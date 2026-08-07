@@ -134,6 +134,13 @@ import { GlobeParkBatch12Assembly } from './GlobeParkBatch12Assembly';
 import { GlobeParkBatch13Assembly } from './GlobeParkBatch13Assembly';
 import { GlobeParkBatch14Assembly } from './GlobeParkBatch14Assembly';
 import { GlobeParkBatch20CoreSurfaces } from './GlobeParkBatch20CoreSurfaces';
+import {
+  parkMeshyAssetsForSelection,
+} from './parkMeshyArchetypeAssets';
+import {
+  resolveParkMeshyDetailPlacements,
+  type ParkMeshyDetailPlacement,
+} from './parkMeshyDetailPlacement';
 
 const DEG_TO_RAD = Math.PI / 180;
 const RENDER_ORDER_PROPS = 145;
@@ -429,6 +436,32 @@ function MetricParkObject({
   return <group position={position} rotation={[0, 0, yaw]}>
     <group rotation={[Math.PI / 2, 0, 0]}><primitive object={clone} /></group>
   </group>;
+}
+
+function GlobeParkMeshyDetailInstances({
+  placements,
+  terrainOffsets,
+}: {
+  placements: readonly ParkMeshyDetailPlacement[];
+  terrainOffsets: readonly number[] | null;
+}) {
+  return <>
+    {placements.map((placement, index) => (
+      <SilentKitBoundary key={`${placement.asset.id}-${index}`} fallback={null}>
+        <Suspense fallback={null}>
+          <MetricParkObject
+            url={placement.asset.url}
+            position={[
+              placement.x,
+              placement.y,
+              (terrainOffsets?.[index] ?? 0) + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS,
+            ]}
+            yaw={placement.yawRad}
+          />
+        </Suspense>
+      </SilentKitBoundary>
+    ))}
+  </>;
 }
 
 function ProceduralParkFinishingProps({
@@ -2084,7 +2117,14 @@ function liveProgrammedParkPlacements(zone: SiteZone): PropPlacement[] {
 }
 
 function hasLiveProgrammedParkGeometry(zone: SiteZone): boolean {
-  return shouldMountParkProgramFrame(zone, liveProgrammedParkPlacements(zone).length);
+  const profile = resolveParkGroundProfile(zone);
+  const hasExactVariantMeshyDetail = Boolean(
+    profile.variantId
+    && parkMeshyAssetsForSelection(profile.archetypeId, profile.variantId)
+      .some((candidate) => candidate.placement),
+  );
+  return hasExactVariantMeshyDetail
+    || shouldMountParkProgramFrame(zone, liveProgrammedParkPlacements(zone).length);
 }
 
 function hasCoreFixedParkProgram(zone: SiteZone): boolean {
@@ -2162,17 +2202,21 @@ function ParkKitInstance({
     () => buildLocalParkProgramFrame(zone.coordinates, centroid),
     [centroid, zone.coordinates],
   );
+  const parkGroundProfile = useMemo(
+    () => resolveParkGroundProfile(zone),
+    [zone],
+  );
   const dressingFamilyId = useMemo(
     () => resolveParkDressingFamily(zone),
     [zone.properties, zone.zone_type],
   );
   const programGuideFit = useMemo(() => {
     return fitParkGroundGuides(
-      resolveParkGroundProfile(zone).guides,
+      parkGroundProfile.guides,
       { width: localProgramFrame.width, height: localProgramFrame.height },
       localProgramFrame.normalizedRing,
     );
-  }, [localProgramFrame, zone]);
+  }, [localProgramFrame, parkGroundProfile.guides]);
   const fittedProgramGuides = programGuideFit.guides;
   const fittedMicrodetailGuides = useMemo(() => {
     return parkMicrodetailGuides(
@@ -2206,6 +2250,17 @@ function ParkKitInstance({
     specialtyStructureKind,
     zone,
   ]);
+  const meshyDetailPlacements = useMemo<ParkMeshyDetailPlacement[]>(() => {
+    if (!parkGroundProfile.variantId) return [];
+    const candidates = parkMeshyAssetsForSelection(
+      parkGroundProfile.archetypeId,
+      parkGroundProfile.variantId,
+    ).filter((candidate) => candidate.placement);
+    return resolveParkMeshyDetailPlacements(
+      candidates,
+      localProgramFrame.points.map(({ x, y }) => [x, y]),
+    );
+  }, [localProgramFrame.points, parkGroundProfile.archetypeId, parkGroundProfile.variantId]);
   const microdetailPlacements = useMemo<ParkMicrodetailPlacement[]>(() => {
     if (
       specialtyStructureKind === 'cricket_ground_assembly'
@@ -2275,8 +2330,14 @@ function ParkKitInstance({
         x: anchor.x,
         y: anchor.y,
       })),
+      ...meshyDetailPlacements.map((placement) => ({
+        lng: centroid.lng + placement.x / mPerLon,
+        lat: centroid.lat + placement.y / METERS_PER_DEG_LAT,
+        x: placement.x,
+        y: placement.y,
+      })),
     ];
-  }, [centroid, microdetailPlacements, placements, specialtyTerrainAnchors]);
+  }, [centroid, meshyDetailPlacements, microdetailPlacements, placements, specialtyTerrainAnchors]);
 
   const byProp = useMemo(() => {
     const groups = new Map<ParkPropId, PropPlacement[]>();
@@ -2479,6 +2540,12 @@ function ParkKitInstance({
   const microdetailZ = instanceZ
     ? instanceZ.slice(placements.length, placements.length + microdetailPlacements.length)
     : null;
+  const meshyDetailStart = placements.length
+    + microdetailPlacements.length
+    + specialtyTerrainAnchors.length;
+  const meshyDetailZ = instanceZ
+    ? instanceZ.slice(meshyDetailStart, meshyDetailStart + meshyDetailPlacements.length)
+    : null;
 
   return (
     <EastNorthUpFrame
@@ -2497,6 +2564,10 @@ function ParkKitInstance({
         terrainOffsets={microdetailZ}
         palette={dressingAppearance?.palette}
         renderOrder={RENDER_ORDER_PROPS}
+      />
+      <GlobeParkMeshyDetailInstances
+        placements={meshyDetailPlacements}
+        terrainOffsets={meshyDetailZ}
       />
       {[...byProp.entries()].map(([propId, group]) => {
         const groupZ = instanceZ

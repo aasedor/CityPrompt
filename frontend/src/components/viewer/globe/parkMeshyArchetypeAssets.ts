@@ -1,3 +1,12 @@
+import { PARK_MESHY_ARCHETYPE_ASSETS_V3 } from './parkMeshyArchetypeAssetsV3';
+
+export interface ParkMeshyPlacementRule {
+  u: number;
+  v: number;
+  yawDeg: number;
+  repeatOnOversize: boolean;
+}
+
 export interface ParkMeshyArchetypeAsset {
   id: string;
   url: string;
@@ -8,6 +17,7 @@ export interface ParkMeshyArchetypeAsset {
   sourceKind: 'meshy_multiview_archetype_reference';
   people: false;
   largeBuildings: false;
+  placement?: ParkMeshyPlacementRule;
 }
 
 const asset = (
@@ -16,6 +26,7 @@ const asset = (
   ...definition,
   variantIds: Object.freeze(definition.variantIds),
   dimensionsM: Object.freeze(definition.dimensionsM),
+  ...(definition.placement ? { placement: Object.freeze(definition.placement) } : {}),
   sourceKind: 'meshy_multiview_archetype_reference',
   people: false,
   largeBuildings: false,
@@ -162,9 +173,13 @@ export const PARK_MESHY_ARCHETYPE_ASSETS = Object.freeze({
     archetypeId: 'constructed_wetland_eco_park', variantIds: ['constructed_wetland_eco_park_variant_2'],
     dimensionsM: [4.0, 1.4, 2.5], placementRole: 'wetland_timber_bird_blind',
   }),
+  ...PARK_MESHY_ARCHETYPE_ASSETS_V3,
 });
 
-export function parkMeshyAssetsForSelection(archetypeId: string, variantId: string) {
+export function parkMeshyAssetsForSelection(
+  archetypeId: string,
+  variantId: string,
+): ParkMeshyArchetypeAsset[] {
   return Object.values(PARK_MESHY_ARCHETYPE_ASSETS).filter((candidate) => (
     candidate.archetypeId === archetypeId && candidate.variantIds.includes(variantId)
   ));

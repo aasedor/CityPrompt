@@ -1,0 +1,840 @@
+{
+  "batchId": "meshy-park-object-catalog-v3d",
+  "version": "2026-08-07",
+  "creditCeiling": 1248,
+  "estimatedCreditsPerAsset": 39,
+  "objects": [
+    {
+      "assetId": "dog-park-rustic-agility-ramp-v1",
+      "family": "dog-park",
+      "archetypeId": "dog_park",
+      "variantIds": [
+        "dog_park_v0"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/dog-park/variant_0.png"
+      ],
+      "dimensionsM": [
+        3.4,
+        1.0,
+        1.45
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "dog_park_rustic_agility_ramp",
+      "placement": {
+        "u": 0.24,
+        "v": 0.28,
+        "yawDeg": 18,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single A-frame dog agility ramp built from weathered timber planks with anti-slip cleats, sturdy braces and safe rounded edges. Derive its design language, proportions and visible construction from the Dog Park \u2014 Rustic Timber & Gravel reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: silvered cedar with warm exposed grain, darkened fasteners and joints, mild damp staining and matte outdoor PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "dog-park-curved-concrete-tunnel-v1",
+      "family": "dog-park",
+      "archetypeId": "dog_park",
+      "variantIds": [
+        "dog_park_v1"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/dog-park/variant_1.png"
+      ],
+      "dimensionsM": [
+        2.8,
+        1.5,
+        1.4
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "dog_park_concrete_tunnel",
+      "placement": {
+        "u": 0.72,
+        "v": 0.28,
+        "yawDeg": -12,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single low curved board-formed concrete dog tunnel with clear walk-through opening, softened rim and broad stable ground contact. Derive its design language, proportions and visible construction from the Dog Park \u2014 Modern Steel & Turf reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: board-formed light-gray concrete with pores, fine aggregate, formwork lines, edge wear and matte PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "dog-park-dog-drinking-fountain-v1",
+      "family": "dog-park",
+      "archetypeId": "dog_park",
+      "variantIds": [
+        "dog_park_v2"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/dog-park/variant_2.png"
+      ],
+      "dimensionsM": [
+        1.0,
+        0.8,
+        1.15
+      ],
+      "orientation": "preserve-upright",
+      "placementRole": "dog_park_drinking_fountain",
+      "placement": {
+        "u": 0.28,
+        "v": 0.72,
+        "yawDeg": 28,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one freestanding dual-height dog drinking fountain with stainless upper bowl, low pet basin, push controls and dark steel pedestal. Derive its design language, proportions and visible construction from the Dog Park \u2014 Natural Meadow reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: weathered galvanized steel with zinc mottling, dark hardware, mild water streaks and realistic non-glossy PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "dog-park-urban-dog-wash-v1",
+      "family": "dog-park",
+      "archetypeId": "dog_park",
+      "variantIds": [
+        "dog_park_v3"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/dog-park/variant_3.png"
+      ],
+      "dimensionsM": [
+        1.8,
+        1.0,
+        1.55
+      ],
+      "orientation": "preserve-upright",
+      "placementRole": "dog_park_wash_station",
+      "placement": {
+        "u": 0.72,
+        "v": 0.72,
+        "yawDeg": -24,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one compact outdoor dog-wash station with galvanized splash panel, low basin, flexible hose hook, leash ring and grated stable base. Derive its design language, proportions and visible construction from the Dog Park \u2014 Urban Contemporary reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: weathered galvanized steel with zinc mottling, dark hardware, mild water streaks and realistic non-glossy PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "playground-adventure-rope-climbing-pyramid-v1",
+      "family": "playground-adventure-play",
+      "archetypeId": "playground_adventure",
+      "variantIds": [
+        "playground_adventure_v0"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/playground-adventure-play/variant_0.png"
+      ],
+      "dimensionsM": [
+        4.0,
+        4.0,
+        3.8
+      ],
+      "orientation": "preserve-upright",
+      "placementRole": "adventure_play_rope_pyramid",
+      "placement": {
+        "u": 0.24,
+        "v": 0.28,
+        "yawDeg": 18,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single compact rope-climbing pyramid with central timber mast, taut radial rope web, dark connectors and stable perimeter anchors. Derive its design language, proportions and visible construction from the Playground / Adventure Play \u2014 Rustic Timber & Gravel reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: marine-grade tan rope with twisted fibers, salt weathering, dark lashings and non-glossy PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "playground-adventure-timber-adventure-tower-v1",
+      "family": "playground-adventure-play",
+      "archetypeId": "playground_adventure",
+      "variantIds": [
+        "playground_adventure_v1"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/playground-adventure-play/variant_1.png"
+      ],
+      "dimensionsM": [
+        3.2,
+        2.8,
+        4.0
+      ],
+      "orientation": "preserve-upright",
+      "placementRole": "adventure_play_timber_tower",
+      "placement": {
+        "u": 0.72,
+        "v": 0.28,
+        "yawDeg": -12,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single open timber adventure tower with cross-braced posts, small roofless platform, rope ladder and climbing net; no slide. Derive its design language, proportions and visible construction from the Playground / Adventure Play \u2014 Modern Steel & Turf reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: silvered cedar with warm exposed grain, darkened fasteners and joints, mild damp staining and matte outdoor PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "playground-adventure-concrete-play-tunnel-mound-v1",
+      "family": "playground-adventure-play",
+      "archetypeId": "playground_adventure",
+      "variantIds": [
+        "playground_adventure_v2"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/playground-adventure-play/variant_2.png"
+      ],
+      "dimensionsM": [
+        4.0,
+        2.6,
+        1.8
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "adventure_play_concrete_mound",
+      "placement": {
+        "u": 0.28,
+        "v": 0.72,
+        "yawDeg": 28,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single sculptural low concrete play mound with one broad crawl-through tunnel, two climbable ridges and child-safe rounded edges. Derive its design language, proportions and visible construction from the Playground / Adventure Play \u2014 Natural Meadow reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: board-formed light-gray concrete with pores, fine aggregate, formwork lines, edge wear and matte PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "playground-adventure-carved-timber-play-animal-v1",
+      "family": "playground-adventure-play",
+      "archetypeId": "playground_adventure",
+      "variantIds": [
+        "playground_adventure_v3"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/playground-adventure-play/variant_3.png"
+      ],
+      "dimensionsM": [
+        2.8,
+        1.2,
+        1.45
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "adventure_play_carved_animal",
+      "placement": {
+        "u": 0.72,
+        "v": 0.72,
+        "yawDeg": -24,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single abstract child-safe carved hardwood woodland animal play sculpture with broad climbable back, integrated handholds and stable base. Derive its design language, proportions and visible construction from the Playground / Adventure Play \u2014 Urban Contemporary reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: weathered exterior hardwood with varied warm-gray grain, darker joints, end-grain detail, subtle checking and matte PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "splash-pad-area-stainless-water-arch-v1",
+      "family": "splash-pad-water-play",
+      "archetypeId": "splash_pad_area",
+      "variantIds": [
+        "splash_pad_area_v0"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/splash-pad-water-play/variant_0.png"
+      ],
+      "dimensionsM": [
+        2.8,
+        0.8,
+        2.6
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "splash_pad_water_arch",
+      "placement": {
+        "u": 0.24,
+        "v": 0.28,
+        "yawDeg": 18,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single stainless splash-pad arch with thick curved tube, six small downward nozzles, two reinforced feet and no running water. Derive its design language, proportions and visible construction from the Splash Pad / Water Play \u2014 Rustic Timber & Gravel reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: weathered galvanized steel with zinc mottling, dark hardware, mild water streaks and realistic non-glossy PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "splash-pad-area-stone-splash-bowl-v1",
+      "family": "splash-pad-water-play",
+      "archetypeId": "splash_pad_area",
+      "variantIds": [
+        "splash_pad_area_v1"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/splash-pad-water-play/variant_1.png"
+      ],
+      "dimensionsM": [
+        1.8,
+        1.8,
+        0.8
+      ],
+      "orientation": "preserve-upright",
+      "placementRole": "splash_pad_stone_bowl",
+      "placement": {
+        "u": 0.72,
+        "v": 0.28,
+        "yawDeg": -12,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one low hand-carved stone splash bowl with irregular circular rim, shallow empty basin and broad non-slip pedestal. Derive its design language, proportions and visible construction from the Splash Pad / Water Play \u2014 Modern Steel & Turf reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: coarse mottled gray granite with charcoal mineral flecks, tan weathering, dark creases and rough matte PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "splash-pad-area-bronze-animal-sprayer-v1",
+      "family": "splash-pad-water-play",
+      "archetypeId": "splash_pad_area",
+      "variantIds": [
+        "splash_pad_area_v2"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/splash-pad-water-play/variant_2.png"
+      ],
+      "dimensionsM": [
+        1.5,
+        0.8,
+        1.2
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "splash_pad_animal_sprayer",
+      "placement": {
+        "u": 0.28,
+        "v": 0.72,
+        "yawDeg": 28,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single stylized bronze river-fish water sprayer sculpture with simple child-safe form, open mouth nozzle and stable plinth. Derive its design language, proportions and visible construction from the Splash Pad / Water Play \u2014 Natural Meadow reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: aged cast bronze with green-blue verdigris, warm brown polished high points, dark oxidation and satin-matte PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "splash-pad-area-water-curtain-frame-v1",
+      "family": "splash-pad-water-play",
+      "archetypeId": "splash_pad_area",
+      "variantIds": [
+        "splash_pad_area_v3"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/splash-pad-water-play/variant_3.png"
+      ],
+      "dimensionsM": [
+        3.2,
+        0.8,
+        2.7
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "splash_pad_water_curtain",
+      "placement": {
+        "u": 0.72,
+        "v": 0.72,
+        "yawDeg": -24,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single sculptural Corten water-curtain frame with two folded uprights, curved top manifold and a row of fine downward nozzles; dry. Derive its design language, proportions and visible construction from the Splash Pad / Water Play \u2014 Urban Contemporary reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: layered orange, russet and dark-brown Corten patina with rain streaks, darker folds and satin-matte PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "fountain-water-feature-bronze-lotus-bowl-v1",
+      "family": "fountain-decorative-water-feature",
+      "archetypeId": "fountain_water_feature",
+      "variantIds": [
+        "fountain_water_feature_v0"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/fountain-decorative-water-feature/variant_0.png"
+      ],
+      "dimensionsM": [
+        2.0,
+        2.0,
+        1.0
+      ],
+      "orientation": "preserve-upright",
+      "placementRole": "fountain_bronze_lotus_bowl",
+      "placement": {
+        "u": 0.24,
+        "v": 0.28,
+        "yawDeg": 18,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single cast-bronze fountain bowl shaped as restrained overlapping lotus petals with empty basin and stable circular foot. Derive its design language, proportions and visible construction from the Fountain / Decorative Water Feature \u2014 Naturalistic Pond reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: aged cast bronze with green-blue verdigris, warm brown polished high points, dark oxidation and satin-matte PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "fountain-water-feature-carved-wall-spout-v1",
+      "family": "fountain-decorative-water-feature",
+      "archetypeId": "fountain_water_feature",
+      "variantIds": [
+        "fountain_water_feature_v1"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/fountain-decorative-water-feature/variant_1.png"
+      ],
+      "dimensionsM": [
+        1.4,
+        0.8,
+        1.8
+      ],
+      "orientation": "preserve-upright",
+      "placementRole": "fountain_carved_wall_spout",
+      "placement": {
+        "u": 0.72,
+        "v": 0.28,
+        "yawDeg": -12,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one freestanding carved-stone fountain wall panel with one bronze spout, shallow catch basin and stable concealed back support; dry. Derive its design language, proportions and visible construction from the Fountain / Decorative Water Feature \u2014 Formal Reflecting reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: weathered pale limestone with warm buff variation, chipped edges, darker pores, restrained lichen and rough matte PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "fountain-water-feature-stainless-water-hoop-v1",
+      "family": "fountain-decorative-water-feature",
+      "archetypeId": "fountain_water_feature",
+      "variantIds": [
+        "fountain_water_feature_v2"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/fountain-decorative-water-feature/variant_2.png"
+      ],
+      "dimensionsM": [
+        2.6,
+        0.7,
+        2.6
+      ],
+      "orientation": "preserve-upright",
+      "placementRole": "fountain_stainless_water_hoop",
+      "placement": {
+        "u": 0.28,
+        "v": 0.72,
+        "yawDeg": 28,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single thick stainless-steel circular water hoop with fine inward nozzles and two discreet base plates; no running water. Derive its design language, proportions and visible construction from the Fountain / Decorative Water Feature \u2014 Contemporary Interactive reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: weathered galvanized steel with zinc mottling, dark hardware, mild water streaks and realistic non-glossy PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "fountain-water-feature-corten-cascade-vessels-v1",
+      "family": "fountain-decorative-water-feature",
+      "archetypeId": "fountain_water_feature",
+      "variantIds": [
+        "fountain_water_feature_v3"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/fountain-decorative-water-feature/variant_3.png"
+      ],
+      "dimensionsM": [
+        2.2,
+        1.5,
+        2.0
+      ],
+      "orientation": "preserve-upright",
+      "placementRole": "fountain_corten_cascade",
+      "placement": {
+        "u": 0.72,
+        "v": 0.72,
+        "yawDeg": -24,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one one coherent stack of three offset folded-Corten cascade vessels at descending heights with empty basins and stable shared base. Derive its design language, proportions and visible construction from the Fountain / Decorative Water Feature \u2014 Ecological Wetland reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: layered orange, russet and dark-brown Corten patina with rain streaks, darker folds and satin-matte PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "parisian-jardin-versailles-stone-urn-v1",
+      "family": "jardin-a-la-francaise",
+      "archetypeId": "parisian_jardin",
+      "variantIds": [
+        "parisian_jardin_v0"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/jardin-a-la-francaise/variant_0.png"
+      ],
+      "dimensionsM": [
+        1.25,
+        1.25,
+        1.8
+      ],
+      "orientation": "preserve-upright",
+      "placementRole": "parisian_jardin_stone_urn",
+      "placement": {
+        "u": 0.24,
+        "v": 0.28,
+        "yawDeg": 18,
+        "repeatOnOversize": true
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one grand French formal garden urn with restrained garland relief, deep empty bowl, carved foot and square limestone pedestal. Derive its design language, proportions and visible construction from the Jardin a la Francaise \u2014 Variant 1 reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: weathered pale limestone with warm buff variation, chipped edges, darker pores, restrained lichen and rough matte PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "parisian-jardin-wrought-iron-chair-pair-v1",
+      "family": "jardin-a-la-francaise",
+      "archetypeId": "parisian_jardin",
+      "variantIds": [
+        "parisian_jardin_v1"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/jardin-a-la-francaise/variant_1.png"
+      ],
+      "dimensionsM": [
+        1.8,
+        0.8,
+        0.95
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "parisian_jardin_chair_pair",
+      "placement": {
+        "u": 0.72,
+        "v": 0.28,
+        "yawDeg": -12,
+        "repeatOnOversize": true
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one one coordinated pair of empty classic Parisian wrought-iron garden chairs joined by a discreet small circular side table. Derive its design language, proportions and visible construction from the Jardin a la Francaise \u2014 Variant 2 reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: layered charcoal wrought iron, subtle edge wear, restrained brown oxidation, realistic outdoor matte PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "parisian-jardin-classical-stone-sundial-v1",
+      "family": "jardin-a-la-francaise",
+      "archetypeId": "parisian_jardin",
+      "variantIds": [
+        "parisian_jardin_v2"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/jardin-a-la-francaise/variant_2.png"
+      ],
+      "dimensionsM": [
+        1.2,
+        1.2,
+        1.55
+      ],
+      "orientation": "preserve-upright",
+      "placementRole": "parisian_jardin_sundial",
+      "placement": {
+        "u": 0.28,
+        "v": 0.72,
+        "yawDeg": 28,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one classical French limestone sundial with bronze dial plate, fluted tapered pedestal and broad square plinth. Derive its design language, proportions and visible construction from the Jardin a la Francaise \u2014 Variant 3 reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: weathered pale limestone with warm buff variation, chipped edges, darker pores, restrained lichen and rough matte PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "parisian-jardin-ornate-iron-fountain-v1",
+      "family": "jardin-a-la-francaise",
+      "archetypeId": "parisian_jardin",
+      "variantIds": [
+        "parisian_jardin_v3"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/jardin-a-la-francaise/variant_3.png"
+      ],
+      "dimensionsM": [
+        1.8,
+        1.8,
+        2.2
+      ],
+      "orientation": "preserve-upright",
+      "placementRole": "parisian_jardin_iron_fountain",
+      "placement": {
+        "u": 0.72,
+        "v": 0.72,
+        "yawDeg": -24,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one ornate but compact cast-iron garden fountain with circular basin, central fluted column and two tiered bowls; dry. Derive its design language, proportions and visible construction from the Jardin a la Francaise \u2014 Variant 4 reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: layered charcoal wrought iron, subtle edge wear, restrained brown oxidation, realistic outdoor matte PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "amsterdam-hofje-garden-sandstone-water-pump-v1",
+      "family": "hofje-courtyard-garden",
+      "archetypeId": "amsterdam_hofje_garden",
+      "variantIds": [
+        "amsterdam_hofje_garden_v0"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/hofje-courtyard-garden/variant_0.png"
+      ],
+      "dimensionsM": [
+        1.1,
+        0.85,
+        1.55
+      ],
+      "orientation": "preserve-upright",
+      "placementRole": "hofje_sandstone_water_pump",
+      "placement": {
+        "u": 0.24,
+        "v": 0.28,
+        "yawDeg": 18,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one traditional Dutch courtyard water pump with carved sandstone pedestal, dark iron hand pump and shallow catch basin. Derive its design language, proportions and visible construction from the Hofje Courtyard Garden \u2014 Variant 1 reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: weathered pale limestone with warm buff variation, chipped edges, darker pores, restrained lichen and rough matte PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "amsterdam-hofje-garden-timber-storage-bench-v1",
+      "family": "hofje-courtyard-garden",
+      "archetypeId": "amsterdam_hofje_garden",
+      "variantIds": [
+        "amsterdam_hofje_garden_v1"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/hofje-courtyard-garden/variant_1.png"
+      ],
+      "dimensionsM": [
+        2.0,
+        0.75,
+        1.0
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "hofje_storage_bench",
+      "placement": {
+        "u": 0.72,
+        "v": 0.28,
+        "yawDeg": -12,
+        "repeatOnOversize": true
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single traditional oak courtyard bench with hinged storage-box seat, paneled back and simple dark iron strap hinges. Derive its design language, proportions and visible construction from the Hofje Courtyard Garden \u2014 Variant 2 reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: weathered exterior hardwood with varied warm-gray grain, darker joints, end-grain detail, subtle checking and matte PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "amsterdam-hofje-garden-communal-well-cover-v1",
+      "family": "hofje-courtyard-garden",
+      "archetypeId": "amsterdam_hofje_garden",
+      "variantIds": [
+        "amsterdam_hofje_garden_v2"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/hofje-courtyard-garden/variant_2.png"
+      ],
+      "dimensionsM": [
+        1.8,
+        1.8,
+        1.5
+      ],
+      "orientation": "preserve-upright",
+      "placementRole": "hofje_communal_well_cover",
+      "placement": {
+        "u": 0.28,
+        "v": 0.72,
+        "yawDeg": 28,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single octagonal communal well cover with low brick-and-stone curb, oak roof frame, small pulley wheel and no bucket. Derive its design language, proportions and visible construction from the Hofje Courtyard Garden \u2014 Variant 3 reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: weathered exterior hardwood with varied warm-gray grain, darker joints, end-grain detail, subtle checking and matte PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "amsterdam-hofje-garden-wrought-iron-courtyard-gate-v1",
+      "family": "hofje-courtyard-garden",
+      "archetypeId": "amsterdam_hofje_garden",
+      "variantIds": [
+        "amsterdam_hofje_garden_v3"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/hofje-courtyard-garden/variant_3.png"
+      ],
+      "dimensionsM": [
+        2.6,
+        0.5,
+        2.4
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "hofje_courtyard_gate",
+      "placement": {
+        "u": 0.72,
+        "v": 0.72,
+        "yawDeg": -24,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one freestanding traditional Dutch wrought-iron courtyard gate with simple arched top, fine vertical bars, scroll details and two masonry-free posts. Derive its design language, proportions and visible construction from the Hofje Courtyard Garden \u2014 Variant 4 reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: layered charcoal wrought iron, subtle edge wear, restrained brown oxidation, realistic outdoor matte PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "newyork-community-garden-compost-sifter-station-v1",
+      "family": "new-york-community-garden",
+      "archetypeId": "newyork_community_garden",
+      "variantIds": [
+        "newyork_community_garden_v0"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/new-york-community-garden/variant_0.png"
+      ],
+      "dimensionsM": [
+        2.2,
+        1.0,
+        1.5
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "nyc_garden_compost_sifter",
+      "placement": {
+        "u": 0.24,
+        "v": 0.28,
+        "yawDeg": 18,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single reclaimed-timber compost sifter station with angled galvanized mesh screen, collection tray and sturdy open frame. Derive its design language, proportions and visible construction from the New York Community Garden \u2014 Variant 1 reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: weathered exterior hardwood with varied warm-gray grain, darker joints, end-grain detail, subtle checking and matte PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "newyork-community-garden-mosaic-garden-bench-v1",
+      "family": "new-york-community-garden",
+      "archetypeId": "newyork_community_garden",
+      "variantIds": [
+        "newyork_community_garden_v1"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/new-york-community-garden/variant_1.png"
+      ],
+      "dimensionsM": [
+        2.2,
+        0.8,
+        1.0
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "nyc_garden_mosaic_bench",
+      "placement": {
+        "u": 0.72,
+        "v": 0.28,
+        "yawDeg": -12,
+        "repeatOnOversize": true
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single community-made curved garden bench with concrete body and richly varied ceramic mosaic seat and back. Derive its design language, proportions and visible construction from the New York Community Garden \u2014 Variant 2 reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: hand-set ceramic mosaic with varied colored tesserae, pale grout, weathered edges and realistic ceramic roughness. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "newyork-community-garden-painted-rain-barrel-v1",
+      "family": "new-york-community-garden",
+      "archetypeId": "newyork_community_garden",
+      "variantIds": [
+        "newyork_community_garden_v2"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/new-york-community-garden/variant_2.png"
+      ],
+      "dimensionsM": [
+        1.0,
+        1.0,
+        1.35
+      ],
+      "orientation": "preserve-upright",
+      "placementRole": "nyc_garden_rain_barrel",
+      "placement": {
+        "u": 0.28,
+        "v": 0.72,
+        "yawDeg": 28,
+        "repeatOnOversize": true
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single cylindrical steel rain barrel with hand-painted botanical mural, fitted lid, brass tap and stable low stand; no readable text. Derive its design language, proportions and visible construction from the New York Community Garden \u2014 Variant 3 reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: powder-coated exterior steel with restrained chips, dark exposed edges, galvanized hardware and satin PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "newyork-community-garden-salvaged-steel-garden-arch-v1",
+      "family": "new-york-community-garden",
+      "archetypeId": "newyork_community_garden",
+      "variantIds": [
+        "newyork_community_garden_v3"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/new-york-community-garden/variant_3.png"
+      ],
+      "dimensionsM": [
+        2.8,
+        0.8,
+        2.6
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "nyc_garden_salvaged_arch",
+      "placement": {
+        "u": 0.72,
+        "v": 0.72,
+        "yawDeg": -24,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single walk-through garden arch assembled from bent salvaged steel strips and small welded leaf motifs, with stable feet and no plants. Derive its design language, proportions and visible construction from the New York Community Garden \u2014 Variant 4 reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: powder-coated exterior steel with restrained chips, dark exposed edges, galvanized hardware and satin PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "halifax-public-gardens-victorian-cast-iron-urn-v1",
+      "family": "halifax-public-gardens",
+      "archetypeId": "halifax_public_gardens",
+      "variantIds": [
+        "halifax_public_gardens_v0"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/halifax-public-gardens/variant_0.png"
+      ],
+      "dimensionsM": [
+        1.2,
+        1.2,
+        1.7
+      ],
+      "orientation": "preserve-upright",
+      "placementRole": "halifax_gardens_victorian_urn",
+      "placement": {
+        "u": 0.24,
+        "v": 0.28,
+        "yawDeg": 18,
+        "repeatOnOversize": true
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one ornate Victorian cast-iron garden urn with fluted bowl, restrained floral relief, curled handles and stable pedestal. Derive its design language, proportions and visible construction from the Halifax Public Gardens \u2014 Rose Garden Peak reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: layered charcoal wrought iron, subtle edge wear, restrained brown oxidation, realistic outdoor matte PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "halifax-public-gardens-victorian-park-bench-v1",
+      "family": "halifax-public-gardens",
+      "archetypeId": "halifax_public_gardens",
+      "variantIds": [
+        "halifax_public_gardens_v1"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/halifax-public-gardens/variant_1.png"
+      ],
+      "dimensionsM": [
+        2.0,
+        0.8,
+        1.05
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "halifax_gardens_victorian_bench",
+      "placement": {
+        "u": 0.72,
+        "v": 0.28,
+        "yawDeg": -12,
+        "repeatOnOversize": true
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single ornate Victorian public-garden bench with cast-iron scroll side frames and warm weathered timber slats. Derive its design language, proportions and visible construction from the Halifax Public Gardens \u2014 Bandstand Concert reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: layered charcoal wrought iron, subtle edge wear, restrained brown oxidation, realistic outdoor matte PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "halifax-public-gardens-sandstone-drinking-fountain-v1",
+      "family": "halifax-public-gardens",
+      "archetypeId": "halifax_public_gardens",
+      "variantIds": [
+        "halifax_public_gardens_v2"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/halifax-public-gardens/variant_2.png"
+      ],
+      "dimensionsM": [
+        1.0,
+        0.8,
+        1.35
+      ],
+      "orientation": "preserve-upright",
+      "placementRole": "halifax_gardens_drinking_fountain",
+      "placement": {
+        "u": 0.28,
+        "v": 0.72,
+        "yawDeg": 28,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one heritage sandstone drinking fountain with carved Gothic panel, shallow bronze basin, simple tap and broad pedestal. Derive its design language, proportions and visible construction from the Halifax Public Gardens \u2014 Autumn Foliage Stroll reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: weathered pale limestone with warm buff variation, chipped edges, darker pores, restrained lichen and rough matte PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "halifax-public-gardens-timber-duck-house-v1",
+      "family": "halifax-public-gardens",
+      "archetypeId": "halifax_public_gardens",
+      "variantIds": [
+        "halifax_public_gardens_v3"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/halifax-public-gardens/variant_3.png"
+      ],
+      "dimensionsM": [
+        1.5,
+        1.2,
+        1.55
+      ],
+      "orientation": "preserve-upright",
+      "placementRole": "halifax_gardens_duck_house",
+      "placement": {
+        "u": 0.72,
+        "v": 0.72,
+        "yawDeg": -24,
+        "repeatOnOversize": true
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one small freestanding decorative timber duck house with pitched cedar-shingle roof, arched opening, raised legs and no birds. Derive its design language, proportions and visible construction from the Halifax Public Gardens \u2014 Spring Tulip Display reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: silvered cedar with warm exposed grain, darkened fasteners and joints, mild damp staining and matte outdoor PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    }
+  ]
+}

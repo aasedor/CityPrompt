@@ -1,0 +1,840 @@
+{
+  "batchId": "meshy-park-object-catalog-v3c",
+  "version": "2026-08-07",
+  "creditCeiling": 1248,
+  "estimatedCreditsPerAsset": 39,
+  "objects": [
+    {
+      "assetId": "promenade-boardwalk-maritime-bollard-rope-v1",
+      "family": "promenade-boardwalk",
+      "archetypeId": "promenade_boardwalk",
+      "variantIds": [
+        "promenade_boardwalk_v0"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/promenade-boardwalk/variant_0.png"
+      ],
+      "dimensionsM": [
+        2.8,
+        0.7,
+        1.05
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "promenade_maritime_bollard_rope",
+      "placement": {
+        "u": 0.24,
+        "v": 0.28,
+        "yawDeg": 18,
+        "repeatOnOversize": true
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single coordinated module of two weathered timber mooring bollards joined by a relaxed heavy nautical rope, with stable feet. Derive its design language, proportions and visible construction from the Promenade / Boardwalk \u2014 Maritime Heritage reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: marine-grade tan rope with twisted fibers, salt weathering, dark lashings and non-glossy PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "promenade-boardwalk-cantilevered-steel-lounger-v1",
+      "family": "promenade-boardwalk",
+      "archetypeId": "promenade_boardwalk",
+      "variantIds": [
+        "promenade_boardwalk_v1"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/promenade-boardwalk/variant_1.png"
+      ],
+      "dimensionsM": [
+        2.2,
+        0.75,
+        0.85
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "promenade_modern_lounger",
+      "placement": {
+        "u": 0.72,
+        "v": 0.28,
+        "yawDeg": -12,
+        "repeatOnOversize": true
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single contemporary cantilevered waterfront lounger made from a folded powder-coated steel ribbon with perforated sitting surface. Derive its design language, proportions and visible construction from the Promenade / Boardwalk \u2014 Modern Esplanade reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: powder-coated exterior steel with restrained chips, dark exposed edges, galvanized hardware and satin PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "promenade-boardwalk-thatched-cabana-daybed-v1",
+      "family": "promenade-boardwalk",
+      "archetypeId": "promenade_boardwalk",
+      "variantIds": [
+        "promenade_boardwalk_v2"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/promenade-boardwalk/variant_2.png"
+      ],
+      "dimensionsM": [
+        3.2,
+        2.4,
+        2.7
+      ],
+      "orientation": "preserve-upright",
+      "placementRole": "promenade_tropical_cabana",
+      "placement": {
+        "u": 0.28,
+        "v": 0.72,
+        "yawDeg": 28,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one one compact open-sided timber cabana with layered thatch roof, raised slatted daybed platform and four sturdy posts; no loose cushions. Derive its design language, proportions and visible construction from the Promenade / Boardwalk \u2014 Tropical Resort reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: silvered cedar with warm exposed grain, darkened fasteners and joints, mild damp staining and matte outdoor PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "promenade-boardwalk-timber-fishing-rod-rack-v1",
+      "family": "promenade-boardwalk",
+      "archetypeId": "promenade_boardwalk",
+      "variantIds": [
+        "promenade_boardwalk_v3"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/promenade-boardwalk/variant_3.png"
+      ],
+      "dimensionsM": [
+        2.6,
+        0.7,
+        1.2
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "promenade_riparian_rod_rack",
+      "placement": {
+        "u": 0.72,
+        "v": 0.72,
+        "yawDeg": -24,
+        "repeatOnOversize": true
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single boardwalk fishing rack with weathered timber frame, six rounded rod notches, small bait shelf and stable feet; no rods. Derive its design language, proportions and visible construction from the Promenade / Boardwalk \u2014 Naturalized Riparian reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: silvered cedar with warm exposed grain, darkened fasteners and joints, mild damp staining and matte outdoor PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "riverfront-park-beach-parasol-deckchair-ensemble-v1",
+      "family": "riverfront-park-beach",
+      "archetypeId": "riverfront_park_beach",
+      "variantIds": [
+        "riverfront_park_beach_v0"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/riverfront-park-beach/variant_0.png"
+      ],
+      "dimensionsM": [
+        2.8,
+        2.6,
+        2.5
+      ],
+      "orientation": "preserve-upright",
+      "placementRole": "riverfront_urban_beach_ensemble",
+      "placement": {
+        "u": 0.24,
+        "v": 0.28,
+        "yawDeg": 18,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one one coordinated beach ensemble containing a folded-fabric striped parasol and one empty timber sling chair on a shared discreet base. Derive its design language, proportions and visible construction from the Riverfront Park / Beach \u2014 Urban River Beach reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: weathered exterior hardwood with varied warm-gray grain, darker joints, end-grain detail, subtle checking and matte PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "riverfront-park-beach-cedar-kayak-rack-v1",
+      "family": "riverfront-park-beach",
+      "archetypeId": "riverfront_park_beach",
+      "variantIds": [
+        "riverfront_park_beach_v1"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/riverfront-park-beach/variant_1.png"
+      ],
+      "dimensionsM": [
+        3.4,
+        1.4,
+        1.8
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "riverfront_swimming_beach_kayak_rack",
+      "placement": {
+        "u": 0.72,
+        "v": 0.28,
+        "yawDeg": -12,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one freestanding cedar rack with four empty curved kayak cradles, galvanized straps and a stable weatherproof frame. Derive its design language, proportions and visible construction from the Riverfront Park / Beach \u2014 Lake Swimming Beach reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: silvered cedar with warm exposed grain, darkened fasteners and joints, mild damp staining and matte outdoor PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "riverfront-park-beach-cargo-net-climbing-frame-v1",
+      "family": "riverfront-park-beach",
+      "archetypeId": "riverfront_park_beach",
+      "variantIds": [
+        "riverfront_park_beach_v2"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/riverfront-park-beach/variant_2.png"
+      ],
+      "dimensionsM": [
+        3.6,
+        3.0,
+        3.0
+      ],
+      "orientation": "preserve-upright",
+      "placementRole": "riverfront_adventure_pier_climber",
+      "placement": {
+        "u": 0.28,
+        "v": 0.72,
+        "yawDeg": 28,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single compact adventure-pier climbing frame with four heavy timber posts and a taut pyramidal marine-rope cargo net, no slide or platform. Derive its design language, proportions and visible construction from the Riverfront Park / Beach \u2014 Adventure Pier reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: marine-grade tan rope with twisted fibers, salt weathering, dark lashings and non-glossy PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "riverfront-park-beach-willow-fascine-revetment-v1",
+      "family": "riverfront-park-beach",
+      "archetypeId": "riverfront_park_beach",
+      "variantIds": [
+        "riverfront_park_beach_v3"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/riverfront-park-beach/variant_3.png"
+      ],
+      "dimensionsM": [
+        4.2,
+        1.4,
+        0.85
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "riverfront_naturalized_fascine",
+      "placement": {
+        "u": 0.72,
+        "v": 0.72,
+        "yawDeg": -24,
+        "repeatOnOversize": true
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one one coherent bioengineered bank-revetment bundle of woven willow branches, coir rolls, timber stakes and visible porous gaps. Derive its design language, proportions and visible construction from the Riverfront Park / Beach \u2014 Naturalized Riverfront reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: marine-grade tan rope with twisted fibers, salt weathering, dark lashings and non-glossy PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "urban-beach-sculptural-sun-lounger-v1",
+      "family": "urban-beach",
+      "archetypeId": "urban_beach",
+      "variantIds": [
+        "urban_beach_v0"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/urban-beach/variant_0.png"
+      ],
+      "dimensionsM": [
+        2.1,
+        0.8,
+        0.72
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "urban_beach_sun_lounger",
+      "placement": {
+        "u": 0.24,
+        "v": 0.28,
+        "yawDeg": 18,
+        "repeatOnOversize": true
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single flowing public beach lounger with perforated powder-coated steel shell, raised head curve and broad stable sled base. Derive its design language, proportions and visible construction from the Urban Beach \u2014 Paris Plages Style reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: powder-coated exterior steel with restrained chips, dark exposed edges, galvanized hardware and satin PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "urban-beach-shade-sail-canopy-v1",
+      "family": "urban-beach",
+      "archetypeId": "urban_beach",
+      "variantIds": [
+        "urban_beach_v1"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/urban-beach/variant_1.png"
+      ],
+      "dimensionsM": [
+        4.2,
+        3.4,
+        3.1
+      ],
+      "orientation": "preserve-upright",
+      "placementRole": "urban_beach_shade_sail",
+      "placement": {
+        "u": 0.72,
+        "v": 0.28,
+        "yawDeg": -12,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one one compact three-mast tensile shade canopy with taut triangular fabric, dark steel masts and realistic cable connections; no furniture. Derive its design language, proportions and visible construction from the Urban Beach \u2014 Riverfront Beach Bar reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: powder-coated exterior steel with restrained chips, dark exposed edges, galvanized hardware and satin PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "urban-beach-beach-shower-column-v1",
+      "family": "urban-beach",
+      "archetypeId": "urban_beach",
+      "variantIds": [
+        "urban_beach_v2"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/urban-beach/variant_2.png"
+      ],
+      "dimensionsM": [
+        1.0,
+        0.8,
+        2.4
+      ],
+      "orientation": "preserve-upright",
+      "placementRole": "urban_beach_shower",
+      "placement": {
+        "u": 0.28,
+        "v": 0.72,
+        "yawDeg": 28,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single robust public beach shower column with two stainless shower heads, push controls, foot rinse and discreet grated base. Derive its design language, proportions and visible construction from the Urban Beach \u2014 Family Splash Beach reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: weathered galvanized steel with zinc mottling, dark hardware, mild water streaks and realistic non-glossy PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "urban-beach-driftwood-windbreak-v1",
+      "family": "urban-beach",
+      "archetypeId": "urban_beach",
+      "variantIds": [
+        "urban_beach_v3"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/urban-beach/variant_3.png"
+      ],
+      "dimensionsM": [
+        3.5,
+        0.7,
+        1.6
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "urban_beach_driftwood_windbreak",
+      "placement": {
+        "u": 0.72,
+        "v": 0.72,
+        "yawDeg": -24,
+        "repeatOnOversize": true
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one one low sculptural windbreak screen assembled from varied vertical salt-bleached driftwood pieces in a stable concealed frame. Derive its design language, proportions and visible construction from the Urban Beach \u2014 Plaza Sand Garden reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: salt-bleached driftwood with silver-gray grain, pale fibers, charcoal checks, rounded worn edges and rough matte PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "tidal-marsh-boardwalk-hexagonal-overlook-rail-v1",
+      "family": "tidal-marsh-boardwalk",
+      "archetypeId": "tidal_marsh_boardwalk",
+      "variantIds": [
+        "tidal_marsh_boardwalk_v0"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/tidal-marsh-boardwalk/variant_0.png"
+      ],
+      "dimensionsM": [
+        3.2,
+        1.2,
+        1.15
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "tidal_marsh_overlook_rail",
+      "placement": {
+        "u": 0.24,
+        "v": 0.28,
+        "yawDeg": 18,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single three-sided segment of a hexagonal timber overlook rail with sturdy posts, top leaning shelf and open back. Derive its design language, proportions and visible construction from the Tidal Marsh Boardwalk \u2014 Cordgrass Salt-Marsh Boardwalk reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: silvered cedar with warm exposed grain, darkened fasteners and joints, mild damp staining and matte outdoor PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "tidal-marsh-boardwalk-mangrove-bird-hide-v1",
+      "family": "tidal-marsh-boardwalk",
+      "archetypeId": "tidal_marsh_boardwalk",
+      "variantIds": [
+        "tidal_marsh_boardwalk_v1"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/tidal-marsh-boardwalk/variant_1.png"
+      ],
+      "dimensionsM": [
+        3.6,
+        1.3,
+        2.2
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "tidal_marsh_mangrove_hide",
+      "placement": {
+        "u": 0.72,
+        "v": 0.28,
+        "yawDeg": -12,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one compact open-air mangrove bird hide with woven timber screen, three viewing slots, short side returns and raised post feet; no roof. Derive its design language, proportions and visible construction from the Tidal Marsh Boardwalk \u2014 Mangrove Tidal-Flat Walk reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: silvered cedar with warm exposed grain, darkened fasteners and joints, mild damp staining and matte outdoor PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "tidal-marsh-boardwalk-timber-birdwatch-tower-v1",
+      "family": "tidal-marsh-boardwalk",
+      "archetypeId": "tidal_marsh_boardwalk",
+      "variantIds": [
+        "tidal_marsh_boardwalk_v2"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/tidal-marsh-boardwalk/variant_2.png"
+      ],
+      "dimensionsM": [
+        2.8,
+        2.8,
+        5.2
+      ],
+      "orientation": "preserve-upright",
+      "placementRole": "tidal_marsh_birdwatch_tower",
+      "placement": {
+        "u": 0.28,
+        "v": 0.72,
+        "yawDeg": 28,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one small open timber observation tower with cross-braced legs, upper viewing deck, slatted guardrail and integrated straight stair. Derive its design language, proportions and visible construction from the Tidal Marsh Boardwalk \u2014 Reedbed Estuary Boardwalk reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: silvered cedar with warm exposed grain, darkened fasteners and joints, mild damp staining and matte outdoor PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "tidal-marsh-boardwalk-low-wetland-viewing-hide-v1",
+      "family": "tidal-marsh-boardwalk",
+      "archetypeId": "tidal_marsh_boardwalk",
+      "variantIds": [
+        "tidal_marsh_boardwalk_v3"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/tidal-marsh-boardwalk/variant_3.png"
+      ],
+      "dimensionsM": [
+        3.8,
+        1.5,
+        1.7
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "tidal_marsh_viewing_hide",
+      "placement": {
+        "u": 0.72,
+        "v": 0.72,
+        "yawDeg": -24,
+        "repeatOnOversize": true
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single low faceted timber viewing hide with four narrow slots at varied heights, leaning rail and stable wetland feet. Derive its design language, proportions and visible construction from the Tidal Marsh Boardwalk \u2014 Bird-Blind Viewing Circuit reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: silvered cedar with warm exposed grain, darkened fasteners and joints, mild damp staining and matte outdoor PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "rooftop-garden-corten-planter-bench-v1",
+      "family": "rooftop-garden",
+      "archetypeId": "rooftop_garden",
+      "variantIds": [
+        "rooftop_garden_v0"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/rooftop-garden/variant_0.png"
+      ],
+      "dimensionsM": [
+        3.2,
+        1.1,
+        0.85
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "rooftop_corten_planter_bench",
+      "placement": {
+        "u": 0.24,
+        "v": 0.28,
+        "yawDeg": 18,
+        "repeatOnOversize": true
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one integrated rooftop Corten planter with a cantilevered timber bench, concealed drainage tray and broad wind-stable base. Derive its design language, proportions and visible construction from the Rooftop Garden \u2014 Intensive Garden reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: layered orange, russet and dark-brown Corten patina with rain streaks, darker folds and satin-matte PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "rooftop-garden-sculptural-shade-pergola-v1",
+      "family": "rooftop-garden",
+      "archetypeId": "rooftop_garden",
+      "variantIds": [
+        "rooftop_garden_v1"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/rooftop-garden/variant_1.png"
+      ],
+      "dimensionsM": [
+        3.8,
+        3.0,
+        2.8
+      ],
+      "orientation": "preserve-upright",
+      "placementRole": "rooftop_sculptural_pergola",
+      "placement": {
+        "u": 0.72,
+        "v": 0.28,
+        "yawDeg": -12,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single compact rooftop pergola with four dark steel posts and a folded perforated-metal shade canopy shaped as two overlapping planes. Derive its design language, proportions and visible construction from the Rooftop Garden \u2014 Sedum Green Roof reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: powder-coated exterior steel with restrained chips, dark exposed edges, galvanized hardware and satin PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "rooftop-garden-rainwater-tank-v1",
+      "family": "rooftop-garden",
+      "archetypeId": "rooftop_garden",
+      "variantIds": [
+        "rooftop_garden_v2"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/rooftop-garden/variant_2.png"
+      ],
+      "dimensionsM": [
+        1.8,
+        1.3,
+        2.0
+      ],
+      "orientation": "preserve-upright",
+      "placementRole": "rooftop_rainwater_tank",
+      "placement": {
+        "u": 0.28,
+        "v": 0.72,
+        "yawDeg": 28,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one compact rooftop rainwater harvesting tank with ribbed galvanized body, inlet basket, overflow, gauge, tap and stable wind frame. Derive its design language, proportions and visible construction from the Rooftop Garden \u2014 Urban Farm reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: weathered galvanized steel with zinc mottling, dark hardware, mild water streaks and realistic non-glossy PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "rooftop-garden-beehive-stand-v1",
+      "family": "rooftop-garden",
+      "archetypeId": "rooftop_garden",
+      "variantIds": [
+        "rooftop_garden_v3"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/rooftop-garden/variant_3.png"
+      ],
+      "dimensionsM": [
+        2.2,
+        0.9,
+        1.55
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "rooftop_beehive_stand",
+      "placement": {
+        "u": 0.72,
+        "v": 0.72,
+        "yawDeg": -24,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one one secure rooftop apiary stand holding three closed timber beehive boxes under a shallow weather cap, with all pieces joined. Derive its design language, proportions and visible construction from the Rooftop Garden \u2014 Social Terrace reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: silvered cedar with warm exposed grain, darkened fasteners and joints, mild damp staining and matte outdoor PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "street-plaza-parklet-bench-planter-module-v1",
+      "family": "street-plaza-parklet",
+      "archetypeId": "street_plaza_parklet",
+      "variantIds": [
+        "street_plaza_parklet_v0"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/street-plaza-parklet/variant_0.png"
+      ],
+      "dimensionsM": [
+        3.4,
+        1.2,
+        0.9
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "parklet_bench_planter",
+      "placement": {
+        "u": 0.24,
+        "v": 0.28,
+        "yawDeg": 18,
+        "repeatOnOversize": true
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single curbside parklet module combining a long timber bench, raised steel planter and protective end panel on one stable platform. Derive its design language, proportions and visible construction from the Street Plaza / Parklet \u2014 NYC Street Plaza reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: weathered exterior hardwood with varied warm-gray grain, darker joints, end-grain detail, subtle checking and matte PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "street-plaza-parklet-bike-corral-planter-v1",
+      "family": "street-plaza-parklet",
+      "archetypeId": "street_plaza_parklet",
+      "variantIds": [
+        "street_plaza_parklet_v1"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/street-plaza-parklet/variant_1.png"
+      ],
+      "dimensionsM": [
+        3.2,
+        1.0,
+        0.9
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "parklet_bike_corral_planter",
+      "placement": {
+        "u": 0.72,
+        "v": 0.28,
+        "yawDeg": -12,
+        "repeatOnOversize": true
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one one coordinated steel bicycle-corral module with three sculptural inverted-U racks integrated into a long planted end trough; empty. Derive its design language, proportions and visible construction from the Street Plaza / Parklet \u2014 SF Parklet reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: powder-coated exterior steel with restrained chips, dark exposed edges, galvanized hardware and satin PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "street-plaza-parklet-compact-cafe-counter-v1",
+      "family": "street-plaza-parklet",
+      "archetypeId": "street_plaza_parklet",
+      "variantIds": [
+        "street_plaza_parklet_v2"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/street-plaza-parklet/variant_2.png"
+      ],
+      "dimensionsM": [
+        2.4,
+        0.8,
+        1.15
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "parklet_cafe_counter",
+      "placement": {
+        "u": 0.28,
+        "v": 0.72,
+        "yawDeg": 28,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single weatherproof parklet caf\u00e9 counter with timber serving top, folded-steel body, two integrated standing ledges and no loose stools. Derive its design language, proportions and visible construction from the Street Plaza / Parklet \u2014 Tactical Urbanism reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: powder-coated exterior steel with restrained chips, dark exposed edges, galvanized hardware and satin PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "street-plaza-parklet-curbside-stage-platform-v1",
+      "family": "street-plaza-parklet",
+      "archetypeId": "street_plaza_parklet",
+      "variantIds": [
+        "street_plaza_parklet_v3"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/street-plaza-parklet/variant_3.png"
+      ],
+      "dimensionsM": [
+        3.6,
+        2.2,
+        0.65
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "parklet_stage_platform",
+      "placement": {
+        "u": 0.72,
+        "v": 0.72,
+        "yawDeg": -24,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single low modular curbside performance platform with timber deck, faceted dark-steel skirt, one integrated step and rounded street-safe corners. Derive its design language, proportions and visible construction from the Street Plaza / Parklet \u2014 European Pocket Plaza reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: weathered exterior hardwood with varied warm-gray grain, darker joints, end-grain detail, subtle checking and matte PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "beer-garden-communal-trestle-set-v1",
+      "family": "beer-garden",
+      "archetypeId": "beer_garden",
+      "variantIds": [
+        "beer_garden_v0"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/beer-garden/variant_0.png"
+      ],
+      "dimensionsM": [
+        2.8,
+        1.8,
+        0.85
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "beer_garden_communal_table",
+      "placement": {
+        "u": 0.24,
+        "v": 0.28,
+        "yawDeg": 18,
+        "repeatOnOversize": true
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one one joined beer-garden furniture set with a heavy timber trestle table and two matching integrated benches, structurally straight and empty. Derive its design language, proportions and visible construction from the Beer Garden \u2014 Munich Biergarten reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: weathered exterior hardwood with varied warm-gray grain, darker joints, end-grain detail, subtle checking and matte PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "beer-garden-string-light-mast-v1",
+      "family": "beer-garden",
+      "archetypeId": "beer_garden",
+      "variantIds": [
+        "beer_garden_v1"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/beer-garden/variant_1.png"
+      ],
+      "dimensionsM": [
+        1.3,
+        1.3,
+        3.8
+      ],
+      "orientation": "preserve-upright",
+      "placementRole": "beer_garden_light_mast",
+      "placement": {
+        "u": 0.72,
+        "v": 0.28,
+        "yawDeg": -12,
+        "repeatOnOversize": true
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single freestanding timber string-light mast with four radial dark cables, small warm bulb housings and weighted steel foot; no surrounding lights. Derive its design language, proportions and visible construction from the Beer Garden \u2014 Brewery Tap Yard reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: silvered cedar with warm exposed grain, darkened fasteners and joints, mild damp staining and matte outdoor PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "beer-garden-barrel-standing-table-v1",
+      "family": "beer-garden",
+      "archetypeId": "beer_garden",
+      "variantIds": [
+        "beer_garden_v2"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/beer-garden/variant_2.png"
+      ],
+      "dimensionsM": [
+        1.0,
+        1.0,
+        1.15
+      ],
+      "orientation": "preserve-upright",
+      "placementRole": "beer_garden_barrel_table",
+      "placement": {
+        "u": 0.28,
+        "v": 0.72,
+        "yawDeg": 28,
+        "repeatOnOversize": true
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single repurposed oak beer barrel standing table with circular timber top, dark iron hoops and stable concealed feet. Derive its design language, proportions and visible construction from the Beer Garden \u2014 Pergola Garden Terrace reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: weathered exterior hardwood with varied warm-gray grain, darker joints, end-grain detail, subtle checking and matte PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "beer-garden-sculptural-fire-bowl-v1",
+      "family": "beer-garden",
+      "archetypeId": "beer_garden",
+      "variantIds": [
+        "beer_garden_v3"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/beer-garden/variant_3.png"
+      ],
+      "dimensionsM": [
+        1.6,
+        1.6,
+        0.72
+      ],
+      "orientation": "preserve-upright",
+      "placementRole": "beer_garden_fire_bowl",
+      "placement": {
+        "u": 0.72,
+        "v": 0.72,
+        "yawDeg": -24,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one large low Corten fire bowl with hand-formed irregular rim, dark interior, three discreet feet and no flames or fuel. Derive its design language, proportions and visible construction from the Beer Garden \u2014 Rooftop Beer Garden reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: layered orange, russet and dark-brown Corten patina with rain streaks, darker folds and satin-matte PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "amphitheater-lawn-portable-acoustic-shell-v1",
+      "family": "amphitheater-performance-lawn",
+      "archetypeId": "amphitheater_lawn",
+      "variantIds": [
+        "amphitheater_lawn_v0"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/amphitheater-performance-lawn/variant_0.png"
+      ],
+      "dimensionsM": [
+        4.2,
+        2.4,
+        3.2
+      ],
+      "orientation": "preserve-upright",
+      "placementRole": "amphitheater_portable_shell",
+      "placement": {
+        "u": 0.24,
+        "v": 0.28,
+        "yawDeg": 18,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single compact open-front timber acoustic shell with layered curved ribs, faceted back panels and stable weighted base; no stage deck. Derive its design language, proportions and visible construction from the Amphitheater / Performance Lawn \u2014 Terraced Performance reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: silvered cedar with warm exposed grain, darkened fasteners and joints, mild damp staining and matte outdoor PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "amphitheater-lawn-carved-stone-seat-block-v1",
+      "family": "amphitheater-performance-lawn",
+      "archetypeId": "amphitheater_lawn",
+      "variantIds": [
+        "amphitheater_lawn_v1"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/amphitheater-performance-lawn/variant_1.png"
+      ],
+      "dimensionsM": [
+        2.6,
+        0.85,
+        0.7
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "amphitheater_stone_seat",
+      "placement": {
+        "u": 0.72,
+        "v": 0.28,
+        "yawDeg": -12,
+        "repeatOnOversize": true
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single long carved-granite amphitheater seat block with gently concave top, chiseled sides and broad stable underside. Derive its design language, proportions and visible construction from the Amphitheater / Performance Lawn \u2014 Open Festival Ground reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: coarse mottled gray granite with charcoal mineral flecks, tan weathering, dark creases and rough matte PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "amphitheater-lawn-timber-sound-reflector-v1",
+      "family": "amphitheater-performance-lawn",
+      "archetypeId": "amphitheater_lawn",
+      "variantIds": [
+        "amphitheater_lawn_v2"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/amphitheater-performance-lawn/variant_2.png"
+      ],
+      "dimensionsM": [
+        3.0,
+        1.2,
+        2.7
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "amphitheater_sound_reflector",
+      "placement": {
+        "u": 0.28,
+        "v": 0.72,
+        "yawDeg": 28,
+        "repeatOnOversize": true
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one freestanding timber acoustic reflector panel with shallow concave face, visible laminated ribs, dark steel feet and no signage. Derive its design language, proportions and visible construction from the Amphitheater / Performance Lawn \u2014 Intimate Garden Venue reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: silvered cedar with warm exposed grain, darkened fasteners and joints, mild damp staining and matte outdoor PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "amphitheater-lawn-stage-lantern-tower-v1",
+      "family": "amphitheater-performance-lawn",
+      "archetypeId": "amphitheater_lawn",
+      "variantIds": [
+        "amphitheater_lawn_v3"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/amphitheater-performance-lawn/variant_3.png"
+      ],
+      "dimensionsM": [
+        1.2,
+        1.2,
+        3.5
+      ],
+      "orientation": "preserve-upright",
+      "placementRole": "amphitheater_lantern_tower",
+      "placement": {
+        "u": 0.72,
+        "v": 0.72,
+        "yawDeg": -24,
+        "repeatOnOversize": true
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single sculptural outdoor lantern tower with weathered steel lattice, protected warm light chambers and stable square base. Derive its design language, proportions and visible construction from the Amphitheater / Performance Lawn \u2014 Industrial Adaptive reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: layered orange, russet and dark-brown Corten patina with rain streaks, darker folds and satin-matte PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    }
+  ]
+}

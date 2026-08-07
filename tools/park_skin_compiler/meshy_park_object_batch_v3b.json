@@ -1,0 +1,840 @@
+{
+  "batchId": "meshy-park-object-catalog-v3b",
+  "version": "2026-08-07",
+  "creditCeiling": 1248,
+  "estimatedCreditsPerAsset": 39,
+  "objects": [
+    {
+      "assetId": "urban-forest-interpretive-trail-marker-v1",
+      "family": "urban-forest",
+      "archetypeId": "urban_forest",
+      "variantIds": [
+        "urban_forest_v0"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/urban-forest/variant_0.png"
+      ],
+      "dimensionsM": [
+        1.2,
+        0.45,
+        1.55
+      ],
+      "orientation": "preserve-upright",
+      "placementRole": "urban_forest_interpretive_marker",
+      "placement": {
+        "u": 0.24,
+        "v": 0.28,
+        "yawDeg": 18,
+        "repeatOnOversize": true
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single low-impact timber trail marker with angled blank interpretive panel, split-log post and discreet metal foot. Derive its design language, proportions and visible construction from the Urban Forest \u2014 Native Restoration reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: silvered cedar with warm exposed grain, darkened fasteners and joints, mild damp staining and matte outdoor PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "urban-forest-rain-cistern-pipework-v1",
+      "family": "urban-forest",
+      "archetypeId": "urban_forest",
+      "variantIds": [
+        "urban_forest_v1"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/urban-forest/variant_1.png"
+      ],
+      "dimensionsM": [
+        2.0,
+        1.4,
+        2.2
+      ],
+      "orientation": "preserve-upright",
+      "placementRole": "urban_forest_rain_cistern",
+      "placement": {
+        "u": 0.72,
+        "v": 0.28,
+        "yawDeg": -12,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one compact galvanized rain-harvesting cistern with ribbed cylindrical tank, inlet basket, overflow pipe, tap and stable plinth. Derive its design language, proportions and visible construction from the Urban Forest \u2014 Bioengineered Infrastructure reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: weathered galvanized steel with zinc mottling, dark hardware, mild water streaks and realistic non-glossy PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "urban-forest-reclaimed-habitat-tower-v1",
+      "family": "urban-forest",
+      "archetypeId": "urban_forest",
+      "variantIds": [
+        "urban_forest_v2"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/urban-forest/variant_2.png"
+      ],
+      "dimensionsM": [
+        1.4,
+        0.8,
+        2.6
+      ],
+      "orientation": "preserve-upright",
+      "placementRole": "urban_forest_reclaimed_habitat_tower",
+      "placement": {
+        "u": 0.28,
+        "v": 0.72,
+        "yawDeg": 28,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one tall habitat tower assembled from reclaimed brick, drilled hardwood, bark and hollow reeds inside a weathered steel frame. Derive its design language, proportions and visible construction from the Urban Forest \u2014 Rewilded Urban reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: weathered exterior hardwood with varied warm-gray grain, darker joints, end-grain detail, subtle checking and matte PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "urban-forest-oyster-reef-module-v1",
+      "family": "urban-forest",
+      "archetypeId": "urban_forest",
+      "variantIds": [
+        "urban_forest_v3"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/urban-forest/variant_3.png"
+      ],
+      "dimensionsM": [
+        2.8,
+        1.8,
+        0.9
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "urban_forest_coastal_oyster_reef",
+      "placement": {
+        "u": 0.72,
+        "v": 0.72,
+        "yawDeg": -24,
+        "repeatOnOversize": true
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one one irregular low living-shoreline reef module made from clustered oyster shells bound into porous ridges with many cavities. Derive its design language, proportions and visible construction from the Urban Forest \u2014 Resilient Coastal reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: irregular pale oyster shell and mineral-cement surfaces with layered gray, cream and green staining, rough porous PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "riparian-buffer-timber-overlook-rail-v1",
+      "family": "riparian-buffer-creek-corridor",
+      "archetypeId": "riparian_buffer",
+      "variantIds": [
+        "riparian_buffer_v0"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/riparian-buffer-creek-corridor/variant_0.png"
+      ],
+      "dimensionsM": [
+        3.5,
+        0.6,
+        1.2
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "riparian_overlook_rail_module",
+      "placement": {
+        "u": 0.24,
+        "v": 0.28,
+        "yawDeg": 18,
+        "repeatOnOversize": true
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single rustic timber overlook railing module with three posts, two horizontal rails and a small integrated leaning shelf. Derive its design language, proportions and visible construction from the Riparian Buffer / Creek Corridor \u2014 Native Restoration reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: silvered cedar with warm exposed grain, darkened fasteners and joints, mild damp staining and matte outdoor PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "riparian-buffer-gabion-seat-module-v1",
+      "family": "riparian-buffer-creek-corridor",
+      "archetypeId": "riparian_buffer",
+      "variantIds": [
+        "riparian_buffer_v1"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/riparian-buffer-creek-corridor/variant_1.png"
+      ],
+      "dimensionsM": [
+        2.5,
+        0.8,
+        0.65
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "riparian_gabion_seat",
+      "placement": {
+        "u": 0.72,
+        "v": 0.28,
+        "yawDeg": -12,
+        "repeatOnOversize": true
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single rectangular galvanized gabion basket filled with varied river stone and topped by a thick weathered timber seat. Derive its design language, proportions and visible construction from the Riparian Buffer / Creek Corridor \u2014 Bioengineered Infrastructure reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: weathered galvanized steel with zinc mottling, dark hardware, mild water streaks and realistic non-glossy PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "riparian-buffer-reclaimed-trail-bench-v1",
+      "family": "riparian-buffer-creek-corridor",
+      "archetypeId": "riparian_buffer",
+      "variantIds": [
+        "riparian_buffer_v2"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/riparian-buffer-creek-corridor/variant_2.png"
+      ],
+      "dimensionsM": [
+        2.2,
+        0.75,
+        0.9
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "riparian_reclaimed_bench",
+      "placement": {
+        "u": 0.28,
+        "v": 0.72,
+        "yawDeg": 28,
+        "repeatOnOversize": true
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single trail bench built from one reclaimed heavy timber beam on two mismatched corten-steel supports, with naturally worn edges. Derive its design language, proportions and visible construction from the Riparian Buffer / Creek Corridor \u2014 Rewilded Urban reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: weathered exterior hardwood with varied warm-gray grain, darker joints, end-grain detail, subtle checking and matte PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "riparian-buffer-coir-bank-fascine-v1",
+      "family": "riparian-buffer-creek-corridor",
+      "archetypeId": "riparian_buffer",
+      "variantIds": [
+        "riparian_buffer_v3"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/riparian-buffer-creek-corridor/variant_3.png"
+      ],
+      "dimensionsM": [
+        4.0,
+        1.1,
+        0.65
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "riparian_coir_bank_fascine",
+      "placement": {
+        "u": 0.72,
+        "v": 0.72,
+        "yawDeg": -24,
+        "repeatOnOversize": true
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one one coherent bank-stabilization fascine bundle of tightly bound natural coir rolls, willow stakes and short branch weave. Derive its design language, proportions and visible construction from the Riparian Buffer / Creek Corridor \u2014 Resilient Coastal reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: marine-grade tan rope with twisted fibers, salt weathering, dark lashings and non-glossy PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "wetland-rain-garden-wildlife-interpretive-sign-v1",
+      "family": "wetland-rain-garden",
+      "archetypeId": "wetland_rain_garden",
+      "variantIds": [
+        "wetland_rain_garden_v0"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/wetland-rain-garden/variant_0.png"
+      ],
+      "dimensionsM": [
+        1.5,
+        0.5,
+        1.45
+      ],
+      "orientation": "preserve-upright",
+      "placementRole": "wetland_interpretive_sign",
+      "placement": {
+        "u": 0.24,
+        "v": 0.28,
+        "yawDeg": 18,
+        "repeatOnOversize": true
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one angled wetland interpretive panel on two weathered timber posts with a blank illustrated face and robust outdoor frame. Derive its design language, proportions and visible construction from the Wetland / Rain Garden \u2014 Native Restoration reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: silvered cedar with warm exposed grain, darkened fasteners and joints, mild damp staining and matte outdoor PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "wetland-rain-garden-stone-steel-check-weir-v1",
+      "family": "wetland-rain-garden",
+      "archetypeId": "wetland_rain_garden",
+      "variantIds": [
+        "wetland_rain_garden_v1"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/wetland-rain-garden/variant_1.png"
+      ],
+      "dimensionsM": [
+        3.6,
+        1.0,
+        0.8
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "wetland_check_weir",
+      "placement": {
+        "u": 0.72,
+        "v": 0.28,
+        "yawDeg": -12,
+        "repeatOnOversize": true
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single low stream check-weir combining irregular stone abutments and one dark galvanized notch plate with believable water passage. Derive its design language, proportions and visible construction from the Wetland / Rain Garden \u2014 Bioengineered Infrastructure reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: weathered pale limestone with warm buff variation, chipped edges, darker pores, restrained lichen and rough matte PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "wetland-rain-garden-pallet-insect-habitat-v1",
+      "family": "wetland-rain-garden",
+      "archetypeId": "wetland_rain_garden",
+      "variantIds": [
+        "wetland_rain_garden_v2"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/wetland-rain-garden/variant_2.png"
+      ],
+      "dimensionsM": [
+        2.1,
+        1.1,
+        1.7
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "wetland_reclaimed_insect_habitat",
+      "placement": {
+        "u": 0.28,
+        "v": 0.72,
+        "yawDeg": 28,
+        "repeatOnOversize": true
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one compact porous habitat pile assembled from reclaimed timber frames, bark slabs, drilled branches and clay tubes as one stable unit. Derive its design language, proportions and visible construction from the Wetland / Rain Garden \u2014 Rewilded Urban reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: weathered exterior hardwood with varied warm-gray grain, darker joints, end-grain detail, subtle checking and matte PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "wetland-rain-garden-oyster-shell-bag-cluster-v1",
+      "family": "wetland-rain-garden",
+      "archetypeId": "wetland_rain_garden",
+      "variantIds": [
+        "wetland_rain_garden_v3"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/wetland-rain-garden/variant_3.png"
+      ],
+      "dimensionsM": [
+        3.0,
+        1.8,
+        0.7
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "wetland_coastal_reef_bags",
+      "placement": {
+        "u": 0.72,
+        "v": 0.72,
+        "yawDeg": -24,
+        "repeatOnOversize": true
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one one low cluster of four interlocked biodegradable mesh bags densely filled with irregular oyster shells for living shoreline restoration. Derive its design language, proportions and visible construction from the Wetland / Rain Garden \u2014 Resilient Coastal reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: irregular pale oyster shell and mineral-cement surfaces with layered gray, cream and green staining, rough porous PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "pond-lake-carved-lakeside-bench-v1",
+      "family": "pond-lake",
+      "archetypeId": "pond_lake",
+      "variantIds": [
+        "pond_lake_v0"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/pond-lake/variant_0.png"
+      ],
+      "dimensionsM": [
+        2.3,
+        0.75,
+        0.9
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "pond_lake_stone_bench",
+      "placement": {
+        "u": 0.24,
+        "v": 0.28,
+        "yawDeg": 18,
+        "repeatOnOversize": true
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single carved limestone lakeside bench with a slightly curved seat, solid sculpted supports and weather-softened edges. Derive its design language, proportions and visible construction from the Pond / Lake \u2014 Naturalistic Pond reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: weathered pale limestone with warm buff variation, chipped edges, darker pores, restrained lichen and rough matte PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "pond-lake-timber-nesting-island-v1",
+      "family": "pond-lake",
+      "archetypeId": "pond_lake",
+      "variantIds": [
+        "pond_lake_v1"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/pond-lake/variant_1.png"
+      ],
+      "dimensionsM": [
+        2.7,
+        2.0,
+        0.75
+      ],
+      "orientation": "preserve-upright",
+      "placementRole": "pond_lake_nesting_island",
+      "placement": {
+        "u": 0.72,
+        "v": 0.28,
+        "yawDeg": -12,
+        "repeatOnOversize": true
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one one floating wildlife nesting island with a low timber perimeter, porous brush center, two sheltered cavities and concealed buoyancy. Derive its design language, proportions and visible construction from the Pond / Lake \u2014 Formal Reflecting reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: silvered cedar with warm exposed grain, darkened fasteners and joints, mild damp staining and matte outdoor PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "pond-lake-fishing-rod-rest-v1",
+      "family": "pond-lake",
+      "archetypeId": "pond_lake",
+      "variantIds": [
+        "pond_lake_v2"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/pond-lake/variant_2.png"
+      ],
+      "dimensionsM": [
+        2.2,
+        0.6,
+        1.15
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "pond_lake_fishing_rod_rest",
+      "placement": {
+        "u": 0.28,
+        "v": 0.72,
+        "yawDeg": 28,
+        "repeatOnOversize": true
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one freestanding weathered timber fishing rod rest with notched upper rail, small tackle shelf and stable feet; no rods or people. Derive its design language, proportions and visible construction from the Pond / Lake \u2014 Contemporary Interactive reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: silvered cedar with warm exposed grain, darkened fasteners and joints, mild damp staining and matte outdoor PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "pond-lake-reed-habitat-bundle-v1",
+      "family": "pond-lake",
+      "archetypeId": "pond_lake",
+      "variantIds": [
+        "pond_lake_v3"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/pond-lake/variant_3.png"
+      ],
+      "dimensionsM": [
+        2.4,
+        1.4,
+        1.2
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "pond_lake_reed_habitat_bundle",
+      "placement": {
+        "u": 0.72,
+        "v": 0.72,
+        "yawDeg": -24,
+        "repeatOnOversize": true
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one one arranged aquatic habitat bundle of upright hollow reed tubes, short timber stakes and woven willow surround with no live plants. Derive its design language, proportions and visible construction from the Pond / Lake \u2014 Ecological Wetland reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: weathered exterior hardwood with varied warm-gray grain, darker joints, end-grain detail, subtle checking and matte PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "stormwater-retention-pond-stormwater-trash-rack-v1",
+      "family": "stormwater-retention-pond",
+      "archetypeId": "stormwater_retention_pond",
+      "variantIds": [
+        "stormwater_retention_pond_v0"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/stormwater-retention-pond/variant_0.png"
+      ],
+      "dimensionsM": [
+        2.8,
+        1.0,
+        1.4
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "retention_pond_trash_rack",
+      "placement": {
+        "u": 0.24,
+        "v": 0.28,
+        "yawDeg": 18,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single angled galvanized stormwater trash rack with closely spaced bars, side braces, base frame and realistic service access handle. Derive its design language, proportions and visible construction from the Stormwater Retention Pond \u2014 Naturalistic Pond reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: weathered galvanized steel with zinc mottling, dark hardware, mild water streaks and realistic non-glossy PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "stormwater-retention-pond-pond-overlook-screen-v1",
+      "family": "stormwater-retention-pond",
+      "archetypeId": "stormwater_retention_pond",
+      "variantIds": [
+        "stormwater_retention_pond_v1"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/stormwater-retention-pond/variant_1.png"
+      ],
+      "dimensionsM": [
+        3.5,
+        0.8,
+        1.8
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "retention_pond_overlook_screen",
+      "placement": {
+        "u": 0.72,
+        "v": 0.28,
+        "yawDeg": -12,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one low open-air timber pond-observation screen with two viewing slots, leaning rail and short side wings, no roof or deck. Derive its design language, proportions and visible construction from the Stormwater Retention Pond \u2014 Formal Reflecting reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: silvered cedar with warm exposed grain, darkened fasteners and joints, mild damp staining and matte outdoor PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "stormwater-retention-pond-gabion-overflow-weir-v1",
+      "family": "stormwater-retention-pond",
+      "archetypeId": "stormwater_retention_pond",
+      "variantIds": [
+        "stormwater_retention_pond_v2"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/stormwater-retention-pond/variant_2.png"
+      ],
+      "dimensionsM": [
+        4.0,
+        1.4,
+        1.0
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "retention_pond_gabion_weir",
+      "placement": {
+        "u": 0.28,
+        "v": 0.72,
+        "yawDeg": 28,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single broad gabion overflow weir filled with angular stone, central lowered spill notch and reinforced galvanized edges. Derive its design language, proportions and visible construction from the Stormwater Retention Pond \u2014 Contemporary Interactive reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: weathered galvanized steel with zinc mottling, dark hardware, mild water streaks and realistic non-glossy PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "stormwater-retention-pond-rock-armored-spillway-v1",
+      "family": "stormwater-retention-pond",
+      "archetypeId": "stormwater_retention_pond",
+      "variantIds": [
+        "stormwater_retention_pond_v3"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/stormwater-retention-pond/variant_3.png"
+      ],
+      "dimensionsM": [
+        4.2,
+        2.2,
+        1.2
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "retention_pond_rock_spillway",
+      "placement": {
+        "u": 0.72,
+        "v": 0.72,
+        "yawDeg": -24,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one one coherent dry spillway cluster of interlocked angular boulders forming a shallow central chute and stable stepped edges. Derive its design language, proportions and visible construction from the Stormwater Retention Pond \u2014 Ecological Wetland reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: coarse mottled gray granite with charcoal mineral flecks, tan weathering, dark creases and rough matte PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "linear-park-greenway-railroad-tie-bench-v1",
+      "family": "linear-park-greenway",
+      "archetypeId": "linear_park_greenway",
+      "variantIds": [
+        "linear_park_greenway_v0"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/linear-park-greenway/variant_0.png"
+      ],
+      "dimensionsM": [
+        2.6,
+        0.75,
+        0.8
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "linear_park_rail_tie_bench",
+      "placement": {
+        "u": 0.24,
+        "v": 0.28,
+        "yawDeg": 18,
+        "repeatOnOversize": true
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single bench built from two deeply weathered reclaimed railway ties on dark steel sled supports, preserving bolt holes and end grain. Derive its design language, proportions and visible construction from the Linear Park / Greenway \u2014 Rail Trail reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: weathered exterior hardwood with varied warm-gray grain, darker joints, end-grain detail, subtle checking and matte PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "linear-park-greenway-kayak-storage-rack-v1",
+      "family": "linear-park-greenway",
+      "archetypeId": "linear_park_greenway",
+      "variantIds": [
+        "linear_park_greenway_v1"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/linear-park-greenway/variant_1.png"
+      ],
+      "dimensionsM": [
+        3.0,
+        1.2,
+        1.8
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "linear_park_kayak_rack",
+      "placement": {
+        "u": 0.72,
+        "v": 0.28,
+        "yawDeg": -12,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one freestanding timber-and-galvanized rack with three empty curved kayak cradles, tie-down loops and stable feet. Derive its design language, proportions and visible construction from the Linear Park / Greenway \u2014 Riverfront Greenway reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: silvered cedar with warm exposed grain, darkened fasteners and joints, mild damp staining and matte outdoor PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "linear-park-greenway-natural-riffle-weir-v1",
+      "family": "linear-park-greenway",
+      "archetypeId": "linear_park_greenway",
+      "variantIds": [
+        "linear_park_greenway_v2"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/linear-park-greenway/variant_2.png"
+      ],
+      "dimensionsM": [
+        4.0,
+        1.8,
+        0.8
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "linear_park_riffle_weir",
+      "placement": {
+        "u": 0.28,
+        "v": 0.72,
+        "yawDeg": 28,
+        "repeatOnOversize": true
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one one low natural stone riffle-weir cluster with irregular river boulders forming a shallow V-shaped central flow notch. Derive its design language, proportions and visible construction from the Linear Park / Greenway \u2014 Daylighted Creek reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: coarse mottled gray granite with charcoal mineral flecks, tan weathering, dark creases and rough matte PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "linear-park-greenway-railway-switch-sculpture-v1",
+      "family": "linear-park-greenway",
+      "archetypeId": "linear_park_greenway",
+      "variantIds": [
+        "linear_park_greenway_v3"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/linear-park-greenway/variant_3.png"
+      ],
+      "dimensionsM": [
+        3.4,
+        1.5,
+        1.0
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "linear_park_rail_switch_sculpture",
+      "placement": {
+        "u": 0.72,
+        "v": 0.72,
+        "yawDeg": -24,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single preserved heritage railway switch assembly with short rail fragments, switch stand and rusted mechanical linkage on discrete sleepers. Derive its design language, proportions and visible construction from the Linear Park / Greenway \u2014 Elevated Viaduct reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: layered orange, russet and dark-brown Corten patina with rain streaks, darker folds and satin-matte PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "nature-preserve-observation-scope-pedestal-v1",
+      "family": "nature-preserve",
+      "archetypeId": "nature_preserve",
+      "variantIds": [
+        "nature_preserve_v0"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/nature-preserve/variant_0.png"
+      ],
+      "dimensionsM": [
+        1.0,
+        0.75,
+        1.55
+      ],
+      "orientation": "preserve-upright",
+      "placementRole": "nature_preserve_observation_scope",
+      "placement": {
+        "u": 0.24,
+        "v": 0.28,
+        "yawDeg": 18,
+        "repeatOnOversize": true
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single weatherproof wildlife observation scope on a sturdy adjustable pedestal with angled binocular housing and stable base. Derive its design language, proportions and visible construction from the Nature Preserve \u2014 Wetland Boardwalk reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: powder-coated exterior steel with restrained chips, dark exposed edges, galvanized hardware and satin PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "nature-preserve-prairie-nesting-tower-v1",
+      "family": "nature-preserve",
+      "archetypeId": "nature_preserve",
+      "variantIds": [
+        "nature_preserve_v1"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/nature-preserve/variant_1.png"
+      ],
+      "dimensionsM": [
+        1.3,
+        1.3,
+        3.8
+      ],
+      "orientation": "preserve-upright",
+      "placementRole": "nature_preserve_nesting_tower",
+      "placement": {
+        "u": 0.72,
+        "v": 0.28,
+        "yawDeg": -12,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one freestanding prairie wildlife nesting tower with weathered timber mast, stacked sheltered nesting boxes and simple predator guard. Derive its design language, proportions and visible construction from the Nature Preserve \u2014 Tallgrass Prairie reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: silvered cedar with warm exposed grain, darkened fasteners and joints, mild damp staining and matte outdoor PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "nature-preserve-dune-sand-fence-v1",
+      "family": "nature-preserve",
+      "archetypeId": "nature_preserve",
+      "variantIds": [
+        "nature_preserve_v2"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/nature-preserve/variant_2.png"
+      ],
+      "dimensionsM": [
+        4.0,
+        0.45,
+        1.2
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "nature_preserve_dune_fence",
+      "placement": {
+        "u": 0.28,
+        "v": 0.72,
+        "yawDeg": 28,
+        "repeatOnOversize": true
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single flexible dune sand-fence module of irregular vertical timber slats joined by two dark wire strands and braced end stakes. Derive its design language, proportions and visible construction from the Nature Preserve \u2014 Coastal Dune reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: salt-bleached driftwood with silver-gray grain, pale fibers, charcoal checks, rounded worn edges and rough matte PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "nature-preserve-mossy-nurse-log-v1",
+      "family": "nature-preserve",
+      "archetypeId": "nature_preserve",
+      "variantIds": [
+        "nature_preserve_v3"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/nature-preserve/variant_3.png"
+      ],
+      "dimensionsM": [
+        4.5,
+        1.2,
+        1.05
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "nature_preserve_nurse_log",
+      "placement": {
+        "u": 0.72,
+        "v": 0.72,
+        "yawDeg": -24,
+        "repeatOnOversize": true
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single horizontal old-growth nurse log with deeply cracked bark, broken hollow end, stable underside and restrained moss mats. Derive its design language, proportions and visible construction from the Nature Preserve \u2014 Old-Growth Forest reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: salt-bleached driftwood with silver-gray grain, pale fibers, charcoal checks, rounded worn edges and rough matte PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "constructed-wetland-eco-park-pond-dipping-platform-v1",
+      "family": "constructed-wetland-eco-park",
+      "archetypeId": "constructed_wetland_eco_park",
+      "variantIds": [
+        "constructed_wetland_eco_park_variant_0"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/constructed-wetland-eco-park/variant_0.png"
+      ],
+      "dimensionsM": [
+        3.2,
+        2.4,
+        1.15
+      ],
+      "orientation": "preserve-upright",
+      "placementRole": "constructed_wetland_dipping_platform",
+      "placement": {
+        "u": 0.24,
+        "v": 0.28,
+        "yawDeg": 18,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one compact freestanding timber pond-dipping deck with low edge rail, one open access side and visible subframe; no boardwalk attached. Derive its design language, proportions and visible construction from the Constructed Wetland Eco Park \u2014 Urban Boardwalk Wetland reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: silvered cedar with warm exposed grain, darkened fasteners and joints, mild damp staining and matte outdoor PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "constructed-wetland-eco-park-sluice-control-gate-v1",
+      "family": "constructed-wetland-eco-park",
+      "archetypeId": "constructed_wetland_eco_park",
+      "variantIds": [
+        "constructed_wetland_eco_park_variant_1"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/constructed-wetland-eco-park/variant_1.png"
+      ],
+      "dimensionsM": [
+        3.2,
+        1.1,
+        2.0
+      ],
+      "orientation": "long-axis-x",
+      "placementRole": "constructed_wetland_sluice_gate",
+      "placement": {
+        "u": 0.72,
+        "v": 0.28,
+        "yawDeg": -12,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one single small water-control sluice with galvanized frame, central adjustable gate plate, hand wheel, braces and short concrete sill. Derive its design language, proportions and visible construction from the Constructed Wetland Eco Park \u2014 Tidal Treatment Wetland reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: weathered galvanized steel with zinc mottling, dark hardware, mild water streaks and realistic non-glossy PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "constructed-wetland-eco-park-wildlife-nesting-raft-v1",
+      "family": "constructed-wetland-eco-park",
+      "archetypeId": "constructed_wetland_eco_park",
+      "variantIds": [
+        "constructed_wetland_eco_park_variant_2"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/constructed-wetland-eco-park/variant_2.png"
+      ],
+      "dimensionsM": [
+        3.0,
+        2.2,
+        0.7
+      ],
+      "orientation": "preserve-upright",
+      "placementRole": "constructed_wetland_nesting_raft",
+      "placement": {
+        "u": 0.28,
+        "v": 0.72,
+        "yawDeg": 28,
+        "repeatOnOversize": true
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one one floating wildlife nesting raft with low timber frame, brush-and-gravel center, two sheltered nesting cavities and concealed floats. Derive its design language, proportions and visible construction from the Constructed Wetland Eco Park \u2014 Wildlife Wetland reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: silvered cedar with warm exposed grain, darkened fasteners and joints, mild damp staining and matte outdoor PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    },
+    {
+      "assetId": "constructed-wetland-eco-park-tactile-interpretive-table-v1",
+      "family": "constructed-wetland-eco-park",
+      "archetypeId": "constructed_wetland_eco_park",
+      "variantIds": [
+        "constructed_wetland_eco_park_variant_3"
+      ],
+      "references": [
+        "frontend/public/archetypes/openspaces/constructed-wetland-eco-park/variant_3.png"
+      ],
+      "dimensionsM": [
+        1.8,
+        1.0,
+        1.05
+      ],
+      "orientation": "preserve-upright",
+      "placementRole": "constructed_wetland_tactile_table",
+      "placement": {
+        "u": 0.72,
+        "v": 0.72,
+        "yawDeg": -24,
+        "repeatOnOversize": false
+      },
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one accessible outdoor tactile interpretation table with angled bronze relief surface, two robust stone supports and no readable text. Derive its design language, proportions and visible construction from the Constructed Wetland Eco Park \u2014 Eco-Park with Nature Center reference image. It must be one coherent freestanding, game-ready park object with believable construction and a stable ground-contact side. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter and side views, fully visible and not cropped. No people, human figures, buildings, terrain, landscape, ground plane, live planting, vehicles, text, signs, loose tools, surrounding furniture, water effects or extra objects.",
+      "texturePrompt": "Photoreal archetype-derived material finish: aged cast bronze with green-blue verdigris, warm brown polished high points, dark oxidation and satin-matte PBR. Preserve construction joints, contact wear and material variation. No people, ground, live plants, scenery, text, labels or extra props."
+    }
+  ]
+}
