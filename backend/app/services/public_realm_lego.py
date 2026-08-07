@@ -397,6 +397,9 @@ _CINEMA_LAWN_PROJECTION_ENVELOPE = _park_envelope(
 _FOOD_TRUCK_PERMANENT_ENVELOPE = _park_envelope(
     nominal=(50.0, 40.0), width=(38.0, 100.0), depth=(32.0, 80.0), area=(1_216.0, 8_000.0),
 )
+_FOOD_TRUCK_INDUSTRIAL_POPUP_ENVELOPE = _park_envelope(
+    nominal=(40.0, 30.0), width=(30.0, 60.0), depth=(20.0, 45.0), area=(500.0, 1_500.0),
+)
 _GREAT_LAWN_ENVELOPE = _park_envelope(
     nominal=(180.0, 120.0), width=(75.0, 420.0), depth=(55.0, 300.0), area=(4_125.0, 126_000.0),
 )
@@ -2087,6 +2090,109 @@ def _apply_batch18_variant_closures(
 
 
 _CAPABILITIES = tuple(_apply_batch18_variant_closures(capability) for capability in _CAPABILITIES)
+
+
+# Batch 19 closes ten destination and seasonal park families. The existing
+# whole-program grammar remains the parcel-adaptation authority; exact variant
+# identities supply their own reference material, landscape language, and
+# program marker without importing people or large reference buildings.
+_BATCH19_VARIANT_CLOSURES: dict[
+    str, tuple[tuple[str, str, str, str, str], ...]
+] = {
+    "park_ice_rink_multipurpose_v3": (
+        ("outdoor_ice_rink", "outdoor_ice_rink_v0", "outdoor_ice_rink_v0_holiday_market_skin", "ice_rink_holiday_market_v0", "holiday_market_rink_program_v1"),
+        ("outdoor_ice_rink", "outdoor_ice_rink_v1", "outdoor_ice_rink_v1_urban_plaza_skin", "ice_rink_urban_plaza_v1", "urban_plaza_rink_program_v1"),
+        ("outdoor_ice_rink", "outdoor_ice_rink_v2", "outdoor_ice_rink_v2_nature_trail_skin", "ice_rink_nature_trail_v2", "nature_skating_trail_program_v1"),
+    ),
+    "park_kayak_river_launch_v0": (
+        ("kayak_launch_dock", "kayak_launch_dock_v1", "kayak_launch_dock_v1_urban_harbour_skin", "kayak_urban_harbour_v1", "urban_harbour_launch_program_v1"),
+        ("kayak_launch_dock", "kayak_launch_dock_v2", "kayak_launch_dock_v2_lake_beach_skin", "kayak_lake_beach_v2", "lake_beach_launch_program_v1"),
+        ("kayak_launch_dock", "kayak_launch_dock_v3", "kayak_launch_dock_v3_community_boathouse_skin", "kayak_community_boathouse_v3", "community_boathouse_program_v1"),
+    ),
+    "park_tidal_marsh_cordgrass_v0": (
+        ("tidal_marsh_boardwalk", "tidal_marsh_boardwalk_v1", "tidal_marsh_boardwalk_v1_mangrove_skin", "tidal_marsh_mangrove_v1", "mangrove_tidal_walk_program_v1"),
+        ("tidal_marsh_boardwalk", "tidal_marsh_boardwalk_v2", "tidal_marsh_boardwalk_v2_reedbed_skin", "tidal_marsh_reedbed_v2", "reedbed_estuary_walk_program_v1"),
+        ("tidal_marsh_boardwalk", "tidal_marsh_boardwalk_v3", "tidal_marsh_boardwalk_v3_bird_blind_skin", "tidal_marsh_bird_blind_v3", "bird_blind_circuit_program_v1"),
+    ),
+    "park_cinema_lawn_projection_v1": (
+        ("outdoor_cinema_lawn", "outdoor_cinema_lawn_v0", "outdoor_cinema_lawn_v0_popup_festival_skin", "cinema_popup_festival_v0", "popup_festival_cinema_program_v1"),
+        ("outdoor_cinema_lawn", "outdoor_cinema_lawn_v2", "outdoor_cinema_lawn_v2_drive_in_skin", "cinema_drive_in_v2", "drive_in_cinema_program_v1"),
+        ("outdoor_cinema_lawn", "outdoor_cinema_lawn_v3", "outdoor_cinema_lawn_v3_rooftop_skin", "cinema_rooftop_v3", "rooftop_cinema_program_v1"),
+    ),
+    "park_food_truck_permanent_v1": (
+        ("food_truck_plaza", "food_truck_plaza_v0", "food_truck_plaza_v0_industrial_popup_skin", "food_truck_industrial_v0", "industrial_popup_truck_program_v1"),
+        ("food_truck_plaza", "food_truck_plaza_v2", "food_truck_plaza_v2_adaptive_lot_skin", "food_truck_adaptive_v2", "adaptive_lot_truck_program_v1"),
+        ("food_truck_plaza", "food_truck_plaza_v3", "food_truck_plaza_v3_night_market_skin", "food_truck_night_market_v3", "night_market_truck_program_v1"),
+    ),
+    "park_great_lawn_v2": (
+        ("festival_event_lawn", "festival_event_lawn_v0", "festival_event_lawn_v0_concert_skin", "festival_concert_v0", "concert_festival_program_v1"),
+        ("festival_event_lawn", "festival_event_lawn_v1", "festival_event_lawn_v1_farmers_market_skin", "festival_farmers_market_v1", "farmers_market_program_v1"),
+        ("festival_event_lawn", "festival_event_lawn_v3", "festival_event_lawn_v3_winter_market_skin", "festival_winter_market_v3", "winter_market_rink_program_v1"),
+    ),
+    "park_campus_meadow_quad_v0": (
+        ("campus_central_quad", "campus_central_quad_variant_1", "campus_central_quad_v1_modern_plaza_skin", "campus_modern_plaza_v1", "modern_plaza_quad_program_v1"),
+        ("campus_central_quad", "campus_central_quad_variant_2", "campus_central_quad_v2_garden_pavilion_skin", "campus_garden_pavilion_v2", "garden_pavilion_quad_program_v1"),
+        ("campus_central_quad", "campus_central_quad_variant_3", "campus_central_quad_v3_formal_collegiate_skin", "campus_formal_collegiate_v3", "formal_collegiate_quad_program_v1"),
+    ),
+    "park_urban_beach_family_v2": (
+        ("urban_beach", "urban_beach_v0", "urban_beach_v0_paris_plages_skin", "urban_beach_paris_v0", "paris_plages_program_v1"),
+        ("urban_beach", "urban_beach_v1", "urban_beach_v1_riverfront_bar_skin", "urban_beach_bar_v1", "riverfront_beach_bar_program_v1"),
+        ("urban_beach", "urban_beach_v3", "urban_beach_v3_sand_garden_skin", "urban_beach_sand_garden_v3", "plaza_sand_garden_program_v1"),
+    ),
+    "park_velodrome_open_air_v0": (
+        ("velodrome_cycling_track", "velodrome_cycling_track_variant_1", "velodrome_cycling_track_v1_indoor_arena_skin", "velodrome_indoor_v1", "indoor_velodrome_program_v1"),
+        ("velodrome_cycling_track", "velodrome_cycling_track_variant_2", "velodrome_cycling_track_v2_parkland_skin", "velodrome_parkland_v2", "parkland_velodrome_program_v1"),
+        ("velodrome_cycling_track", "velodrome_cycling_track_variant_3", "velodrome_cycling_track_v3_community_training_skin", "velodrome_community_v3", "community_training_track_program_v1"),
+    ),
+    "park_mtb_skills_dirt_v2": (
+        ("mountain_bike_park", "mountain_bike_park_variant_0", "mountain_bike_park_v0_paved_pump_skin", "mtb_paved_pump_v0", "paved_pump_track_program_v1"),
+        ("mountain_bike_park", "mountain_bike_park_variant_1", "mountain_bike_park_v1_hillside_skin", "mtb_hillside_v1", "hillside_bike_park_program_v1"),
+        ("mountain_bike_park", "mountain_bike_park_variant_3", "mountain_bike_park_v3_urban_dirt_skin", "mtb_urban_dirt_v3", "urban_dirt_jump_program_v1"),
+    ),
+}
+
+# Variant compatibility stays explicit where the catalogue describes a
+# materially different site scale from the retained family anchor. The compact
+# industrial pop-up is a complete 30 x 40 m truck/table/string-light program;
+# it must not inherit the larger permanent park's 1,216 m2 minimum.
+_BATCH19_COMPATIBILITY_OVERRIDES: dict[
+    tuple[str, str], PublicRealmCompatibility
+] = {
+    ("food_truck_plaza", "food_truck_plaza_v0"): _FOOD_TRUCK_INDUSTRIAL_POPUP_ENVELOPE,
+}
+
+
+def _apply_batch19_variant_closures(
+    capability: PublicRealmFamilyCapability,
+) -> PublicRealmFamilyCapability:
+    descriptors = _BATCH19_VARIANT_CLOSURES.get(capability.family_id, ())
+    if not descriptors:
+        return capability
+    additions: list[PublicRealmSelectionCapability] = []
+    for archetype_id, variant_id, appearance_kit_id, planting_structure, program_component in descriptors:
+        base = next(
+            selection
+            for selection in capability.selections
+            if selection.archetype_id == archetype_id
+        )
+        additions.append(
+            _selection(
+                archetype_id,
+                variant_id,
+                profile_id=base.profile_id,
+                appearance_kit_id=appearance_kit_id,
+                planting_structure=planting_structure,
+                compatibility=_BATCH19_COMPATIBILITY_OVERRIDES.get(
+                    (archetype_id, variant_id),
+                    base.compatibility,
+                ),
+                components=(*base.component_set_ids, program_component),
+            )
+        )
+    return capability.model_copy(update={"selections": (*capability.selections, *additions)})
+
+
+_CAPABILITIES = tuple(_apply_batch19_variant_closures(capability) for capability in _CAPABILITIES)
 
 
 def public_realm_capability_fingerprint(

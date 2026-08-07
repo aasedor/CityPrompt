@@ -283,6 +283,24 @@ describe('park ground pilot profiles', () => {
     expect(resolveParkGroundProfile(candidate).guides.length).toBeGreaterThan(1);
   });
 
+  it('keeps the Batch 19 compact food-truck variant on the batch-6 depth kit', () => {
+    const candidate = zone('food_truck_plaza');
+    candidate.properties = {
+      ...candidate.properties,
+      public_realm_lego: trustedParkRecipe({
+        family_id: 'park_food_truck_permanent_v1',
+        family_version: 1,
+        archetype_id: 'food_truck_plaza',
+        variant_id: 'food_truck_plaza_v0',
+        appearance_kit_id: 'food_truck_plaza_v0_industrial_popup_skin',
+        planting_structure: 'food_truck_industrial_v0',
+      }),
+    };
+    expect(resolveParkSpecialtyStructureKind(candidate)).toBe('batch6_archetype_assembly');
+    expect(resolveParkGroundProfile(candidate).legoFamilyId).toBe('park_food_truck_permanent_v1');
+    expect(resolveParkGroundProfile(candidate).variantId).toBe('food_truck_plaza_v0');
+  });
+
   it.each([
     ['park_regional_english_landscape_v0', 'regional_park', 'regional_park_v0', 'regional_park_v0_english_landscape_skin', 'regional_english_landscape_v0'],
     ['park_beer_garden_munich_v0', 'beer_garden', 'beer_garden_v0', 'beer_garden_v0_munich_chestnut_skin', 'beer_garden_munich_v0'],

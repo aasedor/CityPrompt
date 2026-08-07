@@ -378,24 +378,23 @@ def test_batch6_park_recipes_keep_exact_variant_identity(
     assert recipe.planting_structure == planting
 
 
-@pytest.mark.parametrize(("archetype_id", "selected", "unreviewed"), (
-    ("outdoor_ice_rink", "outdoor_ice_rink_v3", "outdoor_ice_rink_v2"),
-    ("kayak_launch_dock", "kayak_launch_dock_v0", "kayak_launch_dock_v1"),
-    ("tidal_marsh_boardwalk", "tidal_marsh_boardwalk_v0", "tidal_marsh_boardwalk_v1"),
-    ("outdoor_cinema_lawn", "outdoor_cinema_lawn_v1", "outdoor_cinema_lawn_v0"),
-    ("food_truck_plaza", "food_truck_plaza_v1", "food_truck_plaza_v0"),
-    ("festival_event_lawn", "festival_event_lawn_v2", "festival_event_lawn_v1"),
-    ("campus_central_quad", "campus_central_quad_variant_0", "campus_central_quad_variant_1"),
-    ("urban_beach", "urban_beach_v2", "urban_beach_v1"),
-    ("velodrome_cycling_track", "velodrome_cycling_track_variant_0", "velodrome_cycling_track_variant_1"),
-    ("mountain_bike_park", "mountain_bike_park_variant_2", "mountain_bike_park_variant_1"),
+@pytest.mark.parametrize(("archetype_id", "unknown_variant"), (
+    ("outdoor_ice_rink", "outdoor_ice_rink_v99"),
+    ("kayak_launch_dock", "kayak_launch_dock_v99"),
+    ("tidal_marsh_boardwalk", "tidal_marsh_boardwalk_v99"),
+    ("outdoor_cinema_lawn", "outdoor_cinema_lawn_v99"),
+    ("food_truck_plaza", "food_truck_plaza_v99"),
+    ("festival_event_lawn", "festival_event_lawn_v99"),
+    ("campus_central_quad", "campus_central_quad_variant_99"),
+    ("urban_beach", "urban_beach_v99"),
+    ("velodrome_cycling_track", "velodrome_cycling_track_variant_99"),
+    ("mountain_bike_park", "mountain_bike_park_variant_99"),
 ))
-def test_batch6_unreviewed_variants_fail_closed(archetype_id, selected, unreviewed):
-    assert selected != unreviewed
+def test_batch6_unknown_variants_fail_closed(archetype_id, unknown_variant):
     with pytest.raises(PublicRealmPlanningError) as exc:
         plan_public_realm_recipe(PublicRealmPlanRequest(
             archetype_id=archetype_id,
-            variant_id=unreviewed,
+            variant_id=unknown_variant,
             target=ParkPolygonTarget(width_m=180, depth_m=120, area_m2=21_600),
         ))
     assert exc.value.code == "family_incompatible"
@@ -1392,6 +1391,47 @@ def test_batch18_closes_thirty_variants_across_ten_specialty_families():
         assert len({selection.appearance_kit_id for selection in selections}) == 4
         assert len({selection.planting_structure for selection in selections}) == 4
         assert all(selection.component_set_ids for selection in selections)
+
+
+def test_batch19_closes_thirty_variants_across_ten_destination_families():
+    expected = {
+        "park_ice_rink_multipurpose_v3": "outdoor_ice_rink",
+        "park_kayak_river_launch_v0": "kayak_launch_dock",
+        "park_tidal_marsh_cordgrass_v0": "tidal_marsh_boardwalk",
+        "park_cinema_lawn_projection_v1": "outdoor_cinema_lawn",
+        "park_food_truck_permanent_v1": "food_truck_plaza",
+        "park_great_lawn_v2": "festival_event_lawn",
+        "park_campus_meadow_quad_v0": "campus_central_quad",
+        "park_urban_beach_family_v2": "urban_beach",
+        "park_velodrome_open_air_v0": "velodrome_cycling_track",
+        "park_mtb_skills_dirt_v2": "mountain_bike_park",
+    }
+    catalog = build_public_realm_capability_catalog(family_ids=list(expected))
+    assert len(catalog.capabilities) == 10
+    for capability in catalog.capabilities:
+        archetype_id = expected[capability.family_id]
+        selections = [
+            selection
+            for selection in capability.selections
+            if selection.archetype_id == archetype_id
+        ]
+        assert len(selections) == 4
+        assert len({selection.variant_id for selection in selections}) == 4
+        assert len({selection.appearance_kit_id for selection in selections}) == 4
+        assert len({selection.planting_structure for selection in selections}) == 4
+        assert all(selection.component_set_ids for selection in selections)
+
+
+def test_batch19_compact_food_truck_popup_uses_its_own_site_envelope():
+    recipe = plan_public_realm_recipe(PublicRealmPlanRequest(
+        archetype_id="food_truck_plaza",
+        variant_id="food_truck_plaza_v0",
+        target=ParkPolygonTarget(width_m=39.723, depth_m=31.185, area_m2=1192.878),
+    ))
+    assert recipe.family_id == "park_food_truck_permanent_v1"
+    assert recipe.variant_id == "food_truck_plaza_v0"
+    assert recipe.appearance_kit_id == "food_truck_plaza_v0_industrial_popup_skin"
+    assert recipe.target.area_m2 == 1192.878
 
 
 @pytest.mark.parametrize(

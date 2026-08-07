@@ -8,16 +8,17 @@
     "catalogueParents": 130,
     "catalogueVariants": 520,
     "completeExactParents": 0,
-    "completeMappedParents": 43,
-    "partialParents": 87,
+    "completeMappedParents": 53,
+    "partialParents": 77,
     "uncoveredParents": 0,
-    "exactVariants": 85,
-    "sharedMappedVariants": 174,
-    "unmappedVariants": 261,
+    "exactVariants": 75,
+    "sharedMappedVariants": 214,
+    "unmappedVariants": 231,
     "parkCapabilities": 127
   },
   "categorySummary": {
-    "civic_plazas:partial": 19,
+    "civic_plazas:complete_mapped": 1,
+    "civic_plazas:partial": 18,
     "custom:partial": 1,
     "ecological_resilience:complete_mapped": 4,
     "ecological_resilience:partial": 8,
@@ -26,14 +27,16 @@
     "neighborhood_public_realm:complete_mapped": 6,
     "neighborhood_public_realm:partial": 6,
     "parking_areas:complete_mapped": 5,
-    "social_event_spaces:partial": 10,
+    "social_event_spaces:complete_mapped": 3,
+    "social_event_spaces:partial": 7,
     "specialty_gardens:complete_mapped": 5,
     "specialty_gardens:partial": 9,
-    "sports_recreation:complete_mapped": 20,
-    "sports_recreation:partial": 4,
+    "sports_recreation:complete_mapped": 23,
+    "sports_recreation:partial": 1,
     "transport_infrastructure:complete_mapped": 1,
     "water_features:partial": 5,
-    "waterfront_spaces:partial": 13
+    "waterfront_spaces:complete_mapped": 3,
+    "waterfront_spaces:partial": 10
   },
   "parents": [
     {
@@ -6074,30 +6077,58 @@
       "title": "Urban Beach",
       "spaceType": "park",
       "aestheticCategory": "waterfront_spaces",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "urban_beach_v0",
           "label": "Paris Plages Style",
           "thumbnailUrl": "/archetypes/openspaces/urban-beach/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_urban_beach_family_v2",
+              "profileId": "urban-beach-family-lego-v1",
+              "appearanceKitId": "urban_beach_v0_paris_plages_skin",
+              "componentSetIds": [
+                "urban_beach_ground_program_v1",
+                "family_splash_pad_v1",
+                "shade_sail_cluster_v1",
+                "accessible_boardwalk_v1",
+                "paris_plages_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "urban_beach_v1",
           "label": "Riverfront Beach Bar",
           "thumbnailUrl": "/archetypes/openspaces/urban-beach/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_urban_beach_family_v2",
+              "profileId": "urban-beach-family-lego-v1",
+              "appearanceKitId": "urban_beach_v1_riverfront_bar_skin",
+              "componentSetIds": [
+                "urban_beach_ground_program_v1",
+                "family_splash_pad_v1",
+                "shade_sail_cluster_v1",
+                "accessible_boardwalk_v1",
+                "riverfront_beach_bar_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "urban_beach_v2",
           "label": "Family Splash Beach",
           "thumbnailUrl": "/archetypes/openspaces/urban-beach/variant_2.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_urban_beach_family_v2",
@@ -6109,7 +6140,7 @@
                 "shade_sail_cluster_v1",
                 "accessible_boardwalk_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -6117,8 +6148,22 @@
           "id": "urban_beach_v3",
           "label": "Plaza Sand Garden",
           "thumbnailUrl": "/archetypes/openspaces/urban-beach/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_urban_beach_family_v2",
+              "profileId": "urban-beach-family-lego-v1",
+              "appearanceKitId": "urban_beach_v3_sand_garden_skin",
+              "componentSetIds": [
+                "urban_beach_ground_program_v1",
+                "family_splash_pad_v1",
+                "shade_sail_cluster_v1",
+                "accessible_boardwalk_v1",
+                "plaza_sand_garden_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -6317,30 +6362,58 @@
       "title": "Festival Grounds & Event Lawn",
       "spaceType": "park",
       "aestheticCategory": "social_event_spaces",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "festival_event_lawn_v0",
           "label": "Concert & Festival",
           "thumbnailUrl": "/archetypes/openspaces/festival-grounds-event-lawn/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_great_lawn_v2",
+              "profileId": "great-lawn-lego-v1",
+              "appearanceKitId": "festival_event_lawn_v0_concert_skin",
+              "componentSetIds": [
+                "great_lawn_ground_program_v1",
+                "perimeter_event_hookups_v1",
+                "gentle_landform_v1",
+                "clear_event_field_v1",
+                "concert_festival_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "festival_event_lawn_v1",
           "label": "Farmers Market Square",
           "thumbnailUrl": "/archetypes/openspaces/festival-grounds-event-lawn/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_great_lawn_v2",
+              "profileId": "great-lawn-lego-v1",
+              "appearanceKitId": "festival_event_lawn_v1_farmers_market_skin",
+              "componentSetIds": [
+                "great_lawn_ground_program_v1",
+                "perimeter_event_hookups_v1",
+                "gentle_landform_v1",
+                "clear_event_field_v1",
+                "farmers_market_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "festival_event_lawn_v2",
           "label": "Great Lawn",
           "thumbnailUrl": "/archetypes/openspaces/festival-grounds-event-lawn/variant_2.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_great_lawn_v2",
@@ -6352,7 +6425,7 @@
                 "gentle_landform_v1",
                 "clear_event_field_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -6360,8 +6433,22 @@
           "id": "festival_event_lawn_v3",
           "label": "Winter Market & Rink",
           "thumbnailUrl": "/archetypes/openspaces/festival-grounds-event-lawn/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_great_lawn_v2",
+              "profileId": "great-lawn-lego-v1",
+              "appearanceKitId": "festival_event_lawn_v3_winter_market_skin",
+              "componentSetIds": [
+                "great_lawn_ground_program_v1",
+                "perimeter_event_hookups_v1",
+                "gentle_landform_v1",
+                "clear_event_field_v1",
+                "winter_market_rink_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -6465,37 +6552,79 @@
       "title": "Outdoor Ice Rink",
       "spaceType": "park",
       "aestheticCategory": "sports_recreation",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "outdoor_ice_rink_v0",
           "label": "Holiday Market Rink",
           "thumbnailUrl": "/archetypes/openspaces/outdoor-ice-rink/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_ice_rink_multipurpose_v3",
+              "profileId": "ice-rink-multipurpose-lego-v1",
+              "appearanceKitId": "outdoor_ice_rink_v0_holiday_market_skin",
+              "componentSetIds": [
+                "multipurpose_rink_ground_program_v1",
+                "permanent_rink_boards_v1",
+                "seasonal_surface_markings_v1",
+                "rink_light_standard_v1",
+                "holiday_market_rink_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "outdoor_ice_rink_v1",
           "label": "Urban Plaza Rink",
           "thumbnailUrl": "/archetypes/openspaces/outdoor-ice-rink/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_ice_rink_multipurpose_v3",
+              "profileId": "ice-rink-multipurpose-lego-v1",
+              "appearanceKitId": "outdoor_ice_rink_v1_urban_plaza_skin",
+              "componentSetIds": [
+                "multipurpose_rink_ground_program_v1",
+                "permanent_rink_boards_v1",
+                "seasonal_surface_markings_v1",
+                "rink_light_standard_v1",
+                "urban_plaza_rink_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "outdoor_ice_rink_v2",
           "label": "Nature Skating Trail",
           "thumbnailUrl": "/archetypes/openspaces/outdoor-ice-rink/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_ice_rink_multipurpose_v3",
+              "profileId": "ice-rink-multipurpose-lego-v1",
+              "appearanceKitId": "outdoor_ice_rink_v2_nature_trail_skin",
+              "componentSetIds": [
+                "multipurpose_rink_ground_program_v1",
+                "permanent_rink_boards_v1",
+                "seasonal_surface_markings_v1",
+                "rink_light_standard_v1",
+                "nature_skating_trail_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "outdoor_ice_rink_v3",
           "label": "Multipurpose Pad",
           "thumbnailUrl": "/archetypes/openspaces/outdoor-ice-rink/variant_3.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_ice_rink_multipurpose_v3",
@@ -6507,7 +6636,7 @@
                 "seasonal_surface_markings_v1",
                 "rink_light_standard_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         }
@@ -6613,16 +6742,16 @@
       "title": "Kayak & Canoe Launch",
       "spaceType": "park",
       "aestheticCategory": "waterfront_spaces",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "kayak_launch_dock_v0",
           "label": "River Launch",
           "thumbnailUrl": "/archetypes/openspaces/kayak-canoe-launch/variant_0.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_kayak_river_launch_v0",
@@ -6634,7 +6763,7 @@
                 "accessible_launch_slide_v1",
                 "kayak_rack_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -6642,22 +6771,64 @@
           "id": "kayak_launch_dock_v1",
           "label": "Urban Harbour Dock",
           "thumbnailUrl": "/archetypes/openspaces/kayak-canoe-launch/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_kayak_river_launch_v0",
+              "profileId": "kayak-river-launch-lego-v1",
+              "appearanceKitId": "kayak_launch_dock_v1_urban_harbour_skin",
+              "componentSetIds": [
+                "kayak_launch_ground_program_v1",
+                "floating_dock_v1",
+                "accessible_launch_slide_v1",
+                "kayak_rack_v1",
+                "urban_harbour_launch_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "kayak_launch_dock_v2",
           "label": "Lake Beach Launch",
           "thumbnailUrl": "/archetypes/openspaces/kayak-canoe-launch/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_kayak_river_launch_v0",
+              "profileId": "kayak-river-launch-lego-v1",
+              "appearanceKitId": "kayak_launch_dock_v2_lake_beach_skin",
+              "componentSetIds": [
+                "kayak_launch_ground_program_v1",
+                "floating_dock_v1",
+                "accessible_launch_slide_v1",
+                "kayak_rack_v1",
+                "lake_beach_launch_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "kayak_launch_dock_v3",
           "label": "Community Boathouse",
           "thumbnailUrl": "/archetypes/openspaces/kayak-canoe-launch/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_kayak_river_launch_v0",
+              "profileId": "kayak-river-launch-lego-v1",
+              "appearanceKitId": "kayak_launch_dock_v3_community_boathouse_skin",
+              "componentSetIds": [
+                "kayak_launch_ground_program_v1",
+                "floating_dock_v1",
+                "accessible_launch_slide_v1",
+                "kayak_rack_v1",
+                "community_boathouse_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -7143,23 +7314,37 @@
       "title": "Food-Truck Plaza",
       "spaceType": "plaza",
       "aestheticCategory": "social_event_spaces",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "food_truck_plaza_v0",
           "label": "Industrial-Lot Pop-Up",
           "thumbnailUrl": "/archetypes/openspaces/food-truck-plaza/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_food_truck_permanent_v1",
+              "profileId": "food-truck-permanent-lego-v1",
+              "appearanceKitId": "food_truck_plaza_v0_industrial_popup_skin",
+              "componentSetIds": [
+                "food_truck_plaza_ground_program_v1",
+                "utility_truck_bays_v1",
+                "shared_truck_prop_v1",
+                "communal_picnic_grid_v1",
+                "industrial_popup_truck_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "food_truck_plaza_v1",
           "label": "Permanent Food-Truck Park",
           "thumbnailUrl": "/archetypes/openspaces/food-truck-plaza/variant_1.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_food_truck_permanent_v1",
@@ -7171,7 +7356,7 @@
                 "shared_truck_prop_v1",
                 "communal_picnic_grid_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -7179,15 +7364,43 @@
           "id": "food_truck_plaza_v2",
           "label": "Adaptive Parking-Lot Conversion",
           "thumbnailUrl": "/archetypes/openspaces/food-truck-plaza/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_food_truck_permanent_v1",
+              "profileId": "food-truck-permanent-lego-v1",
+              "appearanceKitId": "food_truck_plaza_v2_adaptive_lot_skin",
+              "componentSetIds": [
+                "food_truck_plaza_ground_program_v1",
+                "utility_truck_bays_v1",
+                "shared_truck_prop_v1",
+                "communal_picnic_grid_v1",
+                "adaptive_lot_truck_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "food_truck_plaza_v3",
           "label": "Night-Market Truck Plaza",
           "thumbnailUrl": "/archetypes/openspaces/food-truck-plaza/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_food_truck_permanent_v1",
+              "profileId": "food-truck-permanent-lego-v1",
+              "appearanceKitId": "food_truck_plaza_v3_night_market_skin",
+              "componentSetIds": [
+                "food_truck_plaza_ground_program_v1",
+                "utility_truck_bays_v1",
+                "shared_truck_prop_v1",
+                "communal_picnic_grid_v1",
+                "night_market_truck_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -7196,23 +7409,37 @@
       "title": "Outdoor Cinema Lawn",
       "spaceType": "park",
       "aestheticCategory": "social_event_spaces",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "outdoor_cinema_lawn_v0",
           "label": "Pop-Up Festival Cinema",
           "thumbnailUrl": "/archetypes/openspaces/outdoor-cinema-lawn/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_cinema_lawn_projection_v1",
+              "profileId": "cinema-lawn-projection-lego-v1",
+              "appearanceKitId": "outdoor_cinema_lawn_v0_popup_festival_skin",
+              "componentSetIds": [
+                "cinema_lawn_ground_program_v1",
+                "fixed_projection_screen_v1",
+                "projection_booth_v1",
+                "sightline_lawn_v1",
+                "popup_festival_cinema_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "outdoor_cinema_lawn_v1",
           "label": "Park-Lawn Projection",
           "thumbnailUrl": "/archetypes/openspaces/outdoor-cinema-lawn/variant_1.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_cinema_lawn_projection_v1",
@@ -7224,7 +7451,7 @@
                 "projection_booth_v1",
                 "sightline_lawn_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -7232,15 +7459,43 @@
           "id": "outdoor_cinema_lawn_v2",
           "label": "Drive-In Heritage Lot",
           "thumbnailUrl": "/archetypes/openspaces/outdoor-cinema-lawn/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_cinema_lawn_projection_v1",
+              "profileId": "cinema-lawn-projection-lego-v1",
+              "appearanceKitId": "outdoor_cinema_lawn_v2_drive_in_skin",
+              "componentSetIds": [
+                "cinema_lawn_ground_program_v1",
+                "fixed_projection_screen_v1",
+                "projection_booth_v1",
+                "sightline_lawn_v1",
+                "drive_in_cinema_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "outdoor_cinema_lawn_v3",
           "label": "Rooftop Cinema Terrace",
           "thumbnailUrl": "/archetypes/openspaces/outdoor-cinema-lawn/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_cinema_lawn_projection_v1",
+              "profileId": "cinema-lawn-projection-lego-v1",
+              "appearanceKitId": "outdoor_cinema_lawn_v3_rooftop_skin",
+              "componentSetIds": [
+                "cinema_lawn_ground_program_v1",
+                "fixed_projection_screen_v1",
+                "projection_booth_v1",
+                "sightline_lawn_v1",
+                "rooftop_cinema_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -7567,16 +7822,16 @@
       "title": "Tidal Marsh Boardwalk",
       "spaceType": "park",
       "aestheticCategory": "waterfront_spaces",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "tidal_marsh_boardwalk_v0",
           "label": "Cordgrass Salt-Marsh Boardwalk",
           "thumbnailUrl": "/archetypes/openspaces/tidal-marsh-boardwalk/variant_0.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_tidal_marsh_cordgrass_v0",
@@ -7588,7 +7843,7 @@
                 "hexagonal_overlook_v1",
                 "interpretive_trailhead_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -7596,22 +7851,64 @@
           "id": "tidal_marsh_boardwalk_v1",
           "label": "Mangrove Tidal-Flat Walk",
           "thumbnailUrl": "/archetypes/openspaces/tidal-marsh-boardwalk/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_tidal_marsh_cordgrass_v0",
+              "profileId": "tidal-marsh-cordgrass-lego-v1",
+              "appearanceKitId": "tidal_marsh_boardwalk_v1_mangrove_skin",
+              "componentSetIds": [
+                "tidal_marsh_ground_program_v1",
+                "elevated_boardwalk_v1",
+                "hexagonal_overlook_v1",
+                "interpretive_trailhead_v1",
+                "mangrove_tidal_walk_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "tidal_marsh_boardwalk_v2",
           "label": "Reedbed Estuary Boardwalk",
           "thumbnailUrl": "/archetypes/openspaces/tidal-marsh-boardwalk/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_tidal_marsh_cordgrass_v0",
+              "profileId": "tidal-marsh-cordgrass-lego-v1",
+              "appearanceKitId": "tidal_marsh_boardwalk_v2_reedbed_skin",
+              "componentSetIds": [
+                "tidal_marsh_ground_program_v1",
+                "elevated_boardwalk_v1",
+                "hexagonal_overlook_v1",
+                "interpretive_trailhead_v1",
+                "reedbed_estuary_walk_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "tidal_marsh_boardwalk_v3",
           "label": "Bird-Blind Viewing Circuit",
           "thumbnailUrl": "/archetypes/openspaces/tidal-marsh-boardwalk/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_tidal_marsh_cordgrass_v0",
+              "profileId": "tidal-marsh-cordgrass-lego-v1",
+              "appearanceKitId": "tidal_marsh_boardwalk_v3_bird_blind_skin",
+              "componentSetIds": [
+                "tidal_marsh_ground_program_v1",
+                "elevated_boardwalk_v1",
+                "hexagonal_overlook_v1",
+                "interpretive_trailhead_v1",
+                "bird_blind_circuit_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -7871,16 +8168,16 @@
       "title": "Campus Central Quad",
       "spaceType": "plaza",
       "aestheticCategory": "civic_plazas",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "campus_central_quad_variant_0",
           "label": "Naturalized Meadow Quad",
           "thumbnailUrl": "/archetypes/openspaces/campus-central-quad/variant_0.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_campus_meadow_quad_v0",
@@ -7892,7 +8189,7 @@
                 "social_nodes_v1",
                 "meadow_boulder_matrix_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -7900,22 +8197,64 @@
           "id": "campus_central_quad_variant_1",
           "label": "Modern Plaza Quad",
           "thumbnailUrl": "/archetypes/openspaces/campus-central-quad/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_campus_meadow_quad_v0",
+              "profileId": "campus-meadow-quad-lego-v1",
+              "appearanceKitId": "campus_central_quad_v1_modern_plaza_skin",
+              "componentSetIds": [
+                "campus_meadow_ground_program_v1",
+                "desire_line_crossing_v1",
+                "social_nodes_v1",
+                "meadow_boulder_matrix_v1",
+                "modern_plaza_quad_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "campus_central_quad_variant_2",
           "label": "Garden Pavilion Quad",
           "thumbnailUrl": "/archetypes/openspaces/campus-central-quad/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_campus_meadow_quad_v0",
+              "profileId": "campus-meadow-quad-lego-v1",
+              "appearanceKitId": "campus_central_quad_v2_garden_pavilion_skin",
+              "componentSetIds": [
+                "campus_meadow_ground_program_v1",
+                "desire_line_crossing_v1",
+                "social_nodes_v1",
+                "meadow_boulder_matrix_v1",
+                "garden_pavilion_quad_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "campus_central_quad_variant_3",
           "label": "Formal Collegiate Quad",
           "thumbnailUrl": "/archetypes/openspaces/campus-central-quad/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_campus_meadow_quad_v0",
+              "profileId": "campus-meadow-quad-lego-v1",
+              "appearanceKitId": "campus_central_quad_v3_formal_collegiate_skin",
+              "componentSetIds": [
+                "campus_meadow_ground_program_v1",
+                "desire_line_crossing_v1",
+                "social_nodes_v1",
+                "meadow_boulder_matrix_v1",
+                "formal_collegiate_quad_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -8306,30 +8645,58 @@
       "title": "Mountain Bike Park",
       "spaceType": "park",
       "aestheticCategory": "sports_recreation",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "mountain_bike_park_variant_0",
           "label": "Paved Pump Track",
           "thumbnailUrl": "/archetypes/openspaces/mountain-bike-park/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_mtb_skills_dirt_v2",
+              "profileId": "mtb-skills-dirt-lego-v1",
+              "appearanceKitId": "mountain_bike_park_v0_paved_pump_skin",
+              "componentSetIds": [
+                "mtb_skills_ground_program_v1",
+                "connected_pump_loop_v1",
+                "dirt_jump_line_v1",
+                "technical_feature_set_v1",
+                "paved_pump_track_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "mountain_bike_park_variant_1",
           "label": "Hillside Bike Park",
           "thumbnailUrl": "/archetypes/openspaces/mountain-bike-park/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_mtb_skills_dirt_v2",
+              "profileId": "mtb-skills-dirt-lego-v1",
+              "appearanceKitId": "mountain_bike_park_v1_hillside_skin",
+              "componentSetIds": [
+                "mtb_skills_ground_program_v1",
+                "connected_pump_loop_v1",
+                "dirt_jump_line_v1",
+                "technical_feature_set_v1",
+                "hillside_bike_park_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "mountain_bike_park_variant_2",
           "label": "Skills & Dirt Park",
           "thumbnailUrl": "/archetypes/openspaces/mountain-bike-park/variant_2.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_mtb_skills_dirt_v2",
@@ -8341,7 +8708,7 @@
                 "dirt_jump_line_v1",
                 "technical_feature_set_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -8349,8 +8716,22 @@
           "id": "mountain_bike_park_variant_3",
           "label": "Urban Dirt-Jump Lot",
           "thumbnailUrl": "/archetypes/openspaces/mountain-bike-park/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_mtb_skills_dirt_v2",
+              "profileId": "mtb-skills-dirt-lego-v1",
+              "appearanceKitId": "mountain_bike_park_v3_urban_dirt_skin",
+              "componentSetIds": [
+                "mtb_skills_ground_program_v1",
+                "connected_pump_loop_v1",
+                "dirt_jump_line_v1",
+                "technical_feature_set_v1",
+                "urban_dirt_jump_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -8663,16 +9044,16 @@
       "title": "Velodrome Cycling Track",
       "spaceType": "park",
       "aestheticCategory": "sports_recreation",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "velodrome_cycling_track_variant_0",
           "label": "Open-Air Velodrome",
           "thumbnailUrl": "/archetypes/openspaces/velodrome-cycling-track/variant_0.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_velodrome_open_air_v0",
@@ -8684,7 +9065,7 @@
                 "open_bleacher_v1",
                 "timing_tower_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -8692,22 +9073,64 @@
           "id": "velodrome_cycling_track_variant_1",
           "label": "Indoor Velodrome Arena",
           "thumbnailUrl": "/archetypes/openspaces/velodrome-cycling-track/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_velodrome_open_air_v0",
+              "profileId": "velodrome-open-air-lego-v1",
+              "appearanceKitId": "velodrome_cycling_track_v1_indoor_arena_skin",
+              "componentSetIds": [
+                "velodrome_ground_program_v1",
+                "banked_250m_track_v1",
+                "open_bleacher_v1",
+                "timing_tower_v1",
+                "indoor_velodrome_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "velodrome_cycling_track_variant_2",
           "label": "Velodrome in Parkland",
           "thumbnailUrl": "/archetypes/openspaces/velodrome-cycling-track/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_velodrome_open_air_v0",
+              "profileId": "velodrome-open-air-lego-v1",
+              "appearanceKitId": "velodrome_cycling_track_v2_parkland_skin",
+              "componentSetIds": [
+                "velodrome_ground_program_v1",
+                "banked_250m_track_v1",
+                "open_bleacher_v1",
+                "timing_tower_v1",
+                "parkland_velodrome_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "velodrome_cycling_track_variant_3",
           "label": "Community Training Track",
           "thumbnailUrl": "/archetypes/openspaces/velodrome-cycling-track/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_velodrome_open_air_v0",
+              "profileId": "velodrome-open-air-lego-v1",
+              "appearanceKitId": "velodrome_cycling_track_v3_community_training_skin",
+              "componentSetIds": [
+                "velodrome_ground_program_v1",
+                "banked_250m_track_v1",
+                "open_bleacher_v1",
+                "timing_tower_v1",
+                "community_training_track_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
