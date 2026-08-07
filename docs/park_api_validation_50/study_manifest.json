@@ -1,0 +1,412 @@
+{
+  "schemaVersion": 1,
+  "studyId": "park-composition-api-validation-50-2026-08-07",
+  "purpose": "Fifty new paired flat-image composition references for validating deterministic park LEGO families against archetype-informed AI drapes. These images are study evidence only and are not City Prompt production renders.",
+  "referenceInterpretation": {
+    "archetypePeoplePolicy": "Read people in source archetype images as approximate human-scale, occupancy, circulation, supervision, and use-pattern evidence; never reproduce them in the park LEGO geometry or skins.",
+    "comparisonAxes": [
+      "site-fit logic and repeated modules rather than stretched facilities",
+      "archetype-specific topology and spatial hierarchy",
+      "human scale inferred from use without rendering people",
+      "required 3D equipment, furniture, planting, fencing, lighting, and water-control objects",
+      "surface texture, colour variation, wear, material transitions, and planting character",
+      "safe clearances, circulation, entrances, supervision, spectator, and service zones"
+    ],
+    "limits": "Generated images provide qualitative composition evidence only. Regulation dimensions, accessibility, drainage performance, collision checks, and buildability remain deterministic compiler responsibilities."
+  },
+  "targetApiCalls": 50,
+  "providers": [
+    {
+      "id": "gemini",
+      "model": "gemini-3.1-flash-image",
+      "imageSize": "1K",
+      "aspectRatio": "3:2"
+    },
+    {
+      "id": "openai",
+      "model": "gpt-image-2",
+      "size": "1536x1024",
+      "quality": "low",
+      "outputFormat": "jpeg"
+    }
+  ],
+  "basePrompt": "Create a photorealistic but diagrammatically legible oblique aerial site-composition study of one park, closely following the named archetype and variant character. Show the entire park parcel from a consistent high drone camera looking about 55 degrees downward. Keep every facility at believable human scale. Preserve regulation geometry and safe run-off; repeat standard modules when an oversized site needs more capacity instead of stretching one module. Show all archetype-defining equipment, furniture, fences, lighting, paths, planting, drainage and spectator or service zones. Surfaces must have realistic texture, colour variation, wear and material transitions rather than flat monochrome fills. This is a spatial-planning reference, not a beauty shot.",
+  "negativePrompt": "No people. No cars. No labels, captions, logos, watermarks or dimension text. No buildings inside the park; where a pavilion or service building belongs, show only an empty reserved pad and connecting forecourt. No surrounding skyline. No roads through the park. Do not overlap active facilities. Do not stretch courts, fields, loops or equipment to fill the parcel. Do not crop the parcel.",
+  "scenes": [
+    {
+      "id": "01_basketball_oversized_pair",
+      "title": "Oversized urban basketball park with two courts",
+      "archetypeId": "basketball_court_v0",
+      "sourceReference": "frontend/public/archetypes/openspaces/basketball-court/variant_0.png",
+      "site": "A level rectangular 78 by 45 metre urban park parcel with entry at the centre of one long edge.",
+      "compositionBrief": "Fit exactly two complete regulation basketball court envelopes side by side, each with two correctly scaled hoops, backboards, linework and run-off. Do not make one oversized court and do not stack duplicate slabs. Use one shared perimeter fence, an internal divider only where ball control requires it, a continuous spectator apron along the public edge, paired gates, shared light poles, benches, drinking fountain and bike racks. Preserve a narrow textured planting buffer outside the cage.",
+      "studyFocus": [
+        "repeat versus stretch",
+        "four-hoop equipment count",
+        "shared enclosure",
+        "spectator and entry edge"
+      ],
+      "resolvedPrompt": "Create a photorealistic but diagrammatically legible oblique aerial site-composition study of one park, closely following the named archetype and variant character. Show the entire park parcel from a consistent high drone camera looking about 55 degrees downward. Keep every facility at believable human scale. Preserve regulation geometry and safe run-off; repeat standard modules when an oversized site needs more capacity instead of stretching one module. Show all archetype-defining equipment, furniture, fences, lighting, paths, planting, drainage and spectator or service zones. Surfaces must have realistic texture, colour variation, wear and material transitions rather than flat monochrome fills. This is a spatial-planning reference, not a beauty shot.\n\nSITE: A level rectangular 78 by 45 metre urban park parcel with entry at the centre of one long edge.\n\nCOMPOSITION: Fit exactly two complete regulation basketball court envelopes side by side, each with two correctly scaled hoops, backboards, linework and run-off. Do not make one oversized court and do not stack duplicate slabs. Use one shared perimeter fence, an internal divider only where ball control requires it, a continuous spectator apron along the public edge, paired gates, shared light poles, benches, drinking fountain and bike racks. Preserve a narrow textured planting buffer outside the cage.\n\nSTUDY PRIORITIES: repeat versus stretch; four-hoop equipment count; shared enclosure; spectator and entry edge.\n\nFINAL CONSTRAINTS: No people. No cars. No labels, captions, logos, watermarks or dimension text. No buildings inside the park; where a pavilion or service building belongs, show only an empty reserved pad and connecting forecourt. No surrounding skyline. No roads through the park. Do not overlap active facilities. Do not stretch courts, fields, loops or equipment to fill the parcel. Do not crop the parcel."
+    },
+    {
+      "id": "02_basketball_compact_halfcourt",
+      "title": "Compact neighbourhood basketball half-court",
+      "archetypeId": "basketball_court_v2",
+      "sourceReference": "frontend/public/archetypes/openspaces/basketball-court/variant_2.png",
+      "site": "An irregular 31 by 24 metre corner parcel with a chamfered street edge and one mature tree to retain.",
+      "compositionBrief": "Use one correctly proportioned half-court with exactly one hoop, not a squeezed full court. Aim the hoop away from the entrance, keep a safe run-off apron, add a low ball fence at the vulnerable edges, and form one shaded social edge with two benches and a drinking fountain outside play. Retain the tree in a generous planted island and connect the gate with a direct accessible path.",
+      "studyFocus": [
+        "half-court fallback",
+        "single-hoop count",
+        "irregular polygon fit",
+        "retained-tree social edge"
+      ],
+      "resolvedPrompt": "Create a photorealistic but diagrammatically legible oblique aerial site-composition study of one park, closely following the named archetype and variant character. Show the entire park parcel from a consistent high drone camera looking about 55 degrees downward. Keep every facility at believable human scale. Preserve regulation geometry and safe run-off; repeat standard modules when an oversized site needs more capacity instead of stretching one module. Show all archetype-defining equipment, furniture, fences, lighting, paths, planting, drainage and spectator or service zones. Surfaces must have realistic texture, colour variation, wear and material transitions rather than flat monochrome fills. This is a spatial-planning reference, not a beauty shot.\n\nSITE: An irregular 31 by 24 metre corner parcel with a chamfered street edge and one mature tree to retain.\n\nCOMPOSITION: Use one correctly proportioned half-court with exactly one hoop, not a squeezed full court. Aim the hoop away from the entrance, keep a safe run-off apron, add a low ball fence at the vulnerable edges, and form one shaded social edge with two benches and a drinking fountain outside play. Retain the tree in a generous planted island and connect the gate with a direct accessible path.\n\nSTUDY PRIORITIES: half-court fallback; single-hoop count; irregular polygon fit; retained-tree social edge.\n\nFINAL CONSTRAINTS: No people. No cars. No labels, captions, logos, watermarks or dimension text. No buildings inside the park; where a pavilion or service building belongs, show only an empty reserved pad and connecting forecourt. No surrounding skyline. No roads through the park. Do not overlap active facilities. Do not stretch courts, fields, loops or equipment to fill the parcel. Do not crop the parcel."
+    },
+    {
+      "id": "03_inclusive_playground_zoned",
+      "title": "Inclusive accessible playground",
+      "archetypeId": "inclusive_playground_v0",
+      "sourceReference": "frontend/public/archetypes/openspaces/inclusive-accessible-playground/variant_0.png",
+      "site": "A softly irregular 68 by 52 metre neighbourhood parcel with arrival from the southeast.",
+      "compositionBrief": "Create distinct but connected play zones for toddlers, school-age children, sensory play and quiet retreat. Use a continuous accessible loop and flush resilient surfacing, transfer platforms, inclusive swings, a wheelchair-accessible spinner, ramped play structure, tactile panels and shade canopies. Place caregiver seating at overlapping sightlines, fence only where safety requires it, and keep planting outside fall zones while using trees and berms to make a sheltered perimeter.",
+      "studyFocus": [
+        "age and sensory zoning",
+        "accessible equipment kit",
+        "supervision sightlines",
+        "surface and shade transitions"
+      ],
+      "resolvedPrompt": "Create a photorealistic but diagrammatically legible oblique aerial site-composition study of one park, closely following the named archetype and variant character. Show the entire park parcel from a consistent high drone camera looking about 55 degrees downward. Keep every facility at believable human scale. Preserve regulation geometry and safe run-off; repeat standard modules when an oversized site needs more capacity instead of stretching one module. Show all archetype-defining equipment, furniture, fences, lighting, paths, planting, drainage and spectator or service zones. Surfaces must have realistic texture, colour variation, wear and material transitions rather than flat monochrome fills. This is a spatial-planning reference, not a beauty shot.\n\nSITE: A softly irregular 68 by 52 metre neighbourhood parcel with arrival from the southeast.\n\nCOMPOSITION: Create distinct but connected play zones for toddlers, school-age children, sensory play and quiet retreat. Use a continuous accessible loop and flush resilient surfacing, transfer platforms, inclusive swings, a wheelchair-accessible spinner, ramped play structure, tactile panels and shade canopies. Place caregiver seating at overlapping sightlines, fence only where safety requires it, and keep planting outside fall zones while using trees and berms to make a sheltered perimeter.\n\nSTUDY PRIORITIES: age and sensory zoning; accessible equipment kit; supervision sightlines; surface and shade transitions.\n\nFINAL CONSTRAINTS: No people. No cars. No labels, captions, logos, watermarks or dimension text. No buildings inside the park; where a pavilion or service building belongs, show only an empty reserved pad and connecting forecourt. No surrounding skyline. No roads through the park. Do not overlap active facilities. Do not stretch courts, fields, loops or equipment to fill the parcel. Do not crop the parcel."
+    },
+    {
+      "id": "04_skate_park_naturalized",
+      "title": "Naturalized concrete skate park",
+      "archetypeId": "skate_park_v2",
+      "sourceReference": "frontend/public/archetypes/openspaces/skate-park/variant_2.png",
+      "site": "An elongated irregular 82 by 44 metre parcel widening at the west end.",
+      "compositionBrief": "Shape one coherent skate flow line rather than scattering obstacles: a shallow bowl in the wide end, a connected street plaza with ledges, rails, banks, stairs and quarter pipes through the middle, and a beginner roll-in zone near arrival. Maintain circulation around active lines, spectator ledges outside fall paths, drinking fountain and bike parking at entry, and naturalized meadow, boulders and tree clusters around the concrete without roots intruding into the skate surface.",
+      "studyFocus": [
+        "continuous skate flow",
+        "complete obstacle kit",
+        "beginner-to-advanced gradient",
+        "concrete-to-meadow edge"
+      ],
+      "resolvedPrompt": "Create a photorealistic but diagrammatically legible oblique aerial site-composition study of one park, closely following the named archetype and variant character. Show the entire park parcel from a consistent high drone camera looking about 55 degrees downward. Keep every facility at believable human scale. Preserve regulation geometry and safe run-off; repeat standard modules when an oversized site needs more capacity instead of stretching one module. Show all archetype-defining equipment, furniture, fences, lighting, paths, planting, drainage and spectator or service zones. Surfaces must have realistic texture, colour variation, wear and material transitions rather than flat monochrome fills. This is a spatial-planning reference, not a beauty shot.\n\nSITE: An elongated irregular 82 by 44 metre parcel widening at the west end.\n\nCOMPOSITION: Shape one coherent skate flow line rather than scattering obstacles: a shallow bowl in the wide end, a connected street plaza with ledges, rails, banks, stairs and quarter pipes through the middle, and a beginner roll-in zone near arrival. Maintain circulation around active lines, spectator ledges outside fall paths, drinking fountain and bike parking at entry, and naturalized meadow, boulders and tree clusters around the concrete without roots intruding into the skate surface.\n\nSTUDY PRIORITIES: continuous skate flow; complete obstacle kit; beginner-to-advanced gradient; concrete-to-meadow edge.\n\nFINAL CONSTRAINTS: No people. No cars. No labels, captions, logos, watermarks or dimension text. No buildings inside the park; where a pavilion or service building belongs, show only an empty reserved pad and connecting forecourt. No surrounding skyline. No roads through the park. Do not overlap active facilities. Do not stretch courts, fields, loops or equipment to fill the parcel. Do not crop the parcel."
+    },
+    {
+      "id": "05_dog_park_modern_turf",
+      "title": "Modern divided dog park",
+      "archetypeId": "dog_park_v1",
+      "sourceReference": "frontend/public/archetypes/openspaces/dog-park/variant_1.png",
+      "site": "A rectangular 86 by 56 metre urban parcel with entry from one short edge.",
+      "compositionBrief": "Divide the park into a large-dog run and smaller quiet small-dog enclosure with proportional areas, separate double-gated vestibules and no shared gate conflict. Include durable turf and decomposed-granite wear bands, agility elements, drinking bowls, waste stations, benches under shade structures, tree islands protected by low guards, and a maintenance gate. Preserve long running lines while keeping furniture and trees outside those lines.",
+      "studyFocus": [
+        "two-enclosure hierarchy",
+        "double-gate kit",
+        "dog-specific objects",
+        "wear-aware surface variation"
+      ],
+      "resolvedPrompt": "Create a photorealistic but diagrammatically legible oblique aerial site-composition study of one park, closely following the named archetype and variant character. Show the entire park parcel from a consistent high drone camera looking about 55 degrees downward. Keep every facility at believable human scale. Preserve regulation geometry and safe run-off; repeat standard modules when an oversized site needs more capacity instead of stretching one module. Show all archetype-defining equipment, furniture, fences, lighting, paths, planting, drainage and spectator or service zones. Surfaces must have realistic texture, colour variation, wear and material transitions rather than flat monochrome fills. This is a spatial-planning reference, not a beauty shot.\n\nSITE: A rectangular 86 by 56 metre urban parcel with entry from one short edge.\n\nCOMPOSITION: Divide the park into a large-dog run and smaller quiet small-dog enclosure with proportional areas, separate double-gated vestibules and no shared gate conflict. Include durable turf and decomposed-granite wear bands, agility elements, drinking bowls, waste stations, benches under shade structures, tree islands protected by low guards, and a maintenance gate. Preserve long running lines while keeping furniture and trees outside those lines.\n\nSTUDY PRIORITIES: two-enclosure hierarchy; double-gate kit; dog-specific objects; wear-aware surface variation.\n\nFINAL CONSTRAINTS: No people. No cars. No labels, captions, logos, watermarks or dimension text. No buildings inside the park; where a pavilion or service building belongs, show only an empty reserved pad and connecting forecourt. No surrounding skyline. No roads through the park. Do not overlap active facilities. Do not stretch courts, fields, loops or equipment to fill the parcel. Do not crop the parcel."
+    },
+    {
+      "id": "06_splash_pad_civic",
+      "title": "Civic splash pad with dry companion space",
+      "archetypeId": "splash_pad_area_v0",
+      "sourceReference": "frontend/public/archetypes/openspaces/splash-pad-area/variant_0.png",
+      "site": "A compact rectangular 48 by 38 metre plaza-park with arrival from the south.",
+      "compositionBrief": "Compose a central textured splash surface with flush jets, low spray arches, bollard sprayers and one taller focal feature, graded toward visible trench drains. Keep a dry perimeter loop, caregiver seating and picnic tables under shade sails, a stroller parking niche, drinking fountain and a reserved service pad. Use colourful but non-monochrome paving bands and planted rain-garden edges without placing trees over water infrastructure.",
+      "studyFocus": [
+        "water-feature equipment kit",
+        "wet and dry zoning",
+        "drainage legibility",
+        "caregiver shade and seating"
+      ],
+      "resolvedPrompt": "Create a photorealistic but diagrammatically legible oblique aerial site-composition study of one park, closely following the named archetype and variant character. Show the entire park parcel from a consistent high drone camera looking about 55 degrees downward. Keep every facility at believable human scale. Preserve regulation geometry and safe run-off; repeat standard modules when an oversized site needs more capacity instead of stretching one module. Show all archetype-defining equipment, furniture, fences, lighting, paths, planting, drainage and spectator or service zones. Surfaces must have realistic texture, colour variation, wear and material transitions rather than flat monochrome fills. This is a spatial-planning reference, not a beauty shot.\n\nSITE: A compact rectangular 48 by 38 metre plaza-park with arrival from the south.\n\nCOMPOSITION: Compose a central textured splash surface with flush jets, low spray arches, bollard sprayers and one taller focal feature, graded toward visible trench drains. Keep a dry perimeter loop, caregiver seating and picnic tables under shade sails, a stroller parking niche, drinking fountain and a reserved service pad. Use colourful but non-monochrome paving bands and planted rain-garden edges without placing trees over water infrastructure.\n\nSTUDY PRIORITIES: water-feature equipment kit; wet and dry zoning; drainage legibility; caregiver shade and seating.\n\nFINAL CONSTRAINTS: No people. No cars. No labels, captions, logos, watermarks or dimension text. No buildings inside the park; where a pavilion or service building belongs, show only an empty reserved pad and connecting forecourt. No surrounding skyline. No roads through the park. Do not overlap active facilities. Do not stretch courts, fields, loops or equipment to fill the parcel. Do not crop the parcel."
+    },
+    {
+      "id": "07_community_garden_allotments",
+      "title": "Productive community allotment garden",
+      "archetypeId": "community_garden_v0",
+      "sourceReference": "frontend/public/archetypes/openspaces/community-garden/variant_0.png",
+      "site": "A level 72 by 58 metre neighbourhood parcel with service access at the northwest corner.",
+      "compositionBrief": "Lay out varied but orderly allotment beds in accessible modules around a main cross path, including raised wheelchair beds, shared compost bays, tool storage pad, rainwater tanks, potting tables, wash station and a small teaching circle. Use a perimeter fence with a public entry and separate service gate. Add a pollinator border, orchard row, social picnic node and realistic soil, mulch, gravel and planted-bed colour variation.",
+      "studyFocus": [
+        "productive plot module",
+        "garden operations kit",
+        "accessible beds",
+        "soil and crop texture diversity"
+      ],
+      "resolvedPrompt": "Create a photorealistic but diagrammatically legible oblique aerial site-composition study of one park, closely following the named archetype and variant character. Show the entire park parcel from a consistent high drone camera looking about 55 degrees downward. Keep every facility at believable human scale. Preserve regulation geometry and safe run-off; repeat standard modules when an oversized site needs more capacity instead of stretching one module. Show all archetype-defining equipment, furniture, fences, lighting, paths, planting, drainage and spectator or service zones. Surfaces must have realistic texture, colour variation, wear and material transitions rather than flat monochrome fills. This is a spatial-planning reference, not a beauty shot.\n\nSITE: A level 72 by 58 metre neighbourhood parcel with service access at the northwest corner.\n\nCOMPOSITION: Lay out varied but orderly allotment beds in accessible modules around a main cross path, including raised wheelchair beds, shared compost bays, tool storage pad, rainwater tanks, potting tables, wash station and a small teaching circle. Use a perimeter fence with a public entry and separate service gate. Add a pollinator border, orchard row, social picnic node and realistic soil, mulch, gravel and planted-bed colour variation.\n\nSTUDY PRIORITIES: productive plot module; garden operations kit; accessible beds; soil and crop texture diversity.\n\nFINAL CONSTRAINTS: No people. No cars. No labels, captions, logos, watermarks or dimension text. No buildings inside the park; where a pavilion or service building belongs, show only an empty reserved pad and connecting forecourt. No surrounding skyline. No roads through the park. Do not overlap active facilities. Do not stretch courts, fields, loops or equipment to fill the parcel. Do not crop the parcel."
+    },
+    {
+      "id": "08_senior_fitness_loop",
+      "title": "Senior wellness outdoor fitness circuit",
+      "archetypeId": "outdoor_fitness_circuit_v3",
+      "sourceReference": "frontend/public/archetypes/openspaces/outdoor-fitness-circuit/variant_3.png",
+      "site": "A gently sloping oval 76 by 52 metre park parcel with arrival at the low southeast edge.",
+      "compositionBrief": "Create an accessible walking loop with frequent rest points and a sequence of low-impact fitness stations: hand cycle, step trainer, balance rail, stretching bars, seated press and tai-chi deck. Keep clear transfer zones, contrasting resilient pads, handrails on grades, shade trees and benches at intervals, drinking fountain and an emergency-access spur. Avoid a generic playground appearance.",
+      "studyFocus": [
+        "senior-specific equipment",
+        "accessible loop",
+        "rest and shade cadence",
+        "clear transfer zones"
+      ],
+      "resolvedPrompt": "Create a photorealistic but diagrammatically legible oblique aerial site-composition study of one park, closely following the named archetype and variant character. Show the entire park parcel from a consistent high drone camera looking about 55 degrees downward. Keep every facility at believable human scale. Preserve regulation geometry and safe run-off; repeat standard modules when an oversized site needs more capacity instead of stretching one module. Show all archetype-defining equipment, furniture, fences, lighting, paths, planting, drainage and spectator or service zones. Surfaces must have realistic texture, colour variation, wear and material transitions rather than flat monochrome fills. This is a spatial-planning reference, not a beauty shot.\n\nSITE: A gently sloping oval 76 by 52 metre park parcel with arrival at the low southeast edge.\n\nCOMPOSITION: Create an accessible walking loop with frequent rest points and a sequence of low-impact fitness stations: hand cycle, step trainer, balance rail, stretching bars, seated press and tai-chi deck. Keep clear transfer zones, contrasting resilient pads, handrails on grades, shade trees and benches at intervals, drinking fountain and an emergency-access spur. Avoid a generic playground appearance.\n\nSTUDY PRIORITIES: senior-specific equipment; accessible loop; rest and shade cadence; clear transfer zones.\n\nFINAL CONSTRAINTS: No people. No cars. No labels, captions, logos, watermarks or dimension text. No buildings inside the park; where a pavilion or service building belongs, show only an empty reserved pad and connecting forecourt. No surrounding skyline. No roads through the park. Do not overlap active facilities. Do not stretch courts, fields, loops or equipment to fill the parcel. Do not crop the parcel."
+    },
+    {
+      "id": "09_memorial_woodland",
+      "title": "Woodland memorial garden",
+      "archetypeId": "memorial_garden_v1",
+      "sourceReference": "frontend/public/archetypes/openspaces/memorial-garden/variant_1.png",
+      "site": "An irregular 82 by 64 metre parcel with existing mature canopy and a quiet entry from the east.",
+      "compositionBrief": "Use a restrained loop path through retained trees, a small central remembrance clearing, low stone memorial walls, individual benches in quiet niches, a water bowl or rill, shade-tolerant groundcover and seasonal understory planting. Establish a deliberate arrival threshold and accessible contemplative route. Avoid playground, sports or generic plaza objects and keep the memorial focal hierarchy legible from above.",
+      "studyFocus": [
+        "contemplative sequence",
+        "memorial object kit",
+        "retained canopy",
+        "quiet seating niches"
+      ],
+      "resolvedPrompt": "Create a photorealistic but diagrammatically legible oblique aerial site-composition study of one park, closely following the named archetype and variant character. Show the entire park parcel from a consistent high drone camera looking about 55 degrees downward. Keep every facility at believable human scale. Preserve regulation geometry and safe run-off; repeat standard modules when an oversized site needs more capacity instead of stretching one module. Show all archetype-defining equipment, furniture, fences, lighting, paths, planting, drainage and spectator or service zones. Surfaces must have realistic texture, colour variation, wear and material transitions rather than flat monochrome fills. This is a spatial-planning reference, not a beauty shot.\n\nSITE: An irregular 82 by 64 metre parcel with existing mature canopy and a quiet entry from the east.\n\nCOMPOSITION: Use a restrained loop path through retained trees, a small central remembrance clearing, low stone memorial walls, individual benches in quiet niches, a water bowl or rill, shade-tolerant groundcover and seasonal understory planting. Establish a deliberate arrival threshold and accessible contemplative route. Avoid playground, sports or generic plaza objects and keep the memorial focal hierarchy legible from above.\n\nSTUDY PRIORITIES: contemplative sequence; memorial object kit; retained canopy; quiet seating niches.\n\nFINAL CONSTRAINTS: No people. No cars. No labels, captions, logos, watermarks or dimension text. No buildings inside the park; where a pavilion or service building belongs, show only an empty reserved pad and connecting forecourt. No surrounding skyline. No roads through the park. Do not overlap active facilities. Do not stretch courts, fields, loops or equipment to fill the parcel. Do not crop the parcel."
+    },
+    {
+      "id": "10_academic_courtyard",
+      "title": "Academic teaching courtyard",
+      "archetypeId": "academic_courtyard_variant_0",
+      "sourceReference": "frontend/public/archetypes/openspaces/academic-courtyard/variant_0.png",
+      "site": "A rectangular 58 by 42 metre courtyard footprint with four implied building edges but no buildings rendered.",
+      "compositionBrief": "Organize a strong central lawn or permeable court framed by shaded study terraces, movable tables, seat walls, specimen trees in structural planters and a small outdoor teaching platform. Preserve direct desire lines between four corner entries, accessible routes and a quiet planted rain-garden edge. Reserve clear fa\u00e7ade access strips along the implied building edges and do not fill them with trees or furniture.",
+      "studyFocus": [
+        "cross-campus desire lines",
+        "study furniture kit",
+        "teaching node",
+        "building-edge clearances"
+      ],
+      "resolvedPrompt": "Create a photorealistic but diagrammatically legible oblique aerial site-composition study of one park, closely following the named archetype and variant character. Show the entire park parcel from a consistent high drone camera looking about 55 degrees downward. Keep every facility at believable human scale. Preserve regulation geometry and safe run-off; repeat standard modules when an oversized site needs more capacity instead of stretching one module. Show all archetype-defining equipment, furniture, fences, lighting, paths, planting, drainage and spectator or service zones. Surfaces must have realistic texture, colour variation, wear and material transitions rather than flat monochrome fills. This is a spatial-planning reference, not a beauty shot.\n\nSITE: A rectangular 58 by 42 metre courtyard footprint with four implied building edges but no buildings rendered.\n\nCOMPOSITION: Organize a strong central lawn or permeable court framed by shaded study terraces, movable tables, seat walls, specimen trees in structural planters and a small outdoor teaching platform. Preserve direct desire lines between four corner entries, accessible routes and a quiet planted rain-garden edge. Reserve clear fa\u00e7ade access strips along the implied building edges and do not fill them with trees or furniture.\n\nSTUDY PRIORITIES: cross-campus desire lines; study furniture kit; teaching node; building-edge clearances.\n\nFINAL CONSTRAINTS: No people. No cars. No labels, captions, logos, watermarks or dimension text. No buildings inside the park; where a pavilion or service building belongs, show only an empty reserved pad and connecting forecourt. No surrounding skyline. No roads through the park. Do not overlap active facilities. Do not stretch courts, fields, loops or equipment to fill the parcel. Do not crop the parcel."
+    },
+    {
+      "id": "11_constructed_wetland_cells",
+      "title": "Constructed wetland eco-park",
+      "archetypeId": "constructed_wetland_eco_park_variant_0",
+      "sourceReference": "frontend/public/archetypes/openspaces/constructed-wetland-eco-park/variant_0.png",
+      "site": "A low-lying irregular 145 by 95 metre parcel with water entering at the northwest and leaving at the southeast.",
+      "compositionBrief": "Arrange a visible treatment train of forebay, alternating shallow planted wetland cells, low weirs and a final polishing pond following the grade. Cross it with a limited boardwalk and two overlooks while maintaining maintenance access along one edge. Use dense emergent vegetation bands, open-water patches, riprap inlet and outlet structures, habitat logs and upland meadow buffers. Hydrologic sequence must dominate over decorative paths.",
+      "studyFocus": [
+        "treatment-cell sequence",
+        "water-control objects",
+        "boardwalk restraint",
+        "wet-to-dry planting gradients"
+      ],
+      "resolvedPrompt": "Create a photorealistic but diagrammatically legible oblique aerial site-composition study of one park, closely following the named archetype and variant character. Show the entire park parcel from a consistent high drone camera looking about 55 degrees downward. Keep every facility at believable human scale. Preserve regulation geometry and safe run-off; repeat standard modules when an oversized site needs more capacity instead of stretching one module. Show all archetype-defining equipment, furniture, fences, lighting, paths, planting, drainage and spectator or service zones. Surfaces must have realistic texture, colour variation, wear and material transitions rather than flat monochrome fills. This is a spatial-planning reference, not a beauty shot.\n\nSITE: A low-lying irregular 145 by 95 metre parcel with water entering at the northwest and leaving at the southeast.\n\nCOMPOSITION: Arrange a visible treatment train of forebay, alternating shallow planted wetland cells, low weirs and a final polishing pond following the grade. Cross it with a limited boardwalk and two overlooks while maintaining maintenance access along one edge. Use dense emergent vegetation bands, open-water patches, riprap inlet and outlet structures, habitat logs and upland meadow buffers. Hydrologic sequence must dominate over decorative paths.\n\nSTUDY PRIORITIES: treatment-cell sequence; water-control objects; boardwalk restraint; wet-to-dry planting gradients.\n\nFINAL CONSTRAINTS: No people. No cars. No labels, captions, logos, watermarks or dimension text. No buildings inside the park; where a pavilion or service building belongs, show only an empty reserved pad and connecting forecourt. No surrounding skyline. No roads through the park. Do not overlap active facilities. Do not stretch courts, fields, loops or equipment to fill the parcel. Do not crop the parcel."
+    },
+    {
+      "id": "12_teaching_arboretum",
+      "title": "Research garden and teaching arboretum",
+      "archetypeId": "research_garden_teaching_arboretum_variant_0",
+      "sourceReference": "frontend/public/archetypes/openspaces/research-garden-teaching-arboretum/variant_0.png",
+      "site": "A rectangular 150 by 105 metre campus landscape with entry at the southwest corner.",
+      "compositionBrief": "Create distinct research plots, labelled-tree collection rows without visible text, a nursery and propagation area, small weather-station pad, outdoor classroom circle and a logical service spine. Use contrasting crop, meadow, mulch and gravel textures to make study areas legible. Provide accessible public loops while separating them from operations, and reserve a greenhouse pad at the service edge without rendering a building.",
+      "studyFocus": [
+        "research plot hierarchy",
+        "arboretum spacing",
+        "teaching and operations kit",
+        "public-service separation"
+      ],
+      "resolvedPrompt": "Create a photorealistic but diagrammatically legible oblique aerial site-composition study of one park, closely following the named archetype and variant character. Show the entire park parcel from a consistent high drone camera looking about 55 degrees downward. Keep every facility at believable human scale. Preserve regulation geometry and safe run-off; repeat standard modules when an oversized site needs more capacity instead of stretching one module. Show all archetype-defining equipment, furniture, fences, lighting, paths, planting, drainage and spectator or service zones. Surfaces must have realistic texture, colour variation, wear and material transitions rather than flat monochrome fills. This is a spatial-planning reference, not a beauty shot.\n\nSITE: A rectangular 150 by 105 metre campus landscape with entry at the southwest corner.\n\nCOMPOSITION: Create distinct research plots, labelled-tree collection rows without visible text, a nursery and propagation area, small weather-station pad, outdoor classroom circle and a logical service spine. Use contrasting crop, meadow, mulch and gravel textures to make study areas legible. Provide accessible public loops while separating them from operations, and reserve a greenhouse pad at the service edge without rendering a building.\n\nSTUDY PRIORITIES: research plot hierarchy; arboretum spacing; teaching and operations kit; public-service separation.\n\nFINAL CONSTRAINTS: No people. No cars. No labels, captions, logos, watermarks or dimension text. No buildings inside the park; where a pavilion or service building belongs, show only an empty reserved pad and connecting forecourt. No surrounding skyline. No roads through the park. Do not overlap active facilities. Do not stretch courts, fields, loops or equipment to fill the parcel. Do not crop the parcel."
+    },
+    {
+      "id": "13_rewilding_urban_prairie",
+      "title": "Urban prairie rewilding zone",
+      "archetypeId": "rewilding_ecological_restoration_zone_variant_0",
+      "sourceReference": "frontend/public/archetypes/openspaces/rewilding-ecological-restoration-zone/variant_0.png",
+      "site": "A broad irregular 210 by 140 metre former vacant parcel with a wet depression near the north edge.",
+      "compositionBrief": "Make native prairie, scrub mosaics, regenerating tree clumps and a wet meadow the dominant composition. Add only a sparse mown trail loop, one short accessible boardwalk to an overlook, habitat logs, brush piles, snags, boulders and shallow scrapes. Keep a defensible mown edge near the public entrance and avoid ornamental evenly spaced trees, formal lawns or excessive furniture.",
+      "studyFocus": [
+        "wild mosaic structure",
+        "restoration habitat objects",
+        "minimal circulation",
+        "non-ornamental planting texture"
+      ],
+      "resolvedPrompt": "Create a photorealistic but diagrammatically legible oblique aerial site-composition study of one park, closely following the named archetype and variant character. Show the entire park parcel from a consistent high drone camera looking about 55 degrees downward. Keep every facility at believable human scale. Preserve regulation geometry and safe run-off; repeat standard modules when an oversized site needs more capacity instead of stretching one module. Show all archetype-defining equipment, furniture, fences, lighting, paths, planting, drainage and spectator or service zones. Surfaces must have realistic texture, colour variation, wear and material transitions rather than flat monochrome fills. This is a spatial-planning reference, not a beauty shot.\n\nSITE: A broad irregular 210 by 140 metre former vacant parcel with a wet depression near the north edge.\n\nCOMPOSITION: Make native prairie, scrub mosaics, regenerating tree clumps and a wet meadow the dominant composition. Add only a sparse mown trail loop, one short accessible boardwalk to an overlook, habitat logs, brush piles, snags, boulders and shallow scrapes. Keep a defensible mown edge near the public entrance and avoid ornamental evenly spaced trees, formal lawns or excessive furniture.\n\nSTUDY PRIORITIES: wild mosaic structure; restoration habitat objects; minimal circulation; non-ornamental planting texture.\n\nFINAL CONSTRAINTS: No people. No cars. No labels, captions, logos, watermarks or dimension text. No buildings inside the park; where a pavilion or service building belongs, show only an empty reserved pad and connecting forecourt. No surrounding skyline. No roads through the park. Do not overlap active facilities. Do not stretch courts, fields, loops or equipment to fill the parcel. Do not crop the parcel."
+    },
+    {
+      "id": "14_daylit_stormwater_channel",
+      "title": "Urban daylit stormwater corridor",
+      "archetypeId": "stormwater_naturalized_drainage_corridor_variant_1",
+      "sourceReference": "frontend/public/archetypes/openspaces/stormwater-naturalized-drainage-corridor/variant_1.png",
+      "site": "A linear 260 by 42 metre urban corridor descending steadily from west to east.",
+      "compositionBrief": "Run a meandering but continuous daylit channel along the corridor with stepped pools, rock check dams, sloped planted banks and overflow benches. Parallel it with an accessible path that crosses on three small footbridges at purposeful desire lines. Include maintenance access, seating overlooks on high ground and dense riparian planting without blocking hydraulic flow. Keep the corridor linear and avoid turning it into a pond-dominated park.",
+      "studyFocus": [
+        "linear hydraulic continuity",
+        "bridge and check-dam kit",
+        "high-ground path",
+        "riparian texture"
+      ],
+      "resolvedPrompt": "Create a photorealistic but diagrammatically legible oblique aerial site-composition study of one park, closely following the named archetype and variant character. Show the entire park parcel from a consistent high drone camera looking about 55 degrees downward. Keep every facility at believable human scale. Preserve regulation geometry and safe run-off; repeat standard modules when an oversized site needs more capacity instead of stretching one module. Show all archetype-defining equipment, furniture, fences, lighting, paths, planting, drainage and spectator or service zones. Surfaces must have realistic texture, colour variation, wear and material transitions rather than flat monochrome fills. This is a spatial-planning reference, not a beauty shot.\n\nSITE: A linear 260 by 42 metre urban corridor descending steadily from west to east.\n\nCOMPOSITION: Run a meandering but continuous daylit channel along the corridor with stepped pools, rock check dams, sloped planted banks and overflow benches. Parallel it with an accessible path that crosses on three small footbridges at purposeful desire lines. Include maintenance access, seating overlooks on high ground and dense riparian planting without blocking hydraulic flow. Keep the corridor linear and avoid turning it into a pond-dominated park.\n\nSTUDY PRIORITIES: linear hydraulic continuity; bridge and check-dam kit; high-ground path; riparian texture.\n\nFINAL CONSTRAINTS: No people. No cars. No labels, captions, logos, watermarks or dimension text. No buildings inside the park; where a pavilion or service building belongs, show only an empty reserved pad and connecting forecourt. No surrounding skyline. No roads through the park. Do not overlap active facilities. Do not stretch courts, fields, loops or equipment to fill the parcel. Do not crop the parcel."
+    },
+    {
+      "id": "15_urban_bioswale_park",
+      "title": "Compact urban stormwater resilience park",
+      "archetypeId": "stormwater_resilience_park_variant_0",
+      "sourceReference": "frontend/public/archetypes/openspaces/stormwater-resilience-park/variant_0.png",
+      "site": "A rectangular 92 by 60 metre city parcel receiving runoff at both uphill corners.",
+      "compositionBrief": "Step a sequence of shallow bioswale terraces and small detention lawns toward one planted low basin. Use low check weirs, curb-like inlet notches, boardwalk crossings, seat walls and overlooks on dry high ground. Preserve a clear accessible route around and across the system, show varied wet and dry planting bands, and reserve a small pavilion pad at the high entrance without rendering a structure.",
+      "studyFocus": [
+        "terraced detention logic",
+        "inlet and weir objects",
+        "dry social edge",
+        "wet-dry material gradients"
+      ],
+      "resolvedPrompt": "Create a photorealistic but diagrammatically legible oblique aerial site-composition study of one park, closely following the named archetype and variant character. Show the entire park parcel from a consistent high drone camera looking about 55 degrees downward. Keep every facility at believable human scale. Preserve regulation geometry and safe run-off; repeat standard modules when an oversized site needs more capacity instead of stretching one module. Show all archetype-defining equipment, furniture, fences, lighting, paths, planting, drainage and spectator or service zones. Surfaces must have realistic texture, colour variation, wear and material transitions rather than flat monochrome fills. This is a spatial-planning reference, not a beauty shot.\n\nSITE: A rectangular 92 by 60 metre city parcel receiving runoff at both uphill corners.\n\nCOMPOSITION: Step a sequence of shallow bioswale terraces and small detention lawns toward one planted low basin. Use low check weirs, curb-like inlet notches, boardwalk crossings, seat walls and overlooks on dry high ground. Preserve a clear accessible route around and across the system, show varied wet and dry planting bands, and reserve a small pavilion pad at the high entrance without rendering a structure.\n\nSTUDY PRIORITIES: terraced detention logic; inlet and weir objects; dry social edge; wet-dry material gradients.\n\nFINAL CONSTRAINTS: No people. No cars. No labels, captions, logos, watermarks or dimension text. No buildings inside the park; where a pavilion or service building belongs, show only an empty reserved pad and connecting forecourt. No surrounding skyline. No roads through the park. Do not overlap active facilities. Do not stretch courts, fields, loops or equipment to fill the parcel. Do not crop the parcel."
+    },
+    {
+      "id": "16_pump_track_compact",
+      "title": "Compact asphalt pump track",
+      "archetypeId": "pump_track_v0",
+      "sourceReference": "frontend/public/archetypes/openspaces/pump-track/variant_0.png",
+      "site": "An irregular 72 by 56 metre active-recreation parcel with arrival at the southwest corner.",
+      "compositionBrief": "Build one continuous directional pump-track loop with correctly scaled rollers, bermed turns, two skill-line options and a beginner bypass, all connected without dead ends or crossings. Add a start platform, bike racks, repair stand, drinking fountain and spectator mound outside the riding envelope. Use textured asphalt, compacted-gravel aprons, meadow berms and shade trees only beyond clear fall zones.",
+      "studyFocus": [
+        "continuous ride topology",
+        "rollers and berm kit",
+        "beginner bypass",
+        "spectator and bike-support edge"
+      ],
+      "resolvedPrompt": "Create a photorealistic but diagrammatically legible oblique aerial site-composition study of one park, closely following the named archetype and variant character. Show the entire park parcel from a consistent high drone camera looking about 55 degrees downward. Keep every facility at believable human scale. Preserve regulation geometry and safe run-off; repeat standard modules when an oversized site needs more capacity instead of stretching one module. Show all archetype-defining equipment, furniture, fences, lighting, paths, planting, drainage and spectator or service zones. Surfaces must have realistic texture, colour variation, wear and material transitions rather than flat monochrome fills. This is a spatial-planning reference, not a beauty shot.\n\nSITE: An irregular 72 by 56 metre active-recreation parcel with arrival at the southwest corner.\n\nCOMPOSITION: Build one continuous directional pump-track loop with correctly scaled rollers, bermed turns, two skill-line options and a beginner bypass, all connected without dead ends or crossings. Add a start platform, bike racks, repair stand, drinking fountain and spectator mound outside the riding envelope. Use textured asphalt, compacted-gravel aprons, meadow berms and shade trees only beyond clear fall zones.\n\nSTUDY PRIORITIES: continuous ride topology; rollers and berm kit; beginner bypass; spectator and bike-support edge.\n\nFINAL CONSTRAINTS: No people. No cars. No labels, captions, logos, watermarks or dimension text. No buildings inside the park; where a pavilion or service building belongs, show only an empty reserved pad and connecting forecourt. No surrounding skyline. No roads through the park. Do not overlap active facilities. Do not stretch courts, fields, loops or equipment to fill the parcel. Do not crop the parcel."
+    },
+    {
+      "id": "17_beach_volleyball_bank",
+      "title": "Four-court beach volleyball bank",
+      "archetypeId": "beach_volleyball_courts_v0",
+      "sourceReference": "frontend/public/archetypes/openspaces/beach-volleyball-courts/variant_0.png",
+      "site": "A level rectangular 78 by 58 metre recreation parcel with entry on one long edge.",
+      "compositionBrief": "Arrange exactly four standard beach-volleyball court envelopes as two parallel pairs with correctly placed nets, posts, boundary tapes and generous sand run-off. Use one shared spectator promenade between the pairs, low perimeter fencing where needed, showers and drinking fountain near entry, shade structures and benches outside the sand, and a planted windbreak beyond play clearance. Do not merge the sand into one ambiguous oversized field.",
+      "studyFocus": [
+        "four-court module count",
+        "net and post kit",
+        "shared sand compound",
+        "windbreak and spectator spine"
+      ],
+      "resolvedPrompt": "Create a photorealistic but diagrammatically legible oblique aerial site-composition study of one park, closely following the named archetype and variant character. Show the entire park parcel from a consistent high drone camera looking about 55 degrees downward. Keep every facility at believable human scale. Preserve regulation geometry and safe run-off; repeat standard modules when an oversized site needs more capacity instead of stretching one module. Show all archetype-defining equipment, furniture, fences, lighting, paths, planting, drainage and spectator or service zones. Surfaces must have realistic texture, colour variation, wear and material transitions rather than flat monochrome fills. This is a spatial-planning reference, not a beauty shot.\n\nSITE: A level rectangular 78 by 58 metre recreation parcel with entry on one long edge.\n\nCOMPOSITION: Arrange exactly four standard beach-volleyball court envelopes as two parallel pairs with correctly placed nets, posts, boundary tapes and generous sand run-off. Use one shared spectator promenade between the pairs, low perimeter fencing where needed, showers and drinking fountain near entry, shade structures and benches outside the sand, and a planted windbreak beyond play clearance. Do not merge the sand into one ambiguous oversized field.\n\nSTUDY PRIORITIES: four-court module count; net and post kit; shared sand compound; windbreak and spectator spine.\n\nFINAL CONSTRAINTS: No people. No cars. No labels, captions, logos, watermarks or dimension text. No buildings inside the park; where a pavilion or service building belongs, show only an empty reserved pad and connecting forecourt. No surrounding skyline. No roads through the park. Do not overlap active facilities. Do not stretch courts, fields, loops or equipment to fill the parcel. Do not crop the parcel."
+    },
+    {
+      "id": "18_bocce_social_courts",
+      "title": "Neighbourhood bocce social garden",
+      "archetypeId": "bocce_petanque_court_v0",
+      "sourceReference": "frontend/public/archetypes/openspaces/bocce-p\u00e9tanque-court/variant_0.png",
+      "site": "A rectangular 58 by 42 metre park parcel with arrival at the centre of the south edge.",
+      "compositionBrief": "Place three long narrow bocce courts parallel as standard modules with timber or stone sideboards, compacted fines, end clearances and accessible entries. Create a shaded social terrace with tables and benches along one side, a drinking fountain, score stands without visible text, low hedge enclosure and a small lawn gathering area. Preserve the quiet garden character and avoid sports-stadium fencing.",
+      "studyFocus": [
+        "parallel narrow-court geometry",
+        "sideboard and score kit",
+        "social terrace",
+        "garden-scale enclosure"
+      ],
+      "resolvedPrompt": "Create a photorealistic but diagrammatically legible oblique aerial site-composition study of one park, closely following the named archetype and variant character. Show the entire park parcel from a consistent high drone camera looking about 55 degrees downward. Keep every facility at believable human scale. Preserve regulation geometry and safe run-off; repeat standard modules when an oversized site needs more capacity instead of stretching one module. Show all archetype-defining equipment, furniture, fences, lighting, paths, planting, drainage and spectator or service zones. Surfaces must have realistic texture, colour variation, wear and material transitions rather than flat monochrome fills. This is a spatial-planning reference, not a beauty shot.\n\nSITE: A rectangular 58 by 42 metre park parcel with arrival at the centre of the south edge.\n\nCOMPOSITION: Place three long narrow bocce courts parallel as standard modules with timber or stone sideboards, compacted fines, end clearances and accessible entries. Create a shaded social terrace with tables and benches along one side, a drinking fountain, score stands without visible text, low hedge enclosure and a small lawn gathering area. Preserve the quiet garden character and avoid sports-stadium fencing.\n\nSTUDY PRIORITIES: parallel narrow-court geometry; sideboard and score kit; social terrace; garden-scale enclosure.\n\nFINAL CONSTRAINTS: No people. No cars. No labels, captions, logos, watermarks or dimension text. No buildings inside the park; where a pavilion or service building belongs, show only an empty reserved pad and connecting forecourt. No surrounding skyline. No roads through the park. Do not overlap active facilities. Do not stretch courts, fields, loops or equipment to fill the parcel. Do not crop the parcel."
+    },
+    {
+      "id": "19_climbing_bouldering_garden",
+      "title": "Outdoor climbing and bouldering garden",
+      "archetypeId": "climbing_bouldering_wall_v0",
+      "sourceReference": "frontend/public/archetypes/openspaces/outdoor-climbing-bouldering-wall/variant_0.png",
+      "site": "An irregular 66 by 52 metre parcel with a modest natural grade rising to the north.",
+      "compositionBrief": "Compose a family of freestanding bouldering blocks and one short traverse wall with distinct difficulty zones, realistic landing surfaces and generous fall clearances. Add a warm-up deck, benches, drinking fountain, gear racks and a small spectator edge outside fall zones. Integrate natural boulders, meadow planting and shade trees around the perimeter while keeping climbable faces and circulation unobstructed.",
+      "studyFocus": [
+        "climbing-object family",
+        "fall-zone geometry",
+        "difficulty zoning",
+        "natural-to-resilient surface transition"
+      ],
+      "resolvedPrompt": "Create a photorealistic but diagrammatically legible oblique aerial site-composition study of one park, closely following the named archetype and variant character. Show the entire park parcel from a consistent high drone camera looking about 55 degrees downward. Keep every facility at believable human scale. Preserve regulation geometry and safe run-off; repeat standard modules when an oversized site needs more capacity instead of stretching one module. Show all archetype-defining equipment, furniture, fences, lighting, paths, planting, drainage and spectator or service zones. Surfaces must have realistic texture, colour variation, wear and material transitions rather than flat monochrome fills. This is a spatial-planning reference, not a beauty shot.\n\nSITE: An irregular 66 by 52 metre parcel with a modest natural grade rising to the north.\n\nCOMPOSITION: Compose a family of freestanding bouldering blocks and one short traverse wall with distinct difficulty zones, realistic landing surfaces and generous fall clearances. Add a warm-up deck, benches, drinking fountain, gear racks and a small spectator edge outside fall zones. Integrate natural boulders, meadow planting and shade trees around the perimeter while keeping climbable faces and circulation unobstructed.\n\nSTUDY PRIORITIES: climbing-object family; fall-zone geometry; difficulty zoning; natural-to-resilient surface transition.\n\nFINAL CONSTRAINTS: No people. No cars. No labels, captions, logos, watermarks or dimension text. No buildings inside the park; where a pavilion or service building belongs, show only an empty reserved pad and connecting forecourt. No surrounding skyline. No roads through the park. Do not overlap active facilities. Do not stretch courts, fields, loops or equipment to fill the parcel. Do not crop the parcel."
+    },
+    {
+      "id": "20_disc_golf_nine_hole",
+      "title": "Compact nine-hole disc golf park",
+      "archetypeId": "disc_golf_course_v0",
+      "sourceReference": "frontend/public/archetypes/openspaces/disc-golf-course/variant_0.png",
+      "site": "A wooded irregular 260 by 175 metre park with open meadow in the centre and entry at the southeast.",
+      "compositionBrief": "Lay out a legible nine-hole loop with tee pads, baskets and flight corridors alternating between meadow and woodland edges. Prevent fairways from crossing each other, trails or gathering areas. Add a practice basket near entry, a modest trail network, benches at selected tees, small wayfinding posts without visible text and protected habitat patches. Retain mature trees as strategic obstacles rather than evenly spaced decoration.",
+      "studyFocus": [
+        "non-crossing nine-hole sequence",
+        "tee and basket kit",
+        "woodland-meadow rhythm",
+        "safety separation"
+      ],
+      "resolvedPrompt": "Create a photorealistic but diagrammatically legible oblique aerial site-composition study of one park, closely following the named archetype and variant character. Show the entire park parcel from a consistent high drone camera looking about 55 degrees downward. Keep every facility at believable human scale. Preserve regulation geometry and safe run-off; repeat standard modules when an oversized site needs more capacity instead of stretching one module. Show all archetype-defining equipment, furniture, fences, lighting, paths, planting, drainage and spectator or service zones. Surfaces must have realistic texture, colour variation, wear and material transitions rather than flat monochrome fills. This is a spatial-planning reference, not a beauty shot.\n\nSITE: A wooded irregular 260 by 175 metre park with open meadow in the centre and entry at the southeast.\n\nCOMPOSITION: Lay out a legible nine-hole loop with tee pads, baskets and flight corridors alternating between meadow and woodland edges. Prevent fairways from crossing each other, trails or gathering areas. Add a practice basket near entry, a modest trail network, benches at selected tees, small wayfinding posts without visible text and protected habitat patches. Retain mature trees as strategic obstacles rather than evenly spaced decoration.\n\nSTUDY PRIORITIES: non-crossing nine-hole sequence; tee and basket kit; woodland-meadow rhythm; safety separation.\n\nFINAL CONSTRAINTS: No people. No cars. No labels, captions, logos, watermarks or dimension text. No buildings inside the park; where a pavilion or service building belongs, show only an empty reserved pad and connecting forecourt. No surrounding skyline. No roads through the park. Do not overlap active facilities. Do not stretch courts, fields, loops or equipment to fill the parcel. Do not crop the parcel."
+    },
+    {
+      "id": "21_nature_play_landform",
+      "title": "Landform-led nature play area",
+      "archetypeId": "nature_play_area_v0",
+      "sourceReference": "frontend/public/archetypes/openspaces/nature-play-area/variant_0.png",
+      "site": "A gently sloping irregular 74 by 58 metre parcel retaining several mature trees.",
+      "compositionBrief": "Use sculpted earth mounds, logs, boulders, sand, water rill, stepping stones, rope crossings and a timber climbing structure as an integrated landscape rather than bright catalogue equipment. Provide a continuous accessible exploration route, quiet den, caregiver seating with broad sightlines and a shaded picnic edge. Keep fall surfaces and drainage believable while preserving a natural, texturally varied character.",
+      "studyFocus": [
+        "landform as play structure",
+        "nature-play object kit",
+        "accessible exploration",
+        "natural material texture"
+      ],
+      "resolvedPrompt": "Create a photorealistic but diagrammatically legible oblique aerial site-composition study of one park, closely following the named archetype and variant character. Show the entire park parcel from a consistent high drone camera looking about 55 degrees downward. Keep every facility at believable human scale. Preserve regulation geometry and safe run-off; repeat standard modules when an oversized site needs more capacity instead of stretching one module. Show all archetype-defining equipment, furniture, fences, lighting, paths, planting, drainage and spectator or service zones. Surfaces must have realistic texture, colour variation, wear and material transitions rather than flat monochrome fills. This is a spatial-planning reference, not a beauty shot.\n\nSITE: A gently sloping irregular 74 by 58 metre parcel retaining several mature trees.\n\nCOMPOSITION: Use sculpted earth mounds, logs, boulders, sand, water rill, stepping stones, rope crossings and a timber climbing structure as an integrated landscape rather than bright catalogue equipment. Provide a continuous accessible exploration route, quiet den, caregiver seating with broad sightlines and a shaded picnic edge. Keep fall surfaces and drainage believable while preserving a natural, texturally varied character.\n\nSTUDY PRIORITIES: landform as play structure; nature-play object kit; accessible exploration; natural material texture.\n\nFINAL CONSTRAINTS: No people. No cars. No labels, captions, logos, watermarks or dimension text. No buildings inside the park; where a pavilion or service building belongs, show only an empty reserved pad and connecting forecourt. No surrounding skyline. No roads through the park. Do not overlap active facilities. Do not stretch courts, fields, loops or equipment to fill the parcel. Do not crop the parcel."
+    },
+    {
+      "id": "22_mini_golf_compact",
+      "title": "Compact landscape mini-golf course",
+      "archetypeId": "mini_golf_course_v0",
+      "sourceReference": "frontend/public/archetypes/openspaces/mini-golf-putting-course/variant_0.png",
+      "site": "A rectangular 82 by 54 metre leisure parcel with a reserved service-building pad at the entrance.",
+      "compositionBrief": "Arrange eighteen compact but distinct putting holes in one directional loop without crossing paths or squeezing greens together. Use varied green shapes, cups and flags, low curbs, small bridges, rocks, planting, one modest water hazard and shaded pause nodes. Keep an accessible route and bypass through the course, a clear start and finish beside the reserved building pad, and a maintenance edge.",
+      "studyFocus": [
+        "eighteen-hole sequence",
+        "putting obstacle kit",
+        "non-crossing circulation",
+        "start-finish service interface"
+      ],
+      "resolvedPrompt": "Create a photorealistic but diagrammatically legible oblique aerial site-composition study of one park, closely following the named archetype and variant character. Show the entire park parcel from a consistent high drone camera looking about 55 degrees downward. Keep every facility at believable human scale. Preserve regulation geometry and safe run-off; repeat standard modules when an oversized site needs more capacity instead of stretching one module. Show all archetype-defining equipment, furniture, fences, lighting, paths, planting, drainage and spectator or service zones. Surfaces must have realistic texture, colour variation, wear and material transitions rather than flat monochrome fills. This is a spatial-planning reference, not a beauty shot.\n\nSITE: A rectangular 82 by 54 metre leisure parcel with a reserved service-building pad at the entrance.\n\nCOMPOSITION: Arrange eighteen compact but distinct putting holes in one directional loop without crossing paths or squeezing greens together. Use varied green shapes, cups and flags, low curbs, small bridges, rocks, planting, one modest water hazard and shaded pause nodes. Keep an accessible route and bypass through the course, a clear start and finish beside the reserved building pad, and a maintenance edge.\n\nSTUDY PRIORITIES: eighteen-hole sequence; putting obstacle kit; non-crossing circulation; start-finish service interface.\n\nFINAL CONSTRAINTS: No people. No cars. No labels, captions, logos, watermarks or dimension text. No buildings inside the park; where a pavilion or service building belongs, show only an empty reserved pad and connecting forecourt. No surrounding skyline. No roads through the park. Do not overlap active facilities. Do not stretch courts, fields, loops or equipment to fill the parcel. Do not crop the parcel."
+    },
+    {
+      "id": "23_amphitheater_terraced",
+      "title": "Terraced outdoor amphitheater",
+      "archetypeId": "amphitheater_performance_space_v0",
+      "sourceReference": "frontend/public/archetypes/openspaces/amphitheater-performance-space/variant_0.png",
+      "site": "A sloping 105 by 78 metre park parcel falling toward the north with entry from the south high edge.",
+      "compositionBrief": "Set a correctly scaled stage pad at the low end facing concentric terraced lawn and seat-wall bands climbing the slope. Provide accessible cross aisles, side ramps, lighting positions, backstage and service pads without buildings, and a generous upper arrival terrace. Use tree clusters as a perimeter acoustic and shade buffer while keeping central sightlines open. Avoid a generic flat event lawn.",
+      "studyFocus": [
+        "stage-audience alignment",
+        "terraced seating geometry",
+        "accessible aisles",
+        "service and lighting objects"
+      ],
+      "resolvedPrompt": "Create a photorealistic but diagrammatically legible oblique aerial site-composition study of one park, closely following the named archetype and variant character. Show the entire park parcel from a consistent high drone camera looking about 55 degrees downward. Keep every facility at believable human scale. Preserve regulation geometry and safe run-off; repeat standard modules when an oversized site needs more capacity instead of stretching one module. Show all archetype-defining equipment, furniture, fences, lighting, paths, planting, drainage and spectator or service zones. Surfaces must have realistic texture, colour variation, wear and material transitions rather than flat monochrome fills. This is a spatial-planning reference, not a beauty shot.\n\nSITE: A sloping 105 by 78 metre park parcel falling toward the north with entry from the south high edge.\n\nCOMPOSITION: Set a correctly scaled stage pad at the low end facing concentric terraced lawn and seat-wall bands climbing the slope. Provide accessible cross aisles, side ramps, lighting positions, backstage and service pads without buildings, and a generous upper arrival terrace. Use tree clusters as a perimeter acoustic and shade buffer while keeping central sightlines open. Avoid a generic flat event lawn.\n\nSTUDY PRIORITIES: stage-audience alignment; terraced seating geometry; accessible aisles; service and lighting objects.\n\nFINAL CONSTRAINTS: No people. No cars. No labels, captions, logos, watermarks or dimension text. No buildings inside the park; where a pavilion or service building belongs, show only an empty reserved pad and connecting forecourt. No surrounding skyline. No roads through the park. Do not overlap active facilities. Do not stretch courts, fields, loops or equipment to fill the parcel. Do not crop the parcel."
+    },
+    {
+      "id": "24_pollinator_meadow",
+      "title": "Urban pollinator meadow garden",
+      "archetypeId": "pollinator_meadow_v0",
+      "sourceReference": "frontend/public/archetypes/openspaces/pollinator-meadow-wildflower-garden/variant_0.png",
+      "site": "An irregular 96 by 62 metre urban parcel with a sunny centre and shaded western edge.",
+      "compositionBrief": "Create broad interlocking drifts of native wildflowers and grasses with different heights, colours and seasonal textures, a simple mown loop, small observation deck, insect-habitat logs and stones, shallow rain-garden swale and a few benches at widened nodes. Keep turf limited to access and firebreak edges, retain an open sunny core and avoid ornamental bedding symmetry or evenly distributed objects.",
+      "studyFocus": [
+        "planting-drift composition",
+        "habitat micro-objects",
+        "minimal path network",
+        "seasonal texture variation"
+      ],
+      "resolvedPrompt": "Create a photorealistic but diagrammatically legible oblique aerial site-composition study of one park, closely following the named archetype and variant character. Show the entire park parcel from a consistent high drone camera looking about 55 degrees downward. Keep every facility at believable human scale. Preserve regulation geometry and safe run-off; repeat standard modules when an oversized site needs more capacity instead of stretching one module. Show all archetype-defining equipment, furniture, fences, lighting, paths, planting, drainage and spectator or service zones. Surfaces must have realistic texture, colour variation, wear and material transitions rather than flat monochrome fills. This is a spatial-planning reference, not a beauty shot.\n\nSITE: An irregular 96 by 62 metre urban parcel with a sunny centre and shaded western edge.\n\nCOMPOSITION: Create broad interlocking drifts of native wildflowers and grasses with different heights, colours and seasonal textures, a simple mown loop, small observation deck, insect-habitat logs and stones, shallow rain-garden swale and a few benches at widened nodes. Keep turf limited to access and firebreak edges, retain an open sunny core and avoid ornamental bedding symmetry or evenly distributed objects.\n\nSTUDY PRIORITIES: planting-drift composition; habitat micro-objects; minimal path network; seasonal texture variation.\n\nFINAL CONSTRAINTS: No people. No cars. No labels, captions, logos, watermarks or dimension text. No buildings inside the park; where a pavilion or service building belongs, show only an empty reserved pad and connecting forecourt. No surrounding skyline. No roads through the park. Do not overlap active facilities. Do not stretch courts, fields, loops or equipment to fill the parcel. Do not crop the parcel."
+    },
+    {
+      "id": "25_urban_food_forest",
+      "title": "Urban orchard and food forest",
+      "archetypeId": "urban_orchard_food_forest_v0",
+      "sourceReference": "frontend/public/archetypes/openspaces/urban-orchard-food-forest/variant_0.png",
+      "site": "A gently sloping 115 by 82 metre neighbourhood parcel with service access at the uphill northwest corner.",
+      "compositionBrief": "Organize orchard rows across contour with understory food-forest guilds, berry hedges, herb and pollinator zones, swales and mulch basins. Thread an accessible loop through the productive landscape and include a harvest pavilion pad without a building, wash and tool pads, compost bays, picnic tables and a teaching circle. Preserve clear maintenance lanes and express varied tree age, crop texture, mulch and meadow rather than generic lawn.",
+      "studyFocus": [
+        "contour-aware orchard spacing",
+        "productive landscape kit",
+        "water-harvesting swales",
+        "operations and teaching nodes"
+      ],
+      "resolvedPrompt": "Create a photorealistic but diagrammatically legible oblique aerial site-composition study of one park, closely following the named archetype and variant character. Show the entire park parcel from a consistent high drone camera looking about 55 degrees downward. Keep every facility at believable human scale. Preserve regulation geometry and safe run-off; repeat standard modules when an oversized site needs more capacity instead of stretching one module. Show all archetype-defining equipment, furniture, fences, lighting, paths, planting, drainage and spectator or service zones. Surfaces must have realistic texture, colour variation, wear and material transitions rather than flat monochrome fills. This is a spatial-planning reference, not a beauty shot.\n\nSITE: A gently sloping 115 by 82 metre neighbourhood parcel with service access at the uphill northwest corner.\n\nCOMPOSITION: Organize orchard rows across contour with understory food-forest guilds, berry hedges, herb and pollinator zones, swales and mulch basins. Thread an accessible loop through the productive landscape and include a harvest pavilion pad without a building, wash and tool pads, compost bays, picnic tables and a teaching circle. Preserve clear maintenance lanes and express varied tree age, crop texture, mulch and meadow rather than generic lawn.\n\nSTUDY PRIORITIES: contour-aware orchard spacing; productive landscape kit; water-harvesting swales; operations and teaching nodes.\n\nFINAL CONSTRAINTS: No people. No cars. No labels, captions, logos, watermarks or dimension text. No buildings inside the park; where a pavilion or service building belongs, show only an empty reserved pad and connecting forecourt. No surrounding skyline. No roads through the park. Do not overlap active facilities. Do not stretch courts, fields, loops or equipment to fill the parcel. Do not crop the parcel."
+    }
+  ]
+}

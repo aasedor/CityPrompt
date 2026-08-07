@@ -8,6 +8,7 @@ from __future__ import annotations
 import argparse
 import base64
 import json
+import shutil
 import sys
 import time
 from datetime import datetime, timezone
@@ -30,8 +31,8 @@ def _settings():
     return get_settings()
 
 
-def _load_manifest() -> dict:
-    return json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
+def _load_manifest(path: Path = MANIFEST_PATH) -> dict:
+    return json.loads(path.read_text(encoding="utf-8"))
 
 
 def _resolved_prompt(manifest: dict, scene: dict) -> str:
@@ -125,7 +126,7 @@ def _call_key(scene_id: str, provider_id: str) -> str:
 
 
 def generate(args: argparse.Namespace) -> None:
-    manifest = _load_manifest()
+    manifest = _load_manifest(args.manifest)
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=True)
     resolved = {
@@ -231,8 +232,12 @@ def _font(size: int, bold: bool = False) -> ImageFont.ImageFont:
     return ImageFont.load_default()
 
 
-def compose(output: Path) -> None:
-    manifest = _load_manifest()
+def compose(
+    output: Path,
+    manifest_path: Path = MANIFEST_PATH,
+    publish_dir: Path | None = None,
+) -> None:
+    manifest = _load_manifest(manifest_path)
     output = output.resolve()
     sheets = output / "comparison-sheets"
     sheets.mkdir(parents=True, exist_ok=True)
@@ -270,19 +275,44 @@ def compose(output: Path) -> None:
         overview_path = output / "park-composition-provider-comparison.jpg"
         overview.save(overview_path, quality=88, optimize=True)
         print(f"wrote {overview_path}")
+        if publish_dir is not None:
+            publish_dir = publish_dir.resolve()
+            publish_dir.mkdir(parents=True, exist_ok=True)
+            for evidence_name in ("run.json", "study_manifest.json"):
+                evidence_path = output / evidence_name
+                if evidence_path.exists():
+                    published_evidence = publish_dir / evidence_name
+                    shutil.copy2(evidence_path, published_evidence)
+                    print(f"wrote {published_evidence}")
+            rows_per_page = 5
+            for start in range(0, len(all_rows), rows_per_page):
+                page_rows = all_rows[start:start + rows_per_page]
+                page = Image.new(
+                    "RGB",
+                    (cell_w * 2, len(page_rows) * (cell_h + header)),
+                    "#15191b",
+                )
+                for offset, row in enumerate(page_rows):
+                    page.paste(row, (0, offset * (cell_h + header)))
+                page_index = start // rows_per_page + 1
+                page_path = publish_dir / f"provider-comparison-mobile-{page_index}.jpg"
+                page.save(page_path, quality=88, optimize=True)
+                print(f"wrote {page_path}")
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--manifest", type=Path, default=MANIFEST_PATH)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     parser.add_argument("--provider", choices=("all", "gemini", "openai"), default="all")
     parser.add_argument("--scene")
     parser.add_argument("--max-calls", type=int)
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--compose", action="store_true")
+    parser.add_argument("--publish-dir", type=Path)
     args = parser.parse_args()
     if args.compose:
-        compose(args.output)
+        compose(args.output, args.manifest, args.publish_dir)
     else:
         generate(args)
 

@@ -51,3 +51,4 @@ docs/park_lego_batch24/*.jpg filter=lfs diff=lfs merge=lfs -text
 docs/park_lego_batch24/*.png filter=lfs diff=lfs merge=lfs -text
 docs/park_lego_batch25/*.jpg filter=lfs diff=lfs merge=lfs -text
 docs/park_lego_batch25/*.png filter=lfs diff=lfs merge=lfs -text
+docs/park_api_validation_50/*.jpg filter=lfs diff=lfs merge=lfs -text

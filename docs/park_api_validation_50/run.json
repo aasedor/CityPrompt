@@ -1,0 +1,1333 @@
+{
+  "schemaVersion": 1,
+  "studyId": "park-composition-api-validation-50-2026-08-07",
+  "targetApiCalls": 50,
+  "attemptedApiCalls": 50,
+  "results": [
+    {
+      "sceneId": "01_basketball_oversized_pair",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-image",
+      "startedAt": "2026-08-07T09:42:35.193509+00:00",
+      "status": "succeeded",
+      "file": "01_basketball_oversized_pair__gemini.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 1072886,
+      "durationSeconds": 7.98,
+      "usage": {
+        "promptTokenCount": 371,
+        "candidatesTokenCount": 1565,
+        "totalTokenCount": 1936,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 371
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "IMAGE",
+            "tokenCount": 1120
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    },
+    {
+      "sceneId": "01_basketball_oversized_pair",
+      "provider": "openai",
+      "model": "gpt-image-2",
+      "startedAt": "2026-08-07T09:42:43.190511+00:00",
+      "status": "succeeded",
+      "file": "01_basketball_oversized_pair__openai.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 313662,
+      "durationSeconds": 29.09,
+      "usage": {
+        "input_tokens": 375,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 375
+        },
+        "output_tokens": 158,
+        "output_tokens_details": {
+          "image_tokens": 158,
+          "text_tokens": 0
+        },
+        "total_tokens": 533
+      }
+    },
+    {
+      "sceneId": "02_basketball_compact_halfcourt",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-image",
+      "startedAt": "2026-08-07T09:43:59.275097+00:00",
+      "status": "succeeded",
+      "file": "02_basketball_compact_halfcourt__gemini.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 955328,
+      "durationSeconds": 10.78,
+      "usage": {
+        "promptTokenCount": 363,
+        "candidatesTokenCount": 1623,
+        "totalTokenCount": 1986,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 363
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "IMAGE",
+            "tokenCount": 1120
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    },
+    {
+      "sceneId": "02_basketball_compact_halfcourt",
+      "provider": "openai",
+      "model": "gpt-image-2",
+      "startedAt": "2026-08-07T09:44:10.053231+00:00",
+      "status": "succeeded",
+      "file": "02_basketball_compact_halfcourt__openai.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 345418,
+      "durationSeconds": 29.97,
+      "usage": {
+        "input_tokens": 366,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 366
+        },
+        "output_tokens": 158,
+        "output_tokens_details": {
+          "image_tokens": 158,
+          "text_tokens": 0
+        },
+        "total_tokens": 524
+      }
+    },
+    {
+      "sceneId": "03_inclusive_playground_zoned",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-image",
+      "startedAt": "2026-08-07T09:44:40.035065+00:00",
+      "status": "succeeded",
+      "file": "03_inclusive_playground_zoned__gemini.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 1032442,
+      "durationSeconds": 11.78,
+      "usage": {
+        "promptTokenCount": 360,
+        "candidatesTokenCount": 1855,
+        "totalTokenCount": 2215,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 360
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "IMAGE",
+            "tokenCount": 1120
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    },
+    {
+      "sceneId": "03_inclusive_playground_zoned",
+      "provider": "openai",
+      "model": "gpt-image-2",
+      "startedAt": "2026-08-07T09:44:51.829669+00:00",
+      "status": "succeeded",
+      "file": "03_inclusive_playground_zoned__openai.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 388001,
+      "durationSeconds": 30.03,
+      "usage": {
+        "input_tokens": 366,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 366
+        },
+        "output_tokens": 158,
+        "output_tokens_details": {
+          "image_tokens": 158,
+          "text_tokens": 0
+        },
+        "total_tokens": 524
+      }
+    },
+    {
+      "sceneId": "04_skate_park_naturalized",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-image",
+      "startedAt": "2026-08-07T09:45:21.853556+00:00",
+      "status": "succeeded",
+      "file": "04_skate_park_naturalized__gemini.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 1136826,
+      "durationSeconds": 10.42,
+      "usage": {
+        "promptTokenCount": 368,
+        "candidatesTokenCount": 1665,
+        "totalTokenCount": 2033,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 368
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "IMAGE",
+            "tokenCount": 1120
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    },
+    {
+      "sceneId": "04_skate_park_naturalized",
+      "provider": "openai",
+      "model": "gpt-image-2",
+      "startedAt": "2026-08-07T09:45:32.284998+00:00",
+      "status": "succeeded",
+      "file": "04_skate_park_naturalized__openai.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 392651,
+      "durationSeconds": 31.14,
+      "usage": {
+        "input_tokens": 372,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 372
+        },
+        "output_tokens": 158,
+        "output_tokens_details": {
+          "image_tokens": 158,
+          "text_tokens": 0
+        },
+        "total_tokens": 530
+      }
+    },
+    {
+      "sceneId": "05_dog_park_modern_turf",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-image",
+      "startedAt": "2026-08-07T09:46:03.425456+00:00",
+      "status": "succeeded",
+      "file": "05_dog_park_modern_turf__gemini.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 591198,
+      "durationSeconds": 8.97,
+      "usage": {
+        "promptTokenCount": 360,
+        "candidatesTokenCount": 1582,
+        "totalTokenCount": 1942,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 360
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "IMAGE",
+            "tokenCount": 1120
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    },
+    {
+      "sceneId": "05_dog_park_modern_turf",
+      "provider": "openai",
+      "model": "gpt-image-2",
+      "startedAt": "2026-08-07T09:46:12.401156+00:00",
+      "status": "succeeded",
+      "file": "05_dog_park_modern_turf__openai.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 353160,
+      "durationSeconds": 31.91,
+      "usage": {
+        "input_tokens": 363,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 363
+        },
+        "output_tokens": 158,
+        "output_tokens_details": {
+          "image_tokens": 158,
+          "text_tokens": 0
+        },
+        "total_tokens": 521
+      }
+    },
+    {
+      "sceneId": "06_splash_pad_civic",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-image",
+      "startedAt": "2026-08-07T09:46:44.304766+00:00",
+      "status": "succeeded",
+      "file": "06_splash_pad_civic__gemini.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 1077753,
+      "durationSeconds": 8.44,
+      "usage": {
+        "promptTokenCount": 356,
+        "candidatesTokenCount": 1537,
+        "totalTokenCount": 1893,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 356
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "IMAGE",
+            "tokenCount": 1120
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    },
+    {
+      "sceneId": "06_splash_pad_civic",
+      "provider": "openai",
+      "model": "gpt-image-2",
+      "startedAt": "2026-08-07T09:46:52.739561+00:00",
+      "status": "succeeded",
+      "file": "06_splash_pad_civic__openai.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 347842,
+      "durationSeconds": 34.48,
+      "usage": {
+        "input_tokens": 361,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 361
+        },
+        "output_tokens": 158,
+        "output_tokens_details": {
+          "image_tokens": 158,
+          "text_tokens": 0
+        },
+        "total_tokens": 519
+      }
+    },
+    {
+      "sceneId": "07_community_garden_allotments",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-image",
+      "startedAt": "2026-08-07T09:47:27.236493+00:00",
+      "status": "succeeded",
+      "file": "07_community_garden_allotments__gemini.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 1214218,
+      "durationSeconds": 8.81,
+      "usage": {
+        "promptTokenCount": 355,
+        "candidatesTokenCount": 1666,
+        "totalTokenCount": 2021,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 355
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "IMAGE",
+            "tokenCount": 1120
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    },
+    {
+      "sceneId": "07_community_garden_allotments",
+      "provider": "openai",
+      "model": "gpt-image-2",
+      "startedAt": "2026-08-07T09:47:36.039164+00:00",
+      "status": "succeeded",
+      "file": "07_community_garden_allotments__openai.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 425741,
+      "durationSeconds": 26.42,
+      "usage": {
+        "input_tokens": 363,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 363
+        },
+        "output_tokens": 158,
+        "output_tokens_details": {
+          "image_tokens": 158,
+          "text_tokens": 0
+        },
+        "total_tokens": 521
+      }
+    },
+    {
+      "sceneId": "08_senior_fitness_loop",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-image",
+      "startedAt": "2026-08-07T09:48:02.466700+00:00",
+      "status": "succeeded",
+      "file": "08_senior_fitness_loop__gemini.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 1116240,
+      "durationSeconds": 8.52,
+      "usage": {
+        "promptTokenCount": 350,
+        "candidatesTokenCount": 1552,
+        "totalTokenCount": 1902,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 350
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "IMAGE",
+            "tokenCount": 1120
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    },
+    {
+      "sceneId": "08_senior_fitness_loop",
+      "provider": "openai",
+      "model": "gpt-image-2",
+      "startedAt": "2026-08-07T09:48:10.980807+00:00",
+      "status": "succeeded",
+      "file": "08_senior_fitness_loop__openai.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 408621,
+      "durationSeconds": 31.42,
+      "usage": {
+        "input_tokens": 354,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 354
+        },
+        "output_tokens": 158,
+        "output_tokens_details": {
+          "image_tokens": 158,
+          "text_tokens": 0
+        },
+        "total_tokens": 512
+      }
+    },
+    {
+      "sceneId": "09_memorial_woodland",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-image",
+      "startedAt": "2026-08-07T09:48:42.406846+00:00",
+      "status": "succeeded",
+      "file": "09_memorial_woodland__gemini.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 1224685,
+      "durationSeconds": 9.98,
+      "usage": {
+        "promptTokenCount": 345,
+        "candidatesTokenCount": 1684,
+        "totalTokenCount": 2029,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 345
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "IMAGE",
+            "tokenCount": 1120
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    },
+    {
+      "sceneId": "09_memorial_woodland",
+      "provider": "openai",
+      "model": "gpt-image-2",
+      "startedAt": "2026-08-07T09:48:52.387817+00:00",
+      "status": "succeeded",
+      "file": "09_memorial_woodland__openai.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 439992,
+      "durationSeconds": 27.91,
+      "usage": {
+        "input_tokens": 355,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 355
+        },
+        "output_tokens": 158,
+        "output_tokens_details": {
+          "image_tokens": 158,
+          "text_tokens": 0
+        },
+        "total_tokens": 513
+      }
+    },
+    {
+      "sceneId": "10_academic_courtyard",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-image",
+      "startedAt": "2026-08-07T09:49:20.298469+00:00",
+      "status": "succeeded",
+      "file": "10_academic_courtyard__gemini.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 838655,
+      "durationSeconds": 9.81,
+      "usage": {
+        "promptTokenCount": 348,
+        "candidatesTokenCount": 1443,
+        "totalTokenCount": 1791,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 348
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "IMAGE",
+            "tokenCount": 1120
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    },
+    {
+      "sceneId": "10_academic_courtyard",
+      "provider": "openai",
+      "model": "gpt-image-2",
+      "startedAt": "2026-08-07T09:49:30.101471+00:00",
+      "status": "succeeded",
+      "file": "10_academic_courtyard__openai.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 322206,
+      "durationSeconds": 28.92,
+      "usage": {
+        "input_tokens": 356,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 356
+        },
+        "output_tokens": 158,
+        "output_tokens_details": {
+          "image_tokens": 158,
+          "text_tokens": 0
+        },
+        "total_tokens": 514
+      }
+    },
+    {
+      "sceneId": "11_constructed_wetland_cells",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-image",
+      "startedAt": "2026-08-07T09:49:59.023261+00:00",
+      "status": "succeeded",
+      "file": "11_constructed_wetland_cells__gemini.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 1148406,
+      "durationSeconds": 10.73,
+      "usage": {
+        "promptTokenCount": 362,
+        "candidatesTokenCount": 1730,
+        "totalTokenCount": 2092,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 362
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "IMAGE",
+            "tokenCount": 1120
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    },
+    {
+      "sceneId": "11_constructed_wetland_cells",
+      "provider": "openai",
+      "model": "gpt-image-2",
+      "startedAt": "2026-08-07T09:50:09.760818+00:00",
+      "status": "succeeded",
+      "file": "11_constructed_wetland_cells__openai.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 393390,
+      "durationSeconds": 30.38,
+      "usage": {
+        "input_tokens": 369,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 369
+        },
+        "output_tokens": 158,
+        "output_tokens_details": {
+          "image_tokens": 158,
+          "text_tokens": 0
+        },
+        "total_tokens": 527
+      }
+    },
+    {
+      "sceneId": "12_teaching_arboretum",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-image",
+      "startedAt": "2026-08-07T09:50:40.140386+00:00",
+      "status": "succeeded",
+      "file": "12_teaching_arboretum__gemini.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 1015852,
+      "durationSeconds": 9.05,
+      "usage": {
+        "promptTokenCount": 350,
+        "candidatesTokenCount": 1633,
+        "totalTokenCount": 1983,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 350
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "IMAGE",
+            "tokenCount": 1120
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    },
+    {
+      "sceneId": "12_teaching_arboretum",
+      "provider": "openai",
+      "model": "gpt-image-2",
+      "startedAt": "2026-08-07T09:50:49.188470+00:00",
+      "status": "succeeded",
+      "file": "12_teaching_arboretum__openai.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 395143,
+      "durationSeconds": 31.31,
+      "usage": {
+        "input_tokens": 354,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 354
+        },
+        "output_tokens": 158,
+        "output_tokens_details": {
+          "image_tokens": 158,
+          "text_tokens": 0
+        },
+        "total_tokens": 512
+      }
+    },
+    {
+      "sceneId": "13_rewilding_urban_prairie",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-image",
+      "startedAt": "2026-08-07T09:51:20.496731+00:00",
+      "status": "succeeded",
+      "file": "13_rewilding_urban_prairie__gemini.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 1251513,
+      "durationSeconds": 9.52,
+      "usage": {
+        "promptTokenCount": 352,
+        "candidatesTokenCount": 1572,
+        "totalTokenCount": 1924,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 352
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "IMAGE",
+            "tokenCount": 1120
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    },
+    {
+      "sceneId": "13_rewilding_urban_prairie",
+      "provider": "openai",
+      "model": "gpt-image-2",
+      "startedAt": "2026-08-07T09:51:30.004112+00:00",
+      "status": "succeeded",
+      "file": "13_rewilding_urban_prairie__openai.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 381979,
+      "durationSeconds": 29.45,
+      "usage": {
+        "input_tokens": 363,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 363
+        },
+        "output_tokens": 158,
+        "output_tokens_details": {
+          "image_tokens": 158,
+          "text_tokens": 0
+        },
+        "total_tokens": 521
+      }
+    },
+    {
+      "sceneId": "14_daylit_stormwater_channel",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-image",
+      "startedAt": "2026-08-07T09:51:59.466470+00:00",
+      "status": "succeeded",
+      "file": "14_daylit_stormwater_channel__gemini.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 1226598,
+      "durationSeconds": 10.59,
+      "usage": {
+        "promptTokenCount": 353,
+        "candidatesTokenCount": 1449,
+        "totalTokenCount": 1802,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 353
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "IMAGE",
+            "tokenCount": 1120
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    },
+    {
+      "sceneId": "14_daylit_stormwater_channel",
+      "provider": "openai",
+      "model": "gpt-image-2",
+      "startedAt": "2026-08-07T09:52:10.049947+00:00",
+      "status": "succeeded",
+      "file": "14_daylit_stormwater_channel__openai.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 329401,
+      "durationSeconds": 20.83,
+      "usage": {
+        "input_tokens": 361,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 361
+        },
+        "output_tokens": 158,
+        "output_tokens_details": {
+          "image_tokens": 158,
+          "text_tokens": 0
+        },
+        "total_tokens": 519
+      }
+    },
+    {
+      "sceneId": "15_urban_bioswale_park",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-image",
+      "startedAt": "2026-08-07T09:52:30.887924+00:00",
+      "status": "succeeded",
+      "file": "15_urban_bioswale_park__gemini.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 808916,
+      "durationSeconds": 24.42,
+      "usage": {
+        "promptTokenCount": 351,
+        "candidatesTokenCount": 1633,
+        "totalTokenCount": 1984,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 351
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "IMAGE",
+            "tokenCount": 1120
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    },
+    {
+      "sceneId": "15_urban_bioswale_park",
+      "provider": "openai",
+      "model": "gpt-image-2",
+      "startedAt": "2026-08-07T09:52:55.315178+00:00",
+      "status": "succeeded",
+      "file": "15_urban_bioswale_park__openai.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 405891,
+      "durationSeconds": 27.48,
+      "usage": {
+        "input_tokens": 359,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 359
+        },
+        "output_tokens": 158,
+        "output_tokens_details": {
+          "image_tokens": 158,
+          "text_tokens": 0
+        },
+        "total_tokens": 517
+      }
+    },
+    {
+      "sceneId": "16_pump_track_compact",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-image",
+      "startedAt": "2026-08-07T09:53:22.806506+00:00",
+      "status": "succeeded",
+      "file": "16_pump_track_compact__gemini.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 1034061,
+      "durationSeconds": 8.8,
+      "usage": {
+        "promptTokenCount": 356,
+        "candidatesTokenCount": 1591,
+        "totalTokenCount": 1947,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 356
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "IMAGE",
+            "tokenCount": 1120
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    },
+    {
+      "sceneId": "16_pump_track_compact",
+      "provider": "openai",
+      "model": "gpt-image-2",
+      "startedAt": "2026-08-07T09:53:31.598320+00:00",
+      "status": "succeeded",
+      "file": "16_pump_track_compact__openai.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 376713,
+      "durationSeconds": 27.08,
+      "usage": {
+        "input_tokens": 358,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 358
+        },
+        "output_tokens": 158,
+        "output_tokens_details": {
+          "image_tokens": 158,
+          "text_tokens": 0
+        },
+        "total_tokens": 516
+      }
+    },
+    {
+      "sceneId": "17_beach_volleyball_bank",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-image",
+      "startedAt": "2026-08-07T09:53:58.680432+00:00",
+      "status": "succeeded",
+      "file": "17_beach_volleyball_bank__gemini.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 1035896,
+      "durationSeconds": 10.27,
+      "usage": {
+        "promptTokenCount": 357,
+        "candidatesTokenCount": 1725,
+        "totalTokenCount": 2082,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 357
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "IMAGE",
+            "tokenCount": 1120
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    },
+    {
+      "sceneId": "17_beach_volleyball_bank",
+      "provider": "openai",
+      "model": "gpt-image-2",
+      "startedAt": "2026-08-07T09:54:08.953896+00:00",
+      "status": "succeeded",
+      "file": "17_beach_volleyball_bank__openai.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 440613,
+      "durationSeconds": 25.83,
+      "usage": {
+        "input_tokens": 361,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 361
+        },
+        "output_tokens": 158,
+        "output_tokens_details": {
+          "image_tokens": 158,
+          "text_tokens": 0
+        },
+        "total_tokens": 519
+      }
+    },
+    {
+      "sceneId": "18_bocce_social_courts",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-image",
+      "startedAt": "2026-08-07T09:54:34.780519+00:00",
+      "status": "succeeded",
+      "file": "18_bocce_social_courts__gemini.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 916254,
+      "durationSeconds": 9.03,
+      "usage": {
+        "promptTokenCount": 350,
+        "candidatesTokenCount": 1544,
+        "totalTokenCount": 1894,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 350
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "IMAGE",
+            "tokenCount": 1120
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    },
+    {
+      "sceneId": "18_bocce_social_courts",
+      "provider": "openai",
+      "model": "gpt-image-2",
+      "startedAt": "2026-08-07T09:54:43.804166+00:00",
+      "status": "succeeded",
+      "file": "18_bocce_social_courts__openai.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 364219,
+      "durationSeconds": 29.86,
+      "usage": {
+        "input_tokens": 357,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 357
+        },
+        "output_tokens": 158,
+        "output_tokens_details": {
+          "image_tokens": 158,
+          "text_tokens": 0
+        },
+        "total_tokens": 515
+      }
+    },
+    {
+      "sceneId": "19_climbing_bouldering_garden",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-image",
+      "startedAt": "2026-08-07T09:55:13.660149+00:00",
+      "status": "succeeded",
+      "file": "19_climbing_bouldering_garden__gemini.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 1118069,
+      "durationSeconds": 9.81,
+      "usage": {
+        "promptTokenCount": 350,
+        "candidatesTokenCount": 1719,
+        "totalTokenCount": 2069,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 350
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "IMAGE",
+            "tokenCount": 1120
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    },
+    {
+      "sceneId": "19_climbing_bouldering_garden",
+      "provider": "openai",
+      "model": "gpt-image-2",
+      "startedAt": "2026-08-07T09:55:23.485888+00:00",
+      "status": "succeeded",
+      "file": "19_climbing_bouldering_garden__openai.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 416894,
+      "durationSeconds": 27.5,
+      "usage": {
+        "input_tokens": 359,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 359
+        },
+        "output_tokens": 158,
+        "output_tokens_details": {
+          "image_tokens": 158,
+          "text_tokens": 0
+        },
+        "total_tokens": 517
+      }
+    },
+    {
+      "sceneId": "20_disc_golf_nine_hole",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-image",
+      "startedAt": "2026-08-07T09:55:50.993810+00:00",
+      "status": "succeeded",
+      "file": "20_disc_golf_nine_hole__gemini.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 1155645,
+      "durationSeconds": 9.36,
+      "usage": {
+        "promptTokenCount": 362,
+        "candidatesTokenCount": 1728,
+        "totalTokenCount": 2090,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 362
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "IMAGE",
+            "tokenCount": 1120
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    },
+    {
+      "sceneId": "20_disc_golf_nine_hole",
+      "provider": "openai",
+      "model": "gpt-image-2",
+      "startedAt": "2026-08-07T09:56:00.358723+00:00",
+      "status": "succeeded",
+      "file": "20_disc_golf_nine_hole__openai.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 426247,
+      "durationSeconds": 36.25,
+      "usage": {
+        "input_tokens": 364,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 364
+        },
+        "output_tokens": 158,
+        "output_tokens_details": {
+          "image_tokens": 158,
+          "text_tokens": 0
+        },
+        "total_tokens": 522
+      }
+    },
+    {
+      "sceneId": "21_nature_play_landform",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-image",
+      "startedAt": "2026-08-07T09:56:36.607377+00:00",
+      "status": "succeeded",
+      "file": "21_nature_play_landform__gemini.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 1038723,
+      "durationSeconds": 10.62,
+      "usage": {
+        "promptTokenCount": 346,
+        "candidatesTokenCount": 1572,
+        "totalTokenCount": 1918,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 346
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "IMAGE",
+            "tokenCount": 1120
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    },
+    {
+      "sceneId": "21_nature_play_landform",
+      "provider": "openai",
+      "model": "gpt-image-2",
+      "startedAt": "2026-08-07T09:56:47.231386+00:00",
+      "status": "succeeded",
+      "file": "21_nature_play_landform__openai.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 379940,
+      "durationSeconds": 22.73,
+      "usage": {
+        "input_tokens": 357,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 357
+        },
+        "output_tokens": 158,
+        "output_tokens_details": {
+          "image_tokens": 158,
+          "text_tokens": 0
+        },
+        "total_tokens": 515
+      }
+    },
+    {
+      "sceneId": "22_mini_golf_compact",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-image",
+      "startedAt": "2026-08-07T09:57:09.964093+00:00",
+      "status": "succeeded",
+      "file": "22_mini_golf_compact__gemini.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 995712,
+      "durationSeconds": 8.75,
+      "usage": {
+        "promptTokenCount": 352,
+        "candidatesTokenCount": 1544,
+        "totalTokenCount": 1896,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 352
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "IMAGE",
+            "tokenCount": 1120
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    },
+    {
+      "sceneId": "22_mini_golf_compact",
+      "provider": "openai",
+      "model": "gpt-image-2",
+      "startedAt": "2026-08-07T09:57:18.713137+00:00",
+      "status": "succeeded",
+      "file": "22_mini_golf_compact__openai.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 385390,
+      "durationSeconds": 31.23,
+      "usage": {
+        "input_tokens": 357,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 357
+        },
+        "output_tokens": 158,
+        "output_tokens_details": {
+          "image_tokens": 158,
+          "text_tokens": 0
+        },
+        "total_tokens": 515
+      }
+    },
+    {
+      "sceneId": "23_amphitheater_terraced",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-image",
+      "startedAt": "2026-08-07T09:57:49.940243+00:00",
+      "status": "succeeded",
+      "file": "23_amphitheater_terraced__gemini.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 1150530,
+      "durationSeconds": 8.36,
+      "usage": {
+        "promptTokenCount": 352,
+        "candidatesTokenCount": 1655,
+        "totalTokenCount": 2007,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 352
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "IMAGE",
+            "tokenCount": 1120
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    },
+    {
+      "sceneId": "23_amphitheater_terraced",
+      "provider": "openai",
+      "model": "gpt-image-2",
+      "startedAt": "2026-08-07T09:57:58.303972+00:00",
+      "status": "succeeded",
+      "file": "23_amphitheater_terraced__openai.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 419071,
+      "durationSeconds": 29.97,
+      "usage": {
+        "input_tokens": 360,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 360
+        },
+        "output_tokens": 158,
+        "output_tokens_details": {
+          "image_tokens": 158,
+          "text_tokens": 0
+        },
+        "total_tokens": 518
+      }
+    },
+    {
+      "sceneId": "24_pollinator_meadow",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-image",
+      "startedAt": "2026-08-07T09:58:28.269702+00:00",
+      "status": "succeeded",
+      "file": "24_pollinator_meadow__gemini.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 1197140,
+      "durationSeconds": 7.55,
+      "usage": {
+        "promptTokenCount": 349,
+        "candidatesTokenCount": 1464,
+        "totalTokenCount": 1813,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 349
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "IMAGE",
+            "tokenCount": 1120
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    },
+    {
+      "sceneId": "24_pollinator_meadow",
+      "provider": "openai",
+      "model": "gpt-image-2",
+      "startedAt": "2026-08-07T09:58:35.829208+00:00",
+      "status": "succeeded",
+      "file": "24_pollinator_meadow__openai.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 455769,
+      "durationSeconds": 31.64,
+      "usage": {
+        "input_tokens": 359,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 359
+        },
+        "output_tokens": 158,
+        "output_tokens_details": {
+          "image_tokens": 158,
+          "text_tokens": 0
+        },
+        "total_tokens": 517
+      }
+    },
+    {
+      "sceneId": "25_urban_food_forest",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-image",
+      "startedAt": "2026-08-07T09:59:07.474777+00:00",
+      "status": "succeeded",
+      "file": "25_urban_food_forest__gemini.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 1209885,
+      "durationSeconds": 9.09,
+      "usage": {
+        "promptTokenCount": 363,
+        "candidatesTokenCount": 1645,
+        "totalTokenCount": 2008,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 363
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "IMAGE",
+            "tokenCount": 1120
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    },
+    {
+      "sceneId": "25_urban_food_forest",
+      "provider": "openai",
+      "model": "gpt-image-2",
+      "startedAt": "2026-08-07T09:59:16.576306+00:00",
+      "status": "succeeded",
+      "file": "25_urban_food_forest__openai.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 451981,
+      "durationSeconds": 34.06,
+      "usage": {
+        "input_tokens": 372,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 372
+        },
+        "output_tokens": 158,
+        "output_tokens_details": {
+          "image_tokens": 158,
+          "text_tokens": 0
+        },
+        "total_tokens": 530
+      }
+    }
+  ]
+}
