@@ -39,4 +39,12 @@ describe('archetype-owned park kit registry', () => {
       clearanceM: 0.5,
     });
   });
+
+  it('owns the reviewed Meshy climbing log only in the nature-play family', () => {
+    const naturePlay = archetypeOwnedParkKitForSelection('nature_play_area', 'nature_play_area_v0');
+    expect(naturePlay?.assets.climbingLog).toBe('climbing-log-meshy-v1.glb');
+    expect(Object.values(ARCHETYPE_OWNED_PARK_KITS)
+      .filter(({ assets }) => assets.climbingLog === 'climbing-log-meshy-v1.glb'))
+      .toHaveLength(1);
+  });
 });

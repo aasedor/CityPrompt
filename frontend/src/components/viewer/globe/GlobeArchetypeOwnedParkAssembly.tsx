@@ -669,11 +669,12 @@ function ExactSurface({ kit, materialSlug = kit.slug }: { kit: ArchetypeOwnedPar
 
   if (kit.surfaceKind === 'nature_play') return <>
     <TexturedRect width={40} depth={30} z={0} maps={paver} color={variantSkin ? '#ffffff' : '#866f52'} />
-    <TexturedEllipse x={12} y={-6} rx={7.2} ry={4.8} z={0.035} maps={safety} color={variantSkin ? '#ffffff' : '#bda477'} />
-    <MetricGlb url={asset('rill')} position={[0, 0, 0.02]} />
-    {[[-12, -6, 0.2], [-6, -9, -0.35], [-3, 9, 0.55]].map(([x, y, yaw]) => (
-      <MetricGlb key={`${x}-${y}`} url={asset('balanceLog')} position={[x, y, 0.12]} yaw={yaw} />
-    ))}
+      <TexturedEllipse x={12} y={-6} rx={7.2} ry={4.8} z={0.035} maps={safety} color={variantSkin ? '#ffffff' : '#bda477'} />
+      <MetricGlb url={asset('rill')} position={[0, 0, 0.02]} />
+      <MetricGlb url={asset('climbingLog')} position={[-12, -6, 0.12]} yaw={0.2} />
+      {[[-6, -9, -0.35], [-3, 9, 0.55]].map(([x, y, yaw]) => (
+        <MetricGlb key={`${x}-${y}`} url={asset('balanceLog')} position={[x, y, 0.12]} yaw={yaw} />
+      ))}
     <MetricGlb url={asset('logFort')} position={[9, 7, 0.12]} />
     <MetricGlb url={asset('willowTunnel')} position={[-10, 7, 0.12]} />
     {[[-2, -4], [0, -5], [2, -4], [4, -2], [6, -1]].map(([x, y]) => (

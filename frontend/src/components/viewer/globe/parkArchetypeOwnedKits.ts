@@ -162,6 +162,7 @@ export const ARCHETYPE_OWNED_PARK_KITS = Object.freeze({
     assets: {
       rill: 'water-rill.glb',
       balanceLog: 'balance-log.glb',
+      climbingLog: 'climbing-log-meshy-v1.glb',
       logFort: 'log-fort.glb',
       willowTunnel: 'willow-tunnel.glb',
       steppingStump: 'stepping-stump.glb',
