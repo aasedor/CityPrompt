@@ -8,6 +8,7 @@ import { batch23ParkSkinForSelection } from './parkBatch23Skins';
 import { batch24ParkSkinForSelection } from './parkBatch24Skins';
 import { batch25ParkSkinForSelection } from './parkBatch25Skins';
 import { batch26ParkSkinForSelection } from './parkBatch26Skins';
+import { batch27ParkSkinForSelection } from './parkBatch27Skins';
 import { resolveParkGuideDimensionsM, type ParkGroundGuide } from './parkGroundProfiles';
 import { PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS } from './publicRealmDepthPolicy';
 
@@ -72,7 +73,8 @@ interface CoreSurfaceProps {
 }
 
 export function GlobeParkBatch20CoreSurfaces(props: CoreSurfaceProps) {
-  const skin = batch26ParkSkinForSelection(props.archetypeId, props.variantId)
+  const skin = batch27ParkSkinForSelection(props.archetypeId, props.variantId)
+    ?? batch26ParkSkinForSelection(props.archetypeId, props.variantId)
     ?? batch25ParkSkinForSelection(props.archetypeId, props.variantId)
     ?? batch24ParkSkinForSelection(props.archetypeId, props.variantId)
     ?? batch23ParkSkinForSelection(props.archetypeId, props.variantId)

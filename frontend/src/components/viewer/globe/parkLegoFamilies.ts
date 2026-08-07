@@ -25,6 +25,7 @@ import { batch23ParkSkinForSelection } from './parkBatch23Skins';
 import { batch24ParkSkinForSelection } from './parkBatch24Skins';
 import { batch25ParkSkinForSelection } from './parkBatch25Skins';
 import { batch26ParkSkinForSelection } from './parkBatch26Skins';
+import { batch27ParkSkinForSelection } from './parkBatch27Skins';
 
 /** Public Realm LEGO V1 park families. These ids are shared with the backend
  * capability contract and are deliberately separate from catalog archetype
@@ -1019,25 +1020,25 @@ const PARK_FAMILY_SELECTIONS: Readonly<
       ['estate_pine_creek_v0', 'estate_oak_picnic_v1', 'estate_meadow_pavilion_v2', 'estate_regional_plain_v3']),
   }),
   park_constructed_wetland_boardwalk_v0: Object.freeze({
-    constructed_wetland_eco_park: Object.freeze([Object.freeze({ variantId: 'constructed_wetland_eco_park_variant_0', appearanceKitId: 'constructed_wetland_eco_park_v0_boardwalk_skin', plantingStructure: 'constructed_wetland_boardwalk_v0' })]),
+    constructed_wetland_eco_park: fourNamedVariantMappings('constructed_wetland_eco_park', ['constructed_wetland_eco_park_v0_boardwalk_skin','constructed_wetland_eco_park_v1_tidal_skin','constructed_wetland_eco_park_v2_wildlife_skin','constructed_wetland_eco_park_v3_nature_center_skin'], ['constructed_wetland_boardwalk_v0','constructed_wetland_tidal_v1','constructed_wetland_wildlife_v2','constructed_wetland_nature_center_v3']),
   }),
   park_academic_planted_court_v0: Object.freeze({
-    academic_courtyard: Object.freeze([Object.freeze({ variantId: 'academic_courtyard_variant_0', appearanceKitId: 'academic_courtyard_v0_planted_skin', plantingStructure: 'academic_planted_court_v0' })]),
+    academic_courtyard: fourNamedVariantMappings('academic_courtyard', ['academic_courtyard_v0_planted_skin','academic_courtyard_v1_corten_skin','academic_courtyard_v2_glass_canopy_skin','academic_courtyard_v3_timber_screen_skin'], ['academic_planted_court_v0','academic_corten_court_v1','academic_glass_canopy_v2','academic_timber_screen_v3']),
   }),
   park_campus_green_spine_v0: Object.freeze({
-    campus_pedestrian_spine: Object.freeze([Object.freeze({ variantId: 'campus_pedestrian_spine_variant_0', appearanceKitId: 'campus_pedestrian_spine_v0_green_skin', plantingStructure: 'campus_green_spine_v0' })]),
+    campus_pedestrian_spine: fourNamedVariantMappings('campus_pedestrian_spine', ['campus_pedestrian_spine_v0_green_skin','campus_pedestrian_spine_v1_paved_skin','campus_pedestrian_spine_v2_pavilion_skin','campus_pedestrian_spine_v3_pergola_skin'], ['campus_green_spine_v0','campus_paved_spine_v1','campus_pavilion_spine_v2','campus_pergola_spine_v3']),
   }),
   park_botanical_rose_garden_v3: Object.freeze({
     botanical_garden: Object.freeze([Object.freeze({ variantId: 'botanical_garden_v3', appearanceKitId: 'botanical_garden_v3_rose_skin', plantingStructure: 'botanical_rose_garden_v3' })]),
   }),
   park_research_arboretum_v0: Object.freeze({
-    research_garden_teaching_arboretum: Object.freeze([Object.freeze({ variantId: 'research_garden_teaching_arboretum_variant_0', appearanceKitId: 'research_garden_teaching_arboretum_v0_skin', plantingStructure: 'research_arboretum_v0' })]),
+    research_garden_teaching_arboretum: fourNamedVariantMappings('research_garden_teaching_arboretum', ['research_garden_teaching_arboretum_v0_skin','research_garden_teaching_arboretum_v1_greenhouse_skin','research_garden_teaching_arboretum_v2_pavilion_skin','research_garden_teaching_arboretum_v3_plots_skin'], ['research_arboretum_v0','research_greenhouse_v1','research_pavilion_v2','research_plots_v3']),
   }),
   park_rewilding_reforestation_v1: Object.freeze({
-    rewilding_ecological_restoration_zone: Object.freeze([Object.freeze({ variantId: 'rewilding_ecological_restoration_zone_variant_1', appearanceKitId: 'rewilding_ecological_restoration_zone_v1_skin', plantingStructure: 'rewilding_reforestation_v1' })]),
+    rewilding_ecological_restoration_zone: fourNamedVariantMappings('rewilding_ecological_restoration_zone', ['rewilding_ecological_restoration_zone_v0_prairie_skin','rewilding_ecological_restoration_zone_v1_skin','rewilding_ecological_restoration_zone_v2_interpretive_skin','rewilding_ecological_restoration_zone_v3_riparian_skin'], ['rewilding_prairie_v0','rewilding_reforestation_v1','rewilding_interpretive_v2','rewilding_riparian_v3']),
   }),
   park_stormwater_arid_channel_v3: Object.freeze({
-    stormwater_resilience_park: Object.freeze([Object.freeze({ variantId: 'stormwater_resilience_park_variant_3', appearanceKitId: 'stormwater_resilience_park_v3_arid_skin', plantingStructure: 'stormwater_arid_channel_v3' })]),
+    stormwater_resilience_park: fourNamedVariantMappings('stormwater_resilience_park', ['stormwater_resilience_park_v0_bioswale_skin','stormwater_resilience_park_v1_detention_skin','stormwater_resilience_park_v2_terraced_skin','stormwater_resilience_park_v3_arid_skin'], ['stormwater_bioswale_v0','stormwater_detention_v1','stormwater_terraced_v2','stormwater_arid_channel_v3']),
   }),
   park_urban_pocket_rustic_v0: Object.freeze({
     urban_pocket_park: Object.freeze([Object.freeze({ variantId: 'urban_pocket_park_v0', appearanceKitId: 'urban_pocket_park_v0_rustic_skin', plantingStructure: 'urban_pocket_rustic_v0' })]),
@@ -1227,7 +1228,7 @@ const PARK_FAMILY_SELECTIONS: Readonly<
   park_floating_meadow_loop_v2: Object.freeze({ floating_park_pool: fourVariantMappings('floating_park_pool', ['floating_park_pool_v0_plus_pool_skin','floating_park_pool_v1_harbour_bath_skin','floating_park_pool_v2_meadow_skin','floating_park_pool_v3_little_island_skin'], ['floating_plus_pool_v0','floating_harbour_bath_v1','floating_meadow_loop_v2','floating_little_island_v3']) }),
   park_lighthouse_pacific_headland_v2: Object.freeze({ lighthouse_point_park: fourVariantMappings('lighthouse_point_park', ['lighthouse_point_park_v0_cape_skin','lighthouse_point_park_v1_dune_skin','lighthouse_point_park_v2_pacific_skin','lighthouse_point_park_v3_fortress_skin'], ['lighthouse_cape_v0','lighthouse_dune_v1','lighthouse_pacific_headland_v2','lighthouse_fortress_v3']) }),
   park_lake_edge_timber_deck_v2: Object.freeze({ lake_edge_plaza: fourVariantMappings('lake_edge_plaza', ['lake_edge_plaza_v0_como_skin','lake_edge_plaza_v1_geneva_skin','lake_edge_plaza_v2_timber_skin','lake_edge_plaza_v3_chicago_skin'], ['lake_edge_como_v0','lake_edge_geneva_v1','lake_edge_timber_deck_v2','lake_edge_chicago_v3']) }),
-  park_stormwater_natural_creek_v0: Object.freeze({ stormwater_naturalized_drainage_corridor: Object.freeze([Object.freeze({variantId:'stormwater_naturalized_drainage_corridor_variant_0',appearanceKitId:'stormwater_naturalized_drainage_corridor_v0_creek_skin',plantingStructure:'stormwater_natural_creek_v0'})]) }),
+  park_stormwater_natural_creek_v0: Object.freeze({ stormwater_naturalized_drainage_corridor: fourNamedVariantMappings('stormwater_naturalized_drainage_corridor', ['stormwater_naturalized_drainage_corridor_v0_creek_skin','stormwater_naturalized_drainage_corridor_v1_daylit_skin','stormwater_naturalized_drainage_corridor_v2_seasonal_skin','stormwater_naturalized_drainage_corridor_v3_shelter_skin'], ['stormwater_natural_creek_v0','stormwater_daylit_v1','stormwater_seasonal_v2','stormwater_shelter_v3']) }),
   park_surface_parking_standard_v0: Object.freeze({ surface_parking_lot: fourVariantMappings('surface_parking_lot', ['surface_parking_lot_v0_standard_skin','surface_parking_lot_v1_green_skin','surface_parking_lot_v2_urban_skin','surface_parking_lot_v3_screened_skin'], ['surface_parking_standard_v0','surface_parking_green_v1','surface_parking_urban_v2','surface_parking_screened_v3']) }),
   park_structured_parking_urban_v2: Object.freeze({ structured_parking_garage: fourVariantMappings('structured_parking_garage', ['structured_parking_garage_v0_standard_skin','structured_parking_garage_v1_green_skin','structured_parking_garage_v2_urban_skin','structured_parking_garage_v3_screened_skin'], ['structured_parking_standard_v0','structured_parking_green_v1','structured_parking_urban_v2','structured_parking_screened_v3']) }),
   park_underground_parking_green_v1: Object.freeze({ underground_parking_entry: fourVariantMappings('underground_parking_entry', ['underground_parking_entry_v0_standard_skin','underground_parking_entry_v1_green_skin','underground_parking_entry_v2_urban_skin','underground_parking_entry_v3_screened_skin'], ['underground_parking_standard_v0','underground_parking_green_v1','underground_parking_urban_v2','underground_parking_screened_v3']) }),
@@ -1723,6 +1724,7 @@ export function usesArchetypeOwnedParkSurface(zone: ParkLegoZone): boolean {
   if (batch24ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
   if (batch25ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
   if (batch26ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
+  if (batch27ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
   const kit = archetypeOwnedParkKitForFamily(contract.familyId);
   const selection = archetypeOwnedParkKitForSelection(contract.archetypeId, contract.variantId);
   return kit !== null && selection?.familyId === kit.familyId;

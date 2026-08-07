@@ -2771,6 +2771,72 @@ def _apply_batch26_variant_closures(
 _CAPABILITIES = tuple(_apply_batch26_variant_closures(capability) for capability in _CAPABILITIES)
 
 
+_BATCH27_VARIANT_CLOSURES: dict[
+    str,
+    tuple[tuple[str, str, str, str, str], ...],
+] = {
+    "park_academic_planted_court_v0": (
+        ("academic_courtyard", "academic_courtyard_variant_1", "academic_courtyard_v1_corten_skin", "academic_corten_court_v1", "corten_hardscape_court_program_v1"),
+        ("academic_courtyard", "academic_courtyard_variant_2", "academic_courtyard_v2_glass_canopy_skin", "academic_glass_canopy_v2", "glazed_canopy_court_program_v1"),
+        ("academic_courtyard", "academic_courtyard_variant_3", "academic_courtyard_v3_timber_screen_skin", "academic_timber_screen_v3", "cultural_timber_screen_court_program_v1"),
+    ),
+    "park_campus_green_spine_v0": (
+        ("campus_pedestrian_spine", "campus_pedestrian_spine_variant_1", "campus_pedestrian_spine_v1_paved_skin", "campus_paved_spine_v1", "urban_paved_spine_program_v1"),
+        ("campus_pedestrian_spine", "campus_pedestrian_spine_variant_2", "campus_pedestrian_spine_v2_pavilion_skin", "campus_pavilion_spine_v2", "glass_pavilion_spine_program_v1"),
+        ("campus_pedestrian_spine", "campus_pedestrian_spine_variant_3", "campus_pedestrian_spine_v3_pergola_skin", "campus_pergola_spine_v3", "pergola_garden_spine_program_v1"),
+    ),
+    "park_constructed_wetland_boardwalk_v0": (
+        ("constructed_wetland_eco_park", "constructed_wetland_eco_park_variant_1", "constructed_wetland_eco_park_v1_tidal_skin", "constructed_wetland_tidal_v1", "tidal_treatment_wetland_program_v1"),
+        ("constructed_wetland_eco_park", "constructed_wetland_eco_park_variant_2", "constructed_wetland_eco_park_v2_wildlife_skin", "constructed_wetland_wildlife_v2", "wildlife_wetland_program_v1"),
+        ("constructed_wetland_eco_park", "constructed_wetland_eco_park_variant_3", "constructed_wetland_eco_park_v3_nature_center_skin", "constructed_wetland_nature_center_v3", "nature_center_wetland_program_v1"),
+    ),
+    "park_research_arboretum_v0": (
+        ("research_garden_teaching_arboretum", "research_garden_teaching_arboretum_variant_1", "research_garden_teaching_arboretum_v1_greenhouse_skin", "research_greenhouse_v1", "greenhouse_research_garden_program_v1"),
+        ("research_garden_teaching_arboretum", "research_garden_teaching_arboretum_variant_2", "research_garden_teaching_arboretum_v2_pavilion_skin", "research_pavilion_v2", "teaching_pavilion_garden_program_v1"),
+        ("research_garden_teaching_arboretum", "research_garden_teaching_arboretum_variant_3", "research_garden_teaching_arboretum_v3_plots_skin", "research_plots_v3", "demonstration_plot_garden_program_v1"),
+    ),
+    "park_rewilding_reforestation_v1": (
+        ("rewilding_ecological_restoration_zone", "rewilding_ecological_restoration_zone_variant_0", "rewilding_ecological_restoration_zone_v0_prairie_skin", "rewilding_prairie_v0", "urban_prairie_restoration_program_v1"),
+        ("rewilding_ecological_restoration_zone", "rewilding_ecological_restoration_zone_variant_2", "rewilding_ecological_restoration_zone_v2_interpretive_skin", "rewilding_interpretive_v2", "interpretive_restoration_program_v1"),
+        ("rewilding_ecological_restoration_zone", "rewilding_ecological_restoration_zone_variant_3", "rewilding_ecological_restoration_zone_v3_riparian_skin", "rewilding_riparian_v3", "riparian_restoration_program_v1"),
+    ),
+    "park_stormwater_natural_creek_v0": (
+        ("stormwater_naturalized_drainage_corridor", "stormwater_naturalized_drainage_corridor_variant_1", "stormwater_naturalized_drainage_corridor_v1_daylit_skin", "stormwater_daylit_v1", "urban_daylit_channel_program_v1"),
+        ("stormwater_naturalized_drainage_corridor", "stormwater_naturalized_drainage_corridor_variant_2", "stormwater_naturalized_drainage_corridor_v2_seasonal_skin", "stormwater_seasonal_v2", "seasonal_planted_corridor_program_v1"),
+        ("stormwater_naturalized_drainage_corridor", "stormwater_naturalized_drainage_corridor_variant_3", "stormwater_naturalized_drainage_corridor_v3_shelter_skin", "stormwater_shelter_v3", "natural_stream_shelter_program_v1"),
+    ),
+    "park_stormwater_arid_channel_v3": (
+        ("stormwater_resilience_park", "stormwater_resilience_park_variant_0", "stormwater_resilience_park_v0_bioswale_skin", "stormwater_bioswale_v0", "urban_bioswale_park_program_v1"),
+        ("stormwater_resilience_park", "stormwater_resilience_park_variant_1", "stormwater_resilience_park_v1_detention_skin", "stormwater_detention_v1", "naturalistic_detention_park_program_v1"),
+        ("stormwater_resilience_park", "stormwater_resilience_park_variant_2", "stormwater_resilience_park_v2_terraced_skin", "stormwater_terraced_v2", "engineered_terraced_plaza_program_v1"),
+    ),
+}
+
+
+def _apply_batch27_variant_closures(
+    capability: PublicRealmFamilyCapability,
+) -> PublicRealmFamilyCapability:
+    descriptors = _BATCH27_VARIANT_CLOSURES.get(capability.family_id, ())
+    if not descriptors:
+        return capability
+    additions: list[PublicRealmSelectionCapability] = []
+    for archetype_id, variant_id, appearance_kit_id, planting_structure, program_component in descriptors:
+        base = next(selection for selection in capability.selections if selection.archetype_id == archetype_id)
+        additions.append(_selection(
+            archetype_id,
+            variant_id,
+            profile_id=base.profile_id,
+            appearance_kit_id=appearance_kit_id,
+            planting_structure=planting_structure,
+            compatibility=base.compatibility,
+            components=(*base.component_set_ids, program_component),
+        ))
+    return capability.model_copy(update={"selections": (*capability.selections, *additions)})
+
+
+_CAPABILITIES = tuple(_apply_batch27_variant_closures(capability) for capability in _CAPABILITIES)
+
+
 def public_realm_capability_fingerprint(
     capability: PublicRealmFamilyCapability,
 ) -> str:

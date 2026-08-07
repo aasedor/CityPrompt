@@ -6,6 +6,7 @@ import { batch23ParkSkinForSelection } from './parkBatch23Skins';
 import { batch24ParkSkinForSelection } from './parkBatch24Skins';
 import { batch25ParkSkinForSelection } from './parkBatch25Skins';
 import { batch26ParkSkinForSelection } from './parkBatch26Skins';
+import { batch27ParkSkinForSelection } from './parkBatch27Skins';
 
 export type Batch21ParkBaseRole = 'paver' | 'lawn' | 'planting';
 
@@ -28,7 +29,8 @@ export function resolveBatch21ParkBaseMaterial(
   archetypeId: string,
   variantId: string,
 ): Batch21ParkBaseMaterialSpec | null {
-  const skin = batch26ParkSkinForSelection(archetypeId, variantId)
+  const skin = batch27ParkSkinForSelection(archetypeId, variantId)
+    ?? batch26ParkSkinForSelection(archetypeId, variantId)
     ?? batch25ParkSkinForSelection(archetypeId, variantId)
     ?? batch24ParkSkinForSelection(archetypeId, variantId)
     ?? batch23ParkSkinForSelection(archetypeId, variantId)
@@ -74,6 +76,13 @@ export function resolveBatch21ParkBaseMaterial(
     || archetypeId === 'concert_pavilion_lawn'
     || archetypeId === 'floating_park_pool'
     || archetypeId === 'lighthouse_point_park') {
+    return { slug: skin.slug, role: 'planting', metersPerTile: 5.0 };
+  }
+  if (archetypeId === 'constructed_wetland_eco_park'
+    || archetypeId === 'research_garden_teaching_arboretum'
+    || archetypeId === 'rewilding_ecological_restoration_zone'
+    || archetypeId === 'stormwater_naturalized_drainage_corridor'
+    || archetypeId === 'stormwater_resilience_park') {
     return { slug: skin.slug, role: 'planting', metersPerTile: 5.0 };
   }
   if (archetypeId === 'marina_yacht_harbor' || archetypeId === 'working_pier_wharf_conversion') {

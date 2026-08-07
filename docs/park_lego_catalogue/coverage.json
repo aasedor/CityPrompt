@@ -8,26 +8,23 @@
     "catalogueParents": 130,
     "catalogueVariants": 520,
     "completeExactParents": 0,
-    "completeMappedParents": 123,
-    "partialParents": 7,
+    "completeMappedParents": 130,
+    "partialParents": 0,
     "uncoveredParents": 0,
-    "exactVariants": 10,
-    "sharedMappedVariants": 489,
-    "unmappedVariants": 21,
+    "exactVariants": 3,
+    "sharedMappedVariants": 517,
+    "unmappedVariants": 0,
     "parkCapabilities": 127
   },
   "categorySummary": {
-    "civic_plazas:complete_mapped": 17,
-    "civic_plazas:partial": 2,
+    "civic_plazas:complete_mapped": 19,
     "custom:complete_mapped": 1,
-    "ecological_resilience:complete_mapped": 8,
-    "ecological_resilience:partial": 4,
+    "ecological_resilience:complete_mapped": 12,
     "landscape_parks:complete_mapped": 14,
     "neighborhood_public_realm:complete_mapped": 12,
     "parking_areas:complete_mapped": 5,
     "social_event_spaces:complete_mapped": 10,
-    "specialty_gardens:complete_mapped": 13,
-    "specialty_gardens:partial": 1,
+    "specialty_gardens:complete_mapped": 14,
     "sports_recreation:complete_mapped": 24,
     "transport_infrastructure:complete_mapped": 1,
     "water_features:complete_mapped": 5,
@@ -10893,16 +10890,16 @@
       "title": "Academic Courtyard",
       "spaceType": "plaza",
       "aestheticCategory": "civic_plazas",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "academic_courtyard_variant_0",
           "label": "Modern Planted Courtyard",
           "thumbnailUrl": "/archetypes/openspaces/academic-courtyard/variant_0.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_academic_planted_court_v0",
@@ -10914,7 +10911,7 @@
                 "integrated_seat_ledges_v1",
                 "clear_cross_routes_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -10922,22 +10919,64 @@
           "id": "academic_courtyard_variant_1",
           "label": "Corten Hardscape Courtyard",
           "thumbnailUrl": "/archetypes/openspaces/academic-courtyard/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_academic_planted_court_v0",
+              "profileId": "academic-planted-courtyard-lego-v1",
+              "appearanceKitId": "academic_courtyard_v1_corten_skin",
+              "componentSetIds": [
+                "academic_court_ground_program_v1",
+                "whole_raised_planters_v1",
+                "integrated_seat_ledges_v1",
+                "clear_cross_routes_v1",
+                "corten_hardscape_court_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "academic_courtyard_variant_2",
           "label": "Glass-Canopy Courtyard",
           "thumbnailUrl": "/archetypes/openspaces/academic-courtyard/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_academic_planted_court_v0",
+              "profileId": "academic-planted-courtyard-lego-v1",
+              "appearanceKitId": "academic_courtyard_v2_glass_canopy_skin",
+              "componentSetIds": [
+                "academic_court_ground_program_v1",
+                "whole_raised_planters_v1",
+                "integrated_seat_ledges_v1",
+                "clear_cross_routes_v1",
+                "glazed_canopy_court_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "academic_courtyard_variant_3",
           "label": "Cultural Timber-Screen Courtyard",
           "thumbnailUrl": "/archetypes/openspaces/academic-courtyard/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_academic_planted_court_v0",
+              "profileId": "academic-planted-courtyard-lego-v1",
+              "appearanceKitId": "academic_courtyard_v3_timber_screen_skin",
+              "componentSetIds": [
+                "academic_court_ground_program_v1",
+                "whole_raised_planters_v1",
+                "integrated_seat_ledges_v1",
+                "clear_cross_routes_v1",
+                "cultural_timber_screen_court_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -11228,16 +11267,16 @@
       "title": "Campus Pedestrian Spine",
       "spaceType": "plaza",
       "aestheticCategory": "civic_plazas",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "campus_pedestrian_spine_variant_0",
           "label": "Green Planted Spine",
           "thumbnailUrl": "/archetypes/openspaces/campus-pedestrian-spine/variant_0.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_campus_green_spine_v0",
@@ -11249,7 +11288,7 @@
                 "rain_garden_bands_v1",
                 "repeating_tree_bays_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -11257,22 +11296,64 @@
           "id": "campus_pedestrian_spine_variant_1",
           "label": "Urban Paved Spine",
           "thumbnailUrl": "/archetypes/openspaces/campus-pedestrian-spine/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_campus_green_spine_v0",
+              "profileId": "campus-green-spine-lego-v1",
+              "appearanceKitId": "campus_pedestrian_spine_v1_paved_skin",
+              "componentSetIds": [
+                "campus_spine_ground_program_v1",
+                "continuous_accessible_axis_v1",
+                "rain_garden_bands_v1",
+                "repeating_tree_bays_v1",
+                "urban_paved_spine_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "campus_pedestrian_spine_variant_2",
           "label": "Pavilion Spine",
           "thumbnailUrl": "/archetypes/openspaces/campus-pedestrian-spine/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_campus_green_spine_v0",
+              "profileId": "campus-green-spine-lego-v1",
+              "appearanceKitId": "campus_pedestrian_spine_v2_pavilion_skin",
+              "componentSetIds": [
+                "campus_spine_ground_program_v1",
+                "continuous_accessible_axis_v1",
+                "rain_garden_bands_v1",
+                "repeating_tree_bays_v1",
+                "glass_pavilion_spine_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "campus_pedestrian_spine_variant_3",
           "label": "Pergola Garden Spine",
           "thumbnailUrl": "/archetypes/openspaces/campus-pedestrian-spine/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_campus_green_spine_v0",
+              "profileId": "campus-green-spine-lego-v1",
+              "appearanceKitId": "campus_pedestrian_spine_v3_pergola_skin",
+              "componentSetIds": [
+                "campus_spine_ground_program_v1",
+                "continuous_accessible_axis_v1",
+                "rain_garden_bands_v1",
+                "repeating_tree_bays_v1",
+                "pergola_garden_spine_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -11281,16 +11362,16 @@
       "title": "Constructed Wetland Eco Park",
       "spaceType": "park",
       "aestheticCategory": "ecological_resilience",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "constructed_wetland_eco_park_variant_0",
           "label": "Urban Boardwalk Wetland",
           "thumbnailUrl": "/archetypes/openspaces/constructed-wetland-eco-park/variant_0.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_constructed_wetland_boardwalk_v0",
@@ -11302,7 +11383,7 @@
                 "zigzag_boardwalk_v1",
                 "viewing_deck_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -11310,22 +11391,64 @@
           "id": "constructed_wetland_eco_park_variant_1",
           "label": "Tidal Treatment Wetland",
           "thumbnailUrl": "/archetypes/openspaces/constructed-wetland-eco-park/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_constructed_wetland_boardwalk_v0",
+              "profileId": "constructed-wetland-boardwalk-lego-v1",
+              "appearanceKitId": "constructed_wetland_eco_park_v1_tidal_skin",
+              "componentSetIds": [
+                "wetland_mosaic_ground_program_v1",
+                "complete_treatment_cells_v1",
+                "zigzag_boardwalk_v1",
+                "viewing_deck_v1",
+                "tidal_treatment_wetland_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "constructed_wetland_eco_park_variant_2",
           "label": "Wildlife Wetland",
           "thumbnailUrl": "/archetypes/openspaces/constructed-wetland-eco-park/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_constructed_wetland_boardwalk_v0",
+              "profileId": "constructed-wetland-boardwalk-lego-v1",
+              "appearanceKitId": "constructed_wetland_eco_park_v2_wildlife_skin",
+              "componentSetIds": [
+                "wetland_mosaic_ground_program_v1",
+                "complete_treatment_cells_v1",
+                "zigzag_boardwalk_v1",
+                "viewing_deck_v1",
+                "wildlife_wetland_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "constructed_wetland_eco_park_variant_3",
           "label": "Eco-Park with Nature Center",
           "thumbnailUrl": "/archetypes/openspaces/constructed-wetland-eco-park/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_constructed_wetland_boardwalk_v0",
+              "profileId": "constructed-wetland-boardwalk-lego-v1",
+              "appearanceKitId": "constructed_wetland_eco_park_v3_nature_center_skin",
+              "componentSetIds": [
+                "wetland_mosaic_ground_program_v1",
+                "complete_treatment_cells_v1",
+                "zigzag_boardwalk_v1",
+                "viewing_deck_v1",
+                "nature_center_wetland_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -11797,16 +11920,16 @@
       "title": "Research Garden Teaching Arboretum",
       "spaceType": "park",
       "aestheticCategory": "specialty_gardens",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "research_garden_teaching_arboretum_variant_0",
           "label": "Tree-Collection Arboretum",
           "thumbnailUrl": "/archetypes/openspaces/research-garden-teaching-arboretum/variant_0.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_research_arboretum_v0",
@@ -11818,7 +11941,7 @@
                 "interpretive_loop_v1",
                 "label_and_boulder_nodes_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -11826,22 +11949,64 @@
           "id": "research_garden_teaching_arboretum_variant_1",
           "label": "Greenhouse Research Garden",
           "thumbnailUrl": "/archetypes/openspaces/research-garden-teaching-arboretum/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_research_arboretum_v0",
+              "profileId": "research-arboretum-lego-v1",
+              "appearanceKitId": "research_garden_teaching_arboretum_v1_greenhouse_skin",
+              "componentSetIds": [
+                "arboretum_ground_program_v1",
+                "specimen_tree_collection_v1",
+                "interpretive_loop_v1",
+                "label_and_boulder_nodes_v1",
+                "greenhouse_research_garden_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "research_garden_teaching_arboretum_variant_2",
           "label": "Teaching Pavilion Garden",
           "thumbnailUrl": "/archetypes/openspaces/research-garden-teaching-arboretum/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_research_arboretum_v0",
+              "profileId": "research-arboretum-lego-v1",
+              "appearanceKitId": "research_garden_teaching_arboretum_v2_pavilion_skin",
+              "componentSetIds": [
+                "arboretum_ground_program_v1",
+                "specimen_tree_collection_v1",
+                "interpretive_loop_v1",
+                "label_and_boulder_nodes_v1",
+                "teaching_pavilion_garden_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "research_garden_teaching_arboretum_variant_3",
           "label": "Demonstration-Plot Garden",
           "thumbnailUrl": "/archetypes/openspaces/research-garden-teaching-arboretum/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_research_arboretum_v0",
+              "profileId": "research-arboretum-lego-v1",
+              "appearanceKitId": "research_garden_teaching_arboretum_v3_plots_skin",
+              "componentSetIds": [
+                "arboretum_ground_program_v1",
+                "specimen_tree_collection_v1",
+                "interpretive_loop_v1",
+                "label_and_boulder_nodes_v1",
+                "demonstration_plot_garden_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -11850,23 +12015,37 @@
       "title": "Rewilding Ecological Restoration Zone",
       "spaceType": "park",
       "aestheticCategory": "ecological_resilience",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "rewilding_ecological_restoration_zone_variant_0",
           "label": "Urban Prairie & Grazers",
           "thumbnailUrl": "/archetypes/openspaces/rewilding-ecological-restoration-zone/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_rewilding_reforestation_v1",
+              "profileId": "rewilding-reforestation-lego-v1",
+              "appearanceKitId": "rewilding_ecological_restoration_zone_v0_prairie_skin",
+              "componentSetIds": [
+                "reforestation_ground_program_v1",
+                "sapling_cohort_matrix_v1",
+                "native_understory_v1",
+                "habitat_log_piles_v1",
+                "urban_prairie_restoration_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "rewilding_ecological_restoration_zone_variant_1",
           "label": "Reforestation Zone",
           "thumbnailUrl": "/archetypes/openspaces/rewilding-ecological-restoration-zone/variant_1.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_rewilding_reforestation_v1",
@@ -11878,7 +12057,7 @@
                 "native_understory_v1",
                 "habitat_log_piles_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -11886,15 +12065,43 @@
           "id": "rewilding_ecological_restoration_zone_variant_2",
           "label": "Interpretive Restoration",
           "thumbnailUrl": "/archetypes/openspaces/rewilding-ecological-restoration-zone/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_rewilding_reforestation_v1",
+              "profileId": "rewilding-reforestation-lego-v1",
+              "appearanceKitId": "rewilding_ecological_restoration_zone_v2_interpretive_skin",
+              "componentSetIds": [
+                "reforestation_ground_program_v1",
+                "sapling_cohort_matrix_v1",
+                "native_understory_v1",
+                "habitat_log_piles_v1",
+                "interpretive_restoration_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "rewilding_ecological_restoration_zone_variant_3",
           "label": "Riparian Restoration",
           "thumbnailUrl": "/archetypes/openspaces/rewilding-ecological-restoration-zone/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_rewilding_reforestation_v1",
+              "profileId": "rewilding-reforestation-lego-v1",
+              "appearanceKitId": "rewilding_ecological_restoration_zone_v3_riparian_skin",
+              "componentSetIds": [
+                "reforestation_ground_program_v1",
+                "sapling_cohort_matrix_v1",
+                "native_understory_v1",
+                "habitat_log_piles_v1",
+                "riparian_restoration_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -11903,16 +12110,16 @@
       "title": "Stormwater Naturalized Drainage Corridor",
       "spaceType": "park",
       "aestheticCategory": "ecological_resilience",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "stormwater_naturalized_drainage_corridor_variant_0",
           "label": "Naturalized Creek",
           "thumbnailUrl": "/archetypes/openspaces/stormwater-naturalized-drainage-corridor/variant_0.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_stormwater_natural_creek_v0",
@@ -11924,7 +12131,7 @@
                 "whole_floodplain_cells_v1",
                 "bridge_crossing_bays_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -11932,22 +12139,64 @@
           "id": "stormwater_naturalized_drainage_corridor_variant_1",
           "label": "Urban Daylit Channel",
           "thumbnailUrl": "/archetypes/openspaces/stormwater-naturalized-drainage-corridor/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_stormwater_natural_creek_v0",
+              "profileId": "stormwater-natural-creek-lego-v1",
+              "appearanceKitId": "stormwater_naturalized_drainage_corridor_v1_daylit_skin",
+              "componentSetIds": [
+                "natural_creek_ground_program_v1",
+                "continuous_low_flow_channel_v1",
+                "whole_floodplain_cells_v1",
+                "bridge_crossing_bays_v1",
+                "urban_daylit_channel_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "stormwater_naturalized_drainage_corridor_variant_2",
           "label": "Seasonal Planted Corridor",
           "thumbnailUrl": "/archetypes/openspaces/stormwater-naturalized-drainage-corridor/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_stormwater_natural_creek_v0",
+              "profileId": "stormwater-natural-creek-lego-v1",
+              "appearanceKitId": "stormwater_naturalized_drainage_corridor_v2_seasonal_skin",
+              "componentSetIds": [
+                "natural_creek_ground_program_v1",
+                "continuous_low_flow_channel_v1",
+                "whole_floodplain_cells_v1",
+                "bridge_crossing_bays_v1",
+                "seasonal_planted_corridor_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "stormwater_naturalized_drainage_corridor_variant_3",
           "label": "Naturalized Stream & Shelter",
           "thumbnailUrl": "/archetypes/openspaces/stormwater-naturalized-drainage-corridor/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_stormwater_natural_creek_v0",
+              "profileId": "stormwater-natural-creek-lego-v1",
+              "appearanceKitId": "stormwater_naturalized_drainage_corridor_v3_shelter_skin",
+              "componentSetIds": [
+                "natural_creek_ground_program_v1",
+                "continuous_low_flow_channel_v1",
+                "whole_floodplain_cells_v1",
+                "bridge_crossing_bays_v1",
+                "natural_stream_shelter_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -11956,37 +12205,79 @@
       "title": "Stormwater Resilience Park",
       "spaceType": "park",
       "aestheticCategory": "ecological_resilience",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "stormwater_resilience_park_variant_0",
           "label": "Urban Bioswale Park",
           "thumbnailUrl": "/archetypes/openspaces/stormwater-resilience-park/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_stormwater_arid_channel_v3",
+              "profileId": "stormwater-arid-channel-lego-v1",
+              "appearanceKitId": "stormwater_resilience_park_v0_bioswale_skin",
+              "componentSetIds": [
+                "arid_resilience_ground_program_v1",
+                "continuous_ephemeral_channel_v1",
+                "gravel_detention_pockets_v1",
+                "xeric_planting_v1",
+                "urban_bioswale_park_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "stormwater_resilience_park_variant_1",
           "label": "Naturalistic Detention Park",
           "thumbnailUrl": "/archetypes/openspaces/stormwater-resilience-park/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_stormwater_arid_channel_v3",
+              "profileId": "stormwater-arid-channel-lego-v1",
+              "appearanceKitId": "stormwater_resilience_park_v1_detention_skin",
+              "componentSetIds": [
+                "arid_resilience_ground_program_v1",
+                "continuous_ephemeral_channel_v1",
+                "gravel_detention_pockets_v1",
+                "xeric_planting_v1",
+                "naturalistic_detention_park_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "stormwater_resilience_park_variant_2",
           "label": "Engineered Terraced Plaza",
           "thumbnailUrl": "/archetypes/openspaces/stormwater-resilience-park/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_stormwater_arid_channel_v3",
+              "profileId": "stormwater-arid-channel-lego-v1",
+              "appearanceKitId": "stormwater_resilience_park_v2_terraced_skin",
+              "componentSetIds": [
+                "arid_resilience_ground_program_v1",
+                "continuous_ephemeral_channel_v1",
+                "gravel_detention_pockets_v1",
+                "xeric_planting_v1",
+                "engineered_terraced_plaza_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "stormwater_resilience_park_variant_3",
           "label": "Arid Rock-Channel Park",
           "thumbnailUrl": "/archetypes/openspaces/stormwater-resilience-park/variant_3.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_stormwater_arid_channel_v3",
@@ -11998,7 +12289,7 @@
                 "gravel_detention_pockets_v1",
                 "xeric_planting_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         }

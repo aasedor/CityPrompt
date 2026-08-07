@@ -1721,3 +1721,24 @@ def test_batch26_closes_all_four_variants_for_each_parent(family_id: str, archet
     assert {selection.variant_id for selection in selections} == {f"{archetype_id}_v{index}" for index in range(4)}
     assert len({selection.appearance_kit_id for selection in selections}) == 4
     assert len({selection.planting_structure for selection in selections}) == 4
+
+
+@pytest.mark.parametrize(
+    ("family_id", "archetype_id"),
+    [
+        ("park_academic_planted_court_v0", "academic_courtyard"),
+        ("park_campus_green_spine_v0", "campus_pedestrian_spine"),
+        ("park_constructed_wetland_boardwalk_v0", "constructed_wetland_eco_park"),
+        ("park_research_arboretum_v0", "research_garden_teaching_arboretum"),
+        ("park_rewilding_reforestation_v1", "rewilding_ecological_restoration_zone"),
+        ("park_stormwater_natural_creek_v0", "stormwater_naturalized_drainage_corridor"),
+        ("park_stormwater_arid_channel_v3", "stormwater_resilience_park"),
+    ],
+)
+def test_batch27_closes_every_remaining_catalogue_variant(family_id: str, archetype_id: str):
+    catalog = build_public_realm_capability_catalog(family_ids=[family_id])
+    selections = [selection for selection in catalog.capabilities[0].selections if selection.archetype_id == archetype_id]
+    assert len(selections) == 4
+    assert {selection.variant_id for selection in selections} == {f"{archetype_id}_variant_{index}" for index in range(4)}
+    assert len({selection.appearance_kit_id for selection in selections}) == 4
+    assert len({selection.planting_structure for selection in selections}) == 4

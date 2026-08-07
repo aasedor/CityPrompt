@@ -14,6 +14,7 @@ import {
   usesArchetypeOwnedParkSurface,
 } from './parkLegoFamilies';
 import { BATCH26_PARK_SKINS } from './parkBatch26Skins';
+import { BATCH27_PARK_SKINS } from './parkBatch27Skins';
 
 function zone(properties: Record<string, unknown>): Pick<SiteZone, 'properties' | 'zone_type'> {
   return { zone_type: 'green_space', properties };
@@ -890,6 +891,31 @@ describe('Public Realm LEGO V1 park families', () => {
       lake_edge_plaza: 'park_lake_edge_timber_deck_v2',
     };
     for (const skin of BATCH26_PARK_SKINS) {
+      const candidate = zone({
+        green_space_archetype_id: skin.archetypeId,
+        green_space_selected_variant_id: skin.variantId,
+      });
+      expect(resolveParkLegoContract(candidate)).toMatchObject({
+        familyId: familyByArchetype[skin.archetypeId],
+        archetypeId: skin.archetypeId,
+        variantId: skin.variantId,
+        supported: true,
+      });
+      expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true);
+    }
+  });
+
+  it('executes every final Batch 27 closure through its reviewed parent family', () => {
+    const familyByArchetype: Record<string, string> = {
+      academic_courtyard: 'park_academic_planted_court_v0',
+      campus_pedestrian_spine: 'park_campus_green_spine_v0',
+      constructed_wetland_eco_park: 'park_constructed_wetland_boardwalk_v0',
+      research_garden_teaching_arboretum: 'park_research_arboretum_v0',
+      rewilding_ecological_restoration_zone: 'park_rewilding_reforestation_v1',
+      stormwater_naturalized_drainage_corridor: 'park_stormwater_natural_creek_v0',
+      stormwater_resilience_park: 'park_stormwater_arid_channel_v3',
+    };
+    for (const skin of BATCH27_PARK_SKINS) {
       const candidate = zone({
         green_space_archetype_id: skin.archetypeId,
         green_space_selected_variant_id: skin.variantId,
