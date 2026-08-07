@@ -1,0 +1,143 @@
+{
+  "batchId": "meshy-park-object-catalog-v3a",
+  "reviewedAt": "2026-08-07",
+  "generatedCount": 32,
+  "acceptedCount": 31,
+  "rejectedCount": 1,
+  "creditsUsed": 1248,
+  "balanceBefore": 6309,
+  "balanceAfter": 5061,
+  "qualityGate": "Compared archetype reference, isolated multiview, Meshy output and normalized 12000-face/512px-PBR four-view runtime render. Structural, compositional, scale, people/building contamination, or texture failures remain external artifacts and are not promoted.",
+  "accepted": [
+    {
+      "assetId": "urban-pocket-park-ornamental-iron-loveseat-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "urban-pocket-park-concrete-timber-seat-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "urban-pocket-park-terracotta-planter-ensemble-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "urban-pocket-park-basalt-water-bowl-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "neighborhood-park-romantic-stone-footbridge-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "neighborhood-park-corten-planter-bench-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "neighborhood-park-limestone-seat-wall-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "neighborhood-park-woven-palm-shade-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "community-park-carved-stone-urn-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "community-park-corten-path-light-cluster-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "community-park-olive-oil-amphora-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "community-park-thatched-shade-umbrella-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "regional-park-carved-stone-drinking-fountain-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "regional-park-sculptural-concrete-lounger-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "regional-park-limestone-picnic-hearth-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "regional-park-volcanic-rock-seat-cluster-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "botanical-garden-formal-fluted-urn-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "botanical-garden-concrete-corten-art-plinth-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "botanical-garden-weathered-cottage-gate-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "memorial-garden-stone-sundial-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "memorial-garden-woodland-remembrance-marker-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "memorial-garden-stainless-mourning-sculpture-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "memorial-garden-antique-remembrance-bench-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "community-garden-timber-compost-bay-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "community-garden-rain-barrel-rack-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "community-garden-seed-library-cabinet-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "community-garden-garden-wash-station-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "community-garden-enhanced-accessible-raised-planter-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "community-garden-enhanced-glazed-cold-frame-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "community-garden-enhanced-communal-harvest-table-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "community-garden-enhanced-woven-harvest-basket-rack-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    }
+  ],
+  "rejected": [
+    {
+      "assetId": "botanical-garden-fern-grotto-rock-arch-v1",
+      "reason": "Solid vertical rock column lost the defining walk-through arch opening and cannot serve the authored grotto role."
+    }
+  ]
+}

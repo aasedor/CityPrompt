@@ -81,7 +81,7 @@ def main() -> None:
             f"    url: {q(item['url'])},",
             f"    archetypeId: {q(item['archetypeId'])},",
             f"    variantIds: Object.freeze({q(item['variantIds'])}),",
-            f"    dimensionsM: Object.freeze({q(item['dimensionsM'])}),",
+            f"    dimensionsM: Object.freeze({q(item['dimensionsM'])}) as readonly [number, number, number],",
             f"    placementRole: {q(item['placementRole'])},",
             "    sourceKind: 'meshy_multiview_archetype_reference' as const,",
             "    people: false as const,",
