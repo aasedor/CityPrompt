@@ -1697,3 +1697,27 @@ def test_batch10_families_adapt_to_shared_compact_trial_polygon(archetype_id: st
     assert recipe is not None
     assert recipe.variant_id == variant_id
     assert recipe.generator == "park_kit"
+
+
+@pytest.mark.parametrize(
+    ("family_id", "archetype_id"),
+    [
+        ("park_greenbelt_rail_trail_v1", "greenbelt_buffer_park"),
+        ("park_foothill_heathland_trail_v2", "foothill_trail_park"),
+        ("park_concert_timber_lawn_v2", "concert_pavilion_lawn"),
+        ("park_night_market_hawker_v0", "night_market"),
+        ("park_parade_national_mall_v3", "parade_ground"),
+        ("park_marina_pacific_dock_v2", "marina_yacht_harbor"),
+        ("park_working_pier_brooklyn_park_v3", "working_pier_wharf_conversion"),
+        ("park_floating_meadow_loop_v2", "floating_park_pool"),
+        ("park_lighthouse_pacific_headland_v2", "lighthouse_point_park"),
+        ("park_lake_edge_timber_deck_v2", "lake_edge_plaza"),
+    ],
+)
+def test_batch26_closes_all_four_variants_for_each_parent(family_id: str, archetype_id: str):
+    catalog = build_public_realm_capability_catalog(family_ids=[family_id])
+    selections = [selection for selection in catalog.capabilities[0].selections if selection.archetype_id == archetype_id]
+    assert len(selections) == 4
+    assert {selection.variant_id for selection in selections} == {f"{archetype_id}_v{index}" for index in range(4)}
+    assert len({selection.appearance_kit_id for selection in selections}) == 4
+    assert len({selection.planting_structure for selection in selections}) == 4

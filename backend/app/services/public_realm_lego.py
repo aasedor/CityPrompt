@@ -2690,6 +2690,87 @@ def _apply_batch25_variant_closures(
 _CAPABILITIES = tuple(_apply_batch25_variant_closures(capability) for capability in _CAPABILITIES)
 
 
+_BATCH26_VARIANT_CLOSURES: dict[
+    str,
+    tuple[tuple[str, str, str, str, str], ...],
+] = {
+    "park_greenbelt_rail_trail_v1": (
+        ("greenbelt_buffer_park", "greenbelt_buffer_park_v0", "greenbelt_buffer_park_v0_suburban_lawn_skin", "greenbelt_suburban_lawn_v0", "suburban_lawn_greenbelt_program_v1"),
+        ("greenbelt_buffer_park", "greenbelt_buffer_park_v2", "greenbelt_buffer_park_v2_hedgerow_skin", "greenbelt_hedgerow_v2", "hedgerow_buffer_program_v1"),
+        ("greenbelt_buffer_park", "greenbelt_buffer_park_v3", "greenbelt_buffer_park_v3_active_spine_skin", "greenbelt_active_spine_v3", "active_recreation_spine_program_v1"),
+    ),
+    "park_foothill_heathland_trail_v2": (
+        ("foothill_trail_park", "foothill_trail_park_v0", "foothill_trail_park_v0_sage_skin", "foothill_sage_v0", "sage_scrub_ridge_program_v1"),
+        ("foothill_trail_park", "foothill_trail_park_v1", "foothill_trail_park_v1_eucalyptus_skin", "foothill_eucalyptus_v1", "eucalyptus_ridge_program_v1"),
+        ("foothill_trail_park", "foothill_trail_park_v3", "foothill_trail_park_v3_larch_skin", "foothill_larch_v3", "alpine_larch_ridge_program_v1"),
+    ),
+    "park_concert_timber_lawn_v2": (
+        ("concert_pavilion_lawn", "concert_pavilion_lawn_v0", "concert_pavilion_lawn_v0_stadium_skin", "concert_stadium_v0", "horseshoe_stadium_concert_program_v1"),
+        ("concert_pavilion_lawn", "concert_pavilion_lawn_v1", "concert_pavilion_lawn_v1_wave_skin", "concert_wave_v1", "stainless_wave_lawn_program_v1"),
+        ("concert_pavilion_lawn", "concert_pavilion_lawn_v3", "concert_pavilion_lawn_v3_bowl_skin", "concert_bowl_v3", "concentric_shell_bowl_program_v1"),
+    ),
+    "park_night_market_hawker_v0": (
+        ("night_market", "night_market_v1", "night_market_v1_christmas_skin", "night_market_christmas_v1", "christmas_kiosk_ring_program_v1"),
+        ("night_market", "night_market_v2", "night_market_v2_latin_skin", "night_market_latin_v2", "latin_canopy_rows_program_v1"),
+        ("night_market", "night_market_v3", "night_market_v3_food_hall_skin", "night_market_food_hall_v3", "steel_glass_food_hall_program_v1"),
+    ),
+    "park_parade_national_mall_v3": (
+        ("parade_ground", "parade_ground_v0", "parade_ground_v0_stadium_skin", "parade_stadium_v0", "stadium_forecourt_program_v1"),
+        ("parade_ground", "parade_ground_v1", "parade_ground_v1_mall_skin", "parade_mall_v1", "ceremonial_gravel_allee_program_v1"),
+        ("parade_ground", "parade_ground_v2", "parade_ground_v2_champ_de_mars_skin", "parade_champ_v2", "formal_lawn_esplanade_program_v1"),
+    ),
+    "park_marina_pacific_dock_v2": (
+        ("marina_yacht_harbor", "marina_yacht_harbor_v0", "marina_yacht_harbor_v0_inland_skin", "marina_inland_v0", "inland_marina_fingers_program_v1"),
+        ("marina_yacht_harbor", "marina_yacht_harbor_v1", "marina_yacht_harbor_v1_fishing_skin", "marina_fishing_v1", "fishing_quay_program_v1"),
+        ("marina_yacht_harbor", "marina_yacht_harbor_v3", "marina_yacht_harbor_v3_superyacht_skin", "marina_superyacht_v3", "superyacht_harbour_program_v1"),
+    ),
+    "park_working_pier_brooklyn_park_v3": (
+        ("working_pier_wharf_conversion", "working_pier_wharf_conversion_v0", "working_pier_wharf_conversion_v0_market_skin", "working_pier_market_v0", "public_market_pier_program_v1"),
+        ("working_pier_wharf_conversion", "working_pier_wharf_conversion_v1", "working_pier_wharf_conversion_v1_retail_skin", "working_pier_retail_v1", "retail_kiosk_boardwalk_program_v1"),
+        ("working_pier_wharf_conversion", "working_pier_wharf_conversion_v2", "working_pier_wharf_conversion_v2_industrial_skin", "working_pier_industrial_v2", "industrial_rail_garden_program_v1"),
+    ),
+    "park_floating_meadow_loop_v2": (
+        ("floating_park_pool", "floating_park_pool_v0", "floating_park_pool_v0_plus_pool_skin", "floating_plus_pool_v0", "plus_pool_program_v1"),
+        ("floating_park_pool", "floating_park_pool_v1", "floating_park_pool_v1_harbour_bath_skin", "floating_harbour_bath_v1", "harbour_bath_program_v1"),
+        ("floating_park_pool", "floating_park_pool_v3", "floating_park_pool_v3_little_island_skin", "floating_little_island_v3", "tulip_pillar_island_program_v1"),
+    ),
+    "park_lighthouse_pacific_headland_v2": (
+        ("lighthouse_point_park", "lighthouse_point_park_v0", "lighthouse_point_park_v0_cape_skin", "lighthouse_cape_v0", "cape_light_cottage_program_v1"),
+        ("lighthouse_point_park", "lighthouse_point_park_v1", "lighthouse_point_park_v1_dune_skin", "lighthouse_dune_v1", "atlantic_dune_station_program_v1"),
+        ("lighthouse_point_park", "lighthouse_point_park_v3", "lighthouse_point_park_v3_fortress_skin", "lighthouse_fortress_v3", "fortress_lighthouse_esplanade_program_v1"),
+    ),
+    "park_lake_edge_timber_deck_v2": (
+        ("lake_edge_plaza", "lake_edge_plaza_v0", "lake_edge_plaza_v0_como_skin", "lake_edge_como_v0", "stone_terrace_lake_edge_program_v1"),
+        ("lake_edge_plaza", "lake_edge_plaza_v1", "lake_edge_plaza_v1_geneva_skin", "lake_edge_geneva_v1", "geneva_quayside_program_v1"),
+        ("lake_edge_plaza", "lake_edge_plaza_v3", "lake_edge_plaza_v3_chicago_skin", "lake_edge_chicago_v3", "chicago_hard_esplanade_program_v1"),
+    ),
+}
+
+
+def _apply_batch26_variant_closures(
+    capability: PublicRealmFamilyCapability,
+) -> PublicRealmFamilyCapability:
+    descriptors = _BATCH26_VARIANT_CLOSURES.get(capability.family_id, ())
+    if not descriptors:
+        return capability
+    additions: list[PublicRealmSelectionCapability] = []
+    for archetype_id, variant_id, appearance_kit_id, planting_structure, program_component in descriptors:
+        base = next(selection for selection in capability.selections if selection.archetype_id == archetype_id)
+        additions.append(_selection(
+            archetype_id,
+            variant_id,
+            profile_id=base.profile_id,
+            appearance_kit_id=appearance_kit_id,
+            planting_structure=planting_structure,
+            compatibility=base.compatibility,
+            components=(*base.component_set_ids, program_component),
+        ))
+    return capability.model_copy(update={"selections": (*capability.selections, *additions)})
+
+
+_CAPABILITIES = tuple(_apply_batch26_variant_closures(capability) for capability in _CAPABILITIES)
+
+
 def public_realm_capability_fingerprint(
     capability: PublicRealmFamilyCapability,
 ) -> str:

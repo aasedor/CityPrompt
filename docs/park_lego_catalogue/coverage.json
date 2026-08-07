@@ -8,12 +8,12 @@
     "catalogueParents": 130,
     "catalogueVariants": 520,
     "completeExactParents": 0,
-    "completeMappedParents": 113,
-    "partialParents": 17,
+    "completeMappedParents": 123,
+    "partialParents": 7,
     "uncoveredParents": 0,
-    "exactVariants": 20,
-    "sharedMappedVariants": 449,
-    "unmappedVariants": 51,
+    "exactVariants": 10,
+    "sharedMappedVariants": 489,
+    "unmappedVariants": 21,
     "parkCapabilities": 127
   },
   "categorySummary": {
@@ -22,19 +22,16 @@
     "custom:complete_mapped": 1,
     "ecological_resilience:complete_mapped": 8,
     "ecological_resilience:partial": 4,
-    "landscape_parks:complete_mapped": 12,
-    "landscape_parks:partial": 2,
+    "landscape_parks:complete_mapped": 14,
     "neighborhood_public_realm:complete_mapped": 12,
     "parking_areas:complete_mapped": 5,
-    "social_event_spaces:complete_mapped": 7,
-    "social_event_spaces:partial": 3,
+    "social_event_spaces:complete_mapped": 10,
     "specialty_gardens:complete_mapped": 13,
     "specialty_gardens:partial": 1,
     "sports_recreation:complete_mapped": 24,
     "transport_infrastructure:complete_mapped": 1,
     "water_features:complete_mapped": 5,
-    "waterfront_spaces:complete_mapped": 8,
-    "waterfront_spaces:partial": 5
+    "waterfront_spaces:complete_mapped": 13
   },
   "parents": [
     {
@@ -9661,23 +9658,37 @@
       "title": "Greenbelt Buffer Park",
       "spaceType": "park",
       "aestheticCategory": "landscape_parks",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "greenbelt_buffer_park_v0",
           "label": "Suburban Wide-Lawn Greenbelt",
           "thumbnailUrl": "/archetypes/openspaces/greenbelt-buffer-park/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_greenbelt_rail_trail_v1",
+              "profileId": "greenbelt-rail-trail-lego-v1",
+              "appearanceKitId": "greenbelt_buffer_park_v0_suburban_lawn_skin",
+              "componentSetIds": [
+                "greenbelt_ground_program_v1",
+                "continuous_multiuse_trail_v1",
+                "woodland_buffer_cohorts_v1",
+                "whole_rest_bays_v1",
+                "suburban_lawn_greenbelt_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "greenbelt_buffer_park_v1",
           "label": "Forested Commuter Rail-Trail Buffer",
           "thumbnailUrl": "/archetypes/openspaces/greenbelt-buffer-park/variant_1.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_greenbelt_rail_trail_v1",
@@ -9689,7 +9700,7 @@
                 "woodland_buffer_cohorts_v1",
                 "whole_rest_bays_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -9697,15 +9708,43 @@
           "id": "greenbelt_buffer_park_v2",
           "label": "Agricultural-Edge Hedgerow Buffer",
           "thumbnailUrl": "/archetypes/openspaces/greenbelt-buffer-park/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_greenbelt_rail_trail_v1",
+              "profileId": "greenbelt-rail-trail-lego-v1",
+              "appearanceKitId": "greenbelt_buffer_park_v2_hedgerow_skin",
+              "componentSetIds": [
+                "greenbelt_ground_program_v1",
+                "continuous_multiuse_trail_v1",
+                "woodland_buffer_cohorts_v1",
+                "whole_rest_bays_v1",
+                "hedgerow_buffer_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "greenbelt_buffer_park_v3",
           "label": "Active-Recreation Greenbelt Spine",
           "thumbnailUrl": "/archetypes/openspaces/greenbelt-buffer-park/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_greenbelt_rail_trail_v1",
+              "profileId": "greenbelt-rail-trail-lego-v1",
+              "appearanceKitId": "greenbelt_buffer_park_v3_active_spine_skin",
+              "componentSetIds": [
+                "greenbelt_ground_program_v1",
+                "continuous_multiuse_trail_v1",
+                "woodland_buffer_cohorts_v1",
+                "whole_rest_bays_v1",
+                "active_recreation_spine_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -9714,30 +9753,58 @@
       "title": "Foothill Trail Park",
       "spaceType": "park",
       "aestheticCategory": "landscape_parks",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "foothill_trail_park_v0",
           "label": "California Sage-Scrub Ridge",
           "thumbnailUrl": "/archetypes/openspaces/foothill-trail-park/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_foothill_heathland_trail_v2",
+              "profileId": "foothill-heathland-trail-lego-v1",
+              "appearanceKitId": "foothill_trail_park_v0_sage_skin",
+              "componentSetIds": [
+                "heathland_ground_program_v1",
+                "terrain_seated_trail_v1",
+                "whole_heather_drift_cells_v1",
+                "stone_viewpoint_bays_v1",
+                "sage_scrub_ridge_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "foothill_trail_park_v1",
           "label": "Australian Eucalyptus Ridge",
           "thumbnailUrl": "/archetypes/openspaces/foothill-trail-park/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_foothill_heathland_trail_v2",
+              "profileId": "foothill-heathland-trail-lego-v1",
+              "appearanceKitId": "foothill_trail_park_v1_eucalyptus_skin",
+              "componentSetIds": [
+                "heathland_ground_program_v1",
+                "terrain_seated_trail_v1",
+                "whole_heather_drift_cells_v1",
+                "stone_viewpoint_bays_v1",
+                "eucalyptus_ridge_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "foothill_trail_park_v2",
           "label": "UK Heathland Moor Trail",
           "thumbnailUrl": "/archetypes/openspaces/foothill-trail-park/variant_2.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_foothill_heathland_trail_v2",
@@ -9749,7 +9816,7 @@
                 "whole_heather_drift_cells_v1",
                 "stone_viewpoint_bays_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -9757,8 +9824,22 @@
           "id": "foothill_trail_park_v3",
           "label": "Alpine Larch Ridge Trail",
           "thumbnailUrl": "/archetypes/openspaces/foothill-trail-park/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_foothill_heathland_trail_v2",
+              "profileId": "foothill-heathland-trail-lego-v1",
+              "appearanceKitId": "foothill_trail_park_v3_larch_skin",
+              "componentSetIds": [
+                "heathland_ground_program_v1",
+                "terrain_seated_trail_v1",
+                "whole_heather_drift_cells_v1",
+                "stone_viewpoint_bays_v1",
+                "alpine_larch_ridge_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -9767,30 +9848,58 @@
       "title": "Concert Pavilion Lawn",
       "spaceType": "park",
       "aestheticCategory": "social_event_spaces",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "concert_pavilion_lawn_v0",
           "label": "Forest Hills Tennis-Stadium Concert",
           "thumbnailUrl": "/archetypes/openspaces/concert-pavilion-lawn/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_concert_timber_lawn_v2",
+              "profileId": "concert-timber-lawn-lego-v1",
+              "appearanceKitId": "concert_pavilion_lawn_v0_stadium_skin",
+              "componentSetIds": [
+                "concert_lawn_ground_v1",
+                "audience_lawn_room_v1",
+                "modest_open_timber_stage_v1",
+                "perimeter_path_bays_v1",
+                "horseshoe_stadium_concert_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "concert_pavilion_lawn_v1",
           "label": "Modern Stainless Wave Canopy",
           "thumbnailUrl": "/archetypes/openspaces/concert-pavilion-lawn/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_concert_timber_lawn_v2",
+              "profileId": "concert-timber-lawn-lego-v1",
+              "appearanceKitId": "concert_pavilion_lawn_v1_wave_skin",
+              "componentSetIds": [
+                "concert_lawn_ground_v1",
+                "audience_lawn_room_v1",
+                "modest_open_timber_stage_v1",
+                "perimeter_path_bays_v1",
+                "stainless_wave_lawn_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "concert_pavilion_lawn_v2",
           "label": "Tanglewood Timber Shed Pavilion",
           "thumbnailUrl": "/archetypes/openspaces/concert-pavilion-lawn/variant_2.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_concert_timber_lawn_v2",
@@ -9802,7 +9911,7 @@
                 "modest_open_timber_stage_v1",
                 "perimeter_path_bays_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -9810,8 +9919,22 @@
           "id": "concert_pavilion_lawn_v3",
           "label": "Hollywood-Bowl Shell Amphitheatre",
           "thumbnailUrl": "/archetypes/openspaces/concert-pavilion-lawn/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_concert_timber_lawn_v2",
+              "profileId": "concert-timber-lawn-lego-v1",
+              "appearanceKitId": "concert_pavilion_lawn_v3_bowl_skin",
+              "componentSetIds": [
+                "concert_lawn_ground_v1",
+                "audience_lawn_room_v1",
+                "modest_open_timber_stage_v1",
+                "perimeter_path_bays_v1",
+                "concentric_shell_bowl_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -10010,16 +10133,16 @@
       "title": "Night Market",
       "spaceType": "plaza",
       "aestheticCategory": "social_event_spaces",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "night_market_v0",
           "label": "Asian Hawker Stall Lane",
           "thumbnailUrl": "/archetypes/openspaces/night-market/variant_0.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_night_market_hawker_v0",
@@ -10031,7 +10154,7 @@
                 "whole_hawker_stall_bays_v1",
                 "lantern_cable_rows_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -10039,22 +10162,64 @@
           "id": "night_market_v1",
           "label": "European Christmas-Market Kiosks",
           "thumbnailUrl": "/archetypes/openspaces/night-market/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_night_market_hawker_v0",
+              "profileId": "night-market-hawker-lego-v1",
+              "appearanceKitId": "night_market_v1_christmas_skin",
+              "componentSetIds": [
+                "night_market_ground_v1",
+                "clear_market_lane_v1",
+                "whole_hawker_stall_bays_v1",
+                "lantern_cable_rows_v1",
+                "christmas_kiosk_ring_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "night_market_v2",
           "label": "Latin-American Night Plaza",
           "thumbnailUrl": "/archetypes/openspaces/night-market/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_night_market_hawker_v0",
+              "profileId": "night-market-hawker-lego-v1",
+              "appearanceKitId": "night_market_v2_latin_skin",
+              "componentSetIds": [
+                "night_market_ground_v1",
+                "clear_market_lane_v1",
+                "whole_hawker_stall_bays_v1",
+                "lantern_cable_rows_v1",
+                "latin_canopy_rows_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "night_market_v3",
           "label": "Modern Food-Hall Plaza",
           "thumbnailUrl": "/archetypes/openspaces/night-market/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_night_market_hawker_v0",
+              "profileId": "night-market-hawker-lego-v1",
+              "appearanceKitId": "night_market_v3_food_hall_skin",
+              "componentSetIds": [
+                "night_market_ground_v1",
+                "clear_market_lane_v1",
+                "whole_hawker_stall_bays_v1",
+                "lantern_cable_rows_v1",
+                "steel_glass_food_hall_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -10063,37 +10228,79 @@
       "title": "Parade / Procession Ground",
       "spaceType": "plaza",
       "aestheticCategory": "social_event_spaces",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "parade_ground_v0",
           "label": "Stadium-Fronted Civic Forecourt",
           "thumbnailUrl": "/archetypes/openspaces/parade-ground/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_parade_national_mall_v3",
+              "profileId": "parade-national-mall-lego-v1",
+              "appearanceKitId": "parade_ground_v0_stadium_skin",
+              "componentSetIds": [
+                "ceremonial_mall_ground_v1",
+                "continuous_central_lawn_v1",
+                "reflecting_water_axis_v1",
+                "formal_tree_allies_v1",
+                "stadium_forecourt_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "parade_ground_v1",
           "label": "The Mall London Gravel Allée",
           "thumbnailUrl": "/archetypes/openspaces/parade-ground/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_parade_national_mall_v3",
+              "profileId": "parade-national-mall-lego-v1",
+              "appearanceKitId": "parade_ground_v1_mall_skin",
+              "componentSetIds": [
+                "ceremonial_mall_ground_v1",
+                "continuous_central_lawn_v1",
+                "reflecting_water_axis_v1",
+                "formal_tree_allies_v1",
+                "ceremonial_gravel_allee_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "parade_ground_v2",
           "label": "Champ-de-Mars Lawn Esplanade",
           "thumbnailUrl": "/archetypes/openspaces/parade-ground/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_parade_national_mall_v3",
+              "profileId": "parade-national-mall-lego-v1",
+              "appearanceKitId": "parade_ground_v2_champ_de_mars_skin",
+              "componentSetIds": [
+                "ceremonial_mall_ground_v1",
+                "continuous_central_lawn_v1",
+                "reflecting_water_axis_v1",
+                "formal_tree_allies_v1",
+                "formal_lawn_esplanade_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "parade_ground_v3",
           "label": "National Mall Ceremonial Axis",
           "thumbnailUrl": "/archetypes/openspaces/parade-ground/variant_3.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_parade_national_mall_v3",
@@ -10105,7 +10312,7 @@
                 "reflecting_water_axis_v1",
                 "formal_tree_allies_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         }
@@ -10116,30 +10323,58 @@
       "title": "Marina / Yacht Harbor",
       "spaceType": "park",
       "aestheticCategory": "waterfront_spaces",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "marina_yacht_harbor_v0",
           "label": "Inland-Lake Recreational Marina",
           "thumbnailUrl": "/archetypes/openspaces/marina-yacht-harbor/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_marina_pacific_dock_v2",
+              "profileId": "marina-pacific-dock-lego-v1",
+              "appearanceKitId": "marina_yacht_harbor_v0_inland_skin",
+              "componentSetIds": [
+                "marina_water_ground_program_v1",
+                "continuous_quay_spine_v1",
+                "whole_floating_dock_fingers_v1",
+                "utility_pedestal_bays_v1",
+                "inland_marina_fingers_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "marina_yacht_harbor_v1",
           "label": "Working Fishing-Harbour",
           "thumbnailUrl": "/archetypes/openspaces/marina-yacht-harbor/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_marina_pacific_dock_v2",
+              "profileId": "marina-pacific-dock-lego-v1",
+              "appearanceKitId": "marina_yacht_harbor_v1_fishing_skin",
+              "componentSetIds": [
+                "marina_water_ground_program_v1",
+                "continuous_quay_spine_v1",
+                "whole_floating_dock_fingers_v1",
+                "utility_pedestal_bays_v1",
+                "fishing_quay_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "marina_yacht_harbor_v2",
           "label": "Pacific-Style Floating-Dock Marina",
           "thumbnailUrl": "/archetypes/openspaces/marina-yacht-harbor/variant_2.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_marina_pacific_dock_v2",
@@ -10151,7 +10386,7 @@
                 "whole_floating_dock_fingers_v1",
                 "utility_pedestal_bays_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -10159,8 +10394,22 @@
           "id": "marina_yacht_harbor_v3",
           "label": "Mediterranean Superyacht Harbour",
           "thumbnailUrl": "/archetypes/openspaces/marina-yacht-harbor/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_marina_pacific_dock_v2",
+              "profileId": "marina-pacific-dock-lego-v1",
+              "appearanceKitId": "marina_yacht_harbor_v3_superyacht_skin",
+              "componentSetIds": [
+                "marina_water_ground_program_v1",
+                "continuous_quay_spine_v1",
+                "whole_floating_dock_fingers_v1",
+                "utility_pedestal_bays_v1",
+                "superyacht_harbour_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -10169,37 +10418,79 @@
       "title": "Working Pier / Wharf Conversion",
       "spaceType": "park",
       "aestheticCategory": "waterfront_spaces",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "working_pier_wharf_conversion_v0",
           "label": "Granville-Island Public Market Pier",
           "thumbnailUrl": "/archetypes/openspaces/working-pier-wharf-conversion/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_working_pier_brooklyn_park_v3",
+              "profileId": "working-pier-brooklyn-park-lego-v1",
+              "appearanceKitId": "working_pier_wharf_conversion_v0_market_skin",
+              "componentSetIds": [
+                "pier_park_ground_program_v1",
+                "continuous_pier_deck_v1",
+                "whole_lawn_planting_rooms_v1",
+                "edge_rail_view_bays_v1",
+                "public_market_pier_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "working_pier_wharf_conversion_v1",
           "label": "Pier-39 Retail Tourist Boardwalk",
           "thumbnailUrl": "/archetypes/openspaces/working-pier-wharf-conversion/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_working_pier_brooklyn_park_v3",
+              "profileId": "working-pier-brooklyn-park-lego-v1",
+              "appearanceKitId": "working_pier_wharf_conversion_v1_retail_skin",
+              "componentSetIds": [
+                "pier_park_ground_program_v1",
+                "continuous_pier_deck_v1",
+                "whole_lawn_planting_rooms_v1",
+                "edge_rail_view_bays_v1",
+                "retail_kiosk_boardwalk_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "working_pier_wharf_conversion_v2",
           "label": "Industrial Loading-Pier Adaptive",
           "thumbnailUrl": "/archetypes/openspaces/working-pier-wharf-conversion/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_working_pier_brooklyn_park_v3",
+              "profileId": "working-pier-brooklyn-park-lego-v1",
+              "appearanceKitId": "working_pier_wharf_conversion_v2_industrial_skin",
+              "componentSetIds": [
+                "pier_park_ground_program_v1",
+                "continuous_pier_deck_v1",
+                "whole_lawn_planting_rooms_v1",
+                "edge_rail_view_bays_v1",
+                "industrial_rail_garden_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "working_pier_wharf_conversion_v3",
           "label": "Brooklyn-Bridge-Park Pier",
           "thumbnailUrl": "/archetypes/openspaces/working-pier-wharf-conversion/variant_3.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_working_pier_brooklyn_park_v3",
@@ -10211,7 +10502,7 @@
                 "whole_lawn_planting_rooms_v1",
                 "edge_rail_view_bays_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         }
@@ -10222,30 +10513,58 @@
       "title": "Floating Park / Pool",
       "spaceType": "park",
       "aestheticCategory": "waterfront_spaces",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "floating_park_pool_v0",
           "label": "Plus-Pool Style Swim Basin",
           "thumbnailUrl": "/archetypes/openspaces/floating-park-pool/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_floating_meadow_loop_v2",
+              "profileId": "floating-meadow-loop-lego-v1",
+              "appearanceKitId": "floating_park_pool_v0_plus_pool_skin",
+              "componentSetIds": [
+                "floating_park_ground_program_v1",
+                "continuous_boardwalk_loop_v1",
+                "whole_meadow_islands_v1",
+                "water_edge_rail_v1",
+                "plus_pool_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "floating_park_pool_v1",
           "label": "Copenhagen Harbour Bath",
           "thumbnailUrl": "/archetypes/openspaces/floating-park-pool/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_floating_meadow_loop_v2",
+              "profileId": "floating-meadow-loop-lego-v1",
+              "appearanceKitId": "floating_park_pool_v1_harbour_bath_skin",
+              "componentSetIds": [
+                "floating_park_ground_program_v1",
+                "continuous_boardwalk_loop_v1",
+                "whole_meadow_islands_v1",
+                "water_edge_rail_v1",
+                "harbour_bath_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "floating_park_pool_v2",
           "label": "Floating-Boardwalk Meadow Loop",
           "thumbnailUrl": "/archetypes/openspaces/floating-park-pool/variant_2.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_floating_meadow_loop_v2",
@@ -10257,7 +10576,7 @@
                 "whole_meadow_islands_v1",
                 "water_edge_rail_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -10265,8 +10584,22 @@
           "id": "floating_park_pool_v3",
           "label": "Little-Island Pillar-Meadow",
           "thumbnailUrl": "/archetypes/openspaces/floating-park-pool/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_floating_meadow_loop_v2",
+              "profileId": "floating-meadow-loop-lego-v1",
+              "appearanceKitId": "floating_park_pool_v3_little_island_skin",
+              "componentSetIds": [
+                "floating_park_ground_program_v1",
+                "continuous_boardwalk_loop_v1",
+                "whole_meadow_islands_v1",
+                "water_edge_rail_v1",
+                "tulip_pillar_island_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -10275,30 +10608,58 @@
       "title": "Lighthouse Point / Headland Park",
       "spaceType": "park",
       "aestheticCategory": "waterfront_spaces",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "lighthouse_point_park_v0",
           "label": "Cape Rocky-Headland Light",
           "thumbnailUrl": "/archetypes/openspaces/lighthouse-point-park/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_lighthouse_pacific_headland_v2",
+              "profileId": "lighthouse-pacific-headland-lego-v1",
+              "appearanceKitId": "lighthouse_point_park_v0_cape_skin",
+              "componentSetIds": [
+                "headland_ground_program_v1",
+                "cliff_setback_loop_v1",
+                "whole_wind_grove_cells_v1",
+                "lighthouse_building_reservation_v1",
+                "cape_light_cottage_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "lighthouse_point_park_v1",
           "label": "Atlantic Dune Point Light Station",
           "thumbnailUrl": "/archetypes/openspaces/lighthouse-point-park/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_lighthouse_pacific_headland_v2",
+              "profileId": "lighthouse-pacific-headland-lego-v1",
+              "appearanceKitId": "lighthouse_point_park_v1_dune_skin",
+              "componentSetIds": [
+                "headland_ground_program_v1",
+                "cliff_setback_loop_v1",
+                "whole_wind_grove_cells_v1",
+                "lighthouse_building_reservation_v1",
+                "atlantic_dune_station_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "lighthouse_point_park_v2",
           "label": "Pacific Cliff Promontory Light",
           "thumbnailUrl": "/archetypes/openspaces/lighthouse-point-park/variant_2.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_lighthouse_pacific_headland_v2",
@@ -10310,7 +10671,7 @@
                 "whole_wind_grove_cells_v1",
                 "lighthouse_building_reservation_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -10318,8 +10679,22 @@
           "id": "lighthouse_point_park_v3",
           "label": "Mediterranean Fortress Lighthouse",
           "thumbnailUrl": "/archetypes/openspaces/lighthouse-point-park/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_lighthouse_pacific_headland_v2",
+              "profileId": "lighthouse-pacific-headland-lego-v1",
+              "appearanceKitId": "lighthouse_point_park_v3_fortress_skin",
+              "componentSetIds": [
+                "headland_ground_program_v1",
+                "cliff_setback_loop_v1",
+                "whole_wind_grove_cells_v1",
+                "lighthouse_building_reservation_v1",
+                "fortress_lighthouse_esplanade_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -10423,30 +10798,58 @@
       "title": "Lake Edge Plaza",
       "spaceType": "plaza",
       "aestheticCategory": "waterfront_spaces",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "lake_edge_plaza_v0",
           "label": "Como-Style Stone Terrace",
           "thumbnailUrl": "/archetypes/openspaces/lake-edge-plaza/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_lake_edge_timber_deck_v2",
+              "profileId": "lake-edge-timber-deck-lego-v1",
+              "appearanceKitId": "lake_edge_plaza_v0_como_skin",
+              "componentSetIds": [
+                "lake_edge_ground_program_v1",
+                "continuous_timber_promenade_v1",
+                "whole_step_seat_bays_v1",
+                "rain_planter_edge_v1",
+                "stone_terrace_lake_edge_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "lake_edge_plaza_v1",
           "label": "Geneva Quayside Esplanade",
           "thumbnailUrl": "/archetypes/openspaces/lake-edge-plaza/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_lake_edge_timber_deck_v2",
+              "profileId": "lake-edge-timber-deck-lego-v1",
+              "appearanceKitId": "lake_edge_plaza_v1_geneva_skin",
+              "componentSetIds": [
+                "lake_edge_ground_program_v1",
+                "continuous_timber_promenade_v1",
+                "whole_step_seat_bays_v1",
+                "rain_planter_edge_v1",
+                "geneva_quayside_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "lake_edge_plaza_v2",
           "label": "Modern Timber Lakefront Deck",
           "thumbnailUrl": "/archetypes/openspaces/lake-edge-plaza/variant_2.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_lake_edge_timber_deck_v2",
@@ -10458,7 +10861,7 @@
                 "whole_step_seat_bays_v1",
                 "rain_planter_edge_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -10466,8 +10869,22 @@
           "id": "lake_edge_plaza_v3",
           "label": "Chicago-Lakefront Hard Plaza",
           "thumbnailUrl": "/archetypes/openspaces/lake-edge-plaza/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_lake_edge_timber_deck_v2",
+              "profileId": "lake-edge-timber-deck-lego-v1",
+              "appearanceKitId": "lake_edge_plaza_v3_chicago_skin",
+              "componentSetIds": [
+                "lake_edge_ground_program_v1",
+                "continuous_timber_promenade_v1",
+                "whole_step_seat_bays_v1",
+                "rain_planter_edge_v1",
+                "chicago_hard_esplanade_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },

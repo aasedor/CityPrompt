@@ -13,6 +13,7 @@ import {
   resolveParkProgramAnchorLayout,
   usesArchetypeOwnedParkSurface,
 } from './parkLegoFamilies';
+import { BATCH26_PARK_SKINS } from './parkBatch26Skins';
 
 function zone(properties: Record<string, unknown>): Pick<SiteZone, 'properties' | 'zone_type'> {
   return { zone_type: 'green_space', properties };
@@ -873,5 +874,33 @@ describe('Public Realm LEGO V1 park families', () => {
       .toBe(NEIGHBORHOOD_COMMUNITY_PROGRAM_ANCHORS);
     expect(resolveParkProgramAnchorLayout(zone({ green_space_archetype_id: 'urban_pocket_park' })))
       .toBeUndefined();
+  });
+
+  it('executes every Batch 26 exact-reference closure through its reviewed parent family', () => {
+    const familyByArchetype: Record<string, string> = {
+      greenbelt_buffer_park: 'park_greenbelt_rail_trail_v1',
+      foothill_trail_park: 'park_foothill_heathland_trail_v2',
+      concert_pavilion_lawn: 'park_concert_timber_lawn_v2',
+      night_market: 'park_night_market_hawker_v0',
+      parade_ground: 'park_parade_national_mall_v3',
+      marina_yacht_harbor: 'park_marina_pacific_dock_v2',
+      working_pier_wharf_conversion: 'park_working_pier_brooklyn_park_v3',
+      floating_park_pool: 'park_floating_meadow_loop_v2',
+      lighthouse_point_park: 'park_lighthouse_pacific_headland_v2',
+      lake_edge_plaza: 'park_lake_edge_timber_deck_v2',
+    };
+    for (const skin of BATCH26_PARK_SKINS) {
+      const candidate = zone({
+        green_space_archetype_id: skin.archetypeId,
+        green_space_selected_variant_id: skin.variantId,
+      });
+      expect(resolveParkLegoContract(candidate)).toMatchObject({
+        familyId: familyByArchetype[skin.archetypeId],
+        archetypeId: skin.archetypeId,
+        variantId: skin.variantId,
+        supported: true,
+      });
+      expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true);
+    }
   });
 });

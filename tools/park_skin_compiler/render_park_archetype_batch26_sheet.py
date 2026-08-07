@@ -1,0 +1,74 @@
+"""Render the mobile-friendly Batch 26 archetype-to-material review sheet."""
+from __future__ import annotations
+
+import argparse
+import json
+from pathlib import Path
+
+from PIL import Image, ImageDraw, ImageFont
+
+from compile_neighborhood_park_skins import REPO_ROOT
+
+SCHEDULE = Path(__file__).with_name("park_archetype_batch26_skin_sources.json")
+ROLES = ("paver", "lawn", "asphalt", "planting", "safety", "timber")
+GROUPS = (
+    ("Greenbelt Buffer", ("greenbelt-suburban-lawn-v0", "greenbelt-hedgerow-buffer-v2", "greenbelt-active-spine-v3")),
+    ("Foothill Trail", ("foothill-sage-ridge-v0", "foothill-eucalyptus-ridge-v1", "foothill-alpine-larch-v3")),
+    ("Concert Pavilion Lawn", ("concert-forest-hills-v0", "concert-wave-canopy-v1", "concert-bowl-shell-v3")),
+    ("Night Market", ("night-market-christmas-v1", "night-market-latin-canopy-v2", "night-market-food-hall-v3")),
+    ("Parade Ground", ("parade-stadium-forecourt-v0", "parade-mall-allee-v1", "parade-champ-de-mars-v2")),
+    ("Marina Yacht Harbor", ("marina-inland-lake-v0", "marina-fishing-harbour-v1", "marina-superyacht-v3")),
+    ("Working Pier Conversion", ("working-pier-public-market-v0", "working-pier-retail-boardwalk-v1", "working-pier-industrial-overlay-v2")),
+    ("Floating Park Pool", ("floating-plus-pool-v0", "floating-harbour-bath-v1", "floating-little-island-v3")),
+    ("Lighthouse Point", ("lighthouse-cape-headland-v0", "lighthouse-atlantic-dune-v1", "lighthouse-fortress-v3")),
+    ("Lake Edge Plaza", ("lake-edge-como-terrace-v0", "lake-edge-geneva-esplanade-v1", "lake-edge-chicago-plaza-v3")),
+)
+
+
+def font(size: int, bold: bool = False) -> ImageFont.ImageFont:
+    path = Path("C:/Windows/Fonts/arialbd.ttf" if bold else "C:/Windows/Fonts/arial.ttf")
+    return ImageFont.truetype(str(path), size) if path.exists() else ImageFont.load_default()
+
+
+def cover(image: Image.Image, size: tuple[int, int]) -> Image.Image:
+    source = image.convert("RGB")
+    scale = max(size[0] / source.width, size[1] / source.height)
+    resized = source.resize((round(source.width * scale), round(source.height * scale)), Image.Resampling.LANCZOS)
+    left, top = (resized.width - size[0]) // 2, (resized.height - size[1]) // 2
+    return resized.crop((left, top, left + size[0], top + size[1]))
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--out", type=Path, required=True)
+    args = parser.parse_args()
+    schedule = json.loads(SCHEDULE.read_text(encoding="utf-8"))["archetypes"]
+    card_w, card_h, gap, margin = 510, 430, 18, 24
+    header_h, group_h = 110, 42
+    sheet = Image.new("RGB", (margin * 2 + card_w * 3 + gap * 2, header_h + margin + len(GROUPS) * (group_h + card_h + gap)), "#f2eee5")
+    draw = ImageDraw.Draw(sheet)
+    draw.text((margin, 20), "PARK LEGO BATCH 26 - ARCHETYPE REFERENCE TO MATERIAL FAMILY", fill="#27332c", font=font(26, True))
+    draw.text((margin, 57), "30 exact skins - parcel-aware depth kits - no people - no large buildings - no AI draping", fill="#59665e", font=font(18))
+    y = header_h
+    for group_name, slugs in GROUPS:
+        draw.text((margin, y + 7), group_name.upper(), fill="#3f5948", font=font(19, True)); y += group_h
+        for column, slug in enumerate(slugs):
+            x = margin + column * (card_w + gap)
+            draw.rounded_rectangle((x, y, x + card_w, y + card_h), 14, fill="#fffdf8", outline="#c9c2b5", width=2)
+            sheet.paste(cover(Image.open(REPO_ROOT / schedule[slug]["source"]), (card_w - 24, 245)), (x + 12, y + 12))
+            draw.rectangle((x + 12, y + 220, x + card_w - 12, y + 257), fill="#1d2521")
+            draw.text((x + 22, y + 228), slug, fill="white", font=font(15, True))
+            for role_index, role in enumerate(ROLES):
+                swatch = cover(Image.open(REPO_ROOT / "frontend/public/park-skins" / slug / "adaptive-v1" / role / "albedo.jpg"), (70, 70))
+                swatch_x = x + 12 + role_index * 81
+                sheet.paste(swatch, (swatch_x, y + 276))
+                draw.text((swatch_x, y + 352), role[:5].upper(), fill="#566159", font=font(11, True))
+            draw.text((x + 12, y + 395), "Reference statistics + role-specific procedural structure", fill="#6b736d", font=font(13))
+        y += card_h + gap
+    args.out.parent.mkdir(parents=True, exist_ok=True)
+    sheet.save(args.out, quality=91, optimize=True)
+    print(args.out.resolve())
+
+
+if __name__ == "__main__":
+    main()
