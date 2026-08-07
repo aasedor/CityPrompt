@@ -31,7 +31,38 @@ if hasattr(sys.stderr, "reconfigure"):
 
 import requests
 
+from visual_approval import validate_visual_approval
+
 GLB_CONTENT_TYPE = "model/gltf-binary"
+
+
+def catalogue_release_gate(folder: Path) -> tuple[bool, str]:
+    """Require cheap preflight, structural validation, and human approval."""
+    required = {
+        "production_preflight.json": "pass",
+        "validation_report.json": "pass",
+    }
+    for filename, expected in required.items():
+        path = folder / filename
+        if not path.is_file():
+            return False, f"{filename} is missing"
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            return False, f"could not read {filename}: {exc}"
+        if payload.get("status") != expected:
+            return False, f"{filename} status is {payload.get('status')!r}"
+
+    approval_path = folder / "visual_approval.json"
+    try:
+        approval = (
+            json.loads(approval_path.read_text(encoding="utf-8"))
+            if approval_path.is_file()
+            else None
+        )
+    except (OSError, json.JSONDecodeError) as exc:
+        return False, f"could not read visual_approval.json: {exc}"
+    return validate_visual_approval(approval)
 
 
 def _fail(message: str) -> "SystemExit":
@@ -104,6 +135,12 @@ def import_family(args: argparse.Namespace, token: str, manifest_path: Path) -> 
 
     family = manifest.get("family", manifest_path.stem)
     print(f"\nImporting family '{family}' from {manifest_path.name}")
+    release_ready, release_detail = catalogue_release_gate(manifest_path.parent)
+    if not release_ready and not args.force:
+        print(f"ERROR: catalogue release gate failed: {release_detail}", file=sys.stderr)
+        return False
+    if not release_ready:
+        print(f"  WARNING: --force bypassed catalogue release gate: {release_detail}")
     if not glbs:
         print("ERROR: no module GLBs found next to the manifest", file=sys.stderr)
         return False
@@ -158,7 +195,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--token", default=None, help="Bearer token (or env SITEFORGE_TOKEN)")
     parser.add_argument("--email", default=None, help="Login email (or env SITEFORGE_EMAIL)")
     parser.add_argument("--password", default=None, help="Login password (or env SITEFORGE_PASSWORD)")
-    parser.add_argument("--force", action="store_true", help="Import even if validation_report status != pass")
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        help="explicitly bypass production preflight, validation, or visual-approval release gates",
+    )
     args = parser.parse_args(argv)
 
     if not args.output_dir.is_dir():

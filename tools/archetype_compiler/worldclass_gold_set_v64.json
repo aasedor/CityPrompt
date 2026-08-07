@@ -1,0 +1,60 @@
+{
+  "schema": "worldclass-lego-library@2",
+  "name": "Building Gold Set v64 — Four-Family Production Calibration",
+  "description": "Grammar-only and one-representative pilots for the four user-approved archetype-fidelity benchmarks.",
+  "generation_profile": {
+    "facade_model": "reference-locked-shadow-neutral-pbr",
+    "facade_sheet_schema": "facade-sheet@5",
+    "facade_sheet_root": "tools/archetype_compiler/facade_sheets_pbr_gold_v64",
+    "texture_library": "tools/archetype_compiler/textures_worldclass_v7",
+    "geometry_detail": "hero",
+    "presentation_view_set": "all",
+    "ambient_occlusion": false,
+    "strict_production_preflight": true,
+    "signature_profile": "tools/archetype_compiler/architectural_signature_profiles.json",
+    "quality_memory": "tools/archetype_compiler/high_quality_building_memory.json",
+    "gold_set": "tools/archetype_compiler/building_gold_set.json"
+  },
+  "entries": [
+    {
+      "entry_id": "haussmann-classic-gold",
+      "archetype_id": "parisian_midrise_block",
+      "variant_id": "parisian_haussmann_classic",
+      "family_id": "parisian-haussmann-classic-gold-v64",
+      "floors": 5,
+      "width_m": 24,
+      "depth_m": 16,
+      "group": "Authored semantic heritage stack"
+    },
+    {
+      "entry_id": "victorian-second-empire-gold",
+      "archetype_id": "victorian_heritage_avenue",
+      "variant_id": "victorian_heritage_second_empire",
+      "family_id": "victorian-second-empire-gold-v64",
+      "floors": 4,
+      "width_m": 12,
+      "depth_m": 20,
+      "group": "Authored semantic heritage stack"
+    },
+    {
+      "entry_id": "eixample-classic-gold",
+      "archetype_id": "eixample_apartment_block",
+      "variant_id": "eixample-apartment-block-classic",
+      "family_id": "eixample-classic-gold-v64",
+      "floors": 6,
+      "width_m": 22,
+      "depth_m": 22,
+      "group": "Chamfered perimeter massing graph"
+    },
+    {
+      "entry_id": "perpendicular-chapel-gold",
+      "archetype_id": "collegiate_gothic_education",
+      "variant_id": "collegiate_gothic_perpendicular",
+      "family_id": "perpendicular-chapel-gold-v64",
+      "floors": 4,
+      "width_m": 60,
+      "depth_m": 40,
+      "group": "Landmark massing graph"
+    }
+  ]
+}

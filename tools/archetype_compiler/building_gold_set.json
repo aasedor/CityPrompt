@@ -1,0 +1,79 @@
+{
+  "schema": "building-generation-gold-set@1",
+  "version": "2026-08-07-four-family-v1",
+  "approval_basis": "User selected these four families as the strongest archetype-faithful results produced so far.",
+  "purpose": "Calibration set for compiler changes and representatives for the first catalogue production clusters.",
+  "shared_success_contract": {
+    "variant_level_provenance": true,
+    "minimum_reference_views": 3,
+    "required_reference_roles": [
+      "street_identity",
+      "oblique_massing",
+      "roof_or_aerial"
+    ],
+    "identity_modes": [
+      "semantic_stack",
+      "massing_graph"
+    ],
+    "fixed_identity": [
+      "entrance and base",
+      "corner or end condition",
+      "crown and roof",
+      "archetype-specific silhouette features"
+    ],
+    "repeatable_capacity": "Only ordinary middle bays or floors may repeat.",
+    "release_gate": "A structural pass remains review-only until an explicit multiscale visual_approval.json exists."
+  },
+  "families": [
+    {
+      "id": "victorian-second-empire",
+      "archetype_id": "victorian_heritage_avenue",
+      "variant_id": "victorian_heritage_second_empire",
+      "baseline_family": "victorian-second-empire-renderlocked-v1",
+      "identity_mode": "semantic_stack",
+      "why_it_worked": [
+        "The selected variant, not the Victorian parent, controlled the elevation and materials.",
+        "The shallow crown and patterned mansard remained fixed instead of becoming another repeated floor.",
+        "Portico, rustication, dormers and roof cresting were semantic assemblies with construction depth."
+      ]
+    },
+    {
+      "id": "haussmann-classic",
+      "archetype_id": "parisian_midrise_block",
+      "variant_id": "parisian_haussmann_classic",
+      "baseline_family": "parisian-v19e-detail-correction",
+      "identity_mode": "semantic_stack",
+      "why_it_worked": [
+        "The façade hierarchy was authored as shopfront base, ordered middle, continuous balcony datums and mansard crown.",
+        "Dormers, recessed shopfronts and the softened corner were corrected as geometry rather than repainted pixels.",
+        "Only the neutral limestone bay rhythm remained repeatable."
+      ]
+    },
+    {
+      "id": "eixample-classic",
+      "archetype_id": "eixample_apartment_block",
+      "variant_id": "eixample-apartment-block-classic",
+      "baseline_family": "eixample-apartment-block-v21r",
+      "identity_mode": "massing_graph",
+      "massing_graph": "cerda_chamfer_v21",
+      "why_it_worked": [
+        "A true Cerdà chamfer replaced the generic rectangular corner.",
+        "Diagonal skins, glazing and balconies were oriented onto every chamfer face.",
+        "The corner entrance, balcony datums and cornice remained fixed while ordinary residential bays repeated."
+      ]
+    },
+    {
+      "id": "perpendicular-gothic-chapel",
+      "archetype_id": "collegiate_gothic_education",
+      "variant_id": "collegiate_gothic_perpendicular",
+      "baseline_family": "collegiate-gothic-perpendicular-v2-renderlocked",
+      "identity_mode": "massing_graph",
+      "massing_graph": "perpendicular_chapel_lantern_v52",
+      "why_it_worked": [
+        "The rejected flat rectangular version was replaced by a dedicated chapel-hall massing graph.",
+        "The central tower, octagonal lantern, four terminal towers, buttresses and roof were fixed geometry.",
+        "All exposed tower planes received registered skins and construction-depth glazing."
+      ]
+    }
+  ]
+}

@@ -9,7 +9,10 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-07-18-nine-family-v21`.
+Current executable memory: `2026-08-07-four-family-gold-set-v64`.
+
+The current calibration set and catalogue rollout rationale are documented in
+[`BUILDING_GOLD_SET_PIPELINE_SYNTHESIS_2026-08-07.md`](BUILDING_GOLD_SET_PIPELINE_SYNTHESIS_2026-08-07.md).
 
 ## The quality target
 
@@ -20,6 +23,25 @@ The target is Kinnaird-class architectural identity in a modular real-time asset
 3. **Facade scale:** materials, glazing, joints, returns, interiors and restrained variation withstand close inspection.
 
 A texture can supply surface richness. It cannot repair incorrect massing, missing corners, unsupported projections or a generic roof.
+
+## Four-family gold-set contract
+
+Victorian Second Empire, Classic Haussmann, Classic Eixample and the corrected
+Perpendicular Gothic Chapel are the current visual calibration set. They prove
+two valid production identity modes:
+
+- `semantic_stack` for an archetype whose authentic form is a regular
+  streetwall, provided the base, entrance, ends, datums, crown and roof are
+  fixed and only ordinary middle bays repeat;
+- `massing_graph` where plan, silhouette or section carries identity, such as
+  the Eixample chamfer or the chapel lantern and terminal towers.
+
+Every production family must declare one of these modes. The catalogue exporter
+must resolve a specific variant and record street, oblique and roof/aerial
+reference roles. `production_preflight.json` must pass before facade-image or
+Blender generation. After generation, structural validation is insufficient:
+`visual_approval.json` must explicitly approve block, building, facade and
+orbit/context comparisons before `high_quality_ready` can become true.
 
 ## The repeatable construction recipe
 

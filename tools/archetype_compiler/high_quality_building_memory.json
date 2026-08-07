@@ -1,8 +1,19 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-19-ruskinian-registration-v63",
+  "memory_version": "2026-08-07-four-family-gold-set-v64",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
+  "calibration_set": {
+    "schema": "building-generation-gold-set@1",
+    "version": "2026-08-07-four-family-v1",
+    "path": "tools/archetype_compiler/building_gold_set.json",
+    "families": [
+      "victorian_heritage_second_empire",
+      "parisian_haussmann_classic",
+      "eixample-apartment-block-classic",
+      "collegiate_gothic_perpendicular"
+    ]
+  },
   "non_negotiable_principles": [
     {
       "id": "reference_is_goalpost",
@@ -63,6 +74,18 @@
     {
       "id": "variant_identity_survives_export",
       "rule": "The selected catalogue variant must rewrite generationStyleInput, image provenance and generation identifier before family export. Validate the resolved UI id and source thumbnail so sibling variants can never silently compile as variant_0."
+    },
+    {
+      "id": "identity_mode_is_explicit",
+      "rule": "Every production family declares whether identity is carried by an archetype-specific massing graph or by a tightly authored semantic stack. Unclassified generic stacks cannot enter paid generation."
+    },
+    {
+      "id": "preflight_precedes_paid_generation",
+      "rule": "Variant provenance, three compatible reference roles, the fixed/repeatable decomposition and canonical graph dimensions must pass a grammar-only preflight before any image API or Blender work."
+    },
+    {
+      "id": "human_approval_controls_release",
+      "rule": "Structural validation never implies archetype likeness. A generated family remains review-only until a named reviewer approves block, building, facade and orbit/context comparisons against the authoritative reference set."
     },
     {
       "id": "parcel_is_dimension_authority",
@@ -260,12 +283,14 @@
       "missing_fixed_assembly_contract",
       "fewer_than_three_preferred_footprint_profiles",
       "missing_side_elevation_wrap",
-      "semantic_mask_shape_mismatch",
-      "material_count_warning"
+                   "semantic_mask_shape_mismatch",
+                   "material_count_warning",
+                   "missing_visual_approval"
     ],
     "required_renders": [
-      "preview",
-      "street",
+                             "preview",
+                             "archetype_match",
+                             "street",
       "front_corner_oblique",
       "rear_corner_oblique",
       "aerial",

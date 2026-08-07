@@ -20,6 +20,7 @@ sys.path.insert(0, str(TOOL_DIR))
 
 from compiler import compile_archetype  # noqa: E402
 from generate_family import export_archetype  # noqa: E402
+from pipeline_preflight import assess_generation_preflight  # noqa: E402
 from quality_memory import (  # noqa: E402
     DEFAULT_MEMORY_PATH,
     assess_family_quality,
@@ -62,19 +63,42 @@ def prepare_grammar(entry: dict, family_dir: Path) -> dict:
         width_m=entry.get("width_m"),
         depth_m=entry.get("depth_m"),
     ).to_dict()
-    inject_signature(grammar, entry["archetype_id"])
+    inject_signature(
+        grammar,
+        entry["archetype_id"],
+        variant_id=entry.get("variant_id"),
+    )
+    if entry.get("family_id"):
+        grammar["family_id"] = entry["family_id"]
     (family_dir / "grammar.json").write_text(json.dumps(grammar, indent=2), encoding="utf-8")
     return grammar
 
 
-def family_result(entry: dict, family_dir: Path, sheet_dir: Path, quality_memory: dict) -> dict:
+def family_result(
+    entry: dict,
+    family_dir: Path,
+    sheet_dir: Path,
+    quality_memory: dict,
+    preflight: dict | None = None,
+) -> dict:
     reports = list(family_dir.glob("validation_report.json"))
     manifests = [path for path in family_dir.glob("*_manifest.json") if path.name != "manifest.json"]
     manifest = json.loads(manifests[0].read_text(encoding="utf-8")) if manifests else {}
     report = json.loads(reports[0].read_text(encoding="utf-8")) if reports else {}
+    approval_path = family_dir / "visual_approval.json"
+    visual_approval = (
+        json.loads(approval_path.read_text(encoding="utf-8"))
+        if approval_path.exists()
+        else None
+    )
     preview_name = manifest.get("thumbnail")
     quality_assessment = (
-        assess_family_quality(manifest, report, quality_memory)
+        assess_family_quality(
+            manifest,
+            report,
+            quality_memory,
+            visual_approval=visual_approval,
+        )
         if manifest and report
         else {
             "schema": "high-quality-building-assessment@1",
@@ -103,6 +127,7 @@ def family_result(entry: dict, family_dir: Path, sheet_dir: Path, quality_memory
         "city_prompt_ready": report.get("status") == "pass" and bool(manifests),
         "high_quality_ready": quality_assessment["high_quality_ready"],
         "quality_assessment": quality_assessment,
+        "production_preflight": preflight,
         "import_command": f"python tools/archetype_compiler/import_manifest.py {family_dir.relative_to(REPO_ROOT).as_posix()}",
     }
 
@@ -111,10 +136,25 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--registry", type=Path, default=TOOL_DIR / "worldclass_v7_library.json")
     parser.add_argument("--output", type=Path, default=REPO_ROOT / "build" / "worldclass-v7" / "families")
-    parser.add_argument("--only", action="append", default=[], help="archetype id; repeat to select several")
+    parser.add_argument(
+        "--only",
+        action="append",
+        default=[],
+        help="entry_id or archetype id; repeat to select several",
+    )
     parser.add_argument("--force-facades", action="store_true")
     parser.add_argument("--skip-facades", action="store_true", help="require an existing sheet manifest")
     parser.add_argument("--skip-models", action="store_true", help="prepare grammars/sheets only")
+    parser.add_argument(
+        "--grammar-only",
+        action="store_true",
+        help="export, compile, and production-preflight each entry; make no image API or Blender calls",
+    )
+    parser.add_argument(
+        "--prototype",
+        action="store_true",
+        help="continue beyond failed production preflight; outputs cannot be catalogue-ready",
+    )
     parser.add_argument("--presentation-view-set", choices=("all", "preview"), default=None)
     parser.add_argument("--facade-sheet-detail", choices=("hero", "city"), default=None)
     parser.add_argument(
@@ -132,8 +172,18 @@ def main() -> int:
     entries = list(registry["entries"])
     if args.only:
         selected = set(args.only)
-        entries = [entry for entry in entries if entry["archetype_id"] in selected]
-        missing = selected - {entry["archetype_id"] for entry in entries}
+        entries = [
+            entry
+            for entry in entries
+            if entry["archetype_id"] in selected or entry.get("entry_id") in selected
+        ]
+        matched = {
+            value
+            for entry in entries
+            for value in (entry["archetype_id"], entry.get("entry_id"))
+            if value
+        }
+        missing = selected - matched
         if missing:
             raise SystemExit(f"unknown --only ids: {', '.join(sorted(missing))}")
     output_root = args.output.resolve()
@@ -145,7 +195,12 @@ def main() -> int:
 
     for index, entry in enumerate(entries, 1):
         archetype_id = entry["archetype_id"]
-        family_dir = output_root / archetype_id.replace("_", "-")
+        default_slug = (
+            f"{archetype_id}--{entry['variant_id']}"
+            if entry.get("variant_id")
+            else archetype_id
+        ).replace("_", "-")
+        family_dir = output_root / entry.get("family_id", default_slug)
         log(f"[{index}/{len(entries)}] {archetype_id}")
         try:
             grammar_path = family_dir / "grammar.json"
@@ -157,7 +212,19 @@ def main() -> int:
             sheet_root = REPO_ROOT / profile.get("facade_sheet_root", "tools/archetype_compiler/facade_sheets")
             sheet_dir = sheet_root / family
             sheet_manifest = sheet_dir / "manifest.json"
-            if not args.skip_facades:
+            source = json.loads((family_dir / "archetype-source.json").read_text(encoding="utf-8"))
+            preflight = assess_generation_preflight(source, grammar)
+            (family_dir / "production_preflight.json").write_text(
+                json.dumps(preflight, indent=2) + "\n",
+                encoding="utf-8",
+            )
+            if preflight["status"] != "pass" and not args.prototype:
+                findings = "; ".join(
+                    f"{item['id']}: {item['detail']}" for item in preflight["failures"]
+                )
+                raise RuntimeError(f"production preflight blocked paid generation: {findings}")
+
+            if not args.grammar_only and not args.skip_facades:
                 facade_command = [
                     sys.executable,
                     str(TOOL_DIR / "generate_facade_sheets.py"),
@@ -167,10 +234,10 @@ def main() -> int:
                 if args.force_facades:
                     facade_command.append("--force")
                 run(facade_command, family_dir / "logs" / "facade-sheet.log")
-            elif not args.skip_models and not sheet_manifest.exists():
+            elif not args.grammar_only and not args.skip_models and not sheet_manifest.exists():
                 raise RuntimeError(f"--skip-facades but {sheet_manifest} does not exist")
 
-            if not args.skip_models:
+            if not args.grammar_only and not args.skip_models:
                 model_command = [
                     sys.executable,
                     str(TOOL_DIR / "generate_family.py"),
@@ -188,6 +255,8 @@ def main() -> int:
                 ]
                 if entry.get("variant_id"):
                     model_command += ["--variant-id", entry["variant_id"]]
+                if entry.get("family_id"):
+                    model_command += ["--family-id", entry["family_id"]]
                 if entry.get("floors"):
                     model_command += ["--floors", str(entry["floors"])]
                 if entry.get("width_m"):
@@ -195,7 +264,15 @@ def main() -> int:
                 if entry.get("depth_m"):
                     model_command += ["--depth", str(entry["depth_m"])]
                 run(model_command, family_dir / "logs" / "family-batch.log")
-            results.append(family_result(entry, family_dir, sheet_dir, quality_memory))
+            results.append(
+                family_result(
+                    entry,
+                    family_dir,
+                    sheet_dir,
+                    quality_memory,
+                    preflight=preflight,
+                )
+            )
             log(f"completed {archetype_id}")
         except Exception as exc:
             failure = {"archetype_id": archetype_id, "error": str(exc)}

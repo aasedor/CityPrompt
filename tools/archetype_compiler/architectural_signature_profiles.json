@@ -32,6 +32,12 @@
     },
     "collegiate_gothic_perpendicular": {
       "identity": "Perpendicular Collegiate Gothic chapel with giant traceried windows, a fixed central lantern tower, vertical stone buttresses, corner towers, pinnacles and a crenellated parapet.",
+      "production_contract": {
+        "identity_mode": "massing_graph",
+        "fixed_identity": ["central tower and octagonal lantern", "four terminal stair towers", "crenellated roof perimeter", "pointed ceremonial portal"],
+        "repeatable_capacity": ["ordinary nave wall bays"],
+        "required_reference_roles": ["street_identity", "oblique_massing", "roof_or_aerial"]
+      },
       "material_zones": "pale warm limestone; deep carved tracery; clear warm glazing; lead-grey roof; dark bronze doors",
       "glass_profile": "heritage_leaded_occupied",
       "dimension_overrides": {"width_m": 60.0, "depth_m": 40.0, "default_floors": 4, "crown_height_m": 3.0},
@@ -170,6 +176,13 @@
     },
     "victorian_heritage_second_empire": {
       "identity": "Formal Second Empire mansion with rusticated limestone corners, a fixed columned portico, pedimented windows, balustrades and an ornate patterned-slate mansard with cresting.",
+      "production_contract": {
+        "identity_mode": "semantic_stack",
+        "fixed_identity": ["rusticated base and ceremonial portico", "terminal limestone corners", "shallow cornice crown", "patterned mansard, dormers and cresting"],
+        "repeatable_capacity": ["ordinary dressed-stone middle bays"],
+        "authored_atlas_span_m": 12.0,
+        "required_reference_roles": ["street_identity", "oblique_massing", "roof_or_aerial"]
+      },
       "material_zones": "pale warm limestone; dark bronze sash windows and doors; patterned blue-grey slate; black iron cresting",
       "glass_profile": "residential_low_e",
       "dimension_overrides": {"crown_height_m": 1.45},
@@ -190,6 +203,13 @@
     },
     "parisian_midrise_block": {
       "identity": "Haussmann boulevard block with a tall shopfront base, ordered French windows, two continuous iron balconies, deep cornice and slate mansard dormers.",
+      "production_contract": {
+        "identity_mode": "semantic_stack",
+        "fixed_identity": ["recessed shopfront base and entrance", "returned limestone corner conditions", "continuous balcony datums and deep cornice", "zinc mansard, occupied dormers and chimneys"],
+        "repeatable_capacity": ["ordinary ordered limestone window bays"],
+        "authored_atlas_span_m": 24.0,
+        "required_reference_roles": ["street_identity", "oblique_massing", "roof_or_aerial"]
+      },
       "material_zones": "warm limestone; black iron balconies; dark slate roof; restrained awnings at street level",
       "glass_profile": "residential_low_e",
       "material_overrides": {"roof": {"base_color": "#87939b", "roughness": 0.48, "metallic": 0.72, "texture_key": "standing_seam"}, "accent": {"base_color": "#202326", "metallic": 0.42}},
@@ -1014,6 +1034,12 @@
     },
     "eixample_apartment_block": {
       "identity": "Barcelona Eixample apartment block with chamfered-corner emphasis, repetitive wrought-iron balconies, carved stone portal, glazed galleries and a deep cornice.",
+      "production_contract": {
+        "identity_mode": "massing_graph",
+        "fixed_identity": ["Cerdà chamfer and diagonal entrance", "oriented chamfer return skins", "supported wrapping balcony datums", "deep perimeter cornice and roof deck"],
+        "repeatable_capacity": ["ordinary residential bays between chamfers"],
+        "required_reference_roles": ["street_identity", "oblique_massing", "roof_or_aerial"]
+      },
       "material_zones": "warm carved stone and stucco; black iron; timber shutters; darker stone base",
       "material_overrides": {"roof": {"base_color": "#c3bca8", "roughness": 0.80}, "accent": {"base_color": "#20231f", "roughness": 0.42, "metallic": 0.55}},
       "signature_material_overrides": {"signature_stone": {"base_color": "#d4c8a8", "roughness": 0.78, "texture_key": "limestone"}},

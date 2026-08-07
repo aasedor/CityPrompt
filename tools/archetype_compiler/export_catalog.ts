@@ -14,8 +14,8 @@
  *     --archetype-id nordic_timber_midrise --output ../build/archetype-source.json
  *   npx vite-node ../tools/archetype_compiler/export_catalog.ts -- --all --output ../build/archetype-catalog.json
  */
-import { mkdirSync, writeFileSync } from 'node:fs';
-import { dirname, resolve } from 'node:path';
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { dirname, extname, posix, resolve } from 'node:path';
 import {
   BUILDING_AESTHETIC_CATEGORIES_V2,
   BUILDING_AESTHETIC_OPTIONS_V2,
@@ -88,8 +88,33 @@ interface ExportedArchetype {
     aspectRatio?: string;
   };
   archetypeImages?: AestheticOption['archetypeImages'];
+  referenceViews: Array<{
+    role: 'street_identity' | 'oblique_massing' | 'roof_or_aerial';
+    path: string;
+  }>;
   variants?: ArchetypeVariant[];
   selectedVariant?: ArchetypeVariant | null;
+}
+
+function discoverReferenceViews(thumbnailUrl?: string): ExportedArchetype['referenceViews'] {
+  if (!thumbnailUrl?.startsWith('/archetypes/')) return [];
+
+  const normalized = thumbnailUrl.replace(/\\/g, '/');
+  const publicPath = resolve(process.cwd(), 'public', normalized.slice(1));
+  if (!existsSync(publicPath)) return [];
+
+  const extension = extname(normalized);
+  const stem = normalized.slice(0, -extension.length);
+  const candidates: ExportedArchetype['referenceViews'] = [
+    { role: 'street_identity', path: normalized },
+    { role: 'oblique_massing', path: `${stem}_angle_60.jpg` },
+    { role: 'roof_or_aerial', path: `${stem}_angle_90.jpg` },
+  ];
+
+  return candidates.filter((candidate) => {
+    const candidatePath = resolve(process.cwd(), 'public', candidate.path.slice(1));
+    return existsSync(candidatePath);
+  }).map((candidate) => ({ ...candidate, path: posix.normalize(candidate.path) }));
 }
 
 function buildPayload(option: AestheticOption, variantId?: string): ExportedArchetype {
@@ -113,6 +138,7 @@ function buildPayload(option: AestheticOption, variantId?: string): ExportedArch
         archetypeImagePath: selectedVariant.thumbnailUrl,
       }
     : option.generationStyleInput;
+  const thumbnailUrl = selectedVariant?.thumbnailUrl ?? seed?.thumbnailUrl;
 
   return {
     exportSchema: EXPORT_SCHEMA,
@@ -138,7 +164,7 @@ function buildPayload(option: AestheticOption, variantId?: string): ExportedArch
     shadeId: selectedVariant?.shadeId ?? seed?.shadeId,
     prompt: seed?.prompt,
     renderPrompt: selectedVariant?.renderPrompt ?? seed?.renderPrompt,
-    thumbnailUrl: selectedVariant?.thumbnailUrl ?? seed?.thumbnailUrl,
+    thumbnailUrl,
     districtKit: seed?.districtKit,
     footprintCompatibility: option.footprintCompatibility,
     dimensions: {
@@ -157,6 +183,7 @@ function buildPayload(option: AestheticOption, variantId?: string): ExportedArch
       aspectRatio: selectedVariant?.aspectRatio ?? option.aspectRatio,
     },
     archetypeImages: option.archetypeImages,
+    referenceViews: discoverReferenceViews(thumbnailUrl),
     variants: option.variants,
     selectedVariant,
   };

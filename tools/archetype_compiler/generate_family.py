@@ -31,6 +31,7 @@ sys.path.insert(0, str(TOOL_DIR))
 
 from blender_locator import BlenderNotFoundError, find_blender  # noqa: E402
 from compiler import compile_archetype  # noqa: E402
+from pipeline_preflight import assess_generation_preflight  # noqa: E402
 from signature_profiles import inject_signature  # noqa: E402
 
 
@@ -159,6 +160,14 @@ def main() -> None:
         action="store_true",
         help="export the catalogue entry and write grammar.json, then stop before Blender generation",
     )
+    parser.add_argument(
+        "--prototype",
+        action="store_true",
+        help=(
+            "write production_preflight.json but continue after failed production gates; "
+            "never use for catalogue release"
+        ),
+    )
     parser.add_argument("--verbose", action="store_true")
     args = parser.parse_args()
 
@@ -198,6 +207,21 @@ def main() -> None:
     if payload.get("footprintCompatibility"):
         grammar_payload["footprint_compatibility"] = payload["footprintCompatibility"]
     grammar_file.write_text(json.dumps(grammar_payload, indent=2), encoding="utf-8")
+    preflight = assess_generation_preflight(payload, grammar_payload)
+    preflight_file = output / "production_preflight.json"
+    preflight_file.write_text(json.dumps(preflight, indent=2) + "\n", encoding="utf-8")
+    if preflight["status"] != "pass":
+        details = "\n".join(
+            f"- {finding['id']}: {finding['detail']}" for finding in preflight["failures"]
+        )
+        if not args.prototype:
+            raise StepFailed(
+                "production-preflight",
+                f"paid generation is blocked; see {preflight_file}\n{details}",
+            )
+        log(f"PROTOTYPE ONLY — production preflight failed:\n{details}")
+    else:
+        log(f"production preflight: PASS ({preflight['identity_mode']})")
     dims = grammar.dimensions
     log(f"grammar: {grammar.family_id} — {dims.width_m}x{dims.depth_m} m, "
         f"{dims.default_floors} floors, roof={grammar.roof.type}, retail={grammar.massing.has_podium_retail}")

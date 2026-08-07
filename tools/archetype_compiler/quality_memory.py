@@ -11,6 +11,8 @@ import json
 from pathlib import Path
 from typing import Any
 
+from visual_approval import validate_visual_approval
+
 
 TOOL_DIR = Path(__file__).resolve().parent
 DEFAULT_MEMORY_PATH = TOOL_DIR / "high_quality_building_memory.json"
@@ -35,6 +37,8 @@ def load_quality_memory(path: Path | str = DEFAULT_MEMORY_PATH) -> dict[str, Any
         raise QualityMemoryError("quality memory requires non_negotiable_principles")
     if not payload.get("automated_quality_gates"):
         raise QualityMemoryError("quality memory requires automated_quality_gates")
+    if not payload.get("calibration_set"):
+        raise QualityMemoryError("quality memory requires calibration_set")
     return payload
 
 
@@ -48,6 +52,7 @@ def _render_roles(manifest: dict[str, Any]) -> set[str]:
         "front_corner_oblique",
         "rear_corner_oblique",
         "facade_close",
+        "archetype_match",
         "preview",
         "street",
         "aerial",
@@ -71,6 +76,7 @@ def assess_family_quality(
     manifest: dict[str, Any],
     report: dict[str, Any],
     memory: dict[str, Any] | None = None,
+    visual_approval: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Assess one generated family without requiring Blender or image APIs.
 
@@ -156,6 +162,7 @@ def assess_family_quality(
     )
     material_count = len(assembled_report.get("materials") or [])
     material_threshold = int(gates.get("material_count_review_threshold") or 20)
+    visual_approved, visual_detail = validate_visual_approval(visual_approval)
 
     review = [
         _gate(
@@ -211,6 +218,11 @@ def assess_family_quality(
             if material_count
             else "assembled material inventory unavailable",
         ),
+        _gate(
+            "missing_visual_approval",
+            visual_approved,
+            visual_detail,
+        ),
     ]
 
     triangles = int(assembled.get("triangle_count") or 0)
@@ -246,7 +258,18 @@ def assess_paths(
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     report_path = report_path or manifest_path.with_name("validation_report.json")
     report = json.loads(report_path.read_text(encoding="utf-8"))
-    return assess_family_quality(manifest, report, load_quality_memory(memory_path))
+    approval_path = manifest_path.with_name("visual_approval.json")
+    approval = (
+        json.loads(approval_path.read_text(encoding="utf-8"))
+        if approval_path.exists()
+        else None
+    )
+    return assess_family_quality(
+        manifest,
+        report,
+        load_quality_memory(memory_path),
+        visual_approval=approval,
+    )
 
 
 def main() -> int:

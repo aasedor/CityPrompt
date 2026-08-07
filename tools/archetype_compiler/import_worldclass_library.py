@@ -25,7 +25,8 @@ def main() -> int:
     parser.add_argument("--force", action="store_true")
     args = parser.parse_args()
     payload = json.loads(args.index.resolve().read_text(encoding="utf-8"))
-    families = [item for item in payload.get("families", []) if item.get("city_prompt_ready")]
+    readiness_key = "city_prompt_ready" if args.force else "high_quality_ready"
+    families = [item for item in payload.get("families", []) if item.get(readiness_key)]
     failures = 0
     for item in families:
         command = [

@@ -62,7 +62,7 @@ def test_full_pipeline_generates_validated_family(tmp_path: Path):
     result = subprocess.run(
         [sys.executable, str(TOOL_DIR / "generate_family.py"),
          "--archetype-id", "nordic_timber_midrise", "--output", str(out_dir),
-         "--floors", "6", "--skip-thumbnail"],
+         "--floors", "6", "--skip-thumbnail", "--prototype"],
         capture_output=True, text=True, encoding="utf-8", errors="replace",
     )
     assert result.returncode == 0, (result.stdout + result.stderr)[-1500:]

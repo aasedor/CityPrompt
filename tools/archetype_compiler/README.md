@@ -39,6 +39,25 @@ Direct (any OS):
 python tools/archetype_compiler/generate_family.py --archetype-id nordic_timber_midrise
 ```
 
+Production generation now writes `production_preflight.json` after catalogue
+export and grammar compilation. The preflight requires an explicit variant,
+three compatible reference roles, and an architectural signature declaring
+either `semantic_stack` or `massing_graph`. It blocks facade-image and Blender
+work unless it passes; `--prototype` is the explicit non-release bypass.
+
+Run the four-family gold-set calibration with no paid image or Blender calls:
+
+```powershell
+python tools/archetype_compiler/generate_worldclass_library.py `
+  --registry tools/archetype_compiler/worldclass_gold_set_v64.json `
+  --output artifacts/building-gold-set-v64/families `
+  --grammar-only
+```
+
+After generation, structural validation remains review-only until a person
+records `visual_approval.json`. See
+[`BUILDING_GOLD_SET_PIPELINE_SYNTHESIS_2026-08-07.md`](../../docs/BUILDING_GOLD_SET_PIPELINE_SYNTHESIS_2026-08-07.md).
+
 Architect-Wow twenty-family v8 pilot (Gemini facade-sheet@3 plus archetype signature kits):
 
 ```powershell
@@ -121,6 +140,7 @@ Foundation\Blender *\blender.exe` (highest version wins) → `/Applications/Blen
 build/archetypes/<archetype-id>[--<variant-id>]/
   archetype-source.json      exported catalogue payload
   grammar.json               compiled Building Grammar (with notes[])
+  production_preflight.json  variant/reference/identity gate before paid work
   <family>_podium.glb        \
   <family>_floor_typical_a.glb |
   <family>_floor_typical_b.glb |  one mesh node each, bottom-centre origin
@@ -134,6 +154,7 @@ build/archetypes/<archetype-id>[--<variant-id>]/
   <family>_context.png       high-oblique urban-block review render
   <family>_manifest.json     module metadata + provenance + coordinate contract
   validation_report.json     pass/fail + measured extents
+  visual_approval.json       explicit human multiscale release approval
   logs/blender.log           full Blender output
 ```
 

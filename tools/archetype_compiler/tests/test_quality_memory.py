@@ -35,6 +35,7 @@ def production_manifest() -> dict:
         "assembled": {"filename": "quality-pilot.glb", "triangle_count": 60000},
         "renders": [
             "quality-pilot_preview.png",
+            "quality-pilot_archetype_match.png",
             "quality-pilot_street.png",
             "quality-pilot_aerial.png",
             "quality-pilot_context.png",
@@ -42,6 +43,23 @@ def production_manifest() -> dict:
             "quality-pilot_rear_corner_oblique.png",
             "quality-pilot_facade_close.png",
         ],
+    }
+
+
+def approved_visual_review() -> dict:
+    return {
+        "schema": "building-visual-approval@1",
+        "family": "quality-pilot",
+        "decision": "approved",
+        "reviewer": "test-reviewer",
+        "approved_at": "2026-08-07T00:00:00+00:00",
+        "reference_set": "test-gold-set",
+        "checks": {
+            "block_scale": True,
+            "building_scale": True,
+            "facade_scale": True,
+            "orbit_and_context": True,
+        },
     }
 
 
@@ -53,6 +71,8 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
 
     assert memory["schema"] == "high-quality-building-memory@1"
     assert memory["memory_version"]
+    assert memory["calibration_set"]["version"] == "2026-08-07-four-family-v1"
+    assert len(memory["calibration_set"]["families"]) == 4
     assert {
         "reference_is_goalpost",
         "geometry_carries_identity",
@@ -60,13 +80,20 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
         "materials_are_pbr",
         "glass_is_layered",
         "validate_shapes_not_one_box",
+        "identity_mode_is_explicit",
+        "preflight_precedes_paid_generation",
+        "human_approval_controls_release",
     } <= principle_ids
 
 
 def test_complete_family_passes_executable_quality_memory():
     from quality_memory import assess_family_quality
 
-    assessment = assess_family_quality(production_manifest(), {"status": "pass", "warnings": []})
+    assessment = assess_family_quality(
+        production_manifest(),
+        {"status": "pass", "warnings": []},
+        visual_approval=approved_visual_review(),
+    )
 
     assert assessment["status"] == "pass"
     assert assessment["high_quality_ready"] is True
@@ -88,6 +115,21 @@ def test_legacy_family_routes_to_review_without_stopping_batch():
         "missing_full_pbr_channels",
         "albedo_not_shadow_neutral",
         "missing_fixed_assembly_contract",
+    }
+
+
+def test_structural_pass_requires_explicit_visual_approval():
+    from quality_memory import assess_family_quality
+
+    assessment = assess_family_quality(
+        production_manifest(),
+        {"status": "pass", "warnings": []},
+    )
+
+    assert assessment["status"] == "review"
+    assert assessment["high_quality_ready"] is False
+    assert {item["id"] for item in assessment["review_findings"]} == {
+        "missing_visual_approval"
     }
 
 
@@ -114,7 +156,11 @@ def test_excess_materials_route_to_review_without_structural_failure():
         "warnings": ["quality-pilot.glb: many materials"],
         "modules": [{"role": "assembled", "materials": [f"MAT_{i}" for i in range(24)]}],
     }
-    assessment = assess_family_quality(production_manifest(), report)
+    assessment = assess_family_quality(
+        production_manifest(),
+        report,
+        visual_approval=approved_visual_review(),
+    )
 
     assert assessment["status"] == "review"
     assert assessment["hard_failures"] == []
@@ -138,6 +184,9 @@ def test_resume_safe_batch_writes_per_family_quality_assessment(tmp_path, monkey
     )
     (family_dir / "validation_report.json").write_text(
         json.dumps({"status": "pass", "warnings": []}), encoding="utf-8"
+    )
+    (family_dir / "visual_approval.json").write_text(
+        json.dumps(approved_visual_review()), encoding="utf-8"
     )
 
     result = batch.family_result(
