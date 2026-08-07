@@ -1,0 +1,143 @@
+{
+  "batchId": "meshy-park-object-catalog-v3d",
+  "reviewedAt": "2026-08-07",
+  "generatedCount": 30,
+  "acceptedCount": 28,
+  "rejectedCount": 4,
+  "creditsUsed": 1248,
+  "balanceBefore": 2565,
+  "balanceAfter": 1317,
+  "qualityGate": "Compared archetype reference, isolated multiview, Meshy output and normalized 12000-face/512px-PBR four-view runtime render. Structural, compositional, scale, people/building contamination, or texture failures remain external artifacts and are not promoted.",
+  "accepted": [
+    {
+      "assetId": "dog-park-rustic-agility-ramp-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "dog-park-curved-concrete-tunnel-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "dog-park-dog-drinking-fountain-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "dog-park-urban-dog-wash-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "playground-adventure-rope-climbing-pyramid-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "playground-adventure-timber-adventure-tower-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "playground-adventure-concrete-play-tunnel-mound-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "playground-adventure-carved-timber-play-animal-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "splash-pad-area-stainless-water-arch-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "splash-pad-area-stone-splash-bowl-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "splash-pad-area-bronze-animal-sprayer-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "fountain-water-feature-bronze-lotus-bowl-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "fountain-water-feature-carved-wall-spout-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "fountain-water-feature-stainless-water-hoop-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "fountain-water-feature-corten-cascade-vessels-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "parisian-jardin-versailles-stone-urn-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "parisian-jardin-wrought-iron-chair-pair-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "parisian-jardin-classical-stone-sundial-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "amsterdam-hofje-garden-sandstone-water-pump-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "amsterdam-hofje-garden-timber-storage-bench-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "amsterdam-hofje-garden-communal-well-cover-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "amsterdam-hofje-garden-wrought-iron-courtyard-gate-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "newyork-community-garden-compost-sifter-station-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "newyork-community-garden-mosaic-garden-bench-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "newyork-community-garden-painted-rain-barrel-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "newyork-community-garden-salvaged-steel-garden-arch-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "halifax-public-gardens-victorian-cast-iron-urn-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "halifax-public-gardens-victorian-park-bench-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    }
+  ],
+  "rejected": [
+    {
+      "assetId": "splash-pad-area-water-curtain-frame-v1",
+      "reason": "Became a solid copper wall instead of an open water-curtain frame with usable clearance."
+    },
+    {
+      "assetId": "parisian-jardin-ornate-iron-fountain-v1",
+      "reason": "Runtime basin includes a malformed protruding duplicate section and does not survive as a clean freestanding fountain."
+    },
+    {
+      "assetId": "halifax-public-gardens-sandstone-drinking-fountain-v1",
+      "reason": "Meshy generation did not complete."
+    },
+    {
+      "assetId": "halifax-public-gardens-timber-duck-house-v1",
+      "reason": "Meshy generation did not complete."
+    }
+  ]
+}

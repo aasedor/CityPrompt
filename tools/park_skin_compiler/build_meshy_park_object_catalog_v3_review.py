@@ -14,6 +14,13 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--report", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument(
+        "--credits-used",
+        type=int,
+        help="Override the account delta when waves overlapped or a capped run was interrupted.",
+    )
+    parser.add_argument("--balance-before", type=int)
+    parser.add_argument("--balance-after", type=int)
+    parser.add_argument(
         "--reject",
         action="append",
         default=[],
@@ -56,15 +63,36 @@ def main() -> None:
                 "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings.",
             })
 
+    completed_count = report.get("completedCount")
+    if completed_count is None:
+        completed_count = sum(
+            item.get("outcome") == "completed" for item in report.get("objects", [])
+        )
+    credits_used = (
+        options.credits_used
+        if options.credits_used is not None
+        else report.get("creditsUsed")
+    )
+    balance_before = (
+        options.balance_before
+        if options.balance_before is not None
+        else report.get("balanceBefore")
+    )
+    balance_after = (
+        options.balance_after
+        if options.balance_after is not None
+        else report.get("balanceAfter")
+    )
+
     review = {
         "batchId": batch["batchId"],
         "reviewedAt": date.today().isoformat(),
-        "generatedCount": report["completedCount"],
+        "generatedCount": completed_count,
         "acceptedCount": len(accepted),
         "rejectedCount": len(rejected),
-        "creditsUsed": report["creditsUsed"],
-        "balanceBefore": report["balanceBefore"],
-        "balanceAfter": report["balanceAfter"],
+        "creditsUsed": credits_used,
+        "balanceBefore": balance_before,
+        "balanceAfter": balance_after,
         "qualityGate": "Compared archetype reference, isolated multiview, Meshy output and normalized 12000-face/512px-PBR four-view runtime render. Structural, compositional, scale, people/building contamination, or texture failures remain external artifacts and are not promoted.",
         "accepted": accepted,
         "rejected": rejected,
