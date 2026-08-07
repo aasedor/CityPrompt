@@ -58,6 +58,12 @@ def material_prefix(family: str) -> str:
         "memorial-garden": "meshy_memorial_garden",
         "mini-golf-putting-course": "meshy_mini_golf",
         "sculpture-garden-art-park": "meshy_sculpture_garden",
+        "japanese-garden": "meshy_japanese_garden",
+        "vancouver-beach-park": "meshy_coastal_driftwood",
+        "quarry-sunken-garden-park": "meshy_quarry_limestone",
+        "labyrinth-meditation-garden": "meshy_meditation_garden",
+        "constructed-wetland-eco-park": "meshy_wetland_habitat",
+        "cemetery-memorial-grounds": "meshy_memorial_garden",
     }.get(family, "meshy_park_object")
 
 

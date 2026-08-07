@@ -681,7 +681,14 @@ function ExactSurface({ kit, materialSlug = kit.slug, variantId }: {
         <MetricGlb key={`${x}-${y}`} url={asset('balanceLog')} position={[x, y, 0.12]} yaw={yaw} />
       ))}
     <MetricGlb url={asset('logFort')} position={[9, 7, 0.12]} />
-    <MetricGlb url={asset('willowTunnel')} position={[-10, 7, 0.12]} />
+    {variantId === 'nature_play_area_v1'
+      ? <MetricGlb url={PARK_MESHY_ARCHETYPE_ASSETS.naturePlayWillowTunnel.url} position={[-10, 7, 0.12]} yaw={Math.PI / 2} />
+      : <MetricGlb url={asset('willowTunnel')} position={[-10, 7, 0.12]} />}
+    {variantId === 'nature_play_area_v2' && <MetricGlb
+      url={PARK_MESHY_ARCHETYPE_ASSETS.naturePlayTimberWaterTable.url}
+      position={[1.5, 6.8, 0.12]}
+      yaw={Math.PI / 2}
+    />}
     {[[-2, -4], [0, -5], [2, -4], [4, -2], [6, -1]].map(([x, y]) => (
       <MetricGlb key={`${x}-${y}`} url={asset('steppingStump')} position={[x, y, 0.12]} />
     ))}

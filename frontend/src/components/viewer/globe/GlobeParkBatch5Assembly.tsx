@@ -190,10 +190,12 @@ export function GlobeParkBatch5Assembly({
     const lanes = guides.filter((guide) => guide.kind === 'rounded_rectangle');
     return <group>{lanes.map((lane,index)=>{const c=center(lane,frame);const s=resolveParkGuideDimensionsM(lane,frame);const z=terrainZ(c.x,c.y)+lift;return <group key={index} position={[c.x,c.y,z]} rotation={[0,0,-((lane.rotationDeg??0)*Math.PI)/180]}>
       <mesh position={[0,0,0.025]}><planeGeometry args={[s.width,s.height]}/><meshStandardMaterial {...lawnMaps} color={variantSkin ? '#ffffff' : '#7da067'} roughness={0.94}/></mesh>{[-1,1].map(side=><mesh key={side} position={[0,side*s.height/2,0.16]}><boxGeometry args={[s.width,0.22,0.32]}/><meshStandardMaterial {...paverMaps} color={variantSkin ? '#ffffff' : '#aaa396'} roughness={0.91}/></mesh>)}
-      {index===1&&<ParkKitGlb url="/park-kits/mini-golf/mini-golf-windmill.glb" position={[0,0,0.04]} />}
-      {index===3&&<ParkKitGlb url="/park-kits/mini-golf/mini-golf-bridge.glb" position={[0,0,0.04]} yaw={Math.PI / 2} />}
-      {index===4&&<ParkKitGlb url="/park-kits/mini-golf/mini-golf-loop.glb" position={[0,0,0.04]} />}
+      {variantId!=='mini_golf_course_v3'&&index===1&&<ParkKitGlb url="/park-kits/mini-golf/mini-golf-windmill.glb" position={[0,0,0.04]} />}
+      {variantId!=='mini_golf_course_v3'&&index===3&&<ParkKitGlb url="/park-kits/mini-golf/mini-golf-bridge.glb" position={[0,0,0.04]} yaw={Math.PI / 2} />}
+      {variantId!=='mini_golf_course_v3'&&index===4&&<ParkKitGlb url="/park-kits/mini-golf/mini-golf-loop.glb" position={[0,0,0.04]} />}
+      {variantId==='mini_golf_course_v3'&&index===0&&<ParkKitGlb url={PARK_MESHY_ARCHETYPE_ASSETS.miniGolfHollowLogTunnel.url} position={[0,0,0.04]} yaw={Math.PI/2} />}
       {variantId==='mini_golf_course_v3'&&index===2&&<ParkKitGlb url={PARK_MESHY_ARCHETYPE_ASSETS.miniGolfRockObstacle.url} position={[0,0,0.04]} yaw={Math.PI/2} />}
+      {variantId==='mini_golf_course_v3'&&index===3&&<ParkKitGlb url={PARK_MESHY_ARCHETYPE_ASSETS.miniGolfStumpGate.url} position={[0,0,0.04]} yaw={Math.PI/2} />}
       {index===lanes.length-1&&<ParkKitGlb url="/park-kits/mini-golf/mini-golf-cup-flag.glb" position={[s.width*.32,0,0.04]} />}
     </group>;})}</group>;
   }
@@ -236,7 +238,7 @@ export function GlobeParkBatch5Assembly({
 
   if (familyId === 'park_labyrinth_classical_v0') {
     const rings=guides.filter((guide)=>guide.kind==='ellipse'); if(rings.length===0)return null; const c=center(rings[0],frame); const z=terrainZ(c.x,c.y)+lift;
-    return <group position={[c.x,c.y,z]}>{rings.filter((_,index)=>index%2===1).map((ring,index)=>{const s=resolveParkGuideDimensionsM(ring,frame);return <mesh key={index} position={[0,0,0.32]} scale={[s.width/Math.max(s.height,0.1),1,1]}><torusGeometry args={[s.height/2,0.24,8,64]}/><meshStandardMaterial {...lawnMaps} color={variantSkin ? '#ffffff' : '#5b764a'} roughness={0.97}/></mesh>})}<group position={[0,0,0.45]}><mesh><boxGeometry args={[2.4,0.48,0.18]}/><meshStandardMaterial {...paverMaps} color={variantSkin ? '#ffffff' : '#b9b09d'} roughness={0.9}/></mesh>{[-0.85,0.85].map(x=><mesh key={x} position={[x,0,-0.26]}><boxGeometry args={[0.24,0.40,0.52]}/><meshStandardMaterial {...paverMaps} color={variantSkin ? '#ffffff' : '#a79d89'} roughness={0.9}/></mesh>)}</group></group>;
+    return <group position={[c.x,c.y,z]}>{rings.filter((_,index)=>index%2===1).map((ring,index)=>{const s=resolveParkGuideDimensionsM(ring,frame);return <mesh key={index} position={[0,0,0.32]} scale={[s.width/Math.max(s.height,0.1),1,1]}><torusGeometry args={[s.height/2,0.24,8,64]}/><meshStandardMaterial {...lawnMaps} color={variantSkin ? '#ffffff' : '#5b764a'} roughness={0.97}/></mesh>})}<group position={[0,0,0.45]}><mesh><boxGeometry args={[2.4,0.48,0.18]}/><meshStandardMaterial {...paverMaps} color={variantSkin ? '#ffffff' : '#b9b09d'} roughness={0.9}/></mesh>{[-0.85,0.85].map(x=><mesh key={x} position={[x,0,-0.26]}><boxGeometry args={[0.24,0.40,0.52]}/><meshStandardMaterial {...paverMaps} color={variantSkin ? '#ffffff' : '#a79d89'} roughness={0.9}/></mesh>)}</group>{variantId==='labyrinth_meditation_v0'&&<ParkKitGlb url={PARK_MESHY_ARCHETYPE_ASSETS.labyrinthBronzeWaterBowl.url} position={[Math.min(9,frame.width*.22),0,0.12]} />}</group>;
   }
 
   return null;

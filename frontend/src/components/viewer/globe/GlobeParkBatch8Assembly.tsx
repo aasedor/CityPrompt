@@ -174,6 +174,11 @@ export function GlobeParkBatch8Assembly({ familyId, archetypeId, variantId, guid
       <mesh position={[frame.minX+frame.width/2,y-frame.height*0.31/tierCount,z+0.75]}><boxGeometry args={[Math.max(12,frame.width-2*inset),0.6,1.5]} /><meshStandardMaterial {...paverMaps} color="#9b907d" roughness={0.96} /></mesh>
     </group>;})}
     {pools.map((pool,index)=>{const c=center(pool,frame); const s=resolveParkGuideDimensionsM(pool,frame); const z=terrainZ(c.x,c.y)+lift+index*0.45; return <group key={index}><mesh position={[c.x,c.y,z+0.20]}><boxGeometry args={[s.width+0.8,s.height+0.8,0.4]} /><meshStandardMaterial {...paverMaps} color="#8f8576" roughness={0.92} /></mesh><mesh position={[c.x,c.y,z+0.44]}><boxGeometry args={[s.width,s.height,0.08]} /><meshPhysicalMaterial color="#678b8d" transparent opacity={0.8} roughness={0.12} /></mesh></group>;})}
+    <ParkKitGlb
+      url={PARK_MESHY_ARCHETYPE_ASSETS.quarryLimestoneLedge.url}
+      position={[frame.maxX-frame.width*.13,frame.minY+frame.height*.26,terrainZ(frame.maxX-frame.width*.13,frame.minY+frame.height*.26)+lift+.12]}
+      yaw={-.42}
+    />
     </group>;
   }
 
@@ -195,6 +200,11 @@ export function GlobeParkBatch8Assembly({ familyId, archetypeId, variantId, guid
       {points.slice(0,-1).map((point,index)=><Segment key={index} from={point} to={points[index+1]} width={2.2} height={0.22} z={Math.max(terrainZ(point.x,point.y),terrainZ(points[index+1].x,points[index+1].y))+lift+0.48} maps={timberMaps} color="#80664d" />)}
       {tidal&&<><Segment from={{x:frame.minX+frame.width*.08,y:frame.minY+frame.height*.32}} to={{x:frame.maxX-frame.width*.08,y:frame.maxY-frame.height*.28}} width={Math.max(5,frame.width*.08)} height={.18} z={terrainZ(frame.minX+frame.width*.5,frame.minY+frame.height*.52)+lift+.1} maps={plantingMaps} color="#ffffff"/><mesh position={[frame.minX+frame.width*.72,frame.minY+frame.height*.59,terrainZ(frame.minX+frame.width*.72,frame.minY+frame.height*.59)+lift+.45]}><boxGeometry args={[Math.min(8,frame.width*.12),1.2,.9]}/><meshStandardMaterial {...paverMaps} color="#ffffff" roughness={.94}/></mesh></>}
       {wildlife&&visibleCells.map((cell,index)=>{const c=center(cell,frame),s=resolveParkGuideDimensionsM(cell,frame),z=terrainZ(c.x,c.y)+lift;return <mesh key={`deck-${index}`} position={[c.x+s.width*.28,c.y-s.height*.30,z+.36]}><boxGeometry args={[Math.min(7,s.width*.35),Math.min(5,s.height*.28),.28]}/><meshStandardMaterial {...timberMaps} color="#ffffff" roughness={.92}/></mesh>})}
+      {wildlife&&<ParkKitGlb
+        url={PARK_MESHY_ARCHETYPE_ASSETS.wetlandTimberBirdBlind.url}
+        position={[frame.maxX-frame.width*.18,frame.minY+frame.height*.18,terrainZ(frame.maxX-frame.width*.18,frame.minY+frame.height*.18)+lift+.12]}
+        yaw={-.22}
+      />}
       {natureCenter&&<ParkPavilion x={frame.maxX-frame.width*.18} y={frame.maxY-frame.height*.19} z={terrainZ(frame.maxX-frame.width*.18,frame.maxY-frame.height*.19)+lift} width={Math.min(10,frame.width*.18)} depth={Math.min(6,frame.height*.16)} maps={timberMaps} glass/>}
     </group>;
   }

@@ -96,6 +96,72 @@ export const PARK_MESHY_ARCHETYPE_ASSETS = Object.freeze({
     archetypeId: 'sculpture_garden', variantIds: ['sculpture_garden_v0', 'sculpture_garden_v1', 'sculpture_garden_v3'],
     dimensionsM: [2.6, 1.5, 3.2], placementRole: 'sculpture_garden_stone_portal',
   }),
+  japaneseTimberFootbridge: asset({
+    id: 'japanese-garden-arched-timber-footbridge-v1',
+    url: '/park-kits/japanese-garden/japanese-garden-arched-timber-footbridge-v1.glb',
+    archetypeId: 'japanese_garden', variantIds: ['japanese_garden_v1'],
+    dimensionsM: [4.2, 1.6, 1.35], placementRole: 'japanese_garden_arched_timber_footbridge',
+  }),
+  japaneseConcreteCortenSculpture: asset({
+    id: 'japanese-garden-concrete-corten-sculpture-v1',
+    url: '/park-kits/japanese-garden/japanese-garden-concrete-corten-sculpture-v1.glb',
+    archetypeId: 'japanese_garden', variantIds: ['japanese_garden_v2'],
+    dimensionsM: [2.2, 1.1, 3.2], placementRole: 'japanese_garden_contemporary_sculpture',
+  }),
+  japaneseWeatheredArbor: asset({
+    id: 'japanese-garden-weathered-rose-arbor-v1',
+    url: '/park-kits/japanese-garden/japanese-garden-weathered-rose-arbor-v1.glb',
+    archetypeId: 'japanese_garden', variantIds: ['japanese_garden_v3'],
+    dimensionsM: [3.6, 1.2, 2.8], placementRole: 'japanese_garden_flowering_arbor',
+  }),
+  naturePlayWillowTunnel: asset({
+    id: 'nature-play-woven-willow-tunnel-v1',
+    url: '/park-kits/nature-play-forest-adventure/nature-play-woven-willow-tunnel-v1.glb',
+    archetypeId: 'nature_play_area', variantIds: ['nature_play_area_v1'],
+    dimensionsM: [4.0, 1.8, 2.1], placementRole: 'nature_play_woven_willow_tunnel',
+  }),
+  naturePlayTimberWaterTable: asset({
+    id: 'nature-play-timber-water-table-v1',
+    url: '/park-kits/nature-play-forest-adventure/nature-play-timber-water-table-v1.glb',
+    archetypeId: 'nature_play_area', variantIds: ['nature_play_area_v2'],
+    dimensionsM: [3.2, 1.0, 0.85], placementRole: 'nature_play_timber_water_table',
+  }),
+  vancouverBeachDriftwoodSeat: asset({
+    id: 'vancouver-beach-driftwood-seat-log-v1',
+    url: '/park-kits/vancouver-beach/vancouver-beach-driftwood-seat-log-v1.glb',
+    archetypeId: 'vancouver_beach_park', variantIds: ['vancouver_beach_park_v0', 'vancouver_beach_park_v1', 'vancouver_beach_park_v2', 'vancouver_beach_park_v3'],
+    dimensionsM: [3.8, 1.0, 0.8], placementRole: 'coastal_driftwood_seat_log',
+  }),
+  quarryLimestoneLedge: asset({
+    id: 'quarry-garden-limestone-outcrop-v1',
+    url: '/park-kits/quarry-sunken-garden/quarry-garden-limestone-outcrop-v1.glb',
+    archetypeId: 'quarry_sunken_garden_park', variantIds: ['quarry_sunken_garden_park_v2'],
+    dimensionsM: [5.5, 2.2, 2.8], placementRole: 'quarry_garden_limestone_ledge_seat',
+  }),
+  labyrinthBronzeWaterBowl: asset({
+    id: 'labyrinth-bronze-water-bowl-v1',
+    url: '/park-kits/labyrinth-meditation/labyrinth-bronze-water-bowl-v1.glb',
+    archetypeId: 'labyrinth_meditation', variantIds: ['labyrinth_meditation_v0'],
+    dimensionsM: [1.5, 1.5, 0.8], placementRole: 'meditation_garden_bronze_water_bowl',
+  }),
+  miniGolfHollowLogTunnel: asset({
+    id: 'mini-golf-hollow-log-tunnel-v1',
+    url: '/park-kits/mini-golf/mini-golf-hollow-log-tunnel-v1.glb',
+    archetypeId: 'mini_golf_course', variantIds: ['mini_golf_course_v3'],
+    dimensionsM: [2.8, 1.0, 1.1], placementRole: 'mini_golf_hollow_log_tunnel_obstacle',
+  }),
+  miniGolfStumpGate: asset({
+    id: 'mini-golf-stump-gate-obstacle-v1',
+    url: '/park-kits/mini-golf/mini-golf-stump-gate-obstacle-v1.glb',
+    archetypeId: 'mini_golf_course', variantIds: ['mini_golf_course_v3'],
+    dimensionsM: [2.4, 0.8, 1.5], placementRole: 'mini_golf_timber_stump_gate_obstacle',
+  }),
+  wetlandTimberBirdBlind: asset({
+    id: 'wetland-timber-bird-blind-v1',
+    url: '/park-kits/constructed-wetland/wetland-timber-bird-blind-v1.glb',
+    archetypeId: 'constructed_wetland_eco_park', variantIds: ['constructed_wetland_eco_park_variant_2'],
+    dimensionsM: [4.0, 1.4, 2.5], placementRole: 'wetland_timber_bird_blind',
+  }),
 });
 
 export function parkMeshyAssetsForSelection(archetypeId: string, variantId: string) {
