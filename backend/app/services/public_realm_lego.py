@@ -2528,6 +2528,87 @@ def _apply_batch23_variant_closures(
 _CAPABILITIES = tuple(_apply_batch23_variant_closures(capability) for capability in _CAPABILITIES)
 
 
+_BATCH24_VARIANT_CLOSURES: dict[
+    str,
+    tuple[tuple[str, str, str, str, str], ...],
+] = {
+    "park_calgary_prairie_market_v1": (
+        ("calgary_prairie_plaza", "calgary_prairie_plaza_v0", "calgary_prairie_plaza_v0_winter_skin", "calgary_prairie_winter_v0", "winter_prairie_room_program_v1"),
+        ("calgary_prairie_plaza", "calgary_prairie_plaza_v2", "calgary_prairie_plaza_v2_indigenous_art_skin", "calgary_prairie_indigenous_v2", "indigenous_art_garden_program_v1"),
+        ("calgary_prairie_plaza", "calgary_prairie_plaza_v3", "calgary_prairie_plaza_v3_corporate_green_skin", "calgary_prairie_corporate_v3", "corporate_green_forecourt_program_v1"),
+    ),
+    "park_calgary_princes_island_festival_v0": (
+        ("calgary_princes_island", "calgary_princes_island_v1", "calgary_princes_island_v1_autumn_skin", "calgary_princes_autumn_v1", "autumn_cottonwood_walk_program_v1"),
+        ("calgary_princes_island", "calgary_princes_island_v2", "calgary_princes_island_v2_winter_skin", "calgary_princes_winter_v2", "winter_pavilion_grove_program_v1"),
+        ("calgary_princes_island", "calgary_princes_island_v3", "calgary_princes_island_v3_flood_skin", "calgary_princes_flood_v3", "floodplain_bridge_walk_program_v1"),
+    ),
+    "park_halifax_coastal_fog_path_v2": (
+        ("halifax_coastal_park", "halifax_coastal_park_v0", "halifax_coastal_park_v0_storm_skin", "halifax_coastal_storm_v0", "storm_watch_linear_walk_program_v1"),
+        ("halifax_coastal_park", "halifax_coastal_park_v1", "halifax_coastal_park_v1_summer_skin", "halifax_coastal_summer_v1", "summer_coastal_trail_program_v1"),
+        ("halifax_coastal_park", "halifax_coastal_park_v3", "halifax_coastal_park_v3_boardwalk_skin", "halifax_coastal_boardwalk_v3", "sunset_boardwalk_program_v1"),
+    ),
+    "park_halifax_rose_bandstand_v0": (
+        ("halifax_public_gardens", "halifax_public_gardens_v1", "halifax_public_gardens_v1_bandstand_skin", "halifax_bandstand_concert_v1", "bandstand_concert_garden_program_v1"),
+        ("halifax_public_gardens", "halifax_public_gardens_v2", "halifax_public_gardens_v2_autumn_skin", "halifax_autumn_stroll_v2", "autumn_formal_walk_program_v1"),
+        ("halifax_public_gardens", "halifax_public_gardens_v3", "halifax_public_gardens_v3_tulip_skin", "halifax_spring_tulip_v3", "spring_tulip_display_program_v1"),
+    ),
+    "park_london_circus_planted_v1": (
+        ("london_circus", "london_circus_v0", "london_circus_v0_round_island_skin", "london_circus_round_v0", "round_railed_island_program_v1"),
+        ("london_circus", "london_circus_v2", "london_circus_v2_side_court_skin", "london_circus_side_court_v2", "side_court_planter_program_v1"),
+        ("london_circus", "london_circus_v3", "london_circus_v3_passage_skin", "london_circus_passage_v3", "narrow_passage_program_v1"),
+    ),
+    "park_london_railed_square_v1": (
+        ("london_garden_square", "london_garden_square_v0", "london_garden_square_v0_open_skin", "london_garden_open_v0", "open_garden_room_program_v1"),
+        ("london_garden_square", "london_garden_square_v2", "london_garden_square_v2_lush_brick_skin", "london_garden_lush_brick_v2", "raised_brick_garden_program_v1"),
+        ("london_garden_square", "london_garden_square_v3", "london_garden_square_v3_cafe_skin", "london_garden_cafe_v3", "cafe_forecourt_program_v1"),
+    ),
+    "park_montreal_mount_royal_grove_v2": (
+        ("montreal_mount_royal", "montreal_mount_royal_v0", "montreal_mount_royal_v0_overlook_skin", "montreal_mount_royal_overlook_v0", "slope_overlook_walk_program_v1"),
+        ("montreal_mount_royal", "montreal_mount_royal_v1", "montreal_mount_royal_v1_lawn_skin", "montreal_mount_royal_lawn_v1", "lawn_grove_program_v1"),
+        ("montreal_mount_royal", "montreal_mount_royal_v3", "montreal_mount_royal_v3_hillside_skin", "montreal_mount_royal_hillside_v3", "hillside_terrace_program_v1"),
+    ),
+    "park_montreal_neighbourhood_square_v3": (
+        ("montreal_square", "montreal_square_v0", "montreal_square_v0_hard_plaza_skin", "montreal_square_hard_v0", "hard_plaza_program_v1"),
+        ("montreal_square", "montreal_square_v1", "montreal_square_v1_linear_bench_skin", "montreal_square_linear_v1", "linear_bench_planter_program_v1"),
+        ("montreal_square", "montreal_square_v2", "montreal_square_v2_pocket_court_skin", "montreal_square_pocket_v2", "pocket_court_program_v1"),
+    ),
+    "park_newyork_community_greenhouse_v3": (
+        ("newyork_community_garden", "newyork_community_garden_v0", "newyork_community_garden_v0_allotment_skin", "newyork_community_allotment_v0", "brick_allotment_grid_program_v1"),
+        ("newyork_community_garden", "newyork_community_garden_v1", "newyork_community_garden_v1_raised_grid_skin", "newyork_community_raised_v1", "raised_bed_grid_program_v1"),
+        ("newyork_community_garden", "newyork_community_garden_v2", "newyork_community_garden_v2_shed_skin", "newyork_community_shed_v2", "garden_shed_bed_program_v1"),
+    ),
+    "park_newyork_pocket_water_v0": (
+        ("newyork_pocket_park", "newyork_pocket_park_v1", "newyork_pocket_park_v1_linear_skin", "newyork_pocket_linear_v1", "linear_planter_room_program_v1"),
+        ("newyork_pocket_park", "newyork_pocket_park_v2", "newyork_pocket_park_v2_brick_skin", "newyork_pocket_brick_v2", "brick_seat_garden_program_v1"),
+        ("newyork_pocket_park", "newyork_pocket_park_v3", "newyork_pocket_park_v3_promenade_skin", "newyork_pocket_promenade_v3", "pocket_promenade_program_v1"),
+    ),
+}
+
+
+def _apply_batch24_variant_closures(
+    capability: PublicRealmFamilyCapability,
+) -> PublicRealmFamilyCapability:
+    descriptors = _BATCH24_VARIANT_CLOSURES.get(capability.family_id, ())
+    if not descriptors:
+        return capability
+    additions: list[PublicRealmSelectionCapability] = []
+    for archetype_id, variant_id, appearance_kit_id, planting_structure, program_component in descriptors:
+        base = next(selection for selection in capability.selections if selection.archetype_id == archetype_id)
+        additions.append(_selection(
+            archetype_id,
+            variant_id,
+            profile_id=base.profile_id,
+            appearance_kit_id=appearance_kit_id,
+            planting_structure=planting_structure,
+            compatibility=base.compatibility,
+            components=(*base.component_set_ids, program_component),
+        ))
+    return capability.model_copy(update={"selections": (*capability.selections, *additions)})
+
+
+_CAPABILITIES = tuple(_apply_batch24_variant_closures(capability) for capability in _CAPABILITIES)
+
+
 def public_realm_capability_fingerprint(
     capability: PublicRealmFamilyCapability,
 ) -> str:

@@ -6,6 +6,7 @@ import { resolveParkGuideDimensionsM, type ParkGroundGuide } from './parkGroundP
 import { PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS } from './publicRealmDepthPolicy';
 import { batch22ParkSkinForSelection } from './parkBatch22Skins';
 import { batch23ParkSkinForSelection } from './parkBatch23Skins';
+import { batch24ParkSkinForSelection } from './parkBatch24Skins';
 
 export interface Batch9ProgramFrame { minX: number; maxX: number; minY: number; maxY: number; width: number; height: number }
 interface Point { x: number; y: number }
@@ -72,7 +73,8 @@ function WaterJet({ x, y, z, height }: { x: number; y: number; z: number; height
 
 export function GlobeParkBatch9Assembly({ familyId, archetypeId, variantId, guides, frame, terrainZ }: { familyId: ParkLegoFamilyId; archetypeId?: string; variantId?: string; guides: ParkGroundGuide[]; frame: Batch9ProgramFrame; terrainZ: (x: number, y: number) => number }) {
   const lift = PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS;
-  const selectedSkin = batch23ParkSkinForSelection(archetypeId ?? '', variantId ?? '')
+  const selectedSkin = batch24ParkSkinForSelection(archetypeId ?? '', variantId ?? '')
+    ?? batch23ParkSkinForSelection(archetypeId ?? '', variantId ?? '')
     ?? batch22ParkSkinForSelection(archetypeId ?? '', variantId ?? '');
   const slug = selectedSkin?.slug ?? SKIN_SLUG[familyId as Batch9FamilyId];
   const variantSkin = selectedSkin !== null;
@@ -119,10 +121,39 @@ export function GlobeParkBatch9Assembly({ familyId, archetypeId, variantId, guid
     </group>;
   }
 
+  if (familyId === 'park_london_railed_square_v1' && variantId && variantId !== 'london_garden_square_v1') {
+    const lush = variantId === 'london_garden_square_v2';
+    const cafe = variantId === 'london_garden_square_v3';
+    const cx = frame.minX + frame.width / 2; const cy = frame.minY + frame.height / 2;
+    const base = terrainZ(cx, cy) + lift;
+    const bedCount = lush ? 8 : cafe ? 3 : 6;
+    return <group>
+      <mesh position={[cx,cy,base+.11]}><boxGeometry args={[frame.width*.92,frame.height*.88,.22]} /><meshStandardMaterial {...(cafe?paverMaps:plantingMaps)} color="#ffffff" roughness={.96} /></mesh>
+      {!cafe&&<><Segment from={{x:frame.minX+frame.width*.08,y:cy}} to={{x:frame.maxX-frame.width*.08,y:cy}} width={2.5} height={.16} z={base+.22} maps={paverMaps} color="#ffffff"/><Segment from={{x:cx,y:frame.minY+frame.height*.08}} to={{x:cx,y:frame.maxY-frame.height*.08}} width={2.5} height={.16} z={base+.22} maps={paverMaps} color="#ffffff"/></>}
+      {Array.from({length:bedCount},(_,i)=>{const columns=lush?4:3;const row=Math.floor(i/columns);const x=frame.minX+frame.width*(.16+(i%columns)*.68/Math.max(1,columns-1));const y=frame.minY+frame.height*(lush?.28+row*.42:.25+row*.50);const z=terrainZ(x,y)+lift;return <group key={i}><mesh position={[x,y,z+.36]}><boxGeometry args={[Math.min(lush?5:4,frame.width*.16),Math.min(lush?2.2:2.8,frame.height*.14),.72]}/><meshStandardMaterial {...(lush?paverMaps:plantingMaps)} color="#ffffff" roughness={.96}/></mesh>{!cafe&&<mesh position={[x,y,z+.86]} scale={[1.4,.7,.55]}><dodecahedronGeometry args={[1,1]}/><meshStandardMaterial {...plantingMaps} color="#ffffff" roughness={.98}/></mesh>}</group>})}
+      {Array.from({length:cafe?6:lush?8:6},(_,i)=>{const x=frame.minX+frame.width*(.10+((i*.37)%.80));const y=cafe?frame.minY+frame.height*(.25+(i%2)*.46):frame.minY+frame.height*(i%2?.12:.88);const z=terrainZ(x,y)+lift;return cafe?<group key={i}><mesh position={[x,y,z+.74]}><cylinderGeometry args={[.55,.55,.10,18]}/><meshStandardMaterial {...timberMaps} color="#ffffff"/></mesh><mesh position={[x,y,z+.37]}><cylinderGeometry args={[.06,.08,.70,8]}/><meshStandardMaterial color="#343936" metalness={.5}/></mesh></group>:<Tree key={i} x={x} y={y} z={z+.22} scale={lush?.72:.64}/>})}
+    </group>;
+  }
+
   if (familyId === 'park_london_railed_square_v1') {
     const inset=1.1,z=terrainZ(frame.minX+frame.width/2,frame.minY+frame.height/2)+lift;const rails=[[{x:frame.minX+inset,y:frame.minY+inset},{x:frame.maxX-inset,y:frame.minY+inset}],[{x:frame.maxX-inset,y:frame.minY+inset},{x:frame.maxX-inset,y:frame.maxY-inset}],[{x:frame.maxX-inset,y:frame.maxY-inset},{x:frame.minX+inset,y:frame.maxY-inset}],[{x:frame.minX+inset,y:frame.maxY-inset},{x:frame.minX+inset,y:frame.minY+inset}]];
     const trees=Math.min(16,Math.max(6,Math.floor((frame.width+frame.height)/15)));
     return <group>{rails.map(([from,to],i)=><Segment key={i} from={from} to={to} width={.10} height={1.35} z={z+.12} color="#252a28" />)}{Array.from({length:trees},(_,i)=>{const t=i/trees;const side=i%4;const x=side===0?frame.minX+frame.width*(.12+t*.76):side===2?frame.maxX-frame.width*(.12+t*.76):side===1?frame.maxX-frame.width*.12:frame.minX+frame.width*.12;const y=side===1?frame.minY+frame.height*(.12+t*.76):side===3?frame.maxY-frame.height*(.12+t*.76):side===0?frame.minY+frame.height*.12:frame.maxY-frame.height*.12;return <Tree key={i} x={x} y={y} z={terrainZ(x,y)+lift} scale={.75}/>})}</group>;
+  }
+
+  if (familyId === 'park_halifax_rose_bandstand_v0' && variantId && variantId !== 'halifax_public_gardens_v0') {
+    const concert = variantId === 'halifax_public_gardens_v1';
+    const autumn = variantId === 'halifax_public_gardens_v2';
+    const cx=frame.minX+frame.width/2,cy=frame.minY+frame.height/2,base=terrainZ(cx,cy)+lift;
+    const bedCount=concert?4:autumn?6:10;
+    return <group>
+      <Segment from={{x:frame.minX+frame.width*.08,y:cy}} to={{x:frame.maxX-frame.width*.08,y:cy}} width={2.4} height={.18} z={base+.18} maps={paverMaps} color="#ffffff"/>
+      <Segment from={{x:cx,y:frame.minY+frame.height*.08}} to={{x:cx,y:frame.maxY-frame.height*.08}} width={2.4} height={.18} z={base+.18} maps={paverMaps} color="#ffffff"/>
+      {Array.from({length:bedCount},(_,i)=>{const a=i*Math.PI*2/bedCount,x=cx+Math.cos(a)*frame.width*(concert?.27:.32),y=cy+Math.sin(a)*frame.height*(concert?.24:.29),z=terrainZ(x,y)+lift;return <group key={i}><mesh position={[x,y,z+.24]} scale={[Math.min(2.8,frame.width*.10),Math.min(1.6,frame.height*.07),1]} rotation={[0,0,a]}><cylinderGeometry args={[1,1,.48,18]}/><meshStandardMaterial {...plantingMaps} color="#ffffff" roughness={.98}/></mesh>{!autumn&&Array.from({length:5},(_,j)=>{const color=variantId==='halifax_public_gardens_v3'?['#e07d7f','#f0c95e','#d95f82'][j%3]:['#9f4055','#d58e9d','#ece0d0'][j%3];return <mesh key={j} position={[x+(j-2)*.32,y,z+.60]}><sphereGeometry args={[.22,8,6]}/><meshStandardMaterial color={color} roughness={.92}/></mesh>})}</group>})}
+      {concert&&<group position={[cx,cy+frame.height*.20,base]}>{Array.from({length:8},(_,i)=>{const a=i*Math.PI/4;return <mesh key={i} position={[Math.cos(a)*2.1,Math.sin(a)*2.1,1.65]}><cylinderGeometry args={[.09,.11,3.3,10]}/><meshStandardMaterial color="#e3dcc9"/></mesh>})}<mesh position={[0,0,3.35]}><coneGeometry args={[2.9,1.45,8]}/><meshStandardMaterial {...timberMaps} color="#ffffff"/></mesh><mesh position={[0,0,.28]}><cylinderGeometry args={[2.7,2.7,.56,24]}/><meshStandardMaterial {...paverMaps} color="#ffffff"/></mesh></group>}
+      {Array.from({length:autumn?10:6},(_,i)=>{const x=frame.minX+frame.width*(.08+((i*.31)%.84));const y=frame.minY+frame.height*(i%2?.10:.90);return <Tree key={i} x={x} y={y} z={terrainZ(x,y)+lift} scale={.70}/>})}
+      <Segment from={{x:cx-3,y:frame.minY+frame.height*.06}} to={{x:cx+3,y:frame.minY+frame.height*.06}} width={.12} height={1.5} z={base+.1} color="#292d2b"/>
+    </group>;
   }
 
   if (familyId === 'park_halifax_rose_bandstand_v0') {

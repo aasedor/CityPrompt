@@ -742,6 +742,29 @@ describe('Public Realm LEGO V1 park families', () => {
   });
 
   it.each([
+    ['park_calgary_prairie_market_v1', 'calgary_prairie_plaza', 'calgary_prairie_plaza_v0', 'calgary_prairie_plaza_v0_winter_skin', 'calgary_prairie_winter_v0'],
+    ['park_calgary_princes_island_festival_v0', 'calgary_princes_island', 'calgary_princes_island_v3', 'calgary_princes_island_v3_flood_skin', 'calgary_princes_flood_v3'],
+    ['park_halifax_coastal_fog_path_v2', 'halifax_coastal_park', 'halifax_coastal_park_v3', 'halifax_coastal_park_v3_boardwalk_skin', 'halifax_coastal_boardwalk_v3'],
+    ['park_halifax_rose_bandstand_v0', 'halifax_public_gardens', 'halifax_public_gardens_v3', 'halifax_public_gardens_v3_tulip_skin', 'halifax_spring_tulip_v3'],
+    ['park_london_circus_planted_v1', 'london_circus', 'london_circus_v0', 'london_circus_v0_round_island_skin', 'london_circus_round_v0'],
+    ['park_london_railed_square_v1', 'london_garden_square', 'london_garden_square_v2', 'london_garden_square_v2_lush_brick_skin', 'london_garden_lush_brick_v2'],
+    ['park_montreal_mount_royal_grove_v2', 'montreal_mount_royal', 'montreal_mount_royal_v0', 'montreal_mount_royal_v0_overlook_skin', 'montreal_mount_royal_overlook_v0'],
+    ['park_montreal_neighbourhood_square_v3', 'montreal_square', 'montreal_square_v1', 'montreal_square_v1_linear_bench_skin', 'montreal_square_linear_v1'],
+    ['park_newyork_community_greenhouse_v3', 'newyork_community_garden', 'newyork_community_garden_v0', 'newyork_community_garden_v0_allotment_skin', 'newyork_community_allotment_v0'],
+    ['park_newyork_pocket_water_v0', 'newyork_pocket_park', 'newyork_pocket_park_v2', 'newyork_pocket_park_v2_brick_skin', 'newyork_pocket_brick_v2'],
+  ] as const)('executes the explicit Batch 24 selection for %s', (
+    familyId, archetypeId, variantId, appearanceKitId, plantingStructure,
+  ) => {
+    const candidate = zone({ public_realm_lego: trustedRecipe({
+      family_id: familyId, family_version: 1, archetype_id: archetypeId,
+      variant_id: variantId, appearance_kit_id: appearanceKitId,
+      planting_structure: plantingStructure,
+    }) });
+    expect(resolveParkLegoContract(candidate)).toMatchObject({ familyId, archetypeId, variantId, supported: true });
+    expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true);
+  });
+
+  it.each([
     ['inclusive_playground', 'inclusive_playground_v0'],
     ['dog_park', 'dog_park_v0'],
     ['splash_pad_area', 'splash_pad_area_v0'],

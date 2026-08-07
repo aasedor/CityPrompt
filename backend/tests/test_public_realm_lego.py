@@ -1581,6 +1581,51 @@ def test_batch23_classic_allotment_compiles_on_one_compatible_polygon_without_ai
     assert recipe.generator == "park_kit"
 
 
+def test_batch24_closes_thirty_variants_across_ten_city_park_families():
+    expected = {
+        "park_calgary_prairie_market_v1": "calgary_prairie_plaza",
+        "park_calgary_princes_island_festival_v0": "calgary_princes_island",
+        "park_halifax_coastal_fog_path_v2": "halifax_coastal_park",
+        "park_halifax_rose_bandstand_v0": "halifax_public_gardens",
+        "park_london_circus_planted_v1": "london_circus",
+        "park_london_railed_square_v1": "london_garden_square",
+        "park_montreal_mount_royal_grove_v2": "montreal_mount_royal",
+        "park_montreal_neighbourhood_square_v3": "montreal_square",
+        "park_newyork_community_greenhouse_v3": "newyork_community_garden",
+        "park_newyork_pocket_water_v0": "newyork_pocket_park",
+    }
+    catalog = build_public_realm_capability_catalog(family_ids=list(expected))
+    assert len(catalog.capabilities) == 10
+    for capability in catalog.capabilities:
+        archetype_id = expected[capability.family_id]
+        selections = [selection for selection in capability.selections if selection.archetype_id == archetype_id]
+        assert len(selections) == 4
+        assert {selection.variant_id for selection in selections} == {
+            f"{archetype_id}_v{index}" for index in range(4)
+        }
+        assert len({selection.appearance_kit_id for selection in selections}) == 4
+        assert len({selection.planting_structure for selection in selections}) == 4
+        assert all(selection.component_set_ids for selection in selections)
+
+
+def test_batch24_new_york_allotment_compiles_without_ai_drape_or_large_building():
+    geometry = _to_wgs84(box(700_000, 5_650_000, 700_046, 5_650_034))
+    recipe = plan_public_realm_zone_recipe(
+        "green_space",
+        geometry,
+        {
+            "green_space_archetype_id": "newyork_community_garden",
+            "green_space_selected_variant_id": "newyork_community_garden_v0",
+        },
+        strict=True,
+    )
+    assert recipe is not None
+    assert recipe.family_id == "park_newyork_community_greenhouse_v3"
+    assert recipe.appearance_kit_id == "newyork_community_garden_v0_allotment_skin"
+    assert recipe.planting_structure == "newyork_community_allotment_v0"
+    assert recipe.generator == "park_kit"
+
+
 @pytest.mark.parametrize(
     ("archetype_id", "variant_id"),
     [

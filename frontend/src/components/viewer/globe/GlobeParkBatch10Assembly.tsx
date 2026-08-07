@@ -5,6 +5,7 @@ import type { ParkLegoFamilyId } from './parkLegoFamilies';
 import { resolveParkGuideDimensionsM, type ParkGroundGuide } from './parkGroundProfiles';
 import { PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS } from './publicRealmDepthPolicy';
 import { batch23ParkSkinForSelection } from './parkBatch23Skins';
+import { batch24ParkSkinForSelection } from './parkBatch24Skins';
 
 export interface Batch10ProgramFrame { minX: number; maxX: number; minY: number; maxY: number; width: number; height: number }
 interface Point { x: number; y: number }
@@ -73,7 +74,7 @@ function Canopy({ x, y, z, timberMaps, width = 5, depth = 3.4 }: { x: number; y:
 }
 
 export function GlobeParkBatch10Assembly({ familyId, archetypeId, variantId, guides, frame, terrainZ }: { familyId: ParkLegoFamilyId; archetypeId?: string; variantId?: string; guides: ParkGroundGuide[]; frame: Batch10ProgramFrame; terrainZ: (x: number, y: number) => number }) {
-  const lift = PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS; const variantSkin = batch23ParkSkinForSelection(archetypeId ?? '', variantId ?? ''); const slug = variantSkin?.slug ?? SKIN_SLUG[familyId as Batch10FamilyId];
+  const lift = PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS; const variantSkin = batch24ParkSkinForSelection(archetypeId ?? '', variantId ?? '') ?? batch23ParkSkinForSelection(archetypeId ?? '', variantId ?? ''); const slug = variantSkin?.slug ?? SKIN_SLUG[familyId as Batch10FamilyId];
   const paver = useRoleMaps(slug, 'paver'); const lawn = useRoleMaps(slug, 'lawn', 5); const planting = useRoleMaps(slug, 'planting', 5); const safety = useRoleMaps(slug, 'safety'); const timber = useRoleMaps(slug, 'timber');
   const cx=frame.minX+frame.width/2, cy=frame.minY+frame.height/2, base=terrainZ(cx,cy)+lift;
 
@@ -167,17 +168,61 @@ export function GlobeParkBatch10Assembly({ familyId, archetypeId, variantId, gui
     const cells=guides.filter((g)=>g.kind==='rectangle');
     return <group>{cells.map((g,i)=>{const c=center(g,frame),s=resolveParkGuideDimensionsM(g,frame),z=terrainZ(c.x,c.y)+lift;return <group key={i}><mesh position={[c.x,c.y,z+.13]} rotation={[0,0,(g.rotationDeg??0)*Math.PI/180]}><boxGeometry args={[s.width,s.height,.26]} /><meshStandardMaterial {...safety} color={['#c1a34e','#71927a','#668b9c','#b36f57'][i%4]} roughness={.9} /></mesh>{i%2===0&&<Planter x={c.x} y={c.y} z={z+.26} maps={paver} width={Math.min(4,s.width*.34)} depth={Math.min(1.5,s.height*.28)}/>}</group>})}{Array.from({length:Math.min(16,Math.max(6,Math.floor(frame.width/14)))},(_,i)=>{const x=frame.minX+frame.width*(.08+((i*.291)%0.84)),y=frame.minY+frame.height*(.08+((i*.537)%0.84));return <Tree key={i} x={x} y={y} z={terrainZ(x,y)+lift} scale={.62}/>})}</group>;
   }
+  if (familyId === 'park_calgary_prairie_market_v1' && variantId && variantId !== 'calgary_prairie_plaza_v1') {
+    const art=variantId==='calgary_prairie_plaza_v2',corporate=variantId==='calgary_prairie_plaza_v3';
+    const bandCount=corporate?3:6;
+    return <group>
+      <mesh position={[cx,cy,base+.11]}><boxGeometry args={[frame.width*.94,frame.height*.90,.22]}/><meshStandardMaterial {...paver} color="#ffffff" roughness={.94}/></mesh>
+      {Array.from({length:bandCount},(_,i)=>{const x=frame.minX+frame.width*(.12+(i+.5)*.76/bandCount),y=cy+(i%2?1:-1)*frame.height*(corporate?.22:.25),z=terrainZ(x,y)+lift;return <group key={i}><Planter x={x} y={y} z={z+.22} maps={paver} width={Math.min(corporate?5:4,frame.width*.14)} depth={Math.min(1.8,frame.height*.08)}/>{!corporate&&<mesh position={[x,y,z+1.28]} scale={[1.5,.8,.55]}><dodecahedronGeometry args={[.8,1]}/><meshStandardMaterial {...planting} color="#ffffff" roughness={.99}/></mesh>}</group>})}
+      <Segment from={{x:frame.minX+frame.width*.06,y:cy}} to={{x:frame.maxX-frame.width*.06,y:cy}} width={corporate?5:3.2} height={.14} z={base+.22} maps={paver} color="#ffffff"/>
+      {art&&Array.from({length:5},(_,i)=>{const x=cx+(i-2)*Math.min(3.2,frame.width*.07);return <group key={i}><mesh position={[x,cy,base+1.05+(i%2)*.35]} rotation={[0,.2*(i-2),0]}><boxGeometry args={[.3,.3,1.8+(i%2)*.7]}/><meshStandardMaterial {...safety} color="#ffffff" metalness={.25}/></mesh></group>})}
+      {Array.from({length:corporate?4:6},(_,i)=>{const x=frame.minX+frame.width*(.12+i*.76/Math.max(1,(corporate?3:5))),y=frame.minY+frame.height*(i%2?.12:.88),z=terrainZ(x,y)+lift;return <group key={i}><Tree x={x} y={y} z={z+.22} scale={.62}/><Bench x={x} y={y+(i%2?2:-2)} z={z+.22} maps={timber}/></group>})}
+    </group>;
+  }
   if (familyId === 'park_calgary_prairie_market_v1') {
     const pool=guides.find((g)=>g.kind==='rectangle'&&g.color==='#668c91');const stalls=Math.min(8,Math.max(2,Math.floor(frame.width/12)));
     return <group>{pool&&(()=>{const c=center(pool,frame),s=resolveParkGuideDimensionsM(pool,frame),z=terrainZ(c.x,c.y)+lift;return <mesh position={[c.x,c.y,z+.10]}><boxGeometry args={[s.width,s.height,.20]} /><meshPhysicalMaterial color="#668c91" transparent opacity={.78} roughness={.12} /></mesh>})()}{Array.from({length:stalls},(_,i)=>{const x=frame.minX+frame.width*(.10+(i+.5)*.80/stalls),y=frame.maxY-frame.height*.18,z=terrainZ(x,y)+lift;return <Canopy key={i} x={x} y={y} z={z} timberMaps={timber} width={Math.min(4.8,frame.width*.11)} depth={3.2}/>})}{Array.from({length:Math.min(8,stalls)},(_,i)=>{const x=frame.minX+frame.width*(.12+(i+.5)*.76/Math.min(8,stalls));return <Planter key={i} x={x} y={frame.minY+frame.height*.15} z={terrainZ(x,frame.minY+frame.height*.15)+lift} maps={paver} width={3} depth={1.4}/>})}</group>;
+  }
+  if (familyId === 'park_calgary_princes_island_festival_v0' && variantId && variantId !== 'calgary_princes_island_v0') {
+    const winter=variantId==='calgary_princes_island_v2',flood=variantId==='calgary_princes_island_v3';
+    const pathY=cy+(flood?.10:-.04)*frame.height;
+    return <group>
+      <mesh position={[cx,cy,base+.09]}><boxGeometry args={[frame.width*.94,frame.height*.90,.18]}/><meshStandardMaterial {...(flood?planting:lawn)} color="#ffffff" roughness={.98}/></mesh>
+      {flood&&<mesh position={[cx,frame.minY+frame.height*.30,base+.13]}><boxGeometry args={[frame.width*.90,frame.height*.22,.26]}/><meshPhysicalMaterial color="#5c8587" transparent opacity={.78} roughness={.16}/></mesh>}
+      <Segment from={{x:frame.minX+frame.width*.06,y:pathY}} to={{x:frame.maxX-frame.width*.06,y:pathY}} width={flood?3.2:3.8} height={flood?.34:.18} z={base+(flood?.28:.18)} maps={flood?timber:paver} color="#ffffff"/>
+      {winter&&<Canopy x={frame.maxX-frame.width*.24} y={frame.maxY-frame.height*.24} z={terrainZ(frame.maxX-frame.width*.24,frame.maxY-frame.height*.24)+lift+.18} timberMaps={timber} width={Math.min(8,frame.width*.24)} depth={Math.min(5,frame.height*.18)}/>}
+      {Array.from({length:flood?12:16},(_,i)=>{const x=frame.minX+frame.width*(.06+((i*.337)%.88)),y=frame.minY+frame.height*(.08+((i*.611)%.84));if(Math.abs(y-pathY)<4)return null;return <Tree key={i} x={x} y={y} z={terrainZ(x,y)+lift+.18} scale={.68+(i%3)*.08} autumn={!winter&&!flood}/>})}
+      {Array.from({length:4},(_,i)=>{const x=frame.minX+frame.width*(.18+i*.64/3),z=terrainZ(x,pathY)+lift;return <Bench key={i} x={x} y={pathY+(i%2?2.5:-2.5)} z={z+.2} rotation={i%2?0:Math.PI} maps={timber}/>})}
+    </group>;
   }
   if (familyId === 'park_calgary_princes_island_festival_v0') {
     const wetland=guides.find((g)=>g.kind==='ellipse');const boardwalk=guides.find((g)=>g.kind==='polyline');const pts=boardwalk?route(boardwalk,frame):[];const sx=frame.minX+frame.width*.28,sy=frame.minY+frame.height*.28,sz=terrainZ(sx,sy)+lift;
     return <group>{wetland&&(()=>{const c=center(wetland,frame),s=resolveParkGuideDimensionsM(wetland,frame),z=terrainZ(c.x,c.y)+lift;return <mesh position={[c.x,c.y,z+.08]} scale={[s.width/2,s.height/2,1]}><cylinderGeometry args={[1,1,.16,32]} /><meshPhysicalMaterial color="#597f7b" transparent opacity={.72} roughness={.2} /></mesh>})()}{pts.slice(0,-1).map((p,i)=><Segment key={i} from={p} to={pts[i+1]} width={2.5} height={.28} z={Math.max(terrainZ(p.x,p.y),terrainZ(pts[i+1].x,pts[i+1].y))+lift+.32} maps={timber} color="#816347" />)}<Canopy x={sx} y={sy} z={sz} timberMaps={timber} width={8} depth={5.5}/>{Array.from({length:Math.min(22,Math.max(8,Math.floor(frame.width*frame.height/1600)))},(_,i)=>{const x=frame.minX+frame.width*(.06+((i*.319)%0.88)),y=frame.minY+frame.height*(.06+((i*.587)%0.88));return <Tree key={i} x={x} y={y} z={terrainZ(x,y)+lift} scale={.7+(i%3)*.08}/>})}</group>;
   }
+  if (familyId === 'park_montreal_mount_royal_grove_v2' && variantId && variantId !== 'montreal_mount_royal_v2') {
+    const lawnGrove=variantId==='montreal_mount_royal_v1',hillside=variantId==='montreal_mount_royal_v3';
+    const trail=<Segment from={{x:frame.minX+frame.width*.08,y:frame.minY+frame.height*.25}} to={{x:frame.maxX-frame.width*.08,y:frame.maxY-frame.height*.24}} width={3.2} height={.18} z={base+.22} maps={paver} color="#ffffff"/>;
+    return <group>
+      <mesh position={[cx,cy,base+.10]}><boxGeometry args={[frame.width*.94,frame.height*.90,.20]}/><meshStandardMaterial {...(lawnGrove?lawn:planting)} color="#ffffff" roughness={.98}/></mesh>
+      {trail}
+      {hillside&&Array.from({length:4},(_,i)=>{const y=frame.minY+frame.height*(.20+i*.18),z=terrainZ(cx,y)+lift;return <mesh key={i} position={[cx,y,z+.28+i*.08]}><boxGeometry args={[frame.width*(.68-i*.05),2.0,.56+i*.16]}/><meshStandardMaterial {...(i%2?planting:paver)} color="#ffffff" roughness={.96}/></mesh>})}
+      {!lawnGrove&&<group><mesh position={[frame.maxX-frame.width*.22,frame.maxY-frame.height*.20,base+.46]}><boxGeometry args={[Math.min(10,frame.width*.28),Math.min(5,frame.height*.16),.92]}/><meshStandardMaterial {...paver} color="#ffffff"/></mesh><Segment from={{x:frame.maxX-frame.width*.36,y:frame.maxY-frame.height*.14}} to={{x:frame.maxX-frame.width*.08,y:frame.maxY-frame.height*.14}} width={.12} height={1.1} z={base+.9} color="#414745"/></group>}
+      {Array.from({length:lawnGrove?14:20},(_,i)=>{const x=frame.minX+frame.width*(.05+((i*.277)%.90)),y=frame.minY+frame.height*(.05+((i*.523)%.90));return <Tree key={i} x={x} y={y} z={terrainZ(x,y)+lift+.2} scale={.68+(i%4)*.08} autumn={hillside&&i%4===0}/>})}
+      {[-1,1].map((s)=><Bench key={s} x={cx+s*frame.width*.22} y={cy+s*frame.height*.10} z={terrainZ(cx+s*frame.width*.22,cy+s*frame.height*.10)+lift+.2} rotation={Math.PI/4} maps={timber}/>) }
+    </group>;
+  }
   if (familyId === 'park_montreal_mount_royal_grove_v2') {
     const trail=guides.find((g)=>g.kind==='polyline');const pts=trail?route(trail,frame):[];const deck=guides.find((g)=>g.kind==='rectangle');
     return <group>{pts.slice(0,-1).map((p,i)=><Segment key={i} from={p} to={pts[i+1]} width={3.2} height={.18} z={Math.max(terrainZ(p.x,p.y),terrainZ(pts[i+1].x,pts[i+1].y))+lift+.10} maps={paver} color="#a09178" />)}{deck&&(()=>{const c=center(deck,frame),s=resolveParkGuideDimensionsM(deck,frame),z=terrainZ(c.x,c.y)+lift;return <group><mesh position={[c.x,c.y,z+.42]}><boxGeometry args={[s.width,s.height,.84]} /><meshStandardMaterial {...safety} color="#8f8b83" roughness={.94} /></mesh><Segment from={{x:c.x-s.width*.45,y:c.y+s.height*.42}} to={{x:c.x+s.width*.45,y:c.y+s.height*.42}} width={.14} height={1.1} z={z+.84} color="#4c504d" /></group>})()}{Array.from({length:Math.min(32,Math.max(12,Math.floor(frame.width*frame.height/2400)))},(_,i)=>{const x=frame.minX+frame.width*(.04+((i*.277)%0.92)),y=frame.minY+frame.height*(.04+((i*.523)%0.92));return <Tree key={i} x={x} y={y} z={terrainZ(x,y)+lift} scale={.72+(i%4)*.08} autumn={i%5===0}/>})}</group>;
+  }
+  if (familyId === 'park_montreal_neighbourhood_square_v3' && variantId && variantId !== 'montreal_square_v3') {
+    const linear=variantId==='montreal_square_v1',pocket=variantId==='montreal_square_v2';
+    return <group>
+      <mesh position={[cx,cy,base+.11]}><boxGeometry args={[frame.width*.94,frame.height*.90,.22]}/><meshStandardMaterial {...paver} color="#ffffff" roughness={.94}/></mesh>
+      {variantId==='montreal_square_v0'&&<group><mesh position={[cx,cy,base+.27]}><cylinderGeometry args={[Math.min(3.2,frame.width*.10),Math.min(3.2,frame.width*.10),.32,24]}/><meshStandardMaterial {...safety} color="#ffffff"/></mesh><mesh position={[cx,cy,base+.72]}><cylinderGeometry args={[.12,.18,.9,10]}/><meshStandardMaterial color="#696e6a"/></mesh></group>}
+      {Array.from({length:linear?6:pocket?5:4},(_,i)=>{const x=linear?frame.minX+frame.width*(.14+i*.72/5):cx+Math.cos(i*Math.PI*2/(pocket?5:4))*frame.width*.27;const y=linear?cy+(i%2?1:-1)*frame.height*.18:cy+Math.sin(i*Math.PI*2/(pocket?5:4))*frame.height*.25;const z=terrainZ(x,y)+lift;return <group key={i}><Planter x={x} y={y} z={z+.22} maps={paver} width={linear?4:3.2} depth={1.35}/><Bench x={x} y={y+(i%2?1.8:-1.8)} z={z+.22} rotation={linear?0:i*Math.PI*2/(pocket?5:4)+Math.PI/2} maps={timber}/>{(linear||pocket)&&<Tree x={x} y={y} z={z+1.3} scale={.55}/>}</group>})}
+      {pocket&&<Segment from={{x:frame.minX+frame.width*.08,y:cy}} to={{x:frame.maxX-frame.width*.08,y:cy}} width={2.6} height={.14} z={base+.22} maps={paver} color="#ffffff"/>}
+    </group>;
   }
   if (familyId === 'park_montreal_neighbourhood_square_v3') {
     const fountain=guides.find((g)=>g.kind==='ellipse');const railZ=base+.15;const inset=1.0;

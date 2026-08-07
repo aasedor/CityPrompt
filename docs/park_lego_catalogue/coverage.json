@@ -8,34 +8,33 @@
     "catalogueParents": 130,
     "catalogueVariants": 520,
     "completeExactParents": 0,
-    "completeMappedParents": 93,
-    "partialParents": 37,
+    "completeMappedParents": 103,
+    "partialParents": 27,
     "uncoveredParents": 0,
-    "exactVariants": 39,
-    "sharedMappedVariants": 370,
-    "unmappedVariants": 111,
+    "exactVariants": 29,
+    "sharedMappedVariants": 410,
+    "unmappedVariants": 81,
     "parkCapabilities": 127
   },
   "categorySummary": {
-    "civic_plazas:complete_mapped": 13,
-    "civic_plazas:partial": 6,
+    "civic_plazas:complete_mapped": 16,
+    "civic_plazas:partial": 3,
     "custom:complete_mapped": 1,
     "ecological_resilience:complete_mapped": 8,
     "ecological_resilience:partial": 4,
-    "landscape_parks:complete_mapped": 3,
-    "landscape_parks:partial": 11,
-    "neighborhood_public_realm:complete_mapped": 11,
-    "neighborhood_public_realm:partial": 1,
+    "landscape_parks:complete_mapped": 5,
+    "landscape_parks:partial": 9,
+    "neighborhood_public_realm:complete_mapped": 12,
     "parking_areas:complete_mapped": 5,
     "social_event_spaces:complete_mapped": 7,
     "social_event_spaces:partial": 3,
-    "specialty_gardens:complete_mapped": 10,
-    "specialty_gardens:partial": 4,
+    "specialty_gardens:complete_mapped": 13,
+    "specialty_gardens:partial": 1,
     "sports_recreation:complete_mapped": 24,
     "transport_infrastructure:complete_mapped": 1,
     "water_features:complete_mapped": 5,
-    "waterfront_spaces:complete_mapped": 5,
-    "waterfront_spaces:partial": 8
+    "waterfront_spaces:complete_mapped": 6,
+    "waterfront_spaces:partial": 7
   },
   "parents": [
     {
@@ -5430,23 +5429,37 @@
       "title": "London Garden Square",
       "spaceType": "park",
       "aestheticCategory": "specialty_gardens",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "london_garden_square_v0",
           "label": "Variant 1",
           "thumbnailUrl": "/archetypes/openspaces/london-garden-square/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_london_railed_square_v1",
+              "profileId": "london-railed-square-lego-v1",
+              "appearanceKitId": "london_garden_square_v0_open_skin",
+              "componentSetIds": [
+                "london_square_ground_program_v1",
+                "continuous_iron_rail_v1",
+                "central_lawn_room_v1",
+                "perimeter_tree_walk_v1",
+                "open_garden_room_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "london_garden_square_v1",
           "label": "Variant 2",
           "thumbnailUrl": "/archetypes/openspaces/london-garden-square/variant_1.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_london_railed_square_v1",
@@ -5458,7 +5471,7 @@
                 "central_lawn_room_v1",
                 "perimeter_tree_walk_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -5466,15 +5479,43 @@
           "id": "london_garden_square_v2",
           "label": "Variant 3",
           "thumbnailUrl": "/archetypes/openspaces/london-garden-square/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_london_railed_square_v1",
+              "profileId": "london-railed-square-lego-v1",
+              "appearanceKitId": "london_garden_square_v2_lush_brick_skin",
+              "componentSetIds": [
+                "london_square_ground_program_v1",
+                "continuous_iron_rail_v1",
+                "central_lawn_room_v1",
+                "perimeter_tree_walk_v1",
+                "raised_brick_garden_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "london_garden_square_v3",
           "label": "Variant 4",
           "thumbnailUrl": "/archetypes/openspaces/london-garden-square/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_london_railed_square_v1",
+              "profileId": "london-railed-square-lego-v1",
+              "appearanceKitId": "london_garden_square_v3_cafe_skin",
+              "componentSetIds": [
+                "london_square_ground_program_v1",
+                "continuous_iron_rail_v1",
+                "central_lawn_room_v1",
+                "perimeter_tree_walk_v1",
+                "cafe_forecourt_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -5483,23 +5524,37 @@
       "title": "London Circus",
       "spaceType": "park",
       "aestheticCategory": "civic_plazas",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "london_circus_v0",
           "label": "Variant 1",
           "thumbnailUrl": "/archetypes/openspaces/london-circus/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_london_circus_planted_v1",
+              "profileId": "london-circus-planted-lego-v1",
+              "appearanceKitId": "london_circus_v0_round_island_skin",
+              "componentSetIds": [
+                "circus_radial_ground_program_v1",
+                "central_planted_island_v1",
+                "curved_bench_bays_v1",
+                "clear_cycle_ring_v1",
+                "round_railed_island_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "london_circus_v1",
           "label": "Variant 2",
           "thumbnailUrl": "/archetypes/openspaces/london-circus/variant_1.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_london_circus_planted_v1",
@@ -5511,7 +5566,7 @@
                 "curved_bench_bays_v1",
                 "clear_cycle_ring_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -5519,15 +5574,43 @@
           "id": "london_circus_v2",
           "label": "Variant 3",
           "thumbnailUrl": "/archetypes/openspaces/london-circus/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_london_circus_planted_v1",
+              "profileId": "london-circus-planted-lego-v1",
+              "appearanceKitId": "london_circus_v2_side_court_skin",
+              "componentSetIds": [
+                "circus_radial_ground_program_v1",
+                "central_planted_island_v1",
+                "curved_bench_bays_v1",
+                "clear_cycle_ring_v1",
+                "side_court_planter_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "london_circus_v3",
           "label": "Variant 4",
           "thumbnailUrl": "/archetypes/openspaces/london-circus/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_london_circus_planted_v1",
+              "profileId": "london-circus-planted-lego-v1",
+              "appearanceKitId": "london_circus_v3_passage_skin",
+              "componentSetIds": [
+                "circus_radial_ground_program_v1",
+                "central_planted_island_v1",
+                "curved_bench_bays_v1",
+                "clear_cycle_ring_v1",
+                "narrow_passage_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -5536,16 +5619,16 @@
       "title": "New York Pocket Park",
       "spaceType": "park",
       "aestheticCategory": "neighborhood_public_realm",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "newyork_pocket_park_v0",
           "label": "Variant 1",
           "thumbnailUrl": "/archetypes/openspaces/new-york-pocket-park/variant_0.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_newyork_pocket_water_v0",
@@ -5557,7 +5640,7 @@
                 "whole_seat_planter_bays_v1",
                 "compact_pergola_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -5565,22 +5648,64 @@
           "id": "newyork_pocket_park_v1",
           "label": "Variant 2",
           "thumbnailUrl": "/archetypes/openspaces/new-york-pocket-park/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_newyork_pocket_water_v0",
+              "profileId": "newyork-pocket-water-lego-v1",
+              "appearanceKitId": "newyork_pocket_park_v1_linear_skin",
+              "componentSetIds": [
+                "ny_pocket_ground_program_v1",
+                "linear_water_rill_v1",
+                "whole_seat_planter_bays_v1",
+                "compact_pergola_v1",
+                "linear_planter_room_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "newyork_pocket_park_v2",
           "label": "Variant 3",
           "thumbnailUrl": "/archetypes/openspaces/new-york-pocket-park/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_newyork_pocket_water_v0",
+              "profileId": "newyork-pocket-water-lego-v1",
+              "appearanceKitId": "newyork_pocket_park_v2_brick_skin",
+              "componentSetIds": [
+                "ny_pocket_ground_program_v1",
+                "linear_water_rill_v1",
+                "whole_seat_planter_bays_v1",
+                "compact_pergola_v1",
+                "brick_seat_garden_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "newyork_pocket_park_v3",
           "label": "Variant 4",
           "thumbnailUrl": "/archetypes/openspaces/new-york-pocket-park/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_newyork_pocket_water_v0",
+              "profileId": "newyork-pocket-water-lego-v1",
+              "appearanceKitId": "newyork_pocket_park_v3_promenade_skin",
+              "componentSetIds": [
+                "ny_pocket_ground_program_v1",
+                "linear_water_rill_v1",
+                "whole_seat_planter_bays_v1",
+                "compact_pergola_v1",
+                "pocket_promenade_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -5589,37 +5714,79 @@
       "title": "New York Community Garden",
       "spaceType": "park",
       "aestheticCategory": "specialty_gardens",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "newyork_community_garden_v0",
           "label": "Variant 1",
           "thumbnailUrl": "/archetypes/openspaces/new-york-community-garden/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_newyork_community_greenhouse_v3",
+              "profileId": "newyork-community-greenhouse-lego-v1",
+              "appearanceKitId": "newyork_community_garden_v0_allotment_skin",
+              "componentSetIds": [
+                "ny_community_garden_ground_v1",
+                "whole_raised_bed_grid_v1",
+                "modest_greenhouse_v1",
+                "compost_tool_bay_v1",
+                "brick_allotment_grid_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "newyork_community_garden_v1",
           "label": "Variant 2",
           "thumbnailUrl": "/archetypes/openspaces/new-york-community-garden/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_newyork_community_greenhouse_v3",
+              "profileId": "newyork-community-greenhouse-lego-v1",
+              "appearanceKitId": "newyork_community_garden_v1_raised_grid_skin",
+              "componentSetIds": [
+                "ny_community_garden_ground_v1",
+                "whole_raised_bed_grid_v1",
+                "modest_greenhouse_v1",
+                "compost_tool_bay_v1",
+                "raised_bed_grid_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "newyork_community_garden_v2",
           "label": "Variant 3",
           "thumbnailUrl": "/archetypes/openspaces/new-york-community-garden/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_newyork_community_greenhouse_v3",
+              "profileId": "newyork-community-greenhouse-lego-v1",
+              "appearanceKitId": "newyork_community_garden_v2_shed_skin",
+              "componentSetIds": [
+                "ny_community_garden_ground_v1",
+                "whole_raised_bed_grid_v1",
+                "modest_greenhouse_v1",
+                "compost_tool_bay_v1",
+                "garden_shed_bed_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "newyork_community_garden_v3",
           "label": "Variant 4",
           "thumbnailUrl": "/archetypes/openspaces/new-york-community-garden/variant_3.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_newyork_community_greenhouse_v3",
@@ -5631,7 +5798,7 @@
                 "modest_greenhouse_v1",
                 "compost_tool_bay_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         }
@@ -5642,30 +5809,58 @@
       "title": "Mount Royal Park",
       "spaceType": "park",
       "aestheticCategory": "landscape_parks",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "montreal_mount_royal_v0",
           "label": "Variant 1",
           "thumbnailUrl": "/archetypes/openspaces/mount-royal-park/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_montreal_mount_royal_grove_v2",
+              "profileId": "montreal-mount-royal-grove-lego-v1",
+              "appearanceKitId": "montreal_mount_royal_v0_overlook_skin",
+              "componentSetIds": [
+                "mount_royal_ground_program_v1",
+                "continuous_carriage_switchback_v1",
+                "whole_maple_cohorts_v1",
+                "terrain_seated_belvedere_v1",
+                "slope_overlook_walk_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "montreal_mount_royal_v1",
           "label": "Variant 2",
           "thumbnailUrl": "/archetypes/openspaces/mount-royal-park/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_montreal_mount_royal_grove_v2",
+              "profileId": "montreal-mount-royal-grove-lego-v1",
+              "appearanceKitId": "montreal_mount_royal_v1_lawn_skin",
+              "componentSetIds": [
+                "mount_royal_ground_program_v1",
+                "continuous_carriage_switchback_v1",
+                "whole_maple_cohorts_v1",
+                "terrain_seated_belvedere_v1",
+                "lawn_grove_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "montreal_mount_royal_v2",
           "label": "Variant 3",
           "thumbnailUrl": "/archetypes/openspaces/mount-royal-park/variant_2.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_montreal_mount_royal_grove_v2",
@@ -5677,7 +5872,7 @@
                 "whole_maple_cohorts_v1",
                 "terrain_seated_belvedere_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -5685,8 +5880,22 @@
           "id": "montreal_mount_royal_v3",
           "label": "Variant 4",
           "thumbnailUrl": "/archetypes/openspaces/mount-royal-park/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_montreal_mount_royal_grove_v2",
+              "profileId": "montreal-mount-royal-grove-lego-v1",
+              "appearanceKitId": "montreal_mount_royal_v3_hillside_skin",
+              "componentSetIds": [
+                "mount_royal_ground_program_v1",
+                "continuous_carriage_switchback_v1",
+                "whole_maple_cohorts_v1",
+                "terrain_seated_belvedere_v1",
+                "hillside_terrace_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -5695,37 +5904,79 @@
       "title": "Montreal Neighbourhood Square",
       "spaceType": "park",
       "aestheticCategory": "civic_plazas",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "montreal_square_v0",
           "label": "Variant 1",
           "thumbnailUrl": "/archetypes/openspaces/montreal-neighbourhood-square/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_montreal_neighbourhood_square_v3",
+              "profileId": "montreal-neighbourhood-square-lego-v1",
+              "appearanceKitId": "montreal_square_v0_hard_plaza_skin",
+              "componentSetIds": [
+                "montreal_square_ground_program_v1",
+                "central_fountain_monument_v1",
+                "low_iron_perimeter_v1",
+                "whole_maple_bench_bays_v1",
+                "hard_plaza_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "montreal_square_v1",
           "label": "Variant 2",
           "thumbnailUrl": "/archetypes/openspaces/montreal-neighbourhood-square/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_montreal_neighbourhood_square_v3",
+              "profileId": "montreal-neighbourhood-square-lego-v1",
+              "appearanceKitId": "montreal_square_v1_linear_bench_skin",
+              "componentSetIds": [
+                "montreal_square_ground_program_v1",
+                "central_fountain_monument_v1",
+                "low_iron_perimeter_v1",
+                "whole_maple_bench_bays_v1",
+                "linear_bench_planter_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "montreal_square_v2",
           "label": "Variant 3",
           "thumbnailUrl": "/archetypes/openspaces/montreal-neighbourhood-square/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_montreal_neighbourhood_square_v3",
+              "profileId": "montreal-neighbourhood-square-lego-v1",
+              "appearanceKitId": "montreal_square_v2_pocket_court_skin",
+              "componentSetIds": [
+                "montreal_square_ground_program_v1",
+                "central_fountain_monument_v1",
+                "low_iron_perimeter_v1",
+                "whole_maple_bench_bays_v1",
+                "pocket_court_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "montreal_square_v3",
           "label": "Variant 4",
           "thumbnailUrl": "/archetypes/openspaces/montreal-neighbourhood-square/variant_3.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_montreal_neighbourhood_square_v3",
@@ -5737,7 +5988,7 @@
                 "low_iron_perimeter_v1",
                 "whole_maple_bench_bays_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         }
@@ -5960,16 +6211,16 @@
       "title": "Prince's Island Park",
       "spaceType": "park",
       "aestheticCategory": "waterfront_spaces",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "calgary_princes_island_v0",
           "label": "Summer Festival Ground",
           "thumbnailUrl": "/archetypes/openspaces/princes-island-park/variant_0.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_calgary_princes_island_festival_v0",
@@ -5981,7 +6232,7 @@
                 "wetland_boardwalk_v1",
                 "modest_outdoor_stage_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -5989,22 +6240,64 @@
           "id": "calgary_princes_island_v1",
           "label": "Autumn Cottonwood Gold",
           "thumbnailUrl": "/archetypes/openspaces/princes-island-park/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_calgary_princes_island_festival_v0",
+              "profileId": "calgary-princes-island-festival-lego-v1",
+              "appearanceKitId": "calgary_princes_island_v1_autumn_skin",
+              "componentSetIds": [
+                "princes_island_landscape_rooms_v1",
+                "festival_lawn_v1",
+                "wetland_boardwalk_v1",
+                "modest_outdoor_stage_v1",
+                "autumn_cottonwood_walk_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "calgary_princes_island_v2",
           "label": "Winter Wonderland",
           "thumbnailUrl": "/archetypes/openspaces/princes-island-park/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_calgary_princes_island_festival_v0",
+              "profileId": "calgary-princes-island-festival-lego-v1",
+              "appearanceKitId": "calgary_princes_island_v2_winter_skin",
+              "componentSetIds": [
+                "princes_island_landscape_rooms_v1",
+                "festival_lawn_v1",
+                "wetland_boardwalk_v1",
+                "modest_outdoor_stage_v1",
+                "winter_pavilion_grove_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "calgary_princes_island_v3",
           "label": "Spring Flood Season",
           "thumbnailUrl": "/archetypes/openspaces/princes-island-park/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_calgary_princes_island_festival_v0",
+              "profileId": "calgary-princes-island-festival-lego-v1",
+              "appearanceKitId": "calgary_princes_island_v3_flood_skin",
+              "componentSetIds": [
+                "princes_island_landscape_rooms_v1",
+                "festival_lawn_v1",
+                "wetland_boardwalk_v1",
+                "modest_outdoor_stage_v1",
+                "floodplain_bridge_walk_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -6013,23 +6306,37 @@
       "title": "Calgary Prairie Urban Plaza",
       "spaceType": "plaza",
       "aestheticCategory": "civic_plazas",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "calgary_prairie_plaza_v0",
           "label": "Winter Prairie Plaza",
           "thumbnailUrl": "/archetypes/openspaces/calgary-prairie-urban-plaza/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_calgary_prairie_market_v1",
+              "profileId": "calgary-prairie-market-lego-v1",
+              "appearanceKitId": "calgary_prairie_plaza_v0_winter_skin",
+              "componentSetIds": [
+                "prairie_plaza_ground_program_v1",
+                "linear_reflecting_pool_v1",
+                "whole_market_stall_bays_v1",
+                "native_grass_wind_bays_v1",
+                "winter_prairie_room_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "calgary_prairie_plaza_v1",
           "label": "Summer Market Square",
           "thumbnailUrl": "/archetypes/openspaces/calgary-prairie-urban-plaza/variant_1.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_calgary_prairie_market_v1",
@@ -6041,7 +6348,7 @@
                 "whole_market_stall_bays_v1",
                 "native_grass_wind_bays_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -6049,15 +6356,43 @@
           "id": "calgary_prairie_plaza_v2",
           "label": "Indigenous Art Garden",
           "thumbnailUrl": "/archetypes/openspaces/calgary-prairie-urban-plaza/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_calgary_prairie_market_v1",
+              "profileId": "calgary-prairie-market-lego-v1",
+              "appearanceKitId": "calgary_prairie_plaza_v2_indigenous_art_skin",
+              "componentSetIds": [
+                "prairie_plaza_ground_program_v1",
+                "linear_reflecting_pool_v1",
+                "whole_market_stall_bays_v1",
+                "native_grass_wind_bays_v1",
+                "indigenous_art_garden_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "calgary_prairie_plaza_v3",
           "label": "Corporate Campus Green",
           "thumbnailUrl": "/archetypes/openspaces/calgary-prairie-urban-plaza/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_calgary_prairie_market_v1",
+              "profileId": "calgary-prairie-market-lego-v1",
+              "appearanceKitId": "calgary_prairie_plaza_v3_corporate_green_skin",
+              "componentSetIds": [
+                "prairie_plaza_ground_program_v1",
+                "linear_reflecting_pool_v1",
+                "whole_market_stall_bays_v1",
+                "native_grass_wind_bays_v1",
+                "corporate_green_forecourt_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -6066,16 +6401,16 @@
       "title": "Halifax Public Gardens",
       "spaceType": "park",
       "aestheticCategory": "specialty_gardens",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "halifax_public_gardens_v0",
           "label": "Rose Garden Peak",
           "thumbnailUrl": "/archetypes/openspaces/halifax-public-gardens/variant_0.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_halifax_rose_bandstand_v0",
@@ -6087,7 +6422,7 @@
                 "ornate_bandstand_v1",
                 "wrought_iron_gate_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -6095,22 +6430,64 @@
           "id": "halifax_public_gardens_v1",
           "label": "Bandstand Concert",
           "thumbnailUrl": "/archetypes/openspaces/halifax-public-gardens/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_halifax_rose_bandstand_v0",
+              "profileId": "halifax-rose-bandstand-lego-v1",
+              "appearanceKitId": "halifax_public_gardens_v1_bandstand_skin",
+              "componentSetIds": [
+                "victorian_garden_ground_program_v1",
+                "whole_rose_bed_rooms_v1",
+                "ornate_bandstand_v1",
+                "wrought_iron_gate_v1",
+                "bandstand_concert_garden_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "halifax_public_gardens_v2",
           "label": "Autumn Foliage Stroll",
           "thumbnailUrl": "/archetypes/openspaces/halifax-public-gardens/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_halifax_rose_bandstand_v0",
+              "profileId": "halifax-rose-bandstand-lego-v1",
+              "appearanceKitId": "halifax_public_gardens_v2_autumn_skin",
+              "componentSetIds": [
+                "victorian_garden_ground_program_v1",
+                "whole_rose_bed_rooms_v1",
+                "ornate_bandstand_v1",
+                "wrought_iron_gate_v1",
+                "autumn_formal_walk_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "halifax_public_gardens_v3",
           "label": "Spring Tulip Display",
           "thumbnailUrl": "/archetypes/openspaces/halifax-public-gardens/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_halifax_rose_bandstand_v0",
+              "profileId": "halifax-rose-bandstand-lego-v1",
+              "appearanceKitId": "halifax_public_gardens_v3_tulip_skin",
+              "componentSetIds": [
+                "victorian_garden_ground_program_v1",
+                "whole_rose_bed_rooms_v1",
+                "ornate_bandstand_v1",
+                "wrought_iron_gate_v1",
+                "spring_tulip_display_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -6119,30 +6496,58 @@
       "title": "Halifax Coastal Forest Park",
       "spaceType": "park",
       "aestheticCategory": "landscape_parks",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "halifax_coastal_park_v0",
           "label": "Storm Watch Point",
           "thumbnailUrl": "/archetypes/openspaces/halifax-coastal-forest-park/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_halifax_coastal_fog_path_v2",
+              "profileId": "halifax-coastal-fog-path-lego-v1",
+              "appearanceKitId": "halifax_coastal_park_v0_storm_skin",
+              "componentSetIds": [
+                "coastal_forest_ground_program_v1",
+                "granite_gravel_path_v1",
+                "spruce_fir_grove_cohorts_v1",
+                "whole_boardwalk_lookout_v1",
+                "storm_watch_linear_walk_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "halifax_coastal_park_v1",
           "label": "Summer Beach Trail",
           "thumbnailUrl": "/archetypes/openspaces/halifax-coastal-forest-park/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_halifax_coastal_fog_path_v2",
+              "profileId": "halifax-coastal-fog-path-lego-v1",
+              "appearanceKitId": "halifax_coastal_park_v1_summer_skin",
+              "componentSetIds": [
+                "coastal_forest_ground_program_v1",
+                "granite_gravel_path_v1",
+                "spruce_fir_grove_cohorts_v1",
+                "whole_boardwalk_lookout_v1",
+                "summer_coastal_trail_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "halifax_coastal_park_v2",
           "label": "Foggy Morning Path",
           "thumbnailUrl": "/archetypes/openspaces/halifax-coastal-forest-park/variant_2.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_halifax_coastal_fog_path_v2",
@@ -6154,7 +6559,7 @@
                 "spruce_fir_grove_cohorts_v1",
                 "whole_boardwalk_lookout_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -6162,8 +6567,22 @@
           "id": "halifax_coastal_park_v3",
           "label": "Sunset Boardwalk",
           "thumbnailUrl": "/archetypes/openspaces/halifax-coastal-forest-park/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_halifax_coastal_fog_path_v2",
+              "profileId": "halifax-coastal-fog-path-lego-v1",
+              "appearanceKitId": "halifax_coastal_park_v3_boardwalk_skin",
+              "componentSetIds": [
+                "coastal_forest_ground_program_v1",
+                "granite_gravel_path_v1",
+                "spruce_fir_grove_cohorts_v1",
+                "whole_boardwalk_lookout_v1",
+                "sunset_boardwalk_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
