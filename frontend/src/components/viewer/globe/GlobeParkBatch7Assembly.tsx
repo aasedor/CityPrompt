@@ -6,6 +6,7 @@ import { resolveParkGuideDimensionsM, type ParkGroundGuide } from './parkGroundP
 import { PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS } from './publicRealmDepthPolicy';
 import { batch16ParkSkinForSelection } from './parkBatch16Skins';
 import { batch20ParkSkinForSelection } from './parkBatch20Skins';
+import { batch21ParkSkinForSelection } from './parkBatch21Skins';
 
 export interface Batch7ProgramFrame {
   minX: number;
@@ -136,10 +137,12 @@ export function GlobeParkBatch7Assembly({ familyId, guides, frame, terrainZ, arc
 }) {
   const lift = PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS;
   const batch20Skin = batch20ParkSkinForSelection(archetypeId ?? '', variantId ?? '');
-  const slug = batch20Skin?.slug
+  const batch21Skin = batch21ParkSkinForSelection(archetypeId ?? '', variantId ?? '');
+  const slug = batch21Skin?.slug
+    ?? batch20Skin?.slug
     ?? batch16ParkSkinForSelection(archetypeId ?? '', variantId ?? '')?.slug
     ?? SKIN_SLUG[familyId as Batch7FamilyId];
-  const variantSkin = batch20Skin !== null;
+  const variantSkin = batch20Skin !== null || batch21Skin !== null;
   const paverMaps = useRoleMaps(slug, 'paver');
   const asphaltMaps = useRoleMaps(slug, 'asphalt');
   const plantingMaps = useRoleMaps(slug, 'planting', 5);

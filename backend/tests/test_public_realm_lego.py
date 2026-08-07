@@ -1464,6 +1464,34 @@ def test_batch20_closes_thirty_variants_across_ten_ecological_and_civic_families
             assert all(selection.component_set_ids for selection in selections)
 
 
+def test_batch21_closes_thirty_variants_across_ten_program_and_landscape_families():
+    expected = {
+        "park_athletics_fields_v0": ("athletics_precinct_sports_fields",),
+        "park_community_garden_v0": ("community_garden",),
+        "park_fountain_formal_pool_v1": ("fountain_water_feature",),
+        "park_water_ecology": ("pond_lake",),
+        "park_market_festival_lawn_v1": ("market_square",),
+        "park_civic_plaza": ("formal_civic_plaza",),
+        "park_linear_greenway": ("linear_park_greenway",),
+        "park_boardwalk_maritime_v0": ("promenade_boardwalk",),
+        "park_natural_swimming_pond_v0": ("swimming_pool_complex",),
+        "park_rooftop_intensive_garden_v0": ("rooftop_garden",),
+    }
+    catalog = build_public_realm_capability_catalog(family_ids=list(expected))
+    assert len(catalog.capabilities) == 10
+    for capability in catalog.capabilities:
+        for archetype_id in expected[capability.family_id]:
+            selections = [selection for selection in capability.selections if selection.archetype_id == archetype_id]
+            assert len(selections) == 4
+            separator = "_variant_" if archetype_id == "athletics_precinct_sports_fields" else "_v"
+            assert {selection.variant_id for selection in selections} == {
+                f"{archetype_id}{separator}{index}" for index in range(4)
+            }
+            assert len({selection.appearance_kit_id for selection in selections}) == 4
+            assert len({selection.planting_structure for selection in selections}) == 4
+            assert all(selection.component_set_ids for selection in selections)
+
+
 @pytest.mark.parametrize(
     ("archetype_id", "variant_id"),
     [

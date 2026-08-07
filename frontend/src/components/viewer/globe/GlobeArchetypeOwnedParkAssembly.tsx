@@ -5,6 +5,7 @@ import * as THREE from 'three';
 import { PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS } from './publicRealmDepthPolicy';
 import { batch16ParkSkinForSelection } from './parkBatch16Skins';
 import { batch17ParkSkinForSelection, parkGlbMaterialRole, type ParkSkinRole } from './parkBatch17Skins';
+import { batch21ParkSkinForSelection } from './parkBatch21Skins';
 import { fitFixedParkProgram, type SkateParkPoint } from './skateParkFit';
 import {
   archetypeOwnedParkKitForFamily,
@@ -427,13 +428,17 @@ export function GlobeRegulationParkAssembly({ familyId, modules, terrainZ, varia
     familyId === 'park_caged_soccer_v0' ? 'soccer_pitch_caged' : '',
     variantId ?? '',
   )?.slug;
+  const batch21Slug = batch21ParkSkinForSelection(
+    familyId === 'park_athletics_fields_v0' ? 'athletics_precinct_sports_fields' : '',
+    variantId ?? '',
+  )?.slug;
   const tennisVariantIndex = familyId === 'park_tennis_cluster_v0'
     ? Number(variantId?.match(/_v([0-3])$/)?.[1] ?? 0)
     : 0;
   const slug = familyId === 'park_basketball_court_v0' ? basketballSlug
     : familyId === 'park_tennis_cluster_v0' ? (batch16Slug ?? 'tennis-court-professional')
     : familyId === 'park_caged_soccer_v0' ? (batch17Slug ?? 'caged-soccer-european')
-      : 'athletics-fields-regulation';
+      : (batch21Slug ?? 'athletics-fields-regulation');
   const basketballSurfaceRole = basketballVariantIndex === 0 || basketballVariantIndex === 3
     ? 'asphalt'
     : basketballVariantIndex === 1 ? 'paver' : 'asphalt';
@@ -769,7 +774,8 @@ export function GlobeArchetypeOwnedParkAssembly({ familyId, boundary, terrainZ, 
     return { kit: minimumKit, fit: fitFixedParkProgram(boundary, minimumKit) };
   }, [boundary, kit]);
   const adaptiveKit = adaptiveProgram.kit;
-  const materialSlug = batch17ParkSkinForSelection(archetypeId ?? '', variantId ?? '')?.slug
+  const materialSlug = batch21ParkSkinForSelection(archetypeId ?? '', variantId ?? '')?.slug
+    ?? batch17ParkSkinForSelection(archetypeId ?? '', variantId ?? '')?.slug
     ?? batch16ParkSkinForSelection(archetypeId ?? '', variantId ?? '')?.slug
     ?? adaptiveKit?.slug;
   const fit = adaptiveProgram.fit;

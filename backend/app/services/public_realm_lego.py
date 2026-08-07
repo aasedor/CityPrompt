@@ -2283,6 +2283,89 @@ def _apply_batch20_variant_closures(
 _CAPABILITIES = tuple(_apply_batch20_variant_closures(capability) for capability in _CAPABILITIES)
 
 
+_BATCH21_VARIANT_CLOSURES: dict[
+    str,
+    tuple[tuple[str, str, str, str, str], ...],
+] = {
+    "park_athletics_fields_v0": (
+        ("athletics_precinct_sports_fields", "athletics_precinct_sports_fields_variant_1", "athletics_precinct_sports_fields_v1_university_grandstand_skin", "athletics_university_v1", "university_grandstand_program_v1"),
+        ("athletics_precinct_sports_fields", "athletics_precinct_sports_fields_variant_2", "athletics_precinct_sports_fields_v2_campus_precinct_skin", "athletics_campus_v2", "campus_athletics_precinct_program_v1"),
+        ("athletics_precinct_sports_fields", "athletics_precinct_sports_fields_variant_3", "athletics_precinct_sports_fields_v3_open_oval_skin", "athletics_open_oval_v3", "open_oval_pavilion_program_v1"),
+    ),
+    "park_community_garden_v0": (
+        ("community_garden", "community_garden_v1", "community_garden_v1_modern_steel_turf_skin", "community_garden_modern_v1", "modern_steel_garden_program_v1"),
+        ("community_garden", "community_garden_v2", "community_garden_v2_natural_meadow_skin", "community_garden_meadow_v2", "meadow_allotment_program_v1"),
+        ("community_garden", "community_garden_v3", "community_garden_v3_urban_contemporary_skin", "community_garden_urban_v3", "urban_allotment_program_v1"),
+    ),
+    "park_fountain_formal_pool_v1": (
+        ("fountain_water_feature", "fountain_water_feature_v0", "fountain_water_feature_v0_naturalistic_pond_skin", "fountain_naturalistic_v0", "naturalistic_fountain_program_v1"),
+        ("fountain_water_feature", "fountain_water_feature_v2", "fountain_water_feature_v2_contemporary_interactive_skin", "fountain_interactive_v2", "interactive_fountain_program_v1"),
+        ("fountain_water_feature", "fountain_water_feature_v3", "fountain_water_feature_v3_ecological_wetland_skin", "fountain_wetland_v3", "wetland_fountain_program_v1"),
+    ),
+    "park_water_ecology": (
+        ("pond_lake", "pond_lake_v1", "pond_lake_v1_formal_reflecting_skin", "pond_formal_v1", "formal_reflecting_pond_program_v1"),
+        ("pond_lake", "pond_lake_v2", "pond_lake_v2_contemporary_interactive_skin", "pond_interactive_v2", "interactive_pond_program_v1"),
+        ("pond_lake", "pond_lake_v3", "pond_lake_v3_ecological_wetland_skin", "pond_wetland_v3", "ecological_wetland_pond_program_v1"),
+    ),
+    "park_market_festival_lawn_v1": (
+        ("market_square", "market_square_v0", "market_square_v0_terraced_performance_skin", "market_terraced_v0", "terraced_market_performance_program_v1"),
+        ("market_square", "market_square_v2", "market_square_v2_intimate_garden_skin", "market_garden_v2", "garden_market_venue_program_v1"),
+        ("market_square", "market_square_v3", "market_square_v3_industrial_adaptive_skin", "market_industrial_v3", "industrial_market_program_v1"),
+    ),
+    "park_civic_plaza": (
+        ("formal_civic_plaza", "formal_civic_plaza_v1", "formal_civic_plaza_v1_contemporary_urban_skin", "formal_civic_contemporary_v1", "contemporary_civic_plaza_program_v1"),
+        ("formal_civic_plaza", "formal_civic_plaza_v2", "formal_civic_plaza_v2_green_civic_skin", "formal_civic_green_v2", "green_civic_plaza_program_v1"),
+        ("formal_civic_plaza", "formal_civic_plaza_v3", "formal_civic_plaza_v3_festival_market_skin", "formal_civic_festival_v3", "festival_civic_plaza_program_v1"),
+    ),
+    "park_linear_greenway": (
+        ("linear_park_greenway", "linear_park_greenway_v1", "linear_park_greenway_v1_riverfront_skin", "linear_riverfront_v1", "riverfront_greenway_program_v1"),
+        ("linear_park_greenway", "linear_park_greenway_v2", "linear_park_greenway_v2_daylighted_creek_skin", "linear_daylighted_creek_v2", "daylighted_creek_greenway_program_v1"),
+        ("linear_park_greenway", "linear_park_greenway_v3", "linear_park_greenway_v3_elevated_viaduct_skin", "linear_elevated_viaduct_v3", "elevated_viaduct_greenway_program_v1"),
+    ),
+    "park_boardwalk_maritime_v0": (
+        ("promenade_boardwalk", "promenade_boardwalk_v1", "promenade_boardwalk_v1_modern_esplanade_skin", "boardwalk_modern_v1", "modern_esplanade_program_v1"),
+        ("promenade_boardwalk", "promenade_boardwalk_v2", "promenade_boardwalk_v2_tropical_resort_skin", "boardwalk_tropical_v2", "tropical_boardwalk_program_v1"),
+        ("promenade_boardwalk", "promenade_boardwalk_v3", "promenade_boardwalk_v3_naturalized_riparian_skin", "boardwalk_riparian_v3", "riparian_boardwalk_program_v1"),
+    ),
+    "park_natural_swimming_pond_v0": (
+        ("swimming_pool_complex", "swimming_pool_complex_v1", "swimming_pool_complex_v1_formal_reflecting_skin", "swimming_formal_v1", "formal_swimming_basin_program_v1"),
+        ("swimming_pool_complex", "swimming_pool_complex_v2", "swimming_pool_complex_v2_contemporary_interactive_skin", "swimming_interactive_v2", "interactive_swimming_program_v1"),
+        ("swimming_pool_complex", "swimming_pool_complex_v3", "swimming_pool_complex_v3_ecological_wetland_skin", "swimming_wetland_v3", "ecological_swimming_program_v1"),
+    ),
+    "park_rooftop_intensive_garden_v0": (
+        ("rooftop_garden", "rooftop_garden_v1", "rooftop_garden_v1_sedum_skin", "rooftop_sedum_v1", "sedum_roof_program_v1"),
+        ("rooftop_garden", "rooftop_garden_v2", "rooftop_garden_v2_urban_farm_skin", "rooftop_farm_v2", "rooftop_farm_program_v1"),
+        ("rooftop_garden", "rooftop_garden_v3", "rooftop_garden_v3_social_terrace_skin", "rooftop_social_v3", "rooftop_social_terrace_program_v1"),
+    ),
+}
+
+
+def _apply_batch21_variant_closures(
+    capability: PublicRealmFamilyCapability,
+) -> PublicRealmFamilyCapability:
+    descriptors = _BATCH21_VARIANT_CLOSURES.get(capability.family_id, ())
+    if not descriptors:
+        return capability
+    additions: list[PublicRealmSelectionCapability] = []
+    for archetype_id, variant_id, appearance_kit_id, planting_structure, program_component in descriptors:
+        base = next(selection for selection in capability.selections if selection.archetype_id == archetype_id)
+        additions.append(
+            _selection(
+                archetype_id,
+                variant_id,
+                profile_id=base.profile_id,
+                appearance_kit_id=appearance_kit_id,
+                planting_structure=planting_structure,
+                compatibility=base.compatibility,
+                components=(*base.component_set_ids, program_component),
+            )
+        )
+    return capability.model_copy(update={"selections": (*capability.selections, *additions)})
+
+
+_CAPABILITIES = tuple(_apply_batch21_variant_closures(capability) for capability in _CAPABILITIES)
+
+
 def public_realm_capability_fingerprint(
     capability: PublicRealmFamilyCapability,
 ) -> str:

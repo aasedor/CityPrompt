@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "testedAt": "2026-08-07T01:34:57.579928+00:00",
+  "projectId": "e4dfd8f2-4bb3-4a4f-ad5a-b30bf0fe77cd",
+  "zoneId": "09571cfd-936a-4d9e-8f19-29109c6920f3",
+  "workflow": "one_park_at_a_time_generate_to_3d",
+  "planningState": {
+    "flatColoredPolygon": true,
+    "previewedBatch21DepthKitBeforeGenerate": false
+  },
+  "selection": {
+    "archetypeId": "formal_civic_plaza",
+    "variantId": "formal_civic_plaza_v2",
+    "label": "Green Civic"
+  },
+  "parcelFit": {
+    "initialWidthM": 39.723,
+    "initialDepthM": 31.185,
+    "initialAreaM2": 1192.878,
+    "catalogueMinimumWidthM": 40.0,
+    "catalogueMinimumDepthM": 35.0,
+    "catalogueMinimumAreaM2": 1400.0,
+    "fittedWidthM": 42.179,
+    "fittedDepthM": 36.97,
+    "fittedAreaM2": 1501.834
+  },
+  "compiledRecipe": {
+    "familyId": "park_civic_plaza",
+    "profileId": "formal-civic-plaza-v1",
+    "appearanceKitId": "formal_civic_plaza_v2_green_civic_skin",
+    "plantingStructure": "formal_civic_green_v2",
+    "targetWidthM": 42.179,
+    "targetDepthM": 36.97,
+    "targetAreaM2": 1501.834,
+    "components": [
+      "civic_plaza_ground_program_v1",
+      "civic_fountain_assembly_v1",
+      "public_realm_furnishings_v1",
+      "green_civic_plaza_program_v1"
+    ]
+  },
+  "scene": {
+    "buildings": 1,
+    "parks": 1,
+    "streets": 0,
+    "assembled": 1,
+    "noFamily": 0,
+    "skipped": 0,
+    "separateBuildingFamily": "Parisian Boulevard Corner",
+    "peopleRendered": false,
+    "embeddedLargeBuildings": false,
+    "aiDrapeCalls": 0
+  },
+  "observations": [
+    "The archetype selection remained a flat planning polygon before Generate to 3D.",
+    "The first parcel was smaller than the explicit civic-plaza compatibility envelope; the park was tested on a minimally enlarged valid parcel rather than scaling the fountain or inventing an oversized element.",
+    "Generate to 3D persisted the exact Batch 21 family, variant, appearance kit, planting structure and metric target.",
+    "The compiled parcel base uses the exact Green Civic paver PBR skin instead of the generic plaza material.",
+    "The depth kit adds one central fountain, six paired raised planting terraces, rain-garden planting, timber seating, perimeter trees and civic microdetail while retaining a clear event field.",
+    "The level prepared park datum masks the Google tiles without source geometry protruding through the parcel.",
+    "The separately compiled building remained independent from the park family throughout the trial."
+  ],
+  "result": "pass"
+}

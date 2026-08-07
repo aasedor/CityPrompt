@@ -1,0 +1,89 @@
+import { useEffect, useMemo, useState } from 'react';
+import * as THREE from 'three';
+import { batch21ParkSkinForSelection } from './parkBatch21Skins';
+
+export type Batch21ParkBaseRole = 'paver' | 'lawn' | 'planting';
+
+export interface Batch21ParkBaseMaterialSpec {
+  slug: string;
+  role: Batch21ParkBaseRole;
+  metersPerTile: number;
+}
+
+export interface Batch21ParkBaseMaterialMaps {
+  map: THREE.Texture;
+  normalMap: THREE.Texture;
+  roughnessMap: THREE.Texture;
+}
+
+/** The compiled polygon is the tile-flattening mask as well as the visual
+ * ground plane. Give it the exact archetype skin instead of the generic
+ * plaza/grass texture so an owned LEGO kit never sits on a monochrome slab. */
+export function resolveBatch21ParkBaseMaterial(
+  archetypeId: string,
+  variantId: string,
+): Batch21ParkBaseMaterialSpec | null {
+  const skin = batch21ParkSkinForSelection(archetypeId, variantId);
+  if (!skin) return null;
+  if (archetypeId === 'athletics_precinct_sports_fields') {
+    return { slug: skin.slug, role: 'lawn', metersPerTile: 5.5 };
+  }
+  if (archetypeId === 'linear_park_greenway') {
+    return { slug: skin.slug, role: 'planting', metersPerTile: 5.0 };
+  }
+  if (archetypeId === 'pond_lake') {
+    return { slug: skin.slug, role: 'lawn', metersPerTile: 5.0 };
+  }
+  if (archetypeId === 'rooftop_garden' && variantId !== 'rooftop_garden_v3') {
+    return { slug: skin.slug, role: 'planting', metersPerTile: 4.0 };
+  }
+  return { slug: skin.slug, role: 'paver', metersPerTile: 3.5 };
+}
+
+export function useBatch21ParkBaseMaterial(
+  archetypeId: string,
+  variantId: string,
+  active: boolean,
+): { spec: Batch21ParkBaseMaterialSpec; maps: Batch21ParkBaseMaterialMaps } | null {
+  const spec = useMemo(
+    () => (active ? resolveBatch21ParkBaseMaterial(archetypeId, variantId) : null),
+    [active, archetypeId, variantId],
+  );
+  const [maps, setMaps] = useState<Batch21ParkBaseMaterialMaps | null>(null);
+
+  useEffect(() => {
+    if (!spec) {
+      setMaps(null);
+      return undefined;
+    }
+    let cancelled = false;
+    let loaded: Batch21ParkBaseMaterialMaps | null = null;
+    const root = `/park-skins/${spec.slug}/adaptive-v1/${spec.role}`;
+    const loader = new THREE.TextureLoader();
+    void Promise.all([
+      loader.loadAsync(`${root}/albedo.jpg`),
+      loader.loadAsync(`${root}/normal.png`),
+      loader.loadAsync(`${root}/roughness.jpg`),
+    ]).then(([map, normalMap, roughnessMap]) => {
+      loaded = { map, normalMap, roughnessMap };
+      Object.values(loaded).forEach((texture) => {
+        texture.wrapS = THREE.RepeatWrapping;
+        texture.wrapT = THREE.RepeatWrapping;
+        texture.repeat.set(1 / spec.metersPerTile, 1 / spec.metersPerTile);
+        texture.needsUpdate = true;
+      });
+      map.colorSpace = THREE.SRGBColorSpace;
+      if (!cancelled) setMaps(loaded);
+      else Object.values(loaded).forEach((texture) => texture.dispose());
+    }).catch((error) => {
+      if (!cancelled) console.warn('[parkBatch21BaseMaterial] texture fetch failed', error);
+    });
+    return () => {
+      cancelled = true;
+      setMaps(null);
+      if (loaded) Object.values(loaded).forEach((texture) => texture.dispose());
+    };
+  }, [spec]);
+
+  return spec && maps ? { spec, maps } : null;
+}

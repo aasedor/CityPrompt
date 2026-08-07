@@ -19,6 +19,7 @@ import { batch17ParkSkinForSelection } from './parkBatch17Skins';
 import { batch18ParkSkinForSelection } from './parkBatch18Skins';
 import { batch19ParkSkinForSelection } from './parkBatch19Skins';
 import { batch20ParkSkinForSelection } from './parkBatch20Skins';
+import { batch21ParkSkinForSelection } from './parkBatch21Skins';
 
 /** Public Realm LEGO V1 park families. These ids are shared with the backend
  * capability contract and are deliberately separate from catalog archetype
@@ -603,18 +604,18 @@ const PARK_FAMILY_SELECTIONS: Readonly<
     ),
   }),
   park_civic_plaza: Object.freeze({
-    formal_civic_plaza: Object.freeze([Object.freeze({
-      variantId: 'formal_civic_plaza_v0',
-      appearanceKitId: 'neoclassical_stone_v1',
-      plantingStructure: 'paved_plaza',
-    })]),
+    formal_civic_plaza: fourVariantMappings(
+      'formal_civic_plaza',
+      ['neoclassical_stone_v1', 'formal_civic_plaza_v1_contemporary_urban_skin', 'formal_civic_plaza_v2_green_civic_skin', 'formal_civic_plaza_v3_festival_market_skin'],
+      ['paved_plaza', 'formal_civic_contemporary_v1', 'formal_civic_green_v2', 'formal_civic_festival_v3'],
+    ),
   }),
   park_linear_greenway: Object.freeze({
-    linear_park_greenway: Object.freeze([Object.freeze({
-      variantId: 'linear_park_greenway_v0',
-      appearanceKitId: 'rail_trail_v1',
-      plantingStructure: 'naturalistic_grove',
-    })]),
+    linear_park_greenway: fourVariantMappings(
+      'linear_park_greenway',
+      ['rail_trail_v1', 'linear_park_greenway_v1_riverfront_skin', 'linear_park_greenway_v2_daylighted_creek_skin', 'linear_park_greenway_v3_elevated_viaduct_skin'],
+      ['naturalistic_grove', 'linear_riverfront_v1', 'linear_daylighted_creek_v2', 'linear_elevated_viaduct_v3'],
+    ),
   }),
   park_skate_archetype_v0: Object.freeze({
     skate_park: fourVariantMappings(
@@ -645,9 +646,11 @@ const PARK_FAMILY_SELECTIONS: Readonly<
     ),
   }),
   park_community_garden_v0: Object.freeze({
-    community_garden: Object.freeze([Object.freeze({
-      variantId: 'community_garden_v0', appearanceKitId: 'community_garden_v0_reference_skin', plantingStructure: 'community_garden_v0',
-    })]),
+    community_garden: fourVariantMappings(
+      'community_garden',
+      ['community_garden_v0_reference_skin', 'community_garden_v1_modern_steel_turf_skin', 'community_garden_v2_natural_meadow_skin', 'community_garden_v3_urban_contemporary_skin'],
+      ['community_garden_v0', 'community_garden_modern_v1', 'community_garden_meadow_v2', 'community_garden_urban_v3'],
+    ),
   }),
   park_basketball_court_v0: Object.freeze({
     basketball_court: Object.freeze([
@@ -680,9 +683,11 @@ const PARK_FAMILY_SELECTIONS: Readonly<
     ),
   }),
   park_athletics_fields_v0: Object.freeze({
-    athletics_precinct_sports_fields: Object.freeze([Object.freeze({
-      variantId: 'athletics_precinct_sports_fields_variant_0', appearanceKitId: 'athletics_precinct_sports_fields_v0_reference_skin', plantingStructure: 'athletics_fields_v0',
-    })]),
+    athletics_precinct_sports_fields: fourNamedVariantMappings(
+      'athletics_precinct_sports_fields',
+      ['athletics_precinct_sports_fields_v0_reference_skin', 'athletics_precinct_sports_fields_v1_university_grandstand_skin', 'athletics_precinct_sports_fields_v2_campus_precinct_skin', 'athletics_precinct_sports_fields_v3_open_oval_skin'],
+      ['athletics_fields_v0', 'athletics_university_v1', 'athletics_campus_v2', 'athletics_open_oval_v3'],
+    ),
   }),
   park_nature_play_v0: Object.freeze({
     nature_play_area: fourVariantMappings(
@@ -755,7 +760,7 @@ const PARK_FAMILY_SELECTIONS: Readonly<
     })]),
     pond_lake: Object.freeze([Object.freeze({
       variantId: 'pond_lake_v0', appearanceKitId: 'pond_lake_v0_naturalistic_skin', plantingStructure: 'pond_lake_v0',
-    })]),
+    }), Object.freeze({ variantId: 'pond_lake_v1', appearanceKitId: 'pond_lake_v1_formal_reflecting_skin', plantingStructure: 'pond_formal_v1' }), Object.freeze({ variantId: 'pond_lake_v2', appearanceKitId: 'pond_lake_v2_contemporary_interactive_skin', plantingStructure: 'pond_interactive_v2' }), Object.freeze({ variantId: 'pond_lake_v3', appearanceKitId: 'pond_lake_v3_ecological_wetland_skin', plantingStructure: 'pond_wetland_v3' })]),
     wetland_rain_garden: fourVariantMappings(
       'wetland_rain_garden',
       ['wetland_rain_garden_v0_native_restoration_skin', 'wetland_rain_garden_v1_bioengineered_skin', 'wetland_rain_garden_v2_rewilded_urban_skin', 'wetland_rain_garden_v3_resilient_coastal_skin'],
@@ -972,16 +977,16 @@ const PARK_FAMILY_SELECTIONS: Readonly<
     ),
   }),
   park_market_festival_lawn_v1: Object.freeze({
-    market_square: Object.freeze([Object.freeze({ variantId: 'market_square_v1', appearanceKitId: 'market_square_v1_open_festival_lawn_skin', plantingStructure: 'market_festival_lawn_v1' })]),
+    market_square: fourVariantMappings('market_square', ['market_square_v0_terraced_performance_skin', 'market_square_v1_open_festival_lawn_skin', 'market_square_v2_intimate_garden_skin', 'market_square_v3_industrial_adaptive_skin'], ['market_terraced_v0', 'market_festival_lawn_v1', 'market_garden_v2', 'market_industrial_v3']),
   }),
   park_boardwalk_maritime_v0: Object.freeze({
-    promenade_boardwalk: Object.freeze([Object.freeze({ variantId: 'promenade_boardwalk_v0', appearanceKitId: 'promenade_boardwalk_v0_maritime_skin', plantingStructure: 'boardwalk_maritime_v0' })]),
+    promenade_boardwalk: fourVariantMappings('promenade_boardwalk', ['promenade_boardwalk_v0_maritime_skin', 'promenade_boardwalk_v1_modern_esplanade_skin', 'promenade_boardwalk_v2_tropical_resort_skin', 'promenade_boardwalk_v3_naturalized_riparian_skin'], ['boardwalk_maritime_v0', 'boardwalk_modern_v1', 'boardwalk_tropical_v2', 'boardwalk_riparian_v3']),
   }),
   park_fountain_formal_pool_v1: Object.freeze({
-    fountain_water_feature: Object.freeze([Object.freeze({ variantId: 'fountain_water_feature_v1', appearanceKitId: 'fountain_water_feature_v1_formal_pool_skin', plantingStructure: 'fountain_formal_pool_v1' })]),
+    fountain_water_feature: fourVariantMappings('fountain_water_feature', ['fountain_water_feature_v0_naturalistic_pond_skin', 'fountain_water_feature_v1_formal_pool_skin', 'fountain_water_feature_v2_contemporary_interactive_skin', 'fountain_water_feature_v3_ecological_wetland_skin'], ['fountain_naturalistic_v0', 'fountain_formal_pool_v1', 'fountain_interactive_v2', 'fountain_wetland_v3']),
   }),
   park_natural_swimming_pond_v0: Object.freeze({
-    swimming_pool_complex: Object.freeze([Object.freeze({ variantId: 'swimming_pool_complex_v0', appearanceKitId: 'swimming_pool_complex_v0_natural_pond_skin', plantingStructure: 'natural_swimming_pond_v0' })]),
+    swimming_pool_complex: fourVariantMappings('swimming_pool_complex', ['swimming_pool_complex_v0_natural_pond_skin', 'swimming_pool_complex_v1_formal_reflecting_skin', 'swimming_pool_complex_v2_contemporary_interactive_skin', 'swimming_pool_complex_v3_ecological_wetland_skin'], ['natural_swimming_pond_v0', 'swimming_formal_v1', 'swimming_interactive_v2', 'swimming_wetland_v3']),
   }),
   park_nature_preserve_prairie_v1: Object.freeze({
     nature_preserve: Object.freeze([Object.freeze({ variantId: 'nature_preserve_v1', appearanceKitId: 'nature_preserve_v1_tallgrass_prairie_skin', plantingStructure: 'nature_preserve_prairie_v1' })]),
@@ -1137,7 +1142,7 @@ const PARK_FAMILY_SELECTIONS: Readonly<
   park_parade_national_mall_v3: Object.freeze({ parade_ground: Object.freeze([Object.freeze({ variantId:'parade_ground_v3', appearanceKitId:'parade_ground_v3_national_mall_skin', plantingStructure:'parade_national_mall_v3' })]) }),
   park_canal_ecological_wetland_v3: Object.freeze({ canal_waterway: Object.freeze([Object.freeze({ variantId:'canal_waterway_v3', appearanceKitId:'canal_waterway_v3_ecological_skin', plantingStructure:'canal_ecological_wetland_v3' })]) }),
   park_custom_biophilic_urban_v1: Object.freeze({ custom_parks_plazas: Object.freeze([Object.freeze({ variantId:'custom_parks_plazas_v1', appearanceKitId:'custom_parks_plazas_v1_biophilic_skin', plantingStructure:'custom_biophilic_urban_v1' })]) }),
-  park_rooftop_intensive_garden_v0: Object.freeze({ rooftop_garden: Object.freeze([Object.freeze({variantId:'rooftop_garden_v0',appearanceKitId:'rooftop_garden_v0_intensive_skin',plantingStructure:'rooftop_intensive_garden_v0'})]) }),
+  park_rooftop_intensive_garden_v0: Object.freeze({ rooftop_garden: fourVariantMappings('rooftop_garden', ['rooftop_garden_v0_intensive_skin', 'rooftop_garden_v1_sedum_skin', 'rooftop_garden_v2_urban_farm_skin', 'rooftop_garden_v3_social_terrace_skin'], ['rooftop_intensive_garden_v0', 'rooftop_sedum_v1', 'rooftop_farm_v2', 'rooftop_social_v3']) }),
   park_community_healing_garden_v2: Object.freeze({ community_garden_enhanced: Object.freeze([Object.freeze({variantId:'garden_healing',appearanceKitId:'community_garden_enhanced_healing_skin',plantingStructure:'community_healing_garden_v2'})]) }),
   park_greenbelt_rail_trail_v1: Object.freeze({ greenbelt_buffer_park: Object.freeze([Object.freeze({variantId:'greenbelt_buffer_park_v1',appearanceKitId:'greenbelt_buffer_park_v1_rail_trail_skin',plantingStructure:'greenbelt_rail_trail_v1'})]) }),
   park_foothill_heathland_trail_v2: Object.freeze({ foothill_trail_park: Object.freeze([Object.freeze({variantId:'foothill_trail_park_v2',appearanceKitId:'foothill_trail_park_v2_heathland_skin',plantingStructure:'foothill_heathland_trail_v2'})]) }),
@@ -1629,6 +1634,7 @@ export function usesArchetypeOwnedParkSurface(zone: ParkLegoZone): boolean {
   if (batch18ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
   if (batch19ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
   if (batch20ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
+  if (batch21ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
   const kit = archetypeOwnedParkKitForFamily(contract.familyId);
   const selection = archetypeOwnedParkKitForSelection(contract.archetypeId, contract.variantId);
   return kit !== null && selection?.familyId === kit.familyId;

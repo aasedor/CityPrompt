@@ -72,6 +72,8 @@ import {
   createStreetSurfaceAlbedoTexture,
   type StreetSurfaceMaterialKind,
 } from './streetSurfaceMaterials';
+import { resolveParkLegoContract } from './parkLegoFamilies';
+import { useBatch21ParkBaseMaterial } from './parkBatch21BaseMaterial';
 
 const DEG_TO_RAD = Math.PI / 180;
 const OBJECT_FILTER_SAMPLE_RADIUS_METERS = 8;
@@ -447,6 +449,15 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   const isCompiledGround = (
     (communityKind === 'park' || communityKind === 'street')
     && isCompiledCommunity
+  );
+  const parkLegoContract = useMemo(
+    () => (communityKind === 'park' ? resolveParkLegoContract(zone) : null),
+    [communityKind, zone],
+  );
+  const batch21ParkBaseMaterial = useBatch21ParkBaseMaterial(
+    parkLegoContract?.archetypeId ?? '',
+    parkLegoContract?.variantId ?? '',
+    communityKind === 'park' && isCompiledGround,
   );
   const usesLevelCompiledParkDatum = shouldUseLevelCompiledParkDatum(
     communityKind,
@@ -1047,7 +1058,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
 
   const authoredGroundTexture = drapeActive
     ? groundTexture
-    : woonerfGroundTexture ?? publicRealmBaseTexture;
+    : batch21ParkBaseMaterial?.maps.map ?? woonerfGroundTexture ?? publicRealmBaseTexture;
   const hasAuthoredGroundTexture = Boolean(authoredGroundTexture);
 
   return (
@@ -1099,9 +1110,12 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
             />
           ) : isCompiledGround || drapeActive || isWoonerfGround ? (
             <meshStandardMaterial
-              key={drapeActive ? groundMeta?.document_id ?? 'drape' : isWoonerfGround ? 'woonerf-pavers' : `compiled-${publicRealmBaseKind ?? 'plain'}`}
+              key={drapeActive ? groundMeta?.document_id ?? 'drape' : batch21ParkBaseMaterial ? `batch21-${batch21ParkBaseMaterial.spec.slug}-${batch21ParkBaseMaterial.spec.role}` : isWoonerfGround ? 'woonerf-pavers' : `compiled-${publicRealmBaseKind ?? 'plain'}`}
               color={hasAuthoredGroundTexture ? '#ffffff' : compiledSurfaceColor}
               map={authoredGroundTexture ?? undefined}
+              normalMap={batch21ParkBaseMaterial?.maps.normalMap}
+              normalScale={batch21ParkBaseMaterial ? new THREE.Vector2(0.38, 0.38) : undefined}
+              roughnessMap={batch21ParkBaseMaterial?.maps.roughnessMap}
               roughness={communityKind === 'street' ? 0.94 : 0.98}
               metalness={0}
               transparent={publicRealmDepthPolicy.transparent}

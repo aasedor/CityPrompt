@@ -940,7 +940,7 @@ function ParkSpecialtyStructures({
     return <GlobeParkBatch12Assembly familyId={profileFamilyId} archetypeId={legoContract?.archetypeId} variantId={legoContract?.variantId} guides={fittedProgramGuides} frame={programFrame} terrainZ={terrainZ} />;
   }
   if (structureKind === 'batch13_archetype_assembly' && profileFamilyId) {
-    return <GlobeParkBatch13Assembly familyId={profileFamilyId} guides={fittedProgramGuides} frame={programFrame} terrainZ={terrainZ} />;
+    return <GlobeParkBatch13Assembly familyId={profileFamilyId} archetypeId={legoContract?.archetypeId} variantId={legoContract?.variantId} guides={fittedProgramGuides} frame={programFrame} terrainZ={terrainZ} />;
   }
   if (structureKind === 'batch14_archetype_assembly' && profileFamilyId) {
     if (!legoContract) return null;
@@ -1026,15 +1026,14 @@ function ParkSpecialtyStructures({
       spec.wholeElementClearanceM,
     );
     if (!anchor) return null;
+    const isGreenCivic = legoContract?.variantId === 'formal_civic_plaza_v2';
+    const civicBaseZ = PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS + terrainZ(anchor.x, anchor.y);
+    const planterRows = isGreenCivic
+      ? [-1, 1].flatMap((side) => [-0.30, 0, 0.30].map((along) => ({ side, along })))
+      : [];
     return (
-      <group
-        position={[
-          anchor.x,
-          anchor.y,
-          PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS + terrainZ(anchor.x, anchor.y),
-        ]}
-        renderOrder={RENDER_ORDER_PROPS}
-      >
+      <group renderOrder={RENDER_ORDER_PROPS}>
+      <group position={[anchor.x, anchor.y, civicBaseZ]}>
         <mesh
           position={[0, 0, spec.rimHeightM / 2]}
           rotation={[Math.PI / 2, 0, 0]}
@@ -1094,6 +1093,34 @@ function ParkSpecialtyStructures({
             <meshPhysicalMaterial color="#c5e5e7" transparent opacity={0.68} roughness={0.08} />
           </mesh>
         ))}
+      </group>
+      {planterRows.map(({ side, along }) => {
+        const x = anchor.x + side * Math.min(programFrame.width * 0.34, 13.5);
+        const y = anchor.y + along * Math.min(programFrame.height, 24);
+        const z = PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS + terrainZ(x, y);
+        return (
+          <group key={`${side}-${along}`} position={[x, y, z]}>
+            <mesh position={[0, 0, 0.32]}>
+              <boxGeometry args={[4.8, 2.2, 0.64]} />
+              <meshStandardMaterial color="#91877b" roughness={0.9} />
+            </mesh>
+            <mesh position={[0, 0, 0.67]}>
+              <boxGeometry args={[4.35, 1.75, 0.12]} />
+              <meshStandardMaterial color={along === 0 ? '#567249' : '#728552'} roughness={0.99} />
+            </mesh>
+            {[-1.45, 0, 1.45].map((offset, index) => (
+              <mesh key={offset} position={[offset, 0, 1.0 + (index % 2) * 0.18]}>
+                <dodecahedronGeometry args={[0.62 + (index % 2) * 0.12, 1]} />
+                <meshStandardMaterial color={index % 2 ? '#6f804c' : '#526d43'} roughness={1} />
+              </mesh>
+            ))}
+            <mesh position={[0, -1.48 * side, 0.62]}>
+              <boxGeometry args={[3.9, 0.42, 0.13]} />
+              <meshStandardMaterial color="#8a6948" roughness={0.92} />
+            </mesh>
+          </group>
+        );
+      })}
       </group>
     );
   }

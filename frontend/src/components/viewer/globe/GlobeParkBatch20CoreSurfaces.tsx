@@ -2,6 +2,7 @@ import { useEffect, useMemo } from 'react';
 import { useTexture } from '@react-three/drei';
 import * as THREE from 'three';
 import { batch20ParkSkinForSelection } from './parkBatch20Skins';
+import { batch21ParkSkinForSelection } from './parkBatch21Skins';
 import { resolveParkGuideDimensionsM, type ParkGroundGuide } from './parkGroundProfiles';
 import { PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS } from './publicRealmDepthPolicy';
 
@@ -66,7 +67,8 @@ interface CoreSurfaceProps {
 }
 
 export function GlobeParkBatch20CoreSurfaces(props: CoreSurfaceProps) {
-  const skin = batch20ParkSkinForSelection(props.archetypeId, props.variantId);
+  const skin = batch21ParkSkinForSelection(props.archetypeId, props.variantId)
+    ?? batch20ParkSkinForSelection(props.archetypeId, props.variantId);
   return skin ? <Batch20CoreSurfacesImpl {...props} slug={skin.slug} /> : null;
 }
 

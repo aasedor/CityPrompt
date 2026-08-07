@@ -527,6 +527,37 @@ describe('Public Realm LEGO V1 park families', () => {
     expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true);
   });
 
+  it.each([
+    ['park_athletics_fields_v0', 'athletics_precinct_sports_fields', 'athletics_precinct_sports_fields_variant_2', 'athletics_precinct_sports_fields_v2_campus_precinct_skin', 'athletics_campus_v2'],
+    ['park_community_garden_v0', 'community_garden', 'community_garden_v2', 'community_garden_v2_natural_meadow_skin', 'community_garden_meadow_v2'],
+    ['park_fountain_formal_pool_v1', 'fountain_water_feature', 'fountain_water_feature_v3', 'fountain_water_feature_v3_ecological_wetland_skin', 'fountain_wetland_v3'],
+    ['park_water_ecology', 'pond_lake', 'pond_lake_v1', 'pond_lake_v1_formal_reflecting_skin', 'pond_formal_v1'],
+    ['park_market_festival_lawn_v1', 'market_square', 'market_square_v0', 'market_square_v0_terraced_performance_skin', 'market_terraced_v0'],
+    ['park_civic_plaza', 'formal_civic_plaza', 'formal_civic_plaza_v2', 'formal_civic_plaza_v2_green_civic_skin', 'formal_civic_green_v2'],
+    ['park_linear_greenway', 'linear_park_greenway', 'linear_park_greenway_v3', 'linear_park_greenway_v3_elevated_viaduct_skin', 'linear_elevated_viaduct_v3'],
+    ['park_boardwalk_maritime_v0', 'promenade_boardwalk', 'promenade_boardwalk_v2', 'promenade_boardwalk_v2_tropical_resort_skin', 'boardwalk_tropical_v2'],
+    ['park_natural_swimming_pond_v0', 'swimming_pool_complex', 'swimming_pool_complex_v2', 'swimming_pool_complex_v2_contemporary_interactive_skin', 'swimming_interactive_v2'],
+    ['park_rooftop_intensive_garden_v0', 'rooftop_garden', 'rooftop_garden_v3', 'rooftop_garden_v3_social_terrace_skin', 'rooftop_social_v3'],
+  ] as const)('executes the explicit Batch 21 selection for %s', (
+    familyId, archetypeId, variantId, appearanceKitId, plantingStructure,
+  ) => {
+    const candidate = zone({
+      public_realm_lego: trustedRecipe({
+        family_id: familyId,
+        family_version: 1,
+        archetype_id: archetypeId,
+        variant_id: variantId,
+        appearance_kit_id: appearanceKitId,
+        planting_structure: plantingStructure,
+      }),
+    });
+    expect(resolveParkLegoContract(candidate)).toMatchObject({
+      familyId, archetypeId, variantId, supported: true,
+    });
+    expect(isExecutableParkLegoFamily(candidate)).toBe(true);
+    expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true);
+  });
+
   it('keeps Skate Park v0 on its archetype-owned surface in legacy and compiled states', () => {
     const legacy = zone({
       green_space_archetype_id: 'skate_park',
@@ -665,7 +696,6 @@ describe('Public Realm LEGO V1 park families', () => {
   });
 
   it.each([
-    ['market_square', 'market_square_v0'],
     ['nature_preserve', 'nature_preserve_v0'],
     ['riverfront_park_beach', 'riverfront_park_beach_v0'],
   ] as const)('fails closed for unreviewed batch-7 selection %s/%s', (archetypeId, variantId) => {
