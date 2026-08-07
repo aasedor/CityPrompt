@@ -6,6 +6,7 @@ import { resolveParkGuideDimensionsM, type ParkGroundGuide } from './parkGroundP
 import { PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS } from './publicRealmDepthPolicy';
 import type { Batch10ProgramFrame as ProgramFrame } from './GlobeParkBatch10Assembly';
 import { batch20ParkSkinForSelection } from './parkBatch20Skins';
+import { batch22ParkSkinForSelection } from './parkBatch22Skins';
 
 type FamilyId = Extract<ParkLegoFamilyId,
   | 'park_city_hall_modernist_fountain_v2' | 'park_cathedral_courtyard_fountain_v3'
@@ -31,7 +32,7 @@ function Fountain({x,y,z,wide=false}:{x:number;y:number;z:number;wide?:boolean})
 function Stall({x,y,z,flip,maps}:{x:number;y:number;z:number;flip:boolean;maps:Maps}) { return <group position={[x,y,z]} rotation={[0,0,flip?Math.PI:0]}><Canopy x={0} y={0} z={0} w={4.2} d={2.5} maps={maps}/><mesh position={[0,-.45,1.15]}><boxGeometry args={[3.8,.65,1.4]}/><meshStandardMaterial {...maps} color={flip?'#a85c3f':'#5b7782'}/></mesh><mesh position={[0,-1.45,2.15]} rotation={[.35,0,0]}><boxGeometry args={[4.1,1.5,.12]}/><meshStandardMaterial color={flip?'#d08a51':'#d4b46b'} roughness={.9}/></mesh></group>; }
 
 export function GlobeParkBatch12Assembly({familyId,archetypeId,variantId,guides,frame,terrainZ}:{familyId:ParkLegoFamilyId;archetypeId?:string;variantId?:string;guides:ParkGroundGuide[];frame:ProgramFrame;terrainZ:(x:number,y:number)=>number}) {
-  const id=familyId as FamilyId,selectedSkin=batch20ParkSkinForSelection(archetypeId??'',variantId??''),slug=selectedSkin?.slug??SLUG[id],variantSkin=selectedSkin!==null,lift=PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS,paver=useMaps(slug,'paver'),planting=useMaps(slug,'planting',5),timber=useMaps(slug,'timber'),safety=useMaps(slug,'safety');
+  const id=familyId as FamilyId,selectedSkin=batch22ParkSkinForSelection(archetypeId??'',variantId??'')??batch20ParkSkinForSelection(archetypeId??'',variantId??''),slug=selectedSkin?.slug??SLUG[id],variantSkin=selectedSkin!==null,lift=PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS,paver=useMaps(slug,'paver'),planting=useMaps(slug,'planting',5),timber=useMaps(slug,'timber'),safety=useMaps(slug,'safety');
   const cx=frame.minX+frame.width/2,cy=frame.minY+frame.height/2,base=terrainZ(cx,cy)+lift; const paths:ReactNode[]=[];
   guides.forEach((g,gi)=>{if(g.kind==='polyline'&&g.points){const ps=g.points.map(([x,y])=>({x:frame.minX+frame.width*x,y:frame.maxY-frame.height*y}));ps.slice(0,-1).forEach((p,i)=>paths.push(<Segment key={`p-${gi}-${i}`} a={p} b={ps[i+1]} width={g.strokeWidthM??3} z={Math.max(terrainZ(p.x,p.y),terrainZ(ps[i+1].x,ps[i+1].y))+lift} maps={g.color.startsWith('#5')?undefined:paver} color={g.color}/>));}else if(g.kind==='axis'){const c=point(g,frame),len=Math.max(g.widthM??0,g.heightM??0,g.width*frame.width,g.height*frame.height),a=(g.rotationDeg??90)*Math.PI/180,p1={x:c.x-Math.cos(a)*len/2,y:c.y-Math.sin(a)*len/2},p2={x:c.x+Math.cos(a)*len/2,y:c.y+Math.sin(a)*len/2};paths.push(<Segment key={`a-${gi}`} a={p1} b={p2} width={g.strokeWidthM??3} z={Math.max(terrainZ(p1.x,p1.y),terrainZ(p2.x,p2.y))+lift} maps={paver} color={g.color}/>);}});
   const pads=guides.filter(g=>['rectangle','rounded_rectangle','ellipse'].includes(g.kind)).map((g,i)=>{const c=point(g,frame),s=resolveParkGuideDimensionsM(g,frame),z=terrainZ(c.x,c.y)+lift,green=['#5','#6','#7'].includes(g.color.slice(0,2));return <mesh key={i} position={[c.x,c.y,z+.12]} rotation={g.kind==='ellipse'?[Math.PI/2,0,(g.rotationDeg??0)*Math.PI/180]:[0,0,(g.rotationDeg??0)*Math.PI/180]} scale={g.kind==='ellipse'?[s.width/2,s.height/2,1]:[1,1,1]}>{g.kind==='ellipse'?<cylinderGeometry args={[1,1,.24,36]}/>:<boxGeometry args={[s.width,s.height,.24]}/>}<meshStandardMaterial {...(green?planting:paver)} color={variantSkin?'#ffffff':g.color} roughness={.93}/></mesh>});
@@ -40,11 +41,28 @@ export function GlobeParkBatch12Assembly({familyId,archetypeId,variantId,guides,
   if(id==='park_city_hall_modernist_fountain_v2') extras.push(<Fountain key="f" x={cx} y={cy} z={base+.18} wide/>);
   if(id==='park_cathedral_courtyard_fountain_v3') extras.push(<Fountain key="f" x={cx} y={cy} z={base+.18}/>);
   if(id==='park_cultural_museum_terrace_v0') [0,1,2].forEach(i=>extras.push(<mesh key={i} position={[cx,frame.maxY-frame.height*(.31+i*.045),base+.12+i*.18]}><boxGeometry args={[frame.width*.66,2.2,.35]}/><meshStandardMaterial {...paver} color={variantSkin?'#ffffff':'#aaa69f'}/></mesh>));
-  if(id==='park_transit_green_civic_v2') [-1,1].forEach(s=>extras.push(<Canopy key={s} x={cx+s*frame.width*.24} y={frame.maxY-frame.height*.23} z={base} w={Math.min(7,frame.width*.18)} d={2.6} maps={timber}/>));
-  if(id==='park_amphitheater_terraced_v0') [0,1,2].forEach(i=>extras.push(<mesh key={i} position={[cx,cy+i*frame.height*.025,base+.12+i*.32]} rotation={[Math.PI/2,0,0]} scale={[frame.width*(.33-i*.06),frame.height*(.26-i*.05),1]}><cylinderGeometry args={[1,1,.35,48]}/><meshStandardMaterial {...(i===0?planting:paver)} color={i===0?'#708755':'#8b816f'}/></mesh>));
+  if(id==='park_transit_green_civic_v2') {
+    if(variantId==='transit_plaza_v0') extras.push(<Fountain key="f" x={cx} y={cy} z={base+.18}/>);
+    else if(variantId==='transit_plaza_v3') { for(let i=0;i<Math.min(5,Math.max(2,Math.floor(frame.width/12)));i++){const x=frame.minX+frame.width*(.18+i*.64/Math.max(1,Math.min(4,Math.floor(frame.width/12))));extras.push(<Stall key={i} x={x} y={frame.maxY-frame.height*.23} z={terrainZ(x,frame.maxY-frame.height*.23)+lift} flip={i%2===1} maps={timber}/>);}}
+    else [-1,1].forEach(s=>extras.push(<Canopy key={s} x={cx+s*frame.width*.24} y={frame.maxY-frame.height*.23} z={base} w={Math.min(7,frame.width*.18)} d={2.6} maps={timber}/>));
+  }
+  if(id==='park_amphitheater_terraced_v0') {
+    const tierCount=variantId==='amphitheater_performance_space_v1'?1:variantId==='amphitheater_performance_space_v2'?2:3;
+    Array.from({length:tierCount},(_,i)=>extras.push(<mesh key={i} position={[cx,cy+i*frame.height*.025,base+.12+i*.32]} rotation={[Math.PI/2,0,0]} scale={[frame.width*(.33-i*.06),frame.height*(.26-i*.05),1]}><cylinderGeometry args={[1,1,.35,48]}/><meshStandardMaterial {...(variantId==='amphitheater_performance_space_v1'||i===0?planting:paver)} color={variantSkin?'#ffffff':i===0?'#708755':'#8b816f'}/></mesh>));
+    extras.push(<Canopy key="stage" x={cx} y={frame.maxY-frame.height*.18} z={base} w={Math.min(12,frame.width*.28)} d={Math.min(7,frame.height*.16)} maps={timber}/>);
+  }
   if(id==='park_concert_timber_lawn_v2') extras.push(<Canopy key="stage" x={cx} y={frame.maxY-frame.height*.19} z={base} w={Math.min(12,frame.width*.28)} d={Math.min(7,frame.height*.16)} maps={timber}/>);
   if(id==='park_night_market_hawker_v0'){const n=Math.min(8,Math.max(3,Math.floor(frame.width/12)));for(let i=0;i<n;i++){const x=frame.minX+frame.width*(.12+i*.76/Math.max(1,n-1));extras.push(<Stall key={`a${i}`} x={x} y={frame.maxY-frame.height*.22} z={terrainZ(x,frame.maxY-frame.height*.22)+lift} flip={false} maps={timber}/>,<Stall key={`b${i}`} x={x} y={frame.minY+frame.height*.22} z={terrainZ(x,frame.minY+frame.height*.22)+lift} flip maps={timber}/>);}}
   if(id==='park_parade_national_mall_v3') extras.push(<Fountain key="water" x={cx} y={cy} z={base+.18} wide/>);
-  if(id==='park_canal_ecological_wetland_v3') [-.18,.18].forEach((d,i)=>extras.push(<mesh key={i} position={[cx+d*frame.width,cy,base+.4]}><boxGeometry args={[2.4,Math.min(16,frame.height*.45),.35]}/><meshStandardMaterial {...timber} color="#76583f"/></mesh>));
+  if(id==='park_canal_ecological_wetland_v3') {
+    const formal=variantId==='canal_waterway_v1';
+    [-.18,.18].forEach((d,i)=>extras.push(<mesh key={i} position={[cx+d*frame.width,cy,base+.4]}><boxGeometry args={[formal?1.4:2.4,Math.min(16,frame.height*.45),formal?.72:.35]}/><meshStandardMaterial {...(formal?paver:timber)} color={variantSkin?'#ffffff':formal?'#aaa397':'#76583f'}/></mesh>));
+    if(variantId==='canal_waterway_v2') extras.push(<Fountain key="interactive" x={cx} y={cy} z={base+.55} wide/>);
+  }
+  if(id==='park_custom_biophilic_urban_v1') {
+    if(variantId==='custom_parks_plazas_v2') [-.25,0,.25].forEach((d,i)=>extras.push(<group key={i} position={[cx+d*frame.width,cy,base]}><mesh position={[0,0,1.8]}><boxGeometry args={[.22,.22,3.6]}/><meshStandardMaterial color="#343b3c" metalness={.6}/></mesh><mesh position={[0,0,3.3]}><boxGeometry args={[1.0,.25,.7]}/><meshStandardMaterial {...safety} color="#ffffff"/></mesh></group>));
+    if(variantId==='custom_parks_plazas_v3') extras.push(<Fountain key="heritage" x={cx} y={cy} z={base+.18}/>);
+    if(variantId==='custom_parks_plazas_v0') [-.18,.18].forEach((d,i)=>extras.push(<mesh key={i} position={[cx+d*frame.width,cy,base+1.1]} rotation={[0,.25,i?-.35:.35]}><dodecahedronGeometry args={[1.25,1]}/><meshStandardMaterial {...paver} color="#ffffff"/></mesh>));
+  }
   return <group>{pads}{paths}{trees}{extras}<mesh position={[cx,cy,base-.02]}><boxGeometry args={[.01,.01,.01]}/><meshStandardMaterial {...safety}/></mesh></group>;
 }

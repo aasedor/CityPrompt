@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "projectId": "e4dfd8f2-4bb3-4a4f-ad5a-b30bf0fe77cd",
+  "zoneId": "09571cfd-936a-4d9e-8f19-29109c6920f3",
+  "trial": "single_park_beside_separate_lego_building",
+  "familyId": "park_water_ecology",
+  "archetypeId": "stormwater_retention_pond",
+  "variantId": "stormwater_retention_pond_v3",
+  "appearanceKitId": "stormwater_retention_pond_v3_ecological_wetland_skin",
+  "plantingStructure": "stormwater_ecological_wetland_v3",
+  "componentSetIds": [
+    "stormwater_ground_program_v1",
+    "water_control_assemblies_v1",
+    "landscape_instances_v1",
+    "ecological_stormwater_basin_program_v1"
+  ],
+  "generator": "park_kit",
+  "aiDrape": false,
+  "imageApiCalls": 0,
+  "people": false,
+  "embeddedLargeBuildings": false,
+  "visualReview": {
+    "firstPassAccepted": false,
+    "firstPassIssue": "Ecological wetland inherited the naturalistic anchor's single oval basin.",
+    "correctiveAction": "Replaced the oval with parcel-scaled wetland treatment cells and crossing boardwalk modules.",
+    "correctedPassAccepted": true,
+    "tileFlatteningMaskClear": true,
+    "separateBuildingPreserved": true
+  }
+}

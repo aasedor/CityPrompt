@@ -917,6 +917,8 @@ function ParkSpecialtyStructures({
     return (
       <GlobeParkBatch9Assembly
         familyId={profileFamilyId}
+        archetypeId={legoContract?.archetypeId}
+        variantId={legoContract?.variantId}
         guides={fittedProgramGuides}
         frame={programFrame}
         terrainZ={terrainZ}
@@ -1391,6 +1393,10 @@ function ParkSpecialtyStructures({
     const centerY = waterCenter.y;
     const radiusX = Math.max(2.5, waterDimensions.width / 2);
     const radiusY = Math.max(2.5, waterDimensions.height / 2);
+    const stormwaterVariant = legoContract?.variantId ?? 'stormwater_retention_pond_v0';
+    const isFormalStormwater = stormwaterVariant === 'stormwater_retention_pond_v1';
+    const isInteractiveStormwater = stormwaterVariant === 'stormwater_retention_pond_v2';
+    const isWetlandStormwater = stormwaterVariant === 'stormwater_retention_pond_v3';
     const edgeX = radiusX + 1.25;
     const infrastructure = resolveStormwaterInfrastructureGuides(
       fittedProgramGuides,
@@ -1424,7 +1430,7 @@ function ParkSpecialtyStructures({
     });
     return (
       <group renderOrder={RENDER_ORDER_PROPS}>
-        <mesh
+        {!isWetlandStormwater && <mesh
           position={[
             centerX,
             centerY,
@@ -1442,8 +1448,8 @@ function ParkSpecialtyStructures({
             metalness={0.04}
             depthWrite
           />
-        </mesh>
-        <mesh
+        </mesh>}
+        {!isWetlandStormwater && <mesh
           position={[
             centerX,
             centerY,
@@ -1454,7 +1460,51 @@ function ParkSpecialtyStructures({
         >
           <ringGeometry args={[0.88, 1, 64]} />
           <meshStandardMaterial color="#73865d" roughness={0.98} />
-        </mesh>
+        </mesh>}
+        {isWetlandStormwater && Array.from({ length: 8 }, (_, index) => {
+          const column = index % 4;
+          const row = Math.floor(index / 4);
+          const x = centerX + (column - 1.5) * radiusX * 0.43;
+          const y = centerY + (row - 0.5) * radiusY * 0.78 + (column % 2 ? radiusY * 0.10 : -radiusY * 0.08);
+          const waterCell = index % 3 !== 1;
+          return <mesh
+            key={`wetland-cell-${index}`}
+            position={[x, y, terrainZ(x, y) + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS + 0.016]}
+            scale={[radiusX * 0.17, radiusY * 0.28, 1]}
+            renderOrder={RENDER_ORDER_PROPS + 1}
+          >
+            <circleGeometry args={[1, 36]} />
+            {waterCell
+              ? <meshPhysicalMaterial color={index % 2 ? '#577d78' : '#466f73'} transparent opacity={0.78} roughness={0.24} />
+              : <meshStandardMaterial color={index % 2 ? '#758458' : '#68794f'} roughness={0.98} />}
+          </mesh>;
+        })}
+        {isFormalStormwater && Array.from({ length: 7 }, (_, index) => {
+          const x = centerX + (index - 3) * Math.min(3.2, radiusX * 0.22);
+          return <mesh key={`formal-jet-${index}`} position={[x, centerY, terrainZ(x, centerY) + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS + 0.75 + (index % 2) * 0.35]}>
+            <cylinderGeometry args={[0.035, 0.07, 1.5 + (index % 2) * 0.7, 8]} />
+            <meshPhysicalMaterial color="#c7e9e8" transparent opacity={0.72} roughness={0.08} />
+          </mesh>;
+        })}
+        {isInteractiveStormwater && Array.from({ length: 9 }, (_, index) => {
+          const x = centerX + (index % 3 - 1) * Math.min(3.5, radiusX * 0.28);
+          const y = centerY + (Math.floor(index / 3) - 1) * Math.min(3.5, radiusY * 0.28);
+          return <mesh key={`interactive-jet-${index}`} position={[x, y, terrainZ(x, y) + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS + 0.6 + (index % 3) * 0.28]}>
+            <cylinderGeometry args={[0.03, 0.06, 1.2 + (index % 3) * 0.56, 7]} />
+            <meshPhysicalMaterial color="#c7e9e8" transparent opacity={0.7} roughness={0.08} />
+          </mesh>;
+        })}
+        {isWetlandStormwater && [-0.32, 0, 0.32].map((offset) => {
+          const x = centerX + offset * radiusX;
+          return <mesh key={`wetland-walk-${offset}`} position={[x, centerY, terrainZ(x, centerY) + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS + 0.32]}>
+            <boxGeometry args={[1.8, radiusY * 1.7, 0.28]} />
+            <meshStandardMaterial color="#786149" roughness={0.92} />
+          </mesh>;
+        })}
+        {isWetlandStormwater && <mesh position={[centerX, centerY, terrainZ(centerX, centerY) + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS + 0.34]}>
+          <boxGeometry args={[radiusX * 1.8, 1.8, 0.28]} />
+          <meshStandardMaterial color="#786149" roughness={0.92} />
+        </mesh>}
         <group
           position={[
             inlet.center.x,

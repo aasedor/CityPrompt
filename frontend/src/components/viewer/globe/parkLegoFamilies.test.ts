@@ -696,15 +696,26 @@ describe('Public Realm LEGO V1 park families', () => {
   });
 
   it.each([
-    ['nature_preserve', 'nature_preserve_v0'],
-    ['riverfront_park_beach', 'riverfront_park_beach_v0'],
-  ] as const)('fails closed for unreviewed batch-7 selection %s/%s', (archetypeId, variantId) => {
-    const candidate = zone({
-      green_space_archetype_id: archetypeId,
-      green_space_selected_variant_id: variantId,
-    });
-    expect(resolveParkLegoContract(candidate)?.supported).toBe(false);
-    expect(usesArchetypeOwnedParkSurface(candidate)).toBe(false);
+    ['park_cemetery_classical_v0', 'cemetery_memorial_grounds', 'cemetery_memorial_grounds_v2', 'cemetery_memorial_grounds_v2_sculptural_skin', 'cemetery_sculptural_v2'],
+    ['park_courtyard_linear_water_v1', 'courtyard_plaza', 'courtyard_plaza_v0', 'courtyard_plaza_v0_neoclassical_skin', 'courtyard_neoclassical_v0'],
+    ['park_transit_green_civic_v2', 'transit_plaza', 'transit_plaza_v3', 'transit_plaza_v3_festival_market_skin', 'transit_festival_v3'],
+    ['park_amphitheater_terraced_v0', 'amphitheater_performance_space', 'amphitheater_performance_space_v2', 'amphitheater_performance_space_v2_intimate_garden_skin', 'amphitheater_garden_v2'],
+    ['park_water_ecology', 'stormwater_retention_pond', 'stormwater_retention_pond_v3', 'stormwater_retention_pond_v3_ecological_wetland_skin', 'stormwater_ecological_wetland_v3'],
+    ['park_canal_ecological_wetland_v3', 'canal_waterway', 'canal_waterway_v1', 'canal_waterway_v1_formal_reflecting_skin', 'canal_formal_v1'],
+    ['park_custom_biophilic_urban_v1', 'custom_parks_plazas', 'custom_parks_plazas_v2', 'custom_parks_plazas_v2_tech_smart_skin', 'custom_tech_smart_v2'],
+    ['park_nature_preserve_prairie_v1', 'nature_preserve', 'nature_preserve_v3', 'nature_preserve_v3_old_growth_skin', 'nature_preserve_old_growth_v3'],
+    ['park_riverfront_lake_beach_v1', 'riverfront_park_beach', 'riverfront_park_beach_v0', 'riverfront_park_beach_v0_urban_river_skin', 'riverfront_urban_beach_v0'],
+    ['park_parklet_sf_timber_v1', 'street_plaza_parklet', 'street_plaza_parklet_v2', 'street_plaza_parklet_v2_tactical_skin', 'parklet_tactical_v2'],
+  ] as const)('executes the explicit Batch 22 selection for %s', (
+    familyId, archetypeId, variantId, appearanceKitId, plantingStructure,
+  ) => {
+    const candidate = zone({ public_realm_lego: trustedRecipe({
+      family_id: familyId, family_version: 1, archetype_id: archetypeId,
+      variant_id: variantId, appearance_kit_id: appearanceKitId,
+      planting_structure: plantingStructure,
+    }) });
+    expect(resolveParkLegoContract(candidate)).toMatchObject({ familyId, archetypeId, variantId, supported: true });
+    expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true);
   });
 
   it.each([

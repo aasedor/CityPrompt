@@ -362,6 +362,30 @@ describe('park ground pilot profiles', () => {
   });
 
   it.each([
+    ['park_cemetery_classical_v0', 'cemetery_memorial_grounds', 'cemetery_memorial_grounds_v2', 'cemetery_memorial_grounds_v2_sculptural_skin', 'cemetery_sculptural_v2', 'batch9_archetype_assembly'],
+    ['park_courtyard_linear_water_v1', 'courtyard_plaza', 'courtyard_plaza_v0', 'courtyard_plaza_v0_neoclassical_skin', 'courtyard_neoclassical_v0', 'batch9_archetype_assembly'],
+    ['park_transit_green_civic_v2', 'transit_plaza', 'transit_plaza_v3', 'transit_plaza_v3_festival_market_skin', 'transit_festival_v3', 'batch12_archetype_assembly'],
+    ['park_amphitheater_terraced_v0', 'amphitheater_performance_space', 'amphitheater_performance_space_v2', 'amphitheater_performance_space_v2_intimate_garden_skin', 'amphitheater_garden_v2', 'batch12_archetype_assembly'],
+    ['park_water_ecology', 'stormwater_retention_pond', 'stormwater_retention_pond_v3', 'stormwater_retention_pond_v3_ecological_wetland_skin', 'stormwater_ecological_wetland_v3', 'stormwater_control_assembly'],
+    ['park_canal_ecological_wetland_v3', 'canal_waterway', 'canal_waterway_v1', 'canal_waterway_v1_formal_reflecting_skin', 'canal_formal_v1', 'batch12_archetype_assembly'],
+    ['park_custom_biophilic_urban_v1', 'custom_parks_plazas', 'custom_parks_plazas_v2', 'custom_parks_plazas_v2_tech_smart_skin', 'custom_tech_smart_v2', 'batch12_archetype_assembly'],
+    ['park_nature_preserve_prairie_v1', 'nature_preserve', 'nature_preserve_v3', 'nature_preserve_v3_old_growth_skin', 'nature_preserve_old_growth_v3', 'batch7_archetype_assembly'],
+    ['park_riverfront_lake_beach_v1', 'riverfront_park_beach', 'riverfront_park_beach_v0', 'riverfront_park_beach_v0_urban_river_skin', 'riverfront_urban_beach_v0', 'batch7_archetype_assembly'],
+    ['park_parklet_sf_timber_v1', 'street_plaza_parklet', 'street_plaza_parklet_v2', 'street_plaza_parklet_v2_tactical_skin', 'parklet_tactical_v2', 'batch9_archetype_assembly'],
+  ] as const)('keeps the Batch 22 exact variant on its reviewed depth kit for %s/%s', (
+    familyId, archetypeId, variantId, appearanceKitId, plantingStructure, expectedStructure,
+  ) => {
+    const candidate = zone(archetypeId);
+    candidate.properties = { ...candidate.properties, public_realm_lego: trustedParkRecipe({
+      family_id: familyId, family_version: 1, archetype_id: archetypeId,
+      variant_id: variantId, appearance_kit_id: appearanceKitId,
+      planting_structure: plantingStructure,
+    }) };
+    expect(resolveParkSpecialtyStructureKind(candidate)).toBe(expectedStructure);
+    expect(resolveParkGroundProfile(candidate).guides.length).toBeGreaterThan(0);
+  });
+
+  it.each([
     ['park_regional_english_landscape_v0', 'regional_park', 'regional_park_v0', 'regional_park_v0_english_landscape_skin', 'regional_english_landscape_v0'],
     ['park_beer_garden_munich_v0', 'beer_garden', 'beer_garden_v0', 'beer_garden_v0_munich_chestnut_skin', 'beer_garden_munich_v0'],
     ['park_sunken_courtyard_v0', 'sunken_plaza', 'sunken_plaza_v0', 'sunken_plaza_v0_intimate_courtyard_skin', 'sunken_courtyard_v0'],

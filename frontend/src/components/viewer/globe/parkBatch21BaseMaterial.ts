@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import * as THREE from 'three';
 import { batch21ParkSkinForSelection } from './parkBatch21Skins';
+import { batch22ParkSkinForSelection } from './parkBatch22Skins';
 
 export type Batch21ParkBaseRole = 'paver' | 'lawn' | 'planting';
 
@@ -23,15 +24,16 @@ export function resolveBatch21ParkBaseMaterial(
   archetypeId: string,
   variantId: string,
 ): Batch21ParkBaseMaterialSpec | null {
-  const skin = batch21ParkSkinForSelection(archetypeId, variantId);
+  const skin = batch22ParkSkinForSelection(archetypeId, variantId)
+    ?? batch21ParkSkinForSelection(archetypeId, variantId);
   if (!skin) return null;
   if (archetypeId === 'athletics_precinct_sports_fields') {
     return { slug: skin.slug, role: 'lawn', metersPerTile: 5.5 };
   }
-  if (archetypeId === 'linear_park_greenway') {
+  if (archetypeId === 'linear_park_greenway' || archetypeId === 'nature_preserve') {
     return { slug: skin.slug, role: 'planting', metersPerTile: 5.0 };
   }
-  if (archetypeId === 'pond_lake') {
+  if (archetypeId === 'pond_lake' || archetypeId === 'stormwater_retention_pond' || archetypeId === 'riverfront_park_beach') {
     return { slug: skin.slug, role: 'lawn', metersPerTile: 5.0 };
   }
   if (archetypeId === 'rooftop_garden' && variantId !== 'rooftop_garden_v3') {

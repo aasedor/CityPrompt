@@ -32,4 +32,13 @@ describe('Batch 21 compiled parcel base material', () => {
       'formal_civic_plaza_v0',
     )).toBeNull();
   });
+
+  it('routes Batch 22 exact landscape and civic variants', () => {
+    expect(resolveBatch21ParkBaseMaterial('nature_preserve', 'nature_preserve_v3')).toEqual({
+      slug: 'nature-preserve-old-growth-v3', role: 'planting', metersPerTile: 5,
+    });
+    expect(resolveBatch21ParkBaseMaterial('courtyard_plaza', 'courtyard_plaza_v0')).toEqual({
+      slug: 'courtyard-neoclassical-stone-v0', role: 'paver', metersPerTile: 3.5,
+    });
+  });
 });

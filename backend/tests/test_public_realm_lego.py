@@ -1492,6 +1492,51 @@ def test_batch21_closes_thirty_variants_across_ten_program_and_landscape_familie
             assert all(selection.component_set_ids for selection in selections)
 
 
+def test_batch22_closes_thirty_variants_across_ten_memorial_civic_and_water_families():
+    expected = {
+        "park_cemetery_classical_v0": "cemetery_memorial_grounds",
+        "park_courtyard_linear_water_v1": "courtyard_plaza",
+        "park_transit_green_civic_v2": "transit_plaza",
+        "park_amphitheater_terraced_v0": "amphitheater_performance_space",
+        "park_water_ecology": "stormwater_retention_pond",
+        "park_canal_ecological_wetland_v3": "canal_waterway",
+        "park_custom_biophilic_urban_v1": "custom_parks_plazas",
+        "park_nature_preserve_prairie_v1": "nature_preserve",
+        "park_riverfront_lake_beach_v1": "riverfront_park_beach",
+        "park_parklet_sf_timber_v1": "street_plaza_parklet",
+    }
+    catalog = build_public_realm_capability_catalog(family_ids=list(expected))
+    assert len(catalog.capabilities) == 10
+    for capability in catalog.capabilities:
+        archetype_id = expected[capability.family_id]
+        selections = [selection for selection in capability.selections if selection.archetype_id == archetype_id]
+        assert len(selections) == 4
+        assert {selection.variant_id for selection in selections} == {
+            f"{archetype_id}_v{index}" for index in range(4)
+        }
+        assert len({selection.appearance_kit_id for selection in selections}) == 4
+        assert len({selection.planting_structure for selection in selections}) == 4
+        assert all(selection.component_set_ids for selection in selections)
+
+
+def test_batch22_old_growth_preserve_compiles_on_one_compatible_polygon_without_ai_drape():
+    geometry = _to_wgs84(box(700_000, 5_650_000, 700_090, 5_650_070))
+    recipe = plan_public_realm_zone_recipe(
+        "green_space",
+        geometry,
+        {
+            "green_space_archetype_id": "nature_preserve",
+            "green_space_selected_variant_id": "nature_preserve_v3",
+        },
+        strict=True,
+    )
+    assert recipe is not None
+    assert recipe.family_id == "park_nature_preserve_prairie_v1"
+    assert recipe.variant_id == "nature_preserve_v3"
+    assert recipe.appearance_kit_id == "nature_preserve_v3_old_growth_skin"
+    assert recipe.generator == "park_kit"
+
+
 @pytest.mark.parametrize(
     ("archetype_id", "variant_id"),
     [

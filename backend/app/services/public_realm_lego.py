@@ -2366,6 +2366,87 @@ def _apply_batch21_variant_closures(
 _CAPABILITIES = tuple(_apply_batch21_variant_closures(capability) for capability in _CAPABILITIES)
 
 
+_BATCH22_VARIANT_CLOSURES: dict[
+    str,
+    tuple[tuple[str, str, str, str, str], ...],
+] = {
+    "park_cemetery_classical_v0": (
+        ("cemetery_memorial_grounds", "cemetery_memorial_grounds_v1", "cemetery_memorial_grounds_v1_woodland_skin", "cemetery_woodland_v1", "woodland_memorial_program_v1"),
+        ("cemetery_memorial_grounds", "cemetery_memorial_grounds_v2", "cemetery_memorial_grounds_v2_sculptural_skin", "cemetery_sculptural_v2", "sculptural_memorial_program_v1"),
+        ("cemetery_memorial_grounds", "cemetery_memorial_grounds_v3", "cemetery_memorial_grounds_v3_cottage_skin", "cemetery_cottage_v3", "cottage_memorial_program_v1"),
+    ),
+    "park_courtyard_linear_water_v1": (
+        ("courtyard_plaza", "courtyard_plaza_v0", "courtyard_plaza_v0_neoclassical_skin", "courtyard_neoclassical_v0", "neoclassical_courtyard_program_v1"),
+        ("courtyard_plaza", "courtyard_plaza_v2", "courtyard_plaza_v2_green_civic_skin", "courtyard_green_civic_v2", "green_civic_courtyard_program_v1"),
+        ("courtyard_plaza", "courtyard_plaza_v3", "courtyard_plaza_v3_festival_market_skin", "courtyard_festival_v3", "festival_courtyard_program_v1"),
+    ),
+    "park_transit_green_civic_v2": (
+        ("transit_plaza", "transit_plaza_v0", "transit_plaza_v0_neoclassical_skin", "transit_neoclassical_v0", "neoclassical_transit_plaza_program_v1"),
+        ("transit_plaza", "transit_plaza_v1", "transit_plaza_v1_contemporary_skin", "transit_contemporary_v1", "contemporary_transit_plaza_program_v1"),
+        ("transit_plaza", "transit_plaza_v3", "transit_plaza_v3_festival_market_skin", "transit_festival_v3", "festival_transit_plaza_program_v1"),
+    ),
+    "park_amphitheater_terraced_v0": (
+        ("amphitheater_performance_space", "amphitheater_performance_space_v1", "amphitheater_performance_space_v1_open_festival_skin", "amphitheater_open_festival_v1", "open_festival_amphitheater_program_v1"),
+        ("amphitheater_performance_space", "amphitheater_performance_space_v2", "amphitheater_performance_space_v2_intimate_garden_skin", "amphitheater_garden_v2", "garden_amphitheater_program_v1"),
+        ("amphitheater_performance_space", "amphitheater_performance_space_v3", "amphitheater_performance_space_v3_industrial_skin", "amphitheater_industrial_v3", "industrial_amphitheater_program_v1"),
+    ),
+    "park_water_ecology": (
+        ("stormwater_retention_pond", "stormwater_retention_pond_v1", "stormwater_retention_pond_v1_formal_reflecting_skin", "stormwater_formal_reflecting_v1", "formal_stormwater_basin_program_v1"),
+        ("stormwater_retention_pond", "stormwater_retention_pond_v2", "stormwater_retention_pond_v2_contemporary_interactive_skin", "stormwater_interactive_v2", "interactive_stormwater_basin_program_v1"),
+        ("stormwater_retention_pond", "stormwater_retention_pond_v3", "stormwater_retention_pond_v3_ecological_wetland_skin", "stormwater_ecological_wetland_v3", "ecological_stormwater_basin_program_v1"),
+    ),
+    "park_canal_ecological_wetland_v3": (
+        ("canal_waterway", "canal_waterway_v0", "canal_waterway_v0_naturalistic_skin", "canal_naturalistic_v0", "naturalistic_canal_program_v1"),
+        ("canal_waterway", "canal_waterway_v1", "canal_waterway_v1_formal_reflecting_skin", "canal_formal_v1", "formal_canal_program_v1"),
+        ("canal_waterway", "canal_waterway_v2", "canal_waterway_v2_interactive_skin", "canal_interactive_v2", "interactive_canal_program_v1"),
+    ),
+    "park_custom_biophilic_urban_v1": (
+        ("custom_parks_plazas", "custom_parks_plazas_v0", "custom_parks_plazas_v0_eclectic_skin", "custom_eclectic_v0", "eclectic_custom_park_program_v1"),
+        ("custom_parks_plazas", "custom_parks_plazas_v2", "custom_parks_plazas_v2_tech_smart_skin", "custom_tech_smart_v2", "smart_custom_park_program_v1"),
+        ("custom_parks_plazas", "custom_parks_plazas_v3", "custom_parks_plazas_v3_heritage_skin", "custom_heritage_v3", "heritage_custom_park_program_v1"),
+    ),
+    "park_nature_preserve_prairie_v1": (
+        ("nature_preserve", "nature_preserve_v0", "nature_preserve_v0_wetland_boardwalk_skin", "nature_preserve_wetland_v0", "wetland_preserve_program_v1"),
+        ("nature_preserve", "nature_preserve_v2", "nature_preserve_v2_coastal_dune_skin", "nature_preserve_dune_v2", "coastal_dune_preserve_program_v1"),
+        ("nature_preserve", "nature_preserve_v3", "nature_preserve_v3_old_growth_skin", "nature_preserve_old_growth_v3", "old_growth_preserve_program_v1"),
+    ),
+    "park_riverfront_lake_beach_v1": (
+        ("riverfront_park_beach", "riverfront_park_beach_v0", "riverfront_park_beach_v0_urban_river_skin", "riverfront_urban_beach_v0", "urban_river_beach_program_v1"),
+        ("riverfront_park_beach", "riverfront_park_beach_v2", "riverfront_park_beach_v2_adventure_pier_skin", "riverfront_adventure_pier_v2", "adventure_pier_program_v1"),
+        ("riverfront_park_beach", "riverfront_park_beach_v3", "riverfront_park_beach_v3_naturalized_skin", "riverfront_naturalized_v3", "naturalized_riverfront_program_v1"),
+    ),
+    "park_parklet_sf_timber_v1": (
+        ("street_plaza_parklet", "street_plaza_parklet_v0", "street_plaza_parklet_v0_nyc_skin", "parklet_nyc_v0", "nyc_street_plaza_program_v1"),
+        ("street_plaza_parklet", "street_plaza_parklet_v2", "street_plaza_parklet_v2_tactical_skin", "parklet_tactical_v2", "tactical_parklet_program_v1"),
+        ("street_plaza_parklet", "street_plaza_parklet_v3", "street_plaza_parklet_v3_european_skin", "parklet_european_v3", "european_pocket_plaza_program_v1"),
+    ),
+}
+
+
+def _apply_batch22_variant_closures(
+    capability: PublicRealmFamilyCapability,
+) -> PublicRealmFamilyCapability:
+    descriptors = _BATCH22_VARIANT_CLOSURES.get(capability.family_id, ())
+    if not descriptors:
+        return capability
+    additions: list[PublicRealmSelectionCapability] = []
+    for archetype_id, variant_id, appearance_kit_id, planting_structure, program_component in descriptors:
+        base = next(selection for selection in capability.selections if selection.archetype_id == archetype_id)
+        additions.append(_selection(
+            archetype_id,
+            variant_id,
+            profile_id=base.profile_id,
+            appearance_kit_id=appearance_kit_id,
+            planting_structure=planting_structure,
+            compatibility=base.compatibility,
+            components=(*base.component_set_ids, program_component),
+        ))
+    return capability.model_copy(update={"selections": (*capability.selections, *additions)})
+
+
+_CAPABILITIES = tuple(_apply_batch22_variant_closures(capability) for capability in _CAPABILITIES)
+
+
 def public_realm_capability_fingerprint(
     capability: PublicRealmFamilyCapability,
 ) -> str:
