@@ -1,0 +1,157 @@
+{
+  "schemaVersion": 1,
+  "archetype": "research-demonstration-plots-v3",
+  "source": "frontend/public/archetypes/openspaces/research-garden-teaching-arboretum/variant_3.png",
+  "sources": [
+    "frontend/public/archetypes/openspaces/research-garden-teaching-arboretum/variant_3.png"
+  ],
+  "method": "exact_archetype_reference_statistics_plus_role_specific_procedural_structure",
+  "apiCalls": 0,
+  "sourcePixelsProjected": false,
+  "materials": {
+    "paver": {
+      "source": "frontend/public/archetypes/openspaces/research-garden-teaching-arboretum/variant_3.png",
+      "cropNormalized": [
+        0,
+        0.56,
+        1,
+        1
+      ],
+      "cropPixels": [
+        0,
+        430,
+        1024,
+        768
+      ],
+      "metresPerTile": 4,
+      "pattern": "paver",
+      "files": {
+        "sourceCrop": "paver/source_crop.jpg",
+        "albedo": "paver/albedo.jpg",
+        "normal": "paver/normal.png",
+        "roughness": "paver/roughness.jpg",
+        "ao": "paver/ao.jpg"
+      }
+    },
+    "lawn": {
+      "source": "frontend/public/archetypes/openspaces/research-garden-teaching-arboretum/variant_3.png",
+      "cropNormalized": [
+        0,
+        0.3,
+        1,
+        0.88
+      ],
+      "cropPixels": [
+        0,
+        230,
+        1024,
+        676
+      ],
+      "metresPerTile": 5,
+      "pattern": "lawn",
+      "files": {
+        "sourceCrop": "lawn/source_crop.jpg",
+        "albedo": "lawn/albedo.jpg",
+        "normal": "lawn/normal.png",
+        "roughness": "lawn/roughness.jpg",
+        "ao": "lawn/ao.jpg"
+      }
+    },
+    "asphalt": {
+      "source": "frontend/public/archetypes/openspaces/research-garden-teaching-arboretum/variant_3.png",
+      "cropNormalized": [
+        0,
+        0.58,
+        1,
+        1
+      ],
+      "cropPixels": [
+        0,
+        445,
+        1024,
+        768
+      ],
+      "metresPerTile": 4,
+      "pattern": "asphalt",
+      "files": {
+        "sourceCrop": "asphalt/source_crop.jpg",
+        "albedo": "asphalt/albedo.jpg",
+        "normal": "asphalt/normal.png",
+        "roughness": "asphalt/roughness.jpg",
+        "ao": "asphalt/ao.jpg"
+      }
+    },
+    "planting": {
+      "source": "frontend/public/archetypes/openspaces/research-garden-teaching-arboretum/variant_3.png",
+      "cropNormalized": [
+        0,
+        0.18,
+        1,
+        0.86
+      ],
+      "cropPixels": [
+        0,
+        138,
+        1024,
+        660
+      ],
+      "metresPerTile": 3,
+      "pattern": "planting",
+      "files": {
+        "sourceCrop": "planting/source_crop.jpg",
+        "albedo": "planting/albedo.jpg",
+        "normal": "planting/normal.png",
+        "roughness": "planting/roughness.jpg",
+        "ao": "planting/ao.jpg"
+      }
+    },
+    "safety": {
+      "source": "frontend/public/archetypes/openspaces/research-garden-teaching-arboretum/variant_3.png",
+      "cropNormalized": [
+        0.05,
+        0.44,
+        0.95,
+        0.94
+      ],
+      "cropPixels": [
+        51,
+        338,
+        973,
+        722
+      ],
+      "metresPerTile": 3,
+      "pattern": "safety",
+      "files": {
+        "sourceCrop": "safety/source_crop.jpg",
+        "albedo": "safety/albedo.jpg",
+        "normal": "safety/normal.png",
+        "roughness": "safety/roughness.jpg",
+        "ao": "safety/ao.jpg"
+      }
+    },
+    "timber": {
+      "source": "frontend/public/archetypes/openspaces/research-garden-teaching-arboretum/variant_3.png",
+      "cropNormalized": [
+        0,
+        0.36,
+        1,
+        0.92
+      ],
+      "cropPixels": [
+        0,
+        276,
+        1024,
+        707
+      ],
+      "metresPerTile": 2.5,
+      "pattern": "timber",
+      "files": {
+        "sourceCrop": "timber/source_crop.jpg",
+        "albedo": "timber/albedo.jpg",
+        "normal": "timber/normal.png",
+        "roughness": "timber/roughness.jpg",
+        "ao": "timber/ao.jpg"
+      }
+    }
+  }
+}

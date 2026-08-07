@@ -1,0 +1,143 @@
+{
+  "batchId": "meshy-park-object-catalog-v3c",
+  "reviewedAt": "2026-08-07",
+  "generatedCount": 32,
+  "acceptedCount": 29,
+  "rejectedCount": 3,
+  "creditsUsed": 1248,
+  "balanceBefore": 3813,
+  "balanceAfter": 2565,
+  "qualityGate": "Compared archetype reference, isolated multiview, Meshy output and normalized 12000-face/512px-PBR four-view runtime render. Structural, compositional, scale, people/building contamination, or texture failures remain external artifacts and are not promoted.",
+  "accepted": [
+    {
+      "assetId": "promenade-boardwalk-maritime-bollard-rope-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "promenade-boardwalk-cantilevered-steel-lounger-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "promenade-boardwalk-thatched-cabana-daybed-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "promenade-boardwalk-timber-fishing-rod-rack-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "riverfront-park-beach-parasol-deckchair-ensemble-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "riverfront-park-beach-cedar-kayak-rack-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "riverfront-park-beach-cargo-net-climbing-frame-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "riverfront-park-beach-willow-fascine-revetment-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "urban-beach-sculptural-sun-lounger-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "urban-beach-shade-sail-canopy-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "urban-beach-beach-shower-column-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "urban-beach-driftwood-windbreak-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "tidal-marsh-boardwalk-hexagonal-overlook-rail-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "tidal-marsh-boardwalk-mangrove-bird-hide-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "tidal-marsh-boardwalk-timber-birdwatch-tower-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "tidal-marsh-boardwalk-low-wetland-viewing-hide-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "rooftop-garden-sculptural-shade-pergola-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "rooftop-garden-rainwater-tank-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "rooftop-garden-beehive-stand-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "street-plaza-parklet-bench-planter-module-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "street-plaza-parklet-bike-corral-planter-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "street-plaza-parklet-curbside-stage-platform-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "beer-garden-communal-trestle-set-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "beer-garden-barrel-standing-table-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "beer-garden-sculptural-fire-bowl-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "amphitheater-lawn-portable-acoustic-shell-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "amphitheater-lawn-carved-stone-seat-block-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "amphitheater-lawn-timber-sound-reflector-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "amphitheater-lawn-stage-lantern-tower-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    }
+  ],
+  "rejected": [
+    {
+      "assetId": "rooftop-garden-corten-planter-bench-v1",
+      "reason": "Lost the required seating surface and reads as a raised planter rather than a planter bench."
+    },
+    {
+      "assetId": "street-plaza-parklet-compact-cafe-counter-v1",
+      "reason": "Contains prominent fabricated lettering despite the no-text constraint, so it is unsafe for arbitrary park sites."
+    },
+    {
+      "assetId": "beer-garden-string-light-mast-v1",
+      "reason": "Runtime normalization exposes a disconnected base or bar beside the mast, indicating broken geometry."
+    }
+  ]
+}

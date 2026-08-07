@@ -1,0 +1,158 @@
+{
+  "batchId": "meshy-park-object-batch-v1",
+  "version": "2026-08-07",
+  "creditCeiling": 7000,
+  "estimatedCreditsPerAsset": 45,
+  "objects": [
+    {
+      "assetId": "nature-play-hollow-nurse-log-v1",
+      "family": "nature-play-area",
+      "references": ["frontend/public/archetypes/openspaces/nature-play-area/hero.png", "frontend/public/archetypes/openspaces/nature-play-area/variant_3.png"],
+      "dimensionsM": [4.8, 1.1, 1.0],
+      "orientation": "long-axis-x",
+      "placementRole": "nature_play_hollow_nurse_log",
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of one hollow weathered hardwood nurse log for a natural public play park. Derive the gray-brown bark, exposed end grain, soft irregular silhouette, and subtle moss from the reference park images. The trunk is horizontal, child-safe, large enough to crawl through, and has one naturally hollow open end. Isolate the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter, and side views, fully visible and not cropped. No people, buildings, plants, ground, ropes, platforms, text, tools, or extra objects.",
+      "texturePrompt": "Photoreal aged hardwood: varied gray-brown bark plates, warm exposed end grain, dark hollow interior, subtle moss and dirt in creases, matte roughness. No paint, labels, people, plants, ground, or attached equipment."
+    },
+    {
+      "assetId": "rewilding-root-wad-large-v1",
+      "family": "rewilding-ecological-restoration-zone",
+      "references": ["frontend/public/archetypes/openspaces/rewilding-ecological-restoration-zone/hero.png", "frontend/public/archetypes/openspaces/rewilding-ecological-restoration-zone/variant_3.png"],
+      "dimensionsM": [3.2, 2.8, 2.2],
+      "orientation": "preserve-upright",
+      "placementRole": "riparian_root_wad",
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of one large natural root wad from an uprooted mature tree, as ecological habitat in the rewilded stream references. It has a short broken trunk, dense spreading roots, embedded stones and traces of moss, with a believable stable ground-contact side. Isolate the same exact root structure on a neutral light-gray studio background in front three-quarter, rear three-quarter, and side views, fully visible. No water, people, buildings, plants, ground plane, text, benches, bridges, or extra logs.",
+      "texturePrompt": "Photoreal wetland deadwood: dark weathered roots, gray-brown cracked bark, lighter broken wood, earthy residue and restrained green moss, non-glossy PBR. No people, water, ground plane, or extra vegetation."
+    },
+    {
+      "assetId": "rewilding-root-wad-riparian-v1",
+      "family": "rewilding-ecological-restoration-zone",
+      "references": ["frontend/public/archetypes/openspaces/rewilding-ecological-restoration-zone/variant_3.png", "frontend/public/archetypes/openspaces/rewilding-ecological-restoration-zone/variant_1.png"],
+      "dimensionsM": [3.8, 3.0, 2.4],
+      "orientation": "preserve-upright",
+      "placementRole": "riparian_root_wad_large",
+      "multiviewPrompt": "Create three consistent orthographic product views of one broad riparian root wad used as stream-edge habitat. The object is an uprooted willow-like stump with a low horizontal trunk remnant and an expressive fan of tangled roots, asymmetrical but stable. Match the weathered deadwood and mossy ecological tone of the references. Isolate one exact object on light-gray studio background, front three-quarter, rear three-quarter, and side, fully visible. No people, water, buildings, live foliage, ground plane, text, or extra objects.",
+      "texturePrompt": "Realistic water-aged willow wood with silver-gray bark, dark soil staining around roots, pale broken fibers, restrained moss in sheltered creases, rough matte PBR. No water, people, plants, or ground."
+    },
+    {
+      "assetId": "rewilding-standing-snag-v1",
+      "family": "rewilding-ecological-restoration-zone",
+      "references": ["frontend/public/archetypes/openspaces/rewilding-ecological-restoration-zone/hero.png", "frontend/public/archetypes/openspaces/rewilding-ecological-restoration-zone/variant_0.png"],
+      "dimensionsM": [1.2, 1.2, 5.5],
+      "orientation": "preserve-upright",
+      "placementRole": "standing_habitat_snag",
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of one freestanding wildlife habitat snag: a stable upright dead tree trunk about five metres tall with a broad base, broken top, several short broken branch stubs, bark cavities and a few woodpecker holes. It must read as managed ecological park habitat, not a living tree. Isolate the exact same object upright on a neutral light-gray studio background in front three-quarter, rear three-quarter, and side views. No foliage, people, buildings, ground, signs, nests, text, or extra objects.",
+      "texturePrompt": "Photoreal sun-weathered dead tree bark, gray and muted brown, pale splintered broken top, darker cavities, lichen flecks, matte roughness. No leaves, people, ground, or signage."
+    },
+    {
+      "assetId": "rewilding-standing-snag-hollow-v1",
+      "family": "rewilding-ecological-restoration-zone",
+      "references": ["frontend/public/archetypes/openspaces/rewilding-ecological-restoration-zone/variant_2.png", "frontend/public/archetypes/openspaces/rewilding-ecological-restoration-zone/variant_3.png"],
+      "dimensionsM": [1.4, 1.4, 6.0],
+      "orientation": "preserve-upright",
+      "placementRole": "hollow_habitat_snag",
+      "multiviewPrompt": "Create three consistent orthographic product views of one tall hollow habitat snag for an urban ecological restoration park. It is a naturally broken upright dead trunk with a flared stable base, one prominent irregular hollow, small habitat holes and three short broken limbs. Match the references' realistic managed-wild character. Isolate the same exact upright object on neutral light-gray studio background in three views, fully visible. No foliage, animals, people, buildings, ground plane, signs, text, or extra objects.",
+      "texturePrompt": "Realistic aged hollow trunk: silver-gray peeling bark, warm exposed sapwood, dark hollow interior, restrained lichen and dirt at base, dry matte roughness. No leaves, animals, people, or ground."
+    },
+    {
+      "assetId": "rewilding-brush-habitat-pile-v1",
+      "family": "rewilding-ecological-restoration-zone",
+      "references": ["frontend/public/archetypes/openspaces/rewilding-ecological-restoration-zone/variant_3.png", "frontend/public/archetypes/openspaces/rewilding-ecological-restoration-zone/hero.png"],
+      "dimensionsM": [4.0, 2.6, 1.6],
+      "orientation": "long-axis-x",
+      "placementRole": "brush_habitat_pile",
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of one deliberately arranged wildlife brush pile for a rewilded city park. It is a loose but stable mound of interlocking weathered branches and short logs with visible air gaps and a few thicker base pieces, clearly habitat rather than trash. Isolate the exact same pile on a neutral light-gray studio background in front three-quarter, rear three-quarter, and side views. No people, buildings, live foliage, ground, water, text, rope, or extra objects.",
+      "texturePrompt": "Photoreal mixed aged branches: gray-brown bark, pale cut ends, darker underside dirt, small lichen patches, rough matte PBR variation. No live leaves, ground, people, or debris."
+    },
+    {
+      "assetId": "rewilding-deadwood-habitat-pile-v1",
+      "family": "rewilding-ecological-restoration-zone",
+      "references": ["frontend/public/archetypes/openspaces/rewilding-ecological-restoration-zone/variant_3.png", "frontend/public/archetypes/openspaces/pollinator-meadow-wildflower-garden/hero.png"],
+      "dimensionsM": [3.6, 2.4, 1.4],
+      "orientation": "long-axis-x",
+      "placementRole": "deadwood_habitat_pile",
+      "multiviewPrompt": "Create three consistent orthographic product views of one compact deadwood habitat pile for an urban meadow edge. Use several short irregular logs, bark slabs and branching limbs arranged in a stable porous mound, with varied diameters and natural cavities for insects. Isolate one exact object on neutral light-gray studio background in front three-quarter, rear three-quarter, and side views, fully visible. No people, buildings, live plants, ground plane, water, labels, pallets, or extra objects.",
+      "texturePrompt": "Detailed mixed deadwood PBR: cracked charcoal-gray and brown bark, warm cut ends, pale decayed wood, subtle lichen and earthy staining, dry matte finish. No ground, foliage, people, or rubbish."
+    },
+    {
+      "assetId": "nature-play-climbing-boulder-granite-v1",
+      "family": "nature-play-area",
+      "references": ["frontend/public/archetypes/openspaces/nature-play-area/hero.png", "frontend/public/archetypes/openspaces/nature-play-area/variant_3.png"],
+      "dimensionsM": [2.8, 2.2, 1.8],
+      "orientation": "preserve-upright",
+      "placementRole": "natural_climbing_boulder",
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of one large natural granite climbing boulder for a children's nature-play park. It is a rounded glacial erratic with an asymmetrical climbable silhouette, shallow ledges and weather-softened edges; stable, safe and not an artificial climbing wall. Isolate the same exact boulder on neutral light-gray studio background in front three-quarter, rear three-quarter, and side views. No people, buildings, plants, ground, ropes, holds, text, or extra stones.",
+      "texturePrompt": "Photoreal coarse granite with mottled warm gray, charcoal mineral flecks, subtle tan weathering, restrained moss only in low creases, rough non-glossy PBR. No painted holds, people, vegetation, or ground."
+    },
+    {
+      "assetId": "nature-play-climbing-boulder-sandstone-v1",
+      "family": "nature-play-area",
+      "references": ["frontend/public/archetypes/openspaces/nature-play-area/variant_1.png", "frontend/public/archetypes/openspaces/nature-play-area/variant_2.png"],
+      "dimensionsM": [2.6, 2.0, 1.6],
+      "orientation": "preserve-upright",
+      "placementRole": "natural_climbing_boulder_warm",
+      "multiviewPrompt": "Create three consistent orthographic product views of one warm-toned natural sandstone play boulder, rounded and child-safe with broad low ledges and one shallow passage-like notch. The form must be geologically believable, stable and useful for scrambling. Isolate the same exact boulder on neutral light-gray studio background in front three-quarter, rear three-quarter, and side views. No people, buildings, plants, ground plane, climbing holds, ropes, text, or extra rocks.",
+      "texturePrompt": "Realistic weathered sandstone PBR with layered buff, muted rust and warm gray mineral variation, fine erosion and darker low creases, matte roughness. No paint, people, vegetation, or ground."
+    },
+    {
+      "assetId": "pollinator-insect-hotel-timber-v1",
+      "family": "pollinator-meadow-wildflower-garden",
+      "references": ["frontend/public/archetypes/openspaces/pollinator-meadow-wildflower-garden/hero.png", "frontend/public/archetypes/openspaces/pollinator-meadow-wildflower-garden/variant_2.png"],
+      "dimensionsM": [1.4, 0.5, 2.0],
+      "orientation": "preserve-upright",
+      "placementRole": "pollinator_insect_hotel",
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of one freestanding timber insect hotel for a public pollinator meadow. It has a simple pitched cap, two sturdy legs and organized natural habitat compartments filled with drilled hardwood rounds, hollow reeds, bark and pinecones behind fine dark mesh. Human-scale but no readable sign. Isolate the exact same upright object on neutral light-gray studio background in front three-quarter, rear three-quarter, and side views. No people, flowers, buildings, ground, text, tools, or extra objects.",
+      "texturePrompt": "Photoreal outdoor timber and natural habitat materials: silvered oak frame, warm cut branch ends with drilled holes, tan reeds, dark bark, rusty-black fine mesh, matte weathering. No labels, people, plants, or ground."
+    },
+    {
+      "assetId": "productive-garden-rustic-potting-bench-v1",
+      "family": "urban-orchard-food-forest",
+      "references": ["frontend/public/archetypes/openspaces/urban-orchard-food-forest/hero.png", "frontend/public/archetypes/openspaces/research-garden-teaching-arboretum/variant_2.png"],
+      "dimensionsM": [2.2, 0.8, 1.3],
+      "orientation": "preserve-upright",
+      "placementRole": "community_garden_potting_bench",
+      "multiviewPrompt": "Create three consistent orthographic product views of one robust public community-garden potting bench. It is an outdoor weathered timber worktable with a raised back shelf, lower slatted storage shelf, galvanized soil tray and a few integrated empty terracotta pot cubbies. The structure is accessible, durable and realistically built. Isolate the same exact bench on neutral light-gray studio background in front three-quarter, rear three-quarter, and side views. No people, building, plants, ground, loose tools, text, clutter, or extra furniture.",
+      "texturePrompt": "Photoreal weathered cedar, galvanized steel tray with subtle wear, muted terracotta accents, dirt staining at work surface, matte outdoor PBR. No people, plants, ground, text, or loose tools."
+    },
+    {
+      "assetId": "memorial-woodland-bench-v1",
+      "family": "memorial-garden",
+      "references": ["frontend/public/archetypes/openspaces/memorial-garden/variant_1.png", "frontend/public/archetypes/openspaces/memorial-garden/variant_3.png"],
+      "dimensionsM": [2.4, 0.8, 1.0],
+      "orientation": "preserve-upright",
+      "placementRole": "memorial_woodland_bench",
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of one elegant woodland memorial bench for a quiet garden. It has a gently curved back and seat made from thick weathered oak slats, restrained dark bronze side frames and broad stable feet. It feels crafted and contemplative, not ornate, with no plaque or lettering. Isolate the same exact bench on neutral light-gray studio background in front three-quarter, rear three-quarter, and side views. No people, buildings, plants, ground, text, cushions, or extra objects.",
+      "texturePrompt": "Photoreal silvered oak with warm worn edges, dark patinated bronze supports, subtle rain staining and matte outdoor roughness. No plaque, text, people, vegetation, or ground."
+    },
+    {
+      "assetId": "mini-golf-sculptural-rock-obstacle-v1",
+      "family": "mini-golf-putting-course",
+      "references": ["frontend/public/archetypes/openspaces/mini-golf-putting-course/hero.png", "frontend/public/archetypes/openspaces/mini-golf-putting-course/variant_2.png"],
+      "dimensionsM": [3.0, 2.2, 2.0],
+      "orientation": "preserve-upright",
+      "placementRole": "mini_golf_sculptural_rock_obstacle",
+      "multiviewPrompt": "Create three consistent orthographic product views of one realistic sculptural rock obstacle for an urban mini-golf course. It is a compact cluster of three weathered natural boulders forming one low arch opening large enough for a golf ball path, with a stable base and attractive silhouette. Isolate the same exact obstacle on neutral light-gray studio background in front three-quarter, rear three-quarter, and side views. No people, buildings, grass, ground plane, water, golf balls, clubs, signs, text, or extra rocks.",
+      "texturePrompt": "Photoreal weathered fieldstone and granite, layered warm gray and tan mineral variation, darker sheltered arch interior, small lichen traces, rough matte PBR. No grass, ground, people, or painted markings."
+    },
+    {
+      "assetId": "sculpture-garden-corten-loop-v1",
+      "family": "sculpture-garden-art-park",
+      "references": ["frontend/public/archetypes/openspaces/sculpture-garden-art-park/hero.png", "frontend/public/archetypes/openspaces/sculpture-garden-art-park/variant_1.png"],
+      "dimensionsM": [2.2, 1.6, 3.0],
+      "orientation": "preserve-upright",
+      "placementRole": "sculpture_garden_corten_loop",
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of one original abstract Corten-steel garden sculpture inspired by the references without copying a named artwork. It is a freestanding continuous folded ribbon forming an asymmetrical open loop, with a strong three-dimensional silhouette and a discreet integrated rectangular steel foot. Isolate the same exact sculpture upright on neutral light-gray studio background in front three-quarter, rear three-quarter, and side views. No people, buildings, plants, ground, pedestal, text, logos, or extra art objects.",
+      "texturePrompt": "Highly detailed weathering-steel PBR: layered burnt orange, umber and dark oxide patina, subtle vertical rain streaks, dry matte metal with restrained edge variation. No text, graffiti, people, vegetation, or ground."
+    },
+    {
+      "assetId": "sculpture-garden-stone-portal-v1",
+      "family": "sculpture-garden-art-park",
+      "references": ["frontend/public/archetypes/openspaces/sculpture-garden-art-park/hero.png", "frontend/public/archetypes/openspaces/sculpture-garden-art-park/variant_3.png"],
+      "dimensionsM": [2.6, 1.5, 3.2],
+      "orientation": "preserve-upright",
+      "placementRole": "sculpture_garden_stone_portal",
+      "multiviewPrompt": "Create three consistent orthographic product views of one original carved-stone garden sculpture inspired by the park references without copying a known artwork. It is a monolithic pale limestone form with a broad stable base and one smooth asymmetrical human-scale portal opening, balancing geometric cuts with hand-finished curves. Isolate the same exact upright sculpture on neutral light-gray studio background in front three-quarter, rear three-quarter, and side views. No people, buildings, plants, ground, pedestal, text, logos, or extra objects.",
+      "texturePrompt": "Photoreal pale limestone with subtle warm gray veining, fine tool marks, softened weathered edges, darker sheltered portal interior, matte mineral roughness. No text, people, plants, or ground."
+    }
+  ]
+}

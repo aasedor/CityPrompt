@@ -1,0 +1,17 @@
+{
+  "schemaVersion":1,"expectedArchetypeCount":10,"method":"exact_archetype_reference_statistics_plus_role_specific_procedural_structure","apiCalls":0,"sourcePixelsProjected":false,
+  "archetypes":{
+    "rooftop-intensive-garden-v0":{"source":"frontend/public/archetypes/openspaces/rooftop-garden/variant_0.png","patterns":{"paver":"paver","lawn":"lawn","asphalt":"asphalt","planting":"planting","safety":"safety","timber":"timber"}},
+    "community-healing-garden-v2":{"source":"frontend/public/archetypes/openspaces/community-garden-design-variants/variant_2.png","patterns":{"paver":"paver","lawn":"lawn","asphalt":"asphalt","planting":"planting","safety":"safety","timber":"timber"}},
+    "greenbelt-rail-trail-v1":{"source":"frontend/public/archetypes/openspaces/greenbelt-buffer-park/variant_1.png","patterns":{"paver":"paver","lawn":"lawn","asphalt":"asphalt","planting":"planting","safety":"safety","timber":"timber"}},
+    "foothill-heathland-trail-v2":{"source":"frontend/public/archetypes/openspaces/foothill-trail-park/variant_2.png","patterns":{"paver":"paver","lawn":"lawn","asphalt":"asphalt","planting":"planting","safety":"paver","timber":"timber"}},
+    "marina-pacific-dock-v2":{"source":"frontend/public/archetypes/openspaces/marina-yacht-harbor/variant_2.png","patterns":{"paver":"paver","lawn":"lawn","asphalt":"asphalt","planting":"planting","safety":"safety","timber":"timber"}},
+    "working-pier-brooklyn-park-v3":{"source":"frontend/public/archetypes/openspaces/working-pier-wharf-conversion/variant_3.png","patterns":{"paver":"paver","lawn":"lawn","asphalt":"asphalt","planting":"planting","safety":"safety","timber":"timber"}},
+    "floating-meadow-loop-v2":{"source":"frontend/public/archetypes/openspaces/floating-park-pool/variant_2.png","patterns":{"paver":"paver","lawn":"lawn","asphalt":"asphalt","planting":"planting","safety":"safety","timber":"timber"}},
+    "lighthouse-pacific-headland-v2":{"source":"frontend/public/archetypes/openspaces/lighthouse-point-park/variant_2.png","patterns":{"paver":"paver","lawn":"lawn","asphalt":"asphalt","planting":"planting","safety":"paver","timber":"timber"}},
+    "lake-edge-timber-deck-v2":{"source":"frontend/public/archetypes/openspaces/lake-edge-plaza/variant_2.png","patterns":{"paver":"paver","lawn":"lawn","asphalt":"asphalt","planting":"planting","safety":"safety","timber":"timber"}},
+    "stormwater-natural-creek-v0":{"source":"frontend/public/archetypes/openspaces/stormwater-naturalized-drainage-corridor/variant_0.png","patterns":{"paver":"paver","lawn":"lawn","asphalt":"asphalt","planting":"planting","safety":"paver","timber":"timber"}}
+  },
+  "defaultCrops":{"paver":[0,0.56,1,1],"lawn":[0,0.32,1,0.88],"asphalt":[0,0.64,1,1],"planting":[0,0.18,1,0.86],"safety":[0.05,0.46,0.95,0.94],"timber":[0,0.38,1,0.92]},
+  "materialDefaults":{"paver":{"roughness":0.88,"normalStrength":2,"metresPerTile":4},"lawn":{"roughness":0.95,"normalStrength":2.2,"metresPerTile":5},"asphalt":{"roughness":0.91,"normalStrength":1.8,"metresPerTile":4},"planting":{"roughness":0.98,"normalStrength":3,"metresPerTile":3},"safety":{"roughness":0.9,"normalStrength":2.4,"metresPerTile":3},"timber":{"roughness":0.84,"normalStrength":2.2,"metresPerTile":2.5}}
+}

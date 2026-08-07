@@ -4467,7 +4467,7 @@
       "aspectRatio": "1.5:1",
       "shape": "rectangular",
       "title": "Place Royale",
-      "aestheticCategory": "parisian_civic",
+      "aestheticCategory": "civic_plazas",
       "spaceType": "plaza",
       "description": "Formal Parisian plaza with uniform facades, central monument or fountain, and paved surface",
       "generationTags": [
@@ -4548,7 +4548,7 @@
       "aspectRatio": "1.3:1",
       "shape": "rectangular",
       "title": "Square Parisien",
-      "aestheticCategory": "parisian_garden",
+      "aestheticCategory": "specialty_gardens",
       "spaceType": "park",
       "description": "Small fenced Parisian garden square with gravel paths, green benches, iron fence, and mature trees",
       "generationTags": [
@@ -4629,7 +4629,7 @@
       "aspectRatio": "1.3:1",
       "shape": "irregular",
       "title": "Jardin a la Francaise",
-      "aestheticCategory": "parisian_formal_garden",
+      "aestheticCategory": "specialty_gardens",
       "spaceType": "park",
       "description": "Formal French garden with axial symmetry, geometric parterres, bassin, and moveable green metal chairs",
       "generationTags": [
@@ -4710,7 +4710,7 @@
       "aspectRatio": "1.6:1",
       "shape": "irregular",
       "title": "Vondelpark Garden",
-      "aestheticCategory": "amsterdam_landscape",
+      "aestheticCategory": "landscape_parks",
       "spaceType": "park",
       "description": "English landscape park with winding paths, ponds, mature tree canopy, and open lawns",
       "generationTags": [
@@ -4791,7 +4791,7 @@
       "aspectRatio": "1:1",
       "shape": "rectangular",
       "title": "Hofje Courtyard Garden",
-      "aestheticCategory": "amsterdam_courtyard",
+      "aestheticCategory": "specialty_gardens",
       "spaceType": "park",
       "description": "Enclosed courtyard garden within a hofje complex, with gravel paths, low hedges, and central well",
       "generationTags": [
@@ -4872,7 +4872,7 @@
       "aspectRatio": "1.3:1",
       "shape": "rectangular",
       "title": "Amsterdam Plein",
-      "aestheticCategory": "amsterdam_civic",
+      "aestheticCategory": "civic_plazas",
       "spaceType": "plaza",
       "description": "Irregular hard-paved Amsterdam civic square with market use, cafe terrasses, and church or weigh house focal building",
       "generationTags": [
@@ -4953,7 +4953,7 @@
       "aspectRatio": "1.25:1",
       "shape": "rectangular",
       "title": "Eixample Interior Courtyard",
-      "aestheticCategory": "barcelona_courtyard",
+      "aestheticCategory": "specialty_gardens",
       "spaceType": "park",
       "description": "Green oasis hidden inside an Eixample block, with gravel paths, fountain, and Mediterranean planting",
       "generationTags": [
@@ -5034,7 +5034,7 @@
       "aspectRatio": "1.07:1",
       "shape": "octagonal",
       "title": "Chamfer Plaza",
-      "aestheticCategory": "barcelona_civic",
+      "aestheticCategory": "civic_plazas",
       "spaceType": "plaza",
       "description": "Small diamond-shaped open space where four chamfered Eixample corners meet at an intersection",
       "generationTags": [
@@ -5115,7 +5115,7 @@
       "aspectRatio": "1:1",
       "shape": "square",
       "title": "Barcelona Superblock",
-      "aestheticCategory": "barcelona_urban",
+      "aestheticCategory": "neighborhood_public_realm",
       "spaceType": "plaza",
       "description": "Modern pedestrianized superblock interior with colored pavement, planters, play equipment, and pop-up market",
       "generationTags": [
@@ -5196,7 +5196,7 @@
       "aspectRatio": "1.25:1",
       "shape": "rectangular",
       "title": "London Garden Square",
-      "aestheticCategory": "london_georgian",
+      "aestheticCategory": "specialty_gardens",
       "spaceType": "park",
       "description": "Rectangular fenced garden enclosed by Georgian/Victorian terraces, with plane trees, gravel paths, and locked gate",
       "generationTags": [
@@ -5277,7 +5277,7 @@
       "aspectRatio": "1:1",
       "shape": "circular",
       "title": "London Circus",
-      "aestheticCategory": "london_georgian",
+      "aestheticCategory": "civic_plazas",
       "spaceType": "park",
       "description": "Circular arrangement of grand terrace houses facing inward to a round garden with large trees",
       "generationTags": [
@@ -5358,7 +5358,7 @@
       "aspectRatio": "1:1",
       "shape": "rectangular",
       "title": "New York Pocket Park",
-      "aestheticCategory": "newyork_urban",
+      "aestheticCategory": "neighborhood_public_realm",
       "spaceType": "park",
       "description": "Tiny urban oasis between buildings with waterfall wall, moveable chairs, and honey locust shade",
       "generationTags": [
@@ -5439,7 +5439,7 @@
       "aspectRatio": "1.2:1",
       "shape": "rectangular",
       "title": "New York Community Garden",
-      "aestheticCategory": "newyork_urban",
+      "aestheticCategory": "specialty_gardens",
       "spaceType": "park",
       "description": "Fenced community garden on a former vacant lot with raised beds, murals, casita shed, and volunteer-run plots",
       "generationTags": [
@@ -5520,7 +5520,7 @@
       "aspectRatio": "1.25:1",
       "shape": "irregular",
       "title": "Mount Royal Park",
-      "aestheticCategory": "montreal_landscape",
+      "aestheticCategory": "landscape_parks",
       "spaceType": "park",
       "description": "Olmsted-designed naturalistic park on Mount Royal with wooded hillside, Beaver Lake, and stone lookout with city views",
       "generationTags": [
@@ -5602,7 +5602,7 @@
       "aspectRatio": "1.27:1",
       "shape": "rectangular",
       "title": "Montreal Neighbourhood Square",
-      "aestheticCategory": "montreal_civic",
+      "aestheticCategory": "civic_plazas",
       "spaceType": "park",
       "description": "Small formal Montreal square with central fountain, iron fence, benches, and mature trees, surrounded by triplexes",
       "generationTags": [
@@ -5683,7 +5683,7 @@
       "aspectRatio": "12:1",
       "shape": "linear",
       "title": "Vancouver Seawall Promenade",
-      "aestheticCategory": "vancouver_waterfront",
+      "aestheticCategory": "waterfront_spaces",
       "spaceType": "park",
       "description": "Continuous waterfront seawall path with ocean on one side, forest or city on the other, and mountain views across the in",
       "generationTags": [
@@ -5765,7 +5765,7 @@
       "aspectRatio": "1.9:1",
       "shape": "irregular",
       "title": "Vancouver Beach Park",
-      "aestheticCategory": "vancouver_waterfront",
+      "aestheticCategory": "waterfront_spaces",
       "spaceType": "park",
       "description": "West Coast beach park with sandy beach, drift logs, grassy slope, outdoor pool, and mountain/ocean views",
       "generationTags": [
@@ -5847,7 +5847,7 @@
       "aspectRatio": "3:1",
       "shape": "linear",
       "title": "Toronto Ravine Park",
-      "aestheticCategory": "toronto_landscape",
+      "aestheticCategory": "landscape_parks",
       "spaceType": "park",
       "description": "Deep glacial ravine cutting through the urban grid, dense deciduous forest, unpaved trails, wooden bridges, 20-30m below",
       "generationTags": [
@@ -5929,7 +5929,7 @@
       "aspectRatio": "1.3:1",
       "shape": "rectangular",
       "title": "Toronto Urban Square",
-      "aestheticCategory": "toronto_civic",
+      "aestheticCategory": "civic_plazas",
       "spaceType": "plaza",
       "description": "Hard-surfaced Toronto civic plaza with ice rink in winter, public art, reflecting pool, surrounded by towers",
       "generationTags": [
@@ -6011,7 +6011,7 @@
       "aspectRatio": "2:1",
       "shape": "irregular",
       "title": "Prince's Island Park",
-      "aestheticCategory": "calgary_river",
+      "aestheticCategory": "waterfront_spaces",
       "spaceType": "park",
       "description": "River island park in the Bow River with walking paths, cottonwood trees, public art, event lawns, and mountain views",
       "generationTags": [
@@ -6093,7 +6093,7 @@
       "aspectRatio": "1.27:1",
       "shape": "rectangular",
       "title": "Calgary Prairie Urban Plaza",
-      "aestheticCategory": "calgary_civic",
+      "aestheticCategory": "civic_plazas",
       "spaceType": "plaza",
       "description": "Open civic plaza with big prairie sky, reflecting pool, wind-swept character, seasonal markets, and mountain views",
       "generationTags": [
@@ -6175,7 +6175,7 @@
       "aspectRatio": "1.3:1",
       "shape": "rectangular",
       "title": "Halifax Public Gardens",
-      "aestheticCategory": "halifax_victorian",
+      "aestheticCategory": "specialty_gardens",
       "spaceType": "park",
       "description": "One of the finest surviving Victorian gardens in North America with bandstand, carpet beds, serpentine paths, and wrough",
       "generationTags": [
@@ -6257,7 +6257,7 @@
       "aspectRatio": "2.5:1",
       "shape": "irregular",
       "title": "Halifax Coastal Forest Park",
-      "aestheticCategory": "halifax_natural",
+      "aestheticCategory": "landscape_parks",
       "spaceType": "park",
       "description": "Coastal forest park meeting the Atlantic Ocean with hiking trails, ruined fortifications, rocky shoreline, and salt-wind",
       "generationTags": [

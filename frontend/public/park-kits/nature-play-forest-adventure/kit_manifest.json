@@ -16,6 +16,7 @@
   "skinMethod": "reference_statistics_plus_procedural_structure",
   "depthAssets": [
     "balance-log.glb",
+    "climbing-log-meshy-v1.glb",
     "log-fort.glb",
     "play-boulders.glb",
     "stepping-stump.glb",

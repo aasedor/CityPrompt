@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "validatedAt": "2026-08-06",
+  "projectId": "20c08c19-8bf3-48ab-b9d1-62482b46a66e",
+  "parkZoneId": "f00b58c7-6277-4617-a5d5-0bc4ff21db0b",
+  "buildingZoneId": "74ccecf5-afa2-44b9-9fd0-60464579be86",
+  "method": "one park at a time with one separately compiled building; each park used its nominal catalogue parcel",
+  "expectedContract": {
+    "summary": "1 buildings · 1 parks · 0 streets",
+    "assembled": 1,
+    "noFamily": 0,
+    "skipped": 0,
+    "parkState": "compiled",
+    "groundSystem": "Archetype-owned skin and metric 3D depth kit; no AI drape or generic park dressing"
+  },
+  "trials": [
+    {"archetypeId": "surface_parking_lot", "variantId": "surface_parking_lot_v0", "familyId": "park_surface_parking_standard_v0", "parcelM": [50, 40], "passed": true},
+    {"archetypeId": "structured_parking_garage", "variantId": "structured_parking_garage_v2", "familyId": "park_structured_parking_urban_v2", "parcelM": [50, 20], "passed": true},
+    {"archetypeId": "underground_parking_entry", "variantId": "underground_parking_entry_v1", "familyId": "park_underground_parking_green_v1", "parcelM": [20, 20], "passed": true},
+    {"archetypeId": "green_parking_lot", "variantId": "green_parking_lot_v1", "familyId": "park_green_parking_infrastructure_v1", "parcelM": [40, 30], "passed": true},
+    {"archetypeId": "airport_airfield", "variantId": "airport_airfield_variant_2", "familyId": "park_airport_general_aviation_v2", "parcelM": [2200, 1360], "passed": true},
+    {"archetypeId": "equestrian_center", "variantId": "equestrian_center_variant_1", "familyId": "park_equestrian_working_stable_v1", "parcelM": [250, 160], "passed": true},
+    {"archetypeId": "golf_course_18_hole", "variantId": "golf_course_18_hole_variant_0", "familyId": "park_golf_seaside_links_v0", "parcelM": [1000, 600], "passed": true},
+    {"archetypeId": "golf_driving_range", "variantId": "golf_driving_range_variant_0", "familyId": "park_driving_range_single_tier_v0", "parcelM": [120, 290], "passed": true},
+    {"archetypeId": "multi_sport_complex", "variantId": "multi_sport_complex_variant_3", "familyId": "park_multi_sport_track_field_v3", "parcelM": [250, 160], "passed": true},
+    {"archetypeId": "suburban_retail_parking_lot", "variantId": "suburban_retail_parking_lot_v1", "familyId": "park_retail_parking_landscaped_v1", "parcelM": [70, 50], "passed": true}
+  ]
+}

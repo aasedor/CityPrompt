@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "expectedArchetypeCount": 10,
+  "method": "exact_archetype_reference_statistics_plus_role_specific_procedural_structure",
+  "apiCalls": 0,
+  "sourcePixelsProjected": false,
+  "archetypes": {
+    "outdoor-ice-rink-multipurpose": {
+      "source": "frontend/public/archetypes/openspaces/outdoor-ice-rink/variant_3.png",
+      "patterns": {"paver":"paver","lawn":"planting","asphalt":"asphalt","planting":"planting","safety":"safety","timber":"timber"},
+      "crops": {"paver":[0.00,0.62,0.30,1.00],"lawn":[0.82,0.46,1.00,0.76],"asphalt":[0.00,0.62,0.42,1.00],"planting":[0.78,0.38,1.00,0.72],"safety":[0.12,0.47,0.94,0.92],"timber":[0.00,0.64,0.22,0.92]}
+    },
+    "kayak-river-launch": {
+      "source": "frontend/public/archetypes/openspaces/kayak-canoe-launch/variant_0.png",
+      "patterns": {"paver":"paver","lawn":"lawn","asphalt":"paver","planting":"planting","safety":"safety","timber":"timber"},
+      "crops": {"paver":[0.00,0.65,0.38,1.00],"lawn":[0.00,0.40,0.58,0.78],"asphalt":[0.00,0.66,0.42,1.00],"planting":[0.00,0.34,0.68,0.78],"safety":[0.48,0.45,1.00,0.82],"timber":[0.42,0.50,0.96,0.88]}
+    },
+    "tidal-marsh-cordgrass": {
+      "source": "frontend/public/archetypes/openspaces/tidal-marsh-boardwalk/variant_0.png",
+      "patterns": {"paver":"paver","lawn":"planting","asphalt":"paver","planting":"planting","safety":"planting","timber":"timber"},
+      "crops": {"paver":[0.00,0.62,0.28,1.00],"lawn":[0.08,0.36,0.92,0.90],"asphalt":[0.00,0.65,0.32,1.00],"planting":[0.00,0.34,1.00,0.92],"safety":[0.45,0.38,1.00,0.82],"timber":[0.24,0.54,0.90,0.90]}
+    },
+    "outdoor-cinema-park-lawn": {
+      "source": "frontend/public/archetypes/openspaces/outdoor-cinema-lawn/variant_1.png",
+      "patterns": {"paver":"paver","lawn":"lawn","asphalt":"paver","planting":"planting","safety":"lawn","timber":"timber"},
+      "crops": {"paver":[0.00,0.70,0.26,1.00],"lawn":[0.18,0.58,0.84,0.96],"asphalt":[0.00,0.72,0.34,1.00],"planting":[0.00,0.18,1.00,0.64],"safety":[0.22,0.58,0.80,0.94],"timber":[0.66,0.38,0.86,0.66]}
+    },
+    "food-truck-permanent-park": {
+      "source": "frontend/public/archetypes/openspaces/food-truck-plaza/variant_1.png",
+      "patterns": {"paver":"paver","lawn":"planting","asphalt":"asphalt","planting":"planting","safety":"safety","timber":"timber"},
+      "crops": {"paver":[0.14,0.62,0.90,1.00],"lawn":[0.00,0.48,0.28,0.76],"asphalt":[0.08,0.56,0.98,0.92],"planting":[0.00,0.42,0.34,0.76],"safety":[0.24,0.36,1.00,0.66],"timber":[0.18,0.62,0.84,1.00]}
+    },
+    "festival-great-lawn": {
+      "source": "frontend/public/archetypes/openspaces/festival-grounds-event-lawn/variant_2.png",
+      "patterns": {"paver":"paver","lawn":"lawn","asphalt":"paver","planting":"planting","safety":"lawn","timber":"timber"},
+      "crops": {"paver":[0.00,0.72,1.00,1.00],"lawn":[0.08,0.46,0.92,0.90],"asphalt":[0.00,0.74,1.00,1.00],"planting":[0.00,0.28,1.00,0.62],"safety":[0.14,0.50,0.88,0.90],"timber":[0.00,0.74,0.34,1.00]}
+    },
+    "campus-naturalized-meadow-quad": {
+      "source": "frontend/public/archetypes/openspaces/campus-central-quad/variant_0.png",
+      "patterns": {"paver":"paver","lawn":"lawn","asphalt":"paver","planting":"planting","safety":"paver","timber":"timber"},
+      "crops": {"paver":[0.10,0.58,0.86,0.94],"lawn":[0.06,0.48,0.94,0.92],"asphalt":[0.06,0.62,0.94,0.96],"planting":[0.00,0.44,1.00,0.94],"safety":[0.00,0.64,0.42,0.98],"timber":[0.40,0.54,0.70,0.76]}
+    },
+    "urban-beach-family-splash": {
+      "source": "frontend/public/archetypes/openspaces/urban-beach/variant_2.png",
+      "patterns": {"paver":"paver","lawn":"planting","asphalt":"paver","planting":"planting","safety":"safety","timber":"timber"},
+      "crops": {"paver":[0.60,0.58,1.00,0.94],"lawn":[0.00,0.36,0.26,0.70],"asphalt":[0.60,0.60,1.00,0.96],"planting":[0.00,0.32,0.30,0.72],"safety":[0.04,0.52,0.94,1.00],"timber":[0.20,0.52,0.92,0.88]}
+    },
+    "velodrome-open-air": {
+      "source": "frontend/public/archetypes/openspaces/velodrome-cycling-track/variant_0.png",
+      "patterns": {"paver":"paver","lawn":"lawn","asphalt":"paver","planting":"planting","safety":"safety","timber":"timber"},
+      "crops": {"paver":[0.00,0.70,0.90,1.00],"lawn":[0.00,0.46,0.54,0.78],"asphalt":[0.04,0.60,0.72,0.90],"planting":[0.00,0.42,0.48,0.76],"safety":[0.00,0.40,0.72,0.82],"timber":[0.00,0.38,0.76,0.74]}
+    },
+    "mountain-bike-skills-dirt": {
+      "source": "frontend/public/archetypes/openspaces/mountain-bike-park/variant_2.png",
+      "patterns": {"paver":"paver","lawn":"lawn","asphalt":"asphalt","planting":"planting","safety":"safety","timber":"timber"},
+      "crops": {"paver":[0.18,0.62,0.88,0.94],"lawn":[0.00,0.54,1.00,0.92],"asphalt":[0.38,0.42,1.00,0.78],"planting":[0.00,0.42,1.00,0.90],"safety":[0.00,0.56,0.96,1.00],"timber":[0.00,0.70,0.38,1.00]}
+    }
+  },
+  "materialDefaults": {
+    "paver":{"roughness":0.88,"normalStrength":2.0,"metresPerTile":4.0},
+    "lawn":{"roughness":0.95,"normalStrength":2.2,"metresPerTile":5.0},
+    "asphalt":{"roughness":0.91,"normalStrength":1.8,"metresPerTile":4.0},
+    "planting":{"roughness":0.98,"normalStrength":3.0,"metresPerTile":3.0},
+    "safety":{"roughness":0.90,"normalStrength":2.4,"metresPerTile":3.0},
+    "timber":{"roughness":0.84,"normalStrength":2.2,"metresPerTile":2.5}
+  }
+}

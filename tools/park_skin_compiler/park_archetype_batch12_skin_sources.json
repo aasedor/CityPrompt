@@ -1,0 +1,17 @@
+{
+  "schemaVersion":1,"expectedArchetypeCount":10,"method":"exact_archetype_reference_statistics_plus_role_specific_procedural_structure","apiCalls":0,"sourcePixelsProjected":false,
+  "archetypes":{
+    "city-hall-modernist-fountain-v2":{"source":"frontend/public/archetypes/openspaces/city-hall-government-plaza/variant_2.png","patterns":{"paver":"paver","lawn":"lawn","asphalt":"asphalt","planting":"planting","safety":"paver","timber":"timber"}},
+    "cathedral-mosque-courtyard-v3":{"source":"frontend/public/archetypes/openspaces/cathedral-religious-forecourt/variant_3.png","patterns":{"paver":"paver","lawn":"planting","asphalt":"asphalt","planting":"planting","safety":"paver","timber":"timber"}},
+    "cultural-museum-terrace-v0":{"source":"frontend/public/archetypes/openspaces/cultural-institution-forecourt/variant_0.png","patterns":{"paver":"paver","lawn":"lawn","asphalt":"asphalt","planting":"planting","safety":"paver","timber":"timber"}},
+    "transit-green-civic-v2":{"source":"frontend/public/archetypes/openspaces/transit-plaza/variant_2.png","patterns":{"paver":"paver","lawn":"lawn","asphalt":"asphalt","planting":"planting","safety":"safety","timber":"timber"}},
+    "amphitheater-terraced-v0":{"source":"frontend/public/archetypes/openspaces/outdoor-amphitheater-performance-space/variant_0.png","patterns":{"paver":"paver","lawn":"lawn","asphalt":"asphalt","planting":"planting","safety":"paver","timber":"timber"}},
+    "concert-timber-lawn-v2":{"source":"frontend/public/archetypes/openspaces/concert-pavilion-lawn/variant_2.png","patterns":{"paver":"paver","lawn":"lawn","asphalt":"asphalt","planting":"planting","safety":"safety","timber":"timber"}},
+    "night-market-hawker-v0":{"source":"frontend/public/archetypes/openspaces/night-market/variant_0.png","patterns":{"paver":"paver","lawn":"planting","asphalt":"asphalt","planting":"planting","safety":"safety","timber":"timber"}},
+    "parade-national-mall-v3":{"source":"frontend/public/archetypes/openspaces/parade-ground/variant_3.png","patterns":{"paver":"paver","lawn":"lawn","asphalt":"asphalt","planting":"planting","safety":"paver","timber":"timber"}},
+    "canal-ecological-wetland-v3":{"source":"frontend/public/archetypes/openspaces/canal-waterway/variant_3.png","patterns":{"paver":"paver","lawn":"lawn","asphalt":"asphalt","planting":"planting","safety":"paver","timber":"timber"}},
+    "custom-biophilic-urban-v1":{"source":"frontend/public/archetypes/openspaces/custom-parks-plazas/variant_1.png","patterns":{"paver":"paver","lawn":"lawn","asphalt":"asphalt","planting":"planting","safety":"safety","timber":"timber"}}
+  },
+  "defaultCrops":{"paver":[0,0.56,1,1],"lawn":[0,0.32,1,0.88],"asphalt":[0,0.64,1,1],"planting":[0,0.18,1,0.86],"safety":[0.05,0.46,0.95,0.94],"timber":[0,0.38,1,0.92]},
+  "materialDefaults":{"paver":{"roughness":0.88,"normalStrength":2,"metresPerTile":4},"lawn":{"roughness":0.95,"normalStrength":2.2,"metresPerTile":5},"asphalt":{"roughness":0.91,"normalStrength":1.8,"metresPerTile":4},"planting":{"roughness":0.98,"normalStrength":3,"metresPerTile":3},"safety":{"roughness":0.9,"normalStrength":2.4,"metresPerTile":3},"timber":{"roughness":0.84,"normalStrength":2.2,"metresPerTile":2.5}}
+}

@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "batch": 10,
+  "objective": "Close ten currently uncovered city-specific parent archetypes while testing distinct parcel grammars.",
+  "referencePolicy": {
+    "reviewAllFourVariants": true,
+    "emitPeople": false,
+    "emitLargeBuildings": false,
+    "buildingDominatedReferences": "Use only for ground geometry, material, scale, and use cues.",
+    "paidImageApiCalls": 0
+  },
+  "selections": [
+    {"archetypeId": "amsterdam_hofje_garden", "variantId": "amsterdam_hofje_garden_v0", "workingFamilyId": "park_amsterdam_hofje_garden_v0", "reason": "Clearest enclosed gravel-and-planting courtyard room with central garden focus."},
+    {"archetypeId": "amsterdam_plein", "variantId": "amsterdam_plein_v0", "workingFamilyId": "park_amsterdam_plein_v0", "reason": "Most legible open stone plein; surrounding buildings remain separate."},
+    {"archetypeId": "amsterdam_vondelpark", "variantId": "amsterdam_vondelpark_v3", "workingFamilyId": "park_amsterdam_vondelpark_pavilion_v3", "reason": "Strongest pavilion-edge garden and social terrace cues without copying the building mass."},
+    {"archetypeId": "barcelona_pati_interior", "variantId": "barcelona_pati_interior_v0", "workingFamilyId": "park_barcelona_pati_green_v0", "reason": "Clearest planted Eixample courtyard with a walkable central room."},
+    {"archetypeId": "barcelona_placa_xamfra", "variantId": "barcelona_placa_xamfra_v2", "workingFamilyId": "park_barcelona_xamfra_corner_v2", "reason": "Best evidence for a chamfer-corner plaza and diagonal pedestrian flow."},
+    {"archetypeId": "barcelona_superilla", "variantId": "barcelona_superilla_v1", "workingFamilyId": "park_barcelona_superilla_green_v1", "reason": "Strongest planted superblock room with traffic-calmed pedestrian circulation."},
+    {"archetypeId": "calgary_prairie_plaza", "variantId": "calgary_prairie_plaza_v1", "workingFamilyId": "park_calgary_prairie_market_v1", "reason": "Market and pavilion cues support a flexible prairie plaza grammar."},
+    {"archetypeId": "calgary_princes_island", "variantId": "calgary_princes_island_v0", "workingFamilyId": "park_calgary_princes_island_festival_v0", "reason": "Best connected lawn, path, shade, and festival-pavilion composition."},
+    {"archetypeId": "montreal_mount_royal", "variantId": "montreal_mount_royal_v2", "workingFamilyId": "park_montreal_mount_royal_grove_v2", "reason": "Strongest topographic grove, promenade, and overlook-pavilion cues."},
+    {"archetypeId": "montreal_square", "variantId": "montreal_square_v3", "workingFamilyId": "park_montreal_neighbourhood_square_v3", "reason": "Most legible mixed hardscape, lawn panel, seating, and cycle-through square."}
+  ]
+}

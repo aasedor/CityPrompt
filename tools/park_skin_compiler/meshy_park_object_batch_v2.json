@@ -1,0 +1,168 @@
+{
+  "batchId": "meshy-park-object-batch-v2",
+  "version": "2026-08-07",
+  "creditCeiling": 624,
+  "estimatedCreditsPerAsset": 39,
+  "objects": [
+    {
+      "assetId": "japanese-garden-arched-timber-footbridge-v1",
+      "family": "japanese-garden",
+      "references": ["frontend/public/archetypes/openspaces/japanese-garden/variant_1.png"],
+      "dimensionsM": [4.2, 1.6, 1.35],
+      "orientation": "long-axis-x",
+      "placementRole": "japanese_garden_arched_timber_footbridge",
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one compact Japanese garden footbridge based on the reference. It is a gently arched pedestrian bridge with a weathered timber plank deck, two low curved timber rails, simple square posts, and believable traditional joinery. The bridge is freestanding and fully assembled, with no stream or landscape attached. Show the same exact bridge on a neutral light-gray studio background in front three-quarter, rear three-quarter, and side views, fully visible and not cropped. No people, buildings, plants, water, terrain, stepping stones, text, lanterns, or extra objects.",
+      "texturePrompt": "Photoreal outdoor Japanese timber bridge: warm dark-brown weathered wood, visible grain and end grain, restrained moss staining in sheltered joints, slightly worn plank edges, matte PBR. No people, plants, water, ground, labels, or added props."
+    },
+    {
+      "assetId": "japanese-garden-concrete-corten-sculpture-v1",
+      "family": "japanese-garden",
+      "references": ["frontend/public/archetypes/openspaces/japanese-garden/variant_2.png"],
+      "dimensionsM": [2.2, 1.1, 3.2],
+      "orientation": "preserve-upright",
+      "placementRole": "japanese_garden_contemporary_sculpture",
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one contemporary Japanese-garden sculpture derived from the reference: two offset vertical board-formed concrete slabs interlocked with one narrow folded Corten-steel ribbon, using calm asymmetry, rectangular voids, and a stable concealed base. It must be one coherent sculpture, not a group of separate display objects. Isolate the same exact sculpture upright on a neutral light-gray studio background in front three-quarter, rear three-quarter, and side views, fully visible. No people, buildings, trees, moss islands, water, ground, text, plinth, lighting, or extra sculptures.",
+      "texturePrompt": "Photoreal board-formed light-gray concrete with subtle pores and formwork lines, paired with oxidized orange-brown Corten steel showing layered patina and dark edges, realistic matte PBR. No ground, plants, water, people, or labels."
+    },
+    {
+      "assetId": "japanese-garden-weathered-rose-arbor-v1",
+      "family": "japanese-garden",
+      "references": ["frontend/public/archetypes/openspaces/japanese-garden/variant_3.png"],
+      "dimensionsM": [3.6, 1.2, 2.8],
+      "orientation": "long-axis-x",
+      "placementRole": "japanese_garden_flowering_arbor",
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one traditional weathered timber garden arbor from the reference. It has four sturdy posts, two gently curved laminated top arches, fine square side lattice, a centered walk-through opening, and believable exterior joinery. Model the architectural arbor only, without vines or flowers, so planting can be added separately. Show the same exact freestanding arbor on a neutral light-gray studio background in front three-quarter, rear three-quarter, and side views, fully visible. No people, plants, flowers, benches, paths, buildings, ground, text, gates, or extra objects.",
+      "texturePrompt": "Photoreal silvered cedar and warm aged hardwood with fine grain, darkened joints, mild checking, and restrained outdoor weathering, matte PBR. No vines, flowers, people, ground, signs, or attached furniture."
+    },
+    {
+      "assetId": "nature-play-woven-willow-tunnel-v1",
+      "family": "nature-play-area",
+      "references": ["frontend/public/archetypes/openspaces/nature-play-area/variant_1.png", "frontend/public/archetypes/openspaces/nature-play-area/variant_2.png"],
+      "dimensionsM": [4.0, 1.8, 2.1],
+      "orientation": "long-axis-x",
+      "placementRole": "nature_play_woven_willow_tunnel",
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one child-scale woven willow play tunnel based on the references. Flexible willow rods are bent into a low elongated arch and densely interwoven, with two open ends and a stable natural footprint. Include only sparse small willow leaves so the woven structure remains clear and game-engine friendly. Show the same exact tunnel on a neutral light-gray studio background in front three-quarter, rear three-quarter, and side views, fully visible. No people, buildings, ground, paths, flowers, benches, signs, text, toys, or extra objects.",
+      "texturePrompt": "Photoreal woven willow: varied olive-brown flexible stems, lighter fresh shoots, restrained small green leaves, natural intersections and matte bark roughness. No ground, people, flowers, labels, or extra vegetation."
+    },
+    {
+      "assetId": "nature-play-hollow-timber-drum-v1",
+      "family": "nature-play-area",
+      "references": ["frontend/public/archetypes/openspaces/nature-play-area/variant_1.png"],
+      "dimensionsM": [1.0, 1.0, 1.3],
+      "orientation": "preserve-upright",
+      "placementRole": "nature_play_hollow_timber_drum",
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one freestanding outdoor hollow-log play drum derived from the reference. It is a broad upright hardwood trunk section with a smooth child-safe rim, one dark oval resonance opening near the base, a slightly domed playable top, and a stable flat underside. It should read as a crafted natural musical instrument, not a cut planter. Show the same exact drum on a neutral light-gray studio background in front three-quarter, rear three-quarter, and side views. No people, mallets, buildings, plants, ground, text, ropes, percussion bars, or extra objects.",
+      "texturePrompt": "Photoreal carved hardwood with varied brown grain, weather-softened bark around the body, smooth worn top, dark hollow interior, subtle dirt at base, matte outdoor PBR. No people, ground, plants, labels, or loose mallets."
+    },
+    {
+      "assetId": "nature-play-timber-water-table-v1",
+      "family": "nature-play-area",
+      "references": ["frontend/public/archetypes/openspaces/nature-play-area/variant_2.png"],
+      "dimensionsM": [3.2, 1.0, 0.85],
+      "orientation": "long-axis-x",
+      "placementRole": "nature_play_timber_water_table",
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one robust public nature-play timber water table based on the reference. It has a long shallow carved wooden trough, two stepped spill basins, thick square legs and cross-bracing, rounded child-safe edges, and one simple hand-operated timber gate integrated into the trough. Model the dry assembled apparatus only. Show the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter, and side views, fully visible. No people, water, pumps, buckets, buildings, plants, ground, text, tools, or extra play equipment.",
+      "texturePrompt": "Photoreal weathered outdoor hardwood with warm-brown grain, dark damp staining inside the trough, worn rounded edges, galvanized fastener accents, matte PBR. No water, people, ground, plants, labels, or loose toys."
+    },
+    {
+      "assetId": "vancouver-beach-driftwood-log-cluster-v1",
+      "family": "vancouver-beach-park",
+      "references": ["frontend/public/archetypes/openspaces/vancouver-beach-park/hero.png"],
+      "dimensionsM": [5.8, 2.4, 1.1],
+      "orientation": "long-axis-x",
+      "placementRole": "coastal_beach_driftwood_cluster",
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one compact cluster of three naturally interlocked Pacific-coast driftwood logs based on the beach reference. Use one long bleached trunk, one shorter forked log, and one low branchy piece arranged as a stable sculptural beach habitat cluster with visible gaps. It must be a single placeable cluster and contain no sand base. Show the same exact cluster on a neutral light-gray studio background in front three-quarter, rear three-quarter, and side views, fully visible. No people, buildings, beach, water, plants, rocks, ropes, text, rubbish, or extra logs.",
+      "texturePrompt": "Photoreal salt-bleached driftwood with silver-gray grain, pale exposed fibers, dark weather cracks, rounded wave-worn ends and restrained sand staining, rough matte PBR. No ground, water, people, plants, rope, or debris."
+    },
+    {
+      "assetId": "vancouver-beach-driftwood-seat-log-v1",
+      "family": "vancouver-beach-park",
+      "references": ["frontend/public/archetypes/openspaces/vancouver-beach-park/hero.png"],
+      "dimensionsM": [3.8, 1.0, 0.8],
+      "orientation": "long-axis-x",
+      "placementRole": "coastal_driftwood_seat_log",
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one large Pacific-coast driftwood log naturally suitable as informal seating, derived from the beach reference. It is a single horizontal bleached trunk with a broad stable underside, subtle natural curvature, two short weathered branch stubs, worn ends and a comfortably low upper surface. Do not turn it into manufactured furniture. Show the same exact log on a neutral light-gray studio background in front three-quarter, rear three-quarter, and side views, fully visible. No people, beach, sand base, buildings, plants, water, rocks, text, rope, legs, cushions, or extra objects.",
+      "texturePrompt": "Photoreal salt-weathered driftwood: silver-gray surface, pale tan exposed grain, deep charcoal checks, wave-smoothed ridges and subtle sand discoloration, rough matte PBR. No ground, people, water, plants, or added hardware."
+    },
+    {
+      "assetId": "quarry-garden-limestone-outcrop-v1",
+      "family": "quarry-sunken-garden-park",
+      "references": ["frontend/public/archetypes/openspaces/quarry-sunken-garden-park/variant_2.png"],
+      "dimensionsM": [5.5, 2.2, 2.8],
+      "orientation": "long-axis-x",
+      "placementRole": "quarry_garden_limestone_ledge_seat",
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one freestanding quarried limestone outcrop module based on the reference cliff. It is a long low irregular rock face with two weathered ledges, vertical extraction fractures, undercut creases, and a stable flat back and underside so modules can line a sunken garden edge. Model only the dry stone formation. Show the same exact outcrop on a neutral light-gray studio background in front three-quarter, rear three-quarter, and side views, fully visible. No people, water, waterfall, plants, buildings, walls, stairs, ground, text, or extra rocks.",
+      "texturePrompt": "Photoreal pale buff-gray limestone with horizontal bedding, darker damp creases, warm mineral staining, chipped quarry faces and restrained moss in recesses, rough matte PBR. No water, plants, ground, people, masonry, or labels."
+    },
+    {
+      "assetId": "quarry-garden-limestone-rubble-cluster-v1",
+      "family": "quarry-sunken-garden-park",
+      "references": ["frontend/public/archetypes/openspaces/quarry-sunken-garden-park/variant_2.png", "frontend/public/archetypes/openspaces/quarry-sunken-garden-park/variant_0.png"],
+      "dimensionsM": [3.6, 2.5, 1.5],
+      "orientation": "long-axis-x",
+      "placementRole": "quarry_garden_limestone_rubble_cluster",
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one coherent cluster of six to eight large weathered quarry-limestone blocks for a sunken garden edge. Mix broken rectangular extraction faces with softened natural corners and stable interlocking contact, leaving visible gaps. The cluster must be one placeable object without a terrain slab. Show the same exact cluster on a neutral light-gray studio background in front three-quarter, rear three-quarter, and side views. No people, statues, plants, water, buildings, walls, paths, ground, text, or extra stones.",
+      "texturePrompt": "Photoreal quarried limestone: layered pale gray and warm buff, chipped angular faces, darker joints, fine mineral streaks, restrained lichen and moss, rough matte PBR. No ground, people, plants, water, or masonry mortar."
+    },
+    {
+      "assetId": "labyrinth-bronze-water-bowl-v1",
+      "family": "labyrinth-meditation-garden",
+      "references": ["frontend/public/archetypes/openspaces/labyrinth-meditation-garden/hero.png"],
+      "dimensionsM": [1.5, 1.5, 0.8],
+      "orientation": "preserve-upright",
+      "placementRole": "meditation_garden_bronze_water_bowl",
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one sculptural meditation-garden water bowl derived from the reference. It is a heavy low circular cast-bronze vessel with a slightly asymmetric hand-formed rim, shallow basin, thick walls, and a discreet stable pedestal foot. Model the bowl empty and dry so water can be added procedurally. Show the same exact bowl upright on a neutral light-gray studio background in front three-quarter, rear three-quarter, and side views, fully visible. No people, water, fountain jets, stones, plants, ground, text, coins, plumbing, or extra objects.",
+      "texturePrompt": "Photoreal aged cast bronze with layered green-blue verdigris, warm brown exposed high points, dark oxidation in creases, subtle hammered variation and satin-matte PBR. No water, ground, people, stones, plants, or labels."
+    },
+    {
+      "assetId": "mini-golf-hollow-log-tunnel-v1",
+      "family": "mini-golf-putting-course",
+      "references": ["frontend/public/archetypes/openspaces/mini-golf-putting-course/variant_3.png"],
+      "dimensionsM": [2.8, 1.0, 1.1],
+      "orientation": "long-axis-x",
+      "placementRole": "mini_golf_hollow_log_tunnel_obstacle",
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one natural hollow-log mini-golf tunnel obstacle based on the rustic log-edged reference. It is a short horizontal weathered trunk with both ends open, a clean ball-size passage through the center, broad stable underside, irregular bark silhouette and child-safe softened edges. Show the same exact object on a neutral light-gray studio background in front three-quarter, rear three-quarter, and side views, fully visible. No people, golf balls, clubs, turf, course, ground, plants, rocks, signs, text, or extra logs.",
+      "texturePrompt": "Photoreal aged hardwood log with gray-brown bark, warm cut end grain, dark dry hollow, worn lower passage, subtle lichen and rough matte PBR. No turf, ground, people, plants, balls, or labels."
+    },
+    {
+      "assetId": "mini-golf-stump-gate-obstacle-v1",
+      "family": "mini-golf-putting-course",
+      "references": ["frontend/public/archetypes/openspaces/mini-golf-putting-course/variant_3.png"],
+      "dimensionsM": [2.4, 0.8, 1.5],
+      "orientation": "long-axis-x",
+      "placementRole": "mini_golf_timber_stump_gate_obstacle",
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one rustic mini-golf gate obstacle assembled from two natural upright tree stumps supporting one crooked weathered branch lintel. A generous centered ball opening is clearly visible, all pieces are securely joined, and the silhouette remains natural rather than themed or cartoonish. Show the same exact gate on a neutral light-gray studio background in front three-quarter, rear three-quarter, and side views, fully visible. No people, balls, clubs, turf, ground, plants, rocks, signs, text, rope, or extra objects.",
+      "texturePrompt": "Photoreal weathered hardwood stumps and branch, varied gray-brown bark, pale cut ends, subtle moss in low creases, dark joinery pins and rough matte PBR. No turf, ground, people, plants, signage, or balls."
+    },
+    {
+      "assetId": "urban-orchard-weathered-picnic-table-v1",
+      "family": "urban-orchard-food-forest",
+      "references": ["frontend/public/archetypes/openspaces/urban-orchard-food-forest/variant_1.png"],
+      "dimensionsM": [2.2, 1.5, 0.8],
+      "orientation": "long-axis-x",
+      "placementRole": "orchard_weathered_picnic_table",
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one robust public-orchard picnic table based on the reference. It has a thick weathered timber tabletop, two integrated plank benches, sturdy splayed trestle legs, dark galvanized through-bolts, and believable accessible outdoor construction. Keep the tabletop empty. Show the same exact table on a neutral light-gray studio background in front three-quarter, rear three-quarter, and side views, fully visible. No people, food, baskets, plants, trees, buildings, ground, text, umbrellas, loose objects, or extra furniture.",
+      "texturePrompt": "Photoreal weathered cedar and fir with varied warm-gray grain, worn edges, light checking, subtle orchard dirt staining and dark galvanized hardware, matte PBR. No people, food, ground, plants, labels, or clutter."
+    },
+    {
+      "assetId": "wetland-timber-bird-blind-v1",
+      "family": "constructed-wetland-eco-park",
+      "references": ["frontend/public/archetypes/openspaces/constructed-wetland-eco-park/variant_2.png", "frontend/public/archetypes/openspaces/constructed-wetland-eco-park/hero.png"],
+      "dimensionsM": [4.0, 1.4, 2.5],
+      "orientation": "long-axis-x",
+      "placementRole": "wetland_timber_bird_blind",
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one compact open-air timber bird blind for a public wetland. It has a long slightly faceted weathered-wood viewing screen, three narrow viewing slots at different heights, two short return wings, internal leaning rails, and discreet post feet; no roof and no enclosed building volume. Show the same exact freestanding blind on a neutral light-gray studio background in front three-quarter, rear three-quarter, and side views, fully visible. No people, birds, water, reeds, boardwalk, buildings, ground, signs, text, benches, or extra objects.",
+      "texturePrompt": "Photoreal silvered wetland cedar with vertical board variation, dark slot interiors, galvanized fasteners, subtle damp staining and matte outdoor PBR. No people, birds, water, plants, ground, or labels."
+    },
+    {
+      "assetId": "memorial-folded-corten-ribbon-v1",
+      "family": "cemetery-memorial-grounds",
+      "references": ["frontend/public/archetypes/openspaces/cemetery-memorial-grounds/variant_2.png"],
+      "dimensionsM": [2.8, 1.4, 3.0],
+      "orientation": "preserve-upright",
+      "placementRole": "memorial_folded_corten_ribbon_sculpture",
+      "multiviewPrompt": "Create three mutually consistent orthographic product views of exactly one abstract memorial sculpture derived from the reference: a continuous thick folded Corten-steel ribbon rising from a compact stable base, turning inward around one calm human-scale void, with restrained asymmetry and no figurative form. It must be a single coherent object suitable as a garden memorial focal point. Show the same exact sculpture upright on a neutral light-gray studio background in front three-quarter, rear three-quarter, and side views, fully visible. No people, statues, graves, headstones, buildings, plants, ground, text, plaques, lighting, or extra sculptures.",
+      "texturePrompt": "Photoreal Corten steel with layered orange, russet and dark-brown oxidation, rain streaks, slightly darker folds and edges, realistic satin-matte PBR. No inscriptions, ground, people, plants, plaques, or added objects."
+    }
+  ]
+}

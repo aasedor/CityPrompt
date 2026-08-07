@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "validatedAt": "2026-08-06",
+  "projectId": "e4dfd8f2-4bb3-4a4f-ad5a-b30bf0fe77cd",
+  "parkZoneId": "09571cfd-936a-4d9e-8f19-29109c6920f3",
+  "buildingZoneId": "eaf42f58-2b36-4b7c-8902-f0c0a1a4dea7",
+  "method": "one park at a time beside one separately compiled Parisian Boulevard building on the existing approximately 40 m by 31 m pilot parcel",
+  "expectedContract": {
+    "summary": "1 buildings · 1 parks · 0 streets",
+    "assembled": 1,
+    "noFamily": 0,
+    "skipped": 0,
+    "parkState": "compiled",
+    "groundSystem": "Archetype-owned skin and metric 3D depth kit; no AI drape or generic park dressing",
+    "peopleRendered": false,
+    "largeBuildingEmbeddedInPark": false
+  },
+  "trial": {
+    "archetypeId": "splash_pad_area",
+    "variantId": "splash_pad_area_v3",
+    "familyId": "park_splash_pad_v0",
+    "appearanceKitId": "splash_pad_area_v3_urban_skin",
+    "plantingStructure": "splash_pad_urban_v3",
+    "targetWidthM": 39.723,
+    "targetDepthM": 31.185,
+    "componentSetIds": [
+      "splash_pad_v0_ground_program",
+      "timber_water_tower_v1",
+      "spray_arch_v1",
+      "ground_jet_v1",
+      "split_rail_fence_v1",
+      "urban_water_play_program_v1"
+    ],
+    "passed": true,
+    "visualFinding": "The first live view exposed a dark hard-coded multiplier on the safety surface. Neutral variant tinting restored the reference-derived light concrete and warm aggregate texture while retaining the water tower, spray arch, ground jets, fence, bench, and tile-flattening polygon mask."
+  },
+  "pipelineRulesConfirmed": [
+    "Keep regulation dimensions and whole-program modules while changing count or arrangement for parcel size.",
+    "Bind selected skin roles into authored full-park GLB material names; do not leave variant skin files unused.",
+    "Use neutral material tinting for reference-derived albedo maps.",
+    "Keep people in source photographs only as scale and use references.",
+    "Keep the compiled polygon as the Google-tile replacement mask and suppress generic duplicate diagrams."
+  ]
+}

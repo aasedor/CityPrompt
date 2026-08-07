@@ -1,0 +1,143 @@
+{
+  "batchId": "meshy-park-object-catalog-v3b",
+  "reviewedAt": "2026-08-07",
+  "generatedCount": 32,
+  "acceptedCount": 30,
+  "rejectedCount": 2,
+  "creditsUsed": 1248,
+  "balanceBefore": 5061,
+  "balanceAfter": 3813,
+  "qualityGate": "Compared archetype reference, isolated multiview, Meshy output and normalized 12000-face/512px-PBR four-view runtime render. Structural, compositional, scale, people/building contamination, or texture failures remain external artifacts and are not promoted.",
+  "accepted": [
+    {
+      "assetId": "urban-forest-interpretive-trail-marker-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "urban-forest-rain-cistern-pipework-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "urban-forest-reclaimed-habitat-tower-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "urban-forest-oyster-reef-module-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "riparian-buffer-timber-overlook-rail-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "riparian-buffer-gabion-seat-module-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "riparian-buffer-reclaimed-trail-bench-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "riparian-buffer-coir-bank-fascine-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "wetland-rain-garden-wildlife-interpretive-sign-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "wetland-rain-garden-stone-steel-check-weir-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "wetland-rain-garden-pallet-insect-habitat-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "pond-lake-carved-lakeside-bench-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "pond-lake-fishing-rod-rest-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "pond-lake-reed-habitat-bundle-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "stormwater-retention-pond-stormwater-trash-rack-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "stormwater-retention-pond-pond-overlook-screen-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "stormwater-retention-pond-gabion-overflow-weir-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "stormwater-retention-pond-rock-armored-spillway-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "linear-park-greenway-railroad-tie-bench-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "linear-park-greenway-kayak-storage-rack-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "linear-park-greenway-natural-riffle-weir-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "linear-park-greenway-railway-switch-sculpture-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "nature-preserve-observation-scope-pedestal-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "nature-preserve-prairie-nesting-tower-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "nature-preserve-dune-sand-fence-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "nature-preserve-mossy-nurse-log-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "constructed-wetland-eco-park-pond-dipping-platform-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "constructed-wetland-eco-park-sluice-control-gate-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "constructed-wetland-eco-park-wildlife-nesting-raft-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    },
+    {
+      "assetId": "constructed-wetland-eco-park-tactile-interpretive-table-v1",
+      "reason": "Defining archetype silhouette, material language and human scale survived isolated multiview and normalized four-view review; no people or large buildings."
+    }
+  ],
+  "rejected": [
+    {
+      "assetId": "wetland-rain-garden-oyster-shell-bag-cluster-v1",
+      "reason": "Lost the defining mesh bags after runtime normalization and reads as an ordinary rock cluster."
+    },
+    {
+      "assetId": "pond-lake-timber-nesting-island-v1",
+      "reason": "Became an upright framed nest instead of the required low floating nesting raft."
+    }
+  ]
+}

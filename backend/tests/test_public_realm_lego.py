@@ -91,7 +91,97 @@ def test_catalog_is_deterministic_filtered_and_fingerprinted():
         "park_bioswale_streetside_v0",
         "park_sculpture_museum_court_v0",
         "park_labyrinth_classical_v0",
-    }
+        "park_ice_rink_multipurpose_v3",
+        "park_kayak_river_launch_v0",
+        "park_tidal_marsh_cordgrass_v0",
+        "park_cinema_lawn_projection_v1",
+        "park_food_truck_permanent_v1",
+        "park_great_lawn_v2",
+        "park_campus_meadow_quad_v0",
+        "park_urban_beach_family_v2",
+        "park_velodrome_open_air_v0",
+            "park_mtb_skills_dirt_v2",
+            "park_regional_english_landscape_v0",
+            "park_beer_garden_munich_v0",
+            "park_sunken_courtyard_v0",
+            "park_terraced_cascade_v3",
+            "park_market_festival_lawn_v1",
+            "park_boardwalk_maritime_v0",
+            "park_fountain_formal_pool_v1",
+            "park_natural_swimming_pond_v0",
+            "park_nature_preserve_prairie_v1",
+            "park_riverfront_lake_beach_v1",
+            "park_reclaimed_wharf_v0",
+            "park_quarry_tier_cascade_v2",
+            "park_estate_oak_picnic_v1",
+            "park_constructed_wetland_boardwalk_v0",
+            "park_academic_planted_court_v0",
+            "park_campus_green_spine_v0",
+            "park_botanical_rose_garden_v3",
+            "park_research_arboretum_v0",
+            "park_rewilding_reforestation_v1",
+            "park_stormwater_arid_channel_v3",
+            "park_urban_pocket_rustic_v0",
+            "park_neighborhood_contemporary_v3",
+            "park_cemetery_classical_v0",
+            "park_courtyard_linear_water_v1",
+            "park_parklet_sf_timber_v1",
+            "park_french_parterre_axis_v1",
+            "park_london_railed_square_v1",
+            "park_halifax_rose_bandstand_v0",
+            "park_olmsted_multilandscape_v3",
+            "park_hilltop_viewpoint_v3",
+            "park_amsterdam_hofje_garden_v0",
+            "park_amsterdam_plein_v0",
+            "park_amsterdam_vondelpark_pavilion_v3",
+            "park_barcelona_pati_green_v0",
+            "park_barcelona_xamfra_corner_v2",
+            "park_barcelona_superilla_green_v1",
+            "park_calgary_prairie_market_v1",
+            "park_calgary_princes_island_festival_v0",
+            "park_montreal_mount_royal_grove_v2",
+            "park_montreal_neighbourhood_square_v3",
+            "park_paris_place_royale_v2",
+            "park_paris_square_tree_grid_v3",
+            "park_london_circus_planted_v1",
+            "park_newyork_pocket_water_v0",
+            "park_newyork_community_greenhouse_v3",
+            "park_vancouver_seawall_cycle_v2",
+            "park_vancouver_beach_pavilion_v0",
+            "park_toronto_ravine_creek_v1",
+            "park_toronto_urban_market_v1",
+            "park_halifax_coastal_fog_path_v2",
+            "park_city_hall_modernist_fountain_v2",
+            "park_cathedral_courtyard_fountain_v3",
+            "park_cultural_museum_terrace_v0",
+            "park_transit_green_civic_v2",
+            "park_amphitheater_terraced_v0",
+            "park_concert_timber_lawn_v2",
+            "park_night_market_hawker_v0",
+            "park_parade_national_mall_v3",
+            "park_canal_ecological_wetland_v3",
+            "park_custom_biophilic_urban_v1",
+            "park_rooftop_intensive_garden_v0",
+            "park_community_healing_garden_v2",
+            "park_greenbelt_rail_trail_v1",
+            "park_foothill_heathland_trail_v2",
+            "park_marina_pacific_dock_v2",
+            "park_working_pier_brooklyn_park_v3",
+            "park_floating_meadow_loop_v2",
+            "park_lighthouse_pacific_headland_v2",
+            "park_lake_edge_timber_deck_v2",
+            "park_stormwater_natural_creek_v0",
+            "park_surface_parking_standard_v0",
+            "park_structured_parking_urban_v2",
+            "park_underground_parking_green_v1",
+            "park_green_parking_infrastructure_v1",
+            "park_airport_general_aviation_v2",
+            "park_equestrian_working_stable_v1",
+            "park_golf_seaside_links_v0",
+            "park_driving_range_single_tier_v0",
+            "park_multi_sport_track_field_v3",
+            "park_retail_parking_landscaped_v1",
+        }
     assert local_only.family_ids == ("street_local_public_realm",)
     assert "main_street_complete" not in local_only.archetype_ids
     assert local_only.variants_by_archetype["green_alley"] == ("green_alley_v0",)
@@ -252,12 +342,60 @@ def test_batch5_park_recipes_keep_exact_v0_identity(
     "urban_orchard_food_forest", "bioswale_rain_garden", "sculpture_garden",
     "labyrinth_meditation",
 ))
-def test_batch5_unreviewed_variants_fail_closed(archetype_id):
+def test_batch5_unknown_variants_still_fail_closed(archetype_id):
     with pytest.raises(PublicRealmPlanningError) as exc:
         plan_public_realm_recipe(PublicRealmPlanRequest(
             archetype_id=archetype_id,
-            variant_id=f"{archetype_id}_v1",
+            variant_id=f"{archetype_id}_v99",
             target=ParkPolygonTarget(width_m=80, depth_m=60, area_m2=4_800),
+        ))
+    assert exc.value.code == "family_incompatible"
+
+
+@pytest.mark.parametrize(("archetype_id", "variant_id", "family_id", "appearance_id", "planting", "width", "depth"), (
+    ("outdoor_ice_rink", "outdoor_ice_rink_v3", "park_ice_rink_multipurpose_v3", "outdoor_ice_rink_v3_multipurpose_pad_skin", "ice_rink_multipurpose_v3", 64, 38),
+    ("kayak_launch_dock", "kayak_launch_dock_v0", "park_kayak_river_launch_v0", "kayak_launch_dock_v0_river_launch_skin", "kayak_river_launch_v0", 80, 35),
+    ("tidal_marsh_boardwalk", "tidal_marsh_boardwalk_v0", "park_tidal_marsh_cordgrass_v0", "tidal_marsh_boardwalk_v0_cordgrass_skin", "tidal_marsh_cordgrass_v0", 150, 100),
+    ("outdoor_cinema_lawn", "outdoor_cinema_lawn_v1", "park_cinema_lawn_projection_v1", "outdoor_cinema_lawn_v1_park_projection_skin", "cinema_lawn_projection_v1", 80, 50),
+    ("food_truck_plaza", "food_truck_plaza_v1", "park_food_truck_permanent_v1", "food_truck_plaza_v1_permanent_park_skin", "food_truck_permanent_v1", 50, 40),
+    ("festival_event_lawn", "festival_event_lawn_v2", "park_great_lawn_v2", "festival_event_lawn_v2_great_lawn_skin", "great_lawn_v2", 180, 120),
+    ("campus_central_quad", "campus_central_quad_variant_0", "park_campus_meadow_quad_v0", "campus_central_quad_v0_naturalized_meadow_skin", "campus_meadow_quad_v0", 100, 80),
+    ("urban_beach", "urban_beach_v2", "park_urban_beach_family_v2", "urban_beach_v2_family_splash_skin", "urban_beach_family_v2", 60, 45),
+    ("velodrome_cycling_track", "velodrome_cycling_track_variant_0", "park_velodrome_open_air_v0", "velodrome_cycling_track_v0_open_air_skin", "velodrome_open_air_v0", 135, 82),
+    ("mountain_bike_park", "mountain_bike_park_variant_2", "park_mtb_skills_dirt_v2", "mountain_bike_park_v2_skills_dirt_skin", "mtb_skills_dirt_v2", 90, 60),
+))
+def test_batch6_park_recipes_keep_exact_variant_identity(
+    archetype_id, variant_id, family_id, appearance_id, planting, width, depth,
+):
+    recipe = plan_public_realm_recipe(PublicRealmPlanRequest(
+        archetype_id=archetype_id,
+        variant_id=variant_id,
+        target=ParkPolygonTarget(width_m=width, depth_m=depth, area_m2=width * depth),
+    ))
+    assert recipe.family_id == family_id
+    assert recipe.variant_id == variant_id
+    assert recipe.appearance_kit_id == appearance_id
+    assert recipe.planting_structure == planting
+
+
+@pytest.mark.parametrize(("archetype_id", "unknown_variant"), (
+    ("outdoor_ice_rink", "outdoor_ice_rink_v99"),
+    ("kayak_launch_dock", "kayak_launch_dock_v99"),
+    ("tidal_marsh_boardwalk", "tidal_marsh_boardwalk_v99"),
+    ("outdoor_cinema_lawn", "outdoor_cinema_lawn_v99"),
+    ("food_truck_plaza", "food_truck_plaza_v99"),
+    ("festival_event_lawn", "festival_event_lawn_v99"),
+    ("campus_central_quad", "campus_central_quad_variant_99"),
+    ("urban_beach", "urban_beach_v99"),
+    ("velodrome_cycling_track", "velodrome_cycling_track_variant_99"),
+    ("mountain_bike_park", "mountain_bike_park_variant_99"),
+))
+def test_batch6_unknown_variants_fail_closed(archetype_id, unknown_variant):
+    with pytest.raises(PublicRealmPlanningError) as exc:
+        plan_public_realm_recipe(PublicRealmPlanRequest(
+            archetype_id=archetype_id,
+            variant_id=unknown_variant,
+            target=ParkPolygonTarget(width_m=180, depth_m=120, area_m2=21_600),
         ))
     assert exc.value.code == "family_incompatible"
 
@@ -790,3 +928,817 @@ def test_compact_roundabout_rejects_non_four_arm_topology():
             "supported": [4],
         }
     ]
+
+
+@pytest.mark.parametrize(
+    ("family_id", "archetype_id", "variant_id", "appearance_kit_id"),
+    [
+        ("park_regional_english_landscape_v0", "regional_park", "regional_park_v0", "regional_park_v0_english_landscape_skin"),
+        ("park_beer_garden_munich_v0", "beer_garden", "beer_garden_v0", "beer_garden_v0_munich_chestnut_skin"),
+        ("park_sunken_courtyard_v0", "sunken_plaza", "sunken_plaza_v0", "sunken_plaza_v0_intimate_courtyard_skin"),
+        ("park_terraced_cascade_v3", "stepped_terraced_plaza", "stepped_terraced_plaza_v3", "stepped_terraced_plaza_v3_modernist_cascade_skin"),
+        ("park_market_festival_lawn_v1", "market_square", "market_square_v1", "market_square_v1_open_festival_lawn_skin"),
+        ("park_boardwalk_maritime_v0", "promenade_boardwalk", "promenade_boardwalk_v0", "promenade_boardwalk_v0_maritime_skin"),
+        ("park_fountain_formal_pool_v1", "fountain_water_feature", "fountain_water_feature_v1", "fountain_water_feature_v1_formal_pool_skin"),
+        ("park_natural_swimming_pond_v0", "swimming_pool_complex", "swimming_pool_complex_v0", "swimming_pool_complex_v0_natural_pond_skin"),
+        ("park_nature_preserve_prairie_v1", "nature_preserve", "nature_preserve_v1", "nature_preserve_v1_tallgrass_prairie_skin"),
+        ("park_riverfront_lake_beach_v1", "riverfront_park_beach", "riverfront_park_beach_v1", "riverfront_park_beach_v1_lake_swimming_skin"),
+    ],
+)
+def test_batch7_park_families_are_exact_executable_selections(
+    family_id: str,
+    archetype_id: str,
+    variant_id: str,
+    appearance_kit_id: str,
+):
+    catalog = build_public_realm_capability_catalog(family_ids=[family_id])
+    assert catalog.family_ids == (family_id,)
+    capability = catalog.capabilities[0]
+    assert capability.kind == "park"
+    assert capability.generator == "park_kit"
+    selection = next(
+        candidate
+        for candidate in capability.selections
+        if candidate.variant_id == variant_id
+    )
+    assert selection.archetype_id == archetype_id
+    assert selection.variant_id == variant_id
+    assert selection.appearance_kit_id == appearance_kit_id
+    assert selection.is_default is True
+    assert selection.component_set_ids
+
+
+@pytest.mark.parametrize(
+    ("family_id", "archetype_id", "variant_id", "width_m", "depth_m"),
+    [
+        ("park_regional_english_landscape_v0", "regional_park", "regional_park_v0", 220.0, 160.0),
+        ("park_beer_garden_munich_v0", "beer_garden", "beer_garden_v0", 30.0, 28.0),
+        ("park_sunken_courtyard_v0", "sunken_plaza", "sunken_plaza_v0", 30.0, 25.0),
+        ("park_terraced_cascade_v3", "stepped_terraced_plaza", "stepped_terraced_plaza_v3", 90.0, 100.0),
+        ("park_market_festival_lawn_v1", "market_square", "market_square_v1", 95.0, 75.0),
+        ("park_boardwalk_maritime_v0", "promenade_boardwalk", "promenade_boardwalk_v0", 120.0, 22.0),
+        ("park_fountain_formal_pool_v1", "fountain_water_feature", "fountain_water_feature_v1", 55.0, 35.0),
+        ("park_natural_swimming_pond_v0", "swimming_pool_complex", "swimming_pool_complex_v0", 90.0, 70.0),
+        ("park_nature_preserve_prairie_v1", "nature_preserve", "nature_preserve_v1", 180.0, 120.0),
+        ("park_riverfront_lake_beach_v1", "riverfront_park_beach", "riverfront_park_beach_v1", 130.0, 90.0),
+    ],
+)
+def test_batch7_nominal_sites_compile_without_image_calls(
+    family_id: str,
+    archetype_id: str,
+    variant_id: str,
+    width_m: float,
+    depth_m: float,
+):
+    geometry = _to_wgs84(box(700_000, 5_650_000, 700_000 + width_m, 5_650_000 + depth_m))
+    recipe = plan_public_realm_zone_recipe(
+        "green_space",
+        geometry,
+        {
+            "green_space_archetype_id": archetype_id,
+            "green_space_selected_variant_id": variant_id,
+        },
+        strict=True,
+    )
+    assert recipe is not None
+    assert recipe.family_id == family_id
+    assert recipe.variant_id == variant_id
+    assert recipe.generator == "park_kit"
+
+
+@pytest.mark.parametrize(
+    ("family_id", "archetype_id", "variant_id", "appearance_kit_id", "width_m", "depth_m"),
+    [
+        ("park_reclaimed_wharf_v0", "reclaimed_industrial_park", "reclaimed_industrial_park_v0", "reclaimed_industrial_park_v0_wharf_skin", 100.0, 50.0),
+        ("park_quarry_tier_cascade_v2", "quarry_sunken_garden_park", "quarry_sunken_garden_park_v2", "quarry_sunken_garden_park_v2_tier_cascade_skin", 200.0, 150.0),
+        ("park_estate_oak_picnic_v1", "estate_picnic_grove", "estate_picnic_grove_v1", "estate_picnic_grove_v1_oak_skin", 120.0, 100.0),
+        ("park_constructed_wetland_boardwalk_v0", "constructed_wetland_eco_park", "constructed_wetland_eco_park_variant_0", "constructed_wetland_eco_park_v0_boardwalk_skin", 180.0, 110.0),
+        ("park_academic_planted_court_v0", "academic_courtyard", "academic_courtyard_variant_0", "academic_courtyard_v0_planted_skin", 40.0, 38.0),
+        ("park_campus_green_spine_v0", "campus_pedestrian_spine", "campus_pedestrian_spine_variant_0", "campus_pedestrian_spine_v0_green_skin", 30.0, 240.0),
+        ("park_botanical_rose_garden_v3", "botanical_garden", "botanical_garden_v3", "botanical_garden_v3_rose_skin", 120.0, 90.0),
+        ("park_research_arboretum_v0", "research_garden_teaching_arboretum", "research_garden_teaching_arboretum_variant_0", "research_garden_teaching_arboretum_v0_skin", 300.0, 220.0),
+        ("park_rewilding_reforestation_v1", "rewilding_ecological_restoration_zone", "rewilding_ecological_restoration_zone_variant_1", "rewilding_ecological_restoration_zone_v1_skin", 300.0, 220.0),
+        ("park_stormwater_arid_channel_v3", "stormwater_resilience_park", "stormwater_resilience_park_variant_3", "stormwater_resilience_park_v3_arid_skin", 200.0, 125.0),
+    ],
+)
+def test_batch8_exact_families_compile_without_image_calls(
+    family_id: str,
+    archetype_id: str,
+    variant_id: str,
+    appearance_kit_id: str,
+    width_m: float,
+    depth_m: float,
+):
+    catalog = build_public_realm_capability_catalog(family_ids=[family_id])
+    assert catalog.family_ids == (family_id,)
+    selection = catalog.capabilities[0].selections[0]
+    assert selection.archetype_id == archetype_id
+    assert selection.variant_id == variant_id
+    assert selection.appearance_kit_id == appearance_kit_id
+    assert selection.is_default is True
+    geometry = _to_wgs84(box(700_000, 5_650_000, 700_000 + width_m, 5_650_000 + depth_m))
+    recipe = plan_public_realm_zone_recipe(
+        "green_space",
+        geometry,
+        {"green_space_archetype_id": archetype_id, "green_space_selected_variant_id": variant_id},
+        strict=True,
+    )
+    assert recipe is not None
+    assert recipe.family_id == family_id
+    assert recipe.variant_id == variant_id
+    assert recipe.appearance_kit_id == appearance_kit_id
+    assert recipe.generator == "park_kit"
+
+
+@pytest.mark.parametrize(
+    ("archetype_id", "variant_id"),
+    [
+        ("reclaimed_industrial_park", "reclaimed_industrial_park_v0"),
+        ("quarry_sunken_garden_park", "quarry_sunken_garden_park_v2"),
+        ("estate_picnic_grove", "estate_picnic_grove_v1"),
+        ("constructed_wetland_eco_park", "constructed_wetland_eco_park_variant_0"),
+        ("academic_courtyard", "academic_courtyard_variant_0"),
+        ("campus_pedestrian_spine", "campus_pedestrian_spine_variant_0"),
+        ("botanical_garden", "botanical_garden_v3"),
+        ("research_garden_teaching_arboretum", "research_garden_teaching_arboretum_variant_0"),
+        ("rewilding_ecological_restoration_zone", "rewilding_ecological_restoration_zone_variant_1"),
+        ("stormwater_resilience_park", "stormwater_resilience_park_variant_3"),
+    ],
+)
+def test_batch8_families_adapt_to_compact_urban_park_polygon(
+    archetype_id: str,
+    variant_id: str,
+):
+    """The reference acreage guides composition; it must not be a literal site requirement."""
+
+    geometry = _to_wgs84(box(700_000, 5_650_000, 700_099, 5_650_037))
+    recipe = plan_public_realm_zone_recipe(
+        "green_space",
+        geometry,
+        {
+            "green_space_archetype_id": archetype_id,
+            "green_space_selected_variant_id": variant_id,
+        },
+        strict=True,
+    )
+    assert recipe is not None
+    assert recipe.variant_id == variant_id
+    assert recipe.generator == "park_kit"
+
+
+@pytest.mark.parametrize(
+    ("family_id", "archetype_id", "variant_id", "appearance_kit_id", "width_m", "depth_m"),
+    [
+        ("park_urban_pocket_rustic_v0", "urban_pocket_park", "urban_pocket_park_v0", "urban_pocket_park_v0_rustic_skin", 20.0, 20.0),
+        ("park_neighborhood_contemporary_v3", "neighborhood_park", "neighborhood_park_v3", "neighborhood_park_v3_contemporary_skin", 100.0, 80.0),
+        ("park_cemetery_classical_v0", "cemetery_memorial_grounds", "cemetery_memorial_grounds_v0", "cemetery_memorial_grounds_v0_classical_skin", 250.0, 200.0),
+        ("park_courtyard_linear_water_v1", "courtyard_plaza", "courtyard_plaza_v1", "courtyard_plaza_v1_linear_water_skin", 35.0, 35.0),
+        ("park_parklet_sf_timber_v1", "street_plaza_parklet", "street_plaza_parklet_v1", "street_plaza_parklet_v1_sf_timber_skin", 10.0, 6.0),
+        ("park_french_parterre_axis_v1", "parisian_jardin", "parisian_jardin_v1", "parisian_jardin_v1_water_axis_skin", 180.0, 140.0),
+        ("park_london_railed_square_v1", "london_garden_square", "london_garden_square_v1", "london_garden_square_v1_railed_skin", 100.0, 80.0),
+        ("park_halifax_rose_bandstand_v0", "halifax_public_gardens", "halifax_public_gardens_v0", "halifax_public_gardens_v0_rose_skin", 200.0, 150.0),
+        ("park_olmsted_multilandscape_v3", "picturesque_olmsted_park", "picturesque_olmsted_park_v3", "picturesque_olmsted_park_v3_multilandscape_skin", 400.0, 350.0),
+        ("park_hilltop_viewpoint_v3", "hilltop_topographic_park", "hilltop_topographic_park_v3", "hilltop_topographic_park_v3_viewpoint_skin", 180.0, 180.0),
+    ],
+)
+def test_batch9_exact_families_compile_without_image_calls(
+    family_id: str,
+    archetype_id: str,
+    variant_id: str,
+    appearance_kit_id: str,
+    width_m: float,
+    depth_m: float,
+):
+    catalog = build_public_realm_capability_catalog(family_ids=[family_id])
+    assert catalog.family_ids == (family_id,)
+    selection = next(
+        candidate
+        for candidate in catalog.capabilities[0].selections
+        if candidate.variant_id == variant_id
+    )
+    assert selection.archetype_id == archetype_id
+    assert selection.variant_id == variant_id
+    assert selection.appearance_kit_id == appearance_kit_id
+    assert selection.is_default is True
+    geometry = _to_wgs84(box(700_000, 5_650_000, 700_000 + width_m, 5_650_000 + depth_m))
+    recipe = plan_public_realm_zone_recipe(
+        "green_space",
+        geometry,
+        {"green_space_archetype_id": archetype_id, "green_space_selected_variant_id": variant_id},
+        strict=True,
+    )
+    assert recipe is not None
+    assert recipe.family_id == family_id
+    assert recipe.variant_id == variant_id
+    assert recipe.appearance_kit_id == appearance_kit_id
+    assert recipe.generator == "park_kit"
+
+
+@pytest.mark.parametrize(
+    ("archetype_id", "variant_id"),
+    [
+        ("neighborhood_park", "neighborhood_park_v3"),
+        ("cemetery_memorial_grounds", "cemetery_memorial_grounds_v0"),
+        ("courtyard_plaza", "courtyard_plaza_v1"),
+        ("parisian_jardin", "parisian_jardin_v1"),
+        ("london_garden_square", "london_garden_square_v1"),
+        ("halifax_public_gardens", "halifax_public_gardens_v0"),
+        ("picturesque_olmsted_park", "picturesque_olmsted_park_v3"),
+        ("hilltop_topographic_park", "hilltop_topographic_park_v3"),
+    ],
+)
+def test_large_batch9_families_adapt_to_compact_urban_park_polygon(
+    archetype_id: str,
+    variant_id: str,
+):
+    geometry = _to_wgs84(box(700_000, 5_650_000, 700_099, 5_650_037))
+    recipe = plan_public_realm_zone_recipe(
+        "green_space",
+        geometry,
+        {"green_space_archetype_id": archetype_id, "green_space_selected_variant_id": variant_id},
+        strict=True,
+    )
+    assert recipe is not None
+    assert recipe.variant_id == variant_id
+    assert recipe.generator == "park_kit"
+
+
+@pytest.mark.parametrize(
+    ("family_id", "archetype_id", "variant_id", "appearance_kit_id", "width_m", "depth_m"),
+    [
+        ("park_amsterdam_hofje_garden_v0", "amsterdam_hofje_garden", "amsterdam_hofje_garden_v0", "amsterdam_hofje_garden_v0_skin", 25.0, 25.0),
+        ("park_amsterdam_plein_v0", "amsterdam_plein", "amsterdam_plein_v0", "amsterdam_plein_v0_brick_skin", 70.0, 55.0),
+        ("park_amsterdam_vondelpark_pavilion_v3", "amsterdam_vondelpark", "amsterdam_vondelpark_v3", "amsterdam_vondelpark_v3_pavilion_skin", 250.0, 160.0),
+        ("park_barcelona_pati_green_v0", "barcelona_pati_interior", "barcelona_pati_interior_v0", "barcelona_pati_interior_v0_green_skin", 50.0, 40.0),
+        ("park_barcelona_xamfra_corner_v2", "barcelona_placa_xamfra", "barcelona_placa_xamfra_v2", "barcelona_placa_xamfra_v2_corner_skin", 30.0, 28.0),
+        ("park_barcelona_superilla_green_v1", "barcelona_superilla", "barcelona_superilla_v1", "barcelona_superilla_v1_green_skin", 130.0, 130.0),
+        ("park_calgary_prairie_market_v1", "calgary_prairie_plaza", "calgary_prairie_plaza_v1", "calgary_prairie_plaza_v1_market_skin", 70.0, 55.0),
+        ("park_calgary_princes_island_festival_v0", "calgary_princes_island", "calgary_princes_island_v0", "calgary_princes_island_v0_festival_skin", 400.0, 200.0),
+        ("park_montreal_mount_royal_grove_v2", "montreal_mount_royal", "montreal_mount_royal_v2", "montreal_mount_royal_v2_grove_skin", 500.0, 400.0),
+        ("park_montreal_neighbourhood_square_v3", "montreal_square", "montreal_square_v3", "montreal_square_v3_neighbourhood_skin", 70.0, 55.0),
+        ("park_paris_place_royale_v2", "parisian_place", "parisian_place_v2", "parisian_place_v2_royale_skin", 85.0, 65.0),
+        ("park_paris_square_tree_grid_v3", "parisian_square", "parisian_square_v3", "parisian_square_v3_tree_grid_skin", 70.0, 55.0),
+        ("park_london_circus_planted_v1", "london_circus", "london_circus_v1", "london_circus_v1_planted_skin", 75.0, 60.0),
+        ("park_newyork_pocket_water_v0", "newyork_pocket_park", "newyork_pocket_park_v0", "newyork_pocket_park_v0_water_skin", 32.0, 24.0),
+        ("park_newyork_community_greenhouse_v3", "newyork_community_garden", "newyork_community_garden_v3", "newyork_community_garden_v3_greenhouse_skin", 45.0, 32.0),
+        ("park_vancouver_seawall_cycle_v2", "vancouver_seawall", "vancouver_seawall_v2", "vancouver_seawall_v2_cycle_skin", 140.0, 24.0),
+        ("park_vancouver_beach_pavilion_v0", "vancouver_beach_park", "vancouver_beach_park_v0", "vancouver_beach_park_v0_pavilion_skin", 130.0, 70.0),
+        ("park_toronto_ravine_creek_v1", "toronto_ravine", "toronto_ravine_v1", "toronto_ravine_v1_creek_skin", 220.0, 90.0),
+        ("park_toronto_urban_market_v1", "toronto_urban_square", "toronto_urban_square_v1", "toronto_urban_square_v1_market_skin", 90.0, 65.0),
+        ("park_halifax_coastal_fog_path_v2", "halifax_coastal_park", "halifax_coastal_park_v2", "halifax_coastal_park_v2_fog_path_skin", 180.0, 100.0),
+        ("park_city_hall_modernist_fountain_v2", "city_hall_government_plaza", "city_hall_government_plaza_v2", "city_hall_government_plaza_v2_modernist_skin", 80.0, 60.0),
+        ("park_cathedral_courtyard_fountain_v3", "cathedral_religious_forecourt", "cathedral_religious_forecourt_v3", "cathedral_religious_forecourt_v3_courtyard_skin", 70.0, 55.0),
+        ("park_cultural_museum_terrace_v0", "cultural_institution_forecourt", "cultural_institution_forecourt_v0", "cultural_institution_forecourt_v0_museum_terrace_skin", 95.0, 65.0),
+        ("park_transit_green_civic_v2", "transit_plaza", "transit_plaza_v2", "transit_plaza_v2_green_civic_skin", 75.0, 48.0),
+        ("park_amphitheater_terraced_v0", "amphitheater_performance_space", "amphitheater_performance_space_v0", "amphitheater_performance_space_v0_terraced_skin", 90.0, 70.0),
+        ("park_concert_timber_lawn_v2", "concert_pavilion_lawn", "concert_pavilion_lawn_v2", "concert_pavilion_lawn_v2_timber_skin", 140.0, 95.0),
+        ("park_night_market_hawker_v0", "night_market", "night_market_v0", "night_market_v0_hawker_skin", 85.0, 40.0),
+        ("park_parade_national_mall_v3", "parade_ground", "parade_ground_v3", "parade_ground_v3_national_mall_skin", 220.0, 90.0),
+        ("park_canal_ecological_wetland_v3", "canal_waterway", "canal_waterway_v3", "canal_waterway_v3_ecological_skin", 180.0, 75.0),
+        ("park_custom_biophilic_urban_v1", "custom_parks_plazas", "custom_parks_plazas_v1", "custom_parks_plazas_v1_biophilic_skin", 75.0, 60.0),
+        ("park_rooftop_intensive_garden_v0", "rooftop_garden", "rooftop_garden_v0", "rooftop_garden_v0_intensive_skin", 25.0, 20.0),
+        ("park_community_healing_garden_v2", "community_garden_enhanced", "garden_healing", "community_garden_enhanced_healing_skin", 60.0, 50.0),
+        ("park_greenbelt_rail_trail_v1", "greenbelt_buffer_park", "greenbelt_buffer_park_v1", "greenbelt_buffer_park_v1_rail_trail_skin", 600.0, 180.0),
+        ("park_foothill_heathland_trail_v2", "foothill_trail_park", "foothill_trail_park_v2", "foothill_trail_park_v2_heathland_skin", 400.0, 400.0),
+        ("park_marina_pacific_dock_v2", "marina_yacht_harbor", "marina_yacht_harbor_v2", "marina_yacht_harbor_v2_pacific_skin", 140.0, 120.0),
+        ("park_working_pier_brooklyn_park_v3", "working_pier_wharf_conversion", "working_pier_wharf_conversion_v3", "working_pier_wharf_conversion_v3_park_skin", 180.0, 100.0),
+        ("park_floating_meadow_loop_v2", "floating_park_pool", "floating_park_pool_v2", "floating_park_pool_v2_meadow_skin", 80.0, 70.0),
+        ("park_lighthouse_pacific_headland_v2", "lighthouse_point_park", "lighthouse_point_park_v2", "lighthouse_point_park_v2_pacific_skin", 180.0, 180.0),
+        ("park_lake_edge_timber_deck_v2", "lake_edge_plaza", "lake_edge_plaza_v2", "lake_edge_plaza_v2_timber_skin", 200.0, 40.0),
+        ("park_stormwater_natural_creek_v0", "stormwater_naturalized_drainage_corridor", "stormwater_naturalized_drainage_corridor_variant_0", "stormwater_naturalized_drainage_corridor_v0_creek_skin", 375.0, 40.0),
+        ("park_surface_parking_standard_v0", "surface_parking_lot", "surface_parking_lot_v0", "surface_parking_lot_v0_standard_skin", 50.0, 40.0),
+        ("park_structured_parking_urban_v2", "structured_parking_garage", "structured_parking_garage_v2", "structured_parking_garage_v2_urban_skin", 50.0, 20.0),
+        ("park_underground_parking_green_v1", "underground_parking_entry", "underground_parking_entry_v1", "underground_parking_entry_v1_green_skin", 20.0, 20.0),
+        ("park_green_parking_infrastructure_v1", "green_parking_lot", "green_parking_lot_v1", "green_parking_lot_v1_infrastructure_skin", 40.0, 30.0),
+        ("park_airport_general_aviation_v2", "airport_airfield", "airport_airfield_variant_2", "airport_airfield_v2_general_aviation_skin", 2200.0, 1360.0),
+        ("park_equestrian_working_stable_v1", "equestrian_center", "equestrian_center_variant_1", "equestrian_center_v1_working_stable_skin", 250.0, 160.0),
+        ("park_golf_seaside_links_v0", "golf_course_18_hole", "golf_course_18_hole_variant_0", "golf_course_18_hole_v0_links_skin", 1000.0, 600.0),
+        ("park_driving_range_single_tier_v0", "golf_driving_range", "golf_driving_range_variant_0", "golf_driving_range_v0_single_tier_skin", 120.0, 290.0),
+        ("park_multi_sport_track_field_v3", "multi_sport_complex", "multi_sport_complex_variant_3", "multi_sport_complex_v3_track_field_skin", 250.0, 160.0),
+        ("park_retail_parking_landscaped_v1", "suburban_retail_parking_lot", "suburban_retail_parking_lot_v1", "suburban_retail_parking_lot_v1_landscaped_skin", 70.0, 50.0),
+    ],
+)
+def test_batch10_exact_families_compile_without_image_calls(
+    family_id: str,
+    archetype_id: str,
+    variant_id: str,
+    appearance_kit_id: str,
+    width_m: float,
+    depth_m: float,
+):
+    catalog = build_public_realm_capability_catalog(family_ids=[family_id])
+    selection = next(
+        candidate
+        for candidate in catalog.capabilities[0].selections
+        if candidate.variant_id == variant_id
+    )
+    assert selection.archetype_id == archetype_id
+    assert selection.variant_id == variant_id
+    assert selection.appearance_kit_id == appearance_kit_id
+    assert selection.is_default is True
+    geometry = _to_wgs84(box(700_000, 5_650_000, 700_000 + width_m, 5_650_000 + depth_m))
+    recipe = plan_public_realm_zone_recipe(
+        "green_space",
+        geometry,
+        {"green_space_archetype_id": archetype_id, "green_space_selected_variant_id": variant_id},
+        strict=True,
+    )
+    assert recipe is not None
+    assert recipe.family_id == family_id
+    assert recipe.variant_id == variant_id
+    assert recipe.appearance_kit_id == appearance_kit_id
+    assert recipe.generator == "park_kit"
+
+
+def test_batch15_closes_all_four_variants_for_the_final_ten_parents():
+    expected = {
+        "park_surface_parking_standard_v0": "surface_parking_lot",
+        "park_structured_parking_urban_v2": "structured_parking_garage",
+        "park_underground_parking_green_v1": "underground_parking_entry",
+        "park_green_parking_infrastructure_v1": "green_parking_lot",
+        "park_airport_general_aviation_v2": "airport_airfield",
+        "park_equestrian_working_stable_v1": "equestrian_center",
+        "park_golf_seaside_links_v0": "golf_course_18_hole",
+        "park_driving_range_single_tier_v0": "golf_driving_range",
+        "park_multi_sport_track_field_v3": "multi_sport_complex",
+        "park_retail_parking_landscaped_v1": "suburban_retail_parking_lot",
+    }
+    named_variant_parents = {
+        "airport_airfield",
+        "equestrian_center",
+        "golf_course_18_hole",
+        "golf_driving_range",
+        "multi_sport_complex",
+    }
+    catalog = build_public_realm_capability_catalog(family_ids=list(expected))
+    assert len(catalog.capabilities) == 10
+    for capability in catalog.capabilities:
+        archetype_id = expected[capability.family_id]
+        expected_variants = {
+            f"{archetype_id}_variant_{index}" if archetype_id in named_variant_parents else f"{archetype_id}_v{index}"
+            for index in range(4)
+        }
+        assert {selection.variant_id for selection in capability.selections} == expected_variants
+        assert {selection.archetype_id for selection in capability.selections} == {archetype_id}
+        assert len({selection.appearance_kit_id for selection in capability.selections}) == 4
+        assert len({selection.planting_structure for selection in capability.selections}) == 4
+        assert all(selection.component_set_ids for selection in capability.selections)
+        assert sum(selection.is_default for selection in capability.selections) == 1
+
+
+def test_batch16_closes_twenty_nine_variants_across_ten_shared_families():
+    expected = {
+        "park_neighborhood_community": {"community_park": 4},
+        "park_regional_english_landscape_v0": {"regional_park": 4},
+        "park_dog_archetype_v0": {"dog_park": 4},
+        "park_skate_archetype_v0": {"skate_park": 4},
+        "park_sports_complex_tournament_v0": {"sports_field_complex": 4},
+        "park_tennis_cluster_v0": {"tennis_court_cluster": 4},
+        "park_cultural_gardens": {"botanical_garden": 3, "japanese_garden": 4},
+        "park_memorial_garden_v0": {"memorial_garden": 4},
+        "park_urban_forest": {"urban_forest": 4},
+    }
+    catalog = build_public_realm_capability_catalog(family_ids=list(expected))
+    assert len(catalog.capabilities) == 9
+    for capability in catalog.capabilities:
+        for archetype_id, count in expected[capability.family_id].items():
+            selections = [
+                selection
+                for selection in capability.selections
+                if selection.archetype_id == archetype_id
+            ]
+            assert len(selections) == count
+            assert len({selection.variant_id for selection in selections}) == count
+            assert len({selection.appearance_kit_id for selection in selections}) == count
+            assert len({selection.planting_structure for selection in selections}) == count
+            assert all(selection.component_set_ids for selection in selections)
+
+
+def test_batch16_dog_park_uses_a_whole_compact_program_on_smaller_parcels():
+    geometry = _to_wgs84(box(700_000, 5_650_000, 700_040, 5_650_030))
+    recipe = plan_public_realm_zone_recipe(
+        "green_space",
+        geometry,
+        {
+            "green_space_archetype_id": "dog_park",
+            "green_space_selected_variant_id": "dog_park_v3",
+        },
+        strict=True,
+    )
+    assert recipe is not None
+    assert recipe.family_id == "park_dog_archetype_v0"
+    assert recipe.variant_id == "dog_park_v3"
+    assert recipe.appearance_kit_id == "dog_park_v3_urban_contemporary_skin"
+
+
+def test_batch17_closes_thirty_variants_across_ten_activity_families():
+    expected = {
+        "park_pickleball_community_v1": "pickleball_courts",
+        "park_caged_soccer_v0": "soccer_pitch_caged",
+        "park_track_oval_school_v2": "running_track_oval",
+        "park_outdoor_fitness_v0": "outdoor_fitness_circuit",
+        "park_baseball_club_hub_v1": "baseball_softball_diamond",
+        "park_cricket_village_green_v0": "cricket_pitch_oval",
+        "park_nature_play_v0": "nature_play_area",
+        "park_inclusive_playground_v0": "inclusive_playground",
+        "park_pump_track_v0": "pump_track",
+        "park_splash_pad_v0": "splash_pad_area",
+    }
+    catalog = build_public_realm_capability_catalog(family_ids=list(expected))
+    assert len(catalog.capabilities) == 10
+    for capability in catalog.capabilities:
+        archetype_id = expected[capability.family_id]
+        selections = [
+            selection
+            for selection in capability.selections
+            if selection.archetype_id == archetype_id
+        ]
+        assert len(selections) == 4
+        assert {selection.variant_id for selection in selections} == {
+            f"{archetype_id}_v{index}" for index in range(4)
+        }
+        assert len({selection.appearance_kit_id for selection in selections}) == 4
+        assert len({selection.planting_structure for selection in selections}) == 4
+        assert all(selection.component_set_ids for selection in selections)
+
+
+def test_batch18_closes_thirty_variants_across_ten_specialty_families():
+    expected = {
+        "park_disc_golf_wooded_v0": "disc_golf_course",
+        "park_bocce_piazza_v0": "bocce_petanque_court",
+        "park_climbing_competition_v0": "climbing_bouldering_wall",
+        "park_mini_golf_classic_v0": "mini_golf_course",
+        "park_beach_volleyball_competition_v0": "beach_volleyball_courts",
+        "park_pollinator_prairie_v0": "pollinator_meadow",
+        "park_orchard_heritage_v0": "urban_orchard_food_forest",
+        "park_bioswale_streetside_v0": "bioswale_rain_garden",
+        "park_sculpture_museum_court_v0": "sculpture_garden",
+        "park_labyrinth_classical_v0": "labyrinth_meditation",
+    }
+    catalog = build_public_realm_capability_catalog(family_ids=list(expected))
+    assert len(catalog.capabilities) == 10
+    for capability in catalog.capabilities:
+        archetype_id = expected[capability.family_id]
+        selections = [
+            selection
+            for selection in capability.selections
+            if selection.archetype_id == archetype_id
+        ]
+        assert len(selections) == 4
+        assert {selection.variant_id for selection in selections} == {
+            f"{archetype_id}_v{index}" for index in range(4)
+        }
+        assert len({selection.appearance_kit_id for selection in selections}) == 4
+        assert len({selection.planting_structure for selection in selections}) == 4
+        assert all(selection.component_set_ids for selection in selections)
+
+
+def test_batch19_closes_thirty_variants_across_ten_destination_families():
+    expected = {
+        "park_ice_rink_multipurpose_v3": "outdoor_ice_rink",
+        "park_kayak_river_launch_v0": "kayak_launch_dock",
+        "park_tidal_marsh_cordgrass_v0": "tidal_marsh_boardwalk",
+        "park_cinema_lawn_projection_v1": "outdoor_cinema_lawn",
+        "park_food_truck_permanent_v1": "food_truck_plaza",
+        "park_great_lawn_v2": "festival_event_lawn",
+        "park_campus_meadow_quad_v0": "campus_central_quad",
+        "park_urban_beach_family_v2": "urban_beach",
+        "park_velodrome_open_air_v0": "velodrome_cycling_track",
+        "park_mtb_skills_dirt_v2": "mountain_bike_park",
+    }
+    catalog = build_public_realm_capability_catalog(family_ids=list(expected))
+    assert len(catalog.capabilities) == 10
+    for capability in catalog.capabilities:
+        archetype_id = expected[capability.family_id]
+        selections = [
+            selection
+            for selection in capability.selections
+            if selection.archetype_id == archetype_id
+        ]
+        assert len(selections) == 4
+        assert len({selection.variant_id for selection in selections}) == 4
+        assert len({selection.appearance_kit_id for selection in selections}) == 4
+        assert len({selection.planting_structure for selection in selections}) == 4
+        assert all(selection.component_set_ids for selection in selections)
+
+
+def test_batch19_compact_food_truck_popup_uses_its_own_site_envelope():
+    recipe = plan_public_realm_recipe(PublicRealmPlanRequest(
+        archetype_id="food_truck_plaza",
+        variant_id="food_truck_plaza_v0",
+        target=ParkPolygonTarget(width_m=39.723, depth_m=31.185, area_m2=1192.878),
+    ))
+    assert recipe.family_id == "park_food_truck_permanent_v1"
+    assert recipe.variant_id == "food_truck_plaza_v0"
+    assert recipe.appearance_kit_id == "food_truck_plaza_v0_industrial_popup_skin"
+    assert recipe.target.area_m2 == 1192.878
+
+
+def test_batch20_closes_thirty_variants_across_ten_ecological_and_civic_families():
+    expected = {
+        "park_water_ecology": ("riparian_buffer", "wetland_rain_garden"),
+        "park_playground_adventure_v0": ("playground_adventure",),
+        "park_amphitheater_lawn_v0": ("amphitheater_lawn",),
+        "park_beer_garden_munich_v0": ("beer_garden",),
+        "park_city_hall_modernist_fountain_v2": ("city_hall_government_plaza",),
+        "park_sunken_courtyard_v0": ("sunken_plaza",),
+        "park_cathedral_courtyard_fountain_v3": ("cathedral_religious_forecourt",),
+        "park_cultural_museum_terrace_v0": ("cultural_institution_forecourt",),
+        "park_terraced_cascade_v3": ("stepped_terraced_plaza",),
+    }
+    catalog = build_public_realm_capability_catalog(family_ids=list(expected))
+    assert len(catalog.capabilities) == 9
+    for capability in catalog.capabilities:
+        for archetype_id in expected[capability.family_id]:
+            selections = [
+                selection
+                for selection in capability.selections
+                if selection.archetype_id == archetype_id
+            ]
+            assert len(selections) == 4
+            assert {selection.variant_id for selection in selections} == {
+                f"{archetype_id}_v{index}" for index in range(4)
+            }
+            assert len({selection.appearance_kit_id for selection in selections}) == 4
+            assert len({selection.planting_structure for selection in selections}) == 4
+            assert all(selection.component_set_ids for selection in selections)
+
+
+def test_batch21_closes_thirty_variants_across_ten_program_and_landscape_families():
+    expected = {
+        "park_athletics_fields_v0": ("athletics_precinct_sports_fields",),
+        "park_community_garden_v0": ("community_garden",),
+        "park_fountain_formal_pool_v1": ("fountain_water_feature",),
+        "park_water_ecology": ("pond_lake",),
+        "park_market_festival_lawn_v1": ("market_square",),
+        "park_civic_plaza": ("formal_civic_plaza",),
+        "park_linear_greenway": ("linear_park_greenway",),
+        "park_boardwalk_maritime_v0": ("promenade_boardwalk",),
+        "park_natural_swimming_pond_v0": ("swimming_pool_complex",),
+        "park_rooftop_intensive_garden_v0": ("rooftop_garden",),
+    }
+    catalog = build_public_realm_capability_catalog(family_ids=list(expected))
+    assert len(catalog.capabilities) == 10
+    for capability in catalog.capabilities:
+        for archetype_id in expected[capability.family_id]:
+            selections = [selection for selection in capability.selections if selection.archetype_id == archetype_id]
+            assert len(selections) == 4
+            separator = "_variant_" if archetype_id == "athletics_precinct_sports_fields" else "_v"
+            assert {selection.variant_id for selection in selections} == {
+                f"{archetype_id}{separator}{index}" for index in range(4)
+            }
+            assert len({selection.appearance_kit_id for selection in selections}) == 4
+            assert len({selection.planting_structure for selection in selections}) == 4
+            assert all(selection.component_set_ids for selection in selections)
+
+
+def test_batch22_closes_thirty_variants_across_ten_memorial_civic_and_water_families():
+    expected = {
+        "park_cemetery_classical_v0": "cemetery_memorial_grounds",
+        "park_courtyard_linear_water_v1": "courtyard_plaza",
+        "park_transit_green_civic_v2": "transit_plaza",
+        "park_amphitheater_terraced_v0": "amphitheater_performance_space",
+        "park_water_ecology": "stormwater_retention_pond",
+        "park_canal_ecological_wetland_v3": "canal_waterway",
+        "park_custom_biophilic_urban_v1": "custom_parks_plazas",
+        "park_nature_preserve_prairie_v1": "nature_preserve",
+        "park_riverfront_lake_beach_v1": "riverfront_park_beach",
+        "park_parklet_sf_timber_v1": "street_plaza_parklet",
+    }
+    catalog = build_public_realm_capability_catalog(family_ids=list(expected))
+    assert len(catalog.capabilities) == 10
+    for capability in catalog.capabilities:
+        archetype_id = expected[capability.family_id]
+        selections = [selection for selection in capability.selections if selection.archetype_id == archetype_id]
+        assert len(selections) == 4
+        assert {selection.variant_id for selection in selections} == {
+            f"{archetype_id}_v{index}" for index in range(4)
+        }
+        assert len({selection.appearance_kit_id for selection in selections}) == 4
+        assert len({selection.planting_structure for selection in selections}) == 4
+        assert all(selection.component_set_ids for selection in selections)
+
+
+def test_batch22_old_growth_preserve_compiles_on_one_compatible_polygon_without_ai_drape():
+    geometry = _to_wgs84(box(700_000, 5_650_000, 700_090, 5_650_070))
+    recipe = plan_public_realm_zone_recipe(
+        "green_space",
+        geometry,
+        {
+            "green_space_archetype_id": "nature_preserve",
+            "green_space_selected_variant_id": "nature_preserve_v3",
+        },
+        strict=True,
+    )
+    assert recipe is not None
+    assert recipe.family_id == "park_nature_preserve_prairie_v1"
+    assert recipe.variant_id == "nature_preserve_v3"
+    assert recipe.appearance_kit_id == "nature_preserve_v3_old_growth_skin"
+    assert recipe.generator == "park_kit"
+
+
+def test_batch23_closes_thirty_variants_across_ten_city_garden_families():
+    expected = {
+        "park_community_healing_garden_v2": "community_garden_enhanced",
+        "park_paris_place_royale_v2": "parisian_place",
+        "park_paris_square_tree_grid_v3": "parisian_square",
+        "park_french_parterre_axis_v1": "parisian_jardin",
+        "park_amsterdam_vondelpark_pavilion_v3": "amsterdam_vondelpark",
+        "park_amsterdam_hofje_garden_v0": "amsterdam_hofje_garden",
+        "park_amsterdam_plein_v0": "amsterdam_plein",
+        "park_barcelona_pati_green_v0": "barcelona_pati_interior",
+        "park_barcelona_xamfra_corner_v2": "barcelona_placa_xamfra",
+        "park_barcelona_superilla_green_v1": "barcelona_superilla",
+    }
+    catalog = build_public_realm_capability_catalog(family_ids=list(expected))
+    assert len(catalog.capabilities) == 10
+    for capability in catalog.capabilities:
+        archetype_id = expected[capability.family_id]
+        selections = [selection for selection in capability.selections if selection.archetype_id == archetype_id]
+        assert len(selections) == 4
+        assert len({selection.variant_id for selection in selections}) == 4
+        assert len({selection.appearance_kit_id for selection in selections}) == 4
+        assert len({selection.planting_structure for selection in selections}) == 4
+        assert all(selection.component_set_ids for selection in selections)
+
+
+def test_batch23_classic_allotment_compiles_on_one_compatible_polygon_without_ai_drape():
+    geometry = _to_wgs84(box(700_000, 5_650_000, 700_042, 5_650_037))
+    recipe = plan_public_realm_zone_recipe(
+        "green_space",
+        geometry,
+        {
+            "green_space_archetype_id": "community_garden_enhanced",
+            "green_space_selected_variant_id": "garden_classic_allotment",
+        },
+        strict=True,
+    )
+    assert recipe is not None
+    assert recipe.family_id == "park_community_healing_garden_v2"
+    assert recipe.variant_id == "garden_classic_allotment"
+    assert recipe.appearance_kit_id == "community_garden_enhanced_allotment_skin"
+    assert recipe.planting_structure == "community_allotment_v0"
+    assert recipe.generator == "park_kit"
+
+
+def test_batch24_closes_thirty_variants_across_ten_city_park_families():
+    expected = {
+        "park_calgary_prairie_market_v1": "calgary_prairie_plaza",
+        "park_calgary_princes_island_festival_v0": "calgary_princes_island",
+        "park_halifax_coastal_fog_path_v2": "halifax_coastal_park",
+        "park_halifax_rose_bandstand_v0": "halifax_public_gardens",
+        "park_london_circus_planted_v1": "london_circus",
+        "park_london_railed_square_v1": "london_garden_square",
+        "park_montreal_mount_royal_grove_v2": "montreal_mount_royal",
+        "park_montreal_neighbourhood_square_v3": "montreal_square",
+        "park_newyork_community_greenhouse_v3": "newyork_community_garden",
+        "park_newyork_pocket_water_v0": "newyork_pocket_park",
+    }
+    catalog = build_public_realm_capability_catalog(family_ids=list(expected))
+    assert len(catalog.capabilities) == 10
+    for capability in catalog.capabilities:
+        archetype_id = expected[capability.family_id]
+        selections = [selection for selection in capability.selections if selection.archetype_id == archetype_id]
+        assert len(selections) == 4
+        assert {selection.variant_id for selection in selections} == {
+            f"{archetype_id}_v{index}" for index in range(4)
+        }
+        assert len({selection.appearance_kit_id for selection in selections}) == 4
+        assert len({selection.planting_structure for selection in selections}) == 4
+        assert all(selection.component_set_ids for selection in selections)
+
+
+def test_batch24_new_york_allotment_compiles_without_ai_drape_or_large_building():
+    geometry = _to_wgs84(box(700_000, 5_650_000, 700_046, 5_650_034))
+    recipe = plan_public_realm_zone_recipe(
+        "green_space",
+        geometry,
+        {
+            "green_space_archetype_id": "newyork_community_garden",
+            "green_space_selected_variant_id": "newyork_community_garden_v0",
+        },
+        strict=True,
+    )
+    assert recipe is not None
+    assert recipe.family_id == "park_newyork_community_greenhouse_v3"
+    assert recipe.appearance_kit_id == "newyork_community_garden_v0_allotment_skin"
+    assert recipe.planting_structure == "newyork_community_allotment_v0"
+    assert recipe.generator == "park_kit"
+
+
+def test_batch25_closes_thirty_variants_across_ten_landscape_system_families():
+    expected = {
+        "park_vancouver_seawall_cycle_v2": "vancouver_seawall",
+        "park_vancouver_beach_pavilion_v0": "vancouver_beach_park",
+        "park_toronto_ravine_creek_v1": "toronto_ravine",
+        "park_toronto_urban_market_v1": "toronto_urban_square",
+        "park_olmsted_multilandscape_v3": "picturesque_olmsted_park",
+        "park_reclaimed_wharf_v0": "reclaimed_industrial_park",
+        "park_quarry_tier_cascade_v2": "quarry_sunken_garden_park",
+        "park_hilltop_viewpoint_v3": "hilltop_topographic_park",
+        "park_estate_oak_picnic_v1": "estate_picnic_grove",
+        "park_water_ecology": "reservoir_watershed_park",
+    }
+    catalog = build_public_realm_capability_catalog(family_ids=list(expected))
+    assert len(catalog.capabilities) == 10
+    for capability in catalog.capabilities:
+        archetype_id = expected[capability.family_id]
+        selections = [selection for selection in capability.selections if selection.archetype_id == archetype_id]
+        assert len(selections) == 4
+        assert {selection.variant_id for selection in selections} == {
+            f"{archetype_id}_v{index}" for index in range(4)
+        }
+        assert len({selection.appearance_kit_id for selection in selections}) == 4
+        assert len({selection.planting_structure for selection in selections}) == 4
+        assert all(selection.component_set_ids for selection in selections)
+
+
+def test_batch25_gasworks_mound_compiles_as_one_park_kit_without_ai_drape():
+    geometry = _to_wgs84(box(700_000, 5_650_000, 700_140, 5_650_080))
+    recipe = plan_public_realm_zone_recipe(
+        "green_space",
+        geometry,
+        {
+            "green_space_archetype_id": "reclaimed_industrial_park",
+            "green_space_selected_variant_id": "reclaimed_industrial_park_v1",
+        },
+        strict=True,
+    )
+    assert recipe is not None
+    assert recipe.family_id == "park_reclaimed_wharf_v0"
+    assert recipe.appearance_kit_id == "reclaimed_industrial_park_v1_gasworks_skin"
+    assert recipe.planting_structure == "reclaimed_gasworks_v1"
+    assert recipe.generator == "park_kit"
+
+
+@pytest.mark.parametrize(
+    ("archetype_id", "variant_id"),
+    [
+        ("amsterdam_hofje_garden", "amsterdam_hofje_garden_v0"),
+        ("amsterdam_plein", "amsterdam_plein_v0"),
+        ("amsterdam_vondelpark", "amsterdam_vondelpark_v3"),
+        ("barcelona_pati_interior", "barcelona_pati_interior_v0"),
+        ("barcelona_placa_xamfra", "barcelona_placa_xamfra_v2"),
+        ("barcelona_superilla", "barcelona_superilla_v1"),
+        ("calgary_prairie_plaza", "calgary_prairie_plaza_v1"),
+        ("calgary_princes_island", "calgary_princes_island_v0"),
+        ("montreal_mount_royal", "montreal_mount_royal_v2"),
+        ("montreal_square", "montreal_square_v3"),
+    ],
+)
+def test_batch10_families_adapt_to_shared_compact_trial_polygon(archetype_id: str, variant_id: str):
+    geometry = _to_wgs84(box(700_000, 5_650_000, 700_099, 5_650_000 + 37))
+    recipe = plan_public_realm_zone_recipe(
+        "green_space",
+        geometry,
+        {"green_space_archetype_id": archetype_id, "green_space_selected_variant_id": variant_id},
+        strict=True,
+    )
+    assert recipe is not None
+    assert recipe.variant_id == variant_id
+    assert recipe.generator == "park_kit"
+
+
+@pytest.mark.parametrize(
+    ("family_id", "archetype_id"),
+    [
+        ("park_greenbelt_rail_trail_v1", "greenbelt_buffer_park"),
+        ("park_foothill_heathland_trail_v2", "foothill_trail_park"),
+        ("park_concert_timber_lawn_v2", "concert_pavilion_lawn"),
+        ("park_night_market_hawker_v0", "night_market"),
+        ("park_parade_national_mall_v3", "parade_ground"),
+        ("park_marina_pacific_dock_v2", "marina_yacht_harbor"),
+        ("park_working_pier_brooklyn_park_v3", "working_pier_wharf_conversion"),
+        ("park_floating_meadow_loop_v2", "floating_park_pool"),
+        ("park_lighthouse_pacific_headland_v2", "lighthouse_point_park"),
+        ("park_lake_edge_timber_deck_v2", "lake_edge_plaza"),
+    ],
+)
+def test_batch26_closes_all_four_variants_for_each_parent(family_id: str, archetype_id: str):
+    catalog = build_public_realm_capability_catalog(family_ids=[family_id])
+    selections = [selection for selection in catalog.capabilities[0].selections if selection.archetype_id == archetype_id]
+    assert len(selections) == 4
+    assert {selection.variant_id for selection in selections} == {f"{archetype_id}_v{index}" for index in range(4)}
+    assert len({selection.appearance_kit_id for selection in selections}) == 4
+    assert len({selection.planting_structure for selection in selections}) == 4
+
+
+@pytest.mark.parametrize(
+    ("family_id", "archetype_id"),
+    [
+        ("park_academic_planted_court_v0", "academic_courtyard"),
+        ("park_campus_green_spine_v0", "campus_pedestrian_spine"),
+        ("park_constructed_wetland_boardwalk_v0", "constructed_wetland_eco_park"),
+        ("park_research_arboretum_v0", "research_garden_teaching_arboretum"),
+        ("park_rewilding_reforestation_v1", "rewilding_ecological_restoration_zone"),
+        ("park_stormwater_natural_creek_v0", "stormwater_naturalized_drainage_corridor"),
+        ("park_stormwater_arid_channel_v3", "stormwater_resilience_park"),
+    ],
+)
+def test_batch27_closes_every_remaining_catalogue_variant(family_id: str, archetype_id: str):
+    catalog = build_public_realm_capability_catalog(family_ids=[family_id])
+    selections = [selection for selection in catalog.capabilities[0].selections if selection.archetype_id == archetype_id]
+    assert len(selections) == 4
+    assert {selection.variant_id for selection in selections} == {f"{archetype_id}_variant_{index}" for index in range(4)}
+    assert len({selection.appearance_kit_id for selection in selections}) == 4
+    assert len({selection.planting_structure for selection in selections}) == 4

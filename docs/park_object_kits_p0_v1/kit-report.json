@@ -1,0 +1,306 @@
+{
+  "schemaVersion": 1,
+  "kitVersion": "2026-08-07-p0-v1",
+  "assets": [
+    {
+      "id": "disc_golf_basket",
+      "family": "disc-golf",
+      "filename": "disc-golf-basket.glb",
+      "dimensionsM": [
+        0.73,
+        0.73,
+        1.725
+      ],
+      "triangles": 1844,
+      "bytes": 112016
+    },
+    {
+      "id": "disc_golf_tee_sign",
+      "family": "disc-golf",
+      "filename": "disc-golf-tee-sign.glb",
+      "dimensionsM": [
+        0.58,
+        0.152,
+        1.347
+      ],
+      "triangles": 260,
+      "bytes": 20364
+    },
+    {
+      "id": "bocce_score_stand",
+      "family": "bocce-petanque",
+      "filename": "bocce-score-stand.glb",
+      "dimensionsM": [
+        0.95,
+        0.17,
+        1.475
+      ],
+      "triangles": 700,
+      "bytes": 36164
+    },
+    {
+      "id": "bocce_ball_rack",
+      "family": "bocce-petanque",
+      "filename": "bocce-ball-rack.glb",
+      "dimensionsM": [
+        1.65,
+        0.42,
+        0.855
+      ],
+      "triangles": 1776,
+      "bytes": 135408
+    },
+    {
+      "id": "climbing_competition_wall",
+      "family": "climbing-bouldering",
+      "filename": "climbing-competition-wall.glb",
+      "dimensionsM": [
+        6.68,
+        2.19,
+        4.517
+      ],
+      "triangles": 1304,
+      "bytes": 87336
+    },
+    {
+      "id": "climbing_natural_boulder",
+      "family": "climbing-bouldering",
+      "filename": "climbing-natural-boulder.glb",
+      "dimensionsM": [
+        3.836,
+        3.942,
+        3.394
+      ],
+      "triangles": 160,
+      "bytes": 6796
+    },
+    {
+      "id": "climbing_traverse_wall",
+      "family": "climbing-bouldering",
+      "filename": "climbing-traverse-wall.glb",
+      "dimensionsM": [
+        8.08,
+        0.942,
+        2.198
+      ],
+      "triangles": 1112,
+      "bytes": 75768
+    },
+    {
+      "id": "mini_golf_windmill",
+      "family": "mini-golf",
+      "filename": "mini-golf-windmill.glb",
+      "dimensionsM": [
+        3.2,
+        2.56,
+        3.83
+      ],
+      "triangles": 466,
+      "bytes": 35944
+    },
+    {
+      "id": "mini_golf_loop",
+      "family": "mini-golf",
+      "filename": "mini-golf-loop.glb",
+      "dimensionsM": [
+        1.75,
+        0.58,
+        1.75
+      ],
+      "triangles": 620,
+      "bytes": 45800
+    },
+    {
+      "id": "mini_golf_bridge",
+      "family": "mini-golf",
+      "filename": "mini-golf-bridge.glb",
+      "dimensionsM": [
+        3.564,
+        1.17,
+        1.074
+      ],
+      "triangles": 1308,
+      "bytes": 85580
+    },
+    {
+      "id": "mini_golf_cup_flag",
+      "family": "mini-golf",
+      "filename": "mini-golf-cup-flag.glb",
+      "dimensionsM": [
+        0.44,
+        0.16,
+        0.92
+      ],
+      "triangles": 212,
+      "bytes": 15396
+    },
+    {
+      "id": "beach_volleyball_net",
+      "family": "beach-volleyball",
+      "filename": "beach-volleyball-net.glb",
+      "dimensionsM": [
+        9.13,
+        2.322,
+        2.555
+      ],
+      "triangles": 880,
+      "bytes": 47052
+    },
+    {
+      "id": "beach_volleyball_referee_stand",
+      "family": "beach-volleyball",
+      "filename": "beach-volleyball-referee-stand.glb",
+      "dimensionsM": [
+        1.0,
+        0.86,
+        2.65
+      ],
+      "triangles": 1008,
+      "bytes": 69156
+    },
+    {
+      "id": "wetland_boardwalk_span",
+      "family": "water-ecology-infrastructure",
+      "filename": "wetland-boardwalk-span.glb",
+      "dimensionsM": [
+        8.086,
+        2.505,
+        1.415
+      ],
+      "triangles": 2916,
+      "bytes": 189292
+    },
+    {
+      "id": "wetland_observation_deck",
+      "family": "water-ecology-infrastructure",
+      "filename": "wetland-observation-deck.glb",
+      "dimensionsM": [
+        5.886,
+        5.905,
+        1.415
+      ],
+      "triangles": 2196,
+      "bytes": 140816
+    },
+    {
+      "id": "wetland_footbridge",
+      "family": "water-ecology-infrastructure",
+      "filename": "wetland-footbridge.glb",
+      "dimensionsM": [
+        8.383,
+        2.2,
+        1.342
+      ],
+      "triangles": 2556,
+      "bytes": 157540
+    },
+    {
+      "id": "stormwater_check_weir",
+      "family": "water-ecology-infrastructure",
+      "filename": "stormwater-check-weir.glb",
+      "dimensionsM": [
+        5.444,
+        2.642,
+        1.05
+      ],
+      "triangles": 432,
+      "bytes": 32664
+    },
+    {
+      "id": "stormwater_inlet_headwall",
+      "family": "water-ecology-infrastructure",
+      "filename": "stormwater-inlet-headwall.glb",
+      "dimensionsM": [
+        3.6,
+        2.425,
+        1.15
+      ],
+      "triangles": 524,
+      "bytes": 36360
+    },
+    {
+      "id": "stormwater_outlet_control",
+      "family": "water-ecology-infrastructure",
+      "filename": "stormwater-outlet-control.glb",
+      "dimensionsM": [
+        1.45,
+        1.705,
+        1.885
+      ],
+      "triangles": 400,
+      "bytes": 26396
+    },
+    {
+      "id": "riprap_cluster",
+      "family": "water-ecology-infrastructure",
+      "filename": "riprap-cluster.glb",
+      "dimensionsM": [
+        3.93,
+        2.75,
+        1.212
+      ],
+      "triangles": 1664,
+      "bytes": 50856
+    },
+    {
+      "id": "maintenance_gate",
+      "family": "water-ecology-infrastructure",
+      "filename": "maintenance-gate.glb",
+      "dimensionsM": [
+        3.44,
+        0.14,
+        1.35
+      ],
+      "triangles": 500,
+      "bytes": 29004
+    },
+    {
+      "id": "amphitheater_stage",
+      "family": "amphitheater",
+      "filename": "amphitheater-stage.glb",
+      "dimensionsM": [
+        9.15,
+        5.07,
+        2.55
+      ],
+      "triangles": 1404,
+      "bytes": 100632
+    },
+    {
+      "id": "amphitheater_seat_wall",
+      "family": "amphitheater",
+      "filename": "amphitheater-seat-wall.glb",
+      "dimensionsM": [
+        4.05,
+        0.76,
+        0.52
+      ],
+      "triangles": 216,
+      "bytes": 16716
+    },
+    {
+      "id": "amphitheater_aisle_rail",
+      "family": "amphitheater",
+      "filename": "amphitheater-aisle-rail.glb",
+      "dimensionsM": [
+        2.767,
+        0.086,
+        1.045
+      ],
+      "triangles": 108,
+      "bytes": 6020
+    },
+    {
+      "id": "amphitheater_bollard_light",
+      "family": "amphitheater",
+      "filename": "amphitheater-bollard-light.glb",
+      "dimensionsM": [
+        0.24,
+        0.24,
+        0.97
+      ],
+      "triangles": 220,
+      "bytes": 12588
+    }
+  ]
+}

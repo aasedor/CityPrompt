@@ -13,6 +13,8 @@ import {
   resolveParkProgramAnchorLayout,
   usesArchetypeOwnedParkSurface,
 } from './parkLegoFamilies';
+import { BATCH26_PARK_SKINS } from './parkBatch26Skins';
+import { BATCH27_PARK_SKINS } from './parkBatch27Skins';
 
 function zone(properties: Record<string, unknown>): Pick<SiteZone, 'properties' | 'zone_type'> {
   return { zone_type: 'green_space', properties };
@@ -35,11 +37,182 @@ function trustedRecipe(selection: Record<string, unknown>): Record<string, unkno
 }
 
 describe('Public Realm LEGO V1 park families', () => {
-  it('weights unsupported picnic groves toward real tables without claiming a compiler family', () => {
+  it('routes the now-reviewed default picnic-grove variant through its exact LEGO family', () => {
     const candidate = zone({ green_space_archetype_id: 'estate_picnic_grove' });
-    expect(resolveParkLegoContract(candidate)).toBeNull();
-    expect(resolveParkDressingFamily(candidate)).toBe('park_neighborhood_community');
+    expect(resolveParkLegoContract(candidate)).toMatchObject({
+      familyId: 'park_estate_oak_picnic_v1',
+      variantId: 'estate_picnic_grove_v0',
+      supported: true,
+    });
+    expect(resolveParkDressingFamily(candidate)).toBe('park_estate_oak_picnic_v1');
   });
+
+  it.each([
+    ['park_reclaimed_wharf_v0', 'reclaimed_industrial_park', 'reclaimed_industrial_park_v0', 'reclaimed_industrial_park_v0_wharf_skin', 'reclaimed_wharf_v0'],
+    ['park_quarry_tier_cascade_v2', 'quarry_sunken_garden_park', 'quarry_sunken_garden_park_v2', 'quarry_sunken_garden_park_v2_tier_cascade_skin', 'quarry_tier_cascade_v2'],
+    ['park_estate_oak_picnic_v1', 'estate_picnic_grove', 'estate_picnic_grove_v1', 'estate_picnic_grove_v1_oak_skin', 'estate_oak_picnic_v1'],
+    ['park_constructed_wetland_boardwalk_v0', 'constructed_wetland_eco_park', 'constructed_wetland_eco_park_variant_0', 'constructed_wetland_eco_park_v0_boardwalk_skin', 'constructed_wetland_boardwalk_v0'],
+    ['park_academic_planted_court_v0', 'academic_courtyard', 'academic_courtyard_variant_0', 'academic_courtyard_v0_planted_skin', 'academic_planted_court_v0'],
+    ['park_campus_green_spine_v0', 'campus_pedestrian_spine', 'campus_pedestrian_spine_variant_0', 'campus_pedestrian_spine_v0_green_skin', 'campus_green_spine_v0'],
+    ['park_botanical_rose_garden_v3', 'botanical_garden', 'botanical_garden_v3', 'botanical_garden_v3_rose_skin', 'botanical_rose_garden_v3'],
+    ['park_research_arboretum_v0', 'research_garden_teaching_arboretum', 'research_garden_teaching_arboretum_variant_0', 'research_garden_teaching_arboretum_v0_skin', 'research_arboretum_v0'],
+    ['park_rewilding_reforestation_v1', 'rewilding_ecological_restoration_zone', 'rewilding_ecological_restoration_zone_variant_1', 'rewilding_ecological_restoration_zone_v1_skin', 'rewilding_reforestation_v1'],
+    ['park_stormwater_arid_channel_v3', 'stormwater_resilience_park', 'stormwater_resilience_park_variant_3', 'stormwater_resilience_park_v3_arid_skin', 'stormwater_arid_channel_v3'],
+  ] as const)('executes the exact reviewed Batch 8 selection %s', (familyId, archetypeId, variantId, appearanceKitId, plantingStructure) => {
+    const candidate = zone({
+      public_realm_lego: trustedRecipe({
+        family_id: familyId,
+        family_version: 1,
+        archetype_id: archetypeId,
+        variant_id: variantId,
+        appearance_kit_id: appearanceKitId,
+        planting_structure: plantingStructure,
+      }),
+    });
+    expect(resolveParkLegoContract(candidate)).toMatchObject({ familyId, archetypeId, variantId, supported: true });
+    expect(isExecutableParkLegoFamily(candidate)).toBe(true);
+    expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true);
+  });
+
+  it.each([
+    ['park_urban_pocket_rustic_v0', 'urban_pocket_park', 'urban_pocket_park_v0', 'urban_pocket_park_v0_rustic_skin', 'urban_pocket_rustic_v0'],
+    ['park_neighborhood_contemporary_v3', 'neighborhood_park', 'neighborhood_park_v3', 'neighborhood_park_v3_contemporary_skin', 'neighborhood_contemporary_v3'],
+    ['park_cemetery_classical_v0', 'cemetery_memorial_grounds', 'cemetery_memorial_grounds_v0', 'cemetery_memorial_grounds_v0_classical_skin', 'cemetery_classical_v0'],
+    ['park_courtyard_linear_water_v1', 'courtyard_plaza', 'courtyard_plaza_v1', 'courtyard_plaza_v1_linear_water_skin', 'courtyard_linear_water_v1'],
+    ['park_parklet_sf_timber_v1', 'street_plaza_parklet', 'street_plaza_parklet_v1', 'street_plaza_parklet_v1_sf_timber_skin', 'parklet_sf_timber_v1'],
+    ['park_french_parterre_axis_v1', 'parisian_jardin', 'parisian_jardin_v1', 'parisian_jardin_v1_water_axis_skin', 'french_parterre_axis_v1'],
+    ['park_london_railed_square_v1', 'london_garden_square', 'london_garden_square_v1', 'london_garden_square_v1_railed_skin', 'london_railed_square_v1'],
+    ['park_halifax_rose_bandstand_v0', 'halifax_public_gardens', 'halifax_public_gardens_v0', 'halifax_public_gardens_v0_rose_skin', 'halifax_rose_bandstand_v0'],
+    ['park_olmsted_multilandscape_v3', 'picturesque_olmsted_park', 'picturesque_olmsted_park_v3', 'picturesque_olmsted_park_v3_multilandscape_skin', 'olmsted_multilandscape_v3'],
+    ['park_hilltop_viewpoint_v3', 'hilltop_topographic_park', 'hilltop_topographic_park_v3', 'hilltop_topographic_park_v3_viewpoint_skin', 'hilltop_viewpoint_v3'],
+  ] as const)('executes the exact reviewed Batch 9 selection %s', (familyId, archetypeId, variantId, appearanceKitId, plantingStructure) => {
+    const candidate = zone({
+      public_realm_lego: trustedRecipe({
+        family_id: familyId,
+        family_version: 1,
+        archetype_id: archetypeId,
+        variant_id: variantId,
+        appearance_kit_id: appearanceKitId,
+        planting_structure: plantingStructure,
+      }),
+    });
+    expect(resolveParkLegoContract(candidate)).toMatchObject({ familyId, archetypeId, variantId, supported: true });
+    expect(isExecutableParkLegoFamily(candidate)).toBe(true);
+    expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true);
+  });
+
+  it.each([
+    ['park_amsterdam_hofje_garden_v0', 'amsterdam_hofje_garden', 'amsterdam_hofje_garden_v0', 'amsterdam_hofje_garden_v0_skin', 'amsterdam_hofje_v0'],
+    ['park_amsterdam_plein_v0', 'amsterdam_plein', 'amsterdam_plein_v0', 'amsterdam_plein_v0_brick_skin', 'amsterdam_plein_v0'],
+    ['park_amsterdam_vondelpark_pavilion_v3', 'amsterdam_vondelpark', 'amsterdam_vondelpark_v3', 'amsterdam_vondelpark_v3_pavilion_skin', 'amsterdam_vondelpark_v3'],
+    ['park_barcelona_pati_green_v0', 'barcelona_pati_interior', 'barcelona_pati_interior_v0', 'barcelona_pati_interior_v0_green_skin', 'barcelona_pati_green_v0'],
+    ['park_barcelona_xamfra_corner_v2', 'barcelona_placa_xamfra', 'barcelona_placa_xamfra_v2', 'barcelona_placa_xamfra_v2_corner_skin', 'barcelona_xamfra_v2'],
+    ['park_barcelona_superilla_green_v1', 'barcelona_superilla', 'barcelona_superilla_v1', 'barcelona_superilla_v1_green_skin', 'barcelona_superilla_v1'],
+    ['park_calgary_prairie_market_v1', 'calgary_prairie_plaza', 'calgary_prairie_plaza_v1', 'calgary_prairie_plaza_v1_market_skin', 'calgary_prairie_market_v1'],
+    ['park_calgary_princes_island_festival_v0', 'calgary_princes_island', 'calgary_princes_island_v0', 'calgary_princes_island_v0_festival_skin', 'calgary_princes_island_v0'],
+    ['park_montreal_mount_royal_grove_v2', 'montreal_mount_royal', 'montreal_mount_royal_v2', 'montreal_mount_royal_v2_grove_skin', 'montreal_mount_royal_v2'],
+    ['park_montreal_neighbourhood_square_v3', 'montreal_square', 'montreal_square_v3', 'montreal_square_v3_neighbourhood_skin', 'montreal_square_v3'],
+  ] as const)('executes the exact reviewed Batch 10 selection %s', (familyId, archetypeId, variantId, appearanceKitId, plantingStructure) => {
+    const candidate = zone({
+      public_realm_lego: trustedRecipe({
+        family_id: familyId,
+        family_version: 1,
+        archetype_id: archetypeId,
+        variant_id: variantId,
+        appearance_kit_id: appearanceKitId,
+        planting_structure: plantingStructure,
+      }),
+    });
+    expect(resolveParkLegoContract(candidate)).toMatchObject({ familyId, archetypeId, variantId, supported: true });
+    expect(isExecutableParkLegoFamily(candidate)).toBe(true);
+    expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true);
+  });
+
+  it.each([
+    ['park_paris_place_royale_v2','parisian_place','parisian_place_v2','parisian_place_v2_royale_skin','paris_place_royale_v2'],
+    ['park_paris_square_tree_grid_v3','parisian_square','parisian_square_v3','parisian_square_v3_tree_grid_skin','paris_square_tree_grid_v3'],
+    ['park_london_circus_planted_v1','london_circus','london_circus_v1','london_circus_v1_planted_skin','london_circus_planted_v1'],
+    ['park_newyork_pocket_water_v0','newyork_pocket_park','newyork_pocket_park_v0','newyork_pocket_park_v0_water_skin','newyork_pocket_water_v0'],
+    ['park_newyork_community_greenhouse_v3','newyork_community_garden','newyork_community_garden_v3','newyork_community_garden_v3_greenhouse_skin','newyork_community_greenhouse_v3'],
+    ['park_vancouver_seawall_cycle_v2','vancouver_seawall','vancouver_seawall_v2','vancouver_seawall_v2_cycle_skin','vancouver_seawall_cycle_v2'],
+    ['park_vancouver_beach_pavilion_v0','vancouver_beach_park','vancouver_beach_park_v0','vancouver_beach_park_v0_pavilion_skin','vancouver_beach_pavilion_v0'],
+    ['park_toronto_ravine_creek_v1','toronto_ravine','toronto_ravine_v1','toronto_ravine_v1_creek_skin','toronto_ravine_creek_v1'],
+    ['park_toronto_urban_market_v1','toronto_urban_square','toronto_urban_square_v1','toronto_urban_square_v1_market_skin','toronto_urban_market_v1'],
+    ['park_halifax_coastal_fog_path_v2','halifax_coastal_park','halifax_coastal_park_v2','halifax_coastal_park_v2_fog_path_skin','halifax_coastal_fog_path_v2'],
+  ] as const)('executes the exact reviewed Batch 11 selection %s', (familyId, archetypeId, variantId, appearanceKitId, plantingStructure) => {
+    const candidate = zone({ public_realm_lego: trustedRecipe({ family_id: familyId, family_version: 1, archetype_id: archetypeId, variant_id: variantId, appearance_kit_id: appearanceKitId, planting_structure: plantingStructure }) });
+    expect(resolveParkLegoContract(candidate)).toMatchObject({familyId,archetypeId,variantId,supported:true});
+    expect(isExecutableParkLegoFamily(candidate)).toBe(true);
+    expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true);
+  });
+
+  it.each([
+    ['park_city_hall_modernist_fountain_v2','city_hall_government_plaza','city_hall_government_plaza_v2','city_hall_government_plaza_v2_modernist_skin','city_hall_modernist_fountain_v2'],
+    ['park_cathedral_courtyard_fountain_v3','cathedral_religious_forecourt','cathedral_religious_forecourt_v3','cathedral_religious_forecourt_v3_courtyard_skin','cathedral_courtyard_fountain_v3'],
+    ['park_cultural_museum_terrace_v0','cultural_institution_forecourt','cultural_institution_forecourt_v0','cultural_institution_forecourt_v0_museum_terrace_skin','cultural_museum_terrace_v0'],
+    ['park_transit_green_civic_v2','transit_plaza','transit_plaza_v2','transit_plaza_v2_green_civic_skin','transit_green_civic_v2'],
+    ['park_amphitheater_terraced_v0','amphitheater_performance_space','amphitheater_performance_space_v0','amphitheater_performance_space_v0_terraced_skin','amphitheater_terraced_v0'],
+    ['park_concert_timber_lawn_v2','concert_pavilion_lawn','concert_pavilion_lawn_v2','concert_pavilion_lawn_v2_timber_skin','concert_timber_lawn_v2'],
+    ['park_night_market_hawker_v0','night_market','night_market_v0','night_market_v0_hawker_skin','night_market_hawker_v0'],
+    ['park_parade_national_mall_v3','parade_ground','parade_ground_v3','parade_ground_v3_national_mall_skin','parade_national_mall_v3'],
+    ['park_canal_ecological_wetland_v3','canal_waterway','canal_waterway_v3','canal_waterway_v3_ecological_skin','canal_ecological_wetland_v3'],
+    ['park_custom_biophilic_urban_v1','custom_parks_plazas','custom_parks_plazas_v1','custom_parks_plazas_v1_biophilic_skin','custom_biophilic_urban_v1'],
+  ] as const)('executes the exact reviewed Batch 12 selection %s', (familyId,archetypeId,variantId,appearanceKitId,plantingStructure) => {
+    const candidate=zone({public_realm_lego:trustedRecipe({family_id:familyId,family_version:1,archetype_id:archetypeId,variant_id:variantId,appearance_kit_id:appearanceKitId,planting_structure:plantingStructure})});
+    expect(resolveParkLegoContract(candidate)).toMatchObject({familyId,archetypeId,variantId,supported:true});
+    expect(isExecutableParkLegoFamily(candidate)).toBe(true); expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true);
+  });
+
+  it.each([
+    ['park_rooftop_intensive_garden_v0','rooftop_garden','rooftop_garden_v0','rooftop_garden_v0_intensive_skin','rooftop_intensive_garden_v0'],
+    ['park_community_healing_garden_v2','community_garden_enhanced','garden_healing','community_garden_enhanced_healing_skin','community_healing_garden_v2'],
+    ['park_greenbelt_rail_trail_v1','greenbelt_buffer_park','greenbelt_buffer_park_v1','greenbelt_buffer_park_v1_rail_trail_skin','greenbelt_rail_trail_v1'],
+    ['park_foothill_heathland_trail_v2','foothill_trail_park','foothill_trail_park_v2','foothill_trail_park_v2_heathland_skin','foothill_heathland_trail_v2'],
+    ['park_marina_pacific_dock_v2','marina_yacht_harbor','marina_yacht_harbor_v2','marina_yacht_harbor_v2_pacific_skin','marina_pacific_dock_v2'],
+    ['park_working_pier_brooklyn_park_v3','working_pier_wharf_conversion','working_pier_wharf_conversion_v3','working_pier_wharf_conversion_v3_park_skin','working_pier_brooklyn_park_v3'],
+    ['park_floating_meadow_loop_v2','floating_park_pool','floating_park_pool_v2','floating_park_pool_v2_meadow_skin','floating_meadow_loop_v2'],
+    ['park_lighthouse_pacific_headland_v2','lighthouse_point_park','lighthouse_point_park_v2','lighthouse_point_park_v2_pacific_skin','lighthouse_pacific_headland_v2'],
+    ['park_lake_edge_timber_deck_v2','lake_edge_plaza','lake_edge_plaza_v2','lake_edge_plaza_v2_timber_skin','lake_edge_timber_deck_v2'],
+    ['park_stormwater_natural_creek_v0','stormwater_naturalized_drainage_corridor','stormwater_naturalized_drainage_corridor_variant_0','stormwater_naturalized_drainage_corridor_v0_creek_skin','stormwater_natural_creek_v0'],
+  ] as const)('executes the exact reviewed Batch 13 selection %s',(familyId,archetypeId,variantId,appearanceKitId,plantingStructure)=>{const candidate=zone({public_realm_lego:trustedRecipe({family_id:familyId,family_version:1,archetype_id:archetypeId,variant_id:variantId,appearance_kit_id:appearanceKitId,planting_structure:plantingStructure})});expect(resolveParkLegoContract(candidate)).toMatchObject({familyId,archetypeId,variantId,supported:true});expect(isExecutableParkLegoFamily(candidate)).toBe(true);expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true)});
+
+  it.each([
+    ['park_surface_parking_standard_v0','surface_parking_lot','surface_parking_lot_v0','surface_parking_lot_v0_standard_skin','surface_parking_standard_v0'],
+    ['park_structured_parking_urban_v2','structured_parking_garage','structured_parking_garage_v2','structured_parking_garage_v2_urban_skin','structured_parking_urban_v2'],
+    ['park_underground_parking_green_v1','underground_parking_entry','underground_parking_entry_v1','underground_parking_entry_v1_green_skin','underground_parking_green_v1'],
+    ['park_green_parking_infrastructure_v1','green_parking_lot','green_parking_lot_v1','green_parking_lot_v1_infrastructure_skin','green_parking_infrastructure_v1'],
+    ['park_airport_general_aviation_v2','airport_airfield','airport_airfield_variant_2','airport_airfield_v2_general_aviation_skin','airport_general_aviation_v2'],
+    ['park_equestrian_working_stable_v1','equestrian_center','equestrian_center_variant_1','equestrian_center_v1_working_stable_skin','equestrian_working_stable_v1'],
+    ['park_golf_seaside_links_v0','golf_course_18_hole','golf_course_18_hole_variant_0','golf_course_18_hole_v0_links_skin','golf_seaside_links_v0'],
+    ['park_driving_range_single_tier_v0','golf_driving_range','golf_driving_range_variant_0','golf_driving_range_v0_single_tier_skin','driving_range_single_tier_v0'],
+    ['park_multi_sport_track_field_v3','multi_sport_complex','multi_sport_complex_variant_3','multi_sport_complex_v3_track_field_skin','multi_sport_track_field_v3'],
+    ['park_retail_parking_landscaped_v1','suburban_retail_parking_lot','suburban_retail_parking_lot_v1','suburban_retail_parking_lot_v1_landscaped_skin','retail_parking_landscaped_v1'],
+  ] as const)('executes the exact reviewed Batch 14 selection %s',(familyId,archetypeId,variantId,appearanceKitId,plantingStructure)=>{const candidate=zone({public_realm_lego:trustedRecipe({family_id:familyId,family_version:1,archetype_id:archetypeId,variant_id:variantId,appearance_kit_id:appearanceKitId,planting_structure:plantingStructure})});expect(resolveParkLegoContract(candidate)).toMatchObject({familyId,archetypeId,variantId,supported:true});expect(isExecutableParkLegoFamily(candidate)).toBe(true);expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true)});
+
+  it('executes all forty selections in the ten Batch 23 city-garden families', () => {
+    const groups = [
+      ['park_community_healing_garden_v2', 'community_garden_enhanced', ['garden_classic_allotment', 'garden_permaculture_farm', 'garden_healing', 'garden_intercultural']],
+      ['park_paris_place_royale_v2', 'parisian_place', ['parisian_place_v0', 'parisian_place_v1', 'parisian_place_v2', 'parisian_place_v3']],
+      ['park_paris_square_tree_grid_v3', 'parisian_square', ['parisian_square_v0', 'parisian_square_v1', 'parisian_square_v2', 'parisian_square_v3']],
+      ['park_french_parterre_axis_v1', 'parisian_jardin', ['parisian_jardin_v0', 'parisian_jardin_v1', 'parisian_jardin_v2', 'parisian_jardin_v3']],
+      ['park_amsterdam_vondelpark_pavilion_v3', 'amsterdam_vondelpark', ['amsterdam_vondelpark_v0', 'amsterdam_vondelpark_v1', 'amsterdam_vondelpark_v2', 'amsterdam_vondelpark_v3']],
+      ['park_amsterdam_hofje_garden_v0', 'amsterdam_hofje_garden', ['amsterdam_hofje_garden_v0', 'amsterdam_hofje_garden_v1', 'amsterdam_hofje_garden_v2', 'amsterdam_hofje_garden_v3']],
+      ['park_amsterdam_plein_v0', 'amsterdam_plein', ['amsterdam_plein_v0', 'amsterdam_plein_v1', 'amsterdam_plein_v2', 'amsterdam_plein_v3']],
+      ['park_barcelona_pati_green_v0', 'barcelona_pati_interior', ['barcelona_pati_interior_v0', 'barcelona_pati_interior_v1', 'barcelona_pati_interior_v2', 'barcelona_pati_interior_v3']],
+      ['park_barcelona_xamfra_corner_v2', 'barcelona_placa_xamfra', ['barcelona_placa_xamfra_v0', 'barcelona_placa_xamfra_v1', 'barcelona_placa_xamfra_v2', 'barcelona_placa_xamfra_v3']],
+      ['park_barcelona_superilla_green_v1', 'barcelona_superilla', ['barcelona_superilla_v0', 'barcelona_superilla_v1', 'barcelona_superilla_v2', 'barcelona_superilla_v3']],
+    ] as const;
+    for (const [familyId, archetypeId, variantIds] of groups) {
+      for (const variantId of variantIds) {
+        const candidate = zone({green_space_archetype_id: archetypeId, green_space_selected_variant_id: variantId});
+        expect(resolveParkLegoContract(candidate)).toMatchObject({familyId, archetypeId, variantId, supported: true});
+        expect(isExecutableParkLegoFamily(candidate)).toBe(true);
+        expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true);
+      }
+    }
+  });
+
+  it('preserves an explicitly registered non-numeric catalogue variant in the legacy path',()=>{const candidate=zone({green_space_archetype_id:'community_garden_enhanced',green_space_selected_variant_id:'garden_healing'});expect(resolveParkLegoContract(candidate)).toMatchObject({familyId:'park_community_healing_garden_v2',variantId:'garden_healing',supported:true});expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true)});
 
   it.each([
     [0, 'Village Green', 'english_pastoral', 'thatched'],
@@ -59,7 +232,7 @@ describe('Public Realm LEGO V1 park families', () => {
     expect(resolveParkLegoContract(candidate)).toMatchObject({
       familyId: 'park_cricket_village_green_v0',
       variantId: `cricket_pitch_oval_v${index}`,
-      supported: index === 0,
+      supported: true,
     });
     expect(resolveParkLegoAppearance(candidate)).toBeNull();
     expect(resolveParkDressingAppearance(candidate)).toMatchObject({
@@ -255,6 +428,161 @@ describe('Public Realm LEGO V1 park families', () => {
     expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true);
   });
 
+  it.each([
+    ['park_pickleball_community_v1', 'pickleball_courts', 'pickleball_courts_v3', 'pickleball_courts_v3_indoor_outdoor_skin', 'pickleball_hybrid_v3'],
+    ['park_caged_soccer_v0', 'soccer_pitch_caged', 'soccer_pitch_caged_v2', 'soccer_pitch_caged_v2_youth_training_skin', 'caged_soccer_youth_v2'],
+    ['park_track_oval_school_v2', 'running_track_oval', 'running_track_oval_v3', 'running_track_oval_v3_park_loop_skin', 'track_park_loop_v3'],
+    ['park_outdoor_fitness_v0', 'outdoor_fitness_circuit', 'outdoor_fitness_circuit_v3', 'outdoor_fitness_circuit_v3_senior_wellness_skin', 'fitness_senior_v3'],
+    ['park_baseball_club_hub_v1', 'baseball_softball_diamond', 'baseball_softball_diamond_v0', 'baseball_softball_diamond_v0_classic_skin', 'baseball_classic_v0'],
+    ['park_cricket_village_green_v0', 'cricket_pitch_oval', 'cricket_pitch_oval_v2', 'cricket_pitch_oval_v2_south_asian_skin', 'cricket_south_asian_v2'],
+    ['park_nature_play_v0', 'nature_play_area', 'nature_play_area_v2', 'nature_play_area_v2_mud_water_skin', 'nature_play_mud_water_v2'],
+    ['park_inclusive_playground_v0', 'inclusive_playground', 'inclusive_playground_v1', 'inclusive_playground_v1_sensory_skin', 'inclusive_sensory_v1'],
+    ['park_pump_track_v0', 'pump_track', 'pump_track_v3', 'pump_track_v3_modular_skin', 'pump_track_modular_v3'],
+    ['park_splash_pad_v0', 'splash_pad_area', 'splash_pad_area_v2', 'splash_pad_area_v2_meadow_skin', 'splash_pad_meadow_v2'],
+  ] as const)('executes the explicit Batch 17 selection for %s', (
+    familyId, archetypeId, variantId, appearanceKitId, plantingStructure,
+  ) => {
+    const candidate = zone({
+      public_realm_lego: trustedRecipe({
+        family_id: familyId,
+        family_version: 1,
+        archetype_id: archetypeId,
+        variant_id: variantId,
+        appearance_kit_id: appearanceKitId,
+        planting_structure: plantingStructure,
+      }),
+    });
+    expect(resolveParkLegoContract(candidate)).toMatchObject({
+      familyId, archetypeId, variantId, supported: true,
+    });
+    expect(isExecutableParkLegoFamily(candidate)).toBe(true);
+    expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true);
+  });
+
+  it.each([
+    ['park_disc_golf_wooded_v0', 'disc_golf_course', 'disc_golf_course_v2', 'disc_golf_course_v2_hillside_terrain_skin', 'disc_golf_hillside_v2'],
+    ['park_bocce_piazza_v0', 'bocce_petanque_court', 'bocce_petanque_court_v3', 'bocce_petanque_court_v3_community_senior_skin', 'bocce_community_senior_v3'],
+    ['park_climbing_competition_v0', 'climbing_bouldering_wall', 'climbing_bouldering_wall_v1', 'climbing_bouldering_wall_v1_natural_rock_skin', 'climbing_natural_rock_v1'],
+    ['park_mini_golf_classic_v0', 'mini_golf_course', 'mini_golf_course_v2', 'mini_golf_course_v2_urban_art_skin', 'mini_golf_urban_art_v2'],
+    ['park_beach_volleyball_competition_v0', 'beach_volleyball_courts', 'beach_volleyball_courts_v1', 'beach_volleyball_courts_v1_beachside_skin', 'beach_volleyball_beachside_v1'],
+    ['park_pollinator_prairie_v0', 'pollinator_meadow', 'pollinator_meadow_v3', 'pollinator_meadow_v3_formal_border_skin', 'pollinator_formal_border_v3'],
+    ['park_orchard_heritage_v0', 'urban_orchard_food_forest', 'urban_orchard_food_forest_v2', 'urban_orchard_food_forest_v2_pick_your_own_skin', 'orchard_pick_your_own_v2'],
+    ['park_bioswale_streetside_v0', 'bioswale_rain_garden', 'bioswale_rain_garden_v1', 'bioswale_rain_garden_v1_park_rain_garden_skin', 'bioswale_park_rain_garden_v1'],
+    ['park_sculpture_museum_court_v0', 'sculpture_garden', 'sculpture_garden_v2', 'sculpture_garden_v2_interactive_kinetic_skin', 'sculpture_kinetic_v2'],
+    ['park_labyrinth_classical_v0', 'labyrinth_meditation', 'labyrinth_meditation_v3', 'labyrinth_meditation_v3_modern_mindfulness_skin', 'labyrinth_modern_v3'],
+  ] as const)('executes the explicit Batch 18 selection for %s', (
+    familyId, archetypeId, variantId, appearanceKitId, plantingStructure,
+  ) => {
+    const candidate = zone({
+      public_realm_lego: trustedRecipe({
+        family_id: familyId,
+        family_version: 1,
+        archetype_id: archetypeId,
+        variant_id: variantId,
+        appearance_kit_id: appearanceKitId,
+        planting_structure: plantingStructure,
+      }),
+    });
+    expect(resolveParkLegoContract(candidate)).toMatchObject({
+      familyId, archetypeId, variantId, supported: true,
+    });
+    expect(isExecutableParkLegoFamily(candidate)).toBe(true);
+    expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true);
+  });
+
+  it.each([
+    ['park_ice_rink_multipurpose_v3', 'outdoor_ice_rink', 'outdoor_ice_rink_v0', 'outdoor_ice_rink_v0_holiday_market_skin', 'ice_rink_holiday_market_v0'],
+    ['park_kayak_river_launch_v0', 'kayak_launch_dock', 'kayak_launch_dock_v3', 'kayak_launch_dock_v3_community_boathouse_skin', 'kayak_community_boathouse_v3'],
+    ['park_tidal_marsh_cordgrass_v0', 'tidal_marsh_boardwalk', 'tidal_marsh_boardwalk_v2', 'tidal_marsh_boardwalk_v2_reedbed_skin', 'tidal_marsh_reedbed_v2'],
+    ['park_cinema_lawn_projection_v1', 'outdoor_cinema_lawn', 'outdoor_cinema_lawn_v0', 'outdoor_cinema_lawn_v0_popup_festival_skin', 'cinema_popup_festival_v0'],
+    ['park_food_truck_permanent_v1', 'food_truck_plaza', 'food_truck_plaza_v3', 'food_truck_plaza_v3_night_market_skin', 'food_truck_night_market_v3'],
+    ['park_great_lawn_v2', 'festival_event_lawn', 'festival_event_lawn_v1', 'festival_event_lawn_v1_farmers_market_skin', 'festival_farmers_market_v1'],
+    ['park_campus_meadow_quad_v0', 'campus_central_quad', 'campus_central_quad_variant_3', 'campus_central_quad_v3_formal_collegiate_skin', 'campus_formal_collegiate_v3'],
+    ['park_urban_beach_family_v2', 'urban_beach', 'urban_beach_v0', 'urban_beach_v0_paris_plages_skin', 'urban_beach_paris_v0'],
+    ['park_velodrome_open_air_v0', 'velodrome_cycling_track', 'velodrome_cycling_track_variant_2', 'velodrome_cycling_track_v2_parkland_skin', 'velodrome_parkland_v2'],
+    ['park_mtb_skills_dirt_v2', 'mountain_bike_park', 'mountain_bike_park_variant_1', 'mountain_bike_park_v1_hillside_skin', 'mtb_hillside_v1'],
+  ] as const)('executes the explicit Batch 19 selection for %s', (
+    familyId, archetypeId, variantId, appearanceKitId, plantingStructure,
+  ) => {
+    const candidate = zone({
+      public_realm_lego: trustedRecipe({
+        family_id: familyId,
+        family_version: 1,
+        archetype_id: archetypeId,
+        variant_id: variantId,
+        appearance_kit_id: appearanceKitId,
+        planting_structure: plantingStructure,
+      }),
+    });
+    expect(resolveParkLegoContract(candidate)).toMatchObject({
+      familyId, archetypeId, variantId, supported: true,
+    });
+    expect(isExecutableParkLegoFamily(candidate)).toBe(true);
+    expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true);
+  });
+
+  it.each([
+    ['park_water_ecology', 'riparian_buffer', 'riparian_buffer_v2', 'riparian_buffer_v2_rewilded_urban_skin', 'riparian_rewilded_v2'],
+    ['park_water_ecology', 'wetland_rain_garden', 'wetland_rain_garden_v3', 'wetland_rain_garden_v3_resilient_coastal_skin', 'wetland_coastal_v3'],
+    ['park_playground_adventure_v0', 'playground_adventure', 'playground_adventure_v1', 'playground_adventure_v1_modern_steel_skin', 'playground_modern_steel_v1'],
+    ['park_amphitheater_lawn_v0', 'amphitheater_lawn', 'amphitheater_lawn_v2', 'amphitheater_lawn_v2_intimate_garden_skin', 'amphitheater_intimate_garden_v2'],
+    ['park_beer_garden_munich_v0', 'beer_garden', 'beer_garden_v3', 'beer_garden_v3_rooftop_skin', 'beer_garden_rooftop_v3'],
+    ['park_city_hall_modernist_fountain_v2', 'city_hall_government_plaza', 'city_hall_government_plaza_v1', 'city_hall_government_plaza_v1_historic_skin', 'city_hall_historic_v1'],
+    ['park_sunken_courtyard_v0', 'sunken_plaza', 'sunken_plaza_v1', 'sunken_plaza_v1_rockefeller_rink_skin', 'sunken_rockefeller_v1'],
+    ['park_cathedral_courtyard_fountain_v3', 'cathedral_religious_forecourt', 'cathedral_religious_forecourt_v0', 'cathedral_religious_forecourt_v0_asian_temple_skin', 'cathedral_asian_temple_v0'],
+    ['park_cultural_museum_terrace_v0', 'cultural_institution_forecourt', 'cultural_institution_forecourt_v3', 'cultural_institution_forecourt_v3_arena_concourse_skin', 'cultural_arena_concourse_v3'],
+    ['park_terraced_cascade_v3', 'stepped_terraced_plaza', 'stepped_terraced_plaza_v1', 'stepped_terraced_plaza_v1_spanish_steps_skin', 'terraced_spanish_v1'],
+  ] as const)('executes the explicit Batch 20 selection for %s', (
+    familyId, archetypeId, variantId, appearanceKitId, plantingStructure,
+  ) => {
+    const candidate = zone({
+      public_realm_lego: trustedRecipe({
+        family_id: familyId,
+        family_version: 1,
+        archetype_id: archetypeId,
+        variant_id: variantId,
+        appearance_kit_id: appearanceKitId,
+        planting_structure: plantingStructure,
+      }),
+    });
+    expect(resolveParkLegoContract(candidate)).toMatchObject({
+      familyId, archetypeId, variantId, supported: true,
+    });
+    expect(isExecutableParkLegoFamily(candidate)).toBe(true);
+    expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true);
+  });
+
+  it.each([
+    ['park_athletics_fields_v0', 'athletics_precinct_sports_fields', 'athletics_precinct_sports_fields_variant_2', 'athletics_precinct_sports_fields_v2_campus_precinct_skin', 'athletics_campus_v2'],
+    ['park_community_garden_v0', 'community_garden', 'community_garden_v2', 'community_garden_v2_natural_meadow_skin', 'community_garden_meadow_v2'],
+    ['park_fountain_formal_pool_v1', 'fountain_water_feature', 'fountain_water_feature_v3', 'fountain_water_feature_v3_ecological_wetland_skin', 'fountain_wetland_v3'],
+    ['park_water_ecology', 'pond_lake', 'pond_lake_v1', 'pond_lake_v1_formal_reflecting_skin', 'pond_formal_v1'],
+    ['park_market_festival_lawn_v1', 'market_square', 'market_square_v0', 'market_square_v0_terraced_performance_skin', 'market_terraced_v0'],
+    ['park_civic_plaza', 'formal_civic_plaza', 'formal_civic_plaza_v2', 'formal_civic_plaza_v2_green_civic_skin', 'formal_civic_green_v2'],
+    ['park_linear_greenway', 'linear_park_greenway', 'linear_park_greenway_v3', 'linear_park_greenway_v3_elevated_viaduct_skin', 'linear_elevated_viaduct_v3'],
+    ['park_boardwalk_maritime_v0', 'promenade_boardwalk', 'promenade_boardwalk_v2', 'promenade_boardwalk_v2_tropical_resort_skin', 'boardwalk_tropical_v2'],
+    ['park_natural_swimming_pond_v0', 'swimming_pool_complex', 'swimming_pool_complex_v2', 'swimming_pool_complex_v2_contemporary_interactive_skin', 'swimming_interactive_v2'],
+    ['park_rooftop_intensive_garden_v0', 'rooftop_garden', 'rooftop_garden_v3', 'rooftop_garden_v3_social_terrace_skin', 'rooftop_social_v3'],
+  ] as const)('executes the explicit Batch 21 selection for %s', (
+    familyId, archetypeId, variantId, appearanceKitId, plantingStructure,
+  ) => {
+    const candidate = zone({
+      public_realm_lego: trustedRecipe({
+        family_id: familyId,
+        family_version: 1,
+        archetype_id: archetypeId,
+        variant_id: variantId,
+        appearance_kit_id: appearanceKitId,
+        planting_structure: plantingStructure,
+      }),
+    });
+    expect(resolveParkLegoContract(candidate)).toMatchObject({
+      familyId, archetypeId, variantId, supported: true,
+    });
+    expect(isExecutableParkLegoFamily(candidate)).toBe(true);
+    expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true);
+  });
+
   it('keeps Skate Park v0 on its archetype-owned surface in legacy and compiled states', () => {
     const legacy = zone({
       green_space_archetype_id: 'skate_park',
@@ -331,7 +659,7 @@ describe('Public Realm LEGO V1 park families', () => {
     expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true);
   });
 
-  it('does not borrow the v0 labyrinth program or skin for an unreviewed variant', () => {
+  it('uses the reviewed zen-rock identity instead of borrowing the v0 labyrinth skin', () => {
     const candidate = zone({
       green_space_archetype_id: 'labyrinth_meditation',
       green_space_selected_variant_id: 'labyrinth_meditation_v1',
@@ -339,9 +667,126 @@ describe('Public Realm LEGO V1 park families', () => {
     expect(resolveParkLegoContract(candidate)).toMatchObject({
       familyId: 'park_labyrinth_classical_v0',
       variantId: 'labyrinth_meditation_v1',
-      supported: false,
+      supported: true,
     });
-    expect(usesArchetypeOwnedParkSurface(candidate)).toBe(false);
+    expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true);
+  });
+
+  it.each([
+    ['outdoor_ice_rink', 'outdoor_ice_rink_v3', 'park_ice_rink_multipurpose_v3'],
+    ['kayak_launch_dock', 'kayak_launch_dock_v0', 'park_kayak_river_launch_v0'],
+    ['tidal_marsh_boardwalk', 'tidal_marsh_boardwalk_v0', 'park_tidal_marsh_cordgrass_v0'],
+    ['outdoor_cinema_lawn', 'outdoor_cinema_lawn_v1', 'park_cinema_lawn_projection_v1'],
+    ['food_truck_plaza', 'food_truck_plaza_v1', 'park_food_truck_permanent_v1'],
+    ['festival_event_lawn', 'festival_event_lawn_v2', 'park_great_lawn_v2'],
+    ['campus_central_quad', 'campus_central_quad_variant_0', 'park_campus_meadow_quad_v0'],
+    ['urban_beach', 'urban_beach_v2', 'park_urban_beach_family_v2'],
+    ['velodrome_cycling_track', 'velodrome_cycling_track_variant_0', 'park_velodrome_open_air_v0'],
+    ['mountain_bike_park', 'mountain_bike_park_variant_2', 'park_mtb_skills_dirt_v2'],
+  ] as const)('compiles batch-6 %s/%s to exact zero-call family %s', (
+    archetypeId, variantId, familyId,
+  ) => {
+    const candidate = zone({
+      green_space_archetype_id: archetypeId,
+      green_space_selected_variant_id: variantId,
+    });
+    expect(resolveParkLegoContract(candidate)).toMatchObject({
+      familyId, archetypeId, variantId, supported: true,
+    });
+    expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true);
+  });
+
+  it.each([
+    ['regional_park', 'regional_park_v0', 'park_regional_english_landscape_v0'],
+    ['beer_garden', 'beer_garden_v0', 'park_beer_garden_munich_v0'],
+    ['sunken_plaza', 'sunken_plaza_v0', 'park_sunken_courtyard_v0'],
+    ['stepped_terraced_plaza', 'stepped_terraced_plaza_v3', 'park_terraced_cascade_v3'],
+    ['market_square', 'market_square_v1', 'park_market_festival_lawn_v1'],
+    ['promenade_boardwalk', 'promenade_boardwalk_v0', 'park_boardwalk_maritime_v0'],
+    ['fountain_water_feature', 'fountain_water_feature_v1', 'park_fountain_formal_pool_v1'],
+    ['swimming_pool_complex', 'swimming_pool_complex_v0', 'park_natural_swimming_pond_v0'],
+    ['nature_preserve', 'nature_preserve_v1', 'park_nature_preserve_prairie_v1'],
+    ['riverfront_park_beach', 'riverfront_park_beach_v1', 'park_riverfront_lake_beach_v1'],
+  ] as const)('compiles batch-7 %s/%s to exact zero-call family %s', (
+    archetypeId, variantId, familyId,
+  ) => {
+    const candidate = zone({
+      green_space_archetype_id: archetypeId,
+      green_space_selected_variant_id: variantId,
+    });
+    expect(resolveParkLegoContract(candidate)).toMatchObject({
+      familyId, archetypeId, variantId, supported: true,
+    });
+    expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true);
+  });
+
+  it.each([
+    ['park_cemetery_classical_v0', 'cemetery_memorial_grounds', 'cemetery_memorial_grounds_v2', 'cemetery_memorial_grounds_v2_sculptural_skin', 'cemetery_sculptural_v2'],
+    ['park_courtyard_linear_water_v1', 'courtyard_plaza', 'courtyard_plaza_v0', 'courtyard_plaza_v0_neoclassical_skin', 'courtyard_neoclassical_v0'],
+    ['park_transit_green_civic_v2', 'transit_plaza', 'transit_plaza_v3', 'transit_plaza_v3_festival_market_skin', 'transit_festival_v3'],
+    ['park_amphitheater_terraced_v0', 'amphitheater_performance_space', 'amphitheater_performance_space_v2', 'amphitheater_performance_space_v2_intimate_garden_skin', 'amphitheater_garden_v2'],
+    ['park_water_ecology', 'stormwater_retention_pond', 'stormwater_retention_pond_v3', 'stormwater_retention_pond_v3_ecological_wetland_skin', 'stormwater_ecological_wetland_v3'],
+    ['park_canal_ecological_wetland_v3', 'canal_waterway', 'canal_waterway_v1', 'canal_waterway_v1_formal_reflecting_skin', 'canal_formal_v1'],
+    ['park_custom_biophilic_urban_v1', 'custom_parks_plazas', 'custom_parks_plazas_v2', 'custom_parks_plazas_v2_tech_smart_skin', 'custom_tech_smart_v2'],
+    ['park_nature_preserve_prairie_v1', 'nature_preserve', 'nature_preserve_v3', 'nature_preserve_v3_old_growth_skin', 'nature_preserve_old_growth_v3'],
+    ['park_riverfront_lake_beach_v1', 'riverfront_park_beach', 'riverfront_park_beach_v0', 'riverfront_park_beach_v0_urban_river_skin', 'riverfront_urban_beach_v0'],
+    ['park_parklet_sf_timber_v1', 'street_plaza_parklet', 'street_plaza_parklet_v2', 'street_plaza_parklet_v2_tactical_skin', 'parklet_tactical_v2'],
+  ] as const)('executes the explicit Batch 22 selection for %s', (
+    familyId, archetypeId, variantId, appearanceKitId, plantingStructure,
+  ) => {
+    const candidate = zone({ public_realm_lego: trustedRecipe({
+      family_id: familyId, family_version: 1, archetype_id: archetypeId,
+      variant_id: variantId, appearance_kit_id: appearanceKitId,
+      planting_structure: plantingStructure,
+    }) });
+    expect(resolveParkLegoContract(candidate)).toMatchObject({ familyId, archetypeId, variantId, supported: true });
+    expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true);
+  });
+
+  it.each([
+    ['park_calgary_prairie_market_v1', 'calgary_prairie_plaza', 'calgary_prairie_plaza_v0', 'calgary_prairie_plaza_v0_winter_skin', 'calgary_prairie_winter_v0'],
+    ['park_calgary_princes_island_festival_v0', 'calgary_princes_island', 'calgary_princes_island_v3', 'calgary_princes_island_v3_flood_skin', 'calgary_princes_flood_v3'],
+    ['park_halifax_coastal_fog_path_v2', 'halifax_coastal_park', 'halifax_coastal_park_v3', 'halifax_coastal_park_v3_boardwalk_skin', 'halifax_coastal_boardwalk_v3'],
+    ['park_halifax_rose_bandstand_v0', 'halifax_public_gardens', 'halifax_public_gardens_v3', 'halifax_public_gardens_v3_tulip_skin', 'halifax_spring_tulip_v3'],
+    ['park_london_circus_planted_v1', 'london_circus', 'london_circus_v0', 'london_circus_v0_round_island_skin', 'london_circus_round_v0'],
+    ['park_london_railed_square_v1', 'london_garden_square', 'london_garden_square_v2', 'london_garden_square_v2_lush_brick_skin', 'london_garden_lush_brick_v2'],
+    ['park_montreal_mount_royal_grove_v2', 'montreal_mount_royal', 'montreal_mount_royal_v0', 'montreal_mount_royal_v0_overlook_skin', 'montreal_mount_royal_overlook_v0'],
+    ['park_montreal_neighbourhood_square_v3', 'montreal_square', 'montreal_square_v1', 'montreal_square_v1_linear_bench_skin', 'montreal_square_linear_v1'],
+    ['park_newyork_community_greenhouse_v3', 'newyork_community_garden', 'newyork_community_garden_v0', 'newyork_community_garden_v0_allotment_skin', 'newyork_community_allotment_v0'],
+    ['park_newyork_pocket_water_v0', 'newyork_pocket_park', 'newyork_pocket_park_v2', 'newyork_pocket_park_v2_brick_skin', 'newyork_pocket_brick_v2'],
+  ] as const)('executes the explicit Batch 24 selection for %s', (
+    familyId, archetypeId, variantId, appearanceKitId, plantingStructure,
+  ) => {
+    const candidate = zone({ public_realm_lego: trustedRecipe({
+      family_id: familyId, family_version: 1, archetype_id: archetypeId,
+      variant_id: variantId, appearance_kit_id: appearanceKitId,
+      planting_structure: plantingStructure,
+    }) });
+    expect(resolveParkLegoContract(candidate)).toMatchObject({ familyId, archetypeId, variantId, supported: true });
+    expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true);
+  });
+
+  it.each([
+    ['park_vancouver_seawall_cycle_v2', 'vancouver_seawall', 'vancouver_seawall_v0', 'vancouver_seawall_v0_promenade_skin', 'vancouver_seawall_promenade_v0'],
+    ['park_vancouver_beach_pavilion_v0', 'vancouver_beach_park', 'vancouver_beach_park_v2', 'vancouver_beach_park_v2_glazed_pavilion_skin', 'vancouver_beach_glazed_v2'],
+    ['park_toronto_ravine_creek_v1', 'toronto_ravine', 'toronto_ravine_v3', 'toronto_ravine_v3_winter_skin', 'toronto_ravine_winter_v3'],
+    ['park_toronto_urban_market_v1', 'toronto_urban_square', 'toronto_urban_square_v2', 'toronto_urban_square_v2_modernist_pool_skin', 'toronto_square_modernist_v2'],
+    ['park_olmsted_multilandscape_v3', 'picturesque_olmsted_park', 'picturesque_olmsted_park_v1', 'picturesque_olmsted_park_v1_lookout_skin', 'olmsted_lookout_v1'],
+    ['park_reclaimed_wharf_v0', 'reclaimed_industrial_park', 'reclaimed_industrial_park_v1', 'reclaimed_industrial_park_v1_gasworks_skin', 'reclaimed_gasworks_v1'],
+    ['park_quarry_tier_cascade_v2', 'quarry_sunken_garden_park', 'quarry_sunken_garden_park_v3', 'quarry_sunken_garden_park_v3_show_garden_skin', 'quarry_show_garden_v3'],
+    ['park_hilltop_viewpoint_v3', 'hilltop_topographic_park', 'hilltop_topographic_park_v2', 'hilltop_topographic_park_v2_folly_skin', 'hilltop_folly_v2'],
+    ['park_estate_oak_picnic_v1', 'estate_picnic_grove', 'estate_picnic_grove_v0', 'estate_picnic_grove_v0_pine_creek_skin', 'estate_pine_creek_v0'],
+    ['park_water_ecology', 'reservoir_watershed_park', 'reservoir_watershed_park_v3', 'reservoir_watershed_park_v3_earthen_dam_skin', 'reservoir_earthen_dam_v3'],
+  ] as const)('executes the explicit Batch 25 selection for %s', (
+    familyId, archetypeId, variantId, appearanceKitId, plantingStructure,
+  ) => {
+    const candidate = zone({ public_realm_lego: trustedRecipe({
+      family_id: familyId, family_version: 1, archetype_id: archetypeId,
+      variant_id: variantId, appearance_kit_id: appearanceKitId,
+      planting_structure: plantingStructure,
+    }) });
+    expect(resolveParkLegoContract(candidate)).toMatchObject({ familyId, archetypeId, variantId, supported: true });
+    expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true);
   });
 
   it.each([
@@ -430,5 +875,58 @@ describe('Public Realm LEGO V1 park families', () => {
       .toBe(NEIGHBORHOOD_COMMUNITY_PROGRAM_ANCHORS);
     expect(resolveParkProgramAnchorLayout(zone({ green_space_archetype_id: 'urban_pocket_park' })))
       .toBeUndefined();
+  });
+
+  it('executes every Batch 26 exact-reference closure through its reviewed parent family', () => {
+    const familyByArchetype: Record<string, string> = {
+      greenbelt_buffer_park: 'park_greenbelt_rail_trail_v1',
+      foothill_trail_park: 'park_foothill_heathland_trail_v2',
+      concert_pavilion_lawn: 'park_concert_timber_lawn_v2',
+      night_market: 'park_night_market_hawker_v0',
+      parade_ground: 'park_parade_national_mall_v3',
+      marina_yacht_harbor: 'park_marina_pacific_dock_v2',
+      working_pier_wharf_conversion: 'park_working_pier_brooklyn_park_v3',
+      floating_park_pool: 'park_floating_meadow_loop_v2',
+      lighthouse_point_park: 'park_lighthouse_pacific_headland_v2',
+      lake_edge_plaza: 'park_lake_edge_timber_deck_v2',
+    };
+    for (const skin of BATCH26_PARK_SKINS) {
+      const candidate = zone({
+        green_space_archetype_id: skin.archetypeId,
+        green_space_selected_variant_id: skin.variantId,
+      });
+      expect(resolveParkLegoContract(candidate)).toMatchObject({
+        familyId: familyByArchetype[skin.archetypeId],
+        archetypeId: skin.archetypeId,
+        variantId: skin.variantId,
+        supported: true,
+      });
+      expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true);
+    }
+  });
+
+  it('executes every final Batch 27 closure through its reviewed parent family', () => {
+    const familyByArchetype: Record<string, string> = {
+      academic_courtyard: 'park_academic_planted_court_v0',
+      campus_pedestrian_spine: 'park_campus_green_spine_v0',
+      constructed_wetland_eco_park: 'park_constructed_wetland_boardwalk_v0',
+      research_garden_teaching_arboretum: 'park_research_arboretum_v0',
+      rewilding_ecological_restoration_zone: 'park_rewilding_reforestation_v1',
+      stormwater_naturalized_drainage_corridor: 'park_stormwater_natural_creek_v0',
+      stormwater_resilience_park: 'park_stormwater_arid_channel_v3',
+    };
+    for (const skin of BATCH27_PARK_SKINS) {
+      const candidate = zone({
+        green_space_archetype_id: skin.archetypeId,
+        green_space_selected_variant_id: skin.variantId,
+      });
+      expect(resolveParkLegoContract(candidate)).toMatchObject({
+        familyId: familyByArchetype[skin.archetypeId],
+        archetypeId: skin.archetypeId,
+        variantId: skin.variantId,
+        supported: true,
+      });
+      expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true);
+    }
   });
 });

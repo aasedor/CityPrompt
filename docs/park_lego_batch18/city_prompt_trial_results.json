@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "testedAt": "2026-08-06T23:25:35.472048+00:00",
+  "projectId": "e4dfd8f2-4bb3-4a4f-ad5a-b30bf0fe77cd",
+  "zoneId": "09571cfd-936a-4d9e-8f19-29109c6920f3",
+  "workflow": "one_park_at_a_time_generate_to_3d",
+  "planningState": {
+    "flatMonochromePolygon": true,
+    "previewed3DBeforeGenerate": false
+  },
+  "selection": {
+    "archetypeId": "bocce_petanque_court",
+    "variantId": "bocce_petanque_court_v2",
+    "label": "Modern Park Court"
+  },
+  "compiledRecipe": {
+    "familyId": "park_bocce_piazza_v0",
+    "profileId": "bocce-piazza-lego-v1",
+    "appearanceKitId": "bocce_petanque_court_v2_modern_park_skin",
+    "plantingStructure": "bocce_modern_park_v2",
+    "targetWidthM": 39.723,
+    "targetDepthM": 31.185,
+    "targetAreaM2": 1192.878,
+    "components": [
+      "bocce_ground_program_v1",
+      "regulation_bocce_lane_v1",
+      "stone_border_v1",
+      "vine_pergola_v1",
+      "modern_park_bocce_program_v1"
+    ]
+  },
+  "scene": {
+    "buildings": 1,
+    "parks": 1,
+    "streets": 0,
+    "assembled": 1,
+    "noFamily": 0,
+    "skipped": 0,
+    "separateBuildingFamily": "Parisian Boulevard Corner",
+    "peopleRendered": false,
+    "embeddedLargeBuildings": false,
+    "aiDrapeCalls": 0
+  },
+  "observations": [
+    "The selected park remained a flat monochrome polygon until Generate to 3D.",
+    "Generate to 3D compiled the exact Batch 18 variant without an AI drape.",
+    "The park polygon flattened the Google tile surface beneath the LEGO program.",
+    "Legacy plaza metadata on this reused test zone initially selected a unit-paver base; removing stale plaza_* fields restored the correct green-space base without altering the compiled park recipe."
+  ],
+  "result": "pass"
+}

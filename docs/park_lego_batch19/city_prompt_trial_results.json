@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "testedAt": "2026-08-07T00:05:02.257996+00:00",
+  "projectId": "e4dfd8f2-4bb3-4a4f-ad5a-b30bf0fe77cd",
+  "zoneId": "09571cfd-936a-4d9e-8f19-29109c6920f3",
+  "workflow": "one_park_at_a_time_generate_to_3d",
+  "planningState": {
+    "flatColoredPolygon": true,
+    "previewedBatch19DepthKitBeforeGenerate": false
+  },
+  "selection": {
+    "archetypeId": "food_truck_plaza",
+    "variantId": "food_truck_plaza_v0",
+    "label": "Industrial-Lot Pop-Up"
+  },
+  "compiledRecipe": {
+    "familyId": "park_food_truck_permanent_v1",
+    "profileId": "food-truck-permanent-lego-v1",
+    "appearanceKitId": "food_truck_plaza_v0_industrial_popup_skin",
+    "plantingStructure": "food_truck_industrial_v0",
+    "targetWidthM": 39.723,
+    "targetDepthM": 31.185,
+    "targetAreaM2": 1192.878,
+    "components": [
+      "food_truck_plaza_ground_program_v1",
+      "utility_truck_bays_v1",
+      "shared_truck_prop_v1",
+      "communal_picnic_grid_v1",
+      "industrial_popup_truck_program_v1"
+    ]
+  },
+  "scene": {
+    "buildings": 1,
+    "parks": 1,
+    "streets": 0,
+    "assembled": 1,
+    "noFamily": 0,
+    "skipped": 0,
+    "separateBuildingFamily": "Parisian Boulevard Corner",
+    "peopleRendered": false,
+    "embeddedLargeBuildings": false,
+    "aiDrapeCalls": 0
+  },
+  "observations": [
+    "The selected archetype remained a flat colored polygon before Generate to 3D.",
+    "Generate to 3D persisted the exact Batch 19 family, variant, appearance kit, planting structure, and metric target.",
+    "The compiled globe showed six parcel-fitted food-truck volumes, communal picnic tables, overhead string-light runs, perimeter planting, and the archetype-derived industrial surface.",
+    "The park polygon flattened the Google tile surface beneath the LEGO program.",
+    "An initial Night-Market v3 attempt correctly failed the exact-family size envelope on this 1,193 m2 parcel; the compact Industrial Pop-Up v0 now carries its own 500-1,500 m2 envelope instead of inheriting the permanent park minimum.",
+    "The first browser attempt was connected to a different backend and produced only the generic fallback layer; reconnecting the frontend to the matching Batch 19 backend made the exact recipe authoritative."
+  ],
+  "result": "pass"
+}

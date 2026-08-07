@@ -46,7 +46,7 @@ export function resolveParkMicrodetailGuideKind(
   familyId: ParkLegoFamilyId,
   authoredGuideKind: string,
 ): ParkMicrodetailGuideKind | null {
-  if (familyId === 'park_water_ecology') {
+  if (familyId === 'park_water_ecology' || familyId === 'park_constructed_wetland_boardwalk_v0') {
     return authoredGuideKind === 'ellipse' ? 'water' : 'fixed_program';
   }
   if (['line', 'axis', 'polyline', 'path_loop'].includes(authoredGuideKind)) {
@@ -431,6 +431,146 @@ function familyTargets(
       return [target('ornamental_grass', 14), target('perennial', 10), target('light', 7), target('bin', 2)];
     case 'park_labyrinth_classical_v0':
       return [target('shrub', 14), target('perennial', 8), target('light', 4), target('bin', 1)];
+    case 'park_ice_rink_multipurpose_v3':
+      return [target('light', 4), target('bollard', 6), target('bin', 2), target('bike_rack', 2)];
+    case 'park_kayak_river_launch_v0':
+      return [target('shrub', 12), target('ornamental_grass', 14), target('riprap', 10), target('picnic_table', 2), target('bollard', 4)];
+    case 'park_tidal_marsh_cordgrass_v0':
+      return [target('reed', 32), target('ornamental_grass', 24), target('shrub', 5), target('riprap', 6)];
+    case 'park_cinema_lawn_projection_v1':
+      return [target('light', 4), target('bollard', 6), target('bin', 2), target('bike_rack', 2)];
+    case 'park_food_truck_permanent_v1':
+      return [target('perennial', 10), target('ornamental_grass', 12), target('light', 8), target('bin', 4), target('bike_rack', 3)];
+    case 'park_great_lawn_v2':
+      return [target('shrub', 16), target('ornamental_grass', 12), target('picnic_table', 4), target('bin', 4), target('drinking_fountain', 2)];
+    case 'park_campus_meadow_quad_v0':
+      return [target('perennial', 24), target('ornamental_grass', 24), target('boulder', 12), target('picnic_table', 3), target('bike_rack', 4)];
+    case 'park_urban_beach_family_v2':
+      return [target('ornamental_grass', 10), target('picnic_table', 5), target('bin', 3), target('bike_rack', 2), target('drinking_fountain', 2)];
+    case 'park_velodrome_open_air_v0':
+      return [target('light', 8), target('bollard', 6), target('bin', 3), target('bike_rack', 6), target('drinking_fountain', 2)];
+    case 'park_mtb_skills_dirt_v2':
+      return [target('boulder', 12), target('riprap', 8), target('picnic_table', 3), target('bin', 2), target('bike_rack', 4), target('drinking_fountain', 1)];
+    case 'park_regional_english_landscape_v0':
+      return [target('shrub', 18), target('perennial', 10), target('boulder', 8), target('picnic_table', 5), target('bin', 4), target('drinking_fountain', 2)];
+    case 'park_beer_garden_munich_v0':
+      return [target('light', 10), target('bin', 4), target('bike_rack', 4), target('ornamental_grass', 8)];
+    case 'park_sunken_courtyard_v0':
+      return [target('shrub', 12), target('perennial', 8), target('light', 6), target('bin', 2)];
+    case 'park_terraced_cascade_v3':
+      return [target('shrub', 16), target('ornamental_grass', 18), target('light', 8), target('bin', 3)];
+    case 'park_market_festival_lawn_v1':
+      return [target('light', 8), target('bollard', 12), target('bin', 6), target('bike_rack', 5), target('drinking_fountain', 2)];
+    case 'park_boardwalk_maritime_v0':
+      return [target('ornamental_grass', 18), target('light', 10), target('bollard', 10), target('bin', 4), target('drinking_fountain', 2)];
+    case 'park_fountain_formal_pool_v1':
+      return [target('shrub', 16), target('perennial', 10), target('light', 8), target('bin', 2)];
+    case 'park_natural_swimming_pond_v0':
+      return [target('reed', 24), target('ornamental_grass', 16), target('riprap', 12), target('picnic_table', 4), target('bin', 3), target('drinking_fountain', 2)];
+    case 'park_nature_preserve_prairie_v1':
+      return [target('ornamental_grass', 30), target('perennial', 24), target('shrub', 8), target('boulder', 6)];
+    case 'park_riverfront_lake_beach_v1':
+      return [target('ornamental_grass', 14), target('picnic_table', 6), target('bike_rack', 4), target('bin', 4), target('drinking_fountain', 2)];
+    case 'park_reclaimed_wharf_v0':
+      return [target('ornamental_grass', 18), target('light', 8), target('bin', 4), target('bike_rack', 3), target('bollard', 8)];
+    case 'park_quarry_tier_cascade_v2':
+      return [target('shrub', 18), target('perennial', 18), target('ornamental_grass', 12), target('light', 6), target('bin', 3)];
+    case 'park_estate_oak_picnic_v1':
+      return [target('ornamental_grass', 8), target('bin', 4), target('drinking_fountain', 2)];
+    case 'park_constructed_wetland_boardwalk_v0':
+      return [target('reed', 32), target('ornamental_grass', 22), target('riprap', 10), target('bin', 3)];
+    case 'park_academic_planted_court_v0':
+      return [target('perennial', 14), target('ornamental_grass', 16), target('light', 6), target('bin', 2), target('bike_rack', 2)];
+    case 'park_campus_green_spine_v0':
+      return [target('perennial', 22), target('ornamental_grass', 24), target('light', 10), target('bin', 4), target('bike_rack', 5)];
+    case 'park_botanical_rose_garden_v3':
+      return [target('shrub', 18), target('perennial', 28), target('light', 6), target('bin', 3)];
+    case 'park_research_arboretum_v0':
+      return [target('shrub', 12), target('perennial', 16), target('boulder', 8), target('bin', 4), target('drinking_fountain', 2)];
+    case 'park_rewilding_reforestation_v1':
+      return [target('shrub', 24), target('perennial', 18), target('ornamental_grass', 20), target('boulder', 8)];
+    case 'park_stormwater_arid_channel_v3':
+      return [target('ornamental_grass', 24), target('boulder', 18), target('riprap', 16), target('bin', 3), target('drinking_fountain', 2)];
+    case 'park_urban_pocket_rustic_v0':
+      return [target('perennial', 18), target('ornamental_grass', 12), target('boulder', 6), target('bin', 1)];
+    case 'park_neighborhood_contemporary_v3':
+      return [target('perennial', 18), target('ornamental_grass', 20), target('light', 6), target('bin', 3), target('bike_rack', 3)];
+    case 'park_cemetery_classical_v0':
+      return [target('shrub', 18), target('perennial', 10), target('light', 6), target('bin', 2)];
+    case 'park_courtyard_linear_water_v1':
+      return [target('ornamental_grass', 14), target('perennial', 12), target('light', 5), target('bollard', 6), target('bike_rack', 2)];
+    case 'park_parklet_sf_timber_v1':
+      return [target('shrub', 6), target('perennial', 8), target('bollard', 2), target('bin', 1)];
+    case 'park_french_parterre_axis_v1':
+      return [target('shrub', 24), target('perennial', 20), target('light', 8), target('bin', 3)];
+    case 'park_london_railed_square_v1':
+      return [target('shrub', 18), target('perennial', 14), target('light', 6), target('bin', 3)];
+    case 'park_halifax_rose_bandstand_v0':
+      return [target('shrub', 20), target('perennial', 28), target('light', 8), target('bin', 3), target('drinking_fountain', 1)];
+    case 'park_olmsted_multilandscape_v3':
+      return [target('shrub', 26), target('perennial', 18), target('boulder', 10), target('picnic_table', 4), target('bin', 5), target('drinking_fountain', 2)];
+    case 'park_hilltop_viewpoint_v3':
+      return [target('shrub', 18), target('boulder', 14), target('riprap', 10), target('bin', 3), target('drinking_fountain', 2)];
+    case 'park_amsterdam_hofje_garden_v0':
+      return [target('shrub', 12), target('perennial', 18), target('light', 2), target('bin', 1)];
+    case 'park_amsterdam_plein_v0':
+      return [target('light', 8), target('bike_rack', 10), target('bin', 4), target('bollard', 8)];
+    case 'park_amsterdam_vondelpark_pavilion_v3':
+      return [target('shrub', 22), target('perennial', 16), target('boulder', 6), target('picnic_table', 4), target('bin', 4), target('drinking_fountain', 2)];
+    case 'park_barcelona_pati_green_v0':
+      return [target('shrub', 14), target('perennial', 20), target('light', 4), target('bin', 2), target('drinking_fountain', 1)];
+    case 'park_barcelona_xamfra_corner_v2':
+      return [target('light', 5), target('bike_rack', 4), target('bin', 2), target('bollard', 6)];
+    case 'park_barcelona_superilla_green_v1':
+      return [target('shrub', 16), target('perennial', 18), target('light', 8), target('bike_rack', 8), target('bin', 5), target('bollard', 10)];
+    case 'park_calgary_prairie_market_v1':
+      return [target('ornamental_grass', 24), target('perennial', 16), target('light', 8), target('bin', 5), target('bike_rack', 4)];
+    case 'park_calgary_princes_island_festival_v0':
+      return [target('reed', 18), target('ornamental_grass', 20), target('picnic_table', 6), target('bin', 5), target('drinking_fountain', 2)];
+    case 'park_montreal_mount_royal_grove_v2':
+      return [target('shrub', 24), target('boulder', 16), target('riprap', 12), target('bin', 4), target('drinking_fountain', 2)];
+    case 'park_montreal_neighbourhood_square_v3':
+      return [target('shrub', 16), target('perennial', 18), target('light', 6), target('bin', 3), target('bike_rack', 3)];
+    case 'park_paris_place_royale_v2': return [target('light',8),target('bin',4),target('bollard',8),target('bike_rack',4)];
+    case 'park_paris_square_tree_grid_v3': return [target('shrub',12),target('perennial',14),target('light',6),target('bin',3)];
+    case 'park_london_circus_planted_v1': return [target('shrub',16),target('perennial',16),target('light',7),target('bike_rack',5),target('bin',3)];
+    case 'park_newyork_pocket_water_v0': return [target('shrub',14),target('perennial',18),target('light',4),target('bin',2)];
+    case 'park_newyork_community_greenhouse_v3': return [target('shrub',12),target('perennial',20),target('bin',2),target('drinking_fountain',1)];
+    case 'park_vancouver_seawall_cycle_v2': return [target('light',10),target('bike_rack',8),target('bin',6),target('drinking_fountain',2),target('bollard',8)];
+    case 'park_vancouver_beach_pavilion_v0': return [target('ornamental_grass',20),target('shrub',14),target('bike_rack',6),target('bin',5),target('drinking_fountain',2)];
+    case 'park_toronto_ravine_creek_v1': return [target('shrub',24),target('boulder',14),target('riprap',12),target('bin',3)];
+    case 'park_toronto_urban_market_v1': return [target('ornamental_grass',16),target('light',8),target('bike_rack',6),target('bin',4),target('bollard',8)];
+    case 'park_halifax_coastal_fog_path_v2': return [target('shrub',22),target('boulder',16),target('riprap',12),target('bin',3)];
+    case 'park_city_hall_modernist_fountain_v2': return [target('light',10),target('bollard',10),target('bin',4),target('bike_rack',4)];
+    case 'park_cathedral_courtyard_fountain_v3': return [target('shrub',12),target('light',8),target('bin',3)];
+    case 'park_cultural_museum_terrace_v0': return [target('ornamental_grass',18),target('light',8),target('bollard',8),target('bike_rack',4)];
+    case 'park_transit_green_civic_v2': return [target('ornamental_grass',20),target('light',10),target('bollard',12),target('bike_rack',8),target('bin',5)];
+    case 'park_amphitheater_terraced_v0': return [target('light',8),target('bin',4),target('drinking_fountain',2)];
+    case 'park_concert_timber_lawn_v2': return [target('shrub',16),target('light',8),target('bin',5),target('drinking_fountain',2)];
+    case 'park_night_market_hawker_v0': return [target('light',16),target('bin',8),target('bollard',10),target('bike_rack',6)];
+    case 'park_parade_national_mall_v3': return [target('light',12),target('bollard',10),target('bin',6)];
+    case 'park_canal_ecological_wetland_v3': return [target('reed',28),target('shrub',18),target('boulder',10),target('riprap',14),target('bin',3)];
+    case 'park_custom_biophilic_urban_v1': return [target('shrub',22),target('perennial',28),target('ornamental_grass',18),target('light',7),target('bin',4)];
+    case 'park_rooftop_intensive_garden_v0': return [target('shrub',18),target('perennial',24),target('ornamental_grass',16),target('light',5),target('bin',2)];
+    case 'park_community_healing_garden_v2': return [target('shrub',18),target('perennial',28),target('ornamental_grass',14),target('drinking_fountain',2),target('bin',3)];
+    case 'park_greenbelt_rail_trail_v1': return [target('shrub',24),target('boulder',10),target('bike_rack',6),target('bin',5),target('drinking_fountain',2)];
+    case 'park_foothill_heathland_trail_v2': return [target('shrub',18),target('boulder',22),target('riprap',12),target('bin',3)];
+    case 'park_marina_pacific_dock_v2': return [target('bollard',14),target('light',10),target('bin',6),target('bike_rack',6)];
+    case 'park_working_pier_brooklyn_park_v3': return [target('ornamental_grass',18),target('light',10),target('bin',6),target('bike_rack',6),target('bollard',12)];
+    case 'park_floating_meadow_loop_v2': return [target('ornamental_grass',26),target('perennial',22),target('light',6),target('bin',4)];
+    case 'park_lighthouse_pacific_headland_v2': return [target('shrub',22),target('boulder',20),target('riprap',12),target('bin',3)];
+    case 'park_lake_edge_timber_deck_v2': return [target('ornamental_grass',20),target('light',10),target('bin',6),target('bike_rack',5),target('bollard',10)];
+    case 'park_stormwater_natural_creek_v0': return [target('reed',28),target('shrub',22),target('boulder',14),target('riprap',16),target('bin',3)];
+    case 'park_surface_parking_standard_v0': return [target('light',8),target('bollard',6)];
+    case 'park_structured_parking_urban_v2': return [target('light',6),target('bollard',10),target('bike_rack',4)];
+    case 'park_underground_parking_green_v1': return [target('shrub',18),target('ornamental_grass',16),target('bollard',8),target('light',4)];
+    case 'park_green_parking_infrastructure_v1': return [target('ornamental_grass',24),target('reed',12),target('light',7),target('bollard',6)];
+    case 'park_airport_general_aviation_v2': return [target('light',8),target('bollard',8)];
+    case 'park_equestrian_working_stable_v1': return [target('shrub',14),target('ornamental_grass',12),target('bin',3)];
+    case 'park_golf_seaside_links_v0': return [target('ornamental_grass',30),target('boulder',12),target('bin',4)];
+    case 'park_driving_range_single_tier_v0': return [target('light',8),target('bin',5),target('bike_rack',4)];
+    case 'park_multi_sport_track_field_v3': return [target('light',12),target('bin',8),target('bike_rack',8),target('drinking_fountain',3)];
+    case 'park_retail_parking_landscaped_v1': return [target('ornamental_grass',20),target('light',10),target('bollard',10),target('bike_rack',4)];
   }
 }
 

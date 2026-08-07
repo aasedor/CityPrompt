@@ -1,0 +1,23 @@
+{
+  "project_id": "20c08c19-8bf3-48ab-b9d1-62482b46a66e",
+  "project_name": "Regulation Park LEGO Trials",
+  "site_boundary_required": false,
+  "one_park_at_a_time": true,
+  "receiving_polygon": {
+    "area_m2": 1790,
+    "oriented_footprint_m": [99, 37]
+  },
+  "paid_image_api_calls": 0,
+  "trials": [
+    {"family_id": "park_reclaimed_wharf_v0", "variant_id": "reclaimed_industrial_park_v0", "result": "compiled"},
+    {"family_id": "park_quarry_tier_cascade_v2", "variant_id": "quarry_sunken_garden_park_v2", "result": "compiled"},
+    {"family_id": "park_estate_oak_picnic_v1", "variant_id": "estate_picnic_grove_v1", "result": "compiled"},
+    {"family_id": "park_constructed_wetland_boardwalk_v0", "variant_id": "constructed_wetland_eco_park_variant_0", "result": "compiled"},
+    {"family_id": "park_academic_planted_court_v0", "variant_id": "academic_courtyard_variant_0", "result": "compiled"},
+    {"family_id": "park_campus_green_spine_v0", "variant_id": "campus_pedestrian_spine_variant_0", "result": "compiled"},
+    {"family_id": "park_botanical_rose_garden_v3", "variant_id": "botanical_garden_v3", "result": "compiled"},
+    {"family_id": "park_research_arboretum_v0", "variant_id": "research_garden_teaching_arboretum_variant_0", "result": "compiled"},
+    {"family_id": "park_rewilding_reforestation_v1", "variant_id": "rewilding_ecological_restoration_zone_variant_1", "result": "compiled"},
+    {"family_id": "park_stormwater_arid_channel_v3", "variant_id": "stormwater_resilience_park_variant_3", "result": "compiled"}
+  ]
+}

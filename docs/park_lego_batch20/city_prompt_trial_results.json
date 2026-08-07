@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "testedAt": "2026-08-07T00:37:42.339257+00:00",
+  "projectId": "e4dfd8f2-4bb3-4a4f-ad5a-b30bf0fe77cd",
+  "zoneId": "09571cfd-936a-4d9e-8f19-29109c6920f3",
+  "workflow": "one_park_at_a_time_generate_to_3d",
+  "planningState": {
+    "flatColoredPolygon": true,
+    "previewedBatch20DepthKitBeforeGenerate": false
+  },
+  "selection": {
+    "archetypeId": "beer_garden",
+    "variantId": "beer_garden_v1",
+    "label": "Brewery Tap Yard"
+  },
+  "compiledRecipe": {
+    "familyId": "park_beer_garden_munich_v0",
+    "profileId": "beer-garden-munich-lego-v1",
+    "appearanceKitId": "beer_garden_v1_brewery_tap_yard_skin",
+    "plantingStructure": "beer_garden_brewery_v1",
+    "targetWidthM": 39.723,
+    "targetDepthM": 31.185,
+    "targetAreaM2": 1192.878,
+    "components": [
+      "beer_garden_ground_program_v1",
+      "communal_trestle_row_v1",
+      "chestnut_canopy_grid_v1",
+      "self_service_kiosk_v1",
+      "pennant_string_v1",
+      "brewery_tap_yard_program_v1"
+    ]
+  },
+  "scene": {
+    "buildings": 1,
+    "parks": 1,
+    "streets": 0,
+    "assembled": 1,
+    "noFamily": 0,
+    "skipped": 0,
+    "separateBuildingFamily": "Parisian Boulevard Corner",
+    "peopleRendered": false,
+    "embeddedLargeBuildings": false,
+    "aiDrapeCalls": 0
+  },
+  "observations": [
+    "The selected archetype remained a flat colored polygon before Generate to 3D.",
+    "Generate to 3D persisted the exact Batch 20 family, variant, appearance kit, planting structure and metric target.",
+    "The compiled globe showed repeatable whole trestle modules, a shade-tree grid, a small bounded kiosk, overhead strings and the exact reference-derived surface.",
+    "An initial live render exposed two tent-like ground triangles caused by incompatible Google-tile vertex samples beside the building.",
+    "The repaired workflow uses one robust level construction datum for the compiled park and seats its LEGO kit on that same datum; the source tiles no longer protrude or pull the park surface upward.",
+    "The separately compiled building remained independent from the park family throughout the trial."
+  ],
+  "result": "pass"
+}

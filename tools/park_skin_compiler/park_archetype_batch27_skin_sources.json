@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "expectedArchetypeCount": 21,
+  "method": "exact_archetype_reference_statistics_plus_role_specific_procedural_structure",
+  "apiCalls": 0,
+  "sourcePixelsProjected": false,
+  "archetypes": {
+    "academic-corten-hardscape-v1": {"source": "frontend/public/archetypes/openspaces/academic-courtyard/variant_1.png"},
+    "academic-glass-canopy-v2": {"source": "frontend/public/archetypes/openspaces/academic-courtyard/variant_2.png"},
+    "academic-timber-screen-v3": {"source": "frontend/public/archetypes/openspaces/academic-courtyard/variant_3.png"},
+    "campus-urban-paved-spine-v1": {"source": "frontend/public/archetypes/openspaces/campus-pedestrian-spine/variant_1.png"},
+    "campus-pavilion-spine-v2": {"source": "frontend/public/archetypes/openspaces/campus-pedestrian-spine/variant_2.png"},
+    "campus-pergola-spine-v3": {"source": "frontend/public/archetypes/openspaces/campus-pedestrian-spine/variant_3.png"},
+    "wetland-tidal-treatment-v1": {"source": "frontend/public/archetypes/openspaces/constructed-wetland-eco-park/variant_1.png"},
+    "wetland-wildlife-v2": {"source": "frontend/public/archetypes/openspaces/constructed-wetland-eco-park/variant_2.png"},
+    "wetland-nature-center-v3": {"source": "frontend/public/archetypes/openspaces/constructed-wetland-eco-park/variant_3.png"},
+    "research-greenhouse-garden-v1": {"source": "frontend/public/archetypes/openspaces/research-garden-teaching-arboretum/variant_1.png"},
+    "research-teaching-pavilion-v2": {"source": "frontend/public/archetypes/openspaces/research-garden-teaching-arboretum/variant_2.png"},
+    "research-demonstration-plots-v3": {"source": "frontend/public/archetypes/openspaces/research-garden-teaching-arboretum/variant_3.png"},
+    "rewilding-urban-prairie-v0": {"source": "frontend/public/archetypes/openspaces/rewilding-ecological-restoration-zone/variant_0.png"},
+    "rewilding-interpretive-v2": {"source": "frontend/public/archetypes/openspaces/rewilding-ecological-restoration-zone/variant_2.png"},
+    "rewilding-riparian-v3": {"source": "frontend/public/archetypes/openspaces/rewilding-ecological-restoration-zone/variant_3.png"},
+    "drainage-urban-daylit-v1": {"source": "frontend/public/archetypes/openspaces/stormwater-naturalized-drainage-corridor/variant_1.png"},
+    "drainage-seasonal-planted-v2": {"source": "frontend/public/archetypes/openspaces/stormwater-naturalized-drainage-corridor/variant_2.png"},
+    "drainage-stream-shelter-v3": {"source": "frontend/public/archetypes/openspaces/stormwater-naturalized-drainage-corridor/variant_3.png"},
+    "stormwater-urban-bioswale-v0": {"source": "frontend/public/archetypes/openspaces/stormwater-resilience-park/variant_0.png"},
+    "stormwater-naturalistic-detention-v1": {"source": "frontend/public/archetypes/openspaces/stormwater-resilience-park/variant_1.png"},
+    "stormwater-engineered-plaza-v2": {"source": "frontend/public/archetypes/openspaces/stormwater-resilience-park/variant_2.png"}
+  },
+  "defaultCrops": {"paver": [0, 0.56, 1, 1], "lawn": [0, 0.30, 1, 0.88], "asphalt": [0, 0.58, 1, 1], "planting": [0, 0.18, 1, 0.86], "safety": [0.05, 0.44, 0.95, 0.94], "timber": [0, 0.36, 1, 0.92]},
+  "materialDefaults": {"paver": {"roughness": 0.88, "normalStrength": 2, "metresPerTile": 4}, "lawn": {"roughness": 0.95, "normalStrength": 2.2, "metresPerTile": 5}, "asphalt": {"roughness": 0.91, "normalStrength": 1.8, "metresPerTile": 4}, "planting": {"roughness": 0.98, "normalStrength": 3, "metresPerTile": 3}, "safety": {"roughness": 0.9, "normalStrength": 2.4, "metresPerTile": 3}, "timber": {"roughness": 0.84, "normalStrength": 2.2, "metresPerTile": 2.5}}
+}

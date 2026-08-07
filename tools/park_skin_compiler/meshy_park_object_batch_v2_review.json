@@ -1,0 +1,31 @@
+{
+  "batchId": "meshy-park-object-batch-v2",
+  "reviewedAt": "2026-08-07",
+  "generatedCount": 16,
+  "acceptedCount": 11,
+  "rejectedCount": 5,
+  "creditsUsed": 624,
+  "balanceBefore": 6933,
+  "balanceAfter": 6309,
+  "qualityGate": "Normalized 12000-face, 512px-PBR four-view visual comparison against the source archetype; structural or compositional failures remain external artifacts and are not promoted.",
+  "accepted": [
+    {"assetId": "japanese-garden-arched-timber-footbridge-v1", "reason": "Reference-faithful arch, rail rhythm, joinery and weathered timber."},
+    {"assetId": "japanese-garden-concrete-corten-sculpture-v1", "reason": "Preserves the contemporary variant's interlocked concrete/Corten material language."},
+    {"assetId": "japanese-garden-weathered-rose-arbor-v1", "reason": "Clean walk-through arbor with detailed lattice and reusable planting-free geometry."},
+    {"assetId": "nature-play-woven-willow-tunnel-v1", "reason": "Normalized geometry preserves a complete child-scale woven tunnel and sparse growth."},
+    {"assetId": "nature-play-timber-water-table-v1", "reason": "Recognizable dry play trough with robust timber frame and archetype-derived weathering."},
+    {"assetId": "vancouver-beach-driftwood-seat-log-v1", "reason": "Low horizontal salt-bleached driftwood silhouette matches the beach composition."},
+    {"assetId": "quarry-garden-limestone-outcrop-v1", "registeredRole": "quarry_garden_limestone_ledge_seat", "reason": "Useful irregular tiered limestone ledge; registered by its observed function, not as a cliff wall."},
+    {"assetId": "labyrinth-bronze-water-bowl-v1", "reason": "Strong meditation focal form with varied verdigris and a clean water-ready basin."},
+    {"assetId": "mini-golf-hollow-log-tunnel-v1", "reason": "Clear playable passage, believable bark and end grain, and stable course-scale form."},
+    {"assetId": "mini-golf-stump-gate-obstacle-v1", "reason": "Naturalistic gate silhouette with a legible opening and no cartoon theming."},
+    {"assetId": "wetland-timber-bird-blind-v1", "reason": "Archetype-specific faceted cedar screen with three viewing slots and open-air construction."}
+  ],
+  "rejected": [
+    {"assetId": "nature-play-hollow-timber-drum-v1", "reason": "Reconstruction simplified to a smooth cylinder and lost the defining resonance opening."},
+    {"assetId": "vancouver-beach-driftwood-log-cluster-v1", "reason": "Logs reconstructed as an upright teepee rather than a low scattered beach cluster."},
+    {"assetId": "quarry-garden-limestone-rubble-cluster-v1", "reason": "Became a regular stacked wall panel better produced by procedural masonry."},
+    {"assetId": "urban-orchard-weathered-picnic-table-v1", "reason": "Trestle and leg geometry distorted; the deterministic catalogue table is structurally better."},
+    {"assetId": "memorial-folded-corten-ribbon-v1", "reason": "Collapsed into a closed blob and lost the intended folded ribbon and human-scale void."}
+  ]
+}

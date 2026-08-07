@@ -22,6 +22,20 @@ export interface PublicRealmDepthPolicy {
 }
 
 /**
+ * A compiled park represents a prepared construction parcel, not a decal that
+ * follows every vertex of the source photogrammetry. Keeping one level datum
+ * prevents roof/tree hits in Google Tiles from pulling individual triangles
+ * into tent-like spikes. Streets remain terrain-following because their long
+ * corridors must retain grade continuity beyond a single parcel.
+ */
+export function shouldUseLevelCompiledParkDatum(
+  communityKind: 'building' | 'park' | 'street' | null,
+  isCompiledGround: boolean,
+): boolean {
+  return isCompiledGround && communityKind === 'park';
+}
+
+/**
  * Shared physical lift for authored park/street ground above Google Tiles.
  * Fixed public-realm modules must derive their base elevation from this value
  * so the visible surface and the standing geometry cannot drift apart.

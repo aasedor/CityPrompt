@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "studyId": "park-composition-api-validation-50-2026-08-07",
+  "apiCalls": {
+    "target": 50,
+    "attempted": 50,
+    "succeeded": 50,
+    "failed": 0,
+    "retried": 0,
+    "providers": {
+      "gemini": 25,
+      "openai": 25
+    }
+  },
+  "authority": {
+    "generatedImagesAre": "qualitative composition and object-inventory evidence",
+    "generatedImagesAreNot": [
+      "production City Prompt drapes",
+      "regulation or accessibility standards",
+      "metric measurement sources",
+      "approved construction layouts",
+      "permission to add unrelated program elements"
+    ],
+    "peoplePolicy": "People in catalogue references inform scale, use, supervision, spectator and circulation logic only. No people belong in deterministic park geometry or skins."
+  },
+  "validatedRules": [
+    "Fit complete standard modules; repeat them when capacity and parcel geometry allow, never stretch a court or field.",
+    "Treat the archetype's spatial topology as a family contract: shared compounds, podded layouts, loops, treatment trains, terraces, rows and habitat mosaics are not interchangeable.",
+    "Place entrances, gates, spectator or caregiver edges, service access and accessible routes before decorative planting.",
+    "Assign residual land an intentional archetype role such as meadow, rain garden, orchard, social terrace, habitat buffer or retained canopy.",
+    "Render a family-specific object kit and deterministic equipment count, not generic tree and bench scatter alone.",
+    "Use reference-derived multi-material surfaces with wear, joints, soil, mulch, sand, water, meadow and planting transitions instead of monochrome fills.",
+    "Keep large buildings separate; park recipes reserve pads, forecourts and access clearances only."
+  ],
+  "providerWarnings": [
+    {
+      "sceneId": "03_inclusive_playground_zoned",
+      "warning": "One image invented a basketball court and a person. Reject unrelated program creep and all generated people."
+    },
+    {
+      "sceneId": "16_pump_track_compact",
+      "warning": "The providers produced overly intertwined multi-loop layouts. Enforce one closed primary circuit with bounded skill and bypass branches."
+    },
+    {
+      "sceneId": "18_bocce_social_courts",
+      "warning": "Provider court counts diverged. The selected variant and deterministic fit solver own the number of standard court modules."
+    },
+    {
+      "sceneId": "20_disc_golf_nine_hole",
+      "warning": "Aerial imagery did not reliably expose a safe nine-hole sequence. Tee, basket, fairway and crossing validation must remain graph-based."
+    },
+    {
+      "sceneId": "10_academic_courtyard",
+      "warning": "Both providers drifted toward generic formal quadrangles. Preserve the chosen courtyard variant's exact building-edge clearances, canopy, screen and study-zone identity."
+    }
+  ],
+  "currentLegoComparison": {
+    "strengths": [
+      "All 130 parent archetypes and 520 variants resolve to LEGO family, appearance-kit and planting identities.",
+      "Basketball already uses fitted guide geometry and exact one-hoop versus two-hoop placements; an oversized parcel repeats complete courts rather than stretching one.",
+      "Sixteen reviewed kit manifests provide 70 GLBs for basketball, skate, dog, inclusive play, splash, community garden, nature play, pump track, calisthenics and major regulation-sports anchors.",
+      "Reference-derived PBR skins, tile-flattening bases and one-park-at-a-time generation are already established."
+    ],
+    "gaps": [
+      "The general scatter layer still exposes only tree, bench, playground and pavilion roles; exact guide-anchored program placement is currently implemented most completely for basketball hoops.",
+      "Several live City Prompt trials remain visually sparse compared with both catalogue references and the new API studies, especially ecological, courtyard and late-catalogue families.",
+      "Many late variants share parent geometry and procedural props while relying on their skins for identity; they need variant-owned secondary object sets and placement rules.",
+      "Senior fitness and woodland memorial variants inherit object kits aimed at calisthenics and classical memorials rather than their own specialized equipment and quiet-use character."
+    ]
+  },
+  "objectKitBacklog": [
+    {
+      "priority": "P0",
+      "families": ["constructed_wetland_eco_park", "stormwater_naturalized_drainage_corridor", "stormwater_resilience_park"],
+      "objects": ["boardwalk spans and rails", "footbridges", "check weirs", "inlet and outlet structures", "riprap modules", "observation decks", "maintenance gates"],
+      "method": "Blender/procedural for hydraulic and spanning geometry; Meshy is suitable only for habitat logs, boulders and non-critical natural props."
+    },
+    {
+      "priority": "P0",
+      "families": ["beach_volleyball_courts", "bocce_petanque_court", "disc_golf_course"],
+      "objects": ["volleyball nets, posts and boundary tapes", "bocce sideboards and score stands", "disc-golf tee pads and baskets"],
+      "method": "Deterministic Blender assets with regulation dimensions and guide-anchored placement; do not use Meshy for metric sports equipment."
+    },
+    {
+      "priority": "P0",
+      "families": ["climbing_bouldering_wall", "mini_golf_course", "amphitheater_performance_space"],
+      "objects": ["bouldering block family and traverse wall", "landing-surface modules", "putting cups, flags, curbs, bridges and obstacles", "stage, seat walls, aisle rails and lighting positions"],
+      "method": "Blender/procedural for clearances, sequences and terracing; Meshy may help create non-critical sculptural obstacle variants after metric proxies are locked."
+    },
+    {
+      "priority": "P1",
+      "families": ["academic_courtyard", "research_garden_teaching_arboretum", "urban_orchard_food_forest"],
+      "objects": ["study tables and movable chairs", "seat-wall and canopy modules", "weather station", "nursery bench", "tool, wash and compost pads", "trellis and orchard support systems"],
+      "method": "Reusable Blender kit with variant-owned combinations; Meshy is reasonable for tables, potting benches, tool carts and trellis detail."
+    },
+    {
+      "priority": "P1",
+      "families": ["outdoor_fitness_circuit_v3", "memorial_garden_v1", "pollinator_meadow", "rewilding_ecological_restoration_zone"],
+      "objects": ["senior hand-cycle, step trainer, balance rail and seated press", "memorial wall, water bowl and quiet bench variants", "habitat logs, brush piles, snags, insect blocks, overlook and interpretive posts"],
+      "method": "Use Blender for accessible fitness geometry; Meshy is well suited to natural habitat objects and non-metric furniture variants."
+    }
+  ],
+  "nextVerification": [
+    "Sign into the running City Prompt session.",
+    "Render one park at a time for basketball pair, inclusive playground, constructed wetland, pump track, beach volleyball, disc golf, academic courtyard and food forest.",
+    "Capture consistent 55-degree oblique views with no people and no API drape.",
+    "Score each render against its catalogue references and paired API evidence for topology, object completeness, scale, materials and site adaptation.",
+    "Implement and re-test the P0 object kits before broadening the catalogue again."
+  ]
+}

@@ -67,6 +67,7 @@ import {
   CIVIC_FOUNTAIN_ASSEMBLY_SPEC,
   PARK_PROGRAM_MODULE_SPEC,
   isExecutableParkLegoFamily,
+  resolveParkLegoContract,
   resolveParkDressingAppearance,
   resolveParkDressingFamily,
   resolveParkLegoAppearance,
@@ -123,6 +124,23 @@ import {
   type RegulationParkFamilyId,
 } from './GlobeArchetypeOwnedParkAssembly';
 import { GlobeParkBatch5Assembly } from './GlobeParkBatch5Assembly';
+import { GlobeParkBatch6Assembly } from './GlobeParkBatch6Assembly';
+import { GlobeParkBatch7Assembly } from './GlobeParkBatch7Assembly';
+import { GlobeParkBatch8Assembly } from './GlobeParkBatch8Assembly';
+import { GlobeParkBatch9Assembly } from './GlobeParkBatch9Assembly';
+import { GlobeParkBatch10Assembly } from './GlobeParkBatch10Assembly';
+import { GlobeParkBatch11Assembly } from './GlobeParkBatch11Assembly';
+import { GlobeParkBatch12Assembly } from './GlobeParkBatch12Assembly';
+import { GlobeParkBatch13Assembly } from './GlobeParkBatch13Assembly';
+import { GlobeParkBatch14Assembly } from './GlobeParkBatch14Assembly';
+import { GlobeParkBatch20CoreSurfaces } from './GlobeParkBatch20CoreSurfaces';
+import {
+  parkMeshyAssetsForSelection,
+} from './parkMeshyArchetypeAssets';
+import {
+  resolveParkMeshyDetailPlacements,
+  type ParkMeshyDetailPlacement,
+} from './parkMeshyDetailPlacement';
 
 const DEG_TO_RAD = Math.PI / 180;
 const RENDER_ORDER_PROPS = 145;
@@ -389,6 +407,61 @@ function GLBInstancedProp({
       ))}
     </>
   );
+}
+
+/** Metric, ground-contact archetype object. Unlike generic entourage this is
+ * never height-normalized: authored regulation and clearance dimensions are
+ * preserved exactly. */
+function MetricParkObject({
+  url,
+  position,
+  yaw = 0,
+}: {
+  url: string;
+  position: [number, number, number];
+  yaw?: number;
+}) {
+  const { scene } = useGLTF(url);
+  const clone = useMemo(() => {
+    const next = scene.clone(true);
+    next.traverse((object) => {
+      const mesh = object as THREE.Mesh;
+      if (!mesh.isMesh) return;
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+      mesh.renderOrder = RENDER_ORDER_PROPS + 4;
+    });
+    return next;
+  }, [scene]);
+  return <group position={position} rotation={[0, 0, yaw]}>
+    <group rotation={[Math.PI / 2, 0, 0]}><primitive object={clone} /></group>
+  </group>;
+}
+
+function GlobeParkMeshyDetailInstances({
+  placements,
+  terrainOffsets,
+}: {
+  placements: readonly ParkMeshyDetailPlacement[];
+  terrainOffsets: readonly number[] | null;
+}) {
+  return <>
+    {placements.map((placement, index) => (
+      <SilentKitBoundary key={`${placement.asset.id}-${index}`} fallback={null}>
+        <Suspense fallback={null}>
+          <MetricParkObject
+            url={placement.asset.url}
+            position={[
+              placement.x,
+              placement.y,
+              (terrainOffsets?.[index] ?? 0) + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS,
+            ]}
+            yaw={placement.yawRad}
+          />
+        </Suspense>
+      </SilentKitBoundary>
+    ))}
+  </>;
 }
 
 function ProceduralParkFinishingProps({
@@ -834,12 +907,22 @@ function ParkSpecialtyStructures({
       ? terrainPlane.originZ + samplePlaneOffset(terrainPlane, x, y)
       : 0
   );
+  const legoContract = resolveParkLegoContract(zone);
+  const batch20CoreSurfaces = legoContract ? (
+    <GlobeParkBatch20CoreSurfaces
+      archetypeId={legoContract.archetypeId}
+      variantId={legoContract.variantId}
+      guides={fittedProgramGuides}
+      frame={programFrame}
+      terrainZ={terrainZ}
+    />
+  ) : null;
 
   if (structureKind === 'skate_park_v0_assembly') {
     return (
       <SilentKitBoundary fallback={null}>
         <Suspense fallback={null}>
-          <GlobeSkateParkAssembly boundary={programFrame.points} terrainZ={terrainZ} />
+          <GlobeSkateParkAssembly boundary={programFrame.points} terrainZ={terrainZ} variantId={legoContract?.variantId} />
         </Suspense>
       </SilentKitBoundary>
     );
@@ -850,11 +933,86 @@ function ParkSpecialtyStructures({
     return (
       <GlobeParkBatch5Assembly
         familyId={profileFamilyId}
+        archetypeId={legoContract?.archetypeId}
+        variantId={legoContract?.variantId}
         guides={fittedProgramGuides}
         frame={programFrame}
         terrainZ={terrainZ}
       />
     );
+  }
+  if (structureKind === 'batch6_archetype_assembly' && profileFamilyId) {
+    return (
+      <GlobeParkBatch6Assembly
+        familyId={profileFamilyId}
+        archetypeId={legoContract?.archetypeId}
+        variantId={legoContract?.variantId}
+        guides={fittedProgramGuides}
+        frame={programFrame}
+        terrainZ={terrainZ}
+      />
+    );
+  }
+  if (structureKind === 'batch7_archetype_assembly' && profileFamilyId) {
+    return (
+      <GlobeParkBatch7Assembly
+        familyId={profileFamilyId}
+        archetypeId={legoContract?.archetypeId}
+        variantId={legoContract?.variantId}
+        guides={fittedProgramGuides}
+        frame={programFrame}
+        terrainZ={terrainZ}
+      />
+    );
+  }
+  if (structureKind === 'batch8_archetype_assembly' && profileFamilyId) {
+    return (
+      <GlobeParkBatch8Assembly
+        familyId={profileFamilyId}
+        archetypeId={legoContract?.archetypeId}
+        variantId={legoContract?.variantId}
+        guides={fittedProgramGuides}
+        frame={programFrame}
+        terrainZ={terrainZ}
+      />
+    );
+  }
+  if (structureKind === 'batch9_archetype_assembly' && profileFamilyId) {
+    return (
+      <GlobeParkBatch9Assembly
+        familyId={profileFamilyId}
+        archetypeId={legoContract?.archetypeId}
+        variantId={legoContract?.variantId}
+        guides={fittedProgramGuides}
+        frame={programFrame}
+        terrainZ={terrainZ}
+      />
+    );
+  }
+  if (structureKind === 'batch10_archetype_assembly' && profileFamilyId) {
+    return (
+      <GlobeParkBatch10Assembly
+        familyId={profileFamilyId}
+        archetypeId={legoContract?.archetypeId}
+        variantId={legoContract?.variantId}
+        guides={fittedProgramGuides}
+        frame={programFrame}
+        terrainZ={terrainZ}
+      />
+    );
+  }
+  if (structureKind === 'batch11_archetype_assembly' && profileFamilyId) {
+    return <GlobeParkBatch11Assembly familyId={profileFamilyId} archetypeId={legoContract?.archetypeId} variantId={legoContract?.variantId} guides={fittedProgramGuides} frame={programFrame} terrainZ={terrainZ} />;
+  }
+  if (structureKind === 'batch12_archetype_assembly' && profileFamilyId) {
+    return <GlobeParkBatch12Assembly familyId={profileFamilyId} archetypeId={legoContract?.archetypeId} variantId={legoContract?.variantId} guides={fittedProgramGuides} frame={programFrame} terrainZ={terrainZ} />;
+  }
+  if (structureKind === 'batch13_archetype_assembly' && profileFamilyId) {
+    return <GlobeParkBatch13Assembly familyId={profileFamilyId} archetypeId={legoContract?.archetypeId} variantId={legoContract?.variantId} guides={fittedProgramGuides} frame={programFrame} terrainZ={terrainZ} />;
+  }
+  if (structureKind === 'batch14_archetype_assembly' && profileFamilyId) {
+    if (!legoContract) return null;
+    return <GlobeParkBatch14Assembly familyId={profileFamilyId} archetypeId={legoContract.archetypeId} variantId={legoContract.variantId} guides={fittedProgramGuides} frame={programFrame} terrainZ={terrainZ} />;
   }
   const regulationFamily: RegulationParkFamilyId | null = structureKind === 'basketball_court_assembly'
     ? 'park_basketball_court_v0'
@@ -922,7 +1080,7 @@ function ParkSpecialtyStructures({
     return (
       <SilentKitBoundary fallback={null}>
         <Suspense fallback={null}>
-          <GlobeArchetypeOwnedParkAssembly familyId={exactFamily} boundary={programFrame.points} terrainZ={terrainZ} />
+          <GlobeArchetypeOwnedParkAssembly familyId={exactFamily} boundary={programFrame.points} terrainZ={terrainZ} archetypeId={legoContract?.archetypeId} variantId={legoContract?.variantId} />
         </Suspense>
       </SilentKitBoundary>
     );
@@ -936,15 +1094,14 @@ function ParkSpecialtyStructures({
       spec.wholeElementClearanceM,
     );
     if (!anchor) return null;
+    const isGreenCivic = legoContract?.variantId === 'formal_civic_plaza_v2';
+    const civicBaseZ = PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS + terrainZ(anchor.x, anchor.y);
+    const planterRows = isGreenCivic
+      ? [-1, 1].flatMap((side) => [-0.30, 0, 0.30].map((along) => ({ side, along })))
+      : [];
     return (
-      <group
-        position={[
-          anchor.x,
-          anchor.y,
-          PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS + terrainZ(anchor.x, anchor.y),
-        ]}
-        renderOrder={RENDER_ORDER_PROPS}
-      >
+      <group renderOrder={RENDER_ORDER_PROPS}>
+      <group position={[anchor.x, anchor.y, civicBaseZ]}>
         <mesh
           position={[0, 0, spec.rimHeightM / 2]}
           rotation={[Math.PI / 2, 0, 0]}
@@ -1004,6 +1161,34 @@ function ParkSpecialtyStructures({
             <meshPhysicalMaterial color="#c5e5e7" transparent opacity={0.68} roughness={0.08} />
           </mesh>
         ))}
+      </group>
+      {planterRows.map(({ side, along }) => {
+        const x = anchor.x + side * Math.min(programFrame.width * 0.34, 13.5);
+        const y = anchor.y + along * Math.min(programFrame.height, 24);
+        const z = PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS + terrainZ(x, y);
+        return (
+          <group key={`${side}-${along}`} position={[x, y, z]}>
+            <mesh position={[0, 0, 0.32]}>
+              <boxGeometry args={[4.8, 2.2, 0.64]} />
+              <meshStandardMaterial color="#91877b" roughness={0.9} />
+            </mesh>
+            <mesh position={[0, 0, 0.67]}>
+              <boxGeometry args={[4.35, 1.75, 0.12]} />
+              <meshStandardMaterial color={along === 0 ? '#567249' : '#728552'} roughness={0.99} />
+            </mesh>
+            {[-1.45, 0, 1.45].map((offset, index) => (
+              <mesh key={offset} position={[offset, 0, 1.0 + (index % 2) * 0.18]}>
+                <dodecahedronGeometry args={[0.62 + (index % 2) * 0.12, 1]} />
+                <meshStandardMaterial color={index % 2 ? '#6f804c' : '#526d43'} roughness={1} />
+              </mesh>
+            ))}
+            <mesh position={[0, -1.48 * side, 0.62]}>
+              <boxGeometry args={[3.9, 0.42, 0.13]} />
+              <meshStandardMaterial color="#8a6948" roughness={0.92} />
+            </mesh>
+          </group>
+        );
+      })}
       </group>
     );
   }
@@ -1124,6 +1309,8 @@ function ParkSpecialtyStructures({
     const yaw = Math.atan2(dy, dx);
     const rail = structureKind === 'riparian_bridge_assembly';
     return (
+      <group>
+      {batch20CoreSurfaces}
       <group position={[x, y, terrainZ(x, y) + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS + 0.32]} rotation={[0, 0, yaw]}>
         <mesh renderOrder={RENDER_ORDER_PROPS + 2}>
           <boxGeometry args={[length, width, 0.24]} />
@@ -1159,6 +1346,7 @@ function ParkSpecialtyStructures({
           </group>
         ))}
       </group>
+      </group>
     );
   }
 
@@ -1175,16 +1363,21 @@ function ParkSpecialtyStructures({
     const x = (from.x + to.x) / 2;
     const y = (from.y + to.y) / 2;
     const yaw = Math.atan2(to.y - from.y, to.x - from.x);
+    const reservoirVariant = legoContract?.variantId ?? 'reservoir_watershed_park_v0';
+    const stoneBank = reservoirVariant === 'reservoir_watershed_park_v1';
+    const forested = reservoirVariant === 'reservoir_watershed_park_v2';
+    const earthenDam = reservoirVariant === 'reservoir_watershed_park_v3';
     return (
       <group renderOrder={RENDER_ORDER_PROPS}>
+        {batch20CoreSurfaces}
         <mesh position={[waterCenter.x, waterCenter.y, terrainZ(waterCenter.x, waterCenter.y) + 0.025]} renderOrder={RENDER_ORDER_PROPS + 1}>
           <planeGeometry args={[waterSize.width, waterSize.height]} />
           <meshPhysicalMaterial color="#315f6a" roughness={0.18} transparent opacity={0.84} />
         </mesh>
         <group position={[x, y, terrainZ(x, y) + 0.48]} rotation={[0, 0, yaw]}>
           <mesh renderOrder={RENDER_ORDER_PROPS + 2}>
-            <boxGeometry args={[length, 1.8, 0.96]} />
-            <meshStandardMaterial color="#92928c" roughness={0.9} />
+            <boxGeometry args={[length, earthenDam ? 5.8 : 1.8, earthenDam ? 1.5 : 0.96]} />
+            <meshStandardMaterial color={earthenDam ? '#718154' : stoneBank ? '#817b70' : '#92928c'} roughness={0.9} />
           </mesh>
           <mesh position={[0, -1.15, 0.22]} renderOrder={RENDER_ORDER_PROPS + 3}>
             <boxGeometry args={[Math.min(8, length * 0.2), 1.0, 0.42]} />
@@ -1196,6 +1389,27 @@ function ParkSpecialtyStructures({
           })}
           <mesh position={[0, 0.85, 1.78]}><boxGeometry args={[length, 0.07, 0.07]} /><meshStandardMaterial color="#4e5656" metalness={0.5} roughness={0.55} /></mesh>
         </group>
+        {stoneBank && <>
+          {Array.from({ length: Math.min(18, Math.max(8, Math.floor((programFrame.width + programFrame.height) / 18))) }, (_, index) => {
+            const alongX = programFrame.minX + programFrame.width * (0.08 + ((index * 0.271) % 0.84));
+            const alongY = index % 2 ? waterCenter.y - waterSize.height * 0.58 : waterCenter.y + waterSize.height * 0.58;
+            return <group key={`reservoir-plane-${index}`} position={[alongX, alongY, terrainZ(alongX, alongY)]}><mesh position={[0,0,1.8]}><cylinderGeometry args={[.16,.23,3.6,8]}/><meshStandardMaterial color="#59483b" roughness={.96}/></mesh><mesh position={[0,0,4.2]} scale={[1.1,1.0,.9]}><dodecahedronGeometry args={[1.45,1]}/><meshStandardMaterial color="#59704b" roughness={.99}/></mesh></group>;
+          })}
+          <group position={[waterCenter.x-waterSize.width*.43,waterCenter.y+waterSize.height*.42,terrainZ(waterCenter.x-waterSize.width*.43,waterCenter.y+waterSize.height*.42)]}><mesh position={[0,0,1.4]}><boxGeometry args={[4.5,3.4,2.8]}/><meshStandardMaterial color="#8b8376" roughness={.96}/></mesh><mesh position={[0,0,3.1]} rotation={[0,0,Math.PI/4]}><coneGeometry args={[3.2,1.5,4]}/><meshStandardMaterial color="#6c665d" roughness={.96}/></mesh></group>
+        </>}
+        {forested && <>
+          {Array.from({ length: 28 }, (_, index) => {
+            const angle = index * Math.PI * 2 / 28;
+            const px = waterCenter.x + Math.cos(angle) * waterSize.width * .63;
+            const py = waterCenter.y + Math.sin(angle) * waterSize.height * .68;
+            return <group key={`reservoir-tree-${index}`} position={[px,py,terrainZ(px,py)]}><mesh position={[0,0,1.7]}><cylinderGeometry args={[.16,.24,3.4,8]}/><meshStandardMaterial color="#584638"/></mesh><mesh position={[0,0,4.2]} scale={[1.25,1.15,1]}><dodecahedronGeometry args={[1.5,1]}/><meshStandardMaterial color={index%2?'#46664a':'#58734e'} roughness={.99}/></mesh></group>;
+          })}
+          {[-1,1].map((side)=><group key={`launch-${side}`} position={[waterCenter.x+side*waterSize.width*.40,waterCenter.y-waterSize.height*.30,terrainZ(waterCenter.x+side*waterSize.width*.40,waterCenter.y-waterSize.height*.30)+.30]} rotation={[0,0,side*.20]}><mesh><boxGeometry args={[7,2.1,.28]}/><meshStandardMaterial color="#89684a" roughness={.92}/></mesh></group>)}
+        </>}
+        {earthenDam && <>
+          {[-.32,0,.32].map((offset)=><group key={`pier-${offset}`} position={[waterCenter.x+waterSize.width*offset,waterCenter.y+waterSize.height*.36,terrainZ(waterCenter.x+waterSize.width*offset,waterCenter.y+waterSize.height*.36)+.34]}><mesh><boxGeometry args={[2.1,Math.min(10,waterSize.height*.24),.28]}/><meshStandardMaterial color="#846344" roughness={.92}/></mesh></group>)}
+          <mesh position={[waterCenter.x-waterSize.width*.32,waterCenter.y-waterSize.height*.40,terrainZ(waterCenter.x-waterSize.width*.32,waterCenter.y-waterSize.height*.40)+.08]} rotation={[-Math.PI/2,0,0]}><circleGeometry args={[Math.min(9,waterSize.width*.16),28]}/><meshStandardMaterial color="#c6ad7a" roughness={.98}/></mesh>
+        </>}
       </group>
     );
   }
@@ -1208,20 +1422,42 @@ function ParkSpecialtyStructures({
     const stageSize = resolveParkGuideDimensionsM(stage, programFrame);
     return (
       <group renderOrder={RENDER_ORDER_PROPS}>
+        {batch20CoreSurfaces}
         {tiers.map((tier, index) => {
           const center = guideCenter(tier, programFrame);
           const dimensions = resolveParkGuideDimensionsM(tier, programFrame);
           return (
-            <mesh key={index} position={[center.x, center.y, terrainZ(center.x, center.y) + 0.06 + index * 0.18]} scale={[dimensions.width / 2, dimensions.height / 2, 1]} renderOrder={RENDER_ORDER_PROPS + index}>
-              <ringGeometry args={[0.92, 1, 64]} />
-              <meshStandardMaterial color={index % 2 === 0 ? '#657f4f' : '#75915a'} roughness={0.98} />
-            </mesh>
+            <group key={index}>
+              <mesh position={[center.x, center.y, terrainZ(center.x, center.y) + 0.06 + index * 0.18]} scale={[dimensions.width / 2, dimensions.height / 2, 1]} renderOrder={RENDER_ORDER_PROPS + index}>
+                <ringGeometry args={[0.92, 1, 64]} />
+                <meshStandardMaterial color={index % 2 === 0 ? '#657f4f' : '#75915a'} roughness={0.98} />
+              </mesh>
+              {[-0.24, 0.24].map((offset) => {
+                const x = center.x + dimensions.width * offset;
+                const y = center.y - dimensions.height * 0.43;
+                return <MetricParkObject
+                  key={offset}
+                  url="/park-kits/amphitheater/amphitheater-seat-wall.glb"
+                  position={[x, y, terrainZ(x, y) + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS + index * 0.18]}
+                />;
+              })}
+            </group>
           );
         })}
-        <mesh position={[stageCenter.x, stageCenter.y, terrainZ(stageCenter.x, stageCenter.y) + 0.28]} renderOrder={RENDER_ORDER_PROPS + 5}>
-          <boxGeometry args={[stageSize.width, stageSize.height, 0.52]} />
-          <meshStandardMaterial color="#8b623e" roughness={0.86} />
-        </mesh>
+        <MetricParkObject
+          url="/park-kits/amphitheater/amphitheater-stage.glb"
+          position={[stageCenter.x, stageCenter.y, terrainZ(stageCenter.x, stageCenter.y) + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS]}
+        />
+        {[-1, 1].map((side) => {
+          const x = stageCenter.x + side * Math.min(5.2, stageSize.width * 0.62);
+          const y = stageCenter.y - stageSize.height * 0.58;
+          return <MetricParkObject key={`light-${side}`} url="/park-kits/amphitheater/amphitheater-bollard-light.glb" position={[x, y, terrainZ(x, y) + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS]} />;
+        })}
+        <MetricParkObject
+          url="/park-kits/amphitheater/amphitheater-aisle-rail.glb"
+          position={[stageCenter.x, stageCenter.y - stageSize.height * 0.9, terrainZ(stageCenter.x, stageCenter.y - stageSize.height * 0.9) + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS]}
+          yaw={Math.PI / 2}
+        />
       </group>
     );
   }
@@ -1234,6 +1470,7 @@ function ParkSpecialtyStructures({
     const towerOffsets = [[-5, -3, 2.6], [0, 2, 3.5], [5, -1, 3.0]] as const;
     return (
       <group renderOrder={RENDER_ORDER_PROPS}>
+        {batch20CoreSurfaces}
         {towerOffsets.map(([offsetX, offsetY, deckHeight], index) => (
           <group key={index} position={[towerPad.x + offsetX, towerPad.y + offsetY, terrainZ(towerPad.x + offsetX, towerPad.y + offsetY)]}>
             {[-1.2, 1.2].flatMap((x) => [-1.2, 1.2].map((y) => <mesh key={`${x}-${y}`} position={[x, y, deckHeight / 2]}><cylinderGeometry args={[0.16, 0.22, deckHeight, 9]} /><meshStandardMaterial color={index % 2 === 0 ? '#705841' : '#80664b'} roughness={0.94} /></mesh>))}
@@ -1268,6 +1505,10 @@ function ParkSpecialtyStructures({
     const centerY = waterCenter.y;
     const radiusX = Math.max(2.5, waterDimensions.width / 2);
     const radiusY = Math.max(2.5, waterDimensions.height / 2);
+    const stormwaterVariant = legoContract?.variantId ?? 'stormwater_retention_pond_v0';
+    const isFormalStormwater = stormwaterVariant === 'stormwater_retention_pond_v1';
+    const isInteractiveStormwater = stormwaterVariant === 'stormwater_retention_pond_v2';
+    const isWetlandStormwater = stormwaterVariant === 'stormwater_retention_pond_v3';
     const edgeX = radiusX + 1.25;
     const infrastructure = resolveStormwaterInfrastructureGuides(
       fittedProgramGuides,
@@ -1285,23 +1526,9 @@ function ParkSpecialtyStructures({
       height: 4.2,
       rotationRad: 0,
     };
-    const riprap = Array.from({ length: 14 }, (_, index) => {
-      const column = index % 5;
-      const row = Math.floor(index / 5);
-      const localX = ((column / 4) - 0.5) * inlet.width * 0.78;
-      const localY = ((row / 2) - 0.5) * inlet.height * 0.72
-        + (column % 2 === 0 ? 0 : inlet.height * 0.06);
-      const cos = Math.cos(inlet.rotationRad);
-      const sin = Math.sin(inlet.rotationRad);
-      return {
-        x: inlet.center.x + localX * cos - localY * sin,
-        y: inlet.center.y + localX * sin + localY * cos,
-        scale: Math.min(0.72, 0.34 + (index % 4) * 0.08),
-      };
-    });
     return (
       <group renderOrder={RENDER_ORDER_PROPS}>
-        <mesh
+        {!isWetlandStormwater && <mesh
           position={[
             centerX,
             centerY,
@@ -1319,8 +1546,8 @@ function ParkSpecialtyStructures({
             metalness={0.04}
             depthWrite
           />
-        </mesh>
-        <mesh
+        </mesh>}
+        {!isWetlandStormwater && <mesh
           position={[
             centerX,
             centerY,
@@ -1331,71 +1558,75 @@ function ParkSpecialtyStructures({
         >
           <ringGeometry args={[0.88, 1, 64]} />
           <meshStandardMaterial color="#73865d" roughness={0.98} />
-        </mesh>
-        <group
-          position={[
-            inlet.center.x,
-            inlet.center.y,
-            terrainZ(inlet.center.x, inlet.center.y) + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS,
-          ]}
-          rotation={[0, 0, inlet.rotationRad]}
-        >
-          <mesh position={[0, 0, 0.45]} renderOrder={RENDER_ORDER_PROPS + 2}>
-            <boxGeometry args={[
-              Math.max(0.75, Math.min(1.4, inlet.width * 0.26)),
-              Math.max(1.2, inlet.height * 0.68),
-              0.9,
-            ]} />
-            <meshStandardMaterial color="#858984" roughness={0.9} />
-          </mesh>
-          <mesh
-            position={[Math.max(0.45, Math.min(0.85, inlet.width * 0.16)), 0, 0.43]}
-            rotation={[0, Math.PI / 2, 0]}
-            renderOrder={RENDER_ORDER_PROPS + 3}
-          >
-            <cylinderGeometry args={[0.36, 0.36, 0.55, 16]} />
-            <meshStandardMaterial color="#30383a" metalness={0.48} roughness={0.5} />
-          </mesh>
-        </group>
-        <group
-          position={[
-            outlet.center.x,
-            outlet.center.y,
-            terrainZ(outlet.center.x, outlet.center.y) + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS,
-          ]}
-          rotation={[0, 0, outlet.rotationRad]}
-        >
-          <mesh position={[0, 0, 0.32]} renderOrder={RENDER_ORDER_PROPS + 2}>
-            <boxGeometry args={[outlet.width, outlet.height, 0.64]} />
-            <meshStandardMaterial color="#a29c91" roughness={0.9} />
-          </mesh>
-          <mesh position={[0, 0, 0.66]} renderOrder={RENDER_ORDER_PROPS + 3}>
-            <boxGeometry args={[0.18, Math.max(0.8, outlet.height * 0.84), 0.16]} />
-            <meshStandardMaterial color="#535b5c" metalness={0.38} roughness={0.56} />
-          </mesh>
-          <mesh position={[outlet.width / 2 + 0.55, 0, 1.15]} renderOrder={RENDER_ORDER_PROPS + 3}>
-            <boxGeometry args={[0.10, 1.05, 2.3]} />
-            <meshStandardMaterial color="#5f695f" roughness={0.82} />
-          </mesh>
-        </group>
-        {riprap.map((stone, index) => (
-          <mesh
-            key={`stormwater-riprap-${index}`}
-            position={[
-              stone.x,
-              stone.y,
-              terrainZ(stone.x, stone.y)
-                + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS
-                + stone.scale * 0.35,
-            ]}
-            scale={[stone.scale * 1.2, stone.scale, stone.scale * 0.7]}
-            rotation={[index * 0.21, index * 0.13, index * 0.47]}
+        </mesh>}
+        {isWetlandStormwater && Array.from({ length: 8 }, (_, index) => {
+          const column = index % 4;
+          const row = Math.floor(index / 4);
+          const x = centerX + (column - 1.5) * radiusX * 0.43;
+          const y = centerY + (row - 0.5) * radiusY * 0.78 + (column % 2 ? radiusY * 0.10 : -radiusY * 0.08);
+          const waterCell = index % 3 !== 1;
+          return <mesh
+            key={`wetland-cell-${index}`}
+            position={[x, y, terrainZ(x, y) + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS + 0.016]}
+            scale={[radiusX * 0.17, radiusY * 0.28, 1]}
             renderOrder={RENDER_ORDER_PROPS + 1}
           >
-            <dodecahedronGeometry args={[0.75, 0]} />
-            <meshStandardMaterial color={index % 3 === 0 ? '#7e807a' : '#96948b'} roughness={0.98} />
-          </mesh>
-        ))}
+            <circleGeometry args={[1, 36]} />
+            {waterCell
+              ? <meshPhysicalMaterial color={index % 2 ? '#577d78' : '#466f73'} transparent opacity={0.78} roughness={0.24} />
+              : <meshStandardMaterial color={index % 2 ? '#758458' : '#68794f'} roughness={0.98} />}
+          </mesh>;
+        })}
+        {isFormalStormwater && Array.from({ length: 7 }, (_, index) => {
+          const x = centerX + (index - 3) * Math.min(3.2, radiusX * 0.22);
+          return <mesh key={`formal-jet-${index}`} position={[x, centerY, terrainZ(x, centerY) + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS + 0.75 + (index % 2) * 0.35]}>
+            <cylinderGeometry args={[0.035, 0.07, 1.5 + (index % 2) * 0.7, 8]} />
+            <meshPhysicalMaterial color="#c7e9e8" transparent opacity={0.72} roughness={0.08} />
+          </mesh>;
+        })}
+        {isInteractiveStormwater && Array.from({ length: 9 }, (_, index) => {
+          const x = centerX + (index % 3 - 1) * Math.min(3.5, radiusX * 0.28);
+          const y = centerY + (Math.floor(index / 3) - 1) * Math.min(3.5, radiusY * 0.28);
+          return <mesh key={`interactive-jet-${index}`} position={[x, y, terrainZ(x, y) + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS + 0.6 + (index % 3) * 0.28]}>
+            <cylinderGeometry args={[0.03, 0.06, 1.2 + (index % 3) * 0.56, 7]} />
+            <meshPhysicalMaterial color="#c7e9e8" transparent opacity={0.7} roughness={0.08} />
+          </mesh>;
+        })}
+        {isWetlandStormwater && [-0.32, 0, 0.32].map((offset) => {
+          const x = centerX + offset * radiusX;
+          return <mesh key={`wetland-walk-${offset}`} position={[x, centerY, terrainZ(x, centerY) + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS + 0.32]}>
+            <boxGeometry args={[1.8, radiusY * 1.7, 0.28]} />
+            <meshStandardMaterial color="#786149" roughness={0.92} />
+          </mesh>;
+        })}
+        {isWetlandStormwater && <mesh position={[centerX, centerY, terrainZ(centerX, centerY) + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS + 0.34]}>
+          <boxGeometry args={[radiusX * 1.8, 1.8, 0.28]} />
+          <meshStandardMaterial color="#786149" roughness={0.92} />
+        </mesh>}
+        <MetricParkObject
+          url="/park-kits/water-ecology-infrastructure/stormwater-inlet-headwall.glb"
+          position={[inlet.center.x, inlet.center.y, terrainZ(inlet.center.x, inlet.center.y) + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS]}
+          yaw={inlet.rotationRad}
+        />
+        <MetricParkObject
+          url="/park-kits/water-ecology-infrastructure/stormwater-outlet-control.glb"
+          position={[outlet.center.x, outlet.center.y, terrainZ(outlet.center.x, outlet.center.y) + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS]}
+          yaw={outlet.rotationRad}
+        />
+        <MetricParkObject
+          url="/park-kits/water-ecology-infrastructure/riprap-cluster.glb"
+          position={[inlet.center.x, inlet.center.y, terrainZ(inlet.center.x, inlet.center.y) + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS]}
+          yaw={inlet.rotationRad}
+        />
+        {(isWetlandStormwater || radiusX > 8) && <MetricParkObject
+          url="/park-kits/water-ecology-infrastructure/stormwater-check-weir.glb"
+          position={[centerX, centerY + radiusY * 0.45, terrainZ(centerX, centerY + radiusY * 0.45) + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS]}
+        />}
+        <MetricParkObject
+          url="/park-kits/water-ecology-infrastructure/maintenance-gate.glb"
+          position={[outlet.center.x + Math.cos(outlet.rotationRad) * 2.6, outlet.center.y + Math.sin(outlet.rotationRad) * 2.6, terrainZ(outlet.center.x, outlet.center.y) + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS]}
+          yaw={outlet.rotationRad}
+        />
       </group>
     );
   }
@@ -1424,45 +1655,32 @@ function ParkSpecialtyStructures({
     }).flat();
     return (
       <group renderOrder={RENDER_ORDER_PROPS}>
-        {routes.map(({ from, to }, index) => {
+        {batch20CoreSurfaces}
+        {routes.flatMap(({ from, to }, index) => {
           const dx = to.x - from.x;
           const dy = to.y - from.y;
           const length = Math.hypot(dx, dy);
-          const x = (from.x + to.x) / 2;
-          const y = (from.y + to.y) / 2;
-          return (
-            <group
-              key={`wetland-boardwalk-${index}`}
-              position={[x, y, terrainZ(x, y) + 0.28]}
-              rotation={[0, 0, Math.atan2(dy, dx)]}
-            >
-              <mesh renderOrder={RENDER_ORDER_PROPS}>
-                <boxGeometry args={[length + 0.16, 2.4, 0.24]} />
-                <meshStandardMaterial color={index % 2 === 0 ? '#9a7146' : '#a47b50'} roughness={0.88} />
-              </mesh>
-              <mesh position={[0, 0, 0.135]} renderOrder={RENDER_ORDER_PROPS}>
-                <planeGeometry args={[length, 2.34, Math.max(1, Math.ceil(length / 0.45)), 1]} />
-                <meshStandardMaterial color="#b18a5b" wireframe roughness={0.92} />
-              </mesh>
-            </group>
-          );
+          const yaw = Math.atan2(dy, dx);
+          if (index === 0 && length >= 6) {
+            const x = (from.x + to.x) / 2;
+            const y = (from.y + to.y) / 2;
+            return [<MetricParkObject key="wetland-footbridge" url="/park-kits/water-ecology-infrastructure/wetland-footbridge.glb" position={[x, y, terrainZ(x, y) + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS]} yaw={yaw} />];
+          }
+          const count = Math.max(1, Math.round(length / 8));
+          return Array.from({ length: count }, (_, spanIndex) => {
+            const t = (spanIndex + 0.5) / count;
+            const x = from.x + dx * t;
+            const y = from.y + dy * t;
+            return <MetricParkObject key={`wetland-boardwalk-${index}-${spanIndex}`} url="/park-kits/water-ecology-infrastructure/wetland-boardwalk-span.glb" position={[x, y, terrainZ(x, y) + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS]} yaw={yaw} />;
+          });
         })}
         {[
-          [0.49, 0.93, 6.0, 4.4],
-          [0.88, 0.54, 4.8, 4.8],
-        ].map(([normalizedX, normalizedY, width, depth], index) => {
+          [0.49, 0.93],
+          [0.88, 0.54],
+        ].map(([normalizedX, normalizedY], index) => {
           const x = programFrame.minX + programFrame.width * normalizedX;
           const y = programFrame.maxY - programFrame.height * normalizedY;
-          return (
-            <mesh
-              key={`wetland-overlook-${index}`}
-              position={[x, y, terrainZ(x, y) + 0.28]}
-              renderOrder={RENDER_ORDER_PROPS}
-            >
-              <boxGeometry args={[width, depth, 0.24]} />
-              <meshStandardMaterial color="#a47a4e" roughness={0.88} />
-            </mesh>
-          );
+          return <MetricParkObject key={`wetland-overlook-${index}`} url="/park-kits/water-ecology-infrastructure/wetland-observation-deck.glb" position={[x, y, terrainZ(x, y) + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS]} />;
         })}
       </group>
     );
@@ -1899,7 +2117,14 @@ function liveProgrammedParkPlacements(zone: SiteZone): PropPlacement[] {
 }
 
 function hasLiveProgrammedParkGeometry(zone: SiteZone): boolean {
-  return shouldMountParkProgramFrame(zone, liveProgrammedParkPlacements(zone).length);
+  const profile = resolveParkGroundProfile(zone);
+  const hasExactVariantMeshyDetail = Boolean(
+    profile.variantId
+    && parkMeshyAssetsForSelection(profile.archetypeId, profile.variantId)
+      .some((candidate) => candidate.placement),
+  );
+  return hasExactVariantMeshyDetail
+    || shouldMountParkProgramFrame(zone, liveProgrammedParkPlacements(zone).length);
 }
 
 function hasCoreFixedParkProgram(zone: SiteZone): boolean {
@@ -1977,17 +2202,21 @@ function ParkKitInstance({
     () => buildLocalParkProgramFrame(zone.coordinates, centroid),
     [centroid, zone.coordinates],
   );
+  const parkGroundProfile = useMemo(
+    () => resolveParkGroundProfile(zone),
+    [zone],
+  );
   const dressingFamilyId = useMemo(
     () => resolveParkDressingFamily(zone),
     [zone.properties, zone.zone_type],
   );
   const programGuideFit = useMemo(() => {
     return fitParkGroundGuides(
-      resolveParkGroundProfile(zone).guides,
+      parkGroundProfile.guides,
       { width: localProgramFrame.width, height: localProgramFrame.height },
       localProgramFrame.normalizedRing,
     );
-  }, [localProgramFrame, zone]);
+  }, [localProgramFrame, parkGroundProfile.guides]);
   const fittedProgramGuides = programGuideFit.guides;
   const fittedMicrodetailGuides = useMemo(() => {
     return parkMicrodetailGuides(
@@ -2005,7 +2234,14 @@ function ParkKitInstance({
       fittedMicrodetailGuides,
     )),
     ...computeParkProgramAssetPlacements(zone),
-  ].filter((placement) => !shouldDeferParkFinishingProp(zone, placement.propId)), [
+  ].filter((placement) => (
+    !shouldDeferParkFinishingProp(zone, placement.propId)
+    // A specialty family already owns its complete 3D program. Retaining the
+    // generic playground/pavilion fallback here can place a second oversized
+    // canopy over courts, plazas, or family-specific structures.
+    && !(specialtyStructureKind !== null
+      && (placement.propId === 'playground' || placement.propId === 'pavilion'))
+  )), [
     fittedMicrodetailGuides,
     hasCurrentParkGround,
     plantingStructure,
@@ -2014,6 +2250,17 @@ function ParkKitInstance({
     specialtyStructureKind,
     zone,
   ]);
+  const meshyDetailPlacements = useMemo<ParkMeshyDetailPlacement[]>(() => {
+    if (!parkGroundProfile.variantId) return [];
+    const candidates = parkMeshyAssetsForSelection(
+      parkGroundProfile.archetypeId,
+      parkGroundProfile.variantId,
+    ).filter((candidate) => candidate.placement);
+    return resolveParkMeshyDetailPlacements(
+      candidates,
+      localProgramFrame.points.map(({ x, y }) => [x, y]),
+    );
+  }, [localProgramFrame.points, parkGroundProfile.archetypeId, parkGroundProfile.variantId]);
   const microdetailPlacements = useMemo<ParkMicrodetailPlacement[]>(() => {
     if (
       specialtyStructureKind === 'cricket_ground_assembly'
@@ -2083,8 +2330,14 @@ function ParkKitInstance({
         x: anchor.x,
         y: anchor.y,
       })),
+      ...meshyDetailPlacements.map((placement) => ({
+        lng: centroid.lng + placement.x / mPerLon,
+        lat: centroid.lat + placement.y / METERS_PER_DEG_LAT,
+        x: placement.x,
+        y: placement.y,
+      })),
     ];
-  }, [centroid, microdetailPlacements, placements, specialtyTerrainAnchors]);
+  }, [centroid, meshyDetailPlacements, microdetailPlacements, placements, specialtyTerrainAnchors]);
 
   const byProp = useMemo(() => {
     const groups = new Map<ParkPropId, PropPlacement[]>();
@@ -2207,6 +2460,16 @@ function ParkKitInstance({
 
     const anchor = resolveZoneTerrainHeight(sampledTerrain, storedTerrain, fallbackTerrainHeight);
     const n = terrainTargets.length;
+    // The compiled park surface is a level prepared construction datum. Once
+    // its robust zone anchor is known, seat every kit element on that datum;
+    // otherwise source roofs and canopy hits can tilt the fixed program away
+    // from the flattened parcel below it.
+    if (hasCurrentParkGround) {
+      missesAtFreezeRef.current = 0;
+      frozenRef.current = true;
+      setInstanceZ(new Array<number>(n).fill(0));
+      return;
+    }
     if (!rawElevationRef.current || rawElevationRef.current.length !== n) {
       rawElevationRef.current = new Array<number | null>(n).fill(null);
       hitFlagsRef.current = new Array<boolean>(n).fill(false);
@@ -2277,6 +2540,12 @@ function ParkKitInstance({
   const microdetailZ = instanceZ
     ? instanceZ.slice(placements.length, placements.length + microdetailPlacements.length)
     : null;
+  const meshyDetailStart = placements.length
+    + microdetailPlacements.length
+    + specialtyTerrainAnchors.length;
+  const meshyDetailZ = instanceZ
+    ? instanceZ.slice(meshyDetailStart, meshyDetailStart + meshyDetailPlacements.length)
+    : null;
 
   return (
     <EastNorthUpFrame
@@ -2295,6 +2564,10 @@ function ParkKitInstance({
         terrainOffsets={microdetailZ}
         palette={dressingAppearance?.palette}
         renderOrder={RENDER_ORDER_PROPS}
+      />
+      <GlobeParkMeshyDetailInstances
+        placements={meshyDetailPlacements}
+        terrainOffsets={meshyDetailZ}
       />
       {[...byProp.entries()].map(([propId, group]) => {
         const groupZ = instanceZ

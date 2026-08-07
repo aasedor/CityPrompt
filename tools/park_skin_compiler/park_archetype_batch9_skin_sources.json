@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "expectedArchetypeCount": 10,
+  "method": "exact_archetype_reference_statistics_plus_role_specific_procedural_structure",
+  "apiCalls": 0,
+  "sourcePixelsProjected": false,
+  "archetypes": {
+    "urban-pocket-rustic-v0": {"source":"frontend/public/archetypes/openspaces/urban-pocket-park/variant_0.png","patterns":{"paver":"safety","lawn":"lawn","asphalt":"asphalt","planting":"planting","safety":"safety","timber":"timber"},"crops":{"paver":[0.08,0.44,0.94,0.92],"lawn":[0.20,0.34,0.86,0.78],"asphalt":[0.00,0.62,1.00,1.00],"planting":[0.00,0.28,1.00,0.86],"safety":[0.08,0.44,0.94,0.92],"timber":[0.00,0.42,1.00,0.90]}},
+    "neighborhood-urban-contemporary-v3": {"source":"frontend/public/archetypes/openspaces/neighborhood-park/variant_3.png","patterns":{"paver":"paver","lawn":"lawn","asphalt":"asphalt","planting":"planting","safety":"safety","timber":"timber"},"crops":{"paver":[0.00,0.54,1.00,1.00],"lawn":[0.00,0.38,0.72,0.88],"asphalt":[0.00,0.60,1.00,1.00],"planting":[0.00,0.32,1.00,0.88],"safety":[0.00,0.58,1.00,1.00],"timber":[0.00,0.48,1.00,0.96]}},
+    "cemetery-classical-formal-v0": {"source":"frontend/public/archetypes/openspaces/cemetery-memorial-grounds/variant_0.png","patterns":{"paver":"asphalt","lawn":"lawn","asphalt":"asphalt","planting":"planting","safety":"paver","timber":"timber"},"crops":{"paver":[0.00,0.52,1.00,1.00],"lawn":[0.00,0.34,1.00,0.92],"asphalt":[0.00,0.64,1.00,1.00],"planting":[0.00,0.30,1.00,0.82],"safety":[0.12,0.44,0.90,0.94],"timber":[0.00,0.50,1.00,0.94]}},
+    "courtyard-contemporary-water-v1": {"source":"frontend/public/archetypes/openspaces/courtyard/variant_1.png","patterns":{"paver":"paver","lawn":"planting","asphalt":"asphalt","planting":"planting","safety":"safety","timber":"timber"},"crops":{"paver":[0.00,0.56,1.00,1.00],"lawn":[0.00,0.36,1.00,0.86],"asphalt":[0.00,0.62,1.00,1.00],"planting":[0.00,0.30,1.00,0.88],"safety":[0.10,0.48,0.92,0.94],"timber":[0.00,0.46,1.00,0.92]}},
+    "street-parklet-sf-timber-v1": {"source":"frontend/public/archetypes/openspaces/street-plaza-parklet/variant_1.png","patterns":{"paver":"timber","lawn":"planting","asphalt":"asphalt","planting":"planting","safety":"safety","timber":"timber"},"crops":{"paver":[0.00,0.42,1.00,1.00],"lawn":[0.00,0.18,1.00,0.82],"asphalt":[0.00,0.58,1.00,1.00],"planting":[0.00,0.24,1.00,0.92],"safety":[0.02,0.34,0.98,0.92],"timber":[0.00,0.34,1.00,0.96]}},
+    "jardin-francaise-water-axis-v1": {"source":"frontend/public/archetypes/openspaces/jardin-a-la-francaise/variant_1.png","patterns":{"paver":"asphalt","lawn":"lawn","asphalt":"asphalt","planting":"planting","safety":"paver","timber":"timber"},"crops":{"paver":[0.00,0.54,1.00,1.00],"lawn":[0.00,0.42,1.00,0.90],"asphalt":[0.00,0.64,1.00,1.00],"planting":[0.00,0.34,1.00,0.88],"safety":[0.10,0.40,0.92,0.92],"timber":[0.00,0.48,1.00,0.94]}},
+    "london-garden-square-railed-v1": {"source":"frontend/public/archetypes/openspaces/london-garden-square/variant_1.png","patterns":{"paver":"paver","lawn":"lawn","asphalt":"asphalt","planting":"planting","safety":"safety","timber":"timber"},"crops":{"paver":[0.00,0.56,1.00,1.00],"lawn":[0.04,0.34,0.94,0.90],"asphalt":[0.00,0.64,1.00,1.00],"planting":[0.00,0.28,1.00,0.88],"safety":[0.08,0.42,0.94,0.94],"timber":[0.00,0.46,1.00,0.94]}},
+    "halifax-public-rose-bandstand-v0": {"source":"frontend/public/archetypes/openspaces/halifax-public-gardens/variant_0.png","patterns":{"paver":"asphalt","lawn":"lawn","asphalt":"asphalt","planting":"planting","safety":"safety","timber":"timber"},"crops":{"paver":[0.00,0.56,1.00,1.00],"lawn":[0.00,0.40,1.00,0.90],"asphalt":[0.00,0.64,1.00,1.00],"planting":[0.00,0.32,1.00,0.90],"safety":[0.08,0.38,0.94,0.90],"timber":[0.00,0.42,1.00,0.92]}},
+    "olmsted-central-park-multilandscape-v3": {"source":"frontend/public/archetypes/openspaces/picturesque-olmsted-park/variant_3.png","patterns":{"paver":"paver","lawn":"lawn","asphalt":"asphalt","planting":"planting","safety":"paver","timber":"timber"},"crops":{"paver":[0.00,0.54,1.00,1.00],"lawn":[0.00,0.36,1.00,0.90],"asphalt":[0.00,0.64,1.00,1.00],"planting":[0.00,0.24,1.00,0.88],"safety":[0.08,0.42,0.94,0.94],"timber":[0.00,0.46,1.00,0.94]}},
+    "hilltop-pacific-terraced-viewpoint-v3": {"source":"frontend/public/archetypes/openspaces/hilltop-topographic-park/variant_3.png","patterns":{"paver":"asphalt","lawn":"planting","asphalt":"asphalt","planting":"planting","safety":"safety","timber":"timber"},"crops":{"paver":[0.00,0.54,1.00,1.00],"lawn":[0.00,0.28,1.00,0.88],"asphalt":[0.00,0.64,1.00,1.00],"planting":[0.00,0.18,1.00,0.88],"safety":[0.10,0.40,0.92,0.92],"timber":[0.00,0.44,1.00,0.94]}}
+  },
+  "materialDefaults": {
+    "paver":{"roughness":0.88,"normalStrength":2.0,"metresPerTile":4.0},
+    "lawn":{"roughness":0.95,"normalStrength":2.2,"metresPerTile":5.0},
+    "asphalt":{"roughness":0.91,"normalStrength":1.8,"metresPerTile":4.0},
+    "planting":{"roughness":0.98,"normalStrength":3.0,"metresPerTile":3.0},
+    "safety":{"roughness":0.90,"normalStrength":2.4,"metresPerTile":3.0},
+    "timber":{"roughness":0.84,"normalStrength":2.2,"metresPerTile":2.5}
+  }
+}

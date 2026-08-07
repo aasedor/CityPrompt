@@ -1,0 +1,161 @@
+{
+  "schemaVersion": 1,
+  "kitVersion": "2026-08-07-p0-v1",
+  "familyCount": 7,
+  "assetCount": 25,
+  "bytes": 1571664,
+  "assets": [
+    {
+      "family": "disc-golf",
+      "id": "disc_golf_basket",
+      "filename": "disc-golf-basket.glb",
+      "bytes": 112016
+    },
+    {
+      "family": "disc-golf",
+      "id": "disc_golf_tee_sign",
+      "filename": "disc-golf-tee-sign.glb",
+      "bytes": 20364
+    },
+    {
+      "family": "bocce-petanque",
+      "id": "bocce_score_stand",
+      "filename": "bocce-score-stand.glb",
+      "bytes": 36164
+    },
+    {
+      "family": "bocce-petanque",
+      "id": "bocce_ball_rack",
+      "filename": "bocce-ball-rack.glb",
+      "bytes": 135408
+    },
+    {
+      "family": "climbing-bouldering",
+      "id": "climbing_competition_wall",
+      "filename": "climbing-competition-wall.glb",
+      "bytes": 87336
+    },
+    {
+      "family": "climbing-bouldering",
+      "id": "climbing_natural_boulder",
+      "filename": "climbing-natural-boulder.glb",
+      "bytes": 6796
+    },
+    {
+      "family": "climbing-bouldering",
+      "id": "climbing_traverse_wall",
+      "filename": "climbing-traverse-wall.glb",
+      "bytes": 75768
+    },
+    {
+      "family": "mini-golf",
+      "id": "mini_golf_windmill",
+      "filename": "mini-golf-windmill.glb",
+      "bytes": 35944
+    },
+    {
+      "family": "mini-golf",
+      "id": "mini_golf_loop",
+      "filename": "mini-golf-loop.glb",
+      "bytes": 45800
+    },
+    {
+      "family": "mini-golf",
+      "id": "mini_golf_bridge",
+      "filename": "mini-golf-bridge.glb",
+      "bytes": 85580
+    },
+    {
+      "family": "mini-golf",
+      "id": "mini_golf_cup_flag",
+      "filename": "mini-golf-cup-flag.glb",
+      "bytes": 15396
+    },
+    {
+      "family": "beach-volleyball",
+      "id": "beach_volleyball_net",
+      "filename": "beach-volleyball-net.glb",
+      "bytes": 47052
+    },
+    {
+      "family": "beach-volleyball",
+      "id": "beach_volleyball_referee_stand",
+      "filename": "beach-volleyball-referee-stand.glb",
+      "bytes": 69156
+    },
+    {
+      "family": "water-ecology-infrastructure",
+      "id": "wetland_boardwalk_span",
+      "filename": "wetland-boardwalk-span.glb",
+      "bytes": 189292
+    },
+    {
+      "family": "water-ecology-infrastructure",
+      "id": "wetland_observation_deck",
+      "filename": "wetland-observation-deck.glb",
+      "bytes": 140816
+    },
+    {
+      "family": "water-ecology-infrastructure",
+      "id": "wetland_footbridge",
+      "filename": "wetland-footbridge.glb",
+      "bytes": 157540
+    },
+    {
+      "family": "water-ecology-infrastructure",
+      "id": "stormwater_check_weir",
+      "filename": "stormwater-check-weir.glb",
+      "bytes": 32664
+    },
+    {
+      "family": "water-ecology-infrastructure",
+      "id": "stormwater_inlet_headwall",
+      "filename": "stormwater-inlet-headwall.glb",
+      "bytes": 36360
+    },
+    {
+      "family": "water-ecology-infrastructure",
+      "id": "stormwater_outlet_control",
+      "filename": "stormwater-outlet-control.glb",
+      "bytes": 26396
+    },
+    {
+      "family": "water-ecology-infrastructure",
+      "id": "riprap_cluster",
+      "filename": "riprap-cluster.glb",
+      "bytes": 50856
+    },
+    {
+      "family": "water-ecology-infrastructure",
+      "id": "maintenance_gate",
+      "filename": "maintenance-gate.glb",
+      "bytes": 29004
+    },
+    {
+      "family": "amphitheater",
+      "id": "amphitheater_stage",
+      "filename": "amphitheater-stage.glb",
+      "bytes": 100632
+    },
+    {
+      "family": "amphitheater",
+      "id": "amphitheater_seat_wall",
+      "filename": "amphitheater-seat-wall.glb",
+      "bytes": 16716
+    },
+    {
+      "family": "amphitheater",
+      "id": "amphitheater_aisle_rail",
+      "filename": "amphitheater-aisle-rail.glb",
+      "bytes": 6020
+    },
+    {
+      "family": "amphitheater",
+      "id": "amphitheater_bollard_light",
+      "filename": "amphitheater-bollard-light.glb",
+      "bytes": 12588
+    }
+  ],
+  "errors": [],
+  "passed": true
+}

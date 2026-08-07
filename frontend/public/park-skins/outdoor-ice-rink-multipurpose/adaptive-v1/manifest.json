@@ -1,0 +1,157 @@
+{
+  "schemaVersion": 1,
+  "archetype": "outdoor-ice-rink-multipurpose",
+  "source": "frontend/public/archetypes/openspaces/outdoor-ice-rink/variant_3.png",
+  "sources": [
+    "frontend/public/archetypes/openspaces/outdoor-ice-rink/variant_3.png"
+  ],
+  "method": "exact_archetype_reference_statistics_plus_role_specific_procedural_structure",
+  "apiCalls": 0,
+  "sourcePixelsProjected": false,
+  "materials": {
+    "paver": {
+      "source": "frontend/public/archetypes/openspaces/outdoor-ice-rink/variant_3.png",
+      "cropNormalized": [
+        0.0,
+        0.62,
+        0.3,
+        1.0
+      ],
+      "cropPixels": [
+        0,
+        476,
+        307,
+        768
+      ],
+      "metresPerTile": 4.0,
+      "pattern": "paver",
+      "files": {
+        "sourceCrop": "paver/source_crop.jpg",
+        "albedo": "paver/albedo.jpg",
+        "normal": "paver/normal.png",
+        "roughness": "paver/roughness.jpg",
+        "ao": "paver/ao.jpg"
+      }
+    },
+    "lawn": {
+      "source": "frontend/public/archetypes/openspaces/outdoor-ice-rink/variant_3.png",
+      "cropNormalized": [
+        0.82,
+        0.46,
+        1.0,
+        0.76
+      ],
+      "cropPixels": [
+        840,
+        353,
+        1024,
+        584
+      ],
+      "metresPerTile": 5.0,
+      "pattern": "planting",
+      "files": {
+        "sourceCrop": "lawn/source_crop.jpg",
+        "albedo": "lawn/albedo.jpg",
+        "normal": "lawn/normal.png",
+        "roughness": "lawn/roughness.jpg",
+        "ao": "lawn/ao.jpg"
+      }
+    },
+    "asphalt": {
+      "source": "frontend/public/archetypes/openspaces/outdoor-ice-rink/variant_3.png",
+      "cropNormalized": [
+        0.0,
+        0.62,
+        0.42,
+        1.0
+      ],
+      "cropPixels": [
+        0,
+        476,
+        430,
+        768
+      ],
+      "metresPerTile": 4.0,
+      "pattern": "asphalt",
+      "files": {
+        "sourceCrop": "asphalt/source_crop.jpg",
+        "albedo": "asphalt/albedo.jpg",
+        "normal": "asphalt/normal.png",
+        "roughness": "asphalt/roughness.jpg",
+        "ao": "asphalt/ao.jpg"
+      }
+    },
+    "planting": {
+      "source": "frontend/public/archetypes/openspaces/outdoor-ice-rink/variant_3.png",
+      "cropNormalized": [
+        0.78,
+        0.38,
+        1.0,
+        0.72
+      ],
+      "cropPixels": [
+        799,
+        292,
+        1024,
+        553
+      ],
+      "metresPerTile": 3.0,
+      "pattern": "planting",
+      "files": {
+        "sourceCrop": "planting/source_crop.jpg",
+        "albedo": "planting/albedo.jpg",
+        "normal": "planting/normal.png",
+        "roughness": "planting/roughness.jpg",
+        "ao": "planting/ao.jpg"
+      }
+    },
+    "safety": {
+      "source": "frontend/public/archetypes/openspaces/outdoor-ice-rink/variant_3.png",
+      "cropNormalized": [
+        0.12,
+        0.47,
+        0.94,
+        0.92
+      ],
+      "cropPixels": [
+        123,
+        361,
+        963,
+        707
+      ],
+      "metresPerTile": 3.0,
+      "pattern": "safety",
+      "files": {
+        "sourceCrop": "safety/source_crop.jpg",
+        "albedo": "safety/albedo.jpg",
+        "normal": "safety/normal.png",
+        "roughness": "safety/roughness.jpg",
+        "ao": "safety/ao.jpg"
+      }
+    },
+    "timber": {
+      "source": "frontend/public/archetypes/openspaces/outdoor-ice-rink/variant_3.png",
+      "cropNormalized": [
+        0.0,
+        0.64,
+        0.22,
+        0.92
+      ],
+      "cropPixels": [
+        0,
+        492,
+        225,
+        707
+      ],
+      "metresPerTile": 2.5,
+      "pattern": "timber",
+      "files": {
+        "sourceCrop": "timber/source_crop.jpg",
+        "albedo": "timber/albedo.jpg",
+        "normal": "timber/normal.png",
+        "roughness": "timber/roughness.jpg",
+        "ao": "timber/ao.jpg"
+      }
+    }
+  }
+}

@@ -382,6 +382,139 @@ _SCULPTURE_GARDEN_ENVELOPE = _park_envelope(
 _LABYRINTH_ENVELOPE = _park_envelope(
     nominal=(20.0, 20.0), width=(20.0, 65.0), depth=(20.0, 65.0), area=(400.0, 4_225.0),
 )
+_ICE_RINK_MULTIPURPOSE_ENVELOPE = _park_envelope(
+    nominal=(64.0, 38.0), width=(60.0, 120.0), depth=(30.0, 85.0), area=(1_800.0, 10_200.0),
+)
+_KAYAK_RIVER_LAUNCH_ENVELOPE = _park_envelope(
+    nominal=(80.0, 35.0), width=(45.0, 220.0), depth=(24.0, 80.0), area=(1_080.0, 17_600.0), min_aspect_ratio=1.6,
+)
+_TIDAL_MARSH_CORDGRASS_ENVELOPE = _park_envelope(
+    nominal=(150.0, 100.0), width=(80.0, 360.0), depth=(60.0, 260.0), area=(4_800.0, 93_600.0),
+)
+_CINEMA_LAWN_PROJECTION_ENVELOPE = _park_envelope(
+    nominal=(80.0, 50.0), width=(58.0, 160.0), depth=(40.0, 110.0), area=(2_320.0, 17_600.0),
+)
+_FOOD_TRUCK_PERMANENT_ENVELOPE = _park_envelope(
+    nominal=(50.0, 40.0), width=(38.0, 100.0), depth=(32.0, 80.0), area=(1_216.0, 8_000.0),
+)
+_FOOD_TRUCK_INDUSTRIAL_POPUP_ENVELOPE = _park_envelope(
+    nominal=(40.0, 30.0), width=(30.0, 60.0), depth=(20.0, 45.0), area=(500.0, 1_500.0),
+)
+_GREAT_LAWN_ENVELOPE = _park_envelope(
+    nominal=(180.0, 120.0), width=(75.0, 420.0), depth=(55.0, 300.0), area=(4_125.0, 126_000.0),
+)
+_CAMPUS_MEADOW_QUAD_ENVELOPE = _park_envelope(
+    nominal=(100.0, 80.0), width=(55.0, 220.0), depth=(45.0, 170.0), area=(2_475.0, 37_400.0),
+)
+_URBAN_BEACH_FAMILY_ENVELOPE = _park_envelope(
+    nominal=(60.0, 45.0), width=(42.0, 130.0), depth=(34.0, 100.0), area=(1_428.0, 13_000.0),
+)
+_VELODROME_OPEN_AIR_ENVELOPE = _park_envelope(
+    nominal=(135.0, 82.0), width=(125.0, 220.0), depth=(72.0, 150.0), area=(9_000.0, 33_000.0),
+)
+_MTB_SKILLS_DIRT_ENVELOPE = _park_envelope(
+    nominal=(90.0, 60.0), width=(55.0, 190.0), depth=(42.0, 130.0), area=(2_310.0, 24_700.0),
+)
+_REGIONAL_ENGLISH_LANDSCAPE_ENVELOPE = _park_envelope(
+    nominal=(220.0, 160.0), width=(100.0, 500.0), depth=(80.0, 400.0), area=(8_000.0, 200_000.0),
+)
+_BEER_GARDEN_MUNICH_ENVELOPE = _park_envelope(
+    nominal=(30.0, 28.0), width=(25.0, 100.0), depth=(25.0, 90.0), area=(625.0, 9_000.0),
+)
+_SUNKEN_COURTYARD_ENVELOPE = _park_envelope(
+    nominal=(30.0, 25.0), width=(26.0, 80.0), depth=(22.0, 70.0), area=(572.0, 5_600.0),
+)
+_TERRACED_CASCADE_ENVELOPE = _park_envelope(
+    nominal=(90.0, 100.0), width=(55.0, 180.0), depth=(60.0, 220.0), area=(3_300.0, 39_600.0),
+)
+_MARKET_FESTIVAL_LAWN_ENVELOPE = _park_envelope(
+    nominal=(95.0, 75.0), width=(60.0, 250.0), depth=(50.0, 180.0), area=(3_000.0, 45_000.0),
+)
+_BOARDWALK_MARITIME_ENVELOPE = _park_envelope(
+    nominal=(120.0, 22.0), width=(60.0, 600.0), depth=(14.0, 55.0), area=(840.0, 33_000.0), min_aspect_ratio=2.5,
+)
+_FOUNTAIN_FORMAL_POOL_ENVELOPE = _park_envelope(
+    nominal=(55.0, 35.0), width=(40.0, 160.0), depth=(28.0, 100.0), area=(1_120.0, 16_000.0),
+)
+_NATURAL_SWIMMING_POND_ENVELOPE = _park_envelope(
+    nominal=(90.0, 70.0), width=(60.0, 200.0), depth=(50.0, 150.0), area=(3_000.0, 30_000.0),
+)
+_NATURE_PRESERVE_PRAIRIE_ENVELOPE = _park_envelope(
+    nominal=(180.0, 120.0), width=(80.0, 600.0), depth=(60.0, 450.0), area=(4_800.0, 270_000.0),
+)
+_RIVERFRONT_LAKE_BEACH_ENVELOPE = _park_envelope(
+    nominal=(130.0, 90.0), width=(80.0, 350.0), depth=(60.0, 220.0), area=(4_800.0, 77_000.0),
+)
+_RECLAIMED_WHARF_ENVELOPE = _park_envelope(nominal=(100.0, 50.0), width=(50.0, 280.0), depth=(24.0, 110.0), area=(1_200.0, 30_800.0), min_aspect_ratio=1.4)
+_QUARRY_TIER_CASCADE_ENVELOPE = _park_envelope(nominal=(200.0, 150.0), width=(35.0, 360.0), depth=(30.0, 300.0), area=(1_200.0, 108_000.0))
+_ESTATE_OAK_PICNIC_ENVELOPE = _park_envelope(nominal=(120.0, 100.0), width=(30.0, 320.0), depth=(30.0, 260.0), area=(900.0, 83_200.0))
+_CONSTRUCTED_WETLAND_BOARDWALK_ENVELOPE = _park_envelope(nominal=(180.0, 110.0), width=(35.0, 400.0), depth=(28.0, 250.0), area=(1_200.0, 100_000.0))
+_ACADEMIC_PLANTED_COURT_ENVELOPE = _park_envelope(nominal=(40.0, 38.0), width=(25.0, 72.0), depth=(25.0, 120.0), area=(625.0, 8_640.0))
+_CAMPUS_GREEN_SPINE_ENVELOPE = _park_envelope(nominal=(30.0, 240.0), width=(15.0, 55.0), depth=(60.0, 500.0), area=(900.0, 27_500.0), min_aspect_ratio=2.0)
+_BOTANICAL_ROSE_GARDEN_ENVELOPE = _park_envelope(nominal=(120.0, 90.0), width=(30.0, 260.0), depth=(31.0, 210.0), area=(930.0, 54_600.0))
+_RESEARCH_ARBORETUM_ENVELOPE = _park_envelope(nominal=(300.0, 220.0), width=(35.0, 700.0), depth=(30.0, 520.0), area=(1_200.0, 364_000.0))
+_REWILDING_REFORESTATION_ENVELOPE = _park_envelope(nominal=(300.0, 220.0), width=(35.0, 800.0), depth=(30.0, 650.0), area=(1_200.0, 520_000.0))
+_STORMWATER_ARID_CHANNEL_ENVELOPE = _park_envelope(nominal=(200.0, 125.0), width=(35.0, 450.0), depth=(24.0, 300.0), area=(900.0, 135_000.0))
+_URBAN_POCKET_RUSTIC_ENVELOPE = _park_envelope(nominal=(20.0, 20.0), width=(10.0, 45.0), depth=(10.0, 45.0), area=(100.0, 2_025.0))
+_NEIGHBORHOOD_CONTEMPORARY_ENVELOPE = _park_envelope(nominal=(100.0, 80.0), width=(35.0, 240.0), depth=(28.0, 180.0), area=(980.0, 43_200.0))
+_CEMETERY_CLASSICAL_ENVELOPE = _park_envelope(nominal=(250.0, 200.0), width=(45.0, 600.0), depth=(35.0, 460.0), area=(1_575.0, 276_000.0))
+_COURTYARD_LINEAR_WATER_ENVELOPE = _park_envelope(nominal=(35.0, 35.0), width=(15.0, 120.0), depth=(15.0, 90.0), area=(225.0, 10_800.0))
+_PARKLET_SF_TIMBER_ENVELOPE = _park_envelope(nominal=(10.0, 6.0), width=(5.0, 40.0), depth=(3.0, 14.0), area=(15.0, 560.0), min_aspect_ratio=1.2)
+_FRENCH_PARTERRE_AXIS_ENVELOPE = _park_envelope(nominal=(180.0, 140.0), width=(40.0, 420.0), depth=(30.0, 320.0), area=(1_200.0, 134_400.0))
+_LONDON_RAILED_SQUARE_ENVELOPE = _park_envelope(nominal=(100.0, 80.0), width=(35.0, 260.0), depth=(28.0, 200.0), area=(980.0, 52_000.0))
+_HALIFAX_ROSE_BANDSTAND_ENVELOPE = _park_envelope(nominal=(200.0, 150.0), width=(40.0, 440.0), depth=(32.0, 330.0), area=(1_280.0, 145_200.0))
+_OLMSTED_MULTILANDSCAPE_ENVELOPE = _park_envelope(nominal=(400.0, 350.0), width=(50.0, 900.0), depth=(35.0, 720.0), area=(1_750.0, 648_000.0))
+_HILLTOP_VIEWPOINT_ENVELOPE = _park_envelope(nominal=(180.0, 180.0), width=(40.0, 420.0), depth=(35.0, 380.0), area=(1_400.0, 159_600.0))
+_AMSTERDAM_HOFJE_ENVELOPE = _park_envelope(nominal=(25.0, 25.0), width=(10.0, 110.0), depth=(10.0, 70.0), area=(100.0, 7_700.0))
+_AMSTERDAM_PLEIN_ENVELOPE = _park_envelope(nominal=(70.0, 55.0), width=(25.0, 180.0), depth=(20.0, 125.0), area=(500.0, 22_500.0))
+_AMSTERDAM_VONDELPARK_ENVELOPE = _park_envelope(nominal=(250.0, 160.0), width=(35.0, 600.0), depth=(28.0, 360.0), area=(980.0, 216_000.0))
+_BARCELONA_PATI_ENVELOPE = _park_envelope(nominal=(50.0, 40.0), width=(18.0, 130.0), depth=(14.0, 90.0), area=(252.0, 11_700.0))
+_BARCELONA_XAMFRA_ENVELOPE = _park_envelope(nominal=(30.0, 28.0), width=(14.0, 120.0), depth=(12.0, 80.0), area=(168.0, 9_600.0))
+_BARCELONA_SUPERILLA_ENVELOPE = _park_envelope(nominal=(130.0, 130.0), width=(35.0, 280.0), depth=(30.0, 250.0), area=(1_050.0, 70_000.0))
+_CALGARY_PRAIRIE_MARKET_ENVELOPE = _park_envelope(nominal=(70.0, 55.0), width=(25.0, 180.0), depth=(20.0, 125.0), area=(500.0, 22_500.0))
+_CALGARY_PRINCES_ISLAND_ENVELOPE = _park_envelope(nominal=(400.0, 200.0), width=(40.0, 800.0), depth=(30.0, 430.0), area=(1_200.0, 344_000.0))
+_MONTREAL_MOUNT_ROYAL_ENVELOPE = _park_envelope(nominal=(500.0, 400.0), width=(45.0, 950.0), depth=(30.0, 720.0), area=(1_350.0, 684_000.0))
+_MONTREAL_SQUARE_ENVELOPE = _park_envelope(nominal=(70.0, 55.0), width=(25.0, 180.0), depth=(20.0, 125.0), area=(500.0, 22_500.0))
+_PARIS_PLACE_ROYALE_ENVELOPE = _park_envelope(nominal=(85.0, 65.0), width=(25.0, 210.0), depth=(20.0, 150.0), area=(500.0, 31_500.0))
+_PARIS_SQUARE_TREE_GRID_ENVELOPE = _park_envelope(nominal=(70.0, 55.0), width=(24.0, 180.0), depth=(20.0, 125.0), area=(480.0, 22_500.0))
+_LONDON_CIRCUS_PLANTED_ENVELOPE = _park_envelope(nominal=(75.0, 60.0), width=(24.0, 190.0), depth=(20.0, 140.0), area=(480.0, 26_600.0))
+_NEWYORK_POCKET_WATER_ENVELOPE = _park_envelope(nominal=(32.0, 24.0), width=(12.0, 100.0), depth=(10.0, 75.0), area=(120.0, 7_500.0))
+_NEWYORK_COMMUNITY_GREENHOUSE_ENVELOPE = _park_envelope(nominal=(45.0, 32.0), width=(18.0, 130.0), depth=(14.0, 95.0), area=(252.0, 12_350.0))
+_VANCOUVER_SEAWALL_CYCLE_ENVELOPE = _park_envelope(nominal=(140.0, 24.0), width=(45.0, 650.0), depth=(14.0, 60.0), area=(630.0, 39_000.0), min_aspect_ratio=1.8)
+_VANCOUVER_BEACH_PAVILION_ENVELOPE = _park_envelope(nominal=(130.0, 70.0), width=(35.0, 320.0), depth=(25.0, 180.0), area=(875.0, 57_600.0))
+_TORONTO_RAVINE_CREEK_ENVELOPE = _park_envelope(nominal=(220.0, 90.0), width=(35.0, 600.0), depth=(24.0, 260.0), area=(840.0, 156_000.0))
+_TORONTO_URBAN_MARKET_ENVELOPE = _park_envelope(nominal=(90.0, 65.0), width=(25.0, 220.0), depth=(20.0, 150.0), area=(500.0, 33_000.0))
+_HALIFAX_COASTAL_FOG_PATH_ENVELOPE = _park_envelope(nominal=(180.0, 100.0), width=(35.0, 500.0), depth=(24.0, 280.0), area=(840.0, 140_000.0))
+_CITY_HALL_MODERNIST_FOUNTAIN_ENVELOPE = _park_envelope(nominal=(80.0, 60.0), width=(20.0, 240.0), depth=(16.0, 180.0), area=(320.0, 43_200.0))
+_CATHEDRAL_MOSQUE_COURTYARD_ENVELOPE = _park_envelope(nominal=(70.0, 55.0), width=(18.0, 210.0), depth=(16.0, 160.0), area=(288.0, 33_600.0))
+_CULTURAL_MUSEUM_TERRACE_ENVELOPE = _park_envelope(nominal=(95.0, 65.0), width=(22.0, 260.0), depth=(18.0, 180.0), area=(396.0, 46_800.0))
+_TRANSIT_GREEN_CIVIC_ENVELOPE = _park_envelope(nominal=(75.0, 48.0), width=(18.0, 220.0), depth=(14.0, 140.0), area=(252.0, 30_800.0))
+_AMPHITHEATER_TERRACED_ENVELOPE = _park_envelope(nominal=(90.0, 70.0), width=(24.0, 260.0), depth=(20.0, 210.0), area=(480.0, 54_600.0))
+_CONCERT_TIMBER_LAWN_ENVELOPE = _park_envelope(nominal=(140.0, 95.0), width=(30.0, 360.0), depth=(24.0, 260.0), area=(720.0, 93_600.0))
+_NIGHT_MARKET_HAWKER_ENVELOPE = _park_envelope(nominal=(85.0, 40.0), width=(24.0, 260.0), depth=(14.0, 110.0), area=(336.0, 28_600.0), min_aspect_ratio=1.3)
+_PARADE_NATIONAL_MALL_ENVELOPE = _park_envelope(nominal=(220.0, 90.0), width=(40.0, 600.0), depth=(24.0, 260.0), area=(960.0, 156_000.0), min_aspect_ratio=1.4)
+_CANAL_ECOLOGICAL_WETLAND_ENVELOPE = _park_envelope(nominal=(180.0, 75.0), width=(32.0, 520.0), depth=(22.0, 220.0), area=(704.0, 114_400.0), min_aspect_ratio=1.4)
+_CUSTOM_BIOPHILIC_URBAN_ENVELOPE = _park_envelope(nominal=(75.0, 60.0), width=(18.0, 230.0), depth=(16.0, 180.0), area=(288.0, 41_400.0))
+_ROOFTOP_INTENSIVE_GARDEN_ENVELOPE = _park_envelope(nominal=(25.0, 20.0), width=(10.0, 70.0), depth=(8.0, 55.0), area=(80.0, 3_850.0))
+_COMMUNITY_HEALING_GARDEN_ENVELOPE = _park_envelope(nominal=(60.0, 50.0), width=(20.0, 160.0), depth=(16.0, 130.0), area=(320.0, 20_800.0))
+_GREENBELT_RAIL_TRAIL_ENVELOPE = _park_envelope(nominal=(600.0, 180.0), width=(45.0, 1_500.0), depth=(20.0, 400.0), area=(900.0, 600_000.0), min_aspect_ratio=1.8)
+_FOOTHILL_HEATHLAND_TRAIL_ENVELOPE = _park_envelope(nominal=(400.0, 400.0), width=(35.0, 900.0), depth=(28.0, 900.0), area=(980.0, 810_000.0))
+_MARINA_PACIFIC_DOCK_ENVELOPE = _park_envelope(nominal=(140.0, 120.0), width=(35.0, 360.0), depth=(28.0, 320.0), area=(980.0, 115_200.0))
+_WORKING_PIER_BROOKLYN_PARK_ENVELOPE = _park_envelope(nominal=(180.0, 100.0), width=(35.0, 430.0), depth=(24.0, 260.0), area=(840.0, 111_800.0), min_aspect_ratio=1.3)
+_FLOATING_MEADOW_LOOP_ENVELOPE = _park_envelope(nominal=(80.0, 70.0), width=(22.0, 180.0), depth=(18.0, 150.0), area=(396.0, 27_000.0))
+_LIGHTHOUSE_PACIFIC_HEADLAND_ENVELOPE = _park_envelope(nominal=(180.0, 180.0), width=(35.0, 360.0), depth=(28.0, 340.0), area=(980.0, 122_400.0))
+_LAKE_EDGE_TIMBER_DECK_ENVELOPE = _park_envelope(nominal=(200.0, 40.0), width=(45.0, 620.0), depth=(14.0, 100.0), area=(630.0, 62_000.0), min_aspect_ratio=1.8)
+_STORMWATER_NATURAL_CREEK_ENVELOPE = _park_envelope(nominal=(375.0, 40.0), width=(45.0, 700.0), depth=(16.0, 120.0), area=(720.0, 84_000.0), min_aspect_ratio=1.8)
+_SURFACE_PARKING_STANDARD_ENVELOPE = _park_envelope(nominal=(50.0, 40.0), width=(25.0, 100.0), depth=(20.0, 80.0), area=(500.0, 8_000.0))
+_STRUCTURED_PARKING_URBAN_ENVELOPE = _park_envelope(nominal=(50.0, 20.0), width=(30.0, 80.0), depth=(15.0, 30.0), area=(450.0, 2_400.0), min_aspect_ratio=1.35)
+_UNDERGROUND_PARKING_GREEN_ENVELOPE = _park_envelope(nominal=(20.0, 20.0), width=(10.0, 35.0), depth=(10.0, 35.0), area=(100.0, 1_225.0))
+_GREEN_PARKING_INFRASTRUCTURE_ENVELOPE = _park_envelope(nominal=(40.0, 30.0), width=(20.0, 70.0), depth=(15.0, 50.0), area=(300.0, 3_500.0))
+_AIRPORT_GENERAL_AVIATION_ENVELOPE = _park_envelope(nominal=(2_200.0, 1_360.0), width=(550.0, 7_500.0), depth=(450.0, 6_700.0), area=(250_000.0, 50_000_000.0), min_aspect_ratio=1.1)
+_EQUESTRIAN_WORKING_STABLE_ENVELOPE = _park_envelope(nominal=(250.0, 160.0), width=(90.0, 500.0), depth=(90.0, 400.0), area=(8_000.0, 200_000.0))
+_GOLF_SEASIDE_LINKS_ENVELOPE = _park_envelope(nominal=(1_000.0, 600.0), width=(800.0, 1_150.0), depth=(500.0, 700.0), area=(400_000.0, 800_000.0), min_aspect_ratio=1.15)
+_DRIVING_RANGE_SINGLE_TIER_ENVELOPE = _park_envelope(nominal=(120.0, 290.0), width=(70.0, 170.0), depth=(115.0, 400.0), area=(8_000.0, 70_000.0), min_aspect_ratio=1.2)
+_MULTI_SPORT_TRACK_FIELD_ENVELOPE = _park_envelope(nominal=(250.0, 160.0), width=(130.0, 450.0), depth=(100.0, 320.0), area=(15_000.0, 120_000.0))
+_RETAIL_PARKING_LANDSCAPED_ENVELOPE = _park_envelope(nominal=(70.0, 50.0), width=(30.0, 140.0), depth=(25.0, 100.0), area=(800.0, 15_000.0))
 _SKATE_PARK_V0_ENVELOPE = _park_envelope(
     nominal=(40.0, 30.0),
     # The archetype-owned kit is a fixed 40 x 30 m program. These bounds
@@ -399,7 +532,10 @@ _SKATE_PARK_V0_CLEARANCE_M = 0.5
 _EXACT_PARK_PROGRAMS: dict[tuple[str, str], tuple[float, float, float]] = {
     ("skate_park", "skate_park_v0"): (40.0, 30.0, 0.5),
     ("inclusive_playground", "inclusive_playground_v0"): (50.0, 40.0, 0.5),
-    ("dog_park", "dog_park_v0"): (80.0, 50.0, 0.5),
+    ("dog_park", "dog_park_v0"): (30.0, 25.0, 0.5),
+    ("dog_park", "dog_park_v1"): (30.0, 25.0, 0.5),
+    ("dog_park", "dog_park_v2"): (30.0, 25.0, 0.5),
+    ("dog_park", "dog_park_v3"): (30.0, 25.0, 0.5),
     ("splash_pad_area", "splash_pad_area_v0"): (30.0, 25.0, 0.5),
     ("community_garden", "community_garden_v0"): (50.0, 50.0, 0.5),
     ("basketball_court", "basketball_court_v0"): (32.0, 19.0, 0.5),
@@ -427,7 +563,7 @@ _INCLUSIVE_PLAYGROUND_V0_ENVELOPE = _park_envelope(
     nominal=(50.0, 40.0), width=(50.0, 65.0), depth=(40.0, 55.0), area=(2_000.0, 3_575.0),
 )
 _DOG_PARK_V0_ENVELOPE = _park_envelope(
-    nominal=(80.0, 50.0), width=(80.0, 100.0), depth=(50.0, 65.0), area=(4_000.0, 6_500.0),
+    nominal=(80.0, 50.0), width=(30.0, 100.0), depth=(25.0, 65.0), area=(750.0, 6_500.0),
 )
 _SPLASH_PAD_V0_ENVELOPE = _park_envelope(
     nominal=(30.0, 25.0), width=(30.0, 42.0), depth=(25.0, 35.0), area=(750.0, 1_470.0),
@@ -1128,6 +1264,416 @@ _CAPABILITIES: tuple[PublicRealmFamilyCapability, ...] = (
         selections=(_selection("labyrinth_meditation", "labyrinth_meditation_v0", profile_id="labyrinth-classical-lego-v1", appearance_kit_id="labyrinth_meditation_v0_classical_stone_skin", planting_structure="labyrinth_classical_v0", compatibility=_LABYRINTH_ENVELOPE, components=("labyrinth_ground_program_v1", "chartres_ring_path_v1", "central_stone_bench_v1", "formal_hedge_frame_v1"), default=True),),
     ),
     PublicRealmFamilyCapability(
+        family_id="park_ice_rink_multipurpose_v3", kind="park", title="Outdoor Ice Rink / Multipurpose Pad v3", generator="park_kit",
+        selections=(_selection("outdoor_ice_rink", "outdoor_ice_rink_v3", profile_id="ice-rink-multipurpose-lego-v1", appearance_kit_id="outdoor_ice_rink_v3_multipurpose_pad_skin", planting_structure="ice_rink_multipurpose_v3", compatibility=_ICE_RINK_MULTIPURPOSE_ENVELOPE, components=("multipurpose_rink_ground_program_v1", "permanent_rink_boards_v1", "seasonal_surface_markings_v1", "rink_light_standard_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_kayak_river_launch_v0", kind="park", title="Kayak Launch / River Launch v0", generator="park_kit",
+        selections=(_selection("kayak_launch_dock", "kayak_launch_dock_v0", profile_id="kayak-river-launch-lego-v1", appearance_kit_id="kayak_launch_dock_v0_river_launch_skin", planting_structure="kayak_river_launch_v0", compatibility=_KAYAK_RIVER_LAUNCH_ENVELOPE, components=("kayak_launch_ground_program_v1", "floating_dock_v1", "accessible_launch_slide_v1", "kayak_rack_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_tidal_marsh_cordgrass_v0", kind="park", title="Tidal Marsh Boardwalk / Cordgrass v0", generator="park_kit",
+        selections=(_selection("tidal_marsh_boardwalk", "tidal_marsh_boardwalk_v0", profile_id="tidal-marsh-cordgrass-lego-v1", appearance_kit_id="tidal_marsh_boardwalk_v0_cordgrass_skin", planting_structure="tidal_marsh_cordgrass_v0", compatibility=_TIDAL_MARSH_CORDGRASS_ENVELOPE, components=("tidal_marsh_ground_program_v1", "elevated_boardwalk_v1", "hexagonal_overlook_v1", "interpretive_trailhead_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_cinema_lawn_projection_v1", kind="park", title="Outdoor Cinema / Park Lawn v1", generator="park_kit",
+        selections=(_selection("outdoor_cinema_lawn", "outdoor_cinema_lawn_v1", profile_id="cinema-lawn-projection-lego-v1", appearance_kit_id="outdoor_cinema_lawn_v1_park_projection_skin", planting_structure="cinema_lawn_projection_v1", compatibility=_CINEMA_LAWN_PROJECTION_ENVELOPE, components=("cinema_lawn_ground_program_v1", "fixed_projection_screen_v1", "projection_booth_v1", "sightline_lawn_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_food_truck_permanent_v1", kind="park", title="Food-Truck Plaza / Permanent Park v1", generator="park_kit",
+        selections=(_selection("food_truck_plaza", "food_truck_plaza_v1", profile_id="food-truck-permanent-lego-v1", appearance_kit_id="food_truck_plaza_v1_permanent_park_skin", planting_structure="food_truck_permanent_v1", compatibility=_FOOD_TRUCK_PERMANENT_ENVELOPE, components=("food_truck_plaza_ground_program_v1", "utility_truck_bays_v1", "shared_truck_prop_v1", "communal_picnic_grid_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_great_lawn_v2", kind="park", title="Festival / Great Lawn v2", generator="park_kit",
+        selections=(_selection("festival_event_lawn", "festival_event_lawn_v2", profile_id="great-lawn-lego-v1", appearance_kit_id="festival_event_lawn_v2_great_lawn_skin", planting_structure="great_lawn_v2", compatibility=_GREAT_LAWN_ENVELOPE, components=("great_lawn_ground_program_v1", "perimeter_event_hookups_v1", "gentle_landform_v1", "clear_event_field_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_campus_meadow_quad_v0", kind="park", title="Campus Quad / Naturalized Meadow v0", generator="park_kit",
+        selections=(_selection("campus_central_quad", "campus_central_quad_variant_0", profile_id="campus-meadow-quad-lego-v1", appearance_kit_id="campus_central_quad_v0_naturalized_meadow_skin", planting_structure="campus_meadow_quad_v0", compatibility=_CAMPUS_MEADOW_QUAD_ENVELOPE, components=("campus_meadow_ground_program_v1", "desire_line_crossing_v1", "social_nodes_v1", "meadow_boulder_matrix_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_urban_beach_family_v2", kind="park", title="Urban Beach / Family Splash v2", generator="park_kit",
+        selections=(_selection("urban_beach", "urban_beach_v2", profile_id="urban-beach-family-lego-v1", appearance_kit_id="urban_beach_v2_family_splash_skin", planting_structure="urban_beach_family_v2", compatibility=_URBAN_BEACH_FAMILY_ENVELOPE, components=("urban_beach_ground_program_v1", "family_splash_pad_v1", "shade_sail_cluster_v1", "accessible_boardwalk_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_velodrome_open_air_v0", kind="park", title="Velodrome / Open Air v0", generator="park_kit",
+        selections=(_selection("velodrome_cycling_track", "velodrome_cycling_track_variant_0", profile_id="velodrome-open-air-lego-v1", appearance_kit_id="velodrome_cycling_track_v0_open_air_skin", planting_structure="velodrome_open_air_v0", compatibility=_VELODROME_OPEN_AIR_ENVELOPE, components=("velodrome_ground_program_v1", "banked_250m_track_v1", "open_bleacher_v1", "timing_tower_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_mtb_skills_dirt_v2", kind="park", title="Mountain Bike / Skills and Dirt v2", generator="park_kit",
+        selections=(_selection("mountain_bike_park", "mountain_bike_park_variant_2", profile_id="mtb-skills-dirt-lego-v1", appearance_kit_id="mountain_bike_park_v2_skills_dirt_skin", planting_structure="mtb_skills_dirt_v2", compatibility=_MTB_SKILLS_DIRT_ENVELOPE, components=("mtb_skills_ground_program_v1", "connected_pump_loop_v1", "dirt_jump_line_v1", "technical_feature_set_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_regional_english_landscape_v0", kind="park", title="Regional Park / English Landscape v0", generator="park_kit",
+        selections=(_selection("regional_park", "regional_park_v0", profile_id="regional-english-landscape-lego-v1", appearance_kit_id="regional_park_v0_english_landscape_skin", planting_structure="regional_english_landscape_v0", compatibility=_REGIONAL_ENGLISH_LANDSCAPE_ENVELOPE, components=("regional_landscape_ground_program_v1", "serpentine_walk_network_v1", "naturalistic_pond_v1", "romantic_bridge_v1", "specimen_tree_matrix_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_beer_garden_munich_v0", kind="park", title="Beer Garden / Munich Chestnut v0", generator="park_kit",
+        selections=(_selection("beer_garden", "beer_garden_v0", profile_id="beer-garden-munich-lego-v1", appearance_kit_id="beer_garden_v0_munich_chestnut_skin", planting_structure="beer_garden_munich_v0", compatibility=_BEER_GARDEN_MUNICH_ENVELOPE, components=("beer_garden_ground_program_v1", "communal_trestle_row_v1", "chestnut_canopy_grid_v1", "self_service_kiosk_v1", "pennant_string_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_sunken_courtyard_v0", kind="park", title="Sunken Plaza / Intimate Courtyard v0", generator="park_kit",
+        selections=(_selection("sunken_plaza", "sunken_plaza_v0", profile_id="sunken-courtyard-lego-v1", appearance_kit_id="sunken_plaza_v0_intimate_courtyard_skin", planting_structure="sunken_courtyard_v0", compatibility=_SUNKEN_COURTYARD_ENVELOPE, components=("sunken_court_ground_program_v1", "three_sided_step_bowl_v1", "bronze_fountain_v1", "rim_hedge_v1", "cafe_clearance_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_terraced_cascade_v3", kind="park", title="Stepped Plaza / Modernist Cascade v3", generator="park_kit",
+        selections=(_selection("stepped_terraced_plaza", "stepped_terraced_plaza_v3", profile_id="terraced-cascade-lego-v1", appearance_kit_id="stepped_terraced_plaza_v3_modernist_cascade_skin", planting_structure="terraced_cascade_v3", compatibility=_TERRACED_CASCADE_ENVELOPE, components=("terraced_plaza_ground_program_v1", "three_basin_water_axis_v1", "accessible_wrap_ramp_v1", "planter_terrace_v1", "seat_step_matrix_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_market_festival_lawn_v1", kind="park", title="Market Square / Open Festival Lawn v1", generator="park_kit",
+        selections=(_selection("market_square", "market_square_v1", profile_id="market-festival-lawn-lego-v1", appearance_kit_id="market_square_v1_open_festival_lawn_skin", planting_structure="market_festival_lawn_v1", compatibility=_MARKET_FESTIVAL_LAWN_ENVELOPE, components=("market_lawn_ground_program_v1", "event_utility_bollard_v1", "vendor_pad_matrix_v1", "shade_anchor_v1", "service_loop_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_boardwalk_maritime_v0", kind="park", title="Promenade / Maritime Boardwalk v0", generator="park_kit",
+        selections=(_selection("promenade_boardwalk", "promenade_boardwalk_v0", profile_id="boardwalk-maritime-lego-v1", appearance_kit_id="promenade_boardwalk_v0_maritime_skin", planting_structure="boardwalk_maritime_v0", compatibility=_BOARDWALK_MARITIME_ENVELOPE, components=("maritime_boardwalk_ground_program_v1", "rope_rail_v1", "nautical_light_v1", "view_bench_v1", "mooring_bollard_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_fountain_formal_pool_v1", kind="park", title="Fountain / Formal Reflecting Pool v1", generator="park_kit",
+        selections=(_selection("fountain_water_feature", "fountain_water_feature_v1", profile_id="fountain-formal-pool-lego-v1", appearance_kit_id="fountain_water_feature_v1_formal_pool_skin", planting_structure="fountain_formal_pool_v1", compatibility=_FOUNTAIN_FORMAL_POOL_ENVELOPE, components=("formal_pool_ground_program_v1", "symmetric_jet_array_v1", "granite_coping_v1", "clipped_hedge_frame_v1", "classical_urn_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_natural_swimming_pond_v0", kind="park", title="Swimming Complex / Natural Pond v0", generator="park_kit",
+        selections=(_selection("swimming_pool_complex", "swimming_pool_complex_v0", profile_id="natural-swimming-pond-lego-v1", appearance_kit_id="swimming_pool_complex_v0_natural_pond_skin", planting_structure="natural_swimming_pond_v0", compatibility=_NATURAL_SWIMMING_POND_ENVELOPE, components=("natural_swimming_ground_program_v1", "metric_lap_basin_v1", "regeneration_pond_v1", "timber_dock_v1", "sun_deck_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_nature_preserve_prairie_v1", kind="park", title="Nature Preserve / Tallgrass Prairie v1", generator="park_kit",
+        selections=(_selection("nature_preserve", "nature_preserve_v1", profile_id="nature-preserve-prairie-lego-v1", appearance_kit_id="nature_preserve_v1_tallgrass_prairie_skin", planting_structure="nature_preserve_prairie_v1", compatibility=_NATURE_PRESERVE_PRAIRIE_ENVELOPE, components=("prairie_preserve_ground_program_v1", "mown_trail_network_v1", "timber_observation_deck_v1", "bur_oak_savanna_v1", "interpretive_post_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_riverfront_lake_beach_v1", kind="park", title="Riverfront / Lake Swimming Beach v1", generator="park_kit",
+        selections=(_selection("riverfront_park_beach", "riverfront_park_beach_v1", profile_id="riverfront-lake-beach-lego-v1", appearance_kit_id="riverfront_park_beach_v1_lake_swimming_skin", planting_structure="riverfront_lake_beach_v1", compatibility=_RIVERFRONT_LAKE_BEACH_ENVELOPE, components=("lake_beach_ground_program_v1", "crescent_sand_beach_v1", "t_swimming_dock_v1", "kayak_rack_v1", "bathhouse_reservation_pad_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_reclaimed_wharf_v0", kind="park", title="Reclaimed Industrial Wharf v0", generator="park_kit",
+        selections=(_selection("reclaimed_industrial_park", "reclaimed_industrial_park_v0", profile_id="reclaimed-industrial-wharf-lego-v1", appearance_kit_id="reclaimed_industrial_park_v0_wharf_skin", planting_structure="reclaimed_wharf_v0", compatibility=_RECLAIMED_WHARF_ENVELOPE, components=("reclaimed_wharf_ground_program_v1", "continuous_wharf_walk_v1", "whole_dock_crane_modules_v1", "native_planting_strip_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_quarry_tier_cascade_v2", kind="park", title="Quarry Limestone Tier Cascade v2", generator="park_kit",
+        selections=(_selection("quarry_sunken_garden_park", "quarry_sunken_garden_park_v2", profile_id="quarry-tier-cascade-lego-v1", appearance_kit_id="quarry_sunken_garden_park_v2_tier_cascade_skin", planting_structure="quarry_tier_cascade_v2", compatibility=_QUARRY_TIER_CASCADE_ENVELOPE, components=("quarry_bowl_ground_program_v1", "whole_garden_terraces_v1", "linked_reflecting_basins_v1", "limestone_cascade_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_estate_oak_picnic_v1", kind="park", title="Estate Oak Picnic Grove v1", generator="park_kit",
+        selections=(_selection("estate_picnic_grove", "estate_picnic_grove_v1", profile_id="estate-oak-picnic-lego-v1", appearance_kit_id="estate_picnic_grove_v1_oak_skin", planting_structure="estate_oak_picnic_v1", compatibility=_ESTATE_OAK_PICNIC_ENVELOPE, components=("oak_grove_ground_program_v1", "complete_oak_picnic_station_v1", "central_play_lawn_v1", "crushed_stone_loop_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_constructed_wetland_boardwalk_v0", kind="park", title="Constructed Urban Boardwalk Wetland v0", generator="park_kit",
+        selections=(_selection("constructed_wetland_eco_park", "constructed_wetland_eco_park_variant_0", profile_id="constructed-wetland-boardwalk-lego-v1", appearance_kit_id="constructed_wetland_eco_park_v0_boardwalk_skin", planting_structure="constructed_wetland_boardwalk_v0", compatibility=_CONSTRUCTED_WETLAND_BOARDWALK_ENVELOPE, components=("wetland_mosaic_ground_program_v1", "complete_treatment_cells_v1", "zigzag_boardwalk_v1", "viewing_deck_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_academic_planted_court_v0", kind="park", title="Academic Modern Planted Courtyard v0", generator="park_kit",
+        selections=(_selection("academic_courtyard", "academic_courtyard_variant_0", profile_id="academic-planted-courtyard-lego-v1", appearance_kit_id="academic_courtyard_v0_planted_skin", planting_structure="academic_planted_court_v0", compatibility=_ACADEMIC_PLANTED_COURT_ENVELOPE, components=("academic_court_ground_program_v1", "whole_raised_planters_v1", "integrated_seat_ledges_v1", "clear_cross_routes_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_campus_green_spine_v0", kind="park", title="Campus Green Pedestrian Spine v0", generator="park_kit",
+        selections=(_selection("campus_pedestrian_spine", "campus_pedestrian_spine_variant_0", profile_id="campus-green-spine-lego-v1", appearance_kit_id="campus_pedestrian_spine_v0_green_skin", planting_structure="campus_green_spine_v0", compatibility=_CAMPUS_GREEN_SPINE_ENVELOPE, components=("campus_spine_ground_program_v1", "continuous_accessible_axis_v1", "rain_garden_bands_v1", "repeating_tree_bays_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_botanical_rose_garden_v3", kind="park", title="Botanical Romantic Rose Garden v3", generator="park_kit",
+        selections=(_selection("botanical_garden", "botanical_garden_v3", profile_id="botanical-rose-garden-lego-v1", appearance_kit_id="botanical_garden_v3_rose_skin", planting_structure="botanical_rose_garden_v3", compatibility=_BOTANICAL_ROSE_GARDEN_ENVELOPE, components=("rose_garden_ground_program_v1", "complete_flower_rooms_v1", "timber_rose_arbors_v1", "brick_stone_walk_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_research_arboretum_v0", kind="park", title="Research Teaching Arboretum v0", generator="park_kit",
+        selections=(_selection("research_garden_teaching_arboretum", "research_garden_teaching_arboretum_variant_0", profile_id="research-arboretum-lego-v1", appearance_kit_id="research_garden_teaching_arboretum_v0_skin", planting_structure="research_arboretum_v0", compatibility=_RESEARCH_ARBORETUM_ENVELOPE, components=("arboretum_ground_program_v1", "specimen_tree_collection_v1", "interpretive_loop_v1", "label_and_boulder_nodes_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_rewilding_reforestation_v1", kind="park", title="Rewilding Reforestation Zone v1", generator="park_kit",
+        selections=(_selection("rewilding_ecological_restoration_zone", "rewilding_ecological_restoration_zone_variant_1", profile_id="rewilding-reforestation-lego-v1", appearance_kit_id="rewilding_ecological_restoration_zone_v1_skin", planting_structure="rewilding_reforestation_v1", compatibility=_REWILDING_REFORESTATION_ENVELOPE, components=("reforestation_ground_program_v1", "sapling_cohort_matrix_v1", "native_understory_v1", "habitat_log_piles_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_stormwater_arid_channel_v3", kind="park", title="Stormwater Arid Rock Channel v3", generator="park_kit",
+        selections=(_selection("stormwater_resilience_park", "stormwater_resilience_park_variant_3", profile_id="stormwater-arid-channel-lego-v1", appearance_kit_id="stormwater_resilience_park_v3_arid_skin", planting_structure="stormwater_arid_channel_v3", compatibility=_STORMWATER_ARID_CHANNEL_ENVELOPE, components=("arid_resilience_ground_program_v1", "continuous_ephemeral_channel_v1", "gravel_detention_pockets_v1", "xeric_planting_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_urban_pocket_rustic_v0", kind="park", title="Urban Pocket Park / Rustic Timber v0", generator="park_kit",
+        selections=(_selection("urban_pocket_park", "urban_pocket_park_v0", profile_id="urban-pocket-rustic-lego-v1", appearance_kit_id="urban_pocket_park_v0_rustic_skin", planting_structure="urban_pocket_rustic_v0", compatibility=_URBAN_POCKET_RUSTIC_ENVELOPE, components=("rustic_pocket_ground_program_v1", "whole_pergola_bay_v1", "split_rail_edge_v1", "boulder_seat_cluster_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_neighborhood_contemporary_v3", kind="park", title="Neighborhood Park / Urban Contemporary v3", generator="park_kit",
+        selections=(_selection("neighborhood_park", "neighborhood_park_v3", profile_id="neighborhood-contemporary-lego-v1", appearance_kit_id="neighborhood_park_v3_contemporary_skin", planting_structure="neighborhood_contemporary_v3", compatibility=_NEIGHBORHOOD_CONTEMPORARY_ENVELOPE, components=("contemporary_neighborhood_ground_program_v1", "whole_social_room_v1", "water_jet_pad_v1", "raised_planter_bays_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_cemetery_classical_v0", kind="park", title="Cemetery / Classical Formal v0", generator="park_kit",
+        selections=(_selection("cemetery_memorial_grounds", "cemetery_memorial_grounds_v0", profile_id="cemetery-classical-lego-v1", appearance_kit_id="cemetery_memorial_grounds_v0_classical_skin", planting_structure="cemetery_classical_v0", compatibility=_CEMETERY_CLASSICAL_ENVELOPE, components=("classical_memorial_ground_program_v1", "axial_allee_v1", "whole_memorial_rows_v1", "fountain_parterre_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_courtyard_linear_water_v1", kind="park", title="Courtyard / Contemporary Linear Water v1", generator="park_kit",
+        selections=(_selection("courtyard_plaza", "courtyard_plaza_v1", profile_id="courtyard-linear-water-lego-v1", appearance_kit_id="courtyard_plaza_v1_linear_water_skin", planting_structure="courtyard_linear_water_v1", compatibility=_COURTYARD_LINEAR_WATER_ENVELOPE, components=("linear_water_court_ground_program_v1", "continuous_rill_v1", "concrete_seat_walls_v1", "specimen_tree_grates_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_parklet_sf_timber_v1", kind="park", title="Street Parklet / SF Timber v1", generator="park_kit",
+        selections=(_selection("street_plaza_parklet", "street_plaza_parklet_v1", profile_id="parklet-sf-timber-lego-v1", appearance_kit_id="street_plaza_parklet_v1_sf_timber_skin", planting_structure="parklet_sf_timber_v1", compatibility=_PARKLET_SF_TIMBER_ENVELOPE, components=("timber_parklet_ground_program_v1", "slat_guard_edge_v1", "cafe_table_bay_v1", "terracotta_planter_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_french_parterre_axis_v1", kind="park", title="Jardin a la Francaise / Water Axis v1", generator="park_kit",
+        selections=(_selection("parisian_jardin", "parisian_jardin_v1", profile_id="french-parterre-axis-lego-v1", appearance_kit_id="parisian_jardin_v1_water_axis_skin", planting_structure="french_parterre_axis_v1", compatibility=_FRENCH_PARTERRE_AXIS_ENVELOPE, components=("french_garden_ground_program_v1", "continuous_water_axis_v1", "mirrored_parterre_rooms_v1", "clipped_topiary_bays_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_london_railed_square_v1", kind="park", title="London Garden Square / Railed Garden v1", generator="park_kit",
+        selections=(_selection("london_garden_square", "london_garden_square_v1", profile_id="london-railed-square-lego-v1", appearance_kit_id="london_garden_square_v1_railed_skin", planting_structure="london_railed_square_v1", compatibility=_LONDON_RAILED_SQUARE_ENVELOPE, components=("london_square_ground_program_v1", "continuous_iron_rail_v1", "central_lawn_room_v1", "perimeter_tree_walk_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_halifax_rose_bandstand_v0", kind="park", title="Halifax Public Gardens / Rose Garden v0", generator="park_kit",
+        selections=(_selection("halifax_public_gardens", "halifax_public_gardens_v0", profile_id="halifax-rose-bandstand-lego-v1", appearance_kit_id="halifax_public_gardens_v0_rose_skin", planting_structure="halifax_rose_bandstand_v0", compatibility=_HALIFAX_ROSE_BANDSTAND_ENVELOPE, components=("victorian_garden_ground_program_v1", "whole_rose_bed_rooms_v1", "ornate_bandstand_v1", "wrought_iron_gate_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_olmsted_multilandscape_v3", kind="park", title="Olmsted Park / Central Park Multi-Landscape v3", generator="park_kit",
+        selections=(_selection("picturesque_olmsted_park", "picturesque_olmsted_park_v3", profile_id="olmsted-multilandscape-lego-v1", appearance_kit_id="picturesque_olmsted_park_v3_multilandscape_skin", planting_structure="olmsted_multilandscape_v3", compatibility=_OLMSTED_MULTILANDSCAPE_ENVELOPE, components=("olmsted_ground_program_v1", "whole_landscape_rooms_v1", "rustic_bow_bridge_v1", "elm_mall_bays_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_hilltop_viewpoint_v3", kind="park", title="Hilltop Park / Pacific Terraced Viewpoint v3", generator="park_kit",
+        selections=(_selection("hilltop_topographic_park", "hilltop_topographic_park_v3", profile_id="hilltop-viewpoint-lego-v1", appearance_kit_id="hilltop_topographic_park_v3_viewpoint_skin", planting_structure="hilltop_viewpoint_v3", compatibility=_HILLTOP_VIEWPOINT_ENVELOPE, components=("hilltop_ground_program_v1", "continuous_switchback_trail_v1", "whole_viewpoint_decks_v1", "cedar_fir_slope_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_amsterdam_hofje_garden_v0", kind="park", title="Amsterdam Hofje Garden v0", generator="park_kit",
+        selections=(_selection("amsterdam_hofje_garden", "amsterdam_hofje_garden_v0", profile_id="amsterdam-hofje-lego-v1", appearance_kit_id="amsterdam_hofje_garden_v0_skin", planting_structure="amsterdam_hofje_v0", compatibility=_AMSTERDAM_HOFJE_ENVELOPE, components=("hofje_gravel_cross_v1", "whole_low_hedge_rooms_v1", "central_well_pump_v1", "single_garden_gate_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_amsterdam_plein_v0", kind="park", title="Amsterdam Brick Plein v0", generator="park_kit",
+        selections=(_selection("amsterdam_plein", "amsterdam_plein_v0", profile_id="amsterdam-plein-lego-v1", appearance_kit_id="amsterdam_plein_v0_brick_skin", planting_structure="amsterdam_plein_v0", compatibility=_AMSTERDAM_PLEIN_ENVELOPE, components=("brick_plein_ground_program_v1", "whole_market_stall_bays_v1", "plein_edge_tree_bays_v1", "bicycle_rack_clusters_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_amsterdam_vondelpark_pavilion_v3", kind="park", title="Amsterdam Vondelpark Pavilion v3", generator="park_kit",
+        selections=(_selection("amsterdam_vondelpark", "amsterdam_vondelpark_v3", profile_id="amsterdam-vondelpark-pavilion-lego-v1", appearance_kit_id="amsterdam_vondelpark_v3_pavilion_skin", planting_structure="amsterdam_vondelpark_v3", compatibility=_AMSTERDAM_VONDELPARK_ENVELOPE, components=("vondelpark_landscape_rooms_v1", "continuous_winding_path_v1", "irregular_pond_bridge_v1", "modest_park_pavilion_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_barcelona_pati_green_v0", kind="park", title="Barcelona Eixample Pati v0", generator="park_kit",
+        selections=(_selection("barcelona_pati_interior", "barcelona_pati_interior_v0", profile_id="barcelona-pati-green-lego-v1", appearance_kit_id="barcelona_pati_interior_v0_green_skin", planting_structure="barcelona_pati_green_v0", compatibility=_BARCELONA_PATI_ENVELOPE, components=("pati_gravel_loop_v1", "mediterranean_planting_rooms_v1", "central_fountain_v1", "compact_play_bay_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_barcelona_xamfra_corner_v2", kind="park", title="Barcelona Xamfra Corner Plaza v2", generator="park_kit",
+        selections=(_selection("barcelona_placa_xamfra", "barcelona_placa_xamfra_v2", profile_id="barcelona-xamfra-corner-lego-v1", appearance_kit_id="barcelona_placa_xamfra_v2_corner_skin", planting_structure="barcelona_xamfra_v2", compatibility=_BARCELONA_XAMFRA_ENVELOPE, components=("xamfra_octagonal_ground_v1", "diagonal_clear_route_v1", "single_plane_tree_v1", "whole_cafe_table_clusters_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_barcelona_superilla_green_v1", kind="park", title="Barcelona Superilla Green v1", generator="park_kit",
+        selections=(_selection("barcelona_superilla", "barcelona_superilla_v1", profile_id="barcelona-superilla-green-lego-v1", appearance_kit_id="barcelona_superilla_v1_green_skin", planting_structure="barcelona_superilla_v1", compatibility=_BARCELONA_SUPERILLA_ENVELOPE, components=("superilla_connected_ground_v1", "whole_coloured_activity_rooms_v1", "raised_planter_tree_bays_v1", "social_play_furniture_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_calgary_prairie_market_v1", kind="park", title="Calgary Prairie Market Plaza v1", generator="park_kit",
+        selections=(_selection("calgary_prairie_plaza", "calgary_prairie_plaza_v1", profile_id="calgary-prairie-market-lego-v1", appearance_kit_id="calgary_prairie_plaza_v1_market_skin", planting_structure="calgary_prairie_market_v1", compatibility=_CALGARY_PRAIRIE_MARKET_ENVELOPE, components=("prairie_plaza_ground_program_v1", "linear_reflecting_pool_v1", "whole_market_stall_bays_v1", "native_grass_wind_bays_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_calgary_princes_island_festival_v0", kind="park", title="Calgary Prince's Island Festival v0", generator="park_kit",
+        selections=(_selection("calgary_princes_island", "calgary_princes_island_v0", profile_id="calgary-princes-island-festival-lego-v1", appearance_kit_id="calgary_princes_island_v0_festival_skin", planting_structure="calgary_princes_island_v0", compatibility=_CALGARY_PRINCES_ISLAND_ENVELOPE, components=("princes_island_landscape_rooms_v1", "festival_lawn_v1", "wetland_boardwalk_v1", "modest_outdoor_stage_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_montreal_mount_royal_grove_v2", kind="park", title="Montreal Mount Royal Grove v2", generator="park_kit",
+        selections=(_selection("montreal_mount_royal", "montreal_mount_royal_v2", profile_id="montreal-mount-royal-grove-lego-v1", appearance_kit_id="montreal_mount_royal_v2_grove_skin", planting_structure="montreal_mount_royal_v2", compatibility=_MONTREAL_MOUNT_ROYAL_ENVELOPE, components=("mount_royal_ground_program_v1", "continuous_carriage_switchback_v1", "whole_maple_cohorts_v1", "terrain_seated_belvedere_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_montreal_neighbourhood_square_v3", kind="park", title="Montreal Neighbourhood Square v3", generator="park_kit",
+        selections=(_selection("montreal_square", "montreal_square_v3", profile_id="montreal-neighbourhood-square-lego-v1", appearance_kit_id="montreal_square_v3_neighbourhood_skin", planting_structure="montreal_square_v3", compatibility=_MONTREAL_SQUARE_ENVELOPE, components=("montreal_square_ground_program_v1", "central_fountain_monument_v1", "low_iron_perimeter_v1", "whole_maple_bench_bays_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_paris_place_royale_v2", kind="park", title="Paris Place Royale v2", generator="park_kit",
+        selections=(_selection("parisian_place", "parisian_place_v2", profile_id="paris-place-royale-lego-v1", appearance_kit_id="parisian_place_v2_royale_skin", planting_structure="paris_place_royale_v2", compatibility=_PARIS_PLACE_ROYALE_ENVELOPE, components=("place_royale_ground_program_v1", "clear_ceremonial_centre_v1", "corner_tree_bays_v1", "removable_cafe_clusters_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_paris_square_tree_grid_v3", kind="park", title="Paris Square Tree Grid v3", generator="park_kit",
+        selections=(_selection("parisian_square", "parisian_square_v3", profile_id="paris-square-tree-grid-lego-v1", appearance_kit_id="parisian_square_v3_tree_grid_skin", planting_structure="paris_square_tree_grid_v3", compatibility=_PARIS_SQUARE_TREE_GRID_ENVELOPE, components=("paris_square_ground_program_v1", "ordered_tree_grid_v1", "gravel_social_room_v1", "whole_bench_bays_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_london_circus_planted_v1", kind="park", title="London Circus Planted v1", generator="park_kit",
+        selections=(_selection("london_circus", "london_circus_v1", profile_id="london-circus-planted-lego-v1", appearance_kit_id="london_circus_v1_planted_skin", planting_structure="london_circus_planted_v1", compatibility=_LONDON_CIRCUS_PLANTED_ENVELOPE, components=("circus_radial_ground_program_v1", "central_planted_island_v1", "curved_bench_bays_v1", "clear_cycle_ring_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_newyork_pocket_water_v0", kind="park", title="New York Pocket Water v0", generator="park_kit",
+        selections=(_selection("newyork_pocket_park", "newyork_pocket_park_v0", profile_id="newyork-pocket-water-lego-v1", appearance_kit_id="newyork_pocket_park_v0_water_skin", planting_structure="newyork_pocket_water_v0", compatibility=_NEWYORK_POCKET_WATER_ENVELOPE, components=("ny_pocket_ground_program_v1", "linear_water_rill_v1", "whole_seat_planter_bays_v1", "compact_pergola_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_newyork_community_greenhouse_v3", kind="park", title="New York Community Greenhouse v3", generator="park_kit",
+        selections=(_selection("newyork_community_garden", "newyork_community_garden_v3", profile_id="newyork-community-greenhouse-lego-v1", appearance_kit_id="newyork_community_garden_v3_greenhouse_skin", planting_structure="newyork_community_greenhouse_v3", compatibility=_NEWYORK_COMMUNITY_GREENHOUSE_ENVELOPE, components=("ny_community_garden_ground_v1", "whole_raised_bed_grid_v1", "modest_greenhouse_v1", "compost_tool_bay_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_vancouver_seawall_cycle_v2", kind="park", title="Vancouver Seawall Cycle v2", generator="park_kit",
+        selections=(_selection("vancouver_seawall", "vancouver_seawall_v2", profile_id="vancouver-seawall-cycle-lego-v1", appearance_kit_id="vancouver_seawall_v2_cycle_skin", planting_structure="vancouver_seawall_cycle_v2", compatibility=_VANCOUVER_SEAWALL_CYCLE_ENVELOPE, components=("seawall_ground_program_v1", "separated_cycle_walk_pair_v1", "continuous_seawall_edge_v1", "view_bench_bays_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_vancouver_beach_pavilion_v0", kind="park", title="Vancouver Beach Pavilion v0", generator="park_kit",
+        selections=(_selection("vancouver_beach_park", "vancouver_beach_park_v0", profile_id="vancouver-beach-pavilion-lego-v1", appearance_kit_id="vancouver_beach_park_v0_pavilion_skin", planting_structure="vancouver_beach_pavilion_v0", compatibility=_VANCOUVER_BEACH_PAVILION_ENVELOPE, components=("beach_park_ground_program_v1", "continuous_cycle_walk_pair_v1", "drift_planting_bays_v1", "modest_open_pavilion_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_toronto_ravine_creek_v1", kind="park", title="Toronto Ravine Creek v1", generator="park_kit",
+        selections=(_selection("toronto_ravine", "toronto_ravine_v1", profile_id="toronto-ravine-creek-lego-v1", appearance_kit_id="toronto_ravine_v1_creek_skin", planting_structure="toronto_ravine_creek_v1", compatibility=_TORONTO_RAVINE_CREEK_ENVELOPE, components=("ravine_ground_program_v1", "meandering_creek_v1", "continuous_valley_trail_v1", "whole_bridge_and_grove_bays_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_toronto_urban_market_v1", kind="park", title="Toronto Urban Market v1", generator="park_kit",
+        selections=(_selection("toronto_urban_square", "toronto_urban_square_v1", profile_id="toronto-urban-market-lego-v1", appearance_kit_id="toronto_urban_square_v1_market_skin", planting_structure="toronto_urban_market_v1", compatibility=_TORONTO_URBAN_MARKET_ENVELOPE, components=("toronto_square_ground_program_v1", "flexible_market_centre_v1", "whole_vendor_bays_v1", "rain_planter_seat_bays_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_halifax_coastal_fog_path_v2", kind="park", title="Halifax Coastal Fog Path v2", generator="park_kit",
+        selections=(_selection("halifax_coastal_park", "halifax_coastal_park_v2", profile_id="halifax-coastal-fog-path-lego-v1", appearance_kit_id="halifax_coastal_park_v2_fog_path_skin", planting_structure="halifax_coastal_fog_path_v2", compatibility=_HALIFAX_COASTAL_FOG_PATH_ENVELOPE, components=("coastal_forest_ground_program_v1", "granite_gravel_path_v1", "spruce_fir_grove_cohorts_v1", "whole_boardwalk_lookout_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_city_hall_modernist_fountain_v2", kind="park", title="City Hall Modernist Fountain Plaza v2", generator="park_kit",
+        selections=(_selection("city_hall_government_plaza", "city_hall_government_plaza_v2", profile_id="city-hall-modernist-fountain-lego-v1", appearance_kit_id="city_hall_government_plaza_v2_modernist_skin", planting_structure="city_hall_modernist_fountain_v2", compatibility=_CITY_HALL_MODERNIST_FOUNTAIN_ENVELOPE, components=("modernist_civic_ground_program_v1", "linear_reflecting_pool_v1", "whole_planter_bays_v1", "ceremonial_axes_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_cathedral_courtyard_fountain_v3", kind="park", title="Mosque Courtyard Fountain v3", generator="park_kit",
+        selections=(_selection("cathedral_religious_forecourt", "cathedral_religious_forecourt_v3", profile_id="cathedral-courtyard-fountain-lego-v1", appearance_kit_id="cathedral_religious_forecourt_v3_courtyard_skin", planting_structure="cathedral_courtyard_fountain_v3", compatibility=_CATHEDRAL_MOSQUE_COURTYARD_ENVELOPE, components=("patterned_courtyard_ground_v1", "central_ablution_fountain_v1", "shade_tree_bays_v1", "clear_processional_axes_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_cultural_museum_terrace_v0", kind="park", title="Modern Museum Terrace v0", generator="park_kit",
+        selections=(_selection("cultural_institution_forecourt", "cultural_institution_forecourt_v0", profile_id="cultural-museum-terrace-lego-v1", appearance_kit_id="cultural_institution_forecourt_v0_museum_terrace_skin", planting_structure="cultural_museum_terrace_v0", compatibility=_CULTURAL_MUSEUM_TERRACE_ENVELOPE, components=("museum_forecourt_ground_v1", "broad_terrace_steps_v1", "sculpture_lawn_v1", "seat_planter_edges_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_transit_green_civic_v2", kind="park", title="Green Civic Transit Plaza v2", generator="park_kit",
+        selections=(_selection("transit_plaza", "transit_plaza_v2", profile_id="transit-green-civic-lego-v1", appearance_kit_id="transit_plaza_v2_green_civic_skin", planting_structure="transit_green_civic_v2", compatibility=_TRANSIT_GREEN_CIVIC_ENVELOPE, components=("transit_plaza_ground_v1", "clear_access_spine_v1", "rain_planter_bays_v1", "modest_transit_shelters_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_amphitheater_terraced_v0", kind="park", title="Terraced Performance Amphitheater v0", generator="park_kit",
+        selections=(_selection("amphitheater_performance_space", "amphitheater_performance_space_v0", profile_id="amphitheater-terraced-lego-v1", appearance_kit_id="amphitheater_performance_space_v0_terraced_skin", planting_structure="amphitheater_terraced_v0", compatibility=_AMPHITHEATER_TERRACED_ENVELOPE, components=("performance_bowl_ground_v1", "concentric_seating_tiers_v1", "modest_stage_platform_v1", "accessible_rim_route_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_concert_timber_lawn_v2", kind="park", title="Timber Concert Lawn v2", generator="park_kit",
+        selections=(_selection("concert_pavilion_lawn", "concert_pavilion_lawn_v2", profile_id="concert-timber-lawn-lego-v1", appearance_kit_id="concert_pavilion_lawn_v2_timber_skin", planting_structure="concert_timber_lawn_v2", compatibility=_CONCERT_TIMBER_LAWN_ENVELOPE, components=("concert_lawn_ground_v1", "audience_lawn_room_v1", "modest_open_timber_stage_v1", "perimeter_path_bays_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_night_market_hawker_v0", kind="park", title="Hawker Stall Night Market v0", generator="park_kit",
+        selections=(_selection("night_market", "night_market_v0", profile_id="night-market-hawker-lego-v1", appearance_kit_id="night_market_v0_hawker_skin", planting_structure="night_market_hawker_v0", compatibility=_NIGHT_MARKET_HAWKER_ENVELOPE, components=("night_market_ground_v1", "clear_market_lane_v1", "whole_hawker_stall_bays_v1", "lantern_cable_rows_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_parade_national_mall_v3", kind="park", title="National Mall Ceremonial Axis v3", generator="park_kit",
+        selections=(_selection("parade_ground", "parade_ground_v3", profile_id="parade-national-mall-lego-v1", appearance_kit_id="parade_ground_v3_national_mall_skin", planting_structure="parade_national_mall_v3", compatibility=_PARADE_NATIONAL_MALL_ENVELOPE, components=("ceremonial_mall_ground_v1", "continuous_central_lawn_v1", "reflecting_water_axis_v1", "formal_tree_allies_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_canal_ecological_wetland_v3", kind="park", title="Ecological Wetland Canal v3", generator="park_kit",
+        selections=(_selection("canal_waterway", "canal_waterway_v3", profile_id="canal-ecological-wetland-lego-v1", appearance_kit_id="canal_waterway_v3_ecological_skin", planting_structure="canal_ecological_wetland_v3", compatibility=_CANAL_ECOLOGICAL_WETLAND_ENVELOPE, components=("wetland_canal_ground_v1", "continuous_water_channel_v1", "whole_marsh_cells_v1", "boardwalk_crossings_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_custom_biophilic_urban_v1", kind="park", title="Biophilic Urban Park v1", generator="park_kit",
+        selections=(_selection("custom_parks_plazas", "custom_parks_plazas_v1", profile_id="custom-biophilic-urban-lego-v1", appearance_kit_id="custom_parks_plazas_v1_biophilic_skin", planting_structure="custom_biophilic_urban_v1", compatibility=_CUSTOM_BIOPHILIC_URBAN_ENVELOPE, components=("biophilic_ground_program_v1", "layered_garden_rooms_v1", "meandering_accessible_paths_v1", "whole_seat_planter_bays_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_rooftop_intensive_garden_v0", kind="park", title="Rooftop Intensive Garden v0", generator="park_kit",
+        selections=(_selection("rooftop_garden", "rooftop_garden_v0", profile_id="rooftop-intensive-garden-lego-v1", appearance_kit_id="rooftop_garden_v0_intensive_skin", planting_structure="rooftop_intensive_garden_v0", compatibility=_ROOFTOP_INTENSIVE_GARDEN_ENVELOPE, components=("roof_garden_ground_program_v1", "whole_raised_planter_rooms_v1", "modest_pergola_v1", "wind_screen_edge_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_community_healing_garden_v2", kind="park", title="Community Healing Garden v2", generator="park_kit",
+        selections=(_selection("community_garden_enhanced", "garden_healing", profile_id="community-healing-garden-lego-v1", appearance_kit_id="community_garden_enhanced_healing_skin", planting_structure="community_healing_garden_v2", compatibility=_COMMUNITY_HEALING_GARDEN_ENVELOPE, components=("healing_garden_ground_program_v1", "accessible_loop_v1", "whole_therapeutic_beds_v1", "modest_open_pergola_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_greenbelt_rail_trail_v1", kind="park", title="Forested Greenbelt Rail-Trail v1", generator="park_kit",
+        selections=(_selection("greenbelt_buffer_park", "greenbelt_buffer_park_v1", profile_id="greenbelt-rail-trail-lego-v1", appearance_kit_id="greenbelt_buffer_park_v1_rail_trail_skin", planting_structure="greenbelt_rail_trail_v1", compatibility=_GREENBELT_RAIL_TRAIL_ENVELOPE, components=("greenbelt_ground_program_v1", "continuous_multiuse_trail_v1", "woodland_buffer_cohorts_v1", "whole_rest_bays_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_foothill_heathland_trail_v2", kind="park", title="Heathland Foothill Trail v2", generator="park_kit",
+        selections=(_selection("foothill_trail_park", "foothill_trail_park_v2", profile_id="foothill-heathland-trail-lego-v1", appearance_kit_id="foothill_trail_park_v2_heathland_skin", planting_structure="foothill_heathland_trail_v2", compatibility=_FOOTHILL_HEATHLAND_TRAIL_ENVELOPE, components=("heathland_ground_program_v1", "terrain_seated_trail_v1", "whole_heather_drift_cells_v1", "stone_viewpoint_bays_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_marina_pacific_dock_v2", kind="park", title="Pacific Floating-Dock Marina v2", generator="park_kit",
+        selections=(_selection("marina_yacht_harbor", "marina_yacht_harbor_v2", profile_id="marina-pacific-dock-lego-v1", appearance_kit_id="marina_yacht_harbor_v2_pacific_skin", planting_structure="marina_pacific_dock_v2", compatibility=_MARINA_PACIFIC_DOCK_ENVELOPE, components=("marina_water_ground_program_v1", "continuous_quay_spine_v1", "whole_floating_dock_fingers_v1", "utility_pedestal_bays_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_working_pier_brooklyn_park_v3", kind="park", title="Brooklyn Park Pier v3", generator="park_kit",
+        selections=(_selection("working_pier_wharf_conversion", "working_pier_wharf_conversion_v3", profile_id="working-pier-brooklyn-park-lego-v1", appearance_kit_id="working_pier_wharf_conversion_v3_park_skin", planting_structure="working_pier_brooklyn_park_v3", compatibility=_WORKING_PIER_BROOKLYN_PARK_ENVELOPE, components=("pier_park_ground_program_v1", "continuous_pier_deck_v1", "whole_lawn_planting_rooms_v1", "edge_rail_view_bays_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_floating_meadow_loop_v2", kind="park", title="Floating Meadow Loop v2", generator="park_kit",
+        selections=(_selection("floating_park_pool", "floating_park_pool_v2", profile_id="floating-meadow-loop-lego-v1", appearance_kit_id="floating_park_pool_v2_meadow_skin", planting_structure="floating_meadow_loop_v2", compatibility=_FLOATING_MEADOW_LOOP_ENVELOPE, components=("floating_park_ground_program_v1", "continuous_boardwalk_loop_v1", "whole_meadow_islands_v1", "water_edge_rail_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_lighthouse_pacific_headland_v2", kind="park", title="Pacific Lighthouse Headland v2", generator="park_kit",
+        selections=(_selection("lighthouse_point_park", "lighthouse_point_park_v2", profile_id="lighthouse-pacific-headland-lego-v1", appearance_kit_id="lighthouse_point_park_v2_pacific_skin", planting_structure="lighthouse_pacific_headland_v2", compatibility=_LIGHTHOUSE_PACIFIC_HEADLAND_ENVELOPE, components=("headland_ground_program_v1", "cliff_setback_loop_v1", "whole_wind_grove_cells_v1", "lighthouse_building_reservation_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_lake_edge_timber_deck_v2", kind="park", title="Modern Timber Lake-Edge Deck v2", generator="park_kit",
+        selections=(_selection("lake_edge_plaza", "lake_edge_plaza_v2", profile_id="lake-edge-timber-deck-lego-v1", appearance_kit_id="lake_edge_plaza_v2_timber_skin", planting_structure="lake_edge_timber_deck_v2", compatibility=_LAKE_EDGE_TIMBER_DECK_ENVELOPE, components=("lake_edge_ground_program_v1", "continuous_timber_promenade_v1", "whole_step_seat_bays_v1", "rain_planter_edge_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_stormwater_natural_creek_v0", kind="park", title="Naturalized Stormwater Creek v0", generator="park_kit",
+        selections=(_selection("stormwater_naturalized_drainage_corridor", "stormwater_naturalized_drainage_corridor_variant_0", profile_id="stormwater-natural-creek-lego-v1", appearance_kit_id="stormwater_naturalized_drainage_corridor_v0_creek_skin", planting_structure="stormwater_natural_creek_v0", compatibility=_STORMWATER_NATURAL_CREEK_ENVELOPE, components=("natural_creek_ground_program_v1", "continuous_low_flow_channel_v1", "whole_floodplain_cells_v1", "bridge_crossing_bays_v1"), default=True),),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_surface_parking_standard_v0", kind="park", title="Standard Surface Parking v0", generator="park_kit",
+        selections=(
+            _selection("surface_parking_lot", "surface_parking_lot_v0", profile_id="surface-parking-standard-lego-v1", appearance_kit_id="surface_parking_lot_v0_standard_skin", planting_structure="surface_parking_standard_v0", compatibility=_SURFACE_PARKING_STANDARD_ENVELOPE, components=("regulation_surface_parking_ground_v1", "whole_double_loaded_rows_v1", "clear_drive_aisles_v1", "tree_island_light_kit_v1"), default=True),
+            _selection("surface_parking_lot", "surface_parking_lot_v1", profile_id="surface-parking-green-lego-v1", appearance_kit_id="surface_parking_lot_v1_green_skin", planting_structure="surface_parking_green_v1", compatibility=_SURFACE_PARKING_STANDARD_ENVELOPE, components=("permeable_surface_parking_ground_v1", "whole_double_loaded_rows_v1", "continuous_bioswale_v1", "dense_tree_island_kit_v1")),
+            _selection("surface_parking_lot", "surface_parking_lot_v2", profile_id="surface-parking-urban-lego-v1", appearance_kit_id="surface_parking_lot_v2_urban_skin", planting_structure="surface_parking_urban_v2", compatibility=_SURFACE_PARKING_STANDARD_ENVELOPE, components=("urban_surface_parking_ground_v1", "compact_stall_rows_v1", "pedestrian_spine_v1", "garage_reservation_edge_v1")),
+            _selection("surface_parking_lot", "surface_parking_lot_v3", profile_id="surface-parking-screened-lego-v1", appearance_kit_id="surface_parking_lot_v3_screened_skin", planting_structure="surface_parking_screened_v3", compatibility=_SURFACE_PARKING_STANDARD_ENVELOPE, components=("screened_surface_parking_ground_v1", "whole_double_loaded_rows_v1", "perimeter_berm_v1", "dense_tree_screen_v1")),
+        ),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_structured_parking_urban_v2", kind="park", title="Urban Structured Parking Site v2", generator="park_kit",
+        selections=(
+            _selection("structured_parking_garage", "structured_parking_garage_v0", profile_id="structured-parking-standard-lego-v1", appearance_kit_id="structured_parking_garage_v0_standard_skin", planting_structure="structured_parking_standard_v0", compatibility=_STRUCTURED_PARKING_URBAN_ENVELOPE, components=("garage_building_reservation_v1", "standard_vehicle_apron_v1", "entry_gate_kit_v1")),
+            _selection("structured_parking_garage", "structured_parking_garage_v1", profile_id="structured-parking-green-lego-v1", appearance_kit_id="structured_parking_garage_v1_green_skin", planting_structure="structured_parking_green_v1", compatibility=_STRUCTURED_PARKING_URBAN_ENVELOPE, components=("garage_building_reservation_v1", "green_roof_reservation_v1", "bioswale_arrival_v1", "dense_tree_edge_v1")),
+            _selection("structured_parking_garage", "structured_parking_garage_v2", profile_id="structured-parking-urban-lego-v1", appearance_kit_id="structured_parking_garage_v2_urban_skin", planting_structure="structured_parking_urban_v2", compatibility=_STRUCTURED_PARKING_URBAN_ENVELOPE, components=("garage_building_reservation_v1", "vehicle_arrival_apron_v1", "pedestrian_threshold_v1", "landscape_buffer_v1"), default=True),
+            _selection("structured_parking_garage", "structured_parking_garage_v3", profile_id="structured-parking-screened-lego-v1", appearance_kit_id="structured_parking_garage_v3_screened_skin", planting_structure="structured_parking_screened_v3", compatibility=_STRUCTURED_PARKING_URBAN_ENVELOPE, components=("garage_building_reservation_v1", "screened_arrival_apron_v1", "perimeter_berm_v1", "dense_tree_screen_v1")),
+        ),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_underground_parking_green_v1", kind="park", title="Green Underground Parking Entry v1", generator="park_kit",
+        selections=(
+            _selection("underground_parking_entry", "underground_parking_entry_v0", profile_id="underground-parking-standard-lego-v1", appearance_kit_id="underground_parking_entry_v0_standard_skin", planting_structure="underground_parking_standard_v0", compatibility=_UNDERGROUND_PARKING_GREEN_ENVELOPE, components=("asphalt_surface_ground_v1", "complete_vehicle_ramp_v1", "concrete_retaining_wall_v1", "entry_sign_kit_v1")),
+            _selection("underground_parking_entry", "underground_parking_entry_v1", profile_id="underground-parking-green-lego-v1", appearance_kit_id="underground_parking_entry_v1_green_skin", planting_structure="underground_parking_green_v1", compatibility=_UNDERGROUND_PARKING_GREEN_ENVELOPE, components=("landscaped_surface_ground_v1", "complete_vehicle_ramp_v1", "retaining_guardrail_kit_v1", "flush_vent_grates_v1"), default=True),
+            _selection("underground_parking_entry", "underground_parking_entry_v2", profile_id="underground-parking-urban-lego-v1", appearance_kit_id="underground_parking_entry_v2_urban_skin", planting_structure="underground_parking_urban_v2", compatibility=_UNDERGROUND_PARKING_GREEN_ENVELOPE, components=("urban_paver_surface_v1", "complete_vehicle_ramp_v1", "stone_retaining_wall_v1", "pedestrian_guardrail_v1")),
+            _selection("underground_parking_entry", "underground_parking_entry_v3", profile_id="underground-parking-screened-lego-v1", appearance_kit_id="underground_parking_entry_v3_screened_skin", planting_structure="underground_parking_screened_v3", compatibility=_UNDERGROUND_PARKING_GREEN_ENVELOPE, components=("landscaped_surface_ground_v1", "complete_vehicle_ramp_v1", "screening_berm_v1", "dense_tree_screen_v1")),
+        ),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_green_parking_infrastructure_v1", kind="park", title="Green Infrastructure Parking v1", generator="park_kit",
+        selections=(
+            _selection("green_parking_lot", "green_parking_lot_v0", profile_id="green-parking-standard-lego-v1", appearance_kit_id="green_parking_lot_v0_standard_skin", planting_structure="green_parking_standard_v0", compatibility=_GREEN_PARKING_INFRASTRUCTURE_ENVELOPE, components=("standard_asphalt_parking_ground_v1", "whole_regulation_rows_v1", "light_tree_island_kit_v1")),
+            _selection("green_parking_lot", "green_parking_lot_v1", profile_id="green-parking-infrastructure-lego-v1", appearance_kit_id="green_parking_lot_v1_infrastructure_skin", planting_structure="green_parking_infrastructure_v1", compatibility=_GREEN_PARKING_INFRASTRUCTURE_ENVELOPE, components=("permeable_parking_ground_v1", "whole_regulation_rows_v1", "continuous_bioswale_v1", "tree_island_kit_v1"), default=True),
+            _selection("green_parking_lot", "green_parking_lot_v2", profile_id="green-parking-urban-lego-v1", appearance_kit_id="green_parking_lot_v2_urban_skin", planting_structure="green_parking_urban_v2", compatibility=_GREEN_PARKING_INFRASTRUCTURE_ENVELOPE, components=("urban_permeable_parking_ground_v1", "compact_regulation_rows_v1", "pedestrian_spine_v1", "street_tree_bays_v1")),
+            _selection("green_parking_lot", "green_parking_lot_v3", profile_id="green-parking-screened-lego-v1", appearance_kit_id="green_parking_lot_v3_screened_skin", planting_structure="green_parking_screened_v3", compatibility=_GREEN_PARKING_INFRASTRUCTURE_ENVELOPE, components=("permeable_parking_ground_v1", "whole_regulation_rows_v1", "continuous_bioswale_v1", "dense_tree_screen_v1")),
+        ),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_airport_general_aviation_v2", kind="park", title="General Aviation Airfield v2", generator="park_kit",
+        selections=(
+            _selection("airport_airfield", "airport_airfield_variant_0", profile_id="airport-major-hub-lego-v1", appearance_kit_id="airport_airfield_v0_major_hub_skin", planting_structure="airport_major_hub_v0", compatibility=_AIRPORT_GENERAL_AVIATION_ENVELOPE, components=("parallel_runway_ground_v1", "complete_taxiway_network_v1", "terminal_concourse_reservation_v1", "widebody_apron_stands_v1")),
+            _selection("airport_airfield", "airport_airfield_variant_1", profile_id="airport-regional-lego-v1", appearance_kit_id="airport_airfield_v1_regional_skin", planting_structure="airport_regional_v1", compatibility=_AIRPORT_GENERAL_AVIATION_ENVELOPE, components=("complete_runway_ground_v1", "regional_taxiway_apron_v1", "terminal_reservation_v1", "commuter_aircraft_stands_v1")),
+            _selection("airport_airfield", "airport_airfield_variant_2", profile_id="airport-general-aviation-lego-v1", appearance_kit_id="airport_airfield_v2_general_aviation_skin", planting_structure="airport_general_aviation_v2", compatibility=_AIRPORT_GENERAL_AVIATION_ENVELOPE, components=("complete_runway_ground_v1", "taxiway_apron_network_v1", "small_aircraft_stands_v1", "hangar_terminal_reservations_v1"), default=True),
+            _selection("airport_airfield", "airport_airfield_variant_3", profile_id="airport-mid-size-lego-v1", appearance_kit_id="airport_airfield_v3_mid_size_skin", planting_structure="airport_mid_size_v3", compatibility=_AIRPORT_GENERAL_AVIATION_ENVELOPE, components=("complete_runway_ground_v1", "dual_taxiway_apron_v1", "mid_size_terminal_reservation_v1", "mixed_aircraft_stands_v1")),
+        ),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_equestrian_working_stable_v1", kind="park", title="Rustic Working Equestrian Centre v1", generator="park_kit",
+        selections=(
+            _selection("equestrian_center", "equestrian_center_variant_0", profile_id="equestrian-boarding-lego-v1", appearance_kit_id="equestrian_center_v0_boarding_skin", planting_structure="equestrian_boarding_v0", compatibility=_EQUESTRIAN_WORKING_STABLE_ENVELOPE, components=("lesson_arena_v1", "whole_fenced_paddocks_v1", "stable_building_reservation_v1", "hack_trail_loop_v1")),
+            _selection("equestrian_center", "equestrian_center_variant_1", profile_id="equestrian-working-stable-lego-v1", appearance_kit_id="equestrian_center_v1_working_stable_skin", planting_structure="equestrian_working_stable_v1", compatibility=_EQUESTRIAN_WORKING_STABLE_ENVELOPE, components=("complete_sand_arena_v1", "whole_fenced_paddocks_v1", "service_lane_v1", "stable_building_reservation_v1"), default=True),
+            _selection("equestrian_center", "equestrian_center_variant_2", profile_id="equestrian-competition-lego-v1", appearance_kit_id="equestrian_center_v2_competition_skin", planting_structure="equestrian_competition_v2", compatibility=_EQUESTRIAN_WORKING_STABLE_ENVELOPE, components=("two_show_rings_v1", "warmup_arena_v1", "bleacher_reservations_v1", "stable_building_reservation_v1")),
+            _selection("equestrian_center", "equestrian_center_variant_3", profile_id="equestrian-academy-lego-v1", appearance_kit_id="equestrian_center_v3_academy_skin", planting_structure="equestrian_academy_v3", compatibility=_EQUESTRIAN_WORKING_STABLE_ENVELOPE, components=("modern_outdoor_arena_v1", "indoor_arena_building_reservation_v1", "ordered_paddocks_v1", "arrival_court_v1")),
+        ),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_golf_seaside_links_v0", kind="park", title="Seaside Links Golf v0", generator="park_kit",
+        selections=(
+            _selection("golf_course_18_hole", "golf_course_18_hole_variant_0", profile_id="golf-seaside-links-lego-v1", appearance_kit_id="golf_course_18_hole_v0_links_skin", planting_structure="golf_seaside_links_v0", compatibility=_GOLF_SEASIDE_LINKS_ENVELOPE, components=("whole_hole_modules_v1", "dune_rough_ground_v1", "pot_bunker_flag_kit_v1", "clubhouse_reservation_v1"), default=True),
+            _selection("golf_course_18_hole", "golf_course_18_hole_variant_1", profile_id="golf-parkland-lego-v1", appearance_kit_id="golf_course_18_hole_v1_parkland_skin", planting_structure="golf_parkland_v1", compatibility=_GOLF_SEASIDE_LINKS_ENVELOPE, components=("whole_hole_modules_v1", "parkland_tree_corridors_v1", "broad_bunker_flag_kit_v1", "clubhouse_reservation_v1")),
+            _selection("golf_course_18_hole", "golf_course_18_hole_variant_2", profile_id="golf-desert-lego-v1", appearance_kit_id="golf_course_18_hole_v2_desert_skin", planting_structure="golf_desert_v2", compatibility=_GOLF_SEASIDE_LINKS_ENVELOPE, components=("whole_hole_modules_v1", "desert_rough_ground_v1", "waste_bunker_flag_kit_v1", "xeric_planting_v1")),
+            _selection("golf_course_18_hole", "golf_course_18_hole_variant_3", profile_id="golf-modern-club-lego-v1", appearance_kit_id="golf_course_18_hole_v3_modern_club_skin", planting_structure="golf_modern_club_v3", compatibility=_GOLF_SEASIDE_LINKS_ENVELOPE, components=("whole_hole_modules_v1", "manicured_rough_ground_v1", "water_hazard_v1", "modern_clubhouse_reservation_v1")),
+        ),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_driving_range_single_tier_v0", kind="park", title="Single-Tier Golf Driving Range v0", generator="park_kit",
+        selections=(
+            _selection("golf_driving_range", "golf_driving_range_variant_0", profile_id="driving-range-single-tier-lego-v1", appearance_kit_id="golf_driving_range_v0_single_tier_skin", planting_structure="driving_range_single_tier_v0", compatibility=_DRIVING_RANGE_SINGLE_TIER_ENVELOPE, components=("deep_landing_field_v1", "distance_target_flag_kit_v1", "continuous_side_netting_v1", "open_hitting_bay_canopy_v1"), default=True),
+            _selection("golf_driving_range", "golf_driving_range_variant_1", profile_id="driving-range-entertainment-lego-v1", appearance_kit_id="golf_driving_range_v1_entertainment_skin", planting_structure="driving_range_entertainment_v1", compatibility=_DRIVING_RANGE_SINGLE_TIER_ENVELOPE, components=("deep_landing_field_v1", "colored_target_basin_kit_v1", "continuous_side_netting_v1", "two_tier_building_reservation_v1")),
+            _selection("golf_driving_range", "golf_driving_range_variant_2", profile_id="driving-range-parkland-lego-v1", appearance_kit_id="golf_driving_range_v2_parkland_skin", planting_structure="driving_range_parkland_v2", compatibility=_DRIVING_RANGE_SINGLE_TIER_ENVELOPE, components=("parkland_landing_field_v1", "natural_target_flag_kit_v1", "tree_edge_v1", "timber_pavilion_reservation_v1")),
+            _selection("golf_driving_range", "golf_driving_range_variant_3", profile_id="driving-range-modern-lego-v1", appearance_kit_id="golf_driving_range_v3_modern_skin", planting_structure="driving_range_modern_v3", compatibility=_DRIVING_RANGE_SINGLE_TIER_ENVELOPE, components=("deep_landing_field_v1", "geometric_target_kit_v1", "continuous_side_netting_v1", "modern_two_tier_building_reservation_v1")),
+        ),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_multi_sport_track_field_v3", kind="park", title="Track and Field Precinct v3", generator="park_kit",
+        selections=(
+            _selection("multi_sport_complex", "multi_sport_complex_variant_0", profile_id="multi-sport-community-lego-v1", appearance_kit_id="multi_sport_complex_v0_community_skin", planting_structure="multi_sport_community_v0", compatibility=_MULTI_SPORT_TRACK_FIELD_ENVELOPE, components=("two_community_fields_v1", "multiuse_court_v1", "pavilion_building_reservation_v1", "shared_path_loop_v1")),
+            _selection("multi_sport_complex", "multi_sport_complex_variant_1", profile_id="multi-sport-stadium-lego-v1", appearance_kit_id="multi_sport_complex_v1_stadium_skin", planting_structure="multi_sport_stadium_v1", compatibility=_MULTI_SPORT_TRACK_FIELD_ENVELOPE, components=("stadium_field_v1", "grandstand_building_reservations_v1", "floodlight_kit_v1", "arrival_plaza_v1")),
+            _selection("multi_sport_complex", "multi_sport_complex_variant_2", profile_id="multi-sport-dome-lego-v1", appearance_kit_id="multi_sport_complex_v2_dome_skin", planting_structure="multi_sport_dome_v2", compatibility=_MULTI_SPORT_TRACK_FIELD_ENVELOPE, components=("dome_building_reservation_v1", "outdoor_training_field_v1", "service_apron_v1", "arrival_plaza_v1")),
+            _selection("multi_sport_complex", "multi_sport_complex_variant_3", profile_id="multi-sport-track-field-lego-v1", appearance_kit_id="multi_sport_complex_v3_track_field_skin", planting_structure="multi_sport_track_field_v3", compatibility=_MULTI_SPORT_TRACK_FIELD_ENVELOPE, components=("complete_track_infield_module_v1", "floodlight_kit_v1", "spectator_edge_v1", "fieldhouse_building_reservation_v1"), default=True),
+        ),
+    ),
+    PublicRealmFamilyCapability(
+        family_id="park_retail_parking_landscaped_v1", kind="park", title="Landscaped Retail Parking v1", generator="park_kit",
+        selections=(
+            _selection("suburban_retail_parking_lot", "suburban_retail_parking_lot_v0", profile_id="retail-parking-big-box-lego-v1", appearance_kit_id="suburban_retail_parking_lot_v0_big_box_skin", planting_structure="retail_parking_big_box_v0", compatibility=_RETAIL_PARKING_LANDSCAPED_ENVELOPE, components=("regulation_retail_parking_ground_v1", "wide_stall_rows_v1", "storefront_building_reservation_v1", "cart_corral_kit_v1")),
+            _selection("suburban_retail_parking_lot", "suburban_retail_parking_lot_v1", profile_id="retail-parking-landscaped-lego-v1", appearance_kit_id="suburban_retail_parking_lot_v1_landscaped_skin", planting_structure="retail_parking_landscaped_v1", compatibility=_RETAIL_PARKING_LANDSCAPED_ENVELOPE, components=("regulation_retail_parking_ground_v1", "whole_stall_rows_v1", "crossing_cart_corral_kit_v1", "storefront_building_reservation_v1"), default=True),
+            _selection("suburban_retail_parking_lot", "suburban_retail_parking_lot_v2", profile_id="retail-parking-gravel-lego-v1", appearance_kit_id="suburban_retail_parking_lot_v2_gravel_skin", planting_structure="retail_parking_gravel_v2", compatibility=_RETAIL_PARKING_LANDSCAPED_ENVELOPE, components=("gravel_overflow_ground_v1", "informal_parking_rows_v1", "highway_entry_v1", "minimal_light_kit_v1")),
+            _selection("suburban_retail_parking_lot", "suburban_retail_parking_lot_v3", profile_id="retail-parking-plaza-lego-v1", appearance_kit_id="suburban_retail_parking_lot_v3_plaza_skin", planting_structure="retail_parking_plaza_v3", compatibility=_RETAIL_PARKING_LANDSCAPED_ENVELOPE, components=("compact_retail_parking_ground_v1", "pedestrian_plaza_frontage_v1", "street_tree_bays_v1", "storefront_building_reservation_v1")),
+        ),
+    ),
+    PublicRealmFamilyCapability(
         family_id="street_local_public_realm",
         kind="street",
         title="Local Public Realm",
@@ -1275,6 +1821,1020 @@ _CAPABILITIES: tuple[PublicRealmFamilyCapability, ...] = (
         ),
     ),
 )
+
+
+# Batch 16 closes the non-anchor variants for ten established park LEGO
+# families.  These are intentional shared-geometry mappings: the anchor
+# family keeps its measured parcel-fitting grammar and physical kit, while
+# every source card receives its own archetype-derived material identity,
+# planting structure and explicit program marker.  This avoids duplicating a
+# working family merely to change its landscape language.
+_BATCH16_VARIANT_CLOSURES: dict[
+    str, tuple[tuple[str, str, str, str, str], ...]
+] = {
+    "park_neighborhood_community": (
+        ("community_park", "community_park_v1", "community_park_v1_modern_minimalist_skin", "community_modern_minimalist_v1", "modern_recreation_water_program_v1"),
+        ("community_park", "community_park_v2", "community_park_v2_mediterranean_xeriscape_skin", "community_mediterranean_xeriscape_v2", "xeric_recreation_water_program_v1"),
+        ("community_park", "community_park_v3", "community_park_v3_tropical_lush_skin", "community_tropical_lush_v3", "tropical_recreation_water_program_v1"),
+    ),
+    "park_regional_english_landscape_v0": (
+        ("regional_park", "regional_park_v1", "regional_park_v1_modern_minimalist_skin", "regional_modern_minimalist_v1", "modern_regional_landscape_program_v1"),
+        ("regional_park", "regional_park_v2", "regional_park_v2_mediterranean_xeriscape_skin", "regional_mediterranean_xeriscape_v2", "xeric_regional_landscape_program_v1"),
+        ("regional_park", "regional_park_v3", "regional_park_v3_tropical_lush_skin", "regional_tropical_lush_v3", "tropical_regional_landscape_program_v1"),
+    ),
+    "park_dog_archetype_v0": (
+        ("dog_park", "dog_park_v1", "dog_park_v1_modern_steel_turf_skin", "dog_modern_steel_turf_v1", "dog_multi_pen_modern_program_v1"),
+        ("dog_park", "dog_park_v2", "dog_park_v2_natural_meadow_skin", "dog_natural_meadow_v2", "dog_meadow_loop_program_v1"),
+        ("dog_park", "dog_park_v3", "dog_park_v3_urban_contemporary_skin", "dog_urban_contemporary_v3", "dog_urban_social_program_v1"),
+    ),
+    "park_skate_archetype_v0": (
+        ("skate_park", "skate_park_v1", "skate_park_v1_community_recreation_skin", "skate_community_recreation_v1", "community_skate_program_v1"),
+        ("skate_park", "skate_park_v2", "skate_park_v2_naturalized_active_skin", "skate_naturalized_active_v2", "naturalized_skate_program_v1"),
+        ("skate_park", "skate_park_v3", "skate_park_v3_urban_athletic_skin", "skate_urban_athletic_v3", "urban_skate_program_v1"),
+    ),
+    "park_sports_complex_tournament_v0": (
+        ("sports_field_complex", "sports_field_complex_v1", "sports_field_complex_v1_community_recreation_skin", "sports_complex_community_v1", "community_field_cluster_program_v1"),
+        ("sports_field_complex", "sports_field_complex_v2", "sports_field_complex_v2_naturalized_active_skin", "sports_complex_naturalized_v2", "naturalized_field_cluster_program_v1"),
+        ("sports_field_complex", "sports_field_complex_v3", "sports_field_complex_v3_urban_athletic_skin", "sports_complex_urban_v3", "urban_field_cluster_program_v1"),
+    ),
+    "park_tennis_cluster_v0": (
+        ("tennis_court_cluster", "tennis_court_cluster_v1", "tennis_court_cluster_v1_community_recreation_skin", "tennis_community_v1", "community_tennis_cluster_program_v1"),
+        ("tennis_court_cluster", "tennis_court_cluster_v2", "tennis_court_cluster_v2_naturalized_active_skin", "tennis_naturalized_v2", "naturalized_tennis_cluster_program_v1"),
+        ("tennis_court_cluster", "tennis_court_cluster_v3", "tennis_court_cluster_v3_urban_athletic_skin", "tennis_urban_v3", "urban_tennis_cluster_program_v1"),
+    ),
+    "park_cultural_gardens": (
+        ("botanical_garden", "botanical_garden_v1", "botanical_garden_v1_woodland_naturalistic_skin", "botanical_woodland_v1", "woodland_collection_program_v1"),
+        ("botanical_garden", "botanical_garden_v2", "botanical_garden_v2_contemporary_sculptural_skin", "botanical_sculptural_v2", "sculptural_collection_program_v1"),
+        ("japanese_garden", "japanese_garden_v1", "japanese_garden_v1_woodland_naturalistic_skin", "japanese_woodland_v1", "woodland_stroll_program_v1"),
+        ("japanese_garden", "japanese_garden_v2", "japanese_garden_v2_contemporary_sculptural_skin", "japanese_sculptural_v2", "sculptural_stroll_program_v1"),
+        ("japanese_garden", "japanese_garden_v3", "japanese_garden_v3_cottage_romantic_skin", "japanese_romantic_v3", "romantic_stroll_program_v1"),
+    ),
+    "park_memorial_garden_v0": (
+        ("memorial_garden", "memorial_garden_v1", "memorial_garden_v1_woodland_naturalistic_skin", "memorial_woodland_v1", "woodland_memorial_program_v1"),
+        ("memorial_garden", "memorial_garden_v2", "memorial_garden_v2_contemporary_sculptural_skin", "memorial_sculptural_v2", "sculptural_memorial_program_v1"),
+        ("memorial_garden", "memorial_garden_v3", "memorial_garden_v3_cottage_romantic_skin", "memorial_romantic_v3", "romantic_memorial_program_v1"),
+    ),
+    "park_urban_forest": (
+        ("urban_forest", "urban_forest_v1", "urban_forest_v1_bioengineered_infrastructure_skin", "urban_forest_bioengineered_v1", "bioengineered_forest_program_v1"),
+        ("urban_forest", "urban_forest_v2", "urban_forest_v2_rewilded_urban_skin", "urban_forest_rewilded_v2", "rewilded_forest_program_v1"),
+        ("urban_forest", "urban_forest_v3", "urban_forest_v3_resilient_coastal_skin", "urban_forest_coastal_v3", "coastal_forest_program_v1"),
+    ),
+}
+
+
+def _apply_batch16_variant_closures(
+    capability: PublicRealmFamilyCapability,
+) -> PublicRealmFamilyCapability:
+    descriptors = _BATCH16_VARIANT_CLOSURES.get(capability.family_id, ())
+    if not descriptors:
+        return capability
+    additions: list[PublicRealmSelectionCapability] = []
+    for archetype_id, variant_id, appearance_kit_id, planting_structure, program_component in descriptors:
+        base = next(
+            selection
+            for selection in capability.selections
+            if selection.archetype_id == archetype_id
+        )
+        additions.append(
+            _selection(
+                archetype_id,
+                variant_id,
+                profile_id=base.profile_id,
+                appearance_kit_id=appearance_kit_id,
+                planting_structure=planting_structure,
+                compatibility=base.compatibility,
+                components=(*base.component_set_ids, program_component),
+            )
+        )
+    return capability.model_copy(update={"selections": (*capability.selections, *additions)})
+
+
+_CAPABILITIES = tuple(_apply_batch16_variant_closures(capability) for capability in _CAPABILITIES)
+
+
+# Batch 17 closes ten activity-led families. The shared geometry is limited to
+# regulation or whole-program modules already proven by the anchor selection;
+# variants retain those dimensions/count rules while receiving their own
+# reference-derived surface, planting language, and explicit program marker.
+_BATCH17_VARIANT_CLOSURES: dict[
+    str, tuple[tuple[str, str, str, str, str], ...]
+] = {
+    "park_pickleball_community_v1": (
+        ("pickleball_courts", "pickleball_courts_v0", "pickleball_courts_v0_competition_grade_skin", "pickleball_competition_v0", "pickleball_tournament_program_v1"),
+        ("pickleball_courts", "pickleball_courts_v2", "pickleball_courts_v2_park_integrated_skin", "pickleball_park_integrated_v2", "pickleball_landscape_program_v1"),
+        ("pickleball_courts", "pickleball_courts_v3", "pickleball_courts_v3_indoor_outdoor_skin", "pickleball_hybrid_v3", "pickleball_canopy_program_v1"),
+    ),
+    "park_caged_soccer_v0": (
+        ("soccer_pitch_caged", "soccer_pitch_caged_v1", "soccer_pitch_caged_v1_community_skin", "caged_soccer_community_v1", "community_caged_pitch_program_v1"),
+        ("soccer_pitch_caged", "soccer_pitch_caged_v2", "soccer_pitch_caged_v2_youth_training_skin", "caged_soccer_youth_v2", "youth_training_pitch_program_v1"),
+        ("soccer_pitch_caged", "soccer_pitch_caged_v3", "soccer_pitch_caged_v3_rooftop_skin", "caged_soccer_rooftop_v3", "rooftop_pitch_program_v1"),
+    ),
+    "park_track_oval_school_v2": (
+        ("running_track_oval", "running_track_oval_v0", "running_track_oval_v0_competition_skin", "track_competition_v0", "competition_track_program_v1"),
+        ("running_track_oval", "running_track_oval_v1", "running_track_oval_v1_community_skin", "track_community_v1", "community_track_program_v1"),
+        ("running_track_oval", "running_track_oval_v3", "running_track_oval_v3_park_loop_skin", "track_park_loop_v3", "park_loop_track_program_v1"),
+    ),
+    "park_outdoor_fitness_v0": (
+        ("outdoor_fitness_circuit", "outdoor_fitness_circuit_v1", "outdoor_fitness_circuit_v1_parkour_skin", "fitness_parkour_v1", "parkour_movement_program_v1"),
+        ("outdoor_fitness_circuit", "outdoor_fitness_circuit_v2", "outdoor_fitness_circuit_v2_nature_trail_skin", "fitness_nature_trail_v2", "nature_fitness_circuit_program_v1"),
+        ("outdoor_fitness_circuit", "outdoor_fitness_circuit_v3", "outdoor_fitness_circuit_v3_senior_wellness_skin", "fitness_senior_v3", "senior_wellness_program_v1"),
+    ),
+    "park_baseball_club_hub_v1": (
+        ("baseball_softball_diamond", "baseball_softball_diamond_v0", "baseball_softball_diamond_v0_classic_skin", "baseball_classic_v0", "classic_single_diamond_program_v1"),
+        ("baseball_softball_diamond", "baseball_softball_diamond_v2", "baseball_softball_diamond_v2_softball_skin", "baseball_softball_v2", "softball_field_program_v1"),
+        ("baseball_softball_diamond", "baseball_softball_diamond_v3", "baseball_softball_diamond_v3_sandlot_skin", "baseball_sandlot_v3", "sandlot_field_program_v1"),
+    ),
+    "park_cricket_village_green_v0": (
+        ("cricket_pitch_oval", "cricket_pitch_oval_v1", "cricket_pitch_oval_v1_municipal_skin", "cricket_municipal_v1", "municipal_cricket_program_v1"),
+        ("cricket_pitch_oval", "cricket_pitch_oval_v2", "cricket_pitch_oval_v2_south_asian_skin", "cricket_south_asian_v2", "south_asian_cricket_program_v1"),
+        ("cricket_pitch_oval", "cricket_pitch_oval_v3", "cricket_pitch_oval_v3_caribbean_skin", "cricket_caribbean_v3", "caribbean_beach_cricket_program_v1"),
+    ),
+    "park_nature_play_v0": (
+        ("nature_play_area", "nature_play_area_v1", "nature_play_area_v1_sensory_garden_skin", "nature_play_sensory_v1", "sensory_nature_play_program_v1"),
+        ("nature_play_area", "nature_play_area_v2", "nature_play_area_v2_mud_water_skin", "nature_play_mud_water_v2", "mud_water_play_program_v1"),
+        ("nature_play_area", "nature_play_area_v3", "nature_play_area_v3_toddler_garden_skin", "nature_play_toddler_v3", "toddler_nature_play_program_v1"),
+    ),
+    "park_inclusive_playground_v0": (
+        ("inclusive_playground", "inclusive_playground_v1", "inclusive_playground_v1_sensory_skin", "inclusive_sensory_v1", "sensory_explorer_program_v1"),
+        ("inclusive_playground", "inclusive_playground_v2", "inclusive_playground_v2_mega_skin", "inclusive_mega_v2", "mega_all_abilities_program_v1"),
+        ("inclusive_playground", "inclusive_playground_v3", "inclusive_playground_v3_nature_skin", "inclusive_nature_v3", "nature_inclusive_program_v1"),
+    ),
+    "park_pump_track_v0": (
+        ("pump_track", "pump_track_v1", "pump_track_v1_dirt_bmx_skin", "pump_track_dirt_v1", "dirt_bmx_program_v1"),
+        ("pump_track", "pump_track_v2", "pump_track_v2_family_skin", "pump_track_family_v2", "family_all_wheels_program_v1"),
+        ("pump_track", "pump_track_v3", "pump_track_v3_modular_skin", "pump_track_modular_v3", "modular_pump_track_program_v1"),
+    ),
+    "park_splash_pad_v0": (
+        ("splash_pad_area", "splash_pad_area_v1", "splash_pad_area_v1_modern_skin", "splash_pad_modern_v1", "modern_water_play_program_v1"),
+        ("splash_pad_area", "splash_pad_area_v2", "splash_pad_area_v2_meadow_skin", "splash_pad_meadow_v2", "meadow_water_play_program_v1"),
+        ("splash_pad_area", "splash_pad_area_v3", "splash_pad_area_v3_urban_skin", "splash_pad_urban_v3", "urban_water_play_program_v1"),
+    ),
+}
+
+
+def _apply_batch17_variant_closures(
+    capability: PublicRealmFamilyCapability,
+) -> PublicRealmFamilyCapability:
+    descriptors = _BATCH17_VARIANT_CLOSURES.get(capability.family_id, ())
+    if not descriptors:
+        return capability
+    additions: list[PublicRealmSelectionCapability] = []
+    for archetype_id, variant_id, appearance_kit_id, planting_structure, program_component in descriptors:
+        base = next(
+            selection
+            for selection in capability.selections
+            if selection.archetype_id == archetype_id
+        )
+        additions.append(
+            _selection(
+                archetype_id,
+                variant_id,
+                profile_id=base.profile_id,
+                appearance_kit_id=appearance_kit_id,
+                planting_structure=planting_structure,
+                compatibility=base.compatibility,
+                components=(*base.component_set_ids, program_component),
+            )
+        )
+    return capability.model_copy(update={"selections": (*capability.selections, *additions)})
+
+
+_CAPABILITIES = tuple(_apply_batch17_variant_closures(capability) for capability in _CAPABILITIES)
+
+
+# Batch 18 closes ten specialty and contemplative park families. Each closure
+# reuses the reviewed anchor grammar while preserving the selected catalogue
+# identity through an exact appearance kit, planting language, and program
+# marker derived from that variant's archetype references.
+_BATCH18_VARIANT_CLOSURES: dict[
+    str, tuple[tuple[str, str, str, str, str], ...]
+] = {
+    "park_disc_golf_wooded_v0": (
+        ("disc_golf_course", "disc_golf_course_v1", "disc_golf_course_v1_open_park_skin", "disc_golf_open_park_v1", "open_park_disc_golf_program_v1"),
+        ("disc_golf_course", "disc_golf_course_v2", "disc_golf_course_v2_hillside_terrain_skin", "disc_golf_hillside_v2", "hillside_disc_golf_program_v1"),
+        ("disc_golf_course", "disc_golf_course_v3", "disc_golf_course_v3_urban_short_skin", "disc_golf_urban_short_v3", "urban_short_disc_golf_program_v1"),
+    ),
+    "park_bocce_piazza_v0": (
+        ("bocce_petanque_court", "bocce_petanque_court_v1", "bocce_petanque_court_v1_french_petanque_skin", "bocce_french_v1", "french_petanque_program_v1"),
+        ("bocce_petanque_court", "bocce_petanque_court_v2", "bocce_petanque_court_v2_modern_park_skin", "bocce_modern_park_v2", "modern_park_bocce_program_v1"),
+        ("bocce_petanque_court", "bocce_petanque_court_v3", "bocce_petanque_court_v3_community_senior_skin", "bocce_community_senior_v3", "community_senior_bocce_program_v1"),
+    ),
+    "park_climbing_competition_v0": (
+        ("climbing_bouldering_wall", "climbing_bouldering_wall_v1", "climbing_bouldering_wall_v1_natural_rock_skin", "climbing_natural_rock_v1", "natural_rock_climbing_program_v1"),
+        ("climbing_bouldering_wall", "climbing_bouldering_wall_v2", "climbing_bouldering_wall_v2_kids_adventure_skin", "climbing_kids_adventure_v2", "kids_adventure_climbing_program_v1"),
+        ("climbing_bouldering_wall", "climbing_bouldering_wall_v3", "climbing_bouldering_wall_v3_urban_art_skin", "climbing_urban_art_v3", "urban_art_climbing_program_v1"),
+    ),
+    "park_mini_golf_classic_v0": (
+        ("mini_golf_course", "mini_golf_course_v1", "mini_golf_course_v1_garden_putting_skin", "mini_golf_garden_putting_v1", "garden_putting_program_v1"),
+        ("mini_golf_course", "mini_golf_course_v2", "mini_golf_course_v2_urban_art_skin", "mini_golf_urban_art_v2", "urban_art_mini_golf_program_v1"),
+        ("mini_golf_course", "mini_golf_course_v3", "mini_golf_course_v3_nature_adventure_skin", "mini_golf_nature_adventure_v3", "nature_adventure_mini_golf_program_v1"),
+    ),
+    "park_beach_volleyball_competition_v0": (
+        ("beach_volleyball_courts", "beach_volleyball_courts_v1", "beach_volleyball_courts_v1_beachside_skin", "beach_volleyball_beachside_v1", "beachside_volleyball_program_v1"),
+        ("beach_volleyball_courts", "beach_volleyball_courts_v2", "beach_volleyball_courts_v2_park_sand_skin", "beach_volleyball_park_sand_v2", "park_sand_volleyball_program_v1"),
+        ("beach_volleyball_courts", "beach_volleyball_courts_v3", "beach_volleyball_courts_v3_indoor_outdoor_skin", "beach_volleyball_hybrid_v3", "indoor_outdoor_volleyball_program_v1"),
+    ),
+    "park_pollinator_prairie_v0": (
+        ("pollinator_meadow", "pollinator_meadow_v1", "pollinator_meadow_v1_butterfly_garden_skin", "pollinator_butterfly_v1", "butterfly_garden_program_v1"),
+        ("pollinator_meadow", "pollinator_meadow_v2", "pollinator_meadow_v2_urban_strip_skin", "pollinator_urban_strip_v2", "urban_pollinator_strip_program_v1"),
+        ("pollinator_meadow", "pollinator_meadow_v3", "pollinator_meadow_v3_formal_border_skin", "pollinator_formal_border_v3", "formal_pollinator_border_program_v1"),
+    ),
+    "park_orchard_heritage_v0": (
+        ("urban_orchard_food_forest", "urban_orchard_food_forest_v1", "urban_orchard_food_forest_v1_permaculture_skin", "orchard_permaculture_v1", "permaculture_orchard_program_v1"),
+        ("urban_orchard_food_forest", "urban_orchard_food_forest_v2", "urban_orchard_food_forest_v2_pick_your_own_skin", "orchard_pick_your_own_v2", "pick_your_own_orchard_program_v1"),
+        ("urban_orchard_food_forest", "urban_orchard_food_forest_v3", "urban_orchard_food_forest_v3_citrus_grove_skin", "orchard_citrus_grove_v3", "citrus_grove_program_v1"),
+    ),
+    "park_bioswale_streetside_v0": (
+        ("bioswale_rain_garden", "bioswale_rain_garden_v1", "bioswale_rain_garden_v1_park_rain_garden_skin", "bioswale_park_rain_garden_v1", "park_rain_garden_program_v1"),
+        ("bioswale_rain_garden", "bioswale_rain_garden_v2", "bioswale_rain_garden_v2_terraced_steps_skin", "bioswale_terraced_steps_v2", "terraced_rain_steps_program_v1"),
+        ("bioswale_rain_garden", "bioswale_rain_garden_v3", "bioswale_rain_garden_v3_parking_lot_skin", "bioswale_parking_lot_v3", "parking_lot_bioswale_program_v1"),
+    ),
+    "park_sculpture_museum_court_v0": (
+        ("sculpture_garden", "sculpture_garden_v1", "sculpture_garden_v1_landscape_art_skin", "sculpture_landscape_art_v1", "landscape_art_program_v1"),
+        ("sculpture_garden", "sculpture_garden_v2", "sculpture_garden_v2_interactive_kinetic_skin", "sculpture_kinetic_v2", "interactive_kinetic_art_program_v1"),
+        ("sculpture_garden", "sculpture_garden_v3", "sculpture_garden_v3_rotating_exhibition_skin", "sculpture_rotating_v3", "rotating_exhibition_program_v1"),
+    ),
+    "park_labyrinth_classical_v0": (
+        ("labyrinth_meditation", "labyrinth_meditation_v1", "labyrinth_meditation_v1_zen_rock_skin", "labyrinth_zen_rock_v1", "zen_rock_labyrinth_program_v1"),
+        ("labyrinth_meditation", "labyrinth_meditation_v2", "labyrinth_meditation_v2_healing_garden_skin", "labyrinth_healing_garden_v2", "healing_garden_labyrinth_program_v1"),
+        ("labyrinth_meditation", "labyrinth_meditation_v3", "labyrinth_meditation_v3_modern_mindfulness_skin", "labyrinth_modern_v3", "modern_mindfulness_program_v1"),
+    ),
+}
+
+
+def _apply_batch18_variant_closures(
+    capability: PublicRealmFamilyCapability,
+) -> PublicRealmFamilyCapability:
+    descriptors = _BATCH18_VARIANT_CLOSURES.get(capability.family_id, ())
+    if not descriptors:
+        return capability
+    additions: list[PublicRealmSelectionCapability] = []
+    for archetype_id, variant_id, appearance_kit_id, planting_structure, program_component in descriptors:
+        base = next(
+            selection
+            for selection in capability.selections
+            if selection.archetype_id == archetype_id
+        )
+        additions.append(
+            _selection(
+                archetype_id,
+                variant_id,
+                profile_id=base.profile_id,
+                appearance_kit_id=appearance_kit_id,
+                planting_structure=planting_structure,
+                compatibility=base.compatibility,
+                components=(*base.component_set_ids, program_component),
+            )
+        )
+    return capability.model_copy(update={"selections": (*capability.selections, *additions)})
+
+
+_CAPABILITIES = tuple(_apply_batch18_variant_closures(capability) for capability in _CAPABILITIES)
+
+
+# Batch 19 closes ten destination and seasonal park families. The existing
+# whole-program grammar remains the parcel-adaptation authority; exact variant
+# identities supply their own reference material, landscape language, and
+# program marker without importing people or large reference buildings.
+_BATCH19_VARIANT_CLOSURES: dict[
+    str, tuple[tuple[str, str, str, str, str], ...]
+] = {
+    "park_ice_rink_multipurpose_v3": (
+        ("outdoor_ice_rink", "outdoor_ice_rink_v0", "outdoor_ice_rink_v0_holiday_market_skin", "ice_rink_holiday_market_v0", "holiday_market_rink_program_v1"),
+        ("outdoor_ice_rink", "outdoor_ice_rink_v1", "outdoor_ice_rink_v1_urban_plaza_skin", "ice_rink_urban_plaza_v1", "urban_plaza_rink_program_v1"),
+        ("outdoor_ice_rink", "outdoor_ice_rink_v2", "outdoor_ice_rink_v2_nature_trail_skin", "ice_rink_nature_trail_v2", "nature_skating_trail_program_v1"),
+    ),
+    "park_kayak_river_launch_v0": (
+        ("kayak_launch_dock", "kayak_launch_dock_v1", "kayak_launch_dock_v1_urban_harbour_skin", "kayak_urban_harbour_v1", "urban_harbour_launch_program_v1"),
+        ("kayak_launch_dock", "kayak_launch_dock_v2", "kayak_launch_dock_v2_lake_beach_skin", "kayak_lake_beach_v2", "lake_beach_launch_program_v1"),
+        ("kayak_launch_dock", "kayak_launch_dock_v3", "kayak_launch_dock_v3_community_boathouse_skin", "kayak_community_boathouse_v3", "community_boathouse_program_v1"),
+    ),
+    "park_tidal_marsh_cordgrass_v0": (
+        ("tidal_marsh_boardwalk", "tidal_marsh_boardwalk_v1", "tidal_marsh_boardwalk_v1_mangrove_skin", "tidal_marsh_mangrove_v1", "mangrove_tidal_walk_program_v1"),
+        ("tidal_marsh_boardwalk", "tidal_marsh_boardwalk_v2", "tidal_marsh_boardwalk_v2_reedbed_skin", "tidal_marsh_reedbed_v2", "reedbed_estuary_walk_program_v1"),
+        ("tidal_marsh_boardwalk", "tidal_marsh_boardwalk_v3", "tidal_marsh_boardwalk_v3_bird_blind_skin", "tidal_marsh_bird_blind_v3", "bird_blind_circuit_program_v1"),
+    ),
+    "park_cinema_lawn_projection_v1": (
+        ("outdoor_cinema_lawn", "outdoor_cinema_lawn_v0", "outdoor_cinema_lawn_v0_popup_festival_skin", "cinema_popup_festival_v0", "popup_festival_cinema_program_v1"),
+        ("outdoor_cinema_lawn", "outdoor_cinema_lawn_v2", "outdoor_cinema_lawn_v2_drive_in_skin", "cinema_drive_in_v2", "drive_in_cinema_program_v1"),
+        ("outdoor_cinema_lawn", "outdoor_cinema_lawn_v3", "outdoor_cinema_lawn_v3_rooftop_skin", "cinema_rooftop_v3", "rooftop_cinema_program_v1"),
+    ),
+    "park_food_truck_permanent_v1": (
+        ("food_truck_plaza", "food_truck_plaza_v0", "food_truck_plaza_v0_industrial_popup_skin", "food_truck_industrial_v0", "industrial_popup_truck_program_v1"),
+        ("food_truck_plaza", "food_truck_plaza_v2", "food_truck_plaza_v2_adaptive_lot_skin", "food_truck_adaptive_v2", "adaptive_lot_truck_program_v1"),
+        ("food_truck_plaza", "food_truck_plaza_v3", "food_truck_plaza_v3_night_market_skin", "food_truck_night_market_v3", "night_market_truck_program_v1"),
+    ),
+    "park_great_lawn_v2": (
+        ("festival_event_lawn", "festival_event_lawn_v0", "festival_event_lawn_v0_concert_skin", "festival_concert_v0", "concert_festival_program_v1"),
+        ("festival_event_lawn", "festival_event_lawn_v1", "festival_event_lawn_v1_farmers_market_skin", "festival_farmers_market_v1", "farmers_market_program_v1"),
+        ("festival_event_lawn", "festival_event_lawn_v3", "festival_event_lawn_v3_winter_market_skin", "festival_winter_market_v3", "winter_market_rink_program_v1"),
+    ),
+    "park_campus_meadow_quad_v0": (
+        ("campus_central_quad", "campus_central_quad_variant_1", "campus_central_quad_v1_modern_plaza_skin", "campus_modern_plaza_v1", "modern_plaza_quad_program_v1"),
+        ("campus_central_quad", "campus_central_quad_variant_2", "campus_central_quad_v2_garden_pavilion_skin", "campus_garden_pavilion_v2", "garden_pavilion_quad_program_v1"),
+        ("campus_central_quad", "campus_central_quad_variant_3", "campus_central_quad_v3_formal_collegiate_skin", "campus_formal_collegiate_v3", "formal_collegiate_quad_program_v1"),
+    ),
+    "park_urban_beach_family_v2": (
+        ("urban_beach", "urban_beach_v0", "urban_beach_v0_paris_plages_skin", "urban_beach_paris_v0", "paris_plages_program_v1"),
+        ("urban_beach", "urban_beach_v1", "urban_beach_v1_riverfront_bar_skin", "urban_beach_bar_v1", "riverfront_beach_bar_program_v1"),
+        ("urban_beach", "urban_beach_v3", "urban_beach_v3_sand_garden_skin", "urban_beach_sand_garden_v3", "plaza_sand_garden_program_v1"),
+    ),
+    "park_velodrome_open_air_v0": (
+        ("velodrome_cycling_track", "velodrome_cycling_track_variant_1", "velodrome_cycling_track_v1_indoor_arena_skin", "velodrome_indoor_v1", "indoor_velodrome_program_v1"),
+        ("velodrome_cycling_track", "velodrome_cycling_track_variant_2", "velodrome_cycling_track_v2_parkland_skin", "velodrome_parkland_v2", "parkland_velodrome_program_v1"),
+        ("velodrome_cycling_track", "velodrome_cycling_track_variant_3", "velodrome_cycling_track_v3_community_training_skin", "velodrome_community_v3", "community_training_track_program_v1"),
+    ),
+    "park_mtb_skills_dirt_v2": (
+        ("mountain_bike_park", "mountain_bike_park_variant_0", "mountain_bike_park_v0_paved_pump_skin", "mtb_paved_pump_v0", "paved_pump_track_program_v1"),
+        ("mountain_bike_park", "mountain_bike_park_variant_1", "mountain_bike_park_v1_hillside_skin", "mtb_hillside_v1", "hillside_bike_park_program_v1"),
+        ("mountain_bike_park", "mountain_bike_park_variant_3", "mountain_bike_park_v3_urban_dirt_skin", "mtb_urban_dirt_v3", "urban_dirt_jump_program_v1"),
+    ),
+}
+
+# Variant compatibility stays explicit where the catalogue describes a
+# materially different site scale from the retained family anchor. The compact
+# industrial pop-up is a complete 30 x 40 m truck/table/string-light program;
+# it must not inherit the larger permanent park's 1,216 m2 minimum.
+_BATCH19_COMPATIBILITY_OVERRIDES: dict[
+    tuple[str, str], PublicRealmCompatibility
+] = {
+    ("food_truck_plaza", "food_truck_plaza_v0"): _FOOD_TRUCK_INDUSTRIAL_POPUP_ENVELOPE,
+}
+
+
+def _apply_batch19_variant_closures(
+    capability: PublicRealmFamilyCapability,
+) -> PublicRealmFamilyCapability:
+    descriptors = _BATCH19_VARIANT_CLOSURES.get(capability.family_id, ())
+    if not descriptors:
+        return capability
+    additions: list[PublicRealmSelectionCapability] = []
+    for archetype_id, variant_id, appearance_kit_id, planting_structure, program_component in descriptors:
+        base = next(
+            selection
+            for selection in capability.selections
+            if selection.archetype_id == archetype_id
+        )
+        additions.append(
+            _selection(
+                archetype_id,
+                variant_id,
+                profile_id=base.profile_id,
+                appearance_kit_id=appearance_kit_id,
+                planting_structure=planting_structure,
+                compatibility=_BATCH19_COMPATIBILITY_OVERRIDES.get(
+                    (archetype_id, variant_id),
+                    base.compatibility,
+                ),
+                components=(*base.component_set_ids, program_component),
+            )
+        )
+    return capability.model_copy(update={"selections": (*capability.selections, *additions)})
+
+
+_CAPABILITIES = tuple(_apply_batch19_variant_closures(capability) for capability in _CAPABILITIES)
+
+
+# Batch 20 closes ten ecological, adventure, performance, hospitality, and
+# civic-plaza families. Each variant retains the reviewed anchor's bounded
+# parcel grammar while receiving a reference-specific material, planting, and
+# program identity. Large destination buildings remain separate building LEGO.
+_BATCH20_VARIANT_CLOSURES: dict[
+    str, tuple[tuple[str, str, str, str, str], ...]
+] = {
+    "park_water_ecology": (
+        ("riparian_buffer", "riparian_buffer_v1", "riparian_buffer_v1_bioengineered_skin", "riparian_bioengineered_v1", "bioengineered_creek_program_v1"),
+        ("riparian_buffer", "riparian_buffer_v2", "riparian_buffer_v2_rewilded_urban_skin", "riparian_rewilded_v2", "rewilded_urban_creek_program_v1"),
+        ("riparian_buffer", "riparian_buffer_v3", "riparian_buffer_v3_resilient_coastal_skin", "riparian_coastal_v3", "coastal_riparian_program_v1"),
+        ("wetland_rain_garden", "wetland_rain_garden_v1", "wetland_rain_garden_v1_bioengineered_skin", "wetland_bioengineered_v1", "bioengineered_wetland_program_v1"),
+        ("wetland_rain_garden", "wetland_rain_garden_v2", "wetland_rain_garden_v2_rewilded_urban_skin", "wetland_rewilded_v2", "rewilded_urban_wetland_program_v1"),
+        ("wetland_rain_garden", "wetland_rain_garden_v3", "wetland_rain_garden_v3_resilient_coastal_skin", "wetland_coastal_v3", "coastal_rain_garden_program_v1"),
+    ),
+    "park_playground_adventure_v0": (
+        ("playground_adventure", "playground_adventure_v1", "playground_adventure_v1_modern_steel_skin", "playground_modern_steel_v1", "modern_steel_adventure_program_v1"),
+        ("playground_adventure", "playground_adventure_v2", "playground_adventure_v2_natural_meadow_skin", "playground_natural_meadow_v2", "meadow_adventure_program_v1"),
+        ("playground_adventure", "playground_adventure_v3", "playground_adventure_v3_urban_contemporary_skin", "playground_urban_contemporary_v3", "urban_adventure_program_v1"),
+    ),
+    "park_amphitheater_lawn_v0": (
+        ("amphitheater_lawn", "amphitheater_lawn_v1", "amphitheater_lawn_v1_open_festival_skin", "amphitheater_open_festival_v1", "open_festival_amphitheater_program_v1"),
+        ("amphitheater_lawn", "amphitheater_lawn_v2", "amphitheater_lawn_v2_intimate_garden_skin", "amphitheater_intimate_garden_v2", "intimate_garden_amphitheater_program_v1"),
+        ("amphitheater_lawn", "amphitheater_lawn_v3", "amphitheater_lawn_v3_industrial_adaptive_skin", "amphitheater_industrial_v3", "industrial_amphitheater_program_v1"),
+    ),
+    "park_beer_garden_munich_v0": (
+        ("beer_garden", "beer_garden_v1", "beer_garden_v1_brewery_tap_yard_skin", "beer_garden_brewery_v1", "brewery_tap_yard_program_v1"),
+        ("beer_garden", "beer_garden_v2", "beer_garden_v2_pergola_terrace_skin", "beer_garden_pergola_v2", "pergola_beer_garden_program_v1"),
+        ("beer_garden", "beer_garden_v3", "beer_garden_v3_rooftop_skin", "beer_garden_rooftop_v3", "rooftop_beer_garden_program_v1"),
+    ),
+    "park_city_hall_modernist_fountain_v2": (
+        ("city_hall_government_plaza", "city_hall_government_plaza_v0", "city_hall_government_plaza_v0_compact_skin", "city_hall_compact_v0", "compact_civic_forecourt_program_v1"),
+        ("city_hall_government_plaza", "city_hall_government_plaza_v1", "city_hall_government_plaza_v1_historic_skin", "city_hall_historic_v1", "historic_senate_square_program_v1"),
+        ("city_hall_government_plaza", "city_hall_government_plaza_v3", "city_hall_government_plaza_v3_brutalist_skin", "city_hall_brutalist_v3", "brutalist_forecourt_program_v1"),
+    ),
+    "park_sunken_courtyard_v0": (
+        ("sunken_plaza", "sunken_plaza_v1", "sunken_plaza_v1_rockefeller_rink_skin", "sunken_rockefeller_v1", "rockefeller_rink_terrace_program_v1"),
+        ("sunken_plaza", "sunken_plaza_v2", "sunken_plaza_v2_corporate_atrium_skin", "sunken_corporate_v2", "corporate_atrium_tier_program_v1"),
+        ("sunken_plaza", "sunken_plaza_v3", "sunken_plaza_v3_asian_transit_skin", "sunken_asian_transit_v3", "transit_integrated_sunken_program_v1"),
+    ),
+    "park_cathedral_courtyard_fountain_v3": (
+        ("cathedral_religious_forecourt", "cathedral_religious_forecourt_v0", "cathedral_religious_forecourt_v0_asian_temple_skin", "cathedral_asian_temple_v0", "asian_temple_forecourt_program_v1"),
+        ("cathedral_religious_forecourt", "cathedral_religious_forecourt_v1", "cathedral_religious_forecourt_v1_gothic_parvis_skin", "cathedral_gothic_parvis_v1", "gothic_cathedral_parvis_program_v1"),
+        ("cathedral_religious_forecourt", "cathedral_religious_forecourt_v2", "cathedral_religious_forecourt_v2_renaissance_skin", "cathedral_renaissance_v2", "renaissance_basilica_square_program_v1"),
+    ),
+    "park_cultural_museum_terrace_v0": (
+        ("cultural_institution_forecourt", "cultural_institution_forecourt_v1", "cultural_institution_forecourt_v1_library_steps_skin", "cultural_library_steps_v1", "beaux_arts_library_steps_program_v1"),
+        ("cultural_institution_forecourt", "cultural_institution_forecourt_v2", "cultural_institution_forecourt_v2_concert_hall_skin", "cultural_concert_hall_v2", "concert_hall_forecourt_program_v1"),
+        ("cultural_institution_forecourt", "cultural_institution_forecourt_v3", "cultural_institution_forecourt_v3_arena_concourse_skin", "cultural_arena_concourse_v3", "arena_concourse_program_v1"),
+    ),
+    "park_terraced_cascade_v3": (
+        ("stepped_terraced_plaza", "stepped_terraced_plaza_v0", "stepped_terraced_plaza_v0_aegean_skin", "terraced_aegean_v0", "aegean_village_steps_program_v1"),
+        ("stepped_terraced_plaza", "stepped_terraced_plaza_v1", "stepped_terraced_plaza_v1_spanish_steps_skin", "terraced_spanish_v1", "spanish_steps_program_v1"),
+        ("stepped_terraced_plaza", "stepped_terraced_plaza_v2", "stepped_terraced_plaza_v2_federation_shard_skin", "terraced_federation_v2", "federation_shard_program_v1"),
+    ),
+}
+
+
+def _apply_batch20_variant_closures(
+    capability: PublicRealmFamilyCapability,
+) -> PublicRealmFamilyCapability:
+    descriptors = _BATCH20_VARIANT_CLOSURES.get(capability.family_id, ())
+    if not descriptors:
+        return capability
+    additions: list[PublicRealmSelectionCapability] = []
+    for archetype_id, variant_id, appearance_kit_id, planting_structure, program_component in descriptors:
+        base = next(
+            selection
+            for selection in capability.selections
+            if selection.archetype_id == archetype_id
+        )
+        additions.append(
+            _selection(
+                archetype_id,
+                variant_id,
+                profile_id=base.profile_id,
+                appearance_kit_id=appearance_kit_id,
+                planting_structure=planting_structure,
+                compatibility=base.compatibility,
+                components=(*base.component_set_ids, program_component),
+            )
+        )
+    return capability.model_copy(update={"selections": (*capability.selections, *additions)})
+
+
+_CAPABILITIES = tuple(_apply_batch20_variant_closures(capability) for capability in _CAPABILITIES)
+
+
+_BATCH21_VARIANT_CLOSURES: dict[
+    str,
+    tuple[tuple[str, str, str, str, str], ...],
+] = {
+    "park_athletics_fields_v0": (
+        ("athletics_precinct_sports_fields", "athletics_precinct_sports_fields_variant_1", "athletics_precinct_sports_fields_v1_university_grandstand_skin", "athletics_university_v1", "university_grandstand_program_v1"),
+        ("athletics_precinct_sports_fields", "athletics_precinct_sports_fields_variant_2", "athletics_precinct_sports_fields_v2_campus_precinct_skin", "athletics_campus_v2", "campus_athletics_precinct_program_v1"),
+        ("athletics_precinct_sports_fields", "athletics_precinct_sports_fields_variant_3", "athletics_precinct_sports_fields_v3_open_oval_skin", "athletics_open_oval_v3", "open_oval_pavilion_program_v1"),
+    ),
+    "park_community_garden_v0": (
+        ("community_garden", "community_garden_v1", "community_garden_v1_modern_steel_turf_skin", "community_garden_modern_v1", "modern_steel_garden_program_v1"),
+        ("community_garden", "community_garden_v2", "community_garden_v2_natural_meadow_skin", "community_garden_meadow_v2", "meadow_allotment_program_v1"),
+        ("community_garden", "community_garden_v3", "community_garden_v3_urban_contemporary_skin", "community_garden_urban_v3", "urban_allotment_program_v1"),
+    ),
+    "park_fountain_formal_pool_v1": (
+        ("fountain_water_feature", "fountain_water_feature_v0", "fountain_water_feature_v0_naturalistic_pond_skin", "fountain_naturalistic_v0", "naturalistic_fountain_program_v1"),
+        ("fountain_water_feature", "fountain_water_feature_v2", "fountain_water_feature_v2_contemporary_interactive_skin", "fountain_interactive_v2", "interactive_fountain_program_v1"),
+        ("fountain_water_feature", "fountain_water_feature_v3", "fountain_water_feature_v3_ecological_wetland_skin", "fountain_wetland_v3", "wetland_fountain_program_v1"),
+    ),
+    "park_water_ecology": (
+        ("pond_lake", "pond_lake_v1", "pond_lake_v1_formal_reflecting_skin", "pond_formal_v1", "formal_reflecting_pond_program_v1"),
+        ("pond_lake", "pond_lake_v2", "pond_lake_v2_contemporary_interactive_skin", "pond_interactive_v2", "interactive_pond_program_v1"),
+        ("pond_lake", "pond_lake_v3", "pond_lake_v3_ecological_wetland_skin", "pond_wetland_v3", "ecological_wetland_pond_program_v1"),
+    ),
+    "park_market_festival_lawn_v1": (
+        ("market_square", "market_square_v0", "market_square_v0_terraced_performance_skin", "market_terraced_v0", "terraced_market_performance_program_v1"),
+        ("market_square", "market_square_v2", "market_square_v2_intimate_garden_skin", "market_garden_v2", "garden_market_venue_program_v1"),
+        ("market_square", "market_square_v3", "market_square_v3_industrial_adaptive_skin", "market_industrial_v3", "industrial_market_program_v1"),
+    ),
+    "park_civic_plaza": (
+        ("formal_civic_plaza", "formal_civic_plaza_v1", "formal_civic_plaza_v1_contemporary_urban_skin", "formal_civic_contemporary_v1", "contemporary_civic_plaza_program_v1"),
+        ("formal_civic_plaza", "formal_civic_plaza_v2", "formal_civic_plaza_v2_green_civic_skin", "formal_civic_green_v2", "green_civic_plaza_program_v1"),
+        ("formal_civic_plaza", "formal_civic_plaza_v3", "formal_civic_plaza_v3_festival_market_skin", "formal_civic_festival_v3", "festival_civic_plaza_program_v1"),
+    ),
+    "park_linear_greenway": (
+        ("linear_park_greenway", "linear_park_greenway_v1", "linear_park_greenway_v1_riverfront_skin", "linear_riverfront_v1", "riverfront_greenway_program_v1"),
+        ("linear_park_greenway", "linear_park_greenway_v2", "linear_park_greenway_v2_daylighted_creek_skin", "linear_daylighted_creek_v2", "daylighted_creek_greenway_program_v1"),
+        ("linear_park_greenway", "linear_park_greenway_v3", "linear_park_greenway_v3_elevated_viaduct_skin", "linear_elevated_viaduct_v3", "elevated_viaduct_greenway_program_v1"),
+    ),
+    "park_boardwalk_maritime_v0": (
+        ("promenade_boardwalk", "promenade_boardwalk_v1", "promenade_boardwalk_v1_modern_esplanade_skin", "boardwalk_modern_v1", "modern_esplanade_program_v1"),
+        ("promenade_boardwalk", "promenade_boardwalk_v2", "promenade_boardwalk_v2_tropical_resort_skin", "boardwalk_tropical_v2", "tropical_boardwalk_program_v1"),
+        ("promenade_boardwalk", "promenade_boardwalk_v3", "promenade_boardwalk_v3_naturalized_riparian_skin", "boardwalk_riparian_v3", "riparian_boardwalk_program_v1"),
+    ),
+    "park_natural_swimming_pond_v0": (
+        ("swimming_pool_complex", "swimming_pool_complex_v1", "swimming_pool_complex_v1_formal_reflecting_skin", "swimming_formal_v1", "formal_swimming_basin_program_v1"),
+        ("swimming_pool_complex", "swimming_pool_complex_v2", "swimming_pool_complex_v2_contemporary_interactive_skin", "swimming_interactive_v2", "interactive_swimming_program_v1"),
+        ("swimming_pool_complex", "swimming_pool_complex_v3", "swimming_pool_complex_v3_ecological_wetland_skin", "swimming_wetland_v3", "ecological_swimming_program_v1"),
+    ),
+    "park_rooftop_intensive_garden_v0": (
+        ("rooftop_garden", "rooftop_garden_v1", "rooftop_garden_v1_sedum_skin", "rooftop_sedum_v1", "sedum_roof_program_v1"),
+        ("rooftop_garden", "rooftop_garden_v2", "rooftop_garden_v2_urban_farm_skin", "rooftop_farm_v2", "rooftop_farm_program_v1"),
+        ("rooftop_garden", "rooftop_garden_v3", "rooftop_garden_v3_social_terrace_skin", "rooftop_social_v3", "rooftop_social_terrace_program_v1"),
+    ),
+}
+
+
+def _apply_batch21_variant_closures(
+    capability: PublicRealmFamilyCapability,
+) -> PublicRealmFamilyCapability:
+    descriptors = _BATCH21_VARIANT_CLOSURES.get(capability.family_id, ())
+    if not descriptors:
+        return capability
+    additions: list[PublicRealmSelectionCapability] = []
+    for archetype_id, variant_id, appearance_kit_id, planting_structure, program_component in descriptors:
+        base = next(selection for selection in capability.selections if selection.archetype_id == archetype_id)
+        additions.append(
+            _selection(
+                archetype_id,
+                variant_id,
+                profile_id=base.profile_id,
+                appearance_kit_id=appearance_kit_id,
+                planting_structure=planting_structure,
+                compatibility=base.compatibility,
+                components=(*base.component_set_ids, program_component),
+            )
+        )
+    return capability.model_copy(update={"selections": (*capability.selections, *additions)})
+
+
+_CAPABILITIES = tuple(_apply_batch21_variant_closures(capability) for capability in _CAPABILITIES)
+
+
+_BATCH22_VARIANT_CLOSURES: dict[
+    str,
+    tuple[tuple[str, str, str, str, str], ...],
+] = {
+    "park_cemetery_classical_v0": (
+        ("cemetery_memorial_grounds", "cemetery_memorial_grounds_v1", "cemetery_memorial_grounds_v1_woodland_skin", "cemetery_woodland_v1", "woodland_memorial_program_v1"),
+        ("cemetery_memorial_grounds", "cemetery_memorial_grounds_v2", "cemetery_memorial_grounds_v2_sculptural_skin", "cemetery_sculptural_v2", "sculptural_memorial_program_v1"),
+        ("cemetery_memorial_grounds", "cemetery_memorial_grounds_v3", "cemetery_memorial_grounds_v3_cottage_skin", "cemetery_cottage_v3", "cottage_memorial_program_v1"),
+    ),
+    "park_courtyard_linear_water_v1": (
+        ("courtyard_plaza", "courtyard_plaza_v0", "courtyard_plaza_v0_neoclassical_skin", "courtyard_neoclassical_v0", "neoclassical_courtyard_program_v1"),
+        ("courtyard_plaza", "courtyard_plaza_v2", "courtyard_plaza_v2_green_civic_skin", "courtyard_green_civic_v2", "green_civic_courtyard_program_v1"),
+        ("courtyard_plaza", "courtyard_plaza_v3", "courtyard_plaza_v3_festival_market_skin", "courtyard_festival_v3", "festival_courtyard_program_v1"),
+    ),
+    "park_transit_green_civic_v2": (
+        ("transit_plaza", "transit_plaza_v0", "transit_plaza_v0_neoclassical_skin", "transit_neoclassical_v0", "neoclassical_transit_plaza_program_v1"),
+        ("transit_plaza", "transit_plaza_v1", "transit_plaza_v1_contemporary_skin", "transit_contemporary_v1", "contemporary_transit_plaza_program_v1"),
+        ("transit_plaza", "transit_plaza_v3", "transit_plaza_v3_festival_market_skin", "transit_festival_v3", "festival_transit_plaza_program_v1"),
+    ),
+    "park_amphitheater_terraced_v0": (
+        ("amphitheater_performance_space", "amphitheater_performance_space_v1", "amphitheater_performance_space_v1_open_festival_skin", "amphitheater_open_festival_v1", "open_festival_amphitheater_program_v1"),
+        ("amphitheater_performance_space", "amphitheater_performance_space_v2", "amphitheater_performance_space_v2_intimate_garden_skin", "amphitheater_garden_v2", "garden_amphitheater_program_v1"),
+        ("amphitheater_performance_space", "amphitheater_performance_space_v3", "amphitheater_performance_space_v3_industrial_skin", "amphitheater_industrial_v3", "industrial_amphitheater_program_v1"),
+    ),
+    "park_water_ecology": (
+        ("stormwater_retention_pond", "stormwater_retention_pond_v1", "stormwater_retention_pond_v1_formal_reflecting_skin", "stormwater_formal_reflecting_v1", "formal_stormwater_basin_program_v1"),
+        ("stormwater_retention_pond", "stormwater_retention_pond_v2", "stormwater_retention_pond_v2_contemporary_interactive_skin", "stormwater_interactive_v2", "interactive_stormwater_basin_program_v1"),
+        ("stormwater_retention_pond", "stormwater_retention_pond_v3", "stormwater_retention_pond_v3_ecological_wetland_skin", "stormwater_ecological_wetland_v3", "ecological_stormwater_basin_program_v1"),
+    ),
+    "park_canal_ecological_wetland_v3": (
+        ("canal_waterway", "canal_waterway_v0", "canal_waterway_v0_naturalistic_skin", "canal_naturalistic_v0", "naturalistic_canal_program_v1"),
+        ("canal_waterway", "canal_waterway_v1", "canal_waterway_v1_formal_reflecting_skin", "canal_formal_v1", "formal_canal_program_v1"),
+        ("canal_waterway", "canal_waterway_v2", "canal_waterway_v2_interactive_skin", "canal_interactive_v2", "interactive_canal_program_v1"),
+    ),
+    "park_custom_biophilic_urban_v1": (
+        ("custom_parks_plazas", "custom_parks_plazas_v0", "custom_parks_plazas_v0_eclectic_skin", "custom_eclectic_v0", "eclectic_custom_park_program_v1"),
+        ("custom_parks_plazas", "custom_parks_plazas_v2", "custom_parks_plazas_v2_tech_smart_skin", "custom_tech_smart_v2", "smart_custom_park_program_v1"),
+        ("custom_parks_plazas", "custom_parks_plazas_v3", "custom_parks_plazas_v3_heritage_skin", "custom_heritage_v3", "heritage_custom_park_program_v1"),
+    ),
+    "park_nature_preserve_prairie_v1": (
+        ("nature_preserve", "nature_preserve_v0", "nature_preserve_v0_wetland_boardwalk_skin", "nature_preserve_wetland_v0", "wetland_preserve_program_v1"),
+        ("nature_preserve", "nature_preserve_v2", "nature_preserve_v2_coastal_dune_skin", "nature_preserve_dune_v2", "coastal_dune_preserve_program_v1"),
+        ("nature_preserve", "nature_preserve_v3", "nature_preserve_v3_old_growth_skin", "nature_preserve_old_growth_v3", "old_growth_preserve_program_v1"),
+    ),
+    "park_riverfront_lake_beach_v1": (
+        ("riverfront_park_beach", "riverfront_park_beach_v0", "riverfront_park_beach_v0_urban_river_skin", "riverfront_urban_beach_v0", "urban_river_beach_program_v1"),
+        ("riverfront_park_beach", "riverfront_park_beach_v2", "riverfront_park_beach_v2_adventure_pier_skin", "riverfront_adventure_pier_v2", "adventure_pier_program_v1"),
+        ("riverfront_park_beach", "riverfront_park_beach_v3", "riverfront_park_beach_v3_naturalized_skin", "riverfront_naturalized_v3", "naturalized_riverfront_program_v1"),
+    ),
+    "park_parklet_sf_timber_v1": (
+        ("street_plaza_parklet", "street_plaza_parklet_v0", "street_plaza_parklet_v0_nyc_skin", "parklet_nyc_v0", "nyc_street_plaza_program_v1"),
+        ("street_plaza_parklet", "street_plaza_parklet_v2", "street_plaza_parklet_v2_tactical_skin", "parklet_tactical_v2", "tactical_parklet_program_v1"),
+        ("street_plaza_parklet", "street_plaza_parklet_v3", "street_plaza_parklet_v3_european_skin", "parklet_european_v3", "european_pocket_plaza_program_v1"),
+    ),
+}
+
+
+def _apply_batch22_variant_closures(
+    capability: PublicRealmFamilyCapability,
+) -> PublicRealmFamilyCapability:
+    descriptors = _BATCH22_VARIANT_CLOSURES.get(capability.family_id, ())
+    if not descriptors:
+        return capability
+    additions: list[PublicRealmSelectionCapability] = []
+    for archetype_id, variant_id, appearance_kit_id, planting_structure, program_component in descriptors:
+        base = next(selection for selection in capability.selections if selection.archetype_id == archetype_id)
+        additions.append(_selection(
+            archetype_id,
+            variant_id,
+            profile_id=base.profile_id,
+            appearance_kit_id=appearance_kit_id,
+            planting_structure=planting_structure,
+            compatibility=base.compatibility,
+            components=(*base.component_set_ids, program_component),
+        ))
+    return capability.model_copy(update={"selections": (*capability.selections, *additions)})
+
+
+_CAPABILITIES = tuple(_apply_batch22_variant_closures(capability) for capability in _CAPABILITIES)
+
+
+_BATCH23_VARIANT_CLOSURES: dict[
+    str,
+    tuple[tuple[str, str, str, str, str], ...],
+] = {
+    "park_community_healing_garden_v2": (
+        ("community_garden_enhanced", "garden_classic_allotment", "community_garden_enhanced_allotment_skin", "community_allotment_v0", "classic_allotment_grid_program_v1"),
+        ("community_garden_enhanced", "garden_permaculture_farm", "community_garden_enhanced_permaculture_skin", "community_permaculture_v1", "permaculture_guild_program_v1"),
+        ("community_garden_enhanced", "garden_intercultural", "community_garden_enhanced_intercultural_skin", "community_intercultural_v3", "intercultural_social_garden_program_v1"),
+    ),
+    "park_paris_place_royale_v2": (
+        ("parisian_place", "parisian_place_v0", "parisian_place_v0_quiet_cobble_skin", "paris_place_quiet_v0", "quiet_cobble_place_program_v1"),
+        ("parisian_place", "parisian_place_v1", "parisian_place_v1_statue_axis_skin", "paris_place_statue_v1", "statue_axis_place_program_v1"),
+        ("parisian_place", "parisian_place_v3", "parisian_place_v3_cafe_paved_skin", "paris_place_cafe_v3", "cafe_edge_place_program_v1"),
+    ),
+    "park_paris_square_tree_grid_v3": (
+        ("parisian_square", "parisian_square_v0", "parisian_square_v0_linear_edge_skin", "paris_square_linear_v0", "linear_edge_square_program_v1"),
+        ("parisian_square", "parisian_square_v1", "parisian_square_v1_corner_cafe_skin", "paris_square_corner_cafe_v1", "corner_cafe_square_program_v1"),
+        ("parisian_square", "parisian_square_v2", "parisian_square_v2_compact_cobble_skin", "paris_square_compact_v2", "compact_cobble_square_program_v1"),
+    ),
+    "park_french_parterre_axis_v1": (
+        ("parisian_jardin", "parisian_jardin_v0", "parisian_jardin_v0_clipped_parterre_skin", "paris_jardin_clipped_parterre_v0", "clipped_parterre_program_v1"),
+        ("parisian_jardin", "parisian_jardin_v2", "parisian_jardin_v2_rill_garden_skin", "paris_jardin_rill_garden_v2", "parallel_rill_garden_program_v1"),
+        ("parisian_jardin", "parisian_jardin_v3", "parisian_jardin_v3_paved_forecourt_skin", "paris_jardin_paved_forecourt_v3", "paved_garden_forecourt_program_v1"),
+    ),
+    "park_amsterdam_vondelpark_pavilion_v3": (
+        ("amsterdam_vondelpark", "amsterdam_vondelpark_v0", "amsterdam_vondelpark_v0_neighbourhood_skin", "amsterdam_vondelpark_neighbourhood_v0", "neighbourhood_park_edge_program_v1"),
+        ("amsterdam_vondelpark", "amsterdam_vondelpark_v1", "amsterdam_vondelpark_v1_cafe_skin", "amsterdam_vondelpark_cafe_v1", "vondelpark_cafe_edge_program_v1"),
+        ("amsterdam_vondelpark", "amsterdam_vondelpark_v2", "amsterdam_vondelpark_v2_planted_corner_skin", "amsterdam_vondelpark_planted_v2", "vondelpark_planted_corner_program_v1"),
+    ),
+    "park_amsterdam_hofje_garden_v0": (
+        ("amsterdam_hofje_garden", "amsterdam_hofje_garden_v1", "amsterdam_hofje_garden_v1_lush_skin", "amsterdam_hofje_lush_v1", "lush_communal_hofje_program_v1"),
+        ("amsterdam_hofje_garden", "amsterdam_hofje_garden_v2", "amsterdam_hofje_garden_v2_pocket_skin", "amsterdam_hofje_pocket_v2", "pocket_hofje_program_v1"),
+        ("amsterdam_hofje_garden", "amsterdam_hofje_garden_v3", "amsterdam_hofje_garden_v3_historic_lawn_skin", "amsterdam_hofje_historic_lawn_v3", "historic_lawn_hofje_program_v1"),
+    ),
+    "park_amsterdam_plein_v0": (
+        ("amsterdam_plein", "amsterdam_plein_v1", "amsterdam_plein_v1_glass_canopy_skin", "amsterdam_plein_glass_canopy_v1", "glass_canopy_plein_program_v1"),
+        ("amsterdam_plein", "amsterdam_plein_v2", "amsterdam_plein_v2_cafe_threshold_skin", "amsterdam_plein_cafe_v2", "cafe_threshold_plein_program_v1"),
+        ("amsterdam_plein", "amsterdam_plein_v3", "amsterdam_plein_v3_open_brick_skin", "amsterdam_plein_open_v3", "open_brick_plein_program_v1"),
+    ),
+    "park_barcelona_pati_green_v0": (
+        ("barcelona_pati_interior", "barcelona_pati_interior_v1", "barcelona_pati_interior_v1_lawn_skin", "barcelona_pati_lawn_v1", "pati_lawn_room_program_v1"),
+        ("barcelona_pati_interior", "barcelona_pati_interior_v2", "barcelona_pati_interior_v2_social_paved_skin", "barcelona_pati_social_v2", "pati_social_paving_program_v1"),
+        ("barcelona_pati_interior", "barcelona_pati_interior_v3", "barcelona_pati_interior_v3_shade_paved_skin", "barcelona_pati_shade_v3", "pati_shade_court_program_v1"),
+    ),
+    "park_barcelona_xamfra_corner_v2": (
+        ("barcelona_placa_xamfra", "barcelona_placa_xamfra_v0", "barcelona_placa_xamfra_v0_cafe_skin", "barcelona_xamfra_cafe_v0", "xamfra_cafe_corner_program_v1"),
+        ("barcelona_placa_xamfra", "barcelona_placa_xamfra_v1", "barcelona_placa_xamfra_v1_clear_skin", "barcelona_xamfra_clear_v1", "xamfra_clear_route_program_v1"),
+        ("barcelona_placa_xamfra", "barcelona_placa_xamfra_v3", "barcelona_placa_xamfra_v3_active_skin", "barcelona_xamfra_active_v3", "xamfra_active_corner_program_v1"),
+    ),
+    "park_barcelona_superilla_green_v1": (
+        ("barcelona_superilla", "barcelona_superilla_v0", "barcelona_superilla_v0_plaza_planter_skin", "barcelona_superilla_plaza_v0", "superilla_plaza_planter_program_v1"),
+        ("barcelona_superilla", "barcelona_superilla_v2", "barcelona_superilla_v2_green_corridor_skin", "barcelona_superilla_corridor_v2", "superilla_green_corridor_program_v1"),
+        ("barcelona_superilla", "barcelona_superilla_v3", "barcelona_superilla_v3_social_garden_skin", "barcelona_superilla_social_v3", "superilla_social_garden_program_v1"),
+    ),
+}
+
+
+def _apply_batch23_variant_closures(
+    capability: PublicRealmFamilyCapability,
+) -> PublicRealmFamilyCapability:
+    descriptors = _BATCH23_VARIANT_CLOSURES.get(capability.family_id, ())
+    if not descriptors:
+        return capability
+    additions: list[PublicRealmSelectionCapability] = []
+    for archetype_id, variant_id, appearance_kit_id, planting_structure, program_component in descriptors:
+        base = next(selection for selection in capability.selections if selection.archetype_id == archetype_id)
+        additions.append(_selection(
+            archetype_id,
+            variant_id,
+            profile_id=base.profile_id,
+            appearance_kit_id=appearance_kit_id,
+            planting_structure=planting_structure,
+            compatibility=base.compatibility,
+            components=(*base.component_set_ids, program_component),
+        ))
+    return capability.model_copy(update={"selections": (*capability.selections, *additions)})
+
+
+_CAPABILITIES = tuple(_apply_batch23_variant_closures(capability) for capability in _CAPABILITIES)
+
+
+_BATCH24_VARIANT_CLOSURES: dict[
+    str,
+    tuple[tuple[str, str, str, str, str], ...],
+] = {
+    "park_calgary_prairie_market_v1": (
+        ("calgary_prairie_plaza", "calgary_prairie_plaza_v0", "calgary_prairie_plaza_v0_winter_skin", "calgary_prairie_winter_v0", "winter_prairie_room_program_v1"),
+        ("calgary_prairie_plaza", "calgary_prairie_plaza_v2", "calgary_prairie_plaza_v2_indigenous_art_skin", "calgary_prairie_indigenous_v2", "indigenous_art_garden_program_v1"),
+        ("calgary_prairie_plaza", "calgary_prairie_plaza_v3", "calgary_prairie_plaza_v3_corporate_green_skin", "calgary_prairie_corporate_v3", "corporate_green_forecourt_program_v1"),
+    ),
+    "park_calgary_princes_island_festival_v0": (
+        ("calgary_princes_island", "calgary_princes_island_v1", "calgary_princes_island_v1_autumn_skin", "calgary_princes_autumn_v1", "autumn_cottonwood_walk_program_v1"),
+        ("calgary_princes_island", "calgary_princes_island_v2", "calgary_princes_island_v2_winter_skin", "calgary_princes_winter_v2", "winter_pavilion_grove_program_v1"),
+        ("calgary_princes_island", "calgary_princes_island_v3", "calgary_princes_island_v3_flood_skin", "calgary_princes_flood_v3", "floodplain_bridge_walk_program_v1"),
+    ),
+    "park_halifax_coastal_fog_path_v2": (
+        ("halifax_coastal_park", "halifax_coastal_park_v0", "halifax_coastal_park_v0_storm_skin", "halifax_coastal_storm_v0", "storm_watch_linear_walk_program_v1"),
+        ("halifax_coastal_park", "halifax_coastal_park_v1", "halifax_coastal_park_v1_summer_skin", "halifax_coastal_summer_v1", "summer_coastal_trail_program_v1"),
+        ("halifax_coastal_park", "halifax_coastal_park_v3", "halifax_coastal_park_v3_boardwalk_skin", "halifax_coastal_boardwalk_v3", "sunset_boardwalk_program_v1"),
+    ),
+    "park_halifax_rose_bandstand_v0": (
+        ("halifax_public_gardens", "halifax_public_gardens_v1", "halifax_public_gardens_v1_bandstand_skin", "halifax_bandstand_concert_v1", "bandstand_concert_garden_program_v1"),
+        ("halifax_public_gardens", "halifax_public_gardens_v2", "halifax_public_gardens_v2_autumn_skin", "halifax_autumn_stroll_v2", "autumn_formal_walk_program_v1"),
+        ("halifax_public_gardens", "halifax_public_gardens_v3", "halifax_public_gardens_v3_tulip_skin", "halifax_spring_tulip_v3", "spring_tulip_display_program_v1"),
+    ),
+    "park_london_circus_planted_v1": (
+        ("london_circus", "london_circus_v0", "london_circus_v0_round_island_skin", "london_circus_round_v0", "round_railed_island_program_v1"),
+        ("london_circus", "london_circus_v2", "london_circus_v2_side_court_skin", "london_circus_side_court_v2", "side_court_planter_program_v1"),
+        ("london_circus", "london_circus_v3", "london_circus_v3_passage_skin", "london_circus_passage_v3", "narrow_passage_program_v1"),
+    ),
+    "park_london_railed_square_v1": (
+        ("london_garden_square", "london_garden_square_v0", "london_garden_square_v0_open_skin", "london_garden_open_v0", "open_garden_room_program_v1"),
+        ("london_garden_square", "london_garden_square_v2", "london_garden_square_v2_lush_brick_skin", "london_garden_lush_brick_v2", "raised_brick_garden_program_v1"),
+        ("london_garden_square", "london_garden_square_v3", "london_garden_square_v3_cafe_skin", "london_garden_cafe_v3", "cafe_forecourt_program_v1"),
+    ),
+    "park_montreal_mount_royal_grove_v2": (
+        ("montreal_mount_royal", "montreal_mount_royal_v0", "montreal_mount_royal_v0_overlook_skin", "montreal_mount_royal_overlook_v0", "slope_overlook_walk_program_v1"),
+        ("montreal_mount_royal", "montreal_mount_royal_v1", "montreal_mount_royal_v1_lawn_skin", "montreal_mount_royal_lawn_v1", "lawn_grove_program_v1"),
+        ("montreal_mount_royal", "montreal_mount_royal_v3", "montreal_mount_royal_v3_hillside_skin", "montreal_mount_royal_hillside_v3", "hillside_terrace_program_v1"),
+    ),
+    "park_montreal_neighbourhood_square_v3": (
+        ("montreal_square", "montreal_square_v0", "montreal_square_v0_hard_plaza_skin", "montreal_square_hard_v0", "hard_plaza_program_v1"),
+        ("montreal_square", "montreal_square_v1", "montreal_square_v1_linear_bench_skin", "montreal_square_linear_v1", "linear_bench_planter_program_v1"),
+        ("montreal_square", "montreal_square_v2", "montreal_square_v2_pocket_court_skin", "montreal_square_pocket_v2", "pocket_court_program_v1"),
+    ),
+    "park_newyork_community_greenhouse_v3": (
+        ("newyork_community_garden", "newyork_community_garden_v0", "newyork_community_garden_v0_allotment_skin", "newyork_community_allotment_v0", "brick_allotment_grid_program_v1"),
+        ("newyork_community_garden", "newyork_community_garden_v1", "newyork_community_garden_v1_raised_grid_skin", "newyork_community_raised_v1", "raised_bed_grid_program_v1"),
+        ("newyork_community_garden", "newyork_community_garden_v2", "newyork_community_garden_v2_shed_skin", "newyork_community_shed_v2", "garden_shed_bed_program_v1"),
+    ),
+    "park_newyork_pocket_water_v0": (
+        ("newyork_pocket_park", "newyork_pocket_park_v1", "newyork_pocket_park_v1_linear_skin", "newyork_pocket_linear_v1", "linear_planter_room_program_v1"),
+        ("newyork_pocket_park", "newyork_pocket_park_v2", "newyork_pocket_park_v2_brick_skin", "newyork_pocket_brick_v2", "brick_seat_garden_program_v1"),
+        ("newyork_pocket_park", "newyork_pocket_park_v3", "newyork_pocket_park_v3_promenade_skin", "newyork_pocket_promenade_v3", "pocket_promenade_program_v1"),
+    ),
+}
+
+
+def _apply_batch24_variant_closures(
+    capability: PublicRealmFamilyCapability,
+) -> PublicRealmFamilyCapability:
+    descriptors = _BATCH24_VARIANT_CLOSURES.get(capability.family_id, ())
+    if not descriptors:
+        return capability
+    additions: list[PublicRealmSelectionCapability] = []
+    for archetype_id, variant_id, appearance_kit_id, planting_structure, program_component in descriptors:
+        base = next(selection for selection in capability.selections if selection.archetype_id == archetype_id)
+        additions.append(_selection(
+            archetype_id,
+            variant_id,
+            profile_id=base.profile_id,
+            appearance_kit_id=appearance_kit_id,
+            planting_structure=planting_structure,
+            compatibility=base.compatibility,
+            components=(*base.component_set_ids, program_component),
+        ))
+    return capability.model_copy(update={"selections": (*capability.selections, *additions)})
+
+
+_CAPABILITIES = tuple(_apply_batch24_variant_closures(capability) for capability in _CAPABILITIES)
+
+
+_BATCH25_VARIANT_CLOSURES: dict[
+    str,
+    tuple[tuple[str, str, str, str, str], ...],
+] = {
+    "park_vancouver_seawall_cycle_v2": (
+        ("vancouver_seawall", "vancouver_seawall_v0", "vancouver_seawall_v0_promenade_skin", "vancouver_seawall_promenade_v0", "seawall_stone_promenade_program_v1"),
+        ("vancouver_seawall", "vancouver_seawall_v1", "vancouver_seawall_v1_bench_skin", "vancouver_seawall_bench_v1", "seawall_bench_bay_program_v1"),
+        ("vancouver_seawall", "vancouver_seawall_v3", "vancouver_seawall_v3_esplanade_skin", "vancouver_seawall_esplanade_v3", "seawall_planted_esplanade_program_v1"),
+    ),
+    "park_vancouver_beach_pavilion_v0": (
+        ("vancouver_beach_park", "vancouver_beach_park_v1", "vancouver_beach_park_v1_brick_pavilion_skin", "vancouver_beach_brick_v1", "beach_brick_pavilion_program_v1"),
+        ("vancouver_beach_park", "vancouver_beach_park_v2", "vancouver_beach_park_v2_glazed_pavilion_skin", "vancouver_beach_glazed_v2", "beach_glazed_pavilion_program_v1"),
+        ("vancouver_beach_park", "vancouver_beach_park_v3", "vancouver_beach_park_v3_waterfront_garden_skin", "vancouver_beach_waterfront_v3", "beach_waterfront_garden_program_v1"),
+    ),
+    "park_toronto_ravine_creek_v1": (
+        ("toronto_ravine", "toronto_ravine_v0", "toronto_ravine_v0_spring_skin", "toronto_ravine_spring_v0", "spring_trillium_creek_program_v1"),
+        ("toronto_ravine", "toronto_ravine_v2", "toronto_ravine_v2_autumn_skin", "toronto_ravine_autumn_v2", "autumn_maple_creek_program_v1"),
+        ("toronto_ravine", "toronto_ravine_v3", "toronto_ravine_v3_winter_skin", "toronto_ravine_winter_v3", "winter_frozen_creek_program_v1"),
+    ),
+    "park_toronto_urban_market_v1": (
+        ("toronto_urban_square", "toronto_urban_square_v0", "toronto_urban_square_v0_winter_rink_skin", "toronto_square_winter_v0", "winter_civic_rink_program_v1"),
+        ("toronto_urban_square", "toronto_urban_square_v2", "toronto_urban_square_v2_modernist_pool_skin", "toronto_square_modernist_v2", "modernist_reflecting_pool_program_v1"),
+        ("toronto_urban_square", "toronto_urban_square_v3", "toronto_urban_square_v3_rain_garden_skin", "toronto_square_rain_garden_v3", "corten_rain_garden_plaza_program_v1"),
+    ),
+    "park_olmsted_multilandscape_v3": (
+        ("picturesque_olmsted_park", "picturesque_olmsted_park_v0", "picturesque_olmsted_park_v0_heath_skin", "olmsted_heath_v0", "wild_heath_pond_program_v1"),
+        ("picturesque_olmsted_park", "picturesque_olmsted_park_v1", "picturesque_olmsted_park_v1_lookout_skin", "olmsted_lookout_v1", "hillside_carriage_lookout_program_v1"),
+        ("picturesque_olmsted_park", "picturesque_olmsted_park_v2", "picturesque_olmsted_park_v2_meadow_ravine_skin", "olmsted_meadow_ravine_v2", "meadow_ravine_lake_program_v1"),
+    ),
+    "park_reclaimed_wharf_v0": (
+        ("reclaimed_industrial_park", "reclaimed_industrial_park_v1", "reclaimed_industrial_park_v1_gasworks_skin", "reclaimed_gasworks_v1", "gasometer_kite_mound_program_v1"),
+        ("reclaimed_industrial_park", "reclaimed_industrial_park_v2", "reclaimed_industrial_park_v2_colliery_skin", "reclaimed_colliery_v2", "headframe_conveyor_meadow_program_v1"),
+        ("reclaimed_industrial_park", "reclaimed_industrial_park_v3", "reclaimed_industrial_park_v3_steelworks_skin", "reclaimed_steelworks_v3", "blast_furnace_dive_basin_program_v1"),
+    ),
+    "park_quarry_tier_cascade_v2": (
+        ("quarry_sunken_garden_park", "quarry_sunken_garden_park_v0", "quarry_sunken_garden_park_v0_sculpture_bowl_skin", "quarry_sculpture_bowl_v0", "sunken_sculpture_bowl_program_v1"),
+        ("quarry_sunken_garden_park", "quarry_sunken_garden_park_v1", "quarry_sunken_garden_park_v1_quarry_lake_skin", "quarry_lake_v1", "quarry_lake_beach_program_v1"),
+        ("quarry_sunken_garden_park", "quarry_sunken_garden_park_v3", "quarry_sunken_garden_park_v3_show_garden_skin", "quarry_show_garden_v3", "concentric_show_garden_program_v1"),
+    ),
+    "park_hilltop_viewpoint_v3": (
+        ("hilltop_topographic_park", "hilltop_topographic_park_v0", "hilltop_topographic_park_v0_cypress_skin", "hilltop_cypress_v0", "cypress_stone_terrace_program_v1"),
+        ("hilltop_topographic_park", "hilltop_topographic_park_v1", "hilltop_topographic_park_v1_switchback_skin", "hilltop_switchback_v1", "urban_switchback_belvedere_program_v1"),
+        ("hilltop_topographic_park", "hilltop_topographic_park_v2", "hilltop_topographic_park_v2_folly_skin", "hilltop_folly_v2", "rocky_folly_bridge_program_v1"),
+    ),
+    "park_estate_oak_picnic_v1": (
+        ("estate_picnic_grove", "estate_picnic_grove_v0", "estate_picnic_grove_v0_pine_creek_skin", "estate_pine_creek_v0", "pine_creek_picnic_program_v1"),
+        ("estate_picnic_grove", "estate_picnic_grove_v2", "estate_picnic_grove_v2_meadow_pavilion_skin", "estate_meadow_pavilion_v2", "meadow_pavilion_picnic_program_v1"),
+        ("estate_picnic_grove", "estate_picnic_grove_v3", "estate_picnic_grove_v3_regional_plain_skin", "estate_regional_plain_v3", "regional_picnic_plain_program_v1"),
+    ),
+    "park_water_ecology": (
+        ("reservoir_watershed_park", "reservoir_watershed_park_v1", "reservoir_watershed_park_v1_stone_bank_skin", "reservoir_stone_bank_v1", "stone_bank_running_loop_program_v1"),
+        ("reservoir_watershed_park", "reservoir_watershed_park_v2", "reservoir_watershed_park_v2_forested_skin", "reservoir_forested_v2", "forested_shore_boat_launch_program_v1"),
+        ("reservoir_watershed_park", "reservoir_watershed_park_v3", "reservoir_watershed_park_v3_earthen_dam_skin", "reservoir_earthen_dam_v3", "earthen_dam_pier_loop_program_v1"),
+    ),
+}
+
+
+def _apply_batch25_variant_closures(
+    capability: PublicRealmFamilyCapability,
+) -> PublicRealmFamilyCapability:
+    descriptors = _BATCH25_VARIANT_CLOSURES.get(capability.family_id, ())
+    if not descriptors:
+        return capability
+    additions: list[PublicRealmSelectionCapability] = []
+    for archetype_id, variant_id, appearance_kit_id, planting_structure, program_component in descriptors:
+        base = next(selection for selection in capability.selections if selection.archetype_id == archetype_id)
+        additions.append(_selection(
+            archetype_id,
+            variant_id,
+            profile_id=base.profile_id,
+            appearance_kit_id=appearance_kit_id,
+            planting_structure=planting_structure,
+            compatibility=base.compatibility,
+            components=(*base.component_set_ids, program_component),
+        ))
+    return capability.model_copy(update={"selections": (*capability.selections, *additions)})
+
+
+_CAPABILITIES = tuple(_apply_batch25_variant_closures(capability) for capability in _CAPABILITIES)
+
+
+_BATCH26_VARIANT_CLOSURES: dict[
+    str,
+    tuple[tuple[str, str, str, str, str], ...],
+] = {
+    "park_greenbelt_rail_trail_v1": (
+        ("greenbelt_buffer_park", "greenbelt_buffer_park_v0", "greenbelt_buffer_park_v0_suburban_lawn_skin", "greenbelt_suburban_lawn_v0", "suburban_lawn_greenbelt_program_v1"),
+        ("greenbelt_buffer_park", "greenbelt_buffer_park_v2", "greenbelt_buffer_park_v2_hedgerow_skin", "greenbelt_hedgerow_v2", "hedgerow_buffer_program_v1"),
+        ("greenbelt_buffer_park", "greenbelt_buffer_park_v3", "greenbelt_buffer_park_v3_active_spine_skin", "greenbelt_active_spine_v3", "active_recreation_spine_program_v1"),
+    ),
+    "park_foothill_heathland_trail_v2": (
+        ("foothill_trail_park", "foothill_trail_park_v0", "foothill_trail_park_v0_sage_skin", "foothill_sage_v0", "sage_scrub_ridge_program_v1"),
+        ("foothill_trail_park", "foothill_trail_park_v1", "foothill_trail_park_v1_eucalyptus_skin", "foothill_eucalyptus_v1", "eucalyptus_ridge_program_v1"),
+        ("foothill_trail_park", "foothill_trail_park_v3", "foothill_trail_park_v3_larch_skin", "foothill_larch_v3", "alpine_larch_ridge_program_v1"),
+    ),
+    "park_concert_timber_lawn_v2": (
+        ("concert_pavilion_lawn", "concert_pavilion_lawn_v0", "concert_pavilion_lawn_v0_stadium_skin", "concert_stadium_v0", "horseshoe_stadium_concert_program_v1"),
+        ("concert_pavilion_lawn", "concert_pavilion_lawn_v1", "concert_pavilion_lawn_v1_wave_skin", "concert_wave_v1", "stainless_wave_lawn_program_v1"),
+        ("concert_pavilion_lawn", "concert_pavilion_lawn_v3", "concert_pavilion_lawn_v3_bowl_skin", "concert_bowl_v3", "concentric_shell_bowl_program_v1"),
+    ),
+    "park_night_market_hawker_v0": (
+        ("night_market", "night_market_v1", "night_market_v1_christmas_skin", "night_market_christmas_v1", "christmas_kiosk_ring_program_v1"),
+        ("night_market", "night_market_v2", "night_market_v2_latin_skin", "night_market_latin_v2", "latin_canopy_rows_program_v1"),
+        ("night_market", "night_market_v3", "night_market_v3_food_hall_skin", "night_market_food_hall_v3", "steel_glass_food_hall_program_v1"),
+    ),
+    "park_parade_national_mall_v3": (
+        ("parade_ground", "parade_ground_v0", "parade_ground_v0_stadium_skin", "parade_stadium_v0", "stadium_forecourt_program_v1"),
+        ("parade_ground", "parade_ground_v1", "parade_ground_v1_mall_skin", "parade_mall_v1", "ceremonial_gravel_allee_program_v1"),
+        ("parade_ground", "parade_ground_v2", "parade_ground_v2_champ_de_mars_skin", "parade_champ_v2", "formal_lawn_esplanade_program_v1"),
+    ),
+    "park_marina_pacific_dock_v2": (
+        ("marina_yacht_harbor", "marina_yacht_harbor_v0", "marina_yacht_harbor_v0_inland_skin", "marina_inland_v0", "inland_marina_fingers_program_v1"),
+        ("marina_yacht_harbor", "marina_yacht_harbor_v1", "marina_yacht_harbor_v1_fishing_skin", "marina_fishing_v1", "fishing_quay_program_v1"),
+        ("marina_yacht_harbor", "marina_yacht_harbor_v3", "marina_yacht_harbor_v3_superyacht_skin", "marina_superyacht_v3", "superyacht_harbour_program_v1"),
+    ),
+    "park_working_pier_brooklyn_park_v3": (
+        ("working_pier_wharf_conversion", "working_pier_wharf_conversion_v0", "working_pier_wharf_conversion_v0_market_skin", "working_pier_market_v0", "public_market_pier_program_v1"),
+        ("working_pier_wharf_conversion", "working_pier_wharf_conversion_v1", "working_pier_wharf_conversion_v1_retail_skin", "working_pier_retail_v1", "retail_kiosk_boardwalk_program_v1"),
+        ("working_pier_wharf_conversion", "working_pier_wharf_conversion_v2", "working_pier_wharf_conversion_v2_industrial_skin", "working_pier_industrial_v2", "industrial_rail_garden_program_v1"),
+    ),
+    "park_floating_meadow_loop_v2": (
+        ("floating_park_pool", "floating_park_pool_v0", "floating_park_pool_v0_plus_pool_skin", "floating_plus_pool_v0", "plus_pool_program_v1"),
+        ("floating_park_pool", "floating_park_pool_v1", "floating_park_pool_v1_harbour_bath_skin", "floating_harbour_bath_v1", "harbour_bath_program_v1"),
+        ("floating_park_pool", "floating_park_pool_v3", "floating_park_pool_v3_little_island_skin", "floating_little_island_v3", "tulip_pillar_island_program_v1"),
+    ),
+    "park_lighthouse_pacific_headland_v2": (
+        ("lighthouse_point_park", "lighthouse_point_park_v0", "lighthouse_point_park_v0_cape_skin", "lighthouse_cape_v0", "cape_light_cottage_program_v1"),
+        ("lighthouse_point_park", "lighthouse_point_park_v1", "lighthouse_point_park_v1_dune_skin", "lighthouse_dune_v1", "atlantic_dune_station_program_v1"),
+        ("lighthouse_point_park", "lighthouse_point_park_v3", "lighthouse_point_park_v3_fortress_skin", "lighthouse_fortress_v3", "fortress_lighthouse_esplanade_program_v1"),
+    ),
+    "park_lake_edge_timber_deck_v2": (
+        ("lake_edge_plaza", "lake_edge_plaza_v0", "lake_edge_plaza_v0_como_skin", "lake_edge_como_v0", "stone_terrace_lake_edge_program_v1"),
+        ("lake_edge_plaza", "lake_edge_plaza_v1", "lake_edge_plaza_v1_geneva_skin", "lake_edge_geneva_v1", "geneva_quayside_program_v1"),
+        ("lake_edge_plaza", "lake_edge_plaza_v3", "lake_edge_plaza_v3_chicago_skin", "lake_edge_chicago_v3", "chicago_hard_esplanade_program_v1"),
+    ),
+}
+
+
+def _apply_batch26_variant_closures(
+    capability: PublicRealmFamilyCapability,
+) -> PublicRealmFamilyCapability:
+    descriptors = _BATCH26_VARIANT_CLOSURES.get(capability.family_id, ())
+    if not descriptors:
+        return capability
+    additions: list[PublicRealmSelectionCapability] = []
+    for archetype_id, variant_id, appearance_kit_id, planting_structure, program_component in descriptors:
+        base = next(selection for selection in capability.selections if selection.archetype_id == archetype_id)
+        additions.append(_selection(
+            archetype_id,
+            variant_id,
+            profile_id=base.profile_id,
+            appearance_kit_id=appearance_kit_id,
+            planting_structure=planting_structure,
+            compatibility=base.compatibility,
+            components=(*base.component_set_ids, program_component),
+        ))
+    return capability.model_copy(update={"selections": (*capability.selections, *additions)})
+
+
+_CAPABILITIES = tuple(_apply_batch26_variant_closures(capability) for capability in _CAPABILITIES)
+
+
+_BATCH27_VARIANT_CLOSURES: dict[
+    str,
+    tuple[tuple[str, str, str, str, str], ...],
+] = {
+    "park_academic_planted_court_v0": (
+        ("academic_courtyard", "academic_courtyard_variant_1", "academic_courtyard_v1_corten_skin", "academic_corten_court_v1", "corten_hardscape_court_program_v1"),
+        ("academic_courtyard", "academic_courtyard_variant_2", "academic_courtyard_v2_glass_canopy_skin", "academic_glass_canopy_v2", "glazed_canopy_court_program_v1"),
+        ("academic_courtyard", "academic_courtyard_variant_3", "academic_courtyard_v3_timber_screen_skin", "academic_timber_screen_v3", "cultural_timber_screen_court_program_v1"),
+    ),
+    "park_campus_green_spine_v0": (
+        ("campus_pedestrian_spine", "campus_pedestrian_spine_variant_1", "campus_pedestrian_spine_v1_paved_skin", "campus_paved_spine_v1", "urban_paved_spine_program_v1"),
+        ("campus_pedestrian_spine", "campus_pedestrian_spine_variant_2", "campus_pedestrian_spine_v2_pavilion_skin", "campus_pavilion_spine_v2", "glass_pavilion_spine_program_v1"),
+        ("campus_pedestrian_spine", "campus_pedestrian_spine_variant_3", "campus_pedestrian_spine_v3_pergola_skin", "campus_pergola_spine_v3", "pergola_garden_spine_program_v1"),
+    ),
+    "park_constructed_wetland_boardwalk_v0": (
+        ("constructed_wetland_eco_park", "constructed_wetland_eco_park_variant_1", "constructed_wetland_eco_park_v1_tidal_skin", "constructed_wetland_tidal_v1", "tidal_treatment_wetland_program_v1"),
+        ("constructed_wetland_eco_park", "constructed_wetland_eco_park_variant_2", "constructed_wetland_eco_park_v2_wildlife_skin", "constructed_wetland_wildlife_v2", "wildlife_wetland_program_v1"),
+        ("constructed_wetland_eco_park", "constructed_wetland_eco_park_variant_3", "constructed_wetland_eco_park_v3_nature_center_skin", "constructed_wetland_nature_center_v3", "nature_center_wetland_program_v1"),
+    ),
+    "park_research_arboretum_v0": (
+        ("research_garden_teaching_arboretum", "research_garden_teaching_arboretum_variant_1", "research_garden_teaching_arboretum_v1_greenhouse_skin", "research_greenhouse_v1", "greenhouse_research_garden_program_v1"),
+        ("research_garden_teaching_arboretum", "research_garden_teaching_arboretum_variant_2", "research_garden_teaching_arboretum_v2_pavilion_skin", "research_pavilion_v2", "teaching_pavilion_garden_program_v1"),
+        ("research_garden_teaching_arboretum", "research_garden_teaching_arboretum_variant_3", "research_garden_teaching_arboretum_v3_plots_skin", "research_plots_v3", "demonstration_plot_garden_program_v1"),
+    ),
+    "park_rewilding_reforestation_v1": (
+        ("rewilding_ecological_restoration_zone", "rewilding_ecological_restoration_zone_variant_0", "rewilding_ecological_restoration_zone_v0_prairie_skin", "rewilding_prairie_v0", "urban_prairie_restoration_program_v1"),
+        ("rewilding_ecological_restoration_zone", "rewilding_ecological_restoration_zone_variant_2", "rewilding_ecological_restoration_zone_v2_interpretive_skin", "rewilding_interpretive_v2", "interpretive_restoration_program_v1"),
+        ("rewilding_ecological_restoration_zone", "rewilding_ecological_restoration_zone_variant_3", "rewilding_ecological_restoration_zone_v3_riparian_skin", "rewilding_riparian_v3", "riparian_restoration_program_v1"),
+    ),
+    "park_stormwater_natural_creek_v0": (
+        ("stormwater_naturalized_drainage_corridor", "stormwater_naturalized_drainage_corridor_variant_1", "stormwater_naturalized_drainage_corridor_v1_daylit_skin", "stormwater_daylit_v1", "urban_daylit_channel_program_v1"),
+        ("stormwater_naturalized_drainage_corridor", "stormwater_naturalized_drainage_corridor_variant_2", "stormwater_naturalized_drainage_corridor_v2_seasonal_skin", "stormwater_seasonal_v2", "seasonal_planted_corridor_program_v1"),
+        ("stormwater_naturalized_drainage_corridor", "stormwater_naturalized_drainage_corridor_variant_3", "stormwater_naturalized_drainage_corridor_v3_shelter_skin", "stormwater_shelter_v3", "natural_stream_shelter_program_v1"),
+    ),
+    "park_stormwater_arid_channel_v3": (
+        ("stormwater_resilience_park", "stormwater_resilience_park_variant_0", "stormwater_resilience_park_v0_bioswale_skin", "stormwater_bioswale_v0", "urban_bioswale_park_program_v1"),
+        ("stormwater_resilience_park", "stormwater_resilience_park_variant_1", "stormwater_resilience_park_v1_detention_skin", "stormwater_detention_v1", "naturalistic_detention_park_program_v1"),
+        ("stormwater_resilience_park", "stormwater_resilience_park_variant_2", "stormwater_resilience_park_v2_terraced_skin", "stormwater_terraced_v2", "engineered_terraced_plaza_program_v1"),
+    ),
+}
+
+
+def _apply_batch27_variant_closures(
+    capability: PublicRealmFamilyCapability,
+) -> PublicRealmFamilyCapability:
+    descriptors = _BATCH27_VARIANT_CLOSURES.get(capability.family_id, ())
+    if not descriptors:
+        return capability
+    additions: list[PublicRealmSelectionCapability] = []
+    for archetype_id, variant_id, appearance_kit_id, planting_structure, program_component in descriptors:
+        base = next(selection for selection in capability.selections if selection.archetype_id == archetype_id)
+        additions.append(_selection(
+            archetype_id,
+            variant_id,
+            profile_id=base.profile_id,
+            appearance_kit_id=appearance_kit_id,
+            planting_structure=planting_structure,
+            compatibility=base.compatibility,
+            components=(*base.component_set_ids, program_component),
+        ))
+    return capability.model_copy(update={"selections": (*capability.selections, *additions)})
+
+
+_CAPABILITIES = tuple(_apply_batch27_variant_closures(capability) for capability in _CAPABILITIES)
 
 
 def public_realm_capability_fingerprint(
@@ -1553,6 +3113,15 @@ def plan_public_realm_recipe(
         selection_candidates = defaults or selection_candidates
 
     normalized_target = _normalized_target(request.target)
+    # An explicitly selected variant should resolve to its reviewed one-family
+    # compiler when both that exact compiler and an older multi-variant
+    # fallback advertise the same catalog identity. Without an explicit
+    # variant, retain the established generic/default family behaviour.
+    def selection_rank(pair: tuple[PublicRealmFamilyCapability, PublicRealmSelectionCapability]) -> tuple[int, str, str]:
+        capability, selection = pair
+        exact_family_rank = 0 if request.variant_id is not None and len(capability.selections) == 1 else 1
+        return exact_family_rank, capability.family_id, selection.variant_id
+
     compatible = [
         (capability, selection)
         for capability, selection in selection_candidates
@@ -1564,7 +3133,7 @@ def plan_public_realm_recipe(
     if not compatible:
         capability, selection = min(
             selection_candidates,
-            key=lambda pair: (pair[0].family_id, pair[1].variant_id),
+            key=selection_rank,
         )
         violations = _compatibility_violations(
             normalized_target,
@@ -1579,7 +3148,7 @@ def plan_public_realm_recipe(
         )
     capability, selection = min(
         compatible,
-        key=lambda pair: (pair[0].family_id, pair[1].variant_id),
+        key=selection_rank,
     )
 
     payload = {

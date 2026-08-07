@@ -11,6 +11,7 @@ import {
   PUBLIC_REALM_STREET_SIDEWALK_SURFACE_LIFT_METERS,
   PUBLIC_REALM_STREET_TACTILE_LIFT_METERS,
   resolvePublicRealmGroundDepthPolicy,
+  shouldUseLevelCompiledParkDatum,
 } from './publicRealmDepthPolicy';
 
 describe('public-realm depth policy', () => {
@@ -76,5 +77,12 @@ describe('public-realm depth policy', () => {
       .toBeGreaterThan(PUBLIC_REALM_STREET_MARKING_LIFT_METERS);
     expect(PUBLIC_REALM_STREET_TACTILE_LIFT_METERS)
       .toBeGreaterThan(PUBLIC_REALM_STREET_SIDEWALK_SURFACE_LIFT_METERS);
+  });
+
+  it('levels compiled park parcels without flattening street corridors or planning polygons', () => {
+    expect(shouldUseLevelCompiledParkDatum('park', true)).toBe(true);
+    expect(shouldUseLevelCompiledParkDatum('street', true)).toBe(false);
+    expect(shouldUseLevelCompiledParkDatum('park', false)).toBe(false);
+    expect(shouldUseLevelCompiledParkDatum(null, true)).toBe(false);
   });
 });

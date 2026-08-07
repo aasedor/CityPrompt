@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "validatedAt": "2026-08-06",
+  "projectId": "20c08c19-8bf3-48ab-b9d1-62482b46a66e",
+  "parkZoneId": "f00b58c7-6277-4617-a5d5-0bc4ff21db0b",
+  "buildingZoneId": "74ccecf5-afa2-44b9-9fd0-60464579be86",
+  "site": {
+    "areaM2": 1792.65,
+    "widthM": 98.526,
+    "depthM": 36.664
+  },
+  "procedure": "one_park_at_a_time_with_separate_lego_building",
+  "paidImageApiCalls": 0,
+  "meshyCalls": 0,
+  "expectedGenerateSummary": "1 buildings · 1 parks · 0 streets",
+  "expectedGroundContract": "Archetype-owned skin and metric 3D depth kit; no AI drape or generic park dressing",
+  "trials": [
+    {"order": 1, "archetypeId": "hilltop_topographic_park", "variantId": "hilltop_topographic_park_v3", "familyId": "park_hilltop_viewpoint_v3", "result": "pass"},
+    {"order": 2, "archetypeId": "picturesque_olmsted_park", "variantId": "picturesque_olmsted_park_v3", "familyId": "park_olmsted_multilandscape_v3", "result": "pass"},
+    {"order": 3, "archetypeId": "urban_pocket_park", "variantId": "urban_pocket_park_v0", "familyId": "park_urban_pocket_rustic_v0", "result": "pass"},
+    {"order": 4, "archetypeId": "neighborhood_park", "variantId": "neighborhood_park_v3", "familyId": "park_neighborhood_contemporary_v3", "result": "pass"},
+    {"order": 5, "archetypeId": "cemetery_memorial_grounds", "variantId": "cemetery_memorial_grounds_v0", "familyId": "park_cemetery_classical_v0", "result": "pass"},
+    {"order": 6, "archetypeId": "courtyard_plaza", "variantId": "courtyard_plaza_v1", "familyId": "park_courtyard_linear_water_v1", "result": "pass"},
+    {"order": 7, "archetypeId": "street_plaza_parklet", "variantId": "street_plaza_parklet_v1", "familyId": "park_parklet_sf_timber_v1", "result": "pass"},
+    {"order": 8, "archetypeId": "parisian_jardin", "variantId": "parisian_jardin_v1", "familyId": "park_french_parterre_axis_v1", "result": "pass"},
+    {"order": 9, "archetypeId": "london_garden_square", "variantId": "london_garden_square_v1", "familyId": "park_london_railed_square_v1", "result": "pass"},
+    {"order": 10, "archetypeId": "halifax_public_gardens", "variantId": "halifax_public_gardens_v0", "familyId": "park_halifax_rose_bandstand_v0", "result": "pass"}
+  ],
+  "finalPersistedRecipe": {
+    "familyId": "park_halifax_rose_bandstand_v0",
+    "profileId": "halifax-rose-bandstand-lego-v1",
+    "appearanceKitId": "halifax_public_gardens_v0_rose_skin",
+    "componentSetIds": [
+      "victorian_garden_ground_program_v1",
+      "whole_rose_bed_rooms_v1",
+      "ornate_bandstand_v1",
+      "wrought_iron_gate_v1"
+    ],
+    "state": "compiled"
+  }
+}

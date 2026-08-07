@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "expectedArchetypeCount": 10,
+  "method": "exact_archetype_reference_statistics_plus_role_specific_procedural_structure",
+  "apiCalls": 0,
+  "sourcePixelsProjected": false,
+  "archetypes": {
+    "regional-park-english-landscape": {
+      "source": "frontend/public/archetypes/openspaces/regional-park/variant_0.png",
+      "patterns": {"paver":"paver","lawn":"lawn","asphalt":"paver","planting":"planting","safety":"safety","timber":"timber"},
+      "crops": {"paver":[0.00,0.64,0.82,1.00],"lawn":[0.02,0.38,0.98,0.92],"asphalt":[0.00,0.66,0.84,1.00],"planting":[0.00,0.18,1.00,0.72],"safety":[0.18,0.52,0.68,0.82],"timber":[0.00,0.70,0.34,0.96]}
+    },
+    "beer-garden-munich-chestnut": {
+      "source": "frontend/public/archetypes/openspaces/beer-garden/variant_0.png",
+      "patterns": {"paver":"safety","lawn":"planting","asphalt":"safety","planting":"planting","safety":"safety","timber":"timber"},
+      "crops": {"paver":[0.00,0.64,1.00,1.00],"lawn":[0.00,0.00,1.00,0.52],"asphalt":[0.00,0.62,1.00,1.00],"planting":[0.00,0.00,1.00,0.62],"safety":[0.12,0.08,0.92,0.34],"timber":[0.08,0.44,0.94,0.96]}
+    },
+    "sunken-plaza-intimate-courtyard": {
+      "source": "frontend/public/archetypes/openspaces/sunken-plaza/variant_0.png",
+      "patterns": {"paver":"paver","lawn":"planting","asphalt":"paver","planting":"planting","safety":"safety","timber":"paver"},
+      "crops": {"paver":[0.02,0.48,0.98,1.00],"lawn":[0.00,0.34,1.00,0.64],"asphalt":[0.02,0.48,0.98,1.00],"planting":[0.00,0.34,1.00,0.64],"safety":[0.32,0.58,0.68,0.86],"timber":[0.04,0.52,0.96,1.00]}
+    },
+    "stepped-plaza-modernist-cascade": {
+      "source": "frontend/public/archetypes/openspaces/stepped-terraced-plaza/variant_3.png",
+      "patterns": {"paver":"paver","lawn":"planting","asphalt":"paver","planting":"planting","safety":"safety","timber":"paver"},
+      "crops": {"paver":[0.10,0.50,0.90,1.00],"lawn":[0.00,0.28,1.00,0.70],"asphalt":[0.08,0.52,0.92,1.00],"planting":[0.00,0.24,1.00,0.70],"safety":[0.38,0.30,0.62,0.90],"timber":[0.00,0.54,1.00,1.00]}
+    },
+    "market-square-festival-lawn": {
+      "source": "frontend/public/archetypes/openspaces/market-square/variant_1.png",
+      "patterns": {"paver":"paver","lawn":"lawn","asphalt":"paver","planting":"planting","safety":"safety","timber":"timber"},
+      "crops": {"paver":[0.00,0.62,1.00,1.00],"lawn":[0.14,0.38,0.86,0.88],"asphalt":[0.00,0.64,1.00,1.00],"planting":[0.00,0.24,1.00,0.60],"safety":[0.00,0.48,1.00,0.90],"timber":[0.00,0.58,1.00,0.96]}
+    },
+    "promenade-maritime-boardwalk": {
+      "source": "frontend/public/archetypes/openspaces/promenade-boardwalk/variant_0.png",
+      "patterns": {"paver":"timber","lawn":"planting","asphalt":"paver","planting":"planting","safety":"safety","timber":"timber"},
+      "crops": {"paver":[0.00,0.48,1.00,1.00],"lawn":[0.62,0.40,1.00,0.88],"asphalt":[0.00,0.52,1.00,1.00],"planting":[0.58,0.34,1.00,0.88],"safety":[0.00,0.28,0.44,0.76],"timber":[0.00,0.46,1.00,1.00]}
+    },
+    "fountain-formal-reflecting-pool": {
+      "source": "frontend/public/archetypes/openspaces/fountain-water-feature/variant_1.png",
+      "patterns": {"paver":"paver","lawn":"planting","asphalt":"paver","planting":"planting","safety":"safety","timber":"paver"},
+      "crops": {"paver":[0.00,0.52,1.00,1.00],"lawn":[0.00,0.22,1.00,0.58],"asphalt":[0.00,0.56,1.00,1.00],"planting":[0.00,0.18,1.00,0.58],"safety":[0.20,0.28,0.82,0.90],"timber":[0.00,0.58,1.00,1.00]}
+    },
+    "swimming-natural-pond": {
+      "source": "frontend/public/archetypes/openspaces/swimming-pool-complex/variant_0.png",
+      "patterns": {"paver":"paver","lawn":"planting","asphalt":"paver","planting":"planting","safety":"safety","timber":"timber"},
+      "crops": {"paver":[0.44,0.56,1.00,0.94],"lawn":[0.00,0.30,1.00,0.80],"asphalt":[0.44,0.58,1.00,0.96],"planting":[0.00,0.20,1.00,0.82],"safety":[0.18,0.34,0.96,0.86],"timber":[0.22,0.42,0.54,0.68]}
+    },
+    "nature-preserve-tallgrass-prairie": {
+      "source": "frontend/public/archetypes/openspaces/nature-preserve/variant_1.png",
+      "patterns": {"paver":"paver","lawn":"lawn","asphalt":"paver","planting":"planting","safety":"planting","timber":"timber"},
+      "crops": {"paver":[0.24,0.62,0.76,1.00],"lawn":[0.18,0.46,0.82,0.92],"asphalt":[0.22,0.64,0.78,1.00],"planting":[0.00,0.30,1.00,0.96],"safety":[0.00,0.32,1.00,0.96],"timber":[0.58,0.42,0.90,0.76]}
+    },
+    "riverfront-lake-swimming-beach": {
+      "source": "frontend/public/archetypes/openspaces/riverfront-park-beach/variant_1.png",
+      "patterns": {"paver":"paver","lawn":"lawn","asphalt":"paver","planting":"planting","safety":"safety","timber":"timber"},
+      "crops": {"paver":[0.00,0.58,1.00,1.00],"lawn":[0.00,0.24,0.46,0.70],"asphalt":[0.00,0.60,1.00,1.00],"planting":[0.00,0.08,0.58,0.66],"safety":[0.10,0.42,0.92,0.98],"timber":[0.52,0.26,0.96,0.76]}
+    }
+  },
+  "materialDefaults": {
+    "paver":{"roughness":0.88,"normalStrength":2.0,"metresPerTile":4.0},
+    "lawn":{"roughness":0.95,"normalStrength":2.2,"metresPerTile":5.0},
+    "asphalt":{"roughness":0.91,"normalStrength":1.8,"metresPerTile":4.0},
+    "planting":{"roughness":0.98,"normalStrength":3.0,"metresPerTile":3.0},
+    "safety":{"roughness":0.90,"normalStrength":2.4,"metresPerTile":3.0},
+    "timber":{"roughness":0.84,"normalStrength":2.2,"metresPerTile":2.5}
+  }
+}
