@@ -6943,6 +6943,11 @@ def _graph_facade_skin_stack(parts: list, spec: dict, mats: dict) -> None:
     levels = list(spec.get("levels") or [])
     if not levels:
         raise ValueError(f"facade skin stack {spec.get('id')!r} has no levels")
+    levels = [
+        level
+        for level in levels
+        for _ in range(max(1, int(level.get("repeat", 1))))
+    ]
     current_z = z0
     for index, level in enumerate(levels):
         height = float(level["height_m"])
@@ -6955,6 +6960,12 @@ def _graph_facade_skin_stack(parts: list, spec: dict, mats: dict) -> None:
             elif axis in ("left", "right"):
                 segment_cx = cx
                 segment_cy = cy - span / 2 + segment_span * (segment_index + 0.5)
+            elif axis == "angle":
+                angle_deg = float(spec.get("rotation_z_deg", 0.0))
+                angle = math.radians(angle_deg)
+                offset = -span / 2 + segment_span * (segment_index + 0.5)
+                segment_cx = cx + math.cos(angle) * offset
+                segment_cy = cy + math.sin(angle) * offset
             else:
                 raise ValueError(f"facade skin stack axis {axis!r} is unsupported")
             level_spec = {
@@ -6967,6 +6978,8 @@ def _graph_facade_skin_stack(parts: list, spec: dict, mats: dict) -> None:
                 "band": level.get("band", "floor"),
                 "flip_u": spec.get("flip_u", False),
             }
+            if axis == "angle":
+                level_spec["rotation_z_deg"] = float(spec.get("rotation_z_deg", 0.0))
             _graph_facade_skin(
                 parts,
                 level_spec,

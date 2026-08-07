@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-08-07-four-family-gold-set-v64`.
+Current executable memory: `2026-08-07-three-pilot-expansion-v65`.
 
 The current calibration set and catalogue rollout rationale are documented in
 [`BUILDING_GOLD_SET_PIPELINE_SYNTHESIS_2026-08-07.md`](BUILDING_GOLD_SET_PIPELINE_SYNTHESIS_2026-08-07.md).
@@ -395,6 +395,30 @@ Pass these schedules through `generate_facade_sheets.py` with
 manifest retains their filenames and labels the semantic mask provider as
 `deterministic`. A generated elevation is an identity source; only audited
 architectural regions are allowed to become modular construction.
+
+### V65 three-pilot expansion lessons
+
+The rounded Parisian corner, cream terra-cotta Art Deco tower and restored
+machiya pilots extended the gold-set method across three very different scales:
+
+- A curved or faceted corner needs the same floor-accurate podium, middle and
+  crown bands as an orthogonal streetwall. Angled facade skins must therefore
+  support full vertical band stacks; one stretched elevation on the corner
+  creates a blank drum or an implausibly tall window.
+- A setback tower is one family of repeatable floor bands distributed through
+  several fixed shaft tiers. Repeat the audited floor band vertically inside
+  each tier, keep each setback/cap/crown fixed, and preserve one common bay
+  phase rather than stretching a single facade image over the full tower.
+- Geometry-first massing is necessary but not sufficient. The first Art Deco
+  pass had the correct ziggurat silhouette yet read as a generic glass office
+  until the reference-locked terra-cotta floor rhythm was restored.
+- A low-rise semantic stack can outperform a bespoke graph when its catalogue
+  grammar already preserves the decisive roof, deep eaves, lattice and
+  threshold. Promote it to a graph only if multi-view review shows the plan or
+  section is still wrong.
+- Pilot outputs remain review-only. The Parisian needs a continuous curved
+  balcony, the Art Deco crown needs more authored relief, and the machiya needs
+  a frontage/orientation check before any of them joins the calibration set.
 
 ### Ruskinian repeat-span + relief registration lessons
 

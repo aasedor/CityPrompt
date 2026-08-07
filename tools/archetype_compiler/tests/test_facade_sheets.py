@@ -269,6 +269,64 @@ def test_corner_archetype_compiles_corner_condition():
     assert grammar.massing.corner_condition == "corner"
 
 
+def test_v65_three_pilots_resolve_distinct_identity_strategies():
+    from signature_profiles import inject_signature
+
+    def injected(archetype_id: str, variant_id: str) -> dict:
+        grammar = {
+            "source": {"archetype_id": archetype_id, "variant_id": variant_id},
+            "materials": {"primary": {}, "secondary": {}, "accent": {}, "roof": {}},
+            "dimensions": {},
+        }
+        return inject_signature(grammar, archetype_id, variant_id=variant_id)
+
+    paris = injected("parisian_boulevard_corner", "parisian_corner_haussmann_turret")
+    paris_graph = paris["massing_graph"]
+    paris_assemblies = paris_graph["assemblies"]
+    assert paris["architectural_signature"]["production_contract"]["identity_mode"] == "massing_graph"
+    assert paris_graph["reference_dimensions"] == {
+        "width_m": 18.0,
+        "depth_m": 18.0,
+        "floors": 7,
+        "floor_height_m": 3.4,
+    }
+    assert sum(
+        item["kind"] == "facade_skin_stack" and item.get("axis") == "angle"
+        for item in paris_assemblies
+    ) == 3
+
+    deco = injected("art_deco_setback_tower", "art_deco_cream_terracotta")
+    deco_graph = deco["massing_graph"]
+    assert deco["architectural_signature"]["production_contract"]["identity_mode"] == "massing_graph"
+    assert deco_graph["reference_dimensions"]["floors"] == 35
+    assert sum(node["kind"] == "box" for node in deco_graph["nodes"]) >= 7
+    assert any(
+        level.get("repeat", 1) >= 15
+        for item in deco_graph["assemblies"]
+        if item["kind"] == "facade_skin_stack"
+        for level in item["levels"]
+    )
+
+    machiya = injected("japanese_machiya_mixed_use", "machiya_traditional_restored")
+    assert machiya["architectural_signature"]["production_contract"]["identity_mode"] == "semantic_stack"
+    assert "massing_graph" not in machiya
+    assert machiya["dimensions"]["width_m"] == 5.0
+    assert machiya["dimensions"]["depth_m"] == 20.0
+
+
+def test_v65_three_pilot_registry_is_bounded_and_variant_locked():
+    registry = json.loads(
+        (Path(__file__).parents[1] / "worldclass_three_pilots_v65.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    entries = registry["entries"]
+    assert len(entries) == 3
+    assert len({entry["variant_id"] for entry in entries}) == 3
+    assert all(entry.get("family_id") for entry in entries)
+    assert registry["generation_profile"]["strict_production_preflight"] is True
+
+
 def test_facade_prompts_pin_texture_map_and_forbid_scene_completion():
     pytest.importorskip("PIL")
     pytest.importorskip("numpy")

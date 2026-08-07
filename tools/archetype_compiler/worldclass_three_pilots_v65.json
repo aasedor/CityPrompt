@@ -1,0 +1,50 @@
+{
+  "schema": "worldclass-lego-library@2",
+  "name": "Three-Pilot Identity Expansion v65",
+  "description": "Three deliberately different catalogue representatives testing rounded corner massing, skyscraper setbacks and low-rise roof-led semantic construction after the four-family gold-set calibration.",
+  "generation_profile": {
+    "facade_model": "cached-reference-locked-v8",
+    "facade_sheet_schema": "facade-sheet@3",
+    "facade_sheet_root": "tools/archetype_compiler/facade_sheets_v8",
+    "texture_library": "tools/archetype_compiler/textures_worldclass_v7",
+    "geometry_detail": "hero",
+    "presentation_view_set": "all",
+    "ambient_occlusion": false,
+    "strict_production_preflight": true,
+    "signature_profile": "tools/archetype_compiler/architectural_signature_profiles.json",
+    "quality_memory": "tools/archetype_compiler/high_quality_building_memory.json",
+    "gold_set": "tools/archetype_compiler/building_gold_set.json"
+  },
+  "entries": [
+    {
+      "entry_id": "parisian-corner-turret-pilot",
+      "archetype_id": "parisian_boulevard_corner",
+      "variant_id": "parisian_corner_haussmann_turret",
+      "family_id": "parisian-boulevard-corner",
+      "floors": 7,
+      "width_m": 18,
+      "depth_m": 18,
+      "group": "Rounded corner landmark massing graph"
+    },
+    {
+      "entry_id": "art-deco-cream-tower-pilot",
+      "archetype_id": "art_deco_setback_tower",
+      "variant_id": "art_deco_cream_terracotta",
+      "family_id": "art-deco-setback-tower",
+      "floors": 35,
+      "width_m": 25,
+      "depth_m": 20,
+      "group": "Stepped skyscraper massing graph"
+    },
+    {
+      "entry_id": "machiya-restored-pilot",
+      "archetype_id": "japanese_machiya_mixed_use",
+      "variant_id": "machiya_traditional_restored",
+      "family_id": "japanese-machiya-mixed-use",
+      "floors": 2,
+      "width_m": 5,
+      "depth_m": 20,
+      "group": "Roof-led low-rise semantic stack"
+    }
+  ]
+}

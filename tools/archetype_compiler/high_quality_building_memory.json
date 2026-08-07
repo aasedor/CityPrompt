@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-08-07-four-family-gold-set-v64",
+  "memory_version": "2026-08-07-three-pilot-expansion-v65",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "calibration_set": {
@@ -86,6 +86,14 @@
     {
       "id": "human_approval_controls_release",
       "rule": "Structural validation never implies archetype likeness. A generated family remains review-only until a named reviewer approves block, building, facade and orbit/context comparisons against the authoritative reference set."
+    },
+    {
+      "id": "angled_facades_keep_floor_bands",
+      "rule": "Curved and faceted corners use the same floor-accurate podium, middle and crown band stack as orthogonal elevations; never stretch one floor or one complete elevation over a multi-storey corner surface."
+    },
+    {
+      "id": "setback_tiers_repeat_bays_not_images",
+      "rule": "Each fixed skyscraper setback tier repeats the audited ordinary floor band vertically with a shared bay phase. Setback caps, entrances and crowns remain fixed and may not be produced by stretching one full-height image."
     },
     {
       "id": "parcel_is_dimension_authority",
@@ -565,6 +573,16 @@
       "symptom": "Stone courses, turret bands and eaves look like bright applied graphics in Google Tiles",
       "cause": "Relief geometry duplicated atlas bands with excessive projection, thickness or albedo contrast, so it separated visually from the wall material language.",
       "correction": "Let the atlas own fine coursing. Use shallow construction-scale relief only for shadow-bearing datums, inherit the same warm stone PBR family, reduce exposed profile, and calibrate in live photogrammetry rather than compensating with brighter materials."
+    },
+    {
+      "symptom": "A rounded corner pavilion is a blank drum or contains one impossibly tall facade image",
+      "cause": "The corner massing was modelled, but floor-accurate facade bands were supported only on cardinal streetwalls and the corner received either no skin or one vertically stretched band.",
+      "correction": "Compose podium, alternating floor and crown bands on every angled tangent panel at their authored heights. Preserve the curve with several narrow panels and validate seams from street and aerial obliques."
+    },
+    {
+      "symptom": "A correctly stepped Art Deco tower still reads as a generic curtain-wall office",
+      "cause": "Ziggurat massing was correct, but a universal glass grid replaced the reference's punched terra-cotta window rhythm and vertical masonry piers.",
+      "correction": "Repeat the audited terra-cotta floor band vertically within each fixed shaft tier, align physical piers to the atlas cadence, and keep the podium, setback caps, faceted crown and finial as fixed assemblies."
     }
   ]
 }
