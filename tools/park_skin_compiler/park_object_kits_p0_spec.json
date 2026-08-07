@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "kitVersion": "2026-08-07-p0-v1",
+  "method": "archetype_observation_plus_metric_blender_geometry",
+  "surfaceOwner": "lego_park_grammar",
+  "peopleGenerated": false,
+  "largeBuildingsGenerated": false,
+  "referencePolicy": {
+    "catalogueRoot": "frontend/public/archetypes/openspaces",
+    "compositionStudy": "docs/park_api_validation_50",
+    "authority": "Archetype views govern visible character, material palette, scale cues, and site-use relationships. Regulation dimensions, access clearances, and object geometry remain deterministic.",
+    "placement": "Assets are ground-contact modules. City Prompt fits and repeats modules; it does not stretch a court, field, or object to fill a polygon."
+  },
+  "families": [
+    {
+      "id": "disc-golf",
+      "archetypeId": "disc_golf_course",
+      "skin": "disc-golf-wooded-championship",
+      "assets": [
+        {"id": "disc_golf_basket", "filename": "disc-golf-basket.glb", "placementAnchor": "pole_base", "nominalHeightM": 1.72},
+        {"id": "disc_golf_tee_sign", "filename": "disc-golf-tee-sign.glb", "placementAnchor": "post_base", "nominalHeightM": 1.35}
+      ]
+    },
+    {
+      "id": "bocce-petanque",
+      "archetypeId": "bocce_petanque_court",
+      "skin": "bocce-italian-piazza",
+      "assets": [
+        {"id": "bocce_score_stand", "filename": "bocce-score-stand.glb", "placementAnchor": "post_base", "nominalHeightM": 1.55},
+        {"id": "bocce_ball_rack", "filename": "bocce-ball-rack.glb", "placementAnchor": "assembly_center", "nominalHeightM": 0.82}
+      ]
+    },
+    {
+      "id": "climbing-bouldering",
+      "archetypeId": "climbing_bouldering_wall",
+      "skin": "climbing-competition-boulder",
+      "assets": [
+        {"id": "climbing_competition_wall", "filename": "climbing-competition-wall.glb", "placementAnchor": "wall_center", "nominalHeightM": 4.55},
+        {"id": "climbing_natural_boulder", "filename": "climbing-natural-boulder.glb", "placementAnchor": "boulder_center", "nominalHeightM": 3.4},
+        {"id": "climbing_traverse_wall", "filename": "climbing-traverse-wall.glb", "placementAnchor": "wall_center", "nominalHeightM": 2.25}
+      ]
+    },
+    {
+      "id": "mini-golf",
+      "archetypeId": "mini_golf_course",
+      "skin": "mini-golf-classic-themed",
+      "assets": [
+        {"id": "mini_golf_windmill", "filename": "mini-golf-windmill.glb", "placementAnchor": "assembly_center", "nominalHeightM": 3.85},
+        {"id": "mini_golf_loop", "filename": "mini-golf-loop.glb", "placementAnchor": "assembly_center", "nominalHeightM": 1.75},
+        {"id": "mini_golf_bridge", "filename": "mini-golf-bridge.glb", "placementAnchor": "assembly_center", "nominalHeightM": 1.1},
+        {"id": "mini_golf_cup_flag", "filename": "mini-golf-cup-flag.glb", "placementAnchor": "cup_center", "nominalHeightM": 0.92}
+      ]
+    },
+    {
+      "id": "beach-volleyball",
+      "archetypeId": "beach_volleyball_courts",
+      "skin": "beach-volleyball-competition",
+      "assets": [
+        {"id": "beach_volleyball_net", "filename": "beach-volleyball-net.glb", "placementAnchor": "net_center", "nominalHeightM": 2.55},
+        {"id": "beach_volleyball_referee_stand", "filename": "beach-volleyball-referee-stand.glb", "placementAnchor": "assembly_center", "nominalHeightM": 2.65}
+      ]
+    },
+    {
+      "id": "water-ecology-infrastructure",
+      "archetypeId": "park_water_ecology",
+      "skin": "wetland-rain-garden-native",
+      "assets": [
+        {"id": "wetland_boardwalk_span", "filename": "wetland-boardwalk-span.glb", "placementAnchor": "span_center", "nominalHeightM": 1.42},
+        {"id": "wetland_observation_deck", "filename": "wetland-observation-deck.glb", "placementAnchor": "deck_center", "nominalHeightM": 1.42},
+        {"id": "wetland_footbridge", "filename": "wetland-footbridge.glb", "placementAnchor": "bridge_center", "nominalHeightM": 1.55},
+        {"id": "stormwater_check_weir", "filename": "stormwater-check-weir.glb", "placementAnchor": "weir_center", "nominalHeightM": 1.05},
+        {"id": "stormwater_inlet_headwall", "filename": "stormwater-inlet-headwall.glb", "placementAnchor": "headwall_center", "nominalHeightM": 1.15},
+        {"id": "stormwater_outlet_control", "filename": "stormwater-outlet-control.glb", "placementAnchor": "structure_center", "nominalHeightM": 1.85},
+        {"id": "riprap_cluster", "filename": "riprap-cluster.glb", "placementAnchor": "cluster_center", "nominalHeightM": 1.25},
+        {"id": "maintenance_gate", "filename": "maintenance-gate.glb", "placementAnchor": "gate_center", "nominalHeightM": 1.35}
+      ]
+    },
+    {
+      "id": "amphitheater",
+      "archetypeId": "amphitheater_lawn",
+      "skin": "amphitheater-lawn-terraced",
+      "assets": [
+        {"id": "amphitheater_stage", "filename": "amphitheater-stage.glb", "placementAnchor": "stage_center", "nominalHeightM": 2.55},
+        {"id": "amphitheater_seat_wall", "filename": "amphitheater-seat-wall.glb", "placementAnchor": "module_center", "nominalHeightM": 0.48},
+        {"id": "amphitheater_aisle_rail", "filename": "amphitheater-aisle-rail.glb", "placementAnchor": "rail_center", "nominalHeightM": 1.05},
+        {"id": "amphitheater_bollard_light", "filename": "amphitheater-bollard-light.glb", "placementAnchor": "bollard_base", "nominalHeightM": 0.92}
+      ]
+    }
+  ]
+}

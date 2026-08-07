@@ -402,6 +402,35 @@ function GLBInstancedProp({
   );
 }
 
+/** Metric, ground-contact archetype object. Unlike generic entourage this is
+ * never height-normalized: authored regulation and clearance dimensions are
+ * preserved exactly. */
+function MetricParkObject({
+  url,
+  position,
+  yaw = 0,
+}: {
+  url: string;
+  position: [number, number, number];
+  yaw?: number;
+}) {
+  const { scene } = useGLTF(url);
+  const clone = useMemo(() => {
+    const next = scene.clone(true);
+    next.traverse((object) => {
+      const mesh = object as THREE.Mesh;
+      if (!mesh.isMesh) return;
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+      mesh.renderOrder = RENDER_ORDER_PROPS + 4;
+    });
+    return next;
+  }, [scene]);
+  return <group position={position} rotation={[0, 0, yaw]}>
+    <group rotation={[Math.PI / 2, 0, 0]}><primitive object={clone} /></group>
+  </group>;
+}
+
 function ProceduralParkFinishingProps({
   propId,
   placements,
@@ -1365,16 +1394,37 @@ function ParkSpecialtyStructures({
           const center = guideCenter(tier, programFrame);
           const dimensions = resolveParkGuideDimensionsM(tier, programFrame);
           return (
-            <mesh key={index} position={[center.x, center.y, terrainZ(center.x, center.y) + 0.06 + index * 0.18]} scale={[dimensions.width / 2, dimensions.height / 2, 1]} renderOrder={RENDER_ORDER_PROPS + index}>
-              <ringGeometry args={[0.92, 1, 64]} />
-              <meshStandardMaterial color={index % 2 === 0 ? '#657f4f' : '#75915a'} roughness={0.98} />
-            </mesh>
+            <group key={index}>
+              <mesh position={[center.x, center.y, terrainZ(center.x, center.y) + 0.06 + index * 0.18]} scale={[dimensions.width / 2, dimensions.height / 2, 1]} renderOrder={RENDER_ORDER_PROPS + index}>
+                <ringGeometry args={[0.92, 1, 64]} />
+                <meshStandardMaterial color={index % 2 === 0 ? '#657f4f' : '#75915a'} roughness={0.98} />
+              </mesh>
+              {[-0.24, 0.24].map((offset) => {
+                const x = center.x + dimensions.width * offset;
+                const y = center.y - dimensions.height * 0.43;
+                return <MetricParkObject
+                  key={offset}
+                  url="/park-kits/amphitheater/amphitheater-seat-wall.glb"
+                  position={[x, y, terrainZ(x, y) + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS + index * 0.18]}
+                />;
+              })}
+            </group>
           );
         })}
-        <mesh position={[stageCenter.x, stageCenter.y, terrainZ(stageCenter.x, stageCenter.y) + 0.28]} renderOrder={RENDER_ORDER_PROPS + 5}>
-          <boxGeometry args={[stageSize.width, stageSize.height, 0.52]} />
-          <meshStandardMaterial color="#8b623e" roughness={0.86} />
-        </mesh>
+        <MetricParkObject
+          url="/park-kits/amphitheater/amphitheater-stage.glb"
+          position={[stageCenter.x, stageCenter.y, terrainZ(stageCenter.x, stageCenter.y) + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS]}
+        />
+        {[-1, 1].map((side) => {
+          const x = stageCenter.x + side * Math.min(5.2, stageSize.width * 0.62);
+          const y = stageCenter.y - stageSize.height * 0.58;
+          return <MetricParkObject key={`light-${side}`} url="/park-kits/amphitheater/amphitheater-bollard-light.glb" position={[x, y, terrainZ(x, y) + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS]} />;
+        })}
+        <MetricParkObject
+          url="/park-kits/amphitheater/amphitheater-aisle-rail.glb"
+          position={[stageCenter.x, stageCenter.y - stageSize.height * 0.9, terrainZ(stageCenter.x, stageCenter.y - stageSize.height * 0.9) + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS]}
+          yaw={Math.PI / 2}
+        />
       </group>
     );
   }
@@ -1443,20 +1493,6 @@ function ParkSpecialtyStructures({
       height: 4.2,
       rotationRad: 0,
     };
-    const riprap = Array.from({ length: 14 }, (_, index) => {
-      const column = index % 5;
-      const row = Math.floor(index / 5);
-      const localX = ((column / 4) - 0.5) * inlet.width * 0.78;
-      const localY = ((row / 2) - 0.5) * inlet.height * 0.72
-        + (column % 2 === 0 ? 0 : inlet.height * 0.06);
-      const cos = Math.cos(inlet.rotationRad);
-      const sin = Math.sin(inlet.rotationRad);
-      return {
-        x: inlet.center.x + localX * cos - localY * sin,
-        y: inlet.center.y + localX * sin + localY * cos,
-        scale: Math.min(0.72, 0.34 + (index % 4) * 0.08),
-      };
-    });
     return (
       <group renderOrder={RENDER_ORDER_PROPS}>
         {!isWetlandStormwater && <mesh
@@ -1534,70 +1570,30 @@ function ParkSpecialtyStructures({
           <boxGeometry args={[radiusX * 1.8, 1.8, 0.28]} />
           <meshStandardMaterial color="#786149" roughness={0.92} />
         </mesh>}
-        <group
-          position={[
-            inlet.center.x,
-            inlet.center.y,
-            terrainZ(inlet.center.x, inlet.center.y) + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS,
-          ]}
-          rotation={[0, 0, inlet.rotationRad]}
-        >
-          <mesh position={[0, 0, 0.45]} renderOrder={RENDER_ORDER_PROPS + 2}>
-            <boxGeometry args={[
-              Math.max(0.75, Math.min(1.4, inlet.width * 0.26)),
-              Math.max(1.2, inlet.height * 0.68),
-              0.9,
-            ]} />
-            <meshStandardMaterial color="#858984" roughness={0.9} />
-          </mesh>
-          <mesh
-            position={[Math.max(0.45, Math.min(0.85, inlet.width * 0.16)), 0, 0.43]}
-            rotation={[0, Math.PI / 2, 0]}
-            renderOrder={RENDER_ORDER_PROPS + 3}
-          >
-            <cylinderGeometry args={[0.36, 0.36, 0.55, 16]} />
-            <meshStandardMaterial color="#30383a" metalness={0.48} roughness={0.5} />
-          </mesh>
-        </group>
-        <group
-          position={[
-            outlet.center.x,
-            outlet.center.y,
-            terrainZ(outlet.center.x, outlet.center.y) + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS,
-          ]}
-          rotation={[0, 0, outlet.rotationRad]}
-        >
-          <mesh position={[0, 0, 0.32]} renderOrder={RENDER_ORDER_PROPS + 2}>
-            <boxGeometry args={[outlet.width, outlet.height, 0.64]} />
-            <meshStandardMaterial color="#a29c91" roughness={0.9} />
-          </mesh>
-          <mesh position={[0, 0, 0.66]} renderOrder={RENDER_ORDER_PROPS + 3}>
-            <boxGeometry args={[0.18, Math.max(0.8, outlet.height * 0.84), 0.16]} />
-            <meshStandardMaterial color="#535b5c" metalness={0.38} roughness={0.56} />
-          </mesh>
-          <mesh position={[outlet.width / 2 + 0.55, 0, 1.15]} renderOrder={RENDER_ORDER_PROPS + 3}>
-            <boxGeometry args={[0.10, 1.05, 2.3]} />
-            <meshStandardMaterial color="#5f695f" roughness={0.82} />
-          </mesh>
-        </group>
-        {riprap.map((stone, index) => (
-          <mesh
-            key={`stormwater-riprap-${index}`}
-            position={[
-              stone.x,
-              stone.y,
-              terrainZ(stone.x, stone.y)
-                + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS
-                + stone.scale * 0.35,
-            ]}
-            scale={[stone.scale * 1.2, stone.scale, stone.scale * 0.7]}
-            rotation={[index * 0.21, index * 0.13, index * 0.47]}
-            renderOrder={RENDER_ORDER_PROPS + 1}
-          >
-            <dodecahedronGeometry args={[0.75, 0]} />
-            <meshStandardMaterial color={index % 3 === 0 ? '#7e807a' : '#96948b'} roughness={0.98} />
-          </mesh>
-        ))}
+        <MetricParkObject
+          url="/park-kits/water-ecology-infrastructure/stormwater-inlet-headwall.glb"
+          position={[inlet.center.x, inlet.center.y, terrainZ(inlet.center.x, inlet.center.y) + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS]}
+          yaw={inlet.rotationRad}
+        />
+        <MetricParkObject
+          url="/park-kits/water-ecology-infrastructure/stormwater-outlet-control.glb"
+          position={[outlet.center.x, outlet.center.y, terrainZ(outlet.center.x, outlet.center.y) + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS]}
+          yaw={outlet.rotationRad}
+        />
+        <MetricParkObject
+          url="/park-kits/water-ecology-infrastructure/riprap-cluster.glb"
+          position={[inlet.center.x, inlet.center.y, terrainZ(inlet.center.x, inlet.center.y) + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS]}
+          yaw={inlet.rotationRad}
+        />
+        {(isWetlandStormwater || radiusX > 8) && <MetricParkObject
+          url="/park-kits/water-ecology-infrastructure/stormwater-check-weir.glb"
+          position={[centerX, centerY + radiusY * 0.45, terrainZ(centerX, centerY + radiusY * 0.45) + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS]}
+        />}
+        <MetricParkObject
+          url="/park-kits/water-ecology-infrastructure/maintenance-gate.glb"
+          position={[outlet.center.x + Math.cos(outlet.rotationRad) * 2.6, outlet.center.y + Math.sin(outlet.rotationRad) * 2.6, terrainZ(outlet.center.x, outlet.center.y) + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS]}
+          yaw={outlet.rotationRad}
+        />
       </group>
     );
   }
@@ -1627,45 +1623,31 @@ function ParkSpecialtyStructures({
     return (
       <group renderOrder={RENDER_ORDER_PROPS}>
         {batch20CoreSurfaces}
-        {routes.map(({ from, to }, index) => {
+        {routes.flatMap(({ from, to }, index) => {
           const dx = to.x - from.x;
           const dy = to.y - from.y;
           const length = Math.hypot(dx, dy);
-          const x = (from.x + to.x) / 2;
-          const y = (from.y + to.y) / 2;
-          return (
-            <group
-              key={`wetland-boardwalk-${index}`}
-              position={[x, y, terrainZ(x, y) + 0.28]}
-              rotation={[0, 0, Math.atan2(dy, dx)]}
-            >
-              <mesh renderOrder={RENDER_ORDER_PROPS}>
-                <boxGeometry args={[length + 0.16, 2.4, 0.24]} />
-                <meshStandardMaterial color={index % 2 === 0 ? '#9a7146' : '#a47b50'} roughness={0.88} />
-              </mesh>
-              <mesh position={[0, 0, 0.135]} renderOrder={RENDER_ORDER_PROPS}>
-                <planeGeometry args={[length, 2.34, Math.max(1, Math.ceil(length / 0.45)), 1]} />
-                <meshStandardMaterial color="#b18a5b" wireframe roughness={0.92} />
-              </mesh>
-            </group>
-          );
+          const yaw = Math.atan2(dy, dx);
+          if (index === 0 && length >= 6) {
+            const x = (from.x + to.x) / 2;
+            const y = (from.y + to.y) / 2;
+            return [<MetricParkObject key="wetland-footbridge" url="/park-kits/water-ecology-infrastructure/wetland-footbridge.glb" position={[x, y, terrainZ(x, y) + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS]} yaw={yaw} />];
+          }
+          const count = Math.max(1, Math.round(length / 8));
+          return Array.from({ length: count }, (_, spanIndex) => {
+            const t = (spanIndex + 0.5) / count;
+            const x = from.x + dx * t;
+            const y = from.y + dy * t;
+            return <MetricParkObject key={`wetland-boardwalk-${index}-${spanIndex}`} url="/park-kits/water-ecology-infrastructure/wetland-boardwalk-span.glb" position={[x, y, terrainZ(x, y) + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS]} yaw={yaw} />;
+          });
         })}
         {[
-          [0.49, 0.93, 6.0, 4.4],
-          [0.88, 0.54, 4.8, 4.8],
-        ].map(([normalizedX, normalizedY, width, depth], index) => {
+          [0.49, 0.93],
+          [0.88, 0.54],
+        ].map(([normalizedX, normalizedY], index) => {
           const x = programFrame.minX + programFrame.width * normalizedX;
           const y = programFrame.maxY - programFrame.height * normalizedY;
-          return (
-            <mesh
-              key={`wetland-overlook-${index}`}
-              position={[x, y, terrainZ(x, y) + 0.28]}
-              renderOrder={RENDER_ORDER_PROPS}
-            >
-              <boxGeometry args={[width, depth, 0.24]} />
-              <meshStandardMaterial color="#a47a4e" roughness={0.88} />
-            </mesh>
-          );
+          return <MetricParkObject key={`wetland-overlook-${index}`} url="/park-kits/water-ecology-infrastructure/wetland-observation-deck.glb" position={[x, y, terrainZ(x, y) + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS]} />;
         })}
       </group>
     );

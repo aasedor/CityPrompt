@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from 'react';
-import { useTexture } from '@react-three/drei';
+import { useGLTF, useTexture } from '@react-three/drei';
 import * as THREE from 'three';
 import type { ParkLegoFamilyId } from './parkLegoFamilies';
 import {
@@ -42,6 +42,28 @@ const SKIN_SLUG: Record<Batch5FamilyId, string> = {
 
 interface MaterialMaps {
   map: THREE.Texture; normalMap: THREE.Texture; roughnessMap: THREE.Texture; aoMap: THREE.Texture;
+}
+
+function ParkKitGlb({ url, position, yaw = 0 }: {
+  url: string;
+  position: [number, number, number];
+  yaw?: number;
+}) {
+  const { scene } = useGLTF(url);
+  const clone = useMemo(() => {
+    const next = scene.clone(true);
+    next.traverse((object) => {
+      const mesh = object as THREE.Mesh;
+      if (!mesh.isMesh) return;
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+      mesh.renderOrder = 149;
+    });
+    return next;
+  }, [scene]);
+  return <group position={position} rotation={[0, 0, yaw]}>
+    <group rotation={[Math.PI / 2, 0, 0]}><primitive object={clone} /></group>
+  </group>;
 }
 
 function useRoleMaps(slug: string, role: string): MaterialMaps {
@@ -124,15 +146,14 @@ export function GlobeParkBatch5Assembly({
     const targets = guides.filter((guide) => guide.kind === 'ellipse');
     return <group>{tees.map((tee, index) => {
       const c = center(tee, frame); const size = resolveParkGuideDimensionsM(tee, frame);
-      return <mesh key={`tee-${index}`} position={[c.x, c.y, terrainZ(c.x, c.y) + lift + 0.06]} rotation={[0, 0, -((tee.rotationDeg ?? 0) * Math.PI) / 180]}><boxGeometry args={[size.width, size.height, 0.12]} /><meshStandardMaterial {...paverMaps} color={variantSkin ? '#ffffff' : '#d5d1c7'} roughness={0.94} /></mesh>;
+      const yaw = -((tee.rotationDeg ?? 0) * Math.PI) / 180;
+      return <group key={`tee-${index}`}>
+        <mesh position={[c.x, c.y, terrainZ(c.x, c.y) + lift + 0.06]} rotation={[0, 0, yaw]}><boxGeometry args={[size.width, size.height, 0.12]} /><meshStandardMaterial {...paverMaps} color={variantSkin ? '#ffffff' : '#d5d1c7'} roughness={0.94} /></mesh>
+        <ParkKitGlb url="/park-kits/disc-golf/disc-golf-tee-sign.glb" position={[c.x - Math.cos(yaw) * (size.width / 2 + 0.55), c.y - Math.sin(yaw) * (size.width / 2 + 0.55), terrainZ(c.x, c.y) + lift + 0.12]} yaw={yaw} />
+      </group>;
     })}{targets.map((target, index) => {
       const c = center(target, frame); const z = terrainZ(c.x, c.y) + lift;
-      return <group key={`basket-${index}`} position={[c.x, c.y, z]}>
-        <mesh position={[0, 0, 0.78]} rotation={[Math.PI / 2, 0, 0]}><cylinderGeometry args={[0.035, 0.045, 1.56, 8]} /><meshStandardMaterial color="#6d7470" metalness={0.65} roughness={0.35} /></mesh>
-        <mesh position={[0, 0, 1.18]}><torusGeometry args={[0.31, 0.025, 8, 24]} /><meshStandardMaterial color="#d0b43c" metalness={0.5} roughness={0.38} /></mesh>
-        <mesh position={[0, 0, 1.56]}><torusGeometry args={[0.18, 0.02, 8, 20]} /><meshStandardMaterial color="#d0b43c" metalness={0.5} roughness={0.38} /></mesh>
-        {Array.from({ length: 10 }, (_, chain) => { const a = chain * Math.PI * 0.2; return <mesh key={chain} position={[Math.cos(a) * 0.24, Math.sin(a) * 0.24, 1.37]} rotation={[Math.PI / 2, 0, 0]}><cylinderGeometry args={[0.008, 0.008, 0.38, 5]} /><meshStandardMaterial color="#a6aaa6" metalness={0.8} roughness={0.25} /></mesh>; })}
-      </group>;
+      return <ParkKitGlb key={`basket-${index}`} url="/park-kits/disc-golf/disc-golf-basket.glb" position={[c.x, c.y, z]} />;
     })}</group>;
   }
 
@@ -147,30 +168,40 @@ export function GlobeParkBatch5Assembly({
       {[-1, 1].map((side) => <mesh key={`long-${side}`} position={[c.x, c.y + side * size.height / 2, z + 0.22]}><boxGeometry args={[size.width, 0.34, 0.44]} /><meshStandardMaterial color="#94836a" roughness={0.94} /></mesh>)}
       {[-1, 1].map((side) => <mesh key={`short-${side}`} position={[c.x + side * size.width / 2, c.y, z + 0.22]}><boxGeometry args={[0.34, size.height, 0.44]} /><meshStandardMaterial color="#94836a" roughness={0.94} /></mesh>)}
       {pRoute.length === 2 && <>{Array.from({ length: 6 }, (_, index) => { const t = index / 5; const x = pRoute[0].x + (pRoute[1].x - pRoute[0].x) * t; const y = pRoute[0].y + (pRoute[1].y - pRoute[0].y) * t; return <mesh key={index} position={[x, y, terrainZ(x, y) + lift + 1.45]} rotation={[Math.PI / 2, 0, 0]}><cylinderGeometry args={[0.10, 0.13, 2.9, 8]} /><meshStandardMaterial {...timberMaps} color={variantSkin ? '#ffffff' : '#9e7850'} roughness={0.9} /></mesh>; })}<Segment from={pRoute[0]} to={pRoute[1]} width={3.2} height={0.15} z={Math.max(terrainZ(pRoute[0].x,pRoute[0].y),terrainZ(pRoute[1].x,pRoute[1].y))+lift+2.82} color="#7d5d3c" /></>}
+      <ParkKitGlb url="/park-kits/bocce-petanque/bocce-score-stand.glb" position={[c.x - size.width / 2 - 1.0, c.y, z]} yaw={Math.PI / 2} />
+      <ParkKitGlb url="/park-kits/bocce-petanque/bocce-ball-rack.glb" position={[c.x + size.width / 2 + 1.25, c.y, z]} yaw={Math.PI / 2} />
     </group>;
   }
 
   if (familyId === 'park_climbing_competition_v0') {
     const walls = guides.filter((guide) => guide.kind === 'rectangle');
-    return <group>{walls.map((wall, index) => { const c = center(wall, frame); const size = resolveParkGuideDimensionsM(wall, frame); const height = [3.2,4.4,3.6][index] ?? 3.4; const yaw = (index - 1) * 0.24; const z = terrainZ(c.x,c.y)+lift; return <group key={index} position={[c.x,c.y,z]} rotation={[0,0,yaw]}>
-      <mesh position={[0,0,height/2]} rotation={[0,index===1?0.18:-0.10,0]}><boxGeometry args={[size.width, Math.max(1.0,size.height*0.28), height]} /><meshStandardMaterial {...paverMaps} color={variantSkin ? '#ffffff' : index%2?'#aaada9':'#d0c2a8'} roughness={0.84} /></mesh>
-      {Array.from({length:12},(_,hold)=>{const hx=-size.width*0.38+(hold%4)*size.width*0.25; const hz=0.6+Math.floor(hold/4)*0.95; return <mesh key={hold} position={[hx,-Math.max(0.55,size.height*0.15),hz]} rotation={[Math.PI/2,0,0]}><cylinderGeometry args={[0.10+(hold%3)*0.03,0.15,0.12,8]} /><meshStandardMaterial color={['#e2bb25','#2785b7','#dc6e28'][hold%3]} roughness={0.64} /></mesh>;})}
-    </group>;})}</group>;
+    const variantIndex = Number(variantId?.match(/_v([0-3])$/)?.[1] ?? 0);
+    const filename = variantIndex === 1 ? 'climbing-natural-boulder.glb'
+      : variantIndex === 3 ? 'climbing-traverse-wall.glb'
+        : 'climbing-competition-wall.glb';
+    return <group>{walls.slice(0, variantIndex === 1 ? 3 : 2).map((wall, index) => {
+      const c = center(wall, frame); const z = terrainZ(c.x,c.y)+lift;
+      return <ParkKitGlb key={index} url={`/park-kits/climbing-bouldering/${filename}`} position={[c.x,c.y,z]} yaw={(index - 0.5) * 0.24} />;
+    })}</group>;
   }
 
   if (familyId === 'park_mini_golf_classic_v0') {
     const lanes = guides.filter((guide) => guide.kind === 'rounded_rectangle');
     return <group>{lanes.map((lane,index)=>{const c=center(lane,frame);const s=resolveParkGuideDimensionsM(lane,frame);const z=terrainZ(c.x,c.y)+lift;return <group key={index} position={[c.x,c.y,z]} rotation={[0,0,-((lane.rotationDeg??0)*Math.PI)/180]}>
       <mesh position={[0,0,0.025]}><planeGeometry args={[s.width,s.height]}/><meshStandardMaterial {...lawnMaps} color={variantSkin ? '#ffffff' : '#7da067'} roughness={0.94}/></mesh>{[-1,1].map(side=><mesh key={side} position={[0,side*s.height/2,0.16]}><boxGeometry args={[s.width,0.22,0.32]}/><meshStandardMaterial {...paverMaps} color={variantSkin ? '#ffffff' : '#aaa396'} roughness={0.91}/></mesh>)}
-      {index===1&&<><mesh position={[0,0,1.1]}><coneGeometry args={[0.8,2.2,8]}/><meshStandardMaterial {...timberMaps} color={variantSkin ? '#ffffff' : '#bd6557'} roughness={0.82}/></mesh>{[0,Math.PI/2].map(a=><mesh key={a} position={[0,0,1.7]} rotation={[0,0,a]}><boxGeometry args={[3.2,0.12,0.22]}/><meshStandardMaterial {...timberMaps} color={variantSkin ? '#ffffff' : '#c6a56f'} roughness={0.9}/></mesh>)}</>}
-      {index===4&&<mesh position={[0,0,0.8]} rotation={[Math.PI/2,0,0]}><torusGeometry args={[0.65,0.13,10,28]}/><meshStandardMaterial color="#d8a52a" roughness={0.72}/></mesh>}
-      {index===6&&<><mesh position={[0,0,0.7]}><boxGeometry args={[2.2,0.7,1.4]}/><meshStandardMaterial color="#8d3c30" roughness={0.82}/></mesh><mesh position={[0,-0.42,0.5]}><circleGeometry args={[0.28,16]}/><meshStandardMaterial color="#252a28"/></mesh></>}
+      {index===1&&<ParkKitGlb url="/park-kits/mini-golf/mini-golf-windmill.glb" position={[0,0,0.04]} />}
+      {index===3&&<ParkKitGlb url="/park-kits/mini-golf/mini-golf-bridge.glb" position={[0,0,0.04]} yaw={Math.PI / 2} />}
+      {index===4&&<ParkKitGlb url="/park-kits/mini-golf/mini-golf-loop.glb" position={[0,0,0.04]} />}
+      {index===lanes.length-1&&<ParkKitGlb url="/park-kits/mini-golf/mini-golf-cup-flag.glb" position={[s.width*.32,0,0.04]} />}
     </group>;})}</group>;
   }
 
   if (familyId === 'park_beach_volleyball_competition_v0') {
     const net = guides.find((guide)=>guide.kind==='line'); if(!net)return null; const r=route(net,frame); if(r.length<2)return null; const mid={x:(r[0].x+r[1].x)/2,y:(r[0].y+r[1].y)/2}; const yaw=Math.atan2(r[1].y-r[0].y,r[1].x-r[0].x); const length=Math.hypot(r[1].x-r[0].x,r[1].y-r[0].y); const z=terrainZ(mid.x,mid.y)+lift;
-    return <group position={[mid.x,mid.y,z]} rotation={[0,0,yaw]}>{[-1,1].map(side=><mesh key={side} position={[side*length/2,0,1.35]} rotation={[Math.PI/2,0,0]}><cylinderGeometry args={[0.07,0.09,2.7,10]}/><meshStandardMaterial color="#253f67" roughness={0.54}/></mesh>)}<mesh position={[0,0,1.55]}><planeGeometry args={[length,1.0,16,4]}/><meshStandardMaterial color="#e5e7e2" wireframe side={THREE.DoubleSide}/></mesh><group position={[length/2+0.8,-1.0,0]}><mesh position={[0,0,1.0]}><boxGeometry args={[0.7,0.7,2.0]}/><meshStandardMaterial {...safetyMaps} color={variantSkin ? '#ffffff' : '#e2d4ae'} roughness={0.88}/></mesh><mesh position={[0.45,0,1.7]}><boxGeometry args={[0.9,0.5,0.12]}/><meshStandardMaterial color="#c7c3b6" roughness={0.8}/></mesh></group></group>;
+    return <group position={[mid.x,mid.y,z]} rotation={[0,0,yaw]}>
+      <ParkKitGlb url="/park-kits/beach-volleyball/beach-volleyball-net.glb" position={[0,0,0]} />
+      <ParkKitGlb url="/park-kits/beach-volleyball/beach-volleyball-referee-stand.glb" position={[length/2+0.85,-0.85,0]} yaw={Math.PI / 2} />
+    </group>;
   }
 
   if (familyId === 'park_pollinator_prairie_v0') {
