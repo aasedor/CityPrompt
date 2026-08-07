@@ -4,6 +4,7 @@ import { batch21ParkSkinForSelection } from './parkBatch21Skins';
 import { batch22ParkSkinForSelection } from './parkBatch22Skins';
 import { batch23ParkSkinForSelection } from './parkBatch23Skins';
 import { batch24ParkSkinForSelection } from './parkBatch24Skins';
+import { batch25ParkSkinForSelection } from './parkBatch25Skins';
 
 export type Batch21ParkBaseRole = 'paver' | 'lawn' | 'planting';
 
@@ -26,7 +27,8 @@ export function resolveBatch21ParkBaseMaterial(
   archetypeId: string,
   variantId: string,
 ): Batch21ParkBaseMaterialSpec | null {
-  const skin = batch24ParkSkinForSelection(archetypeId, variantId)
+  const skin = batch25ParkSkinForSelection(archetypeId, variantId)
+    ?? batch24ParkSkinForSelection(archetypeId, variantId)
     ?? batch23ParkSkinForSelection(archetypeId, variantId)
     ?? batch22ParkSkinForSelection(archetypeId, variantId)
     ?? batch21ParkSkinForSelection(archetypeId, variantId);
@@ -52,6 +54,18 @@ export function resolveBatch21ParkBaseMaterial(
     || archetypeId === 'montreal_mount_royal'
     || archetypeId === 'newyork_community_garden') {
     return { slug: skin.slug, role: 'planting', metersPerTile: 4.0 };
+  }
+  if (archetypeId === 'vancouver_beach_park'
+    || archetypeId === 'toronto_ravine'
+    || archetypeId === 'picturesque_olmsted_park'
+    || archetypeId === 'hilltop_topographic_park'
+    || archetypeId === 'estate_picnic_grove') {
+    return { slug: skin.slug, role: 'planting', metersPerTile: 4.5 };
+  }
+  if (archetypeId === 'reclaimed_industrial_park'
+    || archetypeId === 'quarry_sunken_garden_park'
+    || archetypeId === 'reservoir_watershed_park') {
+    return { slug: skin.slug, role: variantId.endsWith('_v3') ? 'planting' : 'lawn', metersPerTile: 5.0 };
   }
   if (archetypeId === 'calgary_prairie_plaza' && variantId !== 'calgary_prairie_plaza_v3') {
     return { slug: skin.slug, role: 'planting', metersPerTile: 4.0 };

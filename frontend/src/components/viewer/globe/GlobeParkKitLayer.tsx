@@ -907,6 +907,8 @@ function ParkSpecialtyStructures({
     return (
       <GlobeParkBatch8Assembly
         familyId={profileFamilyId}
+        archetypeId={legoContract?.archetypeId}
+        variantId={legoContract?.variantId}
         guides={fittedProgramGuides}
         frame={programFrame}
         terrainZ={terrainZ}
@@ -1299,6 +1301,10 @@ function ParkSpecialtyStructures({
     const x = (from.x + to.x) / 2;
     const y = (from.y + to.y) / 2;
     const yaw = Math.atan2(to.y - from.y, to.x - from.x);
+    const reservoirVariant = legoContract?.variantId ?? 'reservoir_watershed_park_v0';
+    const stoneBank = reservoirVariant === 'reservoir_watershed_park_v1';
+    const forested = reservoirVariant === 'reservoir_watershed_park_v2';
+    const earthenDam = reservoirVariant === 'reservoir_watershed_park_v3';
     return (
       <group renderOrder={RENDER_ORDER_PROPS}>
         {batch20CoreSurfaces}
@@ -1308,8 +1314,8 @@ function ParkSpecialtyStructures({
         </mesh>
         <group position={[x, y, terrainZ(x, y) + 0.48]} rotation={[0, 0, yaw]}>
           <mesh renderOrder={RENDER_ORDER_PROPS + 2}>
-            <boxGeometry args={[length, 1.8, 0.96]} />
-            <meshStandardMaterial color="#92928c" roughness={0.9} />
+            <boxGeometry args={[length, earthenDam ? 5.8 : 1.8, earthenDam ? 1.5 : 0.96]} />
+            <meshStandardMaterial color={earthenDam ? '#718154' : stoneBank ? '#817b70' : '#92928c'} roughness={0.9} />
           </mesh>
           <mesh position={[0, -1.15, 0.22]} renderOrder={RENDER_ORDER_PROPS + 3}>
             <boxGeometry args={[Math.min(8, length * 0.2), 1.0, 0.42]} />
@@ -1321,6 +1327,27 @@ function ParkSpecialtyStructures({
           })}
           <mesh position={[0, 0.85, 1.78]}><boxGeometry args={[length, 0.07, 0.07]} /><meshStandardMaterial color="#4e5656" metalness={0.5} roughness={0.55} /></mesh>
         </group>
+        {stoneBank && <>
+          {Array.from({ length: Math.min(18, Math.max(8, Math.floor((programFrame.width + programFrame.height) / 18))) }, (_, index) => {
+            const alongX = programFrame.minX + programFrame.width * (0.08 + ((index * 0.271) % 0.84));
+            const alongY = index % 2 ? waterCenter.y - waterSize.height * 0.58 : waterCenter.y + waterSize.height * 0.58;
+            return <group key={`reservoir-plane-${index}`} position={[alongX, alongY, terrainZ(alongX, alongY)]}><mesh position={[0,0,1.8]}><cylinderGeometry args={[.16,.23,3.6,8]}/><meshStandardMaterial color="#59483b" roughness={.96}/></mesh><mesh position={[0,0,4.2]} scale={[1.1,1.0,.9]}><dodecahedronGeometry args={[1.45,1]}/><meshStandardMaterial color="#59704b" roughness={.99}/></mesh></group>;
+          })}
+          <group position={[waterCenter.x-waterSize.width*.43,waterCenter.y+waterSize.height*.42,terrainZ(waterCenter.x-waterSize.width*.43,waterCenter.y+waterSize.height*.42)]}><mesh position={[0,0,1.4]}><boxGeometry args={[4.5,3.4,2.8]}/><meshStandardMaterial color="#8b8376" roughness={.96}/></mesh><mesh position={[0,0,3.1]} rotation={[0,0,Math.PI/4]}><coneGeometry args={[3.2,1.5,4]}/><meshStandardMaterial color="#6c665d" roughness={.96}/></mesh></group>
+        </>}
+        {forested && <>
+          {Array.from({ length: 28 }, (_, index) => {
+            const angle = index * Math.PI * 2 / 28;
+            const px = waterCenter.x + Math.cos(angle) * waterSize.width * .63;
+            const py = waterCenter.y + Math.sin(angle) * waterSize.height * .68;
+            return <group key={`reservoir-tree-${index}`} position={[px,py,terrainZ(px,py)]}><mesh position={[0,0,1.7]}><cylinderGeometry args={[.16,.24,3.4,8]}/><meshStandardMaterial color="#584638"/></mesh><mesh position={[0,0,4.2]} scale={[1.25,1.15,1]}><dodecahedronGeometry args={[1.5,1]}/><meshStandardMaterial color={index%2?'#46664a':'#58734e'} roughness={.99}/></mesh></group>;
+          })}
+          {[-1,1].map((side)=><group key={`launch-${side}`} position={[waterCenter.x+side*waterSize.width*.40,waterCenter.y-waterSize.height*.30,terrainZ(waterCenter.x+side*waterSize.width*.40,waterCenter.y-waterSize.height*.30)+.30]} rotation={[0,0,side*.20]}><mesh><boxGeometry args={[7,2.1,.28]}/><meshStandardMaterial color="#89684a" roughness={.92}/></mesh></group>)}
+        </>}
+        {earthenDam && <>
+          {[-.32,0,.32].map((offset)=><group key={`pier-${offset}`} position={[waterCenter.x+waterSize.width*offset,waterCenter.y+waterSize.height*.36,terrainZ(waterCenter.x+waterSize.width*offset,waterCenter.y+waterSize.height*.36)+.34]}><mesh><boxGeometry args={[2.1,Math.min(10,waterSize.height*.24),.28]}/><meshStandardMaterial color="#846344" roughness={.92}/></mesh></group>)}
+          <mesh position={[waterCenter.x-waterSize.width*.32,waterCenter.y-waterSize.height*.40,terrainZ(waterCenter.x-waterSize.width*.32,waterCenter.y-waterSize.height*.40)+.08]} rotation={[-Math.PI/2,0,0]}><circleGeometry args={[Math.min(9,waterSize.width*.16),28]}/><meshStandardMaterial color="#c6ad7a" roughness={.98}/></mesh>
+        </>}
       </group>
     );
   }

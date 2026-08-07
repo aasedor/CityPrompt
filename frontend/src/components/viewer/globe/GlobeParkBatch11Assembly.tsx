@@ -7,6 +7,7 @@ import { PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS } from './publicRealmDepthPolicy'
 import type { Batch10ProgramFrame as ProgramFrame } from './GlobeParkBatch10Assembly';
 import { batch23ParkSkinForSelection } from './parkBatch23Skins';
 import { batch24ParkSkinForSelection } from './parkBatch24Skins';
+import { batch25ParkSkinForSelection } from './parkBatch25Skins';
 
 type Batch11FamilyId = Extract<ParkLegoFamilyId,
   | 'park_paris_place_royale_v2' | 'park_paris_square_tree_grid_v3' | 'park_london_circus_planted_v1'
@@ -31,7 +32,7 @@ function Bench({x,y,z,rotation=0,maps}:{x:number;y:number;z:number;rotation?:num
 function RaisedBed({x,y,z,width,depth,maps}:{x:number;y:number;z:number;width:number;depth:number;maps:Maps}) { return <group><mesh position={[x,y,z+.32]}><boxGeometry args={[width,depth,.64]}/><meshStandardMaterial {...maps} color="#ffffff" roughness={.95}/></mesh>{Array.from({length:5},(_,i)=><mesh key={i} position={[x-width*.34+i*width*.17,y,z+.82]} scale={[.45,.72,.38]}><dodecahedronGeometry args={[Math.min(.65,depth*.28),1]}/><meshStandardMaterial color={['#4c7047','#667a45','#8a6b43'][i%3]} roughness={.99}/></mesh>)}</group>; }
 
 export function GlobeParkBatch11Assembly({familyId,archetypeId,variantId,guides,frame,terrainZ}:{familyId:ParkLegoFamilyId;archetypeId?:string;variantId?:string;guides:ParkGroundGuide[];frame:ProgramFrame;terrainZ:(x:number,y:number)=>number}) {
-  const id=familyId as Batch11FamilyId, variantSkin=batch24ParkSkinForSelection(archetypeId??'',variantId??'')??batch23ParkSkinForSelection(archetypeId??'',variantId??''), slug=variantSkin?.slug??SLUG[id], lift=PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS; const paver=useMaps(slug,'paver'); const planting=useMaps(slug,'planting',5); const timber=useMaps(slug,'timber'); const safety=useMaps(slug,'safety');
+  const id=familyId as Batch11FamilyId, variantSkin=batch25ParkSkinForSelection(archetypeId??'',variantId??'')??batch24ParkSkinForSelection(archetypeId??'',variantId??'')??batch23ParkSkinForSelection(archetypeId??'',variantId??''), slug=variantSkin?.slug??SLUG[id], lift=PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS; const paver=useMaps(slug,'paver'); const planting=useMaps(slug,'planting',5); const timber=useMaps(slug,'timber'); const safety=useMaps(slug,'safety');
   const cx=frame.minX+frame.width/2,cy=frame.minY+frame.height/2,base=terrainZ(cx,cy)+lift;
   if (id==='park_paris_place_royale_v2'&&variantId&&variantId!=='parisian_place_v2') {
     const statue=variantId==='parisian_place_v1',cafe=variantId==='parisian_place_v3';
@@ -94,6 +95,47 @@ export function GlobeParkBatch11Assembly({familyId,archetypeId,variantId,guides,
       {boardwalk&&<><Segment a={{x:a.x,y:a.y+1.8}} b={{x:b.x,y:b.y+1.8}} width={.10} z={base+1.12} color="#3f4542"/><Segment a={{x:a.x,y:a.y-1.8}} b={{x:b.x,y:b.y-1.8}} width={.10} z={base+1.12} color="#3f4542"/></>}
       {Array.from({length:summer?14:18},(_,i)=>{const x=frame.minX+frame.width*(.05+((i*.293)%.90)),y=frame.minY+frame.height*(.06+((i*.541)%.88));if(Math.abs((y-a.y)-((b.y-a.y)*(x-a.x)/(b.x-a.x)))<4)return null;return <Tree key={i} x={x} y={y} z={terrainZ(x,y)+lift+.2} coastal/>})}
       {Array.from({length:4},(_,i)=>{const x=frame.minX+frame.width*(.18+i*.64/3),y=a.y+(b.y-a.y)*(x-a.x)/(b.x-a.x);return <Bench key={i} x={x} y={y+(i%2?2.4:-2.4)} z={terrainZ(x,y)+lift+.22} rotation={Math.atan2(b.y-a.y,b.x-a.x)} maps={timber}/>})}
+    </group>;
+  }
+  if (id==='park_vancouver_seawall_cycle_v2'&&variantId&&variantId!=='vancouver_seawall_v2') {
+    const planted=variantId==='vancouver_seawall_v3',benchBay=variantId==='vancouver_seawall_v1';
+    const waterY=frame.minY+frame.height*.10,walkY=frame.minY+frame.height*.28,edgeY=frame.minY+frame.height*.48;
+    return <group>
+      <mesh position={[cx,walkY,base+.13]}><boxGeometry args={[frame.width*.94,Math.min(9,frame.height*.22),.26]}/><meshStandardMaterial {...paver} color="#ffffff" roughness={.94}/></mesh>
+      <Segment a={{x:frame.minX+frame.width*.03,y:waterY}} b={{x:frame.maxX-frame.width*.03,y:waterY}} width={.65} z={base+.25} maps={paver} color="#ffffff"/>
+      {planted&&<mesh position={[cx,edgeY,base+.20]}><boxGeometry args={[frame.width*.90,Math.min(7,frame.height*.17),.40]}/><meshStandardMaterial {...planting} color="#ffffff" roughness={.98}/></mesh>}
+      {Array.from({length:Math.min(10,Math.max(4,Math.floor(frame.width/12)))},(_,i)=>{const x=frame.minX+frame.width*(.08+i*.84/Math.max(1,Math.min(9,Math.floor(frame.width/12))));const y=benchBay?walkY+(i%2?2.3:-2.3):edgeY;const z=terrainZ(x,y)+lift;return <group key={i}>{planted&&i%2===0?<Tree x={x} y={y} z={z+.25}/>:<Bench x={x} y={y} z={z+.25} maps={timber}/>}</group>})}
+    </group>;
+  }
+  if (id==='park_vancouver_beach_pavilion_v0'&&variantId&&variantId!=='vancouver_beach_park_v0') {
+    const glazed=variantId==='vancouver_beach_park_v2',garden=variantId==='vancouver_beach_park_v3';
+    const px=frame.maxX-frame.width*.24,py=frame.maxY-frame.height*.30,pz=terrainZ(px,py)+lift+.22;
+    return <group>
+      <mesh position={[cx,cy,base+.10]}><boxGeometry args={[frame.width*.94,frame.height*.90,.20]}/><meshStandardMaterial {...planting} color="#ffffff" roughness={.98}/></mesh>
+      <Segment a={{x:frame.minX+frame.width*.05,y:frame.minY+frame.height*.25}} b={{x:frame.maxX-frame.width*.05,y:frame.maxY-frame.height*.28}} width={3.2} z={base+.21} maps={paver} color="#ffffff"/>
+      <group position={[px,py,pz]}>{[-1,1].flatMap(sx=>[-1,1].map(sy=><mesh key={`${sx}-${sy}`} position={[sx*3.2,sy*2.2,1.7]}><boxGeometry args={[.25,.25,3.4]}/><meshStandardMaterial {...timber} color="#ffffff"/></mesh>))}<mesh position={[0,0,3.55]}><boxGeometry args={[7.2,5.2,.32]}/><meshStandardMaterial {...timber} color="#ffffff"/></mesh>{glazed&&<mesh position={[0,0,1.75]}><boxGeometry args={[6.5,4.4,3.1]}/><meshPhysicalMaterial color="#b6c9c7" transparent opacity={.42} roughness={.15}/></mesh>}</group>
+      {Array.from({length:garden?9:5},(_,i)=>{const x=frame.minX+frame.width*(.08+((i*.31)%.66)),y=frame.minY+frame.height*(.12+((i*.53)%.76));const z=terrainZ(x,y)+lift;return garden?<RaisedBed key={i} x={x} y={y} z={z+.2} width={3.6} depth={1.5} maps={timber}/>:<Tree key={i} x={x} y={y} z={z}/>})}
+    </group>;
+  }
+  if (id==='park_toronto_ravine_creek_v1'&&variantId&&variantId!=='toronto_ravine_v1') {
+    const spring=variantId==='toronto_ravine_v0',winter=variantId==='toronto_ravine_v3';
+    const a={x:frame.minX+frame.width*.10,y:frame.minY+frame.height*.22},b={x:frame.maxX-frame.width*.08,y:frame.maxY-frame.height*.24};
+    return <group>
+      <mesh position={[cx,cy,base+.09]}><boxGeometry args={[frame.width*.94,frame.height*.90,.18]}/><meshStandardMaterial {...planting} color="#ffffff" roughness={.99}/></mesh>
+      <Segment a={a} b={b} width={Math.min(6,frame.height*.14)} z={base+.18} color={winter?'#b9cad0':spring?'#7e7163':'#557f80'}/>
+      <Segment a={{x:a.x,y:a.y+5}} b={{x:b.x,y:b.y+5}} width={2.6} z={base+.22} maps={paver} color="#ffffff"/>
+      {Array.from({length:22},(_,i)=>{const x=frame.minX+frame.width*(.04+((i*.293)%.92)),y=frame.minY+frame.height*(.04+((i*.541)%.92));const z=terrainZ(x,y)+lift;return <group key={i}><Tree x={x} y={y} z={z}/>{!winter&&<mesh position={[x,y,z+4.0]} scale={[spring?.68:1.05,spring?.62:.92,.72]}><dodecahedronGeometry args={[1.25,1]}/><meshStandardMaterial color={spring?'#88a36d':['#b65e32','#d59133','#8c4930'][i%3]} roughness={.99}/></mesh>}</group>})}
+      {spring&&Array.from({length:18},(_,i)=>{const x=frame.minX+frame.width*(.08+((i*.37)%.84)),y=frame.minY+frame.height*(.08+((i*.61)%.84));return <mesh key={`f-${i}`} position={[x,y,terrainZ(x,y)+lift+.35]}><sphereGeometry args={[.16,7,5]}/><meshStandardMaterial color="#f0eee3"/></mesh>})}
+    </group>;
+  }
+  if (id==='park_toronto_urban_market_v1'&&variantId&&variantId!=='toronto_urban_square_v1') {
+    const rink=variantId==='toronto_urban_square_v0',modern=variantId==='toronto_urban_square_v2';
+    return <group>
+      <mesh position={[cx,cy,base+.11]}><boxGeometry args={[frame.width*.94,frame.height*.90,.22]}/><meshStandardMaterial {...paver} color="#ffffff" roughness={.92}/></mesh>
+      {rink&&<><mesh position={[cx,cy,base+.25]}><boxGeometry args={[frame.width*.58,frame.height*.42,.12]}/><meshPhysicalMaterial color="#b8d4dc" transparent opacity={.88} roughness={.12}/></mesh><mesh position={[cx,cy,base+.42]}><boxGeometry args={[frame.width*.61,frame.height*.45,.14]}/><meshStandardMaterial color="#d9d8d0" wireframe/></mesh></>}
+      {modern&&<><mesh position={[cx,cy,base+.25]}><boxGeometry args={[frame.width*.55,frame.height*.35,.10]}/><meshPhysicalMaterial color="#5d858b" transparent opacity={.80} roughness={.14}/></mesh><mesh position={[cx,cy+frame.height*.24,base+3.2]} rotation={[Math.PI/2,0,0]} scale={[frame.width*.26,3.2,frame.height*.08]}><torusGeometry args={[1,.08,10,40,Math.PI]}/><meshStandardMaterial {...paver} color="#ffffff"/></mesh></>}
+      {!rink&&!modern&&Array.from({length:6},(_,i)=>{const cols=3,x=frame.minX+frame.width*(.25+(i%cols)*.25),y=frame.minY+frame.height*(.30+Math.floor(i/cols)*.38),z=terrainZ(x,y)+lift;return <group key={i}><RaisedBed x={x} y={y} z={z+.22} width={Math.min(7,frame.width*.16)} depth={Math.min(3.2,frame.height*.11)} maps={timber}/><mesh position={[x,y,z+1.15]} scale={[2.2,.8,.55]}><dodecahedronGeometry args={[1,1]}/><meshStandardMaterial {...planting} color="#ffffff"/></mesh></group>})}
+      {Array.from({length:6},(_,i)=>{const x=frame.minX+frame.width*(.08+i*.84/5),y=frame.maxY-frame.height*.10;return <Bench key={i} x={x} y={y} z={terrainZ(x,y)+lift+.22} maps={timber}/>})}
     </group>;
   }
   const paths:ReactNode[]=[]; guides.forEach((g,gi)=>{if(g.kind==='polyline'&&g.points){const ps=g.points.map(([x,y])=>({x:frame.minX+frame.width*x,y:frame.maxY-frame.height*y}));ps.slice(0,-1).forEach((p,i)=>paths.push(<Segment key={`p-${gi}-${i}`} a={p} b={ps[i+1]} width={g.strokeWidthM??3} z={Math.max(terrainZ(p.x,p.y),terrainZ(ps[i+1].x,ps[i+1].y))+lift} maps={g.color==='#587f82'?undefined:paver} color={g.color}/>));}else if(g.kind==='axis'){const c=pt(g,frame),len=Math.max(g.widthM??0,g.heightM??0,g.width*frame.width,g.height*frame.height),a=(g.rotationDeg??90)*Math.PI/180;const p1={x:c.x-Math.cos(a)*len/2,y:c.y-Math.sin(a)*len/2},p2={x:c.x+Math.cos(a)*len/2,y:c.y+Math.sin(a)*len/2};paths.push(<Segment key={`a-${gi}`} a={p1} b={p2} width={g.strokeWidthM??3} z={Math.max(terrainZ(p1.x,p1.y),terrainZ(p2.x,p2.y))+lift} maps={paver} color={g.color}/>);}});

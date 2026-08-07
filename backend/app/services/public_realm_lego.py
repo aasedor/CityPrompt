@@ -2609,6 +2609,87 @@ def _apply_batch24_variant_closures(
 _CAPABILITIES = tuple(_apply_batch24_variant_closures(capability) for capability in _CAPABILITIES)
 
 
+_BATCH25_VARIANT_CLOSURES: dict[
+    str,
+    tuple[tuple[str, str, str, str, str], ...],
+] = {
+    "park_vancouver_seawall_cycle_v2": (
+        ("vancouver_seawall", "vancouver_seawall_v0", "vancouver_seawall_v0_promenade_skin", "vancouver_seawall_promenade_v0", "seawall_stone_promenade_program_v1"),
+        ("vancouver_seawall", "vancouver_seawall_v1", "vancouver_seawall_v1_bench_skin", "vancouver_seawall_bench_v1", "seawall_bench_bay_program_v1"),
+        ("vancouver_seawall", "vancouver_seawall_v3", "vancouver_seawall_v3_esplanade_skin", "vancouver_seawall_esplanade_v3", "seawall_planted_esplanade_program_v1"),
+    ),
+    "park_vancouver_beach_pavilion_v0": (
+        ("vancouver_beach_park", "vancouver_beach_park_v1", "vancouver_beach_park_v1_brick_pavilion_skin", "vancouver_beach_brick_v1", "beach_brick_pavilion_program_v1"),
+        ("vancouver_beach_park", "vancouver_beach_park_v2", "vancouver_beach_park_v2_glazed_pavilion_skin", "vancouver_beach_glazed_v2", "beach_glazed_pavilion_program_v1"),
+        ("vancouver_beach_park", "vancouver_beach_park_v3", "vancouver_beach_park_v3_waterfront_garden_skin", "vancouver_beach_waterfront_v3", "beach_waterfront_garden_program_v1"),
+    ),
+    "park_toronto_ravine_creek_v1": (
+        ("toronto_ravine", "toronto_ravine_v0", "toronto_ravine_v0_spring_skin", "toronto_ravine_spring_v0", "spring_trillium_creek_program_v1"),
+        ("toronto_ravine", "toronto_ravine_v2", "toronto_ravine_v2_autumn_skin", "toronto_ravine_autumn_v2", "autumn_maple_creek_program_v1"),
+        ("toronto_ravine", "toronto_ravine_v3", "toronto_ravine_v3_winter_skin", "toronto_ravine_winter_v3", "winter_frozen_creek_program_v1"),
+    ),
+    "park_toronto_urban_market_v1": (
+        ("toronto_urban_square", "toronto_urban_square_v0", "toronto_urban_square_v0_winter_rink_skin", "toronto_square_winter_v0", "winter_civic_rink_program_v1"),
+        ("toronto_urban_square", "toronto_urban_square_v2", "toronto_urban_square_v2_modernist_pool_skin", "toronto_square_modernist_v2", "modernist_reflecting_pool_program_v1"),
+        ("toronto_urban_square", "toronto_urban_square_v3", "toronto_urban_square_v3_rain_garden_skin", "toronto_square_rain_garden_v3", "corten_rain_garden_plaza_program_v1"),
+    ),
+    "park_olmsted_multilandscape_v3": (
+        ("picturesque_olmsted_park", "picturesque_olmsted_park_v0", "picturesque_olmsted_park_v0_heath_skin", "olmsted_heath_v0", "wild_heath_pond_program_v1"),
+        ("picturesque_olmsted_park", "picturesque_olmsted_park_v1", "picturesque_olmsted_park_v1_lookout_skin", "olmsted_lookout_v1", "hillside_carriage_lookout_program_v1"),
+        ("picturesque_olmsted_park", "picturesque_olmsted_park_v2", "picturesque_olmsted_park_v2_meadow_ravine_skin", "olmsted_meadow_ravine_v2", "meadow_ravine_lake_program_v1"),
+    ),
+    "park_reclaimed_wharf_v0": (
+        ("reclaimed_industrial_park", "reclaimed_industrial_park_v1", "reclaimed_industrial_park_v1_gasworks_skin", "reclaimed_gasworks_v1", "gasometer_kite_mound_program_v1"),
+        ("reclaimed_industrial_park", "reclaimed_industrial_park_v2", "reclaimed_industrial_park_v2_colliery_skin", "reclaimed_colliery_v2", "headframe_conveyor_meadow_program_v1"),
+        ("reclaimed_industrial_park", "reclaimed_industrial_park_v3", "reclaimed_industrial_park_v3_steelworks_skin", "reclaimed_steelworks_v3", "blast_furnace_dive_basin_program_v1"),
+    ),
+    "park_quarry_tier_cascade_v2": (
+        ("quarry_sunken_garden_park", "quarry_sunken_garden_park_v0", "quarry_sunken_garden_park_v0_sculpture_bowl_skin", "quarry_sculpture_bowl_v0", "sunken_sculpture_bowl_program_v1"),
+        ("quarry_sunken_garden_park", "quarry_sunken_garden_park_v1", "quarry_sunken_garden_park_v1_quarry_lake_skin", "quarry_lake_v1", "quarry_lake_beach_program_v1"),
+        ("quarry_sunken_garden_park", "quarry_sunken_garden_park_v3", "quarry_sunken_garden_park_v3_show_garden_skin", "quarry_show_garden_v3", "concentric_show_garden_program_v1"),
+    ),
+    "park_hilltop_viewpoint_v3": (
+        ("hilltop_topographic_park", "hilltop_topographic_park_v0", "hilltop_topographic_park_v0_cypress_skin", "hilltop_cypress_v0", "cypress_stone_terrace_program_v1"),
+        ("hilltop_topographic_park", "hilltop_topographic_park_v1", "hilltop_topographic_park_v1_switchback_skin", "hilltop_switchback_v1", "urban_switchback_belvedere_program_v1"),
+        ("hilltop_topographic_park", "hilltop_topographic_park_v2", "hilltop_topographic_park_v2_folly_skin", "hilltop_folly_v2", "rocky_folly_bridge_program_v1"),
+    ),
+    "park_estate_oak_picnic_v1": (
+        ("estate_picnic_grove", "estate_picnic_grove_v0", "estate_picnic_grove_v0_pine_creek_skin", "estate_pine_creek_v0", "pine_creek_picnic_program_v1"),
+        ("estate_picnic_grove", "estate_picnic_grove_v2", "estate_picnic_grove_v2_meadow_pavilion_skin", "estate_meadow_pavilion_v2", "meadow_pavilion_picnic_program_v1"),
+        ("estate_picnic_grove", "estate_picnic_grove_v3", "estate_picnic_grove_v3_regional_plain_skin", "estate_regional_plain_v3", "regional_picnic_plain_program_v1"),
+    ),
+    "park_water_ecology": (
+        ("reservoir_watershed_park", "reservoir_watershed_park_v1", "reservoir_watershed_park_v1_stone_bank_skin", "reservoir_stone_bank_v1", "stone_bank_running_loop_program_v1"),
+        ("reservoir_watershed_park", "reservoir_watershed_park_v2", "reservoir_watershed_park_v2_forested_skin", "reservoir_forested_v2", "forested_shore_boat_launch_program_v1"),
+        ("reservoir_watershed_park", "reservoir_watershed_park_v3", "reservoir_watershed_park_v3_earthen_dam_skin", "reservoir_earthen_dam_v3", "earthen_dam_pier_loop_program_v1"),
+    ),
+}
+
+
+def _apply_batch25_variant_closures(
+    capability: PublicRealmFamilyCapability,
+) -> PublicRealmFamilyCapability:
+    descriptors = _BATCH25_VARIANT_CLOSURES.get(capability.family_id, ())
+    if not descriptors:
+        return capability
+    additions: list[PublicRealmSelectionCapability] = []
+    for archetype_id, variant_id, appearance_kit_id, planting_structure, program_component in descriptors:
+        base = next(selection for selection in capability.selections if selection.archetype_id == archetype_id)
+        additions.append(_selection(
+            archetype_id,
+            variant_id,
+            profile_id=base.profile_id,
+            appearance_kit_id=appearance_kit_id,
+            planting_structure=planting_structure,
+            compatibility=base.compatibility,
+            components=(*base.component_set_ids, program_component),
+        ))
+    return capability.model_copy(update={"selections": (*capability.selections, *additions)})
+
+
+_CAPABILITIES = tuple(_apply_batch25_variant_closures(capability) for capability in _CAPABILITIES)
+
+
 def public_realm_capability_fingerprint(
     capability: PublicRealmFamilyCapability,
 ) -> str:

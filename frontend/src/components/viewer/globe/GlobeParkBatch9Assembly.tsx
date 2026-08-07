@@ -7,6 +7,7 @@ import { PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS } from './publicRealmDepthPolicy'
 import { batch22ParkSkinForSelection } from './parkBatch22Skins';
 import { batch23ParkSkinForSelection } from './parkBatch23Skins';
 import { batch24ParkSkinForSelection } from './parkBatch24Skins';
+import { batch25ParkSkinForSelection } from './parkBatch25Skins';
 
 export interface Batch9ProgramFrame { minX: number; maxX: number; minY: number; maxY: number; width: number; height: number }
 interface Point { x: number; y: number }
@@ -73,7 +74,8 @@ function WaterJet({ x, y, z, height }: { x: number; y: number; z: number; height
 
 export function GlobeParkBatch9Assembly({ familyId, archetypeId, variantId, guides, frame, terrainZ }: { familyId: ParkLegoFamilyId; archetypeId?: string; variantId?: string; guides: ParkGroundGuide[]; frame: Batch9ProgramFrame; terrainZ: (x: number, y: number) => number }) {
   const lift = PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS;
-  const selectedSkin = batch24ParkSkinForSelection(archetypeId ?? '', variantId ?? '')
+  const selectedSkin = batch25ParkSkinForSelection(archetypeId ?? '', variantId ?? '')
+    ?? batch24ParkSkinForSelection(archetypeId ?? '', variantId ?? '')
     ?? batch23ParkSkinForSelection(archetypeId ?? '', variantId ?? '')
     ?? batch22ParkSkinForSelection(archetypeId ?? '', variantId ?? '');
   const slug = selectedSkin?.slug ?? SKIN_SLUG[familyId as Batch9FamilyId];
@@ -161,9 +163,62 @@ export function GlobeParkBatch9Assembly({ familyId, archetypeId, variantId, guid
     return <group>{beds.map((bed,i)=>{const c=center(bed,frame);const s=resolveParkGuideDimensionsM(bed,frame);const base=terrainZ(c.x,c.y)+lift;return <group key={i}><mesh position={[c.x,c.y,base+.18]} scale={[s.width/2,s.height/2,1]}><cylinderGeometry args={[1,1,.36,24]} /><meshStandardMaterial {...plantingMaps} color="#5b6845" roughness={.98} /></mesh>{Array.from({length:18},(_,j)=>{const a=j*Math.PI*2/18;return <mesh key={j} position={[c.x+Math.cos(a)*s.width*.34,c.y+Math.sin(a)*s.height*.34,base+.62]}><sphereGeometry args={[.28,8,6]} /><meshStandardMaterial color={['#9f4055','#d58e9d','#ece0d0'][j%3]} roughness={.9} /></mesh>})}</group>})}<group position={[x,y,z]}>{Array.from({length:8},(_,i)=>{const a=i*Math.PI/4;return <mesh key={i} position={[Math.cos(a)*2.2,Math.sin(a)*2.2,1.7]}><cylinderGeometry args={[.10,.12,3.4,10]} /><meshStandardMaterial color="#e3dcc9" roughness={.82} /></mesh>})}<mesh position={[0,0,3.5]}><coneGeometry args={[3.0,1.5,8]} /><meshStandardMaterial {...timberMaps} color="#dad0b9" roughness={.82} /></mesh><mesh position={[0,0,.28]}><cylinderGeometry args={[2.8,2.8,.56,24]} /><meshStandardMaterial {...paverMaps} color="#aaa08e" roughness={.9} /></mesh></group></group>;
   }
 
+  if (familyId === 'park_olmsted_multilandscape_v3' && variantId && variantId !== 'picturesque_olmsted_park_v3') {
+    const cx=frame.minX+frame.width/2,cy=frame.minY+frame.height/2,base=terrainZ(cx,cy)+lift;
+    if (variantId === 'picturesque_olmsted_park_v0') {
+      const pondX=frame.minX+frame.width*.73,pondY=frame.minY+frame.height*.28;
+      return <group>
+        <mesh position={[cx,cy,base+.08]} scale={[frame.width*.34,frame.height*.30,1]}><cylinderGeometry args={[1,1,.16,48]}/><meshStandardMaterial {...plantingMaps} color="#ffffff" roughness={.99}/></mesh>
+        <mesh position={[pondX,pondY,terrainZ(pondX,pondY)+lift+.12]} scale={[frame.width*.11,frame.height*.09,1]}><cylinderGeometry args={[1,1,.16,32]}/><meshPhysicalMaterial color="#527b7d" transparent opacity={.8} roughness={.18}/></mesh>
+        {[[.08,.18,.43,.44],[.43,.44,.68,.32],[.68,.32,.90,.70]].map((p,i)=>{const from={x:frame.minX+frame.width*p[0],y:frame.minY+frame.height*p[1]},to={x:frame.minX+frame.width*p[2],y:frame.minY+frame.height*p[3]};return <Segment key={i} from={from} to={to} width={2.1} height={.16} z={Math.max(terrainZ(from.x,from.y),terrainZ(to.x,to.y))+lift+.14} maps={paverMaps} color="#ffffff"/>})}
+        {Array.from({length:20},(_,i)=>{const a=i*Math.PI*2/20,rr=i%2?.42:.47,x=cx+Math.cos(a)*frame.width*rr,y=cy+Math.sin(a)*frame.height*rr;return <Tree key={i} x={x} y={y} z={terrainZ(x,y)+lift} scale={.65+(i%4)*.07}/>})}
+      </group>;
+    }
+    if (variantId === 'picturesque_olmsted_park_v1') {
+      const points=[[.08,.12],[.78,.22],[.24,.38],[.82,.54],[.30,.70],[.70,.86]].map(([x,y])=>({x:frame.minX+frame.width*x,y:frame.minY+frame.height*y}));
+      const tx=frame.minX+frame.width*.70,ty=frame.minY+frame.height*.86,tz=terrainZ(tx,ty)+lift+1.1;
+      return <group>
+        {points.slice(0,-1).map((p,i)=><Segment key={i} from={p} to={points[i+1]} width={3.4} height={.22} z={Math.max(terrainZ(p.x,p.y),terrainZ(points[i+1].x,points[i+1].y))+lift+i*.17} maps={paverMaps} color="#ffffff"/>)}
+        <mesh position={[tx,ty,tz]}><boxGeometry args={[Math.min(22,frame.width*.22),Math.min(12,frame.height*.14),2.2]}/><meshStandardMaterial {...paverMaps} color="#ffffff" roughness={.95}/></mesh>
+        <group position={[tx,ty,tz+1.1]}>{[-1,1].flatMap(sx=>[-1,1].map(sy=><mesh key={`${sx}-${sy}`} position={[sx*3.4,sy*2.2,1.6]}><boxGeometry args={[.25,.25,3.2]}/><meshStandardMaterial {...timberMaps} color="#ffffff"/></mesh>))}<mesh position={[0,0,3.35]}><boxGeometry args={[8,5.4,.34]}/><meshStandardMaterial {...timberMaps} color="#ffffff"/></mesh></group>
+        {Array.from({length:28},(_,i)=>{const x=frame.minX+frame.width*(.04+((i*.347)%.92)),y=frame.minY+frame.height*(.04+((i*.619)%.92));return <Tree key={i} x={x} y={y} z={terrainZ(x,y)+lift} scale={.58+(i%4)*.08}/>})}
+      </group>;
+    }
+    const lakeX=frame.minX+frame.width*.72,lakeY=frame.minY+frame.height*.35;
+    return <group>
+      <mesh position={[frame.minX+frame.width*.30,frame.minY+frame.height*.62,base+.09]} scale={[frame.width*.24,frame.height*.23,1]}><cylinderGeometry args={[1,1,.18,48]}/><meshStandardMaterial {...plantingMaps} color="#ffffff" roughness={.99}/></mesh>
+      <mesh position={[lakeX,lakeY,terrainZ(lakeX,lakeY)+lift+.10]} scale={[frame.width*.19,frame.height*.14,1]}><cylinderGeometry args={[1,1,.16,48]}/><meshPhysicalMaterial color="#517b80" transparent opacity={.82}/></mesh>
+      <Segment from={{x:frame.minX+frame.width*.48,y:frame.minY+frame.height*.20}} to={{x:frame.minX+frame.width*.67,y:frame.minY+frame.height*.50}} width={2.8} height={.28} z={base+.48} maps={timberMaps} color="#ffffff"/>
+      {Array.from({length:24},(_,i)=>{const x=frame.minX+frame.width*(.05+((i*.383)%.9)),y=frame.minY+frame.height*(.05+((i*.571)%.9));if(x<frame.minX+frame.width*.52&&y>frame.minY+frame.height*.40)return null;return <Tree key={i} x={x} y={y} z={terrainZ(x,y)+lift} scale={.6+(i%3)*.08}/>})}
+    </group>;
+  }
+
   if (familyId === 'park_olmsted_multilandscape_v3') {
     const pond=guides.find((g)=>g.kind==='ellipse'&&g.color==='#5f8585');const bridge=guides.find((g)=>g.kind==='polyline');const bridgePoints=bridge?route(bridge,frame):[];const treeCount=Math.min(28,Math.max(10,Math.floor(frame.width*frame.height/900)));
     return <group>{pond&&(()=>{const c=center(pond,frame);const s=resolveParkGuideDimensionsM(pond,frame);const z=terrainZ(c.x,c.y)+lift;return <mesh position={[c.x,c.y,z+.10]} scale={[s.width/2,s.height/2,1]}><cylinderGeometry args={[1,1,.20,36]} /><meshPhysicalMaterial color="#587f82" transparent opacity={.78} roughness={.12} /></mesh>})()}{bridgePoints.slice(0,-1).map((p,i)=><Segment key={i} from={p} to={bridgePoints[i+1]} width={2.5} height={.32} z={Math.max(terrainZ(p.x,p.y),terrainZ(bridgePoints[i+1].x,bridgePoints[i+1].y))+lift+.38} maps={timberMaps} color="#755840" />)}{Array.from({length:treeCount},(_,i)=>{const x=frame.minX+frame.width*(.06+((i*.367)%0.88));const y=frame.minY+frame.height*(.06+((i*.613)%0.88));if(x<frame.minX+frame.width*.47&&y>frame.minY+frame.height*.36&&y<frame.minY+frame.height*.68)return null;return <Tree key={i} x={x} y={y} z={terrainZ(x,y)+lift} scale={.65+(i%4)*.08}/>})}</group>;
+  }
+
+  if (familyId === 'park_hilltop_viewpoint_v3' && variantId && variantId !== 'hilltop_topographic_park_v3') {
+    const cx=frame.minX+frame.width/2,cy=frame.minY+frame.height/2,base=terrainZ(cx,cy)+lift,r=Math.min(frame.width,frame.height)*.30;
+    if (variantId === 'hilltop_topographic_park_v0') return <group>
+      {[1,.72,.45].map((scale,i)=><mesh key={scale} position={[cx,cy,base+i*.58]} scale={[r*scale,r*scale*.82,1]}><ringGeometry args={[.70,1,44]}/><meshStandardMaterial {...paverMaps} color="#ffffff" roughness={.96}/></mesh>)}
+      <mesh position={[cx,cy,base+1.95]}><cylinderGeometry args={[r*.22,r*.22,.24,32]}/><meshStandardMaterial {...paverMaps} color="#ffffff"/></mesh>
+      {Array.from({length:14},(_,i)=>{const a=i*Math.PI*2/14,rr=r*(i%2?.78:1.05),x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr*.82;return <group key={i} position={[x,y,terrainZ(x,y)+lift]}><mesh position={[0,0,2.8]}><cylinderGeometry args={[.12,.18,5.6,8]}/><meshStandardMaterial color="#4e4439"/></mesh><mesh position={[0,0,5.6]}><coneGeometry args={[.72,4.8,9]}/><meshStandardMaterial {...plantingMaps} color="#ffffff"/></mesh></group>})}
+    </group>;
+    if (variantId === 'hilltop_topographic_park_v1') {
+      const ps=[[.08,.08],[.82,.18],[.18,.34],[.80,.50],[.22,.67],[.70,.84]].map(([x,y])=>({x:frame.minX+frame.width*x,y:frame.minY+frame.height*y}));
+      const tx=ps[ps.length-1].x,ty=ps[ps.length-1].y,tz=terrainZ(tx,ty)+lift+1.6;
+      return <group>{ps.slice(0,-1).map((p,i)=><Segment key={i} from={p} to={ps[i+1]} width={3} height={.20} z={Math.max(terrainZ(p.x,p.y),terrainZ(ps[i+1].x,ps[i+1].y))+lift+i*.20} maps={paverMaps} color="#ffffff"/>)}<mesh position={[tx,ty,tz]}><cylinderGeometry args={[4.8,5.2,.55,8]}/><meshStandardMaterial {...paverMaps} color="#ffffff"/></mesh><mesh position={[tx,ty,tz+5]}><cylinderGeometry args={[1.6,2.4,9.5,12]}/><meshStandardMaterial {...safetyMaps} color="#ffffff" roughness={.9}/></mesh>{Array.from({length:18},(_,i)=>{const x=frame.minX+frame.width*(.06+((i*.31)%.88)),y=frame.minY+frame.height*(.06+((i*.57)%.88));return <Tree key={i} x={x} y={y} z={terrainZ(x,y)+lift} scale={.62} conifer/>})}</group>;
+    }
+    const rockX=cx+frame.width*.08,rockY=cy+frame.height*.06;
+    return <group>
+      {[[-2.1,-.8,3.0,2.5,3.8],[1.8,-.5,2.7,2.2,4.6],[0,1.5,3.3,2.6,5.2]].map(([ox,oy,sx,sy,sz],i)=><mesh key={i} position={[rockX+ox,rockY+oy,base+sz*.62]} scale={[sx,sy,sz]} rotation={[.1*i,.08*i,.55*i]}><dodecahedronGeometry args={[1,1]}/><meshStandardMaterial {...safetyMaps} color="#ffffff" roughness={.99}/></mesh>)}
+      <mesh position={[rockX,rockY,base+7.9]}><cylinderGeometry args={[3.5,4.1,.7,16]}/><meshStandardMaterial {...paverMaps} color="#ffffff"/></mesh>
+      {Array.from({length:8},(_,i)=>{const a=i*Math.PI/4;return <mesh key={i} position={[rockX+Math.cos(a)*2.65,rockY+Math.sin(a)*2.65,base+10.15]}><cylinderGeometry args={[.15,.18,4.4,10]}/><meshStandardMaterial color="#e1dccb"/></mesh>})}
+      <mesh position={[rockX,rockY,base+12.45]}><coneGeometry args={[4.0,1.8,8]}/><meshStandardMaterial {...paverMaps} color="#ffffff"/></mesh>
+      <Segment from={{x:frame.minX+frame.width*.22,y:frame.minY+frame.height*.46}} to={{x:rockX,y:rockY}} width={2.1} height={.25} z={base+5.0} maps={safetyMaps} color="#ffffff"/>
+      <mesh position={[frame.minX+frame.width*.24,frame.minY+frame.height*.23,base+.12]} scale={[frame.width*.14,frame.height*.10,1]}><cylinderGeometry args={[1,1,.16,36]}/><meshPhysicalMaterial color="#507b80" transparent opacity={.8}/></mesh>
+    </group>;
   }
 
   if (familyId === 'park_hilltop_viewpoint_v3') {

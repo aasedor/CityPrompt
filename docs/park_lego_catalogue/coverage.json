@@ -8,22 +8,22 @@
     "catalogueParents": 130,
     "catalogueVariants": 520,
     "completeExactParents": 0,
-    "completeMappedParents": 103,
-    "partialParents": 27,
+    "completeMappedParents": 113,
+    "partialParents": 17,
     "uncoveredParents": 0,
-    "exactVariants": 29,
-    "sharedMappedVariants": 410,
-    "unmappedVariants": 81,
+    "exactVariants": 20,
+    "sharedMappedVariants": 449,
+    "unmappedVariants": 51,
     "parkCapabilities": 127
   },
   "categorySummary": {
-    "civic_plazas:complete_mapped": 16,
-    "civic_plazas:partial": 3,
+    "civic_plazas:complete_mapped": 17,
+    "civic_plazas:partial": 2,
     "custom:complete_mapped": 1,
     "ecological_resilience:complete_mapped": 8,
     "ecological_resilience:partial": 4,
-    "landscape_parks:complete_mapped": 5,
-    "landscape_parks:partial": 9,
+    "landscape_parks:complete_mapped": 12,
+    "landscape_parks:partial": 2,
     "neighborhood_public_realm:complete_mapped": 12,
     "parking_areas:complete_mapped": 5,
     "social_event_spaces:complete_mapped": 7,
@@ -33,8 +33,8 @@
     "sports_recreation:complete_mapped": 24,
     "transport_infrastructure:complete_mapped": 1,
     "water_features:complete_mapped": 5,
-    "waterfront_spaces:complete_mapped": 6,
-    "waterfront_spaces:partial": 7
+    "waterfront_spaces:complete_mapped": 8,
+    "waterfront_spaces:partial": 5
   },
   "parents": [
     {
@@ -5999,30 +5999,58 @@
       "title": "Vancouver Seawall Promenade",
       "spaceType": "park",
       "aestheticCategory": "waterfront_spaces",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "vancouver_seawall_v0",
           "label": "Variant 1",
           "thumbnailUrl": "/archetypes/openspaces/vancouver-seawall-promenade/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_vancouver_seawall_cycle_v2",
+              "profileId": "vancouver-seawall-cycle-lego-v1",
+              "appearanceKitId": "vancouver_seawall_v0_promenade_skin",
+              "componentSetIds": [
+                "seawall_ground_program_v1",
+                "separated_cycle_walk_pair_v1",
+                "continuous_seawall_edge_v1",
+                "view_bench_bays_v1",
+                "seawall_stone_promenade_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "vancouver_seawall_v1",
           "label": "Variant 2",
           "thumbnailUrl": "/archetypes/openspaces/vancouver-seawall-promenade/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_vancouver_seawall_cycle_v2",
+              "profileId": "vancouver-seawall-cycle-lego-v1",
+              "appearanceKitId": "vancouver_seawall_v1_bench_skin",
+              "componentSetIds": [
+                "seawall_ground_program_v1",
+                "separated_cycle_walk_pair_v1",
+                "continuous_seawall_edge_v1",
+                "view_bench_bays_v1",
+                "seawall_bench_bay_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "vancouver_seawall_v2",
           "label": "Variant 3",
           "thumbnailUrl": "/archetypes/openspaces/vancouver-seawall-promenade/variant_2.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_vancouver_seawall_cycle_v2",
@@ -6034,7 +6062,7 @@
                 "continuous_seawall_edge_v1",
                 "view_bench_bays_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -6042,8 +6070,22 @@
           "id": "vancouver_seawall_v3",
           "label": "Variant 4",
           "thumbnailUrl": "/archetypes/openspaces/vancouver-seawall-promenade/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_vancouver_seawall_cycle_v2",
+              "profileId": "vancouver-seawall-cycle-lego-v1",
+              "appearanceKitId": "vancouver_seawall_v3_esplanade_skin",
+              "componentSetIds": [
+                "seawall_ground_program_v1",
+                "separated_cycle_walk_pair_v1",
+                "continuous_seawall_edge_v1",
+                "view_bench_bays_v1",
+                "seawall_planted_esplanade_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -6052,16 +6094,16 @@
       "title": "Vancouver Beach Park",
       "spaceType": "park",
       "aestheticCategory": "waterfront_spaces",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "vancouver_beach_park_v0",
           "label": "Variant 1",
           "thumbnailUrl": "/archetypes/openspaces/vancouver-beach-park/variant_0.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_vancouver_beach_pavilion_v0",
@@ -6073,7 +6115,7 @@
                 "drift_planting_bays_v1",
                 "modest_open_pavilion_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -6081,22 +6123,64 @@
           "id": "vancouver_beach_park_v1",
           "label": "Variant 2",
           "thumbnailUrl": "/archetypes/openspaces/vancouver-beach-park/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_vancouver_beach_pavilion_v0",
+              "profileId": "vancouver-beach-pavilion-lego-v1",
+              "appearanceKitId": "vancouver_beach_park_v1_brick_pavilion_skin",
+              "componentSetIds": [
+                "beach_park_ground_program_v1",
+                "continuous_cycle_walk_pair_v1",
+                "drift_planting_bays_v1",
+                "modest_open_pavilion_v1",
+                "beach_brick_pavilion_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "vancouver_beach_park_v2",
           "label": "Variant 3",
           "thumbnailUrl": "/archetypes/openspaces/vancouver-beach-park/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_vancouver_beach_pavilion_v0",
+              "profileId": "vancouver-beach-pavilion-lego-v1",
+              "appearanceKitId": "vancouver_beach_park_v2_glazed_pavilion_skin",
+              "componentSetIds": [
+                "beach_park_ground_program_v1",
+                "continuous_cycle_walk_pair_v1",
+                "drift_planting_bays_v1",
+                "modest_open_pavilion_v1",
+                "beach_glazed_pavilion_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "vancouver_beach_park_v3",
           "label": "Variant 4",
           "thumbnailUrl": "/archetypes/openspaces/vancouver-beach-park/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_vancouver_beach_pavilion_v0",
+              "profileId": "vancouver-beach-pavilion-lego-v1",
+              "appearanceKitId": "vancouver_beach_park_v3_waterfront_garden_skin",
+              "componentSetIds": [
+                "beach_park_ground_program_v1",
+                "continuous_cycle_walk_pair_v1",
+                "drift_planting_bays_v1",
+                "modest_open_pavilion_v1",
+                "beach_waterfront_garden_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -6105,23 +6189,37 @@
       "title": "Toronto Ravine Park",
       "spaceType": "park",
       "aestheticCategory": "landscape_parks",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "toronto_ravine_v0",
           "label": "Spring Bloom Trail",
           "thumbnailUrl": "/archetypes/openspaces/toronto-ravine-park/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_toronto_ravine_creek_v1",
+              "profileId": "toronto-ravine-creek-lego-v1",
+              "appearanceKitId": "toronto_ravine_v0_spring_skin",
+              "componentSetIds": [
+                "ravine_ground_program_v1",
+                "meandering_creek_v1",
+                "continuous_valley_trail_v1",
+                "whole_bridge_and_grove_bays_v1",
+                "spring_trillium_creek_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "toronto_ravine_v1",
           "label": "Summer Creek Shade",
           "thumbnailUrl": "/archetypes/openspaces/toronto-ravine-park/variant_1.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_toronto_ravine_creek_v1",
@@ -6133,7 +6231,7 @@
                 "continuous_valley_trail_v1",
                 "whole_bridge_and_grove_bays_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -6141,15 +6239,43 @@
           "id": "toronto_ravine_v2",
           "label": "Autumn Canopy Walk",
           "thumbnailUrl": "/archetypes/openspaces/toronto-ravine-park/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_toronto_ravine_creek_v1",
+              "profileId": "toronto-ravine-creek-lego-v1",
+              "appearanceKitId": "toronto_ravine_v2_autumn_skin",
+              "componentSetIds": [
+                "ravine_ground_program_v1",
+                "meandering_creek_v1",
+                "continuous_valley_trail_v1",
+                "whole_bridge_and_grove_bays_v1",
+                "autumn_maple_creek_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "toronto_ravine_v3",
           "label": "Winter Frost Walk",
           "thumbnailUrl": "/archetypes/openspaces/toronto-ravine-park/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_toronto_ravine_creek_v1",
+              "profileId": "toronto-ravine-creek-lego-v1",
+              "appearanceKitId": "toronto_ravine_v3_winter_skin",
+              "componentSetIds": [
+                "ravine_ground_program_v1",
+                "meandering_creek_v1",
+                "continuous_valley_trail_v1",
+                "whole_bridge_and_grove_bays_v1",
+                "winter_frozen_creek_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -6158,23 +6284,37 @@
       "title": "Toronto Urban Square",
       "spaceType": "plaza",
       "aestheticCategory": "civic_plazas",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "toronto_urban_square_v0",
           "label": "Winter Ice Rink",
           "thumbnailUrl": "/archetypes/openspaces/toronto-urban-square/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_toronto_urban_market_v1",
+              "profileId": "toronto-urban-market-lego-v1",
+              "appearanceKitId": "toronto_urban_square_v0_winter_rink_skin",
+              "componentSetIds": [
+                "toronto_square_ground_program_v1",
+                "flexible_market_centre_v1",
+                "whole_vendor_bays_v1",
+                "rain_planter_seat_bays_v1",
+                "winter_civic_rink_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "toronto_urban_square_v1",
           "label": "Summer Market Plaza",
           "thumbnailUrl": "/archetypes/openspaces/toronto-urban-square/variant_1.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_toronto_urban_market_v1",
@@ -6186,7 +6326,7 @@
                 "whole_vendor_bays_v1",
                 "rain_planter_seat_bays_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -6194,15 +6334,43 @@
           "id": "toronto_urban_square_v2",
           "label": "Nathan Phillips Style",
           "thumbnailUrl": "/archetypes/openspaces/toronto-urban-square/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_toronto_urban_market_v1",
+              "profileId": "toronto-urban-market-lego-v1",
+              "appearanceKitId": "toronto_urban_square_v2_modernist_pool_skin",
+              "componentSetIds": [
+                "toronto_square_ground_program_v1",
+                "flexible_market_centre_v1",
+                "whole_vendor_bays_v1",
+                "rain_planter_seat_bays_v1",
+                "modernist_reflecting_pool_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "toronto_urban_square_v3",
           "label": "Contemporary Redesign",
           "thumbnailUrl": "/archetypes/openspaces/toronto-urban-square/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_toronto_urban_market_v1",
+              "profileId": "toronto-urban-market-lego-v1",
+              "appearanceKitId": "toronto_urban_square_v3_rain_garden_skin",
+              "componentSetIds": [
+                "toronto_square_ground_program_v1",
+                "flexible_market_centre_v1",
+                "whole_vendor_bays_v1",
+                "rain_planter_seat_bays_v1",
+                "corten_rain_garden_plaza_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -8923,37 +9091,79 @@
       "title": "Picturesque / Olmsted Park",
       "spaceType": "park",
       "aestheticCategory": "landscape_parks",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "picturesque_olmsted_park_v0",
           "label": "Hampstead Heath Wild Fringe",
           "thumbnailUrl": "/archetypes/openspaces/picturesque-olmsted-park/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_olmsted_multilandscape_v3",
+              "profileId": "olmsted-multilandscape-lego-v1",
+              "appearanceKitId": "picturesque_olmsted_park_v0_heath_skin",
+              "componentSetIds": [
+                "olmsted_ground_program_v1",
+                "whole_landscape_rooms_v1",
+                "rustic_bow_bridge_v1",
+                "elm_mall_bays_v1",
+                "wild_heath_pond_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "picturesque_olmsted_park_v1",
           "label": "Mount Royal Hillside Lookout",
           "thumbnailUrl": "/archetypes/openspaces/picturesque-olmsted-park/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_olmsted_multilandscape_v3",
+              "profileId": "olmsted-multilandscape-lego-v1",
+              "appearanceKitId": "picturesque_olmsted_park_v1_lookout_skin",
+              "componentSetIds": [
+                "olmsted_ground_program_v1",
+                "whole_landscape_rooms_v1",
+                "rustic_bow_bridge_v1",
+                "elm_mall_bays_v1",
+                "hillside_carriage_lookout_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "picturesque_olmsted_park_v2",
           "label": "Prospect Park Woodland & Meadow",
           "thumbnailUrl": "/archetypes/openspaces/picturesque-olmsted-park/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_olmsted_multilandscape_v3",
+              "profileId": "olmsted-multilandscape-lego-v1",
+              "appearanceKitId": "picturesque_olmsted_park_v2_meadow_ravine_skin",
+              "componentSetIds": [
+                "olmsted_ground_program_v1",
+                "whole_landscape_rooms_v1",
+                "rustic_bow_bridge_v1",
+                "elm_mall_bays_v1",
+                "meadow_ravine_lake_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "picturesque_olmsted_park_v3",
           "label": "Central Park Multi-Landscape",
           "thumbnailUrl": "/archetypes/openspaces/picturesque-olmsted-park/variant_3.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_olmsted_multilandscape_v3",
@@ -8965,7 +9175,7 @@
                 "rustic_bow_bridge_v1",
                 "elm_mall_bays_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         }
@@ -8976,16 +9186,16 @@
       "title": "Reclaimed Industrial Park",
       "spaceType": "park",
       "aestheticCategory": "landscape_parks",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "reclaimed_industrial_park_v0",
           "label": "Domino Sugar Refinery Wharf",
           "thumbnailUrl": "/archetypes/openspaces/reclaimed-industrial-park/variant_0.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_reclaimed_wharf_v0",
@@ -8997,7 +9207,7 @@
                 "whole_dock_crane_modules_v1",
                 "native_planting_strip_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -9005,22 +9215,64 @@
           "id": "reclaimed_industrial_park_v1",
           "label": "Gas Works Park",
           "thumbnailUrl": "/archetypes/openspaces/reclaimed-industrial-park/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_reclaimed_wharf_v0",
+              "profileId": "reclaimed-industrial-wharf-lego-v1",
+              "appearanceKitId": "reclaimed_industrial_park_v1_gasworks_skin",
+              "componentSetIds": [
+                "reclaimed_wharf_ground_program_v1",
+                "continuous_wharf_walk_v1",
+                "whole_dock_crane_modules_v1",
+                "native_planting_strip_v1",
+                "gasometer_kite_mound_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "reclaimed_industrial_park_v2",
           "label": "Zollverein Colliery Headframe",
           "thumbnailUrl": "/archetypes/openspaces/reclaimed-industrial-park/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_reclaimed_wharf_v0",
+              "profileId": "reclaimed-industrial-wharf-lego-v1",
+              "appearanceKitId": "reclaimed_industrial_park_v2_colliery_skin",
+              "componentSetIds": [
+                "reclaimed_wharf_ground_program_v1",
+                "continuous_wharf_walk_v1",
+                "whole_dock_crane_modules_v1",
+                "native_planting_strip_v1",
+                "headframe_conveyor_meadow_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "reclaimed_industrial_park_v3",
           "label": "Landschaftspark Duisburg-Nord",
           "thumbnailUrl": "/archetypes/openspaces/reclaimed-industrial-park/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_reclaimed_wharf_v0",
+              "profileId": "reclaimed-industrial-wharf-lego-v1",
+              "appearanceKitId": "reclaimed_industrial_park_v3_steelworks_skin",
+              "componentSetIds": [
+                "reclaimed_wharf_ground_program_v1",
+                "continuous_wharf_walk_v1",
+                "whole_dock_crane_modules_v1",
+                "native_planting_strip_v1",
+                "blast_furnace_dive_basin_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -9029,30 +9281,58 @@
       "title": "Quarry / Sunken Garden Park",
       "spaceType": "park",
       "aestheticCategory": "landscape_parks",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "quarry_sunken_garden_park_v0",
           "label": "Vigeland Sunken Sculpture Bowl",
           "thumbnailUrl": "/archetypes/openspaces/quarry-sunken-garden-park/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_quarry_tier_cascade_v2",
+              "profileId": "quarry-tier-cascade-lego-v1",
+              "appearanceKitId": "quarry_sunken_garden_park_v0_sculpture_bowl_skin",
+              "componentSetIds": [
+                "quarry_bowl_ground_program_v1",
+                "whole_garden_terraces_v1",
+                "linked_reflecting_basins_v1",
+                "limestone_cascade_v1",
+                "sunken_sculpture_bowl_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "quarry_sunken_garden_park_v1",
           "label": "Calgary Quarry Park Lake",
           "thumbnailUrl": "/archetypes/openspaces/quarry-sunken-garden-park/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_quarry_tier_cascade_v2",
+              "profileId": "quarry-tier-cascade-lego-v1",
+              "appearanceKitId": "quarry_sunken_garden_park_v1_quarry_lake_skin",
+              "componentSetIds": [
+                "quarry_bowl_ground_program_v1",
+                "whole_garden_terraces_v1",
+                "linked_reflecting_basins_v1",
+                "limestone_cascade_v1",
+                "quarry_lake_beach_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "quarry_sunken_garden_park_v2",
           "label": "Limestone Tier Cascade Garden",
           "thumbnailUrl": "/archetypes/openspaces/quarry-sunken-garden-park/variant_2.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_quarry_tier_cascade_v2",
@@ -9064,7 +9344,7 @@
                 "linked_reflecting_basins_v1",
                 "limestone_cascade_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -9072,8 +9352,22 @@
           "id": "quarry_sunken_garden_park_v3",
           "label": "Butchart Showpiece Sunken Garden",
           "thumbnailUrl": "/archetypes/openspaces/quarry-sunken-garden-park/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_quarry_tier_cascade_v2",
+              "profileId": "quarry-tier-cascade-lego-v1",
+              "appearanceKitId": "quarry_sunken_garden_park_v3_show_garden_skin",
+              "componentSetIds": [
+                "quarry_bowl_ground_program_v1",
+                "whole_garden_terraces_v1",
+                "linked_reflecting_basins_v1",
+                "limestone_cascade_v1",
+                "concentric_show_garden_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -9082,37 +9376,79 @@
       "title": "Hilltop Topographic Park",
       "spaceType": "park",
       "aestheticCategory": "landscape_parks",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "hilltop_topographic_park_v0",
           "label": "Mediterranean Cypress Hill",
           "thumbnailUrl": "/archetypes/openspaces/hilltop-topographic-park/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_hilltop_viewpoint_v3",
+              "profileId": "hilltop-viewpoint-lego-v1",
+              "appearanceKitId": "hilltop_topographic_park_v0_cypress_skin",
+              "componentSetIds": [
+                "hilltop_ground_program_v1",
+                "continuous_switchback_trail_v1",
+                "whole_viewpoint_decks_v1",
+                "cedar_fir_slope_v1",
+                "cypress_stone_terrace_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "hilltop_topographic_park_v1",
           "label": "Telegraph Hill Switchback",
           "thumbnailUrl": "/archetypes/openspaces/hilltop-topographic-park/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_hilltop_viewpoint_v3",
+              "profileId": "hilltop-viewpoint-lego-v1",
+              "appearanceKitId": "hilltop_topographic_park_v1_switchback_skin",
+              "componentSetIds": [
+                "hilltop_ground_program_v1",
+                "continuous_switchback_trail_v1",
+                "whole_viewpoint_decks_v1",
+                "cedar_fir_slope_v1",
+                "urban_switchback_belvedere_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "hilltop_topographic_park_v2",
           "label": "Buttes-Chaumont Rocky Belvedere",
           "thumbnailUrl": "/archetypes/openspaces/hilltop-topographic-park/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_hilltop_viewpoint_v3",
+              "profileId": "hilltop-viewpoint-lego-v1",
+              "appearanceKitId": "hilltop_topographic_park_v2_folly_skin",
+              "componentSetIds": [
+                "hilltop_ground_program_v1",
+                "continuous_switchback_trail_v1",
+                "whole_viewpoint_decks_v1",
+                "cedar_fir_slope_v1",
+                "rocky_folly_bridge_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "hilltop_topographic_park_v3",
           "label": "Pacific Terraced Viewpoint",
           "thumbnailUrl": "/archetypes/openspaces/hilltop-topographic-park/variant_3.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_hilltop_viewpoint_v3",
@@ -9124,7 +9460,7 @@
                 "whole_viewpoint_decks_v1",
                 "cedar_fir_slope_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         }
@@ -9135,23 +9471,37 @@
       "title": "Estate Picnic Grove",
       "spaceType": "park",
       "aestheticCategory": "landscape_parks",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
-      "exactVariantCount": 1,
+      "mappedVariantCount": 4,
+      "exactVariantCount": 0,
       "variants": [
         {
           "id": "estate_picnic_grove_v0",
           "label": "Pine-Shaded Creekside Picnic",
           "thumbnailUrl": "/archetypes/openspaces/estate-picnic-grove/variant_0.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_estate_oak_picnic_v1",
+              "profileId": "estate-oak-picnic-lego-v1",
+              "appearanceKitId": "estate_picnic_grove_v0_pine_creek_skin",
+              "componentSetIds": [
+                "oak_grove_ground_program_v1",
+                "complete_oak_picnic_station_v1",
+                "central_play_lawn_v1",
+                "crushed_stone_loop_v1",
+                "pine_creek_picnic_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "estate_picnic_grove_v1",
           "label": "Wide-Spaced Oak Shade Grove",
           "thumbnailUrl": "/archetypes/openspaces/estate-picnic-grove/variant_1.png",
-          "status": "exact_family",
+          "status": "mapped_shared_family",
           "mappings": [
             {
               "familyId": "park_estate_oak_picnic_v1",
@@ -9163,7 +9513,7 @@
                 "central_play_lawn_v1",
                 "crushed_stone_loop_v1"
               ],
-              "oneSelectionFamily": true
+              "oneSelectionFamily": false
             }
           ]
         },
@@ -9171,15 +9521,43 @@
           "id": "estate_picnic_grove_v2",
           "label": "Open Meadow & Trestle Pavilion",
           "thumbnailUrl": "/archetypes/openspaces/estate-picnic-grove/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_estate_oak_picnic_v1",
+              "profileId": "estate-oak-picnic-lego-v1",
+              "appearanceKitId": "estate_picnic_grove_v2_meadow_pavilion_skin",
+              "componentSetIds": [
+                "oak_grove_ground_program_v1",
+                "complete_oak_picnic_station_v1",
+                "central_play_lawn_v1",
+                "crushed_stone_loop_v1",
+                "meadow_pavilion_picnic_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "estate_picnic_grove_v3",
           "label": "Regional-Park Picnic Plain",
           "thumbnailUrl": "/archetypes/openspaces/estate-picnic-grove/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_estate_oak_picnic_v1",
+              "profileId": "estate-oak-picnic-lego-v1",
+              "appearanceKitId": "estate_picnic_grove_v3_regional_plain_skin",
+              "componentSetIds": [
+                "oak_grove_ground_program_v1",
+                "complete_oak_picnic_station_v1",
+                "central_play_lawn_v1",
+                "crushed_stone_loop_v1",
+                "regional_picnic_plain_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },
@@ -9188,9 +9566,9 @@
       "title": "Reservoir / Watershed Park",
       "spaceType": "park",
       "aestheticCategory": "landscape_parks",
-      "parentStatus": "partial",
+      "parentStatus": "complete_mapped",
       "variantCount": 4,
-      "mappedVariantCount": 1,
+      "mappedVariantCount": 4,
       "exactVariantCount": 0,
       "variants": [
         {
@@ -9217,22 +9595,64 @@
           "id": "reservoir_watershed_park_v1",
           "label": "Stone-Banked Urban Reservoir",
           "thumbnailUrl": "/archetypes/openspaces/reservoir-watershed-park/variant_1.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_water_ecology",
+              "profileId": "reservoir-watershed-park-v3",
+              "appearanceKitId": "reservoir_watershed_park_v1_stone_bank_skin",
+              "componentSetIds": [
+                "reservoir_ground_program_v3",
+                "concrete_dam_spillway_v1",
+                "perimeter_fence_v1",
+                "viewing_deck_v1",
+                "stone_bank_running_loop_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "reservoir_watershed_park_v2",
           "label": "Forested Upland Reservoir",
           "thumbnailUrl": "/archetypes/openspaces/reservoir-watershed-park/variant_2.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_water_ecology",
+              "profileId": "reservoir-watershed-park-v3",
+              "appearanceKitId": "reservoir_watershed_park_v2_forested_skin",
+              "componentSetIds": [
+                "reservoir_ground_program_v3",
+                "concrete_dam_spillway_v1",
+                "perimeter_fence_v1",
+                "viewing_deck_v1",
+                "forested_shore_boat_launch_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         },
         {
           "id": "reservoir_watershed_park_v3",
           "label": "Earthen-Dam Recreation Reservoir",
           "thumbnailUrl": "/archetypes/openspaces/reservoir-watershed-park/variant_3.png",
-          "status": "unmapped",
-          "mappings": []
+          "status": "mapped_shared_family",
+          "mappings": [
+            {
+              "familyId": "park_water_ecology",
+              "profileId": "reservoir-watershed-park-v3",
+              "appearanceKitId": "reservoir_watershed_park_v3_earthen_dam_skin",
+              "componentSetIds": [
+                "reservoir_ground_program_v3",
+                "concrete_dam_spillway_v1",
+                "perimeter_fence_v1",
+                "viewing_deck_v1",
+                "earthen_dam_pier_loop_program_v1"
+              ],
+              "oneSelectionFamily": false
+            }
+          ]
         }
       ]
     },

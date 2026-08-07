@@ -35,14 +35,14 @@ function trustedRecipe(selection: Record<string, unknown>): Record<string, unkno
 }
 
 describe('Public Realm LEGO V1 park families', () => {
-  it('fails closed on the unreviewed picnic-grove variant while retaining safe dressing', () => {
+  it('routes the now-reviewed default picnic-grove variant through its exact LEGO family', () => {
     const candidate = zone({ green_space_archetype_id: 'estate_picnic_grove' });
     expect(resolveParkLegoContract(candidate)).toMatchObject({
       familyId: 'park_estate_oak_picnic_v1',
       variantId: 'estate_picnic_grove_v0',
-      supported: false,
+      supported: true,
     });
-    expect(resolveParkDressingFamily(candidate)).toBe('park_neighborhood_community');
+    expect(resolveParkDressingFamily(candidate)).toBe('park_estate_oak_picnic_v1');
   });
 
   it.each([
@@ -753,6 +753,29 @@ describe('Public Realm LEGO V1 park families', () => {
     ['park_newyork_community_greenhouse_v3', 'newyork_community_garden', 'newyork_community_garden_v0', 'newyork_community_garden_v0_allotment_skin', 'newyork_community_allotment_v0'],
     ['park_newyork_pocket_water_v0', 'newyork_pocket_park', 'newyork_pocket_park_v2', 'newyork_pocket_park_v2_brick_skin', 'newyork_pocket_brick_v2'],
   ] as const)('executes the explicit Batch 24 selection for %s', (
+    familyId, archetypeId, variantId, appearanceKitId, plantingStructure,
+  ) => {
+    const candidate = zone({ public_realm_lego: trustedRecipe({
+      family_id: familyId, family_version: 1, archetype_id: archetypeId,
+      variant_id: variantId, appearance_kit_id: appearanceKitId,
+      planting_structure: plantingStructure,
+    }) });
+    expect(resolveParkLegoContract(candidate)).toMatchObject({ familyId, archetypeId, variantId, supported: true });
+    expect(usesArchetypeOwnedParkSurface(candidate)).toBe(true);
+  });
+
+  it.each([
+    ['park_vancouver_seawall_cycle_v2', 'vancouver_seawall', 'vancouver_seawall_v0', 'vancouver_seawall_v0_promenade_skin', 'vancouver_seawall_promenade_v0'],
+    ['park_vancouver_beach_pavilion_v0', 'vancouver_beach_park', 'vancouver_beach_park_v2', 'vancouver_beach_park_v2_glazed_pavilion_skin', 'vancouver_beach_glazed_v2'],
+    ['park_toronto_ravine_creek_v1', 'toronto_ravine', 'toronto_ravine_v3', 'toronto_ravine_v3_winter_skin', 'toronto_ravine_winter_v3'],
+    ['park_toronto_urban_market_v1', 'toronto_urban_square', 'toronto_urban_square_v2', 'toronto_urban_square_v2_modernist_pool_skin', 'toronto_square_modernist_v2'],
+    ['park_olmsted_multilandscape_v3', 'picturesque_olmsted_park', 'picturesque_olmsted_park_v1', 'picturesque_olmsted_park_v1_lookout_skin', 'olmsted_lookout_v1'],
+    ['park_reclaimed_wharf_v0', 'reclaimed_industrial_park', 'reclaimed_industrial_park_v1', 'reclaimed_industrial_park_v1_gasworks_skin', 'reclaimed_gasworks_v1'],
+    ['park_quarry_tier_cascade_v2', 'quarry_sunken_garden_park', 'quarry_sunken_garden_park_v3', 'quarry_sunken_garden_park_v3_show_garden_skin', 'quarry_show_garden_v3'],
+    ['park_hilltop_viewpoint_v3', 'hilltop_topographic_park', 'hilltop_topographic_park_v2', 'hilltop_topographic_park_v2_folly_skin', 'hilltop_folly_v2'],
+    ['park_estate_oak_picnic_v1', 'estate_picnic_grove', 'estate_picnic_grove_v0', 'estate_picnic_grove_v0_pine_creek_skin', 'estate_pine_creek_v0'],
+    ['park_water_ecology', 'reservoir_watershed_park', 'reservoir_watershed_park_v3', 'reservoir_watershed_park_v3_earthen_dam_skin', 'reservoir_earthen_dam_v3'],
+  ] as const)('executes the explicit Batch 25 selection for %s', (
     familyId, archetypeId, variantId, appearanceKitId, plantingStructure,
   ) => {
     const candidate = zone({ public_realm_lego: trustedRecipe({
