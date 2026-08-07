@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-08-07-three-pilot-expansion-v65`.
+Current executable memory: `2026-08-07-fidelity-refinement-v66`.
 
 The current calibration set and catalogue rollout rationale are documented in
 [`BUILDING_GOLD_SET_PIPELINE_SYNTHESIS_2026-08-07.md`](BUILDING_GOLD_SET_PIPELINE_SYNTHESIS_2026-08-07.md).
@@ -23,6 +23,27 @@ The target is Kinnaird-class architectural identity in a modular real-time asset
 3. **Facade scale:** materials, glazing, joints, returns, interiors and restrained variation withstand close inspection.
 
 A texture can supply surface richness. It cannot repair incorrect massing, missing corners, unsupported projections or a generic roof.
+
+## v66 fidelity refinement
+
+The second three-pilot pass adds three rules to the production pipeline:
+
+- **Curved identity must be curve-native.** Rounded pavilions can use faceted
+  surface cards, but their balcony slabs, rails, supports and skyline must
+  continue around the curve as authored geometry. Straight balcony runs that
+  stop at the tangent points break the archetype silhouette.
+- **Every family gets the complete camera suite.** `archetype_match`, street,
+  front-corner, rear-corner, aerial, facade-close and context renders are now
+  generated in the bounded pilot rather than inferred from one hero image.
+- **Reference materials are intrinsic-first.** Before producing PBR channels,
+  separate material appearance from source illumination and record confidence
+  for uncertain regions. Luminance-derived normal, roughness or depth maps are
+  fallback-only because they preserve baked shadows and highlights.
+
+The Paris pilot applies the first rule with continuous curved balcony datums
+and a bulbous zinc dome. The Art Deco pilot adds a physically framed ceremonial
+portal and eight authored lantern faces. The machiya removes an unrelated pale
+larch texture from its fixed dark-timber structure.
 
 ## Four-family gold-set contract
 

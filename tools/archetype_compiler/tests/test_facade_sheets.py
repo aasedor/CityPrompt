@@ -290,6 +290,7 @@ def test_v65_three_pilots_resolve_distinct_identity_strategies():
         "floors": 7,
         "floor_height_m": 3.4,
     }
+    assert paris_graph["presentation_camera"]["hero_side"] == "right"
     assert sum(
         item["kind"] == "facade_skin_stack" and item.get("axis") == "angle"
         for item in paris_assemblies
@@ -325,6 +326,40 @@ def test_v65_three_pilot_registry_is_bounded_and_variant_locked():
     assert len({entry["variant_id"] for entry in entries}) == 3
     assert all(entry.get("family_id") for entry in entries)
     assert registry["generation_profile"]["strict_production_preflight"] is True
+
+
+def test_v66_refinement_adds_curve_native_and_crown_identity():
+    from signature_profiles import inject_signature
+
+    def graph(archetype_id: str, variant_id: str) -> dict:
+        grammar = {
+            "source": {"archetype_id": archetype_id, "variant_id": variant_id},
+            "materials": {"primary": {}, "secondary": {}, "accent": {}, "roof": {}},
+            "dimensions": {},
+        }
+        return inject_signature(grammar, archetype_id, variant_id=variant_id)["massing_graph"]
+
+    paris = graph("parisian_boulevard_corner", "parisian_corner_haussmann_turret")
+    paris_assemblies = paris["assemblies"]
+    assert any(item["kind"] == "curved_balcony_array" for item in paris_assemblies)
+    assert next(
+        item for item in paris_assemblies if item["id"] == "paris_corner_pavilion"
+    )["roof_style"] == "bulbous"
+
+    deco = graph("art_deco_setback_tower", "art_deco_cream_terracotta")
+    assert sum(
+        item["kind"] == "facade_skin" and item.get("axis") == "angle"
+        for item in deco["assemblies"]
+    ) == 8
+    assert sum("portal" in node["id"] for node in deco["nodes"]) >= 4
+
+    registry = json.loads(
+        (Path(__file__).parents[1] / "worldclass_three_pilots_v66.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert len(registry["entries"]) == 3
+    assert registry["generation_profile"]["presentation_view_set"] == "all"
 
 
 def test_facade_prompts_pin_texture_map_and_forbid_scene_completion():

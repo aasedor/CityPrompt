@@ -924,6 +924,42 @@ def add_ellipsoid(
     return obj
 
 
+def add_revolved_profile(
+    name: str,
+    centre: tuple[float, float],
+    base_z: float,
+    profile: list[tuple[float, float]],
+    mat,
+    segments: int = 48,
+) -> bpy.types.Object:
+    """Create a smooth axial roof from authored ``(height, radius)`` rings."""
+    cx, cy = centre
+    verts: list[tuple[float, float, float]] = []
+    for height, radius in profile:
+        for segment in range(segments):
+            angle = math.tau * segment / segments
+            verts.append((cx + math.cos(angle) * radius, cy + math.sin(angle) * radius, base_z + height))
+    faces: list[tuple[int, ...]] = []
+    for ring in range(len(profile) - 1):
+        lower = ring * segments
+        upper = (ring + 1) * segments
+        for segment in range(segments):
+            following = (segment + 1) % segments
+            faces.append((lower + segment, lower + following, upper + following, upper + segment))
+    faces.append(tuple(reversed(range(segments))))
+    last = (len(profile) - 1) * segments
+    faces.append(tuple(last + segment for segment in range(segments)))
+    mesh = bpy.data.meshes.new(name + "Mesh")
+    mesh.from_pydata(verts, [], faces)
+    mesh.update()
+    obj = bpy.data.objects.new(name, mesh)
+    bpy.context.collection.objects.link(obj)
+    obj.data.materials.append(mat)
+    for polygon in obj.data.polygons:
+        polygon.use_smooth = True
+    return obj
+
+
 def add_foliage(
     name: str,
     location: tuple[float, float, float],
@@ -6622,13 +6658,31 @@ def _graph_striped_turret_array(parts: list, spec: dict, mats: dict) -> None:
                 f"{tag}_CarvedBelt{belt_index:02d}", radius * 1.075, belt_height,
                 (cx, cy, z), belt_mat, vertices,
             ))
-        roof_z = base_z + body_height + roof_height / 2
-        parts.append(add_cone(
-            f"{tag}_ConicalRoof", roof_radius, roof_height,
-            (cx, cy, roof_z), roof_mat, vertices,
-        ))
+        roof_style = str(spec.get("roof_style", "conical"))
+        roof_base = base_z + body_height
+        if roof_style == "bulbous":
+            # A ring-authored Parisian pavilion dome: broad at the eaves,
+            # gently pear-shaped through the middle, then pulled into a small
+            # neck.  A full ellipsoid produces an onion/balloon silhouette.
+            profile = [
+                (roof_height * height_ratio, roof_radius * radius_ratio)
+                for height_ratio, radius_ratio in (
+                    (0.00, 0.96), (0.07, 1.00), (0.22, 0.97),
+                    (0.43, 0.84), (0.63, 0.62), (0.79, 0.38),
+                    (0.89, 0.24), (1.00, 0.10),
+                )
+            ]
+            parts.append(add_revolved_profile(
+                f"{tag}_BulbousRoof", (cx, cy), roof_base, profile, roof_mat, vertices,
+            ))
+        else:
+            roof_z = roof_base + roof_height / 2
+            parts.append(add_cone(
+                f"{tag}_ConicalRoof", roof_radius, roof_height,
+                (cx, cy, roof_z), roof_mat, vertices,
+            ))
         finial_radius = float(spec.get("finial_radius_m", 0.15))
-        finial_base = base_z + body_height + roof_height
+        finial_base = roof_base + roof_height
         parts.append(add_cylinder(
             f"{tag}_FinialStem", finial_radius * 0.32, finial_radius * 2.2,
             (cx, cy, finial_base + finial_radius), belt_mat, 12,
@@ -7592,6 +7646,99 @@ def _graph_balcony_array(parts: list, spec: dict, mats: dict) -> None:
                 ))
 
 
+def _graph_curved_balcony_array(parts: list, spec: dict, mats: dict) -> None:
+    """Supported balcony following a circular or rounded-corner facade.
+
+    Straight balcony bands stop at the tangent points and visibly expose the
+    generic cylinder beneath.  This assembly carries the slab, iron rail and
+    support rhythm continuously around an authored arc instead.
+    """
+    cx, cy, _ = (float(value) for value in spec["centre"])
+    radius = float(spec["radius_m"])
+    start = math.radians(float(spec.get("start_angle_deg", -90.0)))
+    end = math.radians(float(spec.get("end_angle_deg", 0.0)))
+    levels = [float(value) for value in spec.get("levels_z", [])]
+    if not levels:
+        raise ValueError(f"curved balcony array {spec.get('id')!r} has no levels_z")
+    segments = max(3, int(spec.get("segments", 8)))
+    depth = float(spec.get("depth_m", 0.92))
+    slab_h = float(spec.get("slab_height_m", 0.16))
+    rail_h = float(spec.get("rail_height_m", 1.02))
+    pickets_per_segment = max(2, int(spec.get("pickets_per_segment", 4)))
+    slab_mat = _graph_material(mats, spec.get("slab_material", "signature_stone"))
+    rail_mat = _graph_material(mats, spec.get("rail_material", "signature_metal"))
+    shadow_mat = _graph_material(mats, spec.get("shadow_material", "massing_joint"))
+    prefix = str(spec.get("id", "GraphCurvedBalcony"))
+    delta = (end - start) / segments
+    chord = 2.0 * (radius + depth / 2) * math.sin(abs(delta) / 2)
+    rail_chord = 2.0 * (radius + depth) * math.sin(abs(delta) / 2)
+    rail_profile = min(0.055, rail_chord * 0.04)
+
+    def arc_point(angle: float, radial_offset: float, z: float) -> Vector:
+        return Vector((
+            cx + math.cos(angle) * (radius + radial_offset),
+            cy + math.sin(angle) * (radius + radial_offset),
+            z,
+        ))
+
+    def tangent_box(name: str, size: tuple[float, float, float], location: Vector, angle: float, material, bevel: float = 0.0):
+        obj = (
+            add_beveled_box(name, size, tuple(location), material, bevel)
+            if bevel > 0.0 else add_box(name, size, tuple(location), material)
+        )
+        obj.rotation_euler.z = angle + math.pi / 2
+        return obj
+
+    for level_index, z in enumerate(levels):
+        for segment_index in range(segments):
+            angle = start + delta * (segment_index + 0.5)
+            slab = arc_point(angle, depth / 2, z)
+            parts.append(tangent_box(
+                f"{prefix}_{level_index:02d}_{segment_index:02d}_Slab",
+                (chord * 1.035, depth, slab_h), slab, angle, slab_mat, 0.035,
+            ))
+            shadow = arc_point(angle, depth * 0.58, z - slab_h * 0.72)
+            parts.append(tangent_box(
+                f"{prefix}_{level_index:02d}_{segment_index:02d}_Shadow",
+                (chord * 0.94, depth * 0.36, 0.045), shadow, angle, shadow_mat,
+            ))
+            rail = arc_point(angle, depth, z + slab_h / 2 + rail_h)
+            parts.append(tangent_box(
+                f"{prefix}_{level_index:02d}_{segment_index:02d}_TopRail",
+                (rail_chord * 1.03, rail_profile, rail_profile), rail, angle, rail_mat, 0.01,
+            ))
+            for picket_index in range(pickets_per_segment):
+                picket_angle = start + delta * (
+                    segment_index + (picket_index + 0.5) / pickets_per_segment
+                )
+                picket = arc_point(picket_angle, depth, z + slab_h / 2 + rail_h / 2)
+                parts.append(tangent_box(
+                    f"{prefix}_{level_index:02d}_{segment_index:02d}_Picket{picket_index:02d}",
+                    (rail_profile * 0.64, rail_profile, rail_h), picket, picket_angle, rail_mat,
+                ))
+            corbel = arc_point(angle, depth * 0.24, z - 0.24)
+            parts.append(tangent_box(
+                f"{prefix}_{level_index:02d}_{segment_index:02d}_Corbel",
+                (min(0.34, chord * 0.36), depth * 0.44, 0.34), corbel, angle, slab_mat, 0.025,
+            ))
+
+        # Radial end rails visibly join the curved datum to both straight wings.
+        for end_index, angle in enumerate((start, end)):
+            end_rail = arc_point(angle, depth / 2, z + slab_h / 2 + rail_h)
+            end_obj = add_box(
+                f"{prefix}_{level_index:02d}_EndRail{end_index}",
+                (depth, rail_profile, rail_profile), tuple(end_rail), rail_mat,
+            )
+            end_obj.rotation_euler.z = angle
+            parts.append(end_obj)
+            for radial_ratio in (0.06, 0.94):
+                post = arc_point(angle, depth * radial_ratio, z + slab_h / 2 + rail_h / 2)
+                parts.append(tangent_box(
+                    f"{prefix}_{level_index:02d}_EndPost{end_index}_{int(radial_ratio * 100):02d}",
+                    (rail_profile, rail_profile, rail_h), post, angle, rail_mat,
+                ))
+
+
 def _graph_corbel_array(parts: list, spec: dict, mats: dict) -> None:
     """Small masonry blocks repeated along one or more true construction courses."""
     axis = str(spec.get("axis", "front"))
@@ -7793,6 +7940,8 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
             _graph_glazing_overlay(parts, assembly, mats)
         elif kind == "balcony_array":
             _graph_balcony_array(parts, assembly, mats)
+        elif kind == "curved_balcony_array":
+            _graph_curved_balcony_array(parts, assembly, mats)
         elif kind == "corbel_array":
             _graph_corbel_array(parts, assembly, mats)
         else:
@@ -8058,6 +8207,7 @@ def render_presentation_views(
     samples: int = 48,
     view_set: str = "all",
     landmark: bool = False,
+    camera_side: str = "left",
 ) -> tuple[str, list[str]]:
     """Render consistent studio, street and aerial views of the assembled kit.
 
@@ -8265,16 +8415,21 @@ def render_presentation_views(
 
     dist = max(footprint * 2.15, focus_height * 1.95)
     context_dist = max(footprint * 4.2, focus_height * 3.5)
+    camera_x = 1.0 if camera_side == "right" else -1.0
     views = (
-        ("preview", (-dist * 0.72, -dist * 0.92, focus_height * 0.68), (0.0, 0.0, focus_height * 0.43), 43),
-        *((
-            # Pull back enough to retain the roof silhouette and projecting
-            # eaves. Cropping those features made softened/gabled buildings
-            # read as boxes even when their authored geometry was present.
-            ("archetype_match", (-width * 0.88, -(depth / 2 + max(64.0, focus_height * 2.15)), focus_height * 0.50),
-             (-1.0, -1.0, focus_height * 0.42), 50),
-        ) if landmark else ()),
-        ("street", (-width * 0.82, -(depth / 2 + 35.0), focus_height * 0.31), (0.0, -depth * 0.12, focus_height * 0.39), 46),
+        ("preview", (camera_x * dist * 0.72, -dist * 0.92, focus_height * 0.68), (0.0, 0.0, focus_height * 0.43), 43),
+        # Pull back enough to retain the roof silhouette and projecting eaves.
+        # This view is produced for every family so the reference camera can
+        # be compared consistently, including low-rise semantic stacks.
+        ("archetype_match", (camera_x * width * 0.88, -(depth / 2 + max(64.0, focus_height * 2.15)), focus_height * 0.50),
+         (camera_x, -1.0, focus_height * 0.42), 50),
+        ("street", (camera_x * width * 0.82, -(depth / 2 + 35.0), focus_height * 0.31), (0.0, -depth * 0.12, focus_height * 0.39), 46),
+        ("front_corner_oblique", (camera_x * dist * 0.82, -dist * 0.96, focus_height * 0.46),
+         (0.0, -depth * 0.06, focus_height * 0.40), 49),
+        ("rear_corner_oblique", (dist * 0.82, dist * 0.92, focus_height * 0.55),
+         (0.0, depth * 0.06, focus_height * 0.41), 49),
+        ("facade_close", (camera_x * width * 0.18, -(depth / 2 + max(11.0, width * 0.48)), focus_height * 0.31),
+         (0.0, -depth / 2, focus_height * 0.34), 58),
         ("aerial", (dist * 0.62, -dist * 0.78, focus_height + dist * 0.52), (0.0, 0.0, focus_height * 0.38), 49),
         ("context", (context_dist * 0.72, -context_dist * 0.85, focus_height + context_dist * 0.70),
          (0.0, 10.0, focus_height * 0.22), 52),
@@ -8673,6 +8828,7 @@ def generate(grammar: dict, output: Path, *, floors_override: int | None, keep_b
                     preferred_engine=presentation_engine, samples=presentation_samples,
                     view_set=presentation_view_set,
                     landmark=bool(grammar.get("massing_graph")),
+                    camera_side=str((grammar.get("massing_graph") or {}).get("presentation_camera", {}).get("hero_side", "left")),
                 )
                 print(f"[blender_generate] rendered {', '.join(rendered_views)} via {engine_used}")
             except Exception as exc:  # pragma: no cover - render backends vary by machine

@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-08-07-three-pilot-expansion-v65",
+  "memory_version": "2026-08-07-fidelity-refinement-v66",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "calibration_set": {
@@ -92,6 +92,14 @@
       "rule": "Curved and faceted corners use the same floor-accurate podium, middle and crown band stack as orthogonal elevations; never stretch one floor or one complete elevation over a multi-storey corner surface."
     },
     {
+      "id": "curved_identity_uses_curve_native_assemblies",
+      "rule": "Balconies, cornices, rails and other identity-defining projections must follow the authored corner curve. Straight tangent fragments may approximate surface infill, but they may not leave silhouette datums broken at the corner."
+    },
+    {
+      "id": "reference_materials_are_intrinsic_first",
+      "rule": "Before reference imagery becomes PBR input, separate material appearance from view lighting and confidence-mask uncertain regions. Luminance-derived roughness, normal or depth maps are fallback-only because baked shadows and highlights make the asset fight runtime lighting."
+    },
+    {
       "id": "setback_tiers_repeat_bays_not_images",
       "rule": "Each fixed skyscraper setback tier repeats the audited ordinary floor band vertically with a shared bay phase. Setback caps, entrances and crowns remain fixed and may not be produced by stretching one full-height image."
     },
@@ -151,6 +159,7 @@
         "roof form, dormers and chimneys",
         "window recesses and stone returns at hero range",
         "cornice profiles and wrapping balcony slabs",
+        "curve-native rails and supports wherever a fixed rounded corner carries the archetype identity",
         "bevels on exposed masonry, metal and timber edges",
         "signature elements that alter silhouette or cast identity-defining shadows"
       ],
@@ -249,8 +258,8 @@
     },
     {
       "stage": "facade",
-      "automation": "Generate or reuse rectified facade source, derive full PBR channels, semantic glass masks and LOD atlases.",
-      "human_review": "Only failed rectification, baked shadows, inconsistent floors or lost identity."
+      "automation": "Generate or reuse a rectified facade source, perform intrinsic/de-lighting decomposition with confidence masks where available, derive full PBR channels, semantic glass masks and LOD atlases.",
+      "human_review": "Only failed rectification, uncertain material regions, baked shadows, inconsistent floors or lost identity."
     },
     {
       "stage": "assemble",
