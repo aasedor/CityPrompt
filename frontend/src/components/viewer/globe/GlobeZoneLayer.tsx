@@ -53,6 +53,7 @@ import { retainResourceForDeferredDisposal } from './strictModeResourceDisposal'
 import {
   PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS,
   resolvePublicRealmGroundDepthPolicy,
+  shouldUseLevelCompiledParkDatum,
 } from './publicRealmDepthPolicy';
 import {
   applyResidualLandscapeUVs,
@@ -447,6 +448,10 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     (communityKind === 'park' || communityKind === 'street')
     && isCompiledCommunity
   );
+  const usesLevelCompiledParkDatum = shouldUseLevelCompiledParkDatum(
+    communityKind,
+    isCompiledGround,
+  );
   const showThisPlanningOverlay = planningOverlaysVisible && !isCompiledGround;
   // Match the mid-grey value range of Google photogrammetry instead of using
   // near-black planning asphalt. The street section layer still supplies the
@@ -805,6 +810,21 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     const posAttr = flatMeshRef.current.geometry.attributes.position;
     if (!posAttr) return;
 
+    // Generate-to-3D parks replace the source site with a prepared parcel.
+    // Seat every triangle on the same sampled datum instead of independently
+    // raycasting vertices onto roofs, trees and coarse tile faces.
+    if (usesLevelCompiledParkDatum) {
+      for (let i = 0; i < posAttr.count; i += 1) {
+        posAttr.setZ(i, PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS);
+      }
+      posAttr.needsUpdate = true;
+      flatMeshRef.current.geometry.computeVertexNormals();
+      flatMeshRef.current.geometry.computeBoundingSphere();
+      drapedRef.current = true;
+      frozenRef.current = true;
+      return;
+    }
+
     // The terrain-grid geometry stores its densified parcel boundary first,
     // followed by interior rings/vertices. Boundary points receive the full
     // multi-probe object filter. Interior points use a single raycast and the
@@ -893,7 +913,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
         drapedRef.current = true;
       }
     }
-  }, [tiles, geoData, isBuilding, hasBakedElevationRelief, sampledTerrainHeight, storedTerrainHeight, filterObjectHeights, renderCoordinates, zoneTerrainHeight, freezeDrape]);
+  }, [tiles, geoData, isBuilding, hasBakedElevationRelief, sampledTerrainHeight, storedTerrainHeight, filterObjectHeights, renderCoordinates, zoneTerrainHeight, freezeDrape, usesLevelCompiledParkDatum]);
 
   useEffect(() => {
     if (sampledTerrainHeight !== null) return undefined;

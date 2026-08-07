@@ -1434,6 +1434,36 @@ def test_batch19_compact_food_truck_popup_uses_its_own_site_envelope():
     assert recipe.target.area_m2 == 1192.878
 
 
+def test_batch20_closes_thirty_variants_across_ten_ecological_and_civic_families():
+    expected = {
+        "park_water_ecology": ("riparian_buffer", "wetland_rain_garden"),
+        "park_playground_adventure_v0": ("playground_adventure",),
+        "park_amphitheater_lawn_v0": ("amphitheater_lawn",),
+        "park_beer_garden_munich_v0": ("beer_garden",),
+        "park_city_hall_modernist_fountain_v2": ("city_hall_government_plaza",),
+        "park_sunken_courtyard_v0": ("sunken_plaza",),
+        "park_cathedral_courtyard_fountain_v3": ("cathedral_religious_forecourt",),
+        "park_cultural_museum_terrace_v0": ("cultural_institution_forecourt",),
+        "park_terraced_cascade_v3": ("stepped_terraced_plaza",),
+    }
+    catalog = build_public_realm_capability_catalog(family_ids=list(expected))
+    assert len(catalog.capabilities) == 9
+    for capability in catalog.capabilities:
+        for archetype_id in expected[capability.family_id]:
+            selections = [
+                selection
+                for selection in capability.selections
+                if selection.archetype_id == archetype_id
+            ]
+            assert len(selections) == 4
+            assert {selection.variant_id for selection in selections} == {
+                f"{archetype_id}_v{index}" for index in range(4)
+            }
+            assert len({selection.appearance_kit_id for selection in selections}) == 4
+            assert len({selection.planting_structure for selection in selections}) == 4
+            assert all(selection.component_set_ids for selection in selections)
+
+
 @pytest.mark.parametrize(
     ("archetype_id", "variant_id"),
     [

@@ -18,6 +18,7 @@ import { batch16ParkSkinForSelection } from './parkBatch16Skins';
 import { batch17ParkSkinForSelection } from './parkBatch17Skins';
 import { batch18ParkSkinForSelection } from './parkBatch18Skins';
 import { batch19ParkSkinForSelection } from './parkBatch19Skins';
+import { batch20ParkSkinForSelection } from './parkBatch20Skins';
 
 /** Public Realm LEGO V1 park families. These ids are shared with the backend
  * capability contract and are deliberately separate from catalog archetype
@@ -755,12 +756,16 @@ const PARK_FAMILY_SELECTIONS: Readonly<
     pond_lake: Object.freeze([Object.freeze({
       variantId: 'pond_lake_v0', appearanceKitId: 'pond_lake_v0_naturalistic_skin', plantingStructure: 'pond_lake_v0',
     })]),
-    wetland_rain_garden: Object.freeze([Object.freeze({
-      variantId: 'wetland_rain_garden_v0', appearanceKitId: 'wetland_rain_garden_v0_native_restoration_skin', plantingStructure: 'wetland_rain_garden_v0',
-    })]),
-    riparian_buffer: Object.freeze([Object.freeze({
-      variantId: 'riparian_buffer_v0', appearanceKitId: 'riparian_buffer_v0_native_restoration_skin', plantingStructure: 'riparian_buffer_v0',
-    })]),
+    wetland_rain_garden: fourVariantMappings(
+      'wetland_rain_garden',
+      ['wetland_rain_garden_v0_native_restoration_skin', 'wetland_rain_garden_v1_bioengineered_skin', 'wetland_rain_garden_v2_rewilded_urban_skin', 'wetland_rain_garden_v3_resilient_coastal_skin'],
+      ['wetland_rain_garden_v0', 'wetland_bioengineered_v1', 'wetland_rewilded_v2', 'wetland_coastal_v3'],
+    ),
+    riparian_buffer: fourVariantMappings(
+      'riparian_buffer',
+      ['riparian_buffer_v0_native_restoration_skin', 'riparian_buffer_v1_bioengineered_skin', 'riparian_buffer_v2_rewilded_urban_skin', 'riparian_buffer_v3_resilient_coastal_skin'],
+      ['riparian_buffer_v0', 'riparian_bioengineered_v1', 'riparian_rewilded_v2', 'riparian_coastal_v3'],
+    ),
     reservoir_watershed_park: Object.freeze([Object.freeze({
       variantId: 'reservoir_watershed_park_v0', appearanceKitId: 'reservoir_watershed_park_v0_concrete_edge_skin', plantingStructure: 'reservoir_watershed_park_v0',
     })]),
@@ -785,14 +790,18 @@ const PARK_FAMILY_SELECTIONS: Readonly<
     ),
   }),
   park_amphitheater_lawn_v0: Object.freeze({
-    amphitheater_lawn: Object.freeze([Object.freeze({
-      variantId: 'amphitheater_lawn_v0', appearanceKitId: 'amphitheater_lawn_v0_terraced_performance_skin', plantingStructure: 'amphitheater_lawn_v0',
-    })]),
+    amphitheater_lawn: fourVariantMappings(
+      'amphitheater_lawn',
+      ['amphitheater_lawn_v0_terraced_performance_skin', 'amphitheater_lawn_v1_open_festival_skin', 'amphitheater_lawn_v2_intimate_garden_skin', 'amphitheater_lawn_v3_industrial_adaptive_skin'],
+      ['amphitheater_lawn_v0', 'amphitheater_open_festival_v1', 'amphitheater_intimate_garden_v2', 'amphitheater_industrial_v3'],
+    ),
   }),
   park_playground_adventure_v0: Object.freeze({
-    playground_adventure: Object.freeze([Object.freeze({
-      variantId: 'playground_adventure_v0', appearanceKitId: 'playground_adventure_v0_rustic_timber_skin', plantingStructure: 'playground_adventure_v0',
-    })]),
+    playground_adventure: fourVariantMappings(
+      'playground_adventure',
+      ['playground_adventure_v0_rustic_timber_skin', 'playground_adventure_v1_modern_steel_skin', 'playground_adventure_v2_natural_meadow_skin', 'playground_adventure_v3_urban_contemporary_skin'],
+      ['playground_adventure_v0', 'playground_modern_steel_v1', 'playground_natural_meadow_v2', 'playground_urban_contemporary_v3'],
+    ),
   }),
   park_disc_golf_wooded_v0: Object.freeze({
     disc_golf_course: fourVariantMappings(
@@ -942,13 +951,25 @@ const PARK_FAMILY_SELECTIONS: Readonly<
     ),
   }),
   park_beer_garden_munich_v0: Object.freeze({
-    beer_garden: Object.freeze([Object.freeze({ variantId: 'beer_garden_v0', appearanceKitId: 'beer_garden_v0_munich_chestnut_skin', plantingStructure: 'beer_garden_munich_v0' })]),
+    beer_garden: fourVariantMappings(
+      'beer_garden',
+      ['beer_garden_v0_munich_chestnut_skin', 'beer_garden_v1_brewery_tap_yard_skin', 'beer_garden_v2_pergola_terrace_skin', 'beer_garden_v3_rooftop_skin'],
+      ['beer_garden_munich_v0', 'beer_garden_brewery_v1', 'beer_garden_pergola_v2', 'beer_garden_rooftop_v3'],
+    ),
   }),
   park_sunken_courtyard_v0: Object.freeze({
-    sunken_plaza: Object.freeze([Object.freeze({ variantId: 'sunken_plaza_v0', appearanceKitId: 'sunken_plaza_v0_intimate_courtyard_skin', plantingStructure: 'sunken_courtyard_v0' })]),
+    sunken_plaza: fourVariantMappings(
+      'sunken_plaza',
+      ['sunken_plaza_v0_intimate_courtyard_skin', 'sunken_plaza_v1_rockefeller_rink_skin', 'sunken_plaza_v2_corporate_atrium_skin', 'sunken_plaza_v3_asian_transit_skin'],
+      ['sunken_courtyard_v0', 'sunken_rockefeller_v1', 'sunken_corporate_v2', 'sunken_asian_transit_v3'],
+    ),
   }),
   park_terraced_cascade_v3: Object.freeze({
-    stepped_terraced_plaza: Object.freeze([Object.freeze({ variantId: 'stepped_terraced_plaza_v3', appearanceKitId: 'stepped_terraced_plaza_v3_modernist_cascade_skin', plantingStructure: 'terraced_cascade_v3' })]),
+    stepped_terraced_plaza: fourVariantMappings(
+      'stepped_terraced_plaza',
+      ['stepped_terraced_plaza_v0_aegean_skin', 'stepped_terraced_plaza_v1_spanish_steps_skin', 'stepped_terraced_plaza_v2_federation_shard_skin', 'stepped_terraced_plaza_v3_modernist_cascade_skin'],
+      ['terraced_aegean_v0', 'terraced_spanish_v1', 'terraced_federation_v2', 'terraced_cascade_v3'],
+    ),
   }),
   park_market_festival_lawn_v1: Object.freeze({
     market_square: Object.freeze([Object.freeze({ variantId: 'market_square_v1', appearanceKitId: 'market_square_v1_open_festival_lawn_skin', plantingStructure: 'market_festival_lawn_v1' })]),
@@ -1088,9 +1109,27 @@ const PARK_FAMILY_SELECTIONS: Readonly<
   park_halifax_coastal_fog_path_v2: Object.freeze({
     halifax_coastal_park: Object.freeze([Object.freeze({ variantId: 'halifax_coastal_park_v2', appearanceKitId: 'halifax_coastal_park_v2_fog_path_skin', plantingStructure: 'halifax_coastal_fog_path_v2' })]),
   }),
-  park_city_hall_modernist_fountain_v2: Object.freeze({ city_hall_government_plaza: Object.freeze([Object.freeze({ variantId:'city_hall_government_plaza_v2', appearanceKitId:'city_hall_government_plaza_v2_modernist_skin', plantingStructure:'city_hall_modernist_fountain_v2' })]) }),
-  park_cathedral_courtyard_fountain_v3: Object.freeze({ cathedral_religious_forecourt: Object.freeze([Object.freeze({ variantId:'cathedral_religious_forecourt_v3', appearanceKitId:'cathedral_religious_forecourt_v3_courtyard_skin', plantingStructure:'cathedral_courtyard_fountain_v3' })]) }),
-  park_cultural_museum_terrace_v0: Object.freeze({ cultural_institution_forecourt: Object.freeze([Object.freeze({ variantId:'cultural_institution_forecourt_v0', appearanceKitId:'cultural_institution_forecourt_v0_museum_terrace_skin', plantingStructure:'cultural_museum_terrace_v0' })]) }),
+  park_city_hall_modernist_fountain_v2: Object.freeze({
+    city_hall_government_plaza: fourVariantMappings(
+      'city_hall_government_plaza',
+      ['city_hall_government_plaza_v0_compact_skin', 'city_hall_government_plaza_v1_historic_skin', 'city_hall_government_plaza_v2_modernist_skin', 'city_hall_government_plaza_v3_brutalist_skin'],
+      ['city_hall_compact_v0', 'city_hall_historic_v1', 'city_hall_modernist_fountain_v2', 'city_hall_brutalist_v3'],
+    ),
+  }),
+  park_cathedral_courtyard_fountain_v3: Object.freeze({
+    cathedral_religious_forecourt: fourVariantMappings(
+      'cathedral_religious_forecourt',
+      ['cathedral_religious_forecourt_v0_asian_temple_skin', 'cathedral_religious_forecourt_v1_gothic_parvis_skin', 'cathedral_religious_forecourt_v2_renaissance_skin', 'cathedral_religious_forecourt_v3_courtyard_skin'],
+      ['cathedral_asian_temple_v0', 'cathedral_gothic_parvis_v1', 'cathedral_renaissance_v2', 'cathedral_courtyard_fountain_v3'],
+    ),
+  }),
+  park_cultural_museum_terrace_v0: Object.freeze({
+    cultural_institution_forecourt: fourVariantMappings(
+      'cultural_institution_forecourt',
+      ['cultural_institution_forecourt_v0_museum_terrace_skin', 'cultural_institution_forecourt_v1_library_steps_skin', 'cultural_institution_forecourt_v2_concert_hall_skin', 'cultural_institution_forecourt_v3_arena_concourse_skin'],
+      ['cultural_museum_terrace_v0', 'cultural_library_steps_v1', 'cultural_concert_hall_v2', 'cultural_arena_concourse_v3'],
+    ),
+  }),
   park_transit_green_civic_v2: Object.freeze({ transit_plaza: Object.freeze([Object.freeze({ variantId:'transit_plaza_v2', appearanceKitId:'transit_plaza_v2_green_civic_skin', plantingStructure:'transit_green_civic_v2' })]) }),
   park_amphitheater_terraced_v0: Object.freeze({ amphitheater_performance_space: Object.freeze([Object.freeze({ variantId:'amphitheater_performance_space_v0', appearanceKitId:'amphitheater_performance_space_v0_terraced_skin', plantingStructure:'amphitheater_terraced_v0' })]) }),
   park_concert_timber_lawn_v2: Object.freeze({ concert_pavilion_lawn: Object.freeze([Object.freeze({ variantId:'concert_pavilion_lawn_v2', appearanceKitId:'concert_pavilion_lawn_v2_timber_skin', plantingStructure:'concert_timber_lawn_v2' })]) }),
@@ -1589,6 +1628,7 @@ export function usesArchetypeOwnedParkSurface(zone: ParkLegoZone): boolean {
   if (batch17ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
   if (batch18ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
   if (batch19ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
+  if (batch20ParkSkinForSelection(contract.archetypeId, contract.variantId)) return true;
   const kit = archetypeOwnedParkKitForFamily(contract.familyId);
   const selection = archetypeOwnedParkKitForSelection(contract.archetypeId, contract.variantId);
   return kit !== null && selection?.familyId === kit.familyId;

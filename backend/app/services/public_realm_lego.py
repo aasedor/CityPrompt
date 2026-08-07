@@ -2195,6 +2195,94 @@ def _apply_batch19_variant_closures(
 _CAPABILITIES = tuple(_apply_batch19_variant_closures(capability) for capability in _CAPABILITIES)
 
 
+# Batch 20 closes ten ecological, adventure, performance, hospitality, and
+# civic-plaza families. Each variant retains the reviewed anchor's bounded
+# parcel grammar while receiving a reference-specific material, planting, and
+# program identity. Large destination buildings remain separate building LEGO.
+_BATCH20_VARIANT_CLOSURES: dict[
+    str, tuple[tuple[str, str, str, str, str], ...]
+] = {
+    "park_water_ecology": (
+        ("riparian_buffer", "riparian_buffer_v1", "riparian_buffer_v1_bioengineered_skin", "riparian_bioengineered_v1", "bioengineered_creek_program_v1"),
+        ("riparian_buffer", "riparian_buffer_v2", "riparian_buffer_v2_rewilded_urban_skin", "riparian_rewilded_v2", "rewilded_urban_creek_program_v1"),
+        ("riparian_buffer", "riparian_buffer_v3", "riparian_buffer_v3_resilient_coastal_skin", "riparian_coastal_v3", "coastal_riparian_program_v1"),
+        ("wetland_rain_garden", "wetland_rain_garden_v1", "wetland_rain_garden_v1_bioengineered_skin", "wetland_bioengineered_v1", "bioengineered_wetland_program_v1"),
+        ("wetland_rain_garden", "wetland_rain_garden_v2", "wetland_rain_garden_v2_rewilded_urban_skin", "wetland_rewilded_v2", "rewilded_urban_wetland_program_v1"),
+        ("wetland_rain_garden", "wetland_rain_garden_v3", "wetland_rain_garden_v3_resilient_coastal_skin", "wetland_coastal_v3", "coastal_rain_garden_program_v1"),
+    ),
+    "park_playground_adventure_v0": (
+        ("playground_adventure", "playground_adventure_v1", "playground_adventure_v1_modern_steel_skin", "playground_modern_steel_v1", "modern_steel_adventure_program_v1"),
+        ("playground_adventure", "playground_adventure_v2", "playground_adventure_v2_natural_meadow_skin", "playground_natural_meadow_v2", "meadow_adventure_program_v1"),
+        ("playground_adventure", "playground_adventure_v3", "playground_adventure_v3_urban_contemporary_skin", "playground_urban_contemporary_v3", "urban_adventure_program_v1"),
+    ),
+    "park_amphitheater_lawn_v0": (
+        ("amphitheater_lawn", "amphitheater_lawn_v1", "amphitheater_lawn_v1_open_festival_skin", "amphitheater_open_festival_v1", "open_festival_amphitheater_program_v1"),
+        ("amphitheater_lawn", "amphitheater_lawn_v2", "amphitheater_lawn_v2_intimate_garden_skin", "amphitheater_intimate_garden_v2", "intimate_garden_amphitheater_program_v1"),
+        ("amphitheater_lawn", "amphitheater_lawn_v3", "amphitheater_lawn_v3_industrial_adaptive_skin", "amphitheater_industrial_v3", "industrial_amphitheater_program_v1"),
+    ),
+    "park_beer_garden_munich_v0": (
+        ("beer_garden", "beer_garden_v1", "beer_garden_v1_brewery_tap_yard_skin", "beer_garden_brewery_v1", "brewery_tap_yard_program_v1"),
+        ("beer_garden", "beer_garden_v2", "beer_garden_v2_pergola_terrace_skin", "beer_garden_pergola_v2", "pergola_beer_garden_program_v1"),
+        ("beer_garden", "beer_garden_v3", "beer_garden_v3_rooftop_skin", "beer_garden_rooftop_v3", "rooftop_beer_garden_program_v1"),
+    ),
+    "park_city_hall_modernist_fountain_v2": (
+        ("city_hall_government_plaza", "city_hall_government_plaza_v0", "city_hall_government_plaza_v0_compact_skin", "city_hall_compact_v0", "compact_civic_forecourt_program_v1"),
+        ("city_hall_government_plaza", "city_hall_government_plaza_v1", "city_hall_government_plaza_v1_historic_skin", "city_hall_historic_v1", "historic_senate_square_program_v1"),
+        ("city_hall_government_plaza", "city_hall_government_plaza_v3", "city_hall_government_plaza_v3_brutalist_skin", "city_hall_brutalist_v3", "brutalist_forecourt_program_v1"),
+    ),
+    "park_sunken_courtyard_v0": (
+        ("sunken_plaza", "sunken_plaza_v1", "sunken_plaza_v1_rockefeller_rink_skin", "sunken_rockefeller_v1", "rockefeller_rink_terrace_program_v1"),
+        ("sunken_plaza", "sunken_plaza_v2", "sunken_plaza_v2_corporate_atrium_skin", "sunken_corporate_v2", "corporate_atrium_tier_program_v1"),
+        ("sunken_plaza", "sunken_plaza_v3", "sunken_plaza_v3_asian_transit_skin", "sunken_asian_transit_v3", "transit_integrated_sunken_program_v1"),
+    ),
+    "park_cathedral_courtyard_fountain_v3": (
+        ("cathedral_religious_forecourt", "cathedral_religious_forecourt_v0", "cathedral_religious_forecourt_v0_asian_temple_skin", "cathedral_asian_temple_v0", "asian_temple_forecourt_program_v1"),
+        ("cathedral_religious_forecourt", "cathedral_religious_forecourt_v1", "cathedral_religious_forecourt_v1_gothic_parvis_skin", "cathedral_gothic_parvis_v1", "gothic_cathedral_parvis_program_v1"),
+        ("cathedral_religious_forecourt", "cathedral_religious_forecourt_v2", "cathedral_religious_forecourt_v2_renaissance_skin", "cathedral_renaissance_v2", "renaissance_basilica_square_program_v1"),
+    ),
+    "park_cultural_museum_terrace_v0": (
+        ("cultural_institution_forecourt", "cultural_institution_forecourt_v1", "cultural_institution_forecourt_v1_library_steps_skin", "cultural_library_steps_v1", "beaux_arts_library_steps_program_v1"),
+        ("cultural_institution_forecourt", "cultural_institution_forecourt_v2", "cultural_institution_forecourt_v2_concert_hall_skin", "cultural_concert_hall_v2", "concert_hall_forecourt_program_v1"),
+        ("cultural_institution_forecourt", "cultural_institution_forecourt_v3", "cultural_institution_forecourt_v3_arena_concourse_skin", "cultural_arena_concourse_v3", "arena_concourse_program_v1"),
+    ),
+    "park_terraced_cascade_v3": (
+        ("stepped_terraced_plaza", "stepped_terraced_plaza_v0", "stepped_terraced_plaza_v0_aegean_skin", "terraced_aegean_v0", "aegean_village_steps_program_v1"),
+        ("stepped_terraced_plaza", "stepped_terraced_plaza_v1", "stepped_terraced_plaza_v1_spanish_steps_skin", "terraced_spanish_v1", "spanish_steps_program_v1"),
+        ("stepped_terraced_plaza", "stepped_terraced_plaza_v2", "stepped_terraced_plaza_v2_federation_shard_skin", "terraced_federation_v2", "federation_shard_program_v1"),
+    ),
+}
+
+
+def _apply_batch20_variant_closures(
+    capability: PublicRealmFamilyCapability,
+) -> PublicRealmFamilyCapability:
+    descriptors = _BATCH20_VARIANT_CLOSURES.get(capability.family_id, ())
+    if not descriptors:
+        return capability
+    additions: list[PublicRealmSelectionCapability] = []
+    for archetype_id, variant_id, appearance_kit_id, planting_structure, program_component in descriptors:
+        base = next(
+            selection
+            for selection in capability.selections
+            if selection.archetype_id == archetype_id
+        )
+        additions.append(
+            _selection(
+                archetype_id,
+                variant_id,
+                profile_id=base.profile_id,
+                appearance_kit_id=appearance_kit_id,
+                planting_structure=planting_structure,
+                compatibility=base.compatibility,
+                components=(*base.component_set_ids, program_component),
+            )
+        )
+    return capability.model_copy(update={"selections": (*capability.selections, *additions)})
+
+
+_CAPABILITIES = tuple(_apply_batch20_variant_closures(capability) for capability in _CAPABILITIES)
+
+
 def public_realm_capability_fingerprint(
     capability: PublicRealmFamilyCapability,
 ) -> str:

@@ -40,3 +40,4 @@ docs/park_lego_batch16/*.jpg filter=lfs diff=lfs merge=lfs -text
 docs/park_lego_batch17/*.jpg filter=lfs diff=lfs merge=lfs -text
 docs/park_lego_batch18/*.jpg filter=lfs diff=lfs merge=lfs -text
 docs/park_lego_batch19/*.jpg filter=lfs diff=lfs merge=lfs -text
+docs/park_lego_batch20/*.jpg filter=lfs diff=lfs merge=lfs -text

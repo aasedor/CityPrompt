@@ -133,6 +133,7 @@ import { GlobeParkBatch11Assembly } from './GlobeParkBatch11Assembly';
 import { GlobeParkBatch12Assembly } from './GlobeParkBatch12Assembly';
 import { GlobeParkBatch13Assembly } from './GlobeParkBatch13Assembly';
 import { GlobeParkBatch14Assembly } from './GlobeParkBatch14Assembly';
+import { GlobeParkBatch20CoreSurfaces } from './GlobeParkBatch20CoreSurfaces';
 
 const DEG_TO_RAD = Math.PI / 180;
 const RENDER_ORDER_PROPS = 145;
@@ -845,6 +846,15 @@ function ParkSpecialtyStructures({
       : 0
   );
   const legoContract = resolveParkLegoContract(zone);
+  const batch20CoreSurfaces = legoContract ? (
+    <GlobeParkBatch20CoreSurfaces
+      archetypeId={legoContract.archetypeId}
+      variantId={legoContract.variantId}
+      guides={fittedProgramGuides}
+      frame={programFrame}
+      terrainZ={terrainZ}
+    />
+  ) : null;
 
   if (structureKind === 'skate_park_v0_assembly') {
     return (
@@ -927,7 +937,7 @@ function ParkSpecialtyStructures({
     return <GlobeParkBatch11Assembly familyId={profileFamilyId} guides={fittedProgramGuides} frame={programFrame} terrainZ={terrainZ} />;
   }
   if (structureKind === 'batch12_archetype_assembly' && profileFamilyId) {
-    return <GlobeParkBatch12Assembly familyId={profileFamilyId} guides={fittedProgramGuides} frame={programFrame} terrainZ={terrainZ} />;
+    return <GlobeParkBatch12Assembly familyId={profileFamilyId} archetypeId={legoContract?.archetypeId} variantId={legoContract?.variantId} guides={fittedProgramGuides} frame={programFrame} terrainZ={terrainZ} />;
   }
   if (structureKind === 'batch13_archetype_assembly' && profileFamilyId) {
     return <GlobeParkBatch13Assembly familyId={profileFamilyId} guides={fittedProgramGuides} frame={programFrame} terrainZ={terrainZ} />;
@@ -1204,6 +1214,8 @@ function ParkSpecialtyStructures({
     const yaw = Math.atan2(dy, dx);
     const rail = structureKind === 'riparian_bridge_assembly';
     return (
+      <group>
+      {batch20CoreSurfaces}
       <group position={[x, y, terrainZ(x, y) + PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS + 0.32]} rotation={[0, 0, yaw]}>
         <mesh renderOrder={RENDER_ORDER_PROPS + 2}>
           <boxGeometry args={[length, width, 0.24]} />
@@ -1239,6 +1251,7 @@ function ParkSpecialtyStructures({
           </group>
         ))}
       </group>
+      </group>
     );
   }
 
@@ -1257,6 +1270,7 @@ function ParkSpecialtyStructures({
     const yaw = Math.atan2(to.y - from.y, to.x - from.x);
     return (
       <group renderOrder={RENDER_ORDER_PROPS}>
+        {batch20CoreSurfaces}
         <mesh position={[waterCenter.x, waterCenter.y, terrainZ(waterCenter.x, waterCenter.y) + 0.025]} renderOrder={RENDER_ORDER_PROPS + 1}>
           <planeGeometry args={[waterSize.width, waterSize.height]} />
           <meshPhysicalMaterial color="#315f6a" roughness={0.18} transparent opacity={0.84} />
@@ -1288,6 +1302,7 @@ function ParkSpecialtyStructures({
     const stageSize = resolveParkGuideDimensionsM(stage, programFrame);
     return (
       <group renderOrder={RENDER_ORDER_PROPS}>
+        {batch20CoreSurfaces}
         {tiers.map((tier, index) => {
           const center = guideCenter(tier, programFrame);
           const dimensions = resolveParkGuideDimensionsM(tier, programFrame);
@@ -1314,6 +1329,7 @@ function ParkSpecialtyStructures({
     const towerOffsets = [[-5, -3, 2.6], [0, 2, 3.5], [5, -1, 3.0]] as const;
     return (
       <group renderOrder={RENDER_ORDER_PROPS}>
+        {batch20CoreSurfaces}
         {towerOffsets.map(([offsetX, offsetY, deckHeight], index) => (
           <group key={index} position={[towerPad.x + offsetX, towerPad.y + offsetY, terrainZ(towerPad.x + offsetX, towerPad.y + offsetY)]}>
             {[-1.2, 1.2].flatMap((x) => [-1.2, 1.2].map((y) => <mesh key={`${x}-${y}`} position={[x, y, deckHeight / 2]}><cylinderGeometry args={[0.16, 0.22, deckHeight, 9]} /><meshStandardMaterial color={index % 2 === 0 ? '#705841' : '#80664b'} roughness={0.94} /></mesh>))}
@@ -1504,6 +1520,7 @@ function ParkSpecialtyStructures({
     }).flat();
     return (
       <group renderOrder={RENDER_ORDER_PROPS}>
+        {batch20CoreSurfaces}
         {routes.map(({ from, to }, index) => {
           const dx = to.x - from.x;
           const dy = to.y - from.y;
@@ -2085,7 +2102,14 @@ function ParkKitInstance({
       fittedMicrodetailGuides,
     )),
     ...computeParkProgramAssetPlacements(zone),
-  ].filter((placement) => !shouldDeferParkFinishingProp(zone, placement.propId)), [
+  ].filter((placement) => (
+    !shouldDeferParkFinishingProp(zone, placement.propId)
+    // A specialty family already owns its complete 3D program. Retaining the
+    // generic playground/pavilion fallback here can place a second oversized
+    // canopy over courts, plazas, or family-specific structures.
+    && !(specialtyStructureKind !== null
+      && (placement.propId === 'playground' || placement.propId === 'pavilion'))
+  )), [
     fittedMicrodetailGuides,
     hasCurrentParkGround,
     plantingStructure,
@@ -2287,6 +2311,16 @@ function ParkKitInstance({
 
     const anchor = resolveZoneTerrainHeight(sampledTerrain, storedTerrain, fallbackTerrainHeight);
     const n = terrainTargets.length;
+    // The compiled park surface is a level prepared construction datum. Once
+    // its robust zone anchor is known, seat every kit element on that datum;
+    // otherwise source roofs and canopy hits can tilt the fixed program away
+    // from the flattened parcel below it.
+    if (hasCurrentParkGround) {
+      missesAtFreezeRef.current = 0;
+      frozenRef.current = true;
+      setInstanceZ(new Array<number>(n).fill(0));
+      return;
+    }
     if (!rawElevationRef.current || rawElevationRef.current.length !== n) {
       rawElevationRef.current = new Array<number | null>(n).fill(null);
       hitFlagsRef.current = new Array<boolean>(n).fill(false);

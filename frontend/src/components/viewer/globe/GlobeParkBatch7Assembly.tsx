@@ -5,6 +5,7 @@ import type { ParkLegoFamilyId } from './parkLegoFamilies';
 import { resolveParkGuideDimensionsM, type ParkGroundGuide } from './parkGroundProfiles';
 import { PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS } from './publicRealmDepthPolicy';
 import { batch16ParkSkinForSelection } from './parkBatch16Skins';
+import { batch20ParkSkinForSelection } from './parkBatch20Skins';
 
 export interface Batch7ProgramFrame {
   minX: number;
@@ -110,10 +111,10 @@ function DeciduousTree({ x, y, z, scale = 1, trunk = '#5d4936', leaf = '#526c3c'
   </group>;
 }
 
-function TrestleSet({ x, y, z, timberMaps }: { x: number; y: number; z: number; timberMaps: MaterialMaps }) {
+function TrestleSet({ x, y, z, timberMaps, neutralTint = false }: { x: number; y: number; z: number; timberMaps: MaterialMaps; neutralTint?: boolean }) {
   return <group position={[x, y, z]}>
-    <mesh position={[0, 0, 0.78]}><boxGeometry args={[5.8, 0.72, 0.12]} /><meshStandardMaterial {...timberMaps} color="#9a7044" roughness={0.9} /></mesh>
-    {[-0.82, 0.82].map((side) => <mesh key={side} position={[0, side, 0.46]}><boxGeometry args={[5.8, 0.32, 0.10]} /><meshStandardMaterial {...timberMaps} color="#89633f" roughness={0.92} /></mesh>)}
+    <mesh position={[0, 0, 0.78]}><boxGeometry args={[5.8, 0.72, 0.12]} /><meshStandardMaterial {...timberMaps} color={neutralTint ? '#ffffff' : '#9a7044'} roughness={0.9} /></mesh>
+    {[-0.82, 0.82].map((side) => <mesh key={side} position={[0, side, 0.46]}><boxGeometry args={[5.8, 0.32, 0.10]} /><meshStandardMaterial {...timberMaps} color={neutralTint ? '#ffffff' : '#89633f'} roughness={0.92} /></mesh>)}
     {[-1.8, 1.8].flatMap((along) => [-0.42, 0.42].map((side) => <mesh key={`${along}-${side}`} position={[along, side, 0.38]} rotation={[0, side * 0.35, 0]}><boxGeometry args={[0.10, 0.10, 0.75]} /><meshStandardMaterial color="#33413b" metalness={0.55} roughness={0.46} /></mesh>))}
   </group>;
 }
@@ -134,8 +135,11 @@ export function GlobeParkBatch7Assembly({ familyId, guides, frame, terrainZ, arc
   variantId?: string;
 }) {
   const lift = PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS;
-  const slug = batch16ParkSkinForSelection(archetypeId ?? '', variantId ?? '')?.slug
+  const batch20Skin = batch20ParkSkinForSelection(archetypeId ?? '', variantId ?? '');
+  const slug = batch20Skin?.slug
+    ?? batch16ParkSkinForSelection(archetypeId ?? '', variantId ?? '')?.slug
     ?? SKIN_SLUG[familyId as Batch7FamilyId];
+  const variantSkin = batch20Skin !== null;
   const paverMaps = useRoleMaps(slug, 'paver');
   const asphaltMaps = useRoleMaps(slug, 'asphalt');
   const plantingMaps = useRoleMaps(slug, 'planting', 5);
@@ -174,7 +178,7 @@ export function GlobeParkBatch7Assembly({ familyId, guides, frame, terrainZ, arc
         const row = Math.floor(index / columnCount); const column = index % columnCount;
         const x = frame.minX + frame.width / 2 - usableWidth / 2 + (column + 0.5) * usableWidth / columnCount;
         const y = frame.minY + frame.height / 2 - usableHeight / 2 + (row + 0.5) * usableHeight / rowCount;
-        return <TrestleSet key={index} x={x} y={y} z={terrainZ(x, y) + lift} timberMaps={timberMaps} />;
+        return <TrestleSet key={index} x={x} y={y} z={terrainZ(x, y) + lift} timberMaps={timberMaps} neutralTint={variantSkin} />;
       })}
       {Array.from({ length: treesAcross * treesDown }, (_, index) => {
         const row = Math.floor(index / treesAcross); const column = index % treesAcross;
@@ -182,9 +186,9 @@ export function GlobeParkBatch7Assembly({ familyId, guides, frame, terrainZ, arc
         const y = frame.minY + frame.height / 2 - usableHeight / 2 + (row + 0.5) * usableHeight / treesDown;
         return <DeciduousTree key={index} x={x} y={y} z={terrainZ(x, y) + lift} scale={0.78} leaf="#48643d" />;
       })}
-      {kiosk && (() => { const c = center(kiosk, frame); const s = resolveParkGuideDimensionsM(kiosk, frame); const z = terrainZ(c.x, c.y) + lift; return <group position={[c.x, c.y, z]}>
-        <mesh position={[0, 0, 1.45]}><boxGeometry args={[s.width, s.height, 2.9]} /><meshStandardMaterial {...timberMaps} color="#725033" roughness={0.9} /></mesh>
-        <mesh position={[0, 0, 3.25]} rotation={[0, 0, 0]}><coneGeometry args={[Math.max(s.width, s.height) * 0.62, 1.5, 4]} /><meshStandardMaterial {...safetyMaps} color="#7d4932" roughness={0.88} /></mesh>
+      {kiosk && (() => { const c = center(kiosk, frame); const guideSize = resolveParkGuideDimensionsM(kiosk, frame); const s = { width: Math.min(8, guideSize.width), height: Math.min(6, guideSize.height) }; const z = terrainZ(c.x, c.y) + lift; return <group position={[c.x, c.y, z]}>
+        <mesh position={[0, 0, 1.45]}><boxGeometry args={[s.width, s.height, 2.9]} /><meshStandardMaterial {...timberMaps} color={variantSkin ? '#ffffff' : '#725033'} roughness={0.9} /></mesh>
+        <mesh position={[0, 0, 3.25]} rotation={[0, 0, 0]}><coneGeometry args={[Math.min(5, Math.max(s.width, s.height) * 0.62), 1.5, 4]} /><meshStandardMaterial {...safetyMaps} color={variantSkin ? '#ffffff' : '#7d4932'} roughness={0.88} /></mesh>
         <mesh position={[0, -s.height / 2 - 0.01, 1.65]}><planeGeometry args={[s.width * 0.62, 1.15]} /><meshStandardMaterial color="#202826" roughness={0.5} /></mesh>
       </group>; })()}
       {Array.from({ length: 3 }, (_, row) => {
@@ -207,12 +211,12 @@ export function GlobeParkBatch7Assembly({ familyId, guides, frame, terrainZ, arc
       {Array.from({ length: tiers }, (_, tier) => {
         const inset = tier * 1.15; const h = 0.22 + tier * 0.24;
         return <group key={tier}>
-          <mesh position={[c.x, c.y + s.height / 2 + inset / 2, z + h / 2]}><boxGeometry args={[s.width + inset * 2, 1.15, h]} /><meshStandardMaterial {...paverMaps} color="#bdb5a7" roughness={0.9} /></mesh>
-          <mesh position={[c.x - s.width / 2 - inset / 2, c.y, z + h / 2]}><boxGeometry args={[1.15, s.height + inset * 2, h]} /><meshStandardMaterial {...paverMaps} color="#bdb5a7" roughness={0.9} /></mesh>
-          <mesh position={[c.x + s.width / 2 + inset / 2, c.y, z + h / 2]}><boxGeometry args={[1.15, s.height + inset * 2, h]} /><meshStandardMaterial {...paverMaps} color="#bdb5a7" roughness={0.9} /></mesh>
+          <mesh position={[c.x, c.y + s.height / 2 + inset / 2, z + h / 2]}><boxGeometry args={[s.width + inset * 2, 1.15, h]} /><meshStandardMaterial {...paverMaps} color={variantSkin ? '#ffffff' : '#bdb5a7'} roughness={0.9} /></mesh>
+          <mesh position={[c.x - s.width / 2 - inset / 2, c.y, z + h / 2]}><boxGeometry args={[1.15, s.height + inset * 2, h]} /><meshStandardMaterial {...paverMaps} color={variantSkin ? '#ffffff' : '#bdb5a7'} roughness={0.9} /></mesh>
+          <mesh position={[c.x + s.width / 2 + inset / 2, c.y, z + h / 2]}><boxGeometry args={[1.15, s.height + inset * 2, h]} /><meshStandardMaterial {...paverMaps} color={variantSkin ? '#ffffff' : '#bdb5a7'} roughness={0.9} /></mesh>
         </group>;
       })}
-      <mesh position={[fc.x, fc.y, terrainZ(fc.x, fc.y) + lift + 0.32]}><cylinderGeometry args={[fs.width / 2, fs.width / 2 + 0.35, 0.64, 24]} /><meshStandardMaterial {...paverMaps} color="#77756d" roughness={0.82} /></mesh>
+      <mesh position={[fc.x, fc.y, terrainZ(fc.x, fc.y) + lift + 0.32]}><cylinderGeometry args={[fs.width / 2, fs.width / 2 + 0.35, 0.64, 24]} /><meshStandardMaterial {...paverMaps} color={variantSkin ? '#ffffff' : '#77756d'} roughness={0.82} /></mesh>
       <mesh position={[fc.x, fc.y, terrainZ(fc.x, fc.y) + lift + 0.67]}><cylinderGeometry args={[fs.width * 0.39, fs.width * 0.39, 0.08, 24]} /><meshPhysicalMaterial color="#668a8c" transparent opacity={0.82} roughness={0.14} /></mesh>
       <mesh position={[fc.x, fc.y, terrainZ(fc.x, fc.y) + lift + 1.1]}><dodecahedronGeometry args={[0.58, 1]} /><meshStandardMaterial color="#4c5b50" metalness={0.55} roughness={0.48} /></mesh>
     </group>;
@@ -228,15 +232,15 @@ export function GlobeParkBatch7Assembly({ familyId, guides, frame, terrainZ, arc
         const y = frame.maxY - frame.height * 0.14 - (index + 0.5) * bandDepth;
         const z = terrainZ(frame.minX + frame.width / 2, y) + lift + index * 0.28;
         return <group key={index}>
-          <mesh position={[frame.minX + frame.width / 2, y, z + 0.14]}><boxGeometry args={[frame.width * 0.72, bandDepth * 0.92, 0.28]} /><meshStandardMaterial {...paverMaps} color={index % 2 ? '#9f9e99' : '#aaa8a1'} roughness={0.92} /></mesh>
-          {[-1, 1].map((side) => <mesh key={side} position={[frame.minX + frame.width / 2 + side * frame.width * 0.31, y, z + 0.5]}><boxGeometry args={[frame.width * 0.12, bandDepth * 0.84, 0.9]} /><meshStandardMaterial {...plantingMaps} color="#536747" roughness={0.98} /></mesh>)}
+          <mesh position={[frame.minX + frame.width / 2, y, z + 0.14]}><boxGeometry args={[frame.width * 0.72, bandDepth * 0.92, 0.28]} /><meshStandardMaterial {...paverMaps} color={variantSkin ? '#ffffff' : index % 2 ? '#9f9e99' : '#aaa8a1'} roughness={0.92} /></mesh>
+          {[-1, 1].map((side) => <mesh key={side} position={[frame.minX + frame.width / 2 + side * frame.width * 0.31, y, z + 0.5]}><boxGeometry args={[frame.width * 0.12, bandDepth * 0.84, 0.9]} /><meshStandardMaterial {...plantingMaps} color={variantSkin ? '#ffffff' : '#536747'} roughness={0.98} /></mesh>)}
         </group>;
       })}
       {basins.map((basin, index) => { const c = center(basin, frame); const s = resolveParkGuideDimensionsM(basin, frame); const z = terrainZ(c.x, c.y) + lift + index * 0.24; return <group key={index}>
-        <mesh position={[c.x, c.y, z + 0.24]}><boxGeometry args={[s.width + 0.8, s.height + 0.8, 0.48]} /><meshStandardMaterial {...paverMaps} color="#777b79" roughness={0.82} /></mesh>
+        <mesh position={[c.x, c.y, z + 0.24]}><boxGeometry args={[s.width + 0.8, s.height + 0.8, 0.48]} /><meshStandardMaterial {...paverMaps} color={variantSkin ? '#ffffff' : '#777b79'} roughness={0.82} /></mesh>
         <mesh position={[c.x, c.y, z + 0.50]}><boxGeometry args={[s.width, s.height, 0.07]} /><meshPhysicalMaterial color="#668d92" transparent opacity={0.8} roughness={0.12} /></mesh>
       </group>; })}
-      {ramp && (() => { const points = route(ramp, frame); return points.slice(0, -1).map((point, index) => <Segment key={index} from={point} to={points[index + 1]} width={3.2} height={0.18} z={Math.max(terrainZ(point.x, point.y), terrainZ(points[index + 1].x, points[index + 1].y)) + lift + 0.45} maps={paverMaps} color="#aaa79f" />); })()}
+      {ramp && (() => { const points = route(ramp, frame); return points.slice(0, -1).map((point, index) => <Segment key={index} from={point} to={points[index + 1]} width={3.2} height={0.18} z={Math.max(terrainZ(point.x, point.y), terrainZ(points[index + 1].x, points[index + 1].y)) + lift + 0.45} maps={paverMaps} color={variantSkin ? '#ffffff' : '#aaa79f'} />); })()}
     </group>;
   }
 
