@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-08-08-landmark-section-multiview-v72",
+  "memory_version": "2026-08-08-wave-shell-landmark-v73",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "calibration_set": {
@@ -74,6 +74,18 @@
     {
       "id": "landmark_voids_are_sections",
       "rule": "A signature arch, portal, undercroft or carved entrance is authored as a depth-bearing section with outer shell, inner reveal and inhabited back plane. Flat facade imagery or trim cannot carry a public void."
+    },
+    {
+      "id": "large_span_shells_are_closed_and_panelised",
+      "rule": "A wave, barrel or tensile landmark roof is a closed sampled assembly with outer skin, soffit and sealed perimeter. Plan pinch, sectional crests and surface-following panel seams remain physical geometry and must read in both street and roof-plan evidence."
+    },
+    {
+      "id": "audit_views_are_context_free",
+      "rule": "A machine-scored roof or plan audit hides every presentation mesh except the building. Ground, roads, trees, cars and neighbouring masses may appear in human context views but may not enter the segmentation image."
+    },
+    {
+      "id": "large_span_clear_height_is_catalogue_truth",
+      "rule": "Natatoria, hangars and civic halls may legitimately encode one 8-18 m internal level. Preserve that catalogue height through compilation and let an image-locked landmark graph own the final section."
     },
     {
       "id": "site_context_stays_outside_asset_bounds",

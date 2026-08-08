@@ -1,0 +1,25 @@
+{
+  "schema": "building-reference-evidence@2",
+  "id": "wave-shell-natatorium-v73",
+  "required_roles": ["street_identity", "roof_plan"],
+  "views": [
+    {
+      "id": "street_identity",
+      "role": "street_identity",
+      "render_key": "archetype_match",
+      "reference_image": "frontend/public/archetypes/buildings/aquatic-natatorium-complex/variant_0.png",
+      "reference_silhouette_polygon": [[0.055, 0.745], [0.082, 0.548], [0.183, 0.379], [0.354, 0.267], [0.551, 0.258], [0.741, 0.350], [0.907, 0.525], [0.953, 0.744]],
+      "render_extraction": {"roi": [0.01, 0.12, 0.99, 0.86], "background_tolerance": 20.0},
+      "thresholds": {"silhouette_iou_min": 0.48, "roofline_rmse_max": 0.22, "aspect_ratio_error_max": 0.42}
+    },
+    {
+      "id": "roof_plan",
+      "role": "roof_plan",
+      "render_key": "roof_audit",
+      "reference_image": "frontend/public/archetypes/buildings/aquatic-natatorium-complex/variant_0_angle_90.jpg",
+      "reference_silhouette_polygon": [[0.306, 0.205], [0.738, 0.171], [0.817, 0.302], [0.794, 0.667], [0.333, 0.724], [0.226, 0.566], [0.236, 0.310]],
+      "render_extraction": {"roi": [0.12, 0.08, 0.88, 0.90], "background_tolerance": 20.0},
+      "thresholds": {"silhouette_iou_min": 0.50, "roofline_rmse_max": 0.22, "aspect_ratio_error_max": 0.28}
+    }
+  ]
+}

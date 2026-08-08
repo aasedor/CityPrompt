@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-08-08-complete-alpine-category-v71`.
+Current executable memory: `2026-08-08-wave-shell-landmark-v73`.
 
 The current calibration set and catalogue rollout rationale are documented in
 [`BUILDING_GOLD_SET_PIPELINE_SYNTHESIS_2026-08-07.md`](BUILDING_GOLD_SET_PIPELINE_SYNTHESIS_2026-08-07.md).
@@ -633,6 +633,35 @@ with a reference-derived perimeter quadrangle.
 - Keep the result review-only when the primary massing improves but secondary
   ornament remains simplified. V68 establishes the right reconstruction
   method; it does not promote the Scottish pilot into the four-family gold set.
+
+### V73 large-span shell and isolated-audit lessons
+
+The Parametric Wave-Shell Natatorium extends the image-locked graph method to a
+building whose identity is almost entirely plan and section rather than a
+rectangular facade.
+
+- Generate a large-span shell as a closed sampled assembly with an outer skin,
+  separate soffit and sealed perimeter. Modulate plan width and longitudinal
+  crest height explicitly so the building remains asymmetric and wave-like in
+  the street, oblique and top-down views.
+- Panel grids on double-curved roofs are construction evidence, not texture.
+  Build a bounded consolidated seam mesh on the sampled surface; avoid hundreds
+  of detached rods and never flatten the quilt rhythm into a planar decal.
+- Curved glazed end walls follow the same analytic roof section. Their glass,
+  perimeter arch, mullions and transoms are physical geometry, while generated
+  orthographic imagery is restricted to material and glazing character.
+- Structural masts, stays and cables must connect declared 3D endpoints. Thin
+  arbitrary members are reusable, but coincident endpoints and unbounded cable
+  fans fail immediately.
+- A roof audit is context-free only when every presentation mesh other than the
+  building is hidden. Removing neighbouring blocks while leaving roads, ground,
+  trees and cars still contaminates OpenCV segmentation.
+- Preserve catalogue clear-height truth for natatoria, hangars and civic halls.
+  One 8-18 m internal level is valid even though ordinary stacked floors remain
+  much lower; the landmark graph owns the final section.
+- Passing silhouette evidence does not prove material realism. V73 passes the
+  street and roof gates, but its cool curtain wall and simplified occupied
+  interior remain review findings for a later optical/material pass.
 
 ## Updating this memory
 

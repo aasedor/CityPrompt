@@ -1139,3 +1139,48 @@ def test_calgary_library_v72_locks_landmark_section_and_paired_evidence():
     assert contract["schema"] == "building-reference-evidence@2"
     assert {view["role"] for view in contract["views"]} == {"street_identity", "roof_plan"}
     assert next(view for view in contract["views"] if view["role"] == "roof_plan")["render_key"] == "roof_audit"
+
+
+def test_wave_shell_natatorium_v73_locks_section_plan_and_structural_fan():
+    from signature_profiles import inject_signature
+
+    tool_dir = Path(__file__).parents[1]
+    registry = json.loads(
+        (tool_dir / "worldclass_wave_shell_natatorium_v73.json").read_text(encoding="utf-8")
+    )
+    assert registry["entries"] == [{
+        "entry_id": "wave-shell-natatorium-v73",
+        "archetype_id": "aquatic_natatorium_complex",
+        "variant_id": "parametric_wave_shell",
+        "family_id": "wave-shell-natatorium",
+        "floors": 2,
+        "width_m": 80.0,
+        "depth_m": 55.0,
+        "group": "Civic shell landmark",
+    }]
+
+    grammar = {"source": {"archetype_id": "aquatic_natatorium_complex"}, "materials": {}}
+    inject_signature(grammar, "aquatic_natatorium_complex", "parametric_wave_shell")
+    graph = grammar["massing_graph"]
+    assert graph["profile"] == "parametric_wave_shell_natatorium_v73"
+    kinds = [item["kind"] for item in graph["assemblies"]]
+    assert kinds.count("wave_shell") == 1
+    assert kinds.count("wave_end_wall") == 2
+    assert kinds.count("mast_cable_array") == 3
+    assert graph["reference_dimensions"] == {
+        "width_m": 80.0, "depth_m": 55.0, "floors": 2, "floor_height_m": 12.0,
+    }
+    assert {view["role"] for view in graph["reference_views"]} == {
+        "street_identity", "oblique_massing", "roof_plan",
+    }
+
+    source = tool_dir / "facade_sources_v73/parametric_wave_shell.png"
+    prompt = tool_dir / "facade_sources_v73/parametric_wave_shell.prompt.json"
+    assert source.exists() and prompt.exists()
+
+    contract = json.loads(
+        (tool_dir / "reference_fidelity_contracts/wave_shell_natatorium_v73.json").read_text(encoding="utf-8")
+    )
+    assert contract["schema"] == "building-reference-evidence@2"
+    assert {view["role"] for view in contract["views"]} == {"street_identity", "roof_plan"}
+    assert next(view for view in contract["views"] if view["role"] == "roof_plan")["render_key"] == "roof_audit"

@@ -1,0 +1,70 @@
+{
+  "schema": "building-reference-evidence-report@2",
+  "contract": "wave-shell-natatorium-v73",
+  "status": "pass",
+  "required_roles": [
+    "street_identity",
+    "roof_plan"
+  ],
+  "mean_metrics": {
+    "silhouette_iou": 0.76238,
+    "roofline_rmse": 0.06517,
+    "aspect_ratio_error": 0.05974
+  },
+  "views": [
+    {
+      "schema": "building-reference-fidelity-report@1",
+      "contract": "wave-shell-natatorium-v73-street_identity",
+      "reference_image": "C:\\dev\\3D-Maps-building-goldset\\frontend\\public\\archetypes\\buildings\\aquatic-natatorium-complex\\variant_0.png",
+      "render_image": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\wave-shell-natatorium-v73\\families\\wave-shell-natatorium\\wave-shell-natatorium_archetype_match.png",
+      "status": "pass",
+      "metrics": {
+        "silhouette_iou": 0.8501,
+        "roofline_rmse": 0.05732,
+        "aspect_ratio_error": 0.08678,
+        "reference_aspect_ratio": 2.45989,
+        "render_aspect_ratio": 2.24642
+      },
+      "checks": {
+        "silhouette_iou": true,
+        "roofline_rmse": true,
+        "aspect_ratio_error": true
+      },
+      "thresholds": {
+        "silhouette_iou_min": 0.48,
+        "roofline_rmse_max": 0.22,
+        "aspect_ratio_error_max": 0.42
+      },
+      "view_id": "street_identity",
+      "role": "street_identity",
+      "render_key": "archetype_match"
+    },
+    {
+      "schema": "building-reference-fidelity-report@1",
+      "contract": "wave-shell-natatorium-v73-roof_plan",
+      "reference_image": "C:\\dev\\3D-Maps-building-goldset\\frontend\\public\\archetypes\\buildings\\aquatic-natatorium-complex\\variant_0_angle_90.jpg",
+      "render_image": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\wave-shell-natatorium-v73\\families\\wave-shell-natatorium\\wave-shell-natatorium_roof_audit.png",
+      "status": "pass",
+      "metrics": {
+        "silhouette_iou": 0.67467,
+        "roofline_rmse": 0.07302,
+        "aspect_ratio_error": 0.03271,
+        "reference_aspect_ratio": 1.42339,
+        "render_aspect_ratio": 1.37683
+      },
+      "checks": {
+        "silhouette_iou": true,
+        "roofline_rmse": true,
+        "aspect_ratio_error": true
+      },
+      "thresholds": {
+        "silhouette_iou_min": 0.5,
+        "roofline_rmse_max": 0.22,
+        "aspect_ratio_error_max": 0.28
+      },
+      "view_id": "roof_plan",
+      "role": "roof_plan",
+      "render_key": "roof_audit"
+    }
+  ]
+}

@@ -86,6 +86,9 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
         "variant_atlas_matches_selected_reference",
         "silhouette_gate_is_regression_not_approval",
         "reference_plan_voids_are_geometry",
+        "large_span_shells_are_closed_and_panelised",
+        "audit_views_are_context_free",
+        "large_span_clear_height_is_catalogue_truth",
     } <= principle_ids
 
 

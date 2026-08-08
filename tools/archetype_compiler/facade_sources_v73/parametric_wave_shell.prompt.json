@@ -1,0 +1,13 @@
+{
+  "schema": "orthographic-facade-source@1",
+  "variant_id": "parametric_wave_shell",
+  "provider": "openai-imagegen",
+  "created_at": "2026-08-08",
+  "reference_images": [
+    "frontend/public/archetypes/buildings/aquatic-natatorium-complex/variant_0.png",
+    "frontend/public/archetypes/buildings/aquatic-natatorium-complex/variant_0_angle_60.jpg",
+    "frontend/public/archetypes/buildings/aquatic-natatorium-complex/variant_0_angle_90.jpg"
+  ],
+  "role": "material and glazing character only; Blender owns shell, plan, end-wall, canopy, strut, mast and cable geometry",
+  "prompt": "Create one production-ready orthographic architectural material reference for a 3D model of the Parametric Wave-Shell Natatorium shown in the supplied archetype images. Show the MAIN CURVED GLAZED END ELEVATION straight-on, centered, with zero perspective and no visible side wall. Preserve the archetype's broad low parabolic glazed gable, pale precast concrete perimeter arch, slender silver curtain-wall mullions and transoms, translucent silver-white quilted polycarbonate shell visible as the curved head, a restrained central glazed entrance beneath a thin projecting concrete canopy, and two expressive diagonal concrete struts near the entrance. Remove people, cars, trees, signs, text, street furniture, shadows cast by context, neighboring buildings, and sky gradients. Use neutral even overcast illumination, physically plausible glass reflections with muted blue-grey and warm interior variation, clean pale-grey background, exact bilateral elevation alignment, high-frequency but non-stylized material detail, no LEGO studs, no miniature/toy appearance. This is a texture and material-character source only; do not invent towers, domes, extra floors, or rectangular box massing. Output a single uninterrupted front elevation filling the frame with a small neutral margin."
+}

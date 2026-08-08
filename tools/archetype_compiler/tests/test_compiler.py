@@ -303,6 +303,26 @@ def test_floor_override_clamped_to_catalogue_range():
     assert any("clamped" in note for note in grammar.notes)
 
 
+def test_large_span_civic_hall_preserves_catalogue_clear_height():
+    payload = payload_mixed_use_midrise(
+        archetypeId="aquatic_natatorium_complex",
+        developmentType="institutional_health",
+        generationTags=["natatorium", "large_span_roof", "civic_landmark"],
+    )
+    payload["dimensions"] = {
+        "suggestedWidth_m": 80,
+        "suggestedDepth_m": 55,
+        "minFloors": 1,
+        "maxFloors": 2,
+        "suggestedFloorHeight": 12,
+    }
+
+    grammar = compile_archetype(payload, floors=2)
+
+    assert grammar.dimensions.floor_height_m == pytest.approx(12.0)
+    grammar.validate()
+
+
 def test_explicit_dimension_tier_can_exceed_catalogue_recommendations():
     payload = payload_mixed_use_midrise()
     grammar = compile_archetype(

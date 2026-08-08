@@ -93,8 +93,12 @@ class Dimensions:
         _require_range("dimensions.width_m", self.width_m, 3.0, 200.0)
         _require_range("dimensions.depth_m", self.depth_m, 3.0, 200.0)
         _require_range("dimensions.podium_height_m", self.podium_height_m, 2.4, 12.0)
-        _require_range("dimensions.floor_height_m", self.floor_height_m, 2.2, 6.0)
-        _require_range("dimensions.setback_height_m", self.setback_height_m, 2.2, 6.0)
+        # Civic halls, natatoria, hangars and other single-volume landmarks
+        # legitimately encode one 8-18 m internal level.  The former 6 m cap
+        # rejected catalogue truth before an image-locked massing graph could
+        # take ownership of the section.
+        _require_range("dimensions.floor_height_m", self.floor_height_m, 2.2, 18.0)
+        _require_range("dimensions.setback_height_m", self.setback_height_m, 2.2, 18.0)
         _require_range("dimensions.roof_height_m", self.roof_height_m, 0.2, 8.0)
         _require_range("dimensions.min_floors", self.min_floors, 1, 100)
         _require_range("dimensions.max_floors", self.max_floors, self.min_floors, 120)

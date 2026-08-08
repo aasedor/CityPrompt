@@ -1,0 +1,30 @@
+{
+  "schema": "worldclass-lego-library@2",
+  "name": "Parametric Wave-Shell Natatorium Pilot v73",
+  "description": "One finite image-locked civic pilot testing a closed double-wave shell, curved glazed ends, structural cable fan and independent street/roof evidence.",
+  "generation_profile": {
+    "facade_model": "reference-locked-openai-v10",
+    "facade_sheet_schema": "facade-sheet@4",
+    "facade_sheet_root": "artifacts/wave-shell-natatorium-v73/facade-sheets",
+    "texture_library": "tools/archetype_compiler/textures_worldclass_v7",
+    "geometry_detail": "hero",
+    "presentation_view_set": "all",
+    "ambient_occlusion": false,
+    "strict_production_preflight": true,
+    "signature_profile": "tools/archetype_compiler/architectural_signature_profiles.json",
+    "quality_memory": "tools/archetype_compiler/high_quality_building_memory.json",
+    "gold_set": "tools/archetype_compiler/building_gold_set.json"
+  },
+  "entries": [
+    {
+      "entry_id": "wave-shell-natatorium-v73",
+      "archetype_id": "aquatic_natatorium_complex",
+      "variant_id": "parametric_wave_shell",
+      "family_id": "wave-shell-natatorium",
+      "floors": 2,
+      "width_m": 80.0,
+      "depth_m": 55.0,
+      "group": "Civic shell landmark"
+    }
+  ]
+}

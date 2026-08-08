@@ -1604,6 +1604,66 @@
         "target_views": ["archetype_match", "street", "aerial", "context"]
       }
     },
+    "parametric_wave_shell": {
+      "identity": "Catalogue-specific civic natatorium organized by a low pinched double-wave translucent shell, broad curved glazed end walls, a concrete entrance saddle and an asymmetric mast-and-cable fan.",
+      "production_contract": {
+        "identity_mode": "massing_graph",
+        "fixed_identity": ["closed double-wave translucent shell with visible soffit", "quilted panel seams following the curved surface", "full-height parabolic glazed end walls", "projecting concrete entrance canopy and diagonal struts", "inclined mast with a bounded cable fan", "asymmetric pinched near-rectangular plan"],
+        "repeatable_capacity": ["curtain-wall mullions, shell panel seams and low service-wall bays"],
+        "required_reference_roles": ["street_identity", "oblique_massing", "roof_or_aerial"]
+      },
+      "material_zones": "silver-white translucent polycarbonate shell; pale board-formed concrete edge ribs, plinth and canopy; platinum curtain-wall frames and cable steel; reflective blue-grey glass with warm occupied interior",
+      "glass_profile": "low_iron_clear",
+      "dimension_overrides": {"width_m": 80.0, "depth_m": 55.0, "default_floors": 2, "crown_height_m": 12.0},
+      "material_overrides": {
+        "primary": {"base_color": "#b8b7b2", "roughness": 0.78, "metallic": 0.0, "texture_key": "precast_concrete"},
+        "secondary": {"base_color": "#d4d5d2", "roughness": 0.70, "metallic": 0.0, "texture_key": "precast_concrete"},
+        "accent": {"base_color": "#767d82", "roughness": 0.31, "metallic": 0.72},
+        "roof": {"base_color": "#c7cdd0", "roughness": 0.38, "metallic": 0.08}
+      },
+      "signature_material_overrides": {
+        "signature_stone": {"base_color": "#b9b8b2", "roughness": 0.80, "metallic": 0.0, "texture_key": "precast_concrete"},
+        "signature_metal": {"base_color": "#7f878b", "roughness": 0.28, "metallic": 0.78},
+        "signature_roof": {"base_color": "#cdd3d5", "roughness": 0.27, "metallic": 0.04, "transmission": 0.14, "ior": 1.48, "coat_weight": 0.30, "coat_roughness": 0.08, "texture_key": null}
+      },
+      "kits": ["wave_shell", "wave_end_wall", "mast_cable_array", "entrance_saddle", "curved_surface_quilt_grid"],
+      "massing_graph": {
+        "schema": "massing-graph@1",
+        "profile": "parametric_wave_shell_natatorium_v73",
+        "description": "Image-locked natatorium whose plan and section are generated as a closed sampled shell. Curved glazing, perimeter ribs, panel seams, mast cables and entrance struts remain physical geometry in every view.",
+        "height_m": 28.5,
+        "reference_dimensions": {"width_m": 80.0, "depth_m": 55.0, "floors": 2, "floor_height_m": 12.0},
+        "nodes": [
+          {"id": "natatorium_plinth", "kind": "box", "size": [81.0, 56.0, 0.42], "location": [0.0, 0.0, 0.21], "material": "signature_stone", "bevel_m": 0.10},
+          {"id": "natatorium_low_service_core", "kind": "box", "size": [77.5, 51.5, 4.05], "location": [0.0, 0.0, 2.445], "material": "secondary", "bevel_m": 0.18},
+          {"id": "natatorium_front_canopy", "kind": "box", "size": [27.0, 4.6, 0.62], "location": [0.0, -27.60, 6.55], "material": "signature_stone", "bevel_m": 0.11},
+          {"id": "natatorium_front_lobby_shadow", "kind": "box", "size": [21.0, 1.7, 5.35], "location": [0.0, -27.15, 3.075], "material": "massing_joint", "bevel_m": 0.06},
+          {"id": "natatorium_front_lobby_light", "kind": "box", "size": [19.2, 0.06, 4.55], "location": [0.0, -28.76, 3.02], "material": "interior_warm", "bevel_m": 0.01},
+          {"id": "natatorium_left_side_band", "kind": "box", "size": [1.35, 45.0, 2.0], "location": [-39.15, 1.0, 3.42], "material": "signature_stone", "bevel_m": 0.12},
+          {"id": "natatorium_right_side_band", "kind": "box", "size": [1.35, 45.0, 2.0], "location": [39.15, 1.0, 3.42], "material": "signature_stone", "bevel_m": 0.12}
+        ],
+        "voids": [
+          {"id": "natatorium_public_hall", "size": [73.0, 48.0, 18.0], "location": [0.0, 0.0, 10.0], "purpose": "uninterrupted aquatic hall beneath the wave shell"},
+          {"id": "natatorium_entry_saddle", "size": [22.0, 4.0, 5.4], "location": [0.0, -28.0, 3.1], "purpose": "recessed glazed public entry beneath the concrete canopy"}
+        ],
+        "assemblies": [
+          {"id": "natatorium_wave_shell", "kind": "wave_shell", "centre": [0.0, 0.0, 4.42], "width_m": 79.0, "depth_m": 52.6, "rise_m": 14.8, "wave_amplitude_m": 3.4, "twist_m": 0.72, "plan_pinch": 0.085, "curve_power": 2.10, "thickness_m": 0.36, "columns": 36, "rows": 28, "material": "signature_roof", "seam_material": "signature_metal", "seam_width_m": 0.075, "seam_lift_m": 0.065, "seam_column_step": 2, "seam_row_step": 2, "bevel_m": 0.035},
+          {"id": "natatorium_front_glazed_end", "kind": "wave_end_wall", "axis": "front", "base_centre": [0.0, -26.36, 0.42], "width_m": 79.0, "eave_z_m": 4.42, "rise_m": 14.8, "curve_power": 2.10, "depth_m": 0.14, "segments": 44, "mullions": 15, "transoms": 5, "frame_radius_m": 0.085, "edge_radius_m": 0.24, "glass_material": "glass", "frame_material": "signature_metal", "edge_material": "signature_stone"},
+          {"id": "natatorium_rear_glazed_end", "kind": "wave_end_wall", "axis": "rear", "base_centre": [0.0, 26.36, 0.42], "width_m": 79.0, "eave_z_m": 4.42, "rise_m": 14.8, "curve_power": 2.10, "depth_m": 0.14, "segments": 44, "mullions": 13, "transoms": 4, "frame_radius_m": 0.075, "edge_radius_m": 0.22, "glass_material": "glass", "frame_material": "signature_metal", "edge_material": "signature_stone"},
+          {"id": "natatorium_entry_glazing", "kind": "curtain_wall", "axis": "front", "centre": [0.0, -29.15, 3.15], "span_m": 20.0, "height_m": 5.2, "columns": 8, "rows": 2, "frame_m": 0.09, "depth_m": 0.10, "surround_m": 0.0, "frame_material": "signature_metal", "glass_material": "glass", "interior_material": "interior_warm", "interior_recess_m": 0.30},
+          {"id": "natatorium_left_entry_strut", "kind": "mast_cable_array", "base": [-12.8, -29.35, 0.42], "top": [-19.0, -26.45, 10.4], "mast_radius_m": 0.37, "mast_material": "signature_stone", "anchors": []},
+          {"id": "natatorium_right_entry_strut", "kind": "mast_cable_array", "base": [12.8, -29.35, 0.42], "top": [19.0, -26.45, 10.4], "mast_radius_m": 0.37, "mast_material": "signature_stone", "anchors": []},
+          {"id": "natatorium_cable_mast", "kind": "mast_cable_array", "base": [-30.0, -23.4, 0.42], "top": [-27.8, -5.0, 28.2], "mast_radius_m": 0.40, "mast_material": "signature_stone", "cable_radius_m": 0.052, "cable_material": "signature_metal", "anchors": [{"from": [-27.8, -5.0, 28.2], "to": [-35.0, -24.0, 5.6]}, {"from": [-27.8, -5.0, 28.2], "to": [-29.5, -19.0, 13.8]}, {"from": [-27.8, -5.0, 28.2], "to": [-21.0, -13.0, 18.0]}, {"from": [-27.8, -5.0, 28.2], "to": [-10.0, -6.0, 20.0]}, {"from": [-27.8, -5.0, 28.2], "to": [3.0, 1.0, 20.3]}]}
+        ],
+        "presentation_camera": {"hero_side": "left", "oblique_x_scale": 0.88, "identity_distance_scale": 1.20, "street_distance_scale": 1.12},
+        "reference_views": [
+          {"role": "street_identity", "path": "/archetypes/buildings/aquatic-natatorium-complex/variant_0.png", "cues": ["broad curved glazed end", "concrete saddle canopy", "diagonal struts", "translucent quilt shell"]},
+          {"role": "oblique_massing", "path": "/archetypes/buildings/aquatic-natatorium-complex/variant_0_angle_60.jpg", "cues": ["pinched double-wave shell", "curved glazed end walls", "mast and cable fan", "low concrete perimeter"]},
+          {"role": "roof_plan", "path": "/archetypes/buildings/aquatic-natatorium-complex/variant_0_angle_90.jpg", "cues": ["asymmetric near-rectangular plan", "two longitudinal crests and central saddle", "quilt panel grid", "off-centre mast"]}
+        ],
+        "target_views": ["archetype_match", "street", "aerial", "context"]
+      }
+    },
     "eixample_apartment_block": {
       "identity": "Barcelona Eixample apartment block with chamfered-corner emphasis, repetitive wrought-iron balconies, carved stone portal, glazed galleries and a deep cornice.",
       "production_contract": {

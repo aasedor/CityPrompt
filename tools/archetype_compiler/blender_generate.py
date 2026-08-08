@@ -145,6 +145,17 @@ def make_material(name: str, spec: dict) -> bpy.types.Material:
     bsdf.inputs["Base Color"].default_value = color
     bsdf.inputs["Metallic"].default_value = float(spec.get("metallic", 0.0))
     bsdf.inputs["Roughness"].default_value = float(spec.get("roughness", 0.6))
+    transmission_value = spec.get("transmission")
+    if transmission_value is not None:
+        transmission = bsdf.inputs.get("Transmission Weight") or bsdf.inputs.get("Transmission")
+        if transmission:
+            transmission.default_value = max(0.0, min(1.0, float(transmission_value)))
+    if spec.get("ior") is not None and bsdf.inputs.get("IOR"):
+        bsdf.inputs["IOR"].default_value = float(spec["ior"])
+    if spec.get("coat_weight") is not None and bsdf.inputs.get("Coat Weight"):
+        bsdf.inputs["Coat Weight"].default_value = float(spec["coat_weight"])
+    if spec.get("coat_roughness") is not None and bsdf.inputs.get("Coat Roughness"):
+        bsdf.inputs["Coat Roughness"].default_value = float(spec["coat_roughness"])
     emission_color = spec.get("emission_color")
     if emission_color:
         emission_input = bsdf.inputs.get("Emission Color") or bsdf.inputs.get("Emission")
@@ -7437,6 +7448,237 @@ def _graph_timber_arch_shell(parts: list, spec: dict, mats: dict) -> None:
         ))
 
 
+def _graph_member_between(
+    name: str,
+    start: tuple[float, float, float] | list[float],
+    end: tuple[float, float, float] | list[float],
+    radius: float,
+    material,
+    *,
+    vertices: int = 12,
+) -> bpy.types.Object:
+    """Create a structural rod between arbitrary graph-space coordinates."""
+    start_v = Vector(tuple(float(value) for value in start))
+    end_v = Vector(tuple(float(value) for value in end))
+    vector = end_v - start_v
+    length = vector.length
+    if length <= 1e-5:
+        raise ValueError(f"graph member {name!r} has coincident endpoints")
+    member = add_cylinder(
+        name,
+        max(0.006, float(radius)),
+        length,
+        tuple((start_v + end_v) * 0.5),
+        material,
+        max(6, int(vertices)),
+    )
+    member.rotation_mode = "QUATERNION"
+    member.rotation_quaternion = vector.to_track_quat("Z", "Y")
+    return member
+
+
+def _graph_wave_shell(parts: list, spec: dict, mats: dict) -> None:
+    """Sample a closed, panelised shell with a genuine double-wave section.
+
+    The assembly deliberately owns plan, section, soffit and perimeter.  It is
+    therefore legible in a context-free roof audit and cannot collapse into a
+    textured rectangular roof when viewed obliquely.  Longitudinal sine-squared
+    modulation creates two crests around a central saddle; an optional twist
+    keeps the landmark asymmetric without changing its audited footprint.
+    """
+    prefix = str(spec.get("id", "GraphWaveShell"))
+    cx, cy, eave_z = (float(value) for value in spec["centre"])
+    width = float(spec.get("width_m", 78.0))
+    depth = float(spec.get("depth_m", 52.0))
+    rise = float(spec.get("rise_m", 14.0))
+    wave = float(spec.get("wave_amplitude_m", 3.2))
+    twist = float(spec.get("twist_m", 0.8))
+    pinch = min(0.28, max(0.0, float(spec.get("plan_pinch", 0.08))))
+    curve_power = max(1.15, float(spec.get("curve_power", 2.15)))
+    thickness = max(0.08, float(spec.get("thickness_m", 0.34)))
+    columns = max(12, int(spec.get("columns", 32)))
+    rows = max(10, int(spec.get("rows", 24)))
+    shell_material = _graph_material(mats, spec.get("material", "signature_roof"))
+
+    def point(column: int, row: int, *, soffit: bool = False) -> tuple[float, float, float]:
+        u = -1.0 + 2.0 * column / columns
+        v = -1.0 + 2.0 * row / rows
+        width_scale = 1.0 - pinch * (1.0 - v * v)
+        x = cx + width * 0.5 * width_scale * u
+        y = cy + depth * 0.5 * v
+        arch = max(0.0, 1.0 - abs(u) ** curve_power)
+        twin_crest = math.sin(math.pi * v) ** 2
+        z = eave_z + (rise + wave * twin_crest) * arch + twist * u * v
+        if soffit:
+            z -= thickness
+        return (x, y, z)
+
+    stride = columns + 1
+    surface_count = stride * (rows + 1)
+    verts = [point(column, row) for row in range(rows + 1) for column in range(columns + 1)]
+    verts.extend(point(column, row, soffit=True) for row in range(rows + 1) for column in range(columns + 1))
+    faces: list[tuple[int, ...]] = []
+    for row in range(rows):
+        for column in range(columns):
+            a = row * stride + column
+            b = a + 1
+            c = a + stride + 1
+            d = a + stride
+            faces.append((a, b, c, d))
+            faces.append((surface_count + d, surface_count + c, surface_count + b, surface_count + a))
+    boundaries = [
+        [column for column in range(stride)],
+        [rows * stride + column for column in reversed(range(stride))],
+        [row * stride for row in reversed(range(rows + 1))],
+        [row * stride + columns for row in range(rows + 1)],
+    ]
+    for boundary in boundaries:
+        for index in range(len(boundary) - 1):
+            a, b = boundary[index], boundary[index + 1]
+            faces.append((a, b, surface_count + b, surface_count + a))
+    shell = add_prism(prefix, verts, faces, shell_material)
+    bevel_width = max(0.0, float(spec.get("bevel_m", 0.04)))
+    if bevel_width:
+        bevel = shell.modifiers.new(name="WaveShellEdge", type="BEVEL")
+        bevel.width = bevel_width
+        bevel.segments = 2
+        bevel.limit_method = "ANGLE"
+        bpy.context.view_layer.objects.active = shell
+        shell.select_set(True)
+        try:
+            bpy.ops.object.modifier_apply(modifier=bevel.name)
+        except RuntimeError:
+            shell.modifiers.remove(bevel)
+    parts.append(shell)
+
+    # One lightweight mesh carries every quilt seam.  The seams follow the
+    # sampled surface rather than lying in a flat decal plane.
+    seam_material = _graph_material(mats, spec.get("seam_material", "signature_metal"))
+    seam_width = max(0.025, float(spec.get("seam_width_m", 0.085)))
+    seam_lift = max(0.006, float(spec.get("seam_lift_m", 0.055)))
+    column_step = max(1, int(spec.get("seam_column_step", 2)))
+    row_step = max(1, int(spec.get("seam_row_step", 2)))
+    seam_verts: list[tuple[float, float, float]] = []
+    seam_faces: list[tuple[int, ...]] = []
+
+    def append_strip(a: tuple[float, float, float], b: tuple[float, float, float]) -> None:
+        dx, dy = b[0] - a[0], b[1] - a[1]
+        horizontal = max(1e-6, math.hypot(dx, dy))
+        ox, oy = -dy / horizontal * seam_width / 2, dx / horizontal * seam_width / 2
+        start = len(seam_verts)
+        seam_verts.extend([
+            (a[0] + ox, a[1] + oy, a[2] + seam_lift),
+            (a[0] - ox, a[1] - oy, a[2] + seam_lift),
+            (b[0] - ox, b[1] - oy, b[2] + seam_lift),
+            (b[0] + ox, b[1] + oy, b[2] + seam_lift),
+        ])
+        seam_faces.append((start, start + 1, start + 2, start + 3))
+
+    for row in range(0, rows + 1, row_step):
+        for column in range(columns):
+            append_strip(point(column, row), point(column + 1, row))
+    for column in range(0, columns + 1, column_step):
+        for row in range(rows):
+            append_strip(point(column, row), point(column, row + 1))
+    if seam_faces:
+        parts.append(add_prism(f"{prefix}_QuiltSeams", seam_verts, seam_faces, seam_material))
+
+
+def _graph_wave_end_wall(parts: list, spec: dict, mats: dict) -> None:
+    """Create a curved glazed gable whose head follows the shell section."""
+    axis = str(spec.get("axis", "front"))
+    if axis not in {"front", "rear"}:
+        raise ValueError("wave end wall currently supports front or rear axes")
+    prefix = str(spec.get("id", "GraphWaveEnd"))
+    cx, face_y, base_z = (float(value) for value in spec["base_centre"])
+    width = float(spec.get("width_m", 78.0))
+    eave_z = float(spec.get("eave_z_m", base_z + 4.0))
+    rise = float(spec.get("rise_m", 14.0))
+    power = max(1.15, float(spec.get("curve_power", 2.15)))
+    depth = max(0.04, float(spec.get("depth_m", 0.12)))
+    segments = max(16, int(spec.get("segments", 40)))
+    half = width / 2
+    glass = _graph_material(mats, spec.get("glass_material", "glass"))
+    frame = _graph_material(mats, spec.get("frame_material", "signature_metal"))
+    exterior_sign = -1.0 if axis == "front" else 1.0
+    wall_y = face_y + exterior_sign * float(spec.get("face_offset_m", 0.0))
+
+    def head(x: float) -> float:
+        return eave_z + rise * max(0.0, 1.0 - abs(x / half) ** power)
+
+    profile = [(-half, base_z)]
+    profile.extend((-half + width * index / segments, head(-half + width * index / segments)) for index in range(segments + 1))
+    profile.append((half, base_z))
+    front_y, back_y = wall_y - depth / 2, wall_y + depth / 2
+    verts = [(cx + x, front_y, z) for x, z in profile] + [(cx + x, back_y, z) for x, z in profile]
+    count = len(profile)
+    faces: list[tuple[int, ...]] = [tuple(range(count)), tuple(reversed(range(count, count * 2)))]
+    for index in range(count):
+        nxt = (index + 1) % count
+        faces.append((index, nxt, count + nxt, count + index))
+    parts.append(add_prism(f"{prefix}_Glass", verts, faces, glass))
+
+    mullions = max(0, int(spec.get("mullions", 11)))
+    transoms = max(0, int(spec.get("transoms", 4)))
+    frame_radius = max(0.025, float(spec.get("frame_radius_m", 0.10)))
+    frame_y = wall_y + exterior_sign * (depth / 2 + frame_radius * 0.35)
+    for index in range(mullions + 2):
+        x = -half + width * index / (mullions + 1)
+        parts.append(_graph_member_between(
+            f"{prefix}_Mullion{index:02d}",
+            (cx + x, frame_y, base_z), (cx + x, frame_y, head(x)),
+            frame_radius, frame, vertices=10,
+        ))
+    apex = eave_z + rise
+    for index in range(1, transoms + 1):
+        z = base_z + (apex - base_z) * index / (transoms + 1)
+        if z <= eave_z:
+            extent = half
+        else:
+            extent = half * max(0.0, 1.0 - (z - eave_z) / rise) ** (1.0 / power)
+        parts.append(_graph_member_between(
+            f"{prefix}_Transom{index:02d}",
+            (cx - extent, frame_y, z), (cx + extent, frame_y, z),
+            frame_radius, frame, vertices=10,
+        ))
+    curve_points = [(cx - half + width * index / segments, frame_y, head(-half + width * index / segments)) for index in range(segments + 1)]
+    edge_radius = max(frame_radius, float(spec.get("edge_radius_m", 0.18)))
+    edge_material = _graph_material(mats, spec.get("edge_material", "concrete"))
+    for index in range(segments):
+        parts.append(_graph_member_between(
+            f"{prefix}_Edge{index:02d}", curve_points[index], curve_points[index + 1],
+            edge_radius, edge_material, vertices=12,
+        ))
+
+
+def _graph_mast_cable_array(parts: list, spec: dict, mats: dict) -> None:
+    """Build one inclined mast and a bounded fan of structural cables."""
+    prefix = str(spec.get("id", "GraphMastCable"))
+    base = tuple(float(value) for value in spec["base"])
+    top = tuple(float(value) for value in spec["top"])
+    mast = _graph_material(mats, spec.get("mast_material", "concrete"))
+    cable = _graph_material(mats, spec.get("cable_material", "signature_metal"))
+    parts.append(_graph_member_between(
+        f"{prefix}_Mast", base, top,
+        float(spec.get("mast_radius_m", 0.42)), mast, vertices=int(spec.get("mast_vertices", 16)),
+    ))
+    for index, anchor in enumerate(spec.get("anchors", [])):
+        cable_start = tuple(float(value) for value in anchor.get("from", top))
+        cable_end = tuple(float(value) for value in anchor["to"])
+        parts.append(_graph_member_between(
+            f"{prefix}_Cable{index:02d}", cable_start, cable_end,
+            float(anchor.get("radius_m", spec.get("cable_radius_m", 0.045))),
+            cable, vertices=int(spec.get("cable_vertices", 8)),
+        ))
+    for index, stay in enumerate(spec.get("stays", [])):
+        parts.append(_graph_member_between(
+            f"{prefix}_Stay{index:02d}", stay["from"], stay["to"],
+            float(stay.get("radius_m", spec.get("stay_radius_m", 0.22))),
+            _graph_material(mats, stay.get("material", spec.get("stay_material", "concrete"))),
+            vertices=int(stay.get("vertices", 12)),
+        ))
+
+
 def _graph_pointed_window_array(parts: list, spec: dict, mats: dict) -> None:
     """Build repeatable recessed lancets on orthogonal or angled elevations.
 
@@ -8469,6 +8711,12 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
             _graph_pointed_portal(parts, assembly, mats)
         elif kind == "timber_arch_shell":
             _graph_timber_arch_shell(parts, assembly, mats)
+        elif kind == "wave_shell":
+            _graph_wave_shell(parts, assembly, mats)
+        elif kind == "wave_end_wall":
+            _graph_wave_end_wall(parts, assembly, mats)
+        elif kind == "mast_cable_array":
+            _graph_mast_cable_array(parts, assembly, mats)
         elif kind == "pointed_window_array":
             _graph_pointed_window_array(parts, assembly, mats)
         elif kind == "buttress_array":
@@ -9002,6 +9250,13 @@ def render_presentation_views(
         # roads, trees and cars while hiding only those distant massing blocks.
         context_visible = view_name in ("aerial", "context")
         set_review_glazing_lod("far" if context_visible else "near")
+        # The audit must be a genuinely isolated silhouette.  Roads, ground,
+        # trees and cars previously survived because only context buildings
+        # were hidden, contradicting the evidence contract and contaminating
+        # top-down segmentation around low or pinched plans.
+        for rig_object in rig:
+            if rig_object.type == "MESH" and rig_object not in context_only:
+                rig_object.hide_render = view_name == "roof_audit"
         for context_object in context_only:
             context_object.hide_render = not context_visible
         cam.location = location
