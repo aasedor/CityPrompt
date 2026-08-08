@@ -1,0 +1,8 @@
+{
+  "schema": "building-reference-fidelity@1",
+  "id": "alpine-stone-berghaus-v71-hero",
+  "reference_image": "frontend/public/archetypes/buildings/mountain_alpine_chalet/variant_3.png",
+  "reference_silhouette_polygon": [[0.132, 0.762], [0.135, 0.530], [0.225, 0.489], [0.383, 0.432], [0.548, 0.392], [0.653, 0.332], [0.658, 0.216], [0.757, 0.219], [0.758, 0.353], [0.858, 0.492], [0.842, 0.762]],
+  "render_extraction": {"roi": [0.20, 0.13, 0.82, 0.79], "background_tolerance": 18.0},
+  "thresholds": {"silhouette_iou_min": 0.45, "roofline_rmse_max": 0.20, "aspect_ratio_error_max": 0.35}
+}

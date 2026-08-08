@@ -1,0 +1,8 @@
+{
+  "schema": "building-reference-fidelity@1",
+  "id": "alpine-lodge-eco-passive-v71-hero",
+  "reference_image": "frontend/public/archetypes/buildings/alpine_mixed_use_lodge/variant_3.png",
+  "reference_silhouette_polygon": [[0.299, 0.784], [0.300, 0.414], [0.381, 0.342], [0.443, 0.278], [0.628, 0.272], [0.697, 0.200], [0.817, 0.312], [0.817, 0.783]],
+  "render_extraction": {"roi": [0.20, 0.13, 0.82, 0.79], "background_tolerance": 18.0},
+  "thresholds": {"silhouette_iou_min": 0.45, "roofline_rmse_max": 0.20, "aspect_ratio_error_max": 0.35}
+}

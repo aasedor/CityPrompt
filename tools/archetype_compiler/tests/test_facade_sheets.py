@@ -1004,3 +1004,93 @@ def test_ktx2_glb_detection_supports_resumable_packaging(tmp_path):
     )
 
     assert has_ktx2_texture(path) is True
+
+
+def test_mountain_alpine_v71_registry_is_a_complete_exact_variant_batch():
+    from signature_profiles import inject_signature
+
+    tool_dir = Path(__file__).parents[1]
+    registry = json.loads(
+        (tool_dir / "worldclass_mountain_alpine_v71.json").read_text(encoding="utf-8")
+    )
+    entries = registry["entries"]
+
+    assert registry["generation_profile"]["geometry_detail"] == "hero"
+    assert registry["generation_profile"]["presentation_view_set"] == "all"
+    assert len(entries) == 8
+    assert len({entry["variant_id"] for entry in entries}) == 8
+    assert {entry["archetype_id"] for entry in entries} == {
+        "mountain_alpine_chalet", "alpine_mixed_use_lodge",
+    }
+
+    graph_profiles = set()
+    for entry in entries:
+        grammar = {"source": {"archetype_id": entry["archetype_id"]}, "materials": {}}
+        inject_signature(
+            grammar,
+            entry["archetype_id"],
+            variant_id=entry["variant_id"],
+        )
+        graph = grammar["massing_graph"]
+        graph_profiles.add(graph["profile"])
+        assert graph["reference_dimensions"]["width_m"] == float(entry["width_m"])
+        assert graph["reference_dimensions"]["depth_m"] == float(entry["depth_m"])
+        assert {view["role"] for view in graph["reference_views"]} == {
+            "street_identity", "oblique_massing", "roof_plan",
+        }
+        assert len({view["path"] for view in graph["reference_views"]}) == 3
+
+    assert len(graph_profiles) == 8
+
+
+def test_mountain_alpine_v71_has_audited_sources_openings_and_two_axis_bands():
+    tool_dir = Path(__file__).parents[1]
+    registry = json.loads(
+        (tool_dir / "worldclass_mountain_alpine_v71.json").read_text(encoding="utf-8")
+    )
+    variant_ids = {entry["variant_id"] for entry in registry["entries"]}
+    source_dir = tool_dir / "facade_sources_v71"
+    opening_dir = tool_dir / "facade_opening_schedules_v71"
+    band_dir = tool_dir / "facade_band_schedules_v71"
+
+    assert {path.stem for path in source_dir.glob("*.png")} == variant_ids
+    assert {path.stem for path in opening_dir.glob("*.json")} == variant_ids
+    assert {path.stem for path in band_dir.glob("*.json")} == variant_ids
+
+    opening_count = 0
+    for variant_id in variant_ids:
+        openings = json.loads((opening_dir / f"{variant_id}.json").read_text(encoding="utf-8"))
+        bands = json.loads((band_dir / f"{variant_id}.json").read_text(encoding="utf-8"))
+        assert openings["schema"] == "registered-opening-schedule@1"
+        assert openings["source"] == f"{variant_id}.png"
+        assert openings["openings"]
+        opening_count += len(openings["openings"])
+        assert {"elevation", "floor", "floor_alt", "crown", "podium", "side"} <= set(bands)
+        for role in ("elevation", "floor", "floor_alt", "crown", "podium"):
+            assert set(bands[role]) >= {"x", "y"}
+            assert bands[role]["x"][0] < bands[role]["x"][1]
+            assert bands[role]["y"][0] < bands[role]["y"][1]
+
+    assert opening_count >= 90
+
+
+def test_mountain_alpine_v71_keeps_variant_specific_roof_construction():
+    profiles = json.loads(
+        (Path(__file__).parents[1] / "architectural_signature_profiles.json").read_text(
+            encoding="utf-8"
+        )
+    )["profiles"]
+
+    bavarian = profiles["alpine_bavarian_painted"]["massing_graph"]
+    berghaus = profiles["alpine_stone_berghaus"]["massing_graph"]
+    stone_timber = profiles["alpine_lodge_stone_timber"]["massing_graph"]
+    eco = profiles["alpine_lodge_eco_passive"]["massing_graph"]
+
+    assert any(item["kind"] == "pitched_roof_surface_detail" for item in bavarian["assemblies"])
+    assert next(node for node in berghaus["nodes"] if node["id"] == "berghaus_turf_roof")["ridge_axis"] == "x"
+    assert sum(node["kind"] == "gable_roof" for node in stone_timber["nodes"]) >= 2
+    assert eco["reference_dimensions"] == {
+        "width_m": 19.0, "depth_m": 15.0, "floors": 4, "floor_height_m": 3.3,
+    }
+    assert any(node["kind"] == "butterfly_roof" for node in eco["nodes"])
+    assert sum(item["kind"] == "solar_panel_array" for item in eco["assemblies"]) == 3

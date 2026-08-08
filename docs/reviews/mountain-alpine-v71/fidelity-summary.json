@@ -1,0 +1,218 @@
+[
+  {
+    "label": "Swiss traditional",
+    "family_id": "alpine-swiss-traditional",
+    "comparison_view": "archetype_match",
+    "schema": "building-reference-fidelity-report@1",
+    "contract": "alpine-swiss-traditional-v70-hero",
+    "reference_image": "C:\\dev\\3D-Maps-building-goldset\\frontend\\public\\archetypes\\buildings\\mountain_alpine_chalet\\variant_0.png",
+    "render_image": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\mountain-alpine-v71\\families\\alpine-swiss-traditional\\alpine-swiss-traditional_archetype_match.png",
+    "status": "pass",
+    "metrics": {
+      "silhouette_iou": 0.70299,
+      "roofline_rmse": 0.12055,
+      "aspect_ratio_error": 0.17836,
+      "reference_aspect_ratio": 1.90758,
+      "render_aspect_ratio": 1.56735
+    },
+    "checks": {
+      "silhouette_iou": true,
+      "roofline_rmse": true,
+      "aspect_ratio_error": true
+    },
+    "thresholds": {
+      "silhouette_iou_min": 0.58,
+      "roofline_rmse_max": 0.14,
+      "aspect_ratio_error_max": 0.22
+    }
+  },
+  {
+    "label": "Austrian contemporary",
+    "family_id": "alpine-austrian-contemporary",
+    "comparison_view": "archetype_match",
+    "schema": "building-reference-fidelity-report@1",
+    "contract": "alpine-austrian-contemporary-v71-hero",
+    "reference_image": "C:\\dev\\3D-Maps-building-goldset\\frontend\\public\\archetypes\\buildings\\mountain_alpine_chalet\\variant_1.png",
+    "render_image": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\mountain-alpine-v71\\families\\alpine-austrian-contemporary\\alpine-austrian-contemporary_archetype_match.png",
+    "status": "pass",
+    "metrics": {
+      "silhouette_iou": 0.70427,
+      "roofline_rmse": 0.1834,
+      "aspect_ratio_error": 0.27095,
+      "reference_aspect_ratio": 1.46714,
+      "render_aspect_ratio": 1.86466
+    },
+    "checks": {
+      "silhouette_iou": true,
+      "roofline_rmse": true,
+      "aspect_ratio_error": true
+    },
+    "thresholds": {
+      "silhouette_iou_min": 0.45,
+      "roofline_rmse_max": 0.2,
+      "aspect_ratio_error_max": 0.35
+    }
+  },
+  {
+    "label": "Bavarian painted",
+    "family_id": "alpine-bavarian-painted",
+    "comparison_view": "archetype_match",
+    "schema": "building-reference-fidelity-report@1",
+    "contract": "alpine-bavarian-painted-v71-hero",
+    "reference_image": "C:\\dev\\3D-Maps-building-goldset\\frontend\\public\\archetypes\\buildings\\mountain_alpine_chalet\\variant_2.png",
+    "render_image": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\mountain-alpine-v71\\families\\alpine-bavarian-painted\\alpine-bavarian-painted_archetype_match.png",
+    "status": "pass",
+    "metrics": {
+      "silhouette_iou": 0.77692,
+      "roofline_rmse": 0.11141,
+      "aspect_ratio_error": 0.0403,
+      "reference_aspect_ratio": 1.58929,
+      "render_aspect_ratio": 1.65333
+    },
+    "checks": {
+      "silhouette_iou": true,
+      "roofline_rmse": true,
+      "aspect_ratio_error": true
+    },
+    "thresholds": {
+      "silhouette_iou_min": 0.45,
+      "roofline_rmse_max": 0.2,
+      "aspect_ratio_error_max": 0.35
+    }
+  },
+  {
+    "label": "Stone Berghaus",
+    "family_id": "alpine-stone-berghaus",
+    "comparison_view": "archetype_match",
+    "schema": "building-reference-fidelity-report@1",
+    "contract": "alpine-stone-berghaus-v71-hero",
+    "reference_image": "C:\\dev\\3D-Maps-building-goldset\\frontend\\public\\archetypes\\buildings\\mountain_alpine_chalet\\variant_3.png",
+    "render_image": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\mountain-alpine-v71\\families\\alpine-stone-berghaus\\alpine-stone-berghaus_archetype_match.png",
+    "status": "pass",
+    "metrics": {
+      "silhouette_iou": 0.77715,
+      "roofline_rmse": 0.1028,
+      "aspect_ratio_error": 0.19629,
+      "reference_aspect_ratio": 1.77566,
+      "render_aspect_ratio": 2.1242
+    },
+    "checks": {
+      "silhouette_iou": true,
+      "roofline_rmse": true,
+      "aspect_ratio_error": true
+    },
+    "thresholds": {
+      "silhouette_iou_min": 0.45,
+      "roofline_rmse_max": 0.2,
+      "aspect_ratio_error_max": 0.35
+    }
+  },
+  {
+    "label": "Ski-resort glulam",
+    "family_id": "alpine-lodge-ski-resort",
+    "comparison_view": "archetype_match",
+    "schema": "building-reference-fidelity-report@1",
+    "contract": "alpine-lodge-ski-resort-v71-hero",
+    "reference_image": "C:\\dev\\3D-Maps-building-goldset\\frontend\\public\\archetypes\\buildings\\alpine_mixed_use_lodge\\variant_0.png",
+    "render_image": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\mountain-alpine-v71\\families\\alpine-lodge-ski-resort\\alpine-lodge-ski-resort_archetype_match.png",
+    "status": "pass",
+    "metrics": {
+      "silhouette_iou": 0.83228,
+      "roofline_rmse": 0.0947,
+      "aspect_ratio_error": 0.19363,
+      "reference_aspect_ratio": 1.56512,
+      "render_aspect_ratio": 1.86817
+    },
+    "checks": {
+      "silhouette_iou": true,
+      "roofline_rmse": true,
+      "aspect_ratio_error": true
+    },
+    "thresholds": {
+      "silhouette_iou_min": 0.45,
+      "roofline_rmse_max": 0.2,
+      "aspect_ratio_error_max": 0.35
+    }
+  },
+  {
+    "label": "Tyrolean mixed-use",
+    "family_id": "alpine-lodge-tyrolean",
+    "comparison_view": "archetype_match",
+    "schema": "building-reference-fidelity-report@1",
+    "contract": "alpine-lodge-tyrolean-v71-hero",
+    "reference_image": "C:\\dev\\3D-Maps-building-goldset\\frontend\\public\\archetypes\\buildings\\alpine_mixed_use_lodge\\variant_1.png",
+    "render_image": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\mountain-alpine-v71\\families\\alpine-lodge-tyrolean\\alpine-lodge-tyrolean_archetype_match.png",
+    "status": "pass",
+    "metrics": {
+      "silhouette_iou": 0.76877,
+      "roofline_rmse": 0.11449,
+      "aspect_ratio_error": 0.08771,
+      "reference_aspect_ratio": 1.83059,
+      "render_aspect_ratio": 1.67003
+    },
+    "checks": {
+      "silhouette_iou": true,
+      "roofline_rmse": true,
+      "aspect_ratio_error": true
+    },
+    "thresholds": {
+      "silhouette_iou_min": 0.45,
+      "roofline_rmse_max": 0.2,
+      "aspect_ratio_error_max": 0.35
+    }
+  },
+  {
+    "label": "Stone and timber lodge",
+    "family_id": "alpine-lodge-stone-timber",
+    "comparison_view": "archetype_match",
+    "schema": "building-reference-fidelity-report@1",
+    "contract": "alpine-lodge-stone-timber-v71-hero",
+    "reference_image": "C:\\dev\\3D-Maps-building-goldset\\frontend\\public\\archetypes\\buildings\\alpine_mixed_use_lodge\\variant_2.png",
+    "render_image": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\mountain-alpine-v71\\families\\alpine-lodge-stone-timber\\alpine-lodge-stone-timber_archetype_match.png",
+    "status": "pass",
+    "metrics": {
+      "silhouette_iou": 0.75278,
+      "roofline_rmse": 0.12745,
+      "aspect_ratio_error": 0.02758,
+      "reference_aspect_ratio": 1.74681,
+      "render_aspect_ratio": 1.69863
+    },
+    "checks": {
+      "silhouette_iou": true,
+      "roofline_rmse": true,
+      "aspect_ratio_error": true
+    },
+    "thresholds": {
+      "silhouette_iou_min": 0.45,
+      "roofline_rmse_max": 0.2,
+      "aspect_ratio_error_max": 0.35
+    }
+  },
+  {
+    "label": "Eco-passive lodge",
+    "family_id": "alpine-lodge-eco-passive",
+    "comparison_view": "street",
+    "schema": "building-reference-fidelity-report@1",
+    "contract": "alpine-lodge-eco-passive-v71-hero",
+    "reference_image": "C:\\dev\\3D-Maps-building-goldset\\frontend\\public\\archetypes\\buildings\\alpine_mixed_use_lodge\\variant_3.png",
+    "render_image": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\mountain-alpine-v71\\families\\alpine-lodge-eco-passive\\alpine-lodge-eco-passive_street.png",
+    "status": "pass",
+    "metrics": {
+      "silhouette_iou": 0.89141,
+      "roofline_rmse": 0.07663,
+      "aspect_ratio_error": 0.12999,
+      "reference_aspect_ratio": 1.18263,
+      "render_aspect_ratio": 1.33636
+    },
+    "checks": {
+      "silhouette_iou": true,
+      "roofline_rmse": true,
+      "aspect_ratio_error": true
+    },
+    "thresholds": {
+      "silhouette_iou_min": 0.45,
+      "roofline_rmse_max": 0.2,
+      "aspect_ratio_error_max": 0.35
+    }
+  }
+]

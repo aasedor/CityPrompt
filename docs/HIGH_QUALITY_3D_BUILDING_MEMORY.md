@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-08-08-pitched-roof-construction-v70`.
+Current executable memory: `2026-08-08-complete-alpine-category-v71`.
 
 The current calibration set and catalogue rollout rationale are documented in
 [`BUILDING_GOLD_SET_PIPELINE_SYNTHESIS_2026-08-07.md`](BUILDING_GOLD_SET_PIPELINE_SYNTHESIS_2026-08-07.md).
@@ -462,6 +462,43 @@ triangles and passes the structural and camera-locked fidelity gates. Surface
 detail therefore belongs in the near/hero LOD; district and map LODs retain the
 base roof silhouette, material separation and major ridge lines while baking or
 removing individual courses and ballast.
+
+### V71 complete-category rollout
+
+The first bounded category rollout completed all eight Mountain / Alpine
+catalogue variants: four detached chalets and four mixed-use lodges. The batch
+reused construction kits, not a universal shape. Every variant received its own
+signature graph, exact three-view provenance, orthographic facade source,
+audited opening schedule, two-axis band schedule and camera-locked fidelity
+contract.
+
+The category pass added five operational rules:
+
+- Treat category completion as a finite variant registry. A parent label is not
+  permission to share a sibling facade, footprint or roof.
+- Crop rectangular facade skins to the wall body only. Isolation background,
+  sky, roof slopes and shaped gables create white panels when they enter a
+  repeatable elevation crop.
+- Add physical curtain walls only when they are registered to the authored
+  facade. A generic glass cage can hide a strong atlas; when exact registration
+  is unavailable, keep the atlas and add only the reference-proven structural
+  frame.
+- Derive ridge direction, cross-gables, valleys, planted-roof drainage and PV
+  layout from the oblique and 90-degree references. The catalogue roof label is
+  not a construction drawing.
+- Match the OpenCV contract to the closest compatible generated camera. The
+  eco-passive lodge correctly failed under an oblique hero view but passed at
+  the street camera after its overly broad generic envelope was narrowed to its
+  native 19 by 15 metre proportion.
+
+All eight final families pass structural validation and the silhouette gate.
+The resulting set deliberately preserves distinct identities: weighted Swiss
+cross-gables, compact Austrian larch and zinc, painted Bavarian balconies, a
+stone-and-turf Berghaus, a glazed glulam hall, a Tyrolean shop-house, a
+cross-gabled stone/log lodge and a planted butterfly roof with U-shaped PV.
+The review package pairs exact catalogue images with the generated identity and
+roof views so human approval can still identify ornament or secondary-plan work
+that silhouette metrics cannot see.
 
 ### V65 three-pilot expansion lessons
 

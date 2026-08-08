@@ -1,0 +1,8 @@
+{
+  "schema":"registered-opening-schedule@1", "source":"alpine_stone_berghaus.png",
+  "notes":"Nine deep-set timber sash fields only; stone joints, chimney openings, grass and door are opaque.",
+  "openings":[
+    {"shape":"rect","bbox":[0.162,0.430,0.216,0.527]}, {"shape":"rect","bbox":[0.360,0.431,0.412,0.528]}, {"shape":"rect","bbox":[0.555,0.431,0.612,0.528]}, {"shape":"rect","bbox":[0.711,0.432,0.759,0.528]}, {"shape":"rect","bbox":[0.866,0.433,0.913,0.529]},
+    {"shape":"rect","bbox":[0.164,0.626,0.214,0.720]}, {"shape":"rect","bbox":[0.486,0.620,0.601,0.724]}, {"shape":"rect","bbox":[0.710,0.624,0.760,0.720]}, {"shape":"rect","bbox":[0.865,0.624,0.913,0.720]}
+  ]
+}

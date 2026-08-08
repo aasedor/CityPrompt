@@ -1,0 +1,28 @@
+{
+  "schema": "worldclass-lego-library@2",
+  "name": "Complete Mountain / Alpine Category v71",
+  "description": "Finite eight-variant Mountain / Alpine rollout. The approved Swiss chalet is retained and seven exact-reference variants complete both catalogue archetypes.",
+  "generation_profile": {
+    "facade_model": "reference-locked-openai-v9",
+    "facade_sheet_schema": "facade-sheet@4",
+    "facade_sheet_root": "artifacts/mountain-alpine-v71/facade-sheets",
+    "texture_library": "tools/archetype_compiler/textures_worldclass_v7",
+    "geometry_detail": "hero",
+    "presentation_view_set": "all",
+    "ambient_occlusion": false,
+    "strict_production_preflight": true,
+    "signature_profile": "tools/archetype_compiler/architectural_signature_profiles.json",
+    "quality_memory": "tools/archetype_compiler/high_quality_building_memory.json",
+    "gold_set": "tools/archetype_compiler/building_gold_set.json"
+  },
+  "entries": [
+    {"entry_id": "alpine-swiss-traditional-v71", "archetype_id": "mountain_alpine_chalet", "variant_id": "alpine_swiss_traditional", "family_id": "alpine-swiss-traditional", "floors": 3, "width_m": 18, "depth_m": 12, "group": "Traditional chalet"},
+    {"entry_id": "alpine-austrian-contemporary-v71", "archetype_id": "mountain_alpine_chalet", "variant_id": "alpine_austrian_contemporary", "family_id": "alpine-austrian-contemporary", "floors": 3, "width_m": 14, "depth_m": 12, "group": "Contemporary timber and glass"},
+    {"entry_id": "alpine-bavarian-painted-v71", "archetype_id": "mountain_alpine_chalet", "variant_id": "alpine_bavarian_painted", "family_id": "alpine-bavarian-painted", "floors": 3, "width_m": 18, "depth_m": 14, "group": "Painted Tyrolean"},
+    {"entry_id": "alpine-stone-berghaus-v71", "archetype_id": "mountain_alpine_chalet", "variant_id": "alpine_stone_berghaus", "family_id": "alpine-stone-berghaus", "floors": 2, "width_m": 18, "depth_m": 12, "group": "Stone and turf"},
+    {"entry_id": "alpine-lodge-ski-resort-v71", "archetype_id": "alpine_mixed_use_lodge", "variant_id": "alpine_lodge_ski_resort", "family_id": "alpine-lodge-ski-resort", "floors": 3, "width_m": 25, "depth_m": 18, "group": "Contemporary timber and glass"},
+    {"entry_id": "alpine-lodge-tyrolean-v71", "archetype_id": "alpine_mixed_use_lodge", "variant_id": "alpine_lodge_tyrolean", "family_id": "alpine-lodge-tyrolean", "floors": 4, "width_m": 25, "depth_m": 18, "group": "Painted Tyrolean"},
+    {"entry_id": "alpine-lodge-stone-timber-v71", "archetype_id": "alpine_mixed_use_lodge", "variant_id": "alpine_lodge_stone_timber", "family_id": "alpine-lodge-stone-timber", "floors": 3, "width_m": 25, "depth_m": 18, "group": "Stone and log"},
+    {"entry_id": "alpine-lodge-eco-passive-v71", "archetype_id": "alpine_mixed_use_lodge", "variant_id": "alpine_lodge_eco_passive", "family_id": "alpine-lodge-eco-passive", "floors": 4, "width_m": 19, "depth_m": 15, "group": "Contemporary timber and glass"}
+  ]
+}

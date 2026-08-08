@@ -1,0 +1,8 @@
+{
+  "schema": "building-reference-fidelity@1",
+  "id": "alpine-austrian-contemporary-v71-hero",
+  "reference_image": "frontend/public/archetypes/buildings/mountain_alpine_chalet/variant_1.png",
+  "reference_silhouette_polygon": [[0.184, 0.770], [0.185, 0.412], [0.286, 0.369], [0.458, 0.329], [0.659, 0.217], [0.792, 0.370], [0.794, 0.770]],
+  "render_extraction": {"roi": [0.20, 0.13, 0.82, 0.79], "background_tolerance": 18.0},
+  "thresholds": {"silhouette_iou_min": 0.45, "roofline_rmse_max": 0.20, "aspect_ratio_error_max": 0.35}
+}

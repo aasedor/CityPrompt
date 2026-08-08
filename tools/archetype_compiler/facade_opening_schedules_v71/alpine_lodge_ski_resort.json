@@ -1,0 +1,7 @@
+{
+  "schema":"registered-opening-schedule@1", "source":"alpine_lodge_ski_resort.png",
+  "notes":"Six full-height curtain-wall bays; glulam members, chimney and roof are opaque construction.",
+  "openings":[
+    {"shape":"rect","bbox":[0.184,0.432,0.289,0.746]}, {"shape":"rect","bbox":[0.300,0.432,0.406,0.746]}, {"shape":"rect","bbox":[0.418,0.432,0.526,0.746]}, {"shape":"rect","bbox":[0.537,0.432,0.646,0.746]}, {"shape":"rect","bbox":[0.657,0.432,0.766,0.746]}, {"shape":"rect","bbox":[0.777,0.432,0.888,0.746]}
+  ]
+}

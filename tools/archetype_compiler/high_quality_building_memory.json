@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-08-08-pitched-roof-construction-v70",
+  "memory_version": "2026-08-08-complete-alpine-category-v71",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "calibration_set": {
@@ -130,6 +130,26 @@
     {
       "id": "replacement_context_must_survive",
       "rule": "Clip source tiles in world coordinates for a single replacement footprint so photogrammetry behind the proposal remains visible; projected stencil silhouettes are not acceptable in close orbit or render captures."
+    },
+    {
+      "id": "category_batches_are_variant_locked",
+      "rule": "A complete category is a finite registry of exact variants. Every variant owns its reference roles, orthographic facade source, audited opening and band schedules, signature graph, native dimensions and fidelity contract; category labels never authorize sibling reuse."
+    },
+    {
+      "id": "wall_crops_exclude_isolation_background",
+      "rule": "Rectangular facade skins use body-only crops. Sky, isolation background, shaped gables, roof slopes and fixed end insertions stay out of repeatable elevation bands and are represented by fixed geometry or dedicated skins."
+    },
+    {
+      "id": "physical_overlays_require_registration",
+      "rule": "Do not place a generic curtain-wall cage over a reference-authored glass field. Add physical panes and frames only when their span, depth and cadence are registered to the atlas; otherwise retain the audited facade and model only the larger structural frame."
+    },
+    {
+      "id": "roof_topology_comes_from_aerial_evidence",
+      "rule": "Infer ridge axis, valleys, cross-gables, hips, green-roof drainage and photovoltaic layout from compatible 60-degree and 90-degree references. Catalogue roof labels are hints, not sufficient construction evidence."
+    },
+    {
+      "id": "fidelity_view_is_variant_specific",
+      "rule": "Each silhouette contract names the generated view whose projection best matches its authoritative reference. A single global hero camera may be used for presentation, but it must not force a false aspect or roofline comparison."
     }
   ],
   "construction_memory": {
@@ -632,6 +652,21 @@
       "symptom": "A chalet or heritage building has the correct roof silhouette but still reads as a smooth computer-generated lid",
       "cause": "The gable or hip primitive was treated as the finished roof, omitting covering scale, overlapping courses, ballast, ridge and valley metal, gutters and layered verge construction.",
       "correction": "Keep the watertight primitive as the base, then add a bounded hero-range surface assembly aligned to each slope. Build repeated tiles or seams as a consolidated mesh; reserve separate low-poly objects for sparse silhouette-bearing weights, cresting or snow retention, and validate from the aerial camera."
+    },
+    {
+      "symptom": "A category batch contains convincing materials but several buildings still look like the same rectangular block",
+      "cause": "The batch inherited a parent massing recipe and changed only facade imagery instead of reconstructing each variant's roof topology, projections, entrances and native proportions.",
+      "correction": "Cluster variants only for reusable construction kits. Give every exact variant its own fixed graph and use front, oblique and aerial evidence to lock dimensions, ridge axes, cross-gables, balconies, chimneys, glazing halls and roof equipment before rendering the batch."
+    },
+    {
+      "symptom": "A clean facade atlas becomes pale panels or a heavy cage in the assembled model",
+      "cause": "Isolation background entered a rectangular wall crop, or an unregistered physical curtain-wall assembly duplicated the authored glazing and hid the atlas.",
+      "correction": "Crop to the wall body in both axes, keep gables and roofs out of the band, and add only registered shadow-casting geometry. If a physical pane cannot match the exact authored opening, let the atlas carry it and retain only the reference-proven structural frame."
+    },
+    {
+      "symptom": "A roof looks plausible from the street but its ridge direction or solar/valley layout is wrong from above",
+      "cause": "The graph followed a generic roof label or front-image intuition without checking the 60-degree and 90-degree catalogue views.",
+      "correction": "Treat aerial evidence as the roof construction drawing. Record the ridge or valley axis explicitly, place cross-gables and equipment in plan coordinates, and require a paired roof-plan comparison board before category release."
     }
   ]
 }

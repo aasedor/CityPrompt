@@ -1,0 +1,9 @@
+{
+  "schema":"registered-opening-schedule@1", "source":"alpine_lodge_stone_timber.png",
+  "notes":"Audited dormer, gallery and base glass only; logs, stone joints, rails, chimney and shingles remain opaque.",
+  "openings":[
+    {"shape":"rect","bbox":[0.226,0.284,0.373,0.355]}, {"shape":"rect","bbox":[0.540,0.277,0.650,0.355]}, {"shape":"rect","bbox":[0.789,0.326,0.863,0.383]},
+    {"shape":"rect","bbox":[0.225,0.449,0.319,0.533]}, {"shape":"rect","bbox":[0.340,0.449,0.407,0.533]}, {"shape":"rect","bbox":[0.521,0.449,0.584,0.533]}, {"shape":"rect","bbox":[0.661,0.449,0.725,0.533]}, {"shape":"rect","bbox":[0.817,0.449,0.883,0.533]},
+    {"shape":"rect","bbox":[0.210,0.651,0.344,0.761]}, {"shape":"rect","bbox":[0.716,0.651,0.835,0.761]}
+  ]
+}

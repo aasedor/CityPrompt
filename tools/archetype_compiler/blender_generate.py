@@ -1122,6 +1122,99 @@ def add_gable_roof(
     return obj
 
 
+def add_mono_pitch_roof(
+    name: str,
+    size: tuple[float, float, float],
+    location: tuple[float, float, float],
+    mat,
+    bevel_m: float = 0.05,
+    high_side: str = "rear",
+) -> bpy.types.Object:
+    """Solid single-slope roof whose location is the low eave datum.
+
+    The primitive is intentionally graph-native so contemporary Alpine families
+    can preserve their asymmetric section without falling back to a flat slab.
+    """
+    width, depth, rise = size
+    cx, cy, eave_z = location
+    x0, x1 = cx - width / 2, cx + width / 2
+    y0, y1 = cy - depth / 2, cy + depth / 2
+    top = eave_z + rise
+    if high_side in {"rear", "front"}:
+        front_z, rear_z = (eave_z, top) if high_side == "rear" else (top, eave_z)
+        verts = [
+            (x0, y0, eave_z), (x1, y0, eave_z), (x1, y1, eave_z), (x0, y1, eave_z),
+            (x0, y0, front_z), (x1, y0, front_z), (x1, y1, rear_z), (x0, y1, rear_z),
+        ]
+    elif high_side in {"left", "right"}:
+        left_z, right_z = (top, eave_z) if high_side == "left" else (eave_z, top)
+        verts = [
+            (x0, y0, eave_z), (x1, y0, eave_z), (x1, y1, eave_z), (x0, y1, eave_z),
+            (x0, y0, left_z), (x1, y0, right_z), (x1, y1, right_z), (x0, y1, left_z),
+        ]
+    else:
+        raise ValueError(f"mono-pitch high side {high_side!r} is unsupported")
+    obj = add_prism(
+        name, verts,
+        [(0, 1, 2, 3), (0, 4, 5, 1), (1, 5, 6, 2), (2, 6, 7, 3), (3, 7, 4, 0), (4, 7, 6, 5)],
+        mat,
+    )
+    width_m = max(0.0, min(float(bevel_m), min(width, depth, rise) * 0.18))
+    if width_m > 0:
+        bevel = obj.modifiers.new(name="ConstructionEdge", type="BEVEL")
+        bevel.width = width_m
+        bevel.segments = 4 if width_m >= 0.09 else 3
+        bevel.limit_method = "ANGLE"
+        try:
+            bevel.harden_normals = True
+        except AttributeError:
+            pass
+        bpy.context.view_layer.objects.active = obj
+        obj.select_set(True)
+        try:
+            bpy.ops.object.modifier_apply(modifier=bevel.name)
+        except RuntimeError:
+            obj.modifiers.remove(bevel)
+    return obj
+
+
+def add_butterfly_roof(
+    name: str,
+    size: tuple[float, float, float],
+    location: tuple[float, float, float],
+    mat,
+    bevel_m: float = 0.05,
+    valley_axis: str = "y",
+) -> list[bpy.types.Object]:
+    """Two inward-sloping roof wedges with a real central drainage valley."""
+    width, depth, rise = size
+    cx, cy, valley_z = location
+    if valley_axis not in {"x", "y"}:
+        raise ValueError(f"butterfly roof valley axis {valley_axis!r} is unsupported")
+    pieces: list[bpy.types.Object] = []
+    if valley_axis == "y":
+        half = width / 2
+        pieces.append(add_mono_pitch_roof(
+            f"{name}_Left", (half, depth, rise), (cx - half / 2, cy, valley_z), mat,
+            bevel_m, high_side="left",
+        ))
+        pieces.append(add_mono_pitch_roof(
+            f"{name}_Right", (half, depth, rise), (cx + half / 2, cy, valley_z), mat,
+            bevel_m, high_side="right",
+        ))
+    else:
+        half = depth / 2
+        pieces.append(add_mono_pitch_roof(
+            f"{name}_Front", (width, half, rise), (cx, cy - half / 2, valley_z), mat,
+            bevel_m, high_side="front",
+        ))
+        pieces.append(add_mono_pitch_roof(
+            f"{name}_Rear", (width, half, rise), (cx, cy + half / 2, valley_z), mat,
+            bevel_m, high_side="rear",
+        ))
+    return pieces
+
+
 def add_hipped_roof(
     name: str,
     size: tuple[float, float, float],
@@ -7871,32 +7964,33 @@ def _graph_pitched_roof_surface_detail(parts: list, spec: dict, mats: dict) -> N
 
     # Large local stones are a defining Alpine roof technology. Keep their
     # distribution sparse and deterministic so they read as ballast, not noise.
-    weight_rows = max(1, int(spec.get("weight_rows", 3)))
-    weights_per_row = max(2, int(spec.get("weights_per_row", 5)))
-    for side_index, (side, along, _upslope, normal) in enumerate(slope_records):
-        for row in range(weight_rows):
-            t = 0.18 + (0.66 * row / max(1, weight_rows - 1))
-            offset_step = ridge_length / weights_per_row
-            for index in range(weights_per_row):
-                ridge_offset = -ridge_length / 2 + offset_step * (index + 0.5)
-                if (row + side_index) % 2:
-                    ridge_offset += offset_step * 0.22
-                ridge_offset = max(-ridge_length * 0.44, min(ridge_length * 0.44, ridge_offset))
-                if ridge_axis == "x":
-                    surface = Vector((cx + ridge_offset, cy + side * half_run * (1.0 - t), eave_z + rise * t))
-                    scale = (0.30, 0.22, 0.13)
-                else:
-                    surface = Vector((cx + side * half_run * (1.0 - t), cy + ridge_offset, eave_z + rise * t))
-                    scale = (0.22, 0.30, 0.13)
-                size_factor = 0.86 + 0.13 * ((index + row * 2 + side_index) % 3)
-                rock = add_foliage(
-                    f"{prefix}_Weight{side_index}_{row:02d}_{index:02d}",
-                    tuple(surface + normal * 0.13),
-                    tuple(value * size_factor for value in scale),
-                    weight_mat, subdivisions=1,
-                )
-                rock.rotation_euler.z = math.radians((index * 23 + row * 11 + side_index * 7) % 40 - 20)
-                parts.append(rock)
+    if bool(spec.get("weight_enabled", True)):
+        weight_rows = max(1, int(spec.get("weight_rows", 3)))
+        weights_per_row = max(2, int(spec.get("weights_per_row", 5)))
+        for side_index, (side, along, _upslope, normal) in enumerate(slope_records):
+            for row in range(weight_rows):
+                t = 0.18 + (0.66 * row / max(1, weight_rows - 1))
+                offset_step = ridge_length / weights_per_row
+                for index in range(weights_per_row):
+                    ridge_offset = -ridge_length / 2 + offset_step * (index + 0.5)
+                    if (row + side_index) % 2:
+                        ridge_offset += offset_step * 0.22
+                    ridge_offset = max(-ridge_length * 0.44, min(ridge_length * 0.44, ridge_offset))
+                    if ridge_axis == "x":
+                        surface = Vector((cx + ridge_offset, cy + side * half_run * (1.0 - t), eave_z + rise * t))
+                        scale = (0.30, 0.22, 0.13)
+                    else:
+                        surface = Vector((cx + side * half_run * (1.0 - t), cy + ridge_offset, eave_z + rise * t))
+                        scale = (0.22, 0.30, 0.13)
+                    size_factor = 0.86 + 0.13 * ((index + row * 2 + side_index) % 3)
+                    rock = add_foliage(
+                        f"{prefix}_Weight{side_index}_{row:02d}_{index:02d}",
+                        tuple(surface + normal * 0.13),
+                        tuple(value * size_factor for value in scale),
+                        weight_mat, subdivisions=1,
+                    )
+                    rock.rotation_euler.z = math.radians((index * 23 + row * 11 + side_index * 7) % 40 - 20)
+                    parts.append(rock)
 
     ridge_width = float(spec.get("ridge_width_m", 0.24))
     if ridge_axis == "x":
@@ -7936,6 +8030,40 @@ def _graph_pitched_roof_surface_detail(parts: list, spec: dict, mats: dict) -> N
                     verge = add_box(f"{prefix}_Verge{end}_{side}", (slope_length, verge_depth, verge_height), location, verge_mat)
                     verge.rotation_euler.y = side * pitch
                 parts.append(verge)
+
+
+def _graph_solar_panel_array(parts: list, spec: dict, mats: dict) -> None:
+    """Deterministic framed PV field for roof-plan fidelity."""
+    cx, cy, cz = (float(value) for value in spec["centre"])
+    span_x, span_y = (float(value) for value in spec["size"][:2])
+    columns = max(1, int(spec.get("columns", 6)))
+    rows = max(1, int(spec.get("rows", 3)))
+    gap = max(0.04, float(spec.get("gap_m", 0.12)))
+    tilt_x = math.radians(float(spec.get("tilt_x_deg", 0.0)))
+    tilt_y = math.radians(float(spec.get("tilt_y_deg", 0.0)))
+    panel_mat = _graph_material(mats, spec.get("panel_material", "glass"))
+    frame_mat = _graph_material(mats, spec.get("frame_material", "roof_flashing"))
+    prefix = str(spec.get("id", "GraphPV"))
+    panel_w = (span_x - gap * (columns - 1)) / columns
+    panel_d = (span_y - gap * (rows - 1)) / rows
+    for row in range(rows):
+        for column in range(columns):
+            x = cx - span_x / 2 + panel_w / 2 + column * (panel_w + gap)
+            y = cy - span_y / 2 + panel_d / 2 + row * (panel_d + gap)
+            base = add_beveled_box(
+                f"{prefix}_{row:02d}_{column:02d}_Frame",
+                (panel_w + 0.06, panel_d + 0.06, 0.075), (x, y, cz), frame_mat, 0.018,
+            )
+            base.rotation_euler.x = tilt_x
+            base.rotation_euler.y = tilt_y
+            parts.append(base)
+            panel = add_beveled_box(
+                f"{prefix}_{row:02d}_{column:02d}_Panel",
+                (panel_w, panel_d, 0.045), (x, y, cz + 0.055), panel_mat, 0.012,
+            )
+            panel.rotation_euler.x = tilt_x
+            panel.rotation_euler.y = tilt_y
+            parts.append(panel)
 
 
 def _graph_curved_balcony_array(parts: list, spec: dict, mats: dict) -> None:
@@ -8157,6 +8285,20 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
                 _graph_material(mats, node.get("material")), float(node.get("bevel_m", 0.05)),
                 str(node.get("ridge_axis", "y")),
             ))
+        elif kind == "mono_pitch_roof":
+            size = tuple(float(value) for value in node["size"])
+            parts.append(add_mono_pitch_roof(
+                str(node["id"]), size, location,
+                _graph_material(mats, node.get("material")), float(node.get("bevel_m", 0.05)),
+                str(node.get("high_side", "rear")),
+            ))
+        elif kind == "butterfly_roof":
+            size = tuple(float(value) for value in node["size"])
+            parts.extend(add_butterfly_roof(
+                str(node["id"]), size, location,
+                _graph_material(mats, node.get("material")), float(node.get("bevel_m", 0.05)),
+                str(node.get("valley_axis", "y")),
+            ))
         elif kind == "hipped_roof":
             size = tuple(float(value) for value in node["size"])
             parts.append(add_hipped_roof(
@@ -8236,6 +8378,8 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
             _graph_eave_rafter_array(parts, assembly, mats)
         elif kind == "pitched_roof_surface_detail":
             _graph_pitched_roof_surface_detail(parts, assembly, mats)
+        elif kind == "solar_panel_array":
+            _graph_solar_panel_array(parts, assembly, mats)
         elif kind == "curved_balcony_array":
             _graph_curved_balcony_array(parts, assembly, mats)
         elif kind == "corbel_array":

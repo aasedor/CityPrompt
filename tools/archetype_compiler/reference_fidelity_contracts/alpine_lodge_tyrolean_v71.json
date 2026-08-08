@@ -1,0 +1,8 @@
+{
+  "schema": "building-reference-fidelity@1",
+  "id": "alpine-lodge-tyrolean-v71-hero",
+  "reference_image": "frontend/public/archetypes/buildings/alpine_mixed_use_lodge/variant_1.png",
+  "reference_silhouette_polygon": [[0.122, 0.779], [0.124, 0.470], [0.205, 0.432], [0.296, 0.304], [0.421, 0.340], [0.526, 0.277], [0.670, 0.226], [0.882, 0.442], [0.841, 0.779]],
+  "render_extraction": {"roi": [0.20, 0.13, 0.82, 0.79], "background_tolerance": 18.0},
+  "thresholds": {"silhouette_iou_min": 0.45, "roofline_rmse_max": 0.20, "aspect_ratio_error_max": 0.35}
+}

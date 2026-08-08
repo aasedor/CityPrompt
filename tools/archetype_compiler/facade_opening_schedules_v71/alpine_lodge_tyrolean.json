@@ -1,0 +1,12 @@
+{
+  "schema":"registered-opening-schedule@1", "source":"alpine_lodge_tyrolean.png",
+  "notes":"Audited shop, sash, dormer and oriel glass only; painted signs, half timber and canvas awnings remain opaque.",
+  "openings":[
+    {"shape":"rect","bbox":[0.160,0.245,0.201,0.326]}, {"shape":"rect","bbox":[0.278,0.244,0.319,0.326]}, {"shape":"rect","bbox":[0.368,0.244,0.410,0.326]},
+    {"shape":"rect","bbox":[0.590,0.285,0.631,0.371]}, {"shape":"rect","bbox":[0.686,0.285,0.727,0.371]}, {"shape":"rect","bbox":[0.785,0.285,0.827,0.371]},
+    {"shape":"rect","bbox":[0.158,0.405,0.218,0.503]}, {"shape":"rect","bbox":[0.239,0.405,0.299,0.503]}, {"shape":"rect","bbox":[0.320,0.405,0.378,0.503]}, {"shape":"rect","bbox":[0.391,0.405,0.444,0.503]},
+    {"shape":"rect","bbox":[0.418,0.373,0.505,0.649]},
+    {"shape":"rect","bbox":[0.565,0.410,0.613,0.505]}, {"shape":"rect","bbox":[0.652,0.410,0.703,0.505]}, {"shape":"rect","bbox":[0.743,0.410,0.794,0.505]}, {"shape":"rect","bbox":[0.833,0.410,0.882,0.505]},
+    {"shape":"rect","bbox":[0.105,0.704,0.239,0.836]}, {"shape":"rect","bbox":[0.321,0.704,0.447,0.836]}, {"shape":"rect","bbox":[0.500,0.704,0.662,0.836]}, {"shape":"rect","bbox":[0.766,0.704,0.914,0.836]}
+  ]
+}

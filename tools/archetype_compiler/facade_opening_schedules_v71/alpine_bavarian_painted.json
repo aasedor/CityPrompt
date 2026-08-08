@@ -1,0 +1,10 @@
+{
+  "schema": "registered-opening-schedule@1", "source": "alpine_bavarian_painted.png",
+  "notes": "Audited sash glass only; murals, shutters, flowers, carved balcony fronts and timber grain remain opaque.",
+  "openings": [
+    {"shape":"rect","bbox":[0.435,0.236,0.476,0.323]}, {"shape":"rect","bbox":[0.506,0.236,0.548,0.323]}, {"shape":"rect","bbox":[0.559,0.236,0.603,0.323]}, {"shape":"rect","bbox":[0.682,0.242,0.722,0.324]},
+    {"shape":"rect","bbox":[0.213,0.427,0.279,0.532]}, {"shape":"rect","bbox":[0.322,0.404,0.395,0.505]}, {"shape":"rect","bbox":[0.520,0.410,0.600,0.507]}, {"shape":"rect","bbox":[0.718,0.408,0.786,0.505]}, {"shape":"rect","bbox":[0.834,0.427,0.894,0.532]},
+    {"shape":"rect","bbox":[0.213,0.581,0.279,0.686]}, {"shape":"rect","bbox":[0.322,0.580,0.392,0.678]}, {"shape":"rect","bbox":[0.520,0.579,0.599,0.677]}, {"shape":"rect","bbox":[0.718,0.579,0.786,0.677]}, {"shape":"rect","bbox":[0.834,0.581,0.894,0.686]},
+    {"shape":"rect","bbox":[0.181,0.750,0.229,0.842]}, {"shape":"rect","bbox":[0.333,0.744,0.391,0.840]}, {"shape":"rect","bbox":[0.719,0.744,0.778,0.840]}
+  ]
+}
