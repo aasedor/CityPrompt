@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-08-07-reference-fidelity-gate-v68",
+  "memory_version": "2026-08-08-audited-vernacular-openings-v69",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "calibration_set": {
@@ -78,6 +78,10 @@
     {
       "id": "variant_identity_survives_export",
       "rule": "The selected catalogue variant must rewrite generationStyleInput, image provenance and generation identifier before family export. Validate the resolved UI id and source thumbnail so sibling variants can never silently compile as variant_0."
+    },
+    {
+      "id": "vernacular_openings_are_audited_before_geometry",
+      "rule": "Weathered timber grain, murals, flower boxes and masonry joints are not glazing evidence. For irregular vernacular elevations, use an audited opening schedule before creating physical panes or frames; automatic masks remain texture-only evidence until reviewed."
     },
     {
       "id": "identity_mode_is_explicit",
@@ -614,6 +618,11 @@
       "symptom": "A variant has plausible geometry but visibly belongs to another sibling archetype",
       "cause": "The renderer reused a family-level facade atlas generated from the parent hero image, so a variant-specific material and storey contract was overwritten by an older photographic skin.",
       "correction": "Create or resolve an orthographic elevation from the exact selected variant, record audited X/Y band schedules, and bind the facade sheet by variant provenance. Use wall-only crops on repeatable skins; build towers, turrets, roofs and shaped gables as fixed geometry with their own materials."
+    },
+    {
+      "symptom": "A timber or mural facade generates huge dark frames and an unexpectedly expensive GLB",
+      "cause": "Automatic glass segmentation interpreted wood grain, painted motifs, planter shadows or stone joints as thousands of window regions.",
+      "correction": "Stop before rendering, author normalized openings from the actual sash glass, and regenerate the semantic mask from that schedule. Keep decorative pixels in the albedo only; this removes false construction geometry and restores a bounded triangle budget."
     }
   ]
 }

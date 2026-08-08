@@ -1,2 +1,4 @@
 docs/reviews/building-pilots-v67/*.png filter=lfs diff=lfs merge=lfs -text
 docs/reviews/scottish-baronial-v68/*.png filter=lfs diff=lfs merge=lfs -text
+docs/reviews/alpine-chalet-v69/*.png filter=lfs diff=lfs merge=lfs -text
+tools/archetype_compiler/facade_sources_v69/*.png filter=lfs diff=lfs merge=lfs -text

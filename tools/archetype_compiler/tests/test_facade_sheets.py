@@ -411,6 +411,43 @@ def test_v67_variant_profiles_inherit_fixed_massing_without_losing_variant_mater
     assert registry["generation_profile"]["strict_production_preflight"] is True
 
 
+def test_v69_alpine_chalet_locks_cross_gables_deep_eaves_and_flower_balconies():
+    from signature_profiles import inject_signature
+
+    grammar = {
+        "source": {
+            "archetype_id": "mountain_alpine_chalet",
+            "variant_id": "alpine_swiss_traditional",
+        },
+        "materials": {"primary": {}, "secondary": {}, "accent": {}, "roof": {}},
+        "dimensions": {},
+    }
+    chalet = inject_signature(
+        grammar,
+        "mountain_alpine_chalet",
+        variant_id="alpine_swiss_traditional",
+    )
+
+    graph = chalet["massing_graph"]
+    assert graph["profile"] == "swiss_cross_gable_chalet_v69"
+    assert graph["reference_dimensions"]["floors"] == 3
+    assert sum(node["kind"] == "gable_roof" for node in graph["nodes"]) == 3
+    assemblies = graph["assemblies"]
+    assert sum(item["kind"] == "eave_rafter_array" for item in assemblies) == 4
+    balconies = [item for item in assemblies if item["kind"] == "balcony_array"]
+    assert len(balconies) == 2
+    assert all(item.get("planter_enabled") for item in balconies)
+    assert len(graph["reference_views"]) == 3
+
+    registry = json.loads(
+        (Path(__file__).parents[1] / "worldclass_alpine_chalet_v69.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert len(registry["entries"]) == 1
+    assert registry["entries"][0]["variant_id"] == "alpine_swiss_traditional"
+
+
 def test_facade_prompts_pin_texture_map_and_forbid_scene_completion():
     pytest.importorskip("PIL")
     pytest.importorskip("numpy")

@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-08-07-variant-atlas-lock-v67`.
+Current executable memory: `2026-08-08-audited-vernacular-openings-v69`.
 
 The current calibration set and catalogue rollout rationale are documented in
 [`BUILDING_GOLD_SET_PIPELINE_SYNTHESIS_2026-08-07.md`](BUILDING_GOLD_SET_PIPELINE_SYNTHESIS_2026-08-07.md).
@@ -416,6 +416,30 @@ Pass these schedules through `generate_facade_sheets.py` with
 manifest retains their filenames and labels the semantic mask provider as
 `deterministic`. A generated elevation is an identity source; only audited
 architectural regions are allowed to become modular construction.
+
+### V69 vernacular opening audit
+
+The Swiss Alpine chalet pilot exposed a particularly costly false-positive
+case. Automatic segmentation classified weathered timber grain, painted
+Luftlmalerei motifs, flower-box shadows and fieldstone joints as glazing. The
+first generated module exceeded 230,000 triangles and wrapped large false
+frames around decorative facade regions.
+
+For irregular vernacular elevations, the opening schedule is therefore a
+pre-render requirement rather than a later refinement. The chalet's fourteen
+actual sash-glass rectangles reduced the repeatable module to roughly 29,000
+triangles while preserving the timber, murals and stone as albedo. Decorative
+pixels never authorize physical panes, jambs or mullions. An automatic mask may
+remain texture evidence, but only audited openings become construction.
+
+This pilot also confirms why silhouette measurement remains independent of
+material quality. Its stone/timber facade and fixed chalet details read well,
+yet the first OpenCV pass rejected the overall aspect ratio because the
+archetype photo describes a broader composition than the compact 14 by 12 metre
+default. Rebuilding at the catalogue's declared 18 metre maximum frontage moved
+the silhouette IoU from 0.574 to 0.713 and passed the unchanged aspect and
+roofline gates. The conflict was resolved as an explicit native size-tier
+decision rather than hidden by loosening thresholds.
 
 ### V65 three-pilot expansion lessons
 

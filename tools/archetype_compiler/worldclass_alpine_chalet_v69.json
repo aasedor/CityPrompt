@@ -1,0 +1,30 @@
+{
+  "schema": "worldclass-lego-library@2",
+  "name": "Swiss Traditional Chalet Reconstruction v69",
+  "description": "One bounded pilot testing cross-gabled low-rise massing, deep timber eaves, supported balconies, flower planters and a reference-derived orthographic facade source.",
+  "generation_profile": {
+    "facade_model": "reference-locked-openai-v9",
+    "facade_sheet_schema": "facade-sheet@4",
+    "facade_sheet_root": "artifacts/pilot-v69/facade-sheets",
+    "texture_library": "tools/archetype_compiler/textures_worldclass_v7",
+    "geometry_detail": "hero",
+    "presentation_view_set": "all",
+    "ambient_occlusion": false,
+    "strict_production_preflight": true,
+    "signature_profile": "tools/archetype_compiler/architectural_signature_profiles.json",
+    "quality_memory": "tools/archetype_compiler/high_quality_building_memory.json",
+    "gold_set": "tools/archetype_compiler/building_gold_set.json"
+  },
+  "entries": [
+    {
+      "entry_id": "alpine-swiss-traditional-v69",
+      "archetype_id": "mountain_alpine_chalet",
+      "variant_id": "alpine_swiss_traditional",
+      "family_id": "mountain-alpine-chalet",
+      "floors": 3,
+      "width_m": 18,
+      "depth_m": 12,
+      "group": "Cross-gabled timber-and-stone chalet"
+    }
+  ]
+}

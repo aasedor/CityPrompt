@@ -703,6 +703,7 @@ def build_materials(grammar: dict) -> dict[str, bpy.types.Material]:
         "green_roof": make_material("MAT_GreenRoof", materials["green_roof"]),
         "plant": make_material("MAT_Plants", {"base_color": "#416f38", "roughness": 0.86, "metallic": 0.0}),
         "plant_alt": make_material("MAT_Plants_Alt", {"base_color": "#6b7b45", "roughness": 0.88, "metallic": 0.0}),
+        "flower": make_material("MAT_Flowers_Red", {"base_color": "#9f1f24", "roughness": 0.82, "metallic": 0.0}),
         "interior": make_material("MAT_Interior_Shadow", {"base_color": "#171c21", "roughness": 0.72, "metallic": 0.0}),
         "interior_warm": make_material("MAT_Interior_Warm", {
             "base_color": "#6e4e2e", "roughness": 0.82, "metallic": 0.0,
@@ -7676,6 +7677,35 @@ def _graph_balcony_array(parts: list, spec: dict, mats: dict) -> None:
                         f"{prefix}_{level_index:02d}_{segment_index:02d}_EndPost{end_index}_{post_index}",
                         member_size(rail_profile, rail_profile, rail_h), tuple(post), rail_mat,
                     ))
+            if bool(spec.get("planter_enabled", False)):
+                planter_depth = float(spec.get("planter_depth_m", 0.28))
+                planter_height = float(spec.get("planter_height_m", 0.30))
+                planter = datum + outward * (depth + planter_depth / 2)
+                planter.z = z + slab_h / 2 + rail_h * 0.52
+                planter_mat = _graph_material(mats, spec.get("planter_material", "signature_warm"))
+                foliage_mat = _graph_material(mats, spec.get("foliage_material", "plant"))
+                flower_mat = _graph_material(mats, spec.get("flower_material", "flower"))
+                planter_span = segment_span * 0.86
+                parts.append(add_beveled_box(
+                    f"{prefix}_{level_index:02d}_{segment_index:02d}_Planter",
+                    member_size(planter_span, planter_depth, planter_height),
+                    tuple(planter), planter_mat, 0.035,
+                ))
+                cluster_count = max(3, int(spec.get("flower_clusters_per_segment", 7)))
+                for cluster_index in range(cluster_count):
+                    offset_ratio = cluster_index / max(1, cluster_count - 1) - 0.5
+                    foliage = planter + along * (planter_span * 0.88 * offset_ratio)
+                    foliage += outward * (planter_depth * 0.12)
+                    foliage.z += planter_height * 0.62
+                    parts.append(add_cylinder(
+                        f"{prefix}_{level_index:02d}_{segment_index:02d}_Foliage{cluster_index:02d}",
+                        0.16, 0.18, tuple(foliage), foliage_mat, 8,
+                    ))
+                    flower = foliage + Vector((0.0, 0.0, 0.12))
+                    parts.append(add_cylinder(
+                        f"{prefix}_{level_index:02d}_{segment_index:02d}_Flower{cluster_index:02d}",
+                        0.085, 0.08, tuple(flower), flower_mat, 8,
+                    ))
             # Paired tapered-looking corbel blocks visually attach the slab to
             # the wall without the cost of a unique sculpted bracket mesh.
             for corbel_index, corbel_offset in enumerate((-segment_span * 0.28, segment_span * 0.28)):
@@ -7685,6 +7715,61 @@ def _graph_balcony_array(parts: list, spec: dict, mats: dict) -> None:
                     f"{prefix}_{level_index:02d}_{segment_index:02d}_Corbel{corbel_index}",
                     member_size(0.16, depth * 0.44, 0.34), tuple(corbel), slab_mat, 0.025,
                 ))
+
+
+def _graph_eave_rafter_array(parts: list, spec: dict, mats: dict) -> None:
+    """Deep timber rafter tails with wall ledgers and diagonal chalet brackets."""
+    axis = str(spec.get("axis", "front"))
+    if axis not in {"front", "rear", "left", "right"}:
+        raise ValueError(f"eave rafter axis {axis!r} is unsupported")
+    centre = Vector(tuple(float(value) for value in spec["base_centre"]))
+    span = float(spec["span_m"])
+    count = max(3, int(spec.get("count", round(span / 1.25))))
+    projection = float(spec.get("projection_m", 1.35))
+    member_width = float(spec.get("member_width_m", 0.18))
+    member_height = float(spec.get("member_height_m", 0.24))
+    bracket_drop = float(spec.get("bracket_drop_m", 0.95))
+    bracket_projection = min(projection * 0.82, float(spec.get("bracket_projection_m", 0.82)))
+    mat = _graph_material(mats, spec.get("material", "signature_warm"))
+    prefix = str(spec.get("id", "GraphEaveRafter"))
+    outward, along = _glazing_axis_vectors(axis)
+
+    def member_size(along_size: float, outward_size: float, z_size: float) -> tuple[float, float, float]:
+        return (
+            (along_size, outward_size, z_size)
+            if axis in {"front", "rear"}
+            else (outward_size, along_size, z_size)
+        )
+
+    for index in range(count):
+        datum = centre + along * (-span / 2 + span * index / max(1, count - 1))
+        tail = datum + outward * (projection / 2)
+        parts.append(add_box(
+            f"{prefix}_{index:02d}_Tail",
+            member_size(member_width, projection, member_height),
+            tuple(tail), mat,
+        ))
+        ledger = datum + outward * 0.06
+        ledger.z -= bracket_drop / 2
+        parts.append(add_box(
+            f"{prefix}_{index:02d}_Ledger",
+            member_size(member_width * 1.08, member_height * 0.75, bracket_drop),
+            tuple(ledger), mat,
+        ))
+        low = datum + outward * 0.09 + Vector((0.0, 0.0, -bracket_drop * 0.88))
+        high = datum + outward * bracket_projection + Vector((0.0, 0.0, -member_height * 0.35))
+        delta = high - low
+        length = delta.length
+        brace = add_box(
+            f"{prefix}_{index:02d}_Brace",
+            member_size(member_width * 0.78, length, member_height * 0.78),
+            tuple((low + high) / 2), mat,
+        )
+        if axis in {"front", "rear"}:
+            brace.rotation_euler.x = math.atan2(delta.z, delta.y)
+        else:
+            brace.rotation_euler.y = math.atan2(-delta.z, delta.x)
+        parts.append(brace)
 
 
 def _graph_curved_balcony_array(parts: list, spec: dict, mats: dict) -> None:
@@ -7981,6 +8066,8 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
             _graph_glazing_overlay(parts, assembly, mats)
         elif kind == "balcony_array":
             _graph_balcony_array(parts, assembly, mats)
+        elif kind == "eave_rafter_array":
+            _graph_eave_rafter_array(parts, assembly, mats)
         elif kind == "curved_balcony_array":
             _graph_curved_balcony_array(parts, assembly, mats)
         elif kind == "corbel_array":

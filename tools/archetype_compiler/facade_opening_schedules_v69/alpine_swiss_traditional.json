@@ -1,0 +1,23 @@
+{
+  "schema": "registered-opening-schedule@1",
+  "source": "alpine_swiss_traditional.png",
+  "notes": "Audited clear-glass fields for the generated orthographic Swiss chalet elevation. Timber grain, murals, carved door leaves, basement grilles and structural posts remain opaque.",
+  "openings": [
+    {"shape": "rect", "bbox": [0.252, 0.092, 0.337, 0.218]},
+    {"shape": "rect", "bbox": [0.370, 0.092, 0.452, 0.218]},
+    {"shape": "rect", "bbox": [0.548, 0.092, 0.633, 0.218]},
+    {"shape": "rect", "bbox": [0.668, 0.092, 0.750, 0.218]},
+
+    {"shape": "rect", "bbox": [0.129, 0.355, 0.201, 0.472]},
+    {"shape": "rect", "bbox": [0.249, 0.355, 0.326, 0.472]},
+    {"shape": "rect", "bbox": [0.380, 0.355, 0.458, 0.472]},
+    {"shape": "rect", "bbox": [0.548, 0.355, 0.625, 0.472]},
+    {"shape": "rect", "bbox": [0.681, 0.355, 0.756, 0.472]},
+    {"shape": "rect", "bbox": [0.826, 0.355, 0.898, 0.472]},
+
+    {"shape": "rect", "bbox": [0.126, 0.628, 0.190, 0.748]},
+    {"shape": "rect", "bbox": [0.222, 0.628, 0.291, 0.748]},
+    {"shape": "rect", "bbox": [0.704, 0.628, 0.772, 0.748]},
+    {"shape": "rect", "bbox": [0.802, 0.628, 0.871, 0.748]}
+  ]
+}

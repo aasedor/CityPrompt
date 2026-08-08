@@ -1314,6 +1314,77 @@
         ]
       }
     },
+    "mountain_alpine_chalet": {
+      "identity": "Low traditional Swiss chalet with a massive fieldstone base, two weathered timber levels, paired cross-gables, broad shingle eaves, carved flower-box balconies and a dark arched entry.",
+      "production_contract": {
+        "identity_mode": "massing_graph",
+        "fixed_identity": ["fieldstone podium and arched entry", "paired front cross-gables and broad weighted-shingle roof", "deep exposed rafter tails and timber brackets", "two projecting carved timber balcony levels with geranium boxes", "central masonry chimney"],
+        "repeatable_capacity": ["ordinary timber sash bays between the fixed gables and balcony ends"],
+        "required_reference_roles": ["street_identity", "oblique_massing", "roof_or_aerial"]
+      },
+      "material_zones": "rough grey fieldstone podium; deeply weathered brown timber upper walls and structure; dark wood shingles; carved dark-oak rails and doors; red geraniums; cream sash; warm occupied interiors",
+      "material_overrides": {
+        "primary": {"base_color": "#4b3023", "roughness": 0.82, "metallic": 0.0},
+        "secondary": {"base_color": "#8f887d", "roughness": 0.88, "metallic": 0.0},
+        "accent": {"base_color": "#302018", "roughness": 0.70, "metallic": 0.0},
+        "roof": {"base_color": "#4a443c", "roughness": 0.86, "metallic": 0.0, "texture_key": null}
+      },
+      "signature_material_overrides": {
+        "signature_stone": {"base_color": "#8d8981", "roughness": 0.91, "metallic": 0.0, "texture_key": null},
+        "signature_warm": {"base_color": "#503225", "roughness": 0.78, "metallic": 0.0, "texture_key": null},
+        "signature_roof": {"base_color": "#49433c", "roughness": 0.86, "metallic": 0.0, "texture_key": null}
+      },
+      "glass_profile": "residential_low_e",
+      "kits": ["fieldstone_base", "arched_timber_entry", "cross_gable_roof", "deep_eave_brackets", "carved_timber_balconies", "geranium_planters", "chimney_skyline"],
+      "massing_graph": {
+        "schema": "massing-graph@1",
+        "profile": "swiss_cross_gable_chalet_v69",
+        "description": "Reference-built compact Swiss chalet with a real stone/timber section, paired cross-gabled roof plan, deep exposed eaves and supported flower-box balconies.",
+        "height_m": 14.1,
+        "reference_dimensions": {"width_m": 18.0, "depth_m": 12.0, "floors": 3, "floor_height_m": 3.1},
+        "nodes": [
+          {"id": "chalet_plinth", "kind": "box", "size": [18.7, 12.7, 0.38], "location": [0.0, 0.0, 0.19], "material": "signature_stone", "bevel_m": 0.05},
+          {"id": "chalet_stone_base", "kind": "box", "size": [18.0, 12.0, 3.25], "location": [0.0, 0.0, 1.625], "material": "signature_stone", "bevel_m": 0.12},
+          {"id": "chalet_timber_body", "kind": "box", "size": [17.9, 11.9, 6.15], "location": [0.0, 0.0, 6.325], "material": "primary", "bevel_m": 0.10},
+          {"id": "chalet_main_roof", "kind": "gable_roof", "size": [19.7, 14.2, 3.45], "location": [0.0, 0.0, 9.40], "material": "roof", "bevel_m": 0.10, "ridge_axis": "x"},
+          {"id": "chalet_left_cross_gable", "kind": "gable_roof", "size": [7.1, 7.4, 3.15], "location": [-5.10, -3.60, 9.40], "material": "roof", "bevel_m": 0.09, "ridge_axis": "y"},
+          {"id": "chalet_right_cross_gable", "kind": "gable_roof", "size": [7.4, 7.8, 3.45], "location": [4.15, -3.75, 9.40], "material": "roof", "bevel_m": 0.09, "ridge_axis": "y"},
+          {"id": "chalet_stone_transition_front", "kind": "box", "size": [18.3, 0.34, 0.30], "location": [0.0, -6.12, 3.28], "material": "signature_warm", "bevel_m": 0.035},
+          {"id": "chalet_stone_transition_rear", "kind": "box", "size": [18.3, 0.34, 0.30], "location": [0.0, 6.12, 3.28], "material": "signature_warm", "bevel_m": 0.035}
+        ],
+        "voids": [
+          {"id": "chalet_arched_entry", "size": [2.2, 1.0, 2.9], "location": [0.0, -6.0, 1.55], "purpose": "dark centered arched timber entry retained by the facade source and sheltered by the lower balcony"}
+        ],
+        "assemblies": [
+          {"id": "chalet_front_elevation", "kind": "facade_skin", "axis": "front", "centre": [0.0, -6.025, 4.65], "span_m": 17.75, "height_m": 9.18, "depth_m": 0.05, "band": "elevation"},
+          {"id": "chalet_left_podium", "kind": "facade_skin", "axis": "left", "centre": [-9.025, 0.0, 1.625], "span_m": 11.75, "height_m": 3.15, "depth_m": 0.05, "band": "podium", "flip_u": true},
+          {"id": "chalet_right_podium", "kind": "facade_skin", "axis": "right", "centre": [9.025, 0.0, 1.625], "span_m": 11.75, "height_m": 3.15, "depth_m": 0.05, "band": "podium"},
+          {"id": "chalet_rear_podium", "kind": "facade_skin", "axis": "rear", "centre": [0.0, 6.025, 1.625], "span_m": 17.75, "height_m": 3.15, "depth_m": 0.05, "band": "podium", "flip_u": true},
+          {"id": "chalet_left_timber", "kind": "facade_skin", "axis": "left", "centre": [-9.025, 0.0, 6.325], "span_m": 11.75, "height_m": 6.05, "depth_m": 0.05, "band": "side", "flip_u": true},
+          {"id": "chalet_right_timber", "kind": "facade_skin", "axis": "right", "centre": [9.025, 0.0, 6.325], "span_m": 11.75, "height_m": 6.05, "depth_m": 0.05, "band": "side"},
+          {"id": "chalet_rear_timber", "kind": "facade_skin", "axis": "rear", "centre": [0.0, 6.025, 6.325], "span_m": 17.75, "height_m": 6.05, "depth_m": 0.05, "band": "side", "flip_u": true},
+          {"id": "chalet_left_gable_infill", "kind": "shaped_gable_array", "axis": "front", "profile_style": "steep_triangle", "base_centre": [-5.10, -7.32, 9.37], "positions_m": [0.0], "width_m": 5.95, "height_m": 3.15, "depth_m": 0.30, "material": "signature_warm", "infill_enabled": false, "finial_enabled": false, "bevel_m": 0.035},
+          {"id": "chalet_right_gable_infill", "kind": "shaped_gable_array", "axis": "front", "profile_style": "steep_triangle", "base_centre": [4.15, -7.67, 9.37], "positions_m": [0.0], "width_m": 6.15, "height_m": 3.45, "depth_m": 0.30, "material": "signature_warm", "infill_enabled": false, "finial_enabled": false, "bevel_m": 0.035},
+          {"id": "chalet_left_gable_window", "kind": "curtain_wall", "axis": "front", "centre": [-5.10, -7.64, 10.58], "span_m": 1.30, "height_m": 1.36, "columns": 2, "rows": 1, "frame_m": 0.09, "depth_m": 0.07, "surround_m": 0.11, "surround_depth_m": 0.14, "frame_material": "signature_warm", "glass_material": "glass"},
+          {"id": "chalet_right_gable_window", "kind": "curtain_wall", "axis": "front", "centre": [4.15, -7.99, 10.65], "span_m": 1.36, "height_m": 1.44, "columns": 2, "rows": 1, "frame_m": 0.09, "depth_m": 0.07, "surround_m": 0.11, "surround_depth_m": 0.14, "frame_material": "signature_warm", "glass_material": "glass"},
+          {"id": "chalet_front_balconies", "kind": "balcony_array", "axis": "front", "centre": [0.0, -6.02, 0.0], "span_m": 17.0, "levels_z": [3.48, 6.52], "segments": 4, "segment_gap_m": 0.32, "depth_m": 1.18, "slab_height_m": 0.18, "rail_height_m": 0.92, "pickets_per_segment": 9, "slab_material": "signature_warm", "rail_material": "signature_warm", "shadow_material": "massing_joint", "planter_enabled": true, "planter_material": "signature_warm", "foliage_material": "plant", "flower_material": "flower", "flower_clusters_per_segment": 5},
+          {"id": "chalet_left_upper_balcony", "kind": "balcony_array", "axis": "left", "centre": [-8.70, -1.3, 0.0], "span_m": 6.7, "levels_z": [6.52], "segments": 2, "segment_gap_m": 0.24, "depth_m": 0.95, "slab_height_m": 0.18, "rail_height_m": 0.92, "pickets_per_segment": 7, "slab_material": "signature_warm", "rail_material": "signature_warm", "shadow_material": "massing_joint", "planter_enabled": true, "planter_material": "signature_warm", "foliage_material": "plant", "flower_material": "flower", "flower_clusters_per_segment": 4},
+          {"id": "chalet_front_eave", "kind": "eave_rafter_array", "axis": "front", "base_centre": [0.0, -6.0, 9.48], "span_m": 17.7, "count": 13, "projection_m": 1.45, "member_width_m": 0.18, "member_height_m": 0.24, "bracket_drop_m": 1.05, "bracket_projection_m": 0.88, "material": "signature_warm"},
+          {"id": "chalet_rear_eave", "kind": "eave_rafter_array", "axis": "rear", "base_centre": [0.0, 6.0, 9.48], "span_m": 17.7, "count": 13, "projection_m": 1.30, "member_width_m": 0.18, "member_height_m": 0.24, "bracket_drop_m": 0.90, "bracket_projection_m": 0.78, "material": "signature_warm"},
+          {"id": "chalet_left_eave", "kind": "eave_rafter_array", "axis": "left", "base_centre": [-9.0, 0.0, 9.48], "span_m": 11.5, "count": 8, "projection_m": 0.68, "member_width_m": 0.18, "member_height_m": 0.24, "bracket_drop_m": 0.90, "bracket_projection_m": 0.50, "material": "signature_warm"},
+          {"id": "chalet_right_eave", "kind": "eave_rafter_array", "axis": "right", "base_centre": [9.0, 0.0, 9.48], "span_m": 11.5, "count": 8, "projection_m": 0.68, "member_width_m": 0.18, "member_height_m": 0.24, "bracket_drop_m": 0.90, "bracket_projection_m": 0.50, "material": "signature_warm"},
+          {"id": "chalet_chimney", "kind": "chimney_cluster_array", "centres": [[0.9, 1.0, 11.65]], "count_per_cluster": 2, "spacing_m": 0.58, "section_m": 0.46, "height_m": 2.35, "material": "signature_stone", "cap_material": "secondary"},
+          {"id": "chalet_entry_steps", "kind": "steps", "centre": [0.0, -6.85, 0.0], "width_m": 3.8, "depth_m": 1.2, "count": 3, "rise_m": 0.12, "material": "signature_stone"}
+        ],
+        "presentation_camera": {"hero_side": "right"},
+        "reference_views": [
+          {"role": "street_identity", "path": "/archetypes/buildings/mountain_alpine_chalet/variant_0.png", "cues": ["fieldstone podium", "weathered timber upper floors", "flower-box balconies", "paired front gables"]},
+          {"role": "oblique_massing", "path": "/archetypes/buildings/mountain_alpine_chalet/variant_0_angle_60.jpg", "cues": ["broad wrap balcony", "deep eaves and brackets", "cross-gabled roof", "central chimney"]},
+          {"role": "roof_plan", "path": "/archetypes/buildings/mountain_alpine_chalet/variant_0_angle_90.jpg", "cues": ["interlocking cross-gables", "wide shingle overhangs", "compact rectangular plan"]}
+        ],
+        "target_views": ["archetype_match", "street", "aerial", "context"]
+      }
+    },
     "eixample_apartment_block": {
       "identity": "Barcelona Eixample apartment block with chamfered-corner emphasis, repetitive wrought-iron balconies, carved stone portal, glazed galleries and a deep cornice.",
       "production_contract": {
