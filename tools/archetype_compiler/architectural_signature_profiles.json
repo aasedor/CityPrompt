@@ -1528,6 +1528,82 @@
         "reference_views": [{"role": "street_identity", "path": "/archetypes/buildings/alpine_mixed_use_lodge/variant_3.png", "cues": ["vertical larch", "irregular deep windows", "external blinds"]}, {"role": "oblique_massing", "path": "/archetypes/buildings/alpine_mixed_use_lodge/variant_3_angle_60.jpg", "cues": ["four-storey rectangular block", "glazed airlock", "green butterfly roof"]}, {"role": "roof_plan", "path": "/archetypes/buildings/alpine_mixed_use_lodge/variant_3_angle_90.jpg", "cues": ["central drainage valley", "U-shaped PV field", "planted roof"]}], "target_views": ["archetype_match", "street", "aerial", "context"]
       }
     },
+    "library_original_snohetta": {
+      "identity": "Catalogue-specific four-storey Calgary civic library: a broad rectilinear brick and precast perimeter block, tall narrow glazed bays, a monumental flared laminated-timber entrance shell and a visibly occupied roof court.",
+      "production_contract": {
+        "identity_mode": "massing_graph",
+        "fixed_identity": ["giant flared timber entrance shell", "four-storey vertical civic bay rhythm", "rectangular perimeter block with open roof court", "raised roof pavilion and visible service equipment", "secondary rear timber shell"],
+        "repeatable_capacity": ["ordinary tall masonry and glazing bays"],
+        "required_reference_roles": ["street_identity", "oblique_massing", "roof_or_aerial"]
+      },
+      "material_zones": "warm buff and red brick upper piers; pale board-formed concrete podium; bronze vertical frames; honey laminated timber; dark inhabited glazing; gravel roof and grey rooftop plant",
+      "glass_profile": "low_iron_clear",
+      "dimension_overrides": {"width_m": 75.0, "depth_m": 60.0, "default_floors": 4, "crown_height_m": 4.6},
+      "material_overrides": {
+        "primary": {"base_color": "#a77b5b", "roughness": 0.86, "metallic": 0.0, "texture_key": "buff_brick"},
+        "secondary": {"base_color": "#b8b0a3", "roughness": 0.80, "metallic": 0.0, "texture_key": "precast_concrete"},
+        "accent": {"base_color": "#4b3b31", "roughness": 0.43, "metallic": 0.34, "texture_key": "bronze_metal"},
+        "roof": {"base_color": "#77756f", "roughness": 0.91, "metallic": 0.0}
+      },
+      "signature_material_overrides": {
+        "signature_warm": {"base_color": "#bf7d38", "roughness": 0.68, "metallic": 0.0, "texture_key": "oak_wood"},
+        "signature_stone": {"base_color": "#b8b0a3", "roughness": 0.82, "texture_key": "precast_concrete"},
+        "signature_metal": {"base_color": "#493b34", "roughness": 0.41, "metallic": 0.48},
+        "signature_roof": {"base_color": "#77756f", "roughness": 0.91, "metallic": 0.0, "texture_key": null}
+      },
+      "kits": ["timber_arch_shell", "vertical_civic_bays", "perimeter_roof_court", "roof_pavilion", "secondary_rear_shell"],
+      "massing_graph": {
+        "schema": "massing-graph@1",
+        "profile": "calgary_catalogue_timber_portal_roof_court_v72",
+        "description": "Image-locked perimeter civic block with a real central roof court and a flared, nested timber entrance section. The catalogue images override contradictory real-building text metadata.",
+        "height_m": 25.4,
+        "reference_dimensions": {"width_m": 75.0, "depth_m": 60.0, "floors": 4, "floor_height_m": 5.0},
+        "nodes": [
+          {"id": "library_plinth", "kind": "box", "size": [76.0, 61.0, 0.46], "location": [0.0, 0.0, 0.23], "material": "signature_stone", "bevel_m": 0.07},
+          {"id": "library_left_wing", "kind": "box", "size": [18.0, 60.0, 20.0], "location": [-28.5, 0.0, 10.23], "material": "primary", "bevel_m": 0.14},
+          {"id": "library_right_wing", "kind": "box", "size": [18.0, 60.0, 20.0], "location": [28.5, 0.0, 10.23], "material": "primary", "bevel_m": 0.14},
+          {"id": "library_rear_wing", "kind": "box", "size": [39.0, 15.0, 20.0], "location": [0.0, 22.5, 10.23], "material": "primary", "bevel_m": 0.14},
+          {"id": "library_front_bridge", "kind": "box", "size": [39.0, 15.0, 6.2], "location": [0.0, -22.5, 17.13], "material": "primary", "bevel_m": 0.12},
+          {"id": "library_front_atrium_shadow", "kind": "box", "size": [38.5, 14.5, 13.8], "location": [0.0, -22.5, 7.13], "material": "massing_joint", "bevel_m": 0.05},
+          {"id": "library_left_roof", "kind": "box", "size": [18.2, 60.2, 0.55], "location": [-28.5, 0.0, 20.505], "material": "signature_roof", "bevel_m": 0.05},
+          {"id": "library_right_roof", "kind": "box", "size": [18.2, 60.2, 0.55], "location": [28.5, 0.0, 20.505], "material": "signature_roof", "bevel_m": 0.05},
+          {"id": "library_front_roof", "kind": "box", "size": [39.0, 15.2, 0.55], "location": [0.0, -22.5, 20.505], "material": "signature_roof", "bevel_m": 0.05},
+          {"id": "library_rear_roof", "kind": "box", "size": [39.0, 15.2, 0.55], "location": [0.0, 22.5, 20.505], "material": "signature_roof", "bevel_m": 0.05},
+          {"id": "library_roof_court_floor", "kind": "box", "size": [38.0, 28.8, 0.28], "location": [0.0, 0.0, 18.72], "material": "concrete", "bevel_m": 0.04},
+          {"id": "library_roof_pavilion", "kind": "box", "size": [24.0, 13.0, 4.2], "location": [1.0, 1.5, 22.38], "material": "secondary", "bevel_m": 0.12},
+          {"id": "library_roof_pavilion_glass", "kind": "box", "size": [16.0, 0.16, 2.8], "location": [1.0, -5.08, 22.0], "material": "glass", "bevel_m": 0.02},
+          {"id": "library_mechanical_west", "kind": "box", "size": [7.5, 5.0, 1.8], "location": [-13.5, 6.2, 21.45], "material": "signature_metal", "bevel_m": 0.10},
+          {"id": "library_mechanical_east", "kind": "box", "size": [6.0, 4.2, 1.55], "location": [14.8, 6.8, 21.325], "material": "signature_metal", "bevel_m": 0.10},
+          {"id": "library_skylight_west", "kind": "box", "size": [9.5, 3.2, 0.42], "location": [-14.0, -5.7, 19.14], "material": "glass", "bevel_m": 0.05},
+          {"id": "library_skylight_east", "kind": "box", "size": [8.0, 3.0, 0.42], "location": [14.8, -5.4, 19.14], "material": "glass", "bevel_m": 0.05},
+          {"id": "library_front_parapet", "kind": "box", "size": [75.8, 0.42, 0.92], "location": [0.0, -30.18, 20.71], "material": "signature_stone", "bevel_m": 0.04},
+          {"id": "library_rear_parapet", "kind": "box", "size": [75.8, 0.42, 0.92], "location": [0.0, 30.18, 20.71], "material": "signature_stone", "bevel_m": 0.04},
+          {"id": "library_left_parapet", "kind": "box", "size": [0.42, 59.8, 0.92], "location": [-37.68, 0.0, 20.71], "material": "signature_stone", "bevel_m": 0.04},
+          {"id": "library_right_parapet", "kind": "box", "size": [0.42, 59.8, 0.92], "location": [37.68, 0.0, 20.71], "material": "signature_stone", "bevel_m": 0.04}
+        ],
+        "voids": [
+          {"id": "library_monumental_entry", "size": [25.0, 6.5, 18.0], "location": [0.0, -31.5, 9.0], "purpose": "deep flared timber public entrance"},
+          {"id": "library_roof_court", "size": [43.5, 29.0, 18.0], "location": [0.0, 0.0, 10.0], "purpose": "open central roof court visible in aerial evidence"}
+        ],
+        "assemblies": [
+          {"id": "library_front_elevation", "kind": "facade_skin", "axis": "front", "centre": [0.0, -30.025, 10.18], "span_m": 74.7, "height_m": 19.85, "depth_m": 0.05, "band": "elevation"},
+          {"id": "library_left_elevation", "kind": "facade_skin", "axis": "left", "centre": [-37.525, 0.0, 10.18], "span_m": 59.7, "height_m": 19.85, "depth_m": 0.05, "band": "side", "flip_u": true},
+          {"id": "library_right_elevation", "kind": "facade_skin", "axis": "right", "centre": [37.525, 0.0, 10.18], "span_m": 59.7, "height_m": 19.85, "depth_m": 0.05, "band": "side"},
+          {"id": "library_rear_elevation", "kind": "facade_skin", "axis": "rear", "centre": [0.0, 30.025, 10.18], "span_m": 74.7, "height_m": 19.85, "depth_m": 0.05, "band": "elevation", "flip_u": true},
+          {"id": "library_entry_glazing", "kind": "curtain_wall", "axis": "front", "centre": [0.0, -30.16, 9.25], "span_m": 26.0, "height_m": 17.8, "columns": 6, "rows": 4, "frame_m": 0.13, "depth_m": 0.10, "surround_m": 0.0, "frame_material": "signature_metal", "glass_material": "glass", "interior_material": "interior_warm", "interior_recess_m": 0.28},
+          {"id": "library_front_timber_shell", "kind": "timber_arch_shell", "axis": "front", "base_centre": [0.0, -30.10, 0.38], "curve_power": 1.72, "segments": 48, "bevel_m": 0.07, "layers": [{"outer_width_m": 27.5, "outer_height_m": 19.4, "inner_width_m": 22.5, "inner_height_m": 16.6, "projection_m": 3.2, "front_scale": 0.91, "back_scale": 1.0, "material": "signature_warm"}, {"outer_width_m": 21.9, "outer_height_m": 16.0, "inner_width_m": 20.2, "inner_height_m": 14.7, "projection_m": 2.65, "front_scale": 0.94, "back_scale": 1.0, "face_inset_m": 0.20, "material": "signature_warm", "bevel_m": 0.045}], "back_plane": {"width_m": 19.8, "height_m": 14.2, "recess_m": 0.32, "material": "glass"}},
+          {"id": "library_rear_timber_shell", "kind": "timber_arch_shell", "axis": "rear", "base_centre": [0.0, 29.20, 13.4], "curve_power": 1.78, "segments": 36, "layers": [{"outer_width_m": 22.0, "outer_height_m": 8.4, "inner_width_m": 17.0, "inner_height_m": 6.5, "projection_m": 0.72, "front_scale": 0.95, "back_scale": 1.0, "material": "signature_warm"}]},
+          {"id": "library_roof_frame", "kind": "frame_grid", "axis": "front", "centre": [1.0, -5.20, 22.2], "span_m": 22.0, "height_m": 3.6, "columns": 6, "rows": 2, "profile_m": 0.13, "depth_m": 0.18, "material": "signature_metal"}
+        ],
+        "presentation_camera": {"hero_side": "right", "oblique_x_scale": 0.68, "identity_distance_scale": 1.28, "street_distance_scale": 1.15},
+        "reference_views": [
+          {"role": "street_identity", "path": "/archetypes/buildings/calgary-new-central-library/variant_0.png", "cues": ["rectilinear four-storey civic block", "giant nested timber entrance shell", "tall narrow masonry and glass bays"]},
+          {"role": "oblique_massing", "path": "/archetypes/buildings/calgary-new-central-library/variant_0_angle_60.jpg", "cues": ["perimeter block", "deep timber projection", "raised inner roof pavilion", "secondary rear shell"]},
+          {"role": "roof_plan", "path": "/archetypes/buildings/calgary-new-central-library/variant_0_angle_90.jpg", "cues": ["rectangular outer plan", "open roof court", "central service pavilion", "hexagonal apron"]}
+        ],
+        "target_views": ["archetype_match", "street", "aerial", "context"]
+      }
+    },
     "eixample_apartment_block": {
       "identity": "Barcelona Eixample apartment block with chamfered-corner emphasis, repetitive wrought-iron balconies, carved stone portal, glazed galleries and a deep cornice.",
       "production_contract": {

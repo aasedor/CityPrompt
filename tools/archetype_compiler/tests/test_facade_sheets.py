@@ -1094,3 +1094,48 @@ def test_mountain_alpine_v71_keeps_variant_specific_roof_construction():
     }
     assert any(node["kind"] == "butterfly_roof" for node in eco["nodes"])
     assert sum(item["kind"] == "solar_panel_array" for item in eco["assemblies"]) == 3
+
+
+def test_calgary_library_v72_locks_landmark_section_and_paired_evidence():
+    from signature_profiles import inject_signature
+
+    tool_dir = Path(__file__).parents[1]
+    registry = json.loads(
+        (tool_dir / "worldclass_calgary_library_v72.json").read_text(encoding="utf-8")
+    )
+    assert registry["entries"] == [{
+        "entry_id": "calgary-library-original-v72",
+        "archetype_id": "calgary_new_central_library",
+        "variant_id": "library_original_snohetta",
+        "family_id": "calgary-library-original",
+        "floors": 4,
+        "width_m": 75.0,
+        "depth_m": 60.0,
+        "group": "Civic landmark",
+    }]
+
+    grammar = {"source": {"archetype_id": "calgary_new_central_library"}, "materials": {}}
+    inject_signature(grammar, "calgary_new_central_library", "library_original_snohetta")
+    graph = grammar["massing_graph"]
+    assert graph["profile"] == "calgary_catalogue_timber_portal_roof_court_v72"
+    assert sum(item["kind"] == "timber_arch_shell" for item in graph["assemblies"]) == 2
+    assert any(item["kind"] == "curtain_wall" for item in graph["assemblies"])
+    assert {view["role"] for view in graph["reference_views"]} == {
+        "street_identity", "oblique_massing", "roof_plan",
+    }
+    assert graph["presentation_camera"]["identity_distance_scale"] > 1.0
+    assert not any(node["id"] == "library_hex_apron" for node in graph["nodes"])
+
+    source = tool_dir / "facade_sources_v72/library_original_snohetta.png"
+    prompt = tool_dir / "facade_sources_v72/library_original_snohetta.prompt.json"
+    openings = tool_dir / "facade_opening_schedules_v72/library_original_snohetta.json"
+    bands = tool_dir / "facade_band_schedules_v72/library_original_snohetta.json"
+    assert all(path.exists() for path in (source, prompt, openings, bands))
+    assert json.loads(openings.read_text(encoding="utf-8"))["schema"] == "registered-opening-schedule@1"
+
+    contract = json.loads(
+        (tool_dir / "reference_fidelity_contracts/calgary_library_original_v72.json").read_text(encoding="utf-8")
+    )
+    assert contract["schema"] == "building-reference-evidence@2"
+    assert {view["role"] for view in contract["views"]} == {"street_identity", "roof_plan"}
+    assert next(view for view in contract["views"] if view["role"] == "roof_plan")["render_key"] == "roof_audit"

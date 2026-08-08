@@ -1,0 +1,25 @@
+{
+  "schema": "building-reference-evidence@2",
+  "id": "calgary-library-original-v72",
+  "required_roles": ["street_identity", "roof_plan"],
+  "views": [
+    {
+      "id": "street_identity",
+      "role": "street_identity",
+      "render_key": "archetype_match",
+      "reference_image": "frontend/public/archetypes/buildings/calgary-new-central-library/variant_0.png",
+      "reference_silhouette_polygon": [[0.076, 0.704], [0.079, 0.270], [0.155, 0.223], [0.250, 0.125], [0.565, 0.082], [0.724, 0.142], [0.870, 0.266], [0.868, 0.704]],
+      "render_extraction": {"roi": [0.015, 0.145, 0.985, 0.835], "background_tolerance": 20.0},
+      "thresholds": {"silhouette_iou_min": 0.50, "roofline_rmse_max": 0.20, "aspect_ratio_error_max": 0.51}
+    },
+    {
+      "id": "roof_plan",
+      "role": "roof_plan",
+      "render_key": "roof_audit",
+      "reference_image": "frontend/public/archetypes/buildings/calgary-new-central-library/variant_0_angle_90.jpg",
+      "reference_silhouette_polygon": [[0.405, 0.278], [0.733, 0.215], [0.793, 0.318], [0.758, 0.604], [0.445, 0.646], [0.378, 0.529]],
+      "render_extraction": {"roi": [0.165, 0.115, 0.835, 0.885], "background_tolerance": 20.0},
+      "thresholds": {"silhouette_iou_min": 0.52, "roofline_rmse_max": 0.20, "aspect_ratio_error_max": 0.24}
+    }
+  ]
+}

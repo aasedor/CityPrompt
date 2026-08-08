@@ -1,0 +1,28 @@
+{
+  "schema": "registered-opening-schedule@1",
+  "source": "library_original_snohetta.png",
+  "notes": "Audited vision glazing from the generated orthographic elevation. Brick piers, concrete podium, bronze framing and every timber-shell surface remain opaque.",
+  "openings": [
+    {"shape": "rect", "bbox": [0.093, 0.170, 0.122, 0.526]},
+    {"shape": "rect", "bbox": [0.147, 0.170, 0.171, 0.526]},
+    {"shape": "rect", "bbox": [0.230, 0.170, 0.253, 0.526]},
+    {"shape": "rect", "bbox": [0.280, 0.170, 0.307, 0.526]},
+    {"shape": "rect", "bbox": [0.326, 0.170, 0.356, 0.526]},
+    {"shape": "rect", "bbox": [0.626, 0.170, 0.662, 0.526]},
+    {"shape": "rect", "bbox": [0.680, 0.170, 0.707, 0.526]},
+    {"shape": "rect", "bbox": [0.736, 0.170, 0.764, 0.526]},
+    {"shape": "rect", "bbox": [0.806, 0.170, 0.832, 0.526]},
+    {"shape": "rect", "bbox": [0.870, 0.170, 0.898, 0.526]},
+    {"shape": "pointed_arch", "bbox": [0.409, 0.287, 0.594, 0.755], "rise": 0.155},
+    {"shape": "rect", "bbox": [0.092, 0.577, 0.135, 0.760]},
+    {"shape": "rect", "bbox": [0.149, 0.577, 0.175, 0.760]},
+    {"shape": "rect", "bbox": [0.226, 0.577, 0.253, 0.760]},
+    {"shape": "rect", "bbox": [0.276, 0.577, 0.305, 0.760]},
+    {"shape": "rect", "bbox": [0.325, 0.577, 0.355, 0.760]},
+    {"shape": "rect", "bbox": [0.648, 0.577, 0.681, 0.760]},
+    {"shape": "rect", "bbox": [0.704, 0.577, 0.731, 0.760]},
+    {"shape": "rect", "bbox": [0.782, 0.577, 0.810, 0.760]},
+    {"shape": "rect", "bbox": [0.846, 0.577, 0.873, 0.760]},
+    {"shape": "rect", "bbox": [0.901, 0.577, 0.928, 0.760]}
+  ]
+}

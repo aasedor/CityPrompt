@@ -500,6 +500,48 @@ The review package pairs exact catalogue images with the generated identity and
 roof views so human approval can still identify ornament or secondary-plan work
 that silhouette metrics cannot see.
 
+### V72 landmark-section and paired-evidence pilot
+
+The Calgary catalogue library pilot deliberately selected an archetype whose
+local images conflict with its prose metadata. The images show a rectilinear
+brick civic perimeter block with a giant timber entrance shell and occupied
+roof court; the prose describes the real faceted New Central Library. For an
+exact-variant asset, the declared street, oblique and roof images are the
+construction goalposts. Text remains discovery context but cannot overrule
+visible plan, section, material and silhouette evidence.
+
+The first civic pass also proved that a landmark void cannot be represented as
+a facade motif or a flat arch ring. The reusable `timber_arch_shell` assembly
+samples independent front and back arch sections to create a true flare, then
+adds nested laminated layers and a recessed glazed back plane. Projection is
+kept inside the exported footprint allowance; the surrounding plaza belongs to
+placement context rather than the building GLB.
+
+V72 replaces the one-camera regression gate with
+`building-reference-evidence@2`. It wraps the existing OpenCV silhouette
+metrics but requires multiple named roles. A context-free `roof_audit` camera
+isolates roof occupancy, courts and equipment from neighbouring review blocks.
+The first roof audit rejected the library's 1.50:1 court even though its facade
+looked convincing. Thickening the side wings changed the court to 1.30:1 and
+the unchanged roof comparison then passed at IoU 0.813 with 0.013 aspect error.
+The street role passes at IoU 0.706, but its 0.501 aspect error is explicitly
+retained as a camera-calibration weakness rather than hidden in the mean score.
+
+Operational rules from this pilot:
+
+- When catalogue prose and exact variant images disagree, record the conflict
+  and build from the images selected by the UI.
+- Model identity-bearing voids as sections with depth, flare, inner surfaces
+  and an inhabited back plane; a decal or flat trim is insufficient.
+- Separate site/plaza geometry from the asset envelope before structural
+  validation. Recreate it in placement or public-realm context.
+- Require a context-free plan/roof audit in addition to the presentation
+  aerial. A beautiful context render is not a segmentation-safe QA input.
+- Gate each reference role independently. Never average a failed roof plan
+  into a passing facade score.
+- Store camera distance and obliqueness in the signature profile when the
+  default review rig does not match the reference's field of view.
+
 ### V65 three-pilot expansion lessons
 
 The rounded Parisian corner, cream terra-cotta Art Deco tower and restored

@@ -11,6 +11,8 @@ import numpy as np
 
 SCHEMA = "building-reference-fidelity@1"
 REPORT_SCHEMA = "building-reference-fidelity-report@1"
+EVIDENCE_SCHEMA = "building-reference-evidence@2"
+EVIDENCE_REPORT_SCHEMA = "building-reference-evidence-report@2"
 
 
 def normalized_polygon_mask(size: tuple[int, int], points: list[list[float]]) -> np.ndarray:
@@ -187,3 +189,58 @@ def assess_contract(contract: dict[str, Any], render_path: Path) -> tuple[dict[s
 
 def load_contract(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def assess_evidence_contract(
+    contract: dict[str, Any],
+    render_paths: dict[str, Path],
+) -> tuple[dict[str, Any], dict[str, np.ndarray]]:
+    """Assess every declared reference role instead of approving one hero view.
+
+    Each view remains a camera-locked v1 silhouette contract internally, which
+    keeps old pilots and metrics stable. The v2 wrapper adds explicit roles,
+    independent extraction settings and an aggregate release result. A roof
+    or aerial view can therefore fail even when the street facade looks good.
+    """
+    if contract.get("schema") != EVIDENCE_SCHEMA:
+        raise ValueError(f"unsupported evidence contract schema {contract.get('schema')!r}")
+    views = contract.get("views") or []
+    if len(views) < 2:
+        raise ValueError("evidence contract requires at least two reference views")
+
+    reports: list[dict[str, Any]] = []
+    overlays: dict[str, np.ndarray] = {}
+    for view in views:
+        view_id = str(view["id"])
+        render_key = str(view.get("render_key") or view_id)
+        if render_key not in render_paths:
+            raise KeyError(f"missing render path for evidence view {render_key!r}")
+        legacy = {
+            "schema": SCHEMA,
+            "id": f"{contract.get('id')}-{view_id}",
+            "reference_image": view["reference_image"],
+            "reference_silhouette_polygon": view["reference_silhouette_polygon"],
+            "render_extraction": view.get("render_extraction") or {},
+            "thresholds": view.get("thresholds") or contract.get("thresholds") or {},
+        }
+        report, overlay = assess_contract(legacy, render_paths[render_key])
+        report["view_id"] = view_id
+        report["role"] = str(view.get("role") or view_id)
+        report["render_key"] = render_key
+        reports.append(report)
+        overlays[view_id] = overlay
+
+    metric_names = ("silhouette_iou", "roofline_rmse", "aspect_ratio_error")
+    mean_metrics = {
+        name: round(float(np.mean([view["metrics"][name] for view in reports])), 5)
+        for name in metric_names
+    }
+    result = {
+        "schema": EVIDENCE_REPORT_SCHEMA,
+        "contract": contract.get("id"),
+        "status": "pass" if all(view["status"] == "pass" for view in reports) else "fail",
+        "required_roles": list(contract.get("required_roles") or []),
+        "mean_metrics": mean_metrics,
+        "views": reports,
+    }
+    return result, overlays

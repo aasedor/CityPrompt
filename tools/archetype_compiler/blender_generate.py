@@ -7330,6 +7330,113 @@ def _graph_pointed_portal(parts: list, spec: dict, mats: dict) -> None:
     )
 
 
+def _graph_timber_arch_shell(parts: list, spec: dict, mats: dict) -> None:
+    """Build a flared, inhabited timber portal from sampled arch sections.
+
+    Landmark civic entrances are often double-curved shells rather than a flat
+    arch trim.  A front and back section with independent scale factors creates
+    a genuine three-dimensional flare; optional nested layers preserve the
+    laminated construction and deep reveal at street and oblique distances.
+    The section uses a power curve, which spans rounded elliptical arches
+    (power > 2) through taut catenary-like profiles (power about 1.5).
+    """
+    axis = str(spec.get("axis", "front"))
+    if axis not in {"front", "rear"}:
+        raise ValueError("timber arch shell currently supports front or rear axes")
+    cx, face_y, base_z = (float(value) for value in spec["base_centre"])
+    outward = -1.0 if axis == "front" else 1.0
+    prefix = str(spec.get("id", "GraphTimberArch"))
+    segments = max(12, int(spec.get("segments", 40)))
+    power = max(1.05, float(spec.get("curve_power", 1.72)))
+    layers = spec.get("layers") or [{
+        "outer_width_m": spec.get("outer_width_m", 20.0),
+        "outer_height_m": spec.get("outer_height_m", 15.0),
+        "inner_width_m": spec.get("inner_width_m", 14.0),
+        "inner_height_m": spec.get("inner_height_m", 11.0),
+        "projection_m": spec.get("projection_m", 3.0),
+        "front_scale": spec.get("front_scale", 0.90),
+        "material": spec.get("material", "signature_warm"),
+    }]
+
+    def profile(width: float, height: float, scale: float) -> list[tuple[float, float]]:
+        values = []
+        for index in range(segments + 1):
+            t = -1.0 + 2.0 * index / segments
+            values.append((
+                cx + width * scale * 0.5 * t,
+                base_z + height * scale * (1.0 - abs(t) ** power),
+            ))
+        return values
+
+    for layer_index, layer in enumerate(layers):
+        outer_width = float(layer["outer_width_m"])
+        outer_height = float(layer["outer_height_m"])
+        inner_width = float(layer["inner_width_m"])
+        inner_height = float(layer["inner_height_m"])
+        if inner_width >= outer_width or inner_height >= outer_height:
+            raise ValueError(f"timber arch layer {layer_index} requires a smaller inner section")
+        projection = max(0.08, float(layer.get("projection_m", 3.0)))
+        front_scale = max(0.55, min(1.25, float(layer.get("front_scale", 0.90))))
+        back_scale = max(0.55, min(1.30, float(layer.get("back_scale", 1.0))))
+        inset = float(layer.get("face_inset_m", 0.0))
+        front_y = face_y + outward * (projection - inset)
+        back_y = face_y + outward * (-inset)
+        sections = [
+            (profile(outer_width, outer_height, front_scale), front_y),
+            (profile(inner_width, inner_height, front_scale), front_y),
+            (profile(outer_width, outer_height, back_scale), back_y),
+            (profile(inner_width, inner_height, back_scale), back_y),
+        ]
+        verts: list[tuple[float, float, float]] = []
+        for points, y in sections:
+            verts.extend((x, y, z) for x, z in points)
+        stride = segments + 1
+        outer_front, inner_front, outer_back, inner_back = 0, stride, stride * 2, stride * 3
+        faces: list[tuple[int, ...]] = []
+        for index in range(segments):
+            nxt = index + 1
+            faces.extend([
+                (outer_front + index, outer_front + nxt, inner_front + nxt, inner_front + index),
+                (inner_back + index, inner_back + nxt, outer_back + nxt, outer_back + index),
+                (outer_front + index, outer_back + index, outer_back + nxt, outer_front + nxt),
+                (inner_front + index, inner_front + nxt, inner_back + nxt, inner_back + index),
+            ])
+        faces.extend([
+            (outer_front, inner_front, inner_back, outer_back),
+            (outer_front + segments, outer_back + segments, inner_back + segments, inner_front + segments),
+        ])
+        part = add_prism(
+            f"{prefix}_Layer{layer_index:02d}", verts, faces,
+            _graph_material(mats, layer.get("material", spec.get("material", "signature_warm"))),
+        )
+        bevel_width = max(0.0, float(layer.get("bevel_m", spec.get("bevel_m", 0.06))))
+        if bevel_width:
+            bevel = part.modifiers.new(name="LaminatedEdge", type="BEVEL")
+            bevel.width = bevel_width
+            bevel.segments = 3
+            bevel.limit_method = "ANGLE"
+            bpy.context.view_layer.objects.active = part
+            part.select_set(True)
+            try:
+                bpy.ops.object.modifier_apply(modifier=bevel.name)
+            except RuntimeError:
+                part.modifiers.remove(bevel)
+        parts.append(part)
+
+    if spec.get("back_plane"):
+        plane = spec["back_plane"]
+        width = float(plane.get("width_m", layers[-1]["inner_width_m"]))
+        height = float(plane.get("height_m", layers[-1]["inner_height_m"]))
+        recess = float(plane.get("recess_m", 0.30))
+        thickness = max(0.03, float(plane.get("thickness_m", 0.08)))
+        y = face_y - outward * recess
+        parts.append(add_beveled_box(
+            f"{prefix}_GlazedBack", (width, thickness, height),
+            (cx, y, base_z + height / 2),
+            _graph_material(mats, plane.get("material", "glass")), 0.02,
+        ))
+
+
 def _graph_pointed_window_array(parts: list, spec: dict, mats: dict) -> None:
     """Build repeatable recessed lancets on orthogonal or angled elevations.
 
@@ -8360,6 +8467,8 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
             _graph_bay_frame_array(parts, assembly, mats)
         elif kind == "pointed_portal":
             _graph_pointed_portal(parts, assembly, mats)
+        elif kind == "timber_arch_shell":
+            _graph_timber_arch_shell(parts, assembly, mats)
         elif kind == "pointed_window_array":
             _graph_pointed_window_array(parts, assembly, mats)
         elif kind == "buttress_array":
@@ -8648,6 +8757,7 @@ def render_presentation_views(
     view_set: str = "all",
     landmark: bool = False,
     camera_side: str = "left",
+    camera_contract: dict | None = None,
 ) -> tuple[str, list[str]]:
     """Render consistent studio, street and aerial views of the assembled kit.
 
@@ -8855,21 +8965,30 @@ def render_presentation_views(
 
     dist = max(footprint * 2.15, focus_height * 1.95)
     context_dist = max(footprint * 4.2, focus_height * 3.5)
+    camera_contract = camera_contract or {}
     camera_x = 1.0 if camera_side == "right" else -1.0
+    oblique_x_scale = max(0.30, float(camera_contract.get("oblique_x_scale", 0.88)))
+    identity_distance_scale = max(0.75, float(camera_contract.get("identity_distance_scale", 1.0)))
+    street_distance_scale = max(0.75, float(camera_contract.get("street_distance_scale", 1.0)))
     views = (
         ("preview", (camera_x * dist * 0.72, -dist * 0.92, focus_height * 0.68), (0.0, 0.0, focus_height * 0.43), 43),
         # Pull back enough to retain the roof silhouette and projecting eaves.
         # This view is produced for every family so the reference camera can
         # be compared consistently, including low-rise semantic stacks.
-        ("archetype_match", (camera_x * width * 0.88, -(depth / 2 + max(64.0, focus_height * 2.15)), focus_height * 0.50),
+        ("archetype_match", (camera_x * width * oblique_x_scale, -(depth / 2 + max(64.0, focus_height * 2.15) * identity_distance_scale), focus_height * 0.50),
          (camera_x, -1.0, focus_height * 0.42), 50),
-        ("street", (camera_x * width * 0.82, -(depth / 2 + 35.0), focus_height * 0.31), (0.0, -depth * 0.12, focus_height * 0.39), 46),
+        ("street", (camera_x * width * min(0.82, oblique_x_scale + 0.12), -(depth / 2 + 35.0 * street_distance_scale), focus_height * 0.31), (0.0, -depth * 0.12, focus_height * 0.39), 46),
         ("front_corner_oblique", (camera_x * dist * 0.82, -dist * 0.96, focus_height * 0.46),
          (0.0, -depth * 0.06, focus_height * 0.40), 49),
         ("rear_corner_oblique", (dist * 0.82, dist * 0.92, focus_height * 0.55),
          (0.0, depth * 0.06, focus_height * 0.41), 49),
         ("facade_close", (camera_x * width * 0.18, -(depth / 2 + max(11.0, width * 0.48)), focus_height * 0.31),
          (0.0, -depth / 2, focus_height * 0.34), 58),
+        # Context-free near-plan view used by the v2 evidence gate. Unlike the
+        # presentation aerial, this isolates footprint, roof court and plant so
+        # OpenCV does not accidentally score neighbouring review-rig blocks.
+        ("roof_audit", (0.0, -0.5, max(footprint * 2.25, focus_height * 4.5)),
+         (0.0, 0.0, focus_height * 0.32), 56),
         ("aerial", (dist * 0.62, -dist * 0.78, focus_height + dist * 0.52), (0.0, 0.0, focus_height * 0.38), 49),
         ("context", (context_dist * 0.72, -context_dist * 0.85, focus_height + context_dist * 0.70),
          (0.0, 10.0, focus_height * 0.22), 52),
@@ -9269,6 +9388,7 @@ def generate(grammar: dict, output: Path, *, floors_override: int | None, keep_b
                     view_set=presentation_view_set,
                     landmark=bool(grammar.get("massing_graph")),
                     camera_side=str((grammar.get("massing_graph") or {}).get("presentation_camera", {}).get("hero_side", "left")),
+                    camera_contract=(grammar.get("massing_graph") or {}).get("presentation_camera") or {},
                 )
                 print(f"[blender_generate] rendered {', '.join(rendered_views)} via {engine_used}")
             except Exception as exc:  # pragma: no cover - render backends vary by machine

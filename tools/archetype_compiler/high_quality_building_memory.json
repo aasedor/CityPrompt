@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-08-08-complete-alpine-category-v71",
+  "memory_version": "2026-08-08-landmark-section-multiview-v72",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "calibration_set": {
@@ -66,6 +66,18 @@
     {
       "id": "visual_acceptance_is_multiscale",
       "rule": "Compare archetype and model at block, building and facade scales using a street/front view, front-corner oblique, rear-corner oblique, high oblique/aerial, close facade and context view. No family is production-ready from one hero angle."
+    },
+    {
+      "id": "evidence_roles_pass_independently",
+      "rule": "A release contract declares at least street-identity and roof-plan roles, scores each camera independently and fails when any required role fails. A mean score may summarize but never override a failed view."
+    },
+    {
+      "id": "landmark_voids_are_sections",
+      "rule": "A signature arch, portal, undercroft or carved entrance is authored as a depth-bearing section with outer shell, inner reveal and inhabited back plane. Flat facade imagery or trim cannot carry a public void."
+    },
+    {
+      "id": "site_context_stays_outside_asset_bounds",
+      "rule": "Plazas, aprons, streets and public-realm surfaces visible in reference images belong to placement context unless the catalogue footprint explicitly includes them. Keep the exported building inside its declared structural envelope."
     },
     {
       "id": "render_goalposts_are_camera_locked",
@@ -667,6 +679,26 @@
       "symptom": "A roof looks plausible from the street but its ridge direction or solar/valley layout is wrong from above",
       "cause": "The graph followed a generic roof label or front-image intuition without checking the 60-degree and 90-degree catalogue views.",
       "correction": "Treat aerial evidence as the roof construction drawing. Record the ridge or valley axis explicitly, place cross-gables and equipment in plan coordinates, and require a paired roof-plan comparison board before category release."
+    },
+    {
+      "symptom": "A landmark facade looks convincing while the roof court or plan remains wrong",
+      "cause": "Only the hero camera was measured, and the presentation aerial contained neighbouring context that could not be segmented reliably.",
+      "correction": "Add a context-free roof_audit camera and a multi-view evidence contract. Score street identity and roof/plan occupancy independently and fail the pilot when either role misses its threshold."
+    },
+    {
+      "symptom": "A monumental timber entrance reads as a flat hoop, decal or detached stage prop",
+      "cause": "The entrance was represented by a two-dimensional arch ring or facade pixels without independent front/back sections, inner reveal or occupied glazing.",
+      "correction": "Use a sampled flared shell with bounded projection, nested laminated layers, construction bevels and a recessed glazed back plane. Validate from head-on, grazing and aerial cameras."
+    },
+    {
+      "symptom": "The assembled asset fails footprint validation even though the building mass is correctly sized",
+      "cause": "A reference-visible plaza, hexagonal apron or other public-realm surface was joined into the building massing graph.",
+      "correction": "Remove site context from the exported asset and reconstruct it through the placement/public-realm recipe. Keep only the structural plinth inside the declared footprint."
+    },
+    {
+      "symptom": "The compiled building follows famous real-world metadata but does not resemble the selected catalogue images",
+      "cause": "Prose for the named real building contradicted the actual UI variant images and silently overruled their massing and material evidence.",
+      "correction": "Record the conflict and treat the exact selected street, oblique and roof images as the variant contract. Use prose only where it agrees with visible evidence."
     }
   ]
 }

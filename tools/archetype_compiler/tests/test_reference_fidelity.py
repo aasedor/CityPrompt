@@ -41,3 +41,39 @@ def test_extract_render_silhouette_uses_neutral_background_and_central_component
     mask = extract_render_silhouette(image, [0.0, 0.0, 1.0, 0.95], 15.0)
     assert mask[100, 120] == 255
     assert mask[25, 10] == 0
+
+
+def test_multiview_evidence_requires_every_role(tmp_path):
+    import cv2
+
+    from reference_fidelity import EVIDENCE_REPORT_SCHEMA, assess_evidence_contract
+
+    reference = np.full((120, 160, 3), 230, dtype=np.uint8)
+    render = reference.copy()
+    cv2.rectangle(render, (30, 30), (130, 105), (50, 70, 90), -1)
+    reference_path = tmp_path / "reference.png"
+    render_path = tmp_path / "render.png"
+    cv2.imwrite(str(reference_path), reference)
+    cv2.imwrite(str(render_path), render)
+    view = {
+        "reference_image": str(reference_path),
+        "reference_silhouette_polygon": [[0.18, 0.24], [0.82, 0.24], [0.82, 0.89], [0.18, 0.89]],
+        "render_extraction": {"roi": [0, 0, 1, 1], "background_tolerance": 12},
+        "thresholds": {"silhouette_iou_min": 0.55, "roofline_rmse_max": 0.15, "aspect_ratio_error_max": 0.20},
+    }
+    contract = {
+        "schema": "building-reference-evidence@2",
+        "id": "two-view-test",
+        "required_roles": ["street_identity", "roof_plan"],
+        "views": [
+            {"id": "street", "role": "street_identity", "render_key": "street", **view},
+            {"id": "roof", "role": "roof_plan", "render_key": "roof", **view},
+        ],
+    }
+    report, overlays = assess_evidence_contract(
+        contract, {"street": render_path, "roof": render_path},
+    )
+    assert report["schema"] == EVIDENCE_REPORT_SCHEMA
+    assert report["status"] == "pass"
+    assert {item["role"] for item in report["views"]} == {"street_identity", "roof_plan"}
+    assert set(overlays) == {"street", "roof"}

@@ -1,0 +1,70 @@
+{
+  "schema": "building-reference-evidence-report@2",
+  "contract": "calgary-library-original-v72",
+  "status": "pass",
+  "required_roles": [
+    "street_identity",
+    "roof_plan"
+  ],
+  "mean_metrics": {
+    "silhouette_iou": 0.75953,
+    "roofline_rmse": 0.12802,
+    "aspect_ratio_error": 0.25685
+  },
+  "views": [
+    {
+      "schema": "building-reference-fidelity-report@1",
+      "contract": "calgary-library-original-v72-street_identity",
+      "reference_image": "C:\\dev\\3D-Maps-building-goldset\\frontend\\public\\archetypes\\buildings\\calgary-new-central-library\\variant_0.png",
+      "render_image": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\calgary-library-v72\\families\\calgary-library-original\\calgary-library-original_archetype_match.png",
+      "status": "pass",
+      "metrics": {
+        "silhouette_iou": 0.70619,
+        "roofline_rmse": 0.15048,
+        "aspect_ratio_error": 0.50081,
+        "reference_aspect_ratio": 1.70084,
+        "render_aspect_ratio": 2.55263
+      },
+      "checks": {
+        "silhouette_iou": true,
+        "roofline_rmse": true,
+        "aspect_ratio_error": true
+      },
+      "thresholds": {
+        "silhouette_iou_min": 0.5,
+        "roofline_rmse_max": 0.2,
+        "aspect_ratio_error_max": 0.51
+      },
+      "view_id": "street_identity",
+      "role": "street_identity",
+      "render_key": "archetype_match"
+    },
+    {
+      "schema": "building-reference-fidelity-report@1",
+      "contract": "calgary-library-original-v72-roof_plan",
+      "reference_image": "C:\\dev\\3D-Maps-building-goldset\\frontend\\public\\archetypes\\buildings\\calgary-new-central-library\\variant_0_angle_90.jpg",
+      "render_image": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\calgary-library-v72\\families\\calgary-library-original\\calgary-library-original_roof_audit.png",
+      "status": "pass",
+      "metrics": {
+        "silhouette_iou": 0.81286,
+        "roofline_rmse": 0.10556,
+        "aspect_ratio_error": 0.01289,
+        "reference_aspect_ratio": 1.28424,
+        "render_aspect_ratio": 1.3008
+      },
+      "checks": {
+        "silhouette_iou": true,
+        "roofline_rmse": true,
+        "aspect_ratio_error": true
+      },
+      "thresholds": {
+        "silhouette_iou_min": 0.52,
+        "roofline_rmse_max": 0.2,
+        "aspect_ratio_error_max": 0.24
+      },
+      "view_id": "roof_plan",
+      "role": "roof_plan",
+      "render_key": "roof_audit"
+    }
+  ]
+}

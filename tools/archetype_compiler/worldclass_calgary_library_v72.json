@@ -1,0 +1,30 @@
+{
+  "schema": "worldclass-lego-library@2",
+  "name": "Calgary Catalogue Library Pilot v72",
+  "description": "One finite image-locked civic-landmark pilot testing a flared timber void, perimeter roof court and multi-view evidence contract.",
+  "generation_profile": {
+    "facade_model": "reference-locked-openai-v10",
+    "facade_sheet_schema": "facade-sheet@4",
+    "facade_sheet_root": "artifacts/calgary-library-v72/facade-sheets",
+    "texture_library": "tools/archetype_compiler/textures_worldclass_v7",
+    "geometry_detail": "hero",
+    "presentation_view_set": "all",
+    "ambient_occlusion": false,
+    "strict_production_preflight": true,
+    "signature_profile": "tools/archetype_compiler/architectural_signature_profiles.json",
+    "quality_memory": "tools/archetype_compiler/high_quality_building_memory.json",
+    "gold_set": "tools/archetype_compiler/building_gold_set.json"
+  },
+  "entries": [
+    {
+      "entry_id": "calgary-library-original-v72",
+      "archetype_id": "calgary_new_central_library",
+      "variant_id": "library_original_snohetta",
+      "family_id": "calgary-library-original",
+      "floors": 4,
+      "width_m": 75.0,
+      "depth_m": 60.0,
+      "group": "Civic landmark"
+    }
+  ]
+}

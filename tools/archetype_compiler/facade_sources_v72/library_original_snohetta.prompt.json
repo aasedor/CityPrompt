@@ -1,0 +1,12 @@
+{
+  "schema": "facade-source-provenance@1",
+  "generator": "OpenAI built-in imagegen",
+  "created_at": "2026-08-08",
+  "output": "library_original_snohetta.png",
+  "reference_images": [
+    "frontend/public/archetypes/buildings/calgary-new-central-library/variant_0.png",
+    "frontend/public/archetypes/buildings/calgary-new-central-library/variant_0_angle_60.jpg",
+    "frontend/public/archetypes/buildings/calgary-new-central-library/variant_0_angle_90.jpg"
+  ],
+  "prompt": "Create a production-ready orthographic FRONT ELEVATION texture/reference sheet for the exact catalogue building shown in the attached reference images. Match the attached images, not the real Calgary New Central Library and not the contradictory text metadata. The building is a broad four-storey rectilinear civic library in warm tan and reddish brick/precast, with many tall narrow vertical glazed bays, a grey concrete and glass podium, strong corner piers, and one enormous projecting nested double-curved honey-coloured timber arch/shell forming the main entrance. Preserve the attached archetype's proportions, window rhythm, masonry zones, arch spring points, arch apex, and recessed dark glazed entrance. Straight-on centered orthographic architectural elevation, camera perfectly level, full building visible edge to edge, no perspective convergence, no side wall, no roof top visible. Neutral flat daylight, material-readable but shadow-neutral. Empty pale grey background. No people, trees, cars, streets, sky, landscaping, text, signage, watermark, decorative border, or fantasy elements. Do not introduce hexagonal glass panels, crystalline faceting, an oval building, or the actual built Snohetta library. 2048-class detail suitable as a Blender facade source."
+}
