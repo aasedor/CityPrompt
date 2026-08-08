@@ -7477,6 +7477,170 @@ def _graph_member_between(
     return member
 
 
+def _graph_organic_pod_cluster(parts: list, spec: dict, mats: dict) -> None:
+    """Build a bounded cluster of closed, leaning freeform museum pods.
+
+    Each pod is sampled as a small stack of elliptical rings.  Independent
+    taper, bulge, lean, twist and lobe controls preserve an authored plan and
+    section instead of reducing sculptural metal architecture to cylinders.
+    The disconnected pods are consolidated with the rest of the massing graph
+    at export, keeping the real-time object count bounded.
+    """
+    prefix = str(spec.get("id", "GraphOrganicPods"))
+    default_material = spec.get("material", "signature_metal")
+    default_segments = max(16, int(spec.get("segments", 32)))
+    default_rings = max(3, int(spec.get("rings", 7)))
+
+    for pod_index, pod in enumerate(spec.get("pods", [])):
+        name = str(pod.get("id", f"{prefix}_{pod_index:02d}"))
+        cx, cy, base_z = (float(value) for value in pod["base_centre"])
+        radius_x = max(0.35, float(pod.get("radius_x_m", pod.get("radius_m", 4.0))))
+        radius_y = max(0.35, float(pod.get("radius_y_m", pod.get("radius_m", 4.0))))
+        height = max(0.5, float(pod.get("height_m", 8.0)))
+        lean_x, lean_y = (float(value) for value in pod.get("lean_m", [0.0, 0.0]))
+        twist = math.radians(float(pod.get("twist_deg", 0.0)))
+        bulge = float(pod.get("bulge", 0.10))
+        base_taper = max(0.35, float(pod.get("base_taper", 0.92)))
+        top_taper = max(0.25, float(pod.get("top_taper", 0.78)))
+        lobes = max(0, int(pod.get("lobes", 0)))
+        lobe_amplitude = max(0.0, min(0.28, float(pod.get("lobe_amplitude", 0.0))))
+        phase = math.radians(float(pod.get("phase_deg", 0.0)))
+        top_wave = max(0.0, float(pod.get("top_wave_m", 0.0)))
+        segments = max(16, int(pod.get("segments", default_segments)))
+        rings = max(3, int(pod.get("rings", default_rings)))
+
+        verts: list[tuple[float, float, float]] = []
+        for ring in range(rings + 1):
+            t = ring / rings
+            smooth = t * t * (3.0 - 2.0 * t)
+            taper = (1.0 - t) * base_taper + t * top_taper
+            taper += bulge * math.sin(math.pi * t)
+            ring_twist = twist * smooth
+            ring_cx = cx + lean_x * smooth
+            ring_cy = cy + lean_y * smooth
+            for segment in range(segments):
+                angle = 2.0 * math.pi * segment / segments
+                local_scale = 1.0
+                if lobes:
+                    local_scale += lobe_amplitude * math.sin(lobes * angle + phase) * math.sin(math.pi * t)
+                rotated = angle + ring_twist
+                x = ring_cx + radius_x * taper * local_scale * math.cos(rotated)
+                y = ring_cy + radius_y * taper * local_scale * math.sin(rotated)
+                z = base_z + height * t
+                if ring == rings and top_wave:
+                    z += top_wave * math.sin(angle + phase)
+                verts.append((x, y, z))
+
+        faces: list[tuple[int, ...]] = []
+        for ring in range(rings):
+            lower = ring * segments
+            upper = (ring + 1) * segments
+            for segment in range(segments):
+                nxt = (segment + 1) % segments
+                faces.append((lower + segment, lower + nxt, upper + nxt, upper + segment))
+        faces.append(tuple(reversed(range(segments))))
+        top_start = rings * segments
+        faces.append(tuple(top_start + segment for segment in range(segments)))
+        part = add_prism(
+            name,
+            verts,
+            faces,
+            _graph_material(mats, pod.get("material", default_material)),
+        )
+        bevel_width = max(0.0, float(pod.get("bevel_m", spec.get("bevel_m", 0.06))))
+        if bevel_width:
+            bevel = part.modifiers.new(name="PodEdge", type="BEVEL")
+            bevel.width = bevel_width
+            bevel.segments = 2
+            bevel.limit_method = "ANGLE"
+            bpy.context.view_layer.objects.active = part
+            part.select_set(True)
+            try:
+                bpy.ops.object.modifier_apply(modifier=bevel.name)
+            except RuntimeError:
+                part.modifiers.remove(bevel)
+        for polygon in part.data.polygons:
+            polygon.use_smooth = True
+        parts.append(part)
+
+
+def _graph_ribbon_envelope(parts: list, spec: dict, mats: dict) -> None:
+    """Create a closed wavy ribbon around a rounded or superelliptic plan.
+
+    The ribbon owns both faces, top/bottom returns and variable vertical edges.
+    It can therefore express the deep draped screen visible in oblique and roof
+    evidence without relying on a front-only texture card.
+    """
+    prefix = str(spec.get("id", "GraphRibbonEnvelope"))
+    cx, cy, base_z = (float(value) for value in spec["centre"])
+    width = max(1.0, float(spec.get("width_m", 40.0)))
+    depth = max(1.0, float(spec.get("depth_m", 32.0)))
+    height = max(0.8, float(spec.get("height_m", 14.0)))
+    thickness = max(0.04, float(spec.get("thickness_m", 0.22)))
+    exponent = max(2.0, float(spec.get("plan_exponent", 4.0)))
+    segments = max(32, int(spec.get("segments", 96)))
+    plan_waves = max(1, int(spec.get("plan_waves", 3)))
+    plan_wave = float(spec.get("plan_wave_amplitude_m", 0.0))
+    top_waves = max(1, int(spec.get("top_waves", 3)))
+    top_wave = float(spec.get("top_wave_amplitude_m", 0.0))
+    bottom_waves = max(1, int(spec.get("bottom_waves", 3)))
+    bottom_wave = float(spec.get("bottom_wave_amplitude_m", 0.0))
+    phase = math.radians(float(spec.get("phase_deg", 0.0)))
+    front_drop = float(spec.get("front_drop_m", 0.0))
+    front_lift = float(spec.get("front_lift_m", 0.0))
+    material = _graph_material(mats, spec.get("material", "signature_metal"))
+
+    def signed_power(value: float, power: float) -> float:
+        return math.copysign(abs(value) ** power, value)
+
+    def ring_point(index: int, *, inner: bool, top: bool) -> tuple[float, float, float]:
+        angle = 2.0 * math.pi * index / segments
+        cosine, sine = math.cos(angle), math.sin(angle)
+        power = 2.0 / exponent
+        x_unit = signed_power(cosine, power)
+        y_unit = signed_power(sine, power)
+        radial_wave = plan_wave * math.sin(plan_waves * angle + phase)
+        half_width = width * 0.5 + radial_wave
+        half_depth = depth * 0.5 + radial_wave * 0.72
+        normal_x, normal_y = x_unit, y_unit
+        normal_length = max(1e-6, math.hypot(normal_x, normal_y))
+        inset = thickness if inner else 0.0
+        x = cx + half_width * x_unit - inset * normal_x / normal_length
+        y = cy + half_depth * y_unit - inset * normal_y / normal_length
+        front_weight = max(0.0, -y_unit)
+        if top:
+            z = base_z + height + top_wave * math.sin(top_waves * angle + phase)
+            z -= front_drop * front_weight * front_weight
+        else:
+            z = base_z + bottom_wave * math.sin(bottom_waves * angle - phase)
+            z += front_lift * front_weight * front_weight
+        return (x, y, z)
+
+    rings = {
+        "outer_bottom": [ring_point(index, inner=False, top=False) for index in range(segments)],
+        "outer_top": [ring_point(index, inner=False, top=True) for index in range(segments)],
+        "inner_bottom": [ring_point(index, inner=True, top=False) for index in range(segments)],
+        "inner_top": [ring_point(index, inner=True, top=True) for index in range(segments)],
+    }
+    verts = rings["outer_bottom"] + rings["outer_top"] + rings["inner_bottom"] + rings["inner_top"]
+    ob, ot, ib, it = 0, segments, segments * 2, segments * 3
+    faces: list[tuple[int, ...]] = []
+    for index in range(segments):
+        nxt = (index + 1) % segments
+        faces.extend(
+            [
+                (ob + index, ob + nxt, ot + nxt, ot + index),
+                (ib + nxt, ib + index, it + index, it + nxt),
+                (ot + index, ot + nxt, it + nxt, it + index),
+                (ob + nxt, ob + index, ib + index, ib + nxt),
+            ]
+        )
+    ribbon = add_prism(prefix, verts, faces, material)
+    for polygon in ribbon.data.polygons:
+        polygon.use_smooth = True
+    parts.append(ribbon)
+
+
 def _graph_wave_shell(parts: list, spec: dict, mats: dict) -> None:
     """Sample a closed, panelised shell with a genuine double-wave section.
 
@@ -8711,6 +8875,10 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
             _graph_pointed_portal(parts, assembly, mats)
         elif kind == "timber_arch_shell":
             _graph_timber_arch_shell(parts, assembly, mats)
+        elif kind == "organic_pod_cluster":
+            _graph_organic_pod_cluster(parts, assembly, mats)
+        elif kind == "ribbon_envelope":
+            _graph_ribbon_envelope(parts, assembly, mats)
         elif kind == "wave_shell":
             _graph_wave_shell(parts, assembly, mats)
         elif kind == "wave_end_wall":

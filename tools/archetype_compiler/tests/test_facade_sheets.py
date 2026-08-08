@@ -1184,3 +1184,44 @@ def test_wave_shell_natatorium_v73_locks_section_plan_and_structural_fan():
     assert contract["schema"] == "building-reference-evidence@2"
     assert {view["role"] for view in contract["views"]} == {"street_identity", "roof_plan"}
     assert next(view for view in contract["views"] if view["role"] == "roof_plan")["render_key"] == "roof_audit"
+
+
+def test_titanium_museum_v74_locks_controlled_sam_ab_evidence():
+    from signature_profiles import inject_signature
+
+    tool_dir = Path(__file__).parents[1]
+    grammar = {"source": {"archetype_id": "large_art_museum_gallery"}, "materials": {}}
+    inject_signature(
+        grammar,
+        "large_art_museum_gallery",
+        variant_id="deconstructivist_titanium_pavilion",
+    )
+    graph = grammar["massing_graph"]
+    assert graph["profile"] == "deconstructivist_titanium_museum_baseline_v74"
+    assert graph["reference_dimensions"] == {
+        "width_m": 80.0, "depth_m": 60.0, "floors": 4, "floor_height_m": 6.5,
+    }
+    assemblies = {item["id"]: item for item in graph["assemblies"]}
+    assert assemblies["museum_pods"]["kind"] == "organic_pod_cluster"
+    assert len(assemblies["museum_pods"]["pods"]) == 5
+    assert assemblies["museum_ribbon"]["kind"] == "ribbon_envelope"
+    assert assemblies["museum_ribbon"]["plan_wave_amplitude_m"] == 0.7
+    assert {view["role"] for view in graph["reference_views"]} == {
+        "street_identity", "oblique_massing", "roof_plan",
+    }
+
+    profiles = json.loads(
+        (tool_dir / "architectural_signature_profiles.json").read_text(encoding="utf-8")
+    )["profiles"]
+    patches = profiles["deconstructivist_titanium_pavilion"]["sam_evidence_patches"]
+    assert patches["profile"] == "deconstructivist_titanium_museum_sam_informed_v74"
+    assert len(patches["assembly_overrides"]["museum_pods"]["pods"]) == 7
+    assert patches["assembly_overrides"]["museum_ribbon"]["plan_wave_amplitude_m"] == 2.2
+
+    contract = json.loads(
+        (tool_dir / "reference_fidelity_contracts/titanium_museum_sam_ab_v74.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert contract["schema"] == "building-reference-evidence@2"
+    assert {view["role"] for view in contract["views"]} == {"street_identity", "roof_plan"}

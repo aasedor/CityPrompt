@@ -1,0 +1,25 @@
+{
+  "schema": "building-reference-evidence@2",
+  "id": "titanium-museum-sam-ab-v74",
+  "required_roles": ["street_identity", "roof_plan"],
+  "views": [
+    {
+      "id": "street_identity",
+      "role": "street_identity",
+      "render_key": "archetype_match",
+      "reference_image": "frontend/public/archetypes/buildings/large-art-museum-gallery/variant_0.png",
+      "reference_silhouette_polygon": [[0.938, 0.432], [0.801, 0.359], [0.682, 0.173], [0.366, 0.198], [0.098, 0.400], [0.101, 0.855], [0.838, 0.861], [0.831, 0.596], [0.938, 0.523]],
+      "render_extraction": {"roi": [0.01, 0.10, 0.99, 0.88], "background_tolerance": 20.0},
+      "thresholds": {"silhouette_iou_min": 0.45, "roofline_rmse_max": 0.24, "aspect_ratio_error_max": 0.45}
+    },
+    {
+      "id": "roof_plan",
+      "role": "roof_plan",
+      "render_key": "roof_audit",
+      "reference_image": "frontend/public/archetypes/buildings/large-art-museum-gallery/variant_0_angle_90.jpg",
+      "reference_silhouette_polygon": [[0.220, 0.170], [0.790, 0.140], [0.860, 0.220], [0.870, 0.730], [0.750, 0.830], [0.250, 0.840], [0.160, 0.720], [0.170, 0.290]],
+      "render_extraction": {"roi": [0.08, 0.06, 0.92, 0.94], "background_tolerance": 20.0},
+      "thresholds": {"silhouette_iou_min": 0.50, "roofline_rmse_max": 0.22, "aspect_ratio_error_max": 0.30}
+    }
+  ]
+}

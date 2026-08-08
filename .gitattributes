@@ -4,4 +4,5 @@ docs/reviews/alpine-chalet-v69/*.png filter=lfs diff=lfs merge=lfs -text
 docs/reviews/alpine-chalet-v70/*.png filter=lfs diff=lfs merge=lfs -text
 tools/archetype_compiler/facade_sources_v69/*.png filter=lfs diff=lfs merge=lfs -text
 docs/reviews/mountain-alpine-v71/*.png filter=lfs diff=lfs merge=lfs -text
+docs/reviews/sam-ab-titanium-museum-v74/*.png filter=lfs diff=lfs merge=lfs -text
 tools/archetype_compiler/facade_sources_v71/*.png filter=lfs diff=lfs merge=lfs -text

@@ -1604,6 +1604,89 @@
         "target_views": ["archetype_match", "street", "aerial", "context"]
       }
     },
+    "deconstructivist_titanium_pavilion": {
+      "identity": "Catalogue-specific deconstructivist art museum composed from a flower-like cluster of leaning titanium gallery pods, a deep rectilinear cantilever, a tall glazed public cleft and a continuous perforated metal ribbon.",
+      "production_contract": {
+        "identity_mode": "massing_graph",
+        "fixed_identity": ["asymmetric cluster of curved titanium gallery pods", "continuous draped perforated perimeter ribbon", "deep left-biased cantilevered gallery box", "double-height glazed entrance cleft", "irregular occupied roofscape without a common parapet"],
+        "repeatable_capacity": ["titanium panel seams, ribbon perforation field and curtain-wall mullions"],
+        "required_reference_roles": ["street_identity", "oblique_massing", "roof_or_aerial"]
+      },
+      "material_zones": "silver titanium-zinc standing-seam pods and cantilever; slightly darker perforated stainless ribbon; low-iron entrance glazing; deep charcoal soffits and warm occupied lobby",
+      "glass_profile": "low_iron_clear",
+      "dimension_overrides": {"width_m": 80.0, "depth_m": 60.0, "default_floors": 4, "crown_height_m": 4.0},
+      "material_overrides": {
+        "primary": {"base_color": "#aaa9a3", "roughness": 0.37, "metallic": 0.64, "texture_key": "standing_seam"},
+        "secondary": {"base_color": "#858b8d", "roughness": 0.45, "metallic": 0.72},
+        "accent": {"base_color": "#62676a", "roughness": 0.30, "metallic": 0.78},
+        "roof": {"base_color": "#aeb2b1", "roughness": 0.34, "metallic": 0.66, "texture_key": "standing_seam"}
+      },
+      "signature_material_overrides": {
+        "signature_roof": {"base_color": "#aaa9a4", "roughness": 0.31, "metallic": 0.72, "coat_weight": 0.24, "coat_roughness": 0.13, "texture_key": "standing_seam"},
+        "signature_metal": {"base_color": "#737a7d", "roughness": 0.42, "metallic": 0.78}
+      },
+      "kits": ["organic_pod_cluster", "ribbon_envelope", "cantilever_gallery", "double_height_curtain_wall"],
+      "massing_graph": {
+        "schema": "massing-graph@1",
+        "profile": "deconstructivist_titanium_museum_baseline_v74",
+        "description": "Photo-read baseline using the catalogue dimensions and three declared views, without SAM-derived pod-count, depth or lean evidence.",
+        "height_m": 30.0,
+        "reference_dimensions": {"width_m": 80.0, "depth_m": 60.0, "floors": 4, "floor_height_m": 6.5},
+        "nodes": [
+          {"id": "museum_plinth", "kind": "box", "size": [80.8, 60.8, 0.42], "location": [0.0, 0.0, 0.21], "material": "concrete", "bevel_m": 0.10},
+          {"id": "museum_gallery_cantilever", "kind": "box", "size": [31.0, 15.0, 8.2], "location": [-13.0, -23.0, 18.1], "material": "signature_roof", "bevel_m": 0.28},
+          {"id": "museum_gallery_soffit", "kind": "box", "size": [29.8, 14.2, 0.34], "location": [-13.0, -23.2, 13.84], "material": "massing_soffit", "bevel_m": 0.08},
+          {"id": "museum_lobby_shadow", "kind": "box", "size": [23.0, 4.8, 13.0], "location": [1.5, -27.0, 6.92], "material": "massing_joint", "bevel_m": 0.10},
+          {"id": "museum_loading_shadow", "kind": "box", "size": [8.0, 2.2, 4.2], "location": [-31.0, -27.9, 2.52], "material": "massing_joint", "bevel_m": 0.06}
+        ],
+        "voids": [
+          {"id": "museum_public_atrium", "size": [22.0, 12.0, 15.0], "location": [1.5, -24.0, 7.5], "purpose": "double-height public cleft between curved gallery pods"},
+          {"id": "museum_roof_circulation", "size": [37.0, 28.0, 10.0], "location": [0.0, 2.0, 24.0], "purpose": "interstitial roof circulation around separate gallery pods"}
+        ],
+        "assemblies": [
+          {"id": "museum_pods", "kind": "organic_pod_cluster", "material": "signature_roof", "segments": 32, "rings": 7, "bevel_m": 0.055, "pods": [
+            {"id": "museum_pod_centre", "base_centre": [-2.0, 2.0, 0.42], "radius_x_m": 15.0, "radius_y_m": 11.0, "height_m": 22.5, "lean_m": [0.8, 0.2], "twist_deg": 7.0, "bulge": 0.12, "top_taper": 0.72, "lobes": 2, "lobe_amplitude": 0.04},
+            {"id": "museum_pod_left", "base_centre": [-23.0, 5.0, 0.42], "radius_x_m": 10.0, "radius_y_m": 12.0, "height_m": 17.0, "lean_m": [-0.5, 0.8], "twist_deg": -6.0, "bulge": 0.10, "top_taper": 0.76},
+            {"id": "museum_pod_right", "base_centre": [22.0, 3.0, 0.42], "radius_x_m": 9.5, "radius_y_m": 11.5, "height_m": 19.0, "lean_m": [0.8, 0.2], "twist_deg": 8.0, "bulge": 0.11, "top_taper": 0.74},
+            {"id": "museum_pod_rear_left", "base_centre": [-14.0, 18.0, 0.42], "radius_x_m": 9.0, "radius_y_m": 8.0, "height_m": 25.0, "lean_m": [1.0, -0.3], "twist_deg": 11.0, "bulge": 0.08, "top_taper": 0.68},
+            {"id": "museum_pod_rear_right", "base_centre": [16.0, 18.0, 0.42], "radius_x_m": 8.5, "radius_y_m": 8.0, "height_m": 21.5, "lean_m": [-0.7, 0.4], "twist_deg": -9.0, "bulge": 0.09, "top_taper": 0.70}
+          ]},
+          {"id": "museum_ribbon", "kind": "ribbon_envelope", "centre": [0.0, 0.0, 0.42], "width_m": 77.0, "depth_m": 57.0, "height_m": 18.5, "thickness_m": 0.24, "plan_exponent": 5.8, "segments": 112, "plan_waves": 3, "plan_wave_amplitude_m": 0.7, "top_waves": 3, "top_wave_amplitude_m": 1.2, "bottom_waves": 2, "bottom_wave_amplitude_m": 0.7, "front_lift_m": 5.0, "phase_deg": 18.0, "material": "signature_metal"},
+          {"id": "museum_entry_glazing", "kind": "curtain_wall", "axis": "front", "centre": [1.5, -30.15, 7.0], "span_m": 22.0, "height_m": 13.0, "columns": 7, "rows": 3, "frame_m": 0.11, "depth_m": 0.10, "surround_m": 0.0, "frame_material": "signature_metal", "glass_material": "glass", "interior_material": "interior_warm", "interior_recess_m": 0.34},
+          {"id": "museum_gallery_glazing", "kind": "curtain_wall", "axis": "front", "centre": [-13.0, -30.56, 18.2], "span_m": 24.0, "height_m": 5.8, "columns": 6, "rows": 2, "frame_m": 0.10, "depth_m": 0.08, "surround_m": 0.0, "frame_material": "signature_metal", "glass_material": "glass", "interior_material": "interior_warm", "interior_recess_m": 0.28}
+        ],
+        "presentation_camera": {"hero_side": "left", "oblique_x_scale": 0.82, "identity_distance_scale": 1.16, "street_distance_scale": 1.10},
+        "reference_views": [
+          {"role": "street_identity", "path": "/archetypes/buildings/large-art-museum-gallery/variant_0.png", "cues": ["left-biased cantilevered gallery", "tall glazed entrance cleft", "draped perforated ribbon", "colliding titanium volumes"]},
+          {"role": "oblique_massing", "path": "/archetypes/buildings/large-art-museum-gallery/variant_0_angle_60.jpg", "cues": ["rounded-square outer ribbon", "separate occupied roof pods", "deep gallery cantilever", "asymmetric roofscape"]},
+          {"role": "roof_plan", "path": "/archetypes/buildings/large-art-museum-gallery/variant_0_angle_90.jpg", "cues": ["flower-like inner pod cluster", "perimeter roof terrace", "irregular continuous ribbon", "multiple skylights and service zones"]}
+        ],
+        "target_views": ["archetype_match", "street", "aerial", "roof_audit", "context"]
+      },
+      "sam_evidence_patches": {
+        "profile": "deconstructivist_titanium_museum_sam_informed_v74",
+        "description": "The same construction kit after the audited SAM 3D pass established a seven-lobed radial pod cluster, near-full-depth cantilever and substantially stronger section/depth variation.",
+        "node_overrides": {
+          "museum_gallery_cantilever": {"size": [35.0, 18.5, 9.0], "location": [-14.5, -21.6, 18.4]},
+          "museum_gallery_soffit": {"size": [33.8, 17.7, 0.40], "location": [-14.5, -21.9, 13.70]},
+          "museum_lobby_shadow": {"size": [24.0, 7.0, 14.0], "location": [2.0, -25.8, 7.42]}
+        },
+        "assembly_overrides": {
+          "museum_pods": {"pods": [
+            {"id": "museum_pod_centre", "base_centre": [-2.0, 0.0, 0.42], "radius_x_m": 15.8, "radius_y_m": 9.5, "height_m": 24.0, "lean_m": [1.8, 0.5], "twist_deg": 12.0, "bulge": 0.15, "top_taper": 0.66, "lobes": 2, "lobe_amplitude": 0.06, "phase_deg": 20.0, "top_wave_m": 0.7},
+            {"id": "museum_pod_left_mid", "base_centre": [-22.0, 2.0, 0.42], "radius_x_m": 9.5, "radius_y_m": 11.0, "height_m": 16.5, "lean_m": [-1.6, 1.2], "twist_deg": -13.0, "bulge": 0.13, "top_taper": 0.72, "lobes": 2, "lobe_amplitude": 0.05},
+            {"id": "museum_pod_right_mid", "base_centre": [21.5, 1.0, 0.42], "radius_x_m": 9.0, "radius_y_m": 11.0, "height_m": 20.0, "lean_m": [1.4, -0.3], "twist_deg": 14.0, "bulge": 0.13, "top_taper": 0.70, "lobes": 2, "lobe_amplitude": 0.05},
+            {"id": "museum_pod_rear_left", "base_centre": [-20.0, 17.0, 0.42], "radius_x_m": 8.0, "radius_y_m": 9.0, "height_m": 22.0, "lean_m": [1.7, -0.8], "twist_deg": 17.0, "bulge": 0.11, "top_taper": 0.64, "top_wave_m": 0.55},
+            {"id": "museum_pod_rear_centre", "base_centre": [-1.0, 18.5, 0.42], "radius_x_m": 9.5, "radius_y_m": 8.5, "height_m": 27.5, "lean_m": [1.2, -0.4], "twist_deg": -15.0, "bulge": 0.10, "top_taper": 0.62, "top_wave_m": 0.8},
+            {"id": "museum_pod_rear_right", "base_centre": [18.5, 17.0, 0.42], "radius_x_m": 7.5, "radius_y_m": 9.0, "height_m": 21.0, "lean_m": [-1.1, 0.6], "twist_deg": 12.0, "bulge": 0.12, "top_taper": 0.67},
+            {"id": "museum_pod_front_right", "base_centre": [15.0, -14.0, 0.42], "radius_x_m": 8.0, "radius_y_m": 7.0, "height_m": 15.5, "lean_m": [-0.8, 1.0], "twist_deg": -16.0, "bulge": 0.12, "top_taper": 0.70}
+          ]},
+          "museum_ribbon": {"plan_exponent": 4.8, "plan_waves": 4, "plan_wave_amplitude_m": 2.2, "top_waves": 4, "top_wave_amplitude_m": 3.3, "bottom_waves": 3, "bottom_wave_amplitude_m": 1.6, "front_lift_m": 8.8, "front_drop_m": 1.4, "phase_deg": 32.0},
+          "museum_entry_glazing": {"centre": [2.0, -30.15, 7.4], "span_m": 23.0, "height_m": 14.0},
+          "museum_gallery_glazing": {"centre": [-14.5, -30.86, 18.5], "span_m": 27.0, "height_m": 6.4}
+        }
+      }
+    },
     "parametric_wave_shell": {
       "identity": "Catalogue-specific civic natatorium organized by a low pinched double-wave translucent shell, broad curved glazed end walls, a concrete entrance saddle and an asymmetric mast-and-cable fan.",
       "production_contract": {
