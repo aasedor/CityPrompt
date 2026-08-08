@@ -685,6 +685,11 @@ def build_materials(grammar: dict) -> dict[str, bpy.types.Material]:
         "texture_key": "standing_seam",
         **dict(signature_materials.get("signature_roof") or {}),
     }
+    signature_roof_stone_spec = {
+        "base_color": "#82796b", "roughness": 0.92, "metallic": 0.0,
+        "texture_key": None,
+        **dict(signature_materials.get("signature_roof_stone") or {}),
+    }
     signature_metal_spec = {
         "base_color": "#17191b", "roughness": 0.34, "metallic": 0.72,
         **dict(signature_materials.get("signature_metal") or {}),
@@ -719,6 +724,10 @@ def build_materials(grammar: dict) -> dict[str, bpy.types.Material]:
         }),
         "signature_stone": make_material("MAT_Signature_CutStone", signature_stone_spec),
         "signature_roof": make_material("MAT_Signature_AgedLeadRoof", signature_roof_spec),
+        "signature_roof_stone": make_material("MAT_Signature_WeightedStoneRoof", signature_roof_stone_spec),
+        "roof_flashing": make_material("MAT_Roof_AgedFlashing", {
+            "base_color": "#596763", "roughness": 0.58, "metallic": 0.46,
+        }),
         "signature_metal": make_material("MAT_Signature_BlackMetal", signature_metal_spec),
         "massing_soffit": make_material("MAT_Massing_DarkConcreteSoffit", {
             "base_color": "#42413e", "roughness": 0.88, "metallic": 0.0,
@@ -7772,6 +7781,163 @@ def _graph_eave_rafter_array(parts: list, spec: dict, mats: dict) -> None:
         parts.append(brace)
 
 
+def _graph_pitched_roof_surface_detail(parts: list, spec: dict, mats: dict) -> None:
+    """Layer shingle/slab courses, stone weights and edge metal on a gable roof.
+
+    The base gable prism carries the watertight silhouette. This assembly adds
+    construction-scale surface relief in one inexpensive disconnected mesh,
+    then places only the sparse silhouette-bearing weights and edge members as
+    separate objects. It supports either ridge axis so intersecting chalet,
+    Arts-and-Crafts and vernacular roofs can share the same audited recipe.
+    """
+    cx, cy, eave_z = (float(value) for value in spec["centre"])
+    width, depth, rise = (float(value) for value in spec["size"])
+    ridge_axis = str(spec.get("ridge_axis", "y"))
+    if ridge_axis not in {"x", "y"}:
+        raise ValueError(f"pitched roof detail ridge axis {ridge_axis!r} is unsupported")
+    prefix = str(spec.get("id", "GraphPitchedRoofDetail"))
+    tile_mat = _graph_material(mats, spec.get("tile_material", "roof"))
+    weight_mat = _graph_material(mats, spec.get("weight_material", "signature_stone"))
+    ridge_mat = _graph_material(mats, spec.get("ridge_material", "roof_flashing"))
+    verge_mat = _graph_material(mats, spec.get("verge_material", "signature_warm"))
+    rows = max(4, int(spec.get("rows", 10)))
+    columns = max(4, int(spec.get("columns", 14)))
+    tile_thickness = float(spec.get("tile_thickness_m", 0.055))
+    ridge_length = width if ridge_axis == "x" else depth
+    half_run = depth / 2 if ridge_axis == "x" else width / 2
+    slope_length = math.hypot(half_run, rise)
+    slope_step = slope_length / rows
+    ridge_step = ridge_length / columns
+    vertices: list[tuple[float, float, float]] = []
+    faces: list[tuple[int, ...]] = []
+
+    def add_oriented_tile(centre: Vector, along: Vector, upslope: Vector, normal: Vector) -> None:
+        half_along = ridge_step * 0.455
+        half_slope = slope_step * 0.535
+        half_thickness = tile_thickness / 2
+        base = len(vertices)
+        for normal_sign in (-1.0, 1.0):
+            for slope_sign in (-1.0, 1.0):
+                for along_sign in (-1.0, 1.0):
+                    point = (
+                        centre
+                        + along * (along_sign * half_along)
+                        + upslope * (slope_sign * half_slope)
+                        + normal * (normal_sign * half_thickness)
+                    )
+                    vertices.append(tuple(point))
+        faces.extend([
+            (base + 0, base + 1, base + 3, base + 2),
+            (base + 4, base + 6, base + 7, base + 5),
+            (base + 0, base + 4, base + 5, base + 1),
+            (base + 2, base + 3, base + 7, base + 6),
+            (base + 0, base + 2, base + 6, base + 4),
+            (base + 1, base + 5, base + 7, base + 3),
+        ])
+
+    slope_records: list[tuple[float, Vector, Vector, Vector]] = []
+    for side in (-1.0, 1.0):
+        if ridge_axis == "x":
+            along = Vector((1.0, 0.0, 0.0))
+            upslope = Vector((0.0, -side * half_run / slope_length, rise / slope_length))
+            normal = Vector((0.0, side * rise / slope_length, half_run / slope_length))
+        else:
+            along = Vector((0.0, 1.0, 0.0))
+            upslope = Vector((-side * half_run / slope_length, 0.0, rise / slope_length))
+            normal = Vector((side * rise / slope_length, 0.0, half_run / slope_length))
+        slope_records.append((side, along, upslope, normal))
+        for row in range(rows):
+            t = (row + 0.5) / rows
+            stagger = ridge_step * 0.5 if row % 2 else 0.0
+            for column in range(-1, columns + 1):
+                ridge_offset = -ridge_length / 2 + ridge_step * (column + 0.5) + stagger
+                if abs(ridge_offset) > ridge_length / 2 - ridge_step * 0.16:
+                    continue
+                if ridge_axis == "x":
+                    surface = Vector((
+                        cx + ridge_offset,
+                        cy + side * half_run * (1.0 - t),
+                        eave_z + rise * t,
+                    ))
+                else:
+                    surface = Vector((
+                        cx + side * half_run * (1.0 - t),
+                        cy + ridge_offset,
+                        eave_z + rise * t,
+                    ))
+                centre = surface + normal * (tile_thickness * 0.62 + 0.018)
+                add_oriented_tile(centre, along, upslope, normal)
+    parts.append(add_prism(f"{prefix}_Courses", vertices, faces, tile_mat))
+
+    # Large local stones are a defining Alpine roof technology. Keep their
+    # distribution sparse and deterministic so they read as ballast, not noise.
+    weight_rows = max(1, int(spec.get("weight_rows", 3)))
+    weights_per_row = max(2, int(spec.get("weights_per_row", 5)))
+    for side_index, (side, along, _upslope, normal) in enumerate(slope_records):
+        for row in range(weight_rows):
+            t = 0.18 + (0.66 * row / max(1, weight_rows - 1))
+            offset_step = ridge_length / weights_per_row
+            for index in range(weights_per_row):
+                ridge_offset = -ridge_length / 2 + offset_step * (index + 0.5)
+                if (row + side_index) % 2:
+                    ridge_offset += offset_step * 0.22
+                ridge_offset = max(-ridge_length * 0.44, min(ridge_length * 0.44, ridge_offset))
+                if ridge_axis == "x":
+                    surface = Vector((cx + ridge_offset, cy + side * half_run * (1.0 - t), eave_z + rise * t))
+                    scale = (0.30, 0.22, 0.13)
+                else:
+                    surface = Vector((cx + side * half_run * (1.0 - t), cy + ridge_offset, eave_z + rise * t))
+                    scale = (0.22, 0.30, 0.13)
+                size_factor = 0.86 + 0.13 * ((index + row * 2 + side_index) % 3)
+                rock = add_foliage(
+                    f"{prefix}_Weight{side_index}_{row:02d}_{index:02d}",
+                    tuple(surface + normal * 0.13),
+                    tuple(value * size_factor for value in scale),
+                    weight_mat, subdivisions=1,
+                )
+                rock.rotation_euler.z = math.radians((index * 23 + row * 11 + side_index * 7) % 40 - 20)
+                parts.append(rock)
+
+    ridge_width = float(spec.get("ridge_width_m", 0.24))
+    if ridge_axis == "x":
+        ridge_size = (ridge_length * 0.97, ridge_width, 0.14)
+    else:
+        ridge_size = (ridge_width, ridge_length * 0.97, 0.14)
+    parts.append(add_beveled_box(
+        f"{prefix}_RidgeCap", ridge_size,
+        (cx, cy, eave_z + rise + 0.075), ridge_mat, 0.025,
+    ))
+
+    gutter_width = float(spec.get("gutter_width_m", 0.15))
+    if bool(spec.get("gutter_enabled", True)):
+        for side in (-1.0, 1.0):
+            if ridge_axis == "x":
+                size = (ridge_length * 0.985, gutter_width, gutter_width)
+                location = (cx, cy + side * half_run, eave_z - 0.025)
+            else:
+                size = (gutter_width, ridge_length * 0.985, gutter_width)
+                location = (cx + side * half_run, cy, eave_z - 0.025)
+            parts.append(add_beveled_box(
+                f"{prefix}_Gutter{'A' if side < 0 else 'B'}", size, location, ridge_mat, 0.025,
+            ))
+
+    if bool(spec.get("verge_enabled", True)):
+        verge_depth = float(spec.get("verge_depth_m", 0.16))
+        verge_height = float(spec.get("verge_height_m", 0.18))
+        pitch = math.atan2(rise, half_run)
+        for end in (-1.0, 1.0):
+            for side in (-1.0, 1.0):
+                if ridge_axis == "x":
+                    location = (cx + end * (ridge_length / 2 + verge_depth / 2), cy + side * half_run / 2, eave_z + rise / 2)
+                    verge = add_box(f"{prefix}_Verge{end}_{side}", (verge_depth, slope_length, verge_height), location, verge_mat)
+                    verge.rotation_euler.x = -side * pitch
+                else:
+                    location = (cx + side * half_run / 2, cy + end * (ridge_length / 2 + verge_depth / 2), eave_z + rise / 2)
+                    verge = add_box(f"{prefix}_Verge{end}_{side}", (slope_length, verge_depth, verge_height), location, verge_mat)
+                    verge.rotation_euler.y = side * pitch
+                parts.append(verge)
+
+
 def _graph_curved_balcony_array(parts: list, spec: dict, mats: dict) -> None:
     """Supported balcony following a circular or rounded-corner facade.
 
@@ -8068,6 +8234,8 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
             _graph_balcony_array(parts, assembly, mats)
         elif kind == "eave_rafter_array":
             _graph_eave_rafter_array(parts, assembly, mats)
+        elif kind == "pitched_roof_surface_detail":
+            _graph_pitched_roof_surface_detail(parts, assembly, mats)
         elif kind == "curved_balcony_array":
             _graph_curved_balcony_array(parts, assembly, mats)
         elif kind == "corbel_array":

@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-08-08-audited-vernacular-openings-v69`.
+Current executable memory: `2026-08-08-pitched-roof-construction-v70`.
 
 The current calibration set and catalogue rollout rationale are documented in
 [`BUILDING_GOLD_SET_PIPELINE_SYNTHESIS_2026-08-07.md`](BUILDING_GOLD_SET_PIPELINE_SYNTHESIS_2026-08-07.md).
@@ -440,6 +440,28 @@ default. Rebuilding at the catalogue's declared 18 metre maximum frontage moved
 the silhouette IoU from 0.574 to 0.713 and passed the unchanged aspect and
 roofline gates. The conflict was resolved as an explicit native size-tier
 decision rather than hidden by loosening thresholds.
+
+### V70 pitched-roof construction detail
+
+The Alpine chalet roof-detail iteration established that a correct gable prism
+is only the massing layer. At hero and aerial range, broad unbroken roof planes
+still read as procedural unless the covering, edge and retention systems have
+construction scale.
+
+The reusable `pitched_roof_surface_detail` assembly now adds overlapping
+shingle or stone-slab courses as one consolidated disconnected mesh, rather
+than hundreds of Blender objects. Sparse low-poly ballast stones remain
+separate because their silhouettes and contact shadows are identity-bearing.
+Ridge caps, valley/drainage lines, gutters and timber verges finish the roof
+section. The chalet uses dark shingle fields on the main roof and warmer stone
+slabs on the projecting cross-gables, matching the distinct systems visible in
+the aerial references.
+
+The detailed v70 hero remains below the 180,000-triangle ceiling at 102,252
+triangles and passes the structural and camera-locked fidelity gates. Surface
+detail therefore belongs in the near/hero LOD; district and map LODs retain the
+base roof silhouette, material separation and major ridge lines while baking or
+removing individual courses and ballast.
 
 ### V65 three-pilot expansion lessons
 

@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-08-08-audited-vernacular-openings-v69",
+  "memory_version": "2026-08-08-pitched-roof-construction-v70",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "calibration_set": {
@@ -54,6 +54,10 @@
     {
       "id": "assemblies_inherit_the_archetype",
       "rule": "Roofs, dormers, canopies, columns and other fixed assemblies inherit the archetype's material palette, edge profiles and construction logic; no attachment may introduce a separate visual language."
+    },
+    {
+      "id": "pitched_roof_surfaces_are_construction",
+      "rule": "At hero range, a large pitched roof must show its actual covering and edge system: overlapping courses or seams, ridge and valley caps, verge/fascia thickness, drainage, and any archetype-specific ballast or snow retention. A smooth prism supplies massing only, not a finished roof."
     },
     {
       "id": "validate_shapes_not_one_box",
@@ -623,6 +627,11 @@
       "symptom": "A timber or mural facade generates huge dark frames and an unexpectedly expensive GLB",
       "cause": "Automatic glass segmentation interpreted wood grain, painted motifs, planter shadows or stone joints as thousands of window regions.",
       "correction": "Stop before rendering, author normalized openings from the actual sash glass, and regenerate the semantic mask from that schedule. Keep decorative pixels in the albedo only; this removes false construction geometry and restores a bounded triangle budget."
+    },
+    {
+      "symptom": "A chalet or heritage building has the correct roof silhouette but still reads as a smooth computer-generated lid",
+      "cause": "The gable or hip primitive was treated as the finished roof, omitting covering scale, overlapping courses, ballast, ridge and valley metal, gutters and layered verge construction.",
+      "correction": "Keep the watertight primitive as the base, then add a bounded hero-range surface assembly aligned to each slope. Build repeated tiles or seams as a consolidated mesh; reserve separate low-poly objects for sparse silhouette-bearing weights, cresting or snow retention, and validate from the aerial camera."
     }
   ]
 }

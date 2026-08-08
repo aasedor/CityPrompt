@@ -411,7 +411,7 @@ def test_v67_variant_profiles_inherit_fixed_massing_without_losing_variant_mater
     assert registry["generation_profile"]["strict_production_preflight"] is True
 
 
-def test_v69_alpine_chalet_locks_cross_gables_deep_eaves_and_flower_balconies():
+def test_v70_alpine_chalet_locks_detailed_cross_gables_eaves_and_flower_balconies():
     from signature_profiles import inject_signature
 
     grammar = {
@@ -429,11 +429,18 @@ def test_v69_alpine_chalet_locks_cross_gables_deep_eaves_and_flower_balconies():
     )
 
     graph = chalet["massing_graph"]
-    assert graph["profile"] == "swiss_cross_gable_chalet_v69"
+    assert graph["profile"] == "swiss_cross_gable_chalet_v70"
     assert graph["reference_dimensions"]["floors"] == 3
     assert sum(node["kind"] == "gable_roof" for node in graph["nodes"]) == 3
     assemblies = graph["assemblies"]
     assert sum(item["kind"] == "eave_rafter_array" for item in assemblies) == 4
+    roof_surfaces = [item for item in assemblies if item["kind"] == "pitched_roof_surface_detail"]
+    assert len(roof_surfaces) == 3
+    assert {item["tile_material"] for item in roof_surfaces} == {
+        "signature_roof",
+        "signature_roof_stone",
+    }
+    assert all(item["weight_rows"] >= 3 for item in roof_surfaces)
     balconies = [item for item in assemblies if item["kind"] == "balcony_array"]
     assert len(balconies) == 2
     assert all(item.get("planter_enabled") for item in balconies)

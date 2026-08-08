@@ -1332,23 +1332,24 @@
       "signature_material_overrides": {
         "signature_stone": {"base_color": "#8d8981", "roughness": 0.91, "metallic": 0.0, "texture_key": null},
         "signature_warm": {"base_color": "#503225", "roughness": 0.78, "metallic": 0.0, "texture_key": null},
-        "signature_roof": {"base_color": "#49433c", "roughness": 0.86, "metallic": 0.0, "texture_key": null}
+        "signature_roof": {"base_color": "#49433c", "roughness": 0.86, "metallic": 0.0, "texture_key": null},
+        "signature_roof_stone": {"base_color": "#777064", "roughness": 0.94, "metallic": 0.0, "texture_key": null}
       },
       "glass_profile": "residential_low_e",
       "kits": ["fieldstone_base", "arched_timber_entry", "cross_gable_roof", "deep_eave_brackets", "carved_timber_balconies", "geranium_planters", "chimney_skyline"],
       "massing_graph": {
         "schema": "massing-graph@1",
-        "profile": "swiss_cross_gable_chalet_v69",
-        "description": "Reference-built compact Swiss chalet with a real stone/timber section, paired cross-gabled roof plan, deep exposed eaves and supported flower-box balconies.",
+        "profile": "swiss_cross_gable_chalet_v70",
+        "description": "Reference-built Swiss chalet with a real stone/timber section, paired cross-gabled roof plan, course-modeled dark shingles and pale stone slabs, ballast weights, metal ridges, deep exposed eaves and supported flower-box balconies.",
         "height_m": 14.1,
         "reference_dimensions": {"width_m": 18.0, "depth_m": 12.0, "floors": 3, "floor_height_m": 3.1},
         "nodes": [
           {"id": "chalet_plinth", "kind": "box", "size": [18.7, 12.7, 0.38], "location": [0.0, 0.0, 0.19], "material": "signature_stone", "bevel_m": 0.05},
           {"id": "chalet_stone_base", "kind": "box", "size": [18.0, 12.0, 3.25], "location": [0.0, 0.0, 1.625], "material": "signature_stone", "bevel_m": 0.12},
           {"id": "chalet_timber_body", "kind": "box", "size": [17.9, 11.9, 6.15], "location": [0.0, 0.0, 6.325], "material": "primary", "bevel_m": 0.10},
-          {"id": "chalet_main_roof", "kind": "gable_roof", "size": [19.7, 14.2, 3.45], "location": [0.0, 0.0, 9.40], "material": "roof", "bevel_m": 0.10, "ridge_axis": "x"},
-          {"id": "chalet_left_cross_gable", "kind": "gable_roof", "size": [7.1, 7.4, 3.15], "location": [-5.10, -3.60, 9.40], "material": "roof", "bevel_m": 0.09, "ridge_axis": "y"},
-          {"id": "chalet_right_cross_gable", "kind": "gable_roof", "size": [7.4, 7.8, 3.45], "location": [4.15, -3.75, 9.40], "material": "roof", "bevel_m": 0.09, "ridge_axis": "y"},
+          {"id": "chalet_main_roof", "kind": "gable_roof", "size": [19.7, 14.2, 3.45], "location": [0.0, 0.0, 9.40], "material": "signature_roof", "bevel_m": 0.10, "ridge_axis": "x"},
+          {"id": "chalet_left_cross_gable", "kind": "gable_roof", "size": [7.1, 7.4, 3.15], "location": [-5.10, -3.60, 9.40], "material": "signature_roof_stone", "bevel_m": 0.09, "ridge_axis": "y"},
+          {"id": "chalet_right_cross_gable", "kind": "gable_roof", "size": [7.4, 7.8, 3.45], "location": [4.15, -3.75, 9.40], "material": "signature_roof_stone", "bevel_m": 0.09, "ridge_axis": "y"},
           {"id": "chalet_stone_transition_front", "kind": "box", "size": [18.3, 0.34, 0.30], "location": [0.0, -6.12, 3.28], "material": "signature_warm", "bevel_m": 0.035},
           {"id": "chalet_stone_transition_rear", "kind": "box", "size": [18.3, 0.34, 0.30], "location": [0.0, 6.12, 3.28], "material": "signature_warm", "bevel_m": 0.035}
         ],
@@ -1367,6 +1368,9 @@
           {"id": "chalet_right_gable_infill", "kind": "shaped_gable_array", "axis": "front", "profile_style": "steep_triangle", "base_centre": [4.15, -7.67, 9.37], "positions_m": [0.0], "width_m": 6.15, "height_m": 3.45, "depth_m": 0.30, "material": "signature_warm", "infill_enabled": false, "finial_enabled": false, "bevel_m": 0.035},
           {"id": "chalet_left_gable_window", "kind": "curtain_wall", "axis": "front", "centre": [-5.10, -7.64, 10.58], "span_m": 1.30, "height_m": 1.36, "columns": 2, "rows": 1, "frame_m": 0.09, "depth_m": 0.07, "surround_m": 0.11, "surround_depth_m": 0.14, "frame_material": "signature_warm", "glass_material": "glass"},
           {"id": "chalet_right_gable_window", "kind": "curtain_wall", "axis": "front", "centre": [4.15, -7.99, 10.65], "span_m": 1.36, "height_m": 1.44, "columns": 2, "rows": 1, "frame_m": 0.09, "depth_m": 0.07, "surround_m": 0.11, "surround_depth_m": 0.14, "frame_material": "signature_warm", "glass_material": "glass"},
+          {"id": "chalet_main_roof_surface", "kind": "pitched_roof_surface_detail", "centre": [0.0, 0.0, 9.40], "size": [19.7, 14.2, 3.45], "ridge_axis": "x", "rows": 14, "columns": 28, "tile_thickness_m": 0.052, "tile_material": "signature_roof", "weight_rows": 3, "weights_per_row": 7, "weight_material": "signature_stone", "ridge_material": "roof_flashing", "verge_material": "signature_warm", "verge_depth_m": 0.10},
+          {"id": "chalet_left_cross_roof_surface", "kind": "pitched_roof_surface_detail", "centre": [-5.10, -3.60, 9.40], "size": [7.1, 7.4, 3.15], "ridge_axis": "y", "rows": 11, "columns": 10, "tile_thickness_m": 0.065, "tile_material": "signature_roof_stone", "weight_rows": 3, "weights_per_row": 4, "weight_material": "signature_stone", "ridge_material": "roof_flashing", "verge_material": "signature_warm"},
+          {"id": "chalet_right_cross_roof_surface", "kind": "pitched_roof_surface_detail", "centre": [4.15, -3.75, 9.40], "size": [7.4, 7.8, 3.45], "ridge_axis": "y", "rows": 11, "columns": 10, "tile_thickness_m": 0.065, "tile_material": "signature_roof_stone", "weight_rows": 3, "weights_per_row": 4, "weight_material": "signature_stone", "ridge_material": "roof_flashing", "verge_material": "signature_warm"},
           {"id": "chalet_front_balconies", "kind": "balcony_array", "axis": "front", "centre": [0.0, -6.02, 0.0], "span_m": 17.0, "levels_z": [3.48, 6.52], "segments": 4, "segment_gap_m": 0.32, "depth_m": 1.18, "slab_height_m": 0.18, "rail_height_m": 0.92, "pickets_per_segment": 9, "slab_material": "signature_warm", "rail_material": "signature_warm", "shadow_material": "massing_joint", "planter_enabled": true, "planter_material": "signature_warm", "foliage_material": "plant", "flower_material": "flower", "flower_clusters_per_segment": 5},
           {"id": "chalet_left_upper_balcony", "kind": "balcony_array", "axis": "left", "centre": [-8.70, -1.3, 0.0], "span_m": 6.7, "levels_z": [6.52], "segments": 2, "segment_gap_m": 0.24, "depth_m": 0.95, "slab_height_m": 0.18, "rail_height_m": 0.92, "pickets_per_segment": 7, "slab_material": "signature_warm", "rail_material": "signature_warm", "shadow_material": "massing_joint", "planter_enabled": true, "planter_material": "signature_warm", "foliage_material": "plant", "flower_material": "flower", "flower_clusters_per_segment": 4},
           {"id": "chalet_front_eave", "kind": "eave_rafter_array", "axis": "front", "base_centre": [0.0, -6.0, 9.48], "span_m": 17.7, "count": 13, "projection_m": 1.45, "member_width_m": 0.18, "member_height_m": 0.24, "bracket_drop_m": 1.05, "bracket_projection_m": 0.88, "material": "signature_warm"},

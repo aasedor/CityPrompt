@@ -1,0 +1,24 @@
+{
+  "schema": "building-reference-fidelity-report@1",
+  "contract": "alpine-swiss-traditional-v70-hero",
+  "reference_image": "frontend/public/archetypes/buildings/mountain_alpine_chalet/variant_0.png",
+  "render_image": "artifacts/pilot-v70/final/mountain-alpine-chalet/mountain-alpine-chalet_archetype_match.png",
+  "status": "pass",
+  "metrics": {
+    "silhouette_iou": 0.70299,
+    "roofline_rmse": 0.12055,
+    "aspect_ratio_error": 0.17836,
+    "reference_aspect_ratio": 1.90758,
+    "render_aspect_ratio": 1.56735
+  },
+  "checks": {
+    "silhouette_iou": true,
+    "roofline_rmse": true,
+    "aspect_ratio_error": true
+  },
+  "thresholds": {
+    "silhouette_iou_min": 0.58,
+    "roofline_rmse_max": 0.14,
+    "aspect_ratio_error_max": 0.22
+  }
+}
