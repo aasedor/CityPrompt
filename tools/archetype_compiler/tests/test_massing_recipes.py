@@ -63,15 +63,15 @@ def test_signature_extensions_resolve_all_five_exact_variants():
     from signature_profiles import signature_for
 
     variants = {
-        "historical_brick_arts_crafts",
-        "courthouse_neoclassical_temple",
-        "med_arcade_italian_portici",
-        "warehouse_arch_window_brick",
-        "scandi_urban_white_plaster",
+        "historical_brick_arts_crafts": 2,
+        "courthouse_neoclassical_temple": 3,
+        "med_arcade_italian_portici": 3,
+        "warehouse_arch_window_brick": 3,
+        "scandi_urban_white_plaster": 2,
     }
-    for variant in variants:
+    for variant, expected_version in variants.items():
         profile = signature_for(variant)
-        assert profile["production_contract"]["quality_contract_version"] == 2
+        assert profile["production_contract"]["quality_contract_version"] == expected_version
         assert profile["massing_recipe"]["reference_views"]
 
 

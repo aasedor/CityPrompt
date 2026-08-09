@@ -51,6 +51,42 @@ RECIPES = (
         "concrete_roof_story_v83", "concrete", (154, 151, 143), 0.38,
         0.095, 0.145, 1.30, 483, "pale mineral roof surface with drainage-scale tonal breakup",
     ),
+    StoryRecipe(
+        "pale_granite_story_v84", "granite", (208, 204, 194), 0.34,
+        0.050, 0.075, 1.60, 584, "pale courthouse granite with broad ashlar-scale tonal variation",
+    ),
+    StoryRecipe(
+        "pale_granite_detail_v84", "granite", (224, 219, 207), 0.44,
+        0.035, 0.065, 1.45, 684, "cleaner pale granite for columns, steps and portico detail",
+    ),
+    StoryRecipe(
+        "verdigris_copper_story_v84", "standing_seam", (84, 121, 105), 0.66,
+        0.050, 0.105, 1.18, 784, "green-patina courthouse copper with panel-scale oxidation",
+    ),
+    StoryRecipe(
+        "natural_stone_story_v84", "natural_stone", (163, 139, 104), 0.24,
+        0.085, 0.115, 1.65, 884, "warm rough-cut arcade stone with restrained protected-face variation",
+    ),
+    StoryRecipe(
+        "ochre_stucco_story_v84", "stucco", (194, 146, 83), 0.42,
+        0.060, 0.095, 1.35, 984, "ochre lime stucco with broad hand-applied tonal movement",
+    ),
+    StoryRecipe(
+        "terracotta_roof_story_v84", "mediterranean_roof_tile", (145, 91, 60), 0.24,
+        0.070, 0.115, 1.35, 1084, "weathered terracotta roof covering with bounded tile-field variation",
+    ),
+    StoryRecipe(
+        "red_brick_story_v84", "red_brick", (62, 36, 32), 0.48,
+        0.055, 0.105, 1.45, 1184, "dark Richardsonian brick with soot-softened field variation",
+    ),
+    StoryRecipe(
+        "brownstone_story_v84", "brownstone", (103, 72, 55), 0.24,
+        0.075, 0.120, 1.55, 1284, "rusticated brownstone base and loading-bay surround",
+    ),
+    StoryRecipe(
+        "roof_membrane_story_v84", "roof_membrane", (48, 49, 48), 0.38,
+        0.055, 0.105, 1.20, 1384, "dark built-up roof membrane with drainage-scale variation",
+    ),
 )
 
 
@@ -90,8 +126,12 @@ def save_rgb(array: np.ndarray, path: Path, *, png: bool = False) -> None:
         image.save(path, quality=94, optimize=True, subsampling=0)
 
 
-def derive(recipe: StoryRecipe, source_root: Path, output_root: Path, size: int) -> dict:
-    source = source_root / recipe.source_key
+def derive(recipe: StoryRecipe, source_root: Path | list[Path], output_root: Path, size: int) -> dict:
+    source_roots = [source_root] if isinstance(source_root, Path) else list(source_root)
+    source = next(
+        (root / recipe.source_key for root in source_roots if (root / recipe.source_key).exists()),
+        source_roots[0] / recipe.source_key,
+    )
     required = {
         "albedo": source / "albedo.jpg",
         "roughness": source / "roughness.jpg",
@@ -160,16 +200,19 @@ def derive(recipe: StoryRecipe, source_root: Path, output_root: Path, size: int)
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--source-root", type=Path, required=True)
+    parser.add_argument("--additional-source-root", type=Path, action="append", default=[])
     parser.add_argument("--output-root", type=Path, required=True)
     parser.add_argument("--size", type=int, default=2048)
+    parser.add_argument("--pipeline-version", default="v83")
     args = parser.parse_args()
     if args.size < 512:
         raise ValueError("surface-story textures must be at least 512 px")
     args.output_root.mkdir(parents=True, exist_ok=True)
-    materials = [derive(recipe, args.source_root, args.output_root, args.size) for recipe in RECIPES]
+    source_roots = [args.source_root, *args.additional_source_root]
+    materials = [derive(recipe, source_roots, args.output_root, args.size) for recipe in RECIPES]
     manifest = {
         "schema": "surface-story-pbr@1",
-        "pipeline_version": "v83",
+        "pipeline_version": args.pipeline_version,
         "method": "tile-safe baked image textures with restrained macro variation",
         "materials": materials,
     }

@@ -51,23 +51,6 @@ def look_at(obj: bpy.types.Object, target: Vector) -> None:
     obj.rotation_euler = (target - obj.location).to_track_quat("-Z", "Y").to_euler()
 
 
-def add_ground(minimum: Vector, maximum: Vector) -> None:
-    span = max(maximum.x - minimum.x, maximum.y - minimum.y) * 2.4
-    bpy.ops.mesh.primitive_plane_add(
-        size=span,
-        location=((minimum.x + maximum.x) / 2, (minimum.y + maximum.y) / 2, minimum.z - 0.03),
-    )
-    ground = bpy.context.object
-    ground.name = "QA_NeutralGround"
-    material = bpy.data.materials.new("QA_NeutralGround")
-    material.diffuse_color = (0.19, 0.20, 0.21, 1.0)
-    material.use_nodes = True
-    bsdf = material.node_tree.nodes.get("Principled BSDF")
-    bsdf.inputs["Base Color"].default_value = (0.19, 0.20, 0.21, 1.0)
-    bsdf.inputs["Roughness"].default_value = 0.92
-    ground.data.materials.append(material)
-
-
 def add_area(name: str, location: Vector, energy: float, size: float, target: Vector) -> None:
     data = bpy.data.lights.new(name, "AREA")
     data.energy = energy
@@ -87,7 +70,10 @@ def configure_scene(minimum: Vector, maximum: Vector, output: Path) -> None:
     scene.render.resolution_percentage = 100
     scene.render.image_settings.file_format = "PNG"
     scene.render.image_settings.color_mode = "RGBA"
-    scene.render.film_transparent = False
+    # The alpha channel is the authoritative foreground mask for parity. A
+    # studio ground would dominate whole-image scores and could hide a severe
+    # building-material mismatch behind a deceptively high similarity value.
+    scene.render.film_transparent = True
     scene.render.filepath = str(output.resolve())
     scene.view_settings.look = "AgX - Medium High Contrast"
     scene.render.image_settings.color_depth = "8"
@@ -102,7 +88,6 @@ def configure_scene(minimum: Vector, maximum: Vector, output: Path) -> None:
     centre = (minimum + maximum) * 0.5
     dimensions = maximum - minimum
     scale = max(dimensions.x, dimensions.y, dimensions.z * 1.75)
-    add_ground(minimum, maximum)
     add_area(
         "QA_Key",
         centre + Vector((-0.75, -1.10, 1.65)) * scale,

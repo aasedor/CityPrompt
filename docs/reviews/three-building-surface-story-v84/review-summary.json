@@ -1,0 +1,34 @@
+{
+  "schema": "three-building-surface-story-review@1",
+  "pipeline_version": "v84",
+  "batch_status": "bounded_generalization_mixed",
+  "texture_resolution_px": 1024,
+  "buildings": [
+    {
+      "label": "Neoclassical Courthouse",
+      "status": "surface keeper; archetype provisional",
+      "surface_audit": "pass",
+      "glb_roundtrip_similarity": 0.95764,
+      "finding": "Granite and standing-seam copper now read as separate construction systems; sculpted pediment and capital identity remain simplified."
+    },
+    {
+      "label": "Italian Portici",
+      "status": "keeper candidate",
+      "surface_audit": "pass",
+      "glb_roundtrip_similarity": 0.97527,
+      "finding": "The pantile roof, ochre wall and stone arcade are construction-role congruent; deeper occupied shops and eave detail are the main remaining gains."
+    },
+    {
+      "label": "Romanesque Warehouse",
+      "status": "visual provisional; export parity fail",
+      "surface_audit": "fail",
+      "glb_roundtrip_similarity": 0.93261,
+      "finding": "Darker wall brick, brownstone and roof membrane improve material truth, but export parity fails and the loading-arcade cadence still needs a fixed identity pass."
+    }
+  ],
+  "methodology_lessons": [
+    "A surface source must match the construction role and pattern, not merely the material family or colour.",
+    "1024 px baked PBR sets preserved visible quality while keeping all three assembled GLBs below the 8 MB delivery target.",
+    "Surface approval and archetype-identity approval remain separate; missing fixed geometry cannot be replaced by stronger texture noise."
+  ]
+}

@@ -32,19 +32,32 @@ def resolved_material_specs(grammar: dict[str, Any]) -> dict[str, dict[str, Any]
 
 
 def render_parity(source_path: Path, roundtrip_path: Path) -> dict[str, Any]:
-    source = np.asarray(Image.open(source_path).convert("RGB"), dtype=np.float32) / 255.0
-    roundtrip = np.asarray(
-        Image.open(roundtrip_path).convert("RGB").resize(
-            (source.shape[1], source.shape[0]), Image.Resampling.LANCZOS
-        ),
-        dtype=np.float32,
-    ) / 255.0
-    delta = np.abs(source - roundtrip)
+    source_image = Image.open(source_path).convert("RGBA")
+    roundtrip_image = Image.open(roundtrip_path).convert("RGBA").resize(
+        source_image.size, Image.Resampling.LANCZOS
+    )
+    source_rgba = np.asarray(source_image, dtype=np.float32) / 255.0
+    roundtrip_rgba = np.asarray(roundtrip_image, dtype=np.float32) / 255.0
+    source_mask = source_rgba[:, :, 3] >= 0.5
+    roundtrip_mask = roundtrip_rgba[:, :, 3] >= 0.5
+    foreground = source_mask | roundtrip_mask
+    if not foreground.any():
+        raise ValueError("neutral parity renders contain no alpha-masked building foreground")
+    source = source_rgba[:, :, :3]
+    roundtrip = roundtrip_rgba[:, :, :3]
+    delta = np.abs(source - roundtrip)[foreground]
+    intersection = np.count_nonzero(source_mask & roundtrip_mask)
+    union = np.count_nonzero(foreground)
+    silhouette_iou = intersection / max(1, union)
+    mean_error = float(delta.mean())
     return {
-        "mean_absolute_error": round(float(delta.mean()), 5),
+        "scope": "alpha_masked_building_foreground",
+        "foreground_pixel_count": int(union),
+        "silhouette_iou": round(float(silhouette_iou), 5),
+        "mean_absolute_error": round(mean_error, 5),
         "p95_absolute_error": round(float(np.percentile(delta, 95)), 5),
-        "similarity": round(1.0 - float(delta.mean()), 5),
-        "passed": float(delta.mean()) <= 0.14,
+        "similarity": round(1.0 - mean_error, 5),
+        "passed": bool(mean_error <= 0.05 and silhouette_iou >= 0.98),
     }
 
 
@@ -119,7 +132,7 @@ def assess(
         })
     failures = [item for item in checks if not item["passed"]]
     return {
-        "schema": "surface-finish-quality@1",
+        "schema": "surface-finish-quality@2",
         "status": "fail" if failures else "pass",
         "required_materials": required_ids,
         "render_parity": parity,

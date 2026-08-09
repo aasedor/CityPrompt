@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-08-09-exportable-surface-story-v83",
+  "memory_version": "2026-08-09-construction-role-and-foreground-parity-v84",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "calibration_set": {
@@ -42,6 +42,10 @@
     {
       "id": "materials_are_pbr",
       "rule": "Close-range facades use shadow-neutral albedo plus normal, roughness, AO/depth and emissive channels. City lighting remains the lighting authority."
+    },
+    {
+      "id": "material_source_role_matches_construction",
+      "rule": "A baked surface source must match the visible construction role and pattern, not merely its broad material family or colour. Treat pantile, wall brick, ashlar, rusticated stone, standing seam and built-up roof membrane as distinct reviewed source roles and declare the role for every required baked material."
     },
     {
       "id": "glass_is_layered",
@@ -844,6 +848,16 @@
       "symptom": "A less-plastic building still looks like a simplified cartoon of its archetype",
       "cause": "Surface variation improved while the clock tower, carved relief, capitals, balustrades or other identity-bearing medium/fine geometry remained generic.",
       "correction": "Keep surface QA as a separate passed layer, then return to the exact references and author a bounded fixed ornament kit for the silhouette- and shadow-bearing identity cues. Do not increase grunge or normal strength to compensate for missing construction."
+    },
+    {
+      "symptom": "A roof or masonry zone has the right colour but still reads as the wrong material",
+      "cause": "The surface source came from a broad same-family match, such as wall brick used for pantiles, featureless copper used for standing seam, or sandstone recoloured as brownstone.",
+      "correction": "Assign an explicit construction role to each baked material, select a source with the matching joint, course, seam or overlap pattern, and compare it against the exact aerial or facade evidence before accepting the bake."
+    },
+    {
+      "symptom": "A neutral source-versus-GLB audit reports high similarity despite an obvious facade colour or texture shift",
+      "cause": "Whole-frame error was dominated by a shared studio background and ground plane, allowing a small building foreground to contribute too little to the score.",
+      "correction": "Render both neutral views over transparency and compute colour error plus silhouette overlap only on the union of their alpha-masked building pixels. Keep the full-building foreground mean error at or below five percent."
     }
   ]
 }

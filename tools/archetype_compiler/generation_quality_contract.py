@@ -83,10 +83,31 @@ def assess_generation_quality_contract(
 
     surface_finish = production.get("surface_finish") or {}
     if surface_finish:
+        required_baked_materials = [
+            str(value) for value in surface_finish.get("required_baked_materials") or []
+        ]
+        material_roles = {
+            str(key): str(value).strip()
+            for key, value in (surface_finish.get("material_roles") or {}).items()
+        }
+        missing_material_roles = [
+            material_id for material_id in required_baked_materials
+            if not material_roles.get(material_id)
+        ]
+        gates.append(_gate(
+            "surface_material_roles",
+            bool(required_baked_materials) and not missing_material_roles,
+            "missing construction roles: " + ", ".join(missing_material_roles)
+            if missing_material_roles else
+            "declared construction roles: " + ", ".join(
+                f"{material_id}={material_roles[material_id]}"
+                for material_id in required_baked_materials
+            ),
+        ))
         uv_contract = surface_finish.get("uv_contract") or {}
         minimum_tile = float(uv_contract.get("minimum_tile_metres", 0.01))
         maximum_tile = float(uv_contract.get("maximum_tile_metres", float("inf")))
-        for material_id in surface_finish.get("required_baked_materials") or []:
+        for material_id in required_baked_materials:
             spec = material_spec(grammar, str(material_id))
             tile_metres = float(spec.get("texture_tile_metres", 0.0))
             gates.extend([

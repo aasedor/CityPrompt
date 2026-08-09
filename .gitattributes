@@ -15,4 +15,5 @@ docs/reviews/two-building-image-lock-v80/generated/*.png filter=lfs diff=lfs mer
 docs/reviews/beaux-arts-terminal-video-lessons-v82/*.png filter=lfs diff=lfs merge=lfs -text
 docs/reviews/beaux-arts-terminal-video-lessons-v82/generated/*.png filter=lfs diff=lfs merge=lfs -text
 docs/reviews/beaux-arts-terminal-surface-story-v83/*.png filter=lfs diff=lfs merge=lfs -text
+docs/reviews/three-building-surface-story-v84/*.png filter=lfs diff=lfs merge=lfs -text
 tools/archetype_compiler/facade_sources_v71/*.png filter=lfs diff=lfs merge=lfs -text

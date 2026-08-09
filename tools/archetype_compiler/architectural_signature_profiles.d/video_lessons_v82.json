@@ -210,6 +210,14 @@
         "surface_finish": {
           "method": "baked_pbr_story",
           "required_baked_materials": ["primary", "secondary", "signature_stone", "signature_roof", "stone_patina", "headhouse_roof_surface"],
+          "material_roles": {
+            "primary": "coursed_limestone_facade",
+            "secondary": "trainshed_masonry_wall",
+            "signature_stone": "carved_limestone_detail",
+            "signature_roof": "oxidized_standing_seam_metal",
+            "stone_patina": "protected_and_grade_limestone",
+            "headhouse_roof_surface": "pale_mineral_roof_field"
+          },
           "required_channels": ["albedo", "roughness", "normal"],
           "uv_contract": {
             "projection": "metric_box_plus_material_scale",

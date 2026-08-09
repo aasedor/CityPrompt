@@ -855,9 +855,10 @@ maps, and compared the source Blender file with its re-imported catalogue GLB.
   metal and pale mineral roof fields. Do not apply one grunge pass to every
   object.
 - Add a context-free neutral source-versus-GLB render pair. The V83 pilot
-  retained all required PBR channels and reached 99.23 percent mean pixel
-  similarity after glTF export and re-import, proving the surface treatment is
-  portable rather than Blender-only.
+  retained all required PBR channels and reached 99.23 percent whole-frame
+  mean pixel similarity after glTF export and re-import. V84 later showed that
+  background pixels inflated that historical score, so only the newer
+  alpha-masked foreground metric may approve future exports.
 - Surface realism and archetype fidelity are independent approvals. V83 is a
   keeper for the baked-surface and parity methodology, but the exact terminal
   remains provisional because the reference has a more articulated clock
@@ -867,6 +868,40 @@ maps, and compared the source Blender file with its re-imported catalogue GLB.
   visually approved source, then test 1024 px or KTX2/UASTC delivery variants
   side by side; do not accept a texture-budget regression merely because the
   pilot render improved.
+
+### V84 three-building surface-story generalization lessons
+
+The Neoclassical Courthouse, Italian Portici and Romanesque Warehouse extended
+the V83 workflow across granite/copper, stone/stucco/pantile and
+brick/brownstone/membrane material systems while preserving their V78 massing,
+facade sheets and cameras as controlled baselines.
+
+- Construction role is stricter than material family. The first batch used a
+  generic terracotta source that looked like wall brick on the portici roof, a
+  brown copper source without the courthouse's standing-seam language and a
+  recoloured sandstone approximation for warehouse brownstone. Replacing them
+  with pantile, standing-seam and brownstone sources immediately improved the
+  exact-reference comparisons. Every required baked material now declares a
+  named construction role at preflight.
+- The 1024 px baked sets retained the visible surface hierarchy while producing
+  assembled GLBs of 2.69-3.91 MB, all below the 8 MB delivery target. This is
+  the approved default for bounded catalogue pilots unless a side-by-side test
+  proves that a particular hero surface needs more resolution.
+- Whole-frame export similarity was a false comfort because the studio
+  background dominated the score. V84 changed the neutral render to transparent
+  film and scores only the union of alpha-masked building pixels, with a five
+  percent mean-error limit and 0.98 silhouette IoU. The stricter result is
+  95.76 percent for the courthouse, 97.53 percent for the portici and 93.26
+  percent for the warehouse; the warehouse correctly remains blocked.
+- Italian Portici is the strongest keeper candidate because material source
+  roles and existing fixed geometry reinforce the same archetype. The
+  courthouse is a surface-method keeper but still needs sculpted classical
+  identity. The warehouse has improved surfaces but needs both export-parity
+  repair and a more faithful loading-arcade section.
+- Photographic facade sheets can retain fine identity, but the visible results
+  confirm that they do not replace fixed eaves, capitals, pediment relief,
+  occupied arcade depth or correctly paced loading bays. Preserve the approved
+  surfaces and spend the next pass on those medium-scale construction cues.
 
 ## Updating this memory
 

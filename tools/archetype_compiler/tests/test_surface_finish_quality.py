@@ -17,6 +17,22 @@ def test_render_parity_accepts_small_export_shift_and_rejects_large_change(tmp_p
     assert render_parity(tmp_path / "source.png", tmp_path / "far.png")["passed"] is False
 
 
+def test_render_parity_scores_alpha_masked_building_not_background(tmp_path):
+    from surface_finish_quality import render_parity
+
+    source = np.zeros((64, 64, 4), dtype=np.uint8)
+    roundtrip = np.zeros((64, 64, 4), dtype=np.uint8)
+    source[24:40, 24:40] = [140, 100, 70, 255]
+    roundtrip[24:40, 24:40] = [20, 30, 40, 255]
+    Image.fromarray(source, "RGBA").save(tmp_path / "source.png")
+    Image.fromarray(roundtrip, "RGBA").save(tmp_path / "roundtrip.png")
+
+    report = render_parity(tmp_path / "source.png", tmp_path / "roundtrip.png")
+    assert report["scope"] == "alpha_masked_building_foreground"
+    assert report["foreground_pixel_count"] == 256
+    assert report["passed"] is False
+
+
 def test_surface_audit_requires_all_exported_pbr_channels():
     from surface_finish_quality import assess
 

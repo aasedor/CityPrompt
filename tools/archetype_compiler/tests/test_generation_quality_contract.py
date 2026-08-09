@@ -232,6 +232,7 @@ def test_surface_finish_requires_baked_pbr_metric_uvs_and_parity_renders():
     production["quality_contract_version"] = 3
     production["surface_finish"] = {
         "required_baked_materials": ["primary"],
+        "material_roles": {"primary": "coursed_wall_stone"},
         "required_channels": ["albedo", "roughness", "normal"],
         "uv_contract": {"minimum_tile_metres": 3.0, "maximum_tile_metres": 8.0},
         "semantic_weathering": ["grade patina", "roof oxidation", "protected cornice"],
@@ -242,6 +243,11 @@ def test_surface_finish_requires_baked_pbr_metric_uvs_and_parity_renders():
     assert report["status"] == "pass"
     assert any(gate["id"] == "surface_uv_scale:primary" and gate["passed"] for gate in report["gates"])
 
+    production["surface_finish"]["material_roles"] = {}
+    report = assess_generation_quality_contract(grammar, source=source_metadata())
+    assert "surface_material_roles" in {item["id"] for item in report["failures"]}
+
+    production["surface_finish"]["material_roles"] = {"primary": "coursed_wall_stone"}
     grammar["materials"]["primary"]["baked_pbr"] = False
     grammar["materials"]["primary"]["texture_tile_metres"] = 18.0
     production["surface_finish"]["qa_renders"] = ["archetype_match"]

@@ -86,16 +86,16 @@
         ]
       },
       "material_overrides": {
-        "primary": {"texture_key": "limestone", "base_color": "#ded7c9"},
-        "secondary": {"texture_key": "limestone", "base_color": "#eee9df"},
-        "roof": {"texture_key": "copper", "base_color": "#708b7c", "roughness": 0.52, "texture_tint_mode": "COLOR", "texture_tint_strength": 0.72},
+        "primary": {"texture_key": "pale_granite_story_v84", "base_color": "#d5d0c5", "roughness": 0.78, "baked_pbr": true, "texture_tile_metres": 4.4, "normal_strength": 0.82},
+        "secondary": {"texture_key": "pale_granite_detail_v84", "base_color": "#e4dfd4", "roughness": 0.74, "baked_pbr": true, "texture_tile_metres": 3.6, "normal_strength": 0.88},
+        "roof": {"texture_key": "verdigris_copper_story_v84", "base_color": "#5b7e70", "roughness": 0.58, "metallic": 0.62, "baked_pbr": true, "texture_tile_metres": 4.8, "normal_strength": 0.62},
         "accent": {"base_color": "#4b392c", "roughness": 0.42, "metallic": 0.55}
       },
       "production_contract": {
         "identity_mode": "massing_graph",
         "fixed_identity": ["eight-column monumental portico", "broad ceremonial stair and deep bronze entry", "sculpted pediment and low copper roof"],
         "repeatable_capacity": ["symmetrical courthouse wing bays"],
-        "quality_contract_version": 2,
+        "quality_contract_version": 3,
         "metadata_cues": ["white granite ashlar", "monumental Doric columns with entasis", "broad ceremonial stairs spanning full facade width", "low gable with sculpted pediment", "copper with green patina behind stone pediment"],
         "material_continuity": {
           "required_textured_materials": ["primary", "secondary", "roof"],
@@ -115,11 +115,24 @@
             "section_mode": "recessed", "minimum_depth_m": 3.5,
             "minimum_opening_count": 1, "minimum_clearance_count": 1
           }]
+        },
+        "surface_finish": {
+          "method": "baked_pbr_story",
+          "required_baked_materials": ["primary", "secondary", "roof"],
+          "material_roles": {"primary": "coursed_granite_wall", "secondary": "carved_granite_detail", "roof": "standing_seam_copper_roof"},
+          "required_channels": ["albedo", "roughness", "normal"],
+          "uv_contract": {"projection": "metric_box_plus_material_scale", "base_tile_metres": 2.0, "minimum_tile_metres": 3.0, "maximum_tile_metres": 8.0},
+          "semantic_weathering": [
+            "pale granite wall variation remains quieter than carved portico detail",
+            "steps and columns use the cleaner detail-grade granite field",
+            "verdigris oxidation is restricted to the low copper roof"
+          ],
+          "qa_renders": ["neutral_source", "neutral_glb_roundtrip", "archetype_match", "aerial"]
         }
       },
       "massing_recipe": {
-        "kind": "front_opening_landmark", "profile": "courthouse_neoclassical_temple_v78",
-        "description": "Low axial courthouse with an eight-column temple front, deep ceremonial entry and broad stair.",
+        "kind": "front_opening_landmark", "profile": "courthouse_neoclassical_temple_surface_story_v84",
+        "description": "Low axial courthouse with an eight-column temple front, deep ceremonial entry, broad stair and export-baked granite/copper surface story.",
         "reference_views": [
           {"role": "street_identity", "path": "/archetypes/buildings/monumental_courthouse_axis/variant_0.png"},
           {"role": "oblique_massing", "path": "/archetypes/buildings/monumental_courthouse_axis/variant_0_angle_60.jpg"},
@@ -154,15 +167,15 @@
         ]
       },
       "material_overrides": {
-        "primary": {"texture_key": "natural_stone", "base_color": "#b39773"},
-        "secondary": {"texture_key": "stucco", "base_color": "#d4ae6c"},
-        "roof": {"texture_key": "mediterranean_roof_tile", "base_color": "#88715e", "roughness": 0.76, "texture_tint_mode": "COLOR", "texture_tint_strength": 0.72}
+        "primary": {"texture_key": "natural_stone_story_v84", "base_color": "#a58b68", "roughness": 0.88, "baked_pbr": true, "texture_tile_metres": 3.4, "normal_strength": 0.92},
+        "secondary": {"texture_key": "ochre_stucco_story_v84", "base_color": "#c29253", "roughness": 0.84, "baked_pbr": true, "texture_tile_metres": 5.6, "normal_strength": 0.52},
+        "roof": {"texture_key": "terracotta_roof_story_v84", "base_color": "#84553b", "roughness": 0.80, "baked_pbr": true, "texture_tile_metres": 3.0, "normal_strength": 0.88}
       },
       "production_contract": {
         "identity_mode": "massing_graph",
         "fixed_identity": ["continuous round-arch portici", "set-back shopfront wall", "terracotta hip roof"],
         "repeatable_capacity": ["ordinary stucco upper bays"],
-        "quality_contract_version": 2,
+        "quality_contract_version": 3,
         "metadata_cues": ["stone column arcade with round arches", "continuous stone arcade sheltering shops and cafes", "terracotta pantiles"],
         "material_continuity": {
           "required_textured_materials": ["primary", "secondary", "roof"],
@@ -178,11 +191,24 @@
             "section_mode": "recessed", "minimum_depth_m": 3.0,
             "minimum_opening_count": 5, "minimum_clearance_count": 5
           }]
+        },
+        "surface_finish": {
+          "method": "baked_pbr_story",
+          "required_baked_materials": ["primary", "secondary", "roof"],
+          "material_roles": {"primary": "rough_arcade_stone", "secondary": "ochre_wall_stucco", "roof": "overlapping_terracotta_pantile_roof"},
+          "required_channels": ["albedo", "roughness", "normal"],
+          "uv_contract": {"projection": "metric_box_plus_material_scale", "base_tile_metres": 2.0, "minimum_tile_metres": 3.0, "maximum_tile_metres": 8.0},
+          "semantic_weathering": [
+            "rough natural stone is restricted to arcade piers, arches and reveals",
+            "ochre stucco keeps broad low-frequency variation above the portici",
+            "terracotta weathering is restricted to the hipped roof field"
+          ],
+          "qa_renders": ["neutral_source", "neutral_glb_roundtrip", "archetype_match", "aerial"]
         }
       },
       "massing_recipe": {
-        "kind": "front_opening_landmark", "profile": "med_arcade_italian_portici_v78",
-        "description": "Stucco mixed-use block above a five-bay, construction-depth Italian stone portico.",
+        "kind": "front_opening_landmark", "profile": "med_arcade_italian_portici_surface_story_v84",
+        "description": "Stucco mixed-use block above a five-bay construction-depth Italian stone portico with export-baked stone, stucco and terracotta surface story.",
         "reference_views": [
           {"role": "street_identity", "path": "/archetypes/buildings/mediterranean_arcade_mixed_use/variant_0.png"},
           {"role": "oblique_massing", "path": "/archetypes/buildings/mediterranean_arcade_mixed_use/variant_0_angle_60.jpg"},
@@ -214,15 +240,15 @@
         ]
       },
       "material_overrides": {
-        "primary": {"texture_key": "red_brick", "base_color": "#733b31"},
-        "secondary": {"texture_key": "brownstone", "base_color": "#846047"},
-        "roof": {"texture_key": "roof_membrane", "base_color": "#353535", "roughness": 0.88}
+        "primary": {"texture_key": "red_brick_story_v84", "base_color": "#67352b", "roughness": 0.90, "baked_pbr": true, "texture_tile_metres": 3.2, "normal_strength": 0.90},
+        "secondary": {"texture_key": "brownstone_story_v84", "base_color": "#704d37", "roughness": 0.88, "baked_pbr": true, "texture_tile_metres": 3.8, "normal_strength": 0.94},
+        "roof": {"texture_key": "roof_membrane_story_v84", "base_color": "#303130", "roughness": 0.92, "baked_pbr": true, "texture_tile_metres": 7.2, "normal_strength": 0.38}
       },
       "production_contract": {
         "identity_mode": "massing_graph",
         "fixed_identity": ["five round-arched loading bays", "rusticated brownstone base", "corbelled brick parapet"],
         "repeatable_capacity": ["grouped upper arched-window bays"],
-        "quality_contract_version": 2,
+        "quality_contract_version": 3,
         "metadata_cues": ["dark red-brown brick with light stone arched voussoirs", "round-arched loading doors with heavy stone surrounds", "built-up roof behind parapet"],
         "material_continuity": {
           "required_textured_materials": ["primary", "secondary", "roof"],
@@ -238,11 +264,24 @@
             "section_mode": "recessed", "minimum_depth_m": 2.5,
             "minimum_opening_count": 5, "minimum_clearance_count": 5
           }]
+        },
+        "surface_finish": {
+          "method": "baked_pbr_story",
+          "required_baked_materials": ["primary", "secondary", "roof"],
+          "material_roles": {"primary": "red_brown_wall_brick", "secondary": "rusticated_brownstone_detail", "roof": "built_up_roof_membrane"},
+          "required_channels": ["albedo", "roughness", "normal"],
+          "uv_contract": {"projection": "metric_box_plus_material_scale", "base_tile_metres": 2.0, "minimum_tile_metres": 3.0, "maximum_tile_metres": 8.0},
+          "semantic_weathering": [
+            "soot-softened brick remains the upper wall and arch field",
+            "rougher brownstone is restricted to the base, voussoirs and loading reveals",
+            "low-contrast drainage variation is restricted to the built-up roof membrane"
+          ],
+          "qa_renders": ["neutral_source", "neutral_glb_roundtrip", "archetype_match", "aerial"]
         }
       },
       "massing_recipe": {
-        "kind": "front_opening_landmark", "profile": "warehouse_arch_window_brick_v78",
-        "description": "Massive brick warehouse with five full-section loading-bay recesses and a dark membrane roof.",
+        "kind": "front_opening_landmark", "profile": "warehouse_arch_window_brick_surface_story_v84",
+        "description": "Massive brick warehouse with five full-section loading-bay recesses, a dark membrane roof and export-baked brick/brownstone surface story.",
         "reference_views": [
           {"role": "street_identity", "path": "/archetypes/buildings/romanesque_revival_warehouse/variant_0.png"},
           {"role": "oblique_massing", "path": "/archetypes/buildings/romanesque_revival_warehouse/variant_0_angle_60.jpg"},
