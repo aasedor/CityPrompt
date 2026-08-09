@@ -1,0 +1,289 @@
+{
+  "identity": "classic_brownstone_grey_stone",
+  "overall_height_m": 12.8,
+  "floors": 3,
+  "fixed_identity": [
+    "grey limestone ashlar streetwall",
+    "faceted bay windows",
+    "continuous cantilevered stone balcony",
+    "stepped stone parapet with chimneys",
+    "corner configuration with wrapped detailing"
+  ],
+  "repeatable_capacity": [
+    "upper level residences",
+    "ornate window bays"
+  ],
+  "materials": {
+    "primary": {
+      "source_key": "limestone",
+      "base_color": "#808080",
+      "role": "facade structural cladding"
+    },
+    "secondary": {
+      "source_key": "granite",
+      "base_color": "#2C302E",
+      "role": "metal bay frames and trim"
+    },
+    "roof": {
+      "source_key": "roof_membrane",
+      "base_color": "#959A9E",
+      "role": "flat roof protection"
+    }
+  },
+  "nodes": [
+    {
+      "id": "classic_grey_stone_main",
+      "kind": "box",
+      "size": [
+        18.0,
+        18.0,
+        11.2
+      ],
+      "location": [
+        0.0,
+        0.0,
+        5.6
+      ],
+      "material": "primary",
+      "bevel_m": 0.05
+    },
+    {
+      "id": "bay_window_front_left",
+      "kind": "chamfered_box",
+      "size": [
+        3.8,
+        0.8,
+        6.4
+      ],
+      "location": [
+        -4.5,
+        9.4,
+        6.5
+      ],
+      "material": "secondary",
+      "bevel_m": 0.2
+    },
+    {
+      "id": "bay_window_front_right",
+      "kind": "chamfered_box",
+      "size": [
+        3.8,
+        0.8,
+        6.4
+      ],
+      "location": [
+        4.5,
+        9.4,
+        6.5
+      ],
+      "material": "secondary",
+      "bevel_m": 0.2
+    },
+    {
+      "id": "bay_window_left",
+      "kind": "chamfered_box",
+      "size": [
+        0.8,
+        3.8,
+        6.4
+      ],
+      "location": [
+        -9.4,
+        -1.5,
+        6.5
+      ],
+      "material": "secondary",
+      "bevel_m": 0.2
+    },
+    {
+      "id": "balcony_front",
+      "kind": "box",
+      "size": [
+        18.2,
+        1.0,
+        0.25
+      ],
+      "location": [
+        0.1,
+        9.5,
+        3.3
+      ],
+      "material": "primary",
+      "bevel_m": 0.02
+    },
+    {
+      "id": "balcony_left",
+      "kind": "box",
+      "size": [
+        1.0,
+        11.0,
+        0.25
+      ],
+      "location": [
+        -9.5,
+        -3.5,
+        3.3
+      ],
+      "material": "primary",
+      "bevel_m": 0.02
+    },
+    {
+      "id": "parapet_front",
+      "kind": "box",
+      "size": [
+        18.0,
+        0.4,
+        1.2
+      ],
+      "location": [
+        0.0,
+        8.8,
+        11.8
+      ],
+      "material": "primary",
+      "bevel_m": 0.05
+    },
+    {
+      "id": "parapet_left",
+      "kind": "box",
+      "size": [
+        0.4,
+        18.0,
+        1.2
+      ],
+      "location": [
+        -8.8,
+        0.0,
+        11.8
+      ],
+      "material": "primary",
+      "bevel_m": 0.05
+    },
+    {
+      "id": "chimney_left",
+      "kind": "box",
+      "size": [
+        0.8,
+        1.8,
+        2.5
+      ],
+      "location": [
+        -8.5,
+        4.0,
+        12.0
+      ],
+      "material": "primary",
+      "bevel_m": 0.05
+    },
+    {
+      "id": "chimney_right",
+      "kind": "box",
+      "size": [
+        0.8,
+        1.8,
+        2.5
+      ],
+      "location": [
+        8.5,
+        -4.0,
+        12.0
+      ],
+      "material": "primary",
+      "bevel_m": 0.05
+    }
+  ],
+  "skins": [
+    {
+      "id": "skin_front",
+      "axis": "front",
+      "centre": [
+        0.0,
+        9.0,
+        5.6
+      ],
+      "span_m": 18.0,
+      "height_m": 11.2,
+      "depth_m": 0.05,
+      "band": "elevation",
+      "flip_u": false
+    },
+    {
+      "id": "skin_left",
+      "axis": "left",
+      "centre": [
+        -9.0,
+        0.0,
+        5.6
+      ],
+      "span_m": 18.0,
+      "height_m": 11.2,
+      "depth_m": 0.05,
+      "band": "elevation",
+      "flip_u": false
+    }
+  ],
+  "measurements": [
+    {
+      "feature": "Main Building Width",
+      "role": "oblique_massing",
+      "value": 18.0,
+      "unit": "metres",
+      "drives": "classic_grey_stone_main"
+    },
+    {
+      "feature": "Main Building Depth",
+      "role": "oblique_massing",
+      "value": 18.0,
+      "unit": "metres",
+      "drives": "classic_grey_stone_main"
+    },
+    {
+      "feature": "Total Building Height",
+      "role": "street_identity",
+      "value": 11.2,
+      "unit": "metres",
+      "drives": "classic_grey_stone_main"
+    },
+    {
+      "feature": "Front Balcony Width",
+      "role": "street_identity",
+      "value": 18.2,
+      "unit": "metres",
+      "drives": "balcony_front"
+    },
+    {
+      "feature": "Left Balcony Length",
+      "role": "street_identity",
+      "value": 11.0,
+      "unit": "metres",
+      "drives": "balcony_left"
+    },
+    {
+      "feature": "Bay Window Height",
+      "role": "street_identity",
+      "value": 6.4,
+      "unit": "metres",
+      "drives": "bay_window_front_left"
+    },
+    {
+      "feature": "Left Bay Window Width",
+      "role": "street_identity",
+      "value": 3.8,
+      "unit": "metres",
+      "drives": "bay_window_left"
+    },
+    {
+      "feature": "Parapet Wall Height",
+      "role": "roof_plan",
+      "value": 1.2,
+      "unit": "metres",
+      "drives": "parapet_front"
+    }
+  ],
+  "presentation_camera": {
+    "hero_side": "left",
+    "oblique_x_scale": 0.75,
+    "identity_distance_scale": 1.0,
+    "street_distance_scale": 1.0
+  }
+}

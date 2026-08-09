@@ -1,0 +1,287 @@
+{
+  "identity": "modernist_civic_precast_panel",
+  "overall_height_m": 24.0,
+  "floors": 5,
+  "fixed_identity": [
+    "precast concrete grid",
+    "cantilevered corner canopy",
+    "dark recessed window bands",
+    "recessed metal penthouse",
+    "flat roof with parapet"
+  ],
+  "repeatable_capacity": [
+    "systematic window bays",
+    "modular panel joints"
+  ],
+  "materials": {
+    "primary": {
+      "source_key": "precast_concrete",
+      "base_color": "#A9A9A9",
+      "role": "bush-hammered facade panels"
+    },
+    "secondary": {
+      "source_key": "granite",
+      "base_color": "#333333",
+      "role": "dark recessed window gaskets"
+    },
+    "roof": {
+      "source_key": "roof_membrane",
+      "base_color": "#3E3E3E",
+      "role": "flat roof membrane"
+    }
+  },
+  "nodes": [
+    {
+      "id": "block_main",
+      "kind": "box",
+      "size": [
+        26.0,
+        20.0,
+        21.0
+      ],
+      "location": [
+        0.0,
+        0.0,
+        10.5
+      ],
+      "material": "primary",
+      "bevel_m": 0.05
+    },
+    {
+      "id": "block_rear_left",
+      "kind": "box",
+      "size": [
+        10.0,
+        2.0,
+        21.0
+      ],
+      "location": [
+        -8.0,
+        11.0,
+        10.5
+      ],
+      "material": "primary",
+      "bevel_m": 0.05
+    },
+    {
+      "id": "block_rear_right",
+      "kind": "box",
+      "size": [
+        10.0,
+        2.0,
+        21.0
+      ],
+      "location": [
+        8.0,
+        11.0,
+        10.5
+      ],
+      "material": "primary",
+      "bevel_m": 0.05
+    },
+    {
+      "id": "canopy_front",
+      "kind": "box",
+      "size": [
+        28.0,
+        3.0,
+        0.4
+      ],
+      "location": [
+        -1.0,
+        -11.5,
+        4.2
+      ],
+      "material": "primary",
+      "bevel_m": 0.02
+    },
+    {
+      "id": "canopy_right",
+      "kind": "box",
+      "size": [
+        3.0,
+        23.0,
+        0.4
+      ],
+      "location": [
+        14.5,
+        -1.5,
+        4.2
+      ],
+      "material": "primary",
+      "bevel_m": 0.02
+    },
+    {
+      "id": "roof_volume_main",
+      "kind": "box",
+      "size": [
+        22.0,
+        15.0,
+        3.0
+      ],
+      "location": [
+        0.0,
+        -2.0,
+        22.5
+      ],
+      "material": "secondary",
+      "bevel_m": 0.05
+    },
+    {
+      "id": "roof_volume_left",
+      "kind": "box",
+      "size": [
+        8.0,
+        2.0,
+        3.0
+      ],
+      "location": [
+        -7.0,
+        6.5,
+        22.5
+      ],
+      "material": "secondary",
+      "bevel_m": 0.05
+    },
+    {
+      "id": "roof_volume_right",
+      "kind": "box",
+      "size": [
+        8.0,
+        2.0,
+        3.0
+      ],
+      "location": [
+        7.0,
+        6.5,
+        22.5
+      ],
+      "material": "secondary",
+      "bevel_m": 0.05
+    },
+    {
+      "id": "roof_slab",
+      "kind": "box",
+      "size": [
+        25.6,
+        21.6,
+        0.1
+      ],
+      "location": [
+        0.0,
+        0.1,
+        21.0
+      ],
+      "material": "roof",
+      "bevel_m": 0.0
+    }
+  ],
+  "skins": [
+    {
+      "id": "skin_front",
+      "axis": "front",
+      "centre": [
+        0.0,
+        -10.0,
+        10.5
+      ],
+      "span_m": 26.0,
+      "height_m": 21.0,
+      "depth_m": 0.05,
+      "band": "elevation",
+      "flip_u": false
+    },
+    {
+      "id": "skin_right",
+      "axis": "right",
+      "centre": [
+        13.0,
+        0.0,
+        10.5
+      ],
+      "span_m": 20.0,
+      "height_m": 21.0,
+      "depth_m": 0.05,
+      "band": "elevation",
+      "flip_u": false
+    },
+    {
+      "id": "skin_left",
+      "axis": "left",
+      "centre": [
+        -13.0,
+        0.0,
+        10.5
+      ],
+      "span_m": 20.0,
+      "height_m": 21.0,
+      "depth_m": 0.05,
+      "band": "elevation",
+      "flip_u": false
+    }
+  ],
+  "measurements": [
+    {
+      "feature": "facade_width",
+      "role": "street_identity",
+      "value": 26.0,
+      "unit": "metres",
+      "drives": "block_main"
+    },
+    {
+      "feature": "facade_depth",
+      "role": "street_identity",
+      "value": 20.0,
+      "unit": "metres",
+      "drives": "block_main"
+    },
+    {
+      "feature": "canopy_front_span",
+      "role": "street_identity",
+      "value": 28.0,
+      "unit": "metres",
+      "drives": "canopy_front"
+    },
+    {
+      "feature": "canopy_right_span",
+      "role": "street_identity",
+      "value": 23.0,
+      "unit": "metres",
+      "drives": "canopy_right"
+    },
+    {
+      "feature": "penthouse_height",
+      "role": "roof_plan",
+      "value": 3.0,
+      "unit": "metres",
+      "drives": "roof_volume_main"
+    },
+    {
+      "feature": "front_skin_span",
+      "role": "street_identity",
+      "value": 26.0,
+      "unit": "metres",
+      "drives": "skin_front"
+    },
+    {
+      "feature": "right_skin_span",
+      "role": "street_identity",
+      "value": 20.0,
+      "unit": "metres",
+      "drives": "skin_right"
+    },
+    {
+      "feature": "rear_block_left_width",
+      "role": "oblique_massing",
+      "value": 10.0,
+      "unit": "metres",
+      "drives": "block_rear_left"
+    }
+  ],
+  "presentation_camera": {
+    "hero_side": "right",
+    "oblique_x_scale": 0.75,
+    "identity_distance_scale": 1.0,
+    "street_distance_scale": 0.95
+  }
+}

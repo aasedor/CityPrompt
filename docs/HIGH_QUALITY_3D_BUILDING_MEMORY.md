@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-08-09-finite-catalogue-rollout-v86`.
+Current executable memory: `2026-08-09-exact-variant-checkpoint-v87`.
 
 The current calibration set and catalogue rollout rationale are documented in
 [`BUILDING_GOLD_SET_PIPELINE_SYNTHESIS_2026-08-07.md`](BUILDING_GOLD_SET_PIPELINE_SYNTHESIS_2026-08-07.md).
@@ -953,6 +953,40 @@ a finite catalogue campaign without weakening the human visual checkpoint.
   volumes, deep ground-floor recess, pilotis, clerestory, roof slab and raised
   roof core are preserved. Glazing/environment realism remains a named human
   review item rather than a reason to overstate machine approval.
+
+### V87 ten-variant checkpoint lessons
+
+The first ten-variant checkpoint tested exact-image authoring across five new
+parent archetypes. It confirmed that the campaign can produce convincing new
+families, but also proved why ten must be reviewed before one hundred begin.
+
+- Treat the three reference views as the geometry authority. Multimodal output
+  is a draft feature schedule, not executable geometry; normalize it, bind
+  every measurement to a named node and reject metadata that conflicts with
+  visible evidence.
+- Count storeys and opening shapes before generating the facade atlas. A
+  technically polished atlas with invented arches or the wrong floor count is
+  a semantic failure and must not be promoted merely because its PBR and GLB
+  checks pass.
+- Large modern curtain walls use lightweight registered glass masks and fixed
+  structural members. Generating a complete return/frame assembly for every
+  atlas opening creates floating cages, excessive triangles and a less faithful
+  silhouette. Heritage entrances and arcades may still use deep returns where
+  the section is identity-bearing.
+- Roofs, side walls and rear walls need explicit material ownership. Every
+  visible attachment resolves to a baked construction material; every exposed
+  elevation receives a related skin; and roof/aerial review remains a separate
+  pass from the street facade.
+- Recessed public space is topology. The Moorish pilot's three souk arches are
+  a real opening block with piers, lining, clearances and deeper occupied backs,
+  not dark rectangles painted onto a wall.
+- Add a medium-detail construction pass after massing: entry surrounds, timber
+  reveals, fins, balcony edges and roof frames. Use one owner per feature so
+  the atlas and geometry do not duplicate the same balcony or window system.
+- Compare exact reference, archetype-match, roof-audit and rear-corner views on
+  one board. Record `keeper`, `provisional` or `rejected` independently from
+  validation, PBR-channel and source-versus-GLB parity status. Scale-up remains
+  blocked whenever any pilot needs semantic or proportion repair.
 
 ## Updating this memory
 

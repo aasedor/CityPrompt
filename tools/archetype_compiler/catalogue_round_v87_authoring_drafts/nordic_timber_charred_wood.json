@@ -1,0 +1,220 @@
+{
+  "identity": "Nordic mid-rise clad in charred timber (shou sugi ban) with warm natural timber reveals and asymmetric pitched roof",
+  "overall_height_m": 15.0,
+  "floors": 3,
+  "fixed_identity": [
+    "charred_timber_cladding",
+    "asymmetric_pitched_roof",
+    "natural_timber_reveals",
+    "brass_hardware_accents"
+  ],
+  "repeatable_capacity": [
+    "three_stories_occupied",
+    "attic_loft_spaces"
+  ],
+  "materials": {
+    "primary": {
+      "source_key": "charred_timber",
+      "base_color": "#1F2022",
+      "role": "facade cladding"
+    },
+    "secondary": {
+      "source_key": "natural_timber",
+      "base_color": "#C29A75",
+      "role": "window and door reveals"
+    },
+    "roof": {
+      "source_key": "standing_seam",
+      "base_color": "#2C2E30",
+      "role": "standing seam roofing"
+    }
+  },
+  "nodes": [
+    {
+      "id": "mass_main",
+      "kind": "box",
+      "size": [
+        15.0,
+        10.0,
+        9.6
+      ],
+      "location": [
+        0.0,
+        0.0,
+        4.8
+      ],
+      "material": "primary",
+      "bevel_m": 0.05
+    },
+    {
+      "id": "mass_rear",
+      "kind": "box",
+      "size": [
+        7.0,
+        4.0,
+        9.6
+      ],
+      "location": [
+        4.0,
+        7.0,
+        4.8
+      ],
+      "material": "primary",
+      "bevel_m": 0.05
+    },
+    {
+      "id": "roof_main",
+      "kind": "gable_roof",
+      "size": [
+        15.0,
+        10.0,
+        5.4
+      ],
+      "location": [
+        0.0,
+        0.0,
+        9.6
+      ],
+      "material": "roof",
+      "bevel_m": 0.0
+    },
+    {
+      "id": "roof_rear",
+      "kind": "gable_roof",
+      "size": [
+        7.0,
+        4.0,
+        5.4
+      ],
+      "location": [
+        4.0,
+        7.0,
+        9.6
+      ],
+      "material": "roof",
+      "bevel_m": 0.0
+    }
+  ],
+  "skins": [
+    {
+      "id": "skin_front",
+      "axis": "front",
+      "centre": [
+        0.0,
+        -5.0,
+        4.8
+      ],
+      "span_m": 15.0,
+      "height_m": 9.6,
+      "depth_m": 0.05,
+      "band": "elevation",
+      "flip_u": false
+    },
+    {
+      "id": "skin_right",
+      "axis": "right",
+      "centre": [
+        7.5,
+        0.0,
+        4.8
+      ],
+      "span_m": 10.0,
+      "height_m": 9.6,
+      "depth_m": 0.05,
+      "band": "elevation",
+      "flip_u": false
+    },
+    {
+      "id": "skin_rear_right",
+      "axis": "right",
+      "centre": [
+        7.5,
+        7.0,
+        4.8
+      ],
+      "span_m": 4.0,
+      "height_m": 9.6,
+      "depth_m": 0.05,
+      "band": "elevation",
+      "flip_u": false
+    },
+    {
+      "id": "skin_left",
+      "axis": "left",
+      "centre": [
+        -7.5,
+        0.0,
+        4.8
+      ],
+      "span_m": 10.0,
+      "height_m": 9.6,
+      "depth_m": 0.05,
+      "band": "elevation",
+      "flip_u": false
+    }
+  ],
+  "measurements": [
+    {
+      "feature": "main_width",
+      "role": "street_identity",
+      "value": 15.0,
+      "unit": "metres",
+      "drives": "mass_main"
+    },
+    {
+      "feature": "main_depth",
+      "role": "roof_plan",
+      "value": 10.0,
+      "unit": "metres",
+      "drives": "mass_main"
+    },
+    {
+      "feature": "rear_width",
+      "role": "roof_plan",
+      "value": 7.0,
+      "unit": "metres",
+      "drives": "mass_rear"
+    },
+    {
+      "feature": "rear_depth",
+      "role": "roof_plan",
+      "value": 4.0,
+      "unit": "metres",
+      "drives": "mass_rear"
+    },
+    {
+      "feature": "facade_height",
+      "role": "street_identity",
+      "value": 9.6,
+      "unit": "metres",
+      "drives": "mass_main"
+    },
+    {
+      "feature": "roof_height",
+      "role": "oblique_massing",
+      "value": 5.4,
+      "unit": "metres",
+      "drives": "roof_main"
+    },
+    {
+      "feature": "front_skin_span",
+      "role": "street_identity",
+      "value": 15.0,
+      "unit": "metres",
+      "drives": "skin_front"
+    },
+    {
+      "feature": "right_skin_span",
+      "role": "oblique_massing",
+      "value": 10.0,
+      "unit": "metres",
+      "drives": "skin_right"
+    }
+  ],
+  "presentation_camera": {
+    "hero_side": "right",
+    "oblique_x_scale": 0.75,
+    "identity_distance_scale": 1.0,
+    "street_distance_scale": 1.0
+  }
+}

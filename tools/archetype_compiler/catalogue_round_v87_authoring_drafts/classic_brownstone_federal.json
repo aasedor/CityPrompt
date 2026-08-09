@@ -1,0 +1,272 @@
+{
+  "identity": "Classic Federal Red Brick Streetwall with Front Gable and Parapets",
+  "overall_height_m": 13.6,
+  "floors": 3,
+  "fixed_identity": [
+    "Flemish bond red brick facade",
+    "Low-slope gable roof behind prominent side parapets",
+    "Symmetrical double chimneys on side party walls",
+    "White marble entry trim and lintels"
+  ],
+  "repeatable_capacity": [
+    "3 floors of residential space",
+    "Rear flat roof extension"
+  ],
+  "materials": {
+    "primary": {
+      "source_key": "red_brick",
+      "base_color": "#93632f",
+      "role": "main facade and chimney construction"
+    },
+    "secondary": {
+      "source_key": "limestone",
+      "base_color": "#e6e0d4",
+      "role": "white marble lintels and entry portico"
+    },
+    "roof": {
+      "source_key": "standing_seam",
+      "base_color": "#a2a8ab",
+      "role": "sloped metal roofing"
+    }
+  },
+  "nodes": [
+    {
+      "id": "main_mass",
+      "kind": "box",
+      "size": [
+        18.0,
+        11.5,
+        9.6
+      ],
+      "location": [
+        0.0,
+        -3.25,
+        4.8
+      ],
+      "material": "primary",
+      "bevel_m": 0.05
+    },
+    {
+      "id": "rear_mass",
+      "kind": "box",
+      "size": [
+        18.0,
+        6.5,
+        9.6
+      ],
+      "location": [
+        0.0,
+        5.75,
+        4.8
+      ],
+      "material": "primary",
+      "bevel_m": 0.05
+    },
+    {
+      "id": "gable_roof",
+      "kind": "gable_roof",
+      "size": [
+        17.0,
+        11.5,
+        2.8
+      ],
+      "location": [
+        0.0,
+        -3.25,
+        9.6
+      ],
+      "material": "roof",
+      "bevel_m": 0.0
+    },
+    {
+      "id": "left_parapet",
+      "kind": "box",
+      "size": [
+        0.5,
+        11.5,
+        3.0
+      ],
+      "location": [
+        -8.75,
+        -3.25,
+        11.1
+      ],
+      "material": "primary",
+      "bevel_m": 0.05
+    },
+    {
+      "id": "right_parapet",
+      "kind": "box",
+      "size": [
+        0.5,
+        11.5,
+        3.0
+      ],
+      "location": [
+        8.75,
+        -3.25,
+        11.1
+      ],
+      "material": "primary",
+      "bevel_m": 0.05
+    },
+    {
+      "id": "chimney_lf",
+      "kind": "box",
+      "size": [
+        0.8,
+        1.2,
+        2.0
+      ],
+      "location": [
+        -8.75,
+        -7.5,
+        12.6
+      ],
+      "material": "primary",
+      "bevel_m": 0.02
+    },
+    {
+      "id": "chimney_lb",
+      "kind": "box",
+      "size": [
+        0.8,
+        1.2,
+        2.0
+      ],
+      "location": [
+        -8.75,
+        1.0,
+        12.6
+      ],
+      "material": "primary",
+      "bevel_m": 0.02
+    },
+    {
+      "id": "chimney_rf",
+      "kind": "box",
+      "size": [
+        0.8,
+        1.2,
+        2.0
+      ],
+      "location": [
+        8.75,
+        -7.5,
+        12.6
+      ],
+      "material": "primary",
+      "bevel_m": 0.02
+    },
+    {
+      "id": "chimney_rb",
+      "kind": "box",
+      "size": [
+        0.8,
+        1.2,
+        2.0
+      ],
+      "location": [
+        8.75,
+        1.0,
+        12.6
+      ],
+      "material": "primary",
+      "bevel_m": 0.02
+    }
+  ],
+  "skins": [
+    {
+      "id": "front_skin",
+      "axis": "front",
+      "centre": [
+        0.0,
+        -9.02,
+        4.8
+      ],
+      "span_m": 18.0,
+      "height_m": 9.6,
+      "depth_m": 0.05,
+      "band": "elevation",
+      "flip_u": false
+    },
+    {
+      "id": "rear_skin",
+      "axis": "rear",
+      "centre": [
+        0.0,
+        9.02,
+        4.8
+      ],
+      "span_m": 18.0,
+      "height_m": 9.6,
+      "depth_m": 0.05,
+      "band": "elevation",
+      "flip_u": false
+    }
+  ],
+  "measurements": [
+    {
+      "feature": "front_facade_width",
+      "role": "street_identity",
+      "value": 18.0,
+      "unit": "metres",
+      "drives": "front_skin"
+    },
+    {
+      "feature": "front_facade_height",
+      "role": "street_identity",
+      "value": 9.6,
+      "unit": "metres",
+      "drives": "front_skin"
+    },
+    {
+      "feature": "main_mass_height",
+      "role": "oblique_massing",
+      "value": 9.6,
+      "unit": "metres",
+      "drives": "main_mass"
+    },
+    {
+      "feature": "rear_extension_depth",
+      "role": "oblique_massing",
+      "value": 6.5,
+      "unit": "metres",
+      "drives": "rear_mass"
+    },
+    {
+      "feature": "roof_rise",
+      "role": "roof_plan",
+      "value": 2.8,
+      "unit": "metres",
+      "drives": "gable_roof"
+    },
+    {
+      "feature": "chimney_height",
+      "role": "roof_plan",
+      "value": 2.0,
+      "unit": "metres",
+      "drives": "chimney_lf"
+    },
+    {
+      "feature": "left_parapet_height",
+      "role": "roof_plan",
+      "value": 3.0,
+      "unit": "metres",
+      "drives": "left_parapet"
+    },
+    {
+      "feature": "right_parapet_height",
+      "role": "roof_plan",
+      "value": 3.0,
+      "unit": "metres",
+      "drives": "right_parapet"
+    }
+  ],
+  "presentation_camera": {
+    "hero_side": "left",
+    "oblique_x_scale": 0.7,
+    "identity_distance_scale": 1.0,
+    "street_distance_scale": 0.95
+  }
+}

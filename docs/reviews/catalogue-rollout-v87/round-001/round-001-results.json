@@ -1,0 +1,95 @@
+{
+  "schema": "catalogue-v87-checkpoint-results@1",
+  "round_id": "ROUND-001",
+  "pipeline_version": "v87",
+  "requested": 10,
+  "human_summary": {
+    "keeper_candidate": 6,
+    "provisional": 2,
+    "rejected": 2
+  },
+  "scale_decision": "blocked",
+  "scale_blockers": [
+    "transparent and dark-material GLB parity",
+    "precast rear skin overlap",
+    "terracotta module export throughput",
+    "Catalan curve-native massing and storey-band semantics"
+  ],
+  "cost": {
+    "currency": "USD",
+    "authorized_cap": 20.0,
+    "reserved_total": 1.41,
+    "text_authoring_calls": 10,
+    "facade_image_calls": 11
+  },
+  "review_images": [
+    "docs/reviews/catalogue-rollout-v87/round-001/exact-reference-comparison.png",
+    "docs/reviews/catalogue-rollout-v87/round-001/roof-and-side-audit.png"
+  ],
+  "results": [
+    {
+      "variant_id": "classic_brownstone_federal",
+      "human_status": "keeper_candidate",
+      "machine_status": "pass",
+      "foreground_similarity": 0.95433
+    },
+    {
+      "variant_id": "classic_brownstone_grey_stone",
+      "human_status": "keeper_candidate",
+      "machine_status": "blocked",
+      "foreground_similarity": 0.91995,
+      "blocker": "neutral_glb_roundtrip_parity"
+    },
+    {
+      "variant_id": "modernist_civic_white_corbusian",
+      "human_status": "keeper_candidate",
+      "machine_status": "pass",
+      "foreground_similarity": 0.99199
+    },
+    {
+      "variant_id": "modernist_civic_precast_panel",
+      "human_status": "provisional",
+      "machine_status": "pass",
+      "foreground_similarity": 0.95557,
+      "blocker": "rear_skin_overlap"
+    },
+    {
+      "variant_id": "glass_office_terracotta_fins",
+      "human_status": "rejected",
+      "machine_status": "failed",
+      "blocker": "unacceptable module export throughput after proportion repair"
+    },
+    {
+      "variant_id": "glass_office_dark_frame",
+      "human_status": "provisional",
+      "machine_status": "blocked",
+      "foreground_similarity": 0.91599,
+      "blocker": "transparent neutral_glb_roundtrip_parity"
+    },
+    {
+      "variant_id": "nordic_timber_charred_wood",
+      "human_status": "keeper_candidate",
+      "machine_status": "blocked",
+      "foreground_similarity": 0.94514,
+      "blocker": "neutral_glb_roundtrip_parity"
+    },
+    {
+      "variant_id": "nordic_timber_cross_laminated",
+      "human_status": "keeper_candidate",
+      "machine_status": "pass",
+      "foreground_similarity": 0.9713
+    },
+    {
+      "variant_id": "med_arcade_moorish",
+      "human_status": "keeper_candidate",
+      "machine_status": "pass",
+      "foreground_similarity": 0.95921
+    },
+    {
+      "variant_id": "med_arcade_catalan_modernista",
+      "human_status": "rejected",
+      "machine_status": "failed",
+      "blocker": "flat repeated atlas and non-organic massing"
+    }
+  ]
+}

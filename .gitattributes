@@ -19,3 +19,4 @@ docs/reviews/three-building-surface-story-v84/*.png filter=lfs diff=lfs merge=lf
 tools/archetype_compiler/facade_sources_v71/*.png filter=lfs diff=lfs merge=lfs -text
 docs/reviews/three-new-archetypes-v85/*.png filter=lfs diff=lfs merge=lfs -text
 docs/reviews/catalogue-rollout-v86/**/*.png filter=lfs diff=lfs merge=lfs -text
+docs/reviews/catalogue-rollout-v87/**/*.png filter=lfs diff=lfs merge=lfs -text

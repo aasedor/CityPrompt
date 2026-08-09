@@ -42,3 +42,26 @@ def test_surface_story_bake_is_deterministic_and_writes_three_pbr_channels(tmp_p
     assert first["statistics"]["albedo_std"] > 1.0
     assert first["statistics"]["roughness_std"] > 1.0
     assert first["statistics"]["normal_xy_std"] > 1.0
+
+
+def test_external_surface_story_recipe_manifest(tmp_path):
+    import json
+    from derive_surface_story_pbr import load_recipe_manifest
+
+    path = tmp_path / "recipes.json"
+    path.write_text(json.dumps({
+        "schema": "surface-story-recipes@1",
+        "recipes": [{
+            "output_key": "federal_red_brick_v87",
+            "source_key": "red_brick",
+            "tint": "#93632f",
+            "seed": 8701,
+            "role": "Federal red brick",
+        }],
+    }), encoding="utf-8")
+
+    recipes = load_recipe_manifest(path)
+    assert len(recipes) == 1
+    assert recipes[0].output_key == "federal_red_brick_v87"
+    assert recipes[0].tint == (147, 99, 47)
+    assert recipes[0].source_key == "red_brick"

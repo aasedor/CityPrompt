@@ -136,6 +136,45 @@ RECIPES = (
 )
 
 
+def load_recipe_manifest(path: Path) -> tuple[StoryRecipe, ...]:
+    """Load bounded campaign recipes without expanding the global recipe table."""
+    payload = json.loads(path.read_text(encoding="utf-8-sig"))
+    if payload.get("schema") != "surface-story-recipes@1":
+        raise ValueError(f"unsupported recipe manifest schema: {payload.get('schema')!r}")
+    recipes: list[StoryRecipe] = []
+    seen: set[str] = set()
+    for number, item in enumerate(payload.get("recipes") or [], 1):
+        output_key = str(item.get("output_key") or "").strip()
+        source_key = str(item.get("source_key") or "").strip()
+        if not output_key or not source_key:
+            raise ValueError(f"recipe {number} requires output_key and source_key")
+        if output_key in seen:
+            raise ValueError(f"duplicate external recipe output_key: {output_key}")
+        seen.add(output_key)
+        raw_tint = item.get("tint")
+        if isinstance(raw_tint, str) and len(raw_tint) == 7 and raw_tint.startswith("#"):
+            tint = tuple(int(raw_tint[index:index + 2], 16) for index in (1, 3, 5))
+        elif isinstance(raw_tint, list) and len(raw_tint) == 3:
+            tint = tuple(int(channel) for channel in raw_tint)
+        else:
+            raise ValueError(f"recipe {output_key} tint must be #RRGGBB or three channels")
+        if any(channel < 0 or channel > 255 for channel in tint):
+            raise ValueError(f"recipe {output_key} tint channels must be 0..255")
+        recipes.append(StoryRecipe(
+            output_key=output_key,
+            source_key=source_key,
+            tint=tint,
+            tint_mix=float(item.get("tint_mix", 0.42)),
+            macro_strength=float(item.get("macro_strength", 0.055)),
+            roughness_strength=float(item.get("roughness_strength", 0.09)),
+            normal_strength=float(item.get("normal_strength", 1.25)),
+            seed=int(item.get("seed", 1)),
+            role=str(item.get("role") or output_key),
+            pattern=str(item.get("pattern") or "source"),
+        ))
+    return tuple(recipes)
+
+
 def periodic_noise(size: int, seed: int) -> np.ndarray:
     """Return deterministic seamless low-frequency noise in the range -1..1."""
     rng = np.random.default_rng(seed)
@@ -316,12 +355,20 @@ def main() -> None:
     parser.add_argument("--output-root", type=Path, required=True)
     parser.add_argument("--size", type=int, default=2048)
     parser.add_argument("--pipeline-version", default="v83")
+    parser.add_argument("--recipe-manifest", type=Path, default=None)
     args = parser.parse_args()
     if args.size < 512:
         raise ValueError("surface-story textures must be at least 512 px")
     args.output_root.mkdir(parents=True, exist_ok=True)
     source_roots = [args.source_root, *args.additional_source_root]
-    materials = [derive(recipe, source_roots, args.output_root, args.size) for recipe in RECIPES]
+    external = load_recipe_manifest(args.recipe_manifest) if args.recipe_manifest else ()
+    duplicate_keys = {recipe.output_key for recipe in RECIPES} & {recipe.output_key for recipe in external}
+    if duplicate_keys:
+        raise ValueError("external recipes duplicate built-in keys: " + ", ".join(sorted(duplicate_keys)))
+    materials = [
+        derive(recipe, source_roots, args.output_root, args.size)
+        for recipe in (*RECIPES, *external)
+    ]
     manifest = {
         "schema": "surface-story-pbr@1",
         "pipeline_version": args.pipeline_version,

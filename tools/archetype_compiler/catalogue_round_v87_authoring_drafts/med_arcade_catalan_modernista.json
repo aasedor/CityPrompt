@@ -1,0 +1,256 @@
+{
+  "identity": "Catalan Modernista mixed-use building with undulating facade and ceramic-clad roof",
+  "overall_height_m": 29.0,
+  "floors": 6,
+  "fixed_identity": [
+    "parabolic_arches",
+    "trencadis_mosaic_facade",
+    "organic_ironwork_balconies",
+    "undulating_facade_profiles",
+    "sculptural_chimneys"
+  ],
+  "repeatable_capacity": [
+    "boutique_retail",
+    "cultural_exhibition_space",
+    "luxury_apartments"
+  ],
+  "materials": {
+    "primary": {
+      "source_key": "limestone",
+      "base_color": "#d2c29d",
+      "role": "organic carved stone structure and balconies"
+    },
+    "secondary": {
+      "source_key": "stucco",
+      "base_color": "#aabc0b",
+      "role": "colorful trencadis mosaic facade backing"
+    },
+    "roof": {
+      "source_key": "terracotta",
+      "base_color": "#3c7ca6",
+      "role": "iridescent scaled ceramic roof tiles"
+    }
+  },
+  "nodes": [
+    {
+      "id": "main_body",
+      "kind": "chamfered_box",
+      "size": [
+        20.0,
+        16.0,
+        18.0
+      ],
+      "location": [
+        0.0,
+        0.0,
+        9.0
+      ],
+      "material": "primary",
+      "bevel_m": 2.0
+    },
+    {
+      "id": "roof_mass",
+      "kind": "hipped_roof",
+      "size": [
+        18.0,
+        14.0,
+        4.0
+      ],
+      "location": [
+        0.0,
+        0.0,
+        18.0
+      ],
+      "material": "roof",
+      "bevel_m": 0.0
+    },
+    {
+      "id": "left_tower_cyl",
+      "kind": "cylinder",
+      "size": [
+        3.0,
+        3.0,
+        7.0
+      ],
+      "location": [
+        -8.0,
+        -6.0,
+        21.5
+      ],
+      "material": "secondary",
+      "bevel_m": 0.0
+    },
+    {
+      "id": "left_tower_cone",
+      "kind": "cone",
+      "size": [
+        3.2,
+        3.2,
+        4.0
+      ],
+      "location": [
+        -8.0,
+        -6.0,
+        27.0
+      ],
+      "material": "roof",
+      "bevel_m": 0.0
+    },
+    {
+      "id": "chimney_1",
+      "kind": "cylinder",
+      "size": [
+        1.2,
+        1.2,
+        5.0
+      ],
+      "location": [
+        4.0,
+        -3.0,
+        22.5
+      ],
+      "material": "primary",
+      "bevel_m": 0.0
+    },
+    {
+      "id": "chimney_2",
+      "kind": "cylinder",
+      "size": [
+        1.2,
+        1.2,
+        4.5
+      ],
+      "location": [
+        6.0,
+        -2.5,
+        22.25
+      ],
+      "material": "primary",
+      "bevel_m": 0.0
+    },
+    {
+      "id": "chimney_3",
+      "kind": "cylinder",
+      "size": [
+        1.4,
+        1.4,
+        4.0
+      ],
+      "location": [
+        -1.5,
+        1.0,
+        22.0
+      ],
+      "material": "primary",
+      "bevel_m": 0.0
+    }
+  ],
+  "skins": [
+    {
+      "id": "front_facade",
+      "axis": "front",
+      "centre": [
+        0.0,
+        -8.0,
+        9.0
+      ],
+      "span_m": 20.0,
+      "height_m": 18.0,
+      "depth_m": 0.05,
+      "band": "elevation",
+      "flip_u": false
+    },
+    {
+      "id": "right_facade",
+      "axis": "right",
+      "centre": [
+        10.0,
+        0.0,
+        9.0
+      ],
+      "span_m": 16.0,
+      "height_m": 18.0,
+      "depth_m": 0.05,
+      "band": "elevation",
+      "flip_u": false
+    },
+    {
+      "id": "left_facade",
+      "axis": "left",
+      "centre": [
+        -10.0,
+        0.0,
+        9.0
+      ],
+      "span_m": 16.0,
+      "height_m": 18.0,
+      "depth_m": 0.05,
+      "band": "elevation",
+      "flip_u": false
+    }
+  ],
+  "measurements": [
+    {
+      "feature": "facade_width",
+      "role": "street_identity",
+      "value": 20.0,
+      "unit": "metres",
+      "drives": "front_facade"
+    },
+    {
+      "feature": "facade_height",
+      "role": "street_identity",
+      "value": 18.0,
+      "unit": "metres",
+      "drives": "front_facade"
+    },
+    {
+      "feature": "main_body_height",
+      "role": "oblique_massing",
+      "value": 18.0,
+      "unit": "metres",
+      "drives": "main_body"
+    },
+    {
+      "feature": "main_body_depth",
+      "role": "oblique_massing",
+      "value": 16.0,
+      "unit": "metres",
+      "drives": "main_body"
+    },
+    {
+      "feature": "roof_rise",
+      "role": "roof_plan",
+      "value": 4.0,
+      "unit": "metres",
+      "drives": "roof_mass"
+    },
+    {
+      "feature": "tower_cyl_height",
+      "role": "oblique_massing",
+      "value": 7.0,
+      "unit": "metres",
+      "drives": "left_tower_cyl"
+    },
+    {
+      "feature": "tower_cone_height",
+      "role": "oblique_massing",
+      "value": 4.0,
+      "unit": "metres",
+      "drives": "left_tower_cone"
+    },
+    {
+      "feature": "chimney_1_height",
+      "role": "oblique_massing",
+      "value": 5.0,
+      "unit": "metres",
+      "drives": "chimney_1"
+    }
+  ],
+  "presentation_camera": {
+    "hero_side": "right",
+    "oblique_x_scale": 0.72,
+    "identity_distance_scale": 0.95,
+    "street_distance_scale": 1.05
+  }
+}

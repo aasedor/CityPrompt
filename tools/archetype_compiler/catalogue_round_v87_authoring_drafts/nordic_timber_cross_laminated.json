@@ -1,0 +1,209 @@
+{
+  "identity": "Nordic Timber Mid-Rise with Green Roof & Sauna",
+  "overall_height_m": 15.4,
+  "floors": 4,
+  "fixed_identity": [
+    "Marine-grade birch plywood panel cladding",
+    "Pine-framed triple-glazed windows",
+    "Flat green roof with timber sauna pavilion",
+    "Rear-left stepped footprint setback",
+    "Ground floor community kitchen with extensive glazing"
+  ],
+  "repeatable_capacity": [
+    "16 mid-size residential apartments",
+    "Rooftop community deck and sauna"
+  ],
+  "materials": {
+    "primary": {
+      "source_key": "natural_timber",
+      "base_color": "#d7c383",
+      "role": "Birch plywood facade panels"
+    },
+    "secondary": {
+      "source_key": "white_plaster",
+      "base_color": "#f0ece1",
+      "role": "Horizontal spandrel bands and window frame details"
+    },
+    "roof": {
+      "source_key": "sedum_roof",
+      "base_color": "#5c7a43",
+      "role": "Extensive sedum green roof layer"
+    }
+  },
+  "nodes": [
+    {
+      "id": "mass_east",
+      "kind": "box",
+      "size": [
+        13.0,
+        16.0,
+        12.8
+      ],
+      "location": [
+        3.5,
+        0.0,
+        6.4
+      ],
+      "material": "primary",
+      "bevel_m": 0.05
+    },
+    {
+      "id": "mass_west",
+      "kind": "box",
+      "size": [
+        7.0,
+        12.0,
+        12.8
+      ],
+      "location": [
+        -6.5,
+        -2.0,
+        6.4
+      ],
+      "material": "primary",
+      "bevel_m": 0.05
+    },
+    {
+      "id": "sauna_pavilion",
+      "kind": "box",
+      "size": [
+        6.5,
+        4.5,
+        2.6
+      ],
+      "location": [
+        3.0,
+        -2.0,
+        14.1
+      ],
+      "material": "primary",
+      "bevel_m": 0.02
+    },
+    {
+      "id": "roof_east_sedum",
+      "kind": "box",
+      "size": [
+        13.0,
+        16.0,
+        0.2
+      ],
+      "location": [
+        3.5,
+        0.0,
+        12.9
+      ],
+      "material": "roof",
+      "bevel_m": 0.0
+    },
+    {
+      "id": "roof_west_sedum",
+      "kind": "box",
+      "size": [
+        7.0,
+        12.0,
+        0.2
+      ],
+      "location": [
+        -6.5,
+        -2.0,
+        12.9
+      ],
+      "material": "roof",
+      "bevel_m": 0.0
+    }
+  ],
+  "skins": [
+    {
+      "id": "skin_front",
+      "axis": "front",
+      "centre": [
+        0.0,
+        -8.025,
+        6.4
+      ],
+      "span_m": 20.0,
+      "height_m": 12.8,
+      "depth_m": 0.05,
+      "band": "elevation",
+      "flip_u": false
+    },
+    {
+      "id": "skin_right",
+      "axis": "right",
+      "centre": [
+        10.025,
+        0.0,
+        6.4
+      ],
+      "span_m": 16.0,
+      "height_m": 12.8,
+      "depth_m": 0.05,
+      "band": "elevation",
+      "flip_u": false
+    }
+  ],
+  "measurements": [
+    {
+      "feature": "overall_height",
+      "role": "oblique_massing",
+      "value": 15.4,
+      "unit": "metres",
+      "drives": "sauna_pavilion"
+    },
+    {
+      "feature": "facade_width",
+      "role": "street_identity",
+      "value": 20.0,
+      "unit": "metres",
+      "drives": "skin_front"
+    },
+    {
+      "feature": "facade_height",
+      "role": "street_identity",
+      "value": 12.8,
+      "unit": "metres",
+      "drives": "skin_front"
+    },
+    {
+      "feature": "side_depth",
+      "role": "street_identity",
+      "value": 16.0,
+      "unit": "metres",
+      "drives": "skin_right"
+    },
+    {
+      "feature": "east_mass_width",
+      "role": "oblique_massing",
+      "value": 13.0,
+      "unit": "metres",
+      "drives": "mass_east"
+    },
+    {
+      "feature": "west_mass_width",
+      "role": "oblique_massing",
+      "value": 7.0,
+      "unit": "metres",
+      "drives": "mass_west"
+    },
+    {
+      "feature": "sauna_width",
+      "role": "roof_plan",
+      "value": 6.5,
+      "unit": "metres",
+      "drives": "sauna_pavilion"
+    },
+    {
+      "feature": "sauna_height",
+      "role": "roof_plan",
+      "value": 2.6,
+      "unit": "metres",
+      "drives": "sauna_pavilion"
+    }
+  ],
+  "presentation_camera": {
+    "hero_side": "right",
+    "oblique_x_scale": 0.75,
+    "identity_distance_scale": 1.0,
+    "street_distance_scale": 1.0
+  }
+}

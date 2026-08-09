@@ -1,0 +1,306 @@
+{
+  "schema": "surface-story-recipes@1",
+  "round_id": "ROUND-001",
+  "recipes": [
+    {
+      "output_key": "v87_classic_brownstone_federal_primary",
+      "source_key": "red_brick",
+      "tint": "#93632f",
+      "tint_mix": 0.44,
+      "macro_strength": 0.06,
+      "roughness_strength": 0.09,
+      "normal_strength": 1.85,
+      "role": "main facade and chimney construction"
+    },
+    {
+      "output_key": "v87_classic_brownstone_federal_secondary",
+      "source_key": "limestone",
+      "tint": "#e6e0d4",
+      "tint_mix": 0.44,
+      "macro_strength": 0.06,
+      "roughness_strength": 0.09,
+      "normal_strength": 2.6,
+      "role": "white marble lintels and entry portico"
+    },
+    {
+      "output_key": "v87_classic_brownstone_federal_roof",
+      "source_key": "standing_seam",
+      "tint": "#a2a8ab",
+      "tint_mix": 0.44,
+      "macro_strength": 0.06,
+      "roughness_strength": 0.09,
+      "normal_strength": 1.85,
+      "role": "sloped metal roofing"
+    },
+    {
+      "output_key": "v87_classic_brownstone_grey_stone_primary",
+      "source_key": "limestone",
+      "tint": "#808080",
+      "tint_mix": 0.44,
+      "macro_strength": 0.06,
+      "roughness_strength": 0.09,
+      "normal_strength": 2.6,
+      "role": "facade structural cladding"
+    },
+    {
+      "output_key": "v87_classic_brownstone_grey_stone_secondary",
+      "source_key": "granite",
+      "tint": "#2C302E",
+      "tint_mix": 0.44,
+      "macro_strength": 0.06,
+      "roughness_strength": 0.09,
+      "normal_strength": 1.85,
+      "role": "metal bay frames and trim"
+    },
+    {
+      "output_key": "v87_classic_brownstone_grey_stone_roof",
+      "source_key": "roof_membrane",
+      "tint": "#959A9E",
+      "tint_mix": 0.44,
+      "macro_strength": 0.06,
+      "roughness_strength": 0.09,
+      "normal_strength": 1.85,
+      "role": "flat roof protection"
+    },
+    {
+      "output_key": "v87_modernist_civic_white_corbusian_primary",
+      "source_key": "white_plaster",
+      "tint": "#FFFFF0",
+      "tint_mix": 0.44,
+      "macro_strength": 0.06,
+      "roughness_strength": 0.09,
+      "normal_strength": 4.0,
+      "role": "smooth white cement render massing"
+    },
+    {
+      "output_key": "v87_modernist_civic_white_corbusian_secondary",
+      "source_key": "curtain_wall",
+      "tint": "#2A3A4A",
+      "tint_mix": 0.44,
+      "macro_strength": 0.06,
+      "roughness_strength": 0.09,
+      "normal_strength": 1.85,
+      "role": "ribbon windows and ground floor glazing"
+    },
+    {
+      "output_key": "v87_modernist_civic_white_corbusian_roof",
+      "source_key": "sedum_roof",
+      "tint": "#5F8575",
+      "tint_mix": 0.44,
+      "macro_strength": 0.06,
+      "roughness_strength": 0.09,
+      "normal_strength": 1.85,
+      "role": "accessible landscaped roof garden"
+    },
+    {
+      "output_key": "v87_modernist_civic_precast_panel_primary",
+      "source_key": "precast_concrete",
+      "tint": "#A9A9A9",
+      "tint_mix": 0.44,
+      "macro_strength": 0.06,
+      "roughness_strength": 0.09,
+      "normal_strength": 1.85,
+      "role": "bush-hammered facade panels"
+    },
+    {
+      "output_key": "v87_modernist_civic_precast_panel_secondary",
+      "source_key": "granite",
+      "tint": "#333333",
+      "tint_mix": 0.44,
+      "macro_strength": 0.06,
+      "roughness_strength": 0.09,
+      "normal_strength": 1.85,
+      "role": "dark recessed window gaskets"
+    },
+    {
+      "output_key": "v87_modernist_civic_precast_panel_roof",
+      "source_key": "roof_membrane",
+      "tint": "#3E3E3E",
+      "tint_mix": 0.44,
+      "macro_strength": 0.06,
+      "roughness_strength": 0.09,
+      "normal_strength": 1.85,
+      "role": "flat roof membrane"
+    },
+    {
+      "output_key": "v87_glass_office_terracotta_fins_primary",
+      "source_key": "terracotta",
+      "tint": "#CC7722",
+      "tint_mix": 0.44,
+      "macro_strength": 0.06,
+      "roughness_strength": 0.09,
+      "normal_strength": 1.85,
+      "role": "vertical shading brise-soleil fins"
+    },
+    {
+      "output_key": "v87_glass_office_terracotta_fins_secondary",
+      "source_key": "curtain_wall",
+      "tint": "#A9C0CD",
+      "tint_mix": 0.44,
+      "macro_strength": 0.06,
+      "roughness_strength": 0.09,
+      "normal_strength": 1.85,
+      "role": "structural glass window wall"
+    },
+    {
+      "output_key": "v87_glass_office_terracotta_fins_roof",
+      "source_key": "sedum_roof",
+      "tint": "#5D7A50",
+      "tint_mix": 0.44,
+      "macro_strength": 0.06,
+      "roughness_strength": 0.09,
+      "normal_strength": 1.85,
+      "role": "intensive green roof with terrace planting"
+    },
+    {
+      "output_key": "v87_glass_office_dark_frame_primary",
+      "source_key": "curtain_wall",
+      "tint": "#1C1C1C",
+      "tint_mix": 0.44,
+      "macro_strength": 0.06,
+      "roughness_strength": 0.09,
+      "normal_strength": 1.85,
+      "role": "expressed exterior structural frame and glazing"
+    },
+    {
+      "output_key": "v87_glass_office_dark_frame_secondary",
+      "source_key": "precast_concrete",
+      "tint": "#A5A5A5",
+      "tint_mix": 0.44,
+      "macro_strength": 0.06,
+      "roughness_strength": 0.09,
+      "normal_strength": 1.85,
+      "role": "structural core and rear solid party walls"
+    },
+    {
+      "output_key": "v87_glass_office_dark_frame_roof",
+      "source_key": "roof_membrane",
+      "tint": "#7F8285",
+      "tint_mix": 0.44,
+      "macro_strength": 0.06,
+      "roughness_strength": 0.09,
+      "normal_strength": 1.85,
+      "role": "flat roof weatherproofing"
+    },
+    {
+      "output_key": "v87_nordic_timber_charred_wood_primary",
+      "source_key": "charred_timber",
+      "tint": "#1F2022",
+      "tint_mix": 0.44,
+      "macro_strength": 0.06,
+      "roughness_strength": 0.09,
+      "normal_strength": 1.85,
+      "role": "facade cladding"
+    },
+    {
+      "output_key": "v87_nordic_timber_charred_wood_secondary",
+      "source_key": "natural_timber",
+      "tint": "#C29A75",
+      "tint_mix": 0.44,
+      "macro_strength": 0.06,
+      "roughness_strength": 0.09,
+      "normal_strength": 1.85,
+      "role": "window and door reveals"
+    },
+    {
+      "output_key": "v87_nordic_timber_charred_wood_roof",
+      "source_key": "standing_seam",
+      "tint": "#2C2E30",
+      "tint_mix": 0.44,
+      "macro_strength": 0.06,
+      "roughness_strength": 0.09,
+      "normal_strength": 1.85,
+      "role": "standing seam roofing"
+    },
+    {
+      "output_key": "v87_nordic_timber_cross_laminated_primary",
+      "source_key": "natural_timber",
+      "tint": "#d7c383",
+      "tint_mix": 0.44,
+      "macro_strength": 0.06,
+      "roughness_strength": 0.09,
+      "normal_strength": 1.85,
+      "role": "Birch plywood facade panels"
+    },
+    {
+      "output_key": "v87_nordic_timber_cross_laminated_secondary",
+      "source_key": "white_plaster",
+      "tint": "#f0ece1",
+      "tint_mix": 0.44,
+      "macro_strength": 0.06,
+      "roughness_strength": 0.09,
+      "normal_strength": 4.0,
+      "role": "Horizontal spandrel bands and window frame details"
+    },
+    {
+      "output_key": "v87_nordic_timber_cross_laminated_roof",
+      "source_key": "sedum_roof",
+      "tint": "#5c7a43",
+      "tint_mix": 0.44,
+      "macro_strength": 0.06,
+      "roughness_strength": 0.09,
+      "normal_strength": 1.85,
+      "role": "Extensive sedum green roof layer"
+    },
+    {
+      "output_key": "v87_med_arcade_moorish_primary",
+      "source_key": "white_plaster",
+      "tint": "#F5F2EB",
+      "tint_mix": 0.44,
+      "macro_strength": 0.06,
+      "roughness_strength": 0.09,
+      "normal_strength": 4.0,
+      "role": "white lime render masonry walls"
+    },
+    {
+      "output_key": "v87_med_arcade_moorish_secondary",
+      "source_key": "stucco",
+      "tint": "#2BB3B1",
+      "tint_mix": 0.44,
+      "macro_strength": 0.06,
+      "roughness_strength": 0.09,
+      "normal_strength": 1.85,
+      "role": "turquoise zellige framing"
+    },
+    {
+      "output_key": "v87_med_arcade_moorish_roof",
+      "source_key": "terracotta",
+      "tint": "#C16A4D",
+      "tint_mix": 0.44,
+      "macro_strength": 0.06,
+      "roughness_strength": 0.09,
+      "normal_strength": 1.85,
+      "role": "ceramic tile coping"
+    },
+    {
+      "output_key": "v87_med_arcade_catalan_modernista_primary",
+      "source_key": "limestone",
+      "tint": "#d2c29d",
+      "tint_mix": 0.44,
+      "macro_strength": 0.06,
+      "roughness_strength": 0.09,
+      "normal_strength": 2.6,
+      "role": "organic carved stone structure and balconies"
+    },
+    {
+      "output_key": "v87_med_arcade_catalan_modernista_secondary",
+      "source_key": "stucco",
+      "tint": "#aabc0b",
+      "tint_mix": 0.44,
+      "macro_strength": 0.06,
+      "roughness_strength": 0.09,
+      "normal_strength": 1.85,
+      "role": "colorful trencadis mosaic facade backing"
+    },
+    {
+      "output_key": "v87_med_arcade_catalan_modernista_roof",
+      "source_key": "terracotta",
+      "tint": "#3c7ca6",
+      "tint_mix": 0.44,
+      "macro_strength": 0.06,
+      "roughness_strength": 0.09,
+      "normal_strength": 1.85,
+      "role": "iridescent scaled ceramic roof tiles"
+    }
+  ]
+}

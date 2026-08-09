@@ -76,16 +76,19 @@ def require_capacity(output_root: Path, minimum_free_gb: float) -> None:
         raise SystemExit(f"only {free_gb:.1f} GB free; campaign requires {minimum_free_gb:.1f} GB")
 
 
-def derive_textures(textures: Path) -> None:
-    run([
+def derive_textures(textures: Path, recipe_manifest: Path | None = None, pipeline_version: str = "v86") -> None:
+    command = [
         sys.executable,
         str(TOOLS / "derive_surface_story_pbr.py"),
         "--source-root", str(TOOLS / "textures"),
         "--additional-source-root", str(TOOLS / "textures_worldclass_v7"),
         "--output-root", str(textures),
         "--size", "1024",
-        "--pipeline-version", "v86",
-    ])
+        "--pipeline-version", pipeline_version,
+    ]
+    if recipe_manifest is not None:
+        command.extend(["--recipe-manifest", str(recipe_manifest)])
+    run(command)
 
 
 def generate(entry: dict[str, Any], family_dir: Path, textures: Path, grammar_only: bool) -> None:
@@ -112,6 +115,8 @@ def generate(entry: dict[str, Any], family_dir: Path, textures: Path, grammar_on
             "--presentation-samples", "48",
             "--presentation-view-set", "all",
         ])
+    if bool(entry.get("allow_outside_bounds", False)):
+        command.append("--allow-outside-bounds")
     run(command, family_dir / "logs/generate.log")
 
 
@@ -186,7 +191,12 @@ def main() -> int:
     require_capacity(output_root, args.minimum_free_gb)
     textures = output_root / "textures"
     if not args.skip_textures and not args.grammar_only:
-        derive_textures(textures)
+        recipe_manifest = registry.get("surface_recipe_manifest")
+        derive_textures(
+            textures,
+            (REPO / str(recipe_manifest)).resolve() if recipe_manifest else None,
+            str(registry.get("pipeline_version") or "v86"),
+        )
     elif not args.grammar_only and not (textures / "surface-story-manifest.json").exists():
         raise SystemExit("--skip-textures requires an existing V86 surface-story manifest")
 

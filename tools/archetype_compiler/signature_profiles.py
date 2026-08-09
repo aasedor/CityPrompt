@@ -22,10 +22,18 @@ def load_signature_profiles(path: Path = PROFILE_PATH) -> dict[str, dict]:
             if extension.get("schema") != "architectural-signatures@1":
                 raise ValueError(f"unsupported signature schema in {extension_path}")
             duplicates = set(profiles) & set(extension.get("profiles") or {})
-            if duplicates:
+            declared_overrides = set(extension.get("override_profiles") or [])
+            undeclared_duplicates = duplicates - declared_overrides
+            missing_overrides = declared_overrides - set(profiles)
+            if missing_overrides:
+                raise ValueError(
+                    f"architectural signature overrides in {extension_path} reference missing profiles: "
+                    + ", ".join(sorted(missing_overrides))
+                )
+            if undeclared_duplicates:
                 raise ValueError(
                     f"duplicate architectural signature profiles in {extension_path}: "
-                    + ", ".join(sorted(duplicates))
+                    + ", ".join(sorted(undeclared_duplicates))
                 )
             profiles.update(deepcopy(extension.get("profiles") or {}))
     return profiles

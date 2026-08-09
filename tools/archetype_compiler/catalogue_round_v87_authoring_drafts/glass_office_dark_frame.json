@@ -1,0 +1,220 @@
+{
+  "identity": "Minimalist dark frame glass office with concrete rear volume and steel crown",
+  "overall_height_m": 27.5,
+  "floors": 6,
+  "fixed_identity": [
+    "matte black steel frame",
+    "clear glass facade",
+    "exposed concrete party wall",
+    "rooftop steel trellis"
+  ],
+  "repeatable_capacity": [
+    "flexible open-plan office layouts",
+    "rooftop terrace with perimeter frame"
+  ],
+  "materials": {
+    "primary": {
+      "source_key": "curtain_wall",
+      "base_color": "#1C1C1C",
+      "role": "expressed exterior structural frame and glazing"
+    },
+    "secondary": {
+      "source_key": "precast_concrete",
+      "base_color": "#A5A5A5",
+      "role": "structural core and rear solid party walls"
+    },
+    "roof": {
+      "source_key": "roof_membrane",
+      "base_color": "#7F8285",
+      "role": "flat roof weatherproofing"
+    }
+  },
+  "nodes": [
+    {
+      "id": "mass_office_glass",
+      "kind": "box",
+      "size": [
+        22.0,
+        8.0,
+        24.0
+      ],
+      "location": [
+        0.0,
+        6.0,
+        12.0
+      ],
+      "material": "primary",
+      "bevel_m": 0.05
+    },
+    {
+      "id": "mass_office_concrete",
+      "kind": "box",
+      "size": [
+        22.0,
+        12.0,
+        24.0
+      ],
+      "location": [
+        0.0,
+        -4.0,
+        12.0
+      ],
+      "material": "secondary",
+      "bevel_m": 0.0
+    },
+    {
+      "id": "mass_roof_penthouse",
+      "kind": "box",
+      "size": [
+        12.0,
+        10.0,
+        3.5
+      ],
+      "location": [
+        -1.0,
+        -1.0,
+        25.75
+      ],
+      "material": "secondary",
+      "bevel_m": 0.05
+    },
+    {
+      "id": "mass_roof_trellis",
+      "kind": "box",
+      "size": [
+        20.0,
+        16.0,
+        2.5
+      ],
+      "location": [
+        0.0,
+        1.0,
+        25.25
+      ],
+      "material": "primary",
+      "bevel_m": 0.02
+    }
+  ],
+  "skins": [
+    {
+      "id": "skin_front",
+      "axis": "front",
+      "centre": [
+        0.0,
+        10.0,
+        12.0
+      ],
+      "span_m": 22.0,
+      "height_m": 24.0,
+      "depth_m": 0.05,
+      "band": "elevation",
+      "flip_u": false
+    },
+    {
+      "id": "skin_left_glass",
+      "axis": "left",
+      "centre": [
+        -11.0,
+        6.0,
+        12.0
+      ],
+      "span_m": 8.0,
+      "height_m": 24.0,
+      "depth_m": 0.05,
+      "band": "elevation",
+      "flip_u": false
+    },
+    {
+      "id": "skin_left_concrete",
+      "axis": "left",
+      "centre": [
+        -11.0,
+        -4.0,
+        12.0
+      ],
+      "span_m": 12.0,
+      "height_m": 24.0,
+      "depth_m": 0.05,
+      "band": "elevation",
+      "flip_u": false
+    },
+    {
+      "id": "skin_right_concrete",
+      "axis": "right",
+      "centre": [
+        11.0,
+        0.0,
+        12.0
+      ],
+      "span_m": 20.0,
+      "height_m": 24.0,
+      "depth_m": 0.05,
+      "band": "elevation",
+      "flip_u": false
+    }
+  ],
+  "measurements": [
+    {
+      "feature": "main_width",
+      "role": "oblique_massing",
+      "value": 22.0,
+      "unit": "metres",
+      "drives": "mass_office_glass"
+    },
+    {
+      "feature": "glass_depth",
+      "role": "oblique_massing",
+      "value": 8.0,
+      "unit": "metres",
+      "drives": "mass_office_glass"
+    },
+    {
+      "feature": "rear_depth",
+      "role": "oblique_massing",
+      "value": 12.0,
+      "unit": "metres",
+      "drives": "mass_office_concrete"
+    },
+    {
+      "feature": "building_height",
+      "role": "oblique_massing",
+      "value": 24.0,
+      "unit": "metres",
+      "drives": "mass_office_glass"
+    },
+    {
+      "feature": "penthouse_height",
+      "role": "roof_plan",
+      "value": 3.5,
+      "unit": "metres",
+      "drives": "mass_roof_penthouse"
+    },
+    {
+      "feature": "front_skin_span",
+      "role": "street_identity",
+      "value": 22.0,
+      "unit": "metres",
+      "drives": "skin_front"
+    },
+    {
+      "feature": "left_skin_glass_span",
+      "role": "street_identity",
+      "value": 8.0,
+      "unit": "metres",
+      "drives": "skin_left_glass"
+    },
+    {
+      "feature": "left_skin_concrete_span",
+      "role": "street_identity",
+      "value": 12.0,
+      "unit": "metres",
+      "drives": "skin_left_concrete"
+    }
+  ],
+  "presentation_camera": {
+    "hero_side": "left",
+    "oblique_x_scale": 0.7,
+    "identity_distance_scale": 1.0,
+    "street_distance_scale": 0.95
+  }
+}

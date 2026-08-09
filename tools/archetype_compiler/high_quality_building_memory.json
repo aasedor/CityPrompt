@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-08-09-finite-catalogue-rollout-v86",
+  "memory_version": "2026-08-09-exact-variant-checkpoint-v87",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "calibration_set": {
@@ -15,6 +15,18 @@
     ]
   },
   "non_negotiable_principles": [
+    {
+      "id": "ten_variant_checkpoint_precedes_hundred_scale",
+      "rule": "Before expanding a catalogue campaign to one hundred, complete and visually classify ten exact variants. A failed semantic, proportion, roof, side/rear or export-parity gate blocks scale-up; never lower a threshold or average away a rejected pilot."
+    },
+    {
+      "id": "facade_semantics_are_a_release_gate",
+      "rule": "Count storeys and classify reference opening shapes before facade generation. Reject a facade atlas that invents arches, changes the bay hierarchy or changes the visible floor count even when its technical texture checks pass."
+    },
+    {
+      "id": "glass_complexity_matches_building_scale",
+      "rule": "Use lightweight registered mask-only glazing for large repeated modern curtain walls and reserve complete returns, frames and occupied cavities for identity-bearing heritage openings, entrances and arcades. One feature has one owner; do not duplicate atlas construction as a floating geometry cage."
+    },
     {
       "id": "catalogue_rollout_is_a_finite_authoring_campaign",
       "rule": "Plan every exact variant explicitly, complete one representative per parent before sibling expansion, cap each production batch at five buildings, render serially and require a human exact-reference checkpoint after every batch. Machine success cannot approve catalogue release."
@@ -894,6 +906,21 @@
       "symptom": "Concrete has the right pale colour but reads as square precast cladding instead of board-formed construction",
       "cause": "A broad concrete-family source was relabelled without changing its visible joint hierarchy.",
       "correction": "Bind the material to a board-formed construction role, bake horizontal shutter-board courses with restrained staggered joints and inspect the result in the exact facade comparison before release."
+    },
+    {
+      "symptom": "A polished exact-variant facade contains arched windows where the reference has rectangular openings, or repeats the wrong number of storeys",
+      "cause": "The image model treated architectural identity as a soft style prompt and was not checked against a counted opening and storey schedule before the atlas entered Blender.",
+      "correction": "Record opening shape and storey count as hard visual-review fields. Reject and regenerate semantically wrong atlases; do not try to hide the error with massing, tinting or stronger surface detail."
+    },
+    {
+      "symptom": "A modern curtain-wall building resembles a cage and consumes excessive geometry",
+      "cause": "The compiler created deep returns and frames for every detected window even though the registered atlas and fixed structural grid already owned the repeated facade system.",
+      "correction": "Use a mask-only physical glass overlay for large repeated modern elevations, retain only silhouette- and shadow-bearing structural members, and reserve full return assemblies for identity-bearing openings."
+    },
+    {
+      "symptom": "A ten-building checkpoint contains several attractive models but the campaign is nevertheless unsafe to expand to one hundred",
+      "cause": "Machine validation and a few keeper examples were treated as evidence that the methodology generalizes across semantic opening, proportion, roof and export cases.",
+      "correction": "Publish a per-building keeper/provisional/rejected table beside the four-view comparison board. Repair or explicitly defer every rejected case before authorizing the next finite batch."
     }
   ]
 }

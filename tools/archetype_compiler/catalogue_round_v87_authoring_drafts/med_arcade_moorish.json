@@ -1,0 +1,250 @@
+{
+  "identity": "Moorish Arched Souk",
+  "overall_height_m": 9.0,
+  "floors": 2,
+  "fixed_identity": [
+    "horseshoe-arched arcade",
+    "turquoise and cobalt zellige tile accents",
+    "white lime rendered masonry setback",
+    "decorative roof parapet with geometric cutouts"
+  ],
+  "repeatable_capacity": [
+    "ground floor artisan workshops",
+    "upper level residential quarters"
+  ],
+  "materials": {
+    "primary": {
+      "source_key": "white_plaster",
+      "base_color": "#F5F2EB",
+      "role": "white lime render masonry walls"
+    },
+    "secondary": {
+      "source_key": "stucco",
+      "base_color": "#2BB3B1",
+      "role": "turquoise zellige framing"
+    },
+    "roof": {
+      "source_key": "terracotta",
+      "base_color": "#C16A4D",
+      "role": "ceramic tile coping"
+    }
+  },
+  "nodes": [
+    {
+      "id": "ground_mass",
+      "kind": "box",
+      "size": [
+        20.0,
+        15.0,
+        4.5
+      ],
+      "location": [
+        0.0,
+        0.0,
+        2.25
+      ],
+      "material": "primary",
+      "bevel_m": 0.05
+    },
+    {
+      "id": "upper_mass",
+      "kind": "box",
+      "size": [
+        18.0,
+        11.0,
+        3.6
+      ],
+      "location": [
+        -1.0,
+        2.0,
+        6.3
+      ],
+      "material": "primary",
+      "bevel_m": 0.05
+    },
+    {
+      "id": "decorative_parapet",
+      "kind": "box",
+      "size": [
+        18.0,
+        11.0,
+        0.9
+      ],
+      "location": [
+        -1.0,
+        2.0,
+        8.55
+      ],
+      "material": "primary",
+      "bevel_m": 0.02
+    },
+    {
+      "id": "terrace_tile_coping_front",
+      "kind": "mono_pitch_roof",
+      "size": [
+        20.0,
+        0.4,
+        0.3
+      ],
+      "location": [
+        0.0,
+        -7.3,
+        4.65
+      ],
+      "material": "roof",
+      "bevel_m": 0.0
+    },
+    {
+      "id": "terrace_tile_coping_right",
+      "kind": "mono_pitch_roof",
+      "size": [
+        0.4,
+        15.0,
+        0.3
+      ],
+      "location": [
+        9.8,
+        0.0,
+        4.65
+      ],
+      "material": "roof",
+      "bevel_m": 0.0
+    }
+  ],
+  "skins": [
+    {
+      "id": "skin_arcade_front",
+      "axis": "front",
+      "centre": [
+        0.0,
+        -7.55,
+        2.25
+      ],
+      "span_m": 20.0,
+      "height_m": 4.5,
+      "depth_m": 0.05,
+      "band": "elevation",
+      "flip_u": false
+    },
+    {
+      "id": "skin_arcade_right",
+      "axis": "right",
+      "centre": [
+        10.05,
+        0.0,
+        2.25
+      ],
+      "span_m": 15.0,
+      "height_m": 4.5,
+      "depth_m": 0.05,
+      "band": "elevation",
+      "flip_u": false
+    },
+    {
+      "id": "skin_upper_front",
+      "axis": "front",
+      "centre": [
+        -1.0,
+        -3.55,
+        6.3
+      ],
+      "span_m": 18.0,
+      "height_m": 3.6,
+      "depth_m": 0.05,
+      "band": "elevation",
+      "flip_u": false
+    },
+    {
+      "id": "skin_upper_right",
+      "axis": "right",
+      "centre": [
+        8.05,
+        2.0,
+        6.3
+      ],
+      "span_m": 11.0,
+      "height_m": 3.6,
+      "depth_m": 0.05,
+      "band": "elevation",
+      "flip_u": false
+    },
+    {
+      "id": "skin_parapet_front",
+      "axis": "front",
+      "centre": [
+        -1.0,
+        -3.55,
+        8.55
+      ],
+      "span_m": 18.0,
+      "height_m": 0.9,
+      "depth_m": 0.05,
+      "band": "elevation",
+      "flip_u": false
+    }
+  ],
+  "measurements": [
+    {
+      "feature": "ground_width",
+      "role": "oblique_massing",
+      "value": 20.0,
+      "unit": "metres",
+      "drives": "ground_mass"
+    },
+    {
+      "feature": "ground_height",
+      "role": "street_identity",
+      "value": 4.5,
+      "unit": "metres",
+      "drives": "ground_mass"
+    },
+    {
+      "feature": "upper_mass_height",
+      "role": "street_identity",
+      "value": 3.6,
+      "unit": "metres",
+      "drives": "upper_mass"
+    },
+    {
+      "feature": "parapet_crest_height",
+      "role": "roof_plan",
+      "value": 0.9,
+      "unit": "metres",
+      "drives": "decorative_parapet"
+    },
+    {
+      "feature": "front_arcade_span",
+      "role": "street_identity",
+      "value": 20.0,
+      "unit": "metres",
+      "drives": "skin_arcade_front"
+    },
+    {
+      "feature": "side_arcade_span",
+      "role": "street_identity",
+      "value": 15.0,
+      "unit": "metres",
+      "drives": "skin_arcade_right"
+    },
+    {
+      "feature": "upper_facade_width",
+      "role": "oblique_massing",
+      "value": 18.0,
+      "unit": "metres",
+      "drives": "skin_upper_front"
+    },
+    {
+      "feature": "coping_front_length",
+      "role": "roof_plan",
+      "value": 20.0,
+      "unit": "metres",
+      "drives": "terrace_tile_coping_front"
+    }
+  ],
+  "presentation_camera": {
+    "hero_side": "right",
+    "oblique_x_scale": 0.7,
+    "identity_distance_scale": 1.0,
+    "street_distance_scale": 1.0
+  }
+}

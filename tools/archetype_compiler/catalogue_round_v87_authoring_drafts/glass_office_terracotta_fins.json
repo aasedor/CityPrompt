@@ -1,0 +1,359 @@
+{
+  "identity": "Glass & Terracotta Fins Office Building",
+  "overall_height_m": 33.1,
+  "floors": 8,
+  "fixed_identity": [
+    "Warm terracotta vertical fins",
+    "High-transparency curtain wall facade",
+    "Double-height colonnaded ground floor retail",
+    "Stepped intensive green roof terraces"
+  ],
+  "repeatable_capacity": [
+    "Bespoke solar shading fins",
+    "Integrated perimeter planters",
+    "Flexible column-free office layouts"
+  ],
+  "materials": {
+    "primary": {
+      "source_key": "terracotta",
+      "base_color": "#CC7722",
+      "role": "vertical shading brise-soleil fins"
+    },
+    "secondary": {
+      "source_key": "curtain_wall",
+      "base_color": "#A9C0CD",
+      "role": "structural glass window wall"
+    },
+    "roof": {
+      "source_key": "sedum_roof",
+      "base_color": "#5D7A50",
+      "role": "intensive green roof with terrace planting"
+    }
+  },
+  "nodes": [
+    {
+      "id": "ground_colonnade",
+      "kind": "box",
+      "size": [
+        30.0,
+        24.0,
+        5.0
+      ],
+      "location": [
+        0.0,
+        0.0,
+        2.5
+      ],
+      "material": "secondary",
+      "bevel_m": 0.05
+    },
+    {
+      "id": "level_1_fins",
+      "kind": "box",
+      "size": [
+        30.0,
+        24.0,
+        4.0
+      ],
+      "location": [
+        0.0,
+        0.0,
+        7.0
+      ],
+      "material": "primary",
+      "bevel_m": 0.05
+    },
+    {
+      "id": "level_2_glass",
+      "kind": "box",
+      "size": [
+        30.0,
+        24.0,
+        4.0
+      ],
+      "location": [
+        0.0,
+        0.0,
+        11.0
+      ],
+      "material": "secondary",
+      "bevel_m": 0.0
+    },
+    {
+      "id": "level_3_fins",
+      "kind": "box",
+      "size": [
+        30.0,
+        24.0,
+        4.0
+      ],
+      "location": [
+        0.0,
+        0.0,
+        15.0
+      ],
+      "material": "primary",
+      "bevel_m": 0.05
+    },
+    {
+      "id": "level_4_glass",
+      "kind": "box",
+      "size": [
+        30.0,
+        24.0,
+        4.0
+      ],
+      "location": [
+        0.0,
+        0.0,
+        19.0
+      ],
+      "material": "secondary",
+      "bevel_m": 0.0
+    },
+    {
+      "id": "level_5_fins",
+      "kind": "box",
+      "size": [
+        30.0,
+        24.0,
+        4.0
+      ],
+      "location": [
+        0.0,
+        0.0,
+        23.0
+      ],
+      "material": "primary",
+      "bevel_m": 0.05
+    },
+    {
+      "id": "terrace_level",
+      "kind": "box",
+      "size": [
+        27.0,
+        21.0,
+        4.0
+      ],
+      "location": [
+        0.0,
+        0.0,
+        27.0
+      ],
+      "material": "secondary",
+      "bevel_m": 0.05
+    },
+    {
+      "id": "roof_garden",
+      "kind": "box",
+      "size": [
+        27.0,
+        21.0,
+        0.3
+      ],
+      "location": [
+        0.0,
+        0.0,
+        29.15
+      ],
+      "material": "roof",
+      "bevel_m": 0.0
+    },
+    {
+      "id": "roof_penthouse",
+      "kind": "box",
+      "size": [
+        16.0,
+        12.0,
+        3.5
+      ],
+      "location": [
+        0.0,
+        0.0,
+        31.05
+      ],
+      "material": "secondary",
+      "bevel_m": 0.05
+    },
+    {
+      "id": "roof_penthouse_top",
+      "kind": "box",
+      "size": [
+        16.0,
+        12.0,
+        0.3
+      ],
+      "location": [
+        0.0,
+        0.0,
+        32.95
+      ],
+      "material": "roof",
+      "bevel_m": 0.0
+    }
+  ],
+  "skins": [
+    {
+      "id": "skin_ground_front",
+      "axis": "front",
+      "centre": [
+        0.0,
+        -12.0,
+        2.5
+      ],
+      "span_m": 30.0,
+      "height_m": 5.0,
+      "depth_m": 0.05,
+      "band": "elevation",
+      "flip_u": false
+    },
+    {
+      "id": "skin_l1_fins_front",
+      "axis": "front",
+      "centre": [
+        0.0,
+        -12.0,
+        7.0
+      ],
+      "span_m": 30.0,
+      "height_m": 4.0,
+      "depth_m": 0.05,
+      "band": "elevation",
+      "flip_u": false
+    },
+    {
+      "id": "skin_l2_glass_front",
+      "axis": "front",
+      "centre": [
+        0.0,
+        -12.0,
+        11.0
+      ],
+      "span_m": 30.0,
+      "height_m": 4.0,
+      "depth_m": 0.05,
+      "band": "elevation",
+      "flip_u": false
+    },
+    {
+      "id": "skin_l3_fins_front",
+      "axis": "front",
+      "centre": [
+        0.0,
+        -12.0,
+        15.0
+      ],
+      "span_m": 30.0,
+      "height_m": 4.0,
+      "depth_m": 0.05,
+      "band": "elevation",
+      "flip_u": false
+    },
+    {
+      "id": "skin_l4_glass_front",
+      "axis": "front",
+      "centre": [
+        0.0,
+        -12.0,
+        19.0
+      ],
+      "span_m": 30.0,
+      "height_m": 4.0,
+      "depth_m": 0.05,
+      "band": "elevation",
+      "flip_u": false
+    },
+    {
+      "id": "skin_l5_fins_front",
+      "axis": "front",
+      "centre": [
+        0.0,
+        -12.0,
+        23.0
+      ],
+      "span_m": 30.0,
+      "height_m": 4.0,
+      "depth_m": 0.05,
+      "band": "elevation",
+      "flip_u": false
+    },
+    {
+      "id": "skin_terrace_front",
+      "axis": "front",
+      "centre": [
+        0.0,
+        -10.5,
+        27.0
+      ],
+      "span_m": 27.0,
+      "height_m": 4.0,
+      "depth_m": 0.05,
+      "band": "elevation",
+      "flip_u": false
+    }
+  ],
+  "measurements": [
+    {
+      "feature": "ground_retail_height",
+      "role": "street_identity",
+      "value": 5.0,
+      "unit": "metres",
+      "drives": "ground_colonnade"
+    },
+    {
+      "feature": "terracotta_module_one_height",
+      "role": "oblique_massing",
+      "value": 4.0,
+      "unit": "metres",
+      "drives": "level_1_fins"
+    },
+    {
+      "feature": "glass_band_one_height",
+      "role": "oblique_massing",
+      "value": 4.0,
+      "unit": "metres",
+      "drives": "level_2_glass"
+    },
+    {
+      "feature": "terracotta_module_two_height",
+      "role": "oblique_massing",
+      "value": 4.0,
+      "unit": "metres",
+      "drives": "level_3_fins"
+    },
+    {
+      "feature": "glass_band_two_height",
+      "role": "oblique_massing",
+      "value": 4.0,
+      "unit": "metres",
+      "drives": "level_4_glass"
+    },
+    {
+      "feature": "terracotta_module_three_height",
+      "role": "oblique_massing",
+      "value": 4.0,
+      "unit": "metres",
+      "drives": "level_5_fins"
+    },
+    {
+      "feature": "terrace_setback_width",
+      "role": "roof_plan",
+      "value": 27.0,
+      "unit": "metres",
+      "drives": "terrace_level"
+    },
+    {
+      "feature": "penthouse_pavilion_width",
+      "role": "roof_plan",
+      "value": 16.0,
+      "unit": "metres",
+      "drives": "roof_penthouse"
+    }
+  ],
+  "presentation_camera": {
+    "hero_side": "right",
+    "oblique_x_scale": 0.72,
+    "identity_distance_scale": 0.95,
+    "street_distance_scale": 1.05
+  }
+}

@@ -1,0 +1,332 @@
+{
+  "identity": "White Corbusian Modernist Civic Block on Pilotis",
+  "overall_height_m": 21.0,
+  "floors": 5,
+  "fixed_identity": [
+    "pilotis supported free plan ground floor",
+    "continuous horizontal ribbon windows with primary color accents",
+    "crisp smooth white cement render",
+    "flat roof garden with skeletal pergola canopy",
+    "cantilevered massing with recessed glazing"
+  ],
+  "repeatable_capacity": [
+    "flexible modernist office plates",
+    "roof garden terraces",
+    "transparent public foyer"
+  ],
+  "materials": {
+    "primary": {
+      "source_key": "white_plaster",
+      "base_color": "#FFFFF0",
+      "role": "smooth white cement render massing"
+    },
+    "secondary": {
+      "source_key": "curtain_wall",
+      "base_color": "#2A3A4A",
+      "role": "ribbon windows and ground floor glazing"
+    },
+    "roof": {
+      "source_key": "sedum_roof",
+      "base_color": "#5F8575",
+      "role": "accessible landscaped roof garden"
+    }
+  },
+  "nodes": [
+    {
+      "id": "ground_glazing_mass",
+      "kind": "box",
+      "size": [
+        33.0,
+        19.0,
+        4.5
+      ],
+      "location": [
+        0.0,
+        0.0,
+        2.25
+      ],
+      "material": "secondary",
+      "bevel_m": 0.0
+    },
+    {
+      "id": "pilotis_front_1",
+      "kind": "cylinder",
+      "size": [
+        0.6,
+        0.6,
+        4.5
+      ],
+      "location": [
+        -17.5,
+        -10.5,
+        2.25
+      ],
+      "material": "primary",
+      "bevel_m": 0.0
+    },
+    {
+      "id": "pilotis_front_2",
+      "kind": "cylinder",
+      "size": [
+        0.6,
+        0.6,
+        4.5
+      ],
+      "location": [
+        -10.5,
+        -10.5,
+        2.25
+      ],
+      "material": "primary",
+      "bevel_m": 0.0
+    },
+    {
+      "id": "pilotis_front_3",
+      "kind": "cylinder",
+      "size": [
+        0.6,
+        0.6,
+        4.5
+      ],
+      "location": [
+        -3.5,
+        -10.5,
+        2.25
+      ],
+      "material": "primary",
+      "bevel_m": 0.0
+    },
+    {
+      "id": "pilotis_front_4",
+      "kind": "cylinder",
+      "size": [
+        0.6,
+        0.6,
+        4.5
+      ],
+      "location": [
+        3.5,
+        -10.5,
+        2.25
+      ],
+      "material": "primary",
+      "bevel_m": 0.0
+    },
+    {
+      "id": "pilotis_front_5",
+      "kind": "cylinder",
+      "size": [
+        0.6,
+        0.6,
+        4.5
+      ],
+      "location": [
+        10.5,
+        -10.5,
+        2.25
+      ],
+      "material": "primary",
+      "bevel_m": 0.0
+    },
+    {
+      "id": "pilotis_front_6",
+      "kind": "cylinder",
+      "size": [
+        0.6,
+        0.6,
+        4.5
+      ],
+      "location": [
+        17.5,
+        -10.5,
+        2.25
+      ],
+      "material": "primary",
+      "bevel_m": 0.0
+    },
+    {
+      "id": "main_cantilever_block",
+      "kind": "box",
+      "size": [
+        36.0,
+        22.0,
+        10.5
+      ],
+      "location": [
+        0.0,
+        0.0,
+        9.75
+      ],
+      "material": "primary",
+      "bevel_m": 0.1
+    },
+    {
+      "id": "penthouse_block",
+      "kind": "box",
+      "size": [
+        32.0,
+        16.0,
+        3.5
+      ],
+      "location": [
+        0.0,
+        1.0,
+        16.75
+      ],
+      "material": "primary",
+      "bevel_m": 0.0
+    },
+    {
+      "id": "pergola_canopy",
+      "kind": "box",
+      "size": [
+        30.0,
+        14.0,
+        2.5
+      ],
+      "location": [
+        0.0,
+        1.0,
+        19.75
+      ],
+      "material": "roof",
+      "bevel_m": 0.0
+    }
+  ],
+  "skins": [
+    {
+      "id": "skin_front_main",
+      "axis": "front",
+      "centre": [
+        0.0,
+        -11.02,
+        9.75
+      ],
+      "span_m": 36.0,
+      "height_m": 10.5,
+      "depth_m": 0.05,
+      "band": "elevation",
+      "flip_u": false
+    },
+    {
+      "id": "skin_left_main",
+      "axis": "left",
+      "centre": [
+        -18.02,
+        0.0,
+        9.75
+      ],
+      "span_m": 22.0,
+      "height_m": 10.5,
+      "depth_m": 0.05,
+      "band": "elevation",
+      "flip_u": false
+    },
+    {
+      "id": "skin_right_main",
+      "axis": "right",
+      "centre": [
+        18.02,
+        0.0,
+        9.75
+      ],
+      "span_m": 22.0,
+      "height_m": 10.5,
+      "depth_m": 0.05,
+      "band": "elevation",
+      "flip_u": false
+    },
+    {
+      "id": "skin_ground_front",
+      "axis": "front",
+      "centre": [
+        0.0,
+        -9.52,
+        2.25
+      ],
+      "span_m": 33.0,
+      "height_m": 4.5,
+      "depth_m": 0.05,
+      "band": "elevation",
+      "flip_u": false
+    },
+    {
+      "id": "skin_penthouse_front",
+      "axis": "front",
+      "centre": [
+        0.0,
+        -7.02,
+        16.75
+      ],
+      "span_m": 32.0,
+      "height_m": 3.5,
+      "depth_m": 0.05,
+      "band": "elevation",
+      "flip_u": false
+    }
+  ],
+  "measurements": [
+    {
+      "feature": "ground_clearance",
+      "role": "street_identity",
+      "value": 4.5,
+      "unit": "metres",
+      "drives": "ground_glazing_mass"
+    },
+    {
+      "feature": "main_block_width",
+      "role": "oblique_massing",
+      "value": 36.0,
+      "unit": "metres",
+      "drives": "main_cantilever_block"
+    },
+    {
+      "feature": "main_block_height",
+      "role": "oblique_massing",
+      "value": 10.5,
+      "unit": "metres",
+      "drives": "main_cantilever_block"
+    },
+    {
+      "feature": "pilotis_diameter",
+      "role": "street_identity",
+      "value": 0.6,
+      "unit": "metres",
+      "drives": "pilotis_front_1"
+    },
+    {
+      "feature": "front_facade_span",
+      "role": "street_identity",
+      "value": 36.0,
+      "unit": "metres",
+      "drives": "skin_front_main"
+    },
+    {
+      "feature": "side_facade_depth",
+      "role": "oblique_massing",
+      "value": 22.0,
+      "unit": "metres",
+      "drives": "skin_left_main"
+    },
+    {
+      "feature": "penthouse_width",
+      "role": "roof_plan",
+      "value": 32.0,
+      "unit": "metres",
+      "drives": "penthouse_block"
+    },
+    {
+      "feature": "pergola_canopy_height",
+      "role": "roof_plan",
+      "value": 2.5,
+      "unit": "metres",
+      "drives": "pergola_canopy"
+    }
+  ],
+  "presentation_camera": {
+    "hero_side": "left",
+    "oblique_x_scale": 0.7,
+    "identity_distance_scale": 1.0,
+    "street_distance_scale": 0.95
+  }
+}
