@@ -1,0 +1,132 @@
+{
+  "schema": "archetype-geometry-evidence@1",
+  "id": "titanium-museum-free-geometry-v75",
+  "status": "review",
+  "scope": "one_archetype_bounded_pilot",
+  "source": {
+    "archetype_id": "large_art_museum_gallery",
+    "variant_id": "deconstructivist_titanium_pavilion",
+    "reference_images": [
+      "artifacts\\archetype-geometry-pass-v75\\inputs\\01-street.png",
+      "artifacts\\archetype-geometry-pass-v75\\inputs\\02-oblique.jpg",
+      "artifacts\\archetype-geometry-pass-v75\\inputs\\03-roof.jpg"
+    ],
+    "audited_street_mask": "artifacts\\sam3d-museum-ab-pilot\\museum-audited-mask.png"
+  },
+  "provenance": {
+    "moge": {
+      "model": "Ruicheng/moge-2-vits-normal",
+      "license": "MIT",
+      "role": "street metric depth and normals"
+    },
+    "da3": {
+      "model": "depth-anything/DA3-BASE",
+      "license": "Apache-2.0",
+      "role": "three-view relative depth, cameras and confidence"
+    },
+    "opencv": {
+      "role": "registered masks, robust alignment, curvature and edge analysis"
+    }
+  },
+  "declared_dimensions_m": {
+    "width": 80.0,
+    "depth": 60.0,
+    "height": 30.0
+  },
+  "street_geometry": {
+    "valid_coverage": 0.99575,
+    "cross_model_alignment": {
+      "scale": 49.65432,
+      "offset": 6.29262
+    },
+    "cross_model_disagreement": {
+      "median_ratio": 0.07629,
+      "p90_ratio": 0.22129
+    },
+    "front_plane_residual": {
+      "median_ratio": 0.12385,
+      "p90_ratio": 0.44566
+    },
+    "curved_surface_ratio": 0.09467,
+    "visible_horizontal_depth_edge_candidate": {
+      "image_y": 0.55382,
+      "depth_step_ratio": 0.05685,
+      "confidence": 0.7787,
+      "policy": "Advisory edge location only; confirm overhang direction from the reference image."
+    },
+    "confidence": {
+      "mean": 5.3026,
+      "p10": 4.2474,
+      "median": 5.4599,
+      "p90": 6.2174
+    }
+  },
+  "roof_geometry": {
+    "dominant_elevation_peaks": [
+      {
+        "x": 0.4762,
+        "y": 0.4193,
+        "relative_height": 0.3725
+      },
+      {
+        "x": 0.65,
+        "y": 0.5,
+        "relative_height": 0.37152
+      },
+      {
+        "x": 0.6429,
+        "y": 0.3509,
+        "relative_height": 0.3564
+      },
+      {
+        "x": 0.519,
+        "y": 0.646,
+        "relative_height": 0.34402
+      },
+      {
+        "x": 0.4619,
+        "y": 0.2764,
+        "relative_height": 0.32977
+      }
+    ],
+    "dominant_peak_count": 5,
+    "relative_height_range": 0.34073,
+    "edge_density": 0.02491,
+    "confidence": {
+      "mean": 2.1323,
+      "p10": 1.86,
+      "median": 2.16,
+      "p90": 2.37
+    }
+  },
+  "uncertainty": {
+    "reliable_street_fraction": 0.82693,
+    "hidden_sides": "high",
+    "reflective_perforated_envelope": "high",
+    "visible_cantilever_and_front_curvature": "low",
+    "roof_plan_from_declared_top_view": "medium",
+    "policy": "Use learned output only for visible plan/section constraints; hidden construction remains authored from architectural knowledge."
+  },
+  "authored_geometry_constraints": {
+    "front_envelope": "continuous_curved_screen_with_visible_layer_separation",
+    "cantilever": "deep_left_biased_projecting_gallery_with_real_soffit",
+    "inner_massing": "multiple_asymmetric_curved_pods_not_orthogonal_boxes",
+    "roof": "multi-level_curvilinear_roofscape_with_interstitial_courts",
+    "do_not_copy": [
+      "raw point cloud",
+      "vegetation depth",
+      "sky depth",
+      "occluded rear geometry"
+    ]
+  },
+  "gates": {
+    "valid_coverage_min_0_88": true,
+    "cross_model_median_disagreement_max_0_06": false,
+    "roof_confidence_median_min_1_25": true
+  },
+  "outputs": {
+    "moge_proxy_glb": "artifacts\\archetype-geometry-pass-v75\\moge\\museum-archetype\\mesh.glb",
+    "da3_proxy_glb": "artifacts\\archetype-geometry-pass-v75\\da3\\scene.glb",
+    "review_board": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\archetype-geometry-pass-v75\\evidence\\geometry-evidence-board.png"
+  }
+}

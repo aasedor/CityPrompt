@@ -1,0 +1,37 @@
+{
+  "schema": "free-geometry-pilot-summary@1",
+  "status": "review_only",
+  "automatic_geometry_evidence": "review",
+  "human_decision": "apply_shared_visible_constraints_only",
+  "model": {
+    "assembled_triangles": 21052,
+    "api_cost_usd": 0.0
+  },
+  "metrics": {
+    "sam_v74": {
+      "street_iou": 0.67438,
+      "street_aspect_error": 0.42665,
+      "roof_iou": 0.91176
+    },
+    "free_v75": {
+      "street_iou": 0.65729,
+      "street_aspect_error": 0.45251,
+      "roof_iou": 0.90173
+    }
+  },
+  "accepted": [
+    "curved screen plan",
+    "visible layer separation",
+    "deep cantilever with soffit",
+    "asymmetric curved inner masses",
+    "multi-level roof evidence"
+  ],
+  "withheld": [
+    "raw learned mesh",
+    "reflective veil depth",
+    "glass depth",
+    "vegetation",
+    "hidden sides"
+  ],
+  "next_priority": "connected curvilinear roof-wall topology, then titanium/glazing/interior material calibration"
+}

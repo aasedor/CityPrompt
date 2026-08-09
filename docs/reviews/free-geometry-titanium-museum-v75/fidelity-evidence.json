@@ -1,0 +1,70 @@
+{
+  "schema": "building-reference-evidence-report@2",
+  "contract": "titanium-museum-sam-ab-v74",
+  "status": "fail",
+  "required_roles": [
+    "street_identity",
+    "roof_plan"
+  ],
+  "mean_metrics": {
+    "silhouette_iou": 0.77951,
+    "roofline_rmse": 0.09961,
+    "aspect_ratio_error": 0.2638
+  },
+  "views": [
+    {
+      "schema": "building-reference-fidelity-report@1",
+      "contract": "titanium-museum-sam-ab-v74-street_identity",
+      "reference_image": "C:\\dev\\3D-Maps-building-goldset\\frontend\\public\\archetypes\\buildings\\large-art-museum-gallery\\variant_0.png",
+      "render_image": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\archetype-geometry-pass-v75\\model-v2\\titanium-museum-free-geometry-v75_archetype_match.png",
+      "status": "fail",
+      "metrics": {
+        "silhouette_iou": 0.65729,
+        "roofline_rmse": 0.14577,
+        "aspect_ratio_error": 0.45251,
+        "reference_aspect_ratio": 1.63068,
+        "render_aspect_ratio": 2.36858
+      },
+      "checks": {
+        "silhouette_iou": true,
+        "roofline_rmse": true,
+        "aspect_ratio_error": false
+      },
+      "thresholds": {
+        "silhouette_iou_min": 0.45,
+        "roofline_rmse_max": 0.24,
+        "aspect_ratio_error_max": 0.45
+      },
+      "view_id": "street_identity",
+      "role": "street_identity",
+      "render_key": "archetype_match"
+    },
+    {
+      "schema": "building-reference-fidelity-report@1",
+      "contract": "titanium-museum-sam-ab-v74-roof_plan",
+      "reference_image": "C:\\dev\\3D-Maps-building-goldset\\frontend\\public\\archetypes\\buildings\\large-art-museum-gallery\\variant_0_angle_90.jpg",
+      "render_image": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\archetype-geometry-pass-v75\\model-v2\\titanium-museum-free-geometry-v75_roof_audit.png",
+      "status": "pass",
+      "metrics": {
+        "silhouette_iou": 0.90173,
+        "roofline_rmse": 0.05345,
+        "aspect_ratio_error": 0.07508,
+        "reference_aspect_ratio": 1.35191,
+        "render_aspect_ratio": 1.45341
+      },
+      "checks": {
+        "silhouette_iou": true,
+        "roofline_rmse": true,
+        "aspect_ratio_error": true
+      },
+      "thresholds": {
+        "silhouette_iou_min": 0.5,
+        "roofline_rmse_max": 0.22,
+        "aspect_ratio_error_max": 0.3
+      },
+      "view_id": "roof_plan",
+      "role": "roof_plan",
+      "render_key": "roof_audit"
+    }
+  ]
+}

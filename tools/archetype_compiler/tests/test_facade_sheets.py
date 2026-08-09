@@ -1218,6 +1218,13 @@ def test_titanium_museum_v74_locks_controlled_sam_ab_evidence():
     assert len(patches["assembly_overrides"]["museum_pods"]["pods"]) == 7
     assert patches["assembly_overrides"]["museum_ribbon"]["plan_wave_amplitude_m"] == 2.2
 
+    free_patch = profiles["deconstructivist_titanium_pavilion"]["free_geometry_evidence_patches"]
+    assert free_patch["base_patch"] == "sam_evidence_patches"
+    assert free_patch["profile"] == "deconstructivist_titanium_museum_free_geometry_v75"
+    assert free_patch["assembly_overrides"]["museum_ribbon"]["kind"] == "perforated_ribbon_screen"
+    assert free_patch["assembly_overrides"]["museum_pods"]["roof_recess_m"] > 0
+    assert free_patch["assemblies_add"][0]["kind"] == "cantilever_gallery_shell"
+
     contract = json.loads(
         (tool_dir / "reference_fidelity_contracts/titanium_museum_sam_ab_v74.json").read_text(
             encoding="utf-8"

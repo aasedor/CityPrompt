@@ -1685,6 +1685,30 @@
           "museum_entry_glazing": {"centre": [2.0, -30.15, 7.4], "span_m": 23.0, "height_m": 14.0},
           "museum_gallery_glazing": {"centre": [-14.5, -30.86, 18.5], "span_m": 27.0, "height_m": 6.4}
         }
+      },
+      "free_geometry_evidence_patches": {
+        "profile": "deconstructivist_titanium_museum_free_geometry_v75",
+        "description": "The v74 seven-pod plan refined with the reviewed MoGe-2 normal field and DA3 three-view confidence: the perimeter becomes a physically open silver screen, each pod receives a recessed occupied roof court, and the left gallery becomes a curved tapered shell with a genuine glazed opening.",
+        "evidence_contract": "artifacts/archetype-geometry-pass-v75/evidence/architectural-geometry-evidence.json",
+        "base_patch": "sam_evidence_patches",
+        "remove_nodes": ["museum_gallery_cantilever"],
+        "node_overrides": {
+          "museum_gallery_soffit": {"size": [35.4, 18.9, 0.34], "location": [-14.0, -21.2, 13.62]},
+          "museum_lobby_shadow": {"size": [23.0, 8.5, 14.5], "location": [2.0, -24.8, 7.67]}
+        },
+        "assembly_overrides": {
+          "museum_pods": {"roof_inset_m": 1.05, "roof_recess_m": 0.48, "roof_court_material": "roof"},
+          "museum_ribbon": {"kind": "perforated_ribbon_screen", "panel_count": 160, "horizontal_bands": 1, "panel_gap_ratio": 0.16, "band_gap_ratio": 0.0, "thickness_m": 0.16, "front_lift_m": 8.2, "front_drop_m": 1.8},
+          "museum_entry_glazing": {"centre": [2.0, -30.18, 7.7], "span_m": 22.5, "height_m": 14.5, "columns": 8, "rows": 4},
+          "museum_gallery_glazing": {"centre": [-14.0, -31.08, 18.65], "span_m": 23.5, "height_m": 5.9, "columns": 7, "rows": 2}
+        },
+        "assemblies_add": [
+          {"id": "museum_gallery_curved_shell", "kind": "cantilever_gallery_shell", "centre": [-14.0, -21.2, 18.55], "width_m": 36.0, "depth_m": 19.5, "height_m": 9.7, "opening_width_m": 24.5, "opening_height_m": 6.2, "opening_z_offset_m": 0.15, "profile_exponent": 5.0, "segments": 56, "rear_scale_x": 0.86, "rear_scale_z": 0.91, "rear_shift_x_m": 2.0, "rear_shift_z_m": 0.45, "top_shift_x_m": 1.8, "material": "signature_roof", "bevel_m": 0.09}
+        ],
+        "signature_material_overrides": {
+          "signature_roof": {"base_color": "#d0d1cd", "roughness": 0.42, "metallic": 0.58, "coat_weight": 0.30, "coat_roughness": 0.14, "texture_key": "standing_seam"},
+          "signature_metal": {"base_color": "#c6c9c7", "roughness": 0.38, "metallic": 0.66, "coat_weight": 0.20, "coat_roughness": 0.14}
+        }
       }
     },
     "parametric_wave_shell": {
