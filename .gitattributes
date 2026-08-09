@@ -10,4 +10,6 @@ docs/reviews/scottish-baronial-v76/*.png filter=lfs diff=lfs merge=lfs -text
 docs/reviews/scottish-baronial-v77/*.png filter=lfs diff=lfs merge=lfs -text
 docs/reviews/five-building-material-void-v78/*.png filter=lfs diff=lfs merge=lfs -text
 docs/reviews/five-building-material-void-v78/generated/*.png filter=lfs diff=lfs merge=lfs -text
+docs/reviews/two-building-image-lock-v80/*.png filter=lfs diff=lfs merge=lfs -text
+docs/reviews/two-building-image-lock-v80/generated/*.png filter=lfs diff=lfs merge=lfs -text
 tools/archetype_compiler/facade_sources_v71/*.png filter=lfs diff=lfs merge=lfs -text

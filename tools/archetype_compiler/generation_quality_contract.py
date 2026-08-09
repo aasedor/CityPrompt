@@ -1,4 +1,4 @@
-"""Executable material-continuity and spatial-void quality contracts.
+"""Executable image-lock, material-continuity and spatial-void contracts.
 
 Catalogue prose supplies the architectural evidence, while a resolved
 signature profile maps that evidence to named graph materials and passages.
@@ -85,9 +85,82 @@ def assess_generation_quality_contract(
     nodes = {str(item.get("id")): item for item in graph.get("nodes") or []}
     voids = {str(item.get("id")): item for item in graph.get("voids") or []}
     assemblies = {str(item.get("id")): item for item in graph.get("assemblies") or []}
+    image_lock = production.get("image_lock") or {}
+    if image_lock:
+        reference_roles = {
+            str(view.get("role")) for view in graph.get("reference_views") or []
+        }
+        required_roles = {str(role) for role in image_lock.get("required_reference_roles") or []}
+        missing_roles = sorted(required_roles - reference_roles)
+        gates.append(_gate(
+            "image_lock_reference_roles",
+            bool(required_roles) and not missing_roles,
+            "missing reference roles: " + ", ".join(missing_roles)
+            if missing_roles else f"{len(required_roles)} image-authoritative roles declared",
+        ))
+        measurements = list(image_lock.get("measurements") or [])
+        minimum_measurements = int(image_lock.get("minimum_measurements", 1))
+        invalid_measurements = []
+        for index, measurement in enumerate(measurements):
+            valid = (
+                isinstance(measurement, dict)
+                and bool(measurement.get("feature"))
+                and str(measurement.get("role")) in reference_roles
+                and isinstance(measurement.get("value"), (int, float))
+                and bool(measurement.get("unit"))
+                and bool(measurement.get("drives"))
+            )
+            if not valid:
+                invalid_measurements.append(index)
+        gates.append(_gate(
+            "image_lock_measurements",
+            len(measurements) >= minimum_measurements and not invalid_measurements,
+            f"{len(measurements)} measurements; minimum {minimum_measurements}; "
+            f"invalid indices: {invalid_measurements or 'none'}",
+        ))
+        for noun, collection in (
+            ("node", nodes), ("assembly", assemblies), ("void", voids),
+        ):
+            if f"required_{noun}_ids" not in image_lock:
+                continue
+            required_ids = {str(value) for value in image_lock.get(f"required_{noun}_ids") or []}
+            missing_ids = sorted(required_ids - set(collection))
+            gates.append(_gate(
+                f"image_lock_{noun}_topology",
+                bool(required_ids) and not missing_ids,
+                f"missing {noun} ids: {', '.join(missing_ids)}"
+                if missing_ids else f"{len(required_ids)} required {noun} ids resolved",
+            ))
+        for noun, items in (("node", nodes.values()), ("assembly", assemblies.values())):
+            if f"required_{noun}_kinds" not in image_lock:
+                continue
+            counts: dict[str, int] = {}
+            for item in items:
+                kind = str(item.get("kind"))
+                counts[kind] = counts.get(kind, 0) + 1
+            required_counts = {
+                str(kind): int(count)
+                for kind, count in (image_lock.get(f"required_{noun}_kinds") or {}).items()
+            }
+            deficits = {
+                kind: [counts.get(kind, 0), minimum]
+                for kind, minimum in required_counts.items()
+                if counts.get(kind, 0) < minimum
+            }
+            gates.append(_gate(
+                f"image_lock_{noun}_kind_counts",
+                bool(required_counts) and not deficits,
+                f"kind deficits (actual, minimum): {deficits}"
+                if deficits else f"{len(required_counts)} {noun} kind counts satisfied",
+            ))
     for binding in material_contract.get("assembly_bindings") or []:
         kind = str(binding["kind"])
-        matching = [item for item in assemblies.values() if item.get("kind") == kind]
+        limited_ids = {str(value) for value in binding.get("ids") or []}
+        matching = [
+            item for item in assemblies.values()
+            if item.get("kind") == kind
+            and (not limited_ids or str(item.get("id")) in limited_ids)
+        ]
         expected = dict(binding.get("slots") or {})
         incorrect = [
             str(item.get("id"))
@@ -95,7 +168,8 @@ def assess_generation_quality_contract(
             if any(item.get(slot) != material_id for slot, material_id in expected.items())
         ]
         gates.append(_gate(
-            f"material_assembly_binding:{kind}",
+            f"material_assembly_binding:{kind}"
+            + (f":{','.join(sorted(limited_ids))}" if limited_ids else ""),
             bool(matching) and not incorrect,
             f"{len(matching)} assemblies checked; incorrect: {', '.join(incorrect) if incorrect else 'none'}",
         ))

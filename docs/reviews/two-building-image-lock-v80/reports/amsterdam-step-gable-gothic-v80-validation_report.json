@@ -1,0 +1,191 @@
+{
+  "status": "pass",
+  "family": "amsterdam-step-gable-gothic-v80",
+  "archetype_id": "amsterdam_step_gable_house",
+  "reuse_keys": [
+    "amsterdam_step_gable_house",
+    "historical",
+    "Residential \u2014 Rowhouse / Townhouse / Terrace"
+  ],
+  "manifest": "amsterdam-step-gable-gothic-v80_manifest.json",
+  "errors": [],
+  "warnings": [],
+  "modules": [
+    {
+      "file": "amsterdam-step-gable-gothic-v80_podium.glb",
+      "status": "ok",
+      "triangles": 11092,
+      "extent_m": {
+        "width_x": 6.56,
+        "height_y": 4.289,
+        "depth_z": 13.74
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_Glass",
+        "MAT_Interior_Room_00",
+        "MAT_Interior_Room_01",
+        "MAT_Interior_Room_02",
+        "MAT_Interior_Room_03",
+        "MAT_Interior_Shadow",
+        "MAT_Interior_Warm"
+      ],
+      "size_bytes": 1667600
+    },
+    {
+      "file": "amsterdam-step-gable-gothic-v80_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 11756,
+      "extent_m": {
+        "width_x": 6.52,
+        "height_y": 3.07,
+        "depth_z": 12.88
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_Glass",
+        "MAT_Interior_Room_00",
+        "MAT_Interior_Room_01",
+        "MAT_Interior_Room_02",
+        "MAT_Interior_Room_03"
+      ],
+      "size_bytes": 1382520
+    },
+    {
+      "file": "amsterdam-step-gable-gothic-v80_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 11756,
+      "extent_m": {
+        "width_x": 6.52,
+        "height_y": 3.07,
+        "depth_z": 12.88
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_Glass",
+        "MAT_Interior_Room_00",
+        "MAT_Interior_Room_01",
+        "MAT_Interior_Room_02",
+        "MAT_Interior_Room_03"
+      ],
+      "size_bytes": 1382520
+    },
+    {
+      "file": "amsterdam-step-gable-gothic-v80_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 11756,
+      "extent_m": {
+        "width_x": 6.52,
+        "height_y": 3.07,
+        "depth_z": 12.88
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_Glass",
+        "MAT_Interior_Room_00",
+        "MAT_Interior_Room_01",
+        "MAT_Interior_Room_02",
+        "MAT_Interior_Room_03"
+      ],
+      "size_bytes": 1382520
+    },
+    {
+      "file": "amsterdam-step-gable-gothic-v80_setback_upper.glb",
+      "status": "ok",
+      "triangles": 11756,
+      "extent_m": {
+        "width_x": 6.52,
+        "height_y": 3.17,
+        "depth_z": 12.88
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_Glass",
+        "MAT_Interior_Room_00",
+        "MAT_Interior_Room_01",
+        "MAT_Interior_Room_02",
+        "MAT_Interior_Room_03"
+      ],
+      "size_bytes": 1384396
+    },
+    {
+      "file": "amsterdam-step-gable-gothic-v80_crown_crown.glb",
+      "status": "ok",
+      "triangles": 13264,
+      "extent_m": {
+        "width_x": 6.56,
+        "height_y": 3.055,
+        "depth_z": 12.88
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_Glass",
+        "MAT_Interior_Room_00",
+        "MAT_Interior_Room_01",
+        "MAT_Interior_Room_02",
+        "MAT_Interior_Room_03"
+      ],
+      "size_bytes": 1479632
+    },
+    {
+      "file": "amsterdam-step-gable-gothic-v80_roof.glb",
+      "status": "ok",
+      "triangles": 76,
+      "extent_m": {
+        "width_x": 6.7,
+        "height_y": 3.688,
+        "depth_z": 12.656
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Roof"
+      ],
+      "size_bytes": 190272
+    },
+    {
+      "file": "amsterdam-step-gable-gothic-v80_assembled.glb",
+      "status": "ok",
+      "triangles": 73144,
+      "extent_m": {
+        "width_x": 6.475,
+        "height_y": 14.08,
+        "depth_z": 13.48
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Facade_Primary",
+        "MAT_Glass",
+        "MAT_GlazingInterior_heritage_leaded_occupied_01.007",
+        "MAT_GlazingInterior_heritage_leaded_occupied_02.007",
+        "MAT_GlazingInterior_heritage_leaded_occupied_03.007",
+        "MAT_Massing_RecessShadow",
+        "MAT_Roof_AgedFlashing",
+        "MAT_Signature_AgedLeadRoof",
+        "MAT_Signature_BlackMetal",
+        "MAT_Signature_CutStone",
+        "MAT_Signature_DarkOakDoor"
+      ],
+      "size_bytes": 6143640,
+      "role": "assembled"
+    }
+  ]
+}

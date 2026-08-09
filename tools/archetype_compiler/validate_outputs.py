@@ -101,7 +101,12 @@ def _check_module(path: Path, expected: dict[str, Any], errors: list[str], warni
     # Roof modules (and assembled stacks containing them) may carry eave overhangs
     role = expected.get("role") or ""
     allow_inset_footprint = bool(expected.get("allow_inset_footprint"))
-    width_tol = FOOTPRINT_TOLERANCE_M + (ROOF_OVERHANG_ALLOWANCE_M if role in ("roof", "assembled") else 0.0)
+    projection_allowance = max(0.0, float(expected.get("footprint_projection_allowance_m", 0.0)))
+    width_tol = (
+        FOOTPRINT_TOLERANCE_M
+        + (ROOF_OVERHANG_ALLOWANCE_M if role in ("roof", "assembled") else 0.0)
+        + projection_allowance
+    )
     if width and not allow_inset_footprint and abs(extent_x - width) > width_tol:
         errors.append(f"{label}: X extent {extent_x:.2f} m vs grammar width {width} m (tol {width_tol} m)")
     elif width and allow_inset_footprint and extent_x > width + width_tol:
@@ -109,7 +114,11 @@ def _check_module(path: Path, expected: dict[str, Any], errors: list[str], warni
     if depth:
         if not allow_inset_footprint and extent_z < depth - FOOTPRINT_TOLERANCE_M:
             errors.append(f"{label}: Z extent {extent_z:.2f} m smaller than grammar depth {depth} m")
-        elif extent_z > depth + FRONT_PROTRUSION_ALLOWANCE_M + (ROOF_OVERHANG_ALLOWANCE_M if role in ("roof", "assembled") else 0.0):
+        elif extent_z > (
+            depth + FRONT_PROTRUSION_ALLOWANCE_M
+            + (ROOF_OVERHANG_ALLOWANCE_M if role in ("roof", "assembled") else 0.0)
+            + projection_allowance
+        ):
             errors.append(
                 f"{label}: Z extent {extent_z:.2f} m exceeds grammar depth {depth} m + allowances"
             )
@@ -214,11 +223,13 @@ def validate_family(output_dir: Path, grammar_path: Path | None = None) -> dict[
     if assembled:
         path = output_dir / assembled["filename"]
         footprint_target = assembled.get("footprint_target") or {}
+        graph_contract = ((((grammar or {}).get("massing_graph") or {}).get("recipe_contract")) or {})
         report = _check_module(
             path,
             {"role": "assembled",
              "width_m": footprint_target.get("width_m", manifest["dimensions"]["width_m"]),
              "depth_m": footprint_target.get("depth_m", manifest["dimensions"]["depth_m"]),
+             "footprint_projection_allowance_m": graph_contract.get("footprint_projection_allowance_m", 0.0),
              "height_m": assembled["height_m"]},
             errors, warnings,
         )

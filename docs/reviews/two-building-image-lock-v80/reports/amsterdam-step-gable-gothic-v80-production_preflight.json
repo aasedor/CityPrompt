@@ -1,0 +1,249 @@
+{
+  "schema": "building-generation-preflight@1",
+  "archetype_id": "amsterdam_step_gable_house",
+  "variant_id": "step_gable_gothic",
+  "family": "amsterdam-step-gable-gothic-v80",
+  "status": "pass",
+  "paid_generation_allowed": true,
+  "reference_views": [
+    {
+      "role": "street_identity",
+      "path": "/archetypes/buildings/amsterdam-step-gable-house/variant_0.png"
+    },
+    {
+      "role": "oblique_massing",
+      "path": "/archetypes/buildings/amsterdam-step-gable-house/variant_0_angle_60.jpg"
+    },
+    {
+      "role": "roof_or_aerial",
+      "path": "/archetypes/buildings/amsterdam-step-gable-house/variant_0_angle_90.jpg"
+    }
+  ],
+  "identity_mode": "massing_graph",
+  "generation_quality": {
+    "schema": "building-generation-quality@1",
+    "status": "pass",
+    "quality_contract_version": 2,
+    "failures": [],
+    "gates": [
+      {
+        "id": "material_texture_key:primary",
+        "passed": true,
+        "detail": "primary resolves to texture 'red_brick'"
+      },
+      {
+        "id": "material_texture_key:signature_stone",
+        "passed": true,
+        "detail": "signature_stone resolves to texture 'limestone'"
+      },
+      {
+        "id": "material_texture_key:signature_roof",
+        "passed": true,
+        "detail": "signature_roof resolves to texture 'terracotta'"
+      },
+      {
+        "id": "material_texture_key:signature_metal",
+        "passed": true,
+        "detail": "signature_metal resolves to texture 'black_metal'"
+      },
+      {
+        "id": "image_lock_reference_roles",
+        "passed": true,
+        "detail": "3 image-authoritative roles declared"
+      },
+      {
+        "id": "image_lock_measurements",
+        "passed": true,
+        "detail": "9 measurements; minimum 8; invalid indices: none"
+      },
+      {
+        "id": "image_lock_node_topology",
+        "passed": true,
+        "detail": "2 required node ids resolved"
+      },
+      {
+        "id": "image_lock_assembly_topology",
+        "passed": true,
+        "detail": "8 required assembly ids resolved"
+      },
+      {
+        "id": "image_lock_node_kind_counts",
+        "passed": true,
+        "detail": "2 node kind counts satisfied"
+      },
+      {
+        "id": "image_lock_assembly_kind_counts",
+        "passed": true,
+        "detail": "4 assembly kind counts satisfied"
+      },
+      {
+        "id": "material_assembly_binding:shaped_gable_array",
+        "passed": true,
+        "detail": "1 assemblies checked; incorrect: none"
+      },
+      {
+        "id": "material_assembly_binding:punched_opening_schedule",
+        "passed": true,
+        "detail": "5 assemblies checked; incorrect: none"
+      },
+      {
+        "id": "material_assembly_binding:pitched_roof_surface_detail",
+        "passed": true,
+        "detail": "1 assemblies checked; incorrect: none"
+      },
+      {
+        "id": "material_node_binding:box",
+        "passed": true,
+        "detail": "1 nodes checked; incorrect: none"
+      },
+      {
+        "id": "material_node_binding:gable_roof",
+        "passed": true,
+        "detail": "1 nodes checked; incorrect: none"
+      },
+      {
+        "id": "metadata_traceability",
+        "passed": true,
+        "detail": "quality contract is traceable to catalogue metadata"
+      }
+    ]
+  },
+  "failures": [],
+  "gates": [
+    {
+      "id": "variant_not_selected",
+      "passed": true,
+      "detail": "selected variant 'step_gable_gothic'"
+    },
+    {
+      "id": "variant_generation_provenance_mismatch",
+      "passed": true,
+      "detail": "generation id 'amsterdam_step_gable_house_variant_0'; expected 'amsterdam_step_gable_house_variant_0'"
+    },
+    {
+      "id": "grammar_variant_mismatch",
+      "passed": true,
+      "detail": "grammar variant 'step_gable_gothic'; selected 'step_gable_gothic'"
+    },
+    {
+      "id": "incomplete_reference_set",
+      "passed": true,
+      "detail": "3 compatible reference views"
+    },
+    {
+      "id": "missing_production_contract",
+      "passed": true,
+      "detail": "architectural signature declares a production contract"
+    },
+    {
+      "id": "unclassified_identity_mode",
+      "passed": true,
+      "detail": "identity mode 'massing_graph'; expected one of ['massing_graph', 'semantic_stack']"
+    },
+    {
+      "id": "missing_fixed_identity",
+      "passed": true,
+      "detail": "3 fixed identity assemblies; minimum 3"
+    },
+    {
+      "id": "missing_repeatable_capacity",
+      "passed": true,
+      "detail": "1 repeatable capacity assemblies"
+    },
+    {
+      "id": "missing_required_massing_graph",
+      "passed": true,
+      "detail": "massing profile 'amsterdam_step_gable_image_lock_v80'"
+    },
+    {
+      "id": "unsafe_metadata_evidence",
+      "passed": true,
+      "detail": "images are authoritative; 2 metadata fields admitted for bounded uses"
+    },
+    {
+      "id": "massing_reference_dimensions_mismatch",
+      "passed": true,
+      "detail": "canonical graph dimensions activate exactly"
+    },
+    {
+      "id": "material_texture_key:primary",
+      "passed": true,
+      "detail": "primary resolves to texture 'red_brick'"
+    },
+    {
+      "id": "material_texture_key:signature_stone",
+      "passed": true,
+      "detail": "signature_stone resolves to texture 'limestone'"
+    },
+    {
+      "id": "material_texture_key:signature_roof",
+      "passed": true,
+      "detail": "signature_roof resolves to texture 'terracotta'"
+    },
+    {
+      "id": "material_texture_key:signature_metal",
+      "passed": true,
+      "detail": "signature_metal resolves to texture 'black_metal'"
+    },
+    {
+      "id": "image_lock_reference_roles",
+      "passed": true,
+      "detail": "3 image-authoritative roles declared"
+    },
+    {
+      "id": "image_lock_measurements",
+      "passed": true,
+      "detail": "9 measurements; minimum 8; invalid indices: none"
+    },
+    {
+      "id": "image_lock_node_topology",
+      "passed": true,
+      "detail": "2 required node ids resolved"
+    },
+    {
+      "id": "image_lock_assembly_topology",
+      "passed": true,
+      "detail": "8 required assembly ids resolved"
+    },
+    {
+      "id": "image_lock_node_kind_counts",
+      "passed": true,
+      "detail": "2 node kind counts satisfied"
+    },
+    {
+      "id": "image_lock_assembly_kind_counts",
+      "passed": true,
+      "detail": "4 assembly kind counts satisfied"
+    },
+    {
+      "id": "material_assembly_binding:shaped_gable_array",
+      "passed": true,
+      "detail": "1 assemblies checked; incorrect: none"
+    },
+    {
+      "id": "material_assembly_binding:punched_opening_schedule",
+      "passed": true,
+      "detail": "5 assemblies checked; incorrect: none"
+    },
+    {
+      "id": "material_assembly_binding:pitched_roof_surface_detail",
+      "passed": true,
+      "detail": "1 assemblies checked; incorrect: none"
+    },
+    {
+      "id": "material_node_binding:box",
+      "passed": true,
+      "detail": "1 nodes checked; incorrect: none"
+    },
+    {
+      "id": "material_node_binding:gable_roof",
+      "passed": true,
+      "detail": "1 nodes checked; incorrect: none"
+    },
+    {
+      "id": "metadata_traceability",
+      "passed": true,
+      "detail": "quality contract is traceable to catalogue metadata"
+    }
+  ]
+}

@@ -1,0 +1,214 @@
+{
+  "status": "pass",
+  "family": "barcelona-mercat-modernista-v80",
+  "archetype_id": "barcelona_mercat",
+  "reuse_keys": [
+    "barcelona_mercat",
+    "historical",
+    "Commercial \u2014 Market / Specialty Retail"
+  ],
+  "manifest": "barcelona-mercat-modernista-v80_manifest.json",
+  "errors": [],
+  "warnings": [
+    "barcelona-mercat-modernista-v80_assembled.glb: 90484 triangles (heavy; consider simplification)"
+  ],
+  "modules": [
+    {
+      "file": "barcelona-mercat-modernista-v80_podium.glb",
+      "status": "ok",
+      "triangles": 23068,
+      "extent_m": {
+        "width_x": 52.5,
+        "height_y": 5.8,
+        "depth_z": 47.45
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Glass",
+        "MAT_Interior_Room_00",
+        "MAT_Interior_Room_01",
+        "MAT_Interior_Room_02",
+        "MAT_Interior_Room_03",
+        "MAT_Interior_Room_04",
+        "MAT_Interior_Room_05",
+        "MAT_Interior_Room_06"
+      ],
+      "size_bytes": 2524728
+    },
+    {
+      "file": "barcelona-mercat-modernista-v80_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 28952,
+      "extent_m": {
+        "width_x": 52.5,
+        "height_y": 5.8,
+        "depth_z": 47.782
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Glass",
+        "MAT_Interior_Room_00",
+        "MAT_Interior_Room_01",
+        "MAT_Interior_Room_02",
+        "MAT_Interior_Room_03",
+        "MAT_Interior_Room_04",
+        "MAT_Interior_Room_05",
+        "MAT_Interior_Room_06"
+      ],
+      "size_bytes": 2697816
+    },
+    {
+      "file": "barcelona-mercat-modernista-v80_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 28952,
+      "extent_m": {
+        "width_x": 52.5,
+        "height_y": 5.8,
+        "depth_z": 47.782
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Glass",
+        "MAT_Interior_Room_00",
+        "MAT_Interior_Room_01",
+        "MAT_Interior_Room_02",
+        "MAT_Interior_Room_03",
+        "MAT_Interior_Room_04",
+        "MAT_Interior_Room_05",
+        "MAT_Interior_Room_06"
+      ],
+      "size_bytes": 2697592
+    },
+    {
+      "file": "barcelona-mercat-modernista-v80_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 28952,
+      "extent_m": {
+        "width_x": 52.5,
+        "height_y": 5.8,
+        "depth_z": 47.782
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Glass",
+        "MAT_Interior_Room_00",
+        "MAT_Interior_Room_01",
+        "MAT_Interior_Room_02",
+        "MAT_Interior_Room_03",
+        "MAT_Interior_Room_04",
+        "MAT_Interior_Room_05",
+        "MAT_Interior_Room_06"
+      ],
+      "size_bytes": 2697816
+    },
+    {
+      "file": "barcelona-mercat-modernista-v80_setback_upper.glb",
+      "status": "ok",
+      "triangles": 27412,
+      "extent_m": {
+        "width_x": 52.0,
+        "height_y": 3.6,
+        "depth_z": 46.25
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_Glass",
+        "MAT_Interior_Room_00",
+        "MAT_Interior_Room_01",
+        "MAT_Interior_Room_02",
+        "MAT_Interior_Room_03",
+        "MAT_Interior_Room_04",
+        "MAT_Interior_Room_05",
+        "MAT_Interior_Room_06"
+      ],
+      "size_bytes": 3207160
+    },
+    {
+      "file": "barcelona-mercat-modernista-v80_crown_crown.glb",
+      "status": "ok",
+      "triangles": 27104,
+      "extent_m": {
+        "width_x": 52.1,
+        "height_y": 5.8,
+        "depth_z": 46.025
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Glass",
+        "MAT_Interior_Room_00",
+        "MAT_Interior_Room_01",
+        "MAT_Interior_Room_02",
+        "MAT_Interior_Room_03",
+        "MAT_Interior_Room_04",
+        "MAT_Interior_Room_05",
+        "MAT_Interior_Room_06"
+      ],
+      "size_bytes": 2579836
+    },
+    {
+      "file": "barcelona-mercat-modernista-v80_roof.glb",
+      "status": "ok",
+      "triangles": 2528,
+      "extent_m": {
+        "width_x": 52.08,
+        "height_y": 4.0,
+        "depth_z": 46.08
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Glass",
+        "MAT_Roof"
+      ],
+      "size_bytes": 1138096
+    },
+    {
+      "file": "barcelona-mercat-modernista-v80_assembled.glb",
+      "status": "ok",
+      "triangles": 90484,
+      "extent_m": {
+        "width_x": 56.88,
+        "height_y": 11.386,
+        "depth_z": 50.88
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_Interior_Warm",
+        "MAT_Roof_AgedFlashing",
+        "MAT_Signature_AgedLeadRoof",
+        "MAT_Signature_BlackMetal",
+        "MAT_Signature_awning_blue",
+        "MAT_Signature_awning_red",
+        "MAT_Signature_awning_yellow",
+        "MAT_Signature_stained_glass",
+        "MAT_Signature_stall_backdrop"
+      ],
+      "size_bytes": 7338620,
+      "role": "assembled"
+    }
+  ]
+}

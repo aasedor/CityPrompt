@@ -1,0 +1,346 @@
+{
+  "schema": "architectural-signatures@1",
+  "description": "Two exact-reference pilots using measured openings, roof topology and image-authoritative metadata policy.",
+  "profiles": {
+    "step_gable_gothic": {
+      "identity": "Narrow three-level Amsterdam brick house with one exact crow-stepped front parapet, sparse secondary windows, a steep charcoal tiled roof and a raised central timber door.",
+      "material_zones": "red-brown brick body and gable; pale stone step caps and window returns; charcoal roof tiles; black timber sash; dark oak door",
+      "evidence_policy": {
+        "authority": "reference_images",
+        "metadata_mode": "selective",
+        "selected_metadata": [
+          {
+            "path": "selectedVariant.facadeDetail.primaryMaterial",
+            "cue": "early red-brown brick with Gothic proportions, steep and narrow",
+            "purpose": "brick family and narrow proportion only",
+            "image_consistent": true
+          },
+          {
+            "path": "selectedVariant.roofDetail.material",
+            "cue": "heavy dark clay tiles",
+            "purpose": "roof covering family only",
+            "image_consistent": true
+          }
+        ],
+        "ignored_metadata": [
+          {
+            "path": "selectedVariant.facadeDetail.secondaryMaterial",
+            "reason": "the exact image has rectangular sash rather than the described pointed windows"
+          },
+          {
+            "path": "selectedVariant.facadeDetail.groundFloor",
+            "reason": "the exact image has a rectangular timber door rather than a pointed entrance"
+          },
+          {
+            "path": "styleProfile",
+            "reason": "generic step-gable history does not determine this selected house"
+          },
+          {
+            "path": "renderPrompt",
+            "reason": "map-overlay prose is not a construction drawing"
+          }
+        ]
+      },
+      "dimension_overrides": {
+        "podium_height_m": 3.8,
+        "floor_height_m": 3.0,
+        "roof_height_m": 3.7,
+        "default_floors": 3
+      },
+      "material_overrides": {
+        "primary": {
+          "texture_key": "red_brick",
+          "base_color": "#7b4030",
+          "roughness": 0.86,
+          "texture_tint_mode": "COLOR",
+          "texture_tint_strength": 0.62
+        },
+        "secondary": {
+          "texture_key": "red_brick",
+          "base_color": "#7b4030",
+          "roughness": 0.86
+        },
+        "roof": {
+          "texture_key": "terracotta",
+          "base_color": "#20262c",
+          "roughness": 0.84,
+          "texture_tint_mode": "MULTIPLY",
+          "texture_tint_strength": 0.98
+        }
+      },
+      "signature_material_overrides": {
+        "signature_stone": {
+          "texture_key": "limestone",
+          "base_color": "#d1c7ad",
+          "roughness": 0.82
+        },
+        "signature_roof": {
+          "texture_key": "terracotta",
+          "base_color": "#20262c",
+          "roughness": 0.84,
+          "metallic": 0.0,
+          "texture_tint_mode": "MULTIPLY",
+          "texture_tint_strength": 0.98
+        },
+        "signature_metal": {
+          "texture_key": "black_metal",
+          "base_color": "#242322",
+          "roughness": 0.46,
+          "metallic": 0.18
+        },
+        "signature_door": {
+          "texture_key": "oak_wood",
+          "base_color": "#563522",
+          "roughness": 0.67,
+          "metallic": 0.0,
+          "texture_tint_mode": "MULTIPLY",
+          "texture_tint_strength": 0.30
+        }
+      },
+      "glass_profile": "heritage_leaded_occupied",
+      "production_contract": {
+        "identity_mode": "massing_graph",
+        "fixed_identity": [
+          "capped crow-step front parapet",
+          "image-scheduled rectangular sash and timber door",
+          "steep construction-detailed charcoal tile roof"
+        ],
+        "repeatable_capacity": [
+          "audited ordinary rear wall bays only; front and side schedules remain fixed"
+        ],
+        "quality_contract_version": 2,
+        "metadata_cues": [
+          "early red-brown brick with Gothic proportions, steep and narrow",
+          "heavy dark clay tiles"
+        ],
+        "image_lock": {
+          "required_reference_roles": [
+            "street_identity",
+            "oblique_massing",
+            "roof_plan"
+          ],
+          "minimum_measurements": 8,
+          "measurements": [
+            {"feature": "frontage width", "role": "street_identity", "value": 6.0, "unit": "metres", "drives": "canal_house_body width"},
+            {"feature": "body depth", "role": "roof_plan", "value": 12.0, "unit": "metres", "drives": "canal_house_body depth"},
+            {"feature": "wall eave height", "role": "oblique_massing", "value": 9.8, "unit": "metres", "drives": "body and roof eave datum"},
+            {"feature": "crow-step rise", "role": "street_identity", "value": 4.3, "unit": "metres", "drives": "front_crow_step height"},
+            {"feature": "roof ridge axis", "role": "roof_plan", "value": 90, "unit": "degrees from frontage", "drives": "canal_house_roof ridge_axis"},
+            {"feature": "occupied levels below gable", "role": "street_identity", "value": 3, "unit": "storeys", "drives": "canal_house_body levels"},
+            {"feature": "front punched openings", "role": "street_identity", "value": 10, "unit": "count", "drives": "front_opening_schedule"},
+            {"feature": "visible side punched openings", "role": "oblique_massing", "value": 4, "unit": "count", "drives": "right_opening_schedule"},
+            {"feature": "crow steps per side", "role": "street_identity", "value": 5, "unit": "count", "drives": "crow_step profile"}
+          ],
+          "required_node_ids": [
+            "canal_house_body",
+            "canal_house_roof"
+          ],
+          "required_assembly_ids": [
+            "front_crow_step",
+            "front_opening_schedule",
+            "front_gable_opening_schedule",
+            "right_opening_schedule",
+            "left_opening_schedule",
+            "rear_opening_schedule",
+            "clay_roof_courses",
+            "front_stoep"
+          ],
+          "required_node_kinds": {
+            "box": 1,
+            "gable_roof": 1
+          },
+          "required_assembly_kinds": {
+            "shaped_gable_array": 1,
+            "punched_opening_schedule": 5,
+            "pitched_roof_surface_detail": 1,
+            "steps": 1
+          }
+        },
+        "material_continuity": {
+          "required_textured_materials": [
+            "primary",
+            "signature_stone",
+            "signature_roof",
+            "signature_metal"
+          ],
+          "node_bindings": [
+            {"kind": "box", "ids": ["canal_house_body"], "slots": {"material": "primary"}},
+            {"kind": "gable_roof", "ids": ["canal_house_roof"], "slots": {"material": "signature_roof"}}
+          ],
+          "assembly_bindings": [
+            {"kind": "shaped_gable_array", "slots": {"material": "signature_stone", "infill_material": "primary"}},
+            {"kind": "punched_opening_schedule", "slots": {"frame_material": "signature_metal", "surround_material": "signature_stone"}},
+            {"kind": "pitched_roof_surface_detail", "slots": {"tile_material": "signature_roof"}}
+          ]
+        }
+      },
+      "massing_recipe": {
+        "kind": "stepped_gable_house",
+        "profile": "amsterdam_step_gable_image_lock_v80",
+        "description": "Image-measured narrow canal house with fixed crow-step silhouette and explicit punched openings on all elevations.",
+        "reference_views": [
+          {"role": "street_identity", "path": "/archetypes/buildings/amsterdam-step-gable-house/variant_0.png"},
+          {"role": "oblique_massing", "path": "/archetypes/buildings/amsterdam-step-gable-house/variant_0_angle_60.jpg"},
+          {"role": "roof_plan", "path": "/archetypes/buildings/amsterdam-step-gable-house/variant_0_angle_90.jpg"}
+        ],
+        "floors": 3,
+        "podium_height_m": 3.8,
+        "floor_height_m": 3.0,
+        "roof_height_m": 3.7,
+        "gable_height_m": 4.3,
+        "wall_material": "primary",
+        "cap_material": "signature_stone",
+        "roof_material": "signature_roof",
+        "front_openings": [
+          {"type": "door", "along_m": 0.0, "base_z_m": 0.32, "width_m": 0.88, "height_m": 2.72, "depth_m": 0.16},
+          {"type": "window", "along_m": -1.72, "base_z_m": 1.02, "width_m": 1.02, "height_m": 2.18, "columns": 2, "rows": 2},
+          {"type": "window", "along_m": 1.72, "base_z_m": 1.02, "width_m": 1.02, "height_m": 2.18, "columns": 2, "rows": 2},
+          {"type": "window", "along_m": -1.72, "base_z_m": 4.25, "width_m": 1.02, "height_m": 2.16, "columns": 2, "rows": 2},
+          {"type": "window", "along_m": 0.0, "base_z_m": 4.25, "width_m": 1.02, "height_m": 2.16, "columns": 2, "rows": 2},
+          {"type": "window", "along_m": 1.72, "base_z_m": 4.25, "width_m": 1.02, "height_m": 2.16, "columns": 2, "rows": 2},
+          {"type": "window", "along_m": -1.72, "base_z_m": 7.25, "width_m": 1.02, "height_m": 2.16, "columns": 2, "rows": 2},
+          {"type": "window", "along_m": 0.0, "base_z_m": 7.25, "width_m": 1.02, "height_m": 2.16, "columns": 2, "rows": 2},
+          {"type": "window", "along_m": 1.72, "base_z_m": 7.25, "width_m": 1.02, "height_m": 2.16, "columns": 2, "rows": 2},
+          {"type": "window", "along_m": 0.0, "base_z_m": 10.55, "width_m": 1.00, "height_m": 1.82, "columns": 2, "rows": 2}
+        ],
+        "side_openings": [
+          {"type": "window", "along_m": -3.65, "base_z_m": 4.30, "width_m": 0.82, "height_m": 1.70, "columns": 2, "rows": 2},
+          {"type": "window", "along_m": -3.65, "base_z_m": 7.30, "width_m": 0.82, "height_m": 1.70, "columns": 2, "rows": 2},
+          {"type": "window", "along_m": 2.25, "base_z_m": 1.05, "width_m": 0.76, "height_m": 1.58, "columns": 2, "rows": 2},
+          {"type": "window", "along_m": 2.25, "base_z_m": 7.30, "width_m": 0.76, "height_m": 1.58, "columns": 2, "rows": 2}
+        ],
+        "left_openings": [
+          {"type": "window", "along_m": -2.8, "base_z_m": 4.35, "width_m": 0.76, "height_m": 1.62, "columns": 2, "rows": 2},
+          {"type": "window", "along_m": 2.8, "base_z_m": 7.35, "width_m": 0.76, "height_m": 1.62, "columns": 2, "rows": 2}
+        ],
+        "rear_openings": [
+          {"type": "window", "along_m": -1.45, "base_z_m": 1.05, "width_m": 0.90, "height_m": 1.80, "columns": 2, "rows": 2},
+          {"type": "window", "along_m": 1.45, "base_z_m": 1.05, "width_m": 0.90, "height_m": 1.80, "columns": 2, "rows": 2},
+          {"type": "window", "along_m": -1.45, "base_z_m": 4.30, "width_m": 0.90, "height_m": 1.80, "columns": 2, "rows": 2},
+          {"type": "window", "along_m": 1.45, "base_z_m": 4.30, "width_m": 0.90, "height_m": 1.80, "columns": 2, "rows": 2},
+          {"type": "window", "along_m": -1.45, "base_z_m": 7.30, "width_m": 0.90, "height_m": 1.80, "columns": 2, "rows": 2},
+          {"type": "window", "along_m": 1.45, "base_z_m": 7.30, "width_m": 0.90, "height_m": 1.80, "columns": 2, "rows": 2}
+        ],
+        "chimney": {"x_m": 1.55, "y_m": 3.9, "base_offset_m": 1.45, "count": 2, "height_m": 2.25}
+      }
+    },
+    "mercat_modernista": {
+      "identity": "Low near-square brick market with four genuinely open stall frontages, coloured awnings and a cross-shaped hierarchy of standing-seam roofs, stained skylight bands and arched clerestories.",
+      "material_zones": "warm red brick perimeter columns; weathered ochre header panels; black iron trusses; translucent green-blue clerestories and skylight bands; dark standing-seam roofs; red, yellow and blue fabric awnings",
+      "evidence_policy": {
+        "authority": "reference_images",
+        "metadata_mode": "disabled",
+        "ignored_metadata": [
+          {"path": "selectedVariant", "reason": "the Boqueria prose and five-aisle claim conflict with the exact cross-gabled selected images"},
+          {"path": "styleProfile", "reason": "generic Barcelona market history cannot determine the selected roof plan"},
+          {"path": "renderPrompt", "reason": "map-overlay prose is not a construction drawing"}
+        ]
+      },
+      "dimension_overrides": {
+        "podium_height_m": 5.8,
+        "floor_height_m": 5.8,
+        "roof_height_m": 5.0,
+        "default_floors": 1
+      },
+      "material_overrides": {
+        "primary": {"texture_key": "red_brick", "base_color": "#9a573f", "roughness": 0.84},
+        "secondary": {"texture_key": "stucco", "base_color": "#91745b", "roughness": 0.87},
+        "roof": {"texture_key": "standing_seam", "base_color": "#4f5958", "roughness": 0.48, "metallic": 0.54}
+      },
+      "signature_material_overrides": {
+        "signature_roof": {"texture_key": "standing_seam", "base_color": "#4f5958", "roughness": 0.48, "metallic": 0.54},
+        "signature_metal": {"texture_key": "black_metal", "base_color": "#252a29", "roughness": 0.38, "metallic": 0.70},
+        "stained_glass": {"base_color": "#4f8077", "roughness": 0.19, "metallic": 0.0, "transmission": 0.58, "ior": 1.48, "emission_color": "#7ab3a1", "emission_strength": 0.04},
+        "stall_backdrop": {"base_color": "#3b2a21", "roughness": 0.78, "metallic": 0.0, "emission_color": "#b47a42", "emission_strength": 0.08},
+        "awning_red": {"base_color": "#9f3029", "roughness": 0.92, "metallic": 0.0},
+        "awning_yellow": {"base_color": "#d1a735", "roughness": 0.92, "metallic": 0.0},
+        "awning_blue": {"base_color": "#315e7c", "roughness": 0.92, "metallic": 0.0}
+      },
+      "glass_profile": "low_iron_clear",
+      "production_contract": {
+        "identity_mode": "massing_graph",
+        "fixed_identity": [
+          "cross-shaped multi-aisle roof plan",
+          "four construction-open market frontages",
+          "arched iron-and-stained-glass clerestories and coloured awnings"
+        ],
+        "repeatable_capacity": [
+          "ordinary open stall bay between fixed corner columns"
+        ],
+        "quality_contract_version": 2,
+        "metadata_cues": [],
+        "image_lock": {
+          "required_reference_roles": ["street_identity", "oblique_massing", "roof_plan"],
+          "minimum_measurements": 9,
+          "measurements": [
+            {"feature": "block frontage", "role": "roof_plan", "value": 52.0, "unit": "metres", "drives": "market hall width"},
+            {"feature": "block depth", "role": "roof_plan", "value": 46.0, "unit": "metres", "drives": "market hall depth"},
+            {"feature": "front open bays", "role": "street_identity", "value": 6, "unit": "count", "drives": "front_market_columns"},
+            {"feature": "side open bays", "role": "oblique_massing", "value": 5, "unit": "count", "drives": "side market columns"},
+            {"feature": "central nave width", "role": "roof_plan", "value": 16.5, "unit": "metres", "drives": "central_glass_nave"},
+            {"feature": "cross nave depth", "role": "roof_plan", "value": 15.5, "unit": "metres", "drives": "cross_glass_nave"},
+            {"feature": "perimeter eave height", "role": "street_identity", "value": 5.8, "unit": "metres", "drives": "headers and roof eaves"},
+            {"feature": "central ridge rise", "role": "oblique_massing", "value": 5.4, "unit": "metres", "drives": "central_glass_nave rise"},
+            {"feature": "primary roof ridge axes", "role": "roof_plan", "value": 2, "unit": "orthogonal axes", "drives": "central and cross roof nodes"}
+          ],
+          "required_node_ids": [
+            "front_header", "rear_header", "left_header", "right_header",
+            "central_glass_nave", "left_opaque_aisle", "right_opaque_aisle", "cross_glass_nave"
+          ],
+          "required_assembly_ids": [
+            "front_market_columns", "rear_market_columns", "left_market_columns", "right_market_columns",
+            "front_market_backdrop", "rear_market_backdrop", "left_market_backdrop", "right_market_backdrop",
+            "central_front_clerestory", "central_rear_clerestory", "cross_left_clerestory", "cross_right_clerestory",
+            "central_roof_iron", "cross_roof_iron", "central_skylight_panels", "cross_skylight_panels",
+            "front_market_awnings", "rear_market_awnings", "left_market_awnings", "right_market_awnings"
+          ],
+          "required_void_ids": [
+            "front_open_market_bays", "rear_open_market_bays", "left_open_market_bays", "right_open_market_bays"
+          ],
+          "required_node_kinds": {"box": 4, "gable_roof": 4},
+          "required_assembly_kinds": {"column_array": 4, "curtain_wall": 4, "gable_end_glazing": 4, "pitched_roof_frame": 2, "pitched_roof_surface_detail": 4, "awning_schedule": 4}
+        },
+        "material_continuity": {
+          "required_textured_materials": ["primary", "secondary", "signature_roof", "signature_metal"],
+          "node_bindings": [
+            {"kind": "box", "ids": ["front_header", "rear_header", "left_header", "right_header"], "slots": {"material": "secondary"}},
+            {"kind": "gable_roof", "ids": ["central_glass_nave", "left_opaque_aisle", "right_opaque_aisle", "cross_glass_nave"], "slots": {"material": "signature_roof"}}
+          ],
+          "assembly_bindings": [
+            {"kind": "column_array", "slots": {"material": "primary"}},
+            {"kind": "curtain_wall", "slots": {"glass_material": "stall_backdrop", "frame_material": "signature_metal"}},
+            {"kind": "gable_end_glazing", "slots": {"glass_material": "stained_glass", "frame_material": "signature_metal", "edge_material": "primary"}},
+            {"kind": "pitched_roof_frame", "slots": {"material": "signature_metal"}},
+            {"kind": "pitched_roof_surface_detail", "ids": ["opaque_roof_detail_0", "opaque_roof_detail_1"], "slots": {"tile_material": "signature_roof"}},
+            {"kind": "pitched_roof_surface_detail", "ids": ["central_skylight_panels", "cross_skylight_panels"], "slots": {"tile_material": "stained_glass"}}
+          ]
+        }
+      },
+      "massing_recipe": {
+        "kind": "multi_aisle_market_hall",
+        "profile": "barcelona_mercat_image_lock_v80",
+        "description": "Image-measured open market hall with a near-square cross-roof plan, arched clerestories, skylight bands and active awning frontage.",
+        "reference_views": [
+          {"role": "street_identity", "path": "/archetypes/buildings/barcelona-mercat/variant_0.png"},
+          {"role": "oblique_massing", "path": "/archetypes/buildings/barcelona-mercat/variant_0_angle_60.jpg"},
+          {"role": "roof_plan", "path": "/archetypes/buildings/barcelona-mercat/variant_0_angle_90.jpg"}
+        ],
+        "eave_height_m": 5.8,
+        "header_height_m": 2.1,
+        "central_aisle_width_m": 16.5,
+        "central_rise_m": 5.4,
+        "side_rise_m": 3.2,
+        "cross_aisle_depth_m": 15.5,
+        "cross_rise_m": 5.0,
+        "front_column_count": 7,
+        "side_column_count": 6,
+        "wall_material": "primary",
+        "header_material": "secondary",
+        "backdrop_material": "stall_backdrop",
+        "opaque_roof_material": "signature_roof",
+        "glass_roof_material": "signature_roof",
+        "iron_material": "signature_metal"
+      }
+    }
+  }
+}

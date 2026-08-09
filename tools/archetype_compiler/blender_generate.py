@@ -772,6 +772,7 @@ def build_materials(grammar: dict) -> dict[str, bpy.types.Material]:
         "signature_door": make_material("MAT_Signature_DarkOakDoor", {
             "base_color": "#3f2d22", "roughness": 0.64, "metallic": 0.0,
             "texture_key": "charred_timber",
+            **dict(signature_materials.get("signature_door") or {}),
         }),
         "signature_stone": make_material("MAT_Signature_CutStone", signature_stone_spec),
         "signature_roof": make_material("MAT_Signature_AgedLeadRoof", signature_roof_spec),
@@ -788,6 +789,16 @@ def build_materials(grammar: dict) -> dict[str, bpy.types.Material]:
             "base_color": "#17191a", "roughness": 0.72, "metallic": 0.0,
         }),
     }
+    # Image-locked recipes occasionally need a small bounded palette that is
+    # not part of the universal material vocabulary (for example market-awning
+    # colours or stained clerestory glass). Preserve the named fixed slots
+    # above, then expose any additional declared overrides to the graph rather
+    # than silently falling back to the primary wall material.
+    for key, spec in signature_materials.items():
+        if key in result:
+            continue
+        safe_name = "".join(character if character.isalnum() else "_" for character in str(key))
+        result[str(key)] = make_material(f"MAT_Signature_{safe_name}", dict(spec or {}))
     result["glass_profile_name"] = profile_name
     # Cell 7 in the legacy atlas is deliberately blue/dark. The occupied-city
     # treatment keeps every window lit, so omit that cell from new assemblies.
@@ -6453,6 +6464,9 @@ def _graph_curtain_wall(parts: list, spec: dict, mats: dict, *, ribbon: bool = F
     prefix = str(spec.get("id", "GraphGlazing"))
     glass_mat = _graph_material(mats, spec.get("glass_material", "glass"))
     frame_mat = _graph_material(mats, spec.get("frame_material", "signature_metal"))
+    surround_mat = _graph_material(
+        mats, spec.get("surround_material", spec.get("frame_material", "signature_metal"))
+    )
     shadow_mat = _graph_material(mats, "massing_joint")
     interior_key = spec.get("interior_material")
     interior_mat = _graph_material(mats, interior_key) if interior_key else None
@@ -6491,12 +6505,12 @@ def _graph_curtain_wall(parts: list, spec: dict, mats: dict, *, ribbon: bool = F
             outward = -1.0 if axis == "front" else 1.0
             surround_y = cy + outward * max(0.0, surround_depth - depth) * 0.5
             for label, x in (("LeftReturn", cx - span / 2 - surround / 2), ("RightReturn", cx + span / 2 + surround / 2)):
-                parts.append(add_beveled_box(f"{prefix}_{label}", (surround, surround_depth, height + surround * 2), (x, surround_y, cz), frame_mat, bevel))
+                parts.append(add_beveled_box(f"{prefix}_{label}", (surround, surround_depth, height + surround * 2), (x, surround_y, cz), surround_mat, bevel))
             for label, z in (("HeadReturn", cz + height / 2 + surround / 2), ("SillReturn", cz - height / 2 - surround / 2)):
                 projection = sill_projection if label == "SillReturn" else 0.0
                 return_depth = surround_depth + projection
                 return_y = surround_y + outward * projection * 0.5
-                parts.append(add_beveled_box(f"{prefix}_{label}", (span + surround * 2, return_depth, surround), (cx, return_y, z), frame_mat, bevel))
+                parts.append(add_beveled_box(f"{prefix}_{label}", (span + surround * 2, return_depth, surround), (cx, return_y, z), surround_mat, bevel))
     elif axis in ("left", "right"):
         if reveal:
             parts.append(add_beveled_box(
@@ -6523,14 +6537,239 @@ def _graph_curtain_wall(parts: list, spec: dict, mats: dict, *, ribbon: bool = F
             outward = -1.0 if axis == "left" else 1.0
             surround_x = cx + outward * max(0.0, surround_depth - depth) * 0.5
             for label, y in (("LeftReturn", cy - span / 2 - surround / 2), ("RightReturn", cy + span / 2 + surround / 2)):
-                parts.append(add_beveled_box(f"{prefix}_{label}", (surround_depth, surround, height + surround * 2), (surround_x, y, cz), frame_mat, bevel))
+                parts.append(add_beveled_box(f"{prefix}_{label}", (surround_depth, surround, height + surround * 2), (surround_x, y, cz), surround_mat, bevel))
             for label, z in (("HeadReturn", cz + height / 2 + surround / 2), ("SillReturn", cz - height / 2 - surround / 2)):
                 projection = sill_projection if label == "SillReturn" else 0.0
                 return_depth = surround_depth + projection
                 return_x = surround_x + outward * projection * 0.5
-                parts.append(add_beveled_box(f"{prefix}_{label}", (return_depth, span + surround * 2, surround), (return_x, cy, z), frame_mat, bevel))
+                parts.append(add_beveled_box(f"{prefix}_{label}", (return_depth, span + surround * 2, surround), (return_x, cy, z), surround_mat, bevel))
     else:
         raise ValueError(f"massing graph glazing axis {axis!r} is unsupported")
+
+
+def _graph_punched_opening_schedule(parts: list, spec: dict, mats: dict) -> None:
+    """Build only image-audited punched windows and doors on an elevation.
+
+    A regular grid is intentionally not inferred here. Each opening owns its
+    exact along-facade coordinate, sill/base datum and dimensions, allowing
+    sparse secondary elevations and asymmetric heritage fronts to remain true
+    to the selected image set.
+    """
+    axis = str(spec.get("axis", "front"))
+    if axis not in {"front", "rear", "left", "right"}:
+        raise ValueError(f"punched opening schedule axis {axis!r} is unsupported")
+    face = float(spec["face_coordinate_m"])
+    prefix = str(spec.get("id", "GraphPunchedOpenings"))
+    default_frame = spec.get("frame_material", "signature_metal")
+    default_surround = spec.get("surround_material", "signature_stone")
+    default_glass = spec.get("glass_material", "glass")
+    default_interior = spec.get("interior_material", "interior_warm")
+    door_material = _graph_material(mats, spec.get("door_material", "signature_door"))
+    shadow_material = _graph_material(mats, "massing_joint")
+
+    def centre(along: float, z: float) -> tuple[float, float, float]:
+        return (along, face, z) if axis in {"front", "rear"} else (face, along, z)
+
+    for index, opening in enumerate(spec.get("openings") or []):
+        along = float(opening["along_m"])
+        base_z = float(opening.get("base_z_m", 0.35))
+        width = float(opening["width_m"])
+        height = float(opening["height_m"])
+        opening_type = str(opening.get("type", "window"))
+        tag = f"{prefix}_{index:02d}"
+        if opening_type == "door":
+            depth = float(opening.get("depth_m", 0.16))
+            frame = float(opening.get("frame_m", 0.11))
+            cx, cy, cz = centre(along, base_z + height / 2)
+            if axis in {"front", "rear"}:
+                reveal_size, door_size = (width + frame * 2, depth * 1.8, height + frame * 2), (width, depth, height)
+                outward = -1.0 if axis == "front" else 1.0
+                door_centre = (cx, cy + outward * depth * 0.38, cz)
+            else:
+                reveal_size, door_size = (depth * 1.8, width + frame * 2, height + frame * 2), (depth, width, height)
+                outward = -1.0 if axis == "left" else 1.0
+                door_centre = (cx + outward * depth * 0.38, cy, cz)
+            parts.append(add_beveled_box(f"{tag}_Reveal", reveal_size, (cx, cy, cz), shadow_material, 0.025))
+            parts.append(add_beveled_box(f"{tag}_Door", door_size, door_centre, door_material, 0.028))
+            continue
+        if opening_type != "window":
+            raise ValueError(f"punched opening {tag} has unsupported type {opening_type!r}")
+        _graph_curtain_wall(parts, {
+            "id": tag, "axis": axis,
+            "centre": list(centre(along, base_z + height / 2)),
+            "span_m": width, "height_m": height,
+            "columns": int(opening.get("columns", 2)),
+            "rows": max(int(spec.get("minimum_rows", 1)), int(opening.get("rows", 2))),
+            "frame_m": float(opening.get("frame_m", 0.055)),
+            "depth_m": float(opening.get("depth_m", 0.075)),
+            "reveal_m": float(opening.get("reveal_m", 0.12)),
+            "surround_m": float(opening.get("surround_m", 0.060)),
+            "surround_depth_m": float(opening.get("surround_depth_m", 0.15)),
+            "sill_projection_m": float(opening.get("sill_projection_m", 0.055)),
+            "frame_material": opening.get("frame_material", default_frame),
+            "glass_material": opening.get("glass_material", default_glass),
+            "interior_material": opening.get("interior_material", default_interior),
+            "interior_recess_m": float(opening.get("interior_recess_m", 0.22)),
+            "surround_material": opening.get("surround_material", default_surround),
+        }, mats)
+
+
+def _graph_gable_end_glazing(parts: list, spec: dict, mats: dict) -> None:
+    """Create a triangular or segmental-arched glazed gable on any main axis."""
+    axis = str(spec.get("axis", "front"))
+    if axis not in {"front", "rear", "left", "right"}:
+        raise ValueError(f"gable end glazing axis {axis!r} is unsupported")
+    cx, cy, base_z = (float(value) for value in spec["base_centre"])
+    width = float(spec["width_m"])
+    rise = float(spec["rise_m"])
+    depth = max(0.04, float(spec.get("depth_m", 0.10)))
+    segments = max(12, int(spec.get("segments", 32)))
+    style = str(spec.get("head_style", "triangle"))
+    if style not in {"triangle", "segmental_arch"}:
+        raise ValueError(f"gable end glazing head style {style!r} is unsupported")
+    prefix = str(spec.get("id", "GraphGableEndGlass"))
+    glass = _graph_material(mats, spec.get("glass_material", "glass"))
+    frame = _graph_material(mats, spec.get("frame_material", "signature_metal"))
+    edge = _graph_material(mats, spec.get("edge_material", "primary"))
+    half = width / 2
+
+    def head(along: float) -> float:
+        ratio = min(1.0, abs(along) / half)
+        if style == "triangle":
+            return base_z + rise * (1.0 - ratio)
+        return base_z + rise * math.sqrt(max(0.0, 1.0 - ratio * ratio))
+
+    def world(along: float, normal: float, z: float) -> tuple[float, float, float]:
+        if axis in {"front", "rear"}:
+            return (cx + along, cy + normal, z)
+        return (cx + normal, cy + along, z)
+
+    outline = [(-half, base_z)]
+    outline.extend((-half + width * index / segments, head(-half + width * index / segments)) for index in range(segments + 1))
+    outline.append((half, base_z))
+    outward = -1.0 if axis in {"front", "left"} else 1.0
+    front_normal, back_normal = outward * depth / 2, -outward * depth / 2
+    verts = [world(along, front_normal, z) for along, z in outline]
+    verts.extend(world(along, back_normal, z) for along, z in outline)
+    count = len(outline)
+    faces: list[tuple[int, ...]] = [tuple(range(count)), tuple(reversed(range(count, count * 2)))]
+    for index in range(count):
+        nxt = (index + 1) % count
+        faces.append((index, nxt, count + nxt, count + index))
+    parts.append(add_prism(f"{prefix}_Glass", verts, faces, glass))
+
+    lift = outward * (depth / 2 + float(spec.get("frame_lift_m", 0.055)))
+    radius = max(0.035, float(spec.get("frame_radius_m", 0.095)))
+    mullions = max(0, int(spec.get("mullions", 5)))
+    # The outline owns the two edge bars. Interior mullions must exclude the
+    # arch spring points, where head(along) == base_z and a member has no length.
+    for index in range(1, mullions + 1):
+        along = -half + width * index / (mullions + 1)
+        parts.append(_graph_member_between(
+            f"{prefix}_Mullion{index:02d}", world(along, lift, base_z),
+            world(along, lift, head(along)), radius, frame, vertices=10,
+        ))
+    transoms = max(0, int(spec.get("transoms", 2)))
+    for index in range(1, transoms + 1):
+        t = index / (transoms + 1)
+        z = base_z + rise * t
+        extent = half * ((1.0 - t) if style == "triangle" else math.sqrt(max(0.0, 1.0 - t * t)))
+        parts.append(_graph_member_between(
+            f"{prefix}_Transom{index:02d}", world(-extent, lift, z),
+            world(extent, lift, z), radius, frame, vertices=10,
+        ))
+    edge_radius = max(radius * 1.25, float(spec.get("edge_radius_m", 0.16)))
+    curve = [world(along, lift, z) for along, z in outline[1:-1]]
+    for index in range(len(curve) - 1):
+        parts.append(_graph_member_between(
+            f"{prefix}_Edge{index:02d}", curve[index], curve[index + 1],
+            edge_radius, edge, vertices=10,
+        ))
+
+
+def _graph_pitched_roof_frame(parts: list, spec: dict, mats: dict) -> None:
+    """Add slope-registered iron rafters and purlins over a gable roof."""
+    cx, cy, eave_z = (float(value) for value in spec["centre"])
+    width, depth, rise = (float(value) for value in spec["size"])
+    ridge_axis = str(spec.get("ridge_axis", "y"))
+    if ridge_axis not in {"x", "y"}:
+        raise ValueError(f"pitched roof frame axis {ridge_axis!r} is unsupported")
+    prefix = str(spec.get("id", "GraphPitchedRoofFrame"))
+    material = _graph_material(mats, spec.get("material", "signature_metal"))
+    radius = max(0.025, float(spec.get("profile_m", 0.09)))
+    rafter_count = max(2, int(spec.get("rafter_count", 10)))
+    purlin_rows = max(0, int(spec.get("purlin_rows", 3)))
+    ridge_length = width if ridge_axis == "x" else depth
+    half_run = depth / 2 if ridge_axis == "x" else width / 2
+
+    def point(along: float, side: float, t: float) -> tuple[float, float, float]:
+        across = side * half_run * (1.0 - t)
+        z = eave_z + rise * t + radius * 0.55
+        return (cx + along, cy + across, z) if ridge_axis == "x" else (cx + across, cy + along, z)
+
+    for index in range(rafter_count):
+        along = -ridge_length / 2 + ridge_length * index / max(1, rafter_count - 1)
+        for side in (-1.0, 1.0):
+            parts.append(_graph_member_between(
+                f"{prefix}_Rafter{index:02d}_{'L' if side < 0 else 'R'}",
+                point(along, side, 0.0), point(along, side, 1.0), radius, material, vertices=8,
+            ))
+    for row in range(1, purlin_rows + 1):
+        t = row / (purlin_rows + 1)
+        for side in (-1.0, 1.0):
+            parts.append(_graph_member_between(
+                f"{prefix}_Purlin{row:02d}_{'L' if side < 0 else 'R'}",
+                point(-ridge_length / 2, side, t), point(ridge_length / 2, side, t),
+                radius * 0.78, material, vertices=8,
+            ))
+    parts.append(_graph_member_between(
+        f"{prefix}_Ridge", point(-ridge_length / 2, 1.0, 1.0),
+        point(ridge_length / 2, 1.0, 1.0), radius * 1.15, material, vertices=8,
+    ))
+
+
+def _graph_awning_schedule(parts: list, spec: dict, mats: dict) -> None:
+    """Build a bounded row of supported fabric awnings on one facade."""
+    axis = str(spec.get("axis", "front"))
+    if axis not in {"front", "rear", "left", "right"}:
+        raise ValueError(f"awning schedule axis {axis!r} is unsupported")
+    face = float(spec["face_coordinate_m"])
+    base_z = float(spec.get("base_z_m", 3.0))
+    width = float(spec.get("width_m", 3.2))
+    projection = float(spec.get("projection_m", 2.0))
+    drop = float(spec.get("drop_m", 0.35))
+    materials = list(spec.get("materials") or ["signature_warm"])
+    iron = _graph_material(mats, spec.get("support_material", "signature_metal"))
+    prefix = str(spec.get("id", "GraphAwnings"))
+    angle = math.atan2(drop, projection)
+    for index, along in enumerate(float(value) for value in spec.get("positions_m") or []):
+        outward = -1.0 if axis in {"front", "left"} else 1.0
+        panel_material = _graph_material(mats, materials[index % len(materials)])
+        if axis in {"front", "rear"}:
+            location = (along, face + outward * projection / 2, base_z - drop / 2)
+            panel = add_beveled_box(f"{prefix}_{index:02d}_Canopy", (width, projection, 0.075), location, panel_material, 0.018)
+            panel.rotation_euler.x = outward * angle
+            outer = (along, face + outward * projection, base_z - drop)
+            valance_size = (width, 0.08, 0.30)
+            arm_starts = [(along - width * 0.42, face, base_z), (along + width * 0.42, face, base_z)]
+            arm_ends = [(along - width * 0.42, outer[1], outer[2]), (along + width * 0.42, outer[1], outer[2])]
+        else:
+            location = (face + outward * projection / 2, along, base_z - drop / 2)
+            panel = add_beveled_box(f"{prefix}_{index:02d}_Canopy", (projection, width, 0.075), location, panel_material, 0.018)
+            panel.rotation_euler.y = -outward * angle
+            outer = (face + outward * projection, along, base_z - drop)
+            valance_size = (0.08, width, 0.30)
+            arm_starts = [(face, along - width * 0.42, base_z), (face, along + width * 0.42, base_z)]
+            arm_ends = [(outer[0], along - width * 0.42, outer[2]), (outer[0], along + width * 0.42, outer[2])]
+        parts.append(panel)
+        parts.append(add_beveled_box(
+            f"{prefix}_{index:02d}_Valance", valance_size,
+            (outer[0], outer[1], outer[2] - 0.12), panel_material, 0.015,
+        ))
+        for arm_index, (start, end) in enumerate(zip(arm_starts, arm_ends)):
+            parts.append(_graph_member_between(
+                f"{prefix}_{index:02d}_Arm{arm_index}", start, end, 0.032, iron, vertices=8,
+            ))
 
 
 def _graph_column_array(parts: list, spec: dict, mats: dict) -> None:
@@ -6688,20 +6927,32 @@ def _graph_shaped_gable_array(parts: list, spec: dict, mats: dict) -> None:
             (-0.075, 0.86), (0.00, 1.00), (0.075, 0.86),
             (0.455, 0.10), (0.50, 0.10), (0.50, 0.00),
         ]
-    elif profile_style == "crow_step":
+    elif profile_style in {"crow_step", "crow_step_flat"}:
         # Scottish Baronial and northern European parapet gables need an
         # unmistakably constructed stair-step silhouette.  Each horizontal
         # tread and vertical riser is explicit geometry so the profile remains
         # legible in the archetype-match camera and after LEGO-scale export.
-        outline = [
-            (-0.50, 0.00), (-0.50, 0.16), (-0.40, 0.16),
-            (-0.40, 0.32), (-0.30, 0.32), (-0.30, 0.48),
-            (-0.20, 0.48), (-0.20, 0.64), (-0.10, 0.64),
-            (-0.10, 0.82), (0.00, 1.00), (0.10, 0.82),
-            (0.10, 0.64), (0.20, 0.64), (0.20, 0.48),
-            (0.30, 0.48), (0.30, 0.32), (0.40, 0.32),
-            (0.40, 0.16), (0.50, 0.16), (0.50, 0.00),
-        ]
+        outline = (
+            [
+                (-0.50, 0.00), (-0.50, 0.16), (-0.40, 0.16),
+                (-0.40, 0.32), (-0.30, 0.32), (-0.30, 0.48),
+                (-0.20, 0.48), (-0.20, 0.64), (-0.10, 0.64),
+                (-0.10, 0.82), (-0.075, 1.00), (0.075, 1.00), (0.10, 0.82),
+                (0.10, 0.64), (0.20, 0.64), (0.20, 0.48),
+                (0.30, 0.48), (0.30, 0.32), (0.40, 0.32),
+                (0.40, 0.16), (0.50, 0.16), (0.50, 0.00),
+            ]
+            if profile_style == "crow_step_flat" else
+            [
+                (-0.50, 0.00), (-0.50, 0.16), (-0.40, 0.16),
+                (-0.40, 0.32), (-0.30, 0.32), (-0.30, 0.48),
+                (-0.20, 0.48), (-0.20, 0.64), (-0.10, 0.64),
+                (-0.10, 0.82), (0.00, 1.00), (0.10, 0.82),
+                (0.10, 0.64), (0.20, 0.64), (0.20, 0.48),
+                (0.30, 0.48), (0.30, 0.32), (0.40, 0.32),
+                (0.40, 0.16), (0.50, 0.16), (0.50, 0.00),
+            ]
+        )
     else:
         # A sampled ogee/scroll outline reads as curved after the construction
         # bevel is applied, while remaining deterministic and inexpensive in GLB.
@@ -6751,15 +7002,35 @@ def _graph_shaped_gable_array(parts: list, spec: dict, mats: dict) -> None:
     for index, offset in enumerate(positions):
         x = cx + offset
         tag = f"{prefix}_{index:02d}"
-        parts.append(extruded_profile(
-            f"{tag}_StoneScroll", x, width, height, depth,
-            base_z, facade_y, stone, float(spec.get("bevel_m", 0.075)),
-        ))
-        if bool(spec.get("infill_enabled", True)):
+        construction = str(spec.get("profile_construction", "layered_profile"))
+        if profile_style in {"crow_step", "crow_step_flat"} and construction == "capped_masonry":
             parts.append(extruded_profile(
-                f"{tag}_BrickInfill", x, width * 0.82, height * 0.78, depth * 0.16,
-                base_z + height * 0.10, facade_y - depth - 0.018, brick, 0.025,
+                f"{tag}_BrickParapet", x, width, height, depth,
+                base_z, facade_y, brick, float(spec.get("bevel_m", 0.035)),
             ))
+            cap_thickness = max(0.04, float(spec.get("cap_thickness_m", 0.16)))
+            cap_projection = max(0.0, float(spec.get("cap_projection_m", 0.10)))
+            for segment_index, (start, end) in enumerate(zip(outline, outline[1:])):
+                if abs(start[1] - end[1]) > 1e-6 or abs(start[0] - end[0]) < 1e-6:
+                    continue
+                x0, x1 = x + start[0] * width, x + end[0] * width
+                z = base_z + start[1] * height
+                parts.append(add_beveled_box(
+                    f"{tag}_StepCap{segment_index:02d}",
+                    (abs(x1 - x0) + cap_projection * 2, depth + cap_projection * 2, cap_thickness),
+                    ((x0 + x1) / 2, facade_y - depth / 2, z + cap_thickness / 2),
+                    stone, min(0.025, cap_thickness * 0.18),
+                ))
+        else:
+            parts.append(extruded_profile(
+                f"{tag}_StoneScroll", x, width, height, depth,
+                base_z, facade_y, stone, float(spec.get("bevel_m", 0.075)),
+            ))
+            if bool(spec.get("infill_enabled", True)):
+                parts.append(extruded_profile(
+                    f"{tag}_BrickInfill", x, width * 0.82, height * 0.78, depth * 0.16,
+                    base_z + height * 0.10, facade_y - depth - 0.018, brick, 0.025,
+                ))
         if bool(spec.get("finial_enabled", True)):
             finial_radius = float(spec.get("finial_radius_m", 0.19))
             finial_z = base_z + height + finial_radius * 1.15
@@ -9004,6 +9275,10 @@ def _graph_pitched_roof_surface_detail(parts: list, spec: dict, mats: dict) -> N
     rows = max(4, int(spec.get("rows", 10)))
     columns = max(4, int(spec.get("columns", 14)))
     tile_thickness = float(spec.get("tile_thickness_m", 0.055))
+    row_min = max(0.0, min(1.0, float(spec.get("row_min_fraction", 0.0))))
+    row_max = max(row_min, min(1.0, float(spec.get("row_max_fraction", 1.0))))
+    along_min = max(-1.0, min(1.0, float(spec.get("along_min_fraction", -1.0))))
+    along_max = max(along_min, min(1.0, float(spec.get("along_max_fraction", 1.0))))
     ridge_length = width if ridge_axis == "x" else depth
     half_run = depth / 2 if ridge_axis == "x" else width / 2
     slope_length = math.hypot(half_run, rise)
@@ -9049,10 +9324,15 @@ def _graph_pitched_roof_surface_detail(parts: list, spec: dict, mats: dict) -> N
         slope_records.append((side, along, upslope, normal))
         for row in range(rows):
             t = (row + 0.5) / rows
+            if not row_min <= t <= row_max:
+                continue
             stagger = ridge_step * 0.5 if row % 2 else 0.0
             for column in range(-1, columns + 1):
                 ridge_offset = -ridge_length / 2 + ridge_step * (column + 0.5) + stagger
                 if abs(ridge_offset) > ridge_length / 2 - ridge_step * 0.16:
+                    continue
+                along_fraction = ridge_offset / max(0.001, ridge_length / 2)
+                if not along_min <= along_fraction <= along_max:
                     continue
                 if ridge_axis == "x":
                     surface = Vector((
@@ -9105,10 +9385,11 @@ def _graph_pitched_roof_surface_detail(parts: list, spec: dict, mats: dict) -> N
         ridge_size = (ridge_length * 0.97, ridge_width, 0.14)
     else:
         ridge_size = (ridge_width, ridge_length * 0.97, 0.14)
-    parts.append(add_beveled_box(
-        f"{prefix}_RidgeCap", ridge_size,
-        (cx, cy, eave_z + rise + 0.075), ridge_mat, 0.025,
-    ))
+    if bool(spec.get("ridge_enabled", True)):
+        parts.append(add_beveled_box(
+            f"{prefix}_RidgeCap", ridge_size,
+            (cx, cy, eave_z + rise + 0.075), ridge_mat, 0.025,
+        ))
 
     gutter_width = float(spec.get("gutter_width_m", 0.15))
     if bool(spec.get("gutter_enabled", True)):
@@ -9452,6 +9733,14 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
             _graph_striped_turret_array(parts, assembly, mats)
         elif kind == "curtain_wall":
             _graph_curtain_wall(parts, assembly, mats)
+        elif kind == "punched_opening_schedule":
+            _graph_punched_opening_schedule(parts, assembly, mats)
+        elif kind == "gable_end_glazing":
+            _graph_gable_end_glazing(parts, assembly, mats)
+        elif kind == "pitched_roof_frame":
+            _graph_pitched_roof_frame(parts, assembly, mats)
+        elif kind == "awning_schedule":
+            _graph_awning_schedule(parts, assembly, mats)
         elif kind == "ribbon_window":
             _graph_curtain_wall(parts, assembly, mats, ribbon=True)
         elif kind == "steps":

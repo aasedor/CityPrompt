@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-08-08-image-first-selective-metadata-v79",
+  "memory_version": "2026-08-08-image-measured-feature-schedules-v80",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "calibration_set": {
@@ -22,6 +22,10 @@
     {
       "id": "metadata_is_selective_optional_evidence",
       "rule": "Reference images are authoritative. Admit metadata field by field only when it is image-confirmed and bound to a specific construction purpose; ignore conflicting or generic parent prose, and allow metadata to be disabled entirely."
+    },
+    {
+      "id": "image_measurements_drive_topology",
+      "rule": "Before Blender, convert exact street, oblique and roof images into a bounded feature schedule: dimensions, storey and opening counts, opening positions, ridge axes, roof intersections, material zones and depth-bearing voids. Every measurement names the graph node, assembly or void it drives, and production preflight fails when required topology is missing."
     },
     {
       "id": "geometry_carries_identity",
@@ -753,6 +757,16 @@
       "symptom": "A model is metadata-correct but its roof, massing or visible material is wrong in the exact archetype comparison",
       "cause": "The pipeline ingested a complete metadata description or generic parent prompt instead of admitting only image-confirmed variant facts for bounded purposes.",
       "correction": "Declare an image-authoritative evidence policy. Select exact dotted metadata paths one by one with a purpose and image-consistency confirmation, ignore conflicting parent prose, and disable metadata when no field improves the image-derived contract."
+    },
+    {
+      "symptom": "A generated building is structurally complete but remains a generic sibling of the exact archetype",
+      "cause": "Reference images were consulted informally, but their visible storey count, opening schedule, roof axes and material zones were never translated into named graph requirements.",
+      "correction": "Write an image-lock feature schedule before rendering. Bind every numeric or counted cue to a required node, assembly or void; run production gates; then use side-by-side human review to catch perceptual errors such as an extra storey or incorrect roof value."
+    },
+    {
+      "symptom": "An open market, arcade or entrance looks hollow from one camera but flat or empty from another",
+      "cause": "The foreground opening has no depth contract, or the void terminates without a recessed occupied surface that establishes a believable interior section.",
+      "correction": "Pair each real perimeter void with columns or reveals and a deeper occupied backdrop. Wrap the construction around every exposed elevation and verify it from front, corner and rear views rather than accepting a dark facade rectangle."
     }
   ]
 }

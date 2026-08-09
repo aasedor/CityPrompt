@@ -311,10 +311,443 @@ def _courtyard_passage(recipe: dict[str, Any], dims: dict[str, Any]) -> dict[str
     }
 
 
+def _stepped_gable_house(recipe: dict[str, Any], dims: dict[str, Any]) -> dict[str, Any]:
+    """Compile a narrow image-measured canal house without a stretched atlas."""
+    width = float(dims["width_m"])
+    depth = float(dims["depth_m"])
+    floors = int(recipe.get("floors", dims["default_floors"]))
+    podium = float(recipe.get("podium_height_m", dims["podium_height_m"]))
+    floor = float(recipe.get("floor_height_m", dims["floor_height_m"]))
+    wall_height = podium + floor * max(0, floors - 1)
+    roof_rise = float(recipe.get("roof_height_m", 4.1))
+    gable_rise = float(recipe.get("gable_height_m", roof_rise + 1.0))
+    front_y, rear_y = -depth / 2, depth / 2
+    wall_material = str(recipe.get("wall_material", "primary"))
+    cap_material = str(recipe.get("cap_material", "signature_stone"))
+    roof_material = str(recipe.get("roof_material", "signature_roof"))
+
+    front_openings = deepcopy(recipe.get("front_openings") or [])
+    body_front_openings = [
+        opening for opening in front_openings
+        if float(opening.get("base_z_m", 0.0)) < wall_height - 0.35
+    ]
+    gable_front_openings = [
+        opening for opening in front_openings
+        if float(opening.get("base_z_m", 0.0)) >= wall_height - 0.35
+    ]
+    side_openings = deepcopy(recipe.get("side_openings") or [])
+    rear_openings = deepcopy(recipe.get("rear_openings") or [])
+    nodes = [
+        {
+            "id": "canal_house_body", "kind": "box",
+            "size": [width, depth, wall_height],
+            "location": [0.0, 0.0, wall_height / 2],
+            "material": wall_material, "bevel_m": 0.055,
+        },
+        {
+            "id": "canal_house_roof", "kind": "gable_roof",
+            "size": [width + 0.18, depth + 0.20, roof_rise],
+            "location": [0.0, 0.0, wall_height],
+            "material": roof_material, "ridge_axis": "y", "bevel_m": 0.045,
+        },
+    ]
+    assemblies: list[dict[str, Any]] = [
+        {
+            "id": "front_crow_step", "kind": "shaped_gable_array", "axis": "front",
+            "base_centre": [0.0, front_y - 0.03, wall_height - 0.18],
+            "positions_m": [0.0], "width_m": width + 0.10, "height_m": gable_rise,
+            "depth_m": 0.38, "profile_style": "crow_step_flat",
+            "profile_construction": "capped_masonry", "material": cap_material,
+            "infill_material": wall_material, "cap_thickness_m": 0.16,
+            "cap_projection_m": 0.10, "finial_enabled": False,
+            "window_enabled": False, "bevel_m": 0.035,
+        },
+        {
+            "id": "front_opening_schedule", "kind": "punched_opening_schedule",
+            "axis": "front", "face_coordinate_m": front_y - 0.07,
+            "openings": body_front_openings, "frame_material": "signature_metal",
+            "surround_material": cap_material, "door_material": "signature_door",
+            "glass_material": "glass", "interior_material": "glazing_interior_1",
+            "minimum_rows": 3,
+        },
+        {
+            "id": "front_gable_opening_schedule", "kind": "punched_opening_schedule",
+            "axis": "front", "face_coordinate_m": front_y - 0.46,
+            "openings": gable_front_openings, "frame_material": "signature_metal",
+            "surround_material": cap_material, "glass_material": "glass",
+            "interior_material": "glazing_interior_1", "minimum_rows": 3,
+        },
+        {
+            "id": "right_opening_schedule", "kind": "punched_opening_schedule",
+            "axis": "right", "face_coordinate_m": width / 2 + 0.07,
+            "openings": side_openings, "frame_material": "signature_metal",
+            "surround_material": cap_material, "glass_material": "glass",
+            "interior_material": "glazing_interior_2", "minimum_rows": 3,
+        },
+        {
+            "id": "left_opening_schedule", "kind": "punched_opening_schedule",
+            "axis": "left", "face_coordinate_m": -width / 2 - 0.07,
+            "openings": deepcopy(recipe.get("left_openings") or side_openings),
+            "frame_material": "signature_metal", "surround_material": cap_material,
+            "glass_material": "glass", "interior_material": "glazing_interior_3",
+            "minimum_rows": 3,
+        },
+        {
+            "id": "rear_opening_schedule", "kind": "punched_opening_schedule",
+            "axis": "rear", "face_coordinate_m": rear_y + 0.07,
+            "openings": rear_openings, "frame_material": "signature_metal",
+            "surround_material": cap_material, "glass_material": "glass",
+            "interior_material": "glazing_interior_4", "minimum_rows": 3,
+        },
+        {
+            "id": "clay_roof_courses", "kind": "pitched_roof_surface_detail",
+            "centre": [0.0, 0.0, wall_height],
+            "size": [width + 0.18, depth + 0.20, roof_rise], "ridge_axis": "y",
+            "tile_material": roof_material, "ridge_material": "roof_flashing",
+            "verge_material": cap_material, "rows": int(recipe.get("roof_rows", 13)),
+            "columns": int(recipe.get("roof_columns", 15)), "tile_thickness_m": 0.045,
+            "weight_enabled": False, "gutter_enabled": True, "verge_enabled": True,
+        },
+        {
+            "id": "front_stoep", "kind": "steps",
+            "centre": [0.0, front_y - 0.62, 0.0], "width_m": 2.25,
+            "depth_m": 1.20, "height_m": 0.48, "count": 3,
+            "material": cap_material,
+        },
+    ]
+    chimney = recipe.get("chimney")
+    if chimney:
+        assemblies.append({
+            "id": "rear_chimney", "kind": "chimney_cluster_array",
+            "centres": [[float(chimney.get("x_m", 1.55)), float(chimney.get("y_m", 3.8)),
+                         wall_height + float(chimney.get("base_offset_m", 1.5))]],
+            "count_per_cluster": int(chimney.get("count", 2)),
+            "height_m": float(chimney.get("height_m", 2.3)),
+            "section_m": float(chimney.get("section_m", 0.34)),
+            "spacing_m": float(chimney.get("spacing_m", 0.52)),
+            "material": wall_material, "cap_material": cap_material,
+        })
+
+    return {
+        "schema": "massing-graph@1", "profile": str(recipe["profile"]),
+        "description": str(recipe["description"]),
+        "reference_views": deepcopy(recipe.get("reference_views") or []),
+        "height_m": wall_height + gable_rise,
+        "reference_dimensions": {
+            "width_m": width, "depth_m": depth, "floors": floors,
+            "floor_height_m": floor,
+        },
+        "nodes": nodes, "voids": [], "assemblies": assemblies,
+        "target_views": ["archetype_match", "street", "front_corner_oblique", "aerial", "roof_audit"],
+        "recipe_contract": {
+            "kind": "stepped_gable_house", "front_opening_count": len(front_openings),
+            "side_opening_count": len(side_openings), "roof_node_ids": ["canal_house_roof"],
+        },
+    }
+
+
+def _multi_aisle_market_hall(recipe: dict[str, Any], dims: dict[str, Any]) -> dict[str, Any]:
+    """Compile a permeable masonry-and-iron market from street and roof evidence."""
+    width = float(dims["width_m"])
+    depth = float(dims["depth_m"])
+    eave_z = float(recipe.get("eave_height_m", 6.2))
+    header_height = float(recipe.get("header_height_m", 2.0))
+    column_height = eave_z - header_height
+    central_width = float(recipe.get("central_aisle_width_m", width * 0.34))
+    side_width = (width - central_width) / 2
+    central_rise = float(recipe.get("central_rise_m", 7.2))
+    side_rise = float(recipe.get("side_rise_m", 4.3))
+    cross_depth = float(recipe.get("cross_aisle_depth_m", depth * 0.36))
+    cross_rise = float(recipe.get("cross_rise_m", 5.8))
+    front_y, rear_y = -depth / 2, depth / 2
+    left_x, right_x = -width / 2, width / 2
+    wall_material = str(recipe.get("wall_material", "primary"))
+    header_material = str(recipe.get("header_material", wall_material))
+    backdrop_material = str(recipe.get("backdrop_material", "glass"))
+    opaque_roof = str(recipe.get("opaque_roof_material", "signature_roof"))
+    glass_roof = str(recipe.get("glass_roof_material", "glass"))
+    iron = str(recipe.get("iron_material", "signature_metal"))
+
+    nodes: list[dict[str, Any]] = [
+        {
+            "id": "market_floor", "kind": "roof_slab", "size": [width, depth, 0.22],
+            "location": [0.0, 0.0, 0.11], "material": "concrete", "bevel_m": 0.025,
+        },
+        {
+            "id": "front_header", "kind": "box", "size": [width, 1.15, header_height],
+            "location": [0.0, front_y + 0.575, column_height + header_height / 2],
+            "material": header_material, "bevel_m": 0.055,
+        },
+        {
+            "id": "rear_header", "kind": "box", "size": [width, 1.15, header_height],
+            "location": [0.0, rear_y - 0.575, column_height + header_height / 2],
+            "material": header_material, "bevel_m": 0.055,
+        },
+        {
+            "id": "left_header", "kind": "box", "size": [1.15, depth - 2.3, header_height],
+            "location": [left_x + 0.575, 0.0, column_height + header_height / 2],
+            "material": header_material, "bevel_m": 0.055,
+        },
+        {
+            "id": "right_header", "kind": "box", "size": [1.15, depth - 2.3, header_height],
+            "location": [right_x - 0.575, 0.0, column_height + header_height / 2],
+            "material": header_material, "bevel_m": 0.055,
+        },
+        {
+            "id": "central_glass_nave", "kind": "gable_roof",
+            "size": [central_width, depth, central_rise], "location": [0.0, 0.0, eave_z],
+            "material": opaque_roof, "ridge_axis": "y", "bevel_m": 0.035,
+        },
+        {
+            "id": "left_opaque_aisle", "kind": "gable_roof",
+            "size": [side_width + 0.20, depth, side_rise],
+            "location": [-(central_width + side_width) / 2, 0.0, eave_z],
+            "material": opaque_roof, "ridge_axis": "y", "bevel_m": 0.045,
+        },
+        {
+            "id": "right_opaque_aisle", "kind": "gable_roof",
+            "size": [side_width + 0.20, depth, side_rise],
+            "location": [(central_width + side_width) / 2, 0.0, eave_z],
+            "material": opaque_roof, "ridge_axis": "y", "bevel_m": 0.045,
+        },
+        {
+            "id": "cross_glass_nave", "kind": "gable_roof",
+            "size": [width, cross_depth, cross_rise], "location": [0.0, 0.0, eave_z + 0.10],
+            "material": opaque_roof, "ridge_axis": "x", "bevel_m": 0.035,
+        },
+    ]
+    front_columns = int(recipe.get("front_column_count", 9))
+    side_columns = int(recipe.get("side_column_count", 7))
+    assemblies: list[dict[str, Any]] = [
+        {
+            "id": "front_market_columns", "kind": "column_array",
+            "start": [left_x + 1.1, front_y + 0.28, 0.22],
+            "end": [right_x - 1.1, front_y + 0.28, 0.22], "count": front_columns,
+            "section": [0.82, 0.82], "height_m": column_height, "material": wall_material,
+        },
+        {
+            "id": "rear_market_columns", "kind": "column_array",
+            "start": [left_x + 1.1, rear_y - 0.28, 0.22],
+            "end": [right_x - 1.1, rear_y - 0.28, 0.22], "count": front_columns,
+            "section": [0.82, 0.82], "height_m": column_height, "material": wall_material,
+        },
+        {
+            "id": "left_market_columns", "kind": "column_array",
+            "start": [left_x + 0.28, front_y + 1.4, 0.22],
+            "end": [left_x + 0.28, rear_y - 1.4, 0.22], "count": side_columns,
+            "section": [0.82, 0.82], "height_m": column_height, "material": wall_material,
+        },
+        {
+            "id": "right_market_columns", "kind": "column_array",
+            "start": [right_x - 0.28, front_y + 1.4, 0.22],
+            "end": [right_x - 0.28, rear_y - 1.4, 0.22], "count": side_columns,
+            "section": [0.82, 0.82], "height_m": column_height, "material": wall_material,
+        },
+        {
+            "id": "front_market_backdrop", "kind": "curtain_wall", "axis": "front",
+            "centre": [0.0, front_y + 5.2, column_height / 2 + 0.25],
+            "span_m": width - 8.0, "height_m": column_height - 0.5,
+            "columns": front_columns - 1, "rows": 1, "frame_m": 0.10,
+            "depth_m": 0.08, "frame_material": iron, "glass_material": backdrop_material,
+            "interior_material": "interior_warm", "interior_recess_m": 0.20,
+        },
+        {
+            "id": "rear_market_backdrop", "kind": "curtain_wall", "axis": "rear",
+            "centre": [0.0, rear_y - 5.2, column_height / 2 + 0.25],
+            "span_m": width - 8.0, "height_m": column_height - 0.5,
+            "columns": front_columns - 1, "rows": 1, "frame_m": 0.10,
+            "depth_m": 0.08, "frame_material": iron, "glass_material": backdrop_material,
+            "interior_material": "interior_warm", "interior_recess_m": 0.20,
+        },
+        {
+            "id": "left_market_backdrop", "kind": "curtain_wall", "axis": "left",
+            "centre": [left_x + 5.2, 0.0, column_height / 2 + 0.25],
+            "span_m": depth - 8.0, "height_m": column_height - 0.5,
+            "columns": side_columns - 1, "rows": 1, "frame_m": 0.10,
+            "depth_m": 0.08, "frame_material": iron, "glass_material": backdrop_material,
+            "interior_material": "interior_warm", "interior_recess_m": 0.20,
+        },
+        {
+            "id": "right_market_backdrop", "kind": "curtain_wall", "axis": "right",
+            "centre": [right_x - 5.2, 0.0, column_height / 2 + 0.25],
+            "span_m": depth - 8.0, "height_m": column_height - 0.5,
+            "columns": side_columns - 1, "rows": 1, "frame_m": 0.10,
+            "depth_m": 0.08, "frame_material": iron, "glass_material": backdrop_material,
+            "interior_material": "interior_warm", "interior_recess_m": 0.20,
+        },
+        {
+            "id": "central_front_clerestory", "kind": "gable_end_glazing", "axis": "front",
+            "base_centre": [0.0, front_y - 0.04, eave_z], "width_m": central_width,
+            "rise_m": central_rise, "head_style": "segmental_arch", "mullions": 7,
+            "transoms": 3, "glass_material": "stained_glass", "frame_material": iron,
+            "edge_material": wall_material,
+        },
+        {
+            "id": "central_rear_clerestory", "kind": "gable_end_glazing", "axis": "rear",
+            "base_centre": [0.0, rear_y + 0.04, eave_z], "width_m": central_width,
+            "rise_m": central_rise, "head_style": "segmental_arch", "mullions": 7,
+            "transoms": 3, "glass_material": "stained_glass", "frame_material": iron,
+            "edge_material": wall_material,
+        },
+        {
+            "id": "cross_left_clerestory", "kind": "gable_end_glazing", "axis": "left",
+            "base_centre": [left_x - 0.04, 0.0, eave_z + 0.10], "width_m": cross_depth,
+            "rise_m": cross_rise, "head_style": "segmental_arch", "mullions": 5,
+            "transoms": 3, "glass_material": "stained_glass", "frame_material": iron,
+            "edge_material": wall_material,
+        },
+        {
+            "id": "cross_right_clerestory", "kind": "gable_end_glazing", "axis": "right",
+            "base_centre": [right_x + 0.04, 0.0, eave_z + 0.10], "width_m": cross_depth,
+            "rise_m": cross_rise, "head_style": "segmental_arch", "mullions": 5,
+            "transoms": 3, "glass_material": "stained_glass", "frame_material": iron,
+            "edge_material": wall_material,
+        },
+        {
+            "id": "central_roof_iron", "kind": "pitched_roof_frame",
+            "centre": [0.0, 0.0, eave_z], "size": [central_width, depth, central_rise],
+            "ridge_axis": "y", "rafter_count": 12, "purlin_rows": 4,
+            "material": iron, "profile_m": 0.11,
+        },
+        {
+            "id": "cross_roof_iron", "kind": "pitched_roof_frame",
+            "centre": [0.0, 0.0, eave_z + 0.10], "size": [width, cross_depth, cross_rise],
+            "ridge_axis": "x", "rafter_count": 15, "purlin_rows": 4,
+            "material": iron, "profile_m": 0.11,
+        },
+        {
+            "id": "central_skylight_panels", "kind": "pitched_roof_surface_detail",
+            "centre": [0.0, 0.0, eave_z], "size": [central_width, depth, central_rise],
+            "ridge_axis": "y", "tile_material": "stained_glass",
+            "rows": 7, "columns": 14, "tile_thickness_m": 0.026,
+            "row_min_fraction": 0.18, "row_max_fraction": 0.72,
+            "along_min_fraction": -0.46, "along_max_fraction": 0.46,
+            "weight_enabled": False, "ridge_enabled": False,
+            "gutter_enabled": False, "verge_enabled": False,
+        },
+        {
+            "id": "cross_skylight_panels", "kind": "pitched_roof_surface_detail",
+            "centre": [0.0, 0.0, eave_z + 0.10], "size": [width, cross_depth, cross_rise],
+            "ridge_axis": "x", "tile_material": "stained_glass",
+            "rows": 7, "columns": 14, "tile_thickness_m": 0.026,
+            "row_min_fraction": 0.18, "row_max_fraction": 0.68,
+            "along_min_fraction": -0.44, "along_max_fraction": 0.44,
+            "weight_enabled": False, "ridge_enabled": False,
+            "gutter_enabled": False, "verge_enabled": False,
+        },
+        {
+            "id": "front_market_awnings", "kind": "awning_schedule", "axis": "front",
+            "face_coordinate_m": front_y - 0.10, "base_z_m": 3.0,
+            "positions_m": [
+                left_x + (width - 2.2) * (index + 0.5) / (front_columns - 1)
+                for index in range(front_columns - 1)
+            ],
+            "width_m": (width - 4.0) / (front_columns - 1) * 0.72,
+            "projection_m": 2.3, "drop_m": 0.42,
+            "materials": ["awning_red", "awning_yellow", "awning_blue"],
+        },
+        {
+            "id": "rear_market_awnings", "kind": "awning_schedule", "axis": "rear",
+            "face_coordinate_m": rear_y + 0.10, "base_z_m": 3.0,
+            "positions_m": [
+                left_x + (width - 2.2) * (index + 0.5) / (front_columns - 1)
+                for index in range(front_columns - 1)
+            ],
+            "width_m": (width - 4.0) / (front_columns - 1) * 0.72,
+            "projection_m": 2.3, "drop_m": 0.42,
+            "materials": ["awning_blue", "awning_yellow", "awning_red"],
+        },
+        {
+            "id": "left_market_awnings", "kind": "awning_schedule", "axis": "left",
+            "face_coordinate_m": left_x - 0.10, "base_z_m": 3.0,
+            "positions_m": [
+                front_y + (depth - 2.8) * (index + 0.5) / (side_columns - 1)
+                for index in range(side_columns - 1)
+            ],
+            "width_m": (depth - 4.6) / (side_columns - 1) * 0.72,
+            "projection_m": 2.3, "drop_m": 0.42,
+            "materials": ["awning_yellow", "awning_red", "awning_blue"],
+        },
+        {
+            "id": "right_market_awnings", "kind": "awning_schedule", "axis": "right",
+            "face_coordinate_m": right_x + 0.10, "base_z_m": 3.0,
+            "positions_m": [
+                front_y + (depth - 2.8) * (index + 0.5) / (side_columns - 1)
+                for index in range(side_columns - 1)
+            ],
+            "width_m": (depth - 4.6) / (side_columns - 1) * 0.72,
+            "projection_m": 2.3, "drop_m": 0.42,
+            "materials": ["awning_red", "awning_blue", "awning_yellow"],
+        },
+    ]
+    for index, centre_x in enumerate((-(central_width + side_width) / 2, (central_width + side_width) / 2)):
+        assemblies.append({
+            "id": f"opaque_roof_detail_{index}", "kind": "pitched_roof_surface_detail",
+            "centre": [centre_x, 0.0, eave_z],
+            "size": [side_width + 0.20, depth, side_rise], "ridge_axis": "y",
+            "tile_material": opaque_roof, "ridge_material": "roof_flashing",
+            "verge_material": iron, "rows": 9, "columns": 20,
+            "tile_thickness_m": 0.035, "weight_enabled": False,
+            "gutter_enabled": True, "verge_enabled": True,
+        })
+
+    front_void_depth = 5.0
+    voids = [
+        {
+            "id": "front_open_market_bays", "shape": "open_perimeter_bays", "axis": "front",
+            "size": [width - 2.2, front_void_depth, column_height],
+            "location": [0.0, front_y + front_void_depth / 2, column_height / 2],
+            "purpose": "reference-visible open produce-stall frontage",
+        },
+        {
+            "id": "rear_open_market_bays", "shape": "open_perimeter_bays", "axis": "rear",
+            "size": [width - 2.2, front_void_depth, column_height],
+            "location": [0.0, rear_y - front_void_depth / 2, column_height / 2],
+            "purpose": "permeable rear market frontage",
+        },
+        {
+            "id": "left_open_market_bays", "shape": "open_perimeter_bays", "axis": "left",
+            "size": [front_void_depth, depth - 2.8, column_height],
+            "location": [left_x + front_void_depth / 2, 0.0, column_height / 2],
+            "purpose": "permeable side market frontage",
+        },
+        {
+            "id": "right_open_market_bays", "shape": "open_perimeter_bays", "axis": "right",
+            "size": [front_void_depth, depth - 2.8, column_height],
+            "location": [right_x - front_void_depth / 2, 0.0, column_height / 2],
+            "purpose": "permeable side market frontage",
+        },
+    ]
+    return {
+        "schema": "massing-graph@1", "profile": str(recipe["profile"]),
+        "description": str(recipe["description"]),
+        "reference_views": deepcopy(recipe.get("reference_views") or []),
+        "height_m": eave_z + max(central_rise, cross_rise),
+        "reference_dimensions": {
+            "width_m": width, "depth_m": depth, "floors": 1,
+            "floor_height_m": eave_z,
+        },
+        "nodes": nodes, "voids": voids, "assemblies": assemblies,
+        "target_views": ["archetype_match", "street", "front_corner_oblique", "aerial", "roof_audit"],
+        "recipe_contract": {
+            "kind": "multi_aisle_market_hall", "front_open_bays": front_columns - 1,
+            "side_open_bays": side_columns - 1,
+            "footprint_projection_allowance_m": 5.2,
+            "roof_node_ids": [
+                "central_glass_nave", "left_opaque_aisle", "right_opaque_aisle", "cross_glass_nave",
+            ],
+        },
+    }
+
+
 def compile_massing_recipe(recipe: dict[str, Any], dimensions: dict[str, Any]) -> dict[str, Any]:
     kind = str(recipe.get("kind", ""))
     if kind == "front_opening_landmark":
         return _front_opening_landmark(deepcopy(recipe), dimensions)
     if kind == "courtyard_passage":
         return _courtyard_passage(deepcopy(recipe), dimensions)
+    if kind == "stepped_gable_house":
+        return _stepped_gable_house(deepcopy(recipe), dimensions)
+    if kind == "multi_aisle_market_hall":
+        return _multi_aisle_market_hall(deepcopy(recipe), dimensions)
     raise ValueError(f"unsupported massing recipe kind {kind!r}")

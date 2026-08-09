@@ -89,6 +89,34 @@ def test_flat_landmark_material_and_missing_runtime_skin_fail():
     assert "material_texture_available:roof" in failures
 
 
+def test_material_assembly_bindings_can_target_named_subsets_of_one_kind():
+    from generation_quality_contract import assess_generation_quality_contract
+
+    grammar = quality_grammar()
+    contract = grammar["architectural_signature"]["production_contract"]["material_continuity"]
+    contract["assembly_bindings"] = [
+        {
+            "kind": "striped_turret_array", "ids": ["stone_turrets"],
+            "slots": {"body_material": "signature_stone", "roof_material": "roof"},
+        },
+        {
+            "kind": "striped_turret_array", "ids": ["brick_turrets"],
+            "slots": {"body_material": "primary", "roof_material": "roof"},
+        },
+    ]
+    grammar["massing_graph"]["assemblies"][0]["id"] = "stone_turrets"
+    grammar["massing_graph"]["assemblies"].append({
+        "id": "brick_turrets", "kind": "striped_turret_array",
+        "body_material": "primary", "roof_material": "roof",
+    })
+    report = assess_generation_quality_contract(grammar, source=source_metadata())
+    assert report["status"] == "pass"
+
+    grammar["massing_graph"]["assemblies"][-1]["body_material"] = "signature_stone"
+    report = assess_generation_quality_contract(grammar, source=source_metadata())
+    assert any(not gate["passed"] and "brick_turrets" in gate["detail"] for gate in report["gates"])
+
+
 def test_decorative_portal_cannot_satisfy_a_declared_passage():
     from generation_quality_contract import assess_generation_quality_contract
 
@@ -141,3 +169,52 @@ def test_multi_arch_recess_requires_every_opening_and_skin_clearance():
     graph["assemblies"][1]["opening_clearances"] = graph["assemblies"][1]["opening_clearances"][:4]
     report = assess_generation_quality_contract(grammar, source=source_metadata())
     assert "passage_skin_clearance:gate_passage" in {item["id"] for item in report["failures"]}
+
+
+def test_image_lock_requires_measured_reference_roles_and_named_graph_topology():
+    from generation_quality_contract import assess_generation_quality_contract
+
+    grammar = quality_grammar()
+    production = grammar["architectural_signature"]["production_contract"]
+    production["image_lock"] = {
+        "required_reference_roles": ["street_identity", "roof_plan"],
+        "minimum_measurements": 2,
+        "measurements": [
+            {"feature": "front bay count", "role": "street_identity", "value": 5, "unit": "count", "drives": "opening schedule"},
+            {"feature": "ridge axis", "role": "roof_plan", "value": 90, "unit": "degrees", "drives": "roof node"},
+        ],
+        "required_node_ids": ["gate_tower"],
+        "required_assembly_ids": ["gate_portal"],
+        "required_node_kinds": {"pointed_passage_block": 1},
+        "required_assembly_kinds": {"pointed_portal": 1},
+    }
+    grammar["massing_graph"]["reference_views"] = [
+        {"role": "street_identity", "path": "street.png"},
+        {"role": "roof_plan", "path": "roof.png"},
+    ]
+    report = assess_generation_quality_contract(grammar, source=source_metadata())
+    assert report["status"] == "pass"
+
+    grammar["massing_graph"]["assemblies"][1]["id"] = "wrong_portal"
+    report = assess_generation_quality_contract(grammar, source=source_metadata())
+    assert "image_lock_assembly_topology" in {item["id"] for item in report["failures"]}
+
+
+def test_image_lock_rejects_untraceable_measurement():
+    from generation_quality_contract import assess_generation_quality_contract
+
+    grammar = quality_grammar()
+    grammar["architectural_signature"]["production_contract"]["image_lock"] = {
+        "required_reference_roles": ["street_identity"],
+        "minimum_measurements": 1,
+        "measurements": [{
+            "feature": "gable height", "role": "missing_view", "value": 5.2,
+            "unit": "metres", "drives": "front gable",
+        }],
+        "required_node_ids": ["gate_tower"],
+    }
+    grammar["massing_graph"]["reference_views"] = [
+        {"role": "street_identity", "path": "street.png"},
+    ]
+    report = assess_generation_quality_contract(grammar, source=source_metadata())
+    assert "image_lock_measurements" in {item["id"] for item in report["failures"]}

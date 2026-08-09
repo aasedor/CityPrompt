@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-08-08-image-first-selective-metadata-v79`.
+Current executable memory: `2026-08-08-image-measured-feature-schedules-v80`.
 
 The current calibration set and catalogue rollout rationale are documented in
 [`BUILDING_GOLD_SET_PIPELINE_SYNTHESIS_2026-08-07.md`](BUILDING_GOLD_SET_PIPELINE_SYNTHESIS_2026-08-07.md).
@@ -746,6 +746,37 @@ roof topology, visible colour, openings and assembly hierarchy.
   leak unselected prose into the production contract's traceable cues.
 - This gate is opt-in for legacy compatibility. Every new image-locked pilot
   and catalogue expansion should declare it before paid or heavyweight work.
+
+### V80 image-measured feature-schedule lessons
+
+Looking at the right images is not enough. Before Blender, the selected street,
+oblique and roof views must become an explicit, executable feature schedule.
+
+- Record the visible storey count, wall and ridge datums, opening count and
+  positions, roof axes and intersections, material zones, and real spatial
+  voids. Each measurement names the graph node, assembly or void it drives.
+- Production preflight verifies that every required reference role is present,
+  measurements are well formed, and the named graph topology exists. This
+  prevents an image cue from being written into a report but omitted from the
+  build.
+- Keep opening schedules elevation-specific. Exact front sash rhythm must not
+  be repeated blindly across side and rear walls; sparse party-wall and service
+  elevations are part of the archetype identity.
+- Construct a roof as a plan graph, not a text label. Ridge axes, cross aisles,
+  clerestories, surface covering and edge systems are independent requirements
+  checked from the aerial reference and a context-free roof-audit camera.
+- A public opening needs both foreground construction and a believable depth
+  termination. Pair arches, columns or reveals with a recessed occupied
+  backdrop so the space reads as a tunnel, market bay or inhabited entrance
+  rather than a dark or brick-painted rectangle.
+- Learned depth, camera and point-cloud models such as MoGe, Depth Anything or
+  VGGT remain confidence-scored advisory evidence. They can expose curvature,
+  overhang and plan uncertainty, but noisy single-view mesh output does not
+  replace architecturally authored topology.
+- Machine gates catch omissions; side-by-side human comparison catches
+  perceptual mistakes. The Amsterdam pilot passed topology checks before human
+  review identified an extra storey and the wrong roof value, so visual keeper
+  status remains independent of validation success.
 
 ## Updating this memory
 
