@@ -106,3 +106,38 @@ def test_unpunched_facade_skin_cannot_cover_a_declared_passage():
     grammar["massing_graph"]["assemblies"][2].pop("opening_clearances")
     report = assess_generation_quality_contract(grammar, source=source_metadata())
     assert "passage_skin_clearance:gate_passage" in {item["id"] for item in report["failures"]}
+
+
+def test_multi_arch_recess_requires_every_opening_and_skin_clearance():
+    from generation_quality_contract import assess_generation_quality_contract
+
+    grammar = quality_grammar()
+    passage = grammar["architectural_signature"]["production_contract"]["spatial_voids"]["required_passages"][0]
+    passage.update({
+        "target_node_kind": "opening_block",
+        "shape": "round_arch_passage",
+        "section_mode": "recessed",
+        "minimum_opening_count": 5,
+        "minimum_clearance_count": 5,
+        "minimum_depth_m": 2.5,
+    })
+    passage.pop("portal_assembly_id")
+    graph = grammar["massing_graph"]
+    graph["nodes"][0].update({
+        "kind": "opening_block", "section_mode": "recessed", "opening_count": 5,
+    })
+    graph["voids"][0].update({"shape": "round_arch_passage", "size": [18.0, 2.8, 4.8]})
+    graph["assemblies"] = [
+        graph["assemblies"][0],
+        {
+            "id": "arcade_skin", "kind": "facade_skin",
+            "opening_clearances": [{"void_id": "gate_passage"} for _ in range(5)],
+        },
+    ]
+
+    report = assess_generation_quality_contract(grammar, source=source_metadata())
+    assert report["status"] == "pass"
+
+    graph["assemblies"][1]["opening_clearances"] = graph["assemblies"][1]["opening_clearances"][:4]
+    report = assess_generation_quality_contract(grammar, source=source_metadata())
+    assert "passage_skin_clearance:gate_passage" in {item["id"] for item in report["failures"]}

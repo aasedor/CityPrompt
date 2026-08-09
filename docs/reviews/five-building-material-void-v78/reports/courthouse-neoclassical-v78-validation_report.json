@@ -1,0 +1,183 @@
+{
+  "status": "pass",
+  "family": "courthouse-neoclassical-v78",
+  "archetype_id": "monumental_courthouse_axis",
+  "reuse_keys": [
+    "monumental_courthouse_axis",
+    "classical",
+    "Civic / Institutional"
+  ],
+  "manifest": "courthouse-neoclassical-v78_manifest.json",
+  "errors": [],
+  "warnings": [],
+  "modules": [
+    {
+      "file": "courthouse-neoclassical-v78_podium.glb",
+      "status": "ok",
+      "triangles": 2084,
+      "extent_m": {
+        "width_x": 60.24,
+        "height_y": 5.2,
+        "depth_z": 36.55
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_Sheet_Far_Podium",
+        "MAT_Sheet_Wrapped_Podium_Left",
+        "MAT_Sheet_Wrapped_Podium_Rear",
+        "MAT_Sheet_Wrapped_Podium_Right",
+        "MAT_Signature_CutStone"
+      ],
+      "size_bytes": 749980
+    },
+    {
+      "file": "courthouse-neoclassical-v78_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 968,
+      "extent_m": {
+        "width_x": 60.3,
+        "height_y": 5.5,
+        "depth_z": 35.365
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_Sheet_Far_Floor",
+        "MAT_Sheet_Wrapped_Floor_Left",
+        "MAT_Sheet_Wrapped_Floor_Rear",
+        "MAT_Sheet_Wrapped_Floor_Right",
+        "MAT_Signature_CutStone"
+      ],
+      "size_bytes": 735424
+    },
+    {
+      "file": "courthouse-neoclassical-v78_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 968,
+      "extent_m": {
+        "width_x": 60.3,
+        "height_y": 5.5,
+        "depth_z": 35.365
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_Sheet_Far_Floor_alt",
+        "MAT_Sheet_Wrapped_Floor_Left.001",
+        "MAT_Sheet_Wrapped_Floor_Rear.001",
+        "MAT_Sheet_Wrapped_Floor_Right.001",
+        "MAT_Signature_CutStone"
+      ],
+      "size_bytes": 735444
+    },
+    {
+      "file": "courthouse-neoclassical-v78_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 968,
+      "extent_m": {
+        "width_x": 60.3,
+        "height_y": 5.5,
+        "depth_z": 35.365
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_Sheet_Far_Floor",
+        "MAT_Sheet_Wrapped_Floor_Left.002",
+        "MAT_Sheet_Wrapped_Floor_Rear.002",
+        "MAT_Sheet_Wrapped_Floor_Right.002",
+        "MAT_Signature_CutStone"
+      ],
+      "size_bytes": 735436
+    },
+    {
+      "file": "courthouse-neoclassical-v78_setback_upper.glb",
+      "status": "ok",
+      "triangles": 1276,
+      "extent_m": {
+        "width_x": 60.0,
+        "height_y": 5.5,
+        "depth_z": 35.045
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Concrete",
+        "MAT_Facade_Secondary",
+        "MAT_Sheet_Far_Floor",
+        "MAT_Sheet_Wrapped_Floor_Left.003",
+        "MAT_Sheet_Wrapped_Floor_Rear.003",
+        "MAT_Sheet_Wrapped_Floor_Right.003",
+        "MAT_Signature_CutStone"
+      ],
+      "size_bytes": 753752
+    },
+    {
+      "file": "courthouse-neoclassical-v78_crown_crown.glb",
+      "status": "ok",
+      "triangles": 924,
+      "extent_m": {
+        "width_x": 59.9,
+        "height_y": 5.5,
+        "depth_z": 35.015
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Sheet_Far_Crown",
+        "MAT_Sheet_Wrapped_Floor_Left.004",
+        "MAT_Sheet_Wrapped_Floor_Rear.004",
+        "MAT_Sheet_Wrapped_Floor_Right.004",
+        "MAT_Signature_CutStone"
+      ],
+      "size_bytes": 852148
+    },
+    {
+      "file": "courthouse-neoclassical-v78_roof.glb",
+      "status": "ok",
+      "triangles": 452,
+      "extent_m": {
+        "width_x": 60.7,
+        "height_y": 2.4,
+        "depth_z": 35.677
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Roof",
+        "MAT_Signature_CutStone"
+      ],
+      "size_bytes": 553968
+    },
+    {
+      "file": "courthouse-neoclassical-v78_assembled.glb",
+      "status": "ok",
+      "triangles": 31248,
+      "extent_m": {
+        "width_x": 60.452,
+        "height_y": 13.72,
+        "depth_z": 39.383
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_Roof",
+        "MAT_Sheet_Far_Floor",
+        "MAT_Sheet_Far_Podium"
+      ],
+      "size_bytes": 2675016,
+      "role": "assembled"
+    }
+  ]
+}

@@ -8,4 +8,6 @@ docs/reviews/sam-ab-titanium-museum-v74/*.png filter=lfs diff=lfs merge=lfs -tex
 docs/reviews/free-geometry-titanium-museum-v75/*.png filter=lfs diff=lfs merge=lfs -text
 docs/reviews/scottish-baronial-v76/*.png filter=lfs diff=lfs merge=lfs -text
 docs/reviews/scottish-baronial-v77/*.png filter=lfs diff=lfs merge=lfs -text
+docs/reviews/five-building-material-void-v78/*.png filter=lfs diff=lfs merge=lfs -text
+docs/reviews/five-building-material-void-v78/generated/*.png filter=lfs diff=lfs merge=lfs -text
 tools/archetype_compiler/facade_sources_v71/*.png filter=lfs diff=lfs merge=lfs -text

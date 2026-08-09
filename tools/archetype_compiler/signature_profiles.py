@@ -5,14 +5,30 @@ import json
 from copy import deepcopy
 from pathlib import Path
 
+from massing_recipes import compile_massing_recipe
+
 PROFILE_PATH = Path(__file__).with_name("architectural_signature_profiles.json")
+PROFILE_EXTENSION_DIR = Path(__file__).with_name("architectural_signature_profiles.d")
 
 
 def load_signature_profiles(path: Path = PROFILE_PATH) -> dict[str, dict]:
     payload = json.loads(path.read_text(encoding="utf-8"))
     if payload.get("schema") != "architectural-signatures@1":
         raise ValueError(f"unsupported signature schema in {path}")
-    return payload["profiles"]
+    profiles = deepcopy(payload["profiles"])
+    if path.resolve() == PROFILE_PATH.resolve() and PROFILE_EXTENSION_DIR.exists():
+        for extension_path in sorted(PROFILE_EXTENSION_DIR.glob("*.json")):
+            extension = json.loads(extension_path.read_text(encoding="utf-8"))
+            if extension.get("schema") != "architectural-signatures@1":
+                raise ValueError(f"unsupported signature schema in {extension_path}")
+            duplicates = set(profiles) & set(extension.get("profiles") or {})
+            if duplicates:
+                raise ValueError(
+                    f"duplicate architectural signature profiles in {extension_path}: "
+                    + ", ".join(sorted(duplicates))
+                )
+            profiles.update(deepcopy(extension.get("profiles") or {}))
+    return profiles
 
 
 def _merge_profile(base: dict, override: dict) -> dict:
@@ -98,6 +114,11 @@ def inject_signature(
     key = preferred_variant if preferred_variant in profiles else parent_key
     if key in profiles:
         profile = _resolved_profile(profiles, key)
+        massing_recipe = profile.pop("massing_recipe", None)
+        if massing_recipe:
+            profile["massing_graph"] = compile_massing_recipe(
+                massing_recipe, grammar.get("dimensions") or {}
+            )
         # Massing graphs are a renderer-level building contract rather than a
         # facade-signature hint. Keep them at the grammar root so renderers can
         # opt in without sending a large geometry recipe to image generators.

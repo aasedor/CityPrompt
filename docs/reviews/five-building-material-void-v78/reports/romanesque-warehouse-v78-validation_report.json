@@ -1,0 +1,186 @@
+{
+  "status": "pass",
+  "family": "romanesque-warehouse-v78",
+  "archetype_id": "romanesque_revival_warehouse",
+  "reuse_keys": [
+    "romanesque_revival_warehouse",
+    "Industrial"
+  ],
+  "manifest": "romanesque-warehouse-v78_manifest.json",
+  "errors": [],
+  "warnings": [],
+  "modules": [
+    {
+      "file": "romanesque-warehouse-v78_podium.glb",
+      "status": "ok",
+      "triangles": 3980,
+      "extent_m": {
+        "width_x": 40.56,
+        "height_y": 5.2,
+        "depth_z": 40.34
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_Sheet_Far_Podium",
+        "MAT_Sheet_Wrapped_Podium_Left",
+        "MAT_Sheet_Wrapped_Podium_Rear",
+        "MAT_Sheet_Wrapped_Podium_Right",
+        "MAT_Signature_CutStone"
+      ],
+      "size_bytes": 1982500
+    },
+    {
+      "file": "romanesque-warehouse-v78_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 3064,
+      "extent_m": {
+        "width_x": 40.56,
+        "height_y": 4.2,
+        "depth_z": 40.365
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_Sheet_Far_Floor",
+        "MAT_Sheet_Wrapped_Floor_Left",
+        "MAT_Sheet_Wrapped_Floor_Rear",
+        "MAT_Sheet_Wrapped_Floor_Right",
+        "MAT_Signature_CutStone"
+      ],
+      "size_bytes": 2025560
+    },
+    {
+      "file": "romanesque-warehouse-v78_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 3064,
+      "extent_m": {
+        "width_x": 40.56,
+        "height_y": 4.2,
+        "depth_z": 40.365
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_Sheet_Far_Floor_alt",
+        "MAT_Sheet_Wrapped_Floor_Left.001",
+        "MAT_Sheet_Wrapped_Floor_Rear.001",
+        "MAT_Sheet_Wrapped_Floor_Right.001",
+        "MAT_Signature_CutStone"
+      ],
+      "size_bytes": 2025580
+    },
+    {
+      "file": "romanesque-warehouse-v78_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 3064,
+      "extent_m": {
+        "width_x": 40.56,
+        "height_y": 4.2,
+        "depth_z": 40.365
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_Sheet_Far_Floor",
+        "MAT_Sheet_Wrapped_Floor_Left.002",
+        "MAT_Sheet_Wrapped_Floor_Rear.002",
+        "MAT_Sheet_Wrapped_Floor_Right.002",
+        "MAT_Signature_CutStone"
+      ],
+      "size_bytes": 2025572
+    },
+    {
+      "file": "romanesque-warehouse-v78_setback_upper.glb",
+      "status": "ok",
+      "triangles": 3328,
+      "extent_m": {
+        "width_x": 40.0,
+        "height_y": 4.2,
+        "depth_z": 40.045
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Concrete",
+        "MAT_Facade_Secondary",
+        "MAT_Sheet_Far_Floor",
+        "MAT_Sheet_Wrapped_Floor_Left.003",
+        "MAT_Sheet_Wrapped_Floor_Rear.003",
+        "MAT_Sheet_Wrapped_Floor_Right.003",
+        "MAT_Signature_CutStone"
+      ],
+      "size_bytes": 1498624
+    },
+    {
+      "file": "romanesque-warehouse-v78_crown_crown.glb",
+      "status": "ok",
+      "triangles": 704,
+      "extent_m": {
+        "width_x": 40.16,
+        "height_y": 4.2,
+        "depth_z": 40.015
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Sheet_Far_Crown",
+        "MAT_Sheet_Wrapped_Floor_Left.004",
+        "MAT_Sheet_Wrapped_Floor_Rear.004",
+        "MAT_Sheet_Wrapped_Floor_Right.004",
+        "MAT_Signature_CutStone"
+      ],
+      "size_bytes": 1560632
+    },
+    {
+      "file": "romanesque-warehouse-v78_roof.glb",
+      "status": "ok",
+      "triangles": 2908,
+      "extent_m": {
+        "width_x": 40.56,
+        "height_y": 1.15,
+        "depth_z": 40.48
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Glass",
+        "MAT_Roof",
+        "MAT_Signature_CutStone"
+      ],
+      "size_bytes": 1887312
+    },
+    {
+      "file": "romanesque-warehouse-v78_assembled.glb",
+      "status": "ok",
+      "triangles": 11984,
+      "extent_m": {
+        "width_x": 40.4,
+        "height_y": 22.38,
+        "depth_z": 40.4
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_Interior_Warm",
+        "MAT_Roof",
+        "MAT_Sheet_Far_Floor",
+        "MAT_Sheet_Far_Podium"
+      ],
+      "size_bytes": 2789952,
+      "role": "assembled"
+    }
+  ]
+}

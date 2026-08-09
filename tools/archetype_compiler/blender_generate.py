@@ -34,7 +34,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from glass_profiles import glass_profile, glass_profile_for_grammar
 from generation_quality_contract import assess_generation_quality_contract
 
-GENERATOR_VERSION = "0.14.2"
+GENERATOR_VERSION = "0.15.0"
 SUPPORTED_SCHEMA_VERSION = 3
 
 # Set from CLI in main(); make_material reads them so build_materials stays a
@@ -44,9 +44,11 @@ DEFAULT_TEXTURES_DIR = Path(__file__).resolve().parent / "textures"
 CURATED_TEXTURE_DIRS = (
     Path(__file__).resolve().parent / "textures_kinnaird_v6",
     Path(__file__).resolve().parent / "textures_archviz_v5",
+    Path(__file__).resolve().parent / "textures_worldclass_v7",
 )
 FACADE_SHEET: dict | None = None
 FACADE_SHEET_DETAIL = "hero"
+FACADE_SHEET_TINT: dict | None = None
 UV_TILE_METRES = 2.0  # one texture tile covers 2 m of facade (matches generate_textures.py prompts)
 INTERIOR_ATLAS_FILENAME = "interior-atlas-gpt-v1.jpg"
 INTERIOR_ATLAS_COLUMNS = 4
@@ -359,7 +361,33 @@ def make_facade_sheet_material(
     albedo_node.extension = "REPEAT"
     albedo_node.location = (-500, 220)
     links.new(uv_node.outputs["UV"], albedo_node.inputs["Vector"])
-    links.new(albedo_node.outputs["Color"], bsdf.inputs["Base Color"])
+    if FACADE_SHEET_TINT:
+        # Reconcile a family-level atlas with exact-variant material metadata
+        # without washing out dark glazing. Bright wall pixels receive the
+        # corrective hue strongly; shadowed windows retain their source tone.
+        rgb_to_bw = nodes.new("ShaderNodeRGBToBW")
+        rgb_to_bw.name = rgb_to_bw.label = "SHEET_TintLuminance"
+        rgb_to_bw.location = (-260, 300)
+        tint_range = nodes.new("ShaderNodeMapRange")
+        tint_range.name = tint_range.label = "SHEET_TintWallMask"
+        tint_range.clamp = True
+        tint_range.location = (-40, 300)
+        tint_range.inputs["From Min"].default_value = float(FACADE_SHEET_TINT.get("luminance_min", 0.18))
+        tint_range.inputs["From Max"].default_value = float(FACADE_SHEET_TINT.get("luminance_max", 0.72))
+        tint_range.inputs["To Min"].default_value = 0.0
+        tint_range.inputs["To Max"].default_value = float(FACADE_SHEET_TINT.get("strength", 0.75))
+        tint_mix = nodes.new("ShaderNodeMixRGB")
+        tint_mix.name = tint_mix.label = "SHEET_ExactVariantTint"
+        tint_mix.blend_type = "MIX"
+        tint_mix.location = (20, 180)
+        tint_mix.inputs[2].default_value = hex_rgba(str(FACADE_SHEET_TINT["color"]), 1.0)
+        links.new(albedo_node.outputs["Color"], rgb_to_bw.inputs["Color"])
+        links.new(rgb_to_bw.outputs["Val"], tint_range.inputs["Value"])
+        links.new(tint_range.outputs["Result"], tint_mix.inputs[0])
+        links.new(albedo_node.outputs["Color"], tint_mix.inputs[1])
+        links.new(tint_mix.outputs["Color"], bsdf.inputs["Base Color"])
+    else:
+        links.new(albedo_node.outputs["Color"], bsdf.inputs["Base Color"])
 
     if roughness and roughness.exists():
         roughness_node = nodes.new("ShaderNodeTexImage")
@@ -681,7 +709,12 @@ def make_interior_atlas_material(index: int) -> bpy.types.Material:
 
 
 def build_materials(grammar: dict) -> dict[str, bpy.types.Material]:
+    global FACADE_SHEET_TINT
     materials = grammar["materials"]
+    FACADE_SHEET_TINT = (
+        (grammar.get("architectural_signature") or {}).get("facade_sheet_tint")
+        or None
+    )
     profile_name = glass_profile_for_grammar(grammar)
     glass_profile(profile_name)  # fail early on an invalid profile id
     signature_materials = (
@@ -6603,18 +6636,20 @@ def _graph_classical_portico(parts: list, spec: dict, mats: dict) -> None:
         (cx, facade_y - depth * 0.80, pediment_eave_z),
         stone, 0.065, "y",
     ))
-    # A dark recessed door and transom keep the centre legible behind the
-    # colonnade even when the facade atlas is viewed at a grazing angle.
-    door_width = float(spec.get("door_width_m", width * 0.22))
-    door_height = float(spec.get("door_height_m", 4.1))
-    parts.append(add_beveled_box(
-        f"{prefix}_DoorReveal", (door_width + 0.65, 0.16, door_height + 0.55),
-        (cx, facade_y - 0.10, base_z + door_height / 2 + 0.12), shadow, 0.055,
-    ))
-    parts.append(add_box(
-        f"{prefix}_BronzeDoor", (door_width, 0.05, door_height),
-        (cx, facade_y - 0.20, base_z + door_height / 2 + 0.12), bronze,
-    ))
+    # A graph may supply a construction-depth opening behind the portico. In
+    # that case the shallow legacy door must be disabled so it cannot flatten
+    # the real vestibule into a decorative plane.
+    if bool(spec.get("door_enabled", True)):
+        door_width = float(spec.get("door_width_m", width * 0.22))
+        door_height = float(spec.get("door_height_m", 4.1))
+        parts.append(add_beveled_box(
+            f"{prefix}_DoorReveal", (door_width + 0.65, 0.16, door_height + 0.55),
+            (cx, facade_y - 0.10, base_z + door_height / 2 + 0.12), shadow, 0.055,
+        ))
+        parts.append(add_box(
+            f"{prefix}_BronzeDoor", (door_width, 0.05, door_height),
+            (cx, facade_y - 0.20, base_z + door_height / 2 + 0.12), bronze,
+        ))
 
 
 def _graph_shaped_gable_array(parts: list, spec: dict, mats: dict) -> None:
@@ -7188,25 +7223,42 @@ def _graph_facade_skin(parts: list, spec: dict, mats: dict, *, suffix: str = "")
     material["massing_skin_v_max"] = float(spec.get("uv_v_max", 1.0))
     clearances = list(spec.get("opening_clearances") or [])
     if clearances:
-        if axis not in {"front", "rear"} or len(clearances) != 1:
-            raise ValueError("v1 facade-skin clearances support one front/rear opening")
-        clearance = clearances[0]
-        opening_centre = float(clearance.get("centre_m", cx))
-        opening_width = float(clearance["width_m"])
-        opening_base = float(clearance["base_z_m"])
-        opening_height = float(clearance["height_m"])
-        opening_left = opening_centre - opening_width / 2
-        opening_right = opening_centre + opening_width / 2
-        opening_top = opening_base + opening_height
+        if axis not in {"front", "rear"}:
+            raise ValueError("facade-skin clearances currently support front/rear openings")
         z_min, z_max = cz - height / 2, cz + height / 2
-        if not (u_min < opening_left < opening_right < u_max and z_min <= opening_base < opening_top < z_max):
-            raise ValueError(f"facade skin {spec.get('id')!r} opening clearance lies outside the skin")
-
+        openings = []
+        for clearance in clearances:
+            opening_centre = float(clearance.get("centre_m", cx))
+            opening_width = float(clearance["width_m"])
+            opening_base = float(clearance["base_z_m"])
+            opening_top = opening_base + float(clearance["height_m"])
+            openings.append((
+                opening_centre - opening_width / 2,
+                opening_centre + opening_width / 2,
+                opening_base,
+                opening_top,
+                clearance,
+            ))
+        openings.sort(key=lambda item: item[0])
+        common_base, common_top = openings[0][2], openings[0][3]
+        if any(abs(item[2] - common_base) > 1e-4 or abs(item[3] - common_top) > 1e-4 for item in openings):
+            raise ValueError("facade-skin clearances must share a base and head height")
+        if not (z_min <= common_base < common_top < z_max):
+            raise ValueError(f"facade skin {spec.get('id')!r} opening height lies outside the skin")
+        cursor = u_min
+        vertical_panels = []
+        for opening_left, opening_right, *_ in openings:
+            if not (cursor < opening_left < opening_right < u_max):
+                raise ValueError(f"facade skin {spec.get('id')!r} clearances overlap or leave the skin")
+            vertical_panels.append((cursor, opening_left))
+            cursor = opening_right
+        vertical_panels.append((cursor, u_max))
         panels = [
-            ("Left", u_min, opening_left, z_min, z_max),
-            ("Right", opening_right, u_max, z_min, z_max),
-            ("Below", opening_left, opening_right, z_min, opening_base),
-            ("Above", opening_left, opening_right, opening_top, z_max),
+            ("Below", u_min, u_max, z_min, common_base),
+            ("Above", u_min, u_max, common_top, z_max),
+        ] + [
+            (f"Pier{index:02d}", panel_left, panel_right, common_base, common_top)
+            for index, (panel_left, panel_right) in enumerate(vertical_panels)
         ]
         for label, panel_left, panel_right, panel_bottom, panel_top in panels:
             panel_span = panel_right - panel_left
@@ -7220,7 +7272,9 @@ def _graph_facade_skin(parts: list, spec: dict, mats: dict, *, suffix: str = "")
                 material,
             )
             panel["facade_skin_source"] = str(spec.get("band", "elevation"))
-            panel["facade_skin_clearance_void"] = str(clearance.get("void_id", ""))
+            panel["facade_skin_clearance_void"] = ",".join(
+                sorted({str(item[4].get("void_id", "")) for item in openings})
+            )
             parts.append(panel)
         return
     skin = add_box(f"{spec.get('id', 'GraphSkin')}{suffix}", size, (cx, cy, cz), material)
@@ -7461,6 +7515,181 @@ def _graph_pointed_passage_block(parts: list, spec: dict, mats: dict) -> None:
     spandrel(f"{prefix}_SpandrelR", [
         (cx, apex_z), (cx + half_opening, spring_z), (cx + half_opening, apex_z),
     ])
+
+
+def _graph_opening_block(parts: list, spec: dict, mats: dict) -> None:
+    """Build a wall volume around repeated rectangular or round-arched voids."""
+    width, depth, height = (float(value) for value in spec["size"])
+    cx, cy, cz = (float(value) for value in spec["location"])
+    shape = str(spec.get("opening_shape", "rectangular"))
+    if shape not in {"rectangular", "round_arch"}:
+        raise ValueError(f"opening block {spec.get('id')!r} has unsupported shape {shape!r}")
+    count = max(1, int(spec.get("opening_count", 1)))
+    opening_width = float(spec.get("opening_width_m", width / (count * 1.7)))
+    opening_base = float(spec.get("opening_base_m", 0.0))
+    opening_height = float(spec.get("opening_height_m", height * 0.72))
+    spring = float(spec.get("spring_height_m", opening_height - opening_width / 2))
+    if not 0 <= opening_base < opening_height < height:
+        raise ValueError(f"opening block {spec.get('id')!r} has invalid opening height")
+    if shape == "round_arch" and not opening_base < spring < opening_height:
+        raise ValueError(f"opening block {spec.get('id')!r} has invalid arch spring")
+    centres = [float(value) for value in spec.get("opening_centres_m") or []]
+    if not centres:
+        margin = float(spec.get("side_margin_m", max(0.55, opening_width * 0.42)))
+        usable = width - margin * 2
+        if count == 1:
+            centres = [cx]
+        else:
+            bay = usable / count
+            centres = [cx - usable / 2 + bay * (index + 0.5) for index in range(count)]
+    else:
+        centres = [cx + value for value in centres]
+        count = len(centres)
+    if any(abs(a - b) < opening_width for a, b in zip(centres, centres[1:])):
+        raise ValueError(f"opening block {spec.get('id')!r} openings overlap")
+
+    prefix = str(spec.get("id", "GraphOpeningBlock"))
+    material = _graph_material(mats, spec.get("material", "primary"))
+    lining = _graph_material(mats, spec.get("lining_material", spec.get("material", "primary")))
+    trim = _graph_material(mats, spec.get("trim_material", spec.get("lining_material", spec.get("material", "primary"))))
+    back = _graph_material(mats, spec.get("back_material", "interior_warm"))
+    back_glass = (
+        _graph_material(mats, spec.get("back_glass_material"))
+        if spec.get("back_glass_material") else None
+    )
+    back_frame = (
+        _graph_material(mats, spec.get("back_frame_material"))
+        if spec.get("back_frame_material") else None
+    )
+    base_z = cz - height / 2
+    left_edge, right_edge = cx - width / 2, cx + width / 2
+    half = opening_width / 2
+    opening_edges = [(centre - half, centre + half) for centre in centres]
+    if opening_edges[0][0] <= left_edge or opening_edges[-1][1] >= right_edge:
+        raise ValueError(f"opening block {spec.get('id')!r} openings exceed the wall width")
+
+    def box(name: str, x0: float, x1: float, z0: float, z1: float, mat=material) -> None:
+        if x1 - x0 <= 0.01 or z1 - z0 <= 0.01:
+            return
+        parts.append(add_beveled_box(
+            f"{prefix}_{name}", (x1 - x0, depth, z1 - z0),
+            ((x0 + x1) / 2, cy, (z0 + z1) / 2), mat,
+            min(float(spec.get("bevel_m", 0.05)), (x1 - x0) * 0.08, (z1 - z0) * 0.08),
+        ))
+
+    if opening_base > 0:
+        box("Plinth", left_edge, right_edge, base_z, base_z + opening_base)
+    cursor = left_edge
+    pier_top = base_z + (spring if shape == "round_arch" else opening_height)
+    for index, (opening_left, opening_right) in enumerate(opening_edges):
+        box(f"Pier{index:02d}", cursor, opening_left, base_z + opening_base, pier_top)
+        cursor = opening_right
+    box(f"Pier{count:02d}", cursor, right_edge, base_z + opening_base, pier_top)
+
+    y0, y1 = cy - depth / 2, cy + depth / 2
+
+    def extrude_polygon(name: str, points: list[tuple[float, float]], mat=material) -> None:
+        vertices = [(x, y0, z) for x, z in points] + [(x, y1, z) for x, z in points]
+        size = len(points)
+        faces: list[tuple[int, ...]] = [tuple(reversed(range(size))), tuple(range(size, size * 2))]
+        for index in range(size):
+            nxt = (index + 1) % size
+            faces.append((index, nxt, size + nxt, size + index))
+        parts.append(add_prism(f"{prefix}_{name}", vertices, faces, mat))
+
+    apex_z = base_z + opening_height
+    if shape == "round_arch":
+        spring_z = base_z + spring
+        radius = opening_height - spring
+        if abs(radius - half) > max(0.08, opening_width * 0.08):
+            raise ValueError(f"opening block {spec.get('id')!r} round arch must be semicircular")
+        boundaries = [left_edge] + [
+            (opening_edges[index][1] + opening_edges[index + 1][0]) / 2
+            for index in range(count - 1)
+        ] + [right_edge]
+        segments = max(8, int(spec.get("arch_segments", 16)))
+        for index, centre in enumerate(centres):
+            left_arc = [
+                (centre + radius * math.cos(math.pi - math.pi * step / (2 * segments)),
+                 spring_z + radius * math.sin(math.pi - math.pi * step / (2 * segments)))
+                for step in range(segments + 1)
+            ]
+            right_arc = [
+                (centre + radius * math.cos(math.pi / 2 - math.pi * step / (2 * segments)),
+                 spring_z + radius * math.sin(math.pi / 2 - math.pi * step / (2 * segments)))
+                for step in range(segments + 1)
+            ]
+            extrude_polygon(f"SpandrelL{index:02d}", [
+                (boundaries[index], spring_z), (centre - radius, spring_z), *left_arc[1:],
+                (boundaries[index], apex_z),
+            ])
+            extrude_polygon(f"SpandrelR{index:02d}", [
+                (centre, apex_z), *right_arc[1:], (boundaries[index + 1], spring_z),
+                (boundaries[index + 1], apex_z),
+            ])
+        trim_profile = float(spec.get("trim_profile_m", 0.24))
+        trim_depth = min(depth, float(spec.get("trim_depth_m", depth)))
+        front_y = cy - depth / 2 + trim_depth / 2
+        for index, centre in enumerate(centres):
+            parts.append(add_arch_ring(
+                f"{prefix}_ArchTrim{index:02d}", centre, front_y, spring_z,
+                radius, trim_profile, trim_depth, trim, segments,
+            ))
+            for side_index, side in enumerate((-1.0, 1.0)):
+                parts.append(add_beveled_box(
+                    f"{prefix}_JambTrim{index:02d}_{side_index}",
+                    (trim_profile, trim_depth, spring - opening_base),
+                    (centre + side * (half + trim_profile / 2), front_y,
+                     base_z + opening_base + (spring - opening_base) / 2),
+                    trim, min(0.04, trim_profile * 0.18),
+                ))
+    box("Head", left_edge, right_edge, apex_z, base_z + height)
+
+    lining_thickness = max(0.025, float(spec.get("lining_thickness_m", 0.06)))
+    if shape == "rectangular":
+        for index, centre in enumerate(centres):
+            for side_index, side in enumerate((-1.0, 1.0)):
+                parts.append(add_box(
+                    f"{prefix}_Lining{index:02d}_{side_index}",
+                    (lining_thickness, depth * 0.98, opening_height - opening_base),
+                    (centre + side * (half - lining_thickness / 2), cy,
+                     base_z + opening_base + (opening_height - opening_base) / 2), lining,
+                ))
+            parts.append(add_box(
+                f"{prefix}_LiningHead{index:02d}",
+                (opening_width, depth * 0.98, lining_thickness),
+                (centre, cy, apex_z - lining_thickness / 2), lining,
+            ))
+    if str(spec.get("section_mode", "through")) == "recessed":
+        for index, centre in enumerate(centres):
+            parts.append(add_box(
+                f"{prefix}_Back{index:02d}",
+                (opening_width * 0.94, 0.055, opening_height - opening_base - 0.08),
+                (centre, y1 - 0.035, base_z + opening_base + (opening_height - opening_base) / 2), back,
+            ))
+            if back_glass is not None:
+                parts.append(add_box(
+                    f"{prefix}_BackGlass{index:02d}",
+                    (opening_width * 0.90, 0.035, opening_height - opening_base - 0.18),
+                    (centre, y1 - 0.085, base_z + opening_base + (opening_height - opening_base) / 2),
+                    back_glass,
+                ))
+            if back_frame is not None:
+                frame_y = y1 - 0.095
+                frame_height = opening_height - opening_base - 0.20
+                for offset in (-opening_width * 0.22, 0.0, opening_width * 0.22):
+                    parts.append(add_box(
+                        f"{prefix}_BackFrameV{index:02d}_{offset:+.2f}",
+                        (0.055, 0.055, frame_height),
+                        (centre + offset, frame_y, base_z + opening_base + frame_height / 2 + 0.06),
+                        back_frame,
+                    ))
+                parts.append(add_box(
+                    f"{prefix}_BackFrameH{index:02d}",
+                    (opening_width * 0.88, 0.055, 0.055),
+                    (centre, frame_y, base_z + opening_base + frame_height * 0.62),
+                    back_frame,
+                ))
 
 
 def _graph_pointed_portal(parts: list, spec: dict, mats: dict) -> None:
@@ -9140,7 +9369,7 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
     for node in graph.get("nodes", []):
         kind = node.get("kind")
         location = tuple(float(value) for value in node["location"])
-        if kind == "box":
+        if kind in {"box", "roof_slab"}:
             size = tuple(float(value) for value in node["size"])
             part = add_beveled_box(
                 str(node["id"]), size, location,
@@ -9151,6 +9380,8 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
             parts.append(part)
         elif kind == "pointed_passage_block":
             _graph_pointed_passage_block(parts, node, mats)
+        elif kind == "opening_block":
+            _graph_opening_block(parts, node, mats)
         elif kind == "chamfered_box":
             size = tuple(float(value) for value in node["size"])
             parts.append(add_chamfered_box(

@@ -1,0 +1,41 @@
+{
+  "schema": "five-building-material-void-review@1",
+  "pipeline_version": "v78",
+  "buildings": [
+    {
+      "family": "historical-brick-arts-crafts-v78",
+      "status": "provisional",
+      "reference": "frontend/public/archetypes/buildings/historical_brick_main_street/variant_2.png",
+      "generated": "generated/historical-brick-arts-crafts-v78.png",
+      "finding": "Two-storey twin-gable mass, green tile skin and 1.8 m entry recess now follow the photo. Exact leaded glazing and half-timber infill still need a variant-native atlas."
+    },
+    {
+      "family": "courthouse-neoclassical-v78",
+      "status": "keeper",
+      "reference": "frontend/public/archetypes/buildings/monumental_courthouse_axis/variant_0.png",
+      "generated": "generated/courthouse-neoclassical-v78.png",
+      "finding": "Eight-column portico, broad stair, pediment, low green-copper roof and 4 m entry section replace the rejected Art Deco/classical atlas mismatch."
+    },
+    {
+      "family": "mediterranean-portici-v78",
+      "status": "keeper",
+      "reference": "frontend/public/archetypes/buildings/mediterranean_arcade_mixed_use/variant_0.png",
+      "generated": "generated/mediterranean-portici-v78.png",
+      "finding": "Five construction-depth stone arches, framed set-back shop wall, ochre upper floors and a low textured hip roof reproduce the main hierarchy."
+    },
+    {
+      "family": "romanesque-warehouse-v78",
+      "status": "keeper",
+      "reference": "frontend/public/archetypes/buildings/romanesque_revival_warehouse/variant_0.png",
+      "generated": "generated/romanesque-warehouse-v78.png",
+      "finding": "The existing exact-style atlas combines well with five 2.8 m loading recesses, a rusticated base and a textured membrane roof."
+    },
+    {
+      "family": "scandinavian-passage-v78",
+      "status": "provisional",
+      "reference": "frontend/public/archetypes/buildings/scandinavian_urban_residential/variant_0.png",
+      "generated": "generated/scandinavian-passage-v78.png",
+      "finding": "The 4.2 m timber-lined through-passage opens into a real court and the zinc roof is corrected. Smooth plaster, dormers and projecting balconies need a variant-native atlas/kit."
+    }
+  ]
+}

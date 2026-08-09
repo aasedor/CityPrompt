@@ -1,0 +1,182 @@
+{
+  "status": "pass",
+  "family": "historical-brick-arts-crafts-v78",
+  "archetype_id": "historical_brick_main_street",
+  "reuse_keys": [
+    "historical_brick_main_street",
+    "historical",
+    "Commercial \u2014 Main Street / Heritage Retail"
+  ],
+  "manifest": "historical-brick-arts-crafts-v78_manifest.json",
+  "errors": [],
+  "warnings": [],
+  "modules": [
+    {
+      "file": "historical-brick-arts-crafts-v78_podium.glb",
+      "status": "ok",
+      "triangles": 2856,
+      "extent_m": {
+        "width_x": 15.34,
+        "height_y": 4.5,
+        "depth_z": 19.24
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_Interior_Shadow",
+        "MAT_Sheet_Far_Podium",
+        "MAT_Sheet_Wrapped_Podium_Left",
+        "MAT_Sheet_Wrapped_Podium_Rear",
+        "MAT_Sheet_Wrapped_Podium_Right",
+        "MAT_Signature_BlackMetal"
+      ],
+      "size_bytes": 1531264
+    },
+    {
+      "file": "historical-brick-arts-crafts-v78_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 528,
+      "extent_m": {
+        "width_x": 15.3,
+        "height_y": 3.6,
+        "depth_z": 18.365
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_Sheet_Far_Floor",
+        "MAT_Sheet_Wrapped_Floor_Left",
+        "MAT_Sheet_Wrapped_Floor_Rear",
+        "MAT_Sheet_Wrapped_Floor_Right"
+      ],
+      "size_bytes": 1545244
+    },
+    {
+      "file": "historical-brick-arts-crafts-v78_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 528,
+      "extent_m": {
+        "width_x": 15.3,
+        "height_y": 3.6,
+        "depth_z": 18.365
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_Sheet_Far_Floor_alt",
+        "MAT_Sheet_Wrapped_Floor_Left.001",
+        "MAT_Sheet_Wrapped_Floor_Rear.001",
+        "MAT_Sheet_Wrapped_Floor_Right.001"
+      ],
+      "size_bytes": 1545264
+    },
+    {
+      "file": "historical-brick-arts-crafts-v78_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 528,
+      "extent_m": {
+        "width_x": 15.3,
+        "height_y": 3.6,
+        "depth_z": 18.365
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_Sheet_Far_Floor",
+        "MAT_Sheet_Wrapped_Floor_Left.002",
+        "MAT_Sheet_Wrapped_Floor_Rear.002",
+        "MAT_Sheet_Wrapped_Floor_Right.002"
+      ],
+      "size_bytes": 1545256
+    },
+    {
+      "file": "historical-brick-arts-crafts-v78_setback_upper.glb",
+      "status": "ok",
+      "triangles": 836,
+      "extent_m": {
+        "width_x": 15.0,
+        "height_y": 3.6,
+        "depth_z": 18.045
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_Sheet_Far_Floor",
+        "MAT_Sheet_Wrapped_Floor_Left.003",
+        "MAT_Sheet_Wrapped_Floor_Rear.003",
+        "MAT_Sheet_Wrapped_Floor_Right.003"
+      ],
+      "size_bytes": 1557876
+    },
+    {
+      "file": "historical-brick-arts-crafts-v78_crown_crown.glb",
+      "status": "ok",
+      "triangles": 836,
+      "extent_m": {
+        "width_x": 15.32,
+        "height_y": 3.6,
+        "depth_z": 18.115
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_Sheet_Far_Crown",
+        "MAT_Sheet_Wrapped_Floor_Left.004",
+        "MAT_Sheet_Wrapped_Floor_Rear.004",
+        "MAT_Sheet_Wrapped_Floor_Right.004"
+      ],
+      "size_bytes": 1735900
+    },
+    {
+      "file": "historical-brick-arts-crafts-v78_roof.glb",
+      "status": "ok",
+      "triangles": 452,
+      "extent_m": {
+        "width_x": 15.7,
+        "height_y": 2.4,
+        "depth_z": 18.678
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Roof",
+        "MAT_Signature_CutStone"
+      ],
+      "size_bytes": 381924
+    },
+    {
+      "file": "historical-brick-arts-crafts-v78_assembled.glb",
+      "status": "ok",
+      "triangles": 6600,
+      "extent_m": {
+        "width_x": 15.5,
+        "height_y": 12.173,
+        "depth_z": 18.852
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_Interior_Warm",
+        "MAT_Roof",
+        "MAT_Sheet_Far_Floor",
+        "MAT_Sheet_Far_Podium"
+      ],
+      "size_bytes": 1626388,
+      "role": "assembled"
+    }
+  ]
+}

@@ -1,0 +1,184 @@
+{
+  "schema": "building-generation-preflight@1",
+  "archetype_id": "scandinavian_urban_residential",
+  "variant_id": "scandi_urban_white_plaster",
+  "family": "scandinavian-passage-v78",
+  "status": "pass",
+  "paid_generation_allowed": true,
+  "reference_views": [
+    {
+      "role": "street_identity",
+      "path": "/archetypes/buildings/scandinavian_urban_residential/variant_0.png"
+    },
+    {
+      "role": "oblique_massing",
+      "path": "/archetypes/buildings/scandinavian_urban_residential/variant_0_angle_60.jpg"
+    },
+    {
+      "role": "roof_or_aerial",
+      "path": "/archetypes/buildings/scandinavian_urban_residential/variant_0_angle_90.jpg"
+    }
+  ],
+  "identity_mode": "massing_graph",
+  "generation_quality": {
+    "schema": "building-generation-quality@1",
+    "status": "pass",
+    "quality_contract_version": 2,
+    "failures": [],
+    "gates": [
+      {
+        "id": "material_texture_key:primary",
+        "passed": true,
+        "detail": "primary resolves to texture 'white_plaster'"
+      },
+      {
+        "id": "material_texture_key:secondary",
+        "passed": true,
+        "detail": "secondary resolves to texture 'larch_wood'"
+      },
+      {
+        "id": "material_texture_key:roof",
+        "passed": true,
+        "detail": "roof resolves to texture 'standing_seam'"
+      },
+      {
+        "id": "material_node_binding:opening_block",
+        "passed": true,
+        "detail": "1 nodes checked; incorrect: none"
+      },
+      {
+        "id": "material_node_binding:gable_roof",
+        "passed": true,
+        "detail": "4 nodes checked; incorrect: none"
+      },
+      {
+        "id": "passage_void:scandi_courtyard_passage",
+        "passed": true,
+        "detail": "declared void shape 'rectangular_passage'"
+      },
+      {
+        "id": "passage_depth:scandi_courtyard_passage",
+        "passed": true,
+        "detail": "passage depth 4.20 m; minimum 4.00 m"
+      },
+      {
+        "id": "passage_target:scandi_courtyard_passage",
+        "passed": true,
+        "detail": "target node kind 'opening_block'; mode 'through'; openings 1"
+      },
+      {
+        "id": "passage_skin_clearance:scandi_courtyard_passage",
+        "passed": true,
+        "detail": "1 facade-skin clearances reference the passage"
+      },
+      {
+        "id": "metadata_traceability",
+        "passed": true,
+        "detail": "quality contract is traceable to catalogue metadata"
+      }
+    ]
+  },
+  "failures": [],
+  "gates": [
+    {
+      "id": "variant_not_selected",
+      "passed": true,
+      "detail": "selected variant 'scandi_urban_white_plaster'"
+    },
+    {
+      "id": "variant_generation_provenance_mismatch",
+      "passed": true,
+      "detail": "generation id 'scandinavian_urban_residential_variant_0'; expected 'scandinavian_urban_residential_variant_0'"
+    },
+    {
+      "id": "grammar_variant_mismatch",
+      "passed": true,
+      "detail": "grammar variant 'scandi_urban_white_plaster'; selected 'scandi_urban_white_plaster'"
+    },
+    {
+      "id": "incomplete_reference_set",
+      "passed": true,
+      "detail": "3 compatible reference views"
+    },
+    {
+      "id": "missing_production_contract",
+      "passed": true,
+      "detail": "architectural signature declares a production contract"
+    },
+    {
+      "id": "unclassified_identity_mode",
+      "passed": true,
+      "detail": "identity mode 'massing_graph'; expected one of ['massing_graph', 'semantic_stack']"
+    },
+    {
+      "id": "missing_fixed_identity",
+      "passed": true,
+      "detail": "3 fixed identity assemblies; minimum 3"
+    },
+    {
+      "id": "missing_repeatable_capacity",
+      "passed": true,
+      "detail": "1 repeatable capacity assemblies"
+    },
+    {
+      "id": "missing_required_massing_graph",
+      "passed": true,
+      "detail": "massing profile 'scandi_urban_white_plaster_v78'"
+    },
+    {
+      "id": "massing_reference_dimensions_mismatch",
+      "passed": true,
+      "detail": "canonical graph dimensions activate exactly"
+    },
+    {
+      "id": "material_texture_key:primary",
+      "passed": true,
+      "detail": "primary resolves to texture 'white_plaster'"
+    },
+    {
+      "id": "material_texture_key:secondary",
+      "passed": true,
+      "detail": "secondary resolves to texture 'larch_wood'"
+    },
+    {
+      "id": "material_texture_key:roof",
+      "passed": true,
+      "detail": "roof resolves to texture 'standing_seam'"
+    },
+    {
+      "id": "material_node_binding:opening_block",
+      "passed": true,
+      "detail": "1 nodes checked; incorrect: none"
+    },
+    {
+      "id": "material_node_binding:gable_roof",
+      "passed": true,
+      "detail": "4 nodes checked; incorrect: none"
+    },
+    {
+      "id": "passage_void:scandi_courtyard_passage",
+      "passed": true,
+      "detail": "declared void shape 'rectangular_passage'"
+    },
+    {
+      "id": "passage_depth:scandi_courtyard_passage",
+      "passed": true,
+      "detail": "passage depth 4.20 m; minimum 4.00 m"
+    },
+    {
+      "id": "passage_target:scandi_courtyard_passage",
+      "passed": true,
+      "detail": "target node kind 'opening_block'; mode 'through'; openings 1"
+    },
+    {
+      "id": "passage_skin_clearance:scandi_courtyard_passage",
+      "passed": true,
+      "detail": "1 facade-skin clearances reference the passage"
+    },
+    {
+      "id": "metadata_traceability",
+      "passed": true,
+      "detail": "quality contract is traceable to catalogue metadata"
+    }
+  ]
+}

@@ -1,0 +1,204 @@
+{
+  "schema": "building-generation-preflight@1",
+  "archetype_id": "monumental_courthouse_axis",
+  "variant_id": "courthouse_neoclassical_temple",
+  "family": "courthouse-neoclassical-v78",
+  "status": "pass",
+  "paid_generation_allowed": true,
+  "reference_views": [
+    {
+      "role": "street_identity",
+      "path": "/archetypes/buildings/monumental_courthouse_axis/variant_0.png"
+    },
+    {
+      "role": "oblique_massing",
+      "path": "/archetypes/buildings/monumental_courthouse_axis/variant_0_angle_60.jpg"
+    },
+    {
+      "role": "roof_or_aerial",
+      "path": "/archetypes/buildings/monumental_courthouse_axis/variant_0_angle_90.jpg"
+    }
+  ],
+  "identity_mode": "massing_graph",
+  "generation_quality": {
+    "schema": "building-generation-quality@1",
+    "status": "pass",
+    "quality_contract_version": 2,
+    "failures": [],
+    "gates": [
+      {
+        "id": "material_texture_key:primary",
+        "passed": true,
+        "detail": "primary resolves to texture 'limestone'"
+      },
+      {
+        "id": "material_texture_key:secondary",
+        "passed": true,
+        "detail": "secondary resolves to texture 'limestone'"
+      },
+      {
+        "id": "material_texture_key:roof",
+        "passed": true,
+        "detail": "roof resolves to texture 'copper'"
+      },
+      {
+        "id": "material_assembly_binding:classical_portico",
+        "passed": true,
+        "detail": "1 assemblies checked; incorrect: none"
+      },
+      {
+        "id": "material_assembly_binding:steps",
+        "passed": true,
+        "detail": "1 assemblies checked; incorrect: none"
+      },
+      {
+        "id": "material_node_binding:opening_block",
+        "passed": true,
+        "detail": "1 nodes checked; incorrect: none"
+      },
+      {
+        "id": "material_node_binding:hipped_roof",
+        "passed": true,
+        "detail": "1 nodes checked; incorrect: none"
+      },
+      {
+        "id": "passage_void:neoclassical_judicial_entry",
+        "passed": true,
+        "detail": "declared void shape 'rectangular_passage'"
+      },
+      {
+        "id": "passage_depth:neoclassical_judicial_entry",
+        "passed": true,
+        "detail": "passage depth 4.00 m; minimum 3.50 m"
+      },
+      {
+        "id": "passage_target:neoclassical_judicial_entry",
+        "passed": true,
+        "detail": "target node kind 'opening_block'; mode 'recessed'; openings 1"
+      },
+      {
+        "id": "passage_skin_clearance:neoclassical_judicial_entry",
+        "passed": true,
+        "detail": "1 facade-skin clearances reference the passage"
+      },
+      {
+        "id": "metadata_traceability",
+        "passed": true,
+        "detail": "quality contract is traceable to catalogue metadata"
+      }
+    ]
+  },
+  "failures": [],
+  "gates": [
+    {
+      "id": "variant_not_selected",
+      "passed": true,
+      "detail": "selected variant 'courthouse_neoclassical_temple'"
+    },
+    {
+      "id": "variant_generation_provenance_mismatch",
+      "passed": true,
+      "detail": "generation id 'monumental_courthouse_axis_variant_0'; expected 'monumental_courthouse_axis_variant_0'"
+    },
+    {
+      "id": "grammar_variant_mismatch",
+      "passed": true,
+      "detail": "grammar variant 'courthouse_neoclassical_temple'; selected 'courthouse_neoclassical_temple'"
+    },
+    {
+      "id": "incomplete_reference_set",
+      "passed": true,
+      "detail": "3 compatible reference views"
+    },
+    {
+      "id": "missing_production_contract",
+      "passed": true,
+      "detail": "architectural signature declares a production contract"
+    },
+    {
+      "id": "unclassified_identity_mode",
+      "passed": true,
+      "detail": "identity mode 'massing_graph'; expected one of ['massing_graph', 'semantic_stack']"
+    },
+    {
+      "id": "missing_fixed_identity",
+      "passed": true,
+      "detail": "3 fixed identity assemblies; minimum 3"
+    },
+    {
+      "id": "missing_repeatable_capacity",
+      "passed": true,
+      "detail": "1 repeatable capacity assemblies"
+    },
+    {
+      "id": "missing_required_massing_graph",
+      "passed": true,
+      "detail": "massing profile 'courthouse_neoclassical_temple_v78'"
+    },
+    {
+      "id": "massing_reference_dimensions_mismatch",
+      "passed": true,
+      "detail": "canonical graph dimensions activate exactly"
+    },
+    {
+      "id": "material_texture_key:primary",
+      "passed": true,
+      "detail": "primary resolves to texture 'limestone'"
+    },
+    {
+      "id": "material_texture_key:secondary",
+      "passed": true,
+      "detail": "secondary resolves to texture 'limestone'"
+    },
+    {
+      "id": "material_texture_key:roof",
+      "passed": true,
+      "detail": "roof resolves to texture 'copper'"
+    },
+    {
+      "id": "material_assembly_binding:classical_portico",
+      "passed": true,
+      "detail": "1 assemblies checked; incorrect: none"
+    },
+    {
+      "id": "material_assembly_binding:steps",
+      "passed": true,
+      "detail": "1 assemblies checked; incorrect: none"
+    },
+    {
+      "id": "material_node_binding:opening_block",
+      "passed": true,
+      "detail": "1 nodes checked; incorrect: none"
+    },
+    {
+      "id": "material_node_binding:hipped_roof",
+      "passed": true,
+      "detail": "1 nodes checked; incorrect: none"
+    },
+    {
+      "id": "passage_void:neoclassical_judicial_entry",
+      "passed": true,
+      "detail": "declared void shape 'rectangular_passage'"
+    },
+    {
+      "id": "passage_depth:neoclassical_judicial_entry",
+      "passed": true,
+      "detail": "passage depth 4.00 m; minimum 3.50 m"
+    },
+    {
+      "id": "passage_target:neoclassical_judicial_entry",
+      "passed": true,
+      "detail": "target node kind 'opening_block'; mode 'recessed'; openings 1"
+    },
+    {
+      "id": "passage_skin_clearance:neoclassical_judicial_entry",
+      "passed": true,
+      "detail": "1 facade-skin clearances reference the passage"
+    },
+    {
+      "id": "metadata_traceability",
+      "passed": true,
+      "detail": "quality contract is traceable to catalogue metadata"
+    }
+  ]
+}

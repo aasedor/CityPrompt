@@ -1,0 +1,256 @@
+{
+  "schema": "architectural-signatures@1",
+  "description": "Five exact-variant material-continuity and executable-opening pilots.",
+  "profiles": {
+    "historical_brick_arts_crafts": {
+      "extends": "historical_brick_main_street",
+      "identity": "Two-storey Arts and Crafts clinker-brick hall with a deep tiled arched entry, twin half-timbered cross gables and green-glazed hand-cut clay-tile roof.",
+      "material_zones": "textured clinker brick; dark half-timber and stucco; handmade entry tile; hand-cut clay roof tile",
+      "material_overrides": {
+        "primary": {"texture_key": "red_brick", "base_color": "#8d4f3e"},
+        "secondary": {"texture_key": "natural_timber", "base_color": "#5f432e"},
+        "roof": {"texture_key": "terracotta", "base_color": "#55766b", "roughness": 0.78, "texture_tint_mode": "COLOR", "texture_tint_strength": 0.72}
+      },
+      "facade_sheet_tint": {"color": "#c39b63", "strength": 0.66, "luminance_min": 0.16, "luminance_max": 0.70},
+      "production_contract": {
+        "identity_mode": "massing_graph",
+        "fixed_identity": ["arched handmade-tile entry", "half-timber front gable", "clay-tile roof"],
+        "repeatable_capacity": ["ordinary upper shop-house bays"],
+        "quality_contract_version": 2,
+        "metadata_cues": ["textured clinker brick", "arched brick entry with handmade tile surround", "hand-cut clay tiles"],
+        "material_continuity": {
+          "required_textured_materials": ["primary", "secondary", "roof"],
+          "node_bindings": [
+            {"kind": "opening_block", "slots": {"material": "primary", "lining_material": "secondary", "trim_material": "secondary"}},
+            {"kind": "gable_roof", "ids": ["main_roof"], "slots": {"material": "roof"}}
+          ],
+          "assembly_bindings": [
+            {"kind": "shaped_gable_array", "slots": {"material": "secondary", "infill_material": "primary"}}
+          ]
+        },
+        "spatial_voids": {
+          "required_passages": [{
+            "void_id": "arts_crafts_entry_recess", "target_node_id": "front_opening_block",
+            "target_node_kind": "opening_block", "shape": "round_arch_passage",
+            "section_mode": "recessed", "minimum_depth_m": 1.6,
+            "minimum_opening_count": 1, "minimum_clearance_count": 1
+          }]
+        }
+      },
+      "massing_recipe": {
+        "kind": "front_opening_landmark", "profile": "historical_brick_arts_crafts_v78",
+        "description": "Narrow clinker-brick shop-house with a construction-depth arched vestibule and fixed steep gable.",
+        "reference_views": [
+          {"role": "street_identity", "path": "/archetypes/buildings/historical_brick_main_street/variant_2.png"},
+          {"role": "oblique_massing", "path": "/archetypes/buildings/historical_brick_main_street/variant_2_angle_60.jpg"},
+          {"role": "roof_plan", "path": "/archetypes/buildings/historical_brick_main_street/variant_2_angle_90.jpg"}
+        ],
+        "floors": 2, "podium_height_m": 4.5, "floor_height_m": 3.6,
+        "frontage_depth_m": 1.8, "opening_shape": "round_arch", "opening_count": 1,
+        "opening_width_m": 2.6, "opening_base_m": 0.12, "opening_height_m": 3.6,
+        "spring_height_m": 2.2, "section_mode": "recessed", "void_id": "arts_crafts_entry_recess",
+        "void_purpose": "handmade-tile arched entrance vestibule", "wall_material": "primary",
+        "frontage_material": "primary", "lining_material": "secondary", "trim_material": "secondary",
+        "podium_band": "floor", "roof_kind": "gabled", "roof_height_m": 3.6, "ridge_axis": "x",
+        "front_gable": true, "front_gable_positions_m": [-3.8, 3.7], "front_gable_width_m": 6.2
+      }
+    },
+    "courthouse_neoclassical_temple": {
+      "extends": "monumental_courthouse_axis",
+      "identity": "White-granite Neoclassical courthouse with a full-height colonnaded portico, broad ceremonial stair, deep bronze entry and low green-copper roof.",
+      "material_zones": "white granite ashlar; monumental stone columns; bronze entry; green-patina copper roof",
+      "material_overrides": {
+        "primary": {"texture_key": "limestone", "base_color": "#ded7c9"},
+        "secondary": {"texture_key": "limestone", "base_color": "#eee9df"},
+        "roof": {"texture_key": "copper", "base_color": "#708b7c", "roughness": 0.52, "texture_tint_mode": "COLOR", "texture_tint_strength": 0.72},
+        "accent": {"base_color": "#4b392c", "roughness": 0.42, "metallic": 0.55}
+      },
+      "production_contract": {
+        "identity_mode": "massing_graph",
+        "fixed_identity": ["eight-column monumental portico", "broad ceremonial stair and deep bronze entry", "sculpted pediment and low copper roof"],
+        "repeatable_capacity": ["symmetrical courthouse wing bays"],
+        "quality_contract_version": 2,
+        "metadata_cues": ["white granite ashlar", "monumental Doric columns with entasis", "broad ceremonial stairs spanning full facade width", "low gable with sculpted pediment", "copper with green patina behind stone pediment"],
+        "material_continuity": {
+          "required_textured_materials": ["primary", "secondary", "roof"],
+          "node_bindings": [
+            {"kind": "opening_block", "slots": {"material": "primary", "lining_material": "secondary", "trim_material": "secondary"}},
+            {"kind": "hipped_roof", "ids": ["main_roof"], "slots": {"material": "roof"}}
+          ],
+          "assembly_bindings": [
+            {"kind": "classical_portico", "slots": {"material": "secondary", "door_material": "accent"}},
+            {"kind": "steps", "slots": {"material": "secondary"}}
+          ]
+        },
+        "spatial_voids": {
+          "required_passages": [{
+            "void_id": "neoclassical_judicial_entry", "target_node_id": "front_opening_block",
+            "target_node_kind": "opening_block", "shape": "rectangular_passage",
+            "section_mode": "recessed", "minimum_depth_m": 3.5,
+            "minimum_opening_count": 1, "minimum_clearance_count": 1
+          }]
+        }
+      },
+      "massing_recipe": {
+        "kind": "front_opening_landmark", "profile": "courthouse_neoclassical_temple_v78",
+        "description": "Low axial courthouse with an eight-column temple front, deep ceremonial entry and broad stair.",
+        "reference_views": [
+          {"role": "street_identity", "path": "/archetypes/buildings/monumental_courthouse_axis/variant_0.png"},
+          {"role": "oblique_massing", "path": "/archetypes/buildings/monumental_courthouse_axis/variant_0_angle_60.jpg"},
+          {"role": "roof_plan", "path": "/archetypes/buildings/monumental_courthouse_axis/variant_0_angle_90.jpg"}
+        ],
+        "floors": 3, "podium_height_m": 5.2, "floor_height_m": 2.75,
+        "frontage_depth_m": 4.0, "opening_shape": "rectangular", "opening_count": 1,
+        "opening_width_m": 6.0, "opening_base_m": 0.15, "opening_height_m": 4.8,
+        "section_mode": "recessed", "void_id": "neoclassical_judicial_entry",
+        "void_purpose": "deep bronze judicial entrance behind the colonnade", "wall_material": "primary",
+        "frontage_material": "primary", "lining_material": "secondary", "trim_material": "secondary",
+        "back_material": "accent", "roof_kind": "hipped", "roof_height_m": 2.2,
+        "ridge_axis": "x", "ridge_inset_m": 6.0,
+        "classical_portico": {"base_centre": [0.0, -17.55, 0.72], "width_m": 43.0, "depth_m": 4.0, "column_height_m": 8.4, "column_radius_m": 0.62, "count": 8, "pediment_rise_m": 2.8, "door_enabled": false, "material": "secondary", "door_material": "accent"},
+        "ceremonial_steps": {"centre": [0.0, -19.0, 0.0], "width_m": 49.0, "depth_m": 2.8, "count": 9, "rise_m": 0.08, "material": "secondary"}
+      }
+    },
+    "med_arcade_italian_portici": {
+      "extends": "mediterranean_arcade_mixed_use",
+      "identity": "Italian portici block with a continuous construction-depth stone arcade, ochre stucco upper floors and terracotta pantile hip roof.",
+      "material_zones": "warm natural-stone arcade; ochre stucco; dark shutters; overlapping terracotta pantiles",
+      "material_overrides": {
+        "primary": {"texture_key": "natural_stone", "base_color": "#b39773"},
+        "secondary": {"texture_key": "stucco", "base_color": "#d4ae6c"},
+        "roof": {"texture_key": "mediterranean_roof_tile", "base_color": "#88715e", "roughness": 0.76, "texture_tint_mode": "COLOR", "texture_tint_strength": 0.72}
+      },
+      "production_contract": {
+        "identity_mode": "massing_graph",
+        "fixed_identity": ["continuous round-arch portici", "set-back shopfront wall", "terracotta hip roof"],
+        "repeatable_capacity": ["ordinary stucco upper bays"],
+        "quality_contract_version": 2,
+        "metadata_cues": ["stone column arcade with round arches", "continuous stone arcade sheltering shops and cafes", "terracotta pantiles"],
+        "material_continuity": {
+          "required_textured_materials": ["primary", "secondary", "roof"],
+          "node_bindings": [
+            {"kind": "opening_block", "slots": {"material": "primary", "lining_material": "primary", "trim_material": "primary"}},
+            {"kind": "hipped_roof", "ids": ["main_roof"], "slots": {"material": "roof"}}
+          ]
+        },
+        "spatial_voids": {
+          "required_passages": [{
+            "void_id": "portici_arcade", "target_node_id": "front_opening_block",
+            "target_node_kind": "opening_block", "shape": "round_arch_passage",
+            "section_mode": "recessed", "minimum_depth_m": 3.0,
+            "minimum_opening_count": 5, "minimum_clearance_count": 5
+          }]
+        }
+      },
+      "massing_recipe": {
+        "kind": "front_opening_landmark", "profile": "med_arcade_italian_portici_v78",
+        "description": "Stucco mixed-use block above a five-bay, construction-depth Italian stone portico.",
+        "reference_views": [
+          {"role": "street_identity", "path": "/archetypes/buildings/mediterranean_arcade_mixed_use/variant_0.png"},
+          {"role": "oblique_massing", "path": "/archetypes/buildings/mediterranean_arcade_mixed_use/variant_0_angle_60.jpg"},
+          {"role": "roof_plan", "path": "/archetypes/buildings/mediterranean_arcade_mixed_use/variant_0_angle_90.jpg"}
+        ],
+        "frontage_depth_m": 3.2, "opening_shape": "round_arch", "opening_count": 5,
+        "opening_width_m": 2.7, "opening_base_m": 0.10, "opening_height_m": 4.0,
+        "spring_height_m": 2.65, "side_margin_m": 1.0, "section_mode": "recessed",
+        "void_id": "portici_arcade", "void_purpose": "continuous shaded arcade sheltering shops and cafes",
+        "wall_material": "secondary", "frontage_material": "primary", "lining_material": "primary",
+        "trim_material": "primary", "back_frame_material": "accent", "roof_kind": "hipped", "roof_height_m": 1.6,
+        "ridge_axis": "x", "ridge_inset_m": 4.0
+      }
+    },
+    "warehouse_arch_window_brick": {
+      "extends": "romanesque_revival_warehouse",
+      "identity": "Richardsonian brick warehouse with five cavernous round-arched loading bays, rusticated brownstone base and corbelled flat parapet.",
+      "material_zones": "dark red-brown brick; light stone arched voussoirs; rusticated brownstone; dark built-up roof",
+      "material_overrides": {
+        "primary": {"texture_key": "red_brick", "base_color": "#733b31"},
+        "secondary": {"texture_key": "brownstone", "base_color": "#846047"},
+        "roof": {"texture_key": "roof_membrane", "base_color": "#353535", "roughness": 0.88}
+      },
+      "production_contract": {
+        "identity_mode": "massing_graph",
+        "fixed_identity": ["five round-arched loading bays", "rusticated brownstone base", "corbelled brick parapet"],
+        "repeatable_capacity": ["grouped upper arched-window bays"],
+        "quality_contract_version": 2,
+        "metadata_cues": ["dark red-brown brick with light stone arched voussoirs", "round-arched loading doors with heavy stone surrounds", "built-up roof behind parapet"],
+        "material_continuity": {
+          "required_textured_materials": ["primary", "secondary", "roof"],
+          "node_bindings": [
+            {"kind": "opening_block", "slots": {"material": "primary", "lining_material": "secondary", "trim_material": "secondary"}},
+            {"kind": "roof_slab", "ids": ["main_roof"], "slots": {"material": "roof"}}
+          ]
+        },
+        "spatial_voids": {
+          "required_passages": [{
+            "void_id": "romanesque_loading_recesses", "target_node_id": "front_opening_block",
+            "target_node_kind": "opening_block", "shape": "round_arch_passage",
+            "section_mode": "recessed", "minimum_depth_m": 2.5,
+            "minimum_opening_count": 5, "minimum_clearance_count": 5
+          }]
+        }
+      },
+      "massing_recipe": {
+        "kind": "front_opening_landmark", "profile": "warehouse_arch_window_brick_v78",
+        "description": "Massive brick warehouse with five full-section loading-bay recesses and a dark membrane roof.",
+        "reference_views": [
+          {"role": "street_identity", "path": "/archetypes/buildings/romanesque_revival_warehouse/variant_0.png"},
+          {"role": "oblique_massing", "path": "/archetypes/buildings/romanesque_revival_warehouse/variant_0_angle_60.jpg"},
+          {"role": "roof_plan", "path": "/archetypes/buildings/romanesque_revival_warehouse/variant_0_angle_90.jpg"}
+        ],
+        "frontage_depth_m": 2.8, "opening_shape": "round_arch", "opening_count": 5,
+        "opening_width_m": 5.8, "opening_base_m": 0.10, "opening_height_m": 4.8,
+        "spring_height_m": 1.9, "side_margin_m": 1.5, "section_mode": "recessed",
+        "void_id": "romanesque_loading_recesses", "void_purpose": "cavernous loading-door recesses",
+        "wall_material": "primary", "frontage_material": "primary", "lining_material": "secondary",
+        "trim_material": "secondary", "roof_kind": "flat"
+      }
+    },
+    "scandi_urban_white_plaster": {
+      "extends": "scandinavian_urban_residential",
+      "identity": "White-plastered Scandinavian perimeter block with an open timber-lined passage into a planted courtyard and dark zinc gable roofs.",
+      "material_zones": "white lime plaster; oiled larch passage and balcony soffits; black frames; standing-seam zinc",
+      "material_overrides": {
+        "primary": {"texture_key": "white_plaster", "base_color": "#e6e2da"},
+        "secondary": {"texture_key": "larch_wood", "base_color": "#b1804e"},
+        "roof": {"texture_key": "standing_seam", "base_color": "#555b60", "roughness": 0.54, "texture_tint_mode": "COLOR", "texture_tint_strength": 0.64}
+      },
+      "facade_sheet_tint": {"color": "#ebe9e2", "strength": 0.84, "luminance_min": 0.20, "luminance_max": 0.68},
+      "production_contract": {
+        "identity_mode": "massing_graph",
+        "fixed_identity": ["open timber-lined courtyard passage", "perimeter courtyard plan", "standing-seam zinc roofs"],
+        "repeatable_capacity": ["ordinary white-plaster residential bays"],
+        "quality_contract_version": 2,
+        "metadata_cues": ["smooth white lime plaster", "recessed passage to courtyard with timber-lined ceiling", "standing seam zinc in dark grey"],
+        "material_continuity": {
+          "required_textured_materials": ["primary", "secondary", "roof"],
+          "node_bindings": [
+            {"kind": "opening_block", "slots": {"material": "primary", "lining_material": "secondary"}},
+            {"kind": "gable_roof", "slots": {"material": "roof"}}
+          ]
+        },
+        "spatial_voids": {
+          "required_passages": [{
+            "void_id": "scandi_courtyard_passage", "target_node_id": "front_passage_wing",
+            "target_node_kind": "opening_block", "shape": "rectangular_passage",
+            "section_mode": "through", "minimum_depth_m": 4.0,
+            "minimum_opening_count": 1, "minimum_clearance_count": 1
+          }]
+        }
+      },
+      "massing_recipe": {
+        "kind": "courtyard_passage", "profile": "scandi_urban_white_plaster_v78",
+        "description": "Four-wing Scandinavian court block whose timber-lined street passage is physically open into the courtyard.",
+        "reference_views": [
+          {"role": "street_identity", "path": "/archetypes/buildings/scandinavian_urban_residential/variant_0.png"},
+          {"role": "oblique_massing", "path": "/archetypes/buildings/scandinavian_urban_residential/variant_0_angle_60.jpg"},
+          {"role": "roof_plan", "path": "/archetypes/buildings/scandinavian_urban_residential/variant_0_angle_90.jpg"}
+        ],
+        "wing_depth_m": 4.2, "opening_width_m": 4.4, "opening_base_m": 0.12,
+        "opening_height_m": 4.0, "void_id": "scandi_courtyard_passage",
+        "void_purpose": "timber-lined passage opening from street to planted courtyard",
+        "wall_material": "primary", "lining_material": "secondary", "roof_material": "roof", "roof_height_m": 2.4
+      }
+    }
+  }
+}

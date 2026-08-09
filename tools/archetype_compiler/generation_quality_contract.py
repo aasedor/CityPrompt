@@ -99,6 +99,25 @@ def assess_generation_quality_contract(
             bool(matching) and not incorrect,
             f"{len(matching)} assemblies checked; incorrect: {', '.join(incorrect) if incorrect else 'none'}",
         ))
+    for binding in material_contract.get("node_bindings") or []:
+        kind = str(binding["kind"])
+        limited_ids = {str(value) for value in binding.get("ids") or []}
+        matching = [
+            item for item in nodes.values()
+            if item.get("kind") == kind
+            and (not limited_ids or str(item.get("id")) in limited_ids)
+        ]
+        expected = dict(binding.get("slots") or {})
+        incorrect = [
+            str(item.get("id"))
+            for item in matching
+            if any(item.get(slot) != material_id for slot, material_id in expected.items())
+        ]
+        gates.append(_gate(
+            f"material_node_binding:{kind}",
+            bool(matching) and not incorrect,
+            f"{len(matching)} nodes checked; incorrect: {', '.join(incorrect) if incorrect else 'none'}",
+        ))
     for passage in (production.get("spatial_voids") or {}).get("required_passages") or []:
         passage_id = str(passage["void_id"])
         void = voids.get(passage_id) or {}
@@ -116,6 +135,10 @@ def assess_generation_quality_contract(
             for clearance in assembly.get("opening_clearances") or []
             if clearance.get("void_id") == passage_id
         ]
+        expected_target_kind = str(passage.get("target_node_kind", "pointed_passage_block"))
+        expected_section_mode = str(passage.get("section_mode", "through"))
+        minimum_openings = int(passage.get("minimum_opening_count", 1))
+        target_openings = int(target.get("opening_count", 1))
         gates.extend([
             _gate(
                 f"passage_void:{passage_id}",
@@ -129,22 +152,25 @@ def assess_generation_quality_contract(
             ),
             _gate(
                 f"passage_target:{passage_id}",
-                target.get("kind") == "pointed_passage_block",
-                f"target node kind {target.get('kind')!r}",
+                target.get("kind") == expected_target_kind
+                and str(target.get("section_mode", "through")) == expected_section_mode
+                and target_openings >= minimum_openings,
+                f"target node kind {target.get('kind')!r}; mode {target.get('section_mode', 'through')!r}; openings {target_openings}",
             ),
             _gate(
+                f"passage_skin_clearance:{passage_id}",
+                len(clearances) >= int(passage.get("minimum_clearance_count", minimum_openings)),
+                f"{len(clearances)} facade-skin clearances reference the passage",
+            ),
+        ])
+        if passage.get("portal_assembly_id"):
+            gates.append(_gate(
                 f"passage_portal:{passage_id}",
                 portal.get("kind") == "pointed_portal"
                 and portal.get("opening_mode") == "through_passage"
                 and portal.get("passage_void_id") == passage_id,
                 f"portal {portal.get('id')!r} mode {portal.get('opening_mode')!r}",
-            ),
-            _gate(
-                f"passage_skin_clearance:{passage_id}",
-                bool(clearances),
-                f"{len(clearances)} facade-skin clearances reference the passage",
-            ),
-        ])
+            ))
 
     metadata_cues = [str(cue).lower() for cue in production.get("metadata_cues") or []]
     if source is not None and metadata_cues:

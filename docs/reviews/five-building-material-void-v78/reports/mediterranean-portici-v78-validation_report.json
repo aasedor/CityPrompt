@@ -1,0 +1,185 @@
+{
+  "status": "pass",
+  "family": "mediterranean-portici-v78",
+  "archetype_id": "mediterranean_arcade_mixed_use",
+  "reuse_keys": [
+    "mediterranean_arcade_mixed_use",
+    "mediterranean",
+    "Commercial \u2014 Market / Specialty Retail"
+  ],
+  "manifest": "mediterranean-portici-v78_manifest.json",
+  "errors": [],
+  "warnings": [],
+  "modules": [
+    {
+      "file": "mediterranean-portici-v78_podium.glb",
+      "status": "ok",
+      "triangles": 2516,
+      "extent_m": {
+        "width_x": 20.24,
+        "height_y": 4.5,
+        "depth_z": 17.24
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_Sheet_Far_Podium",
+        "MAT_Sheet_Wrapped_Podium_Left",
+        "MAT_Sheet_Wrapped_Podium_Rear",
+        "MAT_Sheet_Wrapped_Podium_Right",
+        "MAT_Signature_CutStone"
+      ],
+      "size_bytes": 1872416
+    },
+    {
+      "file": "mediterranean-portici-v78_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 1628,
+      "extent_m": {
+        "width_x": 20.14,
+        "height_y": 3.6,
+        "depth_z": 16.299
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_Sheet_Far_Floor",
+        "MAT_Sheet_Wrapped_Floor_Left",
+        "MAT_Sheet_Wrapped_Floor_Rear",
+        "MAT_Sheet_Wrapped_Floor_Right",
+        "MAT_Signature_CutStone"
+      ],
+      "size_bytes": 1941668
+    },
+    {
+      "file": "mediterranean-portici-v78_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 1628,
+      "extent_m": {
+        "width_x": 20.14,
+        "height_y": 3.6,
+        "depth_z": 16.299
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_Sheet_Far_Floor_alt",
+        "MAT_Sheet_Wrapped_Floor_Left.001",
+        "MAT_Sheet_Wrapped_Floor_Rear.001",
+        "MAT_Sheet_Wrapped_Floor_Right.001",
+        "MAT_Signature_CutStone"
+      ],
+      "size_bytes": 1941688
+    },
+    {
+      "file": "mediterranean-portici-v78_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 1628,
+      "extent_m": {
+        "width_x": 20.14,
+        "height_y": 3.6,
+        "depth_z": 16.299
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_Sheet_Far_Floor",
+        "MAT_Sheet_Wrapped_Floor_Left.002",
+        "MAT_Sheet_Wrapped_Floor_Rear.002",
+        "MAT_Sheet_Wrapped_Floor_Right.002",
+        "MAT_Signature_CutStone"
+      ],
+      "size_bytes": 1941680
+    },
+    {
+      "file": "mediterranean-portici-v78_setback_upper.glb",
+      "status": "ok",
+      "triangles": 1672,
+      "extent_m": {
+        "width_x": 20.0,
+        "height_y": 3.6,
+        "depth_z": 16.045
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Concrete",
+        "MAT_Facade_Secondary",
+        "MAT_Sheet_Far_Floor",
+        "MAT_Sheet_Wrapped_Floor_Left.003",
+        "MAT_Sheet_Wrapped_Floor_Rear.003",
+        "MAT_Sheet_Wrapped_Floor_Right.003",
+        "MAT_Signature_CutStone"
+      ],
+      "size_bytes": 1408684
+    },
+    {
+      "file": "mediterranean-portici-v78_crown_crown.glb",
+      "status": "ok",
+      "triangles": 1320,
+      "extent_m": {
+        "width_x": 19.7,
+        "height_y": 3.6,
+        "depth_z": 15.95
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Sheet_Far_Crown",
+        "MAT_Sheet_Wrapped_Floor_Left.004",
+        "MAT_Sheet_Wrapped_Floor_Rear.004",
+        "MAT_Sheet_Wrapped_Floor_Right.004",
+        "MAT_Signature_CutStone"
+      ],
+      "size_bytes": 1385628
+    },
+    {
+      "file": "mediterranean-portici-v78_roof.glb",
+      "status": "ok",
+      "triangles": 452,
+      "extent_m": {
+        "width_x": 20.7,
+        "height_y": 2.4,
+        "depth_z": 16.678
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Roof",
+        "MAT_Signature_WarmTimber"
+      ],
+      "size_bytes": 788912
+    },
+    {
+      "file": "mediterranean-portici-v78_assembled.glb",
+      "status": "ok",
+      "triangles": 12580,
+      "extent_m": {
+        "width_x": 20.436,
+        "height_y": 16.9,
+        "depth_z": 16.404
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_Interior_Warm",
+        "MAT_Roof",
+        "MAT_Sheet_Far_Floor",
+        "MAT_Sheet_Far_Podium"
+      ],
+      "size_bytes": 2488284,
+      "role": "assembled"
+    }
+  ]
+}

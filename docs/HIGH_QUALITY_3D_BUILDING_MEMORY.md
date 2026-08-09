@@ -693,6 +693,39 @@ instead of remaining prompt prose.
   the roof topology still needs reference-accurate dormers, intersecting
   gables, ridge/valley work and the correct tower hierarchy before promotion.
 
+### V78 bounded five-building recipe and atlas-congruence lessons
+
+The five-building expansion applied the material/void contract to Arts and
+Crafts, Neoclassical courthouse, Italian portici, Romanesque warehouse and
+Scandinavian courtyard archetypes. It produced three keeper pilots and two
+provisional pilots, which is the correct outcome for a bounded learning run:
+technical completion did not erase visible exact-variant differences.
+
+- Store exact-variant construction decisions as compact deterministic recipes,
+  then expand them into ordinary `massing-graph@1` nodes, voids and assemblies
+  before preflight. This keeps five related pilots reviewable without weakening
+  the renderer-level graph contract or copying thousands of JSON lines.
+- A depth-bearing opening primitive may construct one entry or a counted run of
+  round/rectangular arches. The recipe owns pier spacing, heads, jambs, reveal
+  depth, back wall or through mode, and one facade-skin clearance per opening.
+  A single semantic void beside five flat arch decals does not pass.
+- Catalogue metadata can directly select construction: number of storeys,
+  ridge axis, hip height, roof texture family, passage depth and material slots.
+  The image remains authoritative when prose and visible colour/topology differ.
+- Exact-variant atlas congruence is a human and provenance gate. The first
+  courthouse attempt paired Art Deco metadata with a Neoclassical family atlas;
+  it was rejected and rebuilt against the matching Neoclassical variant rather
+  than published as a polished sibling mismatch.
+- Luminance-aware atlas tinting is only a bounded fallback. It can reconcile a
+  reusable wall's hue while preserving dark glazing, but it cannot turn brick
+  joints into smooth plaster, rectangular sash into leaded casements, or add
+  dormers and projecting balconies. Arts and Crafts and Scandinavian remain
+  provisional until exact-variant facade sources and fixed detail kits exist.
+- Publish a named visual status beside every passing report. In v78 the
+  courthouse, portici and Romanesque warehouse are keeper pilots; Arts and
+  Crafts and Scandinavian are provisional. None enters catalogue release until
+  the normal human visual-approval gate is signed.
+
 ## Updating this memory
 
 When a pilot reveals a reusable lesson:

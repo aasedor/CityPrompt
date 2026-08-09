@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-08-08-material-void-contract-v77",
+  "memory_version": "2026-08-08-five-building-material-void-v78",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "calibration_set": {
@@ -729,6 +729,21 @@
       "symptom": "A gate or doorway described as deeply recessed is filled by a flat wall or brick panel",
       "cause": "The grammar recorded a semantic void, but the target mass remained solid and a rectangular facade skin or portal back plane covered the opening.",
       "correction": "Bind the passage to an executable void primitive or Boolean, enforce a reference-derived minimum depth, switch the portal to through-passage mode and split every crossing facade skin around the opening."
+    },
+    {
+      "symptom": "A row of arches looks correct head-on but is made from flat decals or only one of the bays is actually recessed",
+      "cause": "The contract checked for one semantic void and one skin clearance even when the archetype showed a counted arcade or loading-bay run.",
+      "correction": "Compile the reference-derived opening count into a depth-bearing opening block. Build every pier, head, reveal and back section, and require at least one facade-skin clearance for every opening in the run."
+    },
+    {
+      "symptom": "A technically valid building uses the right wall colour but the wrong masonry joints, window shapes or balcony language",
+      "cause": "A family-level photographic atlas was recoloured and treated as if hue correction made it congruent with the exact selected variant.",
+      "correction": "Use luminance-aware tinting only when construction and opening language already match. If brick must become plaster, sash must become leaded glass, or fixed projections differ, mark the pilot provisional and generate or rectify a variant-native atlas plus audited fixed-detail kit."
+    },
+    {
+      "symptom": "A batch reports five successes even though only some models resemble their exact archetype images",
+      "cause": "Production preflight, runtime material/void gates and GLB validation were conflated with human visual acceptance.",
+      "correction": "Publish keeper, provisional or rejected status for every model beside a side-by-side exact-reference board. Keep catalogue release blocked until the named human visual-approval contract passes independently."
     }
   ]
 }

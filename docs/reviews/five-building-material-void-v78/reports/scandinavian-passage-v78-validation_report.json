@@ -1,0 +1,187 @@
+{
+  "status": "pass",
+  "family": "scandinavian-passage-v78",
+  "archetype_id": "scandinavian_urban_residential",
+  "reuse_keys": [
+    "scandinavian_urban_residential",
+    "scandinavian_nordic",
+    "Residential \u2014 Mid-Rise Apartment"
+  ],
+  "manifest": "scandinavian-passage-v78_manifest.json",
+  "errors": [],
+  "warnings": [],
+  "modules": [
+    {
+      "file": "scandinavian-passage-v78_podium.glb",
+      "status": "ok",
+      "triangles": 396,
+      "extent_m": {
+        "width_x": 20.24,
+        "height_y": 4.0,
+        "depth_z": 17.135
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_Sheet_Far_Podium",
+        "MAT_Sheet_Wrapped_Podium_Left",
+        "MAT_Sheet_Wrapped_Podium_Rear",
+        "MAT_Sheet_Wrapped_Podium_Right"
+      ],
+      "size_bytes": 1046152
+    },
+    {
+      "file": "scandinavian-passage-v78_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 3892,
+      "extent_m": {
+        "width_x": 20.1,
+        "height_y": 3.2,
+        "depth_z": 17.065
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Sheet_Far_Floor",
+        "MAT_Sheet_Wrapped_Floor_Left",
+        "MAT_Sheet_Wrapped_Floor_Rear",
+        "MAT_Sheet_Wrapped_Floor_Right",
+        "MAT_Signature_BlackMetal",
+        "MAT_Signature_WarmTimber"
+      ],
+      "size_bytes": 1226664
+    },
+    {
+      "file": "scandinavian-passage-v78_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 3892,
+      "extent_m": {
+        "width_x": 20.1,
+        "height_y": 3.2,
+        "depth_z": 17.065
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Sheet_Far_Floor_alt",
+        "MAT_Sheet_Wrapped_Floor_Left.001",
+        "MAT_Sheet_Wrapped_Floor_Rear.001",
+        "MAT_Sheet_Wrapped_Floor_Right.001",
+        "MAT_Signature_BlackMetal",
+        "MAT_Signature_WarmTimber"
+      ],
+      "size_bytes": 1226684
+    },
+    {
+      "file": "scandinavian-passage-v78_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 3892,
+      "extent_m": {
+        "width_x": 20.1,
+        "height_y": 3.2,
+        "depth_z": 17.065
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Sheet_Far_Floor",
+        "MAT_Sheet_Wrapped_Floor_Left.002",
+        "MAT_Sheet_Wrapped_Floor_Rear.002",
+        "MAT_Sheet_Wrapped_Floor_Right.002",
+        "MAT_Signature_BlackMetal",
+        "MAT_Signature_WarmTimber"
+      ],
+      "size_bytes": 1226676
+    },
+    {
+      "file": "scandinavian-passage-v78_setback_upper.glb",
+      "status": "ok",
+      "triangles": 4200,
+      "extent_m": {
+        "width_x": 20.0,
+        "height_y": 3.2,
+        "depth_z": 16.045
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Concrete",
+        "MAT_Facade_Secondary",
+        "MAT_Sheet_Far_Floor",
+        "MAT_Sheet_Wrapped_Floor_Left.003",
+        "MAT_Sheet_Wrapped_Floor_Rear.003",
+        "MAT_Sheet_Wrapped_Floor_Right.003",
+        "MAT_Signature_BlackMetal",
+        "MAT_Signature_WarmTimber"
+      ],
+      "size_bytes": 1487424
+    },
+    {
+      "file": "scandinavian-passage-v78_crown_crown.glb",
+      "status": "ok",
+      "triangles": 2504,
+      "extent_m": {
+        "width_x": 20.02,
+        "height_y": 3.2,
+        "depth_z": 16.795
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Glass",
+        "MAT_Interior_Shadow",
+        "MAT_Sheet_Far_Crown",
+        "MAT_Sheet_Wrapped_Floor_Left.004",
+        "MAT_Sheet_Wrapped_Floor_Rear.004",
+        "MAT_Sheet_Wrapped_Floor_Right.004",
+        "MAT_Signature_WarmTimber"
+      ],
+      "size_bytes": 1238360
+    },
+    {
+      "file": "scandinavian-passage-v78_roof.glb",
+      "status": "ok",
+      "triangles": 452,
+      "extent_m": {
+        "width_x": 20.7,
+        "height_y": 2.4,
+        "depth_z": 16.678
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Roof",
+        "MAT_Signature_CutStone"
+      ],
+      "size_bytes": 402716
+    },
+    {
+      "file": "scandinavian-passage-v78_assembled.glb",
+      "status": "ok",
+      "triangles": 4608,
+      "extent_m": {
+        "width_x": 24.4,
+        "height_y": 22.37,
+        "depth_z": 20.348
+      },
+      "bottom_y": -0.0,
+      "materials": [
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_Roof",
+        "MAT_Sheet_Far_Floor",
+        "MAT_Sheet_Far_FullElevation",
+        "MAT_Sheet_Far_Podium"
+      ],
+      "size_bytes": 1874696,
+      "role": "assembled"
+    }
+  ]
+}
