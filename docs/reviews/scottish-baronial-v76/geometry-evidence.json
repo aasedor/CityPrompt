@@ -1,0 +1,130 @@
+{
+  "schema": "archetype-geometry-evidence@1",
+  "id": "scottish-baronial-architectural-evidence-v76",
+  "status": "review",
+  "scope": "one_archetype_bounded_pilot",
+  "source": {
+    "archetype_id": "chateauesque_grand_railway_hotel",
+    "variant_id": "scottish_baronial_granite_tower",
+    "reference_images": [
+      "artifacts\\architectural-evidence-v76\\inputs\\01-street.png",
+      "artifacts\\architectural-evidence-v76\\inputs\\02-oblique.jpg",
+      "artifacts\\architectural-evidence-v76\\inputs\\03-roof.jpg"
+    ],
+    "audited_street_mask": "artifacts\\architectural-evidence-v76\\01-street-mask.png"
+  },
+  "provenance": {
+    "moge": {
+      "model": "Ruicheng/moge-2-vits-normal",
+      "license": "MIT",
+      "role": "street metric depth and normals"
+    },
+    "da3": {
+      "model": "depth-anything/DA3-BASE",
+      "license": "Apache-2.0",
+      "role": "three-view relative depth, cameras and confidence"
+    },
+    "opencv": {
+      "role": "registered masks, robust alignment, curvature and edge analysis"
+    },
+    "architectural_profile": "scottish_baronial_v76"
+  },
+  "declared_dimensions_m": {
+    "width": 55.0,
+    "depth": 48.0,
+    "height": 29.7
+  },
+  "street_geometry": {
+    "valid_coverage": 0.92546,
+    "cross_model_alignment": {
+      "scale": 81.85335,
+      "offset": 7.98805
+    },
+    "cross_model_disagreement": {
+      "median_ratio": 0.03382,
+      "p90_ratio": 0.11833
+    },
+    "front_plane_residual": {
+      "median_ratio": 0.16758,
+      "p90_ratio": 0.46031
+    },
+    "curved_surface_ratio": 0.11529,
+    "visible_horizontal_depth_edge_candidate": {
+      "image_y": 0.18056,
+      "depth_step_ratio": 0.06645,
+      "confidence": 0.8817,
+      "policy": "Advisory edge location only; confirm overhang direction from the reference image."
+    },
+    "confidence": {
+      "mean": 2.6724,
+      "p10": 2.0113,
+      "median": 2.764,
+      "p90": 3.1989
+    }
+  },
+  "roof_geometry": {
+    "dominant_elevation_peaks": [
+      {
+        "x": 0.5476,
+        "y": 0.7391,
+        "relative_height": 0.19246
+      },
+      {
+        "x": 0.2857,
+        "y": 0.7453,
+        "relative_height": 0.18484
+      },
+      {
+        "x": 0.6643,
+        "y": 0.764,
+        "relative_height": 0.17687
+      },
+      {
+        "x": 0.5048,
+        "y": 0.2329,
+        "relative_height": 0.12346
+      }
+    ],
+    "dominant_peak_count": 4,
+    "relative_height_range": 0.25657,
+    "edge_density": 0.02673,
+    "confidence": {
+      "mean": 1.1432,
+      "p10": 1.06,
+      "median": 1.12,
+      "p90": 1.27
+    }
+  },
+  "uncertainty": {
+    "reliable_street_fraction": 0.8466,
+    "hidden_sides": "high",
+    "roof_plan_from_declared_top_view": "medium",
+    "policy": "Use learned output only for visible plan/section constraints; hidden construction remains authored from architectural knowledge.",
+    "visible_gate_tower_and_corner_turrets": "low",
+    "roof_and_courtyard_from_declared_top_view": "medium",
+    "tree_occluded_lower_facade": "high",
+    "hidden_rear_opening_schedule": "high"
+  },
+  "authored_geometry_constraints": {
+    "front_envelope": "deep orthogonal perimeter block with a projecting gate tower, not a shallow decorated street wall",
+    "corner_hierarchy": "cylindrical conical-roof turrets continue down exposed corners and carry floor-accurate openings",
+    "roof": "continuous steep perimeter roof around a compact open court with fixed cross-gables and chimneys",
+    "courtyard": "physical near-square central void with authored internal elevations",
+    "do_not_copy": [
+      "raw learned mesh",
+      "vegetation depth",
+      "neighbouring roofs",
+      "occluded construction"
+    ]
+  },
+  "gates": {
+    "valid_coverage_min_0_88": true,
+    "cross_model_median_disagreement_max_0_06": true,
+    "roof_confidence_median_min_1_25": false
+  },
+  "outputs": {
+    "moge_proxy_glb": "artifacts\\architectural-evidence-v76\\moge\\01-street\\mesh.glb",
+    "da3_proxy_glb": "artifacts\\architectural-evidence-v76\\da3\\scene.glb",
+    "review_board": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\architectural-evidence-v76\\evidence\\geometry-evidence-board.png"
+  }
+}

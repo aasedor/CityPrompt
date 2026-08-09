@@ -135,10 +135,15 @@ def _contain(path: Path, size: tuple[int, int], background: str = "#e8e5df") -> 
     return canvas
 
 
-def _write_board(output: Path, panels: list[tuple[str, Path]], summary: list[str]) -> None:
+def _write_board(
+    output: Path,
+    panels: list[tuple[str, Path]],
+    summary: list[str],
+    title: str = "Free Archetype Geometry Pass v75",
+) -> None:
     board = Image.new("RGB", (2200, 1430), "#f5f1e9")
     draw = ImageDraw.Draw(board)
-    draw.text((55, 30), "Free Archetype Geometry Pass v75", font=_font(42, True), fill="#101b2b")
+    draw.text((55, 30), title, font=_font(42, True), fill="#101b2b")
     draw.text((57, 89), "MoGe-2 normals + DA3 multi-view confidence, converted into authored-geometry evidence.", font=_font(21), fill="#536174")
     draw.rectangle((55, 132, 2145, 141), fill="#2aa7a1")
     for index, (label, path) in enumerate(panels):
@@ -154,9 +159,24 @@ def _write_board(output: Path, panels: list[tuple[str, Path]], summary: list[str
     board.save(output, optimize=True)
 
 
+def _architectural_profile(args: argparse.Namespace) -> dict[str, Any]:
+    if not args.architectural_profiles:
+        return {}
+    payload = json.loads(args.architectural_profiles.read_text(encoding="utf-8"))
+    if payload.get("schema") != "architectural-evidence-profiles@1":
+        raise ValueError("Architectural evidence profiles must use architectural-evidence-profiles@1")
+    if not args.profile_id:
+        raise ValueError("--profile-id is required with --architectural-profiles")
+    try:
+        return payload["profiles"][args.profile_id]
+    except KeyError as exc:
+        raise ValueError(f"Unknown architectural evidence profile: {args.profile_id}") from exc
+
+
 def analyse(args: argparse.Namespace) -> dict[str, Any]:
     output_dir = args.output_dir.resolve()
     output_dir.mkdir(parents=True, exist_ok=True)
+    architectural_profile = _architectural_profile(args)
 
     moge_depth = cv2.imread(str(args.moge_depth), cv2.IMREAD_UNCHANGED)
     if moge_depth is None or moge_depth.ndim != 2:
@@ -245,6 +265,25 @@ def analyse(args: argparse.Namespace) -> dict[str, Any]:
         and agreement_median <= 0.06
         and _confidence_stats(da3_conf[2], roof_mask)["median"] >= 1.25
     )
+    default_constraints = {
+        "front_envelope": "continuous_curved_screen_with_visible_layer_separation",
+        "cantilever": "deep_left_biased_projecting_gallery_with_real_soffit",
+        "inner_massing": "multiple_asymmetric_curved_pods_not_orthogonal_boxes",
+        "roof": "multi-level_curvilinear_roofscape_with_interstitial_courts",
+        "do_not_copy": ["raw point cloud", "vegetation depth", "sky depth", "occluded rear geometry"],
+    }
+    uncertainty_policy = {
+        "reliable_street_fraction": round(reliable_fraction, 5),
+        "hidden_sides": "high",
+        "roof_plan_from_declared_top_view": "medium",
+        "policy": "Use learned output only for visible plan/section constraints; hidden construction remains authored from architectural knowledge.",
+    }
+    if not architectural_profile:
+        uncertainty_policy.update({
+            "reflective_perforated_envelope": "high",
+            "visible_cantilever_and_front_curvature": "low",
+        })
+    uncertainty_policy.update(architectural_profile.get("uncertainty_overrides", {}))
     evidence: dict[str, Any] = {
         "schema": SCHEMA,
         "id": args.id,
@@ -260,6 +299,7 @@ def analyse(args: argparse.Namespace) -> dict[str, Any]:
             "moge": {"model": "Ruicheng/moge-2-vits-normal", "license": "MIT", "role": "street metric depth and normals"},
             "da3": {"model": "depth-anything/DA3-BASE", "license": "Apache-2.0", "role": "three-view relative depth, cameras and confidence"},
             "opencv": {"role": "registered masks, robust alignment, curvature and edge analysis"},
+            "architectural_profile": args.profile_id,
         },
         "declared_dimensions_m": {"width": args.width_m, "depth": args.depth_m, "height": args.height_m},
         "street_geometry": {
@@ -283,21 +323,8 @@ def analyse(args: argparse.Namespace) -> dict[str, Any]:
             "edge_density": round(roof_edge_density, 5),
             "confidence": _confidence_stats(da3_conf[2], roof_mask),
         },
-        "uncertainty": {
-            "reliable_street_fraction": round(reliable_fraction, 5),
-            "hidden_sides": "high",
-            "reflective_perforated_envelope": "high",
-            "visible_cantilever_and_front_curvature": "low",
-            "roof_plan_from_declared_top_view": "medium",
-            "policy": "Use learned output only for visible plan/section constraints; hidden construction remains authored from architectural knowledge.",
-        },
-        "authored_geometry_constraints": {
-            "front_envelope": "continuous_curved_screen_with_visible_layer_separation",
-            "cantilever": "deep_left_biased_projecting_gallery_with_real_soffit",
-            "inner_massing": "multiple_asymmetric_curved_pods_not_orthogonal_boxes",
-            "roof": "multi-level_curvilinear_roofscape_with_interstitial_courts",
-            "do_not_copy": ["raw point cloud", "vegetation depth", "sky depth", "occluded rear geometry"],
-        },
+        "uncertainty": uncertainty_policy,
+        "authored_geometry_constraints": architectural_profile.get("geometry_constraints", default_constraints),
         "gates": {
             "valid_coverage_min_0_88": valid_coverage >= 0.88,
             "cross_model_median_disagreement_max_0_06": agreement_median <= 0.06,
@@ -313,18 +340,22 @@ def analyse(args: argparse.Namespace) -> dict[str, Any]:
     evidence_path = output_dir / "architectural-geometry-evidence.json"
     evidence_path.write_text(json.dumps(evidence, indent=2) + "\n", encoding="utf-8")
     panels = [
-        ("ARCHETYPE — STREET", args.street_image),
-        ("MOGE — DEPTH", street_depth_path),
-        ("MOGE — NORMALS", args.moge_normal),
-        ("ARCHETYPE — ROOF", args.roof_image),
-        ("DA3 — ROOF HEIGHT", roof_depth_path),
-        ("ENSEMBLE — UNCERTAINTY", street_uncertainty_path),
+        ("ARCHETYPE - STREET", args.street_image),
+        ("MOGE - DEPTH", street_depth_path),
+        ("MOGE - NORMALS", args.moge_normal),
+        ("ARCHETYPE - ROOF", args.roof_image),
+        ("DA3 - ROOF HEIGHT", roof_depth_path),
+        ("ENSEMBLE - UNCERTAINTY", street_uncertainty_path),
     ]
     _write_board(output_dir / "geometry-evidence-board.png", panels, [
         f"Gate: {evidence['status'].upper()} | valid coverage {valid_coverage:.3f} | median disagreement {agreement_median:.3f}",
         f"Visible surface curvature {curved_ratio:.3f} | roof elevation peaks {len(roof_peaks)} | reliable street area {reliable_fraction:.3f}",
-        "Red/yellow evidence remains advisory: reflective veil, glazing and hidden sides require authored architectural logic.",
-    ])
+        "Uncertain or occluded regions remain advisory and require authored architectural logic.",
+    ], title=(
+        "Scottish Baronial v76 - geometry evidence"
+        if args.profile_id == "scottish_baronial_v76"
+        else "Free Archetype Geometry Pass v75"
+    ))
     return evidence
 
 
@@ -344,6 +375,8 @@ def parser() -> argparse.ArgumentParser:
     value.add_argument("--da3-npz", type=Path, required=True)
     value.add_argument("--da3-glb", type=Path, required=True)
     value.add_argument("--contract", type=Path, required=True)
+    value.add_argument("--architectural-profiles", type=Path)
+    value.add_argument("--profile-id")
     value.add_argument("--width-m", type=float, required=True)
     value.add_argument("--depth-m", type=float, required=True)
     value.add_argument("--height-m", type=float, required=True)

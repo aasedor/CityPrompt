@@ -1,0 +1,35 @@
+{
+  "schema": "architectural-evidence-pilot-summary@1",
+  "status": "review_only",
+  "automatic_geometry_evidence": "review",
+  "human_decision": "apply_reviewed_constraints",
+  "model": {
+    "assembled_triangles": 148990,
+    "api_cost_usd": 0.0
+  },
+  "evidence": {
+    "valid_coverage": 0.92546,
+    "cross_model_median_disagreement": 0.03382,
+    "roof_confidence_median": 1.12
+  },
+  "metrics": {
+    "v68_street_iou": 0.89148,
+    "v76_street_iou": 0.90206,
+    "v76_roof_iou": 0.79685
+  },
+  "accepted": [
+    "55 x 48 m near-square plan",
+    "29 x 24 m compact court",
+    "deeper side wings",
+    "side turret hierarchy",
+    "central court gable",
+    "audited gable and turret openings"
+  ],
+  "withheld": [
+    "raw learned mesh",
+    "vegetation depth",
+    "neighbouring roofs",
+    "occluded rear opening schedule"
+  ],
+  "next_priority": "authored Scottish Baronial roof and gate-tower topology"
+}

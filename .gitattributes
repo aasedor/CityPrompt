@@ -6,4 +6,5 @@ tools/archetype_compiler/facade_sources_v69/*.png filter=lfs diff=lfs merge=lfs 
 docs/reviews/mountain-alpine-v71/*.png filter=lfs diff=lfs merge=lfs -text
 docs/reviews/sam-ab-titanium-museum-v74/*.png filter=lfs diff=lfs merge=lfs -text
 docs/reviews/free-geometry-titanium-museum-v75/*.png filter=lfs diff=lfs merge=lfs -text
+docs/reviews/scottish-baronial-v76/*.png filter=lfs diff=lfs merge=lfs -text
 tools/archetype_compiler/facade_sources_v71/*.png filter=lfs diff=lfs merge=lfs -text

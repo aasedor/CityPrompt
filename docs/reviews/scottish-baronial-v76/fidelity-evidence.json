@@ -1,0 +1,70 @@
+{
+  "schema": "building-reference-evidence-report@2",
+  "contract": "scottish-baronial-architectural-evidence-v76",
+  "status": "pass",
+  "required_roles": [
+    "street_identity",
+    "roof_plan"
+  ],
+  "mean_metrics": {
+    "silhouette_iou": 0.84945,
+    "roofline_rmse": 0.09911,
+    "aspect_ratio_error": 0.1595
+  },
+  "views": [
+    {
+      "schema": "building-reference-fidelity-report@1",
+      "contract": "scottish-baronial-architectural-evidence-v76-street_identity",
+      "reference_image": "C:\\dev\\3D-Maps-building-goldset\\frontend\\public\\archetypes\\buildings\\chateauesque-grand-railway-hotel\\variant_0.png",
+      "render_image": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\architectural-evidence-v76\\model-v2\\scottish-baronial-architectural-evidence-v76_archetype_match.png",
+      "status": "pass",
+      "metrics": {
+        "silhouette_iou": 0.90206,
+        "roofline_rmse": 0.05165,
+        "aspect_ratio_error": 0.09258,
+        "reference_aspect_ratio": 1.56098,
+        "render_aspect_ratio": 1.70549
+      },
+      "checks": {
+        "silhouette_iou": true,
+        "roofline_rmse": true,
+        "aspect_ratio_error": true
+      },
+      "thresholds": {
+        "silhouette_iou_min": 0.62,
+        "roofline_rmse_max": 0.12,
+        "aspect_ratio_error_max": 0.16
+      },
+      "view_id": "street_identity",
+      "role": "street_identity",
+      "render_key": "archetype_match"
+    },
+    {
+      "schema": "building-reference-fidelity-report@1",
+      "contract": "scottish-baronial-architectural-evidence-v76-roof_plan",
+      "reference_image": "C:\\dev\\3D-Maps-building-goldset\\frontend\\public\\archetypes\\buildings\\chateauesque-grand-railway-hotel\\variant_0_angle_90.jpg",
+      "render_image": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\architectural-evidence-v76\\model-v2\\scottish-baronial-architectural-evidence-v76_roof_audit.png",
+      "status": "pass",
+      "metrics": {
+        "silhouette_iou": 0.79685,
+        "roofline_rmse": 0.14658,
+        "aspect_ratio_error": 0.22642,
+        "reference_aspect_ratio": 1.10646,
+        "render_aspect_ratio": 1.35699
+      },
+      "checks": {
+        "silhouette_iou": true,
+        "roofline_rmse": true,
+        "aspect_ratio_error": true
+      },
+      "thresholds": {
+        "silhouette_iou_min": 0.52,
+        "roofline_rmse_max": 0.2,
+        "aspect_ratio_error_max": 0.25
+      },
+      "view_id": "roof_plan",
+      "role": "roof_plan",
+      "render_key": "roof_audit"
+    }
+  ]
+}

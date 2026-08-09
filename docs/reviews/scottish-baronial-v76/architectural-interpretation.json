@@ -1,0 +1,341 @@
+{
+  "schema": "architectural-interpretation@1",
+  "id": "scottish_baronial_architectural_evidence_v76",
+  "status": "review",
+  "decision": "apply_reviewed_constraints",
+  "identity_mode": "massing_graph",
+  "source": {
+    "archetype_id": "chateauesque_grand_railway_hotel",
+    "variant_id": "scottish_baronial_granite_tower",
+    "base_graph": "scottish_baronial_quadrangle_v68",
+    "geometry_evidence_id": "scottish-baronial-architectural-evidence-v76",
+    "geometry_evidence_status": "review"
+  },
+  "fixed_identity": [
+    "perimeter quadrangle and gate passage",
+    "projecting crenellated gate tower",
+    "crow-stepped gables and steep slate roof",
+    "corner and side turret hierarchy",
+    "courtyard-facing elevations and central court gable"
+  ],
+  "repeatable_capacity": [
+    "ordinary rectangular sash bays between fixed towers and gables",
+    "secondary side and courtyard wall bays"
+  ],
+  "gold_memory_rules": [
+    {
+      "id": "reference_is_goalpost",
+      "rule": "Use every compatible archetype view to infer massing, corners, roof, entrances and side elevations; never optimize only for the card image."
+    },
+    {
+      "id": "geometry_carries_identity",
+      "rule": "Silhouette-changing and shadow-casting features are geometry. A facade photograph must not be asked to hide generic massing."
+    },
+    {
+      "id": "fixed_ends_repeat_middle",
+      "rule": "Keep corner, entrance, podium, crown and roof assemblies fixed. Repeat or stretch only authored middle bays."
+    },
+    {
+      "id": "details_wrap",
+      "rule": "Author front, left, right and rear elevations for every asset, including courtyard walls. Material courses, cornices, balconies, window returns and roof logic continue around exposed sides and corners; secondary elevations remain stylistically related but use a believable different opening and service hierarchy. Detail may be occluded only when site geometry confirms a true party wall."
+    },
+    {
+      "id": "reference_plan_voids_are_geometry",
+      "rule": "Courtyards, quadrangles, light wells and gate passages visible in an authoritative roof or aerial reference are fixed plan geometry. They may not survive only as metadata inside an otherwise solid massing core."
+    },
+    {
+      "id": "roof_topology_comes_from_aerial_evidence",
+      "rule": "Infer ridge axis, valleys, cross-gables, hips, green-roof drainage and photovoltaic layout from compatible 60-degree and 90-degree references. Catalogue roof labels are hints, not sufficient construction evidence."
+    },
+    {
+      "id": "silhouette_gate_is_regression_not_approval",
+      "rule": "Use a camera-locked OpenCV silhouette, roofline and aspect-ratio contract to catch gross drift, but never treat its pass as likeness approval. Pair it with explicit landmark hierarchy and roof-plan checks because an incorrect solid box can share the correct outer boundary."
+    },
+    {
+      "id": "vernacular_openings_are_audited_before_geometry",
+      "rule": "Weathered timber grain, murals, flower boxes and masonry joints are not glazing evidence. For irregular vernacular elevations, use an audited opening schedule before creating physical panes or frames; automatic masks remain texture-only evidence until reviewed."
+    }
+  ],
+  "plan_measurements": {
+    "source": "audited roof reference supported by DA3 roof depth",
+    "outer_width_depth_ratio": 1.15,
+    "courtyard_width_ratio": 0.53,
+    "courtyard_depth_ratio": 0.5,
+    "confidence": "medium"
+  },
+  "target_dimensions_m": {
+    "width": 55.0,
+    "depth": 48.0,
+    "height": 29.7
+  },
+  "operations": [
+    {
+      "id": "deepen_perimeter_plan",
+      "kind": "scale_plan_axis",
+      "axis": "y",
+      "factor": 1.3333333333,
+      "evidence": [
+        "da3.roof_plan",
+        "reference.oblique_massing",
+        "gold.reference_plan_voids_are_geometry"
+      ],
+      "rationale": "The roof and oblique references show a substantially deeper, near-square perimeter block than the 55 x 36 m v68 graph."
+    },
+    {
+      "id": "compact_the_courtyard",
+      "kind": "patch_graph_items",
+      "evidence": [
+        "da3.roof_plan",
+        "reference.roof_plan",
+        "gold.reference_plan_voids_are_geometry"
+      ],
+      "rationale": "The learned roof depth and audited image agree on a compact court bounded by materially thick side wings.",
+      "patches": {
+        "nodes": {
+          "baronial_left_wing": {
+            "size": [
+              13.0,
+              26.6667,
+              20.5
+            ],
+            "location": [
+              -21.0,
+              0.0,
+              10.25
+            ]
+          },
+          "baronial_right_wing": {
+            "size": [
+              13.0,
+              26.6667,
+              20.5
+            ],
+            "location": [
+              21.0,
+              0.0,
+              10.25
+            ]
+          },
+          "baronial_left_roof": {
+            "size": [
+              13.4,
+              26.9333,
+              5.4
+            ],
+            "location": [
+              -21.0,
+              0.0,
+              20.5
+            ]
+          },
+          "baronial_right_roof": {
+            "size": [
+              13.4,
+              26.9333,
+              5.4
+            ],
+            "location": [
+              21.0,
+              0.0,
+              20.5
+            ]
+          }
+        },
+        "voids": {
+          "baronial_open_quadrangle": {
+            "size": [
+              29.0,
+              24.0,
+              24.0
+            ]
+          }
+        },
+        "assemblies": {
+          "baronial_court_rear_skin": {
+            "span_m": 28.7
+          },
+          "baronial_court_left_skin": {
+            "centre": [
+              -14.475,
+              0.0,
+              10.25
+            ],
+            "span_m": 23.7
+          },
+          "baronial_court_right_skin": {
+            "centre": [
+              14.475,
+              0.0,
+              10.25
+            ],
+            "span_m": 23.7
+          }
+        }
+      }
+    },
+    {
+      "id": "localize_gable_and_turret_openings",
+      "kind": "patch_graph_items",
+      "evidence": [
+        "moge.street_normals",
+        "reference.street_identity",
+        "gold.vernacular_openings_are_audited_before_geometry"
+      ],
+      "rationale": "MoGe preserves the gable and turret planes clearly; openings are added only at visually audited floor levels rather than inferred from texture grain.",
+      "patches": {
+        "assemblies": {
+          "baronial_crow_gables": {
+            "window_enabled": true,
+            "window_width_m": 1.25,
+            "window_height_m": 1.65,
+            "window_base_offset_m": 1.05,
+            "window_glass_material": "accent",
+            "window_interior_material": "interior_warm"
+          },
+          "baronial_corner_turrets": {
+            "window_levels_m": [
+              3.1,
+              7.2,
+              11.3,
+              15.4
+            ],
+            "window_span_m": 0.95,
+            "window_height_m": 1.9,
+            "window_style": "rectangular",
+            "window_transoms": 1,
+            "window_glass_material": "accent",
+            "window_interior_material": "interior_warm"
+          },
+          "baronial_gate_bartizan": {
+            "window_levels_m": [
+              2.2,
+              5.9
+            ],
+            "window_span_m": 0.68,
+            "window_height_m": 1.35,
+            "window_style": "rectangular",
+            "window_transoms": 0,
+            "window_glass_material": "accent",
+            "window_interior_material": "interior_warm"
+          }
+        }
+      }
+    },
+    {
+      "id": "restore_side_and_court_landmarks",
+      "kind": "add_graph_assemblies",
+      "evidence": [
+        "da3.oblique_depth",
+        "da3.roof_plan",
+        "reference.roof_plan",
+        "gold.details_wrap"
+      ],
+      "rationale": "The oblique and roof evidence show additional side turret hierarchy and a central courtyard gable absent from v68.",
+      "assemblies": [
+        {
+          "id": "baronial_mid_side_turrets",
+          "kind": "striped_turret_array",
+          "centres": [
+            [
+              -25.2,
+              1.8
+            ],
+            [
+              25.2,
+              1.8
+            ]
+          ],
+          "base_z": 4.5,
+          "body_height_m": 18.0,
+          "radius_m": 2.15,
+          "vertices": 40,
+          "body_material": "signature_stone",
+          "stripe_material": "signature_stone",
+          "dark_material": "signature_stone",
+          "belt_material": "secondary",
+          "roof_material": "roof",
+          "belt_levels_m": [
+            3.7,
+            7.8,
+            11.9,
+            16.0
+          ],
+          "belt_height_m": 0.22,
+          "roof_height_m": 5.7,
+          "roof_radius_m": 2.48,
+          "window_levels_m": [
+            2.6,
+            6.7,
+            10.8,
+            14.9
+          ],
+          "window_span_m": 0.86,
+          "window_height_m": 1.75,
+          "window_style": "rectangular",
+          "window_transoms": 1,
+          "window_glass_material": "accent",
+          "window_interior_material": "interior_warm"
+        },
+        {
+          "id": "baronial_court_central_gable",
+          "kind": "shaped_gable_array",
+          "axis": "front",
+          "base_centre": [
+            0.0,
+            13.28,
+            20.3
+          ],
+          "positions_m": [
+            0.0
+          ],
+          "width_m": 8.8,
+          "height_m": 6.6,
+          "depth_m": 0.64,
+          "profile_style": "crow_step",
+          "material": "signature_stone",
+          "infill_material": "primary",
+          "infill_enabled": false,
+          "finial_enabled": false,
+          "window_enabled": true,
+          "window_width_m": 1.45,
+          "window_height_m": 1.65,
+          "window_base_offset_m": 1.0,
+          "window_glass_material": "accent",
+          "window_interior_material": "interior_warm",
+          "bevel_m": 0.035
+        }
+      ]
+    }
+  ],
+  "uncertainty": {
+    "reliable_street_fraction": 0.8466,
+    "hidden_sides": "high",
+    "roof_plan_from_declared_top_view": "medium",
+    "policy": "Use learned output only for visible plan/section constraints; hidden construction remains authored from architectural knowledge.",
+    "visible_gate_tower_and_corner_turrets": "low",
+    "roof_and_courtyard_from_declared_top_view": "medium",
+    "tree_occluded_lower_facade": "high",
+    "hidden_rear_opening_schedule": "high"
+  },
+  "policy": {
+    "learned_mesh_delivery": "prohibited",
+    "visible_constraints": "reviewed_before_application",
+    "occluded_geometry": "authored_from_architectural_rules",
+    "release": "review_only_until_multiscale_visual_approval"
+  },
+  "gates": {
+    "safe_visible_evidence": true,
+    "human_reviewed": true,
+    "every_operation_traceable": true,
+    "profile_thresholds": {
+      "valid_coverage_min": 0.88,
+      "cross_model_median_disagreement_max": 0.06,
+      "roof_confidence_median_min": 1.05
+    },
+    "profile_gate_results": {
+      "valid_coverage": true,
+      "cross_model_median_disagreement": true,
+      "roof_confidence_median": true
+    }
+  }
+}

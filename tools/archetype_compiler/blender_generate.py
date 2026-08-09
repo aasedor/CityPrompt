@@ -6616,6 +6616,10 @@ def _graph_shaped_gable_array(parts: list, spec: dict, mats: dict) -> None:
     stone = _graph_material(mats, spec.get("material", "signature_stone"))
     brick = _graph_material(mats, spec.get("infill_material", "primary"))
     prefix = str(spec.get("id", "GraphShapedGable"))
+    window_enabled = bool(spec.get("window_enabled", False))
+    window_width = max(0.45, float(spec.get("window_width_m", width * 0.18)))
+    window_height = max(0.55, float(spec.get("window_height_m", height * 0.26)))
+    window_base_offset = max(0.15, float(spec.get("window_base_offset_m", height * 0.16)))
 
     profile_style = str(spec.get("profile_style", "ogee_scroll"))
     if profile_style == "steep_triangle":
@@ -6711,6 +6715,32 @@ def _graph_shaped_gable_array(parts: list, spec: dict, mats: dict) -> None:
                 f"{tag}_FinialBall", (x, facade_y - depth * 0.58, finial_z),
                 (finial_radius, finial_radius, finial_radius), stone,
             ))
+        if window_enabled:
+            # Gable glazing is a fixed landmark opening, never part of the
+            # repeatable rectangular wall atlas. Reuse the layered glazing kit
+            # so the pane, frame and occupied card keep construction depth.
+            _graph_curtain_wall(parts, {
+                "id": f"{tag}_GableWindow",
+                "axis": "front",
+                "centre": [
+                    x,
+                    facade_y - depth - 0.055,
+                    base_z + window_base_offset + window_height * 0.5,
+                ],
+                "span_m": window_width,
+                "height_m": window_height,
+                "columns": 1,
+                "rows": 1,
+                "depth_m": 0.09,
+                "frame_m": 0.075,
+                "reveal_m": 0.07,
+                "surround_m": 0.12,
+                "surround_depth_m": 0.18,
+                "interior_recess_m": 0.24,
+                "frame_material": spec.get("window_material", "signature_stone"),
+                "glass_material": spec.get("window_glass_material", "glass"),
+                "interior_material": spec.get("window_interior_material", "interior_warm"),
+            }, mats)
 
 
 def _graph_chimney_cluster_array(parts: list, spec: dict, mats: dict) -> None:
