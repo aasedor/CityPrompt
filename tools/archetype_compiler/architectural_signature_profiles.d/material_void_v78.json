@@ -6,6 +6,18 @@
       "extends": "historical_brick_main_street",
       "identity": "Two-storey Arts and Crafts clinker-brick hall with a deep tiled arched entry, twin half-timbered cross gables and green-glazed hand-cut clay-tile roof.",
       "material_zones": "textured clinker brick; dark half-timber and stucco; handmade entry tile; hand-cut clay roof tile",
+      "evidence_policy": {
+        "authority": "reference_images", "metadata_mode": "selective",
+        "selected_metadata": [
+          {"path": "selectedVariant.facadeDetail.primaryMaterial", "cue": "textured clinker brick", "purpose": "wall material family only", "image_consistent": true},
+          {"path": "selectedVariant.facadeDetail.groundFloor", "cue": "arched brick entry with handmade tile surround", "purpose": "entry shape and lining only", "image_consistent": true},
+          {"path": "selectedVariant.roofDetail.material", "cue": "hand-cut clay tiles", "purpose": "roof covering scale only; reference image controls colour", "image_consistent": true}
+        ],
+        "ignored_metadata": [
+          {"path": "styleProfile", "reason": "parent-family defaults are less specific than the exact variant images"},
+          {"path": "renderPrompt", "reason": "map-overlay prose is not a 3D construction reference"}
+        ]
+      },
       "material_overrides": {
         "primary": {"texture_key": "red_brick", "base_color": "#8d4f3e"},
         "secondary": {"texture_key": "natural_timber", "base_color": "#5f432e"},
@@ -59,6 +71,20 @@
       "extends": "monumental_courthouse_axis",
       "identity": "White-granite Neoclassical courthouse with a full-height colonnaded portico, broad ceremonial stair, deep bronze entry and low green-copper roof.",
       "material_zones": "white granite ashlar; monumental stone columns; bronze entry; green-patina copper roof",
+      "evidence_policy": {
+        "authority": "reference_images", "metadata_mode": "selective",
+        "selected_metadata": [
+          {"path": "selectedVariant.facadeDetail.primaryMaterial", "cue": "white granite ashlar", "purpose": "wall material family", "image_consistent": true},
+          {"path": "selectedVariant.facadeDetail.secondaryMaterial", "cue": "monumental Doric columns with entasis", "purpose": "portico order", "image_consistent": true},
+          {"path": "selectedVariant.facadeDetail.groundFloor", "cue": "broad ceremonial stairs spanning full facade width", "purpose": "entry threshold geometry", "image_consistent": true},
+          {"path": "selectedVariant.roofDetail.form", "cue": "low gable with sculpted pediment", "purpose": "roof and pediment topology", "image_consistent": true},
+          {"path": "selectedVariant.roofDetail.material", "cue": "copper with green patina behind stone pediment", "purpose": "roof material family", "image_consistent": true}
+        ],
+        "ignored_metadata": [
+          {"path": "styleProfile", "reason": "generic classical parent fields conflict with exact-variant proportions"},
+          {"path": "renderPrompt", "reason": "the parent dome/rotunda prompt contradicts the selected temple image"}
+        ]
+      },
       "material_overrides": {
         "primary": {"texture_key": "limestone", "base_color": "#ded7c9"},
         "secondary": {"texture_key": "limestone", "base_color": "#eee9df"},
@@ -115,6 +141,18 @@
       "extends": "mediterranean_arcade_mixed_use",
       "identity": "Italian portici block with a continuous construction-depth stone arcade, ochre stucco upper floors and terracotta pantile hip roof.",
       "material_zones": "warm natural-stone arcade; ochre stucco; dark shutters; overlapping terracotta pantiles",
+      "evidence_policy": {
+        "authority": "reference_images", "metadata_mode": "selective",
+        "selected_metadata": [
+          {"path": "selectedVariant.facadeDetail.primaryMaterial", "cue": "stone column arcade with round arches", "purpose": "arcade material and opening shape", "image_consistent": true},
+          {"path": "selectedVariant.facadeDetail.groundFloor", "cue": "continuous stone arcade sheltering shops and cafes", "purpose": "arcade depth and use", "image_consistent": true},
+          {"path": "selectedVariant.roofDetail.material", "cue": "terracotta pantiles", "purpose": "roof covering family", "image_consistent": true}
+        ],
+        "ignored_metadata": [
+          {"path": "styleProfile", "reason": "family-level defaults do not control exact portici geometry"},
+          {"path": "renderPrompt", "reason": "map-overlay prose is not a construction reference"}
+        ]
+      },
       "material_overrides": {
         "primary": {"texture_key": "natural_stone", "base_color": "#b39773"},
         "secondary": {"texture_key": "stucco", "base_color": "#d4ae6c"},
@@ -163,6 +201,18 @@
       "extends": "romanesque_revival_warehouse",
       "identity": "Richardsonian brick warehouse with five cavernous round-arched loading bays, rusticated brownstone base and corbelled flat parapet.",
       "material_zones": "dark red-brown brick; light stone arched voussoirs; rusticated brownstone; dark built-up roof",
+      "evidence_policy": {
+        "authority": "reference_images", "metadata_mode": "selective",
+        "selected_metadata": [
+          {"path": "selectedVariant.facadeDetail.primaryMaterial", "cue": "dark red-brown brick with light stone arched voussoirs", "purpose": "wall and arch material families", "image_consistent": true},
+          {"path": "selectedVariant.facadeDetail.groundFloor", "cue": "round-arched loading doors with heavy stone surrounds", "purpose": "loading-bay shape and trim", "image_consistent": true},
+          {"path": "selectedVariant.roofDetail.material", "cue": "built-up roof behind parapet", "purpose": "roof surface family", "image_consistent": true}
+        ],
+        "ignored_metadata": [
+          {"path": "styleProfile", "reason": "family defaults are subordinate to the exact warehouse images"},
+          {"path": "renderPrompt", "reason": "map-overlay prose is not a construction reference"}
+        ]
+      },
       "material_overrides": {
         "primary": {"texture_key": "red_brick", "base_color": "#733b31"},
         "secondary": {"texture_key": "brownstone", "base_color": "#846047"},
@@ -210,6 +260,18 @@
       "extends": "scandinavian_urban_residential",
       "identity": "White-plastered Scandinavian perimeter block with an open timber-lined passage into a planted courtyard and dark zinc gable roofs.",
       "material_zones": "white lime plaster; oiled larch passage and balcony soffits; black frames; standing-seam zinc",
+      "evidence_policy": {
+        "authority": "reference_images", "metadata_mode": "selective",
+        "selected_metadata": [
+          {"path": "selectedVariant.facadeDetail.primaryMaterial", "cue": "smooth white lime plaster", "purpose": "wall finish family", "image_consistent": true},
+          {"path": "selectedVariant.facadeDetail.groundFloor", "cue": "recessed passage to courtyard with timber-lined ceiling", "purpose": "through-passage section and lining", "image_consistent": true},
+          {"path": "selectedVariant.roofDetail.material", "cue": "standing seam zinc in dark grey", "purpose": "roof material family", "image_consistent": true}
+        ],
+        "ignored_metadata": [
+          {"path": "styleProfile", "reason": "generic Scandinavian fields cannot override the exact white-plaster image"},
+          {"path": "renderPrompt", "reason": "map-overlay prose is not a construction reference"}
+        ]
+      },
       "material_overrides": {
         "primary": {"texture_key": "white_plaster", "base_color": "#e6e2da"},
         "secondary": {"texture_key": "larch_wood", "base_color": "#b1804e"},

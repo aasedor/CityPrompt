@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-08-08-five-building-material-void-v78",
+  "memory_version": "2026-08-08-image-first-selective-metadata-v79",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "calibration_set": {
@@ -18,6 +18,10 @@
     {
       "id": "reference_is_goalpost",
       "rule": "Use every compatible archetype view to infer massing, corners, roof, entrances and side elevations; never optimize only for the card image."
+    },
+    {
+      "id": "metadata_is_selective_optional_evidence",
+      "rule": "Reference images are authoritative. Admit metadata field by field only when it is image-confirmed and bound to a specific construction purpose; ignore conflicting or generic parent prose, and allow metadata to be disabled entirely."
     },
     {
       "id": "geometry_carries_identity",
@@ -744,6 +748,11 @@
       "symptom": "A batch reports five successes even though only some models resemble their exact archetype images",
       "cause": "Production preflight, runtime material/void gates and GLB validation were conflated with human visual acceptance.",
       "correction": "Publish keeper, provisional or rejected status for every model beside a side-by-side exact-reference board. Keep catalogue release blocked until the named human visual-approval contract passes independently."
+    },
+    {
+      "symptom": "A model is metadata-correct but its roof, massing or visible material is wrong in the exact archetype comparison",
+      "cause": "The pipeline ingested a complete metadata description or generic parent prompt instead of admitting only image-confirmed variant facts for bounded purposes.",
+      "correction": "Declare an image-authoritative evidence policy. Select exact dotted metadata paths one by one with a purpose and image-consistency confirmation, ignore conflicting parent prose, and disable metadata when no field improves the image-derived contract."
     }
   ]
 }

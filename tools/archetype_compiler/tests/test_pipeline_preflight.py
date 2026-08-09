@@ -95,6 +95,51 @@ def test_unclassified_generic_stack_is_not_production_ready():
     }
 
 
+def test_selective_metadata_requires_image_confirmation_and_bounded_use():
+    from pipeline_preflight import assess_generation_preflight
+
+    source = source_payload()
+    source["selectedVariant"]["roofDetail"] = {"form": "low green copper hip"}
+    grammar = semantic_grammar()
+    signature = grammar["architectural_signature"]
+    signature["evidence_policy"] = {
+        "authority": "reference_images",
+        "metadata_mode": "selective",
+        "selected_metadata": [{
+            "path": "selectedVariant.roofDetail.form",
+            "cue": "green copper",
+            "purpose": "roof material family only",
+            "image_consistent": True,
+        }],
+        "ignored_metadata": [{
+            "path": "styleProfile",
+            "reason": "generic parent prose is not visible evidence",
+        }],
+    }
+    signature["production_contract"]["metadata_cues"] = ["green copper"]
+
+    report = assess_generation_preflight(source, grammar)
+    assert report["status"] == "pass"
+    assert next(gate for gate in report["gates"] if gate["id"] == "unsafe_metadata_evidence")["passed"]
+
+    signature["evidence_policy"]["selected_metadata"][0]["image_consistent"] = False
+    report = assess_generation_preflight(source, grammar)
+    assert "unsafe_metadata_evidence" in {item["id"] for item in report["failures"]}
+
+
+def test_disabled_metadata_cannot_leak_into_contract_cues():
+    from pipeline_preflight import assess_generation_preflight
+
+    grammar = semantic_grammar()
+    signature = grammar["architectural_signature"]
+    signature["evidence_policy"] = {
+        "authority": "reference_images", "metadata_mode": "disabled",
+    }
+    signature["production_contract"]["metadata_cues"] = ["generic roof prose"]
+    report = assess_generation_preflight(source_payload(), grammar)
+    assert "unsafe_metadata_evidence" in {item["id"] for item in report["failures"]}
+
+
 def test_catalogue_import_gate_requires_human_visual_approval(tmp_path):
     from import_manifest import catalogue_release_gate
 

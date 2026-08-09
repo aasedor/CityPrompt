@@ -47,6 +47,83 @@ def _reference_views(source: dict[str, Any], grammar: dict[str, Any]) -> list[di
     return views
 
 
+def _source_value(source: dict[str, Any], dotted_path: str) -> Any:
+    value: Any = source
+    for key in dotted_path.split("."):
+        if not isinstance(value, dict) or key not in value:
+            return None
+        value = value[key]
+    return value
+
+
+def _metadata_evidence_gate(
+    source: dict[str, Any], signature: dict[str, Any], contract: dict[str, Any],
+) -> dict[str, Any] | None:
+    """Require declared metadata to be selectively admitted behind the images."""
+    policy = signature.get("evidence_policy")
+    if not policy:
+        return None
+    if not isinstance(policy, dict):
+        return _gate("unsafe_metadata_evidence", False, "evidence_policy must be an object")
+    authority = str(policy.get("authority", ""))
+    mode = str(policy.get("metadata_mode", ""))
+    selected = list(policy.get("selected_metadata") or [])
+    ignored = list(policy.get("ignored_metadata") or [])
+    problems: list[str] = []
+    if authority != "reference_images":
+        problems.append("authority must be reference_images")
+    if mode not in {"selective", "disabled"}:
+        problems.append("metadata_mode must be selective or disabled")
+    if mode == "disabled" and selected:
+        problems.append("disabled metadata policy cannot select fields")
+
+    selected_cues: set[str] = set()
+    for index, item in enumerate(selected):
+        if not isinstance(item, dict):
+            problems.append(f"selected_metadata[{index}] must be an object")
+            continue
+        path = str(item.get("path", ""))
+        purpose = str(item.get("purpose", ""))
+        cue = str(item.get("cue", "")).lower()
+        value = _source_value(source, path) if path else None
+        if not path or value is None or value == "":
+            problems.append(f"selected_metadata[{index}] path is missing from the source")
+        if not purpose:
+            problems.append(f"selected_metadata[{index}] has no bounded purpose")
+        if item.get("image_consistent") is not True:
+            problems.append(f"selected_metadata[{index}] is not image-confirmed")
+        if not cue:
+            problems.append(f"selected_metadata[{index}] has no traceable cue")
+        else:
+            selected_cues.add(cue)
+            if value is not None and value != "" and cue not in str(value).lower():
+                problems.append(f"selected_metadata[{index}] cue is absent from {path}")
+
+    for index, item in enumerate(ignored):
+        if not isinstance(item, dict):
+            problems.append(f"ignored_metadata[{index}] must be an object")
+            continue
+        if not item.get("path") or not item.get("reason"):
+            problems.append(f"ignored_metadata[{index}] needs a path and reason")
+
+    contract_cues = {
+        str(cue).lower() for cue in contract.get("metadata_cues") or []
+    }
+    if mode == "disabled" and contract_cues:
+        problems.append("disabled metadata policy cannot supply metadata_cues")
+    elif mode == "selective":
+        undeclared = contract_cues - selected_cues
+        if undeclared:
+            problems.append("contract uses unselected metadata cues: " + ", ".join(sorted(undeclared)))
+
+    return _gate(
+        "unsafe_metadata_evidence",
+        not problems,
+        "; ".join(problems)
+        if problems else f"images are authoritative; {len(selected)} metadata fields admitted for bounded uses",
+    )
+
+
 def assess_generation_preflight(
     source: dict[str, Any],
     grammar: dict[str, Any],
@@ -130,6 +207,10 @@ def assess_generation_preflight(
             else "massing_graph identity selected without a graph profile",
         ),
     ]
+
+    metadata_gate = _metadata_evidence_gate(source, signature, contract)
+    if metadata_gate:
+        hard.append(metadata_gate)
 
     if identity_mode == "massing_graph" and graph_reference:
         mismatches: list[str] = []

@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-08-08-material-void-contract-v77`.
+Current executable memory: `2026-08-08-image-first-selective-metadata-v79`.
 
 The current calibration set and catalogue rollout rationale are documented in
 [`BUILDING_GOLD_SET_PIPELINE_SYNTHESIS_2026-08-07.md`](BUILDING_GOLD_SET_PIPELINE_SYNTHESIS_2026-08-07.md).
@@ -709,9 +709,10 @@ technical completion did not erase visible exact-variant differences.
   round/rectangular arches. The recipe owns pier spacing, heads, jambs, reveal
   depth, back wall or through mode, and one facade-skin clearance per opening.
   A single semantic void beside five flat arch decals does not pass.
-- Catalogue metadata can directly select construction: number of storeys,
-  ridge axis, hip height, roof texture family, passage depth and material slots.
-  The image remains authoritative when prose and visible colour/topology differ.
+- Image-confirmed catalogue metadata can select bounded construction facts:
+  number of storeys, ridge axis, hip height, roof texture family, passage depth
+  and material slots. The image remains authoritative when prose and visible
+  colour or topology differ.
 - Exact-variant atlas congruence is a human and provenance gate. The first
   courthouse attempt paired Art Deco metadata with a Neoclassical family atlas;
   it was rejected and rebuilt against the matching Neoclassical variant rather
@@ -725,6 +726,26 @@ technical completion did not erase visible exact-variant differences.
   courthouse, portici and Romanesque warehouse are keeper pilots; Arts and
   Crafts and Scandinavian are provisional. None enters catalogue release until
   the normal human visual-approval gate is signed.
+
+### V79 image authority and selective-metadata lessons
+
+Catalogue prose is optional evidence, not a design brief. The exact selected
+reference images remain the construction authority for silhouette, proportion,
+roof topology, visible colour, openings and assembly hierarchy.
+
+- Admit metadata field by field. Every selected field records its exact dotted
+  source path, the bounded construction purpose it serves and an explicit
+  confirmation that it agrees with the selected images.
+- Ignore generic parent `styleProfile` and `renderPrompt` prose when an exact
+  variant field exists or when the prose contradicts the selected image set.
+  A famous-building description cannot overrule the catalogue variant.
+- A useful portion of a field may be narrower than the prose. For the Arts and
+  Crafts pilot, `hand-cut clay tiles` may establish covering scale and overlap,
+  while the reference image still owns the visible green roof colour.
+- Metadata may be disabled entirely. A selective or disabled policy must not
+  leak unselected prose into the production contract's traceable cues.
+- This gate is opt-in for legacy compatibility. Every new image-locked pilot
+  and catalogue expansion should declare it before paid or heavyweight work.
 
 ## Updating this memory
 
