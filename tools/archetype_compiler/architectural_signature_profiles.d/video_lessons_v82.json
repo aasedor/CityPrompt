@@ -1,6 +1,6 @@
 {
   "schema": "architectural-signatures@1",
-  "description": "V82 video-lessons pilot: modular construction, multi-scale detail, physical glazing, readable interiors, and presentation parity.",
+  "description": "V83 surface-story pilot extending V82 with baked PBR materials, controlled UV scale, localized patina, GLB parity and neutral-versus-beauty QA.",
   "profiles": {
     "beaux_arts_trainshed_terminal": {
       "identity": "Long warm-limestone Beaux-Arts headhouse with two stacked arched orders, a fixed offset clock tower, and a separate iron-and-glass barrel-vault trainshed with metal-clad end fields.",
@@ -47,41 +47,66 @@
       },
       "material_overrides": {
         "primary": {
-          "texture_key": "limestone",
+          "texture_key": "limestone_story_v83",
           "base_color": "#d3c2a2",
           "roughness": 0.82,
-          "texture_tint_mode": "COLOR",
-          "texture_tint_strength": 0.12
+          "baked_pbr": true,
+          "texture_tile_metres": 4.0,
+          "normal_strength": 0.72
         },
         "secondary": {
-          "texture_key": "red_brick",
+          "texture_key": "red_brick_story_v83",
           "base_color": "#744737",
           "roughness": 0.88,
-          "texture_tint_mode": "MULTIPLY",
-          "texture_tint_strength": 0.18
+          "baked_pbr": true,
+          "texture_tile_metres": 3.2,
+          "normal_strength": 0.82
         },
         "roof": {
-          "texture_key": "standing_seam",
+          "texture_key": "standing_seam_story_v83",
           "base_color": "#56645e",
           "roughness": 0.52,
-          "metallic": 0.55
+          "metallic": 0.55,
+          "baked_pbr": true,
+          "texture_tile_metres": 4.8,
+          "normal_strength": 0.64
         }
       },
       "signature_material_overrides": {
         "signature_stone": {
-          "texture_key": "limestone",
+          "texture_key": "limestone_story_v83",
           "base_color": "#dfcfad",
           "roughness": 0.78,
-          "texture_tint_mode": "COLOR",
-          "texture_tint_strength": 0.10
+          "baked_pbr": true,
+          "texture_tile_metres": 3.6,
+          "normal_strength": 0.78
         },
         "signature_roof": {
-          "texture_key": "standing_seam",
+          "texture_key": "standing_seam_story_v83",
           "base_color": "#4f605b",
           "roughness": 0.50,
           "metallic": 0.58,
-          "texture_tint_mode": "COLOR",
-          "texture_tint_strength": 0.10
+          "baked_pbr": true,
+          "texture_tile_metres": 4.8,
+          "normal_strength": 0.68
+        },
+        "stone_patina": {
+          "texture_key": "limestone_patina_v83",
+          "base_color": "#b9aa8e",
+          "roughness": 0.86,
+          "metallic": 0.0,
+          "baked_pbr": true,
+          "texture_tile_metres": 5.2,
+          "normal_strength": 0.76
+        },
+        "headhouse_roof_surface": {
+          "texture_key": "concrete_roof_story_v83",
+          "base_color": "#aaa69d",
+          "roughness": 0.88,
+          "metallic": 0.0,
+          "baked_pbr": true,
+          "texture_tile_metres": 7.0,
+          "normal_strength": 0.38
         },
         "signature_metal": {
           "texture_key": "black_metal",
@@ -128,7 +153,7 @@
           "ground and upper headhouse bay modules between fixed end returns",
           "transverse trainshed rib module between fixed roof end fields"
         ],
-        "quality_contract_version": 2,
+        "quality_contract_version": 3,
         "metadata_cues": [
           "dressed limestone ashlar",
           "semicircular barrel-vault trainshed glazed roof rising behind",
@@ -171,7 +196,7 @@
           }
         },
         "material_continuity": {
-          "required_textured_materials": ["primary", "secondary", "signature_stone", "signature_roof"],
+          "required_textured_materials": ["primary", "secondary", "signature_stone", "signature_roof", "stone_patina", "headhouse_roof_surface"],
           "node_bindings": [
             {"kind": "opening_block", "ids": ["ground_arcade", "upper_arcade"], "slots": {"material": "primary", "trim_material": "signature_stone"}},
             {"kind": "box", "ids": ["shed_left_wall", "shed_right_wall"], "slots": {"material": "secondary"}}
@@ -181,12 +206,29 @@
             {"kind": "gable_end_glazing", "slots": {"glass_material": "trainshed_glass", "frame_material": "signature_metal", "edge_material": "secondary"}},
             {"kind": "clock_face_array", "slots": {"face_material": "clock_face", "hand_material": "signature_metal"}}
           ]
+        },
+        "surface_finish": {
+          "method": "baked_pbr_story",
+          "required_baked_materials": ["primary", "secondary", "signature_stone", "signature_roof", "stone_patina", "headhouse_roof_surface"],
+          "required_channels": ["albedo", "roughness", "normal"],
+          "uv_contract": {
+            "projection": "metric_box_plus_material_scale",
+            "base_tile_metres": 2.0,
+            "minimum_tile_metres": 3.0,
+            "maximum_tile_metres": 8.0
+          },
+          "semantic_weathering": [
+            "stone_patina only at grade and protected cornice bands",
+            "oxidized standing seam only on roof and cupola",
+            "pale mineral roof texture only on the headhouse roof surface"
+          ],
+          "qa_renders": ["neutral_source", "neutral_glb_roundtrip", "archetype_match", "aerial"]
         }
       },
       "massing_recipe": {
         "kind": "beaux_arts_trainshed_terminal",
-        "profile": "beaux_arts_trainshed_terminal_video_lessons_v82",
-        "description": "Image-measured Beaux-Arts terminal with modular limestone arcades, genuine entrance tunnels, fixed clock tower and an unbacked physical-glass barrel vault.",
+        "profile": "beaux_arts_trainshed_terminal_surface_story_v83",
+        "description": "Image-measured Beaux-Arts terminal with modular limestone arcades, genuine entrance tunnels, fixed clock tower, an unbacked physical-glass barrel vault and export-baked surface storytelling.",
         "reference_views": [
           {"role": "street_identity", "path": "/archetypes/buildings/intermodal-transit-hub/variant_1.png"},
           {"role": "oblique_massing", "path": "/archetypes/buildings/intermodal-transit-hub/variant_1_angle_60.jpg"},
@@ -229,7 +271,9 @@
         "glass_material": "terminal_window_glass",
         "roof_glass_material": "trainshed_glass",
         "brick_material": "secondary",
-        "roof_material": "signature_roof"
+        "roof_material": "signature_roof",
+        "stone_patina_material": "stone_patina",
+        "headhouse_roof_material": "headhouse_roof_surface"
       }
     }
   }

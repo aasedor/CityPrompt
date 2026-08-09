@@ -838,6 +838,8 @@ def _beaux_arts_trainshed_terminal(recipe: dict[str, Any], dims: dict[str, Any])
     roof_glass = str(recipe.get("roof_glass_material", glass))
     brick = str(recipe.get("brick_material", "secondary"))
     roof_metal = str(recipe.get("roof_material", "signature_roof"))
+    stone_patina = str(recipe.get("stone_patina_material", trim))
+    headhouse_roof = str(recipe.get("headhouse_roof_material", trim))
 
     ground_count = int(recipe.get("ground_arch_count", 9))
     upper_count = int(recipe.get("upper_arch_count", 5))
@@ -925,7 +927,25 @@ def _beaux_arts_trainshed_terminal(recipe: dict[str, Any], dims: dict[str, Any])
             "id": "headhouse_roof", "kind": "roof_slab",
             "size": [width + 0.7, headhouse_depth + 0.6, 0.55],
             "location": [0.0, front_y + headhouse_depth / 2, wall_height + 0.275],
-            "material": trim, "bevel_m": 0.055,
+            "material": headhouse_roof, "bevel_m": 0.055,
+        },
+        {
+            "id": "headhouse_rear_parapet", "kind": "box",
+            "size": [width + 0.2, 0.42, 1.35],
+            "location": [0.0, inner_y - 0.21, wall_height + 0.675],
+            "material": stone_patina, "bevel_m": 0.045,
+        },
+        {
+            "id": "headhouse_left_parapet", "kind": "box",
+            "size": [0.42, headhouse_depth, 1.35],
+            "location": [-width / 2 + 0.21, front_y + headhouse_depth / 2, wall_height + 0.675],
+            "material": stone_patina, "bevel_m": 0.045,
+        },
+        {
+            "id": "headhouse_right_parapet", "kind": "box",
+            "size": [0.42, headhouse_depth, 1.35],
+            "location": [width / 2 - 0.21, front_y + headhouse_depth / 2, wall_height + 0.675],
+            "material": stone_patina, "bevel_m": 0.045,
         },
         {
             "id": "shed_left_wall", "kind": "box",
@@ -950,6 +970,18 @@ def _beaux_arts_trainshed_terminal(recipe: dict[str, Any], dims: dict[str, Any])
             "size": [clock_width + 1.15, clock_width + 1.15, 0.55],
             "location": [clock_x, clock_y, wall_height + clock_height - 0.10],
             "material": trim, "bevel_m": 0.05,
+        },
+        {
+            "id": "clock_tower_lower_belt", "kind": "roof_slab",
+            "size": [clock_width + 0.42, clock_width + 0.42, 0.24],
+            "location": [clock_x, clock_y, wall_height + clock_height * 0.34],
+            "material": stone_patina, "bevel_m": 0.035,
+        },
+        {
+            "id": "clock_tower_upper_belt", "kind": "roof_slab",
+            "size": [clock_width + 0.54, clock_width + 0.54, 0.28],
+            "location": [clock_x, clock_y, wall_height + clock_height * 0.74],
+            "material": stone_patina, "bevel_m": 0.035,
         },
         {
             "id": "clock_tower_cupola", "kind": "hipped_roof",
@@ -995,7 +1027,7 @@ def _beaux_arts_trainshed_terminal(recipe: dict[str, Any], dims: dict[str, Any])
             "id": "front_cornice_corbel_course", "kind": "corbel_array", "axis": "front",
             "centre": [0.0, front_y - 0.08, 0.0], "span_m": width - 1.0,
             "levels_z": [wall_height - 1.05, wall_height - 0.55], "count": 44,
-            "depth_m": 0.36, "height_m": 0.22, "material": trim,
+            "depth_m": 0.36, "height_m": 0.22, "material": stone_patina,
         },
         {
             "id": "front_balustrade_posts", "kind": "column_array",

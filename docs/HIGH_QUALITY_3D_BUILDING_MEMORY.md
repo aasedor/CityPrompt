@@ -835,6 +835,39 @@ and Cycles.
   feature counts, proportions, roof-field fractions and landmark placement
   remained image-measured.
 
+### V83 exportable surface-story and neutral-parity lessons
+
+The second Beaux-Arts terminal pass isolated the material workflow taught in
+the reviewed Blender videos. It kept the V82 massing and cameras as a
+controlled baseline, baked restrained surface history into ordinary PBR image
+maps, and compared the source Blender file with its re-imported catalogue GLB.
+
+- Procedural material work is useful only when its result survives delivery.
+  Bake the approved palette and macro variation into tile-safe albedo,
+  roughness and tangent-space normal maps, wire those maps directly to the
+  Principled material, and retain the texture key and real-world tile scale in
+  exported material metadata.
+- UV scale is an architectural measurement. Every required surface declares a
+  plausible metres-per-tile range; a stone course, brick field and standing
+  seam roof may share machinery but should not share an arbitrary scale.
+- Weathering is semantic, not global noise. Use separate bounded materials for
+  plausible zones such as protected cornice bands, grade patina, oxidized roof
+  metal and pale mineral roof fields. Do not apply one grunge pass to every
+  object.
+- Add a context-free neutral source-versus-GLB render pair. The V83 pilot
+  retained all required PBR channels and reached 99.23 percent mean pixel
+  similarity after glTF export and re-import, proving the surface treatment is
+  portable rather than Blender-only.
+- Surface realism and archetype fidelity are independent approvals. V83 is a
+  keeper for the baked-surface and parity methodology, but the exact terminal
+  remains provisional because the reference has a more articulated clock
+  tower, sculpted stone relief, richer capitals and a different balustrade
+  cadence. Those are fixed ornament/topology tasks, not shader tasks.
+- The 2048 px hero bake raised the assembled GLB to 13.9 MB. Preserve the
+  visually approved source, then test 1024 px or KTX2/UASTC delivery variants
+  side by side; do not accept a texture-budget regression merely because the
+  pilot render improved.
+
 ## Updating this memory
 
 When a pilot reveals a reusable lesson:

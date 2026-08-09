@@ -1,0 +1,145 @@
+{
+  "schema": "surface-finish-quality@1",
+  "status": "pass",
+  "required_materials": [
+    "primary",
+    "secondary",
+    "signature_stone",
+    "signature_roof",
+    "stone_patina",
+    "headhouse_roof_surface"
+  ],
+  "render_parity": {
+    "mean_absolute_error": 0.00772,
+    "p95_absolute_error": 0.05098,
+    "similarity": 0.99228,
+    "passed": true
+  },
+  "failures": [],
+  "checks": [
+    {
+      "id": "story_manifest:primary",
+      "passed": true,
+      "detail": "primary resolves to 'limestone_story_v83'"
+    },
+    {
+      "id": "surface_variation:primary",
+      "passed": true,
+      "detail": {
+        "albedo_std": 13.234,
+        "roughness_std": 29.215,
+        "normal_xy_std": 1.173
+      }
+    },
+    {
+      "id": "glb_pbr_channels:primary",
+      "passed": true,
+      "detail": "exported material 'MAT_Signature_CutStone'"
+    },
+    {
+      "id": "story_manifest:secondary",
+      "passed": true,
+      "detail": "secondary resolves to 'red_brick_story_v83'"
+    },
+    {
+      "id": "surface_variation:secondary",
+      "passed": true,
+      "detail": {
+        "albedo_std": 35.698,
+        "roughness_std": 25.058,
+        "normal_xy_std": 3.863
+      }
+    },
+    {
+      "id": "glb_pbr_channels:secondary",
+      "passed": true,
+      "detail": "exported material 'MAT_Facade_Secondary'"
+    },
+    {
+      "id": "story_manifest:signature_stone",
+      "passed": true,
+      "detail": "signature_stone resolves to 'limestone_story_v83'"
+    },
+    {
+      "id": "surface_variation:signature_stone",
+      "passed": true,
+      "detail": {
+        "albedo_std": 13.234,
+        "roughness_std": 29.215,
+        "normal_xy_std": 1.173
+      }
+    },
+    {
+      "id": "glb_pbr_channels:signature_stone",
+      "passed": true,
+      "detail": "exported material 'MAT_Signature_CutStone'"
+    },
+    {
+      "id": "story_manifest:signature_roof",
+      "passed": true,
+      "detail": "signature_roof resolves to 'standing_seam_story_v83'"
+    },
+    {
+      "id": "surface_variation:signature_roof",
+      "passed": true,
+      "detail": {
+        "albedo_std": 8.517,
+        "roughness_std": 29.415,
+        "normal_xy_std": 1.96
+      }
+    },
+    {
+      "id": "glb_pbr_channels:signature_roof",
+      "passed": true,
+      "detail": "exported material 'MAT_Signature_AgedLeadRoof'"
+    },
+    {
+      "id": "story_manifest:stone_patina",
+      "passed": true,
+      "detail": "stone_patina resolves to 'limestone_patina_v83'"
+    },
+    {
+      "id": "surface_variation:stone_patina",
+      "passed": true,
+      "detail": {
+        "albedo_std": 13.858,
+        "roughness_std": 29.674,
+        "normal_xy_std": 1.189
+      }
+    },
+    {
+      "id": "glb_pbr_channels:stone_patina",
+      "passed": true,
+      "detail": "exported material 'MAT_Signature_stone_patina'"
+    },
+    {
+      "id": "story_manifest:headhouse_roof_surface",
+      "passed": true,
+      "detail": "headhouse_roof_surface resolves to 'concrete_roof_story_v83'"
+    },
+    {
+      "id": "surface_variation:headhouse_roof_surface",
+      "passed": true,
+      "detail": {
+        "albedo_std": 10.069,
+        "roughness_std": 28.326,
+        "normal_xy_std": 1.349
+      }
+    },
+    {
+      "id": "glb_pbr_channels:headhouse_roof_surface",
+      "passed": true,
+      "detail": "exported material 'MAT_Signature_headhouse_roof_surface'"
+    },
+    {
+      "id": "neutral_glb_roundtrip_parity",
+      "passed": true,
+      "detail": {
+        "mean_absolute_error": 0.00772,
+        "p95_absolute_error": 0.05098,
+        "similarity": 0.99228,
+        "passed": true
+      }
+    }
+  ]
+}

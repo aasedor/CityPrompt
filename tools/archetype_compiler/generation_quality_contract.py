@@ -81,6 +81,47 @@ def assess_generation_quality_contract(
             f"{landmark_id} texture {landmark_key!r}; {reference_id} texture {reference_key!r}",
         ))
 
+    surface_finish = production.get("surface_finish") or {}
+    if surface_finish:
+        uv_contract = surface_finish.get("uv_contract") or {}
+        minimum_tile = float(uv_contract.get("minimum_tile_metres", 0.01))
+        maximum_tile = float(uv_contract.get("maximum_tile_metres", float("inf")))
+        for material_id in surface_finish.get("required_baked_materials") or []:
+            spec = material_spec(grammar, str(material_id))
+            tile_metres = float(spec.get("texture_tile_metres", 0.0))
+            gates.extend([
+                _gate(
+                    f"surface_baked_pbr:{material_id}",
+                    spec.get("baked_pbr") is True,
+                    f"{material_id} baked_pbr is {spec.get('baked_pbr')!r}",
+                ),
+                _gate(
+                    f"surface_uv_scale:{material_id}",
+                    minimum_tile <= tile_metres <= maximum_tile,
+                    f"{material_id} tiles every {tile_metres:.2f} m; required {minimum_tile:.2f}-{maximum_tile:.2f} m",
+                ),
+            ])
+        channels = {str(value) for value in surface_finish.get("required_channels") or []}
+        expected_channels = {"albedo", "roughness", "normal"}
+        gates.append(_gate(
+            "surface_finish_channels",
+            expected_channels.issubset(channels),
+            f"declared channels: {', '.join(sorted(channels)) or 'none'}",
+        ))
+        weathering = list(surface_finish.get("semantic_weathering") or [])
+        gates.append(_gate(
+            "surface_semantic_weathering",
+            len(weathering) >= 3,
+            f"{len(weathering)} location-specific weathering rules declared",
+        ))
+        qa_renders = {str(value) for value in surface_finish.get("qa_renders") or []}
+        required_qa = {"neutral_source", "neutral_glb_roundtrip", "archetype_match"}
+        gates.append(_gate(
+            "surface_qa_renders",
+            required_qa.issubset(qa_renders),
+            f"declared QA renders: {', '.join(sorted(qa_renders)) or 'none'}",
+        ))
+
     graph = grammar.get("massing_graph") or {}
     nodes = {str(item.get("id")): item for item in graph.get("nodes") or []}
     voids = {str(item.get("id")): item for item in graph.get("voids") or []}

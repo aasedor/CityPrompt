@@ -218,3 +218,35 @@ def test_image_lock_rejects_untraceable_measurement():
     ]
     report = assess_generation_quality_contract(grammar, source=source_metadata())
     assert "image_lock_measurements" in {item["id"] for item in report["failures"]}
+
+
+def test_surface_finish_requires_baked_pbr_metric_uvs_and_parity_renders():
+    from generation_quality_contract import assess_generation_quality_contract
+
+    grammar = quality_grammar()
+    grammar["materials"]["primary"].update({
+        "baked_pbr": True,
+        "texture_tile_metres": 4.0,
+    })
+    production = grammar["architectural_signature"]["production_contract"]
+    production["quality_contract_version"] = 3
+    production["surface_finish"] = {
+        "required_baked_materials": ["primary"],
+        "required_channels": ["albedo", "roughness", "normal"],
+        "uv_contract": {"minimum_tile_metres": 3.0, "maximum_tile_metres": 8.0},
+        "semantic_weathering": ["grade patina", "roof oxidation", "protected cornice"],
+        "qa_renders": ["neutral_source", "neutral_glb_roundtrip", "archetype_match"],
+    }
+
+    report = assess_generation_quality_contract(grammar, source=source_metadata())
+    assert report["status"] == "pass"
+    assert any(gate["id"] == "surface_uv_scale:primary" and gate["passed"] for gate in report["gates"])
+
+    grammar["materials"]["primary"]["baked_pbr"] = False
+    grammar["materials"]["primary"]["texture_tile_metres"] = 18.0
+    production["surface_finish"]["qa_renders"] = ["archetype_match"]
+    report = assess_generation_quality_contract(grammar, source=source_metadata())
+    failures = {item["id"] for item in report["failures"]}
+    assert "surface_baked_pbr:primary" in failures
+    assert "surface_uv_scale:primary" in failures
+    assert "surface_qa_renders" in failures

@@ -201,62 +201,84 @@ def make_material(name: str, spec: dict) -> bpy.types.Material:
         uv_node.uv_map = "UVMap"
         uv_node.location = (-760, 0)
 
+        vector_output = uv_node.outputs["UV"]
+        texture_tile_metres = float(spec.get("texture_tile_metres", UV_TILE_METRES))
+        if texture_tile_metres <= 0:
+            raise ValueError(f"material {name} texture_tile_metres must be positive")
+        if abs(texture_tile_metres - UV_TILE_METRES) > 1e-6:
+            mapping = nodes.new("ShaderNodeMapping")
+            mapping.name = mapping.label = "TEX_RealWorldScale"
+            mapping.vector_type = "POINT"
+            scale = UV_TILE_METRES / texture_tile_metres
+            mapping.inputs["Scale"].default_value = (scale, scale, scale)
+            mapping.location = (-620, 0)
+            links.new(vector_output, mapping.inputs["Vector"])
+            vector_output = mapping.outputs["Vector"]
+
         albedo_node = nodes.new("ShaderNodeTexImage")
         albedo_node.name = albedo_node.label = "TEX_Albedo"
         albedo_node.image = _load_image(textures["albedo"], "sRGB")
         albedo_node.location = (-480, 260)
-        links.new(uv_node.outputs["UV"], albedo_node.inputs["Vector"])
-        grade_node = nodes.new("ShaderNodeHueSaturation")
-        grade_node.name = grade_node.label = "TEX_ArchitecturalGrade"
+        links.new(vector_output, albedo_node.inputs["Vector"])
         texture_key = spec.get("texture_key")
-        archviz_timber = bool(TEXTURES_DIR and TEXTURES_DIR.name == "textures_archviz_v5" and texture_key == "clt")
-        archviz_sedum = bool(TEXTURES_DIR and TEXTURES_DIR.name == "textures_archviz_v5" and texture_key == "sedum_roof")
-        grade_node.inputs["Saturation"].default_value = (
-            0.9 if archviz_timber else (0.88 if archviz_sedum else (1.04 if texture_key == "red_brick" else 1.08))
-        )
-        grade_node.inputs["Value"].default_value = {
-            "red_brick": 0.64,
-            "clt": 0.82 if archviz_timber else 0.8,
-            "sedum_roof": 0.94 if archviz_sedum else 0.84,
-            "white_plaster": 0.98,
-            "limestone": 0.94,
-            "heritage_portland_stone": 0.91,
-            "welsh_slate": 0.74,
-            "standing_seam": 1.10,
-            "verdigris_copper": 0.98,
-        }.get(texture_key, 0.84)
-        grade_node.location = (-190, 260)
-        links.new(albedo_node.outputs["Color"], grade_node.inputs["Color"])
-        # The texture supplies real surface variation; the catalogue colour
-        # still needs to steer its architectural palette (notably honey-toned
-        # CLT versus pale raw pine). A partial multiply preserves photography
-        # while carrying the archetype-specific tint into renders and GLB.
-        tint_node = nodes.new("ShaderNodeMixRGB")
-        tint_node.name = tint_node.label = "TEX_CatalogueTint"
-        tint_mode = str(spec.get("texture_tint_mode", "MULTIPLY")).upper()
-        tint_node.blend_type = tint_mode if tint_mode in {"MULTIPLY", "COLOR", "MIX"} else "MULTIPLY"
-        tint_node.inputs[0].default_value = float(spec.get("texture_tint_strength", {
-            "clt": 0.15 if archviz_timber else 0.46,
-            "sedum_roof": 0.04 if archviz_sedum else 0.14,
-            "red_brick": 0.18,
-            "white_plaster": 0.08,
-            "limestone": 0.12,
-            "heritage_portland_stone": 0.05,
-            "welsh_slate": 0.06,
-            "standing_seam": 0.04,
-            "verdigris_copper": 0.03,
-        }.get(texture_key, 0.14)))
-        tint_node.inputs[2].default_value = color
-        tint_node.location = (20, 260)
-        links.new(grade_node.outputs["Color"], tint_node.inputs[1])
-        links.new(tint_node.outputs["Color"], bsdf.inputs["Base Color"])
+        baked_pbr = bool(spec.get("baked_pbr", False))
+        if baked_pbr:
+            # Export-ready story textures already contain their intended
+            # palette and macro variation.  Direct image-to-Principled wiring
+            # keeps the Blender and GLB material paths identical.
+            links.new(albedo_node.outputs["Color"], bsdf.inputs["Base Color"])
+        else:
+            grade_node = nodes.new("ShaderNodeHueSaturation")
+            grade_node.name = grade_node.label = "TEX_ArchitecturalGrade"
+            archviz_timber = bool(TEXTURES_DIR and TEXTURES_DIR.name == "textures_archviz_v5" and texture_key == "clt")
+            archviz_sedum = bool(TEXTURES_DIR and TEXTURES_DIR.name == "textures_archviz_v5" and texture_key == "sedum_roof")
+            grade_node.inputs["Saturation"].default_value = float(spec.get(
+                "texture_saturation",
+                0.9 if archviz_timber else (0.88 if archviz_sedum else (1.04 if texture_key == "red_brick" else 1.08)),
+            ))
+            grade_node.inputs["Value"].default_value = float(spec.get("texture_value", {
+                "red_brick": 0.64,
+                "clt": 0.82 if archviz_timber else 0.8,
+                "sedum_roof": 0.94 if archviz_sedum else 0.84,
+                "white_plaster": 0.98,
+                "limestone": 0.94,
+                "heritage_portland_stone": 0.91,
+                "welsh_slate": 0.74,
+                "standing_seam": 1.10,
+                "verdigris_copper": 0.98,
+            }.get(texture_key, 0.84)))
+            grade_node.location = (-190, 260)
+            links.new(albedo_node.outputs["Color"], grade_node.inputs["Color"])
+            # The texture supplies real surface variation; the catalogue colour
+            # still needs to steer its architectural palette (notably honey-toned
+            # CLT versus pale raw pine). A partial multiply preserves photography
+            # while carrying the archetype-specific tint into renders and GLB.
+            tint_node = nodes.new("ShaderNodeMixRGB")
+            tint_node.name = tint_node.label = "TEX_CatalogueTint"
+            tint_mode = str(spec.get("texture_tint_mode", "MULTIPLY")).upper()
+            tint_node.blend_type = tint_mode if tint_mode in {"MULTIPLY", "COLOR", "MIX"} else "MULTIPLY"
+            tint_node.inputs[0].default_value = float(spec.get("texture_tint_strength", {
+                "clt": 0.15 if archviz_timber else 0.46,
+                "sedum_roof": 0.04 if archviz_sedum else 0.14,
+                "red_brick": 0.18,
+                "white_plaster": 0.08,
+                "limestone": 0.12,
+                "heritage_portland_stone": 0.05,
+                "welsh_slate": 0.06,
+                "standing_seam": 0.04,
+                "verdigris_copper": 0.03,
+            }.get(texture_key, 0.14)))
+            tint_node.inputs[2].default_value = color
+            tint_node.location = (20, 260)
+            links.new(grade_node.outputs["Color"], tint_node.inputs[1])
+            links.new(tint_node.outputs["Color"], bsdf.inputs["Base Color"])
 
         if "roughness" in textures:
             rough_node = nodes.new("ShaderNodeTexImage")
             rough_node.name = rough_node.label = "TEX_Roughness"
             rough_node.image = _load_image(textures["roughness"], "Non-Color")
             rough_node.location = (-480, -40)
-            links.new(uv_node.outputs["UV"], rough_node.inputs["Vector"])
+            links.new(vector_output, rough_node.inputs["Vector"])
             links.new(rough_node.outputs["Color"], bsdf.inputs["Roughness"])
 
         if "normal" in textures:
@@ -264,15 +286,18 @@ def make_material(name: str, spec: dict) -> bpy.types.Material:
             normal_tex.name = normal_tex.label = "TEX_Normal"
             normal_tex.image = _load_image(textures["normal"], "Non-Color")
             normal_tex.location = (-480, -340)
-            links.new(uv_node.outputs["UV"], normal_tex.inputs["Vector"])
+            links.new(vector_output, normal_tex.inputs["Vector"])
             normal_map = nodes.new("ShaderNodeNormalMap")
             normal_map.uv_map = "UVMap"
-            normal_map.inputs["Strength"].default_value = 0.45
+            normal_map.inputs["Strength"].default_value = float(spec.get("normal_strength", 0.45))
             normal_map.location = (-180, -340)
             links.new(normal_tex.outputs["Color"], normal_map.inputs["Color"])
             links.new(normal_map.outputs["Normal"], bsdf.inputs["Normal"])
 
         mat["texture_key"] = spec.get("texture_key")
+        mat["texture_tile_metres"] = texture_tile_metres
+        mat["baked_pbr"] = baked_pbr
+        mat["normal_strength"] = float(spec.get("normal_strength", 0.45))
     return mat
 
 

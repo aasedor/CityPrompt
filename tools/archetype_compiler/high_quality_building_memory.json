@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-08-09-multiscale-modular-material-v82",
+  "memory_version": "2026-08-09-exportable-surface-story-v83",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "calibration_set": {
@@ -214,6 +214,14 @@
     {
       "id": "optimize_after_section_and_silhouette_approval",
       "rule": "For a bounded pilot, preserve the approved silhouette, voids and physical material section before consolidating repeated meshes, baking non-silhouette ornament or reducing texture payloads. Optimization must satisfy explicit triangle, material and delivery-envelope gates without erasing archetype evidence."
+    },
+    {
+      "id": "surface_story_is_baked_and_export_audited",
+      "rule": "Use metric UV scale and restrained location-specific albedo, roughness and normal variation, then bake the result into ordinary image maps that survive glTF export. Compare the same neutral camera from the Blender source and a re-imported GLB; a beauty render cannot substitute for export parity."
+    },
+    {
+      "id": "material_realism_does_not_replace_ornament",
+      "rule": "Treat surface finish, medium construction and archetype-specific sculptural ornament as separate approvals. Better stone and roof shaders may remove plastic flatness, but they cannot prove tower proportion, carved relief, balustrade cadence or silhouette fidelity."
     }
   ],
   "construction_memory": {
@@ -302,7 +310,10 @@
         "shadow-neutral albedo",
         "seam-safe middle bays",
         "shape-aware semantic glass masks",
-        "separate podium, typical, alternate and crown bands"
+        "separate podium, typical, alternate and crown bands",
+        "metric material texture scale",
+        "export-baked albedo, roughness and normal variation",
+        "semantic weathering limited to plausible material zones"
       ],
       "near_atlas_min_width_px": 2048,
       "preferred_near_atlas_width_px": 4096,
@@ -406,7 +417,9 @@
       "missing_side_elevation_wrap",
                    "semantic_mask_shape_mismatch",
                    "material_count_warning",
-                   "missing_visual_approval"
+                   "missing_visual_approval",
+                   "missing_neutral_source_glb_parity",
+                   "uniform_or_unbounded_surface_weathering"
     ],
     "required_renders": [
                              "preview",
@@ -821,6 +834,16 @@
       "symptom": "A high-detail keeper pilot exceeds triangle, material or delivery-envelope budgets",
       "cause": "Every rib, ornament and material variation survived as unique geometry or a separate shader after visual approval.",
       "correction": "Preserve fixed silhouette and void assemblies, instance or consolidate repeatable members, bake non-silhouette ornament to normal/AO/roughness, merge equivalent materials and downscale only textures whose visual contribution survives side-by-side review."
+    },
+    {
+      "symptom": "Stone and roof surfaces look nuanced in Blender but become flat or differently coloured in the exported catalogue model",
+      "cause": "The look depended on Blender-only procedural, grading or mix nodes that the glTF material path could not reproduce.",
+      "correction": "Bake the approved surface story into tile-safe albedo, roughness and tangent-space normal images, use metric UV scale, export them through Principled BSDF and require a camera-locked neutral source-versus-reimport parity report."
+    },
+    {
+      "symptom": "A less-plastic building still looks like a simplified cartoon of its archetype",
+      "cause": "Surface variation improved while the clock tower, carved relief, capitals, balustrades or other identity-bearing medium/fine geometry remained generic.",
+      "correction": "Keep surface QA as a separate passed layer, then return to the exact references and author a bounded fixed ornament kit for the silhouette- and shadow-bearing identity cues. Do not increase grunge or normal strength to compensate for missing construction."
     }
   ]
 }
