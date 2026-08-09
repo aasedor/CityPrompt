@@ -102,7 +102,8 @@
         "identity_mode": "massing_graph",
         "fixed_identity": [
           "capped crow-step front parapet",
-          "image-scheduled rectangular sash and timber door",
+          "image-scheduled rectangular sash, paneled timber door and glazed fanlight",
+          "black vertical masonry anchors on all exposed elevations",
           "steep construction-detailed charcoal tile roof"
         ],
         "repeatable_capacity": [
@@ -142,6 +143,10 @@
             "right_opening_schedule",
             "left_opening_schedule",
             "rear_opening_schedule",
+            "front_wall_anchors",
+            "right_wall_anchors",
+            "left_wall_anchors",
+            "rear_wall_anchors",
             "clay_roof_courses",
             "front_stoep"
           ],
@@ -152,6 +157,7 @@
           "required_assembly_kinds": {
             "shaped_gable_array": 1,
             "punched_opening_schedule": 5,
+            "tie_grid": 4,
             "pitched_roof_surface_detail": 1,
             "steps": 1
           }
@@ -170,6 +176,7 @@
           "assembly_bindings": [
             {"kind": "shaped_gable_array", "slots": {"material": "signature_stone", "infill_material": "primary"}},
             {"kind": "punched_opening_schedule", "slots": {"frame_material": "signature_metal", "surround_material": "signature_stone"}},
+            {"kind": "tie_grid", "slots": {"material": "signature_metal"}},
             {"kind": "pitched_roof_surface_detail", "slots": {"tile_material": "signature_roof"}}
           ]
         }
@@ -192,7 +199,7 @@
         "cap_material": "signature_stone",
         "roof_material": "signature_roof",
         "front_openings": [
-          {"type": "door", "along_m": 0.0, "base_z_m": 0.32, "width_m": 0.88, "height_m": 2.72, "depth_m": 0.16},
+          {"type": "door", "along_m": 0.0, "base_z_m": 0.32, "width_m": 0.88, "height_m": 2.72, "depth_m": 0.16, "panel_rows": 3, "panel_columns": 1, "transom_height_m": 0.50, "transom_diagonal": true},
           {"type": "window", "along_m": -1.72, "base_z_m": 1.02, "width_m": 1.02, "height_m": 2.18, "columns": 2, "rows": 2},
           {"type": "window", "along_m": 1.72, "base_z_m": 1.02, "width_m": 1.02, "height_m": 2.18, "columns": 2, "rows": 2},
           {"type": "window", "along_m": -1.72, "base_z_m": 4.25, "width_m": 1.02, "height_m": 2.16, "columns": 2, "rows": 2},
@@ -252,6 +259,7 @@
         "signature_metal": {"texture_key": "black_metal", "base_color": "#252a29", "roughness": 0.38, "metallic": 0.70},
         "stained_glass": {"base_color": "#4f8077", "roughness": 0.19, "metallic": 0.0, "transmission": 0.58, "ior": 1.48, "emission_color": "#7ab3a1", "emission_strength": 0.04},
         "stall_backdrop": {"base_color": "#3b2a21", "roughness": 0.78, "metallic": 0.0, "emission_color": "#b47a42", "emission_strength": 0.08},
+        "produce_green": {"base_color": "#557a32", "roughness": 0.76, "metallic": 0.0},
         "awning_red": {"base_color": "#9f3029", "roughness": 0.92, "metallic": 0.0},
         "awning_yellow": {"base_color": "#d1a735", "roughness": 0.92, "metallic": 0.0},
         "awning_blue": {"base_color": "#315e7c", "roughness": 0.92, "metallic": 0.0}
@@ -262,7 +270,8 @@
         "fixed_identity": [
           "cross-shaped multi-aisle roof plan",
           "four construction-open market frontages",
-          "arched iron-and-stained-glass clerestories and coloured awnings"
+          "arched iron-and-stained-glass clerestories and coloured awnings",
+          "occupied produce counters in every open perimeter bay"
         ],
         "repeatable_capacity": [
           "ordinary open stall bay between fixed corner columns"
@@ -292,13 +301,14 @@
             "front_market_backdrop", "rear_market_backdrop", "left_market_backdrop", "right_market_backdrop",
             "central_front_clerestory", "central_rear_clerestory", "cross_left_clerestory", "cross_right_clerestory",
             "central_roof_iron", "cross_roof_iron", "central_skylight_panels", "cross_skylight_panels",
+            "front_market_stalls", "rear_market_stalls", "left_market_stalls", "right_market_stalls",
             "front_market_awnings", "rear_market_awnings", "left_market_awnings", "right_market_awnings"
           ],
           "required_void_ids": [
             "front_open_market_bays", "rear_open_market_bays", "left_open_market_bays", "right_open_market_bays"
           ],
           "required_node_kinds": {"box": 4, "gable_roof": 4},
-          "required_assembly_kinds": {"column_array": 4, "curtain_wall": 4, "gable_end_glazing": 4, "pitched_roof_frame": 2, "pitched_roof_surface_detail": 4, "awning_schedule": 4}
+          "required_assembly_kinds": {"column_array": 4, "curtain_wall": 4, "gable_end_glazing": 4, "pitched_roof_frame": 2, "pitched_roof_surface_detail": 4, "market_stall_schedule": 4, "awning_schedule": 4}
         },
         "material_continuity": {
           "required_textured_materials": ["primary", "secondary", "signature_roof", "signature_metal"],
@@ -325,6 +335,7 @@
           {"role": "oblique_massing", "path": "/archetypes/buildings/barcelona-mercat/variant_0_angle_60.jpg"},
           {"role": "roof_plan", "path": "/archetypes/buildings/barcelona-mercat/variant_0_angle_90.jpg"}
         ],
+        "presentation_camera": {"hero_side": "left", "oblique_x_scale": 0.58, "identity_distance_scale": 0.78, "street_distance_scale": 0.84},
         "eave_height_m": 5.8,
         "header_height_m": 2.1,
         "central_aisle_width_m": 16.5,

@@ -10,7 +10,8 @@
   "manifest": "barcelona-mercat-modernista-v80_manifest.json",
   "errors": [],
   "warnings": [
-    "barcelona-mercat-modernista-v80_assembled.glb: 90484 triangles (heavy; consider simplification)"
+    "barcelona-mercat-modernista-v80_assembled.glb: 109668 triangles (heavy; consider simplification)",
+    "barcelona-mercat-modernista-v80_assembled.glb: 8.2 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
   ],
   "modules": [
     {
@@ -186,7 +187,7 @@
     {
       "file": "barcelona-mercat-modernista-v80_assembled.glb",
       "status": "ok",
-      "triangles": 90484,
+      "triangles": 109668,
       "extent_m": {
         "width_x": 56.88,
         "height_y": 11.386,
@@ -201,13 +202,15 @@
         "MAT_Roof_AgedFlashing",
         "MAT_Signature_AgedLeadRoof",
         "MAT_Signature_BlackMetal",
+        "MAT_Signature_DarkOakDoor",
         "MAT_Signature_awning_blue",
         "MAT_Signature_awning_red",
         "MAT_Signature_awning_yellow",
+        "MAT_Signature_produce_green",
         "MAT_Signature_stained_glass",
         "MAT_Signature_stall_backdrop"
       ],
-      "size_bytes": 7338620,
+      "size_bytes": 8585500,
       "role": "assembled"
     }
   ]

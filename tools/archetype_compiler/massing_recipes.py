@@ -400,6 +400,38 @@ def _stepped_gable_house(recipe: dict[str, Any], dims: dict[str, Any]) -> dict[s
             "interior_material": "glazing_interior_4", "minimum_rows": 3,
         },
         {
+            "id": "front_wall_anchors", "kind": "tie_grid", "axis": "front",
+            "centre": [0.0, front_y - 0.13, 6.5], "span_m": 2.8,
+            "height_m": 9.0, "columns": 2, "rows": 3,
+            "style": "vertical_bar", "bar_length_m": 0.48,
+            "bar_width_m": 0.075, "bar_depth_m": 0.050,
+            "material": "signature_metal",
+        },
+        {
+            "id": "right_wall_anchors", "kind": "tie_grid", "axis": "right",
+            "centre": [width / 2 + 0.13, 0.0, 6.5], "span_m": depth - 2.0,
+            "height_m": 9.0, "columns": 4, "rows": 3,
+            "style": "vertical_bar", "bar_length_m": 0.48,
+            "bar_width_m": 0.075, "bar_depth_m": 0.050,
+            "material": "signature_metal",
+        },
+        {
+            "id": "left_wall_anchors", "kind": "tie_grid", "axis": "left",
+            "centre": [-width / 2 - 0.13, 0.0, 6.5], "span_m": depth - 2.0,
+            "height_m": 9.0, "columns": 4, "rows": 3,
+            "style": "vertical_bar", "bar_length_m": 0.48,
+            "bar_width_m": 0.075, "bar_depth_m": 0.050,
+            "material": "signature_metal",
+        },
+        {
+            "id": "rear_wall_anchors", "kind": "tie_grid", "axis": "rear",
+            "centre": [0.0, rear_y + 0.13, 6.5], "span_m": width - 1.2,
+            "height_m": 9.0, "columns": 3, "rows": 3,
+            "style": "vertical_bar", "bar_length_m": 0.48,
+            "bar_width_m": 0.075, "bar_depth_m": 0.050,
+            "material": "signature_metal",
+        },
+        {
             "id": "clay_roof_courses", "kind": "pitched_roof_surface_detail",
             "centre": [0.0, 0.0, wall_height],
             "size": [width + 0.18, depth + 0.20, roof_rise], "ridge_axis": "y",
@@ -438,6 +470,7 @@ def _stepped_gable_house(recipe: dict[str, Any], dims: dict[str, Any]) -> dict[s
             "floor_height_m": floor,
         },
         "nodes": nodes, "voids": [], "assemblies": assemblies,
+        "presentation_camera": deepcopy(recipe.get("presentation_camera") or {}),
         "target_views": ["archetype_match", "street", "front_corner_oblique", "aerial", "roof_audit"],
         "recipe_contract": {
             "kind": "stepped_gable_house", "front_opening_count": len(front_openings),
@@ -523,25 +556,25 @@ def _multi_aisle_market_hall(recipe: dict[str, Any], dims: dict[str, Any]) -> di
             "id": "front_market_columns", "kind": "column_array",
             "start": [left_x + 1.1, front_y + 0.28, 0.22],
             "end": [right_x - 1.1, front_y + 0.28, 0.22], "count": front_columns,
-            "section": [0.82, 0.82], "height_m": column_height, "material": wall_material,
+            "section": [0.82, 0.82], "height_m": eave_z - 0.22, "material": wall_material,
         },
         {
             "id": "rear_market_columns", "kind": "column_array",
             "start": [left_x + 1.1, rear_y - 0.28, 0.22],
             "end": [right_x - 1.1, rear_y - 0.28, 0.22], "count": front_columns,
-            "section": [0.82, 0.82], "height_m": column_height, "material": wall_material,
+            "section": [0.82, 0.82], "height_m": eave_z - 0.22, "material": wall_material,
         },
         {
             "id": "left_market_columns", "kind": "column_array",
             "start": [left_x + 0.28, front_y + 1.4, 0.22],
             "end": [left_x + 0.28, rear_y - 1.4, 0.22], "count": side_columns,
-            "section": [0.82, 0.82], "height_m": column_height, "material": wall_material,
+            "section": [0.82, 0.82], "height_m": eave_z - 0.22, "material": wall_material,
         },
         {
             "id": "right_market_columns", "kind": "column_array",
             "start": [right_x - 0.28, front_y + 1.4, 0.22],
             "end": [right_x - 0.28, rear_y - 1.4, 0.22], "count": side_columns,
-            "section": [0.82, 0.82], "height_m": column_height, "material": wall_material,
+            "section": [0.82, 0.82], "height_m": eave_z - 0.22, "material": wall_material,
         },
         {
             "id": "front_market_backdrop", "kind": "curtain_wall", "axis": "front",
@@ -636,6 +669,46 @@ def _multi_aisle_market_hall(recipe: dict[str, Any], dims: dict[str, Any]) -> di
             "gutter_enabled": False, "verge_enabled": False,
         },
         {
+            "id": "front_market_stalls", "kind": "market_stall_schedule", "axis": "front",
+            "face_coordinate_m": front_y - 0.04, "base_z_m": 0.22,
+            "positions_m": [
+                left_x + (width - 2.2) * (index + 0.5) / (front_columns - 1)
+                for index in range(front_columns - 1)
+            ],
+            "bay_width_m": (width - 4.0) / (front_columns - 1),
+            "crate_count": 2, "produce_per_crate": 2, "light_count": 2,
+        },
+        {
+            "id": "rear_market_stalls", "kind": "market_stall_schedule", "axis": "rear",
+            "face_coordinate_m": rear_y + 0.04, "base_z_m": 0.22,
+            "positions_m": [
+                left_x + (width - 2.2) * (index + 0.5) / (front_columns - 1)
+                for index in range(front_columns - 1)
+            ],
+            "bay_width_m": (width - 4.0) / (front_columns - 1),
+            "crate_count": 2, "produce_per_crate": 2, "light_count": 2,
+        },
+        {
+            "id": "left_market_stalls", "kind": "market_stall_schedule", "axis": "left",
+            "face_coordinate_m": left_x - 0.04, "base_z_m": 0.22,
+            "positions_m": [
+                front_y + (depth - 2.8) * (index + 0.5) / (side_columns - 1)
+                for index in range(side_columns - 1)
+            ],
+            "bay_width_m": (depth - 4.6) / (side_columns - 1),
+            "crate_count": 2, "produce_per_crate": 2, "light_count": 2,
+        },
+        {
+            "id": "right_market_stalls", "kind": "market_stall_schedule", "axis": "right",
+            "face_coordinate_m": right_x + 0.04, "base_z_m": 0.22,
+            "positions_m": [
+                front_y + (depth - 2.8) * (index + 0.5) / (side_columns - 1)
+                for index in range(side_columns - 1)
+            ],
+            "bay_width_m": (depth - 4.6) / (side_columns - 1),
+            "crate_count": 2, "produce_per_crate": 2, "light_count": 2,
+        },
+        {
             "id": "front_market_awnings", "kind": "awning_schedule", "axis": "front",
             "face_coordinate_m": front_y - 0.10, "base_z_m": 3.0,
             "positions_m": [
@@ -728,6 +801,7 @@ def _multi_aisle_market_hall(recipe: dict[str, Any], dims: dict[str, Any]) -> di
             "floor_height_m": eave_z,
         },
         "nodes": nodes, "voids": voids, "assemblies": assemblies,
+        "presentation_camera": deepcopy(recipe.get("presentation_camera") or {}),
         "target_views": ["archetype_match", "street", "front_corner_oblique", "aerial", "roof_audit"],
         "recipe_contract": {
             "kind": "multi_aisle_market_hall", "front_open_bays": front_columns - 1,

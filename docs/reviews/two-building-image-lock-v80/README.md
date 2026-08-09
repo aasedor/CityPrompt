@@ -1,4 +1,4 @@
-# Two-building image-lock pilot v80
+# Two-building image-lock pilot v80 — v81 refinement
 
 This bounded pilot tests whether exact archetype images can drive construction
 topology instead of serving only as informal inspiration. It uses the Amsterdam
@@ -17,9 +17,22 @@ intersecting roof plan.
 - **Barcelona Mercat — provisional.** The near-square market now has six front
   and five side open bays, four genuinely permeable frontages, recessed stall
   backdrops, coloured perimeter awnings, dark standing-seam cross roofs,
-  stained skylight bands and four arched clerestories. The remaining fidelity
-  gap is archetype-specific produce-stall dressing, fine iron ornament, signage
-  and closer photographic context—not a flat-wall or generic-box failure.
+  stained skylight bands, four arched clerestories and occupied produce
+  counters. The remaining fidelity gap is fine iron ornament, signage, people
+  and photographic context—not a flat-wall or generic-box failure.
+
+## V81 refinement round
+
+- Amsterdam now has a separately glazed diamond fanlight, a paneled oak leaf
+  and image-consistent black masonry anchors on all exposed elevations. The
+  entrance and side wall no longer read as flat placeholder surfaces.
+- Mercat brick piers continue through the contrasting header, and every open
+  frontage now contains a bounded low-poly stall kit with counters, crates,
+  produce and warm task lights. This preserves the validated void section and
+  roof graph while adding the activity that carries the archetype photograph.
+- The Mercat comparison camera is closer and less oblique, matching the
+  reference framing more directly. Fine iron ornament, signage and people
+  remain outside this bounded refinement, so its status remains provisional.
 
 ## Method now encoded in the pipeline
 

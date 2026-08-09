@@ -93,6 +93,7 @@ def test_step_gable_recipe_keeps_sparse_openings_and_capped_profile_explicit():
     assert gable["profile_style"] == "crow_step_flat"
     assert gable["profile_construction"] == "capped_masonry"
     assert schedule["openings"] == openings
+    assert len([item for item in graph["assemblies"] if item["kind"] == "tie_grid"]) == 4
     assert graph["recipe_contract"]["front_opening_count"] == 2
 
 
@@ -117,6 +118,11 @@ def test_market_recipe_builds_cross_aisles_and_four_real_open_perimeters():
     assert len([void for void in graph["voids"] if void["shape"] == "open_perimeter_bays"]) == 4
     assert len([item for item in graph["assemblies"] if item["kind"] == "curtain_wall"]) == 4
     assert len([item for item in graph["assemblies"] if item["kind"] == "awning_schedule"]) == 4
+    assert len([item for item in graph["assemblies"] if item["kind"] == "market_stall_schedule"]) == 4
+    assert all(
+        item["height_m"] == 5.98
+        for item in graph["assemblies"] if item["kind"] == "column_array"
+    )
     assert len([
         item for item in graph["assemblies"]
         if item["kind"] == "pitched_roof_surface_detail" and item["tile_material"] == "stained_glass"

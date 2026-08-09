@@ -64,7 +64,7 @@
       {
         "id": "image_lock_assembly_topology",
         "passed": true,
-        "detail": "8 required assembly ids resolved"
+        "detail": "12 required assembly ids resolved"
       },
       {
         "id": "image_lock_node_kind_counts",
@@ -74,7 +74,7 @@
       {
         "id": "image_lock_assembly_kind_counts",
         "passed": true,
-        "detail": "4 assembly kind counts satisfied"
+        "detail": "5 assembly kind counts satisfied"
       },
       {
         "id": "material_assembly_binding:shaped_gable_array",
@@ -85,6 +85,11 @@
         "id": "material_assembly_binding:punched_opening_schedule",
         "passed": true,
         "detail": "5 assemblies checked; incorrect: none"
+      },
+      {
+        "id": "material_assembly_binding:tie_grid",
+        "passed": true,
+        "detail": "4 assemblies checked; incorrect: none"
       },
       {
         "id": "material_assembly_binding:pitched_roof_surface_detail",
@@ -143,7 +148,7 @@
     {
       "id": "missing_fixed_identity",
       "passed": true,
-      "detail": "3 fixed identity assemblies; minimum 3"
+      "detail": "4 fixed identity assemblies; minimum 3"
     },
     {
       "id": "missing_repeatable_capacity",
@@ -203,7 +208,7 @@
     {
       "id": "image_lock_assembly_topology",
       "passed": true,
-      "detail": "8 required assembly ids resolved"
+      "detail": "12 required assembly ids resolved"
     },
     {
       "id": "image_lock_node_kind_counts",
@@ -213,7 +218,7 @@
     {
       "id": "image_lock_assembly_kind_counts",
       "passed": true,
-      "detail": "4 assembly kind counts satisfied"
+      "detail": "5 assembly kind counts satisfied"
     },
     {
       "id": "material_assembly_binding:shaped_gable_array",
@@ -224,6 +229,11 @@
       "id": "material_assembly_binding:punched_opening_schedule",
       "passed": true,
       "detail": "5 assemblies checked; incorrect: none"
+    },
+    {
+      "id": "material_assembly_binding:tie_grid",
+      "passed": true,
+      "detail": "4 assemblies checked; incorrect: none"
     },
     {
       "id": "material_assembly_binding:pitched_roof_surface_detail",

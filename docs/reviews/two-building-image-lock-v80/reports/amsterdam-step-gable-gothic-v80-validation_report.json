@@ -9,7 +9,9 @@
   ],
   "manifest": "amsterdam-step-gable-gothic-v80_manifest.json",
   "errors": [],
-  "warnings": [],
+  "warnings": [
+    "amsterdam-step-gable-gothic-v80_assembled.glb: 82020 triangles (heavy; consider simplification)"
+  ],
   "modules": [
     {
       "file": "amsterdam-step-gable-gothic-v80_podium.glb",
@@ -164,7 +166,7 @@
     {
       "file": "amsterdam-step-gable-gothic-v80_assembled.glb",
       "status": "ok",
-      "triangles": 73144,
+      "triangles": 82020,
       "extent_m": {
         "width_x": 6.475,
         "height_y": 14.08,
@@ -184,7 +186,7 @@
         "MAT_Signature_CutStone",
         "MAT_Signature_DarkOakDoor"
       ],
-      "size_bytes": 6143640,
+      "size_bytes": 6952460,
       "role": "assembled"
     }
   ]

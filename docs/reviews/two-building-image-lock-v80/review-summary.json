@@ -1,11 +1,12 @@
 {
   "schema": "two-building-image-lock-review@1",
-  "pipeline_version": "v80",
+  "pipeline_version": "v81 refinement on v80 image-lock pilots",
   "method": [
     "exact reference roles become numeric feature schedules",
     "required graph nodes, assemblies and voids are production gates",
     "metadata is disabled or selectively admitted only when image-consistent",
-    "human comparison remains the final keeper decision"
+    "human comparison remains the final keeper decision",
+    "occupied opening kits add bounded public-edge detail without changing validated topology"
   ],
   "buildings": [
     {
@@ -13,14 +14,14 @@
       "status": "keeper",
       "reference": "frontend/public/archetypes/buildings/amsterdam-step-gable-house/variant_0.png",
       "generated": "generated/amsterdam-step-gable-gothic-v80_front_corner_oblique.png",
-      "finding": "The image\u2014not generic metadata\u2014now fixes three occupied levels, ten front openings, a flat-topped capped crow-step silhouette, sparse side sash, and a steep charcoal tile roof."
+      "finding": "Three occupied levels, exact sash schedules and the capped crow-step remain image-locked. Round two adds a paneled oak door, glazed diamond fanlight and black masonry anchors instead of flat dark placeholders."
     },
     {
       "family": "barcelona-mercat-modernista-v80",
       "status": "provisional",
       "reference": "frontend/public/archetypes/buildings/barcelona-mercat/variant_0.png",
       "generated": "generated/barcelona-mercat-modernista-v80_archetype_match.png",
-      "finding": "The image schedule fixes four open stall frontages, recessed occupied backdrops, perimeter awnings, arched iron clerestories, and the orthogonal multi-aisle roof graph. Produce-stall dressing remains outside this geometry pilot."
+      "finding": "The image-locked roof and real open bays now gain continuous brick piers plus counters, crates, produce and warm task lights on all four frontages. Fine iron ornament and photographic entourage remain provisional."
     }
   ]
 }

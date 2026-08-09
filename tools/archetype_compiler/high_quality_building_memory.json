@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-08-08-image-measured-feature-schedules-v80",
+  "memory_version": "2026-08-08-occupied-opening-detail-v81",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "calibration_set": {
@@ -26,6 +26,10 @@
     {
       "id": "image_measurements_drive_topology",
       "rule": "Before Blender, convert exact street, oblique and roof images into a bounded feature schedule: dimensions, storey and opening counts, opening positions, ridge axes, roof intersections, material zones and depth-bearing voids. Every measurement names the graph node, assembly or void it drives, and production preflight fails when required topology is missing."
+    },
+    {
+      "id": "occupied_openings_are_layered_assemblies",
+      "rule": "A reference-visible door, shop bay or market stall needs more than a void and dark back plane. Preserve the real section, then add a bounded identity kit at the opening: door leaf panels and fanlight, or counters, crates, goods, shelving and warm task lights. Fine occupation may repeat inside approved bays but cannot replace the fixed opening geometry."
     },
     {
       "id": "geometry_carries_identity",
@@ -767,6 +771,16 @@
       "symptom": "An open market, arcade or entrance looks hollow from one camera but flat or empty from another",
       "cause": "The foreground opening has no depth contract, or the void terminates without a recessed occupied surface that establishes a believable interior section.",
       "correction": "Pair each real perimeter void with columns or reveals and a deeper occupied backdrop. Wrap the construction around every exposed elevation and verify it from front, corner and rear views rather than accepting a dark facade rectangle."
+    },
+    {
+      "symptom": "A validated open market still looks abandoned compared with a richly occupied archetype photograph",
+      "cause": "The model contains real bays and recessed backdrops but omits the foreground identity layer: counters, crates, produce, task lights and vertical piers that make the public edge legible.",
+      "correction": "Attach a bounded occupied-stall schedule to the already validated bay positions. Reuse low-cost counters and goods inside each bay, continue structural piers through the header, and keep the through-space and roof topology unchanged."
+    },
+    {
+      "symptom": "A heritage entrance has the correct opening size but reads as a black placeholder",
+      "cause": "One dark slab was used for the entire door opening, omitting leaf panels, fanlight glazing and the small frame relief visible in the archetype.",
+      "correction": "Split the entrance into a recessed paneled timber leaf and separately framed fanlight. Use real relief and glass at hero range while retaining the image-locked opening dimensions and depth."
     }
   ]
 }

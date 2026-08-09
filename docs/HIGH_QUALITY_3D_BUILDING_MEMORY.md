@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-08-08-image-measured-feature-schedules-v80`.
+Current executable memory: `2026-08-08-occupied-opening-detail-v81`.
 
 The current calibration set and catalogue rollout rationale are documented in
 [`BUILDING_GOLD_SET_PIPELINE_SYNTHESIS_2026-08-07.md`](BUILDING_GOLD_SET_PIPELINE_SYNTHESIS_2026-08-07.md).
@@ -777,6 +777,27 @@ oblique and roof views must become an explicit, executable feature schedule.
   perceptual mistakes. The Amsterdam pilot passed topology checks before human
   review identified an extra storey and the wrong roof value, so visual keeper
   status remains independent of validation success.
+
+### V81 occupied-opening detail lessons
+
+Correct massing and real void depth can still look visually empty when the
+archetype depends on activity at the public edge. Occupation is a bounded
+assembly layer attached to validated openings, not a substitute for them.
+
+- Heritage doors split into an inset timber leaf, shallow panel relief and a
+  separately framed glazed fanlight. This prevents a correctly sized entrance
+  from reading as one black placeholder slab.
+- Open market bays retain their columns, void volume and recessed interior
+  termination, then receive low-cost counters, crate groups, goods and warm
+  task lights at the exact scheduled bay positions.
+- Structural articulation continues through occupied frontage. Brick piers
+  rise through the contrasting market header instead of stopping below it, so
+  the bay rhythm reads at street and oblique scales.
+- Repeated occupation is allowed only inside approved repeatable bays. Roof
+  topology, corner bays, entry hierarchy and perimeter voids remain fixed.
+- Detail additions must survive the same all-elevation, triangle-budget and
+  delivery-envelope checks as the base model. A richer render is not an excuse
+  to weaken modular validation.
 
 ## Updating this memory
 

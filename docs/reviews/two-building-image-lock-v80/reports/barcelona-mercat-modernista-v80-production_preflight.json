@@ -64,7 +64,7 @@
       {
         "id": "image_lock_assembly_topology",
         "passed": true,
-        "detail": "20 required assembly ids resolved"
+        "detail": "24 required assembly ids resolved"
       },
       {
         "id": "image_lock_void_topology",
@@ -79,7 +79,7 @@
       {
         "id": "image_lock_assembly_kind_counts",
         "passed": true,
-        "detail": "6 assembly kind counts satisfied"
+        "detail": "7 assembly kind counts satisfied"
       },
       {
         "id": "material_assembly_binding:column_array",
@@ -102,12 +102,12 @@
         "detail": "2 assemblies checked; incorrect: none"
       },
       {
-        "id": "material_assembly_binding:pitched_roof_surface_detail",
+        "id": "material_assembly_binding:pitched_roof_surface_detail:opaque_roof_detail_0,opaque_roof_detail_1",
         "passed": true,
         "detail": "2 assemblies checked; incorrect: none"
       },
       {
-        "id": "material_assembly_binding:pitched_roof_surface_detail",
+        "id": "material_assembly_binding:pitched_roof_surface_detail:central_skylight_panels,cross_skylight_panels",
         "passed": true,
         "detail": "2 assemblies checked; incorrect: none"
       },
@@ -158,7 +158,7 @@
     {
       "id": "missing_fixed_identity",
       "passed": true,
-      "detail": "3 fixed identity assemblies; minimum 3"
+      "detail": "4 fixed identity assemblies; minimum 3"
     },
     {
       "id": "missing_repeatable_capacity",
@@ -218,7 +218,7 @@
     {
       "id": "image_lock_assembly_topology",
       "passed": true,
-      "detail": "20 required assembly ids resolved"
+      "detail": "24 required assembly ids resolved"
     },
     {
       "id": "image_lock_void_topology",
@@ -233,7 +233,7 @@
     {
       "id": "image_lock_assembly_kind_counts",
       "passed": true,
-      "detail": "6 assembly kind counts satisfied"
+      "detail": "7 assembly kind counts satisfied"
     },
     {
       "id": "material_assembly_binding:column_array",
@@ -256,12 +256,12 @@
       "detail": "2 assemblies checked; incorrect: none"
     },
     {
-      "id": "material_assembly_binding:pitched_roof_surface_detail",
+      "id": "material_assembly_binding:pitched_roof_surface_detail:opaque_roof_detail_0,opaque_roof_detail_1",
       "passed": true,
       "detail": "2 assemblies checked; incorrect: none"
     },
     {
-      "id": "material_assembly_binding:pitched_roof_surface_detail",
+      "id": "material_assembly_binding:pitched_roof_surface_detail:central_skylight_panels,cross_skylight_panels",
       "passed": true,
       "detail": "2 assemblies checked; incorrect: none"
     },

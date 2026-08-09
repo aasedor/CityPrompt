@@ -6581,16 +6581,86 @@ def _graph_punched_opening_schedule(parts: list, spec: dict, mats: dict) -> None
             depth = float(opening.get("depth_m", 0.16))
             frame = float(opening.get("frame_m", 0.11))
             cx, cy, cz = centre(along, base_z + height / 2)
+            transom_height = max(0.0, min(height * 0.38, float(opening.get("transom_height_m", 0.0))))
+            leaf_height = height - transom_height
+            leaf_cz = base_z + leaf_height / 2
             if axis in {"front", "rear"}:
-                reveal_size, door_size = (width + frame * 2, depth * 1.8, height + frame * 2), (width, depth, height)
+                reveal_size, door_size = (width + frame * 2, depth * 1.8, height + frame * 2), (width, depth, leaf_height)
                 outward = -1.0 if axis == "front" else 1.0
-                door_centre = (cx, cy + outward * depth * 0.38, cz)
+                door_centre = (cx, cy + outward * depth * 0.38, leaf_cz)
             else:
-                reveal_size, door_size = (depth * 1.8, width + frame * 2, height + frame * 2), (depth, width, height)
+                reveal_size, door_size = (depth * 1.8, width + frame * 2, height + frame * 2), (depth, width, leaf_height)
                 outward = -1.0 if axis == "left" else 1.0
-                door_centre = (cx + outward * depth * 0.38, cy, cz)
+                door_centre = (cx + outward * depth * 0.38, cy, leaf_cz)
             parts.append(add_beveled_box(f"{tag}_Reveal", reveal_size, (cx, cy, cz), shadow_material, 0.025))
             parts.append(add_beveled_box(f"{tag}_Door", door_size, door_centre, door_material, 0.028))
+
+            # Hero-range heritage doors need construction relief. Raised panels
+            # catch light on the timber leaf, while a separately glazed fanlight
+            # prevents the entrance from reading as one flat black rectangle.
+            panel_rows = max(0, int(opening.get("panel_rows", 0)))
+            panel_columns = max(1, int(opening.get("panel_columns", 1)))
+            if panel_rows:
+                margin = min(width * 0.18, float(opening.get("panel_margin_m", 0.13)))
+                gap = min(width * 0.18, float(opening.get("panel_gap_m", 0.11)))
+                panel_width = max(0.08, (width - margin * 2 - gap * (panel_columns - 1)) / panel_columns)
+                panel_height = max(0.10, (leaf_height - margin * 2 - gap * (panel_rows - 1)) / panel_rows)
+                for panel_row in range(panel_rows):
+                    panel_z = base_z + margin + panel_height / 2 + panel_row * (panel_height + gap)
+                    for panel_column in range(panel_columns):
+                        panel_along = along - width / 2 + margin + panel_width / 2 + panel_column * (panel_width + gap)
+                        if axis in {"front", "rear"}:
+                            panel_size = (panel_width, 0.045, panel_height)
+                            panel_centre = (panel_along, door_centre[1] + outward * (depth / 2 + 0.018), panel_z)
+                        else:
+                            panel_size = (0.045, panel_width, panel_height)
+                            panel_centre = (door_centre[0] + outward * (depth / 2 + 0.018), panel_along, panel_z)
+                        parts.append(add_beveled_box(
+                            f"{tag}_Panel{panel_row:02d}_{panel_column:02d}",
+                            panel_size, panel_centre, door_material, 0.012,
+                        ))
+
+            if transom_height > 0.08:
+                transom_z = base_z + leaf_height + transom_height / 2
+                transom_glass = _graph_material(mats, opening.get("transom_glass_material", default_glass))
+                transom_frame = _graph_material(mats, opening.get("transom_frame_material", default_frame))
+                glass_width = max(0.08, width - frame * 1.4)
+                glass_height = max(0.08, transom_height - frame * 1.4)
+                if axis in {"front", "rear"}:
+                    plane = door_centre[1] + outward * (depth / 2 + 0.026)
+                    parts.append(add_box(f"{tag}_TransomGlass", (glass_width, 0.035, glass_height), (along, plane, transom_z), transom_glass))
+                    for side in (-1.0, 1.0):
+                        parts.append(add_beveled_box(
+                            f"{tag}_TransomJamb{side}", (frame, 0.055, transom_height),
+                            (along + side * (width - frame) / 2, plane + outward * 0.012, transom_z), transom_frame, 0.012,
+                        ))
+                    for side in (-1.0, 1.0):
+                        parts.append(add_beveled_box(
+                            f"{tag}_TransomRail{side}", (width, 0.055, frame),
+                            (along, plane + outward * 0.012, transom_z + side * (transom_height - frame) / 2), transom_frame, 0.012,
+                        ))
+                    if bool(opening.get("transom_diagonal", False)):
+                        parts.append(_graph_member_between(
+                            f"{tag}_TransomDiagA", (along - glass_width / 2, plane + outward * 0.04, transom_z - glass_height / 2),
+                            (along + glass_width / 2, plane + outward * 0.04, transom_z + glass_height / 2), frame * 0.16, transom_frame, vertices=8,
+                        ))
+                        parts.append(_graph_member_between(
+                            f"{tag}_TransomDiagB", (along - glass_width / 2, plane + outward * 0.04, transom_z + glass_height / 2),
+                            (along + glass_width / 2, plane + outward * 0.04, transom_z - glass_height / 2), frame * 0.16, transom_frame, vertices=8,
+                        ))
+                else:
+                    plane = door_centre[0] + outward * (depth / 2 + 0.026)
+                    parts.append(add_box(f"{tag}_TransomGlass", (0.035, glass_width, glass_height), (plane, along, transom_z), transom_glass))
+                    for side in (-1.0, 1.0):
+                        parts.append(add_beveled_box(
+                            f"{tag}_TransomJamb{side}", (0.055, frame, transom_height),
+                            (plane + outward * 0.012, along + side * (width - frame) / 2, transom_z), transom_frame, 0.012,
+                        ))
+                    for side in (-1.0, 1.0):
+                        parts.append(add_beveled_box(
+                            f"{tag}_TransomRail{side}", (0.055, width, frame),
+                            (plane + outward * 0.012, along, transom_z + side * (transom_height - frame) / 2), transom_frame, 0.012,
+                        ))
             continue
         if opening_type != "window":
             raise ValueError(f"punched opening {tag} has unsupported type {opening_type!r}")
@@ -6769,6 +6839,89 @@ def _graph_awning_schedule(parts: list, spec: dict, mats: dict) -> None:
         for arm_index, (start, end) in enumerate(zip(arm_starts, arm_ends)):
             parts.append(_graph_member_between(
                 f"{prefix}_{index:02d}_Arm{arm_index}", start, end, 0.032, iron, vertices=8,
+            ))
+
+
+def _graph_market_stall_schedule(parts: list, spec: dict, mats: dict) -> None:
+    """Populate image-visible open bays with bounded counters, crates and produce."""
+    axis = str(spec.get("axis", "front"))
+    if axis not in {"front", "rear", "left", "right"}:
+        raise ValueError(f"market stall schedule axis {axis!r} is unsupported")
+    face = float(spec["face_coordinate_m"])
+    base_z = float(spec.get("base_z_m", 0.22))
+    positions = [float(value) for value in spec.get("positions_m") or []]
+    bay_width = float(spec.get("bay_width_m", 4.8))
+    prefix = str(spec.get("id", "GraphMarketStalls"))
+    outward = -1.0 if axis in {"front", "left"} else 1.0
+    counter = _graph_material(mats, spec.get("counter_material", "signature_metal"))
+    crate = _graph_material(mats, spec.get("crate_material", "signature_door"))
+    iron = _graph_material(mats, spec.get("frame_material", "signature_metal"))
+    light = _graph_material(mats, spec.get("light_material", "interior_warm"))
+    produce_materials = [
+        _graph_material(mats, material_id)
+        for material_id in (spec.get("produce_materials") or ["awning_red", "produce_green", "awning_yellow"])
+    ]
+    stall_width = bay_width * 0.72
+    counter_depth = float(spec.get("counter_depth_m", 0.82))
+    counter_height = float(spec.get("counter_height_m", 0.86))
+    crate_count = max(2, int(spec.get("crate_count", 3)))
+    produce_per_crate = max(2, int(spec.get("produce_per_crate", 5)))
+    light_count = max(1, int(spec.get("light_count", 2)))
+
+    def point(along: float, normal_offset: float, z: float) -> tuple[float, float, float]:
+        if axis in {"front", "rear"}:
+            return (along, face + outward * normal_offset, z)
+        return (face + outward * normal_offset, along, z)
+
+    for stall_index, along in enumerate(positions):
+        counter_centre = point(along, counter_depth * 0.58, base_z + counter_height / 2)
+        counter_size = (
+            (stall_width, counter_depth, counter_height)
+            if axis in {"front", "rear"}
+            else (counter_depth, stall_width, counter_height)
+        )
+        parts.append(add_box(
+            f"{prefix}_{stall_index:02d}_Counter", counter_size, counter_centre,
+            counter,
+        ))
+        fascia_size = (
+            (stall_width * 0.94, 0.055, counter_height * 0.72)
+            if axis in {"front", "rear"}
+            else (0.055, stall_width * 0.94, counter_height * 0.72)
+        )
+        parts.append(add_box(
+            f"{prefix}_{stall_index:02d}_Fascia", fascia_size,
+            point(along, counter_depth + 0.035, base_z + counter_height * 0.48),
+            iron,
+        ))
+        crate_width = stall_width * 0.84 / crate_count
+        for crate_index in range(crate_count):
+            crate_along = along - stall_width * 0.36 + stall_width * 0.72 * (crate_index + 0.5) / crate_count
+            crate_size = (
+                (crate_width * 0.90, counter_depth * 0.66, 0.22)
+                if axis in {"front", "rear"}
+                else (counter_depth * 0.66, crate_width * 0.90, 0.22)
+            )
+            crate_centre = point(crate_along, counter_depth * 0.60, base_z + counter_height + 0.11)
+            parts.append(add_box(
+                f"{prefix}_{stall_index:02d}_Crate{crate_index:02d}",
+                crate_size, crate_centre, crate,
+            ))
+            produce_mat = produce_materials[(stall_index + crate_index) % len(produce_materials)]
+            for produce_index in range(produce_per_crate):
+                lateral = (produce_index % 3 - 1) * crate_width * 0.20
+                normal = counter_depth * (0.45 + 0.16 * (produce_index // 3))
+                location = point(crate_along + lateral, normal, base_z + counter_height + 0.28 + 0.035 * (produce_index % 2))
+                parts.append(add_foliage(
+                    f"{prefix}_{stall_index:02d}_Produce{crate_index:02d}_{produce_index:02d}",
+                    location, (0.105, 0.105, 0.09), produce_mat, subdivisions=1,
+                ))
+        for light_index in range(light_count):
+            light_along = along - stall_width * 0.32 + stall_width * 0.64 * light_index / max(1, light_count - 1)
+            parts.append(add_foliage(
+                f"{prefix}_{stall_index:02d}_Light{light_index:02d}",
+                point(light_along, 0.16, base_z + 2.72), (0.065, 0.065, 0.075),
+                light, subdivisions=1,
             ))
 
 
@@ -7407,8 +7560,9 @@ def _graph_tie_grid(parts: list, spec: dict, mats: dict) -> None:
     columns = max(2, int(spec.get("columns", 6)))
     rows = max(2, int(spec.get("rows", 3)))
     radius = float(spec.get("radius_m", 0.035))
-    mat = _graph_material(mats, "massing_joint")
+    mat = _graph_material(mats, spec.get("material", "massing_joint"))
     prefix = str(spec.get("id", "GraphTies"))
+    style = str(spec.get("style", "disc"))
     for row in range(rows):
         z = cz - height / 2 + height * (row + 0.5) / rows
         for column in range(columns):
@@ -7419,9 +7573,18 @@ def _graph_tie_grid(parts: list, spec: dict, mats: dict) -> None:
             else:
                 location = (cx, cy + along, z)
                 rotation = (0.0, math.pi / 2, 0.0)
-            tie = add_cylinder(f"{prefix}_{row:02d}_{column:02d}", radius, 0.028, location, mat, 12)
-            tie.rotation_euler = rotation
-            parts.append(tie)
+            if style == "vertical_bar":
+                bar_length = max(0.12, float(spec.get("bar_length_m", 0.46)))
+                bar_width = max(0.025, float(spec.get("bar_width_m", radius * 1.6)))
+                bar_depth = max(0.018, float(spec.get("bar_depth_m", 0.045)))
+                size = (bar_width, bar_depth, bar_length) if axis in ("front", "rear") else (bar_depth, bar_width, bar_length)
+                parts.append(add_beveled_box(
+                    f"{prefix}_{row:02d}_{column:02d}", size, location, mat, min(0.012, bar_width * 0.18),
+                ))
+            else:
+                tie = add_cylinder(f"{prefix}_{row:02d}_{column:02d}", radius, 0.028, location, mat, 12)
+                tie.rotation_euler = rotation
+                parts.append(tie)
 
 
 def _graph_shadow_line(parts: list, spec: dict, mats: dict) -> None:
@@ -9741,6 +9904,8 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
             _graph_pitched_roof_frame(parts, assembly, mats)
         elif kind == "awning_schedule":
             _graph_awning_schedule(parts, assembly, mats)
+        elif kind == "market_stall_schedule":
+            _graph_market_stall_schedule(parts, assembly, mats)
         elif kind == "ribbon_window":
             _graph_curtain_wall(parts, assembly, mats, ribbon=True)
         elif kind == "steps":

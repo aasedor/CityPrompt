@@ -22,7 +22,7 @@ ROWS = [
         "family": "amsterdam-step-gable-gothic-v80",
         "view": "front_corner_oblique",
         "status": "KEEPER",
-        "finding": "The image—not generic metadata—now fixes three occupied levels, ten front openings, a flat-topped capped crow-step silhouette, sparse side sash, and a steep charcoal tile roof.",
+        "finding": "Three occupied levels, exact sash schedules and the capped crow-step remain image-locked. Round two adds a paneled oak door, glazed diamond fanlight and black masonry anchors instead of flat dark placeholders.",
     },
     {
         "slug": "mercat",
@@ -32,7 +32,7 @@ ROWS = [
         "family": "barcelona-mercat-modernista-v80",
         "view": "archetype_match",
         "status": "PROVISIONAL",
-        "finding": "The image schedule fixes four open stall frontages, recessed occupied backdrops, perimeter awnings, arched iron clerestories, and the orthogonal multi-aisle roof graph. Produce-stall dressing remains outside this geometry pilot.",
+        "finding": "The image-locked roof and real open bays now gain continuous brick piers plus counters, crates, produce and warm task lights on all four frontages. Fine iron ornament and photographic entourage remain provisional.",
     },
 ]
 
@@ -89,8 +89,8 @@ def comparison_board() -> Path:
     width, row_height, header_height = 2400, 570, 150
     board = Image.new("RGB", (width, header_height + row_height * len(ROWS)), "#11161b")
     draw = ImageDraw.Draw(board)
-    draw.text((55, 28), "v80 exact archetype vs generated geometry", font=font(42, True), fill="#f5f1e8")
-    draw.text((55, 88), "Image-measured feature schedules | selective metadata | real void depth | material continuity", font=font(24), fill="#aeb8c2")
+    draw.text((55, 28), "v81 refinement — exact archetype vs generated geometry", font=font(42, True), fill="#f5f1e8")
+    draw.text((55, 88), "Image-lock topology | real void depth | occupied opening kits | material continuity", font=font(24), fill="#aeb8c2")
     tile = (880, 470)
     for index, row in enumerate(ROWS):
         y = header_height + index * row_height
@@ -113,7 +113,7 @@ def roof_board() -> Path:
     width, row_height, header_height = 2400, 500, 140
     board = Image.new("RGB", (width, header_height + row_height * len(ROWS)), "#11161b")
     draw = ImageDraw.Draw(board)
-    draw.text((55, 26), "v80 roof-plan and material audit", font=font(42, True), fill="#f5f1e8")
+    draw.text((55, 26), "v81 refinement — roof-plan and material audit", font=font(42, True), fill="#f5f1e8")
     draw.text((55, 83), "Exact aerial evidence beside the generated aerial and independent roof-audit camera", font=font(23), fill="#aeb8c2")
     tile = (730, 410)
     for index, row in enumerate(ROWS):
@@ -137,12 +137,13 @@ def main() -> None:
     roof = roof_board()
     summary = {
         "schema": "two-building-image-lock-review@1",
-        "pipeline_version": "v80",
+        "pipeline_version": "v81 refinement on v80 image-lock pilots",
         "method": [
             "exact reference roles become numeric feature schedules",
             "required graph nodes, assemblies and voids are production gates",
             "metadata is disabled or selectively admitted only when image-consistent",
             "human comparison remains the final keeper decision",
+            "occupied opening kits add bounded public-edge detail without changing validated topology",
         ],
         "buildings": [
             {
