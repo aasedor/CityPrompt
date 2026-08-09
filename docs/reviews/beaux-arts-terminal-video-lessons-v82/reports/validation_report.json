@@ -1,0 +1,203 @@
+{
+  "status": "pass",
+  "family": "beaux-arts-terminal-video-lessons-v82",
+  "archetype_id": "intermodal_transit_hub",
+  "reuse_keys": [
+    "intermodal_transit_hub",
+    "civic_infrastructure",
+    "Transportation"
+  ],
+  "manifest": "beaux-arts-terminal-video-lessons-v82_manifest.json",
+  "errors": [],
+  "warnings": [
+    "beaux-arts-terminal-video-lessons-v82_assembled.glb: 132272 triangles (heavy; consider simplification)",
+    "beaux-arts-terminal-video-lessons-v82_assembled.glb: 15 materials (many; consider consolidation)",
+    "beaux-arts-terminal-video-lessons-v82_assembled.glb: 10.4 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "beaux-arts-terminal-video-lessons-v82_podium.glb",
+      "status": "ok",
+      "triangles": 48580,
+      "extent_m": {
+        "width_x": 70.56,
+        "height_y": 7.04,
+        "depth_z": 57.74
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_Glass",
+        "MAT_Interior_Room_00",
+        "MAT_Interior_Room_01",
+        "MAT_Interior_Room_02",
+        "MAT_Interior_Room_03",
+        "MAT_Interior_Shadow",
+        "MAT_Interior_Warm"
+      ],
+      "size_bytes": 4336312
+    },
+    {
+      "file": "beaux-arts-terminal-video-lessons-v82_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 62660,
+      "extent_m": {
+        "width_x": 70.52,
+        "height_y": 6.5,
+        "depth_z": 56.88
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_Glass",
+        "MAT_Interior_Room_00",
+        "MAT_Interior_Room_01",
+        "MAT_Interior_Room_02",
+        "MAT_Interior_Room_03"
+      ],
+      "size_bytes": 4880388
+    },
+    {
+      "file": "beaux-arts-terminal-video-lessons-v82_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 62660,
+      "extent_m": {
+        "width_x": 70.52,
+        "height_y": 6.5,
+        "depth_z": 56.88
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_Glass",
+        "MAT_Interior_Room_00",
+        "MAT_Interior_Room_01",
+        "MAT_Interior_Room_02",
+        "MAT_Interior_Room_03"
+      ],
+      "size_bytes": 4880388
+    },
+    {
+      "file": "beaux-arts-terminal-video-lessons-v82_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 62660,
+      "extent_m": {
+        "width_x": 70.52,
+        "height_y": 6.5,
+        "depth_z": 56.88
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_Glass",
+        "MAT_Interior_Room_00",
+        "MAT_Interior_Room_01",
+        "MAT_Interior_Room_02",
+        "MAT_Interior_Room_03"
+      ],
+      "size_bytes": 4880388
+    },
+    {
+      "file": "beaux-arts-terminal-video-lessons-v82_setback_upper.glb",
+      "status": "ok",
+      "triangles": 62660,
+      "extent_m": {
+        "width_x": 70.52,
+        "height_y": 6.5,
+        "depth_z": 56.88
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_Glass",
+        "MAT_Interior_Room_00",
+        "MAT_Interior_Room_01",
+        "MAT_Interior_Room_02",
+        "MAT_Interior_Room_03"
+      ],
+      "size_bytes": 4896032
+    },
+    {
+      "file": "beaux-arts-terminal-video-lessons-v82_crown_crown.glb",
+      "status": "ok",
+      "triangles": 70376,
+      "extent_m": {
+        "width_x": 70.56,
+        "height_y": 6.555,
+        "depth_z": 56.88
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_Glass",
+        "MAT_Interior_Room_00",
+        "MAT_Interior_Room_01",
+        "MAT_Interior_Room_02",
+        "MAT_Interior_Room_03"
+      ],
+      "size_bytes": 5390100
+    },
+    {
+      "file": "beaux-arts-terminal-video-lessons-v82_roof.glb",
+      "status": "ok",
+      "triangles": 2528,
+      "extent_m": {
+        "width_x": 70.08,
+        "height_y": 2.35,
+        "depth_z": 56.08
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Glass",
+        "MAT_Roof"
+      ],
+      "size_bytes": 767864
+    },
+    {
+      "file": "beaux-arts-terminal-video-lessons-v82_assembled.glb",
+      "status": "ok",
+      "triangles": 132272,
+      "extent_m": {
+        "width_x": 70.7,
+        "height_y": 37.462,
+        "depth_z": 56.987
+      },
+      "bottom_y": -0.0,
+      "materials": [
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_GlazingInterior_industrial_sash_01",
+        "MAT_GlazingInterior_industrial_sash_02",
+        "MAT_GlazingInterior_industrial_sash_03",
+        "MAT_Interior_Warm",
+        "MAT_Massing_RecessShadow",
+        "MAT_Signature_AgedLeadRoof",
+        "MAT_Signature_BlackMetal",
+        "MAT_Signature_CutStone",
+        "MAT_Signature_DarkOakDoor",
+        "MAT_Signature_clock_face",
+        "MAT_Signature_terminal_window_glass",
+        "MAT_Signature_trainshed_glass"
+      ],
+      "size_bytes": 10901292,
+      "role": "assembled"
+    }
+  ]
+}

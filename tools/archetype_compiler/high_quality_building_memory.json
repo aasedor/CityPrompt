@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-08-08-occupied-opening-detail-v81",
+  "memory_version": "2026-08-09-multiscale-modular-material-v82",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "calibration_set": {
@@ -194,6 +194,26 @@
     {
       "id": "fidelity_view_is_variant_specific",
       "rule": "Each silhouette contract names the generated view whose projection best matches its authoritative reference. A single global hero camera may be used for presentation, but it must not force a false aspect or roofline comparison."
+    },
+    {
+      "id": "landmarks_have_fixed_repeatable_and_material_modules",
+      "rule": "Decompose every image-locked landmark into fixed ceremonial/end modules, repeatable structural bays and explicit material fields. Repeat only inside declared spans; never stretch the entrance, corner, clock tower, roof termination or another identity-bearing module."
+    },
+    {
+      "id": "detail_is_authored_at_multiple_scales",
+      "rule": "Approve large silhouette and section first, then medium shadow-bearing construction such as pilasters, cornices, ribs, purlins and side openings, then fine baked or instanced ornament. Fine detail cannot rescue wrong massing, and large geometry must not carry texture-scale noise."
+    },
+    {
+      "id": "transparent_roofs_are_non_overlapping_sections",
+      "rule": "Glass roof fields and opaque cladding occupy separate geometry with visible supporting structure and an unobstructed volume below. Never place transmissive glass over an opaque shell and call the result a glazed roof."
+    },
+    {
+      "id": "presentation_and_runtime_materials_are_separately_audited",
+      "rule": "Keep sun, world, fill, camera and context outside the exported GLB, but make them a reproducible presentation contract. Compare Cycles, Eevee and runtime Three.js independently so renderer parity problems are not misdiagnosed as missing geometry or vice versa."
+    },
+    {
+      "id": "optimize_after_section_and_silhouette_approval",
+      "rule": "For a bounded pilot, preserve the approved silhouette, voids and physical material section before consolidating repeated meshes, baking non-silhouette ornament or reducing texture payloads. Optimization must satisfy explicit triangle, material and delivery-envelope gates without erasing archetype evidence."
     }
   ],
   "construction_memory": {
@@ -781,6 +801,26 @@
       "symptom": "A heritage entrance has the correct opening size but reads as a black placeholder",
       "cause": "One dark slab was used for the entire door opening, omitting leaf panels, fanlight glazing and the small frame relief visible in the archetype.",
       "correction": "Split the entrance into a recessed paneled timber leaf and separately framed fanlight. Use real relief and glass at hero range while retaining the image-locked opening dimensions and depth."
+    },
+    {
+      "symptom": "A glazed barrel roof reads as coloured plastic or an opaque painted shell",
+      "cause": "The transmissive surface overlaps an opaque roof, lacks visible supporting structure, or encloses a blank volume that provides nothing credible to transmit or reflect.",
+      "correction": "Partition opaque and glass roof fields into non-overlapping shells, add silhouette-scale transverse ribs and depth-running purlins, keep the volume below open, and place bounded interior structure or activity where the reference supports it."
+    },
+    {
+      "symptom": "A building has the correct overall mass but still looks sparse and cartoonish",
+      "cause": "The pipeline jumped from large box/roof primitives directly to tiny texture detail, omitting the medium shadow-bearing construction that communicates architectural scale.",
+      "correction": "Add an explicit medium-detail pass after silhouette approval: bay pilasters, cornice courses, balustrade depth, roof ribs and purlins, edge returns, side-wall openings and fixed landmark furniture. Audit that layer from street, oblique and roof views before adding fine ornament."
+    },
+    {
+      "symptom": "Physical glazing is warm and dimensional in Cycles but black or flat in Eevee or the city runtime",
+      "cause": "The geometry and dielectric material are valid, but the real-time renderer uses a different transmission, environment, reflection or interior-LOD path.",
+      "correction": "Keep a reproducible Cycles reference, Eevee automation render and exported-GLB runtime capture. Tune renderer-specific optical parity without replacing valid glass with alpha plastic, and record remaining carved or silhouette gaps separately as modeling work."
+    },
+    {
+      "symptom": "A high-detail keeper pilot exceeds triangle, material or delivery-envelope budgets",
+      "cause": "Every rib, ornament and material variation survived as unique geometry or a separate shader after visual approval.",
+      "correction": "Preserve fixed silhouette and void assemblies, instance or consolidate repeatable members, bake non-silhouette ornament to normal/AO/roughness, merge equivalent materials and downscale only textures whose visual contribution survives side-by-side review."
     }
   ]
 }

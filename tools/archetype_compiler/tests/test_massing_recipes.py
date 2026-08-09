@@ -130,3 +130,48 @@ def test_market_recipe_builds_cross_aisles_and_four_real_open_perimeters():
     assert graph["recipe_contract"]["front_open_bays"] == 8
     assert graph["recipe_contract"]["side_open_bays"] == 6
     assert graph["recipe_contract"]["footprint_projection_allowance_m"] == 5.2
+
+
+def test_terminal_recipe_separates_arcades_clock_and_unbacked_glass_vault():
+    from massing_recipes import compile_massing_recipe
+
+    graph = compile_massing_recipe({
+        "kind": "beaux_arts_trainshed_terminal",
+        "profile": "test_terminal",
+        "description": "image-locked terminal",
+        "headhouse_depth_m": 18.0,
+        "headhouse_height_m": 20.0,
+        "ground_arch_count": 9,
+        "upper_arch_count": 5,
+        "shed_width_m": 44.0,
+        "shed_rise_m": 13.5,
+        "glass_material": "terminal_window_glass",
+        "roof_glass_material": "trainshed_glass",
+    }, {**DIMENSIONS, "width_m": 70.0, "depth_m": 56.0, "default_floors": 3})
+
+    ground = next(node for node in graph["nodes"] if node["id"] == "ground_arcade")
+    upper = next(node for node in graph["nodes"] if node["id"] == "upper_arcade")
+    vault = next(item for item in graph["assemblies"] if item["id"] == "trainshed_barrel_glazing")
+    doors = next(item for item in graph["assemblies"] if item["id"] == "recessed_entry_doors")
+    assert ground["section_mode"] == "through"
+    assert ground["opening_count"] == 9
+    assert upper["opening_count"] == 5
+    assert upper["back_enabled"] is False
+    assert upper["back_glass_material"] == "terminal_window_glass"
+    assert vault["glass_material"] == "trainshed_glass"
+    assert vault["glass_depth_fraction"] == 0.58
+    assert len(doors["openings"]) == 9
+    assert {void["id"] for void in graph["voids"]} == {
+        "ground_arcade_tunnels", "open_trainshed_volume",
+    }
+    assert graph["recipe_contract"]["kind"] == "beaux_arts_trainshed_terminal"
+
+
+def test_video_lessons_terminal_profile_is_selective_and_image_locked():
+    from signature_profiles import signature_for
+
+    profile = signature_for("beaux_arts_trainshed_terminal")
+    assert profile["evidence_policy"]["metadata_mode"] == "selective"
+    assert profile["glass_profile"] == "industrial_sash"
+    assert profile["massing_recipe"]["kind"] == "beaux_arts_trainshed_terminal"
+    assert profile["production_contract"]["image_lock"]["minimum_measurements"] == 10

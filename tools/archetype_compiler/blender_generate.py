@@ -34,7 +34,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from glass_profiles import glass_profile, glass_profile_for_grammar
 from generation_quality_contract import assess_generation_quality_contract
 
-GENERATOR_VERSION = "0.15.0"
+GENERATOR_VERSION = "0.16.0"
 SUPPORTED_SCHEMA_VERSION = 3
 
 # Set from CLI in main(); make_material reads them so build_materials stays a
@@ -8096,11 +8096,12 @@ def _graph_opening_block(parts: list, spec: dict, mats: dict) -> None:
             ))
     if str(spec.get("section_mode", "through")) == "recessed":
         for index, centre in enumerate(centres):
-            parts.append(add_box(
-                f"{prefix}_Back{index:02d}",
-                (opening_width * 0.94, 0.055, opening_height - opening_base - 0.08),
-                (centre, y1 - 0.035, base_z + opening_base + (opening_height - opening_base) / 2), back,
-            ))
+            if bool(spec.get("back_enabled", True)):
+                parts.append(add_box(
+                    f"{prefix}_Back{index:02d}",
+                    (opening_width * 0.94, 0.055, opening_height - opening_base - 0.08),
+                    (centre, y1 - 0.035, base_z + opening_base + (opening_height - opening_base) / 2), back,
+                ))
             if back_glass is not None:
                 parts.append(add_box(
                     f"{prefix}_BackGlass{index:02d}",
@@ -8124,6 +8125,163 @@ def _graph_opening_block(parts: list, spec: dict, mats: dict) -> None:
                     (centre, frame_y, base_z + opening_base + frame_height * 0.62),
                     back_frame,
                 ))
+
+
+def _graph_barrel_vault_glazing(parts: list, spec: dict, mats: dict) -> None:
+    """Physical glass barrel vault with visible ribs and optional metal end fields.
+
+    The shells partition the roof in depth, so glass never overlaps an opaque
+    backing. Transverse arches carry the silhouette while depth-running
+    purlins provide the medium-scale structure visible through the glazing.
+    """
+    cx, cy, eave_z = (float(value) for value in spec["centre"])
+    span = float(spec["span_m"])
+    depth = float(spec["depth_m"])
+    rise = float(spec["rise_m"])
+    segments = max(18, int(spec.get("segments", 32)))
+    rib_count = max(3, int(spec.get("rib_count", 8)))
+    purlin_count = max(5, int(spec.get("purlin_count", 11)))
+    profile = max(0.07, float(spec.get("profile_m", 0.16)))
+    glass = _graph_material(mats, spec.get("glass_material", "glass"))
+    frame = _graph_material(mats, spec.get("frame_material", "signature_metal"))
+    cap = _graph_material(mats, spec.get("cap_material", "signature_roof"))
+    prefix = str(spec.get("id", "GraphBarrelVault"))
+
+    glass_fraction = max(0.12, min(0.92, float(spec.get("glass_depth_fraction", 0.62))))
+    front_fraction = max(0.0, min(1.0 - glass_fraction, float(spec.get("front_cap_fraction", 0.18))))
+    glass_depth = depth * glass_fraction
+    front_depth = depth * front_fraction
+    rear_depth = max(0.0, depth - front_depth - glass_depth)
+    start_y = cy - depth / 2
+    if front_depth > 0.08:
+        parts.append(add_barrel_vault(
+            f"{prefix}_FrontMetalField", span, front_depth, rise,
+            (cx, start_y + front_depth / 2, eave_z), cap, 0.08, segments,
+        ))
+    parts.append(add_barrel_vault(
+        f"{prefix}_ClearField", span, glass_depth, rise,
+        (cx, start_y + front_depth + glass_depth / 2, eave_z), glass, 0.035, segments,
+    ))
+    if rear_depth > 0.08:
+        parts.append(add_barrel_vault(
+            f"{prefix}_RearMetalField", span, rear_depth, rise,
+            (cx, cy + depth / 2 - rear_depth / 2, eave_z), cap, 0.08, segments,
+        ))
+
+    for index in range(rib_count):
+        y = start_y + depth * index / max(1, rib_count - 1)
+        parts.append(add_barrel_vault(
+            f"{prefix}_TransverseRib{index:02d}", span + profile * 0.8,
+            profile * 0.74, rise + profile * 0.28, (cx, y, eave_z - profile * 0.04),
+            frame, profile * 0.62, segments,
+        ))
+    half = span / 2
+    for index in range(purlin_count):
+        theta = math.pi * (0.045 + 0.91 * index / max(1, purlin_count - 1))
+        x = cx + half * math.cos(theta)
+        z = eave_z + rise * math.sin(theta)
+        member = add_beveled_box(
+            f"{prefix}_LongitudinalPurlin{index:02d}",
+            (profile * 0.72, depth + 0.12, profile * 0.72),
+            (x, cy, z), frame, min(0.025, profile * 0.12),
+        )
+        parts.append(member)
+
+
+def _graph_clock_face_array(parts: list, spec: dict, mats: dict) -> None:
+    """Two legible clock faces with rims, ticks, and dimensional hands."""
+    cx, cy, cz = (float(value) for value in spec["centre"])
+    tower_width = float(spec["tower_width_m"])
+    diameter = float(spec["diameter_m"])
+    radius = diameter / 2
+    face = _graph_material(mats, spec.get("face_material", "clock_face"))
+    hands = _graph_material(mats, spec.get("hand_material", "signature_metal"))
+    prefix = str(spec.get("id", "GraphClock"))
+    planes = [
+        ("Front", (cx, cy - tower_width / 2 - 0.055, cz), (math.pi / 2, 0.0, 0.0), "front"),
+        ("Right", (cx + tower_width / 2 + 0.055, cy, cz), (0.0, math.pi / 2, 0.0), "right"),
+    ]
+    for label, location, rotation, axis in planes:
+        disc = add_cylinder(f"{prefix}_{label}Face", radius, 0.09, location, face, 40)
+        disc.rotation_euler = rotation
+        parts.append(disc)
+        parts.append(add_torus(
+            f"{prefix}_{label}Rim", radius * 0.93, max(0.045, radius * 0.035),
+            location, hands, rotation=rotation, major_segments=40, minor_segments=6,
+        ))
+        outward = -0.09 if axis == "front" else 0.09
+        for tick in range(12):
+            angle = math.pi * 2 * tick / 12
+            along_a = radius * 0.76 * math.cos(angle)
+            along_b = radius * 0.76 * math.sin(angle)
+            if axis == "front":
+                tick_location = (cx + along_a, location[1] + outward, cz + along_b)
+                tick_size = (0.11, 0.055, 0.27)
+            else:
+                tick_location = (location[0] + outward, cy + along_a, cz + along_b)
+                tick_size = (0.055, 0.11, 0.27)
+            tick_obj = add_beveled_box(
+                f"{prefix}_{label}Tick{tick:02d}", tick_size, tick_location,
+                hands, 0.018,
+            )
+            if axis == "front":
+                tick_obj.rotation_euler.y = -angle
+            else:
+                tick_obj.rotation_euler.x = angle
+            parts.append(tick_obj)
+        if axis == "front":
+            centre = (cx, location[1] + outward * 1.08, cz)
+            minute = (cx + radius * 0.08, centre[1], cz + radius * 0.62)
+            hour = (cx + radius * 0.42, centre[1], cz + radius * 0.10)
+        else:
+            centre = (location[0] + outward * 1.08, cy, cz)
+            minute = (centre[0], cy + radius * 0.08, cz + radius * 0.62)
+            hour = (centre[0], cy + radius * 0.42, cz + radius * 0.10)
+        parts.append(_graph_member_between(f"{prefix}_{label}Minute", centre, minute, 0.075, hands, vertices=10))
+        parts.append(_graph_member_between(f"{prefix}_{label}Hour", centre, hour, 0.095, hands, vertices=10))
+
+
+def _graph_station_concourse(parts: list, spec: dict, mats: dict) -> None:
+    """A shallow readable concourse placed beyond real entrance tunnels."""
+    cx, cy, base_z = (float(value) for value in spec["centre"])
+    width = float(spec["width_m"])
+    depth = float(spec["depth_m"])
+    height = float(spec["height_m"])
+    bays = max(3, int(spec.get("bay_count", 7)))
+    structure = _graph_material(mats, spec.get("structure_material", "signature_metal"))
+    interior = _graph_material(mats, spec.get("interior_material", "interior_warm"))
+    stone = _graph_material(mats, spec.get("floor_material", "signature_stone"))
+    prefix = str(spec.get("id", "GraphConcourse"))
+    parts.append(add_beveled_box(
+        f"{prefix}_TerrazzoFloor", (width, depth, 0.14),
+        (cx, cy, base_z + 0.07), stone, 0.02,
+    ))
+    column_y = cy + depth * 0.16
+    for index in range(bays + 1):
+        x = cx - width / 2 + width * index / bays
+        parts.append(add_beveled_box(
+            f"{prefix}_Column{index:02d}", (0.19, 0.19, height - 0.22),
+            (x, column_y, base_z + (height - 0.22) / 2), structure, 0.022,
+        ))
+    parts.append(add_beveled_box(
+        f"{prefix}_Beam", (width + 0.25, 0.28, 0.32),
+        (cx, column_y, base_z + height - 0.22), structure, 0.025,
+    ))
+    # Alternating warm room cards and dark gaps make transmitted glass read as
+    # occupied depth instead of a single coloured plastic rectangle.
+    card_width = width / bays * 0.70
+    back_y = cy + depth / 2 - 0.08
+    for index in range(bays):
+        x = cx - width / 2 + width * (index + 0.5) / bays
+        parts.append(add_box(
+            f"{prefix}_WarmDepth{index:02d}", (card_width, 0.035, height * 0.58),
+            (x, back_y, base_z + height * 0.48), interior,
+        ))
+        parts.append(add_foliage(
+            f"{prefix}_Pendant{index:02d}",
+            (x, cy - depth * 0.12, base_z + height * 0.72),
+            (0.10, 0.10, 0.10), interior, subdivisions=1,
+        ))
 
 
 def _graph_pointed_portal(parts: list, spec: dict, mats: dict) -> None:
@@ -9966,6 +10124,12 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
             _graph_curved_balcony_array(parts, assembly, mats)
         elif kind == "corbel_array":
             _graph_corbel_array(parts, assembly, mats)
+        elif kind == "barrel_vault_glazing":
+            _graph_barrel_vault_glazing(parts, assembly, mats)
+        elif kind == "clock_face_array":
+            _graph_clock_face_array(parts, assembly, mats)
+        elif kind == "station_concourse":
+            _graph_station_concourse(parts, assembly, mats)
         else:
             raise ValueError(f"massing graph assembly {assembly.get('id')!r} has unsupported kind {kind!r}")
 
@@ -10240,6 +10404,7 @@ def render_presentation_views(
     scene = bpy.context.scene
     engine = pick_render_engine(preferred_engine, samples)
     footprint = max(width, depth)
+    camera_contract = camera_contract or {}
 
     # The exported GLB carries complementary material LODs. Blender otherwise
     # renders both at once, letting the far baked window sit between physical
@@ -10378,9 +10543,11 @@ def render_presentation_views(
     sun_data = bpy.data.lights.new("PreviewSun", type="SUN")
     # Calibrated as an overcast-bright archviz rig. The previous 2.8-strength
     # sun clipped dark timber and masonry facade sheets into pale grey.
-    sun_data.energy = 1.55 if landmark else 1.35
+    sun_data.energy = float(camera_contract.get("sun_energy", 1.55 if landmark else 1.35))
     sun_data.angle = math.radians(2.8 if landmark else 4.0)
-    if landmark:
+    if camera_contract.get("sun_color"):
+        sun_data.color = hex_rgba(str(camera_contract["sun_color"]))[:3]
+    elif landmark:
         sun_data.color = (1.0, 0.90, 0.78)
     sun = bpy.data.objects.new("PreviewSun", sun_data)
     sun.rotation_euler = (math.radians(42), math.radians(-18), math.radians(-38))
@@ -10388,7 +10555,7 @@ def render_presentation_views(
     rig.append(sun)
 
     area_data = bpy.data.lights.new("PreviewFill", type="AREA")
-    area_data.energy = 390.0
+    area_data.energy = float(camera_contract.get("fill_energy", 390.0))
     area_data.shape = "DISK"
     area_data.size = footprint * 1.4
     area = bpy.data.objects.new("PreviewFill", area_data)
@@ -10410,8 +10577,12 @@ def render_presentation_views(
     world.use_nodes = True
     bg = world.node_tree.nodes.get("Background")
     if bg:
-        bg.inputs[0].default_value = (0.58, 0.67, 0.77, 1.0)
-        bg.inputs[1].default_value = 0.34
+        bg.inputs[0].default_value = (
+            hex_rgba(str(camera_contract["world_color"]))
+            if camera_contract.get("world_color")
+            else (0.58, 0.67, 0.77, 1.0)
+        )
+        bg.inputs[1].default_value = float(camera_contract.get("world_strength", 0.34))
 
     try:
         scene.view_settings.look = "AgX - Medium High Contrast"
@@ -10438,7 +10609,6 @@ def render_presentation_views(
 
     dist = max(footprint * 2.15, focus_height * 1.95)
     context_dist = max(footprint * 4.2, focus_height * 3.5)
-    camera_contract = camera_contract or {}
     camera_x = 1.0 if camera_side == "right" else -1.0
     oblique_x_scale = max(0.30, float(camera_contract.get("oblique_x_scale", 0.88)))
     identity_distance_scale = max(0.75, float(camera_contract.get("identity_distance_scale", 1.0)))

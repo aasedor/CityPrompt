@@ -1,0 +1,236 @@
+{
+  "schema": "architectural-signatures@1",
+  "description": "V82 video-lessons pilot: modular construction, multi-scale detail, physical glazing, readable interiors, and presentation parity.",
+  "profiles": {
+    "beaux_arts_trainshed_terminal": {
+      "identity": "Long warm-limestone Beaux-Arts headhouse with two stacked arched orders, a fixed offset clock tower, and a separate iron-and-glass barrel-vault trainshed with metal-clad end fields.",
+      "material_zones": "warm textured limestone headhouse; rusticated lower arcade; bronze-black iron sash; clear roof glazing; oxidized metal vault ends; red-brick trainshed walls; warm visible concourse",
+      "evidence_policy": {
+        "authority": "reference_images",
+        "metadata_mode": "selective",
+        "selected_metadata": [
+          {
+            "path": "selectedVariant.facadeDetail.primaryMaterial",
+            "cue": "dressed limestone ashlar",
+            "purpose": "headhouse material family only",
+            "image_consistent": true
+          },
+          {
+            "path": "selectedVariant.roofDetail.form",
+            "cue": "semicircular barrel-vault trainshed glazed roof rising behind",
+            "purpose": "roof topology only",
+            "image_consistent": true
+          },
+          {
+            "path": "selectedVariant.facadeDetail.groundFloor",
+            "cue": "rusticated stone arcade with arched openings and recessed iron-grille entry doors",
+            "purpose": "deep ground-arcade section",
+            "image_consistent": true
+          }
+        ],
+        "ignored_metadata": [
+          {
+            "path": "selectedVariant.suggestedDimensions",
+            "reason": "generic dimensions do not resolve the image-specific headhouse-to-trainshed proportions"
+          },
+          {
+            "path": "renderPrompt",
+            "reason": "presentation prose does not determine construction geometry"
+          }
+        ]
+      },
+      "dimension_overrides": {
+        "podium_height_m": 7.0,
+        "floor_height_m": 6.5,
+        "roof_height_m": 2.8,
+        "default_floors": 3
+      },
+      "material_overrides": {
+        "primary": {
+          "texture_key": "limestone",
+          "base_color": "#d3c2a2",
+          "roughness": 0.82,
+          "texture_tint_mode": "COLOR",
+          "texture_tint_strength": 0.12
+        },
+        "secondary": {
+          "texture_key": "red_brick",
+          "base_color": "#744737",
+          "roughness": 0.88,
+          "texture_tint_mode": "MULTIPLY",
+          "texture_tint_strength": 0.18
+        },
+        "roof": {
+          "texture_key": "standing_seam",
+          "base_color": "#56645e",
+          "roughness": 0.52,
+          "metallic": 0.55
+        }
+      },
+      "signature_material_overrides": {
+        "signature_stone": {
+          "texture_key": "limestone",
+          "base_color": "#dfcfad",
+          "roughness": 0.78,
+          "texture_tint_mode": "COLOR",
+          "texture_tint_strength": 0.10
+        },
+        "signature_roof": {
+          "texture_key": "standing_seam",
+          "base_color": "#4f605b",
+          "roughness": 0.50,
+          "metallic": 0.58,
+          "texture_tint_mode": "COLOR",
+          "texture_tint_strength": 0.10
+        },
+        "signature_metal": {
+          "texture_key": "black_metal",
+          "base_color": "#292d2b",
+          "roughness": 0.38,
+          "metallic": 0.68
+        },
+        "trainshed_glass": {
+          "base_color": "#aab5af",
+          "roughness": 0.10,
+          "metallic": 0.0,
+          "transmission": 0.78,
+          "ior": 1.50,
+          "coat_weight": 0.34,
+          "coat_roughness": 0.06
+        },
+        "terminal_window_glass": {
+          "base_color": "#a9987f",
+          "roughness": 0.10,
+          "metallic": 0.0,
+          "transmission": 0.72,
+          "ior": 1.49,
+          "coat_weight": 0.24,
+          "coat_roughness": 0.10,
+          "emission_color": "#5a3822",
+          "emission_strength": 0.015
+        },
+        "clock_face": {
+          "base_color": "#e8dfc8",
+          "roughness": 0.68,
+          "metallic": 0.0
+        }
+      },
+      "glass_profile": "industrial_sash",
+      "production_contract": {
+        "identity_mode": "massing_graph",
+        "fixed_identity": [
+          "five monumental upper arched windows over nine ground arcade tunnels",
+          "offset two-faced clock tower with dimensional clock furniture",
+          "separate barrel-vault trainshed with transparent middle field and metal-clad ends",
+          "visible iron roof ribs, purlins and shallow occupied concourse"
+        ],
+        "repeatable_capacity": [
+          "ground and upper headhouse bay modules between fixed end returns",
+          "transverse trainshed rib module between fixed roof end fields"
+        ],
+        "quality_contract_version": 2,
+        "metadata_cues": [
+          "dressed limestone ashlar",
+          "semicircular barrel-vault trainshed glazed roof rising behind",
+          "rusticated stone arcade with arched openings and recessed iron-grille entry doors"
+        ],
+        "image_lock": {
+          "required_reference_roles": ["street_identity", "oblique_massing", "roof_plan"],
+          "minimum_measurements": 10,
+          "measurements": [
+            {"feature": "overall frontage", "role": "roof_plan", "value": 70.0, "unit": "metres", "drives": "headhouse width"},
+            {"feature": "overall depth", "role": "roof_plan", "value": 56.0, "unit": "metres", "drives": "terminal depth"},
+            {"feature": "headhouse depth", "role": "roof_plan", "value": 18.0, "unit": "metres", "drives": "headhouse module"},
+            {"feature": "headhouse height", "role": "street_identity", "value": 20.0, "unit": "metres", "drives": "two stacked arched orders"},
+            {"feature": "ground arches", "role": "street_identity", "value": 9, "unit": "count", "drives": "ground_arcade"},
+            {"feature": "upper arches", "role": "street_identity", "value": 5, "unit": "count", "drives": "upper_arcade"},
+            {"feature": "trainshed span", "role": "roof_plan", "value": 44.0, "unit": "metres", "drives": "barrel vault span"},
+            {"feature": "trainshed eave", "role": "oblique_massing", "value": 10.2, "unit": "metres", "drives": "barrel spring datum"},
+            {"feature": "trainshed rise", "role": "oblique_massing", "value": 13.5, "unit": "metres", "drives": "barrel silhouette"},
+            {"feature": "transparent roof fraction", "role": "roof_plan", "value": 0.58, "unit": "fraction", "drives": "non-overlapping glass roof field"},
+            {"feature": "clock tower offset", "role": "street_identity", "value": 21.0, "unit": "metres right of centre", "drives": "fixed landmark placement"}
+          ],
+          "required_node_ids": [
+            "terminal_floor", "ground_arcade", "upper_arcade", "headhouse_rear_wall",
+            "headhouse_roof", "shed_left_wall", "shed_right_wall", "clock_tower_core",
+            "clock_tower_cupola"
+          ],
+          "required_assembly_ids": [
+            "trainshed_barrel_glazing", "shed_front_arch_glazing", "shed_rear_arch_glazing",
+            "clock_faces", "front_cornice_corbel_course", "front_balustrade_posts",
+            "interior_concourse"
+          ],
+          "required_void_ids": ["ground_arcade_tunnels", "open_trainshed_volume"],
+          "required_node_kinds": {"opening_block": 2, "box": 5, "roof_slab": 4, "hipped_roof": 1},
+          "required_assembly_kinds": {
+            "barrel_vault_glazing": 1,
+            "gable_end_glazing": 2,
+            "clock_face_array": 1,
+            "station_concourse": 1,
+            "corbel_array": 1
+          }
+        },
+        "material_continuity": {
+          "required_textured_materials": ["primary", "secondary", "signature_stone", "signature_roof"],
+          "node_bindings": [
+            {"kind": "opening_block", "ids": ["ground_arcade", "upper_arcade"], "slots": {"material": "primary", "trim_material": "signature_stone"}},
+            {"kind": "box", "ids": ["shed_left_wall", "shed_right_wall"], "slots": {"material": "secondary"}}
+          ],
+          "assembly_bindings": [
+            {"kind": "barrel_vault_glazing", "slots": {"glass_material": "trainshed_glass", "frame_material": "signature_metal", "cap_material": "signature_roof"}},
+            {"kind": "gable_end_glazing", "slots": {"glass_material": "trainshed_glass", "frame_material": "signature_metal", "edge_material": "secondary"}},
+            {"kind": "clock_face_array", "slots": {"face_material": "clock_face", "hand_material": "signature_metal"}}
+          ]
+        }
+      },
+      "massing_recipe": {
+        "kind": "beaux_arts_trainshed_terminal",
+        "profile": "beaux_arts_trainshed_terminal_video_lessons_v82",
+        "description": "Image-measured Beaux-Arts terminal with modular limestone arcades, genuine entrance tunnels, fixed clock tower and an unbacked physical-glass barrel vault.",
+        "reference_views": [
+          {"role": "street_identity", "path": "/archetypes/buildings/intermodal-transit-hub/variant_1.png"},
+          {"role": "oblique_massing", "path": "/archetypes/buildings/intermodal-transit-hub/variant_1_angle_60.jpg"},
+          {"role": "roof_plan", "path": "/archetypes/buildings/intermodal-transit-hub/variant_1_angle_90.jpg"}
+        ],
+        "presentation_camera": {
+          "hero_side": "left",
+          "oblique_x_scale": 0.72,
+          "identity_distance_scale": 0.86,
+          "street_distance_scale": 0.92,
+          "sun_energy": 1.82,
+          "sun_color": "#ffd2a3",
+          "fill_energy": 245.0,
+          "world_color": "#8fa5b7",
+          "world_strength": 0.24
+        },
+        "headhouse_depth_m": 18.0,
+        "headhouse_height_m": 20.0,
+        "ground_height_m": 7.0,
+        "facade_depth_m": 2.5,
+        "ground_arch_count": 9,
+        "ground_arch_width_m": 4.6,
+        "ground_opening_height_m": 6.2,
+        "upper_arch_count": 5,
+        "upper_arch_width_m": 9.2,
+        "upper_opening_height_m": 11.3,
+        "shed_width_m": 44.0,
+        "shed_overlap_m": 1.4,
+        "shed_eave_height_m": 10.2,
+        "shed_rise_m": 13.5,
+        "clock_tower_x_m": 21.0,
+        "clock_tower_y_m": -17.5,
+        "clock_tower_width_m": 7.2,
+        "clock_tower_height_m": 14.5,
+        "glass_depth_fraction": 0.58,
+        "front_cap_fraction": 0.21,
+        "stone_material": "primary",
+        "trim_material": "signature_stone",
+        "iron_material": "signature_metal",
+        "glass_material": "terminal_window_glass",
+        "roof_glass_material": "trainshed_glass",
+        "brick_material": "secondary",
+        "roof_material": "signature_roof"
+      }
+    }
+  }
+}

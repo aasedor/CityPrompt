@@ -1,0 +1,21 @@
+{
+  "schema": "building-video-lessons-review@1",
+  "pipeline_version": "v82",
+  "family": "beaux-arts-terminal-video-lessons-v82",
+  "status": "provisional_keeper",
+  "methods_proven": [
+    "fixed landmark modules are separated from repeatable bay and rib modules",
+    "physical roof glass occupies a distinct field with no opaque backing",
+    "ground entrances are real through-passages with recessed doors and a shallow concourse",
+    "medium-scale iron purlins, facade pilasters, cornice blocks and side windows prevent flat massing",
+    "presentation lighting is an explicit recipe contract and does not enter the exported GLB",
+    "metadata is selective and admitted only where all exact images agree"
+  ],
+  "remaining_gaps": [
+    "fine carved Beaux-Arts ornament remains below the exact archetype",
+    "upper-window interiors need stronger room-readable parallax in Eevee and runtime Three.js",
+    "132272 triangles, 15 materials and 10.4 MB require a quality-preserving optimization pass",
+    "City Prompt/Three.js still needs to be compared against the now-documented Cycles and Eevee baselines"
+  ],
+  "validation": "pass_with_budget_warnings"
+}

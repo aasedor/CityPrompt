@@ -814,6 +814,326 @@ def _multi_aisle_market_hall(recipe: dict[str, Any], dims: dict[str, Any]) -> di
     }
 
 
+def _beaux_arts_trainshed_terminal(recipe: dict[str, Any], dims: dict[str, Any]) -> dict[str, Any]:
+    """Compile an image-locked limestone headhouse and open glazed trainshed.
+
+    The terminal is deliberately split into stable modules: a repeated arched
+    headhouse, a fixed clock-tower landmark, and a separately framed barrel
+    vault.  No opaque roof is placed below the trainshed glazing.
+    """
+    width = float(dims["width_m"])
+    depth = float(dims["depth_m"])
+    front_y, rear_y = -depth / 2, depth / 2
+    headhouse_depth = float(recipe.get("headhouse_depth_m", depth * 0.32))
+    wall_height = float(recipe.get("headhouse_height_m", 20.0))
+    ground_height = float(recipe.get("ground_height_m", 7.0))
+    upper_height = wall_height - ground_height
+    facade_depth = float(recipe.get("facade_depth_m", 2.4))
+    facade_y = front_y + facade_depth / 2
+    inner_y = front_y + headhouse_depth
+    stone = str(recipe.get("stone_material", "primary"))
+    trim = str(recipe.get("trim_material", "signature_stone"))
+    iron = str(recipe.get("iron_material", "signature_metal"))
+    glass = str(recipe.get("glass_material", "glass"))
+    roof_glass = str(recipe.get("roof_glass_material", glass))
+    brick = str(recipe.get("brick_material", "secondary"))
+    roof_metal = str(recipe.get("roof_material", "signature_roof"))
+
+    ground_count = int(recipe.get("ground_arch_count", 9))
+    upper_count = int(recipe.get("upper_arch_count", 5))
+    ground_width = float(recipe.get("ground_arch_width_m", 4.6))
+    upper_width = float(recipe.get("upper_arch_width_m", 9.2))
+    ground_opening_height = float(recipe.get("ground_opening_height_m", 6.2))
+    upper_opening_height = float(recipe.get("upper_opening_height_m", 11.3))
+    ground_spring = ground_opening_height - ground_width / 2
+    upper_spring = upper_opening_height - upper_width / 2
+    ground_margin = max(0.55, ground_width * 0.42)
+    ground_usable = width - ground_margin * 2
+    ground_bay = ground_usable / ground_count
+    ground_centres = [
+        -ground_usable / 2 + ground_bay * (index + 0.5)
+        for index in range(ground_count)
+    ]
+
+    shed_width = float(recipe.get("shed_width_m", width * 0.63))
+    shed_front_y = inner_y - float(recipe.get("shed_overlap_m", 1.4))
+    shed_depth = rear_y - shed_front_y
+    shed_eave = float(recipe.get("shed_eave_height_m", 10.2))
+    shed_rise = float(recipe.get("shed_rise_m", 13.5))
+    shed_centre_y = (shed_front_y + rear_y) / 2
+    side_wall = float(recipe.get("shed_wall_thickness_m", 1.25))
+    clock_x = float(recipe.get("clock_tower_x_m", width * 0.30))
+    clock_y = float(recipe.get("clock_tower_y_m", front_y + headhouse_depth * 0.58))
+    clock_width = float(recipe.get("clock_tower_width_m", 7.2))
+    clock_height = float(recipe.get("clock_tower_height_m", 14.5))
+
+    nodes: list[dict[str, Any]] = [
+        {
+            "id": "terminal_floor", "kind": "roof_slab",
+            "size": [width, depth, 0.28], "location": [0.0, 0.0, 0.14],
+            "material": "concrete", "bevel_m": 0.025,
+        },
+        {
+            "id": "ground_arcade", "kind": "opening_block",
+            "size": [width, facade_depth, ground_height],
+            "location": [0.0, facade_y, ground_height / 2],
+            "material": stone, "lining_material": trim, "trim_material": trim,
+            "opening_shape": "round_arch", "opening_count": ground_count,
+            "opening_width_m": ground_width, "opening_base_m": 0.18,
+            "opening_height_m": ground_opening_height, "spring_height_m": ground_spring,
+            "section_mode": "through", "trim_profile_m": 0.24,
+            "trim_depth_m": facade_depth, "bevel_m": 0.055,
+        },
+        {
+            "id": "upper_arcade", "kind": "opening_block",
+            "size": [width, facade_depth, upper_height],
+            "location": [0.0, facade_y, ground_height + upper_height / 2],
+            "material": stone, "lining_material": trim, "trim_material": trim,
+            "back_glass_material": glass, "back_frame_material": iron,
+            "back_enabled": False,
+            "opening_shape": "round_arch", "opening_count": upper_count,
+            "opening_width_m": upper_width, "opening_base_m": 0.50,
+            "opening_height_m": upper_opening_height, "spring_height_m": upper_spring,
+            "section_mode": "recessed", "trim_profile_m": 0.42,
+            "trim_depth_m": facade_depth, "bevel_m": 0.065,
+        },
+        {
+            "id": "headhouse_rear_wall", "kind": "box",
+            "size": [width, 1.1, wall_height],
+            "location": [0.0, inner_y - 0.55, wall_height / 2],
+            "material": stone, "bevel_m": 0.06,
+        },
+        {
+            "id": "headhouse_left_return", "kind": "box",
+            "size": [2.0, headhouse_depth - facade_depth, wall_height],
+            "location": [-width / 2 + 1.0, front_y + facade_depth + (headhouse_depth - facade_depth) / 2, wall_height / 2],
+            "material": stone, "bevel_m": 0.06,
+        },
+        {
+            "id": "headhouse_right_return", "kind": "box",
+            "size": [2.0, headhouse_depth - facade_depth, wall_height],
+            "location": [width / 2 - 1.0, front_y + facade_depth + (headhouse_depth - facade_depth) / 2, wall_height / 2],
+            "material": stone, "bevel_m": 0.06,
+        },
+        {
+            "id": "headhouse_mid_floor", "kind": "roof_slab",
+            "size": [width - 3.5, headhouse_depth - 2.5, 0.38],
+            "location": [0.0, front_y + headhouse_depth / 2, ground_height + 0.05],
+            "material": trim, "bevel_m": 0.035,
+        },
+        {
+            "id": "headhouse_roof", "kind": "roof_slab",
+            "size": [width + 0.7, headhouse_depth + 0.6, 0.55],
+            "location": [0.0, front_y + headhouse_depth / 2, wall_height + 0.275],
+            "material": trim, "bevel_m": 0.055,
+        },
+        {
+            "id": "shed_left_wall", "kind": "box",
+            "size": [side_wall, shed_depth, shed_eave],
+            "location": [-shed_width / 2 + side_wall / 2, shed_centre_y, shed_eave / 2],
+            "material": brick, "bevel_m": 0.055,
+        },
+        {
+            "id": "shed_right_wall", "kind": "box",
+            "size": [side_wall, shed_depth, shed_eave],
+            "location": [shed_width / 2 - side_wall / 2, shed_centre_y, shed_eave / 2],
+            "material": brick, "bevel_m": 0.055,
+        },
+        {
+            "id": "clock_tower_core", "kind": "box",
+            "size": [clock_width, clock_width, clock_height],
+            "location": [clock_x, clock_y, wall_height + clock_height / 2 - 0.3],
+            "material": stone, "bevel_m": 0.08,
+        },
+        {
+            "id": "clock_tower_cornice", "kind": "roof_slab",
+            "size": [clock_width + 1.15, clock_width + 1.15, 0.55],
+            "location": [clock_x, clock_y, wall_height + clock_height - 0.10],
+            "material": trim, "bevel_m": 0.05,
+        },
+        {
+            "id": "clock_tower_cupola", "kind": "hipped_roof",
+            "size": [clock_width + 0.25, clock_width + 0.25, 2.8],
+            "location": [clock_x, clock_y, wall_height + clock_height + 0.18],
+            "material": roof_metal, "ridge_axis": "x", "ridge_inset_m": 2.3,
+            "bevel_m": 0.045,
+        },
+    ]
+
+    assemblies: list[dict[str, Any]] = [
+        {
+            "id": "trainshed_barrel_glazing", "kind": "barrel_vault_glazing",
+            "centre": [0.0, shed_centre_y, shed_eave], "span_m": shed_width,
+            "depth_m": shed_depth, "rise_m": shed_rise,
+            "glass_depth_fraction": float(recipe.get("glass_depth_fraction", 0.58)),
+            "front_cap_fraction": float(recipe.get("front_cap_fraction", 0.21)),
+            "segments": 36, "rib_count": 8, "purlin_count": 13,
+            "glass_material": roof_glass, "frame_material": iron,
+            "cap_material": roof_metal, "profile_m": 0.18,
+        },
+        {
+            "id": "shed_front_arch_glazing", "kind": "gable_end_glazing", "axis": "front",
+            "base_centre": [0.0, shed_front_y - 0.07, shed_eave],
+            "width_m": shed_width - 2.2, "rise_m": shed_rise,
+            "head_style": "segmental_arch", "mullions": 11, "transoms": 5,
+            "glass_material": roof_glass, "frame_material": iron, "edge_material": brick,
+        },
+        {
+            "id": "shed_rear_arch_glazing", "kind": "gable_end_glazing", "axis": "rear",
+            "base_centre": [0.0, rear_y + 0.07, shed_eave],
+            "width_m": shed_width - 2.2, "rise_m": shed_rise,
+            "head_style": "segmental_arch", "mullions": 11, "transoms": 5,
+            "glass_material": roof_glass, "frame_material": iron, "edge_material": brick,
+        },
+        {
+            "id": "clock_faces", "kind": "clock_face_array",
+            "centre": [clock_x, clock_y, wall_height + clock_height * 0.61],
+            "tower_width_m": clock_width, "diameter_m": clock_width * 0.64,
+            "face_material": "clock_face", "hand_material": iron,
+        },
+        {
+            "id": "front_cornice_corbel_course", "kind": "corbel_array", "axis": "front",
+            "centre": [0.0, front_y - 0.08, 0.0], "span_m": width - 1.0,
+            "levels_z": [wall_height - 1.05, wall_height - 0.55], "count": 44,
+            "depth_m": 0.36, "height_m": 0.22, "material": trim,
+        },
+        {
+            "id": "front_balustrade_posts", "kind": "column_array",
+            "start": [-width / 2 + 1.2, front_y + 0.20, wall_height + 0.55],
+            "end": [width / 2 - 1.2, front_y + 0.20, wall_height + 0.55],
+            "count": 38, "section": [0.18, 0.18], "height_m": 1.15,
+            "material": trim, "bevel_m": 0.018,
+        },
+        {
+            "id": "front_balustrade_rail", "kind": "shadow_line", "axis": "front",
+            "centre": [0.0, front_y + 0.18, wall_height + 1.70],
+            "span_m": width - 0.8, "height_m": 0.28, "depth_m": 0.42,
+            "material": trim,
+        },
+        {
+            "id": "interior_concourse", "kind": "station_concourse",
+            "centre": [0.0, front_y + headhouse_depth * 0.56, 0.28],
+            "width_m": width - 8.0, "depth_m": headhouse_depth - 5.0,
+            "height_m": ground_height - 0.55, "bay_count": ground_count,
+            "structure_material": iron, "interior_material": "interior_warm",
+        },
+        {
+            "id": "upper_headhouse_depth", "kind": "station_concourse",
+            "centre": [0.0, front_y + 6.3, ground_height + 0.42],
+            "width_m": width - 7.0, "depth_m": 7.0,
+            "height_m": upper_height - 1.0, "bay_count": upper_count,
+            "structure_material": iron, "interior_material": "glazing_interior_1",
+            "floor_material": trim,
+        },
+        {
+            "id": "recessed_entry_doors", "kind": "punched_opening_schedule",
+            "axis": "front", "face_coordinate_m": front_y + 6.4,
+            "openings": [
+                {
+                    "type": "door", "along_m": centre, "base_z_m": 0.24,
+                    "width_m": ground_width * 0.70, "height_m": 4.9,
+                    "depth_m": 0.18, "frame_m": 0.13,
+                    "transom_height_m": 1.05, "panel_rows": 2, "panel_columns": 2
+                }
+                for centre in ground_centres
+            ],
+            "frame_material": iron, "door_material": "signature_door",
+            "glass_material": glass,
+        },
+        {
+            "id": "upper_order_pilasters", "kind": "column_array",
+            "start": [-width / 2 + 3.6, front_y - 0.22, ground_height + 0.05],
+            "end": [width / 2 - 3.6, front_y - 0.22, ground_height + 0.05],
+            "count": upper_count + 1, "section": [0.86, 0.74],
+            "height_m": upper_height - 0.25, "material": trim, "bevel_m": 0.035,
+        },
+        {
+            "id": "ground_upper_division_band", "kind": "shadow_line", "axis": "front",
+            "centre": [0.0, front_y - 0.30, ground_height + 0.13],
+            "span_m": width + 0.40, "height_m": 0.42, "depth_m": 0.72,
+            "material": trim,
+        },
+        {
+            "id": "shed_left_window_schedule", "kind": "punched_opening_schedule",
+            "axis": "left", "face_coordinate_m": -shed_width / 2 - 0.075,
+            "openings": [
+                {"type": "window", "along_m": shed_front_y + 4.5 + index * (shed_depth - 9.0) / 4,
+                 "base_z_m": 2.0, "width_m": 4.2, "height_m": 6.2,
+                 "columns": 2, "rows": 3, "reveal_m": 0.16, "surround_m": 0.12,
+                 "interior_recess_m": 0.30}
+                for index in range(5)
+            ],
+            "frame_material": iron, "surround_material": brick,
+            "glass_material": glass, "interior_material": "glazing_interior_2",
+            "minimum_rows": 3,
+        },
+        {
+            "id": "shed_right_window_schedule", "kind": "punched_opening_schedule",
+            "axis": "right", "face_coordinate_m": shed_width / 2 + 0.075,
+            "openings": [
+                {"type": "window", "along_m": shed_front_y + 4.5 + index * (shed_depth - 9.0) / 4,
+                 "base_z_m": 2.0, "width_m": 4.2, "height_m": 6.2,
+                 "columns": 2, "rows": 3, "reveal_m": 0.16, "surround_m": 0.12,
+                 "interior_recess_m": 0.30}
+                for index in range(5)
+            ],
+            "frame_material": iron, "surround_material": brick,
+            "glass_material": glass, "interior_material": "glazing_interior_3",
+            "minimum_rows": 3,
+        },
+        {
+            "id": "clock_front_finials", "kind": "pinnacle_array", "axis": "front",
+            "base_centre": [clock_x, clock_y - clock_width / 2, wall_height + clock_height + 0.36],
+            "span_m": clock_width - 0.7, "count": 2, "shaft_height_m": 0.72,
+            "cap_height_m": 0.48, "radius_m": 0.16, "material": trim,
+        },
+        {
+            "id": "clock_rear_finials", "kind": "pinnacle_array", "axis": "rear",
+            "base_centre": [clock_x, clock_y + clock_width / 2, wall_height + clock_height + 0.36],
+            "span_m": clock_width - 0.7, "count": 2, "shaft_height_m": 0.72,
+            "cap_height_m": 0.48, "radius_m": 0.16, "material": trim,
+        },
+    ]
+    for index in range(1, 10):
+        assemblies.append({
+            "id": f"rustication_joint_{index:02d}", "kind": "shadow_line", "axis": "front",
+            "centre": [0.0, front_y - 0.025, 0.62 * index], "span_m": width - 0.25,
+            "height_m": 0.045, "depth_m": 0.055, "material": "massing_joint",
+        })
+
+    return {
+        "schema": "massing-graph@1", "profile": str(recipe["profile"]),
+        "description": str(recipe["description"]),
+        "reference_views": deepcopy(recipe.get("reference_views") or []),
+        "height_m": wall_height + clock_height + 3.0,
+        "reference_dimensions": {
+            "width_m": width, "depth_m": depth, "floors": 3,
+            "floor_height_m": ground_height,
+        },
+        "nodes": nodes, "voids": [
+            {
+                "id": "ground_arcade_tunnels", "shape": "round_arch_passage", "axis": "front",
+                "size": [width - 5.0, headhouse_depth, ground_opening_height],
+                "location": [0.0, front_y + headhouse_depth / 2, ground_opening_height / 2],
+                "purpose": "nine image-confirmed recessed entrance tunnels into the concourse",
+            },
+            {
+                "id": "open_trainshed_volume", "shape": "barrel_vault_interior",
+                "size": [shed_width - side_wall * 2, shed_depth, shed_eave + shed_rise],
+                "location": [0.0, shed_centre_y, (shed_eave + shed_rise) / 2],
+                "purpose": "unblocked volume below physical glass and iron roof",
+            },
+        ],
+        "assemblies": assemblies,
+        "presentation_camera": deepcopy(recipe.get("presentation_camera") or {}),
+        "target_views": ["archetype_match", "street", "front_corner_oblique", "aerial", "roof_audit"],
+        "recipe_contract": {
+            "kind": "beaux_arts_trainshed_terminal", "ground_arches": ground_count,
+            "upper_arches": upper_count, "roof_node_ids": ["trainshed_barrel_glazing"],
+        },
+    }
+
+
 def compile_massing_recipe(recipe: dict[str, Any], dimensions: dict[str, Any]) -> dict[str, Any]:
     kind = str(recipe.get("kind", ""))
     if kind == "front_opening_landmark":
@@ -824,4 +1144,6 @@ def compile_massing_recipe(recipe: dict[str, Any], dimensions: dict[str, Any]) -
         return _stepped_gable_house(deepcopy(recipe), dimensions)
     if kind == "multi_aisle_market_hall":
         return _multi_aisle_market_hall(deepcopy(recipe), dimensions)
+    if kind == "beaux_arts_trainshed_terminal":
+        return _beaux_arts_trainshed_terminal(deepcopy(recipe), dimensions)
     raise ValueError(f"unsupported massing recipe kind {kind!r}")

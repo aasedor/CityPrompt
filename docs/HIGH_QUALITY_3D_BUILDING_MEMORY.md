@@ -799,6 +799,42 @@ assembly layer attached to validated openings, not a substitute for them.
   delivery-envelope checks as the base model. A richer render is not an excuse
   to weaken modular validation.
 
+### V82 multi-scale modular material and presentation lessons
+
+The Beaux-Arts terminal pilot applied the broader Blender-video synthesis to a
+single reference-rich landmark. It separated repeatable construction from
+fixed identity, built a real glass-and-iron trainshed section, added medium
+detail before fine ornament, and compared the exact references with both Eevee
+and Cycles.
+
+- Decompose a landmark into fixed ceremonial modules, repeatable structural
+  bays and material fields before adding decoration. The headhouse end returns,
+  clock tower and roof end fields remain fixed; ordinary arches and transverse
+  trainshed ribs may repeat only inside their declared spans.
+- Use a multi-scale detail contract. Large massing establishes the headhouse and
+  barrel silhouette; medium geometry supplies pilasters, cornice blocks, iron
+  ribs, purlins, balustrades and side-wall openings; fine baked or instanced
+  ornament is added only after those layers survive all reference views.
+- A transparent roof is a physical section, not a shader setting. Glass and
+  opaque metal occupy non-overlapping roof fields, visible iron structure sits
+  below and across the glazing, and the interior volume remains unobstructed.
+- Glazing realism requires an environment and something to see through or
+  reflect. Pair physical panes with a readable recessed interior and keep the
+  presentation world, sun and fill as a separate recipe contract that never
+  enters the exported GLB.
+- Compare Cycles, Eevee and the runtime independently. In this pilot Cycles
+  revealed warm transmitted depth that Eevee suppressed, proving that dark
+  real-time windows were chiefly a parity issue; both renderers still exposed
+  the same missing carved stone relief, which remains a modeling issue.
+- Prefer bounded high-detail pilots before optimization. Preserve the approved
+  silhouette and section, then consolidate repeated meshes, bake non-silhouette
+  ornament and reduce material/texture payloads against explicit triangle,
+  material and delivery-envelope warnings.
+- Metadata remains selective. Limestone family, recessed arcade section and
+  barrel-vault topology were admitted because all three exact images agreed;
+  feature counts, proportions, roof-field fractions and landmark placement
+  remained image-measured.
+
 ## Updating this memory
 
 When a pilot reveals a reusable lesson:
