@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-08-08-occupied-opening-detail-v81`.
+Current executable memory: `2026-08-09-baked-albedo-and-single-owner-detail-v85`.
 
 The current calibration set and catalogue rollout rationale are documented in
 [`BUILDING_GOLD_SET_PIPELINE_SYNTHESIS_2026-08-07.md`](BUILDING_GOLD_SET_PIPELINE_SYNTHESIS_2026-08-07.md).
@@ -902,6 +902,31 @@ facade sheets and cameras as controlled baselines.
   confirm that they do not replace fixed eaves, capitals, pediment relief,
   occupied arcade depth or correctly paced loading bays. Preserve the approved
   surfaces and spend the next pass on those medium-scale construction cues.
+
+### V85 three-new-archetype lessons
+
+The Classic Brownstone Streetwall, Blue Curtain-Wall Office and Nordic
+Mass-Timber Mid-Rise tested the current image-lock, facade-sheet, layered-glass
+and baked-surface workflow on three catalogue archetypes with no prior pilot
+artifacts.
+
+- The actual baked albedo is the delivered colour authority. The first
+  brownstone pass declared a pale roof but still rendered a dark membrane
+  because the bound V84 image map contained dark pixels. A new pale membrane
+  bake fixed the exact-aerial comparison and passed the surface audit; changing
+  only `base_color` would not have done so.
+- Give each architectural feature one owner. The first Nordic pass combined
+  loggias already present in the audited facade/glazing sheets with another
+  projecting balcony and picture-frame system, producing floating timber
+  cages. Removing the redundant assemblies retained the recessed loggia read
+  and reduced the assembled model from 43,536 to 24,464 triangles.
+- Automated preflight, geometry, PBR-channel and export-parity checks do not
+  prove that a facade sheet matches the exact variant composition. The office
+  passes every machine gate and its layered glazing is materially credible,
+  but the inherited rectified sheet assigns too much frontage to opaque metal
+  panels. It remains conditional until a variant-native sheet is approved.
+- Brownstone and Nordic timber are keeper candidates after exact-image review;
+  the office is a useful glass-method pilot but is not yet a catalogue keeper.
 
 ## Updating this memory
 

@@ -1,0 +1,174 @@
+{
+  "schema": "architectural-signatures@1",
+  "description": "Three genuinely new V85 pilots using image-locked construction roles, fixed medium detail and export-audited surface stories.",
+  "profiles": {
+    "classic_brownstone_traditional": {
+      "extends": "classic_brownstone_streetwall",
+      "identity": "Three attached warm-brownstone houses with elevated stoops, high parlor entrances, pale carved surrounds, tall sash windows, heavy bracketed cornices and a pale built-up roof behind party-wall parapets.",
+      "material_zones": "warm dressed brownstone walls and stoops; pale carved limestone surrounds and cornice; black wrought iron; dark timber doors; pale weathered roof membrane",
+      "glass_profile": "residential_low_e",
+      "dimension_overrides": {"width_m": 25.2, "depth_m": 19.0, "default_floors": 4, "roof_height_m": 0.8},
+      "material_overrides": {
+        "primary": {"texture_key": "brownstone_story_v85", "base_color": "#8d5b49", "roughness": 0.86, "baked_pbr": true, "texture_tile_metres": 3.4, "normal_strength": 0.82},
+        "secondary": {"texture_key": "carved_limestone_story_v85", "base_color": "#d7cdb7", "roughness": 0.79, "baked_pbr": true, "texture_tile_metres": 3.2, "normal_strength": 0.76},
+        "accent": {"texture_key": "black_metal_story_v85", "base_color": "#242526", "roughness": 0.42, "metallic": 0.56, "baked_pbr": true, "texture_tile_metres": 5.0, "normal_strength": 0.42},
+        "roof": {"texture_key": "pale_roof_membrane_story_v85", "base_color": "#c3c0b7", "roughness": 0.90, "baked_pbr": true, "texture_tile_metres": 7.0, "normal_strength": 0.38}
+      },
+      "signature_material_overrides": {
+        "signature_stone": {"texture_key": "carved_limestone_story_v85", "base_color": "#d7cdb7", "roughness": 0.79, "baked_pbr": true, "texture_tile_metres": 3.2, "normal_strength": 0.76},
+        "signature_metal": {"texture_key": "black_metal_story_v85", "base_color": "#242526", "roughness": 0.42, "metallic": 0.56, "baked_pbr": true, "texture_tile_metres": 5.0, "normal_strength": 0.42},
+        "signature_warm": {"texture_key": "oak_wood", "base_color": "#3a251c", "roughness": 0.53}
+      },
+      "evidence_policy": {
+        "authority": "reference_images",
+        "metadata_mode": "disabled",
+        "selected_metadata": [],
+        "ignored_metadata": [{"path": "*", "reason": "the three exact reference images provide a complete and safer construction contract"}]
+      },
+      "production_contract": {
+        "identity_mode": "massing_graph",
+        "fixed_identity": ["three elevated stoops", "three house divisions", "heavy bracketed cornice", "party-wall roof and chimney rhythm"],
+        "repeatable_capacity": ["ordinary sash-window bays within each fixed house division"],
+        "quality_contract_version": 3,
+        "image_lock": {
+          "required_reference_roles": ["street_identity", "oblique_massing", "roof_plan"],
+          "minimum_measurements": 8,
+          "measurements": [
+            {"feature": "attached house count", "role": "street_identity", "value": 3, "unit": "count", "drives": "fixed house divisions and stoops"},
+            {"feature": "frontage", "role": "roof_plan", "value": 25.2, "unit": "metres", "drives": "streetwall width"},
+            {"feature": "depth", "role": "roof_plan", "value": 19.0, "unit": "metres", "drives": "rowhouse depth"},
+            {"feature": "occupied wall height", "role": "street_identity", "value": 13.6, "unit": "metres", "drives": "facade stack"},
+            {"feature": "stoop rise", "role": "street_identity", "value": 1.55, "unit": "metres", "drives": "three stoop assemblies"},
+            {"feature": "cornice projection", "role": "oblique_massing", "value": 0.42, "unit": "metres", "drives": "fixed cornice courses"},
+            {"feature": "roof type", "role": "roof_plan", "value": 1, "unit": "flat membrane", "drives": "roof slab and parapets"},
+            {"feature": "chimney groups", "role": "roof_plan", "value": 4, "unit": "count", "drives": "party-wall chimney nodes"}
+          ],
+          "required_node_ids": ["brownstone_core", "brownstone_roof", "brownstone_front_parapet"],
+          "required_assembly_ids": ["brownstone_front_skin", "brownstone_stoop_left", "brownstone_stoop_centre", "brownstone_stoop_right", "brownstone_cornice_brackets"],
+          "required_node_kinds": {"box": 10},
+          "required_assembly_kinds": {"facade_skin_stack": 4, "rowhouse_stoop": 3, "corbel_array": 1}
+        },
+        "material_continuity": {"required_textured_materials": ["primary", "secondary", "accent", "roof", "signature_stone", "signature_metal"]},
+        "surface_finish": {
+          "method": "baked_pbr_story",
+          "required_baked_materials": ["primary", "signature_stone", "signature_metal", "roof"],
+          "material_roles": {"primary": "dressed_brownstone_wall", "signature_stone": "carved_limestone_trim", "signature_metal": "wrought_iron_stoop_rail", "roof": "built_up_roof_membrane"},
+          "required_channels": ["albedo", "roughness", "normal"],
+          "uv_contract": {"projection": "metric_box_plus_material_scale", "base_tile_metres": 2.0, "minimum_tile_metres": 3.0, "maximum_tile_metres": 8.0},
+          "semantic_weathering": ["brownstone variation remains quiet across the dressed facade", "cleaner pale stone is restricted to carved surrounds and cornice", "roof drainage variation remains behind the parapet"],
+          "qa_renders": ["neutral_source", "neutral_glb_roundtrip", "archetype_match", "aerial"]
+        }
+      },
+      "massing_graph": {
+        "schema": "massing-graph@1",
+        "profile": "classic_brownstone_three_house_v85",
+        "description": "Three fixed brownstone house divisions with construction-depth stoops, repeated rectified facade bands, bracketed cornice, party-wall parapets and a reviewed roof plan.",
+        "height_m": 15.8,
+        "reference_dimensions": {"width_m": 25.2, "depth_m": 19.0, "floors": 4, "floor_height_m": 3.2},
+        "reference_views": [
+          {"role": "street_identity", "path": "/archetypes/buildings/classic_brownstone_streetwall/variant_0.png"},
+          {"role": "oblique_massing", "path": "/archetypes/buildings/classic_brownstone_streetwall/variant_0_angle_60.jpg"},
+          {"role": "roof_plan", "path": "/archetypes/buildings/classic_brownstone_streetwall/variant_0_angle_90.jpg"}
+        ],
+        "presentation_camera": {"hero_side": "left", "oblique_x_scale": 0.66, "identity_distance_scale": 0.84, "street_distance_scale": 0.88},
+        "nodes": [
+          {"id": "brownstone_plinth", "kind": "box", "size": [25.5, 19.3, 0.22], "location": [0.0, 0.0, 0.11], "material": "signature_stone", "bevel_m": 0.03},
+          {"id": "brownstone_core", "kind": "box", "size": [24.6, 18.5, 13.6], "location": [0.0, 0.0, 6.8], "material": "primary", "bevel_m": 0.11},
+          {"id": "brownstone_roof", "kind": "roof_slab", "size": [24.9, 18.8, 0.28], "location": [0.0, 0.0, 13.74], "material": "roof", "bevel_m": 0.04},
+          {"id": "brownstone_front_parapet", "kind": "box", "size": [25.2, 0.38, 0.58], "location": [0.0, -9.27, 14.02], "material": "primary", "bevel_m": 0.04},
+          {"id": "brownstone_rear_parapet", "kind": "box", "size": [25.2, 0.38, 0.62], "location": [0.0, 9.27, 14.04], "material": "primary", "bevel_m": 0.04},
+          {"id": "brownstone_left_parapet", "kind": "box", "size": [0.38, 18.5, 0.62], "location": [-12.41, 0.0, 14.04], "material": "primary", "bevel_m": 0.04},
+          {"id": "brownstone_right_parapet", "kind": "box", "size": [0.38, 18.5, 0.62], "location": [12.41, 0.0, 14.04], "material": "primary", "bevel_m": 0.04},
+          {"id": "brownstone_party_wall_left", "kind": "box", "size": [0.34, 18.0, 0.82], "location": [-4.2, 0.0, 14.14], "material": "primary", "bevel_m": 0.035},
+          {"id": "brownstone_party_wall_right", "kind": "box", "size": [0.34, 18.0, 0.82], "location": [4.2, 0.0, 14.14], "material": "primary", "bevel_m": 0.035},
+          {"id": "brownstone_chimney_1", "kind": "box", "size": [0.72, 0.72, 1.65], "location": [-11.0, 5.5, 14.8], "material": "primary", "bevel_m": 0.04},
+          {"id": "brownstone_chimney_2", "kind": "box", "size": [0.72, 0.72, 1.65], "location": [-4.2, 5.2, 14.8], "material": "primary", "bevel_m": 0.04},
+          {"id": "brownstone_chimney_3", "kind": "box", "size": [0.72, 0.72, 1.65], "location": [4.2, 5.2, 14.8], "material": "primary", "bevel_m": 0.04},
+          {"id": "brownstone_chimney_4", "kind": "box", "size": [0.72, 0.72, 1.65], "location": [11.0, 5.5, 14.8], "material": "primary", "bevel_m": 0.04}
+        ],
+        "voids": [
+          {"id": "brownstone_front_service_cavity", "size": [24.8, 0.55, 13.2], "location": [0.0, -9.05, 6.8], "purpose": "depth reserve behind the rectified sash and entrance facade"}
+        ],
+        "assemblies": [
+          {"id": "brownstone_front_skin", "kind": "facade_skin_stack", "axis": "front", "base_centre": [0.0, -9.305, 0.22], "span_m": 24.9, "depth_m": 0.05, "levels": [{"band": "podium", "height_m": 4.0, "repeat_count": 3}, {"band": "floor", "height_m": 3.2, "repeat_count": 3}, {"band": "floor_alt", "height_m": 3.2, "repeat_count": 3}, {"band": "crown", "height_m": 3.2, "repeat_count": 3}]},
+          {"id": "brownstone_left_skin", "kind": "facade_skin_stack", "axis": "left", "base_centre": [-12.43, 0.0, 0.22], "span_m": 18.6, "depth_m": 0.05, "flip_u": true, "levels": [{"band": "podium", "height_m": 4.0, "repeat_count": 2}, {"band": "floor_alt", "height_m": 3.2, "repeat_count": 2}, {"band": "floor", "height_m": 3.2, "repeat_count": 2}, {"band": "crown", "height_m": 3.2, "repeat_count": 2}]},
+          {"id": "brownstone_right_skin", "kind": "facade_skin_stack", "axis": "right", "base_centre": [12.43, 0.0, 0.22], "span_m": 18.6, "depth_m": 0.05, "levels": [{"band": "podium", "height_m": 4.0, "repeat_count": 2}, {"band": "floor_alt", "height_m": 3.2, "repeat_count": 2}, {"band": "floor", "height_m": 3.2, "repeat_count": 2}, {"band": "crown", "height_m": 3.2, "repeat_count": 2}]},
+          {"id": "brownstone_rear_skin", "kind": "facade_skin_stack", "axis": "rear", "base_centre": [0.0, 9.305, 0.22], "span_m": 24.9, "depth_m": 0.05, "flip_u": true, "levels": [{"band": "podium", "height_m": 4.0, "repeat_count": 3}, {"band": "floor_alt", "height_m": 3.2, "repeat_count": 3}, {"band": "floor", "height_m": 3.2, "repeat_count": 3}, {"band": "crown", "height_m": 3.2, "repeat_count": 3}]},
+          {"id": "brownstone_house_divisions", "kind": "frame_grid", "axis": "front", "centre": [0.0, -9.40, 6.8], "span_m": 24.95, "height_m": 13.55, "columns": 3, "rows": 1, "active_vertical_indices": [0, 1, 2, 3], "active_horizontal_indices": [], "vertical_profile_m": 0.14, "vertical_depth_m": 0.18, "material": "primary"},
+          {"id": "brownstone_stoop_left", "kind": "rowhouse_stoop", "axis": "front", "base_centre": [-8.3, -9.34, 0.0], "width_m": 2.55, "run_m": 3.0, "rise_m": 1.55, "landing_depth_m": 1.0, "count": 10, "stone_material": "primary", "rail_material": "signature_metal"},
+          {"id": "brownstone_stoop_centre", "kind": "rowhouse_stoop", "axis": "front", "base_centre": [0.0, -9.34, 0.0], "width_m": 2.55, "run_m": 3.0, "rise_m": 1.55, "landing_depth_m": 1.0, "count": 10, "stone_material": "primary", "rail_material": "signature_metal"},
+          {"id": "brownstone_stoop_right", "kind": "rowhouse_stoop", "axis": "front", "base_centre": [8.3, -9.34, 0.0], "width_m": 2.55, "run_m": 3.0, "rise_m": 1.55, "landing_depth_m": 1.0, "count": 10, "stone_material": "primary", "rail_material": "signature_metal"},
+          {"id": "brownstone_cornice_lower", "kind": "shadow_line", "axis": "front", "centre": [0.0, -9.43, 13.10], "span_m": 25.2, "height_m": 0.18, "depth_m": 0.24, "material": "signature_stone"},
+          {"id": "brownstone_cornice_upper", "kind": "shadow_line", "axis": "front", "centre": [0.0, -9.48, 13.48], "span_m": 25.5, "height_m": 0.20, "depth_m": 0.34, "material": "signature_stone"},
+          {"id": "brownstone_cornice_brackets", "kind": "corbel_array", "axis": "front", "centre": [0.0, -9.41, 0.0], "span_m": 24.8, "count": 30, "levels_z": [13.26], "depth_m": 0.30, "height_m": 0.24, "width_ratio": 0.48, "material": "signature_stone"}
+        ],
+        "target_views": ["archetype_match", "street", "aerial", "facade_close", "roof_audit"]
+      }
+    },
+    "glass_office_blue_curtainwall": {
+      "extends": "modern_glass_office_institutional",
+      "identity": "Compact blue low-iron curtain-wall office with expressed dark corner mullions, silver transom bands, a double-height pale-stone lobby and a screened rooftop mechanical penthouse.",
+      "dimension_overrides": {"width_m": 30.0, "depth_m": 20.0, "default_floors": 10},
+      "material_overrides": {
+        "secondary": {"texture_key": "anodized_aluminum_story_v85", "base_color": "#74818a", "roughness": 0.48, "metallic": 0.62, "baked_pbr": true, "texture_tile_metres": 5.4, "normal_strength": 0.42},
+        "roof": {"texture_key": "roof_membrane_story_v84", "base_color": "#a9a9a4", "roughness": 0.88, "baked_pbr": true, "texture_tile_metres": 7.4, "normal_strength": 0.34}
+      },
+      "signature_material_overrides": {
+        "signature_stone": {"texture_key": "pale_lobby_stone_story_v85", "base_color": "#d8d5cc", "roughness": 0.42, "baked_pbr": true, "texture_tile_metres": 3.6, "normal_strength": 0.55},
+        "signature_metal": {"texture_key": "anodized_aluminum_story_v85", "base_color": "#74818a", "roughness": 0.48, "metallic": 0.62, "baked_pbr": true, "texture_tile_metres": 5.4, "normal_strength": 0.42}
+      },
+      "evidence_policy": {"authority": "reference_images", "metadata_mode": "disabled", "selected_metadata": [], "ignored_metadata": [{"path": "*", "reason": "the three exact reference images provide a complete and safer construction contract"}]},
+      "production_contract": {
+        "identity_mode": "massing_graph",
+        "fixed_identity": ["transparent double-height lobby", "dark expressed corner mullions", "silver curtain-wall grid", "screened mechanical penthouse"],
+        "repeatable_capacity": ["ordinary curtain-wall bays between fixed corner mullions"],
+        "quality_contract_version": 3,
+        "image_lock": {
+          "required_reference_roles": ["street_identity", "oblique_massing", "roof_plan"], "minimum_measurements": 7,
+          "measurements": [{"feature": "frontage", "role": "roof_plan", "value": 30.0, "unit": "metres", "drives": "curtain-wall span"}, {"feature": "depth", "role": "roof_plan", "value": 20.0, "unit": "metres", "drives": "side elevation span"}, {"feature": "curtain-wall levels", "role": "street_identity", "value": 9, "unit": "count", "drives": "transom rows"}, {"feature": "front structural bays", "role": "street_identity", "value": 10, "unit": "count", "drives": "front mullion grid"}, {"feature": "double-height lobby", "role": "street_identity", "value": 5.0, "unit": "metres", "drives": "public base"}, {"feature": "roof penthouse width", "role": "roof_plan", "value": 11.0, "unit": "metres", "drives": "mechanical screen"}, {"feature": "roof penthouse height", "role": "oblique_massing", "value": 3.2, "unit": "metres", "drives": "roof skyline"}],
+          "required_node_ids": ["glass_shadow_core", "glass_roof_deck", "glass_mechanical_penthouse", "glass_mechanical_cap"],
+          "required_assembly_ids": ["glass_front_elevation", "glass_front_depth_grid", "glass_front_glazing_overlay", "glass_mechanical_front_grid"],
+          "required_node_kinds": {"box": 6}, "required_assembly_kinds": {"facade_skin": 4, "frame_grid": 7, "glazing_overlay": 4}
+        },
+        "material_continuity": {"required_textured_materials": ["secondary", "signature_stone", "signature_metal", "roof"]},
+        "surface_finish": {"method": "baked_pbr_story", "required_baked_materials": ["secondary", "signature_stone", "roof"], "material_roles": {"secondary": "anodized_aluminum_curtain_wall_grid", "signature_stone": "polished_lobby_stone", "roof": "built_up_roof_membrane"}, "required_channels": ["albedo", "roughness", "normal"], "uv_contract": {"projection": "metric_box_plus_material_scale", "base_tile_metres": 2.0, "minimum_tile_metres": 3.0, "maximum_tile_metres": 8.0}, "semantic_weathering": ["aluminum variation remains subordinate to the glass grid", "pale stone variation is restricted to the lobby plinth", "roof drainage variation remains behind the parapet and screen"], "qa_renders": ["neutral_source", "neutral_glb_roundtrip", "archetype_match", "aerial"]}
+      },
+      "massing_graph": {
+        "profile": "blue_curtainwall_roof_screen_v85", "height_m": 38.2,
+        "reference_views": [{"role": "street_identity", "path": "/archetypes/buildings/modern_glass_office_institutional/variant_0.png"}, {"role": "oblique_massing", "path": "/archetypes/buildings/modern_glass_office_institutional/variant_0_angle_60.jpg"}, {"role": "roof_plan", "path": "/archetypes/buildings/modern_glass_office_institutional/variant_0_angle_90.jpg"}],
+        "presentation_camera": {"hero_side": "left", "oblique_x_scale": 0.62, "identity_distance_scale": 0.86, "street_distance_scale": 0.90},
+        "node_overrides": {"glass_roof_deck": {"material": "roof"}},
+        "append_nodes": [{"id": "glass_mechanical_penthouse", "kind": "box", "size": [11.0, 8.5, 3.2], "location": [1.0, 1.0, 35.2], "material": "signature_metal", "bevel_m": 0.08}, {"id": "glass_mechanical_cap", "kind": "box", "size": [11.5, 9.0, 0.22], "location": [1.0, 1.0, 36.91], "material": "secondary", "bevel_m": 0.05}, {"id": "glass_hvac_1", "kind": "box", "size": [2.1, 1.6, 0.95], "location": [-1.2, 0.2, 37.48], "material": "secondary", "bevel_m": 0.06}, {"id": "glass_hvac_2", "kind": "box", "size": [2.1, 1.6, 0.95], "location": [2.1, 0.2, 37.48], "material": "secondary", "bevel_m": 0.06}],
+        "append_assemblies": [{"id": "glass_mechanical_front_grid", "kind": "frame_grid", "axis": "front", "centre": [1.0, -3.31, 35.2], "span_m": 10.8, "height_m": 3.0, "columns": 8, "rows": 3, "profile_m": 0.055, "depth_m": 0.08, "material": "secondary"}, {"id": "glass_mechanical_left_grid", "kind": "frame_grid", "axis": "left", "centre": [-4.51, 1.0, 35.2], "span_m": 8.3, "height_m": 3.0, "columns": 6, "rows": 3, "profile_m": 0.055, "depth_m": 0.08, "material": "secondary"}, {"id": "glass_mechanical_right_grid", "kind": "frame_grid", "axis": "right", "centre": [6.51, 1.0, 35.2], "span_m": 8.3, "height_m": 3.0, "columns": 6, "rows": 3, "profile_m": 0.055, "depth_m": 0.08, "material": "secondary"}],
+        "target_views": ["archetype_match", "street", "aerial", "facade_close", "roof_audit"]
+      }
+    },
+    "nordic_timber_mass_timber": {
+      "extends": "nordic_timber_midrise",
+      "identity": "Seven-storey honey-tone mass-timber midrise with expressed glulam frame, deep loggia rails, vertical larch infill, transparent street level and an inhabited sedum roof around a timber pavilion.",
+      "dimension_overrides": {"width_m": 20.0, "depth_m": 16.0, "default_floors": 7},
+      "material_overrides": {"primary": {"texture_key": "natural_larch_story_v85", "base_color": "#9f7046", "roughness": 0.76, "baked_pbr": true, "texture_tile_metres": 3.2, "normal_strength": 0.78}, "accent": {"texture_key": "black_metal_story_v85", "base_color": "#242526", "roughness": 0.44, "metallic": 0.52, "baked_pbr": true, "texture_tile_metres": 5.0, "normal_strength": 0.40}, "roof": {"texture_key": "roof_membrane_story_v84", "base_color": "#414341", "roughness": 0.90, "baked_pbr": true, "texture_tile_metres": 7.0, "normal_strength": 0.34}, "green_roof": {"texture_key": "sedum_roof_story_v85", "base_color": "#60713f", "roughness": 0.92, "baked_pbr": true, "texture_tile_metres": 3.8, "normal_strength": 0.72}},
+      "signature_material_overrides": {"signature_warm": {"texture_key": "honey_glulam_story_v85", "base_color": "#986332", "roughness": 0.68, "baked_pbr": true, "texture_tile_metres": 3.0, "normal_strength": 0.70}, "signature_metal": {"texture_key": "black_metal_story_v85", "base_color": "#242526", "roughness": 0.44, "metallic": 0.52, "baked_pbr": true, "texture_tile_metres": 5.0, "normal_strength": 0.40}, "green_roof": {"texture_key": "sedum_roof_story_v85", "base_color": "#60713f", "roughness": 0.92, "baked_pbr": true, "texture_tile_metres": 3.8, "normal_strength": 0.72}},
+      "evidence_policy": {"authority": "reference_images", "metadata_mode": "disabled", "selected_metadata": [], "ignored_metadata": [{"path": "*", "reason": "the three exact reference images provide a complete and safer construction contract"}]},
+      "production_contract": {
+        "identity_mode": "massing_graph", "fixed_identity": ["expressed glulam perimeter frame", "deep front loggia rails", "vertical larch infill", "sedum roof terrace and pavilion"], "repeatable_capacity": ["ordinary larch/glass bays inside the fixed timber frame"], "quality_contract_version": 3,
+        "image_lock": {"required_reference_roles": ["street_identity", "oblique_massing", "roof_plan"], "minimum_measurements": 8, "measurements": [{"feature": "frontage", "role": "roof_plan", "value": 20.0, "unit": "metres", "drives": "timber frame span"}, {"feature": "depth", "role": "roof_plan", "value": 16.0, "unit": "metres", "drives": "side frame span"}, {"feature": "occupied levels", "role": "street_identity", "value": 7, "unit": "count", "drives": "floor datums"}, {"feature": "front structural bays", "role": "street_identity", "value": 4, "unit": "count", "drives": "glulam frame"}, {"feature": "loggia rail levels", "role": "street_identity", "value": 5, "unit": "count", "drives": "rectified façade sheet and glazing mask"}, {"feature": "roof terrace height", "role": "oblique_massing", "value": 23.2, "unit": "metres", "drives": "sedum deck"}, {"feature": "pavilion width", "role": "roof_plan", "value": 12.0, "unit": "metres", "drives": "roof pavilion"}, {"feature": "pavilion height", "role": "oblique_massing", "value": 3.2, "unit": "metres", "drives": "roof skyline"}], "required_node_ids": ["timber_shadow_core", "green_roof", "pavilion_roof"], "required_assembly_ids": ["timber_front_elevation", "timber_front_structure", "timber_roof_guard_front"], "required_node_kinds": {"box": 8}, "required_assembly_kinds": {"facade_skin": 4, "frame_grid": 8, "glazing_overlay": 4}},
+        "material_continuity": {"required_textured_materials": ["primary", "accent", "roof", "signature_warm", "signature_metal", "green_roof"]},
+        "surface_finish": {"method": "baked_pbr_story", "required_baked_materials": ["primary", "signature_warm", "signature_metal", "green_roof"], "material_roles": {"primary": "vertical_natural_larch_infill", "signature_warm": "glulam_post_and_beam_frame", "signature_metal": "dark_loggia_and_roof_rail", "green_roof": "mixed_sedum_roof_field"}, "required_channels": ["albedo", "roughness", "normal"], "uv_contract": {"projection": "metric_box_plus_material_scale", "base_tile_metres": 2.0, "minimum_tile_metres": 3.0, "maximum_tile_metres": 8.0}, "semantic_weathering": ["larch board variation stays aligned with the infill role", "glulam remains warmer and cleaner than larch infill", "sedum variation is restricted to the roof terrace"], "qa_renders": ["neutral_source", "neutral_glb_roundtrip", "archetype_match", "aerial"]}
+      },
+      "massing_graph": {
+        "profile": "nordic_mass_timber_terrace_v85",
+        "reference_views": [{"role": "street_identity", "path": "/archetypes/buildings/nordic_timber_midrise/variant_0.png"}, {"role": "oblique_massing", "path": "/archetypes/buildings/nordic_timber_midrise/variant_0_angle_60.jpg"}, {"role": "roof_plan", "path": "/archetypes/buildings/nordic_timber_midrise/variant_0_angle_90.jpg"}],
+        "presentation_camera": {"hero_side": "left", "oblique_x_scale": 0.68, "identity_distance_scale": 0.86, "street_distance_scale": 0.90},
+        "remove_assembly_ids": ["timber_front_picture_frames"],
+        "append_assemblies": [
+          {"id": "timber_roof_guard_front", "kind": "frame_grid", "axis": "front", "centre": [0.0, -8.06, 23.68], "span_m": 19.6, "height_m": 0.92, "columns": 14, "rows": 1, "vertical_profile_m": 0.035, "horizontal_profile_m": 0.045, "depth_m": 0.055, "material": "signature_metal"},
+          {"id": "timber_roof_guard_rear", "kind": "frame_grid", "axis": "rear", "centre": [0.0, 8.06, 23.68], "span_m": 19.6, "height_m": 0.92, "columns": 14, "rows": 1, "vertical_profile_m": 0.035, "horizontal_profile_m": 0.045, "depth_m": 0.055, "material": "signature_metal"},
+          {"id": "timber_roof_guard_left", "kind": "frame_grid", "axis": "left", "centre": [-10.06, 0.0, 23.68], "span_m": 15.6, "height_m": 0.92, "columns": 11, "rows": 1, "vertical_profile_m": 0.035, "horizontal_profile_m": 0.045, "depth_m": 0.055, "material": "signature_metal"},
+          {"id": "timber_roof_guard_right", "kind": "frame_grid", "axis": "right", "centre": [10.06, 0.0, 23.68], "span_m": 15.6, "height_m": 0.92, "columns": 11, "rows": 1, "vertical_profile_m": 0.035, "horizontal_profile_m": 0.045, "depth_m": 0.055, "material": "signature_metal"}
+        ],
+        "target_views": ["archetype_match", "street", "aerial", "facade_close", "roof_audit"]
+      }
+    }
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "schema": "three-new-archetypes-review@1",
+  "pipeline_version": "v85",
+  "batch_status": "two_keeper_candidates_one_conditional",
+  "buildings": [
+    {
+      "label": "Classic Brownstone Streetwall",
+      "status": "keeper candidate",
+      "validation": "pass",
+      "validation_warning_count": 0,
+      "surface_audit": "pass",
+      "glb_roundtrip_similarity": 0.96906,
+      "assembled_triangles": 32276,
+      "assembled_size_bytes": 3847132,
+      "finding": "Three physical stoops, party-wall roof divisions, chimneys and carved trim preserve the attached-house identity; the pale roof correction now matches the aerial evidence."
+    },
+    {
+      "label": "Blue Curtain-Wall Office",
+      "status": "conditional pilot",
+      "validation": "pass",
+      "validation_warning_count": 14,
+      "surface_audit": "pass",
+      "glb_roundtrip_similarity": 0.99701,
+      "assembled_triangles": 25104,
+      "assembled_size_bytes": 4111360,
+      "finding": "Layered glazing, occupied interior depth and a screened mechanical roof avoid plastic glass, but the inherited fa\u00e7ade sheet overstates the opaque metal-panel zone relative to the exact photo."
+    },
+    {
+      "label": "Nordic Mass-Timber Mid-Rise",
+      "status": "keeper candidate",
+      "validation": "pass",
+      "validation_warning_count": 7,
+      "surface_audit": "pass",
+      "glb_roundtrip_similarity": 0.99825,
+      "assembled_triangles": 24464,
+      "assembled_size_bytes": 5027520,
+      "finding": "The corrected pass removes redundant projecting frames and keeps the expressed glulam grid, recessed loggia read, larch infill, sedum terrace and roof pavilion."
+    }
+  ],
+  "methodology_lessons": [
+    "Baked albedo is authoritative: a declared material base colour does not repair a roof texture whose actual pixels have the wrong value.",
+    "One architectural feature needs one owning representation; duplicating loggias in both the fa\u00e7ade sheet and projecting geometry creates floating cages.",
+    "Automated geometry, PBR and export checks are necessary but cannot detect an archetype-specific fa\u00e7ade-sheet composition mismatch."
+  ]
+}

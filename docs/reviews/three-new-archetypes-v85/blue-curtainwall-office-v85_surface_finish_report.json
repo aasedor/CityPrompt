@@ -1,0 +1,91 @@
+{
+  "schema": "surface-finish-quality@2",
+  "status": "pass",
+  "required_materials": [
+    "secondary",
+    "signature_stone",
+    "roof"
+  ],
+  "render_parity": {
+    "scope": "alpha_masked_building_foreground",
+    "foreground_pixel_count": 265613,
+    "silhouette_iou": 1.0,
+    "mean_absolute_error": 0.00299,
+    "p95_absolute_error": 0.01176,
+    "similarity": 0.99701,
+    "passed": true
+  },
+  "failures": [],
+  "checks": [
+    {
+      "id": "story_manifest:secondary",
+      "passed": true,
+      "detail": "secondary resolves to 'anodized_aluminum_story_v85'"
+    },
+    {
+      "id": "surface_variation:secondary",
+      "passed": true,
+      "detail": {
+        "albedo_std": 10.718,
+        "roughness_std": 30.984,
+        "normal_xy_std": 2.337
+      }
+    },
+    {
+      "id": "glb_pbr_channels:secondary",
+      "passed": true,
+      "detail": "exported material 'MAT_Signature_BlackMetal'"
+    },
+    {
+      "id": "story_manifest:signature_stone",
+      "passed": true,
+      "detail": "signature_stone resolves to 'pale_lobby_stone_story_v85'"
+    },
+    {
+      "id": "surface_variation:signature_stone",
+      "passed": true,
+      "detail": {
+        "albedo_std": 18.102,
+        "roughness_std": 23.301,
+        "normal_xy_std": 2.99
+      }
+    },
+    {
+      "id": "glb_pbr_channels:signature_stone",
+      "passed": true,
+      "detail": "exported material 'MAT_Signature_CutStone'"
+    },
+    {
+      "id": "story_manifest:roof",
+      "passed": true,
+      "detail": "roof resolves to 'roof_membrane_story_v84'"
+    },
+    {
+      "id": "surface_variation:roof",
+      "passed": true,
+      "detail": {
+        "albedo_std": 30.915,
+        "roughness_std": 23.746,
+        "normal_xy_std": 7.975
+      }
+    },
+    {
+      "id": "glb_pbr_channels:roof",
+      "passed": true,
+      "detail": "exported material 'MAT_Roof'"
+    },
+    {
+      "id": "neutral_glb_roundtrip_parity",
+      "passed": true,
+      "detail": {
+        "scope": "alpha_masked_building_foreground",
+        "foreground_pixel_count": 265613,
+        "silhouette_iou": 1.0,
+        "mean_absolute_error": 0.00299,
+        "p95_absolute_error": 0.01176,
+        "similarity": 0.99701,
+        "passed": true
+      }
+    }
+  ]
+}

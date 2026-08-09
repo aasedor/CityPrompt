@@ -1,0 +1,111 @@
+{
+  "schema": "surface-finish-quality@2",
+  "status": "pass",
+  "required_materials": [
+    "primary",
+    "signature_stone",
+    "signature_metal",
+    "roof"
+  ],
+  "render_parity": {
+    "scope": "alpha_masked_building_foreground",
+    "foreground_pixel_count": 698474,
+    "silhouette_iou": 1.0,
+    "mean_absolute_error": 0.03094,
+    "p95_absolute_error": 0.14902,
+    "similarity": 0.96906,
+    "passed": true
+  },
+  "failures": [],
+  "checks": [
+    {
+      "id": "story_manifest:primary",
+      "passed": true,
+      "detail": "primary resolves to 'brownstone_story_v85'"
+    },
+    {
+      "id": "surface_variation:primary",
+      "passed": true,
+      "detail": {
+        "albedo_std": 20.235,
+        "roughness_std": 27.678,
+        "normal_xy_std": 1.406
+      }
+    },
+    {
+      "id": "glb_pbr_channels:primary",
+      "passed": true,
+      "detail": "exported material 'MAT_Facade_Primary'"
+    },
+    {
+      "id": "story_manifest:signature_stone",
+      "passed": true,
+      "detail": "signature_stone resolves to 'carved_limestone_story_v85'"
+    },
+    {
+      "id": "surface_variation:signature_stone",
+      "passed": true,
+      "detail": {
+        "albedo_std": 12.296,
+        "roughness_std": 29.187,
+        "normal_xy_std": 1.177
+      }
+    },
+    {
+      "id": "glb_pbr_channels:signature_stone",
+      "passed": true,
+      "detail": "exported material 'MAT_Signature_CutStone'"
+    },
+    {
+      "id": "story_manifest:signature_metal",
+      "passed": true,
+      "detail": "signature_metal resolves to 'black_metal_story_v85'"
+    },
+    {
+      "id": "surface_variation:signature_metal",
+      "passed": true,
+      "detail": {
+        "albedo_std": 6.538,
+        "roughness_std": 31.861,
+        "normal_xy_std": 1.404
+      }
+    },
+    {
+      "id": "glb_pbr_channels:signature_metal",
+      "passed": true,
+      "detail": "exported material 'MAT_Signature_BlackMetal'"
+    },
+    {
+      "id": "story_manifest:roof",
+      "passed": true,
+      "detail": "roof resolves to 'pale_roof_membrane_story_v85'"
+    },
+    {
+      "id": "surface_variation:roof",
+      "passed": true,
+      "detail": {
+        "albedo_std": 14.831,
+        "roughness_std": 24.052,
+        "normal_xy_std": 7.311
+      }
+    },
+    {
+      "id": "glb_pbr_channels:roof",
+      "passed": true,
+      "detail": "exported material 'MAT_Roof'"
+    },
+    {
+      "id": "neutral_glb_roundtrip_parity",
+      "passed": true,
+      "detail": {
+        "scope": "alpha_masked_building_foreground",
+        "foreground_pixel_count": 698474,
+        "silhouette_iou": 1.0,
+        "mean_absolute_error": 0.03094,
+        "p95_absolute_error": 0.14902,
+        "similarity": 0.96906,
+        "passed": true
+      }
+    }
+  ]
+}

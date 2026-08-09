@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-08-09-construction-role-and-foreground-parity-v84",
+  "memory_version": "2026-08-09-baked-albedo-and-single-owner-detail-v85",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "calibration_set": {
@@ -226,6 +226,14 @@
     {
       "id": "material_realism_does_not_replace_ornament",
       "rule": "Treat surface finish, medium construction and archetype-specific sculptural ornament as separate approvals. Better stone and roof shaders may remove plastic flatness, but they cannot prove tower proportion, carved relief, balustrade cadence or silhouette fidelity."
+    },
+    {
+      "id": "baked_albedo_pixels_are_colour_authority",
+      "rule": "When a material uses baked PBR maps, the actual albedo pixels are the delivered colour authority. A declared base colour does not repair an incompatible dark, pale or hue-shifted bake; compare the baked map itself with exact facade or roof evidence before rendering."
+    },
+    {
+      "id": "one_feature_has_one_owning_representation",
+      "rule": "Assign each visible architectural feature one owning representation at each distance band. Do not independently encode the same loggia, mullion, frame or ornament in both an audited facade sheet and projecting geometry unless the layers have explicit non-overlapping responsibilities."
     }
   ],
   "construction_memory": {
@@ -858,6 +866,16 @@
       "symptom": "A neutral source-versus-GLB audit reports high similarity despite an obvious facade colour or texture shift",
       "cause": "Whole-frame error was dominated by a shared studio background and ground plane, allowing a small building foreground to contribute too little to the score.",
       "correction": "Render both neutral views over transparency and compute colour error plus silhouette overlap only on the union of their alpha-masked building pixels. Keep the full-building foreground mean error at or below five percent."
+    },
+    {
+      "symptom": "A baked roof stays dark even though the profile declares a pale roof base colour",
+      "cause": "The exported Principled material receives its visible colour from a dark baked albedo image, so the declaration cannot recolour the delivered pixels.",
+      "correction": "Derive and audit a construction-role-correct pale albedo bake, bind that texture key to the roof slot and rerun both the exact-aerial comparison and GLB surface-finish audit."
+    },
+    {
+      "symptom": "Loggias or window bays appear as floating cages in front of an otherwise correct facade",
+      "cause": "The same feature was encoded once in the rectified facade/glazing sheet and again as a complete projecting frame or balcony assembly.",
+      "correction": "Choose one owner for the feature, remove the redundant assembly and retain physical geometry only for depth, silhouettes or rails that the facade sheet cannot credibly supply."
     }
   ]
 }

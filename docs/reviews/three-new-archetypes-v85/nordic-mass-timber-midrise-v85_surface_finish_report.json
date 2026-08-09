@@ -1,0 +1,111 @@
+{
+  "schema": "surface-finish-quality@2",
+  "status": "pass",
+  "required_materials": [
+    "primary",
+    "signature_warm",
+    "signature_metal",
+    "green_roof"
+  ],
+  "render_parity": {
+    "scope": "alpha_masked_building_foreground",
+    "foreground_pixel_count": 280223,
+    "silhouette_iou": 1.0,
+    "mean_absolute_error": 0.00175,
+    "p95_absolute_error": 0.00784,
+    "similarity": 0.99825,
+    "passed": true
+  },
+  "failures": [],
+  "checks": [
+    {
+      "id": "story_manifest:primary",
+      "passed": true,
+      "detail": "primary resolves to 'natural_larch_story_v85'"
+    },
+    {
+      "id": "surface_variation:primary",
+      "passed": true,
+      "detail": {
+        "albedo_std": 59.077,
+        "roughness_std": 34.307,
+        "normal_xy_std": 3.453
+      }
+    },
+    {
+      "id": "glb_pbr_channels:primary",
+      "passed": true,
+      "detail": "exported material 'MAT_Facade_Primary'"
+    },
+    {
+      "id": "story_manifest:signature_warm",
+      "passed": true,
+      "detail": "signature_warm resolves to 'honey_glulam_story_v85'"
+    },
+    {
+      "id": "surface_variation:signature_warm",
+      "passed": true,
+      "detail": {
+        "albedo_std": 56.323,
+        "roughness_std": 32.817,
+        "normal_xy_std": 4.004
+      }
+    },
+    {
+      "id": "glb_pbr_channels:signature_warm",
+      "passed": true,
+      "detail": "exported material 'MAT_Signature_WarmTimber'"
+    },
+    {
+      "id": "story_manifest:signature_metal",
+      "passed": true,
+      "detail": "signature_metal resolves to 'black_metal_story_v85'"
+    },
+    {
+      "id": "surface_variation:signature_metal",
+      "passed": true,
+      "detail": {
+        "albedo_std": 6.538,
+        "roughness_std": 31.861,
+        "normal_xy_std": 1.404
+      }
+    },
+    {
+      "id": "glb_pbr_channels:signature_metal",
+      "passed": true,
+      "detail": "exported material 'MAT_Signature_BlackMetal'"
+    },
+    {
+      "id": "story_manifest:green_roof",
+      "passed": true,
+      "detail": "green_roof resolves to 'sedum_roof_story_v85'"
+    },
+    {
+      "id": "surface_variation:green_roof",
+      "passed": true,
+      "detail": {
+        "albedo_std": 49.792,
+        "roughness_std": 21.473,
+        "normal_xy_std": 11.58
+      }
+    },
+    {
+      "id": "glb_pbr_channels:green_roof",
+      "passed": true,
+      "detail": "exported material 'MAT_GreenRoof'"
+    },
+    {
+      "id": "neutral_glb_roundtrip_parity",
+      "passed": true,
+      "detail": {
+        "scope": "alpha_masked_building_foreground",
+        "foreground_pixel_count": 280223,
+        "silhouette_iou": 1.0,
+        "mean_absolute_error": 0.00175,
+        "p95_absolute_error": 0.00784,
+        "similarity": 0.99825,
+        "passed": true
+      }
+    }
+  ]
+}

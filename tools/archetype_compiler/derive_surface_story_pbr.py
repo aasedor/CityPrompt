@@ -87,6 +87,42 @@ RECIPES = (
         "roof_membrane_story_v84", "roof_membrane", (48, 49, 48), 0.38,
         0.055, 0.105, 1.20, 1384, "dark built-up roof membrane with drainage-scale variation",
     ),
+    StoryRecipe(
+        "brownstone_story_v85", "brownstone", (129, 82, 62), 0.24,
+        0.060, 0.105, 1.45, 1485, "warm dressed brownstone wall and stoop construction",
+    ),
+    StoryRecipe(
+        "carved_limestone_story_v85", "limestone", (218, 209, 187), 0.40,
+        0.045, 0.070, 1.90, 1585, "pale carved limestone trim and cornice detail",
+    ),
+    StoryRecipe(
+        "pale_roof_membrane_story_v85", "roof_membrane", (205, 202, 192), 0.72,
+        0.035, 0.080, 1.10, 1635, "pale weathered built-up roof membrane matching the brownstone aerial reference",
+    ),
+    StoryRecipe(
+        "black_metal_story_v85", "black_metal", (35, 37, 38), 0.32,
+        0.035, 0.080, 1.10, 1685, "blackened iron rails and restrained architectural metal",
+    ),
+    StoryRecipe(
+        "anodized_aluminum_story_v85", "metal_panel", (116, 128, 136), 0.34,
+        0.040, 0.075, 1.05, 1785, "cool anodized aluminum mullions, spandrels and roof screens",
+    ),
+    StoryRecipe(
+        "pale_lobby_stone_story_v85", "granite", (213, 211, 204), 0.46,
+        0.030, 0.065, 1.30, 1885, "pale polished lobby stone with restrained mineral variation",
+    ),
+    StoryRecipe(
+        "natural_larch_story_v85", "scandinavian_larch", (161, 113, 67), 0.18,
+        0.055, 0.090, 1.35, 1985, "vertical natural-larch infill with bounded board-scale variation",
+    ),
+    StoryRecipe(
+        "honey_glulam_story_v85", "glulam", (151, 99, 49), 0.24,
+        0.045, 0.085, 1.25, 2085, "honey-tone glulam structural posts, beams and roof pavilion",
+    ),
+    StoryRecipe(
+        "sedum_roof_story_v85", "sedum_roof", (91, 105, 60), 0.18,
+        0.080, 0.120, 1.35, 2185, "mixed sedum roof field with low planted variation",
+    ),
 )
 
 
