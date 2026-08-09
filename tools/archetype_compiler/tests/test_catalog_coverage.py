@@ -1,6 +1,17 @@
 from __future__ import annotations
 
-from catalog_coverage import Candidate, _best_candidates, _summary, _target_rows
+from catalog_coverage import Candidate, _best_candidates, _normalise_catalogue, _summary, _target_rows
+
+
+def test_live_frontend_catalogue_wrapper_and_field_names_are_supported():
+    rows = _normalise_catalogue({"archetypes": [{
+        "id": "brick_hall",
+        "title": "Brick Hall",
+        "variants": [{"id": "brick_hall_red", "label": "Red"}],
+    }]})
+
+    assert rows[0]["archetypeId"] == "brick_hall"
+    assert rows[0]["archetypeLabel"] == "Brick Hall"
 
 
 def test_parent_fallback_does_not_count_as_named_variant_coverage():

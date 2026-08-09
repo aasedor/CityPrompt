@@ -1,0 +1,127 @@
+{
+  "schema": "high-quality-building-assessment@1",
+  "memory_version": "2026-08-09-baked-albedo-and-single-owner-detail-v85",
+  "archetype_id": "modernist_civic_block",
+  "family": "modernist-civic-concrete-v86",
+  "status": "review",
+  "high_quality_ready": false,
+  "hard_failures": [],
+  "review_findings": [
+    {
+      "id": "fewer_than_three_middle_variants",
+      "passed": false,
+      "detail": "0 middle variants; target is 3"
+    },
+    {
+      "id": "albedo_not_shadow_neutral",
+      "passed": false,
+      "detail": "shadow-neutral albedo not declared"
+    },
+    {
+      "id": "near_atlas_below_2048",
+      "passed": false,
+      "detail": "near atlas width 0px; minimum 2048px"
+    },
+    {
+      "id": "far_atlas_above_1024",
+      "passed": false,
+      "detail": "far atlas width 0px; maximum 1024px"
+    },
+    {
+      "id": "missing_visual_approval",
+      "passed": false,
+      "detail": "visual_approval.json is missing"
+    }
+  ],
+  "gates": {
+    "hard": [
+      {
+        "id": "validation_report_not_pass",
+        "passed": true,
+        "detail": "validation status is 'pass'"
+      },
+      {
+        "id": "missing_assembled_glb",
+        "passed": true,
+        "detail": "assembled filename is present"
+      },
+      {
+        "id": "missing_fixed_semantic_module",
+        "passed": true,
+        "detail": "4 fixed semantic modules"
+      },
+      {
+        "id": "missing_repeatable_middle_module",
+        "passed": true,
+        "detail": "3 repeatable middle modules"
+      },
+      {
+        "id": "missing_footprint_compatibility",
+        "passed": true,
+        "detail": "3 preferred footprint profiles"
+      },
+      {
+        "id": "missing_required_render",
+        "passed": true,
+        "detail": "all required renders declared"
+      }
+    ],
+    "review": [
+      {
+        "id": "fewer_than_three_middle_variants",
+        "passed": false,
+        "detail": "0 middle variants; target is 3"
+      },
+      {
+        "id": "missing_full_pbr_channels",
+        "passed": true,
+        "detail": "full PBR channel set declared"
+      },
+      {
+        "id": "albedo_not_shadow_neutral",
+        "passed": false,
+        "detail": "shadow-neutral albedo not declared"
+      },
+      {
+        "id": "near_atlas_below_2048",
+        "passed": false,
+        "detail": "near atlas width 0px; minimum 2048px"
+      },
+      {
+        "id": "far_atlas_above_1024",
+        "passed": false,
+        "detail": "far atlas width 0px; maximum 1024px"
+      },
+      {
+        "id": "missing_fixed_assembly_contract",
+        "passed": true,
+        "detail": "fixed entrance, corner, crown and roof declared"
+      },
+      {
+        "id": "fewer_than_three_preferred_footprint_profiles",
+        "passed": true,
+        "detail": "3 preferred profiles; target is 3"
+      },
+      {
+        "id": "missing_side_elevation_wrap",
+        "passed": true,
+        "detail": "wrapped PBR atlas with physical recessed glazing"
+      },
+      {
+        "id": "material_count_warning",
+        "passed": true,
+        "detail": "7 assembled materials; review above 20"
+      },
+      {
+        "id": "missing_visual_approval",
+        "passed": false,
+        "detail": "visual_approval.json is missing"
+      },
+      {
+        "id": "city_triangle_budget",
+        "passed": true,
+        "detail": "29012 assembled triangles; budget 12000-180000"
+      }
+    ]
+  }
+}

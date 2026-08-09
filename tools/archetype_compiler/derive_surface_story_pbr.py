@@ -14,7 +14,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageFilter
 
 
 @dataclass(frozen=True)
@@ -28,6 +28,7 @@ class StoryRecipe:
     normal_strength: float
     seed: int
     role: str
+    pattern: str = "source"
 
 
 RECIPES = (
@@ -123,6 +124,15 @@ RECIPES = (
         "sedum_roof_story_v85", "sedum_roof", (91, 105, 60), 0.18,
         0.080, 0.120, 1.35, 2185, "mixed sedum roof field with low planted variation",
     ),
+    StoryRecipe(
+        "board_formed_concrete_story_v86", "concrete", (188, 185, 177), 0.22,
+        0.055, 0.105, 1.20, 2286, "board-formed civic concrete with restrained lift and tie variation",
+        "board_formed",
+    ),
+    StoryRecipe(
+        "pale_civic_roof_story_v86", "roof_membrane", (218, 216, 209), 0.76,
+        0.030, 0.075, 1.05, 2386, "pale weathered civic roof membrane",
+    ),
 )
 
 
@@ -162,6 +172,69 @@ def save_rgb(array: np.ndarray, path: Path, *, png: bool = False) -> None:
         image.save(path, quality=94, optimize=True, subsampling=0)
 
 
+def board_formed_maps(
+    albedo: np.ndarray,
+    roughness: np.ndarray,
+    normal: np.ndarray,
+    size: int,
+    seed: int,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """Replace generic panel joints with horizontal board-form construction cues."""
+    rng = np.random.default_rng(seed)
+    period = max(32, size // 16)
+    # Remove the source's regular square-panel hierarchy while retaining broad
+    # concrete mottling and a small amount of aggregate texture.
+    blurred_albedo = np.asarray(
+        Image.fromarray(np.clip(albedo, 0, 255).astype(np.uint8), "RGB").filter(
+            ImageFilter.GaussianBlur(max(3.0, size / 128.0))
+        ),
+        dtype=np.float32,
+    )
+    albedo = blurred_albedo * 0.86 + albedo * 0.14
+    blurred_roughness = np.asarray(
+        Image.fromarray(np.clip(roughness, 0, 255).astype(np.uint8), "RGB").filter(
+            ImageFilter.GaussianBlur(max(2.0, size / 192.0))
+        ),
+        dtype=np.float32,
+    )
+    roughness = blurred_roughness * 0.72 + roughness * 0.28
+
+    height = np.zeros((size, size), dtype=np.float32)
+    board_count = math.ceil(size / period)
+    for board in range(board_count):
+        y0 = board * period
+        y1 = min(size, y0 + period)
+        tone = float(rng.uniform(-0.035, 0.035))
+        albedo[y0:y1] *= 1.0 + tone
+        roughness[y0:y1] += tone * 95.0
+        if y0 < size:
+            rows = slice(y0, min(size, y0 + 2))
+            albedo[rows] *= 0.76
+            roughness[rows] += 24.0
+            height[rows] -= 1.0
+        if y0 + 2 < size:
+            albedo[y0 + 2:min(size, y0 + 4)] *= 1.055
+            height[y0 + 2:min(size, y0 + 4)] += 0.22
+        # Sparse staggered shutter joints avoid reverting to a precast grid.
+        if board % 4 == 1:
+            joint = size // 2
+            xs = slice(joint, min(size, joint + 2))
+            albedo[y0:y1, xs] *= 0.88
+            height[y0:y1, xs] -= 0.38
+
+    nx = (normal[..., 0] / 127.5 - 1.0) * 0.24
+    ny = (normal[..., 1] / 127.5 - 1.0) * 0.24
+    grad_y, grad_x = np.gradient(height)
+    nx -= grad_x * 2.8
+    ny -= grad_y * 2.8
+    length = np.maximum(1.0, np.sqrt(nx * nx + ny * ny + 1.0))
+    encoded = np.empty_like(normal)
+    encoded[..., 0] = (nx / length * 0.5 + 0.5) * 255.0
+    encoded[..., 1] = (ny / length * 0.5 + 0.5) * 255.0
+    encoded[..., 2] = (1.0 / length * 0.5 + 0.5) * 255.0
+    return albedo, roughness, encoded
+
+
 def derive(recipe: StoryRecipe, source_root: Path | list[Path], output_root: Path, size: int) -> dict:
     source_roots = [source_root] if isinstance(source_root, Path) else list(source_root)
     source = next(
@@ -194,20 +267,23 @@ def derive(recipe: StoryRecipe, source_root: Path | list[Path], output_root: Pat
     tint = np.asarray(recipe.tint, dtype=np.float32)[None, None, :]
     albedo = albedo * (1.0 - recipe.tint_mix) + tint * recipe.tint_mix
     albedo *= (1.0 + story[..., None] * recipe.macro_strength)
-    save_rgb(albedo, destination / "albedo.jpg")
-
     roughness = load_rgb(required["roughness"], size)
     roughness += story[..., None] * (255.0 * recipe.roughness_strength)
-    save_rgb(roughness, destination / "roughness.jpg")
-
     normal = load_rgb(required["normal"], size)
-    nx = (normal[..., 0] / 127.5 - 1.0) * recipe.normal_strength
-    ny = (normal[..., 1] / 127.5 - 1.0) * recipe.normal_strength
-    length = np.maximum(1.0, np.sqrt(nx * nx + ny * ny + 1.0))
-    encoded = np.empty_like(normal)
-    encoded[..., 0] = (nx / length * 0.5 + 0.5) * 255.0
-    encoded[..., 1] = (ny / length * 0.5 + 0.5) * 255.0
-    encoded[..., 2] = (1.0 / length * 0.5 + 0.5) * 255.0
+    if recipe.pattern == "board_formed":
+        albedo, roughness, encoded = board_formed_maps(
+            albedo, roughness, normal, size, recipe.seed
+        )
+    else:
+        nx = (normal[..., 0] / 127.5 - 1.0) * recipe.normal_strength
+        ny = (normal[..., 1] / 127.5 - 1.0) * recipe.normal_strength
+        length = np.maximum(1.0, np.sqrt(nx * nx + ny * ny + 1.0))
+        encoded = np.empty_like(normal)
+        encoded[..., 0] = (nx / length * 0.5 + 0.5) * 255.0
+        encoded[..., 1] = (ny / length * 0.5 + 0.5) * 255.0
+        encoded[..., 2] = (1.0 / length * 0.5 + 0.5) * 255.0
+    save_rgb(albedo, destination / "albedo.jpg")
+    save_rgb(roughness, destination / "roughness.jpg")
     save_rgb(encoded, destination / "normal.png", png=True)
 
     albedo_std = float(np.asarray(Image.open(destination / "albedo.jpg")).std())

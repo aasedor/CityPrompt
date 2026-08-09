@@ -1,0 +1,18 @@
+{
+  "schema": "catalogue-rollout-campaign@1",
+  "version": "2026-08-09-v86",
+  "name": "V86 exact-archetype catalogue rollout",
+  "catalogue": "frontend/src/data/buildingArchetypes.json",
+  "target_policy": "representative_variant_then_remaining_variants",
+  "batch_size": 5,
+  "max_parallel_blender_jobs": 1,
+  "minimum_free_disk_gb": 15,
+  "default_paid_facade_calls_per_batch": 0,
+  "artifact_retention": "retain only the active five-building batch locally; promote reviewed comparison PNGs, reports and delivery GLBs intentionally",
+  "quality_gates": ["exact variant signature profile", "three role-labelled exact reference images", "image-lock production preflight", "fixed medium-detail ownership audit", "construction-role baked PBR", "geometry and delivery validation", "foreground-only neutral GLB parity", "side-by-side human keeper/provisional/reject decision"],
+  "checkpoints": ["dry-run the complete ledger", "one-archetype campaign pilot", "five-building bounded batch", "human review before the next batch", "category checkpoint before scaling a new architectural cluster"],
+  "approval_sources": ["tools/archetype_compiler/building_gold_set.json", "tools/archetype_compiler/renderlock_variant_pilot_v1.json"],
+  "facade_sheet_roots": ["tools/archetype_compiler/facade_sheets_v8", "tools/archetype_compiler/facade_sheets"],
+  "build_roots": ["artifacts", "build"],
+  "pilot": {"batch_id": "PILOT-001", "archetype_id": "modernist_civic_block", "variant_id": "modernist_civic_concrete_brutalist", "family_id": "modernist-civic-concrete-v86", "width_m": 50.0, "depth_m": 30.0, "floors": 4, "facade_sheet": "tools/archetype_compiler/facade_sheets_v8/modernist-civic-block"}
+}

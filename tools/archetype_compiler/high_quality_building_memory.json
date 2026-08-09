@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-08-09-baked-albedo-and-single-owner-detail-v85",
+  "memory_version": "2026-08-09-finite-catalogue-rollout-v86",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "calibration_set": {
@@ -15,6 +15,14 @@
     ]
   },
   "non_negotiable_principles": [
+    {
+      "id": "catalogue_rollout_is_a_finite_authoring_campaign",
+      "rule": "Plan every exact variant explicitly, complete one representative per parent before sibling expansion, cap each production batch at five buildings, render serially and require a human exact-reference checkpoint after every batch. Machine success cannot approve catalogue release."
+    },
+    {
+      "id": "paid_generation_is_separately_authorized",
+      "rule": "Catalogue rendering defaults to zero paid facade-image calls. Estimate missing assets in planning, but reject paid calls in the batch runner and require a separate explicitly authorized asset-generation step."
+    },
     {
       "id": "reference_is_goalpost",
       "rule": "Use every compatible archetype view to infer massing, corners, roof, entrances and side elevations; never optimize only for the card image."
@@ -876,6 +884,16 @@
       "symptom": "Loggias or window bays appear as floating cages in front of an otherwise correct facade",
       "cause": "The same feature was encoded once in the rectified facade/glazing sheet and again as a complete projecting frame or balcony assembly.",
       "correction": "Choose one owner for the feature, remove the redundant assembly and retain physical geometry only for depth, silhouettes or rails that the facade sheet cannot credibly supply."
+    },
+    {
+      "symptom": "A catalogue batch renders successfully but contains targets that never received exact-variant architectural authoring or visual approval",
+      "cause": "The catalogue was treated as an unattended rendering queue, so inherited parent profiles and generic sheets were mistaken for production readiness.",
+      "correction": "Partition the catalogue into representative and sibling phases, require exact-profile and audited-sheet readiness before rendering, limit batches to five, and stop at a human exact-reference checkpoint after each batch."
+    },
+    {
+      "symptom": "Concrete has the right pale colour but reads as square precast cladding instead of board-formed construction",
+      "cause": "A broad concrete-family source was relabelled without changing its visible joint hierarchy.",
+      "correction": "Bind the material to a board-formed construction role, bake horizontal shutter-board courses with restrained staggered joints and inspect the result in the exact facade comparison before release."
     }
   ]
 }

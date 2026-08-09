@@ -18,3 +18,4 @@ docs/reviews/beaux-arts-terminal-surface-story-v83/*.png filter=lfs diff=lfs mer
 docs/reviews/three-building-surface-story-v84/*.png filter=lfs diff=lfs merge=lfs -text
 tools/archetype_compiler/facade_sources_v71/*.png filter=lfs diff=lfs merge=lfs -text
 docs/reviews/three-new-archetypes-v85/*.png filter=lfs diff=lfs merge=lfs -text
+docs/reviews/catalogue-rollout-v86/**/*.png filter=lfs diff=lfs merge=lfs -text

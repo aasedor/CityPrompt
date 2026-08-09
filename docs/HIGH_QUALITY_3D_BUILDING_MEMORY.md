@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-08-09-baked-albedo-and-single-owner-detail-v85`.
+Current executable memory: `2026-08-09-finite-catalogue-rollout-v86`.
 
 The current calibration set and catalogue rollout rationale are documented in
 [`BUILDING_GOLD_SET_PIPELINE_SYNTHESIS_2026-08-07.md`](BUILDING_GOLD_SET_PIPELINE_SYNTHESIS_2026-08-07.md).
@@ -927,6 +927,32 @@ artifacts.
   panels. It remains conditional until a variant-native sheet is approved.
 - Brownstone and Nordic timber are keeper candidates after exact-image review;
   the office is a useful glass-method pilot but is not yet a catalogue keeper.
+
+### V86 finite-catalogue rollout lessons
+
+The Board-Formed Concrete civic pilot converted the image-lock methodology into
+a finite catalogue campaign without weakening the human visual checkpoint.
+
+- Treat catalogue completion as an authoring queue, not an unattended render
+  loop. A target becomes render-ready only after it has an exact-variant
+  signature profile, compatible reference roles, an audited facade sheet and a
+  production contract. Machine success never promotes it to the catalogue.
+- Complete one representative exact variant for each parent archetype before
+  expanding sibling variants. Keep production batches at five buildings or
+  fewer, render serially, preserve resumable manifests and stop after every
+  batch for exact-reference review.
+- Separate paid image generation from batch execution. The rollout planner may
+  estimate missing facade-sheet calls, but the runner defaults to zero and
+  rejects a batch that requests paid calls without a separately authorized
+  asset-generation step.
+- Surface naming must describe the visible construction pattern. The first
+  concrete pass used a square-panel source while declaring board-formed
+  concrete; horizontal shutter-board courses and sparse staggered joints were
+  required before the material matched the archetype.
+- The pilot is a keeper candidate after exact-image review: its floating blind
+  volumes, deep ground-floor recess, pilotis, clerestory, roof slab and raised
+  roof core are preserved. Glazing/environment realism remains a named human
+  review item rather than a reason to overstate machine approval.
 
 ## Updating this memory
 

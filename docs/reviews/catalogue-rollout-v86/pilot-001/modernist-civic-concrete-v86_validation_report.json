@@ -1,0 +1,191 @@
+{
+  "status": "pass",
+  "family": "modernist-civic-concrete-v86",
+  "archetype_id": "modernist_civic_block",
+  "reuse_keys": [
+    "modernist_civic_block",
+    "modernist",
+    "Civic / Institutional"
+  ],
+  "manifest": "modernist-civic-concrete-v86_manifest.json",
+  "errors": [],
+  "warnings": [],
+  "modules": [
+    {
+      "file": "modernist-civic-concrete-v86_podium.glb",
+      "status": "ok",
+      "triangles": 2096,
+      "extent_m": {
+        "width_x": 50.24,
+        "height_y": 5.2,
+        "depth_z": 31.89
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_Sheet_Far_Podium",
+        "MAT_Sheet_Wrapped_Podium_Left",
+        "MAT_Sheet_Wrapped_Podium_Rear",
+        "MAT_Sheet_Wrapped_Podium_Right",
+        "MAT_Signature_BlackMetal",
+        "MAT_Signature_CutStone"
+      ],
+      "size_bytes": 505760
+    },
+    {
+      "file": "modernist-civic-concrete-v86_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 8804,
+      "extent_m": {
+        "width_x": 50.14,
+        "height_y": 4.5,
+        "depth_z": 31.577
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_Sheet_Far_Floor",
+        "MAT_Sheet_Wrapped_Floor_Left",
+        "MAT_Sheet_Wrapped_Floor_Rear",
+        "MAT_Sheet_Wrapped_Floor_Right",
+        "MAT_Signature_BlackMetal"
+      ],
+      "size_bytes": 907320
+    },
+    {
+      "file": "modernist-civic-concrete-v86_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 8804,
+      "extent_m": {
+        "width_x": 50.14,
+        "height_y": 4.5,
+        "depth_z": 31.577
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_Sheet_Far_Floor_alt",
+        "MAT_Sheet_Wrapped_Floor_Left.001",
+        "MAT_Sheet_Wrapped_Floor_Rear.001",
+        "MAT_Sheet_Wrapped_Floor_Right.001",
+        "MAT_Signature_BlackMetal"
+      ],
+      "size_bytes": 907372
+    },
+    {
+      "file": "modernist-civic-concrete-v86_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 8804,
+      "extent_m": {
+        "width_x": 50.14,
+        "height_y": 4.5,
+        "depth_z": 31.577
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_Sheet_Far_Floor",
+        "MAT_Sheet_Wrapped_Floor_Left.002",
+        "MAT_Sheet_Wrapped_Floor_Rear.002",
+        "MAT_Sheet_Wrapped_Floor_Right.002",
+        "MAT_Signature_BlackMetal"
+      ],
+      "size_bytes": 907332
+    },
+    {
+      "file": "modernist-civic-concrete-v86_setback_upper.glb",
+      "status": "ok",
+      "triangles": 7528,
+      "extent_m": {
+        "width_x": 50.0,
+        "height_y": 4.5,
+        "depth_z": 30.045
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Concrete",
+        "MAT_Facade_Secondary",
+        "MAT_Sheet_Far_Floor",
+        "MAT_Sheet_Wrapped_Floor_Left.003",
+        "MAT_Sheet_Wrapped_Floor_Rear.003",
+        "MAT_Sheet_Wrapped_Floor_Right.003",
+        "MAT_Signature_BlackMetal"
+      ],
+      "size_bytes": 827804
+    },
+    {
+      "file": "modernist-civic-concrete-v86_crown_crown.glb",
+      "status": "ok",
+      "triangles": 7176,
+      "extent_m": {
+        "width_x": 49.7,
+        "height_y": 4.5,
+        "depth_z": 30.215
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Sheet_Far_Crown",
+        "MAT_Sheet_Wrapped_Floor_Left.004",
+        "MAT_Sheet_Wrapped_Floor_Rear.004",
+        "MAT_Sheet_Wrapped_Floor_Right.004",
+        "MAT_Signature_BlackMetal"
+      ],
+      "size_bytes": 849896
+    },
+    {
+      "file": "modernist-civic-concrete-v86_roof.glb",
+      "status": "ok",
+      "triangles": 2528,
+      "extent_m": {
+        "width_x": 50.08,
+        "height_y": 1.15,
+        "depth_z": 30.08
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Glass",
+        "MAT_Roof"
+      ],
+      "size_bytes": 851256
+    },
+    {
+      "file": "modernist-civic-concrete-v86_assembled.glb",
+      "status": "ok",
+      "triangles": 29012,
+      "extent_m": {
+        "width_x": 51.2,
+        "height_y": 20.25,
+        "depth_z": 31.203
+      },
+      "bottom_y": -0.0,
+      "materials": [
+        "MAT_Concrete",
+        "MAT_Glass",
+        "MAT_Interior_Shadow",
+        "MAT_Massing_DarkConcreteSoffit",
+        "MAT_Massing_RecessShadow",
+        "MAT_Roof",
+        "MAT_Signature_BlackMetal"
+      ],
+      "size_bytes": 2904968,
+      "role": "assembled"
+    }
+  ]
+}

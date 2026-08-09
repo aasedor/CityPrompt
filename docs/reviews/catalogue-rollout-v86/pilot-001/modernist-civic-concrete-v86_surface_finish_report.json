@@ -1,0 +1,71 @@
+{
+  "schema": "surface-finish-quality@2",
+  "status": "pass",
+  "required_materials": [
+    "concrete",
+    "roof"
+  ],
+  "render_parity": {
+    "scope": "alpha_masked_building_foreground",
+    "foreground_pixel_count": 496680,
+    "silhouette_iou": 1.0,
+    "mean_absolute_error": 0.00817,
+    "p95_absolute_error": 0.03529,
+    "similarity": 0.99183,
+    "passed": true
+  },
+  "failures": [],
+  "checks": [
+    {
+      "id": "story_manifest:concrete",
+      "passed": true,
+      "detail": "concrete resolves to 'board_formed_concrete_story_v86'"
+    },
+    {
+      "id": "surface_variation:concrete",
+      "passed": true,
+      "detail": {
+        "albedo_std": 11.8,
+        "roughness_std": 15.348,
+        "normal_xy_std": 19.261
+      }
+    },
+    {
+      "id": "glb_pbr_channels:concrete",
+      "passed": true,
+      "detail": "exported material 'MAT_Concrete'"
+    },
+    {
+      "id": "story_manifest:roof",
+      "passed": true,
+      "detail": "roof resolves to 'pale_civic_roof_story_v86'"
+    },
+    {
+      "id": "surface_variation:roof",
+      "passed": true,
+      "detail": {
+        "albedo_std": 12.581,
+        "roughness_std": 23.704,
+        "normal_xy_std": 7.081
+      }
+    },
+    {
+      "id": "glb_pbr_channels:roof",
+      "passed": true,
+      "detail": "exported material 'MAT_Roof'"
+    },
+    {
+      "id": "neutral_glb_roundtrip_parity",
+      "passed": true,
+      "detail": {
+        "scope": "alpha_masked_building_foreground",
+        "foreground_pixel_count": 496680,
+        "silhouette_iou": 1.0,
+        "mean_absolute_error": 0.00817,
+        "p95_absolute_error": 0.03529,
+        "similarity": 0.99183,
+        "passed": true
+      }
+    }
+  ]
+}

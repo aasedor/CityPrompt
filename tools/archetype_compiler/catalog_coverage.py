@@ -40,6 +40,23 @@ def _read_json(path: Path) -> Any:
     return json.loads(path.read_text(encoding="utf-8-sig"))
 
 
+def _normalise_catalogue(payload: Any) -> list[dict[str, Any]]:
+    """Accept both compiler exports and the live wrapped frontend catalogue."""
+    if isinstance(payload, dict):
+        payload = payload.get("archetypes")
+    if not isinstance(payload, list):
+        raise SystemExit("catalogue must be an array or an object with an archetypes array")
+    rows: list[dict[str, Any]] = []
+    for item in payload:
+        if not isinstance(item, dict):
+            continue
+        row = dict(item)
+        row.setdefault("archetypeId", item.get("id"))
+        row.setdefault("archetypeLabel", item.get("title"))
+        rows.append(row)
+    return rows
+
+
 def _validation_status(manifest_path: Path) -> str:
     report = manifest_path.parent / "validation_report.json"
     if not report.exists():
@@ -274,9 +291,7 @@ def main() -> None:
     parser.add_argument("--markdown", type=Path)
     args = parser.parse_args()
 
-    catalogue = _read_json(args.catalog)
-    if not isinstance(catalogue, list):
-        raise SystemExit("catalogue export must be a JSON array")
+    catalogue = _normalise_catalogue(_read_json(args.catalog))
     build_roots = args.build_root or [Path("build")]
     candidates = _scan_candidates(build_roots)
     imported = _live_families(args.api_base)

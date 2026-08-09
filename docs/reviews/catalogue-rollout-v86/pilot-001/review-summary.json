@@ -1,0 +1,19 @@
+{
+  "schema": "catalogue-rollout-review@1",
+  "batch_id": "PILOT-001",
+  "checkpoint_state": "human_review_required",
+  "buildings": [
+    {
+      "archetype_id": "modernist_civic_block",
+      "variant_id": "modernist_civic_concrete_brutalist",
+      "family_id": "modernist-civic-concrete-v86",
+      "machine_status": "pass",
+      "human_status": "unreviewed",
+      "validation": "pass",
+      "surface_finish": "pass",
+      "foreground_similarity": 0.99183,
+      "assembled_triangles": 29012,
+      "assembled_size_bytes": 2904968
+    }
+  ]
+}

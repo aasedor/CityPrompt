@@ -1,0 +1,73 @@
+{
+  "schema": "architectural-signatures@1",
+  "profiles": {
+    "modernist_civic_concrete_brutalist": {
+      "extends": "modernist_civic_block",
+      "identity": "Low board-formed concrete civic landmark composed from three blind floating volumes above an open pilotis forecourt, narrow ribbon windows, a deep continuous roof cantilever and a large central rooftop service block.",
+      "dimension_overrides": {"width_m": 50.0, "depth_m": 30.0, "default_floors": 4},
+      "material_overrides": {
+        "primary": {"texture_key": "board_formed_concrete_story_v86", "base_color": "#bbb8b0", "roughness": 0.84, "baked_pbr": true, "texture_tile_metres": 4.2, "normal_strength": 0.72},
+        "secondary": {"texture_key": "board_formed_concrete_story_v86", "base_color": "#b3b0a8", "roughness": 0.86, "baked_pbr": true, "texture_tile_metres": 4.2, "normal_strength": 0.72},
+        "concrete": {"texture_key": "board_formed_concrete_story_v86", "base_color": "#bbb8b0", "roughness": 0.84, "baked_pbr": true, "texture_tile_metres": 4.2, "normal_strength": 0.72},
+        "roof": {"texture_key": "pale_civic_roof_story_v86", "base_color": "#d8d6cf", "roughness": 0.91, "baked_pbr": true, "texture_tile_metres": 7.0, "normal_strength": 0.34}
+      },
+      "evidence_policy": {
+        "authority": "reference_images",
+        "metadata_mode": "disabled",
+        "selected_metadata": [],
+        "ignored_metadata": [{"path": "*", "reason": "the exact street, oblique and roof images provide a complete construction contract for this rollout pilot"}]
+      },
+      "production_contract": {
+        "identity_mode": "massing_graph",
+        "fixed_identity": ["open pilotis forecourt", "three offset blind concrete rooms", "continuous cantilever roof", "large central rooftop service block"],
+        "repeatable_capacity": ["mullion subdivisions inside the fixed ribbon and clerestory openings"],
+        "quality_contract_version": 3,
+        "image_lock": {
+          "required_reference_roles": ["street_identity", "oblique_massing", "roof_plan"],
+          "minimum_measurements": 8,
+          "measurements": [
+            {"feature": "frontage", "role": "roof_plan", "value": 50.0, "unit": "metres", "drives": "civic plinth and cantilever span"},
+            {"feature": "depth", "role": "roof_plan", "value": 30.0, "unit": "metres", "drives": "roof and volume depth"},
+            {"feature": "overall height", "role": "oblique_massing", "value": 20.25, "unit": "metres", "drives": "roof service block"},
+            {"feature": "floating blind volumes", "role": "street_identity", "value": 3, "unit": "count", "drives": "west centre and east concrete rooms"},
+            {"feature": "front pilotis", "role": "street_identity", "value": 4, "unit": "count", "drives": "open civic forecourt"},
+            {"feature": "roof frontage overhang", "role": "oblique_massing", "value": 51.2, "unit": "metres", "drives": "continuous cantilever roof"},
+            {"feature": "roof service block width", "role": "roof_plan", "value": 24.0, "unit": "metres", "drives": "central penthouse"},
+            {"feature": "roof service block depth", "role": "roof_plan", "value": 18.0, "unit": "metres", "drives": "central penthouse"}
+          ],
+          "required_node_ids": ["ground_lobby_shadow", "west_floating_volume", "centre_floating_volume", "east_floating_volume", "cantilevered_roof", "roof_penthouse", "civic_roof_membrane"],
+          "required_assembly_ids": ["front_pilotis", "recessed_lobby_front", "west_clerestory", "west_ribbon", "civic_steps"],
+          "required_node_kinds": {"box": 17},
+          "required_assembly_kinds": {"column_array": 2, "curtain_wall": 6, "ribbon_window": 3, "steps": 1}
+        },
+        "material_continuity": {"required_textured_materials": ["concrete", "roof"]},
+        "surface_finish": {
+          "method": "baked_pbr_story",
+          "required_baked_materials": ["concrete", "roof"],
+          "material_roles": {"concrete": "board_formed_structural_concrete", "roof": "pale_built_up_roof_membrane"},
+          "required_channels": ["albedo", "roughness", "normal"],
+          "uv_contract": {"projection": "metric_box_plus_material_scale", "base_tile_metres": 2.0, "minimum_tile_metres": 3.0, "maximum_tile_metres": 8.0},
+          "semantic_weathering": ["form and lift variation stays on concrete volumes", "pale membrane variation stays on horizontal roof fields", "dark runoff remains bounded to roof edges and drainage lines"],
+          "qa_renders": ["neutral_source", "neutral_glb_roundtrip", "archetype_match", "aerial"]
+        }
+      },
+      "massing_graph": {
+        "profile": "modernist_civic_concrete_image_lock_v86",
+        "height_m": 20.25,
+        "reference_views": [
+          {"role": "street_identity", "path": "/archetypes/buildings/modernist_civic_block/variant_0.png"},
+          {"role": "oblique_massing", "path": "/archetypes/buildings/modernist_civic_block/variant_0_angle_60.jpg"},
+          {"role": "roof_plan", "path": "/archetypes/buildings/modernist_civic_block/variant_0_angle_90.jpg"}
+        ],
+        "presentation_camera": {"hero_side": "left", "oblique_x_scale": 0.68, "identity_distance_scale": 0.90, "street_distance_scale": 0.94},
+        "node_overrides": {"roof_penthouse": {"size": [24.0, 18.0, 1.2], "location": [4.0, 2.0, 19.6]}},
+        "remove_assembly_ids": ["west_lower_slot", "centre_ribbon"],
+        "append_nodes": [
+          {"id": "civic_roof_membrane", "kind": "box", "size": [50.7, 30.7, 0.06], "location": [-0.5, 0.0, 19.21], "material": "roof", "bevel_m": 0.015},
+          {"id": "civic_penthouse_membrane", "kind": "box", "size": [23.6, 17.6, 0.05], "location": [4.0, 2.0, 20.225], "material": "roof", "bevel_m": 0.012}
+        ],
+        "target_views": ["archetype_match", "street", "front_corner_oblique", "rear_corner_oblique", "facade_close", "roof_audit", "aerial", "context"]
+      }
+    }
+  }
+}

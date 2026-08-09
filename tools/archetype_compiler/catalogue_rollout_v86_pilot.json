@@ -1,0 +1,9 @@
+{
+  "schema": "catalogue-rollout-batch@1",
+  "campaign": "tools/archetype_compiler/catalogue_rollout_v86.json",
+  "batch_id": "PILOT-001",
+  "paid_facade_calls": 0,
+  "entries": [
+    {"archetype_id": "modernist_civic_block", "variant_id": "modernist_civic_concrete_brutalist", "family_id": "modernist-civic-concrete-v86", "width_m": 50.0, "depth_m": 30.0, "floors": 4, "facade_sheet": "tools/archetype_compiler/facade_sheets_v8/modernist-civic-block"}
+  ]
+}
