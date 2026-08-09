@@ -1,0 +1,93 @@
+{
+  "schema": "building-generation-quality@1",
+  "status": "pass",
+  "quality_contract_version": 2,
+  "failures": [],
+  "gates": [
+    {
+      "id": "material_texture_key:primary",
+      "passed": true,
+      "detail": "primary resolves to texture 'granite'"
+    },
+    {
+      "id": "material_texture_available:primary",
+      "passed": true,
+      "detail": "texture set 'granite' is available to the selected Blender library"
+    },
+    {
+      "id": "material_texture_key:secondary",
+      "passed": true,
+      "detail": "secondary resolves to texture 'granite'"
+    },
+    {
+      "id": "material_texture_available:secondary",
+      "passed": true,
+      "detail": "texture set 'granite' is available to the selected Blender library"
+    },
+    {
+      "id": "material_texture_key:signature_stone",
+      "passed": true,
+      "detail": "signature_stone resolves to texture 'granite'"
+    },
+    {
+      "id": "material_texture_available:signature_stone",
+      "passed": true,
+      "detail": "texture set 'granite' is available to the selected Blender library"
+    },
+    {
+      "id": "material_texture_key:roof",
+      "passed": true,
+      "detail": "roof resolves to texture 'welsh_slate'"
+    },
+    {
+      "id": "material_texture_available:roof",
+      "passed": true,
+      "detail": "texture set 'welsh_slate' is available to the selected Blender library"
+    },
+    {
+      "id": "material_family_match:signature_stone",
+      "passed": true,
+      "detail": "signature_stone texture 'granite'; primary texture 'granite'"
+    },
+    {
+      "id": "material_assembly_binding:striped_turret_array",
+      "passed": true,
+      "detail": "3 assemblies checked; incorrect: none"
+    },
+    {
+      "id": "material_assembly_binding:shaped_gable_array",
+      "passed": true,
+      "detail": "2 assemblies checked; incorrect: none"
+    },
+    {
+      "id": "material_assembly_binding:crenellation_array",
+      "passed": true,
+      "detail": "3 assemblies checked; incorrect: none"
+    },
+    {
+      "id": "passage_void:baronial_gate_passage",
+      "passed": true,
+      "detail": "declared void shape 'pointed_arch_passage'"
+    },
+    {
+      "id": "passage_depth:baronial_gate_passage",
+      "passed": true,
+      "detail": "passage depth 11.73 m; minimum 6.00 m"
+    },
+    {
+      "id": "passage_target:baronial_gate_passage",
+      "passed": true,
+      "detail": "target node kind 'pointed_passage_block'"
+    },
+    {
+      "id": "passage_portal:baronial_gate_passage",
+      "passed": true,
+      "detail": "portal 'baronial_gate_portal' mode 'through_passage'"
+    },
+    {
+      "id": "passage_skin_clearance:baronial_gate_passage",
+      "passed": true,
+      "detail": "1 facade-skin clearances reference the passage"
+    }
+  ]
+}

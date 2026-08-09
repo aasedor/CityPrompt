@@ -1,0 +1,25 @@
+{
+  "schema": "material-void-pilot-summary@1",
+  "status": "review_only",
+  "api_cost_usd": 0.0,
+  "assembled_triangles": 149730,
+  "runtime_quality": "pass",
+  "passed_runtime_gates": 17,
+  "total_runtime_gates": 17,
+  "metadata_cues": [
+    "rusticated pink-grey granite ashlar",
+    "dark grey natural slate",
+    "deeply recessed"
+  ],
+  "accepted": [
+    "Welsh-slate texture resolves on main and turret roofs",
+    "granite texture family binds to turrets, shaped gables and crenellations",
+    "pointed entrance is a full-depth 11.73 m passage",
+    "facade skin clears the passage and portal has no back plane"
+  ],
+  "remaining": [
+    "stronger per-turret stone course registration and window returns",
+    "reference-accurate dormer arrays and gate-tower hierarchy",
+    "intersecting cross-gables, ridge caps, valleys and chimney clusters"
+  ]
+}

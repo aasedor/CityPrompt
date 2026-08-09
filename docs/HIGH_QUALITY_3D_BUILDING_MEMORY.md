@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-08-08-wave-shell-landmark-v73`.
+Current executable memory: `2026-08-08-material-void-contract-v77`.
 
 The current calibration set and catalogue rollout rationale are documented in
 [`BUILDING_GOLD_SET_PIPELINE_SYNTHESIS_2026-08-07.md`](BUILDING_GOLD_SET_PIPELINE_SYNTHESIS_2026-08-07.md).
@@ -662,6 +662,36 @@ rectangular facade.
 - Passing silhouette evidence does not prove material realism. V73 passes the
   street and roof gates, but its cool curtain wall and simplified occupied
   interior remain review findings for a later optical/material pass.
+
+### V77 material-continuity and executable-void lessons
+
+The Scottish Baronial material/void pass exposed two cases where the catalogue
+metadata was already correct but the renderer did not enforce it. The selected
+variant described rusticated pink-grey granite, dark grey natural slate and a
+deeply recessed porte-cochere. Those phrases now compile into generation gates
+instead of remaining prompt prose.
+
+- Large fixed assemblies declare material slots. Turret drums, shaped gables
+  and crenellations must inherit the facade's granite texture family, while
+  turret caps and roof planes must resolve the variant's Welsh-slate family.
+  Both preflight and Blender runtime fail if a required texture key is absent,
+  points at a mismatched family or cannot be found in the selected library.
+- Material overrides merge deliberately. A variant colour correction may tint
+  a shared intrinsic texture, but it may not silently erase the texture key or
+  retain an incompatible parent material such as copper after changing only
+  the roof colour.
+- Semantic voids are executable construction. A passage names its target mass,
+  shape, direction and minimum depth; the gate node builds around that volume,
+  the portal omits its back plane and every crossing facade skin declares an
+  opening clearance.
+- Metadata is useful when it is traceable and subordinate to the images. The
+  quality report records which catalogue phrases justified each contract, but
+  visible street, oblique and aerial evidence remains the authority whenever
+  the prose conflicts with the selected variant.
+- These gates prevent known technical regressions; they do not prove visual
+  likeness. The v77 granite tint is still too uniform on some turret drums, and
+  the roof topology still needs reference-accurate dormers, intersecting
+  gables, ridge/valley work and the correct tower hierarchy before promotion.
 
 ## Updating this memory
 

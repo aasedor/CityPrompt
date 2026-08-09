@@ -1238,15 +1238,39 @@
     "scottish_baronial_granite_tower": {
       "extends": "chateauesque_grand_railway_hotel",
       "identity": "Pink-grey granite Scottish Baronial railway hotel with a fixed crenellated gate tower, crow-stepped gables, dark conical turrets, arched arrival portal and deep urban perimeter mass.",
+      "production_contract": {
+        "quality_contract_version": 2,
+        "metadata_cues": ["rusticated pink-grey granite ashlar", "dark grey natural slate", "deeply recessed"],
+        "material_continuity": {
+          "required_textured_materials": ["primary", "secondary", "signature_stone", "roof"],
+          "required_material_matches": {"signature_stone": "primary"},
+          "assembly_bindings": [
+            {"kind": "striped_turret_array", "slots": {"body_material": "signature_stone", "stripe_material": "signature_stone", "dark_material": "signature_stone", "roof_material": "roof"}},
+            {"kind": "shaped_gable_array", "slots": {"material": "signature_stone"}},
+            {"kind": "crenellation_array", "slots": {"material": "signature_stone"}}
+          ]
+        },
+        "spatial_voids": {
+          "required_passages": [
+            {
+              "void_id": "baronial_gate_passage",
+              "target_node_id": "baronial_gate_tower",
+              "portal_assembly_id": "baronial_gate_portal",
+              "shape": "pointed_arch_passage",
+              "minimum_depth_m": 6.0
+            }
+          ]
+        }
+      },
       "material_zones": "pink-grey rusticated granite; smoother granite dressings; charcoal natural slate; black iron; warm occupied sash windows",
       "material_overrides": {
         "primary": {"base_color": "#8e7b78", "roughness": 0.84, "metallic": 0.0},
         "secondary": {"base_color": "#a99a96", "roughness": 0.82, "metallic": 0.0},
         "accent": {"base_color": "#292d31", "roughness": 0.42, "metallic": 0.48},
-        "roof": {"base_color": "#353b43", "roughness": 0.62, "metallic": 0.04}
+        "roof": {"base_color": "#353b43", "roughness": 0.62, "metallic": 0.04, "texture_key": "welsh_slate"}
       },
       "signature_material_overrides": {
-        "signature_stone": {"base_color": "#927f7d", "roughness": 0.84, "metallic": 0.0, "texture_key": null},
+        "signature_stone": {"base_color": "#a77f7d", "roughness": 0.84, "metallic": 0.0, "texture_key": "granite", "texture_tint_mode": "COLOR", "texture_tint_strength": 0.55},
         "signature_metal": {"base_color": "#25292d", "roughness": 0.40, "metallic": 0.52}
       },
       "massing_graph": {
@@ -1267,13 +1291,13 @@
           {"id": "baronial_left_roof", "kind": "gable_roof", "size": [8.4, 20.2, 5.4], "location": [-23.5, 0.0, 20.5], "material": "roof", "bevel_m": 0.09, "ridge_axis": "y"},
           {"id": "baronial_right_roof", "kind": "gable_roof", "size": [8.4, 20.2, 5.4], "location": [23.5, 0.0, 20.5], "material": "roof", "bevel_m": 0.09, "ridge_axis": "y"},
           {"id": "baronial_rear_roof", "kind": "gable_roof", "size": [47.2, 8.4, 5.4], "location": [0.0, 14.0, 20.5], "material": "roof", "bevel_m": 0.09, "ridge_axis": "x"},
-          {"id": "baronial_gate_tower", "kind": "box", "size": [10.5, 8.8, 27.0], "location": [0.0, -16.0, 13.5], "material": "signature_stone", "bevel_m": 0.15},
+          {"id": "baronial_gate_tower", "kind": "pointed_passage_block", "size": [10.5, 8.8, 27.0], "location": [0.0, -16.0, 13.5], "material": "signature_stone", "bevel_m": 0.15, "opening": {"width_m": 4.9, "spring_height_m": 5.2, "apex_height_m": 8.0}},
           {"id": "baronial_gate_tower_belt", "kind": "box", "size": [11.0, 0.72, 0.48], "location": [0.0, -20.46, 20.5], "material": "secondary", "bevel_m": 0.05},
           {"id": "baronial_gate_tower_cap", "kind": "box", "size": [10.9, 9.2, 0.46], "location": [0.0, -16.0, 27.2], "material": "signature_stone", "bevel_m": 0.06}
         ],
         "voids": [
           {"id": "baronial_open_quadrangle", "size": [39.0, 20.0, 24.0], "location": [0.0, 0.0, 12.0], "purpose": "reference-locked open central court visible in the roof-plan image"},
-          {"id": "baronial_gate_passage", "size": [4.8, 8.8, 7.8], "location": [0.0, -16.0, 3.9], "purpose": "deep centered arched passage into the quadrangle"}
+          {"id": "baronial_gate_passage", "shape": "pointed_arch_passage", "axis": "front", "size": [4.8, 8.8, 8.0], "location": [0.0, -16.0, 4.0], "target_node_ids": ["baronial_gate_tower"], "purpose": "executable deep centered arched passage into the quadrangle"}
         ],
         "assemblies": [
           {"id": "baronial_front_left_skin", "kind": "facade_skin", "axis": "front", "centre": [-17.0, -18.025, 10.25], "span_m": 19.7, "height_m": 20.2, "depth_m": 0.05, "band": "elevation", "flip_u": true},
@@ -1281,7 +1305,7 @@
           {"id": "baronial_left_skin", "kind": "facade_skin", "axis": "left", "centre": [-27.525, 0.0, 10.25], "span_m": 19.7, "height_m": 20.2, "depth_m": 0.05, "band": "elevation", "flip_u": true},
           {"id": "baronial_right_skin", "kind": "facade_skin", "axis": "right", "centre": [27.525, 0.0, 10.25], "span_m": 19.7, "height_m": 20.2, "depth_m": 0.05, "band": "elevation"},
           {"id": "baronial_rear_skin", "kind": "facade_skin", "axis": "rear", "centre": [0.0, 18.025, 10.25], "span_m": 46.7, "height_m": 20.2, "depth_m": 0.05, "band": "elevation", "flip_u": true},
-          {"id": "baronial_gate_front_skin", "kind": "facade_skin", "axis": "front", "centre": [0.0, -20.425, 13.5], "span_m": 10.2, "height_m": 26.7, "depth_m": 0.05, "band": "elevation"},
+          {"id": "baronial_gate_front_skin", "kind": "facade_skin", "axis": "front", "centre": [0.0, -20.425, 13.5], "span_m": 10.2, "height_m": 26.7, "depth_m": 0.05, "band": "elevation", "opening_clearances": [{"void_id": "baronial_gate_passage", "centre_m": 0.0, "base_z_m": 0.35, "width_m": 5.9, "height_m": 8.1}]},
           {"id": "baronial_gate_left_skin", "kind": "facade_skin", "axis": "left", "centre": [-5.275, -16.0, 13.5], "span_m": 8.5, "height_m": 26.7, "depth_m": 0.05, "band": "elevation", "flip_u": true},
           {"id": "baronial_gate_right_skin", "kind": "facade_skin", "axis": "right", "centre": [5.275, -16.0, 13.5], "span_m": 8.5, "height_m": 26.7, "depth_m": 0.05, "band": "elevation"},
           {"id": "baronial_front_left_outer_return", "kind": "facade_skin", "axis": "left", "centre": [-27.025, -14.0, 10.25], "span_m": 7.7, "height_m": 20.2, "depth_m": 0.05, "band": "elevation", "flip_u": true},
@@ -1299,7 +1323,7 @@
           {"id": "baronial_crow_gables", "kind": "shaped_gable_array", "axis": "front", "base_centre": [0.0, -18.12, 20.3], "positions_m": [-16.5, 16.5], "width_m": 7.4, "height_m": 6.2, "depth_m": 0.64, "profile_style": "crow_step", "material": "signature_stone", "infill_material": "primary", "infill_enabled": false, "finial_enabled": false, "bevel_m": 0.035},
           {"id": "baronial_corner_turrets", "kind": "striped_turret_array", "centres": [[-25.2, -15.5], [25.2, -15.5], [-25.2, 15.5], [25.2, 15.5]], "base_z": 0.4, "body_height_m": 22.1, "radius_m": 2.55, "vertices": 40, "body_material": "signature_stone", "stripe_material": "signature_stone", "dark_material": "signature_stone", "belt_material": "secondary", "roof_material": "roof", "belt_levels_m": [4.1, 8.2, 12.3, 16.4, 20.4], "belt_height_m": 0.22, "roof_height_m": 6.7, "roof_radius_m": 2.95},
           {"id": "baronial_gate_bartizan", "kind": "striped_turret_array", "centres": [[5.15, -18.45]], "base_z": 16.2, "body_height_m": 8.2, "radius_m": 1.45, "vertices": 32, "body_material": "signature_stone", "stripe_material": "signature_stone", "dark_material": "signature_stone", "belt_material": "secondary", "roof_material": "roof", "belt_levels_m": [0.4, 4.1, 7.8], "belt_height_m": 0.20, "roof_height_m": 4.7, "roof_radius_m": 1.75},
-          {"id": "baronial_gate_portal", "kind": "pointed_portal", "axis": "front", "base_centre": [0.0, -20.48, 0.45], "width_m": 4.9, "spring_height_m": 5.2, "apex_height_m": 8.0, "depth_m": 0.82, "profile_m": 0.48, "material": "secondary", "back_material": "accent", "recess_plane_y": -20.53},
+          {"id": "baronial_gate_portal", "kind": "pointed_portal", "axis": "front", "base_centre": [0.0, -20.48, 0.45], "width_m": 4.9, "spring_height_m": 5.2, "apex_height_m": 8.0, "depth_m": 0.82, "profile_m": 0.48, "material": "secondary", "opening_mode": "through_passage", "passage_void_id": "baronial_gate_passage"},
           {"id": "baronial_gate_battlements", "kind": "crenellation_array", "axis": "front", "base_centre": [0.0, -20.42, 27.0], "span_m": 10.4, "count": 6, "depth_m": 0.78, "course_height_m": 0.46, "merlon_height_m": 1.08, "material": "signature_stone"},
           {"id": "baronial_gate_left_battlements", "kind": "crenellation_array", "axis": "left", "base_centre": [-5.22, -16.0, 27.0], "span_m": 8.7, "count": 5, "depth_m": 0.78, "course_height_m": 0.46, "merlon_height_m": 1.08, "material": "signature_stone"},
           {"id": "baronial_gate_right_battlements", "kind": "crenellation_array", "axis": "right", "base_centre": [5.22, -16.0, 27.0], "span_m": 8.7, "count": 5, "depth_m": 0.78, "course_height_m": 0.46, "merlon_height_m": 1.08, "material": "signature_stone"},

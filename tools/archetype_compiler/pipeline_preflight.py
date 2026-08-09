@@ -12,6 +12,8 @@ import json
 from pathlib import Path
 from typing import Any
 
+from generation_quality_contract import assess_generation_quality_contract
+
 
 SUPPORTED_SCHEMA = "building-generation-preflight@1"
 IDENTITY_MODES = {"massing_graph", "semantic_stack"}
@@ -148,6 +150,9 @@ def assess_generation_preflight(
             )
         )
 
+    quality = assess_generation_quality_contract(grammar, source=source)
+    hard.extend(quality["gates"])
+
     failures = [gate for gate in hard if not gate["passed"]]
     status = "fail" if failures else "pass"
     return {
@@ -159,6 +164,7 @@ def assess_generation_preflight(
         "paid_generation_allowed": status == "pass",
         "reference_views": references,
         "identity_mode": identity_mode,
+        "generation_quality": quality,
         "failures": failures,
         "gates": hard,
     }

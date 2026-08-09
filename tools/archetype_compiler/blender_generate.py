@@ -32,14 +32,19 @@ from mathutils import Vector
 # to sys.path on Windows; keep compiler-side helper modules importable.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from glass_profiles import glass_profile, glass_profile_for_grammar
+from generation_quality_contract import assess_generation_quality_contract
 
-GENERATOR_VERSION = "0.14.1"
+GENERATOR_VERSION = "0.14.2"
 SUPPORTED_SCHEMA_VERSION = 3
 
 # Set from CLI in main(); make_material reads them so build_materials stays a
 # pure function of the grammar.
 TEXTURES_DIR: Path | None = None
 DEFAULT_TEXTURES_DIR = Path(__file__).resolve().parent / "textures"
+CURATED_TEXTURE_DIRS = (
+    Path(__file__).resolve().parent / "textures_kinnaird_v6",
+    Path(__file__).resolve().parent / "textures_archviz_v5",
+)
 FACADE_SHEET: dict | None = None
 FACADE_SHEET_DETAIL = "hero"
 UV_TILE_METRES = 2.0  # one texture tile covers 2 m of facade (matches generate_textures.py prompts)
@@ -89,6 +94,7 @@ def _texture_set(texture_key: str | None) -> dict[str, Path] | None:
     roots = [TEXTURES_DIR]
     if TEXTURES_DIR != DEFAULT_TEXTURES_DIR:
         roots.append(DEFAULT_TEXTURES_DIR)
+    roots.extend(root for root in CURATED_TEXTURE_DIRS if root not in roots)
     tex_dir = next((root / texture_key for root in roots if (root / texture_key / "albedo.jpg").exists()), None)
     if tex_dir is None:
         return None
@@ -225,8 +231,9 @@ def make_material(name: str, spec: dict) -> bpy.types.Material:
         # while carrying the archetype-specific tint into renders and GLB.
         tint_node = nodes.new("ShaderNodeMixRGB")
         tint_node.name = tint_node.label = "TEX_CatalogueTint"
-        tint_node.blend_type = "MULTIPLY"
-        tint_node.inputs[0].default_value = {
+        tint_mode = str(spec.get("texture_tint_mode", "MULTIPLY")).upper()
+        tint_node.blend_type = tint_mode if tint_mode in {"MULTIPLY", "COLOR", "MIX"} else "MULTIPLY"
+        tint_node.inputs[0].default_value = float(spec.get("texture_tint_strength", {
             "clt": 0.15 if archviz_timber else 0.46,
             "sedum_roof": 0.04 if archviz_sedum else 0.14,
             "red_brick": 0.18,
@@ -236,7 +243,7 @@ def make_material(name: str, spec: dict) -> bpy.types.Material:
             "welsh_slate": 0.06,
             "standing_seam": 0.04,
             "verdigris_copper": 0.03,
-        }.get(texture_key, 0.14)
+        }.get(texture_key, 0.14)))
         tint_node.inputs[2].default_value = color
         tint_node.location = (20, 260)
         links.new(grade_node.outputs["Color"], tint_node.inputs[1])
@@ -841,6 +848,20 @@ def build_materials(grammar: dict) -> dict[str, bpy.types.Material]:
                     near_pbr.get("albedo", far_pbr["albedo"]),
                 )
     return result
+
+
+def validate_runtime_quality_contract(grammar: dict) -> dict:
+    """Fail before mesh construction when declared landmark skins are absent."""
+    report = assess_generation_quality_contract(
+        grammar,
+        texture_available=lambda texture_key: _texture_set(texture_key) is not None,
+    )
+    if report["status"] == "fail":
+        detail = "; ".join(f"{item['id']}: {item['detail']}" for item in report["failures"])
+        raise ValueError(f"generation quality contract failed: {detail}")
+    if report["status"] == "pass":
+        print(f"[blender_generate] generation quality contract: PASS ({len(report['gates'])} gates)")
+    return report
 
 
 # ---------------------------------------------------------------------------
@@ -7165,6 +7186,43 @@ def _graph_facade_skin(parts: list, spec: dict, mats: dict, *, suffix: str = "")
     material["massing_skin_tex_u_max"] = float(spec.get("uv_u_max", 1.0))
     material["massing_skin_v_min"] = float(spec.get("uv_v_min", 0.0))
     material["massing_skin_v_max"] = float(spec.get("uv_v_max", 1.0))
+    clearances = list(spec.get("opening_clearances") or [])
+    if clearances:
+        if axis not in {"front", "rear"} or len(clearances) != 1:
+            raise ValueError("v1 facade-skin clearances support one front/rear opening")
+        clearance = clearances[0]
+        opening_centre = float(clearance.get("centre_m", cx))
+        opening_width = float(clearance["width_m"])
+        opening_base = float(clearance["base_z_m"])
+        opening_height = float(clearance["height_m"])
+        opening_left = opening_centre - opening_width / 2
+        opening_right = opening_centre + opening_width / 2
+        opening_top = opening_base + opening_height
+        z_min, z_max = cz - height / 2, cz + height / 2
+        if not (u_min < opening_left < opening_right < u_max and z_min <= opening_base < opening_top < z_max):
+            raise ValueError(f"facade skin {spec.get('id')!r} opening clearance lies outside the skin")
+
+        panels = [
+            ("Left", u_min, opening_left, z_min, z_max),
+            ("Right", opening_right, u_max, z_min, z_max),
+            ("Below", opening_left, opening_right, z_min, opening_base),
+            ("Above", opening_left, opening_right, opening_top, z_max),
+        ]
+        for label, panel_left, panel_right, panel_bottom, panel_top in panels:
+            panel_span = panel_right - panel_left
+            panel_height = panel_top - panel_bottom
+            if panel_span <= 0.01 or panel_height <= 0.01:
+                continue
+            panel = add_box(
+                f"{spec.get('id', 'GraphSkin')}{suffix}_{label}",
+                (panel_span, depth, panel_height),
+                ((panel_left + panel_right) / 2, cy, (panel_bottom + panel_top) / 2),
+                material,
+            )
+            panel["facade_skin_source"] = str(spec.get("band", "elevation"))
+            panel["facade_skin_clearance_void"] = str(clearance.get("void_id", ""))
+            parts.append(panel)
+        return
     skin = add_box(f"{spec.get('id', 'GraphSkin')}{suffix}", size, (cx, cy, cz), material)
     if axis == "angle":
         skin.rotation_euler.z = math.radians(float(spec.get("rotation_z_deg", 0.0)))
@@ -7351,6 +7409,60 @@ def _graph_bay_frame_array(parts: list, spec: dict, mats: dict) -> None:
                 raise ValueError(f"massing graph bay-frame axis {axis!r} is unsupported")
 
 
+def _graph_pointed_passage_block(parts: list, spec: dict, mats: dict) -> None:
+    """Construct a solid block around a genuinely open pointed passage.
+
+    This is intentionally assembled from walls and arch spandrels instead of a
+    solid box plus a decorative portal. The inner faces therefore continue for
+    the full declared depth and read as a tunnel in street and oblique views.
+    """
+    width, depth, height = (float(value) for value in spec["size"])
+    cx, cy, cz = (float(value) for value in spec["location"])
+    opening = dict(spec.get("opening") or {})
+    opening_width = float(opening.get("width_m", width * 0.42))
+    spring = float(opening.get("spring_height_m", height * 0.20))
+    apex = float(opening.get("apex_height_m", height * 0.30))
+    if not 0.0 < opening_width < width or not 0.0 < spring < apex < height:
+        raise ValueError(f"pointed passage block {spec.get('id')!r} has invalid opening dimensions")
+    prefix = str(spec.get("id", "GraphPointedPassageBlock"))
+    material = _graph_material(mats, spec.get("material", "signature_stone"))
+    bevel = max(0.0, float(spec.get("bevel_m", 0.08)))
+    base_z = cz - height / 2
+    half_opening = opening_width / 2
+    side_width = (width - opening_width) / 2
+    for side, sign in (("L", -1.0), ("R", 1.0)):
+        x = cx + sign * (half_opening + side_width / 2)
+        parts.append(add_beveled_box(
+            f"{prefix}_Wall{side}", (side_width, depth, height),
+            (x, cy, cz), material, min(bevel, side_width * 0.12),
+        ))
+    top_height = height - apex
+    parts.append(add_beveled_box(
+        f"{prefix}_Head", (opening_width, depth, top_height),
+        (cx, cy, base_z + apex + top_height / 2), material,
+        min(bevel, top_height * 0.12),
+    ))
+
+    y0, y1 = cy - depth / 2, cy + depth / 2
+
+    def spandrel(name: str, points: list[tuple[float, float]]) -> None:
+        vertices = [(x, y0, z) for x, z in points] + [(x, y1, z) for x, z in points]
+        count = len(points)
+        faces: list[tuple[int, ...]] = [tuple(reversed(range(count))), tuple(range(count, count * 2))]
+        for index in range(count):
+            nxt = (index + 1) % count
+            faces.append((index, nxt, count + nxt, count + index))
+        parts.append(add_prism(name, vertices, faces, material))
+
+    spring_z, apex_z = base_z + spring, base_z + apex
+    spandrel(f"{prefix}_SpandrelL", [
+        (cx - half_opening, spring_z), (cx, apex_z), (cx - half_opening, apex_z),
+    ])
+    spandrel(f"{prefix}_SpandrelR", [
+        (cx, apex_z), (cx + half_opening, spring_z), (cx + half_opening, apex_z),
+    ])
+
+
 def _graph_pointed_portal(parts: list, spec: dict, mats: dict) -> None:
     """Deep Gothic gateway with a real lancet opening and inhabited recess."""
     axis = str(spec.get("axis", "front"))
@@ -7363,7 +7475,8 @@ def _graph_pointed_portal(parts: list, spec: dict, mats: dict) -> None:
     depth = float(spec.get("depth_m", 0.72))
     profile = float(spec.get("profile_m", 0.42))
     stone = _graph_material(mats, spec.get("material", "signature_stone"))
-    back = _graph_material(mats, spec.get("back_material", "interior_warm"))
+    through_passage = spec.get("opening_mode") == "through_passage"
+    back = None if through_passage else _graph_material(mats, spec.get("back_material", "interior_warm"))
     add_pointed_arch_frame(
         parts, str(spec.get("id", "GraphPointedPortal")), cx, cy, base_z,
         spring_z, apex_z, width, depth, profile, stone, back,
@@ -9036,6 +9149,8 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
             if node.get("rotation_z_deg") is not None:
                 part.rotation_euler.z = math.radians(float(node["rotation_z_deg"]))
             parts.append(part)
+        elif kind == "pointed_passage_block":
+            _graph_pointed_passage_block(parts, node, mats)
         elif kind == "chamfered_box":
             size = tuple(float(value) for value in node["size"])
             parts.append(add_chamfered_box(
@@ -9860,6 +9975,7 @@ def generate(grammar: dict, output: Path, *, floors_override: int | None, keep_b
         )
 
     configure_units()
+    runtime_quality = validate_runtime_quality_contract(grammar)
     family = grammar["family_id"]
     dims = grammar["dimensions"]
     source = grammar["source"]
@@ -10113,6 +10229,7 @@ def generate(grammar: dict, output: Path, *, floors_override: int | None, keep_b
             "ao_requested": ao,
             "uv_layers": {"UVMap": "box projection, tiled materials", "AOMap": "smart project, baked AO"},
         },
+        "generation_quality": runtime_quality,
         "facade_sheet": ({
             "schema": FACADE_SHEET["manifest"].get("schema", "facade-sheet@1"),
             "source_directory": str(FACADE_SHEET["dir"]),

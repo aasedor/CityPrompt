@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-08-08-wave-shell-landmark-v73",
+  "memory_version": "2026-08-08-material-void-contract-v77",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "calibration_set": {
@@ -56,6 +56,10 @@
       "rule": "Roofs, dormers, canopies, columns and other fixed assemblies inherit the archetype's material palette, edge profiles and construction logic; no attachment may introduce a separate visual language."
     },
     {
+      "id": "landmark_materials_are_executable_contracts",
+      "rule": "Every large visible fixed assembly names an archetype material slot and resolves to an available texture family at preflight and render time. Turrets, gables, crenellations and roof forms may not fall back to an untextured colour when the catalogue metadata or references identify granite, slate, copper, tile or another construction material."
+    },
+    {
       "id": "pitched_roof_surfaces_are_construction",
       "rule": "At hero range, a large pitched roof must show its actual covering and edge system: overlapping courses or seams, ridge and valley caps, verge/fascia thickness, drainage, and any archetype-specific ballast or snow retention. A smooth prism supplies massing only, not a finished roof."
     },
@@ -74,6 +78,10 @@
     {
       "id": "landmark_voids_are_sections",
       "rule": "A signature arch, portal, undercroft or carved entrance is authored as a depth-bearing section with outer shell, inner reveal and inhabited back plane. Flat facade imagery or trim cannot carry a public void."
+    },
+    {
+      "id": "declared_passages_execute_through_massing",
+      "rule": "A declared gate passage, arcade or undercroft must name its target mass, minimum depth, opening shape and every facade skin that must clear it. The renderer must construct or subtract that volume; recording a void beside a solid node is not an implementation."
     },
     {
       "id": "large_span_shells_are_closed_and_panelised",
@@ -711,6 +719,16 @@
       "symptom": "The compiled building follows famous real-world metadata but does not resemble the selected catalogue images",
       "cause": "Prose for the named real building contradicted the actual UI variant images and silently overruled their massing and material evidence.",
       "correction": "Record the conflict and treat the exact selected street, oblique and roof images as the variant contract. Use prose only where it agrees with visible evidence."
+    },
+    {
+      "symptom": "Turrets, shaped gables, battlements or roof planes render as large mono-coloured surfaces beside a textured facade",
+      "cause": "Fixed assemblies referenced colour-only override materials, inherited a sibling roof texture, or reached Blender before the requested texture set was proven available.",
+      "correction": "Compile material continuity from variant metadata into required material slots and assembly bindings. Fail preflight or runtime when a required landmark lacks a texture key, uses the wrong family, or cannot resolve its texture assets."
+    },
+    {
+      "symptom": "A gate or doorway described as deeply recessed is filled by a flat wall or brick panel",
+      "cause": "The grammar recorded a semantic void, but the target mass remained solid and a rectangular facade skin or portal back plane covered the opening.",
+      "correction": "Bind the passage to an executable void primitive or Boolean, enforce a reference-derived minimum depth, switch the portal to through-passage mode and split every crossing facade skin around the opening."
     }
   ]
 }
