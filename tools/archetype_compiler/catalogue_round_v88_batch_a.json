@@ -1,0 +1,60 @@
+{
+  "schema": "catalogue-rollout-batch@1",
+  "campaign": "tools/archetype_compiler/catalogue_round_v88.json",
+  "pipeline_version": "v88",
+  "surface_recipe_manifest": "tools/archetype_compiler/catalogue_round_v88_surface_recipes.json",
+  "batch_id": "ROUND-001-V88-A",
+  "paid_facade_calls": 0,
+  "entries": [
+    {
+      "archetype_id": "classic_brownstone_streetwall",
+      "variant_id": "classic_brownstone_federal",
+      "family_id": "classic-brownstone-federal-v88",
+      "width_m": 18.0,
+      "depth_m": 18.0,
+      "floors": 3,
+      "allow_outside_bounds": false,
+      "facade_sheet": "artifacts/catalogue-rollout-v87/round-001/facade-sheets/classic_brownstone_federal"
+    },
+    {
+      "archetype_id": "classic_brownstone_streetwall",
+      "variant_id": "classic_brownstone_grey_stone",
+      "family_id": "classic-brownstone-greystone-v88",
+      "width_m": 18.0,
+      "depth_m": 18.0,
+      "floors": 3,
+      "allow_outside_bounds": false,
+      "facade_sheet": "artifacts/catalogue-rollout-v87/round-001/facade-sheets/classic_brownstone_grey_stone"
+    },
+    {
+      "archetype_id": "modernist_civic_block",
+      "variant_id": "modernist_civic_white_corbusian",
+      "family_id": "modernist-civic-white-v88",
+      "width_m": 36.0,
+      "depth_m": 23.0,
+      "floors": 5,
+      "allow_outside_bounds": false,
+      "facade_sheet": "artifacts/catalogue-rollout-v87/round-001/facade-sheets/modernist_civic_white_corbusian"
+    },
+    {
+      "archetype_id": "modernist_civic_block",
+      "variant_id": "modernist_civic_precast_panel",
+      "family_id": "modernist-civic-precast-v88",
+      "width_m": 26.0,
+      "depth_m": 22.0,
+      "floors": 5,
+      "allow_outside_bounds": true,
+      "facade_sheet": "artifacts/catalogue-rollout-v87/round-001/facade-sheets/modernist_civic_precast_panel"
+    },
+    {
+      "archetype_id": "modern_glass_office_institutional",
+      "variant_id": "glass_office_terracotta_fins",
+      "family_id": "glass-office-terracotta-v88",
+      "width_m": 32.0,
+      "depth_m": 22.0,
+      "floors": 4,
+      "allow_outside_bounds": true,
+      "facade_sheet": "artifacts/catalogue-rollout-v87/round-001/facade-sheets/glass_office_terracotta_fins"
+    }
+  ]
+}

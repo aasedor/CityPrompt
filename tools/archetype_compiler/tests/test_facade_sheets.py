@@ -80,7 +80,12 @@ def test_signature_injection_prefers_an_explicit_variant_profile():
     assert "terracotta fins" in result["architectural_signature"]["identity"]
     assert "curtainwall_fins" in result["architectural_signature"]["kits"]
     assert result["materials"]["primary"]["base_color"] == "#a75f43"
-    assert "massing_graph" not in result
+    # V88 promotes this image-locked variant to an exact graph while retaining
+    # its semantic kit tag for catalogue identity.  Generic kit geometry is
+    # explicitly suppressed by the production contract to avoid a duplicate
+    # curtain-wall cage.
+    assert result["massing_graph"]["profile"] == "glass_office_terracotta_fins_quality_lock_v88"
+    assert "curtainwall_fins" in result["architectural_signature"]["production_contract"]["geometry_kit_exclusions"]
 
 
 def test_modernist_civic_signature_injects_semantic_massing_graph():

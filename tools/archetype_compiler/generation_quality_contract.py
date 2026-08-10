@@ -56,6 +56,78 @@ def assess_generation_quality_contract(
         return {"schema": "building-generation-quality@1", "status": "not_declared", "gates": []}
 
     gates: list[dict[str, Any]] = []
+    if version >= 4:
+        workflow = production.get("stage_workflow") or {}
+        required_stages = [
+            "reference_sufficiency",
+            "representation_selection",
+            "clay_massing",
+            "roof_and_voids",
+            "medium_detail",
+            "retopology",
+            "manual_uv_audit",
+            "material_bake",
+            "export_parity",
+            "architect_review",
+        ]
+        declared = workflow.get("required_stages") or {}
+        missing = [
+            stage for stage in required_stages
+            if not isinstance(declared.get(stage), dict)
+            or not declared[stage].get("deliverable")
+            or not declared[stage].get("approval_required")
+        ]
+        gates.append(_gate(
+            "mandatory_stage_workflow",
+            not missing,
+            "missing mandatory stage declarations: " + ", ".join(missing)
+            if missing else f"{len(required_stages)} mandatory production stages declared",
+        ))
+        views = {str(value) for value in workflow.get("architect_review_views") or []}
+        required_views = {"street", "oblique", "roof", "side", "rear", "close_up"}
+        gates.append(_gate(
+            "architect_review_view_set",
+            required_views.issubset(views),
+            "missing architect views: " + ", ".join(sorted(required_views - views))
+            if required_views - views else "complete six-view architect review declared",
+        ))
+        threshold = int(workflow.get("architect_release_score", 0))
+        gates.append(_gate(
+            "architect_release_threshold",
+            threshold >= 85,
+            f"architect release threshold is {threshold}/100; minimum 85",
+        ))
+        gates.append(_gate(
+            "architect_hard_stops",
+            bool(workflow.get("hard_stops_block_release")),
+            "architectural hard stops block release"
+            if workflow.get("hard_stops_block_release") else
+                "architectural hard stops do not block release",
+        ))
+        representation = str(workflow.get("representation") or "")
+        if representation in {"skin_driven_2_5d", "registered_sticker_landmark"}:
+            placement = production.get("placement_contract") or {}
+            footprint = placement.get("footprint_m") or {}
+            fixed_landmark = (
+                placement.get("mode") == "fixed_landmark"
+                and placement.get("ui_interaction") == "select_and_place"
+                and float(footprint.get("width", 0.0)) > 0.0
+                and float(footprint.get("depth", 0.0)) > 0.0
+                and placement.get("non_uniform_scale") == "forbidden"
+                and placement.get("floor_count_change") == "forbidden"
+                and placement.get("polygon_fit") is False
+            )
+            gates.append(_gate(
+                "registered_sticker_fixed_placement",
+                fixed_landmark,
+                (
+                    f"fixed {float(footprint.get('width', 0.0)):.2f} x "
+                    f"{float(footprint.get('depth', 0.0)):.2f} m select-and-place landmark; "
+                    "polygon fitting, floor changes and non-uniform scaling forbidden"
+                    if fixed_landmark else
+                    "registered sticker building lacks a safe fixed-landmark placement contract"
+                ),
+            ))
     material_contract = production.get("material_continuity") or {}
     required_materials = list(material_contract.get("required_textured_materials") or [])
     for material_id in required_materials:
@@ -180,6 +252,81 @@ def assess_generation_quality_contract(
             f"{len(measurements)} measurements; minimum {minimum_measurements}; "
             f"invalid indices: {invalid_measurements or 'none'}",
         ))
+        registration = image_lock.get("surface_registration") or {}
+        if registration:
+            group = str(registration.get("group") or "")
+            frame = registration.get("frame") or {}
+            tolerance = float(registration.get("tolerance_uv", 1e-6))
+            frame_width = float(frame.get("width_m", 0.0))
+            frame_height = float(frame.get("height_m", 0.0))
+            frame_centre_x = float(frame.get("centre_x_m", 0.0))
+            frame_base_z = float(frame.get("base_z_m", 0.0))
+            frame_u_min = float(frame.get("uv_u_min", 0.0))
+            frame_u_max = float(frame.get("uv_u_max", 1.0))
+            frame_v_min = float(frame.get("uv_v_min", 0.0))
+            frame_v_max = float(frame.get("uv_v_max", 1.0))
+            registered = [
+                item for item in assemblies.values()
+                if str(item.get("registration_group") or "") == group
+            ]
+            misregistered: list[str] = []
+            valid_frame = bool(group) and frame_width > 0.0 and frame_height > 0.0
+            if valid_frame:
+                frame_left = frame_centre_x - frame_width / 2
+                for item in registered:
+                    cx, _cy, cz = (float(value) for value in item.get("centre", [0, 0, 0]))
+                    span = float(item.get("span_m", 0.0))
+                    height = float(item.get("height_m", 0.0))
+                    expected = (
+                        frame_u_min + ((cx - span / 2) - frame_left) / frame_width * (frame_u_max - frame_u_min),
+                        frame_u_min + ((cx + span / 2) - frame_left) / frame_width * (frame_u_max - frame_u_min),
+                        frame_v_min + ((cz - height / 2) - frame_base_z) / frame_height * (frame_v_max - frame_v_min),
+                        frame_v_min + ((cz + height / 2) - frame_base_z) / frame_height * (frame_v_max - frame_v_min),
+                    )
+                    actual = (
+                        float(item.get("uv_u_min", 0.0)),
+                        float(item.get("uv_u_max", 1.0)),
+                        float(item.get("uv_v_min", 0.0)),
+                        float(item.get("uv_v_max", 1.0)),
+                    )
+                    if any(abs(left - right) > tolerance for left, right in zip(actual, expected)):
+                        misregistered.append(str(item.get("id")))
+            anchors = {str(value) for value in registration.get("anchor_types") or []}
+            required_anchors = {"window_centres", "column_centres", "floor_datums"}
+            passed = (
+                valid_frame
+                and len(registered) >= 2
+                and not misregistered
+                and required_anchors.issubset(anchors)
+            )
+            gates.append(_gate(
+                "image_lock_surface_registration",
+                passed,
+                f"{len(registered)} surfaces share {group!r}; "
+                f"misregistered: {', '.join(misregistered) if misregistered else 'none'}; "
+                f"anchors: {', '.join(sorted(anchors)) or 'none'}",
+            ))
+            missing_masks = [
+                str(item.get("id")) for item in registered
+                if (
+                    item.get("mask_semantics") == "alpha_isolated_projected_feature"
+                    and not item.get("alpha_mask_path")
+                )
+                or item.get("mask_semantics") not in {
+                    "continuous_registration_base",
+                    "alpha_isolated_projected_feature",
+                }
+            ]
+            base_masks = [
+                item for item in registered
+                if item.get("mask_semantics") == "continuous_registration_base"
+            ]
+            gates.append(_gate(
+                "image_lock_semantic_sticker_masks",
+                len(base_masks) == 1 and not missing_masks,
+                f"{len(registered)} registered surfaces; {len(base_masks)} continuous base; "
+                f"missing semantic masks: {', '.join(missing_masks) if missing_masks else 'none'}",
+            ))
         for noun, collection in (
             ("node", nodes), ("assembly", assemblies), ("void", voids),
         ):

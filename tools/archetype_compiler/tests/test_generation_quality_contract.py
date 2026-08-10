@@ -220,6 +220,36 @@ def test_image_lock_rejects_untraceable_measurement():
     assert "image_lock_measurements" in {item["id"] for item in report["failures"]}
 
 
+def test_image_lock_rejects_a_sticker_with_mismatched_geometry_and_uv_scale():
+    from generation_quality_contract import assess_generation_quality_contract
+
+    grammar = quality_grammar()
+    production = grammar["architectural_signature"]["production_contract"]
+    production["image_lock"] = {
+        "required_reference_roles": ["street_identity"],
+        "minimum_measurements": 1,
+        "measurements": [{
+            "feature": "facade frame", "role": "street_identity", "value": 10,
+            "unit": "metres", "drives": "base_skin",
+        }],
+        "surface_registration": {
+            "group": "front",
+            "frame": {
+                "centre_x_m": 0, "base_z_m": 0, "width_m": 10, "height_m": 10,
+                "uv_u_min": 0, "uv_u_max": 1, "uv_v_min": 0, "uv_v_max": 1,
+            },
+            "anchor_types": ["window_centres", "column_centres", "floor_datums"],
+        },
+    }
+    grammar["massing_graph"]["reference_views"] = [{"role": "street_identity", "path": "street.png"}]
+    grammar["massing_graph"]["assemblies"] = [
+        {"id": "base_skin", "kind": "facade_skin", "centre": [0, -2, 5], "span_m": 10, "height_m": 10, "registration_group": "front"},
+        {"id": "sticker", "kind": "facade_skin", "centre": [0, -3, 5], "span_m": 4, "height_m": 4, "uv_u_min": 0.2, "uv_u_max": 0.8, "uv_v_min": 0.3, "uv_v_max": 0.7, "registration_group": "front"},
+    ]
+    report = assess_generation_quality_contract(grammar, source=source_metadata())
+    assert "image_lock_surface_registration" in {item["id"] for item in report["failures"]}
+
+
 def test_surface_finish_requires_baked_pbr_metric_uvs_and_parity_renders():
     from generation_quality_contract import assess_generation_quality_contract
 
@@ -256,3 +286,68 @@ def test_surface_finish_requires_baked_pbr_metric_uvs_and_parity_renders():
     assert "surface_baked_pbr:primary" in failures
     assert "surface_uv_scale:primary" in failures
     assert "surface_qa_renders" in failures
+
+
+def test_v4_requires_complete_architect_review_workflow():
+    from generation_quality_contract import assess_generation_quality_contract
+
+    grammar = quality_grammar()
+    production = grammar["architectural_signature"]["production_contract"]
+    production["quality_contract_version"] = 4
+    production["stage_workflow"] = {
+        "required_stages": {
+            stage: {"deliverable": f"{stage}.json", "approval_required": True}
+            for stage in (
+                "reference_sufficiency", "representation_selection", "clay_massing",
+                "roof_and_voids", "medium_detail", "retopology", "manual_uv_audit",
+                "material_bake", "export_parity", "architect_review",
+            )
+        },
+        "architect_review_views": ["street", "oblique", "roof", "side", "rear", "close_up"],
+        "architect_release_score": 85,
+        "hard_stops_block_release": True,
+    }
+    report = assess_generation_quality_contract(grammar, source=source_metadata())
+    assert report["status"] == "pass"
+
+    del production["stage_workflow"]["required_stages"]["clay_massing"]
+    production["stage_workflow"]["architect_release_score"] = 80
+    report = assess_generation_quality_contract(grammar, source=source_metadata())
+    failures = {item["id"] for item in report["failures"]}
+    assert "mandatory_stage_workflow" in failures
+    assert "architect_release_threshold" in failures
+
+
+def test_registered_sticker_landmark_forbids_polygon_stretching():
+    from generation_quality_contract import assess_generation_quality_contract
+
+    grammar = quality_grammar()
+    production = grammar["architectural_signature"]["production_contract"]
+    production["quality_contract_version"] = 4
+    production["stage_workflow"] = {
+        "required_stages": {
+            stage: {"deliverable": f"{stage}.json", "approval_required": True}
+            for stage in (
+                "reference_sufficiency", "representation_selection", "clay_massing",
+                "roof_and_voids", "medium_detail", "retopology", "manual_uv_audit",
+                "material_bake", "export_parity", "architect_review",
+            )
+        },
+        "representation": "registered_sticker_landmark",
+        "architect_review_views": ["street", "oblique", "roof", "side", "rear", "close_up"],
+        "architect_release_score": 85,
+        "hard_stops_block_release": True,
+    }
+    production["placement_contract"] = {
+        "mode": "fixed_landmark", "ui_interaction": "select_and_place",
+        "footprint_m": {"width": 14.0, "depth": 31.0},
+        "non_uniform_scale": "forbidden", "floor_count_change": "forbidden",
+        "polygon_fit": False,
+    }
+    report = assess_generation_quality_contract(grammar, source=source_metadata())
+    assert report["status"] == "pass"
+    assert any(gate["id"] == "registered_sticker_fixed_placement" and gate["passed"] for gate in report["gates"])
+
+    production["placement_contract"]["polygon_fit"] = True
+    report = assess_generation_quality_contract(grammar, source=source_metadata())
+    assert "registered_sticker_fixed_placement" in {item["id"] for item in report["failures"]}

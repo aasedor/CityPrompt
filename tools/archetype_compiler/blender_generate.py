@@ -324,8 +324,9 @@ def make_profile_glass_material(name: str, profile_name: str) -> bpy.types.Mater
         principled.inputs["Metallic"].default_value = 0.0
         principled.inputs["Roughness"].default_value = float(profile["roughness"])
         alpha = principled.inputs.get("Alpha")
+        surface_alpha = float(profile.get("surface_alpha", 1.0))
         if alpha:
-            alpha.default_value = 1.0
+            alpha.default_value = surface_alpha
         transmission = principled.inputs.get("Transmission Weight") or principled.inputs.get("Transmission")
         if transmission:
             transmission.default_value = float(profile["transmission"])
@@ -342,10 +343,19 @@ def make_profile_glass_material(name: str, profile_name: str) -> bpy.types.Mater
             emission.default_value = hex_rgba(str(profile["interior_light_color"]))
         if principled.inputs.get("Emission Strength"):
             principled.inputs["Emission Strength"].default_value = float(profile.get("glass_emission_strength", 0.0))
-    mat.diffuse_color = hex_rgba(str(profile["tint"]))
+    mat.diffuse_color = hex_rgba(str(profile["tint"]), surface_alpha)
+    if surface_alpha < 0.999:
+        # Blender 4.2+ replaced blend_method with surface_render_method. Keep
+        # the legacy branch for the repository's older supported runners.
+        if hasattr(mat, "surface_render_method"):
+            mat.surface_render_method = "DITHERED"
+        elif hasattr(mat, "blend_method"):
+            mat.blend_method = "BLEND"
+        if hasattr(mat, "use_transparency_overlap"):
+            mat.use_transparency_overlap = False
     mat["glazing_profile"] = profile_name
     mat["glazing_lod"] = "near"
-    mat["alpha_strategy"] = "opaque_physical_transmission"
+    mat["alpha_strategy"] = "bounded_blend_physical_transmission" if surface_alpha < 0.999 else "opaque_physical_transmission"
     return mat
 
 
@@ -510,6 +520,17 @@ def _add_binary_alpha_mask(
     links.new(uv_node.outputs["UV"], mask_node.inputs["Vector"])
     links.new(mask_node.outputs["Color"], threshold.inputs[0])
     links.new(threshold.outputs[0], bsdf.inputs["Alpha"])
+    # Eevee must apply the same cutout to rasterized shadow maps. Leaving the
+    # copied material in its opaque render mode makes the colour card disappear
+    # correctly while its full rectangular footprint still casts a shadow.
+    if hasattr(mat, "surface_render_method"):
+        mat.surface_render_method = "DITHERED"
+    elif hasattr(mat, "blend_method"):
+        mat.blend_method = "CLIP"
+    if hasattr(mat, "surface_render_method") and hasattr(mat, "use_transparency_overlap"):
+        mat.use_transparency_overlap = False
+    if hasattr(mat, "shadow_method"):
+        mat.shadow_method = "CLIP"
 
 
 def make_near_facade_sheet_material(
@@ -3054,7 +3075,11 @@ def _add_economy_window_row(
 
 
 def _signature_kits(grammar: dict) -> set[str]:
-    return set((grammar.get("architectural_signature") or {}).get("kits") or [])
+    signature = grammar.get("architectural_signature") or {}
+    kits = set(signature.get("kits") or [])
+    contract = signature.get("production_contract") or {}
+    excluded = set(contract.get("geometry_kit_exclusions") or [])
+    return kits - excluded
 
 
 def _has_rooftop_pavilion(grammar: dict) -> bool:
@@ -6494,7 +6519,12 @@ def _graph_curtain_wall(parts: list, spec: dict, mats: dict, *, ribbon: bool = F
     )
     shadow_mat = _graph_material(mats, "massing_joint")
     interior_key = spec.get("interior_material")
-    interior_mat = _graph_material(mats, interior_key) if interior_key else None
+    if interior_key == "interior_atlas":
+        cells = mats.get("interior_cells") or []
+        cell_index = int(spec.get("interior_atlas_cell", 0))
+        interior_mat = cells[cell_index % len(cells)] if cells else _graph_material(mats, "interior")
+    else:
+        interior_mat = _graph_material(mats, interior_key) if interior_key else None
     interior_recess = float(spec.get("interior_recess_m", 0.055))
 
     # Some render-locked curtain walls bake the secondary cap/mullion scale
@@ -7637,6 +7667,37 @@ def _graph_skin_material(mats: dict, spec: dict, *, suffix: str = ""):
     material["massing_skin_canonical"] = base.name
     material["massing_skin_axis"] = str(spec.get("axis", "front"))
     material["massing_skin_flip_u"] = bool(spec.get("flip_u", False))
+    source_image_path = spec.get("source_image_path")
+    if source_image_path:
+        image_path = Path(str(source_image_path))
+        if not image_path.is_absolute():
+            image_path = Path.cwd() / image_path
+        if not image_path.exists():
+            raise FileNotFoundError(f"registered sticker source is missing: {image_path}")
+        albedo = material.node_tree.nodes.get("SHEET_Albedo") if material.node_tree else None
+        if albedo is None or albedo.type != "TEX_IMAGE":
+            raise ValueError("custom registered sticker requires a SHEET_Albedo image node")
+        albedo.image = _load_image(image_path, "sRGB")
+        # The replacement image is its own canonical atlas.  It must not be
+        # consolidated back into the front-elevation material after joining.
+        material["massing_skin_canonical"] = ""
+        material["registered_sticker_source"] = str(image_path)
+    alpha_mask_path = spec.get("alpha_mask_path")
+    if alpha_mask_path:
+        mask_path = Path(str(alpha_mask_path))
+        if not mask_path.exists():
+            raise FileNotFoundError(f"registered sticker mask is missing: {mask_path}")
+        _add_binary_alpha_mask(
+            material,
+            mask_path,
+            node_label=f"STICKER_Alpha_{spec.get('id', 'Skin')}{suffix}",
+        )
+        material["registered_sticker_mask"] = str(mask_path)
+        material["registered_sticker_semantics"] = str(spec.get("mask_semantics", ""))
+        # Alpha-isolated feature stickers cannot be consolidated into the
+        # opaque base elevation material after joining.  Doing so discards the
+        # mask node tree and exposes the full rectangular colour crop.
+        material["massing_skin_canonical"] = ""
     return material
 
 
@@ -7704,6 +7765,77 @@ def _graph_facade_skin(parts: list, spec: dict, mats: dict, *, suffix: str = "")
             raise ValueError("facade-skin clearances must share a base and head height")
         if not (z_min <= common_base < common_top < z_max):
             raise ValueError(f"facade skin {spec.get('id')!r} opening height lies outside the skin")
+
+        # Preserve the photographic sticker right up to an arched reveal.  A
+        # rectangular clearance exposes a pale block around the arch and makes
+        # the tunnel look pasted onto the facade.  This one-opening branch cuts
+        # the sticker on the actual semicircular profile, so the photograph,
+        # physical arch trim and deep passage share the same registration.
+        clearance_shape = str(openings[0][4].get("shape", "rectangular"))
+        if len(openings) == 1 and clearance_shape == "round_arch":
+            opening_left, opening_right, opening_base, opening_top, clearance = openings[0]
+            radius = (opening_right - opening_left) / 2
+            centre = (opening_left + opening_right) / 2
+            spring_z = float(clearance.get("spring_z_m", opening_top - radius))
+            if abs((opening_top - spring_z) - radius) > max(0.08, radius * 0.16):
+                raise ValueError(f"facade skin {spec.get('id')!r} round arch must be semicircular")
+            if not opening_base < spring_z < opening_top:
+                raise ValueError(f"facade skin {spec.get('id')!r} has invalid arch spring")
+
+            def mark(panel, label: str) -> None:
+                panel["facade_skin_source"] = str(spec.get("band", "elevation"))
+                panel["facade_skin_clearance_void"] = str(clearance.get("void_id", ""))
+                panel["facade_skin_clearance_shape"] = "round_arch"
+                parts.append(panel)
+
+            def panel_box(label: str, left: float, right: float, bottom: float, top: float) -> None:
+                if right - left <= 0.01 or top - bottom <= 0.01:
+                    return
+                mark(add_box(
+                    f"{spec.get('id', 'GraphSkin')}{suffix}_{label}",
+                    (right - left, depth, top - bottom),
+                    ((left + right) / 2, cy, (bottom + top) / 2), material,
+                ), label)
+
+            def curved_spandrel(label: str, points: list[tuple[float, float]]) -> None:
+                y0, y1 = cy - depth / 2, cy + depth / 2
+                vertices = [(x, y0, z) for x, z in points] + [(x, y1, z) for x, z in points]
+                count = len(points)
+                faces: list[tuple[int, ...]] = [
+                    tuple(reversed(range(count))), tuple(range(count, count * 2)),
+                ]
+                for index in range(count):
+                    nxt = (index + 1) % count
+                    faces.append((index, nxt, count + nxt, count + index))
+                mark(add_prism(
+                    f"{spec.get('id', 'GraphSkin')}{suffix}_{label}",
+                    vertices, faces, material,
+                ), label)
+
+            panel_box("Below", u_min, u_max, z_min, opening_base)
+            panel_box("Left", u_min, opening_left, opening_base, opening_top)
+            panel_box("Right", opening_right, u_max, opening_base, opening_top)
+            panel_box("Above", u_min, u_max, opening_top, z_max)
+            segments = max(10, int(clearance.get("arch_segments", 20)))
+            left_arc = [
+                (centre + radius * math.cos(math.pi - math.pi * step / (2 * segments)),
+                 spring_z + radius * math.sin(math.pi - math.pi * step / (2 * segments)))
+                for step in range(segments + 1)
+            ]
+            right_arc = [
+                (centre + radius * math.cos(math.pi / 2 - math.pi * step / (2 * segments)),
+                 spring_z + radius * math.sin(math.pi / 2 - math.pi * step / (2 * segments)))
+                for step in range(segments + 1)
+            ]
+            curved_spandrel("ArchSpandrelL", [
+                (opening_left, spring_z), (opening_left, opening_top),
+                (centre, opening_top), *reversed(left_arc[:-1]),
+            ])
+            curved_spandrel("ArchSpandrelR", [
+                (centre, opening_top), (opening_right, opening_top),
+                (opening_right, spring_z), *reversed(right_arc[1:]),
+            ])
+            return
         cursor = u_min
         vertical_panels = []
         for opening_left, opening_right, *_ in openings:
@@ -7739,8 +7871,118 @@ def _graph_facade_skin(parts: list, spec: dict, mats: dict, *, suffix: str = "")
     skin = add_box(f"{spec.get('id', 'GraphSkin')}{suffix}", size, (cx, cy, cz), material)
     if axis == "angle":
         skin.rotation_euler.z = math.radians(float(spec.get("rotation_z_deg", 0.0)))
+    if spec.get("alpha_mask_path") and hasattr(skin, "visible_shadow"):
+        # The feature's eventual return/soffit geometry owns contact shadows.
+        # Eevee treats hidden pixels on a thin alpha card as an opaque
+        # rectangular shadow caster on some export/render paths; the source
+        # card also contains baked relief shading, so retaining that shadow
+        # would double-light the facade and reveal the card boundary.
+        skin.visible_shadow = False
+        skin["registered_sticker_shadow_owner"] = "physical_return_geometry"
     skin["facade_skin_source"] = str(spec.get("band", "elevation"))
     parts.append(skin)
+
+
+def _graph_displaced_facade_skin(parts: list, spec: dict, mats: dict) -> None:
+    """Build one continuous image-registered facade from a depth guide.
+
+    The colour elevation and the depth guide share identical UV coordinates.
+    Unlike stacked crop boxes, this keeps the architectural image continuous
+    while allowing oriels, balconies, reveals and carved stone to move forward
+    or backward as a smooth section.  A solid mass remains immediately behind
+    the mesh, so the displaced surface does not have to fake wall thickness.
+    """
+    axis = str(spec.get("axis", "front"))
+    if axis != "front":
+        raise ValueError("displaced facade skin currently supports the front elevation only")
+    cx, cy, cz = (float(value) for value in spec["centre"])
+    span = float(spec["span_m"])
+    height = float(spec["height_m"])
+    columns = max(24, int(spec.get("columns", 96)))
+    rows = max(32, int(spec.get("rows", round(columns * height / max(span, 0.1)))))
+    u_min = float(spec.get("uv_u_min", 0.0))
+    u_max = float(spec.get("uv_u_max", 1.0))
+    v_min = float(spec.get("uv_v_min", 0.0))
+    v_max = float(spec.get("uv_v_max", 1.0))
+    neutral = float(spec.get("depth_neutral", 0.50))
+    scale = float(spec.get("depth_scale_m", 1.35))
+    min_recess = float(spec.get("min_recess_m", -0.24))
+    max_projection = float(spec.get("max_projection_m", 1.10))
+    depth_path = Path(str(spec["depth_map_path"]))
+    if not depth_path.is_absolute():
+        depth_path = Path.cwd() / depth_path
+    if not depth_path.exists():
+        raise ValueError(f"displaced facade depth map does not exist: {depth_path}")
+    depth_image = bpy.data.images.load(str(depth_path), check_existing=True)
+    try:
+        depth_image.colorspace_settings.name = "Non-Color"
+    except TypeError:
+        pass
+    image_width, image_height = depth_image.size
+    pixels = list(depth_image.pixels[:])
+
+    def sample(u: float, v: float) -> float:
+        px = max(0, min(image_width - 1, int(round(u * (image_width - 1)))))
+        py = max(0, min(image_height - 1, int(round(v * (image_height - 1)))))
+        index = (py * image_width + px) * 4
+        return (pixels[index] + pixels[index + 1] + pixels[index + 2]) / 3.0
+
+    vertices: list[tuple[float, float, float]] = []
+    vertex_uv: list[tuple[float, float]] = []
+    for row in range(rows + 1):
+        row_t = row / rows
+        v = v_min + row_t * (v_max - v_min)
+        z = cz - height / 2 + row_t * height
+        for column in range(columns + 1):
+            column_t = column / columns
+            u = u_min + column_t * (u_max - u_min)
+            x = cx - span / 2 + column_t * span
+            relative_depth = max(min_recess, min(max_projection, (sample(u, v) - neutral) * scale))
+            vertices.append((x, cy - relative_depth, z))
+            vertex_uv.append((u, v))
+    faces: list[tuple[int, int, int, int]] = []
+    stride = columns + 1
+    for row in range(rows):
+        for column in range(columns):
+            lower_left = row * stride + column
+            faces.append((lower_left, lower_left + 1, lower_left + stride + 1, lower_left + stride))
+    mesh = bpy.data.meshes.new(f"{spec.get('id', 'GraphDisplacedSkin')}_Mesh")
+    mesh.from_pydata(vertices, [], faces)
+    mesh.update()
+    for polygon in mesh.polygons:
+        polygon.use_smooth = True
+    uv_layer = mesh.uv_layers.new(name="UVMap")
+    for loop_index, loop in enumerate(mesh.loops):
+        uv_layer.data[loop_index].uv = vertex_uv[loop.vertex_index]
+    material = _graph_skin_material(mats, spec, suffix="_DepthMesh")
+    if material is None:
+        raise ValueError("displaced facade skin requires an audited facade-sheet material")
+    # join_as deliberately reapplies metric box UVs to the unified mesh. Mark
+    # this material with the same post-join reconstruction bounds as a normal
+    # graph skin so _apply_massing_skin_uv restores the exact image/depth
+    # registration before material clones are consolidated.
+    material["massing_skin_u_min"] = cx - span / 2
+    material["massing_skin_u_max"] = cx + span / 2
+    material["massing_skin_z_min"] = cz - height / 2
+    material["massing_skin_z_max"] = cz + height / 2
+    material["massing_skin_tex_u_min"] = u_min
+    material["massing_skin_tex_u_max"] = u_max
+    material["massing_skin_v_min"] = v_min
+    material["massing_skin_v_max"] = v_max
+    # This single material already contains the exact window/reflection pixels.
+    # Until a shape-matched displaced glass overlay is authored, keep it
+    # visible in both near and far review modes; otherwise the global LOD switch
+    # sees another near elevation material in the scene and exposes the plain
+    # structural wall through every semantic opening.
+    material["glazing_lod"] = "always"
+    material["massing_skin_canonical"] = ""
+    mesh.materials.append(material)
+    obj = bpy.data.objects.new(str(spec.get("id", "GraphDisplacedSkin")), mesh)
+    bpy.context.collection.objects.link(obj)
+    obj["facade_skin_source"] = str(spec.get("band", "elevation"))
+    obj["depth_map_path"] = str(depth_path)
+    obj["depth_scale_m"] = scale
+    parts.append(obj)
 
 
 def _graph_facade_skin_stack(parts: list, spec: dict, mats: dict) -> None:
@@ -9544,6 +9786,108 @@ def _graph_balcony_array(parts: list, spec: dict, mats: dict) -> None:
                 ))
 
 
+def _graph_undulating_roof_shell(parts: list, spec: dict, mats: dict) -> None:
+    """Build a closed, tile-ready dragon-back roof from a smooth height field.
+
+    The roof carries a transverse, asymmetrical dragon-back ridge rather than a
+    centre-weighted dome.  Its front edge rises into an organic gable, while
+    explicit vertical skirts construct the space down to the wall plate so the
+    expressive silhouette never opens a black, unbuilt void.
+    """
+    cx, cy, eave_z = (float(value) for value in spec["location"])
+    width, depth, rise = (float(value) for value in spec["size"])
+    columns = max(16, int(spec.get("columns", 40)))
+    rows = max(12, int(spec.get("rows", 28)))
+    thickness = max(0.06, float(spec.get("thickness_m", 0.14)))
+    front_wave = float(spec.get("front_wave_m", 1.05))
+    asymmetry = float(spec.get("asymmetry_m", 0.34))
+    material = _graph_material(mats, spec.get("material", "roof"))
+    prefix = str(spec.get("id", "GraphUndulatingRoof"))
+
+    def height(u: float, v: float) -> float:
+        # u is -1..1 across the facade; v is 0..1 front-to-rear.
+        ridge = math.sin(math.pi * v) ** 0.82
+        # Keep the ridge tall at both party-wall ends.  A hip factor that falls
+        # to zero at x +/- width/2 reads as a generic dome in front elevation.
+        transverse = 0.92 + 0.055 * math.cos(math.pi * (u + 0.10))
+        transverse += 0.035 * math.sin(2.0 * math.pi * (u - 0.08))
+        # The photographed facade-roof junction rises in the middle.  It is a
+        # constructed gable with a skirt below, not a floating roof boundary.
+        gable = (
+            front_wave
+            * (1.0 - v) ** 2.35
+            * (0.5 + 0.5 * math.cos(math.pi * u)) ** 0.72
+        )
+        dragon = (
+            asymmetry
+            * ridge
+            * (
+                0.72 * math.sin(math.pi * (u + 0.22))
+                + 0.38 * math.sin(2.0 * math.pi * (u - 0.08))
+            )
+        )
+        return eave_z + rise * ridge * transverse + gable + dragon
+
+    top: list[tuple[float, float, float]] = []
+    for row in range(rows + 1):
+        v = row / rows
+        y = cy - depth / 2 + depth * v
+        for column in range(columns + 1):
+            u = -1.0 + 2.0 * column / columns
+            x = cx + width * u / 2
+            top.append((x, y, height(u, v)))
+    vertices = top + [(x, y, z - thickness) for x, y, z in top]
+    stride = columns + 1
+    count = len(top)
+    faces: list[tuple[int, ...]] = []
+    for row in range(rows):
+        for column in range(columns):
+            a = row * stride + column
+            b = a + 1
+            c = a + stride + 1
+            d = a + stride
+            faces.append((a, b, c, d))
+            faces.append((count + d, count + c, count + b, count + a))
+    boundaries = [
+        [column for column in range(columns + 1)],
+        [rows * stride + column for column in range(columns + 1)],
+        [row * stride for row in range(rows + 1)],
+        [row * stride + columns for row in range(rows + 1)],
+    ]
+    for boundary in boundaries:
+        for index in range(len(boundary) - 1):
+            a, b = boundary[index], boundary[index + 1]
+            faces.append((a, count + a, count + b, b))
+
+    # Close each expressive boundary vertically to the wall plate.  The roof
+    # can now retain its wavy front gable and raised party-wall ends without
+    # exposing the sky or a black backing underneath in oblique views.
+    if bool(spec.get("wall_skirts", True)):
+        for boundary in boundaries:
+            bottom_indices: list[int] = []
+            for vertex_index in boundary:
+                x, y, _z = vertices[vertex_index]
+                bottom_indices.append(len(vertices))
+                vertices.append((x, y, eave_z - 0.025))
+            for index in range(len(boundary) - 1):
+                a, b = boundary[index], boundary[index + 1]
+                faces.append((a, b, bottom_indices[index + 1], bottom_indices[index]))
+    roof = add_prism(prefix, vertices, faces, material)
+    bevel_width = max(0.0, float(spec.get("bevel_m", 0.045)))
+    if bevel_width:
+        bevel = roof.modifiers.new(name="DragonRoofEdge", type="BEVEL")
+        bevel.width = bevel_width
+        bevel.segments = 2
+        bevel.limit_method = "ANGLE"
+        bpy.context.view_layer.objects.active = roof
+        roof.select_set(True)
+        try:
+            bpy.ops.object.modifier_apply(modifier=bevel.name)
+        except RuntimeError:
+            roof.modifiers.remove(bevel)
+    parts.append(roof)
+
+
 def _graph_eave_rafter_array(parts: list, spec: dict, mats: dict) -> None:
     """Deep timber rafter tails with wall ledgers and diagonal chalet brackets."""
     axis = str(spec.get("axis", "front"))
@@ -9827,7 +10171,7 @@ def _graph_curved_balcony_array(parts: list, spec: dict, mats: dict) -> None:
     delta = (end - start) / segments
     chord = 2.0 * (radius + depth / 2) * math.sin(abs(delta) / 2)
     rail_chord = 2.0 * (radius + depth) * math.sin(abs(delta) / 2)
-    rail_profile = min(0.055, rail_chord * 0.04)
+    rail_profile = max(0.035, float(spec.get("rail_profile_m", min(0.055, rail_chord * 0.04))))
 
     def arc_point(angle: float, radial_offset: float, z: float) -> Vector:
         return Vector((
@@ -9892,6 +10236,55 @@ def _graph_curved_balcony_array(parts: list, spec: dict, mats: dict) -> None:
                     f"{prefix}_{level_index:02d}_EndPost{end_index}_{int(radial_ratio * 100):02d}",
                     (rail_profile, rail_profile, rail_h), post, angle, rail_mat,
                 ))
+
+
+def _graph_curved_window_array(parts: list, spec: dict, mats: dict) -> None:
+    """Physical punched windows distributed around a curved facade.
+
+    A cylindrical mass with flat facade decals reads as an unoccupied shell.
+    These tangent-aligned panes, deep interior cards and four-piece surrounds
+    preserve window depth as the camera moves around the corner.
+    """
+    cx, cy, _ = (float(value) for value in spec["centre"])
+    radius = float(spec["radius_m"])
+    start = math.radians(float(spec.get("start_angle_deg", 195.0)))
+    end = math.radians(float(spec.get("end_angle_deg", 345.0)))
+    levels = [float(value) for value in spec.get("levels_z", [])]
+    bays = max(2, int(spec.get("bays", 5)))
+    window_w = float(spec.get("window_width_m", 1.45))
+    window_h = float(spec.get("window_height_m", 2.1))
+    frame = float(spec.get("frame_m", 0.11))
+    depth = float(spec.get("depth_m", 0.12))
+    glass_mat = _graph_material(mats, spec.get("glass_material", "glass"))
+    frame_mat = _graph_material(mats, spec.get("frame_material", "signature_stone"))
+    interior_key = spec.get("interior_material")
+    interior_cells = mats.get("interior_cells") or []
+    prefix = str(spec.get("id", "GraphCurvedWindows"))
+
+    def tangent_box(name: str, size: tuple[float, float, float], angle: float, radial: float, z: float, material, tangent_offset: float = 0.0):
+        tangent = Vector((-math.sin(angle), math.cos(angle), 0.0))
+        centre = Vector((cx + math.cos(angle) * radial, cy + math.sin(angle) * radial, z))
+        centre += tangent * tangent_offset
+        obj = add_beveled_box(name, size, tuple(centre), material, min(0.025, frame * 0.20))
+        obj.rotation_euler.z = angle + math.pi / 2
+        parts.append(obj)
+
+    for level_index, z in enumerate(levels):
+        for bay_index in range(bays):
+            angle = start + (end - start) * (bay_index + 0.5) / bays
+            suffix = f"{prefix}_{level_index:02d}_{bay_index:02d}"
+            if not bool(spec.get("skip_glass", False)):
+                tangent_box(f"{suffix}_Glass", (window_w, depth, window_h), angle, radius + depth * 0.42, z, glass_mat)
+            if interior_key and not bool(spec.get("skip_interior", False)):
+                if interior_key == "interior_atlas" and interior_cells:
+                    interior_mat = interior_cells[(level_index * bays + bay_index) % len(interior_cells)]
+                else:
+                    interior_mat = _graph_material(mats, interior_key)
+                tangent_box(f"{suffix}_Interior", (window_w * 0.91, 0.025, window_h * 0.90), angle, radius - 0.28, z, interior_mat)
+            for label, offset in (("Left", -window_w / 2 - frame / 2), ("Right", window_w / 2 + frame / 2)):
+                tangent_box(f"{suffix}_{label}", (frame, depth * 1.55, window_h + frame * 2), angle, radius + depth * 0.50, z, frame_mat, offset)
+            for label, edge_z in (("Sill", z - window_h / 2 - frame / 2), ("Head", z + window_h / 2 + frame / 2)):
+                tangent_box(f"{suffix}_{label}", (window_w + frame * 2, depth * 1.55, frame), angle, radius + depth * 0.50, edge_z, frame_mat)
 
 
 def _graph_corbel_array(parts: list, spec: dict, mats: dict) -> None:
@@ -10046,6 +10439,8 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
                 str(node.get("ridge_axis", "x")),
                 float(node["ridge_inset_m"]) if node.get("ridge_inset_m") is not None else None,
             ))
+        elif kind == "undulating_roof_shell":
+            _graph_undulating_roof_shell(parts, node, mats)
         elif kind == "cylinder":
             part = add_cylinder(
                 str(node["id"]), float(node["radius_m"]), float(node["height_m"]), location,
@@ -10101,6 +10496,8 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
             _graph_shadow_line(parts, assembly, mats)
         elif kind == "facade_skin":
             _graph_facade_skin(parts, assembly, mats)
+        elif kind == "displaced_facade_skin":
+            _graph_displaced_facade_skin(parts, assembly, mats)
         elif kind == "facade_skin_stack":
             _graph_facade_skin_stack(parts, assembly, mats)
         elif kind == "frame_grid":
@@ -10147,6 +10544,8 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
             _graph_solar_panel_array(parts, assembly, mats)
         elif kind == "curved_balcony_array":
             _graph_curved_balcony_array(parts, assembly, mats)
+        elif kind == "curved_window_array":
+            _graph_curved_window_array(parts, assembly, mats)
         elif kind == "corbel_array":
             _graph_corbel_array(parts, assembly, mats)
         elif kind == "barrel_vault_glazing":
@@ -10287,19 +10686,15 @@ def export_objects(path: Path, objects: list[bpy.types.Object]) -> None:
         export_cameras=False,
         export_lights=False,
         export_extras=True,
-        # Semantic facade masks make glTF pack photographic colour + alpha
-        # into RGBA. PNG inflated a single elevation to 8 MB; WebP preserves
-        # that alpha at high visual quality and is natively supported by the
-        # Three.js GLTFLoader used in City Prompt.
-        export_image_format="WEBP",
-        export_image_quality=90,
-        export_image_webp_fallback=False,
+        # Preserve masked photographic colour/alpha losslessly when needed.
+        # The V88 export-parity gate showed that WebP could shift enough facade
+        # detail to fail neutral source-vs-GLB comparison. AUTO retains JPEG
+        # where safe and lets the exporter use PNG for alpha-bearing textures.
+        export_image_format="AUTO",
     )
     try:
         bpy.ops.export_scene.gltf(**kwargs)
-    except TypeError:  # older exporter without WebP quality/fallback controls
-        kwargs.pop("export_image_quality", None)
-        kwargs.pop("export_image_webp_fallback", None)
+    except TypeError:
         bpy.ops.export_scene.gltf(**kwargs)
     sanitize_glb_texture_references(path)
 
@@ -10547,8 +10942,11 @@ def render_presentation_views(
         (10.0, 72.0, 1.2), (45.0, 70.0, 1.0), (78.0, 62.0, 1.25),
         (-86.0, -18.0, 1.15), (86.0, -15.0, 1.0), (-8.0, -64.0, 1.2),
     )
+    identity_occluders: list[bpy.types.Object] = []
     for tree_index, (x, y, scale) in enumerate(tree_positions):
+        tree_start = len(rig)
         add_preview_tree(rig, tree_index, x, y, scale, bark_mat, leaf_mat if tree_index % 3 else leaf_alt_mat)
+        identity_occluders.extend(rig[tree_start:])
 
     car_colors = (context_mats["facade_white"], context_mats["facade_dark"], context_mats["facade_warm"])
     for car_index, (x, y, yaw) in enumerate((
@@ -10636,7 +11034,7 @@ def render_presentation_views(
     context_dist = max(footprint * 4.2, focus_height * 3.5)
     camera_x = 1.0 if camera_side == "right" else -1.0
     oblique_x_scale = max(0.30, float(camera_contract.get("oblique_x_scale", 0.88)))
-    identity_distance_scale = max(0.75, float(camera_contract.get("identity_distance_scale", 1.0)))
+    identity_distance_scale = max(0.50, float(camera_contract.get("identity_distance_scale", 1.0)))
     street_distance_scale = max(0.75, float(camera_contract.get("street_distance_scale", 1.0)))
     views = (
         ("preview", (camera_x * dist * 0.72, -dist * 0.92, focus_height * 0.68), (0.0, 0.0, focus_height * 0.43), 43),
@@ -10679,6 +11077,12 @@ def render_presentation_views(
                 rig_object.hide_render = view_name == "roof_audit"
         for context_object in context_only:
             context_object.hide_render = not context_visible
+        # The two frontage trees provide scale in the street/context views but
+        # can cover a third of the facade from the identity camera.  The exact
+        # archetype comparison is a geometry/material audit, so keep that view
+        # free of accidental foreground occlusion.
+        for occluder in identity_occluders:
+            occluder.hide_render = view_name == "archetype_match"
         cam.location = location
         cam.data.lens = lens
         direction = Vector(target_tuple) - cam.location
@@ -10712,6 +11116,11 @@ def build_module(
     variant_key: str = "default",
     interior_seed: int = 0,
 ) -> bpy.types.Object:
+    production = (grammar.get("architectural_signature") or {}).get("production_contract") or {}
+    shared_floor_variant = production.get("repeatable_module_geometry_variant")
+    shared_roles = set(production.get("shared_module_geometry_roles") or ["floor"])
+    if role in shared_roles and shared_floor_variant:
+        variant_key = str(shared_floor_variant)
     if role == "podium":
         if FACADE_SHEET and "sheet_podium" in mats:
             return build_facade_sheet_podium(grammar, mats)
@@ -10723,13 +11132,15 @@ def build_module(
             )
         return build_floor_v3(grammar, mats, variant_key if variant_key != "default" else "typical_a", interior_seed)
     if role == "setback":
+        module_variant = variant_key if variant_key != "default" else "upper"
         if FACADE_SHEET and "sheet_floor" in mats:
-            return build_facade_sheet_floor(grammar, mats, "upper", interior_seed)
-        return build_floor_v3(grammar, mats, "upper", interior_seed)
+            return build_facade_sheet_floor(grammar, mats, module_variant, interior_seed)
+        return build_floor_v3(grammar, mats, module_variant, interior_seed)
     if role == "crown":
+        module_variant = variant_key if variant_key != "default" else "crown"
         if FACADE_SHEET and "sheet_floor" in mats:
-            return build_facade_sheet_floor(grammar, mats, "crown", interior_seed)
-        return build_floor_v3(grammar, mats, "crown", interior_seed)
+            return build_facade_sheet_floor(grammar, mats, module_variant, interior_seed)
+        return build_floor_v3(grammar, mats, module_variant, interior_seed)
     if role == "roof":
         return build_roof(grammar, mats)
     raise ValueError(f"unknown module role {role}")
@@ -11095,6 +11506,11 @@ def generate(grammar: dict, output: Path, *, floors_override: int | None, keep_b
         "reuse_keys": source.get("reuse_keys", []),
         "generation_tags": source.get("generation_tags", []),
         "footprint_compatibility": grammar.get("footprint_compatibility"),
+        "placement_contract": (
+            (grammar.get("architectural_signature") or {})
+            .get("production_contract", {})
+            .get("placement_contract")
+        ),
         "coordinate_contract": {
             "units": "metres",
             "blender_up": "+Z",

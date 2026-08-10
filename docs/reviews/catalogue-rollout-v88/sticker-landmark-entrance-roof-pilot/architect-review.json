@@ -1,0 +1,32 @@
+{
+  "schema": "architect-review@1",
+  "reviewer": "architect_design_reviewer",
+  "score": 86,
+  "release_threshold": 85,
+  "status": "approve_with_notes",
+  "classification": "keeper",
+  "keeper": true,
+  "fixed_select_and_place_ready": true,
+  "polygon_stretchable": false,
+  "method_verdict": "The Sticker Method supports this fixed select-and-place LEGO landmark; it must not be polygon-stretched or have its floor count changed.",
+  "hard_stops": [],
+  "passes": {
+    "front_archetype_fidelity": true,
+    "roof_silhouette": true,
+    "roof_topology": true,
+    "roof_wall_construction": true,
+    "entrance_alignment": true,
+    "true_cavernous_depth": true,
+    "sticker_geometry_registration": true,
+    "side_rear_plausibility": true,
+    "machine_validation": true,
+    "surface_finish": true
+  },
+  "release_notes": [
+    "Roof tile colour and scale remain less faithful than the archetype.",
+    "The left turret is oversized and slightly too central.",
+    "The front roof-wall junction is flatter than the reference.",
+    "Secondary elevations remain comparatively repetitive."
+  ],
+  "biggest_remaining_weakness": "Roof material fidelity"
+}

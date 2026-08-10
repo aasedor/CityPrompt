@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-08-09-exact-variant-checkpoint-v87`.
+Current executable memory: `2026-08-09-fixed-sticker-landmark-v88`.
 
 The current calibration set and catalogue rollout rationale are documented in
 [`BUILDING_GOLD_SET_PIPELINE_SYNTHESIS_2026-08-07.md`](BUILDING_GOLD_SET_PIPELINE_SYNTHESIS_2026-08-07.md).
@@ -987,6 +987,59 @@ families, but also proved why ten must be reviewed before one hundred begin.
   one board. Record `keeper`, `provisional` or `rejected` independently from
   validation, PBR-channel and source-versus-GLB parity status. Scale-up remains
   blocked whenever any pilot needs semantic or proportion repair.
+
+### V88 mandatory gold-set rebuild lessons
+
+The V88 rebuild made the full architectural workflow compulsory for every one
+of the ten checkpoint variants. A successful render is now only an intermediate
+artifact: release requires reference sufficiency, representation selection,
+clay massing, roof and void construction, medium detail, retopology, manual UV
+audit, material bake, export parity and architect review in that order.
+
+- The exact archetype images are the design authority. Metadata is admitted
+  field by field only when it confirms a visible fact and drives a named piece
+  of construction; generic parent prose may never override a counted storey,
+  opening, roof axis, material zone or silhouette.
+- Complex modern glass and highly ornamental curved façades work best as a
+  layered representation. An image-locked semantic surface carries irregular
+  pattern and fine identity, while separate physical glazing, structural
+  members, balcony slabs, rails, roof forms, returns and void sections provide
+  depth, transmission, shadow and orbit credibility. A generic kit is excluded
+  whenever it duplicates or contradicts the exact variant.
+- Treat high-quality image-locked surfaces as registered architectural stickers
+  over approved geometry, not as flat billboards or independently scaled floor
+  strips. Split the source by semantic ownership (wall field, gallery, oriel,
+  balcony face and roof), conform each thin surface to its named construction
+  and preserve one canonical metres-to-UV transform. Seam bleed must expand
+  geometry and UV bounds by the same physical distance. Window centres, column
+  centres and floor datums are mandatory shared anchors; any drift is a
+  machine-testable hard stop before visual review.
+- Public openings are sections, not dark facade marks. Entrances, arcades and
+  undercrofts require an executable opening through the envelope, reveals or
+  lining, a minimum reference-derived tunnel depth and a recessed occupied back
+  layer. Every skin crossing the opening must be split or cleared.
+- Alpha-bearing semantic textures must remain lossless through glTF export.
+  The first precast export used lossy WebP packing and failed neutral source to
+  re-import parity at 94.86 percent. Preserving PNG alpha raised parity to 99.70
+  percent without changing the model, proving that image encoding is a release
+  concern rather than an implementation detail.
+- A registered Sticker Method asset is a fixed landmark. It may be translated
+  and rotated, but polygon fitting, floor-count changes and non-uniform scaling
+  are forbidden because they break the shared metres-to-UV registration. Use a
+  select-and-place catalogue interaction for this representation; use another
+  repeatable-bay representation when arbitrary LEGO capacity is required.
+- Alpha-isolated feature stickers retain their unique material node trees after
+  mesh joining. Consolidating those materials into the opaque elevation atlas
+  discards the mask and exposes rectangular crop edges, so material
+  consolidation is now a release-stage concern as well as an optimization.
+- Machine checks and architectural acceptance remain independent. Each model
+  needs street/front, front-corner, rear-corner, high-oblique/roof, close-facade
+  and context views compared with the exact archetype. A named architect must
+  score at least 85/100 and report no hard-stop error; a batch average cannot
+  conceal a rejected building.
+- Final review artifacts must be rebuilt from the same versioned source and
+  export path. Repair directories are diagnostic checkpoints, not substitutes
+  for a clean ten-building rerun.
 
 ## Updating this memory
 

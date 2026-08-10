@@ -154,7 +154,14 @@ def assess_quality(family_dir: Path) -> dict[str, Any]:
         raise RuntimeError("family manifest missing after generation")
     manifest = read_json(manifests[0])
     validation = read_json(family_dir / "validation_report.json")
-    assessment = assess_family_quality(manifest, validation, load_quality_memory())
+    approval_path = family_dir / "visual_approval.json"
+    visual_approval = read_json(approval_path) if approval_path.exists() else None
+    assessment = assess_family_quality(
+        manifest,
+        validation,
+        load_quality_memory(),
+        visual_approval=visual_approval,
+    )
     (family_dir / "quality_assessment.json").write_text(
         json.dumps(assessment, indent=2) + "\n", encoding="utf-8"
     )

@@ -206,6 +206,23 @@ def main() -> None:
     )
     if payload.get("footprintCompatibility"):
         grammar_payload["footprint_compatibility"] = payload["footprintCompatibility"]
+    else:
+        placement = (
+            (grammar_payload.get("architectural_signature") or {})
+            .get("production_contract", {})
+            .get("placement_contract") or {}
+        )
+        if placement.get("mode") == "fixed_landmark":
+            fixed = placement.get("footprint_m") or {}
+            grammar_payload["footprint_compatibility"] = {
+                "preferredProfiles": ["fixed_landmark"],
+                "placementMode": "select_and_place",
+                "fixedDimensions": {
+                    "width": float(fixed.get("width", grammar_payload["dimensions"]["width_m"])),
+                    "depth": float(fixed.get("depth", grammar_payload["dimensions"]["depth_m"])),
+                },
+                "polygonFit": False,
+            }
     grammar_file.write_text(json.dumps(grammar_payload, indent=2), encoding="utf-8")
     preflight = assess_generation_preflight(payload, grammar_payload)
     preflight_file = output / "production_preflight.json"

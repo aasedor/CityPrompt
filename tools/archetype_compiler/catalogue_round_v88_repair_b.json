@@ -1,0 +1,50 @@
+{
+  "schema": "catalogue-rollout-batch@1",
+  "campaign": "tools/archetype_compiler/catalogue_round_v88.json",
+  "pipeline_version": "v88",
+  "surface_recipe_manifest": "tools/archetype_compiler/catalogue_round_v88_surface_recipes.json",
+  "batch_id": "ROUND-001-V88-REPAIR-B",
+  "paid_facade_calls": 0,
+  "entries": [
+    {
+      "archetype_id": "modern_glass_office_institutional",
+      "variant_id": "glass_office_dark_frame",
+      "family_id": "glass-office-dark-frame-v88",
+      "width_m": 28.0,
+      "depth_m": 20.0,
+      "floors": 6,
+      "allow_outside_bounds": false,
+      "facade_sheet": "artifacts/catalogue-rollout-v87/round-001/facade-sheets/glass_office_dark_frame"
+    },
+    {
+      "archetype_id": "nordic_timber_midrise",
+      "variant_id": "nordic_timber_cross_laminated",
+      "family_id": "nordic-timber-clt-v88",
+      "width_m": 20.0,
+      "depth_m": 16.0,
+      "floors": 4,
+      "allow_outside_bounds": false,
+      "facade_sheet": "artifacts/catalogue-rollout-v87/round-001/facade-sheets/nordic_timber_cross_laminated"
+    },
+    {
+      "archetype_id": "mediterranean_arcade_mixed_use",
+      "variant_id": "med_arcade_moorish",
+      "family_id": "med-arcade-moorish-v88",
+      "width_m": 20.0,
+      "depth_m": 15.0,
+      "floors": 2,
+      "allow_outside_bounds": false,
+      "facade_sheet": "artifacts/catalogue-rollout-v87/round-001/facade-sheets/med_arcade_moorish"
+    },
+    {
+      "archetype_id": "mediterranean_arcade_mixed_use",
+      "variant_id": "med_arcade_catalan_modernista",
+      "family_id": "med-arcade-catalan-v88",
+      "width_m": 14.0,
+      "depth_m": 31.0,
+      "floors": 6,
+      "allow_outside_bounds": false,
+      "facade_sheet": "artifacts/catalogue-rollout-v87/round-001/facade-sheets/med_arcade_catalan_modernista"
+    }
+  ]
+}

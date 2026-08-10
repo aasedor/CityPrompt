@@ -48,6 +48,12 @@ GLASS_PROFILES: dict[str, dict[str, float | str]] = {
         "glass_emission_strength": 0.012,
         "baked_glass_emission": 0.075,
         "baked_glass_mix": 0.52,
+        # Unmasked graph curtain walls need a bounded alpha contribution in
+        # Eevee/glTF.  Fully opaque physical transmission mostly reflects the
+        # world in these exterior views and hides the room cards, making clear
+        # office glazing read as pale plastic.  Masked facade-sheet glass keeps
+        # its binary alpha path and does not consume this value.
+        "surface_alpha": 0.58,
     },
     "reflective_curtain_wall": {
         "label": "Neutral reflective curtain wall",

@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-08-09-exact-variant-checkpoint-v87",
+  "memory_version": "2026-08-09-fixed-sticker-landmark-v88",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "calibration_set": {
@@ -15,6 +15,30 @@
     ]
   },
   "non_negotiable_principles": [
+    {
+      "id": "ten_stage_workflow_is_mandatory",
+      "rule": "Every production variant must pass reference sufficiency, representation selection, clay massing, roof and void construction, medium detail, retopology, manual UV audit, material bake, export parity and named architect review in order. Missing evidence or a failed stage is a hard stop, never a warning."
+    },
+    {
+      "id": "architect_review_is_per_building",
+      "rule": "Compare the exact archetype against street/front, front-corner, rear-corner, high-oblique or roof, close-facade and context views. Require at least 85/100 and no hard-stop architectural error for every building; a batch average cannot approve an individual rejection."
+    },
+    {
+      "id": "semantic_surface_and_physical_section_are_layered",
+      "rule": "For irregular curtain walls and highly ornamental curved facades, let an image-locked semantic surface carry fine identity while separate physical glazing, structure, balconies, rails, roofs, returns and executable voids carry transmission, depth, silhouette and shadow. Exclude generic kits that duplicate or contradict the exact variant."
+    },
+    {
+      "id": "alpha_textures_export_losslessly",
+      "rule": "Semantic textures whose alpha controls facade identity must use a lossless glTF-compatible image path and pass a camera-locked transparent source-versus-reimport comparison. Lossy packing of alpha-bearing textures is an export-parity failure even when geometry validates."
+    },
+    {
+      "id": "registered_stickers_are_fixed_landmarks",
+      "rule": "A building whose identity depends on one registered metres-to-UV frame is a fixed select-and-place landmark. Translation and rotation are allowed; polygon fitting, floor-count changes and non-uniform scaling are forbidden. Arbitrary LEGO capacity changes require a different repeatable-bay representation."
+    },
+    {
+      "id": "masked_stickers_keep_unique_materials",
+      "rule": "Alpha-isolated feature stickers must retain their unique material node trees after mesh joining. Consolidating them into the opaque elevation material discards the mask and exposes rectangular crop edges; this is a pre-release hard stop."
+    },
     {
       "id": "ten_variant_checkpoint_precedes_hundred_scale",
       "rule": "Before expanding a catalogue campaign to one hundred, complete and visually classify ten exact variants. A failed semantic, proportion, roof, side/rear or export-parity gate blocks scale-up; never lower a threshold or average away a rejected pilot."
@@ -210,6 +234,10 @@
     {
       "id": "physical_overlays_require_registration",
       "rule": "Do not place a generic curtain-wall cage over a reference-authored glass field. Add physical panes and frames only when their span, depth and cadence are registered to the atlas; otherwise retain the audited facade and model only the larger structural frame."
+    },
+    {
+      "id": "semantic_stickers_share_one_registration_frame",
+      "rule": "After silhouette, roof, void and projection geometry are approved, a high-quality image-locked surface may be split into thin semantic architectural stickers for wall fields, galleries, oriels, balcony faces and roof pieces. Every piece must preserve the same canonical metres-to-UV transform and shared window, column and floor-datum anchors. Seam bleed expands object-space and UV-space bounds by the identical physical distance; any drift blocks generation."
     },
     {
       "id": "roof_topology_comes_from_aerial_evidence",
@@ -921,6 +949,16 @@
       "symptom": "A ten-building checkpoint contains several attractive models but the campaign is nevertheless unsafe to expand to one hundred",
       "cause": "Machine validation and a few keeper examples were treated as evidence that the methodology generalizes across semantic opening, proportion, roof and export cases.",
       "correction": "Publish a per-building keeper/provisional/rejected table beside the four-view comparison board. Repair or explicitly defer every rejected case before authorizing the next finite batch."
+    },
+    {
+      "symptom": "A Blender source render is faithful but the re-imported GLB loses facade detail or develops halos around semantic panels",
+      "cause": "Alpha-bearing image maps were transcoded through a lossy export format, changing edge coverage and colour even though the material and geometry were unchanged.",
+      "correction": "Keep alpha-bearing semantic textures lossless, export with automatic PNG preservation, and reject the asset unless the alpha-masked neutral source-versus-GLB foreground comparison passes."
+    },
+    {
+      "symptom": "A machine-valid model still has the wrong overall architectural character",
+      "cause": "Automated topology, material and parity gates were allowed to stand in for a per-building exact-reference architectural judgement.",
+      "correction": "Require a named architect to inspect the mandatory six-view board, score that individual building at least 85/100 and record every hard-stop proportion, roof, void, material-continuity or side/rear error before release."
     }
   ]
 }

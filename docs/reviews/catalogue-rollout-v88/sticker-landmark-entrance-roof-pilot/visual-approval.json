@@ -1,0 +1,15 @@
+{
+  "schema": "building-visual-approval@1",
+  "family": "med-arcade-catalan-v88",
+  "decision": "approved",
+  "reviewer": "architect_design_reviewer",
+  "approved_at": "2026-08-10T03:56:52.920747+00:00",
+  "reference_set": "docs/reviews/catalogue-rollout-v88/sticker-landmark-entrance-roof-pilot",
+  "checks": {
+    "block_scale": true,
+    "building_scale": true,
+    "facade_scale": true,
+    "orbit_and_context": true
+  },
+  "notes": "86/100 approve_with_notes; fixed select-and-place landmark only; roof material fidelity remains the primary refinement note."
+}
