@@ -100,6 +100,29 @@ def test_catalan_sticker_method_is_a_fixed_select_and_place_landmark():
     assert not any(item["id"].endswith("_physical_windows") for item in graph["assemblies"])
 
 
+def test_moorish_sticker_landmark_has_registered_deep_front_and_return_arcades():
+    profile = load("architectural_signature_profiles.d/catalogue_round_v88.json")["profiles"]["med_arcade_moorish"]
+    graph = profile["massing_graph"]
+    placement = profile["production_contract"]["placement_contract"]
+    assert graph["reference_dimensions"] == {"width_m": 20.0, "depth_m": 15.0, "floors": 2}
+    assert placement["method"] == "sticker_method"
+    assert placement["mode"] == "fixed_landmark"
+    assert placement["polygon_fit"] is False
+    front = next(node for node in graph["nodes"] if node["id"] == "moorish_front_deep_arcade")
+    side = next(node for node in graph["nodes"] if node["id"] == "moorish_right_deep_arcade")
+    assert front["kind"] == side["kind"] == "opening_block"
+    assert front["axis"] == "front" and len(front["opening_centres_m"]) == 3
+    assert side["axis"] == "right" and len(side["opening_centres_m"]) == 2
+    assert front["size"][1] >= 6.0 and side["size"][0] >= 3.0
+    front_skin = next(item for item in graph["assemblies"] if item["id"] == "moorish_front_arcade_sticker")
+    side_skin = next(item for item in graph["assemblies"] if item["id"] == "moorish_right_arcade_sticker")
+    assert len(front_skin["opening_clearances"]) == 3
+    assert len(side_skin["opening_clearances"]) == 2
+    assert all(item["shape"] == "horseshoe_arch" for item in front_skin["opening_clearances"] + side_skin["opening_clearances"])
+    assert any(item["id"] == "moorish_geometric_roof_parapet" and item["kind"] == "lattice_parapet" for item in graph["assemblies"])
+    assert profile["production_contract"]["stage_workflow"]["representation"] == "registered_sticker_landmark"
+
+
 def test_catalan_stickers_share_one_exact_facade_registration_frame():
     profile = load("architectural_signature_profiles.d/catalogue_round_v88.json")["profiles"]["med_arcade_catalan_modernista"]
     graph = profile["massing_graph"]

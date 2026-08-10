@@ -1,0 +1,22 @@
+{
+  "schema": "architect-review@1",
+  "reviewer": "architect_design_reviewer",
+  "building": "med-arcade-moorish-v88",
+  "method": "sticker_method_fixed_landmark",
+  "score": 71,
+  "release_threshold": 85,
+  "status": "rejected",
+  "hard_stop": true,
+  "best_iteration_score": 77,
+  "iteration_scores": [64, 77, 69, 71],
+  "verified_improvements": [
+    "three deep street arcade passages and two deep right-return passages",
+    "white plaster tunnel lining with turquoise lower reveals",
+    "warm occupied terminations and timber counters",
+    "rectangular upper-pavilion windows",
+    "authored side and rear elevations",
+    "thin terracotta coping and finer four-sided lattice parapet"
+  ],
+  "release_blocker": "The physical portal remains an approximate broad onion/mushroom contour rather than the exact tall pointed-horseshoe inner negative opening. The bright soffit competes with the registered decorative arch.",
+  "required_next_step": "Extract a binary inner-opening contour from the registered archetype or podium sheet, validate its centre/neck/shoulder/crown anchors, uniformly inset it and extrude it backward. Use the identical contour for every sticker clearance and the tunnel section so only a narrow reveal is visible."
+}

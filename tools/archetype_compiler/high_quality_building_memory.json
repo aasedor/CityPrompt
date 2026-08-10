@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-08-09-fixed-sticker-landmark-v88",
+  "memory_version": "2026-08-09-contour-registered-void-v89",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "calibration_set": {
@@ -38,6 +38,10 @@
     {
       "id": "masked_stickers_keep_unique_materials",
       "rule": "Alpha-isolated feature stickers must retain their unique material node trees after mesh joining. Consolidating them into the opaque elevation material discards the mask and exposes rectangular crop edges; this is a pre-release hard stop."
+    },
+    {
+      "id": "non_rectangular_voids_share_an_extracted_contour",
+      "rule": "A non-rectangular public opening must use one versioned inner negative-space contour extracted from the exact registered source or an approved binary mask. That contour cuts every crossing sticker and generates the inset jamb/soffit section; inferred style curves, decorative-frame traces and independently tuned geometry are release-blocking mismatches."
     },
     {
       "id": "ten_variant_checkpoint_precedes_hundred_scale",
@@ -959,6 +963,11 @@
       "symptom": "A machine-valid model still has the wrong overall architectural character",
       "cause": "Automated topology, material and parity gates were allowed to stand in for a per-building exact-reference architectural judgement.",
       "correction": "Require a named architect to inspect the mandatory six-view board, score that individual building at least 85/100 and record every hard-stop proportion, roof, void, material-continuity or side/rear error before release."
+    },
+    {
+      "symptom": "A deep arcade still looks like a generic barrel, Gothic ogive, mushroom or second arch placed inside the decorative portal",
+      "cause": "The sticker clearance and tunnel section were generated from an assumed style formula or a trace of the surrounding ornament instead of the exact inner negative opening contour. The lining then became a dominant foreground shape even though the passage had real depth.",
+      "correction": "Extract and version the binary inner-opening contour from the registered source, validate its centre, neck, shoulder, crown and scale anchors, use that identical contour for sticker clearance and section extrusion, and inset it so only a narrow reveal is visible. Keep the building rejected until six-view architect review clears 85/100."
     }
   ]
 }

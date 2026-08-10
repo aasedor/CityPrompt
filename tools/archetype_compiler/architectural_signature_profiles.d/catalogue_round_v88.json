@@ -7877,11 +7877,12 @@
       "production_contract": {
         "identity_mode": "massing_graph",
         "fixed_identity": [
-          "four deep horseshoe-like arcade passages",
-          "slender pale piers and turquoise tile lining",
-          "occupied market backs",
-          "light upper stucco pavilion",
-          "open parapet and terrace hierarchy"
+          "three deep occupied street arcade passages",
+          "two deep right-return market arches",
+          "white stucco and turquoise zellige sticker registration",
+          "set-back single-storey pavilion",
+          "terracotta terrace coping",
+          "continuous crossed-lattice roof parapet"
         ],
         "repeatable_capacity": [
           "ground floor artisan workshops",
@@ -7897,106 +7898,100 @@
           "minimum_measurements": 8,
           "measurements": [
             {
-              "feature": "ground_width",
-              "role": "oblique_massing",
+              "feature": "facade_width",
+              "role": "street_identity",
               "value": 20.0,
               "unit": "metres",
-              "drives": "ground_mass"
+              "drives": "moorish_front_arcade_sticker"
+            },
+            {
+              "feature": "arcade_count",
+              "role": "street_identity",
+              "value": 3,
+              "unit": "count",
+              "drives": "moorish_front_deep_arcade"
+            },
+            {
+              "feature": "return_arcade_count",
+              "role": "oblique_massing",
+              "value": 2,
+              "unit": "count",
+              "drives": "moorish_right_deep_arcade"
+            },
+            {
+              "feature": "arcade_depth",
+              "role": "oblique_massing",
+              "value": 6.2,
+              "unit": "metres",
+              "drives": "moorish_front_deep_arcade"
             },
             {
               "feature": "ground_height",
               "role": "street_identity",
               "value": 4.5,
               "unit": "metres",
-              "drives": "ground_mass"
+              "drives": "moorish_front_arcade_sticker"
             },
             {
-              "feature": "upper_mass_height",
-              "role": "street_identity",
-              "value": 3.6,
-              "unit": "metres",
-              "drives": "upper_mass"
-            },
-            {
-              "feature": "parapet_crest_height",
+              "feature": "upper_setback",
               "role": "roof_plan",
-              "value": 0.9,
+              "value": 4.3,
               "unit": "metres",
-              "drives": "decorative_parapet"
+              "drives": "moorish_upper_pavilion"
             },
             {
-              "feature": "front_arcade_span",
-              "role": "street_identity",
-              "value": 20.0,
-              "unit": "metres",
-              "drives": "skin_arcade_front"
-            },
-            {
-              "feature": "side_arcade_span",
-              "role": "street_identity",
-              "value": 15.0,
-              "unit": "metres",
-              "drives": "skin_arcade_right"
-            },
-            {
-              "feature": "upper_facade_width",
-              "role": "oblique_massing",
-              "value": 18.0,
-              "unit": "metres",
-              "drives": "skin_upper_front"
-            },
-            {
-              "feature": "coping_front_length",
+              "feature": "upper_width",
               "role": "roof_plan",
-              "value": 20.0,
+              "value": 16.0,
               "unit": "metres",
-              "drives": "terrace_tile_coping_front"
+              "drives": "moorish_upper_pavilion"
+            },
+            {
+              "feature": "overall_height",
+              "role": "roof_plan",
+              "value": 9.25,
+              "unit": "metres",
+              "drives": "moorish_geometric_roof_parapet"
             }
           ],
           "required_node_ids": [
-            "ground_arcade",
-            "upper_mass",
-            "terrace_tile_coping_front",
-            "terrace_tile_coping_right",
-            "moorish_parapet_bottom",
-            "moorish_parapet_top",
-            "moorish_parapet_post_00",
-            "moorish_parapet_post_01",
-            "moorish_parapet_post_02",
-            "moorish_parapet_post_03",
-            "moorish_parapet_post_04",
-            "moorish_parapet_post_05",
-            "moorish_parapet_post_06",
-            "moorish_parapet_post_07",
-            "moorish_parapet_post_08",
-            "moorish_parapet_post_09",
-            "moorish_parapet_post_10",
-            "moorish_parapet_post_11",
-            "moorish_parapet_post_12",
-            "moorish_parapet_post_13",
-            "moorish_parapet_post_14",
-            "moorish_parapet_post_15"
+            "moorish_front_deep_arcade",
+            "moorish_right_deep_arcade",
+            "moorish_rear_ground_body",
+            "moorish_terrace_slab",
+            "moorish_upper_pavilion",
+            "moorish_upper_roof",
+            "moorish_terrace_coping_front",
+            "moorish_terrace_coping_rear",
+            "moorish_terrace_coping_left",
+            "moorish_terrace_coping_right",
+            "moorish_parapet_pier_0",
+            "moorish_parapet_pier_1",
+            "moorish_parapet_pier_2",
+            "moorish_parapet_pier_3"
           ],
           "required_assembly_ids": [
-            "skin_arcade_front",
-            "skin_arcade_right",
-            "skin_upper_right",
-            "skin_arcade_right_glazing",
-            "skin_upper_right_glazing",
-            "moorish_upper_windows",
-            "moorish_stalls",
+            "moorish_front_arcade_sticker",
+            "moorish_right_arcade_sticker",
+            "moorish_upper_front_sticker",
+            "moorish_upper_right_sticker",
+            "moorish_upper_rear_sticker",
+            "moorish_upper_left_sticker",
+            "moorish_rear_ground_sticker",
+            "moorish_left_ground_sticker",
+            "moorish_front_market_stalls",
+            "moorish_right_market_stalls",
+            "moorish_geometric_roof_parapet",
             "moorish_cornice_corbel"
           ],
           "required_node_kinds": {
-            "opening_block": 1,
-            "box": 19,
-            "mono_pitch_roof": 2
+            "opening_block": 2,
+            "box": 12
           },
           "required_assembly_kinds": {
-            "facade_skin": 3,
-            "glazing_overlay": 2,
-            "punched_opening_schedule": 1,
-            "market_stall_schedule": 1,
+            "facade_skin": 8,
+            "market_stall_schedule": 2,
+            "lattice_parapet": 1,
             "corbel_array": 1
           }
         },
@@ -8010,11 +8005,12 @@
             {
               "kind": "opening_block",
               "ids": [
-                "ground_arcade"
+                "moorish_front_deep_arcade",
+                "moorish_right_deep_arcade"
               ],
               "slots": {
                 "material": "primary",
-                "lining_material": "secondary",
+                "lining_material": "primary",
                 "trim_material": "secondary"
               }
             }
@@ -8060,19 +8056,48 @@
         "spatial_voids": {
           "required_passages": [
             {
-              "void_id": "moorish_arcade",
-              "target_node_id": "ground_arcade",
+              "void_id": "moorish_front_arcade",
+              "target_node_id": "moorish_front_deep_arcade",
               "target_node_kind": "opening_block",
-              "shape": "round_arch_passage",
+              "shape": "horseshoe_arch_passage",
               "section_mode": "recessed",
-              "minimum_depth_m": 8.0,
+              "minimum_depth_m": 5.5,
               "minimum_opening_count": 3,
               "minimum_clearance_count": 3
+            },
+            {
+              "void_id": "moorish_right_arcade",
+              "target_node_id": "moorish_right_deep_arcade",
+              "target_node_kind": "opening_block",
+              "shape": "horseshoe_arch_passage",
+              "section_mode": "recessed",
+              "minimum_depth_m": 2.5,
+              "minimum_opening_count": 2,
+              "minimum_clearance_count": 2
             }
           ]
         },
+        "placement_contract": {
+          "method": "sticker_method",
+          "mode": "fixed_landmark",
+          "ui_interaction": "select_and_place",
+          "footprint_m": {
+            "width": 20.0,
+            "depth": 15.0
+          },
+          "visible_height_m": 9.25,
+          "translation": "allowed",
+          "rotation": "allowed",
+          "uniform_scale": "discouraged",
+          "non_uniform_scale": "forbidden",
+          "floor_count_change": "forbidden",
+          "polygon_fit": false,
+          "preferred_context": "freestanding_market_corner",
+          "freestanding_elevations": "authored",
+          "lego_compatibility": "fixed_landmark_with_registered_surface_and_true_arcade_voids"
+        },
         "stage_workflow": {
-          "representation": "massing_graph",
+          "representation": "registered_sticker_landmark",
           "required_stages": {
             "reference_sufficiency": {
               "deliverable": "reference-sufficiency.json",
@@ -8131,7 +8156,7 @@
         "schema": "massing-graph@1",
         "profile": "med_arcade_moorish_quality_lock_v88",
         "description": "Moorish Arched Souk",
-        "height_m": 9.0,
+        "height_m": 9.25,
         "reference_dimensions": {
           "width_m": 20.0,
           "depth_m": 15.0,
@@ -8152,578 +8177,642 @@
           }
         ],
         "presentation_camera": {
-          "hero_side": "right",
-          "oblique_x_scale": 0.7,
-          "identity_distance_scale": 0.58,
-          "street_distance_scale": 1.0
+          "oblique_x_scale": 0.37,
+          "identity_distance_scale": 0.68,
+          "street_distance_scale": 0.72
         },
         "nodes": [
           {
-            "id": "ground_arcade",
+            "id": "moorish_front_deep_arcade",
             "kind": "opening_block",
+            "axis": "front",
             "size": [
               20.0,
-              15.0,
+              6.2,
               4.5
             ],
             "location": [
-              0.0,
-              0.0,
+              0,
+              -4.4,
+              2.25
+            ],
+            "opening_shape": "horseshoe_arch",
+            "opening_count": 3,
+            "opening_centres_m": [
+              -5.9,
+              0.65,
+              7.1
+            ],
+            "opening_width_m": 4.35,
+            "opening_base_m": 0.0,
+            "opening_height_m": 3.95,
+            "spring_height_m": 2.1,
+            "arch_segments": 28,
+            "section_mode": "recessed",
+            "material": "primary",
+            "lining_material": "primary",
+            "trim_material": "secondary",
+            "trim_profile_m": 0.16,
+            "trim_depth_m": 0.38,
+            "back_material": "interior_warm",
+            "back_frame_material": "signature_door",
+            "lining_setback_m": 0.07,
+            "lower_tile_height_m": 0.9,
+            "neck_ratio": 0.74,
+            "bevel_m": 0.045
+          },
+          {
+            "id": "moorish_right_deep_arcade",
+            "kind": "opening_block",
+            "axis": "right",
+            "size": [
+              3.0,
+              8.8,
+              4.5
+            ],
+            "location": [
+              8.5,
+              3.1,
+              2.25
+            ],
+            "opening_shape": "horseshoe_arch",
+            "opening_count": 2,
+            "opening_centres_m": [
+              -1.75,
+              2.55
+            ],
+            "opening_width_m": 3.15,
+            "opening_base_m": 0.0,
+            "opening_height_m": 3.85,
+            "spring_height_m": 2.0,
+            "arch_segments": 26,
+            "section_mode": "recessed",
+            "material": "primary",
+            "lining_material": "primary",
+            "trim_material": "secondary",
+            "trim_profile_m": 0.14,
+            "trim_depth_m": 0.34,
+            "back_material": "interior_warm",
+            "back_frame_material": "signature_door",
+            "lining_setback_m": 0.07,
+            "lower_tile_height_m": 0.86,
+            "neck_ratio": 0.74,
+            "bevel_m": 0.045
+          },
+          {
+            "id": "moorish_rear_ground_body",
+            "kind": "box",
+            "size": [
+              17.0,
+              8.8,
+              4.5
+            ],
+            "location": [
+              -1.5,
+              3.1,
               2.25
             ],
             "material": "primary",
-            "bevel_m": 0.05,
-            "opening_shape": "round_arch",
-            "opening_count": 4,
-            "opening_width_m": 3.55,
-            "opening_base_m": 0.1,
-            "opening_height_m": 4.0,
-            "spring_height_m": 2.18,
-            "side_margin_m": 1.0,
-            "section_mode": "recessed",
-            "lining_material": "secondary",
-            "trim_material": "secondary",
-            "back_material": "interior_warm",
-            "trim_profile_m": 0.13,
-            "trim_depth_m": 0.22
+            "bevel_m": 0.07
           },
           {
-            "id": "upper_mass",
+            "id": "moorish_terrace_slab",
             "kind": "box",
             "size": [
-              18.0,
-              11.0,
-              3.6
+              20.15,
+              15.15,
+              0.24
             ],
             "location": [
-              -1.0,
-              2.0,
-              6.3
+              0,
+              0,
+              4.62
             ],
-            "material": "primary",
-            "bevel_m": 0.05
+            "material": "secondary",
+            "bevel_m": 0.025
           },
           {
-            "id": "terrace_tile_coping_front",
-            "kind": "mono_pitch_roof",
+            "id": "moorish_upper_pavilion",
+            "kind": "box",
             "size": [
-              20.0,
-              0.4,
-              0.3
+              16.0,
+              10.0,
+              3.65
             ],
             "location": [
-              0.0,
-              -7.3,
-              4.65
+              0,
+              1.8,
+              6.325
+            ],
+            "material": "primary",
+            "bevel_m": 0.075
+          },
+          {
+            "id": "moorish_upper_roof",
+            "kind": "box",
+            "size": [
+              16.25,
+              10.25,
+              0.24
+            ],
+            "location": [
+              0,
+              1.8,
+              8.27
+            ],
+            "material": "primary",
+            "bevel_m": 0.025
+          },
+          {
+            "id": "moorish_terrace_coping_front",
+            "kind": "box",
+            "size": [
+              20.25,
+              0.22,
+              0.16
+            ],
+            "location": [
+              0,
+              -7.46,
+              4.75
             ],
             "material": "roof",
-            "bevel_m": 0.0
+            "bevel_m": 0.025
           },
           {
-            "id": "terrace_tile_coping_right",
-            "kind": "mono_pitch_roof",
+            "id": "moorish_terrace_coping_rear",
+            "kind": "box",
             "size": [
-              0.4,
-              15.0,
-              0.3
+              20.25,
+              0.22,
+              0.16
             ],
             "location": [
-              9.8,
-              0.0,
-              4.65
+              0,
+              7.46,
+              4.75
             ],
             "material": "roof",
-            "bevel_m": 0.0
+            "bevel_m": 0.025
           },
           {
-            "id": "moorish_parapet_bottom",
+            "id": "moorish_terrace_coping_left",
             "kind": "box",
             "size": [
-              18.0,
-              0.16,
-              0.12
+              0.22,
+              14.65,
+              0.16
             ],
             "location": [
-              -1.0,
-              -3.55,
-              8.22
+              -9.86,
+              0,
+              4.75
             ],
-            "material": "primary",
-            "bevel_m": 0.015
+            "material": "roof",
+            "bevel_m": 0.025
           },
           {
-            "id": "moorish_parapet_top",
+            "id": "moorish_terrace_coping_right",
             "kind": "box",
             "size": [
-              18.0,
-              0.16,
-              0.14
+              0.22,
+              14.65,
+              0.16
             ],
             "location": [
-              -1.0,
-              -3.55,
-              8.92
+              9.86,
+              0,
+              4.75
             ],
-            "material": "primary",
-            "bevel_m": 0.015
+            "material": "roof",
+            "bevel_m": 0.025
           },
           {
-            "id": "moorish_parapet_post_00",
+            "id": "moorish_parapet_pier_0",
             "kind": "box",
             "size": [
-              0.12,
-              0.16,
-              0.7
+              0.34,
+              0.34,
+              1.18
             ],
             "location": [
-              -9.4,
-              -3.55,
-              8.57
+              -8.0,
+              -3.2,
+              8.82
             ],
             "material": "primary",
-            "bevel_m": 0.012
+            "bevel_m": 0.04
           },
           {
-            "id": "moorish_parapet_post_01",
+            "id": "moorish_parapet_pier_1",
             "kind": "box",
             "size": [
-              0.12,
-              0.16,
-              0.7
+              0.34,
+              0.34,
+              1.18
             ],
             "location": [
-              -8.280000000000001,
-              -3.55,
-              8.57
+              8.0,
+              -3.2,
+              8.82
             ],
             "material": "primary",
-            "bevel_m": 0.012
+            "bevel_m": 0.04
           },
           {
-            "id": "moorish_parapet_post_02",
+            "id": "moorish_parapet_pier_2",
             "kind": "box",
             "size": [
-              0.12,
-              0.16,
-              0.7
+              0.34,
+              0.34,
+              1.18
             ],
             "location": [
-              -7.16,
-              -3.55,
-              8.57
+              -8.0,
+              6.8,
+              8.82
             ],
             "material": "primary",
-            "bevel_m": 0.012
+            "bevel_m": 0.04
           },
           {
-            "id": "moorish_parapet_post_03",
+            "id": "moorish_parapet_pier_3",
             "kind": "box",
             "size": [
-              0.12,
-              0.16,
-              0.7
+              0.34,
+              0.34,
+              1.18
             ],
             "location": [
-              -6.04,
-              -3.55,
-              8.57
+              8.0,
+              6.8,
+              8.82
             ],
             "material": "primary",
-            "bevel_m": 0.012
-          },
-          {
-            "id": "moorish_parapet_post_04",
-            "kind": "box",
-            "size": [
-              0.12,
-              0.16,
-              0.7
-            ],
-            "location": [
-              -4.92,
-              -3.55,
-              8.57
-            ],
-            "material": "primary",
-            "bevel_m": 0.012
-          },
-          {
-            "id": "moorish_parapet_post_05",
-            "kind": "box",
-            "size": [
-              0.12,
-              0.16,
-              0.7
-            ],
-            "location": [
-              -3.8,
-              -3.55,
-              8.57
-            ],
-            "material": "primary",
-            "bevel_m": 0.012
-          },
-          {
-            "id": "moorish_parapet_post_06",
-            "kind": "box",
-            "size": [
-              0.12,
-              0.16,
-              0.7
-            ],
-            "location": [
-              -2.6799999999999997,
-              -3.55,
-              8.57
-            ],
-            "material": "primary",
-            "bevel_m": 0.012
-          },
-          {
-            "id": "moorish_parapet_post_07",
-            "kind": "box",
-            "size": [
-              0.12,
-              0.16,
-              0.7
-            ],
-            "location": [
-              -1.5599999999999996,
-              -3.55,
-              8.57
-            ],
-            "material": "primary",
-            "bevel_m": 0.012
-          },
-          {
-            "id": "moorish_parapet_post_08",
-            "kind": "box",
-            "size": [
-              0.12,
-              0.16,
-              0.7
-            ],
-            "location": [
-              -0.4399999999999995,
-              -3.55,
-              8.57
-            ],
-            "material": "primary",
-            "bevel_m": 0.012
-          },
-          {
-            "id": "moorish_parapet_post_09",
-            "kind": "box",
-            "size": [
-              0.12,
-              0.16,
-              0.7
-            ],
-            "location": [
-              0.6800000000000015,
-              -3.55,
-              8.57
-            ],
-            "material": "primary",
-            "bevel_m": 0.012
-          },
-          {
-            "id": "moorish_parapet_post_10",
-            "kind": "box",
-            "size": [
-              0.12,
-              0.16,
-              0.7
-            ],
-            "location": [
-              1.8000000000000007,
-              -3.55,
-              8.57
-            ],
-            "material": "primary",
-            "bevel_m": 0.012
-          },
-          {
-            "id": "moorish_parapet_post_11",
-            "kind": "box",
-            "size": [
-              0.12,
-              0.16,
-              0.7
-            ],
-            "location": [
-              2.92,
-              -3.55,
-              8.57
-            ],
-            "material": "primary",
-            "bevel_m": 0.012
-          },
-          {
-            "id": "moorish_parapet_post_12",
-            "kind": "box",
-            "size": [
-              0.12,
-              0.16,
-              0.7
-            ],
-            "location": [
-              4.040000000000001,
-              -3.55,
-              8.57
-            ],
-            "material": "primary",
-            "bevel_m": 0.012
-          },
-          {
-            "id": "moorish_parapet_post_13",
-            "kind": "box",
-            "size": [
-              0.12,
-              0.16,
-              0.7
-            ],
-            "location": [
-              5.160000000000002,
-              -3.55,
-              8.57
-            ],
-            "material": "primary",
-            "bevel_m": 0.012
-          },
-          {
-            "id": "moorish_parapet_post_14",
-            "kind": "box",
-            "size": [
-              0.12,
-              0.16,
-              0.7
-            ],
-            "location": [
-              6.280000000000001,
-              -3.55,
-              8.57
-            ],
-            "material": "primary",
-            "bevel_m": 0.012
-          },
-          {
-            "id": "moorish_parapet_post_15",
-            "kind": "box",
-            "size": [
-              0.12,
-              0.16,
-              0.7
-            ],
-            "location": [
-              7.4,
-              -3.55,
-              8.57
-            ],
-            "material": "primary",
-            "bevel_m": 0.012
+            "bevel_m": 0.04
           }
         ],
         "voids": [
           {
-            "id": "moorish_arcade",
-            "shape": "round_arch_passage",
+            "id": "moorish_front_arcade",
+            "shape": "horseshoe_arch_passage",
             "axis": "front",
             "size": [
-              18.0,
-              15.0,
-              3.9
+              20.0,
+              6.2,
+              4.0
             ],
             "location": [
               0,
-              0,
-              2.05
+              -4.4,
+              2.0
             ],
-            "purpose": "three construction-depth shaded souk bays"
+            "purpose": "deep occupied street market arcade"
+          },
+          {
+            "id": "moorish_right_arcade",
+            "shape": "horseshoe_arch_passage",
+            "axis": "right",
+            "size": [
+              3.0,
+              8.8,
+              3.9
+            ],
+            "location": [
+              8.5,
+              3.1,
+              1.95
+            ],
+            "purpose": "deep occupied return market arcade"
           }
         ],
         "assemblies": [
           {
+            "id": "moorish_front_arcade_sticker",
             "kind": "facade_skin",
-            "id": "skin_arcade_front",
             "axis": "front",
             "centre": [
-              0.0,
-              -7.55,
+              0,
+              -7.525,
               2.25
             ],
             "span_m": 20.0,
             "height_m": 4.5,
-            "depth_m": 0.05,
+            "depth_m": 0.045,
             "band": "podium",
             "flip_u": false,
+            "source_image_path": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\catalogue-rollout-v87\\round-001\\facade-sheets\\med_arcade_moorish\\podium_albedo.jpg",
+            "registration_group": "moorish_front_arcade",
             "opening_clearances": [
               {
-                "void_id": "moorish_arcade",
-                "centre_m": -6.0,
-                "base_z_m": 0.1,
-                "width_m": 4.5,
-                "height_m": 3.9
+                "void_id": "moorish_front_arcade",
+                "shape": "horseshoe_arch",
+                "centre_m": -5.9,
+                "width_m": 4.35,
+                "base_z_m": 0.0,
+                "height_m": 3.95,
+                "spring_z_m": 2.1,
+                "arch_segments": 28,
+                "neck_ratio": 0.74,
+                "shoulder_bulge_ratio": 0.55
               },
               {
-                "void_id": "moorish_arcade",
-                "centre_m": 0.0,
-                "base_z_m": 0.1,
-                "width_m": 4.5,
-                "height_m": 3.9
+                "void_id": "moorish_front_arcade",
+                "shape": "horseshoe_arch",
+                "centre_m": 0.65,
+                "width_m": 4.35,
+                "base_z_m": 0.0,
+                "height_m": 3.95,
+                "spring_z_m": 2.1,
+                "arch_segments": 28,
+                "neck_ratio": 0.74,
+                "shoulder_bulge_ratio": 0.55
               },
               {
-                "void_id": "moorish_arcade",
-                "centre_m": 6.0,
-                "base_z_m": 0.1,
-                "width_m": 4.5,
-                "height_m": 3.9
+                "void_id": "moorish_front_arcade",
+                "shape": "horseshoe_arch",
+                "centre_m": 7.1,
+                "width_m": 4.35,
+                "base_z_m": 0.0,
+                "height_m": 3.95,
+                "spring_z_m": 2.1,
+                "arch_segments": 28,
+                "neck_ratio": 0.74,
+                "shoulder_bulge_ratio": 0.55
               }
             ]
           },
           {
+            "id": "moorish_right_arcade_sticker",
             "kind": "facade_skin",
-            "id": "skin_arcade_right",
             "axis": "right",
             "centre": [
-              10.05,
-              0.0,
+              10.025,
+              3.1,
               2.25
             ],
-            "span_m": 15.0,
+            "span_m": 8.8,
             "height_m": 4.5,
-            "depth_m": 0.05,
+            "depth_m": 0.045,
             "band": "podium",
-            "flip_u": false
+            "flip_u": false,
+            "source_image_path": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\catalogue-rollout-v87\\round-001\\facade-sheets\\med_arcade_moorish\\podium_albedo.jpg",
+            "registration_group": "moorish_right_arcade",
+            "uv_u_min": 0.33,
+            "uv_u_max": 1.0,
+            "opening_clearances": [
+              {
+                "void_id": "moorish_right_arcade",
+                "shape": "horseshoe_arch",
+                "centre_m": 1.35,
+                "width_m": 3.15,
+                "base_z_m": 0.0,
+                "height_m": 3.85,
+                "spring_z_m": 2.0,
+                "arch_segments": 26,
+                "neck_ratio": 0.74,
+                "shoulder_bulge_ratio": 0.55
+              },
+              {
+                "void_id": "moorish_right_arcade",
+                "shape": "horseshoe_arch",
+                "centre_m": 5.65,
+                "width_m": 3.15,
+                "base_z_m": 0.0,
+                "height_m": 3.85,
+                "spring_z_m": 2.0,
+                "arch_segments": 26,
+                "neck_ratio": 0.74,
+                "shoulder_bulge_ratio": 0.55
+              }
+            ]
           },
           {
+            "id": "moorish_upper_front_sticker",
             "kind": "facade_skin",
-            "id": "skin_upper_right",
-            "axis": "right",
-            "centre": [
-              8.05,
-              2.0,
-              6.3
-            ],
-            "span_m": 11.0,
-            "height_m": 3.6,
-            "depth_m": 0.05,
-            "band": "floor",
-            "flip_u": false
-          },
-          {
-            "id": "skin_arcade_right_glazing",
-            "axis": "right",
-            "centre": [
-              10.05,
-              0.0,
-              2.25
-            ],
-            "span_m": 15.0,
-            "height_m": 4.5,
-            "depth_m": 0.05,
-            "band": "podium",
-            "flip_u": false,
-            "kind": "glazing_overlay",
-            "columns": 5,
-            "rows": 1,
-            "glass_profile": "residential_low_e",
-            "frame_mode": "region_caps",
-            "opening_returns": true,
-            "pane_recess_m": 0.2,
-            "cavity_depth_m": 0.48,
-            "room_card_recess_m": 0.12,
-            "max_regions": 8
-          },
-          {
-            "id": "skin_upper_right_glazing",
-            "axis": "right",
-            "centre": [
-              8.05,
-              2.0,
-              6.3
-            ],
-            "span_m": 11.0,
-            "height_m": 3.6,
-            "depth_m": 0.05,
-            "band": "floor",
-            "flip_u": false,
-            "kind": "glazing_overlay",
-            "columns": 3,
-            "rows": 1,
-            "glass_profile": "residential_low_e",
-            "frame_mode": "region_caps",
-            "opening_returns": true,
-            "pane_recess_m": 0.2,
-            "cavity_depth_m": 0.48,
-            "room_card_recess_m": 0.12,
-            "max_regions": 8
-          },
-          {
-            "id": "moorish_upper_windows",
-            "kind": "punched_opening_schedule",
             "axis": "front",
-            "face_coordinate_m": -3.58,
-            "frame_material": "secondary",
-            "surround_material": "primary",
-            "glass_material": "glass",
-            "interior_material": "interior_warm",
-            "openings": [
-              {
-                "along_m": -5.5,
-                "base_z_m": 5.1,
-                "width_m": 2.0,
-                "height_m": 2.25
-              },
-              {
-                "along_m": 0.0,
-                "base_z_m": 5.1,
-                "width_m": 2.0,
-                "height_m": 2.25
-              },
-              {
-                "along_m": 5.5,
-                "base_z_m": 5.1,
-                "width_m": 2.0,
-                "height_m": 2.25
-              }
-            ]
+            "centre": [
+              0,
+              -3.225,
+              6.325
+            ],
+            "span_m": 16.0,
+            "height_m": 3.65,
+            "depth_m": 0.045,
+            "band": "crown",
+            "flip_u": false,
+            "source_image_path": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\catalogue-rollout-v87\\round-001\\facade-sheets\\med_arcade_moorish\\crown_albedo.jpg",
+            "registration_group": "moorish_upper_front",
+            "uv_u_min": 0.05,
+            "uv_u_max": 0.75,
+            "uv_v_min": 0.0,
+            "uv_v_max": 0.5
           },
           {
-            "id": "moorish_stalls",
+            "id": "moorish_upper_right_sticker",
+            "kind": "facade_skin",
+            "axis": "right",
+            "centre": [
+              8.025,
+              1.8,
+              6.325
+            ],
+            "span_m": 10.0,
+            "height_m": 3.65,
+            "depth_m": 0.045,
+            "band": "crown",
+            "flip_u": false,
+            "source_image_path": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\catalogue-rollout-v87\\round-001\\facade-sheets\\med_arcade_moorish\\crown_albedo.jpg",
+            "registration_group": "moorish_upper_right",
+            "uv_u_min": 0.05,
+            "uv_u_max": 0.5,
+            "uv_v_min": 0.0,
+            "uv_v_max": 0.5
+          },
+          {
+            "id": "moorish_upper_rear_sticker",
+            "kind": "facade_skin",
+            "axis": "rear",
+            "centre": [
+              0,
+              6.825,
+              6.325
+            ],
+            "span_m": 16.0,
+            "height_m": 3.65,
+            "depth_m": 0.045,
+            "band": "crown",
+            "flip_u": true,
+            "source_image_path": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\catalogue-rollout-v87\\round-001\\facade-sheets\\med_arcade_moorish\\crown_albedo.jpg",
+            "uv_u_min": 0.05,
+            "uv_u_max": 0.75,
+            "uv_v_min": 0.0,
+            "uv_v_max": 0.5
+          },
+          {
+            "id": "moorish_upper_left_sticker",
+            "kind": "facade_skin",
+            "axis": "left",
+            "centre": [
+              -8.025,
+              1.8,
+              6.325
+            ],
+            "span_m": 10.0,
+            "height_m": 3.65,
+            "depth_m": 0.045,
+            "band": "crown",
+            "flip_u": true,
+            "source_image_path": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\catalogue-rollout-v87\\round-001\\facade-sheets\\med_arcade_moorish\\crown_albedo.jpg",
+            "uv_u_min": 0.5,
+            "uv_u_max": 1.0,
+            "uv_v_min": 0.0,
+            "uv_v_max": 0.5
+          },
+          {
+            "id": "moorish_rear_ground_sticker",
+            "kind": "facade_skin",
+            "axis": "rear",
+            "centre": [
+              -1.5,
+              7.525,
+              2.25
+            ],
+            "span_m": 17.0,
+            "height_m": 4.5,
+            "depth_m": 0.045,
+            "band": "crown",
+            "flip_u": true,
+            "source_image_path": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\catalogue-rollout-v87\\round-001\\facade-sheets\\med_arcade_moorish\\crown_albedo.jpg",
+            "uv_u_min": 0.0,
+            "uv_u_max": 1.0,
+            "uv_v_min": 0.0,
+            "uv_v_max": 0.5
+          },
+          {
+            "id": "moorish_left_ground_sticker",
+            "kind": "facade_skin",
+            "axis": "left",
+            "centre": [
+              -10.025,
+              3.1,
+              2.25
+            ],
+            "span_m": 8.8,
+            "height_m": 4.5,
+            "depth_m": 0.045,
+            "band": "crown",
+            "flip_u": true,
+            "source_image_path": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\catalogue-rollout-v87\\round-001\\facade-sheets\\med_arcade_moorish\\crown_albedo.jpg",
+            "uv_u_min": 0.0,
+            "uv_u_max": 0.55,
+            "uv_v_min": 0.0,
+            "uv_v_max": 0.5
+          },
+          {
+            "id": "moorish_front_market_stalls",
             "kind": "market_stall_schedule",
             "axis": "front",
-            "face_coordinate_m": -5.4,
+            "face_coordinate_m": -1.34,
             "positions_m": [
-              -7.2,
-              -2.4,
-              2.4,
-              7.2
+              -5.9,
+              0.65,
+              7.1
             ],
-            "bay_width_m": 3.55,
+            "bay_width_m": 4.35,
             "base_z_m": 0.18,
             "counter_depth_m": 0.82,
             "counter_height_m": 0.92,
-            "counter_material": "secondary",
-            "frame_material": "secondary"
+            "counter_material": "signature_warm",
+            "frame_material": "signature_warm"
+          },
+          {
+            "id": "moorish_right_market_stalls",
+            "kind": "market_stall_schedule",
+            "axis": "right",
+            "face_coordinate_m": 7.03,
+            "positions_m": [
+              1.35,
+              5.65
+            ],
+            "bay_width_m": 3.15,
+            "base_z_m": 0.18,
+            "counter_depth_m": 0.72,
+            "counter_height_m": 0.88,
+            "counter_material": "signature_warm",
+            "frame_material": "signature_warm"
+          },
+          {
+            "id": "moorish_geometric_roof_parapet",
+            "kind": "lattice_parapet",
+            "base_z_m": 8.36,
+            "height_m": 0.86,
+            "profile_m": 0.028,
+            "material": "primary",
+            "runs": [
+              {
+                "start": [
+                  -8.0,
+                  -3.2
+                ],
+                "end": [
+                  8.0,
+                  -3.2
+                ],
+                "cells": 24
+              },
+              {
+                "start": [
+                  8.0,
+                  -3.2
+                ],
+                "end": [
+                  8.0,
+                  6.8
+                ],
+                "cells": 16
+              },
+              {
+                "start": [
+                  8.0,
+                  6.8
+                ],
+                "end": [
+                  -8.0,
+                  6.8
+                ],
+                "cells": 24
+              },
+              {
+                "start": [
+                  -8.0,
+                  6.8
+                ],
+                "end": [
+                  -8.0,
+                  -3.2
+                ],
+                "cells": 16
+              }
+            ]
           },
           {
             "id": "moorish_cornice_corbel",
             "kind": "corbel_array",
             "axis": "front",
             "centre": [
-              -1,
-              -3.72,
-              8.3
+              0,
+              -3.38,
+              8.18
             ],
-            "span_m": 18.0,
+            "span_m": 16.0,
             "levels_z": [
-              8.15
+              8.1
             ],
-            "count": 22,
+            "count": 20,
             "material": "secondary",
-            "depth_m": 0.28,
-            "height_m": 0.18
+            "depth_m": 0.24,
+            "height_m": 0.16
           }
         ],
         "target_views": [

@@ -1,0 +1,12 @@
+{
+  "schema": "visual-approval@1",
+  "building": "med-arcade-moorish-v88",
+  "approved": false,
+  "classification": "rejected_research_pilot",
+  "architect_score": 71,
+  "threshold": 85,
+  "hard_stop": "non-rectangular portal contour is not registered to the exact inner negative opening",
+  "machine_validation": "pass",
+  "surface_finish_parity": "pass",
+  "catalogue_release": "blocked"
+}

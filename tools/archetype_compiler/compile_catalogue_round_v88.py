@@ -32,10 +32,14 @@ REPAIR_B = TOOLS / "catalogue_round_v88_repair_b.json"
 TERRACOTTA_RETRY = TOOLS / "catalogue_round_v88_terracotta_retry.json"
 CATALAN_RETRY = TOOLS / "catalogue_round_v88_catalan_retry.json"
 CATALAN_STICKER_RETRY = TOOLS / "catalogue_round_v88_catalan_sticker_retry.json"
+MOORISH_STICKER_RETRY = TOOLS / "catalogue_round_v88_moorish_sticker_retry.json"
 CATALAN_STICKER_MASKS = REPO / "artifacts/catalogue-rollout-v88/round-001/sticker-masks/med_arcade_catalan_modernista"
 CATALAN_MULTIVIEW = REPO / "artifacts/catalogue-rollout-v88/round-001/multiview-references/med_arcade_catalan_modernista"
 CATALAN_SIDE_STICKER = CATALAN_MULTIVIEW / "left-elevation-wall-sticker-v1.png"
 CATALAN_REAR_STICKER = CATALAN_MULTIVIEW / "rear-elevation-wall-sticker-v1.png"
+MOORISH_SHEETS = REPO / "artifacts/catalogue-rollout-v87/round-001/facade-sheets/med_arcade_moorish"
+MOORISH_PODIUM_STICKER = MOORISH_SHEETS / "podium_albedo.jpg"
+MOORISH_CROWN_STICKER = MOORISH_SHEETS / "crown_albedo.jpg"
 DIMENSION_OVERRIDES = {
     "glass_office_dark_frame": {
         "width_m": 28.0,
@@ -448,36 +452,178 @@ def clt(graph: dict[str, Any], production: dict[str, Any]) -> None:
 
 
 def moorish(graph: dict[str, Any], production: dict[str, Any]) -> None:
-    arcade = next(node for node in graph["nodes"] if node["id"] == "ground_arcade")
-    arcade.update({"opening_count": 4, "opening_width_m": 3.55, "spring_height_m": 2.18, "trim_profile_m": 0.13, "trim_depth_m": 0.22})
-    graph["nodes"] = [node for node in graph["nodes"] if node["id"] != "decorative_parapet"]
+    # Fixed two-storey landmark reconstructed from the exact street, oblique
+    # and roof references.  The inherited metadata elevation had invented a
+    # third storey; only the trustworthy ground and single crown bands survive.
+    width, depth, ground_h, upper_h, total_h = 20.0, 15.0, 4.5, 3.65, 9.25
+    front_y = -depth / 2
+    front_centres = [-5.90, 0.65, 7.10]
+    side_centres = [1.35, 5.65]
+    graph["nodes"] = [
+        {
+            "id": "moorish_front_deep_arcade", "kind": "opening_block", "axis": "front",
+            "size": [width, 6.2, ground_h], "location": [0, -4.4, ground_h / 2],
+            "opening_shape": "horseshoe_arch", "opening_count": 3, "opening_centres_m": front_centres,
+            "opening_width_m": 4.35, "opening_base_m": 0.0,
+            "opening_height_m": 3.95, "spring_height_m": 2.10,
+            "arch_segments": 28, "section_mode": "recessed", "material": "primary",
+            "lining_material": "primary", "trim_material": "secondary",
+            "trim_profile_m": 0.16, "trim_depth_m": 0.38,
+            "back_material": "interior_warm", "back_frame_material": "signature_door",
+            "lining_setback_m": 0.07, "lower_tile_height_m": 0.90,
+            "neck_ratio": 0.74,
+            "bevel_m": 0.045,
+        },
+        # This separate return volume makes the two right-hand market bays
+        # actual cavernous spaces.  It is not a stretched side photograph.
+        {
+            "id": "moorish_right_deep_arcade", "kind": "opening_block", "axis": "right",
+            "size": [3.0, 8.8, ground_h], "location": [8.5, 3.1, ground_h / 2],
+            "opening_shape": "horseshoe_arch", "opening_count": 2, "opening_centres_m": [-1.75, 2.55],
+            "opening_width_m": 3.15, "opening_base_m": 0.0,
+            "opening_height_m": 3.85, "spring_height_m": 2.00,
+            "arch_segments": 26, "section_mode": "recessed", "material": "primary",
+            "lining_material": "primary", "trim_material": "secondary",
+            "trim_profile_m": 0.14, "trim_depth_m": 0.34,
+            "back_material": "interior_warm", "back_frame_material": "signature_door",
+            "lining_setback_m": 0.07, "lower_tile_height_m": 0.86,
+            "neck_ratio": 0.74,
+            "bevel_m": 0.045,
+        },
+        box("moorish_rear_ground_body", [17.0, 8.8, ground_h], [-1.5, 3.1, ground_h / 2], "primary", 0.07),
+        box("moorish_terrace_slab", [20.15, 15.15, 0.24], [0, 0, 4.62], "secondary", 0.025),
+        box("moorish_upper_pavilion", [16.0, 10.0, upper_h], [0, 1.8, ground_h + upper_h / 2], "primary", 0.075),
+        box("moorish_upper_roof", [16.25, 10.25, 0.24], [0, 1.8, 8.27], "primary", 0.025),
+        # Terracotta terrace coping is a distinct lower roof datum in the exact reference.
+        box("moorish_terrace_coping_front", [20.25, 0.22, 0.16], [0, -7.46, 4.75], "roof", 0.025),
+        box("moorish_terrace_coping_rear", [20.25, 0.22, 0.16], [0, 7.46, 4.75], "roof", 0.025),
+        box("moorish_terrace_coping_left", [0.22, 14.65, 0.16], [-9.86, 0, 4.75], "roof", 0.025),
+        box("moorish_terrace_coping_right", [0.22, 14.65, 0.16], [9.86, 0, 4.75], "roof", 0.025),
+    ]
+    for index, (x, y) in enumerate(((-8.0, -3.2), (8.0, -3.2), (-8.0, 6.8), (8.0, 6.8))):
+        graph["nodes"].append(box(
+            f"moorish_parapet_pier_{index}", [0.34, 0.34, 1.18], [x, y, 8.82], "primary", 0.04,
+        ))
+
+    front_clearances = [{
+        "void_id": "moorish_front_arcade", "shape": "horseshoe_arch",
+        "centre_m": centre, "width_m": 4.35, "base_z_m": 0.0,
+        "height_m": 3.95, "spring_z_m": 2.10, "arch_segments": 28,
+        "neck_ratio": 0.74, "shoulder_bulge_ratio": 0.55,
+    } for index, centre in enumerate(front_centres)]
+    side_clearances = [{
+        "void_id": "moorish_right_arcade", "shape": "horseshoe_arch",
+        "centre_m": centre, "width_m": 3.15, "base_z_m": 0.0,
+        "height_m": 3.85, "spring_z_m": 2.00, "arch_segments": 26,
+        "neck_ratio": 0.74, "shoulder_bulge_ratio": 0.55,
+    } for index, centre in enumerate(side_centres)]
     graph["assemblies"] = [
-        assembly for assembly in graph["assemblies"]
-        if assembly["id"] not in {
-            "skin_upper_front", "skin_upper_front_glazing", "skin_parapet_front",
-            "rear_depth_skin", "rear_depth_skin_glazing",
-            "left_depth_skin", "left_depth_skin_glazing",
-        }
+        {
+            **skin("moorish_front_arcade_sticker", "front", [0, front_y - 0.025, ground_h / 2], width, ground_h, band="podium"),
+            "source_image_path": str(MOORISH_PODIUM_STICKER),
+            "registration_group": "moorish_front_arcade",
+            "opening_clearances": front_clearances,
+        },
+        {
+            **skin("moorish_right_arcade_sticker", "right", [10.025, 3.1, ground_h / 2], 8.8, ground_h, band="podium"),
+            "source_image_path": str(MOORISH_PODIUM_STICKER),
+            "registration_group": "moorish_right_arcade", "uv_u_min": 0.33, "uv_u_max": 1.0,
+            "opening_clearances": side_clearances,
+        },
+        {
+            **skin("moorish_upper_front_sticker", "front", [0, -3.225, 6.325], 16.0, upper_h, band="crown"),
+            "source_image_path": str(MOORISH_CROWN_STICKER),
+            "registration_group": "moorish_upper_front", "uv_u_min": 0.05, "uv_u_max": 0.75,
+            "uv_v_min": 0.0, "uv_v_max": 0.50,
+        },
+        {
+            **skin("moorish_upper_right_sticker", "right", [8.025, 1.8, 6.325], 10.0, upper_h, band="crown"),
+            "source_image_path": str(MOORISH_CROWN_STICKER),
+            "registration_group": "moorish_upper_right", "uv_u_min": 0.05, "uv_u_max": 0.50,
+            "uv_v_min": 0.0, "uv_v_max": 0.50,
+        },
+        {
+            **skin("moorish_upper_rear_sticker", "rear", [0, 6.825, 6.325], 16.0, upper_h, band="crown", flip=True),
+            "source_image_path": str(MOORISH_CROWN_STICKER), "uv_u_min": 0.05, "uv_u_max": 0.75,
+            "uv_v_min": 0.0, "uv_v_max": 0.50,
+        },
+        {
+            **skin("moorish_upper_left_sticker", "left", [-8.025, 1.8, 6.325], 10.0, upper_h, band="crown", flip=True),
+            "source_image_path": str(MOORISH_CROWN_STICKER), "uv_u_min": 0.50, "uv_u_max": 1.0,
+            "uv_v_min": 0.0, "uv_v_max": 0.50,
+        },
+        {
+            **skin("moorish_rear_ground_sticker", "rear", [-1.5, 7.525, ground_h / 2], 17.0, ground_h, band="crown", flip=True),
+            "source_image_path": str(MOORISH_CROWN_STICKER), "uv_u_min": 0.0, "uv_u_max": 1.0,
+            "uv_v_min": 0.0, "uv_v_max": 0.50,
+        },
+        {
+            **skin("moorish_left_ground_sticker", "left", [-10.025, 3.1, ground_h / 2], 8.8, ground_h, band="crown", flip=True),
+            "source_image_path": str(MOORISH_CROWN_STICKER), "uv_u_min": 0.0, "uv_u_max": 0.55,
+            "uv_v_min": 0.0, "uv_v_max": 0.50,
+        },
+        {"id": "moorish_front_market_stalls", "kind": "market_stall_schedule", "axis": "front", "face_coordinate_m": -1.34, "positions_m": front_centres, "bay_width_m": 4.35, "base_z_m": 0.18, "counter_depth_m": 0.82, "counter_height_m": 0.92, "counter_material": "signature_warm", "frame_material": "signature_warm"},
+        {"id": "moorish_right_market_stalls", "kind": "market_stall_schedule", "axis": "right", "face_coordinate_m": 7.03, "positions_m": side_centres, "bay_width_m": 3.15, "base_z_m": 0.18, "counter_depth_m": 0.72, "counter_height_m": 0.88, "counter_material": "signature_warm", "frame_material": "signature_warm"},
+        {
+            "id": "moorish_geometric_roof_parapet", "kind": "lattice_parapet",
+            "base_z_m": 8.36, "height_m": 0.86, "profile_m": 0.028, "material": "primary",
+            "runs": [
+                {"start": [-8.0, -3.2], "end": [8.0, -3.2], "cells": 24},
+                {"start": [8.0, -3.2], "end": [8.0, 6.8], "cells": 16},
+                {"start": [8.0, 6.8], "end": [-8.0, 6.8], "cells": 24},
+                {"start": [-8.0, 6.8], "end": [-8.0, -3.2], "cells": 16},
+            ],
+        },
+        {"id": "moorish_cornice_corbel", "kind": "corbel_array", "axis": "front", "centre": [0, -3.38, 8.18], "span_m": 16.0, "levels_z": [8.10], "count": 20, "material": "secondary", "depth_m": 0.24, "height_m": 0.16},
     ]
-    graph["assemblies"] += [
-        {"id": "moorish_upper_windows", "kind": "punched_opening_schedule", "axis": "front", "face_coordinate_m": -3.58, "frame_material": "secondary", "surround_material": "primary", "glass_material": "glass", "interior_material": "interior_warm", "openings": [
-            {"along_m": -5.5, "base_z_m": 5.10, "width_m": 2.0, "height_m": 2.25},
-            {"along_m": 0.0, "base_z_m": 5.10, "width_m": 2.0, "height_m": 2.25},
-            {"along_m": 5.5, "base_z_m": 5.10, "width_m": 2.0, "height_m": 2.25},
-        ]},
-        {"id": "moorish_stalls", "kind": "market_stall_schedule", "axis": "front", "face_coordinate_m": -5.40, "positions_m": [-7.2, -2.4, 2.4, 7.2], "bay_width_m": 3.55, "base_z_m": 0.18, "counter_depth_m": 0.82, "counter_height_m": 0.92, "counter_material": "secondary", "frame_material": "secondary"},
-        {"id": "moorish_cornice_corbel", "kind": "corbel_array", "axis": "front", "centre": [-1, -3.72, 8.3], "span_m": 18.0, "levels_z": [8.15], "count": 22, "material": "secondary", "depth_m": 0.28, "height_m": 0.18},
+    graph["reference_dimensions"].update({"width_m": width, "depth_m": depth, "floors": 2})
+    graph["height_m"] = total_h
+    graph["voids"] = [
+        {"id": "moorish_front_arcade", "shape": "horseshoe_arch_passage", "axis": "front", "size": [width, 6.2, 4.0], "location": [0, -4.4, 2.0], "purpose": "deep occupied street market arcade"},
+        {"id": "moorish_right_arcade", "shape": "horseshoe_arch_passage", "axis": "right", "size": [3.0, 8.8, 3.9], "location": [8.5, 3.1, 1.95], "purpose": "deep occupied return market arcade"},
     ]
-    graph["nodes"] += [
-        box("moorish_parapet_bottom", [18.0, 0.16, 0.12], [-1.0, -3.55, 8.22], "primary", 0.015),
-        box("moorish_parapet_top", [18.0, 0.16, 0.14], [-1.0, -3.55, 8.92], "primary", 0.015),
-    ]
-    for index in range(16):
-        graph["nodes"].append(box(f"moorish_parapet_post_{index:02d}", [0.12, 0.16, 0.70], [-9.4 + index * 1.12, -3.55, 8.57], "primary", 0.012))
-    graph.setdefault("presentation_camera", {})["identity_distance_scale"] = 0.58
+    graph["presentation_camera"] = {"oblique_x_scale": 0.37, "identity_distance_scale": 0.68, "street_distance_scale": 0.72}
     production["fixed_identity"] = [
-        "four deep horseshoe-like arcade passages", "slender pale piers and turquoise tile lining",
-        "occupied market backs", "light upper stucco pavilion", "open parapet and terrace hierarchy",
+        "three deep occupied street arcade passages", "two deep right-return market arches",
+        "white stucco and turquoise zellige sticker registration", "set-back single-storey pavilion",
+        "terracotta terrace coping", "continuous crossed-lattice roof parapet",
+    ]
+    production["placement_contract"] = {
+        "method": "sticker_method", "mode": "fixed_landmark", "ui_interaction": "select_and_place",
+        "footprint_m": {"width": width, "depth": depth}, "visible_height_m": total_h,
+        "translation": "allowed", "rotation": "allowed", "uniform_scale": "discouraged",
+        "non_uniform_scale": "forbidden", "floor_count_change": "forbidden", "polygon_fit": False,
+        "preferred_context": "freestanding_market_corner", "freestanding_elevations": "authored",
+        "lego_compatibility": "fixed_landmark_with_registered_surface_and_true_arcade_voids",
+    }
+    production["material_continuity"]["node_bindings"] = [{
+        "kind": "opening_block",
+        "ids": ["moorish_front_deep_arcade", "moorish_right_deep_arcade"],
+        "slots": {"material": "primary", "lining_material": "primary", "trim_material": "secondary"},
+    }]
+    production["spatial_voids"] = {"required_passages": [
+        {
+            "void_id": "moorish_front_arcade", "target_node_id": "moorish_front_deep_arcade",
+            "target_node_kind": "opening_block", "shape": "horseshoe_arch_passage",
+            "section_mode": "recessed", "minimum_depth_m": 5.5,
+            "minimum_opening_count": 3, "minimum_clearance_count": 3,
+        },
+        {
+            "void_id": "moorish_right_arcade", "target_node_id": "moorish_right_deep_arcade",
+            "target_node_kind": "opening_block", "shape": "horseshoe_arch_passage",
+            "section_mode": "recessed", "minimum_depth_m": 2.5,
+            "minimum_opening_count": 2, "minimum_clearance_count": 2,
+        },
+    ]}
+    production["image_lock"]["measurements"] = [
+        {"feature": "facade_width", "role": "street_identity", "value": width, "unit": "metres", "drives": "moorish_front_arcade_sticker"},
+        {"feature": "arcade_count", "role": "street_identity", "value": 3, "unit": "count", "drives": "moorish_front_deep_arcade"},
+        {"feature": "return_arcade_count", "role": "oblique_massing", "value": 2, "unit": "count", "drives": "moorish_right_deep_arcade"},
+        {"feature": "arcade_depth", "role": "oblique_massing", "value": 6.2, "unit": "metres", "drives": "moorish_front_deep_arcade"},
+        {"feature": "ground_height", "role": "street_identity", "value": ground_h, "unit": "metres", "drives": "moorish_front_arcade_sticker"},
+        {"feature": "upper_setback", "role": "roof_plan", "value": 4.3, "unit": "metres", "drives": "moorish_upper_pavilion"},
+        {"feature": "upper_width", "role": "roof_plan", "value": 16.0, "unit": "metres", "drives": "moorish_upper_pavilion"},
+        {"feature": "overall_height", "role": "roof_plan", "value": total_h, "unit": "metres", "drives": "moorish_geometric_roof_parapet"},
     ]
 
 
@@ -755,7 +901,11 @@ def refresh_contract(profile: dict[str, Any], variant: str) -> None:
     graph["target_views"] = ["archetype_match", "street", "front_corner_oblique", "rear_corner_oblique", "facade_close", "roof_audit", "aerial", "context"]
     production = profile["production_contract"]
     production["quality_contract_version"] = 4
-    representation = "registered_sticker_landmark" if variant == "med_arcade_catalan_modernista" else "massing_graph"
+    representation = (
+        "registered_sticker_landmark"
+        if variant in {"med_arcade_catalan_modernista", "med_arcade_moorish"}
+        else "massing_graph"
+    )
     production["stage_workflow"] = stage_workflow(representation)
     image_lock = production["image_lock"]
     image_lock["required_node_ids"] = [str(item["id"]) for item in graph.get("nodes") or []]
@@ -854,6 +1004,8 @@ def main() -> None:
     catalan_target = [target for target in TARGETS if target[1] == "med_arcade_catalan_modernista"]
     write_json(CATALAN_RETRY, registry("ROUND-001-V88-CATALAN-RETRY", catalan_target))
     write_json(CATALAN_STICKER_RETRY, registry("ROUND-001-V88-CATALAN-STICKER-RETRY", catalan_target))
+    moorish_target = [target for target in TARGETS if target[1] == "med_arcade_moorish"]
+    write_json(MOORISH_STICKER_RETRY, registry("ROUND-001-V89-MOORISH-STICKER-RETRY", moorish_target))
     print(PROFILE)
 
 

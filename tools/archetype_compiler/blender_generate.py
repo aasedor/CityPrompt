@@ -1558,6 +1558,110 @@ def add_arch_ring(
     return add_prism(name, verts, faces, mat)
 
 
+def add_arch_ring_axis(
+    name: str,
+    centre_u: float,
+    normal_centre: float,
+    spring_z: float,
+    inner_radius: float,
+    ring_width: float,
+    depth: float,
+    mat,
+    *,
+    axis: str = "front",
+    segments: int = 18,
+) -> bpy.types.Object:
+    """Extruded semicircular ring on any orthogonal facade axis.
+
+    ``u`` follows the elevation (x on front/rear, y on left/right) and the
+    normal coordinate provides the reveal depth.  This keeps return arcades
+    genuinely three-dimensional instead of rotating a photographic card.
+    """
+    outer_radius = inner_radius + ring_width
+    normal_0, normal_1 = normal_centre - depth / 2, normal_centre + depth / 2
+
+    def point(u: float, normal: float, z: float) -> tuple[float, float, float]:
+        if axis in {"front", "rear"}:
+            return (u, normal, z)
+        if axis in {"left", "right"}:
+            return (normal, u, z)
+        raise ValueError(f"arch ring axis {axis!r} is unsupported")
+
+    verts: list[tuple[float, float, float]] = []
+    for normal in (normal_0, normal_1):
+        for radius in (inner_radius, outer_radius):
+            for index in range(segments + 1):
+                theta = math.pi * index / segments
+                verts.append(point(
+                    centre_u + radius * math.cos(theta), normal,
+                    spring_z + radius * math.sin(theta),
+                ))
+    stride = segments + 1
+    inner_front, outer_front = 0, stride
+    inner_back, outer_back = stride * 2, stride * 3
+    faces: list[tuple[int, ...]] = []
+    for index in range(segments):
+        nxt = index + 1
+        faces.extend([
+            (outer_front + index, outer_front + nxt, inner_front + nxt, inner_front + index),
+            (inner_back + index, inner_back + nxt, outer_back + nxt, outer_back + index),
+            (outer_front + index, outer_back + index, outer_back + nxt, outer_front + nxt),
+            (inner_front + index, inner_front + nxt, inner_back + nxt, inner_back + index),
+        ])
+    faces.extend([
+        (inner_front, inner_back, outer_back, outer_front),
+        (inner_front + segments, outer_front + segments, outer_back + segments, inner_back + segments),
+    ])
+    return add_prism(name, verts, faces, mat)
+
+
+def _horseshoe_arch_curve(
+    centre: float,
+    half_width: float,
+    spring_z: float,
+    apex_z: float,
+    segments: int,
+    *,
+    neck_ratio: float = 0.74,
+) -> list[tuple[float, float]]:
+    """Trace the left half of a pointed horseshoe negative-space profile.
+
+    The seven controls are normalized measurements from the registered Moorish
+    arcade sheet, not an assumed circle: narrow neck, outward shoulder, then a
+    restrained contraction to the pointed crown.  Catmull-Rom interpolation
+    keeps the shared sticker/tunnel boundary smooth without shoulder overshoot.
+    """
+    x_controls = [neck_ratio, 0.93, 1.00, 0.92, 0.71, 0.40, 0.0]
+    z_controls = [0.0, 0.14, 0.30, 0.48, 0.67, 0.84, 1.0]
+    control_count = len(x_controls)
+
+    def catmull(values: list[float], position: float) -> float:
+        scaled = position * (control_count - 1)
+        index = min(control_count - 2, int(math.floor(scaled)))
+        t = scaled - index
+        p0 = values[max(0, index - 1)]
+        p1 = values[index]
+        p2 = values[index + 1]
+        p3 = values[min(control_count - 1, index + 2)]
+        return 0.5 * (
+            2.0 * p1
+            + (-p0 + p2) * t
+            + (2.0 * p0 - 5.0 * p1 + 4.0 * p2 - p3) * t * t
+            + (-p0 + 3.0 * p1 - 3.0 * p2 + p3) * t * t * t
+        )
+
+    rise = apex_z - spring_z
+    curve: list[tuple[float, float]] = []
+    for step in range(segments + 1):
+        position = step / segments
+        x_ratio = max(0.0, min(1.015, catmull(x_controls, position)))
+        z_ratio = max(0.0, min(1.0, catmull(z_controls, position)))
+        curve.append((centre - half_width * x_ratio, spring_z + rise * z_ratio))
+    curve[0] = (centre - half_width * neck_ratio, spring_z)
+    curve[-1] = (centre, apex_z)
+    return curve
+
+
 def add_pointed_arch_frame(
     parts: list,
     prefix: str,
@@ -7743,8 +7847,8 @@ def _graph_facade_skin(parts: list, spec: dict, mats: dict, *, suffix: str = "")
     material["massing_skin_v_max"] = float(spec.get("uv_v_max", 1.0))
     clearances = list(spec.get("opening_clearances") or [])
     if clearances:
-        if axis not in {"front", "rear"}:
-            raise ValueError("facade-skin clearances currently support front/rear openings")
+        if axis not in {"front", "rear", "left", "right"}:
+            raise ValueError("facade-skin clearances require an orthogonal facade axis")
         z_min, z_max = cz - height / 2, cz + height / 2
         openings = []
         for clearance in clearances:
@@ -7766,40 +7870,46 @@ def _graph_facade_skin(parts: list, spec: dict, mats: dict, *, suffix: str = "")
         if not (z_min <= common_base < common_top < z_max):
             raise ValueError(f"facade skin {spec.get('id')!r} opening height lies outside the skin")
 
-        # Preserve the photographic sticker right up to an arched reveal.  A
-        # rectangular clearance exposes a pale block around the arch and makes
-        # the tunnel look pasted onto the facade.  This one-opening branch cuts
-        # the sticker on the actual semicircular profile, so the photograph,
-        # physical arch trim and deep passage share the same registration.
-        clearance_shape = str(openings[0][4].get("shape", "rectangular"))
-        if len(openings) == 1 and clearance_shape == "round_arch":
-            opening_left, opening_right, opening_base, opening_top, clearance = openings[0]
-            radius = (opening_right - opening_left) / 2
-            centre = (opening_left + opening_right) / 2
-            spring_z = float(clearance.get("spring_z_m", opening_top - radius))
-            if abs((opening_top - spring_z) - radius) > max(0.08, radius * 0.16):
-                raise ValueError(f"facade skin {spec.get('id')!r} round arch must be semicircular")
-            if not opening_base < spring_z < opening_top:
-                raise ValueError(f"facade skin {spec.get('id')!r} has invalid arch spring")
+        # Preserve the photographic sticker right up to every arched reveal.
+        # The geometry schedule owns the count and centres; a source sheet can
+        # never create an extra opening or leave a pale rectangular halo.
+        arch_shapes = {str(item[4].get("shape", "rectangular")) for item in openings}
+        if len(arch_shapes) == 1 and arch_shapes.issubset({"round_arch", "horseshoe_arch"}):
+            clearance_shape = next(iter(arch_shapes))
+            void_ids = ",".join(sorted({str(item[4].get("void_id", "")) for item in openings}))
 
-            def mark(panel, label: str) -> None:
+            def mark(panel) -> None:
                 panel["facade_skin_source"] = str(spec.get("band", "elevation"))
-                panel["facade_skin_clearance_void"] = str(clearance.get("void_id", ""))
-                panel["facade_skin_clearance_shape"] = "round_arch"
+                panel["facade_skin_clearance_void"] = void_ids
+                panel["facade_skin_clearance_shape"] = clearance_shape
                 parts.append(panel)
 
             def panel_box(label: str, left: float, right: float, bottom: float, top: float) -> None:
                 if right - left <= 0.01 or top - bottom <= 0.01:
                     return
+                panel_size = (
+                    (right - left, depth, top - bottom)
+                    if axis in {"front", "rear"}
+                    else (depth, right - left, top - bottom)
+                )
+                panel_location = (
+                    ((left + right) / 2, cy, (bottom + top) / 2)
+                    if axis in {"front", "rear"}
+                    else (cx, (left + right) / 2, (bottom + top) / 2)
+                )
                 mark(add_box(
                     f"{spec.get('id', 'GraphSkin')}{suffix}_{label}",
-                    (right - left, depth, top - bottom),
-                    ((left + right) / 2, cy, (bottom + top) / 2), material,
-                ), label)
+                    panel_size, panel_location, material,
+                ))
 
             def curved_spandrel(label: str, points: list[tuple[float, float]]) -> None:
-                y0, y1 = cy - depth / 2, cy + depth / 2
-                vertices = [(x, y0, z) for x, z in points] + [(x, y1, z) for x, z in points]
+                normal_centre = cy if axis in {"front", "rear"} else cx
+                n0, n1 = normal_centre - depth / 2, normal_centre + depth / 2
+
+                def point(u: float, normal: float, z: float) -> tuple[float, float, float]:
+                    return (u, normal, z) if axis in {"front", "rear"} else (normal, u, z)
+
+                vertices = [point(u, n0, z) for u, z in points] + [point(u, n1, z) for u, z in points]
                 count = len(points)
                 faces: list[tuple[int, ...]] = [
                     tuple(reversed(range(count))), tuple(range(count, count * 2)),
@@ -7810,31 +7920,53 @@ def _graph_facade_skin(parts: list, spec: dict, mats: dict, *, suffix: str = "")
                 mark(add_prism(
                     f"{spec.get('id', 'GraphSkin')}{suffix}_{label}",
                     vertices, faces, material,
-                ), label)
+                ))
 
-            panel_box("Below", u_min, u_max, z_min, opening_base)
-            panel_box("Left", u_min, opening_left, opening_base, opening_top)
-            panel_box("Right", opening_right, u_max, opening_base, opening_top)
-            panel_box("Above", u_min, u_max, opening_top, z_max)
-            segments = max(10, int(clearance.get("arch_segments", 20)))
-            left_arc = [
-                (centre + radius * math.cos(math.pi - math.pi * step / (2 * segments)),
-                 spring_z + radius * math.sin(math.pi - math.pi * step / (2 * segments)))
-                for step in range(segments + 1)
-            ]
-            right_arc = [
-                (centre + radius * math.cos(math.pi / 2 - math.pi * step / (2 * segments)),
-                 spring_z + radius * math.sin(math.pi / 2 - math.pi * step / (2 * segments)))
-                for step in range(segments + 1)
-            ]
-            curved_spandrel("ArchSpandrelL", [
-                (opening_left, spring_z), (opening_left, opening_top),
-                (centre, opening_top), *reversed(left_arc[:-1]),
-            ])
-            curved_spandrel("ArchSpandrelR", [
-                (centre, opening_top), (opening_right, opening_top),
-                (opening_right, spring_z), *reversed(right_arc[1:]),
-            ])
+            panel_box("Below", u_min, u_max, z_min, common_base)
+            panel_box("Above", u_min, u_max, common_top, z_max)
+            cursor = u_min
+            for index, (opening_left, opening_right, opening_base, opening_top, clearance) in enumerate(openings):
+                if not (cursor < opening_left < opening_right < u_max):
+                    raise ValueError(f"facade skin {spec.get('id')!r} clearances overlap or leave the skin")
+                panel_box(f"Pier{index:02d}", cursor, opening_left, opening_base, opening_top)
+                cursor = opening_right
+                radius = (opening_right - opening_left) / 2
+                centre = (opening_left + opening_right) / 2
+                spring_z = float(clearance.get("spring_z_m", opening_top - radius))
+                if clearance_shape == "round_arch" and abs((opening_top - spring_z) - radius) > max(0.08, radius * 0.16):
+                    raise ValueError(f"facade skin {spec.get('id')!r} round arch must be semicircular")
+                if not opening_base < spring_z < opening_top:
+                    raise ValueError(f"facade skin {spec.get('id')!r} has invalid arch spring")
+                segments = max(10, int(clearance.get("arch_segments", 20)))
+                if clearance_shape == "horseshoe_arch":
+                    neck_half = radius * float(clearance.get("neck_ratio", 0.78))
+                    left_arc = _horseshoe_arch_curve(
+                        centre, radius, spring_z, opening_top, segments,
+                        neck_ratio=float(clearance.get("neck_ratio", 0.74)),
+                    )
+                    right_arc = [(2 * centre - x, z) for x, z in reversed(left_arc)]
+                    panel_box(f"HorseshoePinchL{index:02d}", opening_left, centre - neck_half, opening_base, spring_z)
+                    panel_box(f"HorseshoePinchR{index:02d}", centre + neck_half, opening_right, opening_base, spring_z)
+                else:
+                    left_arc = [
+                        (centre + radius * math.cos(math.pi - math.pi * step / (2 * segments)),
+                         spring_z + radius * math.sin(math.pi - math.pi * step / (2 * segments)))
+                        for step in range(segments + 1)
+                    ]
+                    right_arc = [
+                        (centre + radius * math.cos(math.pi / 2 - math.pi * step / (2 * segments)),
+                         spring_z + radius * math.sin(math.pi / 2 - math.pi * step / (2 * segments)))
+                        for step in range(segments + 1)
+                    ]
+                curved_spandrel(f"ArchSpandrelL{index:02d}", [
+                    (opening_left, spring_z), (opening_left, opening_top),
+                    (centre, opening_top), *reversed(left_arc[:-1]),
+                ])
+                curved_spandrel(f"ArchSpandrelR{index:02d}", [
+                    (centre, opening_top), (opening_right, opening_top),
+                    (opening_right, spring_z), *reversed(right_arc[1:]),
+                ])
+            panel_box(f"Pier{len(openings):02d}", cursor, u_max, common_base, common_top)
             return
         cursor = u_min
         vertical_panels = []
@@ -7856,11 +7988,19 @@ def _graph_facade_skin(parts: list, spec: dict, mats: dict, *, suffix: str = "")
             panel_height = panel_top - panel_bottom
             if panel_span <= 0.01 or panel_height <= 0.01:
                 continue
+            panel_size = (
+                (panel_span, depth, panel_height)
+                if axis in {"front", "rear"}
+                else (depth, panel_span, panel_height)
+            )
+            panel_location = (
+                ((panel_left + panel_right) / 2, cy, (panel_bottom + panel_top) / 2)
+                if axis in {"front", "rear"}
+                else (cx, (panel_left + panel_right) / 2, (panel_bottom + panel_top) / 2)
+            )
             panel = add_box(
                 f"{spec.get('id', 'GraphSkin')}{suffix}_{label}",
-                (panel_span, depth, panel_height),
-                ((panel_left + panel_right) / 2, cy, (panel_bottom + panel_top) / 2),
-                material,
+                panel_size, panel_location, material,
             )
             panel["facade_skin_source"] = str(spec.get("band", "elevation"))
             panel["facade_skin_clearance_void"] = ",".join(
@@ -8220,10 +8360,17 @@ def _graph_pointed_passage_block(parts: list, spec: dict, mats: dict) -> None:
 
 def _graph_opening_block(parts: list, spec: dict, mats: dict) -> None:
     """Build a wall volume around repeated rectangular or round-arched voids."""
-    width, depth, height = (float(value) for value in spec["size"])
+    size_x, size_y, height = (float(value) for value in spec["size"])
     cx, cy, cz = (float(value) for value in spec["location"])
+    axis = str(spec.get("axis", "front"))
+    if axis in {"front", "rear"}:
+        width, depth, centre_u, centre_n = size_x, size_y, cx, cy
+    elif axis in {"left", "right"}:
+        width, depth, centre_u, centre_n = size_y, size_x, cy, cx
+    else:
+        raise ValueError(f"opening block {spec.get('id')!r} has unsupported axis {axis!r}")
     shape = str(spec.get("opening_shape", "rectangular"))
-    if shape not in {"rectangular", "round_arch"}:
+    if shape not in {"rectangular", "round_arch", "horseshoe_arch"}:
         raise ValueError(f"opening block {spec.get('id')!r} has unsupported shape {shape!r}")
     count = max(1, int(spec.get("opening_count", 1)))
     opening_width = float(spec.get("opening_width_m", width / (count * 1.7)))
@@ -8232,19 +8379,19 @@ def _graph_opening_block(parts: list, spec: dict, mats: dict) -> None:
     spring = float(spec.get("spring_height_m", opening_height - opening_width / 2))
     if not 0 <= opening_base < opening_height < height:
         raise ValueError(f"opening block {spec.get('id')!r} has invalid opening height")
-    if shape == "round_arch" and not opening_base < spring < opening_height:
+    if shape in {"round_arch", "horseshoe_arch"} and not opening_base < spring < opening_height:
         raise ValueError(f"opening block {spec.get('id')!r} has invalid arch spring")
     centres = [float(value) for value in spec.get("opening_centres_m") or []]
     if not centres:
         margin = float(spec.get("side_margin_m", max(0.55, opening_width * 0.42)))
         usable = width - margin * 2
         if count == 1:
-            centres = [cx]
+            centres = [centre_u]
         else:
             bay = usable / count
-            centres = [cx - usable / 2 + bay * (index + 0.5) for index in range(count)]
+            centres = [centre_u - usable / 2 + bay * (index + 0.5) for index in range(count)]
     else:
-        centres = [cx + value for value in centres]
+        centres = [centre_u + value for value in centres]
         count = len(centres)
     if any(abs(a - b) < opening_width for a, b in zip(centres, centres[1:])):
         raise ValueError(f"opening block {spec.get('id')!r} openings overlap")
@@ -8263,7 +8410,7 @@ def _graph_opening_block(parts: list, spec: dict, mats: dict) -> None:
         if spec.get("back_frame_material") else None
     )
     base_z = cz - height / 2
-    left_edge, right_edge = cx - width / 2, cx + width / 2
+    left_edge, right_edge = centre_u - width / 2, centre_u + width / 2
     half = opening_width / 2
     opening_edges = [(centre - half, centre + half) for centre in centres]
     if opening_edges[0][0] <= left_edge or opening_edges[-1][1] >= right_edge:
@@ -8272,25 +8419,35 @@ def _graph_opening_block(parts: list, spec: dict, mats: dict) -> None:
     def box(name: str, x0: float, x1: float, z0: float, z1: float, mat=material) -> None:
         if x1 - x0 <= 0.01 or z1 - z0 <= 0.01:
             return
+        size = (x1 - x0, depth, z1 - z0) if axis in {"front", "rear"} else (depth, x1 - x0, z1 - z0)
+        location = (
+            ((x0 + x1) / 2, centre_n, (z0 + z1) / 2)
+            if axis in {"front", "rear"}
+            else (centre_n, (x0 + x1) / 2, (z0 + z1) / 2)
+        )
         parts.append(add_beveled_box(
-            f"{prefix}_{name}", (x1 - x0, depth, z1 - z0),
-            ((x0 + x1) / 2, cy, (z0 + z1) / 2), mat,
+            f"{prefix}_{name}", size, location, mat,
             min(float(spec.get("bevel_m", 0.05)), (x1 - x0) * 0.08, (z1 - z0) * 0.08),
         ))
 
     if opening_base > 0:
         box("Plinth", left_edge, right_edge, base_z, base_z + opening_base)
     cursor = left_edge
-    pier_top = base_z + (spring if shape == "round_arch" else opening_height)
-    for index, (opening_left, opening_right) in enumerate(opening_edges):
+    pier_top = base_z + (spring if shape in {"round_arch", "horseshoe_arch"} else opening_height)
+    pier_half = half * (float(spec.get("neck_ratio", 0.74)) if shape == "horseshoe_arch" else 1.0)
+    pier_edges = [(centre - pier_half, centre + pier_half) for centre in centres]
+    for index, (opening_left, opening_right) in enumerate(pier_edges):
         box(f"Pier{index:02d}", cursor, opening_left, base_z + opening_base, pier_top)
         cursor = opening_right
     box(f"Pier{count:02d}", cursor, right_edge, base_z + opening_base, pier_top)
 
-    y0, y1 = cy - depth / 2, cy + depth / 2
+    normal_0, normal_1 = centre_n - depth / 2, centre_n + depth / 2
+
+    def point(u: float, normal: float, z: float) -> tuple[float, float, float]:
+        return (u, normal, z) if axis in {"front", "rear"} else (normal, u, z)
 
     def extrude_polygon(name: str, points: list[tuple[float, float]], mat=material) -> None:
-        vertices = [(x, y0, z) for x, z in points] + [(x, y1, z) for x, z in points]
+        vertices = [point(u, normal_0, z) for u, z in points] + [point(u, normal_1, z) for u, z in points]
         size = len(points)
         faces: list[tuple[int, ...]] = [tuple(reversed(range(size))), tuple(range(size, size * 2))]
         for index in range(size):
@@ -8330,19 +8487,130 @@ def _graph_opening_block(parts: list, spec: dict, mats: dict) -> None:
             ])
         trim_profile = float(spec.get("trim_profile_m", 0.24))
         trim_depth = min(depth, float(spec.get("trim_depth_m", depth)))
-        front_y = cy - depth / 2 + trim_depth / 2
+        exterior_sign = -1.0 if axis in {"front", "left"} else 1.0
+        trim_normal = centre_n + exterior_sign * (depth / 2 - trim_depth / 2)
         for index, centre in enumerate(centres):
-            parts.append(add_arch_ring(
-                f"{prefix}_ArchTrim{index:02d}", centre, front_y, spring_z,
-                radius, trim_profile, trim_depth, trim, segments,
+            parts.append(add_arch_ring_axis(
+                f"{prefix}_ArchTrim{index:02d}", centre, trim_normal, spring_z,
+                radius, trim_profile, trim_depth, trim, axis=axis, segments=segments,
             ))
             for side_index, side in enumerate((-1.0, 1.0)):
+                jamb_size = (
+                    (trim_profile, trim_depth, spring - opening_base)
+                    if axis in {"front", "rear"}
+                    else (trim_depth, trim_profile, spring - opening_base)
+                )
+                jamb_location = (
+                    (centre + side * (half + trim_profile / 2), trim_normal,
+                     base_z + opening_base + (spring - opening_base) / 2)
+                    if axis in {"front", "rear"}
+                    else (trim_normal, centre + side * (half + trim_profile / 2),
+                          base_z + opening_base + (spring - opening_base) / 2)
+                )
                 parts.append(add_beveled_box(
                     f"{prefix}_JambTrim{index:02d}_{side_index}",
-                    (trim_profile, trim_depth, spring - opening_base),
-                    (centre + side * (half + trim_profile / 2), front_y,
-                     base_z + opening_base + (spring - opening_base) / 2),
+                    jamb_size, jamb_location,
                     trim, min(0.04, trim_profile * 0.18),
+                ))
+            # Carry the authored lining through the full tunnel.  Without this
+            # inner ring and its jamb strips the reveal reads as a monolithic
+            # grey extrusion even when the facade sticker is richly tiled.
+            lining_thickness = max(0.025, float(spec.get("lining_thickness_m", 0.06)))
+            parts.append(add_arch_ring_axis(
+                f"{prefix}_ArchSoffit{index:02d}", centre, centre_n, spring_z,
+                max(0.05, radius - lining_thickness), lining_thickness,
+                depth * 0.985, lining, axis=axis, segments=segments,
+            ))
+            for side_index, side in enumerate((-1.0, 1.0)):
+                jamb_size = (
+                    (lining_thickness, depth * 0.985, spring - opening_base)
+                    if axis in {"front", "rear"}
+                    else (depth * 0.985, lining_thickness, spring - opening_base)
+                )
+                jamb_location = (
+                    (centre + side * (half - lining_thickness / 2), centre_n,
+                     base_z + opening_base + (spring - opening_base) / 2)
+                    if axis in {"front", "rear"}
+                    else (centre_n, centre + side * (half - lining_thickness / 2),
+                          base_z + opening_base + (spring - opening_base) / 2)
+                )
+                parts.append(add_box(
+                    f"{prefix}_JambLining{index:02d}_{side_index}",
+                    jamb_size, jamb_location, lining,
+                ))
+    elif shape == "horseshoe_arch":
+        spring_z = base_z + spring
+        rise = opening_height - spring
+        boundaries = [left_edge] + [
+            (opening_edges[index][1] + opening_edges[index + 1][0]) / 2
+            for index in range(count - 1)
+        ] + [right_edge]
+        segments = max(12, int(spec.get("arch_segments", 20)))
+        exterior_sign = -1.0 if axis in {"front", "left"} else 1.0
+        n_exterior = centre_n + exterior_sign * depth / 2
+        n_start = n_exterior - exterior_sign * float(spec.get("lining_setback_m", 0.14))
+        n_back = centre_n - exterior_sign * depth / 2 + exterior_sign * 0.07
+        tile_height = min(spring * 0.58, float(spec.get("lower_tile_height_m", 0.95)))
+        lining_thickness = max(0.035, float(spec.get("lining_thickness_m", 0.07)))
+
+        def curve_for(centre: float) -> list[tuple[float, float]]:
+            left = _horseshoe_arch_curve(
+                centre, half, spring_z, apex_z, segments,
+                neck_ratio=float(spec.get("neck_ratio", 0.74)),
+            )
+            right = [(2 * centre - x, z) for x, z in reversed(left[:-1])]
+            return left + right
+
+        for index, centre in enumerate(centres):
+            curve = curve_for(centre)
+            left_curve = curve[:segments + 1]
+            right_curve = curve[segments:]
+            extrude_polygon(f"HorseshoeSpandrelL{index:02d}", [
+                (boundaries[index], spring_z), (centre - pier_half, spring_z),
+                *left_curve[1:], (boundaries[index], apex_z),
+            ])
+            extrude_polygon(f"HorseshoeSpandrelR{index:02d}", [
+                (centre, apex_z), *right_curve[1:],
+                (boundaries[index + 1], spring_z), (boundaries[index + 1], apex_z),
+            ])
+            # Thin plaster soffit follows the exact horseshoe curve but starts
+            # behind the photographic mosaic frame, which stays unobstructed.
+            for segment_index, ((u0, z0), (u1, z1)) in enumerate(zip(curve, curve[1:])):
+                parts.append(add_prism(
+                    f"{prefix}_HorseshoeSoffit{index:02d}_{segment_index:02d}",
+                    [point(u0, n_start, z0), point(u1, n_start, z1),
+                     point(u0, n_back, z0), point(u1, n_back, z1)],
+                    [(0, 1, 3, 2)], lining,
+                ))
+            for side_index, side in enumerate((-1.0, 1.0)):
+                jamb_u = centre + side * (pier_half - lining_thickness / 2)
+                jamb_size = (
+                    (lining_thickness, abs(n_back - n_start), spring - opening_base)
+                    if axis in {"front", "rear"}
+                    else (abs(n_back - n_start), lining_thickness, spring - opening_base)
+                )
+                jamb_location = (
+                    (jamb_u, (n_start + n_back) / 2,
+                     base_z + opening_base + (spring - opening_base) / 2)
+                    if axis in {"front", "rear"}
+                    else ((n_start + n_back) / 2, jamb_u,
+                          base_z + opening_base + (spring - opening_base) / 2)
+                )
+                parts.append(add_box(
+                    f"{prefix}_HorseshoeJamb{index:02d}_{side_index}", jamb_size, jamb_location, lining,
+                ))
+                tile_size = (
+                    (lining_thickness * 1.15, abs(n_back - n_start), tile_height)
+                    if axis in {"front", "rear"}
+                    else (abs(n_back - n_start), lining_thickness * 1.15, tile_height)
+                )
+                tile_location = (
+                    (jamb_u - side * 0.008, (n_start + n_back) / 2, base_z + tile_height / 2)
+                    if axis in {"front", "rear"}
+                    else ((n_start + n_back) / 2, jamb_u - side * 0.008, base_z + tile_height / 2)
+                )
+                parts.append(add_box(
+                    f"{prefix}_LowerZellige{index:02d}_{side_index}", tile_size, tile_location, trim,
                 ))
     box("Head", left_edge, right_edge, apex_z, base_z + height)
 
@@ -8350,47 +8618,95 @@ def _graph_opening_block(parts: list, spec: dict, mats: dict) -> None:
     if shape == "rectangular":
         for index, centre in enumerate(centres):
             for side_index, side in enumerate((-1.0, 1.0)):
+                lining_size = (
+                    (lining_thickness, depth * 0.98, opening_height - opening_base)
+                    if axis in {"front", "rear"}
+                    else (depth * 0.98, lining_thickness, opening_height - opening_base)
+                )
+                lining_location = (
+                    (centre + side * (half - lining_thickness / 2), centre_n,
+                     base_z + opening_base + (opening_height - opening_base) / 2)
+                    if axis in {"front", "rear"}
+                    else (centre_n, centre + side * (half - lining_thickness / 2),
+                          base_z + opening_base + (opening_height - opening_base) / 2)
+                )
                 parts.append(add_box(
                     f"{prefix}_Lining{index:02d}_{side_index}",
-                    (lining_thickness, depth * 0.98, opening_height - opening_base),
-                    (centre + side * (half - lining_thickness / 2), cy,
-                     base_z + opening_base + (opening_height - opening_base) / 2), lining,
+                    lining_size, lining_location, lining,
                 ))
+            head_size = (
+                (opening_width, depth * 0.98, lining_thickness)
+                if axis in {"front", "rear"}
+                else (depth * 0.98, opening_width, lining_thickness)
+            )
+            head_location = (
+                (centre, centre_n, apex_z - lining_thickness / 2)
+                if axis in {"front", "rear"}
+                else (centre_n, centre, apex_z - lining_thickness / 2)
+            )
             parts.append(add_box(
                 f"{prefix}_LiningHead{index:02d}",
-                (opening_width, depth * 0.98, lining_thickness),
-                (centre, cy, apex_z - lining_thickness / 2), lining,
+                head_size, head_location, lining,
             ))
     if str(spec.get("section_mode", "through")) == "recessed":
+        exterior_sign = -1.0 if axis in {"front", "left"} else 1.0
+        back_normal = centre_n - exterior_sign * (depth / 2 - 0.035)
         for index, centre in enumerate(centres):
             if bool(spec.get("back_enabled", True)):
+                back_size = (
+                    (opening_width * 0.94, 0.055, opening_height - opening_base - 0.08)
+                    if axis in {"front", "rear"}
+                    else (0.055, opening_width * 0.94, opening_height - opening_base - 0.08)
+                )
+                back_location = (
+                    (centre, back_normal, base_z + opening_base + (opening_height - opening_base) / 2)
+                    if axis in {"front", "rear"}
+                    else (back_normal, centre, base_z + opening_base + (opening_height - opening_base) / 2)
+                )
                 parts.append(add_box(
-                    f"{prefix}_Back{index:02d}",
-                    (opening_width * 0.94, 0.055, opening_height - opening_base - 0.08),
-                    (centre, y1 - 0.035, base_z + opening_base + (opening_height - opening_base) / 2), back,
+                    f"{prefix}_Back{index:02d}", back_size, back_location, back,
                 ))
             if back_glass is not None:
+                glass_normal = back_normal + exterior_sign * 0.05
+                glass_size = (
+                    (opening_width * 0.90, 0.035, opening_height - opening_base - 0.18)
+                    if axis in {"front", "rear"}
+                    else (0.035, opening_width * 0.90, opening_height - opening_base - 0.18)
+                )
+                glass_location = (
+                    (centre, glass_normal, base_z + opening_base + (opening_height - opening_base) / 2)
+                    if axis in {"front", "rear"}
+                    else (glass_normal, centre, base_z + opening_base + (opening_height - opening_base) / 2)
+                )
                 parts.append(add_box(
-                    f"{prefix}_BackGlass{index:02d}",
-                    (opening_width * 0.90, 0.035, opening_height - opening_base - 0.18),
-                    (centre, y1 - 0.085, base_z + opening_base + (opening_height - opening_base) / 2),
-                    back_glass,
+                    f"{prefix}_BackGlass{index:02d}", glass_size, glass_location, back_glass,
                 ))
             if back_frame is not None:
-                frame_y = y1 - 0.095
+                frame_normal = back_normal + exterior_sign * 0.06
                 frame_height = opening_height - opening_base - 0.20
                 for offset in (-opening_width * 0.22, 0.0, opening_width * 0.22):
+                    frame_size = (0.055, 0.055, frame_height)
+                    frame_location = (
+                        (centre + offset, frame_normal, base_z + opening_base + frame_height / 2 + 0.06)
+                        if axis in {"front", "rear"}
+                        else (frame_normal, centre + offset, base_z + opening_base + frame_height / 2 + 0.06)
+                    )
                     parts.append(add_box(
-                        f"{prefix}_BackFrameV{index:02d}_{offset:+.2f}",
-                        (0.055, 0.055, frame_height),
-                        (centre + offset, frame_y, base_z + opening_base + frame_height / 2 + 0.06),
-                        back_frame,
+                        f"{prefix}_BackFrameV{index:02d}_{offset:+.2f}", frame_size,
+                        frame_location, back_frame,
                     ))
+                cross_size = (
+                    (opening_width * 0.88, 0.055, 0.055)
+                    if axis in {"front", "rear"}
+                    else (0.055, opening_width * 0.88, 0.055)
+                )
+                cross_location = (
+                    (centre, frame_normal, base_z + opening_base + frame_height * 0.62)
+                    if axis in {"front", "rear"}
+                    else (frame_normal, centre, base_z + opening_base + frame_height * 0.62)
+                )
                 parts.append(add_box(
-                    f"{prefix}_BackFrameH{index:02d}",
-                    (opening_width * 0.88, 0.055, 0.055),
-                    (centre, frame_y, base_z + opening_base + frame_height * 0.62),
-                    back_frame,
+                    f"{prefix}_BackFrameH{index:02d}", cross_size, cross_location, back_frame,
                 ))
 
 
@@ -8706,6 +9022,51 @@ def _graph_member_between(
     member.rotation_mode = "QUATERNION"
     member.rotation_quaternion = vector.to_track_quat("Z", "Y")
     return member
+
+
+def _graph_lattice_parapet(parts: list, spec: dict, mats: dict) -> None:
+    """Build a continuous crossed-lattice roof parapet around authored runs."""
+    prefix = str(spec.get("id", "GraphLatticeParapet"))
+    material = _graph_material(mats, spec.get("material", "primary"))
+    base_z = float(spec["base_z_m"])
+    height = float(spec.get("height_m", 0.90))
+    radius = float(spec.get("profile_m", 0.055))
+    for run_index, run in enumerate(spec.get("runs") or []):
+        start = tuple(float(value) for value in run["start"])
+        end = tuple(float(value) for value in run["end"])
+        cells = max(1, int(run.get("cells", spec.get("cells", 8))))
+        sx, sy = start
+        ex, ey = end
+
+        def at(t: float, z: float) -> tuple[float, float, float]:
+            return (sx + (ex - sx) * t, sy + (ey - sy) * t, z)
+
+        parts.append(_graph_member_between(
+            f"{prefix}_Run{run_index:02d}_Bottom", at(0, base_z), at(1, base_z),
+            radius * 1.10, material, vertices=10,
+        ))
+        parts.append(_graph_member_between(
+            f"{prefix}_Run{run_index:02d}_Top", at(0, base_z + height), at(1, base_z + height),
+            radius * 1.18, material, vertices=10,
+        ))
+        for cell in range(cells + 1):
+            t = cell / cells
+            parts.append(_graph_member_between(
+                f"{prefix}_Run{run_index:02d}_Post{cell:02d}",
+                at(t, base_z), at(t, base_z + height), radius, material, vertices=10,
+            ))
+        for cell in range(cells):
+            t0, t1 = cell / cells, (cell + 1) / cells
+            parts.append(_graph_member_between(
+                f"{prefix}_Run{run_index:02d}_DiagA{cell:02d}",
+                at(t0, base_z + 0.08), at(t1, base_z + height - 0.08),
+                radius * 0.72, material, vertices=8,
+            ))
+            parts.append(_graph_member_between(
+                f"{prefix}_Run{run_index:02d}_DiagB{cell:02d}",
+                at(t0, base_z + height - 0.08), at(t1, base_z + 0.08),
+                radius * 0.72, material, vertices=8,
+            ))
 
 
 def _graph_organic_pod_cluster(parts: list, spec: dict, mats: dict) -> None:
@@ -10484,6 +10845,8 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
             _graph_awning_schedule(parts, assembly, mats)
         elif kind == "market_stall_schedule":
             _graph_market_stall_schedule(parts, assembly, mats)
+        elif kind == "lattice_parapet":
+            _graph_lattice_parapet(parts, assembly, mats)
         elif kind == "ribbon_window":
             _graph_curtain_wall(parts, assembly, mats, ribbon=True)
         elif kind == "steps":

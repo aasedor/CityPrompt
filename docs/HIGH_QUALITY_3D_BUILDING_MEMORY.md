@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-08-09-fixed-sticker-landmark-v88`.
+Current executable memory: `2026-08-09-contour-registered-void-v89`.
 
 The current calibration set and catalogue rollout rationale are documented in
 [`BUILDING_GOLD_SET_PIPELINE_SYNTHESIS_2026-08-07.md`](BUILDING_GOLD_SET_PIPELINE_SYNTHESIS_2026-08-07.md).
@@ -1040,6 +1040,29 @@ audit, material bake, export parity and architect review in that order.
 - Final review artifacts must be rebuilt from the same versioned source and
   export path. Repair directories are diagnostic checkpoints, not substitutes
   for a clean ten-building rerun.
+
+### V89 non-rectangular void registration lesson
+
+The Moorish Sticker Method pilot proved that a real tunnel is necessary but
+not sufficient. A generic semicircle, a hand-tuned Gothic ogive and an
+over-bulged horseshoe all passed structural validation while failing exact
+architect review at 64, 77 and 69/100. A smoothed seven-control approximation
+still failed at 71/100 because the visible soffit became a second dominant arch.
+
+- For a non-rectangular public opening, extract the actual inner negative-space
+  contour from the registered source or an approved binary mask. Do not infer
+  the contour from the surrounding decorative frame or a style label.
+- The same versioned contour must cut every sticker crossing the opening and
+  generate the physical jamb/soffit section. Count, centre, spring, shoulder and
+  crown drift are hard stops before Blender rendering.
+- Uniformly inset/extrude the contour behind the facade plane. The lining is a
+  narrow reveal owned by the passage section; it must not cover the decorative
+  sticker or read as a second foreground portal.
+- Deep occupied backs, plaster soffits, lower tile datums and authored return
+  arcades remain reusable successes. They do not compensate for a mismatched
+  portal silhouette.
+- Publish failed iterations and architect scores. A machine-valid contour
+  experiment remains `rejected` until the named architect clears 85/100.
 
 ## Updating this memory
 
