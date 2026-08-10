@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-08-09-contour-registered-void-v89",
+  "memory_version": "2026-08-10-continuous-sticker-glazing-v90",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "calibration_set": {
@@ -26,6 +26,14 @@
     {
       "id": "semantic_surface_and_physical_section_are_layered",
       "rule": "For irregular curtain walls and highly ornamental curved facades, let an image-locked semantic surface carry fine identity while separate physical glazing, structure, balconies, rails, roofs, returns and executable voids carry transmission, depth, silhouette and shadow. Exclude generic kits that duplicate or contradict the exact variant."
+    },
+    {
+      "id": "continuous_sticker_glazing_requires_exact_mask_registration",
+      "rule": "A continuous image-locked elevation owns its visible windows and fine frames until an opening-accurate semantic glass mask is approved in the same metres-to-UV registration frame. Physical optical overlays may add transmission and recess only inside that mask; generic pane schedules that cover or duplicate photographed openings are a release-blocking ownership error."
+    },
+    {
+      "id": "sticker_generation_follows_complete_silhouette_approval",
+      "rule": "Before generating a landmark sticker, approve a source-traced roof and silhouette proxy plus an all-elevation occupancy map. Blank visible sides or rears, generic roof boxes, duplicated physical/sticker gables and unregistered porches or balconies are pre-render hard stops. Camera-match final review views; source-to-GLB parity measures export fidelity, not archetype likeness."
     },
     {
       "id": "alpha_textures_export_losslessly",
@@ -968,6 +976,16 @@
       "symptom": "A deep arcade still looks like a generic barrel, Gothic ogive, mushroom or second arch placed inside the decorative portal",
       "cause": "The sticker clearance and tunnel section were generated from an assumed style formula or a trace of the surrounding ornament instead of the exact inner negative opening contour. The lining then became a dominant foreground shape even though the passage had real depth.",
       "correction": "Extract and version the binary inner-opening contour from the registered source, validate its centre, neck, shoulder, crown and scale anchors, use that identical contour for sticker clearance and section extrusion, and inset it so only a narrow reveal is visible. Keep the building rejected until six-view architect review clears 85/100."
+    },
+    {
+      "symptom": "A highly accurate continuous facade sticker develops opaque, doubled or misaligned windows after physical glazing is added",
+      "cause": "A generic pane schedule was placed over photographed openings without an opening-accurate semantic mask in the sticker's canonical registration frame.",
+      "correction": "Keep the sticker as the visible owner of glazing and frames until an exact registered glass mask exists. Permit physical optical depth only within that mask, preserve separate silhouette and reveal geometry, and reject any overlay whose opening count, centres, floor datums or boundaries drift from the image lock."
+    },
+    {
+      "symptom": "A beautiful front sticker is attached to a generic roof box with blank side and rear elevations",
+      "cause": "Sticker generation began before a source-matched whole-building silhouette, roof proxy and elevation-occupancy contract had passed, so the detailed front concealed incomplete architectural massing until final review.",
+      "correction": "Gate sticker generation behind an approved clay roof/silhouette proxy and all-elevation opening map derived from street, oblique and aerial evidence. Reject doubled gables, blank visible elevations and unregistered overlays before paid image generation; camera-match the final architect board independently from export-parity tests."
     }
   ]
 }

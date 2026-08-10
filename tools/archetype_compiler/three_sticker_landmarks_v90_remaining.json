@@ -1,0 +1,28 @@
+{
+  "schema": "catalogue-rollout-batch@1",
+  "campaign": "tools/archetype_compiler/three_sticker_landmarks_v90.json",
+  "pipeline_version": "v90",
+  "surface_recipe_manifest": "tools/archetype_compiler/three_sticker_landmarks_v90_surface_recipes.json",
+  "batch_id": "THREE-STICKER-LANDMARKS-V90-REMAINING",
+  "paid_facade_calls": 0,
+  "entries": [
+    {
+      "archetype_id": "parisian_corner_with_dome",
+      "variant_id": "parisian-corner-with-dome-zinc-mansard",
+      "family_id": "paris-zinc-dome-corner-v90",
+      "width_m": 20.0,
+      "depth_m": 20.0,
+      "floors": 4,
+      "facade_sheet": "artifacts/three-sticker-landmarks-v90/facade-sheets/parisian-corner-with-dome-zinc-mansard"
+    },
+    {
+      "archetype_id": "toronto_bay_and_gable_house",
+      "variant_id": "toronto_bay_gable_yellow_brick",
+      "family_id": "toronto-yellow-bay-gable-v90",
+      "width_m": 6.0,
+      "depth_m": 12.0,
+      "floors": 2,
+      "facade_sheet": "artifacts/three-sticker-landmarks-v90/facade-sheets/toronto_bay_gable_yellow_brick"
+    }
+  ]
+}

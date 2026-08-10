@@ -1,0 +1,43 @@
+{
+  "schema": "three-sticker-landmarks-review@1",
+  "pipeline": "v90-continuous-sticker-landmark",
+  "paid_image_calls": 5,
+  "api_budget_state": "bounded_complete_no_more_calls",
+  "results": [
+    {
+      "building": "Amsterdam Neck-Gable Merchant",
+      "slug": "amsterdam-neck-gable",
+      "machine_validation": "pass",
+      "surface_finish": "pass",
+      "foreground_similarity": 0.99943,
+      "architect_score": 64,
+      "human_status": "rejected"
+    },
+    {
+      "building": "Parisian Zinc-Dome Corner",
+      "slug": "paris-zinc-dome-corner",
+      "machine_validation": "pass",
+      "surface_finish": "pass",
+      "foreground_similarity": 0.9976,
+      "architect_score": 54,
+      "human_status": "rejected"
+    },
+    {
+      "building": "Toronto Yellow-Brick Bay-and-Gable",
+      "slug": "toronto-yellow-bay-gable",
+      "machine_validation": "pass",
+      "surface_finish": "pass",
+      "foreground_similarity": 0.99792,
+      "architect_score": 61,
+      "human_status": "rejected"
+    }
+  ],
+  "architect_review": {
+    "keeper_threshold": 85,
+    "keepers": 0,
+    "provisional": 0,
+    "rejected": 3,
+    "batch_verdict": "rejected_for_scale_up",
+    "methodology_priority": "Require a source-matched silhouette and roof proxy plus an all-elevation occupancy map before sticker generation."
+  }
+}

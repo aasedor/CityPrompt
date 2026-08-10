@@ -24,3 +24,5 @@ docs/reviews/catalogue-rollout-v88/**/*.png filter=lfs diff=lfs merge=lfs -text
 docs/reviews/catalogue-rollout-v88/**/*.jpg filter=lfs diff=lfs merge=lfs -text
 docs/reviews/catalogue-rollout-v89/moorish-sticker-landmark-pilot/*.png filter=lfs diff=lfs merge=lfs -text
 docs/reviews/catalogue-rollout-v89/moorish-sticker-landmark-pilot/*.jpg filter=lfs diff=lfs merge=lfs -text
+docs/reviews/catalogue-rollout-v90/three-sticker-landmarks-pilot/**/*.png filter=lfs diff=lfs merge=lfs -text
+docs/reviews/catalogue-rollout-v90/three-sticker-landmarks-pilot/**/*.jpg filter=lfs diff=lfs merge=lfs -text

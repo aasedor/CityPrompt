@@ -10736,6 +10736,67 @@ def _consolidate_massing_skin_materials(obj: bpy.types.Object) -> None:
             mesh.materials[index] = canonical
 
 
+def _graph_dome_roof(parts: list, spec: dict, mats: dict) -> None:
+    """Create an elliptical masonry/metal dome with optional raised ribs.
+
+    The graph previously had only cones and cylinders, which made landmark
+    corner domes read as cartoon hats.  This lathed half-ellipsoid keeps a
+    smooth convex silhouette while remaining deterministic and inexpensive.
+    ``location`` is the centre of the dome's base plane.
+    """
+    cx, cy, base_z = (float(value) for value in spec["location"])
+    radius = float(spec["radius_m"])
+    height = float(spec["height_m"])
+    segments = max(16, int(spec.get("segments", 48)))
+    rings = max(6, int(spec.get("rings", 16)))
+    material = _graph_material(mats, spec.get("material", "roof"))
+    rib_material = _graph_material(mats, spec.get("rib_material", "roof_flashing"))
+    prefix = str(spec.get("id", "GraphDome"))
+    vertices: list[tuple[float, float, float]] = []
+    faces: list[tuple[int, ...]] = []
+
+    # Include a small base ring above the spring line so the dome meets its
+    # drum with a visible built edge instead of a tangential shading seam.
+    for ring in range(rings + 1):
+        t = ring / rings
+        ring_radius = radius * math.cos(t * math.pi / 2)
+        z = base_z + height * math.sin(t * math.pi / 2)
+        for segment in range(segments):
+            angle = 2 * math.pi * segment / segments
+            vertices.append((cx + ring_radius * math.cos(angle), cy + ring_radius * math.sin(angle), z))
+    for ring in range(rings):
+        for segment in range(segments):
+            nxt = (segment + 1) % segments
+            lower = ring * segments + segment
+            lower_next = ring * segments + nxt
+            upper = (ring + 1) * segments + segment
+            upper_next = (ring + 1) * segments + nxt
+            faces.append((lower, lower_next, upper_next, upper))
+    faces.append(tuple(reversed(range(segments))))
+    dome = add_prism(f"{prefix}_Shell", vertices, faces, material)
+    for polygon in dome.data.polygons:
+        polygon.use_smooth = True
+    parts.append(dome)
+
+    rib_count = max(0, int(spec.get("rib_count", 0)))
+    rib_radius = max(0.018, float(spec.get("rib_radius_m", 0.045)))
+    rib_steps = max(4, int(spec.get("rib_steps", 8)))
+    rib_offset = float(spec.get("rib_offset_m", 0.025))
+    for rib in range(rib_count):
+        angle = 2 * math.pi * rib / rib_count
+        points: list[tuple[float, float, float]] = []
+        for step in range(rib_steps + 1):
+            t = step / rib_steps
+            ring_radius = radius * math.cos(t * math.pi / 2) + rib_offset
+            z = base_z + height * math.sin(t * math.pi / 2) + rib_offset
+            points.append((cx + ring_radius * math.cos(angle), cy + ring_radius * math.sin(angle), z))
+        for step, (start, end) in enumerate(zip(points, points[1:])):
+            parts.append(_graph_member_between(
+                f"{prefix}_Rib{rib:02d}_{step:02d}", start, end,
+                rib_radius, rib_material, vertices=8,
+            ))
+
+
 def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
     """Build a single landmark asset from an opt-in ``massing-graph@1`` recipe.
 
@@ -10818,6 +10879,8 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
             if node.get("rotation_z_deg") is not None:
                 part.rotation_euler.z = math.radians(float(node["rotation_z_deg"]))
             parts.append(part)
+        elif kind == "dome_roof":
+            _graph_dome_roof(parts, node, mats)
         else:
             raise ValueError(f"massing graph node {node.get('id')!r} has unsupported kind {kind!r}")
 

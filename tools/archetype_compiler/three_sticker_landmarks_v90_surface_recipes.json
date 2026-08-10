@@ -1,0 +1,96 @@
+{
+  "schema": "surface-story-recipes@1",
+  "round_id": "THREE-STICKER-LANDMARKS-V90",
+  "recipes": [
+    {
+      "output_key": "v90_neck_gable_merchant_primary",
+      "source_key": "red_brick",
+      "tint": "#7f3f2c",
+      "tint_mix": 0.44,
+      "macro_strength": 0.06,
+      "roughness_strength": 0.09,
+      "normal_strength": 1.85,
+      "role": "fine Dutch brick wall and chimney"
+    },
+    {
+      "output_key": "v90_neck_gable_merchant_secondary",
+      "source_key": "sandstone",
+      "tint": "#d7c39a",
+      "tint_mix": 0.44,
+      "macro_strength": 0.06,
+      "roughness_strength": 0.09,
+      "normal_strength": 1.85,
+      "role": "neck-gable scrolls, lintels and cornice"
+    },
+    {
+      "output_key": "v90_neck_gable_merchant_roof",
+      "source_key": "roof_membrane",
+      "tint": "#303739",
+      "tint_mix": 0.44,
+      "macro_strength": 0.06,
+      "roughness_strength": 0.09,
+      "normal_strength": 1.85,
+      "role": "steep dark clay/slate roof"
+    },
+    {
+      "output_key": "v90_parisian-corner-with-dome-zinc-mansard_primary",
+      "source_key": "limestone",
+      "tint": "#ded3bc",
+      "tint_mix": 0.44,
+      "macro_strength": 0.06,
+      "roughness_strength": 0.09,
+      "normal_strength": 2.6,
+      "role": "ashlar limestone frame and ornament"
+    },
+    {
+      "output_key": "v90_parisian-corner-with-dome-zinc-mansard_secondary",
+      "source_key": "red_brick",
+      "tint": "#9c624e",
+      "tint_mix": 0.44,
+      "macro_strength": 0.06,
+      "roughness_strength": 0.09,
+      "normal_strength": 1.85,
+      "role": "warm brick facade panels"
+    },
+    {
+      "output_key": "v90_parisian-corner-with-dome-zinc-mansard_roof",
+      "source_key": "zinc",
+      "tint": "#5f6868",
+      "tint_mix": 0.44,
+      "macro_strength": 0.06,
+      "roughness_strength": 0.09,
+      "normal_strength": 1.85,
+      "role": "mansard, dome and flashing"
+    },
+    {
+      "output_key": "v90_toronto_bay_gable_yellow_brick_primary",
+      "source_key": "victorian_brick",
+      "tint": "#b06b43",
+      "tint_mix": 0.44,
+      "macro_strength": 0.06,
+      "roughness_strength": 0.09,
+      "normal_strength": 1.85,
+      "role": "Toronto pressed brick walls and bay"
+    },
+    {
+      "output_key": "v90_toronto_bay_gable_yellow_brick_secondary",
+      "source_key": "cedar_wood",
+      "tint": "#4a3527",
+      "tint_mix": 0.44,
+      "macro_strength": 0.06,
+      "roughness_strength": 0.09,
+      "normal_strength": 1.85,
+      "role": "carved bargeboard, porch and window trim"
+    },
+    {
+      "output_key": "v90_toronto_bay_gable_yellow_brick_roof",
+      "source_key": "roof_membrane",
+      "tint": "#343b3d",
+      "tint_mix": 0.44,
+      "macro_strength": 0.06,
+      "roughness_strength": 0.09,
+      "normal_strength": 1.85,
+      "role": "steep slate roof"
+    }
+  ]
+}

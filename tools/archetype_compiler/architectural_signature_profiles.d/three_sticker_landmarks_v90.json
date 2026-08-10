@@ -1,0 +1,1720 @@
+{
+  "schema": "architectural-signatures@1",
+  "profiles": {
+    "neck_gable_merchant": {
+      "identity": "Amsterdam merchant canal house with exactly three window bays on one continuous brick elevation, sandstone neck gable and steep tiled roof; never five bays",
+      "dimension_overrides": {
+        "width_m": 6.0,
+        "depth_m": 13.0,
+        "default_floors": 4
+      },
+      "material_overrides": {
+        "primary": {
+          "texture_key": "v90_neck_gable_merchant_primary",
+          "base_color": "#7f3f2c",
+          "roughness": 0.86,
+          "metallic": 0.0,
+          "baked_pbr": true,
+          "texture_tile_metres": 4.0,
+          "normal_strength": 0.72
+        },
+        "secondary": {
+          "texture_key": "v90_neck_gable_merchant_secondary",
+          "base_color": "#d7c39a",
+          "roughness": 0.86,
+          "metallic": 0.0,
+          "baked_pbr": true,
+          "texture_tile_metres": 4.0,
+          "normal_strength": 0.72
+        },
+        "roof": {
+          "texture_key": "v90_neck_gable_merchant_roof",
+          "base_color": "#303739",
+          "roughness": 0.82,
+          "metallic": 0.0,
+          "baked_pbr": true,
+          "texture_tile_metres": 5.5,
+          "normal_strength": 0.72
+        }
+      },
+      "evidence_policy": {
+        "authority": "reference_images",
+        "metadata_mode": "disabled",
+        "selected_metadata": [],
+        "ignored_metadata": [
+          {
+            "path": "*",
+            "reason": "not used unless visibly corroborated by all exact reference roles"
+          }
+        ]
+      },
+      "production_contract": {
+        "identity_mode": "massing_graph",
+        "fixed_identity": [
+          "three-bay narrow red-brown brick canal facade",
+          "sandstone neck gable with paired scroll shoulders and pediment-like crown",
+          "steep dark tiled roof running behind the shaped front parapet",
+          "tall recessed timber sash windows and double entrance leaf"
+        ],
+        "repeatable_capacity": [
+          "fixed select-and-place landmark; no width or floor-count mutation"
+        ],
+        "quality_contract_version": 4,
+        "image_lock": {
+          "required_reference_roles": [
+            "street_identity",
+            "oblique_massing",
+            "roof_plan"
+          ],
+          "minimum_measurements": 8,
+          "measurements": [
+            {
+              "feature": "facade width",
+              "role": "street_identity",
+              "value": 6.0,
+              "unit": "metres",
+              "drives": "amsterdam_front_sticker"
+            },
+            {
+              "feature": "wall height",
+              "role": "street_identity",
+              "value": 11.6,
+              "unit": "metres",
+              "drives": "canal_house_mass"
+            },
+            {
+              "feature": "neck gable rise",
+              "role": "street_identity",
+              "value": 4.4,
+              "unit": "metres",
+              "drives": "amsterdam_neck_gable"
+            },
+            {
+              "feature": "roof rise",
+              "role": "roof_plan",
+              "value": 3.4,
+              "unit": "metres",
+              "drives": "canal_roof"
+            },
+            {
+              "feature": "roof depth",
+              "role": "roof_plan",
+              "value": 13.4,
+              "unit": "metres",
+              "drives": "canal_roof"
+            },
+            {
+              "feature": "cornice projection",
+              "role": "oblique_massing",
+              "value": 0.45,
+              "unit": "metres",
+              "drives": "canal_cornice"
+            },
+            {
+              "feature": "front window bay spacing",
+              "role": "street_identity",
+              "value": 1.72,
+              "unit": "metres",
+              "drives": "amsterdam_front_openings"
+            },
+            {
+              "feature": "side window rhythm",
+              "role": "oblique_massing",
+              "value": 3.0,
+              "unit": "metres",
+              "drives": "amsterdam_side_openings"
+            }
+          ],
+          "required_node_ids": [
+            "canal_house_mass",
+            "canal_roof",
+            "canal_cornice",
+            "canal_chimney"
+          ],
+          "required_assembly_ids": [
+            "amsterdam_front_sticker",
+            "amsterdam_rear_sticker",
+            "amsterdam_left_sticker",
+            "amsterdam_right_sticker",
+            "amsterdam_neck_gable",
+            "amsterdam_roof_tiles"
+          ],
+          "required_node_kinds": {
+            "box": 3,
+            "gable_roof": 1
+          },
+          "required_assembly_kinds": {
+            "facade_skin": 4,
+            "shaped_gable_array": 1,
+            "pitched_roof_surface_detail": 1
+          }
+        },
+        "material_continuity": {
+          "required_textured_materials": [
+            "primary",
+            "secondary",
+            "roof"
+          ]
+        },
+        "surface_finish": {
+          "method": "baked_pbr_story",
+          "required_baked_materials": [
+            "primary",
+            "secondary",
+            "roof"
+          ],
+          "material_roles": {
+            "primary": "fine Dutch brick wall and chimney",
+            "secondary": "neck-gable scrolls, lintels and cornice",
+            "roof": "steep dark clay/slate roof"
+          },
+          "required_channels": [
+            "albedo",
+            "roughness",
+            "normal"
+          ],
+          "uv_contract": {
+            "projection": "metric_box_plus_material_scale",
+            "base_tile_metres": 2.0,
+            "minimum_tile_metres": 3.0,
+            "maximum_tile_metres": 8.0
+          },
+          "semantic_weathering": [
+            "wall variation remains bounded to the authored wall materials",
+            "roof variation remains on horizontal or pitched roof fields",
+            "glazing keeps physical pane, reveal and occupied-interior depth"
+          ],
+          "qa_renders": [
+            "neutral_source",
+            "neutral_glb_roundtrip",
+            "archetype_match",
+            "facade_close",
+            "roof_audit",
+            "rear_corner_oblique"
+          ]
+        },
+        "stage_workflow": {
+          "representation": "registered_sticker_landmark",
+          "required_stages": {
+            "reference_sufficiency": {
+              "deliverable": "reference-sufficiency.json",
+              "approval_required": true
+            },
+            "representation_selection": {
+              "deliverable": "representation-selection.json",
+              "approval_required": true
+            },
+            "clay_massing": {
+              "deliverable": "clay-comparison.png",
+              "approval_required": true
+            },
+            "roof_and_voids": {
+              "deliverable": "roof-void-comparison.png",
+              "approval_required": true
+            },
+            "medium_detail": {
+              "deliverable": "medium-detail-comparison.png",
+              "approval_required": true
+            },
+            "retopology": {
+              "deliverable": "mesh-audit.json",
+              "approval_required": true
+            },
+            "manual_uv_audit": {
+              "deliverable": "uv-audit.json",
+              "approval_required": true
+            },
+            "material_bake": {
+              "deliverable": "surface-finish-report.json",
+              "approval_required": true
+            },
+            "export_parity": {
+              "deliverable": "neutral-source-vs-glb.png",
+              "approval_required": true
+            },
+            "architect_review": {
+              "deliverable": "architect-review.json",
+              "approval_required": true
+            }
+          },
+          "architect_review_views": [
+            "street",
+            "oblique",
+            "roof",
+            "side",
+            "rear",
+            "close_up"
+          ],
+          "architect_release_score": 85,
+          "hard_stops_block_release": true
+        },
+        "geometry_kit_exclusions": [],
+        "placement_contract": {
+          "method": "sticker_method",
+          "mode": "fixed_landmark",
+          "ui_interaction": "select_and_place",
+          "polygon_fit": false,
+          "footprint_m": {
+            "width": 6.0,
+            "depth": 13.0
+          },
+          "visible_height_m": 16.0,
+          "translation": "allowed",
+          "rotation": "allowed",
+          "uniform_scale": "discouraged",
+          "non_uniform_scale": "forbidden",
+          "floor_count_change": "forbidden",
+          "preferred_context": "image-matched urban placement",
+          "freestanding_elevations": "authored",
+          "lego_compatibility": "fixed landmark with continuous registered facade skins"
+        },
+        "sticker_method": {
+          "surface_owner": "one continuous registered facade per elevation",
+          "geometry_owner": "silhouette, roof, openings, projections, returns and shadow depth",
+          "duplicate_feature_ownership_forbidden": true,
+          "registration_anchors": [
+            "window_centres",
+            "column_centres",
+            "floor_datums",
+            "roof_spring_line"
+          ]
+        }
+      },
+      "massing_graph": {
+        "schema": "massing-graph@1",
+        "profile": "neck_gable_merchant_continuous_sticker_v90",
+        "description": "Amsterdam merchant canal house with exactly three window bays on one continuous brick elevation, sandstone neck gable and steep tiled roof; never five bays",
+        "height_m": 16.0,
+        "reference_dimensions": {
+          "width_m": 6.0,
+          "depth_m": 13.0,
+          "floors": 4
+        },
+        "reference_views": [
+          {
+            "role": "street_identity",
+            "path": "/archetypes/buildings/amsterdam_neck_gable_house/variant_1.png"
+          },
+          {
+            "role": "oblique_massing",
+            "path": "/archetypes/buildings/amsterdam_neck_gable_house/variant_1_angle_60.jpg"
+          },
+          {
+            "role": "roof_plan",
+            "path": "/archetypes/buildings/amsterdam_neck_gable_house/variant_1_angle_90.jpg"
+          }
+        ],
+        "presentation_camera": {
+          "hero_side": "left",
+          "oblique_x_scale": 0.55,
+          "identity_distance_scale": 0.87,
+          "street_distance_scale": 0.88
+        },
+        "nodes": [
+          {
+            "id": "canal_house_mass",
+            "kind": "box",
+            "size": [
+              6.0,
+              13.0,
+              11.6
+            ],
+            "location": [
+              0.0,
+              0.0,
+              5.8
+            ],
+            "material": "primary",
+            "bevel_m": 0.025
+          },
+          {
+            "id": "canal_roof",
+            "kind": "gable_roof",
+            "size": [
+              6.2,
+              13.4,
+              3.4
+            ],
+            "location": [
+              0.0,
+              0.0,
+              11.6
+            ],
+            "material": "roof",
+            "ridge_axis": "y",
+            "bevel_m": 0.035
+          },
+          {
+            "id": "canal_cornice",
+            "kind": "box",
+            "size": [
+              6.35,
+              0.45,
+              0.42
+            ],
+            "location": [
+              0.0,
+              -6.62,
+              11.35
+            ],
+            "material": "secondary",
+            "bevel_m": 0.035
+          },
+          {
+            "id": "canal_chimney",
+            "kind": "box",
+            "size": [
+              0.75,
+              1.05,
+              2.0
+            ],
+            "location": [
+              2.15,
+              3.4,
+              14.15
+            ],
+            "material": "primary",
+            "bevel_m": 0.025
+          }
+        ],
+        "voids": [],
+        "assemblies": [
+          {
+            "kind": "facade_skin",
+            "id": "amsterdam_front_sticker",
+            "axis": "front",
+            "centre": [
+              0.0,
+              -6.535,
+              5.8
+            ],
+            "span_m": 6.0,
+            "height_m": 11.6,
+            "depth_m": 0.045,
+            "band": "elevation",
+            "flip_u": false,
+            "uv_u_min": 0.2,
+            "uv_u_max": 0.8
+          },
+          {
+            "kind": "facade_skin",
+            "id": "amsterdam_rear_sticker",
+            "axis": "rear",
+            "centre": [
+              0.0,
+              6.535,
+              5.8
+            ],
+            "span_m": 6.0,
+            "height_m": 11.6,
+            "depth_m": 0.045,
+            "band": "side",
+            "flip_u": true
+          },
+          {
+            "kind": "facade_skin",
+            "id": "amsterdam_left_sticker",
+            "axis": "left",
+            "centre": [
+              -3.035,
+              0.0,
+              5.8
+            ],
+            "span_m": 13.0,
+            "height_m": 11.6,
+            "depth_m": 0.045,
+            "band": "side",
+            "flip_u": true
+          },
+          {
+            "kind": "facade_skin",
+            "id": "amsterdam_right_sticker",
+            "axis": "right",
+            "centre": [
+              3.035,
+              0.0,
+              5.8
+            ],
+            "span_m": 13.0,
+            "height_m": 11.6,
+            "depth_m": 0.045,
+            "band": "side",
+            "flip_u": false
+          },
+          {
+            "id": "amsterdam_neck_gable",
+            "kind": "shaped_gable_array",
+            "axis": "front",
+            "base_centre": [
+              0.0,
+              -6.68,
+              10.8
+            ],
+            "positions_m": [
+              0.0
+            ],
+            "width_m": 6.1,
+            "height_m": 4.6,
+            "depth_m": 0.42,
+            "material": "secondary",
+            "infill_material": "primary",
+            "profile_style": "ogee_scroll",
+            "window_enabled": true,
+            "window_width_m": 1.0,
+            "window_height_m": 1.45,
+            "window_base_offset_m": 1.35,
+            "finial_enabled": false
+          },
+          {
+            "id": "amsterdam_roof_tiles",
+            "kind": "pitched_roof_surface_detail",
+            "centre": [
+              0.0,
+              0.0,
+              11.6
+            ],
+            "size": [
+              6.2,
+              13.4,
+              3.4
+            ],
+            "ridge_axis": "y",
+            "tile_material": "roof",
+            "weight_enabled": false,
+            "rows": 16,
+            "columns": 9,
+            "gutter_enabled": true,
+            "verge_enabled": true
+          }
+        ],
+        "target_views": [
+          "archetype_match",
+          "street",
+          "front_corner_oblique",
+          "rear_corner_oblique",
+          "facade_close",
+          "roof_audit",
+          "aerial",
+          "context"
+        ]
+      }
+    },
+    "parisian-corner-with-dome-zinc-mansard": {
+      "identity": "Parisian limestone-and-brick corner building with a chamfered cafe frontage, mansard and ribbed zinc dome",
+      "dimension_overrides": {
+        "width_m": 20.0,
+        "depth_m": 20.0,
+        "default_floors": 4
+      },
+      "material_overrides": {
+        "primary": {
+          "texture_key": "v90_parisian-corner-with-dome-zinc-mansard_primary",
+          "base_color": "#ded3bc",
+          "roughness": 0.86,
+          "metallic": 0.0,
+          "baked_pbr": true,
+          "texture_tile_metres": 4.0,
+          "normal_strength": 0.72
+        },
+        "secondary": {
+          "texture_key": "v90_parisian-corner-with-dome-zinc-mansard_secondary",
+          "base_color": "#9c624e",
+          "roughness": 0.86,
+          "metallic": 0.0,
+          "baked_pbr": true,
+          "texture_tile_metres": 4.0,
+          "normal_strength": 0.72
+        },
+        "roof": {
+          "texture_key": "v90_parisian-corner-with-dome-zinc-mansard_roof",
+          "base_color": "#5f6868",
+          "roughness": 0.82,
+          "metallic": 0.0,
+          "baked_pbr": true,
+          "texture_tile_metres": 5.5,
+          "normal_strength": 0.72
+        }
+      },
+      "evidence_policy": {
+        "authority": "reference_images",
+        "metadata_mode": "disabled",
+        "selected_metadata": [],
+        "ignored_metadata": [
+          {
+            "path": "*",
+            "reason": "not used unless visibly corroborated by all exact reference roles"
+          }
+        ]
+      },
+      "production_contract": {
+        "identity_mode": "massing_graph",
+        "fixed_identity": [
+          "two continuous image-registered street elevations meeting at a chamfered cafe corner",
+          "projecting iron balconies with aligned supports and openings",
+          "dark zinc mansard with dormers and chimney stacks",
+          "elliptical ribbed corner dome, glazed drum and lantern"
+        ],
+        "repeatable_capacity": [
+          "fixed select-and-place corner landmark; rotation and translation only"
+        ],
+        "quality_contract_version": 4,
+        "image_lock": {
+          "required_reference_roles": [
+            "street_identity",
+            "oblique_massing",
+            "roof_plan"
+          ],
+          "minimum_measurements": 8,
+          "measurements": [
+            {
+              "feature": "corner block width",
+              "role": "oblique_massing",
+              "value": 20.0,
+              "unit": "metres",
+              "drives": "paris_corner_mass"
+            },
+            {
+              "feature": "facade wall height",
+              "role": "street_identity",
+              "value": 15.2,
+              "unit": "metres",
+              "drives": "paris_front_sticker"
+            },
+            {
+              "feature": "chamfer width",
+              "role": "street_identity",
+              "value": 4.4,
+              "unit": "metres",
+              "drives": "paris_corner_sticker"
+            },
+            {
+              "feature": "mansard rise",
+              "role": "roof_plan",
+              "value": 4.2,
+              "unit": "metres",
+              "drives": "paris_mansard"
+            },
+            {
+              "feature": "dome diameter",
+              "role": "street_identity",
+              "value": 6.0,
+              "unit": "metres",
+              "drives": "paris_corner_dome"
+            },
+            {
+              "feature": "dome rise",
+              "role": "roof_plan",
+              "value": 3.45,
+              "unit": "metres",
+              "drives": "paris_corner_dome"
+            },
+            {
+              "feature": "continuous balcony length",
+              "role": "oblique_massing",
+              "value": 14.2,
+              "unit": "metres",
+              "drives": "paris_front_balconies"
+            },
+            {
+              "feature": "lantern height",
+              "role": "roof_plan",
+              "value": 2.1,
+              "unit": "metres",
+              "drives": "paris_lantern"
+            }
+          ],
+          "required_node_ids": [
+            "paris_corner_mass",
+            "paris_mansard",
+            "paris_dome_drum",
+            "paris_corner_dome",
+            "paris_lantern",
+            "paris_lantern_cap",
+            "paris_cornice_front",
+            "paris_cornice_left",
+            "paris_chimney_front",
+            "paris_chimney_left"
+          ],
+          "required_assembly_ids": [
+            "paris_front_sticker",
+            "paris_left_sticker",
+            "paris_right_sticker",
+            "paris_rear_sticker",
+            "paris_corner_sticker",
+            "paris_front_balconies",
+            "paris_left_balconies",
+            "paris_cafe_awnings_front",
+            "paris_cafe_awnings_left"
+          ],
+          "required_node_kinds": {
+            "chamfered_box": 1,
+            "hipped_roof": 1,
+            "cylinder": 2,
+            "dome_roof": 1,
+            "cone": 1,
+            "box": 4
+          },
+          "required_assembly_kinds": {
+            "facade_skin": 5,
+            "balcony_array": 2,
+            "awning_schedule": 2
+          }
+        },
+        "material_continuity": {
+          "required_textured_materials": [
+            "primary",
+            "secondary",
+            "roof"
+          ]
+        },
+        "surface_finish": {
+          "method": "baked_pbr_story",
+          "required_baked_materials": [
+            "primary",
+            "secondary",
+            "roof"
+          ],
+          "material_roles": {
+            "primary": "ashlar limestone frame and ornament",
+            "secondary": "warm brick facade panels",
+            "roof": "mansard, dome and flashing"
+          },
+          "required_channels": [
+            "albedo",
+            "roughness",
+            "normal"
+          ],
+          "uv_contract": {
+            "projection": "metric_box_plus_material_scale",
+            "base_tile_metres": 2.0,
+            "minimum_tile_metres": 3.0,
+            "maximum_tile_metres": 8.0
+          },
+          "semantic_weathering": [
+            "wall variation remains bounded to the authored wall materials",
+            "roof variation remains on horizontal or pitched roof fields",
+            "glazing keeps physical pane, reveal and occupied-interior depth"
+          ],
+          "qa_renders": [
+            "neutral_source",
+            "neutral_glb_roundtrip",
+            "archetype_match",
+            "facade_close",
+            "roof_audit",
+            "rear_corner_oblique"
+          ]
+        },
+        "stage_workflow": {
+          "representation": "registered_sticker_landmark",
+          "required_stages": {
+            "reference_sufficiency": {
+              "deliverable": "reference-sufficiency.json",
+              "approval_required": true
+            },
+            "representation_selection": {
+              "deliverable": "representation-selection.json",
+              "approval_required": true
+            },
+            "clay_massing": {
+              "deliverable": "clay-comparison.png",
+              "approval_required": true
+            },
+            "roof_and_voids": {
+              "deliverable": "roof-void-comparison.png",
+              "approval_required": true
+            },
+            "medium_detail": {
+              "deliverable": "medium-detail-comparison.png",
+              "approval_required": true
+            },
+            "retopology": {
+              "deliverable": "mesh-audit.json",
+              "approval_required": true
+            },
+            "manual_uv_audit": {
+              "deliverable": "uv-audit.json",
+              "approval_required": true
+            },
+            "material_bake": {
+              "deliverable": "surface-finish-report.json",
+              "approval_required": true
+            },
+            "export_parity": {
+              "deliverable": "neutral-source-vs-glb.png",
+              "approval_required": true
+            },
+            "architect_review": {
+              "deliverable": "architect-review.json",
+              "approval_required": true
+            }
+          },
+          "architect_review_views": [
+            "street",
+            "oblique",
+            "roof",
+            "side",
+            "rear",
+            "close_up"
+          ],
+          "architect_release_score": 85,
+          "hard_stops_block_release": true
+        },
+        "geometry_kit_exclusions": [],
+        "placement_contract": {
+          "method": "sticker_method",
+          "mode": "fixed_landmark",
+          "ui_interaction": "select_and_place",
+          "polygon_fit": false,
+          "footprint_m": {
+            "width": 20.0,
+            "depth": 20.0
+          },
+          "visible_height_m": 21.9,
+          "translation": "allowed",
+          "rotation": "allowed",
+          "uniform_scale": "discouraged",
+          "non_uniform_scale": "forbidden",
+          "floor_count_change": "forbidden",
+          "preferred_context": "image-matched urban placement",
+          "freestanding_elevations": "authored",
+          "lego_compatibility": "fixed landmark with continuous registered facade skins"
+        },
+        "sticker_method": {
+          "surface_owner": "one continuous registered facade per elevation",
+          "geometry_owner": "silhouette, roof, openings, projections, returns and shadow depth",
+          "duplicate_feature_ownership_forbidden": true,
+          "registration_anchors": [
+            "window_centres",
+            "column_centres",
+            "floor_datums",
+            "roof_spring_line"
+          ]
+        }
+      },
+      "massing_graph": {
+        "schema": "massing-graph@1",
+        "profile": "parisian-corner-with-dome-zinc-mansard_continuous_sticker_v90",
+        "description": "Parisian limestone-and-brick corner building with a chamfered cafe frontage, mansard and ribbed zinc dome",
+        "height_m": 21.9,
+        "reference_dimensions": {
+          "width_m": 20.0,
+          "depth_m": 20.0,
+          "floors": 4
+        },
+        "reference_views": [
+          {
+            "role": "street_identity",
+            "path": "/archetypes/buildings/parisian_corner_with_dome/variant_0.png"
+          },
+          {
+            "role": "oblique_massing",
+            "path": "/archetypes/buildings/parisian_corner_with_dome/variant_0_angle_60.jpg"
+          },
+          {
+            "role": "roof_plan",
+            "path": "/archetypes/buildings/parisian_corner_with_dome/variant_0_angle_90.jpg"
+          }
+        ],
+        "presentation_camera": {
+          "hero_side": "left",
+          "oblique_x_scale": 0.76,
+          "identity_distance_scale": 0.94,
+          "street_distance_scale": 0.94
+        },
+        "nodes": [
+          {
+            "id": "paris_corner_mass",
+            "kind": "chamfered_box",
+            "size": [
+              20.0,
+              20.0,
+              15.2
+            ],
+            "location": [
+              0.0,
+              0.0,
+              7.6
+            ],
+            "material": "primary",
+            "chamfer_m": 2.6,
+            "bevel_m": 0.055
+          },
+          {
+            "id": "paris_mansard",
+            "kind": "hipped_roof",
+            "size": [
+              19.8,
+              19.8,
+              4.2
+            ],
+            "location": [
+              0.0,
+              0.0,
+              15.15
+            ],
+            "material": "roof",
+            "ridge_axis": "x",
+            "ridge_inset_m": 5.4,
+            "bevel_m": 0.04
+          },
+          {
+            "id": "paris_dome_drum",
+            "kind": "cylinder",
+            "location": [
+              -8.2,
+              -8.2,
+              15.9
+            ],
+            "radius_m": 3.0,
+            "height_m": 1.8,
+            "material": "primary",
+            "vertices": 48
+          },
+          {
+            "id": "paris_corner_dome",
+            "kind": "dome_roof",
+            "location": [
+              -8.2,
+              -8.2,
+              16.75
+            ],
+            "radius_m": 3.0,
+            "height_m": 3.45,
+            "material": "roof",
+            "rib_material": "roof",
+            "rib_count": 12,
+            "rib_radius_m": 0.052,
+            "segments": 56,
+            "rings": 18
+          },
+          {
+            "id": "paris_lantern",
+            "kind": "cylinder",
+            "location": [
+              -8.2,
+              -8.2,
+              20.55
+            ],
+            "radius_m": 0.72,
+            "height_m": 1.35,
+            "material": "secondary",
+            "vertices": 12
+          },
+          {
+            "id": "paris_lantern_cap",
+            "kind": "cone",
+            "location": [
+              -8.2,
+              -8.2,
+              21.45
+            ],
+            "radius_m": 0.86,
+            "height_m": 0.75,
+            "material": "roof",
+            "vertices": 16
+          },
+          {
+            "id": "paris_cornice_front",
+            "kind": "box",
+            "size": [
+              15.1,
+              0.62,
+              0.62
+            ],
+            "location": [
+              2.15,
+              -10.1,
+              15.0
+            ],
+            "material": "primary",
+            "bevel_m": 0.045
+          },
+          {
+            "id": "paris_cornice_left",
+            "kind": "box",
+            "size": [
+              0.62,
+              15.1,
+              0.62
+            ],
+            "location": [
+              -10.1,
+              2.15,
+              15.0
+            ],
+            "material": "primary",
+            "bevel_m": 0.045
+          },
+          {
+            "id": "paris_chimney_front",
+            "kind": "box",
+            "size": [
+              0.85,
+              1.15,
+              2.5
+            ],
+            "location": [
+              4.6,
+              -2.2,
+              17.5
+            ],
+            "material": "primary",
+            "bevel_m": 0.025
+          },
+          {
+            "id": "paris_chimney_left",
+            "kind": "box",
+            "size": [
+              1.15,
+              0.85,
+              2.5
+            ],
+            "location": [
+              -2.2,
+              4.6,
+              17.5
+            ],
+            "material": "primary",
+            "bevel_m": 0.025
+          }
+        ],
+        "voids": [],
+        "assemblies": [
+          {
+            "kind": "facade_skin",
+            "id": "paris_front_sticker",
+            "axis": "front",
+            "centre": [
+              2.15,
+              -10.035,
+              7.6
+            ],
+            "span_m": 15.1,
+            "height_m": 15.2,
+            "depth_m": 0.045,
+            "band": "elevation",
+            "flip_u": false
+          },
+          {
+            "kind": "facade_skin",
+            "id": "paris_left_sticker",
+            "axis": "left",
+            "centre": [
+              -10.035,
+              2.15,
+              7.6
+            ],
+            "span_m": 15.1,
+            "height_m": 15.2,
+            "depth_m": 0.045,
+            "band": "elevation",
+            "flip_u": true
+          },
+          {
+            "kind": "facade_skin",
+            "id": "paris_right_sticker",
+            "axis": "right",
+            "centre": [
+              10.035,
+              0.0,
+              7.6
+            ],
+            "span_m": 20.0,
+            "height_m": 15.2,
+            "depth_m": 0.045,
+            "band": "side",
+            "flip_u": false
+          },
+          {
+            "kind": "facade_skin",
+            "id": "paris_rear_sticker",
+            "axis": "rear",
+            "centre": [
+              0.0,
+              10.035,
+              7.6
+            ],
+            "span_m": 20.0,
+            "height_m": 15.2,
+            "depth_m": 0.045,
+            "band": "side",
+            "flip_u": true
+          },
+          {
+            "kind": "facade_skin",
+            "id": "paris_corner_sticker",
+            "axis": "angle",
+            "centre": [
+              -8.76,
+              -8.76,
+              7.6
+            ],
+            "span_m": 3.65,
+            "height_m": 15.2,
+            "depth_m": 0.055,
+            "band": "elevation",
+            "rotation_z_deg": -45.0
+          },
+          {
+            "id": "paris_front_balconies",
+            "kind": "balcony_array",
+            "axis": "front",
+            "centre": [
+              2.15,
+              -10.05,
+              0.0
+            ],
+            "span_m": 14.2,
+            "levels_z": [
+              6.55,
+              12.65
+            ],
+            "segments": 4,
+            "depth_m": 0.82,
+            "slab_material": "primary",
+            "rail_material": "signature_metal",
+            "pickets_per_segment": 9
+          },
+          {
+            "id": "paris_left_balconies",
+            "kind": "balcony_array",
+            "axis": "left",
+            "centre": [
+              -10.05,
+              2.15,
+              0.0
+            ],
+            "span_m": 14.2,
+            "levels_z": [
+              6.55,
+              12.65
+            ],
+            "segments": 4,
+            "depth_m": 0.82,
+            "slab_material": "primary",
+            "rail_material": "signature_metal",
+            "pickets_per_segment": 9
+          },
+          {
+            "id": "paris_cafe_awnings_front",
+            "kind": "awning_schedule",
+            "axis": "front",
+            "face_coordinate_m": -10.18,
+            "base_z_m": 3.0,
+            "positions_m": [
+              -3.15,
+              0.4,
+              3.95,
+              7.5
+            ],
+            "width_m": 3.25,
+            "projection_m": 1.55,
+            "materials": [
+              "signature_warm"
+            ]
+          },
+          {
+            "id": "paris_cafe_awnings_left",
+            "kind": "awning_schedule",
+            "axis": "left",
+            "face_coordinate_m": -10.18,
+            "base_z_m": 3.0,
+            "positions_m": [
+              -3.15,
+              0.4,
+              3.95,
+              7.5
+            ],
+            "width_m": 3.25,
+            "projection_m": 1.55,
+            "materials": [
+              "signature_warm"
+            ]
+          }
+        ],
+        "target_views": [
+          "archetype_match",
+          "street",
+          "front_corner_oblique",
+          "rear_corner_oblique",
+          "facade_close",
+          "roof_audit",
+          "aerial",
+          "context"
+        ]
+      }
+    },
+    "toronto_bay_gable_yellow_brick": {
+      "identity": "Toronto yellow-brick bay-and-gable house with exactly two occupied storeys plus an attic gable, a true projecting two-storey bay, porch and steep decorated front gable; no third or fourth upper storey",
+      "dimension_overrides": {
+        "width_m": 6.0,
+        "depth_m": 12.0,
+        "default_floors": 2
+      },
+      "material_overrides": {
+        "primary": {
+          "texture_key": "v90_toronto_bay_gable_yellow_brick_primary",
+          "base_color": "#b06b43",
+          "roughness": 0.86,
+          "metallic": 0.0,
+          "baked_pbr": true,
+          "texture_tile_metres": 4.0,
+          "normal_strength": 0.72
+        },
+        "secondary": {
+          "texture_key": "v90_toronto_bay_gable_yellow_brick_secondary",
+          "base_color": "#4a3527",
+          "roughness": 0.86,
+          "metallic": 0.0,
+          "baked_pbr": true,
+          "texture_tile_metres": 4.0,
+          "normal_strength": 0.72
+        },
+        "roof": {
+          "texture_key": "v90_toronto_bay_gable_yellow_brick_roof",
+          "base_color": "#343b3d",
+          "roughness": 0.82,
+          "metallic": 0.0,
+          "baked_pbr": true,
+          "texture_tile_metres": 5.5,
+          "normal_strength": 0.72
+        }
+      },
+      "evidence_policy": {
+        "authority": "reference_images",
+        "metadata_mode": "disabled",
+        "selected_metadata": [],
+        "ignored_metadata": [
+          {
+            "path": "*",
+            "reason": "not used unless visibly corroborated by all exact reference roles"
+          }
+        ]
+      },
+      "production_contract": {
+        "identity_mode": "massing_graph",
+        "fixed_identity": [
+          "narrow yellow-red brick house with deep side elevation",
+          "projecting two-storey angled bay carrying the front gable",
+          "steep dark shingle roof with visible eaves and chimney",
+          "cavernous covered porch with timber columns and recessed green door"
+        ],
+        "repeatable_capacity": [
+          "fixed select-and-place landmark; party-wall repetition disabled"
+        ],
+        "quality_contract_version": 4,
+        "image_lock": {
+          "required_reference_roles": [
+            "street_identity",
+            "oblique_massing",
+            "roof_plan"
+          ],
+          "minimum_measurements": 8,
+          "measurements": [
+            {
+              "feature": "house width",
+              "role": "street_identity",
+              "value": 6.0,
+              "unit": "metres",
+              "drives": "toronto_main_mass"
+            },
+            {
+              "feature": "house depth",
+              "role": "oblique_massing",
+              "value": 12.0,
+              "unit": "metres",
+              "drives": "toronto_main_mass"
+            },
+            {
+              "feature": "wall height",
+              "role": "street_identity",
+              "value": 7.2,
+              "unit": "metres",
+              "drives": "toronto_front_sticker"
+            },
+            {
+              "feature": "front roof rise",
+              "role": "roof_plan",
+              "value": 3.1,
+              "unit": "metres",
+              "drives": "toronto_main_roof"
+            },
+            {
+              "feature": "bay projection",
+              "role": "oblique_massing",
+              "value": 1.15,
+              "unit": "metres",
+              "drives": "toronto_bay_mass"
+            },
+            {
+              "feature": "bay width",
+              "role": "street_identity",
+              "value": 3.4,
+              "unit": "metres",
+              "drives": "toronto_bay_mass"
+            },
+            {
+              "feature": "porch depth",
+              "role": "street_identity",
+              "value": 2.05,
+              "unit": "metres",
+              "drives": "toronto_porch_canopy"
+            },
+            {
+              "feature": "gable rise",
+              "role": "street_identity",
+              "value": 3.55,
+              "unit": "metres",
+              "drives": "toronto_front_gable"
+            }
+          ],
+          "required_node_ids": [
+            "toronto_main_mass",
+            "toronto_main_roof",
+            "toronto_bay_mass",
+            "toronto_bay_crown",
+            "toronto_chimney",
+            "toronto_porch_canopy"
+          ],
+          "required_assembly_ids": [
+            "toronto_front_sticker",
+            "toronto_rear_sticker",
+            "toronto_left_sticker",
+            "toronto_right_sticker",
+            "toronto_bay_sticker",
+            "toronto_front_gable",
+            "toronto_porch_columns",
+            "toronto_roof_shingles"
+          ],
+          "required_node_kinds": {
+            "box": 5,
+            "gable_roof": 1
+          },
+          "required_assembly_kinds": {
+            "facade_skin": 5,
+            "shaped_gable_array": 1,
+            "column_array": 1,
+            "pitched_roof_surface_detail": 1
+          }
+        },
+        "material_continuity": {
+          "required_textured_materials": [
+            "primary",
+            "secondary",
+            "roof"
+          ]
+        },
+        "surface_finish": {
+          "method": "baked_pbr_story",
+          "required_baked_materials": [
+            "primary",
+            "secondary",
+            "roof"
+          ],
+          "material_roles": {
+            "primary": "Toronto pressed brick walls and bay",
+            "secondary": "carved bargeboard, porch and window trim",
+            "roof": "steep slate roof"
+          },
+          "required_channels": [
+            "albedo",
+            "roughness",
+            "normal"
+          ],
+          "uv_contract": {
+            "projection": "metric_box_plus_material_scale",
+            "base_tile_metres": 2.0,
+            "minimum_tile_metres": 3.0,
+            "maximum_tile_metres": 8.0
+          },
+          "semantic_weathering": [
+            "wall variation remains bounded to the authored wall materials",
+            "roof variation remains on horizontal or pitched roof fields",
+            "glazing keeps physical pane, reveal and occupied-interior depth"
+          ],
+          "qa_renders": [
+            "neutral_source",
+            "neutral_glb_roundtrip",
+            "archetype_match",
+            "facade_close",
+            "roof_audit",
+            "rear_corner_oblique"
+          ]
+        },
+        "stage_workflow": {
+          "representation": "registered_sticker_landmark",
+          "required_stages": {
+            "reference_sufficiency": {
+              "deliverable": "reference-sufficiency.json",
+              "approval_required": true
+            },
+            "representation_selection": {
+              "deliverable": "representation-selection.json",
+              "approval_required": true
+            },
+            "clay_massing": {
+              "deliverable": "clay-comparison.png",
+              "approval_required": true
+            },
+            "roof_and_voids": {
+              "deliverable": "roof-void-comparison.png",
+              "approval_required": true
+            },
+            "medium_detail": {
+              "deliverable": "medium-detail-comparison.png",
+              "approval_required": true
+            },
+            "retopology": {
+              "deliverable": "mesh-audit.json",
+              "approval_required": true
+            },
+            "manual_uv_audit": {
+              "deliverable": "uv-audit.json",
+              "approval_required": true
+            },
+            "material_bake": {
+              "deliverable": "surface-finish-report.json",
+              "approval_required": true
+            },
+            "export_parity": {
+              "deliverable": "neutral-source-vs-glb.png",
+              "approval_required": true
+            },
+            "architect_review": {
+              "deliverable": "architect-review.json",
+              "approval_required": true
+            }
+          },
+          "architect_review_views": [
+            "street",
+            "oblique",
+            "roof",
+            "side",
+            "rear",
+            "close_up"
+          ],
+          "architect_release_score": 85,
+          "hard_stops_block_release": true
+        },
+        "geometry_kit_exclusions": [],
+        "placement_contract": {
+          "method": "sticker_method",
+          "mode": "fixed_landmark",
+          "ui_interaction": "select_and_place",
+          "polygon_fit": false,
+          "footprint_m": {
+            "width": 6.0,
+            "depth": 12.0
+          },
+          "visible_height_m": 10.5,
+          "translation": "allowed",
+          "rotation": "allowed",
+          "uniform_scale": "discouraged",
+          "non_uniform_scale": "forbidden",
+          "floor_count_change": "forbidden",
+          "preferred_context": "image-matched urban placement",
+          "freestanding_elevations": "authored",
+          "lego_compatibility": "fixed landmark with continuous registered facade skins"
+        },
+        "sticker_method": {
+          "surface_owner": "one continuous registered facade per elevation",
+          "geometry_owner": "silhouette, roof, openings, projections, returns and shadow depth",
+          "duplicate_feature_ownership_forbidden": true,
+          "registration_anchors": [
+            "window_centres",
+            "column_centres",
+            "floor_datums",
+            "roof_spring_line"
+          ]
+        }
+      },
+      "massing_graph": {
+        "schema": "massing-graph@1",
+        "profile": "toronto_bay_gable_yellow_brick_continuous_sticker_v90",
+        "description": "Toronto yellow-brick bay-and-gable house with exactly two occupied storeys plus an attic gable, a true projecting two-storey bay, porch and steep decorated front gable; no third or fourth upper storey",
+        "height_m": 10.5,
+        "reference_dimensions": {
+          "width_m": 6.0,
+          "depth_m": 12.0,
+          "floors": 2
+        },
+        "reference_views": [
+          {
+            "role": "street_identity",
+            "path": "/archetypes/buildings/toronto_bay_and_gable_house/variant_0.png"
+          },
+          {
+            "role": "oblique_massing",
+            "path": "/archetypes/buildings/toronto_bay_and_gable_house/variant_0_angle_60.jpg"
+          },
+          {
+            "role": "roof_plan",
+            "path": "/archetypes/buildings/toronto_bay_and_gable_house/variant_0_angle_90.jpg"
+          }
+        ],
+        "presentation_camera": {
+          "hero_side": "left",
+          "oblique_x_scale": 0.66,
+          "identity_distance_scale": 0.88,
+          "street_distance_scale": 0.9
+        },
+        "nodes": [
+          {
+            "id": "toronto_main_mass",
+            "kind": "box",
+            "size": [
+              6.0,
+              12.0,
+              7.2
+            ],
+            "location": [
+              0.0,
+              0.0,
+              3.6
+            ],
+            "material": "primary",
+            "bevel_m": 0.035
+          },
+          {
+            "id": "toronto_main_roof",
+            "kind": "gable_roof",
+            "size": [
+              6.35,
+              12.5,
+              3.1
+            ],
+            "location": [
+              0.0,
+              0.0,
+              7.15
+            ],
+            "material": "roof",
+            "ridge_axis": "x",
+            "bevel_m": 0.035
+          },
+          {
+            "id": "toronto_bay_mass",
+            "kind": "box",
+            "size": [
+              3.4,
+              1.15,
+              5.75
+            ],
+            "location": [
+              -0.8,
+              -6.55,
+              3.35
+            ],
+            "material": "primary",
+            "bevel_m": 0.12
+          },
+          {
+            "id": "toronto_bay_crown",
+            "kind": "box",
+            "size": [
+              3.75,
+              1.35,
+              0.3
+            ],
+            "location": [
+              -0.8,
+              -6.58,
+              6.25
+            ],
+            "material": "secondary",
+            "bevel_m": 0.035
+          },
+          {
+            "id": "toronto_chimney",
+            "kind": "box",
+            "size": [
+              0.72,
+              0.95,
+              1.8
+            ],
+            "location": [
+              2.05,
+              2.5,
+              9.55
+            ],
+            "material": "primary",
+            "bevel_m": 0.025
+          },
+          {
+            "id": "toronto_porch_canopy",
+            "kind": "box",
+            "size": [
+              2.55,
+              2.05,
+              0.28
+            ],
+            "location": [
+              1.55,
+              -6.75,
+              3.25
+            ],
+            "material": "secondary",
+            "bevel_m": 0.04
+          }
+        ],
+        "voids": [],
+        "assemblies": [
+          {
+            "kind": "facade_skin",
+            "id": "toronto_front_sticker",
+            "axis": "front",
+            "centre": [
+              0.0,
+              -6.035,
+              3.6
+            ],
+            "span_m": 6.0,
+            "height_m": 7.2,
+            "depth_m": 0.045,
+            "band": "elevation",
+            "flip_u": false
+          },
+          {
+            "kind": "facade_skin",
+            "id": "toronto_rear_sticker",
+            "axis": "rear",
+            "centre": [
+              0.0,
+              6.035,
+              3.6
+            ],
+            "span_m": 6.0,
+            "height_m": 7.2,
+            "depth_m": 0.045,
+            "band": "side",
+            "flip_u": true
+          },
+          {
+            "kind": "facade_skin",
+            "id": "toronto_left_sticker",
+            "axis": "left",
+            "centre": [
+              -3.035,
+              0.0,
+              3.6
+            ],
+            "span_m": 12.0,
+            "height_m": 7.2,
+            "depth_m": 0.045,
+            "band": "side",
+            "flip_u": true
+          },
+          {
+            "kind": "facade_skin",
+            "id": "toronto_right_sticker",
+            "axis": "right",
+            "centre": [
+              3.035,
+              0.0,
+              3.6
+            ],
+            "span_m": 12.0,
+            "height_m": 7.2,
+            "depth_m": 0.045,
+            "band": "side",
+            "flip_u": false
+          },
+          {
+            "id": "toronto_bay_sticker",
+            "kind": "facade_skin",
+            "axis": "front",
+            "centre": [
+              -0.8,
+              -7.145,
+              3.35
+            ],
+            "span_m": 3.4,
+            "height_m": 5.75,
+            "depth_m": 0.045,
+            "band": "elevation",
+            "uv_u_min": 0.0,
+            "uv_u_max": 0.5,
+            "uv_v_min": 0.08,
+            "uv_v_max": 0.96
+          },
+          {
+            "id": "toronto_front_gable",
+            "kind": "shaped_gable_array",
+            "axis": "front",
+            "base_centre": [
+              -0.8,
+              -7.18,
+              6.15
+            ],
+            "positions_m": [
+              0.0
+            ],
+            "width_m": 4.45,
+            "height_m": 3.55,
+            "depth_m": 0.36,
+            "material": "secondary",
+            "infill_material": "primary",
+            "profile_style": "steep_triangle",
+            "window_enabled": true,
+            "window_width_m": 0.9,
+            "window_height_m": 1.55,
+            "window_base_offset_m": 0.72,
+            "finial_enabled": true
+          },
+          {
+            "id": "toronto_porch_columns",
+            "kind": "column_array",
+            "start": [
+              0.55,
+              -7.65,
+              0.0
+            ],
+            "end": [
+              2.55,
+              -7.65,
+              0.0
+            ],
+            "count": 2,
+            "section": [
+              0.16,
+              0.16
+            ],
+            "height_m": 3.15,
+            "material": "secondary"
+          },
+          {
+            "id": "toronto_roof_shingles",
+            "kind": "pitched_roof_surface_detail",
+            "centre": [
+              0.0,
+              0.0,
+              7.15
+            ],
+            "size": [
+              6.35,
+              12.5,
+              3.1
+            ],
+            "ridge_axis": "x",
+            "tile_material": "roof",
+            "weight_enabled": false,
+            "rows": 15,
+            "columns": 15,
+            "gutter_enabled": true,
+            "verge_enabled": true
+          }
+        ],
+        "target_views": [
+          "archetype_match",
+          "street",
+          "front_corner_oblique",
+          "rear_corner_oblique",
+          "facade_close",
+          "roof_audit",
+          "aerial",
+          "context"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "schema": "named-architect-review@1",
+  "review": "v90_three_sticker_landmarks_strict_architect_qa",
+  "reviewer": "architect_design_reviewer",
+  "keeper_rule": ">=85 and no hard stop",
+  "buildings": [
+    {
+      "building": "Amsterdam Neck-Gable Merchant",
+      "score": 64,
+      "status": "rejected",
+      "hard_stops": [
+        "The sculpted neck gable became a sticker scroll gable below a separate peaked brick cap, changing the defining silhouette.",
+        "The long side and rear are almost entirely blank despite side windows and roof openings in the exact oblique reference.",
+        "The roof is a generic uninterrupted gable and the entrance remains essentially planar."
+      ],
+      "strongest_faithful_traits": [
+        "Convincing dark Dutch brick, sash-window texture and narrow vertical proportion on the front plane.",
+        "Twin ground-floor doors and scroll ornament retain some archetype identity.",
+        "Front sticker window rows are internally aligned without obvious horizontal registration jumps."
+      ],
+      "biggest_archetype_gap": "A decorated facade is attached to a blank generic shed rather than a complete canal-corner merchant house.",
+      "next_correction": "Replace the upper/front junction with one source-traced neck-gable silhouette joined to the steep tiled roof, carry the side-window and dormer grid onto the long elevation, and remove the separate triangular cap."
+    },
+    {
+      "building": "Parisian Zinc-Dome Corner",
+      "score": 54,
+      "status": "rejected",
+      "hard_stops": [
+        "The zinc mansard and courtyard roof with repeated dormers became a square hipped roof without a mansard break, dormer rhythm or courtyard logic.",
+        "The corner dome is an oversized bulb on a blank cylindrical band rather than an integrated pavilion, ribbed zinc dome, glazed cupola and finial.",
+        "An untextured strip at the chamfer and blank rear walls expose sticker seams and break facade continuity.",
+        "Oversized physical rails duplicate photographed balconies, while the cafe canopy is absent and the shop entrance remains flat."
+      ],
+      "strongest_faithful_traits": [
+        "The limestone/red-brick palette, French-window cadence and decorative spandrel texture are strong on the sticker planes.",
+        "The corner-building concept and ribbed dome gesture make the type recognisable.",
+        "The timber shopfront texture has useful warmth and scale."
+      ],
+      "biggest_archetype_gap": "The roof and corner pavilion are architecturally different from the archetype, and added geometry fights the sticker.",
+      "next_correction": "Rebuild the corner and roof as one source-derived chamfered pavilion with a zinc mansard break, aligned dormers, and a proportioned ribbed dome on a fenestrated cupola; remove the blank cylinder and duplicate balcony geometry."
+    },
+    {
+      "building": "Toronto Yellow-Brick Bay-and-Gable",
+      "score": 61,
+      "status": "rejected",
+      "hard_stops": [
+        "The ornate sticker gable sits below a separate physical brick triangle, doubling the source's integrated cross-gable.",
+        "The compound cross-gabled roof and projecting bay roof are reduced to a simple rectangular two-slope roof.",
+        "Side and rear elevations are blank despite visible domestic fenestration and articulation in the references.",
+        "The oversized porch crosses the bay and doorway instead of aligning with the right-hand entrance, which lacks a recessed threshold.",
+        "The street reference is predominantly red brick while the generated front is yellow, making reference and sticker selection inconsistent."
+      ],
+      "strongest_faithful_traits": [
+        "The projecting bay, stained-glass panels and Victorian bargeboard imagery convey the decorative family.",
+        "Narrow detached-house proportions and asymmetrical bay/entrance composition are recognisable.",
+        "Brick and window textures are detailed and vertically coherent within the front sticker."
+      ],
+      "biggest_archetype_gap": "Strong front imagery is mounted onto an incorrect roof box with a doubled gable and misregistered porch.",
+      "next_correction": "Derive the complete roof and bay silhouette from the aerial reference, make the ornate front gable the actual cross-gable volume, delete the extra triangle, and anchor a scaled porch solely around the right entrance."
+    }
+  ],
+  "batch": {
+    "verdict": "rejected_for_scale_up",
+    "keepers": 0,
+    "provisional": 0,
+    "rejected": 3,
+    "ranked_order": [
+      {"rank": 1, "building": "Amsterdam Neck-Gable Merchant", "score": 64},
+      {"rank": 2, "building": "Toronto Yellow-Brick Bay-and-Gable", "score": 61},
+      {"rank": 3, "building": "Parisian Zinc-Dome Corner", "score": 54}
+    ],
+    "shared_hard_stops": [
+      "Accurate front stickers terminate at generic or blank side/rear masses.",
+      "Roof geometry is not derived tightly enough from aerial references.",
+      "Physical overlays duplicate photographed detail instead of adding only depth-bearing construction.",
+      "Entrances remain planar images rather than recessed thresholds and interiors.",
+      "Comparison renders are not camera-matched to exact sources, so export parity does not validate architectural likeness."
+    ],
+    "methodology_priority": "Require a source-matched silhouette/roof proxy and all-elevation occupancy map to pass before sticker generation. Treat blank visible side/rear walls, duplicated gables or rails, and unmatched reference cameras as automatic QA failures."
+  }
+}

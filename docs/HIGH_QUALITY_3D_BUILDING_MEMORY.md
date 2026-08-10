@@ -1064,6 +1064,33 @@ still failed at 71/100 because the visible soffit became a second dominant arch.
 - Publish failed iterations and architect scores. A machine-valid contour
   experiment remains `rejected` until the named architect clears 85/100.
 
+### V90 continuous-sticker glazing ownership lesson
+
+The three-landmark pilot showed that a high-quality continuous facade sticker
+can lose realism when a generic physical glazing schedule is placed in front of
+it. Even technically valid panes become opaque-looking duplicates when their
+centres, mullions or extents do not exactly match the photographed openings.
+
+- Approve a source-traced roof/silhouette proxy and an all-elevation occupancy
+  map before generating the sticker. Blank visible sides or rears, generic roof
+  boxes and doubled physical/sticker gables are automatic pre-render failures.
+- Keep the continuous image-locked elevation as the visible owner of windows,
+  mullions and fine surrounds until an opening-accurate semantic glass mask has
+  been approved in the same metres-to-UV registration frame.
+- A physical optical overlay may add transmission, reflection and recess only
+  inside that approved mask. It may not introduce a second window schedule or
+  cover photographed frames, curtains, ornament or masonry.
+- Geometry still owns sill/reveal depth, bays, balconies, roofs, void sections
+  and other silhouette- or shadow-bearing construction. Removing a duplicate
+  pane does not permit the elevation to collapse back into a flat billboard.
+- Treat sticker-to-glass registration as a release gate: compare opening count,
+  centres, floor datums and boundaries before Blender rendering. When no exact
+  mask exists, retain sticker-owned glazing and record physical glass as a
+  deferred enhancement rather than guessing.
+- Camera-match the review renders to the exact reference views. Neutral
+  source-to-GLB parity verifies export fidelity, not architectural likeness,
+  and must never be presented as an archetype-similarity score.
+
 ## Updating this memory
 
 When a pilot reveals a reusable lesson:

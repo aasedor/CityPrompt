@@ -1,0 +1,19 @@
+{
+  "schema": "catalogue-rollout-batch@1",
+  "campaign": "tools/archetype_compiler/three_sticker_landmarks_v90.json",
+  "pipeline_version": "v90",
+  "surface_recipe_manifest": "tools/archetype_compiler/three_sticker_landmarks_v90_surface_recipes.json",
+  "batch_id": "THREE-STICKER-LANDMARKS-V90-PILOT",
+  "paid_facade_calls": 0,
+  "entries": [
+    {
+      "archetype_id": "amsterdam_neck_gable_house",
+      "variant_id": "neck_gable_merchant",
+      "family_id": "amsterdam-neck-gable-merchant-v90",
+      "width_m": 6.0,
+      "depth_m": 13.0,
+      "floors": 4,
+      "facade_sheet": "artifacts/three-sticker-landmarks-v90/facade-sheets/neck_gable_merchant"
+    }
+  ]
+}
