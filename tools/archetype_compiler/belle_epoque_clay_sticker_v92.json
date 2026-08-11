@@ -1,0 +1,17 @@
+{
+  "schema": "catalogue-rollout-batch@1",
+  "pipeline_version": "v92",
+  "batch_id": "BELLE-EPOQUE-CLAY-STICKER-V92",
+  "paid_facade_calls": 0,
+  "entries": [
+    {
+      "archetype_id": "grand_magasin",
+      "variant_id": "grand-magasin-belle-epoque",
+      "family_id": "belle-epoque-grand-magasin-v92",
+      "width_m": 36.0,
+      "depth_m": 34.0,
+      "floors": 5,
+      "facade_sheet": "artifacts/three-all-surface-stickers-v91/facade-sheets/grand-magasin-belle-epoque"
+    }
+  ]
+}

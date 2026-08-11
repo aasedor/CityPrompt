@@ -1,0 +1,15 @@
+{
+  "schema": "building-pilot-delivery@1",
+  "archetype": "grand-magasin-belle-epoque",
+  "method": "immutable-clay-plus-native-surface-stickers",
+  "placement_model": "select-and-place-landmark",
+  "clay_status": "approved",
+  "sticker_registration_status": "contract-valid",
+  "visual_catalogue_status": "rejected",
+  "architect_score": 73,
+  "assembled_glb_bytes": 24824520,
+  "assembled_glb_budget_bytes": 8388608,
+  "assembled_glb_budget_status": "failed",
+  "paid_api_spend_usd": 0,
+  "catalogue_promotion_allowed": false
+}

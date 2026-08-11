@@ -48,6 +48,7 @@ CURATED_TEXTURE_DIRS = (
 )
 FACADE_SHEET: dict | None = None
 FACADE_SHEET_DETAIL = "hero"
+CLAY_MODE = False
 FACADE_SHEET_TINT: dict | None = None
 UV_TILE_METRES = 2.0  # one texture tile covers 2 m of facade (matches generate_textures.py prompts)
 INTERIOR_ATLAS_FILENAME = "interior-atlas-gpt-v1.jpg"
@@ -1508,6 +1509,72 @@ def add_chamfered_box(
             bevel.harden_normals = True
         except AttributeError:
             pass
+        bpy.context.view_layer.objects.active = obj
+        obj.select_set(True)
+        try:
+            bpy.ops.object.modifier_apply(modifier=bevel.name)
+        except RuntimeError:
+            obj.modifiers.remove(bevel)
+    return obj
+
+
+def _rounded_front_left_ring(
+    width: float,
+    depth: float,
+    centre_x: float,
+    centre_y: float,
+    corner_radius: float,
+    other_chamfer: float,
+    segments: int,
+) -> list[tuple[float, float]]:
+    """CCW plan loop with one source-defining rounded street corner."""
+    x0, x1 = centre_x - width / 2, centre_x + width / 2
+    y0, y1 = centre_y - depth / 2, centre_y + depth / 2
+    radius = max(0.2, min(corner_radius, width * 0.42, depth * 0.42))
+    cut = max(0.01, min(other_chamfer, width * 0.35, depth * 0.35))
+    arc_cx, arc_cy = x0 + radius, y0 + radius
+    ring = [
+        (arc_cx, y0),
+        (x1 - cut, y0), (x1, y0 + cut),
+        (x1, y1 - cut), (x1 - cut, y1),
+        (x0 + cut, y1), (x0, y1 - cut),
+        (x0, arc_cy),
+    ]
+    count = max(3, int(segments))
+    for index in range(1, count):
+        angle = math.pi + (math.pi / 2) * index / count
+        ring.append((arc_cx + radius * math.cos(angle), arc_cy + radius * math.sin(angle)))
+    return ring
+
+
+def add_rounded_corner_box(
+    name: str,
+    size: tuple[float, float, float],
+    location: tuple[float, float, float],
+    mat,
+    corner_radius_m: float,
+    other_chamfer_m: float,
+    corner_segments: int = 8,
+    bevel_m: float = 0.04,
+) -> bpy.types.Object:
+    """Perimeter block with a multi-faceted principal rounded corner."""
+    width, depth, height = size
+    cx, cy, cz = location
+    ring = _rounded_front_left_ring(
+        width, depth, cx, cy, corner_radius_m, other_chamfer_m, corner_segments,
+    )
+    z0, z1 = cz - height / 2, cz + height / 2
+    count = len(ring)
+    verts = [(x, y, z0) for x, y in ring] + [(x, y, z1) for x, y in ring]
+    faces: list[tuple[int, ...]] = [tuple(reversed(range(count))), tuple(range(count, count * 2))]
+    faces.extend((i, (i + 1) % count, (i + 1) % count + count, i + count) for i in range(count))
+    obj = add_prism(name, verts, faces, mat)
+    width_m = max(0.0, min(float(bevel_m), min(width, depth, height) * 0.08))
+    if width_m > 0:
+        bevel = obj.modifiers.new(name="ConstructionEdge", type="BEVEL")
+        bevel.width = width_m
+        bevel.segments = 2
+        bevel.limit_method = "ANGLE"
         bpy.context.view_layer.objects.active = obj
         obj.select_set(True)
         try:
@@ -10863,9 +10930,22 @@ def _apply_massing_skin_uv(obj: bpy.types.Object) -> None:
                 )
             elif axis == "plan":
                 along = coordinate.x
+            elif axis in {"cylindrical_segment", "dome_radial"}:
+                centre_x = float(material.get("massing_skin_origin_x", 0.0))
+                centre_y = float(material.get("massing_skin_origin_y", 0.0))
+                angle = math.atan2(coordinate.y - centre_y, coordinate.x - centre_x)
+                if angle < 0.0:
+                    angle += math.tau
+                start = math.radians(float(material.get("massing_skin_angle_start_deg", 0.0))) % math.tau
+                end = math.radians(float(material.get("massing_skin_angle_end_deg", 360.0))) % math.tau
+                if end <= start:
+                    end += math.tau
+                while angle < start:
+                    angle += math.tau
+                along = (angle - start) / max(end - start, 1e-6)
             else:
                 continue
-            u = (along - u_min) / span_u
+            u = along if axis in {"cylindrical_segment", "dome_radial"} else (along - u_min) / span_u
             if flip_u:
                 u = 1.0 - u
             u = tex_u_min + u * (tex_u_max - tex_u_min)
@@ -10877,9 +10957,127 @@ def _apply_massing_skin_uv(obj: bpy.types.Object) -> None:
                 if bool(material.get("massing_skin_plan_flip_v", False)):
                     plan_v = 1.0 - plan_v
                 v = v_min + plan_v * (v_max - v_min)
+            elif axis == "dome_radial":
+                dome_radius = max(float(material.get("massing_skin_dome_radius_m", 1.0)), 1e-6)
+                radial = math.hypot(coordinate.x - centre_x, coordinate.y - centre_y)
+                meridional = 1.0 - max(0.0, min(1.0, radial / dome_radius))
+                v = v_min + meridional * (v_max - v_min)
             else:
                 v = v_min + (coordinate.z - z_min) / span_v * (v_max - v_min)
             uv_layer.data[loop_index].uv = (u, v)
+
+
+def _graph_carrier_skin(parts: list, spec: dict, mats: dict) -> None:
+    """Register imagery directly on approved clay faces without a thick card."""
+    material_role = str(spec.get("material_role", "elevation"))
+    axis = str(spec.get("axis", "front"))
+    if material_role in {"roof", "glass"}:
+        base = mats.get(material_role)
+        if base is None:
+            raise ValueError(f"carrier {material_role} skin requires the {material_role} material")
+        material = base.copy()
+        material.name = f"{base.name}_{spec.get('id', 'CarrierSkin')}"
+        image_node = material.node_tree.nodes.get("TEX_Albedo") if material.node_tree else None
+        if image_node is None or image_node.type != "TEX_IMAGE":
+            if material_role != "glass" or material.node_tree is None:
+                raise ValueError("carrier roof skin requires a textured roof PBR material")
+            image_node = material.node_tree.nodes.new("ShaderNodeTexImage")
+            image_node.name = image_node.label = "TEX_Albedo"
+            principled = next((node for node in material.node_tree.nodes if node.type == "BSDF_PRINCIPLED"), None)
+            if principled is None:
+                raise ValueError("carrier glass skin requires a Principled BSDF")
+            material.node_tree.links.new(image_node.outputs["Color"], principled.inputs["Base Color"])
+        image_path = Path(str(spec["source_image_path"]))
+        if not image_path.is_absolute():
+            image_path = Path.cwd() / image_path
+        if not image_path.exists():
+            raise FileNotFoundError(f"registered carrier source is missing: {image_path}")
+        image_node.image = _load_image(image_path, "sRGB")
+        for link in list(image_node.inputs["Vector"].links):
+            material.node_tree.links.remove(link)
+        uv_node = material.node_tree.nodes.new("ShaderNodeUVMap")
+        uv_node.name = uv_node.label = f"CARRIER_UV_{spec.get('id', 'Skin')}"
+        uv_node.uv_map = "UVMap"
+        material.node_tree.links.new(uv_node.outputs["UV"], image_node.inputs["Vector"])
+        material["registered_sticker_source"] = str(image_path)
+        material["registered_sticker_preserves_transmission"] = material_role == "glass"
+    else:
+        material = _graph_skin_material(mats, {**spec, "band": "elevation"})
+        if material is None:
+            raise ValueError("carrier facade skin requires the elevation sheet material")
+
+    material["massing_skin"] = True
+    material["massing_skin_canonical"] = ""
+    material["massing_skin_axis"] = axis
+    material["massing_skin_flip_u"] = bool(spec.get("flip_u", False))
+    material["massing_skin_tex_u_min"] = float(spec.get("uv_u_min", 0.0))
+    material["massing_skin_tex_u_max"] = float(spec.get("uv_u_max", 1.0))
+    material["massing_skin_v_min"] = float(spec.get("uv_v_min", 0.0))
+    material["massing_skin_v_max"] = float(spec.get("uv_v_max", 1.0))
+    centre = spec.get("centre", (0.0, 0.0, 0.0))
+    cx, cy, cz = (float(value) for value in centre)
+    span = float(spec.get("span_m", 1.0))
+    height = float(spec.get("height_m", 1.0))
+    default_u_centre = cy if axis in {"left", "right"} else cx
+    material["massing_skin_u_min"] = float(spec.get("u_min_m", -span / 2 if axis == "angle" else default_u_centre - span / 2))
+    material["massing_skin_u_max"] = float(spec.get("u_max_m", span / 2 if axis == "angle" else default_u_centre + span / 2))
+    material["massing_skin_z_min"] = float(spec.get("z_min_m", cz - height / 2))
+    material["massing_skin_z_max"] = float(spec.get("z_max_m", cz + height / 2))
+    if axis == "angle":
+        angle = math.radians(float(spec.get("rotation_z_deg", 0.0)))
+        material["massing_skin_origin_x"] = cx
+        material["massing_skin_origin_y"] = cy
+        material["massing_skin_along_x"] = math.cos(angle)
+        material["massing_skin_along_y"] = math.sin(angle)
+    elif axis in {"cylindrical_segment", "dome_radial"}:
+        material["massing_skin_origin_x"] = float(spec.get("origin_x", cx))
+        material["massing_skin_origin_y"] = float(spec.get("origin_y", cy))
+        material["massing_skin_angle_start_deg"] = float(spec.get("angle_start_deg", 0.0))
+        material["massing_skin_angle_end_deg"] = float(spec.get("angle_end_deg", 360.0))
+        material["massing_skin_dome_base_z"] = float(spec.get("dome_base_z", cz - height / 2))
+        material["massing_skin_dome_height_m"] = float(spec.get("dome_height_m", height))
+        material["massing_skin_dome_radius_m"] = float(spec.get("dome_radius_m", span / 2))
+    elif axis == "plan":
+        bounds = spec.get("plan_bounds")
+        if not bounds or len(bounds) != 4:
+            raise ValueError("plan carrier skin requires plan_bounds")
+        material["massing_skin_u_min"] = float(bounds[0])
+        material["massing_skin_u_max"] = float(bounds[1])
+        material["massing_skin_plan_v_min"] = float(bounds[2])
+        material["massing_skin_plan_v_max"] = float(bounds[3])
+
+    targets = {str(value) for value in spec.get("target_ids") or []}
+    if not targets:
+        raise ValueError("carrier skin requires target_ids")
+    desired_normal = spec.get("normal_xy")
+    normal_vector = Vector((float(desired_normal[0]), float(desired_normal[1]), 0.0)).normalized() if desired_normal else None
+    normal_dot_min = float(spec.get("normal_dot_min", 0.92))
+    normal_z_min = float(spec.get("normal_z_min", -1.01))
+    normal_z_max = float(spec.get("normal_z_max", 1.01))
+    angle_range = spec.get("normal_angle_range_deg")
+    assigned = 0
+    for obj in parts:
+        if obj.name not in targets and not any(obj.name.startswith(f"{target}_") for target in targets):
+            continue
+        slot = len(obj.data.materials)
+        obj.data.materials.append(material)
+        for polygon in obj.data.polygons:
+            world_normal = (obj.matrix_world.to_3x3() @ polygon.normal).normalized()
+            if not normal_z_min <= world_normal.z <= normal_z_max:
+                continue
+            if normal_vector is not None and world_normal.dot(normal_vector) < normal_dot_min:
+                continue
+            if angle_range is not None:
+                angle = math.degrees(math.atan2(world_normal.y, world_normal.x)) % 360.0
+                start, end = float(angle_range[0]) % 360.0, float(angle_range[1]) % 360.0
+                inside = start <= angle <= end if start <= end else angle >= start or angle <= end
+                if not inside:
+                    continue
+            polygon.material_index = slot
+            assigned += 1
+    if assigned == 0:
+        raise ValueError(f"carrier skin {spec.get('id')!r} selected no clay faces")
+    material["carrier_skin_assigned_faces"] = assigned
 
 
 def _consolidate_massing_skin_materials(obj: bpy.types.Object) -> None:
@@ -10960,6 +11158,80 @@ def _graph_dome_roof(parts: list, spec: dict, mats: dict) -> None:
             ))
 
 
+def _graph_courtyard_ring_roof(parts: list, spec: dict, mats: dict) -> None:
+    """One connected sloping perimeter roof around an open courtyard."""
+    cx, cy, eave_z = (float(value) for value in spec["location"])
+    width, depth = (float(value) for value in spec["outer_size"])
+    inner_width, inner_depth = (float(value) for value in spec["inner_size"])
+    rise = float(spec.get("rise_m", 3.6))
+    thickness = max(0.08, float(spec.get("thickness_m", 0.24)))
+    outer = _rounded_front_left_ring(
+        width, depth, cx, cy,
+        float(spec.get("corner_radius_m", 5.0)),
+        float(spec.get("other_chamfer_m", 4.0)),
+        int(spec.get("corner_segments", 8)),
+    )
+    inner: list[tuple[float, float]] = []
+    half_w, half_d = inner_width / 2, inner_depth / 2
+    for x, y in outer:
+        dx, dy = x - cx, y - cy
+        scale_x = half_w / abs(dx) if abs(dx) > 1e-8 else float("inf")
+        scale_y = half_d / abs(dy) if abs(dy) > 1e-8 else float("inf")
+        scale = min(scale_x, scale_y)
+        inner.append((cx + dx * scale, cy + dy * scale))
+    count = len(outer)
+    vertices = (
+        [(x, y, eave_z) for x, y in outer]
+        + [(x, y, eave_z + rise) for x, y in inner]
+        + [(x, y, eave_z - thickness) for x, y in outer]
+        + [(x, y, eave_z + rise - thickness) for x, y in inner]
+    )
+    outer_top, inner_top, outer_bottom, inner_bottom = 0, count, count * 2, count * 3
+    faces: list[tuple[int, ...]] = []
+    for index in range(count):
+        nxt = (index + 1) % count
+        faces.extend([
+            (outer_top + index, outer_top + nxt, inner_top + nxt, inner_top + index),
+            (outer_bottom + index, inner_bottom + index, inner_bottom + nxt, outer_bottom + nxt),
+            (outer_bottom + index, outer_bottom + nxt, outer_top + nxt, outer_top + index),
+            (inner_bottom + index, inner_top + index, inner_top + nxt, inner_bottom + nxt),
+        ])
+    obj = add_prism(
+        str(spec.get("id", "GraphCourtyardRoof")), vertices, faces,
+        _graph_material(mats, spec.get("material", "roof")),
+    )
+    obj["watertight_roof_ring"] = True
+    obj["courtyard_opening_m"] = [inner_width, inner_depth]
+    parts.append(obj)
+
+
+def _graph_locked_mesh_bundle(parts: list, spec: dict, mats: dict) -> None:
+    """Build a reviewed clay mesh bundle embedded in the signature profile.
+
+    This is the geometry half of the clay-and-sticker workflow.  The compiler
+    serializes the approved vertices and faces into the profile, so Blender
+    receives the exact audited carrier without depending on an ignored OBJ or
+    reconstructing it from looser primitives.  Sticker assemblies may change
+    materials and UVs, but never these vertices or faces.
+    """
+    meshes = list(spec.get("meshes") or [])
+    if not meshes:
+        raise ValueError("locked mesh bundle requires at least one mesh")
+    default_material = spec.get("material", "primary")
+    for mesh_spec in meshes:
+        vertices = [tuple(float(value) for value in vertex) for vertex in mesh_spec.get("vertices") or []]
+        faces = [tuple(int(value) for value in face) for face in mesh_spec.get("faces") or []]
+        if len(vertices) < 3 or not faces:
+            raise ValueError(f"locked mesh {mesh_spec.get('name')!r} has incomplete topology")
+        obj = add_prism(
+            str(mesh_spec["name"]), vertices, faces,
+            _graph_material(mats, mesh_spec.get("material", default_material)),
+        )
+        obj["locked_clay_geometry"] = True
+        obj["locked_clay_sha256"] = str(spec.get("geometry_sha256", ""))
+        parts.append(obj)
+
+
 def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
     """Build a single landmark asset from an opt-in ``massing-graph@1`` recipe.
 
@@ -11001,6 +11273,16 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
                 str(node["id"]), size, location,
                 _graph_material(mats, node.get("material")), float(node.get("bevel_m", 0.05)),
                 str(node.get("ridge_axis", "y")),
+            ))
+        elif kind == "rounded_corner_box":
+            size = tuple(float(value) for value in node["size"])
+            parts.append(add_rounded_corner_box(
+                str(node["id"]), size, location,
+                _graph_material(mats, node.get("material")),
+                float(node.get("corner_radius_m", 5.0)),
+                float(node.get("other_chamfer_m", 4.0)),
+                int(node.get("corner_segments", 8)),
+                float(node.get("bevel_m", 0.04)),
             ))
         elif kind == "mono_pitch_roof":
             size = tuple(float(value) for value in node["size"])
@@ -11044,11 +11326,17 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
             parts.append(part)
         elif kind == "dome_roof":
             _graph_dome_roof(parts, node, mats)
+        elif kind == "courtyard_ring_roof":
+            _graph_courtyard_ring_roof(parts, node, mats)
+        elif kind == "locked_mesh_bundle":
+            _graph_locked_mesh_bundle(parts, node, mats)
         else:
             raise ValueError(f"massing graph node {node.get('id')!r} has unsupported kind {kind!r}")
 
     for assembly in graph.get("assemblies", []):
         kind = assembly.get("kind")
+        if CLAY_MODE and kind in {"facade_skin", "roof_skin", "carrier_skin", "displaced_facade_skin", "facade_skin_stack"}:
+            continue
         if kind == "column_array":
             _graph_column_array(parts, assembly, mats)
         elif kind == "classical_portico":
@@ -11087,6 +11375,8 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
             _graph_facade_skin(parts, assembly, mats)
         elif kind == "roof_skin":
             _graph_roof_skin(parts, assembly, mats)
+        elif kind == "carrier_skin":
+            _graph_carrier_skin(parts, assembly, mats)
         elif kind == "displaced_facade_skin":
             _graph_displaced_facade_skin(parts, assembly, mats)
         elif kind == "facade_skin_stack":
@@ -11151,8 +11441,18 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
     if not parts:
         raise ValueError("massing graph contains no renderable nodes or assemblies")
     model = join_as("ASM_MassingGraph", parts)
-    _apply_massing_skin_uv(model)
-    _consolidate_massing_skin_materials(model)
+    if CLAY_MODE:
+        clay = make_material("MAT_ClayLock", {
+            "base_color": "#b7b2aa", "roughness": 0.88, "metallic": 0.0,
+        })
+        model.data.materials.clear()
+        model.data.materials.append(clay)
+        for polygon in model.data.polygons:
+            polygon.material_index = 0
+        model["geometry_review_mode"] = "neutral_clay"
+    else:
+        _apply_massing_skin_uv(model)
+        _consolidate_massing_skin_materials(model)
     # Bevelled plinths and stair nosings can produce a tiny negative export
     # bound even when their design datum is exactly zero.  Runtime placement
     # requires a true bottom-centre origin, so normalize the completed graph
@@ -12203,15 +12503,18 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
                         help="facade-sheet directory; enables the hybrid photo-elevation modules")
     parser.add_argument("--facade-sheet-detail", choices=("hero", "city"), default="hero",
                         help="hero keeps full side/rear openings; city uses a lighter orbit-safe treatment")
+    parser.add_argument("--clay-mode", action="store_true",
+                        help="skip sticker assemblies and render the locked geometry in neutral clay")
     return parser.parse_args(argv)
 
 
 def main() -> None:
     argv = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
     args = parse_args(argv)
-    global TEXTURES_DIR, FACADE_SHEET, FACADE_SHEET_DETAIL
+    global TEXTURES_DIR, FACADE_SHEET, FACADE_SHEET_DETAIL, CLAY_MODE
     TEXTURES_DIR = args.textures.resolve() if args.textures else None
     FACADE_SHEET_DETAIL = args.facade_sheet_detail
+    CLAY_MODE = bool(args.clay_mode)
     if args.facade_sheets:
         sheet_dir = args.facade_sheets.resolve()
         sheet_manifest = sheet_dir / "manifest.json"

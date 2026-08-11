@@ -1,0 +1,21 @@
+{
+  "schema": "architect-review@1",
+  "archetype": "grand-magasin-belle-epoque",
+  "run": "final-run-v4",
+  "reviewer": "architect_design_reviewer",
+  "score": 73,
+  "visual_catalogue_verdict": "reject",
+  "packaging_verdict_is_separate": true,
+  "hard_stops": [
+    "Broad pale roof-eave and upper-cornice bands read as exposed carrier geometry.",
+    "Compressed and discontinuous sticker registration remains at the rounded pavilion, roofline and exterior corners.",
+    "The oversized smooth canopy and blank support conceal the recessed entrance and are not faithful to the glazed iron-framed portal.",
+    "Domes remain dark and distorted while dormer side and top returns remain visually incomplete.",
+    "The principal silhouette is dominated by thick horizontal bands, a heavy canopy and a mechanically stacked corner tower."
+  ],
+  "strengths": [
+    "The facade-close view retains credible iron, stone and glass detail.",
+    "The roof massing and open courtyard are broadly correct.",
+    "The clay geometry passed the independent geometry gate before sticker application."
+  ]
+}

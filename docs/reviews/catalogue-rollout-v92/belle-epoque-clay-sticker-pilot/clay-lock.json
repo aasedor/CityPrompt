@@ -1,0 +1,2403 @@
+{
+  "schema": "belle-epoque-clay-lock@1",
+  "building_id": "grand-magasin-belle-epoque",
+  "status": "approved",
+  "coordinate_frame": "x_right_y_rear_z_up_metres",
+  "geometry_sha256": "4a0c2c6514d0a546d3a3154b6766d40797c88b8b3ffb7ce4e1523831be73b815",
+  "carrier_mode": "native_surface_material",
+  "separate_sticker_face_boxes": "forbidden",
+  "placement": {
+    "mode": "fixed_select_and_place",
+    "translation": "allowed",
+    "rotation": "allowed",
+    "uniform_scale": "forbidden",
+    "non_uniform_scale": "forbidden",
+    "polygon_fit": false,
+    "pivot_m": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "dimensions": {
+    "width_m": 36.0,
+    "depth_m": 34.0,
+    "main_wall_height_m": 18.5,
+    "upper_setback_height_m": 2.0,
+    "wall_height_m": 20.5,
+    "crown_outer_eave_m": 21.0,
+    "mansard_break_m": 24.0,
+    "crown_inner_eave_m": 24.8,
+    "visible_height_m": 31.0
+  },
+  "evidence": {
+    "authority": "exact_v91_three_view_reference_set",
+    "views": [
+      {
+        "role": "street_identity",
+        "path": "frontend/public/archetypes/buildings/grand-magasin/variant_0.png",
+        "image_size_px": [
+          1024,
+          768
+        ],
+        "annotations": {
+          "path": "variant_0.png",
+          "building_bbox_px": [
+            77,
+            22,
+            951,
+            670
+          ],
+          "floor_datums_y_px": [
+            670,
+            565,
+            468,
+            371,
+            272,
+            174
+          ],
+          "entrance_centres_x_px": [
+            447,
+            510,
+            573
+          ],
+          "entrance_span_px": [
+            414,
+            606
+          ],
+          "horizon_y_px": 474,
+          "vanishing_points_px": [
+            [
+              -905,
+              474
+            ],
+            [
+              1915,
+              474
+            ],
+            [
+              510,
+              -2690
+            ]
+          ]
+        }
+      },
+      {
+        "role": "oblique_massing",
+        "path": "frontend/public/archetypes/buildings/grand-magasin/variant_0_angle_60.jpg",
+        "image_size_px": [
+          1195,
+          896
+        ],
+        "annotations": {
+          "path": "variant_0_angle_60.jpg",
+          "building_bbox_px": [
+            247,
+            133,
+            1110,
+            888
+          ],
+          "roof_corners_px": [
+            [
+              260,
+              247
+            ],
+            [
+              626,
+              132
+            ],
+            [
+              1098,
+              298
+            ],
+            [
+              555,
+              888
+            ]
+          ],
+          "court_corners_px": [
+            [
+              458,
+              214
+            ],
+            [
+              766,
+              163
+            ],
+            [
+              916,
+              355
+            ],
+            [
+              579,
+              461
+            ]
+          ],
+          "dome_centre_px": [
+            647,
+            371
+          ],
+          "horizon_y_px": 518,
+          "vanishing_points_px": [
+            [
+              -620,
+              518
+            ],
+            [
+              1920,
+              518
+            ],
+            [
+              606,
+              -1810
+            ]
+          ]
+        }
+      },
+      {
+        "role": "roof_plan",
+        "path": "frontend/public/archetypes/buildings/grand-magasin/variant_0_angle_90.jpg",
+        "image_size_px": [
+          1195,
+          896
+        ],
+        "annotations": {
+          "path": "variant_0_angle_90.jpg",
+          "outer_bbox_px": [
+            204,
+            54,
+            1022,
+            849
+          ],
+          "court_bbox_px": [
+            376,
+            238,
+            884,
+            670
+          ],
+          "central_dome_bbox_px": [
+            447,
+            281,
+            863,
+            697
+          ],
+          "corner_dome_bbox_px": [
+            202,
+            662,
+            369,
+            839
+          ],
+          "camera_mode": "near_orthographic",
+          "estimated_fov_deg": 18.0
+        }
+      }
+    ],
+    "evidence_conflicts": [
+      {
+        "id": "principal_entrance_topology",
+        "conflict": "The street image reads as a centred frontal composition, while the oblique and aerial views locate the landmark entrance and small cupola at the wrapped front-left corner.",
+        "adjudication": "oblique_massing_and_roof_plan_control_topology",
+        "street_identity_scope": [
+          "architectural_character",
+          "facade_hierarchy",
+          "camera",
+          "materials"
+        ],
+        "street_identity_excluded_scope": [
+          "entrance_plan_location",
+          "corner_topology"
+        ],
+        "status": "resolved"
+      }
+    ],
+    "selective_scale_basis": "five visible occupied facade levels at 4.1 m datum spacing; ratios remain image-measured",
+    "camera_calibration": {
+      "street_identity": {
+        "mode": "three_vanishing_point",
+        "horizon_y_px": 474,
+        "estimated_focal_px": 1400.0,
+        "estimated_fov_deg": 40.2,
+        "anchor_space": "source_pixels"
+      },
+      "oblique_massing": {
+        "mode": "three_vanishing_point",
+        "horizon_y_px": 518,
+        "estimated_focal_px": 1248.0,
+        "estimated_fov_deg": 51.1,
+        "anchor_space": "source_pixels"
+      },
+      "roof_plan": {
+        "mode": "near_orthographic_plan_homography",
+        "estimated_fov_deg": 18.0,
+        "anchor_space": "source_pixels"
+      }
+    }
+  },
+  "cameras": {
+    "street_identity": {
+      "mode": "three_vanishing_point",
+      "horizon_y_px": 474,
+      "estimated_focal_px": 1400.0,
+      "estimated_fov_deg": 40.2,
+      "anchor_space": "source_pixels"
+    },
+    "oblique_massing": {
+      "mode": "three_vanishing_point",
+      "horizon_y_px": 518,
+      "estimated_focal_px": 1248.0,
+      "estimated_fov_deg": 51.1,
+      "anchor_space": "source_pixels"
+    },
+    "roof_plan": {
+      "mode": "near_orthographic_plan_homography",
+      "estimated_fov_deg": 18.0,
+      "anchor_space": "source_pixels"
+    },
+    "aggregate_anchor_metrics": {
+      "rmse_bbox": 0.012591928262653523,
+      "p95_bbox": 0.02078239608801956
+    }
+  },
+  "street_silhouette_priority": [
+    "corner_upper_tower",
+    "corner_cupola",
+    "wrapped_corner_entrance",
+    "central_dome"
+  ],
+  "anchors": [
+    {
+      "anchor_id": "floor_00",
+      "kind": "datum",
+      "object_space_m": [
+        0.0,
+        -17.0,
+        0.0
+      ]
+    },
+    {
+      "anchor_id": "floor_01",
+      "kind": "datum",
+      "object_space_m": [
+        0.0,
+        -17.0,
+        4.1
+      ]
+    },
+    {
+      "anchor_id": "floor_02",
+      "kind": "datum",
+      "object_space_m": [
+        0.0,
+        -17.0,
+        8.2
+      ]
+    },
+    {
+      "anchor_id": "floor_03",
+      "kind": "datum",
+      "object_space_m": [
+        0.0,
+        -17.0,
+        12.3
+      ]
+    },
+    {
+      "anchor_id": "floor_04",
+      "kind": "datum",
+      "object_space_m": [
+        0.0,
+        -17.0,
+        16.4
+      ]
+    },
+    {
+      "anchor_id": "floor_05",
+      "kind": "datum",
+      "object_space_m": [
+        0.0,
+        -17.0,
+        20.5
+      ]
+    },
+    {
+      "anchor_id": "wrapped_corner_entrance_axis",
+      "kind": "axis",
+      "object_space_m": [
+        -15.949747468305834,
+        -14.949747468305834,
+        0.0
+      ]
+    },
+    {
+      "anchor_id": "main_cornice_datum",
+      "kind": "datum",
+      "object_space_m": [
+        0.0,
+        -17.0,
+        18.5
+      ]
+    },
+    {
+      "anchor_id": "mansard_outer_eave",
+      "kind": "roof_break",
+      "object_space_m": [
+        0.0,
+        -17.0,
+        21.0
+      ]
+    },
+    {
+      "anchor_id": "mansard_break",
+      "kind": "roof_break",
+      "object_space_m": [
+        0.0,
+        -13.5,
+        24.0
+      ]
+    },
+    {
+      "anchor_id": "raised_court_curb",
+      "kind": "roof_break",
+      "object_space_m": [
+        0.0,
+        -7.5,
+        24.8
+      ]
+    },
+    {
+      "anchor_id": "central_dome_centre",
+      "kind": "roof_feature",
+      "object_space_m": [
+        0.0,
+        0.0,
+        25.75
+      ]
+    },
+    {
+      "anchor_id": "corner_tower_axis",
+      "kind": "street_primary_roof_feature",
+      "object_space_m": [
+        -14.5,
+        -13.5,
+        18.4
+      ],
+      "priority": 1
+    },
+    {
+      "anchor_id": "corner_cupola_centre",
+      "kind": "street_primary_roof_feature",
+      "object_space_m": [
+        -14.5,
+        -13.5,
+        25.05
+      ],
+      "priority": 1
+    },
+    {
+      "anchor_id": "dormer_front_left",
+      "kind": "roof_feature",
+      "object_space_m": [
+        -9.0,
+        -14.8,
+        22.1
+      ]
+    },
+    {
+      "anchor_id": "dormer_front_centre",
+      "kind": "roof_feature",
+      "object_space_m": [
+        0.0,
+        -14.8,
+        22.1
+      ]
+    },
+    {
+      "anchor_id": "dormer_front_right",
+      "kind": "roof_feature",
+      "object_space_m": [
+        9.0,
+        -14.8,
+        22.1
+      ]
+    },
+    {
+      "anchor_id": "dormer_rear_left",
+      "kind": "roof_feature",
+      "object_space_m": [
+        -9.0,
+        14.8,
+        22.1
+      ]
+    },
+    {
+      "anchor_id": "dormer_rear_centre",
+      "kind": "roof_feature",
+      "object_space_m": [
+        0.0,
+        14.8,
+        22.1
+      ]
+    },
+    {
+      "anchor_id": "dormer_rear_right",
+      "kind": "roof_feature",
+      "object_space_m": [
+        9.0,
+        14.8,
+        22.1
+      ]
+    },
+    {
+      "anchor_id": "dormer_left_front",
+      "kind": "roof_feature",
+      "object_space_m": [
+        -14.8,
+        -5.0,
+        22.1
+      ]
+    },
+    {
+      "anchor_id": "dormer_left_rear",
+      "kind": "roof_feature",
+      "object_space_m": [
+        -14.8,
+        5.0,
+        22.1
+      ]
+    },
+    {
+      "anchor_id": "dormer_right_front",
+      "kind": "roof_feature",
+      "object_space_m": [
+        14.8,
+        -5.0,
+        22.1
+      ]
+    },
+    {
+      "anchor_id": "dormer_right_rear",
+      "kind": "roof_feature",
+      "object_space_m": [
+        14.8,
+        5.0,
+        22.1
+      ]
+    }
+  ],
+  "surfaces": [
+    {
+      "surface_id": "facade_front",
+      "role": "front",
+      "carrier_mesh": "front_wall",
+      "mapping": "planar",
+      "boundary_m": [
+        [
+          -11,
+          -17,
+          0.0
+        ],
+        [
+          18,
+          -17,
+          0.0
+        ],
+        [
+          18,
+          -17,
+          18.5
+        ],
+        [
+          -11,
+          -17,
+          18.5
+        ]
+      ],
+      "exposed": true
+    },
+    {
+      "surface_id": "facade_right",
+      "role": "right",
+      "carrier_mesh": "right_wall",
+      "mapping": "planar",
+      "boundary_m": [
+        [
+          18,
+          -17,
+          0.0
+        ],
+        [
+          18,
+          17,
+          0.0
+        ],
+        [
+          18,
+          17,
+          18.5
+        ],
+        [
+          18,
+          -17,
+          18.5
+        ]
+      ],
+      "exposed": true
+    },
+    {
+      "surface_id": "facade_rear",
+      "role": "rear",
+      "carrier_mesh": "rear_wall",
+      "mapping": "planar",
+      "boundary_m": [
+        [
+          18,
+          17,
+          0.0
+        ],
+        [
+          -18,
+          17,
+          0.0
+        ],
+        [
+          -18,
+          17,
+          18.5
+        ],
+        [
+          18,
+          17,
+          18.5
+        ]
+      ],
+      "exposed": true
+    },
+    {
+      "surface_id": "facade_left",
+      "role": "left",
+      "carrier_mesh": "left_wall",
+      "mapping": "planar",
+      "boundary_m": [
+        [
+          -18,
+          17,
+          0.0
+        ],
+        [
+          -18,
+          -10,
+          0.0
+        ],
+        [
+          -18,
+          -10,
+          18.5
+        ],
+        [
+          -18,
+          17,
+          18.5
+        ]
+      ],
+      "exposed": true
+    },
+    {
+      "surface_id": "corner_pavilion",
+      "role": "front_left_corner",
+      "carrier_mesh": "corner_pavilion_facet_assembly",
+      "mapping": "cylindrical",
+      "boundary_m": [
+        [
+          -18.0,
+          -10.0,
+          0.0
+        ],
+        [
+          -17.4672,
+          -12.6788,
+          0.0
+        ],
+        [
+          -15.9497,
+          -14.9497,
+          0.0
+        ],
+        [
+          -13.6788,
+          -16.4672,
+          0.0
+        ],
+        [
+          -11.0,
+          -17.0,
+          0.0
+        ],
+        [
+          -11.0,
+          -17.0,
+          20.5
+        ],
+        [
+          -13.6788,
+          -16.4672,
+          20.5
+        ],
+        [
+          -15.9497,
+          -14.9497,
+          20.5
+        ],
+        [
+          -17.4672,
+          -12.6788,
+          20.5
+        ],
+        [
+          -18.0,
+          -10.0,
+          20.5
+        ]
+      ],
+      "exposed": true
+    },
+    {
+      "surface_id": "court_front",
+      "role": "court_front",
+      "carrier_mesh": "court_front_wall",
+      "mapping": "planar",
+      "boundary_m": [
+        [
+          -9,
+          -7.5,
+          0.0
+        ],
+        [
+          9,
+          -7.5,
+          0.0
+        ],
+        [
+          9,
+          -7.5,
+          20.5
+        ],
+        [
+          -9,
+          -7.5,
+          20.5
+        ]
+      ],
+      "exposed": true
+    },
+    {
+      "surface_id": "court_right",
+      "role": "court_right",
+      "carrier_mesh": "court_right_wall",
+      "mapping": "planar",
+      "boundary_m": [
+        [
+          9,
+          -7.5,
+          0.0
+        ],
+        [
+          9,
+          7.5,
+          0.0
+        ],
+        [
+          9,
+          7.5,
+          20.5
+        ],
+        [
+          9,
+          -7.5,
+          20.5
+        ]
+      ],
+      "exposed": true
+    },
+    {
+      "surface_id": "court_rear",
+      "role": "court_rear",
+      "carrier_mesh": "court_rear_wall",
+      "mapping": "planar",
+      "boundary_m": [
+        [
+          9,
+          7.5,
+          0.0
+        ],
+        [
+          -9,
+          7.5,
+          0.0
+        ],
+        [
+          -9,
+          7.5,
+          20.5
+        ],
+        [
+          9,
+          7.5,
+          20.5
+        ]
+      ],
+      "exposed": true
+    },
+    {
+      "surface_id": "court_left",
+      "role": "court_left",
+      "carrier_mesh": "court_left_wall",
+      "mapping": "planar",
+      "boundary_m": [
+        [
+          -9,
+          7.5,
+          0.0
+        ],
+        [
+          -9,
+          -7.5,
+          0.0
+        ],
+        [
+          -9,
+          -7.5,
+          20.5
+        ],
+        [
+          -9,
+          7.5,
+          20.5
+        ]
+      ],
+      "exposed": true
+    },
+    {
+      "surface_id": "upper_front",
+      "role": "upper_front_setback",
+      "carrier_mesh": "upper_front_setback",
+      "mapping": "planar",
+      "boundary_m": [
+        [
+          -10.5,
+          -16.35,
+          18.5
+        ],
+        [
+          17.35,
+          -16.35,
+          18.5
+        ],
+        [
+          17.35,
+          -16.35,
+          20.5
+        ],
+        [
+          -10.5,
+          -16.35,
+          20.5
+        ]
+      ],
+      "exposed": true
+    },
+    {
+      "surface_id": "upper_right",
+      "role": "upper_right_setback",
+      "carrier_mesh": "upper_right_setback",
+      "mapping": "planar",
+      "boundary_m": [
+        [
+          17.85,
+          -16.35,
+          18.5
+        ],
+        [
+          17.85,
+          16.35,
+          18.5
+        ],
+        [
+          17.85,
+          16.35,
+          20.5
+        ],
+        [
+          17.85,
+          -16.35,
+          20.5
+        ]
+      ],
+      "exposed": true
+    },
+    {
+      "surface_id": "upper_rear",
+      "role": "upper_rear_setback",
+      "carrier_mesh": "upper_rear_setback",
+      "mapping": "planar",
+      "boundary_m": [
+        [
+          17.35,
+          16.35,
+          18.5
+        ],
+        [
+          -17.35,
+          16.35,
+          18.5
+        ],
+        [
+          -17.35,
+          16.35,
+          20.5
+        ],
+        [
+          17.35,
+          16.35,
+          20.5
+        ]
+      ],
+      "exposed": true
+    },
+    {
+      "surface_id": "upper_left",
+      "role": "upper_left_setback",
+      "carrier_mesh": "upper_left_setback",
+      "mapping": "planar",
+      "boundary_m": [
+        [
+          -17.85,
+          16.35,
+          18.5
+        ],
+        [
+          -17.85,
+          -9.5,
+          18.5
+        ],
+        [
+          -17.85,
+          -9.5,
+          20.5
+        ],
+        [
+          -17.85,
+          16.35,
+          20.5
+        ]
+      ],
+      "exposed": true
+    },
+    {
+      "surface_id": "corner_upper_returns",
+      "role": "closed_upper_corner_returns",
+      "carrier_mesh": "corner_upper_return_assembly",
+      "mapping": "planar",
+      "boundary_m": [
+        [
+          -18.05,
+          -10.1,
+          18.5
+        ],
+        [
+          -17.25,
+          -9.4,
+          18.5
+        ],
+        [
+          -10.4,
+          -16.25,
+          20.5
+        ],
+        [
+          -11.1,
+          -17.05,
+          20.5
+        ]
+      ],
+      "exposed": true
+    },
+    {
+      "surface_id": "perimeter_cornice",
+      "role": "projecting_perimeter_cornice",
+      "carrier_mesh": "main_cornice_assembly",
+      "mapping": "planar",
+      "boundary_m": [
+        [
+          -18.35,
+          -17.35,
+          18.05
+        ],
+        [
+          18.35,
+          -17.35,
+          18.05
+        ],
+        [
+          18.35,
+          17.35,
+          18.75
+        ],
+        [
+          -18.35,
+          17.35,
+          18.75
+        ]
+      ],
+      "exposed": true
+    },
+    {
+      "surface_id": "corner_cornices",
+      "role": "projecting_corner_cornices",
+      "carrier_mesh": "corner_pavilion_cornice_assembly",
+      "mapping": "cylindrical",
+      "boundary_m": [
+        [
+          -18.38,
+          -10,
+          18.05
+        ],
+        [
+          -15.95,
+          -14.95,
+          18.05
+        ],
+        [
+          -11,
+          -17.38,
+          20.62
+        ],
+        [
+          -18.38,
+          -10,
+          20.62
+        ]
+      ],
+      "exposed": true
+    },
+    {
+      "surface_id": "wrapped_canopy",
+      "role": "wrapped_corner_canopy",
+      "carrier_mesh": "wrapped_corner_canopy",
+      "mapping": "cylindrical",
+      "boundary_m": [
+        [
+          -21.2,
+          -10,
+          5.05
+        ],
+        [
+          -18.21,
+          -17.21,
+          5.05
+        ],
+        [
+          -11,
+          -20.2,
+          5.38
+        ],
+        [
+          -17.2,
+          -10,
+          5.38
+        ]
+      ],
+      "exposed": true
+    },
+    {
+      "surface_id": "roof_front",
+      "role": "roof_mansard_front",
+      "carrier_mesh": "watertight_perimeter_court_crown",
+      "mapping": "planar",
+      "boundary_m": [
+        [
+          -18,
+          -17,
+          21
+        ],
+        [
+          18,
+          -17,
+          21
+        ],
+        [
+          14.5,
+          -13.5,
+          24
+        ],
+        [
+          -14.5,
+          -13.5,
+          24
+        ]
+      ],
+      "exposed": true
+    },
+    {
+      "surface_id": "roof_right",
+      "role": "roof_mansard_right",
+      "carrier_mesh": "watertight_perimeter_court_crown",
+      "mapping": "planar",
+      "boundary_m": [
+        [
+          18,
+          -17,
+          21
+        ],
+        [
+          18,
+          17,
+          21
+        ],
+        [
+          14.5,
+          13.5,
+          24
+        ],
+        [
+          14.5,
+          -13.5,
+          24
+        ]
+      ],
+      "exposed": true
+    },
+    {
+      "surface_id": "roof_rear",
+      "role": "roof_mansard_rear",
+      "carrier_mesh": "watertight_perimeter_court_crown",
+      "mapping": "planar",
+      "boundary_m": [
+        [
+          18,
+          17,
+          21
+        ],
+        [
+          -18,
+          17,
+          21
+        ],
+        [
+          -14.5,
+          13.5,
+          24
+        ],
+        [
+          14.5,
+          13.5,
+          24
+        ]
+      ],
+      "exposed": true
+    },
+    {
+      "surface_id": "roof_left",
+      "role": "roof_mansard_left",
+      "carrier_mesh": "watertight_perimeter_court_crown",
+      "mapping": "planar",
+      "boundary_m": [
+        [
+          -18,
+          17,
+          21
+        ],
+        [
+          -18,
+          -17,
+          21
+        ],
+        [
+          -14.5,
+          -13.5,
+          24
+        ],
+        [
+          -14.5,
+          13.5,
+          24
+        ]
+      ],
+      "exposed": true
+    },
+    {
+      "surface_id": "terrace_front",
+      "role": "roof_terrace_front",
+      "carrier_mesh": "watertight_perimeter_court_crown",
+      "mapping": "planar",
+      "boundary_m": [
+        [
+          -14.5,
+          -13.5,
+          24
+        ],
+        [
+          14.5,
+          -13.5,
+          24
+        ],
+        [
+          9,
+          -7.5,
+          24.8
+        ],
+        [
+          -9,
+          -7.5,
+          24.8
+        ]
+      ],
+      "exposed": true
+    },
+    {
+      "surface_id": "terrace_right",
+      "role": "roof_terrace_right",
+      "carrier_mesh": "watertight_perimeter_court_crown",
+      "mapping": "planar",
+      "boundary_m": [
+        [
+          14.5,
+          -13.5,
+          24
+        ],
+        [
+          14.5,
+          13.5,
+          24
+        ],
+        [
+          9,
+          7.5,
+          24.8
+        ],
+        [
+          9,
+          -7.5,
+          24.8
+        ]
+      ],
+      "exposed": true
+    },
+    {
+      "surface_id": "terrace_rear",
+      "role": "roof_terrace_rear",
+      "carrier_mesh": "watertight_perimeter_court_crown",
+      "mapping": "planar",
+      "boundary_m": [
+        [
+          14.5,
+          13.5,
+          24
+        ],
+        [
+          -14.5,
+          13.5,
+          24
+        ],
+        [
+          -9,
+          7.5,
+          24.8
+        ],
+        [
+          9,
+          7.5,
+          24.8
+        ]
+      ],
+      "exposed": true
+    },
+    {
+      "surface_id": "terrace_left",
+      "role": "roof_terrace_left",
+      "carrier_mesh": "watertight_perimeter_court_crown",
+      "mapping": "planar",
+      "boundary_m": [
+        [
+          -14.5,
+          13.5,
+          24
+        ],
+        [
+          -14.5,
+          -13.5,
+          24
+        ],
+        [
+          -9,
+          -7.5,
+          24.8
+        ],
+        [
+          -9,
+          7.5,
+          24.8
+        ]
+      ],
+      "exposed": true
+    },
+    {
+      "surface_id": "dormers_front",
+      "role": "dormer_front_geometry",
+      "carrier_mesh": "dormer_front_assembly",
+      "mapping": "planar",
+      "boundary_m": [
+        [
+          -10.25,
+          -15.6,
+          22.1
+        ],
+        [
+          10.25,
+          -15.6,
+          22.1
+        ],
+        [
+          10.25,
+          -15.6,
+          24.0
+        ],
+        [
+          9,
+          -15.6,
+          25.15
+        ],
+        [
+          -10.25,
+          -15.6,
+          24.0
+        ]
+      ],
+      "exposed": true
+    },
+    {
+      "surface_id": "dormers_rear",
+      "role": "dormer_rear_geometry",
+      "carrier_mesh": "dormer_rear_assembly",
+      "mapping": "planar",
+      "boundary_m": [
+        [
+          10.25,
+          15.6,
+          22.1
+        ],
+        [
+          -10.25,
+          15.6,
+          22.1
+        ],
+        [
+          -10.25,
+          15.6,
+          24.0
+        ],
+        [
+          -9,
+          15.6,
+          25.15
+        ],
+        [
+          10.25,
+          15.6,
+          24.0
+        ]
+      ],
+      "exposed": true
+    },
+    {
+      "surface_id": "dormers_left",
+      "role": "dormer_left_geometry",
+      "carrier_mesh": "dormer_left_assembly",
+      "mapping": "planar",
+      "boundary_m": [
+        [
+          -15.6,
+          6.25,
+          22.1
+        ],
+        [
+          -15.6,
+          -6.25,
+          22.1
+        ],
+        [
+          -15.6,
+          -6.25,
+          24.0
+        ],
+        [
+          -15.6,
+          -5,
+          25.15
+        ],
+        [
+          -15.6,
+          6.25,
+          24.0
+        ]
+      ],
+      "exposed": true
+    },
+    {
+      "surface_id": "dormers_right",
+      "role": "dormer_right_geometry",
+      "carrier_mesh": "dormer_right_assembly",
+      "mapping": "planar",
+      "boundary_m": [
+        [
+          15.6,
+          -6.25,
+          22.1
+        ],
+        [
+          15.6,
+          6.25,
+          22.1
+        ],
+        [
+          15.6,
+          6.25,
+          24.0
+        ],
+        [
+          15.6,
+          5,
+          25.15
+        ],
+        [
+          15.6,
+          -6.25,
+          24.0
+        ]
+      ],
+      "exposed": true
+    },
+    {
+      "surface_id": "central_curb",
+      "role": "central_dome_curb",
+      "carrier_mesh": "central_dome_curb",
+      "mapping": "cylindrical",
+      "boundary_m": [
+        [
+          0,
+          0,
+          24.45
+        ],
+        [
+          6.2,
+          0,
+          24.45
+        ],
+        [
+          6.2,
+          0,
+          25.05
+        ],
+        [
+          0,
+          0,
+          25.05
+        ]
+      ],
+      "exposed": true
+    },
+    {
+      "surface_id": "central_drum",
+      "role": "central_dome_drum",
+      "carrier_mesh": "central_dome_drum",
+      "mapping": "cylindrical",
+      "boundary_m": [
+        [
+          0,
+          0,
+          24.85
+        ],
+        [
+          6.0,
+          0,
+          24.85
+        ],
+        [
+          6.0,
+          0,
+          25.9
+        ],
+        [
+          0,
+          0,
+          25.9
+        ]
+      ],
+      "exposed": true
+    },
+    {
+      "surface_id": "central_dome",
+      "role": "central_dome",
+      "carrier_mesh": "central_glass_dome",
+      "mapping": "radial",
+      "boundary_m": [
+        [
+          0,
+          0,
+          25.75
+        ],
+        [
+          5.9,
+          0,
+          25.75
+        ],
+        [
+          0,
+          0,
+          29.75
+        ],
+        [
+          -5.9,
+          0,
+          25.75
+        ]
+      ],
+      "exposed": true
+    },
+    {
+      "surface_id": "central_cap_finial",
+      "role": "central_dome_cap_finial",
+      "carrier_mesh": "central_dome_cap_finial_assembly",
+      "mapping": "cylindrical",
+      "boundary_m": [
+        [
+          0,
+          0,
+          29.65
+        ],
+        [
+          1.15,
+          0,
+          29.65
+        ],
+        [
+          0.11,
+          0,
+          31.0
+        ],
+        [
+          0,
+          0,
+          31.0
+        ]
+      ],
+      "exposed": true
+    },
+    {
+      "surface_id": "corner_tower",
+      "role": "corner_upper_tower",
+      "carrier_mesh": "corner_upper_tower",
+      "mapping": "cylindrical",
+      "boundary_m": [
+        [
+          -14.5,
+          -13.5,
+          18.4
+        ],
+        [
+          -11.35,
+          -13.5,
+          18.4
+        ],
+        [
+          -11.35,
+          -13.5,
+          24.0
+        ],
+        [
+          -14.5,
+          -13.5,
+          24.0
+        ]
+      ],
+      "exposed": true
+    },
+    {
+      "surface_id": "corner_tower_crown",
+      "role": "corner_tower_crown",
+      "carrier_mesh": "corner_tower_crown",
+      "mapping": "cylindrical",
+      "boundary_m": [
+        [
+          -14.5,
+          -13.5,
+          23.65
+        ],
+        [
+          -11.2,
+          -13.5,
+          23.65
+        ],
+        [
+          -11.2,
+          -13.5,
+          24.15
+        ],
+        [
+          -14.5,
+          -13.5,
+          24.15
+        ]
+      ],
+      "exposed": true
+    },
+    {
+      "surface_id": "corner_drum",
+      "role": "corner_cupola_drum",
+      "carrier_mesh": "corner_cupola_drum",
+      "mapping": "cylindrical",
+      "boundary_m": [
+        [
+          -14.5,
+          -13.5,
+          23.85
+        ],
+        [
+          -11.35,
+          -13.5,
+          23.85
+        ],
+        [
+          -11.35,
+          -13.5,
+          25.2
+        ],
+        [
+          -14.5,
+          -13.5,
+          25.2
+        ]
+      ],
+      "exposed": true
+    },
+    {
+      "surface_id": "corner_dome",
+      "role": "corner_cupola",
+      "carrier_mesh": "corner_glass_cupola",
+      "mapping": "radial",
+      "boundary_m": [
+        [
+          -14.5,
+          -13.5,
+          25.05
+        ],
+        [
+          -11.3,
+          -13.5,
+          25.05
+        ],
+        [
+          -14.5,
+          -13.5,
+          28.35
+        ],
+        [
+          -17.7,
+          -13.5,
+          25.05
+        ]
+      ],
+      "exposed": true
+    },
+    {
+      "surface_id": "corner_cap_finial",
+      "role": "corner_cupola_cap_finial",
+      "carrier_mesh": "corner_cupola_cap_finial_assembly",
+      "mapping": "cylindrical",
+      "boundary_m": [
+        [
+          -14.5,
+          -13.5,
+          28.25
+        ],
+        [
+          -13.78,
+          -13.5,
+          28.25
+        ],
+        [
+          -14.41,
+          -13.5,
+          29.45
+        ],
+        [
+          -14.5,
+          -13.5,
+          29.45
+        ]
+      ],
+      "exposed": true
+    }
+  ],
+  "adjacency": [
+    {
+      "a": {
+        "surface_id": "facade_front",
+        "edge_id": "end"
+      },
+      "b": {
+        "surface_id": "facade_right",
+        "edge_id": "start"
+      },
+      "mode": "covered_joint",
+      "cover_object": "stone_corner_pier"
+    },
+    {
+      "a": {
+        "surface_id": "facade_right",
+        "edge_id": "end"
+      },
+      "b": {
+        "surface_id": "facade_rear",
+        "edge_id": "start"
+      },
+      "mode": "covered_joint",
+      "cover_object": "stone_corner_pier"
+    },
+    {
+      "a": {
+        "surface_id": "facade_rear",
+        "edge_id": "end"
+      },
+      "b": {
+        "surface_id": "facade_left",
+        "edge_id": "start"
+      },
+      "mode": "covered_joint",
+      "cover_object": "stone_corner_pier"
+    },
+    {
+      "a": {
+        "surface_id": "facade_left",
+        "edge_id": "end"
+      },
+      "b": {
+        "surface_id": "corner_pavilion",
+        "edge_id": "start"
+      },
+      "mode": "covered_joint",
+      "cover_object": "stone_corner_pier"
+    },
+    {
+      "a": {
+        "surface_id": "corner_pavilion",
+        "edge_id": "end"
+      },
+      "b": {
+        "surface_id": "facade_front",
+        "edge_id": "start"
+      },
+      "mode": "covered_joint",
+      "cover_object": "stone_corner_pier"
+    },
+    {
+      "a": {
+        "surface_id": "court_front",
+        "edge_id": "end"
+      },
+      "b": {
+        "surface_id": "court_right",
+        "edge_id": "start"
+      },
+      "mode": "covered_joint",
+      "cover_object": "court_corner_return"
+    },
+    {
+      "a": {
+        "surface_id": "court_right",
+        "edge_id": "end"
+      },
+      "b": {
+        "surface_id": "court_rear",
+        "edge_id": "start"
+      },
+      "mode": "covered_joint",
+      "cover_object": "court_corner_return"
+    },
+    {
+      "a": {
+        "surface_id": "court_rear",
+        "edge_id": "end"
+      },
+      "b": {
+        "surface_id": "court_left",
+        "edge_id": "start"
+      },
+      "mode": "covered_joint",
+      "cover_object": "court_corner_return"
+    },
+    {
+      "a": {
+        "surface_id": "court_left",
+        "edge_id": "end"
+      },
+      "b": {
+        "surface_id": "court_front",
+        "edge_id": "start"
+      },
+      "mode": "covered_joint",
+      "cover_object": "court_corner_return"
+    },
+    {
+      "a": {
+        "surface_id": "roof_front",
+        "edge_id": "end"
+      },
+      "b": {
+        "surface_id": "roof_right",
+        "edge_id": "start"
+      },
+      "mode": "covered_joint",
+      "cover_object": "standing_seam_mansard_hip"
+    },
+    {
+      "a": {
+        "surface_id": "roof_right",
+        "edge_id": "end"
+      },
+      "b": {
+        "surface_id": "roof_rear",
+        "edge_id": "start"
+      },
+      "mode": "covered_joint",
+      "cover_object": "standing_seam_mansard_hip"
+    },
+    {
+      "a": {
+        "surface_id": "roof_rear",
+        "edge_id": "end"
+      },
+      "b": {
+        "surface_id": "roof_left",
+        "edge_id": "start"
+      },
+      "mode": "covered_joint",
+      "cover_object": "standing_seam_mansard_hip"
+    },
+    {
+      "a": {
+        "surface_id": "roof_left",
+        "edge_id": "end"
+      },
+      "b": {
+        "surface_id": "roof_front",
+        "edge_id": "start"
+      },
+      "mode": "covered_joint",
+      "cover_object": "standing_seam_mansard_hip"
+    },
+    {
+      "a": {
+        "surface_id": "terrace_front",
+        "edge_id": "end"
+      },
+      "b": {
+        "surface_id": "terrace_right",
+        "edge_id": "start"
+      },
+      "mode": "covered_joint",
+      "cover_object": "terrace_folding_seam"
+    },
+    {
+      "a": {
+        "surface_id": "terrace_right",
+        "edge_id": "end"
+      },
+      "b": {
+        "surface_id": "terrace_rear",
+        "edge_id": "start"
+      },
+      "mode": "covered_joint",
+      "cover_object": "terrace_folding_seam"
+    },
+    {
+      "a": {
+        "surface_id": "terrace_rear",
+        "edge_id": "end"
+      },
+      "b": {
+        "surface_id": "terrace_left",
+        "edge_id": "start"
+      },
+      "mode": "covered_joint",
+      "cover_object": "terrace_folding_seam"
+    },
+    {
+      "a": {
+        "surface_id": "terrace_left",
+        "edge_id": "end"
+      },
+      "b": {
+        "surface_id": "terrace_front",
+        "edge_id": "start"
+      },
+      "mode": "covered_joint",
+      "cover_object": "terrace_folding_seam"
+    },
+    {
+      "a": {
+        "surface_id": "upper_front",
+        "edge_id": "end"
+      },
+      "b": {
+        "surface_id": "upper_right",
+        "edge_id": "start"
+      },
+      "mode": "covered_joint",
+      "cover_object": "upper_setback_corner_return"
+    },
+    {
+      "a": {
+        "surface_id": "upper_right",
+        "edge_id": "end"
+      },
+      "b": {
+        "surface_id": "upper_rear",
+        "edge_id": "start"
+      },
+      "mode": "covered_joint",
+      "cover_object": "upper_setback_corner_return"
+    },
+    {
+      "a": {
+        "surface_id": "upper_rear",
+        "edge_id": "end"
+      },
+      "b": {
+        "surface_id": "upper_left",
+        "edge_id": "start"
+      },
+      "mode": "covered_joint",
+      "cover_object": "upper_setback_corner_return"
+    },
+    {
+      "a": {
+        "surface_id": "upper_left",
+        "edge_id": "end"
+      },
+      "b": {
+        "surface_id": "upper_front",
+        "edge_id": "start"
+      },
+      "mode": "covered_joint",
+      "cover_object": "upper_setback_corner_return"
+    },
+    {
+      "a": {
+        "surface_id": "facade_front",
+        "edge_id": "top"
+      },
+      "b": {
+        "surface_id": "upper_front",
+        "edge_id": "bottom"
+      },
+      "mode": "covered_joint",
+      "cover_object": "projecting_perimeter_cornice"
+    },
+    {
+      "a": {
+        "surface_id": "facade_right",
+        "edge_id": "top"
+      },
+      "b": {
+        "surface_id": "upper_right",
+        "edge_id": "bottom"
+      },
+      "mode": "covered_joint",
+      "cover_object": "projecting_perimeter_cornice"
+    },
+    {
+      "a": {
+        "surface_id": "facade_rear",
+        "edge_id": "top"
+      },
+      "b": {
+        "surface_id": "upper_rear",
+        "edge_id": "bottom"
+      },
+      "mode": "covered_joint",
+      "cover_object": "projecting_perimeter_cornice"
+    },
+    {
+      "a": {
+        "surface_id": "facade_left",
+        "edge_id": "top"
+      },
+      "b": {
+        "surface_id": "upper_left",
+        "edge_id": "bottom"
+      },
+      "mode": "covered_joint",
+      "cover_object": "projecting_perimeter_cornice"
+    },
+    {
+      "a": {
+        "surface_id": "upper_front",
+        "edge_id": "top"
+      },
+      "b": {
+        "surface_id": "roof_front",
+        "edge_id": "outer_eave"
+      },
+      "mode": "covered_joint",
+      "cover_object": "zinc_eave_and_crown_return"
+    },
+    {
+      "a": {
+        "surface_id": "upper_right",
+        "edge_id": "top"
+      },
+      "b": {
+        "surface_id": "roof_right",
+        "edge_id": "outer_eave"
+      },
+      "mode": "covered_joint",
+      "cover_object": "zinc_eave_and_crown_return"
+    },
+    {
+      "a": {
+        "surface_id": "upper_rear",
+        "edge_id": "top"
+      },
+      "b": {
+        "surface_id": "roof_rear",
+        "edge_id": "outer_eave"
+      },
+      "mode": "covered_joint",
+      "cover_object": "zinc_eave_and_crown_return"
+    },
+    {
+      "a": {
+        "surface_id": "upper_left",
+        "edge_id": "top"
+      },
+      "b": {
+        "surface_id": "roof_left",
+        "edge_id": "outer_eave"
+      },
+      "mode": "covered_joint",
+      "cover_object": "zinc_eave_and_crown_return"
+    },
+    {
+      "a": {
+        "surface_id": "corner_pavilion",
+        "edge_id": "top"
+      },
+      "b": {
+        "surface_id": "roof_front",
+        "edge_id": "rounded_corner_eave"
+      },
+      "mode": "covered_joint",
+      "cover_object": "faceted_corner_cornice"
+    },
+    {
+      "a": {
+        "surface_id": "corner_pavilion",
+        "edge_id": "entrance_head"
+      },
+      "b": {
+        "surface_id": "wrapped_canopy",
+        "edge_id": "inner_edge"
+      },
+      "mode": "covered_joint",
+      "cover_object": "canopy_wall_flashing"
+    },
+    {
+      "a": {
+        "surface_id": "perimeter_cornice",
+        "edge_id": "wall_edge"
+      },
+      "b": {
+        "surface_id": "corner_cornices",
+        "edge_id": "straight_return"
+      },
+      "mode": "continuous_wrap",
+      "cover_object": "cornice_profile"
+    },
+    {
+      "a": {
+        "surface_id": "corner_pavilion",
+        "edge_id": "upper_front"
+      },
+      "b": {
+        "surface_id": "corner_upper_returns",
+        "edge_id": "corner_side"
+      },
+      "mode": "continuous_wrap",
+      "cover_object": "closed_upper_corner_return"
+    },
+    {
+      "a": {
+        "surface_id": "corner_upper_returns",
+        "edge_id": "front_end"
+      },
+      "b": {
+        "surface_id": "upper_front",
+        "edge_id": "start"
+      },
+      "mode": "covered_joint",
+      "cover_object": "front_upper_return"
+    },
+    {
+      "a": {
+        "surface_id": "corner_upper_returns",
+        "edge_id": "left_end"
+      },
+      "b": {
+        "surface_id": "upper_left",
+        "edge_id": "end"
+      },
+      "mode": "covered_joint",
+      "cover_object": "left_upper_return"
+    },
+    {
+      "a": {
+        "surface_id": "roof_front",
+        "edge_id": "inner_break"
+      },
+      "b": {
+        "surface_id": "terrace_front",
+        "edge_id": "outer_break"
+      },
+      "mode": "hard_material_joint",
+      "cover_object": "mansard_break_seam"
+    },
+    {
+      "a": {
+        "surface_id": "roof_right",
+        "edge_id": "inner_break"
+      },
+      "b": {
+        "surface_id": "terrace_right",
+        "edge_id": "outer_break"
+      },
+      "mode": "hard_material_joint",
+      "cover_object": "mansard_break_seam"
+    },
+    {
+      "a": {
+        "surface_id": "roof_rear",
+        "edge_id": "inner_break"
+      },
+      "b": {
+        "surface_id": "terrace_rear",
+        "edge_id": "outer_break"
+      },
+      "mode": "hard_material_joint",
+      "cover_object": "mansard_break_seam"
+    },
+    {
+      "a": {
+        "surface_id": "roof_left",
+        "edge_id": "inner_break"
+      },
+      "b": {
+        "surface_id": "terrace_left",
+        "edge_id": "outer_break"
+      },
+      "mode": "hard_material_joint",
+      "cover_object": "mansard_break_seam"
+    },
+    {
+      "a": {
+        "surface_id": "dormers_front",
+        "edge_id": "bottom"
+      },
+      "b": {
+        "surface_id": "roof_front",
+        "edge_id": "dormer_seat"
+      },
+      "mode": "covered_joint",
+      "cover_object": "dormer_flashing"
+    },
+    {
+      "a": {
+        "surface_id": "dormers_right",
+        "edge_id": "bottom"
+      },
+      "b": {
+        "surface_id": "roof_right",
+        "edge_id": "dormer_seat"
+      },
+      "mode": "covered_joint",
+      "cover_object": "dormer_flashing"
+    },
+    {
+      "a": {
+        "surface_id": "dormers_rear",
+        "edge_id": "bottom"
+      },
+      "b": {
+        "surface_id": "roof_rear",
+        "edge_id": "dormer_seat"
+      },
+      "mode": "covered_joint",
+      "cover_object": "dormer_flashing"
+    },
+    {
+      "a": {
+        "surface_id": "dormers_left",
+        "edge_id": "bottom"
+      },
+      "b": {
+        "surface_id": "roof_left",
+        "edge_id": "dormer_seat"
+      },
+      "mode": "covered_joint",
+      "cover_object": "dormer_flashing"
+    },
+    {
+      "a": {
+        "surface_id": "court_front",
+        "edge_id": "top"
+      },
+      "b": {
+        "surface_id": "terrace_front",
+        "edge_id": "inner_curb"
+      },
+      "mode": "covered_joint",
+      "cover_object": "raised_court_flashing"
+    },
+    {
+      "a": {
+        "surface_id": "court_right",
+        "edge_id": "top"
+      },
+      "b": {
+        "surface_id": "terrace_right",
+        "edge_id": "inner_curb"
+      },
+      "mode": "covered_joint",
+      "cover_object": "raised_court_flashing"
+    },
+    {
+      "a": {
+        "surface_id": "court_rear",
+        "edge_id": "top"
+      },
+      "b": {
+        "surface_id": "terrace_rear",
+        "edge_id": "inner_curb"
+      },
+      "mode": "covered_joint",
+      "cover_object": "raised_court_flashing"
+    },
+    {
+      "a": {
+        "surface_id": "court_left",
+        "edge_id": "top"
+      },
+      "b": {
+        "surface_id": "terrace_left",
+        "edge_id": "inner_curb"
+      },
+      "mode": "covered_joint",
+      "cover_object": "raised_court_flashing"
+    },
+    {
+      "a": {
+        "surface_id": "central_curb",
+        "edge_id": "bottom"
+      },
+      "b": {
+        "surface_id": "terrace_front",
+        "edge_id": "dome_seat"
+      },
+      "mode": "covered_joint",
+      "cover_object": "central_dome_flashing"
+    },
+    {
+      "a": {
+        "surface_id": "central_curb",
+        "edge_id": "top"
+      },
+      "b": {
+        "surface_id": "central_drum",
+        "edge_id": "bottom"
+      },
+      "mode": "hard_material_joint",
+      "cover_object": "central_dome_base_ring"
+    },
+    {
+      "a": {
+        "surface_id": "central_drum",
+        "edge_id": "top"
+      },
+      "b": {
+        "surface_id": "central_dome",
+        "edge_id": "spring"
+      },
+      "mode": "hard_material_joint",
+      "cover_object": "dome_spring_ring"
+    },
+    {
+      "a": {
+        "surface_id": "central_dome",
+        "edge_id": "apex"
+      },
+      "b": {
+        "surface_id": "central_cap_finial",
+        "edge_id": "bottom"
+      },
+      "mode": "hard_material_joint",
+      "cover_object": "central_dome_cap_ring"
+    },
+    {
+      "a": {
+        "surface_id": "corner_pavilion",
+        "edge_id": "tower_seat"
+      },
+      "b": {
+        "surface_id": "corner_tower",
+        "edge_id": "bottom"
+      },
+      "mode": "continuous_wrap",
+      "cover_object": "integrated_corner_tower"
+    },
+    {
+      "a": {
+        "surface_id": "corner_tower",
+        "edge_id": "top"
+      },
+      "b": {
+        "surface_id": "corner_tower_crown",
+        "edge_id": "bottom"
+      },
+      "mode": "hard_material_joint",
+      "cover_object": "tower_cornice"
+    },
+    {
+      "a": {
+        "surface_id": "corner_tower_crown",
+        "edge_id": "top"
+      },
+      "b": {
+        "surface_id": "corner_drum",
+        "edge_id": "bottom"
+      },
+      "mode": "covered_joint",
+      "cover_object": "corner_cupola_flashing"
+    },
+    {
+      "a": {
+        "surface_id": "corner_drum",
+        "edge_id": "top"
+      },
+      "b": {
+        "surface_id": "corner_dome",
+        "edge_id": "spring"
+      },
+      "mode": "hard_material_joint",
+      "cover_object": "cupola_spring_ring"
+    },
+    {
+      "a": {
+        "surface_id": "corner_dome",
+        "edge_id": "apex"
+      },
+      "b": {
+        "surface_id": "corner_cap_finial",
+        "edge_id": "bottom"
+      },
+      "mode": "hard_material_joint",
+      "cover_object": "cupola_cap_ring"
+    }
+  ],
+  "entrance": {
+    "carrier_surface_id": "corner_pavilion",
+    "topology": "single_wrapped_recessed_front_left_corner",
+    "depth_m": 4.2,
+    "contour_sha256": "e6a800b594331c9c0298639859c02ab68439841611ecf8b64f4f466f0ff8c836",
+    "contour_uv": [
+      [
+        [
+          0.25444665922964715,
+          0.0
+        ],
+        [
+          0.25444665922964715,
+          0.23414634146341462
+        ],
+        [
+          0.7455533407703528,
+          0.23414634146341462
+        ],
+        [
+          0.7455533407703528,
+          0.0
+        ]
+      ]
+    ],
+    "clear_ray_fraction": 1.0,
+    "canopy_mesh": "wrapped_corner_canopy"
+  },
+  "feature_ownership": {
+    "geometry": [
+      "perimeter_and_courtyard_mass",
+      "upper_setback_and_closed_corner_returns",
+      "watertight_steep_mansard_and_flat_terrace_crown",
+      "raised_court_curb",
+      "mansard_dormer_depth_and_pediment_caps",
+      "court_contained_central_dome_curb_drum_cap_finial",
+      "vertical_corner_tower_and_concentric_cupola",
+      "wrapped_corner_pavilion",
+      "entrance_void_jambs_soffits_and_depth",
+      "wrapped_canopy",
+      "projecting_cornice_and_eave_shadow_lines"
+    ],
+    "sticker": [
+      "windows",
+      "ironwork",
+      "stone_surface",
+      "signage",
+      "balustrade_ornament",
+      "roof_patina",
+      "stained_glass_colour",
+      "dormer_glazing_imagery"
+    ],
+    "duplicate_ownership_forbidden": true
+  },
+  "blender_primitive_targets": {
+    "crown": {
+      "kind": "courtyard_ring_roof",
+      "source_mesh": "watertight_perimeter_court_crown"
+    },
+    "surface_binding": {
+      "kind": "carrier_skin",
+      "mode": "native_surface_material"
+    },
+    "corner_pavilion": {
+      "kind": "rounded_corner_box",
+      "radius_m": 7.0,
+      "segments": 4,
+      "lower_void": "single_wrapped_recessed_front_left_corner"
+    }
+  },
+  "budgets": {
+    "final_glb_max_bytes": 8000000,
+    "native_carrier_offset_max_m": 0.003,
+    "opaque_sticker_layers_per_surface_max": 1
+  },
+  "gate_report": "belle_epoque_clay_v92_gate_report.json",
+  "immutable": {
+    "geometry": true,
+    "object_transforms": true,
+    "cameras": true,
+    "void_contours": true,
+    "roof_topology": true,
+    "sticker_agent_may_modify": [
+      "materials",
+      "uv_layers",
+      "approved_decal_objects"
+    ]
+  }
+}

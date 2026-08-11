@@ -1,0 +1,430 @@
+{
+  "schema": "belle-epoque-clay-gates@1",
+  "status": "pass",
+  "measurements": {
+    "outer_plan_aspect_error": 0.029052207680138054,
+    "court_plan_aspect_error": 0.020472440944881987,
+    "central_dome_ratio_error": 0.19946581196581192,
+    "corner_dome_ratio_error": 0.1545219638242894,
+    "floor_datum_rmse": 0.0058200631974760775,
+    "entrance_corner_alignment_m": 0.0,
+    "camera_anchor_rmse_bbox": 0.012591928262653523,
+    "camera_anchor_p95_bbox": 0.02078239608801956,
+    "roof_manifold_bad_edges": 0,
+    "roof_face_winding_errors": 0,
+    "roof_crossing_top_faces": 0,
+    "court_cap_face_count": 0,
+    "court_cap_overlap_area_m2": 0.0,
+    "open_court_area_m2": 149.23717839600835,
+    "dormer_count": 10,
+    "dormer_rhythm": {
+      "front": 3,
+      "left": 2,
+      "rear": 3,
+      "right": 2
+    },
+    "dormer_manifold_bad_edges": 0,
+    "entrance_clear_ray_fraction": 1.0,
+    "minimum_dome_seat_overlap_m": 0.14999999999999858,
+    "roof_wall_gap_m": 0.0,
+    "mansard_rise_m": 3.0,
+    "terrace_rise_m": 0.8000000000000007,
+    "mansard_slope": 0.8571428571428571,
+    "terrace_slope": 0.1454545454545456,
+    "mansard_to_terrace_slope_ratio": 5.892857142857137,
+    "central_dome_rise_ratio": 0.3389830508474576,
+    "corner_dome_rise_ratio": 0.5156249999999999,
+    "corner_pavilion_arc_m": 10.995574287564276,
+    "wrapped_entrance_width_m": 5.4,
+    "wrapped_canopy_depth_m": 4.0,
+    "upper_setback_inset_m": 0.65,
+    "central_dome_diameter_m": 11.8,
+    "central_dome_rise_m": 4.0,
+    "court_circulation_margin_m": 1.2999999999999998,
+    "corner_tower_support_height_m": 5.600000000000001,
+    "cupola_support_ratio": 0.9843749999999999,
+    "cupola_plate_projection_m": 0.1499999999999999,
+    "missing_medium_detail_meshes": [],
+    "carrier_coverage": 1.0,
+    "unpaired_required_edges": 0
+  },
+  "gates": [
+    {
+      "id": "reference_evidence_complete",
+      "passed": true,
+      "measured": 3,
+      "threshold": "three exact source views"
+    },
+    {
+      "id": "evidence_conflict_adjudicated",
+      "passed": true,
+      "measured": "resolved",
+      "threshold": "resolved with aerial/oblique topology authority"
+    },
+    {
+      "id": "camera_calibration_complete",
+      "passed": true,
+      "measured": [
+        "oblique_massing",
+        "roof_plan",
+        "street_identity"
+      ],
+      "threshold": "all evidence roles calibrated"
+    },
+    {
+      "id": "outer_plan_proportion",
+      "passed": true,
+      "measured": 0.029052207680138054,
+      "threshold": 0.08
+    },
+    {
+      "id": "court_plan_proportion",
+      "passed": true,
+      "measured": 0.020472440944881987,
+      "threshold": 0.08
+    },
+    {
+      "id": "central_dome_plan_ratio",
+      "passed": true,
+      "measured": 0.19946581196581192,
+      "threshold": 0.22
+    },
+    {
+      "id": "corner_dome_plan_ratio",
+      "passed": true,
+      "measured": 0.1545219638242894,
+      "threshold": 0.16
+    },
+    {
+      "id": "floor_datum_registration",
+      "passed": true,
+      "measured": 0.0058200631974760775,
+      "threshold": 0.025
+    },
+    {
+      "id": "wrapped_corner_entrance_alignment",
+      "passed": true,
+      "measured": 0.0,
+      "threshold": 0.1
+    },
+    {
+      "id": "camera_anchor_registration",
+      "passed": true,
+      "measured": {
+        "rmse_bbox": 0.012591928262653523,
+        "p95_bbox": 0.02078239608801956
+      },
+      "threshold": {
+        "rmse_bbox_max": 0.015,
+        "p95_bbox_max": 0.03
+      }
+    },
+    {
+      "id": "watertight_perimeter_court_crown",
+      "passed": true,
+      "measured": 0,
+      "threshold": 0
+    },
+    {
+      "id": "coherent_non_crossing_roof_ring",
+      "passed": true,
+      "measured": {
+        "manifold_bad_edges": 0,
+        "face_winding_errors": 0,
+        "crossing_top_faces": 0
+      },
+      "threshold": {
+        "maximum_each": 0
+      }
+    },
+    {
+      "id": "open_court_lightwell",
+      "passed": true,
+      "measured": {
+        "declared_open": true,
+        "cap_allowed": false,
+        "cap_faces": 0,
+        "cap_overlap_area_m2": 0.0,
+        "open_area_m2": 149.23717839600835
+      },
+      "threshold": {
+        "cap_faces_max": 0,
+        "cap_overlap_area_max_m2": 1e-06,
+        "open_area_min_m2": 120.0
+      }
+    },
+    {
+      "id": "bounded_principal_dormer_rhythm",
+      "passed": true,
+      "measured": {
+        "count": 10,
+        "rhythm": {
+          "front": 3,
+          "left": 2,
+          "rear": 3,
+          "right": 2
+        },
+        "manifold_bad_edges": 0
+      },
+      "threshold": {
+        "count": 10,
+        "rhythm": {
+          "front": 3,
+          "rear": 3,
+          "left": 2,
+          "right": 2
+        },
+        "manifold_bad_edges": 0
+      }
+    },
+    {
+      "id": "roof_seated_on_walls",
+      "passed": true,
+      "measured": 0.0,
+      "threshold": 0.02
+    },
+    {
+      "id": "differentiated_mansard_section",
+      "passed": true,
+      "measured": 3.0,
+      "threshold": 3.0
+    },
+    {
+      "id": "steep_mansard_and_flat_inner_terrace",
+      "passed": true,
+      "measured": {
+        "field_count": 8,
+        "mansard_slope": 0.8571428571428571,
+        "terrace_slope": 0.1454545454545456,
+        "ratio": 5.892857142857137
+      },
+      "threshold": {
+        "field_count": 8,
+        "slope_ratio_min": 3.0,
+        "terrace_slope_max": 0.25
+      }
+    },
+    {
+      "id": "seated_dome_drums",
+      "passed": true,
+      "measured": 0.14999999999999858,
+      "threshold": 0.15
+    },
+    {
+      "id": "shallow_integrated_dome_profiles",
+      "passed": true,
+      "measured": {
+        "central": 0.3389830508474576,
+        "corner": 0.5156249999999999
+      },
+      "threshold": {
+        "central_max": 0.45,
+        "corner_max": 0.55
+      }
+    },
+    {
+      "id": "central_dome_contained_in_court",
+      "passed": true,
+      "measured": {
+        "diameter_m": 11.8,
+        "rise_m": 4.0,
+        "circulation_margin_m": 1.2999999999999998
+      },
+      "threshold": {
+        "diameter_max_m": 12.0,
+        "rise_max_m": 4.2,
+        "circulation_margin_min_m": 1.0
+      }
+    },
+    {
+      "id": "corner_cupola_has_vertical_support",
+      "passed": true,
+      "measured": {
+        "tower_height_m": 5.600000000000001,
+        "support_ratio": 0.9843749999999999,
+        "plate_projection_m": 0.1499999999999999
+      },
+      "threshold": {
+        "tower_height_min_m": 5.0,
+        "support_ratio_min": 0.95,
+        "plate_projection_max_m": 0.25
+      }
+    },
+    {
+      "id": "broad_corner_pavilion",
+      "passed": true,
+      "measured": 10.995574287564276,
+      "threshold": 10.0
+    },
+    {
+      "id": "broad_wrapped_entrance_and_canopy",
+      "passed": true,
+      "measured": {
+        "entrance_width_m": 5.4,
+        "canopy_depth_m": 4.0
+      },
+      "threshold": {
+        "entrance_width_min_m": 5.0,
+        "canopy_depth_min_m": 3.5
+      }
+    },
+    {
+      "id": "upper_setback_and_medium_detail",
+      "passed": true,
+      "measured": {
+        "setback_inset_m": 0.65,
+        "missing_meshes": []
+      },
+      "threshold": {
+        "setback_inset_min_m": 0.5,
+        "missing_meshes": []
+      }
+    },
+    {
+      "id": "unobstructed_wrapped_corner_entrance",
+      "passed": true,
+      "measured": 1.0,
+      "threshold": 0.95
+    },
+    {
+      "id": "all_exposed_surface_carriers",
+      "passed": true,
+      "measured": 1.0,
+      "threshold": 1.0
+    },
+    {
+      "id": "reciprocal_non_bare_adjacency",
+      "passed": true,
+      "measured": 0,
+      "threshold": 0
+    }
+  ],
+  "entrance_rays": [
+    {
+      "origin": [
+        -16.79827560572969,
+        -14.101219330881976,
+        0.9
+      ],
+      "target": [
+        -13.82842712474619,
+        -11.131370849898477,
+        0.9
+      ],
+      "clear": true,
+      "blockers": []
+    },
+    {
+      "origin": [
+        -16.79827560572969,
+        -14.101219330881976,
+        2.1
+      ],
+      "target": [
+        -13.82842712474619,
+        -11.131370849898477,
+        2.1
+      ],
+      "clear": true,
+      "blockers": []
+    },
+    {
+      "origin": [
+        -16.79827560572969,
+        -14.101219330881976,
+        3.5
+      ],
+      "target": [
+        -13.82842712474619,
+        -11.131370849898477,
+        3.5
+      ],
+      "clear": true,
+      "blockers": []
+    },
+    {
+      "origin": [
+        -15.949747468305834,
+        -14.949747468305834,
+        0.9
+      ],
+      "target": [
+        -12.979898987322334,
+        -11.979898987322334,
+        0.9
+      ],
+      "clear": true,
+      "blockers": []
+    },
+    {
+      "origin": [
+        -15.949747468305834,
+        -14.949747468305834,
+        2.1
+      ],
+      "target": [
+        -12.979898987322334,
+        -11.979898987322334,
+        2.1
+      ],
+      "clear": true,
+      "blockers": []
+    },
+    {
+      "origin": [
+        -15.949747468305834,
+        -14.949747468305834,
+        3.5
+      ],
+      "target": [
+        -12.979898987322334,
+        -11.979898987322334,
+        3.5
+      ],
+      "clear": true,
+      "blockers": []
+    },
+    {
+      "origin": [
+        -15.101219330881976,
+        -15.79827560572969,
+        0.9
+      ],
+      "target": [
+        -12.131370849898477,
+        -12.828427124746192,
+        0.9
+      ],
+      "clear": true,
+      "blockers": []
+    },
+    {
+      "origin": [
+        -15.101219330881976,
+        -15.79827560572969,
+        2.1
+      ],
+      "target": [
+        -12.131370849898477,
+        -12.828427124746192,
+        2.1
+      ],
+      "clear": true,
+      "blockers": []
+    },
+    {
+      "origin": [
+        -15.101219330881976,
+        -15.79827560572969,
+        3.5
+      ],
+      "target": [
+        -12.131370849898477,
+        -12.828427124746192,
+        3.5
+      ],
+      "clear": true,
+      "blockers": []
+    }
+  ]
+}

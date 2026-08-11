@@ -1,0 +1,6702 @@
+{
+  "schema": "belle-epoque-sticker-registration@1",
+  "building_id": "grand-magasin-belle-epoque",
+  "pipeline": "v92-locked-clay-native-sticker",
+  "status": "registration_ready_pending_atlas_and_glb",
+  "clay_lock": {
+    "path": "artifacts/belle-epoque-clay-v92/clay_lock.json",
+    "file_sha256": "1cc9a5e30bd3acab1cf230e13b1f450a571098f573702fd643409d232de9ff55",
+    "geometry_sha256": "4a0c2c6514d0a546d3a3154b6766d40797c88b8b3ffb7ce4e1523831be73b815",
+    "immutable_geometry_required": true
+  },
+  "entrance_clearance": {
+    "carrier_surface_id": "corner_pavilion",
+    "topology": "single_wrapped_recessed_front_left_corner",
+    "contour_sha256": "e6a800b594331c9c0298639859c02ab68439841611ecf8b64f4f466f0ff8c836",
+    "geometry_contour_sha256": "e6a800b594331c9c0298639859c02ab68439841611ecf8b64f4f466f0ff8c836",
+    "sticker_contour_sha256": "e6a800b594331c9c0298639859c02ab68439841611ecf8b64f4f466f0ff8c836",
+    "contour_uv": [
+      [
+        [
+          0.25444665922964715,
+          0.0
+        ],
+        [
+          0.25444665922964715,
+          0.23414634146341462
+        ],
+        [
+          0.7455533407703528,
+          0.23414634146341462
+        ],
+        [
+          0.7455533407703528,
+          0.0
+        ]
+      ]
+    ],
+    "operation": "clip carrier albedo and UV coverage by the identical contour; geometry owns jambs, soffit and 4.2 m tunnel"
+  },
+  "feature_ownership": {
+    "geometry": [
+      "perimeter_and_courtyard_mass",
+      "upper_setback_and_closed_corner_returns",
+      "watertight_steep_mansard_and_flat_terrace_crown",
+      "raised_court_curb",
+      "mansard_dormer_depth_and_pediment_caps",
+      "court_contained_central_dome_curb_drum_cap_finial",
+      "vertical_corner_tower_and_concentric_cupola",
+      "wrapped_corner_pavilion",
+      "entrance_void_jambs_soffits_and_depth",
+      "wrapped_canopy",
+      "projecting_cornice_and_eave_shadow_lines"
+    ],
+    "sticker": [
+      "windows",
+      "ironwork",
+      "stone_surface",
+      "signage",
+      "balustrade_ornament",
+      "roof_patina",
+      "stained_glass_colour",
+      "dormer_glazing_imagery"
+    ],
+    "duplicate_ownership_forbidden": true
+  },
+  "surface_coverage": {
+    "exposed_surface_count": 38,
+    "registered_surface_count": 38,
+    "unowned_exposed_surfaces": []
+  },
+  "assemblies": [
+    {
+      "id": "sticker_facade_front",
+      "kind": "carrier_skin",
+      "carrier_mode": "native_surface_material",
+      "carrier_surface_id": "facade_front",
+      "carrier_mesh": "front_wall",
+      "surface_role": "front",
+      "mapping": "planar_anchored",
+      "mapping_parameters": {
+        "solver": "least_squares_homography",
+        "preserve_aspect": true
+      },
+      "registration_anchors": [
+        {
+          "anchor_id": "boundary_0",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            -11,
+            -17,
+            0.0
+          ],
+          "surface_uv": [
+            0.0,
+            0.0
+          ],
+          "source_uv": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_1",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            18,
+            -17,
+            0.0
+          ],
+          "surface_uv": [
+            1.0,
+            0.0
+          ],
+          "source_uv": [
+            1.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_2",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            18,
+            -17,
+            18.5
+          ],
+          "surface_uv": [
+            1.0,
+            1.0
+          ],
+          "source_uv": [
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_3",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            -11,
+            -17,
+            18.5
+          ],
+          "surface_uv": [
+            0.0,
+            1.0
+          ],
+          "source_uv": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "anchor_id": "floor_datum_1",
+          "kind": "floor_datum",
+          "object_space_m": [
+            3.5,
+            -17.0,
+            4.1
+          ],
+          "surface_uv": [
+            0.5,
+            0.2216216216216216
+          ],
+          "source_uv": [
+            0.5,
+            0.2216216216216216
+          ]
+        },
+        {
+          "anchor_id": "floor_datum_2",
+          "kind": "floor_datum",
+          "object_space_m": [
+            3.5,
+            -17.0,
+            8.2
+          ],
+          "surface_uv": [
+            0.5,
+            0.4432432432432432
+          ],
+          "source_uv": [
+            0.5,
+            0.4432432432432432
+          ]
+        },
+        {
+          "anchor_id": "floor_datum_3",
+          "kind": "floor_datum",
+          "object_space_m": [
+            3.5,
+            -17.0,
+            12.3
+          ],
+          "surface_uv": [
+            0.5,
+            0.664864864864865
+          ],
+          "source_uv": [
+            0.5,
+            0.664864864864865
+          ]
+        },
+        {
+          "anchor_id": "floor_datum_4",
+          "kind": "floor_datum",
+          "object_space_m": [
+            3.5,
+            -17.0,
+            16.4
+          ],
+          "surface_uv": [
+            0.5,
+            0.8864864864864864
+          ],
+          "source_uv": [
+            0.5,
+            0.8864864864864864
+          ]
+        }
+      ],
+      "source_id": "front",
+      "source_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-front.png",
+      "source_sha256": "635883a1538b588000affe7a4443adc9e029bc2b25bfeaa0808610d1f419e50c",
+      "source_crop_xyxy": [
+        0,
+        0,
+        1536,
+        1024
+      ],
+      "source_to_canonical_h": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "material_binding": {
+        "albedo": "registered_sticker_atlas",
+        "normal": "construction_role_metric_pbr",
+        "roughness": "construction_role_metric_pbr",
+        "apply_to_existing_carrier": true,
+        "create_geometry": false,
+        "carrier_offset_m": 0.0
+      }
+    },
+    {
+      "id": "sticker_facade_right",
+      "kind": "carrier_skin",
+      "carrier_mode": "native_surface_material",
+      "carrier_surface_id": "facade_right",
+      "carrier_mesh": "right_wall",
+      "surface_role": "right",
+      "mapping": "planar_anchored",
+      "mapping_parameters": {
+        "solver": "least_squares_homography",
+        "preserve_aspect": true
+      },
+      "registration_anchors": [
+        {
+          "anchor_id": "boundary_0",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            18,
+            -17,
+            0.0
+          ],
+          "surface_uv": [
+            0.0,
+            0.0
+          ],
+          "source_uv": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_1",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            18,
+            17,
+            0.0
+          ],
+          "surface_uv": [
+            1.0,
+            0.0
+          ],
+          "source_uv": [
+            1.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_2",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            18,
+            17,
+            18.5
+          ],
+          "surface_uv": [
+            1.0,
+            1.0
+          ],
+          "source_uv": [
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_3",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            18,
+            -17,
+            18.5
+          ],
+          "surface_uv": [
+            0.0,
+            1.0
+          ],
+          "source_uv": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "anchor_id": "floor_datum_1",
+          "kind": "floor_datum",
+          "object_space_m": [
+            18.0,
+            0.0,
+            4.1
+          ],
+          "surface_uv": [
+            0.5,
+            0.2216216216216216
+          ],
+          "source_uv": [
+            0.5,
+            0.2216216216216216
+          ]
+        },
+        {
+          "anchor_id": "floor_datum_2",
+          "kind": "floor_datum",
+          "object_space_m": [
+            18.0,
+            0.0,
+            8.2
+          ],
+          "surface_uv": [
+            0.5,
+            0.4432432432432432
+          ],
+          "source_uv": [
+            0.5,
+            0.4432432432432432
+          ]
+        },
+        {
+          "anchor_id": "floor_datum_3",
+          "kind": "floor_datum",
+          "object_space_m": [
+            18.0,
+            0.0,
+            12.3
+          ],
+          "surface_uv": [
+            0.5,
+            0.664864864864865
+          ],
+          "source_uv": [
+            0.5,
+            0.664864864864865
+          ]
+        },
+        {
+          "anchor_id": "floor_datum_4",
+          "kind": "floor_datum",
+          "object_space_m": [
+            18.0,
+            0.0,
+            16.4
+          ],
+          "surface_uv": [
+            0.5,
+            0.8864864864864864
+          ],
+          "source_uv": [
+            0.5,
+            0.8864864864864864
+          ]
+        }
+      ],
+      "source_id": "right",
+      "source_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-right.png",
+      "source_sha256": "b7e1a978b66fcca6d2dbe5d8d1d9f23fc7b3574004ad97196eb01909f6c854f6",
+      "source_crop_xyxy": [
+        0,
+        0,
+        1536,
+        1024
+      ],
+      "source_to_canonical_h": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "material_binding": {
+        "albedo": "registered_sticker_atlas",
+        "normal": "construction_role_metric_pbr",
+        "roughness": "construction_role_metric_pbr",
+        "apply_to_existing_carrier": true,
+        "create_geometry": false,
+        "carrier_offset_m": 0.0
+      }
+    },
+    {
+      "id": "sticker_facade_rear",
+      "kind": "carrier_skin",
+      "carrier_mode": "native_surface_material",
+      "carrier_surface_id": "facade_rear",
+      "carrier_mesh": "rear_wall",
+      "surface_role": "rear",
+      "mapping": "planar_anchored",
+      "mapping_parameters": {
+        "solver": "least_squares_homography",
+        "preserve_aspect": true
+      },
+      "registration_anchors": [
+        {
+          "anchor_id": "boundary_0",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            18,
+            17,
+            0.0
+          ],
+          "surface_uv": [
+            0.0,
+            0.0
+          ],
+          "source_uv": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_1",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            -18,
+            17,
+            0.0
+          ],
+          "surface_uv": [
+            1.0,
+            0.0
+          ],
+          "source_uv": [
+            1.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_2",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            -18,
+            17,
+            18.5
+          ],
+          "surface_uv": [
+            1.0,
+            1.0
+          ],
+          "source_uv": [
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_3",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            18,
+            17,
+            18.5
+          ],
+          "surface_uv": [
+            0.0,
+            1.0
+          ],
+          "source_uv": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "anchor_id": "floor_datum_1",
+          "kind": "floor_datum",
+          "object_space_m": [
+            0.0,
+            17.0,
+            4.1
+          ],
+          "surface_uv": [
+            0.5,
+            0.2216216216216216
+          ],
+          "source_uv": [
+            0.5,
+            0.2216216216216216
+          ]
+        },
+        {
+          "anchor_id": "floor_datum_2",
+          "kind": "floor_datum",
+          "object_space_m": [
+            0.0,
+            17.0,
+            8.2
+          ],
+          "surface_uv": [
+            0.5,
+            0.4432432432432432
+          ],
+          "source_uv": [
+            0.5,
+            0.4432432432432432
+          ]
+        },
+        {
+          "anchor_id": "floor_datum_3",
+          "kind": "floor_datum",
+          "object_space_m": [
+            0.0,
+            17.0,
+            12.3
+          ],
+          "surface_uv": [
+            0.5,
+            0.664864864864865
+          ],
+          "source_uv": [
+            0.5,
+            0.664864864864865
+          ]
+        },
+        {
+          "anchor_id": "floor_datum_4",
+          "kind": "floor_datum",
+          "object_space_m": [
+            0.0,
+            17.0,
+            16.4
+          ],
+          "surface_uv": [
+            0.5,
+            0.8864864864864864
+          ],
+          "source_uv": [
+            0.5,
+            0.8864864864864864
+          ]
+        }
+      ],
+      "source_id": "rear",
+      "source_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-rear.png",
+      "source_sha256": "0c3f441ec32d3f2215a613dd5dac79264df275babef140120b584704379bc097",
+      "source_crop_xyxy": [
+        0,
+        0,
+        1536,
+        1024
+      ],
+      "source_to_canonical_h": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "material_binding": {
+        "albedo": "registered_sticker_atlas",
+        "normal": "construction_role_metric_pbr",
+        "roughness": "construction_role_metric_pbr",
+        "apply_to_existing_carrier": true,
+        "create_geometry": false,
+        "carrier_offset_m": 0.0
+      }
+    },
+    {
+      "id": "sticker_facade_left",
+      "kind": "carrier_skin",
+      "carrier_mode": "native_surface_material",
+      "carrier_surface_id": "facade_left",
+      "carrier_mesh": "left_wall",
+      "surface_role": "left",
+      "mapping": "planar_anchored",
+      "mapping_parameters": {
+        "solver": "least_squares_homography",
+        "preserve_aspect": true
+      },
+      "registration_anchors": [
+        {
+          "anchor_id": "boundary_0",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            -18,
+            17,
+            0.0
+          ],
+          "surface_uv": [
+            0.0,
+            0.0
+          ],
+          "source_uv": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_1",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            -18,
+            -10,
+            0.0
+          ],
+          "surface_uv": [
+            1.0,
+            0.0
+          ],
+          "source_uv": [
+            1.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_2",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            -18,
+            -10,
+            18.5
+          ],
+          "surface_uv": [
+            1.0,
+            1.0
+          ],
+          "source_uv": [
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_3",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            -18,
+            17,
+            18.5
+          ],
+          "surface_uv": [
+            0.0,
+            1.0
+          ],
+          "source_uv": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "anchor_id": "floor_datum_1",
+          "kind": "floor_datum",
+          "object_space_m": [
+            -18.0,
+            3.5,
+            4.1
+          ],
+          "surface_uv": [
+            0.5,
+            0.2216216216216216
+          ],
+          "source_uv": [
+            0.5,
+            0.2216216216216216
+          ]
+        },
+        {
+          "anchor_id": "floor_datum_2",
+          "kind": "floor_datum",
+          "object_space_m": [
+            -18.0,
+            3.5,
+            8.2
+          ],
+          "surface_uv": [
+            0.5,
+            0.4432432432432432
+          ],
+          "source_uv": [
+            0.5,
+            0.4432432432432432
+          ]
+        },
+        {
+          "anchor_id": "floor_datum_3",
+          "kind": "floor_datum",
+          "object_space_m": [
+            -18.0,
+            3.5,
+            12.3
+          ],
+          "surface_uv": [
+            0.5,
+            0.664864864864865
+          ],
+          "source_uv": [
+            0.5,
+            0.664864864864865
+          ]
+        },
+        {
+          "anchor_id": "floor_datum_4",
+          "kind": "floor_datum",
+          "object_space_m": [
+            -18.0,
+            3.5,
+            16.4
+          ],
+          "surface_uv": [
+            0.5,
+            0.8864864864864864
+          ],
+          "source_uv": [
+            0.5,
+            0.8864864864864864
+          ]
+        }
+      ],
+      "source_id": "left",
+      "source_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-left.png",
+      "source_sha256": "1218d30d1c680c8ed92d3e0ef5503a48b4c9e5d40cdcf10855663205357560db",
+      "source_crop_xyxy": [
+        0,
+        0,
+        1619,
+        971
+      ],
+      "source_to_canonical_h": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "material_binding": {
+        "albedo": "registered_sticker_atlas",
+        "normal": "construction_role_metric_pbr",
+        "roughness": "construction_role_metric_pbr",
+        "apply_to_existing_carrier": true,
+        "create_geometry": false,
+        "carrier_offset_m": 0.0
+      }
+    },
+    {
+      "id": "sticker_corner_pavilion",
+      "kind": "carrier_skin",
+      "carrier_mode": "native_surface_material",
+      "carrier_surface_id": "corner_pavilion",
+      "carrier_mesh": "corner_pavilion_facet_assembly",
+      "surface_role": "front_left_corner",
+      "mapping": "cylindrical_arc_length",
+      "mapping_parameters": {
+        "centre_xy_m": [
+          -11.0,
+          -10.0
+        ],
+        "theta_zero_axis_xy": [
+          1.0,
+          0.0
+        ],
+        "theta_direction": "counter_clockwise",
+        "seam_angle_deg": 180.0,
+        "v_mode": "height_fraction"
+      },
+      "registration_anchors": [
+        {
+          "anchor_id": "curved_0",
+          "kind": "arc_anchor",
+          "object_space_m": [
+            -18.0,
+            -10.0,
+            0.0
+          ],
+          "surface_uv": [
+            0.5,
+            0.0
+          ],
+          "source_uv": [
+            0.5,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "curved_1",
+          "kind": "arc_anchor",
+          "object_space_m": [
+            -17.4672,
+            -12.6788,
+            0.0
+          ],
+          "surface_uv": [
+            0.5624999590269603,
+            0.0
+          ],
+          "source_uv": [
+            0.5624999590269603,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "curved_2",
+          "kind": "arc_anchor",
+          "object_space_m": [
+            -15.9497,
+            -14.9497,
+            0.0
+          ],
+          "surface_uv": [
+            0.625,
+            0.0
+          ],
+          "source_uv": [
+            0.625,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "curved_3",
+          "kind": "arc_anchor",
+          "object_space_m": [
+            -13.6788,
+            -16.4672,
+            0.0
+          ],
+          "surface_uv": [
+            0.6875000409730396,
+            0.0
+          ],
+          "source_uv": [
+            0.6875000409730396,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "curved_4",
+          "kind": "arc_anchor",
+          "object_space_m": [
+            -11.0,
+            -17.0,
+            0.0
+          ],
+          "surface_uv": [
+            0.75,
+            0.0
+          ],
+          "source_uv": [
+            0.75,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "curved_5",
+          "kind": "arc_anchor",
+          "object_space_m": [
+            -11.0,
+            -17.0,
+            20.5
+          ],
+          "surface_uv": [
+            0.75,
+            1.0
+          ],
+          "source_uv": [
+            0.75,
+            1.0
+          ]
+        },
+        {
+          "anchor_id": "curved_6",
+          "kind": "arc_anchor",
+          "object_space_m": [
+            -13.6788,
+            -16.4672,
+            20.5
+          ],
+          "surface_uv": [
+            0.6875000409730396,
+            1.0
+          ],
+          "source_uv": [
+            0.6875000409730396,
+            1.0
+          ]
+        },
+        {
+          "anchor_id": "curved_7",
+          "kind": "arc_anchor",
+          "object_space_m": [
+            -15.9497,
+            -14.9497,
+            20.5
+          ],
+          "surface_uv": [
+            0.625,
+            1.0
+          ],
+          "source_uv": [
+            0.625,
+            1.0
+          ]
+        },
+        {
+          "anchor_id": "curved_8",
+          "kind": "arc_anchor",
+          "object_space_m": [
+            -17.4672,
+            -12.6788,
+            20.5
+          ],
+          "surface_uv": [
+            0.5624999590269603,
+            1.0
+          ],
+          "source_uv": [
+            0.5624999590269603,
+            1.0
+          ]
+        },
+        {
+          "anchor_id": "curved_9",
+          "kind": "arc_anchor",
+          "object_space_m": [
+            -18.0,
+            -10.0,
+            20.5
+          ],
+          "surface_uv": [
+            0.5,
+            1.0
+          ],
+          "source_uv": [
+            0.5,
+            1.0
+          ]
+        }
+      ],
+      "source_id": "front_left",
+      "source_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-front-left.png",
+      "source_sha256": "df4c3f2c8ff717c4ec676f861e599ef6c622c5f77da2ac19465061cdf5415af3",
+      "source_crop_xyxy": [
+        0,
+        0,
+        933,
+        1686
+      ],
+      "source_to_canonical_h": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "material_binding": {
+        "albedo": "registered_sticker_atlas",
+        "normal": "construction_role_metric_pbr",
+        "roughness": "construction_role_metric_pbr",
+        "apply_to_existing_carrier": true,
+        "create_geometry": false,
+        "carrier_offset_m": 0.0
+      }
+    },
+    {
+      "id": "sticker_court_front",
+      "kind": "carrier_skin",
+      "carrier_mode": "native_surface_material",
+      "carrier_surface_id": "court_front",
+      "carrier_mesh": "court_front_wall",
+      "surface_role": "court_front",
+      "mapping": "planar_anchored",
+      "mapping_parameters": {
+        "solver": "least_squares_homography",
+        "preserve_aspect": true
+      },
+      "registration_anchors": [
+        {
+          "anchor_id": "boundary_0",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            -9,
+            -7.5,
+            0.0
+          ],
+          "surface_uv": [
+            0.0,
+            0.0
+          ],
+          "source_uv": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_1",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            9,
+            -7.5,
+            0.0
+          ],
+          "surface_uv": [
+            1.0,
+            0.0
+          ],
+          "source_uv": [
+            1.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_2",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            9,
+            -7.5,
+            20.5
+          ],
+          "surface_uv": [
+            1.0,
+            1.0
+          ],
+          "source_uv": [
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_3",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            -9,
+            -7.5,
+            20.5
+          ],
+          "surface_uv": [
+            0.0,
+            1.0
+          ],
+          "source_uv": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "anchor_id": "floor_datum_1",
+          "kind": "floor_datum",
+          "object_space_m": [
+            0.0,
+            -7.5,
+            4.1
+          ],
+          "surface_uv": [
+            0.5,
+            0.19999999999999998
+          ],
+          "source_uv": [
+            0.5,
+            0.19999999999999998
+          ]
+        },
+        {
+          "anchor_id": "floor_datum_2",
+          "kind": "floor_datum",
+          "object_space_m": [
+            0.0,
+            -7.5,
+            8.2
+          ],
+          "surface_uv": [
+            0.5,
+            0.39999999999999997
+          ],
+          "source_uv": [
+            0.5,
+            0.39999999999999997
+          ]
+        },
+        {
+          "anchor_id": "floor_datum_3",
+          "kind": "floor_datum",
+          "object_space_m": [
+            0.0,
+            -7.5,
+            12.3
+          ],
+          "surface_uv": [
+            0.5,
+            0.6000000000000001
+          ],
+          "source_uv": [
+            0.5,
+            0.6000000000000001
+          ]
+        },
+        {
+          "anchor_id": "floor_datum_4",
+          "kind": "floor_datum",
+          "object_space_m": [
+            0.0,
+            -7.5,
+            16.4
+          ],
+          "surface_uv": [
+            0.5,
+            0.7999999999999999
+          ],
+          "source_uv": [
+            0.5,
+            0.7999999999999999
+          ]
+        }
+      ],
+      "source_id": "rear",
+      "source_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-rear.png",
+      "source_sha256": "0c3f441ec32d3f2215a613dd5dac79264df275babef140120b584704379bc097",
+      "source_crop_xyxy": [
+        0,
+        0,
+        1536,
+        1024
+      ],
+      "source_to_canonical_h": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "material_binding": {
+        "albedo": "registered_sticker_atlas",
+        "normal": "construction_role_metric_pbr",
+        "roughness": "construction_role_metric_pbr",
+        "apply_to_existing_carrier": true,
+        "create_geometry": false,
+        "carrier_offset_m": 0.0
+      }
+    },
+    {
+      "id": "sticker_court_right",
+      "kind": "carrier_skin",
+      "carrier_mode": "native_surface_material",
+      "carrier_surface_id": "court_right",
+      "carrier_mesh": "court_right_wall",
+      "surface_role": "court_right",
+      "mapping": "planar_anchored",
+      "mapping_parameters": {
+        "solver": "least_squares_homography",
+        "preserve_aspect": true
+      },
+      "registration_anchors": [
+        {
+          "anchor_id": "boundary_0",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            9,
+            -7.5,
+            0.0
+          ],
+          "surface_uv": [
+            0.0,
+            0.0
+          ],
+          "source_uv": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_1",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            9,
+            7.5,
+            0.0
+          ],
+          "surface_uv": [
+            1.0,
+            0.0
+          ],
+          "source_uv": [
+            1.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_2",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            9,
+            7.5,
+            20.5
+          ],
+          "surface_uv": [
+            1.0,
+            1.0
+          ],
+          "source_uv": [
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_3",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            9,
+            -7.5,
+            20.5
+          ],
+          "surface_uv": [
+            0.0,
+            1.0
+          ],
+          "source_uv": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "anchor_id": "floor_datum_1",
+          "kind": "floor_datum",
+          "object_space_m": [
+            9.0,
+            0.0,
+            4.1
+          ],
+          "surface_uv": [
+            0.5,
+            0.19999999999999998
+          ],
+          "source_uv": [
+            0.5,
+            0.19999999999999998
+          ]
+        },
+        {
+          "anchor_id": "floor_datum_2",
+          "kind": "floor_datum",
+          "object_space_m": [
+            9.0,
+            0.0,
+            8.2
+          ],
+          "surface_uv": [
+            0.5,
+            0.39999999999999997
+          ],
+          "source_uv": [
+            0.5,
+            0.39999999999999997
+          ]
+        },
+        {
+          "anchor_id": "floor_datum_3",
+          "kind": "floor_datum",
+          "object_space_m": [
+            9.0,
+            0.0,
+            12.3
+          ],
+          "surface_uv": [
+            0.5,
+            0.6000000000000001
+          ],
+          "source_uv": [
+            0.5,
+            0.6000000000000001
+          ]
+        },
+        {
+          "anchor_id": "floor_datum_4",
+          "kind": "floor_datum",
+          "object_space_m": [
+            9.0,
+            0.0,
+            16.4
+          ],
+          "surface_uv": [
+            0.5,
+            0.7999999999999999
+          ],
+          "source_uv": [
+            0.5,
+            0.7999999999999999
+          ]
+        }
+      ],
+      "source_id": "left",
+      "source_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-left.png",
+      "source_sha256": "1218d30d1c680c8ed92d3e0ef5503a48b4c9e5d40cdcf10855663205357560db",
+      "source_crop_xyxy": [
+        0,
+        0,
+        1619,
+        971
+      ],
+      "source_to_canonical_h": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "material_binding": {
+        "albedo": "registered_sticker_atlas",
+        "normal": "construction_role_metric_pbr",
+        "roughness": "construction_role_metric_pbr",
+        "apply_to_existing_carrier": true,
+        "create_geometry": false,
+        "carrier_offset_m": 0.0
+      }
+    },
+    {
+      "id": "sticker_court_rear",
+      "kind": "carrier_skin",
+      "carrier_mode": "native_surface_material",
+      "carrier_surface_id": "court_rear",
+      "carrier_mesh": "court_rear_wall",
+      "surface_role": "court_rear",
+      "mapping": "planar_anchored",
+      "mapping_parameters": {
+        "solver": "least_squares_homography",
+        "preserve_aspect": true
+      },
+      "registration_anchors": [
+        {
+          "anchor_id": "boundary_0",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            9,
+            7.5,
+            0.0
+          ],
+          "surface_uv": [
+            0.0,
+            0.0
+          ],
+          "source_uv": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_1",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            -9,
+            7.5,
+            0.0
+          ],
+          "surface_uv": [
+            1.0,
+            0.0
+          ],
+          "source_uv": [
+            1.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_2",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            -9,
+            7.5,
+            20.5
+          ],
+          "surface_uv": [
+            1.0,
+            1.0
+          ],
+          "source_uv": [
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_3",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            9,
+            7.5,
+            20.5
+          ],
+          "surface_uv": [
+            0.0,
+            1.0
+          ],
+          "source_uv": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "anchor_id": "floor_datum_1",
+          "kind": "floor_datum",
+          "object_space_m": [
+            0.0,
+            7.5,
+            4.1
+          ],
+          "surface_uv": [
+            0.5,
+            0.19999999999999998
+          ],
+          "source_uv": [
+            0.5,
+            0.19999999999999998
+          ]
+        },
+        {
+          "anchor_id": "floor_datum_2",
+          "kind": "floor_datum",
+          "object_space_m": [
+            0.0,
+            7.5,
+            8.2
+          ],
+          "surface_uv": [
+            0.5,
+            0.39999999999999997
+          ],
+          "source_uv": [
+            0.5,
+            0.39999999999999997
+          ]
+        },
+        {
+          "anchor_id": "floor_datum_3",
+          "kind": "floor_datum",
+          "object_space_m": [
+            0.0,
+            7.5,
+            12.3
+          ],
+          "surface_uv": [
+            0.5,
+            0.6000000000000001
+          ],
+          "source_uv": [
+            0.5,
+            0.6000000000000001
+          ]
+        },
+        {
+          "anchor_id": "floor_datum_4",
+          "kind": "floor_datum",
+          "object_space_m": [
+            0.0,
+            7.5,
+            16.4
+          ],
+          "surface_uv": [
+            0.5,
+            0.7999999999999999
+          ],
+          "source_uv": [
+            0.5,
+            0.7999999999999999
+          ]
+        }
+      ],
+      "source_id": "front",
+      "source_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-front.png",
+      "source_sha256": "635883a1538b588000affe7a4443adc9e029bc2b25bfeaa0808610d1f419e50c",
+      "source_crop_xyxy": [
+        0,
+        0,
+        1536,
+        1024
+      ],
+      "source_to_canonical_h": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "material_binding": {
+        "albedo": "registered_sticker_atlas",
+        "normal": "construction_role_metric_pbr",
+        "roughness": "construction_role_metric_pbr",
+        "apply_to_existing_carrier": true,
+        "create_geometry": false,
+        "carrier_offset_m": 0.0
+      }
+    },
+    {
+      "id": "sticker_court_left",
+      "kind": "carrier_skin",
+      "carrier_mode": "native_surface_material",
+      "carrier_surface_id": "court_left",
+      "carrier_mesh": "court_left_wall",
+      "surface_role": "court_left",
+      "mapping": "planar_anchored",
+      "mapping_parameters": {
+        "solver": "least_squares_homography",
+        "preserve_aspect": true
+      },
+      "registration_anchors": [
+        {
+          "anchor_id": "boundary_0",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            -9,
+            7.5,
+            0.0
+          ],
+          "surface_uv": [
+            0.0,
+            0.0
+          ],
+          "source_uv": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_1",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            -9,
+            -7.5,
+            0.0
+          ],
+          "surface_uv": [
+            1.0,
+            0.0
+          ],
+          "source_uv": [
+            1.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_2",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            -9,
+            -7.5,
+            20.5
+          ],
+          "surface_uv": [
+            1.0,
+            1.0
+          ],
+          "source_uv": [
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_3",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            -9,
+            7.5,
+            20.5
+          ],
+          "surface_uv": [
+            0.0,
+            1.0
+          ],
+          "source_uv": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "anchor_id": "floor_datum_1",
+          "kind": "floor_datum",
+          "object_space_m": [
+            -9.0,
+            0.0,
+            4.1
+          ],
+          "surface_uv": [
+            0.5,
+            0.19999999999999998
+          ],
+          "source_uv": [
+            0.5,
+            0.19999999999999998
+          ]
+        },
+        {
+          "anchor_id": "floor_datum_2",
+          "kind": "floor_datum",
+          "object_space_m": [
+            -9.0,
+            0.0,
+            8.2
+          ],
+          "surface_uv": [
+            0.5,
+            0.39999999999999997
+          ],
+          "source_uv": [
+            0.5,
+            0.39999999999999997
+          ]
+        },
+        {
+          "anchor_id": "floor_datum_3",
+          "kind": "floor_datum",
+          "object_space_m": [
+            -9.0,
+            0.0,
+            12.3
+          ],
+          "surface_uv": [
+            0.5,
+            0.6000000000000001
+          ],
+          "source_uv": [
+            0.5,
+            0.6000000000000001
+          ]
+        },
+        {
+          "anchor_id": "floor_datum_4",
+          "kind": "floor_datum",
+          "object_space_m": [
+            -9.0,
+            0.0,
+            16.4
+          ],
+          "surface_uv": [
+            0.5,
+            0.7999999999999999
+          ],
+          "source_uv": [
+            0.5,
+            0.7999999999999999
+          ]
+        }
+      ],
+      "source_id": "right",
+      "source_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-right.png",
+      "source_sha256": "b7e1a978b66fcca6d2dbe5d8d1d9f23fc7b3574004ad97196eb01909f6c854f6",
+      "source_crop_xyxy": [
+        0,
+        0,
+        1536,
+        1024
+      ],
+      "source_to_canonical_h": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "material_binding": {
+        "albedo": "registered_sticker_atlas",
+        "normal": "construction_role_metric_pbr",
+        "roughness": "construction_role_metric_pbr",
+        "apply_to_existing_carrier": true,
+        "create_geometry": false,
+        "carrier_offset_m": 0.0
+      }
+    },
+    {
+      "id": "sticker_upper_front",
+      "kind": "carrier_skin",
+      "carrier_mode": "native_surface_material",
+      "carrier_surface_id": "upper_front",
+      "carrier_mesh": "upper_front_setback",
+      "surface_role": "upper_front_setback",
+      "mapping": "planar_anchored",
+      "mapping_parameters": {
+        "solver": "least_squares_homography",
+        "preserve_aspect": true
+      },
+      "registration_anchors": [
+        {
+          "anchor_id": "boundary_0",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            -10.5,
+            -16.35,
+            18.5
+          ],
+          "surface_uv": [
+            0.0,
+            0.0
+          ],
+          "source_uv": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_1",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            17.35,
+            -16.35,
+            18.5
+          ],
+          "surface_uv": [
+            1.0,
+            0.0
+          ],
+          "source_uv": [
+            1.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_2",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            17.35,
+            -16.35,
+            20.5
+          ],
+          "surface_uv": [
+            1.0,
+            1.0
+          ],
+          "source_uv": [
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_3",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            -10.5,
+            -16.35,
+            20.5
+          ],
+          "surface_uv": [
+            0.0,
+            1.0
+          ],
+          "source_uv": [
+            0.0,
+            1.0
+          ]
+        }
+      ],
+      "source_id": "front",
+      "source_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-front.png",
+      "source_sha256": "635883a1538b588000affe7a4443adc9e029bc2b25bfeaa0808610d1f419e50c",
+      "source_crop_xyxy": [
+        0,
+        0,
+        1536,
+        1024
+      ],
+      "source_to_canonical_h": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "material_binding": {
+        "albedo": "registered_sticker_atlas",
+        "normal": "construction_role_metric_pbr",
+        "roughness": "construction_role_metric_pbr",
+        "apply_to_existing_carrier": true,
+        "create_geometry": false,
+        "carrier_offset_m": 0.0
+      }
+    },
+    {
+      "id": "sticker_upper_right",
+      "kind": "carrier_skin",
+      "carrier_mode": "native_surface_material",
+      "carrier_surface_id": "upper_right",
+      "carrier_mesh": "upper_right_setback",
+      "surface_role": "upper_right_setback",
+      "mapping": "planar_anchored",
+      "mapping_parameters": {
+        "solver": "least_squares_homography",
+        "preserve_aspect": true
+      },
+      "registration_anchors": [
+        {
+          "anchor_id": "boundary_0",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            17.85,
+            -16.35,
+            18.5
+          ],
+          "surface_uv": [
+            0.0,
+            0.0
+          ],
+          "source_uv": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_1",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            17.85,
+            16.35,
+            18.5
+          ],
+          "surface_uv": [
+            1.0,
+            0.0
+          ],
+          "source_uv": [
+            1.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_2",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            17.85,
+            16.35,
+            20.5
+          ],
+          "surface_uv": [
+            1.0,
+            1.0
+          ],
+          "source_uv": [
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_3",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            17.85,
+            -16.35,
+            20.5
+          ],
+          "surface_uv": [
+            0.0,
+            1.0
+          ],
+          "source_uv": [
+            0.0,
+            1.0
+          ]
+        }
+      ],
+      "source_id": "right",
+      "source_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-right.png",
+      "source_sha256": "b7e1a978b66fcca6d2dbe5d8d1d9f23fc7b3574004ad97196eb01909f6c854f6",
+      "source_crop_xyxy": [
+        0,
+        0,
+        1536,
+        1024
+      ],
+      "source_to_canonical_h": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "material_binding": {
+        "albedo": "registered_sticker_atlas",
+        "normal": "construction_role_metric_pbr",
+        "roughness": "construction_role_metric_pbr",
+        "apply_to_existing_carrier": true,
+        "create_geometry": false,
+        "carrier_offset_m": 0.0
+      }
+    },
+    {
+      "id": "sticker_upper_rear",
+      "kind": "carrier_skin",
+      "carrier_mode": "native_surface_material",
+      "carrier_surface_id": "upper_rear",
+      "carrier_mesh": "upper_rear_setback",
+      "surface_role": "upper_rear_setback",
+      "mapping": "planar_anchored",
+      "mapping_parameters": {
+        "solver": "least_squares_homography",
+        "preserve_aspect": true
+      },
+      "registration_anchors": [
+        {
+          "anchor_id": "boundary_0",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            17.35,
+            16.35,
+            18.5
+          ],
+          "surface_uv": [
+            0.0,
+            0.0
+          ],
+          "source_uv": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_1",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            -17.35,
+            16.35,
+            18.5
+          ],
+          "surface_uv": [
+            1.0,
+            0.0
+          ],
+          "source_uv": [
+            1.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_2",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            -17.35,
+            16.35,
+            20.5
+          ],
+          "surface_uv": [
+            1.0,
+            1.0
+          ],
+          "source_uv": [
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_3",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            17.35,
+            16.35,
+            20.5
+          ],
+          "surface_uv": [
+            0.0,
+            1.0
+          ],
+          "source_uv": [
+            0.0,
+            1.0
+          ]
+        }
+      ],
+      "source_id": "rear",
+      "source_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-rear.png",
+      "source_sha256": "0c3f441ec32d3f2215a613dd5dac79264df275babef140120b584704379bc097",
+      "source_crop_xyxy": [
+        0,
+        0,
+        1536,
+        1024
+      ],
+      "source_to_canonical_h": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "material_binding": {
+        "albedo": "registered_sticker_atlas",
+        "normal": "construction_role_metric_pbr",
+        "roughness": "construction_role_metric_pbr",
+        "apply_to_existing_carrier": true,
+        "create_geometry": false,
+        "carrier_offset_m": 0.0
+      }
+    },
+    {
+      "id": "sticker_upper_left",
+      "kind": "carrier_skin",
+      "carrier_mode": "native_surface_material",
+      "carrier_surface_id": "upper_left",
+      "carrier_mesh": "upper_left_setback",
+      "surface_role": "upper_left_setback",
+      "mapping": "planar_anchored",
+      "mapping_parameters": {
+        "solver": "least_squares_homography",
+        "preserve_aspect": true
+      },
+      "registration_anchors": [
+        {
+          "anchor_id": "boundary_0",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            -17.85,
+            16.35,
+            18.5
+          ],
+          "surface_uv": [
+            0.0,
+            0.0
+          ],
+          "source_uv": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_1",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            -17.85,
+            -9.5,
+            18.5
+          ],
+          "surface_uv": [
+            1.0,
+            0.0
+          ],
+          "source_uv": [
+            1.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_2",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            -17.85,
+            -9.5,
+            20.5
+          ],
+          "surface_uv": [
+            1.0,
+            1.0
+          ],
+          "source_uv": [
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_3",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            -17.85,
+            16.35,
+            20.5
+          ],
+          "surface_uv": [
+            0.0,
+            1.0
+          ],
+          "source_uv": [
+            0.0,
+            1.0
+          ]
+        }
+      ],
+      "source_id": "left",
+      "source_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-left.png",
+      "source_sha256": "1218d30d1c680c8ed92d3e0ef5503a48b4c9e5d40cdcf10855663205357560db",
+      "source_crop_xyxy": [
+        0,
+        0,
+        1619,
+        971
+      ],
+      "source_to_canonical_h": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "material_binding": {
+        "albedo": "registered_sticker_atlas",
+        "normal": "construction_role_metric_pbr",
+        "roughness": "construction_role_metric_pbr",
+        "apply_to_existing_carrier": true,
+        "create_geometry": false,
+        "carrier_offset_m": 0.0
+      }
+    },
+    {
+      "id": "sticker_corner_upper_returns",
+      "kind": "carrier_skin",
+      "carrier_mode": "native_surface_material",
+      "carrier_surface_id": "corner_upper_returns",
+      "carrier_mesh": "corner_upper_return_assembly",
+      "surface_role": "closed_upper_corner_returns",
+      "mapping": "planar_anchored",
+      "mapping_parameters": {
+        "solver": "least_squares_homography",
+        "preserve_aspect": true
+      },
+      "registration_anchors": [
+        {
+          "anchor_id": "boundary_0",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            -18.05,
+            -10.1,
+            18.5
+          ],
+          "surface_uv": [
+            0.0,
+            0.0
+          ],
+          "source_uv": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_1",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            -17.25,
+            -9.4,
+            18.5
+          ],
+          "surface_uv": [
+            1.0,
+            0.0
+          ],
+          "source_uv": [
+            1.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_2",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            -10.4,
+            -16.25,
+            20.5
+          ],
+          "surface_uv": [
+            1.0,
+            1.0
+          ],
+          "source_uv": [
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_3",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            -11.1,
+            -17.05,
+            20.5
+          ],
+          "surface_uv": [
+            0.0,
+            1.0
+          ],
+          "source_uv": [
+            0.0,
+            1.0
+          ]
+        }
+      ],
+      "source_id": "front_left",
+      "source_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-front-left.png",
+      "source_sha256": "df4c3f2c8ff717c4ec676f861e599ef6c622c5f77da2ac19465061cdf5415af3",
+      "source_crop_xyxy": [
+        0,
+        0,
+        933,
+        1686
+      ],
+      "source_to_canonical_h": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "material_binding": {
+        "albedo": "registered_sticker_atlas",
+        "normal": "construction_role_metric_pbr",
+        "roughness": "construction_role_metric_pbr",
+        "apply_to_existing_carrier": true,
+        "create_geometry": false,
+        "carrier_offset_m": 0.0
+      }
+    },
+    {
+      "id": "sticker_perimeter_cornice",
+      "kind": "carrier_skin",
+      "carrier_mode": "native_surface_material",
+      "carrier_surface_id": "perimeter_cornice",
+      "carrier_mesh": "main_cornice_assembly",
+      "surface_role": "projecting_perimeter_cornice",
+      "mapping": "planar_anchored",
+      "mapping_parameters": {
+        "solver": "least_squares_homography",
+        "preserve_aspect": true
+      },
+      "registration_anchors": [
+        {
+          "anchor_id": "boundary_0",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            -18.35,
+            -17.35,
+            18.05
+          ],
+          "surface_uv": [
+            0.0,
+            0.0
+          ],
+          "source_uv": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_1",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            18.35,
+            -17.35,
+            18.05
+          ],
+          "surface_uv": [
+            1.0,
+            0.0
+          ],
+          "source_uv": [
+            1.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_2",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            18.35,
+            17.35,
+            18.75
+          ],
+          "surface_uv": [
+            1.0,
+            1.0
+          ],
+          "source_uv": [
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_3",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            -18.35,
+            17.35,
+            18.75
+          ],
+          "surface_uv": [
+            0.0,
+            1.0
+          ],
+          "source_uv": [
+            0.0,
+            1.0
+          ]
+        }
+      ],
+      "source_id": "front",
+      "source_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-front.png",
+      "source_sha256": "635883a1538b588000affe7a4443adc9e029bc2b25bfeaa0808610d1f419e50c",
+      "source_crop_xyxy": [
+        0,
+        0,
+        1536,
+        1024
+      ],
+      "source_to_canonical_h": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "material_binding": {
+        "albedo": "registered_sticker_atlas",
+        "normal": "construction_role_metric_pbr",
+        "roughness": "construction_role_metric_pbr",
+        "apply_to_existing_carrier": true,
+        "create_geometry": false,
+        "carrier_offset_m": 0.0
+      }
+    },
+    {
+      "id": "sticker_corner_cornices",
+      "kind": "carrier_skin",
+      "carrier_mode": "native_surface_material",
+      "carrier_surface_id": "corner_cornices",
+      "carrier_mesh": "corner_pavilion_cornice_assembly",
+      "surface_role": "projecting_corner_cornices",
+      "mapping": "cylindrical_arc_length",
+      "mapping_parameters": {
+        "centre_xy_m": [
+          -11.0,
+          -10.0
+        ],
+        "theta_zero_axis_xy": [
+          1.0,
+          0.0
+        ],
+        "theta_direction": "counter_clockwise",
+        "seam_angle_deg": 180.0,
+        "v_mode": "height_fraction"
+      },
+      "registration_anchors": [
+        {
+          "anchor_id": "curved_0",
+          "kind": "arc_anchor",
+          "object_space_m": [
+            -18.38,
+            -10,
+            18.05
+          ],
+          "surface_uv": [
+            0.5,
+            0.0
+          ],
+          "source_uv": [
+            0.5,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "curved_1",
+          "kind": "arc_anchor",
+          "object_space_m": [
+            -15.95,
+            -14.95,
+            18.05
+          ],
+          "surface_uv": [
+            0.625,
+            0.0
+          ],
+          "source_uv": [
+            0.625,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "curved_2",
+          "kind": "arc_anchor",
+          "object_space_m": [
+            -11,
+            -17.38,
+            20.62
+          ],
+          "surface_uv": [
+            0.75,
+            1.0
+          ],
+          "source_uv": [
+            0.75,
+            1.0
+          ]
+        },
+        {
+          "anchor_id": "curved_3",
+          "kind": "arc_anchor",
+          "object_space_m": [
+            -18.38,
+            -10,
+            20.62
+          ],
+          "surface_uv": [
+            0.5,
+            1.0
+          ],
+          "source_uv": [
+            0.5,
+            1.0
+          ]
+        }
+      ],
+      "source_id": "front_left",
+      "source_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-front-left.png",
+      "source_sha256": "df4c3f2c8ff717c4ec676f861e599ef6c622c5f77da2ac19465061cdf5415af3",
+      "source_crop_xyxy": [
+        0,
+        0,
+        933,
+        1686
+      ],
+      "source_to_canonical_h": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "material_binding": {
+        "albedo": "registered_sticker_atlas",
+        "normal": "construction_role_metric_pbr",
+        "roughness": "construction_role_metric_pbr",
+        "apply_to_existing_carrier": true,
+        "create_geometry": false,
+        "carrier_offset_m": 0.0
+      }
+    },
+    {
+      "id": "sticker_wrapped_canopy",
+      "kind": "carrier_skin",
+      "carrier_mode": "native_surface_material",
+      "carrier_surface_id": "wrapped_canopy",
+      "carrier_mesh": "wrapped_corner_canopy",
+      "surface_role": "wrapped_corner_canopy",
+      "mapping": "cylindrical_arc_length",
+      "mapping_parameters": {
+        "centre_xy_m": [
+          -11.0,
+          -10.0
+        ],
+        "theta_zero_axis_xy": [
+          1.0,
+          0.0
+        ],
+        "theta_direction": "counter_clockwise",
+        "seam_angle_deg": 180.0,
+        "v_mode": "height_fraction"
+      },
+      "registration_anchors": [
+        {
+          "anchor_id": "curved_0",
+          "kind": "arc_anchor",
+          "object_space_m": [
+            -21.2,
+            -10,
+            5.05
+          ],
+          "surface_uv": [
+            0.5,
+            0.0
+          ],
+          "source_uv": [
+            0.5,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "curved_1",
+          "kind": "arc_anchor",
+          "object_space_m": [
+            -18.21,
+            -17.21,
+            5.05
+          ],
+          "surface_uv": [
+            0.625,
+            0.0
+          ],
+          "source_uv": [
+            0.625,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "curved_2",
+          "kind": "arc_anchor",
+          "object_space_m": [
+            -11,
+            -20.2,
+            5.38
+          ],
+          "surface_uv": [
+            0.75,
+            1.0
+          ],
+          "source_uv": [
+            0.75,
+            1.0
+          ]
+        },
+        {
+          "anchor_id": "curved_3",
+          "kind": "arc_anchor",
+          "object_space_m": [
+            -17.2,
+            -10,
+            5.38
+          ],
+          "surface_uv": [
+            0.5,
+            1.0
+          ],
+          "source_uv": [
+            0.5,
+            1.0
+          ]
+        }
+      ],
+      "source_id": "front_left",
+      "source_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-front-left.png",
+      "source_sha256": "df4c3f2c8ff717c4ec676f861e599ef6c622c5f77da2ac19465061cdf5415af3",
+      "source_crop_xyxy": [
+        0,
+        0,
+        933,
+        1686
+      ],
+      "source_to_canonical_h": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "material_binding": {
+        "albedo": "registered_sticker_atlas",
+        "normal": "construction_role_metric_pbr",
+        "roughness": "construction_role_metric_pbr",
+        "apply_to_existing_carrier": true,
+        "create_geometry": false,
+        "carrier_offset_m": 0.0
+      }
+    },
+    {
+      "id": "sticker_roof_front",
+      "kind": "carrier_skin",
+      "carrier_mode": "native_surface_material",
+      "carrier_surface_id": "roof_front",
+      "carrier_mesh": "watertight_perimeter_court_crown",
+      "surface_role": "roof_mansard_front",
+      "mapping": "roof_plan_shared",
+      "mapping_parameters": {
+        "shared_plan_bounds_m": [
+          -21.2,
+          18.35,
+          -20.2,
+          17.35
+        ],
+        "projector": "global_xy"
+      },
+      "registration_anchors": [
+        {
+          "anchor_id": "plan_boundary_0",
+          "kind": "roof_plan_point",
+          "object_space_m": [
+            -18,
+            -17,
+            21
+          ],
+          "surface_uv": [
+            0.0809102402022756,
+            0.08521970705725698
+          ],
+          "source_uv": [
+            0.0809102402022756,
+            0.08521970705725698
+          ]
+        },
+        {
+          "anchor_id": "plan_boundary_1",
+          "kind": "roof_plan_point",
+          "object_space_m": [
+            18,
+            -17,
+            21
+          ],
+          "surface_uv": [
+            0.9911504424778762,
+            0.08521970705725698
+          ],
+          "source_uv": [
+            0.9911504424778762,
+            0.08521970705725698
+          ]
+        },
+        {
+          "anchor_id": "plan_boundary_2",
+          "kind": "roof_plan_point",
+          "object_space_m": [
+            14.5,
+            -13.5,
+            24
+          ],
+          "surface_uv": [
+            0.9026548672566373,
+            0.1784287616511318
+          ],
+          "source_uv": [
+            0.9026548672566373,
+            0.1784287616511318
+          ]
+        },
+        {
+          "anchor_id": "plan_boundary_3",
+          "kind": "roof_plan_point",
+          "object_space_m": [
+            -14.5,
+            -13.5,
+            24
+          ],
+          "surface_uv": [
+            0.16940581542351454,
+            0.1784287616511318
+          ],
+          "source_uv": [
+            0.16940581542351454,
+            0.1784287616511318
+          ]
+        }
+      ],
+      "source_id": "roof",
+      "source_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-roof.png",
+      "source_sha256": "124fea6055d6a9ce0f2a2069c6f9c35daaa1ea9e70ba9ffb4b5cc2cb90b85aaf",
+      "source_crop_xyxy": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "source_to_canonical_h": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "material_binding": {
+        "albedo": "registered_sticker_atlas",
+        "normal": "construction_role_metric_pbr",
+        "roughness": "construction_role_metric_pbr",
+        "apply_to_existing_carrier": true,
+        "create_geometry": false,
+        "carrier_offset_m": 0.0
+      }
+    },
+    {
+      "id": "sticker_roof_right",
+      "kind": "carrier_skin",
+      "carrier_mode": "native_surface_material",
+      "carrier_surface_id": "roof_right",
+      "carrier_mesh": "watertight_perimeter_court_crown",
+      "surface_role": "roof_mansard_right",
+      "mapping": "roof_plan_shared",
+      "mapping_parameters": {
+        "shared_plan_bounds_m": [
+          -21.2,
+          18.35,
+          -20.2,
+          17.35
+        ],
+        "projector": "global_xy"
+      },
+      "registration_anchors": [
+        {
+          "anchor_id": "plan_boundary_0",
+          "kind": "roof_plan_point",
+          "object_space_m": [
+            18,
+            -17,
+            21
+          ],
+          "surface_uv": [
+            0.9911504424778762,
+            0.08521970705725698
+          ],
+          "source_uv": [
+            0.9911504424778762,
+            0.08521970705725698
+          ]
+        },
+        {
+          "anchor_id": "plan_boundary_1",
+          "kind": "roof_plan_point",
+          "object_space_m": [
+            18,
+            17,
+            21
+          ],
+          "surface_uv": [
+            0.9911504424778762,
+            0.9906790945406126
+          ],
+          "source_uv": [
+            0.9911504424778762,
+            0.9906790945406126
+          ]
+        },
+        {
+          "anchor_id": "plan_boundary_2",
+          "kind": "roof_plan_point",
+          "object_space_m": [
+            14.5,
+            13.5,
+            24
+          ],
+          "surface_uv": [
+            0.9026548672566373,
+            0.8974700399467378
+          ],
+          "source_uv": [
+            0.9026548672566373,
+            0.8974700399467378
+          ]
+        },
+        {
+          "anchor_id": "plan_boundary_3",
+          "kind": "roof_plan_point",
+          "object_space_m": [
+            14.5,
+            -13.5,
+            24
+          ],
+          "surface_uv": [
+            0.9026548672566373,
+            0.1784287616511318
+          ],
+          "source_uv": [
+            0.9026548672566373,
+            0.1784287616511318
+          ]
+        }
+      ],
+      "source_id": "roof",
+      "source_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-roof.png",
+      "source_sha256": "124fea6055d6a9ce0f2a2069c6f9c35daaa1ea9e70ba9ffb4b5cc2cb90b85aaf",
+      "source_crop_xyxy": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "source_to_canonical_h": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "material_binding": {
+        "albedo": "registered_sticker_atlas",
+        "normal": "construction_role_metric_pbr",
+        "roughness": "construction_role_metric_pbr",
+        "apply_to_existing_carrier": true,
+        "create_geometry": false,
+        "carrier_offset_m": 0.0
+      }
+    },
+    {
+      "id": "sticker_roof_rear",
+      "kind": "carrier_skin",
+      "carrier_mode": "native_surface_material",
+      "carrier_surface_id": "roof_rear",
+      "carrier_mesh": "watertight_perimeter_court_crown",
+      "surface_role": "roof_mansard_rear",
+      "mapping": "roof_plan_shared",
+      "mapping_parameters": {
+        "shared_plan_bounds_m": [
+          -21.2,
+          18.35,
+          -20.2,
+          17.35
+        ],
+        "projector": "global_xy"
+      },
+      "registration_anchors": [
+        {
+          "anchor_id": "plan_boundary_0",
+          "kind": "roof_plan_point",
+          "object_space_m": [
+            18,
+            17,
+            21
+          ],
+          "surface_uv": [
+            0.9911504424778762,
+            0.9906790945406126
+          ],
+          "source_uv": [
+            0.9911504424778762,
+            0.9906790945406126
+          ]
+        },
+        {
+          "anchor_id": "plan_boundary_1",
+          "kind": "roof_plan_point",
+          "object_space_m": [
+            -18,
+            17,
+            21
+          ],
+          "surface_uv": [
+            0.0809102402022756,
+            0.9906790945406126
+          ],
+          "source_uv": [
+            0.0809102402022756,
+            0.9906790945406126
+          ]
+        },
+        {
+          "anchor_id": "plan_boundary_2",
+          "kind": "roof_plan_point",
+          "object_space_m": [
+            -14.5,
+            13.5,
+            24
+          ],
+          "surface_uv": [
+            0.16940581542351454,
+            0.8974700399467378
+          ],
+          "source_uv": [
+            0.16940581542351454,
+            0.8974700399467378
+          ]
+        },
+        {
+          "anchor_id": "plan_boundary_3",
+          "kind": "roof_plan_point",
+          "object_space_m": [
+            14.5,
+            13.5,
+            24
+          ],
+          "surface_uv": [
+            0.9026548672566373,
+            0.8974700399467378
+          ],
+          "source_uv": [
+            0.9026548672566373,
+            0.8974700399467378
+          ]
+        }
+      ],
+      "source_id": "roof",
+      "source_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-roof.png",
+      "source_sha256": "124fea6055d6a9ce0f2a2069c6f9c35daaa1ea9e70ba9ffb4b5cc2cb90b85aaf",
+      "source_crop_xyxy": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "source_to_canonical_h": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "material_binding": {
+        "albedo": "registered_sticker_atlas",
+        "normal": "construction_role_metric_pbr",
+        "roughness": "construction_role_metric_pbr",
+        "apply_to_existing_carrier": true,
+        "create_geometry": false,
+        "carrier_offset_m": 0.0
+      }
+    },
+    {
+      "id": "sticker_roof_left",
+      "kind": "carrier_skin",
+      "carrier_mode": "native_surface_material",
+      "carrier_surface_id": "roof_left",
+      "carrier_mesh": "watertight_perimeter_court_crown",
+      "surface_role": "roof_mansard_left",
+      "mapping": "roof_plan_shared",
+      "mapping_parameters": {
+        "shared_plan_bounds_m": [
+          -21.2,
+          18.35,
+          -20.2,
+          17.35
+        ],
+        "projector": "global_xy"
+      },
+      "registration_anchors": [
+        {
+          "anchor_id": "plan_boundary_0",
+          "kind": "roof_plan_point",
+          "object_space_m": [
+            -18,
+            17,
+            21
+          ],
+          "surface_uv": [
+            0.0809102402022756,
+            0.9906790945406126
+          ],
+          "source_uv": [
+            0.0809102402022756,
+            0.9906790945406126
+          ]
+        },
+        {
+          "anchor_id": "plan_boundary_1",
+          "kind": "roof_plan_point",
+          "object_space_m": [
+            -18,
+            -17,
+            21
+          ],
+          "surface_uv": [
+            0.0809102402022756,
+            0.08521970705725698
+          ],
+          "source_uv": [
+            0.0809102402022756,
+            0.08521970705725698
+          ]
+        },
+        {
+          "anchor_id": "plan_boundary_2",
+          "kind": "roof_plan_point",
+          "object_space_m": [
+            -14.5,
+            -13.5,
+            24
+          ],
+          "surface_uv": [
+            0.16940581542351454,
+            0.1784287616511318
+          ],
+          "source_uv": [
+            0.16940581542351454,
+            0.1784287616511318
+          ]
+        },
+        {
+          "anchor_id": "plan_boundary_3",
+          "kind": "roof_plan_point",
+          "object_space_m": [
+            -14.5,
+            13.5,
+            24
+          ],
+          "surface_uv": [
+            0.16940581542351454,
+            0.8974700399467378
+          ],
+          "source_uv": [
+            0.16940581542351454,
+            0.8974700399467378
+          ]
+        }
+      ],
+      "source_id": "roof",
+      "source_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-roof.png",
+      "source_sha256": "124fea6055d6a9ce0f2a2069c6f9c35daaa1ea9e70ba9ffb4b5cc2cb90b85aaf",
+      "source_crop_xyxy": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "source_to_canonical_h": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "material_binding": {
+        "albedo": "registered_sticker_atlas",
+        "normal": "construction_role_metric_pbr",
+        "roughness": "construction_role_metric_pbr",
+        "apply_to_existing_carrier": true,
+        "create_geometry": false,
+        "carrier_offset_m": 0.0
+      }
+    },
+    {
+      "id": "sticker_terrace_front",
+      "kind": "carrier_skin",
+      "carrier_mode": "native_surface_material",
+      "carrier_surface_id": "terrace_front",
+      "carrier_mesh": "watertight_perimeter_court_crown",
+      "surface_role": "roof_terrace_front",
+      "mapping": "roof_plan_shared",
+      "mapping_parameters": {
+        "shared_plan_bounds_m": [
+          -21.2,
+          18.35,
+          -20.2,
+          17.35
+        ],
+        "projector": "global_xy"
+      },
+      "registration_anchors": [
+        {
+          "anchor_id": "plan_boundary_0",
+          "kind": "roof_plan_point",
+          "object_space_m": [
+            -14.5,
+            -13.5,
+            24
+          ],
+          "surface_uv": [
+            0.16940581542351454,
+            0.1784287616511318
+          ],
+          "source_uv": [
+            0.16940581542351454,
+            0.1784287616511318
+          ]
+        },
+        {
+          "anchor_id": "plan_boundary_1",
+          "kind": "roof_plan_point",
+          "object_space_m": [
+            14.5,
+            -13.5,
+            24
+          ],
+          "surface_uv": [
+            0.9026548672566373,
+            0.1784287616511318
+          ],
+          "source_uv": [
+            0.9026548672566373,
+            0.1784287616511318
+          ]
+        },
+        {
+          "anchor_id": "plan_boundary_2",
+          "kind": "roof_plan_point",
+          "object_space_m": [
+            9,
+            -7.5,
+            24.8
+          ],
+          "surface_uv": [
+            0.763590391908976,
+            0.3382157123834887
+          ],
+          "source_uv": [
+            0.763590391908976,
+            0.3382157123834887
+          ]
+        },
+        {
+          "anchor_id": "plan_boundary_3",
+          "kind": "roof_plan_point",
+          "object_space_m": [
+            -9,
+            -7.5,
+            24.8
+          ],
+          "surface_uv": [
+            0.3084702907711757,
+            0.3382157123834887
+          ],
+          "source_uv": [
+            0.3084702907711757,
+            0.3382157123834887
+          ]
+        }
+      ],
+      "source_id": "roof",
+      "source_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-roof.png",
+      "source_sha256": "124fea6055d6a9ce0f2a2069c6f9c35daaa1ea9e70ba9ffb4b5cc2cb90b85aaf",
+      "source_crop_xyxy": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "source_to_canonical_h": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "material_binding": {
+        "albedo": "registered_sticker_atlas",
+        "normal": "construction_role_metric_pbr",
+        "roughness": "construction_role_metric_pbr",
+        "apply_to_existing_carrier": true,
+        "create_geometry": false,
+        "carrier_offset_m": 0.0
+      }
+    },
+    {
+      "id": "sticker_terrace_right",
+      "kind": "carrier_skin",
+      "carrier_mode": "native_surface_material",
+      "carrier_surface_id": "terrace_right",
+      "carrier_mesh": "watertight_perimeter_court_crown",
+      "surface_role": "roof_terrace_right",
+      "mapping": "roof_plan_shared",
+      "mapping_parameters": {
+        "shared_plan_bounds_m": [
+          -21.2,
+          18.35,
+          -20.2,
+          17.35
+        ],
+        "projector": "global_xy"
+      },
+      "registration_anchors": [
+        {
+          "anchor_id": "plan_boundary_0",
+          "kind": "roof_plan_point",
+          "object_space_m": [
+            14.5,
+            -13.5,
+            24
+          ],
+          "surface_uv": [
+            0.9026548672566373,
+            0.1784287616511318
+          ],
+          "source_uv": [
+            0.9026548672566373,
+            0.1784287616511318
+          ]
+        },
+        {
+          "anchor_id": "plan_boundary_1",
+          "kind": "roof_plan_point",
+          "object_space_m": [
+            14.5,
+            13.5,
+            24
+          ],
+          "surface_uv": [
+            0.9026548672566373,
+            0.8974700399467378
+          ],
+          "source_uv": [
+            0.9026548672566373,
+            0.8974700399467378
+          ]
+        },
+        {
+          "anchor_id": "plan_boundary_2",
+          "kind": "roof_plan_point",
+          "object_space_m": [
+            9,
+            7.5,
+            24.8
+          ],
+          "surface_uv": [
+            0.763590391908976,
+            0.7376830892143809
+          ],
+          "source_uv": [
+            0.763590391908976,
+            0.7376830892143809
+          ]
+        },
+        {
+          "anchor_id": "plan_boundary_3",
+          "kind": "roof_plan_point",
+          "object_space_m": [
+            9,
+            -7.5,
+            24.8
+          ],
+          "surface_uv": [
+            0.763590391908976,
+            0.3382157123834887
+          ],
+          "source_uv": [
+            0.763590391908976,
+            0.3382157123834887
+          ]
+        }
+      ],
+      "source_id": "roof",
+      "source_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-roof.png",
+      "source_sha256": "124fea6055d6a9ce0f2a2069c6f9c35daaa1ea9e70ba9ffb4b5cc2cb90b85aaf",
+      "source_crop_xyxy": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "source_to_canonical_h": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "material_binding": {
+        "albedo": "registered_sticker_atlas",
+        "normal": "construction_role_metric_pbr",
+        "roughness": "construction_role_metric_pbr",
+        "apply_to_existing_carrier": true,
+        "create_geometry": false,
+        "carrier_offset_m": 0.0
+      }
+    },
+    {
+      "id": "sticker_terrace_rear",
+      "kind": "carrier_skin",
+      "carrier_mode": "native_surface_material",
+      "carrier_surface_id": "terrace_rear",
+      "carrier_mesh": "watertight_perimeter_court_crown",
+      "surface_role": "roof_terrace_rear",
+      "mapping": "roof_plan_shared",
+      "mapping_parameters": {
+        "shared_plan_bounds_m": [
+          -21.2,
+          18.35,
+          -20.2,
+          17.35
+        ],
+        "projector": "global_xy"
+      },
+      "registration_anchors": [
+        {
+          "anchor_id": "plan_boundary_0",
+          "kind": "roof_plan_point",
+          "object_space_m": [
+            14.5,
+            13.5,
+            24
+          ],
+          "surface_uv": [
+            0.9026548672566373,
+            0.8974700399467378
+          ],
+          "source_uv": [
+            0.9026548672566373,
+            0.8974700399467378
+          ]
+        },
+        {
+          "anchor_id": "plan_boundary_1",
+          "kind": "roof_plan_point",
+          "object_space_m": [
+            -14.5,
+            13.5,
+            24
+          ],
+          "surface_uv": [
+            0.16940581542351454,
+            0.8974700399467378
+          ],
+          "source_uv": [
+            0.16940581542351454,
+            0.8974700399467378
+          ]
+        },
+        {
+          "anchor_id": "plan_boundary_2",
+          "kind": "roof_plan_point",
+          "object_space_m": [
+            -9,
+            7.5,
+            24.8
+          ],
+          "surface_uv": [
+            0.3084702907711757,
+            0.7376830892143809
+          ],
+          "source_uv": [
+            0.3084702907711757,
+            0.7376830892143809
+          ]
+        },
+        {
+          "anchor_id": "plan_boundary_3",
+          "kind": "roof_plan_point",
+          "object_space_m": [
+            9,
+            7.5,
+            24.8
+          ],
+          "surface_uv": [
+            0.763590391908976,
+            0.7376830892143809
+          ],
+          "source_uv": [
+            0.763590391908976,
+            0.7376830892143809
+          ]
+        }
+      ],
+      "source_id": "roof",
+      "source_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-roof.png",
+      "source_sha256": "124fea6055d6a9ce0f2a2069c6f9c35daaa1ea9e70ba9ffb4b5cc2cb90b85aaf",
+      "source_crop_xyxy": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "source_to_canonical_h": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "material_binding": {
+        "albedo": "registered_sticker_atlas",
+        "normal": "construction_role_metric_pbr",
+        "roughness": "construction_role_metric_pbr",
+        "apply_to_existing_carrier": true,
+        "create_geometry": false,
+        "carrier_offset_m": 0.0
+      }
+    },
+    {
+      "id": "sticker_terrace_left",
+      "kind": "carrier_skin",
+      "carrier_mode": "native_surface_material",
+      "carrier_surface_id": "terrace_left",
+      "carrier_mesh": "watertight_perimeter_court_crown",
+      "surface_role": "roof_terrace_left",
+      "mapping": "roof_plan_shared",
+      "mapping_parameters": {
+        "shared_plan_bounds_m": [
+          -21.2,
+          18.35,
+          -20.2,
+          17.35
+        ],
+        "projector": "global_xy"
+      },
+      "registration_anchors": [
+        {
+          "anchor_id": "plan_boundary_0",
+          "kind": "roof_plan_point",
+          "object_space_m": [
+            -14.5,
+            13.5,
+            24
+          ],
+          "surface_uv": [
+            0.16940581542351454,
+            0.8974700399467378
+          ],
+          "source_uv": [
+            0.16940581542351454,
+            0.8974700399467378
+          ]
+        },
+        {
+          "anchor_id": "plan_boundary_1",
+          "kind": "roof_plan_point",
+          "object_space_m": [
+            -14.5,
+            -13.5,
+            24
+          ],
+          "surface_uv": [
+            0.16940581542351454,
+            0.1784287616511318
+          ],
+          "source_uv": [
+            0.16940581542351454,
+            0.1784287616511318
+          ]
+        },
+        {
+          "anchor_id": "plan_boundary_2",
+          "kind": "roof_plan_point",
+          "object_space_m": [
+            -9,
+            -7.5,
+            24.8
+          ],
+          "surface_uv": [
+            0.3084702907711757,
+            0.3382157123834887
+          ],
+          "source_uv": [
+            0.3084702907711757,
+            0.3382157123834887
+          ]
+        },
+        {
+          "anchor_id": "plan_boundary_3",
+          "kind": "roof_plan_point",
+          "object_space_m": [
+            -9,
+            7.5,
+            24.8
+          ],
+          "surface_uv": [
+            0.3084702907711757,
+            0.7376830892143809
+          ],
+          "source_uv": [
+            0.3084702907711757,
+            0.7376830892143809
+          ]
+        }
+      ],
+      "source_id": "roof",
+      "source_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-roof.png",
+      "source_sha256": "124fea6055d6a9ce0f2a2069c6f9c35daaa1ea9e70ba9ffb4b5cc2cb90b85aaf",
+      "source_crop_xyxy": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "source_to_canonical_h": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "material_binding": {
+        "albedo": "registered_sticker_atlas",
+        "normal": "construction_role_metric_pbr",
+        "roughness": "construction_role_metric_pbr",
+        "apply_to_existing_carrier": true,
+        "create_geometry": false,
+        "carrier_offset_m": 0.0
+      }
+    },
+    {
+      "id": "sticker_dormers_front",
+      "kind": "carrier_skin",
+      "carrier_mode": "native_surface_material",
+      "carrier_surface_id": "dormers_front",
+      "carrier_mesh": "dormer_front_assembly",
+      "surface_role": "dormer_front_geometry",
+      "mapping": "planar_anchored",
+      "mapping_parameters": {
+        "solver": "least_squares_homography",
+        "preserve_aspect": true
+      },
+      "registration_anchors": [
+        {
+          "anchor_id": "boundary_0",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            -10.25,
+            -15.6,
+            22.1
+          ],
+          "surface_uv": [
+            0.0,
+            0.0
+          ],
+          "source_uv": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_1",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            10.25,
+            -15.6,
+            22.1
+          ],
+          "surface_uv": [
+            1.0,
+            0.0
+          ],
+          "source_uv": [
+            1.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_2",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            10.25,
+            -15.6,
+            24.0
+          ],
+          "surface_uv": [
+            1.0,
+            1.0
+          ],
+          "source_uv": [
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_3",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            9,
+            -15.6,
+            25.15
+          ],
+          "surface_uv": [
+            0.0,
+            1.0
+          ],
+          "source_uv": [
+            0.0,
+            1.0
+          ]
+        }
+      ],
+      "source_id": "front",
+      "source_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-front.png",
+      "source_sha256": "635883a1538b588000affe7a4443adc9e029bc2b25bfeaa0808610d1f419e50c",
+      "source_crop_xyxy": [
+        0,
+        0,
+        1536,
+        1024
+      ],
+      "source_to_canonical_h": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "material_binding": {
+        "albedo": "registered_sticker_atlas",
+        "normal": "construction_role_metric_pbr",
+        "roughness": "construction_role_metric_pbr",
+        "apply_to_existing_carrier": true,
+        "create_geometry": false,
+        "carrier_offset_m": 0.0
+      }
+    },
+    {
+      "id": "sticker_dormers_rear",
+      "kind": "carrier_skin",
+      "carrier_mode": "native_surface_material",
+      "carrier_surface_id": "dormers_rear",
+      "carrier_mesh": "dormer_rear_assembly",
+      "surface_role": "dormer_rear_geometry",
+      "mapping": "planar_anchored",
+      "mapping_parameters": {
+        "solver": "least_squares_homography",
+        "preserve_aspect": true
+      },
+      "registration_anchors": [
+        {
+          "anchor_id": "boundary_0",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            10.25,
+            15.6,
+            22.1
+          ],
+          "surface_uv": [
+            0.0,
+            0.0
+          ],
+          "source_uv": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_1",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            -10.25,
+            15.6,
+            22.1
+          ],
+          "surface_uv": [
+            1.0,
+            0.0
+          ],
+          "source_uv": [
+            1.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_2",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            -10.25,
+            15.6,
+            24.0
+          ],
+          "surface_uv": [
+            1.0,
+            1.0
+          ],
+          "source_uv": [
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_3",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            -9,
+            15.6,
+            25.15
+          ],
+          "surface_uv": [
+            0.0,
+            1.0
+          ],
+          "source_uv": [
+            0.0,
+            1.0
+          ]
+        }
+      ],
+      "source_id": "rear",
+      "source_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-rear.png",
+      "source_sha256": "0c3f441ec32d3f2215a613dd5dac79264df275babef140120b584704379bc097",
+      "source_crop_xyxy": [
+        0,
+        0,
+        1536,
+        1024
+      ],
+      "source_to_canonical_h": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "material_binding": {
+        "albedo": "registered_sticker_atlas",
+        "normal": "construction_role_metric_pbr",
+        "roughness": "construction_role_metric_pbr",
+        "apply_to_existing_carrier": true,
+        "create_geometry": false,
+        "carrier_offset_m": 0.0
+      }
+    },
+    {
+      "id": "sticker_dormers_left",
+      "kind": "carrier_skin",
+      "carrier_mode": "native_surface_material",
+      "carrier_surface_id": "dormers_left",
+      "carrier_mesh": "dormer_left_assembly",
+      "surface_role": "dormer_left_geometry",
+      "mapping": "planar_anchored",
+      "mapping_parameters": {
+        "solver": "least_squares_homography",
+        "preserve_aspect": true
+      },
+      "registration_anchors": [
+        {
+          "anchor_id": "boundary_0",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            -15.6,
+            6.25,
+            22.1
+          ],
+          "surface_uv": [
+            0.0,
+            0.0
+          ],
+          "source_uv": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_1",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            -15.6,
+            -6.25,
+            22.1
+          ],
+          "surface_uv": [
+            1.0,
+            0.0
+          ],
+          "source_uv": [
+            1.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_2",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            -15.6,
+            -6.25,
+            24.0
+          ],
+          "surface_uv": [
+            1.0,
+            1.0
+          ],
+          "source_uv": [
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_3",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            -15.6,
+            -5,
+            25.15
+          ],
+          "surface_uv": [
+            0.0,
+            1.0
+          ],
+          "source_uv": [
+            0.0,
+            1.0
+          ]
+        }
+      ],
+      "source_id": "left",
+      "source_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-left.png",
+      "source_sha256": "1218d30d1c680c8ed92d3e0ef5503a48b4c9e5d40cdcf10855663205357560db",
+      "source_crop_xyxy": [
+        0,
+        0,
+        1619,
+        971
+      ],
+      "source_to_canonical_h": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "material_binding": {
+        "albedo": "registered_sticker_atlas",
+        "normal": "construction_role_metric_pbr",
+        "roughness": "construction_role_metric_pbr",
+        "apply_to_existing_carrier": true,
+        "create_geometry": false,
+        "carrier_offset_m": 0.0
+      }
+    },
+    {
+      "id": "sticker_dormers_right",
+      "kind": "carrier_skin",
+      "carrier_mode": "native_surface_material",
+      "carrier_surface_id": "dormers_right",
+      "carrier_mesh": "dormer_right_assembly",
+      "surface_role": "dormer_right_geometry",
+      "mapping": "planar_anchored",
+      "mapping_parameters": {
+        "solver": "least_squares_homography",
+        "preserve_aspect": true
+      },
+      "registration_anchors": [
+        {
+          "anchor_id": "boundary_0",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            15.6,
+            -6.25,
+            22.1
+          ],
+          "surface_uv": [
+            0.0,
+            0.0
+          ],
+          "source_uv": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_1",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            15.6,
+            6.25,
+            22.1
+          ],
+          "surface_uv": [
+            1.0,
+            0.0
+          ],
+          "source_uv": [
+            1.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_2",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            15.6,
+            6.25,
+            24.0
+          ],
+          "surface_uv": [
+            1.0,
+            1.0
+          ],
+          "source_uv": [
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "anchor_id": "boundary_3",
+          "kind": "boundary_corner",
+          "object_space_m": [
+            15.6,
+            5,
+            25.15
+          ],
+          "surface_uv": [
+            0.0,
+            1.0
+          ],
+          "source_uv": [
+            0.0,
+            1.0
+          ]
+        }
+      ],
+      "source_id": "right",
+      "source_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-right.png",
+      "source_sha256": "b7e1a978b66fcca6d2dbe5d8d1d9f23fc7b3574004ad97196eb01909f6c854f6",
+      "source_crop_xyxy": [
+        0,
+        0,
+        1536,
+        1024
+      ],
+      "source_to_canonical_h": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "material_binding": {
+        "albedo": "registered_sticker_atlas",
+        "normal": "construction_role_metric_pbr",
+        "roughness": "construction_role_metric_pbr",
+        "apply_to_existing_carrier": true,
+        "create_geometry": false,
+        "carrier_offset_m": 0.0
+      }
+    },
+    {
+      "id": "sticker_central_curb",
+      "kind": "carrier_skin",
+      "carrier_mode": "native_surface_material",
+      "carrier_surface_id": "central_curb",
+      "carrier_mesh": "central_dome_curb",
+      "surface_role": "central_dome_curb",
+      "mapping": "cylindrical_arc_length",
+      "mapping_parameters": {
+        "centre_xy_m": [
+          0.0,
+          0.0
+        ],
+        "theta_zero_axis_xy": [
+          1.0,
+          0.0
+        ],
+        "theta_direction": "counter_clockwise",
+        "seam_angle_deg": 180.0,
+        "v_mode": "height_fraction"
+      },
+      "registration_anchors": [
+        {
+          "anchor_id": "curved_0",
+          "kind": "arc_anchor",
+          "object_space_m": [
+            0,
+            0,
+            24.45
+          ],
+          "surface_uv": [
+            0.0,
+            0.0
+          ],
+          "source_uv": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "curved_1",
+          "kind": "arc_anchor",
+          "object_space_m": [
+            6.2,
+            0,
+            24.45
+          ],
+          "surface_uv": [
+            0.0,
+            0.0
+          ],
+          "source_uv": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "curved_2",
+          "kind": "arc_anchor",
+          "object_space_m": [
+            6.2,
+            0,
+            25.05
+          ],
+          "surface_uv": [
+            0.0,
+            1.0
+          ],
+          "source_uv": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "anchor_id": "curved_3",
+          "kind": "arc_anchor",
+          "object_space_m": [
+            0,
+            0,
+            25.05
+          ],
+          "surface_uv": [
+            0.0,
+            1.0
+          ],
+          "source_uv": [
+            0.0,
+            1.0
+          ]
+        }
+      ],
+      "source_id": "roof",
+      "source_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-roof.png",
+      "source_sha256": "124fea6055d6a9ce0f2a2069c6f9c35daaa1ea9e70ba9ffb4b5cc2cb90b85aaf",
+      "source_crop_xyxy": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "source_to_canonical_h": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "material_binding": {
+        "albedo": "registered_sticker_atlas",
+        "normal": "construction_role_metric_pbr",
+        "roughness": "construction_role_metric_pbr",
+        "apply_to_existing_carrier": true,
+        "create_geometry": false,
+        "carrier_offset_m": 0.0
+      }
+    },
+    {
+      "id": "sticker_central_drum",
+      "kind": "carrier_skin",
+      "carrier_mode": "native_surface_material",
+      "carrier_surface_id": "central_drum",
+      "carrier_mesh": "central_dome_drum",
+      "surface_role": "central_dome_drum",
+      "mapping": "cylindrical_arc_length",
+      "mapping_parameters": {
+        "centre_xy_m": [
+          0.0,
+          0.0
+        ],
+        "theta_zero_axis_xy": [
+          1.0,
+          0.0
+        ],
+        "theta_direction": "counter_clockwise",
+        "seam_angle_deg": 180.0,
+        "v_mode": "height_fraction"
+      },
+      "registration_anchors": [
+        {
+          "anchor_id": "curved_0",
+          "kind": "arc_anchor",
+          "object_space_m": [
+            0,
+            0,
+            24.85
+          ],
+          "surface_uv": [
+            0.0,
+            0.0
+          ],
+          "source_uv": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "curved_1",
+          "kind": "arc_anchor",
+          "object_space_m": [
+            6.0,
+            0,
+            24.85
+          ],
+          "surface_uv": [
+            0.0,
+            0.0
+          ],
+          "source_uv": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "curved_2",
+          "kind": "arc_anchor",
+          "object_space_m": [
+            6.0,
+            0,
+            25.9
+          ],
+          "surface_uv": [
+            0.0,
+            1.0
+          ],
+          "source_uv": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "anchor_id": "curved_3",
+          "kind": "arc_anchor",
+          "object_space_m": [
+            0,
+            0,
+            25.9
+          ],
+          "surface_uv": [
+            0.0,
+            1.0
+          ],
+          "source_uv": [
+            0.0,
+            1.0
+          ]
+        }
+      ],
+      "source_id": "roof",
+      "source_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-roof.png",
+      "source_sha256": "124fea6055d6a9ce0f2a2069c6f9c35daaa1ea9e70ba9ffb4b5cc2cb90b85aaf",
+      "source_crop_xyxy": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "source_to_canonical_h": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "material_binding": {
+        "albedo": "registered_sticker_atlas",
+        "normal": "construction_role_metric_pbr",
+        "roughness": "construction_role_metric_pbr",
+        "apply_to_existing_carrier": true,
+        "create_geometry": false,
+        "carrier_offset_m": 0.0
+      }
+    },
+    {
+      "id": "sticker_central_dome",
+      "kind": "carrier_skin",
+      "carrier_mode": "native_surface_material",
+      "carrier_surface_id": "central_dome",
+      "carrier_mesh": "central_glass_dome",
+      "surface_role": "central_dome",
+      "mapping": "radial_dome",
+      "mapping_parameters": {
+        "centre_xy_m": [
+          0.0,
+          0.0
+        ],
+        "theta_zero_axis_xy": [
+          1.0,
+          0.0
+        ],
+        "theta_direction": "counter_clockwise",
+        "seam_angle_deg": 180.0,
+        "v_mode": "meridional_arc_fraction"
+      },
+      "registration_anchors": [
+        {
+          "anchor_id": "curved_0",
+          "kind": "dome_anchor",
+          "object_space_m": [
+            0,
+            0,
+            25.75
+          ],
+          "surface_uv": [
+            0.0,
+            0.0
+          ],
+          "source_uv": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "curved_1",
+          "kind": "dome_anchor",
+          "object_space_m": [
+            5.9,
+            0,
+            25.75
+          ],
+          "surface_uv": [
+            0.0,
+            0.0
+          ],
+          "source_uv": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "curved_2",
+          "kind": "dome_anchor",
+          "object_space_m": [
+            0,
+            0,
+            29.75
+          ],
+          "surface_uv": [
+            0.0,
+            1.0
+          ],
+          "source_uv": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "anchor_id": "curved_3",
+          "kind": "dome_anchor",
+          "object_space_m": [
+            -5.9,
+            0,
+            25.75
+          ],
+          "surface_uv": [
+            0.5,
+            0.0
+          ],
+          "source_uv": [
+            0.5,
+            0.0
+          ]
+        }
+      ],
+      "source_id": "roof",
+      "source_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-roof.png",
+      "source_sha256": "124fea6055d6a9ce0f2a2069c6f9c35daaa1ea9e70ba9ffb4b5cc2cb90b85aaf",
+      "source_crop_xyxy": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "source_to_canonical_h": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "material_binding": {
+        "albedo": "registered_sticker_atlas",
+        "normal": "construction_role_metric_pbr",
+        "roughness": "construction_role_metric_pbr",
+        "apply_to_existing_carrier": true,
+        "create_geometry": false,
+        "carrier_offset_m": 0.0
+      }
+    },
+    {
+      "id": "sticker_central_cap_finial",
+      "kind": "carrier_skin",
+      "carrier_mode": "native_surface_material",
+      "carrier_surface_id": "central_cap_finial",
+      "carrier_mesh": "central_dome_cap_finial_assembly",
+      "surface_role": "central_dome_cap_finial",
+      "mapping": "cylindrical_arc_length",
+      "mapping_parameters": {
+        "centre_xy_m": [
+          0.0,
+          0.0
+        ],
+        "theta_zero_axis_xy": [
+          1.0,
+          0.0
+        ],
+        "theta_direction": "counter_clockwise",
+        "seam_angle_deg": 180.0,
+        "v_mode": "height_fraction"
+      },
+      "registration_anchors": [
+        {
+          "anchor_id": "curved_0",
+          "kind": "arc_anchor",
+          "object_space_m": [
+            0,
+            0,
+            29.65
+          ],
+          "surface_uv": [
+            0.0,
+            0.0
+          ],
+          "source_uv": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "curved_1",
+          "kind": "arc_anchor",
+          "object_space_m": [
+            1.15,
+            0,
+            29.65
+          ],
+          "surface_uv": [
+            0.0,
+            0.0
+          ],
+          "source_uv": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "curved_2",
+          "kind": "arc_anchor",
+          "object_space_m": [
+            0.11,
+            0,
+            31.0
+          ],
+          "surface_uv": [
+            0.0,
+            1.0
+          ],
+          "source_uv": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "anchor_id": "curved_3",
+          "kind": "arc_anchor",
+          "object_space_m": [
+            0,
+            0,
+            31.0
+          ],
+          "surface_uv": [
+            0.0,
+            1.0
+          ],
+          "source_uv": [
+            0.0,
+            1.0
+          ]
+        }
+      ],
+      "source_id": "roof",
+      "source_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-roof.png",
+      "source_sha256": "124fea6055d6a9ce0f2a2069c6f9c35daaa1ea9e70ba9ffb4b5cc2cb90b85aaf",
+      "source_crop_xyxy": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "source_to_canonical_h": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "material_binding": {
+        "albedo": "registered_sticker_atlas",
+        "normal": "construction_role_metric_pbr",
+        "roughness": "construction_role_metric_pbr",
+        "apply_to_existing_carrier": true,
+        "create_geometry": false,
+        "carrier_offset_m": 0.0
+      }
+    },
+    {
+      "id": "sticker_corner_tower",
+      "kind": "carrier_skin",
+      "carrier_mode": "native_surface_material",
+      "carrier_surface_id": "corner_tower",
+      "carrier_mesh": "corner_upper_tower",
+      "surface_role": "corner_upper_tower",
+      "mapping": "cylindrical_arc_length",
+      "mapping_parameters": {
+        "centre_xy_m": [
+          -14.5,
+          -13.5
+        ],
+        "theta_zero_axis_xy": [
+          1.0,
+          0.0
+        ],
+        "theta_direction": "counter_clockwise",
+        "seam_angle_deg": 180.0,
+        "v_mode": "height_fraction"
+      },
+      "registration_anchors": [
+        {
+          "anchor_id": "curved_0",
+          "kind": "arc_anchor",
+          "object_space_m": [
+            -14.5,
+            -13.5,
+            18.4
+          ],
+          "surface_uv": [
+            0.0,
+            0.0
+          ],
+          "source_uv": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "curved_1",
+          "kind": "arc_anchor",
+          "object_space_m": [
+            -11.35,
+            -13.5,
+            18.4
+          ],
+          "surface_uv": [
+            0.0,
+            0.0
+          ],
+          "source_uv": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "curved_2",
+          "kind": "arc_anchor",
+          "object_space_m": [
+            -11.35,
+            -13.5,
+            24.0
+          ],
+          "surface_uv": [
+            0.0,
+            1.0
+          ],
+          "source_uv": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "anchor_id": "curved_3",
+          "kind": "arc_anchor",
+          "object_space_m": [
+            -14.5,
+            -13.5,
+            24.0
+          ],
+          "surface_uv": [
+            0.0,
+            1.0
+          ],
+          "source_uv": [
+            0.0,
+            1.0
+          ]
+        }
+      ],
+      "source_id": "front_left",
+      "source_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-front-left.png",
+      "source_sha256": "df4c3f2c8ff717c4ec676f861e599ef6c622c5f77da2ac19465061cdf5415af3",
+      "source_crop_xyxy": [
+        0,
+        0,
+        933,
+        1686
+      ],
+      "source_to_canonical_h": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "material_binding": {
+        "albedo": "registered_sticker_atlas",
+        "normal": "construction_role_metric_pbr",
+        "roughness": "construction_role_metric_pbr",
+        "apply_to_existing_carrier": true,
+        "create_geometry": false,
+        "carrier_offset_m": 0.0
+      }
+    },
+    {
+      "id": "sticker_corner_tower_crown",
+      "kind": "carrier_skin",
+      "carrier_mode": "native_surface_material",
+      "carrier_surface_id": "corner_tower_crown",
+      "carrier_mesh": "corner_tower_crown",
+      "surface_role": "corner_tower_crown",
+      "mapping": "cylindrical_arc_length",
+      "mapping_parameters": {
+        "centre_xy_m": [
+          -14.5,
+          -13.5
+        ],
+        "theta_zero_axis_xy": [
+          1.0,
+          0.0
+        ],
+        "theta_direction": "counter_clockwise",
+        "seam_angle_deg": 180.0,
+        "v_mode": "height_fraction"
+      },
+      "registration_anchors": [
+        {
+          "anchor_id": "curved_0",
+          "kind": "arc_anchor",
+          "object_space_m": [
+            -14.5,
+            -13.5,
+            23.65
+          ],
+          "surface_uv": [
+            0.0,
+            0.0
+          ],
+          "source_uv": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "curved_1",
+          "kind": "arc_anchor",
+          "object_space_m": [
+            -11.2,
+            -13.5,
+            23.65
+          ],
+          "surface_uv": [
+            0.0,
+            0.0
+          ],
+          "source_uv": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "curved_2",
+          "kind": "arc_anchor",
+          "object_space_m": [
+            -11.2,
+            -13.5,
+            24.15
+          ],
+          "surface_uv": [
+            0.0,
+            1.0
+          ],
+          "source_uv": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "anchor_id": "curved_3",
+          "kind": "arc_anchor",
+          "object_space_m": [
+            -14.5,
+            -13.5,
+            24.15
+          ],
+          "surface_uv": [
+            0.0,
+            1.0
+          ],
+          "source_uv": [
+            0.0,
+            1.0
+          ]
+        }
+      ],
+      "source_id": "roof",
+      "source_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-roof.png",
+      "source_sha256": "124fea6055d6a9ce0f2a2069c6f9c35daaa1ea9e70ba9ffb4b5cc2cb90b85aaf",
+      "source_crop_xyxy": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "source_to_canonical_h": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "material_binding": {
+        "albedo": "registered_sticker_atlas",
+        "normal": "construction_role_metric_pbr",
+        "roughness": "construction_role_metric_pbr",
+        "apply_to_existing_carrier": true,
+        "create_geometry": false,
+        "carrier_offset_m": 0.0
+      }
+    },
+    {
+      "id": "sticker_corner_drum",
+      "kind": "carrier_skin",
+      "carrier_mode": "native_surface_material",
+      "carrier_surface_id": "corner_drum",
+      "carrier_mesh": "corner_cupola_drum",
+      "surface_role": "corner_cupola_drum",
+      "mapping": "cylindrical_arc_length",
+      "mapping_parameters": {
+        "centre_xy_m": [
+          -14.5,
+          -13.5
+        ],
+        "theta_zero_axis_xy": [
+          1.0,
+          0.0
+        ],
+        "theta_direction": "counter_clockwise",
+        "seam_angle_deg": 180.0,
+        "v_mode": "height_fraction"
+      },
+      "registration_anchors": [
+        {
+          "anchor_id": "curved_0",
+          "kind": "arc_anchor",
+          "object_space_m": [
+            -14.5,
+            -13.5,
+            23.85
+          ],
+          "surface_uv": [
+            0.0,
+            0.0
+          ],
+          "source_uv": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "curved_1",
+          "kind": "arc_anchor",
+          "object_space_m": [
+            -11.35,
+            -13.5,
+            23.85
+          ],
+          "surface_uv": [
+            0.0,
+            0.0
+          ],
+          "source_uv": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "curved_2",
+          "kind": "arc_anchor",
+          "object_space_m": [
+            -11.35,
+            -13.5,
+            25.2
+          ],
+          "surface_uv": [
+            0.0,
+            1.0
+          ],
+          "source_uv": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "anchor_id": "curved_3",
+          "kind": "arc_anchor",
+          "object_space_m": [
+            -14.5,
+            -13.5,
+            25.2
+          ],
+          "surface_uv": [
+            0.0,
+            1.0
+          ],
+          "source_uv": [
+            0.0,
+            1.0
+          ]
+        }
+      ],
+      "source_id": "roof",
+      "source_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-roof.png",
+      "source_sha256": "124fea6055d6a9ce0f2a2069c6f9c35daaa1ea9e70ba9ffb4b5cc2cb90b85aaf",
+      "source_crop_xyxy": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "source_to_canonical_h": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "material_binding": {
+        "albedo": "registered_sticker_atlas",
+        "normal": "construction_role_metric_pbr",
+        "roughness": "construction_role_metric_pbr",
+        "apply_to_existing_carrier": true,
+        "create_geometry": false,
+        "carrier_offset_m": 0.0
+      }
+    },
+    {
+      "id": "sticker_corner_dome",
+      "kind": "carrier_skin",
+      "carrier_mode": "native_surface_material",
+      "carrier_surface_id": "corner_dome",
+      "carrier_mesh": "corner_glass_cupola",
+      "surface_role": "corner_cupola",
+      "mapping": "radial_dome",
+      "mapping_parameters": {
+        "centre_xy_m": [
+          -14.5,
+          -13.5
+        ],
+        "theta_zero_axis_xy": [
+          1.0,
+          0.0
+        ],
+        "theta_direction": "counter_clockwise",
+        "seam_angle_deg": 180.0,
+        "v_mode": "meridional_arc_fraction"
+      },
+      "registration_anchors": [
+        {
+          "anchor_id": "curved_0",
+          "kind": "dome_anchor",
+          "object_space_m": [
+            -14.5,
+            -13.5,
+            25.05
+          ],
+          "surface_uv": [
+            0.0,
+            0.0
+          ],
+          "source_uv": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "curved_1",
+          "kind": "dome_anchor",
+          "object_space_m": [
+            -11.3,
+            -13.5,
+            25.05
+          ],
+          "surface_uv": [
+            0.0,
+            0.0
+          ],
+          "source_uv": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "curved_2",
+          "kind": "dome_anchor",
+          "object_space_m": [
+            -14.5,
+            -13.5,
+            28.35
+          ],
+          "surface_uv": [
+            0.0,
+            1.0
+          ],
+          "source_uv": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "anchor_id": "curved_3",
+          "kind": "dome_anchor",
+          "object_space_m": [
+            -17.7,
+            -13.5,
+            25.05
+          ],
+          "surface_uv": [
+            0.5,
+            0.0
+          ],
+          "source_uv": [
+            0.5,
+            0.0
+          ]
+        }
+      ],
+      "source_id": "roof",
+      "source_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-roof.png",
+      "source_sha256": "124fea6055d6a9ce0f2a2069c6f9c35daaa1ea9e70ba9ffb4b5cc2cb90b85aaf",
+      "source_crop_xyxy": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "source_to_canonical_h": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "material_binding": {
+        "albedo": "registered_sticker_atlas",
+        "normal": "construction_role_metric_pbr",
+        "roughness": "construction_role_metric_pbr",
+        "apply_to_existing_carrier": true,
+        "create_geometry": false,
+        "carrier_offset_m": 0.0
+      }
+    },
+    {
+      "id": "sticker_corner_cap_finial",
+      "kind": "carrier_skin",
+      "carrier_mode": "native_surface_material",
+      "carrier_surface_id": "corner_cap_finial",
+      "carrier_mesh": "corner_cupola_cap_finial_assembly",
+      "surface_role": "corner_cupola_cap_finial",
+      "mapping": "cylindrical_arc_length",
+      "mapping_parameters": {
+        "centre_xy_m": [
+          -14.5,
+          -13.5
+        ],
+        "theta_zero_axis_xy": [
+          1.0,
+          0.0
+        ],
+        "theta_direction": "counter_clockwise",
+        "seam_angle_deg": 180.0,
+        "v_mode": "height_fraction"
+      },
+      "registration_anchors": [
+        {
+          "anchor_id": "curved_0",
+          "kind": "arc_anchor",
+          "object_space_m": [
+            -14.5,
+            -13.5,
+            28.25
+          ],
+          "surface_uv": [
+            0.0,
+            0.0
+          ],
+          "source_uv": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "curved_1",
+          "kind": "arc_anchor",
+          "object_space_m": [
+            -13.78,
+            -13.5,
+            28.25
+          ],
+          "surface_uv": [
+            0.0,
+            0.0
+          ],
+          "source_uv": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "anchor_id": "curved_2",
+          "kind": "arc_anchor",
+          "object_space_m": [
+            -14.41,
+            -13.5,
+            29.45
+          ],
+          "surface_uv": [
+            0.0,
+            1.0
+          ],
+          "source_uv": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "anchor_id": "curved_3",
+          "kind": "arc_anchor",
+          "object_space_m": [
+            -14.5,
+            -13.5,
+            29.45
+          ],
+          "surface_uv": [
+            0.0,
+            1.0
+          ],
+          "source_uv": [
+            0.0,
+            1.0
+          ]
+        }
+      ],
+      "source_id": "roof",
+      "source_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-roof.png",
+      "source_sha256": "124fea6055d6a9ce0f2a2069c6f9c35daaa1ea9e70ba9ffb4b5cc2cb90b85aaf",
+      "source_crop_xyxy": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "source_to_canonical_h": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "material_binding": {
+        "albedo": "registered_sticker_atlas",
+        "normal": "construction_role_metric_pbr",
+        "roughness": "construction_role_metric_pbr",
+        "apply_to_existing_carrier": true,
+        "create_geometry": false,
+        "carrier_offset_m": 0.0
+      }
+    }
+  ],
+  "reciprocal_seams": [
+    {
+      "seam_id": "seam_00_facade_front_facade_right",
+      "owner_type": "geometry_cover",
+      "owner_id": "stone_corner_pier",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "facade_front",
+      "from_edge": "end",
+      "to_surface": "facade_right",
+      "to_edge": "start"
+    },
+    {
+      "seam_id": "seam_00_facade_front_facade_right",
+      "owner_type": "geometry_cover",
+      "owner_id": "stone_corner_pier",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "facade_right",
+      "from_edge": "start",
+      "to_surface": "facade_front",
+      "to_edge": "end"
+    },
+    {
+      "seam_id": "seam_01_facade_right_facade_rear",
+      "owner_type": "geometry_cover",
+      "owner_id": "stone_corner_pier",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "facade_right",
+      "from_edge": "end",
+      "to_surface": "facade_rear",
+      "to_edge": "start"
+    },
+    {
+      "seam_id": "seam_01_facade_right_facade_rear",
+      "owner_type": "geometry_cover",
+      "owner_id": "stone_corner_pier",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "facade_rear",
+      "from_edge": "start",
+      "to_surface": "facade_right",
+      "to_edge": "end"
+    },
+    {
+      "seam_id": "seam_02_facade_rear_facade_left",
+      "owner_type": "geometry_cover",
+      "owner_id": "stone_corner_pier",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "facade_rear",
+      "from_edge": "end",
+      "to_surface": "facade_left",
+      "to_edge": "start"
+    },
+    {
+      "seam_id": "seam_02_facade_rear_facade_left",
+      "owner_type": "geometry_cover",
+      "owner_id": "stone_corner_pier",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "facade_left",
+      "from_edge": "start",
+      "to_surface": "facade_rear",
+      "to_edge": "end"
+    },
+    {
+      "seam_id": "seam_03_facade_left_corner_pavilion",
+      "owner_type": "geometry_cover",
+      "owner_id": "stone_corner_pier",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "facade_left",
+      "from_edge": "end",
+      "to_surface": "corner_pavilion",
+      "to_edge": "start"
+    },
+    {
+      "seam_id": "seam_03_facade_left_corner_pavilion",
+      "owner_type": "geometry_cover",
+      "owner_id": "stone_corner_pier",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "corner_pavilion",
+      "from_edge": "start",
+      "to_surface": "facade_left",
+      "to_edge": "end"
+    },
+    {
+      "seam_id": "seam_04_corner_pavilion_facade_front",
+      "owner_type": "geometry_cover",
+      "owner_id": "stone_corner_pier",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "corner_pavilion",
+      "from_edge": "end",
+      "to_surface": "facade_front",
+      "to_edge": "start"
+    },
+    {
+      "seam_id": "seam_04_corner_pavilion_facade_front",
+      "owner_type": "geometry_cover",
+      "owner_id": "stone_corner_pier",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "facade_front",
+      "from_edge": "start",
+      "to_surface": "corner_pavilion",
+      "to_edge": "end"
+    },
+    {
+      "seam_id": "seam_05_court_front_court_right",
+      "owner_type": "geometry_cover",
+      "owner_id": "court_corner_return",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "court_front",
+      "from_edge": "end",
+      "to_surface": "court_right",
+      "to_edge": "start"
+    },
+    {
+      "seam_id": "seam_05_court_front_court_right",
+      "owner_type": "geometry_cover",
+      "owner_id": "court_corner_return",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "court_right",
+      "from_edge": "start",
+      "to_surface": "court_front",
+      "to_edge": "end"
+    },
+    {
+      "seam_id": "seam_06_court_right_court_rear",
+      "owner_type": "geometry_cover",
+      "owner_id": "court_corner_return",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "court_right",
+      "from_edge": "end",
+      "to_surface": "court_rear",
+      "to_edge": "start"
+    },
+    {
+      "seam_id": "seam_06_court_right_court_rear",
+      "owner_type": "geometry_cover",
+      "owner_id": "court_corner_return",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "court_rear",
+      "from_edge": "start",
+      "to_surface": "court_right",
+      "to_edge": "end"
+    },
+    {
+      "seam_id": "seam_07_court_rear_court_left",
+      "owner_type": "geometry_cover",
+      "owner_id": "court_corner_return",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "court_rear",
+      "from_edge": "end",
+      "to_surface": "court_left",
+      "to_edge": "start"
+    },
+    {
+      "seam_id": "seam_07_court_rear_court_left",
+      "owner_type": "geometry_cover",
+      "owner_id": "court_corner_return",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "court_left",
+      "from_edge": "start",
+      "to_surface": "court_rear",
+      "to_edge": "end"
+    },
+    {
+      "seam_id": "seam_08_court_left_court_front",
+      "owner_type": "geometry_cover",
+      "owner_id": "court_corner_return",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "court_left",
+      "from_edge": "end",
+      "to_surface": "court_front",
+      "to_edge": "start"
+    },
+    {
+      "seam_id": "seam_08_court_left_court_front",
+      "owner_type": "geometry_cover",
+      "owner_id": "court_corner_return",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "court_front",
+      "from_edge": "start",
+      "to_surface": "court_left",
+      "to_edge": "end"
+    },
+    {
+      "seam_id": "seam_09_roof_front_roof_right",
+      "owner_type": "geometry_cover",
+      "owner_id": "standing_seam_mansard_hip",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "roof_front",
+      "from_edge": "end",
+      "to_surface": "roof_right",
+      "to_edge": "start"
+    },
+    {
+      "seam_id": "seam_09_roof_front_roof_right",
+      "owner_type": "geometry_cover",
+      "owner_id": "standing_seam_mansard_hip",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "roof_right",
+      "from_edge": "start",
+      "to_surface": "roof_front",
+      "to_edge": "end"
+    },
+    {
+      "seam_id": "seam_10_roof_right_roof_rear",
+      "owner_type": "geometry_cover",
+      "owner_id": "standing_seam_mansard_hip",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "roof_right",
+      "from_edge": "end",
+      "to_surface": "roof_rear",
+      "to_edge": "start"
+    },
+    {
+      "seam_id": "seam_10_roof_right_roof_rear",
+      "owner_type": "geometry_cover",
+      "owner_id": "standing_seam_mansard_hip",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "roof_rear",
+      "from_edge": "start",
+      "to_surface": "roof_right",
+      "to_edge": "end"
+    },
+    {
+      "seam_id": "seam_11_roof_rear_roof_left",
+      "owner_type": "geometry_cover",
+      "owner_id": "standing_seam_mansard_hip",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "roof_rear",
+      "from_edge": "end",
+      "to_surface": "roof_left",
+      "to_edge": "start"
+    },
+    {
+      "seam_id": "seam_11_roof_rear_roof_left",
+      "owner_type": "geometry_cover",
+      "owner_id": "standing_seam_mansard_hip",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "roof_left",
+      "from_edge": "start",
+      "to_surface": "roof_rear",
+      "to_edge": "end"
+    },
+    {
+      "seam_id": "seam_12_roof_left_roof_front",
+      "owner_type": "geometry_cover",
+      "owner_id": "standing_seam_mansard_hip",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "roof_left",
+      "from_edge": "end",
+      "to_surface": "roof_front",
+      "to_edge": "start"
+    },
+    {
+      "seam_id": "seam_12_roof_left_roof_front",
+      "owner_type": "geometry_cover",
+      "owner_id": "standing_seam_mansard_hip",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "roof_front",
+      "from_edge": "start",
+      "to_surface": "roof_left",
+      "to_edge": "end"
+    },
+    {
+      "seam_id": "seam_13_terrace_front_terrace_right",
+      "owner_type": "geometry_cover",
+      "owner_id": "terrace_folding_seam",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "terrace_front",
+      "from_edge": "end",
+      "to_surface": "terrace_right",
+      "to_edge": "start"
+    },
+    {
+      "seam_id": "seam_13_terrace_front_terrace_right",
+      "owner_type": "geometry_cover",
+      "owner_id": "terrace_folding_seam",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "terrace_right",
+      "from_edge": "start",
+      "to_surface": "terrace_front",
+      "to_edge": "end"
+    },
+    {
+      "seam_id": "seam_14_terrace_right_terrace_rear",
+      "owner_type": "geometry_cover",
+      "owner_id": "terrace_folding_seam",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "terrace_right",
+      "from_edge": "end",
+      "to_surface": "terrace_rear",
+      "to_edge": "start"
+    },
+    {
+      "seam_id": "seam_14_terrace_right_terrace_rear",
+      "owner_type": "geometry_cover",
+      "owner_id": "terrace_folding_seam",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "terrace_rear",
+      "from_edge": "start",
+      "to_surface": "terrace_right",
+      "to_edge": "end"
+    },
+    {
+      "seam_id": "seam_15_terrace_rear_terrace_left",
+      "owner_type": "geometry_cover",
+      "owner_id": "terrace_folding_seam",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "terrace_rear",
+      "from_edge": "end",
+      "to_surface": "terrace_left",
+      "to_edge": "start"
+    },
+    {
+      "seam_id": "seam_15_terrace_rear_terrace_left",
+      "owner_type": "geometry_cover",
+      "owner_id": "terrace_folding_seam",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "terrace_left",
+      "from_edge": "start",
+      "to_surface": "terrace_rear",
+      "to_edge": "end"
+    },
+    {
+      "seam_id": "seam_16_terrace_left_terrace_front",
+      "owner_type": "geometry_cover",
+      "owner_id": "terrace_folding_seam",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "terrace_left",
+      "from_edge": "end",
+      "to_surface": "terrace_front",
+      "to_edge": "start"
+    },
+    {
+      "seam_id": "seam_16_terrace_left_terrace_front",
+      "owner_type": "geometry_cover",
+      "owner_id": "terrace_folding_seam",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "terrace_front",
+      "from_edge": "start",
+      "to_surface": "terrace_left",
+      "to_edge": "end"
+    },
+    {
+      "seam_id": "seam_17_upper_front_upper_right",
+      "owner_type": "geometry_cover",
+      "owner_id": "upper_setback_corner_return",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "upper_front",
+      "from_edge": "end",
+      "to_surface": "upper_right",
+      "to_edge": "start"
+    },
+    {
+      "seam_id": "seam_17_upper_front_upper_right",
+      "owner_type": "geometry_cover",
+      "owner_id": "upper_setback_corner_return",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "upper_right",
+      "from_edge": "start",
+      "to_surface": "upper_front",
+      "to_edge": "end"
+    },
+    {
+      "seam_id": "seam_18_upper_right_upper_rear",
+      "owner_type": "geometry_cover",
+      "owner_id": "upper_setback_corner_return",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "upper_right",
+      "from_edge": "end",
+      "to_surface": "upper_rear",
+      "to_edge": "start"
+    },
+    {
+      "seam_id": "seam_18_upper_right_upper_rear",
+      "owner_type": "geometry_cover",
+      "owner_id": "upper_setback_corner_return",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "upper_rear",
+      "from_edge": "start",
+      "to_surface": "upper_right",
+      "to_edge": "end"
+    },
+    {
+      "seam_id": "seam_19_upper_rear_upper_left",
+      "owner_type": "geometry_cover",
+      "owner_id": "upper_setback_corner_return",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "upper_rear",
+      "from_edge": "end",
+      "to_surface": "upper_left",
+      "to_edge": "start"
+    },
+    {
+      "seam_id": "seam_19_upper_rear_upper_left",
+      "owner_type": "geometry_cover",
+      "owner_id": "upper_setback_corner_return",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "upper_left",
+      "from_edge": "start",
+      "to_surface": "upper_rear",
+      "to_edge": "end"
+    },
+    {
+      "seam_id": "seam_20_upper_left_upper_front",
+      "owner_type": "geometry_cover",
+      "owner_id": "upper_setback_corner_return",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "upper_left",
+      "from_edge": "end",
+      "to_surface": "upper_front",
+      "to_edge": "start"
+    },
+    {
+      "seam_id": "seam_20_upper_left_upper_front",
+      "owner_type": "geometry_cover",
+      "owner_id": "upper_setback_corner_return",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "upper_front",
+      "from_edge": "start",
+      "to_surface": "upper_left",
+      "to_edge": "end"
+    },
+    {
+      "seam_id": "seam_21_facade_front_upper_front",
+      "owner_type": "geometry_cover",
+      "owner_id": "projecting_perimeter_cornice",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "facade_front",
+      "from_edge": "top",
+      "to_surface": "upper_front",
+      "to_edge": "bottom"
+    },
+    {
+      "seam_id": "seam_21_facade_front_upper_front",
+      "owner_type": "geometry_cover",
+      "owner_id": "projecting_perimeter_cornice",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "upper_front",
+      "from_edge": "bottom",
+      "to_surface": "facade_front",
+      "to_edge": "top"
+    },
+    {
+      "seam_id": "seam_22_facade_right_upper_right",
+      "owner_type": "geometry_cover",
+      "owner_id": "projecting_perimeter_cornice",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "facade_right",
+      "from_edge": "top",
+      "to_surface": "upper_right",
+      "to_edge": "bottom"
+    },
+    {
+      "seam_id": "seam_22_facade_right_upper_right",
+      "owner_type": "geometry_cover",
+      "owner_id": "projecting_perimeter_cornice",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "upper_right",
+      "from_edge": "bottom",
+      "to_surface": "facade_right",
+      "to_edge": "top"
+    },
+    {
+      "seam_id": "seam_23_facade_rear_upper_rear",
+      "owner_type": "geometry_cover",
+      "owner_id": "projecting_perimeter_cornice",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "facade_rear",
+      "from_edge": "top",
+      "to_surface": "upper_rear",
+      "to_edge": "bottom"
+    },
+    {
+      "seam_id": "seam_23_facade_rear_upper_rear",
+      "owner_type": "geometry_cover",
+      "owner_id": "projecting_perimeter_cornice",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "upper_rear",
+      "from_edge": "bottom",
+      "to_surface": "facade_rear",
+      "to_edge": "top"
+    },
+    {
+      "seam_id": "seam_24_facade_left_upper_left",
+      "owner_type": "geometry_cover",
+      "owner_id": "projecting_perimeter_cornice",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "facade_left",
+      "from_edge": "top",
+      "to_surface": "upper_left",
+      "to_edge": "bottom"
+    },
+    {
+      "seam_id": "seam_24_facade_left_upper_left",
+      "owner_type": "geometry_cover",
+      "owner_id": "projecting_perimeter_cornice",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "upper_left",
+      "from_edge": "bottom",
+      "to_surface": "facade_left",
+      "to_edge": "top"
+    },
+    {
+      "seam_id": "seam_25_upper_front_roof_front",
+      "owner_type": "geometry_cover",
+      "owner_id": "zinc_eave_and_crown_return",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "upper_front",
+      "from_edge": "top",
+      "to_surface": "roof_front",
+      "to_edge": "outer_eave"
+    },
+    {
+      "seam_id": "seam_25_upper_front_roof_front",
+      "owner_type": "geometry_cover",
+      "owner_id": "zinc_eave_and_crown_return",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "roof_front",
+      "from_edge": "outer_eave",
+      "to_surface": "upper_front",
+      "to_edge": "top"
+    },
+    {
+      "seam_id": "seam_26_upper_right_roof_right",
+      "owner_type": "geometry_cover",
+      "owner_id": "zinc_eave_and_crown_return",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "upper_right",
+      "from_edge": "top",
+      "to_surface": "roof_right",
+      "to_edge": "outer_eave"
+    },
+    {
+      "seam_id": "seam_26_upper_right_roof_right",
+      "owner_type": "geometry_cover",
+      "owner_id": "zinc_eave_and_crown_return",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "roof_right",
+      "from_edge": "outer_eave",
+      "to_surface": "upper_right",
+      "to_edge": "top"
+    },
+    {
+      "seam_id": "seam_27_upper_rear_roof_rear",
+      "owner_type": "geometry_cover",
+      "owner_id": "zinc_eave_and_crown_return",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "upper_rear",
+      "from_edge": "top",
+      "to_surface": "roof_rear",
+      "to_edge": "outer_eave"
+    },
+    {
+      "seam_id": "seam_27_upper_rear_roof_rear",
+      "owner_type": "geometry_cover",
+      "owner_id": "zinc_eave_and_crown_return",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "roof_rear",
+      "from_edge": "outer_eave",
+      "to_surface": "upper_rear",
+      "to_edge": "top"
+    },
+    {
+      "seam_id": "seam_28_upper_left_roof_left",
+      "owner_type": "geometry_cover",
+      "owner_id": "zinc_eave_and_crown_return",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "upper_left",
+      "from_edge": "top",
+      "to_surface": "roof_left",
+      "to_edge": "outer_eave"
+    },
+    {
+      "seam_id": "seam_28_upper_left_roof_left",
+      "owner_type": "geometry_cover",
+      "owner_id": "zinc_eave_and_crown_return",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "roof_left",
+      "from_edge": "outer_eave",
+      "to_surface": "upper_left",
+      "to_edge": "top"
+    },
+    {
+      "seam_id": "seam_29_corner_pavilion_roof_front",
+      "owner_type": "geometry_cover",
+      "owner_id": "faceted_corner_cornice",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "corner_pavilion",
+      "from_edge": "top",
+      "to_surface": "roof_front",
+      "to_edge": "rounded_corner_eave"
+    },
+    {
+      "seam_id": "seam_29_corner_pavilion_roof_front",
+      "owner_type": "geometry_cover",
+      "owner_id": "faceted_corner_cornice",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "roof_front",
+      "from_edge": "rounded_corner_eave",
+      "to_surface": "corner_pavilion",
+      "to_edge": "top"
+    },
+    {
+      "seam_id": "seam_30_corner_pavilion_wrapped_canopy",
+      "owner_type": "geometry_cover",
+      "owner_id": "canopy_wall_flashing",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "corner_pavilion",
+      "from_edge": "entrance_head",
+      "to_surface": "wrapped_canopy",
+      "to_edge": "inner_edge"
+    },
+    {
+      "seam_id": "seam_30_corner_pavilion_wrapped_canopy",
+      "owner_type": "geometry_cover",
+      "owner_id": "canopy_wall_flashing",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "wrapped_canopy",
+      "from_edge": "inner_edge",
+      "to_surface": "corner_pavilion",
+      "to_edge": "entrance_head"
+    },
+    {
+      "seam_id": "seam_31_perimeter_cornice_corner_cornices",
+      "owner_type": "geometry_cover",
+      "owner_id": "cornice_profile",
+      "mode": "continuous_wrap",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "perimeter_cornice",
+      "from_edge": "wall_edge",
+      "to_surface": "corner_cornices",
+      "to_edge": "straight_return"
+    },
+    {
+      "seam_id": "seam_31_perimeter_cornice_corner_cornices",
+      "owner_type": "geometry_cover",
+      "owner_id": "cornice_profile",
+      "mode": "continuous_wrap",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "corner_cornices",
+      "from_edge": "straight_return",
+      "to_surface": "perimeter_cornice",
+      "to_edge": "wall_edge"
+    },
+    {
+      "seam_id": "seam_32_corner_pavilion_corner_upper_returns",
+      "owner_type": "geometry_cover",
+      "owner_id": "closed_upper_corner_return",
+      "mode": "continuous_wrap",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "corner_pavilion",
+      "from_edge": "upper_front",
+      "to_surface": "corner_upper_returns",
+      "to_edge": "corner_side"
+    },
+    {
+      "seam_id": "seam_32_corner_pavilion_corner_upper_returns",
+      "owner_type": "geometry_cover",
+      "owner_id": "closed_upper_corner_return",
+      "mode": "continuous_wrap",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "corner_upper_returns",
+      "from_edge": "corner_side",
+      "to_surface": "corner_pavilion",
+      "to_edge": "upper_front"
+    },
+    {
+      "seam_id": "seam_33_corner_upper_returns_upper_front",
+      "owner_type": "geometry_cover",
+      "owner_id": "front_upper_return",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "corner_upper_returns",
+      "from_edge": "front_end",
+      "to_surface": "upper_front",
+      "to_edge": "start"
+    },
+    {
+      "seam_id": "seam_33_corner_upper_returns_upper_front",
+      "owner_type": "geometry_cover",
+      "owner_id": "front_upper_return",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "upper_front",
+      "from_edge": "start",
+      "to_surface": "corner_upper_returns",
+      "to_edge": "front_end"
+    },
+    {
+      "seam_id": "seam_34_corner_upper_returns_upper_left",
+      "owner_type": "geometry_cover",
+      "owner_id": "left_upper_return",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "corner_upper_returns",
+      "from_edge": "left_end",
+      "to_surface": "upper_left",
+      "to_edge": "end"
+    },
+    {
+      "seam_id": "seam_34_corner_upper_returns_upper_left",
+      "owner_type": "geometry_cover",
+      "owner_id": "left_upper_return",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "upper_left",
+      "from_edge": "end",
+      "to_surface": "corner_upper_returns",
+      "to_edge": "left_end"
+    },
+    {
+      "seam_id": "seam_35_roof_front_terrace_front",
+      "owner_type": "geometry_cover",
+      "owner_id": "mansard_break_seam",
+      "mode": "hard_material_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "roof_front",
+      "from_edge": "inner_break",
+      "to_surface": "terrace_front",
+      "to_edge": "outer_break"
+    },
+    {
+      "seam_id": "seam_35_roof_front_terrace_front",
+      "owner_type": "geometry_cover",
+      "owner_id": "mansard_break_seam",
+      "mode": "hard_material_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "terrace_front",
+      "from_edge": "outer_break",
+      "to_surface": "roof_front",
+      "to_edge": "inner_break"
+    },
+    {
+      "seam_id": "seam_36_roof_right_terrace_right",
+      "owner_type": "geometry_cover",
+      "owner_id": "mansard_break_seam",
+      "mode": "hard_material_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "roof_right",
+      "from_edge": "inner_break",
+      "to_surface": "terrace_right",
+      "to_edge": "outer_break"
+    },
+    {
+      "seam_id": "seam_36_roof_right_terrace_right",
+      "owner_type": "geometry_cover",
+      "owner_id": "mansard_break_seam",
+      "mode": "hard_material_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "terrace_right",
+      "from_edge": "outer_break",
+      "to_surface": "roof_right",
+      "to_edge": "inner_break"
+    },
+    {
+      "seam_id": "seam_37_roof_rear_terrace_rear",
+      "owner_type": "geometry_cover",
+      "owner_id": "mansard_break_seam",
+      "mode": "hard_material_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "roof_rear",
+      "from_edge": "inner_break",
+      "to_surface": "terrace_rear",
+      "to_edge": "outer_break"
+    },
+    {
+      "seam_id": "seam_37_roof_rear_terrace_rear",
+      "owner_type": "geometry_cover",
+      "owner_id": "mansard_break_seam",
+      "mode": "hard_material_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "terrace_rear",
+      "from_edge": "outer_break",
+      "to_surface": "roof_rear",
+      "to_edge": "inner_break"
+    },
+    {
+      "seam_id": "seam_38_roof_left_terrace_left",
+      "owner_type": "geometry_cover",
+      "owner_id": "mansard_break_seam",
+      "mode": "hard_material_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "roof_left",
+      "from_edge": "inner_break",
+      "to_surface": "terrace_left",
+      "to_edge": "outer_break"
+    },
+    {
+      "seam_id": "seam_38_roof_left_terrace_left",
+      "owner_type": "geometry_cover",
+      "owner_id": "mansard_break_seam",
+      "mode": "hard_material_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "terrace_left",
+      "from_edge": "outer_break",
+      "to_surface": "roof_left",
+      "to_edge": "inner_break"
+    },
+    {
+      "seam_id": "seam_39_dormers_front_roof_front",
+      "owner_type": "geometry_cover",
+      "owner_id": "dormer_flashing",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "dormers_front",
+      "from_edge": "bottom",
+      "to_surface": "roof_front",
+      "to_edge": "dormer_seat"
+    },
+    {
+      "seam_id": "seam_39_dormers_front_roof_front",
+      "owner_type": "geometry_cover",
+      "owner_id": "dormer_flashing",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "roof_front",
+      "from_edge": "dormer_seat",
+      "to_surface": "dormers_front",
+      "to_edge": "bottom"
+    },
+    {
+      "seam_id": "seam_40_dormers_right_roof_right",
+      "owner_type": "geometry_cover",
+      "owner_id": "dormer_flashing",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "dormers_right",
+      "from_edge": "bottom",
+      "to_surface": "roof_right",
+      "to_edge": "dormer_seat"
+    },
+    {
+      "seam_id": "seam_40_dormers_right_roof_right",
+      "owner_type": "geometry_cover",
+      "owner_id": "dormer_flashing",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "roof_right",
+      "from_edge": "dormer_seat",
+      "to_surface": "dormers_right",
+      "to_edge": "bottom"
+    },
+    {
+      "seam_id": "seam_41_dormers_rear_roof_rear",
+      "owner_type": "geometry_cover",
+      "owner_id": "dormer_flashing",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "dormers_rear",
+      "from_edge": "bottom",
+      "to_surface": "roof_rear",
+      "to_edge": "dormer_seat"
+    },
+    {
+      "seam_id": "seam_41_dormers_rear_roof_rear",
+      "owner_type": "geometry_cover",
+      "owner_id": "dormer_flashing",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "roof_rear",
+      "from_edge": "dormer_seat",
+      "to_surface": "dormers_rear",
+      "to_edge": "bottom"
+    },
+    {
+      "seam_id": "seam_42_dormers_left_roof_left",
+      "owner_type": "geometry_cover",
+      "owner_id": "dormer_flashing",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "dormers_left",
+      "from_edge": "bottom",
+      "to_surface": "roof_left",
+      "to_edge": "dormer_seat"
+    },
+    {
+      "seam_id": "seam_42_dormers_left_roof_left",
+      "owner_type": "geometry_cover",
+      "owner_id": "dormer_flashing",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "roof_left",
+      "from_edge": "dormer_seat",
+      "to_surface": "dormers_left",
+      "to_edge": "bottom"
+    },
+    {
+      "seam_id": "seam_43_court_front_terrace_front",
+      "owner_type": "geometry_cover",
+      "owner_id": "raised_court_flashing",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "court_front",
+      "from_edge": "top",
+      "to_surface": "terrace_front",
+      "to_edge": "inner_curb"
+    },
+    {
+      "seam_id": "seam_43_court_front_terrace_front",
+      "owner_type": "geometry_cover",
+      "owner_id": "raised_court_flashing",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "terrace_front",
+      "from_edge": "inner_curb",
+      "to_surface": "court_front",
+      "to_edge": "top"
+    },
+    {
+      "seam_id": "seam_44_court_right_terrace_right",
+      "owner_type": "geometry_cover",
+      "owner_id": "raised_court_flashing",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "court_right",
+      "from_edge": "top",
+      "to_surface": "terrace_right",
+      "to_edge": "inner_curb"
+    },
+    {
+      "seam_id": "seam_44_court_right_terrace_right",
+      "owner_type": "geometry_cover",
+      "owner_id": "raised_court_flashing",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "terrace_right",
+      "from_edge": "inner_curb",
+      "to_surface": "court_right",
+      "to_edge": "top"
+    },
+    {
+      "seam_id": "seam_45_court_rear_terrace_rear",
+      "owner_type": "geometry_cover",
+      "owner_id": "raised_court_flashing",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "court_rear",
+      "from_edge": "top",
+      "to_surface": "terrace_rear",
+      "to_edge": "inner_curb"
+    },
+    {
+      "seam_id": "seam_45_court_rear_terrace_rear",
+      "owner_type": "geometry_cover",
+      "owner_id": "raised_court_flashing",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "terrace_rear",
+      "from_edge": "inner_curb",
+      "to_surface": "court_rear",
+      "to_edge": "top"
+    },
+    {
+      "seam_id": "seam_46_court_left_terrace_left",
+      "owner_type": "geometry_cover",
+      "owner_id": "raised_court_flashing",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "court_left",
+      "from_edge": "top",
+      "to_surface": "terrace_left",
+      "to_edge": "inner_curb"
+    },
+    {
+      "seam_id": "seam_46_court_left_terrace_left",
+      "owner_type": "geometry_cover",
+      "owner_id": "raised_court_flashing",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "terrace_left",
+      "from_edge": "inner_curb",
+      "to_surface": "court_left",
+      "to_edge": "top"
+    },
+    {
+      "seam_id": "seam_47_central_curb_terrace_front",
+      "owner_type": "geometry_cover",
+      "owner_id": "central_dome_flashing",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "central_curb",
+      "from_edge": "bottom",
+      "to_surface": "terrace_front",
+      "to_edge": "dome_seat"
+    },
+    {
+      "seam_id": "seam_47_central_curb_terrace_front",
+      "owner_type": "geometry_cover",
+      "owner_id": "central_dome_flashing",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "terrace_front",
+      "from_edge": "dome_seat",
+      "to_surface": "central_curb",
+      "to_edge": "bottom"
+    },
+    {
+      "seam_id": "seam_48_central_curb_central_drum",
+      "owner_type": "geometry_cover",
+      "owner_id": "central_dome_base_ring",
+      "mode": "hard_material_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "central_curb",
+      "from_edge": "top",
+      "to_surface": "central_drum",
+      "to_edge": "bottom"
+    },
+    {
+      "seam_id": "seam_48_central_curb_central_drum",
+      "owner_type": "geometry_cover",
+      "owner_id": "central_dome_base_ring",
+      "mode": "hard_material_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "central_drum",
+      "from_edge": "bottom",
+      "to_surface": "central_curb",
+      "to_edge": "top"
+    },
+    {
+      "seam_id": "seam_49_central_drum_central_dome",
+      "owner_type": "geometry_cover",
+      "owner_id": "dome_spring_ring",
+      "mode": "hard_material_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "central_drum",
+      "from_edge": "top",
+      "to_surface": "central_dome",
+      "to_edge": "spring"
+    },
+    {
+      "seam_id": "seam_49_central_drum_central_dome",
+      "owner_type": "geometry_cover",
+      "owner_id": "dome_spring_ring",
+      "mode": "hard_material_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "central_dome",
+      "from_edge": "spring",
+      "to_surface": "central_drum",
+      "to_edge": "top"
+    },
+    {
+      "seam_id": "seam_50_central_dome_central_cap_finial",
+      "owner_type": "geometry_cover",
+      "owner_id": "central_dome_cap_ring",
+      "mode": "hard_material_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "central_dome",
+      "from_edge": "apex",
+      "to_surface": "central_cap_finial",
+      "to_edge": "bottom"
+    },
+    {
+      "seam_id": "seam_50_central_dome_central_cap_finial",
+      "owner_type": "geometry_cover",
+      "owner_id": "central_dome_cap_ring",
+      "mode": "hard_material_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "central_cap_finial",
+      "from_edge": "bottom",
+      "to_surface": "central_dome",
+      "to_edge": "apex"
+    },
+    {
+      "seam_id": "seam_51_corner_pavilion_corner_tower",
+      "owner_type": "geometry_cover",
+      "owner_id": "integrated_corner_tower",
+      "mode": "continuous_wrap",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "corner_pavilion",
+      "from_edge": "tower_seat",
+      "to_surface": "corner_tower",
+      "to_edge": "bottom"
+    },
+    {
+      "seam_id": "seam_51_corner_pavilion_corner_tower",
+      "owner_type": "geometry_cover",
+      "owner_id": "integrated_corner_tower",
+      "mode": "continuous_wrap",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "corner_tower",
+      "from_edge": "bottom",
+      "to_surface": "corner_pavilion",
+      "to_edge": "tower_seat"
+    },
+    {
+      "seam_id": "seam_52_corner_tower_corner_tower_crown",
+      "owner_type": "geometry_cover",
+      "owner_id": "tower_cornice",
+      "mode": "hard_material_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "corner_tower",
+      "from_edge": "top",
+      "to_surface": "corner_tower_crown",
+      "to_edge": "bottom"
+    },
+    {
+      "seam_id": "seam_52_corner_tower_corner_tower_crown",
+      "owner_type": "geometry_cover",
+      "owner_id": "tower_cornice",
+      "mode": "hard_material_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "corner_tower_crown",
+      "from_edge": "bottom",
+      "to_surface": "corner_tower",
+      "to_edge": "top"
+    },
+    {
+      "seam_id": "seam_53_corner_tower_crown_corner_drum",
+      "owner_type": "geometry_cover",
+      "owner_id": "corner_cupola_flashing",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "corner_tower_crown",
+      "from_edge": "top",
+      "to_surface": "corner_drum",
+      "to_edge": "bottom"
+    },
+    {
+      "seam_id": "seam_53_corner_tower_crown_corner_drum",
+      "owner_type": "geometry_cover",
+      "owner_id": "corner_cupola_flashing",
+      "mode": "covered_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "corner_drum",
+      "from_edge": "bottom",
+      "to_surface": "corner_tower_crown",
+      "to_edge": "top"
+    },
+    {
+      "seam_id": "seam_54_corner_drum_corner_dome",
+      "owner_type": "geometry_cover",
+      "owner_id": "cupola_spring_ring",
+      "mode": "hard_material_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "corner_drum",
+      "from_edge": "top",
+      "to_surface": "corner_dome",
+      "to_edge": "spring"
+    },
+    {
+      "seam_id": "seam_54_corner_drum_corner_dome",
+      "owner_type": "geometry_cover",
+      "owner_id": "cupola_spring_ring",
+      "mode": "hard_material_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "corner_dome",
+      "from_edge": "spring",
+      "to_surface": "corner_drum",
+      "to_edge": "top"
+    },
+    {
+      "seam_id": "seam_55_corner_dome_corner_cap_finial",
+      "owner_type": "geometry_cover",
+      "owner_id": "cupola_cap_ring",
+      "mode": "hard_material_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "corner_dome",
+      "from_edge": "apex",
+      "to_surface": "corner_cap_finial",
+      "to_edge": "bottom"
+    },
+    {
+      "seam_id": "seam_55_corner_dome_corner_cap_finial",
+      "owner_type": "geometry_cover",
+      "owner_id": "cupola_cap_ring",
+      "mode": "hard_material_joint",
+      "sticker_overlap_m": 0.0,
+      "uv_gutter_px": 16,
+      "from_surface": "corner_cap_finial",
+      "from_edge": "bottom",
+      "to_surface": "corner_dome",
+      "to_edge": "apex"
+    }
+  ],
+  "atlas_plan": {
+    "opaque_atlas_max_px": [
+      4096,
+      4096
+    ],
+    "alpha_glass_atlas_max_px": [
+      4096,
+      4096
+    ],
+    "city_lod_max_px": [
+      1024,
+      1024
+    ],
+    "gutter_px_min": 16,
+    "runtime_material_count_max": 8,
+    "assembled_glb_bytes_max": 8388608,
+    "delivery": "KTX2/UASTC close atlas plus <=1K city LOD",
+    "opaque_atlas_count": 1,
+    "alpha_glass_atlas_count_max": 1,
+    "packing": "pack after registration; 16 px dilated gutters; preserve alpha losslessly",
+    "material_slots": [
+      "opaque_sticker_pbr",
+      "glass_sticker_pbr",
+      "roof_sticker_pbr"
+    ]
+  },
+  "delivery_measurements": {
+    "assembled_glb_bytes": null,
+    "assembled_glb_bytes_max": 8388608,
+    "within_glb_budget": null
+  },
+  "hard_stops": [
+    "missing_or_unapproved_clay_lock",
+    "clay_geometry_hash_mismatch",
+    "separate_full_face_sticker_box",
+    "missing_numeric_registration_anchors",
+    "non_reciprocal_seam_ownership",
+    "planar_dome_projection",
+    "entrance_contour_hash_mismatch",
+    "duplicate_feature_owner",
+    "unowned_exposed_surface",
+    "assembled_glb_over_8mb"
+  ]
+}

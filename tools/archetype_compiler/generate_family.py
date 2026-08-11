@@ -153,6 +153,8 @@ def main() -> None:
                         help="review-image renderer; use cycles for final archviz QA")
     parser.add_argument("--presentation-samples", type=int, default=48)
     parser.add_argument("--presentation-view-set", choices=("all", "preview"), default="all")
+    parser.add_argument("--clay-mode", action="store_true",
+                        help="render the massing graph without sticker assemblies for geometry approval")
     parser.add_argument("--skip-validation", action="store_true")
     parser.add_argument("--no-auto-install", action="store_true", help="don't pip-install validation deps automatically")
     parser.add_argument(
@@ -281,6 +283,8 @@ def main() -> None:
         blender_cmd += ["--assembled-only"]
     if args.no_ao:
         blender_cmd += ["--no-ao"]
+    if args.clay_mode:
+        blender_cmd += ["--clay-mode"]
     if args.facade_sheets:
         blender_cmd += ["--facade-sheets", str(args.facade_sheets.resolve()),
                         "--facade-sheet-detail", args.facade_sheet_detail]
