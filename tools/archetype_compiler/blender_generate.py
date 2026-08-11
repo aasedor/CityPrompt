@@ -9243,6 +9243,179 @@ def _graph_member_between(
     return member
 
 
+def _graph_recessed_portal_section(parts: list, spec: dict, mats: dict) -> None:
+    """Build a readable diagonal iron-and-glass entrance inside a real void.
+
+    The surrounding locked mesh owns the opening and stone returns.  This
+    assembly owns only the recessed door wall, warm occupied termination and
+    construction-scale ironwork, so it cannot brick the passage flat at the
+    facade plane.
+    """
+    prefix = str(spec.get("id", "GraphRecessedPortal"))
+    outer = Vector(tuple(float(value) for value in spec["outer_centre_xy"]))
+    inward = Vector(tuple(float(value) for value in spec["inward_xy"])).normalized()
+    tangent = Vector(tuple(float(value) for value in spec["tangent_xy"])).normalized()
+    width = float(spec.get("width_m", 4.8))
+    height = float(spec.get("height_m", 4.35))
+    recess = float(spec.get("recess_m", 2.9))
+    sill_z = float(spec.get("sill_z_m", 0.16))
+    profile = float(spec.get("frame_profile_m", 0.085))
+    plane_thickness = float(spec.get("plane_thickness_m", 0.075))
+    angle = math.atan2(tangent.y, tangent.x)
+    bronze = _graph_material(mats, spec.get("frame_material", "signature_bronze"))
+    glass = _graph_material(mats, spec.get("glass_material", "glass"))
+    occupied = _graph_material(mats, spec.get("interior_material", "interior_warm"))
+
+    def point(along: float, depth: float, z: float) -> tuple[float, float, float]:
+        xy = outer + tangent * along + inward * depth
+        return (xy.x, xy.y, z)
+
+    # A warm card sits behind the optical pane; the gap is deliberately large
+    # enough to survive an oblique orbit as inhabited depth rather than paint.
+    back = add_beveled_box(
+        f"{prefix}_OccupiedBack",
+        (width * 0.94, plane_thickness, height * 0.94),
+        point(0.0, recess + 0.48, sill_z + height * 0.50), occupied, 0.018,
+    )
+    back.rotation_euler.z = angle
+    parts.append(back)
+    pane = add_beveled_box(
+        f"{prefix}_GlassDoorWall",
+        (width, plane_thickness, height),
+        point(0.0, recess, sill_z + height * 0.50), glass, 0.012,
+    )
+    pane.rotation_euler.z = angle
+    parts.append(pane)
+
+    verticals = (-width / 2, -width * 0.27, 0.0, width * 0.27, width / 2)
+    for index, along in enumerate(verticals):
+        member = add_beveled_box(
+            f"{prefix}_Mullion{index:02d}",
+            (profile, plane_thickness * 2.1, height + profile),
+            point(along, recess - plane_thickness * 0.15, sill_z + height * 0.50),
+            bronze, min(0.018, profile * 0.22),
+        )
+        member.rotation_euler.z = angle
+        parts.append(member)
+    for index, z in enumerate((sill_z + 1.05, sill_z + height * 0.76, sill_z + height)):
+        member = add_beveled_box(
+            f"{prefix}_Transom{index:02d}",
+            (width + profile, plane_thickness * 2.1, profile),
+            point(0.0, recess - plane_thickness * 0.15, z),
+            bronze, min(0.018, profile * 0.22),
+        )
+        member.rotation_euler.z = angle
+        parts.append(member)
+    for index, along in enumerate((-width * 0.37, width * 0.37)):
+        location = point(along, recess - 0.10, sill_z + height * 0.50)
+        parts.append(add_cylinder(
+            f"{prefix}_EntrancePost{index:02d}", profile * 0.72, height + 0.20,
+            location, bronze, 16,
+        ))
+
+
+def _graph_curved_glass_canopy(parts: list, spec: dict, mats: dict) -> None:
+    """Create a thin annular glazed canopy with explicit iron ribs."""
+    prefix = str(spec.get("id", "GraphCurvedGlassCanopy"))
+    cx, cy = (float(value) for value in spec["centre_xy"])
+    inner = float(spec.get("inner_radius_m", 7.05))
+    outer = float(spec.get("outer_radius_m", 8.65))
+    start = math.radians(float(spec.get("angle_start_deg", 180.0)))
+    end = math.radians(float(spec.get("angle_end_deg", 270.0)))
+    segments = max(4, int(spec.get("segments", 12)))
+    inner_z = float(spec.get("inner_z_m", 5.24))
+    outer_z = float(spec.get("outer_z_m", 5.08))
+    thickness = float(spec.get("glass_thickness_m", 0.045))
+    rib_radius = float(spec.get("rib_radius_m", 0.035))
+    glass = _graph_material(mats, spec.get("glass_material", "glass"))
+    iron = _graph_material(mats, spec.get("frame_material", "signature_bronze"))
+
+    def at(radius: float, angle: float, z: float) -> tuple[float, float, float]:
+        return (cx + radius * math.cos(angle), cy + radius * math.sin(angle), z)
+
+    for index in range(segments):
+        a0 = start + (end - start) * index / segments
+        a1 = start + (end - start) * (index + 1) / segments
+        top = [at(inner, a0, inner_z), at(inner, a1, inner_z), at(outer, a1, outer_z), at(outer, a0, outer_z)]
+        bottom = [[x, y, z - thickness] for x, y, z in top]
+        vertices = top + bottom
+        faces = [[0, 1, 2, 3], [7, 6, 5, 4], [0, 4, 5, 1], [1, 5, 6, 2], [2, 6, 7, 3], [3, 7, 4, 0]]
+        parts.append(add_prism(f"{prefix}_Glass{index:02d}", vertices, faces, glass))
+    for index in range(segments + 1):
+        angle = start + (end - start) * index / segments
+        parts.append(_graph_member_between(
+            f"{prefix}_RadialRib{index:02d}", at(inner, angle, inner_z + 0.025),
+            at(outer, angle, outer_z + 0.025), rib_radius, iron, vertices=10,
+        ))
+    for radius_index, (radius, z) in enumerate(((inner, inner_z), (outer, outer_z))):
+        for index in range(segments):
+            a0 = start + (end - start) * index / segments
+            a1 = start + (end - start) * (index + 1) / segments
+            parts.append(_graph_member_between(
+                f"{prefix}_Arc{radius_index}_{index:02d}", at(radius, a0, z + 0.025),
+                at(radius, a1, z + 0.025), rib_radius, iron, vertices=10,
+            ))
+
+
+def _graph_curved_band_schedule(parts: list, spec: dict, mats: dict) -> None:
+    """Hide floor-atlas boundaries behind construction-scale curved rails."""
+    prefix = str(spec.get("id", "GraphCurvedBands"))
+    cx, cy = (float(value) for value in spec["centre_xy"])
+    radius = float(spec["radius_m"])
+    start = math.radians(float(spec.get("angle_start_deg", 180.0)))
+    end = math.radians(float(spec.get("angle_end_deg", 270.0)))
+    segments = max(4, int(spec.get("segments", 12)))
+    profile = float(spec.get("profile_m", 0.045))
+    material = _graph_material(mats, spec.get("material", "signature_bronze"))
+    for band_index, z in enumerate(float(value) for value in spec.get("levels_z", [])):
+        for index in range(segments):
+            a0 = start + (end - start) * index / segments
+            a1 = start + (end - start) * (index + 1) / segments
+            parts.append(_graph_member_between(
+                f"{prefix}_{band_index:02d}_{index:02d}",
+                (cx + radius * math.cos(a0), cy + radius * math.sin(a0), z),
+                (cx + radius * math.cos(a1), cy + radius * math.sin(a1), z),
+                profile, material, vertices=10,
+            ))
+
+
+def _graph_dome_rib_system(parts: list, spec: dict, mats: dict) -> None:
+    """Add physical meridional and ring ribs over a registered glass dome."""
+    prefix = str(spec.get("id", "GraphDomeRibs"))
+    cx, cy = (float(value) for value in spec["centre_xy"])
+    radius = float(spec["radius_m"])
+    base_z = float(spec["base_z_m"])
+    rise = float(spec["rise_m"])
+    meridians = max(8, int(spec.get("meridians", 20)))
+    ring_steps = max(4, int(spec.get("ring_steps", 8)))
+    profile = float(spec.get("profile_m", 0.045))
+    material = _graph_material(mats, spec.get("material", "signature_bronze"))
+
+    def point(angle: float, t: float) -> tuple[float, float, float]:
+        radial = radius * math.cos(t * math.pi / 2) + profile * 0.55
+        z = base_z + rise * math.sin(t * math.pi / 2) + profile * 0.30
+        return (cx + radial * math.cos(angle), cy + radial * math.sin(angle), z)
+
+    for meridian in range(meridians):
+        angle = 2 * math.pi * meridian / meridians
+        for step in range(ring_steps):
+            parts.append(_graph_member_between(
+                f"{prefix}_Meridian{meridian:02d}_{step:02d}",
+                point(angle, step / ring_steps), point(angle, (step + 1) / ring_steps),
+                profile, material, vertices=8,
+            ))
+    ring_segments = meridians
+    for ring_index, t in enumerate(spec.get("ring_fractions", (0.24, 0.48, 0.70))):
+        t = float(t)
+        for segment in range(ring_segments):
+            a0 = 2 * math.pi * segment / ring_segments
+            a1 = 2 * math.pi * (segment + 1) / ring_segments
+            parts.append(_graph_member_between(
+                f"{prefix}_Ring{ring_index:02d}_{segment:02d}",
+                point(a0, t), point(a1, t), profile * 0.78, material, vertices=8,
+            ))
+
+
 def _graph_lattice_parapet(parts: list, spec: dict, mats: dict) -> None:
     """Build a continuous crossed-lattice roof parapet around authored runs."""
     prefix = str(spec.get("id", "GraphLatticeParapet"))
@@ -11519,6 +11692,14 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
             _graph_clock_face_array(parts, assembly, mats)
         elif kind == "station_concourse":
             _graph_station_concourse(parts, assembly, mats)
+        elif kind == "recessed_portal_section":
+            _graph_recessed_portal_section(parts, assembly, mats)
+        elif kind == "curved_glass_canopy":
+            _graph_curved_glass_canopy(parts, assembly, mats)
+        elif kind == "curved_band_schedule":
+            _graph_curved_band_schedule(parts, assembly, mats)
+        elif kind == "dome_rib_system":
+            _graph_dome_rib_system(parts, assembly, mats)
         else:
             raise ValueError(f"massing graph assembly {assembly.get('id')!r} has unsupported kind {kind!r}")
 
@@ -11527,6 +11708,12 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
     final_surface_audit = _audit_final_surface_bindings(parts, graph) if not CLAY_MODE else {
         "status": "clay_review_exempt", "checked_faces": 0, "failure_count": 0,
     }
+    print(
+        "[blender_generate] final surface audit: "
+        f"{final_surface_audit['status']} "
+        f"({int(final_surface_audit.get('checked_faces', 0))} faces, "
+        f"{int(final_surface_audit.get('failure_count', 0))} failures)"
+    )
     model = join_as("ASM_MassingGraph", parts)
     if CLAY_MODE:
         clay = make_material("MAT_ClayLock", {
@@ -11556,6 +11743,7 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
     model["massing_graph_void_count"] = len(graph.get("voids", []))
     model["final_surface_audit_status"] = final_surface_audit["status"]
     model["final_surface_audit_checked_faces"] = int(final_surface_audit.get("checked_faces", 0))
+    model["final_surface_audit_failure_count"] = int(final_surface_audit.get("failure_count", 0))
     return model
 
 

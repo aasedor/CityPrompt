@@ -1,0 +1,35 @@
+{
+  "schema": "continuous-floor-sticker-contract@1",
+  "building_id": "grand-magasin-belle-epoque",
+  "pipeline": "v94-continuous-shell-floor-stickers",
+  "extends": "v93-segmented-floor-stickers",
+  "floor_count": 5,
+  "score_target": 90,
+  "method": {
+    "geometry": "one welded wall topology per elevation with floor-addressable faces and no internal horizontal caps",
+    "stickers": "separate ground, middle and top-crown source crops assigned to exact faces on the continuous shell",
+    "seams": "source-adjacent UV boundaries hidden only by reference-supported construction datums",
+    "entrance": "real wrapped void plus recessed optical door wall, warm occupied termination and iron frame",
+    "domes": "registered stained-glass source beneath physical meridional and ring ribs",
+    "canopy": "thin transparent annular glass panels with radial and perimeter iron ribs"
+  },
+  "hard_stops": [
+    "internal_floor_cap",
+    "visible_uncovered_or_low_information_carrier",
+    "sticker_boundary_crossing_window_or_column",
+    "roof_source_below_roof_datum",
+    "opaque_or_unframed_dome",
+    "flat_or_blocked_entrance",
+    "legacy_opaque_canopy",
+    "front_corner_or_rear_corner_tear",
+    "architect_score_below_90"
+  ],
+  "review_weights": {
+    "silhouette_and_proportion": 25,
+    "facade_alignment_and_continuity": 20,
+    "roof_and_domes": 20,
+    "entrance_and_sectional_depth": 15,
+    "materials_and_glazing": 10,
+    "seams_and_all_surface_coverage": 10
+  }
+}

@@ -32,3 +32,6 @@ docs/reviews/catalogue-rollout-v92/**/*.png filter=lfs diff=lfs merge=lfs -text
 docs/reviews/catalogue-rollout-v92/**/*.jpg filter=lfs diff=lfs merge=lfs -text
 docs/reviews/catalogue-rollout-v93/**/*.png filter=lfs diff=lfs merge=lfs -text
 docs/reviews/catalogue-rollout-v93/**/*.jpg filter=lfs diff=lfs merge=lfs -text
+docs/reviews/catalogue-rollout-v94/**/*.png filter=lfs diff=lfs merge=lfs -text
+docs/reviews/catalogue-rollout-v94/**/*.jpg filter=lfs diff=lfs merge=lfs -text
+tools/archetype_compiler/sticker_assets/belle_epoque_v94/*.png filter=lfs diff=lfs merge=lfs -text

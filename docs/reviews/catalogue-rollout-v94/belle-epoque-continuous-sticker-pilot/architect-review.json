@@ -1,0 +1,26 @@
+{
+  "reviewer": "architect_design_reviewer",
+  "run": "belle-epoque-grand-magasin-v94-continuous-5-r6",
+  "threshold": 90,
+  "score_breakdown": {
+    "silhouette_massing": {"score": 18, "maximum": 20},
+    "facade_opening_registration": {"score": 19, "maximum": 20},
+    "floor_corner_continuity": {"score": 18, "maximum": 20},
+    "roof_dome_fidelity": {"score": 13, "maximum": 15},
+    "entrance_void_construction": {"score": 13, "maximum": 15},
+    "materials_side_rear_completeness": {"score": 10, "maximum": 10}
+  },
+  "total": 91,
+  "verdict": "approve",
+  "hard_stops": [],
+  "cleared_from_run_5": [
+    "projecting crossing-rail cornices",
+    "principal corner return seam"
+  ],
+  "remaining_polish": [
+    "broaden and curve the entrance canopy",
+    "make stained-glass domes more luminous",
+    "refine dormer fronts and returns",
+    "lighten the straight-to-rounded pavilion transition"
+  ]
+}

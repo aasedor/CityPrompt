@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-08-11-floor-addressable-sticker-v93`.
+Current executable memory: `2026-08-11-continuous-shell-sticker-v94`.
 
 The current calibration set and catalogue rollout rationale are documented in
 [`BUILDING_GOLD_SET_PIPELINE_SYNTHESIS_2026-08-07.md`](BUILDING_GOLD_SET_PIPELINE_SYNTHESIS_2026-08-07.md).
@@ -1143,6 +1143,31 @@ coverage is therefore not evidence of rendered polygon coverage.
 - A contract must fail on band gaps, overlaps, missing floor targets, roof
   material below the roof datum or any remaining fallback polygon. The final
   named architect review remains separate from this machine completeness gate.
+
+### V94 continuous-shell floor ownership lesson
+
+The improved Belle Epoque pilot showed that floor addressability belongs in
+face ownership and UV registration, not in five closed wall boxes. Even when
+each box has the correct floor sticker, coincident caps and separately rounded
+edges produce horizontal cuts that make the facade read as stacked cards.
+
+- Build one cap-free continuous exterior wall per elevation, then assign each
+  polygon to ground, middle or crown floor owners. Internal floor caps on an
+  exterior wall are a pre-render failure.
+- Do not conceal a sticker seam with a generic belt, rail or shadow strip. Such
+  repairs cross windows and columns and create a second, more obvious alignment
+  error. Fix shared texels, face ownership or the continuous shell instead.
+- Keep full plan atlases on upward roof faces. A roof sheet projected over
+  fascias or steep edge returns imports its isolation border or stretches roof
+  pixels into vertical stripes. Give front, side and rear roof edges their own
+  directionally mapped construction-finish stickers.
+- Optical landmarks need physical section as well as imagery: entrance glass
+  sits behind a framed, recessed portal and canopy; glass domes keep their
+  registered image owner but gain real meridional ribs and rings.
+- Maintain floor-level replacement metadata even when the render mesh is
+  continuous. A taller configurable sibling inserts a complete middle-face
+  schedule and translates fixed crown/roof assemblies; it does not reopen the
+  approved landmark mesh through arbitrary non-uniform scaling.
 
 ## Updating this memory
 

@@ -1,0 +1,17 @@
+{
+  "schema": "belle-epoque-continuous-surface-audit@1",
+  "run": "belle-epoque-grand-magasin-v94-continuous-5-r6",
+  "status": "pass",
+  "geometry_sha256": "f0fab4227765a1ecc3524f7d0ae624c3e6bf617d627436baabd53c381ac1eb3d",
+  "continuous_wall_count": 9,
+  "internal_floor_cap_count": 0,
+  "final_faces_checked": 1756,
+  "fallback_or_unowned_faces": 0,
+  "roof_faces_below_roof_datum": 0,
+  "validation_status": "pass",
+  "triangle_count": 46624,
+  "material_count": 142,
+  "assembled_glb_bytes": 23120664,
+  "delivery_budget_bytes": 8000000,
+  "delivery_budget_status": "warning_needs_optimization_before_runtime_release"
+}

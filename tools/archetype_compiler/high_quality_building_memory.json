@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-08-11-floor-addressable-sticker-v93",
+  "memory_version": "2026-08-11-continuous-shell-sticker-v94",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "calibration_set": {
@@ -42,6 +42,10 @@
     {
       "id": "floor_stickers_and_roof_are_disjoint_material_domains",
       "rule": "Segment occupied elevations into explicit ground, repeatable middle and fixed top/crown bands before material binding. The roof is a separate domain beginning at an audited roof datum and may never own a vertical occupied-floor polygon. A taller bounded variant inserts complete middle geometry and its registered sticker, then translates the unchanged top/crown and roof assemblies; stretching a monolithic wall or full-height sticker is forbidden. After Blender binding, count every visible polygon and hard-stop any unowned face, generic blue/grey/clay fallback, overlapping band or roof material below the roof datum."
+    },
+    {
+      "id": "floor_addressability_uses_a_continuous_cap_free_shell",
+      "rule": "Represent each exposed elevation as one continuous wall without internal floor caps, then assign its faces to explicit floor sticker owners. Do not hide seams with generic rails or belts that cross openings. Keep plan roof atlases on upward roof faces and use directionally mapped edge stickers for fascias and steep returns."
     },
     {
       "id": "alpha_textures_export_losslessly",
@@ -1004,6 +1008,11 @@
       "symptom": "The top occupied floor receives roof imagery while blue-grey carrier polygons or unstickered returns remain visible elsewhere",
       "cause": "The contract counted named surfaces rather than the polygons that actually received materials, and one full-height wall carrier crossed ground, middle, crown and roof ownership boundaries.",
       "correction": "Subdivide or floor-address the elevation at audited floor datums, assign separate ground, middle and top/crown sticker owners, isolate roof targets above the roof datum, and run a post-binding face audit in Blender. Release requires zero unassigned faces, zero generic fallback materials, zero band gaps or overlaps and zero roof-owned vertical occupied-floor polygons."
+    },
+    {
+      "symptom": "Floor stickers form horizontal cuts or roof edges become white bands and vertical texture streaks even though every face is technically assigned",
+      "cause": "Closed per-floor wall prisms introduced coincident caps, while a full plan roof atlas was later projected across steep fascias and overrode the dedicated edge finish.",
+      "correction": "Weld occupied floors into one cap-free wall with face-level floor owners, reject cosmetic seam rails, keep the plan atlas on roof-facing polygons and bind separate front, right, rear and left construction-finish stickers to the edge faces after all general roof carriers."
     }
   ]
 }
