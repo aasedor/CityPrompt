@@ -1,0 +1,76 @@
+{
+  "schema": "three-all-surface-sticker-review@1",
+  "pipeline": "v91-all-surface-registered-sticker-landmark",
+  "batch_scope": "three never-before-attempted fixed select-and-place landmarks",
+  "image_generation": {
+    "gpt_image_api_calls": 15,
+    "built_in_image_fallbacks": 4,
+    "total_authored_surface_stickers": 19,
+    "metadata_mode": "disabled",
+    "authority": "exact three-view archetype evidence plus selective architectural research"
+  },
+  "results": [
+    {
+      "building": "Tuscan Farmhouse",
+      "slug": "tuscan-farmhouse",
+      "machine_validation": "pass",
+      "surface_finish": "pass",
+      "registered_surface_count": 5,
+      "registered_surfaces": [
+        "front",
+        "left",
+        "rear",
+        "right",
+        "roof"
+      ],
+      "human_status": "rejected",
+      "known_limit": "The roof is fully skinned but close aerial views retain mild pantile moire.",
+      "architect_review": "65/100"
+    },
+    {
+      "building": "Egyptian Revival Theater",
+      "slug": "egyptian-revival-theater",
+      "machine_validation": "pass",
+      "surface_finish": "pass",
+      "registered_surface_count": 5,
+      "registered_surfaces": [
+        "front",
+        "left",
+        "rear",
+        "right",
+        "roof"
+      ],
+      "human_status": "rejected",
+      "known_limit": "Slim physical lotus columns remain deliberately subordinate to the registered facade image.",
+      "architect_review": "73/100"
+    },
+    {
+      "building": "Belle Epoque Grand Magasin",
+      "slug": "belle-epoque-grand-magasin",
+      "machine_validation": "pass",
+      "surface_finish": "pass",
+      "registered_surface_count": 9,
+      "registered_surfaces": [
+        "front",
+        "front_right",
+        "right",
+        "rear_right",
+        "rear",
+        "rear_left",
+        "left",
+        "front_left",
+        "roof"
+      ],
+      "human_status": "rejected",
+      "known_limit": "Pale exposed edge strips remain visible at several zinc-roof returns, and the three front entrance backs still read too shallow in the head-on view.",
+      "architect_review": "68/100"
+    }
+  ],
+  "architect_gate": {
+    "reviewer": "Mencius - architect_design_reviewer",
+    "keeper_threshold": 85,
+    "keepers": 0,
+    "batch_status": "rejected_for_scale_up",
+    "next_pilot": "Repair only the Egyptian Revival Theater before producing another batch."
+  }
+}

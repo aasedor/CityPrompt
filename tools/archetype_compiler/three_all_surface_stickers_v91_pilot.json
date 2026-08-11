@@ -1,0 +1,19 @@
+{
+  "schema": "catalogue-rollout-batch@1",
+  "campaign": "tools/archetype_compiler/three_all_surface_stickers_v91.json",
+  "pipeline_version": "v91",
+  "surface_recipe_manifest": "tools/archetype_compiler/three_all_surface_stickers_v91_surface_recipes.json",
+  "batch_id": "THREE-ALL-SURFACE-STICKERS-V91-PILOT",
+  "paid_facade_calls": 0,
+  "entries": [
+    {
+      "archetype_id": "mediterranean_villa_estate",
+      "variant_id": "med_villa_tuscan",
+      "family_id": "tuscan-farmhouse-v91",
+      "width_m": 14.0,
+      "depth_m": 10.0,
+      "floors": 3,
+      "facade_sheet": "artifacts/three-all-surface-stickers-v91/facade-sheets/med_villa_tuscan"
+    }
+  ]
+}

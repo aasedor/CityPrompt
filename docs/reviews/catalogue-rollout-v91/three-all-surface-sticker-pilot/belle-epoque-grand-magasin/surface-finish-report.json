@@ -1,0 +1,91 @@
+{
+  "schema": "surface-finish-quality@2",
+  "status": "pass",
+  "required_materials": [
+    "primary",
+    "secondary",
+    "roof"
+  ],
+  "render_parity": {
+    "scope": "alpha_masked_building_foreground",
+    "foreground_pixel_count": 392694,
+    "silhouette_iou": 1.0,
+    "mean_absolute_error": 0.00387,
+    "p95_absolute_error": 0.01961,
+    "similarity": 0.99613,
+    "passed": true
+  },
+  "failures": [],
+  "checks": [
+    {
+      "id": "story_manifest:primary",
+      "passed": true,
+      "detail": "primary resolves to 'v91_grand-magasin-belle-epoque_primary'"
+    },
+    {
+      "id": "surface_variation:primary",
+      "passed": true,
+      "detail": {
+        "albedo_std": 14.931,
+        "roughness_std": 29.193,
+        "normal_xy_std": 1.484
+      }
+    },
+    {
+      "id": "glb_pbr_channels:primary",
+      "passed": true,
+      "detail": "exported material 'MAT_Facade_Primary'"
+    },
+    {
+      "id": "story_manifest:secondary",
+      "passed": true,
+      "detail": "secondary resolves to 'v91_grand-magasin-belle-epoque_secondary'"
+    },
+    {
+      "id": "surface_variation:secondary",
+      "passed": true,
+      "detail": {
+        "albedo_std": 6.653,
+        "roughness_std": 31.69,
+        "normal_xy_std": 2.179
+      }
+    },
+    {
+      "id": "glb_pbr_channels:secondary",
+      "passed": true,
+      "detail": "exported material 'MAT_Facade_Secondary'"
+    },
+    {
+      "id": "story_manifest:roof",
+      "passed": true,
+      "detail": "roof resolves to 'v91_grand-magasin-belle-epoque_roof'"
+    },
+    {
+      "id": "surface_variation:roof",
+      "passed": true,
+      "detail": {
+        "albedo_std": 14.3,
+        "roughness_std": 36.457,
+        "normal_xy_std": 5.395
+      }
+    },
+    {
+      "id": "glb_pbr_channels:roof",
+      "passed": true,
+      "detail": "exported material 'MAT_Roof_grand_right_roof_sticker'"
+    },
+    {
+      "id": "neutral_glb_roundtrip_parity",
+      "passed": true,
+      "detail": {
+        "scope": "alpha_masked_building_foreground",
+        "foreground_pixel_count": 392694,
+        "silhouette_iou": 1.0,
+        "mean_absolute_error": 0.00387,
+        "p95_absolute_error": 0.01961,
+        "similarity": 0.99613,
+        "passed": true
+      }
+    }
+  ]
+}

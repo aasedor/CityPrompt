@@ -8023,6 +8023,158 @@ def _graph_facade_skin(parts: list, spec: dict, mats: dict, *, suffix: str = "")
     parts.append(skin)
 
 
+def _graph_roof_skin(parts: list, spec: dict, mats: dict) -> None:
+    """Build real roof geometry with one registered top-plan sticker.
+
+    The V90 landmark review proved that a detailed facade attached to a generic
+    roof remains architecturally wrong.  A roof skin therefore owns both the
+    source-traced silhouette and a shared plan registration.  Multiple wings
+    and domes may use the same ``plan_bounds`` so seams remain phase-aligned.
+    """
+    # Roof stickers must retain the roof story material's normal and
+    # roughness channels.  Copying the facade sheet here made the roof look
+    # detailed in Blender but removed the required exported roof PBR material
+    # from the GLB.  Replace only the roof material's albedo with the registered
+    # plan sticker and leave its derived PBR channels intact.
+    base = mats.get("roof")
+    if base is None:
+        return
+    material = base.copy()
+    material.name = f"{base.name}_{spec.get('id', 'RoofSkin')}"
+    material["massing_skin"] = True
+    material["massing_skin_canonical"] = ""
+    material["massing_skin_axis"] = "plan"
+    source_image_path = spec.get("source_image_path")
+    if not source_image_path:
+        raise ValueError("roof skin requires source_image_path")
+    image_path = Path(str(source_image_path))
+    if not image_path.is_absolute():
+        image_path = Path.cwd() / image_path
+    if not image_path.exists():
+        raise FileNotFoundError(f"registered roof sticker source is missing: {image_path}")
+    albedo = material.node_tree.nodes.get("TEX_Albedo") if material.node_tree else None
+    if albedo is None or albedo.type != "TEX_IMAGE":
+        raise ValueError("registered roof sticker requires a textured roof PBR material")
+    albedo.image = _load_image(image_path, "sRGB")
+    # The colour sticker owns one non-repeating plan UV while the derived
+    # normal/roughness maps may retain their real-world tiling.
+    for link in list(albedo.inputs["Vector"].links):
+        material.node_tree.links.remove(link)
+    uv_node = material.node_tree.nodes.get("ROOF_STICKER_UV")
+    if uv_node is None:
+        uv_node = material.node_tree.nodes.new("ShaderNodeUVMap")
+        uv_node.name = uv_node.label = "ROOF_STICKER_UV"
+        uv_node.uv_map = "UVMap"
+        uv_node.location = (-760, 360)
+    material.node_tree.links.new(uv_node.outputs["UV"], albedo.inputs["Vector"])
+    material["registered_sticker_source"] = str(image_path)
+    shape = str(spec.get("shape", "flat"))
+    cx, cy, base_z = (float(value) for value in spec["location"])
+    size = tuple(float(value) for value in spec.get("size", (1.0, 1.0, 0.12)))
+    bounds = spec.get("plan_bounds") or [
+        cx - size[0] / 2, cx + size[0] / 2,
+        cy - size[1] / 2, cy + size[1] / 2,
+    ]
+    material["massing_skin_axis"] = "plan"
+    material["massing_skin_u_min"] = float(bounds[0])
+    material["massing_skin_u_max"] = float(bounds[1])
+    material["massing_skin_plan_v_min"] = float(bounds[2])
+    material["massing_skin_plan_v_max"] = float(bounds[3])
+    material["massing_skin_plan_flip_v"] = bool(spec.get("flip_v", False))
+    material["massing_skin_tex_u_min"] = float(spec.get("uv_u_min", 0.0))
+    material["massing_skin_tex_u_max"] = float(spec.get("uv_u_max", 1.0))
+    material["massing_skin_v_min"] = float(spec.get("uv_v_min", 0.0))
+    material["massing_skin_v_max"] = float(spec.get("uv_v_max", 1.0))
+    material["registered_roof_sticker"] = True
+
+    transmission = float(spec.get("transmission", 0.0))
+    if transmission > 0.0 and material.use_nodes and material.node_tree:
+        principled = next((node for node in material.node_tree.nodes if node.type == "BSDF_PRINCIPLED"), None)
+        if principled is not None:
+            socket = principled.inputs.get("Transmission Weight") or principled.inputs.get("Transmission")
+            if socket is not None:
+                socket.default_value = max(0.0, min(transmission, 1.0))
+            roughness = principled.inputs.get("Roughness")
+            if roughness is not None:
+                roughness.default_value = float(spec.get("roughness", 0.2))
+
+    bevel = float(spec.get("bevel_m", 0.035))
+    prefix = str(spec.get("id", "GraphRoofSkin"))
+    if shape == "flat":
+        thickness = max(0.035, float(spec.get("thickness_m", size[2] if len(size) > 2 else 0.10)))
+        parts.append(add_box(prefix, (size[0], size[1], thickness), (cx, cy, base_z + thickness / 2), material))
+    elif shape == "gable":
+        parts.append(add_gable_roof(prefix, size, (cx, cy, base_z), material, bevel, str(spec.get("ridge_axis", "y"))))
+    elif shape == "hipped":
+        parts.append(add_hipped_roof(
+            prefix, size, (cx, cy, base_z), material, bevel,
+            str(spec.get("ridge_axis", "x")),
+            float(spec["ridge_inset_m"]) if spec.get("ridge_inset_m") is not None else None,
+        ))
+    elif shape == "mono_pitch":
+        roof_object = add_mono_pitch_roof(
+            prefix, size, (cx, cy, base_z), material, bevel,
+            str(spec.get("high_side", "rear")),
+        )
+        # The registered aerial image belongs only to the sloped weathering
+        # field.  Vertical verge/fascia and soffit faces use the same derived
+        # zinc PBR story material; sampling the plan atlas on those faces
+        # produced pale triangular cut-outs at every wing end.
+        if len(roof_object.data.materials) < 2:
+            roof_object.data.materials.append(base)
+        for polygon in roof_object.data.polygons:
+            is_sloped_weathering_field = (
+                abs(polygon.normal.z) > 0.20
+                and polygon.center.z > base_z + 0.15
+            )
+            polygon.material_index = 0 if is_sloped_weathering_field else 1
+        parts.append(roof_object)
+    elif shape == "dome":
+        radius = float(spec["radius_m"])
+        height = float(spec["height_m"])
+        segments = max(20, int(spec.get("segments", 56)))
+        rings = max(8, int(spec.get("rings", 18)))
+        vertices: list[tuple[float, float, float]] = []
+        faces: list[tuple[int, ...]] = []
+        for ring in range(rings + 1):
+            t = ring / rings
+            ring_radius = radius * math.cos(t * math.pi / 2)
+            z = base_z + height * math.sin(t * math.pi / 2)
+            for segment in range(segments):
+                angle = 2 * math.pi * segment / segments
+                vertices.append((cx + ring_radius * math.cos(angle), cy + ring_radius * math.sin(angle), z))
+        for ring in range(rings):
+            for segment in range(segments):
+                nxt = (segment + 1) % segments
+                lower = ring * segments + segment
+                lower_next = ring * segments + nxt
+                upper = (ring + 1) * segments + segment
+                upper_next = (ring + 1) * segments + nxt
+                faces.append((lower, lower_next, upper_next, upper))
+        faces.append(tuple(reversed(range(segments))))
+        dome = add_prism(prefix, vertices, faces, material)
+        for polygon in dome.data.polygons:
+            polygon.use_smooth = True
+        parts.append(dome)
+        rib_count = max(0, int(spec.get("rib_count", 0)))
+        rib_radius = max(0.018, float(spec.get("rib_radius_m", 0.045)))
+        for rib in range(rib_count):
+            angle = 2 * math.pi * rib / rib_count
+            points = []
+            for step in range(9):
+                t = step / 8
+                ring_radius = radius * math.cos(t * math.pi / 2) + 0.025
+                z = base_z + height * math.sin(t * math.pi / 2) + 0.025
+                points.append((cx + ring_radius * math.cos(angle), cy + ring_radius * math.sin(angle), z))
+            for step, (start, end) in enumerate(zip(points, points[1:])):
+                parts.append(_graph_member_between(
+                    f"{prefix}_Rib{rib:02d}_{step:02d}", start, end,
+                    rib_radius, material, vertices=8,
+                ))
+    else:
+        raise ValueError(f"roof skin {prefix!r} has unsupported shape {shape!r}")
+
+
 def _graph_displaced_facade_skin(parts: list, spec: dict, mats: dict) -> None:
     """Build one continuous image-registered facade from a depth guide.
 
@@ -10709,13 +10861,24 @@ def _apply_massing_skin_uv(obj: bpy.types.Object) -> None:
                     + (coordinate.y - float(material.get("massing_skin_origin_y", 0.0)))
                     * float(material.get("massing_skin_along_y", 0.0))
                 )
+            elif axis == "plan":
+                along = coordinate.x
             else:
                 continue
             u = (along - u_min) / span_u
             if flip_u:
                 u = 1.0 - u
             u = tex_u_min + u * (tex_u_max - tex_u_min)
-            v = v_min + (coordinate.z - z_min) / span_v * (v_max - v_min)
+            if axis == "plan":
+                plan_v_min = float(material.get("massing_skin_plan_v_min", 0.0))
+                plan_v_max = float(material.get("massing_skin_plan_v_max", 1.0))
+                plan_v_span = max(plan_v_max - plan_v_min, 1e-6)
+                plan_v = (coordinate.y - plan_v_min) / plan_v_span
+                if bool(material.get("massing_skin_plan_flip_v", False)):
+                    plan_v = 1.0 - plan_v
+                v = v_min + plan_v * (v_max - v_min)
+            else:
+                v = v_min + (coordinate.z - z_min) / span_v * (v_max - v_min)
             uv_layer.data[loop_index].uv = (u, v)
 
 
@@ -10922,6 +11085,8 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
             _graph_shadow_line(parts, assembly, mats)
         elif kind == "facade_skin":
             _graph_facade_skin(parts, assembly, mats)
+        elif kind == "roof_skin":
+            _graph_roof_skin(parts, assembly, mats)
         elif kind == "displaced_facade_skin":
             _graph_displaced_facade_skin(parts, assembly, mats)
         elif kind == "facade_skin_stack":

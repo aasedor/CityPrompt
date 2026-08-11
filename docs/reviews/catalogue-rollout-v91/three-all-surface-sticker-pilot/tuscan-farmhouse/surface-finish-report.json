@@ -1,0 +1,91 @@
+{
+  "schema": "surface-finish-quality@2",
+  "status": "pass",
+  "required_materials": [
+    "primary",
+    "secondary",
+    "roof"
+  ],
+  "render_parity": {
+    "scope": "alpha_masked_building_foreground",
+    "foreground_pixel_count": 381841,
+    "silhouette_iou": 1.0,
+    "mean_absolute_error": 0.00113,
+    "p95_absolute_error": 0.00784,
+    "similarity": 0.99887,
+    "passed": true
+  },
+  "failures": [],
+  "checks": [
+    {
+      "id": "story_manifest:primary",
+      "passed": true,
+      "detail": "primary resolves to 'v91_med_villa_tuscan_primary'"
+    },
+    {
+      "id": "surface_variation:primary",
+      "passed": true,
+      "detail": {
+        "albedo_std": 35.594,
+        "roughness_std": 29.803,
+        "normal_xy_std": 2.903
+      }
+    },
+    {
+      "id": "glb_pbr_channels:primary",
+      "passed": true,
+      "detail": "exported material 'MAT_Facade_Primary'"
+    },
+    {
+      "id": "story_manifest:secondary",
+      "passed": true,
+      "detail": "secondary resolves to 'v91_med_villa_tuscan_secondary'"
+    },
+    {
+      "id": "surface_variation:secondary",
+      "passed": true,
+      "detail": {
+        "albedo_std": 26.474,
+        "roughness_std": 31.262,
+        "normal_xy_std": 3.909
+      }
+    },
+    {
+      "id": "glb_pbr_channels:secondary",
+      "passed": true,
+      "detail": "exported material 'MAT_Facade_Secondary'"
+    },
+    {
+      "id": "story_manifest:roof",
+      "passed": true,
+      "detail": "roof resolves to 'v91_med_villa_tuscan_roof'"
+    },
+    {
+      "id": "surface_variation:roof",
+      "passed": true,
+      "detail": {
+        "albedo_std": 51.558,
+        "roughness_std": 32.052,
+        "normal_xy_std": 16.501
+      }
+    },
+    {
+      "id": "glb_pbr_channels:roof",
+      "passed": true,
+      "detail": "exported material 'MAT_Roof_tuscan_roof_sticker'"
+    },
+    {
+      "id": "neutral_glb_roundtrip_parity",
+      "passed": true,
+      "detail": {
+        "scope": "alpha_masked_building_foreground",
+        "foreground_pixel_count": 381841,
+        "silhouette_iou": 1.0,
+        "mean_absolute_error": 0.00113,
+        "p95_absolute_error": 0.00784,
+        "similarity": 0.99887,
+        "passed": true
+      }
+    }
+  ]
+}

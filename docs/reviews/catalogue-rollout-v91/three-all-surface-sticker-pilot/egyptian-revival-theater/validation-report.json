@@ -1,0 +1,287 @@
+{
+  "status": "pass",
+  "family": "egyptian-revival-theater-v91",
+  "archetype_id": "deco_theater_mainstreet",
+  "reuse_keys": [
+    "deco_theater_mainstreet",
+    "art_deco",
+    "Entertainment / Culture"
+  ],
+  "manifest": "egyptian-revival-theater-v91_manifest.json",
+  "errors": [],
+  "warnings": [
+    "egyptian-revival-theater-v91_podium.glb: 18 materials (many; consider consolidation)",
+    "egyptian-revival-theater-v91_floor_typical_a.glb: 23 materials (many; consider consolidation)",
+    "egyptian-revival-theater-v91_floor_typical_b.glb: 24 materials (many; consider consolidation)",
+    "egyptian-revival-theater-v91_floor_typical_b.glb: 9.4 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "egyptian-revival-theater-v91_floor_typical_c.glb: 23 materials (many; consider consolidation)",
+    "egyptian-revival-theater-v91_setback_upper.glb: 23 materials (many; consider consolidation)",
+    "egyptian-revival-theater-v91_crown_crown.glb: 22 materials (many; consider consolidation)",
+    "egyptian-revival-theater-v91_crown_crown.glb: 8.5 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)",
+    "egyptian-revival-theater-v91_assembled.glb: 15.9 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "egyptian-revival-theater-v91_podium.glb",
+      "status": "ok",
+      "triangles": 8436,
+      "extent_m": {
+        "width_x": 24.24,
+        "height_y": 5.252,
+        "depth_z": 34.18
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_GlassOverlay_low_iron_clear_Podium_Module_podium_FrontGlazing_Glass",
+        "MAT_GlassOverlay_low_iron_clear_Podium_Module_podium_LeftGlazing_Glass",
+        "MAT_GlassOverlay_low_iron_clear_Podium_Module_podium_RearGlazing_Glass",
+        "MAT_GlassOverlay_low_iron_clear_Podium_Module_podium_RightGlazing_Glass",
+        "MAT_GlazingFrame_low_iron_clear",
+        "MAT_GlazingInterior_low_iron_clear_00",
+        "MAT_GlazingInterior_low_iron_clear_01",
+        "MAT_Sheet_Near_Podium",
+        "MAT_Sheet_Near_Podium_Module_podium_FrontGlazing_Near",
+        "MAT_Sheet_Near_Podium_Module_podium_LeftGlazing_Near",
+        "MAT_Sheet_Near_Podium_Module_podium_RearGlazing_Near",
+        "MAT_Sheet_Near_Podium_Module_podium_RightGlazing_Near",
+        "MAT_Sheet_Wrapped_Podium_Left",
+        "MAT_Sheet_Wrapped_Podium_Rear",
+        "MAT_Sheet_Wrapped_Podium_Right"
+      ],
+      "size_bytes": 5198712
+    },
+    {
+      "file": "egyptian-revival-theater-v91_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 34556,
+      "extent_m": {
+        "width_x": 24.377,
+        "height_y": 6.052,
+        "depth_z": 35.721
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_GlassOverlay_low_iron_clear_Floor_Module_floor_FrontGlazing_Glass",
+        "MAT_GlassOverlay_low_iron_clear_Floor_Module_floor_LeftGlazing_Glass",
+        "MAT_GlassOverlay_low_iron_clear_Floor_Module_floor_RearGlazing_Glass",
+        "MAT_GlassOverlay_low_iron_clear_Floor_Module_floor_RightGlazing_Glass",
+        "MAT_GlazingFrame_low_iron_clear.001",
+        "MAT_GlazingInterior_low_iron_clear_00.001",
+        "MAT_GlazingInterior_low_iron_clear_01.001",
+        "MAT_GlazingInterior_low_iron_clear_02.001",
+        "MAT_GlazingInterior_low_iron_clear_03.001",
+        "MAT_GlazingInterior_low_iron_clear_04.001",
+        "MAT_GlazingInterior_low_iron_clear_05.001",
+        "MAT_Sheet_Near_Floor",
+        "MAT_Sheet_Near_Floor_Module_floor_FrontGlazing_Near",
+        "MAT_Sheet_Near_Floor_Module_floor_LeftGlazing_Near",
+        "MAT_Sheet_Near_Floor_Module_floor_RearGlazing_Near",
+        "MAT_Sheet_Near_Floor_Module_floor_RightGlazing_Near",
+        "MAT_Sheet_Wrapped_Floor_Left",
+        "MAT_Sheet_Wrapped_Floor_Rear",
+        "MAT_Sheet_Wrapped_Floor_Right"
+      ],
+      "size_bytes": 7432620
+    },
+    {
+      "file": "egyptian-revival-theater-v91_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 66156,
+      "extent_m": {
+        "width_x": 24.377,
+        "height_y": 6.026,
+        "depth_z": 35.721
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_GlassOverlay_low_iron_clear_Floor_alt_Module_floor_alt_FrontGlazing_Glass",
+        "MAT_GlassOverlay_low_iron_clear_Floor_alt_Module_floor_alt_LeftGlazing_Glass",
+        "MAT_GlassOverlay_low_iron_clear_Floor_alt_Module_floor_alt_RearGlazing_Glass",
+        "MAT_GlassOverlay_low_iron_clear_Floor_alt_Module_floor_alt_RightGlazing_Glass",
+        "MAT_GlazingFrame_low_iron_clear.002",
+        "MAT_GlazingInterior_low_iron_clear_00.002",
+        "MAT_GlazingInterior_low_iron_clear_01.002",
+        "MAT_GlazingInterior_low_iron_clear_02.002",
+        "MAT_GlazingInterior_low_iron_clear_03.002",
+        "MAT_GlazingInterior_low_iron_clear_04.002",
+        "MAT_GlazingInterior_low_iron_clear_05.002",
+        "MAT_GlazingInterior_low_iron_clear_06.002",
+        "MAT_Sheet_Near_Floor_alt",
+        "MAT_Sheet_Near_Floor_alt_Module_floor_alt_FrontGlazing_Near",
+        "MAT_Sheet_Near_Floor_alt_Module_floor_alt_LeftGlazing_Near",
+        "MAT_Sheet_Near_Floor_alt_Module_floor_alt_RearGlazing_Near",
+        "MAT_Sheet_Near_Floor_alt_Module_floor_alt_RightGlazing_Near",
+        "MAT_Sheet_Wrapped_Floor_Alt_Left",
+        "MAT_Sheet_Wrapped_Floor_Alt_Rear",
+        "MAT_Sheet_Wrapped_Floor_Alt_Right"
+      ],
+      "size_bytes": 9859820
+    },
+    {
+      "file": "egyptian-revival-theater-v91_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 34556,
+      "extent_m": {
+        "width_x": 24.377,
+        "height_y": 6.052,
+        "depth_z": 35.721
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_GlassOverlay_low_iron_clear_Floor_Module_floor_FrontGlazing_Glass.001",
+        "MAT_GlassOverlay_low_iron_clear_Floor_Module_floor_LeftGlazing_Glass.001",
+        "MAT_GlassOverlay_low_iron_clear_Floor_Module_floor_RearGlazing_Glass.001",
+        "MAT_GlassOverlay_low_iron_clear_Floor_Module_floor_RightGlazing_Glass.001",
+        "MAT_GlazingFrame_low_iron_clear.003",
+        "MAT_GlazingInterior_low_iron_clear_00.003",
+        "MAT_GlazingInterior_low_iron_clear_01.003",
+        "MAT_GlazingInterior_low_iron_clear_02.003",
+        "MAT_GlazingInterior_low_iron_clear_03.003",
+        "MAT_GlazingInterior_low_iron_clear_04.003",
+        "MAT_GlazingInterior_low_iron_clear_05.003",
+        "MAT_Sheet_Near_Floor",
+        "MAT_Sheet_Near_Floor_Module_floor_FrontGlazing_Near.001",
+        "MAT_Sheet_Near_Floor_Module_floor_LeftGlazing_Near.001",
+        "MAT_Sheet_Near_Floor_Module_floor_RearGlazing_Near.001",
+        "MAT_Sheet_Near_Floor_Module_floor_RightGlazing_Near.001",
+        "MAT_Sheet_Wrapped_Floor_Left.001",
+        "MAT_Sheet_Wrapped_Floor_Rear.001",
+        "MAT_Sheet_Wrapped_Floor_Right.001"
+      ],
+      "size_bytes": 7432664
+    },
+    {
+      "file": "egyptian-revival-theater-v91_setback_upper.glb",
+      "status": "ok",
+      "triangles": 34072,
+      "extent_m": {
+        "width_x": 24.0,
+        "height_y": 6.052,
+        "depth_z": 34.189
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_GlassOverlay_low_iron_clear_Floor_Module_floor_FrontGlazing_Glass.002",
+        "MAT_GlassOverlay_low_iron_clear_Floor_Module_floor_LeftGlazing_Glass.002",
+        "MAT_GlassOverlay_low_iron_clear_Floor_Module_floor_RearGlazing_Glass.002",
+        "MAT_GlassOverlay_low_iron_clear_Floor_Module_floor_RightGlazing_Glass.002",
+        "MAT_GlazingFrame_low_iron_clear.004",
+        "MAT_GlazingInterior_low_iron_clear_00.004",
+        "MAT_GlazingInterior_low_iron_clear_01.004",
+        "MAT_GlazingInterior_low_iron_clear_02.004",
+        "MAT_GlazingInterior_low_iron_clear_03.004",
+        "MAT_GlazingInterior_low_iron_clear_04.004",
+        "MAT_GlazingInterior_low_iron_clear_05.004",
+        "MAT_Sheet_Near_Floor",
+        "MAT_Sheet_Near_Floor_Module_floor_FrontGlazing_Near.002",
+        "MAT_Sheet_Near_Floor_Module_floor_LeftGlazing_Near.002",
+        "MAT_Sheet_Near_Floor_Module_floor_RearGlazing_Near.002",
+        "MAT_Sheet_Near_Floor_Module_floor_RightGlazing_Near.002",
+        "MAT_Sheet_Wrapped_Floor_Left.002",
+        "MAT_Sheet_Wrapped_Floor_Rear.002",
+        "MAT_Sheet_Wrapped_Floor_Right.002"
+      ],
+      "size_bytes": 7398200
+    },
+    {
+      "file": "egyptian-revival-theater-v91_crown_crown.glb",
+      "status": "ok",
+      "triangles": 68328,
+      "extent_m": {
+        "width_x": 23.977,
+        "height_y": 6.026,
+        "depth_z": 34.027
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_GlassOverlay_low_iron_clear_Crown_Module_crown_FrontGlazing_Glass",
+        "MAT_GlassOverlay_low_iron_clear_Crown_Module_crown_LeftGlazing_Glass",
+        "MAT_GlassOverlay_low_iron_clear_Crown_Module_crown_RearGlazing_Glass",
+        "MAT_GlassOverlay_low_iron_clear_Crown_Module_crown_RightGlazing_Glass",
+        "MAT_GlazingFrame_low_iron_clear.005",
+        "MAT_GlazingInterior_low_iron_clear_00.005",
+        "MAT_GlazingInterior_low_iron_clear_01.005",
+        "MAT_GlazingInterior_low_iron_clear_02.005",
+        "MAT_GlazingInterior_low_iron_clear_03.005",
+        "MAT_GlazingInterior_low_iron_clear_04.005",
+        "MAT_GlazingInterior_low_iron_clear_05.005",
+        "MAT_GlazingInterior_low_iron_clear_06.005",
+        "MAT_Sheet_Near_Crown",
+        "MAT_Sheet_Near_Crown_Module_crown_FrontGlazing_Near",
+        "MAT_Sheet_Near_Crown_Module_crown_LeftGlazing_Near",
+        "MAT_Sheet_Near_Crown_Module_crown_RearGlazing_Near",
+        "MAT_Sheet_Near_Crown_Module_crown_RightGlazing_Near",
+        "MAT_Sheet_Wrapped_Crown_Left",
+        "MAT_Sheet_Wrapped_Crown_Rear",
+        "MAT_Sheet_Wrapped_Crown_Right"
+      ],
+      "size_bytes": 8945468
+    },
+    {
+      "file": "egyptian-revival-theater-v91_roof.glb",
+      "status": "ok",
+      "triangles": 2528,
+      "extent_m": {
+        "width_x": 24.08,
+        "height_y": 1.15,
+        "depth_z": 34.08
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Glass",
+        "MAT_Roof"
+      ],
+      "size_bytes": 5084672
+    },
+    {
+      "file": "egyptian-revival-theater-v91_assembled.glb",
+      "status": "ok",
+      "triangles": 7320,
+      "extent_m": {
+        "width_x": 24.2,
+        "height_y": 18.3,
+        "depth_z": 37.307
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_Glass",
+        "MAT_Interior_Shadow",
+        "MAT_Roof_theater_main_roof_sticker",
+        "MAT_Roof_theater_stage_roof_sticker",
+        "MAT_Sheet_Far_FullElevation_theater_front_sticker",
+        "MAT_Sheet_Far_FullElevation_theater_left_sticker",
+        "MAT_Sheet_Far_FullElevation_theater_rear_sticker",
+        "MAT_Sheet_Far_FullElevation_theater_right_sticker",
+        "MAT_Signature_DarkOakDoor"
+      ],
+      "size_bytes": 16665408,
+      "role": "assembled"
+    }
+  ]
+}

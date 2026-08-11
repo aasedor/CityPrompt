@@ -1,0 +1,96 @@
+{
+  "schema": "surface-story-recipes@1",
+  "round_id": "THREE-ALL-SURFACE-STICKERS-V91",
+  "recipes": [
+    {
+      "output_key": "v91_med_villa_tuscan_primary",
+      "source_key": "stucco",
+      "tint": "#c99352",
+      "tint_mix": 0.44,
+      "macro_strength": 0.06,
+      "roughness_strength": 0.09,
+      "normal_strength": 1.85,
+      "role": "ochre lime plaster wall fields"
+    },
+    {
+      "output_key": "v91_med_villa_tuscan_secondary",
+      "source_key": "sandstone",
+      "tint": "#9b8468",
+      "tint_mix": 0.44,
+      "macro_strength": 0.06,
+      "roughness_strength": 0.09,
+      "normal_strength": 1.85,
+      "role": "rough stone arcade, quoins and reveals"
+    },
+    {
+      "output_key": "v91_med_villa_tuscan_roof",
+      "source_key": "terracotta",
+      "tint": "#8b5136",
+      "tint_mix": 0.44,
+      "macro_strength": 0.06,
+      "roughness_strength": 0.09,
+      "normal_strength": 1.85,
+      "role": "weathered overlapping terracotta pantiles"
+    },
+    {
+      "output_key": "v91_deco_theater_egyptian_revival_primary",
+      "source_key": "sandstone",
+      "tint": "#c78d52",
+      "tint_mix": 0.44,
+      "macro_strength": 0.06,
+      "roughness_strength": 0.09,
+      "normal_strength": 1.85,
+      "role": "warm buff stucco and battered pylon fields"
+    },
+    {
+      "output_key": "v91_deco_theater_egyptian_revival_secondary",
+      "source_key": "copper",
+      "tint": "#3d9d93",
+      "tint_mix": 0.44,
+      "macro_strength": 0.06,
+      "roughness_strength": 0.09,
+      "normal_strength": 1.85,
+      "role": "turquoise Egyptian cornices, capitals and trim"
+    },
+    {
+      "output_key": "v91_deco_theater_egyptian_revival_roof",
+      "source_key": "roof_membrane",
+      "tint": "#6d675d",
+      "tint_mix": 0.44,
+      "macro_strength": 0.06,
+      "roughness_strength": 0.09,
+      "normal_strength": 1.85,
+      "role": "weathered flat membrane roofs and parapets"
+    },
+    {
+      "output_key": "v91_grand-magasin-belle-epoque_primary",
+      "source_key": "limestone",
+      "tint": "#d2c3a6",
+      "tint_mix": 0.44,
+      "macro_strength": 0.06,
+      "roughness_strength": 0.09,
+      "normal_strength": 2.6,
+      "role": "pale limestone piers, cornices and upper wall fields"
+    },
+    {
+      "output_key": "v91_grand-magasin-belle-epoque_secondary",
+      "source_key": "black_metal",
+      "tint": "#4c4437",
+      "tint_mix": 0.44,
+      "macro_strength": 0.06,
+      "roughness_strength": 0.09,
+      "normal_strength": 1.85,
+      "role": "dark iron glazing frames, gilded rails and entrance canopy"
+    },
+    {
+      "output_key": "v91_grand-magasin-belle-epoque_roof",
+      "source_key": "zinc",
+      "tint": "#889194",
+      "tint_mix": 0.44,
+      "macro_strength": 0.06,
+      "roughness_strength": 0.09,
+      "normal_strength": 1.85,
+      "role": "standing-seam zinc wings, dome ribs and flashing"
+    }
+  ]
+}

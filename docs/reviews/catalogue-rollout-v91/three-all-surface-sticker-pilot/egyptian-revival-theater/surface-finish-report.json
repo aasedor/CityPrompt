@@ -1,0 +1,91 @@
+{
+  "schema": "surface-finish-quality@2",
+  "status": "pass",
+  "required_materials": [
+    "primary",
+    "secondary",
+    "roof"
+  ],
+  "render_parity": {
+    "scope": "alpha_masked_building_foreground",
+    "foreground_pixel_count": 564194,
+    "silhouette_iou": 1.0,
+    "mean_absolute_error": 0.00704,
+    "p95_absolute_error": 0.04706,
+    "similarity": 0.99296,
+    "passed": true
+  },
+  "failures": [],
+  "checks": [
+    {
+      "id": "story_manifest:primary",
+      "passed": true,
+      "detail": "primary resolves to 'v91_deco_theater_egyptian_revival_primary'"
+    },
+    {
+      "id": "surface_variation:primary",
+      "passed": true,
+      "detail": {
+        "albedo_std": 37.848,
+        "roughness_std": 31.262,
+        "normal_xy_std": 3.909
+      }
+    },
+    {
+      "id": "glb_pbr_channels:primary",
+      "passed": true,
+      "detail": "exported material 'MAT_Facade_Primary'"
+    },
+    {
+      "id": "story_manifest:secondary",
+      "passed": true,
+      "detail": "secondary resolves to 'v91_deco_theater_egyptian_revival_secondary'"
+    },
+    {
+      "id": "surface_variation:secondary",
+      "passed": true,
+      "detail": {
+        "albedo_std": 14.49,
+        "roughness_std": 34.006,
+        "normal_xy_std": 4.954
+      }
+    },
+    {
+      "id": "glb_pbr_channels:secondary",
+      "passed": true,
+      "detail": "exported material 'MAT_Facade_Secondary'"
+    },
+    {
+      "id": "story_manifest:roof",
+      "passed": true,
+      "detail": "roof resolves to 'v91_deco_theater_egyptian_revival_roof'"
+    },
+    {
+      "id": "surface_variation:roof",
+      "passed": true,
+      "detail": {
+        "albedo_std": 28.276,
+        "roughness_std": 23.697,
+        "normal_xy_std": 12.12
+      }
+    },
+    {
+      "id": "glb_pbr_channels:roof",
+      "passed": true,
+      "detail": "exported material 'MAT_Roof_theater_stage_roof_sticker'"
+    },
+    {
+      "id": "neutral_glb_roundtrip_parity",
+      "passed": true,
+      "detail": {
+        "scope": "alpha_masked_building_foreground",
+        "foreground_pixel_count": 564194,
+        "silhouette_iou": 1.0,
+        "mean_absolute_error": 0.00704,
+        "p95_absolute_error": 0.04706,
+        "similarity": 0.99296,
+        "passed": true
+      }
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-08-10-continuous-sticker-glazing-v90",
+  "memory_version": "2026-08-11-all-surface-sticker-v91",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "calibration_set": {
@@ -34,6 +34,10 @@
     {
       "id": "sticker_generation_follows_complete_silhouette_approval",
       "rule": "Before generating a landmark sticker, approve a source-traced roof and silhouette proxy plus an all-elevation occupancy map. Blank visible sides or rears, generic roof boxes, duplicated physical/sticker gables and unregistered porches or balconies are pre-render hard stops. Camera-match final review views; source-to-GLB parity measures export fidelity, not archetype likeness."
+    },
+    {
+      "id": "all_exposed_landmark_surfaces_have_registered_owners",
+      "rule": "A fixed Sticker Method landmark must declare one registered owner for every exposed exterior wall, chamfer, courtyard wall and roof weathering field. Crop isolation backgrounds before registration, align entrance-block outer faces to the facade plane, and replace only roof albedo so the approved PBR normal and roughness survive. Blank fields, pale crop borders and independently scaled roof stickers are pre-release failures."
     },
     {
       "id": "alpha_textures_export_losslessly",
@@ -986,6 +990,11 @@
       "symptom": "A beautiful front sticker is attached to a generic roof box with blank side and rear elevations",
       "cause": "Sticker generation began before a source-matched whole-building silhouette, roof proxy and elevation-occupancy contract had passed, so the detailed front concealed incomplete architectural massing until final review.",
       "correction": "Gate sticker generation behind an approved clay roof/silhouette proxy and all-elevation opening map derived from street, oblique and aerial evidence. Reject doubled gables, blank visible elevations and unregistered overlays before paid image generation; camera-match the final architect board independently from export-parity tests."
+    },
+    {
+      "symptom": "A whole-building sticker pilot shows white borders, flat roof colour or an entrance volume projecting in front of its photographed opening",
+      "cause": "The image isolation background was registered as part of the wall, the roof sticker replaced the complete PBR material instead of only its albedo, or the depth-bearing opening block was centred without aligning its outer face to the facade plane.",
+      "correction": "Preserve the generated master, derive a render-ready edge-to-edge occupied crop, register roof imagery in one declared plan frame while retaining construction-role normal and roughness, and calculate opening-block centre from facade plane plus half depth. Compare front, rear-corner and roof-audit views before release."
     }
   ]
 }

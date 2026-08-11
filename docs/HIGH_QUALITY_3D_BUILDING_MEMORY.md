@@ -1091,6 +1091,31 @@ centres, mullions or extents do not exactly match the photographed openings.
   source-to-GLB parity verifies export fidelity, not architectural likeness,
   and must never be presented as an archetype-similarity score.
 
+### V91 all-surface sticker registration lesson
+
+The three-building pilot extended the Sticker Method from a convincing front
+elevation to a complete fixed landmark. The front image cannot conceal generic
+sides, a flat roof or misaligned entrance construction when users can orbit the
+asset.
+
+- Give every exposed wall, chamfer, courtyard wall and roof weathering field one
+  explicit registered image owner. Blank sides, inherited sibling skins and
+  colour-only roof faces are hard stops.
+- Preserve generated masters, but derive edge-to-edge render-ready crops that
+  remove pale isolation backgrounds. A border included in the UV field becomes
+  a highly visible white seam after projection.
+- Treat the roof sticker as registered albedo over a construction-role-correct
+  PBR roof. Keep the baked normal and roughness so tiles, zinc seams and membrane
+  wear retain physical response; use one declared plan frame across related
+  roof fields and domes.
+- Align the outer face of a recessed opening block with the facade plane. Its
+  centre therefore depends on half its tunnel depth; centring it on the wall
+  plane makes the entrance protrude and breaks sticker-to-void registration.
+- Review the exact street, oblique and aerial references beside front-corner,
+  rear-corner and roof-audit renders. All-surface coverage is a machine gate,
+  while seams, silhouette and architectural faithfulness remain named-architect
+  decisions.
+
 ## Updating this memory
 
 When a pilot reveals a reusable lesson:

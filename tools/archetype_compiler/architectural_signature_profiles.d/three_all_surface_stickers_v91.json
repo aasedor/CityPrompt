@@ -1,0 +1,2146 @@
+{
+  "schema": "architectural-signatures@1",
+  "profiles": {
+    "med_villa_tuscan": {
+      "identity": "three-storey Tuscan farmhouse with ochre plaster, stone quoins, a true three-bay loggia and one broad terracotta hip roof",
+      "dimension_overrides": {
+        "width_m": 14.0,
+        "depth_m": 10.0,
+        "default_floors": 3
+      },
+      "material_overrides": {
+        "primary": {
+          "texture_key": "v91_med_villa_tuscan_primary",
+          "base_color": "#c99352",
+          "roughness": 0.86,
+          "metallic": 0.0,
+          "baked_pbr": true,
+          "texture_tile_metres": 4.0,
+          "normal_strength": 0.72
+        },
+        "secondary": {
+          "texture_key": "v91_med_villa_tuscan_secondary",
+          "base_color": "#9b8468",
+          "roughness": 0.86,
+          "metallic": 0.0,
+          "baked_pbr": true,
+          "texture_tile_metres": 4.0,
+          "normal_strength": 0.72
+        },
+        "roof": {
+          "texture_key": "v91_med_villa_tuscan_roof",
+          "base_color": "#8b5136",
+          "roughness": 0.82,
+          "metallic": 0.0,
+          "baked_pbr": true,
+          "texture_tile_metres": 5.5,
+          "normal_strength": 0.72
+        }
+      },
+      "evidence_policy": {
+        "authority": "reference_images",
+        "metadata_mode": "disabled",
+        "selected_metadata": [],
+        "ignored_metadata": [
+          {
+            "path": "*",
+            "reason": "the exact three-view reference set and cited architectural sources are the complete construction authority"
+          }
+        ]
+      },
+      "production_contract": {
+        "identity_mode": "massing_graph",
+        "fixed_identity": [
+          "three cavernous round-arch loggia openings with stone piers and a recessed occupied back wall",
+          "ochre lime plaster and rough pale-stone corner quoins",
+          "restrained shuttered window grid on all four elevations",
+          "single low-pitched weathered terracotta hip roof with deep eaves"
+        ],
+        "repeatable_capacity": [
+          "fixed select-and-place villa; no floor, width or roof mutation"
+        ],
+        "quality_contract_version": 5,
+        "image_lock": {
+          "required_reference_roles": [
+            "street_identity",
+            "oblique_massing",
+            "roof_plan"
+          ],
+          "minimum_measurements": 8,
+          "measurements": [
+            {
+              "feature": "frontage width",
+              "role": "street_identity",
+              "value": 14.0,
+              "unit": "metres",
+              "drives": "tuscan_front_sticker"
+            },
+            {
+              "feature": "wall height",
+              "role": "street_identity",
+              "value": 9.6,
+              "unit": "metres",
+              "drives": "tuscan_rear_body"
+            },
+            {
+              "feature": "loggia count",
+              "role": "street_identity",
+              "value": 3.0,
+              "unit": "metres",
+              "drives": "tuscan_loggia"
+            },
+            {
+              "feature": "loggia depth",
+              "role": "oblique_massing",
+              "value": 3.0,
+              "unit": "metres",
+              "drives": "tuscan_loggia"
+            },
+            {
+              "feature": "loggia clear width",
+              "role": "street_identity",
+              "value": 3.35,
+              "unit": "metres",
+              "drives": "tuscan_loggia"
+            },
+            {
+              "feature": "roof rise",
+              "role": "roof_plan",
+              "value": 2.65,
+              "unit": "metres",
+              "drives": "tuscan_roof_sticker"
+            },
+            {
+              "feature": "roof width",
+              "role": "roof_plan",
+              "value": 14.7,
+              "unit": "metres",
+              "drives": "tuscan_roof_sticker"
+            },
+            {
+              "feature": "roof depth",
+              "role": "roof_plan",
+              "value": 10.7,
+              "unit": "metres",
+              "drives": "tuscan_roof_sticker"
+            }
+          ],
+          "required_node_ids": [
+            "tuscan_rear_body",
+            "tuscan_front_upper",
+            "tuscan_loggia",
+            "tuscan_left_quoin",
+            "tuscan_right_quoin"
+          ],
+          "required_assembly_ids": [
+            "tuscan_front_sticker",
+            "tuscan_rear_sticker",
+            "tuscan_left_sticker",
+            "tuscan_right_sticker",
+            "tuscan_roof_sticker"
+          ],
+          "required_node_kinds": {
+            "box": 4,
+            "opening_block": 1
+          },
+          "required_assembly_kinds": {
+            "facade_skin": 4,
+            "roof_skin": 1
+          }
+        },
+        "material_continuity": {
+          "required_textured_materials": [
+            "primary",
+            "secondary",
+            "roof"
+          ]
+        },
+        "surface_finish": {
+          "method": "baked_pbr_story",
+          "required_baked_materials": [
+            "primary",
+            "secondary",
+            "roof"
+          ],
+          "material_roles": {
+            "primary": "ochre lime plaster wall fields",
+            "secondary": "rough stone arcade, quoins and reveals",
+            "roof": "weathered overlapping terracotta pantiles"
+          },
+          "required_channels": [
+            "albedo",
+            "roughness",
+            "normal"
+          ],
+          "uv_contract": {
+            "projection": "metric_box_plus_material_scale",
+            "base_tile_metres": 2.0,
+            "minimum_tile_metres": 3.0,
+            "maximum_tile_metres": 8.0
+          },
+          "semantic_weathering": [
+            "wall variation remains bounded to the authored wall materials",
+            "roof variation remains on horizontal or pitched roof fields",
+            "glazing keeps physical pane, reveal and occupied-interior depth"
+          ],
+          "qa_renders": [
+            "neutral_source",
+            "neutral_glb_roundtrip",
+            "archetype_match",
+            "facade_close",
+            "roof_audit",
+            "rear_corner_oblique"
+          ]
+        },
+        "stage_workflow": {
+          "representation": "all_surface_registered_sticker_landmark",
+          "required_stages": {
+            "reference_sufficiency": {
+              "deliverable": "reference-sufficiency.json",
+              "approval_required": true
+            },
+            "representation_selection": {
+              "deliverable": "representation-selection.json",
+              "approval_required": true
+            },
+            "clay_massing": {
+              "deliverable": "clay-comparison.png",
+              "approval_required": true
+            },
+            "roof_and_voids": {
+              "deliverable": "roof-void-comparison.png",
+              "approval_required": true
+            },
+            "medium_detail": {
+              "deliverable": "medium-detail-comparison.png",
+              "approval_required": true
+            },
+            "retopology": {
+              "deliverable": "mesh-audit.json",
+              "approval_required": true
+            },
+            "manual_uv_audit": {
+              "deliverable": "uv-audit.json",
+              "approval_required": true
+            },
+            "material_bake": {
+              "deliverable": "surface-finish-report.json",
+              "approval_required": true
+            },
+            "export_parity": {
+              "deliverable": "neutral-source-vs-glb.png",
+              "approval_required": true
+            },
+            "architect_review": {
+              "deliverable": "architect-review.json",
+              "approval_required": true
+            }
+          },
+          "architect_review_views": [
+            "street",
+            "oblique",
+            "roof",
+            "side",
+            "rear",
+            "close_up"
+          ],
+          "architect_release_score": 85,
+          "hard_stops_block_release": true
+        },
+        "geometry_kit_exclusions": [],
+        "placement_contract": {
+          "method": "sticker_method",
+          "mode": "fixed_landmark",
+          "ui_interaction": "select_and_place",
+          "polygon_fit": false,
+          "footprint_m": {
+            "width": 14.0,
+            "depth": 10.0
+          },
+          "visible_height_m": 12.2,
+          "translation": "allowed",
+          "rotation": "allowed",
+          "uniform_scale": "discouraged",
+          "non_uniform_scale": "forbidden",
+          "floor_count_change": "forbidden",
+          "freestanding_elevations": "authored",
+          "lego_compatibility": "fixed landmark with registered stickers on every exposed wall and roof surface"
+        },
+        "sticker_method": {
+          "surface_owner": "unique registered sticker on every exposed exterior wall, chamfer, court wall and roof field",
+          "geometry_owner": "source-approved silhouette, void sections, projections, roof section and aligned medium detail",
+          "duplicate_feature_ownership_forbidden": true,
+          "registration_anchors": [
+            "window_centres",
+            "column_centres",
+            "floor_datums",
+            "roof_spring_line",
+            "plan_bounds"
+          ],
+          "all_surface_coverage": {
+            "status": "required",
+            "facade_skin_ids": [
+              "tuscan_front_sticker",
+              "tuscan_rear_sticker",
+              "tuscan_left_sticker",
+              "tuscan_right_sticker"
+            ],
+            "roof_skin_ids": [
+              "tuscan_roof_sticker"
+            ],
+            "unskinned_exposed_wall_fields_allowed": false,
+            "unskinned_roof_fields_allowed": false
+          },
+          "pre_sticker_massing_gate": {
+            "silhouette_traced_from": [
+              "street_identity",
+              "oblique_massing",
+              "roof_plan"
+            ],
+            "all_elevation_occupancy_map": "required",
+            "blank_side_or_rear": "hard_stop",
+            "generic_roof_substitution": "hard_stop",
+            "status": "pass_for_bounded_pilot"
+          }
+        }
+      },
+      "massing_graph": {
+        "schema": "massing-graph@1",
+        "profile": "med_villa_tuscan_all_surface_sticker_v91",
+        "description": "three-storey Tuscan farmhouse with ochre plaster, stone quoins, a true three-bay loggia and one broad terracotta hip roof",
+        "height_m": 12.2,
+        "reference_dimensions": {
+          "width_m": 14.0,
+          "depth_m": 10.0,
+          "floors": 3
+        },
+        "reference_views": [
+          {
+            "role": "street_identity",
+            "path": "/archetypes/buildings/mediterranean_villa_estate/variant_0.png"
+          },
+          {
+            "role": "oblique_massing",
+            "path": "/archetypes/buildings/mediterranean_villa_estate/variant_0_angle_60.jpg"
+          },
+          {
+            "role": "roof_plan",
+            "path": "/archetypes/buildings/mediterranean_villa_estate/variant_0_angle_90.jpg"
+          }
+        ],
+        "presentation_camera": {
+          "hero_side": "left",
+          "oblique_x_scale": 0.72,
+          "identity_distance_scale": 0.9,
+          "street_distance_scale": 0.92
+        },
+        "nodes": [
+          {
+            "id": "tuscan_rear_body",
+            "kind": "box",
+            "size": [
+              14.0,
+              7.0,
+              9.6
+            ],
+            "location": [
+              0.0,
+              1.5,
+              4.8
+            ],
+            "material": "primary",
+            "bevel_m": 0.05
+          },
+          {
+            "id": "tuscan_front_upper",
+            "kind": "box",
+            "size": [
+              14.0,
+              3.0,
+              6.2
+            ],
+            "location": [
+              0.0,
+              -3.5,
+              6.5
+            ],
+            "material": "primary",
+            "bevel_m": 0.05
+          },
+          {
+            "id": "tuscan_loggia",
+            "kind": "opening_block",
+            "axis": "front",
+            "size": [
+              14.0,
+              3.0,
+              3.4
+            ],
+            "location": [
+              0.0,
+              -3.5,
+              1.7
+            ],
+            "opening_shape": "round_arch",
+            "opening_count": 3,
+            "opening_centres_m": [
+              -4.35,
+              0.0,
+              4.35
+            ],
+            "opening_width_m": 3.35,
+            "opening_base_m": 0.0,
+            "opening_height_m": 3.2,
+            "spring_height_m": 1.58,
+            "arch_segments": 28,
+            "section_mode": "recessed",
+            "material": "secondary",
+            "lining_material": "secondary",
+            "trim_material": "secondary",
+            "trim_profile_m": 0.13,
+            "trim_depth_m": 0.28,
+            "back_material": "interior_warm",
+            "back_frame_material": "signature_door",
+            "lining_setback_m": 0.08,
+            "bevel_m": 0.04
+          },
+          {
+            "id": "tuscan_left_quoin",
+            "kind": "box",
+            "size": [
+              0.48,
+              0.55,
+              9.6
+            ],
+            "location": [
+              -6.82,
+              -4.72,
+              4.8
+            ],
+            "material": "secondary",
+            "bevel_m": 0.04
+          },
+          {
+            "id": "tuscan_right_quoin",
+            "kind": "box",
+            "size": [
+              0.48,
+              0.55,
+              9.6
+            ],
+            "location": [
+              6.82,
+              -4.72,
+              4.8
+            ],
+            "material": "secondary",
+            "bevel_m": 0.04
+          }
+        ],
+        "voids": [],
+        "assemblies": [
+          {
+            "kind": "facade_skin",
+            "id": "tuscan_front_sticker",
+            "axis": "front",
+            "centre": [
+              0.0,
+              -5.035,
+              4.8
+            ],
+            "span_m": 14.0,
+            "height_m": 9.6,
+            "depth_m": 0.045,
+            "band": "elevation",
+            "flip_u": false,
+            "source_image_path": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\three-all-surface-stickers-v91\\render-ready-stickers\\med_villa_tuscan\\front.png",
+            "surface_role": "front",
+            "opening_clearances": [
+              {
+                "void_id": "tuscan_loggia",
+                "centre_m": -4.35,
+                "width_m": 3.35,
+                "base_z_m": 0.0,
+                "height_m": 3.2,
+                "spring_z_m": 1.58,
+                "shape": "round_arch",
+                "arch_segments": 28
+              },
+              {
+                "void_id": "tuscan_loggia",
+                "centre_m": 0.0,
+                "width_m": 3.35,
+                "base_z_m": 0.0,
+                "height_m": 3.2,
+                "spring_z_m": 1.58,
+                "shape": "round_arch",
+                "arch_segments": 28
+              },
+              {
+                "void_id": "tuscan_loggia",
+                "centre_m": 4.35,
+                "width_m": 3.35,
+                "base_z_m": 0.0,
+                "height_m": 3.2,
+                "spring_z_m": 1.58,
+                "shape": "round_arch",
+                "arch_segments": 28
+              }
+            ]
+          },
+          {
+            "kind": "facade_skin",
+            "id": "tuscan_rear_sticker",
+            "axis": "rear",
+            "centre": [
+              0.0,
+              5.035,
+              4.8
+            ],
+            "span_m": 14.0,
+            "height_m": 9.6,
+            "depth_m": 0.045,
+            "band": "elevation",
+            "flip_u": true,
+            "source_image_path": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\three-all-surface-stickers-v91\\render-ready-stickers\\med_villa_tuscan\\rear.png",
+            "surface_role": "rear"
+          },
+          {
+            "kind": "facade_skin",
+            "id": "tuscan_left_sticker",
+            "axis": "left",
+            "centre": [
+              -7.035,
+              0.0,
+              4.8
+            ],
+            "span_m": 10.0,
+            "height_m": 9.6,
+            "depth_m": 0.045,
+            "band": "elevation",
+            "flip_u": true,
+            "source_image_path": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\three-all-surface-stickers-v91\\render-ready-stickers\\med_villa_tuscan\\left.png",
+            "surface_role": "left"
+          },
+          {
+            "kind": "facade_skin",
+            "id": "tuscan_right_sticker",
+            "axis": "right",
+            "centre": [
+              7.035,
+              0.0,
+              4.8
+            ],
+            "span_m": 10.0,
+            "height_m": 9.6,
+            "depth_m": 0.045,
+            "band": "elevation",
+            "flip_u": false,
+            "source_image_path": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\three-all-surface-stickers-v91\\render-ready-stickers\\med_villa_tuscan\\right.png",
+            "surface_role": "right"
+          },
+          {
+            "kind": "roof_skin",
+            "id": "tuscan_roof_sticker",
+            "shape": "hipped",
+            "size": [
+              14.7,
+              10.7,
+              2.65
+            ],
+            "location": [
+              0.0,
+              0.0,
+              9.55
+            ],
+            "band": "elevation",
+            "source_image_path": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\three-all-surface-stickers-v91\\render-ready-stickers\\med_villa_tuscan\\roof.png",
+            "surface_role": "roof",
+            "plan_bounds": [
+              -7.35,
+              7.35,
+              -5.35,
+              5.35
+            ],
+            "ridge_axis": "x",
+            "ridge_inset_m": 3.8
+          }
+        ],
+        "target_views": [
+          "archetype_match",
+          "street",
+          "front_corner_oblique",
+          "rear_corner_oblique",
+          "facade_close",
+          "roof_audit",
+          "aerial",
+          "context"
+        ]
+      }
+    },
+    "deco_theater_egyptian_revival": {
+      "identity": "Egyptian Revival movie palace with battered pylon front, lotus columns, deep triple-door vestibule, marquee and stepped flat auditorium roofs",
+      "dimension_overrides": {
+        "width_m": 24.0,
+        "depth_m": 34.0,
+        "default_floors": 3
+      },
+      "material_overrides": {
+        "primary": {
+          "texture_key": "v91_deco_theater_egyptian_revival_primary",
+          "base_color": "#c78d52",
+          "roughness": 0.86,
+          "metallic": 0.0,
+          "baked_pbr": true,
+          "texture_tile_metres": 4.0,
+          "normal_strength": 0.72
+        },
+        "secondary": {
+          "texture_key": "v91_deco_theater_egyptian_revival_secondary",
+          "base_color": "#3d9d93",
+          "roughness": 0.86,
+          "metallic": 0.0,
+          "baked_pbr": true,
+          "texture_tile_metres": 4.0,
+          "normal_strength": 0.72
+        },
+        "roof": {
+          "texture_key": "v91_deco_theater_egyptian_revival_roof",
+          "base_color": "#6d675d",
+          "roughness": 0.82,
+          "metallic": 0.0,
+          "baked_pbr": true,
+          "texture_tile_metres": 5.5,
+          "normal_strength": 0.72
+        }
+      },
+      "evidence_policy": {
+        "authority": "reference_images",
+        "metadata_mode": "disabled",
+        "selected_metadata": [],
+        "ignored_metadata": [
+          {
+            "path": "*",
+            "reason": "the exact three-view reference set and cited architectural sources are the complete construction authority"
+          }
+        ]
+      },
+      "production_contract": {
+        "identity_mode": "massing_graph",
+        "fixed_identity": [
+          "sand-coloured battered pylon facade with winged-sun and turquoise lotus ornament",
+          "four aligned lotus columns framing tall upper windows",
+          "deep three-opening entrance vestibule beneath a projecting marquee",
+          "long brick-and-stucco auditorium sides and stepped stage-house roof"
+        ],
+        "repeatable_capacity": [
+          "fixed select-and-place theater; auditorium length and facade proportions are locked"
+        ],
+        "quality_contract_version": 5,
+        "image_lock": {
+          "required_reference_roles": [
+            "street_identity",
+            "oblique_massing",
+            "roof_plan"
+          ],
+          "minimum_measurements": 8,
+          "measurements": [
+            {
+              "feature": "facade width",
+              "role": "street_identity",
+              "value": 24.0,
+              "unit": "metres",
+              "drives": "theater_front_sticker"
+            },
+            {
+              "feature": "auditorium depth",
+              "role": "roof_plan",
+              "value": 34.0,
+              "unit": "metres",
+              "drives": "theater_auditorium"
+            },
+            {
+              "feature": "front wall height",
+              "role": "street_identity",
+              "value": 14.0,
+              "unit": "metres",
+              "drives": "theater_front_sticker"
+            },
+            {
+              "feature": "stage-house height",
+              "role": "oblique_massing",
+              "value": 18.2,
+              "unit": "metres",
+              "drives": "theater_stage_house"
+            },
+            {
+              "feature": "entrance tunnel depth",
+              "role": "street_identity",
+              "value": 4.0,
+              "unit": "metres",
+              "drives": "theater_entrance_vestibule"
+            },
+            {
+              "feature": "entrance count",
+              "role": "street_identity",
+              "value": 3.0,
+              "unit": "metres",
+              "drives": "theater_entrance_vestibule"
+            },
+            {
+              "feature": "marquee projection",
+              "role": "street_identity",
+              "value": 3.0,
+              "unit": "metres",
+              "drives": "theater_marquee"
+            },
+            {
+              "feature": "stage-house roof depth",
+              "role": "roof_plan",
+              "value": 13.7,
+              "unit": "metres",
+              "drives": "theater_stage_roof_sticker"
+            }
+          ],
+          "required_node_ids": [
+            "theater_auditorium",
+            "theater_front_left_flank",
+            "theater_front_right_flank",
+            "theater_front_upper_bridge",
+            "theater_stage_house",
+            "theater_left_pylon",
+            "theater_right_pylon",
+            "theater_entrance_vestibule",
+            "theater_marquee"
+          ],
+          "required_assembly_ids": [
+            "theater_front_sticker",
+            "theater_rear_sticker",
+            "theater_left_sticker",
+            "theater_right_sticker",
+            "theater_main_roof_sticker",
+            "theater_stage_roof_sticker",
+            "theater_lotus_columns"
+          ],
+          "required_node_kinds": {
+            "box": 8,
+            "opening_block": 1
+          },
+          "required_assembly_kinds": {
+            "facade_skin": 4,
+            "roof_skin": 2,
+            "column_array": 1
+          }
+        },
+        "material_continuity": {
+          "required_textured_materials": [
+            "primary",
+            "secondary",
+            "roof"
+          ]
+        },
+        "surface_finish": {
+          "method": "baked_pbr_story",
+          "required_baked_materials": [
+            "primary",
+            "secondary",
+            "roof"
+          ],
+          "material_roles": {
+            "primary": "warm buff stucco and battered pylon fields",
+            "secondary": "turquoise Egyptian cornices, capitals and trim",
+            "roof": "weathered flat membrane roofs and parapets"
+          },
+          "required_channels": [
+            "albedo",
+            "roughness",
+            "normal"
+          ],
+          "uv_contract": {
+            "projection": "metric_box_plus_material_scale",
+            "base_tile_metres": 2.0,
+            "minimum_tile_metres": 3.0,
+            "maximum_tile_metres": 8.0
+          },
+          "semantic_weathering": [
+            "wall variation remains bounded to the authored wall materials",
+            "roof variation remains on horizontal or pitched roof fields",
+            "glazing keeps physical pane, reveal and occupied-interior depth"
+          ],
+          "qa_renders": [
+            "neutral_source",
+            "neutral_glb_roundtrip",
+            "archetype_match",
+            "facade_close",
+            "roof_audit",
+            "rear_corner_oblique"
+          ]
+        },
+        "stage_workflow": {
+          "representation": "all_surface_registered_sticker_landmark",
+          "required_stages": {
+            "reference_sufficiency": {
+              "deliverable": "reference-sufficiency.json",
+              "approval_required": true
+            },
+            "representation_selection": {
+              "deliverable": "representation-selection.json",
+              "approval_required": true
+            },
+            "clay_massing": {
+              "deliverable": "clay-comparison.png",
+              "approval_required": true
+            },
+            "roof_and_voids": {
+              "deliverable": "roof-void-comparison.png",
+              "approval_required": true
+            },
+            "medium_detail": {
+              "deliverable": "medium-detail-comparison.png",
+              "approval_required": true
+            },
+            "retopology": {
+              "deliverable": "mesh-audit.json",
+              "approval_required": true
+            },
+            "manual_uv_audit": {
+              "deliverable": "uv-audit.json",
+              "approval_required": true
+            },
+            "material_bake": {
+              "deliverable": "surface-finish-report.json",
+              "approval_required": true
+            },
+            "export_parity": {
+              "deliverable": "neutral-source-vs-glb.png",
+              "approval_required": true
+            },
+            "architect_review": {
+              "deliverable": "architect-review.json",
+              "approval_required": true
+            }
+          },
+          "architect_review_views": [
+            "street",
+            "oblique",
+            "roof",
+            "side",
+            "rear",
+            "close_up"
+          ],
+          "architect_release_score": 85,
+          "hard_stops_block_release": true
+        },
+        "geometry_kit_exclusions": [],
+        "placement_contract": {
+          "method": "sticker_method",
+          "mode": "fixed_landmark",
+          "ui_interaction": "select_and_place",
+          "polygon_fit": false,
+          "footprint_m": {
+            "width": 24.0,
+            "depth": 34.0
+          },
+          "visible_height_m": 18.200000000000003,
+          "translation": "allowed",
+          "rotation": "allowed",
+          "uniform_scale": "discouraged",
+          "non_uniform_scale": "forbidden",
+          "floor_count_change": "forbidden",
+          "freestanding_elevations": "authored",
+          "lego_compatibility": "fixed landmark with registered stickers on every exposed wall and roof surface"
+        },
+        "sticker_method": {
+          "surface_owner": "unique registered sticker on every exposed exterior wall, chamfer, court wall and roof field",
+          "geometry_owner": "source-approved silhouette, void sections, projections, roof section and aligned medium detail",
+          "duplicate_feature_ownership_forbidden": true,
+          "registration_anchors": [
+            "window_centres",
+            "column_centres",
+            "floor_datums",
+            "roof_spring_line",
+            "plan_bounds"
+          ],
+          "all_surface_coverage": {
+            "status": "required",
+            "facade_skin_ids": [
+              "theater_front_sticker",
+              "theater_rear_sticker",
+              "theater_left_sticker",
+              "theater_right_sticker"
+            ],
+            "roof_skin_ids": [
+              "theater_main_roof_sticker",
+              "theater_stage_roof_sticker"
+            ],
+            "unskinned_exposed_wall_fields_allowed": false,
+            "unskinned_roof_fields_allowed": false
+          },
+          "pre_sticker_massing_gate": {
+            "silhouette_traced_from": [
+              "street_identity",
+              "oblique_massing",
+              "roof_plan"
+            ],
+            "all_elevation_occupancy_map": "required",
+            "blank_side_or_rear": "hard_stop",
+            "generic_roof_substitution": "hard_stop",
+            "status": "pass_for_bounded_pilot"
+          }
+        }
+      },
+      "massing_graph": {
+        "schema": "massing-graph@1",
+        "profile": "deco_theater_egyptian_revival_all_surface_sticker_v91",
+        "description": "Egyptian Revival movie palace with battered pylon front, lotus columns, deep triple-door vestibule, marquee and stepped flat auditorium roofs",
+        "height_m": 18.200000000000003,
+        "reference_dimensions": {
+          "width_m": 24.0,
+          "depth_m": 34.0,
+          "floors": 3
+        },
+        "reference_views": [
+          {
+            "role": "street_identity",
+            "path": "/archetypes/buildings/deco_theater_mainstreet/variant_2.png"
+          },
+          {
+            "role": "oblique_massing",
+            "path": "/archetypes/buildings/deco_theater_mainstreet/variant_2_angle_60.jpg"
+          },
+          {
+            "role": "roof_plan",
+            "path": "/archetypes/buildings/deco_theater_mainstreet/variant_2_angle_90.jpg"
+          }
+        ],
+        "presentation_camera": {
+          "hero_side": "left",
+          "oblique_x_scale": 0.76,
+          "identity_distance_scale": 0.93,
+          "street_distance_scale": 0.94
+        },
+        "nodes": [
+          {
+            "id": "theater_auditorium",
+            "kind": "box",
+            "size": [
+              24.0,
+              30.0,
+              14.0
+            ],
+            "location": [
+              0.0,
+              2.0,
+              7.0
+            ],
+            "material": "primary",
+            "bevel_m": 0.08
+          },
+          {
+            "id": "theater_front_left_flank",
+            "kind": "box",
+            "size": [
+              6.5,
+              4.0,
+              14.0
+            ],
+            "location": [
+              -8.75,
+              -15.0,
+              7.0
+            ],
+            "material": "primary",
+            "bevel_m": 0.06
+          },
+          {
+            "id": "theater_front_right_flank",
+            "kind": "box",
+            "size": [
+              6.5,
+              4.0,
+              14.0
+            ],
+            "location": [
+              8.75,
+              -15.0,
+              7.0
+            ],
+            "material": "primary",
+            "bevel_m": 0.06
+          },
+          {
+            "id": "theater_front_upper_bridge",
+            "kind": "box",
+            "size": [
+              11.0,
+              4.0,
+              9.6
+            ],
+            "location": [
+              0.0,
+              -15.0,
+              9.2
+            ],
+            "material": "primary",
+            "bevel_m": 0.06
+          },
+          {
+            "id": "theater_stage_house",
+            "kind": "box",
+            "size": [
+              20.0,
+              13.5,
+              4.2
+            ],
+            "location": [
+              0.0,
+              8.5,
+              16.1
+            ],
+            "material": "primary",
+            "bevel_m": 0.06
+          },
+          {
+            "id": "theater_left_pylon",
+            "kind": "box",
+            "size": [
+              5.2,
+              1.0,
+              2.0
+            ],
+            "location": [
+              -8.7,
+              -17.4,
+              13.0
+            ],
+            "material": "primary",
+            "bevel_m": 0.06
+          },
+          {
+            "id": "theater_right_pylon",
+            "kind": "box",
+            "size": [
+              5.2,
+              1.0,
+              2.0
+            ],
+            "location": [
+              8.7,
+              -17.4,
+              13.0
+            ],
+            "material": "primary",
+            "bevel_m": 0.06
+          },
+          {
+            "id": "theater_entrance_vestibule",
+            "kind": "opening_block",
+            "axis": "front",
+            "size": [
+              11.0,
+              4.0,
+              4.4
+            ],
+            "location": [
+              0.0,
+              -15.0,
+              2.2
+            ],
+            "opening_shape": "rectangular",
+            "opening_count": 3,
+            "opening_centres_m": [
+              -3.4,
+              0.0,
+              3.4
+            ],
+            "opening_width_m": 2.35,
+            "opening_base_m": 0.0,
+            "opening_height_m": 3.85,
+            "section_mode": "recessed",
+            "material": "primary",
+            "lining_material": "secondary",
+            "trim_material": "secondary",
+            "trim_profile_m": 0.12,
+            "trim_depth_m": 0.26,
+            "back_material": "interior",
+            "back_glass_material": "glass",
+            "back_frame_material": "signature_door",
+            "lining_setback_m": 0.08,
+            "bevel_m": 0.045
+          },
+          {
+            "id": "theater_marquee",
+            "kind": "box",
+            "size": [
+              13.2,
+              3.0,
+              0.42
+            ],
+            "location": [
+              0.0,
+              -18.25,
+              4.45
+            ],
+            "material": "secondary",
+            "bevel_m": 0.06
+          }
+        ],
+        "voids": [],
+        "assemblies": [
+          {
+            "kind": "facade_skin",
+            "id": "theater_front_sticker",
+            "axis": "front",
+            "centre": [
+              0.0,
+              -17.035,
+              7.0
+            ],
+            "span_m": 24.0,
+            "height_m": 14.0,
+            "depth_m": 0.045,
+            "band": "elevation",
+            "flip_u": false,
+            "source_image_path": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\three-all-surface-stickers-v91\\render-ready-stickers\\deco_theater_egyptian_revival\\front.png",
+            "surface_role": "front",
+            "opening_clearances": [
+              {
+                "void_id": "theater_entrance_vestibule",
+                "centre_m": -3.4,
+                "width_m": 2.35,
+                "base_z_m": 0.0,
+                "height_m": 3.85
+              },
+              {
+                "void_id": "theater_entrance_vestibule",
+                "centre_m": 0.0,
+                "width_m": 2.35,
+                "base_z_m": 0.0,
+                "height_m": 3.85
+              },
+              {
+                "void_id": "theater_entrance_vestibule",
+                "centre_m": 3.4,
+                "width_m": 2.35,
+                "base_z_m": 0.0,
+                "height_m": 3.85
+              }
+            ]
+          },
+          {
+            "kind": "facade_skin",
+            "id": "theater_rear_sticker",
+            "axis": "rear",
+            "centre": [
+              0.0,
+              17.535,
+              7.0
+            ],
+            "span_m": 24.0,
+            "height_m": 14.0,
+            "depth_m": 0.045,
+            "band": "elevation",
+            "flip_u": true,
+            "source_image_path": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\three-all-surface-stickers-v91\\render-ready-stickers\\deco_theater_egyptian_revival\\rear.png",
+            "surface_role": "rear"
+          },
+          {
+            "kind": "facade_skin",
+            "id": "theater_left_sticker",
+            "axis": "left",
+            "centre": [
+              -12.035,
+              0.0,
+              7.0
+            ],
+            "span_m": 34.0,
+            "height_m": 14.0,
+            "depth_m": 0.045,
+            "band": "elevation",
+            "flip_u": true,
+            "source_image_path": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\three-all-surface-stickers-v91\\render-ready-stickers\\deco_theater_egyptian_revival\\left.png",
+            "surface_role": "left"
+          },
+          {
+            "kind": "facade_skin",
+            "id": "theater_right_sticker",
+            "axis": "right",
+            "centre": [
+              12.035,
+              0.0,
+              7.0
+            ],
+            "span_m": 34.0,
+            "height_m": 14.0,
+            "depth_m": 0.045,
+            "band": "elevation",
+            "flip_u": false,
+            "source_image_path": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\three-all-surface-stickers-v91\\render-ready-stickers\\deco_theater_egyptian_revival\\right.png",
+            "surface_role": "right"
+          },
+          {
+            "kind": "roof_skin",
+            "id": "theater_main_roof_sticker",
+            "shape": "flat",
+            "size": [
+              24.2,
+              34.2,
+              0.12
+            ],
+            "location": [
+              0.0,
+              0.0,
+              13.98
+            ],
+            "band": "elevation",
+            "source_image_path": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\three-all-surface-stickers-v91\\render-ready-stickers\\deco_theater_egyptian_revival\\roof.png",
+            "surface_role": "roof",
+            "plan_bounds": [
+              -12.1,
+              12.1,
+              -17.1,
+              17.1
+            ],
+            "thickness_m": 0.12
+          },
+          {
+            "kind": "roof_skin",
+            "id": "theater_stage_roof_sticker",
+            "shape": "flat",
+            "size": [
+              20.2,
+              13.7,
+              0.12
+            ],
+            "location": [
+              0.0,
+              8.5,
+              18.18
+            ],
+            "band": "elevation",
+            "source_image_path": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\three-all-surface-stickers-v91\\render-ready-stickers\\deco_theater_egyptian_revival\\roof.png",
+            "surface_role": "roof",
+            "plan_bounds": [
+              -12.1,
+              12.1,
+              -17.1,
+              17.1
+            ],
+            "thickness_m": 0.12
+          },
+          {
+            "id": "theater_lotus_columns",
+            "kind": "column_array",
+            "start": [
+              -5.8,
+              -17.65,
+              4.55
+            ],
+            "end": [
+              5.8,
+              -17.65,
+              4.55
+            ],
+            "count": 4,
+            "section": [
+              0.48,
+              0.38
+            ],
+            "height_m": 6.6,
+            "material": "secondary"
+          }
+        ],
+        "target_views": [
+          "archetype_match",
+          "street",
+          "front_corner_oblique",
+          "rear_corner_oblique",
+          "facade_close",
+          "roof_audit",
+          "aerial",
+          "context"
+        ]
+      }
+    },
+    "grand-magasin-belle-epoque": {
+      "identity": "Belle Epoque corner department store with eight occupied elevations, iron-and-glass bays, perimeter zinc roofs, a central stained-glass dome and corner cupola",
+      "dimension_overrides": {
+        "width_m": 34.0,
+        "depth_m": 28.0,
+        "default_floors": 5
+      },
+      "material_overrides": {
+        "primary": {
+          "texture_key": "v91_grand-magasin-belle-epoque_primary",
+          "base_color": "#d2c3a6",
+          "roughness": 0.86,
+          "metallic": 0.0,
+          "baked_pbr": true,
+          "texture_tile_metres": 4.0,
+          "normal_strength": 0.72
+        },
+        "secondary": {
+          "texture_key": "v91_grand-magasin-belle-epoque_secondary",
+          "base_color": "#4c4437",
+          "roughness": 0.86,
+          "metallic": 0.0,
+          "baked_pbr": true,
+          "texture_tile_metres": 4.0,
+          "normal_strength": 0.72
+        },
+        "roof": {
+          "texture_key": "v91_grand-magasin-belle-epoque_roof",
+          "base_color": "#889194",
+          "roughness": 0.82,
+          "metallic": 0.0,
+          "baked_pbr": true,
+          "texture_tile_metres": 5.5,
+          "normal_strength": 0.72
+        }
+      },
+      "evidence_policy": {
+        "authority": "reference_images",
+        "metadata_mode": "disabled",
+        "selected_metadata": [],
+        "ignored_metadata": [
+          {
+            "path": "*",
+            "reason": "the exact three-view reference set and cited architectural sources are the complete construction authority"
+          }
+        ]
+      },
+      "production_contract": {
+        "identity_mode": "massing_graph",
+        "fixed_identity": [
+          "eight-sided corner block with continuous limestone and gilded iron glazing on every street face",
+          "large source-positioned stained-glass dome over the interior court",
+          "smaller corner cupola integrated with the chamfered entrance pavilion",
+          "four zinc roof wings surrounding the domed court, with no generic square roof cap"
+        ],
+        "repeatable_capacity": [
+          "fixed select-and-place landmark; all eight street faces and both domes are locked"
+        ],
+        "quality_contract_version": 5,
+        "image_lock": {
+          "required_reference_roles": [
+            "street_identity",
+            "oblique_massing",
+            "roof_plan"
+          ],
+          "minimum_measurements": 8,
+          "measurements": [
+            {
+              "feature": "block width",
+              "role": "roof_plan",
+              "value": 34.0,
+              "unit": "metres",
+              "drives": "grand_magasin_block"
+            },
+            {
+              "feature": "block depth",
+              "role": "roof_plan",
+              "value": 28.0,
+              "unit": "metres",
+              "drives": "grand_magasin_block"
+            },
+            {
+              "feature": "wall height",
+              "role": "street_identity",
+              "value": 20.0,
+              "unit": "metres",
+              "drives": "grand_front_sticker"
+            },
+            {
+              "feature": "corner chamfer",
+              "role": "oblique_massing",
+              "value": 4.5,
+              "unit": "metres",
+              "drives": "grand_magasin_block"
+            },
+            {
+              "feature": "central dome diameter",
+              "role": "roof_plan",
+              "value": 14.0,
+              "unit": "metres",
+              "drives": "grand_central_dome_sticker"
+            },
+            {
+              "feature": "central dome rise",
+              "role": "oblique_massing",
+              "value": 7.0,
+              "unit": "metres",
+              "drives": "grand_central_dome_sticker"
+            },
+            {
+              "feature": "corner dome diameter",
+              "role": "street_identity",
+              "value": 7.0,
+              "unit": "metres",
+              "drives": "grand_corner_dome_sticker"
+            },
+            {
+              "feature": "entrance tunnel depth",
+              "role": "street_identity",
+              "value": 4.2,
+              "unit": "metres",
+              "drives": "grand_magasin_entrance"
+            }
+          ],
+          "required_node_ids": [
+            "grand_magasin_block",
+            "grand_magasin_entrance",
+            "grand_magasin_canopy",
+            "grand_magasin_central_lantern",
+            "grand_magasin_corner_lantern"
+          ],
+          "required_assembly_ids": [
+            "grand_front_sticker",
+            "grand_front_right_sticker",
+            "grand_right_sticker",
+            "grand_rear_right_sticker",
+            "grand_rear_sticker",
+            "grand_rear_left_sticker",
+            "grand_left_sticker",
+            "grand_front_left_sticker",
+            "grand_court_front_sticker",
+            "grand_court_rear_sticker",
+            "grand_court_left_sticker",
+            "grand_court_right_sticker",
+            "grand_front_roof_sticker",
+            "grand_rear_roof_sticker",
+            "grand_left_roof_sticker",
+            "grand_right_roof_sticker",
+            "grand_central_dome_sticker",
+            "grand_corner_dome_sticker"
+          ],
+          "required_node_kinds": {
+            "chamfered_box": 1,
+            "opening_block": 1,
+            "box": 3
+          },
+          "required_assembly_kinds": {
+            "facade_skin": 12,
+            "roof_skin": 6
+          }
+        },
+        "material_continuity": {
+          "required_textured_materials": [
+            "primary",
+            "secondary",
+            "roof"
+          ]
+        },
+        "surface_finish": {
+          "method": "baked_pbr_story",
+          "required_baked_materials": [
+            "primary",
+            "secondary",
+            "roof"
+          ],
+          "material_roles": {
+            "primary": "pale limestone piers, cornices and upper wall fields",
+            "secondary": "dark iron glazing frames, gilded rails and entrance canopy",
+            "roof": "standing-seam zinc wings, dome ribs and flashing"
+          },
+          "required_channels": [
+            "albedo",
+            "roughness",
+            "normal"
+          ],
+          "uv_contract": {
+            "projection": "metric_box_plus_material_scale",
+            "base_tile_metres": 2.0,
+            "minimum_tile_metres": 3.0,
+            "maximum_tile_metres": 8.0
+          },
+          "semantic_weathering": [
+            "wall variation remains bounded to the authored wall materials",
+            "roof variation remains on horizontal or pitched roof fields",
+            "glazing keeps physical pane, reveal and occupied-interior depth"
+          ],
+          "qa_renders": [
+            "neutral_source",
+            "neutral_glb_roundtrip",
+            "archetype_match",
+            "facade_close",
+            "roof_audit",
+            "rear_corner_oblique"
+          ]
+        },
+        "stage_workflow": {
+          "representation": "all_surface_registered_sticker_landmark",
+          "required_stages": {
+            "reference_sufficiency": {
+              "deliverable": "reference-sufficiency.json",
+              "approval_required": true
+            },
+            "representation_selection": {
+              "deliverable": "representation-selection.json",
+              "approval_required": true
+            },
+            "clay_massing": {
+              "deliverable": "clay-comparison.png",
+              "approval_required": true
+            },
+            "roof_and_voids": {
+              "deliverable": "roof-void-comparison.png",
+              "approval_required": true
+            },
+            "medium_detail": {
+              "deliverable": "medium-detail-comparison.png",
+              "approval_required": true
+            },
+            "retopology": {
+              "deliverable": "mesh-audit.json",
+              "approval_required": true
+            },
+            "manual_uv_audit": {
+              "deliverable": "uv-audit.json",
+              "approval_required": true
+            },
+            "material_bake": {
+              "deliverable": "surface-finish-report.json",
+              "approval_required": true
+            },
+            "export_parity": {
+              "deliverable": "neutral-source-vs-glb.png",
+              "approval_required": true
+            },
+            "architect_review": {
+              "deliverable": "architect-review.json",
+              "approval_required": true
+            }
+          },
+          "architect_review_views": [
+            "street",
+            "oblique",
+            "roof",
+            "side",
+            "rear",
+            "close_up"
+          ],
+          "architect_release_score": 85,
+          "hard_stops_block_release": true
+        },
+        "geometry_kit_exclusions": [],
+        "placement_contract": {
+          "method": "sticker_method",
+          "mode": "fixed_landmark",
+          "ui_interaction": "select_and_place",
+          "polygon_fit": false,
+          "footprint_m": {
+            "width": 34.0,
+            "depth": 28.0
+          },
+          "visible_height_m": 28.3,
+          "translation": "allowed",
+          "rotation": "allowed",
+          "uniform_scale": "discouraged",
+          "non_uniform_scale": "forbidden",
+          "floor_count_change": "forbidden",
+          "freestanding_elevations": "authored",
+          "lego_compatibility": "fixed landmark with registered stickers on every exposed wall and roof surface"
+        },
+        "sticker_method": {
+          "surface_owner": "unique registered sticker on every exposed exterior wall, chamfer, court wall and roof field",
+          "geometry_owner": "source-approved silhouette, void sections, projections, roof section and aligned medium detail",
+          "duplicate_feature_ownership_forbidden": true,
+          "registration_anchors": [
+            "window_centres",
+            "column_centres",
+            "floor_datums",
+            "roof_spring_line",
+            "plan_bounds"
+          ],
+          "all_surface_coverage": {
+            "status": "required",
+            "facade_skin_ids": [
+              "grand_front_sticker",
+              "grand_front_right_sticker",
+              "grand_right_sticker",
+              "grand_rear_right_sticker",
+              "grand_rear_sticker",
+              "grand_rear_left_sticker",
+              "grand_left_sticker",
+              "grand_front_left_sticker",
+              "grand_court_front_sticker",
+              "grand_court_rear_sticker",
+              "grand_court_left_sticker",
+              "grand_court_right_sticker"
+            ],
+            "roof_skin_ids": [
+              "grand_front_roof_sticker",
+              "grand_rear_roof_sticker",
+              "grand_left_roof_sticker",
+              "grand_right_roof_sticker",
+              "grand_central_dome_sticker",
+              "grand_corner_dome_sticker"
+            ],
+            "unskinned_exposed_wall_fields_allowed": false,
+            "unskinned_roof_fields_allowed": false
+          },
+          "pre_sticker_massing_gate": {
+            "silhouette_traced_from": [
+              "street_identity",
+              "oblique_massing",
+              "roof_plan"
+            ],
+            "all_elevation_occupancy_map": "required",
+            "blank_side_or_rear": "hard_stop",
+            "generic_roof_substitution": "hard_stop",
+            "status": "pass_for_bounded_pilot"
+          }
+        }
+      },
+      "massing_graph": {
+        "schema": "massing-graph@1",
+        "profile": "grand-magasin-belle-epoque_all_surface_sticker_v91",
+        "description": "Belle Epoque corner department store with eight occupied elevations, iron-and-glass bays, perimeter zinc roofs, a central stained-glass dome and corner cupola",
+        "height_m": 28.3,
+        "reference_dimensions": {
+          "width_m": 34.0,
+          "depth_m": 28.0,
+          "floors": 5
+        },
+        "reference_views": [
+          {
+            "role": "street_identity",
+            "path": "/archetypes/buildings/grand_magasin/variant_0.png"
+          },
+          {
+            "role": "oblique_massing",
+            "path": "/archetypes/buildings/grand_magasin/variant_0_angle_60.jpg"
+          },
+          {
+            "role": "roof_plan",
+            "path": "/archetypes/buildings/grand_magasin/variant_0_angle_90.jpg"
+          }
+        ],
+        "presentation_camera": {
+          "hero_side": "left",
+          "oblique_x_scale": 0.8,
+          "identity_distance_scale": 0.96,
+          "street_distance_scale": 0.96
+        },
+        "nodes": [
+          {
+            "id": "grand_magasin_block",
+            "kind": "chamfered_box",
+            "size": [
+              34.0,
+              28.0,
+              20.0
+            ],
+            "location": [
+              0.0,
+              0.0,
+              10.0
+            ],
+            "material": "primary",
+            "chamfer_m": 4.5,
+            "bevel_m": 0.07
+          },
+          {
+            "id": "grand_magasin_entrance",
+            "kind": "opening_block",
+            "axis": "front",
+            "size": [
+              12.0,
+              4.2,
+              4.8
+            ],
+            "location": [
+              0.0,
+              -11.9,
+              2.4
+            ],
+            "opening_shape": "round_arch",
+            "opening_count": 3,
+            "opening_centres_m": [
+              -3.75,
+              0.0,
+              3.75
+            ],
+            "opening_width_m": 2.7,
+            "opening_base_m": 0.0,
+            "opening_height_m": 4.25,
+            "spring_height_m": 2.85,
+            "arch_segments": 28,
+            "section_mode": "recessed",
+            "material": "primary",
+            "lining_material": "primary",
+            "trim_material": "secondary",
+            "trim_profile_m": 0.13,
+            "trim_depth_m": 0.26,
+            "back_material": "interior",
+            "back_glass_material": "glass",
+            "back_frame_material": "signature_door",
+            "lining_setback_m": 0.08,
+            "bevel_m": 0.045
+          },
+          {
+            "id": "grand_magasin_canopy",
+            "kind": "box",
+            "size": [
+              18.0,
+              3.2,
+              0.34
+            ],
+            "location": [
+              0.0,
+              -15.25,
+              4.75
+            ],
+            "material": "secondary",
+            "bevel_m": 0.05
+          },
+          {
+            "id": "grand_magasin_central_lantern",
+            "kind": "box",
+            "size": [
+              1.8,
+              1.8,
+              1.2
+            ],
+            "location": [
+              0.0,
+              0.0,
+              27.65
+            ],
+            "material": "roof",
+            "bevel_m": 0.08
+          },
+          {
+            "id": "grand_magasin_corner_lantern",
+            "kind": "box",
+            "size": [
+              1.35,
+              1.35,
+              1.0
+            ],
+            "location": [
+              -12.0,
+              -9.0,
+              26.65
+            ],
+            "material": "roof",
+            "bevel_m": 0.06
+          }
+        ],
+        "voids": [],
+        "assemblies": [
+          {
+            "kind": "facade_skin",
+            "id": "grand_front_sticker",
+            "axis": "front",
+            "centre": [
+              0.0,
+              -14.035,
+              10.0
+            ],
+            "span_m": 25.0,
+            "height_m": 20.0,
+            "depth_m": 0.045,
+            "band": "elevation",
+            "flip_u": false,
+            "source_image_path": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\three-all-surface-stickers-v91\\render-ready-stickers\\grand-magasin-belle-epoque\\front.png",
+            "surface_role": "front",
+            "opening_clearances": [
+              {
+                "void_id": "grand_magasin_entrance",
+                "centre_m": -3.75,
+                "width_m": 2.7,
+                "base_z_m": 0.0,
+                "height_m": 4.25,
+                "spring_z_m": 2.85,
+                "shape": "round_arch",
+                "arch_segments": 28
+              },
+              {
+                "void_id": "grand_magasin_entrance",
+                "centre_m": 0.0,
+                "width_m": 2.7,
+                "base_z_m": 0.0,
+                "height_m": 4.25,
+                "spring_z_m": 2.85,
+                "shape": "round_arch",
+                "arch_segments": 28
+              },
+              {
+                "void_id": "grand_magasin_entrance",
+                "centre_m": 3.75,
+                "width_m": 2.7,
+                "base_z_m": 0.0,
+                "height_m": 4.25,
+                "spring_z_m": 2.85,
+                "shape": "round_arch",
+                "arch_segments": 28
+              }
+            ]
+          },
+          {
+            "kind": "facade_skin",
+            "id": "grand_front_right_sticker",
+            "axis": "angle",
+            "centre": [
+              14.77,
+              -11.77,
+              10.0
+            ],
+            "span_m": 6.363961030678928,
+            "height_m": 20.0,
+            "depth_m": 0.045,
+            "band": "elevation",
+            "flip_u": false,
+            "source_image_path": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\three-all-surface-stickers-v91\\render-ready-stickers\\grand-magasin-belle-epoque\\front_right.png",
+            "surface_role": "front_right",
+            "rotation_z_deg": 45.0
+          },
+          {
+            "kind": "facade_skin",
+            "id": "grand_right_sticker",
+            "axis": "right",
+            "centre": [
+              17.035,
+              0.0,
+              10.0
+            ],
+            "span_m": 19.0,
+            "height_m": 20.0,
+            "depth_m": 0.045,
+            "band": "elevation",
+            "flip_u": false,
+            "source_image_path": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\three-all-surface-stickers-v91\\render-ready-stickers\\grand-magasin-belle-epoque\\right.png",
+            "surface_role": "right"
+          },
+          {
+            "kind": "facade_skin",
+            "id": "grand_rear_right_sticker",
+            "axis": "angle",
+            "centre": [
+              14.77,
+              11.77,
+              10.0
+            ],
+            "span_m": 6.363961030678928,
+            "height_m": 20.0,
+            "depth_m": 0.045,
+            "band": "elevation",
+            "flip_u": false,
+            "source_image_path": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\three-all-surface-stickers-v91\\render-ready-stickers\\grand-magasin-belle-epoque\\rear_right.png",
+            "surface_role": "rear_right",
+            "rotation_z_deg": 135.0
+          },
+          {
+            "kind": "facade_skin",
+            "id": "grand_rear_sticker",
+            "axis": "rear",
+            "centre": [
+              0.0,
+              14.035,
+              10.0
+            ],
+            "span_m": 25.0,
+            "height_m": 20.0,
+            "depth_m": 0.045,
+            "band": "elevation",
+            "flip_u": true,
+            "source_image_path": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\three-all-surface-stickers-v91\\render-ready-stickers\\grand-magasin-belle-epoque\\rear.png",
+            "surface_role": "rear"
+          },
+          {
+            "kind": "facade_skin",
+            "id": "grand_rear_left_sticker",
+            "axis": "angle",
+            "centre": [
+              -14.77,
+              11.77,
+              10.0
+            ],
+            "span_m": 6.363961030678928,
+            "height_m": 20.0,
+            "depth_m": 0.045,
+            "band": "elevation",
+            "flip_u": false,
+            "source_image_path": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\three-all-surface-stickers-v91\\render-ready-stickers\\grand-magasin-belle-epoque\\rear_left.png",
+            "surface_role": "rear_left",
+            "rotation_z_deg": -135.0
+          },
+          {
+            "kind": "facade_skin",
+            "id": "grand_left_sticker",
+            "axis": "left",
+            "centre": [
+              -17.035,
+              0.0,
+              10.0
+            ],
+            "span_m": 19.0,
+            "height_m": 20.0,
+            "depth_m": 0.045,
+            "band": "elevation",
+            "flip_u": true,
+            "source_image_path": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\three-all-surface-stickers-v91\\render-ready-stickers\\grand-magasin-belle-epoque\\left.png",
+            "surface_role": "left"
+          },
+          {
+            "kind": "facade_skin",
+            "id": "grand_front_left_sticker",
+            "axis": "angle",
+            "centre": [
+              -14.77,
+              -11.77,
+              10.0
+            ],
+            "span_m": 6.363961030678928,
+            "height_m": 20.0,
+            "depth_m": 0.045,
+            "band": "elevation",
+            "flip_u": false,
+            "source_image_path": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\three-all-surface-stickers-v91\\render-ready-stickers\\grand-magasin-belle-epoque\\front_left.png",
+            "surface_role": "front_left",
+            "rotation_z_deg": -45.0
+          },
+          {
+            "kind": "facade_skin",
+            "id": "grand_court_front_sticker",
+            "axis": "front",
+            "centre": [
+              0.0,
+              -5.95,
+              16.0
+            ],
+            "span_m": 14.0,
+            "height_m": 8.0,
+            "depth_m": 0.045,
+            "band": "elevation",
+            "flip_u": false,
+            "source_image_path": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\three-all-surface-stickers-v91\\render-ready-stickers\\grand-magasin-belle-epoque\\rear.png",
+            "surface_role": "rear"
+          },
+          {
+            "kind": "facade_skin",
+            "id": "grand_court_rear_sticker",
+            "axis": "rear",
+            "centre": [
+              0.0,
+              5.95,
+              16.0
+            ],
+            "span_m": 14.0,
+            "height_m": 8.0,
+            "depth_m": 0.045,
+            "band": "elevation",
+            "flip_u": true,
+            "source_image_path": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\three-all-surface-stickers-v91\\render-ready-stickers\\grand-magasin-belle-epoque\\front.png",
+            "surface_role": "front"
+          },
+          {
+            "kind": "facade_skin",
+            "id": "grand_court_left_sticker",
+            "axis": "left",
+            "centre": [
+              -6.95,
+              0.0,
+              16.0
+            ],
+            "span_m": 12.0,
+            "height_m": 8.0,
+            "depth_m": 0.045,
+            "band": "elevation",
+            "flip_u": true,
+            "source_image_path": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\three-all-surface-stickers-v91\\render-ready-stickers\\grand-magasin-belle-epoque\\right.png",
+            "surface_role": "right"
+          },
+          {
+            "kind": "facade_skin",
+            "id": "grand_court_right_sticker",
+            "axis": "right",
+            "centre": [
+              6.95,
+              0.0,
+              16.0
+            ],
+            "span_m": 12.0,
+            "height_m": 8.0,
+            "depth_m": 0.045,
+            "band": "elevation",
+            "flip_u": false,
+            "source_image_path": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\three-all-surface-stickers-v91\\render-ready-stickers\\grand-magasin-belle-epoque\\left.png",
+            "surface_role": "left"
+          },
+          {
+            "kind": "roof_skin",
+            "id": "grand_front_roof_sticker",
+            "shape": "mono_pitch",
+            "size": [
+              34.6,
+              8.5,
+              4.0
+            ],
+            "location": [
+              0.0,
+              -10.0,
+              20.0
+            ],
+            "band": "elevation",
+            "source_image_path": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\three-all-surface-stickers-v91\\render-ready-stickers\\grand-magasin-belle-epoque\\roof.png",
+            "surface_role": "roof",
+            "plan_bounds": [
+              -17.35,
+              17.35,
+              -14.35,
+              14.35
+            ],
+            "high_side": "rear"
+          },
+          {
+            "kind": "roof_skin",
+            "id": "grand_rear_roof_sticker",
+            "shape": "mono_pitch",
+            "size": [
+              34.6,
+              8.5,
+              4.0
+            ],
+            "location": [
+              0.0,
+              10.0,
+              20.0
+            ],
+            "band": "elevation",
+            "source_image_path": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\three-all-surface-stickers-v91\\render-ready-stickers\\grand-magasin-belle-epoque\\roof.png",
+            "surface_role": "roof",
+            "plan_bounds": [
+              -17.35,
+              17.35,
+              -14.35,
+              14.35
+            ],
+            "high_side": "front"
+          },
+          {
+            "kind": "roof_skin",
+            "id": "grand_left_roof_sticker",
+            "shape": "mono_pitch",
+            "size": [
+              9.0,
+              12.0,
+              4.0
+            ],
+            "location": [
+              -12.7,
+              0.0,
+              20.0
+            ],
+            "band": "elevation",
+            "source_image_path": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\three-all-surface-stickers-v91\\render-ready-stickers\\grand-magasin-belle-epoque\\roof.png",
+            "surface_role": "roof",
+            "plan_bounds": [
+              -17.35,
+              17.35,
+              -14.35,
+              14.35
+            ],
+            "high_side": "right"
+          },
+          {
+            "kind": "roof_skin",
+            "id": "grand_right_roof_sticker",
+            "shape": "mono_pitch",
+            "size": [
+              9.0,
+              12.0,
+              4.0
+            ],
+            "location": [
+              12.7,
+              0.0,
+              20.0
+            ],
+            "band": "elevation",
+            "source_image_path": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\three-all-surface-stickers-v91\\render-ready-stickers\\grand-magasin-belle-epoque\\roof.png",
+            "surface_role": "roof",
+            "plan_bounds": [
+              -17.35,
+              17.35,
+              -14.35,
+              14.35
+            ],
+            "high_side": "left"
+          },
+          {
+            "kind": "roof_skin",
+            "id": "grand_central_dome_sticker",
+            "shape": "dome",
+            "size": [
+              14.0,
+              14.0,
+              7.0
+            ],
+            "location": [
+              0.0,
+              0.0,
+              20.7
+            ],
+            "band": "elevation",
+            "source_image_path": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\three-all-surface-stickers-v91\\render-ready-stickers\\grand-magasin-belle-epoque\\roof.png",
+            "surface_role": "roof",
+            "plan_bounds": [
+              -17.35,
+              17.35,
+              -14.35,
+              14.35
+            ],
+            "radius_m": 7.0,
+            "height_m": 7.0,
+            "rib_count": 16,
+            "rib_radius_m": 0.07,
+            "transmission": 0.18,
+            "roughness": 0.22
+          },
+          {
+            "kind": "roof_skin",
+            "id": "grand_corner_dome_sticker",
+            "shape": "dome",
+            "size": [
+              7.0,
+              7.0,
+              3.8
+            ],
+            "location": [
+              -12.0,
+              -9.0,
+              22.4
+            ],
+            "band": "elevation",
+            "source_image_path": "C:\\dev\\3D-Maps-building-goldset\\artifacts\\three-all-surface-stickers-v91\\render-ready-stickers\\grand-magasin-belle-epoque\\roof.png",
+            "surface_role": "roof",
+            "plan_bounds": [
+              -17.35,
+              17.35,
+              -14.35,
+              14.35
+            ],
+            "radius_m": 3.5,
+            "height_m": 3.8,
+            "rib_count": 12,
+            "rib_radius_m": 0.055,
+            "transmission": 0.16,
+            "roughness": 0.22
+          }
+        ],
+        "target_views": [
+          "archetype_match",
+          "street",
+          "front_corner_oblique",
+          "rear_corner_oblique",
+          "facade_close",
+          "roof_audit",
+          "aerial",
+          "context"
+        ]
+      }
+    }
+  }
+}

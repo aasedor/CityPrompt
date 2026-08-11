@@ -1,0 +1,267 @@
+{
+  "status": "pass",
+  "family": "belle-epoque-grand-magasin-v91",
+  "archetype_id": "grand_magasin",
+  "reuse_keys": [
+    "grand_magasin",
+    "classical",
+    "Commercial \u2014 Market / Specialty Retail"
+  ],
+  "manifest": "belle-epoque-grand-magasin-v91_manifest.json",
+  "errors": [],
+  "warnings": [
+    "belle-epoque-grand-magasin-v91_podium.glb: 16 materials (many; consider consolidation)",
+    "belle-epoque-grand-magasin-v91_floor_typical_a.glb: 16 materials (many; consider consolidation)",
+    "belle-epoque-grand-magasin-v91_floor_typical_b.glb: 17 materials (many; consider consolidation)",
+    "belle-epoque-grand-magasin-v91_floor_typical_c.glb: 16 materials (many; consider consolidation)",
+    "belle-epoque-grand-magasin-v91_setback_upper.glb: 17 materials (many; consider consolidation)",
+    "belle-epoque-grand-magasin-v91_crown_crown.glb: 15 materials (many; consider consolidation)",
+    "belle-epoque-grand-magasin-v91_assembled.glb: 24 materials (many; consider consolidation)",
+    "belle-epoque-grand-magasin-v91_assembled.glb: 29.8 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "belle-epoque-grand-magasin-v91_podium.glb",
+      "status": "ok",
+      "triangles": 1540,
+      "extent_m": {
+        "width_x": 34.24,
+        "height_y": 4.25,
+        "depth_z": 28.18
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_GlassOverlay_low_iron_clear_Podium_Module_podium_FrontGlazing_Glass",
+        "MAT_GlassOverlay_low_iron_clear_Podium_Module_podium_LeftGlazing_Glass",
+        "MAT_GlassOverlay_low_iron_clear_Podium_Module_podium_RearGlazing_Glass",
+        "MAT_GlassOverlay_low_iron_clear_Podium_Module_podium_RightGlazing_Glass",
+        "MAT_GlazingInterior_low_iron_clear_00",
+        "MAT_Sheet_Near_Podium",
+        "MAT_Sheet_Near_Podium_Module_podium_FrontGlazing_Near",
+        "MAT_Sheet_Near_Podium_Module_podium_LeftGlazing_Near",
+        "MAT_Sheet_Near_Podium_Module_podium_RearGlazing_Near",
+        "MAT_Sheet_Near_Podium_Module_podium_RightGlazing_Near",
+        "MAT_Sheet_Wrapped_Podium_Left",
+        "MAT_Sheet_Wrapped_Podium_Rear",
+        "MAT_Sheet_Wrapped_Podium_Right"
+      ],
+      "size_bytes": 4091400
+    },
+    {
+      "file": "belle-epoque-grand-magasin-v91_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 2292,
+      "extent_m": {
+        "width_x": 34.413,
+        "height_y": 3.656,
+        "depth_z": 28.413
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_GlassOverlay_low_iron_clear_Floor_Module_floor_FrontGlazing_Glass",
+        "MAT_GlassOverlay_low_iron_clear_Floor_Module_floor_LeftGlazing_Glass",
+        "MAT_GlassOverlay_low_iron_clear_Floor_Module_floor_RearGlazing_Glass",
+        "MAT_GlassOverlay_low_iron_clear_Floor_Module_floor_RightGlazing_Glass",
+        "MAT_GlazingInterior_low_iron_clear_00.001",
+        "MAT_Sheet_Near_Floor",
+        "MAT_Sheet_Near_Floor_Module_floor_FrontGlazing_Near",
+        "MAT_Sheet_Near_Floor_Module_floor_LeftGlazing_Near",
+        "MAT_Sheet_Near_Floor_Module_floor_RearGlazing_Near",
+        "MAT_Sheet_Near_Floor_Module_floor_RightGlazing_Near",
+        "MAT_Sheet_Wrapped_Floor_Left",
+        "MAT_Sheet_Wrapped_Floor_Rear",
+        "MAT_Sheet_Wrapped_Floor_Right"
+      ],
+      "size_bytes": 4411228
+    },
+    {
+      "file": "belle-epoque-grand-magasin-v91_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 7704,
+      "extent_m": {
+        "width_x": 34.413,
+        "height_y": 3.656,
+        "depth_z": 29.204
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_GlassOverlay_low_iron_clear_Floor_alt_Module_floor_alt_FrontGlazing_Glass",
+        "MAT_GlassOverlay_low_iron_clear_Floor_alt_Module_floor_alt_LeftGlazing_Glass",
+        "MAT_GlassOverlay_low_iron_clear_Floor_alt_Module_floor_alt_RearGlazing_Glass",
+        "MAT_GlassOverlay_low_iron_clear_Floor_alt_Module_floor_alt_RightGlazing_Glass",
+        "MAT_GlazingInterior_low_iron_clear_00.002",
+        "MAT_Sheet_Near_Floor_alt",
+        "MAT_Sheet_Near_Floor_alt_Module_floor_alt_FrontGlazing_Near",
+        "MAT_Sheet_Near_Floor_alt_Module_floor_alt_LeftGlazing_Near",
+        "MAT_Sheet_Near_Floor_alt_Module_floor_alt_RearGlazing_Near",
+        "MAT_Sheet_Near_Floor_alt_Module_floor_alt_RightGlazing_Near",
+        "MAT_Sheet_Wrapped_Floor_Alt_Left",
+        "MAT_Sheet_Wrapped_Floor_Alt_Rear",
+        "MAT_Sheet_Wrapped_Floor_Alt_Right"
+      ],
+      "size_bytes": 4532008
+    },
+    {
+      "file": "belle-epoque-grand-magasin-v91_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 2292,
+      "extent_m": {
+        "width_x": 34.413,
+        "height_y": 3.656,
+        "depth_z": 28.413
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_GlassOverlay_low_iron_clear_Floor_Module_floor_FrontGlazing_Glass.001",
+        "MAT_GlassOverlay_low_iron_clear_Floor_Module_floor_LeftGlazing_Glass.001",
+        "MAT_GlassOverlay_low_iron_clear_Floor_Module_floor_RearGlazing_Glass.001",
+        "MAT_GlassOverlay_low_iron_clear_Floor_Module_floor_RightGlazing_Glass.001",
+        "MAT_GlazingInterior_low_iron_clear_00.003",
+        "MAT_Sheet_Near_Floor",
+        "MAT_Sheet_Near_Floor_Module_floor_FrontGlazing_Near.001",
+        "MAT_Sheet_Near_Floor_Module_floor_LeftGlazing_Near.001",
+        "MAT_Sheet_Near_Floor_Module_floor_RearGlazing_Near.001",
+        "MAT_Sheet_Near_Floor_Module_floor_RightGlazing_Near.001",
+        "MAT_Sheet_Wrapped_Floor_Left.001",
+        "MAT_Sheet_Wrapped_Floor_Rear.001",
+        "MAT_Sheet_Wrapped_Floor_Right.001"
+      ],
+      "size_bytes": 4411272
+    },
+    {
+      "file": "belle-epoque-grand-magasin-v91_setback_upper.glb",
+      "status": "ok",
+      "triangles": 2600,
+      "extent_m": {
+        "width_x": 34.0,
+        "height_y": 3.656,
+        "depth_z": 28.206
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_GlassOverlay_low_iron_clear_Floor_Module_floor_FrontGlazing_Glass.002",
+        "MAT_GlassOverlay_low_iron_clear_Floor_Module_floor_LeftGlazing_Glass.002",
+        "MAT_GlassOverlay_low_iron_clear_Floor_Module_floor_RearGlazing_Glass.002",
+        "MAT_GlassOverlay_low_iron_clear_Floor_Module_floor_RightGlazing_Glass.002",
+        "MAT_GlazingInterior_low_iron_clear_00.004",
+        "MAT_Sheet_Near_Floor",
+        "MAT_Sheet_Near_Floor_Module_floor_FrontGlazing_Near.002",
+        "MAT_Sheet_Near_Floor_Module_floor_LeftGlazing_Near.002",
+        "MAT_Sheet_Near_Floor_Module_floor_RearGlazing_Near.002",
+        "MAT_Sheet_Near_Floor_Module_floor_RightGlazing_Near.002",
+        "MAT_Sheet_Wrapped_Floor_Left.002",
+        "MAT_Sheet_Wrapped_Floor_Rear.002",
+        "MAT_Sheet_Wrapped_Floor_Right.002"
+      ],
+      "size_bytes": 4431252
+    },
+    {
+      "file": "belle-epoque-grand-magasin-v91_crown_crown.glb",
+      "status": "ok",
+      "triangles": 2248,
+      "extent_m": {
+        "width_x": 34.013,
+        "height_y": 3.528,
+        "depth_z": 28.063
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Concrete",
+        "MAT_Facade_Primary",
+        "MAT_GlassOverlay_low_iron_clear_Crown_Module_crown_FrontGlazing_Glass",
+        "MAT_GlassOverlay_low_iron_clear_Crown_Module_crown_LeftGlazing_Glass",
+        "MAT_GlassOverlay_low_iron_clear_Crown_Module_crown_RearGlazing_Glass",
+        "MAT_GlassOverlay_low_iron_clear_Crown_Module_crown_RightGlazing_Glass",
+        "MAT_GlazingInterior_low_iron_clear_00.005",
+        "MAT_Sheet_Near_Crown",
+        "MAT_Sheet_Near_Crown_Module_crown_FrontGlazing_Near",
+        "MAT_Sheet_Near_Crown_Module_crown_LeftGlazing_Near",
+        "MAT_Sheet_Near_Crown_Module_crown_RearGlazing_Near",
+        "MAT_Sheet_Near_Crown_Module_crown_RightGlazing_Near",
+        "MAT_Sheet_Wrapped_Crown_Left",
+        "MAT_Sheet_Wrapped_Crown_Rear",
+        "MAT_Sheet_Wrapped_Crown_Right"
+      ],
+      "size_bytes": 3112772
+    },
+    {
+      "file": "belle-epoque-grand-magasin-v91_roof.glb",
+      "status": "ok",
+      "triangles": 18304,
+      "extent_m": {
+        "width_x": 34.72,
+        "height_y": 6.13,
+        "depth_z": 28.667
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Accent",
+        "MAT_Facade_Secondary",
+        "MAT_Glass",
+        "MAT_Interior_Room_00",
+        "MAT_Interior_Room_01",
+        "MAT_Interior_Room_02",
+        "MAT_Interior_Room_03",
+        "MAT_Roof",
+        "MAT_Roof_AgedLead"
+      ],
+      "size_bytes": 3839736
+    },
+    {
+      "file": "belle-epoque-grand-magasin-v91_assembled.glb",
+      "status": "ok",
+      "triangles": 39020,
+      "extent_m": {
+        "width_x": 34.6,
+        "height_y": 28.25,
+        "depth_z": 31.1
+      },
+      "bottom_y": -0.0,
+      "materials": [
+        "MAT_Facade_Primary",
+        "MAT_Facade_Secondary",
+        "MAT_Glass",
+        "MAT_Interior_Shadow",
+        "MAT_Roof",
+        "MAT_Roof_grand_central_dome_sticker",
+        "MAT_Roof_grand_corner_dome_sticker",
+        "MAT_Roof_grand_front_roof_sticker",
+        "MAT_Roof_grand_left_roof_sticker",
+        "MAT_Roof_grand_rear_roof_sticker",
+        "MAT_Roof_grand_right_roof_sticker",
+        "MAT_Sheet_Far_FullElevation_grand_court_front_sticker",
+        "MAT_Sheet_Far_FullElevation_grand_court_left_sticker",
+        "MAT_Sheet_Far_FullElevation_grand_court_rear_sticker",
+        "MAT_Sheet_Far_FullElevation_grand_court_right_sticker",
+        "MAT_Sheet_Far_FullElevation_grand_front_left_sticker",
+        "MAT_Sheet_Far_FullElevation_grand_front_right_sticker",
+        "MAT_Sheet_Far_FullElevation_grand_front_sticker",
+        "MAT_Sheet_Far_FullElevation_grand_left_sticker",
+        "MAT_Sheet_Far_FullElevation_grand_rear_left_sticker",
+        "MAT_Sheet_Far_FullElevation_grand_rear_right_sticker",
+        "MAT_Sheet_Far_FullElevation_grand_rear_sticker",
+        "MAT_Sheet_Far_FullElevation_grand_right_sticker",
+        "MAT_Signature_DarkOakDoor"
+      ],
+      "size_bytes": 31280712,
+      "role": "assembled"
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "schema": "building-architect-review@1",
+  "reviewer": "Mencius - architect_design_reviewer",
+  "package": "catalogue-rollout-v91/three-all-surface-sticker-pilot",
+  "keeper_rule": ">=85 and no hard stop",
+  "batch_status": "rejected_for_scale_up",
+  "keepers": 0,
+  "ranked_results": [
+    {
+      "rank": 1,
+      "building": "Egyptian Revival Theater",
+      "score": 73,
+      "status": "rejected",
+      "strengths": "Strong palette, Egyptian-Deco iconography, stepped roof evidence and deep-auditorium identity; closest of the batch.",
+      "hard_stops": [
+        "Entrance geometry reads as projecting portal boxes rather than recessed accessible voids.",
+        "Physical lotus columns duplicate and obscure photographed columns and signage.",
+        "Bright corner seams remain visible.",
+        "Assembled GLB exceeds the stated 8 MB catalogue budget."
+      ],
+      "next_action": "Use as the single V92 repair pilot: replace the entry pods with exact narrow jamb and soffit sections, remove duplicate columns, close corner UVs, camera-match the evidence and compress below 8 MB."
+    },
+    {
+      "rank": 2,
+      "building": "Belle Epoque Grand Magasin",
+      "score": 68,
+      "status": "rejected",
+      "strengths": "Exceptional iron-and-glass facade imagery and complete occupied elevations.",
+      "hard_stops": [
+        "Floating or disconnected roof planes and pale construction returns.",
+        "Malformed dome bases and non-archetypal box caps.",
+        "Principal entrance openings read as flat opaque plugs.",
+        "Assembled GLB materially exceeds the catalogue budget."
+      ],
+      "next_action": "Rebuild the crown as one watertight perimeter and courtyard roof with seated zinc fields and integrated dome drums, then cut the entrance voids."
+    },
+    {
+      "rank": 3,
+      "building": "Tuscan Farmhouse",
+      "score": 65,
+      "status": "rejected",
+      "strengths": "Convincing stucco, stone, shutters, pantiles and coherent four-elevation wrapping.",
+      "hard_stops": [
+        "Tall narrow massing does not match the broad low reference proportion.",
+        "Four-sided hip roof conflicts with the source roof silhouette.",
+        "Nested barrel liners compete with and obstruct the three photographed arches.",
+        "Assembled GLB exceeds the stated catalogue budget."
+      ],
+      "next_action": "Rebuild to the source width-to-height ratio and roof evidence, then subtract one continuous loggia behind exact arch contours."
+    }
+  ],
+  "shared_hard_stops": [
+    "All assets exceed the 8 MB catalogue budget.",
+    "All buildings expose surface seams in normal oblique views.",
+    "Entrance systems remain visually blocked or geometrically competitive with the sticker openings.",
+    "Comparison cameras are not yet matched closely enough to the exact references."
+  ],
+  "recommended_next_action": "Do not generate another three-building batch. Repair only the Egyptian Revival Theater until it reaches 85/100 with seam-free corners, genuinely recessed entrances, registered columns, matched cameras and an assembled size below 8 MB."
+}

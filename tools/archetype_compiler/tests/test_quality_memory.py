@@ -91,6 +91,7 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
         "large_span_shells_are_closed_and_panelised",
         "audit_views_are_context_free",
         "large_span_clear_height_is_catalogue_truth",
+        "all_exposed_landmark_surfaces_have_registered_owners",
     } <= principle_ids
 
 
