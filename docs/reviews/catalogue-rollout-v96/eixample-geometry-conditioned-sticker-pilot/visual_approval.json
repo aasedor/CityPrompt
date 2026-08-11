@@ -1,0 +1,44 @@
+{
+  "schema": "architectural-visual-approval@1",
+  "building_id": "eixample-apartment-block-classic",
+  "pipeline_version": "v96",
+  "method": "geometry-conditioned-floor-sticker",
+  "placement_model": "select_and_place_landmark",
+  "status": "approved",
+  "score": 96,
+  "score_target": 95,
+  "reviewer": "architect_design_reviewer",
+  "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+  "carrier_package_sha256": "8462cc89ba6987bfe90ec318b2ff8274c523bc12c50ab3623f1294090682676e",
+  "carrier_count": 117,
+  "breakdown": {
+    "archetype_silhouette_massing": 25,
+    "floor_proportion_alignment": 20,
+    "sticker_continuity_coverage": 19,
+    "entrance_courtyard_roof_geometry": 14,
+    "materials_glazing_detail": 9,
+    "cross_view_coherence_presentation": 9
+  },
+  "hard_stops": [],
+  "references": [
+    "frontend/public/archetypes/buildings/eixample-apartment-block/variant_0.png",
+    "frontend/public/archetypes/buildings/eixample-apartment-block/variant_0_angle_60.jpg",
+    "frontend/public/archetypes/buildings/eixample-apartment-block/variant_0_angle_90.jpg"
+  ],
+  "review_views": [
+    "archetype_match",
+    "street",
+    "front_corner_oblique",
+    "rear_corner_oblique",
+    "facade_close",
+    "roof_audit",
+    "aerial",
+    "context"
+  ],
+  "residuals": [
+    "Subtle terrace and lower-court roughness or grime variation remains optional material polish.",
+    "Rooflight glass may be made slightly clearer and its metal curbs finer.",
+    "Planter, shutter and occupied-glazing variation can be increased without reopening the carrier."
+  ],
+  "paid_api_calls": 0
+}

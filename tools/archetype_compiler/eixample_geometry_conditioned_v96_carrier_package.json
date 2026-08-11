@@ -1,0 +1,3427 @@
+{
+  "schema": "siteforge.sticker-carrier-space@1",
+  "status": "pass",
+  "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+  "carrier_count": 117,
+  "score_target": 95,
+  "approval_space": "rendered_on_locked_carrier",
+  "required_conditioning_maps": [
+    "uv_chart",
+    "position",
+    "normal",
+    "depth",
+    "visibility",
+    "curvature",
+    "ambient_occlusion",
+    "floor_id",
+    "construction_role",
+    "opening_mask",
+    "glass_mask",
+    "uv_distortion"
+  ],
+  "hard_stops": [
+    "carrier_geometry_hash_mismatch",
+    "unresolved_final_carrier",
+    "post_generation_crop",
+    "post_generation_nonuniform_scale",
+    "source_directional_light_baked_as_surface_albedo",
+    "architect_score_below_95"
+  ],
+  "failures": [],
+  "carriers": [
+    {
+      "carrier_id": "v96_outer_wall_0_floor_0",
+      "surface_id": "outer_segment_0_floor_0",
+      "sticker_layer": "ground_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_wall_0",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "dcdc52464de7b55f2906f577b81c7aa80b8c7a084d8ade747e8b3c12bb10bd72"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.0,
+        0.97,
+        0.2707
+      ],
+      "floor_role": "ground",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "ce4aaf6ef398808397a3490652fad0f07398ad50037277d624d882f6cc5cba9e"
+    },
+    {
+      "carrier_id": "v96_outer_wall_0_floor_1",
+      "surface_id": "outer_segment_0_floor_1",
+      "sticker_layer": "middle_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_wall_0",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "3e647a8a2ebd3d381c6a52a1ce6ff5558d42199bee6c28d7924f399708bb4439"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.2707,
+        0.97,
+        0.4844
+      ],
+      "floor_role": "middle",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "7764eb9cd737e09c3140e13cef694ae594788735ee4b5ec274722c72607d6472"
+    },
+    {
+      "carrier_id": "v96_outer_wall_0_floor_2",
+      "surface_id": "outer_segment_0_floor_2",
+      "sticker_layer": "middle_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_wall_0",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "276014eaf0e2f090ad5cd3e834d2afc1cc4b4c3ada42bcef13c2f406cc7e1429"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.4844,
+        0.97,
+        0.702
+      ],
+      "floor_role": "middle",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "ca1dd820f8e0c10dc8379d2b7893c5ed681a797c7e375af80835d2b504e4c7df"
+    },
+    {
+      "carrier_id": "v96_outer_wall_0_floor_3",
+      "surface_id": "outer_segment_0_floor_3",
+      "sticker_layer": "top_crown_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_wall_0",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "5498a258d8e68247d9b9ca9dce7c33128733360be4580deb77143928aaca34d1"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.702,
+        0.97,
+        0.8948
+      ],
+      "floor_role": "top_crown",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "6e72a0394893f13ee86758aa0da574c8d674c23acd62121c12dd467b50e5fe87"
+    },
+    {
+      "carrier_id": "v96_outer_wall_1_floor_0",
+      "surface_id": "outer_segment_1_floor_0",
+      "sticker_layer": "ground_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_wall_1",
+          "selected_face_count": 3,
+          "fingerprint_sha256": "7ee2ae5846946e607837f898f84e71898dfcb62baed59784de4c696297b35fcb"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/principal_elevation_intrinsic.png",
+      "source_image_sha256": "2b795d28237d56e45cd8d01e8330865fbd57a4f2d21bcba5b3cf8390dd093a91",
+      "source_uv_bounds": [
+        0.03,
+        0.0,
+        0.97,
+        0.2707
+      ],
+      "floor_role": "ground",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "c31765e1f0f0df8327f68bd035e267e31e9f5b8b73a80cb591453f0503d437af"
+    },
+    {
+      "carrier_id": "v96_outer_wall_1_floor_1",
+      "surface_id": "outer_segment_1_floor_1",
+      "sticker_layer": "middle_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_wall_1",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "5cbecd33376a91e2e3cae3bb9afea04374b555a04225201e2aa873b4d2a8a007"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/principal_elevation_intrinsic.png",
+      "source_image_sha256": "2b795d28237d56e45cd8d01e8330865fbd57a4f2d21bcba5b3cf8390dd093a91",
+      "source_uv_bounds": [
+        0.03,
+        0.2707,
+        0.97,
+        0.4844
+      ],
+      "floor_role": "middle",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "6efd58e61b627798055d3a035b934e2eceb0a56fdd04dbf3ec44a0a8a829f033"
+    },
+    {
+      "carrier_id": "v96_outer_wall_1_floor_2",
+      "surface_id": "outer_segment_1_floor_2",
+      "sticker_layer": "middle_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_wall_1",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "06420ddcf11cafd103fa88b0f5845a6ed4201967ebee54c530b1ce925039d027"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/principal_elevation_intrinsic.png",
+      "source_image_sha256": "2b795d28237d56e45cd8d01e8330865fbd57a4f2d21bcba5b3cf8390dd093a91",
+      "source_uv_bounds": [
+        0.03,
+        0.4844,
+        0.97,
+        0.702
+      ],
+      "floor_role": "middle",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "002fe2e22b6a84d19176d64d22e90482de3b234760c66b802e259c9b3e542ccf"
+    },
+    {
+      "carrier_id": "v96_outer_wall_1_floor_3",
+      "surface_id": "outer_segment_1_floor_3",
+      "sticker_layer": "top_crown_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_wall_1",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "8257565de268814755dd700e7779da0a8681d1587b814cc83f5f4898d458397b"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/principal_elevation_intrinsic.png",
+      "source_image_sha256": "2b795d28237d56e45cd8d01e8330865fbd57a4f2d21bcba5b3cf8390dd093a91",
+      "source_uv_bounds": [
+        0.03,
+        0.702,
+        0.97,
+        0.8948
+      ],
+      "floor_role": "top_crown",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "ba76a55d28e08d8b46623b2de059b497f366eabaf144c6b2cb9319577604de43"
+    },
+    {
+      "carrier_id": "v96_outer_wall_2_floor_0",
+      "surface_id": "outer_segment_2_floor_0",
+      "sticker_layer": "ground_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_wall_2",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "0e79be1f0760184f96e494329bb7ad6824936943256d7bb8760808663c9ad500"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.0,
+        0.97,
+        0.2707
+      ],
+      "floor_role": "ground",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "e8d1197e050442848b70d0f3ca1a7ff97effa95fafac6d6d3a57b00487df54d3"
+    },
+    {
+      "carrier_id": "v96_outer_wall_2_floor_1",
+      "surface_id": "outer_segment_2_floor_1",
+      "sticker_layer": "middle_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_wall_2",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "0dc588b8bf099b2792b3be70737f4f86c806e241b18a0e97221961c5a2ce2659"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.2707,
+        0.97,
+        0.4844
+      ],
+      "floor_role": "middle",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "c287fde3a7867d2ca70d6dea8cc388e1f2711c60384b5e2d4ef9436f1a330bd3"
+    },
+    {
+      "carrier_id": "v96_outer_wall_2_floor_2",
+      "surface_id": "outer_segment_2_floor_2",
+      "sticker_layer": "middle_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_wall_2",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "d13f744f0340022e69209a6ec5f2bc07301b30f985893c96d3d690d3a8d47ff4"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.4844,
+        0.97,
+        0.702
+      ],
+      "floor_role": "middle",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "ffcb19f219fa2ecb5be7f06f6b6f186c9cde5118ba49ea5c79c44f1adf2f97df"
+    },
+    {
+      "carrier_id": "v96_outer_wall_2_floor_3",
+      "surface_id": "outer_segment_2_floor_3",
+      "sticker_layer": "top_crown_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_wall_2",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "67ef17fcc8bb0ca86805aa04b3a3d0875b330423d629252ccda842c21d7429ff"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.702,
+        0.97,
+        0.8948
+      ],
+      "floor_role": "top_crown",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "1d4fb219ee38502220cab9a5c52e14d7f7b8a4e65b2fbb0c2280529df34f1ffd"
+    },
+    {
+      "carrier_id": "v96_outer_wall_3_floor_0",
+      "surface_id": "outer_segment_3_floor_0",
+      "sticker_layer": "ground_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_wall_3",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "43b7faa6e06024e719819b370ece95726422407dce70e18a1622470e6feb4414"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.0,
+        0.97,
+        0.2707
+      ],
+      "floor_role": "ground",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "c7a8edef0bb53e427f9ea25d5dec57db5822c62709d367405b5d68eeb7db4e06"
+    },
+    {
+      "carrier_id": "v96_outer_wall_3_floor_1",
+      "surface_id": "outer_segment_3_floor_1",
+      "sticker_layer": "middle_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_wall_3",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "a665259ad43cdd7f9d2fe6367fb0b2649b5ed7b2d3d2ed4c524094c69f82928d"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.2707,
+        0.97,
+        0.4844
+      ],
+      "floor_role": "middle",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "251db5e9013f5c573dd5003fa8903d96e97dc664d49ba893f0f9b13331d8d607"
+    },
+    {
+      "carrier_id": "v96_outer_wall_3_floor_2",
+      "surface_id": "outer_segment_3_floor_2",
+      "sticker_layer": "middle_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_wall_3",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "dc313dcbf235ab7778dbaca4305de8646059ec4d08bf08999f91f1985e4d76b7"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.4844,
+        0.97,
+        0.702
+      ],
+      "floor_role": "middle",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "f3053a906b23b229fd8e7fb8550f6f5e3553528bdcffcfc8ea050e2b9a2b5704"
+    },
+    {
+      "carrier_id": "v96_outer_wall_3_floor_3",
+      "surface_id": "outer_segment_3_floor_3",
+      "sticker_layer": "top_crown_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_wall_3",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "c2f008f4a1c88072c4fab5d66fd5357e11c44f577176a2130cfe83bd3b25aece"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.702,
+        0.97,
+        0.8948
+      ],
+      "floor_role": "top_crown",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "70b4f040f619e2404b5ffa12f5de456db8a22bea6612b58ec4d4a13f229bda7f"
+    },
+    {
+      "carrier_id": "v96_outer_wall_4_floor_0",
+      "surface_id": "outer_segment_4_floor_0",
+      "sticker_layer": "ground_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_wall_4",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "e4bea52152f3175d078ff716f6ce8b820f28f282780f59d8d54966e24cd21bee"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.0,
+        0.97,
+        0.2707
+      ],
+      "floor_role": "ground",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "44f79d3b162bef8e6b94275afc56543dd34345e617e446748f0c8b61ca4b3a85"
+    },
+    {
+      "carrier_id": "v96_outer_wall_4_floor_1",
+      "surface_id": "outer_segment_4_floor_1",
+      "sticker_layer": "middle_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_wall_4",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "9f86ac85dfe57529471fb2c4f64cfd6b9e7fc9f2c1623f014cec479802e148c8"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.2707,
+        0.97,
+        0.4844
+      ],
+      "floor_role": "middle",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "620ec6f675047898dd7b34abd21b027b814ccf618f05ec4824ced0d5ffc74ef5"
+    },
+    {
+      "carrier_id": "v96_outer_wall_4_floor_2",
+      "surface_id": "outer_segment_4_floor_2",
+      "sticker_layer": "middle_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_wall_4",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "8346bd46271e01216c6a61fb17fd556393e6cc8aca9d4e4ddf656685dcba3bbf"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.4844,
+        0.97,
+        0.702
+      ],
+      "floor_role": "middle",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "b654805364fcf24fb8e231ad1e87aa37be61f6a800321eb076ba2c050a763f5e"
+    },
+    {
+      "carrier_id": "v96_outer_wall_4_floor_3",
+      "surface_id": "outer_segment_4_floor_3",
+      "sticker_layer": "top_crown_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_wall_4",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "1334b30b30855cc4d3ee4b0fd612451a821ab975c9df6013f4a638cc8b82b81b"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.702,
+        0.97,
+        0.8948
+      ],
+      "floor_role": "top_crown",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "2383e7a4a3a28ed0baf8ecfedcb2cdff6654ca9a01f95f77e88529cd6c595a5f"
+    },
+    {
+      "carrier_id": "v96_outer_wall_5_floor_0",
+      "surface_id": "outer_segment_5_floor_0",
+      "sticker_layer": "ground_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_wall_5",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "a0550e573cf99e9733fceb69d06defa838ca654380f462b15da718a4a9b04e1c"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.0,
+        0.97,
+        0.2707
+      ],
+      "floor_role": "ground",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "ea1e79837cc9450001b5dc4dfeb54599e6848acb1b19816892710f25ff0c848b"
+    },
+    {
+      "carrier_id": "v96_outer_wall_5_floor_1",
+      "surface_id": "outer_segment_5_floor_1",
+      "sticker_layer": "middle_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_wall_5",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "a8c08519ba125e96487fa0162886d8b9e70e59199da22830703ece5f4b993c4a"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.2707,
+        0.97,
+        0.4844
+      ],
+      "floor_role": "middle",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "001445b1519ffa7f45dcc4b303dbf780a5b5c9e617f8ae30db30abfe7d077016"
+    },
+    {
+      "carrier_id": "v96_outer_wall_5_floor_2",
+      "surface_id": "outer_segment_5_floor_2",
+      "sticker_layer": "middle_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_wall_5",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "2289b93b6f65d3a775bdbc3b3298b002177d6957c97c1823adbfb95b15fdb87a"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.4844,
+        0.97,
+        0.702
+      ],
+      "floor_role": "middle",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "2a30d5c319f572027bf8be8bed5771205379db77e1e58a49de2092bbc3905b3e"
+    },
+    {
+      "carrier_id": "v96_outer_wall_5_floor_3",
+      "surface_id": "outer_segment_5_floor_3",
+      "sticker_layer": "top_crown_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_wall_5",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "b1b0ddf16f2945ebb0271e8fee7e119a8c9c448b8db2e732a554cb41ee28d521"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.702,
+        0.97,
+        0.8948
+      ],
+      "floor_role": "top_crown",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "8592827461a793d428f0426834590467397795ca20f129b6f5056e523f4c86f4"
+    },
+    {
+      "carrier_id": "v96_outer_wall_6_floor_0",
+      "surface_id": "outer_segment_6_floor_0",
+      "sticker_layer": "ground_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_wall_6",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "2cc477683facaf1105031a39d0fe9f61900eabdd5271463cf688aa0620f17914"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.0,
+        0.97,
+        0.2707
+      ],
+      "floor_role": "ground",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "60c851f5fc994a598ba5098043433a87447f6162e02813a3f8033ea113e5330a"
+    },
+    {
+      "carrier_id": "v96_outer_wall_6_floor_1",
+      "surface_id": "outer_segment_6_floor_1",
+      "sticker_layer": "middle_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_wall_6",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "aa13b94c4fae70603260a5954e4e1b1828b2eb09724fae968396a79ba599e7df"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.2707,
+        0.97,
+        0.4844
+      ],
+      "floor_role": "middle",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "709e8461b9a2ff9854c93a0a49ca572aab7792a9e7ca1f4ccc0c5c6e7039f054"
+    },
+    {
+      "carrier_id": "v96_outer_wall_6_floor_2",
+      "surface_id": "outer_segment_6_floor_2",
+      "sticker_layer": "middle_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_wall_6",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "1914e9b099c54ccb31413c1c09599d28d5172d7bd6baaa71e4895d664248007c"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.4844,
+        0.97,
+        0.702
+      ],
+      "floor_role": "middle",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "fd7dba3a1629ce30f4754b5a0445fcecea39c319def08631c0a274de1be89f9d"
+    },
+    {
+      "carrier_id": "v96_outer_wall_6_floor_3",
+      "surface_id": "outer_segment_6_floor_3",
+      "sticker_layer": "top_crown_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_wall_6",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "e07cd3668c11f8a09f33862bfed018d505abf8352e62332c9b8ac8e7dc5f8d7d"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.702,
+        0.97,
+        0.8948
+      ],
+      "floor_role": "top_crown",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "11e2dc0779d9082176a21361c4c9806fea24fdfc4f8531e0028edd3f0d1a6eb0"
+    },
+    {
+      "carrier_id": "v96_outer_wall_7_floor_0",
+      "surface_id": "outer_segment_7_floor_0",
+      "sticker_layer": "ground_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_wall_7",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "1ea59c436e2d8e5ddaf048cac38e3438a95f2f07c53f5f23cf244b02062f0fa1"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.0,
+        0.97,
+        0.2707
+      ],
+      "floor_role": "ground",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "a7c546f3501425dd863e9000b76ea2f72d16881a5eeac6e92c7479915596e253"
+    },
+    {
+      "carrier_id": "v96_outer_wall_7_floor_1",
+      "surface_id": "outer_segment_7_floor_1",
+      "sticker_layer": "middle_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_wall_7",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "e8efc0285ddef1cf0cb69252a3e1733611597b9e22384713bf9a5e12d9407b4e"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.2707,
+        0.97,
+        0.4844
+      ],
+      "floor_role": "middle",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "fd0b40385dbdf2169f5d8d8ca912befb9e960e63f2c0f739a0c8b06101de4252"
+    },
+    {
+      "carrier_id": "v96_outer_wall_7_floor_2",
+      "surface_id": "outer_segment_7_floor_2",
+      "sticker_layer": "middle_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_wall_7",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "4b7eb6f1b83b13eb5be5a9a83574d4722b758fbfe0f90aab3fb9908cf303755b"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.4844,
+        0.97,
+        0.702
+      ],
+      "floor_role": "middle",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "ccdd8e955eabaae7ac89bd65ae17aea345d6c60bc1e80bba81d1cbf3c3fc4236"
+    },
+    {
+      "carrier_id": "v96_outer_wall_7_floor_3",
+      "surface_id": "outer_segment_7_floor_3",
+      "sticker_layer": "top_crown_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_wall_7",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "bba39359b4b675893b9f2377e74e2113ec66e84ea117c0e8337b262c60f63279"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.702,
+        0.97,
+        0.8948
+      ],
+      "floor_role": "top_crown",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "dfbb3db0dfc28a093aa96f279455e0d587fef13acf9243d88f5c6d4a93b8cb7c"
+    },
+    {
+      "carrier_id": "v96_court_wall_0_floor_0",
+      "surface_id": "court_segment_0_floor_0",
+      "sticker_layer": "ground_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_wall_0",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "a97a510713d5a45d8afab5d0c965594d43ea19d1158befbe9c92dd78e75a746c"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.0,
+        0.97,
+        0.2707
+      ],
+      "floor_role": "ground",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "554dd5a014298b3915c68d1288bb326d5dd0839ad04fe87af5df7a3c633df50a"
+    },
+    {
+      "carrier_id": "v96_court_wall_0_floor_1",
+      "surface_id": "court_segment_0_floor_1",
+      "sticker_layer": "middle_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_wall_0",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "da4e02b3c7da55c7f7e3b746b003112e001804104f300e0dbc31e8ee8ce98239"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.2707,
+        0.97,
+        0.4844
+      ],
+      "floor_role": "middle",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "65b04473f4e92f3a3ef52aec97d56434efbc16fe0f15c938ae4fe19732b47328"
+    },
+    {
+      "carrier_id": "v96_court_wall_0_floor_2",
+      "surface_id": "court_segment_0_floor_2",
+      "sticker_layer": "middle_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_wall_0",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "a831c78f169e1dcd69afe7817fbc89b4440883c9dd58faf1fc7b50cdaef76689"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.4844,
+        0.97,
+        0.702
+      ],
+      "floor_role": "middle",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "0fc9f14c162c4c378c4f94148681038d4142e0ef08958b8c83fa980d5052f551"
+    },
+    {
+      "carrier_id": "v96_court_wall_0_floor_3",
+      "surface_id": "court_segment_0_floor_3",
+      "sticker_layer": "top_crown_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_wall_0",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "5cc3dfa798c4c622c96c6f4c01e27de021569a79b92fb9c27be149ad920f8c8d"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.702,
+        0.97,
+        0.8948
+      ],
+      "floor_role": "top_crown",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "4707e2be343c17e7036a789bcc1cd563cec3aac4dc77db52c3ff8b0483d8bb7b"
+    },
+    {
+      "carrier_id": "v96_court_wall_1_floor_0",
+      "surface_id": "court_segment_1_floor_0",
+      "sticker_layer": "ground_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_wall_1",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "a0455809af5f697089b278d21550fb01f28d0f337d028bb9470804d4fdf2bd97"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.0,
+        0.97,
+        0.2707
+      ],
+      "floor_role": "ground",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "aec47667d4492ee1e594d51f459e355245f757f1f4d6fe1c9069963062cc7e1c"
+    },
+    {
+      "carrier_id": "v96_court_wall_1_floor_1",
+      "surface_id": "court_segment_1_floor_1",
+      "sticker_layer": "middle_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_wall_1",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "f4f29fbe6ffee15faa02f8ef1537b8b75708dcc494a2c32885adee15805765fc"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.2707,
+        0.97,
+        0.4844
+      ],
+      "floor_role": "middle",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "2b363cd14ed8ce0cf178e579960cabe4e3aaccf9fc9a4568b2fe4d483bf5cee3"
+    },
+    {
+      "carrier_id": "v96_court_wall_1_floor_2",
+      "surface_id": "court_segment_1_floor_2",
+      "sticker_layer": "middle_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_wall_1",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "0f81699bc6a42a43e4b8523c4b9d8bee29a7b0fb3ebefb4bc70ab02c30059234"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.4844,
+        0.97,
+        0.702
+      ],
+      "floor_role": "middle",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "e1a6547fdab34a6b103525e1e95cc2995947a96b899ff890208c9f0f78c2f77c"
+    },
+    {
+      "carrier_id": "v96_court_wall_1_floor_3",
+      "surface_id": "court_segment_1_floor_3",
+      "sticker_layer": "top_crown_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_wall_1",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "c56ab61597cdd1ab4fb0ae72773900fb8c674f8ed692f7cc9f747bc84d1b63a0"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.702,
+        0.97,
+        0.8948
+      ],
+      "floor_role": "top_crown",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "0dd8481e59e79038a28a308212c4fbcd0a8e552f4b8d3e38f2eda6c7c7bf355a"
+    },
+    {
+      "carrier_id": "v96_court_wall_2_floor_0",
+      "surface_id": "court_segment_2_floor_0",
+      "sticker_layer": "ground_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_wall_2",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "22fe1792176d38dac376cda5ed021570ed3915309c8e859cd1035aa4db67fed5"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.0,
+        0.97,
+        0.2707
+      ],
+      "floor_role": "ground",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "bc161ea28a39e2a5d95547f463f979fba93bc9bbaf6cb4c3a6bd4f5db8a72323"
+    },
+    {
+      "carrier_id": "v96_court_wall_2_floor_1",
+      "surface_id": "court_segment_2_floor_1",
+      "sticker_layer": "middle_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_wall_2",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "b717fbf1106c5025483944be16189ca8225a8d744df57f03ff7c1b10eac8f2c2"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.2707,
+        0.97,
+        0.4844
+      ],
+      "floor_role": "middle",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "b1593e9f54e46fd2d807e07c50bc0165d313281b6485c569a0adfaf77f1d239c"
+    },
+    {
+      "carrier_id": "v96_court_wall_2_floor_2",
+      "surface_id": "court_segment_2_floor_2",
+      "sticker_layer": "middle_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_wall_2",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "cb7f29dbfb518849926b9dfd220e3895fa6253abc9b1a7beebdbbd9cdc96ef21"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.4844,
+        0.97,
+        0.702
+      ],
+      "floor_role": "middle",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "ad478b53109b0d57b4ce846abfa2e63f0df34cdf01e691d6eb4dac1727d7f379"
+    },
+    {
+      "carrier_id": "v96_court_wall_2_floor_3",
+      "surface_id": "court_segment_2_floor_3",
+      "sticker_layer": "top_crown_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_wall_2",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "b084c36403688933438b8fce35c8a3eb4d62688e838134a411c846558f20c951"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.702,
+        0.97,
+        0.8948
+      ],
+      "floor_role": "top_crown",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "c85c638c086c303f4873b7d308ad1f9366ba6be1b1df10aec1634602f32944ae"
+    },
+    {
+      "carrier_id": "v96_court_wall_3_floor_0",
+      "surface_id": "court_segment_3_floor_0",
+      "sticker_layer": "ground_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_wall_3",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "20b9dbcc97fab5dbff9626c39559e242921804ce9b9f616d78152fdb836afe7e"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.0,
+        0.97,
+        0.2707
+      ],
+      "floor_role": "ground",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "bfe17f9c1b3f4e77d70512ee3a701d39f3b31fc52e41cd910820b79384d9cf64"
+    },
+    {
+      "carrier_id": "v96_court_wall_3_floor_1",
+      "surface_id": "court_segment_3_floor_1",
+      "sticker_layer": "middle_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_wall_3",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "907ce792219485793c975171fc83f5bf813e4d3bfa11e5accab131f5efe2b3ba"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.2707,
+        0.97,
+        0.4844
+      ],
+      "floor_role": "middle",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "8ff46541d8a548d924cf256ba633392bbc880e58bdbf65244a9bfdc4858c7b7d"
+    },
+    {
+      "carrier_id": "v96_court_wall_3_floor_2",
+      "surface_id": "court_segment_3_floor_2",
+      "sticker_layer": "middle_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_wall_3",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "da1cd2d3cb28658879c0eaf7e5f40f80996401a11ba878502f90d0cc3bfa3ebf"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.4844,
+        0.97,
+        0.702
+      ],
+      "floor_role": "middle",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "bf9f6559139e5481f9331b81a18be55da15f90eff403ba2ad0e4209903c2b6d4"
+    },
+    {
+      "carrier_id": "v96_court_wall_3_floor_3",
+      "surface_id": "court_segment_3_floor_3",
+      "sticker_layer": "top_crown_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_wall_3",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "4f3f4807f4a96a3fa8e836596ece40450f6b488542921017432c81dff0849518"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.702,
+        0.97,
+        0.8948
+      ],
+      "floor_role": "top_crown",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "aa9673033828e3ce79e73c86ac36014c78a8681c07ab4b749cd589a3d581af36"
+    },
+    {
+      "carrier_id": "v96_court_wall_4_floor_0",
+      "surface_id": "court_segment_4_floor_0",
+      "sticker_layer": "ground_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_wall_4",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "c96fb5b1c69c51114bf88a8e1ccd206aba883a29fc2dd57f59649960ba76a84a"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.0,
+        0.97,
+        0.2707
+      ],
+      "floor_role": "ground",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "67d740c5391bdd1c226af7d26f839e53eb478f2e4c9e88fe632c8b107f6d9061"
+    },
+    {
+      "carrier_id": "v96_court_wall_4_floor_1",
+      "surface_id": "court_segment_4_floor_1",
+      "sticker_layer": "middle_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_wall_4",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "d4e7098c7dd108e726c230634a2570e4f5583c41fa6694c14418158c66685650"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.2707,
+        0.97,
+        0.4844
+      ],
+      "floor_role": "middle",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "b189de57be131201149a5ba85783662188b639311a1da91517cba8c88677b086"
+    },
+    {
+      "carrier_id": "v96_court_wall_4_floor_2",
+      "surface_id": "court_segment_4_floor_2",
+      "sticker_layer": "middle_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_wall_4",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "1cc5222b3a988bc79fa547638462cc88404483c1ffd1248ee8ab0720572589ba"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.4844,
+        0.97,
+        0.702
+      ],
+      "floor_role": "middle",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "d65a3e1686d80fc9970972647fd8b9e5ee1918dcf8b3d84deed7f9dbe0f959ba"
+    },
+    {
+      "carrier_id": "v96_court_wall_4_floor_3",
+      "surface_id": "court_segment_4_floor_3",
+      "sticker_layer": "top_crown_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_wall_4",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "44bc32f7524d14bdef7554b3d3c0669c0bd771fdc21037751bf8f37f864e15c7"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.702,
+        0.97,
+        0.8948
+      ],
+      "floor_role": "top_crown",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "201d4ce3ec9bacfdfef150fe9bdc670cd97332f96834c68a7feadfe7e09f3be4"
+    },
+    {
+      "carrier_id": "v96_court_wall_5_floor_0",
+      "surface_id": "court_segment_5_floor_0",
+      "sticker_layer": "ground_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_wall_5",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "7c5f7a4124ada984fa129e1e7874a67d330b61e28f55acc873cc1f6dd5c0e8ee"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.0,
+        0.97,
+        0.2707
+      ],
+      "floor_role": "ground",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "2866b13811b392d36a0119df4b1913cb12d71b3830766cff0cc1f55265af655a"
+    },
+    {
+      "carrier_id": "v96_court_wall_5_floor_1",
+      "surface_id": "court_segment_5_floor_1",
+      "sticker_layer": "middle_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_wall_5",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "442259e1b173dd10d7ac45aff42e15082e571079c5d8256c0dbf2b05bad0d7d0"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.2707,
+        0.97,
+        0.4844
+      ],
+      "floor_role": "middle",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "4d743f7f69f8e5ceef069d0558b8d55223f94b02e9bfaa01ff03f44cd3813c07"
+    },
+    {
+      "carrier_id": "v96_court_wall_5_floor_2",
+      "surface_id": "court_segment_5_floor_2",
+      "sticker_layer": "middle_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_wall_5",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "4b00245956d97de9c64cfe8c11b0b9be72cac6c66b19b2eb0c6a8db624bb387c"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.4844,
+        0.97,
+        0.702
+      ],
+      "floor_role": "middle",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "99ca25ad313392c2a7403b975d050ace51acd4e2a14e5d7a1935d10a7913953a"
+    },
+    {
+      "carrier_id": "v96_court_wall_5_floor_3",
+      "surface_id": "court_segment_5_floor_3",
+      "sticker_layer": "top_crown_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_wall_5",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "da9fd8bc8493506da5f3e20548869f8520579342b41f48c085d8f8b2398487ff"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.702,
+        0.97,
+        0.8948
+      ],
+      "floor_role": "top_crown",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "02344d0635473fe7e1d2825dab64661cd51d65d4651a38fc7d8fe61afb17bcc2"
+    },
+    {
+      "carrier_id": "v96_court_wall_6_floor_0",
+      "surface_id": "court_segment_6_floor_0",
+      "sticker_layer": "ground_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_wall_6",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "26cb6ee1a852a28d73ada21ef6737a8891456bd5419114e893712e482a10e5ec"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.0,
+        0.97,
+        0.2707
+      ],
+      "floor_role": "ground",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "af277a1372154331c4b7c2a7227459581591126d50585d64d7b91e1a5e1bcd74"
+    },
+    {
+      "carrier_id": "v96_court_wall_6_floor_1",
+      "surface_id": "court_segment_6_floor_1",
+      "sticker_layer": "middle_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_wall_6",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "ab9877b154ad0d6922753e765252af855811d9f0f48f60126e60f147135c73be"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.2707,
+        0.97,
+        0.4844
+      ],
+      "floor_role": "middle",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "ad700b86b2684aa000c593215337aaaf7f6331a9720c7a9a8afd0b281642b1af"
+    },
+    {
+      "carrier_id": "v96_court_wall_6_floor_2",
+      "surface_id": "court_segment_6_floor_2",
+      "sticker_layer": "middle_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_wall_6",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "0c79eecbcba63a0060ba0dd2b509b82510b156ee6701d0fae98773a20f1e0995"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.4844,
+        0.97,
+        0.702
+      ],
+      "floor_role": "middle",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "21e3c688b06797d40f378f9c5c8a87cc0ef535df5a69bb0adff311ec3d807657"
+    },
+    {
+      "carrier_id": "v96_court_wall_6_floor_3",
+      "surface_id": "court_segment_6_floor_3",
+      "sticker_layer": "top_crown_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_wall_6",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "03384943d2f2d51b131740b7b72b7b532f03d4d1782b80d5069510f94800f621"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.702,
+        0.97,
+        0.8948
+      ],
+      "floor_role": "top_crown",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "8bcd413d4b6e9e1276ad4ac0d33e46425ba021a1d8dc461721a11f7e24024668"
+    },
+    {
+      "carrier_id": "v96_court_wall_7_floor_0",
+      "surface_id": "court_segment_7_floor_0",
+      "sticker_layer": "ground_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_wall_7",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "638b1b7e072546047af27552c3d6cc771e13f034ca491e80dbecaf4d7a741afb"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.0,
+        0.97,
+        0.2707
+      ],
+      "floor_role": "ground",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "9ac623294372d6fbbc0b9198a6003e71d56f7f9be3c133495d394f9ce16879af"
+    },
+    {
+      "carrier_id": "v96_court_wall_7_floor_1",
+      "surface_id": "court_segment_7_floor_1",
+      "sticker_layer": "middle_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_wall_7",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "4118b57cdae180c7f5fa1866b48a734bf7a834be48c9c81d6f72f3c780a5d9e8"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.2707,
+        0.97,
+        0.4844
+      ],
+      "floor_role": "middle",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "baad7d0d58ea70c7e97360417615557a5052ba8adce331de72f7d448f5bcd4c5"
+    },
+    {
+      "carrier_id": "v96_court_wall_7_floor_2",
+      "surface_id": "court_segment_7_floor_2",
+      "sticker_layer": "middle_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_wall_7",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "b00afca2f79fa0be07c8e77785c720662cb3127af7cb6bab81c93d368a44bd52"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.4844,
+        0.97,
+        0.702
+      ],
+      "floor_role": "middle",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "bb6c274dc3eb76d224b474b8722624eaa66dc931cc1f0b83cfed3893d1ceffa5"
+    },
+    {
+      "carrier_id": "v96_court_wall_7_floor_3",
+      "surface_id": "court_segment_7_floor_3",
+      "sticker_layer": "top_crown_floor",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_wall_7",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "0505fac9f242009b076c49efd457a835ff200b232c06cb3f0532c17fe5a130d9"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.702,
+        0.97,
+        0.8948
+      ],
+      "floor_role": "top_crown",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "bda6d9896ceca1c8980ff9b87bfe1bbe7663952fec024dd6b8938fa6141307c6"
+    },
+    {
+      "carrier_id": "v96_terrace_roof_sticker",
+      "surface_id": "open_courtyard_terrace_roof",
+      "sticker_layer": "roof",
+      "mapping_method": "plan_orthographic",
+      "mapping_axis": "plan",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "terrace_roof_ring",
+          "selected_face_count": 8,
+          "fingerprint_sha256": "f0f55be21b32152a83f024290e5fbc3d4f9a670cde1e1c3f5113ab143eabd815"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/terrace_roof_intrinsic.png",
+      "source_image_sha256": "bec44480d86b5a0c615a06adcc184965403f8c2a089c446f183aa61b9503fd08",
+      "source_uv_bounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "floor_role": "roof",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "4ec3e769d86e8b7e83774ce094d016e956c3fc947638e08429d925b99743e7f3"
+    },
+    {
+      "carrier_id": "v96_outer_parapet_0_crown_sticker",
+      "surface_id": "outer_parapet_0_visible_crown",
+      "sticker_layer": "crown",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_parapet_0",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "1773cd71f50799e94418282ffa0e3baef1e9d5c6dcbdc72b5bd7175a89b1463d"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.8948,
+        0.97,
+        1.0
+      ],
+      "floor_role": "top_crown",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "7f214f1a183650d3cec14350248a28209c363c053a00402b1db906adf9813c12"
+    },
+    {
+      "carrier_id": "v96_outer_parapet_0_roof_return_sticker",
+      "surface_id": "outer_parapet_0_inner_return",
+      "sticker_layer": "roof_return",
+      "mapping_method": "directional_per_face_box_projection",
+      "mapping_axis": "box_projected",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_parapet_0",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "c335e10eac3269541a515aa8475e9fc589ea6e8375665b1ad90ac6ccc71f9ec6"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/terrace_roof_intrinsic.png",
+      "source_image_sha256": "bec44480d86b5a0c615a06adcc184965403f8c2a089c446f183aa61b9503fd08",
+      "source_uv_bounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "floor_role": "roof",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "e63b9000a98d6dd8a6748dce193fdebf505cb77c79deea15571399d3d8efffae"
+    },
+    {
+      "carrier_id": "v96_outer_parapet_0_terracotta_cap_sticker",
+      "surface_id": "outer_parapet_0_terracotta_cap",
+      "sticker_layer": "roof_cap",
+      "mapping_method": "plan_orthographic",
+      "mapping_axis": "plan",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_parapet_0",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "4922c86186edad288a4c6623040f5a4ab2a0c20c292038d575c0d64e38a9a9c4"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/terracotta_cap_intrinsic.png",
+      "source_image_sha256": "13516e9681544351896b654d4ad5ca94abd5d9f42995300380a20153ad467ba7",
+      "source_uv_bounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "floor_role": "roof",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "f39490fc97e8deabb0a342eb5c589b43e37d13c895d85617f32755b08d826bc8"
+    },
+    {
+      "carrier_id": "v96_outer_parapet_1_crown_sticker",
+      "surface_id": "outer_parapet_1_visible_crown",
+      "sticker_layer": "crown",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_parapet_1",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "6fe45a35a9d43a876b4b9a0b877c169e2618d23cf072bc2e2a547e43a6fa44de"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.8948,
+        0.97,
+        1.0
+      ],
+      "floor_role": "top_crown",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "54ccd1eff51d2752333375a6d058a910663e441d695d7c126b1ac6ba9a28779c"
+    },
+    {
+      "carrier_id": "v96_outer_parapet_1_roof_return_sticker",
+      "surface_id": "outer_parapet_1_inner_return",
+      "sticker_layer": "roof_return",
+      "mapping_method": "directional_per_face_box_projection",
+      "mapping_axis": "box_projected",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_parapet_1",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "dd28a0aa6b67b65152242b86b315b139a5a403c7adc84d5ad3c7f6dbeb284b2f"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/terrace_roof_intrinsic.png",
+      "source_image_sha256": "bec44480d86b5a0c615a06adcc184965403f8c2a089c446f183aa61b9503fd08",
+      "source_uv_bounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "floor_role": "roof",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "f27636d7adc95e656d063780399fff1063f99bb38c5b278040599ed04592c72c"
+    },
+    {
+      "carrier_id": "v96_outer_parapet_1_terracotta_cap_sticker",
+      "surface_id": "outer_parapet_1_terracotta_cap",
+      "sticker_layer": "roof_cap",
+      "mapping_method": "plan_orthographic",
+      "mapping_axis": "plan",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_parapet_1",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "9b04203eea77507c6008e1e27231d424b15cf459d73dc2b4256e5f845227e44a"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/terracotta_cap_intrinsic.png",
+      "source_image_sha256": "13516e9681544351896b654d4ad5ca94abd5d9f42995300380a20153ad467ba7",
+      "source_uv_bounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "floor_role": "roof",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "f098a9aab8b3a974d2743a31b1b5581d4b5c6389bdc92b8214e3d2d5aa3bd5ad"
+    },
+    {
+      "carrier_id": "v96_outer_parapet_2_crown_sticker",
+      "surface_id": "outer_parapet_2_visible_crown",
+      "sticker_layer": "crown",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_parapet_2",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "65b3f6d324365b5ec48d5fbcd1cd161125d2992c8a53dfbb39636062ff3904ee"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.8948,
+        0.97,
+        1.0
+      ],
+      "floor_role": "top_crown",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "46b206117feec888030ed5b73b77dacb226bba9cf083e0eab8b5d33eac16e2cc"
+    },
+    {
+      "carrier_id": "v96_outer_parapet_2_roof_return_sticker",
+      "surface_id": "outer_parapet_2_inner_return",
+      "sticker_layer": "roof_return",
+      "mapping_method": "directional_per_face_box_projection",
+      "mapping_axis": "box_projected",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_parapet_2",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "86e480319bd234dfe386783c62051f0bc175cf4d17639f94dd745dcbc7403f0e"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/terrace_roof_intrinsic.png",
+      "source_image_sha256": "bec44480d86b5a0c615a06adcc184965403f8c2a089c446f183aa61b9503fd08",
+      "source_uv_bounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "floor_role": "roof",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "f509cbf8ef9b8e9b4077ad3a357681e690862ac4ff7da02225eb1027e77b8d8c"
+    },
+    {
+      "carrier_id": "v96_outer_parapet_2_terracotta_cap_sticker",
+      "surface_id": "outer_parapet_2_terracotta_cap",
+      "sticker_layer": "roof_cap",
+      "mapping_method": "plan_orthographic",
+      "mapping_axis": "plan",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_parapet_2",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "df0ba41ec77045a1b73ee0d63b03700f6dd56e9064cb47507794e15b3dac1a33"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/terracotta_cap_intrinsic.png",
+      "source_image_sha256": "13516e9681544351896b654d4ad5ca94abd5d9f42995300380a20153ad467ba7",
+      "source_uv_bounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "floor_role": "roof",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "d8647d6e58c91d0592a6738460b9860669a3b2982161d169fafe5ecca5db2259"
+    },
+    {
+      "carrier_id": "v96_outer_parapet_3_crown_sticker",
+      "surface_id": "outer_parapet_3_visible_crown",
+      "sticker_layer": "crown",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_parapet_3",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "74f8d1a0a1c22b7d41d3cfb359c7adea641c651c8fc28bdec87acf5459441f55"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.8948,
+        0.97,
+        1.0
+      ],
+      "floor_role": "top_crown",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "624eb95ff7f691206dd92cee5cc32f25c399c6b09262ca45c6860066bb939ca2"
+    },
+    {
+      "carrier_id": "v96_outer_parapet_3_roof_return_sticker",
+      "surface_id": "outer_parapet_3_inner_return",
+      "sticker_layer": "roof_return",
+      "mapping_method": "directional_per_face_box_projection",
+      "mapping_axis": "box_projected",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_parapet_3",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "f20e5208dd6d6ee300a7e96fd0218a3f7fe223d87e7a0ae1280f6b872a362b78"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/terrace_roof_intrinsic.png",
+      "source_image_sha256": "bec44480d86b5a0c615a06adcc184965403f8c2a089c446f183aa61b9503fd08",
+      "source_uv_bounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "floor_role": "roof",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "bc46300e623d6a68be9f6df4ba4422a47feea232f639b538b7eeb846bdd7f106"
+    },
+    {
+      "carrier_id": "v96_outer_parapet_3_terracotta_cap_sticker",
+      "surface_id": "outer_parapet_3_terracotta_cap",
+      "sticker_layer": "roof_cap",
+      "mapping_method": "plan_orthographic",
+      "mapping_axis": "plan",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_parapet_3",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "bcc5344c569992d8b54f7f6959c7c1665604a2509b962c0a4167ec2d416a18d0"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/terracotta_cap_intrinsic.png",
+      "source_image_sha256": "13516e9681544351896b654d4ad5ca94abd5d9f42995300380a20153ad467ba7",
+      "source_uv_bounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "floor_role": "roof",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "acce631ee1e30e94d57e9d1f4fb3d174c08a74c144092d461a4d0603a3addaa0"
+    },
+    {
+      "carrier_id": "v96_outer_parapet_4_crown_sticker",
+      "surface_id": "outer_parapet_4_visible_crown",
+      "sticker_layer": "crown",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_parapet_4",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "a02d848a0e2e8e1b84ac0b1c485103293084aad0ff99cb2ef7ea7590d8377385"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.8948,
+        0.97,
+        1.0
+      ],
+      "floor_role": "top_crown",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "61fb96ea7c83fc0c0c83d8862225fe865dc9526b7de47518ebf05558f11ec0b1"
+    },
+    {
+      "carrier_id": "v96_outer_parapet_4_roof_return_sticker",
+      "surface_id": "outer_parapet_4_inner_return",
+      "sticker_layer": "roof_return",
+      "mapping_method": "directional_per_face_box_projection",
+      "mapping_axis": "box_projected",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_parapet_4",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "2c39f9be9d43f8dc9d03e43320a6f21e2338461646d949f9e5de9be30793003d"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/terrace_roof_intrinsic.png",
+      "source_image_sha256": "bec44480d86b5a0c615a06adcc184965403f8c2a089c446f183aa61b9503fd08",
+      "source_uv_bounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "floor_role": "roof",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "112a2711500186d248b044fa6bcb14270e71ce31a67d841db6ed338ef3bb0675"
+    },
+    {
+      "carrier_id": "v96_outer_parapet_4_terracotta_cap_sticker",
+      "surface_id": "outer_parapet_4_terracotta_cap",
+      "sticker_layer": "roof_cap",
+      "mapping_method": "plan_orthographic",
+      "mapping_axis": "plan",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_parapet_4",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "d25b4a0f795a4960e8ec91017bea79babde57cd13384714b1bfe5260e478dc26"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/terracotta_cap_intrinsic.png",
+      "source_image_sha256": "13516e9681544351896b654d4ad5ca94abd5d9f42995300380a20153ad467ba7",
+      "source_uv_bounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "floor_role": "roof",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "96165d185e5be590cba18c2027e2d7021da2e557301acea10e25e8b15c08098f"
+    },
+    {
+      "carrier_id": "v96_outer_parapet_5_crown_sticker",
+      "surface_id": "outer_parapet_5_visible_crown",
+      "sticker_layer": "crown",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_parapet_5",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "88f91f9fe672d722ab3982c61d583a2c674fc15d7a0aa955f2e51dbad9d4f57c"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.8948,
+        0.97,
+        1.0
+      ],
+      "floor_role": "top_crown",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "73d9121eac8d17ea881f48bae232382f20996e0e43f87841abc62bddc2d33b06"
+    },
+    {
+      "carrier_id": "v96_outer_parapet_5_roof_return_sticker",
+      "surface_id": "outer_parapet_5_inner_return",
+      "sticker_layer": "roof_return",
+      "mapping_method": "directional_per_face_box_projection",
+      "mapping_axis": "box_projected",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_parapet_5",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "408c7ba292744506d1d73a45b61c598a5be006df32f3e96493e98c4789b70320"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/terrace_roof_intrinsic.png",
+      "source_image_sha256": "bec44480d86b5a0c615a06adcc184965403f8c2a089c446f183aa61b9503fd08",
+      "source_uv_bounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "floor_role": "roof",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "87a8e6d1c53119a47525831ed56e79b286ce3eccd47e3fb2daf3599cabc03efc"
+    },
+    {
+      "carrier_id": "v96_outer_parapet_5_terracotta_cap_sticker",
+      "surface_id": "outer_parapet_5_terracotta_cap",
+      "sticker_layer": "roof_cap",
+      "mapping_method": "plan_orthographic",
+      "mapping_axis": "plan",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_parapet_5",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "299e7ce817a93d16f85b568a3b31a91aa8fdb0a739167e629797adf5bc97bd1a"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/terracotta_cap_intrinsic.png",
+      "source_image_sha256": "13516e9681544351896b654d4ad5ca94abd5d9f42995300380a20153ad467ba7",
+      "source_uv_bounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "floor_role": "roof",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "fae78636a46276da66ec4b07a715c91e47237d6109984696db5417af3f8a9483"
+    },
+    {
+      "carrier_id": "v96_outer_parapet_6_crown_sticker",
+      "surface_id": "outer_parapet_6_visible_crown",
+      "sticker_layer": "crown",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_parapet_6",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "5a9a2406ddf9daa92fe1df98f2a4b7e4eae0eb82cc88473bbd7b29c8feb212af"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.8948,
+        0.97,
+        1.0
+      ],
+      "floor_role": "top_crown",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "929d1ee8975bec84e44e9f230951e650d74c90c0881a8abf28f3d94593cc1185"
+    },
+    {
+      "carrier_id": "v96_outer_parapet_6_roof_return_sticker",
+      "surface_id": "outer_parapet_6_inner_return",
+      "sticker_layer": "roof_return",
+      "mapping_method": "directional_per_face_box_projection",
+      "mapping_axis": "box_projected",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_parapet_6",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "abae50ef6c8c17bac3fbd8eb3646cc6cc47a767b8e725977fc410aa0af5320f5"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/terrace_roof_intrinsic.png",
+      "source_image_sha256": "bec44480d86b5a0c615a06adcc184965403f8c2a089c446f183aa61b9503fd08",
+      "source_uv_bounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "floor_role": "roof",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "7c5f7c0ee372c6e8c0e550bb3ea0a869b21304fb87625854a125c4d4b0327c83"
+    },
+    {
+      "carrier_id": "v96_outer_parapet_6_terracotta_cap_sticker",
+      "surface_id": "outer_parapet_6_terracotta_cap",
+      "sticker_layer": "roof_cap",
+      "mapping_method": "plan_orthographic",
+      "mapping_axis": "plan",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_parapet_6",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "5e501c833114a65c274a7ffb1ba53510d7c22b1a355d37412d69e428d40516c4"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/terracotta_cap_intrinsic.png",
+      "source_image_sha256": "13516e9681544351896b654d4ad5ca94abd5d9f42995300380a20153ad467ba7",
+      "source_uv_bounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "floor_role": "roof",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "6ba1031271a4d3281b0ba436228f9919cccd83f5a33ad4ce1086854cfe58967a"
+    },
+    {
+      "carrier_id": "v96_outer_parapet_7_crown_sticker",
+      "surface_id": "outer_parapet_7_visible_crown",
+      "sticker_layer": "crown",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_parapet_7",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "72ef61d06801eb83c97e88c40534187cf9084329738c1033c56f028a1c6721bb"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.8948,
+        0.97,
+        1.0
+      ],
+      "floor_role": "top_crown",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "a6d7112b947bcc6b5a854fe6f3a9bed921435fd0391d1a7f4a2b790eb11c347c"
+    },
+    {
+      "carrier_id": "v96_outer_parapet_7_roof_return_sticker",
+      "surface_id": "outer_parapet_7_inner_return",
+      "sticker_layer": "roof_return",
+      "mapping_method": "directional_per_face_box_projection",
+      "mapping_axis": "box_projected",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_parapet_7",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "e9c00e824da09ffbf89ce384d5f0ba4be4ef326662683616b63c588367706be3"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/terrace_roof_intrinsic.png",
+      "source_image_sha256": "bec44480d86b5a0c615a06adcc184965403f8c2a089c446f183aa61b9503fd08",
+      "source_uv_bounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "floor_role": "roof",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "8308dabad0128efa3c0095fd6f9caa4313ad804a9764eec1e7e52732f180223b"
+    },
+    {
+      "carrier_id": "v96_outer_parapet_7_terracotta_cap_sticker",
+      "surface_id": "outer_parapet_7_terracotta_cap",
+      "sticker_layer": "roof_cap",
+      "mapping_method": "plan_orthographic",
+      "mapping_axis": "plan",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "outer_parapet_7",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "620fdc1afee4acd85de7a2d00e1793ed57b7f46ab52d976053c559af691b85d7"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/terracotta_cap_intrinsic.png",
+      "source_image_sha256": "13516e9681544351896b654d4ad5ca94abd5d9f42995300380a20153ad467ba7",
+      "source_uv_bounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "floor_role": "roof",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "183089edddb5f68e666db6859dd5ad6e72e749dcdfeaa407a46a66ca292a34ad"
+    },
+    {
+      "carrier_id": "v96_court_parapet_0_crown_sticker",
+      "surface_id": "court_parapet_0_visible_crown",
+      "sticker_layer": "crown",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_parapet_0",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "60f1b3dd7e8b49a9cbe1bddc6b7873fe528492f439628eba7b270b386c9dbc42"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.8948,
+        0.97,
+        1.0
+      ],
+      "floor_role": "top_crown",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "5c8d259750b472c33dd2ea4e4e2de7903a77d8774af309955b2af0d4aa971c66"
+    },
+    {
+      "carrier_id": "v96_court_parapet_0_roof_return_sticker",
+      "surface_id": "court_parapet_0_inner_return",
+      "sticker_layer": "roof_return",
+      "mapping_method": "directional_per_face_box_projection",
+      "mapping_axis": "box_projected",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_parapet_0",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "401e7590b1f4231cb399b4c8483945a3416294a5c633696e8a04fff416b00e02"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/terrace_roof_intrinsic.png",
+      "source_image_sha256": "bec44480d86b5a0c615a06adcc184965403f8c2a089c446f183aa61b9503fd08",
+      "source_uv_bounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "floor_role": "roof",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "00cc2581397e0b4b8ed6d9ee5528ed209bfbadcbdaa45a485e55ad9ff157fef0"
+    },
+    {
+      "carrier_id": "v96_court_parapet_0_terracotta_cap_sticker",
+      "surface_id": "court_parapet_0_terracotta_cap",
+      "sticker_layer": "roof_cap",
+      "mapping_method": "plan_orthographic",
+      "mapping_axis": "plan",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_parapet_0",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "d96dced1bef20374e54f96528e416faae3070de7a96ce1017ed3c0c946228ebb"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/terracotta_cap_intrinsic.png",
+      "source_image_sha256": "13516e9681544351896b654d4ad5ca94abd5d9f42995300380a20153ad467ba7",
+      "source_uv_bounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "floor_role": "roof",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "075ebedfdb9be6a843fb5f57817b35eefeb9d8bd70abce128a0abdc7053eaf25"
+    },
+    {
+      "carrier_id": "v96_court_parapet_1_crown_sticker",
+      "surface_id": "court_parapet_1_visible_crown",
+      "sticker_layer": "crown",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_parapet_1",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "96c9dd2351a8c4821b339d1803ab93202d3195ac32eb9a7463171e8f944a263a"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.8948,
+        0.97,
+        1.0
+      ],
+      "floor_role": "top_crown",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "ca66759a85d7f929e53d994ad96930425f7c9ded2940bbcc0a57919386d0bc85"
+    },
+    {
+      "carrier_id": "v96_court_parapet_1_roof_return_sticker",
+      "surface_id": "court_parapet_1_inner_return",
+      "sticker_layer": "roof_return",
+      "mapping_method": "directional_per_face_box_projection",
+      "mapping_axis": "box_projected",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_parapet_1",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "6669afa685b455c9adadc485c3171c62e8f6f9d4e177165eca7d1badb56e94f9"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/terrace_roof_intrinsic.png",
+      "source_image_sha256": "bec44480d86b5a0c615a06adcc184965403f8c2a089c446f183aa61b9503fd08",
+      "source_uv_bounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "floor_role": "roof",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "687d1a6bffaef80d2a25fd79c73679228363a0dd0ef87bd99d956977f9bea9b0"
+    },
+    {
+      "carrier_id": "v96_court_parapet_1_terracotta_cap_sticker",
+      "surface_id": "court_parapet_1_terracotta_cap",
+      "sticker_layer": "roof_cap",
+      "mapping_method": "plan_orthographic",
+      "mapping_axis": "plan",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_parapet_1",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "ef0a0b7934085dbac0e05279ff4b36966934e53c63c61122bb414d00a2e8a0b3"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/terracotta_cap_intrinsic.png",
+      "source_image_sha256": "13516e9681544351896b654d4ad5ca94abd5d9f42995300380a20153ad467ba7",
+      "source_uv_bounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "floor_role": "roof",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "73b38b2a5d97fb734b396318710da14def1b7cff3785e94ec8615b83a6d965f0"
+    },
+    {
+      "carrier_id": "v96_court_parapet_2_crown_sticker",
+      "surface_id": "court_parapet_2_visible_crown",
+      "sticker_layer": "crown",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_parapet_2",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "e799e245507dd53d3c1fe2435252572f76e6fb7e8f5b0067a4846629337c3388"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.8948,
+        0.97,
+        1.0
+      ],
+      "floor_role": "top_crown",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "14c22138d8796e6acdda587156d566fd6fe07083de926b6cd31ec9f86b6c78e1"
+    },
+    {
+      "carrier_id": "v96_court_parapet_2_roof_return_sticker",
+      "surface_id": "court_parapet_2_inner_return",
+      "sticker_layer": "roof_return",
+      "mapping_method": "directional_per_face_box_projection",
+      "mapping_axis": "box_projected",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_parapet_2",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "8a47648795d6c570f893b2aa6a39bf8d8f32b35dc36d13db72093fd246870151"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/terrace_roof_intrinsic.png",
+      "source_image_sha256": "bec44480d86b5a0c615a06adcc184965403f8c2a089c446f183aa61b9503fd08",
+      "source_uv_bounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "floor_role": "roof",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "f8bfc4a605f4a58bb42b26a6656334d9026bd313e6cc9a645232f0a32e76cbf0"
+    },
+    {
+      "carrier_id": "v96_court_parapet_2_terracotta_cap_sticker",
+      "surface_id": "court_parapet_2_terracotta_cap",
+      "sticker_layer": "roof_cap",
+      "mapping_method": "plan_orthographic",
+      "mapping_axis": "plan",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_parapet_2",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "73e07e6779e549f398335e51e4d552ee5cfbfe9f108ff3b80fba324b9a02587b"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/terracotta_cap_intrinsic.png",
+      "source_image_sha256": "13516e9681544351896b654d4ad5ca94abd5d9f42995300380a20153ad467ba7",
+      "source_uv_bounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "floor_role": "roof",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "0fdb13d217008368ab49fc6ef03c5e011eec1fb5ac448a5b1c06bea12ab02331"
+    },
+    {
+      "carrier_id": "v96_court_parapet_3_crown_sticker",
+      "surface_id": "court_parapet_3_visible_crown",
+      "sticker_layer": "crown",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_parapet_3",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "90e1ea7ea4d27ecca9d3cdd42452da20540438c82a218680fbad3bffc02b0652"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.8948,
+        0.97,
+        1.0
+      ],
+      "floor_role": "top_crown",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "7d37eb89c3dc97bafceff0fe0618ca38e229035042fafe36bfb41bf9e30faa2b"
+    },
+    {
+      "carrier_id": "v96_court_parapet_3_roof_return_sticker",
+      "surface_id": "court_parapet_3_inner_return",
+      "sticker_layer": "roof_return",
+      "mapping_method": "directional_per_face_box_projection",
+      "mapping_axis": "box_projected",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_parapet_3",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "494b94b818311c36d317ea20028e85f598e5488b62d925297a0c7f2216cf77f2"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/terrace_roof_intrinsic.png",
+      "source_image_sha256": "bec44480d86b5a0c615a06adcc184965403f8c2a089c446f183aa61b9503fd08",
+      "source_uv_bounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "floor_role": "roof",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "cf1fedaf547b36d721d9e9f766267846fbafd5598ee591c8f5a184448ff49cf4"
+    },
+    {
+      "carrier_id": "v96_court_parapet_3_terracotta_cap_sticker",
+      "surface_id": "court_parapet_3_terracotta_cap",
+      "sticker_layer": "roof_cap",
+      "mapping_method": "plan_orthographic",
+      "mapping_axis": "plan",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_parapet_3",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "8d3002125b067c1d34f8c6df86f943b77cc3f7f40d17baa7f49a4b9f821753ab"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/terracotta_cap_intrinsic.png",
+      "source_image_sha256": "13516e9681544351896b654d4ad5ca94abd5d9f42995300380a20153ad467ba7",
+      "source_uv_bounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "floor_role": "roof",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "2c1e55866c5cc427206b7aaf533fe72df3bb79665effca7cb518ca8c20bb7b6a"
+    },
+    {
+      "carrier_id": "v96_court_parapet_4_crown_sticker",
+      "surface_id": "court_parapet_4_visible_crown",
+      "sticker_layer": "crown",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_parapet_4",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "d8d32e2660b5981e021de21a3c9832c81da6ce264798eebd1c7955585bfd3aae"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.8948,
+        0.97,
+        1.0
+      ],
+      "floor_role": "top_crown",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "77fa5367724a0fc1f3d3bc11435c1b5872f58387c72936c0088854c99662ea31"
+    },
+    {
+      "carrier_id": "v96_court_parapet_4_roof_return_sticker",
+      "surface_id": "court_parapet_4_inner_return",
+      "sticker_layer": "roof_return",
+      "mapping_method": "directional_per_face_box_projection",
+      "mapping_axis": "box_projected",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_parapet_4",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "8e77daf9df2e7702b4b96926ca7873060b8fe515e1971b66b5d113d701e4c78e"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/terrace_roof_intrinsic.png",
+      "source_image_sha256": "bec44480d86b5a0c615a06adcc184965403f8c2a089c446f183aa61b9503fd08",
+      "source_uv_bounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "floor_role": "roof",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "327c5263be3091a88affbb057f3ee8982b6268064dc400f27836079f1ddc7921"
+    },
+    {
+      "carrier_id": "v96_court_parapet_4_terracotta_cap_sticker",
+      "surface_id": "court_parapet_4_terracotta_cap",
+      "sticker_layer": "roof_cap",
+      "mapping_method": "plan_orthographic",
+      "mapping_axis": "plan",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_parapet_4",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "b9f21c9313714dba0692010c0e75a3aa5b12b744f7cc0422554d5d42f441008c"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/terracotta_cap_intrinsic.png",
+      "source_image_sha256": "13516e9681544351896b654d4ad5ca94abd5d9f42995300380a20153ad467ba7",
+      "source_uv_bounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "floor_role": "roof",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "b5f28bfa4fb7172ef8c7bb38846d0964158bddddb84297005554d7602cc3d223"
+    },
+    {
+      "carrier_id": "v96_court_parapet_5_crown_sticker",
+      "surface_id": "court_parapet_5_visible_crown",
+      "sticker_layer": "crown",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_parapet_5",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "b8df9eb5e0104cf2e660bac4eb85a81392f75235f5b0af67cf664d4f0e05a1e5"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.8948,
+        0.97,
+        1.0
+      ],
+      "floor_role": "top_crown",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "c32c40627ffb768142d340a88b655d9374d3e23ef971a038c98f31a2eef235e2"
+    },
+    {
+      "carrier_id": "v96_court_parapet_5_roof_return_sticker",
+      "surface_id": "court_parapet_5_inner_return",
+      "sticker_layer": "roof_return",
+      "mapping_method": "directional_per_face_box_projection",
+      "mapping_axis": "box_projected",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_parapet_5",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "a0cb72a7e3303033c5b0a5447b4d4de3195df9ea88578aa1ed2d7594826c2c20"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/terrace_roof_intrinsic.png",
+      "source_image_sha256": "bec44480d86b5a0c615a06adcc184965403f8c2a089c446f183aa61b9503fd08",
+      "source_uv_bounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "floor_role": "roof",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "fd42c64cd95c3c8f02c8a1b15b96fd5918b5134e876b54d9930e4d8ee04db4be"
+    },
+    {
+      "carrier_id": "v96_court_parapet_5_terracotta_cap_sticker",
+      "surface_id": "court_parapet_5_terracotta_cap",
+      "sticker_layer": "roof_cap",
+      "mapping_method": "plan_orthographic",
+      "mapping_axis": "plan",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_parapet_5",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "a2634f25e77d430fdeb5c15b922a099ac41ce1898bb6a51b847df517a2a5ca82"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/terracotta_cap_intrinsic.png",
+      "source_image_sha256": "13516e9681544351896b654d4ad5ca94abd5d9f42995300380a20153ad467ba7",
+      "source_uv_bounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "floor_role": "roof",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "3d55f985fcf1828ac7cc53f7ce138e7cf496e6f96538a69034ce9c8ad8cee570"
+    },
+    {
+      "carrier_id": "v96_court_parapet_6_crown_sticker",
+      "surface_id": "court_parapet_6_visible_crown",
+      "sticker_layer": "crown",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_parapet_6",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "baf9e12fc7640acaea6debc2264c57ff7e128c2a60cb08884a7447e9ad83c4e1"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.8948,
+        0.97,
+        1.0
+      ],
+      "floor_role": "top_crown",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "01aee964116caf48c69ed715f30e2e922b354e14a5800db89c94feb16bb7f18c"
+    },
+    {
+      "carrier_id": "v96_court_parapet_6_roof_return_sticker",
+      "surface_id": "court_parapet_6_inner_return",
+      "sticker_layer": "roof_return",
+      "mapping_method": "directional_per_face_box_projection",
+      "mapping_axis": "box_projected",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_parapet_6",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "ff83156bf1b6ce178ac1086092caea7a281e88688db4cecd3debd32b3cb7988e"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/terrace_roof_intrinsic.png",
+      "source_image_sha256": "bec44480d86b5a0c615a06adcc184965403f8c2a089c446f183aa61b9503fd08",
+      "source_uv_bounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "floor_role": "roof",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "8661942d3f71138d3dec9212df0451ba5e2a63c1fc6133a9786d034bf529a6fe"
+    },
+    {
+      "carrier_id": "v96_court_parapet_6_terracotta_cap_sticker",
+      "surface_id": "court_parapet_6_terracotta_cap",
+      "sticker_layer": "roof_cap",
+      "mapping_method": "plan_orthographic",
+      "mapping_axis": "plan",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_parapet_6",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "2475aef615f66db2644a3154074bb47906dc21edf3b27e26d0945b75d77de275"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/terracotta_cap_intrinsic.png",
+      "source_image_sha256": "13516e9681544351896b654d4ad5ca94abd5d9f42995300380a20153ad467ba7",
+      "source_uv_bounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "floor_role": "roof",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "b03fda9dee0c778f6fcb888a65255b8fa3703fe4b67e97dc46ace4c343f590f4"
+    },
+    {
+      "carrier_id": "v96_court_parapet_7_crown_sticker",
+      "surface_id": "court_parapet_7_visible_crown",
+      "sticker_layer": "crown",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_parapet_7",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "d7736f604ec6d398b45be6498db9ffaaaadcbbddfef46d0a34e9a6d4816eac0a"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/ordinary_elevation_intrinsic.png",
+      "source_image_sha256": "2e0cf618554295ae13b870543aea62af6d7aa1ef5a40cc3313b12eebd533c6b9",
+      "source_uv_bounds": [
+        0.03,
+        0.8948,
+        0.97,
+        1.0
+      ],
+      "floor_role": "top_crown",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "f86599ba02f59f722cbd8ad548ab78e0ed9345f92cb77bb4e12bd354c104c4b4"
+    },
+    {
+      "carrier_id": "v96_court_parapet_7_roof_return_sticker",
+      "surface_id": "court_parapet_7_inner_return",
+      "sticker_layer": "roof_return",
+      "mapping_method": "directional_per_face_box_projection",
+      "mapping_axis": "box_projected",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_parapet_7",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "e5041144d5607e78c2fd2f69ddf5a4e64ba295c67636176a28dba9fb3a5569ed"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/terrace_roof_intrinsic.png",
+      "source_image_sha256": "bec44480d86b5a0c615a06adcc184965403f8c2a089c446f183aa61b9503fd08",
+      "source_uv_bounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "floor_role": "roof",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "c404299e9dbadb06442599b61413f4c77c30ff5951c2cb37b72f1618ad19cb7e"
+    },
+    {
+      "carrier_id": "v96_court_parapet_7_terracotta_cap_sticker",
+      "surface_id": "court_parapet_7_terracotta_cap",
+      "sticker_layer": "roof_cap",
+      "mapping_method": "plan_orthographic",
+      "mapping_axis": "plan",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "court_parapet_7",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "06b5711b748325dc87dc4513b44920cffae146c648ab3db0895d7187255ee10d"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/terracotta_cap_intrinsic.png",
+      "source_image_sha256": "13516e9681544351896b654d4ad5ca94abd5d9f42995300380a20153ad467ba7",
+      "source_uv_bounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "floor_role": "roof",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "4dfbd28754ae9dedd6cc310ed9a98c1313fa34f4f630edb56e974dfdd880d5b3"
+    },
+    {
+      "carrier_id": "v96_roof_access_sticker",
+      "surface_id": "roof_access_house",
+      "sticker_layer": "roof_access",
+      "mapping_method": "directional_per_face_box_projection",
+      "mapping_axis": "box_projected",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "roof_access_house",
+          "selected_face_count": 5,
+          "fingerprint_sha256": "15243067f52285ce40096c7ea077749bbc03a00a9c95d89bc96a804d77f11ad8"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/terrace_roof_intrinsic.png",
+      "source_image_sha256": "bec44480d86b5a0c615a06adcc184965403f8c2a089c446f183aa61b9503fd08",
+      "source_uv_bounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "floor_role": "roof",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "8f0e5429c50108c6d57fd03b0b7368783c7153238c45682f46a15aad1c6b7cbd"
+    },
+    {
+      "carrier_id": "v96_courtyard_floor_sticker",
+      "surface_id": "inhabited_open_courtyard_floor",
+      "sticker_layer": "courtyard_ground",
+      "mapping_method": "plan_orthographic",
+      "mapping_axis": "plan",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "courtyard_floor",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "6b304fe1505f2295d055d4ccf5e64356e741aa5d519a664f403c241b4a0a9517"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/courtyard_floor_intrinsic.png",
+      "source_image_sha256": "3cadf1f9fafe820079e5c9406236a95efab401a11d115e8a1ce0bf162b634b06",
+      "source_uv_bounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "floor_role": "ground",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "5e27840cdf5d3d1c81db49d656392e90c1431fc1ce2c9ace630d3018d09960d1"
+    },
+    {
+      "carrier_id": "v96_portal_tunnel_sticker",
+      "surface_id": "carved_portal_tunnel_returns",
+      "sticker_layer": "entrance_tunnel",
+      "mapping_method": "directional_per_face_box_projection",
+      "mapping_axis": "box_projected",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "hero_portal_tunnel",
+          "selected_face_count": 4,
+          "fingerprint_sha256": "60e19eed70491f212b62d8525690e0cb5bdc50e3d6f9af12d61f2dc093c18582"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/textures/limestone/albedo.jpg",
+      "source_image_sha256": "a1e20e06859507b05e5a3d96ff617263ecb0fd7562f13dbb935abf6a6f4ab57a",
+      "source_uv_bounds": [
+        0.36,
+        0.0,
+        0.64,
+        0.2707
+      ],
+      "floor_role": "ground",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "a43acf06339ab2af7cc386e6d9e0496f4615bb97dff18ea330487068890ce9c5"
+    },
+    {
+      "carrier_id": "v96_portal_door_sticker",
+      "surface_id": "recessed_timber_portal_door",
+      "sticker_layer": "entrance_door",
+      "mapping_method": "rectified_oblique_plane",
+      "mapping_axis": "angle",
+      "locked_geometry_sha256": "f26d4f6a427b838beee4cf6cdfc38f979c3b6e10b0fdf155771d8c4ae94df534",
+      "carrier_targets": [
+        {
+          "kind": "locked_mesh_faces",
+          "target": "hero_portal_door",
+          "selected_face_count": 1,
+          "fingerprint_sha256": "12a933ddc057405d472257b07aa358115092ef66cf99f0ebcb347e08d2ae9d1d"
+        }
+      ],
+      "source_image_path": "tools/archetype_compiler/sticker_assets/eixample_v96/principal_elevation_intrinsic.png",
+      "source_image_sha256": "2b795d28237d56e45cd8d01e8330865fbd57a4f2d21bcba5b3cf8390dd093a91",
+      "source_uv_bounds": [
+        0.4,
+        0.0,
+        0.6,
+        0.2707
+      ],
+      "floor_role": "ground",
+      "approval_space": "rendered_on_locked_carrier",
+      "post_generation_crop_allowed": false,
+      "post_generation_nonuniform_scale_allowed": false,
+      "registration_sha256": "0fa9a008a6d4f368a41a74d195bd483a42610805798e77de8e6eea5b3aeea3f5"
+    }
+  ],
+  "package_sha256": "8462cc89ba6987bfe90ec318b2ff8274c523bc12c50ab3623f1294090682676e"
+}

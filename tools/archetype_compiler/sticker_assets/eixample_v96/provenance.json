@@ -1,0 +1,10 @@
+{
+  "schema": "siteforge.sticker-asset-provenance@1",
+  "building": "eixample-apartment-block-classic",
+  "method": "occupied-crop, de-isolation, restrained intrinsic normalization",
+  "principal_source": "C:\\dev-artifacts\\3D-Maps\\families\\eixample-classic-v1\\facade-source\\imagegen-elevation-source.png",
+  "secondary_source": "C:\\dev-artifacts\\3D-Maps\\families\\eixample-classic-v1\\facade-pbr-v1\\near\\side_albedo.png",
+  "post_generation_nonuniform_scale_allowed": false,
+  "ordinary_source_rule": "portal-free approved-bay repeat; hero portal is unique",
+  "approval_space": "rendered_on_locked_carrier"
+}

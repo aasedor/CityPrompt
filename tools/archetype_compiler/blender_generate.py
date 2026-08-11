@@ -9321,6 +9321,31 @@ def _graph_recessed_portal_section(parts: list, spec: dict, mats: dict) -> None:
         ))
 
 
+def _graph_arched_portal_trim(parts: list, spec: dict, mats: dict) -> None:
+    """Place a shallow semicircular stone surround on an arbitrary facade."""
+    prefix = str(spec.get("id", "GraphArchedPortalTrim"))
+    cx, cy = (float(value) for value in spec["centre_xy"])
+    angle = math.radians(float(spec.get("rotation_z_deg", 0.0)))
+    spring = float(spec.get("spring_z_m", 2.55))
+    radius = float(spec.get("inner_radius_m", 1.7))
+    ring_width = float(spec.get("ring_width_m", 0.24))
+    depth = float(spec.get("depth_m", 0.28))
+    material = _graph_material(mats, spec.get("material", "signature_stone"))
+    ring = add_arch_ring(prefix + "_Arch", 0.0, 0.0, spring, radius, ring_width, depth, material, 24)
+    ring.rotation_euler.z = angle
+    ring.location.x, ring.location.y = cx, cy
+    parts.append(ring)
+    tangent = Vector((math.cos(angle), math.sin(angle), 0.0))
+    for index, side in enumerate((-1.0, 1.0)):
+        centre = Vector((cx, cy, spring / 2)) + tangent * (side * (radius + ring_width / 2))
+        jamb = add_beveled_box(
+            f"{prefix}_Jamb{index}", (ring_width, depth, spring), tuple(centre),
+            material, min(0.035, ring_width * 0.12),
+        )
+        jamb.rotation_euler.z = angle
+        parts.append(jamb)
+
+
 def _graph_curved_glass_canopy(parts: list, spec: dict, mats: dict) -> None:
     """Create a thin annular glazed canopy with explicit iron ribs."""
     prefix = str(spec.get("id", "GraphCurvedGlassCanopy"))
@@ -10570,7 +10595,13 @@ def _graph_balcony_array(parts: list, spec: dict, mats: dict) -> None:
     rail_mat = _graph_material(mats, spec.get("rail_material", "signature_metal"))
     shadow_mat = _graph_material(mats, spec.get("shadow_material", "massing_joint"))
     prefix = str(spec.get("id", "GraphBalcony"))
-    outward, along = _glazing_axis_vectors(axis)
+    rotation_z = 0.0
+    if axis == "angle":
+        rotation_z = math.radians(float(spec.get("rotation_z_deg", 0.0)))
+        along = Vector((math.cos(rotation_z), math.sin(rotation_z), 0.0))
+        outward = Vector((math.sin(rotation_z), -math.cos(rotation_z), 0.0))
+    else:
+        outward, along = _glazing_axis_vectors(axis)
     cell = span / segment_count
     segment_span = max(0.8, cell - gap)
     rail_profile = min(0.055, segment_span * 0.03)
@@ -10578,9 +10609,23 @@ def _graph_balcony_array(parts: list, spec: dict, mats: dict) -> None:
     def member_size(along_size: float, outward_size: float, z_size: float) -> tuple[float, float, float]:
         return (
             (along_size, outward_size, z_size)
-            if axis in {"front", "rear"}
+            if axis in {"front", "rear", "angle"}
             else (outward_size, along_size, z_size)
         )
+
+    def oriented_box(name: str, size: tuple[float, float, float], location, material):
+        obj = add_box(name, size, location, material)
+        if axis == "angle":
+            obj.rotation_euler.z = rotation_z
+        return obj
+
+    def oriented_beveled_box(
+        name: str, size: tuple[float, float, float], location, material, bevel: float,
+    ):
+        obj = add_beveled_box(name, size, location, material, bevel)
+        if axis == "angle":
+            obj.rotation_euler.z = rotation_z
+        return obj
 
     for level_index, z in enumerate(levels):
         for segment_index in range(segment_count):
@@ -10588,43 +10633,44 @@ def _graph_balcony_array(parts: list, spec: dict, mats: dict) -> None:
             datum = centre + along * offset
             slab_centre = datum + outward * (depth / 2)
             slab_centre.z = z
-            parts.append(add_beveled_box(
+            parts.append(oriented_beveled_box(
                 f"{prefix}_{level_index:02d}_{segment_index:02d}_Slab",
                 member_size(segment_span, depth, slab_h), tuple(slab_centre), slab_mat, 0.035,
             ))
             shadow = datum + outward * (depth * 0.58)
             shadow.z = z - slab_h * 0.72
-            parts.append(add_box(
+            parts.append(oriented_box(
                 f"{prefix}_{level_index:02d}_{segment_index:02d}_Shadow",
                 member_size(segment_span * 0.92, depth * 0.36, 0.045), tuple(shadow), shadow_mat,
             ))
-            front = datum + outward * depth
-            front.z = z + slab_h / 2 + rail_h
-            parts.append(add_beveled_box(
-                f"{prefix}_{level_index:02d}_{segment_index:02d}_TopRail",
-                member_size(segment_span, rail_profile, rail_profile), tuple(front), rail_mat, 0.01,
-            ))
-            for picket_index in range(pickets + 1):
-                picket = datum + along * (-segment_span / 2 + segment_span * picket_index / pickets) + outward * depth
-                picket.z = z + slab_h / 2 + rail_h / 2
-                parts.append(add_box(
-                    f"{prefix}_{level_index:02d}_{segment_index:02d}_Picket{picket_index:02d}",
-                    member_size(rail_profile * 0.62, rail_profile, rail_h), tuple(picket), rail_mat,
+            if bool(spec.get("rail_enabled", True)):
+                front = datum + outward * depth
+                front.z = z + slab_h / 2 + rail_h
+                parts.append(oriented_beveled_box(
+                    f"{prefix}_{level_index:02d}_{segment_index:02d}_TopRail",
+                    member_size(segment_span, rail_profile, rail_profile), tuple(front), rail_mat, 0.01,
                 ))
-            for end_index, end_offset in enumerate((-segment_span / 2, segment_span / 2)):
-                end = datum + along * end_offset + outward * (depth / 2)
-                end.z = z + slab_h / 2 + rail_h
-                parts.append(add_box(
-                    f"{prefix}_{level_index:02d}_{segment_index:02d}_EndTop{end_index}",
-                    member_size(rail_profile, depth, rail_profile), tuple(end), rail_mat,
-                ))
-                for post_index, outward_ratio in enumerate((0.08, 0.92)):
-                    post = datum + along * end_offset + outward * (depth * outward_ratio)
-                    post.z = z + slab_h / 2 + rail_h / 2
-                    parts.append(add_box(
-                        f"{prefix}_{level_index:02d}_{segment_index:02d}_EndPost{end_index}_{post_index}",
-                        member_size(rail_profile, rail_profile, rail_h), tuple(post), rail_mat,
+                for picket_index in range(pickets + 1):
+                    picket = datum + along * (-segment_span / 2 + segment_span * picket_index / pickets) + outward * depth
+                    picket.z = z + slab_h / 2 + rail_h / 2
+                    parts.append(oriented_box(
+                        f"{prefix}_{level_index:02d}_{segment_index:02d}_Picket{picket_index:02d}",
+                        member_size(rail_profile * 0.62, rail_profile, rail_h), tuple(picket), rail_mat,
                     ))
+                for end_index, end_offset in enumerate((-segment_span / 2, segment_span / 2)):
+                    end = datum + along * end_offset + outward * (depth / 2)
+                    end.z = z + slab_h / 2 + rail_h
+                    parts.append(oriented_box(
+                        f"{prefix}_{level_index:02d}_{segment_index:02d}_EndTop{end_index}",
+                        member_size(rail_profile, depth, rail_profile), tuple(end), rail_mat,
+                    ))
+                    for post_index, outward_ratio in enumerate((0.08, 0.92)):
+                        post = datum + along * end_offset + outward * (depth * outward_ratio)
+                        post.z = z + slab_h / 2 + rail_h / 2
+                        parts.append(oriented_box(
+                            f"{prefix}_{level_index:02d}_{segment_index:02d}_EndPost{end_index}_{post_index}",
+                            member_size(rail_profile, rail_profile, rail_h), tuple(post), rail_mat,
+                        ))
             if bool(spec.get("planter_enabled", False)):
                 planter_depth = float(spec.get("planter_depth_m", 0.28))
                 planter_height = float(spec.get("planter_height_m", 0.30))
@@ -10634,7 +10680,7 @@ def _graph_balcony_array(parts: list, spec: dict, mats: dict) -> None:
                 foliage_mat = _graph_material(mats, spec.get("foliage_material", "plant"))
                 flower_mat = _graph_material(mats, spec.get("flower_material", "flower"))
                 planter_span = segment_span * 0.86
-                parts.append(add_beveled_box(
+                parts.append(oriented_beveled_box(
                     f"{prefix}_{level_index:02d}_{segment_index:02d}_Planter",
                     member_size(planter_span, planter_depth, planter_height),
                     tuple(planter), planter_mat, 0.035,
@@ -10659,7 +10705,7 @@ def _graph_balcony_array(parts: list, spec: dict, mats: dict) -> None:
             for corbel_index, corbel_offset in enumerate((-segment_span * 0.28, segment_span * 0.28)):
                 corbel = datum + along * corbel_offset + outward * (depth * 0.22)
                 corbel.z = z - 0.24
-                parts.append(add_beveled_box(
+                parts.append(oriented_beveled_box(
                     f"{prefix}_{level_index:02d}_{segment_index:02d}_Corbel{corbel_index}",
                     member_size(0.16, depth * 0.44, 0.34), tuple(corbel), slab_mat, 0.025,
                 ))
@@ -10787,9 +10833,23 @@ def _graph_eave_rafter_array(parts: list, spec: dict, mats: dict) -> None:
     def member_size(along_size: float, outward_size: float, z_size: float) -> tuple[float, float, float]:
         return (
             (along_size, outward_size, z_size)
-            if axis in {"front", "rear"}
+            if axis in {"front", "rear", "angle"}
             else (outward_size, along_size, z_size)
         )
+
+    def oriented_box(name: str, size: tuple[float, float, float], location, material):
+        obj = add_box(name, size, location, material)
+        if axis == "angle":
+            obj.rotation_euler.z = rotation_z
+        return obj
+
+    def oriented_beveled_box(
+        name: str, size: tuple[float, float, float], location, material, bevel: float,
+    ):
+        obj = add_beveled_box(name, size, location, material, bevel)
+        if axis == "angle":
+            obj.rotation_euler.z = rotation_z
+        return obj
 
     for index in range(count):
         datum = centre + along * (-span / 2 + span * index / max(1, count - 1))
@@ -11864,6 +11924,8 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
             _graph_station_concourse(parts, assembly, mats)
         elif kind == "recessed_portal_section":
             _graph_recessed_portal_section(parts, assembly, mats)
+        elif kind == "arched_portal_trim":
+            _graph_arched_portal_trim(parts, assembly, mats)
         elif kind == "curved_glass_canopy":
             _graph_curved_glass_canopy(parts, assembly, mats)
         elif kind == "curved_band_schedule":
@@ -12380,6 +12442,7 @@ def render_presentation_views(
     oblique_x_scale = max(0.30, float(camera_contract.get("oblique_x_scale", 0.88)))
     identity_distance_scale = max(0.50, float(camera_contract.get("identity_distance_scale", 1.0)))
     street_distance_scale = max(0.75, float(camera_contract.get("street_distance_scale", 1.0)))
+    street_x_scale = max(0.30, float(camera_contract.get("street_x_scale", min(0.82, oblique_x_scale + 0.12))))
     views = (
         ("preview", (camera_x * dist * 0.72, -dist * 0.92, focus_height * 0.68), (0.0, 0.0, focus_height * 0.43), 43),
         # Pull back enough to retain the roof silhouette and projecting eaves.
@@ -12387,7 +12450,7 @@ def render_presentation_views(
         # be compared consistently, including low-rise semantic stacks.
         ("archetype_match", (camera_x * width * oblique_x_scale, -(depth / 2 + max(64.0, focus_height * 2.15) * identity_distance_scale), focus_height * 0.50),
          (camera_x, -1.0, focus_height * 0.42), 50),
-        ("street", (camera_x * width * min(0.82, oblique_x_scale + 0.12), -(depth / 2 + 35.0 * street_distance_scale), focus_height * 0.31), (0.0, -depth * 0.12, focus_height * 0.39), 46),
+        ("street", (camera_x * width * street_x_scale, -(depth / 2 + 35.0 * street_distance_scale), focus_height * 0.31), (0.0, -depth * 0.12, focus_height * 0.39), 46),
         ("front_corner_oblique", (camera_x * dist * 0.82, -dist * 0.96, focus_height * 0.46),
          (0.0, -depth * 0.06, focus_height * 0.40), 49),
         ("rear_corner_oblique", (dist * 0.82, dist * 0.92, focus_height * 0.55),

@@ -1,0 +1,16 @@
+{
+  "schema": "catalogue-rollout-batch@1",
+  "pipeline_version": "v96",
+  "batch_id": "EIXAMPLE-GEOMETRY-CONDITIONED-STICKER-V96",
+  "paid_facade_calls": 0,
+  "entries": [
+    {
+      "archetype_id": "eixample_apartment_block",
+      "variant_id": "eixample-apartment-block-classic-geometry-conditioned-4",
+      "family_id": "eixample-apartment-block-v96-conditioned-4",
+      "width_m": 46.0,
+      "depth_m": 46.0,
+      "floors": 4
+    }
+  ]
+}
