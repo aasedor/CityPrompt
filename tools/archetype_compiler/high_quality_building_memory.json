@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-08-11-continuous-shell-sticker-v94",
+  "memory_version": "2026-08-11-geometry-conditioned-sticker-v95",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "calibration_set": {
@@ -46,6 +46,22 @@
     {
       "id": "floor_addressability_uses_a_continuous_cap_free_shell",
       "rule": "Represent each exposed elevation as one continuous wall without internal floor caps, then assign its faces to explicit floor sticker owners. Do not hide seams with generic rails or belts that cross openings. Keep plan roof atlases on upward roof faces and use directionally mapped edge stickers for fascias and steep returns."
+    },
+    {
+      "id": "stickers_are_approved_in_exact_final_carrier_space",
+      "rule": "Fingerprint every sticker against the exact locked mesh or parametric carrier producer, mapping contract and source asset. Generate and approve the sticker only after it is projected on that final carrier. A topology, proportion, crop or non-uniform scale change invalidates the affected sticker and requires regeneration."
+    },
+    {
+      "id": "floor_ownership_follows_carrier_construction_domain",
+      "rule": "Derive ground, middle, top/crown and roof ownership from the final carrier geometry domain rather than shader or material class. Glass, elevation imagery and luminous layers attached to a dome, cupola or glazed roof transition remain roof-owned and may not bypass the occupied-floor boundary gate."
+    },
+    {
+      "id": "identity_landmark_glass_persists_across_review_lods",
+      "rule": "Identity-bearing dome, cupola and roof-lantern glass must remain present in street, corner, roof and aerial review modes. Near-only LOD switching is reserved for optional facade optical overlays; hiding landmark glass and exposing its backing geometry is a cross-view release failure."
+    },
+    {
+      "id": "thin_returns_use_shared_texels_or_explicit_joints",
+      "rule": "A thin exterior return must receive shared boundary texels from the adjoining registered elevation or an explicit construction-role-correct joint sticker. Isolation-background pixels, atlas padding and arbitrary average colour are forbidden seam content."
     },
     {
       "id": "alpha_textures_export_losslessly",
@@ -1013,6 +1029,26 @@
       "symptom": "Floor stickers form horizontal cuts or roof edges become white bands and vertical texture streaks even though every face is technically assigned",
       "cause": "Closed per-floor wall prisms introduced coincident caps, while a full plan roof atlas was later projected across steep fascias and overrode the dedicated edge finish.",
       "correction": "Weld occupied floors into one cap-free wall with face-level floor owners, reject cosmetic seam rails, keep the plan atlas on roof-facing polygons and bind separate front, right, rear and left construction-finish stickers to the edge faces after all general roof carriers."
+    },
+    {
+      "symptom": "An attractive sticker loses alignment after a late geometry refinement, crop or scale adjustment",
+      "cause": "The flat image was treated as an independent deliverable instead of an output fingerprinted to one exact final carrier, UV mapping and source package.",
+      "correction": "Freeze and hash the final carrier and mapping before generation, forbid post-generation crop and non-uniform scale, and approve only multi-view renders of the sticker projected back onto that identical carrier."
+    },
+    {
+      "symptom": "A roof dome is correct in street views but turns pale, blank or opaque in an aerial render",
+      "cause": "Identity-bearing roof glass inherited a near-only facade-glazing LOD tag, so the review renderer hid it and exposed the light-well or backing geometry.",
+      "correction": "Classify dome, cupola and lantern glass as all-view landmark glazing, test every mandatory camera after LOD switching, and reject a release whose material owner changes between street and aerial views."
+    },
+    {
+      "symptom": "Roof imagery appears on the top occupied floor even though every roof material reports a valid semantic class",
+      "cause": "Floor ownership was inferred from shader class, allowing glass or elevation-style carriers attached to cupolas and roof transitions to escape the roof-domain boundary.",
+      "correction": "Resolve ownership from the final target mesh construction domain. Require every carrier to have exactly one ground, middle, top/crown or roof role and hard-stop null, overlapping or cross-datum assignments."
+    },
+    {
+      "symptom": "A narrow bright vertical strip remains at an otherwise fully stickered outside corner",
+      "cause": "A thin return sampled pale isolation-border or padding texels from the generated elevation master, so technically assigned pixels still read as an unstickered seam.",
+      "correction": "Use shared boundary texels across the corner or bind a floor-addressed construction-role-correct joint sticker. Inspect the result in front-corner, rear-corner and aerial views, not only head-on."
     }
   ]
 }

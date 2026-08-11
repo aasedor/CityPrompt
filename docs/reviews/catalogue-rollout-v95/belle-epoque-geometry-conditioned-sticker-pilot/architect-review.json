@@ -1,0 +1,31 @@
+{
+  "schema": "building-architect-review@1",
+  "family": "belle-epoque-grand-magasin-v95-conditioned-5",
+  "reviewer": "Mencius — architect_design_reviewer",
+  "decision": "approved",
+  "score": 95,
+  "hard_stops": [],
+  "scores": {
+    "silhouette_and_massing": 19,
+    "facade_registration": 20,
+    "floor_and_corner_continuity": 19,
+    "roof_and_dome": 14,
+    "entrance": 14,
+    "materials_side_and_rear": 9
+  },
+  "non_blocking_findings": [
+    "Dome glass remains somewhat coarse and dark compared with the reference.",
+    "Dormer and canopy construction is simplified at very close range.",
+    "The rounded roof transition remains slightly heavy."
+  ],
+  "required_views_reviewed": [
+    "archetype-match",
+    "street",
+    "front-corner",
+    "rear-corner",
+    "facade-close",
+    "roof-audit",
+    "aerial",
+    "context"
+  ]
+}

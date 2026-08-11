@@ -1,0 +1,20 @@
+{
+  "schema": "sticker-agent-review@1",
+  "family": "belle-epoque-grand-magasin-v95-conditioned-5",
+  "reviewer": "Zeno — sticker_agent",
+  "decision": "approved",
+  "score": 95,
+  "hard_stops": [],
+  "gates": {
+    "raw_blue_grey_or_clay_polygons": 0,
+    "visibly_unstickered_surfaces": 0,
+    "roof_material_on_occupied_wall": 0,
+    "registration_or_overlap_failures": 0,
+    "dome_glass_consistent_across_views": true,
+    "outer_returns_read_as_authored_construction_joints": true
+  },
+  "non_blocking_findings": [
+    "Corner construction joints are slightly cleaner than the weathered facade.",
+    "Dome reflections retain small square highlights."
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "schema": "geometry-conditioned-continuous-sticker-contract@1",
+  "building_id": "grand-magasin-belle-epoque",
+  "score_target": 95,
+  "locked_geometry_sha256": "60c0082e9546c5d5151aa8e0ec8d05993dc8d5abaeb7f29a414ba995b7eff969",
+  "carrier_package_sha256": "8cae3dc996b5ac0b2e2911ef788ed4643fcc20d063196bf6666a5d62d1d74cc4",
+  "carrier_count": 198,
+  "status": "pass",
+  "hard_stops": [
+    "carrier_geometry_hash_mismatch",
+    "unresolved_final_carrier",
+    "post_generation_crop",
+    "post_generation_nonuniform_scale",
+    "source_directional_light_baked_as_surface_albedo",
+    "architect_score_below_95"
+  ],
+  "focused_repairs": [
+    "broadened_curved_entrance_canopy",
+    "luminous_physical_dome_section",
+    "face-specific_dormer_front_cheek_cap_return_ownership",
+    "geometry-conditioned_curved_pavilion_registration"
+  ]
+}

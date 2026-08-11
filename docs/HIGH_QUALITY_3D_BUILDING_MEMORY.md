@@ -1169,6 +1169,34 @@ edges produce horizontal cuts that make the facade read as stacked cards.
   schedule and translates fixed crown/roof assemblies; it does not reopen the
   approved landmark mesh through arbitrary non-uniform scaling.
 
+### V95 geometry-conditioned carrier and cross-view LOD lesson
+
+The Belle Epoque Grand Magasin reached 95/100 only after the sticker became a
+versioned output of the exact final carrier rather than an attractive flat
+image applied after modelling. The approved V95 package fingerprints 198
+carriers against one locked geometry hash and approves them only in projected
+multi-view renders.
+
+- Freeze and hash the final mesh or parametric carrier producer, UV/mapping
+  contract and source asset before generating the final sticker. A later crop,
+  topology edit, proportion change or non-uniform scale invalidates that
+  carrier's sticker and triggers regeneration.
+- Determine ground, middle, top/crown and roof ownership from the target mesh's
+  construction domain, not its shader class. Dome glass and elevation-style
+  cupola transitions are still roof-owned.
+- Keep identity-bearing dome, cupola and roof-lantern glass visible in every
+  review LOD. A near-only facade-glazing switch once hid the approved stained
+  glass in aerial views and exposed the pale light-well backing instead.
+- Treat thin exterior returns as authored surfaces. Use shared corner texels or
+  a construction-role-correct, floor-addressed joint sticker; never map atlas
+  isolation borders or padding into the visible return.
+- Require cross-view agreement after all Blender visibility and material
+  switching. Passing the street view does not approve a sticker that changes
+  owner or appearance in the roof, rear or aerial view.
+- Declare reference-visible ornament projections in a bounded runtime footprint
+  contract. Do not shrink an architect-approved silhouette merely to satisfy a
+  generic envelope tolerance.
+
 ## Updating this memory
 
 When a pilot reveals a reusable lesson:

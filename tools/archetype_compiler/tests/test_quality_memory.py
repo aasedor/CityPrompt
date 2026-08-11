@@ -92,6 +92,10 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
         "audit_views_are_context_free",
         "large_span_clear_height_is_catalogue_truth",
         "all_exposed_landmark_surfaces_have_registered_owners",
+        "stickers_are_approved_in_exact_final_carrier_space",
+        "floor_ownership_follows_carrier_construction_domain",
+        "identity_landmark_glass_persists_across_review_lods",
+        "thin_returns_use_shared_texels_or_explicit_joints",
     } <= principle_ids
 
 

@@ -6924,7 +6924,14 @@ def _graph_gable_end_glazing(parts: list, spec: dict, mats: dict) -> None:
     if style not in {"triangle", "segmental_arch"}:
         raise ValueError(f"gable end glazing head style {style!r} is unsupported")
     prefix = str(spec.get("id", "GraphGableEndGlass"))
-    glass = _graph_material(mats, spec.get("glass_material", "glass"))
+    glass_profile_override = str(spec.get("glass_profile", ""))
+    glass = (
+        make_profile_glass_material(
+            f"MAT_{prefix}_Glass_{glass_profile_override}", glass_profile_override,
+        )
+        if glass_profile_override
+        else _graph_material(mats, spec.get("glass_material", "glass"))
+    )
     frame = _graph_material(mats, spec.get("frame_material", "signature_metal"))
     edge = _graph_material(mats, spec.get("edge_material", "primary"))
     half = width / 2
@@ -9416,6 +9423,125 @@ def _graph_dome_rib_system(parts: list, spec: dict, mats: dict) -> None:
             ))
 
 
+def _graph_dome_light_well(parts: list, spec: dict, mats: dict) -> None:
+    """Add an occupied warm termination below a transmissive dome."""
+    prefix = str(spec.get("id", "GraphDomeLightWell"))
+    cx, cy = (float(value) for value in spec["centre_xy"])
+    radius = float(spec["radius_m"])
+    thickness = max(0.04, float(spec.get("thickness_m", 0.12)))
+    z = float(spec["z_m"])
+    material = _graph_material(mats, spec.get("material", "interior_warm"))
+    parts.append(add_cylinder(prefix, radius, thickness, (cx, cy, z), material, 48))
+
+
+def _graph_dormer_trim_system(parts: list, spec: dict, mats: dict) -> None:
+    """Build slim registered dormer fronts without duplicating sticker windows."""
+    prefix = str(spec.get("id", "GraphDormerTrim"))
+    outward = Vector((float(spec["outward_xy"][0]), float(spec["outward_xy"][1]), 0.0)).normalized()
+    tangent = Vector((float(spec["tangent_xy"][0]), float(spec["tangent_xy"][1]), 0.0)).normalized()
+    plane = float(spec["front_plane"])
+    width = float(spec.get("width_m", 2.5))
+    sill = float(spec.get("sill_z_m", 22.18))
+    shoulder = float(spec.get("shoulder_z_m", 24.0))
+    apex = float(spec.get("apex_z_m", 25.15))
+    radius = float(spec.get("profile_m", 0.038))
+    material = _graph_material(mats, spec.get("material", "signature_bronze"))
+    flashing = _graph_material(mats, spec.get("flashing_material", "roof"))
+    glass = _graph_material(mats, spec.get("glass_material", "glass"))
+    interior = _graph_material(mats, spec.get("interior_material", "interior_warm"))
+
+    for dormer_index, centre in enumerate(float(value) for value in spec.get("centres", [])):
+        if abs(outward.y) > 0.5:
+            origin = Vector((centre, plane, 0.0)) + outward * 0.025
+        else:
+            origin = Vector((plane, centre, 0.0)) + outward * 0.025
+
+        def point(along: float, z: float) -> tuple[float, float, float]:
+            value = origin + tangent * along
+            return (value.x, value.y, z)
+
+        points = [
+            point(-width / 2, sill), point(-width / 2, shoulder), point(0.0, apex),
+            point(width / 2, shoulder), point(width / 2, sill),
+        ]
+        # Construction-role-correct zinc flashing gives the dormer a distinct
+        # sill/cap termination against the roof instead of a proxy-house edge.
+        parts.append(_graph_member_between(
+            f"{prefix}_{dormer_index:02d}_SillFlashing",
+            point(-width / 2 - 0.10, sill - 0.015),
+            point(width / 2 + 0.10, sill - 0.015),
+            radius * 1.18, flashing, vertices=8,
+        ))
+        for edge_index in range(4):
+            parts.append(_graph_member_between(
+                f"{prefix}_{dormer_index:02d}_Edge{edge_index:02d}",
+                points[edge_index], points[edge_index + 1], radius, material, vertices=8,
+            ))
+        parts.append(_graph_member_between(
+            f"{prefix}_{dormer_index:02d}_Sill", points[0], points[4], radius, material, vertices=8,
+        ))
+        angle = math.atan2(tangent.y, tangent.x)
+        pane_width = min(width * 0.62, float(spec.get("window_width_m", width * 0.50)))
+        pane_height = min(
+            (shoulder - sill) * 0.68,
+            float(spec.get("window_height_m", (shoulder - sill) * 0.55)),
+        )
+        pane_sill = float(spec.get("window_sill_z_m", sill + 0.14))
+        pane_z = pane_sill + pane_height / 2
+        # The inset sash is its own registered architectural layer.  Its four
+        # edges and central mullion make the smaller dark pane read as a true
+        # dormer window rather than an unframed glass card.
+        sash_radius = radius * 0.78
+        sash_points = (
+            point(-pane_width / 2, pane_sill),
+            point(-pane_width / 2, pane_sill + pane_height),
+            point(pane_width / 2, pane_sill + pane_height),
+            point(pane_width / 2, pane_sill),
+        )
+        for sash_index in range(4):
+            parts.append(_graph_member_between(
+                f"{prefix}_{dormer_index:02d}_Sash{sash_index:02d}",
+                sash_points[sash_index], sash_points[(sash_index + 1) % 4],
+                sash_radius, material, vertices=8,
+            ))
+        parts.append(_graph_member_between(
+            f"{prefix}_{dormer_index:02d}_Mullion",
+            point(0.0, pane_sill), point(0.0, pane_sill + pane_height),
+            radius * 0.62, material, vertices=8,
+        ))
+        parts.append(_graph_member_between(
+            f"{prefix}_{dormer_index:02d}_Transom",
+            point(-pane_width / 2, pane_sill + pane_height * 0.52),
+            point(pane_width / 2, pane_sill + pane_height * 0.52),
+            radius * 0.56, material, vertices=8,
+        ))
+        for suffix, depth, pane_material in (
+            ("OccupiedBack", -0.12, interior),
+            ("Glass", 0.018, glass),
+        ):
+            location = origin + outward * depth
+            pane = add_beveled_box(
+                f"{prefix}_{dormer_index:02d}_{suffix}",
+                (pane_width, 0.045, pane_height),
+                (location.x, location.y, pane_z), pane_material, 0.012,
+            )
+            pane.rotation_euler.z = angle
+            parts.append(pane)
+
+
+def _graph_registered_sign_panel(parts: list, spec: dict, mats: dict) -> None:
+    """Create the locked thin plaque that receives an entrance sign sticker."""
+    centre = tuple(float(value) for value in spec["centre"])
+    size = tuple(float(value) for value in spec["size"])
+    panel = add_beveled_box(
+        str(spec.get("id", "GraphRegisteredSignPanel")), size, centre,
+        _graph_material(mats, spec.get("material", "signature_bronze")),
+        float(spec.get("bevel_m", 0.025)),
+    )
+    panel.rotation_euler.z = math.radians(float(spec.get("rotation_z_deg", 0.0)))
+    parts.append(panel)
+
+
 def _graph_lattice_parapet(parts: list, spec: dict, mats: dict) -> None:
     """Build a continuous crossed-lattice roof parapet around authored runs."""
     prefix = str(spec.get("id", "GraphLatticeParapet"))
@@ -11172,7 +11298,13 @@ def _graph_carrier_skin(parts: list, spec: dict, mats: dict) -> None:
     material_role = str(spec.get("material_role", "elevation"))
     axis = str(spec.get("axis", "front"))
     if material_role in {"roof", "glass"}:
-        base = mats.get(material_role)
+        profile_override = str(spec.get("glass_profile", "")) if material_role == "glass" else ""
+        base = (
+            make_profile_glass_material(
+                f"MAT_Glass_{profile_override}_{spec.get('id', 'CarrierSkin')}", profile_override,
+            )
+            if profile_override else mats.get(material_role)
+        )
         if base is None:
             raise ValueError(f"carrier {material_role} skin requires the {material_role} material")
         material = base.copy()
@@ -11199,12 +11331,50 @@ def _graph_carrier_skin(parts: list, spec: dict, mats: dict) -> None:
         uv_node.name = uv_node.label = f"CARRIER_UV_{spec.get('id', 'Skin')}"
         uv_node.uv_map = "UVMap"
         material.node_tree.links.new(uv_node.outputs["UV"], image_node.inputs["Vector"])
+        if material_role == "glass" and profile_override:
+            principled = next(
+                (node for node in material.node_tree.nodes if node.type == "BSDF_PRINCIPLED"),
+                None,
+            )
+            emission = (
+                principled.inputs.get("Emission Color") or principled.inputs.get("Emission")
+                if principled is not None else None
+            )
+            if emission is not None:
+                # Preserve the registered stained-glass colour under oblique
+                # sky reflections. The profile's restrained emission strength
+                # still controls energy; this only makes the exact sticker the
+                # chromatic authority from every review camera.
+                for link in list(emission.links):
+                    material.node_tree.links.remove(link)
+                material.node_tree.links.new(image_node.outputs["Color"], emission)
         material["registered_sticker_source"] = str(image_path)
         material["registered_sticker_preserves_transmission"] = material_role == "glass"
+        if material_role == "glass" and profile_override:
+            # Landmark dome stickers are the final visible carrier, not a
+            # facade near-LOD overlay. The presentation renderer switches
+            # ordinary physical window glass off for aerial views; tagging a
+            # dome as "near" made its sticker disappear and exposed the pale
+            # light well below it. Keep this registered glass in every LOD.
+            material["glazing_lod"] = "always"
     else:
         material = _graph_skin_material(mats, {**spec, "band": "elevation"})
         if material is None:
-            raise ValueError("carrier facade skin requires the elevation sheet material")
+            # A geometry-conditioned sticker already declares its own exact
+            # image. It must remain reproducible in a fresh checkout even when
+            # the optional legacy facade-sheet cache is absent. Build the same
+            # PBR-capable node graph directly from the registered source.
+            image_path = Path(str(spec.get("source_image_path", "")))
+            if not image_path.is_absolute():
+                image_path = Path.cwd() / image_path
+            if not image_path.is_file():
+                raise ValueError("carrier facade skin requires a registered source image")
+            material = make_facade_sheet_material(
+                f"MAT_RegisteredCarrier_{spec.get('id', 'Skin')}",
+                image_path, None, None,
+            )
+            material["registered_sticker_source"] = str(image_path)
+            material["registered_sticker_standalone"] = True
 
     material["massing_skin"] = True
     material["massing_skin_canonical"] = ""
@@ -11700,6 +11870,12 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
             _graph_curved_band_schedule(parts, assembly, mats)
         elif kind == "dome_rib_system":
             _graph_dome_rib_system(parts, assembly, mats)
+        elif kind == "dome_light_well":
+            _graph_dome_light_well(parts, assembly, mats)
+        elif kind == "dormer_trim_system":
+            _graph_dormer_trim_system(parts, assembly, mats)
+        elif kind == "registered_sign_panel":
+            _graph_registered_sign_panel(parts, assembly, mats)
         else:
             raise ValueError(f"massing graph assembly {assembly.get('id')!r} has unsupported kind {kind!r}")
 
@@ -12633,6 +12809,21 @@ def generate(grammar: dict, output: Path, *, floors_override: int | None, keep_b
                 "void_count": len(massing_graph.get("voids", [])),
             } if massing_graph else None),
         }
+        audit_objects = [
+            obj for obj in stack
+            if obj.get("final_surface_audit_status") is not None
+        ]
+        if audit_objects:
+            assembled_meta["final_surface_audit_status"] = (
+                "pass" if all(obj.get("final_surface_audit_status") == "pass" for obj in audit_objects)
+                else "fail"
+            )
+            assembled_meta["final_surface_audit_checked_faces"] = sum(
+                int(obj.get("final_surface_audit_checked_faces", 0)) for obj in audit_objects
+            )
+            assembled_meta["final_surface_audit_failure_count"] = sum(
+                int(obj.get("final_surface_audit_failure_count", 0)) for obj in audit_objects
+            )
         print(f"[blender_generate] exported {assembled_path.name} (height {z:.2f} m, {floors} floors)")
 
         if thumbnail:

@@ -1,0 +1,27 @@
+{
+  "schema": "sticker-method-v95-surface-audit@1",
+  "run": "belle-epoque-grand-magasin-v95-conditioned-5",
+  "carrier_package_status": "pass",
+  "carrier_count": 198,
+  "locked_geometry_sha256": "60c0082e9546c5d5151aa8e0ec8d05993dc8d5abaeb7f29a414ba995b7eff969",
+  "final_surface_contract": {
+    "required": true,
+    "scope": "every_polygon_of_locked_clay_geometry",
+    "forbidden_material_names": [
+      "MAT_Clay",
+      "MAT_Facade_Primary",
+      "MAT_Facade_Secondary",
+      "MAT_Roof"
+    ],
+    "unmatched_polygon_action": "hard_stop"
+  },
+  "final_surface_audit": {
+    "status": "pass",
+    "checked_faces": 1804,
+    "failure_count": 0
+  },
+  "triangles": 69556,
+  "glb_bytes": 18515772,
+  "validation_status": "pass",
+  "material_warning": "delivery optimization deferred until visual lock"
+}

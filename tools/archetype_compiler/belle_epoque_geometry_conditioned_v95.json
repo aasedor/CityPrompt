@@ -1,0 +1,16 @@
+{
+  "schema": "catalogue-rollout-batch@1",
+  "pipeline_version": "v95",
+  "batch_id": "BELLE-EPOQUE-GEOMETRY-CONDITIONED-STICKER-V95",
+  "paid_facade_calls": 0,
+  "entries": [
+    {
+      "archetype_id": "grand_magasin",
+      "variant_id": "grand-magasin-belle-epoque-geometry-conditioned-5",
+      "family_id": "belle-epoque-grand-magasin-v95-conditioned-5",
+      "width_m": 36.0,
+      "depth_m": 34.0,
+      "floors": 5
+    }
+  ]
+}

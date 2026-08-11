@@ -1,0 +1,160 @@
+{
+  "schema": "siteforge.sticker_method_contract.v1",
+  "version": "2026-08-11-geometry-conditioned-v95-approved",
+  "status": "approved_bounded_reference",
+  "representation": "fixed_select_and_place_landmark",
+  "visual_baseline": {
+    "pilot": "belle-epoque-grand-magasin-v95-conditioned-5",
+    "architect_score": 95,
+    "sticker_agent_score": 95,
+    "hard_stops": 0
+  },
+  "central_rule": "Generate and validate every sticker in the UV and depth frame of its locked final 3D carrier. A standalone flat image may not be approved and subsequently stretched to fit geometry.",
+  "authoritative_sequence": [
+    "lock_reference_evidence_and_cameras",
+    "lock_final_carrier_geometry",
+    "bake_carrier_space_generation_package",
+    "generate_surface_specific_stickers",
+    "bind_to_exact_source_carrier",
+    "render_required_views",
+    "back_project_errors_to_geometry_or_uv_owner",
+    "pass_machine_registration_gates",
+    "pass_named_architect_review",
+    "optimize_delivery_only_after_visual_lock"
+  ],
+  "required_carrier_maps": [
+    "uv_chart",
+    "padded_island_mask",
+    "object_position",
+    "world_position",
+    "surface_normal",
+    "reference_camera_depth",
+    "reference_camera_visibility",
+    "source_illumination_and_reflection_mask",
+    "curvature",
+    "ambient_occlusion",
+    "floor_band_id",
+    "elevation_id",
+    "construction_role_id",
+    "material_role_id",
+    "opening_mask",
+    "glass_mask",
+    "frame_mask",
+    "column_axis_mask",
+    "void_mask",
+    "uv_distortion"
+  ],
+  "sticker_output_semantics": {
+    "is_surface_material_not_screenshot": true,
+    "required_intrinsic_channels": [
+      "delit_albedo",
+      "roughness",
+      "normal_or_height_when_source_supported",
+      "ambient_occlusion_when_source_supported",
+      "glass_mask",
+      "emissive_mask"
+    ],
+    "forbidden_baked_appearance": [
+      "directional_sunlight",
+      "cast_shadow",
+      "sky_or_camera_reflection",
+      "lens_distortion",
+      "painted_geometry_depth"
+    ]
+  },
+  "surface_mapping": {
+    "straight_wall": "rectified_elevation",
+    "rounded_pavilion_or_turret": "cylindrical_or_conformal",
+    "chamfer_or_corner": "shared_cross_corner_or_paired_boundary",
+    "pitched_roof": "per_slope_plan_orthographic",
+    "dome": "radial_gore_registered_to_ribs_and_rings",
+    "dormer_or_chimney": "separate_front_cheek_cap_and_return",
+    "entrance_or_canopy": "separate_foreground_reveal_soffit_edge_and_back"
+  },
+  "floor_domains": {
+    "ground": "fixed",
+    "middle": "complete_repeatable_module",
+    "crown": "fixed",
+    "roof": "fixed_disjoint_from_occupied_floors",
+    "render_mesh_rule": "one_continuous_cap_free_exterior_shell_with_face_level_ownership",
+    "ownership_source": "final_target_mesh_construction_domain_not_shader_class"
+  },
+  "feature_ownership": {
+    "geometry": [
+      "silhouette",
+      "construction_depth",
+      "voids",
+      "returns",
+      "shadow_bearing_projections"
+    ],
+    "sticker": [
+      "image_locked_colour",
+      "fine_ornament",
+      "irregular_surface_identity"
+    ],
+    "pbr": [
+      "roughness",
+      "normal_response",
+      "transmission",
+      "reflection"
+    ]
+  },
+  "machine_release_gates": {
+    "visible_surface_ownership_percent_min": 100.0,
+    "fallback_face_count_max": 0,
+    "floor_band_gap_count_max": 0,
+    "floor_band_overlap_count_max": 0,
+    "roof_owned_occupied_wall_face_count_max": 0,
+    "internal_exterior_wall_cap_count_max": 0,
+    "anchor_reprojection_rmse_px_at_1600_max": 2.0,
+    "window_or_column_center_drift_elevation_width_percent_max": 0.25,
+    "paired_seam_delta_e00_p95_max": 3.0,
+    "symmetric_uv_area_stretch_p95_max": 1.25,
+    "masked_source_export_silhouette_iou_min": 0.98,
+    "alpha_masked_source_export_mean_error_percent_max": 3.0,
+    "required_review_camera_count": 7,
+    "identity_landmark_glass_missing_in_any_review_lod_max": 0,
+    "architect_score_min": 95,
+    "architect_hard_stops_max": 0
+  },
+  "hard_stops": [
+    "sticker_generated_without_locked_final_carrier",
+    "post_approval_sticker_crop_or_nonuniform_scale",
+    "unowned_or_generic_visible_polygon",
+    "independently_scaled_floor_band",
+    "roof_material_below_roof_datum",
+    "shared_seam_without_shared_boundary_evidence",
+    "identity_landmark_glass_hidden_by_presentation_lod",
+    "thin_return_uses_isolation_or_padding_pixels",
+    "uv_distortion_over_threshold_without_chart_split",
+    "source_directional_lighting_or_reflection_baked_into_albedo",
+    "physical_glass_outside_registered_glass_mask",
+    "duplicated_window_column_balcony_frame_or_gable",
+    "sticker_crosses_uncut_public_void",
+    "geometry_error_hidden_in_albedo",
+    "architect_score_below_95"
+  ],
+  "required_review_cameras": [
+    "archetype_match",
+    "street",
+    "front_corner",
+    "rear_corner",
+    "aerial",
+    "roof_audit",
+    "facade_close"
+  ],
+  "completed_bounded_pilot": {
+    "archetype": "belle_epoque_grand_magasin",
+    "implemented_repairs": [
+      "entrance_canopy_contour_and_section",
+      "dome_luminous_glass_and_structure",
+      "dormer_front_cheek_and_return_charts",
+      "straight_to_rounded_pavilion_transition"
+    ],
+    "carrier_count": 198,
+    "checked_faces": 1804,
+    "surface_audit_failures": 0,
+    "runtime_validation": "pass",
+    "catalogue_scale_blocked_until_transfer_proof": true
+  }
+}

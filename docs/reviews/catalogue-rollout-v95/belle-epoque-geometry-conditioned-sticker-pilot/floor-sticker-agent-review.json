@@ -1,0 +1,21 @@
+{
+  "schema": "floor-sticker-agent-review@1",
+  "family": "belle-epoque-grand-magasin-v95-conditioned-5",
+  "reviewer": "Descartes — floor_sticker_agent",
+  "decision": "strict_pass",
+  "hard_stops": [],
+  "carrier_count": 198,
+  "floor_roles": {
+    "ground": 30,
+    "middle": 78,
+    "top_crown": 28,
+    "roof": 62
+  },
+  "outer_return_carriers": 40,
+  "roof_datum_m": 20.5,
+  "band_gaps": 0,
+  "band_overlaps": 0,
+  "unowned_carriers": 0,
+  "roof_owned_vertical_wall_conflicts": 0,
+  "profile_package_hashes_match": true
+}
