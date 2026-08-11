@@ -70,6 +70,48 @@
         "pixel_size": [1254, 1254],
         "source_crop_xyxy": [0, 0, 1254, 1254],
         "source_to_canonical_h": [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+      },
+      "front_seam_matched": {
+        "path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/front_seam_matched.jpg",
+        "sha256": "a5efb9553dc583960bb8f233b87044d185badf83754c6eda06938dcba9125ab5",
+        "pixel_size": [1536, 1024],
+        "source_crop_xyxy": [0, 0, 1536, 1024],
+        "source_to_canonical_h": [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+      },
+      "left_seam_matched": {
+        "path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/left_seam_matched.jpg",
+        "sha256": "af659ca5aa3b46de159fbca859d38e74eae35cd1373ac65393cceb58424425e5",
+        "pixel_size": [1619, 971],
+        "source_crop_xyxy": [0, 0, 1619, 971],
+        "source_to_canonical_h": [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+      },
+      "corner_seam_matched": {
+        "path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/corner_seam_matched.jpg",
+        "sha256": "d7c48261573096aec38a4ad0e433ce03b00a69269139bf1e9541d130f2752668",
+        "pixel_size": [933, 1686],
+        "source_crop_xyxy": [0, 0, 933, 1686],
+        "source_to_canonical_h": [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+      },
+      "cornice_zinc": {
+        "path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/cornice_zinc.jpg",
+        "sha256": "f7fce5b52fdcc865c8bda3bea3b607d32e26f07f9cd1731e7b385e476c358f4e",
+        "pixel_size": [1536, 192],
+        "source_crop_xyxy": [0, 0, 1536, 192],
+        "source_to_canonical_h": [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+      },
+      "central_dome_polar": {
+        "path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/central_dome_polar.jpg",
+        "sha256": "68d99c9bdbc9f6559dfae0e1e50636fe2d1b8215d76fbff7b68acfd9502ecb30",
+        "pixel_size": [1536, 768],
+        "source_crop_xyxy": [0, 0, 1536, 768],
+        "source_to_canonical_h": [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+      },
+      "corner_dome_polar": {
+        "path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/corner_dome_polar.jpg",
+        "sha256": "e017a168cdb0e8df5b83f7c56d5f85103652d5672a53a43199f5afb69940b9a0",
+        "pixel_size": [1024, 512],
+        "source_crop_xyxy": [0, 0, 1024, 512],
+        "source_to_canonical_h": [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
       }
     }
   },
@@ -87,23 +129,23 @@
     "corner_cupola_drum", "corner_cupola", "corner_cupola_cap_finial"
   ],
   "source_for_role": {
-    "front": "front",
+    "front": "front_seam_matched",
     "right": "right",
     "rear": "rear",
-    "left": "left",
-    "front_left_corner": "front_left",
+    "left": "left_seam_matched",
+    "front_left_corner": "corner_seam_matched",
     "court_front": "rear",
     "court_right": "left",
     "court_rear": "front",
     "court_left": "right",
-    "upper_front_setback": "front",
+    "upper_front_setback": "front_seam_matched",
     "upper_right_setback": "right",
     "upper_rear_setback": "rear",
-    "upper_left_setback": "left",
-    "closed_upper_corner_returns": "front_left",
-    "projecting_perimeter_cornice": "front",
-    "projecting_corner_cornices": "front_left",
-    "wrapped_corner_canopy": "front_left",
+    "upper_left_setback": "left_seam_matched",
+    "closed_upper_corner_returns": "corner_seam_matched",
+    "projecting_perimeter_cornice": "cornice_zinc",
+    "projecting_corner_cornices": "cornice_zinc",
+    "wrapped_corner_canopy": "corner_seam_matched",
     "roof_mansard_front": "roof",
     "roof_mansard_right": "roof",
     "roof_mansard_rear": "roof",
@@ -116,15 +158,15 @@
     "dormer_rear_geometry": "rear",
     "dormer_left_geometry": "left",
     "dormer_right_geometry": "right",
-    "central_dome_curb": "roof",
-    "central_dome_drum": "roof",
-    "central_dome": "roof",
-    "central_dome_cap_finial": "roof",
-    "corner_upper_tower": "front_left",
-    "corner_tower_crown": "roof",
-    "corner_cupola_drum": "roof",
-    "corner_cupola": "roof",
-    "corner_cupola_cap_finial": "roof"
+    "central_dome_curb": "cornice_zinc",
+    "central_dome_drum": "central_dome_polar",
+    "central_dome": "central_dome_polar",
+    "central_dome_cap_finial": "cornice_zinc",
+    "corner_upper_tower": "corner_seam_matched",
+    "corner_tower_crown": "cornice_zinc",
+    "corner_cupola_drum": "corner_dome_polar",
+    "corner_cupola": "corner_dome_polar",
+    "corner_cupola_cap_finial": "cornice_zinc"
   },
   "mapping_for_role": {
     "front": "planar_anchored",
@@ -179,6 +221,72 @@
     "seam_delta_e_median_max": 3.0,
     "seam_delta_e_p95_max": 6.0
   },
+  "visible_face_coverage_contract": {
+    "policy": "Every camera-visible exterior polygon has an explicit registered or construction-specific material owner; unmatched polygons are a hard stop.",
+    "unmatched_polygon_action": "hard_stop",
+    "generic_fallback_materials_forbidden": ["primary", "secondary", "roof", "default", "clay", "blue", "grey", "gray"],
+    "finish_class_for_role": {
+      "front": "heritage_facade_sticker_pbr",
+      "right": "heritage_facade_sticker_pbr",
+      "rear": "heritage_facade_sticker_pbr",
+      "left": "heritage_facade_sticker_pbr",
+      "front_left_corner": "heritage_corner_sticker_pbr",
+      "court_front": "heritage_facade_sticker_pbr",
+      "court_right": "heritage_facade_sticker_pbr",
+      "court_rear": "heritage_facade_sticker_pbr",
+      "court_left": "heritage_facade_sticker_pbr",
+      "upper_front_setback": "heritage_facade_sticker_pbr",
+      "upper_right_setback": "heritage_facade_sticker_pbr",
+      "upper_rear_setback": "heritage_facade_sticker_pbr",
+      "upper_left_setback": "heritage_facade_sticker_pbr",
+      "closed_upper_corner_returns": "heritage_corner_sticker_pbr",
+      "projecting_perimeter_cornice": "zinc_cornice_return_pbr",
+      "projecting_corner_cornices": "zinc_cornice_return_pbr",
+      "wrapped_corner_canopy": "iron_glass_canopy_pbr",
+      "roof_mansard_front": "zinc_roof_sticker_pbr",
+      "roof_mansard_right": "zinc_roof_sticker_pbr",
+      "roof_mansard_rear": "zinc_roof_sticker_pbr",
+      "roof_mansard_left": "zinc_roof_sticker_pbr",
+      "roof_terrace_front": "zinc_roof_sticker_pbr",
+      "roof_terrace_right": "zinc_roof_sticker_pbr",
+      "roof_terrace_rear": "zinc_roof_sticker_pbr",
+      "roof_terrace_left": "zinc_roof_sticker_pbr",
+      "dormer_front_geometry": "dormer_zinc_glazing_pbr",
+      "dormer_rear_geometry": "dormer_zinc_glazing_pbr",
+      "dormer_left_geometry": "dormer_zinc_glazing_pbr",
+      "dormer_right_geometry": "dormer_zinc_glazing_pbr",
+      "central_dome_curb": "zinc_cornice_return_pbr",
+      "central_dome_drum": "stained_glass_dome_pbr",
+      "central_dome": "stained_glass_dome_pbr",
+      "central_dome_cap_finial": "zinc_cornice_return_pbr",
+      "corner_upper_tower": "heritage_corner_sticker_pbr",
+      "corner_tower_crown": "zinc_cornice_return_pbr",
+      "corner_cupola_drum": "stained_glass_dome_pbr",
+      "corner_cupola": "stained_glass_dome_pbr",
+      "corner_cupola_cap_finial": "zinc_cornice_return_pbr"
+    },
+    "finish_classes": {
+      "heritage_facade_sticker_pbr": {"texture_required": true, "all_visible_faces": true, "broad_flat_colour_allowed": false, "fallback_allowed": false},
+      "heritage_corner_sticker_pbr": {"texture_required": true, "all_visible_faces": true, "broad_flat_colour_allowed": false, "fallback_allowed": false},
+      "zinc_roof_sticker_pbr": {"texture_required": true, "all_visible_faces": true, "include_returns_eaves_and_soffits": true, "broad_flat_colour_allowed": false, "fallback_allowed": false},
+      "zinc_cornice_return_pbr": {"texture_required": true, "all_visible_faces": true, "include_top_bottom_and_end_caps": true, "broad_flat_colour_allowed": false, "fallback_allowed": false},
+      "dormer_zinc_glazing_pbr": {"texture_required": true, "all_visible_faces": true, "geometry_owns": ["depth", "pediment_caps"], "sticker_owns": ["glazing", "zinc_patina", "return_colour"], "broad_flat_colour_allowed": false, "fallback_allowed": false},
+      "stained_glass_dome_pbr": {"texture_required": true, "all_visible_faces": true, "layered_transmission_required": true, "broad_flat_colour_allowed": false, "fallback_allowed": false},
+      "iron_glass_canopy_pbr": {"texture_required": true, "all_visible_faces": true, "underside_required": true, "broad_flat_colour_allowed": false, "fallback_allowed": false},
+      "entrance_limestone_return_pbr": {"texture_required": true, "all_visible_faces": true, "broad_flat_colour_allowed": false, "fallback_allowed": false},
+      "entrance_dark_glass_pbr": {"layered_shader_required": true, "transmission_required": true, "interior_backplate_required": true, "broad_flat_colour_allowed": false, "fallback_allowed": false},
+      "entrance_occupied_interior_pbr": {"layered_shader_required": true, "depth_gradient_required": true, "warm_occupancy_variation_required": true, "broad_flat_colour_allowed": false, "fallback_allowed": false}
+    },
+    "supplemental_visible_bindings": [
+      {"id": "entrance_jamb_left_skin", "target_kind": "existing_mesh", "target": "corner_entrance_jamb_left", "finish_class": "entrance_limestone_return_pbr", "source_id": "corner_seam_matched", "coverage": "all_faces"},
+      {"id": "entrance_jamb_right_skin", "target_kind": "existing_mesh", "target": "corner_entrance_jamb_right", "finish_class": "entrance_limestone_return_pbr", "source_id": "corner_seam_matched", "coverage": "all_faces"},
+      {"id": "entrance_tunnel_soffit_skin", "target_kind": "semantic_region", "target": "wrapped_entrance_tunnel_soffit", "finish_class": "entrance_limestone_return_pbr", "source_id": "corner_seam_matched", "coverage": "all_visible_faces"},
+      {"id": "entrance_tunnel_side_return_skin", "target_kind": "semantic_region", "target": "wrapped_entrance_tunnel_side_returns", "finish_class": "entrance_limestone_return_pbr", "source_id": "corner_seam_matched", "coverage": "all_visible_faces"},
+      {"id": "entrance_back_glass_skin", "target_kind": "approved_decal_layer", "target": "wrapped_entrance_recessed_glass_plane", "finish_class": "entrance_dark_glass_pbr", "source_id": "corner_seam_matched", "coverage": "entrance_contour_only"},
+      {"id": "entrance_interior_backplate_skin", "target_kind": "approved_decal_layer", "target": "wrapped_entrance_occupied_backplate", "finish_class": "entrance_occupied_interior_pbr", "source_id": "corner_seam_matched", "coverage": "entrance_contour_only"},
+      {"id": "canopy_underside_skin", "target_kind": "semantic_region", "target": "wrapped_corner_canopy_underside", "finish_class": "iron_glass_canopy_pbr", "source_id": "corner_seam_matched", "coverage": "underside_and_edge_returns"}
+    ]
+  },
   "pbr_policy": {
     "carrier_native_uv_required": true,
     "albedo_owner": "registered sticker atlas",
@@ -206,6 +314,10 @@
     "entrance_contour_hash_mismatch",
     "duplicate_feature_owner",
     "unowned_exposed_surface",
+    "unassigned_visible_polygon",
+    "generic_blue_grey_or_clay_fallback",
+    "broad_flat_colour_on_exterior_face",
+    "unfinished_entrance_recess_surface",
     "assembled_glb_over_8mb"
   ]
 }

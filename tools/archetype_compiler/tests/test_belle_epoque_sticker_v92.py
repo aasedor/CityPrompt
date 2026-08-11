@@ -36,16 +36,22 @@ def test_approved_lock_compiles_all_thirty_eight_native_carrier_skins(tmp_path: 
     clay, _spec, _lock_path, registration = _approved(tmp_path)
     assert registration["status"] == "registration_ready_pending_atlas_and_glb"
     assert registration["clay_lock"]["geometry_sha256"] == clay["geometry_sha256"]
-    assert registration["surface_coverage"] == {
-        "exposed_surface_count": 38,
-        "registered_surface_count": 38,
-        "unowned_exposed_surfaces": [],
-    }
+    assert registration["surface_coverage"]["exposed_surface_count"] == 38
+    assert registration["surface_coverage"]["registered_surface_count"] == 38
+    assert registration["surface_coverage"]["unowned_exposed_surfaces"] == []
+    assert registration["surface_coverage"]["unassigned_visible_polygons"] == []
+    assert registration["surface_coverage"]["generic_fallbacks"] == []
+    assert registration["surface_coverage"]["broad_flat_colour_surfaces"] == []
+    assert registration["surface_coverage"]["status"] == "mandatory_complete"
     assert all(item["kind"] == "carrier_skin" for item in registration["assemblies"])
     assert all(item["carrier_mode"] == "native_surface_material" for item in registration["assemblies"])
     assert all(item["material_binding"]["apply_to_existing_carrier"] is True for item in registration["assemblies"])
     assert all(item["material_binding"]["create_geometry"] is False for item in registration["assemblies"])
     assert all(item["material_binding"]["carrier_offset_m"] == 0.0 for item in registration["assemblies"])
+    assert all(item["finish_class"] for item in registration["assemblies"])
+    assert all(item["visible_face_coverage"]["scope"] == "all_visible_polygons" for item in registration["assemblies"])
+    assert all(item["visible_face_coverage"]["generic_fallback_allowed"] is False for item in registration["assemblies"])
+    assert all(item["visible_face_coverage"]["broad_flat_colour_allowed"] is False for item in registration["assemblies"])
 
 
 def test_every_surface_has_explicit_numeric_anchors_and_crop_transform(tmp_path: Path):
@@ -161,10 +167,48 @@ def test_duplicate_feature_ownership_and_contour_drift_are_rejected(tmp_path: Pa
 def test_all_accepted_sources_are_hash_locked_with_explicit_crop_transforms():
     spec = load_document(DEFAULT_SPEC)
     sources = validate_sources(spec)
-    assert len(sources) == 9
+    assert len(sources) == 15
     assert all(source["verified_sha256"] == source["sha256"] for source in sources.values())
     assert all(len(source["source_crop_xyxy"]) == 4 for source in sources.values())
     assert all(len(source["source_to_canonical_h"]) == 3 for source in sources.values())
+
+
+def test_every_visible_role_has_texture_class_and_no_generic_fallback(tmp_path: Path):
+    clay, spec, _lock_path, registration = _approved(tmp_path)
+    contract = spec["visible_face_coverage_contract"]
+    assert contract["unmatched_polygon_action"] == "hard_stop"
+    assert {"blue", "grey", "gray", "clay", "default"}.issubset(
+        set(contract["generic_fallback_materials_forbidden"])
+    )
+    assert set(contract["finish_class_for_role"]) == {surface["role"] for surface in clay["surfaces"]}
+    for assembly in registration["assemblies"]:
+        finish = contract["finish_classes"][assembly["finish_class"]]
+        assert finish["all_visible_faces"] is True
+        assert finish["fallback_allowed"] is False
+        assert finish["broad_flat_colour_allowed"] is False
+        assert assembly["source_sha256"]
+
+
+def test_entrance_canopy_roof_cornice_and_dormer_returns_have_deliberate_skins(tmp_path: Path):
+    _clay, _spec, _lock_path, registration = _approved(tmp_path)
+    supplements = {item["id"]: item for item in registration["supplemental_visible_bindings"]}
+    assert set(supplements) == {
+        "entrance_jamb_left_skin", "entrance_jamb_right_skin", "entrance_tunnel_soffit_skin",
+        "entrance_tunnel_side_return_skin", "entrance_back_glass_skin",
+        "entrance_interior_backplate_skin", "canopy_underside_skin",
+    }
+    assert supplements["entrance_back_glass_skin"]["finish_class"] == "entrance_dark_glass_pbr"
+    assert supplements["entrance_interior_backplate_skin"]["finish_class"] == "entrance_occupied_interior_pbr"
+    assert supplements["entrance_tunnel_soffit_skin"]["finish_class"] == "entrance_limestone_return_pbr"
+    assert supplements["canopy_underside_skin"]["finish_class"] == "iron_glass_canopy_pbr"
+    assert all(item["generic_fallback_allowed"] is False for item in supplements.values())
+    by_role = {item["surface_role"]: item for item in registration["assemblies"]}
+    for role in (
+        "projecting_perimeter_cornice", "projecting_corner_cornices",
+        "roof_mansard_front", "roof_terrace_front", "dormer_front_geometry",
+        "central_dome_drum", "corner_cupola_drum",
+    ):
+        assert by_role[role]["visible_face_coverage"]["scope"] == "all_visible_polygons"
 
 
 def test_delivery_rejects_glb_over_eight_megabytes(tmp_path: Path):

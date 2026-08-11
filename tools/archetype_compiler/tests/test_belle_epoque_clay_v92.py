@@ -5,13 +5,18 @@ from pathlib import Path
 from build_belle_epoque_clay_v92 import (
     SCHEMA,
     audit,
+    audit_visible_face_materials,
     build_geometry,
     build_lock,
     entrance_clear_fraction,
     evidence_contract,
+    final_surface_classification,
+    final_surface_coverage_audit,
     mesh_bad_edges,
     roof_topology_audit,
     sha256,
+    storey_band_contract,
+    storey_band_contract_audit,
     surface_contract,
 )
 
@@ -69,6 +74,83 @@ def test_roof_only_pass_freezes_landmark_dimensions():
     assert geometry["domes"][1] == {"id": "corner_glass_cupola", "centre": [-14.5, -13.5], "diameter_m": 6.4, "rise_m": 3.3, "tower_radius_m": 3.15, "tower_base_z_m": 18.4, "tower_top_z_m": 24.0, "drum_base_z_m": 23.85, "roof_seat_z_m": 24.0, "dome_base_z_m": 25.05, "top_z_m": 29.45, "street_anchor_priority": 1}
     entrance = geometry["entrance"]
     assert {key: entrance[key] for key in ("width_m", "depth_m", "canopy_depth_m")} == {"width_m": 5.4, "depth_m": 4.2, "canopy_depth_m": 4.0}
+
+
+def test_every_authored_face_has_exactly_one_final_surface_classification():
+    geometry = build_geometry()
+    surfaces, _adjacency, _required = surface_contract()
+    classification = final_surface_classification(geometry)
+    coverage = final_surface_coverage_audit(geometry, classification, {surface["surface_id"] for surface in surfaces})
+    assert coverage["passed"] is True
+    assert coverage["authored_face_count"] == coverage["classified_face_count"] == 1680
+    assert coverage["unclassified_face_count"] == 0
+    assert coverage["duplicate_face_count"] == 0
+    assert coverage["fallback_exception_count"] == 0
+
+
+def test_final_surface_contract_covers_known_visible_fallback_sources():
+    entries = final_surface_classification(build_geometry())["entries"]
+    by_mesh: dict[str, list[dict]] = {}
+    for entry in entries:
+        by_mesh.setdefault(entry["mesh_name"], []).append(entry)
+    assert by_mesh["corner_entrance_jamb_left"][0]["finish_class"] == "entrance_stone_return_finish"
+    assert by_mesh["wrapped_corner_canopy"][0]["finish_class"] == "canopy_metal_top_edge_and_soffit_finish"
+    assert by_mesh["front_main_cornice"][0]["finish_class"] == "cornice_metal_wrap_finish"
+    assert {entry["finish_class"] for entry in by_mesh["dormer_front_0"]} == {"elevation_sticker", "roof_sticker_wrap"}
+    assert by_mesh["central_dome_drum"][0]["finish_class"] == "roof_metal_wrap_finish"
+    assert by_mesh["corner_cupola_drum"][0]["finish_class"] == "roof_metal_wrap_finish"
+    assert by_mesh["right_wall"][0]["finish_class"] == "elevation_sticker_with_sampled_returns"
+    assert all(entry["fallback_material_forbidden"] for entry in entries)
+
+
+def test_visible_face_material_audit_blocks_one_fallback_polygon():
+    classification = final_surface_classification(build_geometry())
+    assignments: dict[str, dict[int, str]] = {}
+    for entry in classification["entries"]:
+        mesh = assignments.setdefault(entry["mesh_name"], {})
+        for start, end in entry["face_ranges_inclusive"]:
+            for face in range(start, end + 1):
+                mesh[face] = "MAT_FinalFinish_v92_verified"
+    assert audit_visible_face_materials(classification, assignments)["status"] == "pass"
+    assignments["wrapped_corner_canopy"][1] = "MAT_Roof"
+    failed = audit_visible_face_materials(classification, assignments)
+    assert failed["status"] == "fail"
+    assert failed["failure_count"] == 1
+    assert failed["failures"][0] == {"mesh_name": "wrapped_corner_canopy", "face_index": 1, "material": "MAT_Roof", "finish_class": "canopy_metal_top_edge_and_soffit_finish"}
+
+
+def test_surface_classification_does_not_change_approved_geometry_hash():
+    assert sha256(build_geometry()) == "4a0c2c6514d0a546d3a3154b6766d40797c88b8b3ffb7ce4e1523831be73b815"
+
+
+def test_six_storey_contract_adds_exactly_one_repeatable_middle_band():
+    contract = storey_band_contract()
+    five = contract["variants"]["five_storey"]
+    six = contract["variants"]["six_storey"]
+    assert len(five["repeatable_middle"]) == 3
+    assert len(six["repeatable_middle"]) == 4
+    assert five["ground"] == six["ground"]
+    assert five["top_crown"]["template_id"] == six["top_crown"]["template_id"] == "top_crown_v92"
+    assert five["roof"]["template_id"] == six["roof"]["template_id"] == "roof_v92"
+    assert math.isclose(six["top_crown"]["z_min_m"] - five["top_crown"]["z_min_m"], 4.1)
+    assert math.isclose(six["roof"]["z_min_m"] - five["roof"]["z_min_m"], 4.1)
+    assert six["roof"]["translation_z_m"] == 4.1
+    assert contract["insertion_z_range_m"] == [12.3, 16.4]
+
+
+def test_six_storey_monolithic_scaling_is_blocked_until_segmented_geometry_exists():
+    contract = storey_band_contract()
+    six = contract["variants"]["six_storey"]
+    assert six["geometry_status"] == "requires_separately_hashed_segmented_floor_addressable_bundle"
+    assert six["monolithic_wall_scaling"] == "forbidden"
+    assert contract["six_storey_generation_guard"] == "hard_stop_until_segmented_floor_addressable_geometry_is_present"
+
+
+def test_roof_finish_never_owns_vertical_occupied_floor_carriers():
+    classification = final_surface_classification(build_geometry())
+    report = storey_band_contract_audit(storey_band_contract(), classification)
+    assert report["passed"] is True
+    assert report["roof_owned_vertical_face_conflicts"] == []
 
 
 def test_single_wrapped_corner_entrance_is_deep_and_unobstructed():

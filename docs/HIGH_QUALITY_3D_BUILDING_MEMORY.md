@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-08-09-contour-registered-void-v89`.
+Current executable memory: `2026-08-11-floor-addressable-sticker-v93`.
 
 The current calibration set and catalogue rollout rationale are documented in
 [`BUILDING_GOLD_SET_PIPELINE_SYNTHESIS_2026-08-07.md`](BUILDING_GOLD_SET_PIPELINE_SYNTHESIS_2026-08-07.md).
@@ -1115,6 +1115,34 @@ asset.
   rear-corner and roof-audit renders. All-surface coverage is a machine gate,
   while seams, silhouette and architectural faithfulness remain named-architect
   decisions.
+
+### V92/V93 face-level coverage and floor-addressable sticker lesson
+
+The Belle Epoque Grand Magasin exposed a false-positive in the all-surface
+contract. The semantic registration reported every named surface as owned, but
+the assembled Blender scene still contained 1,242 generic-material polygons:
+436 primary facade faces, 50 secondary faces and 756 roof faces. Named carrier
+coverage is therefore not evidence of rendered polygon coverage.
+
+- Audit materials after every carrier has been bound and before the meshes are
+  joined or rendered. Every visible polygon must resolve to a registered image
+  or an explicit source-derived construction finish. Generic clay, default,
+  blue-grey facade and unregistered roof materials are hard stops.
+- Classify returns as well as hero faces: entrance jambs and tunnel linings,
+  canopy tops/edges/soffits, cornice caps and undersides, roof fascias and court
+  curbs, dormer cheeks and caps, dome drums, finials and exterior end caps.
+- Make occupied-floor ownership explicit. Use separate ground, repeatable
+  middle and fixed top/crown sticker bands, with non-overlapping z intervals.
+  Roof stickers belong to a disjoint roof-only domain and may never be assigned
+  to vertical occupied-floor polygons.
+- A bounded taller variant inserts one complete middle geometry band and its
+  registered sticker. Ground remains fixed; top/crown and the complete roof
+  assembly translate upward by exactly one module. Stretching a monolithic wall
+  or full-height sticker is forbidden because it destroys openings and floor
+  registration.
+- A contract must fail on band gaps, overlaps, missing floor targets, roof
+  material below the roof datum or any remaining fallback polygon. The final
+  named architect review remains separate from this machine completeness gate.
 
 ## Updating this memory
 

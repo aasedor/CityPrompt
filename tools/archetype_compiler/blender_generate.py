@@ -10930,6 +10930,14 @@ def _apply_massing_skin_uv(obj: bpy.types.Object) -> None:
                 )
             elif axis == "plan":
                 along = coordinate.x
+            elif axis == "box_projected":
+                normal = polygon.normal
+                if abs(normal.z) >= max(abs(normal.x), abs(normal.y)):
+                    along = coordinate.x
+                elif abs(normal.x) >= abs(normal.y):
+                    along = coordinate.y
+                else:
+                    along = coordinate.x
             elif axis in {"cylindrical_segment", "dome_radial"}:
                 centre_x = float(material.get("massing_skin_origin_x", 0.0))
                 centre_y = float(material.get("massing_skin_origin_y", 0.0))
@@ -10945,7 +10953,17 @@ def _apply_massing_skin_uv(obj: bpy.types.Object) -> None:
                 along = (angle - start) / max(end - start, 1e-6)
             else:
                 continue
-            u = along if axis in {"cylindrical_segment", "dome_radial"} else (along - u_min) / span_u
+            if axis == "box_projected":
+                box = list(material.get("massing_skin_box_bounds", (-18.0, 18.0, -17.0, 17.0, 0.0, 31.0)))
+                if abs(polygon.normal.z) >= max(abs(polygon.normal.x), abs(polygon.normal.y)):
+                    box_u_min, box_u_max = float(box[0]), float(box[1])
+                elif abs(polygon.normal.x) >= abs(polygon.normal.y):
+                    box_u_min, box_u_max = float(box[2]), float(box[3])
+                else:
+                    box_u_min, box_u_max = float(box[0]), float(box[1])
+                u = (along - box_u_min) / max(box_u_max - box_u_min, 1e-6)
+            else:
+                u = along if axis in {"cylindrical_segment", "dome_radial"} else (along - u_min) / span_u
             if flip_u:
                 u = 1.0 - u
             u = tex_u_min + u * (tex_u_max - tex_u_min)
@@ -10957,6 +10975,15 @@ def _apply_massing_skin_uv(obj: bpy.types.Object) -> None:
                 if bool(material.get("massing_skin_plan_flip_v", False)):
                     plan_v = 1.0 - plan_v
                 v = v_min + plan_v * (v_max - v_min)
+            elif axis == "box_projected":
+                box = list(material.get("massing_skin_box_bounds", (-18.0, 18.0, -17.0, 17.0, 0.0, 31.0)))
+                if abs(polygon.normal.z) >= max(abs(polygon.normal.x), abs(polygon.normal.y)):
+                    box_v_min, box_v_max = float(box[2]), float(box[3])
+                    vertical = coordinate.y
+                else:
+                    box_v_min, box_v_max = float(box[4]), float(box[5])
+                    vertical = coordinate.z
+                v = v_min + (vertical - box_v_min) / max(box_v_max - box_v_min, 1e-6) * (v_max - v_min)
             elif axis == "dome_radial":
                 dome_radius = max(float(material.get("massing_skin_dome_radius_m", 1.0)), 1e-6)
                 radial = math.hypot(coordinate.x - centre_x, coordinate.y - centre_y)
@@ -11014,6 +11041,11 @@ def _graph_carrier_skin(parts: list, spec: dict, mats: dict) -> None:
     material["massing_skin_tex_u_max"] = float(spec.get("uv_u_max", 1.0))
     material["massing_skin_v_min"] = float(spec.get("uv_v_min", 0.0))
     material["massing_skin_v_max"] = float(spec.get("uv_v_max", 1.0))
+    material["final_surface_coverage"] = bool(spec.get("final_surface_coverage", True))
+    material["final_surface_finish_class"] = str(spec.get("finish_class", "registered_sticker"))
+    material["sticker_layer"] = str(spec.get("sticker_layer", "semantic"))
+    material["sticker_floor_role"] = str(spec.get("floor_role", ""))
+    material["sticker_surface_id"] = str(spec.get("surface_id", ""))
     centre = spec.get("centre", (0.0, 0.0, 0.0))
     cx, cy, cz = (float(value) for value in centre)
     span = float(spec.get("span_m", 1.0))
@@ -11045,6 +11077,11 @@ def _graph_carrier_skin(parts: list, spec: dict, mats: dict) -> None:
         material["massing_skin_u_max"] = float(bounds[1])
         material["massing_skin_plan_v_min"] = float(bounds[2])
         material["massing_skin_plan_v_max"] = float(bounds[3])
+    elif axis == "box_projected":
+        bounds = list(spec.get("box_bounds") or [-18.0, 18.0, -17.0, 17.0, 0.0, 31.0])
+        if len(bounds) != 6:
+            raise ValueError("box-projected carrier skin requires six box_bounds values")
+        material["massing_skin_box_bounds"] = [float(value) for value in bounds]
 
     targets = {str(value) for value in spec.get("target_ids") or []}
     if not targets:
@@ -11055,6 +11092,7 @@ def _graph_carrier_skin(parts: list, spec: dict, mats: dict) -> None:
     normal_z_min = float(spec.get("normal_z_min", -1.01))
     normal_z_max = float(spec.get("normal_z_max", 1.01))
     angle_range = spec.get("normal_angle_range_deg")
+    face_indices = {int(value) for value in spec.get("face_indices") or []}
     assigned = 0
     for obj in parts:
         if obj.name not in targets and not any(obj.name.startswith(f"{target}_") for target in targets):
@@ -11062,6 +11100,8 @@ def _graph_carrier_skin(parts: list, spec: dict, mats: dict) -> None:
         slot = len(obj.data.materials)
         obj.data.materials.append(material)
         for polygon in obj.data.polygons:
+            if face_indices and polygon.index not in face_indices:
+                continue
             world_normal = (obj.matrix_world.to_3x3() @ polygon.normal).normalized()
             if not normal_z_min <= world_normal.z <= normal_z_max:
                 continue
@@ -11078,6 +11118,50 @@ def _graph_carrier_skin(parts: list, spec: dict, mats: dict) -> None:
     if assigned == 0:
         raise ValueError(f"carrier skin {spec.get('id')!r} selected no clay faces")
     material["carrier_skin_assigned_faces"] = assigned
+
+
+def _audit_final_surface_bindings(parts: list, graph: dict) -> dict:
+    """Fail before render when an audited clay face retains a generic material.
+
+    Surface declarations alone are insufficient: a normal or z filter can
+    select zero faces while the registration JSON still claims ownership. This
+    gate inspects the material bound to every polygon after all assemblies have
+    executed and before the meshes are joined.
+    """
+    contract = graph.get("final_surface_audit") or {}
+    if not contract.get("required"):
+        return {"status": "not_required", "checked_faces": 0, "failures": []}
+    forbidden = {str(value) for value in contract.get(
+        "forbidden_material_names",
+        ("MAT_Clay", "MAT_Facade_Primary", "MAT_Facade_Secondary", "MAT_Roof"),
+    )}
+    failures: list[dict] = []
+    checked = 0
+    floor_contract = graph.get("floor_sticker_contract") or {}
+    roof_start = float(floor_contract.get("roof_starts_at_z_m", float("inf")))
+    for obj in parts:
+        if not obj.get("locked_clay_geometry"):
+            continue
+        for polygon in obj.data.polygons:
+            checked += 1
+            material = obj.data.materials[polygon.material_index] if polygon.material_index < len(obj.data.materials) else None
+            name = material.name if material else "<NONE>"
+            reason = ""
+            if material is None or not bool(material.get("final_surface_coverage")):
+                reason = "missing_final_surface_owner"
+            elif name in forbidden:
+                reason = "generic_or_clay_fallback"
+            elif material.get("sticker_floor_role") == "roof" and polygon.center.z < roof_start - 1e-5:
+                reason = "roof_sticker_below_roof_datum"
+            if reason:
+                failures.append({"object": obj.name, "face_index": polygon.index, "material": name, "reason": reason})
+    if failures:
+        preview = ", ".join(
+            f"{item['object']}:{item['face_index']}={item['material']}({item['reason']})"
+            for item in failures[:12]
+        )
+        raise ValueError(f"final surface audit failed for {len(failures)} visible faces: {preview}")
+    return {"status": "pass", "checked_faces": checked, "failure_count": 0}
 
 
 def _consolidate_massing_skin_materials(obj: bpy.types.Object) -> None:
@@ -11440,6 +11524,9 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
 
     if not parts:
         raise ValueError("massing graph contains no renderable nodes or assemblies")
+    final_surface_audit = _audit_final_surface_bindings(parts, graph) if not CLAY_MODE else {
+        "status": "clay_review_exempt", "checked_faces": 0, "failure_count": 0,
+    }
     model = join_as("ASM_MassingGraph", parts)
     if CLAY_MODE:
         clay = make_material("MAT_ClayLock", {
@@ -11467,6 +11554,8 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
     model["massing_graph_node_count"] = len(graph.get("nodes", []))
     model["massing_graph_assembly_count"] = len(graph.get("assemblies", []))
     model["massing_graph_void_count"] = len(graph.get("voids", []))
+    model["final_surface_audit_status"] = final_surface_audit["status"]
+    model["final_surface_audit_checked_faces"] = int(final_surface_audit.get("checked_faces", 0))
     return model
 
 

@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-08-11-all-surface-sticker-v91",
+  "memory_version": "2026-08-11-floor-addressable-sticker-v93",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "calibration_set": {
@@ -38,6 +38,10 @@
     {
       "id": "all_exposed_landmark_surfaces_have_registered_owners",
       "rule": "A fixed Sticker Method landmark must declare one registered owner for every exposed exterior wall, chamfer, courtyard wall and roof weathering field. Crop isolation backgrounds before registration, align entrance-block outer faces to the facade plane, and replace only roof albedo so the approved PBR normal and roughness survive. Blank fields, pale crop borders and independently scaled roof stickers are pre-release failures."
+    },
+    {
+      "id": "floor_stickers_and_roof_are_disjoint_material_domains",
+      "rule": "Segment occupied elevations into explicit ground, repeatable middle and fixed top/crown bands before material binding. The roof is a separate domain beginning at an audited roof datum and may never own a vertical occupied-floor polygon. A taller bounded variant inserts complete middle geometry and its registered sticker, then translates the unchanged top/crown and roof assemblies; stretching a monolithic wall or full-height sticker is forbidden. After Blender binding, count every visible polygon and hard-stop any unowned face, generic blue/grey/clay fallback, overlapping band or roof material below the roof datum."
     },
     {
       "id": "alpha_textures_export_losslessly",
@@ -995,6 +999,11 @@
       "symptom": "A whole-building sticker pilot shows white borders, flat roof colour or an entrance volume projecting in front of its photographed opening",
       "cause": "The image isolation background was registered as part of the wall, the roof sticker replaced the complete PBR material instead of only its albedo, or the depth-bearing opening block was centred without aligning its outer face to the facade plane.",
       "correction": "Preserve the generated master, derive a render-ready edge-to-edge occupied crop, register roof imagery in one declared plan frame while retaining construction-role normal and roughness, and calculate opening-block centre from facade plane plus half depth. Compare front, rear-corner and roof-audit views before release."
+    },
+    {
+      "symptom": "The top occupied floor receives roof imagery while blue-grey carrier polygons or unstickered returns remain visible elsewhere",
+      "cause": "The contract counted named surfaces rather than the polygons that actually received materials, and one full-height wall carrier crossed ground, middle, crown and roof ownership boundaries.",
+      "correction": "Subdivide or floor-address the elevation at audited floor datums, assign separate ground, middle and top/crown sticker owners, isolate roof targets above the roof datum, and run a post-binding face audit in Blender. Release requires zero unassigned faces, zero generic fallback materials, zero band gaps or overlaps and zero roof-owned vertical occupied-floor polygons."
     }
   ]
 }

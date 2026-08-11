@@ -11,10 +11,11 @@ import argparse
 import hashlib
 import json
 import math
-import struct
 import sys
 from pathlib import Path
 from typing import Any
+
+from PIL import Image
 
 
 REPO = Path(__file__).resolve().parents[2]
@@ -50,12 +51,14 @@ def resolve_path(raw: str | Path, *, relative_to: Path) -> Path:
     return local if local.exists() else REPO / path
 
 
-def png_size(path: Path) -> tuple[int, int]:
-    with path.open("rb") as handle:
-        header = handle.read(24)
-    if len(header) != 24 or header[:8] != b"\x89PNG\r\n\x1a\n" or header[12:16] != b"IHDR":
-        raise ContractError(f"sticker source is not a valid PNG: {path}")
-    return struct.unpack(">II", header[16:24])
+def raster_size(path: Path) -> tuple[int, int]:
+    try:
+        with Image.open(path) as image:
+            image.verify()
+        with Image.open(path) as image:
+            return image.size
+    except (OSError, SyntaxError) as exc:
+        raise ContractError(f"sticker source is not a valid raster image: {path}") from exc
 
 
 def _is_number(value: Any) -> bool:
@@ -90,7 +93,7 @@ def validate_sources(spec: dict[str, Any]) -> dict[str, dict[str, Any]]:
         actual_hash = sha256_file(path)
         if actual_hash != source.get("sha256"):
             raise ContractError(f"accepted sticker hash mismatch for {source_id}: {actual_hash}")
-        dimensions = list(png_size(path))
+        dimensions = list(raster_size(path))
         if dimensions != source.get("pixel_size"):
             raise ContractError(f"accepted sticker dimensions changed for {source_id}: {dimensions}")
         crop = source.get("source_crop_xyxy")
@@ -214,6 +217,72 @@ def validate_surfaces(clay: dict[str, Any], spec: dict[str, Any]) -> dict[str, d
     if missing_roles:
         raise ContractError(f"clay lock is missing required exposed roles: {', '.join(missing_roles)}")
     return by_id
+
+
+def validate_visible_face_contract(
+    spec: dict[str, Any], surfaces: dict[str, dict[str, Any]], sources: dict[str, dict[str, Any]]
+) -> tuple[dict[str, str], list[dict[str, Any]]]:
+    coverage = spec.get("visible_face_coverage_contract", {})
+    if coverage.get("unmatched_polygon_action") != "hard_stop":
+        raise ContractError("visible-face coverage must hard-stop on every unmatched polygon")
+    forbidden = {str(value).lower() for value in coverage.get("generic_fallback_materials_forbidden", [])}
+    if not {"clay", "blue", "grey", "gray", "default"}.issubset(forbidden):
+        raise ContractError("visible-face coverage does not forbid generic blue/grey/clay fallbacks")
+    classes = coverage.get("finish_classes", {})
+    role_classes = coverage.get("finish_class_for_role", {})
+    resolved: dict[str, str] = {}
+    for surface_id, surface in surfaces.items():
+        role = str(surface["role"])
+        finish_class = str(role_classes.get(role, ""))
+        finish = classes.get(finish_class)
+        if not finish_class or not isinstance(finish, dict):
+            raise ContractError(f"visible carrier has no finish class: {surface_id} ({role})")
+        if finish.get("all_visible_faces") is not True:
+            raise ContractError(f"finish class does not cover all visible faces: {finish_class}")
+        if finish.get("fallback_allowed") is not False or finish.get("broad_flat_colour_allowed") is not False:
+            raise ContractError(f"finish class permits fallback or broad flat colour: {finish_class}")
+        source_id = spec.get("source_for_role", {}).get(role)
+        if finish.get("texture_required") is True and source_id not in sources:
+            raise ContractError(f"texture-backed finish class has no verified source: {surface_id}")
+        resolved[surface_id] = finish_class
+
+    supplements: list[dict[str, Any]] = []
+    seen_ids: set[str] = set()
+    required_entrance = {
+        "entrance_jamb_left_skin", "entrance_jamb_right_skin", "entrance_tunnel_soffit_skin",
+        "entrance_tunnel_side_return_skin", "entrance_back_glass_skin",
+        "entrance_interior_backplate_skin", "canopy_underside_skin",
+    }
+    for binding in coverage.get("supplemental_visible_bindings", []):
+        binding_id = str(binding.get("id", ""))
+        finish_class = str(binding.get("finish_class", ""))
+        source_id = str(binding.get("source_id", ""))
+        if not binding_id or binding_id in seen_ids:
+            raise ContractError(f"duplicate or missing supplemental visible binding: {binding_id!r}")
+        if finish_class not in classes:
+            raise ContractError(f"supplemental binding has unknown finish class: {binding_id}")
+        finish = classes[finish_class]
+        if finish.get("fallback_allowed") is not False or finish.get("broad_flat_colour_allowed") is not False:
+            raise ContractError(f"supplemental binding permits a flat fallback: {binding_id}")
+        if source_id not in sources:
+            raise ContractError(f"supplemental binding has no verified texture source: {binding_id}")
+        if not binding.get("target") or binding.get("coverage") not in {
+            "all_faces", "all_visible_faces", "entrance_contour_only", "underside_and_edge_returns"
+        }:
+            raise ContractError(f"supplemental binding has incomplete target coverage: {binding_id}")
+        seen_ids.add(binding_id)
+        supplements.append({
+            **binding,
+            "source_path": sources[source_id]["path"],
+            "source_sha256": sources[source_id]["verified_sha256"],
+            "material_policy": finish,
+            "generic_fallback_allowed": False,
+            "broad_flat_colour_allowed": False,
+        })
+    missing_entrance = sorted(required_entrance - seen_ids)
+    if missing_entrance:
+        raise ContractError(f"entrance/canopy visible surfaces are unfinished: {', '.join(missing_entrance)}")
+    return resolved, supplements
 
 
 def reciprocal_seams(clay: dict[str, Any], surfaces: dict[str, dict[str, Any]]) -> list[dict[str, Any]]:
@@ -366,6 +435,7 @@ def build_registration(
     validate_clay_lock(clay, spec, lock_path=lock_path)
     sources = validate_sources(spec)
     surfaces = validate_surfaces(clay, spec)
+    finish_classes, supplemental_bindings = validate_visible_face_contract(spec, surfaces, sources)
     seams = reciprocal_seams(clay, surfaces)
     dimensions = clay["dimensions"]
     wall_height = float(dimensions["wall_height_m"])
@@ -389,6 +459,8 @@ def build_registration(
         if len(anchors) < int(spec["registration_thresholds"]["minimum_planar_anchor_count"]):
             raise ContractError(f"surface has too few explicit numeric anchors: {surface_id}")
         source_id = spec["source_for_role"][role]
+        finish_class = finish_classes[surface_id]
+        finish_policy = spec["visible_face_coverage_contract"]["finish_classes"][finish_class]
         assemblies.append({
             "id": f"sticker_{surface_id}",
             "kind": "carrier_skin",
@@ -404,6 +476,14 @@ def build_registration(
             "source_sha256": sources[source_id]["verified_sha256"],
             "source_crop_xyxy": sources[source_id]["source_crop_xyxy"],
             "source_to_canonical_h": sources[source_id]["source_to_canonical_h"],
+            "finish_class": finish_class,
+            "visible_face_coverage": {
+                "scope": "all_visible_polygons",
+                "side_returns": "same construction-specific finish class",
+                "unmatched_polygon_action": "hard_stop",
+                "generic_fallback_allowed": False,
+                "broad_flat_colour_allowed": False,
+            },
             "material_binding": {
                 "albedo": "registered_sticker_atlas",
                 "normal": "construction_role_metric_pbr",
@@ -411,6 +491,8 @@ def build_registration(
                 "apply_to_existing_carrier": True,
                 "create_geometry": False,
                 "carrier_offset_m": 0.0,
+                "finish_policy": finish_policy,
+                "fallback_material": None,
             },
         })
 
@@ -445,8 +527,13 @@ def build_registration(
             "exposed_surface_count": len(surfaces),
             "registered_surface_count": len(assemblies),
             "unowned_exposed_surfaces": [],
+            "unassigned_visible_polygons": [],
+            "generic_fallbacks": [],
+            "broad_flat_colour_surfaces": [],
+            "status": "mandatory_complete",
         },
         "assemblies": assemblies,
+        "supplemental_visible_bindings": supplemental_bindings,
         "reciprocal_seams": seams,
         "atlas_plan": {
             **spec["atlas_budget"],

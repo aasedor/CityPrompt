@@ -199,9 +199,55 @@ def render_carriers(lock: dict[str, Any], registration: dict[str, Any]) -> list[
             "carrier_mode", "surface_role", "mapping", "mapping_parameters",
             "registration_anchors", "source_id", "source_sha256",
             "source_crop_xyxy", "source_to_canonical_h", "material_binding",
+            "finish_class", "visible_face_coverage",
         ):
             item[key] = deepcopy(registered[key])
         output.append(item)
+    return output
+
+
+def exact_face_coverage_carriers(lock: dict[str, Any], semantic: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Give every locked polygon a deliberate texture before hero skins override it."""
+    by_surface: dict[str, dict[str, Any]] = {}
+    for item in semantic:
+        surface_id = str(item.get("semantic_surface_id") or item.get("surface_id") or "")
+        by_surface.setdefault(surface_id, item)
+    zinc = (PREPARED_ASSETS / "cornice_zinc.jpg").relative_to(REPO).as_posix()
+    central_polar = (PREPARED_ASSETS / "central_dome_polar.jpg").relative_to(REPO).as_posix()
+    corner_polar = (PREPARED_ASSETS / "corner_dome_polar.jpg").relative_to(REPO).as_posix()
+    output: list[dict[str, Any]] = []
+    for index, entry in enumerate(lock["final_surface_classification"]["entries"]):
+        finish = str(entry["finish_class"])
+        surface_id = str(entry["carrier_surface_id"])
+        semantic_owner = by_surface.get(surface_id)
+        if "glass" in finish:
+            material_role = "glass"
+            source = corner_polar if surface_id == "corner_dome" else central_polar
+        elif any(token in finish for token in ("roof", "cornice", "canopy", "metal")):
+            material_role = "roof"
+            source = zinc
+        else:
+            material_role = "elevation"
+            source = str(semantic_owner["source_image_path"]) if semantic_owner else (
+                PREPARED_ASSETS / "corner_seam_matched.jpg"
+            ).relative_to(REPO).as_posix()
+        face_indices = [
+            face
+            for start, end in entry["face_ranges_inclusive"]
+            for face in range(int(start), int(end) + 1)
+        ]
+        output.append(carrier(
+            f"coverage_{index:03d}_{entry['mesh_name']}",
+            [str(entry["mesh_name"])], source, "box_projected",
+            centre=[0.0, 0.0, 15.5], span_m=36.0, height_m=31.0,
+            material_role=material_role,
+            box_bounds=[-21.25, 18.35, -20.25, 17.35, 0.0, 31.0],
+            face_indices=face_indices,
+            finish_class=finish,
+            sticker_layer="coverage_seal",
+            final_surface_coverage=True,
+            semantic_surface_id=surface_id,
+        ))
     return output
 
 
@@ -230,7 +276,8 @@ def build_profile() -> tuple[dict[str, Any], dict[str, Any]]:
         })
 
     registration = build_registration(lock, contract, lock_path=CLAY_OUTPUT / "clay_lock.json")
-    assemblies = render_carriers(lock, registration)
+    semantic_assemblies = render_carriers(lock, registration)
+    assemblies = exact_face_coverage_carriers(lock, semantic_assemblies) + semantic_assemblies
 
     base_payload = json.loads(BASE_PROFILE.read_text(encoding="utf-8"))
     profile = deepcopy(base_payload["profiles"][VARIANT])
@@ -255,6 +302,12 @@ def build_profile() -> tuple[dict[str, Any], dict[str, Any]]:
             "meshes": meshes,
         }],
         "assemblies": assemblies,
+        "final_surface_audit": {
+            "required": True,
+            "scope": "every_polygon_of_locked_clay_geometry",
+            "forbidden_material_names": ["MAT_Clay", "MAT_Facade_Primary", "MAT_Facade_Secondary", "MAT_Roof"],
+            "unmatched_polygon_action": "hard_stop",
+        },
         "voids": [{
             "id": "wrapped_corner_entrance",
             "kind": "recessed_tunnel",
@@ -279,7 +332,8 @@ def build_profile() -> tuple[dict[str, Any], dict[str, Any]]:
         "contract": str(CONTRACT.relative_to(REPO)).replace("\\", "/"),
         "carrier_mode": "native_surface_material",
         "geometry_mutation_after_clay_gate": "forbidden",
-        "registered_surface_roles": [item["surface_id"] for item in assemblies],
+        "registered_surface_roles": [item["surface_id"] for item in semantic_assemblies],
+        "exact_face_coverage_carrier_count": len(assemblies) - len(semantic_assemblies),
         "separate_full_face_boxes": "forbidden",
         "glass_transmission_preserved": True,
     }

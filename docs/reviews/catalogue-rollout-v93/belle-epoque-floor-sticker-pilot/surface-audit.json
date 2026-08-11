@@ -1,0 +1,27 @@
+{
+  "schema": "final-surface-audit@1",
+  "pipeline": "v93-segmented-floor-stickers",
+  "previous_false_positive": {
+    "rendered_polygons": 3232,
+    "fallback_polygons": 1242,
+    "fallback_percent": 38.4
+  },
+  "pilots": {
+    "five_storey": {
+      "final_faces_checked": 1956,
+      "fallback_faces": 0,
+      "roof_faces_below_roof_datum": 0,
+      "assembled_glb_bytes": 19660716,
+      "geometry_hash": "2f433ac720d49e35cc48d8f92f2d7d4540710e3ec98a641c99567f50dcee1e9c",
+      "status": "technical_coverage_pass_visual_gate_reject"
+    },
+    "six_storey": {
+      "final_faces_checked": 2028,
+      "fallback_faces": 0,
+      "roof_faces_below_roof_datum": 0,
+      "assembled_glb_bytes": 19723032,
+      "geometry_hash": "c0d0a0636e2095918a8d96198528394a2629fe7ce95dc639d1b49bf9f4d5d1c0",
+      "status": "technical_coverage_pass_visual_gate_reject"
+    }
+  }
+}

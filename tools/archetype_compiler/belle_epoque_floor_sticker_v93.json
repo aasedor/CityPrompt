@@ -1,0 +1,24 @@
+{
+  "schema": "catalogue-rollout-batch@1",
+  "pipeline_version": "v93",
+  "batch_id": "BELLE-EPOQUE-FLOOR-STICKER-V93",
+  "paid_facade_calls": 0,
+  "entries": [
+    {
+      "archetype_id": "grand_magasin",
+      "variant_id": "grand-magasin-belle-epoque-floor-5",
+      "family_id": "belle-epoque-grand-magasin-v93-5",
+      "width_m": 36.0,
+      "depth_m": 34.0,
+      "floors": 5
+    },
+    {
+      "archetype_id": "grand_magasin",
+      "variant_id": "grand-magasin-belle-epoque-floor-6",
+      "family_id": "belle-epoque-grand-magasin-v93-6",
+      "width_m": 36.0,
+      "depth_m": 34.0,
+      "floors": 6
+    }
+  ]
+}

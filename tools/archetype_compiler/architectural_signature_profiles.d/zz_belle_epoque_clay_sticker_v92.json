@@ -132,6 +132,80 @@
             "v92_locked_clay"
           ],
           "required_assembly_ids": [
+            "v92_skin_coverage_000_corner_pavilion_facet_0",
+            "v92_skin_coverage_001_corner_pavilion_facet_1",
+            "v92_skin_coverage_002_corner_pavilion_facet_2",
+            "v92_skin_coverage_003_corner_pavilion_facet_3",
+            "v92_skin_coverage_004_corner_entrance_jamb_left",
+            "v92_skin_coverage_005_corner_entrance_jamb_right",
+            "v92_skin_coverage_006_wrapped_corner_canopy",
+            "v92_skin_coverage_007_corner_pavilion_mid_cornice",
+            "v92_skin_coverage_008_corner_pavilion_crown_cornice",
+            "v92_skin_coverage_009_front_wall",
+            "v92_skin_coverage_010_right_wall",
+            "v92_skin_coverage_011_rear_wall",
+            "v92_skin_coverage_012_left_wall",
+            "v92_skin_coverage_013_court_front_wall",
+            "v92_skin_coverage_014_court_right_wall",
+            "v92_skin_coverage_015_court_rear_wall",
+            "v92_skin_coverage_016_court_left_wall",
+            "v92_skin_coverage_017_upper_front_setback",
+            "v92_skin_coverage_018_upper_right_setback",
+            "v92_skin_coverage_019_upper_rear_setback",
+            "v92_skin_coverage_020_upper_left_setback",
+            "v92_skin_coverage_021_corner_upper_front_return",
+            "v92_skin_coverage_022_corner_upper_left_return",
+            "v92_skin_coverage_023_front_main_cornice",
+            "v92_skin_coverage_024_front_crown_return",
+            "v92_skin_coverage_025_right_main_cornice",
+            "v92_skin_coverage_026_right_crown_return",
+            "v92_skin_coverage_027_rear_main_cornice",
+            "v92_skin_coverage_028_rear_crown_return",
+            "v92_skin_coverage_029_left_main_cornice",
+            "v92_skin_coverage_030_left_crown_return",
+            "v92_skin_coverage_031_watertight_perimeter_court_crown",
+            "v92_skin_coverage_032_watertight_perimeter_court_crown",
+            "v92_skin_coverage_033_watertight_perimeter_court_crown",
+            "v92_skin_coverage_034_watertight_perimeter_court_crown",
+            "v92_skin_coverage_035_watertight_perimeter_court_crown",
+            "v92_skin_coverage_036_watertight_perimeter_court_crown",
+            "v92_skin_coverage_037_watertight_perimeter_court_crown",
+            "v92_skin_coverage_038_watertight_perimeter_court_crown",
+            "v92_skin_coverage_039_watertight_perimeter_court_crown",
+            "v92_skin_coverage_040_watertight_perimeter_court_crown",
+            "v92_skin_coverage_041_watertight_perimeter_court_crown",
+            "v92_skin_coverage_042_watertight_perimeter_court_crown",
+            "v92_skin_coverage_043_dormer_front_0",
+            "v92_skin_coverage_044_dormer_front_0",
+            "v92_skin_coverage_045_dormer_front_1",
+            "v92_skin_coverage_046_dormer_front_1",
+            "v92_skin_coverage_047_dormer_front_2",
+            "v92_skin_coverage_048_dormer_front_2",
+            "v92_skin_coverage_049_dormer_rear_0",
+            "v92_skin_coverage_050_dormer_rear_0",
+            "v92_skin_coverage_051_dormer_rear_1",
+            "v92_skin_coverage_052_dormer_rear_1",
+            "v92_skin_coverage_053_dormer_rear_2",
+            "v92_skin_coverage_054_dormer_rear_2",
+            "v92_skin_coverage_055_dormer_left_0",
+            "v92_skin_coverage_056_dormer_left_0",
+            "v92_skin_coverage_057_dormer_left_1",
+            "v92_skin_coverage_058_dormer_left_1",
+            "v92_skin_coverage_059_dormer_right_0",
+            "v92_skin_coverage_060_dormer_right_0",
+            "v92_skin_coverage_061_dormer_right_1",
+            "v92_skin_coverage_062_dormer_right_1",
+            "v92_skin_coverage_063_central_dome_curb",
+            "v92_skin_coverage_064_central_dome_drum",
+            "v92_skin_coverage_065_central_glass_dome",
+            "v92_skin_coverage_066_central_dome_cap",
+            "v92_skin_coverage_067_central_dome_finial",
+            "v92_skin_coverage_068_corner_upper_tower",
+            "v92_skin_coverage_069_corner_tower_crown",
+            "v92_skin_coverage_070_corner_cupola_drum",
+            "v92_skin_coverage_071_corner_glass_cupola",
+            "v92_skin_coverage_072_corner_cupola_cap",
+            "v92_skin_coverage_073_corner_cupola_finial",
             "v92_skin_facade_front",
             "v92_skin_facade_right",
             "v92_skin_facade_rear",
@@ -181,7 +255,7 @@
             "locked_mesh_bundle": 1
           },
           "required_assembly_kinds": {
-            "carrier_skin": 44
+            "carrier_skin": 118
           }
         },
         "material_continuity": {
@@ -347,6 +421,7 @@
             "corner_dome",
             "corner_cap_finial"
           ],
+          "exact_face_coverage_carrier_count": 74,
           "separate_full_face_boxes": "forbidden",
           "glass_transmission_preserved": true
         },
@@ -364,7 +439,11 @@
           "surface_coverage": {
             "exposed_surface_count": 38,
             "registered_surface_count": 38,
-            "unowned_exposed_surfaces": []
+            "unowned_exposed_surfaces": [],
+            "unassigned_visible_polygons": [],
+            "generic_fallbacks": [],
+            "broad_flat_colour_surfaces": [],
+            "status": "mandatory_complete"
           },
           "entrance_clearance": {
             "carrier_surface_id": "corner_pavilion",
@@ -1802,6 +1881,10 @@
             "entrance_contour_hash_mismatch",
             "duplicate_feature_owner",
             "unowned_exposed_surface",
+            "unassigned_visible_polygon",
+            "generic_blue_grey_or_clay_fallback",
+            "broad_flat_colour_on_exterior_face",
+            "unfinished_entrance_recess_surface",
             "assembled_glb_over_8mb"
           ]
         }
@@ -19660,6 +19743,4202 @@
         ],
         "assemblies": [
           {
+            "id": "v92_skin_coverage_000_corner_pavilion_facet_0",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_000_corner_pavilion_facet_0",
+            "target_ids": [
+              "corner_pavilion_facet_0"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/corner_seam_matched.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "elevation",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "finish_class": "elevation_sticker_with_sampled_returns",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "corner_pavilion"
+          },
+          {
+            "id": "v92_skin_coverage_001_corner_pavilion_facet_1",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_001_corner_pavilion_facet_1",
+            "target_ids": [
+              "corner_pavilion_facet_1"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/corner_seam_matched.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "elevation",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "finish_class": "elevation_sticker_with_sampled_returns",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "corner_pavilion"
+          },
+          {
+            "id": "v92_skin_coverage_002_corner_pavilion_facet_2",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_002_corner_pavilion_facet_2",
+            "target_ids": [
+              "corner_pavilion_facet_2"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/corner_seam_matched.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "elevation",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "finish_class": "elevation_sticker_with_sampled_returns",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "corner_pavilion"
+          },
+          {
+            "id": "v92_skin_coverage_003_corner_pavilion_facet_3",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_003_corner_pavilion_facet_3",
+            "target_ids": [
+              "corner_pavilion_facet_3"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/corner_seam_matched.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "elevation",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "finish_class": "elevation_sticker_with_sampled_returns",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "corner_pavilion"
+          },
+          {
+            "id": "v92_skin_coverage_004_corner_entrance_jamb_left",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_004_corner_entrance_jamb_left",
+            "target_ids": [
+              "corner_entrance_jamb_left"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/corner_seam_matched.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "elevation",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "finish_class": "entrance_stone_return_finish",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "corner_pavilion"
+          },
+          {
+            "id": "v92_skin_coverage_005_corner_entrance_jamb_right",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_005_corner_entrance_jamb_right",
+            "target_ids": [
+              "corner_entrance_jamb_right"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/corner_seam_matched.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "elevation",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "finish_class": "entrance_stone_return_finish",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "corner_pavilion"
+          },
+          {
+            "id": "v92_skin_coverage_006_wrapped_corner_canopy",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_006_wrapped_corner_canopy",
+            "target_ids": [
+              "wrapped_corner_canopy"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/cornice_zinc.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "roof",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19
+            ],
+            "finish_class": "canopy_metal_top_edge_and_soffit_finish",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "wrapped_canopy"
+          },
+          {
+            "id": "v92_skin_coverage_007_corner_pavilion_mid_cornice",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_007_corner_pavilion_mid_cornice",
+            "target_ids": [
+              "corner_pavilion_mid_cornice"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/cornice_zinc.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "roof",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19
+            ],
+            "finish_class": "cornice_metal_wrap_finish",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "corner_cornices"
+          },
+          {
+            "id": "v92_skin_coverage_008_corner_pavilion_crown_cornice",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_008_corner_pavilion_crown_cornice",
+            "target_ids": [
+              "corner_pavilion_crown_cornice"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/cornice_zinc.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "roof",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19
+            ],
+            "finish_class": "cornice_metal_wrap_finish",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "corner_cornices"
+          },
+          {
+            "id": "v92_skin_coverage_009_front_wall",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_009_front_wall",
+            "target_ids": [
+              "front_wall"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/front_seam_matched.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "elevation",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "finish_class": "elevation_sticker_with_sampled_returns",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "facade_front"
+          },
+          {
+            "id": "v92_skin_coverage_010_right_wall",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_010_right_wall",
+            "target_ids": [
+              "right_wall"
+            ],
+            "source_image_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-right.png",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "elevation",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "finish_class": "elevation_sticker_with_sampled_returns",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "facade_right"
+          },
+          {
+            "id": "v92_skin_coverage_011_rear_wall",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_011_rear_wall",
+            "target_ids": [
+              "rear_wall"
+            ],
+            "source_image_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-rear.png",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "elevation",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "finish_class": "elevation_sticker_with_sampled_returns",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "facade_rear"
+          },
+          {
+            "id": "v92_skin_coverage_012_left_wall",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_012_left_wall",
+            "target_ids": [
+              "left_wall"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/left_seam_matched.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "elevation",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "finish_class": "elevation_sticker_with_sampled_returns",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "facade_left"
+          },
+          {
+            "id": "v92_skin_coverage_013_court_front_wall",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_013_court_front_wall",
+            "target_ids": [
+              "court_front_wall"
+            ],
+            "source_image_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-rear.png",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "elevation",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "finish_class": "elevation_sticker_with_sampled_returns",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "court_front"
+          },
+          {
+            "id": "v92_skin_coverage_014_court_right_wall",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_014_court_right_wall",
+            "target_ids": [
+              "court_right_wall"
+            ],
+            "source_image_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-left.png",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "elevation",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "finish_class": "elevation_sticker_with_sampled_returns",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "court_right"
+          },
+          {
+            "id": "v92_skin_coverage_015_court_rear_wall",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_015_court_rear_wall",
+            "target_ids": [
+              "court_rear_wall"
+            ],
+            "source_image_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-front.png",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "elevation",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "finish_class": "elevation_sticker_with_sampled_returns",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "court_rear"
+          },
+          {
+            "id": "v92_skin_coverage_016_court_left_wall",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_016_court_left_wall",
+            "target_ids": [
+              "court_left_wall"
+            ],
+            "source_image_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-right.png",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "elevation",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "finish_class": "elevation_sticker_with_sampled_returns",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "court_left"
+          },
+          {
+            "id": "v92_skin_coverage_017_upper_front_setback",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_017_upper_front_setback",
+            "target_ids": [
+              "upper_front_setback"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/front_seam_matched.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "elevation",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "finish_class": "elevation_sticker_with_sampled_returns",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "upper_front"
+          },
+          {
+            "id": "v92_skin_coverage_018_upper_right_setback",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_018_upper_right_setback",
+            "target_ids": [
+              "upper_right_setback"
+            ],
+            "source_image_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-right.png",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "elevation",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "finish_class": "elevation_sticker_with_sampled_returns",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "upper_right"
+          },
+          {
+            "id": "v92_skin_coverage_019_upper_rear_setback",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_019_upper_rear_setback",
+            "target_ids": [
+              "upper_rear_setback"
+            ],
+            "source_image_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-rear.png",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "elevation",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "finish_class": "elevation_sticker_with_sampled_returns",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "upper_rear"
+          },
+          {
+            "id": "v92_skin_coverage_020_upper_left_setback",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_020_upper_left_setback",
+            "target_ids": [
+              "upper_left_setback"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/left_seam_matched.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "elevation",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "finish_class": "elevation_sticker_with_sampled_returns",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "upper_left"
+          },
+          {
+            "id": "v92_skin_coverage_021_corner_upper_front_return",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_021_corner_upper_front_return",
+            "target_ids": [
+              "corner_upper_front_return"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/corner_seam_matched.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "elevation",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "finish_class": "elevation_sticker_with_sampled_returns",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "corner_upper_returns"
+          },
+          {
+            "id": "v92_skin_coverage_022_corner_upper_left_return",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_022_corner_upper_left_return",
+            "target_ids": [
+              "corner_upper_left_return"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/corner_seam_matched.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "elevation",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "finish_class": "elevation_sticker_with_sampled_returns",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "corner_upper_returns"
+          },
+          {
+            "id": "v92_skin_coverage_023_front_main_cornice",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_023_front_main_cornice",
+            "target_ids": [
+              "front_main_cornice"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/cornice_zinc.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "roof",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "finish_class": "cornice_metal_wrap_finish",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "perimeter_cornice"
+          },
+          {
+            "id": "v92_skin_coverage_024_front_crown_return",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_024_front_crown_return",
+            "target_ids": [
+              "front_crown_return"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/cornice_zinc.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "roof",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "finish_class": "cornice_metal_wrap_finish",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "perimeter_cornice"
+          },
+          {
+            "id": "v92_skin_coverage_025_right_main_cornice",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_025_right_main_cornice",
+            "target_ids": [
+              "right_main_cornice"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/cornice_zinc.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "roof",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "finish_class": "cornice_metal_wrap_finish",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "perimeter_cornice"
+          },
+          {
+            "id": "v92_skin_coverage_026_right_crown_return",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_026_right_crown_return",
+            "target_ids": [
+              "right_crown_return"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/cornice_zinc.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "roof",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "finish_class": "cornice_metal_wrap_finish",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "perimeter_cornice"
+          },
+          {
+            "id": "v92_skin_coverage_027_rear_main_cornice",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_027_rear_main_cornice",
+            "target_ids": [
+              "rear_main_cornice"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/cornice_zinc.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "roof",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "finish_class": "cornice_metal_wrap_finish",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "perimeter_cornice"
+          },
+          {
+            "id": "v92_skin_coverage_028_rear_crown_return",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_028_rear_crown_return",
+            "target_ids": [
+              "rear_crown_return"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/cornice_zinc.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "roof",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "finish_class": "cornice_metal_wrap_finish",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "perimeter_cornice"
+          },
+          {
+            "id": "v92_skin_coverage_029_left_main_cornice",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_029_left_main_cornice",
+            "target_ids": [
+              "left_main_cornice"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/cornice_zinc.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "roof",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "finish_class": "cornice_metal_wrap_finish",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "perimeter_cornice"
+          },
+          {
+            "id": "v92_skin_coverage_030_left_crown_return",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_030_left_crown_return",
+            "target_ids": [
+              "left_crown_return"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/cornice_zinc.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "roof",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "finish_class": "cornice_metal_wrap_finish",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "perimeter_cornice"
+          },
+          {
+            "id": "v92_skin_coverage_031_watertight_perimeter_court_crown",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_031_watertight_perimeter_court_crown",
+            "target_ids": [
+              "watertight_perimeter_court_crown"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/cornice_zinc.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "roof",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0,
+              8
+            ],
+            "finish_class": "roof_sticker_wrap",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "roof_front"
+          },
+          {
+            "id": "v92_skin_coverage_032_watertight_perimeter_court_crown",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_032_watertight_perimeter_court_crown",
+            "target_ids": [
+              "watertight_perimeter_court_crown"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/cornice_zinc.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "roof",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              4,
+              12,
+              20
+            ],
+            "finish_class": "roof_sticker_wrap",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "terrace_front"
+          },
+          {
+            "id": "v92_skin_coverage_033_watertight_perimeter_court_crown",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_033_watertight_perimeter_court_crown",
+            "target_ids": [
+              "watertight_perimeter_court_crown"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/cornice_zinc.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "roof",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              16
+            ],
+            "finish_class": "cornice_metal_wrap_finish",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "perimeter_cornice"
+          },
+          {
+            "id": "v92_skin_coverage_034_watertight_perimeter_court_crown",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_034_watertight_perimeter_court_crown",
+            "target_ids": [
+              "watertight_perimeter_court_crown"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/cornice_zinc.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "roof",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              1,
+              9
+            ],
+            "finish_class": "roof_sticker_wrap",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "roof_right"
+          },
+          {
+            "id": "v92_skin_coverage_035_watertight_perimeter_court_crown",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_035_watertight_perimeter_court_crown",
+            "target_ids": [
+              "watertight_perimeter_court_crown"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/cornice_zinc.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "roof",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              5,
+              13,
+              21
+            ],
+            "finish_class": "roof_sticker_wrap",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "terrace_right"
+          },
+          {
+            "id": "v92_skin_coverage_036_watertight_perimeter_court_crown",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_036_watertight_perimeter_court_crown",
+            "target_ids": [
+              "watertight_perimeter_court_crown"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/cornice_zinc.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "roof",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              17
+            ],
+            "finish_class": "cornice_metal_wrap_finish",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "perimeter_cornice"
+          },
+          {
+            "id": "v92_skin_coverage_037_watertight_perimeter_court_crown",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_037_watertight_perimeter_court_crown",
+            "target_ids": [
+              "watertight_perimeter_court_crown"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/cornice_zinc.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "roof",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              2,
+              10
+            ],
+            "finish_class": "roof_sticker_wrap",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "roof_rear"
+          },
+          {
+            "id": "v92_skin_coverage_038_watertight_perimeter_court_crown",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_038_watertight_perimeter_court_crown",
+            "target_ids": [
+              "watertight_perimeter_court_crown"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/cornice_zinc.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "roof",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              6,
+              14,
+              22
+            ],
+            "finish_class": "roof_sticker_wrap",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "terrace_rear"
+          },
+          {
+            "id": "v92_skin_coverage_039_watertight_perimeter_court_crown",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_039_watertight_perimeter_court_crown",
+            "target_ids": [
+              "watertight_perimeter_court_crown"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/cornice_zinc.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "roof",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              18
+            ],
+            "finish_class": "cornice_metal_wrap_finish",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "perimeter_cornice"
+          },
+          {
+            "id": "v92_skin_coverage_040_watertight_perimeter_court_crown",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_040_watertight_perimeter_court_crown",
+            "target_ids": [
+              "watertight_perimeter_court_crown"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/cornice_zinc.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "roof",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              3,
+              11
+            ],
+            "finish_class": "roof_sticker_wrap",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "roof_left"
+          },
+          {
+            "id": "v92_skin_coverage_041_watertight_perimeter_court_crown",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_041_watertight_perimeter_court_crown",
+            "target_ids": [
+              "watertight_perimeter_court_crown"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/cornice_zinc.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "roof",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              7,
+              15,
+              23
+            ],
+            "finish_class": "roof_sticker_wrap",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "terrace_left"
+          },
+          {
+            "id": "v92_skin_coverage_042_watertight_perimeter_court_crown",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_042_watertight_perimeter_court_crown",
+            "target_ids": [
+              "watertight_perimeter_court_crown"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/cornice_zinc.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "roof",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              19
+            ],
+            "finish_class": "cornice_metal_wrap_finish",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "perimeter_cornice"
+          },
+          {
+            "id": "v92_skin_coverage_043_dormer_front_0",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_043_dormer_front_0",
+            "target_ids": [
+              "dormer_front_0"
+            ],
+            "source_image_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-front.png",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "elevation",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0
+            ],
+            "finish_class": "elevation_sticker",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "dormers_front"
+          },
+          {
+            "id": "v92_skin_coverage_044_dormer_front_0",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_044_dormer_front_0",
+            "target_ids": [
+              "dormer_front_0"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/cornice_zinc.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "roof",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "finish_class": "roof_sticker_wrap",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "dormers_front"
+          },
+          {
+            "id": "v92_skin_coverage_045_dormer_front_1",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_045_dormer_front_1",
+            "target_ids": [
+              "dormer_front_1"
+            ],
+            "source_image_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-front.png",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "elevation",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0
+            ],
+            "finish_class": "elevation_sticker",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "dormers_front"
+          },
+          {
+            "id": "v92_skin_coverage_046_dormer_front_1",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_046_dormer_front_1",
+            "target_ids": [
+              "dormer_front_1"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/cornice_zinc.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "roof",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "finish_class": "roof_sticker_wrap",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "dormers_front"
+          },
+          {
+            "id": "v92_skin_coverage_047_dormer_front_2",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_047_dormer_front_2",
+            "target_ids": [
+              "dormer_front_2"
+            ],
+            "source_image_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-front.png",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "elevation",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0
+            ],
+            "finish_class": "elevation_sticker",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "dormers_front"
+          },
+          {
+            "id": "v92_skin_coverage_048_dormer_front_2",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_048_dormer_front_2",
+            "target_ids": [
+              "dormer_front_2"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/cornice_zinc.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "roof",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "finish_class": "roof_sticker_wrap",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "dormers_front"
+          },
+          {
+            "id": "v92_skin_coverage_049_dormer_rear_0",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_049_dormer_rear_0",
+            "target_ids": [
+              "dormer_rear_0"
+            ],
+            "source_image_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-rear.png",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "elevation",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              1
+            ],
+            "finish_class": "elevation_sticker",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "dormers_rear"
+          },
+          {
+            "id": "v92_skin_coverage_050_dormer_rear_0",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_050_dormer_rear_0",
+            "target_ids": [
+              "dormer_rear_0"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/cornice_zinc.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "roof",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "finish_class": "roof_sticker_wrap",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "dormers_rear"
+          },
+          {
+            "id": "v92_skin_coverage_051_dormer_rear_1",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_051_dormer_rear_1",
+            "target_ids": [
+              "dormer_rear_1"
+            ],
+            "source_image_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-rear.png",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "elevation",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              1
+            ],
+            "finish_class": "elevation_sticker",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "dormers_rear"
+          },
+          {
+            "id": "v92_skin_coverage_052_dormer_rear_1",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_052_dormer_rear_1",
+            "target_ids": [
+              "dormer_rear_1"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/cornice_zinc.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "roof",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "finish_class": "roof_sticker_wrap",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "dormers_rear"
+          },
+          {
+            "id": "v92_skin_coverage_053_dormer_rear_2",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_053_dormer_rear_2",
+            "target_ids": [
+              "dormer_rear_2"
+            ],
+            "source_image_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-rear.png",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "elevation",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              1
+            ],
+            "finish_class": "elevation_sticker",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "dormers_rear"
+          },
+          {
+            "id": "v92_skin_coverage_054_dormer_rear_2",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_054_dormer_rear_2",
+            "target_ids": [
+              "dormer_rear_2"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/cornice_zinc.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "roof",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "finish_class": "roof_sticker_wrap",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "dormers_rear"
+          },
+          {
+            "id": "v92_skin_coverage_055_dormer_left_0",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_055_dormer_left_0",
+            "target_ids": [
+              "dormer_left_0"
+            ],
+            "source_image_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-left.png",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "elevation",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0
+            ],
+            "finish_class": "elevation_sticker",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "dormers_left"
+          },
+          {
+            "id": "v92_skin_coverage_056_dormer_left_0",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_056_dormer_left_0",
+            "target_ids": [
+              "dormer_left_0"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/cornice_zinc.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "roof",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "finish_class": "roof_sticker_wrap",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "dormers_left"
+          },
+          {
+            "id": "v92_skin_coverage_057_dormer_left_1",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_057_dormer_left_1",
+            "target_ids": [
+              "dormer_left_1"
+            ],
+            "source_image_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-left.png",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "elevation",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0
+            ],
+            "finish_class": "elevation_sticker",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "dormers_left"
+          },
+          {
+            "id": "v92_skin_coverage_058_dormer_left_1",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_058_dormer_left_1",
+            "target_ids": [
+              "dormer_left_1"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/cornice_zinc.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "roof",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "finish_class": "roof_sticker_wrap",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "dormers_left"
+          },
+          {
+            "id": "v92_skin_coverage_059_dormer_right_0",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_059_dormer_right_0",
+            "target_ids": [
+              "dormer_right_0"
+            ],
+            "source_image_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-right.png",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "elevation",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              1
+            ],
+            "finish_class": "elevation_sticker",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "dormers_right"
+          },
+          {
+            "id": "v92_skin_coverage_060_dormer_right_0",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_060_dormer_right_0",
+            "target_ids": [
+              "dormer_right_0"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/cornice_zinc.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "roof",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "finish_class": "roof_sticker_wrap",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "dormers_right"
+          },
+          {
+            "id": "v92_skin_coverage_061_dormer_right_1",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_061_dormer_right_1",
+            "target_ids": [
+              "dormer_right_1"
+            ],
+            "source_image_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-right.png",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "elevation",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              1
+            ],
+            "finish_class": "elevation_sticker",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "dormers_right"
+          },
+          {
+            "id": "v92_skin_coverage_062_dormer_right_1",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_062_dormer_right_1",
+            "target_ids": [
+              "dormer_right_1"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/cornice_zinc.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "roof",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "finish_class": "roof_sticker_wrap",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "dormers_right"
+          },
+          {
+            "id": "v92_skin_coverage_063_central_dome_curb",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_063_central_dome_curb",
+            "target_ids": [
+              "central_dome_curb"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/cornice_zinc.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "roof",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31,
+              32,
+              33,
+              34,
+              35,
+              36,
+              37,
+              38,
+              39,
+              40,
+              41,
+              42,
+              43,
+              44,
+              45,
+              46,
+              47,
+              48,
+              49,
+              50,
+              51,
+              52,
+              53,
+              54,
+              55,
+              56,
+              57,
+              58,
+              59,
+              60,
+              61,
+              62,
+              63,
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              72,
+              73,
+              74,
+              75,
+              76,
+              77,
+              78,
+              79,
+              80,
+              81,
+              82,
+              83,
+              84,
+              85,
+              86,
+              87,
+              88,
+              89,
+              90,
+              91,
+              92,
+              93,
+              94,
+              95,
+              96,
+              97,
+              98,
+              99,
+              100,
+              101,
+              102,
+              103,
+              104,
+              105,
+              106,
+              107,
+              108,
+              109,
+              110,
+              111,
+              112,
+              113,
+              114,
+              115,
+              116,
+              117,
+              118,
+              119
+            ],
+            "finish_class": "roof_metal_wrap_finish",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "central_curb"
+          },
+          {
+            "id": "v92_skin_coverage_064_central_dome_drum",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_064_central_dome_drum",
+            "target_ids": [
+              "central_dome_drum"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/cornice_zinc.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "roof",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31,
+              32,
+              33,
+              34,
+              35,
+              36,
+              37,
+              38,
+              39,
+              40,
+              41,
+              42,
+              43,
+              44,
+              45,
+              46,
+              47,
+              48,
+              49,
+              50,
+              51,
+              52,
+              53,
+              54,
+              55,
+              56,
+              57,
+              58,
+              59,
+              60,
+              61,
+              62,
+              63,
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              72,
+              73,
+              74,
+              75,
+              76,
+              77,
+              78,
+              79,
+              80,
+              81,
+              82,
+              83,
+              84,
+              85,
+              86,
+              87,
+              88,
+              89,
+              90,
+              91,
+              92,
+              93,
+              94,
+              95,
+              96,
+              97,
+              98,
+              99,
+              100,
+              101,
+              102,
+              103,
+              104,
+              105,
+              106,
+              107,
+              108,
+              109,
+              110,
+              111,
+              112,
+              113,
+              114,
+              115,
+              116,
+              117,
+              118,
+              119
+            ],
+            "finish_class": "roof_metal_wrap_finish",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "central_drum"
+          },
+          {
+            "id": "v92_skin_coverage_065_central_glass_dome",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_065_central_glass_dome",
+            "target_ids": [
+              "central_glass_dome"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/central_dome_polar.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "glass",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31,
+              32,
+              33,
+              34,
+              35,
+              36,
+              37,
+              38,
+              39,
+              40,
+              41,
+              42,
+              43,
+              44,
+              45,
+              46,
+              47,
+              48,
+              49,
+              50,
+              51,
+              52,
+              53,
+              54,
+              55,
+              56,
+              57,
+              58,
+              59,
+              60,
+              61,
+              62,
+              63,
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              72,
+              73,
+              74,
+              75,
+              76,
+              77,
+              78,
+              79,
+              80,
+              81,
+              82,
+              83,
+              84,
+              85,
+              86,
+              87,
+              88,
+              89,
+              90,
+              91,
+              92,
+              93,
+              94,
+              95,
+              96,
+              97,
+              98,
+              99,
+              100,
+              101,
+              102,
+              103,
+              104,
+              105,
+              106,
+              107,
+              108,
+              109,
+              110,
+              111,
+              112,
+              113,
+              114,
+              115,
+              116,
+              117,
+              118,
+              119,
+              120,
+              121,
+              122,
+              123,
+              124,
+              125,
+              126,
+              127,
+              128,
+              129,
+              130,
+              131,
+              132,
+              133,
+              134,
+              135,
+              136,
+              137,
+              138,
+              139,
+              140,
+              141,
+              142,
+              143,
+              144,
+              145,
+              146,
+              147,
+              148,
+              149,
+              150,
+              151,
+              152,
+              153,
+              154,
+              155,
+              156,
+              157,
+              158,
+              159,
+              160,
+              161,
+              162,
+              163,
+              164,
+              165,
+              166,
+              167,
+              168,
+              169,
+              170,
+              171,
+              172,
+              173,
+              174,
+              175,
+              176,
+              177,
+              178,
+              179,
+              180,
+              181,
+              182,
+              183,
+              184,
+              185,
+              186,
+              187,
+              188,
+              189,
+              190,
+              191,
+              192,
+              193,
+              194,
+              195,
+              196,
+              197,
+              198,
+              199,
+              200,
+              201,
+              202,
+              203,
+              204,
+              205,
+              206,
+              207,
+              208,
+              209,
+              210,
+              211,
+              212,
+              213,
+              214,
+              215,
+              216,
+              217,
+              218,
+              219,
+              220,
+              221,
+              222,
+              223,
+              224,
+              225,
+              226,
+              227,
+              228,
+              229,
+              230,
+              231,
+              232,
+              233,
+              234,
+              235,
+              236,
+              237,
+              238,
+              239,
+              240,
+              241,
+              242,
+              243,
+              244,
+              245,
+              246,
+              247,
+              248,
+              249,
+              250,
+              251,
+              252,
+              253,
+              254,
+              255,
+              256,
+              257,
+              258,
+              259,
+              260,
+              261,
+              262,
+              263,
+              264,
+              265,
+              266,
+              267,
+              268,
+              269,
+              270,
+              271,
+              272,
+              273,
+              274,
+              275,
+              276,
+              277,
+              278,
+              279,
+              280,
+              281,
+              282,
+              283,
+              284,
+              285,
+              286,
+              287,
+              288,
+              289,
+              290,
+              291,
+              292,
+              293,
+              294,
+              295,
+              296,
+              297,
+              298,
+              299,
+              300,
+              301,
+              302,
+              303,
+              304,
+              305,
+              306,
+              307,
+              308,
+              309,
+              310,
+              311,
+              312,
+              313,
+              314,
+              315,
+              316,
+              317,
+              318,
+              319,
+              320,
+              321,
+              322,
+              323,
+              324,
+              325,
+              326,
+              327,
+              328,
+              329,
+              330,
+              331,
+              332,
+              333,
+              334,
+              335,
+              336,
+              337,
+              338,
+              339,
+              340,
+              341,
+              342,
+              343,
+              344,
+              345,
+              346,
+              347,
+              348,
+              349,
+              350,
+              351,
+              352,
+              353,
+              354,
+              355,
+              356,
+              357,
+              358,
+              359,
+              360,
+              361,
+              362,
+              363,
+              364,
+              365,
+              366,
+              367,
+              368,
+              369,
+              370,
+              371,
+              372,
+              373,
+              374,
+              375,
+              376,
+              377,
+              378,
+              379,
+              380,
+              381,
+              382,
+              383,
+              384,
+              385,
+              386,
+              387,
+              388,
+              389,
+              390,
+              391,
+              392,
+              393,
+              394,
+              395,
+              396,
+              397,
+              398,
+              399,
+              400,
+              401,
+              402,
+              403,
+              404,
+              405,
+              406,
+              407,
+              408,
+              409,
+              410,
+              411,
+              412,
+              413,
+              414,
+              415,
+              416,
+              417,
+              418,
+              419,
+              420,
+              421,
+              422,
+              423,
+              424,
+              425,
+              426,
+              427,
+              428,
+              429,
+              430,
+              431,
+              432,
+              433,
+              434,
+              435,
+              436,
+              437,
+              438,
+              439
+            ],
+            "finish_class": "glass_sticker",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "central_dome"
+          },
+          {
+            "id": "v92_skin_coverage_066_central_dome_cap",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_066_central_dome_cap",
+            "target_ids": [
+              "central_dome_cap"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/cornice_zinc.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "roof",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31,
+              32,
+              33,
+              34,
+              35,
+              36,
+              37,
+              38,
+              39,
+              40,
+              41,
+              42,
+              43,
+              44,
+              45,
+              46,
+              47,
+              48,
+              49,
+              50,
+              51,
+              52,
+              53,
+              54,
+              55,
+              56,
+              57,
+              58,
+              59,
+              60,
+              61,
+              62,
+              63,
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71
+            ],
+            "finish_class": "roof_metal_wrap_finish",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "central_cap_finial"
+          },
+          {
+            "id": "v92_skin_coverage_067_central_dome_finial",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_067_central_dome_finial",
+            "target_ids": [
+              "central_dome_finial"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/cornice_zinc.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "roof",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31,
+              32,
+              33,
+              34,
+              35
+            ],
+            "finish_class": "roof_metal_wrap_finish",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "central_cap_finial"
+          },
+          {
+            "id": "v92_skin_coverage_068_corner_upper_tower",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_068_corner_upper_tower",
+            "target_ids": [
+              "corner_upper_tower"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/corner_seam_matched.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "elevation",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31,
+              32,
+              33,
+              34,
+              35,
+              36,
+              37,
+              38,
+              39,
+              40,
+              41,
+              42,
+              43,
+              44,
+              45,
+              46,
+              47
+            ],
+            "finish_class": "elevation_sticker_with_sampled_caps",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "corner_tower"
+          },
+          {
+            "id": "v92_skin_coverage_069_corner_tower_crown",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_069_corner_tower_crown",
+            "target_ids": [
+              "corner_tower_crown"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/cornice_zinc.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "roof",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31,
+              32,
+              33,
+              34,
+              35,
+              36,
+              37,
+              38,
+              39,
+              40,
+              41,
+              42,
+              43,
+              44,
+              45,
+              46,
+              47
+            ],
+            "finish_class": "roof_metal_wrap_finish",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "corner_tower_crown"
+          },
+          {
+            "id": "v92_skin_coverage_070_corner_cupola_drum",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_070_corner_cupola_drum",
+            "target_ids": [
+              "corner_cupola_drum"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/cornice_zinc.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "roof",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31,
+              32,
+              33,
+              34,
+              35,
+              36,
+              37,
+              38,
+              39,
+              40,
+              41,
+              42,
+              43,
+              44,
+              45,
+              46,
+              47,
+              48,
+              49,
+              50,
+              51,
+              52,
+              53,
+              54,
+              55,
+              56,
+              57,
+              58,
+              59,
+              60,
+              61,
+              62,
+              63,
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              72,
+              73,
+              74,
+              75,
+              76,
+              77,
+              78,
+              79,
+              80,
+              81,
+              82,
+              83,
+              84,
+              85,
+              86,
+              87,
+              88,
+              89,
+              90,
+              91,
+              92,
+              93,
+              94,
+              95
+            ],
+            "finish_class": "roof_metal_wrap_finish",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "corner_drum"
+          },
+          {
+            "id": "v92_skin_coverage_071_corner_glass_cupola",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_071_corner_glass_cupola",
+            "target_ids": [
+              "corner_glass_cupola"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/corner_dome_polar.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "glass",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31,
+              32,
+              33,
+              34,
+              35,
+              36,
+              37,
+              38,
+              39,
+              40,
+              41,
+              42,
+              43,
+              44,
+              45,
+              46,
+              47,
+              48,
+              49,
+              50,
+              51,
+              52,
+              53,
+              54,
+              55,
+              56,
+              57,
+              58,
+              59,
+              60,
+              61,
+              62,
+              63,
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              72,
+              73,
+              74,
+              75,
+              76,
+              77,
+              78,
+              79,
+              80,
+              81,
+              82,
+              83,
+              84,
+              85,
+              86,
+              87,
+              88,
+              89,
+              90,
+              91,
+              92,
+              93,
+              94,
+              95,
+              96,
+              97,
+              98,
+              99,
+              100,
+              101,
+              102,
+              103,
+              104,
+              105,
+              106,
+              107,
+              108,
+              109,
+              110,
+              111,
+              112,
+              113,
+              114,
+              115,
+              116,
+              117,
+              118,
+              119,
+              120,
+              121,
+              122,
+              123,
+              124,
+              125,
+              126,
+              127,
+              128,
+              129,
+              130,
+              131,
+              132,
+              133,
+              134,
+              135,
+              136,
+              137,
+              138,
+              139,
+              140,
+              141,
+              142,
+              143,
+              144,
+              145,
+              146,
+              147,
+              148,
+              149,
+              150,
+              151,
+              152,
+              153,
+              154,
+              155,
+              156,
+              157,
+              158,
+              159,
+              160,
+              161,
+              162,
+              163,
+              164,
+              165,
+              166,
+              167,
+              168,
+              169,
+              170,
+              171,
+              172,
+              173,
+              174,
+              175,
+              176,
+              177,
+              178,
+              179,
+              180,
+              181,
+              182,
+              183,
+              184,
+              185,
+              186,
+              187,
+              188,
+              189,
+              190,
+              191,
+              192,
+              193,
+              194,
+              195,
+              196,
+              197,
+              198,
+              199,
+              200,
+              201,
+              202,
+              203,
+              204,
+              205,
+              206,
+              207,
+              208,
+              209,
+              210,
+              211,
+              212,
+              213,
+              214,
+              215,
+              216,
+              217,
+              218,
+              219,
+              220,
+              221,
+              222,
+              223,
+              224,
+              225,
+              226,
+              227,
+              228,
+              229,
+              230,
+              231,
+              232,
+              233,
+              234,
+              235,
+              236,
+              237,
+              238,
+              239,
+              240,
+              241,
+              242,
+              243,
+              244,
+              245,
+              246,
+              247,
+              248,
+              249,
+              250,
+              251,
+              252,
+              253,
+              254,
+              255,
+              256,
+              257,
+              258,
+              259,
+              260,
+              261,
+              262,
+              263,
+              264,
+              265,
+              266,
+              267,
+              268,
+              269,
+              270,
+              271,
+              272,
+              273,
+              274,
+              275,
+              276,
+              277,
+              278,
+              279,
+              280,
+              281,
+              282,
+              283,
+              284,
+              285,
+              286,
+              287
+            ],
+            "finish_class": "glass_sticker",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "corner_dome"
+          },
+          {
+            "id": "v92_skin_coverage_072_corner_cupola_cap",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_072_corner_cupola_cap",
+            "target_ids": [
+              "corner_cupola_cap"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/cornice_zinc.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "roof",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31,
+              32,
+              33,
+              34,
+              35,
+              36,
+              37,
+              38,
+              39,
+              40,
+              41,
+              42,
+              43,
+              44,
+              45,
+              46,
+              47,
+              48,
+              49,
+              50,
+              51,
+              52,
+              53,
+              54,
+              55,
+              56,
+              57,
+              58,
+              59
+            ],
+            "finish_class": "roof_metal_wrap_finish",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "corner_cap_finial"
+          },
+          {
+            "id": "v92_skin_coverage_073_corner_cupola_finial",
+            "kind": "carrier_skin",
+            "surface_id": "coverage_073_corner_cupola_finial",
+            "target_ids": [
+              "corner_cupola_finial"
+            ],
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/cornice_zinc.jpg",
+            "axis": "box_projected",
+            "centre": [
+              0.0,
+              0.0,
+              15.5
+            ],
+            "span_m": 36.0,
+            "height_m": 31.0,
+            "normal_z_min": -1.01,
+            "normal_z_max": 1.01,
+            "material_role": "roof",
+            "box_bounds": [
+              -21.25,
+              18.35,
+              -20.25,
+              17.35,
+              0.0,
+              31.0
+            ],
+            "face_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29
+            ],
+            "finish_class": "roof_metal_wrap_finish",
+            "sticker_layer": "coverage_seal",
+            "final_surface_coverage": true,
+            "semantic_surface_id": "corner_cap_finial"
+          },
+          {
             "id": "v92_skin_facade_front",
             "kind": "carrier_skin",
             "surface_id": "facade_front",
@@ -19831,8 +24110,8 @@
                 ]
               }
             ],
-            "source_id": "front",
-            "source_sha256": "635883a1538b588000affe7a4443adc9e029bc2b25bfeaa0808610d1f419e50c",
+            "source_id": "front_seam_matched",
+            "source_sha256": "a5efb9553dc583960bb8f233b87044d185badf83754c6eda06938dcba9125ab5",
             "source_crop_xyxy": [
               0,
               0,
@@ -19862,7 +24141,22 @@
               "roughness": "construction_role_metric_pbr",
               "apply_to_existing_carrier": true,
               "create_geometry": false,
-              "carrier_offset_m": 0.0
+              "carrier_offset_m": 0.0,
+              "finish_policy": {
+                "texture_required": true,
+                "all_visible_faces": true,
+                "broad_flat_colour_allowed": false,
+                "fallback_allowed": false
+              },
+              "fallback_material": null
+            },
+            "finish_class": "heritage_facade_sticker_pbr",
+            "visible_face_coverage": {
+              "scope": "all_visible_polygons",
+              "side_returns": "same construction-specific finish class",
+              "unmatched_polygon_action": "hard_stop",
+              "generic_fallback_allowed": false,
+              "broad_flat_colour_allowed": false
             }
           },
           {
@@ -20068,7 +24362,22 @@
               "roughness": "construction_role_metric_pbr",
               "apply_to_existing_carrier": true,
               "create_geometry": false,
-              "carrier_offset_m": 0.0
+              "carrier_offset_m": 0.0,
+              "finish_policy": {
+                "texture_required": true,
+                "all_visible_faces": true,
+                "broad_flat_colour_allowed": false,
+                "fallback_allowed": false
+              },
+              "fallback_material": null
+            },
+            "finish_class": "heritage_facade_sticker_pbr",
+            "visible_face_coverage": {
+              "scope": "all_visible_polygons",
+              "side_returns": "same construction-specific finish class",
+              "unmatched_polygon_action": "hard_stop",
+              "generic_fallback_allowed": false,
+              "broad_flat_colour_allowed": false
             }
           },
           {
@@ -20274,7 +24583,22 @@
               "roughness": "construction_role_metric_pbr",
               "apply_to_existing_carrier": true,
               "create_geometry": false,
-              "carrier_offset_m": 0.0
+              "carrier_offset_m": 0.0,
+              "finish_policy": {
+                "texture_required": true,
+                "all_visible_faces": true,
+                "broad_flat_colour_allowed": false,
+                "fallback_allowed": false
+              },
+              "fallback_material": null
+            },
+            "finish_class": "heritage_facade_sticker_pbr",
+            "visible_face_coverage": {
+              "scope": "all_visible_polygons",
+              "side_returns": "same construction-specific finish class",
+              "unmatched_polygon_action": "hard_stop",
+              "generic_fallback_allowed": false,
+              "broad_flat_colour_allowed": false
             }
           },
           {
@@ -20449,8 +24773,8 @@
                 ]
               }
             ],
-            "source_id": "left",
-            "source_sha256": "1218d30d1c680c8ed92d3e0ef5503a48b4c9e5d40cdcf10855663205357560db",
+            "source_id": "left_seam_matched",
+            "source_sha256": "af659ca5aa3b46de159fbca859d38e74eae35cd1373ac65393cceb58424425e5",
             "source_crop_xyxy": [
               0,
               0,
@@ -20480,7 +24804,22 @@
               "roughness": "construction_role_metric_pbr",
               "apply_to_existing_carrier": true,
               "create_geometry": false,
-              "carrier_offset_m": 0.0
+              "carrier_offset_m": 0.0,
+              "finish_policy": {
+                "texture_required": true,
+                "all_visible_faces": true,
+                "broad_flat_colour_allowed": false,
+                "fallback_allowed": false
+              },
+              "fallback_material": null
+            },
+            "finish_class": "heritage_facade_sticker_pbr",
+            "visible_face_coverage": {
+              "scope": "all_visible_polygons",
+              "side_returns": "same construction-specific finish class",
+              "unmatched_polygon_action": "hard_stop",
+              "generic_fallback_allowed": false,
+              "broad_flat_colour_allowed": false
             }
           },
           {
@@ -20697,8 +25036,8 @@
                 ]
               }
             ],
-            "source_id": "front_left",
-            "source_sha256": "df4c3f2c8ff717c4ec676f861e599ef6c622c5f77da2ac19465061cdf5415af3",
+            "source_id": "corner_seam_matched",
+            "source_sha256": "d7c48261573096aec38a4ad0e433ce03b00a69269139bf1e9541d130f2752668",
             "source_crop_xyxy": [
               0,
               0,
@@ -20728,7 +25067,22 @@
               "roughness": "construction_role_metric_pbr",
               "apply_to_existing_carrier": true,
               "create_geometry": false,
-              "carrier_offset_m": 0.0
+              "carrier_offset_m": 0.0,
+              "finish_policy": {
+                "texture_required": true,
+                "all_visible_faces": true,
+                "broad_flat_colour_allowed": false,
+                "fallback_allowed": false
+              },
+              "fallback_material": null
+            },
+            "finish_class": "heritage_corner_sticker_pbr",
+            "visible_face_coverage": {
+              "scope": "all_visible_polygons",
+              "side_returns": "same construction-specific finish class",
+              "unmatched_polygon_action": "hard_stop",
+              "generic_fallback_allowed": false,
+              "broad_flat_colour_allowed": false
             }
           },
           {
@@ -20934,7 +25288,22 @@
               "roughness": "construction_role_metric_pbr",
               "apply_to_existing_carrier": true,
               "create_geometry": false,
-              "carrier_offset_m": 0.0
+              "carrier_offset_m": 0.0,
+              "finish_policy": {
+                "texture_required": true,
+                "all_visible_faces": true,
+                "broad_flat_colour_allowed": false,
+                "fallback_allowed": false
+              },
+              "fallback_material": null
+            },
+            "finish_class": "heritage_facade_sticker_pbr",
+            "visible_face_coverage": {
+              "scope": "all_visible_polygons",
+              "side_returns": "same construction-specific finish class",
+              "unmatched_polygon_action": "hard_stop",
+              "generic_fallback_allowed": false,
+              "broad_flat_colour_allowed": false
             }
           },
           {
@@ -21140,7 +25509,22 @@
               "roughness": "construction_role_metric_pbr",
               "apply_to_existing_carrier": true,
               "create_geometry": false,
-              "carrier_offset_m": 0.0
+              "carrier_offset_m": 0.0,
+              "finish_policy": {
+                "texture_required": true,
+                "all_visible_faces": true,
+                "broad_flat_colour_allowed": false,
+                "fallback_allowed": false
+              },
+              "fallback_material": null
+            },
+            "finish_class": "heritage_facade_sticker_pbr",
+            "visible_face_coverage": {
+              "scope": "all_visible_polygons",
+              "side_returns": "same construction-specific finish class",
+              "unmatched_polygon_action": "hard_stop",
+              "generic_fallback_allowed": false,
+              "broad_flat_colour_allowed": false
             }
           },
           {
@@ -21346,7 +25730,22 @@
               "roughness": "construction_role_metric_pbr",
               "apply_to_existing_carrier": true,
               "create_geometry": false,
-              "carrier_offset_m": 0.0
+              "carrier_offset_m": 0.0,
+              "finish_policy": {
+                "texture_required": true,
+                "all_visible_faces": true,
+                "broad_flat_colour_allowed": false,
+                "fallback_allowed": false
+              },
+              "fallback_material": null
+            },
+            "finish_class": "heritage_facade_sticker_pbr",
+            "visible_face_coverage": {
+              "scope": "all_visible_polygons",
+              "side_returns": "same construction-specific finish class",
+              "unmatched_polygon_action": "hard_stop",
+              "generic_fallback_allowed": false,
+              "broad_flat_colour_allowed": false
             }
           },
           {
@@ -21552,7 +25951,22 @@
               "roughness": "construction_role_metric_pbr",
               "apply_to_existing_carrier": true,
               "create_geometry": false,
-              "carrier_offset_m": 0.0
+              "carrier_offset_m": 0.0,
+              "finish_policy": {
+                "texture_required": true,
+                "all_visible_faces": true,
+                "broad_flat_colour_allowed": false,
+                "fallback_allowed": false
+              },
+              "fallback_material": null
+            },
+            "finish_class": "heritage_facade_sticker_pbr",
+            "visible_face_coverage": {
+              "scope": "all_visible_polygons",
+              "side_returns": "same construction-specific finish class",
+              "unmatched_polygon_action": "hard_stop",
+              "generic_fallback_allowed": false,
+              "broad_flat_colour_allowed": false
             }
           },
           {
@@ -21562,7 +25976,7 @@
             "target_ids": [
               "upper_front_setback"
             ],
-            "source_image_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-front.png",
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/front_seam_matched.jpg",
             "axis": "front",
             "centre": [
               3.4250000000000007,
@@ -21659,8 +26073,8 @@
                 ]
               }
             ],
-            "source_id": "front",
-            "source_sha256": "635883a1538b588000affe7a4443adc9e029bc2b25bfeaa0808610d1f419e50c",
+            "source_id": "front_seam_matched",
+            "source_sha256": "a5efb9553dc583960bb8f233b87044d185badf83754c6eda06938dcba9125ab5",
             "source_crop_xyxy": [
               0,
               0,
@@ -21690,7 +26104,22 @@
               "roughness": "construction_role_metric_pbr",
               "apply_to_existing_carrier": true,
               "create_geometry": false,
-              "carrier_offset_m": 0.0
+              "carrier_offset_m": 0.0,
+              "finish_policy": {
+                "texture_required": true,
+                "all_visible_faces": true,
+                "broad_flat_colour_allowed": false,
+                "fallback_allowed": false
+              },
+              "fallback_material": null
+            },
+            "finish_class": "heritage_facade_sticker_pbr",
+            "visible_face_coverage": {
+              "scope": "all_visible_polygons",
+              "side_returns": "same construction-specific finish class",
+              "unmatched_polygon_action": "hard_stop",
+              "generic_fallback_allowed": false,
+              "broad_flat_colour_allowed": false
             }
           },
           {
@@ -21828,7 +26257,22 @@
               "roughness": "construction_role_metric_pbr",
               "apply_to_existing_carrier": true,
               "create_geometry": false,
-              "carrier_offset_m": 0.0
+              "carrier_offset_m": 0.0,
+              "finish_policy": {
+                "texture_required": true,
+                "all_visible_faces": true,
+                "broad_flat_colour_allowed": false,
+                "fallback_allowed": false
+              },
+              "fallback_material": null
+            },
+            "finish_class": "heritage_facade_sticker_pbr",
+            "visible_face_coverage": {
+              "scope": "all_visible_polygons",
+              "side_returns": "same construction-specific finish class",
+              "unmatched_polygon_action": "hard_stop",
+              "generic_fallback_allowed": false,
+              "broad_flat_colour_allowed": false
             }
           },
           {
@@ -21966,7 +26410,22 @@
               "roughness": "construction_role_metric_pbr",
               "apply_to_existing_carrier": true,
               "create_geometry": false,
-              "carrier_offset_m": 0.0
+              "carrier_offset_m": 0.0,
+              "finish_policy": {
+                "texture_required": true,
+                "all_visible_faces": true,
+                "broad_flat_colour_allowed": false,
+                "fallback_allowed": false
+              },
+              "fallback_material": null
+            },
+            "finish_class": "heritage_facade_sticker_pbr",
+            "visible_face_coverage": {
+              "scope": "all_visible_polygons",
+              "side_returns": "same construction-specific finish class",
+              "unmatched_polygon_action": "hard_stop",
+              "generic_fallback_allowed": false,
+              "broad_flat_colour_allowed": false
             }
           },
           {
@@ -21976,7 +26435,7 @@
             "target_ids": [
               "upper_left_setback"
             ],
-            "source_image_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-left.png",
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/left_seam_matched.jpg",
             "axis": "left",
             "centre": [
               -17.85,
@@ -22073,8 +26532,8 @@
                 ]
               }
             ],
-            "source_id": "left",
-            "source_sha256": "1218d30d1c680c8ed92d3e0ef5503a48b4c9e5d40cdcf10855663205357560db",
+            "source_id": "left_seam_matched",
+            "source_sha256": "af659ca5aa3b46de159fbca859d38e74eae35cd1373ac65393cceb58424425e5",
             "source_crop_xyxy": [
               0,
               0,
@@ -22104,7 +26563,22 @@
               "roughness": "construction_role_metric_pbr",
               "apply_to_existing_carrier": true,
               "create_geometry": false,
-              "carrier_offset_m": 0.0
+              "carrier_offset_m": 0.0,
+              "finish_policy": {
+                "texture_required": true,
+                "all_visible_faces": true,
+                "broad_flat_colour_allowed": false,
+                "fallback_allowed": false
+              },
+              "fallback_material": null
+            },
+            "finish_class": "heritage_facade_sticker_pbr",
+            "visible_face_coverage": {
+              "scope": "all_visible_polygons",
+              "side_returns": "same construction-specific finish class",
+              "unmatched_polygon_action": "hard_stop",
+              "generic_fallback_allowed": false,
+              "broad_flat_colour_allowed": false
             }
           },
           {
@@ -22114,7 +26588,7 @@
             "target_ids": [
               "corner_upper_front_return"
             ],
-            "source_image_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-front-left.png",
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/corner_seam_matched.jpg",
             "axis": "front",
             "centre": [
               -14.225000000000001,
@@ -22143,7 +26617,7 @@
             "target_ids": [
               "corner_upper_left_return"
             ],
-            "source_image_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-front-left.png",
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/corner_seam_matched.jpg",
             "axis": "left",
             "centre": [
               -14.225000000000001,
@@ -22311,13 +26785,13 @@
                 ]
               }
             ],
-            "source_id": "front_left",
-            "source_sha256": "df4c3f2c8ff717c4ec676f861e599ef6c622c5f77da2ac19465061cdf5415af3",
+            "source_id": "cornice_zinc",
+            "source_sha256": "f7fce5b52fdcc865c8bda3bea3b607d32e26f07f9cd1731e7b385e476c358f4e",
             "source_crop_xyxy": [
               0,
               0,
-              933,
-              1686
+              1536,
+              192
             ],
             "source_to_canonical_h": [
               [
@@ -22342,7 +26816,23 @@
               "roughness": "construction_role_metric_pbr",
               "apply_to_existing_carrier": true,
               "create_geometry": false,
-              "carrier_offset_m": 0.0
+              "carrier_offset_m": 0.0,
+              "finish_policy": {
+                "texture_required": true,
+                "all_visible_faces": true,
+                "include_top_bottom_and_end_caps": true,
+                "broad_flat_colour_allowed": false,
+                "fallback_allowed": false
+              },
+              "fallback_material": null
+            },
+            "finish_class": "zinc_cornice_return_pbr",
+            "visible_face_coverage": {
+              "scope": "all_visible_polygons",
+              "side_returns": "same construction-specific finish class",
+              "unmatched_polygon_action": "hard_stop",
+              "generic_fallback_allowed": false,
+              "broad_flat_colour_allowed": false
             }
           },
           {
@@ -22352,7 +26842,7 @@
             "target_ids": [
               "wrapped_corner_canopy"
             ],
-            "source_image_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-front-left.png",
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/corner_seam_matched.jpg",
             "axis": "cylindrical_segment",
             "centre": [
               -16.1,
@@ -22461,8 +26951,8 @@
                 ]
               }
             ],
-            "source_id": "front_left",
-            "source_sha256": "df4c3f2c8ff717c4ec676f861e599ef6c622c5f77da2ac19465061cdf5415af3",
+            "source_id": "corner_seam_matched",
+            "source_sha256": "d7c48261573096aec38a4ad0e433ce03b00a69269139bf1e9541d130f2752668",
             "source_crop_xyxy": [
               0,
               0,
@@ -22492,7 +26982,23 @@
               "roughness": "construction_role_metric_pbr",
               "apply_to_existing_carrier": true,
               "create_geometry": false,
-              "carrier_offset_m": 0.0
+              "carrier_offset_m": 0.0,
+              "finish_policy": {
+                "texture_required": true,
+                "all_visible_faces": true,
+                "underside_required": true,
+                "broad_flat_colour_allowed": false,
+                "fallback_allowed": false
+              },
+              "fallback_material": null
+            },
+            "finish_class": "iron_glass_canopy_pbr",
+            "visible_face_coverage": {
+              "scope": "all_visible_polygons",
+              "side_returns": "same construction-specific finish class",
+              "unmatched_polygon_action": "hard_stop",
+              "generic_fallback_allowed": false,
+              "broad_flat_colour_allowed": false
             }
           },
           {
@@ -22663,7 +27169,23 @@
               "roughness": "construction_role_metric_pbr",
               "apply_to_existing_carrier": true,
               "create_geometry": false,
-              "carrier_offset_m": 0.0
+              "carrier_offset_m": 0.0,
+              "finish_policy": {
+                "texture_required": true,
+                "all_visible_faces": true,
+                "include_returns_eaves_and_soffits": true,
+                "broad_flat_colour_allowed": false,
+                "fallback_allowed": false
+              },
+              "fallback_material": null
+            },
+            "finish_class": "zinc_roof_sticker_pbr",
+            "visible_face_coverage": {
+              "scope": "all_visible_polygons",
+              "side_returns": "same construction-specific finish class",
+              "unmatched_polygon_action": "hard_stop",
+              "generic_fallback_allowed": false,
+              "broad_flat_colour_allowed": false
             }
           },
           {
@@ -22808,7 +27330,23 @@
               "roughness": "construction_role_metric_pbr",
               "apply_to_existing_carrier": true,
               "create_geometry": false,
-              "carrier_offset_m": 0.0
+              "carrier_offset_m": 0.0,
+              "finish_policy": {
+                "texture_required": true,
+                "all_visible_faces": true,
+                "include_returns_eaves_and_soffits": true,
+                "broad_flat_colour_allowed": false,
+                "fallback_allowed": false
+              },
+              "fallback_material": null
+            },
+            "finish_class": "zinc_roof_sticker_pbr",
+            "visible_face_coverage": {
+              "scope": "all_visible_polygons",
+              "side_returns": "same construction-specific finish class",
+              "unmatched_polygon_action": "hard_stop",
+              "generic_fallback_allowed": false,
+              "broad_flat_colour_allowed": false
             }
           },
           {
@@ -22953,7 +27491,23 @@
               "roughness": "construction_role_metric_pbr",
               "apply_to_existing_carrier": true,
               "create_geometry": false,
-              "carrier_offset_m": 0.0
+              "carrier_offset_m": 0.0,
+              "finish_policy": {
+                "texture_required": true,
+                "all_visible_faces": true,
+                "include_returns_eaves_and_soffits": true,
+                "broad_flat_colour_allowed": false,
+                "fallback_allowed": false
+              },
+              "fallback_material": null
+            },
+            "finish_class": "zinc_roof_sticker_pbr",
+            "visible_face_coverage": {
+              "scope": "all_visible_polygons",
+              "side_returns": "same construction-specific finish class",
+              "unmatched_polygon_action": "hard_stop",
+              "generic_fallback_allowed": false,
+              "broad_flat_colour_allowed": false
             }
           },
           {
@@ -23098,7 +27652,23 @@
               "roughness": "construction_role_metric_pbr",
               "apply_to_existing_carrier": true,
               "create_geometry": false,
-              "carrier_offset_m": 0.0
+              "carrier_offset_m": 0.0,
+              "finish_policy": {
+                "texture_required": true,
+                "all_visible_faces": true,
+                "include_returns_eaves_and_soffits": true,
+                "broad_flat_colour_allowed": false,
+                "fallback_allowed": false
+              },
+              "fallback_material": null
+            },
+            "finish_class": "zinc_roof_sticker_pbr",
+            "visible_face_coverage": {
+              "scope": "all_visible_polygons",
+              "side_returns": "same construction-specific finish class",
+              "unmatched_polygon_action": "hard_stop",
+              "generic_fallback_allowed": false,
+              "broad_flat_colour_allowed": false
             }
           },
           {
@@ -23243,7 +27813,23 @@
               "roughness": "construction_role_metric_pbr",
               "apply_to_existing_carrier": true,
               "create_geometry": false,
-              "carrier_offset_m": 0.0
+              "carrier_offset_m": 0.0,
+              "finish_policy": {
+                "texture_required": true,
+                "all_visible_faces": true,
+                "include_returns_eaves_and_soffits": true,
+                "broad_flat_colour_allowed": false,
+                "fallback_allowed": false
+              },
+              "fallback_material": null
+            },
+            "finish_class": "zinc_roof_sticker_pbr",
+            "visible_face_coverage": {
+              "scope": "all_visible_polygons",
+              "side_returns": "same construction-specific finish class",
+              "unmatched_polygon_action": "hard_stop",
+              "generic_fallback_allowed": false,
+              "broad_flat_colour_allowed": false
             }
           },
           {
@@ -23388,7 +27974,23 @@
               "roughness": "construction_role_metric_pbr",
               "apply_to_existing_carrier": true,
               "create_geometry": false,
-              "carrier_offset_m": 0.0
+              "carrier_offset_m": 0.0,
+              "finish_policy": {
+                "texture_required": true,
+                "all_visible_faces": true,
+                "include_returns_eaves_and_soffits": true,
+                "broad_flat_colour_allowed": false,
+                "fallback_allowed": false
+              },
+              "fallback_material": null
+            },
+            "finish_class": "zinc_roof_sticker_pbr",
+            "visible_face_coverage": {
+              "scope": "all_visible_polygons",
+              "side_returns": "same construction-specific finish class",
+              "unmatched_polygon_action": "hard_stop",
+              "generic_fallback_allowed": false,
+              "broad_flat_colour_allowed": false
             }
           },
           {
@@ -23533,7 +28135,23 @@
               "roughness": "construction_role_metric_pbr",
               "apply_to_existing_carrier": true,
               "create_geometry": false,
-              "carrier_offset_m": 0.0
+              "carrier_offset_m": 0.0,
+              "finish_policy": {
+                "texture_required": true,
+                "all_visible_faces": true,
+                "include_returns_eaves_and_soffits": true,
+                "broad_flat_colour_allowed": false,
+                "fallback_allowed": false
+              },
+              "fallback_material": null
+            },
+            "finish_class": "zinc_roof_sticker_pbr",
+            "visible_face_coverage": {
+              "scope": "all_visible_polygons",
+              "side_returns": "same construction-specific finish class",
+              "unmatched_polygon_action": "hard_stop",
+              "generic_fallback_allowed": false,
+              "broad_flat_colour_allowed": false
             }
           },
           {
@@ -23678,7 +28296,23 @@
               "roughness": "construction_role_metric_pbr",
               "apply_to_existing_carrier": true,
               "create_geometry": false,
-              "carrier_offset_m": 0.0
+              "carrier_offset_m": 0.0,
+              "finish_policy": {
+                "texture_required": true,
+                "all_visible_faces": true,
+                "include_returns_eaves_and_soffits": true,
+                "broad_flat_colour_allowed": false,
+                "fallback_allowed": false
+              },
+              "fallback_material": null
+            },
+            "finish_class": "zinc_roof_sticker_pbr",
+            "visible_face_coverage": {
+              "scope": "all_visible_polygons",
+              "side_returns": "same construction-specific finish class",
+              "unmatched_polygon_action": "hard_stop",
+              "generic_fallback_allowed": false,
+              "broad_flat_colour_allowed": false
             }
           },
           {
@@ -23842,7 +28476,31 @@
               "roughness": "construction_role_metric_pbr",
               "apply_to_existing_carrier": true,
               "create_geometry": false,
-              "carrier_offset_m": 0.0
+              "carrier_offset_m": 0.0,
+              "finish_policy": {
+                "texture_required": true,
+                "all_visible_faces": true,
+                "geometry_owns": [
+                  "depth",
+                  "pediment_caps"
+                ],
+                "sticker_owns": [
+                  "glazing",
+                  "zinc_patina",
+                  "return_colour"
+                ],
+                "broad_flat_colour_allowed": false,
+                "fallback_allowed": false
+              },
+              "fallback_material": null
+            },
+            "finish_class": "dormer_zinc_glazing_pbr",
+            "visible_face_coverage": {
+              "scope": "all_visible_polygons",
+              "side_returns": "same construction-specific finish class",
+              "unmatched_polygon_action": "hard_stop",
+              "generic_fallback_allowed": false,
+              "broad_flat_colour_allowed": false
             }
           },
           {
@@ -24006,7 +28664,31 @@
               "roughness": "construction_role_metric_pbr",
               "apply_to_existing_carrier": true,
               "create_geometry": false,
-              "carrier_offset_m": 0.0
+              "carrier_offset_m": 0.0,
+              "finish_policy": {
+                "texture_required": true,
+                "all_visible_faces": true,
+                "geometry_owns": [
+                  "depth",
+                  "pediment_caps"
+                ],
+                "sticker_owns": [
+                  "glazing",
+                  "zinc_patina",
+                  "return_colour"
+                ],
+                "broad_flat_colour_allowed": false,
+                "fallback_allowed": false
+              },
+              "fallback_material": null
+            },
+            "finish_class": "dormer_zinc_glazing_pbr",
+            "visible_face_coverage": {
+              "scope": "all_visible_polygons",
+              "side_returns": "same construction-specific finish class",
+              "unmatched_polygon_action": "hard_stop",
+              "generic_fallback_allowed": false,
+              "broad_flat_colour_allowed": false
             }
           },
           {
@@ -24170,7 +28852,31 @@
               "roughness": "construction_role_metric_pbr",
               "apply_to_existing_carrier": true,
               "create_geometry": false,
-              "carrier_offset_m": 0.0
+              "carrier_offset_m": 0.0,
+              "finish_policy": {
+                "texture_required": true,
+                "all_visible_faces": true,
+                "geometry_owns": [
+                  "depth",
+                  "pediment_caps"
+                ],
+                "sticker_owns": [
+                  "glazing",
+                  "zinc_patina",
+                  "return_colour"
+                ],
+                "broad_flat_colour_allowed": false,
+                "fallback_allowed": false
+              },
+              "fallback_material": null
+            },
+            "finish_class": "dormer_zinc_glazing_pbr",
+            "visible_face_coverage": {
+              "scope": "all_visible_polygons",
+              "side_returns": "same construction-specific finish class",
+              "unmatched_polygon_action": "hard_stop",
+              "generic_fallback_allowed": false,
+              "broad_flat_colour_allowed": false
             }
           },
           {
@@ -24334,7 +29040,31 @@
               "roughness": "construction_role_metric_pbr",
               "apply_to_existing_carrier": true,
               "create_geometry": false,
-              "carrier_offset_m": 0.0
+              "carrier_offset_m": 0.0,
+              "finish_policy": {
+                "texture_required": true,
+                "all_visible_faces": true,
+                "geometry_owns": [
+                  "depth",
+                  "pediment_caps"
+                ],
+                "sticker_owns": [
+                  "glazing",
+                  "zinc_patina",
+                  "return_colour"
+                ],
+                "broad_flat_colour_allowed": false,
+                "fallback_allowed": false
+              },
+              "fallback_material": null
+            },
+            "finish_class": "dormer_zinc_glazing_pbr",
+            "visible_face_coverage": {
+              "scope": "all_visible_polygons",
+              "side_returns": "same construction-specific finish class",
+              "unmatched_polygon_action": "hard_stop",
+              "generic_fallback_allowed": false,
+              "broad_flat_colour_allowed": false
             }
           },
           {
@@ -24344,7 +29074,7 @@
             "target_ids": [
               "central_dome_curb"
             ],
-            "source_image_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-roof.png",
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/cornice_zinc.jpg",
             "axis": "cylindrical_segment",
             "centre": [
               3.1,
@@ -24355,7 +29085,7 @@
             "height_m": 0.6000000000000014,
             "normal_z_min": -0.25,
             "normal_z_max": 0.25,
-            "material_role": "roof",
+            "material_role": "elevation",
             "origin_x": 0.0,
             "origin_y": 0.0,
             "angle_start_deg": 0.0,
@@ -24449,13 +29179,13 @@
                 ]
               }
             ],
-            "source_id": "roof",
-            "source_sha256": "124fea6055d6a9ce0f2a2069c6f9c35daaa1ea9e70ba9ffb4b5cc2cb90b85aaf",
+            "source_id": "cornice_zinc",
+            "source_sha256": "f7fce5b52fdcc865c8bda3bea3b607d32e26f07f9cd1731e7b385e476c358f4e",
             "source_crop_xyxy": [
               0,
               0,
-              1254,
-              1254
+              1536,
+              192
             ],
             "source_to_canonical_h": [
               [
@@ -24480,7 +29210,23 @@
               "roughness": "construction_role_metric_pbr",
               "apply_to_existing_carrier": true,
               "create_geometry": false,
-              "carrier_offset_m": 0.0
+              "carrier_offset_m": 0.0,
+              "finish_policy": {
+                "texture_required": true,
+                "all_visible_faces": true,
+                "include_top_bottom_and_end_caps": true,
+                "broad_flat_colour_allowed": false,
+                "fallback_allowed": false
+              },
+              "fallback_material": null
+            },
+            "finish_class": "zinc_cornice_return_pbr",
+            "visible_face_coverage": {
+              "scope": "all_visible_polygons",
+              "side_returns": "same construction-specific finish class",
+              "unmatched_polygon_action": "hard_stop",
+              "generic_fallback_allowed": false,
+              "broad_flat_colour_allowed": false
             }
           },
           {
@@ -24490,7 +29236,7 @@
             "target_ids": [
               "central_dome_drum"
             ],
-            "source_image_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-roof.png",
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/central_dome_polar.jpg",
             "axis": "cylindrical_segment",
             "centre": [
               3.0,
@@ -24501,7 +29247,7 @@
             "height_m": 1.0499999999999972,
             "normal_z_min": -0.25,
             "normal_z_max": 0.25,
-            "material_role": "roof",
+            "material_role": "elevation",
             "origin_x": 0.0,
             "origin_y": 0.0,
             "angle_start_deg": 0.0,
@@ -24595,13 +29341,13 @@
                 ]
               }
             ],
-            "source_id": "roof",
-            "source_sha256": "124fea6055d6a9ce0f2a2069c6f9c35daaa1ea9e70ba9ffb4b5cc2cb90b85aaf",
+            "source_id": "central_dome_polar",
+            "source_sha256": "68d99c9bdbc9f6559dfae0e1e50636fe2d1b8215d76fbff7b68acfd9502ecb30",
             "source_crop_xyxy": [
               0,
               0,
-              1254,
-              1254
+              1536,
+              768
             ],
             "source_to_canonical_h": [
               [
@@ -24626,7 +29372,23 @@
               "roughness": "construction_role_metric_pbr",
               "apply_to_existing_carrier": true,
               "create_geometry": false,
-              "carrier_offset_m": 0.0
+              "carrier_offset_m": 0.0,
+              "finish_policy": {
+                "texture_required": true,
+                "all_visible_faces": true,
+                "layered_transmission_required": true,
+                "broad_flat_colour_allowed": false,
+                "fallback_allowed": false
+              },
+              "fallback_material": null
+            },
+            "finish_class": "stained_glass_dome_pbr",
+            "visible_face_coverage": {
+              "scope": "all_visible_polygons",
+              "side_returns": "same construction-specific finish class",
+              "unmatched_polygon_action": "hard_stop",
+              "generic_fallback_allowed": false,
+              "broad_flat_colour_allowed": false
             }
           },
           {
@@ -24741,13 +29503,13 @@
                 ]
               }
             ],
-            "source_id": "roof",
-            "source_sha256": "124fea6055d6a9ce0f2a2069c6f9c35daaa1ea9e70ba9ffb4b5cc2cb90b85aaf",
+            "source_id": "central_dome_polar",
+            "source_sha256": "68d99c9bdbc9f6559dfae0e1e50636fe2d1b8215d76fbff7b68acfd9502ecb30",
             "source_crop_xyxy": [
               0,
               0,
-              1254,
-              1254
+              1536,
+              768
             ],
             "source_to_canonical_h": [
               [
@@ -24772,7 +29534,23 @@
               "roughness": "construction_role_metric_pbr",
               "apply_to_existing_carrier": true,
               "create_geometry": false,
-              "carrier_offset_m": 0.0
+              "carrier_offset_m": 0.0,
+              "finish_policy": {
+                "texture_required": true,
+                "all_visible_faces": true,
+                "layered_transmission_required": true,
+                "broad_flat_colour_allowed": false,
+                "fallback_allowed": false
+              },
+              "fallback_material": null
+            },
+            "finish_class": "stained_glass_dome_pbr",
+            "visible_face_coverage": {
+              "scope": "all_visible_polygons",
+              "side_returns": "same construction-specific finish class",
+              "unmatched_polygon_action": "hard_stop",
+              "generic_fallback_allowed": false,
+              "broad_flat_colour_allowed": false
             }
           },
           {
@@ -24783,7 +29561,7 @@
               "central_dome_cap",
               "central_dome_finial"
             ],
-            "source_image_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-roof.png",
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/cornice_zinc.jpg",
             "axis": "cylindrical_segment",
             "centre": [
               0.575,
@@ -24794,7 +29572,7 @@
             "height_m": 1.3500000000000014,
             "normal_z_min": -0.25,
             "normal_z_max": 0.25,
-            "material_role": "roof",
+            "material_role": "elevation",
             "origin_x": 0.0,
             "origin_y": 0.0,
             "angle_start_deg": 0.0,
@@ -24888,13 +29666,13 @@
                 ]
               }
             ],
-            "source_id": "roof",
-            "source_sha256": "124fea6055d6a9ce0f2a2069c6f9c35daaa1ea9e70ba9ffb4b5cc2cb90b85aaf",
+            "source_id": "cornice_zinc",
+            "source_sha256": "f7fce5b52fdcc865c8bda3bea3b607d32e26f07f9cd1731e7b385e476c358f4e",
             "source_crop_xyxy": [
               0,
               0,
-              1254,
-              1254
+              1536,
+              192
             ],
             "source_to_canonical_h": [
               [
@@ -24919,7 +29697,23 @@
               "roughness": "construction_role_metric_pbr",
               "apply_to_existing_carrier": true,
               "create_geometry": false,
-              "carrier_offset_m": 0.0
+              "carrier_offset_m": 0.0,
+              "finish_policy": {
+                "texture_required": true,
+                "all_visible_faces": true,
+                "include_top_bottom_and_end_caps": true,
+                "broad_flat_colour_allowed": false,
+                "fallback_allowed": false
+              },
+              "fallback_material": null
+            },
+            "finish_class": "zinc_cornice_return_pbr",
+            "visible_face_coverage": {
+              "scope": "all_visible_polygons",
+              "side_returns": "same construction-specific finish class",
+              "unmatched_polygon_action": "hard_stop",
+              "generic_fallback_allowed": false,
+              "broad_flat_colour_allowed": false
             }
           },
           {
@@ -24929,7 +29723,7 @@
             "target_ids": [
               "corner_upper_tower"
             ],
-            "source_image_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-front-left.png",
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/corner_seam_matched.jpg",
             "axis": "cylindrical_segment",
             "centre": [
               -12.925,
@@ -25034,8 +29828,8 @@
                 ]
               }
             ],
-            "source_id": "front_left",
-            "source_sha256": "df4c3f2c8ff717c4ec676f861e599ef6c622c5f77da2ac19465061cdf5415af3",
+            "source_id": "corner_seam_matched",
+            "source_sha256": "d7c48261573096aec38a4ad0e433ce03b00a69269139bf1e9541d130f2752668",
             "source_crop_xyxy": [
               0,
               0,
@@ -25065,7 +29859,22 @@
               "roughness": "construction_role_metric_pbr",
               "apply_to_existing_carrier": true,
               "create_geometry": false,
-              "carrier_offset_m": 0.0
+              "carrier_offset_m": 0.0,
+              "finish_policy": {
+                "texture_required": true,
+                "all_visible_faces": true,
+                "broad_flat_colour_allowed": false,
+                "fallback_allowed": false
+              },
+              "fallback_material": null
+            },
+            "finish_class": "heritage_corner_sticker_pbr",
+            "visible_face_coverage": {
+              "scope": "all_visible_polygons",
+              "side_returns": "same construction-specific finish class",
+              "unmatched_polygon_action": "hard_stop",
+              "generic_fallback_allowed": false,
+              "broad_flat_colour_allowed": false
             }
           },
           {
@@ -25075,7 +29884,7 @@
             "target_ids": [
               "corner_tower_crown"
             ],
-            "source_image_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-roof.png",
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/cornice_zinc.jpg",
             "axis": "cylindrical_segment",
             "centre": [
               -12.85,
@@ -25086,7 +29895,7 @@
             "height_m": 0.5,
             "normal_z_min": -0.25,
             "normal_z_max": 0.25,
-            "material_role": "roof",
+            "material_role": "elevation",
             "origin_x": -14.5,
             "origin_y": -13.5,
             "angle_start_deg": 0.0,
@@ -25180,13 +29989,13 @@
                 ]
               }
             ],
-            "source_id": "roof",
-            "source_sha256": "124fea6055d6a9ce0f2a2069c6f9c35daaa1ea9e70ba9ffb4b5cc2cb90b85aaf",
+            "source_id": "cornice_zinc",
+            "source_sha256": "f7fce5b52fdcc865c8bda3bea3b607d32e26f07f9cd1731e7b385e476c358f4e",
             "source_crop_xyxy": [
               0,
               0,
-              1254,
-              1254
+              1536,
+              192
             ],
             "source_to_canonical_h": [
               [
@@ -25211,7 +30020,23 @@
               "roughness": "construction_role_metric_pbr",
               "apply_to_existing_carrier": true,
               "create_geometry": false,
-              "carrier_offset_m": 0.0
+              "carrier_offset_m": 0.0,
+              "finish_policy": {
+                "texture_required": true,
+                "all_visible_faces": true,
+                "include_top_bottom_and_end_caps": true,
+                "broad_flat_colour_allowed": false,
+                "fallback_allowed": false
+              },
+              "fallback_material": null
+            },
+            "finish_class": "zinc_cornice_return_pbr",
+            "visible_face_coverage": {
+              "scope": "all_visible_polygons",
+              "side_returns": "same construction-specific finish class",
+              "unmatched_polygon_action": "hard_stop",
+              "generic_fallback_allowed": false,
+              "broad_flat_colour_allowed": false
             }
           },
           {
@@ -25221,7 +30046,7 @@
             "target_ids": [
               "corner_cupola_drum"
             ],
-            "source_image_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-roof.png",
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/corner_dome_polar.jpg",
             "axis": "cylindrical_segment",
             "centre": [
               -12.925,
@@ -25232,7 +30057,7 @@
             "height_m": 1.3499999999999979,
             "normal_z_min": -0.25,
             "normal_z_max": 0.25,
-            "material_role": "roof",
+            "material_role": "elevation",
             "origin_x": -14.5,
             "origin_y": -13.5,
             "angle_start_deg": 0.0,
@@ -25326,13 +30151,13 @@
                 ]
               }
             ],
-            "source_id": "roof",
-            "source_sha256": "124fea6055d6a9ce0f2a2069c6f9c35daaa1ea9e70ba9ffb4b5cc2cb90b85aaf",
+            "source_id": "corner_dome_polar",
+            "source_sha256": "e017a168cdb0e8df5b83f7c56d5f85103652d5672a53a43199f5afb69940b9a0",
             "source_crop_xyxy": [
               0,
               0,
-              1254,
-              1254
+              1024,
+              512
             ],
             "source_to_canonical_h": [
               [
@@ -25357,7 +30182,23 @@
               "roughness": "construction_role_metric_pbr",
               "apply_to_existing_carrier": true,
               "create_geometry": false,
-              "carrier_offset_m": 0.0
+              "carrier_offset_m": 0.0,
+              "finish_policy": {
+                "texture_required": true,
+                "all_visible_faces": true,
+                "layered_transmission_required": true,
+                "broad_flat_colour_allowed": false,
+                "fallback_allowed": false
+              },
+              "fallback_material": null
+            },
+            "finish_class": "stained_glass_dome_pbr",
+            "visible_face_coverage": {
+              "scope": "all_visible_polygons",
+              "side_returns": "same construction-specific finish class",
+              "unmatched_polygon_action": "hard_stop",
+              "generic_fallback_allowed": false,
+              "broad_flat_colour_allowed": false
             }
           },
           {
@@ -25472,13 +30313,13 @@
                 ]
               }
             ],
-            "source_id": "roof",
-            "source_sha256": "124fea6055d6a9ce0f2a2069c6f9c35daaa1ea9e70ba9ffb4b5cc2cb90b85aaf",
+            "source_id": "corner_dome_polar",
+            "source_sha256": "e017a168cdb0e8df5b83f7c56d5f85103652d5672a53a43199f5afb69940b9a0",
             "source_crop_xyxy": [
               0,
               0,
-              1254,
-              1254
+              1024,
+              512
             ],
             "source_to_canonical_h": [
               [
@@ -25503,7 +30344,23 @@
               "roughness": "construction_role_metric_pbr",
               "apply_to_existing_carrier": true,
               "create_geometry": false,
-              "carrier_offset_m": 0.0
+              "carrier_offset_m": 0.0,
+              "finish_policy": {
+                "texture_required": true,
+                "all_visible_faces": true,
+                "layered_transmission_required": true,
+                "broad_flat_colour_allowed": false,
+                "fallback_allowed": false
+              },
+              "fallback_material": null
+            },
+            "finish_class": "stained_glass_dome_pbr",
+            "visible_face_coverage": {
+              "scope": "all_visible_polygons",
+              "side_returns": "same construction-specific finish class",
+              "unmatched_polygon_action": "hard_stop",
+              "generic_fallback_allowed": false,
+              "broad_flat_colour_allowed": false
             }
           },
           {
@@ -25514,7 +30371,7 @@
               "corner_cupola_cap",
               "corner_cupola_finial"
             ],
-            "source_image_path": "docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/belle-epoque-grand-magasin/sticker-roof.png",
+            "source_image_path": "tools/archetype_compiler/sticker_assets/belle_epoque_v92/cornice_zinc.jpg",
             "axis": "cylindrical_segment",
             "centre": [
               -14.14,
@@ -25525,7 +30382,7 @@
             "height_m": 1.1999999999999993,
             "normal_z_min": -0.25,
             "normal_z_max": 0.25,
-            "material_role": "roof",
+            "material_role": "elevation",
             "origin_x": -14.5,
             "origin_y": -13.5,
             "angle_start_deg": 0.0,
@@ -25619,13 +30476,13 @@
                 ]
               }
             ],
-            "source_id": "roof",
-            "source_sha256": "124fea6055d6a9ce0f2a2069c6f9c35daaa1ea9e70ba9ffb4b5cc2cb90b85aaf",
+            "source_id": "cornice_zinc",
+            "source_sha256": "f7fce5b52fdcc865c8bda3bea3b607d32e26f07f9cd1731e7b385e476c358f4e",
             "source_crop_xyxy": [
               0,
               0,
-              1254,
-              1254
+              1536,
+              192
             ],
             "source_to_canonical_h": [
               [
@@ -25650,10 +30507,37 @@
               "roughness": "construction_role_metric_pbr",
               "apply_to_existing_carrier": true,
               "create_geometry": false,
-              "carrier_offset_m": 0.0
+              "carrier_offset_m": 0.0,
+              "finish_policy": {
+                "texture_required": true,
+                "all_visible_faces": true,
+                "include_top_bottom_and_end_caps": true,
+                "broad_flat_colour_allowed": false,
+                "fallback_allowed": false
+              },
+              "fallback_material": null
+            },
+            "finish_class": "zinc_cornice_return_pbr",
+            "visible_face_coverage": {
+              "scope": "all_visible_polygons",
+              "side_returns": "same construction-specific finish class",
+              "unmatched_polygon_action": "hard_stop",
+              "generic_fallback_allowed": false,
+              "broad_flat_colour_allowed": false
             }
           }
         ],
+        "final_surface_audit": {
+          "required": true,
+          "scope": "every_polygon_of_locked_clay_geometry",
+          "forbidden_material_names": [
+            "MAT_Clay",
+            "MAT_Facade_Primary",
+            "MAT_Facade_Secondary",
+            "MAT_Roof"
+          ],
+          "unmatched_polygon_action": "hard_stop"
+        },
         "voids": [
           {
             "id": "wrapped_corner_entrance",

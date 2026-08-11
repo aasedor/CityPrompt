@@ -30,3 +30,5 @@ docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/**/*.png filt
 docs/reviews/catalogue-rollout-v91/three-all-surface-sticker-pilot/**/*.jpg filter=lfs diff=lfs merge=lfs -text
 docs/reviews/catalogue-rollout-v92/**/*.png filter=lfs diff=lfs merge=lfs -text
 docs/reviews/catalogue-rollout-v92/**/*.jpg filter=lfs diff=lfs merge=lfs -text
+docs/reviews/catalogue-rollout-v93/**/*.png filter=lfs diff=lfs merge=lfs -text
+docs/reviews/catalogue-rollout-v93/**/*.jpg filter=lfs diff=lfs merge=lfs -text

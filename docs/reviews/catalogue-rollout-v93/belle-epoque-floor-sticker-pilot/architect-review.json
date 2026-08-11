@@ -1,0 +1,29 @@
+{
+  "schema": "architect-design-review@1",
+  "reviewer": "architect_design_reviewer",
+  "catalogue_threshold": 85,
+  "five_storey": {
+    "score": 77,
+    "verdict": "REJECT",
+    "successes": [
+      "occupied top floor is separated from the roof texture",
+      "ground, middle, top-crown, and roof bands are addressable"
+    ]
+  },
+  "six_storey": {
+    "score": 79,
+    "verdict": "REJECT",
+    "successes": [
+      "a complete middle floor is inserted without stretching",
+      "fixed top-crown and roof groups translate together"
+    ]
+  },
+  "hard_stops": [
+    "broad pale belts and roof-edge returns read as exposed carriers",
+    "visible horizontal floor-atlas seams and corner tears",
+    "top crown and cornice are architecturally oversized and broken",
+    "entrance canopy obscures an unreadable dark portal",
+    "domes are flattened and smeared rather than ribbed translucent glass",
+    "assembled GLB exceeds the 8 MB delivery gate"
+  ]
+}

@@ -599,6 +599,276 @@ def surface_contract() -> tuple[list[dict[str, Any]], list[dict[str, Any]], list
     return surfaces, adjacency, required_edges
 
 
+FALLBACK_FINAL_MATERIALS = {
+    "<NONE>",
+    "MAT_Facade_Primary",
+    "MAT_Facade_Secondary",
+    "MAT_Roof",
+    "Material",
+}
+APPROVED_FINAL_MATERIAL_PREFIXES = (
+    "MAT_Sheet_",
+    "MAT_Roof_v92_skin_",
+    "MAT_Glass_v92_skin_",
+    "MAT_FinalFinish_",
+    "MAT_InteriorShadow_v92_",
+)
+
+
+def final_surface_classification(geometry: dict[str, Any]) -> dict[str, Any]:
+    """Assign every authored polygon to a release-grade final finish.
+
+    The sticker renderer can use a photograph on the principal face and a
+    source-sampled architectural finish on its returns, caps, soffits, or
+    backs.  Neither path may fall through to generic clay in a final render.
+    """
+    face_counts = {mesh["name"]: len(mesh["faces"]) for mesh in geometry["meshes"]}
+    entries: list[dict[str, Any]] = []
+
+    def add(mesh: str, surface: str, finish: str, ranges: list[list[int]], reason: str) -> None:
+        entries.append({
+            "mesh_name": mesh,
+            "face_ranges_inclusive": ranges,
+            "carrier_surface_id": surface,
+            "finish_class": finish,
+            "visible_in_final_views": True,
+            "fallback_material_forbidden": True,
+            "reason": reason,
+        })
+
+    def add_all(mesh: str, surface: str, finish: str, reason: str) -> None:
+        add(mesh, surface, finish, [[0, face_counts[mesh] - 1]], reason)
+
+    for index in range(4):
+        add_all(f"corner_pavilion_facet_{index}", "corner_pavilion", "elevation_sticker_with_sampled_returns", "outer pavilion, reveal, head, and end-cap faces")
+    for side in ("left", "right"):
+        add_all(f"corner_entrance_jamb_{side}", "corner_pavilion", "entrance_stone_return_finish", "entrance tunnel jamb and support faces")
+    add_all("wrapped_corner_canopy", "wrapped_canopy", "canopy_metal_top_edge_and_soffit_finish", "canopy top, fascia, radial ends, and visible underside")
+    for label in ("mid", "crown"):
+        add_all(f"corner_pavilion_{label}_cornice", "corner_cornices", "cornice_metal_wrap_finish", "projecting corner cornice top, fascia, ends, and soffit")
+
+    for mesh, surface in (
+        ("front_wall", "facade_front"), ("right_wall", "facade_right"),
+        ("rear_wall", "facade_rear"), ("left_wall", "facade_left"),
+        ("court_front_wall", "court_front"), ("court_right_wall", "court_right"),
+        ("court_rear_wall", "court_rear"), ("court_left_wall", "court_left"),
+        ("upper_front_setback", "upper_front"), ("upper_right_setback", "upper_right"),
+        ("upper_rear_setback", "upper_rear"), ("upper_left_setback", "upper_left"),
+    ):
+        add_all(mesh, surface, "elevation_sticker_with_sampled_returns", "principal elevation plus exposed side, top, and corner end caps")
+    for mesh in ("corner_upper_front_return", "corner_upper_left_return"):
+        add_all(mesh, "corner_upper_returns", "elevation_sticker_with_sampled_returns", "closed upper corner return including exposed end caps")
+    for side in ("front", "right", "rear", "left"):
+        add_all(f"{side}_main_cornice", "perimeter_cornice", "cornice_metal_wrap_finish", "main cornice top, fascia, ends, and soffit")
+        add_all(f"{side}_crown_return", "perimeter_cornice", "cornice_metal_wrap_finish", "roof-eave return top, fascia, ends, and soffit")
+
+    roof_sides = ("front", "right", "rear", "left")
+    for offset, side in enumerate(roof_sides):
+        add("watertight_perimeter_court_crown", f"roof_{side}", "roof_sticker_wrap", [[offset, offset], [8 + offset, 8 + offset]], "mansard field and its visible lower return")
+        add("watertight_perimeter_court_crown", f"terrace_{side}", "roof_sticker_wrap", [[4 + offset, 4 + offset], [12 + offset, 12 + offset], [20 + offset, 20 + offset]], "terrace field, underside, and court curb")
+        add("watertight_perimeter_court_crown", "perimeter_cornice", "cornice_metal_wrap_finish", [[16 + offset, 16 + offset]], "outer roof fascia/eave face")
+
+    for side, count, elevation_face in (("front", 3, 0), ("rear", 3, 1), ("left", 2, 0), ("right", 2, 1)):
+        for index in range(count):
+            mesh = f"dormer_{side}_{index}"
+            surface = f"dormers_{side}"
+            add(mesh, surface, "elevation_sticker", [[elevation_face, elevation_face]], "principal dormer elevation")
+            remaining = [[face, face] for face in range(face_counts[mesh]) if face != elevation_face]
+            add(mesh, surface, "roof_sticker_wrap", remaining, "dormer roof, cheeks, rear return, cap, and seat")
+
+    for mesh, surface, finish, reason in (
+        ("central_dome_curb", "central_curb", "roof_metal_wrap_finish", "central dome curb sides and caps"),
+        ("central_dome_drum", "central_drum", "roof_metal_wrap_finish", "central dome drum sides and caps"),
+        ("central_glass_dome", "central_dome", "glass_sticker", "central dome glazing and buried base closure"),
+        ("central_dome_cap", "central_cap_finial", "roof_metal_wrap_finish", "central dome cap sides and caps"),
+        ("central_dome_finial", "central_cap_finial", "roof_metal_wrap_finish", "central finial sides and caps"),
+        ("corner_upper_tower", "corner_tower", "elevation_sticker_with_sampled_caps", "corner tower envelope and horizontal caps"),
+        ("corner_tower_crown", "corner_tower_crown", "roof_metal_wrap_finish", "corner tower crown sides and caps"),
+        ("corner_cupola_drum", "corner_drum", "roof_metal_wrap_finish", "corner cupola drum sides and caps"),
+        ("corner_glass_cupola", "corner_dome", "glass_sticker", "corner cupola glazing and buried base closure"),
+        ("corner_cupola_cap", "corner_cap_finial", "roof_metal_wrap_finish", "corner cupola cap sides and caps"),
+        ("corner_cupola_finial", "corner_cap_finial", "roof_metal_wrap_finish", "corner finial sides and caps"),
+    ):
+        add_all(mesh, surface, finish, reason)
+
+    classified_meshes = {entry["mesh_name"] for entry in entries}
+    unknown_meshes = sorted(set(face_counts) - classified_meshes)
+    if unknown_meshes:
+        raise ValueError(f"final-surface classification missing meshes: {unknown_meshes}")
+    return {
+        "schema": "belle-epoque-final-surface-classification@1",
+        "policy": "every authored face receives a registered sticker or explicit source-derived architectural finish",
+        "fallback_material_names_forbidden": sorted(FALLBACK_FINAL_MATERIALS),
+        "approved_material_prefixes": list(APPROVED_FINAL_MATERIAL_PREFIXES),
+        "entries": entries,
+    }
+
+
+def final_surface_coverage_audit(geometry: dict[str, Any], classification: dict[str, Any], surface_ids: set[str]) -> dict[str, Any]:
+    """Verify that the face-level classification is total and non-overlapping."""
+    face_counts = {mesh["name"]: len(mesh["faces"]) for mesh in geometry["meshes"]}
+    assignments: Counter[tuple[str, int]] = Counter()
+    invalid_surface_entries = 0
+    invalid_face_references = 0
+    fallback_exceptions = 0
+    for entry in classification["entries"]:
+        mesh = entry["mesh_name"]
+        if entry["carrier_surface_id"] not in surface_ids:
+            invalid_surface_entries += 1
+        if not entry.get("fallback_material_forbidden", False):
+            fallback_exceptions += 1
+        for start, end in entry["face_ranges_inclusive"]:
+            if mesh not in face_counts or start < 0 or end < start or end >= face_counts.get(mesh, 0):
+                invalid_face_references += 1
+                continue
+            for face in range(start, end + 1):
+                assignments[(mesh, face)] += 1
+    expected = {(mesh, face) for mesh, count in face_counts.items() for face in range(count)}
+    unclassified = sorted(expected - set(assignments))
+    duplicate = sorted(key for key, count in assignments.items() if count != 1)
+    return {
+        "authored_face_count": len(expected),
+        "classified_face_count": len(expected & set(assignments)),
+        "unclassified_face_count": len(unclassified),
+        "duplicate_face_count": len(duplicate),
+        "invalid_surface_entry_count": invalid_surface_entries,
+        "invalid_face_reference_count": invalid_face_references,
+        "fallback_exception_count": fallback_exceptions,
+        "unclassified_examples": [f"{mesh}:{face}" for mesh, face in unclassified[:12]],
+        "duplicate_examples": [f"{mesh}:{face}" for mesh, face in duplicate[:12]],
+        "passed": not unclassified and not duplicate and invalid_surface_entries == 0 and invalid_face_references == 0 and fallback_exceptions == 0,
+    }
+
+
+def audit_visible_face_materials(classification: dict[str, Any], face_materials: dict[str, dict[int, str]]) -> dict[str, Any]:
+    """Release audit consumed after Blender assigns materials, before render."""
+    failures: list[dict[str, Any]] = []
+    checked = 0
+    for entry in classification["entries"]:
+        if not entry.get("visible_in_final_views"):
+            continue
+        mesh_materials = face_materials.get(entry["mesh_name"], {})
+        for start, end in entry["face_ranges_inclusive"]:
+            for face in range(start, end + 1):
+                checked += 1
+                material = mesh_materials.get(face, "<NONE>")
+                approved = material not in FALLBACK_FINAL_MATERIALS and material.startswith(APPROVED_FINAL_MATERIAL_PREFIXES)
+                if not approved:
+                    failures.append({"mesh_name": entry["mesh_name"], "face_index": face, "material": material, "finish_class": entry["finish_class"]})
+    return {"status": "pass" if not failures else "fail", "checked_visible_faces": checked, "failure_count": len(failures), "failures": failures}
+
+
+def storey_band_contract() -> dict[str, Any]:
+    """Define immutable floor ownership plus one bounded middle-band variant."""
+    band_height = 4.1
+    elevation_surfaces = [
+        "facade_front", "facade_right", "facade_rear", "facade_left", "corner_pavilion",
+        "court_front", "court_right", "court_rear", "court_left",
+    ]
+    top_extension_surfaces = ["upper_front", "upper_right", "upper_rear", "upper_left", "corner_upper_returns"]
+    roof_surfaces = [
+        "roof_front", "roof_right", "roof_rear", "roof_left",
+        "terrace_front", "terrace_right", "terrace_rear", "terrace_left",
+        "central_curb", "central_drum", "central_dome", "central_cap_finial",
+        "corner_tower_crown", "corner_drum", "corner_dome", "corner_cap_finial",
+    ]
+
+    def variant(floors: int) -> dict[str, Any]:
+        middle_count = floors - 2
+        ground = {"band_id": "ground", "z_min_m": 0.0, "z_max_m": band_height, "owner": "ground_sticker", "template_id": "ground_v92"}
+        middle = [
+            {"band_id": f"middle_{index + 1}", "z_min_m": band_height * (index + 1), "z_max_m": band_height * (index + 2), "owner": "repeatable_middle_sticker", "template_id": "middle_repeat_v92"}
+            for index in range(middle_count)
+        ]
+        top_min = band_height * (middle_count + 1)
+        top = {"band_id": "top_crown", "z_min_m": top_min, "z_max_m": top_min + band_height, "owner": "top_crown_sticker", "template_id": "top_crown_v92"}
+        translation = band_height * (floors - 5)
+        roof = {"band_id": "roof", "z_min_m": top["z_max_m"], "owner": "roof_sticker", "template_id": "roof_v92", "translation_z_m": translation}
+        return {
+            "floor_count": floors,
+            "geometry_status": "approved_immutable_clay" if floors == 5 else "requires_separately_hashed_segmented_floor_addressable_bundle",
+            "monolithic_wall_scaling": "forbidden",
+            "ground": ground,
+            "repeatable_middle": middle,
+            "top_crown": top,
+            "roof": roof,
+            "top_crown_translation_z_m": translation,
+            "surface_ownership": {
+                "ground_sticker": elevation_surfaces,
+                "repeatable_middle_sticker": elevation_surfaces,
+                "top_crown_sticker": elevation_surfaces + top_extension_surfaces + ["perimeter_cornice", "corner_cornices"],
+                "roof_sticker": roof_surfaces,
+                "dormer_elevation_sticker": ["dormers_front", "dormers_right", "dormers_rear", "dormers_left"],
+                "entrance_detail_sticker": ["wrapped_canopy"],
+            },
+            "floor_addressable_target_pattern": "{surface_id}_{ground|middle_01..middle_N|top_crown}",
+        }
+
+    templates = {
+        "ground_v92": {"height_m": band_height, "immutable": True, "content": "ground entrance and shopfront band"},
+        "middle_repeat_v92": {"height_m": band_height, "repeatable": True, "content": "one occupied facade middle band"},
+        "top_crown_v92": {"height_m": band_height, "immutable": True, "content": "top occupied floor, upper setback, and cornice"},
+        "roof_v92": {"source_geometry_sha256": "4a0c2c6514d0a546d3a3154b6766d40797c88b8b3ffb7ce4e1523831be73b815", "immutable_shape": True, "content": "mansard, terrace, dormers, domes, cupola, and roof caps"},
+    }
+    return {
+        "schema": "belle-epoque-storey-band-contract@1",
+        "band_height_m": band_height,
+        "templates": templates,
+        "variants": {"five_storey": variant(5), "six_storey": variant(6)},
+        "insertion_rule": "six_storey_inserts_exactly_one_middle_repeat_below_unchanged_top_crown_and_roof_templates",
+        "insertion_z_range_m": [12.3, 16.4],
+        "six_storey_generation_guard": "hard_stop_until_segmented_floor_addressable_geometry_is_present",
+        "shifted_roof_meshes": [
+            "watertight_perimeter_court_crown", "dormer_*", "central_dome_curb", "central_dome_drum",
+            "central_glass_dome", "central_dome_cap", "central_dome_finial", "corner_upper_tower",
+            "corner_tower_crown", "corner_cupola_drum", "corner_glass_cupola", "corner_cupola_cap",
+            "corner_cupola_finial",
+        ],
+        "roof_material_on_vertical_occupied_floor_faces": "forbidden",
+    }
+
+
+def storey_band_contract_audit(contract: dict[str, Any], classification: dict[str, Any]) -> dict[str, Any]:
+    five = contract["variants"]["five_storey"]
+    six = contract["variants"]["six_storey"]
+    band_height = contract["band_height_m"]
+    same_ground = five["ground"] == six["ground"]
+    one_middle_added = len(six["repeatable_middle"]) == len(five["repeatable_middle"]) + 1
+    preserved_middle_prefix = six["repeatable_middle"][:len(five["repeatable_middle"])] == five["repeatable_middle"]
+    top_template_preserved = five["top_crown"]["template_id"] == six["top_crown"]["template_id"] == "top_crown_v92"
+    roof_template_preserved = five["roof"]["template_id"] == six["roof"]["template_id"] == "roof_v92"
+    translated_exactly_one_band = (
+        math.isclose(six["top_crown_translation_z_m"] - five["top_crown_translation_z_m"], band_height)
+        and math.isclose(six["roof"]["translation_z_m"] - five["roof"]["translation_z_m"], band_height)
+        and math.isclose(six["top_crown"]["z_min_m"] - five["top_crown"]["z_min_m"], band_height)
+        and math.isclose(six["roof"]["z_min_m"] - five["roof"]["z_min_m"], band_height)
+    )
+    facade_mesh_prefixes = ("front_wall", "right_wall", "rear_wall", "left_wall", "court_", "upper_", "corner_pavilion_facet", "corner_upper_")
+    roof_owned_vertical_conflicts = [
+        f"{entry['mesh_name']}:{entry['face_ranges_inclusive']}"
+        for entry in classification["entries"]
+        if entry["mesh_name"].startswith(facade_mesh_prefixes) and entry["finish_class"].startswith("roof_")
+    ]
+    six_storey_safely_guarded = (
+        six["geometry_status"] == "requires_separately_hashed_segmented_floor_addressable_bundle"
+        and six["monolithic_wall_scaling"] == "forbidden"
+        and contract["six_storey_generation_guard"] == "hard_stop_until_segmented_floor_addressable_geometry_is_present"
+    )
+    passed = all((same_ground, one_middle_added, preserved_middle_prefix, top_template_preserved, roof_template_preserved, translated_exactly_one_band, not roof_owned_vertical_conflicts, six_storey_safely_guarded))
+    return {
+        "passed": passed,
+        "same_ground_template_and_extents": same_ground,
+        "middle_band_counts": {"five_storey": len(five["repeatable_middle"]), "six_storey": len(six["repeatable_middle"])},
+        "one_middle_added": one_middle_added,
+        "preserved_middle_prefix": preserved_middle_prefix,
+        "top_template_preserved": top_template_preserved,
+        "roof_template_preserved": roof_template_preserved,
+        "top_and_roof_translation_delta_m": six["roof"]["translation_z_m"] - five["roof"]["translation_z_m"],
+        "roof_owned_vertical_face_conflicts": roof_owned_vertical_conflicts,
+        "six_storey_safely_guarded": six_storey_safely_guarded,
+    }
+
+
 def evidence_contract() -> dict[str, Any]:
     views = []
     for role, annotation in REFERENCE_MEASUREMENTS.items():
@@ -709,6 +979,20 @@ def audit(geometry: dict[str, Any], evidence: dict[str, Any], surfaces: list[dic
     measurements["carrier_coverage"] = len(roles & expected_roles) / len(expected_roles)
     paired_edges = {f"{item['a']['surface_id']}:{item['a']['edge_id']}" for item in adjacency} | {f"{item['b']['surface_id']}:{item['b']['edge_id']}" for item in adjacency}
     measurements["unpaired_required_edges"] = len(set(required_edges) - paired_edges)
+    classification = final_surface_classification(geometry)
+    final_coverage = final_surface_coverage_audit(geometry, classification, {surface["surface_id"] for surface in surfaces})
+    storeys = storey_band_contract()
+    storey_audit = storey_band_contract_audit(storeys, classification)
+    measurements["final_surface_authored_faces"] = final_coverage["authored_face_count"]
+    measurements["final_surface_classified_faces"] = final_coverage["classified_face_count"]
+    measurements["final_surface_unclassified_faces"] = final_coverage["unclassified_face_count"]
+    measurements["final_surface_duplicate_faces"] = final_coverage["duplicate_face_count"]
+    measurements["final_surface_invalid_surface_entries"] = final_coverage["invalid_surface_entry_count"]
+    measurements["final_surface_fallback_exceptions"] = final_coverage["fallback_exception_count"]
+    measurements["five_storey_middle_band_count"] = storey_audit["middle_band_counts"]["five_storey"]
+    measurements["six_storey_middle_band_count"] = storey_audit["middle_band_counts"]["six_storey"]
+    measurements["six_storey_roof_translation_m"] = storey_audit["top_and_roof_translation_delta_m"]
+    measurements["roof_owned_vertical_face_conflicts"] = len(storey_audit["roof_owned_vertical_face_conflicts"])
     gate_specs = [
         ("reference_evidence_complete", len(evidence["views"]) == 3 and all(Path(REPO / view["path"]).exists() for view in evidence["views"]), len(evidence["views"]), "three exact source views"),
         ("evidence_conflict_adjudicated", len(evidence["evidence_conflicts"]) == 1 and evidence["evidence_conflicts"][0]["status"] == "resolved" and evidence["evidence_conflicts"][0]["adjudication"] == "oblique_massing_and_roof_plan_control_topology", evidence["evidence_conflicts"][0]["status"], "resolved with aerial/oblique topology authority"),
@@ -736,10 +1020,12 @@ def audit(geometry: dict[str, Any], evidence: dict[str, Any], surfaces: list[dic
         ("upper_setback_and_medium_detail", measurements["upper_setback_inset_m"] >= THRESHOLDS["upper_setback_min_m"] and not measurements["missing_medium_detail_meshes"], {"setback_inset_m": measurements["upper_setback_inset_m"], "missing_meshes": measurements["missing_medium_detail_meshes"]}, {"setback_inset_min_m": THRESHOLDS["upper_setback_min_m"], "missing_meshes": []}),
         ("unobstructed_wrapped_corner_entrance", measurements["entrance_clear_ray_fraction"] >= THRESHOLDS["entrance_clear_ray_fraction_min"], measurements["entrance_clear_ray_fraction"], THRESHOLDS["entrance_clear_ray_fraction_min"]),
         ("all_exposed_surface_carriers", measurements["carrier_coverage"] >= THRESHOLDS["carrier_coverage_min"], measurements["carrier_coverage"], THRESHOLDS["carrier_coverage_min"]),
+        ("every_authored_face_has_final_surface_classification", final_coverage["passed"], final_coverage, {"unclassified_faces": 0, "duplicate_faces": 0, "invalid_surfaces": 0, "fallback_exceptions": 0}),
+        ("bounded_five_and_six_storey_band_ownership", storey_audit["passed"], storey_audit, {"middle_band_counts": {"five_storey": 3, "six_storey": 4}, "translation_delta_m": 4.1, "roof_owned_vertical_face_conflicts": [], "six_storey_safely_guarded": True}),
         ("reciprocal_non_bare_adjacency", measurements["unpaired_required_edges"] == 0 and all(item["mode"] != "bare_butt" for item in adjacency), measurements["unpaired_required_edges"], 0),
     ]
     gates = [{"id": gate_id, "passed": bool(passed), "measured": measured, "threshold": threshold} for gate_id, passed, measured, threshold in gate_specs]
-    return {"schema": "belle-epoque-clay-gates@1", "status": "pass" if all(gate["passed"] for gate in gates) else "fail", "measurements": measurements, "gates": gates, "entrance_rays": rays}
+    return {"schema": "belle-epoque-clay-gates@1", "status": "pass" if all(gate["passed"] for gate in gates) else "fail", "measurements": measurements, "gates": gates, "entrance_rays": rays, "final_surface_coverage": final_coverage, "storey_band_audit": storey_audit}
 
 
 def write_obj(path: Path, meshes: list[dict[str, Any]]) -> None:
@@ -805,6 +1091,8 @@ def build_lock(output: Path) -> dict[str, Any]:
     geometry = build_geometry()
     evidence = evidence_contract()
     surfaces, adjacency, required_edges = surface_contract()
+    classification = final_surface_classification(geometry)
+    storeys = storey_band_contract()
     report = audit(geometry, evidence, surfaces, adjacency, required_edges)
     output.mkdir(parents=True, exist_ok=True)
     geometry_payload = {key: value for key, value in geometry.items() if key != "meshes"}
@@ -857,6 +1145,14 @@ def build_lock(output: Path) -> dict[str, Any]:
         "street_silhouette_priority": ["corner_upper_tower", "corner_cupola", "wrapped_corner_entrance", "central_dome"],
         "anchors": anchors,
         "surfaces": surfaces,
+        "final_surface_classification": classification,
+        "final_surface_release_audit": {
+            "stage": "after_material_binding_before_final_render",
+            "function": "audit_visible_face_materials",
+            "failure_policy": "block_release_when_any_visible_face_is_missing_or_uses_a_forbidden_fallback_material",
+            "required_status": "pass",
+        },
+        "storey_band_contract": storeys,
         "adjacency": adjacency,
         "entrance": {"carrier_surface_id": "corner_pavilion", "topology": "single_wrapped_recessed_front_left_corner", "depth_m": geometry["entrance"]["depth_m"], "contour_sha256": sha256(contours_uv), "contour_uv": contours_uv, "clear_ray_fraction": report["measurements"]["entrance_clear_ray_fraction"], "canopy_mesh": "wrapped_corner_canopy"},
         "feature_ownership": {
