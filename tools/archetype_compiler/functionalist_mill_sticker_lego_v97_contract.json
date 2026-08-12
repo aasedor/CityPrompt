@@ -1,0 +1,50 @@
+{
+  "schema": "geometry-conditioned-sticker-lego-contract@1",
+  "building_id": "functionalist-brick-industrial--brick-multistory-mill",
+  "score_target": 95,
+  "size_matrix": {
+    "small": {
+      "width_m": 35.0,
+      "depth_m": 30.0,
+      "floors": 4
+    },
+    "canonical": {
+      "width_m": 50.0,
+      "depth_m": 40.0,
+      "floors": 5
+    },
+    "large": {
+      "width_m": 65.0,
+      "depth_m": 50.0,
+      "floors": 6
+    }
+  },
+  "bay_module_m": 5.0,
+  "floor_module_m": 5.0,
+  "whole_modules_only": true,
+  "statuses": {
+    "small": "pass",
+    "canonical": "pass",
+    "large": "pass"
+  },
+  "geometry_sha256": {
+    "small": "dc9a737f90585479390393129101e488799595e2d236a45ed6f160ab2703a8fc",
+    "canonical": "dc19270544b708fe89485329deca354ee209d1762532dcdb53dcc3051260d4ec",
+    "large": "61a36b1958939836bebd90a0e1d8e81e1e40700885bc9f08cdf0a39564225ea7"
+  },
+  "carrier_counts": {
+    "small": 149,
+    "canonical": 232,
+    "large": 335
+  },
+  "hard_stops": [
+    "partial_bay",
+    "nonuniform_sticker_scale",
+    "duplicated_entrance",
+    "repeated_ground_or_crown",
+    "floor_roof_overlap",
+    "exposed_carrier",
+    "window_aspect_drift",
+    "architect_score_below_95"
+  ]
+}

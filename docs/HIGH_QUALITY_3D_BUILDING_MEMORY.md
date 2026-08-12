@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-08-11-continuous-shell-sticker-v94`.
+Current executable memory: `2026-08-11-discrete-sticker-lego-v97`.
 
 The current calibration set and catalogue rollout rationale are documented in
 [`BUILDING_GOLD_SET_PIPELINE_SYNTHESIS_2026-08-07.md`](BUILDING_GOLD_SET_PIPELINE_SYNTHESIS_2026-08-07.md).
@@ -1196,6 +1196,30 @@ multi-view renders.
 - Declare reference-visible ornament projections in a bounded runtime footprint
   contract. Do not shrink an architect-approved silhouette merely to satisfy a
   generic envelope tolerance.
+
+### V97 discrete Sticker LEGO scaling lesson
+
+The Functionalist mill pilot proved that the Sticker Method can support several
+catalogue-valid building sizes without stretching a complete elevation. The
+successful contract used constant 5 m bay and floor carriers, whole-module
+insertion and a singular fixed identity kit.
+
+- Change capacity only by adding or removing complete ordinary bays and middle
+  floors. Preserve window aspect, metric UV scale and texel density; partial
+  bays and continuous non-uniform scaling are release failures.
+- Keep entrances, stair wings, end/service bays, roof terminations, dormers,
+  annexes and chimneys fixed in number and physical size. A larger tier may add
+  repeat capacity, but it may not multiply or stretch architectural identity.
+- Give recesses complete construction ownership, including tunnel faces,
+  returns, thresholds, soffits and thin fascias. A machine-assigned face that
+  visibly reads as black clay or an unskinned overhang remains a visual failure.
+- Model subordinate roofs as their own semantic domain. A valid annex roof may
+  sit below the main roof datum; it still needs registered weathering coverage
+  without being misclassified as roof imagery on an occupied top floor.
+- Score small, canonical and large tiers separately against exact references.
+  Passing carrier ownership and scale-consistency proves method viability, not
+  exact archetype fidelity; fixed identity must remain strong enough that the
+  repeat grid does not turn larger tiers into generic boxes.
 
 ## Updating this memory
 

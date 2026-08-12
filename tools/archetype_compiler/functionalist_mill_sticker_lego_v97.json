@@ -1,0 +1,35 @@
+{
+  "schema": "catalogue-rollout-batch@1",
+  "pipeline_version": "v97",
+  "batch_id": "FUNCTIONALIST-MILL-STICKER-LEGO-V97",
+  "paid_facade_calls": 2,
+  "entries": [
+    {
+      "archetype_id": "functionalist_brick_industrial",
+      "variant_id": "brick_multistory_mill",
+      "signature_profile_id": "functional-mill-sticker-lego-small",
+      "family_id": "functionalist-brick-mill-v97-small",
+      "width_m": 35.0,
+      "depth_m": 30.0,
+      "floors": 4
+    },
+    {
+      "archetype_id": "functionalist_brick_industrial",
+      "variant_id": "brick_multistory_mill",
+      "signature_profile_id": "functional-mill-sticker-lego-canonical",
+      "family_id": "functionalist-brick-mill-v97-canonical",
+      "width_m": 50.0,
+      "depth_m": 40.0,
+      "floors": 5
+    },
+    {
+      "archetype_id": "functionalist_brick_industrial",
+      "variant_id": "brick_multistory_mill",
+      "signature_profile_id": "functional-mill-sticker-lego-large",
+      "family_id": "functionalist-brick-mill-v97-large",
+      "width_m": 65.0,
+      "depth_m": 50.0,
+      "floors": 6
+    }
+  ]
+}

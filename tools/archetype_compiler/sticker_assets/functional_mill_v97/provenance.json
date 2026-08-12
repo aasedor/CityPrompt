@@ -1,0 +1,15 @@
+{
+  "schema": "siteforge.sticker-asset-provenance@1",
+  "building": "functionalist-brick-industrial--brick-multistory-mill",
+  "method": "V97 rectified 5x5 cell master plus crop-only fixed entrance",
+  "ordinary_sha256": "8eaf666ec1cb3b236d2c414abf8e3df56b6114eb7d132283999937172d5d8351",
+  "entrance_sha256": "e5bbda0119b381102135e5cbf94e9a8866be32d539f9b68490c75b68192ca2b0",
+  "bay_module_m": 5.0,
+  "floor_module_m": 5.0,
+  "source_grid": [
+    5,
+    5
+  ],
+  "post_generation_nonuniform_scale_allowed": false,
+  "approval_space": "rendered_on_all_three_locked_carriers"
+}

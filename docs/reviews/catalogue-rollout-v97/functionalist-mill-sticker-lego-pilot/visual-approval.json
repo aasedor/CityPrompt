@@ -1,0 +1,44 @@
+{
+  "schema": "siteforge.named-architect-review@1",
+  "pipeline_version": "v97.3",
+  "building_id": "functionalist-brick-industrial--brick-multistory-mill",
+  "reviewer": "architect_design_reviewer",
+  "status": "pass",
+  "score_target": 95,
+  "overall_score": 95,
+  "mean_score": 95.3,
+  "hard_stop_status": "pass",
+  "scores": {
+    "small": 95,
+    "canonical": 96,
+    "large": 95
+  },
+  "size_matrix": {
+    "small": {"width_m": 35, "depth_m": 30, "floors": 4, "sticker_carriers": 149},
+    "canonical": {"width_m": 50, "depth_m": 40, "floors": 5, "sticker_carriers": 232},
+    "large": {"width_m": 65, "depth_m": 50, "floors": 6, "sticker_carriers": 335}
+  },
+  "approved_contract": {
+    "bay_module_m": 5,
+    "floor_module_m": 5,
+    "whole_modules_only": true,
+    "nonuniform_skin_scale_allowed": false,
+    "arbitrary_continuous_resize_allowed": false,
+    "fixed_identity": [
+      "one-bay recessed entrance/stair wing",
+      "finished entrance eave and tunnel",
+      "two-storey rear service annex",
+      "pitched timber roof service dormer",
+      "closed hip ends",
+      "three chimneys"
+    ]
+  },
+  "machine_evidence": {
+    "production_preflight": "pass",
+    "final_surface_audit": "pass",
+    "surface_failures": 0,
+    "focused_tests": "36 passed"
+  },
+  "residual_limitation": "The rear composition simplifies the reference's more offset linked wing and side/eave-integrated timber service projection.",
+  "verdict": "Approved only for the three bounded snapped tiers and this archetype-specific contract; every new archetype still requires its own visual review."
+}

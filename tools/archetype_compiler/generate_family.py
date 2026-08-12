@@ -112,6 +112,14 @@ def main() -> None:
     parser.add_argument("--archetype-id", required=True, help="catalogue id, e.g. nordic_timber_midrise (see export_catalog.ts --list)")
     parser.add_argument("--variant-id", default=None)
     parser.add_argument(
+        "--signature-profile-id",
+        default=None,
+        help=(
+            "optional architectural-signature profile distinct from the real catalogue variant; "
+            "used for coexisting small/canonical/large LEGO tiers"
+        ),
+    )
+    parser.add_argument(
         "--family-id",
         default=None,
         help=(
@@ -204,7 +212,8 @@ def main() -> None:
         grammar.validate()
     grammar_file = output / "grammar.json"
     grammar_payload = inject_signature(
-        grammar.to_dict(), args.archetype_id, variant_id=args.variant_id,
+        grammar.to_dict(), args.archetype_id,
+        variant_id=args.signature_profile_id or args.variant_id,
     )
     if payload.get("footprintCompatibility"):
         grammar_payload["footprint_compatibility"] = payload["footprintCompatibility"]

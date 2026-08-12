@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-08-11-geometry-conditioned-sticker-v95",
+  "memory_version": "2026-08-11-discrete-sticker-lego-v97",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "calibration_set": {
@@ -322,6 +322,10 @@
     {
       "id": "one_feature_has_one_owning_representation",
       "rule": "Assign each visible architectural feature one owning representation at each distance band. Do not independently encode the same loggia, mullion, frame or ornament in both an audited facade sheet and projecting geometry unless the layers have explicit non-overlapping responsibilities."
+    },
+    {
+      "id": "sticker_lego_scaling_uses_discrete_fixed_and_repeatable_modules",
+      "rule": "To offer one archetype at several sizes, preserve identity-bearing entrance, end, roof, dormer and annex assemblies as singular fixed modules and change capacity only by inserting or removing whole structural bays and complete middle-floor bands. Every module keeps one metric carrier size, UV crop and texel density. Continuous building scaling, partial bays, repeated entrances, stretched windows and duplicated ground or crown bands are hard stops."
     }
   ],
   "construction_memory": {
@@ -1049,6 +1053,11 @@
       "symptom": "A narrow bright vertical strip remains at an otherwise fully stickered outside corner",
       "cause": "A thin return sampled pale isolation-border or padding texels from the generated elevation master, so technically assigned pixels still read as an unstickered seam.",
       "correction": "Use shared boundary texels across the corner or bind a floor-addressed construction-role-correct joint sticker. Inspect the result in front-corner, rear-corner and aerial views, not only head-on."
+    },
+    {
+      "symptom": "A building scales cleanly across several footprints but the larger tiers become generic and less faithful to the exact archetype",
+      "cause": "The pipeline proved UV and bay repetition but allowed the repeatable rectangle to dominate fixed identity. Entrances, stair wings, narrow service bays, annexes, dormers and roof terminations were simplified or scaled with capacity.",
+      "correction": "Keep a constant metric bay and floor grid, but lock a singular identity kit before scaling: recessed entrance/stair geometry including soffits and returns, fixed end/service-bay hierarchy, subordinate annexes, roof hips and identity dormers. Review small, canonical and large tiers independently; method viability does not waive the per-tier archetype score."
     }
   ]
 }
