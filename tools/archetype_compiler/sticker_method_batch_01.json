@@ -1,0 +1,92 @@
+{
+  "schema": "siteforge.sticker-method-batch@1",
+  "batch_id": "STICKER-METHOD-BATCH-01",
+  "policy": {
+    "building_count": 10,
+    "approval_threshold": "unrounded_architect_mean_strictly_greater_than_95",
+    "minimum_tier_score": 95,
+    "hard_stops_allowed": 0,
+    "push_checkpoint": "after_each_approved_building",
+    "rear_reference_policy": "constrained_completion_from_oblique_and_aerial; never label as exact rear evidence"
+  },
+  "buildings": [
+    {
+      "order": 1,
+      "archetype_id": "old_montreal_warehouse_loft",
+      "variant_id": "old_mtl_textile_mill",
+      "representation": "discrete_horizontal_lego",
+      "status": "approved_95_plus",
+      "identity_locks": [
+        "fixed three-storey adaptive-reuse corner composition",
+        "brick upper piers and ground piers",
+        "stone middle band and cornice",
+        "true recessed glass storefront and arched middle windows",
+        "flat gravel roof with two long skylights and bounded service equipment"
+      ],
+      "reference_authority": "exact_images_override_conflicting_4_to_6_floor_metadata"
+    },
+    {
+      "order": 2,
+      "archetype_id": "daylight_factory",
+      "variant_id": "factory_sawtooth_roof",
+      "representation": "discrete_horizontal_lego",
+      "status": "queued"
+    },
+    {
+      "order": 3,
+      "archetype_id": "administrative_faculty_office_building",
+      "variant_id": "admin_faculty_brick_bronze_fins",
+      "representation": "discrete_horizontal_lego",
+      "status": "queued"
+    },
+    {
+      "order": 4,
+      "archetype_id": "halifax_waterfront_warehouse",
+      "variant_id": "warehouse_privateers_wharf",
+      "representation": "discrete_horizontal_lego",
+      "status": "queued"
+    },
+    {
+      "order": 5,
+      "archetype_id": "civic_modernism_rec_centre",
+      "variant_id": "rec_brick_glass_box",
+      "representation": "bounded_discrete_lego",
+      "status": "queued"
+    },
+    {
+      "order": 6,
+      "archetype_id": "shophouse_southeast_asian",
+      "variant_id": "shophouse_peranakan",
+      "representation": "whole_attached_unit_lego",
+      "status": "queued"
+    },
+    {
+      "order": 7,
+      "archetype_id": "industrial_park_modernism",
+      "variant_id": "industrial_tilt_up_concrete",
+      "representation": "discrete_panel_lego",
+      "status": "queued"
+    },
+    {
+      "order": 8,
+      "archetype_id": "graduate_family_housing",
+      "variant_id": "collegiate_brick_corner_block",
+      "representation": "discrete_horizontal_lego",
+      "status": "queued"
+    },
+    {
+      "order": 9,
+      "archetype_id": "brutalist_institutional",
+      "variant_id": "brutalist_heroic",
+      "representation": "fixed_landmark",
+      "status": "queued"
+    },
+    {
+      "order": 10,
+      "archetype_id": "food_hall_market_hall",
+      "variant_id": "market_historic_iron_glass",
+      "representation": "fixed_landmark",
+      "status": "queued"
+    }
+  ]
+}

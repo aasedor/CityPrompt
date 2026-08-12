@@ -1,0 +1,123 @@
+{
+  "schema": "siteforge.sticker-method-machine-evidence@1",
+  "tiers": {
+    "canonical": {
+      "dimensions": {
+        "width_m": 25.0,
+        "depth_m": 20.0,
+        "podium_height_m": 5.2,
+        "floor_height_m": 4.2,
+        "setback_height_m": 4.2,
+        "roof_height_m": 1.2,
+        "default_floors": 3,
+        "min_floors": 3,
+        "max_floors": 3,
+        "crown_height_m": 4.2
+      },
+      "assembled": {
+        "filename": "old-montreal-textile-mill-v98-canonical_assembled.glb",
+        "floors": 3,
+        "uses_setback": false,
+        "uses_crown": false,
+        "height_m": 14.8,
+        "triangle_count": 33080,
+        "stack": [
+          {
+            "role": "massing_graph",
+            "variant_key": "old-montreal-textile-sticker-lego-canonical",
+            "level": 0,
+            "z_m": 0.0,
+            "height_m": 14.8
+          }
+        ],
+        "footprint_profile": "rectangle",
+        "footprint_target": {
+          "width_m": 25.0,
+          "depth_m": 20.0,
+          "wing_depth_m": 20.0,
+          "segments": [
+            {
+              "id": "main",
+              "centre_x_m": 0.0,
+              "centre_y_m": 0.0,
+              "length_m": 25.0,
+              "thickness_m": 20.0,
+              "rotation_degrees": 0.0
+            }
+          ]
+        },
+        "massing_graph": {
+          "schema": "massing-graph@1",
+          "profile": "old-montreal-textile-sticker-lego-canonical",
+          "node_count": 1,
+          "assembly_count": 1653,
+          "void_count": 54
+        },
+        "final_surface_audit_status": "pass",
+        "final_surface_audit_checked_faces": 5943,
+        "final_surface_audit_failure_count": 0
+      },
+      "validation": "pass",
+      "render_count": 9
+    },
+    "extended": {
+      "dimensions": {
+        "width_m": 35.0,
+        "depth_m": 20.0,
+        "podium_height_m": 5.2,
+        "floor_height_m": 4.2,
+        "setback_height_m": 4.2,
+        "roof_height_m": 1.2,
+        "default_floors": 3,
+        "min_floors": 3,
+        "max_floors": 3,
+        "crown_height_m": 4.2
+      },
+      "assembled": {
+        "filename": "old-montreal-textile-mill-v98-extended_assembled.glb",
+        "floors": 3,
+        "uses_setback": false,
+        "uses_crown": false,
+        "height_m": 14.8,
+        "triangle_count": 39624,
+        "stack": [
+          {
+            "role": "massing_graph",
+            "variant_key": "old-montreal-textile-sticker-lego-extended",
+            "level": 0,
+            "z_m": 0.0,
+            "height_m": 14.8
+          }
+        ],
+        "footprint_profile": "rectangle",
+        "footprint_target": {
+          "width_m": 35.0,
+          "depth_m": 20.0,
+          "wing_depth_m": 20.0,
+          "segments": [
+            {
+              "id": "main",
+              "centre_x_m": 0.0,
+              "centre_y_m": 0.0,
+              "length_m": 35.0,
+              "thickness_m": 20.0,
+              "rotation_degrees": 0.0
+            }
+          ]
+        },
+        "massing_graph": {
+          "schema": "massing-graph@1",
+          "profile": "old-montreal-textile-sticker-lego-extended",
+          "node_count": 1,
+          "assembly_count": 2009,
+          "void_count": 66
+        },
+        "final_surface_audit_status": "pass",
+        "final_surface_audit_checked_faces": 7139,
+        "final_surface_audit_failure_count": 0
+      },
+      "validation": "pass",
+      "render_count": 9
+    }
+  }
+}

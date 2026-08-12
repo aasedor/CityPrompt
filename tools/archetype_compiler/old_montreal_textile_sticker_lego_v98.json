@@ -1,0 +1,26 @@
+{
+  "schema": "catalogue-rollout-batch@1",
+  "pipeline_version": "v98",
+  "batch_id": "OLD-MONTREAL-TEXTILE-V98",
+  "paid_facade_calls": 1,
+  "entries": [
+    {
+      "archetype_id": "old_montreal_warehouse_loft",
+      "variant_id": "old_mtl_textile_mill",
+      "signature_profile_id": "old-montreal-textile-sticker-lego-canonical",
+      "family_id": "old-montreal-textile-mill-v98-canonical",
+      "width_m": 25.0,
+      "depth_m": 20.0,
+      "floors": 3
+    },
+    {
+      "archetype_id": "old_montreal_warehouse_loft",
+      "variant_id": "old_mtl_textile_mill",
+      "signature_profile_id": "old-montreal-textile-sticker-lego-extended",
+      "family_id": "old-montreal-textile-mill-v98-extended",
+      "width_m": 35.0,
+      "depth_m": 20.0,
+      "floors": 3
+    }
+  ]
+}

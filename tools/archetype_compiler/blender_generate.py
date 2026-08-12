@@ -11263,6 +11263,19 @@ def _apply_massing_skin_uv(obj: bpy.types.Object) -> None:
         material = mesh.materials[polygon.material_index]
         if not material or not material.get("massing_skin"):
             continue
+        world_tile_m = float(material.get("massing_skin_world_metric_uv_tile_m", 0.0))
+        if world_tile_m > 0.0:
+            for loop_index in polygon.loop_indices:
+                coordinate = mesh.vertices[mesh.loops[loop_index].vertex_index].co
+                normal = polygon.normal
+                if abs(normal.z) >= max(abs(normal.x), abs(normal.y)):
+                    u, v = coordinate.x / world_tile_m, coordinate.y / world_tile_m
+                elif abs(normal.x) >= abs(normal.y):
+                    u, v = coordinate.y / world_tile_m, coordinate.z / world_tile_m
+                else:
+                    u, v = coordinate.x / world_tile_m, coordinate.z / world_tile_m
+                uv_layer.data[loop_index].uv = (u, v)
+            continue
         axis = str(material.get("massing_skin_axis", "front"))
         u_min = float(material.get("massing_skin_u_min", 0.0))
         u_max = float(material.get("massing_skin_u_max", 1.0))
@@ -11396,6 +11409,41 @@ def _graph_carrier_skin(parts: list, spec: dict, mats: dict) -> None:
                 (node for node in material.node_tree.nodes if node.type == "BSDF_PRINCIPLED"),
                 None,
             )
+            surface_alpha_override = spec.get("surface_alpha_override")
+            if principled is not None and surface_alpha_override is not None:
+                surface_alpha = max(0.05, min(1.0, float(surface_alpha_override)))
+                alpha_input = principled.inputs.get("Alpha")
+                if alpha_input is not None:
+                    alpha_input.default_value = surface_alpha
+                material.diffuse_color = (*material.diffuse_color[:3], surface_alpha)
+                if surface_alpha < 0.999:
+                    if hasattr(material, "surface_render_method"):
+                        material.surface_render_method = str(spec.get("transparency_mode", "DITHERED"))
+                    elif hasattr(material, "blend_method"):
+                        material.blend_method = "BLEND"
+                    if hasattr(material, "use_transparency_overlap"):
+                        material.use_transparency_overlap = False
+                material["carrier_glass_surface_alpha_override"] = surface_alpha
+            roughness_override = spec.get("roughness_override")
+            if principled is not None and roughness_override is not None:
+                principled.inputs["Roughness"].default_value = max(0.0, min(1.0, float(roughness_override)))
+                material["carrier_glass_roughness_override"] = float(roughness_override)
+            transmission_override = spec.get("transmission_override")
+            if principled is not None and transmission_override is not None:
+                transmission = principled.inputs.get("Transmission Weight") or principled.inputs.get("Transmission")
+                if transmission is not None:
+                    transmission.default_value = max(0.0, min(1.0, float(transmission_override)))
+                material["carrier_glass_transmission_override"] = float(transmission_override)
+            specular_override = spec.get("specular_ior_level_override")
+            if principled is not None and specular_override is not None:
+                specular = principled.inputs.get("Specular IOR Level")
+                if specular is not None:
+                    specular.default_value = max(0.0, min(1.0, float(specular_override)))
+            coat_override = spec.get("coat_weight_override")
+            if principled is not None and coat_override is not None:
+                coat = principled.inputs.get("Coat Weight")
+                if coat is not None:
+                    coat.default_value = max(0.0, min(1.0, float(coat_override)))
             emission = (
                 principled.inputs.get("Emission Color") or principled.inputs.get("Emission")
                 if principled is not None else None
@@ -11408,6 +11456,11 @@ def _graph_carrier_skin(parts: list, spec: dict, mats: dict) -> None:
                 for link in list(emission.links):
                     material.node_tree.links.remove(link)
                 material.node_tree.links.new(image_node.outputs["Color"], emission)
+            emission_strength_override = spec.get("emission_strength_override")
+            if principled is not None and emission_strength_override is not None:
+                emission_strength = principled.inputs.get("Emission Strength")
+                if emission_strength is not None:
+                    emission_strength.default_value = max(0.0, float(emission_strength_override))
         material["registered_sticker_source"] = str(image_path)
         material["registered_sticker_preserves_transmission"] = material_role == "glass"
         if material_role == "glass" and profile_override:
@@ -11436,6 +11489,21 @@ def _graph_carrier_skin(parts: list, spec: dict, mats: dict) -> None:
             material["registered_sticker_source"] = str(image_path)
             material["registered_sticker_standalone"] = True
 
+        emission_strength_override = spec.get("emission_strength_override")
+        if emission_strength_override is not None and material.node_tree is not None:
+            principled = next((node for node in material.node_tree.nodes if node.type == "BSDF_PRINCIPLED"), None)
+            image_node = material.node_tree.nodes.get("SHEET_Albedo")
+            if principled is not None and image_node is not None:
+                emission = principled.inputs.get("Emission Color") or principled.inputs.get("Emission")
+                if emission is not None:
+                    for link in list(emission.links):
+                        material.node_tree.links.remove(link)
+                    material.node_tree.links.new(image_node.outputs["Color"], emission)
+                strength = principled.inputs.get("Emission Strength")
+                if strength is not None:
+                    strength.default_value = max(0.0, float(emission_strength_override))
+                material["carrier_emission_strength_override"] = float(emission_strength_override)
+
     material["massing_skin"] = True
     material["massing_skin_canonical"] = ""
     material["massing_skin_axis"] = axis
@@ -11444,6 +11512,7 @@ def _graph_carrier_skin(parts: list, spec: dict, mats: dict) -> None:
     material["massing_skin_tex_u_max"] = float(spec.get("uv_u_max", 1.0))
     material["massing_skin_v_min"] = float(spec.get("uv_v_min", 0.0))
     material["massing_skin_v_max"] = float(spec.get("uv_v_max", 1.0))
+    material["massing_skin_world_metric_uv_tile_m"] = float(spec.get("world_metric_uv_tile_m", 0.0))
     material["final_surface_coverage"] = bool(spec.get("final_surface_coverage", True))
     material["final_surface_finish_class"] = str(spec.get("finish_class", "registered_sticker"))
     material["sticker_layer"] = str(spec.get("sticker_layer", "semantic"))

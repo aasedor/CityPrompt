@@ -1,0 +1,54 @@
+{
+  "schema": "siteforge.named-architect-review@1",
+  "pipeline_version": "v98.1",
+  "building_id": "old_montreal_warehouse_loft--old_mtl_textile_mill",
+  "reviewer": "architect_design_reviewer",
+  "status": "pass",
+  "score_target_exclusive_mean": 95.0,
+  "mean_score_unrounded": 95.75,
+  "hard_stop_status": "pass",
+  "hard_stop_count": 0,
+  "scores": {
+    "canonical": {
+      "archetype_identity": 28.5,
+      "massing_and_geometry": 19.2,
+      "sticker_registration": 19.4,
+      "all_surface_roof_and_entrance_coverage": 14.4,
+      "lego_scale_consistency_no_stretching": 14.5,
+      "total": 96.0
+    },
+    "extended": {
+      "archetype_identity": 28.2,
+      "massing_and_geometry": 19.0,
+      "sticker_registration": 19.2,
+      "all_surface_roof_and_entrance_coverage": 14.4,
+      "lego_scale_consistency_no_stretching": 14.7,
+      "total": 95.5
+    }
+  },
+  "approved_tiers": {
+    "canonical": {"width_m": 25, "depth_m": 20, "floors": 3, "facade_bays": 5},
+    "extended": {"width_m": 35, "depth_m": 20, "floors": 3, "facade_bays": 7}
+  },
+  "approved_contract": {
+    "horizontal_bay_module_m": 5,
+    "whole_horizontal_bays_only": true,
+    "vertical_scaling_allowed": false,
+    "continuous_resize_allowed": false,
+    "exact_images_override_conflicting_floor_metadata": true
+  },
+  "machine_evidence": {
+    "canonical_surface_faces": 5943,
+    "extended_surface_faces": 7139,
+    "surface_failures": 0,
+    "production_preflight": "pass",
+    "export_validation": "pass"
+  },
+  "residual_deductions": [
+    "The exact reference has a somewhat richer middle limestone apron and corner-capital hierarchy.",
+    "Rear service composition and HVAC remain simplified.",
+    "Repeated industrial bay logic is more apparent in the extended tier.",
+    "Interiors are curated recessed cards rather than fully modelled rooms."
+  ],
+  "verdict": "Approved only for the bounded canonical five-bay and extended seven-bay tiers; arbitrary continuous resizing is not authorized."
+}
