@@ -30,7 +30,15 @@
       "archetype_id": "daylight_factory",
       "variant_id": "factory_sawtooth_roof",
       "representation": "discrete_horizontal_lego",
-      "status": "queued"
+      "status": "approved_95_plus",
+      "identity_locks": [
+        "one occupied storey with six same-handed canonical northlight cells",
+        "ordinary red brick gables and segmental arched steel-sash windows",
+        "singular three-door dock with one canopy, platform, stair and bounded ramp",
+        "detached hollow ring-capped brick chimney",
+        "physical northlight grids over transmissive glazing and recessed workshop depth"
+      ],
+      "reference_authority": "exact_images_override_conflicting_two_floor_metadata"
     },
     {
       "order": 3,

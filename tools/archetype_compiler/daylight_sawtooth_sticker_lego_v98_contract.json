@@ -1,0 +1,38 @@
+{
+  "schema": "siteforge.daylight-sawtooth-sticker-lego@1",
+  "version": "v98.1",
+  "archetype_id": "daylight_factory",
+  "variant_id": "factory_sawtooth_roof",
+  "reference_authority": "exact variant_0 images override rollout floor conflict",
+  "fixed_identity": [
+    "one occupied storey",
+    "same-handed sawtooth northlights",
+    "one three-door dock and canopy",
+    "one detached hollow chimney"
+  ],
+  "size_matrix": {
+    "canonical": {
+      "width_m": 60.0,
+      "depth_m": 40.0,
+      "front_bays": 12,
+      "side_bays": 8,
+      "teeth": 6
+    },
+    "extended": {
+      "width_m": 80.0,
+      "depth_m": 40.0,
+      "front_bays": 16,
+      "side_bays": 8,
+      "teeth": 8
+    }
+  },
+  "continuous_resize_allowed": false,
+  "vertical_scaling_allowed": false,
+  "hard_stops": [
+    "wrong tooth count",
+    "mixed roof handedness",
+    "repeated loading dock",
+    "solid chimney",
+    "unowned visible polygon"
+  ]
+}

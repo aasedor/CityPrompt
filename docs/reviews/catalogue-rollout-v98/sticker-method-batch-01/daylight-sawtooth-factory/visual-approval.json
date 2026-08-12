@@ -1,0 +1,56 @@
+{
+  "schema": "siteforge.named-architect-review@1",
+  "pipeline_version": "v98.1",
+  "building_id": "daylight_factory--factory_sawtooth_roof",
+  "reviewer": "architect_design_reviewer",
+  "status": "pass",
+  "score_target_exclusive_mean": 95.0,
+  "mean_score_unrounded": 96.55,
+  "hard_stop_status": "pass",
+  "hard_stop_count": 0,
+  "scores": {
+    "canonical": {
+      "archetype_identity": 28.9,
+      "massing_and_geometry": 19.5,
+      "sticker_registration": 19.3,
+      "all_surface_roof_and_entrance_coverage": 14.8,
+      "lego_scale_consistency_no_stretching": 14.5,
+      "total": 97.0
+    },
+    "extended": {
+      "archetype_identity": 28.5,
+      "massing_and_geometry": 19.1,
+      "sticker_registration": 19.2,
+      "all_surface_roof_and_entrance_coverage": 14.8,
+      "lego_scale_consistency_no_stretching": 14.5,
+      "total": 96.1
+    }
+  },
+  "approved_tiers": {
+    "canonical": {"width_m": 60, "depth_m": 40, "floors": 1, "sawtooth_cells": 6},
+    "extended": {"width_m": 80, "depth_m": 40, "floors": 1, "sawtooth_cells": 8}
+  },
+  "approved_contract": {
+    "horizontal_tooth_module_m": 10,
+    "whole_horizontal_teeth_only": true,
+    "vertical_scaling_allowed": false,
+    "depth_scaling_allowed": false,
+    "continuous_resize_allowed": false,
+    "exact_images_override_conflicting_floor_metadata": true
+  },
+  "machine_evidence": {
+    "canonical_surface_faces": 6135,
+    "extended_surface_faces": 7531,
+    "surface_failures": 0,
+    "production_preflight": "pass",
+    "export_validation": "pass"
+  },
+  "residual_deductions": [
+    "Northlight glazing remains darker than the exact sunlit references in several principal views.",
+    "Roof weathering remains slightly regular under strict roof-audit inspection.",
+    "The finest brick corbel richness and dock-canopy weathering are simplified.",
+    "The eight-cell tier necessarily dilutes correspondence to the exact six-cell reference.",
+    "Very fine brick and glazing detail approaches photographic density rather than overt brick-scale abstraction."
+  ],
+  "verdict": "Approved only for the reviewed canonical six-cell and extended eight-cell tiers; unreviewed extrapolation is not authorized."
+}

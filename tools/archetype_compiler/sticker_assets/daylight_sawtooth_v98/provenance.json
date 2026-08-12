@@ -1,0 +1,311 @@
+{
+  "schema": "siteforge.sticker-asset-provenance@1",
+  "building": "daylight-factory--factory-sawtooth-roof",
+  "variant_index": 0,
+  "method": "exact-reference-conditioned approved-master crops plus deterministic intrinsic completion; no facade or roof-feature overlays",
+  "exact_reference_sources": {
+    "street_identity": {
+      "path": "frontend/public/archetypes/buildings/daylight_factory/variant_0.png",
+      "evidence_class": "exact_reference",
+      "sha256": "07598421a7834e313762bd33f6edfafcedef3170334976e2c385cb4a1bb03b96"
+    },
+    "oblique_wall_roof_canopy": {
+      "path": "frontend/public/archetypes/buildings/daylight_factory/variant_0_angle_60.jpg",
+      "evidence_class": "exact_reference",
+      "sha256": "734ae95f07271be05506eafdc1495ccdbbd0b2d3b9765343fd0c56059e870180"
+    },
+    "aerial_six_tooth_roof_plan": {
+      "path": "frontend/public/archetypes/buildings/daylight_factory/variant_0_angle_90.jpg",
+      "evidence_class": "exact_reference",
+      "sha256": "4bb6bb58b8bd3a7455b07220a5df3bdb0391b2158a183a4244b831c56bfa8d40"
+    }
+  },
+  "palette_conditioning": {
+    "method": "fixed median reference crops blended toward bounded architectural material priors",
+    "values_rgb": {
+      "brick": [
+        145,
+        78,
+        49
+      ],
+      "stone": [
+        142,
+        124,
+        104
+      ],
+      "concrete": [
+        138,
+        119,
+        96
+      ],
+      "roof": [
+        99,
+        93,
+        85
+      ],
+      "wall_glass": [
+        80,
+        78,
+        75
+      ],
+      "northlight_glass": [
+        77,
+        83,
+        83
+      ],
+      "rolling_door": [
+        122,
+        121,
+        101
+      ]
+    }
+  },
+  "approved_generation_sources": {
+    "material_atlas": {
+      "path": "tools/archetype_compiler/sticker_assets/daylight_sawtooth_v98/source_material_atlas.png",
+      "sha256": "4edc3aed58f596e195e67d23dad8d170e050b75171bb5da8bf91b6163293dd2e",
+      "layout": "3 columns x 2 rows: brick, dark roof, concrete / rolling door, smoky glass, black steel",
+      "crop_policy": "fixed cell crops inset from separator bars; no windows, openings, or facade geometry"
+    },
+    "workshop_interior_master": {
+      "path": "tools/archetype_compiler/sticker_assets/daylight_sawtooth_v98/source_workshop_interior_master.png",
+      "sha256": "65b7060483f9844ce022c9936e7d5474f5b5a6a80b72b72753dc950650d872d0",
+      "layout": "continuous 8-cell interior-only concept master",
+      "crop_policy": "eight deterministic equal-width crops repacked to a 4 x 2 atlas; outer edge inset only"
+    },
+    "optical_roof_master_v2": {
+      "path": "tools/archetype_compiler/sticker_assets/daylight_sawtooth_v98/source_optical_roof_atlas_v2.png",
+      "sha256": "0249f16fa38b26160fffb5a79c7b37be9bc94855fd8b599612c457961445efa1",
+      "layout": "3 columns: wall glass, northlight glass, continuous dark roof",
+      "crop_policy": "fixed intrinsic cell crops; no printed frames, mullions or architecture"
+    }
+  },
+  "topology_authority": {
+    "occupied_floors": 1,
+    "sawtooth_units": 6,
+    "statement": "Exact images override conflicting two-floor rollout metadata; clerestories are rooflight volume."
+  },
+  "rear_evidence": {
+    "evidence_class": "constrained_completion",
+    "statement": "No exact rear elevation exists; rear and hidden returns may repeat only the ordinary material grammar constrained by the oblique and aerial references."
+  },
+  "geometry_ownership": "Locked geometry exclusively owns openings, arches, piers, sash bars, sills, canopy edges, roof teeth, northlight frames and chimney silhouette.",
+  "assets": {
+    "ordinary_red_brick_field": {
+      "path": "tools/archetype_compiler/sticker_assets/daylight_sawtooth_v98/red_brick_wall_intrinsic.png",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_crop_from_approved_material_master",
+      "contains_printed_modeled_geometry": false,
+      "sha256": "875420caf919608d2246895041f99bbef645d495569072e12dec33c0a70f603a",
+      "source_master": "tools/archetype_compiler/sticker_assets/daylight_sawtooth_v98/source_material_atlas.png",
+      "source_crop_px": [
+        4,
+        4,
+        507,
+        507
+      ]
+    },
+    "brick_construction_return": {
+      "path": "tools/archetype_compiler/sticker_assets/daylight_sawtooth_v98/red_brick_return_intrinsic.png",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_crop_from_approved_material_master",
+      "contains_printed_modeled_geometry": false,
+      "sha256": "8f46080f20f7803ebc709311776d14a03ee9cd6ab25194157a1b6f05f2ea8230",
+      "source_master": "tools/archetype_compiler/sticker_assets/daylight_sawtooth_v98/source_material_atlas.png",
+      "source_crop_px": [
+        4,
+        4,
+        507,
+        507
+      ],
+      "transform": "horizontal_mirror"
+    },
+    "pale_stone_sill_cap": {
+      "path": "tools/archetype_compiler/sticker_assets/daylight_sawtooth_v98/pale_stone_sill_cap_intrinsic.png",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_code_native",
+      "contains_printed_modeled_geometry": false,
+      "sha256": "487b54005e7a0a7070cb5df7a38229c57051e4483e0f405585ae5a364e221cee"
+    },
+    "dock_concrete_vertical": {
+      "path": "tools/archetype_compiler/sticker_assets/daylight_sawtooth_v98/weathered_dock_concrete_vertical_intrinsic.png",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_crop_from_approved_material_master",
+      "contains_printed_modeled_geometry": false,
+      "sha256": "8041b4a5aed437907ea9d1884b1bd1f65c78011160d199ea6a549f154b93b315",
+      "source_master": "tools/archetype_compiler/sticker_assets/daylight_sawtooth_v98/source_material_atlas.png",
+      "source_crop_px": [
+        1029,
+        4,
+        1532,
+        507
+      ]
+    },
+    "dock_concrete_top": {
+      "path": "tools/archetype_compiler/sticker_assets/daylight_sawtooth_v98/weathered_dock_concrete_top_intrinsic.png",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_code_native",
+      "contains_printed_modeled_geometry": false,
+      "sha256": "21476d3d778fb356f57bc05c257bf89f25f99448577f2085274fb19d3b0b76a5"
+    },
+    "opaque_tooth_roof": {
+      "path": "tools/archetype_compiler/sticker_assets/daylight_sawtooth_v98/dark_slate_metal_roof_intrinsic.png",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_crop_from_approved_optical_roof_master_v2",
+      "contains_printed_modeled_geometry": false,
+      "sha256": "87ffcadbf571e15c81c19519e4cccbcd89697e36169fa8d081ed22632568279b",
+      "source_master": "tools/archetype_compiler/sticker_assets/daylight_sawtooth_v98/source_optical_roof_atlas_v2.png",
+      "source_crop_px": [
+        1448,
+        0,
+        2172,
+        724
+      ]
+    },
+    "wall_window_glass": {
+      "path": "tools/archetype_compiler/sticker_assets/daylight_sawtooth_v98/neutral_industrial_glass_intrinsic.png",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_reference_palette_conditioned_intrinsic_glass",
+      "contains_printed_modeled_geometry": false,
+      "sha256": "6072721d4065ec5cc62a17b094c8a2b7c7d48f55f13109a3e4d02dd738d15105",
+      "source_master": "exact_reference_palette_statistics",
+      "source_crop_px": null
+    },
+    "northlight_glass": {
+      "path": "tools/archetype_compiler/sticker_assets/daylight_sawtooth_v98/northlight_glass_intrinsic.png",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_reference_palette_conditioned_intrinsic_glass",
+      "contains_printed_modeled_geometry": false,
+      "sha256": "bb2501b2e62d20b954381e3bda26542a19e30ba3bdba69a3019d6c8ae2d7eedb",
+      "source_master": "exact_reference_palette_statistics",
+      "source_crop_px": null
+    },
+    "steel_sash_and_flashing": {
+      "path": "tools/archetype_compiler/sticker_assets/daylight_sawtooth_v98/black_steel_intrinsic.png",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_crop_from_approved_material_master",
+      "contains_printed_modeled_geometry": false,
+      "sha256": "5083979be1851e1eacb5e894f0f4406a4238bc0147e23d2bada7ad5a6aaa4e7b",
+      "source_master": "tools/archetype_compiler/sticker_assets/daylight_sawtooth_v98/source_material_atlas.png",
+      "source_crop_px": [
+        1029,
+        517,
+        1532,
+        1020
+      ]
+    },
+    "rolling_door_metal": {
+      "path": "tools/archetype_compiler/sticker_assets/daylight_sawtooth_v98/rolling_door_intrinsic.png",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_crop_from_approved_material_master",
+      "contains_printed_modeled_geometry": false,
+      "sha256": "d067cddb2aaf74b7a2e8007cbc9912db0f8f92c6705f905adf0965848e94ffc6",
+      "source_master": "tools/archetype_compiler/sticker_assets/daylight_sawtooth_v98/source_material_atlas.png",
+      "source_crop_px": [
+        4,
+        517,
+        507,
+        1020
+      ]
+    },
+    "occupied_workshop_interior_cards": {
+      "path": "tools/archetype_compiler/sticker_assets/daylight_sawtooth_v98/occupied_workshop_interior_atlas.png",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_repack_from_approved_interior_master",
+      "contains_printed_modeled_geometry": false,
+      "sha256": "7ab6d97e6707d7f1fd41b7cd15fa0f98bd43e7ca1e52374d367092f2f67068ec",
+      "source_master": "tools/archetype_compiler/sticker_assets/daylight_sawtooth_v98/source_workshop_interior_master.png",
+      "source_crop_px": [
+        [
+          2,
+          2,
+          272,
+          722
+        ],
+        [
+          272,
+          2,
+          543,
+          722
+        ],
+        [
+          543,
+          2,
+          814,
+          722
+        ],
+        [
+          814,
+          2,
+          1086,
+          722
+        ],
+        [
+          1086,
+          2,
+          1358,
+          722
+        ],
+        [
+          1358,
+          2,
+          1629,
+          722
+        ],
+        [
+          1629,
+          2,
+          1900,
+          722
+        ],
+        [
+          1900,
+          2,
+          2170,
+          722
+        ]
+      ]
+    },
+    "canopy_top": {
+      "path": "tools/archetype_compiler/sticker_assets/daylight_sawtooth_v98/canopy_top_intrinsic.png",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_code_native",
+      "contains_printed_modeled_geometry": false,
+      "sha256": "654a4cc52a8c0ad36149a93b5b298be1f34208316284cfe23cbc01f589061bb2"
+    },
+    "canopy_fascia": {
+      "path": "tools/archetype_compiler/sticker_assets/daylight_sawtooth_v98/canopy_fascia_intrinsic.png",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_code_native",
+      "contains_printed_modeled_geometry": false,
+      "sha256": "b0cbd830846403cb575a7b33943352f7a88f1c8ff3b15d6ce41ae0ffe25aef77"
+    },
+    "canopy_soffit": {
+      "path": "tools/archetype_compiler/sticker_assets/daylight_sawtooth_v98/canopy_soffit_intrinsic.png",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_code_native",
+      "contains_printed_modeled_geometry": false,
+      "sha256": "da881da2a61cf706447cff55e6e5c59ad978072df7e9dea2f1ad8aee5410d8d6"
+    },
+    "chimney_brick_wrap": {
+      "path": "tools/archetype_compiler/sticker_assets/daylight_sawtooth_v98/chimney_brick_intrinsic.png",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_code_native",
+      "contains_printed_modeled_geometry": false,
+      "sha256": "1b5a26b1902c4ef1a9c0d0fb4621591bf3853168f44e053747e41d1c1b1aed1f"
+    },
+    "chimney_coping": {
+      "path": "tools/archetype_compiler/sticker_assets/daylight_sawtooth_v98/chimney_coping_intrinsic.png",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_code_native",
+      "contains_printed_modeled_geometry": false,
+      "sha256": "ddd92ad55ec9f4e257dd9d8555a362793bb7904dc3c20d3d7b98dca66454e5ae"
+    }
+  },
+  "workshop_atlas_grid": [
+    4,
+    2
+  ],
+  "post_generation_nonuniform_scale_allowed": false,
+  "approval_space": "rendered_on_locked_atomic_carriers_with_wall_roof_canopy_chimney_and_underface seam audit"
+}

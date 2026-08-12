@@ -1,0 +1,27 @@
+{
+  "schema": "siteforge.sticker-lego-family@1",
+  "archetype_id": "daylight_factory",
+  "variant_id": "factory_sawtooth_roof",
+  "tiers": [
+    {
+      "id": "canonical",
+      "signature_profile_id": "daylight-sawtooth-sticker-lego-canonical",
+      "family_id": "daylight-sawtooth-factory-v98-canonical",
+      "width_m": 60.0,
+      "depth_m": 40.0,
+      "front_bays": 12,
+      "side_bays": 8,
+      "teeth": 6
+    },
+    {
+      "id": "extended",
+      "signature_profile_id": "daylight-sawtooth-sticker-lego-extended",
+      "family_id": "daylight-sawtooth-factory-v98-extended",
+      "width_m": 80.0,
+      "depth_m": 40.0,
+      "front_bays": 16,
+      "side_bays": 8,
+      "teeth": 8
+    }
+  ]
+}

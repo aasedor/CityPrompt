@@ -11265,6 +11265,8 @@ def _apply_massing_skin_uv(obj: bpy.types.Object) -> None:
             continue
         world_tile_m = float(material.get("massing_skin_world_metric_uv_tile_m", 0.0))
         if world_tile_m > 0.0:
+            u_offset = float(material.get("massing_skin_world_metric_uv_u_offset", 0.0))
+            v_offset = float(material.get("massing_skin_world_metric_uv_v_offset", 0.0))
             for loop_index in polygon.loop_indices:
                 coordinate = mesh.vertices[mesh.loops[loop_index].vertex_index].co
                 normal = polygon.normal
@@ -11274,7 +11276,7 @@ def _apply_massing_skin_uv(obj: bpy.types.Object) -> None:
                     u, v = coordinate.y / world_tile_m, coordinate.z / world_tile_m
                 else:
                     u, v = coordinate.x / world_tile_m, coordinate.z / world_tile_m
-                uv_layer.data[loop_index].uv = (u, v)
+                uv_layer.data[loop_index].uv = (u + u_offset, v + v_offset)
             continue
         axis = str(material.get("massing_skin_axis", "front"))
         u_min = float(material.get("massing_skin_u_min", 0.0))
@@ -11513,6 +11515,8 @@ def _graph_carrier_skin(parts: list, spec: dict, mats: dict) -> None:
     material["massing_skin_v_min"] = float(spec.get("uv_v_min", 0.0))
     material["massing_skin_v_max"] = float(spec.get("uv_v_max", 1.0))
     material["massing_skin_world_metric_uv_tile_m"] = float(spec.get("world_metric_uv_tile_m", 0.0))
+    material["massing_skin_world_metric_uv_u_offset"] = float(spec.get("world_metric_uv_u_offset", 0.0))
+    material["massing_skin_world_metric_uv_v_offset"] = float(spec.get("world_metric_uv_v_offset", 0.0))
     material["final_surface_coverage"] = bool(spec.get("final_surface_coverage", True))
     material["final_surface_finish_class"] = str(spec.get("finish_class", "registered_sticker"))
     material["sticker_layer"] = str(spec.get("sticker_layer", "semantic"))
