@@ -1220,6 +1220,10 @@ insertion and a singular fixed identity kit.
   Passing carrier ownership and scale-consistency proves method viability, not
   exact archetype fidelity; fixed identity must remain strong enough that the
   repeat grid does not turn larger tiers into generic boxes.
+- Release a Sticker Method family only when its unrounded independent architect
+  mean is strictly above 95, every reviewed tier is at least 95 and the
+  reviewer records zero hard stops. A strong canonical tier cannot compensate
+  for a rejected size sibling.
 
 ## Updating this memory
 

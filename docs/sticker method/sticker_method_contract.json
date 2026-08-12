@@ -1,27 +1,117 @@
 {
-  "schema": "siteforge.sticker_method_contract.v1",
-  "version": "2026-08-11-geometry-conditioned-v95-approved",
-  "status": "approved_bounded_reference",
-  "representation": "fixed_select_and_place_landmark",
-  "visual_baseline": {
-    "pilot": "belle-epoque-grand-magasin-v95-conditioned-5",
-    "architect_score": 95,
-    "sticker_agent_score": 95,
-    "hard_stops": 0
+  "schema": "siteforge.sticker_method_contract.v2",
+  "version": "2026-08-11-discrete-sticker-lego-v97.3",
+  "status": "production_approved_bounded_method",
+  "canonical_playbook": "docs/sticker method/STICKER_METHOD_PRODUCTION_PLAYBOOK.md",
+  "central_rule": "Generate every sticker for the exact locked final 3D carrier and approve the projected multi-view building, never the standalone flat image.",
+  "release_policy": {
+    "architect_mean_score_exclusive_min": 95.0,
+    "architect_tier_score_inclusive_min": 95,
+    "architect_hard_stops_max": 0,
+    "all_machine_gates_required": true,
+    "all_required_views_required": true,
+    "approval_scope": "only_the_reviewed_archetype_and_bounded_snapped_tiers"
   },
-  "central_rule": "Generate and validate every sticker in the UV and depth frame of its locked final 3D carrier. A standalone flat image may not be approved and subsequently stretched to fit geometry.",
-  "authoritative_sequence": [
-    "lock_reference_evidence_and_cameras",
-    "lock_final_carrier_geometry",
+  "representations": {
+    "fixed_landmark": {
+      "placement": "select_translate_rotate",
+      "nonuniform_scale_allowed": false,
+      "use_when": "identity depends on a unique footprint, roof, curved carrier or ornament composition"
+    },
+    "discrete_sticker_lego": {
+      "placement": "snap_to_complete_approved_modules",
+      "continuous_resize_allowed": false,
+      "partial_modules_allowed": false,
+      "fixed_identity_remains_singular": true,
+      "repeatable_capacity": [
+        "ordinary_structural_bays",
+        "complete_middle_floor_bands",
+        "compatible_roof_strips"
+      ]
+    }
+  },
+  "mandatory_sequence": [
+    "lock_reference_evidence_and_identity_contract",
+    "choose_fixed_or_discrete_representation",
+    "declare_fixed_and_repeatable_modules",
+    "approve_complete_clay_geometry",
+    "construct_real_voids_roofs_returns_and_projections",
+    "freeze_and_hash_final_carriers",
+    "declare_exactly_one_owner_for_every_visible_polygon",
     "bake_carrier_space_generation_package",
-    "generate_surface_specific_stickers",
-    "bind_to_exact_source_carrier",
-    "render_required_views",
-    "back_project_errors_to_geometry_or_uv_owner",
-    "pass_machine_registration_gates",
-    "pass_named_architect_review",
-    "optimize_delivery_only_after_visual_lock"
+    "generate_intrinsic_surface_specific_stickers",
+    "bind_floor_and_surface_roles_at_constant_metric_scale",
+    "add_registered_pbr_glass_and_optical_layers",
+    "pass_machine_registration_and_surface_audits",
+    "render_every_required_view_and_size_tier",
+    "back_project_and_repair_errors_in_the_owning_layer",
+    "pass_independent_architect_review",
+    "publish_bounded_evidence_package_with_provenance"
   ],
+  "agent_roles": {
+    "geometry_agent": {
+      "owns": [
+        "reference_derived_clay",
+        "footprint_and_massing",
+        "real_voids_and_tunnels",
+        "roof_and_fixed_identity_geometry",
+        "fixed_repeat_module_map",
+        "carrier_geometry_hash"
+      ],
+      "cannot_approve": ["final_sticker", "architect_score"]
+    },
+    "sticker_agent": {
+      "owns": [
+        "intrinsic_surface_masters",
+        "surface_specific_mapping",
+        "corner_and_return_seams",
+        "source_and_call_provenance",
+        "sticker_asset_hashes"
+      ],
+      "cannot_approve": ["geometry_deviation", "architect_score"]
+    },
+    "floor_sticker_agent": {
+      "owns": [
+        "ground_middle_crown_roof_roles",
+        "repeat_schedule",
+        "bounded_size_matrix",
+        "constant_texel_density",
+        "whole_module_validation"
+      ],
+      "cannot_approve": ["partial_bay", "arbitrary_stretch"]
+    },
+    "architect_design_reviewer": {
+      "owns": [
+        "independent_exact_reference_comparison",
+        "per_tier_score",
+        "hard_stop_verdict",
+        "publication_scope"
+      ],
+      "must_be_independent_from_generation": true
+    }
+  },
+  "reference_policy": {
+    "minimum_compatible_views": 3,
+    "required_roles": [
+      "street_identity",
+      "oblique_massing",
+      "roof_or_aerial"
+    ],
+    "preferred_additional_roles": [
+      "side",
+      "rear",
+      "facade_detail",
+      "roof_detail"
+    ],
+    "authority_order": [
+      "exact_archetype_images",
+      "compatible_real_world_references",
+      "image_consistent_metadata",
+      "architectural_knowledge",
+      "conflicting_or_legacy_metadata"
+    ],
+    "selective_metadata_only": true
+  },
   "required_carrier_maps": [
     "uv_chart",
     "padded_island_mask",
@@ -30,7 +120,6 @@
     "surface_normal",
     "reference_camera_depth",
     "reference_camera_visibility",
-    "source_illumination_and_reflection_mask",
     "curvature",
     "ambient_occlusion",
     "floor_band_id",
@@ -44,13 +133,13 @@
     "void_mask",
     "uv_distortion"
   ],
-  "sticker_output_semantics": {
-    "is_surface_material_not_screenshot": true,
+  "sticker_semantics": {
+    "surface_material_not_screenshot": true,
     "required_intrinsic_channels": [
       "delit_albedo",
       "roughness",
-      "normal_or_height_when_source_supported",
-      "ambient_occlusion_when_source_supported",
+      "normal_or_height_when_supported",
+      "ambient_occlusion_when_supported",
       "glass_mask",
       "emissive_mask"
     ],
@@ -60,7 +149,9 @@
       "sky_or_camera_reflection",
       "lens_distortion",
       "painted_geometry_depth"
-    ]
+    ],
+    "post_generation_crop_allowed": false,
+    "post_generation_nonuniform_scale_allowed": false
   },
   "surface_mapping": {
     "straight_wall": "rectified_elevation",
@@ -70,14 +161,6 @@
     "dome": "radial_gore_registered_to_ribs_and_rings",
     "dormer_or_chimney": "separate_front_cheek_cap_and_return",
     "entrance_or_canopy": "separate_foreground_reveal_soffit_edge_and_back"
-  },
-  "floor_domains": {
-    "ground": "fixed",
-    "middle": "complete_repeatable_module",
-    "crown": "fixed",
-    "roof": "fixed_disjoint_from_occupied_floors",
-    "render_mesh_rule": "one_continuous_cap_free_exterior_shell_with_face_level_ownership",
-    "ownership_source": "final_target_mesh_construction_domain_not_shader_class"
   },
   "feature_ownership": {
     "geometry": [
@@ -92,69 +175,123 @@
       "fine_ornament",
       "irregular_surface_identity"
     ],
-    "pbr": [
+    "pbr_and_optical": [
       "roughness",
       "normal_response",
       "transmission",
-      "reflection"
+      "reflection",
+      "registered_glazing_depth"
     ]
+  },
+  "floor_domains": {
+    "ground": "fixed",
+    "middle": "complete_repeatable_module",
+    "crown": "fixed",
+    "subordinate_roof": "fixed_separate_domain",
+    "main_roof": "fixed_disjoint_from_occupied_floors",
+    "ownership_source": "final_target_mesh_construction_domain_not_shader_class"
   },
   "machine_release_gates": {
     "visible_surface_ownership_percent_min": 100.0,
     "fallback_face_count_max": 0,
+    "owners_per_locked_face_min": 1,
+    "owners_per_locked_face_max": 1,
     "floor_band_gap_count_max": 0,
     "floor_band_overlap_count_max": 0,
-    "roof_owned_occupied_wall_face_count_max": 0,
-    "internal_exterior_wall_cap_count_max": 0,
-    "anchor_reprojection_rmse_px_at_1600_max": 2.0,
-    "window_or_column_center_drift_elevation_width_percent_max": 0.25,
+    "main_roof_owned_occupied_wall_face_count_max": 0,
+    "partial_module_count_max": 0,
+    "duplicated_fixed_module_count_max": 0,
+    "window_aspect_drift_percent_max": 0.25,
     "paired_seam_delta_e00_p95_max": 3.0,
     "symmetric_uv_area_stretch_p95_max": 1.25,
-    "masked_source_export_silhouette_iou_min": 0.98,
-    "alpha_masked_source_export_mean_error_percent_max": 3.0,
     "required_review_camera_count": 7,
-    "identity_landmark_glass_missing_in_any_review_lod_max": 0,
-    "architect_score_min": 95,
-    "architect_hard_stops_max": 0
+    "production_preflight_required": true,
+    "exported_glb_surface_audit_required": true
   },
-  "hard_stops": [
-    "sticker_generated_without_locked_final_carrier",
-    "post_approval_sticker_crop_or_nonuniform_scale",
-    "unowned_or_generic_visible_polygon",
-    "independently_scaled_floor_band",
-    "roof_material_below_roof_datum",
-    "shared_seam_without_shared_boundary_evidence",
-    "identity_landmark_glass_hidden_by_presentation_lod",
-    "thin_return_uses_isolation_or_padding_pixels",
-    "uv_distortion_over_threshold_without_chart_split",
-    "source_directional_lighting_or_reflection_baked_into_albedo",
-    "physical_glass_outside_registered_glass_mask",
-    "duplicated_window_column_balcony_frame_or_gable",
-    "sticker_crosses_uncut_public_void",
-    "geometry_error_hidden_in_albedo",
-    "architect_score_below_95"
-  ],
   "required_review_cameras": [
     "archetype_match",
     "street",
     "front_corner",
     "rear_corner",
-    "aerial",
+    "facade_close",
     "roof_audit",
-    "facade_close"
+    "aerial_or_context"
   ],
-  "completed_bounded_pilot": {
-    "archetype": "belle_epoque_grand_magasin",
-    "implemented_repairs": [
-      "entrance_canopy_contour_and_section",
-      "dome_luminous_glass_and_structure",
-      "dormer_front_cheek_and_return_charts",
-      "straight_to_rounded_pavilion_transition"
-    ],
-    "carrier_count": 198,
-    "checked_faces": 1804,
-    "surface_audit_failures": 0,
-    "runtime_validation": "pass",
-    "catalogue_scale_blocked_until_transfer_proof": true
-  }
+  "architect_score_weights": {
+    "archetype_identity": 30,
+    "massing_and_geometry": 20,
+    "sticker_registration": 20,
+    "all_surface_roof_and_entrance_coverage": 15,
+    "lego_scale_consistency_no_stretching": 15
+  },
+  "api_generation_policy": {
+    "carrier_lock_required_before_paid_call": true,
+    "smallest_responsible_region_first": true,
+    "retain_successful_master": true,
+    "regenerate_failed_regions_only": true,
+    "record_provider_prompt_sources_call_count_and_hashes": true,
+    "calls_may_not_compensate_for_wrong_geometry": true
+  },
+  "hard_stops": [
+    "architect_mean_score_not_strictly_above_95",
+    "any_tier_score_below_95",
+    "sticker_generated_without_locked_final_carrier",
+    "post_approval_crop_aspect_change_or_nonuniform_scale",
+    "unowned_or_generic_visible_polygon",
+    "duplicate_surface_owner",
+    "unstickered_return_soffit_underside_or_cap",
+    "partial_bay_or_floor_module",
+    "repeated_ground_crown_entrance_or_roof_identity",
+    "roof_material_on_occupied_floor",
+    "shared_seam_without_shared_boundary_evidence",
+    "physical_glass_outside_registered_glass_mask",
+    "duplicated_window_column_balcony_frame_or_gable",
+    "sticker_crosses_uncut_public_void",
+    "geometry_error_hidden_in_albedo",
+    "missing_required_review_view",
+    "missing_independent_architect_verdict"
+  ],
+  "publication_package": [
+    "exact_reference_comparison_board",
+    "size_matrix_board_when_scalable",
+    "roof_and_oblique_boards",
+    "individual_audit_renders",
+    "geometry_and_sticker_contract",
+    "sticker_provenance_and_hashes",
+    "architect_approval_record",
+    "generator_and_regression_tests",
+    "quality_memory_update"
+  ],
+  "proven_references": [
+    {
+      "id": "belle-epoque-grand-magasin-v95",
+      "mode": "fixed_landmark",
+      "architect_score": 95,
+      "carrier_count": 198,
+      "surface_audit_failures": 0,
+      "historical_role": "established_geometry_conditioned_carrier_space_method"
+    },
+    {
+      "id": "functionalist-brick-mill-v97.3",
+      "mode": "discrete_sticker_lego",
+      "tier_scores": {
+        "small": 95,
+        "canonical": 96,
+        "large": 95
+      },
+      "architect_mean_unrounded": 95.3,
+      "hard_stops": 0,
+      "module_size_m": {
+        "facade_bay": 5,
+        "floor_band": 5
+      },
+      "approved_tiers": [
+        {"width_m": 35, "depth_m": 30, "floors": 4},
+        {"width_m": 50, "depth_m": 40, "floors": 5},
+        {"width_m": 65, "depth_m": 50, "floors": 6}
+      ],
+      "surface_audit_failures": 0,
+      "approval_scope": "these_three_bounded_tiers_only"
+    }
+  ]
 }

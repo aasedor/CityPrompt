@@ -325,7 +325,7 @@
     },
     {
       "id": "sticker_lego_scaling_uses_discrete_fixed_and_repeatable_modules",
-      "rule": "To offer one archetype at several sizes, preserve identity-bearing entrance, end, roof, dormer and annex assemblies as singular fixed modules and change capacity only by inserting or removing whole structural bays and complete middle-floor bands. Every module keeps one metric carrier size, UV crop and texel density. Continuous building scaling, partial bays, repeated entrances, stretched windows and duplicated ground or crown bands are hard stops."
+      "rule": "To offer one archetype at several sizes, preserve identity-bearing entrance, end, roof, dormer and annex assemblies as singular fixed modules and change capacity only by inserting or removing whole structural bays and complete middle-floor bands. Every module keeps one metric carrier size, UV crop and texel density. Continuous building scaling, partial bays, repeated entrances, stretched windows and duplicated ground or crown bands are hard stops. Sticker Method release additionally requires an unrounded independent architect mean strictly above 95, every reviewed tier at least 95 and zero hard stops."
     }
   ],
   "construction_memory": {

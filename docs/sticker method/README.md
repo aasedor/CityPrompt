@@ -1,90 +1,84 @@
 # Sticker Method
 
-This folder is the working specification for producing image-locked architectural
-landmarks by combining approved 3D construction with registered surface
-stickers. It consolidates the lessons through the Belle Époque Grand Magasin
-V95 pilot.
+This folder is the authoritative specification for high-fidelity,
+image-locked 3D buildings and discretely scalable Sticker LEGO families.
 
-The current reference result is the geometry-conditioned V95 pilot:
-**95/100, approved, with zero hard stops**. It proves continuous exterior
-shells, floor-addressable ownership, complete surface coverage, real entrance
-depth, roof-edge ownership, persistent landmark glass and physical dome
-structure. This is the first 95+ production reference; catalogue scale remains
-blocked until the three-archetype transfer proof in the production plan passes.
+## Release rule
 
-## The central rule
+A building is publishable only when:
 
-**A sticker is made for its final 3D carrier; it is not a finished flat image
-that is later stretched onto an approximate model.**
+- its unrounded independent architect-review mean is **greater than 95/100**;
+- every rendered size tier scores at least **95/100**;
+- every machine ownership, registration and export gate passes;
+- no architectural hard-stop defect remains.
 
-The approved clay mesh is frozen first. That exact mesh produces the UV charts,
-surface-position map, normals, depth, curvature, visibility, floor IDs and
-semantic masks used to create the sticker. A sticker is approved only after it
-has been rendered back on that same mesh from the required reference views.
+## Central rule
 
-The master sticker is de-lit intrinsic surface colour plus explicit material
-channels—not a photograph with its old perspective, sunlight, shadows and
-reflections baked in. Those effects are re-created by the 3D carrier, PBR
-material, glazing and scene lighting.
+**A sticker is generated for its locked final 3D carrier and approved only as
+part of the rendered 3D building.** It is never approved as a beautiful flat
+image and then stretched onto approximate geometry.
 
-This changes the workflow from `beautiful image → wrap it somehow` to:
+Geometry owns silhouette, depth, roofs, openings and shadow-bearing
+construction. Stickers own image-specific colour and fine surface identity.
+PBR and optical layers own material response and glazing. Every visible
+polygon—including returns, soffits, caps, entrances and subordinate roofs—has
+exactly one semantic owner.
 
-`reference evidence → final carrier geometry → carrier-space evidence → sticker → projected proof render`.
+## Canonical documents
 
-## What the method is
+- [Production playbook](STICKER_METHOD_PRODUCTION_PLAYBOOK.md) — mandatory
+  end-to-end workflow, LEGO rules, agent responsibilities and release gate.
+- [Machine-readable contract](sticker_method_contract.json) — executable policy
+  used by generation and review tooling.
+- [95+ development record](STICKER_METHOD_95_PLUS_PLAN.md) — the V94/V95 path
+  that established geometry-conditioned carrier-space stickers.
+- [V97.3 scalable pilot](../reviews/catalogue-rollout-v97/functionalist-mill-sticker-lego-pilot/README.md)
+  — first production-ready discrete Sticker LEGO family.
+- [High-quality building memory](../HIGH_QUALITY_3D_BUILDING_MEMORY.md) — shared
+  cross-pipeline lessons and hard stops.
 
-- A **fixed select-and-place landmark representation** for image-specific
-  buildings. Translation and rotation are safe; non-uniform scaling and
-  arbitrary polygon fitting are not.
-- A **continuous exterior shell** whose faces retain ground, middle, crown and
-  roof ownership. Floor addressability must not create stacked closed boxes or
-  horizontal facade cuts.
-- A **layered representation**: geometry owns silhouette, depth, openings and
-  shadow-bearing construction; stickers own image-locked colour, fine ornament
-  and irregular identity; PBR materials own optical response.
-- An **all-surface system**. Front, side, rear, chamfer, courtyard, roof, dormer,
-  dome, entrance return, canopy edge and exposed cap all require an owner.
+## Proven modes
 
-## What the method is not
+### Fixed landmark
 
-- A billboard pasted onto a box.
-- A monolithic elevation texture stretched to a different floor count.
-- Independent floor prisms stacked behind attractive strips.
-- A way to paint a doorway over solid masonry. Recesses and tunnels remain
-  actual topology.
-- A licence for generic glass or roof geometry to cover photographed windows,
-  frames, ornament or roof details.
+Belle Époque Grand Magasin V95 established the locked-geometry Sticker Method:
+198 fingerprinted carriers, zero exposed fallback faces and a 95/100 architect
+score. This remains the reference for curved façades, domes, complex roofs and
+unique select-and-place landmarks.
 
-## Authoritative documents
+### Discrete Sticker LEGO family
 
-- [95+ production plan](STICKER_METHOD_95_PLUS_PLAN.md)
-- [Machine-readable contract](sticker_method_contract.json)
-- [Current V95 evidence](../reviews/catalogue-rollout-v95/belle-epoque-geometry-conditioned-sticker-pilot/README.md)
-- [V94 baseline evidence](../reviews/catalogue-rollout-v94/belle-epoque-continuous-sticker-pilot/README.md)
-- [High-quality building memory](../HIGH_QUALITY_3D_BUILDING_MEMORY.md)
+Functionalist Brick Mill V97.3 established bounded size variation without
+stretching:
 
-## Current findings
+| Tier | Footprint | Floors | Architect score |
+|---|---:|---:|---:|
+| Small | 35 × 30 m | 4 | 95 |
+| Canonical | 50 × 40 m | 5 | 96 |
+| Large | 65 × 50 m | 6 | 95 |
 
-1. Beautiful source skins retain archetype identity, but their accuracy is lost
-   when geometry, UVs, floor datums or physical overlays use a different
-   registration frame.
-2. Complete named-material coverage is insufficient. The final Blender scene
-   must report zero fallback polygons after every carrier is bound.
-3. Floor ownership is useful for replacement and bounded height variants, but
-   the visible wall should remain one continuous cap-free shell.
-4. Curved walls, domes and pitched roofs need shape-appropriate UV charts.
-   Planar projection is not an acceptable universal mapping.
-5. Corners and elevation transitions need shared boundary evidence. Independent
-   front and side images create colour, course and feature discontinuities even
-   when both are individually attractive.
-6. A physical optical layer is allowed only inside a sticker-derived, registered
-   mask. Otherwise it duplicates or obscures windows.
-7. Raw sticker beauty is diagnostic, not an approval result. The projected
-   multi-view render is the product the user will see.
-8. Floor/roof ownership follows the final carrier's construction domain, not
-   its shader class. Glass on a dome is still roof-owned.
-9. Identity-bearing landmark glass must persist in every presentation LOD.
-   Hiding it in aerial views exposes backing geometry and invalidates the
-   sticker approval even when street views pass.
-10. A thin return must use shared boundary texels or be authored as an explicit
-    construction joint. Isolation-border pixels are never valid seam content.
+The unrounded mean is 95.3 with zero hard stops. Each tier uses whole 5 m wall
+bays and 5 m floor bands at constant texel density. The entrance wing, annex,
+pitched dormer, roof hips and chimneys stay fixed while ordinary bays, middle
+floors and roof strips change capacity.
+
+## What is prohibited
+
+- billboard façades or a front-only skin on a generic box;
+- arbitrary continuous or non-uniform building scaling;
+- monolithic elevation textures stretched to new floor or bay counts;
+- repeated entrances, ground floors, crowns or roof identity;
+- painted doors where the reference requires a recessed tunnel;
+- roof imagery on occupied floors;
+- unowned blue-grey/clay polygons, returns, undersides or caps;
+- generic glass or geometry covering sticker-owned windows and ornament;
+- approval from a hero view without rear, roof and close-up inspection;
+- release at an architect mean of 95.0 or below.
+
+## Catalogue policy
+
+Use finite, checkpointed batches. For every new archetype: lock reference
+evidence, classify fixed and repeatable architecture, approve clay geometry,
+generate carrier-conditioned stickers, pass machine audits, render the complete
+review set, and obtain independent architect approval. A passing family proves
+its own contract only; it does not waive review for the next building.

@@ -1,5 +1,12 @@
 # Sticker Method: final steps to 95+
 
+> **Status: implemented and superseded as the operating guide by**
+> [STICKER_METHOD_PRODUCTION_PLAYBOOK.md](STICKER_METHOD_PRODUCTION_PLAYBOOK.md).
+> V95 established the geometry-conditioned fixed-landmark method. V97.3 then
+> proved discrete Sticker LEGO sizing at 95/96/95 by tier, a 95.3 unrounded
+> mean, and zero hard stops. Future release requires an unrounded mean strictly
+> greater than 95, every tier at least 95, and no hard-stop defect.
+
 ## Outcome sought
 
 Raise a building from the Belle Époque V94 baseline of 91/100 to at
@@ -172,17 +179,21 @@ It must remain visible in street, corner, roof and aerial presentations, or the
 pale light-well backing replaces the approved dome sticker. The fixed result
 uses an all-view landmark-glass classification.
 
-## 10. Prove the method before catalogue scale
+## 10. Prove the method before catalogue scale — completed for discrete sizing
 
-After Belle Époque passes, run a three-building proof set:
+The original transfer plan called for:
 
 - one mostly planar, floor-repeatable streetwall;
 - one curved/turreted landmark;
 - one roof-dominant building with dormers or complex intersections.
 
-Each must independently clear 95 with zero fallback faces and zero registration
-hard stops. Only then consolidate materials, create city-distance LODs, verify
-source-to-GLB parity again, and move to bounded catalogue batches.
+V97.3 completed the missing scalability proof on one archetype rendered in
+three bounded sizes. It demonstrated whole-bay and whole-floor insertion,
+constant texel density, singular fixed identity, zero fallback faces and an
+independent architect mean above 95. This authorizes bounded archetype-specific
+Sticker LEGO work, but not arbitrary scaling or unattended catalogue rollout.
+Every new archetype still passes the full playbook and its own independent
+visual gate.
 
 ## Expected contribution to the missing four points
 
