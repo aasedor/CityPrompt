@@ -156,7 +156,26 @@
       "archetype_id": "graduate_family_housing",
       "variant_id": "collegiate_brick_corner_block",
       "representation": "discrete_horizontal_lego",
-      "status": "queued"
+      "status": "approved_95_plus",
+      "architect_scores": {
+        "canonical": 95.20,
+        "extended": 95.05,
+        "mean": 95.125,
+        "hard_stops": 0
+      },
+      "identity_locks": [
+        "five-storey warm tan brick perimeter courtyard block",
+        "singular bronze corner oriel and crown beside a recessed entry slot",
+        "projected grouped-window stacks with continuous pale precast floor datums",
+        "physical residential and corner glass with separate occupied depth cues",
+        "layered gravel perimeter and dark inner membrane roof with screened plant"
+      ],
+      "approved_tiers": {
+        "canonical": {"width_m": 42.0, "depth_m": 38.0, "floors": 5},
+        "extended": {"width_m": 49.0, "depth_m": 38.0, "floors": 5}
+      },
+      "lego_rule": "extended adds exactly one complete 7m horizontal courtyard-ring module; corner oriel entry courtyard roof kit floor count depth and all metric UV scales remain fixed",
+      "review_path": "docs/reviews/catalogue-rollout-v98/sticker-method-batch-01/collegiate-brick-corner-block"
     },
     {
       "order": 9,

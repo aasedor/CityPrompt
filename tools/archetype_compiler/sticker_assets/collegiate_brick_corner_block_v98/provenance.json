@@ -1,0 +1,520 @@
+{
+  "schema": "siteforge.sticker-asset-provenance@1",
+  "building": "graduate_family_housing--collegiate_brick_corner_block",
+  "variant_index": 0,
+  "identity_authority": "three_exact_variant_0_images",
+  "exact_reference_sources": {
+    "variant_0.png": {
+      "path": "frontend/public/archetypes/buildings/graduate-family-housing/variant_0.png",
+      "sha256": "975880325493f35fdae5367aeeccd5648ebe38f57baf5d7b7aa2ce024c17f747",
+      "evidence_class": "exact_reference"
+    },
+    "variant_0_angle_60.jpg": {
+      "path": "frontend/public/archetypes/buildings/graduate-family-housing/variant_0_angle_60.jpg",
+      "sha256": "3af8854ea010429a2d4cc1c87862b04eb91a93294767467d393b80a41598c4df",
+      "evidence_class": "exact_reference"
+    },
+    "variant_0_angle_90.jpg": {
+      "path": "frontend/public/archetypes/buildings/graduate-family-housing/variant_0_angle_90.jpg",
+      "sha256": "21e0c4e9ab7fd36fac73258b6294f492ca4af6424dd0b85c753f8604ef3f2dc5",
+      "evidence_class": "exact_reference"
+    }
+  },
+  "palette_conditioning": {
+    "rule": "bounds-asserted median probes blended toward intrinsic material priors; no source pixels pasted",
+    "crops_px": {
+      "brick": {
+        "path": "frontend/public/archetypes/buildings/graduate-family-housing/variant_0.png",
+        "box": [
+          420,
+          112,
+          520,
+          255
+        ]
+      },
+      "precast": {
+        "path": "frontend/public/archetypes/buildings/graduate-family-housing/variant_0.png",
+        "box": [
+          645,
+          248,
+          690,
+          474
+        ]
+      },
+      "base": {
+        "path": "frontend/public/archetypes/buildings/graduate-family-housing/variant_0.png",
+        "box": [
+          514,
+          535,
+          670,
+          650
+        ]
+      },
+      "bronze": {
+        "path": "frontend/public/archetypes/buildings/graduate-family-housing/variant_0.png",
+        "box": [
+          532,
+          162,
+          633,
+          455
+        ]
+      },
+      "residential_glass": {
+        "path": "frontend/public/archetypes/buildings/graduate-family-housing/variant_0.png",
+        "box": [
+          350,
+          285,
+          390,
+          386
+        ]
+      },
+      "corner_glass": {
+        "path": "frontend/public/archetypes/buildings/graduate-family-housing/variant_0.png",
+        "box": [
+          558,
+          178,
+          615,
+          419
+        ]
+      },
+      "gravel": {
+        "path": "frontend/public/archetypes/buildings/graduate-family-housing/variant_0_angle_60.jpg",
+        "box": [
+          713,
+          200,
+          997,
+          360
+        ]
+      },
+      "membrane": {
+        "path": "frontend/public/archetypes/buildings/graduate-family-housing/variant_0_angle_90.jpg",
+        "box": [
+          455,
+          370,
+          740,
+          710
+        ]
+      },
+      "screen": {
+        "path": "frontend/public/archetypes/buildings/graduate-family-housing/variant_0_angle_60.jpg",
+        "box": [
+          470,
+          190,
+          735,
+          310
+        ]
+      },
+      "equipment": {
+        "path": "frontend/public/archetypes/buildings/graduate-family-housing/variant_0_angle_90.jpg",
+        "box": [
+          420,
+          205,
+          850,
+          360
+        ]
+      }
+    },
+    "sampled_rgb": {
+      "brick": [
+        194,
+        162,
+        113
+      ],
+      "precast": [
+        73,
+        61,
+        53
+      ],
+      "base": [
+        58,
+        50,
+        43
+      ],
+      "bronze": [
+        155,
+        149,
+        124
+      ],
+      "residential_glass": [
+        93,
+        79,
+        71
+      ],
+      "corner_glass": [
+        172,
+        169,
+        164
+      ],
+      "gravel": [
+        70,
+        79,
+        86
+      ],
+      "membrane": [
+        103,
+        100,
+        99
+      ],
+      "screen": [
+        130,
+        128,
+        125
+      ],
+      "equipment": [
+        102,
+        98,
+        95
+      ]
+    },
+    "prepared_palette_rgb": {
+      "brick": [
+        183,
+        146,
+        102
+      ],
+      "courtyard_brick": [
+        166,
+        132,
+        94
+      ],
+      "precast": [
+        178,
+        172,
+        157
+      ],
+      "base": [
+        144,
+        140,
+        132
+      ],
+      "bronze": [
+        100,
+        79,
+        60
+      ],
+      "residential_glass": [
+        165,
+        177,
+        179
+      ],
+      "corner_glass": [
+        158,
+        174,
+        178
+      ],
+      "gravel": [
+        157,
+        152,
+        140
+      ],
+      "membrane": [
+        70,
+        73,
+        73
+      ],
+      "screen": [
+        99,
+        84,
+        69
+      ],
+      "galvanized": [
+        142,
+        143,
+        138
+      ]
+    }
+  },
+  "geometry_ownership": [
+    "openings and reveals",
+    "precast bands and pilasters",
+    "oriel projection and frames",
+    "parapets and coping profiles",
+    "mechanical screen profiles and roof equipment"
+  ],
+  "brick_contract": "Fine 65.6mm-course metric running-bond fired-clay field only; no printed opening, floor band, pilaster, shadow or lighting.",
+  "glass_contract": "Separate neutral residential and corner optical fields; no printed frame, mullion, aperture, scene reflection or horizon.",
+  "interior_contract": "Separate deterministic neutral-veiled 4x2 residential, corner and lobby cards remain recessed and subordinate.",
+  "roof_contract": "Seamless light gravel, dark inner membrane and service path belong only to explicit upward roof fields; no printed membrane seam; verticals, curbs, coping and equipment retain construction-role finishes.",
+  "atlas_grid": [
+    4,
+    2
+  ],
+  "assets": {
+    "warm_tan_brick_front": {
+      "path": "tools/archetype_compiler/sticker_assets/collegiate_brick_corner_block_v98/warm_tan_brick_front_intrinsic.png",
+      "sha256": "54bdf17136462756126f7554cf5f86982a5b277f4ad632f10850163b882b16a0",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_frames_or_mullions": false,
+      "contains_printed_bands_or_pilasters": false,
+      "contains_printed_reflection_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "warm_tan_brick_return": {
+      "path": "tools/archetype_compiler/sticker_assets/collegiate_brick_corner_block_v98/warm_tan_brick_return_intrinsic.png",
+      "sha256": "01bba60f26c6212f2ada001a58d807dbb2e71d35d8af9b1e57c394461f0cc28e",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_frames_or_mullions": false,
+      "contains_printed_bands_or_pilasters": false,
+      "contains_printed_reflection_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "subdued_courtyard_brick": {
+      "path": "tools/archetype_compiler/sticker_assets/collegiate_brick_corner_block_v98/subdued_courtyard_brick_intrinsic.png",
+      "sha256": "8ab4dc7d29d6b82da56dcfcd92ec630159b89a8229c456c3a92760a2422a78eb",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_frames_or_mullions": false,
+      "contains_printed_bands_or_pilasters": false,
+      "contains_printed_reflection_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "pale_precast": {
+      "path": "tools/archetype_compiler/sticker_assets/collegiate_brick_corner_block_v98/pale_precast_intrinsic.png",
+      "sha256": "bb26487594b7a350899f453e13d5fcb87481ccbaf68bf254bc5889ca7ba2a9df",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_frames_or_mullions": false,
+      "contains_printed_bands_or_pilasters": false,
+      "contains_printed_reflection_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "weathered_base_plinth_reveal": {
+      "path": "tools/archetype_compiler/sticker_assets/collegiate_brick_corner_block_v98/weathered_base_plinth_reveal_intrinsic.png",
+      "sha256": "d5aae76632ddc6149b6a138c8cd6212b8c66f58f5e26e5d7aafcac8f976c19e6",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_frames_or_mullions": false,
+      "contains_printed_bands_or_pilasters": false,
+      "contains_printed_reflection_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "pale_coping_cornice": {
+      "path": "tools/archetype_compiler/sticker_assets/collegiate_brick_corner_block_v98/pale_coping_cornice_intrinsic.png",
+      "sha256": "7cfd181e63feaac8f143a27f1a2c2d2a36141b4513cbc7fd4a57059cf87ca71e",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_frames_or_mullions": false,
+      "contains_printed_bands_or_pilasters": false,
+      "contains_printed_reflection_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "dark_joint_sealant": {
+      "path": "tools/archetype_compiler/sticker_assets/collegiate_brick_corner_block_v98/dark_joint_sealant_intrinsic.png",
+      "sha256": "5458dd34a108138bfebddbbdf682548ce31953c66eabf990ef827fccdfa066fd",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_frames_or_mullions": false,
+      "contains_printed_bands_or_pilasters": false,
+      "contains_printed_reflection_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "bronze_oriel_frames": {
+      "path": "tools/archetype_compiler/sticker_assets/collegiate_brick_corner_block_v98/bronze_oriel_frames_intrinsic.png",
+      "sha256": "6e172648f90c8918d9b6a5ee4ea74f0f510733ada68cb4429f41be97684f50f6",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_frames_or_mullions": false,
+      "contains_printed_bands_or_pilasters": false,
+      "contains_printed_reflection_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "bronze_spandrel_casing": {
+      "path": "tools/archetype_compiler/sticker_assets/collegiate_brick_corner_block_v98/bronze_spandrel_casing_intrinsic.png",
+      "sha256": "cc9f256acbed9b35164408eb35d332fab0e04f01a1d422fba891c14d999d87be",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_frames_or_mullions": false,
+      "contains_printed_bands_or_pilasters": false,
+      "contains_printed_reflection_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "bronze_mechanical_screen": {
+      "path": "tools/archetype_compiler/sticker_assets/collegiate_brick_corner_block_v98/bronze_mechanical_screen_intrinsic.png",
+      "sha256": "8748337903d8554132c6570cbd40c2e99f21cc542068d6f94e78635cf2da65ce",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_frames_or_mullions": false,
+      "contains_printed_bands_or_pilasters": false,
+      "contains_printed_reflection_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "physical_residential_glass": {
+      "path": "tools/archetype_compiler/sticker_assets/collegiate_brick_corner_block_v98/physical_residential_glass_intrinsic.png",
+      "sha256": "32d7fcf7dd29f3f1fc8a25fb6e3c8b82eb8d111e307f59c1ae8a8c94ee1a9a03",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_frames_or_mullions": false,
+      "contains_printed_bands_or_pilasters": false,
+      "contains_printed_reflection_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "physical_corner_glass": {
+      "path": "tools/archetype_compiler/sticker_assets/collegiate_brick_corner_block_v98/physical_corner_glass_intrinsic.png",
+      "sha256": "1a32ec31b5ae58f07f68e65df46e7855b22483ed91880e9bf1562b8b001cc2fb",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_frames_or_mullions": false,
+      "contains_printed_bands_or_pilasters": false,
+      "contains_printed_reflection_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "residential_interiors": {
+      "path": "tools/archetype_compiler/sticker_assets/collegiate_brick_corner_block_v98/residential_interior_atlas.png",
+      "sha256": "b2af92e66ed2481cdf7f02ea4aedaf4a393de9508b945cb753ab674d169d3ad0",
+      "evidence_class": "constrained_completion",
+      "contains_printed_openings": false,
+      "contains_printed_frames_or_mullions": false,
+      "contains_printed_bands_or_pilasters": false,
+      "contains_printed_reflection_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "corner_interiors": {
+      "path": "tools/archetype_compiler/sticker_assets/collegiate_brick_corner_block_v98/corner_interior_atlas.png",
+      "sha256": "a4088696a25e0b3f05e13b347c6b59a61e146fd92db13511e55bbd8ba62b6e75",
+      "evidence_class": "constrained_completion",
+      "contains_printed_openings": false,
+      "contains_printed_frames_or_mullions": false,
+      "contains_printed_bands_or_pilasters": false,
+      "contains_printed_reflection_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "ground_lobby_interiors": {
+      "path": "tools/archetype_compiler/sticker_assets/collegiate_brick_corner_block_v98/ground_lobby_interior_atlas.png",
+      "sha256": "ad4b02f9841644e9cc41d897b77354764958c105369a355432daf378fc0b776d",
+      "evidence_class": "constrained_completion",
+      "contains_printed_openings": false,
+      "contains_printed_frames_or_mullions": false,
+      "contains_printed_bands_or_pilasters": false,
+      "contains_printed_reflection_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "gravel_ballast_roof": {
+      "path": "tools/archetype_compiler/sticker_assets/collegiate_brick_corner_block_v98/gravel_ballast_roof_intrinsic.png",
+      "sha256": "21dce5c9aae3f67831593d3fdc1b1606272b4243f9698178e8914809353cc18c",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_frames_or_mullions": false,
+      "contains_printed_bands_or_pilasters": false,
+      "contains_printed_reflection_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "dark_inner_membrane": {
+      "path": "tools/archetype_compiler/sticker_assets/collegiate_brick_corner_block_v98/dark_inner_membrane_intrinsic.png",
+      "sha256": "eee75e244e4ad60db27dd9379d87e7df3357a4da2d958846f61427204827ef9e",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_frames_or_mullions": false,
+      "contains_printed_bands_or_pilasters": false,
+      "contains_printed_reflection_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "membrane_service_path": {
+      "path": "tools/archetype_compiler/sticker_assets/collegiate_brick_corner_block_v98/membrane_service_path_intrinsic.png",
+      "sha256": "37bae4dae7eba3b07a8c9286a77cc666f45dfa93819d844969fee60e6297c840",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_frames_or_mullions": false,
+      "contains_printed_bands_or_pilasters": false,
+      "contains_printed_reflection_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "roof_perimeter_flashing": {
+      "path": "tools/archetype_compiler/sticker_assets/collegiate_brick_corner_block_v98/roof_perimeter_flashing_intrinsic.png",
+      "sha256": "c6a98eba135568cfcf43dd36d9fa797e5cf0e5ccc140fd309d255505678392e0",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_frames_or_mullions": false,
+      "contains_printed_bands_or_pilasters": false,
+      "contains_printed_reflection_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "aged_galvanized_hvac": {
+      "path": "tools/archetype_compiler/sticker_assets/collegiate_brick_corner_block_v98/aged_galvanized_hvac_intrinsic.png",
+      "sha256": "4726401b79af1388e8102382ab456c815ef1c04aff57b58c777cec2621155710",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_frames_or_mullions": false,
+      "contains_printed_bands_or_pilasters": false,
+      "contains_printed_reflection_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "galvanized_duct_rails_vents": {
+      "path": "tools/archetype_compiler/sticker_assets/collegiate_brick_corner_block_v98/galvanized_duct_rails_vents_intrinsic.png",
+      "sha256": "acfe33082bb63620fd1a1dc0e8f0540bf08894d5a3386d73711d938bd0b6c16a",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_frames_or_mullions": false,
+      "contains_printed_bands_or_pilasters": false,
+      "contains_printed_reflection_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "rooflight_glass": {
+      "path": "tools/archetype_compiler/sticker_assets/collegiate_brick_corner_block_v98/rooflight_glass_intrinsic.png",
+      "sha256": "3a78fa24719a587e28fe73e9831eeecebbc0673341bdb40701f9cb8b36863c98",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_frames_or_mullions": false,
+      "contains_printed_bands_or_pilasters": false,
+      "contains_printed_reflection_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "rooflight_curb": {
+      "path": "tools/archetype_compiler/sticker_assets/collegiate_brick_corner_block_v98/rooflight_curb_intrinsic.png",
+      "sha256": "7e31b980e26a51e034996a5274fd529269ddd8f031ae59c794a5747efbf33097",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_frames_or_mullions": false,
+      "contains_printed_bands_or_pilasters": false,
+      "contains_printed_reflection_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "threshold": {
+      "path": "tools/archetype_compiler/sticker_assets/collegiate_brick_corner_block_v98/threshold_intrinsic.png",
+      "sha256": "6d51bf7a32a1931767d02ea97a252a07190b070857efcc8186c4214ff3d4071a",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_frames_or_mullions": false,
+      "contains_printed_bands_or_pilasters": false,
+      "contains_printed_reflection_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "door_hardware": {
+      "path": "tools/archetype_compiler/sticker_assets/collegiate_brick_corner_block_v98/door_hardware_intrinsic.png",
+      "sha256": "55dae187f603d5ebdeb69f38838fd36aa2a5aad498bfe6a31aa6688a09dbef0b",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_frames_or_mullions": false,
+      "contains_printed_bands_or_pilasters": false,
+      "contains_printed_reflection_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    }
+  },
+  "post_generation_nonuniform_scale_allowed": false
+}

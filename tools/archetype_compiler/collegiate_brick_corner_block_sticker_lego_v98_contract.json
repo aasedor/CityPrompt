@@ -1,0 +1,41 @@
+{
+  "schema": "siteforge.collegiate-brick-corner-block-sticker-lego@1",
+  "version": "v98.0",
+  "archetype_id": "graduate_family_housing",
+  "variant_id": "collegiate_brick_corner_block",
+  "identity_authority": "three_exact_variant_0_images",
+  "reference_sha256": {
+    "frontend/public/archetypes/buildings/graduate-family-housing/variant_0.png": "975880325493f35fdae5367aeeccd5648ebe38f57baf5d7b7aa2ce024c17f747",
+    "frontend/public/archetypes/buildings/graduate-family-housing/variant_0_angle_60.jpg": "3af8854ea010429a2d4cc1c87862b04eb91a93294767467d393b80a41598c4df",
+    "frontend/public/archetypes/buildings/graduate-family-housing/variant_0_angle_90.jpg": "21e0c4e9ab7fd36fac73258b6294f492ca4af6424dd0b85c753f8604ef3f2dc5"
+  },
+  "geometry_sha256": {
+    "canonical": "a3dc8607f4d04ef819f728762267bca3254ef386390aa689480b045d8833b740",
+    "extended": "62d7b04ab8800debbaa3bfc1b7df99afe4d5b8e7eaeaa4665741fffd88e18bd7"
+  },
+  "size_matrix": {
+    "canonical": {
+      "width_m": 42.0,
+      "depth_m": 38.0,
+      "horizontal_modules": 0
+    },
+    "extended": {
+      "width_m": 49.0,
+      "depth_m": 38.0,
+      "horizontal_modules": 1
+    }
+  },
+  "continuous_resize_allowed": false,
+  "vertical_scaling_allowed": false,
+  "depth_scaling_allowed": false,
+  "whole_modules_only": true,
+  "module_width_m": 7.0,
+  "hard_stops": [
+    "partial or stretched 7m module",
+    "changed fixed corner entry courtyard or roof kit",
+    "generic fallback",
+    "unowned or multiply owned face",
+    "roof domain leakage",
+    "brick UV not 2.4m"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "schema": "siteforge.sticker-lego-family@1",
+  "archetype_id": "graduate_family_housing",
+  "variant_id": "collegiate_brick_corner_block",
+  "identity_mode": "massing_graph",
+  "tiers": [
+    {
+      "id": "canonical",
+      "signature_profile_id": "collegiate-brick-corner-block-sticker-lego-canonical",
+      "family_id": "collegiate-brick-corner-block-v98-canonical",
+      "width_m": 42.0,
+      "depth_m": 38.0,
+      "horizontal_modules": 0
+    },
+    {
+      "id": "extended",
+      "signature_profile_id": "collegiate-brick-corner-block-sticker-lego-extended",
+      "family_id": "collegiate-brick-corner-block-v98-extended",
+      "width_m": 49.0,
+      "depth_m": 38.0,
+      "horizontal_modules": 1
+    }
+  ]
+}
