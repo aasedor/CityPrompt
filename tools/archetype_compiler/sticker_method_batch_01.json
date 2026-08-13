@@ -103,7 +103,26 @@
       "archetype_id": "shophouse_southeast_asian",
       "variant_id": "shophouse_peranakan",
       "representation": "whole_attached_unit_lego",
-      "status": "queued"
+      "status": "approved_95_plus",
+      "architect_scores": {
+        "canonical": 95.15,
+        "extended": 95.1,
+        "mean": 95.125,
+        "hard_stops": 0
+      },
+      "identity_locks": [
+        "exact six-unit two-storey Peranakan terrace",
+        "continuous hollow five-foot-way with recessed shopfronts",
+        "three physical upper arches per five-metre unit",
+        "three bounded central balconies",
+        "one pitched terracotta roof and dormer per unit",
+        "singleton party walls and open rear air wells"
+      ],
+      "approved_tiers": {
+        "canonical": {"units": 6, "width_m": 30.0, "depth_m": 28.0},
+        "extended": {"units": 7, "width_m": 35.0, "depth_m": 28.0}
+      },
+      "review_path": "docs/reviews/catalogue-rollout-v98/sticker-method-batch-01/peranakan-shophouse-row"
     },
     {
       "order": 7,

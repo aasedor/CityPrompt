@@ -49,3 +49,4 @@ tools/archetype_compiler/sticker_assets/daylight_sawtooth_v98/*.png filter=lfs d
 tools/archetype_compiler/sticker_assets/administrative_faculty_office_v98/*.png filter=lfs diff=lfs merge=lfs -text
 tools/archetype_compiler/sticker_assets/halifax_waterfront_warehouse_v98/*.png filter=lfs diff=lfs merge=lfs -text
 tools/archetype_compiler/sticker_assets/civic_modernism_rec_centre_v98/*.png filter=lfs diff=lfs merge=lfs -text
+tools/archetype_compiler/sticker_assets/shophouse_peranakan_v98/*.png filter=lfs diff=lfs merge=lfs -text

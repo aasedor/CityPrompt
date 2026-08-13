@@ -1,0 +1,469 @@
+{
+  "schema": "siteforge.sticker-lego-family@1",
+  "archetype_id": "shophouse_southeast_asian",
+  "variant_id": "shophouse_peranakan",
+  "identity_mode": "massing_graph",
+  "representation": "whole_attached_unit_lego",
+  "registered_assets": {
+    "plaster_turquoise_front": {
+      "path": "tools/archetype_compiler/sticker_assets/shophouse_peranakan_v98/plaster_turquoise_front_intrinsic.png",
+      "sha256": "bfad062dd69260db0e2531cdbd89965fec0881969139d9d19fc5d84b15ad06e2",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_pilasters_or_arches": false,
+      "contains_printed_rails_or_mullions": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_reflection_horizon": false
+    },
+    "plaster_turquoise_return": {
+      "path": "tools/archetype_compiler/sticker_assets/shophouse_peranakan_v98/plaster_turquoise_return_intrinsic.png",
+      "sha256": "b78357dfea6f7c2d20a199425a83a91b6379649ae6399143505c9b810de004be",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_pilasters_or_arches": false,
+      "contains_printed_rails_or_mullions": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_reflection_horizon": false
+    },
+    "plaster_turquoise_rear": {
+      "path": "tools/archetype_compiler/sticker_assets/shophouse_peranakan_v98/plaster_turquoise_rear_intrinsic.png",
+      "sha256": "82cac4dc043214ffec057e60ce143e1b8a848a44f34a5ec7a91349a63277a926",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_pilasters_or_arches": false,
+      "contains_printed_rails_or_mullions": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_reflection_horizon": false
+    },
+    "plaster_coral_front": {
+      "path": "tools/archetype_compiler/sticker_assets/shophouse_peranakan_v98/plaster_coral_front_intrinsic.png",
+      "sha256": "52ff76cd98714a9107cf25f8189cb981cba3aa14d5193172ca9ac0336fb66de3",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_pilasters_or_arches": false,
+      "contains_printed_rails_or_mullions": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_reflection_horizon": false
+    },
+    "plaster_coral_return": {
+      "path": "tools/archetype_compiler/sticker_assets/shophouse_peranakan_v98/plaster_coral_return_intrinsic.png",
+      "sha256": "ba89376d8f272a1308735bb9b205c7f24fd66a00bc44d38f8d998cc205dc83b9",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_pilasters_or_arches": false,
+      "contains_printed_rails_or_mullions": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_reflection_horizon": false
+    },
+    "plaster_coral_rear": {
+      "path": "tools/archetype_compiler/sticker_assets/shophouse_peranakan_v98/plaster_coral_rear_intrinsic.png",
+      "sha256": "fb9012c935a29da2ec4a315aab584a5ef5f94e7a2ffc135ca2cb3f40b6b46800",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_pilasters_or_arches": false,
+      "contains_printed_rails_or_mullions": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_reflection_horizon": false
+    },
+    "plaster_ochre_front": {
+      "path": "tools/archetype_compiler/sticker_assets/shophouse_peranakan_v98/plaster_ochre_front_intrinsic.png",
+      "sha256": "ec1771b8763173f53c6d50870a48e752bf7c064b56b7d576dfa9cf7485bb6fad",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_pilasters_or_arches": false,
+      "contains_printed_rails_or_mullions": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_reflection_horizon": false
+    },
+    "plaster_ochre_return": {
+      "path": "tools/archetype_compiler/sticker_assets/shophouse_peranakan_v98/plaster_ochre_return_intrinsic.png",
+      "sha256": "9b883f57af7d0023b719fc199b68c836c618518208a64aa0c55ff5ec413ab501",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_pilasters_or_arches": false,
+      "contains_printed_rails_or_mullions": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_reflection_horizon": false
+    },
+    "plaster_ochre_rear": {
+      "path": "tools/archetype_compiler/sticker_assets/shophouse_peranakan_v98/plaster_ochre_rear_intrinsic.png",
+      "sha256": "34c4f09abc96d70022939da350c387eb80bdb86e2b77026ca4ac8fe78e551272",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_pilasters_or_arches": false,
+      "contains_printed_rails_or_mullions": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_reflection_horizon": false
+    },
+    "plaster_mint_front": {
+      "path": "tools/archetype_compiler/sticker_assets/shophouse_peranakan_v98/plaster_mint_front_intrinsic.png",
+      "sha256": "2c3d9669416214572da3d9ab47ce6c418b758ffb99a5748f78297c4cc3e6c718",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_pilasters_or_arches": false,
+      "contains_printed_rails_or_mullions": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_reflection_horizon": false
+    },
+    "plaster_mint_return": {
+      "path": "tools/archetype_compiler/sticker_assets/shophouse_peranakan_v98/plaster_mint_return_intrinsic.png",
+      "sha256": "4e69d5de9af566428b749e0662eb5f545e5f36c56e559c3afc8490d0a0d338da",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_pilasters_or_arches": false,
+      "contains_printed_rails_or_mullions": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_reflection_horizon": false
+    },
+    "plaster_mint_rear": {
+      "path": "tools/archetype_compiler/sticker_assets/shophouse_peranakan_v98/plaster_mint_rear_intrinsic.png",
+      "sha256": "e0b195540c51491cbe07ef3d410affc07c497cfc605fef26365e8cb2c68de40e",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_pilasters_or_arches": false,
+      "contains_printed_rails_or_mullions": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_reflection_horizon": false
+    },
+    "plaster_lavender_front": {
+      "path": "tools/archetype_compiler/sticker_assets/shophouse_peranakan_v98/plaster_lavender_front_intrinsic.png",
+      "sha256": "63749dae7d6a5991b484a6c4eb08df81c040c377b3b7f3e90fae43114148e770",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_pilasters_or_arches": false,
+      "contains_printed_rails_or_mullions": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_reflection_horizon": false
+    },
+    "plaster_lavender_return": {
+      "path": "tools/archetype_compiler/sticker_assets/shophouse_peranakan_v98/plaster_lavender_return_intrinsic.png",
+      "sha256": "7b902072b12216bd0b78005a1fb572db93e2ddecb950f70e8e8b9703f8f6d72d",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_pilasters_or_arches": false,
+      "contains_printed_rails_or_mullions": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_reflection_horizon": false
+    },
+    "plaster_lavender_rear": {
+      "path": "tools/archetype_compiler/sticker_assets/shophouse_peranakan_v98/plaster_lavender_rear_intrinsic.png",
+      "sha256": "d108e09bc4b969fbef7db17d9b929c7de2249f48ff606bcb9a2cc78423cde439",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_pilasters_or_arches": false,
+      "contains_printed_rails_or_mullions": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_reflection_horizon": false
+    },
+    "plaster_cream_front": {
+      "path": "tools/archetype_compiler/sticker_assets/shophouse_peranakan_v98/plaster_cream_front_intrinsic.png",
+      "sha256": "ffb8c027548c9e751f40be71379bad1fc9b31df1c930606c77ed7888771a3e26",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_pilasters_or_arches": false,
+      "contains_printed_rails_or_mullions": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_reflection_horizon": false
+    },
+    "plaster_cream_return": {
+      "path": "tools/archetype_compiler/sticker_assets/shophouse_peranakan_v98/plaster_cream_return_intrinsic.png",
+      "sha256": "bd15bea21d47833196b8a978961037ca715328e730dee0f57f320b50ce38c1b7",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_pilasters_or_arches": false,
+      "contains_printed_rails_or_mullions": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_reflection_horizon": false
+    },
+    "plaster_cream_rear": {
+      "path": "tools/archetype_compiler/sticker_assets/shophouse_peranakan_v98/plaster_cream_rear_intrinsic.png",
+      "sha256": "8664c68a4610f867626420e624845f7263cc4fe96fba6e5f56f1e5ce84a0cbf5",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_pilasters_or_arches": false,
+      "contains_printed_rails_or_mullions": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_reflection_horizon": false
+    },
+    "pale_trim_relief": {
+      "path": "tools/archetype_compiler/sticker_assets/shophouse_peranakan_v98/pale_trim_relief_intrinsic.png",
+      "sha256": "bad82fc74e7adde59d8f5d70208b5b31587a1f5ce6eb90cfad889f46f52a032f",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_pilasters_or_arches": false,
+      "contains_printed_rails_or_mullions": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_reflection_horizon": false
+    },
+    "fine_ornament": {
+      "path": "tools/archetype_compiler/sticker_assets/shophouse_peranakan_v98/fine_ornament_intrinsic.png",
+      "sha256": "7875ea21c5c12e6abae327e59476a50dbb5589f9a00e902f997fdd0fa9089e80",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_pilasters_or_arches": false,
+      "contains_printed_rails_or_mullions": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_reflection_horizon": false
+    },
+    "ceramic_dado": {
+      "path": "tools/archetype_compiler/sticker_assets/shophouse_peranakan_v98/peranakan_ceramic_dado_intrinsic.png",
+      "sha256": "b24f12dfa8b848b836f05f22d636d890419a74c8d3b6d2ce3c11740e90325640",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_pilasters_or_arches": false,
+      "contains_printed_rails_or_mullions": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_reflection_horizon": false
+    },
+    "walkway_tile": {
+      "path": "tools/archetype_compiler/sticker_assets/shophouse_peranakan_v98/five_foot_way_tile_intrinsic.png",
+      "sha256": "75f55fdfe8cbb6c5aaa6069abec5d3f7c9ed9f02c350de2b4cc6b4c2e3363f57",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_pilasters_or_arches": false,
+      "contains_printed_rails_or_mullions": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_reflection_horizon": false
+    },
+    "carved_dark_timber": {
+      "path": "tools/archetype_compiler/sticker_assets/shophouse_peranakan_v98/carved_dark_timber_intrinsic.png",
+      "sha256": "1443cfa7210e794d6ad9e11930697427ffaf902209620ccb8c10370bea2b9055",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_pilasters_or_arches": false,
+      "contains_printed_rails_or_mullions": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_reflection_horizon": false
+    },
+    "physical_clear_glass": {
+      "path": "tools/archetype_compiler/sticker_assets/shophouse_peranakan_v98/physical_clear_glass_intrinsic.png",
+      "sha256": "f125a41400efc7b1866826bb83d73d6164036dfd0a02f1652cc3448ab8752bd9",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_pilasters_or_arches": false,
+      "contains_printed_rails_or_mullions": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_reflection_horizon": false
+    },
+    "ground_shop_interiors": {
+      "path": "tools/archetype_compiler/sticker_assets/shophouse_peranakan_v98/ground_shop_interior_atlas.png",
+      "sha256": "87a84d009ab4bc6648a698226abeb3175a77382432f16fa171a475314f633958",
+      "evidence_class": "constrained_completion",
+      "contains_printed_openings": false,
+      "contains_printed_pilasters_or_arches": false,
+      "contains_printed_rails_or_mullions": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_reflection_horizon": false
+    },
+    "upper_residential_interiors": {
+      "path": "tools/archetype_compiler/sticker_assets/shophouse_peranakan_v98/upper_residential_interior_atlas.png",
+      "sha256": "cb9b6b5176854e969f02038927fdad9f4b176486445d47b5d4f1c11f53974722",
+      "evidence_class": "constrained_completion",
+      "contains_printed_openings": false,
+      "contains_printed_pilasters_or_arches": false,
+      "contains_printed_rails_or_mullions": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_reflection_horizon": false
+    },
+    "terracotta_roof_field": {
+      "path": "tools/archetype_compiler/sticker_assets/shophouse_peranakan_v98/terracotta_roof_field_intrinsic.png",
+      "sha256": "3480fde29e73f410ccec582534628a64ced0a2b6b378a0b3fde2f9f910d055fb",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_pilasters_or_arches": false,
+      "contains_printed_rails_or_mullions": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_reflection_horizon": false
+    },
+    "terracotta_ridge_cap": {
+      "path": "tools/archetype_compiler/sticker_assets/shophouse_peranakan_v98/terracotta_ridge_cap_intrinsic.png",
+      "sha256": "72a8e74bf4daf6161691820c028e9c0827ee5ed768c8e45a5942fdf6a16cf1d8",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_pilasters_or_arches": false,
+      "contains_printed_rails_or_mullions": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_reflection_horizon": false
+    },
+    "party_wall_plaster": {
+      "path": "tools/archetype_compiler/sticker_assets/shophouse_peranakan_v98/party_wall_plaster_intrinsic.png",
+      "sha256": "6314974e630dae781843e2ee7666cbdf945f5e48d358aef413b66732d54d3aac",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_pilasters_or_arches": false,
+      "contains_printed_rails_or_mullions": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_reflection_horizon": false
+    },
+    "party_wall_coping": {
+      "path": "tools/archetype_compiler/sticker_assets/shophouse_peranakan_v98/party_wall_coping_intrinsic.png",
+      "sha256": "757b1bc6ce2ca0af0f4ac02e722ea37b25e0d66b77bc1d421b0cb920024cd7a1",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_pilasters_or_arches": false,
+      "contains_printed_rails_or_mullions": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_reflection_horizon": false
+    },
+    "roof_flashing": {
+      "path": "tools/archetype_compiler/sticker_assets/shophouse_peranakan_v98/roof_flashing_intrinsic.png",
+      "sha256": "4188bdafdbc5d2bb7a7d6e606a69b7a4cd4fbe63eb1d1625a08c5dd835868c30",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_pilasters_or_arches": false,
+      "contains_printed_rails_or_mullions": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_reflection_horizon": false
+    },
+    "painted_fretwork_fascia": {
+      "path": "tools/archetype_compiler/sticker_assets/shophouse_peranakan_v98/painted_fretwork_fascia_intrinsic.png",
+      "sha256": "2dde30a114457582e0871986106b7f8bcce561d673386cb2cdb9fd4556665a81",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_pilasters_or_arches": false,
+      "contains_printed_rails_or_mullions": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_reflection_horizon": false
+    },
+    "wrought_iron": {
+      "path": "tools/archetype_compiler/sticker_assets/shophouse_peranakan_v98/wrought_iron_intrinsic.png",
+      "sha256": "a8d6d5daf5f846c68a59c54aba1ff63ae9cc1b30affbd48bc3b642844b576752",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_pilasters_or_arches": false,
+      "contains_printed_rails_or_mullions": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_reflection_horizon": false
+    },
+    "gutter_downpipe": {
+      "path": "tools/archetype_compiler/sticker_assets/shophouse_peranakan_v98/gutter_downpipe_intrinsic.png",
+      "sha256": "2620a60325e9c1880277760bc94906a89dc08e196fe0d998d1bd371578dc48a8",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_pilasters_or_arches": false,
+      "contains_printed_rails_or_mullions": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_reflection_horizon": false
+    },
+    "balcony_plaster": {
+      "path": "tools/archetype_compiler/sticker_assets/shophouse_peranakan_v98/balcony_plaster_intrinsic.png",
+      "sha256": "444d4a4b9761e361ec78ef88b51f7d464bc92b04b807eaa58f010c6f567a24b8",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_pilasters_or_arches": false,
+      "contains_printed_rails_or_mullions": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_reflection_horizon": false
+    },
+    "arcade_soffit_reveal": {
+      "path": "tools/archetype_compiler/sticker_assets/shophouse_peranakan_v98/arcade_soffit_reveal_intrinsic.png",
+      "sha256": "fee49e03d930d57fa55f745989f6911063cf592307e46d6294b331e2ff54a0c5",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_pilasters_or_arches": false,
+      "contains_printed_rails_or_mullions": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_reflection_horizon": false
+    },
+    "rear_service_finish": {
+      "path": "tools/archetype_compiler/sticker_assets/shophouse_peranakan_v98/rear_service_finish_intrinsic.png",
+      "sha256": "0a7a4c99640ee602f51ab64c3c3e8835e66d1b6ca1730e7b77e4c4a67cfc7101",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_pilasters_or_arches": false,
+      "contains_printed_rails_or_mullions": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_reflection_horizon": false
+    },
+    "threshold_hardware": {
+      "path": "tools/archetype_compiler/sticker_assets/shophouse_peranakan_v98/threshold_hardware_intrinsic.png",
+      "sha256": "9623ed1638f3a24c6c59ca304c7b34f1062f88d0ed62423f853deab376254397",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_pilasters_or_arches": false,
+      "contains_printed_rails_or_mullions": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_reflection_horizon": false
+    },
+    "ceramic_dado_family_0": {
+      "path": "tools/archetype_compiler/sticker_assets/shophouse_peranakan_v98/peranakan_ceramic_dado_family_0_intrinsic.png",
+      "sha256": "4af885fd44fcdd22627025f2553c979910c9fc36d69d356a28e9cb5ad9d8ebe3",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_pilasters_or_arches": false,
+      "contains_printed_rails_or_mullions": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_reflection_horizon": false
+    },
+    "ceramic_dado_family_1": {
+      "path": "tools/archetype_compiler/sticker_assets/shophouse_peranakan_v98/peranakan_ceramic_dado_family_1_intrinsic.png",
+      "sha256": "554df41e81dd2f90f21586d4bbc64a76df7b3f1b1f30c0041e0deb7535b06252",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_pilasters_or_arches": false,
+      "contains_printed_rails_or_mullions": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_reflection_horizon": false
+    },
+    "ceramic_dado_family_2": {
+      "path": "tools/archetype_compiler/sticker_assets/shophouse_peranakan_v98/peranakan_ceramic_dado_family_2_intrinsic.png",
+      "sha256": "c094f817d9d135d48843dd9ace1401744ef3afdd22fcd02da07c7fb12185861f",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_pilasters_or_arches": false,
+      "contains_printed_rails_or_mullions": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_reflection_horizon": false
+    },
+    "ceramic_dado_family_3": {
+      "path": "tools/archetype_compiler/sticker_assets/shophouse_peranakan_v98/peranakan_ceramic_dado_family_3_intrinsic.png",
+      "sha256": "aaa6901147f1d843b93f80f980daa91f4bea82a9fb14284be0254299d02a89b7",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_pilasters_or_arches": false,
+      "contains_printed_rails_or_mullions": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_reflection_horizon": false
+    },
+    "ceramic_dado_family_4": {
+      "path": "tools/archetype_compiler/sticker_assets/shophouse_peranakan_v98/peranakan_ceramic_dado_family_4_intrinsic.png",
+      "sha256": "49001859517fd8bad023e888ec5fee03cbbbb940401945a6538448d498684b30",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_pilasters_or_arches": false,
+      "contains_printed_rails_or_mullions": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_reflection_horizon": false
+    },
+    "ceramic_dado_family_5": {
+      "path": "tools/archetype_compiler/sticker_assets/shophouse_peranakan_v98/peranakan_ceramic_dado_family_5_intrinsic.png",
+      "sha256": "55a5681817721deedd3ea869e9984c685724e5a9d31da0966c56c653d436ceaa",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_openings": false,
+      "contains_printed_pilasters_or_arches": false,
+      "contains_printed_rails_or_mullions": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_reflection_horizon": false
+    }
+  },
+  "tiers": [
+    {
+      "id": "canonical",
+      "signature_profile_id": "peranakan-shophouse-row-sticker-lego-canonical",
+      "family_id": "peranakan-shophouse-row-v98-canonical",
+      "units": 6,
+      "width_m": 30.0,
+      "depth_m": 28.0,
+      "geometry_sha256": "5d69760c7b41a874c1eb1f68e5e2d9b5b7d32f65c90440b124f80323632def12"
+    },
+    {
+      "id": "extended",
+      "signature_profile_id": "peranakan-shophouse-row-sticker-lego-extended",
+      "family_id": "peranakan-shophouse-row-v98-extended",
+      "units": 7,
+      "width_m": 35.0,
+      "depth_m": 28.0,
+      "geometry_sha256": "c26e25415557894c1c300908794582d72409ff709947d4b486dfac5f0c0c110f"
+    }
+  ]
+}
