@@ -129,7 +129,27 @@
       "archetype_id": "industrial_park_modernism",
       "variant_id": "industrial_tilt_up_concrete",
       "representation": "discrete_panel_lego",
-      "status": "queued"
+      "status": "approved_95_plus",
+      "architect_scores": {
+        "canonical": 95.15,
+        "extended": 95.1,
+        "mean": 95.125,
+        "hard_stops": 0
+      },
+      "identity_locks": [
+        "single-volume tilt-up warehouse with two office ribbons only on the public front",
+        "physical openwork fin screen terminating at one raised blind pylon",
+        "one recessed glazed entrance with supported dark canopy",
+        "six recessed sectional loading doors on the right return with paired bollards",
+        "three constrained rear receiving positions",
+        "flat TPO roof with two RTUs, three rooflights and sparse vents"
+      ],
+      "approved_tiers": {
+        "canonical": {"width_m": 60.0, "depth_m": 42.0, "office_levels": 2},
+        "extended": {"width_m": 60.0, "depth_m": 48.0, "office_levels": 2}
+      },
+      "lego_rule": "extended adds exactly one complete 6m rear operational module; front office entry pylon screen loading kit and all metric UV scales remain fixed",
+      "review_path": "docs/reviews/catalogue-rollout-v98/sticker-method-batch-01/industrial-tilt-up-concrete"
     },
     {
       "order": 8,

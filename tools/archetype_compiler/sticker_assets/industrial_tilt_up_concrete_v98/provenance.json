@@ -1,0 +1,539 @@
+{
+  "schema": "siteforge.sticker-asset-provenance@1",
+  "building": "industrial_park_modernism--industrial_tilt_up_concrete",
+  "variant_index": 0,
+  "identity_authority": "three_exact_variant_0_images",
+  "exact_reference_sources": {
+    "variant_0.png": {
+      "path": "frontend/public/archetypes/buildings/industrial_park_modernism/variant_0.png",
+      "sha256": "de5e08df02bcda3c33c5a0d9eb5f13ac4c8f4d4c50a5ac89ef9d0df7826baab7",
+      "evidence_class": "exact_reference"
+    },
+    "variant_0_angle_60.jpg": {
+      "path": "frontend/public/archetypes/buildings/industrial_park_modernism/variant_0_angle_60.jpg",
+      "sha256": "0e2fd31a87d156a3e8a04f0fbaea93b1e0e69606e1c4ebbe8f1a52bb9923c65b",
+      "evidence_class": "exact_reference"
+    },
+    "variant_0_angle_90.jpg": {
+      "path": "frontend/public/archetypes/buildings/industrial_park_modernism/variant_0_angle_90.jpg",
+      "sha256": "d6abca22f264b4ba34c4d43af49eb0d311236f5dadebce2ed393220e1be3817e",
+      "evidence_class": "exact_reference"
+    }
+  },
+  "palette_conditioning": {
+    "rule": "bounds-asserted median probes blended toward intrinsic material priors; no source pixels pasted",
+    "crops_px": {
+      "warm_concrete": {
+        "path": "frontend/public/archetypes/buildings/industrial_park_modernism/variant_0.png",
+        "box": [
+          445,
+          213,
+          615,
+          390
+        ]
+      },
+      "cool_concrete": {
+        "path": "frontend/public/archetypes/buildings/industrial_park_modernism/variant_0.png",
+        "box": [
+          790,
+          245,
+          950,
+          460
+        ]
+      },
+      "plinth": {
+        "path": "frontend/public/archetypes/buildings/industrial_park_modernism/variant_0.png",
+        "box": [
+          520,
+          520,
+          680,
+          600
+        ]
+      },
+      "joinery": {
+        "path": "frontend/public/archetypes/buildings/industrial_park_modernism/variant_0.png",
+        "box": [
+          205,
+          342,
+          315,
+          455
+        ]
+      },
+      "glass": {
+        "path": "frontend/public/archetypes/buildings/industrial_park_modernism/variant_0.png",
+        "box": [
+          215,
+          350,
+          300,
+          435
+        ]
+      },
+      "canopy": {
+        "path": "frontend/public/archetypes/buildings/industrial_park_modernism/variant_0_angle_60.jpg",
+        "box": [
+          245,
+          533,
+          455,
+          585
+        ]
+      },
+      "roof": {
+        "path": "frontend/public/archetypes/buildings/industrial_park_modernism/variant_0_angle_90.jpg",
+        "box": [
+          315,
+          220,
+          930,
+          665
+        ]
+      },
+      "equipment": {
+        "path": "frontend/public/archetypes/buildings/industrial_park_modernism/variant_0_angle_60.jpg",
+        "box": [
+          405,
+          240,
+          595,
+          400
+        ]
+      },
+      "door": {
+        "path": "frontend/public/archetypes/buildings/industrial_park_modernism/variant_0.png",
+        "box": [
+          835,
+          415,
+          955,
+          590
+        ]
+      }
+    },
+    "sampled_rgb": {
+      "warm_concrete": [
+        194,
+        165,
+        129
+      ],
+      "cool_concrete": [
+        86,
+        90,
+        94
+      ],
+      "plinth": [
+        77,
+        79,
+        62
+      ],
+      "joinery": [
+        182,
+        162,
+        128
+      ],
+      "glass": [
+        169,
+        155,
+        127
+      ],
+      "canopy": [
+        129,
+        108,
+        87
+      ],
+      "roof": [
+        221,
+        206,
+        194
+      ],
+      "equipment": [
+        223,
+        209,
+        198
+      ],
+      "door": [
+        76,
+        81,
+        83
+      ]
+    },
+    "prepared_palette_rgb": {
+      "warm": [
+        184,
+        171,
+        146
+      ],
+      "cool": [
+        156,
+        160,
+        157
+      ],
+      "plinth": [
+        118,
+        120,
+        112
+      ],
+      "joinery": [
+        79,
+        81,
+        77
+      ],
+      "glass": [
+        138,
+        157,
+        163
+      ],
+      "canopy": [
+        74,
+        75,
+        71
+      ],
+      "roof": [
+        212,
+        210,
+        202
+      ],
+      "roof_perimeter": [
+        173,
+        172,
+        165
+      ],
+      "galvanized": [
+        156,
+        157,
+        153
+      ],
+      "door": [
+        129,
+        133,
+        132
+      ]
+    }
+  },
+  "geometry_ownership": [
+    "tilt-up panel joints and sealant grooves",
+    "apertures",
+    "loading recesses",
+    "window and door frames",
+    "canopy geometry",
+    "parapets, coping profiles and roof equipment"
+  ],
+  "concrete_contract": "Intrinsic aggregate and low-frequency mineral variation only; no printed panel grid, joints, form ties, openings, text, shadows or lighting.",
+  "glass_contract": "Neutral physical optical field only; no printed frame, aperture, reflection or horizon.",
+  "interior_contract": "Separate deterministic neutral-veiled 4x2 lower/lobby and upper-office cards remain recessed and subordinate.",
+  "roof_contract": "Off-white TPO and perimeter patch belong only to explicit upward roof faces; parapets, coping, curbs and equipment retain construction-role finishes.",
+  "atlas_grid": [
+    4,
+    2
+  ],
+  "assets": {
+    "warm_buff_concrete_front": {
+      "path": "tools/archetype_compiler/sticker_assets/industrial_tilt_up_concrete_v98/warm_buff_concrete_front_intrinsic.png",
+      "sha256": "6033f2a65d0a9bce3f0ad3a57f4d340fed436367a72d9dd9d645982599b0fbd9",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_panel_joints": false,
+      "contains_printed_structural_grid": false,
+      "contains_printed_apertures": false,
+      "contains_printed_mullions": false,
+      "contains_printed_reflections_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "warm_buff_concrete_return": {
+      "path": "tools/archetype_compiler/sticker_assets/industrial_tilt_up_concrete_v98/warm_buff_concrete_return_intrinsic.png",
+      "sha256": "be25978a40494f46ee733bcd2f24b7f79e26b91fb97e718515574b7c055dcd5b",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_panel_joints": false,
+      "contains_printed_structural_grid": false,
+      "contains_printed_apertures": false,
+      "contains_printed_mullions": false,
+      "contains_printed_reflections_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "cool_gray_side_rear_concrete": {
+      "path": "tools/archetype_compiler/sticker_assets/industrial_tilt_up_concrete_v98/cool_gray_side_rear_concrete_intrinsic.png",
+      "sha256": "e8b8dff068bb3960ed06fad3500e6df32d30e9229e392bc4469dc7e3538753d7",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_panel_joints": false,
+      "contains_printed_structural_grid": false,
+      "contains_printed_apertures": false,
+      "contains_printed_mullions": false,
+      "contains_printed_reflections_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "weathered_plinth_reveal_concrete": {
+      "path": "tools/archetype_compiler/sticker_assets/industrial_tilt_up_concrete_v98/weathered_plinth_reveal_concrete_intrinsic.png",
+      "sha256": "0794a04251179a164dcf846fc73353a09ecf3a22a6f06304db3a10c58c6496d1",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_panel_joints": false,
+      "contains_printed_structural_grid": false,
+      "contains_printed_apertures": false,
+      "contains_printed_mullions": false,
+      "contains_printed_reflections_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "dark_joint_sealant": {
+      "path": "tools/archetype_compiler/sticker_assets/industrial_tilt_up_concrete_v98/dark_joint_sealant_intrinsic.png",
+      "sha256": "e66fa85f02db75ec401a5d991b0eb340809fa16bfd3e2640c97d57a0105639a8",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_panel_joints": false,
+      "contains_printed_structural_grid": false,
+      "contains_printed_apertures": false,
+      "contains_printed_mullions": false,
+      "contains_printed_reflections_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "pale_coping_flashing": {
+      "path": "tools/archetype_compiler/sticker_assets/industrial_tilt_up_concrete_v98/pale_coping_flashing_intrinsic.png",
+      "sha256": "bd748e95bca9a279c9171a0343891492f897b034a5a506e7d2b10ac08ae1dbb2",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_panel_joints": false,
+      "contains_printed_structural_grid": false,
+      "contains_printed_apertures": false,
+      "contains_printed_mullions": false,
+      "contains_printed_reflections_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "charcoal_bronze_aluminum": {
+      "path": "tools/archetype_compiler/sticker_assets/industrial_tilt_up_concrete_v98/charcoal_bronze_aluminum_intrinsic.png",
+      "sha256": "26c06117c4e80d37efc1d5c26167dbf819bf2749a73de11749779d1335466f8a",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_panel_joints": false,
+      "contains_printed_structural_grid": false,
+      "contains_printed_apertures": false,
+      "contains_printed_mullions": false,
+      "contains_printed_reflections_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "physical_neutral_glass": {
+      "path": "tools/archetype_compiler/sticker_assets/industrial_tilt_up_concrete_v98/physical_neutral_glass_intrinsic.png",
+      "sha256": "b0f93cc77fb32dc551f30680b598c2e8ba1573365af7edffaa63cf5becdbc95e",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_panel_joints": false,
+      "contains_printed_structural_grid": false,
+      "contains_printed_apertures": false,
+      "contains_printed_mullions": false,
+      "contains_printed_reflections_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "lobby_lower_office_interiors": {
+      "path": "tools/archetype_compiler/sticker_assets/industrial_tilt_up_concrete_v98/lobby_lower_office_interior_atlas.png",
+      "sha256": "036bcc965600c99f66ea8d78079c9f59fdf3ba1ec2773ab04b81a7446f8d526a",
+      "evidence_class": "constrained_completion",
+      "contains_printed_panel_joints": false,
+      "contains_printed_structural_grid": false,
+      "contains_printed_apertures": false,
+      "contains_printed_mullions": false,
+      "contains_printed_reflections_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "upper_office_interiors": {
+      "path": "tools/archetype_compiler/sticker_assets/industrial_tilt_up_concrete_v98/upper_office_interior_atlas.png",
+      "sha256": "fbe9ea62640de3c7001432bccbf415b33fda0eb28c933ad35ea2b7a3499cde9f",
+      "evidence_class": "constrained_completion",
+      "contains_printed_panel_joints": false,
+      "contains_printed_structural_grid": false,
+      "contains_printed_apertures": false,
+      "contains_printed_mullions": false,
+      "contains_printed_reflections_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "canopy_top": {
+      "path": "tools/archetype_compiler/sticker_assets/industrial_tilt_up_concrete_v98/dark_canopy_top_intrinsic.png",
+      "sha256": "5b8b34c8fbabfd9490720dbdab53cc1997e7fa964e3e7ef63823acfc36822ecc",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_panel_joints": false,
+      "contains_printed_structural_grid": false,
+      "contains_printed_apertures": false,
+      "contains_printed_mullions": false,
+      "contains_printed_reflections_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "canopy_fascia": {
+      "path": "tools/archetype_compiler/sticker_assets/industrial_tilt_up_concrete_v98/dark_canopy_fascia_intrinsic.png",
+      "sha256": "fc4fbd5f5c5b531fd00dddb1d75cfce36368ff85734eaef354ee183922ca6f49",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_panel_joints": false,
+      "contains_printed_structural_grid": false,
+      "contains_printed_apertures": false,
+      "contains_printed_mullions": false,
+      "contains_printed_reflections_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "canopy_soffit_posts": {
+      "path": "tools/archetype_compiler/sticker_assets/industrial_tilt_up_concrete_v98/dark_canopy_soffit_posts_intrinsic.png",
+      "sha256": "2a54f84186123b38a01d17e3e342ec47b46a2d058c63e5e0617db58c802e49d3",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_panel_joints": false,
+      "contains_printed_structural_grid": false,
+      "contains_printed_apertures": false,
+      "contains_printed_mullions": false,
+      "contains_printed_reflections_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "ribbed_overhead_doors": {
+      "path": "tools/archetype_compiler/sticker_assets/industrial_tilt_up_concrete_v98/ribbed_overhead_doors_intrinsic.png",
+      "sha256": "7d9ecdaba40977469a48c43c2181d5f080f2a08cedc67876bb942d8ccff9c72e",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_panel_joints": false,
+      "contains_printed_structural_grid": false,
+      "contains_printed_apertures": false,
+      "contains_printed_mullions": false,
+      "contains_printed_reflections_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "dock_rubber_hardware": {
+      "path": "tools/archetype_compiler/sticker_assets/industrial_tilt_up_concrete_v98/dock_rubber_hardware_intrinsic.png",
+      "sha256": "01b84e48d58ac93f9e5d00473e377d9d22a4c0c7d9ec796b4be5f63a4d6d8783",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_panel_joints": false,
+      "contains_printed_structural_grid": false,
+      "contains_printed_apertures": false,
+      "contains_printed_mullions": false,
+      "contains_printed_reflections_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "galvanized_threshold": {
+      "path": "tools/archetype_compiler/sticker_assets/industrial_tilt_up_concrete_v98/galvanized_threshold_intrinsic.png",
+      "sha256": "3856c488b447dc85a1fe10d59ba770a44c33ace8f5639484d07c6ef27f823983",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_panel_joints": false,
+      "contains_printed_structural_grid": false,
+      "contains_printed_apertures": false,
+      "contains_printed_mullions": false,
+      "contains_printed_reflections_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "personnel_doors": {
+      "path": "tools/archetype_compiler/sticker_assets/industrial_tilt_up_concrete_v98/personnel_doors_intrinsic.png",
+      "sha256": "9e463331daccc345c80f27a0d765ce88fb022531774840f988e83ca52e03c86f",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_panel_joints": false,
+      "contains_printed_structural_grid": false,
+      "contains_printed_apertures": false,
+      "contains_printed_mullions": false,
+      "contains_printed_reflections_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "safety_yellow_bollards": {
+      "path": "tools/archetype_compiler/sticker_assets/industrial_tilt_up_concrete_v98/safety_yellow_bollards_intrinsic.png",
+      "sha256": "10262d918ab6280100cc0ffce45d02d810623995f4484c9405c1fcde585ed38a",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_panel_joints": false,
+      "contains_printed_structural_grid": false,
+      "contains_printed_apertures": false,
+      "contains_printed_mullions": false,
+      "contains_printed_reflections_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "off_white_tpo": {
+      "path": "tools/archetype_compiler/sticker_assets/industrial_tilt_up_concrete_v98/off_white_tpo_intrinsic.png",
+      "sha256": "1adf1b4ae3191c57a741df4395ed69312cfd5cb78b1b870445cf5099681e8c5a",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_panel_joints": false,
+      "contains_printed_structural_grid": false,
+      "contains_printed_apertures": false,
+      "contains_printed_mullions": false,
+      "contains_printed_reflections_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "roof_perimeter_patch": {
+      "path": "tools/archetype_compiler/sticker_assets/industrial_tilt_up_concrete_v98/roof_perimeter_patch_intrinsic.png",
+      "sha256": "fa1ba567e7339f43af27a1802206c6350204261c8b1cc01e66cc421771898b3e",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_panel_joints": false,
+      "contains_printed_structural_grid": false,
+      "contains_printed_apertures": false,
+      "contains_printed_mullions": false,
+      "contains_printed_reflections_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "rooflight_glass": {
+      "path": "tools/archetype_compiler/sticker_assets/industrial_tilt_up_concrete_v98/rooflight_glass_intrinsic.png",
+      "sha256": "19496e79223954fc31c24644d61d8207a5bed60f6381a100d4e58ce102c5871c",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_panel_joints": false,
+      "contains_printed_structural_grid": false,
+      "contains_printed_apertures": false,
+      "contains_printed_mullions": false,
+      "contains_printed_reflections_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "rooflight_curb": {
+      "path": "tools/archetype_compiler/sticker_assets/industrial_tilt_up_concrete_v98/rooflight_curb_intrinsic.png",
+      "sha256": "77358a6e90c370517d7d0ea8f2706901ad46f265ad2660ff4a167d12a97b07e8",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_panel_joints": false,
+      "contains_printed_structural_grid": false,
+      "contains_printed_apertures": false,
+      "contains_printed_mullions": false,
+      "contains_printed_reflections_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "aged_galvanized_hvac_duct_vents": {
+      "path": "tools/archetype_compiler/sticker_assets/industrial_tilt_up_concrete_v98/aged_galvanized_hvac_duct_vents_intrinsic.png",
+      "sha256": "2e95be52180f09906147c7953b6c24c6aef270495a93fa25b50d715ca498699f",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_panel_joints": false,
+      "contains_printed_structural_grid": false,
+      "contains_printed_apertures": false,
+      "contains_printed_mullions": false,
+      "contains_printed_reflections_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "service_grille": {
+      "path": "tools/archetype_compiler/sticker_assets/industrial_tilt_up_concrete_v98/service_grille_intrinsic.png",
+      "sha256": "2050caf3f587f338c9c9b2dc14f0a36821f68085581ab3e6c768a962edf55d8f",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_panel_joints": false,
+      "contains_printed_structural_grid": false,
+      "contains_printed_apertures": false,
+      "contains_printed_mullions": false,
+      "contains_printed_reflections_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "blank_sign_plate": {
+      "path": "tools/archetype_compiler/sticker_assets/industrial_tilt_up_concrete_v98/blank_sign_plate_intrinsic.png",
+      "sha256": "e6b44c5790eedbfc7382b3bc23e8bbd1c300a9b9e88577f9a5ae705d6ae92847",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_panel_joints": false,
+      "contains_printed_structural_grid": false,
+      "contains_printed_apertures": false,
+      "contains_printed_mullions": false,
+      "contains_printed_reflections_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    },
+    "openwork_shadow_backing": {
+      "path": "tools/archetype_compiler/sticker_assets/industrial_tilt_up_concrete_v98/openwork_shadow_backing_intrinsic.png",
+      "sha256": "278283faebe33029e66ab5da7b34ce13abde9e67884697492c8b9b16fe1296e3",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_panel_joints": false,
+      "contains_printed_structural_grid": false,
+      "contains_printed_apertures": false,
+      "contains_printed_mullions": false,
+      "contains_printed_reflections_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_text_or_logo": false
+    }
+  },
+  "post_generation_nonuniform_scale_allowed": false
+}
