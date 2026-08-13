@@ -1,0 +1,41 @@
+{
+  "schema": "siteforge.named-architect-review@1",
+  "pipeline_version": "v98",
+  "building_id": "graduate_family_housing--collegiate_brick_corner_block",
+  "reviewer": "architect_design_reviewer",
+  "status": "pass",
+  "score_target_exclusive_mean": 95.0,
+  "mean_score_unrounded": 95.125,
+  "hard_stop_status": "pass",
+  "hard_stop_count": 0,
+  "scores": {
+    "canonical": {"total": 95.20},
+    "extended": {"total": 95.05}
+  },
+  "approved_tiers": {
+    "canonical": {"width_m": 42.0, "depth_m": 38.0, "floors": 5},
+    "extended": {"width_m": 49.0, "depth_m": 38.0, "floors": 5}
+  },
+  "approved_contract": {
+    "module_width_m": 7.0,
+    "whole_horizontal_modules_only": true,
+    "vertical_scaling_allowed": false,
+    "depth_scaling_allowed": false,
+    "continuous_resize_allowed": false,
+    "corner_oriel_entry_courtyard_and_roof_kit_remain_fixed": true
+  },
+  "machine_evidence": {
+    "canonical_surface_faces": 17306,
+    "extended_surface_faces": 19568,
+    "surface_failures": 0,
+    "production_preflight": "pass",
+    "export_validation": "pass"
+  },
+  "residual_deductions": [
+    "Residential glazing and subdued occupied interiors remain darker than the exact reference.",
+    "Secondary and rear elevations are architecturally coherent but constrained rather than exact evidence.",
+    "Roof membrane variation and screened plant detail remain restrained.",
+    "The reviewed exports exceed preferred triangle, material and texture budgets and require later consolidation."
+  ],
+  "verdict": "Approved only for the reviewed 42 m canonical and 49 m extended tiers; arbitrary resizing is not authorized."
+}

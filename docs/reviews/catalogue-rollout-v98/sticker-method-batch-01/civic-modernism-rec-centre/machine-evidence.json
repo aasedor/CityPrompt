@@ -1,0 +1,131 @@
+{
+  "schema": "siteforge.sticker-method-machine-evidence@1",
+  "architect_scores": {
+    "canonical": 95.15,
+    "extended": 95.05,
+    "mean": 95.1,
+    "hard_stops": 0
+  },
+  "tiers": {
+    "canonical": {
+      "dimensions": {
+        "width_m": 55.0,
+        "depth_m": 35.0,
+        "podium_height_m": 5.2,
+        "floor_height_m": 4.5,
+        "setback_height_m": 4.5,
+        "roof_height_m": 4.5,
+        "default_floors": 2,
+        "min_floors": 2,
+        "max_floors": 2,
+        "crown_height_m": 4.5
+      },
+      "assembled": {
+        "filename": "civic-modernism-rec-centre-v98-canonical_assembled.glb",
+        "floors": 2,
+        "uses_setback": false,
+        "uses_crown": false,
+        "height_m": 13.5,
+        "triangle_count": 11624,
+        "stack": [
+          {
+            "role": "massing_graph",
+            "variant_key": "civic-modernism-rec-centre-sticker-lego-canonical",
+            "level": 0,
+            "z_m": 0.0,
+            "height_m": 13.5
+          }
+        ],
+        "footprint_profile": "rectangle",
+        "footprint_target": {
+          "width_m": 55.0,
+          "depth_m": 35.0,
+          "wing_depth_m": 35.0,
+          "segments": [
+            {
+              "id": "main",
+              "centre_x_m": 0.0,
+              "centre_y_m": 0.0,
+              "length_m": 55.0,
+              "thickness_m": 35.0,
+              "rotation_degrees": 0.0
+            }
+          ]
+        },
+        "massing_graph": {
+          "schema": "massing-graph@1",
+          "profile": "civic-modernism-rec-centre-sticker-lego-canonical",
+          "node_count": 1,
+          "assembly_count": 279,
+          "void_count": 0
+        },
+        "final_surface_audit_status": "pass",
+        "final_surface_audit_checked_faces": 1595,
+        "final_surface_audit_failure_count": 0
+      },
+      "validation": "pass",
+      "production_preflight": "pass",
+      "render_count": 9
+    },
+    "extended": {
+      "dimensions": {
+        "width_m": 61.25,
+        "depth_m": 35.0,
+        "podium_height_m": 5.2,
+        "floor_height_m": 4.5,
+        "setback_height_m": 4.5,
+        "roof_height_m": 4.5,
+        "default_floors": 2,
+        "min_floors": 2,
+        "max_floors": 2,
+        "crown_height_m": 4.5
+      },
+      "assembled": {
+        "filename": "civic-modernism-rec-centre-v98-extended_assembled.glb",
+        "floors": 2,
+        "uses_setback": false,
+        "uses_crown": false,
+        "height_m": 13.5,
+        "triangle_count": 12152,
+        "stack": [
+          {
+            "role": "massing_graph",
+            "variant_key": "civic-modernism-rec-centre-sticker-lego-extended",
+            "level": 0,
+            "z_m": 0.0,
+            "height_m": 13.5
+          }
+        ],
+        "footprint_profile": "rectangle",
+        "footprint_target": {
+          "width_m": 61.25,
+          "depth_m": 35.0,
+          "wing_depth_m": 35.0,
+          "segments": [
+            {
+              "id": "main",
+              "centre_x_m": 0.0,
+              "centre_y_m": 0.0,
+              "length_m": 61.25,
+              "thickness_m": 35.0,
+              "rotation_degrees": 0.0
+            }
+          ]
+        },
+        "massing_graph": {
+          "schema": "massing-graph@1",
+          "profile": "civic-modernism-rec-centre-sticker-lego-extended",
+          "node_count": 1,
+          "assembly_count": 291,
+          "void_count": 0
+        },
+        "final_surface_audit_status": "pass",
+        "final_surface_audit_checked_faces": 1667,
+        "final_surface_audit_failure_count": 0
+      },
+      "validation": "pass",
+      "production_preflight": "pass",
+      "render_count": 9
+    }
+  }
+}

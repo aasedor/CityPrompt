@@ -1,0 +1,45 @@
+{
+  "schema": "siteforge.sticker-method-release-scaffold@1",
+  "status": "approved_95_plus",
+  "building_id": "graduate_family_housing--collegiate_brick_corner_block",
+  "reference_sha256": {
+    "variant_0.png": "975880325493f35fdae5367aeeccd5648ebe38f57baf5d7b7aa2ce024c17f747",
+    "variant_0_angle_60.jpg": "3af8854ea010429a2d4cc1c87862b04eb91a93294767467d393b80a41598c4df",
+    "variant_0_angle_90.jpg": "21e0c4e9ab7fd36fac73258b6294f492ca4af6424dd0b85c753f8604ef3f2dc5"
+  },
+  "geometry_sha256": {
+    "canonical": "a3dc8607f4d04ef819f728762267bca3254ef386390aa689480b045d8833b740",
+    "extended": "62d7b04ab8800debbaa3bfc1b7df99afe4d5b8e7eaeaa4665741fffd88e18bd7"
+  },
+  "source_sha256": {
+    "build": "845f32b4d10bea61b8ec0c09da49a5e764353fb7e11b190967acbc526fe59ba7",
+    "compiler": "432a3781ea393d8a4fbc2cbaad879bf1999a389bc5728e20f28be0783612d1bb",
+    "contract": "dd19da3181252803722ffb4858fc281eb5a10bdded7a96d6fe177166c3fd0de0",
+    "carrier_packages": "d919d3df5e92172dc97e8a8739aa3197d0a55d3bd6a975b783392fd7149a04ba",
+    "asset_provenance": "f1fa3d319b0635c08af1cc60cecebb241469c7779b06c5f032cc985d0a5c6ab0"
+  },
+  "tier_contract": {
+    "canonical": {"width_m": 42.0, "depth_m": 38.0, "floors": 5, "horizontal_modules": 0},
+    "extended": {"width_m": 49.0, "depth_m": 38.0, "floors": 5, "horizontal_modules": 1},
+    "module_width_m": 7.0,
+    "whole_modules_only": true,
+    "vertical_scaling": false,
+    "depth_scaling": false,
+    "nonuniform_scaling": false,
+    "fixed_corner_entry_courtyard_and_roof_kit": true
+  },
+  "required_machine_gates": {
+    "production_preflight": "pass",
+    "validation": "pass",
+    "surface_audit_failure_count": 0,
+    "visible_face_ownership": "exactly_once",
+    "generic_fallback_allowed": false,
+    "minimum_render_views_per_tier": 9
+  },
+  "formal_release": {
+    "architect_scores": {"canonical": 95.20, "extended": 95.05, "mean": 95.125, "hard_stops": 0},
+    "render_sha256": "recorded_per_tier_in_machine-evidence.json",
+    "review_board_sha256": "recorded_in_machine-evidence.json",
+    "visual_approval_status": "pass"
+  }
+}

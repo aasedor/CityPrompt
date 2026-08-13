@@ -30,3 +30,11 @@ docs/archetype_owned_park_lego_batch2/*.png filter=lfs diff=lfs merge=lfs -text
 docs/archetype_owned_park_lego_batch3/*.png filter=lfs diff=lfs merge=lfs -text
 docs/shared_park_equipment_v1/*.png filter=lfs diff=lfs merge=lfs -text
 docs/cityprompt_five_park_trials_v2/*.png filter=lfs diff=lfs merge=lfs -text
+docs/reviews/catalogue-rollout-v98/**/*.png filter=lfs diff=lfs merge=lfs -text
+tools/archetype_compiler/sticker_assets/old_montreal_textile_v98/*.png filter=lfs diff=lfs merge=lfs -text
+tools/archetype_compiler/sticker_assets/daylight_sawtooth_v98/*.png filter=lfs diff=lfs merge=lfs -text
+tools/archetype_compiler/sticker_assets/administrative_faculty_office_v98/*.png filter=lfs diff=lfs merge=lfs -text
+tools/archetype_compiler/sticker_assets/halifax_waterfront_warehouse_v98/*.png filter=lfs diff=lfs merge=lfs -text
+tools/archetype_compiler/sticker_assets/civic_modernism_rec_centre_v98/*.png filter=lfs diff=lfs merge=lfs -text
+tools/archetype_compiler/sticker_assets/shophouse_peranakan_v98/*.png filter=lfs diff=lfs merge=lfs -text
+tools/archetype_compiler/sticker_assets/industrial_tilt_up_concrete_v98/*.png filter=lfs diff=lfs merge=lfs -text

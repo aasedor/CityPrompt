@@ -1,0 +1,79 @@
+{
+  "schema": "siteforge.sticker-method-machine-evidence@1",
+  "architect_scores": {
+    "canonical": 95.15,
+    "extended": 95.1,
+    "mean": 95.125,
+    "hard_stops": 0
+  },
+  "tiers": {
+    "canonical": {
+      "dimensions": {
+        "width_m": 60.0,
+        "depth_m": 42.0,
+        "podium_height_m": 4.5,
+        "floor_height_m": 6.0,
+        "setback_height_m": 6.0,
+        "roof_height_m": 2.25,
+        "default_floors": 2,
+        "min_floors": 2,
+        "max_floors": 2,
+        "crown_height_m": 6.0
+      },
+      "geometry_sha256": "9c51f0b075aa1379409377ce3ad9d15887be2a1f29dc18d4aadc91564ca74243",
+      "assembled": {
+        "height_m": 13.35,
+        "triangle_count": 10636,
+        "assembly_count": 294
+      },
+      "final_surface_audit": {
+        "status": "pass",
+        "checked_faces": 1478,
+        "failure_count": 0
+      },
+      "validation": "pass",
+      "production_preflight": "pass",
+      "render_count": 9
+    },
+    "extended": {
+      "dimensions": {
+        "width_m": 60.0,
+        "depth_m": 48.0,
+        "podium_height_m": 4.5,
+        "floor_height_m": 6.0,
+        "setback_height_m": 6.0,
+        "roof_height_m": 2.25,
+        "default_floors": 2,
+        "min_floors": 2,
+        "max_floors": 2,
+        "crown_height_m": 6.0
+      },
+      "geometry_sha256": "f7ffcae4a795b48b4598050bfd79e6be6f083b24dd035168779b841023bbb891",
+      "assembled": {
+        "height_m": 13.35,
+        "triangle_count": 10900,
+        "assembly_count": 301
+      },
+      "final_surface_audit": {
+        "status": "pass",
+        "checked_faces": 1514,
+        "failure_count": 0
+      },
+      "validation": "pass",
+      "production_preflight": "pass",
+      "render_count": 9
+    }
+  },
+  "tier_contract": {
+    "representation": "discrete_panel_lego",
+    "canonical_to_extended": "one complete 6 m rear operational module",
+    "width_scaling": false,
+    "vertical_scaling": false,
+    "nonuniform_scaling": false,
+    "metric_uv_scale_preserved": true,
+    "fixed_front_identity_kit_preserved": true
+  },
+  "non_blocking_optimization_follow_up": {
+    "material_consolidation": true
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "schema": "siteforge.industrial-tilt-up-concrete-sticker-lego@1",
+  "version": "v98.1",
+  "archetype_id": "industrial_park_modernism",
+  "variant_id": "industrial_tilt_up_concrete",
+  "identity_authority": "three_exact_variant_0_images",
+  "reference_sha256": {
+    "frontend/public/archetypes/buildings/industrial_park_modernism/variant_0.png": "de5e08df02bcda3c33c5a0d9eb5f13ac4c8f4d4c50a5ac89ef9d0df7826baab7",
+    "frontend/public/archetypes/buildings/industrial_park_modernism/variant_0_angle_60.jpg": "0e2fd31a87d156a3e8a04f0fbaea93b1e0e69606e1c4ebbe8f1a52bb9923c65b",
+    "frontend/public/archetypes/buildings/industrial_park_modernism/variant_0_angle_90.jpg": "d6abca22f264b4ba34c4d43af49eb0d311236f5dadebce2ed393220e1be3817e"
+  },
+  "size_matrix": {
+    "canonical": {
+      "width_m": 60.0,
+      "depth_m": 42.0,
+      "rear_modules": 0
+    },
+    "extended": {
+      "width_m": 60.0,
+      "depth_m": 48.0,
+      "rear_modules": 1
+    }
+  },
+  "continuous_resize_allowed": false,
+  "vertical_scaling_allowed": false,
+  "width_scaling_allowed": false,
+  "whole_modules_only": true,
+  "hard_stops": [
+    "partial rear module resize",
+    "missing fixed office entry pylon loading or roof kit",
+    "generic fallback",
+    "unowned or multiply owned face",
+    "printed panel joints",
+    "roof domain leakage"
+  ]
+}

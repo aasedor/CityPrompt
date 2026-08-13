@@ -1,0 +1,45 @@
+{
+  "schema": "siteforge.peranakan-shophouse-row-sticker-lego@1",
+  "version": "v98.1",
+  "archetype_id": "shophouse_southeast_asian",
+  "variant_id": "shophouse_peranakan",
+  "identity_authority": "three_exact_variant_0_images",
+  "reference_sha256": {
+    "frontend/public/archetypes/buildings/shophouse_southeast_asian/variant_0.png": "c388ea502ac3e7cca481063560fd74f17d06bdf354d48ea821d9a71a8bf17a47",
+    "frontend/public/archetypes/buildings/shophouse_southeast_asian/variant_0_angle_60.jpg": "2751220f0b7511eee91ab94aa0b58cce6e6f4f4734167a4ee87480e610109d03",
+    "frontend/public/archetypes/buildings/shophouse_southeast_asian/variant_0_angle_90.jpg": "df32530009a81081a8012e856b1d013f0f05ef3c00a7a4168395c1134c38c5ce"
+  },
+  "geometry_sha256": {
+    "canonical": "5d69760c7b41a874c1eb1f68e5e2d9b5b7d32f65c90440b124f80323632def12",
+    "extended": "c26e25415557894c1c300908794582d72409ff709947d4b486dfac5f0c0c110f"
+  },
+  "size_matrix": {
+    "canonical": {
+      "units": 6,
+      "width_m": 30.0,
+      "depth_m": 28.0
+    },
+    "extended": {
+      "units": 7,
+      "width_m": 35.0,
+      "depth_m": 28.0
+    }
+  },
+  "continuous_resize_allowed": false,
+  "vertical_scaling_allowed": false,
+  "depth_scaling_allowed": false,
+  "whole_attached_units_only": true,
+  "unit_width_m": 5.0,
+  "registered_asset_count": 44,
+  "hard_stops": [
+    "partial_attached_unit",
+    "stretched_metric_uv",
+    "blocked_five_foot_way",
+    "missing_party_fire_wall",
+    "flat_roof_substitution",
+    "generic_material_fallback",
+    "unowned_or_multiply_owned_face",
+    "printed_opening_pilaster_arch_rail_or_mullion",
+    "interior_card_outside_aperture"
+  ]
+}

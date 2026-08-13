@@ -1,0 +1,45 @@
+{
+  "schema": "geometry-conditioned-sticker-lego-contract@1",
+  "building_id": "old_montreal_warehouse_loft--old_mtl_textile_mill",
+  "score_target": 95,
+  "size_matrix": {
+    "canonical": {
+      "width_m": 25.0,
+      "depth_m": 20.0,
+      "front_bays": 5,
+      "side_bays": 4,
+      "floors": 3
+    },
+    "extended": {
+      "width_m": 35.0,
+      "depth_m": 20.0,
+      "front_bays": 7,
+      "side_bays": 4,
+      "floors": 3
+    }
+  },
+  "bay_module_m": 5.0,
+  "vertical_scaling": "forbidden",
+  "whole_modules_only": true,
+  "statuses": {
+    "canonical": "pass",
+    "extended": "pass"
+  },
+  "geometry_sha256": {
+    "canonical": "b6f755248629a559699ea1db528ea3899e79208dcef98006cb24e2f2318007d8",
+    "extended": "0bb513ef4422f82b55e2d3f7bae45130ad93d4113394e0d71f5d0dedf051551d"
+  },
+  "carrier_counts": {
+    "canonical": 1653,
+    "extended": 2009
+  },
+  "hard_stops": [
+    "partial_bay",
+    "nonuniform_sticker_scale",
+    "floor_roof_overlap",
+    "exposed_carrier",
+    "flat_printed_opening",
+    "generic_material",
+    "architect_mean_not_above_95"
+  ]
+}

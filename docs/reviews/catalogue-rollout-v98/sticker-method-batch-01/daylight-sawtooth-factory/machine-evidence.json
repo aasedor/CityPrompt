@@ -1,0 +1,125 @@
+{
+  "schema": "siteforge.sticker-method-machine-evidence@1",
+  "tiers": {
+    "canonical": {
+      "dimensions": {
+        "width_m": 60.0,
+        "depth_m": 40.0,
+        "podium_height_m": 5.2,
+        "floor_height_m": 6.0,
+        "setback_height_m": 6.0,
+        "roof_height_m": 1.2,
+        "default_floors": 1,
+        "min_floors": 1,
+        "max_floors": 1,
+        "crown_height_m": 6.0
+      },
+      "assembled": {
+        "filename": "daylight-sawtooth-factory-v98-canonical_assembled.glb",
+        "floors": 1,
+        "uses_setback": false,
+        "uses_crown": false,
+        "height_m": 22.0,
+        "triangle_count": 33736,
+        "stack": [
+          {
+            "role": "massing_graph",
+            "variant_key": "daylight-sawtooth-sticker-lego-canonical",
+            "level": 0,
+            "z_m": 0.0,
+            "height_m": 22.0
+          }
+        ],
+        "footprint_profile": "rectangle",
+        "footprint_target": {
+          "width_m": 60.0,
+          "depth_m": 40.0,
+          "wing_depth_m": 40.0,
+          "segments": [
+            {
+              "id": "main",
+              "centre_x_m": 0.0,
+              "centre_y_m": 0.0,
+              "length_m": 60.0,
+              "thickness_m": 40.0,
+              "rotation_degrees": 0.0
+            }
+          ]
+        },
+        "massing_graph": {
+          "schema": "massing-graph@1",
+          "profile": "daylight-sawtooth-sticker-lego-canonical",
+          "node_count": 1,
+          "assembly_count": 1643,
+          "void_count": 0
+        },
+        "final_surface_audit_status": "pass",
+        "final_surface_audit_checked_faces": 6135,
+        "final_surface_audit_failure_count": 0
+      },
+      "validation": "pass",
+      "production_preflight": "pass",
+      "render_count": 9
+    },
+    "extended": {
+      "dimensions": {
+        "width_m": 80.0,
+        "depth_m": 40.0,
+        "podium_height_m": 5.2,
+        "floor_height_m": 6.0,
+        "setback_height_m": 6.0,
+        "roof_height_m": 1.2,
+        "default_floors": 1,
+        "min_floors": 1,
+        "max_floors": 1,
+        "crown_height_m": 6.0
+      },
+      "assembled": {
+        "filename": "daylight-sawtooth-factory-v98-extended_assembled.glb",
+        "floors": 1,
+        "uses_setback": false,
+        "uses_crown": false,
+        "height_m": 22.0,
+        "triangle_count": 41656,
+        "stack": [
+          {
+            "role": "massing_graph",
+            "variant_key": "daylight-sawtooth-sticker-lego-extended",
+            "level": 0,
+            "z_m": 0.0,
+            "height_m": 22.0
+          }
+        ],
+        "footprint_profile": "rectangle",
+        "footprint_target": {
+          "width_m": 80.0,
+          "depth_m": 40.0,
+          "wing_depth_m": 40.0,
+          "segments": [
+            {
+              "id": "main",
+              "centre_x_m": 0.0,
+              "centre_y_m": 0.0,
+              "length_m": 80.0,
+              "thickness_m": 40.0,
+              "rotation_degrees": 0.0
+            }
+          ]
+        },
+        "massing_graph": {
+          "schema": "massing-graph@1",
+          "profile": "daylight-sawtooth-sticker-lego-extended",
+          "node_count": 1,
+          "assembly_count": 2011,
+          "void_count": 0
+        },
+        "final_surface_audit_status": "pass",
+        "final_surface_audit_checked_faces": 7531,
+        "final_surface_audit_failure_count": 0
+      },
+      "validation": "pass",
+      "production_preflight": "pass",
+      "render_count": 9
+    }
+  }
+}

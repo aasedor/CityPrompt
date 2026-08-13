@@ -1,0 +1,147 @@
+{
+  "schema": "siteforge.sticker-asset-provenance@1",
+  "building": "old-montreal-warehouse-loft--old-mtl-textile-mill",
+  "variant_index": 2,
+  "method": "V98 generated rectified master plus deterministic native-scale crops and reference-constrained procedural surface completions",
+  "exact_reference_sources": {
+    "street_identity": {
+      "path": "frontend/public/archetypes/buildings/old-montreal-warehouse-loft/variant_2.png",
+      "evidence_class": "exact_reference",
+      "sha256": "16f4d2e7cad7a750b9352dfa948687bc047d82aac71d5e3568937213f9e84622"
+    },
+    "oblique_side_and_roof_evidence": {
+      "path": "frontend/public/archetypes/buildings/old-montreal-warehouse-loft/variant_2_angle_60.jpg",
+      "evidence_class": "exact_reference",
+      "sha256": "532eff26c65058e1063d16bad5742d2309202f0668004dde42ef904328bc4912"
+    },
+    "aerial_roof_plan_evidence": {
+      "path": "frontend/public/archetypes/buildings/old-montreal-warehouse-loft/variant_2_angle_90.jpg",
+      "evidence_class": "exact_reference",
+      "sha256": "450c26f72ab4897b5b016016ce912d3c2fe44bd2a139dc807f9f5173f0d181c4"
+    }
+  },
+  "rear_evidence": {
+    "evidence_class": "constrained_completion",
+    "statement": "Rear and hidden returns are constrained completion from exact oblique and aerial evidence; no exact rear elevation exists in the variant_2 triplet."
+  },
+  "assets": {
+    "five_bay_three_floor_intrinsic_v2": {
+      "path": "tools/archetype_compiler/sticker_assets/old_montreal_textile_v98/five_bay_three_floor_intrinsic_v2.png",
+      "evidence_class": "generated",
+      "derivation": "generated after clay revision 3 locked; rectified intrinsic elevation conditioned jointly on exact variant_2 references and final canonical carrier",
+      "sha256": "7006053a1d5d69192677ba676e87f02d90c49af23c14142bea046312061292d8"
+    },
+    "five_bay_three_floor_window_only_v1": {
+      "path": "tools/archetype_compiler/sticker_assets/old_montreal_textile_v98/five_bay_three_floor_window_only_v1.png",
+      "evidence_class": "generated",
+      "derivation": "window-only atlas generated after locked geometry and atomic-surface audit; contains glazing, sash and interiors but no masonry or other carrier-owned architecture",
+      "sha256": "894f8a04f5c1584ed50a80e05c41911c4b9d7d05bb9bcf6d619269f8632e90ec"
+    },
+    "five_bay_three_floor_interior_only_v2": {
+      "path": "tools/archetype_compiler/sticker_assets/old_montreal_textile_v98/five_bay_three_floor_interior_only_v2.png",
+      "evidence_class": "generated",
+      "derivation": "interior-only three-band occupied-loft atlas generated after locked geometry; contains no glass, frames, mullions, masonry or exterior silhouette",
+      "sha256": "6898eee4222abd38ee7ac5bfc7ac3bc84f6957ff71a505b95c403da8aa1709bb"
+    },
+    "five_bay_three_floor_interior_only_v3": {
+      "path": "tools/archetype_compiler/sticker_assets/old_montreal_textile_v98/five_bay_three_floor_interior_only_v3.png",
+      "evidence_class": "deterministic_variant_atlas",
+      "derivation": "five bay variants per floor derived from the approved interior-only source using crop, mirror and restrained exposure/colour shifts; no exterior geometry or glass",
+      "sha256": "513102a8d835241df6ea52c903f4e7f3e78519785b6d6ddc398009aae02454c9"
+    },
+    "red_brick_construction_return": {
+      "path": "tools/archetype_compiler/sticker_assets/old_montreal_textile_v98/brick_return_intrinsic.png",
+      "evidence_class": "constrained_completion",
+      "derivation": "deterministic atomic aged-brick construction surface; contains no baked windows, arches, belts or metal",
+      "sha256": "b7c71f8536c8e059933a8daa5b6ff4e8e9afebe258e71e2e29d9ae44bc137cb8"
+    },
+    "pale_stone_belt_pier_soffit": {
+      "path": "tools/archetype_compiler/sticker_assets/old_montreal_textile_v98/pale_stone_construction_intrinsic.png",
+      "evidence_class": "constrained_completion",
+      "derivation": "deterministic procedural completion using stone colour sampled from generated master",
+      "sha256": "94c7a9e84d244d63960bfd3152d7d2cc098b210a69e03f52afd9afb3aa28d28e"
+    },
+    "horizontal_cut_stone": {
+      "path": "tools/archetype_compiler/sticker_assets/old_montreal_textile_v98/cut_stone_horizontal_intrinsic.png",
+      "evidence_class": "constrained_completion",
+      "derivation": "deterministic joint-free weathered cut-stone microtexture for narrow horizontal construction",
+      "sha256": "5f7f6df64b7c31a023d3f8fb43c63ad0b4a375be8753351ce8e960d6a585a4c2"
+    },
+    "black_iron_frame_metal": {
+      "path": "tools/archetype_compiler/sticker_assets/old_montreal_textile_v98/black_iron_metal_intrinsic.png",
+      "evidence_class": "constrained_completion",
+      "derivation": "deterministic procedural completion of black iron frame/metal vocabulary visible in exact street and oblique references",
+      "sha256": "59d199fdb198946ee376797f3e20f9518739b4a19628fe1d786f2193831fcc4e"
+    },
+    "warm_shallow_interior_card": {
+      "path": "tools/archetype_compiler/sticker_assets/old_montreal_textile_v98/warm_interior_card_intrinsic.png",
+      "evidence_class": "constrained_completion",
+      "derivation": "deterministic procedural shallow-interior completion matching warm glazing evidence in exact street and oblique references",
+      "sha256": "3e1d99fa43575aec8492686e06b8cf5e8f25bfb1cf5c2e0ed198d915d19142b6"
+    },
+    "ground_interior_card": {
+      "path": "tools/archetype_compiler/sticker_assets/old_montreal_textile_v98/ground_interior_card_intrinsic.png",
+      "evidence_class": "constrained_completion",
+      "derivation": "deterministic brighter ground-floor interior card, physically behind neutral glass",
+      "sha256": "4bf30bf9250d8b4970368baeb07e9a47aaecda90b2159c7986ebad2f915dacea"
+    },
+    "middle_interior_card": {
+      "path": "tools/archetype_compiler/sticker_assets/old_montreal_textile_v98/middle_interior_card_intrinsic.png",
+      "evidence_class": "constrained_completion",
+      "derivation": "deterministic restrained middle-floor interior card, physically behind neutral glass",
+      "sha256": "3e1d99fa43575aec8492686e06b8cf5e8f25bfb1cf5c2e0ed198d915d19142b6"
+    },
+    "top_interior_card": {
+      "path": "tools/archetype_compiler/sticker_assets/old_montreal_textile_v98/top_interior_card_intrinsic.png",
+      "evidence_class": "constrained_completion",
+      "derivation": "deterministic dim top-floor interior card, physically behind neutral glass",
+      "sha256": "44b7c291fa54849f820dee83f8b92647b8dbd08a06a464667bab65a1c1061e90"
+    },
+    "neutral_physical_window_glass": {
+      "path": "tools/archetype_compiler/sticker_assets/old_montreal_textile_v98/neutral_window_glass_intrinsic.png",
+      "evidence_class": "constrained_completion",
+      "derivation": "neutral low-detail optical colour field with no baked mullions, windows, rooms or directional reflections",
+      "sha256": "4b17d6bb1764c093728b8942519deef9c65b368524ee0751f2c916623709da6c"
+    },
+    "dark_gravel_membrane_roof": {
+      "path": "tools/archetype_compiler/sticker_assets/old_montreal_textile_v98/dark_gravel_roof_intrinsic.png",
+      "evidence_class": "constrained_completion",
+      "derivation": "deterministic procedural completion matching exact aerial gravel/membrane roof evidence",
+      "sha256": "0859b11604aeb56d8652e31aa945aecaced722387e3ba97b21fa0e5f31127d9b"
+    },
+    "dark_coping": {
+      "path": "tools/archetype_compiler/sticker_assets/old_montreal_textile_v98/dark_coping_intrinsic.png",
+      "evidence_class": "constrained_completion",
+      "derivation": "deterministic procedural completion matching dark parapet coping visible in exact oblique and aerial references",
+      "sha256": "fab935e2f468c113687da5aa872f0924a966cf93dd8ab06a534a38610dcae5da"
+    },
+    "skylight_glass_metal": {
+      "path": "tools/archetype_compiler/sticker_assets/old_montreal_textile_v98/skylight_glass_metal_intrinsic.png",
+      "evidence_class": "constrained_completion",
+      "derivation": "deterministic procedural completion matching the two long metal-framed skylights in exact aerial evidence",
+      "sha256": "bf6ced6ae86939d64d179bf40bb8fd0abc6f2c2ada34b4f2ebc97173e0078de3"
+    },
+    "skylight_glass": {
+      "path": "tools/archetype_compiler/sticker_assets/old_montreal_textile_v98/skylight_glass_intrinsic.png",
+      "evidence_class": "constrained_completion",
+      "derivation": "restrained aged gray-green monitor glazing without printed ribs, divisions or directional streaks",
+      "sha256": "49fdcd243de1b887b4b0eef841d59ccaaa5b663d1771532dbe7fe1d628e56f3a"
+    },
+    "hvac_service_casing": {
+      "path": "tools/archetype_compiler/sticker_assets/old_montreal_textile_v98/hvac_service_casing_intrinsic.png",
+      "evidence_class": "constrained_completion",
+      "derivation": "deterministic procedural completion matching bounded rooftop service casing in exact oblique and aerial evidence",
+      "sha256": "7999cf2a74fc64ef6d8ad7babb6a8f090f3860bbd69b6c2d23aef2dd8b55d191"
+    }
+  },
+  "master_source_grid": [
+    5,
+    3
+  ],
+  "master_dimensions_px": [
+    1254,
+    1254
+  ],
+  "post_generation_nonuniform_scale_allowed": false,
+  "approval_space": "rendered_on_locked_geometry_with_front_side_rear_roof_soffit_and_service-carrier seam audit"
+}

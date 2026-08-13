@@ -1,0 +1,423 @@
+{
+  "schema": "siteforge.sticker-asset-provenance@1",
+  "building": "administrative-faculty-office-building--admin-faculty-brick-bronze-fins",
+  "variant_index": 0,
+  "method": "exact-reference palette conditioning, deterministic intrinsic material synthesis, and one registered interior-only image-generated atlas",
+  "reference_authority": "exact variant-0 images override generic parent and rollout metadata",
+  "exact_reference_sources": {
+    "street_identity": {
+      "path": "frontend/public/archetypes/buildings/administrative-faculty-office-building/variant_0.png",
+      "sha256": "e69d0f36223a5885eb91af8d1b24b7ccce18ee672ae58d93cc707e88757ba3be",
+      "evidence_class": "exact_reference"
+    },
+    "oblique_roof_and_returns": {
+      "path": "frontend/public/archetypes/buildings/administrative-faculty-office-building/variant_0_angle_60.jpg",
+      "sha256": "1749deb52c5d8a40dd46ad74b3079f61a6502f173a5b4fc4871bd17a91879333",
+      "evidence_class": "exact_reference"
+    },
+    "aerial_roof_plan": {
+      "path": "frontend/public/archetypes/buildings/administrative-faculty-office-building/variant_0_angle_90.jpg",
+      "sha256": "d51450e610ac79e4373cd657c3d0249e6522558618e3419f609df7fed6eb69de",
+      "evidence_class": "exact_reference"
+    }
+  },
+  "palette_conditioning": {
+    "rule": "fixed, bounds-asserted median probes blended toward bounded material priors; no source pixels pasted",
+    "crops_px": {
+      "brick_street": {
+        "path": "frontend/public/archetypes/buildings/administrative-faculty-office-building/variant_0.png",
+        "box": [
+          680,
+          185,
+          742,
+          308
+        ]
+      },
+      "brick_oblique": {
+        "path": "frontend/public/archetypes/buildings/administrative-faculty-office-building/variant_0_angle_60.jpg",
+        "box": [
+          910,
+          395,
+          990,
+          570
+        ]
+      },
+      "bronze_street": {
+        "path": "frontend/public/archetypes/buildings/administrative-faculty-office-building/variant_0.png",
+        "box": [
+          609,
+          96,
+          658,
+          235
+        ]
+      },
+      "graphite_street": {
+        "path": "frontend/public/archetypes/buildings/administrative-faculty-office-building/variant_0.png",
+        "box": [
+          500,
+          186,
+          522,
+          394
+        ]
+      },
+      "glass_street": {
+        "path": "frontend/public/archetypes/buildings/administrative-faculty-office-building/variant_0.png",
+        "box": [
+          538,
+          188,
+          588,
+          340
+        ]
+      },
+      "entry_stone": {
+        "path": "frontend/public/archetypes/buildings/administrative-faculty-office-building/variant_0.png",
+        "box": [
+          323,
+          215,
+          382,
+          468
+        ]
+      },
+      "roof_gravel": {
+        "path": "frontend/public/archetypes/buildings/administrative-faculty-office-building/variant_0_angle_90.jpg",
+        "box": [
+          389,
+          389,
+          485,
+          572
+        ]
+      },
+      "mechanical": {
+        "path": "frontend/public/archetypes/buildings/administrative-faculty-office-building/variant_0_angle_90.jpg",
+        "box": [
+          604,
+          298,
+          683,
+          346
+        ]
+      }
+    },
+    "sampled_rgb": {
+      "brick_street": [
+        62,
+        55,
+        50
+      ],
+      "brick_oblique": [
+        49,
+        46,
+        41
+      ],
+      "bronze_street": [
+        75,
+        85,
+        92
+      ],
+      "graphite_street": [
+        184,
+        147,
+        109
+      ],
+      "glass_street": [
+        197,
+        187,
+        177
+      ],
+      "entry_stone": [
+        75,
+        61,
+        39
+      ],
+      "roof_gravel": [
+        159,
+        134,
+        112
+      ],
+      "mechanical": [
+        91,
+        87,
+        85
+      ]
+    },
+    "prepared_palette_rgb": {
+      "cream_brick": [
+        121,
+        97,
+        74
+      ],
+      "umber_brick": [
+        127,
+        99,
+        71
+      ],
+      "bronze": [
+        98,
+        79,
+        66
+      ],
+      "graphite": [
+        68,
+        60,
+        51
+      ],
+      "clear_glass": [
+        176,
+        180,
+        177
+      ],
+      "fritted_glass": [
+        189,
+        186,
+        178
+      ],
+      "entry_stone": [
+        175,
+        165,
+        147
+      ],
+      "roof_gravel": [
+        132,
+        124,
+        113
+      ],
+      "mechanical": [
+        126,
+        127,
+        123
+      ]
+    }
+  },
+  "beauty_correction": {
+    "version": "v98.3",
+    "entry_reveal": "pale warm mineral concrete/stone, reference-conditioned and intrinsically mottled without directional shading",
+    "bronze": "warm bronze base with softly alpha-composited ochre, russet and restrained green-aged patina at broad and fine scales",
+    "geometry_exclusions": [
+      "panel boundaries",
+      "fin spacing",
+      "screen spacing",
+      "coping profiles"
+    ],
+    "registered_office_atlas_preserved": true,
+    "optical_balance": "registered office cells neutral-veiled and partially desaturated so physical glazing remains dominant"
+  },
+  "metadata_admission": {
+    "accepted": [
+      "material role names: brick, bronze metal, graphite frames, glass, stone entry, flat gravel roof, mechanical screens"
+    ],
+    "rejected_or_narrowed": [
+      "generic 2-3-storey cream masonry base conflicts with the exact image's full-height warm tan/umber brick fields",
+      "double-height corner entrance is narrowed to the tall recessed portal visible on the street view"
+    ]
+  },
+  "geometry_ownership": [
+    "all apertures and reveal depth",
+    "window and curtain-wall mullions",
+    "projecting bronze frame, fins, panel joints and coping profiles",
+    "parapets, rooftop screens, ducts, pipes and equipment silhouettes",
+    "fritted-glass carrier boundary and entry tunnel section"
+  ],
+  "glass_contract": "Intrinsic optical fields contain no printed mullions, frame outlines, hard horizons or scene reflections; frit dots are material evidence only.",
+  "interior_contract": "The 4x2 office atlas contains shallow occupied office evidence only and no exterior aperture boundaries.",
+  "visible_surface_coverage": [
+    "cast_stone_plinth",
+    "clear_office_glass",
+    "cream_brick_front",
+    "cream_brick_return",
+    "dark_graphite_frame",
+    "entry_concrete_reveal",
+    "fritted_entry_glass",
+    "mechanical_casing",
+    "mechanical_duct",
+    "mechanical_pipe",
+    "occupied_office_interior_cards",
+    "roof_gravel",
+    "umber_brick_front",
+    "umber_brick_return",
+    "weathered_bronze_coping",
+    "weathered_bronze_fin",
+    "weathered_bronze_panel",
+    "weathered_bronze_screen"
+  ],
+  "assets": {
+    "cream_brick_front": {
+      "path": "tools/archetype_compiler/sticker_assets/administrative_faculty_office_v98/cream_brick_front_intrinsic.png",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_code_native_exact_palette_conditioned",
+      "contains_printed_modeled_geometry": false,
+      "contains_baked_directional_lighting": false,
+      "sha256": "19a6d88bc7bbb27c2f2aab673d30c607fcf3a8c94e4f7b7ae6fe914a6a4f80ec"
+    },
+    "cream_brick_return": {
+      "path": "tools/archetype_compiler/sticker_assets/administrative_faculty_office_v98/cream_brick_return_intrinsic.png",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_code_native_exact_palette_conditioned",
+      "contains_printed_modeled_geometry": false,
+      "contains_baked_directional_lighting": false,
+      "sha256": "87011868bf3c98bb0e1f880b711f6bc395d7f9a889f2de48fdb3b4ed78054e59"
+    },
+    "umber_brick_front": {
+      "path": "tools/archetype_compiler/sticker_assets/administrative_faculty_office_v98/umber_brick_front_intrinsic.png",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_code_native_exact_palette_conditioned",
+      "contains_printed_modeled_geometry": false,
+      "contains_baked_directional_lighting": false,
+      "sha256": "1dcb9bd7e3b55447b4c030287a1c5fc1acb549758951dc8eb7ca842f83134274"
+    },
+    "umber_brick_return": {
+      "path": "tools/archetype_compiler/sticker_assets/administrative_faculty_office_v98/umber_brick_return_intrinsic.png",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_code_native_exact_palette_conditioned",
+      "contains_printed_modeled_geometry": false,
+      "contains_baked_directional_lighting": false,
+      "sha256": "723ee6618f0d913a2a4fd25c52a215e6072ec4c048e0196caab64b8383ff594b"
+    },
+    "weathered_bronze_panel": {
+      "path": "tools/archetype_compiler/sticker_assets/administrative_faculty_office_v98/weathered_bronze_panel_intrinsic.png",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_code_native_exact_palette_conditioned",
+      "contains_printed_modeled_geometry": false,
+      "contains_baked_directional_lighting": false,
+      "sha256": "5e328ce8264556c0f585419add06f936adfa3aa6843e2e2acabc0ec868eaf41f"
+    },
+    "weathered_bronze_fin": {
+      "path": "tools/archetype_compiler/sticker_assets/administrative_faculty_office_v98/weathered_bronze_fin_intrinsic.png",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_code_native_exact_palette_conditioned",
+      "contains_printed_modeled_geometry": false,
+      "contains_baked_directional_lighting": false,
+      "sha256": "36ac7b6d8cfd69250a8058cab15e786f9c6c79db23b2e872fa430b0c1425e80a"
+    },
+    "weathered_bronze_coping": {
+      "path": "tools/archetype_compiler/sticker_assets/administrative_faculty_office_v98/weathered_bronze_coping_intrinsic.png",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_code_native_exact_palette_conditioned",
+      "contains_printed_modeled_geometry": false,
+      "contains_baked_directional_lighting": false,
+      "sha256": "84a188e488e93b3d3adf58020b502da80cd6ba59054228659e3920e8b1d03d94"
+    },
+    "weathered_bronze_screen": {
+      "path": "tools/archetype_compiler/sticker_assets/administrative_faculty_office_v98/weathered_bronze_screen_intrinsic.png",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_code_native_exact_palette_conditioned",
+      "contains_printed_modeled_geometry": false,
+      "contains_baked_directional_lighting": false,
+      "sha256": "cfc880ec9bd345397ede512604e99444588c3e6930b296ee8a5c0d46cddf38fc"
+    },
+    "dark_graphite_frame": {
+      "path": "tools/archetype_compiler/sticker_assets/administrative_faculty_office_v98/dark_graphite_frame_intrinsic.png",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_code_native_exact_palette_conditioned",
+      "contains_printed_modeled_geometry": false,
+      "contains_baked_directional_lighting": false,
+      "sha256": "00fab47f78f27afac215719564eddecf4567551bd115b82ac3de3cce4cb53e22"
+    },
+    "clear_office_glass": {
+      "path": "tools/archetype_compiler/sticker_assets/administrative_faculty_office_v98/clear_office_glass_intrinsic.png",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_code_native_exact_palette_conditioned",
+      "contains_printed_modeled_geometry": false,
+      "contains_baked_directional_lighting": false,
+      "sha256": "bd95b1215fe2081c6f2aee3c51b5705b79fcf07cf508e370057e61796ace9b86"
+    },
+    "fritted_entry_glass": {
+      "path": "tools/archetype_compiler/sticker_assets/administrative_faculty_office_v98/fritted_entry_glass_intrinsic.png",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_code_native_exact_palette_conditioned",
+      "contains_printed_modeled_geometry": false,
+      "contains_baked_directional_lighting": false,
+      "sha256": "7e4b1b30fdff198718867ec3024f9c7cef40da5ed9825f24eca69c7619be5e09"
+    },
+    "occupied_office_interior_cards": {
+      "path": "tools/archetype_compiler/sticker_assets/administrative_faculty_office_v98/occupied_office_interior_atlas.png",
+      "evidence_class": "constrained_completion",
+      "generation": "registered_image_generated_interior_only_master",
+      "contains_printed_modeled_geometry": false,
+      "contains_baked_directional_lighting": false,
+      "sha256": "c1f70e23388747d01d6902a27233a2f5130509a808d2331b3eff87b3f186a875",
+      "source_master": {
+        "path": "tools/archetype_compiler/sticker_assets/administrative_faculty_office_v98/source_office_interior_master.png",
+        "sha256": "7e6f7d4215333aab8b6be2eb0e989a1fa2670b270c457ececf4420a031e0c353",
+        "grid": [
+          4,
+          2
+        ],
+        "source_dimensions_px": [
+          1774,
+          887
+        ],
+        "normalization": "whole-image Lanczos resize to 2048x1024; no crop, seam, or geometric reinterpretation"
+      }
+    },
+    "entry_concrete_reveal": {
+      "path": "tools/archetype_compiler/sticker_assets/administrative_faculty_office_v98/entry_concrete_reveal_intrinsic.png",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_code_native_exact_palette_conditioned",
+      "contains_printed_modeled_geometry": false,
+      "contains_baked_directional_lighting": false,
+      "sha256": "1533f2970bda7bff88d19bcf2fd0251a919df7499901e35f5ee93df6502f8ad9"
+    },
+    "cast_stone_plinth": {
+      "path": "tools/archetype_compiler/sticker_assets/administrative_faculty_office_v98/cast_stone_plinth_intrinsic.png",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_code_native_exact_palette_conditioned",
+      "contains_printed_modeled_geometry": false,
+      "contains_baked_directional_lighting": false,
+      "sha256": "c276bb7bfb20341e30aeb329806bee2da9533a4d11916a77414b0df8009b675b"
+    },
+    "roof_gravel": {
+      "path": "tools/archetype_compiler/sticker_assets/administrative_faculty_office_v98/roof_gravel_intrinsic.png",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_code_native_exact_palette_conditioned",
+      "contains_printed_modeled_geometry": false,
+      "contains_baked_directional_lighting": false,
+      "sha256": "d3598d08ca14e63041acd1bd3e52646b26d714eb02dc01c090e512786e75c4ea"
+    },
+    "mechanical_casing": {
+      "path": "tools/archetype_compiler/sticker_assets/administrative_faculty_office_v98/mechanical_casing_intrinsic.png",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_code_native_exact_palette_conditioned",
+      "contains_printed_modeled_geometry": false,
+      "contains_baked_directional_lighting": false,
+      "sha256": "85e83d6f7f0d9f381149b260503ee1a8da6323cf8fe830758c672900bc8153fc"
+    },
+    "mechanical_duct": {
+      "path": "tools/archetype_compiler/sticker_assets/administrative_faculty_office_v98/mechanical_duct_intrinsic.png",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_code_native_exact_palette_conditioned",
+      "contains_printed_modeled_geometry": false,
+      "contains_baked_directional_lighting": false,
+      "sha256": "6017aad254374ee0e5a267b2edc09103e8a05bbc40cb538648209dc49644e176"
+    },
+    "mechanical_pipe": {
+      "path": "tools/archetype_compiler/sticker_assets/administrative_faculty_office_v98/mechanical_pipe_intrinsic.png",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_code_native_exact_palette_conditioned",
+      "contains_printed_modeled_geometry": false,
+      "contains_baked_directional_lighting": false,
+      "sha256": "6749fab6c7ca74ac141ee6693abe9ff1aa8836844cd0f9e6edf91a9624108e5f"
+    }
+  },
+  "office_atlas_grid": [
+    4,
+    2
+  ],
+  "post_generation_nonuniform_scale_allowed": false,
+  "image_generation_record": {
+    "used": true,
+    "purpose": "photoreal shallow occupied-interior evidence behind physical glass",
+    "layout": "continuous 4-column x 2-row atlas, eight distinct faculty-office interiors, no separator bars",
+    "exclusions": [
+      "windows",
+      "mullions",
+      "exterior walls",
+      "hard horizons",
+      "text",
+      "people",
+      "logos",
+      "exterior sun shadows",
+      "isolation borders"
+    ],
+    "source_master_sha256": "7e6f7d4215333aab8b6be2eb0e989a1fa2670b270c457ececf4420a031e0c353"
+  },
+  "approval_space": "locked-carrier multi-view renders with all-face material audit; these intrinsic assets alone do not approve architectural fidelity"
+}

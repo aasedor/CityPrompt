@@ -1,0 +1,57 @@
+{
+  "schema": "siteforge.named-architect-review@1",
+  "pipeline_version": "v98.3",
+  "building_id": "administrative_faculty_office_building--admin_faculty_brick_bronze_fins",
+  "reviewer": "architect_design_reviewer",
+  "status": "pass",
+  "score_target_exclusive_mean": 95.0,
+  "mean_score_unrounded": 95.25,
+  "hard_stop_status": "pass",
+  "hard_stop_count": 0,
+  "scores": {
+    "canonical": {
+      "archetype_identity": 28.5,
+      "massing_and_geometry": 19.2,
+      "sticker_registration": 18.8,
+      "all_surface_roof_and_entrance_coverage": 14.5,
+      "lego_scale_consistency_no_stretching": 14.1,
+      "total": 95.1
+    },
+    "extended": {
+      "archetype_identity": 28.4,
+      "massing_and_geometry": 19.3,
+      "sticker_registration": 19.0,
+      "all_surface_roof_and_entrance_coverage": 14.5,
+      "lego_scale_consistency_no_stretching": 14.2,
+      "total": 95.4
+    }
+  },
+  "approved_tiers": {
+    "canonical": {"width_m": 30.0, "depth_m": 20.0, "floors": 5, "ordinary_front_stacks": 4},
+    "extended": {"width_m": 37.5, "depth_m": 20.0, "floors": 5, "ordinary_front_stacks": 6}
+  },
+  "approved_contract": {
+    "ordinary_front_stack_m": 3.75,
+    "growth_unit_stacks": 2,
+    "whole_horizontal_stacks_only": true,
+    "vertical_scaling_allowed": false,
+    "depth_scaling_allowed": false,
+    "continuous_resize_allowed": false,
+    "entry_slot_and_projecting_bay_remain_fixed": true
+  },
+  "machine_evidence": {
+    "canonical_surface_faces": 5770,
+    "extended_surface_faces": 6730,
+    "surface_failures": 0,
+    "production_preflight": "pass",
+    "export_validation": "pass"
+  },
+  "residual_deductions": [
+    "Glazing remains dark and some interior silhouettes repeat under close inspection.",
+    "Bronze is appropriately subdued but can read brown in shadow.",
+    "Constrained side and rear completion is architecturally generic.",
+    "The screened mechanical compound is schematic compared with the exact asymmetrical service detail.",
+    "The wider tier slightly reduces the visual dominance of the fixed entry and projecting bay."
+  ],
+  "verdict": "Approved only for the reviewed 30 m canonical and 37.5 m extended tiers; arbitrary resizing is not authorized."
+}

@@ -1,0 +1,39 @@
+{
+  "schema": "siteforge.administrative-faculty-office-sticker-lego@1",
+  "version": "v98.3",
+  "archetype_id": "administrative_faculty_office_building",
+  "variant_id": "admin_faculty_brick_bronze_fins",
+  "reference_authority": "exact variant_0 images override conflicting rollout metadata",
+  "fixed_identity": [
+    "five occupied storeys",
+    "one open deep entry",
+    "one broad projecting bronze volume",
+    "one six-zone mechanical court"
+  ],
+  "size_matrix": {
+    "canonical": {
+      "width_m": 30.0,
+      "depth_m": 20.0,
+      "ordinary_front_stacks": 4,
+      "side_bays": 4,
+      "floors": 5
+    },
+    "extended": {
+      "width_m": 37.5,
+      "depth_m": 20.0,
+      "ordinary_front_stacks": 6,
+      "side_bays": 4,
+      "floors": 5
+    }
+  },
+  "continuous_resize_allowed": false,
+  "vertical_scaling_allowed": false,
+  "depth_scaling_allowed": false,
+  "hard_stops": [
+    "wrong floor count",
+    "shallow or sealed entry",
+    "missing narrow or duplicated bronze volume",
+    "generic roof",
+    "unowned visible polygon"
+  ]
+}

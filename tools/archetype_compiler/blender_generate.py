@@ -123,6 +123,21 @@ def _shared_texture(filename: str) -> Path | None:
 
 def _load_image(path: Path, colorspace: str) -> bpy.types.Image:
     image = bpy.data.images.load(str(path), check_existing=True)
+    # Blender may return an Image datablock for a truncated PNG and only log
+    # an OpenImageIO error later, rendering the affected sticker magenta while
+    # the batch still exits successfully. Force one pixel into memory now so a
+    # corrupt/partially-published asset is a hard stop before any GLB or review
+    # frame can be accepted.
+    try:
+        if image.size[0] <= 0 or image.size[1] <= 0:
+            raise ValueError(f"invalid dimensions {tuple(image.size)}")
+        _ = image.pixels[0]
+        if not image.has_data:
+            raise ValueError("pixel buffer did not load")
+    except Exception as exc:
+        if image.users == 0:
+            bpy.data.images.remove(image)
+        raise ValueError(f"registered image failed a complete decode: {path}: {exc}") from exc
     image.colorspace_settings.name = colorspace
     return image
 
@@ -7919,6 +7934,21 @@ def _apply_massing_skin_uv(obj: bpy.types.Object) -> None:
         material = mesh.materials[polygon.material_index]
         if not material or not material.get("massing_skin"):
             continue
+        world_tile_m = float(material.get("massing_skin_world_metric_uv_tile_m", 0.0))
+        if world_tile_m > 0.0:
+            u_offset = float(material.get("massing_skin_world_metric_uv_u_offset", 0.0))
+            v_offset = float(material.get("massing_skin_world_metric_uv_v_offset", 0.0))
+            for loop_index in polygon.loop_indices:
+                coordinate = mesh.vertices[mesh.loops[loop_index].vertex_index].co
+                normal = polygon.normal
+                if abs(normal.z) >= max(abs(normal.x), abs(normal.y)):
+                    u, v = coordinate.x / world_tile_m, coordinate.y / world_tile_m
+                elif abs(normal.x) >= abs(normal.y):
+                    u, v = coordinate.y / world_tile_m, coordinate.z / world_tile_m
+                else:
+                    u, v = coordinate.x / world_tile_m, coordinate.z / world_tile_m
+                uv_layer.data[loop_index].uv = (u + u_offset, v + v_offset)
+            continue
         axis = str(material.get("massing_skin_axis", "front"))
         u_min = float(material.get("massing_skin_u_min", 0.0))
         u_max = float(material.get("massing_skin_u_max", 1.0))
@@ -7951,6 +7981,292 @@ def _apply_massing_skin_uv(obj: bpy.types.Object) -> None:
             u = tex_u_min + u * (tex_u_max - tex_u_min)
             v = v_min + (coordinate.z - z_min) / span_v * (v_max - v_min)
             uv_layer.data[loop_index].uv = (u, v)
+
+
+def _graph_carrier_skin(parts: list, spec: dict, mats: dict) -> None:
+    """Register imagery directly on approved clay faces without a thick card."""
+    material_role = str(spec.get("material_role", "elevation"))
+    axis = str(spec.get("axis", "front"))
+    if material_role in {"roof", "glass"}:
+        profile_override = str(spec.get("glass_profile", "")) if material_role == "glass" else ""
+        base = (
+            make_profile_glass_material(
+                f"MAT_Glass_{profile_override}_{spec.get('id', 'CarrierSkin')}", profile_override,
+            )
+            if profile_override else mats.get(material_role)
+        )
+        if base is None:
+            raise ValueError(f"carrier {material_role} skin requires the {material_role} material")
+        material = base.copy()
+        material.name = f"{base.name}_{spec.get('id', 'CarrierSkin')}"
+        image_node = material.node_tree.nodes.get("TEX_Albedo") if material.node_tree else None
+        if image_node is None or image_node.type != "TEX_IMAGE":
+            if material_role != "glass" or material.node_tree is None:
+                raise ValueError("carrier roof skin requires a textured roof PBR material")
+            image_node = material.node_tree.nodes.new("ShaderNodeTexImage")
+            image_node.name = image_node.label = "TEX_Albedo"
+            principled = next((node for node in material.node_tree.nodes if node.type == "BSDF_PRINCIPLED"), None)
+            if principled is None:
+                raise ValueError("carrier glass skin requires a Principled BSDF")
+            material.node_tree.links.new(image_node.outputs["Color"], principled.inputs["Base Color"])
+        image_path = Path(str(spec["source_image_path"]))
+        if not image_path.is_absolute():
+            image_path = Path.cwd() / image_path
+        if not image_path.exists():
+            raise FileNotFoundError(f"registered carrier source is missing: {image_path}")
+        image_node.image = _load_image(image_path, "sRGB")
+        for link in list(image_node.inputs["Vector"].links):
+            material.node_tree.links.remove(link)
+        uv_node = material.node_tree.nodes.new("ShaderNodeUVMap")
+        uv_node.name = uv_node.label = f"CARRIER_UV_{spec.get('id', 'Skin')}"
+        uv_node.uv_map = "UVMap"
+        material.node_tree.links.new(uv_node.outputs["UV"], image_node.inputs["Vector"])
+        if material_role == "glass" and profile_override:
+            principled = next(
+                (node for node in material.node_tree.nodes if node.type == "BSDF_PRINCIPLED"),
+                None,
+            )
+            surface_alpha_override = spec.get("surface_alpha_override")
+            if principled is not None and surface_alpha_override is not None:
+                surface_alpha = max(0.05, min(1.0, float(surface_alpha_override)))
+                alpha_input = principled.inputs.get("Alpha")
+                if alpha_input is not None:
+                    alpha_input.default_value = surface_alpha
+                material.diffuse_color = (*material.diffuse_color[:3], surface_alpha)
+                if surface_alpha < 0.999:
+                    if hasattr(material, "surface_render_method"):
+                        material.surface_render_method = str(spec.get("transparency_mode", "DITHERED"))
+                    elif hasattr(material, "blend_method"):
+                        material.blend_method = "BLEND"
+                    if hasattr(material, "use_transparency_overlap"):
+                        material.use_transparency_overlap = False
+                material["carrier_glass_surface_alpha_override"] = surface_alpha
+            roughness_override = spec.get("roughness_override")
+            if principled is not None and roughness_override is not None:
+                principled.inputs["Roughness"].default_value = max(0.0, min(1.0, float(roughness_override)))
+                material["carrier_glass_roughness_override"] = float(roughness_override)
+            transmission_override = spec.get("transmission_override")
+            if principled is not None and transmission_override is not None:
+                transmission = principled.inputs.get("Transmission Weight") or principled.inputs.get("Transmission")
+                if transmission is not None:
+                    transmission.default_value = max(0.0, min(1.0, float(transmission_override)))
+                material["carrier_glass_transmission_override"] = float(transmission_override)
+            specular_override = spec.get("specular_ior_level_override")
+            if principled is not None and specular_override is not None:
+                specular = principled.inputs.get("Specular IOR Level")
+                if specular is not None:
+                    specular.default_value = max(0.0, min(1.0, float(specular_override)))
+            coat_override = spec.get("coat_weight_override")
+            if principled is not None and coat_override is not None:
+                coat = principled.inputs.get("Coat Weight")
+                if coat is not None:
+                    coat.default_value = max(0.0, min(1.0, float(coat_override)))
+            emission = (
+                principled.inputs.get("Emission Color") or principled.inputs.get("Emission")
+                if principled is not None else None
+            )
+            if emission is not None:
+                # Preserve the registered stained-glass colour under oblique
+                # sky reflections. The profile's restrained emission strength
+                # still controls energy; this only makes the exact sticker the
+                # chromatic authority from every review camera.
+                for link in list(emission.links):
+                    material.node_tree.links.remove(link)
+                material.node_tree.links.new(image_node.outputs["Color"], emission)
+            emission_strength_override = spec.get("emission_strength_override")
+            if principled is not None and emission_strength_override is not None:
+                emission_strength = principled.inputs.get("Emission Strength")
+                if emission_strength is not None:
+                    emission_strength.default_value = max(0.0, float(emission_strength_override))
+        material["registered_sticker_source"] = str(image_path)
+        material["registered_sticker_preserves_transmission"] = material_role == "glass"
+        if material_role == "glass" and profile_override:
+            # Landmark dome stickers are the final visible carrier, not a
+            # facade near-LOD overlay. The presentation renderer switches
+            # ordinary physical window glass off for aerial views; tagging a
+            # dome as "near" made its sticker disappear and exposed the pale
+            # light well below it. Keep this registered glass in every LOD.
+            material["glazing_lod"] = "always"
+    else:
+        material = _graph_skin_material(mats, {**spec, "band": "elevation"})
+        if material is None:
+            # A geometry-conditioned sticker already declares its own exact
+            # image. It must remain reproducible in a fresh checkout even when
+            # the optional legacy facade-sheet cache is absent. Build the same
+            # PBR-capable node graph directly from the registered source.
+            image_path = Path(str(spec.get("source_image_path", "")))
+            if not image_path.is_absolute():
+                image_path = Path.cwd() / image_path
+            if not image_path.is_file():
+                raise ValueError("carrier facade skin requires a registered source image")
+            material = make_facade_sheet_material(
+                f"MAT_RegisteredCarrier_{spec.get('id', 'Skin')}",
+                image_path, None, None,
+            )
+            material["registered_sticker_source"] = str(image_path)
+            material["registered_sticker_standalone"] = True
+
+        emission_strength_override = spec.get("emission_strength_override")
+        if emission_strength_override is not None and material.node_tree is not None:
+            principled = next((node for node in material.node_tree.nodes if node.type == "BSDF_PRINCIPLED"), None)
+            image_node = material.node_tree.nodes.get("SHEET_Albedo")
+            if principled is not None and image_node is not None:
+                emission = principled.inputs.get("Emission Color") or principled.inputs.get("Emission")
+                if emission is not None:
+                    for link in list(emission.links):
+                        material.node_tree.links.remove(link)
+                    material.node_tree.links.new(image_node.outputs["Color"], emission)
+                strength = principled.inputs.get("Emission Strength")
+                if strength is not None:
+                    strength.default_value = max(0.0, float(emission_strength_override))
+                material["carrier_emission_strength_override"] = float(emission_strength_override)
+
+        # Registered opaque carrier imagery may represent actual metal. Keep
+        # the sticker as chromatic authority while allowing the carrier to
+        # recover physically plausible bronze/steel response in Blender.
+        if material.node_tree is not None:
+            principled = next((node for node in material.node_tree.nodes if node.type == "BSDF_PRINCIPLED"), None)
+            metallic_override = spec.get("metallic_override")
+            if principled is not None and metallic_override is not None:
+                principled.inputs["Metallic"].default_value = max(0.0, min(1.0, float(metallic_override)))
+                material["carrier_metallic_override"] = float(metallic_override)
+            roughness_override = spec.get("roughness_override")
+            if principled is not None and roughness_override is not None:
+                principled.inputs["Roughness"].default_value = max(0.0, min(1.0, float(roughness_override)))
+                material["carrier_opaque_roughness_override"] = float(roughness_override)
+
+    material["massing_skin"] = True
+    material["massing_skin_canonical"] = ""
+    material["massing_skin_axis"] = axis
+    material["massing_skin_flip_u"] = bool(spec.get("flip_u", False))
+    material["massing_skin_tex_u_min"] = float(spec.get("uv_u_min", 0.0))
+    material["massing_skin_tex_u_max"] = float(spec.get("uv_u_max", 1.0))
+    material["massing_skin_v_min"] = float(spec.get("uv_v_min", 0.0))
+    material["massing_skin_v_max"] = float(spec.get("uv_v_max", 1.0))
+    material["massing_skin_world_metric_uv_tile_m"] = float(spec.get("world_metric_uv_tile_m", 0.0))
+    material["massing_skin_world_metric_uv_u_offset"] = float(spec.get("world_metric_uv_u_offset", 0.0))
+    material["massing_skin_world_metric_uv_v_offset"] = float(spec.get("world_metric_uv_v_offset", 0.0))
+    material["final_surface_coverage"] = bool(spec.get("final_surface_coverage", True))
+    material["final_surface_finish_class"] = str(spec.get("finish_class", "registered_sticker"))
+    material["sticker_layer"] = str(spec.get("sticker_layer", "semantic"))
+    material["sticker_floor_role"] = str(spec.get("floor_role", ""))
+    material["sticker_surface_id"] = str(spec.get("surface_id", ""))
+    centre = spec.get("centre", (0.0, 0.0, 0.0))
+    cx, cy, cz = (float(value) for value in centre)
+    span = float(spec.get("span_m", 1.0))
+    height = float(spec.get("height_m", 1.0))
+    default_u_centre = cy if axis in {"left", "right"} else cx
+    material["massing_skin_u_min"] = float(spec.get("u_min_m", -span / 2 if axis == "angle" else default_u_centre - span / 2))
+    material["massing_skin_u_max"] = float(spec.get("u_max_m", span / 2 if axis == "angle" else default_u_centre + span / 2))
+    material["massing_skin_z_min"] = float(spec.get("z_min_m", cz - height / 2))
+    material["massing_skin_z_max"] = float(spec.get("z_max_m", cz + height / 2))
+    if axis == "angle":
+        angle = math.radians(float(spec.get("rotation_z_deg", 0.0)))
+        material["massing_skin_origin_x"] = cx
+        material["massing_skin_origin_y"] = cy
+        material["massing_skin_along_x"] = math.cos(angle)
+        material["massing_skin_along_y"] = math.sin(angle)
+    elif axis in {"cylindrical_segment", "dome_radial"}:
+        material["massing_skin_origin_x"] = float(spec.get("origin_x", cx))
+        material["massing_skin_origin_y"] = float(spec.get("origin_y", cy))
+        material["massing_skin_angle_start_deg"] = float(spec.get("angle_start_deg", 0.0))
+        material["massing_skin_angle_end_deg"] = float(spec.get("angle_end_deg", 360.0))
+        material["massing_skin_dome_base_z"] = float(spec.get("dome_base_z", cz - height / 2))
+        material["massing_skin_dome_height_m"] = float(spec.get("dome_height_m", height))
+        material["massing_skin_dome_radius_m"] = float(spec.get("dome_radius_m", span / 2))
+    elif axis == "plan":
+        bounds = spec.get("plan_bounds")
+        if not bounds or len(bounds) != 4:
+            raise ValueError("plan carrier skin requires plan_bounds")
+        material["massing_skin_u_min"] = float(bounds[0])
+        material["massing_skin_u_max"] = float(bounds[1])
+        material["massing_skin_plan_v_min"] = float(bounds[2])
+        material["massing_skin_plan_v_max"] = float(bounds[3])
+    elif axis == "box_projected":
+        bounds = list(spec.get("box_bounds") or [-18.0, 18.0, -17.0, 17.0, 0.0, 31.0])
+        if len(bounds) != 6:
+            raise ValueError("box-projected carrier skin requires six box_bounds values")
+        material["massing_skin_box_bounds"] = [float(value) for value in bounds]
+
+    targets = {str(value) for value in spec.get("target_ids") or []}
+    if not targets:
+        raise ValueError("carrier skin requires target_ids")
+    desired_normal = spec.get("normal_xy")
+    normal_vector = Vector((float(desired_normal[0]), float(desired_normal[1]), 0.0)).normalized() if desired_normal else None
+    normal_dot_min = float(spec.get("normal_dot_min", 0.92))
+    normal_z_min = float(spec.get("normal_z_min", -1.01))
+    normal_z_max = float(spec.get("normal_z_max", 1.01))
+    angle_range = spec.get("normal_angle_range_deg")
+    face_indices = {int(value) for value in spec.get("face_indices") or []}
+    assigned = 0
+    for obj in parts:
+        if obj.name not in targets and not any(obj.name.startswith(f"{target}_") for target in targets):
+            continue
+        slot = len(obj.data.materials)
+        obj.data.materials.append(material)
+        for polygon in obj.data.polygons:
+            if face_indices and polygon.index not in face_indices:
+                continue
+            world_normal = (obj.matrix_world.to_3x3() @ polygon.normal).normalized()
+            if not normal_z_min <= world_normal.z <= normal_z_max:
+                continue
+            if normal_vector is not None and world_normal.dot(normal_vector) < normal_dot_min:
+                continue
+            if angle_range is not None:
+                angle = math.degrees(math.atan2(world_normal.y, world_normal.x)) % 360.0
+                start, end = float(angle_range[0]) % 360.0, float(angle_range[1]) % 360.0
+                inside = start <= angle <= end if start <= end else angle >= start or angle <= end
+                if not inside:
+                    continue
+            polygon.material_index = slot
+            assigned += 1
+    if assigned == 0:
+        raise ValueError(f"carrier skin {spec.get('id')!r} selected no clay faces")
+    material["carrier_skin_assigned_faces"] = assigned
+
+
+def _audit_final_surface_bindings(parts: list, graph: dict) -> dict:
+    """Fail before render when an audited clay face retains a generic material.
+
+    Surface declarations alone are insufficient: a normal or z filter can
+    select zero faces while the registration JSON still claims ownership. This
+    gate inspects the material bound to every polygon after all assemblies have
+    executed and before the meshes are joined.
+    """
+    contract = graph.get("final_surface_audit") or {}
+    if not contract.get("required"):
+        return {"status": "not_required", "checked_faces": 0, "failures": []}
+    forbidden = {str(value) for value in contract.get(
+        "forbidden_material_names",
+        ("MAT_Clay", "MAT_Facade_Primary", "MAT_Facade_Secondary", "MAT_Roof"),
+    )}
+    failures: list[dict] = []
+    checked = 0
+    floor_contract = graph.get("floor_sticker_contract") or {}
+    roof_start = float(floor_contract.get("roof_starts_at_z_m", float("inf")))
+    for obj in parts:
+        if not obj.get("locked_clay_geometry"):
+            continue
+        for polygon in obj.data.polygons:
+            checked += 1
+            material = obj.data.materials[polygon.material_index] if polygon.material_index < len(obj.data.materials) else None
+            name = material.name if material else "<NONE>"
+            reason = ""
+            if material is None or not bool(material.get("final_surface_coverage")):
+                reason = "missing_final_surface_owner"
+            elif name in forbidden:
+                reason = "generic_or_clay_fallback"
+            elif material.get("sticker_floor_role") == "roof" and polygon.center.z < roof_start - 1e-5:
+                reason = "roof_sticker_below_roof_datum"
+            if reason:
+                failures.append({"object": obj.name, "face_index": polygon.index, "material": name, "reason": reason})
+    if failures:
+        preview = ", ".join(
+            f"{item['object']}:{item['face_index']}={item['material']}({item['reason']})"
+            for item in failures[:12]
+        )
+        raise ValueError(f"final surface audit failed for {len(failures)} visible faces: {preview}")
+    return {"status": "pass", "checked_faces": checked, "failure_count": 0}
 
 
 def _consolidate_massing_skin_materials(obj: bpy.types.Object) -> None:

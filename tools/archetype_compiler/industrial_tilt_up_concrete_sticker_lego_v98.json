@@ -1,0 +1,24 @@
+{
+  "schema": "siteforge.sticker-lego-family@1",
+  "archetype_id": "industrial_park_modernism",
+  "variant_id": "industrial_tilt_up_concrete",
+  "identity_mode": "massing_graph",
+  "tiers": [
+    {
+      "id": "canonical",
+      "signature_profile_id": "industrial-tilt-up-concrete-sticker-lego-canonical",
+      "family_id": "industrial-tilt-up-concrete-v98-canonical",
+      "width_m": 60.0,
+      "depth_m": 42.0,
+      "rear_modules": 0
+    },
+    {
+      "id": "extended",
+      "signature_profile_id": "industrial-tilt-up-concrete-sticker-lego-extended",
+      "family_id": "industrial-tilt-up-concrete-v98-extended",
+      "width_m": 60.0,
+      "depth_m": 48.0,
+      "rear_modules": 1
+    }
+  ]
+}

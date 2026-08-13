@@ -1,0 +1,40 @@
+{
+  "schema": "siteforge.sticker-method-machine-evidence@1",
+  "architect_scores": {
+    "canonical": 95.15,
+    "extended": 95.10,
+    "mean": 95.125,
+    "hard_stops": 0
+  },
+  "tiers": {
+    "canonical": {
+      "dimensions": {"width_m": 30.0, "depth_m": 28.0, "storeys": 2, "unit_count": 6, "unit_width_m": 5.0},
+      "geometry_sha256": "5d69760c7b41a874c1eb1f68e5e2d9b5b7d32f65c90440b124f80323632def12",
+      "assembled": {"height_m": 11.45, "triangle_count": 59694, "assembly_count": 1498},
+      "final_surface_audit": {"status": "pass", "checked_faces": 8808, "failure_count": 0},
+      "validation": "pass",
+      "render_count": 9
+    },
+    "extended": {
+      "dimensions": {"width_m": 35.0, "depth_m": 28.0, "storeys": 2, "unit_count": 7, "unit_width_m": 5.0},
+      "geometry_sha256": "c26e25415557894c1c300908794582d72409ff709947d4b486dfac5f0c0c110f",
+      "assembled": {"height_m": 11.45, "triangle_count": 69215, "assembly_count": 1746},
+      "final_surface_audit": {"status": "pass", "checked_faces": 10230, "failure_count": 0},
+      "validation": "pass",
+      "render_count": 9
+    }
+  },
+  "tier_contract": {
+    "representation": "whole_attached_unit_lego",
+    "canonical_to_extended": "one complete 5 m shophouse unit",
+    "vertical_scaling": false,
+    "depth_scaling": false,
+    "nonuniform_scaling": false,
+    "metric_uv_scale_preserved": true
+  },
+  "non_blocking_optimization_follow_up": {
+    "material_consolidation": true,
+    "canonical_glb_texture_budget_warning_mb": 13.5,
+    "extended_glb_texture_budget_warning_mb": 15.1
+  }
+}

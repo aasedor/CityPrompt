@@ -1,0 +1,114 @@
+{
+  "schema": "siteforge.sticker-method-machine-evidence@1",
+  "architect_scores": {
+    "canonical": 95.2,
+    "extended": 95.05,
+    "mean": 95.125,
+    "hard_stops": 0
+  },
+  "reference_sha256": {
+    "variant_0.png": "975880325493f35fdae5367aeeccd5648ebe38f57baf5d7b7aa2ce024c17f747",
+    "variant_0_angle_60.jpg": "3af8854ea010429a2d4cc1c87862b04eb91a93294767467d393b80a41598c4df",
+    "variant_0_angle_90.jpg": "21e0c4e9ab7fd36fac73258b6294f492ca4af6424dd0b85c753f8604ef3f2dc5"
+  },
+  "source_sha256": {
+    "build_collegiate_brick_corner_block_sticker_lego_v98.py": "845f32b4d10bea61b8ec0c09da49a5e764353fb7e11b190967acbc526fe59ba7",
+    "compile_collegiate_brick_corner_block_sticker_lego_v98.py": "432a3781ea393d8a4fbc2cbaad879bf1999a389bc5728e20f28be0783612d1bb",
+    "collegiate_brick_corner_block_sticker_lego_v98_contract.json": "dd19da3181252803722ffb4858fc281eb5a10bdded7a96d6fe177166c3fd0de0",
+    "collegiate_brick_corner_block_sticker_lego_v98_carrier_packages.json": "d919d3df5e92172dc97e8a8739aa3197d0a55d3bd6a975b783392fd7149a04ba",
+    "sticker_assets/collegiate_brick_corner_block_v98/provenance.json": "f1fa3d319b0635c08af1cc60cecebb241469c7779b06c5f032cc985d0a5c6ab0"
+  },
+  "tiers": {
+    "canonical": {
+      "dimensions": {
+        "width_m": 42.0,
+        "depth_m": 38.0,
+        "podium_height_m": 4.5,
+        "floor_height_m": 3.5,
+        "setback_height_m": 3.5,
+        "roof_height_m": 2.25,
+        "default_floors": 5,
+        "min_floors": 5,
+        "max_floors": 5,
+        "crown_height_m": 3.5
+      },
+      "geometry_sha256": "a3dc8607f4d04ef819f728762267bca3254ef386390aa689480b045d8833b740",
+      "assembled": {
+        "height_m": 19.45,
+        "triangle_count": 123460,
+        "assembly_count": 3444
+      },
+      "final_surface_audit": {
+        "status": "pass",
+        "checked_faces": 17306,
+        "failure_count": 0
+      },
+      "validation": "pass",
+      "production_preflight": "pass",
+      "render_count": 9,
+      "render_sha256": {
+        "archetype_match": "8038f0881f9dae72df9a421f907be3fcfcb5781e49b2faf18a01584d8d103b8f",
+        "front_corner_oblique": "61bd14ee98a8939f2e4b9045140d8d62dad2aa327e3744eff9a75538403d389d",
+        "rear_corner_oblique": "30be7ce923248026bac893d478be6501173db8fe900268d8f94dac3f5f37e03c",
+        "facade_close": "55c7e1dbe5dc6c109799ea2e76808ee3211c153650452fb8a387c80109d255e0",
+        "roof_audit": "362146729ee1fda9dbb7676866dd7c1f5f6f4ad0d8c2d5f6266105c962df8ab5",
+        "aerial": "fb80e8be4fa6480494182c01efded024750ba4207d5b96f91ba2aa7070c2ecc0"
+      }
+    },
+    "extended": {
+      "dimensions": {
+        "width_m": 49.0,
+        "depth_m": 38.0,
+        "podium_height_m": 4.5,
+        "floor_height_m": 3.5,
+        "setback_height_m": 3.5,
+        "roof_height_m": 2.25,
+        "default_floors": 5,
+        "min_floors": 5,
+        "max_floors": 5,
+        "crown_height_m": 3.5
+      },
+      "geometry_sha256": "62d7b04ab8800debbaa3bfc1b7df99afe4d5b8e7eaeaa4665741fffd88e18bd7",
+      "assembled": {
+        "height_m": 19.45,
+        "triangle_count": 139568,
+        "assembly_count": 3896
+      },
+      "final_surface_audit": {
+        "status": "pass",
+        "checked_faces": 19568,
+        "failure_count": 0
+      },
+      "validation": "pass",
+      "production_preflight": "pass",
+      "render_count": 9,
+      "render_sha256": {
+        "archetype_match": "bee618866cb93fe97d2fc213c97a6d93062205f034634beaaf21e9894921330d",
+        "front_corner_oblique": "5f872df670da1a8bdda0a2d85f115fba13f788bf7cfb994726c17a8a2decb5cf",
+        "rear_corner_oblique": "66fbb456dfc5a6e28f8b484a73aaf0ccc275c00f2e8d0229ae1810faa79b4446",
+        "facade_close": "2994e11a459238ed57d80168a98e000d4396e34ddacd135c866160459dcbc736",
+        "roof_audit": "5e63987448bdd3bcb059d35b9258a1446705e40020bc69979bb44445f522c01d",
+        "aerial": "cd761da8ec84383bc23d5ad78688bdd81e8ba5f638d2ff6a62252a2ecdd18f56"
+      }
+    }
+  },
+  "tier_contract": {
+    "representation": "discrete_horizontal_lego",
+    "canonical_to_extended": "one complete 7 m horizontal courtyard-ring module",
+    "vertical_scaling": false,
+    "depth_scaling": false,
+    "nonuniform_scaling": false,
+    "metric_brick_uv_m": 2.4,
+    "fixed_corner_oriel_entry_courtyard_and_roof_kit_preserved": true
+  },
+  "non_blocking_optimization_follow_up": {
+    "material_consolidation": true,
+    "texture_budget": true
+  },
+  "review_board_sha256": {
+    "01-exact-reference-comparison.png": "c97da9387c45981530a1cf00784d8c9a9d2ee54f4d99f2068c30323f3ce90dee",
+    "02-corner-reference-comparison.png": "1f16a11a2df00730858e03804d3c46a2792ba519422fc9e62ba7bdc318dde4fc",
+    "03-roof-reference-comparison.png": "d6a38d9ce6fffccbbe76c5c92c9d7a90531fcec5be2b1854a93cc5a59cdfd2f6",
+    "04-sticker-and-size-comparison.png": "340f8ba68062e0f3b19814152c309ce14bffdb2971ec907e67f8f632cd976c7b"
+  }
+}

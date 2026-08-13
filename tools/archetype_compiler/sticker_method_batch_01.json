@@ -1,0 +1,195 @@
+{
+  "schema": "siteforge.sticker-method-batch@1",
+  "batch_id": "STICKER-METHOD-BATCH-01",
+  "policy": {
+    "building_count": 10,
+    "approval_threshold": "unrounded_architect_mean_strictly_greater_than_95",
+    "minimum_tier_score": 95,
+    "hard_stops_allowed": 0,
+    "push_checkpoint": "after_each_approved_building",
+    "rear_reference_policy": "constrained_completion_from_oblique_and_aerial; never label as exact rear evidence"
+  },
+  "buildings": [
+    {
+      "order": 1,
+      "archetype_id": "old_montreal_warehouse_loft",
+      "variant_id": "old_mtl_textile_mill",
+      "representation": "discrete_horizontal_lego",
+      "status": "approved_95_plus",
+      "identity_locks": [
+        "fixed three-storey adaptive-reuse corner composition",
+        "brick upper piers and ground piers",
+        "stone middle band and cornice",
+        "true recessed glass storefront and arched middle windows",
+        "flat gravel roof with two long skylights and bounded service equipment"
+      ],
+      "reference_authority": "exact_images_override_conflicting_4_to_6_floor_metadata"
+    },
+    {
+      "order": 2,
+      "archetype_id": "daylight_factory",
+      "variant_id": "factory_sawtooth_roof",
+      "representation": "discrete_horizontal_lego",
+      "status": "approved_95_plus",
+      "identity_locks": [
+        "one occupied storey with six same-handed canonical northlight cells",
+        "ordinary red brick gables and segmental arched steel-sash windows",
+        "singular three-door dock with one canopy, platform, stair and bounded ramp",
+        "detached hollow ring-capped brick chimney",
+        "physical northlight grids over transmissive glazing and recessed workshop depth"
+      ],
+      "reference_authority": "exact_images_override_conflicting_two_floor_metadata"
+    },
+    {
+      "order": 3,
+      "archetype_id": "administrative_faculty_office_building",
+      "variant_id": "admin_faculty_brick_bronze_fins",
+      "representation": "discrete_horizontal_lego",
+      "status": "approved_95_plus",
+      "architect_scores": {
+        "canonical": 95.1,
+        "extended": 95.4,
+        "mean": 95.25,
+        "hard_stops": 0
+      }
+    },
+    {
+      "order": 4,
+      "archetype_id": "halifax_waterfront_warehouse",
+      "variant_id": "warehouse_privateers_wharf",
+      "representation": "discrete_horizontal_lego",
+      "status": "approved_95_plus",
+      "architect_scores": {
+        "canonical": 95.45,
+        "extended": 95.35,
+        "mean": 95.4,
+        "hard_stops": 0
+      },
+      "reference_authority": "exact_images_override_conflicting_ironstone_gable_metadata",
+      "identity_locks": [
+        "exactly two tall occupied storeys",
+        "warm red brick within pale rusticated stone frame",
+        "deep dark-green ground storefront and door recesses",
+        "tall physical round-arched upper windows",
+        "deep layered classical cornice and stepped front parapet",
+        "weathered flat membrane roof with sparse bounded stacks"
+      ]
+    },
+    {
+      "order": 5,
+      "archetype_id": "civic_modernism_rec_centre",
+      "variant_id": "rec_brick_glass_box",
+      "representation": "bounded_discrete_lego",
+      "status": "approved_95_plus",
+      "architect_scores": {
+        "canonical": 95.15,
+        "extended": 95.05,
+        "mean": 95.10,
+        "hard_stops": 0
+      },
+      "reference_authority": "exact_variant_0_street_oblique_and_aerial_images_override_generic_family_metadata",
+      "identity_locks": [
+        "low double-height glazed aquatic and public wing wrapping a taller blind gymnasium hall",
+        "continuous full-height pool and lobby glazing with physical aluminum grid",
+        "warm brick infill inside a pale exposed-concrete structural frame",
+        "singular recessed glazed entrance with shallow white ribbed steel canopy",
+        "stepped low and high flat roofs with nested parapets",
+        "fixed two-skylight and bounded mechanical-court roof kit"
+      ],
+      "lego_rule": "canonical 55x35 has four complete 6.25m blind gymnasium bays; extended 61.25x35 adds exactly one whole bay; never stretch or repeat the entrance_pool_glazing_canopy_or_roof_identity_kit"
+    },
+    {
+      "order": 6,
+      "archetype_id": "shophouse_southeast_asian",
+      "variant_id": "shophouse_peranakan",
+      "representation": "whole_attached_unit_lego",
+      "status": "approved_95_plus",
+      "architect_scores": {
+        "canonical": 95.15,
+        "extended": 95.1,
+        "mean": 95.125,
+        "hard_stops": 0
+      },
+      "identity_locks": [
+        "exact six-unit two-storey Peranakan terrace",
+        "continuous hollow five-foot-way with recessed shopfronts",
+        "three physical upper arches per five-metre unit",
+        "three bounded central balconies",
+        "one pitched terracotta roof and dormer per unit",
+        "singleton party walls and open rear air wells"
+      ],
+      "approved_tiers": {
+        "canonical": {"units": 6, "width_m": 30.0, "depth_m": 28.0},
+        "extended": {"units": 7, "width_m": 35.0, "depth_m": 28.0}
+      },
+      "review_path": "docs/reviews/catalogue-rollout-v98/sticker-method-batch-01/peranakan-shophouse-row"
+    },
+    {
+      "order": 7,
+      "archetype_id": "industrial_park_modernism",
+      "variant_id": "industrial_tilt_up_concrete",
+      "representation": "discrete_panel_lego",
+      "status": "approved_95_plus",
+      "architect_scores": {
+        "canonical": 95.15,
+        "extended": 95.1,
+        "mean": 95.125,
+        "hard_stops": 0
+      },
+      "identity_locks": [
+        "single-volume tilt-up warehouse with two office ribbons only on the public front",
+        "physical openwork fin screen terminating at one raised blind pylon",
+        "one recessed glazed entrance with supported dark canopy",
+        "six recessed sectional loading doors on the right return with paired bollards",
+        "three constrained rear receiving positions",
+        "flat TPO roof with two RTUs, three rooflights and sparse vents"
+      ],
+      "approved_tiers": {
+        "canonical": {"width_m": 60.0, "depth_m": 42.0, "office_levels": 2},
+        "extended": {"width_m": 60.0, "depth_m": 48.0, "office_levels": 2}
+      },
+      "lego_rule": "extended adds exactly one complete 6m rear operational module; front office entry pylon screen loading kit and all metric UV scales remain fixed",
+      "review_path": "docs/reviews/catalogue-rollout-v98/sticker-method-batch-01/industrial-tilt-up-concrete"
+    },
+    {
+      "order": 8,
+      "archetype_id": "graduate_family_housing",
+      "variant_id": "collegiate_brick_corner_block",
+      "representation": "discrete_horizontal_lego",
+      "status": "approved_95_plus",
+      "architect_scores": {
+        "canonical": 95.20,
+        "extended": 95.05,
+        "mean": 95.125,
+        "hard_stops": 0
+      },
+      "identity_locks": [
+        "five-storey warm tan brick perimeter courtyard block",
+        "singular bronze corner oriel and crown beside a recessed entry slot",
+        "projected grouped-window stacks with continuous pale precast floor datums",
+        "physical residential and corner glass with separate occupied depth cues",
+        "layered gravel perimeter and dark inner membrane roof with screened plant"
+      ],
+      "approved_tiers": {
+        "canonical": {"width_m": 42.0, "depth_m": 38.0, "floors": 5},
+        "extended": {"width_m": 49.0, "depth_m": 38.0, "floors": 5}
+      },
+      "lego_rule": "extended adds exactly one complete 7m horizontal courtyard-ring module; corner oriel entry courtyard roof kit floor count depth and all metric UV scales remain fixed",
+      "review_path": "docs/reviews/catalogue-rollout-v98/sticker-method-batch-01/collegiate-brick-corner-block"
+    },
+    {
+      "order": 9,
+      "archetype_id": "brutalist_institutional",
+      "variant_id": "brutalist_heroic",
+      "representation": "fixed_landmark",
+      "status": "queued"
+    },
+    {
+      "order": 10,
+      "archetype_id": "food_hall_market_hall",
+      "variant_id": "market_historic_iron_glass",
+      "representation": "fixed_landmark",
+      "status": "queued"
+    }
+  ]
+}

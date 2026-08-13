@@ -1,0 +1,24 @@
+{
+  "schema": "siteforge.sticker-lego-family@1",
+  "archetype_id": "civic_modernism_rec_centre",
+  "variant_id": "rec_brick_glass_box",
+  "identity_mode": "massing_graph",
+  "tiers": [
+    {
+      "id": "canonical",
+      "signature_profile_id": "civic-modernism-rec-centre-sticker-lego-canonical",
+      "family_id": "civic-modernism-rec-centre-v98-canonical",
+      "width_m": 55.0,
+      "depth_m": 35.0,
+      "gym_bays": 4
+    },
+    {
+      "id": "extended",
+      "signature_profile_id": "civic-modernism-rec-centre-sticker-lego-extended",
+      "family_id": "civic-modernism-rec-centre-v98-extended",
+      "width_m": 61.25,
+      "depth_m": 35.0,
+      "gym_bays": 5
+    }
+  ]
+}

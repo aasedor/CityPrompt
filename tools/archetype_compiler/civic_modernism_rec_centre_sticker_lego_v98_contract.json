@@ -1,0 +1,37 @@
+{
+  "schema": "siteforge.civic-modernism-rec-centre-sticker-lego@1",
+  "version": "v98.1",
+  "archetype_id": "civic_modernism_rec_centre",
+  "variant_id": "rec_brick_glass_box",
+  "identity_authority": "three_exact_variant_0_images",
+  "reference_sha256": {
+    "frontend/public/archetypes/buildings/civic_modernism_rec_centre/variant_0.png": "9183129653aa668116a66add2613d1241b6ebbe342895565001d6a675d90ed37",
+    "frontend/public/archetypes/buildings/civic_modernism_rec_centre/variant_0_angle_60.jpg": "cc5c6668c724051a7eca406064ab9d70d0cf4dc79f5e0dc9d742b4e7b049340a",
+    "frontend/public/archetypes/buildings/civic_modernism_rec_centre/variant_0_angle_90.jpg": "8e221717803e0c92eb731d7a448687e6dd17cd32fc43d0724d9361b600ad2889"
+  },
+  "size_matrix": {
+    "canonical": {
+      "width_m": 55.0,
+      "depth_m": 35.0,
+      "gym_bays": 4
+    },
+    "extended": {
+      "width_m": 61.25,
+      "depth_m": 35.0,
+      "gym_bays": 5
+    }
+  },
+  "continuous_resize_allowed": false,
+  "vertical_scaling_allowed": false,
+  "depth_scaling_allowed": false,
+  "whole_bays_only": true,
+  "hard_stops": [
+    "wrong stepped massing",
+    "partial bay resize",
+    "missing fixed pool or entrance kit",
+    "generic material fallback",
+    "unowned or multiply owned face",
+    "printed glass geometry",
+    "roof domain leakage"
+  ]
+}

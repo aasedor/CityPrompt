@@ -11,13 +11,11 @@ __pycache__/
 .env.production
 .env-backups/
 .secret-rotation.log
-
 # Build outputs
 dist/
 build/
 *.egg-info/
 *.tsbuildinfo
-
 # Local generation and visual-QA outputs
 #
 # Keep heavyweight, reproducible render experiments out of the source tree's
@@ -31,30 +29,24 @@ build/
 /tools/archetype_compiler/facade_sheets_gpt_variant_pilot_v1/
 /tools/archetype_compiler/facade_sheets_v40/
 /tools/archetype_compiler/textures_*/
-
 # IDE
 .vscode/
 .idea/
 *.swp
 *.swo
-
 # OS
 .DS_Store
 Thumbs.db
-
 # Docker volumes
 postgres_data/
 redis_data/
 minio_data/
-
 # Logs
 *.log
-
 # Testing
 .coverage
 htmlcov/
 .pytest_cache/
-
 # Generated models
 *.glb
 *.gltf
@@ -130,12 +122,13 @@ vertex-key.json
 /scripts/generate_festival_archetypes.py
 /scripts/generate_mythic_archetypes.py
 /scripts/generate_scifi_archetypes.py
-
 # Secrets/backups and local session artifacts (never commit)
 *.env.bak*
 chat_history.*
 _bak-*/
 **/_bak-*/
 *.bak-keyrotation
-
 .venv/
+# Atomic image publishers may leave a hidden in-flight PNG if Blender or a
+# concurrent verifier holds the destination on Windows. These are never source.
+tools/archetype_compiler/sticker_assets/**/.*.tmp.png
