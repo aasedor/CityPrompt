@@ -80,7 +80,23 @@
       "archetype_id": "civic_modernism_rec_centre",
       "variant_id": "rec_brick_glass_box",
       "representation": "bounded_discrete_lego",
-      "status": "queued"
+      "status": "approved_95_plus",
+      "architect_scores": {
+        "canonical": 95.15,
+        "extended": 95.05,
+        "mean": 95.10,
+        "hard_stops": 0
+      },
+      "reference_authority": "exact_variant_0_street_oblique_and_aerial_images_override_generic_family_metadata",
+      "identity_locks": [
+        "low double-height glazed aquatic and public wing wrapping a taller blind gymnasium hall",
+        "continuous full-height pool and lobby glazing with physical aluminum grid",
+        "warm brick infill inside a pale exposed-concrete structural frame",
+        "singular recessed glazed entrance with shallow white ribbed steel canopy",
+        "stepped low and high flat roofs with nested parapets",
+        "fixed two-skylight and bounded mechanical-court roof kit"
+      ],
+      "lego_rule": "canonical 55x35 has four complete 6.25m blind gymnasium bays; extended 61.25x35 adds exactly one whole bay; never stretch or repeat the entrance_pool_glazing_canopy_or_roof_identity_kit"
     },
     {
       "order": 6,

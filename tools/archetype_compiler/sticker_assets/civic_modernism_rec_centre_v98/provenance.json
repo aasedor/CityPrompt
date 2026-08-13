@@ -1,0 +1,403 @@
+{
+  "schema": "siteforge.sticker-asset-provenance@1",
+  "building": "civic_modernism_rec_centre--rec_brick_glass_box",
+  "variant_index": 0,
+  "identity_authority": "three_exact_variant_0_images",
+  "exact_reference_sources": {
+    "variant_0.png": {
+      "path": "frontend/public/archetypes/buildings/civic_modernism_rec_centre/variant_0.png",
+      "sha256": "9183129653aa668116a66add2613d1241b6ebbe342895565001d6a675d90ed37",
+      "evidence_class": "exact_reference"
+    },
+    "variant_0_angle_60.jpg": {
+      "path": "frontend/public/archetypes/buildings/civic_modernism_rec_centre/variant_0_angle_60.jpg",
+      "sha256": "cc5c6668c724051a7eca406064ab9d70d0cf4dc79f5e0dc9d742b4e7b049340a",
+      "evidence_class": "exact_reference"
+    },
+    "variant_0_angle_90.jpg": {
+      "path": "frontend/public/archetypes/buildings/civic_modernism_rec_centre/variant_0_angle_90.jpg",
+      "sha256": "8e221717803e0c92eb731d7a448687e6dd17cd32fc43d0724d9361b600ad2889",
+      "evidence_class": "exact_reference"
+    }
+  },
+  "palette_conditioning": {
+    "rule": "bounds-asserted median probes blended toward material priors; no source pixels pasted",
+    "crops_px": {
+      "brick": {
+        "path": "frontend/public/archetypes/buildings/civic_modernism_rec_centre/variant_0.png",
+        "box": [
+          675,
+          235,
+          800,
+          375
+        ]
+      },
+      "concrete": {
+        "path": "frontend/public/archetypes/buildings/civic_modernism_rec_centre/variant_0.png",
+        "box": [
+          250,
+          170,
+          310,
+          405
+        ]
+      },
+      "joinery": {
+        "path": "frontend/public/archetypes/buildings/civic_modernism_rec_centre/variant_0.png",
+        "box": [
+          450,
+          435,
+          565,
+          545
+        ]
+      },
+      "glass": {
+        "path": "frontend/public/archetypes/buildings/civic_modernism_rec_centre/variant_0.png",
+        "box": [
+          310,
+          325,
+          420,
+          500
+        ]
+      },
+      "canopy": {
+        "path": "frontend/public/archetypes/buildings/civic_modernism_rec_centre/variant_0.png",
+        "box": [
+          585,
+          430,
+          745,
+          470
+        ]
+      },
+      "roof": {
+        "path": "frontend/public/archetypes/buildings/civic_modernism_rec_centre/variant_0_angle_90.jpg",
+        "box": [
+          625,
+          195,
+          980,
+          515
+        ]
+      },
+      "equipment": {
+        "path": "frontend/public/archetypes/buildings/civic_modernism_rec_centre/variant_0_angle_90.jpg",
+        "box": [
+          410,
+          205,
+          590,
+          360
+        ]
+      }
+    },
+    "sampled_rgb": {
+      "brick": [
+        78,
+        46,
+        38
+      ],
+      "concrete": [
+        201,
+        176,
+        134
+      ],
+      "joinery": [
+        148,
+        106,
+        66
+      ],
+      "glass": [
+        192,
+        169,
+        128
+      ],
+      "canopy": [
+        105,
+        75,
+        49
+      ],
+      "roof": [
+        205,
+        184,
+        169
+      ],
+      "equipment": [
+        87,
+        98,
+        106
+      ]
+    },
+    "prepared_palette_rgb": {
+      "brick": [
+        150,
+        93,
+        72
+      ],
+      "concrete": [
+        161,
+        164,
+        160
+      ],
+      "roof_low": [
+        189,
+        182,
+        171
+      ],
+      "roof_high": [
+        182,
+        175,
+        165
+      ],
+      "roof_patch": [
+        154,
+        149,
+        142
+      ],
+      "canopy": [
+        187,
+        181,
+        169
+      ],
+      "joinery": [
+        70,
+        68,
+        62
+      ],
+      "glass": [
+        138,
+        149,
+        148
+      ],
+      "entry": [
+        129,
+        104,
+        76
+      ],
+      "threshold": [
+        151,
+        150,
+        144
+      ],
+      "galvanized": [
+        132,
+        138,
+        137
+      ]
+    }
+  },
+  "geometry_ownership": [
+    "concrete structural grid",
+    "apertures",
+    "mullions and transoms",
+    "door rails and frames",
+    "canopy and roof silhouettes",
+    "parapets, rooflights and mechanical equipment"
+  ],
+  "glass_contract": "Intrinsic neutral optical field only; no printed mullions, apertures, scene reflections or hard horizon.",
+  "interior_contract": "Separate deterministic neutral-veiled 4x2 pool-hall and community-lobby cards sit behind physical glass and never own facade geometry.",
+  "roof_contract": "Low deck, high deck and perimeter patch are disjoint upward-face assets; parapets, coping, curbs and equipment use construction-role finishes.",
+  "atlas_grid": [
+    4,
+    2
+  ],
+  "assets": {
+    "warm_brick_front": {
+      "path": "tools/archetype_compiler/sticker_assets/civic_modernism_rec_centre_v98/warm_brick_front_intrinsic.png",
+      "sha256": "979946997d69bccc2463591eb3926b19c8354ad85c5b3740f89831f524e45f5f",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_structural_grid": false,
+      "contains_printed_mullions": false,
+      "contains_printed_reflections_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_apertures": false
+    },
+    "warm_brick_return": {
+      "path": "tools/archetype_compiler/sticker_assets/civic_modernism_rec_centre_v98/warm_brick_return_intrinsic.png",
+      "sha256": "279f3022a7b8cdc2fe6ba8454d85780f17de56160cdefa40623ce0ca83cdfe7e",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_structural_grid": false,
+      "contains_printed_mullions": false,
+      "contains_printed_reflections_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_apertures": false
+    },
+    "warm_brick_parapet": {
+      "path": "tools/archetype_compiler/sticker_assets/civic_modernism_rec_centre_v98/warm_brick_parapet_intrinsic.png",
+      "sha256": "efe700522df5468bbf97af6a61490ff23f85fb07f90229b75333f760236ca4ae",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_structural_grid": false,
+      "contains_printed_mullions": false,
+      "contains_printed_reflections_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_apertures": false
+    },
+    "cool_weathered_pale_concrete": {
+      "path": "tools/archetype_compiler/sticker_assets/civic_modernism_rec_centre_v98/cool_weathered_pale_concrete_intrinsic.png",
+      "sha256": "eb1bc80636ac4416c7014a2eee34910e7e72edb5253fac1a82e127f2775dee5c",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_structural_grid": false,
+      "contains_printed_mullions": false,
+      "contains_printed_reflections_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_apertures": false
+    },
+    "pale_concrete_coping": {
+      "path": "tools/archetype_compiler/sticker_assets/civic_modernism_rec_centre_v98/pale_concrete_coping_intrinsic.png",
+      "sha256": "d29eed22506d97a8c127dc0f2d15e40c1423a05294cf6a79b3c236265984e382",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_structural_grid": false,
+      "contains_printed_mullions": false,
+      "contains_printed_reflections_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_apertures": false
+    },
+    "low_roof_membrane": {
+      "path": "tools/archetype_compiler/sticker_assets/civic_modernism_rec_centre_v98/low_roof_membrane_intrinsic.png",
+      "sha256": "81221d19ca415ef6235d3877ffc60a9e6e21d75f50eb8925daa0fde5b356e498",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_structural_grid": false,
+      "contains_printed_mullions": false,
+      "contains_printed_reflections_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_apertures": false
+    },
+    "high_roof_membrane": {
+      "path": "tools/archetype_compiler/sticker_assets/civic_modernism_rec_centre_v98/high_roof_membrane_intrinsic.png",
+      "sha256": "2193ae2a1f23f2a2e5f3c4470d47dc2ea6a14655c550d08af82a34b9c49191ce",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_structural_grid": false,
+      "contains_printed_mullions": false,
+      "contains_printed_reflections_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_apertures": false
+    },
+    "roof_perimeter_patch": {
+      "path": "tools/archetype_compiler/sticker_assets/civic_modernism_rec_centre_v98/roof_perimeter_patch_intrinsic.png",
+      "sha256": "40f4c32f8ecd7b275cca297d82f63f6ead1b95211c124d97ed02f0b32bbc18f8",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_structural_grid": false,
+      "contains_printed_mullions": false,
+      "contains_printed_reflections_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_apertures": false
+    },
+    "ribbed_canopy_top": {
+      "path": "tools/archetype_compiler/sticker_assets/civic_modernism_rec_centre_v98/ribbed_canopy_top_intrinsic.png",
+      "sha256": "0f1196ecfd15fdf5b61b11a1f6abeac516528a4116b02724046ff06b4012305c",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_structural_grid": false,
+      "contains_printed_mullions": false,
+      "contains_printed_reflections_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_apertures": false
+    },
+    "smooth_canopy_fascia_soffit_posts": {
+      "path": "tools/archetype_compiler/sticker_assets/civic_modernism_rec_centre_v98/smooth_canopy_fascia_soffit_posts_intrinsic.png",
+      "sha256": "503433882688873c7d82cefce8fc74d1176ff789c6d96cab4a694b85b455fea6",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_structural_grid": false,
+      "contains_printed_mullions": false,
+      "contains_printed_reflections_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_apertures": false
+    },
+    "dark_aluminum_joinery": {
+      "path": "tools/archetype_compiler/sticker_assets/civic_modernism_rec_centre_v98/dark_aluminum_joinery_intrinsic.png",
+      "sha256": "17ce1bd3fc55c84d0060d54f56a92eddd2f8f12bede94d0b4632e3ae4ca0b483",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_structural_grid": false,
+      "contains_printed_mullions": false,
+      "contains_printed_reflections_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_apertures": false
+    },
+    "physical_clear_glass": {
+      "path": "tools/archetype_compiler/sticker_assets/civic_modernism_rec_centre_v98/physical_clear_glass_intrinsic.png",
+      "sha256": "d17aa21c865a4af9165ef895135e43ad9c90ce3e3d679e62ab287fd88675bb5b",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_structural_grid": false,
+      "contains_printed_mullions": false,
+      "contains_printed_reflections_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_apertures": false
+    },
+    "pool_hall_interiors": {
+      "path": "tools/archetype_compiler/sticker_assets/civic_modernism_rec_centre_v98/pool_hall_interior_atlas.png",
+      "sha256": "a2175bab274fb3b84563ea10091ace6a8b4b64e2863d82db609c0b7ccdb0eda0",
+      "evidence_class": "constrained_completion",
+      "contains_printed_structural_grid": false,
+      "contains_printed_mullions": false,
+      "contains_printed_reflections_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_apertures": false
+    },
+    "community_lobby_interiors": {
+      "path": "tools/archetype_compiler/sticker_assets/civic_modernism_rec_centre_v98/community_lobby_interior_atlas.png",
+      "sha256": "298c2807952d08da4be9acf5a1a512f7d0a0ef9323dfbdbc0453e81c91fa68eb",
+      "evidence_class": "constrained_completion",
+      "contains_printed_structural_grid": false,
+      "contains_printed_mullions": false,
+      "contains_printed_reflections_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_apertures": false
+    },
+    "warm_entry_door_finish": {
+      "path": "tools/archetype_compiler/sticker_assets/civic_modernism_rec_centre_v98/warm_entry_door_finish_intrinsic.png",
+      "sha256": "2ffbeb0af20f641094893ad76d0464520da1eeee9214e0db1245e6b504e14e65",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_structural_grid": false,
+      "contains_printed_mullions": false,
+      "contains_printed_reflections_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_apertures": false
+    },
+    "entry_threshold": {
+      "path": "tools/archetype_compiler/sticker_assets/civic_modernism_rec_centre_v98/entry_threshold_intrinsic.png",
+      "sha256": "a188e3a956fe64882eee3050460d6b292e757fa5f6299dc538f0095c7f99740d",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_structural_grid": false,
+      "contains_printed_mullions": false,
+      "contains_printed_reflections_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_apertures": false
+    },
+    "aged_galvanized_hvac_service": {
+      "path": "tools/archetype_compiler/sticker_assets/civic_modernism_rec_centre_v98/aged_galvanized_hvac_service_intrinsic.png",
+      "sha256": "20b652802cc2a456bab8125ad026589a1ada9f35094d496ca70862546fd8c2c0",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_structural_grid": false,
+      "contains_printed_mullions": false,
+      "contains_printed_reflections_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_apertures": false
+    },
+    "dark_service_grille": {
+      "path": "tools/archetype_compiler/sticker_assets/civic_modernism_rec_centre_v98/dark_service_grille_intrinsic.png",
+      "sha256": "82b25bb13d5ceadd0402c7dd84a18f102342080965ad4efa78788a14d92be65f",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_structural_grid": false,
+      "contains_printed_mullions": false,
+      "contains_printed_reflections_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_apertures": false
+    },
+    "skylight_glass": {
+      "path": "tools/archetype_compiler/sticker_assets/civic_modernism_rec_centre_v98/skylight_glass_intrinsic.png",
+      "sha256": "a1112872d81e15ecb8f5d62df5af13e9b599a2565158ffa4a5865ac6cb342cb4",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_structural_grid": false,
+      "contains_printed_mullions": false,
+      "contains_printed_reflections_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_apertures": false
+    },
+    "skylight_curb": {
+      "path": "tools/archetype_compiler/sticker_assets/civic_modernism_rec_centre_v98/skylight_curb_intrinsic.png",
+      "sha256": "f46765fb9647cb3ec9d946cdbdf297f2b5721d14292d375065f88354b91cb5e0",
+      "evidence_class": "exact_palette_conditioned_intrinsic",
+      "contains_printed_structural_grid": false,
+      "contains_printed_mullions": false,
+      "contains_printed_reflections_or_horizon": false,
+      "contains_baked_directional_lighting": false,
+      "contains_printed_apertures": false
+    }
+  },
+  "post_generation_nonuniform_scale_allowed": false
+}
