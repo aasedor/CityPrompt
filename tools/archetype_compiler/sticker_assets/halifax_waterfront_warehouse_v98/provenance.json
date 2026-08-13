@@ -1,0 +1,310 @@
+{
+  "schema": "siteforge.sticker-asset-provenance@1",
+  "building": "halifax-waterfront-warehouse--warehouse-privateers-wharf",
+  "variant_index": 0,
+  "identity_override": {
+    "path": "A",
+    "authority": "exact_image_locked_two_storey_italianate",
+    "rejected_metadata": [
+      "three-and-a-half-storey ironstone warehouse",
+      "gable slate roof",
+      "loading doors",
+      "hoist beam"
+    ]
+  },
+  "exact_reference_sources": {
+    "variant_0.png": {
+      "path": "frontend/public/archetypes/buildings/halifax-waterfront-warehouse/variant_0.png",
+      "sha256": "ad42ba20d97281337b2a501af57cee64418b3df0486b3fa6c881cd317ef4784c",
+      "evidence_class": "exact_reference"
+    },
+    "variant_0_angle_60.jpg": {
+      "path": "frontend/public/archetypes/buildings/halifax-waterfront-warehouse/variant_0_angle_60.jpg",
+      "sha256": "9b2a732476ea85a955d4047463bf7ea34dfed211e8e0f69fdd5b6b9c1ee49efb",
+      "evidence_class": "exact_reference"
+    },
+    "variant_0_angle_90.jpg": {
+      "path": "frontend/public/archetypes/buildings/halifax-waterfront-warehouse/variant_0_angle_90.jpg",
+      "sha256": "721b8ef5aff6c9e45b9f1bd0beb6df81219675471aece32fc4826f219a1bcdf3",
+      "evidence_class": "exact_reference"
+    }
+  },
+  "palette_conditioning": {
+    "rule": "fixed bounds-asserted median probes blended toward material priors; no source pixels pasted",
+    "crops_px": {
+      "brick": {
+        "path": "frontend/public/archetypes/buildings/halifax-waterfront-warehouse/variant_0.png",
+        "box": [
+          455,
+          185,
+          530,
+          285
+        ]
+      },
+      "stone": {
+        "path": "frontend/public/archetypes/buildings/halifax-waterfront-warehouse/variant_0.png",
+        "box": [
+          562,
+          195,
+          612,
+          510
+        ]
+      },
+      "joinery": {
+        "path": "frontend/public/archetypes/buildings/halifax-waterfront-warehouse/variant_0.png",
+        "box": [
+          405,
+          430,
+          505,
+          620
+        ]
+      },
+      "glass": {
+        "path": "frontend/public/archetypes/buildings/halifax-waterfront-warehouse/variant_0.png",
+        "box": [
+          455,
+          310,
+          520,
+          490
+        ]
+      },
+      "patina": {
+        "path": "frontend/public/archetypes/buildings/halifax-waterfront-warehouse/variant_0_angle_60.jpg",
+        "box": [
+          730,
+          165,
+          1030,
+          300
+        ]
+      },
+      "roof": {
+        "path": "frontend/public/archetypes/buildings/halifax-waterfront-warehouse/variant_0_angle_90.jpg",
+        "box": [
+          260,
+          250,
+          950,
+          690
+        ]
+      }
+    },
+    "sampled_rgb": {
+      "brick": [
+        185,
+        154,
+        118
+      ],
+      "stone": [
+        171,
+        143,
+        106
+      ],
+      "joinery": [
+        61,
+        54,
+        43
+      ],
+      "glass": [
+        115,
+        99,
+        79
+      ],
+      "patina": [
+        119,
+        108,
+        97
+      ],
+      "roof": [
+        129,
+        109,
+        94
+      ]
+    },
+    "prepared_palette_rgb": {
+      "brick": [
+        160,
+        116,
+        93
+      ],
+      "stone": [
+        156,
+        154,
+        148
+      ],
+      "plinth": [
+        152,
+        139,
+        118
+      ],
+      "green": [
+        39,
+        55,
+        46
+      ],
+      "patina": [
+        110,
+        133,
+        129
+      ],
+      "glass": [
+        132,
+        140,
+        141
+      ],
+      "roof": [
+        102,
+        87,
+        77
+      ],
+      "roof_edge": [
+        67,
+        63,
+        58
+      ]
+    }
+  },
+  "geometry_ownership": [
+    "openings and arch contours",
+    "rustication and quoins",
+    "mullions and sash",
+    "cornice profiles and dentils",
+    "roof/parapet/chimney/service silhouettes"
+  ],
+  "glass_contract": "No printed mullions, frames, hard horizons, scene reflections or aperture boundaries.",
+  "interior_contract": "Separate dark, desaturated, neutral-veiled ground retail and upper commercial 4x2 atlases contain subordinate interior evidence only; no tan stripes or printed facade geometry.",
+  "assets": {
+    "warm_brick_front": {
+      "path": "tools/archetype_compiler/sticker_assets/halifax_waterfront_warehouse_v98/warm_brick_front_intrinsic.png",
+      "sha256": "e291ebfe9e3cc8e59a6f05928dfb07e299f8b70f9eb43d4434edc98015b9e6f5",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_code_native_exact_palette_conditioned",
+      "contains_printed_modeled_geometry": false,
+      "contains_baked_directional_lighting": false
+    },
+    "warm_brick_return": {
+      "path": "tools/archetype_compiler/sticker_assets/halifax_waterfront_warehouse_v98/warm_brick_return_intrinsic.png",
+      "sha256": "27619110a6dd73406bb9b245841f6ad5ec13082d1710a7d16bf683aad134e3d3",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_code_native_exact_palette_conditioned",
+      "contains_printed_modeled_geometry": false,
+      "contains_baked_directional_lighting": false
+    },
+    "pale_warm_stone": {
+      "path": "tools/archetype_compiler/sticker_assets/halifax_waterfront_warehouse_v98/pale_warm_stone_intrinsic.png",
+      "sha256": "99d370642c95886ebb6338dd92ded23e4f97e61aa74092db7392fc25d54269ee",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_code_native_exact_palette_conditioned",
+      "contains_printed_modeled_geometry": false,
+      "contains_baked_directional_lighting": false
+    },
+    "weathered_stone_plinth": {
+      "path": "tools/archetype_compiler/sticker_assets/halifax_waterfront_warehouse_v98/weathered_stone_plinth_intrinsic.png",
+      "sha256": "308e2452586f63c51380ca1ea465e2067b56d8a5824d1a6159bda9fd7f2be1de",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_code_native_exact_palette_conditioned",
+      "contains_printed_modeled_geometry": false,
+      "contains_baked_directional_lighting": false
+    },
+    "dark_green_joinery": {
+      "path": "tools/archetype_compiler/sticker_assets/halifax_waterfront_warehouse_v98/dark_green_joinery_intrinsic.png",
+      "sha256": "76ca9c456047cb0b779d7073efcc10dc09727678b13f854bdf02815b99aabfd0",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_code_native_exact_palette_conditioned",
+      "contains_printed_modeled_geometry": false,
+      "contains_baked_directional_lighting": false
+    },
+    "patinated_cornice_metal": {
+      "path": "tools/archetype_compiler/sticker_assets/halifax_waterfront_warehouse_v98/patinated_green_grey_cornice_intrinsic.png",
+      "sha256": "e6c028a63ff731b43da91a26b12efa25e2cafcdf58582e1955d35bca7923994d",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_code_native_exact_palette_conditioned",
+      "contains_printed_modeled_geometry": false,
+      "contains_baked_directional_lighting": false
+    },
+    "clear_upper_glass": {
+      "path": "tools/archetype_compiler/sticker_assets/halifax_waterfront_warehouse_v98/clear_upper_glass_intrinsic.png",
+      "sha256": "cd6158fdfbd68ce9ab54a9e05742ea0ae3794ca92bad39cbb9b02528f0113f00",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_code_native_exact_palette_conditioned",
+      "contains_printed_modeled_geometry": false,
+      "contains_baked_directional_lighting": false
+    },
+    "clear_storefront_glass": {
+      "path": "tools/archetype_compiler/sticker_assets/halifax_waterfront_warehouse_v98/clear_storefront_glass_intrinsic.png",
+      "sha256": "e36cbdccedeaae58129ad534265619e5676a33f5af1bfff57d434aaf3a964176",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_code_native_exact_palette_conditioned",
+      "contains_printed_modeled_geometry": false,
+      "contains_baked_directional_lighting": false
+    },
+    "ground_retail_interiors": {
+      "path": "tools/archetype_compiler/sticker_assets/halifax_waterfront_warehouse_v98/ground_retail_interior_atlas.png",
+      "sha256": "c3994f4847964e4019ad335da9fa3d315e7055052ced30e3c2227d625c2e64d3",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_code_native_exact_palette_conditioned",
+      "contains_printed_modeled_geometry": false,
+      "contains_baked_directional_lighting": false
+    },
+    "upper_commercial_interiors": {
+      "path": "tools/archetype_compiler/sticker_assets/halifax_waterfront_warehouse_v98/upper_commercial_interior_atlas.png",
+      "sha256": "e88451faff5e6256fed78415b3fae2500d61565772324ee02098facfb3112a16",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_code_native_exact_palette_conditioned",
+      "contains_printed_modeled_geometry": false,
+      "contains_baked_directional_lighting": false
+    },
+    "weathered_flat_membrane": {
+      "path": "tools/archetype_compiler/sticker_assets/halifax_waterfront_warehouse_v98/weathered_flat_membrane_intrinsic.png",
+      "sha256": "c33efd6491ad2e4c8396295a0a46c64c60c229edf32b96c9cbc633b7a663452e",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_code_native_exact_palette_conditioned",
+      "contains_printed_modeled_geometry": false,
+      "contains_baked_directional_lighting": false
+    },
+    "dark_perimeter_membrane": {
+      "path": "tools/archetype_compiler/sticker_assets/halifax_waterfront_warehouse_v98/dark_perimeter_membrane_intrinsic.png",
+      "sha256": "be8a69cad2cb28510bf6155481c05550f3325fa3c91885ee813b887eac85b28e",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_code_native_exact_palette_conditioned",
+      "contains_printed_modeled_geometry": false,
+      "contains_baked_directional_lighting": false
+    },
+    "chimney_brick": {
+      "path": "tools/archetype_compiler/sticker_assets/halifax_waterfront_warehouse_v98/chimney_brick_intrinsic.png",
+      "sha256": "e49e336a90df46115dfc5ead01b9dbd92224cd2b6816e030b4ae430de5cf817c",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_code_native_exact_palette_conditioned",
+      "contains_printed_modeled_geometry": false,
+      "contains_baked_directional_lighting": false
+    },
+    "chimney_coping": {
+      "path": "tools/archetype_compiler/sticker_assets/halifax_waterfront_warehouse_v98/chimney_coping_intrinsic.png",
+      "sha256": "f545140c6e83a3d062efdf2dba67d8e7b7a153c479414e31d221a03c1120f325",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_code_native_exact_palette_conditioned",
+      "contains_printed_modeled_geometry": false,
+      "contains_baked_directional_lighting": false
+    },
+    "aged_galvanized_service_metal": {
+      "path": "tools/archetype_compiler/sticker_assets/halifax_waterfront_warehouse_v98/aged_galvanized_service_metal_intrinsic.png",
+      "sha256": "80f9c397996ab36e0483a0f9d1ca5c77629f946b7d0b8ff365b866096c2aa93a",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_code_native_exact_palette_conditioned",
+      "contains_printed_modeled_geometry": false,
+      "contains_baked_directional_lighting": false
+    },
+    "threshold_hardware": {
+      "path": "tools/archetype_compiler/sticker_assets/halifax_waterfront_warehouse_v98/threshold_hardware_intrinsic.png",
+      "sha256": "0fd23330abf8fcd5fadcb2da7212eb7bcf3c44962c40b37501d56d010759a18c",
+      "evidence_class": "constrained_completion",
+      "generation": "deterministic_code_native_exact_palette_conditioned",
+      "contains_printed_modeled_geometry": false,
+      "contains_baked_directional_lighting": false
+    }
+  },
+  "atlas_grid": [
+    4,
+    2
+  ],
+  "post_generation_nonuniform_scale_allowed": false,
+  "approval_space": "locked-carrier multi-view renders with all-face semantic audit"
+}

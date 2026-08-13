@@ -1,0 +1,57 @@
+{
+  "schema": "siteforge.named-architect-review@1",
+  "pipeline_version": "v98.4",
+  "building_id": "halifax_waterfront_warehouse--warehouse_privateers_wharf",
+  "reviewer": "architect_design_reviewer",
+  "status": "pass",
+  "score_target_exclusive_mean": 95.0,
+  "mean_score_unrounded": 95.4,
+  "hard_stop_status": "pass",
+  "hard_stop_count": 0,
+  "scores": {
+    "canonical": {
+      "archetype_identity": 28.7,
+      "massing_and_geometry": 19.2,
+      "sticker_registration": 19.0,
+      "all_surface_roof_and_entrance_coverage": 14.2,
+      "lego_scale_consistency_no_stretching": 14.35,
+      "total": 95.45
+    },
+    "extended": {
+      "archetype_identity": 28.55,
+      "massing_and_geometry": 19.2,
+      "sticker_registration": 19.0,
+      "all_surface_roof_and_entrance_coverage": 14.2,
+      "lego_scale_consistency_no_stretching": 14.4,
+      "total": 95.35
+    }
+  },
+  "approved_tiers": {
+    "canonical": {"width_m": 20.0, "depth_m": 15.0, "floors": 2, "ordinary_front_bays": 6},
+    "extended": {"width_m": 25.0, "depth_m": 15.0, "floors": 2, "ordinary_front_bays": 8}
+  },
+  "approved_contract": {
+    "ordinary_front_bay_m": 2.5,
+    "growth_unit_bays": 2,
+    "whole_horizontal_bays_only": true,
+    "vertical_scaling_allowed": false,
+    "depth_scaling_allowed": false,
+    "continuous_resize_allowed": false,
+    "central_pavilion_entrance_crown_and_chimneys_remain_fixed": true
+  },
+  "machine_evidence": {
+    "canonical_surface_faces": 7620,
+    "extended_surface_faces": 8804,
+    "surface_failures": 0,
+    "production_preflight": "pass",
+    "export_validation": "pass"
+  },
+  "residual_deductions": [
+    "Glazing and subdued interiors remain darker and more repetitive than the exact reference.",
+    "The central ground entrance reads somewhat opaque rather than distinctly glazed double-door joinery.",
+    "Roof membrane patch weathering is restrained compared with the aerial reference.",
+    "Pale stone relief is soft and some quoin slots are visually emphatic.",
+    "The extended frontage is necessarily longer than the exact canonical reference."
+  ],
+  "verdict": "Approved only for the reviewed 20 m canonical and 25 m extended tiers; arbitrary resizing is not authorized."
+}

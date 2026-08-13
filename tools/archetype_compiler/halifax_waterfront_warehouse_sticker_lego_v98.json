@@ -1,0 +1,29 @@
+{
+  "schema": "siteforge.sticker-lego-family@1",
+  "archetype_id": "halifax_waterfront_warehouse",
+  "variant_id": "warehouse_privateers_wharf",
+  "identity_mode": "massing_graph",
+  "identity_authority": "exact_image_locked_semantic_stack",
+  "tiers": [
+    {
+      "id": "canonical",
+      "signature_profile_id": "halifax-waterfront-warehouse-sticker-lego-canonical",
+      "family_id": "halifax-waterfront-warehouse-v98-canonical",
+      "width_m": 20.0,
+      "depth_m": 15.0,
+      "ordinary_front_bays": 6,
+      "side_bays": 5,
+      "storeys": 2
+    },
+    {
+      "id": "extended",
+      "signature_profile_id": "halifax-waterfront-warehouse-sticker-lego-extended",
+      "family_id": "halifax-waterfront-warehouse-v98-extended",
+      "width_m": 25.0,
+      "depth_m": 15.0,
+      "ordinary_front_bays": 8,
+      "side_bays": 5,
+      "storeys": 2
+    }
+  ]
+}

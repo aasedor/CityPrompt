@@ -1,0 +1,43 @@
+{
+  "schema": "siteforge.halifax-waterfront-warehouse-sticker-lego@1",
+  "version": "v98.1",
+  "archetype_id": "halifax_waterfront_warehouse",
+  "variant_id": "warehouse_privateers_wharf",
+  "identity_mode": "massing_graph",
+  "identity_authority": "exact_image_locked_semantic_stack",
+  "reference_sha256": {
+    "frontend/public/archetypes/buildings/halifax-waterfront-warehouse/variant_0.png": "ad42ba20d97281337b2a501af57cee64418b3df0486b3fa6c881cd317ef4784c",
+    "frontend/public/archetypes/buildings/halifax-waterfront-warehouse/variant_0_angle_60.jpg": "9b2a732476ea85a955d4047463bf7ea34dfed211e8e0f69fdd5b6b9c1ee49efb",
+    "frontend/public/archetypes/buildings/halifax-waterfront-warehouse/variant_0_angle_90.jpg": "721b8ef5aff6c9e45b9f1bd0beb6df81219675471aece32fc4826f219a1bcdf3"
+  },
+  "size_matrix": {
+    "canonical": {
+      "width_m": 20.0,
+      "depth_m": 15.0,
+      "ordinary_front_bays": 6,
+      "side_bays": 5,
+      "storeys": 2
+    },
+    "extended": {
+      "width_m": 25.0,
+      "depth_m": 15.0,
+      "ordinary_front_bays": 8,
+      "side_bays": 5,
+      "storeys": 2
+    }
+  },
+  "continuous_resize_allowed": false,
+  "vertical_scaling_allowed": false,
+  "depth_scaling_allowed": false,
+  "whole_bays_only": true,
+  "hard_stops": [
+    "wrong two-storey identity",
+    "wrong footprint tier",
+    "partial bay resize",
+    "missing fixed entrance",
+    "generic material fallback",
+    "unowned or multiply owned visible face",
+    "printed glass geometry or reflections",
+    "roof material domain leakage"
+  ]
+}

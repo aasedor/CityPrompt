@@ -139,3 +139,6 @@ _bak-*/
 *.bak-keyrotation
 
 .venv/
+# Atomic image publishers may leave a hidden in-flight PNG if Blender or a
+# concurrent verifier holds the destination on Windows. These are never source.
+tools/archetype_compiler/sticker_assets/**/.*.tmp.png

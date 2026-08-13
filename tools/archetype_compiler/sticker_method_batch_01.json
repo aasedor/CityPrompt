@@ -45,14 +45,35 @@
       "archetype_id": "administrative_faculty_office_building",
       "variant_id": "admin_faculty_brick_bronze_fins",
       "representation": "discrete_horizontal_lego",
-      "status": "queued"
+      "status": "approved_95_plus",
+      "architect_scores": {
+        "canonical": 95.1,
+        "extended": 95.4,
+        "mean": 95.25,
+        "hard_stops": 0
+      }
     },
     {
       "order": 4,
       "archetype_id": "halifax_waterfront_warehouse",
       "variant_id": "warehouse_privateers_wharf",
       "representation": "discrete_horizontal_lego",
-      "status": "queued"
+      "status": "approved_95_plus",
+      "architect_scores": {
+        "canonical": 95.45,
+        "extended": 95.35,
+        "mean": 95.4,
+        "hard_stops": 0
+      },
+      "reference_authority": "exact_images_override_conflicting_ironstone_gable_metadata",
+      "identity_locks": [
+        "exactly two tall occupied storeys",
+        "warm red brick within pale rusticated stone frame",
+        "deep dark-green ground storefront and door recesses",
+        "tall physical round-arched upper windows",
+        "deep layered classical cornice and stepped front parapet",
+        "weathered flat membrane roof with sparse bounded stacks"
+      ]
     },
     {
       "order": 5,
