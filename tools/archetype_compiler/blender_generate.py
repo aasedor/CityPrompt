@@ -128,6 +128,21 @@ def _shared_texture(filename: str) -> Path | None:
 
 def _load_image(path: Path, colorspace: str) -> bpy.types.Image:
     image = bpy.data.images.load(str(path), check_existing=True)
+    # Blender may return an Image datablock for a truncated PNG and only log
+    # an OpenImageIO error later, rendering the affected sticker magenta while
+    # the batch still exits successfully. Force one pixel into memory now so a
+    # corrupt/partially-published asset is a hard stop before any GLB or review
+    # frame can be accepted.
+    try:
+        if image.size[0] <= 0 or image.size[1] <= 0:
+            raise ValueError(f"invalid dimensions {tuple(image.size)}")
+        _ = image.pixels[0]
+        if not image.has_data:
+            raise ValueError("pixel buffer did not load")
+    except Exception as exc:
+        if image.users == 0:
+            bpy.data.images.remove(image)
+        raise ValueError(f"registered image failed a complete decode: {path}: {exc}") from exc
     image.colorspace_settings.name = colorspace
     return image
 
@@ -11505,6 +11520,20 @@ def _graph_carrier_skin(parts: list, spec: dict, mats: dict) -> None:
                 if strength is not None:
                     strength.default_value = max(0.0, float(emission_strength_override))
                 material["carrier_emission_strength_override"] = float(emission_strength_override)
+
+        # Registered opaque carrier imagery may represent actual metal. Keep
+        # the sticker as chromatic authority while allowing the carrier to
+        # recover physically plausible bronze/steel response in Blender.
+        if material.node_tree is not None:
+            principled = next((node for node in material.node_tree.nodes if node.type == "BSDF_PRINCIPLED"), None)
+            metallic_override = spec.get("metallic_override")
+            if principled is not None and metallic_override is not None:
+                principled.inputs["Metallic"].default_value = max(0.0, min(1.0, float(metallic_override)))
+                material["carrier_metallic_override"] = float(metallic_override)
+            roughness_override = spec.get("roughness_override")
+            if principled is not None and roughness_override is not None:
+                principled.inputs["Roughness"].default_value = max(0.0, min(1.0, float(roughness_override)))
+                material["carrier_opaque_roughness_override"] = float(roughness_override)
 
     material["massing_skin"] = True
     material["massing_skin_canonical"] = ""

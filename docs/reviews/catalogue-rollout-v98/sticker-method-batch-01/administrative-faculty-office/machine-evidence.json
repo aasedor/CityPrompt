@@ -1,0 +1,125 @@
+{
+  "schema": "siteforge.sticker-method-machine-evidence@1",
+  "tiers": {
+    "canonical": {
+      "dimensions": {
+        "width_m": 30.0,
+        "depth_m": 20.0,
+        "podium_height_m": 5.0,
+        "floor_height_m": 4.0,
+        "setback_height_m": 4.0,
+        "roof_height_m": 1.2,
+        "default_floors": 5,
+        "min_floors": 5,
+        "max_floors": 5,
+        "crown_height_m": 4.0
+      },
+      "assembled": {
+        "filename": "administrative-faculty-office-v98-canonical_assembled.glb",
+        "floors": 5,
+        "uses_setback": false,
+        "uses_crown": false,
+        "height_m": 21.32,
+        "triangle_count": 38932,
+        "stack": [
+          {
+            "role": "massing_graph",
+            "variant_key": "administrative-faculty-office-sticker-lego-canonical",
+            "level": 0,
+            "z_m": 0.0,
+            "height_m": 21.32
+          }
+        ],
+        "footprint_profile": "rectangle",
+        "footprint_target": {
+          "width_m": 30.0,
+          "depth_m": 20.0,
+          "wing_depth_m": 20.0,
+          "segments": [
+            {
+              "id": "main",
+              "centre_x_m": 0.0,
+              "centre_y_m": 0.0,
+              "length_m": 30.0,
+              "thickness_m": 20.0,
+              "rotation_degrees": 0.0
+            }
+          ]
+        },
+        "massing_graph": {
+          "schema": "massing-graph@1",
+          "profile": "administrative-faculty-office-sticker-lego-canonical",
+          "node_count": 1,
+          "assembly_count": 1490,
+          "void_count": 0
+        },
+        "final_surface_audit_status": "pass",
+        "final_surface_audit_checked_faces": 5770,
+        "final_surface_audit_failure_count": 0
+      },
+      "validation": "pass",
+      "production_preflight": "pass",
+      "render_count": 9
+    },
+    "extended": {
+      "dimensions": {
+        "width_m": 37.5,
+        "depth_m": 20.0,
+        "podium_height_m": 5.0,
+        "floor_height_m": 4.0,
+        "setback_height_m": 4.0,
+        "roof_height_m": 1.2,
+        "default_floors": 5,
+        "min_floors": 5,
+        "max_floors": 5,
+        "crown_height_m": 4.0
+      },
+      "assembled": {
+        "filename": "administrative-faculty-office-v98-extended_assembled.glb",
+        "floors": 5,
+        "uses_setback": false,
+        "uses_crown": false,
+        "height_m": 21.32,
+        "triangle_count": 45332,
+        "stack": [
+          {
+            "role": "massing_graph",
+            "variant_key": "administrative-faculty-office-sticker-lego-extended",
+            "level": 0,
+            "z_m": 0.0,
+            "height_m": 21.32
+          }
+        ],
+        "footprint_profile": "rectangle",
+        "footprint_target": {
+          "width_m": 37.5,
+          "depth_m": 20.0,
+          "wing_depth_m": 20.0,
+          "segments": [
+            {
+              "id": "main",
+              "centre_x_m": 0.0,
+              "centre_y_m": 0.0,
+              "length_m": 37.5,
+              "thickness_m": 20.0,
+              "rotation_degrees": 0.0
+            }
+          ]
+        },
+        "massing_graph": {
+          "schema": "massing-graph@1",
+          "profile": "administrative-faculty-office-sticker-lego-extended",
+          "node_count": 1,
+          "assembly_count": 1750,
+          "void_count": 0
+        },
+        "final_surface_audit_status": "pass",
+        "final_surface_audit_checked_faces": 6730,
+        "final_surface_audit_failure_count": 0
+      },
+      "validation": "pass",
+      "production_preflight": "pass",
+      "render_count": 9
+    }
+  }
+}

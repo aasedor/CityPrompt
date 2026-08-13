@@ -1,0 +1,27 @@
+{
+  "schema": "siteforge.sticker-lego-family@1",
+  "archetype_id": "administrative_faculty_office_building",
+  "variant_id": "admin_faculty_brick_bronze_fins",
+  "tiers": [
+    {
+      "id": "canonical",
+      "signature_profile_id": "administrative-faculty-office-sticker-lego-canonical",
+      "family_id": "administrative-faculty-office-v98-canonical",
+      "width_m": 30.0,
+      "depth_m": 20.0,
+      "ordinary_front_stacks": 4,
+      "side_bays": 4,
+      "floors": 5
+    },
+    {
+      "id": "extended",
+      "signature_profile_id": "administrative-faculty-office-sticker-lego-extended",
+      "family_id": "administrative-faculty-office-v98-extended",
+      "width_m": 37.5,
+      "depth_m": 20.0,
+      "ordinary_front_stacks": 6,
+      "side_bays": 4,
+      "floors": 5
+    }
+  ]
+}
