@@ -134,6 +134,45 @@ class _DummyAISession:
         self.closed = True
 
 
+def test_generate_3d_model_ai_treats_deleted_building_as_source_removed(monkeypatch):
+    building_id = str(uuid.uuid4())
+    session = _DummyAISession(None)
+
+    monkeypatch.setattr(processing, "_get_sync_session", lambda: session)
+    monkeypatch.setattr(
+        processing,
+        "get_engine",
+        lambda *_args, **_kwargs: (_ for _ in ()).throw(
+            AssertionError("provider must not be created for a removed source")
+        ),
+    )
+    monkeypatch.setattr(
+        processing,
+        "log_api_usage_sync",
+        lambda **_kwargs: (_ for _ in ()).throw(
+            AssertionError("removed sources must not record failed provider usage")
+        ),
+    )
+    monkeypatch.setattr(
+        processing.generate_3d_model_ai,
+        "retry",
+        lambda *args, **kwargs: (_ for _ in ()).throw(
+            AssertionError("removed sources are terminal and must not retry")
+        ),
+    )
+
+    task_result = processing.generate_3d_model_ai.apply(args=[building_id, "unused prompt"])
+
+    assert task_result.successful() is True
+    assert task_result.get() == {
+        "status": "source_removed",
+        "building_id": building_id,
+    }
+    assert session.commit_calls == 0
+    assert session.rollback_calls == 0
+    assert session.closed is True
+
+
 def test_generate_3d_model_ai_uses_provider_adapter(monkeypatch):
     from app.generation.engine import GenerationResult
     from app.models.models import SiteZone

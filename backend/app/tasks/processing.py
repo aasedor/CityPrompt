@@ -856,7 +856,14 @@ def generate_3d_model_ai(
 
         building = session.query(Building).filter_by(id=uuid.UUID(building_id)).first()
         if not building:
-            raise ValueError(f"Building not found: {building_id}")
+            logger.info(
+                "Skipping AI 3D generation because source building %s was removed before execution",
+                building_id,
+            )
+            return {
+                "status": "source_removed",
+                "building_id": building_id,
+            }
 
         provider = get_engine(engine)
         if not provider.is_available():
