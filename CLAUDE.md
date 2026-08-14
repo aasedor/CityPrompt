@@ -24,7 +24,17 @@ cd frontend && npm run type-check && npm run lint
 ## Critical Rules
 
 ### NEVER json.dump buildingArchetypes.json
+
 `json.dump()` corrupts `thumbnailUrl` paths (underscores → hyphens). When adding archetypes, use TEXT-LEVEL insertion — splice new entries as raw text before the closing `]`. Never parse-modify-dump.
+
+### Use only the authoritative archetype image roots
+All catalogue references, generators, Sticker Method evidence locks, and UI
+thumbnail URLs must use `frontend/public/archetypes/buildings`,
+`frontend/public/archetypes/openspaces`, or
+`frontend/public/archetypes/streets`. Legacy sibling folders such as
+`parks_plazas`, `streets_pathways`, `parks-plazas`, and `streets-pathways` are
+not authoritative even when they still exist locally; never read from or write
+new assets to them.
 
 ### Test locally before pushing
 Always verify on localhost:5174 before committing. Check that cards load, renders work, no console errors.
