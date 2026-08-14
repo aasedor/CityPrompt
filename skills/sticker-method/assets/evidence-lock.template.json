@@ -1,0 +1,26 @@
+{
+  "schema": "sticker-method.evidence-lock@1",
+  "archetype_id": "replace_me",
+  "variant_id": "replace_me",
+  "authority": "selected_variant_exact_images",
+  "references": [
+    {
+      "role": "street",
+      "path": "replace/me.png",
+      "sha256": "replace_with_64_hex_characters",
+      "width_px": 0,
+      "height_px": 0
+    }
+  ],
+  "accepted_evidence": [],
+  "rejected_metadata": [],
+  "constrained_completion": [],
+  "binding_dimensions_m": {
+    "width": 0.0,
+    "depth": 0.0,
+    "occupied_datums": []
+  },
+  "fixed_identity": [],
+  "repeatable_capacity": [],
+  "hard_stops": []
+}
