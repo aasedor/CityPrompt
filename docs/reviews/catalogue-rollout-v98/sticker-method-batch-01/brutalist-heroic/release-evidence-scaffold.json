@@ -1,0 +1,42 @@
+{
+  "schema": "siteforge.sticker-method-release-scaffold@1",
+  "status": "approved_95_plus",
+  "building_id": "brutalist_institutional--brutalist_heroic",
+  "reference_sha256": {
+    "variant_0.png": "955d4d45a2148325e2529d02139192c47080210d304bbc0ad856c50b9ef2abbc",
+    "variant_0_angle_60.jpg": "ab69b3ddf450414c39d8fbb3c2e4886ec6748b0d02c6c2d751f000c2b456031b",
+    "variant_0_angle_90.jpg": "427226ea95af68f6e54c0302896ca42dd8cb42167294f0396465cec801317bd5"
+  },
+  "geometry_sha256": {
+    "canonical": "ed97781e52550e79a5a5555b8db4b07580af69b59f31bd234834d67a0c9b8b07"
+  },
+  "source_sha256": {
+    "build": "9fbf0e775e6c30eb912ae7034a721cd74348fd35e5526987152d8894fe7233f9",
+    "compiler": "cd85a5487d3610411e740da9b4d4d0ad9badee03b8fca00bbfbb3ec5bb7755d8",
+    "contract": "d60e33fac7a427dbc6920c04a74e8e45aa9d4fa31d72ede3de20cd688f075127",
+    "carrier_packages": "c0ce6d4bf6143e0031b222d445142bf9c9f11873cb595ea3e6c97f3fcce8f76f",
+    "asset_provenance": "fbf87dea8c70cd1db898337412ff99437e9468e442381d0cd2c201f6cd6fc5fd"
+  },
+  "tier_contract": {
+    "canonical": {"width_m": 50.0, "depth_m": 42.0, "occupied_storeys": 2},
+    "continuous_resize_allowed": false,
+    "vertical_scaling_allowed": false,
+    "depth_scaling_allowed": false,
+    "nonuniform_scaling_allowed": false,
+    "additional_tiers_allowed": false
+  },
+  "required_machine_gates": {
+    "production_preflight": "pass",
+    "validation": "pass",
+    "surface_audit_failure_count": 0,
+    "visible_face_ownership": "exactly_once",
+    "generic_fallback_allowed": false,
+    "minimum_render_views": 9
+  },
+  "formal_release": {
+    "architect_scores": {"canonical": 95.05, "hard_stops": 0},
+    "render_sha256": "recorded_in_machine-evidence.json",
+    "review_board_sha256": "recorded_in_machine-evidence.json",
+    "visual_approval_status": "pass"
+  }
+}

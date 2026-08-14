@@ -182,7 +182,23 @@
       "archetype_id": "brutalist_institutional",
       "variant_id": "brutalist_heroic",
       "representation": "fixed_landmark",
-      "status": "queued"
+      "status": "approved_95_plus",
+      "architect_scores": {
+        "canonical": 95.05,
+        "hard_stops": 0
+      },
+      "identity_locks": [
+        "two-storey heroic board-formed concrete institutional landmark",
+        "blind upper volume with deep projecting light boxes and explicit concrete terminals",
+        "four articulated front pilotis over a recessed dark glazed public base",
+        "panelized side tower and constrained secondary and rear elevations",
+        "cool membrane roof with two sunken courts and three fixed service volumes"
+      ],
+      "approved_tiers": {
+        "canonical": {"width_m": 50.0, "depth_m": 42.0, "occupied_storeys": 2}
+      },
+      "lego_rule": "fixed select-and-place landmark only; continuous vertical depth and nonuniform scaling are forbidden and no alternate tier is approved",
+      "review_path": "docs/reviews/catalogue-rollout-v98/sticker-method-batch-01/brutalist-heroic"
     },
     {
       "order": 10,

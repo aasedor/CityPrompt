@@ -1,0 +1,81 @@
+{
+  "schema": "building-generation-preflight@1",
+  "archetype_id": "brutalist_institutional",
+  "variant_id": "brutalist_heroic",
+  "family": "brutalist-heroic-v98-canonical",
+  "status": "pass",
+  "paid_generation_allowed": true,
+  "reference_views": [
+    {
+      "role": "street_identity",
+      "path": "/archetypes/buildings/brutalist_institutional/variant_0.png"
+    },
+    {
+      "role": "oblique_massing",
+      "path": "/archetypes/buildings/brutalist_institutional/variant_0_angle_60.jpg"
+    },
+    {
+      "role": "roof_or_aerial",
+      "path": "/archetypes/buildings/brutalist_institutional/variant_0_angle_90.jpg"
+    }
+  ],
+  "identity_mode": "massing_graph",
+  "generation_quality": {
+    "schema": "building-generation-quality@1",
+    "status": "not_declared",
+    "gates": []
+  },
+  "failures": [],
+  "gates": [
+    {
+      "id": "variant_not_selected",
+      "passed": true,
+      "detail": "selected variant 'brutalist_heroic'"
+    },
+    {
+      "id": "variant_generation_provenance_mismatch",
+      "passed": true,
+      "detail": "generation id 'brutalist_institutional_variant_0'; expected 'brutalist_institutional_variant_0'"
+    },
+    {
+      "id": "grammar_variant_mismatch",
+      "passed": true,
+      "detail": "grammar variant 'brutalist_heroic'; selected 'brutalist_heroic'"
+    },
+    {
+      "id": "incomplete_reference_set",
+      "passed": true,
+      "detail": "3 compatible reference views"
+    },
+    {
+      "id": "missing_production_contract",
+      "passed": true,
+      "detail": "architectural signature declares a production contract"
+    },
+    {
+      "id": "unclassified_identity_mode",
+      "passed": true,
+      "detail": "identity mode 'massing_graph'; expected one of ['massing_graph', 'semantic_stack']"
+    },
+    {
+      "id": "missing_fixed_identity",
+      "passed": true,
+      "detail": "6 fixed identity assemblies; minimum 3"
+    },
+    {
+      "id": "missing_repeatable_capacity",
+      "passed": true,
+      "detail": "1 repeatable capacity assemblies"
+    },
+    {
+      "id": "missing_required_massing_graph",
+      "passed": true,
+      "detail": "massing profile 'brutalist-heroic-sticker-landmark-v98-canonical'"
+    },
+    {
+      "id": "massing_reference_dimensions_mismatch",
+      "passed": true,
+      "detail": "canonical graph dimensions activate exactly"
+    }
+  ]
+}

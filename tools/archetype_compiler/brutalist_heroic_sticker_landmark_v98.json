@@ -1,0 +1,16 @@
+{
+  "schema": "siteforge.sticker-lego-family@1",
+  "archetype_id": "brutalist_institutional",
+  "variant_id": "brutalist_heroic",
+  "identity_mode": "massing_graph",
+  "tiers": [
+    {
+      "id": "canonical",
+      "signature_profile_id": "brutalist-heroic-sticker-landmark-v98-canonical",
+      "family_id": "brutalist-heroic-v98-canonical",
+      "width_m": 50.0,
+      "depth_m": 42.0,
+      "occupied_storeys": 2
+    }
+  ]
+}

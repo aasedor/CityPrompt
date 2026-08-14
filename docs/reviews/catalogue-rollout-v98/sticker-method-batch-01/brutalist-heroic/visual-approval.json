@@ -1,0 +1,36 @@
+{
+  "schema": "siteforge.named-architect-review@1",
+  "pipeline_version": "v98",
+  "building_id": "brutalist_institutional--brutalist_heroic",
+  "reviewer": "architect_design_reviewer",
+  "status": "pass",
+  "score_target_exclusive": 95.0,
+  "hard_stop_status": "pass",
+  "hard_stop_count": 0,
+  "scores": {
+    "canonical": {"total": 95.05}
+  },
+  "approved_tiers": {
+    "canonical": {"width_m": 50.0, "depth_m": 42.0, "occupied_storeys": 2}
+  },
+  "approved_contract": {
+    "representation": "fixed_landmark",
+    "continuous_resize_allowed": false,
+    "vertical_scaling_allowed": false,
+    "depth_scaling_allowed": false,
+    "nonuniform_scaling_allowed": false,
+    "additional_tiers_allowed": false
+  },
+  "machine_evidence": {
+    "canonical_surface_faces": 1110,
+    "surface_failures": 0,
+    "production_preflight": "pass",
+    "export_validation": "pass"
+  },
+  "residual_deductions": [
+    "The recessed glazing and occupied depth remain deliberately very dark.",
+    "Rear and secondary elevations are constrained completions of limited exact evidence.",
+    "The reviewed export has 517 materials and requires later consolidation."
+  ],
+  "verdict": "Approved only as the reviewed 50 x 42 m fixed landmark; arbitrary resizing is not authorized."
+}
