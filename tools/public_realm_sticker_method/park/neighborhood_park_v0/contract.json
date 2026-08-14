@@ -1,0 +1,81 @@
+{
+  "schema_version": "sticker_method_public_realm_contract_v1",
+  "initiative": "neighborhood_park_v0_sticker_method_pilot",
+  "representation": "site_adaptive_whole_program",
+  "archetype_id": "neighborhood_park",
+  "variant_id": "neighborhood_park_v0",
+  "canonical_test_site_m": {
+    "width": 100.0,
+    "depth": 80.0
+  },
+  "adaptation_rule": {
+    "site_polygon_may_change": true,
+    "nonuniform_object_scaling_allowed": false,
+    "crop_fixed_programs_allowed": false,
+    "whole_element_fit_required": true,
+    "required_gateway_connections": true
+  },
+  "fixed_identity_kit": [
+    "timber_pavilion",
+    "timber_climbing_tower_with_slide",
+    "timber_swing_frame",
+    "split_rail_fence",
+    "natural_boulder_group"
+  ],
+  "adaptive_ground_roles": [
+    "compacted_gravel_circulation",
+    "gravel_or_engineered_wood_fibre_safety",
+    "mown_lawn",
+    "wildflower_meadow",
+    "rustic_pavilion_pad"
+  ],
+  "adaptive_vertical_roles": [
+    "mature_deciduous_tree",
+    "wildflower_and_grass_clump",
+    "rustic_timber_bench",
+    "natural_boulder"
+  ],
+  "hard_stops": [
+    "missing fixed rustic nature-play kit",
+    "cropped or nonuniformly scaled play or pavilion object",
+    "disconnected circulation or gateway",
+    "play equipment or fence outside the parcel",
+    "generic colorful or steel playground substitution",
+    "one material owning multiple incompatible ground roles",
+    "ground sticker crossing a path, play safety zone, or parcel boundary",
+    "unreviewed people, vehicles, sports fields, pond, or large building"
+  ],
+  "runtime_sources": [
+    {
+      "path": "frontend/src/components/viewer/globe/parkGroundProfiles.ts",
+      "sha256": "3fa1709d18611b1451e271a1f5811bba8dd7e277b19777959d48191d4701edec"
+    },
+    {
+      "path": "frontend/src/data/parkKitRecipes.ts",
+      "sha256": "f05015bf17ce2b9021b0b357f90ab45c494f97e892924e9ec01acc414256caeb"
+    },
+    {
+      "path": "frontend/src/components/viewer/globe/parkLegoFamilies.ts",
+      "sha256": "6fb16a2573a47bef83732bc96982970dfea20df19d7528a494613c0c7a0771a4"
+    },
+    {
+      "path": "frontend/src/data/renderlockV1Parks.ts",
+      "sha256": "b9fbd15d717d6fa7a872e895c77ca2fe870a868c4ac3c9e6cd7a1ec0ddc6a8a4"
+    }
+  ],
+  "readiness_status": "hold",
+  "known_runtime_gaps": [
+    {
+      "id": "park_profile_is_generic_contemporary",
+      "description": "The neighborhood-park-v4 profile prescribes pale concrete paths and a generic pad instead of the exact rustic gravel nature-play composition."
+    },
+    {
+      "id": "fixed_rustic_play_kit_not_bound",
+      "description": "The runtime recipe declares a generic three-instance playground cluster rather than the observed pavilion, tower, slide, swing and split-rail kit."
+    },
+    {
+      "id": "variant_geometry_not_image_locked",
+      "description": "The rustic appearance kit exists, but selected-variant geometry is not independently locked to the exact v0 image."
+    }
+  ]
+}

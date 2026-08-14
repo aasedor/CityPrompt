@@ -1,0 +1,38 @@
+{
+  "schema_version": "sticker_method_public_realm_evidence_v1",
+  "initiative": "neighborhood_park_v0_sticker_method_pilot",
+  "archetype_id": "neighborhood_park",
+  "variant_id": "neighborhood_park_v0",
+  "authority": "selected_variant_image_first",
+  "references": [
+    {
+      "path": "frontend/public/archetypes/openspaces/neighborhood-park/variant_0.png",
+      "sha256": "38c1079127126017edb7945f77f47d73c4d0dde1fe5a566ac5dc0e791473d5c3",
+      "width_px": 1024,
+      "height_px": 768,
+      "mode": "RGB",
+      "role": "primary_identity"
+    }
+  ],
+  "observed_identity": [
+    "rustic rough-hewn timber nature-play cluster",
+    "separate timber pavilion and swing frame",
+    "compacted gravel circulation and play ground",
+    "split-rail fence defining the play territory",
+    "wildflower and meadow planting around the active core",
+    "natural boulders at path and planting edges",
+    "open mown neighborhood lawn beyond the play cluster"
+  ],
+  "constrained_completion": [
+    "connect the visible gravel paths to parcel gateways",
+    "retain an open lawn large enough for informal neighborhood use",
+    "continue rustic planting and fence language on unseen edges"
+  ],
+  "rejected_generic_claims": [
+    "generic colorful playground equipment",
+    "smooth pale-concrete primary path system",
+    "urban steel and rubber-surface play kit",
+    "sports markings, pond, or large park building",
+    "a lawn-only fallback without the fixed rustic play identity"
+  ]
+}
