@@ -347,13 +347,24 @@ describe('computeParkPlacements', () => {
 });
 
 describe('planting structures', () => {
-  it('is deterministic for every planting structure', () => {
+  it('is deterministic and avoids duplicate scatter for archetype-owned assemblies', () => {
     const zone = { id: 'z-det', coordinates: squareRing(90) };
+    const archetypeOwnedStructures = new Set([
+      'skate_archetype_v0',
+      'inclusive_playground_v0',
+      'dog_park_v0',
+      'splash_pad_area_v0',
+      'community_garden_v0',
+    ]);
     for (const s of PLANTING_STRUCTURES) {
       const a = computeParkPlacements(zone, NEIGHBORHOOD, s);
       const b = computeParkPlacements(zone, NEIGHBORHOOD, s);
       expect(a).toEqual(b);
-      expect(a.length).toBeGreaterThan(0);
+      if (archetypeOwnedStructures.has(s)) {
+        expect(a).toEqual([]);
+      } else {
+        expect(a.length).toBeGreaterThan(0);
+      }
     }
   });
 

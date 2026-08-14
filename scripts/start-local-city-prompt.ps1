@@ -11,6 +11,7 @@ $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 $artifactRoot = Join-Path $repoRoot 'artifacts\local-dev'
 $backendRoot = Join-Path $repoRoot 'backend'
 $frontendRoot = Join-Path $repoRoot 'frontend'
+$celeryPidPath = Join-Path $artifactRoot 'celery-worker.pid'
 
 New-Item -ItemType Directory -Force -Path $artifactRoot | Out-Null
 
@@ -41,6 +42,86 @@ function Wait-Until {
     } while ((Get-Date) -lt $deadline)
 
     throw "Timed out waiting for $Description after $StartupTimeoutSeconds seconds."
+}
+
+function Get-UnhydratedRuntimeLfsAssets {
+    $publicRoot = Join-Path $frontendRoot 'public'
+    $parkKitRoot = Join-Path $publicRoot 'park-kits'
+    $candidateFiles = if (Test-Path -LiteralPath $parkKitRoot) {
+        @(Get-ChildItem -LiteralPath $parkKitRoot -Recurse -File -Filter '*.glb')
+    }
+    else {
+        @()
+    }
+    foreach ($relativeRoot in @(
+        'archetypes\buildings',
+        'archetypes\openspaces',
+        'archetypes\streets'
+    )) {
+        $catalogueRoot = Join-Path $publicRoot $relativeRoot
+        if (Test-Path -LiteralPath $catalogueRoot) {
+            $candidateFiles += Get-ChildItem -LiteralPath $catalogueRoot -Recurse -File
+        }
+    }
+
+    return @(
+        $candidateFiles |
+            Sort-Object -Property FullName -Unique |
+            Where-Object {
+                $_.Length -lt 300 -and
+                (Get-Content -LiteralPath $_.FullName -First 1 -ErrorAction SilentlyContinue) -eq
+                    'version https://git-lfs.github.com/spec/v1'
+            }
+    )
+}
+
+function Ensure-RuntimeLfsAssets {
+    if ($SkipFrontend) {
+        return
+    }
+
+    $pointers = @(Get-UnhydratedRuntimeLfsAssets)
+    if ($pointers.Count -eq 0) {
+        return
+    }
+
+    git lfs version 2>$null | Out-Null
+    if ($LASTEXITCODE -ne 0) {
+        throw "Found $($pointers.Count) unhydrated runtime assets, but Git LFS is not installed."
+    }
+
+    # Runtime building modules are served from backend library storage. Pulling
+    # every historical source-family GLB here adds roughly 8 GB and makes Vite
+    # copy that archive into dist. The browser directly consumes park kits and
+    # the three authoritative catalogue image roots, so hydrate only those.
+    $include = 'frontend/public/park-kits/**/*.glb,frontend/public/archetypes/buildings/**,frontend/public/archetypes/openspaces/**,frontend/public/archetypes/streets/**'
+    $upstream = ((git rev-parse --abbrev-ref --symbolic-full-name '@{u}' 2>$null) | Out-String).Trim()
+    Write-Host "Hydrating $($pointers.Count) Git LFS catalogue/model assets..."
+    Push-Location $repoRoot
+    try {
+        if ($LASTEXITCODE -eq 0 -and $upstream.Contains('/')) {
+            $slash = $upstream.IndexOf('/')
+            $remote = $upstream.Substring(0, $slash)
+            $branch = $upstream.Substring($slash + 1)
+            git lfs pull $remote $branch "--include=$include"
+        }
+        else {
+            git lfs pull "--include=$include"
+        }
+        $pullExitCode = $LASTEXITCODE
+    }
+    finally {
+        Pop-Location
+    }
+
+    $remaining = @(Get-UnhydratedRuntimeLfsAssets)
+    if ($remaining.Count -gt 0) {
+        $examples = ($remaining | Select-Object -First 3 -ExpandProperty FullName) -join '; '
+        throw "Git LFS left $($remaining.Count) runtime assets as pointer text. Examples: $examples"
+    }
+    if ($pullExitCode -ne 0) {
+        Write-Warning 'Git LFS reported an index update warning, but all required runtime assets were hydrated successfully.'
+    }
 }
 
 function Test-DockerReady {
@@ -130,6 +211,21 @@ function Stop-KnownDockerApiPortConflicts {
             throw "Could not stop Docker API container $name."
         }
     }
+
+    # A worker from the Docker checkout consumes the same default Redis queue
+    # as this worktree. Leaving it alive makes background jobs nondeterministic:
+    # Site DNA may execute against stale source even though the local API is
+    # correct. The launcher owns the application processes; only the stateful
+    # db/redis/minio containers stay shared.
+    foreach ($name in @('cityprompt-celery', 'devplatform-celery')) {
+        if (Test-ContainerRunning -Name $name) {
+            Write-Host "Stopping stale Docker worker $name (stateful services remain running)..."
+            docker stop $name | Out-Null
+            if ($LASTEXITCODE -ne 0) {
+                throw "Could not stop Docker worker $name."
+            }
+        }
+    }
 }
 
 function Assert-PortAvailableOrHealthy {
@@ -211,6 +307,106 @@ function Ensure-Backend {
     }
 }
 
+function Get-LocalCeleryWorkerPid {
+    if (-not (Test-Path -LiteralPath $celeryPidPath)) {
+        return $null
+    }
+
+    $rawPid = (Get-Content -LiteralPath $celeryPidPath -Raw).Trim()
+    $workerPid = 0
+    if (-not [int]::TryParse($rawPid, [ref]$workerPid)) {
+        return $null
+    }
+
+    $worker = Get-CimInstance Win32_Process -Filter "ProcessId=$workerPid" -ErrorAction SilentlyContinue
+    if (
+        $worker -and
+        $worker.Name -match '^python(?:\.exe)?$' -and
+        $worker.CommandLine -match 'celery' -and
+        $worker.CommandLine -match 'app\.tasks\.worker' -and
+        $worker.CommandLine -match '\bworker\b'
+    ) {
+        return $workerPid
+    }
+    return $null
+}
+
+function Test-CeleryWorkerReady {
+    param(
+        [Parameter(Mandatory)][int]$WorkerPid,
+        [Parameter(Mandatory)][string]$PythonPath
+    )
+
+    if (-not (Get-Process -Id $WorkerPid -ErrorAction SilentlyContinue)) {
+        return $false
+    }
+
+    Push-Location $backendRoot
+    try {
+        $ping = & $PythonPath -m celery -A app.tasks.worker inspect ping --timeout 3 2>$null
+        return $LASTEXITCODE -eq 0 -and ($ping -join "`n") -match '\bpong\b'
+    }
+    finally {
+        Pop-Location
+    }
+}
+
+function Ensure-CeleryWorker {
+    $python = Get-Command python.exe -ErrorAction SilentlyContinue
+    if (-not $python) {
+        $python = Get-Command python -ErrorAction SilentlyContinue
+    }
+    if (-not $python) {
+        throw 'Python is not installed or is not on PATH.'
+    }
+
+    $workerPid = Get-LocalCeleryWorkerPid
+    if ($KeepBackend -and $workerPid -and (Test-CeleryWorkerReady -WorkerPid $workerPid -PythonPath $python.Source)) {
+        return
+    }
+
+    if ($workerPid) {
+        Write-Host 'Restarting City Prompt background worker for the current worktree...'
+        Stop-Process -Id $workerPid -Force
+        Wait-Until -Description 'the previous City Prompt background worker to stop' -Condition {
+            -not (Get-Process -Id $workerPid -ErrorAction SilentlyContinue)
+        }
+    }
+
+    if (Test-Path -LiteralPath $celeryPidPath) {
+        Remove-Item -LiteralPath $celeryPidPath -Force
+    }
+
+    $otherWorkers = @(Get-CimInstance Win32_Process | Where-Object {
+        $_.Name -match '^python(?:\.exe)?$' -and
+        $_.CommandLine -match 'celery' -and
+        $_.CommandLine -match 'app\.tasks\.worker' -and
+        $_.CommandLine -match '\bworker\b'
+    })
+    if ($otherWorkers.Count -gt 0) {
+        $owners = ($otherWorkers | Select-Object -ExpandProperty ProcessId) -join ', '
+        throw "A Celery worker not owned by this launcher is already running (PID $owners). Stop it before starting this worktree."
+    }
+
+    Write-Host 'Starting City Prompt background worker...'
+    Start-Process -FilePath $python.Source `
+        -ArgumentList @(
+            '-m', 'celery', '-A', 'app.tasks.worker', 'worker',
+            '--loglevel=info', '--pool=solo',
+            '--hostname=cityprompt-local@%h',
+            "--pidfile=$celeryPidPath"
+        ) `
+        -WorkingDirectory $backendRoot `
+        -RedirectStandardOutput (Join-Path $artifactRoot 'celery.out.log') `
+        -RedirectStandardError (Join-Path $artifactRoot 'celery.err.log') `
+        -WindowStyle Hidden
+
+    Wait-Until -Description 'City Prompt background worker' -Condition {
+        $startedPid = Get-LocalCeleryWorkerPid
+        $startedPid -and (Test-CeleryWorkerReady -WorkerPid $startedPid -PythonPath $python.Source)
+    }
+}
+
 function Ensure-Frontend {
     if ($SkipFrontend) {
         return
@@ -238,13 +434,16 @@ function Ensure-Frontend {
     }
 }
 
+Ensure-RuntimeLfsAssets
 Ensure-DockerDesktop
 Ensure-Infrastructure
 Ensure-Backend
+Ensure-CeleryWorker
 Ensure-Frontend
 
 Write-Host ''
 Write-Host 'City Prompt local stack is ready.' -ForegroundColor Green
 Write-Host 'Frontend: http://127.0.0.1:5174/'
 Write-Host 'API:      http://127.0.0.1:8000/health (also localhost for OAuth callbacks)'
+Write-Host 'Worker:   Celery ready (Site DNA, AI Planner, renders, and processing)'
 Write-Host "Logs:     $artifactRoot"
