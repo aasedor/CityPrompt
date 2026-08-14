@@ -1,0 +1,16 @@
+{
+  "schema": "siteforge.sticker-lego-family@1",
+  "archetype_id": "food_hall_market_hall",
+  "variant_id": "market_historic_iron_glass",
+  "identity_mode": "massing_graph",
+  "tiers": [
+    {
+      "id": "canonical",
+      "signature_profile_id": "market-historic-iron-glass-sticker-landmark-v98-canonical",
+      "family_id": "market-historic-iron-glass-v98-canonical",
+      "width_m": 45.0,
+      "depth_m": 60.0,
+      "occupied_storeys": 2
+    }
+  ]
+}

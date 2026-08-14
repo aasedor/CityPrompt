@@ -1,0 +1,583 @@
+{
+  "schema": "siteforge.intrinsic-sticker-assets@1",
+  "family": "market_historic_iron_glass_v98",
+  "identity_authority": "three_exact_variant_0_images",
+  "reference_evidence": {
+    "frontend/public/archetypes/buildings/food_hall_market_hall/variant_0.png": {
+      "sha256": "0f04fa934c3b2883f82b3a27ba6883639aff8ab57a065e6b11fbe9c1afe13659",
+      "size": [
+        2752,
+        1536
+      ],
+      "conditioning_crop_bounds_px": [
+        0,
+        0,
+        2752,
+        1536
+      ]
+    },
+    "frontend/public/archetypes/buildings/food_hall_market_hall/variant_0_angle_60.jpg": {
+      "sha256": "e504ab5a6c2af9141b0445d560a77d560d96b5e826949fec9be380f4d58d4c6a",
+      "size": [
+        1376,
+        768
+      ],
+      "conditioning_crop_bounds_px": [
+        0,
+        0,
+        1376,
+        768
+      ]
+    },
+    "frontend/public/archetypes/buildings/food_hall_market_hall/variant_0_angle_90.jpg": {
+      "sha256": "af24f5150a12d417f07ae2fd5eab1c0037b984266b70ebb763fd60880dfa6be0",
+      "size": [
+        1376,
+        768
+      ],
+      "conditioning_crop_bounds_px": [
+        0,
+        0,
+        1376,
+        768
+      ]
+    }
+  },
+  "canonical_dimensions_m": {
+    "length": 60.0,
+    "width": 45.0
+  },
+  "registered_asset_groups": {
+    "brick": [
+      "warm_brick_front_intrinsic.png",
+      "warm_brick_return_intrinsic.png",
+      "warm_brick_rear_intrinsic.png"
+    ],
+    "physical_glass": [
+      "physical_vertical_low_iron_glass_intrinsic.png",
+      "physical_curved_roof_glass_intrinsic.png",
+      "ridge_lantern_glass_intrinsic.png",
+      "rooflight_glass_intrinsic.png"
+    ],
+    "interior_atlases": [
+      "ground_market_interior_atlas.png",
+      "gallery_market_interior_atlas.png"
+    ]
+  },
+  "metric_contract": {
+    "brick_course_m": 0.075,
+    "paver_module_m": 0.24,
+    "continuous_resize_allowed": false
+  },
+  "atlas_contract": {
+    "columns": 4,
+    "rows": 2,
+    "cell_px": [
+      512,
+      512
+    ],
+    "printed_frames_allowed": false
+  },
+  "assets": {
+    "aged_hardware_intrinsic.png": {
+      "path": "tools/archetype_compiler/sticker_assets/market_historic_iron_glass_v98/aged_hardware_intrinsic.png",
+      "sha256": "1425f1b835b3710b6c2b4b80a3d3ced524fa026e7f0094adfbf687b2ccc36566",
+      "mode": "RGB",
+      "size": [
+        1024,
+        1024
+      ],
+      "semantic_exclusions": [
+        "printed structural grids",
+        "printed openings",
+        "printed frames or mullions",
+        "printed ironwork silhouettes",
+        "printed roof ribs or seams",
+        "directional lighting",
+        "cast shadows",
+        "reflection horizon",
+        "text or signage"
+      ]
+    },
+    "aged_service_metal_intrinsic.png": {
+      "path": "tools/archetype_compiler/sticker_assets/market_historic_iron_glass_v98/aged_service_metal_intrinsic.png",
+      "sha256": "bec87d7b4a5aa994d5919c0abdba908bc45c26ffdf29f077a53a690cb75f4132",
+      "mode": "RGB",
+      "size": [
+        1024,
+        1024
+      ],
+      "semantic_exclusions": [
+        "printed structural grids",
+        "printed openings",
+        "printed frames or mullions",
+        "printed ironwork silhouettes",
+        "printed roof ribs or seams",
+        "directional lighting",
+        "cast shadows",
+        "reflection horizon",
+        "text or signage"
+      ]
+    },
+    "aged_zinc_roof_intrinsic.png": {
+      "path": "tools/archetype_compiler/sticker_assets/market_historic_iron_glass_v98/aged_zinc_roof_intrinsic.png",
+      "sha256": "77e98bc7efd81dacfba95a2e947c4f6901fdb3017478c7a71b0e3f1c06b113be",
+      "mode": "RGB",
+      "size": [
+        1024,
+        1024
+      ],
+      "semantic_exclusions": [
+        "printed structural grids",
+        "printed openings",
+        "printed frames or mullions",
+        "printed ironwork silhouettes",
+        "printed roof ribs or seams",
+        "directional lighting",
+        "cast shadows",
+        "reflection horizon",
+        "text or signage"
+      ]
+    },
+    "blank_dark_signboard_intrinsic.png": {
+      "path": "tools/archetype_compiler/sticker_assets/market_historic_iron_glass_v98/blank_dark_signboard_intrinsic.png",
+      "sha256": "4101423d7d3c886ce9451476d0ffb65676dadaa00cadb578c6ef358cf3008917",
+      "mode": "RGB",
+      "size": [
+        1024,
+        1024
+      ],
+      "semantic_exclusions": [
+        "printed structural grids",
+        "printed openings",
+        "printed frames or mullions",
+        "printed ironwork silhouettes",
+        "printed roof ribs or seams",
+        "directional lighting",
+        "cast shadows",
+        "reflection horizon",
+        "text or signage"
+      ]
+    },
+    "dark_cavern_backing_intrinsic.png": {
+      "path": "tools/archetype_compiler/sticker_assets/market_historic_iron_glass_v98/dark_cavern_backing_intrinsic.png",
+      "sha256": "d45e2d9e6082788deb886bc9c6f7b28f9f2287b1753e64168c621687f3acc21c",
+      "mode": "RGB",
+      "size": [
+        1024,
+        1024
+      ],
+      "semantic_exclusions": [
+        "printed structural grids",
+        "printed openings",
+        "printed frames or mullions",
+        "printed ironwork silhouettes",
+        "printed roof ribs or seams",
+        "directional lighting",
+        "cast shadows",
+        "reflection horizon",
+        "text or signage"
+      ]
+    },
+    "dark_ornate_rail_intrinsic.png": {
+      "path": "tools/archetype_compiler/sticker_assets/market_historic_iron_glass_v98/dark_ornate_rail_intrinsic.png",
+      "sha256": "ebf82c6c7d393f76d4af999b44337fcc3b636e6c9492948bde80668a34cebc33",
+      "mode": "RGB",
+      "size": [
+        1024,
+        1024
+      ],
+      "semantic_exclusions": [
+        "printed structural grids",
+        "printed openings",
+        "printed frames or mullions",
+        "printed ironwork silhouettes",
+        "printed roof ribs or seams",
+        "directional lighting",
+        "cast shadows",
+        "reflection horizon",
+        "text or signage"
+      ]
+    },
+    "flashing_coping_intrinsic.png": {
+      "path": "tools/archetype_compiler/sticker_assets/market_historic_iron_glass_v98/flashing_coping_intrinsic.png",
+      "sha256": "6cce5f1107f331c63cc402428946c6ca9329daf954e2bbaa047331c2ee5cc49c",
+      "mode": "RGB",
+      "size": [
+        1024,
+        1024
+      ],
+      "semantic_exclusions": [
+        "printed structural grids",
+        "printed openings",
+        "printed frames or mullions",
+        "printed ironwork silhouettes",
+        "printed roof ribs or seams",
+        "directional lighting",
+        "cast shadows",
+        "reflection horizon",
+        "text or signage"
+      ]
+    },
+    "gallery_market_interior_atlas.png": {
+      "path": "tools/archetype_compiler/sticker_assets/market_historic_iron_glass_v98/gallery_market_interior_atlas.png",
+      "sha256": "713419f071991521c8b2de6fc40d1a25390495645cdec0b7888e05630c984ae1",
+      "mode": "RGB",
+      "size": [
+        2048,
+        1024
+      ],
+      "semantic_exclusions": [
+        "printed structural grids",
+        "printed openings",
+        "printed frames or mullions",
+        "printed ironwork silhouettes",
+        "printed roof ribs or seams",
+        "directional lighting",
+        "cast shadows",
+        "reflection horizon",
+        "text or signage"
+      ]
+    },
+    "ground_market_interior_atlas.png": {
+      "path": "tools/archetype_compiler/sticker_assets/market_historic_iron_glass_v98/ground_market_interior_atlas.png",
+      "sha256": "ea5815af1f6a57f145e6baf881fdc438d802d4401e5bd3fed975a4e6eaa10ba9",
+      "mode": "RGB",
+      "size": [
+        2048,
+        1024
+      ],
+      "semantic_exclusions": [
+        "printed structural grids",
+        "printed openings",
+        "printed frames or mullions",
+        "printed ironwork silhouettes",
+        "printed roof ribs or seams",
+        "directional lighting",
+        "cast shadows",
+        "reflection horizon",
+        "text or signage"
+      ]
+    },
+    "heritage_green_cast_iron_intrinsic.png": {
+      "path": "tools/archetype_compiler/sticker_assets/market_historic_iron_glass_v98/heritage_green_cast_iron_intrinsic.png",
+      "sha256": "f73da216c79ae68a15df39a22e052b61d6257cdf9212ee5eb4a482a95aa641ab",
+      "mode": "RGB",
+      "size": [
+        1024,
+        1024
+      ],
+      "semantic_exclusions": [
+        "printed structural grids",
+        "printed openings",
+        "printed frames or mullions",
+        "printed ironwork silhouettes",
+        "printed roof ribs or seams",
+        "directional lighting",
+        "cast shadows",
+        "reflection horizon",
+        "text or signage"
+      ]
+    },
+    "heritage_green_gutter_intrinsic.png": {
+      "path": "tools/archetype_compiler/sticker_assets/market_historic_iron_glass_v98/heritage_green_gutter_intrinsic.png",
+      "sha256": "8d395f5a996e45bdea6d07be6f050e77b01bafc26a0057b32d987bd300df2562",
+      "mode": "RGB",
+      "size": [
+        1024,
+        1024
+      ],
+      "semantic_exclusions": [
+        "printed structural grids",
+        "printed openings",
+        "printed frames or mullions",
+        "printed ironwork silhouettes",
+        "printed roof ribs or seams",
+        "directional lighting",
+        "cast shadows",
+        "reflection horizon",
+        "text or signage"
+      ]
+    },
+    "herringbone_market_paver_intrinsic.png": {
+      "path": "tools/archetype_compiler/sticker_assets/market_historic_iron_glass_v98/herringbone_market_paver_intrinsic.png",
+      "sha256": "9a9b8c3f86d89b45dd468d6af0ac5b0a9e640b69efbaf8d0792f22c5f7891161",
+      "mode": "RGB",
+      "size": [
+        1024,
+        1024
+      ],
+      "semantic_exclusions": [
+        "printed structural grids",
+        "printed openings",
+        "printed frames or mullions",
+        "printed ironwork silhouettes",
+        "printed roof ribs or seams",
+        "directional lighting",
+        "cast shadows",
+        "reflection horizon",
+        "text or signage"
+      ]
+    },
+    "pale_ashlar_intrinsic.png": {
+      "path": "tools/archetype_compiler/sticker_assets/market_historic_iron_glass_v98/pale_ashlar_intrinsic.png",
+      "sha256": "7c6e61eec7610fd96b2e10ead6ba5226f4023f877077c77e8e54ce741683350f",
+      "mode": "RGB",
+      "size": [
+        1024,
+        1024
+      ],
+      "semantic_exclusions": [
+        "printed structural grids",
+        "printed openings",
+        "printed frames or mullions",
+        "printed ironwork silhouettes",
+        "printed roof ribs or seams",
+        "directional lighting",
+        "cast shadows",
+        "reflection horizon",
+        "text or signage"
+      ]
+    },
+    "pale_counter_stone_intrinsic.png": {
+      "path": "tools/archetype_compiler/sticker_assets/market_historic_iron_glass_v98/pale_counter_stone_intrinsic.png",
+      "sha256": "4cdb9bf6391553a1df5ad6b1dd8d56fd535336ed8721baa3e4937f99e93f974d",
+      "mode": "RGB",
+      "size": [
+        1024,
+        1024
+      ],
+      "semantic_exclusions": [
+        "printed structural grids",
+        "printed openings",
+        "printed frames or mullions",
+        "printed ironwork silhouettes",
+        "printed roof ribs or seams",
+        "directional lighting",
+        "cast shadows",
+        "reflection horizon",
+        "text or signage"
+      ]
+    },
+    "physical_curved_roof_glass_intrinsic.png": {
+      "path": "tools/archetype_compiler/sticker_assets/market_historic_iron_glass_v98/physical_curved_roof_glass_intrinsic.png",
+      "sha256": "5eb03dd9991e292b5dea5172e0e17e4eef20449e87bf0ea14c2f5caefafc88bf",
+      "mode": "RGB",
+      "size": [
+        1024,
+        1024
+      ],
+      "semantic_exclusions": [
+        "printed structural grids",
+        "printed openings",
+        "printed frames or mullions",
+        "printed ironwork silhouettes",
+        "printed roof ribs or seams",
+        "directional lighting",
+        "cast shadows",
+        "reflection horizon",
+        "text or signage"
+      ]
+    },
+    "physical_vertical_low_iron_glass_intrinsic.png": {
+      "path": "tools/archetype_compiler/sticker_assets/market_historic_iron_glass_v98/physical_vertical_low_iron_glass_intrinsic.png",
+      "sha256": "db0432d5c937a05418aa97a32d0f28ef32d5bf3fb3b2969a64a3c7f3f946e210",
+      "mode": "RGB",
+      "size": [
+        1024,
+        1024
+      ],
+      "semantic_exclusions": [
+        "printed structural grids",
+        "printed openings",
+        "printed frames or mullions",
+        "printed ironwork silhouettes",
+        "printed roof ribs or seams",
+        "directional lighting",
+        "cast shadows",
+        "reflection horizon",
+        "text or signage"
+      ]
+    },
+    "ridge_lantern_glass_intrinsic.png": {
+      "path": "tools/archetype_compiler/sticker_assets/market_historic_iron_glass_v98/ridge_lantern_glass_intrinsic.png",
+      "sha256": "1ad1596e1146878a764699b75d1f6d668640a8a21fa38c3f80470b56e27e26c9",
+      "mode": "RGB",
+      "size": [
+        1024,
+        1024
+      ],
+      "semantic_exclusions": [
+        "printed structural grids",
+        "printed openings",
+        "printed frames or mullions",
+        "printed ironwork silhouettes",
+        "printed roof ribs or seams",
+        "directional lighting",
+        "cast shadows",
+        "reflection horizon",
+        "text or signage"
+      ]
+    },
+    "rooflight_glass_intrinsic.png": {
+      "path": "tools/archetype_compiler/sticker_assets/market_historic_iron_glass_v98/rooflight_glass_intrinsic.png",
+      "sha256": "f56c56796c2c41e30c057a43c81f84a84175c9670b873e909c8e7abf0cc1e3ee",
+      "mode": "RGB",
+      "size": [
+        1024,
+        1024
+      ],
+      "semantic_exclusions": [
+        "printed structural grids",
+        "printed openings",
+        "printed frames or mullions",
+        "printed ironwork silhouettes",
+        "printed roof ribs or seams",
+        "directional lighting",
+        "cast shadows",
+        "reflection horizon",
+        "text or signage"
+      ]
+    },
+    "warm_brick_front_intrinsic.png": {
+      "path": "tools/archetype_compiler/sticker_assets/market_historic_iron_glass_v98/warm_brick_front_intrinsic.png",
+      "sha256": "7a9f5cdd43df61eba71881f7f2d0680fa70572f3f2a891cd45bc78760a3e2a1d",
+      "mode": "RGB",
+      "size": [
+        1024,
+        1024
+      ],
+      "semantic_exclusions": [
+        "printed structural grids",
+        "printed openings",
+        "printed frames or mullions",
+        "printed ironwork silhouettes",
+        "printed roof ribs or seams",
+        "directional lighting",
+        "cast shadows",
+        "reflection horizon",
+        "text or signage"
+      ]
+    },
+    "warm_brick_rear_intrinsic.png": {
+      "path": "tools/archetype_compiler/sticker_assets/market_historic_iron_glass_v98/warm_brick_rear_intrinsic.png",
+      "sha256": "04be7c4dbf377aca548a26087028537787d08a5b7d5962afe8e5d4f2a0e9fd74",
+      "mode": "RGB",
+      "size": [
+        1024,
+        1024
+      ],
+      "semantic_exclusions": [
+        "printed structural grids",
+        "printed openings",
+        "printed frames or mullions",
+        "printed ironwork silhouettes",
+        "printed roof ribs or seams",
+        "directional lighting",
+        "cast shadows",
+        "reflection horizon",
+        "text or signage"
+      ]
+    },
+    "warm_brick_return_intrinsic.png": {
+      "path": "tools/archetype_compiler/sticker_assets/market_historic_iron_glass_v98/warm_brick_return_intrinsic.png",
+      "sha256": "6deae2dbb2c388782d3743beae8d10c42e4936e0194f4db25afd670e99079f82",
+      "mode": "RGB",
+      "size": [
+        1024,
+        1024
+      ],
+      "semantic_exclusions": [
+        "printed structural grids",
+        "printed openings",
+        "printed frames or mullions",
+        "printed ironwork silhouettes",
+        "printed roof ribs or seams",
+        "directional lighting",
+        "cast shadows",
+        "reflection horizon",
+        "text or signage"
+      ]
+    },
+    "warm_copper_lamp_intrinsic.png": {
+      "path": "tools/archetype_compiler/sticker_assets/market_historic_iron_glass_v98/warm_copper_lamp_intrinsic.png",
+      "sha256": "6db064a8d6e3151a3e2f27d3160541966c6c32ff77c7a3b76d607a27782bd404",
+      "mode": "RGB",
+      "size": [
+        1024,
+        1024
+      ],
+      "semantic_exclusions": [
+        "printed structural grids",
+        "printed openings",
+        "printed frames or mullions",
+        "printed ironwork silhouettes",
+        "printed roof ribs or seams",
+        "directional lighting",
+        "cast shadows",
+        "reflection horizon",
+        "text or signage"
+      ]
+    },
+    "warm_oak_stall_intrinsic.png": {
+      "path": "tools/archetype_compiler/sticker_assets/market_historic_iron_glass_v98/warm_oak_stall_intrinsic.png",
+      "sha256": "e7044c1d06cfa8ef4db826a26c3eb4378a4f5560e7c74e96fd0f594b388d011d",
+      "mode": "RGB",
+      "size": [
+        1024,
+        1024
+      ],
+      "semantic_exclusions": [
+        "printed structural grids",
+        "printed openings",
+        "printed frames or mullions",
+        "printed ironwork silhouettes",
+        "printed roof ribs or seams",
+        "directional lighting",
+        "cast shadows",
+        "reflection horizon",
+        "text or signage"
+      ]
+    },
+    "weathered_slate_intrinsic.png": {
+      "path": "tools/archetype_compiler/sticker_assets/market_historic_iron_glass_v98/weathered_slate_intrinsic.png",
+      "sha256": "b4afa5fe06dbae1eb7da00209a324ce7ba73f98367085707cb5ecb64ff014c58",
+      "mode": "RGB",
+      "size": [
+        1024,
+        1024
+      ],
+      "semantic_exclusions": [
+        "printed structural grids",
+        "printed openings",
+        "printed frames or mullions",
+        "printed ironwork silhouettes",
+        "printed roof ribs or seams",
+        "directional lighting",
+        "cast shadows",
+        "reflection horizon",
+        "text or signage"
+      ]
+    },
+    "weathered_stone_plinth_intrinsic.png": {
+      "path": "tools/archetype_compiler/sticker_assets/market_historic_iron_glass_v98/weathered_stone_plinth_intrinsic.png",
+      "sha256": "c9b0fb8448b6acce27aa0f517cba493770222ddcd78bca711b68ed0fc00a7a50",
+      "mode": "RGB",
+      "size": [
+        1024,
+        1024
+      ],
+      "semantic_exclusions": [
+        "printed structural grids",
+        "printed openings",
+        "printed frames or mullions",
+        "printed ironwork silhouettes",
+        "printed roof ribs or seams",
+        "directional lighting",
+        "cast shadows",
+        "reflection horizon",
+        "text or signage"
+      ]
+    }
+  }
+}

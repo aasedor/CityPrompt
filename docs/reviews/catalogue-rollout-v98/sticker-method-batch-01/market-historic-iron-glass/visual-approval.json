@@ -1,0 +1,50 @@
+{
+  "schema": "siteforge.named-architect-review@1",
+  "pipeline_version": "v98",
+  "building_id": "food_hall_market_hall--market_historic_iron_glass",
+  "reviewer": "architect_design_reviewer",
+  "status": "pass",
+  "score_target_exclusive": 95.0,
+  "hard_stop_status": "pass",
+  "hard_stop_count": 0,
+  "scores": {
+    "canonical": {
+      "total": 95.14,
+      "components": {
+        "archetype_identity": 28.2,
+        "geometry_and_massing": 19.12,
+        "sticker_and_material_fidelity": 19.06,
+        "coverage_and_registration": 14.16,
+        "release_and_landmark_readiness": 14.6
+      }
+    }
+  },
+  "approved_tiers": {
+    "canonical": {
+      "width_m": 45.0,
+      "depth_m": 60.0,
+      "occupied_hall_levels": 1,
+      "fixed_partial_galleries": 2
+    }
+  },
+  "approved_contract": {
+    "representation": "fixed_landmark",
+    "continuous_resize_allowed": false,
+    "vertical_scaling_allowed": false,
+    "depth_scaling_allowed": false,
+    "nonuniform_scaling_allowed": false,
+    "additional_tiers_allowed": false
+  },
+  "machine_evidence": {
+    "canonical_surface_faces": 6409,
+    "surface_failures": 0,
+    "production_preflight": "pass",
+    "export_validation": "pass"
+  },
+  "residual_deductions": [
+    "Rear and service elevations are constrained completions of limited exact evidence.",
+    "The reviewed export has 1,247 materials and requires later consolidation.",
+    "The assembled GLB is 8.1 MB, marginally above the 8 MB texture budget."
+  ],
+  "verdict": "Approved only as the reviewed 45 x 60 m fixed select-and-place landmark; arbitrary resizing is not authorized."
+}

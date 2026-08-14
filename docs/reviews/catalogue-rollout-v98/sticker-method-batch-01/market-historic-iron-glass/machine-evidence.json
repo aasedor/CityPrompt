@@ -1,0 +1,112 @@
+{
+  "schema": "siteforge.sticker-method-machine-evidence@1",
+  "architect_scores": {
+    "canonical": 95.14,
+    "components": {
+      "archetype_identity": 28.2,
+      "geometry_and_massing": 19.12,
+      "sticker_and_material_fidelity": 19.06,
+      "coverage_and_registration": 14.16,
+      "release_and_landmark_readiness": 14.6
+    },
+    "hard_stops": 0
+  },
+  "reference_sha256": {
+    "variant_0.png": "0f04fa934c3b2883f82b3a27ba6883639aff8ab57a065e6b11fbe9c1afe13659",
+    "variant_0_angle_60.jpg": "e504ab5a6c2af9141b0445d560a77d560d96b5e826949fec9be380f4d58d4c6a",
+    "variant_0_angle_90.jpg": "af24f5150a12d417f07ae2fd5eab1c0037b984266b70ebb763fd60880dfa6be0"
+  },
+  "source_sha256": {
+    "build_market_historic_iron_glass_sticker_lego_v98.py": "379fe0b92f906612ee10d36dccde4b41e5f31fe4d3fb8dde55590e2a1583da15",
+    "compile_market_historic_iron_glass_sticker_landmark_v98.py": "0c63a8130c84e3403db82e4e4ecb084a31d36baba9015f144298a7baff3316cc",
+    "market_historic_iron_glass_sticker_landmark_v98.json": "d836d9c91c014c82c2d61505aa87477257fdc211bed15a2fbbe229b01128091d",
+    "architectural_signature_profiles.d/zzzzzzzzzzzzzzzzzz_market_historic_iron_glass_sticker_landmark_v98.json": "948e83d466b252cb4a2f638f275695efea500514815a787b8212b7c010988786",
+    "market_historic_iron_glass_sticker_landmark_v98_carrier_packages.json": "ab4010efb938d5e35fa72286203aa9e6d45eefa0bf7fa9a8fdab925f25d6e528",
+    "market_historic_iron_glass_sticker_landmark_v98_contract.json": "d0af59272f8bc44c987294ceb2330972a57155fecf486e8348f641577994f331",
+    "sticker_assets/market_historic_iron_glass_v98/provenance.json": "4bf5852f1560d14d59b1d82b32cd11d1cae4e7c96eb4f0c7913a8eff82552001"
+  },
+  "formal_input_sha256": {
+    "market-historic-iron-glass-v98-canonical_manifest.json": "90ac182ee6671e7f952c89d803015f3e8542d785dd003a3dec472f303e69d4b8",
+    "production_preflight.json": "f002550be12cabb33a7015aa40d6fb008ed73d2532da9ed8fcb9e13cb74875ec",
+    "validation_report.json": "cd8914d5abee327b2cdaf6cc4f7d925c0fcf792b7569c03380315cb4342332b5",
+    "market-historic-iron-glass-v98-canonical_aerial.png": "40e1077cf07171f72e303334e768c06dddd3d3a5882f5254af73f73b8c7ce01d",
+    "market-historic-iron-glass-v98-canonical_archetype_match.png": "8de839feda28620da943fbf38eaebf81b668a6776a65a017d21e053af20c2062",
+    "market-historic-iron-glass-v98-canonical_context.png": "47fdee7b6b18c6997c5de3f672e04dfc2ea820cbf91d37097b1e40f70206c975",
+    "market-historic-iron-glass-v98-canonical_facade_close.png": "fa176ec835d41c7ad12604a246a5bfbd759bb75c6e8d77b695e5ffcb5a638059",
+    "market-historic-iron-glass-v98-canonical_front_corner_oblique.png": "bf5b7a4027b14f8af4a0c4ab2460124ff2513b488cfd12a0282918e8e4c460ee",
+    "market-historic-iron-glass-v98-canonical_preview.png": "462007283a711fa111a6413e397315ba198ca1d167260d0708a15d3724872a50",
+    "market-historic-iron-glass-v98-canonical_rear_corner_oblique.png": "f9ce2fac88a92d9b2d3641beda5dcab8665286e232ab6e58af07d258d0166f7f",
+    "market-historic-iron-glass-v98-canonical_roof_audit.png": "6d7bab5c21a0541ac6ac4ad0bce5d2e74d558cff14968c19a312e21156b5fbc3",
+    "market-historic-iron-glass-v98-canonical_street.png": "a3e7c28499d0edde8ddb30bf6433632e344fc0043392dc2fc6de8e1d9fcef05b"
+  },
+  "tiers": {
+    "canonical": {
+      "dimensions": {
+        "width_m": 45.0,
+        "depth_m": 60.0,
+        "podium_height_m": 5.2,
+        "floor_height_m": 10.0,
+        "setback_height_m": 10.0,
+        "roof_height_m": 4.8,
+        "default_floors": 2,
+        "min_floors": 2,
+        "max_floors": 2,
+        "crown_height_m": 10.0
+      },
+      "geometry_sha256": "5b200136a81b1b6d75611072674b551ce9a9befcd28d6512f4a8000a36fa729a",
+      "geometry_mesh_count": 1177,
+      "assembled": {
+        "height_m": 16.72,
+        "triangle_count": 47072,
+        "assembly_count": 1247
+      },
+      "final_surface_audit": {
+        "status": "pass",
+        "checked_faces": 6409,
+        "failure_count": 0
+      },
+      "validation": "pass",
+      "validation_sha256": "cd8914d5abee327b2cdaf6cc4f7d925c0fcf792b7569c03380315cb4342332b5",
+      "validation_warnings": [
+        "market-historic-iron-glass-v98-canonical_assembled.glb: 1247 materials (many; consider consolidation)",
+        "market-historic-iron-glass-v98-canonical_assembled.glb: 8.1 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+      ],
+      "production_preflight": "pass",
+      "production_preflight_sha256": "f002550be12cabb33a7015aa40d6fb008ed73d2532da9ed8fcb9e13cb74875ec",
+      "manifest_sha256": "90ac182ee6671e7f952c89d803015f3e8542d785dd003a3dec472f303e69d4b8",
+      "render_count": 9,
+      "render_sha256": {
+        "archetype_match": "8de839feda28620da943fbf38eaebf81b668a6776a65a017d21e053af20c2062",
+        "front_corner_oblique": "bf5b7a4027b14f8af4a0c4ab2460124ff2513b488cfd12a0282918e8e4c460ee",
+        "rear_corner_oblique": "f9ce2fac88a92d9b2d3641beda5dcab8665286e232ab6e58af07d258d0166f7f",
+        "facade_close": "fa176ec835d41c7ad12604a246a5bfbd759bb75c6e8d77b695e5ffcb5a638059",
+        "roof_audit": "6d7bab5c21a0541ac6ac4ad0bce5d2e74d558cff14968c19a312e21156b5fbc3",
+        "aerial": "40e1077cf07171f72e303334e768c06dddd3d3a5882f5254af73f73b8c7ce01d"
+      }
+    }
+  },
+  "tier_contract": {
+    "representation": "fixed_landmark",
+    "approved_dimensions_m": {
+      "width_m": 45.0,
+      "depth_m": 60.0,
+      "occupied_hall_levels": 1,
+      "fixed_partial_galleries": 2
+    },
+    "continuous_resize_allowed": false,
+    "vertical_scaling_allowed": false,
+    "depth_scaling_allowed": false,
+    "nonuniform_scaling_allowed": false,
+    "additional_tiers_allowed": false
+  },
+  "non_blocking_optimization_follow_up": {
+    "material_consolidation": true,
+    "texture_budget": true
+  },
+  "review_board_sha256": {
+    "01-exact-reference-comparison.png": "02f5be8c108afdd3a8ff8f4a4b0e434d0e94b91c62788e9fdc092c90c10705b1",
+    "02-oblique-and-detail-comparison.png": "48b0ddceb0d80e45ca2595a004fddfe65a8834841532e6e7450ced12ad072deb",
+    "03-roof-reference-comparison.png": "65a2512f2a2c28f4b76625d18a09bb6fc237447f07ed952646b7f67c90886d07",
+    "04-nave-and-rear-comparison.png": "7d40ed411c6ff9b8af97726b8d4012740878bcf89c80fff76561910bfc172a27"
+  }
+}

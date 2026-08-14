@@ -1,0 +1,62 @@
+{
+  "schema": "siteforge.sticker-method-release-scaffold@1",
+  "status": "approved_95_plus",
+  "building_id": "food_hall_market_hall--market_historic_iron_glass",
+  "reference_sha256": {
+    "variant_0.png": "0f04fa934c3b2883f82b3a27ba6883639aff8ab57a065e6b11fbe9c1afe13659",
+    "variant_0_angle_60.jpg": "e504ab5a6c2af9141b0445d560a77d560d96b5e826949fec9be380f4d58d4c6a",
+    "variant_0_angle_90.jpg": "af24f5150a12d417f07ae2fd5eab1c0037b984266b70ebb763fd60880dfa6be0"
+  },
+  "geometry_sha256": {
+    "canonical": "5b200136a81b1b6d75611072674b551ce9a9befcd28d6512f4a8000a36fa729a"
+  },
+  "geometry_mesh_count": {
+    "canonical": 1177
+  },
+  "source_sha256": {
+    "build_market_historic_iron_glass_sticker_lego_v98.py": "379fe0b92f906612ee10d36dccde4b41e5f31fe4d3fb8dde55590e2a1583da15",
+    "compile_market_historic_iron_glass_sticker_landmark_v98.py": "0c63a8130c84e3403db82e4e4ecb084a31d36baba9015f144298a7baff3316cc",
+    "market_historic_iron_glass_sticker_landmark_v98.json": "d836d9c91c014c82c2d61505aa87477257fdc211bed15a2fbbe229b01128091d",
+    "architectural_signature_profiles.d/zzzzzzzzzzzzzzzzzz_market_historic_iron_glass_sticker_landmark_v98.json": "948e83d466b252cb4a2f638f275695efea500514815a787b8212b7c010988786",
+    "market_historic_iron_glass_sticker_landmark_v98_carrier_packages.json": "ab4010efb938d5e35fa72286203aa9e6d45eefa0bf7fa9a8fdab925f25d6e528",
+    "market_historic_iron_glass_sticker_landmark_v98_contract.json": "d0af59272f8bc44c987294ceb2330972a57155fecf486e8348f641577994f331",
+    "sticker_assets/market_historic_iron_glass_v98/provenance.json": "4bf5852f1560d14d59b1d82b32cd11d1cae4e7c96eb4f0c7913a8eff82552001"
+  },
+  "tier_contract": {
+    "canonical": {
+      "width_m": 45.0,
+      "depth_m": 60.0,
+      "occupied_hall_levels": 1,
+      "fixed_partial_galleries": 2
+    },
+    "continuous_resize_allowed": false,
+    "vertical_scaling_allowed": false,
+    "depth_scaling_allowed": false,
+    "nonuniform_scaling_allowed": false,
+    "additional_tiers_allowed": false
+  },
+  "required_machine_gates": {
+    "production_preflight": "pass",
+    "validation": "pass",
+    "surface_audit_failure_count": 0,
+    "visible_face_ownership": "exactly_once",
+    "generic_fallback_allowed": false,
+    "minimum_render_views": 9
+  },
+  "formal_release": {
+    "architect_scores": {
+      "canonical": 95.14,
+      "components": {
+        "archetype_identity": 28.2,
+        "geometry_and_massing": 19.12,
+        "sticker_and_material_fidelity": 19.06,
+        "coverage_and_registration": 14.16,
+        "release_and_landmark_readiness": 14.6
+      },
+      "hard_stops": 0
+    },
+    "render_sha256": "recorded_in_machine-evidence.json",
+    "review_board_sha256": "recorded_in_machine-evidence.json",
+    "visual_approval_status": "pass"
+  }
+}

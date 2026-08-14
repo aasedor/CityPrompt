@@ -1,0 +1,30 @@
+{
+  "schema": "siteforge.market-historic-iron-glass-sticker-landmark@1",
+  "version": "v98.1",
+  "archetype_id": "food_hall_market_hall",
+  "variant_id": "market_historic_iron_glass",
+  "identity_authority": "three_exact_variant_0_images",
+  "reference_sha256": {
+    "frontend/public/archetypes/buildings/food_hall_market_hall/variant_0.png": "0f04fa934c3b2883f82b3a27ba6883639aff8ab57a065e6b11fbe9c1afe13659",
+    "frontend/public/archetypes/buildings/food_hall_market_hall/variant_0_angle_60.jpg": "e504ab5a6c2af9141b0445d560a77d560d96b5e826949fec9be380f4d58d4c6a",
+    "frontend/public/archetypes/buildings/food_hall_market_hall/variant_0_angle_90.jpg": "af24f5150a12d417f07ae2fd5eab1c0037b984266b70ebb763fd60880dfa6be0"
+  },
+  "approved_tiers": [
+    "canonical"
+  ],
+  "canonical_footprint_m": {
+    "width": 45.0,
+    "depth": 60.0
+  },
+  "continuous_resize_allowed": false,
+  "vertical_scaling_allowed": false,
+  "hard_stops": [
+    "wrong fixed footprint",
+    "closed or missing open public nave",
+    "missing physical iron frame",
+    "missing barrel glass, asymmetric aisle roofs or ridge lantern",
+    "generic fallback",
+    "unowned or multiply owned face",
+    "roof domain leakage"
+  ]
+}
