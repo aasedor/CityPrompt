@@ -109,6 +109,29 @@ function Ensure-Infrastructure {
     }
 }
 
+function Stop-KnownDockerApiPortConflicts {
+    # OAuth providers return through localhost:8000. A backend container from
+    # another checkout can therefore intercept the callback even while this
+    # worktree's API is healthy on 127.0.0.1. Keep the stateful infrastructure
+    # running, but stop known stateless API containers before binding the port.
+    $knownApiContainers = @('cityprompt-backend', 'devplatform-backend')
+    $publishedOwners = @(docker ps --filter 'publish=8000' --format '{{.Names}}' |
+        Where-Object { $_ })
+
+    $unexpected = @($publishedOwners | Where-Object { $_ -notin $knownApiContainers })
+    if ($unexpected.Count -gt 0) {
+        throw "Port 8000 is published by an unexpected Docker container: $($unexpected -join ', ')."
+    }
+
+    foreach ($name in $publishedOwners) {
+        Write-Host "Stopping stale Docker API container $name (stateful services remain running)..."
+        docker stop $name | Out-Null
+        if ($LASTEXITCODE -ne 0) {
+            throw "Could not stop Docker API container $name."
+        }
+    }
+}
+
 function Assert-PortAvailableOrHealthy {
     param(
         [Parameter(Mandatory)][int]$Port,
@@ -130,35 +153,39 @@ function Assert-PortAvailableOrHealthy {
 }
 
 function Ensure-Backend {
-    # A Docker-published API from another checkout may also own wildcard port
-    # 8000. Always require a loopback-specific Uvicorn process for this
-    # worktree, and restart it by default so source edits cannot leave the
-    # browser talking to stale code.
-    $listener = Get-NetTCPConnection `
-        -State Listen `
-        -LocalAddress '127.0.0.1' `
-        -LocalPort 8000 `
-        -ErrorAction SilentlyContinue |
-        Select-Object -First 1
+    Stop-KnownDockerApiPortConflicts
 
-    if ($listener) {
-        $process = Get-CimInstance Win32_Process -Filter "ProcessId=$($listener.OwningProcess)"
-        $isUvicorn = $process.Name -match '^python(?:\.exe)?$' -and $process.CommandLine -match 'uvicorn(?:\.exe)?"?\s+app\.main:app'
+    # Restart by default so source edits cannot leave the browser talking to
+    # stale code. Inspect every listener because wildcard and IPv6 listeners
+    # can appear as multiple rows for one process.
+    $listeners = @(Get-NetTCPConnection -State Listen -LocalPort 8000 -ErrorAction SilentlyContinue)
+    $listenerPids = @($listeners | Select-Object -ExpandProperty OwningProcess -Unique)
+    $uvicornPids = @()
+
+    foreach ($listenerPid in $listenerPids) {
+        $listenerProcess = Get-CimInstance Win32_Process -Filter "ProcessId=$listenerPid"
+        $isUvicorn = $listenerProcess.Name -match '^python(?:\.exe)?$' -and
+            $listenerProcess.CommandLine -match 'uvicorn(?:\.exe)?"?\s+app\.main:app'
         if (-not $isUvicorn) {
-            throw "Port 127.0.0.1:8000 is owned by an unexpected process (PID $($listener.OwningProcess))."
+            throw "Port 8000 is owned by an unexpected process (PID $listenerPid)."
         }
-        if ($KeepBackend -and (Test-HttpEndpoint -Uri 'http://127.0.0.1:8000/health')) {
-            return
-        }
+        $uvicornPids += $listenerPid
+    }
 
+    $bothLoopbackRoutesHealthy =
+        (Test-HttpEndpoint -Uri 'http://127.0.0.1:8000/health') -and
+        (Test-HttpEndpoint -Uri 'http://localhost:8000/health')
+    if ($KeepBackend -and $uvicornPids.Count -gt 0 -and $bothLoopbackRoutesHealthy) {
+        return
+    }
+
+    if ($uvicornPids.Count -gt 0) {
         Write-Host 'Restarting City Prompt API for the current worktree...'
-        Stop-Process -Id $listener.OwningProcess -Force
+        foreach ($listenerPid in $uvicornPids) {
+            Stop-Process -Id $listenerPid -Force
+        }
         Wait-Until -Description 'the previous City Prompt API to stop' -Condition {
-            -not (Get-NetTCPConnection `
-                -State Listen `
-                -LocalAddress '127.0.0.1' `
-                -LocalPort 8000 `
-                -ErrorAction SilentlyContinue)
+            -not (Get-NetTCPConnection -State Listen -LocalPort 8000 -ErrorAction SilentlyContinue)
         }
     }
 
@@ -172,14 +199,15 @@ function Ensure-Backend {
 
     Write-Host 'Starting City Prompt API...'
     Start-Process -FilePath $uvicorn.Source `
-        -ArgumentList @('app.main:app', '--host', '127.0.0.1', '--port', '8000') `
+        -ArgumentList @('app.main:app', '--host', '0.0.0.0', '--port', '8000') `
         -WorkingDirectory $backendRoot `
         -RedirectStandardOutput (Join-Path $artifactRoot 'backend.out.log') `
         -RedirectStandardError (Join-Path $artifactRoot 'backend.err.log') `
         -WindowStyle Hidden
 
-    Wait-Until -Description 'City Prompt API health' -Condition {
-        Test-HttpEndpoint -Uri 'http://127.0.0.1:8000/health'
+    Wait-Until -Description 'City Prompt API health on both OAuth loopback routes' -Condition {
+        (Test-HttpEndpoint -Uri 'http://127.0.0.1:8000/health') -and
+        (Test-HttpEndpoint -Uri 'http://localhost:8000/health')
     }
 }
 
@@ -218,5 +246,5 @@ Ensure-Frontend
 Write-Host ''
 Write-Host 'City Prompt local stack is ready.' -ForegroundColor Green
 Write-Host 'Frontend: http://127.0.0.1:5174/'
-Write-Host 'API:      http://127.0.0.1:8000/health'
+Write-Host 'API:      http://127.0.0.1:8000/health (also localhost for OAuth callbacks)'
 Write-Host "Logs:     $artifactRoot"

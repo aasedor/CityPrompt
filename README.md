@@ -58,11 +58,13 @@ stack with:
 
 The launcher starts Docker Desktop when necessary, reuses the existing local
 PostgreSQL/Redis/MinIO containers so accounts and projects are preserved,
-restarts the API from the current worktree so major edits cannot leave stale
-code running, starts the frontend when necessary, and waits for both health
-checks. This prevents the misleading empty HTTP 500 login error that appears
-when Vite is running without the API. Pass `-KeepBackend` only when you
-deliberately want to retain the currently running worktree API.
+stops known stateless API containers that would otherwise intercept port 8000,
+restarts the API from the current worktree on both local OAuth routes, starts
+the frontend when necessary, and waits for all health checks. This prevents
+the misleading empty HTTP 500 login error that appears when Vite is running
+without the API, and prevents Google OAuth callbacks from reaching stale code
+in another checkout. Pass `-KeepBackend` only when you deliberately want to
+retain the currently running worktree API.
 
 ### 3. Local Development (without Docker)
 
