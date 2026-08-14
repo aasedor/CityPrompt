@@ -10278,12 +10278,12 @@
         "features": "sawtooth profile visible from street, roof ventilators",
         "aerialAppearance": "distinctive sawtooth or monitor roof profile with glass panels"
       },
-      "thumbnailUrl": "/archetypes/buildings/historic-daylight-factory/hero.png",
+      "thumbnailUrl": "/archetypes/buildings/daylight_factory/hero.png",
       "variants": [
         {
           "id": "factory_sawtooth_roof",
           "label": "Sawtooth Roof",
-          "thumbnailUrl": "/archetypes/buildings/historic-daylight-factory/hero.png",
+          "thumbnailUrl": "/archetypes/buildings/daylight_factory/variant_0.png",
           "minFloors": 1,
           "maxFloors": 1,
           "suggestedFloorHeight": 6.0,

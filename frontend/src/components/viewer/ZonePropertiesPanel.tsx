@@ -18,6 +18,8 @@ import { formatArea, polygonDimensionsMeters } from './mapEngine/geoUtils';
 import { compileBoundaryCommunity3D } from '@/features/legoAssembly/communityCompiler';
 import { legoAssemblyApi } from '@/features/legoAssembly/legoAssemblyApi';
 import legoFamilySignatures from '@/data/legoFamilySignatures.json';
+import stickerMethodPilots from '@/data/stickerMethodPilots.json';
+import archetypeReferenceAvailability from '@/data/archetypeReferenceAvailability.json';
 import {
   BUILDING_AESTHETIC_CATEGORIES_V2,
   BUILDING_AESTHETIC_OPTIONS_V2,
@@ -146,6 +148,13 @@ const PLAZA_AESTHETIC_OPTIONS: DevelopmentAestheticOption[] = PLAZA_AESTHETIC_OP
 // Combined parks + plazas — used by the unified "Parks / Plazas" picker.
 const OPENSPACE_AESTHETIC_CATEGORIES: DevelopmentAestheticCategory[] = OPENSPACE_AESTHETIC_CATEGORIES_V2;
 const OPENSPACE_AESTHETIC_OPTIONS: DevelopmentAestheticOption[] = OPENSPACE_AESTHETIC_OPTIONS_V2;
+const STICKER_METHOD_BUILDING_IDS = new Set(
+  stickerMethodPilots.buildings.map((entry) => entry.archetypeId),
+);
+const STICKER_METHOD_PARK_IDS = new Set(
+  stickerMethodPilots.parks.map((entry) => entry.archetypeId),
+);
+const BUILDING_REFERENCE_READY_IDS = new Set(archetypeReferenceAvailability.buildingIds);
 
 const ROADWAY_AESTHETIC_PRESETS: Record<string, Partial<SiteZoneProperties>> = ROADWAY_AESTHETIC_PRESETS_V2;
 const GREEN_SPACE_AESTHETIC_PRESETS: Record<string, Partial<SiteZoneProperties>> = GREEN_SPACE_AESTHETIC_PRESETS_V2;
@@ -1270,7 +1279,7 @@ const resolveOptionCategory = (
         className="pointer-events-auto fixed inset-0 z-20 bg-black/30 sm:hidden"
         onClick={onClose}
       />
-      <div ref={panelRef} className="pointer-events-auto fixed inset-x-0 bottom-0 z-30 max-h-[70vh] w-full overflow-y-auto rounded-t-lg border-2 border-[#151515] bg-[#fff9ec]/95 p-4 shadow-[8px_8px_0_0_#151515] backdrop-blur-xl sm:absolute sm:inset-auto sm:right-4 sm:top-16 sm:bottom-auto sm:left-auto sm:z-20 sm:w-80 sm:max-h-[calc(100%-5rem)] sm:rounded-lg">
+      <div ref={panelRef} className="pointer-events-auto fixed inset-x-0 bottom-0 z-30 max-h-[70vh] w-full overflow-y-auto rounded-t-lg border-2 border-[#151515] bg-[#fff9ec]/95 p-4 shadow-[8px_8px_0_0_#151515] backdrop-blur-xl sm:absolute sm:inset-auto sm:right-4 sm:top-16 sm:bottom-auto sm:left-auto sm:z-20 sm:w-96 sm:max-h-[calc(100%-5rem)] sm:rounded-lg xl:w-[28rem]">
         {/* Drag handle ? mobile visual cue */}
         <div className="mb-3 flex justify-center sm:hidden">
           <div className="h-1 w-10 rounded-full bg-[#151515]" />
@@ -3027,6 +3036,7 @@ function AestheticOptionCard({
   legoReadyArchetypeIds,
   areaSqm,
   showSiteFit = true,
+  stickerMethodPilot = false,
 }: {
   option: DevelopmentAestheticOption;
   value?: string;
@@ -3036,6 +3046,7 @@ function AestheticOptionCard({
   legoReadyArchetypeIds?: ReadonlySet<string>;
   areaSqm?: number;
   showSiteFit?: boolean;
+  stickerMethodPilot?: boolean;
 }) {
   const setLightboxImage = useViewerStore((s) => s.setLightboxImage);
   const sources = buildAestheticImageSources(option);
@@ -3129,6 +3140,11 @@ function AestheticOptionCard({
             onDoubleClick={(activeSource) => openImageLightbox(activeSource, option.label)}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/20 to-transparent" />
+          {stickerMethodPilot && (
+            <div className="absolute left-1.5 top-1.5 rounded-full border border-[#151515] bg-[#c9ff3d] px-1.5 py-0.5 text-[8px] font-black uppercase text-[#151515] shadow-sm">
+              Sticker Method
+            </div>
+          )}
           {showSiteFit && (
             <div className={`absolute right-1.5 top-1.5 rounded-full px-1.5 py-0.5 text-[8px] font-black uppercase shadow-sm ${
               areaFit
@@ -3305,9 +3321,16 @@ function DevelopmentAestheticPicker({
   areaSqm?: number;
   onChange: (next: string | undefined, archetypeImageId?: string, variantId?: string) => void;
 }) {
+  const [showPendingReferences, setShowPendingReferences] = useState(false);
   const allowedTypes = getAllowedDevelopmentTypes(zoneType || 'building', developmentType);
-  const filteredOptions = filterOptionsByDevelopmentType(DEVELOPMENT_AESTHETIC_OPTIONS, allowedTypes);
+  const categoryOptions = filterOptionsByDevelopmentType(DEVELOPMENT_AESTHETIC_OPTIONS, allowedTypes);
+  const pendingReferenceCount = categoryOptions.filter((option) => !BUILDING_REFERENCE_READY_IDS.has(option.id)).length;
+  const filteredOptions = showPendingReferences
+    ? categoryOptions
+    : categoryOptions.filter((option) => BUILDING_REFERENCE_READY_IDS.has(option.id));
   const rankedOptions = [...filteredOptions].sort((a, b) => {
+    const pilotDelta = Number(STICKER_METHOD_BUILDING_IDS.has(b.id)) - Number(STICKER_METHOD_BUILDING_IDS.has(a.id));
+    if (pilotDelta !== 0) return pilotDelta;
     const aFit = getAestheticAreaFit(a, undefined, areaSqm ?? 0);
     const bFit = getAestheticAreaFit(b, undefined, areaSqm ?? 0);
     if (aFit && bFit) return aFit.fitSort - bFit.fitSort;
@@ -3316,20 +3339,44 @@ function DevelopmentAestheticPicker({
     return a.label.localeCompare(b.label);
   });
   const bestFitCount = rankedOptions.filter((option) => getAestheticAreaFit(option, undefined, areaSqm ?? 0)?.isGoodFit).length;
+  const visibleStickerPilotCount = rankedOptions.filter((option) => STICKER_METHOD_BUILDING_IDS.has(option.id)).length;
   const legoReadyArchetypeIds = useLegoReadyArchetypeIds();
 
   return (
     <div className="space-y-2">
-      {filteredOptions.length === 0 && (
+      {categoryOptions.length === 0 && (
         <div className="rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-2 text-[11px] text-primary-950/60">
           No sub-categories found for this development type.
         </div>
+      )}
+
+      {categoryOptions.length > 0 && filteredOptions.length === 0 && (
+        <div className="rounded border border-amber-500/25 bg-amber-50 px-2 py-2 text-[11px] text-amber-900">
+          Reference images for this category are still pending. Use the catalogue toggle below to inspect unfinished entries.
+        </div>
+      )}
+
+      {pendingReferenceCount > 0 && (
+        <button
+          type="button"
+          onClick={() => setShowPendingReferences((current) => !current)}
+          aria-pressed={showPendingReferences}
+          className="w-full rounded border border-primary-950/[0.12] bg-white px-2 py-1.5 text-[10px] font-bold text-primary-950/65 hover:border-primary-950/[0.28]"
+        >
+          {showPendingReferences ? 'Hide' : 'Show'} {pendingReferenceCount} pending reference{pendingReferenceCount === 1 ? '' : 's'}
+        </button>
       )}
 
       {rankedOptions.length > 0 && (
         <div className="rounded border border-primary-950/[0.08] bg-primary-950/[0.03] px-2 py-1.5 text-[10px] font-semibold text-primary-950/55">
           Best fits are sorted first for this drawn zone
           {bestFitCount > 0 ? ` · ${bestFitCount} likely fit${bestFitCount === 1 ? '' : 's'}` : ''}.
+        </div>
+      )}
+
+      {visibleStickerPilotCount > 0 && (
+        <div className="flex items-center gap-1.5 rounded border border-[#151515]/20 bg-[#c9ff3d]/20 px-2 py-1.5 text-[10px] font-semibold text-[#151515]">
+          {visibleStickerPilotCount} approved Sticker Method pilot{visibleStickerPilotCount === 1 ? '' : 's'} pinned first for trialing.
         </div>
       )}
 
@@ -3352,6 +3399,7 @@ function DevelopmentAestheticPicker({
               onSelect={(id, archetypeImageId, variantId) => onChange(id, archetypeImageId, variantId)}
               legoReadyArchetypeIds={legoReadyArchetypeIds}
               areaSqm={areaSqm}
+              stickerMethodPilot={STICKER_METHOD_BUILDING_IDS.has(option.id)}
             />
           ))}
         </div>
@@ -3455,6 +3503,8 @@ function OpenSpaceAestheticPicker({
     ? OPENSPACE_AESTHETIC_OPTIONS.filter((option) => option.categoryId === category)
     : [];
   const rankedOptions = [...categoryOptions].sort((a, b) => {
+    const pilotDelta = Number(STICKER_METHOD_PARK_IDS.has(b.id)) - Number(STICKER_METHOD_PARK_IDS.has(a.id));
+    if (pilotDelta !== 0) return pilotDelta;
     const aFit = getAestheticAreaFit(a, undefined, areaSqm ?? 0);
     const bFit = getAestheticAreaFit(b, undefined, areaSqm ?? 0);
     if (aFit && bFit) return aFit.fitSort - bFit.fitSort;
@@ -3496,6 +3546,7 @@ function OpenSpaceAestheticPicker({
               selectedVariantId={selectedVariantId}
               onSelect={(id, archetypeImageId, variantId) => onChange(id, archetypeImageId, variantId)}
               areaSqm={areaSqm}
+              stickerMethodPilot={STICKER_METHOD_PARK_IDS.has(option.id)}
             />
           ))}
         </div>

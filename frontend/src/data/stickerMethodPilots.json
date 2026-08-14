@@ -1,0 +1,18 @@
+{
+  "schema": "cityprompt.sticker-method-pilots@1",
+  "buildings": [
+    { "archetypeId": "old_montreal_warehouse_loft", "variantId": "old_mtl_textile_mill" },
+    { "archetypeId": "daylight_factory", "variantId": "factory_sawtooth_roof" },
+    { "archetypeId": "administrative_faculty_office_building", "variantId": "admin_faculty_brick_bronze_fins" },
+    { "archetypeId": "halifax_waterfront_warehouse", "variantId": "warehouse_privateers_wharf" },
+    { "archetypeId": "civic_modernism_rec_centre", "variantId": "rec_brick_glass_box" },
+    { "archetypeId": "shophouse_southeast_asian", "variantId": "shophouse_peranakan" },
+    { "archetypeId": "industrial_park_modernism", "variantId": "industrial_tilt_up_concrete" },
+    { "archetypeId": "graduate_family_housing", "variantId": "collegiate_brick_corner_block" },
+    { "archetypeId": "brutalist_institutional", "variantId": "brutalist_heroic" },
+    { "archetypeId": "food_hall_market_hall", "variantId": "market_historic_iron_glass" }
+  ],
+  "parks": [
+    { "archetypeId": "neighborhood_park", "variantId": "neighborhood_park_v0" }
+  ]
+}
