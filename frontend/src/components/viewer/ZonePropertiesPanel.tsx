@@ -17,7 +17,6 @@ import { isPersistedZoneId } from '@/utils/zoneIdentity';
 import { formatArea, polygonDimensionsMeters } from './mapEngine/geoUtils';
 import { compileBoundaryCommunity3D } from '@/features/legoAssembly/communityCompiler';
 import { legoAssemblyApi } from '@/features/legoAssembly/legoAssemblyApi';
-import legoFamilySignatures from '@/data/legoFamilySignatures.json';
 import stickerMethodPilots from '@/data/stickerMethodPilots.json';
 import archetypeReferenceAvailability from '@/data/archetypeReferenceAvailability.json';
 import {
@@ -104,6 +103,7 @@ type DevelopmentAestheticOption = {
   label: string;
   description: string;
   photoUrl: string;
+  catalogCardImageUrl?: string;
   photoUrls?: string[];
   transportModes?: TransportModeKey[];
   generationTags?: string[];
@@ -2858,35 +2858,11 @@ function SiteBoundarySection({ zone, allZones, onOpenBlockEditor }: { zone: Site
 
 const AESTHETIC_EXAMPLE_COUNT = 4;
 
-type LegoFamilyReferenceSignature = {
-  archetypeId?: string;
-  elevationUrl?: string;
-};
-
-const LEGO_FAMILY_SIGNATURES = (
-  legoFamilySignatures as { families?: Record<string, LegoFamilyReferenceSignature> }
-).families ?? {};
-
 function normalizeExactLegoArchetypeId(value: string): string {
   return value
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '_')
     .replace(/^_+|_+$/g, '');
-}
-
-function normalizeLegoFamilyReferenceId(value: string): string {
-  return normalizeExactLegoArchetypeId(value).replace(/_variant_\d+$/, '');
-}
-
-const LEGO_SIGNATURE_BY_ID = new Map<string, LegoFamilyReferenceSignature>();
-for (const [key, signature] of Object.entries(LEGO_FAMILY_SIGNATURES)) {
-  for (const candidate of [key, signature.archetypeId]) {
-    if (!candidate) continue;
-    const normalized = normalizeLegoFamilyReferenceId(candidate);
-    if (normalized && !LEGO_SIGNATURE_BY_ID.has(normalized)) {
-      LEGO_SIGNATURE_BY_ID.set(normalized, signature);
-    }
-  }
 }
 
 function dedupeImageSources(sources: Array<string | null | undefined>): string[] {
@@ -2895,27 +2871,6 @@ function dedupeImageSources(sources: Array<string | null | undefined>): string[]
     if (source && !deduped.includes(source)) deduped.push(source);
   }
   return deduped;
-}
-
-/**
- * Reference-only fallback for authored LEGO families. These are the source
- * photos/boards used to model the family, never screenshots of the GLB.
- */
-function buildLegoFamilyReferenceSources(archetypeIds: Array<string | null | undefined>): string[] {
-  const sources: string[] = [];
-  for (const archetypeId of archetypeIds) {
-    if (!archetypeId) continue;
-    const signature = LEGO_SIGNATURE_BY_ID.get(normalizeLegoFamilyReferenceId(archetypeId));
-    const elevationUrl = signature?.elevationUrl;
-    if (!elevationUrl) continue;
-    const familyBase = elevationUrl.replace(/\/elevation\.[^/?]+(?:\?.*)?$/i, '');
-    if (familyBase !== elevationUrl) {
-      sources.push(`${familyBase}/textures/source/street-hero-source-v1.png`);
-      sources.push(`${familyBase}/textures/source/archetype-goalpost.png`);
-    }
-    sources.push(elevationUrl);
-  }
-  return dedupeImageSources(sources);
 }
 
 function useLegoReadyArchetypeIds(): ReadonlySet<string> {
@@ -3056,9 +3011,9 @@ function AestheticOptionCard({
     ? archetypeImages[0]
     : getFrontDayArchetypeImage(archetypeImages) || archetypeImages[0];
 
-  // If a variant is selected, use its authored reference as the hero. Family
-  // source photos are fallbacks only; generated 3D model previews never enter
-  // this source list.
+  // Catalogue cards are authored-reference UI. Imported family elevations,
+  // model thumbnails, and generated 3D previews belong only to runtime/model
+  // tooling and must never displace the selected /archetypes variant here.
   const activeVariant = value === option.id && selectedVariantId
     ? variants.find((v) => v.id === selectedVariantId)
     : undefined;
@@ -3067,17 +3022,15 @@ function AestheticOptionCard({
     ? archetypeImages.find((image) => image.id === selectedReferenceId) || defaultArchetype
     : defaultArchetype;
 
-  const familyReferenceSources = buildLegoFamilyReferenceSources([
-    activeVariant?.id,
-    option.id,
-    selectedArchetype?.id,
-  ]);
-  const heroSources = dedupeImageSources([
-    activeVariant?.thumbnailUrl,
-    ...familyReferenceSources,
-    selectedArchetype?.imageUrl,
-    ...sources,
-  ]);
+  // An explicit card render is exclusive: falling back to the known-bad
+  // legacy hero would reintroduce a runtime model preview after one load error.
+  const heroSources = option.catalogCardImageUrl
+    ? [option.catalogCardImageUrl]
+    : dedupeImageSources([
+        activeVariant?.thumbnailUrl,
+        selectedArchetype?.imageUrl,
+        ...sources,
+      ]);
   const isSelected = value === option.id;
   const isStandardSection = Boolean(option.standardSection?.sectionSvgUrl);
   const areaFit = showSiteFit ? getAestheticAreaFit(option, isSelected ? selectedVariantId : undefined, areaSqm ?? 0) : null;

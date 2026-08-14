@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom/vitest';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import type { ReactElement } from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -172,6 +172,12 @@ vi.mock('./aestheticCatalog', async (importOriginal) => {
       subtype: 'park',
     },
   };
+  const japaneseMachiya = actual.BUILDING_AESTHETIC_OPTIONS_V2.find(
+    (option) => option.id === 'japanese_machiya_mixed_use',
+  )!;
+  const daylightFactory = actual.BUILDING_AESTHETIC_OPTIONS_V2.find(
+    (option) => option.id === 'daylight_factory',
+  )!;
   return {
     ...actual,
     BUILDING_AESTHETIC_CATEGORIES_V2: [{
@@ -179,7 +185,7 @@ vi.mock('./aestheticCatalog', async (importOriginal) => {
       label: 'Industrial Brick',
       description: 'Industrial masonry buildings',
     }],
-    BUILDING_AESTHETIC_OPTIONS_V2: [industrialBrick],
+    BUILDING_AESTHETIC_OPTIONS_V2: [industrialBrick, japaneseMachiya, daylightFactory],
     ROADWAY_AESTHETIC_CATEGORIES_V2: [{
       id: 'auto_oriented',
       label: 'Auto Oriented',
@@ -271,6 +277,21 @@ function industrialZone(): SiteZone {
     sort_order: 0,
     created_at: '2026-07-20T00:00:00Z',
     updated_at: '2026-07-20T00:00:00Z',
+  };
+}
+
+function japaneseMachiyaZone(): SiteZone {
+  const zone = industrialZone();
+  return {
+    ...zone,
+    name: 'Machiya Block',
+    properties: {
+      ...zone.properties,
+      development_aesthetic: 'japanese_machiya_mixed_use',
+      development_subcategory: 'japanese_machiya_mixed_use',
+      development_archetype_id: 'japanese_machiya_mixed_use_variant_0',
+      development_selected_variant_id: 'machiya_traditional_restored',
+    },
   };
 }
 
@@ -539,7 +560,9 @@ describe('ZonePropertiesPanel LEGO selection handoff', () => {
     expect(card).not.toBeNull();
     expect(card?.querySelector('button button')).toBeNull();
 
-    fireEvent.click(screen.getByRole('button', { name: /^Automatic \/ best-fitting family/i }));
+    fireEvent.click(within(card as HTMLElement).getByRole('button', {
+      name: /^Automatic \/ best-fitting family/i,
+    }));
 
     await waitFor(() => {
       expect(onUpdate).toHaveBeenCalledWith(
@@ -601,6 +624,56 @@ describe('ZonePropertiesPanel LEGO selection handoff', () => {
       'src',
       '/industrial/brewery-reference.png',
     );
+  });
+
+  it('uses the explicit photoreal card render for the selected traditional Machiya zone', () => {
+    const { container } = renderPanel(
+      <ZonePropertiesPanel
+        zone={japaneseMachiyaZone()}
+        onUpdate={vi.fn()}
+        onDelete={vi.fn()}
+        onClose={vi.fn()}
+      />,
+    );
+
+    fireEvent.click(screen.getAllByRole('button', { name: /archetype/i })[0]);
+
+    const image = screen.getByAltText('Japanese Machiya Mixed Use');
+    expect(image).toHaveAttribute(
+      'src',
+      '/archetypes/buildings/japanese_machiya_mixed_use/variant_3.png',
+    );
+    expect(image).not.toHaveAttribute(
+      'src',
+      '/archetypes/buildings/japanese_machiya_mixed_use/variant_0.png',
+    );
+
+    fireEvent.error(image);
+    const card = container.querySelector('[data-aesthetic-option-id="japanese_machiya_mixed_use"]');
+    expect(card).toHaveTextContent('Photo unavailable');
+    expect(screen.queryByAltText('Japanese Machiya Mixed Use')).not.toBeInTheDocument();
+  });
+
+  it('uses the approved Sticker Method archetype render on its pinned card', () => {
+    const { container } = renderPanel(
+      <ZonePropertiesPanel
+        zone={industrialZone()}
+        onUpdate={vi.fn()}
+        onDelete={vi.fn()}
+        onClose={vi.fn()}
+      />,
+    );
+
+    fireEvent.click(screen.getAllByRole('button', { name: /archetype/i })[0]);
+
+    const card = container.querySelector('[data-aesthetic-option-id="daylight_factory"]');
+    const image = screen.getByAltText('Daylight Factory');
+    expect(card).toHaveTextContent('Sticker Method');
+    expect(image).toHaveAttribute(
+      'src',
+      '/archetypes/buildings/daylight_factory/variant_0.png',
+    );
+    expect(image.getAttribute('src')).not.toContain('/families/');
   });
 
   it('does not collapse numeric variant suffixes when marking exact LEGO readiness', async () => {

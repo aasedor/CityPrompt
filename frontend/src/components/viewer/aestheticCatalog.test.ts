@@ -2,9 +2,11 @@ import { describe, expect, it } from 'vitest';
 
 import {
   BUILDING_AESTHETIC_OPTIONS_V2,
+  OPENSPACE_AESTHETIC_OPTIONS_V2,
   ROADWAY_AESTHETIC_OPTIONS_V2,
 } from './aestheticCatalog';
 import { TRANSPORT_STANDARDS } from '@/data/transportStandards';
+import stickerMethodPilots from '@/data/stickerMethodPilots.json';
 
 describe('building aesthetic reference assets', () => {
   it('uses authored catalogue folders and the authored hero before generated visual-system paths', () => {
@@ -28,6 +30,42 @@ describe('building aesthetic reference assets', () => {
       const thumbnailUrls = option.variants?.map((variant) => variant.thumbnailUrl) ?? [];
       expect(thumbnailUrls.every(Boolean), option.id).toBe(true);
       expect(new Set(thumbnailUrls).size, option.id).toBe(4);
+    }
+  });
+
+  it('gives traditional Machiya an explicit photoreal card render without changing its variant metadata', () => {
+    const option = BUILDING_AESTHETIC_OPTIONS_V2.find(
+      (candidate) => candidate.id === 'japanese_machiya_mixed_use',
+    );
+    const traditional = option?.variants?.find((variant) => (
+      variant.id === 'machiya_traditional_restored'
+    ));
+
+    expect(option?.catalogCardImageUrl).toBe(
+      '/archetypes/buildings/japanese_machiya_mixed_use/variant_3.png',
+    );
+    expect(traditional?.thumbnailUrl).toBe(
+      '/archetypes/buildings/japanese_machiya_mixed_use/variant_0.png',
+    );
+  });
+
+  it('keeps every approved Sticker Method pilot on its catalogue-domain variant image', () => {
+    for (const pilot of stickerMethodPilots.buildings) {
+      const option = BUILDING_AESTHETIC_OPTIONS_V2.find(
+        (candidate) => candidate.id === pilot.archetypeId,
+      );
+      const variant = option?.variants?.find((candidate) => candidate.id === pilot.variantId);
+      expect(variant?.thumbnailUrl, `${pilot.archetypeId}/${pilot.variantId}`)
+        .toMatch(/^\/archetypes\/buildings\//);
+    }
+
+    for (const pilot of stickerMethodPilots.parks) {
+      const option = OPENSPACE_AESTHETIC_OPTIONS_V2.find(
+        (candidate) => candidate.id === pilot.archetypeId,
+      );
+      const variant = option?.variants?.find((candidate) => candidate.id === pilot.variantId);
+      expect(variant?.thumbnailUrl, `${pilot.archetypeId}/${pilot.variantId}`)
+        .toMatch(/^\/archetypes\/openspaces\//);
     }
   });
 });

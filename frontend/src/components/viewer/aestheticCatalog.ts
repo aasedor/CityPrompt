@@ -145,6 +145,8 @@ export type AestheticOption = {
   label: string;
   description: string;
   photoUrl: string;
+  /** Authored picker-card render. UI-only; never changes generation identity. */
+  catalogCardImageUrl?: string;
   photoUrls?: string[];
   transportModes?: TransportModeKey[];
   developmentType?: string;
@@ -230,6 +232,8 @@ type ArchetypeSeed = {
   propertyPresets?: Partial<SiteZoneProperties>;
   variants?: ArchetypeVariant[];
   thumbnailUrl?: string;
+  /** Optional UI-only replacement when the legacy hero is a model preview. */
+  catalogCardImageUrl?: string;
 };
 
 type ArchetypeLibrary = {
@@ -439,6 +443,9 @@ function toAestheticOption(
     label: seed.title,
     description: seed.description,
     photoUrl: heroUrl,
+    catalogCardImageUrl: seed.catalogCardImageUrl
+      ? resolvePublicAssetUrl(seed.catalogCardImageUrl)
+      : undefined,
     photoUrls,
     transportModes: Array.isArray(seed.transportModes) ? seed.transportModes : undefined,
     developmentType: seed.developmentType || (Array.isArray(seed.developmentTypes) ? seed.developmentTypes[0] : undefined),

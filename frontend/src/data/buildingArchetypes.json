@@ -7480,6 +7480,7 @@
         "aerialAppearance": "narrow deep roof forms with grey clay tiles, light-well gardens visible between buildings, rear gardens"
       },
       "thumbnailUrl": "/archetypes/buildings/japanese_machiya_mixed_use/hero.png",
+      "catalogCardImageUrl": "/archetypes/buildings/japanese_machiya_mixed_use/variant_3.png",
       "variants": [
         {
           "id": "machiya_traditional_restored",
