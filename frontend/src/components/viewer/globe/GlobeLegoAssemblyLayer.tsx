@@ -41,7 +41,7 @@ import { raycastTerrainHeightAtLatLng } from './GlobeZoneLayer';
 import {
   getObjectFilteredTerrainHeight,
   isPlausibleTerrainAnchor,
-  preferLowerGroundAnchor,
+  resolveReplacementGroundAnchor,
   resolveZoneTerrainHeight,
 } from './globeTerrainUtils';
 import {
@@ -66,6 +66,11 @@ import {
   LEGO_STACK_RENDER_BUDGET,
   partitionLegoStacksByDistanceAndFamily,
 } from './legoStackBudget';
+import {
+  classifyLegoLayerReadiness,
+  indexRenderableLegoScenes,
+  isCompleteLegoModuleStack,
+} from './legoModuleReadiness';
 import { LocalModelSelectionOutline } from './GlobeModelSelectionOutline';
 import {
   DIRECT_3D_CAPTURE_CONTEXT_USER_DATA,
@@ -180,8 +185,8 @@ function LegoMassingStack({
   frame: FootprintFrame;
   zone: SiteZone | undefined;
   fallbackTerrainHeight: number;
-  onLoaded: (id: string) => void;
-  onUnloaded: (id: string) => void;
+  onLoaded?: (id: string) => void;
+  onUnloaded?: (id: string) => void;
   selected: boolean;
   proposalForDirect3D: boolean;
   onBuildingClick?: (buildingId: string) => void;
@@ -253,7 +258,11 @@ function LegoMassingStack({
       raycastTerrainHeightAtLatLng(longitude, latitude, tilesGroup, raycasterRef.current)
     ));
     const filtered = getObjectFilteredTerrainHeight(samples, storedTerrain);
-    const groundCandidate = preferLowerGroundAnchor(filtered, storedTerrain);
+    const groundCandidate = resolveReplacementGroundAnchor(
+      filtered,
+      storedTerrain,
+      fallbackTerrainHeight,
+    );
     if (
       groundCandidate !== null
       && isPlausibleTerrainAnchor(
@@ -269,8 +278,8 @@ function LegoMassingStack({
 
   useEffect(() => {
     if (!geometry) return undefined;
-    onLoaded(building.id);
-    return () => onUnloaded(building.id);
+    onLoaded?.(building.id);
+    return () => onUnloaded?.(building.id);
   }, [building.id, geometry, onLoaded, onUnloaded]);
 
   if (!geometry) return null;
@@ -322,6 +331,7 @@ function LegoStackInstance({
   selected,
   proposalForDirect3D,
   onBuildingClick,
+  incompleteFallback,
 }: {
   building: Building;
   recipe: LegoAssemblyRecipe;
@@ -334,6 +344,7 @@ function LegoStackInstance({
   selected: boolean;
   proposalForDirect3D: boolean;
   onBuildingClick?: (buildingId: string) => void;
+  incompleteFallback: ReactNode;
 }) {
   // One suspension point for the whole stack: all distinct module GLBs load
   // before anything mounts, so the prism handoff is atomic (no half-stacks).
@@ -347,19 +358,19 @@ function LegoStackInstance({
   const tiles = useContext(TilesRendererContext);
   const maxAnisotropy = gl.capabilities.getMaxAnisotropy();
 
-  const sceneByUrl = useMemo(() => {
-    const map = new Map<string, THREE.Object3D>();
-    urls.forEach((url, index) => {
-      const gltf = gltfs[index];
-      if (gltf) map.set(url, gltf.scene);
-    });
-    return map;
-  }, [urls, gltfs]);
+  const sceneByUrl = useMemo(
+    () => indexRenderableLegoScenes(urls, gltfs),
+    [urls, gltfs],
+  );
 
   // Clone per instance (repeated floors share cached geometry buffers) and
   // restyle for the globe: renderOrder + no frustum culling + env intensity.
-  const modules = useMemo(() => (
-    recipe.instances
+  const modules = useMemo(() => {
+    // A partially resolved family is not a valid architectural stack. Avoid
+    // preparing half the clones; retain the height-bearing massing until every
+    // distinct source scene has real mesh geometry.
+    if (!urls.every((url) => sceneByUrl.has(url))) return [];
+    return recipe.instances
       .map((instance, index) => {
         const scene = sceneByUrl.get(resolveApiFileUrl(instance.model_url));
         if (!scene) return null;
@@ -374,19 +385,27 @@ function LegoStackInstance({
           transform: legoInstanceTransform(instance),
         };
       })
-      .filter((entry): entry is NonNullable<typeof entry> => entry !== null)
-  ), [maxAnisotropy, recipe, sceneByUrl]);
+      .filter((entry): entry is NonNullable<typeof entry> => entry !== null);
+  }, [maxAnisotropy, recipe, sceneByUrl, urls]);
+  const detailedReady = isCompleteLegoModuleStack(recipe.instances.length, modules.length);
   useEffect(() => () => {
     modules.forEach(({ cloned }) => disposeArchitecturalCloneMaterials(cloned));
   }, [modules]);
 
   // Prism suppression: only while this stack is actually mounted AND placeable.
   useEffect(() => {
-    if (!frame) return undefined;
-    onLoaded(building.id);
-    return () => onUnloaded(building.id);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [building.id, frame]);
+    if (!detailedReady) return undefined;
+    onLoaded?.(building.id);
+    return () => onUnloaded?.(building.id);
+  }, [building.id, detailedReady, onLoaded, onUnloaded]);
+
+  useEffect(() => {
+    if (detailedReady || !import.meta.env.DEV) return;
+    console.warn(
+      `[GlobeLego] ${building.id} resolved an incomplete detailed stack `
+      + `(${modules.length}/${recipe.instances.length} instances); retaining massing fallback`,
+    );
+  }, [building.id, detailedReady, modules.length, recipe.instances.length]);
 
   // Terrain seating — same priority chain as GlobeBuildingModelsLayer:
   // stored zone elevation first, then lower-quartile raycast probes
@@ -443,7 +462,11 @@ function LegoStackInstance({
       raycastTerrainHeightAtLatLng(lng, lat, tilesGroup, raycasterRef.current)
     ));
     const filtered = getObjectFilteredTerrainHeight(samples, storedTerrain);
-    const groundCandidate = preferLowerGroundAnchor(filtered, storedTerrain);
+    const groundCandidate = resolveReplacementGroundAnchor(
+      filtered,
+      storedTerrain,
+      fallbackTerrainHeight,
+    );
     // Unrefined-root-tile guard: implausible samples burn an attempt and retry.
     if (
       groundCandidate !== null
@@ -455,7 +478,7 @@ function LegoStackInstance({
     }
   });
 
-  if (!frame || modules.length === 0) return null;
+  if (!detailedReady) return incompleteFallback;
 
   const terrain = resolveZoneTerrainHeight(sampledTerrain, storedTerrain, fallbackTerrainHeight);
   // Recipe target width (stack X) vs depth (stack Z) fixes the plan
@@ -513,6 +536,8 @@ export function GlobeLegoAssemblyLayer({
   onBuildingClick,
 }: GlobeLegoAssemblyLayerProps) {
   const [loadedIds, setLoadedIds] = useState<Set<string>>(() => new Set());
+  const [detailedReadyIds, setDetailedReadyIds] = useState<Set<string>>(() => new Set());
+  const [temporaryFallbackIds, setTemporaryFallbackIds] = useState<Set<string>>(() => new Set());
   const camera = useThree((state) => state.camera);
 
   const zoneRingByBuildingId = useMemo(() => {
@@ -581,7 +606,12 @@ export function GlobeLegoAssemblyLayer({
     );
     return new Set(selection.detailed.map((entry) => entry.building.id));
   }, [entries, entryWorldPositions, selectedBuildingId]);
-  const [detailedIds, setDetailedIds] = useState<Set<string>>(() => new Set());
+  // Start the in-budget detailed loads during the first render. Initializing
+  // empty mounted every recipe as a final LOD massing for one commit, which
+  // could report a false all-ready state before the GLBs even began loading.
+  const [detailedIds, setDetailedIds] = useState<Set<string>>(
+    () => selectDetailedIds(camera.position),
+  );
   const lodFrameRef = useRef(0);
   useEffect(() => {
     setDetailedIds(selectDetailedIds(camera.position));
@@ -612,22 +642,34 @@ export function GlobeLegoAssemblyLayer({
     onLoadedIdsChange(loadedIds);
   }, [loadedIds, onLoadedIdsChange]);
 
+  const layerReadiness = classifyLegoLayerReadiness({
+    entryCount: entries.length,
+    visibleRepresentationCount: loadedIds.size,
+    detailedTargetCount: detailedIds.size,
+    detailedReadyCount: detailedReadyIds.size,
+    temporaryFallbackCount: temporaryFallbackIds.size,
+  });
   useEffect(() => {
-    if (
-      import.meta.env.DEV
-      && entries.length > 0
-      && loadedIds.size === entries.length
-    ) {
+    if (!import.meta.env.DEV) return;
+    if (layerReadiness === 'ready') {
       const legoCount = entries.filter((entry) => entry.kind === 'lego').length;
       const plannedMassingCount = entries.length - legoCount;
       console.debug(
-        `[GlobeLego] Mounted all ${entries.length} building representations `
-        + `(${Math.min(legoCount, LEGO_STACK_RENDER_BUDGET)} stack budget, `
+        `[GlobeLego] Detailed readiness complete for ${entries.length} building representations `
+        + `(${detailedReadyIds.size}/${legoCount} detailed, `
+        + `${Math.max(0, legoCount - detailedReadyIds.size)} final LOD massing, `
+        + `${Math.min(legoCount, LEGO_STACK_RENDER_BUDGET)} stack budget, `
         + `${LEGO_DISTINCT_FAMILY_RENDER_BUDGET} distinct-family budget, `
         + `${plannedMassingCount} planned-family massing)`,
       );
     }
-  }, [entries.length, loadedIds.size]);
+    if (layerReadiness === 'fallback-visible') {
+      console.debug(
+        `[GlobeLego] ${temporaryFallbackIds.size} detailed stack(s) still loading; `
+        + 'showing full-height massing fallback',
+      );
+    }
+  }, [detailedReadyIds.size, entries, layerReadiness, temporaryFallbackIds.size]);
 
   // Clear suppression for everything when the layer unmounts (toggle off).
   useEffect(() => () => onLoadedIdsChange(new Set()), [onLoadedIdsChange]);
@@ -644,6 +686,42 @@ export function GlobeLegoAssemblyLayer({
     next.delete(id);
     return next;
   }), []);
+  const handleDetailedLoaded = useCallback((id: string) => {
+    handleLoaded(id);
+    setDetailedReadyIds((previous) => {
+      if (previous.has(id)) return previous;
+      const next = new Set(previous);
+      next.add(id);
+      return next;
+    });
+  }, [handleLoaded]);
+  const handleDetailedUnloaded = useCallback((id: string) => {
+    handleUnloaded(id);
+    setDetailedReadyIds((previous) => {
+      if (!previous.has(id)) return previous;
+      const next = new Set(previous);
+      next.delete(id);
+      return next;
+    });
+  }, [handleUnloaded]);
+  const handleFallbackLoaded = useCallback((id: string) => {
+    handleLoaded(id);
+    setTemporaryFallbackIds((previous) => {
+      if (previous.has(id)) return previous;
+      const next = new Set(previous);
+      next.add(id);
+      return next;
+    });
+  }, [handleLoaded]);
+  const handleFallbackUnloaded = useCallback((id: string) => {
+    handleUnloaded(id);
+    setTemporaryFallbackIds((previous) => {
+      if (!previous.has(id)) return previous;
+      const next = new Set(previous);
+      next.delete(id);
+      return next;
+    });
+  }, [handleUnloaded]);
 
   // No recipes on this project: clean no-op (hooks above always run in the
   // same order, so this early return is safe).
@@ -683,8 +761,8 @@ export function GlobeLegoAssemblyLayer({
             frame={frame}
             zone={zone}
             fallbackTerrainHeight={terrainHeight}
-            onLoaded={handleLoaded}
-            onUnloaded={handleUnloaded}
+            onLoaded={handleFallbackLoaded}
+            onUnloaded={handleFallbackUnloaded}
             selected={selectedBuildingId === building.id}
             proposalForDirect3D={direct3DProposalBuildingIds?.has(building.id) ?? false}
             onBuildingClick={onBuildingClick}
@@ -717,11 +795,12 @@ export function GlobeLegoAssemblyLayer({
                 frame={frame}
                 zone={zone}
                 fallbackTerrainHeight={terrainHeight}
-                onLoaded={handleLoaded}
-                onUnloaded={handleUnloaded}
+                onLoaded={handleDetailedLoaded}
+                onUnloaded={handleDetailedUnloaded}
                 selected={selectedBuildingId === building.id}
                 proposalForDirect3D={direct3DProposalBuildingIds?.has(building.id) ?? false}
                 onBuildingClick={onBuildingClick}
+                incompleteFallback={massing}
               />
             </Suspense>
           </SilentLegoBoundary>
