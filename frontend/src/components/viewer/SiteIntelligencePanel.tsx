@@ -8,7 +8,7 @@
  * boundary zone (properties._urban_dna_directives) that the layout prompts read.
  */
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { Brain, ChevronDown, ChevronRight, Loader2, Play, RefreshCw, Sparkles, X } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -23,6 +23,11 @@ import type {
 import { URBAN_DNA_SECTION_NAMES } from '@/types';
 import { getApiErrorMessage, urbanDnaApi } from '@/services/api';
 import { isPersistedZoneId } from '@/utils/zoneIdentity';
+import {
+  hasScenarioPlanCompleted,
+  snapshotScenarioPlanStatuses,
+  type ScenarioPlanStatusSnapshot,
+} from './siteIntelligencePlanStatus';
 
 const SECTION_LABELS: Record<UrbanDnaSectionName, string> = {
   site: 'Site',
@@ -711,7 +716,10 @@ export function SiteIntelligencePanel({ zone }: { zone: SiteZone }) {
   // checkpoints a partial snapshot before the policy phase — it usually flips
   // to 'complete' moments later (a truly-terminal partial just keeps a cheap
   // poll alive while the panel is open).
-  const planStatuses = scenarios.map((s) => (s.payload as any)?.plan?.status).join(',');
+  const planStatuses = useMemo(
+    () => snapshotScenarioPlanStatuses(scenarios),
+    [scenarios],
+  );
   const busy =
     snapshot?.status === 'pending' ||
     snapshot?.status === 'partial' ||
@@ -724,13 +732,13 @@ export function SiteIntelligencePanel({ zone }: { zone: SiteZone }) {
   // When a plan drawing completes, the new zone layer must appear on the globe.
   // Fire on any per-scenario transition INTO 'complete' — a fast draw can jump
   // queued→complete between polls and 'drawing' is never observed.
-  const prevPlanStatusesRef = useRef<string>('');
+  const prevPlanStatusesRef = useRef<ScenarioPlanStatusSnapshot | null>(null);
   useEffect(() => {
-    const prev = prevPlanStatusesRef.current.split(',');
-    const next = planStatuses.split(',');
-    const completedNow = next.some((s, i) => s === 'complete' && prev[i] !== 'complete');
-    if (prevPlanStatusesRef.current !== '' && completedNow) {
-      queryClient.invalidateQueries({ queryKey: ['site-zones'] });
+    prevPlanStatusesRef.current = null;
+  }, [zone.id]);
+  useEffect(() => {
+    if (hasScenarioPlanCompleted(prevPlanStatusesRef.current, planStatuses)) {
+      void queryClient.invalidateQueries({ queryKey: ['site-zones'] });
     }
     prevPlanStatusesRef.current = planStatuses;
   }, [planStatuses, queryClient]);
