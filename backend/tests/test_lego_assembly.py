@@ -5605,6 +5605,57 @@ async def test_place_community_infers_and_persists_boundary_for_legacy_plan(clie
 
 
 @pytest.mark.anyio
+async def test_place_community_keeps_boundary_optional_for_manual_multi_zone_plan(
+    client, mock_db, test_user, auth_headers
+):
+    from geoalchemy2.shape import from_shape
+    from shapely.geometry import box
+
+    project = FakeProject(owner_id=test_user.id)
+    park_zone = _make_zone(
+        project,
+        zone_type="green_space",
+        geometry=from_shape(box(-114.0800, 51.0400, -114.0795, 51.0405), srid=4326),
+        properties={},
+    )
+    street_zone = _make_zone(
+        project,
+        zone_type="road",
+        geometry=from_shape(box(-114.0788, 51.0410, -114.0780, 51.0412), srid=4326),
+        properties={},
+    )
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(park_zone),
+            _scalar_result(project),
+            _scalar_result(street_zone),
+            _scalar_result(project),
+            _scalar_result(project.id),
+            _scalars_result([park_zone, street_zone]),
+            _scalars_result([]),
+        ]
+    )
+
+    response = await client.post(
+        "/api/v1/lego-assembly/place-community",
+        headers=auth_headers,
+        json={
+            "items": [
+                _community_item(park_zone),
+                _community_item(street_zone),
+            ]
+        },
+    )
+
+    assert response.status_code == 200, response.text
+    payload = response.json()
+    assert payload["residual_landscape"]["boundary_count"] == 0
+    assert payload["residual_landscape"]["derived_boundary_count"] == 0
+    mock_db.add.assert_not_called()
+
+
+@pytest.mark.anyio
 async def test_place_community_rejects_ambiguous_multiple_site_boundaries(client, mock_db, test_user, auth_headers):
     from geoalchemy2.shape import from_shape
     from shapely.geometry import box

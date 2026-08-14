@@ -10,7 +10,7 @@ from datetime import datetime, timezone
 from typing import Any, Literal
 
 from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile
-from geoalchemy2.shape import to_shape
+from geoalchemy2.shape import from_shape, to_shape
 from pydantic import BaseModel, Field
 from sqlalchemy import or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -51,6 +51,7 @@ from app.services.residual_landscape import (
     community_3d_kind_for_source,
     community_3d_representation_hash,
     community_3d_source_hash,
+    derive_site_boundary_from_authored_zones,
     lock_residual_landscape_project,
     mark_community_3d_stale,
     mark_linked_community_3d_stale,
@@ -1443,9 +1444,53 @@ async def place_community_3d(
                 f"this project has {len(boundaries)}. Merge or remove duplicate boundaries first."
             ),
         )
-    # A site boundary is optional. Without one, compile each authored zone in
-    # place and omit the residual-landscape layer; never invent or persist a
-    # parcel hull merely because a project contains multiple physical zones.
+    # A site boundary is optional for manually authored zones. Legacy planner
+    # projects predate explicit boundaries, but consistently stamp every
+    # physical zone with a recognized plan role. Preserve their historical
+    # residual-landscape behavior without inventing a parcel hull for unrelated
+    # multi-zone projects.
+    derived_boundary_count = 0
+    should_infer_legacy_boundary = (
+        not boundaries
+        and len(residual_scope_zones) >= 2
+        and all(
+            (zone.properties or {}).get("_plan_role") in {"building", "open_space", "street"}
+            for zone in residual_scope_zones
+        )
+    )
+    if should_infer_legacy_boundary:
+        authored_shapes = []
+        for zone in residual_scope_zones:
+            try:
+                authored_shapes.append(to_shape(zone.geometry))
+            except (AssertionError, TypeError, ValueError):
+                # Corrupt historical rows cannot participate in inference; the
+                # normal boundaryless behavior remains safe.
+                continue
+        if len(authored_shapes) >= 2:
+            try:
+                inferred_boundary = derive_site_boundary_from_authored_zones(authored_shapes)
+            except ValueError:
+                inferred_boundary = None
+            if inferred_boundary is not None and not inferred_boundary.is_empty:
+                boundary = SiteZone(
+                    id=uuid.uuid4(),
+                    project_id=project_id,
+                    name="Site Boundary",
+                    zone_type="site_boundary",
+                    geometry=from_shape(inferred_boundary, srid=4326),
+                    color="#7dd3fc",
+                    properties={
+                        "_derived_site_boundary": True,
+                        "_derived_site_boundary_method": "authored_plan_metric_convex_hull",
+                    },
+                    is_active_boundary=True,
+                    sort_order=-1000,
+                )
+                db.add(boundary)
+                project_zones.append(boundary)
+                boundaries = [boundary]
+                derived_boundary_count = 1
 
     # A master-plan redraw can replace source zones or reuse a source UUID for
     # a park/street. Older Community 3D buildings can therefore outlive the
@@ -1573,7 +1618,7 @@ async def place_community_3d(
         "items": results,
         "residual_landscape": {
             "boundary_count": len(boundary_recipes),
-            "derived_boundary_count": 0,
+            "derived_boundary_count": derived_boundary_count,
             "area_sqm": residual_area,
             "placement_count": residual_placements,
         },
