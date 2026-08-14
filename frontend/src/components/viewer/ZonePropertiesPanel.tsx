@@ -18,7 +18,6 @@ import { formatArea, polygonDimensionsMeters } from './mapEngine/geoUtils';
 import { compileBoundaryCommunity3D } from '@/features/legoAssembly/communityCompiler';
 import { legoAssemblyApi } from '@/features/legoAssembly/legoAssemblyApi';
 import stickerMethodPilots from '@/data/stickerMethodPilots.json';
-import archetypeReferenceAvailability from '@/data/archetypeReferenceAvailability.json';
 import {
   BUILDING_AESTHETIC_CATEGORIES_V2,
   BUILDING_AESTHETIC_OPTIONS_V2,
@@ -154,7 +153,6 @@ const STICKER_METHOD_BUILDING_IDS = new Set(
 const STICKER_METHOD_PARK_IDS = new Set(
   stickerMethodPilots.parks.map((entry) => entry.archetypeId),
 );
-const BUILDING_REFERENCE_READY_IDS = new Set(archetypeReferenceAvailability.buildingIds);
 
 const ROADWAY_AESTHETIC_PRESETS: Record<string, Partial<SiteZoneProperties>> = ROADWAY_AESTHETIC_PRESETS_V2;
 const GREEN_SPACE_AESTHETIC_PRESETS: Record<string, Partial<SiteZoneProperties>> = GREEN_SPACE_AESTHETIC_PRESETS_V2;
@@ -3274,14 +3272,9 @@ function DevelopmentAestheticPicker({
   areaSqm?: number;
   onChange: (next: string | undefined, archetypeImageId?: string, variantId?: string) => void;
 }) {
-  const [showPendingReferences, setShowPendingReferences] = useState(false);
   const allowedTypes = getAllowedDevelopmentTypes(zoneType || 'building', developmentType);
   const categoryOptions = filterOptionsByDevelopmentType(DEVELOPMENT_AESTHETIC_OPTIONS, allowedTypes);
-  const pendingReferenceCount = categoryOptions.filter((option) => !BUILDING_REFERENCE_READY_IDS.has(option.id)).length;
-  const filteredOptions = showPendingReferences
-    ? categoryOptions
-    : categoryOptions.filter((option) => BUILDING_REFERENCE_READY_IDS.has(option.id));
-  const rankedOptions = [...filteredOptions].sort((a, b) => {
+  const rankedOptions = [...categoryOptions].sort((a, b) => {
     const pilotDelta = Number(STICKER_METHOD_BUILDING_IDS.has(b.id)) - Number(STICKER_METHOD_BUILDING_IDS.has(a.id));
     if (pilotDelta !== 0) return pilotDelta;
     const aFit = getAestheticAreaFit(a, undefined, areaSqm ?? 0);
@@ -3301,23 +3294,6 @@ function DevelopmentAestheticPicker({
         <div className="rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-2 text-[11px] text-primary-950/60">
           No sub-categories found for this development type.
         </div>
-      )}
-
-      {categoryOptions.length > 0 && filteredOptions.length === 0 && (
-        <div className="rounded border border-amber-500/25 bg-amber-50 px-2 py-2 text-[11px] text-amber-900">
-          Reference images for this category are still pending. Use the catalogue toggle below to inspect unfinished entries.
-        </div>
-      )}
-
-      {pendingReferenceCount > 0 && (
-        <button
-          type="button"
-          onClick={() => setShowPendingReferences((current) => !current)}
-          aria-pressed={showPendingReferences}
-          className="w-full rounded border border-primary-950/[0.12] bg-white px-2 py-1.5 text-[10px] font-bold text-primary-950/65 hover:border-primary-950/[0.28]"
-        >
-          {showPendingReferences ? 'Hide' : 'Show'} {pendingReferenceCount} pending reference{pendingReferenceCount === 1 ? '' : 's'}
-        </button>
       )}
 
       {rankedOptions.length > 0 && (

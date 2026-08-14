@@ -178,6 +178,12 @@ vi.mock('./aestheticCatalog', async (importOriginal) => {
   const daylightFactory = actual.BUILDING_AESTHETIC_OPTIONS_V2.find(
     (option) => option.id === 'daylight_factory',
   )!;
+  const foodHall = actual.BUILDING_AESTHETIC_OPTIONS_V2.find(
+    (option) => option.id === 'food_hall_market_hall',
+  )!;
+  const contemporaryMidrise = actual.BUILDING_AESTHETIC_OPTIONS_V2.find(
+    (option) => option.id === 'contemporary_midrise_residential',
+  )!;
   return {
     ...actual,
     BUILDING_AESTHETIC_CATEGORIES_V2: [{
@@ -185,7 +191,13 @@ vi.mock('./aestheticCatalog', async (importOriginal) => {
       label: 'Industrial Brick',
       description: 'Industrial masonry buildings',
     }],
-    BUILDING_AESTHETIC_OPTIONS_V2: [industrialBrick, japaneseMachiya, daylightFactory],
+    BUILDING_AESTHETIC_OPTIONS_V2: [
+      industrialBrick,
+      japaneseMachiya,
+      daylightFactory,
+      foodHall,
+      contemporaryMidrise,
+    ],
     ROADWAY_AESTHETIC_CATEGORIES_V2: [{
       id: 'auto_oriented',
       label: 'Auto Oriented',
@@ -674,6 +686,52 @@ describe('ZonePropertiesPanel LEGO selection handoff', () => {
       '/archetypes/buildings/daylight_factory/variant_0.png',
     );
     expect(image.getAttribute('src')).not.toContain('/families/');
+  });
+
+  it('keeps the complete building catalogue visible while only highlighting Sticker Method pilots', () => {
+    const { container } = renderPanel(
+      <ZonePropertiesPanel
+        zone={industrialZone()}
+        onUpdate={vi.fn()}
+        onDelete={vi.fn()}
+        onClose={vi.fn()}
+      />,
+    );
+
+    fireEvent.click(screen.getAllByRole('button', { name: /archetype/i })[0]);
+
+    const cards = Array.from(container.querySelectorAll<HTMLElement>('[data-aesthetic-option-id]'));
+    const ids = cards.map((card) => card.dataset.aestheticOptionId);
+    const daylightIndex = ids.indexOf('daylight_factory');
+    const foodHallIndex = ids.indexOf('food_hall_market_hall');
+    const nonStickerIndex = ids.indexOf('contemporary_midrise_residential');
+
+    expect(ids).toEqual(expect.arrayContaining([
+      'industrial_brick_mixed_use',
+      'japanese_machiya_mixed_use',
+      'daylight_factory',
+      'food_hall_market_hall',
+      'contemporary_midrise_residential',
+    ]));
+    expect(daylightIndex).toBeGreaterThanOrEqual(0);
+    expect(foodHallIndex).toBeGreaterThanOrEqual(0);
+    expect(nonStickerIndex).toBeGreaterThanOrEqual(0);
+    expect(daylightIndex).toBeLessThan(nonStickerIndex);
+    expect(foodHallIndex).toBeLessThan(nonStickerIndex);
+
+    const daylightCard = cards[daylightIndex];
+    const foodHallCard = cards[foodHallIndex];
+    const nonStickerCard = cards[nonStickerIndex];
+    expect(daylightCard).toHaveTextContent('Sticker Method');
+    expect(foodHallCard).toHaveTextContent('Sticker Method');
+    expect(within(daylightCard).getByText('Sticker Method')).toHaveClass('bg-[#c9ff3d]');
+    expect(within(foodHallCard).getByText('Sticker Method')).toHaveClass('bg-[#c9ff3d]');
+    expect(nonStickerCard).not.toHaveTextContent('Sticker Method');
+    expect(nonStickerCard.querySelector('img')).toHaveAttribute(
+      'src',
+      expect.stringMatching(/^\/archetypes\/buildings\//),
+    );
+    expect(screen.queryByRole('button', { name: /pending reference/i })).not.toBeInTheDocument();
   });
 
   it('does not collapse numeric variant suffixes when marking exact LEGO readiness', async () => {
