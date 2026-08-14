@@ -147,12 +147,14 @@ const PLAZA_AESTHETIC_OPTIONS: DevelopmentAestheticOption[] = PLAZA_AESTHETIC_OP
 // Combined parks + plazas — used by the unified "Parks / Plazas" picker.
 const OPENSPACE_AESTHETIC_CATEGORIES: DevelopmentAestheticCategory[] = OPENSPACE_AESTHETIC_CATEGORIES_V2;
 const OPENSPACE_AESTHETIC_OPTIONS: DevelopmentAestheticOption[] = OPENSPACE_AESTHETIC_OPTIONS_V2;
-const STICKER_METHOD_BUILDING_IDS = new Set(
-  stickerMethodPilots.buildings.map((entry) => entry.archetypeId),
+const STICKER_METHOD_BUILDING_VARIANT_BY_ARCHETYPE = new Map(
+  stickerMethodPilots.buildings.map((entry) => [entry.archetypeId, entry.variantId]),
 );
-const STICKER_METHOD_PARK_IDS = new Set(
-  stickerMethodPilots.parks.map((entry) => entry.archetypeId),
+const STICKER_METHOD_BUILDING_IDS = new Set(STICKER_METHOD_BUILDING_VARIANT_BY_ARCHETYPE.keys());
+const STICKER_METHOD_PARK_VARIANT_BY_ARCHETYPE = new Map(
+  stickerMethodPilots.parks.map((entry) => [entry.archetypeId, entry.variantId]),
 );
+const STICKER_METHOD_PARK_IDS = new Set(STICKER_METHOD_PARK_VARIANT_BY_ARCHETYPE.keys());
 
 const ROADWAY_AESTHETIC_PRESETS: Record<string, Partial<SiteZoneProperties>> = ROADWAY_AESTHETIC_PRESETS_V2;
 const GREEN_SPACE_AESTHETIC_PRESETS: Record<string, Partial<SiteZoneProperties>> = GREEN_SPACE_AESTHETIC_PRESETS_V2;
@@ -2989,7 +2991,7 @@ function AestheticOptionCard({
   legoReadyArchetypeIds,
   areaSqm,
   showSiteFit = true,
-  stickerMethodPilot = false,
+  stickerMethodVariantId,
 }: {
   option: DevelopmentAestheticOption;
   value?: string;
@@ -2999,7 +3001,7 @@ function AestheticOptionCard({
   legoReadyArchetypeIds?: ReadonlySet<string>;
   areaSqm?: number;
   showSiteFit?: boolean;
-  stickerMethodPilot?: boolean;
+  stickerMethodVariantId?: string;
 }) {
   const setLightboxImage = useViewerStore((s) => s.setLightboxImage);
   const sources = buildAestheticImageSources(option);
@@ -3031,7 +3033,15 @@ function AestheticOptionCard({
       ]);
   const isSelected = value === option.id;
   const isStandardSection = Boolean(option.standardSection?.sectionSvgUrl);
-  const areaFit = showSiteFit ? getAestheticAreaFit(option, isSelected ? selectedVariantId : undefined, areaSqm ?? 0) : null;
+  // A lime Sticker Method badge names one approved child contract. Before the
+  // user chooses another child, show that exact pilot's floors/footprint rather
+  // than silently pairing its badge with an unrelated area-best variant.
+  const displayedFitVariantId = isSelected && selectedVariantId
+    ? selectedVariantId
+    : stickerMethodVariantId;
+  const areaFit = showSiteFit
+    ? getAestheticAreaFit(option, displayedFitVariantId, areaSqm ?? 0)
+    : null;
 
   // Determine thumbnail slot content from authored references only.
   const hasDesignVariants = variants.length > 0;
@@ -3091,7 +3101,7 @@ function AestheticOptionCard({
             onDoubleClick={(activeSource) => openImageLightbox(activeSource, option.label)}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/20 to-transparent" />
-          {stickerMethodPilot && (
+          {stickerMethodVariantId && (
             <div className="absolute left-1.5 top-1.5 rounded-full border border-[#151515] bg-[#c9ff3d] px-1.5 py-0.5 text-[8px] font-black uppercase text-[#151515] shadow-sm">
               Sticker Method
             </div>
@@ -3277,14 +3287,26 @@ function DevelopmentAestheticPicker({
   const rankedOptions = [...categoryOptions].sort((a, b) => {
     const pilotDelta = Number(STICKER_METHOD_BUILDING_IDS.has(b.id)) - Number(STICKER_METHOD_BUILDING_IDS.has(a.id));
     if (pilotDelta !== 0) return pilotDelta;
-    const aFit = getAestheticAreaFit(a, undefined, areaSqm ?? 0);
-    const bFit = getAestheticAreaFit(b, undefined, areaSqm ?? 0);
+    const aFit = getAestheticAreaFit(
+      a,
+      STICKER_METHOD_BUILDING_VARIANT_BY_ARCHETYPE.get(a.id),
+      areaSqm ?? 0,
+    );
+    const bFit = getAestheticAreaFit(
+      b,
+      STICKER_METHOD_BUILDING_VARIANT_BY_ARCHETYPE.get(b.id),
+      areaSqm ?? 0,
+    );
     if (aFit && bFit) return aFit.fitSort - bFit.fitSort;
     if (aFit) return -1;
     if (bFit) return 1;
     return a.label.localeCompare(b.label);
   });
-  const bestFitCount = rankedOptions.filter((option) => getAestheticAreaFit(option, undefined, areaSqm ?? 0)?.isGoodFit).length;
+  const bestFitCount = rankedOptions.filter((option) => getAestheticAreaFit(
+    option,
+    STICKER_METHOD_BUILDING_VARIANT_BY_ARCHETYPE.get(option.id),
+    areaSqm ?? 0,
+  )?.isGoodFit).length;
   const visibleStickerPilotCount = rankedOptions.filter((option) => STICKER_METHOD_BUILDING_IDS.has(option.id)).length;
   const legoReadyArchetypeIds = useLegoReadyArchetypeIds();
 
@@ -3328,7 +3350,7 @@ function DevelopmentAestheticPicker({
               onSelect={(id, archetypeImageId, variantId) => onChange(id, archetypeImageId, variantId)}
               legoReadyArchetypeIds={legoReadyArchetypeIds}
               areaSqm={areaSqm}
-              stickerMethodPilot={STICKER_METHOD_BUILDING_IDS.has(option.id)}
+              stickerMethodVariantId={STICKER_METHOD_BUILDING_VARIANT_BY_ARCHETYPE.get(option.id)}
             />
           ))}
         </div>
@@ -3434,14 +3456,26 @@ function OpenSpaceAestheticPicker({
   const rankedOptions = [...categoryOptions].sort((a, b) => {
     const pilotDelta = Number(STICKER_METHOD_PARK_IDS.has(b.id)) - Number(STICKER_METHOD_PARK_IDS.has(a.id));
     if (pilotDelta !== 0) return pilotDelta;
-    const aFit = getAestheticAreaFit(a, undefined, areaSqm ?? 0);
-    const bFit = getAestheticAreaFit(b, undefined, areaSqm ?? 0);
+    const aFit = getAestheticAreaFit(
+      a,
+      STICKER_METHOD_PARK_VARIANT_BY_ARCHETYPE.get(a.id),
+      areaSqm ?? 0,
+    );
+    const bFit = getAestheticAreaFit(
+      b,
+      STICKER_METHOD_PARK_VARIANT_BY_ARCHETYPE.get(b.id),
+      areaSqm ?? 0,
+    );
     if (aFit && bFit) return aFit.fitSort - bFit.fitSort;
     if (aFit) return -1;
     if (bFit) return 1;
     return a.label.localeCompare(b.label);
   });
-  const bestFitCount = rankedOptions.filter((option) => getAestheticAreaFit(option, undefined, areaSqm ?? 0)?.isGoodFit).length;
+  const bestFitCount = rankedOptions.filter((option) => getAestheticAreaFit(
+    option,
+    STICKER_METHOD_PARK_VARIANT_BY_ARCHETYPE.get(option.id),
+    areaSqm ?? 0,
+  )?.isGoodFit).length;
 
   return (
     <div className="space-y-2">
@@ -3475,7 +3509,7 @@ function OpenSpaceAestheticPicker({
               selectedVariantId={selectedVariantId}
               onSelect={(id, archetypeImageId, variantId) => onChange(id, archetypeImageId, variantId)}
               areaSqm={areaSqm}
-              stickerMethodPilot={STICKER_METHOD_PARK_IDS.has(option.id)}
+              stickerMethodVariantId={STICKER_METHOD_PARK_VARIANT_BY_ARCHETYPE.get(option.id)}
             />
           ))}
         </div>

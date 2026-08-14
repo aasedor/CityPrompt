@@ -47,6 +47,34 @@ describe('building aesthetic reference assets', () => {
     expect(traditional?.thumbnailUrl).toBe(
       '/archetypes/buildings/japanese_machiya_mixed_use/variant_0.png',
     );
+    expect(traditional).toMatchObject({
+      minFloors: 3,
+      maxFloors: 3,
+      suggestedWidth_m: 20,
+      suggestedDepth_m: 14,
+      suggestedAreaSqm: 280,
+    });
+    expect(option).toMatchObject({
+      suggestedWidth_m: 20,
+      suggestedDepth_m: 14,
+    });
+  });
+
+  it('advertises the reviewed historic market landmark as exactly two floors', () => {
+    const option = BUILDING_AESTHETIC_OPTIONS_V2.find(
+      (candidate) => candidate.id === 'food_hall_market_hall',
+    );
+    const historic = option?.variants?.find((variant) => (
+      variant.id === 'market_historic_iron_glass'
+    ));
+
+    expect(historic).toMatchObject({
+      minFloors: 2,
+      maxFloors: 2,
+      suggestedWidth_m: 45,
+      suggestedDepth_m: 60,
+      suggestedAreaSqm: 2700,
+    });
   });
 
   it('keeps every approved Sticker Method pilot on its catalogue-domain variant image', () => {

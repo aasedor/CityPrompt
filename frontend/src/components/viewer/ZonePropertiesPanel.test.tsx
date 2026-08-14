@@ -726,6 +726,9 @@ describe('ZonePropertiesPanel LEGO selection handoff', () => {
     expect(foodHallCard).toHaveTextContent('Sticker Method');
     expect(within(daylightCard).getByText('Sticker Method')).toHaveClass('bg-[#c9ff3d]');
     expect(within(foodHallCard).getByText('Sticker Method')).toHaveClass('bg-[#c9ff3d]');
+    expect(foodHallCard).toHaveTextContent('2-2 floors');
+    expect(foodHallCard).toHaveTextContent('Footprint 45m x 60m');
+    expect(foodHallCard).not.toHaveTextContent('1-1 floors');
     expect(nonStickerCard).not.toHaveTextContent('Sticker Method');
     expect(nonStickerCard.querySelector('img')).toHaveAttribute(
       'src',

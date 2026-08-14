@@ -31,7 +31,10 @@ from __future__ import annotations
 import math
 import re
 from dataclasses import dataclass
+from functools import lru_cache
 from typing import Any, Iterable, Literal
+
+from app.services.plan_geometry.archetypes import load_dims_table
 
 
 VALID_ROLES = {"podium", "floor", "setback", "crown", "roof", "attachment", "assembled"}
@@ -93,6 +96,7 @@ class ModuleDescriptor:
     source_variant_id: str | None = None
     generation_archetype_id: str | None = None
     footprint_compatibility: dict[str, Any] | None = None
+    placement_contract: dict[str, Any] | None = None
     # The declared width/depth are a placement envelope. The authored mesh may
     # intentionally occupy less of that envelope (setbacks, shoulders, courts,
     # chamfers, entrance recesses, sculptural roofs) and must not be stretched
@@ -200,6 +204,9 @@ def descriptor_from_library_entry(entry: Any) -> ModuleDescriptor | None:
         footprint_compatibility=(
             lego.get("footprint_compatibility") if isinstance(lego.get("footprint_compatibility"), dict) else None
         ),
+        placement_contract=(
+            lego.get("placement_contract") if isinstance(lego.get("placement_contract"), dict) else None
+        ),
         allow_inset_footprint=bool(lego.get("allow_inset_footprint", False)),
     )
 
@@ -244,7 +251,41 @@ def _strip_card_variant_suffix(semantic_id: str) -> str:
 
 def _matches_requested_archetype(module: ModuleDescriptor, archetype_id: str) -> bool:
     requested = _strip_card_variant_suffix(_semantic_id(archetype_id))
-    return any(_strip_card_variant_suffix(_semantic_id(candidate)) == requested for candidate in module.archetype_ids)
+    candidates = (
+        *module.archetype_ids,
+        module.source_variant_id,
+        module.generation_archetype_id,
+    )
+    return any(
+        _strip_card_variant_suffix(_semantic_id(candidate)) == requested
+        for candidate in candidates
+        if candidate
+    )
+
+
+@lru_cache(maxsize=512)
+def _catalog_parent_archetype_id(archetype_id: str) -> str | None:
+    """Resolve a known design child to its catalogue parent.
+
+    A user can select a real catalogue child before its independently authored
+    LEGO family is imported.  In that bounded case a generic modular family
+    explicitly registered to the parent remains a truthful fallback.  Unknown
+    IDs never fall back, and an exact imported child family always wins first.
+    """
+
+    requested = _strip_card_variant_suffix(_semantic_id(archetype_id))
+    for entry in load_dims_table():
+        parent_id = str(entry.get("id") or "").strip()
+        if not parent_id:
+            continue
+        if _semantic_id(parent_id) == requested:
+            return parent_id
+        if any(
+            _semantic_id(str(variant_id)) == requested
+            for variant_id in (entry.get("variant_ids") or ())
+        ):
+            return parent_id
+    return None
 
 
 def _module_score(module: ModuleDescriptor, request: AssemblyRequest) -> float:
@@ -542,6 +583,31 @@ def _fixed_landmark_scale_contract(
     return scale_min, scale_max, max_axis_ratio
 
 
+def _fixed_landmark_is_select_and_place(module: ModuleDescriptor) -> bool:
+    """Whether a reviewed landmark forbids the forced-resize escape hatch.
+
+    Current compiler manifests express this twice: the placement contract says
+    the complete landmark is fixed/non-resizable, while footprint compatibility
+    exposes ``select_and_place`` / ``polygonFit: false`` to older importers.
+    Honor either explicit declaration so already-imported families and future
+    re-imports share the same runtime behavior.
+    """
+
+    placement = module.placement_contract or {}
+    footprint = module.footprint_compatibility or {}
+    placement_mode = _semantic_id(str(placement.get("mode") or ""))
+    footprint_mode = _semantic_id(str(footprint.get("placementMode") or ""))
+    fixed_non_resizable = (
+        placement_mode == "fixed_landmark"
+        and placement.get("continuous_resize_allowed") is False
+    )
+    return bool(
+        fixed_non_resizable
+        or footprint_mode == "select_and_place"
+        or footprint.get("polygonFit") is False
+    )
+
+
 # Streetwall repeat: bars validate against the same relaxed band multi-wing
 # profiles already use — repeated bars keep authored facade proportions, so the
 # strict single-bar production band would be needlessly conservative here.
@@ -631,10 +697,11 @@ def plan_vertical_assembly(
 ) -> dict[str, Any]:
     """Build a podium + repeatable floor + optional setback + roof recipe.
 
-    ``allow_forced_fit=True`` (the interactive LEGO Builder contract) always
-    assembles a matched family, labeling out-of-band results instead of
-    rejecting them. Planner probes pass ``False`` so genuine incompatibility
-    keeps raising and can drive re-homing and catalogue decisions.
+    ``allow_forced_fit=True`` lets ordinary modular families label and absorb
+    out-of-band targets. Explicit fixed select-and-place landmarks remain hard
+    fit contracts and reject targets beyond their audited containment band.
+    Planner probes pass ``False`` so genuine incompatibility keeps raising and
+    can drive re-homing and catalogue decisions.
 
     The output is intentionally renderer-neutral. Each instance has a model URL,
     vertical position and scale. A future Three.js composer or GLB baking worker
@@ -660,16 +727,33 @@ def plan_vertical_assembly(
                 code="family_not_found",
                 requested=_requested_target_metadata(request),
             )
+    eligible_families = tuple(families)
+    parent_alias_id: str | None = None
     if request.archetype_id:
-        families = [
+        exact_families = [
             family
-            for family in families
+            for family in eligible_families
             if any(
                 _matches_requested_archetype(module, request.archetype_id)
                 for module in descriptors
                 if module.family == family
             )
         ]
+        families = exact_families
+        if not families:
+            candidate_parent = _catalog_parent_archetype_id(request.archetype_id)
+            if candidate_parent and _semantic_id(candidate_parent) != _semantic_id(request.archetype_id):
+                families = [
+                    family
+                    for family in eligible_families
+                    if any(
+                        _matches_requested_archetype(module, candidate_parent)
+                        for module in descriptors
+                        if module.family == family
+                    )
+                ]
+                if families:
+                    parent_alias_id = candidate_parent
         if not families:
             raise AssemblyPlanningError(
                 f"No module family explicitly matches archetype '{request.archetype_id}'. "
@@ -703,8 +787,8 @@ def plan_vertical_assembly(
         # near-native band. Outside it, prefer the semantic LEGO fallback kit
         # so a hand-drawn rectangle does not crush a courtyard, dome, chamfer,
         # mansard, entrance recess, or other identity-bearing form. An
-        # assembled-only family still remains usable in the forced pass, but
-        # it is uniformly contain-fitted rather than distorted per axis.
+        # An assembled-only family remains eligible for the forced pass only
+        # when its manifest does not declare fixed select-and-place behavior.
         has_stack_fallback = (
             any(module.role == "podium" for module in family_modules)
             and any(module.role == "roof" for module in family_modules)
@@ -712,6 +796,9 @@ def plan_vertical_assembly(
                 request.target_floors <= 1
                 or any(module.role == "floor" and module.repeatable_z for module in family_modules)
             )
+        )
+        executable_archetype_ids = tuple(
+            value for value in (request.archetype_id, parent_alias_id) if value
         )
         assembled = _best(
             (
@@ -722,12 +809,13 @@ def plan_vertical_assembly(
                 and request.footprint_profile == "rectangle"
                 and request.archetype_id
                 and any(
-                    _semantic_id(candidate) == _semantic_id(request.archetype_id)
+                    _semantic_id(candidate) == _semantic_id(executable_id)
                     for candidate in (
                         module.source_variant_id,
                         module.generation_archetype_id,
                     )
                     if candidate
+                    for executable_id in executable_archetype_ids
                 )
             ),
             request,
@@ -777,7 +865,12 @@ def plan_vertical_assembly(
                 and max(authored_axis_scale_x, authored_axis_scale_y) <= FIXED_LANDMARK_CONTAIN_MAX_ENVELOPE_SCALE
                 and axis_ratio <= FIXED_LANDMARK_CONTAIN_MAX_AXIS_RATIO
             )
-            if near_native_fit or uniform_contain_fit or (forced and not has_stack_fallback):
+            forced_landmark_fit = (
+                forced
+                and not has_stack_fallback
+                and not _fixed_landmark_is_select_and_place(assembled)
+            )
+            if near_native_fit or uniform_contain_fit or forced_landmark_fit:
                 # The polygon is a site envelope, not an extrusion mould.
                 # Preserve the reviewed landmark proportions and centre the
                 # complete authored form inside the available rectangle.
@@ -1225,6 +1318,7 @@ def lego_metadata_from_manifest(
         "material_count": module.get("material_count"),
         "coordinate_contract": manifest.get("coordinate_contract") or {},
         "footprint_compatibility": manifest.get("footprint_compatibility") or {},
+        "placement_contract": manifest.get("placement_contract") or {},
         "allow_inset_footprint": bool(module.get("allow_inset_footprint", False)),
         "source_variant_id": variant_id,
         "generation_archetype_id": generation_archetype_id,

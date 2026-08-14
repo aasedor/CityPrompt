@@ -18,6 +18,8 @@ from app.tasks.urban_dna import (
 INDUSTRIAL_PARENT = "industrial_brick_mixed_use"
 INDUSTRIAL_VARIANT = "industrial_brick_original_mill"
 PARISIAN_PARENT = "parisian_boulevard_corner"
+MARKET_PARENT = "food_hall_market_hall"
+MARKET_VARIANT = "market_historic_iron_glass"
 
 
 def _entry(
@@ -275,6 +277,29 @@ def test_selection_uses_exact_variant_for_assembled_only_family():
     assert selection.parent_id == INDUSTRIAL_PARENT
     assert selection.variant_id == INDUSTRIAL_VARIANT
     assert selection.floors == 4
+
+
+def test_historic_market_catalog_advertises_only_native_two_floor_landmark():
+    assembled = _entry(
+        "historic-market-assembled",
+        family="market-historic-iron-glass-v98-canonical",
+        role="assembled",
+        width_m=45,
+        depth_m=60,
+        height_m=24.8,
+        archetype_ids=[MARKET_PARENT, MARKET_VARIANT],
+        native_floors=2,
+        source_variant_id=MARKET_VARIANT,
+        generation_archetype_id="food_hall_market_hall_variant_0",
+    )
+
+    catalog = build_lego_planning_catalog([assembled])
+
+    assert catalog.parent_ids == (MARKET_PARENT,)
+    assert catalog.capabilities[0].selectable_ids == (MARKET_VARIANT,)
+    assert catalog.supported_floors_by_parent[MARKET_PARENT] == (2,)
+    assert catalog.supported_floors_by_selectable_id[MARKET_VARIANT] == (2,)
+    assert catalog.target_dimensions_by_selectable_id[MARKET_VARIANT] == (45.0, 60.0)
 
 
 def test_hybrid_exact_variant_uses_assembled_native_dimensions():

@@ -279,6 +279,102 @@ def test_exact_variant_landmark_resizes_to_a_small_city_parcel():
     assert plan["fit"]["footprint_mode"] == "archetype_contain"
 
 
+def test_fixed_select_and_place_landmark_rejects_forced_miniature_fit():
+    raw = entry(
+        "market-landmark",
+        "Historic iron and glass market",
+        "assembled",
+        height=24.8,
+        width=45.0,
+        depth=60.0,
+    )
+    raw.metadata_["lego"].update(
+        {
+            "archetype_ids": ["food_hall_market_hall", "market_historic_iron_glass"],
+            "native_floors": 2,
+            "source_variant_id": "market_historic_iron_glass",
+            "footprint_compatibility": {
+                "placementMode": "select_and_place",
+                "polygonFit": False,
+                "fixedDimensions": {"width": 45.0, "depth": 60.0},
+            },
+            "placement_contract": {
+                "mode": "fixed_landmark",
+                "continuous_resize_allowed": False,
+            },
+        }
+    )
+    landmark = descriptor_from_library_entry(raw)
+
+    with pytest.raises(AssemblyPlanningError, match="No compatible module family") as error:
+        plan_vertical_assembly(
+            [landmark] if landmark else [],
+            AssemblyRequest(
+                target_width_m=20.0,
+                target_depth_m=15.0,
+                target_floors=2,
+                archetype_id="market_historic_iron_glass",
+            ),
+        )
+
+    assert error.value.code == "family_incompatible"
+    assert error.value.requested == {
+        "width_m": 20.0,
+        "depth_m": 15.0,
+        "floors": 2,
+        "footprint_profile": "rectangle",
+    }
+
+
+def _parent_only_market_modules():
+    modules = []
+    for asset_id, name, role, height in (
+        ("market-podium", "Market podium", "podium", 5.0),
+        ("market-floor", "Market floor", "floor", 4.0),
+        ("market-roof", "Market roof", "roof", 3.0),
+    ):
+        raw = entry(asset_id, name, role, height=height, width=30, depth=20)
+        raw.metadata_["lego"]["archetype_ids"] = ["food_hall_market_hall"]
+        descriptor = descriptor_from_library_entry(raw)
+        if descriptor is not None:
+            modules.append(descriptor)
+    return modules
+
+
+def test_known_child_without_exact_family_uses_catalog_parent_family():
+    modules = _parent_only_market_modules()
+
+    plan = plan_vertical_assembly(
+        modules,
+        AssemblyRequest(
+            target_width_m=30,
+            target_depth_m=20,
+            target_floors=3,
+            archetype_id="market_contemporary",
+        ),
+    )
+
+    assert plan["family"] == "nordic-midrise"
+    assert plan["archetype_id"] == "market_contemporary"
+
+
+def test_unknown_child_never_uses_a_parent_alias_fallback():
+    modules = _parent_only_market_modules()
+
+    with pytest.raises(AssemblyPlanningError, match="explicitly matches") as error:
+        plan_vertical_assembly(
+            modules,
+            AssemblyRequest(
+                target_width_m=30,
+                target_depth_m=20,
+                target_floors=3,
+                archetype_id="invented_market_child",
+            ),
+        )
+
+    assert error.value.code == "family_not_found"
+
+
 def test_wide_parcel_builds_as_streetwall_repeat():
     """A 40 m frontage against a 24 m native facade is covered by two abutting
     bars instead of one visibly crushed stretch — and never rejected."""
@@ -543,6 +639,31 @@ def test_lego_metadata_from_manifest_builds_planner_shape():
     assert metadata["validation_status"] == "pass"
     assert metadata["asset_kind"] == "lego_module"
     assert metadata["allow_inset_footprint"] is False
+
+    contract_manifest = _manifest(
+        footprint_compatibility={"placementMode": "select_and_place", "polygonFit": False},
+        placement_contract={"mode": "fixed_landmark", "continuous_resize_allowed": False},
+    )
+    contract_metadata = lego_metadata_from_manifest(
+        contract_manifest,
+        contract_manifest["modules"][0],
+    )
+    assert contract_metadata["footprint_compatibility"] == {
+        "placementMode": "select_and_place",
+        "polygonFit": False,
+    }
+    assert contract_metadata["placement_contract"] == {
+        "mode": "fixed_landmark",
+        "continuous_resize_allowed": False,
+    }
+    contract_descriptor = descriptor_from_library_entry(SimpleNamespace(
+        id="fixed-contract-podium",
+        name="Fixed contract podium",
+        model_url="https://example.test/fixed-contract-podium.glb",
+        metadata_={"lego": contract_metadata},
+    ))
+    assert contract_descriptor is not None
+    assert contract_descriptor.placement_contract == contract_metadata["placement_contract"]
 
     inset_module = {**manifest["modules"][1], "allow_inset_footprint": True}
     inset_metadata = lego_metadata_from_manifest(manifest, inset_module)

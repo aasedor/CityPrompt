@@ -7397,14 +7397,14 @@
     },
     {
       "id": "japanese_machiya_mixed_use",
-    "suggestedWidth_m": 5,
-    "suggestedDepth_m": 20,
-    "suggestedFloorHeight": 3.0,
-    "minWidth_m": 3.5,
-    "maxWidth_m": 7,
-    "minDepth_m": 15,
-    "maxDepth_m": 30,
-    "aspectRatio": "1:4",
+    "suggestedWidth_m": 20,
+    "suggestedDepth_m": 14,
+    "suggestedFloorHeight": 3.4,
+    "minWidth_m": 16,
+    "maxWidth_m": 24,
+    "minDepth_m": 11,
+    "maxDepth_m": 18,
+    "aspectRatio": "10:7",
       "shadeId": "#cf4017",
       "title": "Japanese Machiya Mixed Use",
       "aestheticCategory": "japanese_contemporary",
@@ -7500,7 +7500,13 @@
           "shadeId": null,
           "palette": {
             "primary": "#686122"
-          }
+          },
+          "minFloors": 3,
+          "maxFloors": 3,
+          "suggestedFloorHeight": 3.4,
+          "suggestedAreaSqm": 280,
+          "suggestedWidth_m": 20,
+          "suggestedDepth_m": 14
         },
         {
           "id": "machiya_modern_reinterpretation",
@@ -7565,7 +7571,7 @@
       ],
       "minFloors": 2,
       "maxFloors": 4,
-      "suggestedAreaSqm": 150,
+      "suggestedAreaSqm": 280,
       "developmentType": "commercial_retail"
     },
     {
@@ -15245,10 +15251,12 @@
             "accent": "#B89060"
           },
           "thumbnailUrl": "/archetypes/buildings/food_hall_market_hall/variant_0.png",
-          "minFloors": 1,
+          "minFloors": 2,
           "maxFloors": 2,
           "suggestedFloorHeight": 10.0,
-          "suggestedAreaSqm": 8000
+          "suggestedAreaSqm": 2700,
+          "suggestedWidth_m": 45,
+          "suggestedDepth_m": 60
         },
         {
           "id": "market_contemporary",
