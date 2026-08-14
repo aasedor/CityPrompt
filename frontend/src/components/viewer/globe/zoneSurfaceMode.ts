@@ -1,3 +1,7 @@
+import { PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS } from './publicRealmDepthPolicy';
+
+export const PLANNING_BUILDING_SURFACE_LIFT_METERS = 0.24;
+
 export interface ZoneSurfaceModeInput {
   isBuilding: boolean;
   isCompiledCommunity: boolean;
@@ -10,6 +14,7 @@ export interface ZoneSurfaceMode {
   isPlanningBuilding: boolean;
   isExtrudedBuilding: boolean;
   useTerrainGridFlat: boolean;
+  flatSurfaceLiftMeters: number;
 }
 
 /**
@@ -29,6 +34,9 @@ export function resolveZoneSurfaceMode({
   return {
     isPlanningBuilding,
     isExtrudedBuilding,
+    flatSurfaceLiftMeters: isPlanningBuilding
+      ? PLANNING_BUILDING_SURFACE_LIFT_METERS
+      : PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS,
     useTerrainGridFlat: (
       isCompiledGround
       || isPark

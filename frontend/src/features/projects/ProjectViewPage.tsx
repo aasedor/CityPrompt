@@ -1023,29 +1023,27 @@ export function ProjectViewPage() {
 
         {/* Zone properties panel */}
         {selectedZone && !showHistory && !measureActive && (
-          <div className="pointer-events-none absolute top-16 right-4 bottom-20 z-40 w-96 overflow-y-auto rounded-xl">
-            <ZonePropertiesPanel
-              key={selectedZone.id}
-              zone={selectedZone}
-              onUpdate={(zoneId, data) => {
-                const previousZone = siteZones.find((z) => z.id === zoneId);
-                updateZone.mutate({
-                  zoneId,
-                  data,
-                  previousData: previousZone
-                    ? { name: previousZone.name, color: previousZone.color, properties: previousZone.properties }
-                    : undefined,
-                });
-                if (siteZones) rebufferRoadOnUpdate(zoneId, data, siteZones, handleZoneUpdated);
-              }}
-              onDelete={(zoneId) => deleteZone.mutate(zoneId)}
-              onClose={() => selectZone(null)}
-              onAIGenerate={(buildingId) => setAiGenerateBuildingId(buildingId)}
-              onOpenBlockEditor={(draftZone) => setLegoZone(draftZone)}
-              buildings={project.buildings}
-              allZones={siteZones}
-            />
-          </div>
+          <ZonePropertiesPanel
+            key={selectedZone.id}
+            zone={selectedZone}
+            onUpdate={(zoneId, data) => {
+              const previousZone = siteZones.find((z) => z.id === zoneId);
+              updateZone.mutate({
+                zoneId,
+                data,
+                previousData: previousZone
+                  ? { name: previousZone.name, color: previousZone.color, properties: previousZone.properties }
+                  : undefined,
+              });
+              if (siteZones) rebufferRoadOnUpdate(zoneId, data, siteZones, handleZoneUpdated);
+            }}
+            onDelete={(zoneId) => deleteZone.mutate(zoneId)}
+            onClose={() => selectZone(null)}
+            onAIGenerate={(buildingId) => setAiGenerateBuildingId(buildingId)}
+            onOpenBlockEditor={(draftZone) => setLegoZone(draftZone)}
+            buildings={project.buildings}
+            allZones={siteZones}
+          />
         )}
 
         {showHistory && !showGlobeRender && id && (

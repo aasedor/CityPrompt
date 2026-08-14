@@ -318,6 +318,32 @@ function publicRealmZone(zoneType: 'road' | 'green_space'): SiteZone {
   };
 }
 
+describe('ZonePropertiesPanel viewport containment', () => {
+  it('owns its desktop positioning and remains bounded by the viewport', () => {
+    Object.defineProperty(HTMLElement.prototype, 'scrollTo', {
+      configurable: true,
+      value: vi.fn(),
+    });
+    const { container } = renderPanel(
+      <ZonePropertiesPanel
+        zone={industrialZone()}
+        onUpdate={vi.fn()}
+        onDelete={vi.fn()}
+        onClose={vi.fn()}
+      />,
+    );
+
+    const panel = Array.from(container.querySelectorAll('div')).find((element) => (
+      element.className.includes('sm:max-w-[calc(100vw-2rem)]')
+    ));
+
+    expect(panel).toBeDefined();
+    expect(panel?.className).toContain('overflow-x-hidden');
+    expect(panel?.className).toContain('sm:max-h-[calc(100dvh-5rem)]');
+    expect(panel?.className).toContain('sm:z-40');
+  });
+});
+
 describe('ZonePropertiesPanel LEGO selection handoff', () => {
   beforeEach(() => {
     vi.clearAllMocks();

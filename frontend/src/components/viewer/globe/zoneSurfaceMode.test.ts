@@ -1,6 +1,10 @@
 import { describe, expect, it } from 'vitest';
 
-import { resolveZoneSurfaceMode } from './zoneSurfaceMode';
+import { PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS } from './publicRealmDepthPolicy';
+import {
+  PLANNING_BUILDING_SURFACE_LIFT_METERS,
+  resolveZoneSurfaceMode,
+} from './zoneSurfaceMode';
 
 describe('zone surface mode', () => {
   it('terrain-drapes an ungenerated building planning footprint', () => {
@@ -14,6 +18,7 @@ describe('zone surface mode', () => {
       isPlanningBuilding: true,
       isExtrudedBuilding: false,
       useTerrainGridFlat: true,
+      flatSurfaceLiftMeters: PLANNING_BUILDING_SURFACE_LIFT_METERS,
     });
   });
 
@@ -28,6 +33,7 @@ describe('zone surface mode', () => {
       isPlanningBuilding: false,
       isExtrudedBuilding: true,
       useTerrainGridFlat: false,
+      flatSurfaceLiftMeters: PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS,
     });
   });
 
@@ -38,6 +44,9 @@ describe('zone surface mode', () => {
       isCompiledGround: true,
       isPark: true,
       isPreparedBoundary: true,
-    }).useTerrainGridFlat).toBe(true);
+    })).toMatchObject({
+      useTerrainGridFlat: true,
+      flatSurfaceLiftMeters: PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS,
+    });
   });
 });

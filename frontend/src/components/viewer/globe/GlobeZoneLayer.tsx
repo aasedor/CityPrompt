@@ -184,6 +184,7 @@ function createLocalGeometry(
   centroidLat: number,
   extrudeHeight: number,
   useTerrainGridFlat: boolean,
+  flatSurfaceLiftMeters = PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS,
 ): {
   fillGeo: THREE.BufferGeometry;
   fillCoords: number[][];
@@ -242,7 +243,7 @@ function createLocalGeometry(
   // Flat zone
   if (!useTerrainGridFlat) {
     const flatVerts: number[] = [];
-    for (const p of localPts) flatVerts.push(p.x, p.y, PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS);
+    for (const p of localPts) flatVerts.push(p.x, p.y, flatSurfaceLiftMeters);
 
     const fillGeo = new THREE.BufferGeometry();
     fillGeo.setAttribute('position', new THREE.Float32BufferAttribute(flatVerts, 3));
@@ -253,8 +254,9 @@ function createLocalGeometry(
     fillGeo.computeBoundingSphere();
 
     const outlineVerts: number[] = [];
-    for (const p of localPts) outlineVerts.push(p.x, p.y, FLAT_ZONE_OUTLINE_LIFT_METERS);
-    outlineVerts.push(localPts[0].x, localPts[0].y, FLAT_ZONE_OUTLINE_LIFT_METERS);
+    const outlineLiftMeters = Math.max(FLAT_ZONE_OUTLINE_LIFT_METERS, flatSurfaceLiftMeters + 0.03);
+    for (const p of localPts) outlineVerts.push(p.x, p.y, outlineLiftMeters);
+    outlineVerts.push(localPts[0].x, localPts[0].y, outlineLiftMeters);
     const outlineGeo = new THREE.BufferGeometry();
     outlineGeo.setAttribute('position', new THREE.Float32BufferAttribute(outlineVerts, 3));
 
@@ -265,7 +267,7 @@ function createLocalGeometry(
   const flatVerts: number[] = [];
   const fillCoords: number[][] = [];
   for (const point of terrainGrid.vertices) {
-    flatVerts.push(point.x, point.y, PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS);
+    flatVerts.push(point.x, point.y, flatSurfaceLiftMeters);
     fillCoords.push([
       centroidLng + point.x / mPerDegLon,
       centroidLat + point.y / METERS_PER_DEG_LAT,
@@ -279,8 +281,9 @@ function createLocalGeometry(
   fillGeo.computeBoundingSphere();
 
   const outlineVerts: number[] = [];
-  for (const p of localPts) outlineVerts.push(p.x, p.y, FLAT_ZONE_OUTLINE_LIFT_METERS);
-  outlineVerts.push(localPts[0].x, localPts[0].y, FLAT_ZONE_OUTLINE_LIFT_METERS);
+  const outlineLiftMeters = Math.max(FLAT_ZONE_OUTLINE_LIFT_METERS, flatSurfaceLiftMeters + 0.03);
+  for (const p of localPts) outlineVerts.push(p.x, p.y, outlineLiftMeters);
+  outlineVerts.push(localPts[0].x, localPts[0].y, outlineLiftMeters);
   const outlineGeo = new THREE.BufferGeometry();
   outlineGeo.setAttribute('position', new THREE.Float32BufferAttribute(outlineVerts, 3));
 
@@ -485,6 +488,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   const {
     isExtrudedBuilding,
     useTerrainGridFlat,
+    flatSurfaceLiftMeters,
   } = resolveZoneSurfaceMode({
     isBuilding,
     isCompiledCommunity,
@@ -504,9 +508,14 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
 
   const geoData = useMemo(() => {
     return createLocalGeometry(
-      renderCoordinates, centroid[0], centroid[1], extrudeHeight, useTerrainGridFlat,
+      renderCoordinates,
+      centroid[0],
+      centroid[1],
+      extrudeHeight,
+      useTerrainGridFlat,
+      flatSurfaceLiftMeters,
     );
-  }, [renderCoordinates, centroid, extrudeHeight, useTerrainGridFlat]);
+  }, [renderCoordinates, centroid, extrudeHeight, useTerrainGridFlat, flatSurfaceLiftMeters]);
 
   const woonerfGroundGeo = useMemo(
     () => (
@@ -855,7 +864,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
         : rawHitElev;
       if (hitElev !== null && isPlausibleTerrainAnchor(hitElev, zoneTerrainHeight)) {
         // Z offset in ENU = hitElev - zoneTerrainHeight (the ENU frame origin elevation)
-        const zOffset = hitElev - zoneTerrainHeight + PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS;
+        const zOffset = hitElev - zoneTerrainHeight + flatSurfaceLiftMeters;
         posAttr.setZ(i, zOffset);
         if (isBoundaryPoint) {
           trustedBoundaryGround.push({ coord, elevation: hitElev });
@@ -878,7 +887,11 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
               ? raycastObjectFilteredTerrainHeightAtLatLng(coord[0], coord[1], tiles.group, raycaster, zoneTerrainHeight)
               : raycastTerrainHeightAtLatLng(coord[0], coord[1], tiles.group, raycaster);
             if (hitElev !== null && isPlausibleTerrainAnchor(hitElev, zoneTerrainHeight)) {
-              const zOffset = hitElev - zoneTerrainHeight + FLAT_ZONE_OUTLINE_LIFT_METERS;
+              const outlineLiftMeters = Math.max(
+                FLAT_ZONE_OUTLINE_LIFT_METERS,
+                flatSurfaceLiftMeters + 0.03,
+              );
+              const zOffset = hitElev - zoneTerrainHeight + outlineLiftMeters;
               outPos.setZ(i, zOffset);
             }
           }
@@ -903,7 +916,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
         drapedRef.current = true;
       }
     }
-  }, [tiles, geoData, isExtrudedBuilding, hasBakedElevationRelief, sampledTerrainHeight, storedTerrainHeight, filterObjectHeights, renderCoordinates, zoneTerrainHeight, freezeDrape]);
+  }, [tiles, geoData, isExtrudedBuilding, hasBakedElevationRelief, sampledTerrainHeight, storedTerrainHeight, filterObjectHeights, renderCoordinates, zoneTerrainHeight, freezeDrape, flatSurfaceLiftMeters]);
 
   useEffect(() => {
     if (sampledTerrainHeight !== null) return undefined;
