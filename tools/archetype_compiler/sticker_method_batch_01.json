@@ -205,7 +205,37 @@
       "archetype_id": "food_hall_market_hall",
       "variant_id": "market_historic_iron_glass",
       "representation": "fixed_landmark",
-      "status": "queued"
+      "status": "approved_95_plus",
+      "architect_scores": {
+        "canonical": 95.14,
+        "components": [
+          28.2,
+          19.12,
+          19.06,
+          14.16,
+          14.6
+        ],
+        "hard_stops": 0
+      },
+      "reference_authority": "three_exact_variant_0_images_override_generic_family_metadata",
+      "identity_locks": [
+        "one open public market hall under a physical heritage-green cast-iron frame",
+        "continuous curved barrel glazing with front and rear fans and a fixed ridge lantern",
+        "warm brick side aisles with pale stone quoins and true recessed arched openings",
+        "fixed partial side galleries and recessed occupied timber market stalls",
+        "asymmetric slate-left and standing-seam-zinc-right aisle roofs with bounded rooflights",
+        "open cavernous nave and constrained closed rear service completion"
+      ],
+      "approved_tiers": {
+        "canonical": {
+          "width_m": 45.0,
+          "depth_m": 60.0,
+          "occupied_hall_levels": 1,
+          "fixed_partial_galleries": 2
+        }
+      },
+      "lego_rule": "fixed 45x60 select-and-place landmark only; preserve one hall and two fixed partial galleries; continuous vertical depth and nonuniform scaling are forbidden and no alternate tier is approved",
+      "review_path": "docs/reviews/catalogue-rollout-v98/sticker-method-batch-01/market-historic-iron-glass"
     }
   ]
 }
