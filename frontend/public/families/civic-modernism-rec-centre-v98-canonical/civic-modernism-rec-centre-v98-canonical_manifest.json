@@ -1,0 +1,322 @@
+{
+  "manifest_schema": 3,
+  "grammar_schema_version": 3,
+  "generator": {
+    "name": "archetype_compiler/blender_generate.py",
+    "version": "0.16.0",
+    "blender_version": "5.1.2",
+    "render_engine": "CYCLES"
+  },
+  "created_at": "2026-08-13T12:07:30.811836+00:00",
+  "family": "civic-modernism-rec-centre-v98-canonical",
+  "archetype_id": "civic_modernism_rec_centre",
+  "archetype_label": "Civic Modernism Rec Centre",
+  "variant_id": "rec_brick_glass_box",
+  "generation_archetype_id": "civic_modernism_rec_centre_variant_0",
+  "aesthetic_category_id": "civic_modernism_rec",
+  "development_type": "recreational_centre",
+  "reuse_keys": [
+    "civic_modernism_rec_centre",
+    "civic_modernism_rec",
+    "Recreation"
+  ],
+  "generation_tags": [
+    "civic_modernism_rec"
+  ],
+  "footprint_compatibility": null,
+  "placement_contract": null,
+  "coordinate_contract": {
+    "units": "metres",
+    "blender_up": "+Z",
+    "gltf_up": "+Y (export_yup)",
+    "origin": "bottom centre",
+    "front_facade": "-Y in Blender, +Z in glTF",
+    "transforms": "applied"
+  },
+  "textures": {
+    "keys_used": [
+      "black_metal",
+      "concrete",
+      "red_brick",
+      "sedum_roof"
+    ],
+    "uv_tile_metres": 2.0,
+    "ao_requested": false,
+    "uv_layers": {
+      "UVMap": "box projection, tiled materials",
+      "AOMap": "smart project, baked AO"
+    }
+  },
+  "generation_quality": {
+    "schema": "building-generation-quality@1",
+    "status": "not_declared",
+    "gates": []
+  },
+  "facade_sheet": null,
+  "massing_graph": {
+    "schema": "massing-graph@1",
+    "profile": "civic-modernism-rec-centre-sticker-lego-canonical",
+    "description": "Exact-reference stepped civic recreation centre with fixed double-height pool glazing, blind brick gym hall and exposed concrete frame.",
+    "target_views": [
+      "archetype_match",
+      "street",
+      "front_corner",
+      "rear_corner",
+      "facade_close",
+      "roof_audit",
+      "aerial"
+    ]
+  },
+  "dimensions": {
+    "width_m": 55.0,
+    "depth_m": 35.0,
+    "podium_height_m": 5.2,
+    "floor_height_m": 4.5,
+    "setback_height_m": 4.5,
+    "roof_height_m": 4.5,
+    "default_floors": 2,
+    "min_floors": 2,
+    "max_floors": 2,
+    "crown_height_m": 4.5
+  },
+  "min_floors": 2,
+  "max_floors": 2,
+  "default_floors": 2,
+  "modules": [
+    {
+      "role": "podium",
+      "variant_key": "default",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "civic-modernism-rec-centre-v98-canonical_podium.glb",
+      "module_family": "civic-modernism-rec-centre-v98-canonical",
+      "width_m": 55.0,
+      "depth_m": 35.0,
+      "height_m": 5.2,
+      "floor_height_m": 4.5,
+      "repeatable_z": false,
+      "triangle_count": 22152,
+      "material_count": 13,
+      "texture_keys": [
+        "black_metal",
+        "concrete",
+        "red_brick",
+        "sedum_roof"
+      ],
+      "ao_baked": false,
+      "size_bytes": 3653456
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_a",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "civic-modernism-rec-centre-v98-canonical_floor_typical_a.glb",
+      "module_family": "civic-modernism-rec-centre-v98-canonical",
+      "width_m": 55.0,
+      "depth_m": 35.0,
+      "height_m": 4.5,
+      "floor_height_m": 4.5,
+      "repeatable_z": true,
+      "triangle_count": 30756,
+      "material_count": 13,
+      "texture_keys": [
+        "black_metal",
+        "concrete",
+        "red_brick",
+        "sedum_roof"
+      ],
+      "ao_baked": false,
+      "size_bytes": 4011492
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_b",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "civic-modernism-rec-centre-v98-canonical_floor_typical_b.glb",
+      "module_family": "civic-modernism-rec-centre-v98-canonical",
+      "width_m": 55.0,
+      "depth_m": 35.0,
+      "height_m": 4.5,
+      "floor_height_m": 4.5,
+      "repeatable_z": true,
+      "triangle_count": 30756,
+      "material_count": 13,
+      "texture_keys": [
+        "black_metal",
+        "concrete",
+        "red_brick",
+        "sedum_roof"
+      ],
+      "ao_baked": false,
+      "size_bytes": 4011492
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_c",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "civic-modernism-rec-centre-v98-canonical_floor_typical_c.glb",
+      "module_family": "civic-modernism-rec-centre-v98-canonical",
+      "width_m": 55.0,
+      "depth_m": 35.0,
+      "height_m": 4.5,
+      "floor_height_m": 4.5,
+      "repeatable_z": true,
+      "triangle_count": 30756,
+      "material_count": 13,
+      "texture_keys": [
+        "black_metal",
+        "concrete",
+        "red_brick",
+        "sedum_roof"
+      ],
+      "ao_baked": false,
+      "size_bytes": 4011492
+    },
+    {
+      "role": "setback",
+      "variant_key": "upper",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [
+        1
+      ],
+      "filename": "civic-modernism-rec-centre-v98-canonical_setback_upper.glb",
+      "module_family": "civic-modernism-rec-centre-v98-canonical",
+      "width_m": 55.0,
+      "depth_m": 35.0,
+      "height_m": 4.5,
+      "floor_height_m": 4.5,
+      "repeatable_z": false,
+      "setback_min_floors": 5,
+      "triangle_count": 26400,
+      "material_count": 12,
+      "texture_keys": [
+        "black_metal",
+        "concrete",
+        "red_brick",
+        "sedum_roof"
+      ],
+      "ao_baked": false,
+      "size_bytes": 3748580
+    },
+    {
+      "role": "crown",
+      "variant_key": "crown",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [
+        1
+      ],
+      "filename": "civic-modernism-rec-centre-v98-canonical_crown_crown.glb",
+      "module_family": "civic-modernism-rec-centre-v98-canonical",
+      "width_m": 55.0,
+      "depth_m": 35.0,
+      "height_m": 4.5,
+      "floor_height_m": 4.5,
+      "repeatable_z": false,
+      "triangle_count": 27148,
+      "material_count": 12,
+      "texture_keys": [
+        "black_metal",
+        "concrete",
+        "red_brick",
+        "sedum_roof"
+      ],
+      "ao_baked": false,
+      "size_bytes": 3788920
+    },
+    {
+      "role": "roof",
+      "variant_key": "default",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "civic-modernism-rec-centre-v98-canonical_roof.glb",
+      "module_family": "civic-modernism-rec-centre-v98-canonical",
+      "width_m": 55.0,
+      "depth_m": 35.0,
+      "height_m": 4.5,
+      "floor_height_m": 4.5,
+      "repeatable_z": false,
+      "triangle_count": 2528,
+      "material_count": 5,
+      "texture_keys": [
+        "black_metal",
+        "concrete",
+        "red_brick",
+        "sedum_roof"
+      ],
+      "ao_baked": false,
+      "size_bytes": 2161104
+    }
+  ],
+  "assembled": {
+    "filename": "civic-modernism-rec-centre-v98-canonical_assembled.glb",
+    "floors": 2,
+    "uses_setback": false,
+    "uses_crown": false,
+    "height_m": 13.5,
+    "triangle_count": 11624,
+    "stack": [
+      {
+        "role": "massing_graph",
+        "variant_key": "civic-modernism-rec-centre-sticker-lego-canonical",
+        "level": 0,
+        "z_m": 0.0,
+        "height_m": 13.5
+      }
+    ],
+    "footprint_profile": "rectangle",
+    "footprint_target": {
+      "width_m": 55.0,
+      "depth_m": 35.0,
+      "wing_depth_m": 35.0,
+      "segments": [
+        {
+          "id": "main",
+          "centre_x_m": 0.0,
+          "centre_y_m": 0.0,
+          "length_m": 55.0,
+          "thickness_m": 35.0,
+          "rotation_degrees": 0.0
+        }
+      ]
+    },
+    "massing_graph": {
+      "schema": "massing-graph@1",
+      "profile": "civic-modernism-rec-centre-sticker-lego-canonical",
+      "node_count": 1,
+      "assembly_count": 279,
+      "void_count": 0
+    },
+    "final_surface_audit_status": "pass",
+    "final_surface_audit_checked_faces": 1595,
+    "final_surface_audit_failure_count": 0
+  },
+  "thumbnail": "civic-modernism-rec-centre-v98-canonical_preview.png",
+  "renders": [
+    "civic-modernism-rec-centre-v98-canonical_preview.png",
+    "civic-modernism-rec-centre-v98-canonical_archetype_match.png",
+    "civic-modernism-rec-centre-v98-canonical_street.png",
+    "civic-modernism-rec-centre-v98-canonical_front_corner_oblique.png",
+    "civic-modernism-rec-centre-v98-canonical_rear_corner_oblique.png",
+    "civic-modernism-rec-centre-v98-canonical_facade_close.png",
+    "civic-modernism-rec-centre-v98-canonical_roof_audit.png",
+    "civic-modernism-rec-centre-v98-canonical_aerial.png",
+    "civic-modernism-rec-centre-v98-canonical_context.png"
+  ]
+}

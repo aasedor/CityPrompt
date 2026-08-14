@@ -1,0 +1,81 @@
+{
+  "schema": "building-generation-preflight@1",
+  "archetype_id": "civic_modernism_rec_centre",
+  "variant_id": "rec_brick_glass_box",
+  "family": "civic-modernism-rec-centre-v98-canonical",
+  "status": "pass",
+  "paid_generation_allowed": true,
+  "reference_views": [
+    {
+      "role": "street_identity",
+      "path": "/archetypes/buildings/civic_modernism_rec_centre/variant_0.png"
+    },
+    {
+      "role": "oblique_massing",
+      "path": "/archetypes/buildings/civic_modernism_rec_centre/variant_0_angle_60.jpg"
+    },
+    {
+      "role": "roof_or_aerial",
+      "path": "/archetypes/buildings/civic_modernism_rec_centre/variant_0_angle_90.jpg"
+    }
+  ],
+  "identity_mode": "massing_graph",
+  "generation_quality": {
+    "schema": "building-generation-quality@1",
+    "status": "not_declared",
+    "gates": []
+  },
+  "failures": [],
+  "gates": [
+    {
+      "id": "variant_not_selected",
+      "passed": true,
+      "detail": "selected variant 'rec_brick_glass_box'"
+    },
+    {
+      "id": "variant_generation_provenance_mismatch",
+      "passed": true,
+      "detail": "generation id 'civic_modernism_rec_centre_variant_0'; expected 'civic_modernism_rec_centre_variant_0'"
+    },
+    {
+      "id": "grammar_variant_mismatch",
+      "passed": true,
+      "detail": "grammar variant 'rec_brick_glass_box'; selected 'rec_brick_glass_box'"
+    },
+    {
+      "id": "incomplete_reference_set",
+      "passed": true,
+      "detail": "3 compatible reference views"
+    },
+    {
+      "id": "missing_production_contract",
+      "passed": true,
+      "detail": "architectural signature declares a production contract"
+    },
+    {
+      "id": "unclassified_identity_mode",
+      "passed": true,
+      "detail": "identity mode 'massing_graph'; expected one of ['massing_graph', 'semantic_stack']"
+    },
+    {
+      "id": "missing_fixed_identity",
+      "passed": true,
+      "detail": "6 fixed identity assemblies; minimum 3"
+    },
+    {
+      "id": "missing_repeatable_capacity",
+      "passed": true,
+      "detail": "1 repeatable capacity assemblies"
+    },
+    {
+      "id": "missing_required_massing_graph",
+      "passed": true,
+      "detail": "massing profile 'civic-modernism-rec-centre-sticker-lego-canonical'"
+    },
+    {
+      "id": "massing_reference_dimensions_mismatch",
+      "passed": true,
+      "detail": "canonical graph dimensions activate exactly"
+    }
+  ]
+}
