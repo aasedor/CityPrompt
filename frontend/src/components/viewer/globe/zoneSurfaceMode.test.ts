@@ -1,13 +1,12 @@
 import { describe, expect, it } from 'vitest';
 
-import { PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS } from './publicRealmDepthPolicy';
 import {
-  PLANNING_BUILDING_SURFACE_LIFT_METERS,
+  resolveBuildingExtrudeHeight,
   resolveZoneSurfaceMode,
 } from './zoneSurfaceMode';
 
 describe('zone surface mode', () => {
-  it('terrain-drapes an ungenerated building planning footprint', () => {
+  it('renders an ungenerated building as an editable extruded mass', () => {
     expect(resolveZoneSurfaceMode({
       isBuilding: true,
       isCompiledCommunity: false,
@@ -16,9 +15,8 @@ describe('zone surface mode', () => {
       isPreparedBoundary: false,
     })).toEqual({
       isPlanningBuilding: true,
-      isExtrudedBuilding: false,
-      useTerrainGridFlat: true,
-      flatSurfaceLiftMeters: PLANNING_BUILDING_SURFACE_LIFT_METERS,
+      isExtrudedBuilding: true,
+      useTerrainGridFlat: false,
     });
   });
 
@@ -33,7 +31,6 @@ describe('zone surface mode', () => {
       isPlanningBuilding: false,
       isExtrudedBuilding: true,
       useTerrainGridFlat: false,
-      flatSurfaceLiftMeters: PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS,
     });
   });
 
@@ -44,9 +41,13 @@ describe('zone surface mode', () => {
       isCompiledGround: true,
       isPark: true,
       isPreparedBoundary: true,
-    })).toMatchObject({
-      useTerrainGridFlat: true,
-      flatSurfaceLiftMeters: PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS,
-    });
+    }).useTerrainGridFlat).toBe(true);
+  });
+
+  it('uses the configured building height with a visible default mass', () => {
+    expect(resolveBuildingExtrudeHeight(true, 21)).toBe(21);
+    expect(resolveBuildingExtrudeHeight(true, 0)).toBe(10);
+    expect(resolveBuildingExtrudeHeight(true, Number.NaN)).toBe(10);
+    expect(resolveBuildingExtrudeHeight(false, 21)).toBe(0);
   });
 });
