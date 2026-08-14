@@ -61,6 +61,10 @@ import {
   PROJECT_FRAME_MIN_HEIGHT_M,
   PROJECT_FRAME_TARGET_FRACTION,
 } from './projectFrameHeight';
+import {
+  getFrameableProjectCoordinates,
+  runProjectFrameRetry,
+} from './projectFrameRetry';
 import { TileStencilPatcher } from './TileStencilPatcher';
 import { GlobeTileMaskLayer } from './GlobeTileMaskLayer';
 import {
@@ -1678,8 +1682,21 @@ export function GlobeSitePlannerMap({
   const hasAppliedSettledViewRef = useRef(false);
   const hasVisibleInitialCameraRef = useRef(false);
   const lastAutoFramedProjectKeyRef = useRef<string | null>(null);
+  const queuedAutoFrameProjectKeyRef = useRef<string | null>(null);
+  const projectFrameRequestGenerationRef = useRef(0);
+  const cameraInteractionGenerationRef = useRef(0);
   const cameraRevealGenerationRef = useRef(0);
   const initialCameraPoseRef = useRef<GlobeCameraPose | null>(null);
+  const projectFrameReadinessRef = useRef({
+    sceneReady: false,
+    terrainReady: false,
+    controlsReady: false,
+  });
+  projectFrameReadinessRef.current = {
+    sceneReady,
+    terrainReady: isTerrainReady,
+    controlsReady: globeControlsReady,
+  };
 
   const projectZonePoints = useMemo(() => {
     const points = getProjectFocusPoints(siteZones);
@@ -1930,7 +1947,7 @@ export function GlobeSitePlannerMap({
     const canvas = canvasRef.current;
     const camera = cameraRef.current;
     if (!canvas || !camera) return false;
-    const coords = renderZones.flatMap(z => z.coordinates ?? []);
+    const coords = getFrameableProjectCoordinates(renderZones);
     if (coords.length < 3) return false;
     let minLng = Infinity; let maxLng = -Infinity;
     let minLat = Infinity; let maxLat = -Infinity;
@@ -2011,6 +2028,52 @@ export function GlobeSitePlannerMap({
     }
   }, []);
 
+  const requestProjectFrame = useCallback(async (
+    renderZones: Array<{ coordinates?: [number, number][] }>,
+    source: 'auto' | 'manual',
+  ): Promise<boolean> => {
+    if (getFrameableProjectCoordinates(renderZones).length < 3) return false;
+
+    const requestGeneration = projectFrameRequestGenerationRef.current + 1;
+    projectFrameRequestGenerationRef.current = requestGeneration;
+    const interactionGeneration = cameraInteractionGenerationRef.current;
+    const isCancelled = () => (
+      projectFrameRequestGenerationRef.current !== requestGeneration
+      || cameraInteractionGenerationRef.current !== interactionGeneration
+      || (source === 'auto' && hasUserInteractedRef.current)
+    );
+
+    const applied = await runProjectFrameRetry({
+      isReady: () => {
+        const readiness = projectFrameReadinessRef.current;
+        const canvas = canvasRef.current;
+        const width = canvas?.clientWidth || canvas?.width || 0;
+        const height = canvas?.clientHeight || canvas?.height || 0;
+        return Boolean(
+          readiness.sceneReady
+          && readiness.terrainReady
+          && readiness.controlsReady
+          && cameraRef.current
+          && globeControlsRef.current
+          && canvas
+          && width > 1
+          && height > 1,
+        );
+      },
+      isCancelled,
+      frame: () => frameZonesForRender(renderZones),
+      onFrameApplied: () => {
+        hasAppliedSettledViewRef.current = true;
+        hasAppliedProjectViewRef.current = true;
+        hasVisibleInitialCameraRef.current = true;
+        setIsInitialCameraApplied(true);
+        revealCanvasAfterPose();
+      },
+    });
+
+    return applied && !isCancelled();
+  }, [frameZonesForRender, revealCanvasAfterPose]);
+
   const handleGlobeControlsRef = useCallback((controls: any | null) => {
     globeControlsRef.current = controls;
     if (controls) {
@@ -2027,6 +2090,8 @@ export function GlobeSitePlannerMap({
     // pending initial/auto-frame retry. Waiting until the delayed canvas reveal
     // flag is set lets a retry move the camera between polygon vertices.
     hasUserInteractedRef.current = true;
+    cameraInteractionGenerationRef.current += 1;
+    projectFrameRequestGenerationRef.current += 1;
   }, []);
 
   useEffect(() => {
@@ -2067,6 +2132,8 @@ export function GlobeSitePlannerMap({
     hasVisibleInitialCameraRef.current = false;
     hasAppliedProjectViewRef.current = false;
     lastAutoFramedProjectKeyRef.current = null;
+    queuedAutoFrameProjectKeyRef.current = null;
+    projectFrameRequestGenerationRef.current += 1;
     lastAppliedZoneViewKeyRef.current = null;
     setIsInitialCameraApplied(false);
     setInitialRevealFallbackReady(false);
@@ -2138,15 +2205,16 @@ export function GlobeSitePlannerMap({
   }, [applyCameraPose, applyCameraView, globeControlsReady, initialRevealFallbackReady, initialView, isSceneSettled, isTerrainReady, preferredCameraPose, preferredView, revealCanvasAfterPose, sceneReady]);
 
   // The basic initial-pose path can run before asynchronously loaded zones
-  // exist, leaving a reopened project at city scale. Run the projection-
-  // verified framing after the coarse settled pose has finished. Never steal
-  // the camera after a real user interaction.
+  // exist, leaving a reopened project at city scale. Queue projection-verified
+  // framing as soon as both the zones and base globe controls exist. The
+  // bounded runner reapplies after late controls updates without depending on
+  // the tile-settled flag, which legitimately toggles throughout refinement.
   useEffect(() => {
     if (!projectZoneFocusKey || siteZones.length === 0) return;
     if (!sceneReady || !isTerrainReady || !globeControlsReady) return;
-    if (!isSceneSettled && !initialRevealFallbackReady) return;
     if (hasUserInteractedRef.current) return;
     if (lastAutoFramedProjectKeyRef.current === projectZoneFocusKey) return;
+    if (queuedAutoFrameProjectKeyRef.current === projectZoneFocusKey) return;
 
     const activeBoundary = getActiveSiteBoundary(siteZones);
     const focusZones = activeBoundary
@@ -2155,50 +2223,26 @@ export function GlobeSitePlannerMap({
     const renderZones = focusZones.length > 0
       ? focusZones
       : siteZones.map((zone) => ({ coordinates: zone.coordinates as [number, number][] }));
-
-    let cancelled = false;
-    let timeoutId: number | undefined;
-    let attemptIndex = 0;
-    const retryDelaysMs = [750, 3500, 7500, 12000];
-    // Tile controls finish one more internal camera update just after their
-    // settled flag flips. Let that update drain, then own the final pose. Tile
-    // streams can temporarily become unsettled without another useful React
-    // transition, so retry on a bounded backoff until the pose sticks.
-    const attemptFrame = () => {
-      if (cancelled || hasUserInteractedRef.current) return;
-      hasAppliedSettledViewRef.current = true;
-      void frameZonesForRender(renderZones).then((framed) => {
-        if (cancelled || hasUserInteractedRef.current) return;
-        const isFinalAttempt = attemptIndex === retryDelaysMs.length - 1;
-        if (framed && (isSceneSettled || isFinalAttempt)) {
-          lastAutoFramedProjectKeyRef.current = projectZoneFocusKey;
-          hasAppliedProjectViewRef.current = true;
-          hasVisibleInitialCameraRef.current = true;
-          setIsInitialCameraApplied(true);
-          revealCanvasAfterPose();
-          return;
-        }
-        if (isFinalAttempt) return;
-        attemptIndex += 1;
-        timeoutId = window.setTimeout(attemptFrame, retryDelaysMs[attemptIndex]);
-      });
-    };
-    timeoutId = window.setTimeout(attemptFrame, retryDelaysMs[attemptIndex]);
-    return () => {
-      cancelled = true;
-      if (timeoutId !== undefined) window.clearTimeout(timeoutId);
-    };
+    queuedAutoFrameProjectKeyRef.current = projectZoneFocusKey;
+    void requestProjectFrame(renderZones, 'auto').then((framed) => {
+      if (queuedAutoFrameProjectKeyRef.current !== projectZoneFocusKey) return;
+      if (framed && !hasUserInteractedRef.current) {
+        lastAutoFramedProjectKeyRef.current = projectZoneFocusKey;
+      }
+    });
   }, [
-    frameZonesForRender,
     globeControlsReady,
-    initialRevealFallbackReady,
-    isSceneSettled,
     isTerrainReady,
     projectZoneFocusKey,
-    revealCanvasAfterPose,
+    requestProjectFrame,
     sceneReady,
     siteZones,
   ]);
+
+  useEffect(() => () => {
+    projectFrameRequestGenerationRef.current += 1;
+    queuedAutoFrameProjectKeyRef.current = null;
+  }, []);
 
   // Drawing state â€” managed at DOM level
   const [drawingPoints, setDrawingPoints] = useState<number[][]>([]);
@@ -4121,9 +4165,9 @@ export function GlobeSitePlannerMap({
           <button
             type="button"
             onClick={() => {
-              void frameZonesForRender(siteZones.map((zone) => ({
+              void requestProjectFrame(siteZones.map((zone) => ({
                 coordinates: zone.coordinates as [number, number][],
-              })));
+              })), 'manual');
             }}
             className="rounded-full border-2 border-[#151515] bg-[#fff9ec]/95 px-3 py-1.5 text-[11px] font-black uppercase text-[#151515] shadow-[3px_3px_0_0_#151515] backdrop-blur-xl transition hover:bg-white"
             title="Focus the camera on this development"
