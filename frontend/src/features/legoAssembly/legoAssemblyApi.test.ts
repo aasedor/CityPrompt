@@ -137,6 +137,25 @@ describe('legoAssemblyApi', () => {
     });
   });
 
+  it('preserves explicit empty scope and boundary values for server validation', async () => {
+    apiPost.mockResolvedValue({
+      data: {
+        status: 'compiled',
+        compiled_at: '2026-08-14T12:00:00Z',
+        counts: { building: 0, park: 0, street: 0 },
+        items: [],
+      },
+    });
+
+    await legoAssemblyApi.compileCommunity([], [], '');
+
+    expect(apiPost).toHaveBeenCalledWith('/api/v1/lego-assembly/place-community', {
+      items: [],
+      scope_zone_ids: [],
+      scope_boundary_id: '',
+    });
+  });
+
   it('getRecipe() unwraps legoAssembly and passes null through', async () => {
     apiGet.mockResolvedValueOnce({ data: { legoAssembly: recipeFixture } });
     await expect(legoAssemblyApi.getRecipe('bldg-1')).resolves.toEqual(recipeFixture);

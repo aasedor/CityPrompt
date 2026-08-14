@@ -6,7 +6,6 @@ import {
 type CommunityCompileItems = Parameters<typeof legoAssemblyApi.compileCommunity>[0];
 
 interface ProjectCompileInFlight {
-  requestFingerprint: string;
   promise: Promise<Community3DCompileResponse>;
 }
 
@@ -22,7 +21,8 @@ interface BrowserLockManager {
 
 const RECENT_SUCCESS_TTL_MS = 60_000;
 const STORAGE_KEY_PREFIX = 'siteforge:community-3d-compile:v1:';
-const projectCompiles = new Map<string, ProjectCompileInFlight>();
+const projectCompiles = new Map<string, Map<string, ProjectCompileInFlight>>();
+const projectCompileTails = new Map<string, Promise<void>>();
 const touchedStorageKeys = new Set<string>();
 
 function canonicalizeJson(value: unknown): unknown {
@@ -51,9 +51,14 @@ function requestFingerprint(
   return JSON.stringify({
     items: canonicalItems,
     scope_zone_ids: scopeZoneIds === undefined
-      ? null
-      : Array.from(new Set(scopeZoneIds)).sort((left, right) => left.localeCompare(right)),
-    scope_boundary_id: scopeBoundaryId ?? null,
+      ? { state: 'omitted' }
+      : {
+          state: 'provided',
+          value: Array.from(new Set(scopeZoneIds)).sort((left, right) => left.localeCompare(right)),
+        },
+    scope_boundary_id: scopeBoundaryId === undefined
+      ? { state: 'omitted' }
+      : { state: 'provided', value: scopeBoundaryId },
   });
 }
 
@@ -133,25 +138,24 @@ export function compileProjectCommunity3D(
   scopeBoundaryId?: string,
 ): Promise<Community3DCompileResponse> {
   const fingerprint = requestFingerprint(items, scopeZoneIds, scopeBoundaryId);
-  const active = projectCompiles.get(projectId);
-  if (active?.requestFingerprint === fingerprint) return active.promise;
+  const inFlight = projectCompiles.get(projectId) ?? new Map<string, ProjectCompileInFlight>();
+  const duplicate = inFlight.get(fingerprint);
+  if (duplicate) return duplicate.promise;
 
-  const promise = (async () => {
-    if (active) {
-      try {
-        await active.promise;
-      } catch {
-        // A failed transaction saved nothing, so the queued request may retry.
-      }
-    }
+  const previousTail = projectCompileTails.get(projectId);
 
+  const execute = () => {
+    // Different requests for one project must run in submission order. Keep
+    // every fingerprint in the in-flight registry while they wait so an A/B/A
+    // burst joins the first A instead of losing it behind B and posting a
+    // guaranteed-stale third transaction.
     return withProjectBrowserLock(projectId, async () => {
       const recent = readRecentCompile(projectId);
       if (recent?.requestFingerprint === fingerprint) return recent.response;
 
-      const response = scopeBoundaryId
+      const response = scopeBoundaryId !== undefined
         ? await legoAssemblyApi.compileCommunity(items, scopeZoneIds, scopeBoundaryId)
-        : scopeZoneIds
+        : scopeZoneIds !== undefined
           ? await legoAssemblyApi.compileCommunity(items, scopeZoneIds)
           : await legoAssemblyApi.compileCommunity(items);
       writeRecentCompile(projectId, {
@@ -161,16 +165,29 @@ export function compileProjectCommunity3D(
       });
       return response;
     });
-  })();
+  };
+  const promise = previousTail ? previousTail.then(execute) : execute();
 
-  const entry = { requestFingerprint: fingerprint, promise };
-  projectCompiles.set(projectId, entry);
+  const entry = { promise };
+  inFlight.set(fingerprint, entry);
+  projectCompiles.set(projectId, inFlight);
+  const settledTail = promise.then(
+    () => undefined,
+    () => undefined,
+  );
+  projectCompileTails.set(projectId, settledTail);
   void promise.then(
     () => {
-      if (projectCompiles.get(projectId) === entry) projectCompiles.delete(projectId);
+      const current = projectCompiles.get(projectId);
+      if (current?.get(fingerprint) === entry) current.delete(fingerprint);
+      if (current?.size === 0) projectCompiles.delete(projectId);
+      if (projectCompileTails.get(projectId) === settledTail) projectCompileTails.delete(projectId);
     },
     () => {
-      if (projectCompiles.get(projectId) === entry) projectCompiles.delete(projectId);
+      const current = projectCompiles.get(projectId);
+      if (current?.get(fingerprint) === entry) current.delete(fingerprint);
+      if (current?.size === 0) projectCompiles.delete(projectId);
+      if (projectCompileTails.get(projectId) === settledTail) projectCompileTails.delete(projectId);
     },
   );
   return promise;
@@ -178,6 +195,7 @@ export function compileProjectCommunity3D(
 
 export function resetProjectCommunityCompileCoordinatorForTests(): void {
   projectCompiles.clear();
+  projectCompileTails.clear();
   if (typeof window !== 'undefined') {
     for (const key of touchedStorageKeys) {
       try {

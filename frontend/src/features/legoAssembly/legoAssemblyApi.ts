@@ -324,8 +324,8 @@ export const legoAssemblyApi = {
       '/api/v1/lego-assembly/place-community',
       {
         items,
-        ...(scopeZoneIds ? { scope_zone_ids: scopeZoneIds } : {}),
-        ...(scopeBoundaryId ? { scope_boundary_id: scopeBoundaryId } : {}),
+        ...(scopeZoneIds !== undefined ? { scope_zone_ids: scopeZoneIds } : {}),
+        ...(scopeBoundaryId !== undefined ? { scope_boundary_id: scopeBoundaryId } : {}),
       },
     );
     return response.data;

@@ -249,6 +249,88 @@ describe('mixed community compiler', () => {
     );
   });
 
+  it('refetches, replans, and retries once when a source revision changes during preparation', async () => {
+    const originalBuilding = zone('changing-building', 'building', {
+      _plan_role: 'building',
+      development_archetype_id: 'supported_building',
+      floors: 5,
+    });
+    const originalPark = zone('changing-park', 'green_space', {
+      _plan_role: 'open_space',
+      green_space_archetype_id: 'neighborhood_park',
+    });
+    const refreshedBuilding = {
+      ...originalBuilding,
+      updated_at: '2026-08-14T12:05:00Z',
+      properties: { ...originalBuilding.properties, floors: 8 },
+    };
+    const refreshedPark = {
+      ...originalPark,
+      updated_at: '2026-08-14T12:05:01Z',
+    };
+    const plan = vi.spyOn(legoAssemblyApi, 'plan').mockResolvedValue(detailedPlan);
+    const compile = vi.spyOn(legoAssemblyApi, 'compileCommunity')
+      .mockRejectedValueOnce({
+        response: {
+          status: 409,
+          data: {
+            detail: 'A Community 3D source zone changed while its 3D recipe was being prepared; refresh and retry.',
+          },
+        },
+      })
+      .mockResolvedValueOnce({
+        status: 'compiled',
+        compiled_at: '2026-08-14T12:06:00Z',
+        counts: { building: 1, park: 1, street: 0 },
+        items: [
+          { zone_id: refreshedBuilding.id, kind: 'building', building_id: 'b-1', building_created: false, generator: 'lego_assembly' },
+          { zone_id: refreshedPark.id, kind: 'park', building_id: null, building_created: false, generator: 'park_kit' },
+        ],
+      });
+    const list = vi.spyOn(siteZonesApi, 'list').mockResolvedValue([
+      refreshedBuilding,
+      refreshedPark,
+    ]);
+
+    await expect(compileMixedCommunity3D([originalBuilding, originalPark])).resolves.toMatchObject({
+      detailedBuildings: 1,
+      parks: 1,
+    });
+
+    expect(list).toHaveBeenCalledOnce();
+    expect(plan).toHaveBeenCalledTimes(2);
+    expect(plan).toHaveBeenLastCalledWith(expect.objectContaining({ target_floors: 8 }));
+    expect(compile).toHaveBeenCalledTimes(2);
+    expect(compile.mock.calls[1][0]).toEqual([
+      expect.objectContaining({
+        zone_id: refreshedBuilding.id,
+        source_updated_at: refreshedBuilding.updated_at,
+      }),
+      { zone_id: refreshedPark.id, source_updated_at: refreshedPark.updated_at },
+    ]);
+  });
+
+  it('does not retry a catalogue-integrity conflict as a source refresh', async () => {
+    const building = zone('catalogue-conflict', 'building', {
+      _plan_role: 'building',
+      development_archetype_id: 'supported_building',
+      floors: 5,
+    });
+    vi.spyOn(legoAssemblyApi, 'plan').mockResolvedValue(detailedPlan);
+    vi.spyOn(legoAssemblyApi, 'compileCommunity').mockRejectedValue({
+      response: {
+        status: 409,
+        data: { detail: 'The executable LEGO catalogue changed after this AI Master Plan was created.' },
+      },
+    });
+    const list = vi.spyOn(siteZonesApi, 'list');
+
+    await expect(compileMixedCommunity3D([building])).rejects.toMatchObject({
+      response: { status: 409 },
+    });
+    expect(list).not.toHaveBeenCalled();
+  });
+
   it('keeps the complete visible scope when Complete compiles only unfinished items', async () => {
     const alreadyCompiled = zone('compiled-building', 'building', {
       _plan_role: 'building',

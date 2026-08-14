@@ -17,16 +17,18 @@ import { resetProjectCommunityCompileCoordinatorForTests } from './projectCommun
 // Mocks (same patterns as LegoAssemblyPreview.test.tsx)
 // ---------------------------------------------------------------------------
 
-const { apiGet, apiPost, apiPut, apiDelete } = vi.hoisted(() => ({
+const { apiGet, apiPost, apiPut, apiDelete, siteZonesList } = vi.hoisted(() => ({
   apiGet: vi.fn(),
   apiPost: vi.fn(),
   apiPut: vi.fn(),
   apiDelete: vi.fn(),
+  siteZonesList: vi.fn(),
 }));
 
 vi.mock('@/services/api', () => ({
   api: { get: apiGet, post: apiPost, put: apiPut, delete: apiDelete },
   siteZonesApi: {
+    list: siteZonesList,
     update: (zoneId: string, body: unknown) => apiPut(`/api/v1/site-zones/${zoneId}`, body),
   },
   resolveApiFileUrl: (url: string) => url,
@@ -121,6 +123,12 @@ const planFixture: LegoAssemblyPlan = {
 function make422(detail: unknown) {
   return Object.assign(new Error('Unprocessable'), {
     response: { status: 422, data: { detail } },
+  });
+}
+
+function make409(detail: string) {
+  return Object.assign(new Error('Conflict'), {
+    response: { status: 409, data: { detail } },
   });
 }
 
@@ -219,6 +227,111 @@ describe('LegoBuilderPanel', () => {
       },
     ));
     expect(await screen.findByText(/landscaped 400 m² of residual site with 2 trees/i)).toBeInTheDocument();
+  });
+
+  it('recovers an auto-build from a changed source by refetching and replanning once', async () => {
+    const original = makeZone({ id: 'changing-building' });
+    const refreshed = {
+      ...original,
+      updated_at: '2026-08-14T12:05:00Z',
+      properties: { ...original.properties, floors: 8 },
+    };
+    siteZonesList.mockResolvedValue([refreshed]);
+    let compileCalls = 0;
+    apiPost.mockImplementation((url: string) => {
+      if (url === '/api/v1/lego-assembly/plan') return Promise.resolve({ data: planFixture });
+      if (url === '/api/v1/lego-assembly/place-community') {
+        compileCalls += 1;
+        if (compileCalls === 1) {
+          return Promise.reject(make409(
+            'A Community 3D source zone changed while its 3D recipe was being prepared; refresh and retry.',
+          ));
+        }
+        return Promise.resolve({
+          data: {
+            status: 'compiled',
+            compiled_at: '2026-08-14T12:06:00Z',
+            counts: { building: 1, park: 0, street: 0 },
+            items: [{
+              zone_id: refreshed.id,
+              kind: 'building',
+              building_id: 'building-1',
+              building_created: false,
+              generator: 'lego_assembly',
+            }],
+          },
+        });
+      }
+      return Promise.reject(new Error(`unexpected POST ${url}`));
+    });
+
+    render(<LegoBuilderPanel zones={[original]} autoGenerate onClose={vi.fn()} />);
+
+    expect(await screen.findByText(
+      'Built 1 detailed building, 0 family-pending masses, and 0 park/street layers',
+    )).toBeInTheDocument();
+    expect(siteZonesList).toHaveBeenCalledWith('proj-1');
+    const compileRequests = apiPost.mock.calls.filter(([url]) => (
+      url === '/api/v1/lego-assembly/place-community'
+    ));
+    expect(compileRequests).toHaveLength(2);
+    expect(compileRequests[1][1]).toEqual({
+      items: [expect.objectContaining({
+        zone_id: refreshed.id,
+        source_updated_at: refreshed.updated_at,
+      })],
+      scope_zone_ids: [refreshed.id],
+    });
+    expect(screen.queryByText(/changed while its 3D recipe/i)).not.toBeInTheDocument();
+  });
+
+  it('uses the refetched post-compile revision for an immediate scene rebuild', async () => {
+    const original = makeZone({ id: 'repeat-building' });
+    const refreshed = { ...original, updated_at: '2026-08-14T12:10:00Z' };
+    const client = new QueryClient();
+    client.setQueryData(['site-zones', 'proj-1'], [original]);
+    let compileCalls = 0;
+    apiPost.mockImplementation((url: string) => {
+      if (url === '/api/v1/lego-assembly/plan') return Promise.resolve({ data: planFixture });
+      if (url === '/api/v1/lego-assembly/place-community') {
+        compileCalls += 1;
+        if (compileCalls === 1) {
+          client.setQueryData(['site-zones', 'proj-1'], [refreshed]);
+        }
+        return Promise.resolve({
+          data: {
+            status: 'compiled',
+            compiled_at: `2026-08-14T12:${10 + compileCalls}:00Z`,
+            counts: { building: 1, park: 0, street: 0 },
+            items: [{
+              zone_id: original.id,
+              kind: 'building',
+              building_id: 'building-1',
+              building_created: compileCalls === 1,
+              generator: 'lego_assembly',
+            }],
+          },
+        });
+      }
+      return Promise.reject(new Error(`unexpected POST ${url}`));
+    });
+
+    render(<LegoBuilderPanel zones={[original]} onClose={vi.fn()} />, client);
+    expect(await screen.findByText(/Assembled 1/)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /^generate to 3d$/i }));
+    expect(await screen.findByRole('button', { name: /rebuild current 3d scene/i })).toBeEnabled();
+    fireEvent.click(screen.getByRole('button', { name: /rebuild current 3d scene/i }));
+
+    await waitFor(() => expect(compileCalls).toBe(2));
+    const compileRequests = apiPost.mock.calls.filter(([url]) => (
+      url === '/api/v1/lego-assembly/place-community'
+    ));
+    expect(compileRequests[1][1]).toEqual({
+      items: [expect.objectContaining({
+        zone_id: original.id,
+        source_updated_at: refreshed.updated_at,
+      })],
+    });
   });
 
   it('compiles planner parks and streets without treating framework overlays as buildings', async () => {

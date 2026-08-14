@@ -91,6 +91,36 @@ describe('project Community 3D compile coordination', () => {
     expect(compile).toHaveBeenCalledTimes(1);
   });
 
+  it('keeps every queued fingerprint joinable during an A/B/A request burst', async () => {
+    let resolveFirst: ((value: Community3DCompileResponse) => void) | undefined;
+    const compile = vi.spyOn(legoAssemblyApi, 'compileCommunity')
+      .mockImplementationOnce(() => new Promise((resolve) => {
+        resolveFirst = resolve;
+      }))
+      .mockResolvedValue(response);
+    const alternateItems = [
+      {
+        ...sourceItems[0],
+        recipe: { ...detailedRecipe, module_family: 'alternate-family' },
+      },
+      sourceItems[1],
+    ];
+
+    const firstA = compileProjectCommunity3D('project-1', sourceItemsWithRecipe);
+    const requestB = compileProjectCommunity3D('project-1', alternateItems);
+    const duplicateA = compileProjectCommunity3D(
+      'project-1',
+      [sourceItems[1], { ...sourceItems[0], recipe: equivalentDetailedRecipe }],
+    );
+
+    expect(duplicateA).toBe(firstA);
+    expect(compile).toHaveBeenCalledTimes(1);
+    resolveFirst?.(response);
+    await expect(firstA).resolves.toEqual(response);
+    await expect(requestB).resolves.toEqual(response);
+    expect(compile).toHaveBeenCalledTimes(2);
+  });
+
   it('reuses a recent successful source snapshot instead of sending a stale second POST', async () => {
     const compile = vi.spyOn(legoAssemblyApi, 'compileCommunity').mockResolvedValue(response);
 
@@ -158,6 +188,21 @@ describe('project Community 3D compile coordination', () => {
     await compileProjectCommunity3D('project-1', sourceItems, []);
 
     expect(compile).toHaveBeenCalledTimes(2);
+  });
+
+  it('keeps an omitted boundary distinct from an explicitly empty boundary', async () => {
+    const compile = vi.spyOn(legoAssemblyApi, 'compileCommunity').mockResolvedValue(response);
+
+    await compileProjectCommunity3D('project-1', sourceItems, ['building-1', 'park-1']);
+    await compileProjectCommunity3D('project-1', sourceItems, ['building-1', 'park-1'], '');
+
+    expect(compile).toHaveBeenCalledTimes(2);
+    expect(compile).toHaveBeenNthCalledWith(
+      2,
+      sourceItems,
+      ['building-1', 'park-1'],
+      '',
+    );
   });
 
   it('isolates identical request identities between projects', async () => {

@@ -4,7 +4,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { Canvas } from '@react-three/fiber';
 import { Bounds, Environment, Grid, OrbitControls } from '@react-three/drei';
 import { AlertTriangle, Blocks, Check, Copy, Loader2, MapPin, RefreshCw, Route, Save, Trees, Upload, X } from 'lucide-react';
-import { getApiErrorMessage } from '@/services/api';
+import { getApiErrorMessage, siteZonesApi } from '@/services/api';
 import type { SiteZone } from '@/types';
 import { resolveCommunity3DKind } from '@/features/community3d/community3d';
 import { allSettledWithConcurrency } from './allSettledWithConcurrency';
@@ -12,6 +12,7 @@ import {
   legoArchetypeContextFromZone,
   legoAssemblyApi,
   getLegoPlanningFailure,
+  type Community3DCompileResponse,
   type LegoAssemblyPlan,
 } from './legoAssemblyApi';
 import {
@@ -25,6 +26,8 @@ import {
 import {
   deriveGroundItems,
   deriveItems,
+  compileMixedCommunity3D,
+  isCommunity3DSourceRevisionConflict,
   recipeFromPlan,
   type GroundBuildItem,
   type ZoneBuildItem,
@@ -108,11 +111,12 @@ export function LegoBuilderPanel({
   // The globe reads buildings from the project query and links from the zone
   // query — both must refetch for the placed stack to appear.
   const refetchPlacedData = useCallback(async () => {
-    if (!projectId) return;
+    if (!projectId) return [];
     await Promise.all([
       queryClient.invalidateQueries({ queryKey: ['project', projectId] }),
       queryClient.invalidateQueries({ queryKey: ['site-zones', projectId] }),
     ]);
+    return queryClient.getQueryData<SiteZone[]>(['site-zones', projectId]) ?? [];
   }, [queryClient, projectId]);
 
   const setPlaceState = useCallback((zoneId: string, placeState: ZoneBuildItem['placeState']) => {
@@ -172,28 +176,51 @@ export function LegoBuilderPanel({
       ]);
       const sourceZones = zones.map((zone) => latestPanelZoneById.get(zone.id) ?? zone);
       setGenerationStage('Placing 3D buildings and public-realm objects');
-      const authoritativeById = new Map(sourceZones.map((zone) => [zone.id, zone]));
+      let authoritativeById = new Map(sourceZones.map((zone) => [zone.id, zone]));
       const authoritativeZone = (zoneId: string): SiteZone => {
         const zone = authoritativeById.get(zoneId);
         if (!zone) throw new Error('A plan zone changed while Generate to 3D was preparing. Refresh and retry.');
         return zone;
       };
       if (!projectId) throw new Error('The project could not be identified for Community 3D generation.');
-      const result = await compileProjectCommunity3D(projectId, [
-        ...placeable.map((item) => ({
-          zone_id: item.zone.id,
-          source_updated_at: authoritativeZone(item.zone.id).updated_at,
-          recipe: recipeFromPlan(item),
-        })),
-        ...massingOnly.map((item) => ({
-          zone_id: item.zone.id,
-          source_updated_at: authoritativeZone(item.zone.id).updated_at,
-        })),
-        ...groundToCompile.map((item) => ({
-          zone_id: item.zone.id,
-          source_updated_at: authoritativeZone(item.zone.id).updated_at,
-        })),
-      ]);
+      let result: Community3DCompileResponse;
+      try {
+        result = await compileProjectCommunity3D(projectId, [
+          ...placeable.map((item) => ({
+            zone_id: item.zone.id,
+            source_updated_at: authoritativeZone(item.zone.id).updated_at,
+            recipe: recipeFromPlan(item),
+          })),
+          ...massingOnly.map((item) => ({
+            zone_id: item.zone.id,
+            source_updated_at: authoritativeZone(item.zone.id).updated_at,
+          })),
+          ...groundToCompile.map((item) => ({
+            zone_id: item.zone.id,
+            source_updated_at: authoritativeZone(item.zone.id).updated_at,
+          })),
+        ]);
+      } catch (error) {
+        if (!isCommunity3DSourceRevisionConflict(error)) throw error;
+        setGenerationStage('Refreshing changed zones and rebuilding their 3D plans');
+        const panelZoneIds = new Set(sourceZones.map((zone) => zone.id));
+        const refreshedZones = (await siteZonesApi.list(projectId)).filter((zone) => (
+          panelZoneIds.has(zone.id)
+        ));
+        if (refreshedZones.length !== panelZoneIds.size) {
+          throw new Error(
+            'A Community 3D source zone was removed while the scene was being prepared. '
+            + 'The plan was refreshed; review it before rebuilding.',
+          );
+        }
+        queryClient.setQueryData(['site-zones', projectId], refreshedZones);
+        authoritativeById = new Map(refreshedZones.map((zone) => [zone.id, zone]));
+        result = (await compileMixedCommunity3D(refreshedZones)).response;
+      }
+      const refreshedAfterCompile = await refetchPlacedData();
+      if (refreshedAfterCompile.length > 0) {
+        authoritativeById = new Map(refreshedAfterCompile.map((zone) => [zone.id, zone]));
+      }
       setItems((prev) => prev.map((item) => {
         if (placeableIds.has(item.zone.id)) {
           return { ...item, zone: authoritativeZone(item.zone.id), placeState: 'placed' };
@@ -220,7 +247,6 @@ export function LegoBuilderPanel({
         + `${groundCount} park/street layer${groundCount === 1 ? '' : 's'}`
         + residualSummary,
       );
-      await refetchPlacedData();
     } catch (error) {
       setItems((prev) => prev.map((item) => {
         if (placeableIds.has(item.zone.id)) {
@@ -245,9 +271,14 @@ export function LegoBuilderPanel({
   }, [groundItems, items, placingAll, projectId, refetchPlacedData, zones]);
 
   const runBatch = useCallback(async (replacePlaced = false) => {
-    const base = deriveItems(zones);
+    const latestPanelZoneById = new Map([
+      ...items.map((item) => [item.zone.id, item.zone] as const),
+      ...groundItems.map((item) => [item.zone.id, item.zone] as const),
+    ]);
+    const latestZones = zones.map((zone) => latestPanelZoneById.get(zone.id) ?? zone);
+    const base = deriveItems(latestZones);
     setItems(base);
-    setGroundItems(deriveGroundItems(zones));
+    setGroundItems(deriveGroundItems(latestZones));
     setSaveResult(null);
     setInitialPlanningComplete(false);
     if (base.length === 0) {
@@ -307,14 +338,13 @@ export function LegoBuilderPanel({
             ? `Rebuilt ${replacedCount} of ${replaceable.length} placed building${replaceable.length === 1 ? '' : 's'}`
             : `Rebuilt ${replacedCount} placed building${replacedCount === 1 ? '' : 's'} with the latest family assets`,
         );
-        await refetchPlacedData();
+        const refreshedZones = await refetchPlacedData();
         // Placing the refreshed recipe intentionally marks its owning source
         // zone stale, which advances zone.updated_at. Carry that authoritative
         // revision into the next atomic Community 3D request; otherwise the
         // immediately-following "Rebuild current 3D scene" deterministically
         // fails optimistic concurrency with the pre-place timestamp.
-        const refreshedZones = queryClient.getQueryData<SiteZone[]>(['site-zones', projectId]);
-        const refreshedById = new Map((refreshedZones ?? []).map((zone) => [zone.id, zone]));
+        const refreshedById = new Map(refreshedZones.map((zone) => [zone.id, zone]));
         setItems(plannedItems.map((item) => ({
           ...item,
           zone: refreshedById.get(item.zone.id) ?? item.zone,
@@ -324,7 +354,7 @@ export function LegoBuilderPanel({
     }
     setPlanning(false);
     setInitialPlanningComplete(true);
-  }, [projectId, queryClient, refetchPlacedData, zones]);
+  }, [groundItems, items, projectId, refetchPlacedData, zones]);
 
   // Plan every buildable zone once when the panel opens; "Rebuild all" re-runs it.
   useEffect(() => {

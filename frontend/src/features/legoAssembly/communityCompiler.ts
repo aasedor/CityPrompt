@@ -271,6 +271,49 @@ export interface MixedCommunityCompileOptions {
   scopeZoneIds?: string[];
   /** Server-validated Site Boundary owning this intentionally narrow scope. */
   scopeBoundaryId?: string;
+  /** One optimistic-concurrency recovery pass is enabled by default. The
+   * internal retry disables itself so a genuinely unstable source does not
+   * create an open-ended generation loop. */
+  recoverSourceChanges?: boolean;
+}
+
+function apiResponseStatus(error: unknown): number | undefined {
+  return (error as { response?: { status?: number } } | undefined)?.response?.status;
+}
+
+/** Only source/scope revision conflicts are safe to recover by reloading and
+ * replanning. Catalogue drift and representation-integrity 409s deliberately
+ * remain hard failures because retrying the same source would hide them. */
+export function isCommunity3DSourceRevisionConflict(error: unknown): boolean {
+  if (apiResponseStatus(error) !== 409) return false;
+  const message = getApiErrorMessage(error, '');
+  return /Community 3D source zone changed|visible Community 3D layer scope changed/i.test(message);
+}
+
+async function reloadCommunityCompilerZones(
+  projectId: string,
+  previousZones: SiteZone[],
+  options: MixedCommunityCompileOptions,
+): Promise<SiteZone[]> {
+  const requestedIds = new Set([
+    ...(options.scopeZoneIds ?? []),
+    ...previousZones.map((zone) => zone.id),
+  ]);
+  const currentProjectZones = await siteZonesApi.list(projectId);
+  const currentById = new Map(currentProjectZones.map((zone) => [zone.id, zone]));
+  const missingIds = Array.from(requestedIds).filter((zoneId) => !currentById.has(zoneId));
+  if (missingIds.length > 0) {
+    throw new Error(
+      `${missingIds.length} Community 3D source zone${missingIds.length === 1 ? '' : 's'} `
+      + 'were removed while the scene was being prepared. The plan was refreshed; review it before rebuilding.',
+    );
+  }
+
+  const refreshed = currentProjectZones.filter((zone) => requestedIds.has(zone.id));
+  const savedLayoutZones = refreshed.filter((zone) => savedSingleBuildingLayoutId(zone) !== null);
+  return savedLayoutZones.length > 0
+    ? alignSavedLayoutBuildingFootprints(refreshed, await buildingsApi.list(projectId))
+    : refreshed;
 }
 
 /** Select the compiler safety policy from the authoritative source scope.
@@ -493,12 +536,25 @@ export async function compileMixedCommunity3D(
   ]));
   const projectId = zones[0]?.project_id;
   if (!projectId) throw new Error('The project could not be identified for Community 3D generation.');
-  const response = await compileProjectCommunity3D(
-    projectId,
-    compileItems,
-    scopeZoneIds,
-    options.scopeBoundaryId,
-  );
+  let response: Community3DCompileResponse;
+  try {
+    response = await compileProjectCommunity3D(
+      projectId,
+      compileItems,
+      scopeZoneIds,
+      options.scopeBoundaryId,
+    );
+  } catch (error) {
+    if (options.recoverSourceChanges === false || !isCommunity3DSourceRevisionConflict(error)) {
+      throw error;
+    }
+    const refreshedZones = await reloadCommunityCompilerZones(projectId, zones, options);
+    return compileMixedCommunity3D(
+      refreshedZones,
+      onProgress,
+      { ...options, recoverSourceChanges: false },
+    );
+  }
   if (options.requireDetailedBuildings) {
     assertDetailedBuildingResponse(buildingItems, response);
   }
