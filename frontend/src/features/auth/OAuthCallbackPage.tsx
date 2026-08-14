@@ -7,10 +7,15 @@ import { authApi } from '@/services/api';
 import { useAuthStore } from '@/store';
 import { resetSessionState } from '@/utils/sessionReset';
 
+export function scrubOAuthCallbackUrl(): void {
+  window.history.replaceState(window.history.state, '', '/oauth/callback');
+}
+
 /**
  * Handles the OAuth2 redirect callback.
  * The backend redirects here with access_token and refresh_token as query params.
- * This page stores the tokens and fetches the user profile, then navigates to the app.
+ * This page immediately removes them from the visible URL, stores them, fetches
+ * the user profile, and then navigates to the app.
  */
 export function OAuthCallbackPage() {
   const navigate = useNavigate();
@@ -37,6 +42,11 @@ export function OAuthCallbackPage() {
       navigate('/login', { replace: true });
       return;
     }
+
+    // The callback tokens are credentials. Remove them from the address bar
+    // and browser history before performing any asynchronous work so they are
+    // not left visible in screenshots or copied URLs.
+    scrubOAuthCallbackUrl();
 
     // Store tokens
     localStorage.setItem('access_token', accessToken);

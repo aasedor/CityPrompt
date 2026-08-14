@@ -7,7 +7,7 @@ import json
 import logging
 import secrets
 from datetime import datetime, timezone
-from urllib.parse import urlencode
+from urllib.parse import urlencode, urlparse
 
 import httpx
 from fastapi import APIRouter, Depends, HTTPException, Query, status
@@ -43,7 +43,30 @@ def _is_allowed_frontend_origin(frontend_origin: str | None) -> bool:
     if not frontend_origin:
         return False
     normalized = frontend_origin.rstrip("/")
-    return normalized in _allowed_frontend_origins()
+    if normalized in _allowed_frontend_origins():
+        return True
+
+    # Linked worktrees deliberately run Vite on the IPv4 loopback so Windows
+    # does not route the proxy through a stale IPv6/WSL listener. Older shared
+    # .env files often list localhost only, however, which made OAuth discard
+    # the initiating 127.0.0.1 origin and fall back to the obsolete port 5175.
+    # Accept a syntactically pure loopback *origin* in development only.
+    if settings.is_production:
+        return False
+    try:
+        parsed = urlparse(normalized)
+        _ = parsed.port  # Validate malformed port values.
+    except ValueError:
+        return False
+    return (
+        parsed.scheme in {"http", "https"}
+        and parsed.hostname in {"localhost", "127.0.0.1", "::1"}
+        and parsed.username is None
+        and parsed.password is None
+        and parsed.path in {"", "/"}
+        and not parsed.query
+        and not parsed.fragment
+    )
 
 
 def _build_oauth_state(frontend_origin: str | None) -> str:

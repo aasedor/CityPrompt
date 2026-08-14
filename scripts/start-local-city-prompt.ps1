@@ -1,6 +1,7 @@
 [CmdletBinding()]
 param(
     [switch]$SkipFrontend,
+    [switch]$KeepBackend,
     [int]$StartupTimeoutSeconds = 90
 )
 
@@ -129,8 +130,36 @@ function Assert-PortAvailableOrHealthy {
 }
 
 function Ensure-Backend {
-    if (Assert-PortAvailableOrHealthy -Port 8000 -HealthUri 'http://127.0.0.1:8000/health' -ServiceName 'City Prompt API') {
-        return
+    # A Docker-published API from another checkout may also own wildcard port
+    # 8000. Always require a loopback-specific Uvicorn process for this
+    # worktree, and restart it by default so source edits cannot leave the
+    # browser talking to stale code.
+    $listener = Get-NetTCPConnection `
+        -State Listen `
+        -LocalAddress '127.0.0.1' `
+        -LocalPort 8000 `
+        -ErrorAction SilentlyContinue |
+        Select-Object -First 1
+
+    if ($listener) {
+        $process = Get-CimInstance Win32_Process -Filter "ProcessId=$($listener.OwningProcess)"
+        $isUvicorn = $process.Name -match '^python(?:\.exe)?$' -and $process.CommandLine -match 'uvicorn(?:\.exe)?"?\s+app\.main:app'
+        if (-not $isUvicorn) {
+            throw "Port 127.0.0.1:8000 is owned by an unexpected process (PID $($listener.OwningProcess))."
+        }
+        if ($KeepBackend -and (Test-HttpEndpoint -Uri 'http://127.0.0.1:8000/health')) {
+            return
+        }
+
+        Write-Host 'Restarting City Prompt API for the current worktree...'
+        Stop-Process -Id $listener.OwningProcess -Force
+        Wait-Until -Description 'the previous City Prompt API to stop' -Condition {
+            -not (Get-NetTCPConnection `
+                -State Listen `
+                -LocalAddress '127.0.0.1' `
+                -LocalPort 8000 `
+                -ErrorAction SilentlyContinue)
+        }
     }
 
     $uvicorn = Get-Command uvicorn.exe -ErrorAction SilentlyContinue
@@ -143,7 +172,7 @@ function Ensure-Backend {
 
     Write-Host 'Starting City Prompt API...'
     Start-Process -FilePath $uvicorn.Source `
-        -ArgumentList @('app.main:app', '--reload', '--host', '127.0.0.1', '--port', '8000') `
+        -ArgumentList @('app.main:app', '--host', '127.0.0.1', '--port', '8000') `
         -WorkingDirectory $backendRoot `
         -RedirectStandardOutput (Join-Path $artifactRoot 'backend.out.log') `
         -RedirectStandardError (Join-Path $artifactRoot 'backend.err.log') `
