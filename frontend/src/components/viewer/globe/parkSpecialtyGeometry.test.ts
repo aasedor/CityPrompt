@@ -70,6 +70,28 @@ describe('park specialty geometry', () => {
     expect(skate).toHaveLength(5);
     expect(skate).toContainEqual({ x: -20, y: -15 });
     expect(skate).toContainEqual({ x: 20, y: 15 });
+
+    const neighborhood = buildParkSpecialtyTerrainAnchors(
+      'neighborhood_park_v0_sticker_assembly',
+      [],
+      {
+        minX: -50,
+        maxX: 50,
+        minY: -40,
+        maxY: 40,
+        width: 100,
+        height: 80,
+        points: [
+          { x: -50, y: -40 },
+          { x: 50, y: -40 },
+          { x: 50, y: 40 },
+          { x: -50, y: 40 },
+        ],
+      },
+    );
+    expect(neighborhood).toHaveLength(5);
+    expect(neighborhood).toContainEqual({ x: -25, y: -19 });
+    expect(neighborhood).toContainEqual({ x: 25, y: 19 });
   });
 
   it('keeps fitted stormwater inlet and outlet centers and dimensions authoritative', () => {

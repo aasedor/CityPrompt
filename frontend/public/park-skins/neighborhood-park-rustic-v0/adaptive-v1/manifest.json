@@ -1,0 +1,196 @@
+{
+  "schemaVersion": 1,
+  "archetype": "neighborhood-park-rustic-v0",
+  "source": "frontend/public/archetypes/openspaces/neighborhood-park/variant_0.png",
+  "sources": [
+    "frontend/public/archetypes/openspaces/neighborhood-park/variant_0.png"
+  ],
+  "method": "exact_variant_reference_statistics_plus_role_specific_intrinsic_structure",
+  "apiCalls": 0,
+  "sourcePixelsProjected": false,
+  "materials": {
+    "paver": {
+      "source": "frontend/public/archetypes/openspaces/neighborhood-park/variant_0.png",
+      "cropNormalized": [
+        0.07,
+        0.48,
+        0.91,
+        0.73
+      ],
+      "cropPixels": [
+        72,
+        369,
+        932,
+        561
+      ],
+      "metresPerTile": 3.0,
+      "pattern": "paver",
+      "files": {
+        "sourceCrop": "paver/source_crop.jpg",
+        "albedo": "paver/albedo.jpg",
+        "normal": "paver/normal.png",
+        "roughness": "paver/roughness.jpg",
+        "ao": "paver/ao.jpg"
+      }
+    },
+    "lawn": {
+      "source": "frontend/public/archetypes/openspaces/neighborhood-park/variant_0.png",
+      "cropNormalized": [
+        0.43,
+        0.25,
+        0.87,
+        0.54
+      ],
+      "cropPixels": [
+        440,
+        192,
+        891,
+        415
+      ],
+      "metresPerTile": 5.0,
+      "pattern": "lawn",
+      "files": {
+        "sourceCrop": "lawn/source_crop.jpg",
+        "albedo": "lawn/albedo.jpg",
+        "normal": "lawn/normal.png",
+        "roughness": "lawn/roughness.jpg",
+        "ao": "lawn/ao.jpg"
+      }
+    },
+    "asphalt": {
+      "source": "frontend/public/archetypes/openspaces/neighborhood-park/variant_0.png",
+      "cropNormalized": [
+        0.02,
+        0.46,
+        0.98,
+        0.69
+      ],
+      "cropPixels": [
+        20,
+        353,
+        1004,
+        530
+      ],
+      "metresPerTile": 3.0,
+      "pattern": "paver",
+      "files": {
+        "sourceCrop": "asphalt/source_crop.jpg",
+        "albedo": "asphalt/albedo.jpg",
+        "normal": "asphalt/normal.png",
+        "roughness": "asphalt/roughness.jpg",
+        "ao": "asphalt/ao.jpg"
+      }
+    },
+    "planting": {
+      "source": "frontend/public/archetypes/openspaces/neighborhood-park/variant_0.png",
+      "cropNormalized": [
+        0.0,
+        0.67,
+        1.0,
+        1.0
+      ],
+      "cropPixels": [
+        0,
+        515,
+        1024,
+        768
+      ],
+      "metresPerTile": 2.5,
+      "pattern": "planting",
+      "files": {
+        "sourceCrop": "planting/source_crop.jpg",
+        "albedo": "planting/albedo.jpg",
+        "normal": "planting/normal.png",
+        "roughness": "planting/roughness.jpg",
+        "ao": "planting/ao.jpg"
+      }
+    },
+    "safety": {
+      "source": "frontend/public/archetypes/openspaces/neighborhood-park/variant_0.png",
+      "cropNormalized": [
+        0.35,
+        0.48,
+        0.76,
+        0.69
+      ],
+      "cropPixels": [
+        358,
+        369,
+        778,
+        530
+      ],
+      "metresPerTile": 2.4,
+      "pattern": "safety",
+      "files": {
+        "sourceCrop": "safety/source_crop.jpg",
+        "albedo": "safety/albedo.jpg",
+        "normal": "safety/normal.png",
+        "roughness": "safety/roughness.jpg",
+        "ao": "safety/ao.jpg"
+      }
+    },
+    "timber": {
+      "source": "frontend/public/archetypes/openspaces/neighborhood-park/variant_0.png",
+      "cropNormalized": [
+        0.1,
+        0.25,
+        0.74,
+        0.57
+      ],
+      "cropPixels": [
+        102,
+        192,
+        758,
+        438
+      ],
+      "metresPerTile": 2.0,
+      "pattern": "timber",
+      "files": {
+        "sourceCrop": "timber/source_crop.jpg",
+        "albedo": "timber/albedo.jpg",
+        "normal": "timber/normal.png",
+        "roughness": "timber/roughness.jpg",
+        "ao": "timber/ao.jpg"
+      }
+    },
+    "stone": {
+      "source": "frontend/public/archetypes/openspaces/neighborhood-park/variant_0.png",
+      "derivedFromIntrinsicRole": "safety",
+      "metresPerTile": 1.8,
+      "pattern": "stone_intrinsic",
+      "files": {
+        "sourceCrop": "stone/source_crop.jpg",
+        "albedo": "stone/albedo.jpg",
+        "normal": "stone/normal.png",
+        "roughness": "stone/roughness.jpg",
+        "ao": "stone/ao.jpg"
+      }
+    },
+    "metal": {
+      "source": "frontend/public/archetypes/openspaces/neighborhood-park/variant_0.png",
+      "derivedFromIntrinsicRole": "paver",
+      "metresPerTile": 1.4,
+      "pattern": "metal_intrinsic",
+      "files": {
+        "sourceCrop": "metal/source_crop.jpg",
+        "albedo": "metal/albedo.jpg",
+        "normal": "metal/normal.png",
+        "roughness": "metal/roughness.jpg",
+        "ao": "metal/ao.jpg"
+      }
+    },
+    "rope": {
+      "source": "frontend/public/archetypes/openspaces/neighborhood-park/variant_0.png",
+      "derivedFromIntrinsicRole": "timber",
+      "metresPerTile": 1.2,
+      "pattern": "rope_intrinsic",
+      "files": {
+        "sourceCrop": "rope/source_crop.jpg",
+        "albedo": "rope/albedo.jpg",
+        "normal": "rope/normal.png",
+        "roughness": "rope/roughness.jpg",
+        "ao": "rope/ao.jpg"
+      }
+    }
+  }
+}

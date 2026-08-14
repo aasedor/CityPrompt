@@ -123,6 +123,7 @@ import {
   type RegulationParkFamilyId,
 } from './GlobeArchetypeOwnedParkAssembly';
 import { GlobeParkBatch5Assembly } from './GlobeParkBatch5Assembly';
+import { GlobeNeighborhoodParkV0StickerAssembly } from './GlobeNeighborhoodParkV0StickerAssembly';
 
 const DEG_TO_RAD = Math.PI / 180;
 const RENDER_ORDER_PROPS = 145;
@@ -840,6 +841,19 @@ function ParkSpecialtyStructures({
       <SilentKitBoundary fallback={null}>
         <Suspense fallback={null}>
           <GlobeSkateParkAssembly boundary={programFrame.points} terrainZ={terrainZ} />
+        </Suspense>
+      </SilentKitBoundary>
+    );
+  }
+
+  if (structureKind === 'neighborhood_park_v0_sticker_assembly') {
+    return (
+      <SilentKitBoundary fallback={null}>
+        <Suspense fallback={null}>
+          <GlobeNeighborhoodParkV0StickerAssembly
+            boundary={programFrame.points}
+            terrainZ={terrainZ}
+          />
         </Suspense>
       </SilentKitBoundary>
     );
@@ -2005,7 +2019,13 @@ function ParkKitInstance({
       fittedMicrodetailGuides,
     )),
     ...computeParkProgramAssetPlacements(zone),
-  ].filter((placement) => !shouldDeferParkFinishingProp(zone, placement.propId)), [
+  ].filter((placement) => (
+    !shouldDeferParkFinishingProp(zone, placement.propId)
+    && !(
+      specialtyStructureKind === 'neighborhood_park_v0_sticker_assembly'
+      && (placement.propId === 'playground' || placement.propId === 'pavilion')
+    )
+  )), [
     fittedMicrodetailGuides,
     hasCurrentParkGround,
     plantingStructure,

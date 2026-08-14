@@ -1747,6 +1747,7 @@ export type ParkSpecialtyStructureKind =
   | 'japanese_garden_bridge'
   | 'cricket_ground_assembly'
   | 'skate_park_v0_assembly'
+  | 'neighborhood_park_v0_sticker_assembly'
   | 'inclusive_playground_v0_assembly'
   | 'dog_park_v0_assembly'
   | 'splash_pad_v0_assembly'
@@ -1818,7 +1819,35 @@ export function resolveParkGroundProfile(zone: ParkProfileZone): ParkGroundProfi
       : fallback;
   }
   const variantOwnsProgram = archetypeId === 'basketball_court';
-  const resolvedExact = variantOwnsProgram
+  const neighborhoodStickerV0 = archetypeId === 'neighborhood_park'
+    && variantId === 'neighborhood_park_v0';
+  const resolvedExact = neighborhoodStickerV0
+    ? {
+        ...exact,
+        programDescription:
+          'A rustic neighborhood park composed around one whole reference-locked timber pavilion, one timber climbing tower with slide, one timber swing frame, a split-rail play enclosure and natural boulder clusters. A compacted-gravel play room and pavilion pad connect to the parcel lawn and wildflower edge; the ground may adapt, but the five identity object families remain whole and metric.',
+        groundDescription:
+          'Warm compacted gravel and fine aggregate under the fixed timber play kit, a small weathered paver pavilion pad, restrained asphalt connector, natural mown lawn and loose native wildflower margins. Materials derive from the selected neighborhood-park v0 reference without projecting source pixels onto geometry.',
+        criticalConstraints:
+          'Keep exactly one pavilion, one climbing tower with slide and one swing frame. Retain the complete split-rail enclosure, bounded boulder groups, clear safety fall zones and an open gateway. Never substitute a generic contemporary playground, duplicate the pavilion, crop a fixed object, or non-uniformly scale any kit object; adapt only ground and residual planting to the parcel.',
+        plantingStructure: 'active_recreation',
+        guides: [
+          { kind: 'ellipse', x: 0.50, y: 0.50, width: 0.64, height: 0.54, color: '#77975d', strokeColor: '#5c7549', strokeWidthM: 0.5 },
+          { kind: 'ellipse', x: 0.53, y: 0.50, width: 0.31, height: 0.25, color: '#b49b74', strokeColor: '#756449', strokeWidthM: 0.6 },
+          { kind: 'rectangle', x: 0.35, y: 0.44, width: 0.10, height: 0.10, color: '#a79a80', strokeColor: '#6e6555', strokeWidthM: 0.5 },
+          { kind: 'polyline', x: 0.50, y: 0.50, width: 1, height: 1, color: '#b7a17c', strokeColor: '#77654b', strokeWidthM: 2.8, points: [[0.00, 0.52], [0.29, 0.48], [0.50, 0.50], [1.00, 0.46]] },
+          { kind: 'ellipse', x: 0.18, y: 0.24, width: 0.23, height: 0.18, color: '#89965c', strokeColor: '#626d45', strokeWidthM: 0.5 },
+          { kind: 'ellipse', x: 0.83, y: 0.75, width: 0.24, height: 0.18, color: '#8d9961', strokeColor: '#636d47', strokeWidthM: 0.5 },
+        ] as ParkGroundGuide[],
+        guideLegend: [
+          'the WARM GRAVEL ellipse is the exact reference play room for the whole timber tower, swing, boulders and split-rail enclosure',
+          'the SMALL WEATHERED rectangle is the pavilion pad for the singular whole timber pavilion',
+          'the muted route connects the fixed kit to the parcel edge while lawn and wildflower rooms remain site-adaptive',
+        ],
+        renderSummary:
+          'rustic neighborhood park v0 with a whole timber pavilion, climbing tower and slide, swing, split-rail enclosure, boulders, gravel, lawn and wildflowers',
+      }
+    : variantOwnsProgram
     ? { ...exact, ...basketballVariantProfile(variantId) }
     : exact;
   const variantSuffix = variant?.label && !variantOwnsProgram
@@ -1848,6 +1877,13 @@ export function resolveParkSpecialtyStructureKind(
   zone: ParkProfileZone,
 ): ParkSpecialtyStructureKind | null {
   const legoContract = resolveParkLegoContract(zone);
+  if (
+    legoContract?.source === 'public_realm_lego'
+    && legoContract.supported
+    && legoContract.familyId === 'park_neighborhood_community'
+    && legoContract.archetypeId === 'neighborhood_park'
+    && legoContract.variantId === 'neighborhood_park_v0'
+  ) return 'neighborhood_park_v0_sticker_assembly';
   const exactKit = legoContract?.supported
     ? archetypeOwnedParkKitForFamily(legoContract.familyId)
     : null;

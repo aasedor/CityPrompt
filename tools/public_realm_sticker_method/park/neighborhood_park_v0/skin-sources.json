@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "method": "exact_variant_reference_statistics_plus_role_specific_intrinsic_structure",
+  "apiCalls": 0,
+  "sourcePixelsProjected": false,
+  "expectedArchetypeCount": 1,
+  "archetypes": {
+    "neighborhood-park-rustic-v0": {
+      "source": "frontend/public/archetypes/openspaces/neighborhood-park/variant_0.png",
+      "roleSources": {
+        "paver": "frontend/public/archetypes/openspaces/neighborhood-park/variant_0.png",
+        "lawn": "frontend/public/archetypes/openspaces/neighborhood-park/variant_0.png",
+        "asphalt": "frontend/public/archetypes/openspaces/neighborhood-park/variant_0.png",
+        "planting": "frontend/public/archetypes/openspaces/neighborhood-park/variant_0.png",
+        "safety": "frontend/public/archetypes/openspaces/neighborhood-park/variant_0.png",
+        "timber": "frontend/public/archetypes/openspaces/neighborhood-park/variant_0.png"
+      },
+      "patterns": {
+        "paver": "paver",
+        "lawn": "lawn",
+        "asphalt": "paver",
+        "planting": "planting",
+        "safety": "safety",
+        "timber": "timber"
+      },
+      "crops": {
+        "paver": [0.07, 0.48, 0.91, 0.73],
+        "lawn": [0.43, 0.25, 0.87, 0.54],
+        "asphalt": [0.02, 0.46, 0.98, 0.69],
+        "planting": [0.00, 0.67, 1.00, 1.00],
+        "safety": [0.35, 0.48, 0.76, 0.69],
+        "timber": [0.10, 0.25, 0.74, 0.57]
+      }
+    }
+  },
+  "materialDefaults": {
+    "paver": {"roughness": 0.92, "normalStrength": 2.2, "metresPerTile": 3.0},
+    "lawn": {"roughness": 0.96, "normalStrength": 2.1, "metresPerTile": 5.0},
+    "asphalt": {"roughness": 0.93, "normalStrength": 1.8, "metresPerTile": 3.0},
+    "planting": {"roughness": 0.98, "normalStrength": 3.0, "metresPerTile": 2.5},
+    "safety": {"roughness": 0.94, "normalStrength": 2.5, "metresPerTile": 2.4},
+    "timber": {"roughness": 0.88, "normalStrength": 2.4, "metresPerTile": 2.0}
+  },
+  "objectMaterialRoles": {
+    "stone": {"baseRole": "safety", "dark": "#555a55", "light": "#a7aa9f", "roughness": 0.96, "normalStrength": 2.2, "metresPerTile": 1.8},
+    "metal": {"baseRole": "paver", "dark": "#161c1b", "light": "#59615e", "roughness": 0.58, "normalStrength": 1.1, "metresPerTile": 1.4},
+    "rope": {"baseRole": "timber", "dark": "#5e4931", "light": "#b69766", "roughness": 0.98, "normalStrength": 2.0, "metresPerTile": 1.2}
+  }
+}

@@ -48,34 +48,53 @@
   "runtime_sources": [
     {
       "path": "frontend/src/components/viewer/globe/parkGroundProfiles.ts",
-      "sha256": "3fa1709d18611b1451e271a1f5811bba8dd7e277b19777959d48191d4701edec"
+      "sha256": "8a395bb82ac69ed25f156dd6cfaf3b64e21315c5295c94fb6071ab531ba3f6fe"
     },
     {
       "path": "frontend/src/data/parkKitRecipes.ts",
-      "sha256": "f05015bf17ce2b9021b0b357f90ab45c494f97e892924e9ec01acc414256caeb"
+      "sha256": "bc6c7920c36972ccfc274fc7464e3bb4e177fe7cb791baedb5bc696e262ba3a5"
     },
     {
       "path": "frontend/src/components/viewer/globe/parkLegoFamilies.ts",
-      "sha256": "6fb16a2573a47bef83732bc96982970dfea20df19d7528a494613c0c7a0771a4"
+      "sha256": "bc0da9611942d9352a25a85d5b7ebf962013050a4f387b9a0c197c32d9858977"
     },
     {
       "path": "frontend/src/data/renderlockV1Parks.ts",
-      "sha256": "b9fbd15d717d6fa7a872e895c77ca2fe870a868c4ac3c9e6cd7a1ec0ddc6a8a4"
+      "sha256": "c8ca9de892a2144c90fd7d9e13b3a621d691b35f6b6c0b513cdd7bcaa8f51ce4"
+    },
+    {
+      "path": "frontend/src/components/viewer/globe/GlobeNeighborhoodParkV0StickerAssembly.tsx",
+      "sha256": "ca7af99ccb4054b593d25a7a09625223431c17e20f1a147363be94981b703f50"
+    },
+    {
+      "path": "frontend/src/data/neighborhoodParkV0StickerKit.json",
+      "sha256": "f11e8562800336145709a91835514a8124e62977d7da74ca0be08ea137389ad4"
+    },
+    {
+      "path": "backend/app/services/public_realm_lego.py",
+      "sha256": "9eff837787e1a2872fb9ad9daafb41f226bca2145a3580cc6c29870ac5de5864"
+    },
+    {
+      "path": "tools/public_realm_sticker_method/park/neighborhood_park_v0/build_objects.py",
+      "sha256": "e352569232a9f7f57eed919d69fe3840d59fe72f6c2b7245a8974a6503bbee12"
+    },
+    {
+      "path": "tools/public_realm_sticker_method/park/neighborhood_park_v0/compile_kit.py",
+      "sha256": "01997e9a9d55481f0b42f60c84aee804f85885a488048abb20a70fb8d700bff9"
+    },
+    {
+      "path": "tools/public_realm_sticker_method/park/neighborhood_park_v0/prepare_assets.py",
+      "sha256": "eb2d90d0bfe49eaf2b16267ac7b9cdd93d31536b6b923b306c12b5bf136f956c"
+    },
+    {
+      "path": "tools/public_realm_sticker_method/park/neighborhood_park_v0/skin-sources.json",
+      "sha256": "c988eb3bae167b5db4a835bd6c59c3c0d4ba1562f249a0bd86c4fd2840eef845"
+    },
+    {
+      "path": "tools/public_realm_sticker_method/park/neighborhood_park_v0/render_preview.py",
+      "sha256": "ed6a5480a3597ffaf7f6ad635d85202f14e94537b2db9314b59e4da21a4d1cfa"
     }
   ],
-  "readiness_status": "hold",
-  "known_runtime_gaps": [
-    {
-      "id": "park_profile_is_generic_contemporary",
-      "description": "The neighborhood-park-v4 profile prescribes pale concrete paths and a generic pad instead of the exact rustic gravel nature-play composition."
-    },
-    {
-      "id": "fixed_rustic_play_kit_not_bound",
-      "description": "The runtime recipe declares a generic three-instance playground cluster rather than the observed pavilion, tower, slide, swing and split-rail kit."
-    },
-    {
-      "id": "variant_geometry_not_image_locked",
-      "description": "The rustic appearance kit exists, but selected-variant geometry is not independently locked to the exact v0 image."
-    }
-  ]
+  "readiness_status": "ready",
+  "known_runtime_gaps": []
 }

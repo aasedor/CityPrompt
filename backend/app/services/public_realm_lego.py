@@ -489,6 +489,14 @@ _PARK_COMPONENTS = (
     "landscape_instances_v1",
     "public_realm_furnishings_v1",
 )
+_NEIGHBORHOOD_PARK_V0_STICKER_COMPONENTS = (
+    "neighborhood_park_v0_ground_program",
+    "rustic_timber_pavilion_v0",
+    "timber_climbing_tower_slide_v0",
+    "timber_swing_frame_v0",
+    "split_rail_fence_v0",
+    "natural_boulder_group_v0",
+)
 _STREET_COMPONENTS = (
     "street_metric_bands_v1",
     "street_edges_markings_v1",
@@ -503,6 +511,7 @@ def _park_variants(
     compatibility: PublicRealmCompatibility,
     appearances: tuple[str, str, str, str],
     structures: tuple[str, str, str, str],
+    component_sets: tuple[tuple[str, ...], ...] | None = None,
 ) -> tuple[PublicRealmSelectionCapability, ...]:
     return tuple(
         _selection(
@@ -512,7 +521,7 @@ def _park_variants(
             appearance_kit_id=appearance,
             planting_structure=structures[index],
             compatibility=compatibility,
-            components=_PARK_COMPONENTS,
+            components=(component_sets[index] if component_sets else _PARK_COMPONENTS),
             default=index == 0,
         )
         for index, appearance in enumerate(appearances)
@@ -907,6 +916,12 @@ _CAPABILITIES: tuple[PublicRealmFamilyCapability, ...] = (
                     "active_recreation",
                     "naturalistic_grove",
                     "active_recreation",
+                ),
+                component_sets=(
+                    _NEIGHBORHOOD_PARK_V0_STICKER_COMPONENTS,
+                    _PARK_COMPONENTS,
+                    _PARK_COMPONENTS,
+                    _PARK_COMPONENTS,
                 ),
             ),
             _selection(

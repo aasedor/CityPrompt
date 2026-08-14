@@ -173,7 +173,8 @@ export function buildParkSpecialtyTerrainAnchors(
     || guide.kind === 'path_loop'
   ));
 
-  const exactProgram = structureKind === 'inclusive_playground_v0_assembly' ? { widthM: 50, depthM: 40, clearanceM: 0.5 }
+  const exactProgram = structureKind === 'neighborhood_park_v0_sticker_assembly' ? { widthM: 50, depthM: 38, clearanceM: 1.5 }
+    : structureKind === 'inclusive_playground_v0_assembly' ? { widthM: 50, depthM: 40, clearanceM: 0.5 }
     : structureKind === 'dog_park_v0_assembly' ? { widthM: 80, depthM: 50, clearanceM: 0.5 }
       : structureKind === 'splash_pad_v0_assembly' ? { widthM: 30, depthM: 25, clearanceM: 0.5 }
         : structureKind === 'community_garden_v0_assembly' ? { widthM: 50, depthM: 50, clearanceM: 0.5 }

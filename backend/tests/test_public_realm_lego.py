@@ -144,6 +144,27 @@ def test_skate_park_v0_recipe_owns_exact_skin_and_metric_depth_assets():
     )
 
 
+def test_neighborhood_park_v0_recipe_owns_the_sticker_method_object_kit():
+    recipe = plan_public_realm_recipe(
+        PublicRealmPlanRequest(
+            archetype_id="neighborhood_park",
+            variant_id="neighborhood_park_v0",
+            target=ParkPolygonTarget(width_m=100, depth_m=80, area_m2=8_000),
+        )
+    )
+
+    assert recipe.family_id == "park_neighborhood_community"
+    assert recipe.appearance_kit_id == "rustic_timber_gravel_v1"
+    assert recipe.component_set_ids == (
+        "neighborhood_park_v0_ground_program",
+        "rustic_timber_pavilion_v0",
+        "timber_climbing_tower_slide_v0",
+        "timber_swing_frame_v0",
+        "split_rail_fence_v0",
+        "natural_boulder_group_v0",
+    )
+
+
 @pytest.mark.parametrize(("archetype_id", "variant_id", "family_id", "appearance_id", "width", "depth"), (
     ("inclusive_playground", "inclusive_playground_v0", "park_inclusive_playground_v0", "inclusive_playground_v0_reference_skin", 55, 45),
     ("dog_park", "dog_park_v0", "park_dog_archetype_v0", "dog_park_v0_reference_skin", 90, 60),

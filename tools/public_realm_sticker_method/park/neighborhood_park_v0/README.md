@@ -1,7 +1,8 @@
 # Neighborhood Park v0 — Sticker Method pilot
 
-This is the evidence-lock wave for applying the Sticker Method to a park. It
-does not claim that the existing runtime is release-ready.
+This is the first executable park pilot for the Sticker Method. It binds the
+selected rustic reference to deterministic skins, five metric GLB object
+families and a site-adaptive runtime assembly.
 
 The exact selected image is authoritative. It depicts a rustic timber nature
 play territory with gravel circulation, split-rail fencing, wildflower edges,
@@ -21,11 +22,11 @@ Run the assessment:
 python tools/public_realm_sticker_method/park/neighborhood_park_v0/audit.py
 ```
 
-The current expected result is `hold`. To use the audit as a release gate:
+Use the fail-closed readiness gate:
 
 ```powershell
 python tools/public_realm_sticker_method/park/neighborhood_park_v0/audit.py --require-ready
 ```
 
-That command intentionally fails until the selected-variant geometry and
-material ownership wave clears every recorded runtime gap.
+The gate verifies the exact reference, source locks, compiled object manifest,
+runtime assembly and explicit surface ownership before returning `ready`.

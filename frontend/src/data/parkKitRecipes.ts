@@ -38,6 +38,9 @@ export interface ParkKitRecipe {
   benches?: BenchRule;
   playground?: ClusterRule;
   pavilion?: ClusterRule;
+  /** Exact-reference objects mounted by the dedicated archetype assembly.
+   * These remain whole at metre scale; the parcel ground adapts around them. */
+  fixedIdentityKit?: readonly string[];
 }
 
 export const NEIGHBORHOOD_PARK: ParkKitRecipe = {
@@ -45,6 +48,13 @@ export const NEIGHBORHOOD_PARK: ParkKitRecipe = {
   benches: { areaPerBench_m2: 2000, min: 2, max: 8, edgeInset_m: 2 },
   playground: { minArea_m2: 3000, clusterRadius_m: 6, instances: 3, clearance_m: 10 },
   pavilion: { minArea_m2: 8000, clusterRadius_m: 0, instances: 1, clearance_m: 8 },
+  fixedIdentityKit: [
+    'rustic_timber_pavilion',
+    'timber_climbing_tower',
+    'timber_swing_frame',
+    'split_rail_fence',
+    'natural_boulder_group',
+  ],
 };
 
 export const URBAN_POCKET_PARK: ParkKitRecipe = {

@@ -1,0 +1,482 @@
+{
+  "adaptation": {
+    "cropFixedObjectsAllowed": false,
+    "nonuniformObjectScalingAllowed": false,
+    "siteAdaptiveGround": true,
+    "wholeFixedKit": true
+  },
+  "archetypeId": "neighborhood_park",
+  "assets": {
+    "natural_boulder_group": {
+      "bytes": 359404,
+      "dimensionsM": [
+        4.7125,
+        2.9671,
+        1.8089
+      ],
+      "file": "natural-boulder-group.glb",
+      "materialRoles": [
+        "stone"
+      ],
+      "meshObjectCount": 4,
+      "metricScale": 1.0,
+      "nonuniformScalingAllowed": false,
+      "owners": [
+        "neighborhood_park_v0"
+      ],
+      "semantic": "natural_boulder_group",
+      "sha256": "01e783daa0bcf2b65f44970a6455ef8d180c9a9208eb0448c1d861d7781b9ae1",
+      "url": "/park-kits/neighborhood-park-rustic-v0/natural-boulder-group.glb"
+    },
+    "split_rail_fence": {
+      "bytes": 364676,
+      "dimensionsM": [
+        4.3353,
+        0.2072,
+        1.5614
+      ],
+      "file": "split-rail-fence-section.glb",
+      "materialRoles": [
+        "timber"
+      ],
+      "meshObjectCount": 4,
+      "metricScale": 1.0,
+      "nonuniformScalingAllowed": false,
+      "owners": [
+        "neighborhood_park_v0"
+      ],
+      "semantic": "split_rail_fence",
+      "sha256": "4a718eefb7d167268812ebcb48d150e643f93b2ffe9f43c406e30433d8bd32a4",
+      "url": "/park-kits/neighborhood-park-rustic-v0/split-rail-fence-section.glb"
+    },
+    "timber_climbing_tower_with_slide": {
+      "bytes": 440492,
+      "dimensionsM": [
+        7.7344,
+        2.35,
+        4.35
+      ],
+      "file": "timber-climbing-tower-slide.glb",
+      "materialRoles": [
+        "timber"
+      ],
+      "meshObjectCount": 24,
+      "metricScale": 1.0,
+      "nonuniformScalingAllowed": false,
+      "owners": [
+        "neighborhood_park_v0"
+      ],
+      "semantic": "timber_climbing_tower_with_slide",
+      "sha256": "8bee3ab414aeef5ad5df37c047d6395d6a0f0b58e37e635f705e3001cda48ccb",
+      "url": "/park-kits/neighborhood-park-rustic-v0/timber-climbing-tower-slide.glb"
+    },
+    "timber_pavilion": {
+      "bytes": 750636,
+      "dimensionsM": [
+        7.8231,
+        5.8,
+        4.3
+      ],
+      "file": "rustic-timber-pavilion.glb",
+      "materialRoles": [
+        "metal",
+        "roof",
+        "timber"
+      ],
+      "meshObjectCount": 25,
+      "metricScale": 1.0,
+      "nonuniformScalingAllowed": false,
+      "owners": [
+        "neighborhood_park_v0"
+      ],
+      "semantic": "timber_pavilion",
+      "sha256": "d7881c8a8ada2c54284aa439fe2c8c291519326ed0b436fd3d2f36f02d1a969c",
+      "url": "/park-kits/neighborhood-park-rustic-v0/rustic-timber-pavilion.glb"
+    },
+    "timber_swing_frame": {
+      "bytes": 580196,
+      "dimensionsM": [
+        5.1,
+        2.9638,
+        3.3362
+      ],
+      "file": "timber-swing-frame.glb",
+      "materialRoles": [
+        "rope",
+        "timber"
+      ],
+      "meshObjectCount": 11,
+      "metricScale": 1.0,
+      "nonuniformScalingAllowed": false,
+      "owners": [
+        "neighborhood_park_v0"
+      ],
+      "semantic": "timber_swing_frame",
+      "sha256": "59e624cfd7b8c0e0cf7724832ee12942ca2051cb2277503f1c0a0a6a0683fc46",
+      "url": "/park-kits/neighborhood-park-rustic-v0/timber-swing-frame.glb"
+    }
+  },
+  "canonicalSiteM": [
+    100.0,
+    80.0
+  ],
+  "compilerInputs": {
+    "kitManifestSha256": "e22f959b8b3168b54314e5af8d5ff1c0c0bf8a805181676d04d5685a1d493cc9",
+    "skinManifestSha256": "44d8305264e8ba7ac2aac2ac28401d7ef3154f5ee195d994fe96a6f8e942246b"
+  },
+  "fixedProgramEnvelopeM": [
+    50.0,
+    38.0
+  ],
+  "groundPatches": [
+    {
+      "centerM": [
+        3.0,
+        -0.5
+      ],
+      "id": "rustic_play_gravel",
+      "kind": "ellipse",
+      "role": "safety",
+      "sizeM": [
+        31.0,
+        20.0
+      ],
+      "zM": 0.028
+    },
+    {
+      "centerM": [
+        -15.0,
+        4.5
+      ],
+      "id": "rustic_pavilion_pad",
+      "kind": "rectangle",
+      "role": "paver",
+      "sizeM": [
+        10.0,
+        8.0
+      ],
+      "zM": 0.035
+    },
+    {
+      "centerM": [
+        -8.8,
+        1.8
+      ],
+      "id": "rustic_connector",
+      "kind": "rectangle",
+      "role": "asphalt",
+      "sizeM": [
+        8.0,
+        3.2
+      ],
+      "yawDeg": -18.0,
+      "zM": 0.031
+    }
+  ],
+  "method": "sticker_method_site_adaptive_whole_program",
+  "placements": [
+    {
+      "assetId": "timber_pavilion",
+      "id": "fixed_timber_pavilion",
+      "positionM": [
+        -15.0,
+        4.5,
+        0.0
+      ],
+      "yawDeg": 0.0
+    },
+    {
+      "assetId": "timber_climbing_tower_with_slide",
+      "id": "fixed_climbing_tower_slide",
+      "positionM": [
+        7.0,
+        -1.5,
+        0.0
+      ],
+      "yawDeg": -8.0
+    },
+    {
+      "assetId": "timber_swing_frame",
+      "id": "fixed_timber_swing",
+      "positionM": [
+        -3.0,
+        5.5,
+        0.0
+      ],
+      "yawDeg": 0.0
+    },
+    {
+      "assetId": "natural_boulder_group",
+      "id": "boulders_west",
+      "positionM": [
+        -10.0,
+        -5.8,
+        0.0
+      ],
+      "yawDeg": 18.0
+    },
+    {
+      "assetId": "natural_boulder_group",
+      "id": "boulders_south",
+      "positionM": [
+        2.0,
+        -8.0,
+        0.0
+      ],
+      "yawDeg": -12.0
+    },
+    {
+      "assetId": "natural_boulder_group",
+      "id": "boulders_east",
+      "positionM": [
+        15.0,
+        5.8,
+        0.0
+      ],
+      "yawDeg": 73.0
+    },
+    {
+      "assetId": "split_rail_fence",
+      "id": "split_rail_fence_00",
+      "positionM": [
+        -5.8,
+        -9.0,
+        0.0
+      ],
+      "yawDeg": 0.0
+    },
+    {
+      "assetId": "split_rail_fence",
+      "id": "split_rail_fence_01",
+      "positionM": [
+        -1.5,
+        -9.0,
+        0.0
+      ],
+      "yawDeg": 2.0
+    },
+    {
+      "assetId": "split_rail_fence",
+      "id": "split_rail_fence_02",
+      "positionM": [
+        2.8,
+        -9.0,
+        0.0
+      ],
+      "yawDeg": -1.0
+    },
+    {
+      "assetId": "split_rail_fence",
+      "id": "split_rail_fence_03",
+      "positionM": [
+        7.1,
+        -9.0,
+        0.0
+      ],
+      "yawDeg": 2.0
+    },
+    {
+      "assetId": "split_rail_fence",
+      "id": "split_rail_fence_04",
+      "positionM": [
+        11.4,
+        -8.3,
+        0.0
+      ],
+      "yawDeg": 16.0
+    },
+    {
+      "assetId": "split_rail_fence",
+      "id": "split_rail_fence_05",
+      "positionM": [
+        15.3,
+        -6.2,
+        0.0
+      ],
+      "yawDeg": 72.0
+    },
+    {
+      "assetId": "split_rail_fence",
+      "id": "split_rail_fence_06",
+      "positionM": [
+        16.0,
+        -2.0,
+        0.0
+      ],
+      "yawDeg": 92.0
+    },
+    {
+      "assetId": "split_rail_fence",
+      "id": "split_rail_fence_07",
+      "positionM": [
+        15.8,
+        2.2,
+        0.0
+      ],
+      "yawDeg": 86.0
+    },
+    {
+      "assetId": "split_rail_fence",
+      "id": "split_rail_fence_08",
+      "positionM": [
+        14.2,
+        6.3,
+        0.0
+      ],
+      "yawDeg": 60.0
+    },
+    {
+      "assetId": "split_rail_fence",
+      "id": "split_rail_fence_09",
+      "positionM": [
+        10.5,
+        8.2,
+        0.0
+      ],
+      "yawDeg": 8.0
+    },
+    {
+      "assetId": "split_rail_fence",
+      "id": "split_rail_fence_10",
+      "positionM": [
+        6.2,
+        8.7,
+        0.0
+      ],
+      "yawDeg": -2.0
+    },
+    {
+      "assetId": "split_rail_fence",
+      "id": "split_rail_fence_11",
+      "positionM": [
+        1.9,
+        8.8,
+        0.0
+      ],
+      "yawDeg": 1.0
+    },
+    {
+      "assetId": "split_rail_fence",
+      "id": "split_rail_fence_12",
+      "positionM": [
+        -7.2,
+        8.3,
+        0.0
+      ],
+      "yawDeg": -8.0
+    },
+    {
+      "assetId": "split_rail_fence",
+      "id": "split_rail_fence_13",
+      "positionM": [
+        -11.2,
+        7.2,
+        0.0
+      ],
+      "yawDeg": -24.0
+    },
+    {
+      "assetId": "split_rail_fence",
+      "id": "split_rail_fence_14",
+      "positionM": [
+        -13.6,
+        4.0,
+        0.0
+      ],
+      "yawDeg": -78.0
+    },
+    {
+      "assetId": "split_rail_fence",
+      "id": "split_rail_fence_15",
+      "positionM": [
+        -13.8,
+        -0.3,
+        0.0
+      ],
+      "yawDeg": -92.0
+    },
+    {
+      "assetId": "split_rail_fence",
+      "id": "split_rail_fence_16",
+      "positionM": [
+        -12.5,
+        -4.4,
+        0.0
+      ],
+      "yawDeg": -64.0
+    }
+  ],
+  "profileId": "neighborhood-park-v4",
+  "reference": {
+    "path": "frontend/public/archetypes/openspaces/neighborhood-park/variant_0.png",
+    "sha256": "38c1079127126017edb7945f77f47d73c4d0dde1fe5a566ac5dc0e791473d5c3"
+  },
+  "schemaVersion": 1,
+  "skin": {
+    "baseUrl": "/park-skins/neighborhood-park-rustic-v0/adaptive-v1",
+    "manifestSha256": "44d8305264e8ba7ac2aac2ac28401d7ef3154f5ee195d994fe96a6f8e942246b",
+    "roles": [
+      "asphalt",
+      "lawn",
+      "metal",
+      "paver",
+      "planting",
+      "rope",
+      "safety",
+      "stone",
+      "timber"
+    ],
+    "sourcePixelsProjected": false
+  },
+  "surfaceOwnership": {
+    "assetOwners": {
+      "natural_boulder_group": {
+        "coverage": "all_exported_mesh_nodes_exactly_once",
+        "materialRoles": [
+          "stone"
+        ],
+        "owner": "neighborhood_park_v0",
+        "semantic": "natural_boulder_group"
+      },
+      "split_rail_fence": {
+        "coverage": "all_exported_mesh_nodes_exactly_once",
+        "materialRoles": [
+          "timber"
+        ],
+        "owner": "neighborhood_park_v0",
+        "semantic": "split_rail_fence"
+      },
+      "timber_climbing_tower_with_slide": {
+        "coverage": "all_exported_mesh_nodes_exactly_once",
+        "materialRoles": [
+          "timber"
+        ],
+        "owner": "neighborhood_park_v0",
+        "semantic": "timber_climbing_tower_with_slide"
+      },
+      "timber_pavilion": {
+        "coverage": "all_exported_mesh_nodes_exactly_once",
+        "materialRoles": [
+          "metal",
+          "roof",
+          "timber"
+        ],
+        "owner": "neighborhood_park_v0",
+        "semantic": "timber_pavilion"
+      },
+      "timber_swing_frame": {
+        "coverage": "all_exported_mesh_nodes_exactly_once",
+        "materialRoles": [
+          "rope",
+          "timber"
+        ],
+        "owner": "neighborhood_park_v0",
+        "semantic": "timber_swing_frame"
+      }
+    },
+    "exactOne": true,
+    "fallbackAllowed": false
+  },
+  "variantId": "neighborhood_park_v0",
+  "wholeElementClearanceM": 1.5
+}

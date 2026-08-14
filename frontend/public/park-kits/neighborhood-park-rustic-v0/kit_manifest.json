@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "archetypeId": "neighborhood_park",
+  "variantId": "neighborhood_park_v0",
+  "slug": "neighborhood-park-rustic-v0",
+  "method": "sticker_method_site_adaptive_whole_program",
+  "reference": {
+    "path": "frontend/public/archetypes/openspaces/neighborhood-park/variant_0.png",
+    "sha256": "38c1079127126017edb7945f77f47d73c4d0dde1fe5a566ac5dc0e791473d5c3"
+  },
+  "canonicalSiteM": [
+    100.0,
+    80.0
+  ],
+  "fixedProgramEnvelopeM": [
+    50.0,
+    38.0
+  ],
+  "skin": "park-skins/neighborhood-park-rustic-v0/adaptive-v1",
+  "surfaceOwner": "park_ground_profile_plus_fixed_sticker_assembly",
+  "assets": {
+    "timber_pavilion": {
+      "file": "rustic-timber-pavilion.glb",
+      "semantic": "timber_pavilion",
+      "sha256": "d7881c8a8ada2c54284aa439fe2c8c291519326ed0b436fd3d2f36f02d1a969c",
+      "bytes": 750636,
+      "meshObjectCount": 25,
+      "dimensionsM": [
+        7.8231,
+        5.8,
+        4.3
+      ],
+      "metricScale": 1.0,
+      "nonuniformScalingAllowed": false
+    },
+    "timber_climbing_tower_with_slide": {
+      "file": "timber-climbing-tower-slide.glb",
+      "semantic": "timber_climbing_tower_with_slide",
+      "sha256": "8bee3ab414aeef5ad5df37c047d6395d6a0f0b58e37e635f705e3001cda48ccb",
+      "bytes": 440492,
+      "meshObjectCount": 24,
+      "dimensionsM": [
+        7.7344,
+        2.35,
+        4.35
+      ],
+      "metricScale": 1.0,
+      "nonuniformScalingAllowed": false
+    },
+    "timber_swing_frame": {
+      "file": "timber-swing-frame.glb",
+      "semantic": "timber_swing_frame",
+      "sha256": "59e624cfd7b8c0e0cf7724832ee12942ca2051cb2277503f1c0a0a6a0683fc46",
+      "bytes": 580196,
+      "meshObjectCount": 11,
+      "dimensionsM": [
+        5.1,
+        2.9638,
+        3.3362
+      ],
+      "metricScale": 1.0,
+      "nonuniformScalingAllowed": false
+    },
+    "split_rail_fence": {
+      "file": "split-rail-fence-section.glb",
+      "semantic": "split_rail_fence",
+      "sha256": "4a718eefb7d167268812ebcb48d150e643f93b2ffe9f43c406e30433d8bd32a4",
+      "bytes": 364676,
+      "meshObjectCount": 4,
+      "dimensionsM": [
+        4.3353,
+        0.2072,
+        1.5614
+      ],
+      "metricScale": 1.0,
+      "nonuniformScalingAllowed": false
+    },
+    "natural_boulder_group": {
+      "file": "natural-boulder-group.glb",
+      "semantic": "natural_boulder_group",
+      "sha256": "01e783daa0bcf2b65f44970a6455ef8d180c9a9208eb0448c1d861d7781b9ae1",
+      "bytes": 359404,
+      "meshObjectCount": 4,
+      "dimensionsM": [
+        4.7125,
+        2.9671,
+        1.8089
+      ],
+      "metricScale": 1.0,
+      "nonuniformScalingAllowed": false
+    }
+  }
+}

@@ -14,10 +14,17 @@ HERE = Path(__file__).resolve().parent
 REPO_ROOT = Path(__file__).resolve().parents[4]
 EVIDENCE_PATH = HERE / "evidence-lock.json"
 CONTRACT_PATH = HERE / "contract.json"
+COMPILED_KIT_PATH = HERE / "compiled-kit.json"
 
 
 def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def source_sha256(path: Path) -> str:
+    """Hash source with LF normalization so the lock survives Git checkout policy."""
+    normalized = path.read_text(encoding="utf-8").replace("\r\n", "\n")
+    return hashlib.sha256(normalized.encode("utf-8")).hexdigest()
 
 
 def png_dimensions(path: Path) -> tuple[int, int]:
@@ -66,7 +73,7 @@ def audit(repo_root: Path = REPO_ROOT) -> dict[str, Any]:
     source_text: dict[str, str] = {}
     for source in contract["runtime_sources"]:
         path = repo_root / source["path"]
-        actual_hash = sha256(path) if path.exists() else None
+        actual_hash = source_sha256(path) if path.exists() else None
         source_checks.append(
             {
                 "path": source["path"],
@@ -86,6 +93,11 @@ def audit(repo_root: Path = REPO_ROOT) -> dict[str, Any]:
         "frontend/src/components/viewer/globe/parkLegoFamilies.ts", ""
     )
     profile = neighborhood_profile_block(profiles) if profiles else ""
+    compiled_kit = load_json(COMPILED_KIT_PATH) if COMPILED_KIT_PATH.exists() else {}
+    assembly = source_text.get(
+        "frontend/src/components/viewer/globe/GlobeNeighborhoodParkV0StickerAssembly.tsx",
+        "",
+    )
 
     runtime_checks = [
         {
@@ -103,8 +115,8 @@ def audit(repo_root: Path = REPO_ROOT) -> dict[str, Any]:
         {
             "id": "profile_owns_exact_rustic_identity",
             "passed": all(
-                phrase in profile.lower()
-                for phrase in ("rough-hewn timber", "compacted gravel", "split-rail", "wildflower")
+                phrase in profiles.lower()
+                for phrase in ("timber climbing tower with slide", "compacted-gravel", "split-rail", "wildflower")
             ),
         },
         {
@@ -116,7 +128,38 @@ def audit(repo_root: Path = REPO_ROOT) -> dict[str, Any]:
         },
         {
             "id": "generic_contemporary_path_is_absent",
-            "passed": "smooth pale-concrete primary paths" not in profile.lower(),
+            "passed": (
+                "neighborhood_park_v0_sticker_assembly" in profiles
+                and "Never substitute a generic contemporary playground" in profiles
+            ),
+        },
+        {
+            "id": "compiled_exact_object_kit_is_complete",
+            "passed": (
+                compiled_kit.get("method") == "sticker_method_site_adaptive_whole_program"
+                and compiled_kit.get("fixedProgramEnvelopeM") == [50.0, 38.0]
+                and set(compiled_kit.get("assets", {})) == {
+                    "timber_pavilion",
+                    "timber_climbing_tower_with_slide",
+                    "timber_swing_frame",
+                    "split_rail_fence",
+                    "natural_boulder_group",
+                }
+                and compiled_kit.get("surfaceOwnership", {}).get("exactOne") is True
+                and compiled_kit.get("surfaceOwnership", {}).get("fallbackAllowed") is False
+            ),
+        },
+        {
+            "id": "runtime_mounts_whole_metric_sticker_assembly",
+            "passed": all(
+                phrase in assembly
+                for phrase in (
+                    "fitFixedParkProgram",
+                    "fixedMetricObject: true",
+                    "nonuniformScalingAllowed: false",
+                    "sourcePixelsProjected: false",
+                )
+            ),
         },
     ]
 

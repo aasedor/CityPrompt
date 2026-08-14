@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import hashlib
 import json
 import subprocess
 import sys
@@ -42,28 +43,58 @@ def test_evidence_and_contract_lock_the_exact_rustic_variant() -> None:
     assert len(contract["fixed_identity_kit"]) == 5
 
 
-def test_assessment_is_integrity_clean_and_honestly_holds_runtime() -> None:
+def test_compiled_manifest_owns_five_metric_glb_families() -> None:
+    compiled = json.loads((PILOT / "compiled-kit.json").read_text(encoding="utf-8"))
+    assert compiled["method"] == "sticker_method_site_adaptive_whole_program"
+    assert compiled["fixedProgramEnvelopeM"] == [50.0, 38.0]
+    assert compiled["adaptation"] == {
+        "cropFixedObjectsAllowed": False,
+        "nonuniformObjectScalingAllowed": False,
+        "siteAdaptiveGround": True,
+        "wholeFixedKit": True,
+    }
+    assert set(compiled["assets"]) == {
+        "timber_pavilion",
+        "timber_climbing_tower_with_slide",
+        "timber_swing_frame",
+        "split_rail_fence",
+        "natural_boulder_group",
+    }
+    assert compiled["skin"]["roles"] == [
+        "asphalt", "lawn", "metal", "paver", "planting", "rope", "safety", "stone", "timber"
+    ]
+    kit_root = ROOT / "frontend/public/park-kits/neighborhood-park-rustic-v0"
+    for asset in compiled["assets"].values():
+        path = kit_root / asset["file"]
+        assert path.exists()
+        assert hashlib.sha256(path.read_bytes()).hexdigest() == asset["sha256"]
+        assert asset["metricScale"] == 1.0
+        assert asset["nonuniformScalingAllowed"] is False
+    assert compiled["surfaceOwnership"] == {
+        "assetOwners": compiled["surfaceOwnership"]["assetOwners"],
+        "exactOne": True,
+        "fallbackAllowed": False,
+    }
+
+
+def test_assessment_is_integrity_clean_and_runtime_ready() -> None:
     module = load_audit_module()
     result = module.audit(ROOT)
 
     assert result["evidence_integrity"] is True
     assert result["source_integrity"] is True
-    assert result["runtime_ready"] is False
-    assert result["status"] == "hold"
+    assert result["runtime_ready"] is True
+    assert result["status"] == "ready"
     failed = {item["id"] for item in result["runtime_checks"] if not item["passed"]}
-    assert failed == {
-        "profile_owns_exact_rustic_identity",
-        "recipe_binds_observed_fixed_kit",
-        "generic_contemporary_path_is_absent",
-    }
+    assert failed == set()
 
 
-def test_require_ready_fails_closed_until_the_geometry_wave() -> None:
+def test_require_ready_passes_after_the_geometry_wave() -> None:
     completed = subprocess.run(
         [sys.executable, str(AUDIT_PATH), "--repo", str(ROOT), "--require-ready"],
         check=False,
         capture_output=True,
         text=True,
     )
-    assert completed.returncode == 1
-    assert '"status": "hold"' in completed.stdout
+    assert completed.returncode == 0
+    assert '"status": "ready"' in completed.stdout

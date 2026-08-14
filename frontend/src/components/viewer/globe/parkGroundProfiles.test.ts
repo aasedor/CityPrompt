@@ -129,7 +129,7 @@ describe('park ground pilot profiles', () => {
   });
 
   it('gives specialty pilots authoritative program guides', () => {
-    expect(resolveParkGroundProfile(zone('neighborhood_park')).guides).toHaveLength(9);
+    expect(resolveParkGroundProfile(zone('neighborhood_park')).guides).toHaveLength(6);
     expect(resolveParkGroundProfile(zone('japanese_garden')).guides).toHaveLength(4);
     expect(resolveParkGroundProfile(zone('sports_field_complex')).guides).toHaveLength(4);
     expect(resolveParkGroundProfile(zone('urban_forest')).guides).toHaveLength(3);
@@ -173,6 +173,27 @@ describe('park ground pilot profiles', () => {
     expect(shouldMountParkProgramFrame(zone('botanical_garden'), 0)).toBe(true);
     expect(shouldMountParkProgramFrame(zone('neighborhood_park'), 0)).toBe(false);
     expect(shouldMountParkProgramFrame(zone('neighborhood_park'), 1)).toBe(true);
+  });
+
+  it('mounts the exact Sticker Method assembly for trusted neighborhood park v0', () => {
+    const candidate = zone('neighborhood_park');
+    candidate.properties = {
+      ...candidate.properties,
+      public_realm_lego: trustedParkRecipe({
+        family_id: 'park_neighborhood_community',
+        family_version: 1,
+        archetype_id: 'neighborhood_park',
+        variant_id: 'neighborhood_park_v0',
+        appearance_kit_id: 'rustic_timber_gravel_v1',
+        planting_structure: 'active_recreation',
+      }),
+    };
+    expect(resolveParkSpecialtyStructureKind(candidate))
+      .toBe('neighborhood_park_v0_sticker_assembly');
+    const profile = resolveParkGroundProfile(candidate);
+    expect(profile.programDescription).toContain('timber climbing tower with slide');
+    expect(profile.criticalConstraints).toContain('Never substitute a generic contemporary playground');
+    expect(profile.guides).toHaveLength(6);
   });
 
   it.each([
@@ -1105,8 +1126,8 @@ describe('park ground pilot profiles', () => {
     expect(prompt).toContain('3 PALE-CREAM circles');
     expect(prompt).toContain('continuous path centerline to every gateway');
     expect(prompt).toContain('surrounding street/path network');
-    expect(prompt).toContain('Never use one perfect circular track');
-    expect(prompt).toContain('native meadow and rain-garden');
+    expect(prompt).toContain('Never substitute a generic contemporary playground');
+    expect(prompt).toContain('lawn and wildflower rooms remain site-adaptive');
   });
 
   it('sets a mature park quality bar appropriate to nadir and oblique views', () => {
