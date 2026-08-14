@@ -1,0 +1,54 @@
+{
+  "schema_version": "sticker_method_public_realm_evidence_v1",
+  "initiative": "woonerf_shared_street_v0_sticker_method_pilot",
+  "archetype_id": "woonerf_shared_street",
+  "variant_id": "woonerf_shared_street_v0",
+  "authority": "selected_variant_images_first",
+  "references": [
+    {
+      "path": "frontend/public/archetypes/streets/woonerf-shared-street/variant_0.png",
+      "sha256": "620ea49bdc3589b4d1fd6ce7a6b586af75075951c8260c2d56e88270ab3c0999",
+      "width_px": 1024,
+      "height_px": 768,
+      "mode": "RGB",
+      "role": "street_identity"
+    },
+    {
+      "path": "frontend/public/archetypes/streets/woonerf-shared-street/variant_0_angle_60.jpg",
+      "sha256": "b330e8ada40f3bd5bfb1cde41fdfe49b3ed3c22b592e5f0bb1c5128543bf9320",
+      "width_px": 1195,
+      "height_px": 896,
+      "mode": "RGB",
+      "role": "oblique_and_module_rhythm"
+    },
+    {
+      "path": "frontend/public/archetypes/streets/woonerf-shared-street/variant_0_angle_90.jpg",
+      "sha256": "5bcd037316f90a9510ea1f9275fa147bd9f99fc78a3be77b7b6815e98f0f6a88",
+      "width_px": 1195,
+      "height_px": 896,
+      "mode": "RGB",
+      "role": "plan_and_longitudinal_rhythm"
+    }
+  ],
+  "observed_identity": [
+    "continuous flush warm-brick pedestrian promenade",
+    "regular pale mosaic square inlays on the corridor centreline",
+    "repeated timber pergola frames at bounded social nodes",
+    "dense flowering vine canopy over the pergolas",
+    "large terracotta citrus planters and clipped small trees",
+    "ornamental wrought-iron benches and historic lamps",
+    "an intimate building-to-building public room with no visible motor lane"
+  ],
+  "constrained_completion": [
+    "preserve a continuous accessible clear route through every module",
+    "terminate modules at graph-owned intersections and building thresholds",
+    "use the catalogue 10 metre width as the diagnostic right-of-way until surveyed dimensions exist"
+  ],
+  "rejected_generic_claims": [
+    "alternating vehicle chicane as the primary identity",
+    "informal parked cars or a distinct motor travel strip",
+    "children's play nodes and raised traffic tables",
+    "generic deciduous tree pits replacing citrus pots and vine pergolas",
+    "standard curbs, lane markings, signals, or a separated sidewalk"
+  ]
+}

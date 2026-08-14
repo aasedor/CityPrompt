@@ -1,0 +1,92 @@
+{
+  "schema_version": "sticker_method_public_realm_contract_v1",
+  "initiative": "woonerf_shared_street_v0_sticker_method_pilot",
+  "representation": "connected_corridor_lego",
+  "archetype_id": "woonerf_shared_street",
+  "variant_id": "woonerf_shared_street_v0",
+  "canonical_diagnostic_segment_m": {
+    "width": 10.0,
+    "length": 96.0
+  },
+  "corridor_rule": {
+    "cross_section_width_m": 10.0,
+    "curbs_allowed": false,
+    "lane_markings_allowed": false,
+    "nonuniform_module_scaling_allowed": false,
+    "graph_owned_endpoints": true,
+    "continuous_accessible_route_required": true
+  },
+  "module_schedule": {
+    "nominal_length_m": 12.0,
+    "allowed_modules": [
+      "open_mosaic_promenade_bay",
+      "pergola_citrus_social_bay"
+    ],
+    "whole_module_only": true,
+    "partial_terminal_module_allowed": false
+  },
+  "fixed_identity_kit": [
+    "timber_pergola_frame",
+    "flowering_vine_canopy",
+    "terracotta_citrus_planter",
+    "wrought_iron_bench",
+    "historic_pedestrian_lamp",
+    "pale_mosaic_square_inlay"
+  ],
+  "surface_roles": [
+    "warm_herringbone_brick_paving",
+    "pale_stone_mosaic_inlay",
+    "permeable_planter_surface",
+    "timber_pergola",
+    "terracotta_planter",
+    "aged_wrought_iron",
+    "flowering_vine_and_citrus_foliage"
+  ],
+  "hard_stops": [
+    "missing pergola-citrus identity module",
+    "separate motor lane, raised curb, or standard lane marking",
+    "generic vehicle chicane or play-node substitution",
+    "disconnected pedestrian clear route",
+    "cropped or longitudinally stretched pergola module",
+    "fixture collision with accessible route or building threshold",
+    "paving sticker crossing planter, mosaic, or graph-owned intersection domains",
+    "module phase jump or material scale stretch at a connection"
+  ],
+  "runtime_sources": [
+    {
+      "path": "frontend/src/components/viewer/globe/streetVisualContracts.ts",
+      "sha256": "123310e960f7c599e93235b4763091d154e574e8a61736829feeeca6021a0349"
+    },
+    {
+      "path": "frontend/src/components/viewer/globe/streetSectionProfiles.ts",
+      "sha256": "b75cbf9d9c8084012ec517ff9655e44906a4c712c159cc9fb23810f4984a8454"
+    },
+    {
+      "path": "frontend/src/components/viewer/globe/streetFamilyFurniture.ts",
+      "sha256": "935883b524c65fe45b9f793e5fb90ec319e091f2e2537be29c666eb61ada5c10"
+    },
+    {
+      "path": "frontend/src/components/viewer/globe/GlobeStreetDetailLayer.tsx",
+      "sha256": "d1706b39be8469ca3bd9f089086ff1d2c4481cd646b4c8a4bb920ac298553053"
+    },
+    {
+      "path": "frontend/src/data/renderlockV1Streets.ts",
+      "sha256": "502002efb1e8e65b9f44e9c82d8c6ba9d718a7fc0c6327b9f40ef119e4518764"
+    }
+  ],
+  "readiness_status": "hold",
+  "known_runtime_gaps": [
+    {
+      "id": "visual_contract_uses_generic_dutch_chicane",
+      "description": "The current v0 contract requires chicanes, raised tables, play elements and sparse vehicles that are not present in the exact selected images."
+    },
+    {
+      "id": "pergola_corridor_module_missing",
+      "description": "No complete timber pergola, flowering-vine, citrus-planter and seating module is bound to the street family."
+    },
+    {
+      "id": "cross_section_preserves_motor_band",
+      "description": "The current section reserves a 6.7 metre motor/shared band between planter edges instead of the image-locked full pedestrian promenade room."
+    }
+  ]
+}
