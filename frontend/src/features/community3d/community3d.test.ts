@@ -278,6 +278,31 @@ describe('community 3D plan contract', () => {
       .toEqual(['building', 'green_space', 'road']);
   });
 
+  it('recompiles a building whose persisted compile marker outlived its model', () => {
+    const building = zone('development_area', { _plan_role: 'building' });
+    building.building_id = 'deleted-building';
+    const compiledBuilding = {
+      ...building,
+      properties: withCommunity3DMeta(building, 'lego_assembly', '2026-07-17T01:00:00Z'),
+    };
+    const park = zone('green_space', { _plan_role: 'open_space' });
+    const compiledPark = {
+      ...park,
+      properties: withCommunity3DMeta(park, 'park_kit', '2026-07-17T01:00:00Z'),
+    };
+    const availableBuildingIds = new Set<string>();
+
+    expect(resolveCommunity3DAction(
+      [compiledBuilding, compiledPark],
+      availableBuildingIds,
+    )).toBe('complete');
+    expect(selectCommunity3DCompileZones(
+      [compiledBuilding, compiledPark],
+      'complete',
+      availableBuildingIds,
+    )).toEqual([compiledBuilding]);
+  });
+
   it('attests only browser-executable nested recipes for AI public realm', () => {
     const aiPark = zone('green_space', {
       _plan_role: 'open_space',

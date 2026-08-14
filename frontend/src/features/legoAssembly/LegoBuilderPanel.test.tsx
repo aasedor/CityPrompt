@@ -529,6 +529,9 @@ describe('LegoBuilderPanel', () => {
     expect(await screen.findByText(/Assembled 1/)).toBeInTheDocument();
     expect(screen.getByText(/Skipped 1/)).toBeInTheDocument();
     expect(screen.getByText(/not placed in the scene/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /^place$/i })).toBeDisabled();
+    expect(screen.getByRole('button', { name: /rebuild current 3d scene/i })).toBeDisabled();
+    expect(apiPost.mock.calls.some(([url]) => url === '/api/v1/lego-assembly/place-community')).toBe(false);
   });
 
   it('Build community posts every assembled building and badges the rows', async () => {

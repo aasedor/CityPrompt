@@ -347,7 +347,11 @@ export function GlobeAIRenderPanel({
     () => [...buildableZones, ...communityGroundZones],
     [buildableZones, communityGroundZones],
   );
-  const community3DAction = resolveCommunity3DAction(communityZones);
+  const availableBuildingIds = useMemo(
+    () => new Set(buildings.map((building) => building.id)),
+    [buildings],
+  );
+  const community3DAction = resolveCommunity3DAction(communityZones, availableBuildingIds);
   const hasCompiledCommunity = communityZones.length > 0 && community3DAction === 'rebuild';
   const community3DCaptureClaims = useMemo(
     () => getCommunity3DCaptureClaims(authoritativeZones, buildings),
@@ -412,8 +416,12 @@ export function GlobeAIRenderPanel({
     }
   }, [direct3DAvailable]);
   const communityCompileZones = useMemo(
-    () => selectCommunity3DCompileZones(communityZones, community3DAction),
-    [community3DAction, communityZones],
+    () => selectCommunity3DCompileZones(
+      communityZones,
+      community3DAction,
+      availableBuildingIds,
+    ),
+    [availableBuildingIds, community3DAction, communityZones],
   );
   const communityCompileBuildingCount = communityCompileZones.filter(
     (zone) => resolveCommunity3DKind(zone) === 'building',

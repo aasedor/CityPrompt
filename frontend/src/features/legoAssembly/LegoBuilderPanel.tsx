@@ -119,7 +119,7 @@ export function LegoBuilderPanel({
   }, []);
 
   const handlePlaceOne = useCallback(async (target: ZoneBuildItem) => {
-    if (!target.plan || target.placeState === 'placing') return;
+    if (!target.plan || !target.offset || target.placeState === 'placing') return;
     setPlaceState(target.zone.id, 'placing');
     try {
       await legoAssemblyApi.place(target.zone.id, recipeFromPlan(target as ZoneBuildItem & { plan: LegoAssemblyPlan }));
@@ -133,8 +133,8 @@ export function LegoBuilderPanel({
 
   const handlePlaceAll = useCallback(async (forceRebuild = false) => {
     const placeable = items.filter(
-      (item): item is ZoneBuildItem & { plan: LegoAssemblyPlan } => (
-        Boolean(item.plan) && (forceRebuild || item.placeState !== 'placed')
+      (item): item is ZoneBuildItem & { plan: LegoAssemblyPlan; offset: [number, number] } => (
+        Boolean(item.plan && item.offset) && (forceRebuild || item.placeState !== 'placed')
       ),
     );
     const massingOnly = items.filter((item) => (
@@ -347,7 +347,9 @@ export function LegoBuilderPanel({
   const parkCount = groundItems.filter((item) => item.kind === 'park').length;
   const streetCount = groundItems.filter((item) => item.kind === 'street').length;
   const compiledGroundCount = groundItems.filter((item) => item.state === 'compiled').length;
-  const unplacedDetailedCount = items.filter((item) => item.plan && item.placeState !== 'placed').length;
+  const unplacedDetailedCount = items.filter(
+    (item) => item.plan && item.offset && item.placeState !== 'placed',
+  ).length;
   const uncompiledMassingCount = items.filter((item) => (
     !item.plan && item.offset && item.massingState !== 'compiled'
   )).length;
@@ -356,6 +358,8 @@ export function LegoBuilderPanel({
     || uncompiledMassingCount > 0
     || compiledGroundCount < groundItems.length
   );
+  const hasPlaceableSceneContent = items.some((item) => Boolean(item.offset))
+    || groundItems.length > 0;
   const saveResultIsError = Boolean(
     items.some((item) => item.placeState === 'failed' || item.massingState === 'failed')
     || groundItems.some((item) => item.state === 'failed'),
@@ -532,8 +536,10 @@ export function LegoBuilderPanel({
                       <button
                         type="button"
                         onClick={() => void handlePlaceOne(item)}
-                        disabled={item.placeState === 'placing' || placingAll}
-                        title="Save this recipe on the zone's building (created if needed) and show the stack on the globe."
+                        disabled={!item.offset || item.placeState === 'placing' || placingAll}
+                        title={item.offset
+                          ? "Save this recipe on the zone's building (created if needed) and show the stack on the globe."
+                          : 'Restore polygon coordinates before placing this building.'}
                         className="flex shrink-0 items-center gap-1 rounded border border-[#151515] bg-white px-1.5 py-0.5 text-[10px] font-black uppercase hover:bg-[#c9ff3d] disabled:opacity-50"
                       >
                         {item.placeState === 'placing'
@@ -688,7 +694,7 @@ export function LegoBuilderPanel({
             <button
               type="button"
               onClick={() => void handlePlaceAll(!canBuildCommunity)}
-              disabled={(items.length === 0 && groundItems.length === 0) || placingAll || planning || saving}
+              disabled={!hasPlaceableSceneContent || placingAll || planning || saving}
               title={canBuildCommunity
                 ? 'Compile every plan zone: supported buildings use real LEGO families, unsupported families use exact-footprint neutral massing, and parks/streets become generated ground systems.'
                 : 'Rebuild every current building, public-realm system, and residual landscape in one atomic scene revision.'}

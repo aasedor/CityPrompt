@@ -299,10 +299,24 @@ export type Community3DAction = 'generate' | 'complete' | 'rebuild';
  * completion so newly imported detailed building families can replace honest
  * planned massing, while the label prevents an already-built scene from
  * looking as if it has never been generated. */
-export function resolveCommunity3DAction(zones: SiteZone[]): Community3DAction {
+function isMaterializedCommunity3D(
+  zone: SiteZone,
+  availableBuildingIds?: ReadonlySet<string>,
+): boolean {
+  if (!isCommunity3DCompiled(zone)) return false;
+  if (resolveCommunity3DKind(zone) !== 'building' || !availableBuildingIds) return true;
+  return Boolean(zone.building_id && availableBuildingIds.has(zone.building_id));
+}
+
+export function resolveCommunity3DAction(
+  zones: SiteZone[],
+  availableBuildingIds?: ReadonlySet<string>,
+): Community3DAction {
   const communityZones = zones.filter((zone) => resolveCommunity3DKind(zone) !== null);
   if (communityZones.length === 0) return 'generate';
-  const compiledCount = communityZones.filter(isCommunity3DCompiled).length;
+  const compiledCount = communityZones.filter(
+    (zone) => isMaterializedCommunity3D(zone, availableBuildingIds),
+  ).length;
   if (compiledCount === 0) return 'generate';
   if (compiledCount === communityZones.length) return 'rebuild';
   return 'complete';
@@ -315,11 +329,15 @@ export function resolveCommunity3DAction(zones: SiteZone[]): Community3DAction {
  * detailed module family replaces planned massing. */
 export function selectCommunity3DCompileZones(
   zones: SiteZone[],
-  action = resolveCommunity3DAction(zones),
+  action?: Community3DAction,
+  availableBuildingIds?: ReadonlySet<string>,
 ): SiteZone[] {
   const communityZones = zones.filter((zone) => resolveCommunity3DKind(zone) !== null);
-  if (action !== 'complete') return communityZones;
-  return communityZones.filter((zone) => !isCommunity3DCompiled(zone));
+  const resolvedAction = action ?? resolveCommunity3DAction(zones, availableBuildingIds);
+  if (resolvedAction !== 'complete') return communityZones;
+  return communityZones.filter(
+    (zone) => !isMaterializedCommunity3D(zone, availableBuildingIds),
+  );
 }
 
 /**
