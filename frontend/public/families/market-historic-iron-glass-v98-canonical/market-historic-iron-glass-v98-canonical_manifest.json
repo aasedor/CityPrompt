@@ -1,0 +1,338 @@
+{
+  "manifest_schema": 3,
+  "grammar_schema_version": 3,
+  "generator": {
+    "name": "archetype_compiler/blender_generate.py",
+    "version": "0.16.0",
+    "blender_version": "5.1.2",
+    "render_engine": "CYCLES"
+  },
+  "created_at": "2026-08-14T10:15:47.810821+00:00",
+  "family": "market-historic-iron-glass-v98-canonical",
+  "archetype_id": "food_hall_market_hall",
+  "archetype_label": "Food Hall / Market Hall",
+  "variant_id": "market_historic_iron_glass",
+  "generation_archetype_id": "food_hall_market_hall_variant_0",
+  "aesthetic_category_id": null,
+  "development_type": "commercial_retail",
+  "reuse_keys": [
+    "food_hall_market_hall",
+    "Commercial \u2014 Market / Specialty Retail"
+  ],
+  "generation_tags": [],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "fixed_landmark"
+    ],
+    "placementMode": "select_and_place",
+    "fixedDimensions": {
+      "width": 45.0,
+      "depth": 60.0
+    },
+    "polygonFit": false
+  },
+  "placement_contract": {
+    "mode": "fixed_landmark",
+    "footprint_m": {
+      "width": 45.0,
+      "depth": 60.0
+    },
+    "polygon_fit": false,
+    "repeat_count": 1,
+    "continuous_resize_allowed": false
+  },
+  "coordinate_contract": {
+    "units": "metres",
+    "blender_up": "+Z",
+    "gltf_up": "+Y (export_yup)",
+    "origin": "bottom centre",
+    "front_facade": "-Y in Blender, +Z in glTF",
+    "transforms": "applied"
+  },
+  "textures": {
+    "keys_used": [
+      "black_metal",
+      "concrete",
+      "red_brick",
+      "sedum_roof"
+    ],
+    "uv_tile_metres": 2.0,
+    "ao_requested": false,
+    "uv_layers": {
+      "UVMap": "box projection, tiled materials",
+      "AOMap": "smart project, baked AO"
+    }
+  },
+  "generation_quality": {
+    "schema": "building-generation-quality@1",
+    "status": "not_declared",
+    "gates": []
+  },
+  "facade_sheet": null,
+  "massing_graph": {
+    "schema": "massing-graph@1",
+    "profile": "market-historic-iron-glass-sticker-landmark-v98-canonical",
+    "description": "Exact-image 45 x 60 metre market landmark: open central nave, two side mezzanines, physical cast-iron frame, arched masonry flanks, closed barrel glazing, asymmetric slate/zinc aisles and ridge lantern.",
+    "target_views": [
+      "archetype_match",
+      "street",
+      "front_corner",
+      "rear_corner",
+      "facade_close",
+      "roof_audit",
+      "aerial"
+    ]
+  },
+  "dimensions": {
+    "width_m": 45.0,
+    "depth_m": 60.0,
+    "podium_height_m": 5.2,
+    "floor_height_m": 10.0,
+    "setback_height_m": 10.0,
+    "roof_height_m": 4.8,
+    "default_floors": 2,
+    "min_floors": 2,
+    "max_floors": 2,
+    "crown_height_m": 10.0
+  },
+  "min_floors": 2,
+  "max_floors": 2,
+  "default_floors": 2,
+  "modules": [
+    {
+      "role": "podium",
+      "variant_key": "default",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "market-historic-iron-glass-v98-canonical_podium.glb",
+      "module_family": "market-historic-iron-glass-v98-canonical",
+      "width_m": 45.0,
+      "depth_m": 60.0,
+      "height_m": 5.2,
+      "floor_height_m": 10.0,
+      "repeatable_z": false,
+      "triangle_count": 25180,
+      "material_count": 11,
+      "texture_keys": [
+        "black_metal",
+        "concrete",
+        "red_brick",
+        "sedum_roof"
+      ],
+      "ao_baked": false,
+      "size_bytes": 3878420
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_a",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "market-historic-iron-glass-v98-canonical_floor_typical_a.glb",
+      "module_family": "market-historic-iron-glass-v98-canonical",
+      "width_m": 45.0,
+      "depth_m": 60.0,
+      "height_m": 10.0,
+      "floor_height_m": 10.0,
+      "repeatable_z": true,
+      "triangle_count": 30228,
+      "material_count": 11,
+      "texture_keys": [
+        "black_metal",
+        "concrete",
+        "red_brick",
+        "sedum_roof"
+      ],
+      "ao_baked": false,
+      "size_bytes": 3883392
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_b",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "market-historic-iron-glass-v98-canonical_floor_typical_b.glb",
+      "module_family": "market-historic-iron-glass-v98-canonical",
+      "width_m": 45.0,
+      "depth_m": 60.0,
+      "height_m": 10.0,
+      "floor_height_m": 10.0,
+      "repeatable_z": true,
+      "triangle_count": 30228,
+      "material_count": 11,
+      "texture_keys": [
+        "black_metal",
+        "concrete",
+        "red_brick",
+        "sedum_roof"
+      ],
+      "ao_baked": false,
+      "size_bytes": 3882528
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_c",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "market-historic-iron-glass-v98-canonical_floor_typical_c.glb",
+      "module_family": "market-historic-iron-glass-v98-canonical",
+      "width_m": 45.0,
+      "depth_m": 60.0,
+      "height_m": 10.0,
+      "floor_height_m": 10.0,
+      "repeatable_z": true,
+      "triangle_count": 30228,
+      "material_count": 11,
+      "texture_keys": [
+        "black_metal",
+        "concrete",
+        "red_brick",
+        "sedum_roof"
+      ],
+      "ao_baked": false,
+      "size_bytes": 3883392
+    },
+    {
+      "role": "setback",
+      "variant_key": "upper",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [
+        1
+      ],
+      "filename": "market-historic-iron-glass-v98-canonical_setback_upper.glb",
+      "module_family": "market-historic-iron-glass-v98-canonical",
+      "width_m": 45.0,
+      "depth_m": 60.0,
+      "height_m": 10.0,
+      "floor_height_m": 10.0,
+      "repeatable_z": false,
+      "setback_min_floors": 5,
+      "triangle_count": 28292,
+      "material_count": 12,
+      "texture_keys": [
+        "black_metal",
+        "concrete",
+        "red_brick",
+        "sedum_roof"
+      ],
+      "ao_baked": false,
+      "size_bytes": 3890368
+    },
+    {
+      "role": "crown",
+      "variant_key": "crown",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [
+        1
+      ],
+      "filename": "market-historic-iron-glass-v98-canonical_crown_crown.glb",
+      "module_family": "market-historic-iron-glass-v98-canonical",
+      "width_m": 45.0,
+      "depth_m": 60.0,
+      "height_m": 10.0,
+      "floor_height_m": 10.0,
+      "repeatable_z": false,
+      "triangle_count": 28688,
+      "material_count": 11,
+      "texture_keys": [
+        "black_metal",
+        "concrete",
+        "red_brick",
+        "sedum_roof"
+      ],
+      "ao_baked": false,
+      "size_bytes": 3918012
+    },
+    {
+      "role": "roof",
+      "variant_key": "default",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [],
+      "filename": "market-historic-iron-glass-v98-canonical_roof.glb",
+      "module_family": "market-historic-iron-glass-v98-canonical",
+      "width_m": 45.0,
+      "depth_m": 60.0,
+      "height_m": 4.8,
+      "floor_height_m": 10.0,
+      "repeatable_z": false,
+      "triangle_count": 2528,
+      "material_count": 5,
+      "texture_keys": [
+        "black_metal",
+        "concrete",
+        "red_brick",
+        "sedum_roof"
+      ],
+      "ao_baked": false,
+      "size_bytes": 2159676
+    }
+  ],
+  "assembled": {
+    "filename": "market-historic-iron-glass-v98-canonical_assembled.glb",
+    "floors": 2,
+    "uses_setback": false,
+    "uses_crown": false,
+    "height_m": 16.72,
+    "triangle_count": 47072,
+    "stack": [
+      {
+        "role": "massing_graph",
+        "variant_key": "market-historic-iron-glass-sticker-landmark-v98-canonical",
+        "level": 0,
+        "z_m": 0.0,
+        "height_m": 16.72
+      }
+    ],
+    "footprint_profile": "rectangle",
+    "footprint_target": {
+      "width_m": 45.0,
+      "depth_m": 60.0,
+      "wing_depth_m": 60.0,
+      "segments": [
+        {
+          "id": "main",
+          "centre_x_m": 0.0,
+          "centre_y_m": 0.0,
+          "length_m": 45.0,
+          "thickness_m": 60.0,
+          "rotation_degrees": 0.0
+        }
+      ]
+    },
+    "massing_graph": {
+      "schema": "massing-graph@1",
+      "profile": "market-historic-iron-glass-sticker-landmark-v98-canonical",
+      "node_count": 1,
+      "assembly_count": 1247,
+      "void_count": 0
+    },
+    "final_surface_audit_status": "pass",
+    "final_surface_audit_checked_faces": 6409,
+    "final_surface_audit_failure_count": 0
+  },
+  "thumbnail": "market-historic-iron-glass-v98-canonical_preview.png",
+  "renders": [
+    "market-historic-iron-glass-v98-canonical_preview.png",
+    "market-historic-iron-glass-v98-canonical_archetype_match.png",
+    "market-historic-iron-glass-v98-canonical_street.png",
+    "market-historic-iron-glass-v98-canonical_front_corner_oblique.png",
+    "market-historic-iron-glass-v98-canonical_rear_corner_oblique.png",
+    "market-historic-iron-glass-v98-canonical_facade_close.png",
+    "market-historic-iron-glass-v98-canonical_roof_audit.png",
+    "market-historic-iron-glass-v98-canonical_aerial.png",
+    "market-historic-iron-glass-v98-canonical_context.png"
+  ]
+}
