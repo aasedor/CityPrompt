@@ -1,0 +1,233 @@
+{
+  "schema": "siteforge.intrinsic-sticker-assets@1",
+  "family": "brutalist_heroic_v98",
+  "reference_sha256": {
+    "frontend/public/archetypes/buildings/brutalist_institutional/variant_0.png": "955d4d45a2148325e2529d02139192c47080210d304bbc0ad856c50b9ef2abbc",
+    "frontend/public/archetypes/buildings/brutalist_institutional/variant_0_angle_60.jpg": "ab69b3ddf450414c39d8fbb3c2e4886ec6748b0d02c6c2d751f000c2b456031b",
+    "frontend/public/archetypes/buildings/brutalist_institutional/variant_0_angle_90.jpg": "427226ea95af68f6e54c0302896ca42dd8cb42167294f0396465cec801317bd5"
+  },
+  "metric_concrete_tile_m": 2.0,
+  "assets": {
+    "aged_service_metal_intrinsic.png": {
+      "path": "tools/archetype_compiler/sticker_assets/brutalist_heroic_v98/aged_service_metal_intrinsic.png",
+      "sha256": "3f47f5f673a682df078b391f32a91926013d8040c90ad72c4a3d0fd5bd7d4464",
+      "mode": "RGB",
+      "size": [
+        1024,
+        1024
+      ],
+      "semantic_exclusions": [
+        "printed openings",
+        "printed frames",
+        "printed panel joints",
+        "directional lighting",
+        "reflection horizon",
+        "text"
+      ]
+    },
+    "boardformed_concrete_front_intrinsic.png": {
+      "path": "tools/archetype_compiler/sticker_assets/brutalist_heroic_v98/boardformed_concrete_front_intrinsic.png",
+      "sha256": "aa6b3fc346d6f8d1ea8c9474ec2753c7e0a4ad17c6e8b547b11cf0bb70700104",
+      "mode": "RGB",
+      "size": [
+        1024,
+        1024
+      ],
+      "semantic_exclusions": [
+        "printed openings",
+        "printed frames",
+        "printed panel joints",
+        "directional lighting",
+        "reflection horizon",
+        "text"
+      ]
+    },
+    "boardformed_concrete_return_intrinsic.png": {
+      "path": "tools/archetype_compiler/sticker_assets/brutalist_heroic_v98/boardformed_concrete_return_intrinsic.png",
+      "sha256": "d3403085a855d9c5e416329136e7a77cdae88be58bf684a9f6e40b62bcdfef3e",
+      "mode": "RGB",
+      "size": [
+        1024,
+        1024
+      ],
+      "semantic_exclusions": [
+        "printed openings",
+        "printed frames",
+        "printed panel joints",
+        "directional lighting",
+        "reflection horizon",
+        "text"
+      ]
+    },
+    "dark_bronze_joinery_intrinsic.png": {
+      "path": "tools/archetype_compiler/sticker_assets/brutalist_heroic_v98/dark_bronze_joinery_intrinsic.png",
+      "sha256": "79ab61ce55bbc480852510d5b20930ba8459e5da3c882d43bee5dceec864bde0",
+      "mode": "RGB",
+      "size": [
+        1024,
+        1024
+      ],
+      "semantic_exclusions": [
+        "printed openings",
+        "printed frames",
+        "printed panel joints",
+        "directional lighting",
+        "reflection horizon",
+        "text"
+      ]
+    },
+    "deep_concrete_reveal_intrinsic.png": {
+      "path": "tools/archetype_compiler/sticker_assets/brutalist_heroic_v98/deep_concrete_reveal_intrinsic.png",
+      "sha256": "2a833ed8fc385a80353e5a099fb8d359ad1c14df3d3a07b0901e35fe72ebd8fe",
+      "mode": "RGB",
+      "size": [
+        1024,
+        1024
+      ],
+      "semantic_exclusions": [
+        "printed openings",
+        "printed frames",
+        "printed panel joints",
+        "directional lighting",
+        "reflection horizon",
+        "text"
+      ]
+    },
+    "ground_public_interior_atlas.png": {
+      "path": "tools/archetype_compiler/sticker_assets/brutalist_heroic_v98/ground_public_interior_atlas.png",
+      "sha256": "9de70e10d6e9cc91c79da1cedfbbc32e2fcecf15048fbc22bda15f1c253e5de7",
+      "mode": "RGB",
+      "size": [
+        2048,
+        1024
+      ],
+      "semantic_exclusions": [
+        "printed openings",
+        "printed frames",
+        "printed panel joints",
+        "directional lighting",
+        "reflection horizon",
+        "text"
+      ]
+    },
+    "pale_concrete_coping_intrinsic.png": {
+      "path": "tools/archetype_compiler/sticker_assets/brutalist_heroic_v98/pale_concrete_coping_intrinsic.png",
+      "sha256": "bde492274d0c7df4601e14de43bae2485ac5c50d2427815e13844c9a0fe34443",
+      "mode": "RGB",
+      "size": [
+        1024,
+        1024
+      ],
+      "semantic_exclusions": [
+        "printed openings",
+        "printed frames",
+        "printed panel joints",
+        "directional lighting",
+        "reflection horizon",
+        "text"
+      ]
+    },
+    "physical_neutral_glass_intrinsic.png": {
+      "path": "tools/archetype_compiler/sticker_assets/brutalist_heroic_v98/physical_neutral_glass_intrinsic.png",
+      "sha256": "11fffcd606eac5a56c36ebc57e30305a3326a6c20f26bfa49985e7fe4e9f6649",
+      "mode": "RGB",
+      "size": [
+        1024,
+        1024
+      ],
+      "semantic_exclusions": [
+        "printed openings",
+        "printed frames",
+        "printed panel joints",
+        "directional lighting",
+        "reflection horizon",
+        "text"
+      ]
+    },
+    "roof_membrane_intrinsic.png": {
+      "path": "tools/archetype_compiler/sticker_assets/brutalist_heroic_v98/roof_membrane_intrinsic.png",
+      "sha256": "5263a2d0a084eb19d627521e2ef1a6c029f97e356b5f59ffb4477be96f740364",
+      "mode": "RGB",
+      "size": [
+        1024,
+        1024
+      ],
+      "semantic_exclusions": [
+        "printed openings",
+        "printed frames",
+        "printed panel joints",
+        "directional lighting",
+        "reflection horizon",
+        "text"
+      ]
+    },
+    "roof_perimeter_flashing_intrinsic.png": {
+      "path": "tools/archetype_compiler/sticker_assets/brutalist_heroic_v98/roof_perimeter_flashing_intrinsic.png",
+      "sha256": "c2f8ce07f12db89d27764421cdcab49f1c396199f31e397b751a26f8b31f6ad2",
+      "mode": "RGB",
+      "size": [
+        1024,
+        1024
+      ],
+      "semantic_exclusions": [
+        "printed openings",
+        "printed frames",
+        "printed panel joints",
+        "directional lighting",
+        "reflection horizon",
+        "text"
+      ]
+    },
+    "sunken_roof_court_intrinsic.png": {
+      "path": "tools/archetype_compiler/sticker_assets/brutalist_heroic_v98/sunken_roof_court_intrinsic.png",
+      "sha256": "59cc2ef34017076528db8f51520c0132d5f2e56b5ff6fd14c779e7be213a0bc6",
+      "mode": "RGB",
+      "size": [
+        1024,
+        1024
+      ],
+      "semantic_exclusions": [
+        "printed openings",
+        "printed frames",
+        "printed panel joints",
+        "directional lighting",
+        "reflection horizon",
+        "text"
+      ]
+    },
+    "upper_institutional_interior_atlas.png": {
+      "path": "tools/archetype_compiler/sticker_assets/brutalist_heroic_v98/upper_institutional_interior_atlas.png",
+      "sha256": "38758d984ec90a53d4057a90cda14ea91b4f6a25b32411545e91e0002f12a703",
+      "mode": "RGB",
+      "size": [
+        2048,
+        1024
+      ],
+      "semantic_exclusions": [
+        "printed openings",
+        "printed frames",
+        "printed panel joints",
+        "directional lighting",
+        "reflection horizon",
+        "text"
+      ]
+    },
+    "weathered_concrete_soffit_intrinsic.png": {
+      "path": "tools/archetype_compiler/sticker_assets/brutalist_heroic_v98/weathered_concrete_soffit_intrinsic.png",
+      "sha256": "192bb18aa79d531acc2538007a266dcf5846a6113f8711e1b928a9e495134c85",
+      "mode": "RGB",
+      "size": [
+        1024,
+        1024
+      ],
+      "semantic_exclusions": [
+        "printed openings",
+        "printed frames",
+        "printed panel joints",
+        "directional lighting",
+        "reflection horizon",
+        "text"
+      ]
+    }
+  }
+}

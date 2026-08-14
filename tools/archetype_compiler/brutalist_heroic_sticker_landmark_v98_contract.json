@@ -1,0 +1,25 @@
+{
+  "schema": "siteforge.brutalist-heroic-sticker-landmark@1",
+  "version": "v98.1",
+  "archetype_id": "brutalist_institutional",
+  "variant_id": "brutalist_heroic",
+  "identity_authority": "three_exact_variant_0_images",
+  "reference_sha256": {
+    "frontend/public/archetypes/buildings/brutalist_institutional/variant_0.png": "955d4d45a2148325e2529d02139192c47080210d304bbc0ad856c50b9ef2abbc",
+    "frontend/public/archetypes/buildings/brutalist_institutional/variant_0_angle_60.jpg": "ab69b3ddf450414c39d8fbb3c2e4886ec6748b0d02c6c2d751f000c2b456031b",
+    "frontend/public/archetypes/buildings/brutalist_institutional/variant_0_angle_90.jpg": "427226ea95af68f6e54c0302896ca42dd8cb42167294f0396465cec801317bd5"
+  },
+  "approved_tiers": [
+    "canonical"
+  ],
+  "continuous_resize_allowed": false,
+  "vertical_scaling_allowed": false,
+  "hard_stops": [
+    "wrong occupied floor count",
+    "missing cantilever pilotis or light boxes",
+    "missing roof courts or penthouses",
+    "generic fallback",
+    "unowned or multiply owned face",
+    "roof domain leakage"
+  ]
+}

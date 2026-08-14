@@ -1,0 +1,95 @@
+{
+  "schema": "siteforge.sticker-method-machine-evidence@1",
+  "architect_scores": {
+    "canonical": 95.05,
+    "hard_stops": 0
+  },
+  "reference_sha256": {
+    "variant_0.png": "955d4d45a2148325e2529d02139192c47080210d304bbc0ad856c50b9ef2abbc",
+    "variant_0_angle_60.jpg": "ab69b3ddf450414c39d8fbb3c2e4886ec6748b0d02c6c2d751f000c2b456031b",
+    "variant_0_angle_90.jpg": "427226ea95af68f6e54c0302896ca42dd8cb42167294f0396465cec801317bd5"
+  },
+  "source_sha256": {
+    "build_brutalist_heroic_sticker_landmark_v98.py": "9fbf0e775e6c30eb912ae7034a721cd74348fd35e5526987152d8894fe7233f9",
+    "compile_brutalist_heroic_sticker_landmark_v98.py": "cd85a5487d3610411e740da9b4d4d0ad9badee03b8fca00bbfbb3ec5bb7755d8",
+    "brutalist_heroic_sticker_landmark_v98_contract.json": "d60e33fac7a427dbc6920c04a74e8e45aa9d4fa31d72ede3de20cd688f075127",
+    "brutalist_heroic_sticker_landmark_v98_carrier_packages.json": "c0ce6d4bf6143e0031b222d445142bf9c9f11873cb595ea3e6c97f3fcce8f76f",
+    "sticker_assets/brutalist_heroic_v98/provenance.json": "fbf87dea8c70cd1db898337412ff99437e9468e442381d0cd2c201f6cd6fc5fd"
+  },
+  "formal_input_sha256": {
+    "brutalist-heroic-v98-canonical_manifest.json": "9191c11dbccf79994d5b7dee872a70c2c00e84fe10f40f1f6a359c25737b2da6",
+    "production_preflight.json": "a1763375748bd5524f09ff0486d76639e9c0aad4a9c492194e43b20ea8508e88",
+    "validation_report.json": "0582ceabdbc97a37c5bcfdec7f8a733fc35df9c56730d91963cd39a8cd91f577",
+    "brutalist-heroic-v98-canonical_aerial.png": "71528db0ab76da4d9ddadd1a42e334fe413a92a6d71f868c7a80e7ba705c140a",
+    "brutalist-heroic-v98-canonical_archetype_match.png": "b762cc09694b6571ce4bc8f81b25341c707b8205311c3d85c068a0767d49bb55",
+    "brutalist-heroic-v98-canonical_context.png": "f54c11da6dcfdfb00c5515cdc00aa9b9cfcc44155ae2552c0f3becdf81d8f018",
+    "brutalist-heroic-v98-canonical_facade_close.png": "5061b833559102bc8bc91b3c7298f66bed01febf8b807ca933854bff68f48936",
+    "brutalist-heroic-v98-canonical_front_corner_oblique.png": "83e12926d5efcb2edb2c9c8129170c741b65da0fd044ca5febafa1a11f73f9c2",
+    "brutalist-heroic-v98-canonical_preview.png": "3c89aedf37a35ba90bb66870f3842018933f182f116edfdddf7f26d86a5907b2",
+    "brutalist-heroic-v98-canonical_rear_corner_oblique.png": "ba7141ac1c3adca0f0ecf62fdd4612caee9f968d2ef0cb3e8aa06bfda21ee8ad",
+    "brutalist-heroic-v98-canonical_roof_audit.png": "2493cd1ebf0d996857a7fbe24cb167a87a3f00f67ac401e60676ea62a899ee87",
+    "brutalist-heroic-v98-canonical_street.png": "8a3ec6d322e813c303f86339ddcd5abc7a870be1cd0537cce3be08bde67066df"
+  },
+  "tiers": {
+    "canonical": {
+      "dimensions": {
+        "width_m": 50.0,
+        "depth_m": 42.0,
+        "podium_height_m": 5.2,
+        "floor_height_m": 4.5,
+        "setback_height_m": 4.5,
+        "roof_height_m": 4.09,
+        "default_floors": 2,
+        "min_floors": 2,
+        "max_floors": 2,
+        "crown_height_m": 4.5
+      },
+      "geometry_sha256": "ed97781e52550e79a5a5555b8db4b07580af69b59f31bd234834d67a0c9b8b07",
+      "assembled": {
+        "height_m": 16.51,
+        "triangle_count": 7756,
+        "assembly_count": 517
+      },
+      "final_surface_audit": {
+        "status": "pass",
+        "checked_faces": 1110,
+        "failure_count": 0
+      },
+      "validation": "pass",
+      "validation_sha256": "0582ceabdbc97a37c5bcfdec7f8a733fc35df9c56730d91963cd39a8cd91f577",
+      "production_preflight": "pass",
+      "production_preflight_sha256": "a1763375748bd5524f09ff0486d76639e9c0aad4a9c492194e43b20ea8508e88",
+      "manifest_sha256": "9191c11dbccf79994d5b7dee872a70c2c00e84fe10f40f1f6a359c25737b2da6",
+      "render_count": 9,
+      "render_sha256": {
+        "archetype_match": "b762cc09694b6571ce4bc8f81b25341c707b8205311c3d85c068a0767d49bb55",
+        "front_corner_oblique": "83e12926d5efcb2edb2c9c8129170c741b65da0fd044ca5febafa1a11f73f9c2",
+        "rear_corner_oblique": "ba7141ac1c3adca0f0ecf62fdd4612caee9f968d2ef0cb3e8aa06bfda21ee8ad",
+        "facade_close": "5061b833559102bc8bc91b3c7298f66bed01febf8b807ca933854bff68f48936",
+        "roof_audit": "2493cd1ebf0d996857a7fbe24cb167a87a3f00f67ac401e60676ea62a899ee87",
+        "aerial": "71528db0ab76da4d9ddadd1a42e334fe413a92a6d71f868c7a80e7ba705c140a"
+      }
+    }
+  },
+  "tier_contract": {
+    "representation": "fixed_landmark",
+    "approved_dimensions_m": {
+      "width": 50.0,
+      "depth": 42.0,
+      "occupied_storeys": 2
+    },
+    "continuous_resize_allowed": false,
+    "vertical_scaling_allowed": false,
+    "depth_scaling_allowed": false,
+    "nonuniform_scaling_allowed": false,
+    "additional_tiers_allowed": false
+  },
+  "non_blocking_optimization_follow_up": {
+    "material_consolidation": true
+  },
+  "review_board_sha256": {
+    "01-exact-reference-comparison.png": "41e5fe31a46f25a271c3cae41e53fe7cb998e70d01f525eae78879b7330feff5",
+    "02-oblique-and-detail-comparison.png": "bc04d069dcae1312b3391cb71850c493b85413f8a2b86fc7fdfd4b815f352d29",
+    "03-roof-and-court-comparison.png": "c5ba94f35fc3f683536c49bd74d27231ba2d55840a1e70398a539cfac1621cb4"
+  }
+}
