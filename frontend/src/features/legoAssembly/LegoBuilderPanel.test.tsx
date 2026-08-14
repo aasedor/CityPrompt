@@ -11,6 +11,7 @@ const render = (ui: ReactElement, client = new QueryClient()) => rtlRender(
 import { LegoBuilderPanel } from './LegoBuilderPanel';
 import type { LegoAssemblyPlan } from './legoAssemblyApi';
 import type { SiteZone } from '@/types';
+import { resetProjectCommunityCompileCoordinatorForTests } from './projectCommunityCompile';
 
 // ---------------------------------------------------------------------------
 // Mocks (same patterns as LegoAssemblyPreview.test.tsx)
@@ -129,6 +130,7 @@ function make422(detail: unknown) {
 
 describe('LegoBuilderPanel', () => {
   beforeEach(() => {
+    resetProjectCommunityCompileCoordinatorForTests();
     vi.resetAllMocks();
   });
 

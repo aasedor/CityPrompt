@@ -34,6 +34,7 @@ import {
   importStreetNetworkGroundTexture,
 } from '@/components/viewer/globe/streetNetworkGroundTexture';
 import { usesArchetypeOwnedParkSurface } from '@/components/viewer/globe/parkLegoFamilies';
+import { compileProjectCommunity3D } from './projectCommunityCompile';
 
 function BuilderScene({ items }: { items: ZoneBuildItem[] }) {
   const placed = items.filter(
@@ -177,7 +178,8 @@ export function LegoBuilderPanel({
         if (!zone) throw new Error('A plan zone changed while Generate to 3D was preparing. Refresh and retry.');
         return zone;
       };
-      const result = await legoAssemblyApi.compileCommunity([
+      if (!projectId) throw new Error('The project could not be identified for Community 3D generation.');
+      const result = await compileProjectCommunity3D(projectId, [
         ...placeable.map((item) => ({
           zone_id: item.zone.id,
           source_updated_at: authoritativeZone(item.zone.id).updated_at,
@@ -240,7 +242,7 @@ export function LegoBuilderPanel({
       setGenerationStage(null);
       setPlacingAll(false);
     }
-  }, [groundItems, items, placingAll, refetchPlacedData, zones]);
+  }, [groundItems, items, placingAll, projectId, refetchPlacedData, zones]);
 
   const runBatch = useCallback(async (replacePlaced = false) => {
     const base = deriveItems(zones);

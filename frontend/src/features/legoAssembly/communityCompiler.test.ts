@@ -15,6 +15,7 @@ import {
   deriveItems,
   recipeFromPlan,
 } from './communityCompiler';
+import { resetProjectCommunityCompileCoordinatorForTests } from './projectCommunityCompile';
 
 function zone(
   id: string,
@@ -63,6 +64,7 @@ const detailedPlan: LegoAssemblyPlan = {
 };
 
 afterEach(() => {
+  resetProjectCommunityCompileCoordinatorForTests();
   vi.restoreAllMocks();
 });
 

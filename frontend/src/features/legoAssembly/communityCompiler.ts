@@ -23,6 +23,7 @@ import {
   findZoneCatalogOption,
   normalizeArchetypeId,
 } from './legoShared';
+import { compileProjectCommunity3D } from './projectCommunityCompile';
 
 const BUILDABLE_ZONE_TYPES = new Set<string>([
   'building',
@@ -490,13 +491,14 @@ export async function compileMixedCommunity3D(
     ...(options.scopeZoneIds ?? compiledScopeZoneIds),
     ...compiledScopeZoneIds,
   ]));
-  const response = options.scopeBoundaryId
-    ? await legoAssemblyApi.compileCommunity(
-        compileItems,
-        scopeZoneIds,
-        options.scopeBoundaryId,
-      )
-    : await legoAssemblyApi.compileCommunity(compileItems, scopeZoneIds);
+  const projectId = zones[0]?.project_id;
+  if (!projectId) throw new Error('The project could not be identified for Community 3D generation.');
+  const response = await compileProjectCommunity3D(
+    projectId,
+    compileItems,
+    scopeZoneIds,
+    options.scopeBoundaryId,
+  );
   if (options.requireDetailedBuildings) {
     assertDetailedBuildingResponse(buildingItems, response);
   }
