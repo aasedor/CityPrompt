@@ -1513,6 +1513,9 @@ export function GlobeSitePlannerMap({
 
   // LOD settlement state â€” true when 3D tiles have fully loaded
   const [isSceneSettled, setIsSceneSettled] = useState(false);
+  // The loading badge can release once visible context is usable; capture
+  // continues to rely on the stricter scene-settled signal below.
+  const [areTilesDisplayReady, setAreTilesDisplayReady] = useState(false);
   // Internal camera pitch from nadir (0=top-down, 90=horizon).
   // UI and render prompts convert this to camera elevation (0=ground, 90=overhead).
   const [pitchAngle, setPitchAngle] = useState(0);
@@ -3761,7 +3764,10 @@ export function GlobeSitePlannerMap({
             useFallbackPlane
           />
           <TilesAttributionOverlay />
-          <SceneSettledMonitor onSettledChange={setIsSceneSettled} />
+          <SceneSettledMonitor
+            onSettledChange={setIsSceneSettled}
+            onDisplayReadyChange={setAreTilesDisplayReady}
+          />
           <TileStencilPatcher zones={tileMaskZones} terrainHeight={terrainElevation} />
           <GlobeTileMaskLayer zones={tileMaskZones} terrainHeight={terrainElevation} />
           {/* Camera starts at project location via Canvas camera prop */}
@@ -4105,7 +4111,7 @@ export function GlobeSitePlannerMap({
         <div className={`rounded-full border-2 border-[#151515] bg-[#fff9ec]/95 px-3 py-1.5 text-[11px] font-black uppercase shadow-[3px_3px_0_0_#151515] backdrop-blur-xl ${cameraElevationBadge.textClass}`}>
           {cameraElevation}° {cameraElevationBadge.label}
         </div>
-        {!isSceneSettled && (
+        {!areTilesDisplayReady && (
           <div className="flex items-center gap-1.5 rounded-full border-2 border-[#151515] bg-[#fff9ec]/95 px-3 py-1.5 shadow-[3px_3px_0_0_#151515] backdrop-blur-xl">
             <div className="h-2 w-2 rounded-full bg-amber-400 animate-pulse" />
             <span className="text-[10px] font-black uppercase text-[#151515]/70">Loading tiles...</span>

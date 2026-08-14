@@ -46,6 +46,11 @@ interface WaitForVisibleTileCoverageOptions {
   acceptVisibleCoverageAtTimeout?: boolean;
 }
 
+type WaitForTileDisplayReadyOptions = Omit<
+  WaitForVisibleTileCoverageOptions,
+  'acceptVisibleCoverageAtTimeout'
+>;
+
 /**
  * Wait for the current Google tile stream to remain idle for a short window.
  *
@@ -180,6 +185,32 @@ export function waitForVisibleTileCoverage(
       const visibleCount = tiles.visibleTiles?.size ?? 0;
       finish(acceptVisibleCoverageAtTimeout && visibleCount >= minimumVisibleTiles);
     }, Math.max(0, timeoutMs));
+  });
+}
+
+/**
+ * Bound the user-facing loading indicator without weakening capture gates.
+ *
+ * A non-empty visible tile set is enough to release the UI after the timeout
+ * even when low-priority descendants keep refining. Empty or unavailable tile
+ * sets still fail closed. Capture callers continue to use the stricter helpers
+ * above and must opt into timeout acceptance explicitly when appropriate.
+ */
+export function waitForTileDisplayReady(
+  tiles: SceneTileRenderer | null | undefined,
+  {
+    stableMs = 900,
+    pollMs = 100,
+    timeoutMs = 8_000,
+    minimumVisibleTiles = 1,
+  }: WaitForTileDisplayReadyOptions = {},
+): Promise<boolean> {
+  return waitForVisibleTileCoverage(tiles, {
+    stableMs,
+    pollMs,
+    timeoutMs,
+    minimumVisibleTiles,
+    acceptVisibleCoverageAtTimeout: true,
   });
 }
 

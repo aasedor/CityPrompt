@@ -3,6 +3,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import {
   holdTileQueueUpdates,
   type SceneTileRenderer,
+  waitForTileDisplayReady,
   waitForTilesSettled,
   waitForVisibleTileCoverage,
 } from './tileLoadReadiness';
@@ -168,6 +169,61 @@ describe('waitForVisibleTileCoverage', () => {
     tiles.visibleTiles.add(second);
     await vi.advanceTimersByTimeAsync(300);
     await expect(result).resolves.toBe(true);
+  });
+
+  it('keeps capture readiness fail-closed at timeout unless explicitly opted in', async () => {
+    vi.useFakeTimers();
+    const tiles = new FakeTiles();
+    tiles.visibleTiles.add({ id: 'still-refining' });
+    const result = waitForVisibleTileCoverage(tiles, {
+      stableMs: 2_000,
+      pollMs: 100,
+      timeoutMs: 500,
+    });
+
+    await vi.advanceTimersByTimeAsync(500);
+    await expect(result).resolves.toBe(false);
+  });
+});
+
+describe('waitForTileDisplayReady', () => {
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it('bounds perpetual background refinement once visible context exists', async () => {
+    vi.useFakeTimers();
+    const tiles = new FakeTiles();
+    tiles.isLoading = true;
+    tiles.visibleTiles.add({ id: 0 });
+    const result = waitForTileDisplayReady(tiles, {
+      stableMs: 2_000,
+      pollMs: 100,
+      timeoutMs: 500,
+    });
+
+    for (let index = 1; index <= 4; index += 1) {
+      await vi.advanceTimersByTimeAsync(100);
+      tiles.visibleTiles.clear();
+      tiles.visibleTiles.add({ id: index });
+    }
+    await vi.advanceTimersByTimeAsync(100);
+
+    await expect(result).resolves.toBe(true);
+  });
+
+  it('does not falsely settle empty or unavailable tile renderers', async () => {
+    vi.useFakeTimers();
+    const tiles = new FakeTiles();
+    const emptyResult = waitForTileDisplayReady(tiles, {
+      stableMs: 200,
+      pollMs: 50,
+      timeoutMs: 500,
+    });
+
+    await vi.advanceTimersByTimeAsync(500);
+    await expect(emptyResult).resolves.toBe(false);
+    await expect(waitForTileDisplayReady(null)).resolves.toBe(false);
   });
 });
 

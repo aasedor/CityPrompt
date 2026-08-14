@@ -11,9 +11,14 @@
 import { useEffect, useRef } from 'react';
 import { useContext } from 'react';
 import { TilesRendererContext } from '3d-tiles-renderer/r3f';
+import {
+  type SceneTileRenderer,
+  waitForTileDisplayReady,
+} from './tileLoadReadiness';
 
 interface SceneSettledMonitorProps {
   onSettledChange: (settled: boolean) => void;
+  onDisplayReadyChange?: (ready: boolean) => void;
   debounceMs?: number;
 }
 
@@ -21,7 +26,11 @@ interface SceneSettledMonitorProps {
  * R3F component that monitors TilesRenderer loading state.
  * Must be placed inside <TilesRenderer> tree to access context.
  */
-export function SceneSettledMonitor({ onSettledChange, debounceMs = 500 }: SceneSettledMonitorProps) {
+export function SceneSettledMonitor({
+  onSettledChange,
+  onDisplayReadyChange,
+  debounceMs = 500,
+}: SceneSettledMonitorProps) {
   const tiles = useContext(TilesRendererContext);
   const settledTimerRef = useRef<number | null>(null);
   const lastSettledRef = useRef(false);
@@ -67,6 +76,35 @@ export function SceneSettledMonitor({ onSettledChange, debounceMs = 500 }: Scene
       if (settledTimerRef.current) clearTimeout(settledTimerRef.current);
     };
   }, [tiles, onSettledChange, debounceMs]);
+
+  useEffect(() => {
+    if (!onDisplayReadyChange) return;
+    onDisplayReadyChange(false);
+    if (!tiles) return;
+
+    const sceneTiles = tiles as unknown as SceneTileRenderer;
+    let cancelled = false;
+    let retryTimer: number | null = null;
+
+    const checkVisibleCoverage = () => {
+      void waitForTileDisplayReady(sceneTiles).then((ready) => {
+        if (cancelled) return;
+        if (ready) {
+          onDisplayReadyChange(true);
+          return;
+        }
+        // An empty renderer must not falsely settle, but it may simply be on a
+        // slow connection. Keep checking at a low cadence until content arrives.
+        retryTimer = window.setTimeout(checkVisibleCoverage, 500);
+      });
+    };
+
+    checkVisibleCoverage();
+    return () => {
+      cancelled = true;
+      if (retryTimer !== null) window.clearTimeout(retryTimer);
+    };
+  }, [onDisplayReadyChange, tiles]);
 
   // This component renders nothing — it's just a monitor
   return null;
