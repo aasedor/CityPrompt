@@ -47,6 +47,21 @@ docker compose up -d
 
 This starts PostgreSQL, Redis, the backend API, Celery workers, and the frontend dev server.
 
+### Recommended Windows local launcher
+
+For day-to-day development, including linked Git worktrees, start the local
+stack with:
+
+```powershell
+.\scripts\start-local-city-prompt.ps1
+```
+
+The launcher starts Docker Desktop when necessary, reuses the existing local
+PostgreSQL/Redis/MinIO containers so accounts and projects are preserved,
+starts the API and frontend from the current worktree, and waits for both
+health checks. This prevents the misleading empty HTTP 500 login error that
+appears when Vite is running without the API.
+
 ### 3. Local Development (without Docker)
 
 **Backend:**
