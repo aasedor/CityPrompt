@@ -1,10 +1,46 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+  buildTerrainRelativeDrawingVertices,
   isWithinPolygonCloseRadius,
   normalizePolygonDrawing,
   POLYGON_CLOSE_RADIUS_METERS,
 } from './drawingGeometry';
+
+describe('terrain-relative drawing preview', () => {
+  it('keeps every clicked point at its sampled terrain height in one ENU frame', () => {
+    const vertices = buildTerrainRelativeDrawingVertices(
+      [
+        [-114.16, 51.04],
+        [-114.159, 51.04],
+        [-114.159, 51.041],
+      ],
+      [1024, 1027, 1025],
+      1025,
+      0.3,
+      true,
+    );
+
+    expect(vertices.filter((_, index) => index % 3 === 2)).toEqual([
+      -0.7,
+      2.3,
+      0.3,
+      -0.7,
+    ]);
+  });
+
+  it('falls back to the frame height for a missing point sample', () => {
+    const vertices = buildTerrainRelativeDrawingVertices(
+      [[-114.16, 51.04], [-114.159, 51.04]],
+      [Number.NaN],
+      1025,
+      0.6,
+    );
+
+    expect(vertices[2]).toBeCloseTo(0.6);
+    expect(vertices[5]).toBeCloseTo(0.6);
+  });
+});
 
 describe('polygon close gesture', () => {
   it('only closes within the visible start-marker radius', () => {

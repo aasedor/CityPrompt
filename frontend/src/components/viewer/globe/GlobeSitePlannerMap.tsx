@@ -94,7 +94,11 @@ import {
   METERS_PER_DEG_LAT,
   metersPerDegLon,
 } from '../mapEngine/geoUtils';
-import { isWithinPolygonCloseRadius, normalizePolygonDrawing } from './drawingGeometry';
+import {
+  buildTerrainRelativeDrawingVertices,
+  isWithinPolygonCloseRadius,
+  normalizePolygonDrawing,
+} from './drawingGeometry';
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
 import { polygon as turfPolygon, point as turfPoint } from '@turf/helpers';
 import {
@@ -1043,7 +1047,15 @@ function FallbackPlaneSync({
 }
 
 /** Render drawing preview dots inside R3F */
-function DrawingPreviewFill({ points, terrainHeight }: { points: number[][]; terrainHeight: number }) {
+function DrawingPreviewFill({
+  points,
+  pointHeights,
+  terrainHeight,
+}: {
+  points: number[][];
+  pointHeights: number[];
+  terrainHeight: number;
+}) {
   const geo = useMemo(() => {
     if (points.length < 3) return null;
     const centroid = computeCentroid(points);
@@ -1054,15 +1066,19 @@ function DrawingPreviewFill({ points, terrainHeight }: { points: number[][]; ter
       (c[1] - centroid[1]) * METERS_PER_DEG_LAT,
     ));
     const indices = THREE.ShapeUtils.triangulateShape(localPts, []);
-    const verts: number[] = [];
-    for (const p of localPts) verts.push(p.x, p.y, DRAWING_FILL_LIFT_METERS);
+    const verts = buildTerrainRelativeDrawingVertices(
+      points,
+      pointHeights,
+      terrainHeight,
+      DRAWING_FILL_LIFT_METERS,
+    );
     const g = new THREE.BufferGeometry();
     g.setAttribute('position', new THREE.Float32BufferAttribute(verts, 3));
     const idx: number[] = [];
     for (const tri of indices) idx.push(tri[0], tri[1], tri[2]);
     g.setIndex(idx);
     return { geo: g, centroid };
-  }, [points]);
+  }, [pointHeights, points, terrainHeight]);
 
   if (!geo) return null;
   return (
@@ -1179,7 +1195,13 @@ function DrawingDots({
   return (
     <>
       {/* Preview fill polygon */}
-      {!linear && <DrawingPreviewFill points={points} terrainHeight={previewHeight} />}
+      {!linear && (
+        <DrawingPreviewFill
+          points={points}
+          pointHeights={sampledPointHeights}
+          terrainHeight={previewHeight}
+        />
+      )}
 
       {/* Live polygon area */}
       {liveArea > 0 && (() => {
@@ -1230,23 +1252,13 @@ function DrawingDots({
       {/* Outline connecting dots */}
       {points.length >= 2 && (() => {
         const centroid = computeCentroid(points);
-        const mPerDegLon = metersPerDegLon(centroid[1]);
-        const outVerts: number[] = [];
-        for (const c of points) {
-          outVerts.push(
-            (c[0] - centroid[0]) * mPerDegLon,
-            (c[1] - centroid[1]) * METERS_PER_DEG_LAT,
-            DRAWING_OUTLINE_LIFT_METERS,
-          );
-        }
-        // Close the loop for polygons only. Linear tools stay open while placing waypoints.
-        if (!linear && points.length >= 3) {
-          outVerts.push(
-            (points[0][0] - centroid[0]) * mPerDegLon,
-            (points[0][1] - centroid[1]) * METERS_PER_DEG_LAT,
-            DRAWING_OUTLINE_LIFT_METERS,
-          );
-        }
+        const outVerts = buildTerrainRelativeDrawingVertices(
+          points,
+          sampledPointHeights,
+          previewHeight,
+          DRAWING_OUTLINE_LIFT_METERS,
+          !linear,
+        );
         const lineGeo = new THREE.BufferGeometry();
         lineGeo.setAttribute('position', new THREE.Float32BufferAttribute(outVerts, 3));
         return (

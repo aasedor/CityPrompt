@@ -71,6 +71,7 @@ import {
   createStreetSurfaceAlbedoTexture,
   type StreetSurfaceMaterialKind,
 } from './streetSurfaceMaterials';
+import { resolveZoneSurfaceMode } from './zoneSurfaceMode';
 
 const DEG_TO_RAD = Math.PI / 180;
 const OBJECT_FILTER_SAMPLE_RADIUS_METERS = 8;
@@ -481,15 +482,24 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   const extrudeHeight = isBuilding && isCompiledCommunity
     ? Math.max(buildingHeight, 10)
     : 0;
-  const useTerrainGridFlat = isCompiledGround || communityKind === 'park' || isPreparedBoundary;
+  const {
+    isExtrudedBuilding,
+    useTerrainGridFlat,
+  } = resolveZoneSurfaceMode({
+    isBuilding,
+    isCompiledCommunity,
+    isCompiledGround,
+    isPark: communityKind === 'park',
+    isPreparedBoundary,
+  });
   // Densify imported flat zones too (not just green_space): a long corridor needs
   // vertices along its length so the draped surface follows the terrain instead of
   // flat triangles spanning dips/humps — which is what reads as parallax drift.
   const renderCoordinates = useMemo(
-    () => ((useTerrainGridFlat || isImported) && !isBuilding && zone.coordinates.length >= 3
+    () => ((useTerrainGridFlat || isImported) && !isExtrudedBuilding && zone.coordinates.length >= 3
       ? densifyFlatZoneCoordinates(zone.coordinates)
       : zone.coordinates),
-    [useTerrainGridFlat, isImported, isBuilding, zone.coordinates],
+    [useTerrainGridFlat, isImported, isExtrudedBuilding, zone.coordinates],
   );
 
   const geoData = useMemo(() => {
@@ -620,9 +630,9 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   const groundMeta = streetGround.meta ?? parkGround.meta;
   const groundTexture = streetGround.texture ?? parkGround.texture;
   const [bakedElevations, setBakedElevations] = useState<number[] | null>(null);
-  // Buildings never use flat fill geometry, and compiled parks/streets must
-  // follow the live Google tile surface. Reserve the external bare-earth bake
-  // for ordinary imported reference overlays only.
+  // Generated buildings never use flat fill geometry. Pre-generation building
+  // footprints intentionally share the live terrain-drape path, while the
+  // external bare-earth bake stays reserved for imported reference overlays.
   const shouldBakeImportedTerrain = isImported && !isBuilding && !isCompiledGround;
   const hasBakedElevationRelief = (
     shouldBakeImportedTerrain && hasUsableElevationRelief(bakedElevations)
@@ -737,9 +747,9 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     const n = coords.length;
 
     // Update fill geometry
-    const meshRef = isBuilding ? buildingMeshRef : flatMeshRef;
-    const outRef = isBuilding ? buildingOutlineRef : flatOutlineRef;
-    const renderDragCoords = isBuilding ? coords : densifyFlatZoneCoordinates(coords);
+    const meshRef = isExtrudedBuilding ? buildingMeshRef : flatMeshRef;
+    const outRef = isExtrudedBuilding ? buildingOutlineRef : flatOutlineRef;
+    const renderDragCoords = isExtrudedBuilding ? coords : densifyFlatZoneCoordinates(coords);
     const renderN = renderDragCoords.length;
 
     if (meshRef.current && !useTerrainGridFlat) {
@@ -751,7 +761,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
           posAttr.setX(i, localX);
           posAttr.setY(i, localY);
           // For extruded buildings, also update the top ring (indices n..2n-1)
-          if (isBuilding && i + n < posAttr.count) {
+          if (isExtrudedBuilding && i + n < posAttr.count) {
             posAttr.setX(i + n, localX);
             posAttr.setY(i + n, localY);
           }
@@ -789,7 +799,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     if (
       !tiles?.group
       || !geoData
-      || isBuilding
+      || isExtrudedBuilding
       || hasBakedElevationRelief
       || !hasTrustedAnchor
       || frozenRef.current
@@ -893,7 +903,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
         drapedRef.current = true;
       }
     }
-  }, [tiles, geoData, isBuilding, hasBakedElevationRelief, sampledTerrainHeight, storedTerrainHeight, filterObjectHeights, renderCoordinates, zoneTerrainHeight, freezeDrape]);
+  }, [tiles, geoData, isExtrudedBuilding, hasBakedElevationRelief, sampledTerrainHeight, storedTerrainHeight, filterObjectHeights, renderCoordinates, zoneTerrainHeight, freezeDrape]);
 
   useEffect(() => {
     if (sampledTerrainHeight !== null) return undefined;
@@ -910,7 +920,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   // stream in. Lightweight zones drape ONCE then freeze (frozenRef) instead of
   // re-draping forever — terrain-accurate without the per-frame storm.
   useEffect(() => {
-    if (isBuilding || !tiles || hasBakedElevationRelief || frozenRef.current) return;
+    if (isExtrudedBuilding || !tiles || hasBakedElevationRelief || frozenRef.current) return;
     if (!freezeDrape) {
       // Live mode (hand-drawn zones): re-drape from scratch on tile changes.
       drapedRef.current = false;
@@ -922,7 +932,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
       setTimeout(drapeToTerrain, terrainScheduleDelay + 12_000),
     ];
     return () => timers.forEach(clearTimeout);
-  }, [tiles, drapeToTerrain, hasBakedElevationRelief, isBuilding, zoneTerrainHeight, freezeDrape, terrainScheduleDelay]);
+  }, [tiles, drapeToTerrain, hasBakedElevationRelief, isExtrudedBuilding, zoneTerrainHeight, freezeDrape, terrainScheduleDelay]);
 
   // Drape convergence. Heavy mode re-drapes continuously for live accuracy;
   // lightweight mode keeps trying only until the zone freezes, then stops dead.
@@ -931,7 +941,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
       sampleZoneTerrainHeight();
     }
     if (hasBakedElevationRelief) return;
-    if (isBuilding || !tiles?.group) return;
+    if (isExtrudedBuilding || !tiles?.group) return;
     if (freezeDrape) {
       if (frozenRef.current) return; // drapeToTerrain self-limits via coverage / attempt budget
       if (Math.random() < 0.0002) drapeToTerrain();
@@ -1044,7 +1054,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
           network as one solid ground polygon that contains park parcels
           (no carve-out), so a lower park order leaves parks hidden under a
           gray slab. Real roadway strips (street detail) still draw above. */}
-      {!isBuilding && geoData.flatTopGeo && (showThisPlanningOverlay || drapeActive || isCompiledGround || isPreparedBoundary) && (
+      {!isExtrudedBuilding && geoData.flatTopGeo && (showThisPlanningOverlay || drapeActive || isCompiledGround || isPreparedBoundary) && (
         <mesh
           ref={flatMeshRef}
           geometry={importedOrthoGeo ?? orthoGeo ?? importedFillGeo ?? preparedSiteGeo ?? woonerfGroundGeo ?? publicRealmBaseGeo ?? geoData.flatTopGeo}
@@ -1134,7 +1144,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
         </mesh>
       )}
 
-      {showThisPlanningOverlay && isBuilding && !suppressed && (
+      {showThisPlanningOverlay && isExtrudedBuilding && !suppressed && (
         <mesh
           ref={buildingMeshRef}
           geometry={geoData.fillGeo}
@@ -1159,8 +1169,8 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
       {/* Outline geometry is spread because JSX line resolves to SVG typings here. */}
       {showThisPlanningOverlay && !(isBuilding && suppressed) && (
         <line
-          ref={isBuilding ? buildingOutlineRef : flatOutlineRef as any}
-          {...({ geometry: !isBuilding ? (importedOutlineGeo ?? geoData.outlineGeo) : geoData.outlineGeo } as any)}
+          ref={isExtrudedBuilding ? buildingOutlineRef : flatOutlineRef as any}
+          {...({ geometry: !isExtrudedBuilding ? (importedOutlineGeo ?? geoData.outlineGeo) : geoData.outlineGeo } as any)}
           renderOrder={isBuilding ? 201 : isSiteBoundary ? 101 : communityKind === 'park' ? 120.6 : 121}
           frustumCulled={false}
           onPointerDown={handleZonePointerDown}
