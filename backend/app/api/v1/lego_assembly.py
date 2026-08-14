@@ -1061,6 +1061,13 @@ def _recipe_payload(body: LegoRecipeRequest) -> dict[str, Any]:
     return payload
 
 
+def _preferred_building_name(*candidates: object) -> str | None:
+    for candidate in candidates:
+        if isinstance(candidate, str) and candidate.strip():
+            return candidate.strip()[:255]
+    return None
+
+
 async def _place_recipe_on_zone(
     db: AsyncSession,
     zone: SiteZone,
@@ -1072,15 +1079,17 @@ async def _place_recipe_on_zone(
         result = await db.execute(select(Building).where(Building.id == zone.building_id))
         building = result.scalar_one_or_none()
 
+    preferred_name = _preferred_building_name(body.building_name, zone.name)
+    assembled_height_meters = _column_height_meters(body.assembled_height_m)
     created = False
     if building is None:
         building = Building(
             id=uuid.uuid4(),
             project_id=zone.project_id,
-            name=(body.building_name or zone.name or body.archetype_id or "LEGO Building")[:255],
+            name=preferred_name or _preferred_building_name(body.archetype_id) or "LEGO Building",
             footprint=zone.geometry,
             floor_count=body.target.floors,
-            height_meters=_column_height_meters(body.assembled_height_m),
+            height_meters=assembled_height_meters,
             # SQLAlchemy's insert default is not visible until flush, but the
             # representation fingerprint is stamped before the final atomic
             # flush. Make the renderer's neutral rotation explicit so the
@@ -1099,8 +1108,12 @@ async def _place_recipe_on_zone(
         # unconditionally on every re-place (mirrors the block-editor sync in
         # site_zones.py) so a rotated zone produces a rotated building.
         building.footprint = zone.geometry
-        if building.floor_count is None:
-            building.floor_count = body.target.floors
+        if preferred_name is not None:
+            building.name = preferred_name
+        # A placed family recipe is the visible representation. Its target and
+        # assembled stack therefore replace metadata left by any prior family.
+        building.floor_count = body.target.floors
+        building.height_meters = assembled_height_meters
 
     specifications = dict(building.specifications or {})
     # A real family recipe upgrades the honest conceptual fallback in place.
@@ -1169,12 +1182,16 @@ async def _place_planned_massing_on_zone(
     floors, height = _planned_massing_dimensions(zone)
     properties = zone.properties or {}
     archetype_id = properties.get("development_archetype_id")
+    preferred_name = _preferred_building_name(
+        zone.name,
+        str(archetype_id) if archetype_id is not None else None,
+    )
     created = False
     if building is None:
         building = Building(
             id=uuid.uuid4(),
             project_id=zone.project_id,
-            name=(zone.name or str(archetype_id or "Planned Building"))[:255],
+            name=preferred_name or "Planned Building",
             footprint=zone.geometry,
             floor_count=floors,
             height_meters=height,
@@ -1189,9 +1206,13 @@ async def _place_planned_massing_on_zone(
         # Same orientation-truth rule as _place_recipe_on_zone: the rotated /
         # reshaped zone ring must reach the footprint the globe places from.
         building.footprint = zone.geometry
-        if building.floor_count is None:
+        has_generated_model = bool(
+            building.model_url or (isinstance(building.lod_urls, dict) and building.lod_urls.get("0"))
+        )
+        if not has_generated_model:
+            if preferred_name is not None:
+                building.name = preferred_name
             building.floor_count = floors
-        if building.height_meters is None:
             building.height_meters = height
 
     specifications = dict(building.specifications or {})

@@ -4171,7 +4171,9 @@ async def test_place_reuses_existing_building_and_preserves_specifications(clien
     building = Building(
         id=uuid.uuid4(),
         project_id=project.id,
+        name="Prior Family",
         floor_count=4,
+        height_meters=12,
         footprint="SRID=4326;POLYGON((0 0,2 0,2 2,0 2,0 0))",
         specifications={"modelUrlWorkflow": {"model_url": "/api/v1/files/original.glb"}},
     )
@@ -4186,7 +4188,8 @@ async def test_place_reuses_existing_building_and_preserves_specifications(clien
         ]
     )
 
-    response = await client.post(f"/api/v1/lego-assembly/place/{zone.id}", headers=auth_headers, json=_recipe_body())
+    body = {**_recipe_body(), "building_name": "  Current Family  "}
+    response = await client.post(f"/api/v1/lego-assembly/place/{zone.id}", headers=auth_headers, json=body)
     assert response.status_code == 200, response.text
     payload = response.json()
     assert payload["building_created"] is False
@@ -4196,9 +4199,10 @@ async def test_place_reuses_existing_building_and_preserves_specifications(clien
     # The zone ring is the orientation source of truth: every re-place syncs
     # the building footprint from the CURRENT zone geometry so rotating or
     # reshaping the zone rotates the compiled building (2026-07-24 fix).
-    # Floor count, when already set, remains authoritative.
     assert building.footprint == zone.geometry
-    assert building.floor_count == 4
+    assert building.name == "Current Family"
+    assert building.floor_count == body["target"]["floors"]
+    assert building.height_meters == body["assembled_height_m"]
     # copy-update-reassign: the untouched workflow fields survive
     assert building.specifications["modelUrlWorkflow"]["model_url"] == "/api/v1/files/original.glb"
     assert building.specifications["legoAssembly"]["module_family"] == "nordic-timber-midrise"
@@ -5159,6 +5163,62 @@ async def test_place_community_persists_exact_footprint_massing_without_family_r
 
 
 @pytest.mark.anyio
+async def test_place_community_reused_massing_syncs_current_zone_metadata(
+    client, mock_db, test_user, auth_headers
+):
+    project = FakeProject(owner_id=test_user.id)
+    building = Building(
+        id=uuid.uuid4(),
+        project_id=project.id,
+        name="Old Unsupported Family",
+        footprint="SRID=4326;POLYGON((0 0,2 0,2 2,0 2,0 0))",
+        floor_count=8,
+        height_meters=26,
+        specifications={
+            "plannedMassing": {"archetype_id": "old_family"},
+            "modelUrlWorkflow": {"status": "preserve-me"},
+        },
+    )
+    zone = _make_zone(
+        project,
+        building_id=building.id,
+        building_ids=[str(building.id)],
+        properties={
+            "_plan_role": "building",
+            "development_archetype_id": "current_unsupported_family",
+            "floors": 3,
+            "height": 11.25,
+        },
+    )
+    zone.name = "Current Unsupported Family"
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(zone),
+            _scalar_result(project),
+            _scalar_result(project.id),
+            _scalars_result([zone]),
+            _scalars_result([building]),
+            _scalar_result(building),
+        ]
+    )
+
+    response = await client.post(
+        "/api/v1/lego-assembly/place-community",
+        headers=auth_headers,
+        json={"items": [_community_item(zone)]},
+    )
+
+    assert response.status_code == 200, response.text
+    assert building.name == "Current Unsupported Family"
+    assert building.footprint == zone.geometry
+    assert building.floor_count == 3
+    assert building.height_meters == 11.25
+    assert building.specifications["plannedMassing"]["archetype_id"] == "current_unsupported_family"
+    assert building.specifications["modelUrlWorkflow"] == {"status": "preserve-me"}
+
+
+@pytest.mark.anyio
 async def test_place_community_stamps_lod_only_generated_model_as_visible_meshy_representation(
     client, mock_db, test_user, auth_headers
 ):
@@ -5213,6 +5273,9 @@ async def test_place_community_stamps_lod_only_generated_model_as_visible_meshy_
     assert "legoAssembly" not in building.specifications
     assert "lego_placed" not in building.specifications
     assert building.specifications["plannedMassing"]["source_zone_id"] == str(zone.id)
+    assert building.name == "LOD model"
+    assert building.floor_count == 7
+    assert building.height_meters == 24
 
 
 @pytest.mark.anyio
@@ -5306,6 +5369,71 @@ async def test_place_community_rebuild_upgrades_massing_without_losing_public_re
     } == {payload["compiled_at"]}
     mock_db.add.assert_not_called()
     mock_db.commit.assert_not_awaited()
+
+
+@pytest.mark.anyio
+async def test_place_community_archetype_switch_syncs_reused_building_metadata(
+    client, mock_db, test_user, auth_headers
+):
+    project = FakeProject(owner_id=test_user.id)
+    building = Building(
+        id=uuid.uuid4(),
+        project_id=project.id,
+        name="Japanese Machiya Mixed Use",
+        footprint="SRID=4326;POLYGON((0 0,2 0,2 2,0 2,0 0))",
+        floor_count=3,
+        height_meters=10.2,
+        specifications={
+            "legoAssembly": {"module_family": "traditional-machiya-v1-renderlocked"},
+            "lego_placed": True,
+            "modelUrlWorkflow": {"status": "preserve-me"},
+        },
+    )
+    zone = _make_zone(
+        project,
+        building_id=building.id,
+        building_ids=[str(building.id)],
+        properties={
+            "_plan_role": "building",
+            "development_archetype_id": "civic_modernism_rec_centre_variant_0",
+            "development_selected_variant_id": "rec_brick_glass_box",
+        },
+    )
+    zone.name = "Civic Modernism Rec Centre"
+    recipe = {
+        **_recipe_body(),
+        "module_family": "civic-modernism-rec-centre-v98-canonical",
+        "archetype_id": "rec_brick_glass_box",
+        "target": {"width_m": 55.0, "depth_m": 35.0, "floors": 2},
+        "assembled_height_m": 13.5,
+    }
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(zone),
+            _scalar_result(project),
+            _scalar_result(project.id),
+            _scalars_result([zone]),
+            _scalars_result([building]),
+            _scalar_result(building),
+        ]
+    )
+
+    response = await client.post(
+        "/api/v1/lego-assembly/place-community",
+        headers=auth_headers,
+        json={"items": [_community_item(zone, recipe=recipe)]},
+    )
+
+    assert response.status_code == 200, response.text
+    assert response.json()["items"][0]["building_created"] is False
+    assert building.name == "Civic Modernism Rec Centre"
+    assert building.footprint == zone.geometry
+    assert building.floor_count == 2
+    assert building.height_meters == 13.5
+    assert building.specifications["legoAssembly"]["module_family"] == recipe["module_family"]
+    assert building.specifications["modelUrlWorkflow"] == {"status": "preserve-me"}
+    assert zone.properties["community_3d"]["generator"] == "lego_assembly"
 
 
 @pytest.mark.anyio
