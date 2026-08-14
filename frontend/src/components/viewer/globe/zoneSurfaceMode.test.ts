@@ -1,9 +1,25 @@
 import { describe, expect, it } from 'vitest';
+import type { SiteZone } from '@/types';
+import { resolveCommunity3DKind } from '@/features/community3d/community3d';
 
 import {
   resolveBuildingExtrudeHeight,
   resolveZoneSurfaceMode,
 } from './zoneSurfaceMode';
+
+function plannedZone(properties: Record<string, unknown>): SiteZone {
+  return {
+    id: 'planned-zone',
+    project_id: 'project-1',
+    zone_type: 'development_area',
+    coordinates: [[-114, 51], [-113.99, 51], [-113.99, 51.01]],
+    color: '#abcdef',
+    properties,
+    sort_order: 0,
+    created_at: '2026-08-14T00:00:00Z',
+    updated_at: '2026-08-14T00:00:00Z',
+  };
+}
 
 describe('zone surface mode', () => {
   it('renders an ungenerated building as an editable extruded mass', () => {
@@ -49,5 +65,34 @@ describe('zone surface mode', () => {
     expect(resolveBuildingExtrudeHeight(true, 0)).toBe(10);
     expect(resolveBuildingExtrudeHeight(true, Number.NaN)).toBe(10);
     expect(resolveBuildingExtrudeHeight(false, 21)).toBe(0);
+  });
+
+  it('extrudes AI Planner development areas but not framework-height overlays', () => {
+    const plannedBuildingKind = resolveCommunity3DKind(plannedZone({
+      _plan_role: 'building',
+      height_m: 24,
+    }));
+    const frameworkKind = resolveCommunity3DKind(plannedZone({
+      _plan_role: 'framework_height',
+      height_m: 36,
+    }));
+
+    expect(plannedBuildingKind).toBe('building');
+    expect(resolveZoneSurfaceMode({
+      isBuilding: plannedBuildingKind === 'building',
+      isCompiledCommunity: false,
+      isCompiledGround: false,
+      isPark: false,
+      isPreparedBoundary: false,
+    }).isExtrudedBuilding).toBe(true);
+
+    expect(frameworkKind).toBeNull();
+    expect(resolveZoneSurfaceMode({
+      isBuilding: frameworkKind === 'building',
+      isCompiledCommunity: false,
+      isCompiledGround: false,
+      isPark: false,
+      isPreparedBoundary: false,
+    }).isExtrudedBuilding).toBe(false);
   });
 });

@@ -430,7 +430,11 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     || (zone.properties?.height as number)
     || ((zone.properties?.floors as number) || 0) * 3.2
     || 0;
-  const isBuilding = zone.zone_type === 'building' || zone.zone_type === 'residential';
+  // Keep the globe aligned with the planner/compiler's shared ownership rules.
+  // AI Planner emits `development_area` polygons, while framework-height
+  // overlays deliberately resolve to no Community 3D owner.
+  const communityKind = resolveCommunity3DKind(zone);
+  const isBuilding = communityKind === 'building';
   const isSiteBoundary = zone.zone_type === 'site_boundary';
   const isPreparedBoundary = isSiteBoundary && sitePrepared;
   const residualLandscapeRecipe = useMemo(
@@ -442,7 +446,6 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     suppressed,
     sitePrepared,
   );
-  const communityKind = resolveCommunity3DKind(zone);
   const isCompiledCommunity = isCommunity3DCompiled(zone);
   const isCompiledGround = (
     (communityKind === 'park' || communityKind === 'street')
@@ -1153,13 +1156,13 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
           frustumCulled={false}
           onPointerDown={handleZonePointerDown}
         >
-          <meshBasicMaterial
+          <meshStandardMaterial
             color={color}
-            transparent
-            opacity={1.0}
             side={THREE.DoubleSide}
             depthTest
-            depthWrite={false}
+            depthWrite
+            roughness={0.78}
+            metalness={0}
             polygonOffset
             polygonOffsetFactor={-1}
             polygonOffsetUnits={-1}
