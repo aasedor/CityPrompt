@@ -1,14 +1,17 @@
 import { createHash } from 'node:crypto';
+import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, extname, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const frontendRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+const repoRoot = resolve(frontendRoot, '..');
 const publicRoot = resolve(frontendRoot, 'public');
 const sourceRoot = resolve(frontendRoot, 'src');
 const outputPath = resolve(sourceRoot, 'data/runtimeAssetManifest.json');
 const checkOnly = process.argv.includes('--check');
 const requireHydrated = process.argv.includes('--require-hydrated');
+const listRequiredLfsPaths = process.argv.includes('--list-required-lfs-paths');
 
 const runtimePrefixes = Object.freeze([
   '/archetypes/',
@@ -27,6 +30,31 @@ const catalogPaths = new Set([
   resolve(sourceRoot, 'data/openSpaceArchetypes.json'),
   resolve(sourceRoot, 'data/streetPathArchetypes.json'),
 ]);
+
+function loadLfsIndex() {
+  try {
+    const result = JSON.parse(execFileSync(
+      'git',
+      ['lfs', 'ls-files', '--json'],
+      {
+        cwd: repoRoot,
+        encoding: 'utf8',
+        maxBuffer: 64 * 1024 * 1024,
+        stdio: ['ignore', 'pipe', 'ignore'],
+      },
+    ));
+    return new Map((result.files ?? []).map((entry) => [
+      entry.name.replace(/\\/g, '/'),
+      { logicalBytes: Number(entry.size), lfsOid: entry.oid },
+    ]));
+  } catch {
+    // Source archives and minimal developer environments may not provide
+    // Git LFS. Pointer contents remain a valid fallback for unhydrated files.
+    return new Map();
+  }
+}
+
+const lfsIndex = loadLfsIndex();
 
 function webPath(filePath) {
   return `/${relative(publicRoot, filePath).split(sep).join('/')}`;
@@ -49,11 +77,17 @@ function walkFiles(root, filter = () => true) {
 
 function assetMetadata(filePath) {
   const stat = statSync(filePath);
+  let pointer = null;
   if (stat.size <= 256) {
-    const pointer = lfsPointerPattern.exec(readFileSync(filePath, 'utf8'));
-    if (pointer) {
-      return { logicalBytes: Number(pointer[2]), lfsOid: pointer[1], hydrated: false };
-    }
+    pointer = lfsPointerPattern.exec(readFileSync(filePath, 'utf8'));
+  }
+  const repoPath = relative(repoRoot, filePath).split(sep).join('/');
+  const trackedLfs = lfsIndex.get(repoPath);
+  if (trackedLfs) {
+    return { ...trackedLfs, hydrated: !pointer };
+  }
+  if (pointer) {
+    return { logicalBytes: Number(pointer[2]), lfsOid: pointer[1], hydrated: false };
   }
   return { logicalBytes: stat.size, lfsOid: null, hydrated: true };
 }
@@ -269,6 +303,13 @@ if (missingReferences.length > 0) {
   console.error(`Runtime asset manifest found ${missingReferences.length} missing direct reference(s).`);
   for (const missing of missingReferences.slice(0, 25)) console.error(`- ${missing.url}`);
   process.exitCode = 1;
+} else if (listRequiredLfsPaths) {
+  for (const path of [...claimedPaths].sort()) {
+    const filePath = resolve(publicRoot, path.replace(/^\/+/, ''));
+    if (assetMetadata(filePath).lfsOid) {
+      console.log(relative(repoRoot, filePath).split(sep).join('/'));
+    }
+  }
 } else if (requireHydrated && unhydratedRequiredCount > 0) {
   console.error(`Runtime assets are not hydrated: ${unhydratedRequiredCount} required Git LFS pointer file(s) remain.`);
   process.exitCode = 1;

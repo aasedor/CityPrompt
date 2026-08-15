@@ -1,6 +1,43 @@
 import { test as base, expect } from '@playwright/test';
 
-export const test = base.extend<{ browserErrors: string[] }>({
+type CityPromptFixtures = {
+  browserErrors: string[];
+  deterministicApiMocks: void;
+};
+
+export const test = base.extend<CityPromptFixtures>({
+  deterministicApiMocks: [async ({ page }, use) => {
+    // Workspace tests intentionally run without the backend. Keep terrain
+    // startup deterministic instead of allowing Vite's proxy to return 500.
+    await page.route('**/api/v1/elevation?*', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          elevation: 0,
+          ellipsoidal_height: -25,
+          resolution: 1000,
+        }),
+      });
+    });
+    await page.route('**/api/v1/elevation/batch', async (route) => {
+      const body = route.request().postDataJSON() as { points?: unknown[] } | null;
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ elevations: body?.points?.map(() => -25) ?? [] }),
+      });
+    });
+    await page.route('**/api/v1/projects/?*', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: '[]',
+      });
+    });
+
+    await use();
+  }, { auto: true }],
   browserErrors: [async ({ page }, use) => {
     const browserErrors: string[] = [];
     page.on('console', (message) => {

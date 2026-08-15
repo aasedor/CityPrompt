@@ -49,9 +49,9 @@ jobs:
           --health-retries 5
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.11"
           cache: pip
@@ -100,11 +100,9 @@ jobs:
         working-directory: frontend
 
     steps:
-      - uses: actions/checkout@v4
-        with:
-          lfs: true
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: "20"
           cache: npm
@@ -137,8 +135,11 @@ jobs:
       - name: Validate Sticker Method assets
         run: npm run check:sticker-pilot-assets
 
-      - name: Validate hydrated runtime asset manifest
-        run: npm run check:runtime-assets:hydrated
+      - name: Validate runtime asset manifest
+        # Routine CI proves addressability and manifest freshness while LFS
+        # files remain pointers. The manual Release Assets workflow performs
+        # the heavyweight hydration proof once per release candidate.
+        run: npm run check:runtime-assets
 
       - name: Enforce bundle budget
         run: npm run check-budget
@@ -153,9 +154,9 @@ jobs:
         working-directory: frontend
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: "20"
           cache: npm
@@ -176,9 +177,7 @@ jobs:
   docker:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-        with:
-          lfs: true
+      - uses: actions/checkout@v7
 
       - name: Build backend image
         run: docker build -f infrastructure/docker/Dockerfile.backend -t backend-test ./backend
