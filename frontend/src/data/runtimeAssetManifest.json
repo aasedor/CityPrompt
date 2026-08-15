@@ -861,6 +861,15 @@
       "logicalBytes": 1245075
     },
     {
+      "url": "/archetypes/buildings/contemporary-prairie-retail-strip/hero.png",
+      "sources": [
+        "src/data/archetypeReferenceAvailability.json",
+        "src/data/buildingArchetypes.json"
+      ],
+      "logicalBytes": 1387127,
+      "lfsOid": "91323197db664cc3d21aae7c464bc1ed2a68fdd2395c9e1408a1ef3a2cc279ce"
+    },
+    {
       "url": "/archetypes/buildings/contemporary_mid_rise_residential/hero.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
@@ -907,15 +916,6 @@
         "src/data/buildingArchetypes.json"
       ],
       "logicalBytes": 1357239
-    },
-    {
-      "url": "/archetypes/buildings/contemporary-prairie-retail-strip/hero.png",
-      "sources": [
-        "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
-      ],
-      "logicalBytes": 1387127,
-      "lfsOid": "91323197db664cc3d21aae7c464bc1ed2a68fdd2395c9e1408a1ef3a2cc279ce"
     },
     {
       "url": "/archetypes/buildings/corten-arch-university-library/hero.png",
@@ -1785,6 +1785,15 @@
       "logicalBytes": 1289892
     },
     {
+      "url": "/archetypes/buildings/modern-fire-station-mass-timber/hero.png",
+      "sources": [
+        "src/data/archetypeReferenceAvailability.json",
+        "src/data/buildingArchetypes.json"
+      ],
+      "logicalBytes": 1550235,
+      "lfsOid": "d2dd7843b098211b93896e13c621a0bbe52a3f719ad199b203740b0964a275a7"
+    },
+    {
       "url": "/archetypes/buildings/modern_fire_station/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
@@ -1839,15 +1848,6 @@
         "src/data/buildingArchetypes.json"
       ],
       "logicalBytes": 974132
-    },
-    {
-      "url": "/archetypes/buildings/modern-fire-station-mass-timber/hero.png",
-      "sources": [
-        "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
-      ],
-      "logicalBytes": 1550235,
-      "lfsOid": "d2dd7843b098211b93896e13c621a0bbe52a3f719ad199b203740b0964a275a7"
     },
     {
       "url": "/archetypes/buildings/modernist_civic_block/variant_0.png",
@@ -2063,6 +2063,15 @@
       "lfsOid": "14b6467fbca9b06af194f52c420bf64f9e71fed7ce822daedd37b4076b275cfa"
     },
     {
+      "url": "/archetypes/buildings/parametric-wave-shell-aquatic-centre/hero.png",
+      "sources": [
+        "src/data/archetypeReferenceAvailability.json",
+        "src/data/buildingArchetypes.json"
+      ],
+      "logicalBytes": 1761707,
+      "lfsOid": "c67fdd78721c011f166c77c1494c5c3baf172e34b885d17b7543ee46898b95b0"
+    },
+    {
       "url": "/archetypes/buildings/parametric_future_hub/hero.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
@@ -2101,15 +2110,6 @@
         "src/data/buildingArchetypes.json"
       ],
       "logicalBytes": 1219397
-    },
-    {
-      "url": "/archetypes/buildings/parametric-wave-shell-aquatic-centre/hero.png",
-      "sources": [
-        "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
-      ],
-      "logicalBytes": 1761707,
-      "lfsOid": "c67fdd78721c011f166c77c1494c5c3baf172e34b885d17b7543ee46898b95b0"
     },
     {
       "url": "/archetypes/buildings/parisian_boulevard_corner/variant_0.png",
@@ -8563,15 +8563,6 @@
       "lfsOid": "89dd34f6f64c029b2a61893a5f15e634d92dbc7ccf48a18190a0c73cddb52603"
     },
     {
-      "url": "/archetypes/streets/calgary-alley/section_stylized.webp",
-      "sources": [
-        "src/data/archetypeReferenceAvailability.json",
-        "src/data/streetPathArchetypes.json"
-      ],
-      "logicalBytes": 12038,
-      "lfsOid": "1a60f4693c1355323b1b9c7976f34bee3cd638e6d056a3e45490c91e53c18d38"
-    },
-    {
       "url": "/archetypes/streets/calgary-alley/section.svg",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
@@ -8581,13 +8572,13 @@
       "logicalBytes": 6779
     },
     {
-      "url": "/archetypes/streets/calgary-arterial-4lane-50/section_stylized.webp",
+      "url": "/archetypes/streets/calgary-alley/section_stylized.webp",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/streetPathArchetypes.json"
       ],
-      "logicalBytes": 24210,
-      "lfsOid": "53c3790d9641444452797fdbb265705ddf5b0cd947f2484d7e431e0e8438110c"
+      "logicalBytes": 12038,
+      "lfsOid": "1a60f4693c1355323b1b9c7976f34bee3cd638e6d056a3e45490c91e53c18d38"
     },
     {
       "url": "/archetypes/streets/calgary-arterial-4lane-50/section.svg",
@@ -8599,13 +8590,13 @@
       "logicalBytes": 19052
     },
     {
-      "url": "/archetypes/streets/calgary-arterial-4lane-70/section_stylized.webp",
+      "url": "/archetypes/streets/calgary-arterial-4lane-50/section_stylized.webp",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/streetPathArchetypes.json"
       ],
-      "logicalBytes": 25172,
-      "lfsOid": "c3a98c5f7a460515ad7b6817f3ed15589118e5259ef6372065548676998fbc48"
+      "logicalBytes": 24210,
+      "lfsOid": "53c3790d9641444452797fdbb265705ddf5b0cd947f2484d7e431e0e8438110c"
     },
     {
       "url": "/archetypes/streets/calgary-arterial-4lane-70/section.svg",
@@ -8617,13 +8608,13 @@
       "logicalBytes": 19043
     },
     {
-      "url": "/archetypes/streets/calgary-arterial-6lane/section_stylized.webp",
+      "url": "/archetypes/streets/calgary-arterial-4lane-70/section_stylized.webp",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/streetPathArchetypes.json"
       ],
-      "logicalBytes": 50972,
-      "lfsOid": "6e3c413a231540a38f073ba892fcec9c477feb807fea79d9b34ae68523a77c98"
+      "logicalBytes": 25172,
+      "lfsOid": "c3a98c5f7a460515ad7b6817f3ed15589118e5259ef6372065548676998fbc48"
     },
     {
       "url": "/archetypes/streets/calgary-arterial-6lane/section.svg",
@@ -8635,13 +8626,13 @@
       "logicalBytes": 21743
     },
     {
-      "url": "/archetypes/streets/calgary-arterial-high-activity/section_stylized.webp",
+      "url": "/archetypes/streets/calgary-arterial-6lane/section_stylized.webp",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/streetPathArchetypes.json"
       ],
-      "logicalBytes": 39060,
-      "lfsOid": "16a7fcbd81036d860fdcd5186ba93a441eb33dd8bd78855af549f407f110433e"
+      "logicalBytes": 50972,
+      "lfsOid": "6e3c413a231540a38f073ba892fcec9c477feb807fea79d9b34ae68523a77c98"
     },
     {
       "url": "/archetypes/streets/calgary-arterial-high-activity/section.svg",
@@ -8653,13 +8644,13 @@
       "logicalBytes": 25848
     },
     {
-      "url": "/archetypes/streets/calgary-collector-high-activity/section_stylized.webp",
+      "url": "/archetypes/streets/calgary-arterial-high-activity/section_stylized.webp",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/streetPathArchetypes.json"
       ],
-      "logicalBytes": 23784,
-      "lfsOid": "fb079285a58ca74636415262c2e649fcfc1a2ea2020698060cb4543d11f998bf"
+      "logicalBytes": 39060,
+      "lfsOid": "16a7fcbd81036d860fdcd5186ba93a441eb33dd8bd78855af549f407f110433e"
     },
     {
       "url": "/archetypes/streets/calgary-collector-high-activity/section.svg",
@@ -8671,13 +8662,13 @@
       "logicalBytes": 23857
     },
     {
-      "url": "/archetypes/streets/calgary-collector-industrial/section_stylized.webp",
+      "url": "/archetypes/streets/calgary-collector-high-activity/section_stylized.webp",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/streetPathArchetypes.json"
       ],
-      "logicalBytes": 19086,
-      "lfsOid": "f1af7a4e97ded7081cd1f5456a9636a6dd2a3c472192c8a075a4f981ff699f32"
+      "logicalBytes": 23784,
+      "lfsOid": "fb079285a58ca74636415262c2e649fcfc1a2ea2020698060cb4543d11f998bf"
     },
     {
       "url": "/archetypes/streets/calgary-collector-industrial/section.svg",
@@ -8689,13 +8680,13 @@
       "logicalBytes": 18447
     },
     {
-      "url": "/archetypes/streets/calgary-collector/section_stylized.webp",
+      "url": "/archetypes/streets/calgary-collector-industrial/section_stylized.webp",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/streetPathArchetypes.json"
       ],
-      "logicalBytes": 47006,
-      "lfsOid": "b3c3f13712e0043149c1058686936ddd5bb14e599a455a670cfcab241e5254f2"
+      "logicalBytes": 19086,
+      "lfsOid": "f1af7a4e97ded7081cd1f5456a9636a6dd2a3c472192c8a075a4f981ff699f32"
     },
     {
       "url": "/archetypes/streets/calgary-collector/section.svg",
@@ -8707,13 +8698,13 @@
       "logicalBytes": 16930
     },
     {
-      "url": "/archetypes/streets/calgary-local-high-activity/section_stylized.webp",
+      "url": "/archetypes/streets/calgary-collector/section_stylized.webp",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/streetPathArchetypes.json"
       ],
-      "logicalBytes": 29750,
-      "lfsOid": "76b89c524afb70d9edddc051d864d0e5e7edec2c0fedbbb00de78698be17fc55"
+      "logicalBytes": 47006,
+      "lfsOid": "b3c3f13712e0043149c1058686936ddd5bb14e599a455a670cfcab241e5254f2"
     },
     {
       "url": "/archetypes/streets/calgary-local-high-activity/section.svg",
@@ -8725,13 +8716,13 @@
       "logicalBytes": 17591
     },
     {
-      "url": "/archetypes/streets/calgary-local-industrial/section_stylized.webp",
+      "url": "/archetypes/streets/calgary-local-high-activity/section_stylized.webp",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/streetPathArchetypes.json"
       ],
-      "logicalBytes": 30578,
-      "lfsOid": "710c506daae54e064bfd802a3b7e03246869cbb5a6820b0333ef7a70a648dcf6"
+      "logicalBytes": 29750,
+      "lfsOid": "76b89c524afb70d9edddc051d864d0e5e7edec2c0fedbbb00de78698be17fc55"
     },
     {
       "url": "/archetypes/streets/calgary-local-industrial/section.svg",
@@ -8743,13 +8734,13 @@
       "logicalBytes": 16166
     },
     {
-      "url": "/archetypes/streets/calgary-local-rural/section_stylized.webp",
+      "url": "/archetypes/streets/calgary-local-industrial/section_stylized.webp",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/streetPathArchetypes.json"
       ],
-      "logicalBytes": 26938,
-      "lfsOid": "bc627326dc0ebc748565179201a53574249dd37c9c56191e09647bf6042a44a3"
+      "logicalBytes": 30578,
+      "lfsOid": "710c506daae54e064bfd802a3b7e03246869cbb5a6820b0333ef7a70a648dcf6"
     },
     {
       "url": "/archetypes/streets/calgary-local-rural/section.svg",
@@ -8761,13 +8752,13 @@
       "logicalBytes": 11879
     },
     {
-      "url": "/archetypes/streets/calgary-local/section_stylized.webp",
+      "url": "/archetypes/streets/calgary-local-rural/section_stylized.webp",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/streetPathArchetypes.json"
       ],
-      "logicalBytes": 32266,
-      "lfsOid": "45d4e7a2fe54b5bb5026e62f237dbda810f1a5a6d3e5a7e4d2ab6b5cea08bb68"
+      "logicalBytes": 26938,
+      "lfsOid": "bc627326dc0ebc748565179201a53574249dd37c9c56191e09647bf6042a44a3"
     },
     {
       "url": "/archetypes/streets/calgary-local/section.svg",
@@ -8779,13 +8770,13 @@
       "logicalBytes": 16026
     },
     {
-      "url": "/archetypes/streets/calgary-skeletal/section_stylized.webp",
+      "url": "/archetypes/streets/calgary-local/section_stylized.webp",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/streetPathArchetypes.json"
       ],
-      "logicalBytes": 19974,
-      "lfsOid": "0316995637034456682a4040be2155df7b929953cf24465f10daa15fedc198d4"
+      "logicalBytes": 32266,
+      "lfsOid": "45d4e7a2fe54b5bb5026e62f237dbda810f1a5a6d3e5a7e4d2ab6b5cea08bb68"
     },
     {
       "url": "/archetypes/streets/calgary-skeletal/section.svg",
@@ -8795,6 +8786,15 @@
         "src/data/transportStandards.ts"
       ],
       "logicalBytes": 18368
+    },
+    {
+      "url": "/archetypes/streets/calgary-skeletal/section_stylized.webp",
+      "sources": [
+        "src/data/archetypeReferenceAvailability.json",
+        "src/data/streetPathArchetypes.json"
+      ],
+      "logicalBytes": 19974,
+      "lfsOid": "0316995637034456682a4040be2155df7b929953cf24465f10daa15fedc198d4"
     },
     {
       "url": "/archetypes/streets/campus-pedestrian-spine/hero.png",

@@ -31,6 +31,10 @@ const catalogPaths = new Set([
   resolve(sourceRoot, 'data/streetPathArchetypes.json'),
 ]);
 
+function compareText(left, right) {
+  return left < right ? -1 : left > right ? 1 : 0;
+}
+
 function loadLfsIndex() {
   try {
     const result = JSON.parse(execFileSync(
@@ -192,7 +196,7 @@ const explicitReferences = [];
 const claimedPaths = new Set();
 let unhydratedRequiredCount = 0;
 
-for (const [url, sources] of [...references].sort(([left], [right]) => left.localeCompare(right))) {
+for (const [url, sources] of [...references].sort(([left], [right]) => compareText(left, right))) {
   const filePath = resolve(publicRoot, url.replace(/^\/+/, ''));
   if (!existsSync(filePath)) {
     missingReferences.push({ url, sources: [...sources].sort() });
@@ -231,7 +235,7 @@ function summarizeCollection(name, roots, reason, include = () => true) {
       rows.push({ path, logicalBytes: metadata.logicalBytes, lfsOid: metadata.lfsOid });
     }
   }
-  rows.sort((left, right) => left.path.localeCompare(right.path));
+  rows.sort((left, right) => compareText(left.path, right.path));
   return {
     name,
     roots,
