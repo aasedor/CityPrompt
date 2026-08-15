@@ -35,6 +35,36 @@ function compareText(left, right) {
   return left < right ? -1 : left > right ? 1 : 0;
 }
 
+function firstDifference(current, expected, path = '$') {
+  if (Object.is(current, expected)) return null;
+  if (typeof current !== typeof expected || current === null || expected === null) {
+    return { path, current, expected };
+  }
+  if (Array.isArray(current) || Array.isArray(expected)) {
+    if (!Array.isArray(current) || !Array.isArray(expected)) return { path, current, expected };
+    if (current.length !== expected.length) {
+      return { path: `${path}.length`, current: current.length, expected: expected.length };
+    }
+    for (let index = 0; index < current.length; index += 1) {
+      const difference = firstDifference(current[index], expected[index], `${path}[${index}]`);
+      if (difference) return difference;
+    }
+    return null;
+  }
+  if (typeof current === 'object') {
+    const currentKeys = Object.keys(current);
+    const expectedKeys = Object.keys(expected);
+    const keyDifference = firstDifference(currentKeys, expectedKeys, `${path}.[keys]`);
+    if (keyDifference) return keyDifference;
+    for (const key of currentKeys) {
+      const difference = firstDifference(current[key], expected[key], `${path}.${key}`);
+      if (difference) return difference;
+    }
+    return null;
+  }
+  return { path, current, expected };
+}
+
 function loadLfsIndex() {
   try {
     const result = JSON.parse(execFileSync(
@@ -323,6 +353,18 @@ if (missingReferences.length > 0) {
     : null;
   if (currentManifest !== serialized) {
     console.error('Runtime asset manifest is stale. Run npm run generate:runtime-assets.');
+    if (currentManifest) {
+      try {
+        const difference = firstDifference(JSON.parse(currentManifest), manifest);
+        if (difference) {
+          console.error(`First difference: ${difference.path}`);
+          console.error(`- recorded: ${JSON.stringify(difference.current)}`);
+          console.error(`- generated: ${JSON.stringify(difference.expected)}`);
+        }
+      } catch {
+        console.error('The recorded runtime asset manifest is not valid JSON.');
+      }
+    }
     process.exitCode = 1;
   } else {
     console.log(`Verified ${claimedPaths.size} required runtime files; manifest is current.`);
