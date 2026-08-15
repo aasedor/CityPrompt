@@ -1225,7 +1225,7 @@ export function ProjectViewPage() {
                 <Video size={18} className="text-[#c9ff3d]" />
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-bold capitalize">{videoRenderLabel(videoLightbox)}</p>
-                  <p className="text-xs text-white/50">8 sec · Gemini Omni · saved to project</p>
+                  <p className="text-xs text-white/50">8 sec · {videoProviderOrigin(videoLightbox)} · saved to project</p>
                 </div>
                 <a
                   href={videoDownloadUrl(videoLightbox)}
@@ -1727,6 +1727,12 @@ function videoDownloadUrl(video: VideoAttempt): string {
       : 'omni';
   const name = `city-prompt-${provider}-${video.style}-${video.camera_motion}-${video.id.slice(0, 8)}.mp4`;
   return `${source}${separator}download=true&filename=${encodeURIComponent(name)}`;
+}
+
+function videoProviderOrigin(video: VideoAttempt): string {
+  if (video.provider === 'seedance_mini') return 'Seedance Mini';
+  if (video.provider === 'internal_enhance') return 'City Prompt local pipeline';
+  return 'Gemini Omni';
 }
 
 function videoRenderLabel(video: VideoAttempt): string {
