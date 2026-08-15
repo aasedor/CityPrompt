@@ -47,7 +47,9 @@ python tools/archetype_compiler/generate_worldclass_library.py `
   --output build/worldclass-v8/families
 ```
 
-See [`docs/ARCHITECT_WOW_LEGO_V8.md`](../../docs/ARCHITECT_WOW_LEGO_V8.md) for the quality contract, signature profiles, regeneration workflow, and comparison gallery.
+See [the high-quality 3D building memory](../../docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md)
+for the quality contract, signature profiles, regeneration workflow, and
+review requirements.
 
 Kinnaird-quality heritage pilot:
 

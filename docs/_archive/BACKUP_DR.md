@@ -53,7 +53,7 @@ PostgreSQL is the most critical data store. It holds all user accounts, project 
 
 - **Tool:** `pg_dump` with custom format (`-Fc`) for parallel restore support.
 - **Frequency:** Daily at 02:00 UTC.
-- **Script:** [`scripts/backup-postgres.sh`](../scripts/backup-postgres.sh)
+- **Script:** [`scripts/backup-postgres.sh`](../../scripts/backup-postgres.sh)
 - **Compression:** gzip applied after dump.
 - **Upload Target:** S3 bucket `s3://devplatform-backups/postgres/daily/`.
 - **Retention:** 30 daily backups. Older backups are automatically pruned from S3 after each successful run.
@@ -107,7 +107,8 @@ MinIO stores all binary assets: uploaded 3D models (glTF, OBJ, FBX), generated t
 
 #### Periodic Mirror Sync
 
-- **Tool:** `mc mirror` via [`scripts/backup-minio.sh`](../scripts/backup-minio.sh)
+- **Tool:** `mc mirror` via
+  [`scripts/backup-minio.sh`](../../scripts/backup-minio.sh)
 - **Frequency:** Every 6 hours.
 - **Purpose:** Acts as a secondary backup mechanism independent of replication. Validates integrity via checksums.
 - **Target:** `s3://devplatform-backups/minio-mirror/`
@@ -185,7 +186,7 @@ volumes:
 
 Use this procedure to restore PostgreSQL from a daily `pg_dump` backup.
 
-**Script:** [`scripts/restore-postgres.sh`](../scripts/restore-postgres.sh)
+**Script:** [`scripts/restore-postgres.sh`](../../scripts/restore-postgres.sh)
 
 **Manual Steps:**
 

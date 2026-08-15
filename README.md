@@ -1,165 +1,173 @@
-# 3D Interactive Development Visualization Platform
+# City Prompt
 
-Transform architectural documents into immersive 3D visualizations for real estate and urban development projects.
+City Prompt is an interactive urban-design workspace for turning a site,
+planning intent, and a catalogue of building and public-realm archetypes into
+editable 2D plans, explorable 3D scenes, and presentation renders.
 
-## Overview
+The application combines:
 
-This platform accepts architectural documents (PDFs, CAD files, images, spreadsheets) and automatically generates interactive 3D models that stakeholders can explore through a web browser. It combines AI-powered document interpretation, procedural 3D generation, and geospatial integration.
+- a React, TypeScript, Mapbox, and Three.js frontend;
+- a FastAPI backend with PostgreSQL/PostGIS, Redis, Celery, and S3-compatible
+  storage;
+- building, street, park, and plaza catalogues;
+- modular LEGO assembly and Sticker Method 3D assets; and
+- optional AI providers for document interpretation, images, 3D generation,
+  and video.
 
-## Architecture
+`main` is the canonical working branch. Long-lived pilot branches are not part
+of the release workflow.
 
-```
-┌─────────────────────────────────────────────────────────┐
-│                   Presentation Layer                     │
-│   React 18 · Three.js · Mapbox GL JS · Tailwind CSS     │
-├─────────────────────────────────────────────────────────┤
-│                   Application Layer                      │
-│   FastAPI · Celery Workers · Claude API · OpenCV         │
-├─────────────────────────────────────────────────────────┤
-│                      Data Layer                          │
-│   PostgreSQL/PostGIS · Redis · S3 Storage · CDN          │
-└─────────────────────────────────────────────────────────┘
-```
+## Student workflow
 
-## Quick Start
+Once the local stack is running, a student can:
 
-### Prerequisites
+1. create an account and project;
+2. locate or define a site;
+3. draw and edit planning zones;
+4. assign building, street, park, and plaza archetypes;
+5. generate and refine a master plan;
+6. inspect the design in 2D and 3D;
+7. use available LEGO and Sticker Method families; and
+8. create optional AI renders when the relevant provider key is configured.
 
-- Docker 24.0+ & Docker Compose v2
-- Node.js 20 LTS+
-- Python 3.11+
-- Git 2.40+
+See [the user guide](docs/USER_GUIDE.md) for the product walkthrough and
+[the local setup guide](docs/LOCAL_SETUP_GUIDE.md) for a beginner-friendly
+installation.
 
-### 1. Clone & Configure
+## Prerequisites
 
-```bash
-git clone <repo-url>
-cd 3d-development-platform
+- Git 2.40+ and Git LFS
+- Docker Desktop with Docker Compose v2
+- Node.js 20+ for frontend development
+- Python 3.11 or 3.12 for backend development
+
+## Quick start
+
+~~~bash
+git lfs install
+git clone https://github.com/aasedor/CityPrompt.git
+cd CityPrompt
 cp .env.example .env
-# Edit .env with your API keys and configuration
-```
+docker compose up -d --build
+~~~
 
-### 2. Start with Docker Compose
+On PowerShell, create the environment file with:
 
-```bash
-docker compose up -d
-```
+~~~powershell
+Copy-Item .env.example .env
+~~~
 
-This starts PostgreSQL, Redis, the backend API, Celery workers, and the frontend dev server.
+At minimum, set `MAPBOX_ACCESS_TOKEN` in `.env` for map tiles. AI features are
+enabled only when their corresponding keys are present. Never commit `.env` or
+paste credentials into documentation.
 
-### Recommended Windows local launcher
+Open:
 
-For day-to-day development, including linked Git worktrees, start the local
-stack with:
+- application: <http://localhost:5175>
+- API health: <http://localhost:8000/health>
+- API documentation: <http://localhost:8000/docs>
+- MinIO console: <http://localhost:9001>
 
-```powershell
+The first build can take several minutes. Use `docker compose ps` and
+`docker compose logs -f` to inspect startup.
+
+### Windows development launcher
+
+For day-to-day Windows development, including linked Git worktrees:
+
+~~~powershell
 .\scripts\start-local-city-prompt.ps1
-```
+~~~
 
-The launcher starts Docker Desktop when necessary, reuses the existing local
-PostgreSQL/Redis/MinIO containers so accounts and projects are preserved,
-stops known stateless API containers that would otherwise intercept port 8000,
-restarts the API from the current worktree on both local OAuth routes, starts
-the frontend when necessary, and waits for all health checks. This prevents
-the misleading empty HTTP 500 login error that appears when Vite is running
-without the API, and prevents Google OAuth callbacks from reaching stale code
-in another checkout. Pass `-KeepBackend` only when you deliberately want to
-retain the currently running worktree API.
+The launcher preserves the shared local database and storage containers,
+starts the API from the current worktree, starts the frontend when necessary,
+and waits for health checks. Pass `-KeepBackend` only when intentionally
+retaining an already-running API.
 
-### 3. Local Development (without Docker)
+## Run services without Docker
 
-**Backend:**
-```bash
+Keep PostgreSQL, Redis, and MinIO available, then run:
+
+~~~bash
 cd backend
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
+python -m venv .venv
+# Windows: .venv\Scripts\activate
+# macOS/Linux: source .venv/bin/activate
 pip install -r requirements.txt
 alembic upgrade head
 uvicorn app.main:app --reload --port 8000
-```
+~~~
 
-**Celery Worker:**
-```bash
-cd backend
-celery -A app.tasks.worker worker --loglevel=info
-```
+In another terminal:
 
-**Frontend:**
-```bash
+~~~bash
 cd frontend
-npm install
+npm ci
 npm run dev
-```
+~~~
 
-### 4. Access
+The direct Vite server uses <http://localhost:5174>.
 
-- **Frontend (Docker Compose)**: http://localhost:5175
-- **Frontend (npm run dev)**: http://localhost:5174
-- **API Docs**: http://localhost:8000/docs
-- **API ReDoc**: http://localhost:8000/redoc
+## Verification
 
+Run these gates before integrating application changes:
 
-### 5. Configure Stability AI (Render Previews)
+~~~bash
+cd frontend
+npm ci
+npm run lint
+npm run type-check
+npm run test -- --run
+npm run build
+npm run check:archetype-assets
+npm run check:sticker-pilot-assets
+~~~
 
-1. Add your key to `.env`:
-   ```bash
-   STABILITY_API_KEY=your-stability-key
-   ```
-2. Restart backend and Celery after updating environment variables.
-3. Generate a building render preview from the UI, or call:
-   - `POST /api/v1/buildings/{building_id}/render-preview`
-4. Verify configuration and credits in cofounder analytics:
-   - `GET /api/v1/analytics/api-balances`
-## Project Structure
+~~~bash
+cd backend
+python -m pytest
+~~~
 
-```
-3d-development-platform/
-├── frontend/                # React + Three.js client
-│   ├── src/
-│   │   ├── components/      # Reusable UI & 3D components
-│   │   ├── features/        # Feature modules (projects, documents, buildings)
-│   │   ├── hooks/           # Custom React hooks
-│   │   ├── services/        # API client layer
-│   │   ├── store/           # Zustand state management
-│   │   ├── types/           # TypeScript type definitions
-│   │   └── utils/           # Utility functions
-│   └── public/              # Static assets
-├── backend/                 # Python FastAPI server
-│   ├── app/
-│   │   ├── api/             # API route handlers
-│   │   ├── core/            # Configuration, security, logging
-│   │   ├── models/          # SQLAlchemy database models
-│   │   ├── schemas/         # Pydantic request/response schemas
-│   │   ├── services/        # Business logic layer
-│   │   ├── processing/      # Document extraction & analysis
-│   │   ├── generation/      # 3D model generation
-│   │   └── tasks/           # Celery async tasks
-│   ├── tests/               # Test suite
-│   └── migrations/          # Alembic DB migrations
-├── infrastructure/          # Deployment configs
-│   ├── docker/              # Dockerfiles
-│   ├── k8s/                 # Kubernetes manifests
-│   └── terraform/           # Infrastructure as code
-└── docs/                    # Documentation
-```
+Compiler changes also require:
 
-## Development Phases
+~~~bash
+python -m pytest tools/archetype_compiler/tests/ -v
+~~~
 
-| Phase | Duration | Focus |
-|-------|----------|-------|
-| **Phase 1: MVP** | 8-10 weeks | Basic upload, simple 3D extrusion, web viewer |
-| **Phase 2: Enhanced** | 6-8 weeks | AI extraction, facade details, shadows |
-| **Phase 3: Advanced** | 8-10 weeks | LOD, phasing, measurements, collaboration |
-| **Phase 4: Production** | 4-6 weeks | Auth, mobile, testing, deployment |
+The current release checklist is in
+[PROJECT_CHECKLIST.md](PROJECT_CHECKLIST.md).
 
-## Tech Stack
+## Repository layout
 
-**Frontend:** React 18, Three.js, React Three Fiber, Mapbox GL JS, Tailwind CSS, Zustand, React Query  
-**Backend:** Python 3.11+, FastAPI, SQLAlchemy 2.0, Celery, PostgreSQL 15+, PostGIS, Redis  
-**AI/ML:** Anthropic Claude API, OpenCV, Tesseract OCR  
-**3D:** trimesh, pygltflib, glTF 2.0 (GLB)  
-**Infrastructure:** Docker, Kubernetes, Terraform, S3, CloudFront
+~~~text
+backend/        FastAPI application, migrations, workers, and pytest suite
+frontend/       React application, Vitest suite, and runtime web assets
+tools/          Deterministic building and public-realm asset compilers
+scripts/        Local launch, validation, and bounded generation helpers
+docs/           Active product, pipeline, and quality documentation
+artifacts/      Ignored local output; never commit generated review batches
+~~~
+
+Runtime archetype images belong only in:
+
+~~~text
+frontend/public/archetypes/buildings/
+frontend/public/archetypes/openspaces/
+frontend/public/archetypes/streets/
+~~~
+
+LEGO and Sticker Method work must follow
+[the high-quality building memory](docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md) and
+the repository's dry-run, one-archetype pilot, visual-review, then bounded
+scale-up sequence.
+
+## Contributing
+
+Read [CONTRIBUTING.md](CONTRIBUTING.md), [AGENTS.md](AGENTS.md), and
+[CLAUDE.md](CLAUDE.md) before substantial work.
+
+Report sensitive issues according to [SECURITY.md](SECURITY.md).
 
 ## License
 
-Proprietary - All rights reserved.
+Proprietary. All rights reserved.

@@ -146,7 +146,8 @@ An item is ready for users only when all of the following pass:
 - Robust shared local terrain contact: [`frontend/src/components/viewer/globe/terrainContactProfile.ts`](../frontend/src/components/viewer/globe/terrainContactProfile.ts)
 - Final mixed-scene render prompting: [`frontend/src/components/viewer/globe/useGlobeAIRender.ts`](../frontend/src/components/viewer/globe/useGlobeAIRender.ts)
 - Archetype-by-archetype readiness log: [`docs/PUBLIC_REALM_ARCHETYPE_READINESS.md`](PUBLIC_REALM_ARCHETYPE_READINESS.md)
-- Screenshot comparison archive: [`artifacts/park-drape-comparisons`](../artifacts/park-drape-comparisons/)
+- Historical screenshot comparison archive: local generated artifact, not
+  retained in the source repository.
 
 The orientation-search change uses the `pg6` source signature so older cached drapes cannot silently masquerade as current fitted geometry.
 
@@ -201,7 +202,8 @@ placement loops and instance counts are finite before district-scale rollout.
 - TypeScript validation passed.
 - Production Vite build passed.
 - Live Google Tiles verification passed on project `0d73b4ea-31ea-48bf-8590-f1862f950504`.
-- Final QA screenshot: [`sports_complex_orientation_search_tiles.png`](../artifacts/park-drape-comparisons/2026-07-18-batch-04/sports_complex_orientation_search_tiles.png)
+- Final QA screenshot: historical local generated artifact, not retained in
+  the source repository.
 
 ## Recommended next work
 

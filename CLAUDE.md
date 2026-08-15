@@ -1,8 +1,11 @@
-# SiteForge — AI-Powered Architectural Site Planning
+# City Prompt — AI-Powered Architectural Site Planning
 
 ## What This Is
 
-SiteForge lets architects draw zones on a map, assign building archetypes, and generate photomontage-quality AI renders. Frontend is React/TypeScript/Vite with Three.js and Mapbox. Backend is Python FastAPI with PostgreSQL/PostGIS.
+City Prompt lets architects draw zones on a map, assign building archetypes,
+and generate photomontage-quality AI renders. The frontend is
+React/TypeScript/Vite with Three.js and Mapbox. The backend is Python FastAPI
+with PostgreSQL/PostGIS.
 
 ## Quick Commands
 
@@ -39,10 +42,15 @@ new assets to them.
 ### Test locally before pushing
 Always verify on localhost:5174 before committing. Check that cards load, renders work, no console errors.
 
-### Two remotes must stay in sync
-- `origin` → aasedor/2D-Maps
-- `beeman` → beemanbesh/2D-Maps2
-Check both with `git log origin/master --oneline -5` and `git log beeman/master --oneline -5` before pushing. Never force push without checking what's on both remotes.
+### Canonical remote and branch
+- `cityprompt` → `aasedor/CityPrompt`
+- `cityprompt/main` is the canonical integration and release branch.
+- `origin` and `claude-2d-maps2` are historical comparison remotes, not release
+  destinations.
+
+Before pushing, fetch `cityprompt`, confirm the local branch is based on
+`cityprompt/main`, and run the complete relevant checks. Never force-push the
+shared `main` branch.
 
 ### Render prompt guidelines
 - Do NOT send temperature on Gemini 3 image calls (official guidance: keep the

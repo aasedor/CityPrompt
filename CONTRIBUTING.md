@@ -1,92 +1,121 @@
-# Contributing to 3D Development Platform
+# Contributing to City Prompt
 
-## Development Setup
+City Prompt uses `main` as its canonical working and integration branch. Keep
+changes small, verified, and easy to review; do not leave completed work on
+long-lived pilot branches.
 
-### Prerequisites
-- Docker & Docker Compose
-- Node.js 20+ (for local frontend development)
-- Python 3.11+ (for local backend development)
+Before substantial work, read [AGENTS.md](AGENTS.md) and
+[CLAUDE.md](CLAUDE.md). Building-family work also requires
+[docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md](docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md).
 
-### Quick Start
-```bash
-# Clone the repository
-git clone <repo-url>
-cd 3d-development-platform
+## Setup
 
-# Copy environment file
+~~~bash
+git lfs install
+git clone https://github.com/aasedor/CityPrompt.git
+cd CityPrompt
 cp .env.example .env
-# Edit .env with your API keys (ANTHROPIC_API_KEY, MAPBOX_ACCESS_TOKEN)
+docker compose up -d --build
+~~~
 
-# Start all services
-docker compose up -d
+See [docs/LOCAL_SETUP_GUIDE.md](docs/LOCAL_SETUP_GUIDE.md) for complete setup
+and troubleshooting.
 
-# Access the app
-# Frontend: http://localhost:5173
-# Backend API: http://localhost:8000/docs
-# MinIO Console: http://localhost:9001
-```
+## Working on main
 
-### Running Tests
-```bash
-# Backend tests
-docker compose exec backend pytest tests/ -v
+1. Start from a clean tree: `git status --short --branch`.
+2. Fetch and fast-forward from `cityprompt/main`.
+3. Work on one named initiative at a time.
+4. Use a temporary branch or worktree only when concurrent or risky work needs
+   isolation, and integrate it promptly.
+5. Preserve unrelated local changes; never reset or clean another person's
+   work.
+6. Commit one coherent, verified unit at a time.
+7. Do not push unverified changes or force-push shared history.
 
-# Frontend tests
-docker compose exec frontend npx vitest run
-```
+## Required checks
 
-## Code Style
+Frontend production changes:
 
-### Backend (Python)
-- **Formatter:** Black (line length 120)
-- **Linter:** Ruff
-- **Type checker:** mypy
-- Run locally: `black . && ruff check . && mypy app/ --ignore-missing-imports`
+~~~bash
+cd frontend
+npm ci
+npm run lint
+npm run type-check
+npm run test -- --run
+npm run build
+~~~
 
-### Frontend (TypeScript/React)
-- **Linter:** ESLint
-- **Framework:** React 18 + TypeScript
-- **State:** Zustand (stores), TanStack React Query (server state)
-- **3D:** React Three Fiber + drei
-- **Styling:** Tailwind CSS
+Backend changes:
 
-## Branch Naming
-- `feature/<short-description>` for new features
-- `fix/<short-description>` for bug fixes
-- `refactor/<short-description>` for refactoring
-- `docs/<short-description>` for documentation
+~~~bash
+cd backend
+python -m pytest
+~~~
 
-## Pull Request Process
-1. Create a feature branch from `main`
-2. Make your changes with clear, focused commits
-3. Ensure all tests pass
-4. Open a PR with a description of changes and a test plan
-5. Request review from a team member
+Asset and catalogue changes:
 
-## Project Structure
-```
-├── backend/              # FastAPI + SQLAlchemy + Celery
-│   ├── app/
-│   │   ├── api/v1/       # API endpoints
-│   │   ├── core/         # Config, database, security
-│   │   ├── models/       # SQLAlchemy models
-│   │   ├── schemas/      # Pydantic schemas
-│   │   ├── processing/   # Document extractors + AI interpreter
-│   │   ├── generation/   # 3D building geometry + GLB export
-│   │   └── tasks/        # Celery task definitions
-│   └── tests/
-├── frontend/             # React + Three.js
-│   └── src/
-│       ├── components/   # Reusable UI components
-│       ├── features/     # Page-level feature components
-│       ├── services/     # API client
-│       ├── store/        # Zustand stores
-│       └── types/        # TypeScript types
-└── infrastructure/       # Docker, deployment configs
-```
+~~~bash
+cd frontend
+npm run check:archetype-assets
+npm run check:sticker-pilot-assets
+~~~
 
-## Key Patterns
-- **API endpoints** use FastAPI dependency injection for auth and database sessions
-- **3D models** are generated server-side (trimesh) as GLB and loaded client-side via useGLTF
-- **Document processing** is async via Celery tasks (upload -> extract -> AI interpret -> generate 3D)
-- **State management** uses Zustand for UI state and React Query for server state
+Compiler changes:
+
+~~~bash
+python -m pytest tools/archetype_compiler/tests/ -v
+~~~
+
+Before every commit:
+
+~~~bash
+git diff --check
+git diff --stat
+git status --short
+~~~
+
+Use `git diff --cached` variants when the change is staged.
+
+## Code conventions
+
+### Frontend
+
+- React 18, TypeScript, Vite, Zustand, TanStack Query, Three.js, and Mapbox.
+- ESLint 9 is the source lint gate.
+- Keep components accessible and avoid adding unguarded debug logging.
+- Add focused Vitest coverage for changed behavior.
+
+### Backend
+
+- Python 3.11+, FastAPI, SQLAlchemy 2, Pydantic, and Celery.
+- Format with Black, lint with Ruff, and type-check touched code when practical.
+- Add focused pytest coverage for services and endpoints.
+
+## Assets and generated output
+
+- Runtime archetype roots are `buildings`, `openspaces`, and `streets` under
+  `frontend/public/archetypes`.
+- Use Git LFS for intentional large binary runtime assets.
+- Keep renders, screenshots, compiler builds, and visual-QA batches outside
+  the source tree or in the ignored `artifacts/` directory.
+- Never stage a generated directory wholesale.
+- Generate a finite batch: dry run, one-archetype pilot, visual review, then a
+  bounded rollout.
+
+## Catalogue edits
+
+Do not parse and rewrite `frontend/src/data/buildingArchetypes.json` with
+`json.dump()`. Its path spellings are contract data. Follow the text-level
+editing rule in [CLAUDE.md](CLAUDE.md), preserve incomplete entries explicitly,
+and run the asset checks.
+
+## Pull requests
+
+When review is needed, include:
+
+- the user-visible outcome;
+- the exact verification commands and results;
+- screenshots for visual changes;
+- source changes separated from ignored/generated output; and
+- any known limitation or follow-up.

@@ -66,7 +66,8 @@ All three trials use the same validated downtown vacant-lot context. Their polyg
 
 ## Batch 02 - 2026-07-18
 
-The complete screenshot audit is stored in [`artifacts/park-drape-comparisons/2026-07-18-batch-02`](../artifacts/park-drape-comparisons/2026-07-18-batch-02/README.md).
+The complete screenshot audit was generated locally for batch 02 and is not
+retained in the source repository.
 
 ### Wetland / rain garden — Native Restoration refinement
 
@@ -99,7 +100,8 @@ The complete screenshot audit is stored in [`artifacts/park-drape-comparisons/20
 
 ## Batch 03 - 2026-07-18
 
-The complete same-footprint screenshot audit is stored in [`artifacts/park-drape-comparisons/2026-07-18-batch-03`](../artifacts/park-drape-comparisons/2026-07-18-batch-03/README.md).
+The complete same-footprint screenshot audit was generated locally for batch
+03 and is not retained in the source repository.
 
 All three trials clone the user's exact 144 × 76.8 m (9,694.6 m²) parcel and terrain context.
 
@@ -131,7 +133,9 @@ All three trials clone the user's exact 144 × 76.8 m (9,694.6 m²) parcel and t
 
 ## Batch 04 - 2026-07-18
 
-The complete same-footprint screenshot audit is stored in [`artifacts/park-drape-comparisons/2026-07-18-batch-04`](../artifacts/park-drape-comparisons/2026-07-18-batch-04/README.md). All trials use the same 144.0 x 76.8 m (9,694.6 m2) parcel.
+The complete same-footprint screenshot audit was generated locally for batch
+04 and is not retained in the source repository. All trials use the same
+144.0 x 76.8 m (9,694.6 m2) parcel.
 
 ### Accepted on this footprint
 
