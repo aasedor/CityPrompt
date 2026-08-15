@@ -23,6 +23,7 @@ const runtimePrefixes = Object.freeze([
   '/park-skins/',
 ]);
 const sourceExtensions = new Set(['.html', '.js', '.json', '.ts', '.tsx']);
+const runtimeTextExtensions = new Set(['.js', '.json', '.svg']);
 const lfsPointerPattern = /^version https:\/\/git-lfs\.github\.com\/spec\/v1\noid sha256:([a-f0-9]{64})\nsize (\d+)\n?$/;
 const catalogPaths = new Set([
   resolve(sourceRoot, 'data/buildingArchetypes.json'),
@@ -123,7 +124,10 @@ function assetMetadata(filePath) {
   if (pointer) {
     return { logicalBytes: Number(pointer[2]), lfsOid: pointer[1], hydrated: false };
   }
-  return { logicalBytes: stat.size, lfsOid: null, hydrated: true };
+  const logicalBytes = runtimeTextExtensions.has(extname(filePath).toLowerCase())
+    ? Buffer.byteLength(readFileSync(filePath, 'utf8').replace(/\r\n?/g, '\n'), 'utf8')
+    : stat.size;
+  return { logicalBytes, lfsOid: null, hydrated: true };
 }
 
 function digestRows(rows) {

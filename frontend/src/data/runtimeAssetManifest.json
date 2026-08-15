@@ -230,7 +230,7 @@
     "explicitReferenceCount": 1437,
     "dynamicCollectionCount": 3,
     "requiredFileCount": 3261,
-    "requiredLogicalBytes": 9641013627,
+    "requiredLogicalBytes": 9640903849,
     "missingReferenceCount": 0
   },
   "explicitReferences": [
@@ -12768,8 +12768,8 @@
       ],
       "reason": "Selected by legoFamilySignatures.json; deployable manifests and GLB model parts are assembled by family and role at runtime.",
       "fileCount": 485,
-      "logicalBytes": 8047060241,
-      "pathDigest": "7a28a762e6f677dac634d4239f52639160fcd707c70d834535cb8910de9fa791"
+      "logicalBytes": 8046957529,
+      "pathDigest": "65ed615949c77e8c9d71a4288a098f42d92b826615baee5d003acbf35ab7f3ce"
     },
     {
       "name": "public-realm-kits",
@@ -12778,8 +12778,8 @@
       ],
       "reason": "Kit filenames are selected from typed park recipes and composed into URLs at runtime.",
       "fileCount": 92,
-      "logicalBytes": 42803660,
-      "pathDigest": "15241b7c91fc7f5c7df0616f5f4d6ef967a7d28aa1c06944edf1da5b216a9fce"
+      "logicalBytes": 42803088,
+      "pathDigest": "8c88494b17fb45904a9332fbc51ba634f45bbded9987eb1eb43a0751707cf31a"
     },
     {
       "name": "public-realm-skins",
@@ -12788,8 +12788,8 @@
       ],
       "reason": "Park skin roles and adaptive sizes are composed into URLs at runtime.",
       "fileCount": 1317,
-      "logicalBytes": 74329921,
-      "pathDigest": "e3b8bf5c58a4df0077275aa1959c731932077a2d4619f3d447303c3749ba7a26"
+      "logicalBytes": 74323427,
+      "pathDigest": "ac31a5a6dd8a23a65ecc4630e09e7375cdcbc83c665c10b6287f3e17ca9fbc2b"
     }
   ],
   "cleanupCandidates": {
