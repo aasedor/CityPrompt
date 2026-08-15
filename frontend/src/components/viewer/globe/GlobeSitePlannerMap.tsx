@@ -64,6 +64,7 @@ import {
 import {
   getFrameableProjectCoordinates,
   runProjectFrameRetry,
+  shouldUsePassiveGlobeHeightCorrection,
 } from './projectFrameRetry';
 import { TileStencilPatcher } from './TileStencilPatcher';
 import { GlobeTileMaskLayer } from './GlobeTileMaskLayer';
@@ -1746,6 +1747,10 @@ export function GlobeSitePlannerMap({
   }, [projectZonePoints]);
 
   const shouldFitProjectZones = Boolean(!preferredView && projectZoneFocus);
+  const usePassiveGlobeHeightCorrection = shouldUsePassiveGlobeHeightCorrection({
+    hasProjectFrameTargets: Boolean(projectZoneFocus),
+    hasPreferredCameraPose: Boolean(preferredView),
+  });
   const projectZoneFocusKey = projectZoneFocus
     ? `${projectZoneFocus.lat.toFixed(7)}:${projectZoneFocus.lng.toFixed(7)}:${Math.round(projectZoneFocus.maxDistMeters)}`
     : null;
@@ -3804,6 +3809,12 @@ export function GlobeSitePlannerMap({
           <TilesExposer tilesRef={tilesRendererRef} />
           <GlobeControls
             ref={handleGlobeControlsRef}
+            // The close project/preferred camera already owns a geodetic
+            // height. Passive scene collision sees late Google tile meshes as
+            // new ground and can lift that camera kilometres after framing.
+            // Keep passive correction only for the unframed empty-city entry;
+            // pointer/zoom raycasts remain enabled for normal navigation.
+            adjustHeight={usePassiveGlobeHeightCorrection}
             maxAltitude={MAX_GLOBE_CAMERA_PITCH_DEGREES * DEG_TO_RAD}
             useFallbackPlane
           />

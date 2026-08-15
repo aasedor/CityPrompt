@@ -4,6 +4,24 @@ export interface ProjectFrameZone {
   coordinates?: [number, number][];
 }
 
+interface PassiveGlobeHeightCorrectionOptions {
+  hasProjectFrameTargets: boolean;
+  hasPreferredCameraPose: boolean;
+}
+
+/**
+ * GlobeControls' passive height correction raycasts every newly streamed
+ * scene mesh. That is useful while exploring an empty city, but it must not
+ * move a close project frame or an exact handed-off camera when higher-detail
+ * Google tiles arrive after the pose was applied.
+ */
+export function shouldUsePassiveGlobeHeightCorrection({
+  hasProjectFrameTargets,
+  hasPreferredCameraPose,
+}: PassiveGlobeHeightCorrectionOptions): boolean {
+  return !hasProjectFrameTargets && !hasPreferredCameraPose;
+}
+
 interface RunProjectFrameRetryOptions {
   isReady: () => boolean;
   isCancelled: () => boolean;

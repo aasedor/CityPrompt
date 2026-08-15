@@ -3,7 +3,31 @@ import { describe, expect, it, vi } from 'vitest';
 import {
   getFrameableProjectCoordinates,
   runProjectFrameRetry,
+  shouldUsePassiveGlobeHeightCorrection,
 } from './projectFrameRetry';
+
+describe('globe passive height correction policy', () => {
+  it('does not let late tile collision move a project-owned camera', () => {
+    expect(shouldUsePassiveGlobeHeightCorrection({
+      hasProjectFrameTargets: true,
+      hasPreferredCameraPose: false,
+    })).toBe(false);
+  });
+
+  it('preserves an exact preferred camera pose', () => {
+    expect(shouldUsePassiveGlobeHeightCorrection({
+      hasProjectFrameTargets: false,
+      hasPreferredCameraPose: true,
+    })).toBe(false);
+  });
+
+  it('keeps passive collision correction for an unframed empty-city entry', () => {
+    expect(shouldUsePassiveGlobeHeightCorrection({
+      hasProjectFrameTargets: false,
+      hasPreferredCameraPose: false,
+    })).toBe(true);
+  });
+});
 
 describe('project camera frame retry', () => {
   it('waits through delayed camera readiness and then reapplies the pose', async () => {
