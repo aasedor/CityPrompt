@@ -41,8 +41,8 @@ available.
 - [ ] Compiler output and visual-QA batches are outside the source repository.
 - [x] Unreachable application code is removed in verified subsystem-sized
       commits.
-- [ ] Catalogue entries are classified as available, preview, experimental, or
-      archived.
+- [x] Catalogue entries are generated and classified as complete, partial, or
+      unavailable; selectors expose only usable references.
 - [ ] Merged pilot branches contain no unique deliverables before retirement.
 
 ## Verification gates
@@ -53,7 +53,8 @@ available.
 - [x] Production frontend build and enforced bundle budget pass.
 - [x] Backend pytest suite passes (1,063 tests).
 - [x] Archetype and Sticker Method asset checks pass.
-- [ ] Compiler tests pass.
+- [ ] Compiler tests pass against hydrated image assets (current unhydrated
+      checkout: 547 passed, 86 failed, 55 errors).
 - [ ] Browser smoke test has no console errors.
 - [ ] Fresh-clone Docker startup passes.
 - [ ] Fresh-clone student workflow passes end to end.

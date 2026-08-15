@@ -83,13 +83,45 @@ incremental content workflow rather than a source-code edit.
 - archetype, Sticker Method, runtime-manifest, and dead-code checks: pass;
 - Playwright discovery: 28 tests load correctly.
 
+The compiler suite was also run in the current checkout. It reported 547
+passes, 86 failures, and 55 setup errors. The failures are not a deletion
+signal: exact-reference inputs such as
+`civic_modernism_rec_centre/variant_0.png` are Git LFS pointer text rather than
+hydrated image bytes. The checkout remained clean after the run.
+
+## Remote branch audit
+
+After fetching `cityprompt`, 26 named pilot/wave branches have zero commits
+outside local `main`. Eight branches still have unique commits and must be
+reviewed before retirement:
+
+| Branch | Unique commits |
+| --- | ---: |
+| `codex/direct3d-inventory-fidelity` | 43 |
+| `codex/direct3d-object-seed` | 21 |
+| `codex/fixed-glb-meshy-blender-pilot` | 2 |
+| `codex/park-lego-variant-closure` | 23 |
+| `codex/park-meshy-object-pilot-v1` | 33 |
+| `codex/sticker-method-batch-01` | 2 |
+| `codex/sticker-method-street-pilot` | 1 |
+| `feat/clean-3d-style-renders` | 2 |
+
+Do not delete even the fully merged branches until this local integration is
+pushed to `cityprompt/main`; the canonical remote branch currently trails the
+release candidate by 34 commits.
+
 ## Remaining release blockers
 
 1. Hydrate the required LFS objects and prove the manifest against real bytes.
+   The current machine has only about 5.3 GiB free while the required runtime
+   set is approximately 8.98 GiB, so this cannot be completed safely on the
+   current drive.
 2. Move the 15,247 compiler/review candidates to external artifact storage;
    8.98 GiB of runtime content is also too heavy for a normal student clone and
    should ultimately be served from object storage/CDN.
-3. Run the compiler test suite after the artifact-storage boundary is chosen.
+3. Re-run the compiler test suite after LFS hydration and the artifact-storage
+   boundary are complete; the unhydrated run is 547 passed, 86 failed, and 55
+   errors.
 4. Run browser smoke and the complete Playwright workflow against a fresh
    Docker clone with real LFS assets and documented test credentials.
 5. Expand mypy beyond core/models/schemas; the legacy API/rendering backlog is
