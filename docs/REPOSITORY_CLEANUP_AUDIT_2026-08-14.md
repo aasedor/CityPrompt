@@ -106,7 +106,7 @@ hydrated image bytes. The checkout remained clean after the run.
 
 ## Remote branch audit
 
-After fetching `cityprompt`, 26 named pilot/wave branches have zero commits
+After fetching `cityprompt`, 24 named pilot/wave branches have zero commits
 outside local `main`. Eight branches still have unique commits and must be
 reviewed before retirement:
 
@@ -124,6 +124,13 @@ reviewed before retirement:
 Do not delete even the fully merged branches until this local integration is
 pushed to `cityprompt/main`; the canonical remote branch still trails the
 release candidate.
+
+GitHub CLI verification confirms that `aasedor/CityPrompt` is private, `main`
+is its default branch, and the current account has administrator access. The
+remote `main` branch is not protected yet. Locally, `main` tracks
+`cityprompt/main` and `remote.pushDefault` is set to `cityprompt`, so an
+unqualified future push cannot accidentally target the historical `origin`
+remote.
 
 ## Remaining release blockers
 
