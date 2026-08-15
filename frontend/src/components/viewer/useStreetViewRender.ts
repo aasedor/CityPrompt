@@ -11,6 +11,7 @@ import type { SiteZone } from '@/types';
 import type { Direct3DCaptureBundle } from './globe/direct3dCapture';
 import { api, getApiErrorMessage } from '@/services/api';
 import { prepareZonesForRender } from './resolvePlanZoneArchetypes';
+import archetypeReferenceAvailability from '@/data/archetypeReferenceAvailability.json';
 import buildingCatalog from '@/data/buildingArchetypes.json';
 import openSpaceCatalog from '@/data/openSpaceArchetypes.json';
 import streetPathCatalog from '@/data/streetPathArchetypes.json';
@@ -82,8 +83,11 @@ interface LegoFamilySignature {
   glassProfile?: string;
   elevationUrl?: string;
 }
-const FAMILY_SIGNATURES: Record<string, LegoFamilySignature> =
-  (legoFamilySignatures as { families?: Record<string, LegoFamilySignature> }).families ?? {};
+const AVAILABLE_FAMILY_SIGNATURES = new Set(archetypeReferenceAvailability.familySignatureIds);
+const FAMILY_SIGNATURES: Record<string, LegoFamilySignature> = Object.fromEntries(
+  Object.entries((legoFamilySignatures as { families?: Record<string, LegoFamilySignature> }).families ?? {})
+    .filter(([id]) => AVAILABLE_FAMILY_SIGNATURES.has(id)),
+);
 
 /** Resolve the authored LEGO family signature for a zone, if it has one. */
 function getLegoFamilySignature(zone: SiteZone): LegoFamilySignature | null {

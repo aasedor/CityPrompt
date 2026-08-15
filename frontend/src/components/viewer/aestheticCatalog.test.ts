@@ -6,6 +6,7 @@ import {
   ROADWAY_AESTHETIC_OPTIONS_V2,
 } from './aestheticCatalog';
 import { TRANSPORT_STANDARDS } from '@/data/transportStandards';
+import archetypeReferenceAvailability from '@/data/archetypeReferenceAvailability.json';
 import stickerMethodPilots from '@/data/stickerMethodPilots.json';
 
 describe('building aesthetic reference assets', () => {
@@ -23,13 +24,18 @@ describe('building aesthetic reference assets', () => {
     );
   });
 
-  it('gives every building archetype four distinct authored variant cards', () => {
+  it('exposes only building references that the generated runtime manifest marks available', () => {
+    const availability = archetypeReferenceAvailability.domains.building.entries as Record<
+      string,
+      { availableUrls: string[] }
+    >;
     for (const option of BUILDING_AESTHETIC_OPTIONS_V2) {
-      expect(option.variants, option.id).toHaveLength(4);
-
+      const availableUrls = new Set(availability[option.id]?.availableUrls ?? []);
+      expect(availableUrls.has(option.photoUrl), option.id).toBe(true);
       const thumbnailUrls = option.variants?.map((variant) => variant.thumbnailUrl) ?? [];
       expect(thumbnailUrls.every(Boolean), option.id).toBe(true);
-      expect(new Set(thumbnailUrls).size, option.id).toBe(4);
+      expect(thumbnailUrls.every((url) => availableUrls.has(url ?? '')), option.id).toBe(true);
+      expect(new Set(thumbnailUrls).size, option.id).toBe(thumbnailUrls.length);
     }
   });
 

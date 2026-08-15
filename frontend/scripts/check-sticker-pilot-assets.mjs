@@ -76,7 +76,7 @@ const expectedAvailableBuildingIds = (buildingCatalog.archetypes ?? [])
   .filter(buildingReferenceSetIsComplete)
   .map((archetype) => archetype.id)
   .sort();
-if (JSON.stringify(referenceAvailability.buildingIds) !== JSON.stringify(expectedAvailableBuildingIds)) {
+if (JSON.stringify(referenceAvailability.completeBuildingIds) !== JSON.stringify(expectedAvailableBuildingIds)) {
   missing.push('reference availability manifest is stale or differs from the complete authored asset sets on disk');
 }
 if (JSON.stringify(manifestBuildings) !== JSON.stringify(approvedBuildings.map((building) => ({

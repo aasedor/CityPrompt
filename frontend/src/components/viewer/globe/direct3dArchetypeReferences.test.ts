@@ -59,14 +59,14 @@ describe('collectDirect3DArchetypeReferences', () => {
     vi.stubGlobal('fetch', fetchMock);
 
     const references = await collectDirect3DArchetypeReferences([
-      zone('Boulevard Block', 'parisian_midrise_block'),
+      zone('Contemporary Block', 'contemporary_midrise_residential'),
       zone('Central Park', null, 'green_space'),
     ]);
 
     expect(references).toHaveLength(1);
-    expect(fetchMock).toHaveBeenCalledWith('/families/parisian-midrise-block/elevation.jpg');
+    expect(fetchMock).toHaveBeenCalledWith('/families/contemporary-midrise-residential/elevation.jpg');
     expect(references[0].label).toContain('FACADE SOURCE');
-    expect(references[0].label).toContain('"Boulevard Block"');
+    expect(references[0].label).toContain('"Contemporary Block"');
     expect(references[0].label).toContain('AUTHORED IDENTITY');
     expect(references[0].label.length).toBeLessThanOrEqual(600);
     expect(references[0].image_base64.length).toBeGreaterThan(0);
@@ -77,11 +77,11 @@ describe('collectDirect3DArchetypeReferences', () => {
     vi.stubGlobal('fetch', fetchMock);
 
     const references = await collectDirect3DArchetypeReferences([
-      zone('Tower', 'parisian_midrise_block_variant_2'),
+      zone('Tower', 'contemporary_midrise_residential_variant_2'),
     ]);
 
     expect(references).toHaveLength(1);
-    expect(fetchMock).toHaveBeenCalledWith('/families/parisian-midrise-block/elevation.jpg');
+    expect(fetchMock).toHaveBeenCalledWith('/families/contemporary-midrise-residential/elevation.jpg');
   });
 
   it('binds a building to the exact selected variant instead of the parent hero', async () => {

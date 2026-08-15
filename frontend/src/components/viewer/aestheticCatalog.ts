@@ -4,6 +4,7 @@ import buildingArchetypeLibrary from '@/data/buildingArchetypes.json';
 import streetPathArchetypeLibrary from '@/data/streetPathArchetypes.json';
 import openSpaceArchetypeLibrary from '@/data/openSpaceArchetypes.json';
 import archetypeVisualSystem from '@/data/archetypeVisualSystem.json';
+import archetypeReferenceAvailability from '@/data/archetypeReferenceAvailability.json';
 import { TRANSPORT_STANDARDS, type TransportStandardEntry } from '@/data/transportStandards';
 
 export type AestheticCategory = {
@@ -245,6 +246,24 @@ const VISUAL_SYSTEM = archetypeVisualSystem as ArchetypeVisualSystem;
 const BUILDING_LIBRARY = buildingArchetypeLibrary as ArchetypeLibrary & { visualSystem?: ArchetypeVisualSystem };
 const ROAD_LIBRARY = streetPathArchetypeLibrary as ArchetypeLibrary;
 const OPEN_SPACE_LIBRARY = openSpaceArchetypeLibrary as ArchetypeLibrary;
+const AVAILABLE_BUILDINGS = new Set(archetypeReferenceAvailability.buildingIds);
+const AVAILABLE_OPEN_SPACES = new Set(archetypeReferenceAvailability.openSpaceIds);
+const AVAILABLE_STREETS = new Set(archetypeReferenceAvailability.streetIds);
+type ReferenceAvailabilityEntry = { availableUrls: string[] };
+type ReferenceAvailabilityDomain = { entries: Record<string, ReferenceAvailabilityEntry> };
+const REFERENCE_AVAILABILITY = archetypeReferenceAvailability.domains as Record<
+  string,
+  ReferenceAvailabilityDomain
+>;
+
+function availableReferenceUrls(domainPath: string, archetypeId: string): Set<string> {
+  const domain = domainPath === 'buildings'
+    ? 'building'
+    : domainPath === 'openspaces'
+      ? 'openSpace'
+      : 'street';
+  return new Set(REFERENCE_AVAILABILITY[domain]?.entries[archetypeId]?.availableUrls ?? []);
+}
 
 const BUILDING_VISUAL_SYSTEM = BUILDING_LIBRARY.visualSystem || VISUAL_SYSTEM;
 const APP_BASE_URL = import.meta.env.BASE_URL || '/';
@@ -337,6 +356,22 @@ function replaceAssetExtension(path: string, extension: string): string {
   return path.replace(/\.[a-z0-9]+(?:[?#].*)?$/i, extension);
 }
 
+function restrictSeedToAvailableReferences(domainPath: string, seed: ArchetypeSeed): ArchetypeSeed {
+  const availableUrls = availableReferenceUrls(domainPath, seed.id);
+  return {
+    ...seed,
+    thumbnailUrl: seed.thumbnailUrl && availableUrls.has(seed.thumbnailUrl)
+      ? seed.thumbnailUrl
+      : undefined,
+    variants: seed.variants?.filter((variant) => (
+      Boolean(variant.thumbnailUrl) && (
+        availableUrls.has(variant.thumbnailUrl ?? '')
+        || availableUrls.has(replaceAssetExtension(variant.thumbnailUrl ?? '', '.webp'))
+      )
+    )),
+  };
+}
+
 function toArchetypeImages(
   domainPath: string,
   visualSystem: ArchetypeVisualSystem,
@@ -351,6 +386,7 @@ function toArchetypeImages(
   // so falling back to the catalogue id merely because a folder uses
   // underscores produces valid-looking URLs that 404 in the picker.
   const folderSlug = resolveArchetypeFolderSlug(seed);
+  const availableUrls = availableReferenceUrls(domainPath, seed.id);
   return variants.map((variant, index) => {
     const authoredStreetVariantPath = domainPath === 'streets'
       ? seed.variants?.[index]?.thumbnailUrl
@@ -375,7 +411,7 @@ function toArchetypeImages(
       generationTags: dedupeStrings(seed.generationTags),
       prompt: buildImagePrompt(visualSystem, seed, variant),
     };
-  });
+  }).filter((image) => availableUrls.has(image.imagePath ?? image.imageUrl));
 }
 
 function getPrimaryArchetypeImage(images: ArchetypeImage[]): ArchetypeImage | undefined {
@@ -507,9 +543,15 @@ function mapPresetRecord(options: AestheticOption[]): Record<string, Partial<Sit
   return record;
 }
 export const BUILDING_AESTHETIC_CATEGORIES_V2: AestheticCategory[] = BUILDING_LIBRARY.categories;
-export const BUILDING_AESTHETIC_OPTIONS_V2: AestheticOption[] = BUILDING_LIBRARY.archetypes.map((seed) =>
-  toAestheticOption('building', 'buildings', BUILDING_VISUAL_SYSTEM, BUILDING_LIBRARY.categories, seed),
-);
+export const BUILDING_AESTHETIC_OPTIONS_V2: AestheticOption[] = BUILDING_LIBRARY.archetypes
+  .filter((seed) => AVAILABLE_BUILDINGS.has(seed.id))
+  .map((seed) => toAestheticOption(
+    'building',
+    'buildings',
+    BUILDING_VISUAL_SYSTEM,
+    BUILDING_LIBRARY.categories,
+    restrictSeedToAvailableReferences('buildings', seed),
+  ));
 
 // Derived from the catalog (like buildings/openspaces) so new street categories
 // — e.g. "Calgary Street Manual" — appear in the picker automatically instead of
@@ -519,13 +561,16 @@ const TRANSPORT_STANDARD_BY_ARCHETYPE = new Map(
   TRANSPORT_STANDARDS.map((standard) => [standard.archetypeId, standard]),
 );
 
-export const ROADWAY_AESTHETIC_OPTIONS_V2: AestheticOption[] = ROAD_LIBRARY.archetypes.map((seed) => {
+export const ROADWAY_AESTHETIC_OPTIONS_V2: AestheticOption[] = ROAD_LIBRARY.archetypes
+  .filter((seed) => AVAILABLE_STREETS.has(seed.id))
+  .map((seed) => {
+  const availableSeed = restrictSeedToAvailableReferences('streets', seed);
   const option = toAestheticOption(
     'street_pathway',
     'streets',
     VISUAL_SYSTEM,
     ROAD_LIBRARY.categories,
-    seed,
+    availableSeed,
   );
   const standard = TRANSPORT_STANDARD_BY_ARCHETYPE.get(seed.id);
   if (!standard?.sectionSvgUrl) return option;
@@ -570,11 +615,17 @@ export const ROADWAY_AESTHETIC_OPTIONS_V2: AestheticOption[] = ROAD_LIBRARY.arch
       ],
     },
   };
-});
+  });
 
-const OPEN_SPACE_OPTIONS = OPEN_SPACE_LIBRARY.archetypes.map((seed) =>
-  toAestheticOption('park_plaza', 'openspaces', VISUAL_SYSTEM, OPEN_SPACE_LIBRARY.categories, seed),
-);
+const OPEN_SPACE_OPTIONS = OPEN_SPACE_LIBRARY.archetypes
+  .filter((seed) => AVAILABLE_OPEN_SPACES.has(seed.id))
+  .map((seed) => toAestheticOption(
+    'park_plaza',
+    'openspaces',
+    VISUAL_SYSTEM,
+    OPEN_SPACE_LIBRARY.categories,
+    restrictSeedToAvailableReferences('openspaces', seed),
+  ));
 
 const GREEN_SPACE_CATEGORY_IDS = new Set(
   OPEN_SPACE_LIBRARY.archetypes

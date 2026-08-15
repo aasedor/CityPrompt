@@ -101,6 +101,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          lfs: true
 
       - uses: actions/setup-node@v4
         with:
@@ -132,6 +134,9 @@ jobs:
       - name: Validate Sticker Method assets
         run: npm run check:sticker-pilot-assets
 
+      - name: Validate hydrated runtime asset manifest
+        run: npm run check:runtime-assets:hydrated
+
       - name: Enforce bundle budget
         run: npm run check-budget
 
@@ -142,6 +147,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          lfs: true
 
       - name: Build backend image
         run: docker build -f infrastructure/docker/Dockerfile.backend -t backend-test ./backend

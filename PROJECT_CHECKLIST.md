@@ -34,9 +34,10 @@ available.
 - [x] All Markdown links resolve, excluding explicit external or archived
       historical references.
 - [x] No credentials or local-machine secrets exist in the current tree.
-- [ ] ESLint 9 has a flat configuration and passes.
-- [ ] CI treats lint, type-check, tests, build, and asset validation as required.
-- [ ] Runtime assets have a generated, reproducible manifest.
+- [x] ESLint 9 has a flat configuration and passes.
+- [x] CI treats lint, type-check, tests, build, security audit, bundle budget,
+      and asset validation as required.
+- [x] Runtime assets have a generated, reproducible manifest.
 - [ ] Compiler output and visual-QA batches are outside the source repository.
 - [ ] Unreachable application code is removed in verified subsystem-sized
       commits.
@@ -46,12 +47,12 @@ available.
 
 ## Verification gates
 
-- [ ] Frontend lint passes.
-- [ ] Frontend type-check passes.
-- [ ] All frontend Vitest tests pass.
-- [ ] Production frontend build passes.
-- [ ] Backend pytest suite passes.
-- [ ] Archetype and Sticker Method asset checks pass.
+- [x] Frontend lint passes.
+- [x] Frontend type-check passes.
+- [x] All frontend Vitest tests pass (1,054 tests).
+- [x] Production frontend build and enforced bundle budget pass.
+- [x] Backend pytest suite passes (1,063 tests).
+- [x] Archetype and Sticker Method asset checks pass.
 - [ ] Compiler tests pass.
 - [ ] Browser smoke test has no console errors.
 - [ ] Fresh-clone Docker startup passes.

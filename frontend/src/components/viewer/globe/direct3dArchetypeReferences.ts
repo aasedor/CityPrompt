@@ -7,6 +7,7 @@
  * respond to the drawn polygon without squeezing or inventing facilities.
  */
 import type { SiteZone } from '@/types';
+import archetypeReferenceAvailability from '@/data/archetypeReferenceAvailability.json';
 import buildingCatalog from '@/data/buildingArchetypes.json';
 import legoFamilySignatures from '@/data/legoFamilySignatures.json';
 import openSpaceCatalog from '@/data/openSpaceArchetypes.json';
@@ -50,8 +51,11 @@ interface ReferenceCandidate {
   targetDescription?: string;
 }
 
-const FAMILIES: Record<string, FamilySignature> =
-  (legoFamilySignatures as { families?: Record<string, FamilySignature> }).families ?? {};
+const AVAILABLE_FAMILY_SIGNATURES = new Set(archetypeReferenceAvailability.familySignatureIds);
+const FAMILIES: Record<string, FamilySignature> = Object.fromEntries(
+  Object.entries((legoFamilySignatures as { families?: Record<string, FamilySignature> }).families ?? {})
+    .filter(([id]) => AVAILABLE_FAMILY_SIGNATURES.has(id)),
+);
 
 const BUILDINGS: CatalogEntry[] =
   (buildingCatalog as { archetypes?: CatalogEntry[] }).archetypes ?? [];
