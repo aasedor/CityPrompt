@@ -58,6 +58,8 @@ available.
 - [x] Controlled browser smoke passes 13 current auth, project, and integrated
       3D-workspace tests with no uncaught page errors, unexpected HTTP errors,
       or console errors.
+- [x] A depth-one clean checkout passes `npm ci`, the controlled browser suite,
+      production build, bundle budget, and the unhydrated manifest check.
 - [ ] Fresh-clone Docker startup passes.
 - [ ] Fresh-clone student workflow passes end to end.
 

@@ -273,7 +273,10 @@ if (missingReferences.length > 0) {
   console.error(`Runtime assets are not hydrated: ${unhydratedRequiredCount} required Git LFS pointer file(s) remain.`);
   process.exitCode = 1;
 } else if (checkOnly) {
-  if (!existsSync(outputPath) || readFileSync(outputPath, 'utf8') !== serialized) {
+  const currentManifest = existsSync(outputPath)
+    ? readFileSync(outputPath, 'utf8').replace(/\r\n?/g, '\n')
+    : null;
+  if (currentManifest !== serialized) {
     console.error('Runtime asset manifest is stale. Run npm run generate:runtime-assets.');
     process.exitCode = 1;
   } else {

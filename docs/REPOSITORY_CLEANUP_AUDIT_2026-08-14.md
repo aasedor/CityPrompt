@@ -87,7 +87,16 @@ incremental content workflow rather than a source-code edit.
 - browser checks reject uncaught page exceptions, unexpected HTTP failures,
   and console errors; and
 - a cold browser run starts its own Vite server and passes in approximately 16
-  seconds on this checkout.
+  seconds on this checkout; and
+- a depth-one clean checkout passes `npm ci` with zero vulnerabilities, all 13
+  browser tests, the production build, bundle budget, and the unhydrated
+  runtime-manifest check.
+
+The clean-checkout exercise also fixed a Windows-only false negative: the
+runtime-manifest checker now normalizes CRLF/LF before comparing deterministic
+JSON. The shared long-lived local Git database is approximately 9.93 GiB, so a
+full local-history clone is not representative of a new student clone and is
+too expensive on the current drive.
 
 The compiler suite was also run in the current checkout. It reported 547
 passes, 86 failures, and 55 setup errors. The failures are not a deletion
@@ -119,9 +128,10 @@ release candidate.
 ## Remaining release blockers
 
 1. Hydrate the required LFS objects and prove the manifest against real bytes.
-   The current machine has only about 5.3 GiB free while the required runtime
-   set is approximately 8.98 GiB, so this cannot be completed safely on the
-   current drive.
+   Free capacity on the current drive fluctuated between approximately 5.3
+   and 14.1 GiB during verification, while the required runtime set is 8.98
+   GiB before clone, dependency, build, and Docker overhead. Hydration is not
+   safe here without first freeing substantial space.
 2. Move the 15,247 compiler/review candidates to external artifact storage;
    8.98 GiB of runtime content is also too heavy for a normal student clone and
    should ultimately be served from object storage/CDN.
