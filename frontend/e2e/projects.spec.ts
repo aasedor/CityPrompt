@@ -1,4 +1,5 @@
-import { test, expect, Page } from '@playwright/test';
+import type { Page } from '@playwright/test';
+import { test, expect } from './fixtures/test';
 
 /**
  * Helper: mock the auth endpoints and set a fake token in localStorage
@@ -23,9 +24,20 @@ async function authenticateUser(page: Page) {
         full_name: 'Test User',
         role: 'user',
         is_active: true,
+        render_credits: 500,
         created_at: new Date().toISOString(),
       }),
     });
+  });
+
+  await page.route('**/api/v1/render/projects/**', async (route) => {
+    await route.fulfill({ status: 200, contentType: 'application/json', body: '[]' });
+  });
+  await page.route('**/api/v1/video/projects/**', async (route) => {
+    await route.fulfill({ status: 200, contentType: 'application/json', body: '{"attempts":[]}' });
+  });
+  await page.route('**/api/v1/site-zones/projects/**', async (route) => {
+    await route.fulfill({ status: 200, contentType: 'application/json', body: '[]' });
   });
 }
 
@@ -58,7 +70,7 @@ test.describe('Project management', () => {
   test('shows project list page with existing projects', async ({ page }) => {
     await authenticateUser(page);
 
-    await page.route('**/api/v1/projects*', async (route) => {
+    await page.route('**/api/v1/projects/**', async (route) => {
       if (route.request().method() === 'GET') {
         await route.fulfill({
           status: 200,
@@ -68,7 +80,7 @@ test.describe('Project management', () => {
       }
     });
 
-    await page.goto('/');
+    await page.goto('/projects');
 
     // Page heading
     await expect(page.getByRole('heading', { name: 'Projects' })).toBeVisible();
@@ -85,7 +97,7 @@ test.describe('Project management', () => {
     await authenticateUser(page);
 
     // Initial list is empty
-    await page.route('**/api/v1/projects*', async (route) => {
+    await page.route('**/api/v1/projects/**', async (route) => {
       if (route.request().method() === 'GET' && !route.request().url().includes('/projects/proj-new')) {
         await route.fulfill({
           status: 200,
@@ -96,7 +108,7 @@ test.describe('Project management', () => {
     });
 
     // Mock the create endpoint
-    await page.route('**/api/v1/projects', async (route) => {
+    await page.route('**/api/v1/projects/', async (route) => {
       if (route.request().method() === 'POST') {
         const body = route.request().postDataJSON();
         await route.fulfill({
@@ -145,7 +157,7 @@ test.describe('Project management', () => {
       });
     });
 
-    await page.goto('/');
+    await page.goto('/projects');
 
     // When there are no projects, a "Create Project" button appears in the empty state
     await page.getByRole('button', { name: /Create Project|New Project/i }).first().click();
@@ -162,10 +174,10 @@ test.describe('Project management', () => {
     await expect(page.getByText('My New Project')).toBeVisible();
   });
 
-  test('navigate to project detail page', async ({ page }) => {
+  test('navigate to the integrated project workspace', async ({ page }) => {
     await authenticateUser(page);
 
-    await page.route('**/api/v1/projects*', async (route) => {
+    await page.route('**/api/v1/projects/**', async (route) => {
       const url = route.request().url();
       if (route.request().method() === 'GET' && url.includes('/projects/proj-1')) {
         await route.fulfill({
@@ -205,22 +217,13 @@ test.describe('Project management', () => {
 
     await page.goto('/projects/proj-1');
 
-    // Project name in the header
-    await expect(page.getByRole('heading', { name: 'Riverside Development' })).toBeVisible();
-
-    // The "Open 3D Viewer" link should exist
-    const viewerLink = page.getByRole('link', { name: /Open 3D Viewer/i });
-    await expect(viewerLink).toBeVisible();
-    await expect(viewerLink).toHaveAttribute('href', '/projects/proj-1/viewer');
-
-    // Building should be listed
-    await expect(page.getByText('Tower A')).toBeVisible();
-
-    // Project details sidebar
-    await expect(page.getByText('Project Details')).toBeVisible();
+    await expect(page).toHaveURL(/\/projects\/proj-1$/);
+    await expect(page.getByText('Riverside Development', { exact: true })).toBeVisible();
+    await expect(page.getByText('Master Plan', { exact: true }).first()).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Generate to 3D' })).toBeVisible();
   });
 
-  test('open 3D viewer from project detail page', async ({ page }) => {
+  test('shows integrated 3D generation controls in the project workspace', async ({ page }) => {
     await authenticateUser(page);
 
     await page.route('**/api/v1/projects/proj-1', async (route) => {
@@ -249,10 +252,9 @@ test.describe('Project management', () => {
 
     await page.goto('/projects/proj-1');
 
-    // Click the "Open 3D Viewer" link
-    await page.getByRole('link', { name: /Open 3D Viewer/i }).click();
-
-    // Should navigate to the viewer URL
-    await expect(page).toHaveURL(/\/projects\/proj-1\/viewer/);
+    await expect(page).toHaveURL(/\/projects\/proj-1$/);
+    const generate3D = page.getByRole('button', { name: 'Generate to 3D' });
+    await expect(generate3D).toBeVisible();
+    await expect(generate3D).toBeDisabled();
   });
 });

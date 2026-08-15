@@ -11,6 +11,7 @@
     "check:dead-code": "knip --include files,dependencies,unlisted --no-progress",
     "type-check": "tsc --noEmit",
     "test": "vitest",
+    "test:e2e": "playwright test --project chromium --reporter=line",
     "test:ui": "vitest --ui",
     "check:archetype-assets": "node scripts/check-archetype-assets.mjs",
     "check:sticker-pilot-assets": "node scripts/check-sticker-pilot-assets.mjs",

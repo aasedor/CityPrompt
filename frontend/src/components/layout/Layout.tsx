@@ -29,6 +29,7 @@ export function Layout() {
   const userMenuRef = useRef<HTMLDivElement>(null);
   const canAdmin = Boolean(user?.role && ['admin', 'cofounder'].includes(user.role));
   const canAnalytics = user?.role === 'cofounder';
+  const renderCredits = user?.render_credits ?? 0;
   const showProjectsNav = location.pathname.startsWith('/projects/') && location.pathname !== '/projects/new';
 
   const navLinkClassName =
@@ -100,9 +101,9 @@ export function Layout() {
             {isAuthenticated && user && !canAdmin && (
               <div
                 className={`flex items-center gap-1.5 rounded-full border-2 border-[#151515] px-3 py-1 text-xs font-black uppercase shadow-[3px_3px_0_0_#151515] ${
-                  user.render_credits <= 0
+                  renderCredits <= 0
                     ? 'bg-red-50 text-red-600'
-                    : user.render_credits <= 100
+                    : renderCredits <= 100
                       ? 'bg-[#f2b84b] text-[#151515]'
                       : 'bg-[#c9ff3d] text-[#151515]'
                 }`}
@@ -113,7 +114,7 @@ export function Layout() {
                     T
                   </text>
                 </svg>
-                {user.render_credits.toLocaleString()} tokens
+                {renderCredits.toLocaleString()} tokens
               </div>
             )}
 

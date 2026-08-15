@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures/test';
 
 test.describe('Auth flow', () => {
   test('login page shows sign-in form with link to register', async ({ page }) => {
@@ -45,6 +45,7 @@ test.describe('Auth flow', () => {
           full_name: 'New User',
           role: 'user',
           is_active: true,
+          render_credits: 500,
           created_at: new Date().toISOString(),
         }),
       });
@@ -78,6 +79,7 @@ test.describe('Auth flow', () => {
             full_name: 'Test User',
             role: 'user',
             is_active: true,
+            render_credits: 500,
             created_at: new Date().toISOString(),
           },
         }),
@@ -95,13 +97,14 @@ test.describe('Auth flow', () => {
           full_name: 'Test User',
           role: 'user',
           is_active: true,
+          render_credits: 500,
           created_at: new Date().toISOString(),
         }),
       });
     });
 
     // Mock the projects list so the redirect target loads
-    await page.route('**/api/v1/projects*', async (route) => {
+    await page.route('**/api/v1/projects/**', async (route) => {
       await route.fulfill({
         status: 200,
         contentType: 'application/json',
@@ -116,8 +119,8 @@ test.describe('Auth flow', () => {
 
     await page.getByRole('button', { name: 'Sign in' }).click();
 
-    // After successful login, the app redirects to / (project list, which is the default "from")
-    await expect(page).toHaveURL(/^\/$|\/projects/);
+    // After successful login, the app redirects to the protected project list.
+    await expect(page).toHaveURL(/\/projects$/);
   });
 
   test('shows error on invalid credentials', async ({ page }) => {

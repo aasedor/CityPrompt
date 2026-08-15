@@ -118,6 +118,8 @@ npm ci
 npm run lint
 npm run type-check
 npm run test -- --run
+npx playwright install chromium
+npm run test:e2e
 npm run build
 npm run check:archetype-assets
 npm run check:sticker-pilot-assets

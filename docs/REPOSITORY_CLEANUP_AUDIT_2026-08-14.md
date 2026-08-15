@@ -22,6 +22,8 @@ blockers are listed below.
   metadata-schema modules;
 - two one-off catalogue mutation scripts that described an obsolete
   45-archetype catalogue;
+- the unmaintained standalone-viewer visual-regression suite, which targeted a
+  route that no longer exists and had no committed screenshot baselines;
 - unused npm dependencies, while adding the two dependencies that were used
   but undeclared (`@playwright/test` and `three-stdlib`).
 
@@ -81,7 +83,11 @@ incremental content workflow rather than a source-code edit.
 - production build and bundle budget: pass;
 - npm audit: zero vulnerabilities;
 - archetype, Sticker Method, runtime-manifest, and dead-code checks: pass;
-- Playwright discovery: 28 tests load correctly.
+- Playwright: 13 current auth, project, and integrated 3D-workspace tests pass;
+- browser checks reject uncaught page exceptions, unexpected HTTP failures,
+  and console errors; and
+- a cold browser run starts its own Vite server and passes in approximately 16
+  seconds on this checkout.
 
 The compiler suite was also run in the current checkout. It reported 547
 passes, 86 failures, and 55 setup errors. The failures are not a deletion
@@ -107,8 +113,8 @@ reviewed before retirement:
 | `feat/clean-3d-style-renders` | 2 |
 
 Do not delete even the fully merged branches until this local integration is
-pushed to `cityprompt/main`; the canonical remote branch currently trails the
-release candidate by 34 commits.
+pushed to `cityprompt/main`; the canonical remote branch still trails the
+release candidate.
 
 ## Remaining release blockers
 
@@ -122,8 +128,9 @@ release candidate by 34 commits.
 3. Re-run the compiler test suite after LFS hydration and the artifact-storage
    boundary are complete; the unhydrated run is 547 passed, 86 failed, and 55
    errors.
-4. Run browser smoke and the complete Playwright workflow against a fresh
-   Docker clone with real LFS assets and documented test credentials.
+4. Run the complete real-account student workflow against a fresh Docker clone
+   with hydrated LFS assets and documented test credentials. The controlled
+   browser suite now passes, but it intentionally mocks API responses.
 5. Expand mypy beyond core/models/schemas; the legacy API/rendering backlog is
    not part of the current mandatory boundary.
 6. Rotate the historical Cloudflare credentials already removed from the

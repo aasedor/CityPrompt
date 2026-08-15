@@ -55,7 +55,9 @@ available.
 - [x] Archetype and Sticker Method asset checks pass.
 - [ ] Compiler tests pass against hydrated image assets (current unhydrated
       checkout: 547 passed, 86 failed, 55 errors).
-- [ ] Browser smoke test has no console errors.
+- [x] Controlled browser smoke passes 13 current auth, project, and integrated
+      3D-workspace tests with no uncaught page errors, unexpected HTTP errors,
+      or console errors.
 - [ ] Fresh-clone Docker startup passes.
 - [ ] Fresh-clone student workflow passes end to end.
 

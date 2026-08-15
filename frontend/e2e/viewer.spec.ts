@@ -1,4 +1,5 @@
-import { test, expect, Page } from '@playwright/test';
+import type { Page } from '@playwright/test';
+import { test, expect } from './fixtures/test';
 
 /**
  * Helper: mock auth endpoints and seed localStorage with a fake token
@@ -20,9 +21,20 @@ async function authenticateUser(page: Page) {
         full_name: 'Test User',
         role: 'user',
         is_active: true,
+        render_credits: 500,
         created_at: new Date().toISOString(),
       }),
     });
+  });
+
+  await page.route('**/api/v1/render/projects/**', async (route) => {
+    await route.fulfill({ status: 200, contentType: 'application/json', body: '[]' });
+  });
+  await page.route('**/api/v1/video/projects/**', async (route) => {
+    await route.fulfill({ status: 200, contentType: 'application/json', body: '{"attempts":[]}' });
+  });
+  await page.route('**/api/v1/site-zones/projects/**', async (route) => {
+    await route.fulfill({ status: 200, contentType: 'application/json', body: '[]' });
   });
 }
 
@@ -72,75 +84,43 @@ async function mockViewerAPIs(page: Page) {
   // The collaboration websocket will fail silently in tests — that is fine.
 }
 
-test.describe('3D Viewer', () => {
+test.describe('Integrated project workspace', () => {
   test.beforeEach(async ({ page }) => {
     await authenticateUser(page);
     await mockViewerAPIs(page);
   });
 
-  test('viewer page loads with a canvas element', async ({ page }) => {
-    await page.goto('/projects/proj-1/viewer');
+  test('loads the project in the integrated workspace', async ({ page }) => {
+    await page.goto('/projects/proj-1');
 
-    // The viewer renders a full-screen container
-    await expect(page.locator('div.relative.h-screen.w-screen')).toBeVisible();
-
-    // The Three.js / R3F scene renders into a <canvas>
-    // Allow extra time since WebGL initialization can be slow
-    const canvas = page.locator('canvas');
-    await expect(canvas).toBeVisible({ timeout: 15_000 });
+    await expect(page).toHaveURL(/\/projects\/proj-1$/);
+    await expect(page.getByText('Riverside Development', { exact: true })).toBeVisible();
+    await expect(page.getByText('Master Plan', { exact: true }).first()).toBeVisible();
   });
 
-  test('viewer controls panel is visible on desktop', async ({ page }) => {
-    await page.goto('/projects/proj-1/viewer');
+  test('shows the current plan, 3D, image, and video workflow controls', async ({ page }) => {
+    await page.goto('/projects/proj-1');
 
-    // The controls panel contains a "Camera" section heading
-    await expect(page.getByText('Camera', { exact: false })).toBeVisible({ timeout: 10_000 });
-
-    // The "Layers" section should also be present
-    await expect(page.getByText('Layers')).toBeVisible();
-
-    // Camera mode buttons
-    await expect(page.getByRole('button', { name: 'Orbit' })).toBeVisible();
-
-    // Layer toggles
-    await expect(page.getByText('Existing Buildings')).toBeVisible();
-    await expect(page.getByText('Grid')).toBeVisible();
+    await expect(page.getByText('Master Plan', { exact: true }).first()).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Generate to 3D' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Render', exact: true })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Video', exact: true })).toBeVisible();
   });
 
-  test('keyboard shortcuts modal opens with "?" key', async ({ page }) => {
-    await page.goto('/projects/proj-1/viewer');
+  test('prevents 3D generation until the planning workflow is complete', async ({ page }) => {
+    await page.goto('/projects/proj-1');
 
-    // Wait for the viewer to finish loading
-    await expect(page.locator('canvas')).toBeVisible({ timeout: 15_000 });
-
-    // Press "?" (Shift + /) to open the keyboard shortcuts modal
-    await page.keyboard.press('Shift+/');
-
-    // The modal heading
-    await expect(page.getByRole('heading', { name: 'Keyboard Shortcuts' })).toBeVisible();
-
-    // Some shortcut content should be visible
-    await expect(page.getByText('Move camera')).toBeVisible();
-    await expect(page.getByText('Toggle this help')).toBeVisible();
-
-    // Close with Escape
-    await page.keyboard.press('Escape');
-    await expect(page.getByRole('heading', { name: 'Keyboard Shortcuts' })).not.toBeVisible();
+    const generate3D = page.getByRole('button', { name: 'Generate to 3D' });
+    await expect(generate3D).toBeDisabled();
+    await expect(generate3D).toHaveAttribute('title', /site boundary|plan|scenario/i);
   });
 
-  test('screenshot button exists in the top bar', async ({ page }) => {
-    await page.goto('/projects/proj-1/viewer');
+  test('provides a route back to the project list', async ({ page }) => {
+    await page.goto('/projects/proj-1');
 
-    // The screenshot button contains "Screenshot" text (hidden on mobile, visible on desktop)
-    const screenshotButton = page.getByRole('button', { name: /Screenshot/i });
-    await expect(screenshotButton).toBeVisible({ timeout: 10_000 });
-
-    // Clicking it should open the resolution sub-menu
-    await screenshotButton.click();
-
-    // The sub-menu shows resolution options
-    await expect(page.getByText('1x Resolution')).toBeVisible();
-    await expect(page.getByText('2x Resolution')).toBeVisible();
-    await expect(page.getByText('4x Resolution')).toBeVisible();
+    const projectsLink = page.locator('a[href="/projects"]').first();
+    await expect(projectsLink).toBeVisible();
+    await projectsLink.click();
+    await expect(page).toHaveURL(/\/projects$/);
   });
 });
