@@ -85,6 +85,32 @@ async def test_expand_happy_path(monkeypatch):
 
 
 @pytest.mark.anyio
+async def test_expand_extracts_exact_geometry_counts_deterministically(monkeypatch):
+    brief = (
+        "Build EXACTLY four separate building footprints and EXACTLY two "
+        "separate public park polygons. Keep them apart."
+    )
+    _patch_client(
+        monkeypatch,
+        payload={
+            "short_name": "Four and Two",
+            "philosophy": {"primary": "balanced"},
+            "emphasis": "Four buildings and two parks.",
+            # The model omits the counts: server extraction remains authority.
+            "rule_hints": {"open_space_share": 0.2},
+        },
+    )
+
+    definition, _ = await expand_brief_to_definition(brief, "custom_42aa0000")
+
+    assert definition.rule_hints == {
+        "open_space_share": 0.2,
+        "building_count_target": 4.0,
+        "park_count_target": 2.0,
+    }
+
+
+@pytest.mark.anyio
 async def test_expand_recovers_stringified_nested_payload(monkeypatch):
     """Same tool-use quirk the expert runner handles: nested objects arrive
     JSON-encoded as strings."""
@@ -133,6 +159,21 @@ async def test_expand_never_fails(monkeypatch):
     assert BRIEF in definition.emphasis
     assert definition.label.startswith("Custom — ")
     assert definition.label.endswith("[dead]")
+
+
+@pytest.mark.anyio
+async def test_expand_fallback_preserves_exact_geometry_counts(monkeypatch):
+    _patch_client(monkeypatch, error=RuntimeError("api down"))
+    definition, expansion = await expand_brief_to_definition(
+        "Exactly 4 buildings and exactly 2 public parks",
+        "custom_deadbeef",
+    )
+
+    assert expansion["fallback"] is True
+    assert definition.rule_hints == {
+        "building_count_target": 4.0,
+        "park_count_target": 2.0,
+    }
 
 
 @pytest.mark.anyio

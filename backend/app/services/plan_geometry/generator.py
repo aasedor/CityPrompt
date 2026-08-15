@@ -15,8 +15,8 @@ from dataclasses import dataclass, field, replace as dataclass_replace
 from typing import Any
 
 from celery.exceptions import SoftTimeLimitExceeded
-from shapely import set_precision
-from shapely.geometry import LineString, Point, Polygon, shape
+from shapely import affinity, set_precision
+from shapely.geometry import LineString, Point, Polygon, box, shape
 from shapely.geometry.base import BaseGeometry
 from shapely.ops import nearest_points, unary_union
 from shapely.validation import make_valid
@@ -88,6 +88,79 @@ def _height_band(floors: float) -> tuple[int, str]:
         if floors <= ceiling:
             return ceiling, color
     return 999, HEIGHT_BANDS[-1][1]
+
+
+def _split_building_cell(cell: Polygon, clearance_m: float) -> list[Polygon] | None:
+    """Split one cell into two footprints with a real metric gap."""
+
+    rectangle = cell.minimum_rotated_rectangle
+    coordinates = list(rectangle.exterior.coords)
+    if len(coordinates) < 4:
+        return None
+    edges = [
+        (
+            math.hypot(
+                coordinates[index + 1][0] - coordinates[index][0],
+                coordinates[index + 1][1] - coordinates[index][1],
+            ),
+            math.degrees(
+                math.atan2(
+                    coordinates[index + 1][1] - coordinates[index][1],
+                    coordinates[index + 1][0] - coordinates[index][0],
+                )
+            ),
+        )
+        for index in range(2)
+    ]
+    longest, angle = max(edges, key=lambda item: item[0])
+    if longest < 12.0 + clearance_m:
+        return None
+    origin = cell.centroid
+    work = affinity.rotate(cell, -angle, origin=origin)
+    minx, miny, maxx, maxy = work.bounds
+    cut_x = (minx + maxx) / 2.0
+    cut = box(cut_x - clearance_m / 2.0, miny - 1.0, cut_x + clearance_m / 2.0, maxy + 1.0)
+    pieces = [
+        piece
+        for piece in iter_polygons(make_valid(work.difference(cut)))
+        if piece.area >= 80.0
+    ]
+    if len(pieces) != 2:
+        return None
+    return [affinity.rotate(piece, angle, origin=origin) for piece in pieces]
+
+
+def _exact_building_cells(
+    cells: list[Polygon],
+    target_count: int,
+    *,
+    clearance_m: float = 4.0,
+) -> list[Polygon]:
+    """Return an exact bounded count when the existing mass can support it.
+
+    The normal massing remains the design authority. Extra cells are obtained
+    only by splitting its largest viable footprint and removing a true gap;
+    no geometry is allowed outside the already validated building mass.
+    """
+
+    target_count = max(1, min(20, int(target_count)))
+    selected = list(cells)
+    while len(selected) < target_count:
+        split_index = None
+        split_pieces = None
+        for index in sorted(range(len(selected)), key=lambda value: (-selected[value].area, value)):
+            candidate = _split_building_cell(selected[index], clearance_m)
+            if candidate is not None:
+                split_index = index
+                split_pieces = candidate
+                break
+        if split_index is None or split_pieces is None:
+            break
+        selected[split_index : split_index + 1] = split_pieces
+    if len(selected) > target_count:
+        keep = sorted(range(len(selected)), key=lambda value: (-selected[value].area, value))[:target_count]
+        selected = [selected[index] for index in sorted(keep)]
+    return selected
 
 
 def _runtime_lego_identities_for_cell(
@@ -776,6 +849,18 @@ def generate_plan_geometry(
     gross = float(boundary_m.area)
 
     rules, rule_notes = resolve_rules(scenario_id, parameters, rule_hints=rule_hints)
+    building_count_target = (
+        max(1, min(20, int(rule_hints["building_count_target"])))
+        if isinstance((rule_hints or {}).get("building_count_target"), (int, float))
+        and not isinstance((rule_hints or {}).get("building_count_target"), bool)
+        else None
+    )
+    park_count_target = (
+        max(1, min(8, int(rule_hints["park_count_target"])))
+        if isinstance((rule_hints or {}).get("park_count_target"), (int, float))
+        and not isinstance((rule_hints or {}).get("park_count_target"), bool)
+        else None
+    )
     if rule_overrides:
         # The refinement loop revises rule inputs; each override is recorded by
         # the loop itself as {parameter, from, to, reason}.
@@ -848,6 +933,8 @@ def generate_plan_geometry(
         "floors_note": rules.floors_note,
         "spine_row_width_m": rules.spine_row_width_m,
         "local_row_width_m": rules.local_row_width_m,
+        **({"building_count_target": building_count_target} if building_count_target else {}),
+        **({"park_count_target": park_count_target} if park_count_target else {}),
     }
     seed = site_hash(boundary_m)
 
@@ -970,6 +1057,7 @@ def generate_plan_geometry(
         palette=palette,
         network=network,
         seed=seed,
+        target_count=park_count_target,
     )
     open_spaces_m = [spec.geom_m for spec in open_plan.specs]
     open_area = open_plan.open_area_m2
@@ -1065,6 +1153,24 @@ def generate_plan_geometry(
                 }
             )
             zone_sort += 1
+
+    emitted_park_count = sum(
+        1
+        for zone in result.zones
+        if zone["zone_type"] == "green_space" and zone["properties"].get("_plan_role") == "open_space"
+    )
+    if park_count_target is not None and emitted_park_count != park_count_target:
+        result.notes.append(
+            {
+                "code": "EXACT_PARK_COUNT_UNMET",
+                "severity": "error",
+                "message": (
+                    f"The brief required exactly {park_count_target} public park polygons; "
+                    f"the safe geometry could emit {emitted_park_count}."
+                ),
+                "source_phase": "civic_distribution",
+            }
+        )
 
     # --- parcels + masses on the developable blocks ------------------------------
     loop_blocks = [
@@ -1288,6 +1394,8 @@ def generate_plan_geometry(
             )
 
         mass_polys = list(iter_polygons(mass))
+        if building_count_target is not None and len(loop_blocks) == 1:
+            mass_polys = _exact_building_cells(mass_polys, building_count_target)
         bar_index = 0
         for poly in mass_polys:
             masses.append(poly)
@@ -1482,6 +1590,18 @@ def generate_plan_geometry(
     result.block_count = len(developable_blocks)
     result.parcel_count = sum(len(p) for p in parcels_by_block)
     result.building_count = sum(1 for z in result.zones if z["zone_type"] == "building")
+    if building_count_target is not None and result.building_count != building_count_target:
+        result.notes.append(
+            {
+                "code": "EXACT_BUILDING_COUNT_UNMET",
+                "severity": "error",
+                "message": (
+                    f"The brief required exactly {building_count_target} building footprints; "
+                    f"the safe geometry could emit {result.building_count}."
+                ),
+                "source_phase": "building_placement",
+            }
+        )
     result.blocks_m = developable_blocks
     result.masses_m = masses
     return result

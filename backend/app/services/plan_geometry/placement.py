@@ -1074,6 +1074,28 @@ def _carve_park_strip(
     )
 
 
+def _split_park_with_gap(
+    park: BaseGeometry,
+    *,
+    gap_m: float = 4.0,
+) -> tuple[Polygon, Polygon] | None:
+    """Divide a reserved green into two real parks separated by a path band."""
+
+    angle = _long_axis_angle(park)
+    origin = park.centroid
+    work = make_valid(affinity.rotate(park, -angle, origin=origin))
+    minx, miny, maxx, maxy = work.bounds
+    if maxx - minx < 32.0 + gap_m:
+        return None
+    split_x = (minx + maxx) / 2.0
+    gap = box(split_x - gap_m / 2.0, miny - 1.0, split_x + gap_m / 2.0, maxy + 1.0)
+    pieces = [piece for piece in iter_polygons(make_valid(work.difference(gap))) if piece.area >= POCKET_PARK_MIN_M2]
+    if len(pieces) != 2:
+        return None
+    rotated = [affinity.rotate(piece, angle, origin=origin) for piece in pieces]
+    return rotated[0], rotated[1]
+
+
 def select_open_space(
     *,
     blocks: list[BaseGeometry],
@@ -1082,6 +1104,7 @@ def select_open_space(
     palette: Palette,
     network: StreetNetwork,
     seed: int,
+    target_count: int | None = None,
 ) -> OpenSpacePlan:
     """One signature central green (pond + greenway when the palette says so),
     pocket parks placed far from it (that is where park access is weakest),
@@ -1099,6 +1122,8 @@ def select_open_space(
     # full-frontage green from one end of the sole block and leave a clean,
     # buildable remainder. The previous len(blocks) >= 2 gate produced 0 m2
     # open space for exactly this common station-area condition.
+    target_count = max(1, min(8, int(target_count))) if target_count is not None else None
+
     if len(blocks) == 1:
         central_block = blocks[0]
         park, remainder = _carve_park_strip(
@@ -1108,13 +1133,55 @@ def select_open_space(
             # A lone narrow block has no neighbouring parcel to absorb the
             # lost depth. Requiring a wider cross-span prevents the park strip
             # from forcing perimeter or row-bar ends into unusable slivers.
-            min_short_span=70.0,
+            min_short_span=24.0 if target_count else 70.0,
         )
         if park is not None and remainder is not None:
             central = park
             carved[0] = remainder
             open_area = float(park.area)
             specs.append(GreenSpec(park, "central", "Park", palette.central_archetype_id))
+            # An explicit multi-park brief on a compact station parcel must
+            # produce separately measurable polygons, not reinterpret a
+            # courtyard or leftover sliver as the second park. Carve bounded
+            # pocket parks from the remaining developable block with a real
+            # buildable remainder after every cut.
+            explicit_pockets = max(0, (target_count or 1) - 1)
+            current_remainder = remainder
+            for pocket_index in range(explicit_pockets):
+                piece, next_remainder = _carve_corner(
+                    current_remainder,
+                    boundary_m.exterior,
+                    20.0,
+                    20.0,
+                )
+                if piece is None or next_remainder is None:
+                    break
+                specs.append(
+                    GreenSpec(
+                        piece,
+                        "pocket",
+                        f"Pocket Park {pocket_index + 1}",
+                        "urban_pocket_park",
+                    )
+                )
+                open_area += float(piece.area)
+                current_remainder = next_remainder
+                carved[0] = current_remainder
+
+            # Irregular site corners can make a 20 m corner cut unsafe even
+            # though the already-reserved frontage green is ample. In that
+            # case partition the reserved green with a 4 m path band. The two
+            # outputs remain separately measurable and the gap cannot overlap
+            # either park or any building.
+            public_parks = [spec for spec in specs if spec.kind in {"central", "pocket"}]
+            if target_count == 2 and len(public_parks) == 1:
+                split_parks = _split_park_with_gap(park)
+                if split_parks is not None:
+                    park_a, park_b = split_parks
+                    specs[0] = GreenSpec(park_a, "central", "Park", palette.central_archetype_id)
+                    specs.append(GreenSpec(park_b, "pocket", "Pocket Park 1", "urban_pocket_park"))
+                    open_area = float(park_a.area + park_b.area)
+                    central = park_a
 
     if len(blocks) >= 2:
         by_proximity = sorted(
@@ -1173,7 +1240,11 @@ def select_open_space(
             key=lambda i: (-blocks[i].centroid.distance(central.centroid), i),
         )
         for i in donors:
-            if open_area >= open_target or pocket_count >= 4:
+            public_park_count = sum(spec.kind in {"central", "pocket"} for spec in specs)
+            if (
+                (open_area >= open_target and (target_count is None or public_park_count >= target_count))
+                or pocket_count >= 4
+            ):
                 break
             block = blocks[i]
             if MIN_BLOCK_M2 <= block.area <= POCKET_PARK_MAX_M2:
@@ -1197,7 +1268,12 @@ def select_open_space(
         # area would land in the 900-2000 m² resolver gap.
         park_count = 1
         for i in by_proximity:
-            if open_area >= open_target or len(consumed) >= max(1, len(blocks) - 1):
+            public_park_count = sum(spec.kind in {"central", "pocket"} for spec in specs)
+            if (
+                (open_area >= open_target and (target_count is None or public_park_count >= target_count))
+                or (target_count is not None and public_park_count >= target_count)
+                or len(consumed) >= max(1, len(blocks) - 1)
+            ):
                 break
             if i in consumed or i in carved:
                 continue

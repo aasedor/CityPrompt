@@ -583,6 +583,39 @@ def test_single_block_plan_draws_courtyard_and_unique_bar_names():
     assert result.geometry_inputs["open_space_area_m2"] >= 900.0
 
 
+def test_single_block_exact_count_contract_emits_four_buildings_and_two_parks_without_overlap():
+    result = generate_plan_geometry(
+        site_polygon_wgs84=_site(95, 78),
+        scenario_id="custom_exact_counts",
+        scenario_label="Four Buildings Two Parks",
+        parameters=PARAMS,
+        road_features=[],
+        district_features=[],
+        rule_hints={
+            "building_count_target": 4.0,
+            "park_count_target": 2.0,
+            "open_space_share": 0.20,
+        },
+    )
+
+    buildings = [zone for zone in result.zones if zone["properties"].get("_plan_role") == "building"]
+    parks = [zone for zone in result.zones if zone["properties"].get("_plan_role") == "open_space"]
+    assert len(buildings) == 4
+    assert len(parks) == 2
+    assert result.building_count == 4
+    assert result.geometry_inputs["open_space_area_m2"] > 0
+
+    authored = [(zone["zone_type"], Polygon(zone["coordinates"])) for zone in (*buildings, *parks)]
+    for index, (kind, geometry) in enumerate(authored):
+        for other_kind, other in authored[index + 1 :]:
+            assert geometry.intersection(other).area == pytest.approx(0.0), (kind, other_kind)
+
+    codes = {note["code"] for note in result.notes}
+    assert "EXACT_BUILDING_COUNT_UNMET" not in codes
+    assert "EXACT_PARK_COUNT_UNMET" not in codes
+    assert "MASS_OPEN_SPACE_COLLISION" not in codes
+
+
 def test_tiny_site_degrades_to_single_block_plan():
     result = generate_plan_geometry(
         site_polygon_wgs84=_site(60, 45),

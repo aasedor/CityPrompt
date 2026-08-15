@@ -38,7 +38,54 @@ SHORT_NAME_MAX_CHARS = 40
 # The only geometry overrides a brief may carry. Clamping happens in
 # resolve_rules (open-space ceiling 0.30 = the evaluator's own revision
 # ceiling; a higher hint would immediately be revised DOWNWARD).
-RULE_HINT_KEYS = ("open_space_share", "block_target_m", "coverage_ratio")
+RULE_HINT_KEYS = (
+    "open_space_share",
+    "block_target_m",
+    "coverage_ratio",
+    "building_count_target",
+    "park_count_target",
+)
+
+_COUNT_WORDS = {
+    "one": 1,
+    "two": 2,
+    "three": 3,
+    "four": 4,
+    "five": 5,
+    "six": 6,
+    "seven": 7,
+    "eight": 8,
+    "nine": 9,
+    "ten": 10,
+}
+
+
+def _exact_count_hints(brief: str) -> dict[str, float]:
+    """Extract only explicit ``exactly N`` object-count contracts.
+
+    This is deliberately deterministic and narrow. Counts affect persisted
+    geometry, so they cannot depend on whether the scenario-expansion model
+    paraphrases or omits a sentence from the user's brief.
+    """
+
+    hints: dict[str, float] = {}
+    normalized = " ".join(brief.lower().split())
+    count_token = r"(?P<count>\d{1,2}|one|two|three|four|five|six|seven|eight|nine|ten)"
+    for noun, key, upper in (
+        ("building", "building_count_target", 20),
+        ("park", "park_count_target", 8),
+    ):
+        match = re.search(
+            rf"\bexactly\s+{count_token}\s+(?:[a-z-]+\s+){{0,4}}{noun}s?\b",
+            normalized,
+        )
+        if match is None:
+            continue
+        raw = match.group("count")
+        value = int(raw) if raw.isdigit() else _COUNT_WORDS[raw]
+        if 1 <= value <= upper:
+            hints[key] = float(value)
+    return hints
 
 EXPANSION_SYSTEM = (
     "You expand a user's free-text master-plan brief into a structured scenario "
@@ -57,6 +104,8 @@ EXPANSION_SYSTEM = (
     "- rule_hints: include a key ONLY when the brief clearly implies it "
     "(e.g. 'a large park' -> open_space_share ~0.25; 'intimate small blocks' -> "
     "block_target_m ~120; 'dense continuous frontage' -> coverage_ratio ~0.55). "
+    "Exact building and park counts are extracted deterministically by the server; "
+    "copy them to building_count_target / park_count_target when clearly stated. "
     "Omit keys the brief doesn't speak to.\n"
     "- aesthetic_hint: ONE concrete architectural-character keyword; prefer "
     "specific terms ('parisian', 'heritage_brick', 'scandinavian_nordic') over "
@@ -102,6 +151,14 @@ def _definition_tool() -> dict[str, Any]:
                         "coverage_ratio": {
                             "type": "number",
                             "description": "building footprint / net block area (0.30-0.60)",
+                        },
+                        "building_count_target": {
+                            "type": "number",
+                            "description": "exact number of separate building footprints explicitly requested",
+                        },
+                        "park_count_target": {
+                            "type": "number",
+                            "description": "exact number of separate public park polygons explicitly requested",
                         },
                     },
                 },
@@ -156,6 +213,8 @@ async def expand_brief_to_definition(brief: str, scenario_id: str) -> tuple[Scen
     fallback_name = _clean_short_name(" ".join(brief_clean.split()[:4]), "Custom scenario")
     usage = {"input_tokens": 0, "output_tokens": 0}
 
+    exact_count_hints = _exact_count_hints(brief_clean)
+
     def _fallback(reason: str) -> tuple[ScenarioDefinition, dict[str, Any]]:
         logger.warning("Custom-scenario expansion fell back for %s: %s", scenario_id, reason)
         definition = ScenarioDefinition(
@@ -164,7 +223,7 @@ async def expand_brief_to_definition(brief: str, scenario_id: str) -> tuple[Scen
             philosophy=PhilosophyWeights(primary="balanced", intensity=0.5),
             emphasis=_fenced_emphasis(brief_clean),
             description=brief_clean[:200],
-            rule_hints={},
+            rule_hints=exact_count_hints,
         )
         return definition, {
             "model": model,
@@ -241,6 +300,7 @@ async def expand_brief_to_definition(brief: str, scenario_id: str) -> tuple[Scen
                         continue
                 if isinstance(value, (int, float)) and not isinstance(value, bool):
                     rule_hints[key] = float(value)
+        rule_hints.update(exact_count_hints)
 
         short_name = _clean_short_name(str(payload.get("short_name") or ""), fallback_name)
         emphasis_text = " ".join(str(payload.get("emphasis") or brief_clean).split())
