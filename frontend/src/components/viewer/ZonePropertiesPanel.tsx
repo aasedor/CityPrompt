@@ -421,7 +421,7 @@ function normalizeLegacyCategoryValue(value: string): string {
   return value
     .trim()
     .toLowerCase()
-    .replace(/[\s\-\/]+/g, '_')
+    .replace(/[\s/-]+/g, '_')
     .replace(/[^a-z0-9_]/g, '');
 }
 
@@ -626,7 +626,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
       customStyleSavePendingRef.current = false;
       handleSaveRef.current();
     }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   const isRemoteReferenceImage = (value: string): boolean => /^https?:\/\//i.test(value);
 
@@ -2139,7 +2139,6 @@ async function captureMapScreenshots(
   boundaryCoords?: number[][],
   allZones?: SiteZone[],
 ): Promise<{ satellite: string; withZones: string } | null> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const map = mapInstance as any;
   if (!map || typeof map.getCanvas !== 'function') {
     console.warn('[captureMapScreenshots] No valid map instance');
@@ -3898,8 +3897,8 @@ type ModelLibraryRecommendation = {
   reasons?: string[];
 };
 
-void _ModelLibrarySection; // suppress unused warning — kept for reuse-library workflow
-function _ModelLibrarySection({ buildingId }: { buildingId: string }) {
+void ModelLibrarySection; // kept for the reuse-library workflow
+function ModelLibrarySection({ buildingId }: { buildingId: string }) {
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState<ModelLibraryEntry[]>([]);
   const [recommended, setRecommended] = useState<ModelLibraryRecommendation[]>([]);
@@ -4182,8 +4181,8 @@ function QuickRegenerateSection({ building }: { building: Building }) {
 // AI Generate button
 // =============================================================================
 
-void _AIGenerateZoneButton; // suppress unused warning — kept for AI generate workflow
-function _AIGenerateZoneButton({ zone, onAIGenerate }: { zone: SiteZone; onAIGenerate: (buildingId: string, initialPrompt?: string) => void }) {
+void AIGenerateZoneButton; // kept for the AI generation workflow
+function AIGenerateZoneButton({ zone, onAIGenerate }: { zone: SiteZone; onAIGenerate: (buildingId: string, initialPrompt?: string) => void }) {
   const [loading, setLoading] = useState(false);
 
   const handleClick = async () => {

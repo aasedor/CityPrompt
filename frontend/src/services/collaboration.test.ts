@@ -51,14 +51,12 @@ afterEach(() => {
 
 describe('useCollaboration', () => {
   it('connects to WebSocket with project ID', async () => {
-    const { result } = renderHook(() => useCollaboration('project-1', 'Alice'));
+    renderHook(() => useCollaboration('project-1', 'Alice'));
 
     await waitFor(() => {
       expect(MockWebSocket.instances.length).toBe(1);
       expect(MockWebSocket.instances[0].url).toContain('/ws/projects/project-1');
     });
-
-    result.current; // access to prevent unused warning
   });
 
   it('sends join message on connect', async () => {

@@ -104,7 +104,7 @@ function useDrawAnimation(canvasRef: React.RefObject<HTMLCanvasElement | null>, 
     const totalCycle = totalDraw + msPause;
 
     let raf = 0;
-    let start = performance.now();
+    const start = performance.now();
 
     const drawShape = (
       shape: Shape,

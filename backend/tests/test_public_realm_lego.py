@@ -165,36 +165,165 @@ def test_neighborhood_park_v0_recipe_owns_the_sticker_method_object_kit():
     )
 
 
-@pytest.mark.parametrize(("archetype_id", "variant_id", "family_id", "appearance_id", "width", "depth"), (
-    ("inclusive_playground", "inclusive_playground_v0", "park_inclusive_playground_v0", "inclusive_playground_v0_reference_skin", 55, 45),
-    ("dog_park", "dog_park_v0", "park_dog_archetype_v0", "dog_park_v0_reference_skin", 90, 60),
-    ("splash_pad_area", "splash_pad_area_v0", "park_splash_pad_v0", "splash_pad_area_v0_reference_skin", 35, 30),
-    ("community_garden", "community_garden_v0", "park_community_garden_v0", "community_garden_v0_reference_skin", 55, 55),
-    ("basketball_court", "basketball_court_v0", "park_basketball_court_v0", "basketball_court_v0_classic_asphalt_skin", 50, 40),
-    ("basketball_court", "basketball_court_v1", "park_basketball_court_v0", "basketball_court_v1_pro_acrylic_skin", 70, 40),
-    ("basketball_court", "basketball_court_v2", "park_basketball_court_v0", "basketball_court_v2_half_court_mural_skin", 25, 20),
-    ("basketball_court", "basketball_court_v3", "park_basketball_court_v0", "basketball_court_v3_streetball_skin", 40, 30),
-    ("tennis_court_cluster", "tennis_court_cluster_v0", "park_tennis_cluster_v0", "tennis_court_cluster_v0_reference_skin", 90, 50),
-    ("soccer_pitch_caged", "soccer_pitch_caged_v0", "park_caged_soccer_v0", "soccer_pitch_caged_v0_reference_skin", 66, 24),
-    ("athletics_precinct_sports_fields", "athletics_precinct_sports_fields_variant_0", "park_athletics_fields_v0", "athletics_precinct_sports_fields_v0_reference_skin", 220, 80),
-    ("nature_play_area", "nature_play_area_v0", "park_nature_play_v0", "nature_play_area_v0_reference_skin", 45, 35),
-    ("pump_track", "pump_track_v0", "park_pump_track_v0", "pump_track_v0_reference_skin", 55, 35),
-    ("outdoor_fitness_circuit", "outdoor_fitness_circuit_v0", "park_outdoor_fitness_v0", "outdoor_fitness_circuit_v0_reference_skin", 35, 30),
-    ("memorial_garden", "memorial_garden_v0", "park_memorial_garden_v0", "memorial_garden_v0_reference_skin", 55, 45),
-    ("pickleball_courts", "pickleball_courts_v1", "park_pickleball_community_v1", "pickleball_courts_v1_multi_angle_skin", 85, 72),
-    ("running_track_oval", "running_track_oval_v2", "park_track_oval_school_v2", "running_track_oval_v2_multi_angle_skin", 230, 145),
-    ("baseball_softball_diamond", "baseball_softball_diamond_v1", "park_baseball_club_hub_v1", "baseball_softball_diamond_v1_multi_angle_skin", 240, 220),
-    ("cricket_pitch_oval", "cricket_pitch_oval_v0", "park_cricket_village_green_v0", "cricket_pitch_oval_v0_multi_angle_skin", 200, 180),
-    ("sports_field_complex", "sports_field_complex_v0", "park_sports_complex_tournament_v0", "sports_field_complex_v0_multi_angle_skin", 340, 255),
-))
+@pytest.mark.parametrize(
+    ("archetype_id", "variant_id", "family_id", "appearance_id", "width", "depth"),
+    (
+        (
+            "inclusive_playground",
+            "inclusive_playground_v0",
+            "park_inclusive_playground_v0",
+            "inclusive_playground_v0_reference_skin",
+            55,
+            45,
+        ),
+        ("dog_park", "dog_park_v0", "park_dog_archetype_v0", "dog_park_v0_reference_skin", 90, 60),
+        ("splash_pad_area", "splash_pad_area_v0", "park_splash_pad_v0", "splash_pad_area_v0_reference_skin", 35, 30),
+        (
+            "community_garden",
+            "community_garden_v0",
+            "park_community_garden_v0",
+            "community_garden_v0_reference_skin",
+            55,
+            55,
+        ),
+        (
+            "basketball_court",
+            "basketball_court_v0",
+            "park_basketball_court_v0",
+            "basketball_court_v0_classic_asphalt_skin",
+            50,
+            40,
+        ),
+        (
+            "basketball_court",
+            "basketball_court_v1",
+            "park_basketball_court_v0",
+            "basketball_court_v1_pro_acrylic_skin",
+            70,
+            40,
+        ),
+        (
+            "basketball_court",
+            "basketball_court_v2",
+            "park_basketball_court_v0",
+            "basketball_court_v2_half_court_mural_skin",
+            25,
+            20,
+        ),
+        (
+            "basketball_court",
+            "basketball_court_v3",
+            "park_basketball_court_v0",
+            "basketball_court_v3_streetball_skin",
+            40,
+            30,
+        ),
+        (
+            "tennis_court_cluster",
+            "tennis_court_cluster_v0",
+            "park_tennis_cluster_v0",
+            "tennis_court_cluster_v0_reference_skin",
+            90,
+            50,
+        ),
+        (
+            "soccer_pitch_caged",
+            "soccer_pitch_caged_v0",
+            "park_caged_soccer_v0",
+            "soccer_pitch_caged_v0_reference_skin",
+            66,
+            24,
+        ),
+        (
+            "athletics_precinct_sports_fields",
+            "athletics_precinct_sports_fields_variant_0",
+            "park_athletics_fields_v0",
+            "athletics_precinct_sports_fields_v0_reference_skin",
+            220,
+            80,
+        ),
+        (
+            "nature_play_area",
+            "nature_play_area_v0",
+            "park_nature_play_v0",
+            "nature_play_area_v0_reference_skin",
+            45,
+            35,
+        ),
+        ("pump_track", "pump_track_v0", "park_pump_track_v0", "pump_track_v0_reference_skin", 55, 35),
+        (
+            "outdoor_fitness_circuit",
+            "outdoor_fitness_circuit_v0",
+            "park_outdoor_fitness_v0",
+            "outdoor_fitness_circuit_v0_reference_skin",
+            35,
+            30,
+        ),
+        (
+            "memorial_garden",
+            "memorial_garden_v0",
+            "park_memorial_garden_v0",
+            "memorial_garden_v0_reference_skin",
+            55,
+            45,
+        ),
+        (
+            "pickleball_courts",
+            "pickleball_courts_v1",
+            "park_pickleball_community_v1",
+            "pickleball_courts_v1_multi_angle_skin",
+            85,
+            72,
+        ),
+        (
+            "running_track_oval",
+            "running_track_oval_v2",
+            "park_track_oval_school_v2",
+            "running_track_oval_v2_multi_angle_skin",
+            230,
+            145,
+        ),
+        (
+            "baseball_softball_diamond",
+            "baseball_softball_diamond_v1",
+            "park_baseball_club_hub_v1",
+            "baseball_softball_diamond_v1_multi_angle_skin",
+            240,
+            220,
+        ),
+        (
+            "cricket_pitch_oval",
+            "cricket_pitch_oval_v0",
+            "park_cricket_village_green_v0",
+            "cricket_pitch_oval_v0_multi_angle_skin",
+            200,
+            180,
+        ),
+        (
+            "sports_field_complex",
+            "sports_field_complex_v0",
+            "park_sports_complex_tournament_v0",
+            "sports_field_complex_v0_multi_angle_skin",
+            340,
+            255,
+        ),
+    ),
+)
 def test_archetype_owned_batch_recipes_keep_exact_identity(
-    archetype_id, variant_id, family_id, appearance_id, width, depth,
+    archetype_id,
+    variant_id,
+    family_id,
+    appearance_id,
+    width,
+    depth,
 ):
-    recipe = plan_public_realm_recipe(PublicRealmPlanRequest(
-        archetype_id=archetype_id,
-        variant_id=variant_id,
-        target=ParkPolygonTarget(width_m=width, depth_m=depth, area_m2=width * depth),
-    ))
+    recipe = plan_public_realm_recipe(
+        PublicRealmPlanRequest(
+            archetype_id=archetype_id,
+            variant_id=variant_id,
+            target=ParkPolygonTarget(width_m=width, depth_m=depth, area_m2=width * depth),
+        )
+    )
     assert recipe.family_id == family_id
     assert recipe.appearance_kit_id == appearance_id
     basketball_planting = {
@@ -203,83 +332,187 @@ def test_archetype_owned_batch_recipes_keep_exact_identity(
         "basketball_court_v2": "basketball_half_court_v2",
         "basketball_court_v3": "basketball_streetball_v3",
     }
-    expected_planting = basketball_planting.get(variant_id) if family_id == "park_basketball_court_v0" else {
-        "park_caged_soccer_v0": "caged_soccer_v0",
-        "park_athletics_fields_v0": "athletics_fields_v0",
-        "park_pickleball_community_v1": "pickleball_community_v1",
-        "park_track_oval_school_v2": "track_oval_school_v2",
-        "park_baseball_club_hub_v1": "baseball_club_hub_v1",
-        "park_cricket_village_green_v0": "cricket_village_green_v0",
-        "park_sports_complex_tournament_v0": "sports_complex_tournament_v0",
-    }.get(family_id, variant_id)
+    expected_planting = (
+        basketball_planting.get(variant_id)
+        if family_id == "park_basketball_court_v0"
+        else {
+            "park_caged_soccer_v0": "caged_soccer_v0",
+            "park_athletics_fields_v0": "athletics_fields_v0",
+            "park_pickleball_community_v1": "pickleball_community_v1",
+            "park_track_oval_school_v2": "track_oval_school_v2",
+            "park_baseball_club_hub_v1": "baseball_club_hub_v1",
+            "park_cricket_village_green_v0": "cricket_village_green_v0",
+            "park_sports_complex_tournament_v0": "sports_complex_tournament_v0",
+        }.get(family_id, variant_id)
+    )
     assert recipe.planting_structure == expected_planting
 
 
-@pytest.mark.parametrize(("archetype_id", "family_id", "appearance_id", "width", "depth"), (
-    ("community_park", "park_neighborhood_community", "english_pastoral_v1", 250, 160),
-    ("pond_lake", "park_water_ecology", "pond_lake_v0_naturalistic_skin", 80, 60),
-    ("wetland_rain_garden", "park_water_ecology", "wetland_rain_garden_v0_native_restoration_skin", 80, 60),
-    ("japanese_garden", "park_cultural_gardens", "japanese_garden_v0_stroll_skin", 90, 70),
-    ("botanical_garden", "park_cultural_gardens", "botanical_garden_v0_collection_skin", 200, 150),
-    ("urban_forest", "park_urban_forest", "urban_forest_v0_native_restoration_skin", 250, 200),
-    ("reservoir_watershed_park", "park_water_ecology", "reservoir_watershed_park_v0_concrete_edge_skin", 140, 80),
-    ("amphitheater_lawn", "park_amphitheater_lawn_v0", "amphitheater_lawn_v0_terraced_performance_skin", 80, 60),
-    ("riparian_buffer", "park_water_ecology", "riparian_buffer_v0_native_restoration_skin", 200, 50),
-    ("playground_adventure", "park_playground_adventure_v0", "playground_adventure_v0_rustic_timber_skin", 45, 40),
-))
+@pytest.mark.parametrize(
+    ("archetype_id", "family_id", "appearance_id", "width", "depth"),
+    (
+        ("community_park", "park_neighborhood_community", "english_pastoral_v1", 250, 160),
+        ("pond_lake", "park_water_ecology", "pond_lake_v0_naturalistic_skin", 80, 60),
+        ("wetland_rain_garden", "park_water_ecology", "wetland_rain_garden_v0_native_restoration_skin", 80, 60),
+        ("japanese_garden", "park_cultural_gardens", "japanese_garden_v0_stroll_skin", 90, 70),
+        ("botanical_garden", "park_cultural_gardens", "botanical_garden_v0_collection_skin", 200, 150),
+        ("urban_forest", "park_urban_forest", "urban_forest_v0_native_restoration_skin", 250, 200),
+        ("reservoir_watershed_park", "park_water_ecology", "reservoir_watershed_park_v0_concrete_edge_skin", 140, 80),
+        ("amphitheater_lawn", "park_amphitheater_lawn_v0", "amphitheater_lawn_v0_terraced_performance_skin", 80, 60),
+        ("riparian_buffer", "park_water_ecology", "riparian_buffer_v0_native_restoration_skin", 200, 50),
+        ("playground_adventure", "park_playground_adventure_v0", "playground_adventure_v0_rustic_timber_skin", 45, 40),
+    ),
+)
 def test_batch4_park_recipes_keep_exact_v0_identity(
-    archetype_id, family_id, appearance_id, width, depth,
+    archetype_id,
+    family_id,
+    appearance_id,
+    width,
+    depth,
 ):
-    recipe = plan_public_realm_recipe(PublicRealmPlanRequest(
-        archetype_id=archetype_id,
-        variant_id=f"{archetype_id}_v0",
-        target=ParkPolygonTarget(width_m=width, depth_m=depth, area_m2=width * depth),
-    ))
+    recipe = plan_public_realm_recipe(
+        PublicRealmPlanRequest(
+            archetype_id=archetype_id,
+            variant_id=f"{archetype_id}_v0",
+            target=ParkPolygonTarget(width_m=width, depth_m=depth, area_m2=width * depth),
+        )
+    )
     assert recipe.family_id == family_id
     assert recipe.variant_id == f"{archetype_id}_v0"
     assert recipe.appearance_kit_id == appearance_id
     assert recipe.planting_structure in {"naturalistic_grove", f"{archetype_id}_v0"}
 
 
-@pytest.mark.parametrize(("archetype_id", "family_id", "appearance_id", "planting", "width", "depth"), (
-    ("disc_golf_course", "park_disc_golf_wooded_v0", "disc_golf_course_v0_wooded_championship_skin", "disc_golf_wooded_v0", 300, 200),
-    ("bocce_petanque_court", "park_bocce_piazza_v0", "bocce_petanque_court_v0_italian_piazza_skin", "bocce_piazza_v0", 28, 16),
-    ("climbing_bouldering_wall", "park_climbing_competition_v0", "climbing_bouldering_wall_v0_competition_skin", "climbing_competition_v0", 25, 20),
-    ("mini_golf_course", "park_mini_golf_classic_v0", "mini_golf_course_v0_classic_skin", "mini_golf_classic_v0", 50, 30),
-    ("beach_volleyball_courts", "park_beach_volleyball_competition_v0", "beach_volleyball_courts_v0_competition_skin", "beach_volleyball_competition_v0", 24, 16),
-    ("pollinator_meadow", "park_pollinator_prairie_v0", "pollinator_meadow_v0_prairie_skin", "pollinator_prairie_v0", 80, 60),
-    ("urban_orchard_food_forest", "park_orchard_heritage_v0", "urban_orchard_food_forest_v0_heritage_apple_skin", "orchard_heritage_v0", 60, 50),
-    ("bioswale_rain_garden", "park_bioswale_streetside_v0", "bioswale_rain_garden_v0_streetside_skin", "bioswale_streetside_v0", 60, 15),
-    ("sculpture_garden", "park_sculpture_museum_court_v0", "sculpture_garden_v0_museum_court_skin", "sculpture_museum_court_v0", 60, 50),
-    ("labyrinth_meditation", "park_labyrinth_classical_v0", "labyrinth_meditation_v0_classical_stone_skin", "labyrinth_classical_v0", 20, 20),
-))
+@pytest.mark.parametrize(
+    ("archetype_id", "family_id", "appearance_id", "planting", "width", "depth"),
+    (
+        (
+            "disc_golf_course",
+            "park_disc_golf_wooded_v0",
+            "disc_golf_course_v0_wooded_championship_skin",
+            "disc_golf_wooded_v0",
+            300,
+            200,
+        ),
+        (
+            "bocce_petanque_court",
+            "park_bocce_piazza_v0",
+            "bocce_petanque_court_v0_italian_piazza_skin",
+            "bocce_piazza_v0",
+            28,
+            16,
+        ),
+        (
+            "climbing_bouldering_wall",
+            "park_climbing_competition_v0",
+            "climbing_bouldering_wall_v0_competition_skin",
+            "climbing_competition_v0",
+            25,
+            20,
+        ),
+        (
+            "mini_golf_course",
+            "park_mini_golf_classic_v0",
+            "mini_golf_course_v0_classic_skin",
+            "mini_golf_classic_v0",
+            50,
+            30,
+        ),
+        (
+            "beach_volleyball_courts",
+            "park_beach_volleyball_competition_v0",
+            "beach_volleyball_courts_v0_competition_skin",
+            "beach_volleyball_competition_v0",
+            24,
+            16,
+        ),
+        (
+            "pollinator_meadow",
+            "park_pollinator_prairie_v0",
+            "pollinator_meadow_v0_prairie_skin",
+            "pollinator_prairie_v0",
+            80,
+            60,
+        ),
+        (
+            "urban_orchard_food_forest",
+            "park_orchard_heritage_v0",
+            "urban_orchard_food_forest_v0_heritage_apple_skin",
+            "orchard_heritage_v0",
+            60,
+            50,
+        ),
+        (
+            "bioswale_rain_garden",
+            "park_bioswale_streetside_v0",
+            "bioswale_rain_garden_v0_streetside_skin",
+            "bioswale_streetside_v0",
+            60,
+            15,
+        ),
+        (
+            "sculpture_garden",
+            "park_sculpture_museum_court_v0",
+            "sculpture_garden_v0_museum_court_skin",
+            "sculpture_museum_court_v0",
+            60,
+            50,
+        ),
+        (
+            "labyrinth_meditation",
+            "park_labyrinth_classical_v0",
+            "labyrinth_meditation_v0_classical_stone_skin",
+            "labyrinth_classical_v0",
+            20,
+            20,
+        ),
+    ),
+)
 def test_batch5_park_recipes_keep_exact_v0_identity(
-    archetype_id, family_id, appearance_id, planting, width, depth,
+    archetype_id,
+    family_id,
+    appearance_id,
+    planting,
+    width,
+    depth,
 ):
-    recipe = plan_public_realm_recipe(PublicRealmPlanRequest(
-        archetype_id=archetype_id,
-        variant_id=f"{archetype_id}_v0",
-        target=ParkPolygonTarget(width_m=width, depth_m=depth, area_m2=width * depth),
-    ))
+    recipe = plan_public_realm_recipe(
+        PublicRealmPlanRequest(
+            archetype_id=archetype_id,
+            variant_id=f"{archetype_id}_v0",
+            target=ParkPolygonTarget(width_m=width, depth_m=depth, area_m2=width * depth),
+        )
+    )
     assert recipe.family_id == family_id
     assert recipe.variant_id == f"{archetype_id}_v0"
     assert recipe.appearance_kit_id == appearance_id
     assert recipe.planting_structure == planting
 
 
-@pytest.mark.parametrize("archetype_id", (
-    "disc_golf_course", "bocce_petanque_court", "climbing_bouldering_wall",
-    "mini_golf_course", "beach_volleyball_courts", "pollinator_meadow",
-    "urban_orchard_food_forest", "bioswale_rain_garden", "sculpture_garden",
-    "labyrinth_meditation",
-))
+@pytest.mark.parametrize(
+    "archetype_id",
+    (
+        "disc_golf_course",
+        "bocce_petanque_court",
+        "climbing_bouldering_wall",
+        "mini_golf_course",
+        "beach_volleyball_courts",
+        "pollinator_meadow",
+        "urban_orchard_food_forest",
+        "bioswale_rain_garden",
+        "sculpture_garden",
+        "labyrinth_meditation",
+    ),
+)
 def test_batch5_unreviewed_variants_fail_closed(archetype_id):
     with pytest.raises(PublicRealmPlanningError) as exc:
-        plan_public_realm_recipe(PublicRealmPlanRequest(
-            archetype_id=archetype_id,
-            variant_id=f"{archetype_id}_v1",
-            target=ParkPolygonTarget(width_m=80, depth_m=60, area_m2=4_800),
-        ))
+        plan_public_realm_recipe(
+            PublicRealmPlanRequest(
+                archetype_id=archetype_id,
+                variant_id=f"{archetype_id}_v1",
+                target=ParkPolygonTarget(width_m=80, depth_m=60, area_m2=4_800),
+            )
+        )
     assert exc.value.code == "family_incompatible"
 
 
@@ -633,9 +866,7 @@ def test_skate_zone_planner_requires_complete_unscaled_program_inside_polygon():
 
     # The bounding box and area still pass the catalog envelope, but this
     # centre cutout makes a complete 40 x 30 m placement impossible.
-    clipped_metric = box(700_000, 5_650_000, 700_044, 5_650_036).difference(
-        box(700_016, 5_650_000, 700_028, 5_650_026)
-    )
+    clipped_metric = box(700_000, 5_650_000, 700_044, 5_650_036).difference(box(700_016, 5_650_000, 700_028, 5_650_026))
     clipped = _to_wgs84(clipped_metric)
     with pytest.raises(PublicRealmPlanningError) as raised:
         plan_public_realm_zone_recipe(
@@ -648,15 +879,18 @@ def test_skate_zone_planner_requires_complete_unscaled_program_inside_polygon():
             strict=True,
         )
     assert raised.value.violations[0]["field"] == "target.polygon_fit"
-    assert plan_public_realm_zone_recipe(
-        "green_space",
-        clipped,
-        {
-            "green_space_archetype_id": "skate_park",
-            "green_space_selected_variant_id": "skate_park_v0",
-        },
-        strict=False,
-    ) is None
+    assert (
+        plan_public_realm_zone_recipe(
+            "green_space",
+            clipped,
+            {
+                "green_space_archetype_id": "skate_park",
+                "green_space_selected_variant_id": "skate_park_v0",
+            },
+            strict=False,
+        )
+        is None
+    )
 
 
 def test_strict_street_attestation_rejects_claimed_width_that_geometry_disproves():

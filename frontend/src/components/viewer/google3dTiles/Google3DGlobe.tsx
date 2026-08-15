@@ -38,7 +38,6 @@ export function Google3DGlobe() {
         gl={{ antialias: true, logarithmicDepthBuffer: true }}
       >
         <TilesRenderer>
-          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
           <TilesPlugin plugin={GoogleCloudAuthPlugin} args={{ apiToken: API_KEY, useRecommendedSettings: true } as any} />
           <TilesPlugin plugin={TileCompressionPlugin} />
           <TilesPlugin plugin={UpdateOnChangePlugin} />

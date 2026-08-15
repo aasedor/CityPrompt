@@ -35,9 +35,7 @@ def test_catalogue_thumbnail_urls_use_authoritative_roots():
 
 
 def test_openai_generator_writes_only_to_authoritative_roots():
-    source = (
-        REPO_ROOT / "scripts" / "render-community-archetype-images-openai.mjs"
-    ).read_text(encoding="utf-8")
+    source = (REPO_ROOT / "scripts" / "render-community-archetype-images-openai.mjs").read_text(encoding="utf-8")
 
     for directory, web_prefix in DOMAIN_CONTRACTS.values():
         assert f"path.join(publicRoot, '{directory}')" in source

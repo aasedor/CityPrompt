@@ -257,9 +257,7 @@ def _matches_requested_archetype(module: ModuleDescriptor, archetype_id: str) ->
         module.generation_archetype_id,
     )
     return any(
-        _strip_card_variant_suffix(_semantic_id(candidate)) == requested
-        for candidate in candidates
-        if candidate
+        _strip_card_variant_suffix(_semantic_id(candidate)) == requested for candidate in candidates if candidate
     )
 
 
@@ -280,10 +278,7 @@ def _catalog_parent_archetype_id(archetype_id: str) -> str | None:
             continue
         if _semantic_id(parent_id) == requested:
             return parent_id
-        if any(
-            _semantic_id(str(variant_id)) == requested
-            for variant_id in (entry.get("variant_ids") or ())
-        ):
+        if any(_semantic_id(str(variant_id)) == requested for variant_id in (entry.get("variant_ids") or ())):
             return parent_id
     return None
 
@@ -629,15 +624,8 @@ def _fixed_landmark_is_select_and_place(module: ModuleDescriptor) -> bool:
     footprint = module.footprint_compatibility or {}
     placement_mode = _semantic_id(str(placement.get("mode") or ""))
     footprint_mode = _semantic_id(str(footprint.get("placementMode") or ""))
-    fixed_non_resizable = (
-        placement_mode == "fixed_landmark"
-        and placement.get("continuous_resize_allowed") is False
-    )
-    return bool(
-        fixed_non_resizable
-        or footprint_mode == "select_and_place"
-        or footprint.get("polygonFit") is False
-    )
+    fixed_non_resizable = placement_mode == "fixed_landmark" and placement.get("continuous_resize_allowed") is False
+    return bool(fixed_non_resizable or footprint_mode == "select_and_place" or footprint.get("polygonFit") is False)
 
 
 # Streetwall repeat: bars validate against the same relaxed band multi-wing
@@ -834,9 +822,7 @@ def plan_vertical_assembly(
                 or any(module.role == "floor" and module.repeatable_z for module in family_modules)
             )
         )
-        executable_archetype_ids = tuple(
-            value for value in (request.archetype_id, parent_alias_id) if value
-        )
+        executable_archetype_ids = tuple(value for value in (request.archetype_id, parent_alias_id) if value)
         assembled = _best(
             (
                 module
@@ -903,9 +889,7 @@ def plan_vertical_assembly(
                 and axis_ratio <= FIXED_LANDMARK_CONTAIN_MAX_AXIS_RATIO
             )
             forced_landmark_fit = (
-                forced
-                and not has_stack_fallback
-                and not _fixed_landmark_is_select_and_place(assembled)
+                forced and not has_stack_fallback and not _fixed_landmark_is_select_and_place(assembled)
             )
             if near_native_fit or uniform_contain_fit or forced_landmark_fit:
                 # The polygon is a site envelope, not an extrusion mould.

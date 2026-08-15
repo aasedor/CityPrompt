@@ -1808,7 +1808,6 @@ function getActiveFaceLabel(bearing: number): 'front' | 'right' | 'rear' | 'left
 // Structured prompt builder â€” Spatial-to-Render Orchestration
 // ---------------------------------------------------------------------------
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const catalog = (archetypeCatalog as any)?.archetypes as any[] | undefined;
 
 interface ZonePromptEntry {
@@ -1860,7 +1859,6 @@ function getZoneArchetypeInfo(zone: SiteZone): {
     const archetypeId = zone.properties[`${prefix}_archetype_id`] as string | undefined;
     if (!archetypeId) continue;
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const entry = catalog.find((a: any) =>
       a.id === archetypeId || archetypeId.startsWith(a.id + '_'),
     );
@@ -2173,7 +2171,6 @@ function buildNegativePrompt(options: AIRenderOptions): string {
     for (const prefix of PREFIXES) {
       const archetypeId = zone.properties[`${prefix}_archetype_id`] as string | undefined;
       if (!archetypeId) continue;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const entry = catalog.find((a: any) => a.id === archetypeId || archetypeId.startsWith(a.id + '_'));
       if (entry?.renderPrompt?.negative) {
         parts.push(entry.renderPrompt.negative);
@@ -2452,7 +2449,6 @@ export function useAIRender(): UseAIRenderReturn {
         return { imageUrl: imageDataUri, bounds, seed: resultSeed, prompt };
       } catch (err: unknown) {
         const msg = err instanceof Error ? err.message : String(err);
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const detail = (err as any)?.response?.data?.detail;
         console.error('[AIRender] Vertex AI failed:', detail || msg);
         throw new Error(detail || msg);
@@ -3296,7 +3292,7 @@ export function useAIRender(): UseAIRenderReturn {
         return null;
       }
     },
-    [render, renderSingle],
+    [render],
   );
 
   // â”€â”€ Bearing-based face swapping â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€

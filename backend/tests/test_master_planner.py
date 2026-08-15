@@ -400,9 +400,7 @@ def test_lego_tool_schema_exposes_all_trusted_building_parents():
     catalog = _lego_catalog()
     tool = master_planner_agent._master_plan_tool(catalog)
     band_schemas = tool["input_schema"]["properties"]["bands"]["properties"]
-    trusted_parent_ids = sorted(
-        entry["id"] for entry in load_dims_table() if entry.get("usable")
-    )
+    trusted_parent_ids = sorted(entry["id"] for entry in load_dims_table() if entry.get("usable"))
 
     for key in ("core", "frontage", "mid", "edge", "anchor"):
         schema = band_schemas[key]
@@ -421,9 +419,7 @@ def test_lego_tool_schema_exposes_role_safe_public_realm_choices_with_optional_e
     assert "public_realm" in schema["required"]
     assert set(properties["spine_archetype_id"]["enum"]) == set(SPINE_STREET_IDS)
     assert set(properties["local_archetype_id"]["enum"]) == set(LOCAL_STREET_IDS)
-    assert set(properties["open_space"]["properties"]["central_park_archetype_id"]["enum"]) == set(
-        CENTRAL_PARK_IDS
-    )
+    assert set(properties["open_space"]["properties"]["central_park_archetype_id"]["enum"]) == set(CENTRAL_PARK_IDS)
     assert properties["open_space"]["properties"]["water_archetype_id"]["enum"] == ["stormwater_retention_pond"]
     public_realm = properties["public_realm"]
     assert public_realm["required"] == []
@@ -526,19 +522,11 @@ def test_family_pending_ai_public_realm_ids_reach_generated_zone_properties_unch
     assert spine_zones
     assert all(zone["properties"]["road_archetype_id"] == "scenic_parkway" for zone in spine_zones)
     assert all(zone["properties"]["road_selected_variant_id"] == "scenic_parkway_v3" for zone in spine_zones)
-    central_zones = [
-        zone
-        for zone in result.zones
-        if zone["properties"].get("green_kind") == "central"
-    ]
+    central_zones = [zone for zone in result.zones if zone["properties"].get("green_kind") == "central"]
     assert central_zones
+    assert all(zone["properties"]["green_space_archetype_id"] == "london_garden_square" for zone in central_zones)
     assert all(
-        zone["properties"]["green_space_archetype_id"] == "london_garden_square"
-        for zone in central_zones
-    )
-    assert all(
-        zone["properties"]["green_space_selected_variant_id"] == "london_garden_square_v2"
-        for zone in central_zones
+        zone["properties"]["green_space_selected_variant_id"] == "london_garden_square_v2" for zone in central_zones
     )
 
 
@@ -574,18 +562,13 @@ def test_explicit_unbuilt_ai_building_survives_spec_geometry_and_binder_as_itsel
         palette_override=palette,
     )
     source_buildings = [
-        zone
-        for zone in result.zones
-        if zone["properties"].get("development_archetype_id") == "deco_theater_mainstreet"
+        zone for zone in result.zones if zone["properties"].get("development_archetype_id") == "deco_theater_mainstreet"
     ]
     assert source_buildings
     assert all(zone["properties"]["floors"] == 3 for zone in source_buildings)
     rebound, report = bind_building_zones_to_lego(source_buildings, [], _lego_catalog())
     assert report.fallback_count == len(source_buildings)
-    assert all(
-        zone["properties"]["development_archetype_id"] == "deco_theater_mainstreet"
-        for zone in rebound
-    )
+    assert all(zone["properties"]["development_archetype_id"] == "deco_theater_mainstreet" for zone in rebound)
     assert all(zone["properties"]["_lego_family_pending"] is True for zone in rebound)
 
 
@@ -1461,14 +1444,11 @@ def test_locked_lego_street_reclassifies_geometry_that_disproves_local_width():
 
 
 def test_oversized_greenway_preserves_source_identity_for_family_pending_fallback():
-    assert (
-        _lego_park_identity_for_metric_polygon(
-            kind="greenway",
-            archetype_id="linear_park_greenway",
-            geometry_m=box(0, 0, 1_200, 80),
-        )
-        == ("greenway", "linear_park_greenway")
-    )
+    assert _lego_park_identity_for_metric_polygon(
+        kind="greenway",
+        archetype_id="linear_park_greenway",
+        geometry_m=box(0, 0, 1_200, 80),
+    ) == ("greenway", "linear_park_greenway")
 
 
 def test_preset_scenarios_stamp_landscape_structures():

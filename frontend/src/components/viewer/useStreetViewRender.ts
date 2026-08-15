@@ -64,7 +64,6 @@ type OpenAIImageQuality = 'auto' | 'low' | 'medium' | 'high';
 const METERS_PER_DEG_LAT = 110_540;
 
 // Merge all archetype catalogs into a single lookup array
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const catalog: any[] = [
   ...((buildingCatalog as any)?.archetypes || []),
   ...((openSpaceCatalog as any)?.archetypes || []),
@@ -88,7 +87,6 @@ const FAMILY_SIGNATURES: Record<string, LegoFamilySignature> =
 
 /** Resolve the authored LEGO family signature for a zone, if it has one. */
 function getLegoFamilySignature(zone: SiteZone): LegoFamilySignature | null {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const props: any = zone.properties || {};
   const rawId = props.development_archetype_id || props.archetype_id;
   if (!rawId) return null;
@@ -168,7 +166,6 @@ export function getZoneArchetypeInfo(zone: SiteZone): ArchetypeInfo {
     const archetypeId = zone.properties[`${prefix}_archetype_id`] as string | undefined;
     if (!archetypeId) continue;
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const entry = catalog.find((a: any) =>
       a.id === archetypeId || archetypeId.startsWith(a.id + '_'),
     );

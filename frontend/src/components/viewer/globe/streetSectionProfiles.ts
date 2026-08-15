@@ -135,7 +135,6 @@ interface CatalogEntry {
   }>;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const CATALOG = (((streetPathCatalog as any).archetypes ?? streetPathCatalog) as CatalogEntry[]);
 
 export const PILOT_STREET_ARCHETYPE_IDS = Object.freeze([

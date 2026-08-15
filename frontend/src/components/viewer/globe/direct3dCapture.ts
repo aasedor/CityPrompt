@@ -1520,6 +1520,9 @@ export async function captureDirect3DScene(
     // Cleanup on a lost context is best-effort. Never replace the actionable
     // context_lost/capture error that caused us to enter this path.
     if (cleanupFailure !== undefined && captureFailure === null) {
+      // The capture succeeded, so a cleanup failure is the only actionable
+      // outcome; intentionally replace the pending return from the try block.
+      // eslint-disable-next-line no-unsafe-finally
       throw new Direct3DCaptureError(
         'capture_failed',
         'The Direct 3D capture completed but renderer state could not be restored.',

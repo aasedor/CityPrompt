@@ -1,4 +1,4 @@
-# Pre-commit hooks for 3D Development Platform
+# Pre-commit hooks for City Prompt
 # Install: pip install pre-commit && pre-commit install
 # Run manually: pre-commit run --all-files
 
@@ -36,7 +36,7 @@ repos:
     hooks:
       - id: eslint
         name: eslint
-        entry: bash -c 'cd frontend && npx eslint --max-warnings=0'
+        entry: bash -c 'cd frontend && npm run lint -- --max-warnings=0'
         language: system
         files: ^frontend/src/.*\.(ts|tsx)$
         pass_filenames: false

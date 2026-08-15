@@ -292,19 +292,23 @@ def _public_realm_variant(
         return value
     if not allowed and value is None:
         return None
-    if not allowed and value is not None and resolve_public_realm_catalog_identity(
-        kind,
-        archetype_id,
-        value,
-    ) is not None:
+    if (
+        not allowed
+        and value is not None
+        and resolve_public_realm_catalog_identity(
+            kind,
+            archetype_id,
+            value,
+        )
+        is not None
+    ):
         return value
     if value is not None:
         resolution = f"{allowed[0]} used" if allowed else "variant selection removed"
         notes.append(
             _note(
                 "MASTER_PLAN_PUBLIC_REALM_VARIANT_REPAIRED",
-                f"public_realm.{field_name} '{value}' is not compatible with "
-                f"'{archetype_id}' - {resolution}.",
+                f"public_realm.{field_name} '{value}' is not compatible with " f"'{archetype_id}' - {resolution}.",
             )
         )
     return allowed[0] if allowed else None
@@ -320,11 +324,7 @@ def _validated_public_realm_plan(
 ) -> PublicRealmPlan:
     spine_id = spine_archetype_id if spine_archetype_id in SPINE_STREET_IDS else "main_street_complete"
     local_id = local_archetype_id if local_archetype_id in LOCAL_STREET_IDS else "narrow_residential_street"
-    central_id = (
-        central_park_archetype_id
-        if central_park_archetype_id in CENTRAL_PARK_IDS
-        else "neighborhood_park"
-    )
+    central_id = central_park_archetype_id if central_park_archetype_id in CENTRAL_PARK_IDS else "neighborhood_park"
     return PublicRealmPlan(
         spine_street_variant_id=_public_realm_variant(
             requested.spine_street_variant_id,
@@ -775,10 +775,7 @@ def _fill_site_scaled_lego_alternates(
             related_aesthetic = bool(
                 primary_aesthetic
                 and candidate_aesthetic
-                and (
-                    primary_aesthetic in candidate_aesthetic
-                    or candidate_aesthetic in primary_aesthetic
-                )
+                and (primary_aesthetic in candidate_aesthetic or candidate_aesthetic in primary_aesthetic)
             )
             if primary_family and candidate_family == primary_family:
                 coherence_rank = 0
@@ -857,9 +854,7 @@ def _validate_spec_with_lego(
     preset = palette_for(scenario_id, palette_hint)
     spine_archetype_id = common.spine_archetype_id or "main_street_complete"
     local_archetype_id = common.local_archetype_id or (
-        preset.local_archetype_id
-        if preset.local_archetype_id in LEGO_LOCAL_STREET_IDS
-        else "narrow_residential_street"
+        preset.local_archetype_id if preset.local_archetype_id in LEGO_LOCAL_STREET_IDS else "narrow_residential_street"
     )
 
     open_space = common.open_space.model_copy(deep=True)
@@ -903,11 +898,7 @@ def _validate_spec_with_lego(
         requested_parent = str(requested_entry.get("id")) if requested_entry is not None else None
         requested_selectable = requested_variant or requested_parent
         capability = next(
-            (
-                candidate
-                for candidate in lego_catalog.capabilities
-                if candidate.parent_id == requested_parent
-            ),
+            (candidate for candidate in lego_catalog.capabilities if candidate.parent_id == requested_parent),
             None,
         )
         is_known_family_pending = bool(
@@ -1145,17 +1136,14 @@ def palette_from_spec(
             if band.archetype_id
             and (
                 (band.variant_id or band.archetype_id) not in lego_catalog.parent_by_selectable_id
-                or lego_catalog.parent_by_selectable_id.get(band.variant_id or band.archetype_id)
-                != band.archetype_id
+                or lego_catalog.parent_by_selectable_id.get(band.variant_id or band.archetype_id) != band.archetype_id
             )
         )
         if lego_catalog is not None
         else frozenset()
     )
     allowed_archetype_ids = (
-        frozenset((*lego_catalog.parent_ids, *family_pending_archetype_ids))
-        if lego_catalog is not None
-        else None
+        frozenset((*lego_catalog.parent_ids, *family_pending_archetype_ids)) if lego_catalog is not None else None
     )
     allowed_variant_ids_by_archetype = dict(lego_catalog.variants_by_parent) if lego_catalog is not None else {}
     supported_floors_by_selectable_id = (
@@ -1200,14 +1188,8 @@ def palette_from_spec(
             allowed = PUBLIC_REALM_VARIANTS_BY_ARCHETYPE.get(archetype_id or "", ())
             if not selected or selected not in allowed:
                 continue
-            target = (
-                spec.diversity.street_characters
-                if role in {"spine", "local"}
-                else spec.diversity.park_characters
-            )
-            public_realm_variant_cycles[role] = tuple(
-                list(dict.fromkeys((selected, *allowed)))[:target]
-            )
+            target = spec.diversity.street_characters if role in {"spine", "local"} else spec.diversity.park_characters
+            public_realm_variant_cycles[role] = tuple(list(dict.fromkeys((selected, *allowed)))[:target])
 
     return Palette(
         bands=bands,

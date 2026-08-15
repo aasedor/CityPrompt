@@ -360,7 +360,7 @@ export function LegoBuilderPanel({
       placingAllRef.current = false;
       setPlacingAll(false);
     }
-  }, [groundItems, importingStreetAtlas, items, projectId, refetchPlacedData, zones]);
+  }, [groundItems, importingStreetAtlas, items, projectId, queryClient, refetchPlacedData, zones]);
 
   const runBatch = useCallback(async (replacePlaced = false) => {
     // StrictMode replays mount effects and fast double-clicks can land before

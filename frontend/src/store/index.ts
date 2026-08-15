@@ -185,7 +185,6 @@ interface ViewerState {
   activeToolProperties: SiteZoneProperties | null;
   selectedZoneId: string | null;
   isDraggingZone: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   mapInstance: any | null; // mapboxgl.Map stored for screenshot capture
   setDraggingZone: (dragging: boolean) => void;
   setMapInstance: (map: unknown) => void;

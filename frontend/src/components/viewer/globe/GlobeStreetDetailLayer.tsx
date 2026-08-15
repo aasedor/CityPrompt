@@ -166,7 +166,7 @@ function StreetRibbonDetail({
   const [stationTerrain, setStationTerrain] = useState<StreetStationTerrain[] | null>(null);
   const sectionProfile = useMemo(
     () => resolvePilotStreetSectionProfile(zone),
-    [zone.properties],
+    [zone],
   );
   const hasAuthoredNetworkGround = Boolean(getStreetNetworkGroundMeta(zone));
   const bandMaterials = useMemo(() => {
@@ -854,7 +854,7 @@ function RoundaboutDetail({
   const [terrainPlane, setTerrainPlane] = useState<ReturnType<typeof fitTerrainContactPlane>>(null);
   const sectionProfile = useMemo(
     () => resolvePilotStreetSectionProfile(zone),
-    [zone.properties],
+    [zone],
   );
   const hasAuthoredNetworkGround = Boolean(getStreetNetworkGroundMeta(zone));
   const appearance = sectionProfile?.appearance

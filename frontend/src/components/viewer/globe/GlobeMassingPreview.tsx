@@ -30,10 +30,7 @@ interface GlobeMassingPreviewProps {
   features: MassingFeature[];
 }
 
-function MassingBlock({ feature }: { feature: MassingFeature }) {
-  const coords = feature.geometry.coordinates[0]; // First ring of polygon
-  if (!coords || coords.length < 3) return null;
-
+function ValidMassingBlock({ feature, coords }: { feature: MassingFeature; coords: number[][] }) {
   const lngLatCoords = coords.map(c => [c[0], c[1]] as number[]);
   const centroid = computeCentroid(lngLatCoords);
   const color = feature.properties.color || '#888888';
@@ -80,6 +77,13 @@ function MassingBlock({ feature }: { feature: MassingFeature }) {
       </mesh>
     </EastNorthUpFrame>
   );
+}
+
+function MassingBlock({ feature }: { feature: MassingFeature }) {
+  const coords = feature.geometry.coordinates[0];
+  if (!coords || coords.length < 3) return null;
+
+  return <ValidMassingBlock feature={feature} coords={coords} />;
 }
 
 export function GlobeMassingPreview({ features }: GlobeMassingPreviewProps) {

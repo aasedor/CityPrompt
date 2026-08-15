@@ -385,7 +385,6 @@ export function ProjectViewPage() {
       setActiveSitePlannerTool(null);
       selectZone(null);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setSitePlannerActive, setActiveSitePlannerTool, selectZone, setWorkflowStep, id]);
 
   useEffect(() => {

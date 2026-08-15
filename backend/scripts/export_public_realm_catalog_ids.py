@@ -36,8 +36,7 @@ def _payload(source: Path) -> dict[str, list[str]]:
         archetype_id = entry["id"]
         variants = entry.get("variants") or []
         if not isinstance(variants, list) or not all(
-            isinstance(variant, dict) and isinstance(variant.get("id"), str)
-            for variant in variants
+            isinstance(variant, dict) and isinstance(variant.get("id"), str) for variant in variants
         ):
             raise RuntimeError(f"{source} has invalid variants for {archetype_id}")
         payload[archetype_id] = sorted(variant["id"] for variant in variants)

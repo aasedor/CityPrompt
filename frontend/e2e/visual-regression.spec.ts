@@ -1,7 +1,6 @@
 import { test, expect } from '@playwright/test';
 import {
   navigateToViewer,
-  waitForSceneLoaded,
   setViewerSettings,
   setColorScheme,
 } from './fixtures/visual-test-helpers';

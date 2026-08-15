@@ -605,7 +605,6 @@ interface CatalogEntry {
   variants?: CatalogVariant[];
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const CATALOG = (((openSpaceCatalog as any).archetypes ?? openSpaceCatalog) as CatalogEntry[]);
 
 const PROFILES: Record<string, Omit<ParkGroundProfile, 'archetypeId' | 'title'>> = {

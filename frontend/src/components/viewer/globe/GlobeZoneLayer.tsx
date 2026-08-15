@@ -907,7 +907,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
         drapedRef.current = true;
       }
     }
-  }, [tiles, geoData, isExtrudedBuilding, hasBakedElevationRelief, sampledTerrainHeight, storedTerrainHeight, filterObjectHeights, renderCoordinates, zoneTerrainHeight, freezeDrape]);
+  }, [tiles, geoData, isExtrudedBuilding, hasBakedElevationRelief, sampledTerrainHeight, filterObjectHeights, renderCoordinates, zoneTerrainHeight, freezeDrape]);
 
   useEffect(() => {
     if (sampledTerrainHeight !== null) return undefined;

@@ -102,7 +102,6 @@ export function collectArchetypeRenderInputs(siteZones: SiteZone[]): ArchetypeRe
   let renderPrompt: ArchetypeRenderPrompt | undefined;
   let matchedArchetypeId: string | undefined;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const catalog = (archetypeCatalog as any)?.archetypes as any[] | undefined;
 
   for (const zone of siteZones) {

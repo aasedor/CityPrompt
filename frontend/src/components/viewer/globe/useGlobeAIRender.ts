@@ -3308,7 +3308,7 @@ export function useGlobeAIRender() {
       const allRenderZones = [...groundZones, ...buildingZones];
       const totalSteps = allRenderZones.length;
       let currentStep = 0;
-      let allPrompts: string[] = [];
+      const allPrompts: string[] = [];
 
       // Create a labeled version of the screenshot with zone names written on each polygon
       // This helps Gemini identify which zone is which, especially when colors are similar

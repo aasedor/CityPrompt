@@ -801,9 +801,11 @@ def plan_blocks(
             available_variants = (
                 variants_of(entry["id"])
                 if entry["id"] in palette.family_pending_archetype_ids
-                else palette.allowed_variant_ids_by_archetype.get(entry["id"], ())
-                if palette.allowed_archetype_ids is not None
-                else variants_of(entry["id"])
+                else (
+                    palette.allowed_variant_ids_by_archetype.get(entry["id"], ())
+                    if palette.allowed_archetype_ids is not None
+                    else variants_of(entry["id"])
+                )
             )
             for vid in available_variants:
                 if vid == primary_variant:

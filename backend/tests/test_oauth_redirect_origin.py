@@ -7,9 +7,7 @@ def _settings(*, production: bool):
     return SimpleNamespace(
         frontend_url="https://cityprompt.example" if production else "http://localhost:5175",
         cors_origins=(
-            ["https://cityprompt.example"]
-            if production
-            else ["http://localhost:5174", "http://localhost:5175"]
+            ["https://cityprompt.example"] if production else ["http://localhost:5174", "http://localhost:5175"]
         ),
         is_production=production,
     )

@@ -270,10 +270,7 @@ def _building_allows_setback(properties: dict[str, Any]) -> bool:
         return True
     style_profile = generation_input.get("styleProfile")
     massing = style_profile.get("massing") if isinstance(style_profile, dict) else None
-    return bool(
-        isinstance(massing, str)
-        and re.search(r"\b(setback|stepped tower|tower on podium)\b", massing.lower())
-    )
+    return bool(isinstance(massing, str) and re.search(r"\b(setback|stepped tower|tower on podium)\b", massing.lower()))
 
 
 def _positive_half_up_int(value: Any) -> int | None:
@@ -325,11 +322,7 @@ def _locked_building_target(zone: SiteZone) -> tuple[float, float, int, str, flo
                     status_code=409,
                     detail="This AI Master Plan building has an invalid locked wing depth.",
                 ) from exc
-        if (
-            profile != "rectangle"
-            and bound_wing is None
-            and not bool(properties.get("_lego_family_pending"))
-        ):
+        if profile != "rectangle" and bound_wing is None and not bool(properties.get("_lego_family_pending")):
             raise HTTPException(
                 status_code=409,
                 detail=(
@@ -443,11 +436,7 @@ async def _assert_ai_lego_recipes_are_current(
 
     entries = await _accessible_entries(db, user, project_id, lock_for_update=True)
     current_catalog = build_lego_planning_catalog(entries)
-    descriptors = [
-        descriptor
-        for entry in entries
-        if (descriptor := descriptor_from_library_entry(entry)) is not None
-    ]
+    descriptors = [descriptor for entry in entries if (descriptor := descriptor_from_library_entry(entry)) is not None]
 
     # A family-pending marker is a historical observation, not a capability
     # token. Probe omissions again under the same lock used for persistence so
@@ -770,11 +759,7 @@ async def create_lego_assembly_plan(
     the existing Urban Intelligence DNA ``generation_style_input`` object.
     """
     entries = await _accessible_entries(db, user, body.project_id)
-    descriptors = [
-        descriptor
-        for entry in entries
-        if (descriptor := descriptor_from_library_entry(entry)) is not None
-    ]
+    descriptors = [descriptor for entry in entries if (descriptor := descriptor_from_library_entry(entry)) is not None]
 
     try:
         plan = plan_vertical_assembly(
@@ -1243,8 +1228,7 @@ def _public_realm_recipe_for_zone(
                 detail={
                     "code": "unknown_catalog_archetype",
                     "message": (
-                        "The selected park/street archetype or variant is not in the "
-                        "authoritative catalogue."
+                        "The selected park/street archetype or variant is not in the " "authoritative catalogue."
                     ),
                     "zone_id": str(zone.id),
                     "kind": kind,
@@ -1297,8 +1281,7 @@ def _public_realm_recipe_for_zone(
                 detail={
                     "code": "unknown_catalog_archetype",
                     "message": (
-                        "The selected park/street archetype or variant is not in the "
-                        "authoritative catalogue."
+                        "The selected park/street archetype or variant is not in the " "authoritative catalogue."
                     ),
                     "zone_id": str(zone.id),
                     "kind": kind,
@@ -1348,11 +1331,7 @@ def _stamp_community_3d(
         source_hash=source_hash,
         building=building,
         public_realm_recipe=public_realm_recipe,
-        public_realm_fallback=(
-            properties.get(PUBLIC_REALM_FALLBACK_PROPERTY)
-            if public_realm_recipe is None
-            else None
-        ),
+        public_realm_fallback=(properties.get(PUBLIC_REALM_FALLBACK_PROPERTY) if public_realm_recipe is None else None),
     )
     if representation_hash is None:
         raise HTTPException(
@@ -1611,10 +1590,7 @@ async def place_lego_assembly(
     ):
         raise HTTPException(
             status_code=409,
-            detail=(
-                "This building zone changed while its LEGO recipe was being prepared; "
-                "refresh and retry."
-            ),
+            detail=("This building zone changed while its LEGO recipe was being prepared; " "refresh and retry."),
         )
 
     freshness_item = Community3DCompileItem(

@@ -72,49 +72,49 @@ export function CofounderAnalyticsPage() {
 
   const fetchActiveUsers = useCallback(async (r: string) => {
     setActiveUsersLoading(true);
-    try { setActiveUsers(await analyticsApi.getActiveUsers(r)); } catch {}
+    try { setActiveUsers(await analyticsApi.getActiveUsers(r)); } catch { /* widget handles null */ }
     finally { setActiveUsersLoading(false); }
   }, []);
 
   const fetchCreationTrends = useCallback(async (r: string) => {
     setCreationTrendsLoading(true);
-    try { setCreationTrends(await analyticsApi.getCreationTrends(r)); } catch {}
+    try { setCreationTrends(await analyticsApi.getCreationTrends(r)); } catch { /* widget handles null */ }
     finally { setCreationTrendsLoading(false); }
   }, []);
 
   const fetchGenerationStats = useCallback(async (r: string) => {
     setGenerationStatsLoading(true);
-    try { setGenerationStats(await analyticsApi.getGenerationStats(r)); } catch {}
+    try { setGenerationStats(await analyticsApi.getGenerationStats(r)); } catch { /* widget handles null */ }
     finally { setGenerationStatsLoading(false); }
   }, []);
 
   const fetchPlatformHealth = useCallback(async () => {
     setPlatformHealthLoading(true);
-    try { setPlatformHealth(await analyticsApi.getPlatformHealth()); } catch {}
+    try { setPlatformHealth(await analyticsApi.getPlatformHealth()); } catch { /* widget handles null */ }
     finally { setPlatformHealthLoading(false); }
   }, []);
 
   const fetchTopUsers = useCallback(async (r: string) => {
     setTopUsersLoading(true);
-    try { setTopUsers(await analyticsApi.getTopUsers(r)); } catch {}
+    try { setTopUsers(await analyticsApi.getTopUsers(r)); } catch { /* widget handles null */ }
     finally { setTopUsersLoading(false); }
   }, []);
 
   const fetchApiBalances = useCallback(async () => {
     setApiBalancesLoading(true);
-    try { setApiBalances(await analyticsApi.getApiBalances()); } catch {}
+    try { setApiBalances(await analyticsApi.getApiBalances()); } catch { /* widget handles null */ }
     finally { setApiBalancesLoading(false); }
   }, []);
 
   const fetchApiUsage = useCallback(async (r: string) => {
     setApiUsageLoading(true);
-    try { setApiUsage(await analyticsApi.getApiUsage(r)); } catch {}
+    try { setApiUsage(await analyticsApi.getApiUsage(r)); } catch { /* widget handles null */ }
     finally { setApiUsageLoading(false); }
   }, []);
 
   const fetchPlatformSettings = useCallback(async () => {
     setSettingsLoading(true);
-    try { setPlatformSettings(await settingsApi.getPlatformSettings()); } catch {}
+    try { setPlatformSettings(await settingsApi.getPlatformSettings()); } catch { /* widget handles null */ }
     finally { setSettingsLoading(false); }
   }, []);
 

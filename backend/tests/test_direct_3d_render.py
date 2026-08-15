@@ -748,8 +748,7 @@ def test_validated_family_pending_public_realm_keeps_allowlisted_identity_withou
     }
     street[PUBLIC_REALM_FALLBACK_PROPERTY] = public_realm_fallback_marker("road", street)
     assert direct_3d_zone_design_identity("street", street) == (
-        "Woonerf Shared Street, catalogue variant 3 — "
-        "Planned Street / Path; Sticker/LEGO family pending"
+        "Woonerf Shared Street, catalogue variant 3 — " "Planned Street / Path; Sticker/LEGO family pending"
     )
 
 

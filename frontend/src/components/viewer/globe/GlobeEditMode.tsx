@@ -403,7 +403,7 @@ export function GlobeEditMode({
     ownerWindow.addEventListener('pointerup', handlePointerUp);
     ownerWindow.addEventListener('pointercancel', handlePointerUp);
     ownerWindow.addEventListener('blur', handlePointerUp);
-  }, [gl, onInteractionStart, onZoneUpdated, pointerToLatLng, renderedCoords, setControlsEnabled, zone]);
+  }, [dragRef, gl, onInteractionStart, onZoneUpdated, pointerToLatLng, renderedCoords, setControlsEnabled, zone]);
 
   // --- Build drag surface geometry (same shape as zone, invisible) ---
   // ENU frame: X=East, Y=North, Z=Up. Ground plane = XY.
@@ -677,7 +677,7 @@ export function GlobeEditMode({
     ownerWindow.addEventListener('pointerup', handlePointerUp);
     ownerWindow.addEventListener('pointercancel', handlePointerUp);
     ownerWindow.addEventListener('blur', handlePointerUp);
-  }, [gl, onInteractionStart, onZoneUpdated, pointerToLatLng, renderedCoords, setControlsEnabled, zone]);
+  }, [dragRef, gl, onInteractionStart, onZoneUpdated, pointerToLatLng, renderedCoords, setControlsEnabled, zone]);
 
   return (
     <>

@@ -142,7 +142,9 @@ def _public_realm_design_identity(
     variant = ""
     if isinstance(variant_id, str):
         suffix = _CATALOG_VARIANT_SUFFIX.search(variant_id)
-        variant = f", catalogue variant {int(suffix.group(1)) + 1}" if suffix else f", {_humanize_identifier(variant_id)}"
+        variant = (
+            f", catalogue variant {int(suffix.group(1)) + 1}" if suffix else f", {_humanize_identifier(variant_id)}"
+        )
     return f"{archetype}{variant} — Planned {kind}; Sticker/LEGO family pending"
 
 

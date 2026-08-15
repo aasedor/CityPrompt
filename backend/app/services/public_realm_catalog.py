@@ -54,10 +54,7 @@ def public_realm_catalog_variants() -> dict[PublicRealmCatalogKind, dict[str, tu
 
 
 def public_realm_catalog_ids() -> dict[PublicRealmCatalogKind, frozenset[str]]:
-    return {
-        kind: frozenset(values)
-        for kind, values in public_realm_catalog_variants().items()
-    }
+    return {kind: frozenset(values) for kind, values in public_realm_catalog_variants().items()}
 
 
 def resolve_public_realm_catalog_identity(

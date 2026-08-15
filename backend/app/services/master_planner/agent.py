@@ -147,9 +147,7 @@ def _band_schema(
     required = ["development_type", "aesthetic", "floors", "typology"]
     if lego_catalog is not None:
         trusted_parent_ids = sorted(
-            str(entry["id"])
-            for entry in load_dims_table()
-            if entry.get("usable") and entry.get("id")
+            str(entry["id"]) for entry in load_dims_table() if entry.get("usable") and entry.get("id")
         )
         exact_parent = {
             "type": "string",
@@ -450,9 +448,7 @@ async def compose_master_plan(
             raise ValueError("no usable tool payload after retry")
 
         try:
-            raw_spec = MasterPlanSpec(**payload).model_copy(
-                update={"diversity": diversity_plan_for_site(site_summary)}
-            )
+            raw_spec = MasterPlanSpec(**payload).model_copy(update={"diversity": diversity_plan_for_site(site_summary)})
         except (ValidationError, TypeError) as exc:
             raise ValueError(f"spec failed validation: {exc}") from exc
 

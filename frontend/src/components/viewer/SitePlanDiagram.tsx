@@ -53,7 +53,7 @@ export function SitePlanDiagram({
     const w = (Math.max(...lngs) - Math.min(...lngs)) * transform.mlon;
     const d = (Math.max(...lats) - Math.min(...lats)) * transform.mlat;
     return { width: Math.round(w), depth: Math.round(d) };
-  }, [zone.coordinates, transform]);
+  }, [coords, transform]);
 
   return (
     <svg

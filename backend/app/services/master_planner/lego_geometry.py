@@ -267,9 +267,7 @@ def bind_building_zones_to_lego(
             if footprint_profile == "rectangle":
                 properties.pop("_lego_actual_wing_depth_m", None)
             else:
-                properties["_lego_actual_wing_depth_m"] = float(
-                    current_plan["target"]["wing_depth_m"]
-                )
+                properties["_lego_actual_wing_depth_m"] = float(current_plan["target"]["wing_depth_m"])
             properties["archetype_source"] = "runtime_lego_actual_footprint"
             properties["_lego_catalog_fingerprint"] = lego_catalog.fingerprint
             properties["_lego_runtime_selection_id"] = current_selectable

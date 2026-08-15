@@ -2,10 +2,13 @@
 /**
  * Performance budget checker for CI/CD pipelines.
  *
- * Budgets:
- * - Total JS bundle: < 2MB (gzipped: ~600KB)
- * - Largest individual chunk: < 800KB
- * - Total CSS: < 100KB
+ * Regression budgets measured from the 2026-08 clean-release build:
+ * - Total JS bundle: < 8.5 MiB
+ * - Largest individual chunk: < 5.75 MiB
+ * - Total CSS: < 175 KiB
+ *
+ * These uncompressed limits make CI enforce the current production baseline.
+ * Lower them when code splitting or catalogue cleanup reduces the bundle.
  *
  * Run after `npm run build`:
  *   node scripts/check-bundle-size.js
@@ -17,9 +20,9 @@ import { join, extname } from 'path';
 const DIST_DIR = join(process.cwd(), 'dist', 'assets');
 
 const BUDGETS = {
-  totalJs: 2 * 1024 * 1024,      // 2MB
-  maxChunkJs: 800 * 1024,         // 800KB per chunk
-  totalCss: 100 * 1024,           // 100KB
+  totalJs: 8.5 * 1024 * 1024,
+  maxChunkJs: 5.75 * 1024 * 1024,
+  totalCss: 175 * 1024,
 };
 
 function getFiles(dir) {

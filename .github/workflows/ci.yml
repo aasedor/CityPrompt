@@ -6,6 +6,13 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   # -------------------------------------------------------
   # Backend: lint, type-check, test
@@ -60,7 +67,10 @@ jobs:
         run: black --check --line-length=120 .
 
       - name: Type check with mypy
-        run: mypy app/ --ignore-missing-imports --no-error-summary || true
+        # This is an intentionally expanding boundary. The legacy API,
+        # processing, and rendering modules are tracked separately until their
+        # historical typing backlog is removed.
+        run: mypy app/core app/models app/schemas --ignore-missing-imports --no-error-summary
 
       - name: Migrate test database
         env:
@@ -101,11 +111,14 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Audit production and development dependencies
+        run: npm audit --audit-level=high
+
       - name: Lint
-        run: npx eslint src/ --max-warnings=0 || true
+        run: npm run lint -- --max-warnings=0
 
       - name: Type check
-        run: npx tsc --noEmit || true
+        run: npm run type-check
 
       - name: Run tests
         run: npx vitest run --reporter=verbose
@@ -113,11 +126,13 @@ jobs:
       - name: Build production bundle
         run: npm run build
 
-      # The inherited 2 MB budget predates the map, Three.js, and authored
-      # archetype catalogue. Keep reporting the debt without making an
-      # otherwise deployable integration permanently red.
-      - name: Report bundle budget
-        continue-on-error: true
+      - name: Validate archetype assets
+        run: npm run check:archetype-assets
+
+      - name: Validate Sticker Method assets
+        run: npm run check:sticker-pilot-assets
+
+      - name: Enforce bundle budget
         run: npm run check-budget
 
   # -------------------------------------------------------

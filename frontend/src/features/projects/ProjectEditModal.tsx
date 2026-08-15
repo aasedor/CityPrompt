@@ -113,9 +113,6 @@ export function ProjectEditModal({ project, isSaving, onClose, onSave }: Project
         longitude: project.location.longitude,
         address: trimmedAddress || null,
       };
-    } else if (trimmedAddress) {
-      setError('Select an address suggestion so the map location can be saved.');
-      return;
     }
 
     setError('');

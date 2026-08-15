@@ -5,7 +5,6 @@ import type { SiteZone } from '@/types';
 
 import { prepareZonesForRender, withPlanArchetypeDefaults } from './resolvePlanZoneArchetypes';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const BUILDINGS = ((buildingCatalog as any).archetypes ?? buildingCatalog) as any[];
 
 // ~200m x 160m block near the Beltline — big enough to not be a pocket park.

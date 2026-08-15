@@ -3838,8 +3838,7 @@ class Direct3DRenderService:
                 exc,
             )
             raise Direct3DProviderError(
-                "OpenAI Direct 3D request outcome is unknown: "
-                f"{type(exc).__name__}: {exc!r}",
+                "OpenAI Direct 3D request outcome is unknown: " f"{type(exc).__name__}: {exc!r}",
                 billing_status="unknown",
             ) from exc
         if response.status_code != 200:

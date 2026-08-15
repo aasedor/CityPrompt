@@ -26,10 +26,6 @@ interface SiteZonesGroupProps {
 }
 
 export function SiteZonesGroup({ zones, projectLat, projectLng, buildingStatuses, onZoneClick }: SiteZonesGroupProps) {
-  if (!projectLat || !projectLng || zones.length === 0) return null;
-
-  const origin = { lat: projectLat, lon: projectLng };
-
   // Build a set of zone IDs that have linked buildings (hide procedural geometry)
   const zonesWithBuildings = useMemo(() => {
     const result = new Set<string>();
@@ -40,6 +36,10 @@ export function SiteZonesGroup({ zones, projectLat, projectLng, buildingStatuses
     }
     return result;
   }, [zones]);
+
+  if (!projectLat || !projectLng || zones.length === 0) return null;
+
+  const origin = { lat: projectLat, lon: projectLng };
 
   // Filter out zones with missing or invalid coordinates to prevent react-three crashes
   const validZones = zones.filter(z => z.coordinates && Array.isArray(z.coordinates) && z.coordinates.length >= 3);
@@ -618,7 +618,7 @@ function DetailedBuildingZone({
       </mesh>
 
       {/* Windows on every wall segment — style-aware */}
-      <PolygonWindows walls={walls} height={height} floors={floors} floorHeight={floorHeight} style={style} />
+      <PolygonWindows walls={walls} floors={floors} floorHeight={floorHeight} style={style} />
 
       {/* Front door on longest wall */}
       {walls.length > 0 && (
@@ -657,13 +657,11 @@ function DetailedBuildingZone({
 
 function PolygonWindows({
   walls,
-  height,
   floors,
   floorHeight,
   style,
 }: {
   walls: WallSegment[];
-  height: number;
   floors: number;
   floorHeight: number;
   style?: ProceduralBuildingStyle | null;
@@ -704,7 +702,7 @@ function PolygonWindows({
       }
     }
     return result;
-  }, [walls, height, floors, floorHeight, spacing, edgeMargin]);
+  }, [walls, floors, floorHeight, spacing, edgeMargin]);
 
   const sfW = style?.groundFloorStorefront ? Math.min(winWidth * 1.5, spacing - 0.4) : winWidth;
   const sfH = style?.groundFloorStorefront ? Math.min((style.storefrontHeight || 3.2) - 0.5, floorHeight * 0.85) : winHeight;

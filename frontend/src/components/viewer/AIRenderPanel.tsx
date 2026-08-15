@@ -33,6 +33,13 @@ const STYLE_GROUPS = [
   { label: 'Stylized', ids: ['isometric', 'clay-maquette', 'woodblock'] },
 ] as const;
 
+const ZONE_LAYER_IDS = [
+  'site-zones-boundary-fill', 'site-zones-fill', 'site-zones-extrusion',
+  'site-zones-outline', 'site-zones-selected', 'site-zones-labels',
+  'zone-edit-vertices-layer', 'zone-rotation-line', 'zone-rotation-handle-layer', 'zone-rotation-north-label',
+  'massing-preview-extrusion', 'massing-preview-green',
+] as const;
+
 // ---------------------------------------------------------------------------
 // Props
 // ---------------------------------------------------------------------------
@@ -149,23 +156,17 @@ export function AIRenderPanel({ mapRef, onPreviewsReady, onClearOverlay, siteZon
   }, [result?.imageUrl]);
 
   // Hide zone polygon layers when a render result is displayed, restore when cleared
-  const ZONE_LAYERS = [
-    'site-zones-boundary-fill', 'site-zones-fill', 'site-zones-extrusion',
-    'site-zones-outline', 'site-zones-selected', 'site-zones-labels',
-    'zone-edit-vertices-layer', 'zone-rotation-line', 'zone-rotation-handle-layer', 'zone-rotation-north-label',
-    'massing-preview-extrusion', 'massing-preview-green',
-  ];
   useEffect(() => {
     const map = mapRef.current;
     if (!map) return;
     const visibility = result ? 'none' : 'visible';
-    for (const layerId of ZONE_LAYERS) {
+    for (const layerId of ZONE_LAYER_IDS) {
       try { if (map.getLayer(layerId)) map.setLayoutProperty(layerId, 'visibility', visibility); } catch { /* map destroyed */ }
     }
     // Restore layers on unmount — guard against map already being destroyed
     return () => {
       try {
-        for (const layerId of ZONE_LAYERS) {
+        for (const layerId of ZONE_LAYER_IDS) {
           if (map.getLayer(layerId)) map.setLayoutProperty(layerId, 'visibility', 'visible');
         }
       } catch { /* map style already removed during navigation */ }

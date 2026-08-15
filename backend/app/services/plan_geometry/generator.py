@@ -1014,10 +1014,10 @@ def generate_plan_geometry(
         for poly_m in iter_polygons(spec.geom_m):
             kind = spec.kind
             archetype_id = (
-                getattr(palette, "central_archetype_id", None)
-                if kind == "central"
-                else spec.archetype_id
-            ) or spec.archetype_id or _PARK_ARCHETYPE_FALLBACK.get(kind)
+                (getattr(palette, "central_archetype_id", None) if kind == "central" else spec.archetype_id)
+                or spec.archetype_id
+                or _PARK_ARCHETYPE_FALLBACK.get(kind)
+            )
             if public_realm_variants:
                 identity = _lego_park_identity_for_metric_polygon(
                     kind=kind,
@@ -1420,9 +1420,7 @@ def generate_plan_geometry(
                             },
                         }
                     )
-                    public_realm_occurrences["courtyard"] = (
-                        public_realm_occurrences.get("courtyard", 0) + 1
-                    )
+                    public_realm_occurrences["courtyard"] = public_realm_occurrences.get("courtyard", 0) + 1
                     zone_sort += 1
 
     if clamp_notes:

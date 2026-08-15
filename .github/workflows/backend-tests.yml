@@ -1,8 +1,5 @@
-# Narrow, trustworthy backend gate. The legacy ci.yml is chronically red for
-# unrelated reasons (strict lint over a long-diverged tree, bundle budgets);
-# this workflow runs ONLY the backend test suite so green here means the
-# planner/DNA/policy stack is sound. Convention: green backend-tests before
-# merge.
+# Narrow backend gate for backend-only changes. The full CI workflow remains
+# the release gate; this path-filtered workflow provides faster pytest feedback.
 name: Backend Tests
 
 on:
@@ -14,6 +11,13 @@ on:
     branches: [main]
     paths:
       - "backend/**"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: backend-tests-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   pytest:

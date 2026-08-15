@@ -683,12 +683,14 @@ def test_lego_metadata_from_manifest_builds_planner_shape():
         "mode": "fixed_landmark",
         "continuous_resize_allowed": False,
     }
-    contract_descriptor = descriptor_from_library_entry(SimpleNamespace(
-        id="fixed-contract-podium",
-        name="Fixed contract podium",
-        model_url="https://example.test/fixed-contract-podium.glb",
-        metadata_={"lego": contract_metadata},
-    ))
+    contract_descriptor = descriptor_from_library_entry(
+        SimpleNamespace(
+            id="fixed-contract-podium",
+            name="Fixed contract podium",
+            model_url="https://example.test/fixed-contract-podium.glb",
+            metadata_={"lego": contract_metadata},
+        )
+    )
     assert contract_descriptor is not None
     assert contract_descriptor.placement_contract == contract_metadata["placement_contract"]
 
@@ -1233,9 +1235,7 @@ async def test_plan_api_builds_oversized_parcel_as_streetwall_grid(client, mock_
 
 
 @pytest.mark.anyio
-async def test_plan_api_strict_mode_rejects_forced_fit_for_ai_compilation(
-    client, mock_db, test_user, auth_headers
-):
+async def test_plan_api_strict_mode_rejects_forced_fit_for_ai_compilation(client, mock_db, test_user, auth_headers):
     library_entries = [
         entry("podium", "Podium", "podium", height=4.5),
         entry("floor", "Floor", "floor", height=3.2),
@@ -4580,11 +4580,7 @@ async def test_place_community_atomically_compiles_mixed_ai_exact_and_family_pen
     mock_db.execute = AsyncMock(
         side_effect=[
             _scalar_result(test_user),
-            *[
-                result
-                for zone in zones
-                for result in (_scalar_result(zone), _scalar_result(project))
-            ],
+            *[result for zone in zones for result in (_scalar_result(zone), _scalar_result(project))],
             _scalar_result(project.id),
             _scalars_result(zones),
             _scalar_result(project),
@@ -5424,9 +5420,7 @@ async def test_place_community_ai_family_pending_building_ignores_lego_inventory
 
 
 @pytest.mark.anyio
-async def test_place_community_rejects_recipe_omission_for_exact_ai_building(
-    client, mock_db, test_user, auth_headers
-):
+async def test_place_community_rejects_recipe_omission_for_exact_ai_building(client, mock_db, test_user, auth_headers):
     project = FakeProject(owner_id=test_user.id)
     entries = _ai_recipe_inventory()
     catalog = build_lego_planning_catalog(entries)
@@ -5468,9 +5462,7 @@ async def test_place_community_rejects_recipe_omission_for_exact_ai_building(
 
 
 @pytest.mark.anyio
-async def test_place_community_rechecks_pending_omission_after_family_import(
-    client, mock_db, test_user, auth_headers
-):
+async def test_place_community_rechecks_pending_omission_after_family_import(client, mock_db, test_user, auth_headers):
     project = FakeProject(owner_id=test_user.id)
     entries = _ai_recipe_inventory()
     zone = _make_zone(
@@ -5979,9 +5971,7 @@ async def test_place_community_persists_exact_footprint_massing_without_family_r
 
 
 @pytest.mark.anyio
-async def test_place_community_reused_massing_syncs_current_zone_metadata(
-    client, mock_db, test_user, auth_headers
-):
+async def test_place_community_reused_massing_syncs_current_zone_metadata(client, mock_db, test_user, auth_headers):
     project = FakeProject(owner_id=test_user.id)
     building = Building(
         id=uuid.uuid4(),
@@ -6172,10 +6162,10 @@ async def test_place_community_rebuild_upgrades_massing_without_losing_public_re
         headers=auth_headers,
         json={
             "items": [
-                    _community_item(
-                        building_zone,
-                        recipe=_recipe_from_plan(plan, catalog.fingerprint),
-                    ),
+                _community_item(
+                    building_zone,
+                    recipe=_recipe_from_plan(plan, catalog.fingerprint),
+                ),
                 _community_item(park_zone),
             ]
         },

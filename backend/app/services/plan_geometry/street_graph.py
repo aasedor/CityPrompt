@@ -633,7 +633,10 @@ def _orthogonal_connectors(anchor: Point, target: Point, grid_angle_deg: float) 
     signatures: set[tuple[tuple[float, float], ...]] = set()
     for elbow in elbows:
         coords = [anchor.coords[0]]
-        if Point(elbow).distance(anchor) > CONNECTION_EPSILON_M and Point(elbow).distance(target) > CONNECTION_EPSILON_M:
+        if (
+            Point(elbow).distance(anchor) > CONNECTION_EPSILON_M
+            and Point(elbow).distance(target) > CONNECTION_EPSILON_M
+        ):
             coords.append(elbow)
         coords.append(target.coords[0])
         signature = tuple((round(x, 6), round(y, 6)) for x, y in coords)

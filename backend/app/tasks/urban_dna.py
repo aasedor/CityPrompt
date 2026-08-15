@@ -828,9 +828,7 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
         cached_reusable = cached_master.get("cache_reusable") is True
         if isinstance(cached_spec, dict) and cached_fingerprint == lego_catalog.fingerprint and cached_reusable:
             try:
-                parsed_spec = MasterPlanSpec(**cached_spec).model_copy(
-                    update={"diversity": diversity_policy}
-                )
+                parsed_spec = MasterPlanSpec(**cached_spec).model_copy(update={"diversity": diversity_policy})
                 master_spec, repair_notes = validate_spec(
                     parsed_spec,
                     row.scenario_id,
@@ -864,6 +862,7 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
                     definition = None
             if definition is not None and snapshot.dna:
                 from app.core.usage_logger import log_api_usage_sync
+
                 # compose_master_plan never raises, but the event-loop plumbing
                 # around it can — and the draw must never depend on the LLM.
                 try:

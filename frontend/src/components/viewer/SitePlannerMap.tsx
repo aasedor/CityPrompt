@@ -872,6 +872,21 @@ export function SitePlannerMap({
     }
   }, [computeCentroid, computeRotationHandlePos]);
 
+  // Update a zone's geometry on the map in real time without changing callback
+  // identity on every render. The current map and zone collection live in
+  // refs so interaction listeners always see the latest values.
+  const updateZoneOnMap = useCallback((zoneId: string, newCoords: number[][]) => {
+    const map = mapRef.current;
+    if (!map || !mapLoadedRef.current) return;
+
+    const source = map.getSource('site-zones') as mapboxgl.GeoJSONSource | undefined;
+    if (!source) return;
+
+    const features = buildZoneFeatures(siteZonesRef.current, zoneId, newCoords);
+    source.setData({ type: 'FeatureCollection', features });
+    pendingCoordsRef.current = { zoneId, coords: newCoords };
+  }, [buildZoneFeatures]);
+
   // ─── Initialize map ───
   useEffect(() => {
     if (!containerRef.current || !MAPBOX_TOKEN) return;
@@ -1537,22 +1552,7 @@ export function SitePlannerMap({
       mapRef.current = null;
       setMapInstance(null);
     };
-  }, [latitude, longitude, addDrawingPoint, buildPreviewFeatures, finishDrawing, setDraggingZone, setMapInstance, updateVertexHandles]);
-
-  // Helper to update a zone's geometry on the map in real-time
-  function updateZoneOnMap(zoneId: string, newCoords: number[][]) {
-    const map = mapRef.current;
-    if (!map || !mapLoadedRef.current) return;
-
-    const source = map.getSource('site-zones') as mapboxgl.GeoJSONSource | undefined;
-    if (!source) return;
-
-    const features = buildZoneFeatures(siteZonesRef.current, zoneId, newCoords);
-    source.setData({ type: 'FeatureCollection', features });
-
-    // Store the pending coordinates for persistence on mouseup
-    pendingCoordsRef.current = { zoneId, coords: newCoords };
-  }
+  }, [latitude, longitude, addDrawingPoint, buildPreviewFeatures, computeCentroid, finishDrawing, setActiveSitePlannerTool, setDraggingZone, setMapInstance, setStreetViewPosition, updateVertexHandles, updateZoneOnMap]);
 
   // We need to handle mouseup more cleanly - use a window listener to catch mouseup even outside map
   useEffect(() => {
@@ -1862,14 +1862,6 @@ export function SitePlannerMap({
     return () => window.removeEventListener('keydown', handleKey);
   }, [interactionPaused, setActiveSitePlannerTool, updateDrawingPreview, finishPolygon, undoLastVertex, selectedZoneId]);
 
-  if (!MAPBOX_TOKEN) {
-    return (
-      <div className="flex h-full w-full items-center justify-center bg-gray-800 text-gray-400">
-        Set VITE_MAPBOX_TOKEN to enable satellite map
-      </div>
-    );
-  }
-
   // ─── Street View Pegman marker + view cone ───
   useEffect(() => {
     const map = mapRef.current;
@@ -1977,6 +1969,14 @@ export function SitePlannerMap({
       }
     };
   }, [interactionPaused, streetViewPegman?.position, setStreetViewAngle, setStreetViewPosition, setStreetViewActive]);
+
+  if (!MAPBOX_TOKEN) {
+    return (
+      <div className="flex h-full w-full items-center justify-center bg-gray-800 text-gray-400">
+        Set VITE_MAPBOX_TOKEN to enable satellite map
+      </div>
+    );
+  }
 
   const linear = isLinearTool(activeSitePlannerTool);
   const minPts = minPointsForTool(activeSitePlannerTool);

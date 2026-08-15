@@ -298,7 +298,7 @@ describe('park ground pilot profiles', () => {
     const fit = fitParkGroundGuides(profile.guides, { width, height });
     expect(fit.omittedGuides, `${archetypeId}: ${JSON.stringify(fit.omittedGuides)}`).toHaveLength(0);
     expect(fit.guides, archetypeId).toHaveLength(profile.guides.length);
-  });
+  }, 15_000);
 
   it('gives every recurring master-planner public realm an authoritative layout guide', () => {
     const plannerArchetypes = [

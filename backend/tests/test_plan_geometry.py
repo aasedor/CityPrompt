@@ -248,19 +248,12 @@ def test_context_entries_detect_parallel_frontages_not_only_crossings():
 
 def test_road_context_entries_are_bounded_and_spaced_like_real_gateways():
     boundary = Polygon([(0, 0), (260, 0), (260, 160), (0, 160)])
-    fragmented_crossings = [
-        LineString([(x, -30), (x, 30)])
-        for x in (20, 48, 76, 104, 132, 160, 188, 216, 244)
-    ]
+    fragmented_crossings = [LineString([(x, -30), (x, 30)]) for x in (20, 48, 76, 104, 132, 160, 188, 216, 244)]
 
     entries = entry_points_from_roads(fragmented_crossings, boundary)
 
     assert len(entries) == 4
-    assert all(
-        first.distance(second) >= 50.0
-        for index, first in enumerate(entries)
-        for second in entries[index + 1 :]
-    )
+    assert all(first.distance(second) >= 50.0 for index, first in enumerate(entries) for second in entries[index + 1 :])
 
 
 def test_park_access_points_prefer_paths_and_land_on_frontages():

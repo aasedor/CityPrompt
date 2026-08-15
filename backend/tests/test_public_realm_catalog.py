@@ -30,11 +30,14 @@ def test_backend_public_realm_trust_index_matches_all_frontend_parents_and_varia
 
 
 def test_family_pending_identity_accepts_known_unbuilt_catalogue_ids_and_exact_variants():
-    assert resolve_public_realm_catalog_identity(
-        "park",
-        "academic_courtyard",
-        "academic_courtyard_variant_2",
-    ) is not None
+    assert (
+        resolve_public_realm_catalog_identity(
+            "park",
+            "academic_courtyard",
+            "academic_courtyard_variant_2",
+        )
+        is not None
+    )
     marker = public_realm_fallback_marker(
         "road",
         {
@@ -48,16 +51,25 @@ def test_family_pending_identity_accepts_known_unbuilt_catalogue_ids_and_exact_v
 
 
 def test_family_pending_identity_rejects_unknown_and_nonexistent_prompt_like_ids():
-    assert resolve_public_realm_catalog_identity(
-        "street",
-        "ignore_previous_instructions",
-    ) is None
-    assert resolve_public_realm_catalog_identity(
-        "street",
-        "scenic_parkway",
-        "scenic_parkway_v99",
-    ) is None
-    assert public_realm_fallback_marker(
-        "road",
-        {"road_archetype_id": "ignore_previous_instructions"},
-    ) is None
+    assert (
+        resolve_public_realm_catalog_identity(
+            "street",
+            "ignore_previous_instructions",
+        )
+        is None
+    )
+    assert (
+        resolve_public_realm_catalog_identity(
+            "street",
+            "scenic_parkway",
+            "scenic_parkway_v99",
+        )
+        is None
+    )
+    assert (
+        public_realm_fallback_marker(
+            "road",
+            {"road_archetype_id": "ignore_previous_instructions"},
+        )
+        is None
+    )

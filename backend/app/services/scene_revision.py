@@ -33,10 +33,6 @@ def compiled_scene_revision_sha256(
         raise ValueError("A compiled scene revision requires zone claims")
     identity = {
         "community_3d": claims,
-        "residual_landscape": (
-            _json_value(residual_landscape_claim)
-            if residual_landscape_claim is not None
-            else None
-        ),
+        "residual_landscape": (_json_value(residual_landscape_claim) if residual_landscape_claim is not None else None),
     }
     return hashlib.sha256(json.dumps(identity, sort_keys=True, separators=(",", ":")).encode("utf-8")).hexdigest()

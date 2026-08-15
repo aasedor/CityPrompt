@@ -1958,23 +1958,22 @@ function ParkKitInstance({
   const plantingStructure = resolveParkPlantingStructure(zone);
   const legoAppearance = useMemo(
     () => resolveParkLegoAppearance(zone),
-    [zone.properties, zone.zone_type],
+    [zone],
   );
   const dressingAppearance = useMemo(
     () => resolveParkDressingAppearance(zone),
-    [zone.properties, zone.zone_type],
+    [zone],
   );
   const programAnchors = useMemo(
     () => resolveParkProgramAnchorLayout(zone),
-    [zone.properties, zone.zone_type],
+    [zone],
   );
   // A generated green-space drape is the spatial source of truth. Both
   // procedural and AI-upgraded grounds keep the same deterministic placement
   // recipe, so their live canopy and seating remain stable across reloads.
-  const hasCurrentParkGround = hasCurrentParkGroundSurface(zone);
   const specialtyStructureKind = useMemo(
     () => resolveParkSpecialtyStructureKind(zone),
-    [zone.properties, zone.zone_type],
+    [zone],
   );
 
   const centroid = useMemo(() => {
@@ -1993,7 +1992,7 @@ function ParkKitInstance({
   );
   const dressingFamilyId = useMemo(
     () => resolveParkDressingFamily(zone),
-    [zone.properties, zone.zone_type],
+    [zone],
   );
   const programGuideFit = useMemo(() => {
     return fitParkGroundGuides(
@@ -2027,7 +2026,6 @@ function ParkKitInstance({
     )
   )), [
     fittedMicrodetailGuides,
-    hasCurrentParkGround,
     plantingStructure,
     programAnchors,
     recipe,

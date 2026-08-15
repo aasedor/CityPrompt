@@ -98,7 +98,7 @@ function ResidualLandscapeInstance({
         `${zone.id}:${placement.id}:${index}`,
       ),
     }));
-  }, [centroid, recipe.placements, zOffsets]);
+  }, [centroid, recipe.placements, zone.id, zOffsets]);
 
   if (!placements.length) return null;
   return (

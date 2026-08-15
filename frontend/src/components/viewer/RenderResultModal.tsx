@@ -129,7 +129,7 @@ export function RenderResultModal({
       setSaveStatus('error');
       setTimeout(() => setSaveStatus('idle'), 3000);
     }
-  }, [fullResult, projectId, style, saveStatus]);
+  }, [fullResult, onSaved, projectId, style, saveStatus]);
 
   const displayImage = fullResult?.imageUrl ?? (selectedIndex != null ? previews[selectedIndex]?.imageUrl : null);
 

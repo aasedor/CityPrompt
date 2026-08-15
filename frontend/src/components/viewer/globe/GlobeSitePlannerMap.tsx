@@ -2419,6 +2419,7 @@ export function GlobeSitePlannerMap({
     focusLatitude,
     focusLongitude,
     getCanvasViewportSize,
+    preferredView?.cameraPosition?.bearing,
     projectLngLatToViewport,
     sceneReady,
     unprojectViewportPoint,
@@ -2441,8 +2442,7 @@ export function GlobeSitePlannerMap({
       ));
     }
 
-    let trackedPromise: Promise<Direct3DCaptureBundle>;
-    trackedPromise = (async () => {
+    const trackedPromise: Promise<Direct3DCaptureBundle> = (async () => {
       const renderer = rendererRef.current;
       const scene = sceneRef.current;
       const camera = cameraRef.current;
@@ -2909,7 +2909,7 @@ export function GlobeSitePlannerMap({
       setBuildingModelsVisible(previousModelsVisible);
       if (fadePlugin && previousFadeDuration !== null) fadePlugin.fadeDuration = previousFadeDuration;
     }
-  }, [captureDirect3D, captureStreetDirect3D, raycastSurfacePoint, waitForCurrentTiles]);
+  }, [captureDirect3D, raycastSurfacePoint, waitForCurrentTiles]);
 
   // Scene hygiene for street-level captures (same pattern as captureDirect3D:
   // flip clean state, two frames for React to commit, restore in finally).
@@ -3277,7 +3277,7 @@ export function GlobeSitePlannerMap({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [canPasteZone, hasDrawingTool, interactionPaused, markUserInteracted, measureModeActive, onBuildingDeleted, onCopyZone, onPasteZone, onZoneCreated, onZoneSelected, onZoneUpdated, selectedBuildingId, selectedZoneId, siteZones, streetViewPegman?.angle, streetViewPegman?.position, _onZoneDeleted]);
+  }, [canPasteZone, hasDrawingTool, interactionPaused, markUserInteracted, measureModeActive, onBuildingDeleted, onCopyZone, onPasteZone, onZoneCreated, onZoneSelected, onZoneUpdated, selectedBuildingId, selectedZoneId, setStreetViewActive, setStreetViewAngle, siteZones, streetViewPegman?.angle, streetViewPegman?.position, _onZoneDeleted]);
 
   useEffect(() => {
     if (interactionPaused) return;
@@ -3614,14 +3614,6 @@ export function GlobeSitePlannerMap({
     };
   }, []);
 
-  if (!API_KEY) {
-    return (
-      <div className="flex h-full items-center justify-center bg-gray-900 text-white">
-        <p className="text-sm text-gray-400">Missing VITE_GOOGLE_MAPS_API_KEY</p>
-      </div>
-    );
-  }
-
   const initialCameraPose = useMemo(
     () => preferredCameraPose ?? computeCameraPose(initialView.lat, initialView.lng, initialView.altitude, terrainElevation),
     [initialView, preferredCameraPose, terrainElevation],
@@ -3636,6 +3628,14 @@ export function GlobeSitePlannerMap({
     applyCameraPoseToCamera(initialThreeCameraRef.current, initialCameraPose);
   }
   const initialThreeCamera = initialThreeCameraRef.current;
+
+  if (!API_KEY) {
+    return (
+      <div className="flex h-full items-center justify-center bg-gray-900 text-white">
+        <p className="text-sm text-gray-400">Missing VITE_GOOGLE_MAPS_API_KEY</p>
+      </div>
+    );
+  }
 
   return (
     <div ref={containerRef} className="relative h-full w-full bg-black" style={{ overflow: 'hidden' }}>
@@ -3798,10 +3798,8 @@ export function GlobeSitePlannerMap({
           {/* autoRefreshToken: Google 3D Tiles sessions expire after a few hours;
               without it every tile fetch 400s (pale background polygons through
               the holes) until a full reload. Refreshes the session on 4xx. */}
-          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
           <TilesPlugin plugin={GoogleCloudAuthPlugin} args={{ apiToken: API_KEY, useRecommendedSettings: true, autoRefreshToken: true } as any} />
           <TilesPlugin plugin={TileCompressionPlugin} />
-          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
           <TilesPlugin plugin={GLTFExtensionsPlugin} args={{ dracoLoader: new DRACOLoader().setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/') } as any} />
           <TilesPlugin plugin={UpdateOnChangePlugin} />
           <TilesPlugin ref={handleUnloadTilesPluginRef} plugin={UnloadTilesPlugin} />
@@ -4120,29 +4118,11 @@ export function GlobeSitePlannerMap({
         );
       })()}
 
-      {/* Street view hint */}
-      {false && !hasDrawingTool && streetViewPegman && (
-        <div className="absolute left-1/2 top-4 z-30 -translate-x-1/2 rounded-lg bg-amber-900/80 px-3 py-1.5 text-center text-[11px] text-amber-100 backdrop-blur-sm border border-amber-500/30">
-          {streetViewPegman?.position
-            ? 'Arrow keys to rotate view - Esc to remove pegman'
-            : 'Click to place street view camera'}
-        </div>
-      )}
-
       {!hasDrawingTool && streetViewPegman && (
         <div className="absolute left-1/2 top-4 z-30 -translate-x-1/2 rounded-full border-2 border-[#151515] bg-[#fff9ec]/95 px-3 py-1.5 text-center text-[11px] font-black uppercase text-[#151515] shadow-[4px_4px_0_0_#151515] backdrop-blur-xl">
           {streetViewPegman?.position
             ? 'Arrow keys to rotate view | Esc to remove pegman'
             : 'Click to place street view camera'}
-        </div>
-      )}
-
-      {/* Select mode hint */}
-      {false && !hasDrawingTool && !streetViewPegman && (
-        <div className="absolute left-1/2 top-4 z-30 -translate-x-1/2 rounded-lg bg-gray-900/70 px-3 py-1.5 text-center text-[11px] text-white/70 backdrop-blur-sm">
-          {selectedZoneId
-            ? 'Drag body to move - Drag vertices to reshape - Del to delete - Ctrl+C to copy'
-            : 'Click zone to select - Scroll to zoom - Drag to orbit'}
         </div>
       )}
 

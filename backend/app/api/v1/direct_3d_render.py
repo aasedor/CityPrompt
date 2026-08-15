@@ -203,21 +203,14 @@ def _validate_direct_3d_project_zones(
         public_realm_recipe = (zone.properties or {}).get(PUBLIC_REALM_RECIPE_PROPERTY)
         public_realm_fallback = (zone.properties or {}).get(PUBLIC_REALM_FALLBACK_PROPERTY)
         plan_scenario = (zone.properties or {}).get("_plan_scenario")
-        if (
-            kind in {"park", "street"}
-            and not isinstance(public_realm_recipe, dict)
-        ):
+        if kind in {"park", "street"} and not isinstance(public_realm_recipe, dict):
             canonical_fallback = public_realm_fallback_marker(
                 zone.zone_type,
                 zone.properties,
             )
             fallback_is_required = isinstance(plan_scenario, str) and bool(plan_scenario.strip())
-            if (
-                (fallback_is_required or public_realm_fallback is not None)
-                and (
-                    canonical_fallback is None
-                    or public_realm_fallback != canonical_fallback
-                )
+            if (fallback_is_required or public_realm_fallback is not None) and (
+                canonical_fallback is None or public_realm_fallback != canonical_fallback
             ):
                 # AI/public-realm fallback is truthful only when Generate to
                 # 3D explicitly stamped the current source identity. This
@@ -260,11 +253,7 @@ def _validate_direct_3d_project_zones(
             source_hash=current_source_hash,
             building=building,
             public_realm_recipe=public_realm_recipe,
-            public_realm_fallback=(
-                public_realm_fallback
-                if not isinstance(public_realm_recipe, dict)
-                else None
-            ),
+            public_realm_fallback=(public_realm_fallback if not isinstance(public_realm_recipe, dict) else None),
         )
         if (
             current_representation_hash is None

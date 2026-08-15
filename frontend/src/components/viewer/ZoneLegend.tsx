@@ -14,7 +14,6 @@ import openSpaceCatalog from '@/data/openSpaceArchetypes.json';
 import streetPathCatalog from '@/data/streetPathArchetypes.json';
 
 // Merge all archetype catalogs for label resolution
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const _allArchetypes: any[] = [
   ...((buildingCatalog as any)?.archetypes || []),
   ...((openSpaceCatalog as any)?.archetypes || []),

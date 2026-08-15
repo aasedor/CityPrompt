@@ -135,6 +135,24 @@ export function useViewpointPicker(map: MapboxMap | null): UseViewpointPickerRet
   // Rotation drag state
   const dragRef      = useRef<{ active: boolean; startX: number; startBearing: number; vpId: string } | null>(null);
 
+  const attachMarkerDrag = useCallback((el: HTMLElement, vpId: string) => {
+    const arrow = el.querySelector('div') as HTMLElement;
+    if (!arrow) return;
+
+    arrow.style.cursor = 'grab';
+    arrow.addEventListener('mousedown', (event) => {
+      event.stopPropagation();
+      const viewpoint = viewpoints.find((candidate) => candidate.id === vpId);
+      if (!viewpoint) return;
+      dragRef.current = {
+        active: true,
+        startX: event.clientX,
+        startBearing: viewpoint.bearing,
+        vpId,
+      };
+    });
+  }, [viewpoints]);
+
   // ── Sync markers to viewpoints state ──────────────────────────────────────
   useEffect(() => {
     if (!map) return;
@@ -176,23 +194,9 @@ export function useViewpointPicker(map: MapboxMap | null): UseViewpointPickerRet
         markersRef.current.set(vp.id, marker);
       }
     });
-  }, [viewpoints, activeViewpoint, map]);
+  }, [activeViewpoint, attachMarkerDrag, map, viewpoints]);
 
   // ── Arrow rotation drag ───────────────────────────────────────────────────
-  function attachMarkerDrag(el: HTMLElement, vpId: string) {
-    const arrow = el.querySelector('div') as HTMLElement;
-    if (!arrow) return;
-
-    arrow.style.cursor = 'grab';
-
-    arrow.addEventListener('mousedown', (e) => {
-      e.stopPropagation();
-      const vp = viewpoints.find(v => v.id === vpId);
-      if (!vp) return;
-      dragRef.current = { active: true, startX: e.clientX, startBearing: vp.bearing, vpId };
-    });
-  }
-
   useEffect(() => {
     function onMouseMove(e: MouseEvent) {
       if (!dragRef.current?.active) return;

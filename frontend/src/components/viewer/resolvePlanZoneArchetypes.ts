@@ -29,11 +29,8 @@ interface CatalogEntry {
   variants?: Array<{ id: string; thumbnailUrl?: string }>;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const BUILDINGS = ((buildingCatalog as any).archetypes ?? buildingCatalog) as CatalogEntry[];
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const OPEN_SPACES = ((openSpaceCatalog as any).archetypes ?? openSpaceCatalog) as CatalogEntry[];
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const STREETS = ((streetPathCatalog as any).archetypes ?? streetPathCatalog) as CatalogEntry[];
 
 const ARCHETYPE_ID_KEYS = [
