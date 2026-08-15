@@ -22,6 +22,7 @@ from shapely.ops import nearest_points, unary_union
 from shapely.validation import make_valid
 
 from app.services.plan_geometry.archetypes import (
+    TargetFootprint,
     resolve_building_archetype,
 )
 from app.services.plan_geometry.community_rules import (
@@ -161,6 +162,67 @@ def _exact_building_cells(
         keep = sorted(range(len(selected)), key=lambda value: (-selected[value].area, value))[:target_count]
         selected = [selected[index] for index in sorted(keep)]
     return selected
+
+
+def _pack_exact_target_cells(
+    block: BaseGeometry,
+    target_count: int,
+    target: TargetFootprint,
+    *,
+    setback_m: float,
+    clearance_m: float = 4.0,
+) -> list[Polygon] | None:
+    """Pack native-footprint LEGO cells on a compact developable block.
+
+    A count contract must not be satisfied by shrinking a reviewed 20 x 15 m
+    module into four incompatible slivers. The primary family owns frontage
+    and depth; this bounded grid keeps both unchanged and returns ``None``
+    when the site genuinely cannot fit them.
+    """
+
+    target_count = max(1, min(20, int(target_count)))
+    rectangle = block.minimum_rotated_rectangle
+    coordinates = list(rectangle.exterior.coords)
+    if len(coordinates) < 4:
+        return None
+    edges = [
+        (
+            math.hypot(
+                coordinates[index + 1][0] - coordinates[index][0],
+                coordinates[index + 1][1] - coordinates[index][1],
+            ),
+            math.degrees(
+                math.atan2(
+                    coordinates[index + 1][1] - coordinates[index][1],
+                    coordinates[index + 1][0] - coordinates[index][0],
+                )
+            ),
+        )
+        for index in range(2)
+    ]
+    _longest, angle = max(edges, key=lambda item: item[0])
+    origin = block.centroid
+    safe = make_valid(block.buffer(-max(0.0, setback_m)))
+    if safe.is_empty:
+        return None
+    work = make_valid(affinity.rotate(safe, -angle, origin=origin))
+    columns = max(1, math.ceil(math.sqrt(target_count)))
+    rows = math.ceil(target_count / columns)
+    total_width = columns * target.width_m + (columns - 1) * clearance_m
+    total_depth = rows * target.depth_m + (rows - 1) * clearance_m
+    center_x, center_y = work.centroid.x, work.centroid.y
+    start_x = center_x - total_width / 2.0
+    start_y = center_y - total_depth / 2.0
+    cells: list[Polygon] = []
+    for index in range(target_count):
+        row, column = divmod(index, columns)
+        x0 = start_x + column * (target.width_m + clearance_m)
+        y0 = start_y + row * (target.depth_m + clearance_m)
+        cell = box(x0, y0, x0 + target.width_m, y0 + target.depth_m)
+        if not work.buffer(0.05).covers(cell):
+            return None
+        cells.append(affinity.rotate(cell, angle, origin=origin))
+    return cells
 
 
 def _runtime_lego_identities_for_cell(
@@ -1395,7 +1457,17 @@ def generate_plan_geometry(
 
         mass_polys = list(iter_polygons(mass))
         if building_count_target is not None and len(loop_blocks) == 1:
-            mass_polys = _exact_building_cells(mass_polys, building_count_target)
+            native_cells = (
+                _pack_exact_target_cells(
+                    mass_block,
+                    building_count_target,
+                    target,
+                    setback_m=rules.front_setback_m,
+                )
+                if target is not None
+                else None
+            )
+            mass_polys = native_cells or _exact_building_cells(mass_polys, building_count_target)
         bar_index = 0
         for poly in mass_polys:
             masses.append(poly)

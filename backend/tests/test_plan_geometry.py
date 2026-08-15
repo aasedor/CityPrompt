@@ -10,6 +10,7 @@ from shapely.ops import unary_union
 
 from app.services.plan_geometry.community_rules import MIN_ROW_M, resolve_rules
 from app.services.plan_geometry.generator import (
+    _pack_exact_target_cells,
     _is_drivable_context_feature,
     _normalize_site_polygon,
     _park_access_points_m,
@@ -26,6 +27,7 @@ from app.services.plan_geometry.street_graph import (
     entry_points_from_roads,
     generate_street_network,
 )
+from app.services.plan_geometry.archetypes import TargetFootprint
 
 # ~500 x 340 m site in the Beltline (WGS84)
 LAT, LON = 51.0405, -114.0850
@@ -614,6 +616,27 @@ def test_single_block_exact_count_contract_emits_four_buildings_and_two_parks_wi
     assert "EXACT_BUILDING_COUNT_UNMET" not in codes
     assert "EXACT_PARK_COUNT_UNMET" not in codes
     assert "MASS_OPEN_SPACE_COLLISION" not in codes
+
+
+def test_exact_count_native_module_packer_preserves_dimensions_and_clearance():
+    cells = _pack_exact_target_cells(
+        Polygon([(0, 0), (95, 0), (95, 58), (0, 58)]),
+        4,
+        TargetFootprint(width_m=20.0, depth_m=15.0, aspect=4 / 3, source="catalog"),
+        setback_m=3.0,
+    )
+
+    assert cells is not None and len(cells) == 4
+    for cell in cells:
+        edges = sorted(
+            math.dist(a, b)
+            for a, b in zip(
+                list(cell.minimum_rotated_rectangle.exterior.coords)[:-1],
+                list(cell.minimum_rotated_rectangle.exterior.coords)[1:],
+            )
+        )
+        assert edges == pytest.approx([15.0, 15.0, 20.0, 20.0])
+    assert min(a.distance(b) for index, a in enumerate(cells) for b in cells[index + 1 :]) >= 4.0 - 1e-6
 
 
 def test_tiny_site_degrades_to_single_block_plan():

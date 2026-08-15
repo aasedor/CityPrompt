@@ -901,6 +901,14 @@ def _validate_spec_with_lego(
             (candidate for candidate in lego_catalog.capabilities if candidate.parent_id == requested_parent),
             None,
         )
+        requested_floor = max(1, int(round(float(requested.floors))))
+        has_exact_runtime_floor = bool(
+            capability is not None
+            and any(
+                requested_floor in capability.supported_floors_by_selectable_id.get(selectable_id, ())
+                for selectable_id in capability.selectable_ids
+            )
+        )
         is_known_family_pending = bool(
             requested_entry is not None
             and requested_entry.get("usable")
@@ -908,8 +916,18 @@ def _validate_spec_with_lego(
             and requested_selectable
             and (
                 capability is None
-                or requested_selectable not in capability.selectable_ids
-                or lego_catalog.parent_by_selectable_id.get(requested_selectable) != requested_parent
+                or (
+                    requested_variant is not None
+                    and (
+                        requested_selectable not in capability.selectable_ids
+                        or lego_catalog.parent_by_selectable_id.get(requested_selectable) != requested_parent
+                    )
+                )
+                or (
+                    requested_variant is None
+                    and requested_parent not in capability.selectable_ids
+                    and not has_exact_runtime_floor
+                )
             )
         )
         if is_known_family_pending:

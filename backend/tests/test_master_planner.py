@@ -612,6 +612,27 @@ def test_lego_validation_fills_missing_bands_but_preserves_explicit_pending_pare
     assert any(note["code"] == "MASTER_PLAN_LEGO_FAMILY_PENDING" for note in notes)
 
 
+def test_assembled_only_parent_uses_installed_child_at_an_exact_runtime_floor():
+    raw = MasterPlanSpec(
+        bands={
+            key: BandPlan(
+                development_type="mixed_use",
+                aesthetic="industrial_brick",
+                floors=4,
+                typology="row_bars",
+                archetype_id="industrial_brick_mixed_use",
+            )
+            for key in ("core", "frontage", "mid", "edge", "anchor")
+        },
+    )
+
+    validated, notes = validate_spec(raw, "city_policy", lego_catalog=_lego_catalog())
+
+    assert all(band.variant_id == "industrial_brick_original_mill" for band in validated.bands.values())
+    assert all(band.floors == 4 for band in validated.bands.values())
+    assert not [note for note in notes if note["code"] == "MASTER_PLAN_LEGO_FAMILY_PENDING"]
+
+
 def test_neighborhood_diversity_contract_fills_missing_lego_alternates():
     base_catalog = _lego_catalog()
     industrial = replace(
@@ -663,7 +684,7 @@ def test_neighborhood_diversity_contract_fills_missing_lego_alternates():
     assert any(note["code"] == "MASTER_PLAN_DIVERSITY_FILLED" for note in notes)
 
 
-def test_lego_palette_carries_pending_parent_and_runtime_limits_without_substitution():
+def test_lego_palette_resolves_parent_to_exact_floor_runtime_child():
     catalog = _lego_catalog()
     raw = MasterPlanSpec(
         bands={
@@ -687,9 +708,11 @@ def test_lego_palette_carries_pending_parent_and_runtime_limits_without_substitu
 
     palette = palette_from_spec(raw, "city_policy", lego_catalog=catalog)
 
-    assert palette.bands["mid"].variant_id is None
-    assert "industrial_brick_mixed_use" in palette.family_pending_archetype_ids
-    assert "mid" not in palette.alternates
+    assert palette.bands["mid"].variant_id == "industrial_brick_original_mill"
+    assert "industrial_brick_mixed_use" not in palette.family_pending_archetype_ids
+    assert palette.alternates["mid"] == (
+        ("mixed_use", "parisian", "parisian_boulevard_corner", None),
+    )
     assert palette.allowed_archetype_ids == frozenset(catalog.parent_ids)
     assert palette.allowed_variant_ids_by_archetype == catalog.variants_by_parent
     assert palette.supported_floors_by_selectable_id == {
