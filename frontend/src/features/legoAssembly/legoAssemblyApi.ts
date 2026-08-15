@@ -42,6 +42,8 @@ export interface LegoAssemblyInstance {
 export interface LegoAssemblyPlan {
   version: number;
   family: string;
+  /** Current executable inventory revision returned by project-scoped plans. */
+  catalog_fingerprint?: string | null;
   archetype_id?: string | null;
   reuse_keys: string[];
   target: {
@@ -86,6 +88,10 @@ export interface LegoPlanRequest {
   preferred_family?: string;
   /** Allow the planner to use setback modules (default true on the backend). */
   allow_setback?: boolean;
+  /** Disable the legacy generic-family forced-fit escape hatch. Community 3D
+   * and AI plans set this false so an out-of-contract family becomes honest
+   * exact massing instead of distorted detail. */
+  allow_forced_fit?: boolean;
   footprint_profile?: LegoFootprintProfile;
   wing_depth_m?: number;
   project_id?: string;
@@ -241,8 +247,8 @@ export function legoArchetypeContextFromZone(
   // reference (for example `*_variant_0`), which must not replace a user's
   // explicit Contemporary Addition / Gothic / corner choice.
   const archetypeId = (properties.development_selected_variant_id as string | undefined)
-    || generationInput?.archetypeId
     || (properties.development_archetype_id as string | undefined)
+    || generationInput?.archetypeId
     || (properties.development_subcategory as string | undefined);
 
   const reuseKeys = generationInput?.downstreamHints?.reuseKeys;
@@ -297,7 +303,11 @@ export const legoAssemblyApi = {
    */
   async place(
     zoneId: string,
-    recipe: LegoAssemblyRecipe & { building_name?: string | null },
+    recipe: LegoAssemblyRecipe & {
+      building_name?: string | null;
+      /** Optimistic-concurrency snapshot used to plan this placement. */
+      source_updated_at?: string;
+    },
   ): Promise<{ building_id: string; building_created: boolean }> {
     const response = await api.post<{
       status: string;

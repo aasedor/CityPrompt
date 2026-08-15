@@ -254,6 +254,10 @@ class Palette:
     allowed_variant_ids_by_archetype: dict[str, tuple[str, ...]] = field(default_factory=dict)
     supported_floors_by_selectable_id: dict[str, tuple[int, ...]] = field(default_factory=dict)
     target_dimensions_by_selectable_id: dict[str, tuple[float, float]] = field(default_factory=dict)
+    # Trusted catalogue identities whose exact Sticker/LEGO family is not in
+    # the current runtime inventory. They remain pinned to authored geometry
+    # and floors, then the binder certifies them as planned massing.
+    family_pending_archetype_ids: frozenset[str] = frozenset()
 
 
 def selected_target_footprint(
@@ -755,27 +759,30 @@ def plan_blocks(
         entry = _resolve_entry(development_type, aesthetic, arch_hint)
         selected_variant_id: str | None = None
         if entry is not None and palette.allowed_archetype_ids is not None:
-            selection_ids = (
-                entry["id"],
-                *palette.allowed_variant_ids_by_archetype.get(entry["id"], ()),
-            )
-            preferred = variant_hint or entry["id"]
-            candidates = [
-                (
-                    abs(supported_floor - floors_int),
-                    0 if selectable_id == preferred else 1,
-                    selectable_id,
-                    supported_floor,
-                )
-                for selectable_id in selection_ids
-                for supported_floor in palette.supported_floors_by_selectable_id.get(selectable_id, ())
-            ]
-            if not candidates:
-                entry = None
+            if entry["id"] in palette.family_pending_archetype_ids:
+                selected_variant_id = variant_hint
             else:
-                _, _, selectable_id, floors_int = min(candidates)
-                floors = float(floors_int)
-                selected_variant_id = selectable_id if selectable_id != entry["id"] else None
+                selection_ids = (
+                    entry["id"],
+                    *palette.allowed_variant_ids_by_archetype.get(entry["id"], ()),
+                )
+                preferred = variant_hint or entry["id"]
+                candidates = [
+                    (
+                        abs(supported_floor - floors_int),
+                        0 if selectable_id == preferred else 1,
+                        selectable_id,
+                        supported_floor,
+                    )
+                    for selectable_id in selection_ids
+                    for supported_floor in palette.supported_floors_by_selectable_id.get(selectable_id, ())
+                ]
+                if not candidates:
+                    entry = None
+                else:
+                    _, _, selectable_id, floors_int = min(candidates)
+                    floors = float(floors_int)
+                    selected_variant_id = selectable_id if selectable_id != entry["id"] else None
         target = selected_target_footprint(
             entry,
             floors_int,
@@ -792,7 +799,9 @@ def plan_blocks(
         if entry is not None:
             primary_variant = selected_variant_id or (measured_entry.variant_id if measured_entry else None)
             available_variants = (
-                palette.allowed_variant_ids_by_archetype.get(entry["id"], ())
+                variants_of(entry["id"])
+                if entry["id"] in palette.family_pending_archetype_ids
+                else palette.allowed_variant_ids_by_archetype.get(entry["id"], ())
                 if palette.allowed_archetype_ids is not None
                 else variants_of(entry["id"])
             )
@@ -801,10 +810,14 @@ def plan_blocks(
                     continue
                 if (
                     palette.allowed_archetype_ids is not None
+                    and entry["id"] not in palette.family_pending_archetype_ids
                     and floors_int not in palette.supported_floors_by_selectable_id.get(vid, ())
                 ):
                     continue
-                if palette.allowed_archetype_ids is not None:
+                if (
+                    palette.allowed_archetype_ids is not None
+                    and entry["id"] not in palette.family_pending_archetype_ids
+                ):
                     variant_dimensions = palette.target_dimensions_by_selectable_id.get(vid)
                     if (
                         target is None

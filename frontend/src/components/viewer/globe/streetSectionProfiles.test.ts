@@ -370,6 +370,28 @@ describe('street section pilot profiles', () => {
     expect(profile?.metricWidthLocked).toBeUndefined();
   });
 
+  it('keeps an explicit family-pending fallback on procedural street geometry', () => {
+    const profile = resolvePilotStreetSectionProfile({
+      properties: {
+        road_archetype_id: 'calgary_local',
+        road_selected_variant_id: 'calgary_local_v0',
+        public_realm_fallback: {
+          schema_version: 1,
+          state: 'family_pending',
+          kind: 'street',
+          generator: 'street_section',
+          archetype_id: 'calgary_local',
+          variant_id: 'calgary_local_v0',
+          target_source: 'zone_geometry',
+        },
+      },
+    } as Pick<SiteZone, 'properties'>);
+
+    expect(profile?.archetypeId).toBe('calgary_local');
+    expect(profile?.familyId).toBeUndefined();
+    expect(profile?.metricWidthLocked).toBeUndefined();
+  });
+
   it('compiles every street/path catalog entry to a measured non-empty section', () => {
     expect(streetPathCatalog.archetypes).toHaveLength(115);
     expect(CATALOG_STREET_ARCHETYPE_IDS).toHaveLength(115);

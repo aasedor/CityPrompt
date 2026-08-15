@@ -18,6 +18,8 @@ import { formatArea, polygonDimensionsMeters } from './mapEngine/geoUtils';
 import { compileBoundaryCommunity3D } from '@/features/legoAssembly/communityCompiler';
 import { legoAssemblyApi } from '@/features/legoAssembly/legoAssemblyApi';
 import stickerMethodPilots from '@/data/stickerMethodPilots.json';
+import neighborhoodParkV0StickerKit from '@/data/neighborhoodParkV0StickerKit.json';
+import { ARCHETYPE_OWNED_PARK_KITS } from './globe/parkArchetypeOwnedKits';
 import {
   BUILDING_AESTHETIC_CATEGORIES_V2,
   BUILDING_AESTHETIC_OPTIONS_V2,
@@ -155,6 +157,10 @@ const STICKER_METHOD_PARK_VARIANT_BY_ARCHETYPE = new Map(
   stickerMethodPilots.parks.map((entry) => [entry.archetypeId, entry.variantId]),
 );
 const STICKER_METHOD_PARK_IDS = new Set(STICKER_METHOD_PARK_VARIANT_BY_ARCHETYPE.keys());
+const PARK_LEGO_READY_VARIANT_IDS = new Set([
+  ...Object.values(ARCHETYPE_OWNED_PARK_KITS).map((kit) => kit.variantId),
+  neighborhoodParkV0StickerKit.variantId,
+]);
 
 const ROADWAY_AESTHETIC_PRESETS: Record<string, Partial<SiteZoneProperties>> = ROADWAY_AESTHETIC_PRESETS_V2;
 const GREEN_SPACE_AESTHETIC_PRESETS: Record<string, Partial<SiteZoneProperties>> = GREEN_SPACE_AESTHETIC_PRESETS_V2;
@@ -3499,6 +3505,13 @@ function OpenSpaceAestheticPicker({
       )}
 
       {rankedOptions.length > 0 && (
+        <div className="flex items-center gap-1.5 rounded border border-emerald-500/25 bg-emerald-500/[0.06] px-2 py-1.5 text-[10px] font-semibold text-emerald-900">
+          <span className="h-3 w-4 shrink-0 rounded border-2 border-emerald-500" aria-hidden="true" />
+          Green frame = this exact park variant has a reviewed 3D kit
+        </div>
+      )}
+
+      {rankedOptions.length > 0 && (
         <div className="grid grid-cols-2 gap-2">
           {rankedOptions.map((option) => (
             <AestheticOptionCard
@@ -3508,6 +3521,7 @@ function OpenSpaceAestheticPicker({
               selectedReferenceId={selectedReferenceId}
               selectedVariantId={selectedVariantId}
               onSelect={(id, archetypeImageId, variantId) => onChange(id, archetypeImageId, variantId)}
+              legoReadyArchetypeIds={PARK_LEGO_READY_VARIANT_IDS}
               areaSqm={areaSqm}
               stickerMethodVariantId={STICKER_METHOD_PARK_VARIANT_BY_ARCHETYPE.get(option.id)}
             />

@@ -5,7 +5,11 @@ import {
   COMMUNITY_3D_PRESENTATION_READY_EVENT,
   type Community3DPresentationReadyDetail,
 } from '@/features/community3d/community3dPresentation';
-import { legoAssemblyApi, type LegoAssemblyPlan } from './legoAssemblyApi';
+import {
+  legoAssemblyApi,
+  type Community3DCompileResponse,
+  type LegoAssemblyPlan,
+} from './legoAssemblyApi';
 import { analyzeLegoFootprint } from './footprintProfiles';
 import {
   communityCompileOptionsForZones,
@@ -63,6 +67,60 @@ const detailedPlan: LegoAssemblyPlan = {
   fit: { scale_x: 1, scale_y: 1, score: 1 },
 };
 
+const malformedGroundResponses: Array<{
+  label: string;
+  response: Community3DCompileResponse;
+}> = [
+  {
+    label: 'wrong generator',
+    response: {
+      status: 'compiled',
+      compiled_at: '2026-07-21T00:00:00Z',
+      counts: { building: 0, park: 1, street: 0 },
+      items: [{
+        zone_id: 'park',
+        kind: 'park',
+        building_id: null,
+        building_created: false,
+        generator: 'street_section',
+      }],
+    },
+  },
+  {
+    label: 'missing item',
+    response: {
+      status: 'compiled',
+      compiled_at: '2026-07-21T00:00:00Z',
+      counts: { building: 0, park: 1, street: 0 },
+      items: [],
+    },
+  },
+  {
+    label: 'extra item and count',
+    response: {
+      status: 'compiled',
+      compiled_at: '2026-07-21T00:00:00Z',
+      counts: { building: 0, park: 2, street: 0 },
+      items: [
+        {
+          zone_id: 'park',
+          kind: 'park',
+          building_id: null,
+          building_created: false,
+          generator: 'park_kit',
+        },
+        {
+          zone_id: 'extra-park',
+          kind: 'park',
+          building_id: null,
+          building_created: false,
+          generator: 'park_kit',
+        },
+      ],
+    },
+  },
+];
+
 afterEach(() => {
   resetProjectCommunityCompileCoordinatorForTests();
   vi.restoreAllMocks();
@@ -71,6 +129,7 @@ afterEach(() => {
 describe('mixed community compiler', () => {
   it('carries the AI catalogue revision into the persisted LEGO recipe only when stamped', () => {
     const fingerprint = 'a'.repeat(64);
+    const currentFingerprint = 'b'.repeat(64);
     const aiBuilding = zone('ai-building', 'building', {
       _plan_role: 'building',
       _plan_scenario: 'community_wellbeing',
@@ -81,17 +140,22 @@ describe('mixed community compiler', () => {
       development_archetype_id: 'supported_building',
     });
 
-    const aiRecipe = recipeFromPlan({ ...deriveItems([aiBuilding])[0], plan: detailedPlan });
+    const aiRecipe = recipeFromPlan({
+      ...deriveItems([aiBuilding])[0],
+      plan: { ...detailedPlan, catalog_fingerprint: currentFingerprint },
+    });
     const manualRecipe = recipeFromPlan({
       ...deriveItems([manualBuilding])[0],
       plan: detailedPlan,
     });
 
-    expect(aiRecipe.catalog_fingerprint).toBe(fingerprint);
+    expect(aiRecipe.catalog_fingerprint).toBe(currentFingerprint);
+    expect(aiRecipe.source_updated_at).toBe(aiBuilding.updated_at);
     expect(manualRecipe).not.toHaveProperty('catalog_fingerprint');
+    expect(manualRecipe.source_updated_at).toBe(manualBuilding.updated_at);
   });
 
-  it('requires detailed LEGO buildings for AI Master Plan scopes only', () => {
+  it('uses the same upgrade-ready massing policy for manual and AI plan scopes', () => {
     const aiBuilding = zone('ai-building', 'building', {
       _plan_role: 'building',
       _plan_scenario: 'community_wellbeing',
@@ -101,15 +165,9 @@ describe('mixed community compiler', () => {
       development_archetype_id: 'supported_building',
     });
 
-    expect(communityCompileOptionsForZones([aiBuilding])).toEqual({
-      requireDetailedBuildings: true,
-    });
-    expect(communityCompileOptionsForZones([manualBuilding])).toEqual({
-      requireDetailedBuildings: false,
-    });
-    expect(communityCompileOptionsForZones([manualBuilding, aiBuilding])).toEqual({
-      requireDetailedBuildings: true,
-    });
+    expect(communityCompileOptionsForZones([aiBuilding])).toEqual({});
+    expect(communityCompileOptionsForZones([manualBuilding])).toEqual({});
+    expect(communityCompileOptionsForZones([manualBuilding, aiBuilding])).toEqual({});
   });
 
   it('uses the drawn parcel dimensions even when catalogue footprint guidance is absent', () => {
@@ -133,6 +191,35 @@ describe('mixed community compiler', () => {
     expect(item.targets.depth_m).toBeLessThan(38);
   });
 
+  it('uses only a positive persisted AI wing-depth proof for shaped footprints', () => {
+    const shapedCoordinates = [
+      [-114.0710, 51.0410],
+      [-114.0700, 51.0410],
+      [-114.0700, 51.0414],
+      [-114.0704, 51.0414],
+      [-114.0704, 51.0418],
+      [-114.0710, 51.0418],
+    ];
+    const bound = zone('bound-shaped', 'building', {
+      _plan_role: 'building',
+      development_archetype_id: 'supported_building',
+      _lego_actual_wing_depth_m: 7.25,
+    });
+    bound.coordinates = shapedCoordinates;
+    const unbound = zone('unbound-shaped', 'building', {
+      _plan_role: 'building',
+      development_archetype_id: 'supported_building',
+      _lego_actual_wing_depth_m: '7.25',
+    });
+    unbound.coordinates = shapedCoordinates;
+
+    expect(deriveItems([bound])[0].targets).toMatchObject({
+      footprint_profile: 'l_shape',
+      wing_depth_m: 7.25,
+    });
+    expect(deriveItems([unbound])[0].targets.wing_depth_m).toBeUndefined();
+  });
+
   it('treats a deleted model with a stale compile marker as ready to place again', () => {
     const parcel = zone('deleted-model', 'building', {
       _plan_role: 'building',
@@ -151,17 +238,25 @@ describe('mixed community compiler', () => {
     expect(deriveItems([parcel])[0].placeState).toBeUndefined();
   });
 
-  it('shares one zone derivation across detailed buildings, missing-family massing, parks, and streets', async () => {
+  it('compiles an AI plan with detailed, missing, incompatible, park, and street representations', async () => {
     const zones = [
       zone('supported', 'development_area', {
         _plan_role: 'building',
+        _plan_scenario: 'community_wellbeing',
         development_archetype_id: 'supported_building',
         floors: 5,
       }),
       zone('missing', 'development_area', {
         _plan_role: 'building',
+        _plan_scenario: 'community_wellbeing',
         development_archetype_id: 'missing_building',
         floors: 4,
+      }),
+      zone('incompatible', 'development_area', {
+        _plan_role: 'building',
+        _plan_scenario: 'community_wellbeing',
+        development_archetype_id: 'incompatible_building',
+        floors: 9,
       }),
       zone('park', 'green_space', {
         _plan_role: 'open_space',
@@ -172,7 +267,7 @@ describe('mixed community compiler', () => {
         road_archetype_id: 'complete_street',
       }),
     ];
-    expect(deriveItems(zones).map((item) => item.zone.id)).toEqual(['supported', 'missing']);
+    expect(deriveItems(zones).map((item) => item.zone.id)).toEqual(['supported', 'missing', 'incompatible']);
     expect(deriveGroundItems(zones).map((item) => item.zone.id)).toEqual(['park', 'street']);
 
     vi.spyOn(legoAssemblyApi, 'plan').mockImplementation(async (request) => {
@@ -184,15 +279,24 @@ describe('mixed community compiler', () => {
           },
         };
       }
+      if (request.archetype_id === 'incompatible_building') {
+        throw {
+          response: {
+            status: 422,
+            data: { detail: { code: 'family_incompatible', message: 'family fit unavailable' } },
+          },
+        };
+      }
       return detailedPlan;
     });
     const compile = vi.spyOn(legoAssemblyApi, 'compileCommunity').mockResolvedValue({
       status: 'compiled',
       compiled_at: '2026-07-18T00:00:00Z',
-      counts: { building: 2, park: 1, street: 1 },
+      counts: { building: 3, park: 1, street: 1 },
       items: [
         { zone_id: 'supported', kind: 'building', building_id: 'b-1', building_created: true, generator: 'lego_assembly' },
         { zone_id: 'missing', kind: 'building', building_id: 'b-2', building_created: true, generator: 'planned_massing' },
+        { zone_id: 'incompatible', kind: 'building', building_id: 'b-3', building_created: true, generator: 'planned_massing' },
         { zone_id: 'park', kind: 'park', building_id: null, building_created: false, generator: 'park_kit' },
         { zone_id: 'street', kind: 'street', building_id: null, building_created: false, generator: 'street_section' },
       ],
@@ -216,23 +320,28 @@ describe('mixed community compiler', () => {
         recipe: expect.objectContaining({ module_family: 'supported-family' }),
       }),
       { zone_id: 'missing', source_updated_at: '2026-01-01T00:00:00Z' },
+      { zone_id: 'incompatible', source_updated_at: '2026-01-01T00:00:00Z' },
       { zone_id: 'park', source_updated_at: '2026-01-01T00:00:00Z' },
       { zone_id: 'street', source_updated_at: '2026-01-01T00:00:00Z' },
     ]);
     expect(compile.mock.calls[0][1]).toEqual([
       'supported',
       'missing',
+      'incompatible',
       'park',
       'street',
     ]);
     expect(result).toMatchObject({
       detailedBuildings: 1,
-      plannedMasses: 1,
+      plannedMasses: 2,
       parks: 1,
       streets: 1,
     });
-    expect(progress[0]).toBe('0/2');
-    expect(progress[progress.length - 1]).toBe('2/2');
+    expect(progress[0]).toBe('0/3');
+    expect(progress[progress.length - 1]).toBe('3/3');
+    expect(vi.mocked(legoAssemblyApi.plan).mock.calls.every(
+      ([request]) => request.allow_forced_fit === false,
+    )).toBe(true);
     expect(presentationReady).toHaveBeenCalledTimes(1);
     expect(
       (presentationReady.mock.calls[0][0] as CustomEvent<Community3DPresentationReadyDetail>)
@@ -240,6 +349,7 @@ describe('mixed community compiler', () => {
     ).toEqual([
       'supported',
       'missing',
+      'incompatible',
       'park',
       'street',
     ]);
@@ -247,6 +357,71 @@ describe('mixed community compiler', () => {
       COMMUNITY_3D_PRESENTATION_READY_EVENT,
       presentationReady,
     );
+  });
+
+  it('probes exact selected sibling variants independently', async () => {
+    const missingSibling = zone('missing-sibling', 'building', {
+      _plan_role: 'building',
+      _plan_scenario: 'community_wellbeing',
+      development_archetype_id: 'courtyard_housing',
+      development_selected_variant_id: 'courtyard_housing_variant_0',
+    });
+    const installedSibling = zone('installed-sibling', 'building', {
+      _plan_role: 'building',
+      _plan_scenario: 'community_wellbeing',
+      development_archetype_id: 'courtyard_housing',
+      development_selected_variant_id: 'courtyard_housing_variant_1',
+    });
+    const plan = vi.spyOn(legoAssemblyApi, 'plan').mockImplementation(async (request) => {
+      if (request.archetype_id === 'courtyard_housing_variant_0') {
+        throw {
+          response: {
+            status: 422,
+            data: { detail: { code: 'family_not_found', message: 'exact sibling family unavailable' } },
+          },
+        };
+      }
+      return { ...detailedPlan, archetype_id: request.archetype_id };
+    });
+    const compile = vi.spyOn(legoAssemblyApi, 'compileCommunity').mockResolvedValue({
+      status: 'compiled',
+      compiled_at: '2026-07-18T00:00:00Z',
+      counts: { building: 2, park: 0, street: 0 },
+      items: [
+        {
+          zone_id: missingSibling.id,
+          kind: 'building',
+          building_id: 'b-missing-sibling',
+          building_created: true,
+          generator: 'planned_massing',
+        },
+        {
+          zone_id: installedSibling.id,
+          kind: 'building',
+          building_id: 'b-installed-sibling',
+          building_created: true,
+          generator: 'lego_assembly',
+        },
+      ],
+    });
+
+    await compileMixedCommunity3D([missingSibling, installedSibling]);
+
+    expect(plan.mock.calls.map(([request]) => request.archetype_id)).toEqual([
+      'courtyard_housing_variant_0',
+      'courtyard_housing_variant_1',
+    ]);
+    expect(plan.mock.calls.every(([request]) => request.allow_forced_fit === false)).toBe(true);
+    expect(compile.mock.calls[0][0]).toEqual([
+      {
+        zone_id: missingSibling.id,
+        source_updated_at: missingSibling.updated_at,
+      },
+      expect.objectContaining({
+        zone_id: installedSibling.id,
+        recipe: expect.objectContaining({ archetype_id: 'courtyard_housing_variant_1' }),
+      }),
+    ]);
   });
 
   it('refetches, replans, and retries once when a source revision changes during preparation', async () => {
@@ -386,7 +561,7 @@ describe('mixed community compiler', () => {
     expect(compile).not.toHaveBeenCalled();
   });
 
-  it('classifies an existing Meshy representation as a detailed building', async () => {
+  it('rejects stale Meshy as the response to a recipe-less capability gap', async () => {
     const generated = zone('generated', 'building', {
       _plan_role: 'building',
       development_archetype_id: 'generated_family',
@@ -411,10 +586,9 @@ describe('mixed community compiler', () => {
       }],
     });
 
-    const result = await compileMixedCommunity3D([generated]);
-
-    expect(result.detailedBuildings).toBe(1);
-    expect(result.plannedMasses).toBe(0);
+    await expect(compileMixedCommunity3D([generated])).rejects.toThrow(
+      'invalid Community 3D representation result',
+    );
   });
 
   it('probes each explicitly missing family once instead of repeating hundreds of 422s', async () => {
@@ -719,10 +893,26 @@ describe('mixed community compiler', () => {
     expect(compile).not.toHaveBeenCalled();
   });
 
-  it('aborts a LEGO-only boundary compile before persistence instead of downgrading a missing family', async () => {
+  it('compiles a missing boundary family as exact massing instead of blocking the plan', async () => {
+    const boundaryId = 'eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee';
     const missing = zone('missing', 'building', {
       _plan_role: 'building',
       development_archetype_id: 'missing_building',
+    });
+    vi.spyOn(siteZonesApi, 'list').mockResolvedValue([missing]);
+    vi.spyOn(siteZonesApi, 'getBoundaryAnalysis').mockResolvedValue({
+      boundary_zone_id: boundaryId,
+      contained_zones: [{
+        id: missing.id,
+        name: missing.name,
+        zone_type: missing.zone_type,
+        color: missing.color,
+        properties: missing.properties ?? {},
+        area_m2: 1_000,
+      }],
+      zone_summary: { building: 1 },
+      total_contained: 1,
+      osm_context: {},
     });
     vi.spyOn(legoAssemblyApi, 'plan').mockRejectedValue({
       response: {
@@ -730,17 +920,28 @@ describe('mixed community compiler', () => {
         data: { detail: { code: 'family_not_found', message: 'family unavailable' } },
       },
     });
-    const compile = vi.spyOn(legoAssemblyApi, 'compileCommunity');
+    const compile = vi.spyOn(legoAssemblyApi, 'compileCommunity').mockResolvedValue({
+      status: 'compiled',
+      compiled_at: '2026-07-21T00:00:00Z',
+      counts: { building: 1, park: 0, street: 0 },
+      items: [{
+        zone_id: missing.id,
+        kind: 'building',
+        building_id: 'b-missing',
+        building_created: true,
+        generator: 'planned_massing',
+      }],
+    });
 
-    await expect(compileMixedCommunity3D(
-      [missing],
-      undefined,
-      { requireDetailedBuildings: true },
-    )).rejects.toThrow('installed archetyped LEGO families');
-    expect(compile).not.toHaveBeenCalled();
+    const result = await compileBoundaryCommunity3D('project-1', boundaryId);
+
+    expect(compile).toHaveBeenCalledWith([
+      { zone_id: missing.id, source_updated_at: missing.updated_at },
+    ], [missing.id], boundaryId);
+    expect(result).toMatchObject({ detailedBuildings: 0, plannedMasses: 1 });
   });
 
-  it('rejects a strict server response that downgrades or adds a non-LEGO building', async () => {
+  it('rejects a server response that downgrades a planned LEGO building or adds another building', async () => {
     const supported = zone('supported', 'building', {
       _plan_role: 'building',
       development_archetype_id: 'supported_building',
@@ -769,10 +970,21 @@ describe('mixed community compiler', () => {
       ],
     });
 
-    await expect(compileMixedCommunity3D(
-      [supported],
-      undefined,
-      { requireDetailedBuildings: true },
-    )).rejects.toThrow('invalid LEGO-only Community 3D result');
+    await expect(compileMixedCommunity3D([supported]))
+      .rejects.toThrow('invalid Community 3D representation result');
   });
+
+  it.each(malformedGroundResponses)(
+    'rejects a malformed ground representation response: $label',
+    async ({ response }) => {
+      const park = zone('park', 'green_space', {
+        _plan_role: 'open_space',
+        green_space_archetype_id: 'neighborhood_park',
+      });
+      vi.spyOn(legoAssemblyApi, 'compileCommunity').mockResolvedValue(response);
+
+      await expect(compileMixedCommunity3D([park]))
+        .rejects.toThrow('invalid Community 3D representation result');
+    },
+  );
 });

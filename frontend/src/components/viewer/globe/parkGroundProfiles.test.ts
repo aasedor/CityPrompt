@@ -196,6 +196,35 @@ describe('park ground pilot profiles', () => {
     expect(profile.guides).toHaveLength(6);
   });
 
+  it('keeps a family-pending park on generic procedural ground with no exact assembly', () => {
+    const candidate = zone('basketball_court');
+    candidate.properties = {
+      ...candidate.properties,
+      green_space_selected_variant_id: 'basketball_court_v0',
+      community_3d: {
+        schema_version: 1,
+        state: 'compiled',
+        kind: 'park',
+        generator: 'park_kit',
+        compiled_at: '2026-08-14T00:00:00Z',
+      },
+      public_realm_fallback: {
+        schema_version: 1,
+        state: 'family_pending',
+        kind: 'park',
+        generator: 'park_kit',
+        archetype_id: 'basketball_court',
+        variant_id: 'basketball_court_v0',
+        target_source: 'zone_geometry',
+      },
+    };
+
+    expect(resolveParkGroundProfile(candidate).legoFamilyId).toBeUndefined();
+    expect(resolveParkSpecialtyStructureKind(candidate)).toBeNull();
+    expect(shouldMountParkProgramFrame(candidate, 0)).toBe(false);
+    expect(resolveParkGroundSurfaceSource(candidate)).toBe('procedural');
+  });
+
   it.each([
     ['park_water_ecology', 'pond_lake', 'pond_lake_v0', 'pond_lake_v0_naturalistic_skin', 'pond_lake_v0', 'pond_dock_assembly'],
     ['park_water_ecology', 'wetland_rain_garden', 'wetland_rain_garden_v0', 'wetland_rain_garden_v0_native_restoration_skin', 'wetland_rain_garden_v0', 'wetland_boardwalk'],

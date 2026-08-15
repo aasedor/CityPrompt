@@ -30,6 +30,9 @@ from app.services.master_planner.lego_catalog import (
     select_lego_archetype,
 )
 from app.services.public_realm_lego import build_public_realm_capability_catalog
+from app.services.public_realm_catalog import (
+    resolve_public_realm_catalog_identity,
+)
 from app.services.plan_geometry.placement import BandSpec, Palette, palette_for
 
 BAND_KEYS = ("core", "frontage", "mid", "edge", "anchor")
@@ -104,19 +107,12 @@ CENTRAL_PARK_IDS = frozenset(
     }
 )
 
-# Public Realm LEGO V1 is deliberately smaller than the visual-card catalog.
-# AI plans may select only executable families; manual projects retain the
-# broader catalog through their existing compatibility path.
-LEGO_SPINE_STREET_IDS = frozenset({"main_street_complete"})
-LEGO_LOCAL_STREET_IDS = frozenset(
-    {
-        "narrow_residential_street",
-        "yield_street",
-        "woonerf_shared_street",
-        "calgary_local",
-    }
-)
-LEGO_CENTRAL_PARK_IDS = frozenset({"neighborhood_park", "community_park"})
+# LEGO-backed plans may express the whole trusted visual catalogue. The
+# compiler decides whether each selected identity has an exact kit or uses the
+# family-pending source-fitted fallback; validation must never re-home intent.
+LEGO_SPINE_STREET_IDS = SPINE_STREET_IDS
+LEGO_LOCAL_STREET_IDS = LOCAL_STREET_IDS
+LEGO_CENTRAL_PARK_IDS = CENTRAL_PARK_IDS
 LEGO_WATER_ARCHETYPE_IDS = frozenset({"stormwater_retention_pond"})
 
 # One authoritative server catalog supplies both validation and recipe
@@ -130,12 +126,12 @@ SPINE_PUBLIC_REALM_VARIANT_IDS = PUBLIC_REALM_VARIANTS_BY_ARCHETYPE["main_street
 LOCAL_PUBLIC_REALM_VARIANT_IDS = tuple(
     variant
     for archetype_id in sorted(LEGO_LOCAL_STREET_IDS)
-    for variant in PUBLIC_REALM_VARIANTS_BY_ARCHETYPE[archetype_id]
+    for variant in PUBLIC_REALM_VARIANTS_BY_ARCHETYPE.get(archetype_id, ())
 )
 CENTRAL_PARK_VARIANT_IDS = tuple(
     variant
     for archetype_id in sorted(LEGO_CENTRAL_PARK_IDS)
-    for variant in PUBLIC_REALM_VARIANTS_BY_ARCHETYPE[archetype_id]
+    for variant in PUBLIC_REALM_VARIANTS_BY_ARCHETYPE.get(archetype_id, ())
 )
 POCKET_PARK_VARIANT_IDS = PUBLIC_REALM_VARIANTS_BY_ARCHETYPE["urban_pocket_park"]
 GREENWAY_VARIANT_IDS = PUBLIC_REALM_VARIANTS_BY_ARCHETYPE["linear_park_greenway"]
@@ -287,20 +283,31 @@ def _public_realm_variant(
     value: str | None,
     *,
     archetype_id: str,
+    kind: Literal["park", "street"],
     field_name: str,
     notes: list[dict[str, Any]],
-) -> str:
-    allowed = PUBLIC_REALM_VARIANTS_BY_ARCHETYPE[archetype_id]
+) -> str | None:
+    allowed = PUBLIC_REALM_VARIANTS_BY_ARCHETYPE.get(archetype_id, ())
     if value in allowed:
         return value
+    if not allowed and value is None:
+        return None
+    if not allowed and value is not None and resolve_public_realm_catalog_identity(
+        kind,
+        archetype_id,
+        value,
+    ) is not None:
+        return value
     if value is not None:
+        resolution = f"{allowed[0]} used" if allowed else "variant selection removed"
         notes.append(
             _note(
                 "MASTER_PLAN_PUBLIC_REALM_VARIANT_REPAIRED",
-                f"public_realm.{field_name} '{value}' is not compatible with " f"'{archetype_id}' - {allowed[0]} used.",
+                f"public_realm.{field_name} '{value}' is not compatible with "
+                f"'{archetype_id}' - {resolution}.",
             )
         )
-    return allowed[0]
+    return allowed[0] if allowed else None
 
 
 def _validated_public_realm_plan(
@@ -311,51 +318,53 @@ def _validated_public_realm_plan(
     central_park_archetype_id: str | None,
     notes: list[dict[str, Any]],
 ) -> PublicRealmPlan:
-    spine_id = (
-        spine_archetype_id if spine_archetype_id in PUBLIC_REALM_VARIANTS_BY_ARCHETYPE else "main_street_complete"
-    )
-    local_id = (
-        local_archetype_id if local_archetype_id in PUBLIC_REALM_VARIANTS_BY_ARCHETYPE else "narrow_residential_street"
-    )
+    spine_id = spine_archetype_id if spine_archetype_id in SPINE_STREET_IDS else "main_street_complete"
+    local_id = local_archetype_id if local_archetype_id in LOCAL_STREET_IDS else "narrow_residential_street"
     central_id = (
         central_park_archetype_id
-        if central_park_archetype_id in PUBLIC_REALM_VARIANTS_BY_ARCHETYPE
+        if central_park_archetype_id in CENTRAL_PARK_IDS
         else "neighborhood_park"
     )
     return PublicRealmPlan(
         spine_street_variant_id=_public_realm_variant(
             requested.spine_street_variant_id,
             archetype_id=spine_id,
+            kind="street",
             field_name="spine_street_variant_id",
             notes=notes,
         ),
         local_street_variant_id=_public_realm_variant(
             requested.local_street_variant_id,
             archetype_id=local_id,
+            kind="street",
             field_name="local_street_variant_id",
             notes=notes,
         ),
         central_park_variant_id=_public_realm_variant(
             requested.central_park_variant_id,
             archetype_id=central_id,
+            kind="park",
             field_name="central_park_variant_id",
             notes=notes,
         ),
         pocket_park_variant_id=_public_realm_variant(
             requested.pocket_park_variant_id,
             archetype_id="urban_pocket_park",
+            kind="park",
             field_name="pocket_park_variant_id",
             notes=notes,
         ),
         courtyard_variant_id=_public_realm_variant(
             requested.courtyard_variant_id,
             archetype_id="urban_pocket_park",
+            kind="park",
             field_name="courtyard_variant_id",
             notes=notes,
         ),
         greenway_variant_id=_public_realm_variant(
             requested.greenway_variant_id,
             archetype_id="linear_park_greenway",
+            kind="park",
             field_name="greenway_variant_id",
             notes=notes,
         ),
@@ -840,57 +849,21 @@ def _validate_spec_with_lego(
         raise ValueError("No executable LEGO building families are available for Master Planner.")
 
     # Preserve the established validation contract for streets, landscape,
-    # open space, strategy and grain. Building bands are rebuilt below from
-    # the original request so a rejected full-catalog character can be repaired
-    # into an installed LEGO family instead of disappearing.
+    # open space, strategy and grain. Building bands are rebuilt below. Known
+    # public-realm identities are deliberately not constrained to the smaller
+    # executable-kit registry: unbuilt selections compile as family-pending
+    # source-fitted representations without losing the authored character.
     common, notes = validate_spec(spec, scenario_id, palette_hint)
     preset = palette_for(scenario_id, palette_hint)
-    spine_archetype_id = common.spine_archetype_id
-    if spine_archetype_id not in LEGO_SPINE_STREET_IDS:
-        if spine_archetype_id is not None:
-            notes.append(
-                _note(
-                    "MASTER_PLAN_PUBLIC_REALM_ARCHETYPE_REPAIRED",
-                    f"AI Public Realm LEGO cannot execute spine '{spine_archetype_id}' - " "main_street_complete used.",
-                )
-            )
-        spine_archetype_id = "main_street_complete"
-
-    local_archetype_id = common.local_archetype_id
-    if local_archetype_id not in LEGO_LOCAL_STREET_IDS:
-        if local_archetype_id is not None:
-            notes.append(
-                _note(
-                    "MASTER_PLAN_PUBLIC_REALM_ARCHETYPE_REPAIRED",
-                    f"AI Public Realm LEGO cannot execute local street '{local_archetype_id}' - "
-                    "narrow_residential_street used.",
-                )
-            )
-        local_archetype_id = (
-            preset.local_archetype_id
-            if preset.local_archetype_id in LEGO_LOCAL_STREET_IDS
-            else "narrow_residential_street"
-        )
+    spine_archetype_id = common.spine_archetype_id or "main_street_complete"
+    local_archetype_id = common.local_archetype_id or (
+        preset.local_archetype_id
+        if preset.local_archetype_id in LEGO_LOCAL_STREET_IDS
+        else "narrow_residential_street"
+    )
 
     open_space = common.open_space.model_copy(deep=True)
-    if open_space.water_archetype_id not in LEGO_WATER_ARCHETYPE_IDS:
-        notes.append(
-            _note(
-                "MASTER_PLAN_PUBLIC_REALM_ARCHETYPE_REPAIRED",
-                f"AI Public Realm LEGO cannot execute water feature "
-                f"'{open_space.water_archetype_id}' - stormwater_retention_pond used.",
-            )
-        )
-        open_space.water_archetype_id = "stormwater_retention_pond"
-    if open_space.central_park_archetype_id not in LEGO_CENTRAL_PARK_IDS:
-        if open_space.central_park_archetype_id is not None:
-            notes.append(
-                _note(
-                    "MASTER_PLAN_PUBLIC_REALM_ARCHETYPE_REPAIRED",
-                    f"AI Public Realm LEGO cannot execute central park "
-                    f"'{open_space.central_park_archetype_id}' - neighborhood_park used.",
-                )
-            )
+    if open_space.central_park_archetype_id is None:
         open_space.central_park_archetype_id = "neighborhood_park"
 
     public_realm = _validated_public_realm_plan(
@@ -913,6 +886,64 @@ def _validate_spec_with_lego(
                     f"Band '{key}' was missing — an imported LEGO family was selected deterministically.",
                 )
             )
+
+        requested_entry = dimensions.get(str(requested.archetype_id or ""))
+        requested_variant = requested.variant_id
+        if requested_entry is None and requested.archetype_id:
+            requested_entry = next(
+                (
+                    candidate
+                    for candidate in dimensions.values()
+                    if requested.archetype_id in (candidate.get("variant_ids") or ())
+                ),
+                None,
+            )
+            if requested_entry is not None:
+                requested_variant = requested.archetype_id
+        requested_parent = str(requested_entry.get("id")) if requested_entry is not None else None
+        requested_selectable = requested_variant or requested_parent
+        capability = next(
+            (
+                candidate
+                for candidate in lego_catalog.capabilities
+                if candidate.parent_id == requested_parent
+            ),
+            None,
+        )
+        is_known_family_pending = bool(
+            requested_entry is not None
+            and requested_entry.get("usable")
+            and requested_parent
+            and requested_selectable
+            and (
+                capability is None
+                or requested_selectable not in capability.selectable_ids
+                or lego_catalog.parent_by_selectable_id.get(requested_selectable) != requested_parent
+            )
+        )
+        if is_known_family_pending:
+            assert requested_entry is not None and requested_parent is not None
+            valid_variants = tuple(requested_entry.get("variant_ids") or ())
+            selected_pending_variant = requested_variant if requested_variant in valid_variants else None
+            typology = requested.typology if requested.typology in TYPOLOGIES else preset.bands[key].typology
+            repaired_bands[key] = BandPlan(
+                development_type=_norm(requested_entry["development_type"]),
+                aesthetic=_norm(requested_entry["aesthetic_category"]),
+                floors=min(MAX_FLOORS, max(1.0, float(requested.floors))),
+                typology=typology,
+                archetype_id=requested_parent,
+                variant_id=selected_pending_variant,
+                alternates=[],
+            )
+            notes.append(
+                _note(
+                    "MASTER_PLAN_LEGO_FAMILY_PENDING",
+                    f"Band '{key}' keeps catalogue archetype "
+                    f"'{selected_pending_variant or requested_parent}' as planned massing "
+                    "until its exact Sticker/LEGO family is imported.",
+                )
+            )
+            continue
 
         capability, selected_variant, selected_floor = _select_lego_character(
             development_type=requested.development_type,
@@ -1107,7 +1138,25 @@ def palette_from_spec(
         if characters:
             alternates[key] = characters
 
-    allowed_archetype_ids = frozenset(lego_catalog.parent_ids) if lego_catalog is not None else None
+    family_pending_archetype_ids = (
+        frozenset(
+            band.archetype_id
+            for band in spec.bands.values()
+            if band.archetype_id
+            and (
+                (band.variant_id or band.archetype_id) not in lego_catalog.parent_by_selectable_id
+                or lego_catalog.parent_by_selectable_id.get(band.variant_id or band.archetype_id)
+                != band.archetype_id
+            )
+        )
+        if lego_catalog is not None
+        else frozenset()
+    )
+    allowed_archetype_ids = (
+        frozenset((*lego_catalog.parent_ids, *family_pending_archetype_ids))
+        if lego_catalog is not None
+        else None
+    )
     allowed_variant_ids_by_archetype = dict(lego_catalog.variants_by_parent) if lego_catalog is not None else {}
     supported_floors_by_selectable_id = (
         dict(lego_catalog.supported_floors_by_selectable_id) if lego_catalog is not None else {}
@@ -1189,4 +1238,5 @@ def palette_from_spec(
         allowed_variant_ids_by_archetype=allowed_variant_ids_by_archetype,
         supported_floors_by_selectable_id=supported_floors_by_selectable_id,
         target_dimensions_by_selectable_id=target_dimensions_by_selectable_id,
+        family_pending_archetype_ids=family_pending_archetype_ids,
     )

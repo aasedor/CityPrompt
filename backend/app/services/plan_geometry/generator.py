@@ -419,41 +419,14 @@ def _lego_park_identity_for_metric_polygon(
     archetype_id: str | None,
     geometry_m: BaseGeometry,
 ) -> tuple[str, str] | None:
-    """Classify strict AI parks into the first family that truly fits."""
+    """Preserve the selected park identity regardless of kit availability.
 
-    if archetype_id and public_realm_park_archetype_supports_metric_geometry(
-        archetype_id,
-        geometry_m,
-    ):
-        return kind, archetype_id
+    Geometry compatibility decides exact-kit versus family-pending fallback
+    during Community 3D compilation. Re-homing here would silently replace
+    the AI/user's catalogue choice before that truthful decision can occur.
+    """
 
-    # Pond-edge ring lobes are garden rooms, not standalone 100 m corridors.
-    # Compact-site signature greens, by contrast, are often genuine 60-80 m
-    # linear routes even though the requested central identity was a broad
-    # neighbourhood park.
-    candidates: tuple[tuple[str, str], ...] = ()
-    if kind == "greenway":
-        candidates = (("pocket", "urban_pocket_park"),)
-    elif kind == "central":
-        candidates = (
-            ("greenway", "linear_park_greenway"),
-            ("pocket", "urban_pocket_park"),
-        )
-    elif kind == "plaza":
-        candidates = (("pocket", "urban_pocket_park"),)
-    elif kind == "pocket":
-        candidates = (("central", "neighborhood_park"),)
-
-    for candidate_kind, candidate_archetype in candidates:
-        if public_realm_park_archetype_supports_metric_geometry(
-            candidate_archetype,
-            geometry_m,
-        ):
-            return candidate_kind, candidate_archetype
-    # Keep the polygon un-authored so residual landscaping owns it.  Emitting
-    # an identity that no executable family accepts would poison the entire
-    # transactional community conversion.
-    return None
+    return (kind, archetype_id) if archetype_id else None
 
 
 def _normalize_site_polygon(
@@ -830,28 +803,40 @@ def generate_plan_geometry(
     public_realm_variants = getattr(palette, "public_realm_variants", None) or {}
     public_realm_occurrences: dict[str, int] = {}
     if public_realm_variants:
+        capability_catalog = build_public_realm_capability_catalog()
+        spine_archetype_id = getattr(palette, "spine_archetype_id", None)
+        local_archetype_id = getattr(palette, "local_archetype_id", None)
+        spine_variant_id = public_realm_variants.get("spine")
+        local_variant_id = public_realm_variants.get("local")
+        spine_exact = spine_variant_id in capability_catalog.variants_by_archetype.get(
+            spine_archetype_id or "",
+            (),
+        )
+        local_exact = local_variant_id in capability_catalog.variants_by_archetype.get(
+            local_archetype_id or "",
+            (),
+        )
         local_native_row_m = {
             "yield_street": 10.0,
             "narrow_residential_street": 14.0,
             "woonerf_shared_street": 10.0,
             "calgary_local": 16.0,
-        }.get(getattr(palette, "local_archetype_id", None), 14.0)
-        rules = dataclass_replace(
-            rules,
-            spine_row_width_m=18.0,
-            local_row_width_m=local_native_row_m,
-        )
-        result.notes.append(
-            {
-                "code": "PUBLIC_REALM_LEGO_NATIVE_STREET_WIDTHS",
-                "severity": "info",
-                "message": (
-                    "The executable street kit set the render-locked 18 m main street and "
-                    f"{local_native_row_m:g} m local section before graph generation."
-                ),
-                "source_phase": "street_graph",
-            }
-        )
+        }.get(local_archetype_id, 14.0)
+        native_updates: dict[str, float] = {}
+        if spine_exact:
+            native_updates["spine_row_width_m"] = 18.0
+        if local_exact:
+            native_updates["local_row_width_m"] = local_native_row_m
+        if native_updates:
+            rules = dataclass_replace(rules, **native_updates)
+            result.notes.append(
+                {
+                    "code": "PUBLIC_REALM_LEGO_NATIVE_STREET_WIDTHS",
+                    "severity": "info",
+                    "message": "Executable street roles set their reviewed native widths before graph generation.",
+                    "source_phase": "street_graph",
+                }
+            )
 
     result.rules = {
         "block_target_m": rules.block_target_m,
@@ -1028,7 +1013,11 @@ def generate_plan_geometry(
         result.green_m.append(spec.geom_m)
         for poly_m in iter_polygons(spec.geom_m):
             kind = spec.kind
-            archetype_id = spec.archetype_id or _PARK_ARCHETYPE_FALLBACK.get(kind)
+            archetype_id = (
+                getattr(palette, "central_archetype_id", None)
+                if kind == "central"
+                else spec.archetype_id
+            ) or spec.archetype_id or _PARK_ARCHETYPE_FALLBACK.get(kind)
             if public_realm_variants:
                 identity = _lego_park_identity_for_metric_polygon(
                     kind=kind,
@@ -1124,7 +1113,11 @@ def generate_plan_geometry(
         plan_development_type = plan.development_type
         plan_aesthetic = plan.aesthetic
         target = plan.target
-        if clamp and round(floors, 1) != plan.floors_target:
+        if (
+            clamp
+            and round(floors, 1) != plan.floors_target
+            and plan_archetype_id not in palette.family_pending_archetype_ids
+        ):
             ceiling_floors = max(1, int(float(floors)))
             supported_by_parent = None
             if palette.allowed_archetype_ids is not None:
@@ -1673,26 +1666,30 @@ def _emit_street_zones(
                                 )
                             )
                     if not compatible_identities:
-                        # This locked shape has no truthful executable section;
-                        # leave it un-authored rather than poisoning conversion.
-                        continue
+                        # Preserve the authored local character as a truthful
+                        # family-pending section when no exact kit fits.
+                        role = "local"
+                        archetype_id = getattr(palette, "local_archetype_id", None)
+                        variant_id = _public_realm_variant_for(palette, "local", locked_occurrence)
+                        emitted_width = rules.local_row_width_m
                     # Compatibility envelopes may overlap (the Calgary local
                     # section reaches the exact 18 m main-street width).  Pick
                     # the role whose native section best matches the measured
                     # polygon instead of allowing tuple order to reclassify it.
-                    (
-                        role,
-                        archetype_id,
-                        variant_id,
-                        emitted_width,
-                        _native_width_delta,
-                    ) = min(
-                        compatible_identities,
-                        key=lambda identity: (
-                            identity[4],
-                            0 if identity[0] == "spine" else 1,
-                        ),
-                    )
+                    else:
+                        (
+                            role,
+                            archetype_id,
+                            variant_id,
+                            emitted_width,
+                            _native_width_delta,
+                        ) = min(
+                            compatible_identities,
+                            key=lambda identity: (
+                                identity[4],
+                                0 if identity[0] == "spine" else 1,
+                            ),
+                        )
                 else:
                     role = "local"
                     archetype_id = None

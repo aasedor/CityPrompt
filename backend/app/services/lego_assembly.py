@@ -288,6 +288,38 @@ def _catalog_parent_archetype_id(archetype_id: str) -> str | None:
     return None
 
 
+def catalog_parent_archetype_id(archetype_id: str) -> str | None:
+    """Return the trusted catalogue parent for a parent or exact child ID."""
+
+    return _catalog_parent_archetype_id(archetype_id)
+
+
+def _is_generic_parent_fallback_family(
+    descriptors: Iterable[ModuleDescriptor],
+    family: str,
+    parent_archetype_id: str,
+) -> bool:
+    """Reject a sibling-specific family masquerading as a parent fallback.
+
+    Exact variant manifests commonly include their broad catalogue parent in
+    ``archetype_ids`` for discovery. That does not make a red-sandstone
+    brownstone a truthful fallback for an unbuilt limestone sibling. A parent
+    fallback is eligible only when its source/generation identity is absent or
+    explicitly the parent itself; independently authored children must wait
+    for their own family and use planned massing in the meantime.
+    """
+
+    parent = _semantic_id(parent_archetype_id)
+    explicit_identities = {
+        _semantic_id(identity)
+        for module in descriptors
+        if module.family == family
+        for identity in (module.source_variant_id, module.generation_archetype_id)
+        if identity
+    }
+    return not explicit_identities or explicit_identities == {parent}
+
+
 def _module_score(module: ModuleDescriptor, request: AssemblyRequest) -> float:
     return _dimension_score(module, request) * 2.0 + _semantic_score(module, request)
 
@@ -750,6 +782,11 @@ def plan_vertical_assembly(
                         _matches_requested_archetype(module, candidate_parent)
                         for module in descriptors
                         if module.family == family
+                    )
+                    and _is_generic_parent_fallback_family(
+                        descriptors,
+                        family,
+                        candidate_parent,
                     )
                 ]
                 if families:

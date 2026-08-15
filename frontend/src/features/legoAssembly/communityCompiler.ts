@@ -151,15 +151,17 @@ export interface ZoneBuildItem {
   plan?: LegoAssemblyPlan;
   error?: string;
   familyMissing?: boolean;
+  familyIncompatible?: boolean;
   placeState?: 'placing' | 'placed' | 'failed';
   massingState?: 'compiling' | 'compiled' | 'failed';
 }
 
 export function recipeFromPlan(
   item: ZoneBuildItem & { plan: LegoAssemblyPlan },
-): LegoAssemblyRecipe & { building_name: string } {
+): LegoAssemblyRecipe & { building_name: string; source_updated_at: string } {
   const context = legoArchetypeContextFromZone(item.zone.properties);
-  const catalogFingerprint = item.zone.properties?._lego_catalog_fingerprint;
+  const catalogFingerprint = item.plan.catalog_fingerprint
+    ?? item.zone.properties?._lego_catalog_fingerprint;
   return {
     schema_version: 1,
     module_family: item.plan.family,
@@ -174,6 +176,7 @@ export function recipeFromPlan(
     fit: item.plan.fit,
     assembled_preview_url: null,
     building_name: item.label,
+    source_updated_at: item.zone.updated_at,
   };
 }
 
@@ -212,6 +215,12 @@ export function deriveItems(zones: SiteZone[]): ZoneBuildItem[] {
       zone.coordinates,
       option?.footprintCompatibility,
     );
+    const persistedWingDepth = zone.properties?._lego_actual_wing_depth_m;
+    const authoritativeWingDepth = typeof persistedWingDepth === 'number'
+      && Number.isFinite(persistedWingDepth)
+      && persistedWingDepth > 0
+      ? persistedWingDepth
+      : undefined;
     const communityMeta = getCommunity3DMeta(zone);
     return {
       zone,
@@ -221,13 +230,19 @@ export function deriveItems(zones: SiteZone[]): ZoneBuildItem[] {
         || (typeof archetypeLabel === 'string' && archetypeLabel ? archetypeLabel : undefined)
         || normalizeArchetypeId(context.archetype_id)
         || zone.zone_type,
-      archetypeId: normalizeArchetypeId(context.archetype_id),
+      // Planning and family-probe batching must retain the exact selected
+      // variant. Normalization is display-only: siblings can have independent
+      // reviewed families and capability states.
+      archetypeId: context.archetype_id,
       targets: {
         ...defaults,
         width_m: footprint?.width_m ?? defaults.width_m,
         depth_m: footprint?.depth_m ?? defaults.depth_m,
         footprint_profile: footprint?.profile ?? 'rectangle',
-        wing_depth_m: footprint?.wing_depth_m,
+        // AI binding persists the exact shaped-family thickness returned by
+        // its strict plan. A catalogue compatibility midpoint is guidance,
+        // not executable proof, so omit it when no positive binding exists.
+        wing_depth_m: footprint?.profile === 'rectangle' ? undefined : authoritativeWingDepth,
         within_recommended_size: footprint?.within_recommended_size ?? true,
       },
       offset: centroid
@@ -258,13 +273,12 @@ export interface MixedCommunityCompileSummary {
   plannedMasses: number;
   parks: number;
   streets: number;
+  /** Authoritative replan classification for callers recovering a source
+   * revision conflict. Optional keeps older test/mocked summaries compatible. */
+  resolvedBuildings?: ZoneBuildItem[];
 }
 
 export interface MixedCommunityCompileOptions {
-  /** AI master-plan entry points must never silently downgrade an authored
-   * LEGO archetype to a generic exact-footprint mass. Manual/community tools
-   * retain their historical mixed-mode fallback unless they opt into this. */
-  requireDetailedBuildings?: boolean;
   /** Complete visible physical-zone scope used for residual landscaping.
    * Incremental `Complete` requests compile only unfinished items, but must
    * still reserve every already-compiled visible building/park/street. */
@@ -316,43 +330,66 @@ async function reloadCommunityCompilerZones(
     : refreshed;
 }
 
-/** Select the compiler safety policy from the authoritative source scope.
- *
- * The render panel is shared by hand-authored and AI-generated communities.
- * Preserve the historical planned-massing fallback for a wholly manual scope,
- * but make any AI Master Plan scope fail closed if one of its archetyped LEGO
- * buildings can no longer be assembled (for example after an inventory
- * change). */
+/** Keep every authoring entry point on the same resilient representation
+ * contract. A selected catalogue archetype is valid before its reviewed LEGO
+ * family exists: semantic planner 422s become exact-footprint massing, while
+ * unexpected planner, geometry, revision, and response-integrity failures
+ * still fail closed. */
 export function communityCompileOptionsForZones(
-  zones: SiteZone[],
+  _zones: SiteZone[],
 ): MixedCommunityCompileOptions {
-  const containsAIMasterPlanZone = zones.some((zone) => {
-    const scenario = zone.properties?._plan_scenario;
-    return typeof scenario === 'string' && scenario.trim().length > 0;
-  });
-  return { requireDetailedBuildings: containsAIMasterPlanZone };
+  return {};
 }
 
-function assertDetailedBuildingResponse(
-  buildingItems: ZoneBuildItem[],
+type CommunityCompileItem = Community3DCompileResponse['items'][number];
+export type CommunityCompileGenerator = CommunityCompileItem['generator'];
+
+export interface CommunityCompileExpectation {
+  zoneId: string;
+  label: string;
+  kind: CommunityCompileItem['kind'];
+  generators: ReadonlySet<CommunityCompileGenerator>;
+}
+
+/** Validate the atomic response before any caller marks rows complete. This is
+ * shared by the one-click Builder and the compiler entry points so malformed,
+ * missing, duplicate, or unlinked representations always fail closed. */
+export function assertCommunityCompileResponse(
+  expectedItems: CommunityCompileExpectation[],
   response: Community3DCompileResponse,
 ): void {
-  const requestedZoneIds = new Set(buildingItems.map((item) => item.zone.id));
-  const returnedBuildings = response.items.filter((item) => item.kind === 'building');
-  const invalidResults = buildingItems.flatMap((item) => {
-    const matches = returnedBuildings.filter((result) => result.zone_id === item.zone.id);
-    if (matches.length === 1 && matches[0].generator === 'lego_assembly') return [];
+  const expectedById = new Map(expectedItems.map((item) => [item.zoneId, item]));
+  const invalidResults = expectedItems.flatMap((item) => {
+    const matches = response.items.filter((result) => result.zone_id === item.zoneId);
+    const result = matches[0];
+    const hasExpectedLink = result?.kind === 'building'
+      ? typeof result.building_id === 'string' && result.building_id.trim().length > 0
+      : result?.building_id === null;
+    if (
+      matches.length === 1
+      && result.kind === item.kind
+      && item.generators.has(result.generator)
+      && hasExpectedLink
+    ) return [];
     const returned = matches.length === 0
       ? 'missing'
-      : matches.map((result) => result.generator).join(', ');
-    return [`${item.label} (${returned})`];
+      : matches.map((match) => (
+        `${match.kind}/${match.generator}/${match.building_id ?? 'no building'}`
+      )).join(', ');
+    return [`${item.label} (expected ${[...item.generators].join(' or ')}, received ${returned})`];
   });
-  const unexpectedResults = returnedBuildings.filter((item) => (
-    !requestedZoneIds.has(item.zone_id) || item.generator !== 'lego_assembly'
+  const unexpectedResults = response.items.filter((item) => (
+    expectedById.get(item.zone_id)?.kind !== item.kind
+    || !expectedById.get(item.zone_id)?.generators.has(item.generator)
   ));
+  const expectedBuildingCount = expectedItems.filter((item) => item.kind === 'building').length;
+  const expectedParkCount = expectedItems.filter((item) => item.kind === 'park').length;
+  const expectedStreetCount = expectedItems.filter((item) => item.kind === 'street').length;
   const countMismatch = (
-    response.counts.building !== buildingItems.length
-    || returnedBuildings.length !== buildingItems.length
+    response.counts.building !== expectedBuildingCount
+    || response.counts.park !== expectedParkCount
+    || response.counts.street !== expectedStreetCount
+    || response.items.length !== expectedItems.length
   );
 
   if (invalidResults.length > 0 || unexpectedResults.length > 0 || countMismatch) {
@@ -361,9 +398,9 @@ function assertDetailedBuildingResponse(
       ...unexpectedResults.map((item) => `${item.zone_id} (${item.generator})`),
     ];
     throw new Error(
-      'The server returned an invalid LEGO-only Community 3D result. '
-      + 'Every requested building must return exactly one lego_assembly result; '
-      + `refresh the project before retrying. Check: ${details.slice(0, 3).join(', ') || 'building count mismatch'}.`,
+      'The server returned an invalid Community 3D representation result. '
+      + 'Every requested building, park, and street must return exactly one matching representation; '
+      + `refresh the project before retrying. Check: ${details.slice(0, 3).join(', ') || 'item count mismatch'}.`,
     );
   }
 }
@@ -381,6 +418,7 @@ function planRequestForItem(item: ZoneBuildItem) {
     // Let the selected LEGO family's native podium depth determine wing
     // thickness, matching the backend's final-footprint proof exactly.
     project_id: item.zone.project_id,
+    allow_forced_fit: false,
     ...legoArchetypeContextFromZone(item.zone.properties),
   });
 }
@@ -488,23 +526,6 @@ export async function compileMixedCommunity3D(
     ));
   }
 
-  if (options.requireDetailedBuildings) {
-    const unsupportedItems = buildingItems.filter((_, index) => (
-      planResults[index]?.status !== 'fulfilled'
-    ));
-    if (unsupportedItems.length > 0) {
-      const sample = unsupportedItems
-        .slice(0, 3)
-        .map((item) => item.label)
-        .join(', ');
-      throw new Error(
-        `${unsupportedItems.length} planned building${unsupportedItems.length === 1 ? '' : 's'} `
-        + 'could not be assembled from the installed archetyped LEGO families. '
-        + `Community 3D was not compiled.${sample ? ` Check: ${sample}.` : ''}`,
-      );
-    }
-  }
-
   const compileItems = buildingItems.map((item, index) => {
     const result = planResults[index];
     return result?.status === 'fulfilled'
@@ -515,7 +536,27 @@ export async function compileMixedCommunity3D(
         }
       : { zone_id: item.zone.id, source_updated_at: item.zone.updated_at };
   });
+  const expectedItems: CommunityCompileExpectation[] = buildingItems.map((item, index) => ({
+      zoneId: item.zone.id,
+      label: item.label,
+      kind: 'building',
+      generators: new Set<CommunityCompileGenerator>(
+        planResults[index]?.status === 'fulfilled'
+          ? ['lego_assembly']
+          : ['planned_massing'],
+      ),
+    }));
   const groundItems = deriveGroundItems(zones);
+  groundItems.forEach((item) => {
+    expectedItems.push({
+      zoneId: item.zone.id,
+      label: item.zone.name || item.kind,
+      kind: item.kind,
+      generators: new Set<CommunityCompileGenerator>([
+        item.kind === 'park' ? 'park_kit' : 'street_section',
+      ]),
+    });
+  });
   compileItems.push(...groundItems.map((item) => ({
     zone_id: item.zone.id,
     source_updated_at: item.zone.updated_at,
@@ -555,29 +596,39 @@ export async function compileMixedCommunity3D(
       { ...options, recoverSourceChanges: false },
     );
   }
-  if (options.requireDetailedBuildings) {
-    assertDetailedBuildingResponse(buildingItems, response);
-  }
+  assertCommunityCompileResponse(expectedItems, response);
   announceCommunity3DPresentationReady(scopeZoneIds);
+  const resolvedBuildings = buildingItems.map((item, index) => {
+    const result = planResults[index];
+    if (result?.status === 'fulfilled') return { ...item, plan: result.value };
+    const planningFailure = result?.status === 'rejected'
+      ? getLegoPlanningFailure(result.reason)
+      : null;
+    return {
+      ...item,
+      error: planningFailure?.message ?? 'Detailed family is not available for this footprint.',
+      familyMissing: planningFailure?.code === 'family_not_found',
+      familyIncompatible: planningFailure?.code === 'family_incompatible',
+    };
+  });
   return {
     response,
-    detailedBuildings: response.items.filter((item) => (
-      item.generator === 'lego_assembly' || item.generator === 'meshy'
-    )).length,
+    detailedBuildings: response.items.filter((item) => item.generator === 'lego_assembly').length,
     plannedMasses: response.items.filter((item) => item.generator === 'planned_massing').length,
     parks: response.counts.park,
     streets: response.counts.street,
+    resolvedBuildings,
   };
 }
 
-/** LEGO-only Site Boundary / AI Master Plan entry point.
+/** Site Boundary / AI Master Plan entry point.
  *
  * Layout application updates zone fingerprints, so this deliberately reloads
  * authoritative zones immediately before planning. Boundary analysis provides
  * the exact intersecting-zone scope; unrelated zones elsewhere in the project
- * are never compiled by a boundary action. Unlike the general Community 3D
- * panel, this path requires a detailed LEGO recipe for every building and
- * therefore cannot fall through to legacy Meshy or planned massing. */
+ * are never compiled by a boundary action. Buildings without a compatible
+ * reviewed family use exact-footprint, authoritative-height massing so an
+ * unfinished asset catalogue never blocks the coordinated plan. */
 export async function compileBoundaryCommunity3D(
   projectId: string,
   boundaryZoneId: string,
@@ -611,7 +662,6 @@ export async function compileBoundaryCommunity3D(
     compilerZones,
     onProgress,
     {
-      requireDetailedBuildings: true,
       scopeZoneIds: Array.from(containedZoneIds),
       scopeBoundaryId: boundaryZoneId,
     },

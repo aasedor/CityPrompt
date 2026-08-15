@@ -137,7 +137,9 @@ export function hasPlannedMassing(building: Building): boolean {
  * can't place, so suppressing the model would leave nothing.
  */
 export function excludeLegoStackBuildings(buildings: Building[]): Building[] {
-  return buildings.filter((building) => !recipeIsRenderable(building));
+  return buildings.filter((building) => (
+    !recipeIsRenderable(building) && !hasPlannedMassing(building)
+  ));
 }
 
 export interface LegoInstanceThreeTransform {

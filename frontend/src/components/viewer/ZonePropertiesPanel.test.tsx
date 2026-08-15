@@ -172,6 +172,32 @@ vi.mock('./aestheticCatalog', async (importOriginal) => {
       subtype: 'park',
     },
   };
+  const neighborhoodPark = {
+    id: 'neighborhood_park',
+    categoryId: 'neighborhood_public_realm',
+    label: 'Neighborhood Park',
+    description: 'Everyday community park with recreation and planting.',
+    photoUrl: '/archetypes/openspaces/neighborhood-park/variant_0.png',
+    suggestedWidth_m: 100,
+    suggestedDepth_m: 80,
+    variants: [
+      {
+        id: 'neighborhood_park_v0',
+        label: 'Rustic Timber & Gravel',
+        thumbnailUrl: '/archetypes/openspaces/neighborhood-park/variant_0.png',
+      },
+      {
+        id: 'neighborhood_park_v1',
+        label: 'Modern Steel & Turf',
+        thumbnailUrl: '/archetypes/openspaces/neighborhood-park/variant_1.png',
+      },
+    ],
+    archetypeImages: [],
+    generationStyleInput: {
+      domain: 'park_plaza',
+      subtype: 'park',
+    },
+  };
   const japaneseMachiya = actual.BUILDING_AESTHETIC_OPTIONS_V2.find(
     (option) => option.id === 'japanese_machiya_mixed_use',
   )!;
@@ -212,7 +238,7 @@ vi.mock('./aestheticCatalog', async (importOriginal) => {
       label: 'Neighborhood Public Realm',
       description: 'Small parks and civic spaces.',
     }],
-    GREEN_SPACE_AESTHETIC_OPTIONS_V2: [urbanPocketPark],
+    GREEN_SPACE_AESTHETIC_OPTIONS_V2: [neighborhoodPark, urbanPocketPark],
     GREEN_SPACE_AESTHETIC_PRESETS_V2: {},
     PLAZA_AESTHETIC_CATEGORIES_V2: [],
     PLAZA_AESTHETIC_OPTIONS_V2: [],
@@ -222,7 +248,7 @@ vi.mock('./aestheticCatalog', async (importOriginal) => {
       label: 'Neighborhood Public Realm',
       description: 'Small parks and civic spaces.',
     }],
-    OPENSPACE_AESTHETIC_OPTIONS_V2: [urbanPocketPark],
+    OPENSPACE_AESTHETIC_OPTIONS_V2: [neighborhoodPark, urbanPocketPark],
     filterOptionsByDevelopmentType: (options: unknown[]) => options,
   };
 });
@@ -550,6 +576,40 @@ describe('ZonePropertiesPanel LEGO selection handoff', () => {
         }),
       );
     });
+  });
+
+  it('keeps ordinary parks visible while framing only an exact reviewed Sticker kit variant', () => {
+    const { container } = renderPanel(
+      <ZonePropertiesPanel
+        zone={publicRealmZone('green_space')}
+        onUpdate={vi.fn()}
+        onDelete={vi.fn()}
+        onClose={vi.fn()}
+      />,
+    );
+
+    const neighborhoodCard = container.querySelector<HTMLElement>(
+      '[data-aesthetic-option-id="neighborhood_park"]',
+    );
+    const ordinaryCard = container.querySelector<HTMLElement>(
+      '[data-aesthetic-option-id="urban_pocket_park"]',
+    );
+    const reviewedVariant = container.querySelector<HTMLElement>(
+      '[data-variant-id="neighborhood_park_v0"]',
+    );
+    const unbuiltSibling = container.querySelector<HTMLElement>(
+      '[data-variant-id="neighborhood_park_v1"]',
+    );
+
+    expect(neighborhoodCard).toBeInTheDocument();
+    expect(ordinaryCard).toBeInTheDocument();
+    expect(within(neighborhoodCard!).getByText('Sticker Method')).toHaveClass('bg-[#c9ff3d]');
+    expect(ordinaryCard).not.toHaveTextContent('Sticker Method');
+    expect(reviewedVariant).toHaveAttribute('data-lego-ready', 'true');
+    expect(reviewedVariant).toHaveClass('border-emerald-500');
+    expect(unbuiltSibling).toHaveAttribute('data-lego-ready', 'false');
+    expect(unbuiltSibling).not.toHaveClass('border-emerald-500');
+    expect(screen.getByText(/exact park variant has a reviewed 3D kit/i)).toBeInTheDocument();
   });
 
   it('persists Brewery -> Automatic and opens LEGO from the current draft without a refetch', async () => {

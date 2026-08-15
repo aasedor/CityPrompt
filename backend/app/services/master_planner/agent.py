@@ -146,12 +146,17 @@ def _band_schema(
     }
     required = ["development_type", "aesthetic", "floors", "typology"]
     if lego_catalog is not None:
+        trusted_parent_ids = sorted(
+            str(entry["id"])
+            for entry in load_dims_table()
+            if entry.get("usable") and entry.get("id")
+        )
         exact_parent = {
             "type": "string",
-            "enum": list(lego_catalog.parent_ids),
+            "enum": trusted_parent_ids,
             "description": (
-                "Exact imported LEGO parent archetype. Choose only from this enum; "
-                "the validator selects an executable child variant when required."
+                "Exact trusted catalogue parent archetype. Choose only from this enum; "
+                "an imported family renders as LEGO and an unbuilt family remains truthful massing."
             ),
         }
         properties["archetype_id"] = exact_parent
@@ -172,9 +177,9 @@ def _band_schema(
 def _master_plan_tool(
     lego_catalog: LegoPlanningCatalog | None = None,
 ) -> dict[str, Any]:
-    # The legacy colored-polygon planner keeps its full visual vocabulary.
-    # When the LEGO catalog is supplied, the tool itself exposes only public-
-    # realm identities that have an executable family/recipe contract.
+    # Both modes expose the complete trusted visual vocabulary. A LEGO-backed
+    # plan may select an identity whose exact family is still pending; the
+    # deterministic compiler preserves it with source-fitted fallback geometry.
     spine_ids = LEGO_SPINE_STREET_IDS if lego_catalog is not None else SPINE_STREET_IDS
     local_ids = LEGO_LOCAL_STREET_IDS if lego_catalog is not None else LOCAL_STREET_IDS
     central_park_ids = LEGO_CENTRAL_PARK_IDS if lego_catalog is not None else CENTRAL_PARK_IDS
@@ -260,8 +265,9 @@ def _master_plan_tool(
                 "public_realm": {
                     "type": "object",
                     "description": (
-                        "Visible variants from executable Public Realm LEGO families. "
-                        "Select identities only; the compiler owns metric geometry and safety."
+                        "Optional exact variants from reviewed Public Realm LEGO families. "
+                        "Leave a role variant unset when selecting a broader catalogue "
+                        "archetype; the compiler preserves it as family-pending geometry."
                     ),
                     "properties": {
                         "spine_street_variant_id": {
@@ -293,14 +299,7 @@ def _master_plan_tool(
                             "description": "One sentence explaining how the variants reinforce the plan.",
                         },
                     },
-                    "required": [
-                        "spine_street_variant_id",
-                        "local_street_variant_id",
-                        "central_park_variant_id",
-                        "pocket_park_variant_id",
-                        "courtyard_variant_id",
-                        "greenway_variant_id",
-                    ],
+                    "required": [],
                 },
             },
             "required": [

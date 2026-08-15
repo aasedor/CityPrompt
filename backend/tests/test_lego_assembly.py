@@ -1,11 +1,13 @@
 import json
 import uuid
+from dataclasses import replace
 from datetime import datetime, timezone
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import AsyncMock, MagicMock
 
 import pytest
+from geoalchemy2 import WKTElement
 
 from app.models.models import Building, ModelLibraryEntry
 from app.services.community_3d_artifacts import (
@@ -15,6 +17,7 @@ from app.services.community_3d_artifacts import (
 from app.services.lego_assembly import (
     AssemblyPlanningError,
     AssemblyRequest,
+    catalog_parent_archetype_id,
     descriptor_from_library_entry,
     find_family_module_entry,
     lego_metadata_from_manifest,
@@ -356,6 +359,30 @@ def test_known_child_without_exact_family_uses_catalog_parent_family():
 
     assert plan["family"] == "nordic-midrise"
     assert plan["archetype_id"] == "market_contemporary"
+
+
+def test_known_child_never_substitutes_a_different_render_locked_sibling():
+    modules = [
+        replace(
+            module,
+            source_variant_id="market_historic_iron_glass",
+            generation_archetype_id="market_historic_iron_glass",
+        )
+        for module in _parent_only_market_modules()
+    ]
+
+    with pytest.raises(AssemblyPlanningError, match="explicitly matches") as error:
+        plan_vertical_assembly(
+            modules,
+            AssemblyRequest(
+                target_width_m=30,
+                target_depth_m=20,
+                target_floors=3,
+                archetype_id="market_contemporary",
+            ),
+        )
+
+    assert error.value.code == "family_not_found"
 
 
 def test_unknown_child_never_uses_a_parent_alias_fallback():
@@ -1203,6 +1230,38 @@ async def test_plan_api_builds_oversized_parcel_as_streetwall_grid(client, mock_
     assert plan["family"] == "nordic-midrise"
     assert plan["fit"]["compatibility_source"] == "streetwall_repeat"
     assert plan["fit"]["segment_count"] == 6
+
+
+@pytest.mark.anyio
+async def test_plan_api_strict_mode_rejects_forced_fit_for_ai_compilation(
+    client, mock_db, test_user, auth_headers
+):
+    library_entries = [
+        entry("podium", "Podium", "podium", height=4.5),
+        entry("floor", "Floor", "floor", height=3.2),
+        entry("roof", "Roof", "roof", height=1.0),
+    ]
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalars_result(library_entries),
+        ]
+    )
+
+    response = await client.post(
+        "/api/v1/lego-assembly/plan",
+        headers=auth_headers,
+        json={
+            "target_width_m": 200,
+            "target_depth_m": 18,
+            "target_floors": 5,
+            "archetype_id": "nordic-midrise",
+            "allow_forced_fit": False,
+        },
+    )
+
+    assert response.status_code == 422
+    assert response.json()["detail"]["code"] == "family_incompatible"
 
 
 @pytest.mark.anyio
@@ -4445,6 +4504,136 @@ async def test_place_community_compiles_mixed_plan_with_one_server_timestamp(cli
 
 
 @pytest.mark.anyio
+async def test_place_community_atomically_compiles_mixed_ai_exact_and_family_pending_content(
+    client, mock_db, test_user, auth_headers
+):
+    project = FakeProject(owner_id=test_user.id)
+    entries = _ai_recipe_inventory()
+    catalog = build_lego_planning_catalog(entries)
+    exact_building = _make_zone(
+        project,
+        geometry=WKTElement(
+            "POLYGON((-114.0800 51.0400,-114.0797 51.0400,-114.0797 51.0402,-114.0800 51.0402,-114.0800 51.0400))",
+            srid=4326,
+        ),
+        properties={
+            "_plan_role": "building",
+            "_plan_scenario": "community_wellbeing",
+            "_lego_catalog_fingerprint": catalog.fingerprint,
+            "_lego_runtime_selection_id": "nordic_timber_midrise",
+            "development_archetype_id": "nordic_timber_midrise",
+            "target_w_m": 24,
+            "target_d_m": 18,
+            "floors": 6,
+            "_lego_actual_footprint_profile": "rectangle",
+        },
+    )
+    pending_building = _make_zone(
+        project,
+        geometry=WKTElement(
+            "POLYGON((-114.0795 51.0400,-114.0792 51.0400,-114.0792 51.0402,-114.0795 51.0402,-114.0795 51.0400))",
+            srid=4326,
+        ),
+        properties={
+            "_plan_role": "building",
+            "_plan_scenario": "community_wellbeing",
+            "_lego_family_pending": True,
+            "_lego_family_pending_reason": "family_not_found",
+            "development_archetype_id": "deco_theater_mainstreet",
+            "target_w_m": 24,
+            "target_d_m": 18,
+            "floors": 5,
+            "height": 18.5,
+            "_lego_actual_footprint_profile": "rectangle",
+        },
+    )
+    pending_park = _make_zone(
+        project,
+        zone_type="green_space",
+        geometry=WKTElement(
+            _calgary_rectangle_ewkt(40, 30).removeprefix("SRID=4326;"),
+            srid=4326,
+        ),
+        properties={
+            "_plan_role": "open_space",
+            "_plan_scenario": "community_wellbeing",
+            "green_space_archetype_id": "academic_courtyard",
+        },
+    )
+    pending_street = _make_zone(
+        project,
+        zone_type="road",
+        geometry=WKTElement(
+            _calgary_rectangle_ewkt(200, 18).removeprefix("SRID=4326;"),
+            srid=4326,
+        ),
+        properties={
+            "_plan_role": "street",
+            "_plan_scenario": "community_wellbeing",
+            "road_archetype_id": "scenic_parkway",
+            "width": 18,
+        },
+    )
+    zones = [exact_building, pending_building, pending_park, pending_street]
+    added: list = []
+    mock_db.add.side_effect = added.append
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            *[
+                result
+                for zone in zones
+                for result in (_scalar_result(zone), _scalar_result(project))
+            ],
+            _scalar_result(project.id),
+            _scalars_result(zones),
+            _scalar_result(project),
+            _scalars_result(entries),
+            _scalars_result([]),
+        ]
+    )
+
+    response = await client.post(
+        "/api/v1/lego-assembly/place-community",
+        headers=auth_headers,
+        json={
+            "items": [
+                _community_item(
+                    exact_building,
+                    recipe=_recipe_from_plan(_plan_for_ai_recipe(entries), catalog.fingerprint),
+                ),
+                _community_item(pending_building),
+                _community_item(pending_park),
+                _community_item(pending_street),
+            ]
+        },
+    )
+
+    assert response.status_code == 200, response.text
+    payload = response.json()
+    assert payload["counts"] == {"building": 2, "park": 1, "street": 1}
+    assert [item["generator"] for item in payload["items"]] == [
+        "lego_assembly",
+        "planned_massing",
+        "park_kit",
+        "street_section",
+    ]
+    buildings = [item for item in added if isinstance(item, Building)]
+    assert len(buildings) == 2
+    assert buildings[0].specifications["legoAssembly"]["module_family"] == "nordic-midrise"
+    assert buildings[1].footprint == pending_building.geometry
+    assert buildings[1].floor_count == 5
+    assert buildings[1].height_meters == 18.5
+    assert buildings[1].specifications["plannedMassing"]["archetype_id"] == "deco_theater_mainstreet"
+    assert pending_park.properties["public_realm_fallback"]["archetype_id"] == "academic_courtyard"
+    assert pending_street.properties["public_realm_fallback"]["archetype_id"] == "scenic_parkway"
+    assert "public_realm_lego" not in pending_park.properties
+    assert "public_realm_lego" not in pending_street.properties
+    assert {zone.properties["community_3d"]["compiled_at"] for zone in zones} == {payload["compiled_at"]}
+    mock_db.commit.assert_not_awaited()
+
+
+@pytest.mark.anyio
 async def test_place_community_persists_and_hashes_strict_ai_public_realm_recipe(
     client, mock_db, test_user, auth_headers
 ):
@@ -4460,6 +4649,15 @@ async def test_place_community_persists_and_hashes_strict_ai_public_realm_recipe
             "road_archetype_id": "main_street_complete",
             "road_selected_variant_id": "main_street_complete_v2",
             "width": 22,
+            "public_realm_fallback": {
+                "schema_version": 1,
+                "state": "family_pending",
+                "kind": "street",
+                "generator": "street_section",
+                "archetype_id": "main_street_complete",
+                "variant_id": "main_street_complete_v2",
+                "target_source": "zone_geometry",
+            },
         },
     )
     mock_db.execute = AsyncMock(
@@ -4489,6 +4687,7 @@ async def test_place_community_persists_and_hashes_strict_ai_public_realm_recipe
     assert len(recipe["catalog_fingerprint"]) == 64
     assert len(recipe["capability_fingerprint"]) == 64
     assert len(recipe["recipe_hash"]) == 64
+    assert "public_realm_fallback" not in street_zone.properties
     assert len(street_zone.properties["plan_centerline"]) == 2
     assert street_zone.properties["community_3d"]["representation_hash"]
     assert response.json()["items"][0]["generator"] == "street_section"
@@ -4733,7 +4932,7 @@ async def test_place_community_migrates_known_ai_street_variants_and_backfills_l
 
 
 @pytest.mark.anyio
-async def test_place_community_rejects_unsupported_ai_public_realm_structurally(
+async def test_place_community_preserves_unsupported_ai_public_realm_as_family_pending(
     client, mock_db, test_user, auth_headers
 ):
     project = FakeProject(owner_id=test_user.id)
@@ -4744,7 +4943,7 @@ async def test_place_community_rejects_unsupported_ai_public_realm_structurally(
         properties={
             "_plan_scenario": "community_wellbeing",
             "_plan_role": "open_space",
-            "green_space_archetype_id": "invented_magic_park",
+            "green_space_archetype_id": "academic_courtyard",
         },
     )
     mock_db.execute = AsyncMock(
@@ -4754,6 +4953,7 @@ async def test_place_community_rejects_unsupported_ai_public_realm_structurally(
             _scalar_result(project),
             _scalar_result(project.id),
             _scalars_result([park_zone]),
+            _scalars_result([]),
         ]
     )
 
@@ -4763,15 +4963,21 @@ async def test_place_community_rejects_unsupported_ai_public_realm_structurally(
         json={"items": [_community_item(park_zone)]},
     )
 
-    assert response.status_code == 422
-    detail = response.json()["detail"]
-    assert detail["code"] == "family_not_found"
-    assert detail["kind"] == "park"
-    assert detail["zone_id"] == str(park_zone.id)
-    assert detail["requested"]["archetype_id"] == "invented_magic_park"
-    assert detail["supported_families"]
+    assert response.status_code == 200, response.text
+    assert response.json()["items"][0]["generator"] == "park_kit"
+    assert park_zone.properties["green_space_archetype_id"] == "academic_courtyard"
     assert "public_realm_lego" not in park_zone.properties
-    assert "community_3d" not in park_zone.properties
+    assert park_zone.properties["public_realm_fallback"] == {
+        "schema_version": 1,
+        "state": "family_pending",
+        "kind": "park",
+        "generator": "park_kit",
+        "archetype_id": "academic_courtyard",
+        "variant_id": None,
+        "target_source": "zone_geometry",
+    }
+    assert park_zone.properties["community_3d"]["state"] == "compiled"
+    assert park_zone.properties["community_3d"]["representation_hash"]
     mock_db.add.assert_not_called()
 
 
@@ -4951,15 +5157,44 @@ async def test_place_community_rejects_recipe_planned_from_stale_same_kind_revis
 
 
 def _ai_recipe_inventory():
-    return [
+    entries = [
         entry("ai-podium", "AI podium", "podium", height=4.5),
         entry("ai-floor", "AI floor", "floor", height=3.2),
         entry("ai-setback", "AI setback", "setback", height=3.2),
         entry("ai-roof", "AI roof", "roof", height=1.0),
     ]
+    for item in entries:
+        item.metadata_["lego"]["archetype_ids"] = ["nordic_timber_midrise"]
+    return entries
 
 
-def _plan_for_ai_recipe(entries):
+def _plan_for_ai_recipe(entries, *, floors=6):
+    descriptors = [descriptor for item in entries if (descriptor := descriptor_from_library_entry(item)) is not None]
+    return plan_vertical_assembly(
+        descriptors,
+        AssemblyRequest(
+            target_width_m=24,
+            target_depth_m=18,
+            target_floors=floors,
+            archetype_id="nordic_timber_midrise",
+            reuse_keys=("nordic_timber_midrise",),
+            allow_setback=False,
+        ),
+    )
+
+
+def _ai_shaped_recipe_inventory():
+    entries = [
+        entry("shape-podium", "Shape podium", "podium", height=4.5, depth=8),
+        entry("shape-floor", "Shape floor", "floor", height=3.2, depth=8),
+        entry("shape-roof", "Shape roof", "roof", height=1.0, depth=8),
+    ]
+    for item in entries:
+        item.metadata_["lego"]["archetype_ids"] = ["nordic_timber_midrise"]
+    return entries
+
+
+def _plan_for_ai_shaped_recipe(entries):
     descriptors = [descriptor for item in entries if (descriptor := descriptor_from_library_entry(item)) is not None]
     return plan_vertical_assembly(
         descriptors,
@@ -4967,9 +5202,12 @@ def _plan_for_ai_recipe(entries):
             target_width_m=24,
             target_depth_m=18,
             target_floors=6,
-            archetype_id="nordic-midrise",
+            archetype_id="nordic_timber_midrise",
+            reuse_keys=("nordic_timber_midrise",),
             allow_setback=False,
+            footprint_profile="l_shape",
         ),
+        allow_forced_fit=False,
     )
 
 
@@ -4985,6 +5223,12 @@ async def test_place_community_rejects_stale_ai_catalog_under_locked_inventory(
             "_plan_role": "building",
             "_plan_scenario": "community_wellbeing",
             "_lego_catalog_fingerprint": stale_fingerprint,
+            "_lego_runtime_selection_id": "nordic_timber_midrise",
+            "development_archetype_id": "nordic_timber_midrise",
+            "target_w_m": 20,
+            "target_d_m": 16,
+            "floors": 6,
+            "_lego_actual_footprint_profile": "rectangle",
         },
     )
     recipe = _recipe_body()
@@ -5036,6 +5280,12 @@ async def test_place_community_rejects_changed_ai_module_even_when_catalog_shape
             "_plan_role": "building",
             "_plan_scenario": "community_wellbeing",
             "_lego_catalog_fingerprint": current_catalog.fingerprint,
+            "_lego_runtime_selection_id": "nordic_timber_midrise",
+            "development_archetype_id": "nordic_timber_midrise",
+            "target_w_m": 24,
+            "target_d_m": 18,
+            "floors": 6,
+            "_lego_actual_footprint_profile": "rectangle",
         },
     )
     recipe = _recipe_from_plan(
@@ -5068,7 +5318,9 @@ async def test_place_community_rejects_changed_ai_module_even_when_catalog_shape
 
 
 @pytest.mark.anyio
-async def test_place_community_accepts_current_ai_recipe_before_persisting(client, mock_db, test_user, auth_headers):
+async def test_place_community_strictly_rebinds_family_pending_ai_building_on_first_upgrade(
+    client, mock_db, test_user, auth_headers
+):
     project = FakeProject(owner_id=test_user.id)
     entries = _ai_recipe_inventory()
     catalog = build_lego_planning_catalog(entries)
@@ -5077,10 +5329,18 @@ async def test_place_community_accepts_current_ai_recipe_before_persisting(clien
         properties={
             "_plan_role": "building",
             "_plan_scenario": "community_wellbeing",
-            "_lego_catalog_fingerprint": catalog.fingerprint,
+            "_lego_family_pending": True,
+            "_lego_family_pending_reason": "family_not_found",
+            "_lego_runtime_selection_id": "classic_brownstone_streetwall",
+            "development_archetype_id": "nordic_timber_midrise",
+            "target_w_m": 24,
+            "target_d_m": 18,
+            # Match the browser's positive half-up floor rounding.
+            "floors": 4.5,
+            "_lego_actual_footprint_profile": "rectangle",
         },
     )
-    recipe = _recipe_from_plan(_plan_for_ai_recipe(entries), catalog.fingerprint)
+    recipe = _recipe_from_plan(_plan_for_ai_recipe(entries, floors=5), catalog.fingerprint)
     mock_db.execute = AsyncMock(
         side_effect=[
             _scalar_result(test_user),
@@ -5103,7 +5363,426 @@ async def test_place_community_accepts_current_ai_recipe_before_persisting(clien
     assert response.status_code == 200, response.text
     assert response.json()["items"][0]["generator"] == "lego_assembly"
     assert zone.properties["community_3d"]["state"] == "compiled"
+    assert zone.properties["_lego_catalog_fingerprint"] == catalog.fingerprint
+    assert zone.properties["_lego_runtime_selection_id"] == "nordic_timber_midrise"
+    assert recipe["target"]["floors"] == 5
+    assert "_lego_family_pending" not in zone.properties
+    assert "_lego_family_pending_reason" not in zone.properties
     assert mock_db.add.call_count == 1
+
+
+@pytest.mark.anyio
+async def test_place_community_ai_family_pending_building_ignores_lego_inventory_stamp(
+    client, mock_db, test_user, auth_headers
+):
+    project = FakeProject(owner_id=test_user.id)
+    zone = _make_zone(
+        project,
+        properties={
+            "_plan_role": "building",
+            "_plan_scenario": "community_wellbeing",
+            "_lego_family_pending": True,
+            "_lego_family_pending_reason": "family_not_found",
+            "development_archetype_id": "deco_theater_mainstreet",
+            "target_w_m": 20,
+            "target_d_m": 16,
+            "_lego_actual_footprint_profile": "rectangle",
+            # JavaScript Math.round(4.5) is 5; Python round(4.5) is 4.
+            "floors": 4.5,
+            "floor_height": 3.25,
+        },
+    )
+    added: list = []
+    mock_db.add.side_effect = added.append
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(zone),
+            _scalar_result(project),
+            _scalar_result(project.id),
+            _scalars_result([zone]),
+            _scalar_result(project),
+            _scalars_result([]),
+            _scalars_result([]),
+        ]
+    )
+
+    response = await client.post(
+        "/api/v1/lego-assembly/place-community",
+        headers=auth_headers,
+        json={"items": [_community_item(zone)]},
+    )
+
+    assert response.status_code == 200, response.text
+    assert response.json()["items"][0]["generator"] == "planned_massing"
+    building = next(item for item in added if isinstance(item, Building))
+    assert building.footprint == zone.geometry
+    assert building.floor_count == 5
+    assert building.height_meters == 16.25
+    assert building.specifications["plannedMassing"]["archetype_id"] == "deco_theater_mainstreet"
+    assert "legoAssembly" not in building.specifications
+
+
+@pytest.mark.anyio
+async def test_place_community_rejects_recipe_omission_for_exact_ai_building(
+    client, mock_db, test_user, auth_headers
+):
+    project = FakeProject(owner_id=test_user.id)
+    entries = _ai_recipe_inventory()
+    catalog = build_lego_planning_catalog(entries)
+    zone = _make_zone(
+        project,
+        properties={
+            "_plan_role": "building",
+            "_plan_scenario": "community_wellbeing",
+            "_lego_catalog_fingerprint": catalog.fingerprint,
+            "development_archetype_id": "nordic_timber_midrise",
+            "target_w_m": 24,
+            "target_d_m": 18,
+            "floors": 6,
+            "_lego_actual_footprint_profile": "rectangle",
+        },
+    )
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(zone),
+            _scalar_result(project),
+            _scalar_result(project.id),
+            _scalars_result([zone]),
+            _scalar_result(project),
+            _scalars_result(entries),
+        ]
+    )
+
+    response = await client.post(
+        "/api/v1/lego-assembly/place-community",
+        headers=auth_headers,
+        json={"items": [_community_item(zone)]},
+    )
+
+    assert response.status_code == 409
+    assert "recipe is missing" in response.json()["detail"]
+    assert zone.properties.get("community_3d") is None
+    mock_db.add.assert_not_called()
+
+
+@pytest.mark.anyio
+async def test_place_community_rechecks_pending_omission_after_family_import(
+    client, mock_db, test_user, auth_headers
+):
+    project = FakeProject(owner_id=test_user.id)
+    entries = _ai_recipe_inventory()
+    zone = _make_zone(
+        project,
+        properties={
+            "_plan_role": "building",
+            "_plan_scenario": "community_wellbeing",
+            "_lego_family_pending": True,
+            "_lego_family_pending_reason": "family_not_found",
+            "development_archetype_id": "nordic_timber_midrise",
+            "target_w_m": 24,
+            "target_d_m": 18,
+            "floors": 6,
+            "_lego_actual_footprint_profile": "rectangle",
+        },
+    )
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(zone),
+            _scalar_result(project),
+            _scalar_result(project.id),
+            _scalars_result([zone]),
+            _scalar_result(project),
+            _scalars_result(entries),
+        ]
+    )
+
+    response = await client.post(
+        "/api/v1/lego-assembly/place-community",
+        headers=auth_headers,
+        json={"items": [_community_item(zone)]},
+    )
+
+    assert response.status_code == 409
+    assert "recipe is missing" in response.json()["detail"]
+    assert zone.properties.get("community_3d") is None
+    mock_db.add.assert_not_called()
+
+
+@pytest.mark.anyio
+async def test_place_community_rejects_recipe_omission_for_supported_manual_catalogue_building(
+    client, mock_db, test_user, auth_headers
+):
+    project = FakeProject(owner_id=test_user.id)
+    entries = _ai_recipe_inventory()
+    zone = _make_zone(
+        project,
+        geometry=_calgary_rectangle_ewkt(24, 18.1),
+        properties={
+            "_plan_role": "building",
+            "development_archetype_id": "nordic_timber_midrise",
+            "floors": 6,
+        },
+    )
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(zone),
+            _scalar_result(project),
+            _scalar_result(project.id),
+            _scalars_result([zone]),
+            _scalar_result(project),
+            _scalars_result(entries),
+        ]
+    )
+
+    response = await client.post(
+        "/api/v1/lego-assembly/place-community",
+        headers=auth_headers,
+        json={"items": [_community_item(zone)]},
+    )
+
+    assert response.status_code == 409
+    assert "recipe is missing" in response.json()["detail"]
+    mock_db.add.assert_not_called()
+
+
+@pytest.mark.anyio
+@pytest.mark.parametrize(
+    ("selected_identity", "submitted_identity"),
+    [
+        ("market_contemporary", "market_historic_iron_glass"),
+        ("nordic_timber_midrise", "classic_brownstone_streetwall"),
+    ],
+)
+async def test_place_community_rejects_valid_current_recipe_for_wrong_ai_identity(
+    selected_identity, submitted_identity, client, mock_db, test_user, auth_headers
+):
+    project = FakeProject(owner_id=test_user.id)
+    entries = _ai_recipe_inventory()
+    catalog = build_lego_planning_catalog(entries)
+    zone = _make_zone(
+        project,
+        properties={
+            "_plan_role": "building",
+            "_plan_scenario": "community_wellbeing",
+            "development_selected_variant_id": selected_identity,
+            "development_archetype_id": catalog_parent_archetype_id(selected_identity),
+            "target_w_m": 24,
+            "target_d_m": 18,
+            "floors": 6,
+            "_lego_actual_footprint_profile": "rectangle",
+        },
+    )
+    recipe = _recipe_from_plan(_plan_for_ai_recipe(entries), catalog.fingerprint)
+    recipe["archetype_id"] = submitted_identity
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(zone),
+            _scalar_result(project),
+            _scalar_result(project.id),
+            _scalars_result([zone]),
+            _scalar_result(project),
+            _scalars_result(entries),
+        ]
+    )
+
+    response = await client.post(
+        "/api/v1/lego-assembly/place-community",
+        headers=auth_headers,
+        json={"items": [_community_item(zone, recipe=recipe)]},
+    )
+
+    assert response.status_code == 409
+    assert "selected catalogue identity" in response.json()["detail"]
+    mock_db.add.assert_not_called()
+
+
+@pytest.mark.anyio
+async def test_place_community_rejects_wrong_current_recipe_for_manual_catalogue_building(
+    client, mock_db, test_user, auth_headers
+):
+    project = FakeProject(owner_id=test_user.id)
+    entries = _ai_recipe_inventory()
+    catalog = build_lego_planning_catalog(entries)
+    zone = _make_zone(
+        project,
+        geometry=_calgary_rectangle_ewkt(24, 18.1),
+        properties={
+            "_plan_role": "building",
+            "development_archetype_id": "nordic_timber_midrise",
+            "floors": 6,
+        },
+    )
+    recipe = _recipe_from_plan(_plan_for_ai_recipe(entries), catalog.fingerprint)
+    recipe["archetype_id"] = "classic_brownstone_streetwall"
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(zone),
+            _scalar_result(project),
+            _scalar_result(project.id),
+            _scalars_result([zone]),
+            _scalar_result(project),
+            _scalars_result(entries),
+        ]
+    )
+
+    response = await client.post(
+        "/api/v1/lego-assembly/place-community",
+        headers=auth_headers,
+        json={"items": [_community_item(zone, recipe=recipe)]},
+    )
+
+    assert response.status_code == 409
+    assert "selected catalogue identity" in response.json()["detail"]
+    mock_db.add.assert_not_called()
+
+
+@pytest.mark.anyio
+@pytest.mark.parametrize(
+    ("field", "value"),
+    [("width_m", 23.0), ("depth_m", 17.0), ("floors", 5), ("footprint_profile", "u_shape")],
+)
+async def test_place_community_binds_ai_recipe_target_to_locked_zone(
+    field, value, client, mock_db, test_user, auth_headers
+):
+    project = FakeProject(owner_id=test_user.id)
+    entries = _ai_recipe_inventory()
+    catalog = build_lego_planning_catalog(entries)
+    zone = _make_zone(
+        project,
+        properties={
+            "_plan_role": "building",
+            "_plan_scenario": "community_wellbeing",
+            "development_archetype_id": "nordic_timber_midrise",
+            "target_w_m": 24,
+            "target_d_m": 18,
+            "floors": 6,
+            "_lego_actual_footprint_profile": "rectangle",
+        },
+    )
+    recipe = _recipe_from_plan(_plan_for_ai_recipe(entries), catalog.fingerprint)
+    recipe["target"][field] = value
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(zone),
+            _scalar_result(project),
+            _scalar_result(project.id),
+            _scalars_result([zone]),
+            _scalar_result(project),
+            _scalars_result(entries),
+        ]
+    )
+
+    response = await client.post(
+        "/api/v1/lego-assembly/place-community",
+        headers=auth_headers,
+        json={"items": [_community_item(zone, recipe=recipe)]},
+    )
+
+    assert response.status_code == 409
+    assert "locked footprint and height" in response.json()["detail"]
+    mock_db.add.assert_not_called()
+
+
+@pytest.mark.anyio
+async def test_place_community_first_shaped_upgrade_binds_and_stamps_native_wing_depth(
+    client, mock_db, test_user, auth_headers
+):
+    project = FakeProject(owner_id=test_user.id)
+    entries = _ai_shaped_recipe_inventory()
+    catalog = build_lego_planning_catalog(entries)
+    plan = _plan_for_ai_shaped_recipe(entries)
+    assert plan["target"]["wing_depth_m"] == pytest.approx(8.0)
+    zone = _make_zone(
+        project,
+        properties={
+            "_plan_role": "building",
+            "_plan_scenario": "community_wellbeing",
+            "_lego_family_pending": True,
+            "_lego_family_pending_reason": "family_not_found",
+            "development_archetype_id": "nordic_timber_midrise",
+            "target_w_m": 24,
+            "target_d_m": 18,
+            "floors": 6,
+            "_lego_actual_footprint_profile": "l_shape",
+        },
+    )
+    recipe = _recipe_from_plan(plan, catalog.fingerprint)
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(zone),
+            _scalar_result(project),
+            _scalar_result(project.id),
+            _scalars_result([zone]),
+            _scalar_result(project),
+            _scalars_result(entries),
+            _scalars_result([]),
+        ]
+    )
+
+    response = await client.post(
+        "/api/v1/lego-assembly/place-community",
+        headers=auth_headers,
+        json={"items": [_community_item(zone, recipe=recipe)]},
+    )
+
+    assert response.status_code == 200, response.text
+    assert zone.properties["_lego_actual_wing_depth_m"] == pytest.approx(8.0)
+    assert zone.properties["community_3d"]["generator"] == "lego_assembly"
+
+
+@pytest.mark.anyio
+@pytest.mark.parametrize(("bound_wing", "recipe_wing"), [(8.0, 6.5), (7.0, 8.0)])
+async def test_place_community_rejects_tampered_or_stale_shaped_wing_depth(
+    bound_wing, recipe_wing, client, mock_db, test_user, auth_headers
+):
+    project = FakeProject(owner_id=test_user.id)
+    entries = _ai_shaped_recipe_inventory()
+    catalog = build_lego_planning_catalog(entries)
+    zone = _make_zone(
+        project,
+        properties={
+            "_plan_role": "building",
+            "_plan_scenario": "community_wellbeing",
+            "_lego_catalog_fingerprint": catalog.fingerprint,
+            "development_archetype_id": "nordic_timber_midrise",
+            "target_w_m": 24,
+            "target_d_m": 18,
+            "floors": 6,
+            "_lego_actual_footprint_profile": "l_shape",
+            "_lego_actual_wing_depth_m": bound_wing,
+        },
+    )
+    recipe = _recipe_from_plan(_plan_for_ai_shaped_recipe(entries), catalog.fingerprint)
+    recipe["target"]["wing_depth_m"] = recipe_wing
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(zone),
+            _scalar_result(project),
+            _scalar_result(project.id),
+            _scalars_result([zone]),
+            _scalar_result(project),
+            _scalars_result(entries),
+        ]
+    )
+
+    response = await client.post(
+        "/api/v1/lego-assembly/place-community",
+        headers=auth_headers,
+        json={"items": [_community_item(zone, recipe=recipe)]},
+    )
+
+    assert response.status_code == 409
+    assert "wing depth" in response.json()["detail"]
+    mock_db.add.assert_not_called()
 
 
 @pytest.mark.anyio
@@ -5117,9 +5796,16 @@ async def test_place_one_rejects_stale_ai_catalog_before_mutation(client, mock_d
             "_plan_role": "building",
             "_plan_scenario": "community_wellbeing",
             "_lego_catalog_fingerprint": stale_fingerprint,
+            "_lego_runtime_selection_id": "nordic_timber_midrise",
+            "development_archetype_id": "nordic_timber_midrise",
+            "target_w_m": 24,
+            "target_d_m": 18,
+            "floors": 6,
+            "_lego_actual_footprint_profile": "rectangle",
         },
     )
     recipe = _recipe_from_plan(_plan_for_ai_recipe(entries), stale_fingerprint)
+    recipe["source_updated_at"] = zone.updated_at.isoformat()
     mock_db.execute = AsyncMock(
         side_effect=[
             _scalar_result(test_user),
@@ -5155,11 +5841,18 @@ async def test_place_one_accepts_current_ai_recipe_with_setbacks_disabled(client
             "_plan_role": "building",
             "_plan_scenario": "community_wellbeing",
             "_lego_catalog_fingerprint": catalog.fingerprint,
+            "_lego_runtime_selection_id": "nordic_timber_midrise",
+            "development_archetype_id": "nordic_timber_midrise",
+            "target_w_m": 24,
+            "target_d_m": 18,
+            "floors": 6,
+            "_lego_actual_footprint_profile": "rectangle",
         },
     )
     planned = _plan_for_ai_recipe(entries)
     assert all(instance["role"] != "setback" for instance in planned["instances"])
     recipe = _recipe_from_plan(planned, catalog.fingerprint)
+    recipe["source_updated_at"] = zone.updated_at.isoformat()
     mock_db.execute = AsyncMock(
         side_effect=[
             _scalar_result(test_user),
@@ -5255,6 +5948,8 @@ async def test_place_community_persists_exact_footprint_massing_without_family_r
             _scalar_result(project),
             _scalar_result(project.id),
             _scalars_result([zone]),
+            _scalar_result(project),
+            _scalars_result([]),
             _scalars_result([]),
         ]
     )
@@ -5340,7 +6035,7 @@ async def test_place_community_reused_massing_syncs_current_zone_metadata(
 
 
 @pytest.mark.anyio
-async def test_place_community_stamps_lod_only_generated_model_as_visible_meshy_representation(
+async def test_place_community_does_not_recertify_old_lod_after_archetype_switch(
     client, mock_db, test_user, auth_headers
 ):
     project = FakeProject(owner_id=test_user.id)
@@ -5367,9 +6062,12 @@ async def test_place_community_stamps_lod_only_generated_model_as_visible_meshy_
         building_ids=[str(building.id)],
         properties={
             "_plan_role": "building",
-            "development_archetype_id": "family_pending",
+            "development_archetype_id": "deco_theater_mainstreet",
+            "floors": 4,
+            "height": 14,
         },
     )
+    zone.name = "Deco Theater Mainstreet"
     mock_db.execute = AsyncMock(
         side_effect=[
             _scalar_result(test_user),
@@ -5377,7 +6075,9 @@ async def test_place_community_stamps_lod_only_generated_model_as_visible_meshy_
             _scalar_result(project),
             _scalar_result(project.id),
             _scalars_result([zone]),
+            _scalar_result(project),
             _scalars_result([]),
+            _scalars_result([building]),
             _scalar_result(building),
         ]
     )
@@ -5389,14 +6089,16 @@ async def test_place_community_stamps_lod_only_generated_model_as_visible_meshy_
     )
 
     assert response.status_code == 200, response.text
-    assert zone.properties["community_3d"]["generator"] == "meshy"
+    assert zone.properties["community_3d"]["generator"] == "planned_massing"
     assert len(zone.properties["community_3d"]["representation_hash"]) == 64
     assert "legoAssembly" not in building.specifications
     assert "lego_placed" not in building.specifications
     assert building.specifications["plannedMassing"]["source_zone_id"] == str(zone.id)
-    assert building.name == "LOD model"
-    assert building.floor_count == 7
-    assert building.height_meters == 24
+    assert building.name == "Deco Theater Mainstreet"
+    assert building.floor_count == 4
+    assert building.height_meters == 14
+    assert building.lod_urls == {"0": "/api/v1/files/lod-zero.glb"}
+    assert building.specifications["plannedMassing"]["archetype_id"] == "deco_theater_mainstreet"
 
 
 @pytest.mark.anyio
@@ -5404,6 +6106,9 @@ async def test_place_community_rebuild_upgrades_massing_without_losing_public_re
     client, mock_db, test_user, auth_headers
 ):
     project = FakeProject(owner_id=test_user.id)
+    entries = _ai_recipe_inventory()
+    catalog = build_lego_planning_catalog(entries)
+    plan = _plan_for_ai_recipe(entries)
     building = Building(
         id=uuid.uuid4(),
         project_id=project.id,
@@ -5414,18 +6119,20 @@ async def test_place_community_rebuild_upgrades_massing_without_losing_public_re
             "plannedMassing": {
                 "schema_version": 1,
                 "source": "community_3d",
-                "archetype_id": "new_york_corner_bodega",
+                "archetype_id": "nordic_timber_midrise",
             },
             "modelUrlWorkflow": {"status": "preserve-me"},
         },
     )
     building_zone = _make_zone(
         project,
+        geometry=_calgary_rectangle_ewkt(24, 18.1),
         building_id=building.id,
         building_ids=[str(building.id)],
         properties={
             "_plan_role": "building",
-            "development_archetype_id": "new_york_corner_bodega",
+            "development_archetype_id": "nordic_timber_midrise",
+            "floors": 6,
         },
     )
     park_zone = _make_zone(
@@ -5453,6 +6160,8 @@ async def test_place_community_rebuild_upgrades_massing_without_losing_public_re
             _scalar_result(project),
             _scalar_result(project.id),
             _scalars_result([building_zone, park_zone]),
+            _scalar_result(project),
+            _scalars_result(entries),
             _scalars_result([building]),
             _scalar_result(building),
         ]
@@ -5463,7 +6172,10 @@ async def test_place_community_rebuild_upgrades_massing_without_losing_public_re
         headers=auth_headers,
         json={
             "items": [
-                _community_item(building_zone, recipe=_recipe_body()),
+                    _community_item(
+                        building_zone,
+                        recipe=_recipe_from_plan(plan, catalog.fingerprint),
+                    ),
                 _community_item(park_zone),
             ]
         },
@@ -5475,7 +6187,7 @@ async def test_place_community_rebuild_upgrades_massing_without_losing_public_re
     assert payload["items"][0]["building_created"] is False
     assert payload["items"][0]["generator"] == "lego_assembly"
     assert "plannedMassing" not in building.specifications
-    assert building.specifications["legoAssembly"]["module_family"] == "nordic-timber-midrise"
+    assert building.specifications["legoAssembly"]["module_family"] == "nordic-midrise"
     assert building.specifications["modelUrlWorkflow"] == {"status": "preserve-me"}
     assert building_zone.properties["community_3d"]["generator"] == "lego_assembly"
     assert park_zone.properties["green_space_archetype_id"] == "neighborhood_park"
@@ -5497,6 +6209,9 @@ async def test_place_community_archetype_switch_syncs_reused_building_metadata(
     client, mock_db, test_user, auth_headers
 ):
     project = FakeProject(owner_id=test_user.id)
+    entries = _ai_recipe_inventory()
+    catalog = build_lego_planning_catalog(entries)
+    plan = _plan_for_ai_recipe(entries)
     building = Building(
         id=uuid.uuid4(),
         project_id=project.id,
@@ -5512,22 +6227,17 @@ async def test_place_community_archetype_switch_syncs_reused_building_metadata(
     )
     zone = _make_zone(
         project,
+        geometry=_calgary_rectangle_ewkt(24, 18.1),
         building_id=building.id,
         building_ids=[str(building.id)],
         properties={
             "_plan_role": "building",
-            "development_archetype_id": "civic_modernism_rec_centre_variant_0",
-            "development_selected_variant_id": "rec_brick_glass_box",
+            "development_archetype_id": "nordic_timber_midrise",
+            "floors": 6,
         },
     )
-    zone.name = "Civic Modernism Rec Centre"
-    recipe = {
-        **_recipe_body(),
-        "module_family": "civic-modernism-rec-centre-v98-canonical",
-        "archetype_id": "rec_brick_glass_box",
-        "target": {"width_m": 55.0, "depth_m": 35.0, "floors": 2},
-        "assembled_height_m": 13.5,
-    }
+    zone.name = "Nordic Timber Midrise"
+    recipe = _recipe_from_plan(plan, catalog.fingerprint)
     mock_db.execute = AsyncMock(
         side_effect=[
             _scalar_result(test_user),
@@ -5535,6 +6245,8 @@ async def test_place_community_archetype_switch_syncs_reused_building_metadata(
             _scalar_result(project),
             _scalar_result(project.id),
             _scalars_result([zone]),
+            _scalar_result(project),
+            _scalars_result(entries),
             _scalars_result([building]),
             _scalar_result(building),
         ]
@@ -5548,10 +6260,10 @@ async def test_place_community_archetype_switch_syncs_reused_building_metadata(
 
     assert response.status_code == 200, response.text
     assert response.json()["items"][0]["building_created"] is False
-    assert building.name == "Civic Modernism Rec Centre"
+    assert building.name == "Nordic Timber Midrise"
     assert building.footprint == zone.geometry
-    assert building.floor_count == 2
-    assert building.height_meters == 13.5
+    assert building.floor_count == 6
+    assert building.height_meters == plan["assembled_height_m"]
     assert building.specifications["legoAssembly"]["module_family"] == recipe["module_family"]
     assert building.specifications["modelUrlWorkflow"] == {"status": "preserve-me"}
     assert zone.properties["community_3d"]["generator"] == "lego_assembly"
@@ -5901,6 +6613,52 @@ async def test_place_community_keeps_boundary_optional_for_manual_multi_zone_pla
     payload = response.json()
     assert payload["residual_landscape"]["boundary_count"] == 0
     assert payload["residual_landscape"]["derived_boundary_count"] == 0
+    mock_db.add.assert_not_called()
+
+
+@pytest.mark.anyio
+@pytest.mark.parametrize("revision", [None, "2026-07-19T12:00:00+00:00"])
+async def test_place_one_requires_current_source_revision_for_ai_zone(
+    revision, client, mock_db, test_user, auth_headers
+):
+    project = FakeProject(owner_id=test_user.id)
+    entries = _ai_recipe_inventory()
+    catalog = build_lego_planning_catalog(entries)
+    zone = _make_zone(
+        project,
+        properties={
+            "_plan_role": "building",
+            "_plan_scenario": "community_wellbeing",
+            "_lego_family_pending": True,
+            "_lego_family_pending_reason": "family_not_found",
+            "development_archetype_id": "nordic_timber_midrise",
+            "target_w_m": 24,
+            "target_d_m": 18,
+            "floors": 6,
+            "_lego_actual_footprint_profile": "rectangle",
+        },
+    )
+    recipe = _recipe_from_plan(_plan_for_ai_recipe(entries), catalog.fingerprint)
+    if revision is not None:
+        recipe["source_updated_at"] = revision
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(zone),
+            _scalar_result(project),
+            _scalar_result(project.id),
+        ]
+    )
+
+    response = await client.post(
+        f"/api/v1/lego-assembly/place/{zone.id}",
+        headers=auth_headers,
+        json=recipe,
+    )
+
+    assert response.status_code == 409
+    assert "source-zone revision" in response.json()["detail"] or "zone changed" in response.json()["detail"]
+    assert zone.building_id is None
     mock_db.add.assert_not_called()
 
 

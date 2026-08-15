@@ -44,11 +44,16 @@ describe('legoAssemblyApi', () => {
       target_floors: 6,
       archetype_id: 'nordic_timber_midrise',
       allow_setback: false,
+      allow_forced_fit: false,
     });
 
     expect(apiPost).toHaveBeenCalledWith(
       '/api/v1/lego-assembly/plan',
-      expect.objectContaining({ allow_setback: false, archetype_id: 'nordic_timber_midrise' }),
+      expect.objectContaining({
+        allow_setback: false,
+        allow_forced_fit: false,
+        archetype_id: 'nordic_timber_midrise',
+      }),
     );
     expect(result).toEqual(plan);
   });
@@ -222,7 +227,7 @@ describe('legoArchetypeContextFromZone', () => {
     expect(legoArchetypeContextFromZone(undefined)).toEqual({});
   });
 
-  it('prefers generation_style_input archetypeId and downstream reuse keys', () => {
+  it('prefers the current parent archetype over stale generation input', () => {
     const context = legoArchetypeContextFromZone({
       development_archetype_id: 'other_id',
       generation_style_input: {
@@ -231,10 +236,20 @@ describe('legoArchetypeContextFromZone', () => {
       },
     });
 
-    expect(context.archetype_id).toBe('nordic_timber_midrise');
+    expect(context.archetype_id).toBe('other_id');
     expect(context.allow_setback).toBe(false);
     // Empty strings are filtered out.
     expect(context.reuse_keys).toEqual(['timber', 'midrise']);
+  });
+
+  it('falls back to generation input when no current selection is stored', () => {
+    const context = legoArchetypeContextFromZone({
+      generation_style_input: {
+        archetypeId: 'nordic_timber_midrise',
+      },
+    });
+
+    expect(context.archetype_id).toBe('nordic_timber_midrise');
   });
 
   it('preserves an explicitly selected design variant over the parent visual reference', () => {

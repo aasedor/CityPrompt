@@ -875,6 +875,12 @@ export function resolveParkLegoContract(zone: ParkLegoZone): ParkLegoContract | 
     };
   }
 
+  // The backend stamps this marker when an exact park family is missing or
+  // outside its reviewed metric fit. Never fall through to the legacy static
+  // registry in that state: doing so would mount the very fixed kit the server
+  // rejected while hashing/certifying a source-fitted procedural fallback.
+  if (props.public_realm_fallback != null) return null;
+
   const familyId = familyForArchetype(legacyArchetype, role);
   if (!familyId) return null;
   const archetypeId = legacyArchetype || defaultArchetype(familyId);

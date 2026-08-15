@@ -199,6 +199,27 @@ describe('excludeLegoStackBuildings (Meshy-layer suppression filter)', () => {
     expect(kept.map((b) => b.id)).toEqual(['meshy', 'no-ring']);
     expect(hasLegoRecipe(recipeNoFootprint)).toBe(true); // still counted as a recipe holder
   });
+
+  it('lets current planned massing replace a retained historical Meshy URL', () => {
+    const planned = makeBuilding({
+      id: 'planned-now',
+      model_url: '/api/legacy-meshy.glb',
+      footprint_coordinates: CALGARY_RING,
+      specifications: {
+        plannedMassing: {
+          schema_version: 1,
+          source: 'community_3d',
+          source_zone_id: 'zone-planned',
+          archetype_id: 'pending_family',
+          floor_count: 4,
+          height_meters: 14,
+        },
+      },
+    });
+
+    expect(hasPlannedMassing(planned)).toBe(true);
+    expect(excludeLegoStackBuildings([planned])).toEqual([]);
+  });
 });
 
 describe('legoInstanceTransform', () => {

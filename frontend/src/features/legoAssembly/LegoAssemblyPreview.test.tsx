@@ -183,7 +183,7 @@ describe('LegoAssemblyPreview', () => {
     expect(screen.getByRole('button', { name: 'More floors' })).toBeEnabled();
   });
 
-  it('shows generation guidance only for a missing-family planning failure', async () => {
+  it('presents a missing detailed family as a nonblocking massing upgrade', async () => {
     apiPost.mockRejectedValueOnce(
       Object.assign(new Error('Unprocessable'), {
         response: {
@@ -201,22 +201,17 @@ describe('LegoAssemblyPreview', () => {
     render(<LegoAssemblyPreview zone={makeZone()} onClose={vi.fn()} />);
     fireEvent.click(screen.getByRole('button', { name: /auto assemble/i }));
 
-    expect(
-      await screen.findByText('No module family covers archetype nordic_timber_midrise.'),
-    ).toBeInTheDocument();
-    expect(screen.getByText(/No module family covers this archetype yet/)).toBeInTheDocument();
-    expect(
-      screen.getByText(/generate_family\.py --archetype-id nordic_timber_midrise/),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(/import_manifest\.py build\/archetypes\/nordic_timber_midrise/),
-    ).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /copy commands/i })).toBeInTheDocument();
+    expect(await screen.findByText(/Detailed Sticker\/LEGO family to add/)).toBeInTheDocument();
+    expect(screen.getByText(/correctly sized 32 × 20 m, 6-floor massing now/i)).toBeInTheDocument();
+    expect(screen.getByText(/Rebuild buildings upgrades it in place/i)).toBeInTheDocument();
+    expect(screen.queryByText(/No module family covers archetype/i)).not.toBeInTheDocument();
+    expect(document.querySelector('pre')).toBeNull();
+    expect(screen.queryByRole('button', { name: /copy commands/i })).not.toBeInTheDocument();
     // No plan — the canvas placeholder stays up.
     expect(screen.getByText(/Choose Auto Assemble/)).toBeInTheDocument();
   });
 
-  it('shows installed-family fit guidance without generation commands when the target is incompatible', async () => {
+  it('keeps incompatible-family massing ready and offers detailed-family sizes as optional guidance', async () => {
     apiPost.mockRejectedValueOnce(
       Object.assign(new Error('Unprocessable'), {
         response: {
@@ -241,9 +236,13 @@ describe('LegoAssemblyPreview', () => {
     render(<LegoAssemblyPreview zone={makeZone()} onClose={vi.fn()} />);
     fireEvent.click(screen.getByRole('button', { name: /auto assemble/i }));
 
-    expect(await screen.findByText(/Industrial Brick Brewery supports/)).toBeInTheDocument();
-    expect(screen.getByText(/matching family is installed/i)).toBeInTheDocument();
+    expect(await screen.findByText(/detailed family is outside its reviewed fit/i)).toBeInTheDocument();
+    expect(screen.getByText(/correctly sized 32 × 20 m, 6-floor massing now/i)).toBeInTheDocument();
+    expect(screen.getByText(/Change the dimensions only if you want to use this reviewed detailed family/i)).toBeInTheDocument();
+    expect(screen.getByText(/Optional detailed-family sizes/i)).toBeInTheDocument();
     expect(screen.getByText(/industrial-brick-brewery-v1-renderlocked: 40 × 26 m; 2–5 floors/i)).toBeInTheDocument();
+    expect(screen.queryByText(/Industrial Brick Brewery supports/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/assemble again/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/No module family covers this archetype yet/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/generate_family\.py/i)).not.toBeInTheDocument();
     expect(screen.queryByRole('button', { name: /copy commands/i })).not.toBeInTheDocument();
@@ -410,10 +409,15 @@ describe('LegoAssemblyPreview', () => {
   });
 
   it('carries an AI zone catalog fingerprint through both save and place recipes', async () => {
-    const aiRecipe = { ...savedRecipeFixture, catalog_fingerprint: aiCatalogFingerprint };
+    const currentCatalogFingerprint = 'b'.repeat(64);
+    const aiRecipe = { ...savedRecipeFixture, catalog_fingerprint: currentCatalogFingerprint };
     apiGet.mockResolvedValue({ data: { legoAssembly: null } });
     apiPost.mockImplementation((url: string) => {
-      if (url === '/api/v1/lego-assembly/plan') return Promise.resolve({ data: planFixture });
+      if (url === '/api/v1/lego-assembly/plan') {
+        return Promise.resolve({
+          data: { ...planFixture, catalog_fingerprint: currentCatalogFingerprint },
+        });
+      }
       if (url === '/api/v1/lego-assembly/recipes/bldg-ai') {
         return Promise.resolve({
           data: { status: 'saved', building_id: 'bldg-ai', legoAssembly: aiRecipe },
@@ -433,6 +437,7 @@ describe('LegoAssemblyPreview', () => {
           building_id: 'bldg-ai',
           properties: {
             development_archetype_id: 'nordic_timber_midrise',
+            _plan_scenario: 'community_wellbeing',
             _lego_catalog_fingerprint: aiCatalogFingerprint,
           },
         })}
@@ -448,7 +453,7 @@ describe('LegoAssemblyPreview', () => {
     await waitFor(() => {
       const saveCall = apiPost.mock.calls.find(([url]) => url === '/api/v1/lego-assembly/recipes/bldg-ai');
       expect(saveCall?.[1]).toEqual(expect.objectContaining({
-        catalog_fingerprint: aiCatalogFingerprint,
+        catalog_fingerprint: currentCatalogFingerprint,
       }));
     });
 
@@ -456,9 +461,36 @@ describe('LegoAssemblyPreview', () => {
     await waitFor(() => {
       const placeCall = apiPost.mock.calls.find(([url]) => url === '/api/v1/lego-assembly/place/zone-1');
       expect(placeCall?.[1]).toEqual(expect.objectContaining({
-        catalog_fingerprint: aiCatalogFingerprint,
+        catalog_fingerprint: currentCatalogFingerprint,
+        source_updated_at: '2026-07-13T00:00:00Z',
       }));
     });
+  });
+
+  it('disables forced fit for both AI and manual plans', async () => {
+    apiPost.mockResolvedValue({ data: planFixture });
+    const aiZone = makeZone({
+      properties: {
+        development_archetype_id: 'nordic_timber_midrise',
+        _plan_scenario: 'community_wellbeing',
+      },
+    });
+
+    const { unmount } = render(<LegoAssemblyPreview zone={aiZone} onClose={vi.fn()} />);
+    fireEvent.click(screen.getByRole('button', { name: /auto assemble/i }));
+    await waitFor(() => expect(apiPost).toHaveBeenCalledWith(
+      '/api/v1/lego-assembly/plan',
+      expect.objectContaining({ allow_forced_fit: false }),
+    ));
+    unmount();
+
+    apiPost.mockClear();
+    render(<LegoAssemblyPreview zone={makeZone()} onClose={vi.fn()} />);
+    fireEvent.click(screen.getByRole('button', { name: /auto assemble/i }));
+    await waitFor(() => expect(apiPost).toHaveBeenCalledWith(
+      '/api/v1/lego-assembly/plan',
+      expect.objectContaining({ allow_forced_fit: false }),
+    ));
   });
 
   it('shows an existing saved recipe on open and Load re-plans with its targets', async () => {

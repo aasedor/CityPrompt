@@ -1,11 +1,12 @@
-"""Final executable-LEGO binding for AI-generated building polygons.
+"""Final representation binding for AI-generated building polygons.
 
-The Master Planner chooses a proven family at its catalog footprint, while the
-geometry engine may stretch, clip, or segment that footprint to fit a real
-block. This final pure pass mirrors the browser's footprint measurement and
-proves the *actual* polygon against ``plan_vertical_assembly``. Incompatible
-identities are deterministically rebound to the closest stylistic family that
-can assemble at the exact polygon dimensions and storey count.
+The Master Planner may select any authored catalogue identity, while only a
+bounded subset has an imported LEGO family today. This pure pass mirrors the
+browser's footprint measurement and proves an exact identity against
+``plan_vertical_assembly``. A proven identity receives the executable
+catalogue fingerprint. An unavailable or incompatible identity is preserved
+unchanged and labelled family-pending so Community 3D can compile its exact
+footprint and authoritative height as neutral planned massing.
 """
 
 from __future__ import annotations
@@ -21,7 +22,6 @@ from app.services.lego_assembly import (
     plan_vertical_assembly,
 )
 from app.services.master_planner.lego_catalog import LegoPlanningCatalog
-from app.services.plan_geometry.archetypes import _norm, compatible_families, family_of
 
 METRES_PER_DEG_LAT = 110_540.0
 METRES_PER_DEG_LNG_EQUATOR = 111_320.0
@@ -42,17 +42,11 @@ class LegoGeometryBindingReport:
     omitted_building_indices: tuple[int, ...]
     repairs: tuple[tuple[str, str, str], ...]
     omissions: tuple[tuple[str, float, float, int], ...]
+    fallback_count: int
+    fallbacks: tuple[tuple[str, str, float, float, int, str], ...]
 
 
-# Geometry refinement can leave a very small clipped bar at a block edge. It
-# is better to return that sliver to the residual landscape than to persist an
-# AI building that the browser cannot assemble. The bounded policy prevents
-# this safety valve from silently hollowing out an incompatible plan.
-MAX_OMITTED_BUILDING_SHARE = 0.10
-MAX_OMITTED_FOOTPRINT_SHARE = 0.05
-
-
-def _frontend_footprint_analysis(
+def frontend_footprint_analysis(
     coordinates: object,
 ) -> tuple[float, float, str] | None:
     """Mirror the browser's dimensions and topology-profile classification."""
@@ -127,7 +121,9 @@ def _frontend_footprint_analysis(
         if abs(cross) > 1e-6 and (1 if cross > 0 else -1) != orientation:
             concave_vertices += 1
     fill_ratio = min(1.0, abs(signed_area) / max(raw_width * raw_depth, 1.0))
-    if fill_ratio >= NEAR_RECTANGLE_FILL_RATIO:
+    # Match the browser's topology rule: a hand-drawn four-corner envelope is
+    # a rectangle even when one imprecise point is slightly re-entrant.
+    if len(ring) == 4 or fill_ratio >= NEAR_RECTANGLE_FILL_RATIO:
         profile = "rectangle"
     elif concave_vertices >= 3:
         profile = "courtyard"
@@ -140,29 +136,9 @@ def _frontend_footprint_analysis(
     return width, depth, profile
 
 
-def _style_penalties(
-    *,
-    current_parent: str | None,
-    current_type: str,
-    current_aesthetic: str,
-    candidate_parent: str,
-    candidate_type: str,
-    candidate_aesthetic: str,
-) -> tuple[int, int, int]:
-    current_family = family_of(current_parent)
-    candidate_family = family_of(candidate_parent)
-    family_penalty = 0
-    if current_family and candidate_family:
-        family_penalty = int(candidate_family not in compatible_families(current_family))
-    type_penalty = int(_norm(candidate_type) != _norm(current_type))
-    requested_aesthetic = _norm(current_aesthetic)
-    offered_aesthetic = _norm(candidate_aesthetic)
-    aesthetic_penalty = int(
-        bool(requested_aesthetic)
-        and requested_aesthetic not in offered_aesthetic
-        and offered_aesthetic not in requested_aesthetic
-    )
-    return family_penalty, type_penalty, aesthetic_penalty
+# Compatibility alias for existing focused tests and internal callers. New
+# code should use the public spelling above.
+_frontend_footprint_analysis = frontend_footprint_analysis
 
 
 def bind_building_zones_to_lego(
@@ -170,7 +146,7 @@ def bind_building_zones_to_lego(
     library_entries: Iterable[Any],
     lego_catalog: LegoPlanningCatalog,
 ) -> tuple[list[dict[str, Any]], LegoGeometryBindingReport]:
-    """Return zones whose every AI building is proven at its actual footprint."""
+    """Bind exact families and preserve all other buildings as honest masses."""
 
     descriptors = [
         descriptor for entry in library_entries if (descriptor := descriptor_from_library_entry(entry)) is not None
@@ -180,8 +156,7 @@ def bind_building_zones_to_lego(
     repairs: list[tuple[str, str, str]] = []
     omissions: list[tuple[str, float, float, int]] = []
     omitted_building_indices: list[int] = []
-    measured_footprint_area = 0.0
-    omitted_footprint_area = 0.0
+    fallbacks: list[tuple[str, str, float, float, int, str]] = []
     building_count = 0
     unchanged_count = 0
 
@@ -191,6 +166,7 @@ def bind_building_zones_to_lego(
         depth_m: float,
         floors: int,
         footprint_profile: str,
+        wing_depth_m: float | None = None,
     ) -> dict[str, Any] | None:
         try:
             return plan_vertical_assembly(
@@ -202,6 +178,7 @@ def bind_building_zones_to_lego(
                     archetype_id=selectable_id,
                     allow_setback=False,
                     footprint_profile=footprint_profile,
+                    wing_depth_m=wing_depth_m,
                 ),
                 # Binding is a proof: genuine incompatibility must keep
                 # raising so identities re-home instead of force-fitting.
@@ -216,13 +193,12 @@ def bind_building_zones_to_lego(
             updated.append(zone)
             continue
         building_count += 1
-        analysis = _frontend_footprint_analysis(zone.get("coordinates"))
+        analysis = frontend_footprint_analysis(zone.get("coordinates"))
         if analysis is None:
             raise LegoGeometryCompatibilityError(
                 f"{zone.get('name') or 'Planned building'} has no measurable footprint."
             )
         width_m, depth_m, footprint_profile = analysis
-        measured_footprint_area += width_m * depth_m
         floors = max(
             1,
             math.floor(float(properties.get("floors") or 1) + 0.5),
@@ -249,118 +225,78 @@ def bind_building_zones_to_lego(
         ):
             current_plan = None
 
-        chosen_parent = parent_id
-        chosen_selectable = current_selectable
         if current_plan is None:
-            candidates: list[tuple[tuple[Any, ...], str, str, dict[str, Any]]] = []
-            for capability in lego_catalog.capabilities:
-                for selectable_id in capability.selectable_ids:
-                    if floors not in capability.supported_floors_by_selectable_id.get(selectable_id, ()):
-                        continue
-                    plan = _plan(
-                        selectable_id,
-                        width_m,
-                        depth_m,
-                        floors,
-                        footprint_profile,
-                    )
-                    if plan is None:
-                        continue
-                    penalties = _style_penalties(
-                        current_parent=parent_id or None,
-                        current_type=str(properties.get("development_type") or ""),
-                        current_aesthetic=str(properties.get("development_aesthetic") or ""),
-                        candidate_parent=capability.parent_id,
-                        candidate_type=capability.development_type,
-                        candidate_aesthetic=capability.aesthetic_category,
-                    )
-                    fit = plan.get("fit") or {}
-                    scale_x = max(float(fit.get("scale_x") or 1.0), 1e-6)
-                    scale_y = max(float(fit.get("scale_y") or 1.0), 1e-6)
-                    quality_penalty = int(not (0.80 <= scale_x <= 1.20 and 0.80 <= scale_y <= 1.20)) + int(
-                        not (0.67 <= scale_x <= 1.50 and 0.67 <= scale_y <= 1.50)
-                    )
-                    distortion = (
-                        abs(math.log(scale_x)) + abs(math.log(scale_y)) + 0.5 * abs(math.log(scale_x / scale_y))
-                    )
-                    fit_score = float(fit.get("score") or 0.0)
-                    score = (
-                        quality_penalty,
-                        *penalties,
-                        distortion,
-                        -fit_score,
-                        capability.parent_id,
-                        selectable_id,
-                    )
-                    candidates.append((score, capability.parent_id, selectable_id, plan))
-            if not candidates:
-                name = str(zone.get("name") or "Planned building")
-                omissions.append((name, width_m, depth_m, floors))
-                omitted_building_indices.append(building_count - 1)
-                omitted_footprint_area += width_m * depth_m
-                continue
-            _, chosen_parent, chosen_selectable, current_plan = min(candidates)
-            repairs.append(
+            reason = (
+                "family_not_found"
+                if capability is None
+                or current_selectable not in capability.selectable_ids
+                or lego_catalog.parent_by_selectable_id.get(current_selectable) != parent_id
+                else "family_incompatible"
+            )
+            properties["target_w_m"] = width_m
+            properties["target_d_m"] = depth_m
+            properties["_lego_actual_footprint_profile"] = footprint_profile
+            properties.pop("_lego_actual_wing_depth_m", None)
+            properties["archetype_source"] = "runtime_planned_massing_actual_footprint"
+            properties["_lego_family_pending"] = True
+            properties["_lego_family_pending_reason"] = reason
+            # These keys certify an exact executable inventory. Leaving one
+            # on a family-pending zone makes a safe recipe-less compile look
+            # like catalogue corruption and turns the fallback into a 409.
+            properties.pop("_lego_catalog_fingerprint", None)
+            properties.pop("_lego_runtime_selection_id", None)
+            properties.pop("_lego_runtime_repaired_from", None)
+            fallbacks.append(
                 (
                     str(zone.get("name") or "Planned building"),
                     current_selectable or "unassigned",
-                    chosen_selectable,
+                    width_m,
+                    depth_m,
+                    floors,
+                    reason,
                 )
             )
         else:
             unchanged_count += 1
-
-        capability = capability_by_parent[chosen_parent]
-        properties["development_archetype_id"] = chosen_parent
-        properties["development_type"] = capability.development_type
-        properties["development_aesthetic"] = capability.aesthetic_category
-        properties["target_w_m"] = width_m
-        properties["target_d_m"] = depth_m
-        properties["_lego_actual_footprint_profile"] = footprint_profile
-        properties["archetype_source"] = "runtime_lego_actual_footprint"
-        properties["_lego_catalog_fingerprint"] = lego_catalog.fingerprint
-        properties["_lego_runtime_selection_id"] = chosen_selectable
-        if chosen_selectable != chosen_parent:
-            properties["development_selected_variant_id"] = chosen_selectable
-        else:
-            properties.pop("development_selected_variant_id", None)
-        if current_selectable and current_selectable != chosen_selectable:
-            properties["_lego_runtime_repaired_from"] = current_selectable
+            assert capability is not None
+            properties["development_type"] = capability.development_type
+            properties["development_aesthetic"] = capability.aesthetic_category
+            properties["target_w_m"] = width_m
+            properties["target_d_m"] = depth_m
+            properties["_lego_actual_footprint_profile"] = footprint_profile
+            if footprint_profile == "rectangle":
+                properties.pop("_lego_actual_wing_depth_m", None)
+            else:
+                properties["_lego_actual_wing_depth_m"] = float(
+                    current_plan["target"]["wing_depth_m"]
+                )
+            properties["archetype_source"] = "runtime_lego_actual_footprint"
+            properties["_lego_catalog_fingerprint"] = lego_catalog.fingerprint
+            properties["_lego_runtime_selection_id"] = current_selectable
+            properties.pop("_lego_runtime_repaired_from", None)
+            properties.pop("_lego_family_pending", None)
+            properties.pop("_lego_family_pending_reason", None)
 
         rebound = dict(zone)
         rebound["properties"] = properties
         updated.append(rebound)
 
-    omitted_count = len(omissions)
-    if omitted_count:
-        omitted_footprint_share = omitted_footprint_area / max(measured_footprint_area, 1.0)
-        allowed_count = max(
-            1,
-            math.ceil(building_count * MAX_OMITTED_BUILDING_SHARE),
-        )
-        if omitted_count > allowed_count or omitted_footprint_share > MAX_OMITTED_FOOTPRINT_SHARE:
-            name, width_m, depth_m, floors = omissions[0]
-            raise LegoGeometryCompatibilityError(
-                f"{name} ({width_m:g} × {depth_m:g} m, {floors} floors) has no "
-                "executable LEGO family; the incompatible footprints exceed the "
-                "bounded residual-landscape allowance "
-                f"({omitted_count}/{building_count} buildings, "
-                f"{omitted_footprint_share:.1%} of building footprint)."
-            )
-
     return updated, LegoGeometryBindingReport(
         building_count=building_count,
-        retained_count=building_count - omitted_count,
+        retained_count=building_count,
         unchanged_count=unchanged_count,
         repaired_count=len(repairs),
-        omitted_count=omitted_count,
+        omitted_count=len(omissions),
         omitted_building_indices=tuple(omitted_building_indices),
         repairs=tuple(repairs),
         omissions=tuple(omissions),
+        fallback_count=len(fallbacks),
+        fallbacks=tuple(fallbacks),
     )
 
 
 __all__ = [
+    "frontend_footprint_analysis",
     "LegoGeometryBindingReport",
     "LegoGeometryCompatibilityError",
     "bind_building_zones_to_lego",

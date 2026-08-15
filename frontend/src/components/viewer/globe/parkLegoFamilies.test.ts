@@ -281,6 +281,27 @@ describe('Public Realm LEGO V1 park families', () => {
     expect(usesArchetypeOwnedParkSurface(compiled)).toBe(true);
   });
 
+  it('does not mount a legacy exact kit over a certified source-fitted fallback', () => {
+    const incompatibleSize = zone({
+      green_space_archetype_id: 'neighborhood_park',
+      green_space_selected_variant_id: 'neighborhood_park_v0',
+      public_realm_fallback: {
+        schema_version: 1,
+        state: 'family_pending',
+        kind: 'park',
+        generator: 'park_kit',
+        archetype_id: 'neighborhood_park',
+        variant_id: 'neighborhood_park_v0',
+        target_source: 'zone_geometry',
+      },
+    });
+
+    expect(resolveParkLegoContract(incompatibleSize)).toBeNull();
+    expect(resolveParkLegoAppearance(incompatibleSize)).toBeNull();
+    expect(usesArchetypeOwnedParkSurface(incompatibleSize)).toBe(false);
+    expect(isExecutableParkLegoFamily(incompatibleSize)).toBe(false);
+  });
+
   it.each([
     ['community_park', 'community_park_v0', 'park_neighborhood_community'],
     ['pond_lake', 'pond_lake_v0', 'park_water_ecology'],

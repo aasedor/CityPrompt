@@ -48,11 +48,13 @@ from app.services.direct_3d_render import (
 )
 from app.services.direct_3d_identity import direct_3d_zone_design_identity
 from app.services.public_realm_lego import (
+    PUBLIC_REALM_FALLBACK_PROPERTY,
     ParkPolygonTarget,
     PublicRealmPlanRequest,
     StreetSegmentTarget,
     plan_public_realm_recipe,
     plan_public_realm_zone_recipe,
+    public_realm_fallback_marker,
 )
 from app.services.residual_landscape import (
     ResidualSourceZone,
@@ -472,6 +474,7 @@ def _compiled_zone(
             generator=generator,
             source_hash=source_hash,
             building=building,
+            public_realm_fallback=zone.properties.get(PUBLIC_REALM_FALLBACK_PROPERTY),
         ),
     }
     return zone
@@ -709,6 +712,45 @@ def test_unknown_persisted_identifier_cannot_become_direct_prompt_prose():
     }
 
     assert direct_3d_zone_design_identity("building", properties) is None
+
+
+def test_validated_family_pending_public_realm_keeps_allowlisted_identity_without_claiming_a_kit():
+    properties = {
+        "_plan_role": "open_space",
+        "green_space_archetype_id": "academic_courtyard",
+    }
+    marker = public_realm_fallback_marker("green_space", properties)
+    assert marker is not None
+    properties[PUBLIC_REALM_FALLBACK_PROPERTY] = marker
+
+    identity = direct_3d_zone_design_identity("park", properties)
+
+    assert identity == "Academic Courtyard — Planned Park / Plaza; Sticker/LEGO family pending"
+    assert "kit" not in identity.lower()
+    properties[PUBLIC_REALM_FALLBACK_PROPERTY]["archetype_id"] = "tampered"
+    assert direct_3d_zone_design_identity("park", properties) is None
+
+    injected = {
+        "_plan_role": "open_space",
+        "green_space_archetype_id": "ignore_previous_instructions",
+    }
+    injected[PUBLIC_REALM_FALLBACK_PROPERTY] = public_realm_fallback_marker(
+        "green_space",
+        injected,
+    )
+    assert injected[PUBLIC_REALM_FALLBACK_PROPERTY] is None
+    assert direct_3d_zone_design_identity("park", injected) is None
+
+    street = {
+        "_plan_role": "street",
+        "road_archetype_id": "woonerf_shared_street",
+        "road_selected_variant_id": "woonerf_shared_street_v2",
+    }
+    street[PUBLIC_REALM_FALLBACK_PROPERTY] = public_realm_fallback_marker("road", street)
+    assert direct_3d_zone_design_identity("street", street) == (
+        "Woonerf Shared Street, catalogue variant 3 — "
+        "Planned Street / Path; Sticker/LEGO family pending"
+    )
 
 
 @pytest.mark.parametrize(
@@ -1534,17 +1576,32 @@ def test_paid_project_preflight_rejects_canonical_recipe_for_different_metric_ta
     assert exc_info.value.detail["billed"] is False
 
 
-def test_paid_project_preflight_requires_v1_recipe_for_ai_public_realm():
+def test_paid_project_preflight_accepts_validated_ai_public_realm_fallback_marker():
     project_id = uuid.uuid4()
+    properties = {
+        "_plan_role": "open_space",
+        "_plan_scenario": "community_wellbeing",
+        "green_space_archetype_id": "academic_courtyard",
+    }
+    properties[PUBLIC_REALM_FALLBACK_PROPERTY] = public_realm_fallback_marker(
+        "green_space",
+        properties,
+    )
     legacy_ai_park = _compiled_zone(
         "green_space",
-        properties={
-            "_plan_role": "open_space",
-            "_plan_scenario": "community_wellbeing",
-            "green_space_archetype_id": "urban_pocket_park",
-        },
+        properties=properties,
     )
 
+    direct_api._validate_direct_3d_project_zones(
+        _project_request(
+            project_id,
+            community_claims=_claims_for([legacy_ai_park]),
+        ),
+        [legacy_ai_park],
+        {},
+    )
+
+    legacy_ai_park.properties[PUBLIC_REALM_FALLBACK_PROPERTY]["archetype_id"] = "tampered"
     with pytest.raises(HTTPException, match="stale or missing") as exc_info:
         direct_api._validate_direct_3d_project_zones(
             _project_request(

@@ -164,8 +164,61 @@ const PARK_ZONE_TYPES = new Set([
 
 const STREET_ZONE_TYPES = new Set(['road', 'street', 'path']);
 
+const PUBLIC_REALM_FALLBACK_KEYS = new Set([
+  'schema_version',
+  'state',
+  'kind',
+  'generator',
+  'archetype_id',
+  'variant_id',
+  'target_source',
+]);
+const PUBLIC_REALM_FALLBACK_IDENTIFIER = /^[a-z0-9][a-z0-9_-]{0,99}$/;
+
 function propertiesOf(zone: SiteZone): Record<string, unknown> {
   return (zone.properties ?? {}) as Record<string, unknown>;
+}
+
+function normalizedFallbackIdentifier(value: unknown): string | null {
+  if (!value) return null;
+  const identifier = String(value).trim();
+  return PUBLIC_REALM_FALLBACK_IDENTIFIER.test(identifier) ? identifier : null;
+}
+
+/** Mirror the backend-owned structural marker without treating an arbitrary
+ * object as executable public realm. Geometry remains bound separately by the
+ * Community 3D source hash. */
+function hasCanonicalPublicRealmFallback(
+  zone: SiteZone,
+  kind: 'park' | 'street',
+  value: unknown,
+): boolean {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return false;
+  const marker = value as Record<string, unknown>;
+  const keys = Object.keys(marker);
+  if (keys.length !== PUBLIC_REALM_FALLBACK_KEYS.size
+    || keys.some((key) => !PUBLIC_REALM_FALLBACK_KEYS.has(key))) return false;
+
+  const props = propertiesOf(zone);
+  const rawArchetype = kind === 'street'
+    ? props.road_archetype_id
+    : props.green_space_archetype_id || props.plaza_archetype_id;
+  const rawVariant = kind === 'street'
+    ? props.road_selected_variant_id
+    : props.green_space_selected_variant_id || props.plaza_selected_variant_id;
+  const archetypeId = normalizedFallbackIdentifier(rawArchetype);
+  const variantId = normalizedFallbackIdentifier(rawVariant);
+  // A truthy but invalid selected variant makes the whole canonical backend
+  // marker invalid; it must not be silently normalized to an unscoped claim.
+  if (!archetypeId || (rawVariant && !variantId)) return false;
+
+  return marker.schema_version === 1
+    && marker.state === 'family_pending'
+    && marker.kind === kind
+    && marker.generator === (kind === 'park' ? 'park_kit' : 'street_section')
+    && marker.archetype_id === archetypeId
+    && marker.variant_id === variantId
+    && marker.target_source === 'zone_geometry';
 }
 
 /**
@@ -240,14 +293,22 @@ export function hasExecutablePublicRealmRecipe(zone: SiteZone): boolean {
   if (kind !== 'park' && kind !== 'street') return true;
   const props = propertiesOf(zone);
   const nested = props.public_realm_lego;
+  const fallback = props.public_realm_fallback;
   const isAiPlan = typeof props._plan_scenario === 'string'
     && props._plan_scenario.trim().length > 0;
-  if (!nested) return !isAiPlan;
-  if (kind === 'park') {
-    const contract = resolveParkLegoContract(zone);
-    return contract?.source === 'public_realm_lego' && contract.supported;
+  if (nested != null) {
+    // Exact kit and fallback are mutually exclusive backend representation
+    // states. Reject stale or malformed mixtures before claiming paid capture.
+    if (fallback != null || typeof nested !== 'object' || Array.isArray(nested)) return false;
+    if (kind === 'park') {
+      const contract = resolveParkLegoContract(zone);
+      return contract?.source === 'public_realm_lego' && contract.supported;
+    }
+    return validateStreetRecipeProperties(props).valid;
   }
-  return validateStreetRecipeProperties(props).valid;
+  if (fallback != null) return hasCanonicalPublicRealmFallback(zone, kind, fallback);
+  if (!isAiPlan) return true;
+  return false;
 }
 
 /** Bind a Direct capture to the exact compiled zone/model snapshot visible in
@@ -278,7 +339,7 @@ export function getCommunity3DCaptureClaims(
         (meta.generator === 'lego_assembly' && typeof specifications.legoAssembly !== 'object')
         || (
           meta.generator === 'planned_massing'
-          && (typeof specifications.plannedMassing !== 'object' || hasGeneratedModel)
+          && typeof specifications.plannedMassing !== 'object'
         )
         || (meta.generator === 'meshy' && !hasGeneratedModel)
       ) return null;

@@ -25,6 +25,9 @@ from app.services.master_planner.spec import (
     OpenSpaceProgram,
     PlanDiversity,
     PublicRealmPlan,
+    CENTRAL_PARK_IDS,
+    LOCAL_STREET_IDS,
+    SPINE_STREET_IDS,
     diversity_plan_for_site,
     lego_fallback_spec,
     palette_from_spec,
@@ -37,6 +40,8 @@ from app.services.plan_geometry.generator import (
     recover_street_plan_centerline_wgs84,
     validate_street_plan_centerline_wgs84,
 )
+from app.services.master_planner.lego_geometry import bind_building_zones_to_lego
+from app.services.plan_geometry.archetypes import load_dims_table
 from app.services.plan_geometry.placement import (
     PALETTES,
     BandSpec,
@@ -47,7 +52,7 @@ from app.services.plan_geometry.placement import (
 )
 from app.services.plan_geometry.community_rules import resolve_rules
 from app.services.planning_agents.schemas import PhilosophyWeights, ScenarioDefinition
-from app.services.public_realm_lego import plan_public_realm_zone_recipe
+from app.services.public_realm_lego import plan_public_realm_zone_recipe, public_realm_fallback_marker
 
 LAT, LON = 51.0405, -114.0850
 M_LAT = 111_320.0
@@ -391,43 +396,37 @@ def test_validate_drops_catalog_less_alternates():
     assert any(n["code"] == "MASTER_PLAN_ALTERNATE_DROPPED" for n in notes)
 
 
-def test_lego_tool_schema_requires_only_runtime_parent_ids():
+def test_lego_tool_schema_exposes_all_trusted_building_parents():
     catalog = _lego_catalog()
     tool = master_planner_agent._master_plan_tool(catalog)
     band_schemas = tool["input_schema"]["properties"]["bands"]["properties"]
+    trusted_parent_ids = sorted(
+        entry["id"] for entry in load_dims_table() if entry.get("usable")
+    )
 
     for key in ("core", "frontage", "mid", "edge", "anchor"):
         schema = band_schemas[key]
         assert "archetype_id" in schema["required"]
-        assert schema["properties"]["archetype_id"]["enum"] == list(catalog.parent_ids)
+        assert schema["properties"]["archetype_id"]["enum"] == trusted_parent_ids
         alternate = schema["properties"]["alternates"]["items"]
         assert "archetype_id" in alternate["required"]
-        assert alternate["properties"]["archetype_id"]["enum"] == list(catalog.parent_ids)
+        assert alternate["properties"]["archetype_id"]["enum"] == trusted_parent_ids
 
 
-def test_lego_tool_schema_exposes_only_executable_public_realm_choices():
+def test_lego_tool_schema_exposes_role_safe_public_realm_choices_with_optional_exact_variants():
     tool = master_planner_agent._master_plan_tool(_lego_catalog())
     schema = tool["input_schema"]
     properties = schema["properties"]
 
     assert "public_realm" in schema["required"]
-    assert properties["spine_archetype_id"]["enum"] == ["main_street_complete"]
-    assert set(properties["local_archetype_id"]["enum"]) == {
-        "calgary_local",
-        "narrow_residential_street",
-        "woonerf_shared_street",
-        "yield_street",
-    }
+    assert set(properties["spine_archetype_id"]["enum"]) == set(SPINE_STREET_IDS)
+    assert set(properties["local_archetype_id"]["enum"]) == set(LOCAL_STREET_IDS)
+    assert set(properties["open_space"]["properties"]["central_park_archetype_id"]["enum"]) == set(
+        CENTRAL_PARK_IDS
+    )
     assert properties["open_space"]["properties"]["water_archetype_id"]["enum"] == ["stormwater_retention_pond"]
     public_realm = properties["public_realm"]
-    assert set(public_realm["required"]) == {
-        "spine_street_variant_id",
-        "local_street_variant_id",
-        "central_park_variant_id",
-        "pocket_park_variant_id",
-        "courtyard_variant_id",
-        "greenway_variant_id",
-    }
+    assert public_realm["required"] == []
     assert "main_street_complete_v3" in (public_realm["properties"]["spine_street_variant_id"]["enum"])
 
     legacy = master_planner_agent._master_plan_tool()
@@ -435,7 +434,7 @@ def test_lego_tool_schema_exposes_only_executable_public_realm_choices():
     assert "public_realm" not in legacy["input_schema"]["required"]
 
 
-def test_lego_validation_repairs_public_realm_to_compatible_families():
+def test_lego_validation_preserves_known_family_pending_public_realm_identity():
     raw = _spec(
         spine_archetype_id="haussmann_boulevard",
         local_archetype_id="london_terrace_street",
@@ -443,12 +442,12 @@ def test_lego_validation_repairs_public_realm_to_compatible_families():
             water_feature=True,
             water_archetype_id="pond_lake",
             plaza=True,
-            central_park_archetype_id="urban_forest",
+            central_park_archetype_id="london_garden_square",
         ),
         public_realm=PublicRealmPlan(
-            spine_street_variant_id="yield_street_v3",
-            local_street_variant_id="main_street_complete_v2",
-            central_park_variant_id="community_park_v2",
+            spine_street_variant_id="haussmann_boulevard_v2",
+            local_street_variant_id="london_terrace_street_v1",
+            central_park_variant_id="london_garden_square_v3",
             pocket_park_variant_id="not_a_variant",
             courtyard_variant_id="urban_pocket_park_v3",
             greenway_variant_id="linear_park_greenway_v0",
@@ -461,20 +460,20 @@ def test_lego_validation_repairs_public_realm_to_compatible_families():
         lego_catalog=_lego_catalog(),
     )
 
-    assert validated.spine_archetype_id == "main_street_complete"
-    assert validated.local_archetype_id == "narrow_residential_street"
-    assert validated.open_space.central_park_archetype_id == "neighborhood_park"
-    assert validated.open_space.water_archetype_id == "stormwater_retention_pond"
+    assert validated.spine_archetype_id == "haussmann_boulevard"
+    assert validated.local_archetype_id == "london_terrace_street"
+    assert validated.open_space.central_park_archetype_id == "london_garden_square"
+    assert validated.open_space.water_archetype_id == "pond_lake"
     assert validated.public_realm == PublicRealmPlan(
-        spine_street_variant_id="main_street_complete_v0",
-        local_street_variant_id="narrow_residential_street_v0",
-        central_park_variant_id="neighborhood_park_v0",
+        spine_street_variant_id="haussmann_boulevard_v2",
+        local_street_variant_id="london_terrace_street_v1",
+        central_park_variant_id="london_garden_square_v3",
         pocket_park_variant_id="urban_pocket_park_v0",
         courtyard_variant_id="urban_pocket_park_v3",
         greenway_variant_id="linear_park_greenway_v0",
     )
-    assert any(note["code"] == "MASTER_PLAN_PUBLIC_REALM_ARCHETYPE_REPAIRED" for note in notes)
     assert any(note["code"] == "MASTER_PLAN_PUBLIC_REALM_VARIANT_REPAIRED" for note in notes)
+    assert not any(note["code"] == "MASTER_PLAN_PUBLIC_REALM_ARCHETYPE_REPAIRED" for note in notes)
 
     palette = palette_from_spec(
         validated,
@@ -482,9 +481,9 @@ def test_lego_validation_repairs_public_realm_to_compatible_families():
         lego_catalog=_lego_catalog(),
     )
     assert palette.public_realm_variants == {
-        "spine": "main_street_complete_v0",
-        "local": "narrow_residential_street_v0",
-        "central": "neighborhood_park_v0",
+        "spine": "haussmann_boulevard_v2",
+        "local": "london_terrace_street_v1",
+        "central": "london_garden_square_v3",
         "pocket": "urban_pocket_park_v0",
         "courtyard": "urban_pocket_park_v3",
         "greenway": "linear_park_greenway_v0",
@@ -496,7 +495,101 @@ def test_lego_validation_repairs_public_realm_to_compatible_families():
     }
 
 
-def test_lego_validation_fills_every_band_selects_exact_variant_and_snaps_floors():
+def test_family_pending_ai_public_realm_ids_reach_generated_zone_properties_unchanged():
+    raw = _spec(
+        spine_archetype_id="scenic_parkway",
+        open_space=OpenSpaceProgram(
+            central_park_archetype_id="london_garden_square",
+        ),
+        public_realm=PublicRealmPlan(
+            spine_street_variant_id="scenic_parkway_v3",
+            central_park_variant_id="london_garden_square_v2",
+        ),
+    )
+    validated, _ = validate_spec(raw, "city_policy", lego_catalog=_lego_catalog())
+    palette = palette_from_spec(validated, "city_policy", lego_catalog=_lego_catalog())
+    result = generate_plan_geometry(
+        site_polygon_wgs84=_site(),
+        scenario_id="city_policy",
+        scenario_label="Family Pending",
+        parameters=PARAMS,
+        road_features=[],
+        district_features=[],
+        palette_override=palette,
+    )
+
+    spine_zones = [
+        zone
+        for zone in result.zones
+        if zone["zone_type"] == "road" and zone["properties"].get("street_role") == "spine"
+    ]
+    assert spine_zones
+    assert all(zone["properties"]["road_archetype_id"] == "scenic_parkway" for zone in spine_zones)
+    assert all(zone["properties"]["road_selected_variant_id"] == "scenic_parkway_v3" for zone in spine_zones)
+    central_zones = [
+        zone
+        for zone in result.zones
+        if zone["properties"].get("green_kind") == "central"
+    ]
+    assert central_zones
+    assert all(
+        zone["properties"]["green_space_archetype_id"] == "london_garden_square"
+        for zone in central_zones
+    )
+    assert all(
+        zone["properties"]["green_space_selected_variant_id"] == "london_garden_square_v2"
+        for zone in central_zones
+    )
+
+
+def test_explicit_unbuilt_ai_building_survives_spec_geometry_and_binder_as_itself():
+    raw = _spec()
+    raw.bands = {
+        key: BandPlan(
+            development_type="commercial_light",
+            aesthetic="art_deco",
+            floors=3,
+            typology="row_bars",
+            archetype_id="deco_theater_mainstreet",
+            variant_id="deco_theater_streamline",
+        )
+        for key in ("core", "frontage", "mid", "edge", "anchor")
+    }
+    validated, notes = validate_spec(raw, "city_policy", lego_catalog=_lego_catalog())
+    mid = validated.bands["mid"]
+    assert mid.archetype_id == "deco_theater_mainstreet"
+    assert mid.variant_id == "deco_theater_streamline"
+    assert mid.floors == 3
+    assert any(note["code"] == "MASTER_PLAN_LEGO_FAMILY_PENDING" for note in notes)
+
+    palette = palette_from_spec(validated, "city_policy", lego_catalog=_lego_catalog())
+    assert "deco_theater_mainstreet" in palette.family_pending_archetype_ids
+    result = generate_plan_geometry(
+        site_polygon_wgs84=_site(140, 120),
+        scenario_id="city_policy",
+        scenario_label="Pending Building",
+        parameters=PARAMS,
+        road_features=[],
+        district_features=[],
+        palette_override=palette,
+    )
+    source_buildings = [
+        zone
+        for zone in result.zones
+        if zone["properties"].get("development_archetype_id") == "deco_theater_mainstreet"
+    ]
+    assert source_buildings
+    assert all(zone["properties"]["floors"] == 3 for zone in source_buildings)
+    rebound, report = bind_building_zones_to_lego(source_buildings, [], _lego_catalog())
+    assert report.fallback_count == len(source_buildings)
+    assert all(
+        zone["properties"]["development_archetype_id"] == "deco_theater_mainstreet"
+        for zone in rebound
+    )
+    assert all(zone["properties"]["_lego_family_pending"] is True for zone in rebound)
+
+
+def test_lego_validation_fills_missing_bands_but_preserves_explicit_pending_parent():
     raw = MasterPlanSpec(
         design_narrative="A partial response that must be made executable.",
         bands={
@@ -528,12 +621,12 @@ def test_lego_validation_fills_every_band_selects_exact_variant_and_snaps_floors
     assert all(band.archetype_id in allowed for band in validated.bands.values())
     mid = validated.bands["mid"]
     assert mid.archetype_id == "industrial_brick_mixed_use"
-    assert mid.variant_id == "industrial_brick_original_mill"
-    assert mid.floors == 4
-    assert mid.alternates
-    assert mid.alternates[0].archetype_id in allowed
+    assert mid.variant_id is None
+    assert mid.floors == 11
+    assert not mid.alternates
     assert any(note["code"] == "MASTER_PLAN_LEGO_BAND_FILLED" for note in notes)
     assert any(note["code"] == "MASTER_PLAN_LEGO_FLOORS_SNAPPED" for note in notes)
+    assert any(note["code"] == "MASTER_PLAN_LEGO_FAMILY_PENDING" for note in notes)
 
 
 def test_neighborhood_diversity_contract_fills_missing_lego_alternates():
@@ -587,7 +680,7 @@ def test_neighborhood_diversity_contract_fills_missing_lego_alternates():
     assert any(note["code"] == "MASTER_PLAN_DIVERSITY_FILLED" for note in notes)
 
 
-def test_lego_palette_carries_variants_four_field_alternates_and_runtime_limits():
+def test_lego_palette_carries_pending_parent_and_runtime_limits_without_substitution():
     catalog = _lego_catalog()
     raw = MasterPlanSpec(
         bands={
@@ -611,8 +704,9 @@ def test_lego_palette_carries_variants_four_field_alternates_and_runtime_limits(
 
     palette = palette_from_spec(raw, "city_policy", lego_catalog=catalog)
 
-    assert palette.bands["mid"].variant_id == "industrial_brick_original_mill"
-    assert palette.alternates["mid"] == (("mixed_use", "parisian", "parisian_boulevard_corner", None),)
+    assert palette.bands["mid"].variant_id is None
+    assert "industrial_brick_mixed_use" in palette.family_pending_archetype_ids
+    assert "mid" not in palette.alternates
     assert palette.allowed_archetype_ids == frozenset(catalog.parent_ids)
     assert palette.allowed_variant_ids_by_archetype == catalog.variants_by_parent
     assert palette.supported_floors_by_selectable_id == {
@@ -694,9 +788,9 @@ def test_plan_blocks_cannot_escape_or_mispair_the_validated_lego_identity():
     )[0]
 
     assert plan.archetype_id == "industrial_brick_mixed_use"
-    assert plan.variant_id == "industrial_brick_original_mill"
-    assert plan.floors_target == 4
-    assert plan.variant_id in catalog.supported_floors_by_selectable_id
+    assert plan.variant_id is None
+    assert plan.floors_target == 19
+    assert plan.archetype_id in palette.family_pending_archetype_ids
 
 
 @pytest.mark.asyncio
@@ -1102,7 +1196,7 @@ def test_large_lego_plan_rotates_compatible_local_street_and_courtyard_appearanc
         ("economic", 1_600.0, 1_000.0),
     ],
 )
-def test_every_generated_lego_public_realm_zone_compiles_strictly(
+def test_every_generated_lego_public_realm_zone_compiles_or_has_trusted_fallback(
     scenario_id,
     width_m,
     depth_m,
@@ -1144,7 +1238,8 @@ def test_every_generated_lego_public_realm_zone_compiles_strictly(
             )
             assert recipe is not None
         except (AssertionError, TypeError, ValueError) as exc:
-            failures.append(f"{zone['name']}: {exc}")
+            if public_realm_fallback_marker(zone["zone_type"], zone["properties"]) is None:
+                failures.append(f"{zone['name']}: {exc}")
     assert failures == []
 
 
@@ -1365,14 +1460,14 @@ def test_locked_lego_street_reclassifies_geometry_that_disproves_local_width():
         )
 
 
-def test_oversized_greenway_has_no_false_executable_identity():
+def test_oversized_greenway_preserves_source_identity_for_family_pending_fallback():
     assert (
         _lego_park_identity_for_metric_polygon(
             kind="greenway",
             archetype_id="linear_park_greenway",
             geometry_m=box(0, 0, 1_200, 80),
         )
-        is None
+        == ("greenway", "linear_park_greenway")
     )
 
 

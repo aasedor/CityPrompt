@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom/vitest';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render as rtlRender, screen, waitFor, fireEvent } from '@testing-library/react';
-import type { ReactElement } from 'react';
+import { StrictMode, type ReactElement } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 // The panel calls useQueryClient (Place invalidates the project/zone queries).
@@ -169,6 +169,7 @@ describe('LegoBuilderPanel', () => {
         target_depth_m: 70,
         target_floors: 6,
         allow_setback: false,
+        allow_forced_fit: false,
         archetype_id: 'nordic_timber_midrise',
       }),
     );
@@ -183,9 +184,9 @@ describe('LegoBuilderPanel', () => {
       }),
     );
 
-    expect(await screen.findByText(/Assembled 2/)).toBeInTheDocument();
-    expect(screen.getByText(/No family 0/)).toBeInTheDocument();
-    expect(screen.getByText(/Skipped 0/)).toBeInTheDocument();
+    expect(await screen.findByText(/Detailed 2/)).toBeInTheDocument();
+    expect(screen.getByText(/Massing ready 0/)).toBeInTheDocument();
+    expect(screen.getByText(/Needs footprint 0/)).toBeInTheDocument();
     expect(screen.getByText('2 buildings · 0 parks · 1 streets')).toBeInTheDocument();
   });
 
@@ -203,7 +204,13 @@ describe('LegoBuilderPanel', () => {
                 area_sqm: 400,
                 placement_count: 2,
               },
-              items: [],
+              items: [{
+                zone_id: 'auto-building',
+                kind: 'building',
+                building_id: 'auto-building-model',
+                building_created: true,
+                generator: 'lego_assembly',
+              }],
             },
           })
         : Promise.resolve({ data: planFixture })
@@ -229,14 +236,112 @@ describe('LegoBuilderPanel', () => {
     expect(await screen.findByText(/landscaped 400 m² of residual site with 2 trees/i)).toBeInTheDocument();
   });
 
-  it('recovers an auto-build from a changed source by refetching and replanning once', async () => {
+  it('starts one planning and compile pass under React StrictMode', async () => {
+    apiPost.mockImplementation((url: string) => (
+      url === '/api/v1/lego-assembly/place-community'
+        ? Promise.resolve({
+            data: {
+              status: 'compiled',
+              compiled_at: '2026-08-03T01:00:00Z',
+              counts: { building: 1, park: 0, street: 0 },
+              items: [{
+                zone_id: 'strict-building',
+                kind: 'building',
+                building_id: 'strict-building-model',
+                building_created: true,
+                generator: 'lego_assembly',
+              }],
+            },
+          })
+        : Promise.resolve({ data: planFixture })
+    ));
+
+    render(
+      <StrictMode>
+        <LegoBuilderPanel
+          zones={[makeZone({ id: 'strict-building' })]}
+          autoGenerate
+          onClose={vi.fn()}
+        />
+      </StrictMode>,
+    );
+
+    expect(await screen.findByText(/Built 1 detailed building/)).toBeInTheDocument();
+    expect(apiPost.mock.calls.filter(
+      ([url]) => url === '/api/v1/lego-assembly/plan',
+    )).toHaveLength(1);
+    expect(apiPost.mock.calls.filter(
+      ([url]) => url === '/api/v1/lego-assembly/place-community',
+    )).toHaveLength(1);
+    expect(screen.getByText('placed')).toBeInTheDocument();
+  });
+
+  it('keeps Rebuild from starting while the atomic community compile is in flight', async () => {
+    let finishCompile!: (value: unknown) => void;
+    const pendingCompile = new Promise((resolve) => {
+      finishCompile = resolve;
+    });
+    apiPost.mockImplementation((url: string) => (
+      url === '/api/v1/lego-assembly/place-community'
+        ? pendingCompile
+        : Promise.resolve({ data: planFixture })
+    ));
+
+    render(<LegoBuilderPanel zones={[makeZone({ id: 'race-building' })]} onClose={vi.fn()} />);
+    expect(await screen.findByText(/Detailed 1/)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /^generate to 3d$/i }));
+
+    await waitFor(() => expect(apiPost.mock.calls.filter(
+      ([url]) => url === '/api/v1/lego-assembly/place-community',
+    )).toHaveLength(1));
+    const rebuild = screen.getByRole('button', { name: /rebuild buildings/i });
+    expect(rebuild).toBeDisabled();
+    fireEvent.click(rebuild);
+    expect(apiPost.mock.calls.filter(([url]) => url === '/api/v1/lego-assembly/plan')).toHaveLength(1);
+
+    finishCompile({
+      data: {
+        status: 'compiled',
+        compiled_at: '2026-08-14T13:00:00Z',
+        counts: { building: 1, park: 0, street: 0 },
+        items: [{
+          zone_id: 'race-building',
+          kind: 'building',
+          building_id: 'race-building-model',
+          building_created: true,
+          generator: 'lego_assembly',
+        }],
+      },
+    });
+    expect(await screen.findByText(/Built 1 detailed building/)).toBeInTheDocument();
+  });
+
+  it('recovers an incremental build without recompiling an already-complete sibling', async () => {
     const original = makeZone({ id: 'changing-building' });
+    const alreadyCompiled = makeZone({
+      id: 'steady-building',
+      building_id: 'steady-model',
+      properties: {
+        development_archetype_id: 'nordic_timber_midrise',
+        community_3d: {
+          schema_version: 1,
+          state: 'compiled',
+          kind: 'building',
+          generator: 'lego_assembly',
+          compiled_at: '2026-08-14T11:55:00Z',
+        },
+      },
+    });
     const refreshed = {
       ...original,
       updated_at: '2026-08-14T12:05:00Z',
       properties: { ...original.properties, floors: 8 },
     };
-    siteZonesList.mockResolvedValue([refreshed]);
+    const refreshedSteady = {
+      ...alreadyCompiled,
+      updated_at: '2026-08-14T12:05:00Z',
+    };
+    siteZonesList.mockResolvedValue([refreshed, refreshedSteady]);
     let compileCalls = 0;
     apiPost.mockImplementation((url: string) => {
       if (url === '/api/v1/lego-assembly/plan') return Promise.resolve({ data: planFixture });
@@ -265,10 +370,12 @@ describe('LegoBuilderPanel', () => {
       return Promise.reject(new Error(`unexpected POST ${url}`));
     });
 
-    render(<LegoBuilderPanel zones={[original]} autoGenerate onClose={vi.fn()} />);
+    render(<LegoBuilderPanel zones={[original, alreadyCompiled]} onClose={vi.fn()} />);
+    expect(await screen.findByText(/Detailed 2/)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /^generate to 3d$/i }));
 
     expect(await screen.findByText(
-      'Built 1 detailed building, 0 family-pending masses, and 0 park/street layers',
+      'Built 1 detailed building, 0 correct-size massing fallbacks, and 0 park/street layers',
     )).toBeInTheDocument();
     expect(siteZonesList).toHaveBeenCalledWith('proj-1');
     const compileRequests = apiPost.mock.calls.filter(([url]) => (
@@ -280,9 +387,66 @@ describe('LegoBuilderPanel', () => {
         zone_id: refreshed.id,
         source_updated_at: refreshed.updated_at,
       })],
-      scope_zone_ids: [refreshed.id],
+      scope_zone_ids: [refreshed.id, refreshedSteady.id],
     });
     expect(screen.queryByText(/changed while its 3D recipe/i)).not.toBeInTheDocument();
+  });
+
+  it('shows the refreshed massing state when a source edit changes detailed capability', async () => {
+    const original = makeZone({ id: 'capability-change' });
+    const refreshed = {
+      ...original,
+      updated_at: '2026-08-14T12:20:00Z',
+      properties: { ...original.properties, floors: 14 },
+    };
+    siteZonesList.mockResolvedValue([refreshed]);
+    let planCalls = 0;
+    let compileCalls = 0;
+    apiPost.mockImplementation((url: string) => {
+      if (url === '/api/v1/lego-assembly/plan') {
+        planCalls += 1;
+        return planCalls === 1
+          ? Promise.resolve({ data: planFixture })
+          : Promise.reject(make422({
+              code: 'family_incompatible',
+              message: 'The reviewed family does not cover this refreshed footprint.',
+            }));
+      }
+      if (url === '/api/v1/lego-assembly/place-community') {
+        compileCalls += 1;
+        if (compileCalls === 1) {
+          return Promise.reject(make409(
+            'A Community 3D source zone changed while its 3D recipe was being prepared; refresh and retry.',
+          ));
+        }
+        return Promise.resolve({
+          data: {
+            status: 'compiled',
+            compiled_at: '2026-08-14T12:21:00Z',
+            counts: { building: 1, park: 0, street: 0 },
+            items: [{
+              zone_id: refreshed.id,
+              kind: 'building',
+              building_id: 'capability-change-model',
+              building_created: true,
+              generator: 'planned_massing',
+            }],
+          },
+        });
+      }
+      return Promise.reject(new Error(`unexpected POST ${url}`));
+    });
+
+    render(<LegoBuilderPanel zones={[original]} onClose={vi.fn()} />);
+    expect(await screen.findByText(/Detailed 1/)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /^generate to 3d$/i }));
+
+    expect(await screen.findByText(
+      'Built 0 detailed buildings, 1 correct-size massing fallback, and 0 park/street layers',
+    )).toBeInTheDocument();
+    expect(screen.getByText('3D massing')).toBeInTheDocument();
+    expect(screen.queryByText('placed')).not.toBeInTheDocument();
+    expect(screen.getByText(/reviewed family does not cover this refreshed footprint/i)).toBeInTheDocument();
   });
 
   it('uses the refetched post-compile revision for an immediate scene rebuild', async () => {
@@ -317,7 +481,7 @@ describe('LegoBuilderPanel', () => {
     });
 
     render(<LegoBuilderPanel zones={[original]} onClose={vi.fn()} />, client);
-    expect(await screen.findByText(/Assembled 1/)).toBeInTheDocument();
+    expect(await screen.findByText(/Detailed 1/)).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: /^generate to 3d$/i }));
     expect(await screen.findByRole('button', { name: /rebuild current 3d scene/i })).toBeEnabled();
     fireEvent.click(screen.getByRole('button', { name: /rebuild current 3d scene/i }));
@@ -348,7 +512,36 @@ describe('LegoBuilderPanel', () => {
                 area_sqm: 1234,
                 placement_count: 3,
               },
-              items: [],
+              items: [
+                {
+                  zone_id: 'z-building',
+                  kind: 'building',
+                  building_id: 'z-building-model',
+                  building_created: true,
+                  generator: 'lego_assembly',
+                },
+                {
+                  zone_id: 'z-park',
+                  kind: 'park',
+                  building_id: null,
+                  building_created: false,
+                  generator: 'park_kit',
+                },
+                {
+                  zone_id: 'z-street',
+                  kind: 'street',
+                  building_id: null,
+                  building_created: false,
+                  generator: 'street_section',
+                },
+                {
+                  zone_id: 'z-plaza',
+                  kind: 'park',
+                  building_id: null,
+                  building_created: false,
+                  generator: 'park_kit',
+                },
+              ],
             },
           })
         : Promise.resolve({ data: planFixture })
@@ -387,7 +580,7 @@ describe('LegoBuilderPanel', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /^generate to 3d$/i }));
     await waitFor(() => expect(screen.getByText(
-      'Built 1 detailed building, 0 family-pending masses, and 3 park/street layers; landscaped 1,234 m² of residual site with 3 trees',
+      'Built 1 detailed building, 0 correct-size massing fallbacks, and 3 park/street layers; landscaped 1,234 m² of residual site with 3 trees',
     )).toBeInTheDocument());
 
     expect(apiPost).toHaveBeenCalledWith(
@@ -429,7 +622,22 @@ describe('LegoBuilderPanel', () => {
               status: 'compiled',
               compiled_at: '2026-08-04T02:01:00Z',
               counts: { building: 0, park: 1, street: 1 },
-              items: [],
+              items: [
+                {
+                  zone_id: 'z-park-refresh',
+                  kind: 'park',
+                  building_id: null,
+                  building_created: false,
+                  generator: 'park_kit',
+                },
+                {
+                  zone_id: 'z-street-refresh',
+                  kind: 'street',
+                  building_id: null,
+                  building_created: false,
+                  generator: 'street_section',
+                },
+              ],
             },
           })
         : Promise.reject(new Error(`unexpected POST ${url}`))
@@ -472,7 +680,7 @@ describe('LegoBuilderPanel', () => {
     expect(apiPost).not.toHaveBeenCalled();
   });
 
-  it('shows no-family rows and one deduplicated command hint on mixed success/422', async () => {
+  it('shows missing families as normal upgrade-ready massing without developer commands', async () => {
     apiPost.mockImplementation((_url: string, body: { archetype_id?: string }) =>
       body.archetype_id?.startsWith('parkside_terraces')
         ? Promise.reject(make422('No module family covers archetype parkside_terraces.'))
@@ -488,23 +696,21 @@ describe('LegoBuilderPanel', () => {
 
     render(<LegoBuilderPanel zones={zones} onClose={vi.fn()} />);
 
-    expect(await screen.findByText(/Assembled 1/)).toBeInTheDocument();
-    expect(screen.getByText(/No family 2/)).toBeInTheDocument();
-
-    // Both failed rows surface the backend detail.
-    expect(screen.getAllByText(/No module family covers archetype parkside_terraces\./)).toHaveLength(2);
-
-    // One shared hint box listing the distinct missing archetype ids. The
-    // facade-sheet workflow compiles the family before and after sheet creation.
-    expect(document.querySelectorAll('pre')).toHaveLength(1);
-    const pre = document.querySelector('pre');
-    expect(pre?.textContent).toContain('generate_family.py --archetype-id parkside_terraces');
-    expect(pre?.textContent).toContain('import_manifest.py build/archetypes/parkside_terraces');
-    expect(pre?.textContent?.match(/--archetype-id parkside_terraces/g)).toHaveLength(2);
-    expect(screen.getByRole('button', { name: /copy commands/i })).toBeInTheDocument();
+    expect(await screen.findByText(/Detailed 1/)).toBeInTheDocument();
+    expect(screen.getByText(/Massing ready 2/)).toBeInTheDocument();
+    expect(screen.getAllByText(/Detailed family to add/)).toHaveLength(2);
+    expect(screen.getAllByText((_content, node) => (
+      node?.tagName === 'P'
+      && Boolean(node.textContent?.includes('exact footprint and 4-floor height now'))
+    ))).toHaveLength(2);
+    expect(screen.getByText(/2 buildings use upgrade-ready massing/i)).toBeInTheDocument();
+    expect(screen.getByText(/Nothing is blocked/i)).toBeInTheDocument();
+    expect(screen.queryByText(/No module family covers archetype/i)).not.toBeInTheDocument();
+    expect(document.querySelector('pre')).toBeNull();
+    expect(screen.queryByRole('button', { name: /copy commands/i })).not.toBeInTheDocument();
   });
 
-  it('does not offer family-generation commands for an installed but incompatible family', async () => {
+  it('treats an installed but incompatible family as normal correctly sized massing', async () => {
     apiPost.mockRejectedValue(make422({
       code: 'family_incompatible',
       message: 'Industrial Brick Brewery supports 40 × 26 m and 2–5 floors.',
@@ -528,10 +734,41 @@ describe('LegoBuilderPanel', () => {
     ]} onClose={vi.fn()} />);
 
     expect(await screen.findByText(/Industrial Brick Brewery supports 40 × 26 m and 2–5 floors/)).toBeInTheDocument();
-    expect(screen.getByText(/No family 0/)).toBeInTheDocument();
-    expect(screen.getByText(/Failed 1/)).toBeInTheDocument();
+    expect(screen.getByText(/Massing ready 1/)).toBeInTheDocument();
+    expect(screen.queryByText(/Failed 1/)).not.toBeInTheDocument();
+    expect(screen.getByText(/Detailed family outside its reviewed fit/)).toBeInTheDocument();
     expect(document.querySelector('pre')).toBeNull();
     expect(screen.queryByRole('button', { name: /copy commands/i })).not.toBeInTheDocument();
+  });
+
+  it('fails closed instead of compiling an unexpected planning error as massing', async () => {
+    apiPost.mockImplementation((url: string, body: { archetype_id?: string }) => {
+      if (url !== '/api/v1/lego-assembly/plan') {
+        return Promise.reject(new Error(`unexpected POST ${url}`));
+      }
+      if (body.archetype_id === 'planner_outage') {
+        return Promise.reject(Object.assign(new Error('Unavailable'), {
+          response: { status: 500, data: { detail: 'Planner service unavailable' } },
+        }));
+      }
+      return Promise.resolve({ data: planFixture });
+    });
+
+    render(<LegoBuilderPanel zones={[
+      makeZone({ id: 'z-supported' }),
+      makeZone({
+        id: 'z-unexpected',
+        properties: { development_archetype_id: 'planner_outage' },
+      }),
+    ]} autoGenerate onClose={vi.fn()} />);
+
+    expect(await screen.findByText(/Needs review 1/)).toBeInTheDocument();
+    expect(screen.getByText(/Planner service unavailable/)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /^generate to 3d$/i })).toBeDisabled();
+    await waitFor(() => expect(apiPost.mock.calls.filter(
+      ([url]) => url === '/api/v1/lego-assembly/place-community',
+    )).toHaveLength(0));
+    expect(screen.queryByText('3D massing')).not.toBeInTheDocument();
   });
 
   it('builds a grounded exact-footprint mass for a building whose detailed family is pending', async () => {
@@ -543,8 +780,20 @@ describe('LegoBuilderPanel', () => {
             compiled_at: '2026-07-17T01:00:00Z',
             counts: { building: 1, park: 1, street: 0 },
             items: [
-              { zone_id: 'z-missing', kind: 'building', generator: 'planned_massing' },
-              { zone_id: 'z-park', kind: 'park', generator: 'park_kit' },
+              {
+                zone_id: 'z-missing',
+                kind: 'building',
+                building_id: 'z-missing-model',
+                building_created: true,
+                generator: 'planned_massing',
+              },
+              {
+                zone_id: 'z-park',
+                kind: 'park',
+                building_id: null,
+                building_created: false,
+                generator: 'park_kit',
+              },
             ],
           },
         });
@@ -567,12 +816,12 @@ describe('LegoBuilderPanel', () => {
     ];
 
     render(<LegoBuilderPanel zones={zones} onClose={vi.fn()} />);
-    expect(await screen.findByText(/No family 1/)).toBeInTheDocument();
+    expect(await screen.findByText(/Massing ready 1/)).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button', { name: /^generate to 3d$/i }));
 
     await waitFor(() => expect(screen.getByText(
-      'Built 0 detailed buildings, 1 family-pending mass, and 1 park/street layer',
+      'Built 0 detailed buildings, 1 correct-size massing fallback, and 1 park/street layer',
     )).toBeInTheDocument());
     expect(screen.getByText('3D massing')).toBeInTheDocument();
 
@@ -598,7 +847,7 @@ describe('LegoBuilderPanel', () => {
     ];
 
     render(<LegoBuilderPanel zones={zones} onClose={vi.fn()} />);
-    expect(await screen.findByText(/Assembled 2/)).toBeInTheDocument();
+    expect(await screen.findByText(/Detailed 2/)).toBeInTheDocument();
 
     const saveButton = screen.getByRole('button', { name: /save all recipes/i });
     expect(saveButton).toBeEnabled();
@@ -624,7 +873,7 @@ describe('LegoBuilderPanel', () => {
     apiPost.mockResolvedValue({ data: planFixture });
 
     render(<LegoBuilderPanel zones={[makeZone()]} onClose={vi.fn()} />);
-    expect(await screen.findByText(/Assembled 1/)).toBeInTheDocument();
+    expect(await screen.findByText(/Detailed 1/)).toBeInTheDocument();
 
     const saveButton = screen.getByRole('button', { name: /save all recipes/i });
     expect(saveButton).toBeDisabled();
@@ -641,12 +890,27 @@ describe('LegoBuilderPanel', () => {
       />,
     );
 
-    expect(await screen.findByText(/Assembled 1/)).toBeInTheDocument();
-    expect(screen.getByText(/Skipped 1/)).toBeInTheDocument();
+    expect(await screen.findByText(/Detailed 1/)).toBeInTheDocument();
+    expect(screen.getByText(/Needs footprint 1/)).toBeInTheDocument();
     expect(screen.getByText(/not placed in the scene/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /^place$/i })).toBeDisabled();
     expect(screen.getByRole('button', { name: /rebuild current 3d scene/i })).toBeDisabled();
     expect(apiPost.mock.calls.some(([url]) => url === '/api/v1/lego-assembly/place-community')).toBe(false);
+  });
+
+  it('blocks the whole compile when one building in a mixed scene has no footprint', async () => {
+    apiPost.mockResolvedValue({ data: planFixture });
+
+    render(<LegoBuilderPanel zones={[
+      makeZone({ id: 'z-valid' }),
+      makeZone({ id: 'z-no-footprint', coordinates: [] as number[][] }),
+      makeZone({ id: 'z-park', zone_type: 'green_space', properties: { _plan_role: 'open_space' } }),
+    ]} autoGenerate onClose={vi.fn()} />);
+
+    expect(await screen.findByText(/Needs footprint 1/)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /^generate to 3d$/i })).toBeDisabled();
+    expect(apiPost.mock.calls.some(([url]) => url === '/api/v1/lego-assembly/place-community')).toBe(false);
+    expect(screen.queryByText('placed')).not.toBeInTheDocument();
   });
 
   it('Build community posts every assembled building and badges the rows', async () => {
@@ -657,7 +921,22 @@ describe('LegoBuilderPanel', () => {
               status: 'compiled',
               compiled_at: '2026-07-17T01:00:00Z',
               counts: { building: 2, park: 0, street: 0 },
-              items: [],
+              items: [
+                {
+                  zone_id: 'z-a',
+                  kind: 'building',
+                  building_id: 'z-a-model',
+                  building_created: true,
+                  generator: 'lego_assembly',
+                },
+                {
+                  zone_id: 'z-b',
+                  kind: 'building',
+                  building_id: 'bldg-existing',
+                  building_created: false,
+                  generator: 'lego_assembly',
+                },
+              ],
             },
           })
         : Promise.resolve({ data: planFixture }),
@@ -668,12 +947,12 @@ describe('LegoBuilderPanel', () => {
       makeZone({ id: 'z-b', building_id: 'bldg-existing' }),
     ];
     render(<LegoBuilderPanel zones={zones} onClose={vi.fn()} />);
-    expect(await screen.findByText(/Assembled 2/)).toBeInTheDocument();
+    expect(await screen.findByText(/Detailed 2/)).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button', { name: /^generate to 3d$/i }));
 
     await waitFor(() => expect(screen.getByText(
-      'Built 2 detailed buildings, 0 family-pending masses, and 0 park/street layers',
+      'Built 2 detailed buildings, 0 correct-size massing fallbacks, and 0 park/street layers',
     )).toBeInTheDocument());
     expect(screen.getAllByText('placed')).toHaveLength(2);
 
@@ -696,6 +975,38 @@ describe('LegoBuilderPanel', () => {
     );
   });
 
+  it('does not mark a malformed atomic response as placed', async () => {
+    apiPost.mockImplementation((url: string) => (
+      url === '/api/v1/lego-assembly/place-community'
+        ? Promise.resolve({
+            data: {
+              status: 'compiled',
+              compiled_at: '2026-07-17T01:00:00Z',
+              counts: { building: 1, park: 0, street: 0 },
+              items: [{
+                zone_id: 'z-unlinked-response',
+                kind: 'building',
+                building_id: null,
+                building_created: false,
+                generator: 'lego_assembly',
+              }],
+            },
+          })
+        : Promise.resolve({ data: planFixture })
+    ));
+
+    render(<LegoBuilderPanel zones={[
+      makeZone({ id: 'z-unlinked-response' }),
+    ]} onClose={vi.fn()} />);
+    expect(await screen.findByText(/Detailed 1/)).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: /^generate to 3d$/i }));
+
+    expect(await screen.findByRole('button', { name: /retry place/i })).toBeInTheDocument();
+    expect(screen.queryByText('placed')).not.toBeInTheDocument();
+    expect(screen.getByText(/Could not build this community/)).toBeInTheDocument();
+  });
+
   it('marks every attempted row retryable when the atomic community build fails', async () => {
     apiPost.mockImplementation((url: string) =>
       url === '/api/v1/lego-assembly/place-community'
@@ -707,13 +1018,13 @@ describe('LegoBuilderPanel', () => {
       makeZone({ id: 'z-building' }),
       makeZone({ id: 'z-park', zone_type: 'green_space', properties: { _plan_role: 'open_space' } }),
     ]} onClose={vi.fn()} />);
-    expect(await screen.findByText(/Assembled 1/)).toBeInTheDocument();
+    expect(await screen.findByText(/Detailed 1/)).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button', { name: /^generate to 3d$/i }));
 
     await waitFor(() => expect(screen.getByText('One zone could not be compiled; no changes were saved.')).toBeInTheDocument());
     expect(screen.getByRole('button', { name: /retry place/i })).toBeInTheDocument();
-    expect(screen.getByText('failed')).toBeInTheDocument();
+    expect(screen.getByText('retry build')).toBeInTheDocument();
   });
 
   it('per-row Place places one zone even without a building id and marks failures retryable', async () => {
@@ -731,7 +1042,7 @@ describe('LegoBuilderPanel', () => {
         onClose={vi.fn()}
       />,
     );
-    expect(await screen.findByText(/Assembled 2/)).toBeInTheDocument();
+    expect(await screen.findByText(/Detailed 2/)).toBeInTheDocument();
 
     const placeButtons = screen.getAllByRole('button', { name: /^place$/i });
     expect(placeButtons).toHaveLength(2);
@@ -744,8 +1055,11 @@ describe('LegoBuilderPanel', () => {
   });
 
   it('Rebuild buildings replaces an already placed recipe with the latest content-hashed assets', async () => {
+    const oldCatalogFingerprint = 'a'.repeat(64);
+    const currentCatalogFingerprint = 'b'.repeat(64);
     const refreshedPlan = {
       ...planFixture,
+      catalog_fingerprint: currentCatalogFingerprint,
       instances: [{ ...planFixture.instances[0], model_url: '/models/podium.glb?v=new-hash' }],
     };
     let planCalls = 0;
@@ -765,7 +1079,13 @@ describe('LegoBuilderPanel', () => {
             status: 'compiled',
             compiled_at: '2026-08-04T01:00:00Z',
             counts: { building: 1, park: 0, street: 0 },
-            items: [],
+            items: [{
+              zone_id: 'zone-placed',
+              kind: 'building',
+              building_id: 'building-1',
+              building_created: false,
+              generator: 'lego_assembly',
+            }],
           },
         });
       }
@@ -777,6 +1097,7 @@ describe('LegoBuilderPanel', () => {
       building_id: 'building-1',
       properties: {
         development_archetype_id: 'nordic_timber_midrise',
+        _lego_catalog_fingerprint: oldCatalogFingerprint,
         community_3d: {
           schema_version: 1,
           state: 'compiled',
@@ -805,6 +1126,8 @@ describe('LegoBuilderPanel', () => {
       '/api/v1/lego-assembly/place/zone-placed',
       expect.objectContaining({
         instances: [expect.objectContaining({ model_url: '/models/podium.glb?v=new-hash' })],
+        catalog_fingerprint: currentCatalogFingerprint,
+        source_updated_at: '2026-08-04T00:30:00Z',
       }),
     ));
     expect(await screen.findByText(/latest family assets/i)).toBeInTheDocument();
@@ -819,5 +1142,109 @@ describe('LegoBuilderPanel', () => {
         })],
       },
     ));
+  });
+
+  it('Rebuild buildings upgrades an exact-massing fallback after its family is imported', async () => {
+    let planCalls = 0;
+    apiPost.mockImplementation((url: string) => {
+      if (url === '/api/v1/lego-assembly/plan') {
+        planCalls += 1;
+        return planCalls === 1
+          ? Promise.reject(make422('No module family covers archetype parkside_terraces.'))
+          : Promise.resolve({ data: planFixture });
+      }
+      if (url === '/api/v1/lego-assembly/place/zone-upgrade') {
+        return Promise.resolve({
+          data: {
+            status: 'placed',
+            zone_id: 'zone-upgrade',
+            building_id: 'building-upgrade',
+            building_created: false,
+          },
+        });
+      }
+      return Promise.reject(new Error(`unexpected POST ${url}`));
+    });
+
+    const massingZone = makeZone({
+      id: 'zone-upgrade',
+      building_id: 'building-upgrade',
+      properties: {
+        development_archetype_id: 'parkside_terraces',
+        community_3d: {
+          schema_version: 1,
+          state: 'compiled',
+          kind: 'building',
+          generator: 'planned_massing',
+          compiled_at: '2026-07-19T00:00:00Z',
+        },
+      },
+    });
+    const client = new QueryClient();
+    client.setQueryData(['site-zones', 'proj-1'], [massingZone]);
+    const invalidateQueries = vi.spyOn(client, 'invalidateQueries');
+    render(<LegoBuilderPanel zones={[massingZone]} onClose={vi.fn()} />, client);
+
+    expect(await screen.findByText('3D massing')).toBeInTheDocument();
+    expect(screen.getByText(/Detailed family to add/)).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: /rebuild buildings/i }));
+
+    await waitFor(() => expect(apiPost).toHaveBeenCalledWith(
+      '/api/v1/lego-assembly/place/zone-upgrade',
+      expect.objectContaining({ module_family: planFixture.family }),
+    ));
+    expect(invalidateQueries).toHaveBeenCalledWith({ queryKey: ['project', 'proj-1'] });
+    expect(invalidateQueries).toHaveBeenCalledWith({ queryKey: ['site-zones', 'proj-1'] });
+    expect(await screen.findByText('placed')).toBeInTheDocument();
+    expect(screen.queryByText('3D massing')).not.toBeInTheDocument();
+    expect(screen.getByText(/latest family assets/i)).toBeInTheDocument();
+  });
+
+  it('leaves Rebuild usable and reports a project refresh failure', async () => {
+    let planCalls = 0;
+    apiPost.mockImplementation((url: string) => {
+      if (url === '/api/v1/lego-assembly/plan') {
+        planCalls += 1;
+        return planCalls === 1
+          ? Promise.reject(make422('No module family covers archetype nordic_timber_midrise.'))
+          : Promise.resolve({ data: planFixture });
+      }
+      if (url === '/api/v1/lego-assembly/place/zone-refresh-fails') {
+        return Promise.resolve({
+          data: {
+            status: 'placed',
+            zone_id: 'zone-refresh-fails',
+            building_id: 'building-refresh-fails',
+            building_created: false,
+          },
+        });
+      }
+      return Promise.reject(new Error(`unexpected POST ${url}`));
+    });
+    const massingZone = makeZone({
+      id: 'zone-refresh-fails',
+      building_id: 'building-refresh-fails',
+      properties: {
+        development_archetype_id: 'nordic_timber_midrise',
+        community_3d: {
+          schema_version: 1,
+          state: 'compiled',
+          kind: 'building',
+          generator: 'planned_massing',
+          compiled_at: '2026-07-19T00:00:00Z',
+        },
+      },
+    });
+    const client = new QueryClient();
+    client.setQueryData(['site-zones', 'proj-1'], [massingZone]);
+    vi.spyOn(client, 'invalidateQueries').mockRejectedValueOnce(new Error('refresh unavailable'));
+    render(<LegoBuilderPanel zones={[massingZone]} onClose={vi.fn()} />, client);
+    expect(await screen.findByText('3D massing')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: /rebuild buildings/i }));
+
+    expect(await screen.findByText(/Could not finish rebuilding the building plans/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /rebuild buildings/i })).toBeEnabled();
   });
 });

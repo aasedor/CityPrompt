@@ -347,9 +347,73 @@ describe('community 3D plan contract', () => {
       },
     })).toBe(false);
 
+    const pendingPark = {
+      ...aiPark,
+      properties: {
+        ...aiPark.properties,
+        public_realm_fallback: {
+          schema_version: 1,
+          state: 'family_pending',
+          kind: 'park',
+          generator: 'park_kit',
+          archetype_id: 'urban_pocket_park',
+          variant_id: 'urban_pocket_park_v0',
+          target_source: 'zone_geometry',
+        },
+      },
+    };
+    expect(hasExecutablePublicRealmRecipe(pendingPark)).toBe(true);
+    expect(hasExecutablePublicRealmRecipe({
+      ...pendingPark,
+      properties: {
+        ...pendingPark.properties,
+        public_realm_fallback: {
+          ...(pendingPark.properties.public_realm_fallback as Record<string, unknown>),
+          state: 'compiled',
+        },
+      },
+    })).toBe(false);
+    expect(hasExecutablePublicRealmRecipe({
+      ...pendingPark,
+      properties: {
+        ...pendingPark.properties,
+        public_realm_fallback: {
+          ...(pendingPark.properties.public_realm_fallback as Record<string, unknown>),
+          arbitrary_claim: true,
+        },
+      },
+    })).toBe(false);
+    expect(hasExecutablePublicRealmRecipe({
+      ...compiledPark,
+      properties: {
+        ...compiledPark.properties,
+        public_realm_fallback: pendingPark.properties.public_realm_fallback,
+      },
+    })).toBe(false);
+
+    const pendingStreet = zone('road', {
+      _plan_role: 'street',
+      _plan_scenario: 'economic',
+      road_archetype_id: 'scenic_parkway',
+      road_selected_variant_id: 'scenic_parkway_v0',
+      public_realm_fallback: {
+        schema_version: 1,
+        state: 'family_pending',
+        kind: 'street',
+        generator: 'street_section',
+        archetype_id: 'scenic_parkway',
+        variant_id: 'scenic_parkway_v0',
+        target_source: 'zone_geometry',
+      },
+    });
+    expect(hasExecutablePublicRealmRecipe(pendingStreet)).toBe(true);
+
     // Manual public realm without a nested V1 claim keeps the established
     // procedural Direct compatibility path.
     expect(hasExecutablePublicRealmRecipe(zone('green_space'))).toBe(true);
+    expect(hasExecutablePublicRealmRecipe(zone('green_space', {
+      public_realm_fallback: { state: 'family_pending' },
+    }))).toBe(false);
   });
 
   it('builds exact per-zone capture claims and rejects legacy or partial fingerprints', () => {
@@ -441,5 +505,45 @@ describe('community 3D plan contract', () => {
     } satisfies Building;
     expect(getCurrentCommunity3DBuildingIds([building], [buildingModel, legacyModel]).has('legacy-building'))
       .toBe(false);
+
+    const plannedZone = {
+      ...building,
+      properties: {
+        ...building.properties,
+        community_3d: {
+          ...(building.properties?.community_3d as Record<string, unknown>),
+          generator: 'planned_massing',
+        },
+      },
+    } satisfies SiteZone;
+    const plannedBuilding = {
+      ...buildingModel,
+      // The old generated asset remains available as history, but the current
+      // linked representation is the exact-footprint planned massing below.
+      model_url: '/api/v1/files/legacy-meshy.glb',
+      specifications: {
+        plannedMassing: {
+          schema_version: 1,
+          source: 'community_3d',
+          source_zone_id: plannedZone.id,
+          archetype_id: 'pending_family',
+          floor_count: 4,
+          height_meters: 14,
+        },
+        community3DRepresentation: {
+          schema_version: 1,
+          zone_id: plannedZone.id,
+          generator: 'planned_massing',
+          representation_hash: '2'.repeat(64),
+          compiled_at: '2026-07-20T01:00:00Z',
+        },
+      },
+    } satisfies Building;
+    expect(getCommunity3DCaptureClaims([plannedZone], [plannedBuilding])).toEqual([{
+      zone_id: plannedZone.id,
+      source_hash: '1'.repeat(64),
+      representation_hash: '2'.repeat(64),
+      building_id: plannedBuilding.id,
+    }]);
   });
 });

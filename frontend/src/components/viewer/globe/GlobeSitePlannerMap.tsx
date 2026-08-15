@@ -1590,7 +1590,7 @@ export function GlobeSitePlannerMap({
   const legoLayerBuildings = useMemo(
     () => (buildings ?? []).filter((building) => (
       hasLegoRecipe(building)
-      || (hasPlannedMassing(building) && !(building.lod_urls?.['0'] ?? building.model_url))
+      || hasPlannedMassing(building)
     )),
     [buildings],
   );

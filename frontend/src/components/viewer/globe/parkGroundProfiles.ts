@@ -1876,6 +1876,10 @@ export function resolveParkGroundProfile(zone: ParkProfileZone): ParkGroundProfi
 export function resolveParkSpecialtyStructureKind(
   zone: ParkProfileZone,
 ): ParkSpecialtyStructureKind | null {
+  const properties = (zone.properties ?? {}) as Record<string, unknown>;
+  // A family-pending marker certifies the generic source-fitted fallback, not
+  // any fixed legacy assembly inferred from the selected catalogue IDs.
+  if (properties.public_realm_fallback != null) return null;
   const legoContract = resolveParkLegoContract(zone);
   if (
     legoContract?.source === 'public_realm_lego'

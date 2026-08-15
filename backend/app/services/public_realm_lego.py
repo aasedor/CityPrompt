@@ -18,6 +18,7 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+import re
 from dataclasses import dataclass
 from typing import Annotated, Any, Iterable, Literal
 
@@ -26,6 +27,7 @@ from shapely import affinity
 from shapely.geometry import box
 from shapely.geometry.base import BaseGeometry
 
+from app.services.public_realm_catalog import resolve_public_realm_catalog_identity
 from app.services.site_engine import (
     WGS84_CRS,
     build_transformer,
@@ -35,12 +37,104 @@ from app.services.site_engine import (
 
 
 PUBLIC_REALM_RECIPE_PROPERTY = "public_realm_lego"
+PUBLIC_REALM_FALLBACK_PROPERTY = "public_realm_fallback"
 PUBLIC_REALM_SCHEMA_VERSION = 1
+PUBLIC_REALM_FALLBACK_SCHEMA_VERSION = 1
 PUBLIC_REALM_FAMILY_VERSION = 1
 
 PublicRealmKind = Literal["park", "street"]
 PublicRealmGenerator = Literal["park_kit", "street_section"]
 PublicRealmPlanningErrorCode = Literal["family_not_found", "family_incompatible"]
+_FALLBACK_IDENTIFIER_RE = re.compile(r"^[a-z0-9][a-z0-9_-]{0,99}$")
+
+
+def public_realm_fallback_marker(
+    zone_type: str | None,
+    properties: dict[str, Any] | None,
+) -> dict[str, Any] | None:
+    """Describe the source-fitted procedural fallback for an unbuilt family.
+
+    Geometry is bound separately by ``community_3d_source_hash``. This marker
+    preserves only trusted structural identity needed to distinguish an
+    intentional family-pending representation from a pre-contract AI layer.
+    It never claims an exact appearance kit or imported LEGO capability.
+    """
+
+    props = properties or {}
+    is_street = props.get("_plan_role") == "street" or zone_type in {"road", "street", "path"}
+    if is_street:
+        archetype_id = str(props.get("road_archetype_id") or "").strip()
+        variant_id = str(props.get("road_selected_variant_id") or "").strip() or None
+        kind: PublicRealmKind = "street"
+        generator: PublicRealmGenerator = "street_section"
+    else:
+        archetype_id = str(
+            props.get("green_space_archetype_id") or props.get("plaza_archetype_id") or ""
+        ).strip()
+        variant_id = str(
+            props.get("green_space_selected_variant_id") or props.get("plaza_selected_variant_id") or ""
+        ).strip() or None
+        kind = "park"
+        generator = "park_kit"
+    if not archetype_id:
+        return None
+    if not _FALLBACK_IDENTIFIER_RE.fullmatch(archetype_id):
+        return None
+    if variant_id is not None and not _FALLBACK_IDENTIFIER_RE.fullmatch(variant_id):
+        return None
+    if resolve_public_realm_catalog_identity(kind, archetype_id, variant_id) is None:
+        return None
+    return {
+        "schema_version": PUBLIC_REALM_FALLBACK_SCHEMA_VERSION,
+        "state": "family_pending",
+        "kind": kind,
+        "generator": generator,
+        "archetype_id": archetype_id,
+        "variant_id": variant_id,
+        "target_source": "zone_geometry",
+    }
+
+
+def public_realm_fallback_identity(value: Any) -> dict[str, Any] | None:
+    """Validate and canonicalize a persisted family-pending marker."""
+
+    if not isinstance(value, dict) or set(value) != {
+        "schema_version",
+        "state",
+        "kind",
+        "generator",
+        "archetype_id",
+        "variant_id",
+        "target_source",
+    }:
+        return None
+    kind = value.get("kind")
+    generator = value.get("generator")
+    if value.get("schema_version") != PUBLIC_REALM_FALLBACK_SCHEMA_VERSION:
+        return None
+    if value.get("state") != "family_pending" or value.get("target_source") != "zone_geometry":
+        return None
+    if (kind, generator) not in {("park", "park_kit"), ("street", "street_section")}:
+        return None
+    archetype_id = value.get("archetype_id")
+    variant_id = value.get("variant_id")
+    if not isinstance(archetype_id, str) or not _FALLBACK_IDENTIFIER_RE.fullmatch(archetype_id):
+        return None
+    if variant_id is not None and (
+        not isinstance(variant_id, str) or not _FALLBACK_IDENTIFIER_RE.fullmatch(variant_id)
+    ):
+        return None
+    if resolve_public_realm_catalog_identity(kind, archetype_id, variant_id) is None:
+        return None
+    return {
+        "schema_version": PUBLIC_REALM_FALLBACK_SCHEMA_VERSION,
+        "state": "family_pending",
+        "kind": kind,
+        "generator": generator,
+        "archetype_id": archetype_id,
+        "variant_id": variant_id,
+        "target_source": "zone_geometry",
+    }
 
 
 class _FrozenModel(BaseModel):

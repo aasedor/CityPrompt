@@ -640,7 +640,7 @@ export function GlobeAIRenderPanel({
         : '';
       setGenerate3DStatus(
         `Built ${summary.detailedBuildings} detailed modular building${summary.detailedBuildings === 1 ? '' : 's'}, `
-        + `${summary.plannedMasses} family-pending exact mass${summary.plannedMasses === 1 ? '' : 'es'}, `
+        + `${summary.plannedMasses} upgrade-ready exact mass${summary.plannedMasses === 1 ? '' : 'es'}, `
         + `${summary.parks} park${summary.parks === 1 ? '' : 's'}, and `
         + `${summary.streets} street/path layer${summary.streets === 1 ? '' : 's'}.`
         + residualStatus,
@@ -1752,7 +1752,7 @@ export function GlobeAIRenderPanel({
                   ? 'Generated master plans require their saved site boundary'
                   : unsavedCommunityCount > 0
                     ? 'Save your zones first — unsaved zones lose their archetype styling'
-                    : `${community3DActionLabel} the whole community with modular buildings, exact family-pending massing, parks, engineered streets, and residual landscaping`
+                    : `${community3DActionLabel} the whole community with modular buildings, upgrade-ready exact massing, parks, engineered streets, and residual landscaping`
               }
               className="mt-2 flex w-full items-center justify-center gap-2 rounded border border-white/20 bg-white/5 px-3 py-2 text-[11px] font-black uppercase text-white/80 transition hover:bg-white/10 disabled:opacity-40"
             >

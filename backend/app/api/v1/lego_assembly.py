@@ -5,6 +5,8 @@ from __future__ import annotations
 import hashlib
 import json
 import logging
+import math
+import re
 import uuid
 from datetime import datetime, timezone
 from typing import Any, Literal
@@ -32,6 +34,7 @@ from app.services.community_3d_scope import (
 from app.services.lego_assembly import (
     AssemblyPlanningError,
     AssemblyRequest,
+    catalog_parent_archetype_id,
     descriptor_from_library_entry,
     find_family_module_entry,
     lego_metadata_from_manifest,
@@ -40,11 +43,14 @@ from app.services.lego_assembly import (
 )
 from app.services.master_planner.lego_catalog import build_lego_planning_catalog
 from app.services.public_realm_lego import (
+    PUBLIC_REALM_FALLBACK_PROPERTY,
     PUBLIC_REALM_RECIPE_PROPERTY,
     PublicRealmPlanningError,
     normalize_legacy_ai_street_variant_properties,
+    public_realm_fallback_marker,
     plan_public_realm_zone_recipe,
 )
+from app.services.master_planner.lego_geometry import frontend_footprint_analysis
 from app.services.residual_landscape import (
     ResidualSourceZone,
     build_residual_landscape_recipe,
@@ -80,6 +86,10 @@ class LegoAssemblyPlanRequest(BaseModel):
     reuse_keys: list[str] = Field(default_factory=list)
     preferred_family: str | None = None
     allow_setback: bool = True
+    # Manual LEGO experiments retain the historical best-effort behaviour.
+    # AI/Master-Plan callers set this false so an out-of-contract reviewed
+    # family becomes truthful planned massing instead of a distorted forced fit.
+    allow_forced_fit: bool = True
     footprint_profile: Literal["rectangle", "l_shape", "u_shape", "courtyard"] = "rectangle"
     wing_depth_m: float | None = Field(default=None, gt=0)
     # When planning for a shared project, use the same owner-visible private
@@ -121,6 +131,9 @@ class LegoPlaceRequest(LegoRecipeRequest):
     zone without a generated building gets one created and linked first."""
 
     building_name: str | None = Field(default=None, max_length=255)
+    # Snapshot used to plan this recipe. AI zones require it so editing a
+    # footprint between /plan and /place cannot certify stale geometry.
+    source_updated_at: datetime | None = None
 
 
 class Community3DCompileItem(BaseModel):
@@ -206,89 +219,311 @@ def _zone_lego_catalog_fingerprint(zone: SiteZone) -> str | None:
     return value.lower()
 
 
+def _selected_building_identity(properties: dict[str, Any]) -> str | None:
+    """Resolve the current authored selection before any stale runtime stamp."""
+
+    generation_input = properties.get("generation_style_input")
+    generation_id = generation_input.get("archetypeId") if isinstance(generation_input, dict) else None
+    return next(
+        (
+            str(value).strip()
+            for value in (
+                properties.get("development_selected_variant_id"),
+                properties.get("development_archetype_id"),
+                generation_id,
+                properties.get("_lego_runtime_selection_id"),
+            )
+            if isinstance(value, str) and value.strip()
+        ),
+        None,
+    )
+
+
+def _building_reuse_keys(properties: dict[str, Any]) -> tuple[str, ...]:
+    generation_input = properties.get("generation_style_input")
+    if isinstance(generation_input, dict):
+        downstream = generation_input.get("downstreamHints")
+        authored = downstream.get("reuseKeys") if isinstance(downstream, dict) else None
+        if isinstance(authored, list):
+            return tuple(value for value in authored if isinstance(value, str) and value)
+    return tuple(
+        value
+        for value in (
+            properties.get("development_subcategory"),
+            properties.get("development_aesthetic_category"),
+            properties.get("development_selected_variant_id"),
+            properties.get("development_archetype_id"),
+        )
+        if isinstance(value, str) and value
+    )
+
+
+def _building_allows_setback(properties: dict[str, Any]) -> bool:
+    generation_input = properties.get("generation_style_input")
+    if not isinstance(generation_input, dict):
+        return False
+    downstream = generation_input.get("downstreamHints")
+    if isinstance(downstream, dict) and isinstance(downstream.get("allowSetback"), bool):
+        return bool(downstream["allowSetback"])
+    tags = generation_input.get("generationTags")
+    if isinstance(tags, list) and any("setback" in str(tag).lower() for tag in tags):
+        return True
+    style_profile = generation_input.get("styleProfile")
+    massing = style_profile.get("massing") if isinstance(style_profile, dict) else None
+    return bool(
+        isinstance(massing, str)
+        and re.search(r"\b(setback|stepped tower|tower on podium)\b", massing.lower())
+    )
+
+
+def _positive_half_up_int(value: Any) -> int | None:
+    """Round a positive count exactly like JavaScript ``Math.round``.
+
+    Planner floor counts can be authored at half-floor precision. Python's
+    built-in ``round`` uses bankers rounding (``4.5 -> 4``), while both the
+    browser and the AI geometry binder use positive half-up rounding
+    (``4.5 -> 5``). Keep the locked recipe target and neutral massing on that
+    same cross-language contract.
+    """
+
+    try:
+        parsed = float(value)
+    except (TypeError, ValueError):
+        return None
+    if not math.isfinite(parsed) or parsed <= 0:
+        return None
+    return max(1, math.floor(parsed + 0.5))
+
+
+def _locked_building_target(zone: SiteZone) -> tuple[float, float, int, str, float | None]:
+    """Read an AI binder target or measure an ordinary authored polygon."""
+
+    properties = zone.properties or {}
+    is_ai_zone = bool(str(properties.get("_plan_scenario") or "").strip())
+    if is_ai_zone:
+        try:
+            width = float(properties["target_w_m"])
+            depth = float(properties["target_d_m"])
+            floors = _positive_half_up_int(properties["floors"])
+            if floors is None:
+                raise ValueError("floors must be positive and finite")
+            profile = str(properties["_lego_actual_footprint_profile"])
+        except (KeyError, TypeError, ValueError) as exc:
+            raise HTTPException(
+                status_code=409,
+                detail=(
+                    "This AI Master Plan building is missing its locked LEGO target; "
+                    "regenerate the plan before compiling Community 3D."
+                ),
+            ) from exc
+        bound_wing: float | None = None
+        if profile != "rectangle" and properties.get("_lego_actual_wing_depth_m") is not None:
+            try:
+                bound_wing = float(properties["_lego_actual_wing_depth_m"])
+            except (TypeError, ValueError) as exc:
+                raise HTTPException(
+                    status_code=409,
+                    detail="This AI Master Plan building has an invalid locked wing depth.",
+                ) from exc
+        if (
+            profile != "rectangle"
+            and bound_wing is None
+            and not bool(properties.get("_lego_family_pending"))
+        ):
+            raise HTTPException(
+                status_code=409,
+                detail=(
+                    "This AI Master Plan building is missing its locked wing depth; "
+                    "regenerate the plan before compiling Community 3D."
+                ),
+            )
+    else:
+        geometry = _community_source_geometry(zone)
+        if geometry.geom_type == "MultiPolygon":
+            geometry = max(geometry.geoms, key=lambda item: item.area)
+        exterior = getattr(geometry, "exterior", None)
+        analysis = frontend_footprint_analysis(list(exterior.coords) if exterior is not None else None)
+        try:
+            floors = _positive_half_up_int(properties.get("floors") or 1)
+            if floors is None:
+                raise ValueError("floors must be positive and finite")
+        except (TypeError, ValueError) as exc:
+            raise HTTPException(status_code=409, detail="This building has an invalid floor count.") from exc
+        if analysis is None:
+            raise HTTPException(
+                status_code=409,
+                detail="This building has no measurable footprint; repair it before compiling Community 3D.",
+            )
+        width, depth, profile = analysis
+        bound_wing = None
+    if width <= 0 or depth <= 0 or profile not in {"rectangle", "l_shape", "u_shape", "courtyard"}:
+        raise HTTPException(
+            status_code=409,
+            detail="This building has an invalid locked LEGO target; refresh and retry.",
+        )
+    if bound_wing is not None and bound_wing <= 0:
+        raise HTTPException(status_code=409, detail="This building has an invalid locked wing depth.")
+    return width, depth, floors, profile, bound_wing
+
+
+def _strict_locked_building_plan(
+    descriptors: list[Any],
+    identity: str,
+    target: tuple[float, float, int, str, float | None],
+    properties: dict[str, Any],
+) -> dict[str, Any]:
+    width, depth, floors, profile, _ = target
+    # Wing depth is intentionally omitted: the current imported family owns
+    # the deterministic native/default thickness. The returned target is then
+    # the independent value against which a submitted shaped recipe is bound.
+    return plan_vertical_assembly(
+        descriptors,
+        AssemblyRequest(
+            target_width_m=width,
+            target_depth_m=depth,
+            target_floors=floors,
+            archetype_id=identity,
+            reuse_keys=_building_reuse_keys(properties),
+            footprint_profile=profile,
+            allow_setback=_building_allows_setback(properties),
+        ),
+        allow_forced_fit=False,
+    )
+
+
 async def _assert_ai_lego_recipes_are_current(
     db: AsyncSession,
     user: User,
     project_id: uuid.UUID,
     resolved_items: list[tuple[Community3DCompileItem, SiteZone, Literal["building", "park", "street"]]],
 ) -> None:
-    """Fail closed when an AI recipe no longer matches its locked inventory.
+    """Certify recipes and recipe-less fallbacks against locked inventory."""
 
-    Catalogue binding and browser-side assembly planning are separate requests.
-    This check runs only after the project mutation lock is held and before any
-    derived Building is changed.  It protects both gaps: the catalogue token
-    proves that the advertised family/floor vocabulary is unchanged, while a
-    fresh server-side plan proves that the exact module IDs, URLs, dimensions,
-    and stack geometry in the submitted recipe still match current rows.
-    """
-    protected: list[tuple[Community3DCompileItem, SiteZone, str]] = []
+    protected: list[tuple[Community3DCompileItem, SiteZone]] = []
+    omissions: list[tuple[SiteZone, str]] = []
     for item, zone, kind in resolved_items:
         if kind != "building":
             continue
-        expected_fingerprint = _zone_lego_catalog_fingerprint(zone)
-        if expected_fingerprint is None:
+        properties = zone.properties or {}
+        is_ai_zone = bool(str(properties.get("_plan_scenario") or "").strip())
+        selected_identity = _selected_building_identity(properties)
+        trusted_identity = (
+            selected_identity
+            if selected_identity is not None and catalog_parent_archetype_id(selected_identity) is not None
+            else None
+        )
+        if item.recipe is None:
+            if is_ai_zone and trusted_identity is None:
+                raise HTTPException(
+                    status_code=409,
+                    detail=(
+                        "This AI Master Plan building has no trusted catalogue identity; "
+                        "regenerate the plan before compiling Community 3D."
+                    ),
+                )
+            if trusted_identity is not None:
+                omissions.append((zone, trusted_identity))
             continue
-        if item.recipe is None or item.recipe.catalog_fingerprint is None:
+        if not is_ai_zone and trusted_identity is None:
+            continue
+        if is_ai_zone:
+            _zone_lego_catalog_fingerprint(zone)
+        if item.recipe.catalog_fingerprint is None:
             raise HTTPException(
                 status_code=409,
                 detail=(
-                    "An AI Master Plan building is missing its LEGO catalogue revision; "
+                    "A catalogue building is missing its LEGO catalogue revision; "
                     "refresh the project and prepare Community 3D again."
                 ),
             )
-        if item.recipe.catalog_fingerprint.lower() != expected_fingerprint:
-            raise HTTPException(
-                status_code=409,
-                detail=(
-                    "An AI Master Plan building recipe came from a different LEGO catalogue; "
-                    "refresh the project and prepare Community 3D again."
-                ),
-            )
-        protected.append((item, zone, expected_fingerprint))
+        protected.append((item, zone))
 
-    if not protected:
+    if not protected and not omissions:
         return
 
-    entries = await _accessible_entries(
-        db,
-        user,
-        project_id,
-        lock_for_update=True,
-    )
+    entries = await _accessible_entries(db, user, project_id, lock_for_update=True)
     current_catalog = build_lego_planning_catalog(entries)
-    stale_catalog = next(
-        ((zone, expected) for _, zone, expected in protected if expected != current_catalog.fingerprint),
-        None,
-    )
-    if stale_catalog is not None:
+    descriptors = [
+        descriptor
+        for entry in entries
+        if (descriptor := descriptor_from_library_entry(entry)) is not None
+    ]
+
+    # A family-pending marker is a historical observation, not a capability
+    # token. Probe omissions again under the same lock used for persistence so
+    # an additive import between /plan and /place requires a fresh detailed
+    # recipe instead of silently preserving massing.
+    for zone, identity in omissions:
+        try:
+            _strict_locked_building_plan(
+                descriptors,
+                identity,
+                _locked_building_target(zone),
+                zone.properties or {},
+            )
+        except AssemblyPlanningError as exc:
+            if exc.code in {"family_not_found", "family_incompatible"}:
+                continue
+            raise
         raise HTTPException(
             status_code=409,
             detail=(
-                "The executable LEGO catalogue changed after this AI Master Plan was created; "
-                "regenerate the plan before compiling Community 3D."
+                "An exact Sticker/LEGO family is available for this building, but its "
+                "LEGO recipe is missing; refresh the project and rebuild it with the "
+                "current detailed recipe."
             ),
         )
 
-    descriptors = [descriptor for entry in entries if (descriptor := descriptor_from_library_entry(entry)) is not None]
-    for item, _, _ in protected:
+    for item, zone in protected:
         recipe = item.recipe
-        assert recipe is not None  # established above; keeps type narrowing explicit
-        try:
-            current_plan = plan_vertical_assembly(
-                descriptors,
-                AssemblyRequest(
-                    target_width_m=recipe.target.width_m,
-                    target_depth_m=recipe.target.depth_m,
-                    target_floors=recipe.target.floors,
-                    archetype_id=recipe.archetype_id,
-                    reuse_keys=tuple(recipe.reuse_keys),
-                    footprint_profile=recipe.target.footprint_profile,
-                    wing_depth_m=recipe.target.wing_depth_m,
-                    # The AI binder and browser compiler deliberately disable
-                    # optional setback modules. The locked re-plan must use
-                    # that same deterministic policy.
-                    allow_setback=False,
+        assert recipe is not None
+        properties = zone.properties or {}
+        selected_identity = _selected_building_identity(properties)
+        if selected_identity is None or catalog_parent_archetype_id(selected_identity) is None:
+            raise HTTPException(
+                status_code=409,
+                detail=(
+                    "This catalogue building is missing its locked catalogue identity; "
+                    "regenerate the plan before compiling Community 3D."
                 ),
+            )
+        if recipe.archetype_id != selected_identity:
+            raise HTTPException(
+                status_code=409,
+                detail=(
+                    "The LEGO recipe does not match this catalogue building's "
+                    "selected catalogue identity; refresh and retry."
+                ),
+            )
+        target = _locked_building_target(zone)
+        expected_width, expected_depth, expected_floors, expected_profile, bound_wing = target
+        if (
+            abs(float(recipe.target.width_m) - expected_width) > 0.05
+            or abs(float(recipe.target.depth_m) - expected_depth) > 0.05
+            or int(recipe.target.floors) != expected_floors
+            or recipe.target.footprint_profile != expected_profile
+        ):
+            raise HTTPException(
+                status_code=409,
+                detail=(
+                    "The LEGO recipe target does not match this catalogue building's "
+                    "locked footprint and height; refresh and retry."
+                ),
+            )
+        if recipe.catalog_fingerprint is None or recipe.catalog_fingerprint.lower() != current_catalog.fingerprint:
+            raise HTTPException(
+                status_code=409,
+                detail=(
+                    "The executable LEGO catalogue changed while this recipe was being prepared; "
+                    "refresh the project and prepare Community 3D again."
+                ),
+            )
+        try:
+            current_plan = _strict_locked_building_plan(
+                descriptors,
+                selected_identity,
+                target,
+                properties,
             )
         except AssemblyPlanningError as exc:
             raise HTTPException(
@@ -299,8 +534,34 @@ async def _assert_ai_lego_recipes_are_current(
                 ),
             ) from exc
 
+        expected_wing = current_plan["target"].get("wing_depth_m")
+        if (
+            expected_profile != "rectangle"
+            and bound_wing is not None
+            and (expected_wing is None or abs(float(bound_wing) - float(expected_wing)) > 0.05)
+        ):
+            raise HTTPException(
+                status_code=409,
+                detail=(
+                    "This catalogue building's locked wing depth no longer matches "
+                    "its current family; regenerate the plan before compiling Community 3D."
+                ),
+            )
+        if expected_profile != "rectangle" and (
+            recipe.target.wing_depth_m is None
+            or expected_wing is None
+            or abs(float(recipe.target.wing_depth_m) - float(expected_wing)) > 0.05
+        ):
+            raise HTTPException(
+                status_code=409,
+                detail=(
+                    "The LEGO recipe wing depth does not match this catalogue building's "
+                    "authoritative shaped footprint; refresh and retry."
+                ),
+            )
         if (
             current_plan["family"] != recipe.module_family
+            or current_plan["reuse_keys"] != recipe.reuse_keys
             or current_plan["instances"] != recipe.instances
             or current_plan["assembled_height_m"] != recipe.assembled_height_m
             or current_plan["fit"] != recipe.fit
@@ -312,6 +573,21 @@ async def _assert_ai_lego_recipes_are_current(
                     "recipes were being prepared; refresh and retry."
                 ),
             )
+
+        rebound = dict(zone.properties or {})
+        rebound["_lego_catalog_fingerprint"] = current_catalog.fingerprint
+        rebound["_lego_runtime_selection_id"] = selected_identity
+        rebound["target_w_m"] = expected_width
+        rebound["target_d_m"] = expected_depth
+        rebound["_lego_actual_footprint_profile"] = expected_profile
+        if expected_profile == "rectangle":
+            rebound.pop("_lego_actual_wing_depth_m", None)
+        else:
+            rebound["_lego_actual_wing_depth_m"] = float(expected_wing)
+        rebound.pop("_lego_family_pending", None)
+        rebound.pop("_lego_family_pending_reason", None)
+        zone.properties = rebound
+        flag_modified(zone, "properties")
 
 
 class LegoModuleMetadataRequest(BaseModel):
@@ -493,14 +769,15 @@ async def create_lego_assembly_plan(
     ``archetype_id`` and ``reuse_keys`` are designed to be passed directly from
     the existing Urban Intelligence DNA ``generation_style_input`` object.
     """
+    entries = await _accessible_entries(db, user, body.project_id)
     descriptors = [
         descriptor
-        for entry in await _accessible_entries(db, user, body.project_id)
+        for entry in entries
         if (descriptor := descriptor_from_library_entry(entry)) is not None
     ]
 
     try:
-        return plan_vertical_assembly(
+        plan = plan_vertical_assembly(
             descriptors,
             AssemblyRequest(
                 target_width_m=body.target_width_m,
@@ -513,7 +790,13 @@ async def create_lego_assembly_plan(
                 footprint_profile=body.footprint_profile,
                 wing_depth_m=body.wing_depth_m,
             ),
+            allow_forced_fit=body.allow_forced_fit,
         )
+        # The caller persists this token with an AI recipe. Community 3D
+        # re-plans under a row/inventory lock and accepts only the same current
+        # revision, including first family-pending -> detailed upgrades.
+        plan["catalog_fingerprint"] = build_lego_planning_catalog(entries).fingerprint
+        return plan
     except AssemblyPlanningError as exc:
         detail: dict[str, Any] = {
             "code": exc.code,
@@ -954,13 +1237,31 @@ def _public_realm_recipe_for_zone(
         detail = exc.as_detail()
         detail["zone_id"] = str(zone.id)
         detail["kind"] = kind
-        logger.warning(
-            "Community 3D public-realm preflight rejected zone %s (%s): %s",
+        if public_realm_fallback_marker(zone.zone_type, properties) is None:
+            raise HTTPException(
+                status_code=422,
+                detail={
+                    "code": "unknown_catalog_archetype",
+                    "message": (
+                        "The selected park/street archetype or variant is not in the "
+                        "authoritative catalogue."
+                    ),
+                    "zone_id": str(zone.id),
+                    "kind": kind,
+                },
+            ) from exc
+        logger.info(
+            "Community 3D will use source-fitted public-realm fallback for zone %s (%s, %s): %s",
             zone.id,
             kind,
+            exc.code,
             detail.get("message", detail),
         )
-        raise HTTPException(status_code=422, detail=detail) from exc
+        # Missing assets and out-of-band exact kits are representation states,
+        # not invalid authored zones. Preserve the selected identity and let
+        # the deterministic source-fitted park/street renderer own the exact
+        # geometry until a compatible Sticker/LEGO kit is imported.
+        return None
     except ValueError as exc:
         logger.warning(
             "Community 3D public-realm geometry rejected zone %s (%s): %s",
@@ -977,7 +1278,34 @@ def _public_realm_recipe_for_zone(
                 "kind": kind,
             },
         ) from exc
-    return recipe.model_dump(mode="json") if recipe is not None else None
+    if recipe is None:
+        identity_fields = (
+            ("road_archetype_id", "road_selected_variant_id")
+            if kind == "street"
+            else (
+                "green_space_archetype_id",
+                "green_space_selected_variant_id",
+                "plaza_archetype_id",
+                "plaza_selected_variant_id",
+            )
+        )
+        if any(str(properties.get(field) or "").strip() for field in identity_fields) and (
+            public_realm_fallback_marker(zone.zone_type, properties) is None
+        ):
+            raise HTTPException(
+                status_code=422,
+                detail={
+                    "code": "unknown_catalog_archetype",
+                    "message": (
+                        "The selected park/street archetype or variant is not in the "
+                        "authoritative catalogue."
+                    ),
+                    "zone_id": str(zone.id),
+                    "kind": kind,
+                },
+            )
+        return None
+    return recipe.model_dump(mode="json")
 
 
 def _stamp_community_3d(
@@ -996,12 +1324,18 @@ def _stamp_community_3d(
     properties = dict(zone.properties or {})
     if kind in {"park", "street"}:
         if public_realm_recipe is None:
-            # A manual legacy archetype may retain the historical procedural
-            # representation, but an older V1 recipe must never survive an
-            # explicit recompile to a different unsupported selection.
+            # A family-pending archetype uses the historical source-fitted
+            # procedural representation, but an older exact V1 recipe must
+            # never survive an explicit recompile to a different selection.
             properties.pop(PUBLIC_REALM_RECIPE_PROPERTY, None)
+            fallback = public_realm_fallback_marker(zone.zone_type, properties)
+            if fallback is None:
+                properties.pop(PUBLIC_REALM_FALLBACK_PROPERTY, None)
+            else:
+                properties[PUBLIC_REALM_FALLBACK_PROPERTY] = fallback
         else:
             properties[PUBLIC_REALM_RECIPE_PROPERTY] = public_realm_recipe
+            properties.pop(PUBLIC_REALM_FALLBACK_PROPERTY, None)
     source_geometry = _community_source_geometry(zone)
     source_hash = community_3d_source_hash(
         zone.zone_type,
@@ -1014,6 +1348,11 @@ def _stamp_community_3d(
         source_hash=source_hash,
         building=building,
         public_realm_recipe=public_realm_recipe,
+        public_realm_fallback=(
+            properties.get(PUBLIC_REALM_FALLBACK_PROPERTY)
+            if public_realm_recipe is None
+            else None
+        ),
     )
     if representation_hash is None:
         raise HTTPException(
@@ -1056,7 +1395,7 @@ def _recipe_payload(body: LegoRecipeRequest) -> dict[str, Any]:
     keep the target shape faithful so save/get and place/get round-trips remain
     backward compatible as footprint capabilities evolve.
     """
-    payload = body.model_dump(exclude={"building_name"})
+    payload = body.model_dump(exclude={"building_name", "source_updated_at"})
     payload["target"] = body.target.model_dump(exclude_unset=True)
     return payload
 
@@ -1134,8 +1473,7 @@ def _positive_float(value: Any) -> float | None:
 
 
 def _positive_int(value: Any) -> int | None:
-    parsed = _positive_float(value)
-    return max(1, round(parsed)) if parsed is not None else None
+    return _positive_half_up_int(value)
 
 
 def _column_height_meters(value: float) -> float:
@@ -1206,20 +1544,21 @@ async def _place_planned_massing_on_zone(
         # Same orientation-truth rule as _place_recipe_on_zone: the rotated /
         # reshaped zone ring must reach the footprint the globe places from.
         building.footprint = zone.geometry
-        has_generated_model = bool(
-            building.model_url or (isinstance(building.lod_urls, dict) and building.lod_urls.get("0"))
-        )
-        if not has_generated_model:
-            if preferred_name is not None:
-                building.name = preferred_name
-            building.floor_count = floors
-            building.height_meters = height
+        # A prior Meshy URL is retained as asset history, but an explicit
+        # family-pending rebuild must not re-certify that old appearance for a
+        # newly selected archetype. The current source zone owns all massing
+        # metadata and the representation stamp below remains planned_massing.
+        if preferred_name is not None:
+            building.name = preferred_name
+        building.floor_count = floors
+        building.height_meters = height
 
     specifications = dict(building.specifications or {})
     # This compiler branch explicitly represents a family-pending building,
-    # so an older LEGO recipe must not keep winning the globe coexistence
-    # filter. A generated model, when present, still takes visual priority and
-    # is stamped as Meshy below by the caller.
+    # so neither an older LEGO recipe nor a historical generated model may be
+    # certified as the current design. Asset URLs remain recoverable history,
+    # while the source-fitted mass and its planned_massing stamp own the live
+    # representation until the selected family is imported and rebuilt.
     specifications.pop(RECIPE_SPEC_KEY, None)
     specifications.pop("lego_placed", None)
     specifications[PLANNED_MASSING_SPEC_KEY] = {
@@ -1257,9 +1596,30 @@ async def place_lego_assembly(
     await lock_residual_landscape_project(db, zone.project_id)
     await db.refresh(zone)
 
+    is_ai_zone = bool(str((zone.properties or {}).get("_plan_scenario") or "").strip())
+    if is_ai_zone and body.source_updated_at is None:
+        raise HTTPException(
+            status_code=409,
+            detail=(
+                "This AI Master Plan recipe is missing its source-zone revision; "
+                "refresh the project and prepare the building again."
+            ),
+        )
+    if body.source_updated_at is not None and not _same_source_revision(
+        body.source_updated_at,
+        zone.updated_at,
+    ):
+        raise HTTPException(
+            status_code=409,
+            detail=(
+                "This building zone changed while its LEGO recipe was being prepared; "
+                "refresh and retry."
+            ),
+        )
+
     freshness_item = Community3DCompileItem(
         zone_id=zone.id,
-        source_updated_at=zone.updated_at or datetime.now(timezone.utc),
+        source_updated_at=body.source_updated_at or zone.updated_at or datetime.now(timezone.utc),
         recipe=body,
     )
     await _assert_ai_lego_recipes_are_current(
@@ -1595,11 +1955,7 @@ async def place_community_3d(
                 building, building_created = await _place_recipe_on_zone(db, zone, item.recipe)
             else:
                 building, building_created = await _place_planned_massing_on_zone(db, zone)
-                building_generator = (
-                    "meshy"
-                    if (building.model_url or (isinstance(building.lod_urls, dict) and building.lod_urls.get("0")))
-                    else "planned_massing"
-                )
+                building_generator = "planned_massing"
             building_id = str(building.id)
 
         _stamp_community_3d(

@@ -13,13 +13,16 @@ from typing import Any
 
 from app.services.plan_geometry.archetypes import dims_by_id, load_families
 from app.services.public_realm_lego import (
+    PUBLIC_REALM_FALLBACK_PROPERTY,
     PUBLIC_REALM_RECIPE_PROPERTY,
     build_public_realm_capability_catalog,
+    public_realm_fallback_identity,
     public_realm_recipe_identity,
 )
 
 
 _VERSION_SUFFIX = re.compile(r"_v\d+$", re.IGNORECASE)
+_CATALOG_VARIANT_SUFFIX = re.compile(r"_(?:v|variant_)(\d+)$", re.IGNORECASE)
 
 
 def _humanize_identifier(value: str) -> str:
@@ -78,48 +81,69 @@ def _building_design_identity(properties: dict[str, Any]) -> str | None:
     return title
 
 
-def _public_realm_design_identity(properties: dict[str, Any]) -> str | None:
+def _public_realm_design_identity(
+    semantic_class: str,
+    properties: dict[str, Any],
+) -> str | None:
     stored_recipe = properties.get(PUBLIC_REALM_RECIPE_PROPERTY)
-    if not isinstance(stored_recipe, dict):
-        return None
-    identity = public_realm_recipe_identity(stored_recipe)
-    if identity is None:
-        return None
-    recipe = identity["recipe"]
-    catalog = build_public_realm_capability_catalog()
-    capability = next(
-        (
-            item
-            for item in catalog.capabilities
-            if item.family_id == recipe["family_id"] and item.family_version == recipe["family_version"]
-        ),
-        None,
-    )
-    if capability is None:
-        return None
-    selection = next(
-        (
-            item
-            for item in capability.selections
-            if item.archetype_id == recipe["archetype_id"] and item.variant_id == recipe["variant_id"]
-        ),
-        None,
-    )
-    if selection is None:
-        return None
+    if isinstance(stored_recipe, dict):
+        identity = public_realm_recipe_identity(stored_recipe)
+        if identity is None:
+            return None
+        recipe = identity["recipe"]
+        catalog = build_public_realm_capability_catalog()
+        capability = next(
+            (
+                item
+                for item in catalog.capabilities
+                if item.family_id == recipe["family_id"] and item.family_version == recipe["family_version"]
+            ),
+            None,
+        )
+        if capability is None:
+            return None
+        selection = next(
+            (
+                item
+                for item in capability.selections
+                if item.archetype_id == recipe["archetype_id"] and item.variant_id == recipe["variant_id"]
+            ),
+            None,
+        )
+        if selection is None:
+            return None
 
-    archetype = _humanize_identifier(selection.archetype_id)
-    family = re.sub(
-        r"^(?:Render-Locked|Legacy)\s+",
-        "",
-        capability.title,
-        flags=re.IGNORECASE,
-    ).strip()
-    appearance = _humanize_identifier(selection.appearance_kit_id)
-    details = [family, appearance]
-    if capability.kind == "park" and selection.planting_structure:
-        details.append(_humanize_identifier(selection.planting_structure))
-    return f"{archetype} — {', '.join(details)}"
+        archetype = _humanize_identifier(selection.archetype_id)
+        family = re.sub(
+            r"^(?:Render-Locked|Legacy)\s+",
+            "",
+            capability.title,
+            flags=re.IGNORECASE,
+        ).strip()
+        appearance = _humanize_identifier(selection.appearance_kit_id)
+        details = [family, appearance]
+        if capability.kind == "park" and selection.planting_structure:
+            details.append(_humanize_identifier(selection.planting_structure))
+        return f"{archetype} — {', '.join(details)}"
+
+    stored_fallback = properties.get(PUBLIC_REALM_FALLBACK_PROPERTY)
+    canonical_fallback = public_realm_fallback_identity(stored_fallback)
+    if not isinstance(stored_fallback, dict) or stored_fallback != canonical_fallback:
+        return None
+    if canonical_fallback["kind"] != semantic_class:
+        return None
+    kind = "Park / Plaza" if canonical_fallback["kind"] == "park" else "Street / Path"
+    # ``public_realm_fallback_identity`` has already resolved both values
+    # through the generated full-catalogue allowlist. Humanizing these
+    # canonical IDs therefore preserves useful Japanese Garden / Dog Park /
+    # Woonerf semantics without ever forwarding a user label or unknown prose.
+    archetype = _humanize_identifier(canonical_fallback["archetype_id"])
+    variant_id = canonical_fallback.get("variant_id")
+    variant = ""
+    if isinstance(variant_id, str):
+        suffix = _CATALOG_VARIANT_SUFFIX.search(variant_id)
+        variant = f", catalogue variant {int(suffix.group(1)) + 1}" if suffix else f", {_humanize_identifier(variant_id)}"
+    return f"{archetype}{variant} — Planned {kind}; Sticker/LEGO family pending"
 
 
 def direct_3d_zone_design_identity(
@@ -132,5 +156,5 @@ def direct_3d_zone_design_identity(
     if semantic_class == "building":
         return _building_design_identity(safe_properties)
     if semantic_class in {"park", "street"}:
-        return _public_realm_design_identity(safe_properties)
+        return _public_realm_design_identity(semantic_class, safe_properties)
     return None

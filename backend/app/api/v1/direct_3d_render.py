@@ -46,9 +46,11 @@ from app.services.direct_3d_render import (
 )
 from app.services.direct_3d_identity import direct_3d_zone_design_identity
 from app.services.public_realm_lego import (
+    PUBLIC_REALM_FALLBACK_PROPERTY,
     PUBLIC_REALM_RECIPE_PROPERTY,
     PublicRealmPlanningError,
     plan_public_realm_zone_recipe,
+    public_realm_fallback_marker,
     public_realm_recipe_identity,
 )
 from app.services.render_audit_images import put_image_with_thumbnail
@@ -199,20 +201,34 @@ def _validate_direct_3d_project_zones(
             continue
 
         public_realm_recipe = (zone.properties or {}).get(PUBLIC_REALM_RECIPE_PROPERTY)
+        public_realm_fallback = (zone.properties or {}).get(PUBLIC_REALM_FALLBACK_PROPERTY)
         plan_scenario = (zone.properties or {}).get("_plan_scenario")
         if (
             kind in {"park", "street"}
-            and isinstance(plan_scenario, str)
-            and bool(plan_scenario.strip())
             and not isinstance(public_realm_recipe, dict)
         ):
-            # Pre-contract AI plans must be rebuilt once so a paid Direct
-            # capture cannot claim LEGO fidelity from the legacy generator-only
-            # fingerprint. Manual public-realm zones retain that compatibility.
-            stale_or_uncompiled.append(zone)
-            continue
+            canonical_fallback = public_realm_fallback_marker(
+                zone.zone_type,
+                zone.properties,
+            )
+            fallback_is_required = isinstance(plan_scenario, str) and bool(plan_scenario.strip())
+            if (
+                (fallback_is_required or public_realm_fallback is not None)
+                and (
+                    canonical_fallback is None
+                    or public_realm_fallback != canonical_fallback
+                )
+            ):
+                # AI/public-realm fallback is truthful only when Generate to
+                # 3D explicitly stamped the current source identity. This
+                # keeps pre-contract or edited layers from claiming fidelity.
+                stale_or_uncompiled.append(zone)
+                continue
 
         if kind in {"park", "street"} and isinstance(public_realm_recipe, dict):
+            if public_realm_fallback is not None:
+                stale_or_uncompiled.append(zone)
+                continue
             try:
                 canonical_recipe = plan_public_realm_zone_recipe(
                     zone.zone_type,
@@ -244,6 +260,11 @@ def _validate_direct_3d_project_zones(
             source_hash=current_source_hash,
             building=building,
             public_realm_recipe=public_realm_recipe,
+            public_realm_fallback=(
+                public_realm_fallback
+                if not isinstance(public_realm_recipe, dict)
+                else None
+            ),
         )
         if (
             current_representation_hash is None
@@ -275,10 +296,10 @@ def _validate_direct_3d_project_zones(
             "boundaries and run Generate to 3D again before rendering."
         )
     if not boundaries:
-        if req.residual_landscape_claim is not None:
+        if req.residual_landscape_claim is not None or len(physical_zones) > 1:
             raise _direct_state_conflict(
-                "The compiled site boundary changed after capture. Refresh and rebuild "
-                "the scene with Generate to 3D before rendering."
+                "This multi-zone project no longer has its compiled site boundary. "
+                "Refresh and rebuild the scene with Generate to 3D before rendering."
             )
         return server_inventory
 

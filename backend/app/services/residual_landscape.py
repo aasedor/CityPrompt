@@ -28,7 +28,7 @@ from app.services.site_engine import (
     local_metric_crs_for_polygon,
     project_geometry,
 )
-from app.services.public_realm_lego import public_realm_recipe_identity
+from app.services.public_realm_lego import public_realm_fallback_identity, public_realm_recipe_identity
 
 
 @dataclass(frozen=True)
@@ -675,6 +675,7 @@ def community_3d_representation_hash(
     source_hash: str,
     building: Any | None = None,
     public_realm_recipe: dict[str, Any] | None = None,
+    public_realm_fallback: dict[str, Any] | None = None,
 ) -> str | None:
     """Fingerprint the exact persisted representation mounted by the globe.
 
@@ -750,6 +751,13 @@ def community_3d_representation_hash(
         if canonical_recipe.get("kind") != kind or canonical_recipe.get("generator") != generator:
             return None
         payload["public_realm_lego"] = identity
+    elif public_realm_fallback is not None:
+        identity = public_realm_fallback_identity(public_realm_fallback)
+        if identity is None:
+            return None
+        if identity.get("kind") != kind or identity.get("generator") != generator:
+            return None
+        payload["public_realm_fallback"] = identity
 
     return hashlib.sha256(
         json.dumps(

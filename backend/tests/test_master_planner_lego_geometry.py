@@ -3,15 +3,10 @@ from __future__ import annotations
 import math
 from types import SimpleNamespace
 
-import pytest
 from shapely.geometry import Polygon
 
 from app.services.master_planner.lego_catalog import build_lego_planning_catalog
-from app.services.master_planner.lego_geometry import (
-    LegoGeometryCompatibilityError,
-    _frontend_footprint_analysis,
-    bind_building_zones_to_lego,
-)
+from app.services.master_planner.lego_geometry import _frontend_footprint_analysis, bind_building_zones_to_lego
 from app.services.master_planner.spec import lego_fallback_spec, palette_from_spec
 from app.services.plan_geometry.placement import BandSpec, Palette
 from app.services.plan_geometry.refinement import run_refinement_loop
@@ -108,9 +103,12 @@ def _entries() -> list[SimpleNamespace]:
 def test_actual_footprint_binding_keeps_a_compatible_identity():
     entries = _entries()
     catalog = build_lego_planning_catalog(entries)
+    zone = _zone(30, 20)
+    zone["properties"]["_lego_family_pending"] = True
+    zone["properties"]["_lego_family_pending_reason"] = "family_not_found"
 
     zones, report = bind_building_zones_to_lego(
-        [_zone(30, 20)],
+        [zone],
         entries,
         catalog,
     )
@@ -120,8 +118,11 @@ def test_actual_footprint_binding_keeps_a_compatible_identity():
     assert report.unchanged_count == 1
     assert report.repaired_count == 0
     assert report.omitted_count == 0
+    assert report.fallback_count == 0
     assert zones[0]["properties"]["development_archetype_id"] == ("industrial_brick_mixed_use")
     assert zones[0]["properties"]["archetype_source"] == ("runtime_lego_actual_footprint")
+    assert "_lego_family_pending" not in zones[0]["properties"]
+    assert "_lego_family_pending_reason" not in zones[0]["properties"]
 
 
 def test_actual_footprint_analysis_matches_browser_near_rectangle_rule():
@@ -161,7 +162,7 @@ def test_actual_footprint_analysis_preserves_a_material_l_shape():
     assert analysis[2] == "l_shape"
 
 
-def test_actual_footprint_binding_rehomes_an_incompatible_identity_atomically():
+def test_actual_footprint_binding_preserves_incompatible_identity_as_pending_massing():
     entries = _entries()
     catalog = build_lego_planning_catalog(entries)
 
@@ -172,14 +173,19 @@ def test_actual_footprint_binding_rehomes_an_incompatible_identity_atomically():
     )
 
     properties = zones[0]["properties"]
-    assert report.repaired_count == 1
-    assert properties["development_archetype_id"] == "courtyard_family_housing"
-    assert properties["_lego_runtime_repaired_from"] == "industrial_brick_mixed_use"
+    assert report.repaired_count == 0
+    assert report.omitted_count == 0
+    assert report.fallback_count == 1
+    assert properties["development_archetype_id"] == "industrial_brick_mixed_use"
+    assert properties["_lego_family_pending"] is True
+    assert properties["_lego_family_pending_reason"] == "family_incompatible"
+    assert "_lego_catalog_fingerprint" not in properties
+    assert "_lego_runtime_selection_id" not in properties
     assert properties["target_w_m"] == 14
     assert properties["target_d_m"] == 14
 
 
-def test_actual_footprint_binding_rejects_a_cross_parent_selected_identity():
+def test_actual_footprint_binding_preserves_cross_parent_selection_for_truthful_fallback():
     entries = _entries()
     catalog = build_lego_planning_catalog(entries)
     zone = _zone(14, 14)
@@ -189,24 +195,31 @@ def test_actual_footprint_binding_rejects_a_cross_parent_selected_identity():
 
     properties = zones[0]["properties"]
     assert report.unchanged_count == 0
-    assert report.repaired_count == 1
-    assert properties["development_archetype_id"] == "courtyard_family_housing"
-    assert properties.get("development_selected_variant_id") is None
+    assert report.repaired_count == 0
+    assert report.fallback_count == 1
+    assert properties["development_archetype_id"] == "industrial_brick_mixed_use"
+    assert properties["development_selected_variant_id"] == "courtyard_family_housing"
+    assert properties["_lego_family_pending_reason"] == "family_not_found"
 
 
-def test_actual_footprint_binding_fails_before_persistence_without_any_recipe():
+def test_actual_footprint_binding_retains_a_large_family_pending_building():
     entries = _entries()
     catalog = build_lego_planning_catalog(entries)
 
-    with pytest.raises(LegoGeometryCompatibilityError, match="no executable LEGO family"):
-        bind_building_zones_to_lego(
-            [_zone(100, 100)],
-            entries,
-            catalog,
-        )
+    zones, report = bind_building_zones_to_lego(
+        [_zone(100, 100)],
+        entries,
+        catalog,
+    )
+
+    assert len(zones) == 1
+    assert report.retained_count == 1
+    assert report.fallback_count == 1
+    assert zones[0]["properties"]["development_archetype_id"] == "industrial_brick_mixed_use"
+    assert zones[0]["properties"]["_lego_family_pending"] is True
 
 
-def test_actual_footprint_binding_returns_a_bounded_sliver_to_landscape():
+def test_actual_footprint_binding_keeps_a_clipped_sliver_as_pending_massing():
     entries = _entries()
     catalog = build_lego_planning_catalog(entries)
     zones_in = [_zone(30, 20) for _ in range(9)] + [_zone(11.8, 5.1)]
@@ -214,27 +227,30 @@ def test_actual_footprint_binding_returns_a_bounded_sliver_to_landscape():
 
     zones, report = bind_building_zones_to_lego(zones_in, entries, catalog)
 
-    assert len(zones) == 9
+    assert len(zones) == 10
     assert report.building_count == 10
-    assert report.retained_count == 9
-    assert report.omitted_count == 1
-    assert report.omitted_building_indices == (9,)
-    assert report.omissions == (("Clipped edge sliver", 11.8, 5.1, 3),)
+    assert report.retained_count == 10
+    assert report.omitted_count == 0
+    assert report.fallback_count == 1
+    assert report.fallbacks == (
+        ("Clipped edge sliver", "industrial_brick_mixed_use", 11.8, 5.1, 3, "family_incompatible"),
+    )
 
 
-def test_actual_footprint_binding_rejects_excessive_omissions_atomically():
+def test_actual_footprint_binding_never_hollows_out_multiple_pending_buildings():
     entries = _entries()
     catalog = build_lego_planning_catalog(entries)
 
-    with pytest.raises(
-        LegoGeometryCompatibilityError,
-        match="bounded residual-landscape allowance",
-    ):
-        bind_building_zones_to_lego(
-            [_zone(30, 20), _zone(11.8, 5.1), _zone(11.8, 5.1)],
-            entries,
-            catalog,
-        )
+    zones, report = bind_building_zones_to_lego(
+        [_zone(30, 20), _zone(11.8, 5.1), _zone(11.8, 5.1)],
+        entries,
+        catalog,
+    )
+
+    assert len(zones) == 3
+    assert report.retained_count == 3
+    assert report.omitted_count == 0
+    assert report.fallback_count == 2
 
 
 def test_fallback_refinement_preserves_native_lego_identities_through_binding():

@@ -1102,6 +1102,19 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
                     "source_phase": "building_placement",
                 }
             )
+        if lego_binding.fallback_count:
+            result.notes.append(
+                {
+                    "code": "LEGO_FAMILY_PENDING_MASSING",
+                    "severity": "info",
+                    "message": (
+                        f"{lego_binding.fallback_count} of {lego_binding.building_count} "
+                        "building footprints preserve their selected catalogue identity "
+                        "as exact-footprint planned massing until that LEGO family is imported."
+                    ),
+                    "source_phase": "building_placement",
+                }
+            )
         # The planner's own notes (composition + repairs) lead the plan notes.
         result.notes[:0] = master_notes
 
@@ -1202,6 +1215,18 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
                 "unchanged_count": lego_binding.unchanged_count,
                 "repaired_count": lego_binding.repaired_count,
                 "omitted_count": lego_binding.omitted_count,
+                "fallback_count": lego_binding.fallback_count,
+                "fallbacks": [
+                    {
+                        "name": name,
+                        "selection_id": selection_id,
+                        "width_m": width_m,
+                        "depth_m": depth_m,
+                        "floors": floors,
+                        "reason": reason,
+                    }
+                    for name, selection_id, width_m, depth_m, floors, reason in lego_binding.fallbacks
+                ],
             },
             "intersection_density_per_km2": round(result.intersection_density_per_km2, 1),
             "rules": result.rules,

@@ -160,6 +160,41 @@ def test_community_representation_fingerprint_tracks_exact_generator_content():
     )
 
 
+def test_community_representation_fingerprint_binds_family_pending_public_realm_marker():
+    source_hash = "b" * 64
+    marker = {
+        "schema_version": 1,
+        "state": "family_pending",
+        "kind": "park",
+        "generator": "park_kit",
+        "archetype_id": "academic_courtyard",
+        "variant_id": None,
+        "target_source": "zone_geometry",
+    }
+
+    original = community_3d_representation_hash(
+        kind="park",
+        generator="park_kit",
+        source_hash=source_hash,
+        public_realm_fallback=marker,
+    )
+
+    assert original is not None
+    changed = {**marker, "archetype_id": "amsterdam_hofje_garden"}
+    assert community_3d_representation_hash(
+        kind="park",
+        generator="park_kit",
+        source_hash=source_hash,
+        public_realm_fallback=changed,
+    ) != original
+    assert community_3d_representation_hash(
+        kind="street",
+        generator="street_section",
+        source_hash=source_hash,
+        public_realm_fallback=marker,
+    ) is None
+
+
 def test_community_source_fingerprint_tracks_building_design_not_operational_metadata():
     properties = {
         "_plan_role": "building",

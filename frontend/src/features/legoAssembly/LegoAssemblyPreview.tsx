@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { Canvas } from '@react-three/fiber';
 import { Bounds, Environment, Grid, OrbitControls } from '@react-three/drei';
-import { AlertTriangle, Bookmark, Box, Check, Copy, Loader2, MapPin, Minus, Plus, RefreshCw, Save, Trash2, X } from 'lucide-react';
+import { AlertTriangle, Bookmark, Box, Check, Loader2, MapPin, Minus, Plus, RefreshCw, Save, Trash2, X } from 'lucide-react';
 import { getApiErrorMessage } from '@/services/api';
 import type { SiteZone, SiteZoneProperties } from '@/types';
 import {
@@ -25,7 +25,6 @@ import {
   Progress,
   clamp,
   deriveZoneTargets,
-  familyGenerationCommands,
   findZoneCatalogOption,
   fitIsStretched,
   normalizeArchetypeId,
@@ -123,7 +122,6 @@ export function LegoAssemblyPreview({
   // a building created by Place is only known through the endpoint's response.
   const [placedBuildingId, setPlacedBuildingId] = useState<string | null>(null);
   const [clearing, setClearing] = useState(false);
-  const [copied, setCopied] = useState(false);
   const queryClient = useQueryClient();
 
   // Restore any saved recipe for this building when the composer opens.
@@ -161,12 +159,16 @@ export function LegoAssemblyPreview({
         ...(zone?.project_id ? { project_id: zone.project_id } : {}),
         ...archetypeContext,
         allow_setback: allowSetback,
+        // A reviewed family either fits its declared contract or this preview
+        // reports the normal correct-size fallback. Do not silently distort a
+        // fixed family in the manual authoring path.
+        allow_forced_fit: false,
       });
       setPlan(result);
     } catch (cause) {
       const failure = getLegoPlanningFailure(cause);
       setPlanningFailure(failure);
-      setError(failure?.message || getApiErrorMessage(cause, 'Could not assemble this building.'));
+      setError(failure ? null : getApiErrorMessage(cause, 'Could not assemble this building.'));
     } finally {
       setLoading(false);
     }
@@ -189,7 +191,9 @@ export function LegoAssemblyPreview({
       const saved = await legoAssemblyApi.saveRecipe(buildingId, {
         schema_version: 1,
         module_family: plan.family,
-        ...(catalogFingerprint ? { catalog_fingerprint: catalogFingerprint } : {}),
+        ...(plan.catalog_fingerprint ?? catalogFingerprint
+          ? { catalog_fingerprint: plan.catalog_fingerprint ?? catalogFingerprint }
+          : {}),
         archetype_id: plan.archetype_id ?? archetypeContext.archetype_id ?? null,
         reuse_keys: plan.reuse_keys,
         target: plan.target,
@@ -208,10 +212,11 @@ export function LegoAssemblyPreview({
 
   const recipeFromCurrentPlan = (): LegoAssemblyRecipe | null => {
     if (!plan) return null;
+    const currentCatalogFingerprint = plan.catalog_fingerprint ?? catalogFingerprint;
     return {
       schema_version: 1,
       module_family: plan.family,
-      ...(catalogFingerprint ? { catalog_fingerprint: catalogFingerprint } : {}),
+      ...(currentCatalogFingerprint ? { catalog_fingerprint: currentCatalogFingerprint } : {}),
       archetype_id: plan.archetype_id ?? archetypeContext.archetype_id ?? null,
       reuse_keys: plan.reuse_keys,
       target: plan.target,
@@ -230,7 +235,11 @@ export function LegoAssemblyPreview({
     setPlacing(true);
     setError(null);
     try {
-      const result = await legoAssemblyApi.place(zone.id, { ...recipe, building_name: archetypeLabel });
+      const result = await legoAssemblyApi.place(zone.id, {
+        ...recipe,
+        building_name: archetypeLabel,
+        source_updated_at: zone.updated_at,
+      });
       setSavedRecipe(recipe);
       setPlacedBuildingId(result.building_id);
       await Promise.all([
@@ -263,19 +272,6 @@ export function LegoAssemblyPreview({
       setError(getApiErrorMessage(cause, 'Could not clear the saved recipe.'));
     } finally {
       setClearing(false);
-    }
-  };
-
-  const hintArchetypeId = normalizeArchetypeId(archetypeContext.archetype_id) ?? '<archetype-id>';
-  const generateFamilyCommand = familyGenerationCommands(hintArchetypeId);
-
-  const copyGenerateCommand = async () => {
-    try {
-      await navigator.clipboard.writeText(generateFamilyCommand);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      // Clipboard unavailable (e.g. insecure context) — the command stays selectable.
     }
   };
 
@@ -482,28 +478,27 @@ export function LegoAssemblyPreview({
           {error && <p className="mt-3 rounded border border-red-300 bg-red-50 p-2 text-xs text-red-800">{error}</p>}
 
           {planningFailure?.code === 'family_not_found' && (
-            <div className="mt-2 rounded border border-red-300 bg-red-50 p-2 text-[11px] text-red-900">
-              <p className="font-bold">No module family covers this archetype yet.</p>
-              <p className="mt-1">Generate one, then import its manifest:</p>
-              <pre className="mt-1.5 select-all overflow-x-auto whitespace-pre-wrap break-all rounded bg-red-100 p-1.5 font-mono text-[10px] leading-relaxed">{generateFamilyCommand}</pre>
-              <button
-                type="button"
-                onClick={copyGenerateCommand}
-                className="mt-1.5 flex items-center gap-1 rounded border border-red-400 bg-white px-2 py-0.5 text-[10px] font-bold text-red-800 hover:bg-red-100"
-              >
-                {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
-                {copied ? 'Copied' : 'Copy commands'}
-              </button>
+            <div className="mt-2 rounded border border-amber-300 bg-amber-50 p-2 text-[11px] text-amber-950">
+              <p className="font-bold">Detailed Sticker/LEGO family to add</p>
+              <p className="mt-1">
+                This does not block the plan. Generate to 3D uses correctly sized {targetWidth} × {targetDepth} m,
+                {` ${targetFloors}-floor`} massing now. After the reviewed family is imported, Rebuild buildings
+                upgrades it in place.
+              </p>
             </div>
           )}
 
           {planningFailure?.code === 'family_incompatible' && (
             <div className="mt-2 rounded border border-amber-400 bg-amber-50 p-2 text-[11px] text-amber-900">
-              <p className="font-bold">A matching family is installed, but it does not fit this target.</p>
-              <p className="mt-1">Adjust the width, depth, floors or footprint profile and assemble again.</p>
+              <p className="font-bold">This detailed family is outside its reviewed fit.</p>
+              <p className="mt-1">
+                This does not block the plan. Generate to 3D uses correctly sized {targetWidth} × {targetDepth} m,
+                {` ${targetFloors}-floor`} massing now. Change the dimensions only if you want to use this reviewed
+                detailed family.
+              </p>
               {planningFailure.supported_families && planningFailure.supported_families.length > 0 && (
                 <div className="mt-1.5">
-                  <p className="font-bold">Supported family sizes</p>
+                  <p className="font-bold">Optional detailed-family sizes</p>
                   <ul className="mt-0.5 list-disc space-y-0.5 pl-4">
                     {planningFailure.supported_families.map((supported) => (
                       <li key={supported.family}>{supportedFamilyLabel(supported)}</li>

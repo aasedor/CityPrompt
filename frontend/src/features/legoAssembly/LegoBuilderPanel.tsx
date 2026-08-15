@@ -1,9 +1,9 @@
-import { Suspense, useCallback, useEffect, useMemo, useRef, useState, type ChangeEvent } from 'react';
+import { Suspense, useCallback, useEffect, useRef, useState, type ChangeEvent } from 'react';
 import { createPortal } from 'react-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { Canvas } from '@react-three/fiber';
 import { Bounds, Environment, Grid, OrbitControls } from '@react-three/drei';
-import { AlertTriangle, Blocks, Check, Copy, Loader2, MapPin, RefreshCw, Route, Save, Trees, Upload, X } from 'lucide-react';
+import { AlertTriangle, Blocks, Check, Loader2, MapPin, RefreshCw, Route, Save, Trees, Upload, X } from 'lucide-react';
 import { getApiErrorMessage, siteZonesApi } from '@/services/api';
 import type { SiteZone } from '@/types';
 import { resolveCommunity3DKind } from '@/features/community3d/community3d';
@@ -19,16 +19,17 @@ import {
   ModuleInstance,
   PreviewErrorBoundary,
   Progress,
-  familyGenerationCommands,
   fitIsStretched,
   fitPreservesArchetypeForm,
 } from './legoShared';
 import {
+  assertCommunityCompileResponse,
   deriveGroundItems,
   deriveItems,
   compileMixedCommunity3D,
   isCommunity3DSourceRevisionConflict,
   recipeFromPlan,
+  type CommunityCompileExpectation,
   type GroundBuildItem,
   type ZoneBuildItem,
 } from './communityCompiler';
@@ -95,9 +96,12 @@ export function LegoBuilderPanel({
   const [generationStage, setGenerationStage] = useState<string | null>(null);
   const [initialPlanningComplete, setInitialPlanningComplete] = useState(false);
   const [saveResult, setSaveResult] = useState<string | null>(null);
-  const [copied, setCopied] = useState(false);
   const queryClient = useQueryClient();
   const autoGenerateStartedRef = useRef(false);
+  const initialPlanStartedRef = useRef(false);
+  const batchInFlightRef = useRef(false);
+  const batchEpochRef = useRef(0);
+  const placingAllRef = useRef(false);
   const streetAtlasInputRef = useRef<HTMLInputElement | null>(null);
   const [streetAtlasStatus, setStreetAtlasStatus] = useState<{
     kind: 'success' | 'error';
@@ -137,24 +141,72 @@ export function LegoBuilderPanel({
   }, [refetchPlacedData, setPlaceState]);
 
   const handlePlaceAll = useCallback(async (forceRebuild = false) => {
+    const blockingPlanningFailures = items.filter((item) => (
+      !item.plan && Boolean(item.error) && !item.familyMissing && !item.familyIncompatible
+    ));
+    if (blockingPlanningFailures.length > 0) {
+      setSaveResult(
+        `${blockingPlanningFailures.length} building plan${blockingPlanningFailures.length === 1 ? '' : 's'} `
+        + 'need review. Nothing was compiled; retry planning before Generate to 3D.',
+      );
+      return;
+    }
+    const invalidFootprints = items.filter((item) => item.offset === null);
+    if (invalidFootprints.length > 0) {
+      setSaveResult(
+        `${invalidFootprints.length} building zone${invalidFootprints.length === 1 ? '' : 's'} `
+        + 'need a usable footprint. Nothing was compiled; repair the plan before Generate to 3D.',
+      );
+      return;
+    }
     const placeable = items.filter(
       (item): item is ZoneBuildItem & { plan: LegoAssemblyPlan; offset: [number, number] } => (
         Boolean(item.plan && item.offset) && (forceRebuild || item.placeState !== 'placed')
       ),
     );
     const massingOnly = items.filter((item) => (
-      !item.plan && Boolean(item.offset) && (forceRebuild || item.massingState !== 'compiled')
+      !item.plan
+      && (item.familyMissing || item.familyIncompatible)
+      && Boolean(item.offset)
+      && (forceRebuild || item.massingState !== 'compiled')
     ));
     const groundToCompile = groundItems.filter((item) => (
       forceRebuild || item.state !== 'compiled'
     ));
     if (
       (placeable.length === 0 && massingOnly.length === 0 && groundToCompile.length === 0)
-      || placingAll
+      || placingAllRef.current
+      || importingStreetAtlas
     ) return;
     const placeableIds = new Set(placeable.map((item) => item.zone.id));
     const massingOnlyIds = new Set(massingOnly.map((item) => item.zone.id));
     const groundToCompileIds = new Set(groundToCompile.map((item) => item.zone.id));
+    const requestedZoneIds = new Set([
+      ...placeableIds,
+      ...massingOnlyIds,
+      ...groundToCompileIds,
+    ]);
+    const expectedItems: CommunityCompileExpectation[] = [
+      ...placeable.map((item) => ({
+        zoneId: item.zone.id,
+        label: item.label,
+        kind: 'building' as const,
+        generators: new Set(['lego_assembly'] as const),
+      })),
+      ...massingOnly.map((item) => ({
+        zoneId: item.zone.id,
+        label: item.label,
+        kind: 'building' as const,
+        generators: new Set(['planned_massing'] as const),
+      })),
+      ...groundToCompile.map((item) => ({
+        zoneId: item.zone.id,
+        label: item.zone.name || item.kind,
+        kind: item.kind,
+        generators: new Set([item.kind === 'park' ? 'park_kit' : 'street_section'] as const),
+      })),
+    ];
+    placingAllRef.current = true;
     setPlacingAll(true);
     setSaveResult(null);
     setItems((prev) => prev.map((item) => {
@@ -184,6 +236,8 @@ export function LegoBuilderPanel({
       };
       if (!projectId) throw new Error('The project could not be identified for Community 3D generation.');
       let result: Community3DCompileResponse;
+      let responseAlreadyValidated = false;
+      let recoveredBuildings: ZoneBuildItem[] | undefined;
       try {
         result = await compileProjectCommunity3D(projectId, [
           ...placeable.map((item) => ({
@@ -215,20 +269,55 @@ export function LegoBuilderPanel({
         }
         queryClient.setQueryData(['site-zones', projectId], refreshedZones);
         authoritativeById = new Map(refreshedZones.map((zone) => [zone.id, zone]));
-        result = (await compileMixedCommunity3D(refreshedZones)).response;
+        const refreshedRequestedZones = refreshedZones.filter((zone) => requestedZoneIds.has(zone.id));
+        if (refreshedRequestedZones.length !== requestedZoneIds.size) {
+          throw new Error(
+            'A requested Community 3D source zone was removed while the scene was being prepared. '
+            + 'The plan was refreshed; review it before rebuilding.',
+          );
+        }
+        const recovered = await compileMixedCommunity3D(
+          refreshedRequestedZones,
+          undefined,
+          {
+            scopeZoneIds: refreshedZones
+              .filter((zone) => resolveCommunity3DKind(zone) !== null)
+              .map((zone) => zone.id),
+          },
+        );
+        result = recovered.response;
+        recoveredBuildings = recovered.resolvedBuildings;
+        // The shared compiler replans the refreshed subset and validates its
+        // potentially changed detailed-vs-massing capability classification.
+        responseAlreadyValidated = true;
       }
+      if (!responseAlreadyValidated) assertCommunityCompileResponse(expectedItems, result);
       const refreshedAfterCompile = await refetchPlacedData();
       if (refreshedAfterCompile.length > 0) {
         authoritativeById = new Map(refreshedAfterCompile.map((zone) => [zone.id, zone]));
       }
+      const recoveredById = new Map(
+        (recoveredBuildings ?? []).map((item) => [item.zone.id, item]),
+      );
+      const representationById = new Map(result.items.map((item) => [item.zone_id, item]));
       setItems((prev) => prev.map((item) => {
-        if (placeableIds.has(item.zone.id)) {
-          return { ...item, zone: authoritativeZone(item.zone.id), placeState: 'placed' };
+        if (!requestedZoneIds.has(item.zone.id)) return item;
+        const base = recoveredById.get(item.zone.id) ?? item;
+        const zone = authoritativeZone(item.zone.id);
+        const representation = representationById.get(item.zone.id);
+        if (representation?.generator === 'lego_assembly') {
+          return { ...base, zone, placeState: 'placed', massingState: undefined };
         }
-        if (massingOnlyIds.has(item.zone.id)) {
-          return { ...item, zone: authoritativeZone(item.zone.id), massingState: 'compiled' };
+        if (representation?.generator === 'planned_massing') {
+          return {
+            ...base,
+            zone,
+            plan: undefined,
+            placeState: undefined,
+            massingState: 'compiled',
+          };
         }
-        return item;
+        return { ...base, zone };
       }));
       setGroundItems((prev) => prev.map((item) => (
         groundToCompileIds.has(item.zone.id)
@@ -236,14 +325,16 @@ export function LegoBuilderPanel({
           : item
       )));
       const groundCount = result.counts.park + result.counts.street;
+      const detailedCount = result.items.filter((item) => item.generator === 'lego_assembly').length;
+      const massingCount = result.items.filter((item) => item.generator === 'planned_massing').length;
       const residual = result.residual_landscape;
       const residualSummary = residual && residual.boundary_count > 0
         ? `; landscaped ${Math.round(residual.area_sqm).toLocaleString()} m² of residual site`
           + ` with ${residual.placement_count} tree${residual.placement_count === 1 ? '' : 's'}`
         : '';
       setSaveResult(
-        `Built ${placeable.length} detailed building${placeable.length === 1 ? '' : 's'}, `
-        + `${massingOnly.length} family-pending mass${massingOnly.length === 1 ? '' : 'es'}, and `
+        `Built ${detailedCount} detailed building${detailedCount === 1 ? '' : 's'}, `
+        + `${massingCount} correct-size massing fallback${massingCount === 1 ? '' : 's'}, and `
         + `${groundCount} park/street layer${groundCount === 1 ? '' : 's'}`
         + residualSummary,
       );
@@ -266,16 +357,31 @@ export function LegoBuilderPanel({
       await refetchPlacedData();
     } finally {
       setGenerationStage(null);
+      placingAllRef.current = false;
       setPlacingAll(false);
     }
-  }, [groundItems, items, placingAll, projectId, refetchPlacedData, zones]);
+  }, [groundItems, importingStreetAtlas, items, projectId, refetchPlacedData, zones]);
 
   const runBatch = useCallback(async (replacePlaced = false) => {
+    // StrictMode replays mount effects and fast double-clicks can land before
+    // React paints the disabled state. Only one planning epoch may own panel
+    // state at a time, so a late result can never overwrite a compiled row.
+    if (batchInFlightRef.current || placingAllRef.current || importingStreetAtlas) return;
+    batchInFlightRef.current = true;
+    const batchEpoch = ++batchEpochRef.current;
+    const isCurrentBatch = () => batchEpochRef.current === batchEpoch;
     const latestPanelZoneById = new Map([
       ...items.map((item) => [item.zone.id, item.zone] as const),
       ...groundItems.map((item) => [item.zone.id, item.zone] as const),
     ]);
-    const latestZones = zones.map((zone) => latestPanelZoneById.get(zone.id) ?? zone);
+    const cachedZoneById = new Map(
+      (projectId
+        ? queryClient.getQueryData<SiteZone[]>(['site-zones', projectId]) ?? []
+        : []).map((zone) => [zone.id, zone]),
+    );
+    const latestZones = zones.map((zone) => (
+      cachedZoneById.get(zone.id) ?? latestPanelZoneById.get(zone.id) ?? zone
+    ));
     const base = deriveItems(latestZones);
     setItems(base);
     setGroundItems(deriveGroundItems(latestZones));
@@ -283,10 +389,12 @@ export function LegoBuilderPanel({
     setInitialPlanningComplete(false);
     if (base.length === 0) {
       setInitialPlanningComplete(true);
+      batchInFlightRef.current = false;
       return;
     }
     setPlanning(true);
-    const results = await allSettledWithConcurrency(
+    try {
+      const results = await allSettledWithConcurrency(
       base,
       (item) => legoAssemblyApi.plan({
           target_width_m: item.targets.width_m,
@@ -295,11 +403,13 @@ export function LegoBuilderPanel({
           footprint_profile: item.targets.footprint_profile,
           wing_depth_m: item.targets.wing_depth_m,
           project_id: item.zone.project_id,
+          allow_forced_fit: false,
           ...legoArchetypeContextFromZone(item.zone.properties),
         }),
       8,
     );
-    const plannedItems = base.map((item, index) => {
+      if (!isCurrentBatch()) return;
+      const plannedItems = base.map((item, index) => {
       const result = results[index];
       if (result.status === 'fulfilled') return { ...item, plan: result.value };
       const planningFailure = getLegoPlanningFailure(result.reason);
@@ -307,18 +417,20 @@ export function LegoBuilderPanel({
         ...item,
         error: planningFailure?.message || getApiErrorMessage(result.reason, 'Could not assemble this zone.'),
         familyMissing: planningFailure?.code === 'family_not_found',
+        familyIncompatible: planningFailure?.code === 'family_incompatible',
       };
     });
-    setItems(plannedItems);
+      setItems(plannedItems);
 
-    // "Rebuild" must update recipes that are already on the globe. Merely
-    // recalculating the preview leaves their old content-hashed module URLs in
-    // Building.specifications, so a freshly imported family can never replace
-    // the cached live asset. The initial panel load still plans read-only.
-    if (replacePlaced) {
+    // "Rebuild" must update recipes already on the globe and upgrade a prior
+    // exact-massing fallback as soon as its reviewed family is imported.
+    // Merely recalculating the preview would leave either the old content hash
+    // or neutral massing live. The initial panel load still plans read-only.
+      if (replacePlaced) {
       const replaceable = plannedItems.filter(
         (item): item is ZoneBuildItem & { plan: LegoAssemblyPlan } => (
-          Boolean(item.plan) && item.placeState === 'placed'
+          Boolean(item.plan)
+          && (item.placeState === 'placed' || item.massingState === 'compiled')
         ),
       );
       if (replaceable.length > 0) {
@@ -332,6 +444,11 @@ export function LegoBuilderPanel({
             .filter((_item, index) => replaced[index].status === 'rejected')
             .map((item) => item.zone.id),
         );
+        const replacedIds = new Set(
+          replaceable
+            .filter((_item, index) => replaced[index].status === 'fulfilled')
+            .map((item) => item.zone.id),
+        );
         const replacedCount = replaced.filter((result) => result.status === 'fulfilled').length;
         setSaveResult(
           failedIds.size > 0
@@ -339,6 +456,7 @@ export function LegoBuilderPanel({
             : `Rebuilt ${replacedCount} placed building${replacedCount === 1 ? '' : 's'} with the latest family assets`,
         );
         const refreshedZones = await refetchPlacedData();
+        if (!isCurrentBatch()) return;
         // Placing the refreshed recipe intentionally marks its owning source
         // zone stale, which advances zone.updated_at. Carry that authoritative
         // revision into the next atomic Community 3D request; otherwise the
@@ -348,16 +466,33 @@ export function LegoBuilderPanel({
         setItems(plannedItems.map((item) => ({
           ...item,
           zone: refreshedById.get(item.zone.id) ?? item.zone,
-          ...(failedIds.has(item.zone.id) ? { placeState: 'failed' as const } : {}),
+          ...(failedIds.has(item.zone.id)
+            ? { placeState: 'failed' as const }
+            : replacedIds.has(item.zone.id)
+              ? { placeState: 'placed' as const, massingState: undefined }
+              : {}),
         })));
       }
+      }
+      setInitialPlanningComplete(true);
+    } catch (error) {
+      setSaveResult(getApiErrorMessage(
+        error,
+        'Could not finish rebuilding the building plans. Refresh the project and retry.',
+      ));
+      setInitialPlanningComplete(false);
+    } finally {
+      if (isCurrentBatch()) {
+        batchInFlightRef.current = false;
+        setPlanning(false);
+      }
     }
-    setPlanning(false);
-    setInitialPlanningComplete(true);
-  }, [groundItems, items, projectId, refetchPlacedData, zones]);
+  }, [groundItems, importingStreetAtlas, items, projectId, queryClient, refetchPlacedData, zones]);
 
   // Plan every buildable zone once when the panel opens; "Rebuild all" re-runs it.
   useEffect(() => {
+    if (initialPlanStartedRef.current) return;
+    initialPlanStartedRef.current = true;
     void runBatch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -372,8 +507,12 @@ export function LegoBuilderPanel({
   }, [autoGenerate, handlePlaceAll, initialPlanningComplete]);
 
   const assembledCount = items.filter((item) => item.plan).length;
-  const noFamilyCount = items.filter((item) => item.familyMissing).length;
-  const otherFailedCount = items.filter((item) => item.error && !item.familyMissing).length;
+  const missingFamilyCount = items.filter((item) => item.familyMissing).length;
+  const incompatibleFamilyCount = items.filter((item) => item.familyIncompatible).length;
+  const massingFallbackCount = missingFamilyCount + incompatibleFamilyCount;
+  const issueCount = items.filter((item) => (
+    item.error && !item.familyMissing && !item.familyIncompatible
+  )).length;
   const skippedCount = items.filter((item) => !item.offset).length;
   const placedCount = items.filter((item) => item.plan && item.offset).length;
   const parkCount = groundItems.filter((item) => item.kind === 'park').length;
@@ -383,7 +522,10 @@ export function LegoBuilderPanel({
     (item) => item.plan && item.offset && item.placeState !== 'placed',
   ).length;
   const uncompiledMassingCount = items.filter((item) => (
-    !item.plan && item.offset && item.massingState !== 'compiled'
+    !item.plan
+    && (item.familyMissing || item.familyIncompatible)
+    && item.offset
+    && item.massingState !== 'compiled'
   )).length;
   const canBuildCommunity = (
     unplacedDetailedCount > 0
@@ -396,12 +538,6 @@ export function LegoBuilderPanel({
     items.some((item) => item.placeState === 'failed' || item.massingState === 'failed')
     || groundItems.some((item) => item.state === 'failed'),
   );
-
-  const missingArchetypeIds = useMemo(
-    () => [...new Set(items.filter((item) => item.familyMissing).map((item) => item.archetypeId ?? '<archetype-id>'))],
-    [items],
-  );
-  const hintCommands = missingArchetypeIds.map((id) => familyGenerationCommands(id)).join('\n');
 
   const savable = items.filter(
     (item): item is ZoneBuildItem & { plan: LegoAssemblyPlan } =>
@@ -436,20 +572,10 @@ export function LegoBuilderPanel({
     setSaving(false);
   };
 
-  const copyHintCommands = async () => {
-    try {
-      await navigator.clipboard.writeText(hintCommands);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      // Clipboard unavailable (e.g. insecure context) — the commands stay selectable.
-    }
-  };
-
   const handleStreetAtlasImport = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.currentTarget.files?.[0];
     event.currentTarget.value = '';
-    if (!file || !projectId || importingStreetAtlas) return;
+    if (!file || !projectId || importingStreetAtlas || planning || placingAll || saving) return;
     setImportingStreetAtlas(true);
     setStreetAtlasStatus(null);
     try {
@@ -488,8 +614,8 @@ export function LegoBuilderPanel({
               {`${items.length} buildings · ${parkCount} parks · ${streetCount} streets`}
             </p>
             <p className="mt-1 text-[11px] font-bold text-black/55">
-              {`Assembled ${assembledCount} · No family ${noFamilyCount} · Skipped ${skippedCount}`}
-              {otherFailedCount > 0 ? ` · Failed ${otherFailedCount}` : ''}
+              {`Detailed ${assembledCount} · Massing ready ${massingFallbackCount} · Needs footprint ${skippedCount}`}
+              {issueCount > 0 ? ` · Needs review ${issueCount}` : ''}
             </p>
             {planning && (
               <p className="mt-1 flex items-center gap-1.5 text-[11px] text-black/55">
@@ -516,9 +642,9 @@ export function LegoBuilderPanel({
               <div
                 key={item.zone.id}
                 className={`rounded border-2 p-2 text-[11px] ${
-                  item.error && !item.familyMissing
+                  item.error && !item.familyMissing && !item.familyIncompatible
                     ? 'border-red-300 bg-red-50'
-                    : item.familyMissing
+                    : item.familyMissing || item.familyIncompatible
                       ? 'border-amber-300 bg-amber-50'
                       : 'border-[#151515]/15 bg-white'
                 }`}
@@ -547,6 +673,11 @@ export function LegoBuilderPanel({
                       {item.massingState === 'compiling'
                         ? 'massing...'
                         : item.massingState === 'compiled' ? '3D massing' : 'retry massing'}
+                    </span>
+                  )}
+                  {!item.plan && !item.massingState && (item.familyMissing || item.familyIncompatible) && (
+                    <span className="shrink-0 rounded bg-sky-100 px-1.5 py-0.5 text-[10px] font-bold text-sky-800">
+                      massing ready
                     </span>
                   )}
                 </div>
@@ -582,14 +713,21 @@ export function LegoBuilderPanel({
                     )}
                   </div>
                 )}
-                {item.error && (
-                  <p className={`mt-0.5 ${item.familyMissing ? 'text-amber-900' : 'text-red-800'}`}>
-                    {item.familyMissing && <span className="font-black uppercase">No family · </span>}
-                    {item.error}
-                    {item.familyMissing && item.offset && (
-                      <span className="font-bold"> Exact-footprint 3D massing will stand in until this family is imported.</span>
-                    )}
+                {item.familyMissing && (
+                  <p className="mt-0.5 text-amber-950">
+                    <span className="font-black">Detailed family to add. </span>
+                    Generate to 3D uses this exact footprint and {item.targets.floors}-floor height now;
+                    importing its reviewed Sticker/LEGO family later upgrades it in place.
                   </p>
+                )}
+                {item.familyIncompatible && (
+                  <p className="mt-0.5 text-amber-950">
+                    <span className="font-black">Detailed family outside its reviewed fit. </span>
+                    {item.error} Correctly sized {item.targets.floors}-floor massing remains ready for this parcel.
+                  </p>
+                )}
+                {item.error && !item.familyMissing && !item.familyIncompatible && (
+                  <p className="mt-0.5 text-red-800">{item.error}</p>
                 )}
                 {!item.plan && !item.error && planning && (
                   <p className="mt-0.5 text-black/50">Assembling…</p>
@@ -629,7 +767,15 @@ export function LegoBuilderPanel({
                               ? 'bg-red-100 text-red-800'
                               : 'bg-sky-100 text-sky-800'
                         }`}>
-                          {item.state === 'compiling' ? 'building…' : item.state}
+                          {item.state === 'compiling'
+                            ? 'building…'
+                            : item.state === 'compiled'
+                              ? '3D ready'
+                              : item.state === 'ready'
+                                ? item.kind === 'park' && usesArchetypeOwnedParkSurface(item.zone)
+                                  ? 'Sticker kit ready'
+                                  : 'procedural ready'
+                                : 'retry build'}
                         </span>
                       </div>
                       <p className="mt-0.5 text-black/55">
@@ -647,23 +793,17 @@ export function LegoBuilderPanel({
               </div>
             )}
 
-            {missingArchetypeIds.length > 0 && (
+            {massingFallbackCount > 0 && (
               <div className="rounded border border-amber-300 bg-amber-50 p-2 text-[11px] text-amber-950">
                 <p className="font-bold">
-                  {missingArchetypeIds.length === 1
-                    ? 'One archetype has no module family yet.'
-                    : `${missingArchetypeIds.length} archetypes have no module family yet.`}
+                  {massingFallbackCount === 1
+                    ? 'One building uses upgrade-ready massing.'
+                    : `${massingFallbackCount} buildings use upgrade-ready massing.`}
                 </p>
-                <p className="mt-1">These zones build as neutral, authoritative-height massing now. Generate and import the families to upgrade them in place:</p>
-                <pre className="mt-1.5 select-all overflow-x-auto whitespace-pre-wrap break-all rounded bg-amber-100 p-1.5 font-mono text-[10px] leading-relaxed">{hintCommands}</pre>
-                <button
-                  type="button"
-                  onClick={copyHintCommands}
-                  className="mt-1.5 flex items-center gap-1 rounded border border-amber-500 bg-white px-2 py-0.5 text-[10px] font-bold text-amber-900 hover:bg-amber-100"
-                >
-                  {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
-                  {copied ? 'Copied' : 'Copy commands'}
-                </button>
+                <p className="mt-1">
+                  Nothing is blocked: their drawn footprint and floor height build now. Add the reviewed
+                  Sticker/LEGO families when ready, then choose Rebuild buildings to upgrade them in place.
+                </p>
               </div>
             )}
           </div>
@@ -697,7 +837,7 @@ export function LegoBuilderPanel({
                 <button
                   type="button"
                   onClick={() => streetAtlasInputRef.current?.click()}
-                  disabled={importingStreetAtlas}
+                  disabled={importingStreetAtlas || planning || placingAll || saving}
                   className="mt-1.5 flex w-full items-center justify-center gap-1.5 rounded border border-sky-800 bg-white px-2 py-1 font-black uppercase hover:bg-sky-100 disabled:opacity-50"
                 >
                   {importingStreetAtlas
@@ -716,7 +856,7 @@ export function LegoBuilderPanel({
             <button
               type="button"
               onClick={() => void runBatch(true)}
-              disabled={planning || saving}
+              disabled={planning || saving || placingAll || importingStreetAtlas}
               className="flex w-full items-center justify-center gap-2 rounded border-2 border-[#151515] bg-[#c9ff3d] px-3 py-2 text-xs font-black uppercase shadow-[3px_3px_0_0_#151515] disabled:opacity-50"
             >
               {planning ? <Loader2 className="h-4 w-4 animate-spin" /> : <RefreshCw className="h-4 w-4" />}
@@ -726,8 +866,12 @@ export function LegoBuilderPanel({
             <button
               type="button"
               onClick={() => void handlePlaceAll(!canBuildCommunity)}
-              disabled={!hasPlaceableSceneContent || placingAll || planning || saving}
-              title={canBuildCommunity
+              disabled={!hasPlaceableSceneContent || placingAll || planning || saving || importingStreetAtlas || issueCount > 0 || skippedCount > 0}
+              title={skippedCount > 0
+                ? 'One or more buildings need a usable footprint. Repair the plan before compiling any 3D changes.'
+                : issueCount > 0
+                ? 'One or more building plans need review. Retry planning before compiling any 3D changes.'
+                : canBuildCommunity
                 ? 'Compile every plan zone: supported buildings use real LEGO families, unsupported families use exact-footprint neutral massing, and parks/streets become generated ground systems.'
                 : 'Rebuild every current building, public-realm system, and residual landscape in one atomic scene revision.'}
               className="mt-2 flex w-full items-center justify-center gap-2 rounded border-2 border-[#151515] bg-[#28c7e8] px-3 py-2 text-xs font-black uppercase shadow-[3px_3px_0_0_#151515] disabled:opacity-50"
