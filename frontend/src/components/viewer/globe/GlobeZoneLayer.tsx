@@ -45,6 +45,7 @@ import {
   createSitePreparationTexture,
   createWoonerfPaverTexture,
   getPreparedSiteBoundaryIds,
+  resolvePreparedSiteTerrainHeight,
   overlapPreparedGroundEdges,
   shouldRenderReplacementFootprintGround,
 } from './sitePreparationSurface';
@@ -403,7 +404,7 @@ function getTerrainProbePoints(
   return probes;
 }
 
-function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabled, lightweight = false, suppressed = false, planningOverlaysVisible = true, sitePrepared = false }: {
+function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabled, lightweight = false, suppressed = false, planningOverlaysVisible = true, boundaryOverlayVisible = true, sitePrepared = false }: {
   zone: SiteZone;
   isSelected: boolean;
   terrainHeight: number;
@@ -412,6 +413,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   lightweight?: boolean;
   suppressed?: boolean;
   planningOverlaysVisible?: boolean;
+  boundaryOverlayVisible?: boolean;
   sitePrepared?: boolean;
 }) {
   const color = resolveZoneColor(zone);
@@ -511,6 +513,42 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
       useTerrainGridFlat,
     );
   }, [renderCoordinates, centroid, extrudeHeight, useTerrainGridFlat]);
+
+  const siteBoundaryDashGeo = useMemo(() => {
+    if (!isSiteBoundary || renderCoordinates.length < 3) return null;
+    const positions: number[] = [];
+    const metersPerLongitude = metersPerDegLon(centroid[1]);
+    const dashLength = 2.4;
+    const gapLength = 1.2;
+    for (let index = 0; index < renderCoordinates.length; index += 1) {
+      const start = renderCoordinates[index];
+      const end = renderCoordinates[(index + 1) % renderCoordinates.length];
+      const x1 = (start[0] - centroid[0]) * metersPerLongitude;
+      const y1 = (start[1] - centroid[1]) * METERS_PER_DEG_LAT;
+      const x2 = (end[0] - centroid[0]) * metersPerLongitude;
+      const y2 = (end[1] - centroid[1]) * METERS_PER_DEG_LAT;
+      const length = Math.hypot(x2 - x1, y2 - y1);
+      if (length <= 0) continue;
+      for (let distance = 0; distance < length; distance += dashLength + gapLength) {
+        const dashEnd = Math.min(length, distance + dashLength);
+        const t1 = distance / length;
+        const t2 = dashEnd / length;
+        positions.push(
+          x1 + (x2 - x1) * t1,
+          y1 + (y2 - y1) * t1,
+          0.22,
+          x1 + (x2 - x1) * t2,
+          y1 + (y2 - y1) * t2,
+          0.22,
+        );
+      }
+    }
+    const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+    geometry.computeBoundingSphere();
+    return geometry;
+  }, [centroid, isSiteBoundary, renderCoordinates]);
+  useDeferredDisposable(siteBoundaryDashGeo);
 
   const woonerfGroundGeo = useMemo(
     () => (
@@ -669,11 +707,13 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   // (no per-frame raycasting, no re-storm on navigation). The drape-and-freeze.
   const frozenRef = useRef(false);
   const [sampledTerrainHeight, setSampledTerrainHeight] = useState<number | null>(null);
-  const zoneTerrainHeight = resolveZoneTerrainHeight(
-    sampledTerrainHeight,
-    storedTerrainHeight,
-    terrainHeight,
-  );
+  const zoneTerrainHeight = isPreparedBoundary
+    ? resolvePreparedSiteTerrainHeight(zone, terrainHeight)
+    : resolveZoneTerrainHeight(
+      sampledTerrainHeight,
+      storedTerrainHeight,
+      terrainHeight,
+    );
   const terrainReferenceHeight = storedTerrainHeight ?? terrainHeight;
   const hasAuthoredGroundTextureMeta = Boolean(
     zoneProps?.park_ground_texture || zoneProps?.street_network_ground_texture,
@@ -1110,9 +1150,9 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
           ) : (
             <meshBasicMaterial
               key="plain"
-              color={isSiteBoundary ? '#ffffff' : color}
+              color={isSiteBoundary ? '#ef4444' : color}
               transparent={publicRealmDepthPolicy.transparent}
-              opacity={isSiteBoundary ? 0.15 : 1.0}
+              opacity={isSiteBoundary ? 0 : 1.0}
               side={THREE.DoubleSide}
               depthTest={publicRealmDepthPolicy.depthTest}
               depthWrite={publicRealmDepthPolicy.depthWrite}
@@ -1171,11 +1211,26 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
       )}
 
       {/* Outline geometry is spread because JSX line resolves to SVG typings here. */}
-      {showThisPlanningOverlay && !(isBuilding && suppressed) && (
+      {boundaryOverlayVisible && isSiteBoundary && siteBoundaryDashGeo && (
+        <lineSegments
+          geometry={siteBoundaryDashGeo}
+          renderOrder={260}
+          frustumCulled={false}
+          onPointerDown={handleZonePointerDown}
+        >
+          <lineBasicMaterial
+            color="#ef4444"
+            depthTest={false}
+            depthWrite={false}
+          />
+        </lineSegments>
+      )}
+
+      {showThisPlanningOverlay && !isSiteBoundary && !(isBuilding && suppressed) && (
         <line
           ref={isExtrudedBuilding ? buildingOutlineRef : flatOutlineRef as any}
           {...({ geometry: !isExtrudedBuilding ? (importedOutlineGeo ?? geoData.outlineGeo) : geoData.outlineGeo } as any)}
-          renderOrder={isBuilding ? 201 : isSiteBoundary ? 101 : communityKind === 'park' ? 120.6 : 121}
+          renderOrder={isBuilding ? 201 : communityKind === 'park' ? 120.6 : 121}
           frustumCulled={false}
           onPointerDown={handleZonePointerDown}
         >
@@ -1259,6 +1314,7 @@ export function GlobeZoneLayer({
               lightweight={lightweight}
               suppressed={Boolean(zone.building_id && suppressedBuildingIds?.has(zone.building_id))}
               planningOverlaysVisible={showPlanningOverlays}
+              boundaryOverlayVisible={!overlaysHidden}
               sitePrepared={sitePrepared}
             />
           </group>

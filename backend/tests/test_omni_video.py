@@ -279,6 +279,45 @@ def test_detail_flythrough_is_low_and_source_route_locked():
     assert "Never fly through a solid wall, roof, tree, or facade" in prompt
 
 
+def test_prompt_uses_premium_architectural_camera_language_and_ground_contact_lock():
+    prompt = build_cinematic_prompt(
+        route_points=[{"x": 0.22, "y": 0.72}, {"x": 0.5, "y": 0.55}, {"x": 0.78, "y": 0.48}],
+        camera_motion="path_follow",
+        scene_brief="Three authored buildings, one park, and one street.",
+        duration_seconds=8,
+        control_mode="preview_video",
+        provider="omni",
+    )
+
+    assert "ARCHITECTURAL CINEMATOGRAPHY" in prompt
+    assert "gentle acceleration into the move" in prompt
+    assert "gentle deceleration into the final hold" in prompt
+    assert "coherent foreground-to-background parallax" in prompt
+    assert "No roll, dutch angle, yaw hunting, orbiting, speed ramp" in prompt
+    assert "autofocus breathing, rack focus" in prompt
+    assert "GROUND-CONTACT LOCK" in prompt
+    assert "Never raise, lower, tilt, bury, float, hover" in prompt
+    assert "sink its base below the ground plane" in prompt
+    assert "720p" not in prompt
+    assert "highest resolution supported by the supplied control video" in prompt
+
+
+def test_prompt_ends_with_explicit_clean_plate_override_for_zone_id_artifacts():
+    prompt = build_cinematic_prompt(
+        route_points=[{"x": 0.25, "y": 0.65}, {"x": 0.75, "y": 0.48}],
+        camera_motion="path_follow",
+        scene_brief="B1, B2, and B3 frame P1 beside S1.",
+        duration_seconds=8,
+        control_mode="preview_video",
+        provider="omni",
+    )
+
+    assert "CLEAN-PLATE OUTPUT - ABSOLUTE FINAL CHECK" in prompt
+    assert "no B1, B2, B3, P1, S1, zone IDs" in prompt
+    assert "no typography or interface graphics anywhere" in prompt
+    assert prompt.endswith("preserve the corresponding source-video pixels unchanged.")
+
+
 def test_prompt_locks_courtyard_topology_and_limits_aerial_scale_change():
     prompt = build_cinematic_prompt(
         route_points=[{"x": 0.52, "y": 0.62}, {"x": 0.5, "y": 0.46}],
@@ -299,7 +338,8 @@ def test_prompt_locks_courtyard_topology_and_limits_aerial_scale_change():
     assert "CONTEXT ISOLATION — FINAL OVERRIDE" in prompt
     assert "it is not global art direction" in prompt
     assert "Any new background instance of an authored archetype is a failed result" in prompt
-    assert prompt.endswith("preserve Image1 unchanged.")
+    assert "When motion or visual quality conflicts with context fidelity, preserve Image1 unchanged." in prompt
+    assert prompt.endswith("preserve the corresponding source-video pixels unchanged.")
 
 
 def test_prompt_makes_omni_an_animator_without_visual_style_instructions():
@@ -317,7 +357,8 @@ def test_prompt_makes_omni_an_animator_without_visual_style_instructions():
     assert "watercolour" not in prompt
     assert "golden-hour" not in prompt
     assert "PBR materials" not in prompt
-    assert prompt.endswith("preserve Image1 unchanged.")
+    assert "When motion or visual quality conflicts with context fidelity, preserve Image1 unchanged." in prompt
+    assert prompt.endswith("preserve the corresponding source-video pixels unchanged.")
 
 
 @pytest.mark.parametrize(

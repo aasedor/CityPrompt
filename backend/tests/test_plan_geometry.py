@@ -19,6 +19,7 @@ from app.services.plan_geometry.layout_validation import validate_plan
 from app.services.plan_geometry.parceling import building_mass_for_block, subdivide_block
 from app.services.plan_geometry.street_graph import (
     _append_context_connectors,
+    _context_grid_angle_deg,
     StreetNetwork,
     StreetSegment,
     entry_points_from_paths,
@@ -244,6 +245,78 @@ def test_context_entries_detect_parallel_frontages_not_only_crossings():
     assert road_entries[0].distance(Point(60, 0)) < 1.0
     assert len(path_entries) == 1
     assert path_entries[0].distance(Point(39, 0)) < 1.0
+
+
+def test_context_grid_orientation_recovers_a_rotated_orthogonal_pattern():
+    boundary = Polygon([(0, 0), (400, 0), (400, 250), (0, 250)])
+    angle = math.radians(30.0)
+    along = (math.cos(angle), math.sin(angle))
+    across = (-math.sin(angle), math.cos(angle))
+    center = Point(200, 125)
+    roads = []
+    for offset in (-90.0, 0.0, 90.0):
+        origin = Point(center.x + across[0] * offset, center.y + across[1] * offset)
+        roads.append(
+            LineString(
+                [
+                    (origin.x - along[0] * 400, origin.y - along[1] * 400),
+                    (origin.x + along[0] * 400, origin.y + along[1] * 400),
+                ]
+            )
+        )
+    for offset in (-100.0, 100.0):
+        origin = Point(center.x + along[0] * offset, center.y + along[1] * offset)
+        roads.append(
+            LineString(
+                [
+                    (origin.x - across[0] * 300, origin.y - across[1] * 300),
+                    (origin.x + across[0] * 300, origin.y + across[1] * 300),
+                ]
+            )
+        )
+
+    orientation = _context_grid_angle_deg(roads, boundary)
+
+    assert orientation is not None
+    resolved, confidence, segment_count = orientation
+    assert resolved == pytest.approx(30.0, abs=0.2)
+    assert confidence > 0.95
+    assert segment_count >= 5
+
+
+def test_context_grid_orientation_rejects_directionally_ambiguous_streets():
+    boundary = Polygon([(0, 0), (400, 0), (400, 250), (0, 250)])
+    center = Point(200, 125)
+    roads = []
+    for angle_deg in (0.0, 22.5, 45.0, 67.5):
+        angle = math.radians(angle_deg)
+        roads.append(
+            LineString(
+                [
+                    (center.x - math.cos(angle) * 250, center.y - math.sin(angle) * 250),
+                    (center.x + math.cos(angle) * 250, center.y + math.sin(angle) * 250),
+                ]
+            )
+        )
+
+    assert _context_grid_angle_deg(roads, boundary) is None
+
+
+def test_generated_network_records_contextual_grid_alignment():
+    boundary = Polygon([(0, 0), (400, 0), (400, 250), (0, 250)])
+    rules, _ = resolve_rules("lap_compliant", PARAMS)
+    angle = math.radians(25.0)
+    roads = [
+        LineString([(-50, 20), (450, 20 + math.tan(angle) * 500)]),
+        LineString([(-50, 90), (450, 90 + math.tan(angle) * 500)]),
+    ]
+
+    network = generate_street_network(boundary, rules, [], context_road_lines=roads)
+
+    assert network.grid_orientation_source == "surrounding_street_grid"
+    assert network.grid_angle_deg == pytest.approx(25.0, abs=0.2)
+    assert network.grid_orientation_confidence is not None
+    assert any(note["code"] == "CONTEXT_GRID_ORIENTATION_APPLIED" for note in network.notes)
 
 
 def test_road_context_entries_are_bounded_and_spaced_like_real_gateways():
@@ -505,8 +578,9 @@ def test_single_block_plan_draws_courtyard_and_unique_bar_names():
     courtyards = [z for z in result.zones if z["properties"].get("_plan_role") == "courtyard"]
     assert courtyards and all(z["zone_type"] == "green_space" for z in courtyards)
     assert all(z["properties"].get("green_space_archetype_id") == "urban_pocket_park" for z in courtyards)
-    # Visual zone only: the frozen metrics/evaluator loop must not see it.
-    assert result.geometry_inputs["open_space_area_m2"] == 0.0
+    # Compact plans now preserve a measurable signature park even when no
+    # internal street fits; the courtyard remains additional visual amenity.
+    assert result.geometry_inputs["open_space_area_m2"] >= 900.0
 
 
 def test_tiny_site_degrades_to_single_block_plan():

@@ -169,7 +169,7 @@ describe('LegoBuilderPanel', () => {
         target_depth_m: 70,
         target_floors: 6,
         allow_setback: false,
-        allow_forced_fit: false,
+        allow_forced_fit: true,
         archetype_id: 'nordic_timber_midrise',
       }),
     );
@@ -188,6 +188,25 @@ describe('LegoBuilderPanel', () => {
     expect(screen.getByText(/Massing ready 0/)).toBeInTheDocument();
     expect(screen.getByText(/Needs footprint 0/)).toBeInTheDocument();
     expect(screen.getByText('2 buildings · 0 parks · 1 streets')).toBeInTheDocument();
+  });
+
+  it('keeps AI master-plan family fitting strict while manual LEGO plans may adapt', async () => {
+    apiPost.mockResolvedValue({ data: planFixture });
+
+    render(<LegoBuilderPanel zones={[
+      makeZone({
+        id: 'z-ai-building',
+        properties: {
+          development_archetype_id: 'nordic_timber_midrise',
+          _plan_scenario: 'student-tod',
+        },
+      }),
+    ]} onClose={vi.fn()} />);
+
+    await waitFor(() => expect(apiPost).toHaveBeenCalledWith(
+      '/api/v1/lego-assembly/plan',
+      expect.objectContaining({ allow_forced_fit: false }),
+    ));
   });
 
   it('runs the complete atomic compile without a second click from the top-level workflow', async () => {

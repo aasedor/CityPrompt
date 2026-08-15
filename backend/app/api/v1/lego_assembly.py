@@ -364,6 +364,8 @@ def _strict_locked_building_plan(
     identity: str,
     target: tuple[float, float, int, str, float | None],
     properties: dict[str, Any],
+    *,
+    allow_forced_fit: bool = False,
 ) -> dict[str, Any]:
     width, depth, floors, profile, _ = target
     # Wing depth is intentionally omitted: the current imported family owns
@@ -380,7 +382,7 @@ def _strict_locked_building_plan(
             footprint_profile=profile,
             allow_setback=_building_allows_setback(properties),
         ),
-        allow_forced_fit=False,
+        allow_forced_fit=allow_forced_fit,
     )
 
 
@@ -443,12 +445,14 @@ async def _assert_ai_lego_recipes_are_current(
     # an additive import between /plan and /place requires a fresh detailed
     # recipe instead of silently preserving massing.
     for zone, identity in omissions:
+        is_ai_zone = bool(str((zone.properties or {}).get("_plan_scenario") or "").strip())
         try:
             _strict_locked_building_plan(
                 descriptors,
                 identity,
                 _locked_building_target(zone),
                 zone.properties or {},
+                allow_forced_fit=not is_ai_zone,
             )
         except AssemblyPlanningError as exc:
             if exc.code in {"family_not_found", "family_incompatible"}:
@@ -513,12 +517,13 @@ async def _assert_ai_lego_recipes_are_current(
                 selected_identity,
                 target,
                 properties,
+                allow_forced_fit=not is_ai_zone,
             )
         except AssemblyPlanningError as exc:
             raise HTTPException(
                 status_code=409,
                 detail=(
-                    "A LEGO family used by this AI Master Plan is no longer executable; "
+                    "A LEGO family used by this plan is no longer executable; "
                     "regenerate the plan before compiling Community 3D."
                 ),
             ) from exc

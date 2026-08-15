@@ -1559,3 +1559,43 @@ def test_single_block_site_honors_master_plan_typology():
         # row_bars requested; perimeter_block only as the degenerate fallback.
         assert typologies <= {"row_bars", "perimeter_block"}
         assert "row_bars" in typologies
+
+
+def test_single_block_tod_keeps_a_real_park_and_buildable_remainder():
+    spec, _ = validate_spec(
+        _spec(single_block_typology="row_bars").model_copy(
+            update={
+                "open_space": OpenSpaceProgram(
+                    water_feature=False,
+                    plaza=False,
+                    central_park_archetype_id="neighborhood_park",
+                )
+            }
+        ),
+        "city_policy",
+    )
+    palette = palette_from_spec(spec, "city_policy")
+    compact = _site(width_m=95.0, depth_m=78.0)
+
+    result = generate_plan_geometry(
+        site_polygon_wgs84=compact,
+        scenario_id="city_policy",
+        scenario_label="Compact TOD",
+        parameters=PARAMS,
+        road_features=[],
+        district_features=[],
+        palette_override=palette,
+    )
+
+    parks = [
+        zone
+        for zone in result.zones
+        if zone["properties"].get("_plan_role") == "open_space"
+        and zone["properties"].get("green_kind") == "central"
+    ]
+    buildings = [zone for zone in result.zones if zone["properties"].get("_plan_role") == "building"]
+
+    assert len(parks) == 1
+    assert result.geometry_inputs["open_space_area_m2"] >= 900.0
+    assert buildings
+    assert result.geometry_inputs["building_footprint_m2"] > 0.0

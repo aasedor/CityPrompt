@@ -403,7 +403,12 @@ export function LegoBuilderPanel({
           footprint_profile: item.targets.footprint_profile,
           wing_depth_m: item.targets.wing_depth_m,
           project_id: item.zone.project_id,
-          allow_forced_fit: false,
+          // A manually drawn parcel is an intentional design target. Match the
+          // single-building LEGO composer by allowing modular families to
+          // repeat or uniformly contain-scale into that footprint. AI master
+          // plans stay strict because their recipes are catalog-locked and
+          // certified again by the atomic community compiler.
+          allow_forced_fit: !String(item.zone.properties?._plan_scenario ?? '').trim(),
           ...legoArchetypeContextFromZone(item.zone.properties),
         }),
       8,
@@ -515,6 +520,7 @@ export function LegoBuilderPanel({
   )).length;
   const skippedCount = items.filter((item) => !item.offset).length;
   const placedCount = items.filter((item) => item.plan && item.offset).length;
+  const compiledMassingCount = items.filter((item) => item.massingState === 'compiled').length;
   const parkCount = groundItems.filter((item) => item.kind === 'park').length;
   const streetCount = groundItems.filter((item) => item.kind === 'street').length;
   const compiledGroundCount = groundItems.filter((item) => item.state === 'compiled').length;
@@ -929,6 +935,8 @@ export function LegoBuilderPanel({
                 <p className="max-w-md text-sm font-bold">
                   {planning
                     ? 'Assembling the plan from LEGO modules…'
+                    : compiledMassingCount > 0 || compiledGroundCount > 0
+                      ? `Built ${compiledMassingCount} massing building${compiledMassingCount === 1 ? '' : 's'} and ${compiledGroundCount} park/street layer${compiledGroundCount === 1 ? '' : 's'} on the globe. Close this dialog to review the 3D scene.`
                     : items.length === 0 && groundItems.length === 0
                       ? 'No community zones in this plan yet.'
                       : items.length === 0

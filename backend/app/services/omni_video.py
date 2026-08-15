@@ -200,7 +200,7 @@ def build_cinematic_prompt(
         control_prefix = f"[# Sources <FIRST_FRAME>@Image1] [# References {references}]"
         input_authority = (
             f"Images1 through Image{keyframe_count} are deterministic City Prompt renders of the same frozen scene, "
-            "sampled in chronological order at equal travelled-distance intervals along the route"
+            "sampled in chronological order at equal time intervals along the route's approved eased speed curve"
         )
         flight_instruction = (
             "Follow the exact chronological camera progression demonstrated by the ordered route images. "
@@ -276,6 +276,31 @@ def build_cinematic_prompt(
         if omni_preview_finish
         else "Do not redesign or enhance any pixel."
     )
+    cinematography_lock = (
+        "ARCHITECTURAL CINEMATOGRAPHY: Treat the supplied route as an approved storyboard, not as a request to invent "
+        "camera coverage. Deliver the restrained visual language of a premium architectural film: one intentional hero "
+        "composition, smooth gimbal stabilization, gentle acceleration into the move, gentle deceleration into the final "
+        "hold, coherent foreground-to-background parallax, and a calm readable silhouette. Preserve the source camera's "
+        "moderate-wide rectilinear lens and focus; keep verticals upright and the horizon level. No roll, dutch angle, "
+        "yaw hunting, orbiting, speed ramp, whip pan, crash zoom, dolly zoom, autofocus breathing, rack focus, or artificial "
+        "depth-of-field pulse. The architecture, public realm, and arrival sequence are the subject; camera motion must "
+        "reveal them without calling attention to itself."
+    )
+    ground_contact_lock = (
+        "GROUND-CONTACT LOCK: Every authored building foundation, park surface, plaza, path, curb, and street must remain "
+        "seated on the same terrain surface shown by the control input in every frame. Preserve continuous contact shadows "
+        "at foundations, curbs, tree bases, street furniture, and landscape edges. Never raise, lower, tilt, bury, float, "
+        "hover, or vertically drift any building, park, path, street, tree, vehicle, or pedestrian; never expose a gap under "
+        "an object or sink its base below the ground plane."
+    )
+    clean_plate_lock = (
+        "CLEAN-PLATE OUTPUT - ABSOLUTE FINAL CHECK: Return only the finished architectural photograph in motion. Render no "
+        "typography or interface graphics anywhere in the image: no B1, B2, B3, P1, S1, zone IDs, route-point numbers, "
+        "letters, digits, labels, annotations, captions, legends, title cards, callouts, leader lines, pins, arrows, borders, "
+        "watermarks, logos, or signage invented from prompt metadata. Before outputting every frame, remove any such mark. "
+        "If a requested visual enhancement conflicts with the clean plate, fixed geometry, ground contact, or source-video "
+        "continuity, preserve the corresponding source-video pixels unchanged."
+    )
 
     body = "\n\n".join(
         section
@@ -311,6 +336,8 @@ def build_cinematic_prompt(
             ),
             appearance_lock,
             actor_lock,
+            cinematography_lock,
+            ground_contact_lock,
             (
                 "CONTINUITY LOCKS: Maintain one stable world coordinate system and physically realistic parallax. "
                 "Every physical object has persistent identity and fixed world coordinates across all 192 frames. Every "
@@ -322,7 +349,8 @@ def build_cinematic_prompt(
                 f"Move slowly. {travel_lock} Courtyard perimeter drift or changing roof negative space is a failed result. Keep all "
                 f"buildings spatially coherent. {framing_lock} Keep the "
                 "horizon level, motion fluid, exposure stable, and the final composition calm and sharp. "
-                "Output polished 720p 24 fps cinematic footage."
+                "Output polished, clean 16:9 24 fps cinematic footage at the highest resolution supported by the supplied "
+                "control video; never downsample an approved high-quality source merely because of this text prompt."
             ),
             (
                 "CONTEXT ISOLATION — FINAL OVERRIDE: Authored-zone identity applies only inside each explicitly authored "
@@ -334,6 +362,7 @@ def build_cinematic_prompt(
                 f"archetype is a failed result. {context_finish_lock} When motion or visual quality conflicts "
                 f"with context fidelity, {final_preservation}."
             ),
+            clean_plate_lock,
         ]
         if section
     ).strip()

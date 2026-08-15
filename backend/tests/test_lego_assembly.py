@@ -9,6 +9,7 @@ from unittest.mock import AsyncMock, MagicMock
 import pytest
 from geoalchemy2 import WKTElement
 
+from app.api.v1.lego_assembly import _strict_locked_building_plan
 from app.models.models import Building, ModelLibraryEntry
 from app.services.community_3d_artifacts import (
     community_3d_buildings_for_zones,
@@ -90,6 +91,40 @@ def test_vertical_plan_reuses_archetype_metadata_and_stacks_modules():
     assert plan["assembled_height_m"] == pytest.approx(21.5)
     assert plan["archetype_id"] == "nordic-midrise"
     assert plan["reuse_keys"] == ["nordic", "mixed-use"]
+
+
+def test_locked_manual_plan_can_use_the_flexible_family_fit_contract():
+    descriptors = [
+        descriptor
+        for item in (
+            entry("manual-podium", "Manual podium", "podium", height=4.5),
+            entry("manual-floor", "Manual floor", "floor", height=3.2),
+            entry("manual-roof", "Manual roof", "roof", height=1.0),
+        )
+        if (descriptor := descriptor_from_library_entry(item)) is not None
+    ]
+    target = (12.0, 9.0, 6, "rectangle", None)
+    properties = {"development_archetype_id": "nordic-midrise", "floors": 6}
+
+    with pytest.raises(AssemblyPlanningError):
+        _strict_locked_building_plan(
+            descriptors,
+            "nordic-midrise",
+            target,
+            properties,
+        )
+
+    plan = _strict_locked_building_plan(
+        descriptors,
+        "nordic-midrise",
+        target,
+        properties,
+        allow_forced_fit=True,
+    )
+
+    assert plan["fit"]["compatibility_source"] == "forced_fit"
+    assert plan["target"]["width_m"] == 12.0
+    assert plan["target"]["depth_m"] == 9.0
 
 
 def test_exact_variant_uses_fixed_landmark_at_canonical_size_and_floors():

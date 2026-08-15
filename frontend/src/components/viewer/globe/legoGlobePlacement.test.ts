@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import type { Building } from '@/types';
 import type { LegoAssemblyInstance, LegoAssemblyRecipe } from '@/features/legoAssembly/legoAssemblyApi';
 import {
+  computeLegoStackBaseLift,
   computeLegoStackYaw,
   excludeLegoStackBuildings,
   extractLegoRecipe,
@@ -271,6 +272,31 @@ describe('computeLegoStackYaw', () => {
     expect(computeLegoStackYaw(bearing, { width_m: 24, depth_m: 18 }, 90))
       .toBeCloseTo(base + Math.PI / 2, 6);
     expect(computeLegoStackYaw(bearing, { width_m: 24, depth_m: 18 }, null)).toBeCloseTo(base, 6);
+  });
+});
+
+describe('computeLegoStackBaseLift', () => {
+  it('lifts a centred-origin family so no storeys remain below ground', () => {
+    expect(computeLegoStackBaseLift([
+      { positionY: 0, scaleY: 1, boundsMinY: -6, boundsMaxY: 6 },
+      { positionY: 12, scaleY: 1, boundsMinY: -1.5, boundsMaxY: 1.5 },
+    ])).toBe(6);
+  });
+
+  it('lowers a floating authored origin and respects signed instance scale', () => {
+    expect(computeLegoStackBaseLift([
+      { positionY: 2, scaleY: 2, boundsMinY: 1, boundsMaxY: 4 },
+    ])).toBe(-4);
+    expect(computeLegoStackBaseLift([
+      { positionY: 0, scaleY: -2, boundsMinY: -1, boundsMaxY: 3 },
+    ])).toBe(6);
+  });
+
+  it('keeps correctly normalized stacks on the recipe datum', () => {
+    expect(computeLegoStackBaseLift([
+      { positionY: 0, scaleY: 1, boundsMinY: 0, boundsMaxY: 4 },
+      { positionY: 4, scaleY: 1, boundsMinY: 0, boundsMaxY: 3 },
+    ])).toBe(0);
   });
 });
 

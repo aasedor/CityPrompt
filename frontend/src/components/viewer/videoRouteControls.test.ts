@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+  cinematicRouteProgress,
   normalizedVideoPointToNdc,
   resampleVideoRoute,
   selectVideoRecorderMimeType,
@@ -9,6 +10,16 @@ import {
 } from './videoRouteControls';
 
 describe('video route controls', () => {
+  it('eases camera motion into the route and into the final hold', () => {
+    expect(cinematicRouteProgress(-1)).toBe(0);
+    expect(cinematicRouteProgress(0)).toBe(0);
+    expect(cinematicRouteProgress(0.25)).toBeCloseTo(0.15625);
+    expect(cinematicRouteProgress(0.5)).toBe(0.5);
+    expect(cinematicRouteProgress(0.75)).toBeCloseTo(0.84375);
+    expect(cinematicRouteProgress(1)).toBe(1);
+    expect(cinematicRouteProgress(2)).toBe(1);
+  });
+
   it('resamples a drawn path by travelled distance and preserves its endpoints', () => {
     const samples = resampleVideoRoute([
       { x: 0.1, y: 0.2 },

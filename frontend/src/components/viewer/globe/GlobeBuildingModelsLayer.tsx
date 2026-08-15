@@ -61,7 +61,6 @@ import {
 } from './direct3dCapture';
 
 const DEG_TO_RAD = Math.PI / 180;
-const GROUND_EMBED_METERS = 0.3;
 // Above depthTest-false road overlays (120), below zone prisms (200).
 const MODEL_RENDER_ORDER = 150;
 const TERRAIN_SAMPLE_FRAME_INTERVAL = 30;
@@ -90,6 +89,8 @@ interface GlobeBuildingModelsLayerProps {
   direct3DProposalBuildingIds?: ReadonlySet<string>;
   /** Site-level elevation fallback (from the map's elevation fetch). */
   terrainHeight: number;
+  /** Authoritative prepared-site datum; overrides legacy per-zone elevations. */
+  preparedSiteTerrainHeight?: number | null;
   /** Buildings whose detailed or massing representation is mounted. */
   onLoadedIdsChange: (ids: Set<string>) => void;
   selectedBuildingId?: string | null;
@@ -131,6 +132,7 @@ function BuildingModelInstance({
   ring,
   frame,
   fallbackTerrainHeight,
+  preparedSiteTerrainHeight,
   onLoaded,
   onUnloaded,
   selected,
@@ -142,6 +144,7 @@ function BuildingModelInstance({
   ring: number[][];
   frame: FootprintFrame;
   fallbackTerrainHeight: number;
+  preparedSiteTerrainHeight?: number | null;
   onLoaded: (id: string) => void;
   onUnloaded: (id: string) => void;
   selected: boolean;
@@ -262,7 +265,8 @@ function BuildingModelInstance({
 
   if (!placement) return null;
 
-  const terrain = resolveZoneTerrainHeight(sampledTerrain, storedTerrain, fallbackTerrainHeight);
+  const terrain = preparedSiteTerrainHeight
+    ?? resolveZoneTerrainHeight(sampledTerrain, storedTerrain, fallbackTerrainHeight);
 
   return (
     <EastNorthUpFrame
@@ -272,7 +276,7 @@ function BuildingModelInstance({
     >
       <group
         ref={modelRootRef}
-        position={[frame.rectCenterLocal[0], frame.rectCenterLocal[1], -GROUND_EMBED_METERS]}
+        position={[frame.rectCenterLocal[0], frame.rectCenterLocal[1], 0]}
         rotation={[0, 0, placement.yawRad]}
         userData={proposalForDirect3D
           ? direct3DBuildingInstanceUserData(building, zone)
@@ -302,6 +306,7 @@ function GeneratedBuildingMassing({
   ring,
   frame,
   fallbackTerrainHeight,
+  preparedSiteTerrainHeight,
   onLoaded,
   onUnloaded,
   selected,
@@ -313,6 +318,7 @@ function GeneratedBuildingMassing({
   ring: number[][];
   frame: FootprintFrame;
   fallbackTerrainHeight: number;
+  preparedSiteTerrainHeight?: number | null;
   onLoaded: (id: string) => void;
   onUnloaded: (id: string) => void;
   selected: boolean;
@@ -402,7 +408,7 @@ function GeneratedBuildingMassing({
   }, [building.id, geometry, onLoaded, onUnloaded]);
 
   if (!geometry) return null;
-  const terrain = resolveZoneTerrainHeight(
+  const terrain = preparedSiteTerrainHeight ?? resolveZoneTerrainHeight(
     sampledTerrain,
     storedTerrain,
     fallbackTerrainHeight,
@@ -416,7 +422,7 @@ function GeneratedBuildingMassing({
     >
       <mesh
         geometry={geometry}
-        position={[0, 0, -GROUND_EMBED_METERS]}
+        position={[0, 0, 0]}
         renderOrder={MODEL_RENDER_ORDER}
         userData={proposalForDirect3D
           ? direct3DBuildingInstanceUserData(building, zone)
@@ -443,6 +449,7 @@ export function GlobeBuildingModelsLayer({
   zones,
   direct3DProposalBuildingIds,
   terrainHeight,
+  preparedSiteTerrainHeight = null,
   onLoadedIdsChange,
   selectedBuildingId = null,
   onBuildingClick,
@@ -579,6 +586,7 @@ export function GlobeBuildingModelsLayer({
             ring={ring}
             frame={frame}
             fallbackTerrainHeight={terrainHeight}
+            preparedSiteTerrainHeight={preparedSiteTerrainHeight}
             onLoaded={handleLoaded}
             onUnloaded={handleUnloaded}
             selected={selectedBuildingId === building.id}
@@ -595,6 +603,7 @@ export function GlobeBuildingModelsLayer({
               ring={ring}
               frame={frame}
               fallbackTerrainHeight={terrainHeight}
+              preparedSiteTerrainHeight={preparedSiteTerrainHeight}
               onLoaded={handleLoaded}
               onUnloaded={handleUnloaded}
               selected={selectedBuildingId === building.id}
@@ -612,6 +621,7 @@ export function GlobeBuildingModelsLayer({
                 ring={ring}
                 frame={frame}
                 fallbackTerrainHeight={terrainHeight}
+                preparedSiteTerrainHeight={preparedSiteTerrainHeight}
                 onLoaded={handleLoaded}
                 onUnloaded={handleUnloaded}
                 selected={selectedBuildingId === building.id}

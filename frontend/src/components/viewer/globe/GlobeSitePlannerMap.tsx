@@ -70,6 +70,7 @@ import { TileStencilPatcher } from './TileStencilPatcher';
 import { GlobeTileMaskLayer } from './GlobeTileMaskLayer';
 import {
   getPreparedSiteBoundaryIds,
+  resolvePreparedSiteTerrainHeight,
   shouldMaskReplacementBuildingTiles,
 } from './sitePreparationSurface';
 import {
@@ -117,6 +118,7 @@ import {
   type Direct3DCaptureOptions,
 } from './direct3dCapture';
 import {
+  cinematicRouteProgress,
   normalizedVideoPointToNdc,
   resampleVideoRoute,
   stableNearFieldTerrainHeight,
@@ -1622,9 +1624,10 @@ export function GlobeSitePlannerMap({
   );
   const tileMaskZones = useMemo(
     () => {
-      // A compiled project boundary uses true world-coordinate clipping. Do
-      // not combine it with projected stencil volumes; the spatial mask owns
-      // the whole demolition envelope and correctly reveals context behind it.
+      // A prepared project boundary and its replacement ground now share one
+      // persisted elevation datum. The whole-site mask therefore clears old
+      // photogrammetry without a parallax apron or terrain tearing beneath
+      // parks and streets.
       if (preparedSiteBoundaryIds.size > 0) {
         return siteZones.filter((zone) => preparedSiteBoundaryIds.has(zone.id));
       }
@@ -1658,6 +1661,12 @@ export function GlobeSitePlannerMap({
 
   // Dynamic terrain elevation â€” fetched from Google Elevation API on mount
   const [terrainElevation, setTerrainElevation] = useState(DEFAULT_TERRAIN_ELEVATION);
+  const preparedSiteTerrainHeight = useMemo(() => {
+    const boundary = getActiveSiteBoundary(siteZones);
+    return boundary
+      ? resolvePreparedSiteTerrainHeight(boundary, terrainElevation)
+      : null;
+  }, [siteZones, terrainElevation]);
   const [isTerrainReady, setIsTerrainReady] = useState(false);
   const terrainElevationRef = useRef(DEFAULT_TERRAIN_ELEVATION);
   terrainElevationRef.current = terrainElevation;
@@ -2759,7 +2768,7 @@ export function GlobeSitePlannerMap({
       let depthCheckpointCount = 0;
       let normalCheckpointCount = 0;
       for (let index = 0; index < sampledRoute.length; index += 1) {
-        applyRoutePose(index / (sampledRoute.length - 1));
+        applyRoutePose(cinematicRouteProgress(index / (sampledRoute.length - 1)));
         await twoFrames();
         const settled = await waitForRouteContext();
         if (!settled) {
@@ -2820,7 +2829,7 @@ export function GlobeSitePlannerMap({
         durationSeconds: request.durationSeconds,
         bitrate: renderProfile.bitrate,
         renderFrame: async (frame) => {
-          applyRoutePose(frame.progress);
+          applyRoutePose(cinematicRouteProgress(frame.progress));
           // Give TilesRenderer and the authored R3F layers one render cycle to
           // respond to this indexed pose, then render that exact camera state.
           await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
@@ -3891,6 +3900,7 @@ export function GlobeSitePlannerMap({
                 zones={siteZones}
                 direct3DProposalBuildingIds={direct3DProposalBuildingIds}
                 terrainHeight={terrainElevation}
+                preparedSiteTerrainHeight={preparedSiteTerrainHeight}
                 onLoadedIdsChange={handleModeledIdsChange}
                 selectedBuildingId={selectedRenderedBuildingId}
                 onBuildingClick={handleBuildingModelClick}
@@ -3907,6 +3917,7 @@ export function GlobeSitePlannerMap({
                 zones={siteZones}
                 direct3DProposalBuildingIds={direct3DProposalBuildingIds}
                 terrainHeight={terrainElevation}
+                preparedSiteTerrainHeight={preparedSiteTerrainHeight}
                 onLoadedIdsChange={handleLegoIdsChange}
                 selectedBuildingId={selectedRenderedBuildingId}
                 onBuildingClick={handleBuildingModelClick}

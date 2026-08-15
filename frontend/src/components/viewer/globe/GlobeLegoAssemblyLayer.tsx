@@ -45,6 +45,7 @@ import {
   resolveZoneTerrainHeight,
 } from './globeTerrainUtils';
 import {
+  computeLegoStackBaseLift,
   computeLegoStackYaw,
   extractLegoRecipe,
   extractPlannedMassing,
@@ -79,7 +80,6 @@ import {
 } from './direct3dCapture';
 
 const DEG_TO_RAD = Math.PI / 180;
-const GROUND_EMBED_METERS = 0.3;
 // Same convention as GlobeBuildingModelsLayer: above depthTest-false road
 // overlays (120), below zone prisms (200).
 const LEGO_RENDER_ORDER = 150;
@@ -119,6 +119,8 @@ interface GlobeLegoAssemblyLayerProps {
   direct3DProposalBuildingIds?: ReadonlySet<string>;
   /** Site-level elevation fallback (from the map's elevation fetch). */
   terrainHeight: number;
+  /** Authoritative prepared-site datum; overrides legacy per-zone elevations. */
+  preparedSiteTerrainHeight?: number | null;
   /** Buildings whose stack is actually mounted — drives prism suppression. */
   onLoadedIdsChange: (ids: Set<string>) => void;
   selectedBuildingId?: string | null;
@@ -172,6 +174,7 @@ function LegoMassingStack({
   frame,
   zone,
   fallbackTerrainHeight,
+  preparedSiteTerrainHeight,
   onLoaded,
   onUnloaded,
   selected,
@@ -185,6 +188,7 @@ function LegoMassingStack({
   frame: FootprintFrame;
   zone: SiteZone | undefined;
   fallbackTerrainHeight: number;
+  preparedSiteTerrainHeight?: number | null;
   onLoaded?: (id: string) => void;
   onUnloaded?: (id: string) => void;
   selected: boolean;
@@ -283,7 +287,7 @@ function LegoMassingStack({
   }, [building.id, geometry, onLoaded, onUnloaded]);
 
   if (!geometry) return null;
-  const terrain = resolveZoneTerrainHeight(
+  const terrain = preparedSiteTerrainHeight ?? resolveZoneTerrainHeight(
     sampledTerrain,
     storedTerrain,
     fallbackTerrainHeight,
@@ -297,7 +301,7 @@ function LegoMassingStack({
     >
       <mesh
         geometry={geometry}
-        position={[0, 0, -GROUND_EMBED_METERS]}
+        position={[0, 0, 0]}
         renderOrder={LEGO_RENDER_ORDER}
         userData={proposalForDirect3D
           ? direct3DBuildingInstanceUserData(building, zone)
@@ -326,6 +330,7 @@ function LegoStackInstance({
   frame,
   zone,
   fallbackTerrainHeight,
+  preparedSiteTerrainHeight,
   onLoaded,
   onUnloaded,
   selected,
@@ -339,6 +344,7 @@ function LegoStackInstance({
   frame: FootprintFrame;
   zone: SiteZone | undefined;
   fallbackTerrainHeight: number;
+  preparedSiteTerrainHeight?: number | null;
   onLoaded: (id: string) => void;
   onUnloaded: (id: string) => void;
   selected: boolean;
@@ -383,11 +389,20 @@ function LegoStackInstance({
           key: `${instance.asset_id}-${instance.level}-${index}`,
           cloned,
           transform: legoInstanceTransform(instance),
+          bounds: new THREE.Box3().setFromObject(scene),
         };
       })
       .filter((entry): entry is NonNullable<typeof entry> => entry !== null);
   }, [maxAnisotropy, recipe, sceneByUrl, urls]);
   const detailedReady = isCompleteLegoModuleStack(recipe.instances.length, modules.length);
+  const stackBaseLift = useMemo(() => computeLegoStackBaseLift(
+    modules.map(({ bounds, transform }) => ({
+      positionY: transform.position[1],
+      scaleY: transform.scale[1],
+      boundsMinY: bounds.min.y,
+      boundsMaxY: bounds.max.y,
+    })),
+  ), [modules]);
   useEffect(() => () => {
     modules.forEach(({ cloned }) => disposeArchitecturalCloneMaterials(cloned));
   }, [modules]);
@@ -480,7 +495,8 @@ function LegoStackInstance({
 
   if (!detailedReady) return incompleteFallback;
 
-  const terrain = resolveZoneTerrainHeight(sampledTerrain, storedTerrain, fallbackTerrainHeight);
+  const terrain = preparedSiteTerrainHeight
+    ?? resolveZoneTerrainHeight(sampledTerrain, storedTerrain, fallbackTerrainHeight);
   // Recipe target width (stack X) vs depth (stack Z) fixes the plan
   // orientation, so the stack's long axis lands on the footprint's long axis
   // and the module front facade (+Z glTF) faces the short-axis street side.
@@ -494,7 +510,7 @@ function LegoStackInstance({
     >
       <group
         ref={stackRef}
-        position={[frame.rectCenterLocal[0], frame.rectCenterLocal[1], -GROUND_EMBED_METERS]}
+        position={[frame.rectCenterLocal[0], frame.rectCenterLocal[1], 0]}
         rotation={[0, 0, yawRad]}
         userData={proposalForDirect3D
           ? direct3DBuildingInstanceUserData(building, zone)
@@ -510,15 +526,17 @@ function LegoStackInstance({
             recipe origin is the building's bottom-centre, so no recentering:
             the frame transform alone positions the stack. */}
         <group rotation={[Math.PI / 2, 0, 0]}>
-          {modules.map(({ key, cloned, transform }) => (
-            <primitive
-              key={key}
-              object={cloned}
-              position={transform.position}
-              rotation={[0, transform.rotationYRad, 0]}
-              scale={transform.scale}
-            />
-          ))}
+          <group position={[0, stackBaseLift, 0]}>
+            {modules.map(({ key, cloned, transform }) => (
+              <primitive
+                key={key}
+                object={cloned}
+                position={transform.position}
+                rotation={[0, transform.rotationYRad, 0]}
+                scale={transform.scale}
+              />
+            ))}
+          </group>
         </group>
       </group>
       {selected && <LocalModelSelectionOutline ring={ring} frame={frame} />}
@@ -531,6 +549,7 @@ export function GlobeLegoAssemblyLayer({
   zones,
   direct3DProposalBuildingIds,
   terrainHeight,
+  preparedSiteTerrainHeight = null,
   onLoadedIdsChange,
   selectedBuildingId = null,
   onBuildingClick,
@@ -743,6 +762,7 @@ export function GlobeLegoAssemblyLayer({
               frame={frame}
               zone={zone}
               fallbackTerrainHeight={terrainHeight}
+              preparedSiteTerrainHeight={preparedSiteTerrainHeight}
               onLoaded={handleLoaded}
               onUnloaded={handleUnloaded}
               selected={selectedBuildingId === building.id}
@@ -761,6 +781,7 @@ export function GlobeLegoAssemblyLayer({
             frame={frame}
             zone={zone}
             fallbackTerrainHeight={terrainHeight}
+            preparedSiteTerrainHeight={preparedSiteTerrainHeight}
             onLoaded={handleFallbackLoaded}
             onUnloaded={handleFallbackUnloaded}
             selected={selectedBuildingId === building.id}
@@ -778,6 +799,7 @@ export function GlobeLegoAssemblyLayer({
             frame={frame}
             zone={zone}
             fallbackTerrainHeight={terrainHeight}
+            preparedSiteTerrainHeight={preparedSiteTerrainHeight}
             onLoaded={handleLoaded}
             onUnloaded={handleUnloaded}
             selected={selectedBuildingId === building.id}
@@ -795,6 +817,7 @@ export function GlobeLegoAssemblyLayer({
                 frame={frame}
                 zone={zone}
                 fallbackTerrainHeight={terrainHeight}
+                preparedSiteTerrainHeight={preparedSiteTerrainHeight}
                 onLoaded={handleDetailedLoaded}
                 onUnloaded={handleDetailedUnloaded}
                 selected={selectedBuildingId === building.id}

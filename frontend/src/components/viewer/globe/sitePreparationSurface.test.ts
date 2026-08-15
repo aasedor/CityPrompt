@@ -8,6 +8,7 @@ import {
   getPreparedSiteBoundaryIds,
   hasCompiledCommunity,
   overlapPreparedGroundEdges,
+  resolvePreparedSiteTerrainHeight,
   shouldMaskReplacementBuildingTiles,
   shouldRenderReplacementFootprintGround,
 } from './sitePreparationSurface';
@@ -37,6 +38,14 @@ const compiledPark = {
 };
 
 describe('compiled site preparation', () => {
+  it('shares one stored terrain datum between the site mask and replacement surface', () => {
+    expect(resolvePreparedSiteTerrainHeight(
+      zone('boundary', 'site_boundary', { terrain_elevation_m: 1044.75 }),
+      1000,
+    )).toBe(1044.75);
+    expect(resolvePreparedSiteTerrainHeight(zone('boundary', 'site_boundary'), 1000)).toBe(1000);
+  });
+
   it('covers a clipped standalone building only without a prepared site boundary', () => {
     const building = zone('building', 'building');
     expect(shouldRenderReplacementFootprintGround(building, true, false)).toBe(true);

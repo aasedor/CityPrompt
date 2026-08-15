@@ -151,6 +151,44 @@ export interface LegoInstanceThreeTransform {
   scale: [number, number, number];
 }
 
+export interface LegoModuleVerticalExtent {
+  /** Instance origin in stack-space Y (the eventual globe Up axis). */
+  positionY: number;
+  /** Instance scale on stack-space Y. Negative scales are supported. */
+  scaleY: number;
+  /** Authored GLB bounds before the instance transform. */
+  boundsMinY: number;
+  boundsMaxY: number;
+}
+
+/**
+ * Translate a complete LEGO stack so its lowest transformed vertex is exactly
+ * at the recipe ground datum. Family assets are intended to use a bottom-
+ * centre origin, but older/high-detail GLBs can carry centred or offset origins.
+ * Trusting the origin alone buries those families by one or more storeys.
+ */
+export function computeLegoStackBaseLift(
+  extents: readonly LegoModuleVerticalExtent[],
+): number {
+  let stackMinY = Number.POSITIVE_INFINITY;
+  for (const extent of extents) {
+    const values = [
+      extent.positionY,
+      extent.scaleY,
+      extent.boundsMinY,
+      extent.boundsMaxY,
+    ];
+    if (!values.every(Number.isFinite)) continue;
+    const scaledMin = Math.min(
+      extent.boundsMinY * extent.scaleY,
+      extent.boundsMaxY * extent.scaleY,
+    );
+    stackMinY = Math.min(stackMinY, extent.positionY + scaledMin);
+  }
+  if (!Number.isFinite(stackMinY) || Math.abs(stackMinY) < 1e-6) return 0;
+  return -stackMinY;
+}
+
 /**
  * Backend Z-up instance placement -> three.js Y-up stack space. Mirrors
  * legoShared.ModuleInstance exactly: position [x, y, z-up] -> [x, z, y],

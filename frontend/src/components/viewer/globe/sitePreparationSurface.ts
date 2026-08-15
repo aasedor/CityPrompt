@@ -13,6 +13,23 @@ export function getPreparedSiteBoundaryIds(zones: SiteZone[]): Set<string> {
   return activeBoundary ? new Set([activeBoundary.id]) : new Set();
 }
 
+/** One authoritative elevation for both the whole-site tile mask and its
+ * prepared replacement surface. Letting either side independently raycast
+ * photogrammetry shifts their projected edges apart and exposes a blue/sky
+ * apron that makes the proposal look sunken. */
+export function resolvePreparedSiteTerrainHeight(
+  boundary: SiteZone,
+  fallbackTerrainHeight: number,
+): number {
+  const properties = boundary.properties as Record<string, unknown> | undefined;
+  const stored = Number(
+    properties?.terrain_elevation_m
+    ?? properties?.terrain_height
+    ?? properties?.terrainElevation,
+  );
+  return Number.isFinite(stored) ? stored : fallbackTerrainHeight;
+}
+
 /** A standalone replacement building still clips the source Google mesh, but
  * older/manual projects may not have a separate site-boundary zone whose
  * prepared surface can cover the cleared footprint. In that case mount a

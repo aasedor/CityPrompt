@@ -1034,7 +1034,11 @@ def _carve_corner(
 
 
 def _carve_park_strip(
-    block: BaseGeometry, target_area: float, toward: BaseGeometry
+    block: BaseGeometry,
+    target_area: float,
+    toward: BaseGeometry,
+    *,
+    min_short_span: float = 24.0,
 ) -> tuple[BaseGeometry | None, BaseGeometry | None]:
     """Cut a full-width park strip of ~target_area from the end of `block`
     nearest `toward`, leaving a clean rectangular developable remainder.
@@ -1049,6 +1053,8 @@ def _carve_park_strip(
     minx, miny, maxx, maxy = work.bounds
     width, span = maxx - minx, maxy - miny
     if width < 24.0 or span < 45.0:
+        return None, None
+    if min_short_span > 24.0 and min(width, span) < min_short_span:
         return None, None
     depth = max(14.0, min(target_area / width, span - 32.0))
     if span - depth < 30.0:
@@ -1087,6 +1093,28 @@ def select_open_space(
     carved: dict[int, BaseGeometry] = {}
     open_area = 0.0
     central: BaseGeometry | None = None
+
+    # A compact infill/TOD parcel can be too small for even one internal
+    # street, but that must not erase an explicitly requested park. Carve a
+    # full-frontage green from one end of the sole block and leave a clean,
+    # buildable remainder. The previous len(blocks) >= 2 gate produced 0 m2
+    # open space for exactly this common station-area condition.
+    if len(blocks) == 1:
+        central_block = blocks[0]
+        park, remainder = _carve_park_strip(
+            central_block,
+            max(open_target, min(central_block.area * 0.18, 1400.0)),
+            boundary_m.centroid,
+            # A lone narrow block has no neighbouring parcel to absorb the
+            # lost depth. Requiring a wider cross-span prevents the park strip
+            # from forcing perimeter or row-bar ends into unusable slivers.
+            min_short_span=70.0,
+        )
+        if park is not None and remainder is not None:
+            central = park
+            carved[0] = remainder
+            open_area = float(park.area)
+            specs.append(GreenSpec(park, "central", "Park", palette.central_archetype_id))
 
     if len(blocks) >= 2:
         by_proximity = sorted(

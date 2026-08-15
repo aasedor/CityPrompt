@@ -351,10 +351,10 @@ export function ProjectViewPage() {
 
   const cityPromptWorkflow = useMemo(
     () => deriveCityPromptWorkflow(
-      siteZones,
+      visibleZones,
       savedRenders.length > 0 || savedVideos.length > 0,
     ),
-    [savedRenders.length, savedVideos.length, siteZones],
+    [savedRenders.length, savedVideos.length, visibleZones],
   );
 
   useEffect(() => {

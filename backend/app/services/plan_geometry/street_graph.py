@@ -1,9 +1,10 @@
 """Street graph — an oriented internal grid connected to the real frontage streets.
 
-All math in the site-local metric CRS. The grid orientation follows the site's
-minimum rotated rectangle; the grid phase is shifted so a line passes through
-the first street entry point (where the surrounding network meets the boundary),
-then explicit connector stubs join every other feasible road or pathway anchor.
+All math is in the site-local metric CRS. A coherent surrounding street pattern
+sets the grid orientation; sparse or directionally ambiguous context falls back
+to the site's minimum rotated rectangle. The grid phase shifts so a line passes
+through the first street entry point, then explicit connector stubs join every
+other feasible road or pathway anchor.
 """
 
 from __future__ import annotations
@@ -73,6 +74,9 @@ class StreetNetwork:
     notes: list[dict[str, Any]] = field(default_factory=list)
     curve_mode: str = "none"  # "none" | "spine" | "all" ACTUALLY applied
     curve_skip_reason: str | None = None  # set when a requested curve self-skipped
+    grid_angle_deg: float = 0.0
+    grid_orientation_source: str = "site_boundary"
+    grid_orientation_confidence: float | None = None
 
 
 def _grid_angle_deg(boundary_m: Polygon) -> float:
@@ -86,6 +90,86 @@ def _grid_angle_deg(boundary_m: Polygon) -> float:
             best_len = length
             best_angle = math.degrees(math.atan2(y2 - y1, x2 - x1))
     return best_angle
+
+
+def _nearest_equivalent_grid_angle(angle_deg: float, reference_deg: float) -> float:
+    """Return the 90-degree-equivalent grid axis nearest a reference axis."""
+
+    candidates = [angle_deg + (90.0 * offset) for offset in range(-4, 5)]
+    resolved = min(candidates, key=lambda candidate: abs(candidate - reference_deg))
+    # A street axis is undirected. Keep diagnostics readable and prevent the
+    # same grid from appearing as, for example, 210 degrees instead of 30.
+    return ((resolved + 90.0) % 180.0) - 90.0
+
+
+def _axis_difference_deg(first: float, second: float) -> float:
+    """Smallest angular difference between two undirected axes."""
+
+    return abs(((first - second + 90.0) % 180.0) - 90.0)
+
+
+def _context_grid_angle_deg(
+    road_lines_m: list[LineString],
+    boundary_m: Polygon,
+    *,
+    max_distance_m: float = 220.0,
+    minimum_total_weight_m: float = 80.0,
+    minimum_confidence: float = 0.58,
+) -> tuple[float, float, int] | None:
+    """Infer a local orthogonal grid from nearby street-segment bearings.
+
+    Street axes are undirected and perpendicular streets belong to the same
+    grid, so segment bearings are combined in four-angle circular space. Each
+    segment is weighted by a capped length and a proximity decay: several
+    nearby local streets can outweigh one long regional corridor. A weak or
+    sparse signal returns ``None`` and preserves the site-boundary fallback.
+    """
+
+    if not road_lines_m:
+        return None
+
+    context_area = boundary_m.buffer(max_distance_m)
+    weighted_cos = 0.0
+    weighted_sin = 0.0
+    total_weight = 0.0
+    segment_count = 0
+
+    for road in road_lines_m:
+        try:
+            clipped = road.intersection(context_area)
+        except Exception:  # noqa: BLE001 - context feeds can contain bad geometry
+            continue
+        parts = [clipped] if isinstance(clipped, LineString) else [
+            part for part in getattr(clipped, "geoms", ()) if isinstance(part, LineString)
+        ]
+        for part in parts:
+            coordinates = list(part.coords)
+            for start, end in zip(coordinates[:-1], coordinates[1:]):
+                dx = end[0] - start[0]
+                dy = end[1] - start[1]
+                length = math.hypot(dx, dy)
+                if length < 8.0:
+                    continue
+                midpoint = Point((start[0] + end[0]) / 2, (start[1] + end[1]) / 2)
+                distance = midpoint.distance(boundary_m)
+                proximity_weight = math.exp(-distance / 120.0)
+                weight = min(length, 120.0) * proximity_weight
+                angle = math.atan2(dy, dx)
+                weighted_cos += weight * math.cos(4.0 * angle)
+                weighted_sin += weight * math.sin(4.0 * angle)
+                total_weight += weight
+                segment_count += 1
+
+    if segment_count < 2 or total_weight < minimum_total_weight_m:
+        return None
+    confidence = math.hypot(weighted_cos, weighted_sin) / total_weight
+    if confidence < minimum_confidence:
+        return None
+
+    grid_angle = math.degrees(math.atan2(weighted_sin, weighted_cos)) / 4.0
+    site_angle = _grid_angle_deg(boundary_m)
+    resolved_angle = _nearest_equivalent_grid_angle(grid_angle, site_angle)
+    return resolved_angle, confidence, segment_count
 
 
 def _entry_points_from_context_lines(
@@ -199,6 +283,7 @@ def generate_street_network(
     entry_points: list[Point] | None = None,
     *,
     path_entry_points: list[Point] | None = None,
+    context_road_lines: list[LineString] | None = None,
     include_roundabouts: bool = False,
     curve_mode: str = "none",
     seed: int = 0,
@@ -232,7 +317,35 @@ def generate_street_network(
         network.street_area = Polygon()
         return network
 
-    angle = _grid_angle_deg(boundary_m)
+    site_angle = _grid_angle_deg(boundary_m)
+    context_orientation = _context_grid_angle_deg(context_road_lines or [], boundary_m)
+    if context_orientation is None:
+        angle = site_angle
+    else:
+        context_angle, confidence, segment_count = context_orientation
+        network.grid_orientation_confidence = confidence
+        # Preserve byte-identical historic geometry when the site edge already
+        # agrees with context. Tiny projection/convergence differences can
+        # otherwise create fragile near-coincident polygon cuts.
+        if _axis_difference_deg(context_angle, site_angle) <= 2.0:
+            angle = site_angle
+            network.grid_orientation_source = "site_boundary_confirmed_by_context"
+        else:
+            angle = context_angle
+            network.grid_orientation_source = "surrounding_street_grid"
+            network.notes.append(
+                {
+                    "code": "CONTEXT_GRID_ORIENTATION_APPLIED",
+                    "severity": "info",
+                    "message": (
+                        f"Aligned the internal grid to the surrounding street pattern "
+                        f"({angle:.1f} degrees; confidence {confidence:.2f}; "
+                        f"{segment_count} measured segments)."
+                    ),
+                    "source_phase": "street_graph",
+                }
+            )
+    network.grid_angle_deg = angle
     origin = boundary_m.centroid
     # Work in a rotated frame where the grid is axis-aligned.
     work = affinity.rotate(inset, -angle, origin=origin)

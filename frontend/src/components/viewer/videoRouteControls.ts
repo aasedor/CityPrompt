@@ -45,6 +45,16 @@ export interface VideoRouteCaptureResult {
 
 const clamp01 = (value: number) => Math.max(0, Math.min(1, value));
 
+/**
+ * Convert timeline progress to a restrained ease-in/ease-out camera move.
+ * Smoothstep keeps the authored endpoints and midpoint exact while removing
+ * the abrupt start and stop of constant-speed spline traversal.
+ */
+export function cinematicRouteProgress(progress: number): number {
+  const time = clamp01(progress);
+  return time * time * (3 - 2 * time);
+}
+
 /** Sample a hand-drawn route at equal travelled-distance intervals. */
 export function resampleVideoRoute(
   points: NormalizedVideoRoutePoint[],
