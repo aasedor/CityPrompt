@@ -119,6 +119,9 @@ jobs:
       - name: Lint
         run: npm run lint -- --max-warnings=0
 
+      - name: Reject unreachable files and dependency drift
+        run: npm run check:dead-code
+
       - name: Type check
         run: npm run type-check
 

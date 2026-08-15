@@ -39,7 +39,7 @@ available.
       and asset validation as required.
 - [x] Runtime assets have a generated, reproducible manifest.
 - [ ] Compiler output and visual-QA batches are outside the source repository.
-- [ ] Unreachable application code is removed in verified subsystem-sized
+- [x] Unreachable application code is removed in verified subsystem-sized
       commits.
 - [ ] Catalogue entries are classified as available, preview, experimental, or
       archived.

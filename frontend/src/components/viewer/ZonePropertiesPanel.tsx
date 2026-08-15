@@ -2082,11 +2082,18 @@ const resolveOptionCategory = (
           const linkedBuilding = buildings?.find((b) => b.id === zone.building_id);
           if (!linkedBuilding || linkedBuilding.generation_status !== 'completed') return null;
           return (
-            <QuickRegenerateSection
-              building={linkedBuilding}
-            />
+            <>
+              <QuickRegenerateSection building={linkedBuilding} />
+              <ModelLibrarySection buildingId={linkedBuilding.id} />
+            </>
           );
         })()}
+
+        {(zone.zone_type === 'building' || zone.zone_type === 'residential' || zone.zone_type === 'development_area')
+          && !zone.building_id
+          && onAIGenerate && (
+          <AIGenerateZoneButton zone={zone} onAIGenerate={onAIGenerate} />
+        )}
 
         {/* Build with LEGO modules ? modular assembly composer */}
         {onOpenBlockEditor
@@ -3897,7 +3904,6 @@ type ModelLibraryRecommendation = {
   reasons?: string[];
 };
 
-void ModelLibrarySection; // kept for the reuse-library workflow
 function ModelLibrarySection({ buildingId }: { buildingId: string }) {
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState<ModelLibraryEntry[]>([]);
@@ -4181,7 +4187,6 @@ function QuickRegenerateSection({ building }: { building: Building }) {
 // AI Generate button
 // =============================================================================
 
-void AIGenerateZoneButton; // kept for the AI generation workflow
 function AIGenerateZoneButton({ zone, onAIGenerate }: { zone: SiteZone; onAIGenerate: (buildingId: string, initialPrompt?: string) => void }) {
   const [loading, setLoading] = useState(false);
 

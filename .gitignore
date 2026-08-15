@@ -47,6 +47,8 @@ minio_data/
 .coverage
 htmlcov/
 .pytest_cache/
+/frontend/playwright-report/
+/frontend/test-results/
 # Generated models
 *.glb
 *.gltf
