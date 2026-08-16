@@ -14,9 +14,12 @@ import type { SiteZone } from '@/types';
 import {
   createStencilVolume,
   getTileStencilVolumeHeight,
-  resolveTileStencilAnchorHeight,
   shouldCreateTileStencilMask,
 } from './StencilMaskPlugin';
+import {
+  getObjectFilteredTerrainHeight,
+  resolveReplacementGroundAnchor,
+} from './globeTerrainUtils';
 import {
   computeCentroid,
   METERS_PER_DEG_LAT,
@@ -92,7 +95,15 @@ function TileMaskVolume({ zone, terrainHeight }: { zone: SiteZone; terrainHeight
       raycastTerrainHeightAtLatLng(lng, lat, group, raycasterRef.current)
     ));
     if (!samples.some(Number.isFinite)) return;
-    setSampledAnchor(resolveTileStencilAnchorHeight(samples, storedAnchor, terrainHeight));
+    // Share the replacement building's anchor chain. The stencil volume and the
+    // model it clips for must agree on the ground, or the carve sits below the
+    // model's apron and the scene background shows through the difference as a
+    // wedge on sloping sites (blue-apron fix).
+    setSampledAnchor(resolveReplacementGroundAnchor(
+      getObjectFilteredTerrainHeight(samples, storedAnchor),
+      storedAnchor,
+      terrainHeight,
+    ) ?? terrainHeight);
     frozenRef.current = true;
   });
 
