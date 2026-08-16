@@ -574,15 +574,32 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     const appearanceKitId = String(lego?.appearance_kit_id ?? '').toLowerCase();
     return appearanceKitId.includes('european_cobblestone') ? 'buffer_stone' : 'asphalt';
   }, [communityKind, isCompiledGround, isPlazaGround, isWoonerfGround, zoneProps]);
+  // The spatial tile mask carves the full convex hull of every compiled zone,
+  // so a public-realm surface drawn to the exact polygon edge leaves the scene
+  // background showing as a pale rim around parks and streets. Take the same
+  // outward overlap the prepared site and the building apron already use so a
+  // compiled surface always covers the hole cut for it.
   const publicRealmBaseGeo = useMemo(
-    () => (
-      publicRealmBaseKind && geoData?.flatTopGeo
-        ? createMetricSurfaceGeometry(geoData.flatTopGeo)
-        : null
-    ),
-    [geoData, publicRealmBaseKind],
+    () => {
+      if (!publicRealmBaseKind || !geoData?.flatTopGeo) return null;
+      const geometry = createMetricSurfaceGeometry(geoData.flatTopGeo);
+      return isCompiledGround ? overlapPreparedGroundEdges(geometry) : geometry;
+    },
+    [geoData, isCompiledGround, publicRealmBaseKind],
   );
   useDeferredDisposable(publicRealmBaseGeo);
+  // Compiled zones with no textured base kit fall through to the raw polygon,
+  // which needs the same treatment. Clone so the shared drape geometry (fill,
+  // outline, elevation relief) keeps its authored extent.
+  const compiledGroundGeo = useMemo(
+    () => (
+      isCompiledGround && !publicRealmBaseKind && geoData?.flatTopGeo
+        ? overlapPreparedGroundEdges(geoData.flatTopGeo.clone())
+        : null
+    ),
+    [geoData, isCompiledGround, publicRealmBaseKind],
+  );
+  useDeferredDisposable(compiledGroundGeo);
   const publicRealmBaseTexture = useMemo(
     () => (
       publicRealmBaseKind
@@ -1101,7 +1118,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
       {!isExtrudedBuilding && geoData.flatTopGeo && (showThisPlanningOverlay || drapeActive || isCompiledGround || isPreparedBoundary) && (
         <mesh
           ref={flatMeshRef}
-          geometry={importedOrthoGeo ?? orthoGeo ?? importedFillGeo ?? preparedSiteGeo ?? woonerfGroundGeo ?? publicRealmBaseGeo ?? geoData.flatTopGeo}
+          geometry={importedOrthoGeo ?? orthoGeo ?? importedFillGeo ?? preparedSiteGeo ?? woonerfGroundGeo ?? publicRealmBaseGeo ?? compiledGroundGeo ?? geoData.flatTopGeo}
           renderOrder={isSiteBoundary ? 100 : communityKind === 'park' ? 120.5 : 120}
           frustumCulled={false}
           onPointerDown={handleZonePointerDown}
