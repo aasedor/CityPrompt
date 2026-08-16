@@ -114,20 +114,29 @@ export function preferLowerGroundAnchor(
 }
 
 /** Choose the safest bare-ground frame origin for replacement development.
- * A current tile ray, a stored zone height, or the project terrain fallback
- * may each have landed on a roof. Material disagreement therefore resolves to
- * the lower plausible elevation in both comparisons. */
+ * A current tile ray or a stored zone height may each have landed on a roof, so
+ * material disagreement between those two still resolves to the lower plausible
+ * elevation.
+ *
+ * The project terrain is different in kind: it is a site-wide elevation-API
+ * average, so it can never be a roof hit, and on a site whose local grade sits
+ * above the site mean it is legitimately the lowest of the three. Ranking it by
+ * "lower wins" therefore let a coarse average override a corroborated local
+ * reading and buried every model by the difference (measured 3.4m at Olympic
+ * Plaza). It may now only reject a local anchor standing a storey or more above
+ * it — the roof case it was introduced for — and otherwise serves as the
+ * fallback for a missing local reading. */
 export function resolveReplacementGroundAnchor(
   sampled: number | null | undefined,
   stored: number | null | undefined,
   projectTerrain: number | null | undefined,
   thresholdMeters = OBJECT_HEIGHT_FILTER_THRESHOLD_METERS,
 ): number | null {
-  return preferLowerGroundAnchor(
-    preferLowerGroundAnchor(sampled, stored, thresholdMeters),
-    projectTerrain,
-    thresholdMeters,
-  );
+  const local = preferLowerGroundAnchor(sampled, stored, thresholdMeters);
+  if (local === null) return Number.isFinite(projectTerrain) ? projectTerrain as number : null;
+  if (!Number.isFinite(projectTerrain)) return local;
+  const rise = local - (projectTerrain as number);
+  return rise > EXCAVATION_REJECT_METERS ? projectTerrain as number : local;
 }
 
 /** Public realm follows the current streamed tile surface when it agrees with

@@ -67,11 +67,28 @@ describe('resolveReplacementGroundAnchor', () => {
   });
 
   it('keeps a stable local ground reading when all references agree', () => {
-    expect(resolveReplacementGroundAnchor(1120.6, 1120, 1120.4)).toBe(1120.4);
+    // The corroborated local reading wins; the site-wide average does not get
+    // to nudge a model off ground just by being fractionally lower.
+    expect(resolveReplacementGroundAnchor(1120.6, 1120, 1120.4)).toBe(1120);
   });
 
   it('preserves a lower current sample on a descending site', () => {
     expect(resolveReplacementGroundAnchor(1112, 1120, 1121)).toBe(1112);
+  });
+
+  it('does not bury a model whose local grade stands above the site-wide average', () => {
+    // Measured at Olympic Plaza: tile ray and stored zone grade agree at
+    // ~1100.6 while the project elevation API reports 1097.2. Ranking the
+    // average as "lowest wins" sank every placed building by 3.4m.
+    expect(resolveReplacementGroundAnchor(1100.5, 1100.596, 1097.205)).toBe(1100.596);
+  });
+
+  it('still rejects a local anchor left standing a storey above the site average', () => {
+    expect(resolveReplacementGroundAnchor(1131.5, 1131, 1120)).toBe(1120);
+  });
+
+  it('falls back to the project terrain when no local reading exists', () => {
+    expect(resolveReplacementGroundAnchor(null, null, 1097.205)).toBe(1097.205);
   });
 });
 
