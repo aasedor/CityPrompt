@@ -44,3 +44,4 @@ tools/archetype_compiler/sticker_assets/shophouse_peranakan_v98/*.png filter=lfs
 tools/archetype_compiler/sticker_assets/industrial_tilt_up_concrete_v98/*.png filter=lfs diff=lfs merge=lfs -text
 frontend/public/archetypes/streets/**/*.png filter=lfs diff=lfs merge=lfs -text
 frontend/public/archetypes/streets/**/*.jpg filter=lfs diff=lfs merge=lfs -text
+seed/model-library/objects/** filter=lfs diff=lfs merge=lfs -text

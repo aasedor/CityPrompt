@@ -134,3 +134,7 @@ _bak-*/
 # Atomic image publishers may leave a hidden in-flight PNG if Blender or a
 # concurrent verifier holds the destination on Windows. These are never source.
 tools/archetype_compiler/sticker_assets/**/.*.tmp.png
+
+# The shared 3D model library seed is deliberately versioned so a clean clone
+# can build detailed buildings. Restored with tools/seed_model_library.py.
+!seed/model-library/objects/**/*.glb
