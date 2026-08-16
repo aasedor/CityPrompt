@@ -27,6 +27,10 @@ interface CatalogEntry {
   id?: string;
   title?: string;
   thumbnailUrl?: string;
+  variants?: Array<{
+    id?: string;
+    label?: string;
+  }>;
 }
 
 const FAMILIES: Record<string, FamilySignature> =
@@ -82,7 +86,12 @@ export async function collectDirect3DArchetypeReferences(
 ): Promise<Direct3DArchetypeReference[]> {
   // Group building zones by resolved archetype so a repeated family attaches
   // one reference naming every building it styles.
-  const byArchetype = new Map<string, { rawId: string; zoneNames: string[] }>();
+  const byArchetype = new Map<string, {
+    rawId: string;
+    signatureId: string;
+    selectedVariantId?: string;
+    zoneNames: string[];
+  }>();
   for (const zone of zones) {
     if (zone.zone_type !== 'building') continue;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -90,19 +99,37 @@ export async function collectDirect3DArchetypeReferences(
     const rawId = props.development_archetype_id || props.archetype_id;
     if (!rawId) continue;
     const baseId = stripCardVariantSuffix(String(rawId));
-    const entry = byArchetype.get(baseId) ?? { rawId: String(rawId), zoneNames: [] };
+    const selectedVariantId = typeof props.development_selected_variant_id === 'string'
+      ? props.development_selected_variant_id
+      : undefined;
+    // The catalogue stores the selected design variant separately from the
+    // parent archetype. Prefer its authored Sticker when one exists; otherwise
+    // preserve the established parent-family fallback.
+    const signatureId = selectedVariantId && FAMILIES[selectedVariantId]
+      ? selectedVariantId
+      : (FAMILIES[baseId] ? baseId : String(rawId));
+    const entry = byArchetype.get(signatureId) ?? {
+      rawId: String(rawId),
+      signatureId,
+      selectedVariantId,
+      zoneNames: [] as string[],
+    };
     if (zone.name && entry.zoneNames.length < 3) entry.zoneNames.push(zone.name);
-    byArchetype.set(baseId, entry);
+    byArchetype.set(signatureId, entry);
   }
 
   const references: Direct3DArchetypeReference[] = [];
-  for (const [baseId, { rawId, zoneNames }] of byArchetype) {
+  for (const [, { rawId, signatureId, selectedVariantId, zoneNames }] of byArchetype) {
     if (references.length >= limit) break;
-    const signature = FAMILIES[baseId] ?? FAMILIES[rawId] ?? null;
+    const baseId = stripCardVariantSuffix(rawId);
+    const signature = FAMILIES[signatureId] ?? FAMILIES[baseId] ?? FAMILIES[rawId] ?? null;
     const catalogEntry = CATALOG.find((c) => c.id === baseId)
       ?? CATALOG.find((c) => c.id === rawId)
       ?? null;
-    const title = catalogEntry?.title || baseId.replace(/_/g, ' ');
+    const selectedVariant = catalogEntry?.variants?.find((variant) => variant.id === selectedVariantId);
+    const title = selectedVariant?.label
+      ? `${catalogEntry?.title || baseId.replace(/_/g, ' ')} / ${selectedVariant.label}`
+      : (catalogEntry?.title || baseId.replace(/_/g, ' '));
     const buildingClause = zoneNames.length
       ? ` for the building(s) named ${zoneNames.map((n) => `"${n}"`).join(', ')}`
       : '';

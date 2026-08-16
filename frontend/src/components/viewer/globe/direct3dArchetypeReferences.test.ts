@@ -11,6 +11,16 @@ function zone(name: string, archetypeId: string | null, zoneType = 'building'): 
   } as unknown as SiteZone;
 }
 
+function variantZone(name: string, archetypeId: string, selectedVariantId: string): SiteZone {
+  return {
+    ...zone(name, archetypeId),
+    properties: {
+      development_archetype_id: archetypeId,
+      development_selected_variant_id: selectedVariantId,
+    },
+  } as unknown as SiteZone;
+}
+
 function imageResponse(type = 'image/jpeg') {
   return {
     ok: true,
@@ -47,6 +57,36 @@ describe('collectDirect3DArchetypeReferences', () => {
 
     const references = await collectDirect3DArchetypeReferences([
       zone('Tower', 'parisian_midrise_block_variant_2'),
+    ]);
+
+    expect(references).toHaveLength(1);
+    expect(fetchMock).toHaveBeenCalledWith('/families/parisian-midrise-block/elevation.jpg');
+  });
+
+  it('prefers an authored Sticker for the separately selected catalogue variant', async () => {
+    const fetchMock = vi.fn(async () => imageResponse());
+    vi.stubGlobal('fetch', fetchMock);
+
+    const references = await collectDirect3DArchetypeReferences([
+      variantZone(
+        'Gothic Hall',
+        'collegiate_gothic_education',
+        'collegiate_gothic_perpendicular',
+      ),
+    ]);
+
+    expect(references).toHaveLength(1);
+    expect(fetchMock).toHaveBeenCalledWith('/families/collegiate-gothic-perpendicular/elevation.jpg');
+    expect(references[0].label).toContain('Collegiate Gothic / Perpendicular Revival');
+    expect(references[0].label).toContain('giant traceried windows');
+  });
+
+  it('keeps the parent Sticker fallback when a selected variant has none', async () => {
+    const fetchMock = vi.fn(async () => imageResponse());
+    vi.stubGlobal('fetch', fetchMock);
+
+    const references = await collectDirect3DArchetypeReferences([
+      variantZone('Boulevard Block', 'parisian_midrise_block', 'unregistered_variant'),
     ]);
 
     expect(references).toHaveLength(1);

@@ -6,7 +6,8 @@
                                                              "archetypeId":  "toronto_junction_printing_press",
                                                              "identity":  "Aged painted-brick printing works with oversized black steel sash, deep masonry openings, one fixed studio entrance, a stackable exterior fire escape and a restrained roof terrace rail.",
                                                              "materialZones":  "weathered warm-white painted brick; blackened steel sash and fire escape; pale concrete sills; warm occupied studio glazing",
-                                                             "glassProfile":  "industrial_sash"
+                                                             "glassProfile":  "industrial_sash",
+                                                             "elevationUrl":  "/families/toronto-junction-printing-press/elevation.jpg"
                                                          },
                      "toronto_junction_cold_storage":  {
                                                            "archetypeId":  "toronto_junction_cold_storage",
@@ -18,25 +19,29 @@
                                                              "archetypeId":  "collegiate_gothic_perpendicular",
                                                              "identity":  "Perpendicular Collegiate Gothic chapel with giant traceried windows, a fixed central lantern tower, vertical stone buttresses, corner towers, pinnacles and a crenellated parapet.",
                                                              "materialZones":  "pale warm limestone; deep carved tracery; clear warm glazing; lead-grey roof; dark bronze doors",
-                                                             "glassProfile":  "heritage_leaded_occupied"
+                                                             "glassProfile":  "heritage_leaded_occupied",
+                                                             "elevationUrl":  "/families/collegiate-gothic-perpendicular/elevation.jpg"
                                                          },
                      "contemporary_midrise_variant_brick_bronze":  {
                                                                        "archetypeId":  "contemporary_midrise_variant_brick_bronze",
                                                                        "identity":  "Contemporary urban mid-rise with deep red-brown brick pilasters, bronze-anodized window reveals, one fixed arched entrance and a quiet parapet crown.",
                                                                        "materialZones":  "red-brown pressed brick; bronze window frames and spandrels; pale stone base; warm occupied glazing",
-                                                                       "glassProfile":  "residential_low_e"
+                                                                       "glassProfile":  "residential_low_e",
+                                                                       "elevationUrl":  "/families/contemporary-midrise-variant-brick-bronze/elevation.jpg"
                                                                    },
                      "glass_office_terracotta_fins":  {
                                                           "archetypeId":  "glass_office_terracotta_fins",
                                                           "identity":  "Stepped low-iron glass office wrapped in warm terracotta fins, with a transparent double-height lobby, planted setback bands and an occupied glazed crown.",
                                                           "materialZones":  "clear low-iron glass; ribbed terracotta fins; charcoal-bronze mullions; pale concrete slab edges; integrated planting",
-                                                          "glassProfile":  "low_iron_clear"
+                                                          "glassProfile":  "low_iron_clear",
+                                                          "elevationUrl":  "/families/glass-office-terracotta-fins/elevation.jpg"
                                                       },
                      "victorian_heritage_second_empire":  {
                                                               "archetypeId":  "victorian_heritage_second_empire",
                                                               "identity":  "Formal Second Empire mansion with rusticated limestone corners, a fixed columned portico, pedimented windows, balustrades and an ornate patterned-slate mansard with cresting.",
                                                               "materialZones":  "pale warm limestone; dark bronze sash windows and doors; patterned blue-grey slate; black iron cresting",
-                                                              "glassProfile":  "residential_low_e"
+                                                              "glassProfile":  "residential_low_e",
+                                                              "elevationUrl":  "/families/victorian-heritage-second-empire/elevation.jpg"
                                                           },
                      "london_heritage_mansion_block":  {
                                                            "archetypeId":  "london_heritage_mansion_block",
@@ -109,7 +114,8 @@
                                                                "archetypeId":  "brownstone_rowhouse_red_sandstone",
                                                                "identity":  "A single five-bay red-brick rowhouse with an elevated sandstone stoop, a shadowed garden level, tall black-framed double-hung sash, carved sandstone lintels and sills, one fixed dark-timber entrance in the centre bay and a deep bracketed pressed-metal cornice.",
                                                                "materialZones":  "warm variegated red-brown brick; carved buff sandstone base, lintels, sills and stoop; black wrought iron; dark stained timber door; softly occupied clear sash; grey membrane roof",
-                                                               "glassProfile":  "residential_low_e"
+                                                               "glassProfile":  "residential_low_e",
+                                                               "elevationUrl":  "/families/brownstone-rowhouse-red-sandstone/elevation.jpg"
                                                            },
                      "historical_brick_main_street":  {
                                                           "archetypeId":  "historical_brick_main_street",

@@ -92,8 +92,14 @@ function getLegoFamilySignature(zone: SiteZone): LegoFamilySignature | null {
   const props: any = zone.properties || {};
   const rawId = props.development_archetype_id || props.archetype_id;
   if (!rawId) return null;
+  const selectedVariantId = typeof props.development_selected_variant_id === 'string'
+    ? props.development_selected_variant_id
+    : null;
   const baseId = String(rawId).replace(/_(?:variant_|v)\d+$/, '');
-  return FAMILY_SIGNATURES[baseId] ?? FAMILY_SIGNATURES[String(rawId)] ?? null;
+  return (selectedVariantId ? FAMILY_SIGNATURES[selectedVariantId] : null)
+    ?? FAMILY_SIGNATURES[baseId]
+    ?? FAMILY_SIGNATURES[String(rawId)]
+    ?? null;
 }
 
 // ---------------------------------------------------------------------------
