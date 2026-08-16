@@ -20,7 +20,7 @@ import os
 import uuid as _uuid
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Optional
+from typing import Literal, Optional
 
 import httpx
 from PIL import Image, ImageDraw, ImageEnhance, ImageFont, PngImagePlugin
@@ -155,6 +155,26 @@ class RenderRequest(BaseModel):
             "tenant list for this location are fetched server-side and appended to the "
             "reference images + prompt (Gemini path), grounding the render in the real "
             "surroundings. Validated 2026-06-10, artifacts/sv-context-pilot/."
+        ),
+    )
+    guide_image_kind: Optional[Literal["clay", "context_3d", "model_3d"]] = Field(
+        default=None,
+        description=(
+            "What image_base64 actually depicts, so the provider-facing description "
+            "matches the pixels. 'clay' (default): synthetic color-coded massing model. "
+            "'context_3d': photorealistic 3D-tiles capture of the EXISTING site with "
+            "zone overlays marking intervention areas. 'model_3d': street-level capture "
+            "of the authored 3D development model standing in real 3D-tiles context — "
+            "the modelled buildings are the design and must be preserved."
+        ),
+    )
+    semantic_guide_base64: Optional[str] = Field(
+        default=None,
+        description=(
+            "Optional flat-color semantic zone map rendered from the same camera as "
+            "image_base64 (Direct 3D class-ID pass: one color per zone class, real "
+            "context transparent/dark). Anchors depth ordering and zone containment — "
+            "sent to providers as an additional reference image."
         ),
     )
 
@@ -446,6 +466,76 @@ def _openai_mask_png_bytes(mask_b64: str) -> bytes:
         return raw
 
 
+def _gemini_guide_image_text(kind: Optional[str], img_index: int) -> str:
+    """Describe the primary guide image (image_base64) to Gemini.
+
+    The description must match what the pixels actually show — a mismatched
+    label (e.g. calling a photorealistic 3D capture a "clay massing model")
+    makes the model distrust or reinterpret the guide.
+    """
+    if kind == "model_3d":
+        return (
+            f"Image {img_index} (DEVELOPMENT MODEL IN REAL CONTEXT): This is a "
+            f"street-level capture of the site's detailed 3D development model "
+            f"standing inside real photographic 3D context. The modelled buildings "
+            f"ARE the proposed design: their positions, silhouettes, storey counts, "
+            f"facade rhythm, and materials are authored ground truth — preserve them "
+            f"exactly and resolve them into photorealistic built reality. The "
+            f"surrounding real terrain, streets, and existing buildings are the real "
+            f"site — keep them consistent with the capture."
+        )
+    if kind == "context_3d":
+        return (
+            f"Image {img_index} (REAL SITE CAPTURE): This is a photorealistic "
+            f"street-level capture of the EXISTING site (3D photogrammetry). Colored "
+            f"semi-transparent overlays mark where new interventions are planned. "
+            f"Preserve the real context exactly; add the described new architecture "
+            f"only within the marked areas."
+        )
+    return (
+        f"Image {img_index} (SPATIAL LAYOUT): This is a 3D clay massing model "
+        f"showing the exact spatial arrangement of all structures from the camera's "
+        f"perspective. Use this as the definitive spatial reference."
+    )
+
+
+def _openai_source_framing(kind: Optional[str]) -> str:
+    """First-paragraph framing of the source image for the OpenAI edit path."""
+    if kind == "model_3d":
+        return (
+            "Use the first attached image as the source scene. It is a street-level "
+            "capture of the site's authored 3D development model standing in real "
+            "photographic context. The modelled buildings ARE the proposed design: "
+            "preserve their positions, silhouettes, storey counts, facade rhythm, "
+            "and materials exactly while resolving them into photorealistic built "
+            "reality. Preserve the camera angle, lighting, terrain, and surrounding "
+            "real context. Additional attached images are archetype references for "
+            "the proposed zones. If a previous render is attached, use it as a "
+            "visual continuity reference while keeping the source scene and prompt "
+            "instructions authoritative.\n\n"
+        )
+    if kind == "context_3d":
+        return (
+            "Use the first attached image as the source city/site context. It is a "
+            "photorealistic capture of the existing site; colored overlays mark "
+            "where new interventions are planned. Preserve the camera angle, "
+            "lighting, terrain, surrounding buildings, and all unedited context. "
+            "Additional attached images are archetype references for the proposed "
+            "zones. If a previous render is attached, use it as a visual continuity "
+            "reference while keeping the source context and prompt instructions "
+            "authoritative.\n\n"
+        )
+    return (
+        "Use the first attached image as the source city/site context. "
+        "Preserve the camera angle, lighting, terrain, surrounding buildings, "
+        "and all unedited context. If an edit mask is attached, edit only the "
+        "masked site areas. Additional attached images are archetype references "
+        "for the proposed zones. If a previous render is attached, use it as a "
+        "visual continuity reference while keeping the source context and prompt "
+        "instructions authoritative.\n\n"
+    )
+
+
 def _build_openai_files(
     req: RenderRequest,
     include_mask: bool,
@@ -460,6 +550,14 @@ def _build_openai_files(
     files: list[tuple[str, tuple[str, bytes, str]]] = [
         ("image[]", (f"site-context.{input_ext}", _decode_base64_payload(req.image_base64), input_mime)),
     ]
+
+    # Semantic zone map rides directly behind the source so the prompt can
+    # reference it as "the second attached image".
+    if req.semantic_guide_base64:
+        files.append((
+            "image[]",
+            ("semantic-zone-map.png", _decode_base64_payload(req.semantic_guide_base64), "image/png"),
+        ))
 
     if req.previous_render_base64:
         previous_mime = _guess_image_mime(req.previous_render_base64)
@@ -513,16 +611,15 @@ async def _call_openai_image_edit(
     site_pack: dict | None = None,
 ) -> httpx.Response:
     prompt_text = _prompt_with_negative(req)
-    prompt_text = (
-        "Use the first attached image as the source city/site context. "
-        "Preserve the camera angle, lighting, terrain, surrounding buildings, "
-        "and all unedited context. If an edit mask is attached, edit only the "
-        "masked site areas. Additional attached images are archetype references "
-        "for the proposed zones. If a previous render is attached, use it as a "
-        "visual continuity reference while keeping the source context and prompt "
-        "instructions authoritative.\n\n"
-        + prompt_text
+    semantic_framing = (
+        "The second attached image is a SEMANTIC ZONE MAP of the exact same view: "
+        "each proposed zone painted one flat color, real context dark. Use it only "
+        "to resolve volume identity, silhouettes, and depth ordering (nearer volumes "
+        "occlude farther ones exactly as shown) — never copy its flat colors.\n\n"
+        if req.semantic_guide_base64
+        else ""
     )
+    prompt_text = _openai_source_framing(req.guide_image_kind) + semantic_framing + prompt_text
     if site_pack:
         n_ctx = len(site_pack.get("images", []))
         prompt_text += (
@@ -759,18 +856,36 @@ async def generate_render(
             }
         })
 
-    # Add the primary layout image (clay render or screenshot)
+    # Add the primary layout image (clay render, 3D capture, or screenshot)
     if req.image_base64:
         img_index = 2 if req.previous_render_base64 else 1
         parts.append({
-            "text": f"Image {img_index} (SPATIAL LAYOUT): This is a 3D clay massing model "
-                    f"showing the exact spatial arrangement of all structures from the camera's "
-                    f"perspective. Use this as the definitive spatial reference."
+            "text": _gemini_guide_image_text(req.guide_image_kind, img_index)
         })
         parts.append({
             "inlineData": {
                 "mimeType": "image/png",
                 "data": req.image_base64,
+            }
+        })
+
+    # Semantic zone map — same camera as the primary guide, one flat color per
+    # proposal zone class. It pins depth ordering (nearer volumes occlude
+    # farther ones) and zone containment without competing as a style source.
+    if req.image_base64 and req.semantic_guide_base64:
+        sem_index = 3 if req.previous_render_base64 else 2
+        parts.append({
+            "text": f"Image {sem_index} (SEMANTIC ZONE MAP): The same camera view as the "
+                    f"previous image with each proposed zone painted one flat color and "
+                    f"the real context left dark. Use it ONLY to resolve which volume is "
+                    f"which, their exact silhouettes, and their depth ordering — nearer "
+                    f"volumes occlude farther ones exactly as shown. Never copy its flat "
+                    f"colors into the output."
+        })
+        parts.append({
+            "inlineData": {
+                "mimeType": "image/png",
+                "data": req.semantic_guide_base64,
             }
         })
 
@@ -782,6 +897,8 @@ async def generate_render(
     # angle each ref is taken from, so the label already carries the angle.
     if req.archetype_images:
         base_index = 3 if req.previous_render_base64 else 2
+        if req.image_base64 and req.semantic_guide_base64:
+            base_index += 1
         for i, arch_img in enumerate(req.archetype_images[:48]):  # Max 48 archetype refs
             img_idx = base_index + i
             color_ref = f" Located in the {arch_img.zone_color} zone." if arch_img.zone_color else ""

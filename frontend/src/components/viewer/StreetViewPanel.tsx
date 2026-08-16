@@ -6,12 +6,20 @@
 import { useState, useCallback } from 'react';
 import { Eye, ArrowLeft, ArrowRight, Loader2, X, Download, Save, Wand2 } from 'lucide-react';
 import { useViewerStore } from '@/store';
-import { useStreetViewRender, type StreetViewResult } from './useStreetViewRender';
-import type { SavedRender, SiteZone } from '@/types';
+import {
+  useStreetViewRender,
+  type StreetCaptureResult,
+  type StreetViewGuideKind,
+  type StreetViewResult,
+} from './useStreetViewRender';
+import type { Building, SavedRender, SiteZone } from '@/types';
 import toast from 'react-hot-toast';
 import { getRenderImageKey, saveRenderedImage } from '@/utils/renderPersistence';
-import { resolveApiFileUrl } from '@/services/api';
+import { getApiErrorMessage, resolveApiFileUrl } from '@/services/api';
 import { RenderEditModal } from './RenderEditModal';
+import { DIRECT_3D_ALLOWED_STYLES, useDirect3DRender } from './globe/useDirect3DRender';
+import { getCommunity3DCaptureClaims } from '@/features/community3d/community3d';
+import { getCurrentResidualLandscapeClaim } from './globe/residualLandscape';
 
 const COMPASS_LABELS: Record<number, string> = {
   0: 'N', 45: 'NE', 90: 'E', 135: 'SE',
@@ -111,6 +119,17 @@ const STREET_VIEW_RENDER_MODELS = [
 ];
 const STREET_VIEW_RENDER_LABEL = 'Gemini + GPT Image 2';
 
+// Street style ids that don't exist verbatim in the Direct 3D catalogue.
+const STREET_TO_DIRECT3D_STYLE: Record<string, string> = {
+  'human-scale': 'photorealistic',
+  'clay-model': 'clay-maquette',
+};
+
+function resolveDirect3DStreetStyle(streetStyleId: string): string {
+  const mapped = STREET_TO_DIRECT3D_STYLE[streetStyleId] ?? streetStyleId;
+  return DIRECT_3D_ALLOWED_STYLES.has(mapped) ? mapped : 'photorealistic';
+}
+
 function escapeSvgText(value: string): string {
   return value.replace(/[<>&"]/g, (char) => ({
     '<': '&lt;',
@@ -145,14 +164,23 @@ function compassLabel(angle: number): string {
 interface StreetViewPanelProps {
   siteZones: SiteZone[];
   projectId?: string;
-  /** When provided, captures 3D tiles from street level instead of clay render */
-  globeCapture?: () => Promise<string | null>;
+  /** When provided, captures the globe scene from street level instead of the
+   *  clay render — including the authored 3D building models when present
+   *  (result.kind tells which framing the prompt should use). */
+  globeCapture?: () => Promise<StreetCaptureResult | null>;
+  /** Project buildings — required for the inventory-locked Direct 3D street
+   *  path (per-zone capture claims are derived from them). */
+  buildings?: Building[];
   onRenderSaved?: (render: SavedRender) => void;
 }
 
-export function StreetViewPanel({ siteZones, projectId, globeCapture, onRenderSaved }: StreetViewPanelProps) {
+export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings, onRenderSaved }: StreetViewPanelProps) {
   const { streetViewPegman, setStreetViewAngle, setStreetViewPosition, setStreetViewActive } = useViewerStore();
   const { generateStreetView } = useStreetViewRender();
+  const { renderDirect3D } = useDirect3DRender();
+  // Inventory-locked single-call street render through the Direct 3D endpoint
+  // (review-first). Off = the classic Gemini + GPT two-provider flow.
+  const [directStreetMode, setDirectStreetMode] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [result, setResult] = useState<StreetViewResult | null>(null);
   const [previews, setPreviews] = useState<StreetViewResult[]>([]);
@@ -230,17 +258,86 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, onRenderSa
         ? `PHOTO STYLE: ${styleObj.prompt}`
         : undefined;
 
-      // If globe mode: capture 3D tiles from street level as guide image
+      // If globe mode: capture the 3D scene from street level as guide image.
+      // kind === 'model3d' means the authored 3D building models are in frame;
+      // 'context3d' means existing tiles + zone overlays only.
       let overrideGuideImage: string | undefined;
+      let overrideGuideKind: StreetViewGuideKind | undefined;
+      let overrideAspectRatio: string | undefined;
+      let overrideSemanticGuide: string | undefined;
+      let streetCapture: StreetCaptureResult | null = null;
       if (globeCapture) {
-        console.log('[StreetViewPanel] Capturing 3D tiles from street level...');
-        const captured = await globeCapture();
-        if (captured) {
-          overrideGuideImage = captured;
-          console.log('[StreetViewPanel] 3D tiles capture successful');
+        console.log('[StreetViewPanel] Capturing globe scene from street level...');
+        streetCapture = await globeCapture();
+        if (streetCapture) {
+          overrideGuideImage = streetCapture.imageBase64;
+          overrideGuideKind = streetCapture.kind;
+          overrideAspectRatio = streetCapture.aspectRatio;
+          overrideSemanticGuide = streetCapture.semanticBase64;
+          console.log(`[StreetViewPanel] Street-level capture successful (${streetCapture.kind}, ${streetCapture.aspectRatio}, semantic=${!!streetCapture.semanticBase64})`);
         } else {
-          console.warn('[StreetViewPanel] 3D tiles capture failed, falling back to clay render');
+          console.warn('[StreetViewPanel] Street-level capture failed, falling back to clay render');
         }
+      }
+
+      // Inventory-locked street render: one call through the Direct 3D
+      // endpoint with the full pass stack. Review-first — no auto-save unless
+      // the server ever returns 'accepted'.
+      if (directStreetMode) {
+        const bundle = streetCapture?.direct3d;
+        if (!projectId) {
+          toast.error('Save the project before a Direct 3D street render.');
+          return;
+        }
+        if (!bundle) {
+          toast.error('Direct 3D street needs compiled 3D models in the scene — the capture returned no pass stack.');
+          return;
+        }
+        const claims = getCommunity3DCaptureClaims(siteZones, buildings ?? []);
+        if (!claims?.length) {
+          toast.error('Rebuild Community 3D first — per-zone scene fingerprints are missing.');
+          return;
+        }
+        const directLabel = 'Direct 3D Street';
+        try {
+          const direct = await renderDirect3D(bundle, {
+            style: resolveDirect3DStreetStyle(selectedStyle),
+            projectId,
+            community3DClaims: claims,
+            residualLandscapeClaim: getCurrentResidualLandscapeClaim(siteZones),
+            viewMode: 'street',
+          });
+          const reviewSuffix = direct.outcome === 'review_required' ? ' · review' : '';
+          const directResult: StreetViewResult = {
+            imageUrl: direct.render.imageUrl,
+            prompt: direct.render.prompt,
+            model: direct.render.model,
+            imageQuality: 'high',
+            providerLabel: `${direct.render.providerLabel}${reviewSuffix}`,
+          };
+          setPreviews([directResult]);
+          setSelectedPreviewIndex(0);
+          setResult(directResult);
+          if (direct.outcome === 'accepted' && projectId) {
+            await saveStreetViewRender(directResult);
+          } else {
+            toast('Review-first render: compare against the 3D capture, then Save if it holds up.', { icon: '🔍' });
+          }
+        } catch (err) {
+          const message = getApiErrorMessage(err, 'Direct 3D street render failed.');
+          const errorResult: StreetViewResult = {
+            imageUrl: createErrorPreviewImage(directLabel, message),
+            prompt: '',
+            model: 'gpt-image-2',
+            providerLabel: directLabel,
+            error: message,
+          };
+          setPreviews([errorResult]);
+          setSelectedPreviewIndex(0);
+          setResult(errorResult);
+          toast.error(`${directLabel} failed`);
+        }
+        return;
       }
 
       const results = await Promise.all(STREET_VIEW_RENDER_MODELS.map(async (provider) => {
@@ -255,6 +352,9 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, onRenderSa
               previousRenderBase64,
               styleModifier,
               overrideGuideImage,
+              guideKind: overrideGuideKind,
+              aspectRatio: overrideAspectRatio,
+              semanticGuideBase64: overrideSemanticGuide,
               projectId,
               useRealContext,
               includePeople,
@@ -309,7 +409,7 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, onRenderSa
     } finally {
       setIsGenerating(false);
     }
-  }, [streetViewPegman, siteZones, generateStreetView, selectedStyle, useRealContext, includePeople, includeVehicles, result, globeCapture, projectId, saveStreetViewRender]);
+  }, [streetViewPegman, siteZones, generateStreetView, renderDirect3D, directStreetMode, buildings, selectedStyle, useRealContext, includePeople, includeVehicles, result, globeCapture, projectId, saveStreetViewRender]);
 
   const handleDownload = useCallback(() => {
     if (!result?.imageUrl || result.error) return;
@@ -681,6 +781,21 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, onRenderSa
           </span>
         </label>
 
+        {/* Direct 3D street: single inventory-locked call via the Direct 3D
+            endpoint (review-first). Only meaningful on the globe mount. */}
+        {globeCapture && (
+          <button
+            type="button"
+            onClick={() => setDirectStreetMode((v) => !v)}
+            title="One inventory-locked render through the Direct 3D pipeline (GPT Image 2, review-first). Off = classic Gemini + GPT provider test."
+            className={`rounded-full px-3 py-1.5 text-[10px] font-black uppercase leading-tight transition ${
+              directStreetMode ? 'bg-[#c9ff3d] text-black' : 'bg-black/5 text-black/55 hover:bg-black/10'
+            }`}
+          >
+            {directStreetMode ? '✓ Direct 3D' : 'Direct 3D'}
+          </button>
+        )}
+
         {/* Add people / vehicles toggles — default off for clean hero renders */}
         <div className="flex flex-col gap-1.5">
           <button
@@ -715,7 +830,7 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, onRenderSa
           {isGenerating ? (
             <>
               <Loader2 size={16} className="animate-spin" />
-              Rendering {STREET_VIEW_RENDER_LABEL}
+              Rendering {directStreetMode ? 'Direct 3D Street' : STREET_VIEW_RENDER_LABEL}
             </>
           ) : (
             <>

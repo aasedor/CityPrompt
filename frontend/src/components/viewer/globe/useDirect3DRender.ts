@@ -327,6 +327,9 @@ export function useDirect3DRender() {
       projectId: string;
       community3DClaims: Community3DCaptureClaim[];
       residualLandscapeClaim?: ResidualLandscapeClaim | null;
+      /** 'street' marks an eye-level capture: scene presentation is forced and
+       *  the server returns review_required in this first version. */
+      viewMode?: 'aerial' | 'street';
     },
   ): Promise<Direct3DRenderResult> => {
     if (!DIRECT_3D_ALLOWED_STYLES.has(options.style)) {
@@ -346,8 +349,12 @@ export function useDirect3DRender() {
       capture,
       fidelityPolicy,
     );
-    const presentationMode = resolveDirect3DPresentationMode(options.style);
+    const viewMode = options.viewMode ?? 'aerial';
+    const presentationMode = viewMode === 'street'
+      ? 'scene'
+      : resolveDirect3DPresentationMode(options.style);
     const response = await rendersApi.generateDirect3D({
+      view_mode: viewMode,
       beauty_image_base64: capture.beautyImageBase64,
       proposal_mask_base64: capture.proposalMaskBase64,
       object_id_image_base64: capture.classIdImageBase64,
@@ -373,7 +380,9 @@ export function useDirect3DRender() {
         prompt,
         model: response.model,
         imageQuality: 'high',
-        providerLabel: 'Direct 3D · GPT Image 2',
+        providerLabel: viewMode === 'street'
+          ? 'Direct 3D Street · GPT Image 2'
+          : 'Direct 3D · GPT Image 2',
       },
       diagnostics: response.diagnostics,
       captureFingerprint: response.capture_fingerprint,

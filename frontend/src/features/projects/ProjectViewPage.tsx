@@ -15,7 +15,8 @@ import { SitePlannerToolbar } from '@/components/viewer/SitePlannerToolbar';
 import { HistoryPanel } from '@/components/viewer/HistoryPanel';
 import { GlobeSitePlannerMap } from '@/components/viewer/globe/GlobeSitePlannerMap';
 import { GlobeAIRenderPanel } from '@/components/viewer/globe/GlobeAIRenderPanel';
-import { useGlobeAIRender } from '@/components/viewer/globe/useGlobeAIRender';
+import { nearestAspectRatio, useGlobeAIRender } from '@/components/viewer/globe/useGlobeAIRender';
+import type { StreetCaptureResult } from '@/components/viewer/useStreetViewRender';
 import { useGlobeCamera } from '@/components/viewer/globe/useGlobeCamera';
 import { ZonePropertiesPanel } from '@/components/viewer/ZonePropertiesPanel';
 import { AIRenderPanel } from '@/components/viewer/AIRenderPanel';
@@ -66,6 +67,8 @@ export function ProjectViewPage() {
     waitForTilesSettled?: () => Promise<boolean>;
     setBuildingModelsVisible?: (visible: boolean) => void;
     captureDirect3D?: () => Promise<Direct3DCaptureBundle>;
+    withStreetCaptureScene?: <T>(fn: (kind: 'model3d' | 'context3d') => Promise<T>) => Promise<T>;
+    captureStreetDirect3D?: () => Promise<Direct3DCaptureBundle | null>;
   } | null>(null);
   // Buildings whose generated GLB is currently placed on the globe — the
   // render panel keys "render with 3D models" behavior off this set.
@@ -78,17 +81,51 @@ export function ProjectViewPage() {
   const { captureStreetView } = useGlobeAIRender();
   const { flyToStreetLevel, restoreAerialView, saveCameraState } = useGlobeCamera();
 
-  const handleGlobeStreetCapture = useCallback(async (): Promise<string | null> => {
+  const handleGlobeStreetCapture = useCallback(async (): Promise<StreetCaptureResult | null> => {
     if (!globeRefs?.canvas || !globeRefs?.camera) return null;
     const pegman = useViewerStore.getState().streetViewPegman;
     if (!pegman?.position) return null;
     const [lng, lat] = pegman.position;
-    return captureStreetView(
-      globeRefs.canvas, globeRefs.camera,
-      lat, lng, pegman.angle,
-      pegman.terrainHeight ?? globeRefs.terrainHeight,
-      flyToStreetLevel, restoreAerialView, saveCameraState,
-    );
+    const runCapture = async (kind: 'model3d' | 'context3d'): Promise<StreetCaptureResult | null> => {
+      // Strip a data: URL prefix — the render API expects raw base64.
+      const rawB64 = (value: string) => (value.includes(',') ? value.split(',')[1] : value);
+      // With authored models in scene, grab the full Direct 3D pass stack
+      // while the camera is parked at street level: clean off-screen beauty
+      // (no editor affordances by construction) + the class-ID semantic frame
+      // that anchors depth ordering. Falls back to a plain screenshot.
+      const captureState: { bundle: Direct3DCaptureBundle | null } = { bundle: null };
+      const captureFrame = kind === 'model3d' && globeRefs.captureStreetDirect3D
+        ? async () => {
+          captureState.bundle = await globeRefs.captureStreetDirect3D!();
+          return captureState.bundle ? rawB64(captureState.bundle.beautyImageBase64) : null;
+        }
+        : undefined;
+      const imageBase64 = await captureStreetView(
+        globeRefs.canvas, globeRefs.camera,
+        lat, lng, pegman.angle,
+        pegman.terrainHeight ?? globeRefs.terrainHeight,
+        flyToStreetLevel, restoreAerialView, saveCameraState,
+        globeRefs.waitForTilesSettled,
+        captureFrame,
+      );
+      if (!imageBase64) return null;
+      const captured = captureState.bundle;
+      return {
+        imageBase64,
+        kind,
+        aspectRatio: captured
+          ? nearestAspectRatio(captured.width, captured.height)
+          : nearestAspectRatio(globeRefs.canvas.width, globeRefs.canvas.height),
+        semanticBase64: captured ? rawB64(captured.classIdImageBase64) : undefined,
+        direct3d: captured ?? undefined,
+      };
+    };
+    // Scene hygiene (hide pegman marker; models vs overlays per kind) lives in
+    // the globe component. Without it, fall back to a plain existing-context
+    // capture — same behavior street view had before 3D models existed.
+    return globeRefs.withStreetCaptureScene
+      ? globeRefs.withStreetCaptureScene(runCapture)
+      : runCapture('context3d');
   }, [globeRefs, captureStreetView, flyToStreetLevel, restoreAerialView, saveCameraState]);
 
   // Register Ctrl+Z / Ctrl+Shift+Z keyboard shortcuts for undo/redo
@@ -798,6 +835,7 @@ export function ProjectViewPage() {
           siteZones={siteZones}
           projectId={project?.id}
           globeCapture={handleGlobeStreetCapture}
+          buildings={project?.buildings ?? []}
           onRenderSaved={rememberSavedRender}
         />
 

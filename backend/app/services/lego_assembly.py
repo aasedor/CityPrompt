@@ -82,6 +82,7 @@ class ModuleDescriptor:
     native_floors: int | None = None
     source_variant_id: str | None = None
     generation_archetype_id: str | None = None
+    footprint_compatibility: dict[str, Any] | None = None
 
 
 @dataclass(frozen=True)
@@ -183,6 +184,11 @@ def descriptor_from_library_entry(entry: Any) -> ModuleDescriptor | None:
             str(lego.get("generation_archetype_id"))
             if lego.get("generation_archetype_id") else None
         ),
+        footprint_compatibility=(
+            lego.get("footprint_compatibility")
+            if isinstance(lego.get("footprint_compatibility"), dict)
+            else None
+        ),
     )
 
 
@@ -212,9 +218,24 @@ def _semantic_id(value: str) -> str:
     return re.sub(r"[^a-z0-9]+", "_", value.lower()).strip("_")
 
 
+def _strip_card_variant_suffix(semantic_id: str) -> str:
+    """Drop a planner-added ``_variant_<n>`` card suffix.
+
+    Master-plan zones store the selected catalogue card as
+    ``<archetype_id>_variant_<n>``. The card index picks artwork, not a
+    different building family, so matching must resolve it to the archetype
+    itself. Real variant families (e.g. ``nordic_timber_charred_wood``) are
+    unaffected — they never use the ``variant_<n>`` spelling.
+    """
+    return re.sub(r"_variant_\d+$", "", semantic_id)
+
+
 def _matches_requested_archetype(module: ModuleDescriptor, archetype_id: str) -> bool:
-    requested = _semantic_id(archetype_id)
-    return any(_semantic_id(candidate) == requested for candidate in module.archetype_ids)
+    requested = _strip_card_variant_suffix(_semantic_id(archetype_id))
+    return any(
+        _strip_card_variant_suffix(_semantic_id(candidate)) == requested
+        for candidate in module.archetype_ids
+    )
 
 
 def _module_score(module: ModuleDescriptor, request: AssemblyRequest) -> float:
@@ -227,6 +248,58 @@ def _valid_for_floor_count(module: ModuleDescriptor, floors: int) -> bool:
     if module.max_floors is not None and floors > module.max_floors:
         return False
     return True
+
+
+def _recommended_range_contains(value: float, recommended: Any) -> bool | None:
+    """Return whether a value is inside a declared two-number range.
+
+    ``None`` means the manifest did not provide a usable range, so callers can
+    retain the conservative native-dimension fallback.
+    """
+
+    if not isinstance(recommended, (list, tuple)) or len(recommended) != 2:
+        return None
+    lower = _as_float(recommended[0], float("nan"))
+    upper = _as_float(recommended[1], float("nan"))
+    if not (math.isfinite(lower) and math.isfinite(upper)):
+        return None
+    return min(lower, upper) <= value <= max(lower, upper)
+
+
+def _declared_profile_covers_target(
+    module: ModuleDescriptor,
+    request: AssemblyRequest,
+) -> bool:
+    """Honor the shape matrix authored and validated with a module family."""
+
+    compatibility = module.footprint_compatibility
+    if not isinstance(compatibility, dict):
+        return False
+    profiles = compatibility.get("profiles")
+    profile = (
+        profiles.get(request.footprint_profile)
+        if isinstance(profiles, dict)
+        else None
+    )
+    if not isinstance(profile, dict):
+        return False
+
+    width_range = profile.get("recommendedWidth_m")
+    depth_range = profile.get("recommendedDepth_m")
+    floor_range = profile.get("recommendedFloors")
+    direct_width = _recommended_range_contains(request.target_width_m, width_range)
+    direct_depth = _recommended_range_contains(request.target_depth_m, depth_range)
+    rotated_width = _recommended_range_contains(request.target_depth_m, width_range)
+    rotated_depth = _recommended_range_contains(request.target_width_m, depth_range)
+    floors = _recommended_range_contains(float(request.target_floors), floor_range)
+
+    dimensions_declared = direct_width is not None and direct_depth is not None
+    dimensions_fit = bool(
+        (direct_width and direct_depth)
+        or (rotated_width and rotated_depth)
+    )
+    floors_fit = floors is not False
+    return dimensions_declared and dimensions_fit and floors_fit
 
 
 def _best(modules: Iterable[ModuleDescriptor], request: AssemblyRequest) -> ModuleDescriptor | None:
@@ -578,10 +651,11 @@ def plan_vertical_assembly(
         # Rectangles can represent either authored axis order after browser
         # measurement. Quarter-turn the complete stack when that is the exact
         # fit; multi-wing profiles already encode each return's rotation.
+        declared_profile_fit = _declared_profile_covers_target(podium, request)
         scale_min, scale_max = (
-            (0.80, 1.20)
-            if request.footprint_profile == "rectangle"
-            else (0.62, 1.40)
+            (0.62, 1.40)
+            if declared_profile_fit or request.footprint_profile != "rectangle"
+            else (0.80, 1.20)
         )
         if request.footprint_profile == "rectangle":
             (
@@ -697,6 +771,9 @@ def plan_vertical_assembly(
                 "score": round(family_score, 5),
                 "profile": request.footprint_profile,
                 "segment_count": len(segments),
+                "compatibility_source": (
+                    "manifest_shape_matrix" if declared_profile_fit else "native_scale"
+                ),
             },
             "footprint_segments": segments,
         }

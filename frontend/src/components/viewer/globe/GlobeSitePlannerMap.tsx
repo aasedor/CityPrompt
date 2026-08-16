@@ -1343,6 +1343,18 @@ interface GlobeSitePlannerMapProps {
     /** Capture a clean, current-camera 3D beauty frame plus exact proposal
      *  mask and semantic class-ID frame. This is isolated from Classic. */
     captureDirect3D?: () => Promise<Direct3DCaptureBundle>;
+    /** Run a street-level capture with scene hygiene: hides the pegman marker,
+     *  and — when authored 3D building models are present ('model3d') — hides
+     *  zone overlays, deselects buildings, and forces models visible so the
+     *  capture shows the design, not editor affordances. Without models
+     *  ('context3d') the zone overlays are forced visible instead, because
+     *  they are the intervention markers the prompt references. Restores all
+     *  prior visibility state afterwards. */
+    withStreetCaptureScene?: <T>(fn: (kind: 'model3d' | 'context3d') => Promise<T>) => Promise<T>;
+    /** Full Direct 3D pass stack (beauty/class-ID/instance-ID) from the
+     *  CURRENT camera with street-relaxed coverage bounds. Returns null on
+     *  failure so callers can fall back to a plain screenshot. */
+    captureStreetDirect3D?: () => Promise<Direct3DCaptureBundle | null>;
   }) => void;
   /** Fired with the ids of buildings whose GLB is currently mounted on the
    *  globe — the render panel keys preserve-the-massing prompts off it. */
@@ -1438,8 +1450,20 @@ export function GlobeSitePlannerMap({
   // captures. modeledBuildingIds suppresses the matching zone prisms only
   // while a model is actually mounted.
   const [buildingModelsVisible, setBuildingModelsVisible] = useState(true);
+  const buildingModelsVisibleRef = useRef(true);
+  buildingModelsVisibleRef.current = buildingModelsVisible;
   const [modeledBuildingIds, setModeledBuildingIds] = useState<Set<string>>(() => new Set());
   const [legoBuildingIds, setLegoBuildingIds] = useState<Set<string>>(() => new Set());
+  // Street-level capture hygiene: the pegman marker + view cone sit exactly
+  // where the capture camera stands, so they photobomb every street capture
+  // unless hidden for the duration.
+  const [streetCapturePegmanHidden, setStreetCapturePegmanHidden] = useState(false);
+  // Whether the scene holds authored 3D building models (compiled community,
+  // LEGO stacks, or placed GLBs) — decides whether a street capture shows the
+  // design itself ('model3d') or only existing context + overlays ('context3d').
+  const streetCaptureHas3DModelsRef = useRef(false);
+  streetCaptureHas3DModelsRef.current =
+    hasCompiledCommunity3D || modeledBuildingIds.size > 0 || legoBuildingIds.size > 0;
   const [buildingLayerRecoveryGeneration, setBuildingLayerRecoveryGeneration] = useState(0);
   const [selectedBuildingId, setSelectedBuildingId] = useState<string | null>(null);
   const selectedBuildingIdRef = useRef<string | null>(null);
@@ -2307,6 +2331,62 @@ export function GlobeSitePlannerMap({
     return trackedPromise;
   }, [waitForCurrentTiles]);
 
+  // Street-level Direct 3D capture: the full off-screen pass stack (beauty +
+  // class-ID + instance-ID) from the CURRENT camera — the caller parks the
+  // camera at street level first. Aerial mask-coverage bounds are relaxed:
+  // at eye level the sky legitimately dominates the frame.
+  const captureStreetDirect3D = useCallback(async (): Promise<Direct3DCaptureBundle | null> => {
+    const renderer = rendererRef.current;
+    const scene = sceneRef.current;
+    const camera = cameraRef.current;
+    if (!renderer || !scene || !camera || renderer.getContext().isContextLost()) return null;
+    try {
+      return await captureDirect3DScene(renderer, scene, camera, {
+        minMaskCoverage: 0,
+        maxMaskCoverage: 1,
+      });
+    } catch (err) {
+      console.warn('[GlobeSitePlannerMap] Street Direct 3D capture failed — falling back to screenshot:', err);
+      return null;
+    }
+  }, []);
+
+  // Scene hygiene for street-level captures (same pattern as captureDirect3D:
+  // flip clean state, two frames for React to commit, restore in finally).
+  const withStreetCaptureScene = useCallback(async <T,>(
+    fn: (kind: 'model3d' | 'context3d') => Promise<T>,
+  ): Promise<T> => {
+    const kind: 'model3d' | 'context3d' = streetCaptureHas3DModelsRef.current
+      ? 'model3d'
+      : 'context3d';
+    const previousOverlaysVisible = zoneOverlaysVisibleRef.current;
+    const previousSelectedBuildingId = selectedBuildingIdRef.current;
+    const previousModelsVisible = buildingModelsVisibleRef.current;
+    try {
+      setStreetCapturePegmanHidden(true);
+      setSelectedBuildingId(null);
+      if (kind === 'model3d') {
+        // The authored models carry the design — colored zone overlays would
+        // only contaminate the capture.
+        setZoneOverlaysVisible(false);
+        setBuildingModelsVisible(true);
+      } else {
+        // No models: the overlays ARE the intervention markers the prompt
+        // references, so they must be in frame even if the user hid them.
+        setZoneOverlaysVisible(true);
+      }
+      await new Promise<void>((resolve) => {
+        requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
+      });
+      return await fn(kind);
+    } finally {
+      setStreetCapturePegmanHidden(false);
+      setSelectedBuildingId(previousSelectedBuildingId);
+      setZoneOverlaysVisible(previousOverlaysVisible);
+      setBuildingModelsVisible(previousModelsVisible);
+    }
+  }, []);
+
   // Emit stable's {canvas, camera, terrainHeight} contract when all three refs
   // are populated. Gated on globeAIRenderViewport so we only fire once the
   // scene is ready (the viewport memo guards on sceneReady + both refs).
@@ -2323,6 +2403,8 @@ export function GlobeSitePlannerMap({
       waitForTilesSettled: waitForCurrentTiles,
       setBuildingModelsVisible,
       captureDirect3D,
+      withStreetCaptureScene,
+      captureStreetDirect3D,
     });
     // Dev-only handle for e2e/console camera control (hidden browser pane
     // can't reach React state; see memory: e2e browser pane tricks).
@@ -2337,7 +2419,7 @@ export function GlobeSitePlannerMap({
         captureDirect3D,
       });
     }
-  }, [captureDirect3D, globeAIRenderViewport, isSceneSettled, onGlobeReady, terrainElevation, waitForCurrentTiles]);
+  }, [captureDirect3D, captureStreetDirect3D, globeAIRenderViewport, isSceneSettled, onGlobeReady, terrainElevation, waitForCurrentTiles, withStreetCaptureScene]);
 
   // Prevent page scroll
   useEffect(() => {
@@ -3252,8 +3334,9 @@ export function GlobeSitePlannerMap({
               ) : null;
             })()}
 
-          {/* Street view pegman */}
-            {streetViewPegman?.position && (
+          {/* Street view pegman — hidden while a street capture is in flight
+              (the marker + cone sit exactly where the capture camera stands) */}
+            {streetViewPegman?.position && !streetCapturePegmanHidden && (
               <GlobePegman
                 position={streetViewPegman?.position as [number, number]}
                 angle={streetViewPegman.angle}
