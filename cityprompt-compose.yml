@@ -1,0 +1,109 @@
+# Standalone dev stack for the CityPrompt clone, port-shifted so it can run
+# alongside the Playground devplatform stack. Untracked on purpose.
+# Usage: docker compose -f cityprompt-compose.yml -p cityprompt up -d
+services:
+  db:
+    image: postgis/postgis:15-3.4
+    container_name: cityprompt-db
+    environment:
+      POSTGRES_DB: dev_platform
+      POSTGRES_USER: devuser
+      POSTGRES_PASSWORD: devpassword
+    ports:
+      - "5433:5432"
+    volumes:
+      - cityprompt_postgres_data:/var/lib/postgresql/data
+      - ./backend/scripts/init-db.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U devuser -d dev_platform"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7.2-alpine
+    container_name: cityprompt-redis
+    ports:
+      - "6380:6379"
+    volumes:
+      - cityprompt_redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  minio:
+    image: minio/minio:latest
+    container_name: cityprompt-minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    ports:
+      - "9002:9000"
+      - "9003:9001"
+    volumes:
+      - cityprompt_minio_data:/data
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: ../infrastructure/docker/Dockerfile.backend
+    container_name: cityprompt-backend
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://devuser:devpassword@db:5432/dev_platform
+      - DATABASE_URL_SYNC=postgresql://devuser:devpassword@db:5432/dev_platform
+      - REDIS_URL=redis://redis:6379/0
+      - S3_ENDPOINT_URL=http://minio:9000
+      - S3_ACCESS_KEY=minioadmin
+      - S3_SECRET_KEY=minioadmin
+      - S3_BUCKET_NAME=dev-platform-uploads
+      - APP_ENV=development
+      - APP_DEBUG=true
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+    env_file:
+      - .env
+    ports:
+      - "8010:8000"
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      minio:
+        condition: service_started
+
+  celery-worker:
+    build:
+      context: ./backend
+      dockerfile: ../infrastructure/docker/Dockerfile.backend
+    container_name: cityprompt-celery
+    command: celery -A app.tasks.worker worker --loglevel=info --concurrency=2
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://devuser:devpassword@db:5432/dev_platform
+      - DATABASE_URL_SYNC=postgresql://devuser:devpassword@db:5432/dev_platform
+      - REDIS_URL=redis://redis:6379/0
+      - S3_ENDPOINT_URL=http://minio:9000
+      - S3_ACCESS_KEY=minioadmin
+      - S3_SECRET_KEY=minioadmin
+      - S3_BUCKET_NAME=dev-platform-uploads
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+    env_file:
+      - .env
+    volumes:
+      - ./backend:/app
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+volumes:
+  cityprompt_postgres_data:
+  cityprompt_redis_data:
+  cityprompt_minio_data:
