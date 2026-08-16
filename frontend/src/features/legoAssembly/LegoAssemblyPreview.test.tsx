@@ -16,16 +16,18 @@ import type { SiteZone } from '@/types';
 // Mocks
 // ---------------------------------------------------------------------------
 
-const { apiGet, apiPost, apiPut, apiDelete } = vi.hoisted(() => ({
+const { apiGet, apiPost, apiPut, apiDelete, zonesList } = vi.hoisted(() => ({
   apiGet: vi.fn(),
   apiPost: vi.fn(),
   apiPut: vi.fn(),
   apiDelete: vi.fn(),
+  zonesList: vi.fn(),
 }));
 
 vi.mock('@/services/api', () => ({
   api: { get: apiGet, post: apiPost, put: apiPut, delete: apiDelete },
   resolveApiFileUrl: (url: string) => url,
+  siteZonesApi: { list: zonesList },
   getApiErrorMessage: (error: unknown, fallback = 'Something went wrong') => {
     const detail = (error as { response?: { data?: { detail?: unknown } } })?.response?.data?.detail;
     return typeof detail === 'string' ? detail : fallback;
@@ -406,6 +408,40 @@ describe('LegoAssemblyPreview', () => {
     await waitFor(() =>
       expect(apiDelete).toHaveBeenCalledWith('/api/v1/lego-assembly/recipes/bldg-new'),
     );
+  });
+
+  it('Place on map reloads the zone revision and retries once when the source changed', async () => {
+    // The panel holds the zone it was opened with, so a zone edited after open
+    // would otherwise wedge on a stale source_updated_at and 409 forever.
+    const conflict = {
+      response: {
+        status: 409,
+        data: { detail: 'This building zone changed while its LEGO recipe was being prepared; refresh and retry.' },
+      },
+    };
+    let placeAttempts = 0;
+    apiPost.mockImplementation((url: string) => {
+      if (!url.includes('/place/')) return Promise.resolve({ data: planFixture });
+      placeAttempts += 1;
+      return placeAttempts === 1
+        ? Promise.reject(conflict)
+        : Promise.resolve({ data: { status: 'placed', zone_id: 'zone-1', building_id: 'bldg-new' } });
+    });
+    zonesList.mockResolvedValue([makeZone({ updated_at: '2026-07-13T09:30:00Z' })]);
+
+    render(<LegoAssemblyPreview zone={makeZone()} onClose={vi.fn()} />);
+    fireEvent.click(screen.getByRole('button', { name: /auto assemble/i }));
+    const placeButton = screen.getByRole('button', { name: /place on map/i });
+    await waitFor(() => expect(placeButton).toBeEnabled());
+
+    fireEvent.click(placeButton);
+
+    // Succeeds on the retry rather than surfacing the conflict to the user.
+    expect(await screen.findByRole('button', { name: /placed — place again/i })).toBeInTheDocument();
+    expect(zonesList).toHaveBeenCalledWith('proj-1');
+    expect(placeAttempts).toBe(2);
+    const placeCalls = apiPost.mock.calls.filter(([url]) => url === '/api/v1/lego-assembly/place/zone-1');
+    expect(placeCalls[placeCalls.length - 1]?.[1]).toMatchObject({ source_updated_at: '2026-07-13T09:30:00Z' });
   });
 
   it('carries an AI zone catalog fingerprint through both save and place recipes', async () => {

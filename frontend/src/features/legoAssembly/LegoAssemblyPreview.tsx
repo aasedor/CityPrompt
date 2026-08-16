@@ -4,7 +4,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { Canvas } from '@react-three/fiber';
 import { Bounds, Environment, Grid, OrbitControls } from '@react-three/drei';
 import { AlertTriangle, Bookmark, Box, Check, Loader2, MapPin, Minus, Plus, RefreshCw, Save, Trash2, X } from 'lucide-react';
-import { getApiErrorMessage } from '@/services/api';
+import { getApiErrorMessage, siteZonesApi } from '@/services/api';
 import type { SiteZone, SiteZoneProperties } from '@/types';
 import {
   legoArchetypeContextFromZone,
@@ -63,6 +63,15 @@ function supportedFamilyLabel(supported: LegoSupportedFamily): string {
         ? `up to ${supported.max_floors} floors`
         : 'floor range not specified';
   return `${supported.family}: ${widths} × ${depths} m; ${floorRange}`;
+}
+
+/** The place endpoint rejects a recipe prepared against an older zone revision.
+ * Only that conflict is safe to recover by reloading the zone and placing again;
+ * other 409s (catalogue drift, missing AI revision) stay hard failures. */
+function isZoneSourceRevisionConflict(error: unknown): boolean {
+  const status = (error as { response?: { status?: number } } | undefined)?.response?.status;
+  if (status !== 409) return false;
+  return /changed while its LEGO recipe was being prepared/i.test(getApiErrorMessage(error, ''));
 }
 
 export function LegoAssemblyPreview({
@@ -235,11 +244,28 @@ export function LegoAssemblyPreview({
     setPlacing(true);
     setError(null);
     try {
-      const result = await legoAssemblyApi.place(zone.id, {
+      const payload = {
         ...recipe,
         building_name: archetypeLabel,
         source_updated_at: zone.updated_at,
-      });
+      };
+      let result: Awaited<ReturnType<typeof legoAssemblyApi.place>>;
+      try {
+        result = await legoAssemblyApi.place(zone.id, payload);
+      } catch (cause) {
+        if (!isZoneSourceRevisionConflict(cause)) throw cause;
+        // This panel keeps the zone it was opened with, so editing width, depth
+        // or floors leaves `zone.updated_at` behind the server's revision and
+        // every later Place would keep failing on the same stale timestamp.
+        // Reload the zone once and place against its current revision.
+        const refreshed = (await siteZonesApi.list(zone.project_id))
+          .find((candidate) => candidate.id === zone.id);
+        if (!refreshed) throw cause;
+        result = await legoAssemblyApi.place(zone.id, {
+          ...payload,
+          source_updated_at: refreshed.updated_at,
+        });
+      }
       setSavedRecipe(recipe);
       setPlacedBuildingId(result.building_id);
       await Promise.all([
