@@ -2,9 +2,14 @@ from __future__ import annotations
 
 import json
 import struct
+import sys
 from pathlib import Path
 
-from tools.audit_seed_model_library import (
+REPO_ROOT = Path(__file__).resolve().parents[2]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from tools.audit_seed_model_library import (  # noqa: E402
     _dimension_warnings,
     _validate_lego_contract,
     inspect_glb,
@@ -45,9 +50,7 @@ def _write_fixture_glb(
     raw_json += b" " * ((4 - len(raw_json) % 4) % 4)
     total_length = 12 + 8 + len(raw_json)
     path.write_bytes(
-        struct.pack("<4sII", b"glTF", 2, total_length)
-        + struct.pack("<II", len(raw_json), 0x4E4F534A)
-        + raw_json
+        struct.pack("<4sII", b"glTF", 2, total_length) + struct.pack("<II", len(raw_json), 0x4E4F534A) + raw_json
     )
 
 

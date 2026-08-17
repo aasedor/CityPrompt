@@ -1,8 +1,14 @@
 from __future__ import annotations
 
 import json
+import sys
+from pathlib import Path
 
-from tools.seed_model_library import _prepare_row_for_restore, _seed_owner_ids
+REPO_ROOT = Path(__file__).resolve().parents[2]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from tools.seed_model_library import _prepare_row_for_restore, _seed_owner_ids  # noqa: E402
 
 
 COLUMNS = [
