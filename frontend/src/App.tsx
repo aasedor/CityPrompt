@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Layout } from '@/components/layout/Layout';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
@@ -26,6 +26,12 @@ import { FeedbackWidget } from '@/components/FeedbackWidget';
 import { useAuthStore } from '@/store';
 import { authApi } from '@/services/api';
 import '@/store/themeStore';
+
+const ModelBenchmarkPage = import.meta.env.DEV
+  ? lazy(() => import('@/features/dev/ModelBenchmarkPage').then((module) => ({
+      default: module.ModelBenchmarkPage,
+    })))
+  : null;
 
 
 export default function App() {
@@ -64,6 +70,16 @@ export default function App() {
       <Route path="/oauth/callback" element={<OAuthCallbackPage />} />
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />
       <Route path="/reset-password" element={<ResetPasswordPage />} />
+      {ModelBenchmarkPage && (
+        <Route
+          path="/dev/model-benchmark"
+          element={(
+            <Suspense fallback={<div className="p-8 font-semibold">Loading model benchmark…</div>}>
+              <ModelBenchmarkPage />
+            </Suspense>
+          )}
+        />
+      )}
 
       {/* App routes — require authentication */}
       <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>

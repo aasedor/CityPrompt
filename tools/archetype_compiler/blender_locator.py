@@ -1,6 +1,7 @@
 """Cross-platform Blender discovery for the archetype compiler."""
 from __future__ import annotations
 
+import argparse
 import glob
 import os
 import re
@@ -69,5 +70,28 @@ def find_blender(explicit: str | None = None) -> str:
     )
 
 
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "path",
+        nargs="?",
+        help="optional explicit path to blender.exe (used by the PowerShell wrapper)",
+    )
+    parser.add_argument(
+        "--blender-path",
+        dest="blender_path",
+        help="optional explicit path to the Blender executable",
+    )
+    args = parser.parse_args(argv)
+    if args.path and args.blender_path:
+        parser.error("pass the Blender path either positionally or with --blender-path, not both")
+    try:
+        print(find_blender(args.blender_path or args.path))
+    except BlenderNotFoundError as exc:
+        print(exc, file=sys.stderr)
+        return 2
+    return 0
+
+
 if __name__ == "__main__":
-    print(find_blender())
+    raise SystemExit(main())

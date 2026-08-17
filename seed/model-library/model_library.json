@@ -6203,7 +6203,7 @@
       "Industrial"
      ],
      "variant_key": "default",
-     "content_hash": "274c5f16da5fa7ed452a1d0b15ad00af04c586921f8f2a5eb75c43d1baee5acb",
+     "content_hash": "8475ca4007007841bf6ed53eb91f23c278f3776f21fc803965b7501fdb907229",
      "repeatable_z": false,
      "archetype_ids": [
       "daylight_factory",
@@ -76604,7 +76604,7 @@
       "Industrial"
      ],
      "variant_key": "extended",
-     "content_hash": "4719dfc61229d706eb453711480943c32fd3e8f4ffa60e6f28da03bea7502c25",
+     "content_hash": "4d1acee1df114d998e0b3283537738c4bf762c86ce8cffc789f5520806b87fcc",
      "repeatable_z": false,
      "archetype_ids": [
       "old_montreal_warehouse_loft",
@@ -77630,7 +77630,7 @@
       "Industrial"
      ],
      "variant_key": "extended",
-     "content_hash": "6d197e38aee4d223243bb0a25802273c1da298b23e6bce0825ff20fe1f1b2464",
+     "content_hash": "b162147b7120b56715e826ab3b6e17dbd66d5c52d84146c35cf601c24a05eee8",
      "repeatable_z": false,
      "archetype_ids": [
       "daylight_factory",
