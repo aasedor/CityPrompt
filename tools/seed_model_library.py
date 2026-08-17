@@ -25,6 +25,11 @@ target stack differs.
 
 Existing rows are matched on primary key and left untouched unless ``--replace``
 is passed, so re-running is safe.
+
+The export retains historical owner and source ids. A clean database does not
+contain those users/projects/buildings, so restore creates inactive placeholder
+owners, clears optional source provenance, and exposes LEGO modules as the
+shared catalogue that the planner expects.
 """
 from __future__ import annotations
 
@@ -52,6 +57,58 @@ DEFAULT_DB = os.environ.get(
 JSON_COLUMNS = {"tags", "lod_urls", "metadata"}
 
 
+def _seed_owner_ids(rows: list[dict]) -> list[str]:
+    return sorted({str(row["owner_id"]) for row in rows if row.get("owner_id")})
+
+
+def _prepare_row_for_restore(row: dict, columns: list[str]) -> dict:
+    """Adapt an exported row to the foreign-key and visibility contract of a fresh database."""
+    params = {
+        column: (
+            json.dumps(row[column])
+            if column in JSON_COLUMNS and row.get(column) is not None
+            else row.get(column)
+        )
+        for column in columns
+    }
+    # Historical source objects are provenance only and are intentionally not
+    # part of this portable catalogue seed. PostgreSQL still validates SET NULL
+    # foreign keys on insert, so omit those unavailable references up front.
+    params["source_building_id"] = None
+    params["source_project_id"] = None
+
+    metadata = row.get("metadata")
+    lego = metadata.get("lego") if isinstance(metadata, dict) else None
+    if isinstance(lego, dict) and lego.get("asset_kind") == "lego_module":
+        # These are the shared building modules restored by this seed. Keeping
+        # their historical private flag makes every module invisible to users
+        # created on the new machine and silently forces plain massing.
+        params["is_public"] = True
+    return params
+
+
+def _ensure_seed_owners(conn, owner_ids: list[str], sa) -> None:
+    for owner_id in owner_ids:
+        conn.execute(
+            sa.text(
+                """
+                INSERT INTO users (
+                    id, email, hashed_password, full_name, role,
+                    is_active, render_credits
+                ) VALUES (
+                    :id, :email, NULL, :full_name, 'viewer', false, 0
+                )
+                ON CONFLICT (id) DO NOTHING
+                """
+            ),
+            {
+                "id": owner_id,
+                "email": f"cityprompt-seed-{owner_id}@seed.cityprompt.invalid",
+                "full_name": "CityPrompt Catalogue Seed",
+            },
+        )
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--endpoint", default=DEFAULT_ENDPOINT)
@@ -63,6 +120,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--rows-only", action="store_true")
     parser.add_argument("--replace", action="store_true", help="overwrite rows that already exist")
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument(
+        "--skip-asset-audit",
+        action="store_true",
+        help="skip the GLB grounding/smoothness preflight (maintenance escape hatch)",
+    )
     return parser.parse_args()
 
 
@@ -141,6 +203,8 @@ def insert_rows(args: argparse.Namespace) -> int:
     placeholders = ", ".join(f":{c}" for c in columns)
 
     with engine.begin() as conn:
+        owner_ids = _seed_owner_ids(rows)
+        _ensure_seed_owners(conn, owner_ids, sa)
         present = {
             str(r[0])
             for r in conn.execute(sa.text("SELECT id FROM model_library"))
@@ -153,16 +217,14 @@ def insert_rows(args: argparse.Namespace) -> int:
                     continue
                 conn.execute(sa.text("DELETE FROM model_library WHERE id = :id"), {"id": rid})
                 replaced += 1
-            params = {
-                c: (json.dumps(row[c]) if c in JSON_COLUMNS and row[c] is not None else row[c])
-                for c in columns
-            }
+            params = _prepare_row_for_restore(row, columns)
             conn.execute(
                 sa.text(f"INSERT INTO model_library ({col_list}) VALUES ({placeholders})"),
                 params,
             )
             inserted += 1
 
+    print(f"   ensured {len(owner_ids)} inactive catalogue owner(s)")
     print(f"   inserted {inserted}, replaced {replaced}, skipped {skipped} already present")
     if skipped and not args.replace:
         print("   (pass --replace to overwrite existing entries)")
@@ -173,6 +235,13 @@ def main() -> int:
     args = parse_args()
     print(f"endpoint: {args.endpoint}   bucket: {args.bucket}")
     status = 0
+    if not args.rows_only and not args.skip_asset_audit:
+        from audit_seed_model_library import audit_seed_library, print_summary
+
+        audit = audit_seed_library(SEED_DIR)
+        print_summary(audit)
+        if audit["status"] != "pass":
+            return 1
     if not args.rows_only:
         status |= upload_objects(args)
     if not args.objects_only and status == 0:

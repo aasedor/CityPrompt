@@ -1,9 +1,10 @@
 /// <reference types="vitest" />
-import { defineConfig } from 'vite';
+import { defineConfig, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
 import fs from 'node:fs';
 import path from 'path';
 import { selectViteEnvDir } from './src/config/viteEnvDir';
+import { MODEL_BENCHMARK_ASSETS } from './src/features/dev/modelBenchmarkAssets';
 
 function gitCommonDir(projectRoot: string): string | null {
   const dotGit = path.join(projectRoot, '.git');
@@ -61,12 +62,85 @@ function resolveEnvDir(): string {
   });
 }
 
+function modelBenchmarkAssetsPlugin(): Plugin {
+  return {
+    name: 'cityprompt-model-benchmark-assets',
+    apply: 'serve',
+    configureServer(server) {
+      const projectRoot = path.resolve(__dirname, '..');
+      const commonGitDir = gitCommonDir(projectRoot);
+
+      server.middlewares.use((request, response, next) => {
+        const requestPath = request.url
+          ? new URL(request.url, 'http://localhost').pathname
+          : '';
+        const match = requestPath.match(
+          /^\/__model-benchmark\/(original|optimized)\/([a-z0-9-]+)\.glb$/,
+        );
+        if (!match) {
+          next();
+          return;
+        }
+
+        const [, variant, assetId] = match;
+        const asset = MODEL_BENCHMARK_ASSETS.find((candidate) => candidate.id === assetId);
+        if (!asset || (request.method !== 'GET' && request.method !== 'HEAD')) {
+          response.statusCode = asset ? 405 : 404;
+          response.end(asset ? 'Method not allowed' : 'Unknown benchmark asset');
+          return;
+        }
+
+        const sourcePath = variant === 'optimized'
+          ? path.join(projectRoot, asset.relativePath)
+          : commonGitDir
+            ? path.join(
+                commonGitDir,
+                'lfs',
+                'objects',
+                asset.original.sha256.slice(0, 2),
+                asset.original.sha256.slice(2, 4),
+                asset.original.sha256,
+              )
+            : '';
+        if (!sourcePath || !fs.existsSync(sourcePath)) {
+          response.statusCode = 404;
+          response.setHeader('Content-Type', 'text/plain; charset=utf-8');
+          response.end(
+            variant === 'original'
+              ? 'Original Git LFS object is unavailable. Run: git lfs fetch origin main'
+              : 'Optimized seed GLB is unavailable in this worktree.',
+          );
+          return;
+        }
+
+        const stat = fs.statSync(sourcePath);
+        response.statusCode = 200;
+        response.setHeader('Content-Type', 'model/gltf-binary');
+        response.setHeader('Content-Length', stat.size);
+        response.setHeader('Cache-Control', 'no-store');
+        response.setHeader('X-CityPrompt-Benchmark-Variant', variant);
+        if (request.method === 'HEAD') {
+          response.end();
+          return;
+        }
+        const stream = fs.createReadStream(sourcePath);
+        stream.on('error', (error) => {
+          server.config.logger.error(`Benchmark asset read failed: ${error.message}`);
+          if (!response.headersSent) response.statusCode = 500;
+          response.end();
+        });
+        stream.pipe(response);
+      });
+    },
+  };
+}
+
 export default defineConfig({
   // Worktrees share browser API keys through the repository's ignored Git
   // common directory. VITE_ENV_DIR and a worktree-root .env remain explicit
   // overrides for unusual local or CI setups.
   envDir: resolveEnvDir(),
-  plugins: [react()],
+  plugins: [react(), modelBenchmarkAssetsPlugin()],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

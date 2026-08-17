@@ -125,8 +125,16 @@ function Ensure-RuntimeLfsAssets {
 }
 
 function Test-DockerReady {
-    docker version --format '{{.Server.Version}}' 2>$null | Out-Null
-    return $LASTEXITCODE -eq 0
+    # PowerShell 7 can promote a non-zero native exit to a terminating error
+    # when the script uses ErrorActionPreference=Stop. A stopped Docker daemon
+    # is an expected probe result here; let Ensure-DockerDesktop start it.
+    try {
+        docker version --format '{{.Server.Version}}' 2>$null | Out-Null
+        return $LASTEXITCODE -eq 0
+    }
+    catch {
+        return $false
+    }
 }
 
 function Ensure-DockerDesktop {
@@ -153,8 +161,16 @@ function Get-ContainerName {
 function Test-ContainerRunning {
     param([Parameter(Mandatory)][string]$Name)
 
-    $running = docker inspect $Name --format '{{.State.Running}}' 2>$null
-    return $LASTEXITCODE -eq 0 -and $running -eq 'true'
+    # Optional application containers are commonly absent on a clean setup.
+    # Treat docker inspect's non-zero exit as "not running" under PowerShell 7
+    # instead of allowing ErrorActionPreference=Stop to abort the launcher.
+    try {
+        $running = docker inspect $Name --format '{{.State.Running}}' 2>$null
+        return $LASTEXITCODE -eq 0 -and $running -eq 'true'
+    }
+    catch {
+        return $false
+    }
 }
 
 function Ensure-Infrastructure {
@@ -187,6 +203,28 @@ function Ensure-Infrastructure {
     }
     Wait-Until -Description 'Redis health' -Condition {
         (docker inspect devplatform-redis --format '{{.State.Health.Status}}' 2>$null) -eq 'healthy'
+    }
+}
+
+function Ensure-DatabaseSchema {
+    $python = Get-Command python.exe -ErrorAction SilentlyContinue
+    if (-not $python) {
+        $python = Get-Command python -ErrorAction SilentlyContinue
+    }
+    if (-not $python) {
+        throw 'Python is not installed or is not on PATH.'
+    }
+
+    Write-Host 'Applying City Prompt database migrations...'
+    Push-Location $backendRoot
+    try {
+        & $python.Source -m alembic upgrade head
+        if ($LASTEXITCODE -ne 0) {
+            throw 'Alembic could not upgrade the local City Prompt database.'
+        }
+    }
+    finally {
+        Pop-Location
     }
 }
 
@@ -289,13 +327,36 @@ function Ensure-Backend {
     if (-not $uvicorn) {
         $uvicorn = Get-Command uvicorn -ErrorAction SilentlyContinue
     }
-    if (-not $uvicorn) {
-        throw 'uvicorn is not installed. Install backend/requirements.txt before starting City Prompt.'
+    $uvicornArguments = @('app.main:app', '--host', '0.0.0.0', '--port', '8000')
+    if ($uvicorn) {
+        $uvicornExecutable = $uvicorn.Source
+    }
+    else {
+        # Python's Windows app installer can expose installed console modules
+        # without placing their generated .exe wrappers on PATH.
+        $python = Get-Command python.exe -ErrorAction SilentlyContinue
+        if (-not $python) {
+            $python = Get-Command python -ErrorAction SilentlyContinue
+        }
+        try {
+            if (-not $python) {
+                throw 'Python is not installed.'
+            }
+            & $python.Source -c 'import uvicorn' 2>$null
+            if ($LASTEXITCODE -ne 0) {
+                throw 'The uvicorn Python module is not installed.'
+            }
+        }
+        catch {
+            throw 'uvicorn is not installed. Install backend/requirements.txt before starting City Prompt.'
+        }
+        $uvicornExecutable = $python.Source
+        $uvicornArguments = @('-m', 'uvicorn') + $uvicornArguments
     }
 
     Write-Host 'Starting City Prompt API...'
-    Start-Process -FilePath $uvicorn.Source `
-        -ArgumentList @('app.main:app', '--host', '0.0.0.0', '--port', '8000') `
+    Start-Process -FilePath $uvicornExecutable `
+        -ArgumentList $uvicornArguments `
         -WorkingDirectory $backendRoot `
         -RedirectStandardOutput (Join-Path $artifactRoot 'backend.out.log') `
         -RedirectStandardError (Join-Path $artifactRoot 'backend.err.log') `
@@ -437,6 +498,7 @@ function Ensure-Frontend {
 Ensure-RuntimeLfsAssets
 Ensure-DockerDesktop
 Ensure-Infrastructure
+Ensure-DatabaseSchema
 Ensure-Backend
 Ensure-CeleryWorker
 Ensure-Frontend

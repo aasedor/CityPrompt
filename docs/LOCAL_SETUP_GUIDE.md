@@ -67,7 +67,7 @@ Copy-Item .env.example .env
 Edit `.env` locally. For the map-based workflow, configure:
 
 ~~~dotenv
-MAPBOX_ACCESS_TOKEN=pk.your-public-token
+VITE_GOOGLE_MAPS_API_KEY=your-browser-restricted-google-maps-key
 ~~~
 
 Optional features use the corresponding placeholders already documented in
@@ -116,7 +116,23 @@ Windows contributors can use:
 ~~~
 
 It reuses the local data services, starts the API from the current worktree,
-starts the frontend when necessary, and waits for health checks.
+applies every pending Alembic migration, starts the frontend when necessary,
+and waits for the API and background worker health checks. It also starts
+Docker Desktop when Docker is installed but stopped.
+
+### Restore the shared 3D catalogue
+
+After the services are healthy and Git LFS is hydrated, restore the reviewed
+building catalogue into local MinIO and PostgreSQL:
+
+~~~powershell
+python tools/seed_model_library.py
+~~~
+
+The command is idempotent. It audits grounding and stack seams before upload,
+skips objects and rows already present, and restores LEGO modules as a shared
+catalogue. Without this step, Generate to 3D can silently fall back to plain
+massing even though the frontend archetype cards are present.
 
 ## 5. Student smoke test
 
@@ -182,6 +198,19 @@ pip install -r requirements.txt
 python -m pytest
 ~~~
 
+With the local stack running and the shared catalogue restored, run the
+opt-in full-stack Machiya acceptance test:
+
+~~~powershell
+cd frontend
+$env:CITYPROMPT_LIVE_E2E = "1"
+npx playwright test live-machiya.spec.ts --project chromium --reporter=line
+~~~
+
+The test creates a disposable local account, project, and retail polygon,
+clicks the real Generate to 3D workflow, requires the restored Kyoto Machiya
+family, and verifies its persisted Y=0 recipe and delivered GLB bytes.
+
 ## Troubleshooting
 
 ### A service is restarting
@@ -194,7 +223,7 @@ docker compose logs frontend
 
 ### The map is blank
 
-Confirm `MAPBOX_ACCESS_TOKEN` is set in `.env`, then restart the frontend.
+Confirm `VITE_GOOGLE_MAPS_API_KEY` is set in `.env`, then restart the frontend.
 Inspect the browser console for a token or network error.
 
 ### An asset is a tiny text file

@@ -13,6 +13,7 @@ import sys
 from pathlib import Path
 
 import pytest
+from PIL import Image, ImageStat
 
 TOOL_DIR = Path(__file__).resolve().parents[1]
 REPO_ROOT = TOOL_DIR.parents[1]
@@ -25,6 +26,17 @@ from compiler import compile_archetype  # noqa: E402
 
 NPX = shutil.which("npx") or shutil.which("npx.cmd")
 HAS_NODE_DEPS = NPX is not None and (FRONTEND / "node_modules" / ".bin").exists()
+MACHIYA_DELIVERY = (
+    REPO_ROOT
+    / "seed"
+    / "model-library"
+    / "objects"
+    / "lego"
+    / "651daf60-b797-4f95-b1e7-6364d6dc0665"
+    / "restored-kyoto-machiya"
+    / "assembled--default--lod0.glb"
+)
+HAS_MACHIYA_DELIVERY = MACHIYA_DELIVERY.is_file() and MACHIYA_DELIVERY.stat().st_size >= 200
 
 try:
     BLENDER = find_blender()
@@ -77,3 +89,62 @@ def test_full_pipeline_generates_validated_family(tmp_path: Path):
 
     report = json.loads((out_dir / "validation_report.json").read_text(encoding="utf-8"))
     assert report["status"] == "pass", report["errors"]
+
+
+@pytest.mark.skipif(
+    not (BLENDER and HAS_MACHIYA_DELIVERY),
+    reason="needs Blender and the hydrated restored Machiya delivery GLB",
+)
+def test_delivery_glb_renders_grounded_locked_camera_evidence(tmp_path: Path):
+    review_dir = tmp_path / "delivery-review"
+    result = subprocess.run(
+        [
+            BLENDER,
+            "--background",
+            "--factory-startup",
+            "--python",
+            str(TOOL_DIR / "render_delivery_glb.py"),
+            "--",
+            "--input",
+            str(MACHIYA_DELIVERY),
+            "--output-dir",
+            str(review_dir),
+            "--family",
+            "restored-kyoto-machiya",
+            "--resolution-x",
+            "320",
+            "--resolution-y",
+            "240",
+            "--samples",
+            "1",
+        ],
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        timeout=180,
+    )
+    assert result.returncode == 0, (result.stdout + result.stderr)[-2000:]
+
+    review = json.loads((review_dir / "delivery-review.json").read_text(encoding="utf-8"))
+    assert review["schema"] == "cityprompt-delivery-glb-review@1"
+    assert review["family"] == "restored-kyoto-machiya"
+    assert review["blender_version"]
+    assert review["mesh_objects"] > 0
+    assert review["ground_delta_m"] == pytest.approx(0.0, abs=0.02)
+    assert review["bounds"]["dimensions"] == pytest.approx(
+        [19.77, 16.77, 11.57],
+        abs=0.02,
+    )
+    assert {item["role"] for item in review["views"]} == {
+        "front",
+        "front_corner",
+        "rear_corner",
+        "aerial",
+    }
+
+    for item in review["views"]:
+        image_path = review_dir / item["path"]
+        with Image.open(image_path) as rendered:
+            assert rendered.size == (320, 240)
+            assert ImageStat.Stat(rendered.convert("L")).stddev[0] > 5
