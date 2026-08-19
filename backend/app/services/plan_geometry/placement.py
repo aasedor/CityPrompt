@@ -40,6 +40,7 @@ from app.services.plan_geometry.archetypes import (
     variants_of,
 )
 from app.services.plan_geometry.community_rules import FLOOR_HEIGHT_M, RuleProfile
+from app.services.plan_geometry.open_space_archetypes import ladder_bounds as open_space_ladder_bounds
 from app.services.plan_geometry.parceling import (
     MIN_BLOCK_M2,
     TypologyDims,
@@ -84,10 +85,20 @@ TYPOLOGY_DIMS: dict[str, TypologyDims] = {
     "anchor_mass": TypologyDims(unit_w_m=60.0, unit_d_m=45.0, gap_m=0.0),
 }
 
-# Resolver open-space band edges (must match resolvePlanZoneArchetypes.ts).
-POCKET_PARK_MIN_M2 = 200.0
-POCKET_PARK_MAX_M2 = 900.0
-NEIGHBORHOOD_PARK_MIN_M2 = 2000.0
+
+# Open-space band edges, DERIVED from the catalogue's own ladder rather than
+# restated here — the hand-written copies had drifted from the entries they
+# were mirroring, and from the frontend resolver, in different directions.
+def _park_band(archetype_id: str, index: int, default: float) -> float:
+    for candidate_id, low, high in open_space_ladder_bounds("park"):
+        if candidate_id == archetype_id:
+            return (low, high)[index]
+    return default
+
+
+POCKET_PARK_MIN_M2 = _park_band("urban_pocket_park", 0, 200.0)
+POCKET_PARK_MAX_M2 = _park_band("urban_pocket_park", 1, 900.0)
+NEIGHBORHOOD_PARK_MIN_M2 = _park_band("neighborhood_park", 0, 2000.0)
 
 POND_MIN_M2 = 300.0  # stormwater_retention_pond catalog range
 POND_MAX_M2 = 9600.0
@@ -1298,8 +1309,11 @@ def select_open_space(
             if i in consumed or i in carved:
                 continue
             area = float(blocks[i].area)
-            if POCKET_PARK_MAX_M2 < area < NEIGHBORHOOD_PARK_MIN_M2:
-                continue
+            # The 900-2,000 m2 "resolver gap" this used to skip existed only in
+            # the four-entry canonical ladder; the catalogue has 46 park
+            # archetypes covering 1,200 m2 and open_space_archetypes resolves
+            # against their real bands. Skipping these blocks now only loses
+            # perfectly good neighbourhood greens.
             if open_area + area <= open_target * 1.6:
                 consumed.add(i)
                 open_area += area

@@ -25,6 +25,9 @@ interface CatalogEntry {
   aestheticCategory?: string;
   minFloors?: number;
   maxFloors?: number;
+  spaceType?: string;
+  minAreaSqm?: number;
+  maxAreaSqm?: number;
   thumbnailUrl?: string;
   variants?: Array<{ id: string; thumbnailUrl?: string }>;
 }
@@ -148,15 +151,51 @@ function approxAreaM2(coordinates: number[][] | undefined): number {
   return Math.abs(sum) / 2;
 }
 
-const POCKET_PARK_MAX_M2 = 1500;
+/**
+ * Generic open-space ladder, smallest band first. Everything else in the
+ * catalogue stays reachable by an explicit archetype id on the zone.
+ */
+const PARK_LADDER = ['urban_pocket_park', 'neighborhood_park', 'community_park', 'regional_park'];
 
+/** Distance from an area to an entry's own catalogue band; 0 means it fits. */
+function bandDistance(entry: CatalogEntry, area: number): number {
+  const low = entry.minAreaSqm ?? 0;
+  const high = entry.maxAreaSqm ?? Infinity;
+  if (area >= low && area <= high) return 0;
+  return area < low ? low - area : area - high;
+}
+
+/**
+ * Resolve by the catalogue's own area bands (mirrors the backend's
+ * open_space_archetypes.resolve_open_space_archetype).
+ *
+ * The previous single 1500 m2 threshold sat inside neither band it selected:
+ * a 1,200 m2 park became urban_pocket_park (band stops at 900) and a 1,600 m2
+ * park became neighborhood_park (band starts at 2,000), so both were stretched
+ * outside the geometry the entry describes.
+ */
 function resolveOpenSpace(zone: SiteZone): CatalogEntry | undefined {
   const area = approxAreaM2(zone.coordinates);
-  const wanted = area < POCKET_PARK_MAX_M2 ? 'urban_pocket_park' : 'neighborhood_park';
-  return (
-    OPEN_SPACES.find((e) => e.id === wanted && usable(e)) ||
-    OPEN_SPACES.find((e) => e.id === 'neighborhood_park' && usable(e))
+  const pool = OPEN_SPACES.filter((e) => usable(e) && (e.spaceType ?? 'park') === 'park');
+  if (!pool.length) return undefined;
+
+  // The ladder is the default and always answers: smallest tier whose band
+  // admits the area, then nearest tier if none does. Bands overlap, and the
+  // smaller tier is the right name — a park is not a community park merely
+  // because it is big enough to qualify. Nearest-tier matters because the
+  // bands leave gaps: pocket stops at 900 m2, neighbourhood starts at 2,000,
+  // and a 905 m2 green is still a pocket park.
+  const ladder = PARK_LADDER.map((id) => pool.find((e) => e.id === id)).filter(
+    (e): e is CatalogEntry => Boolean(e),
   );
+  if (ladder.length) {
+    const contained = ladder.find((e) => bandDistance(e, area) === 0);
+    if (contained) return contained;
+    const best = Math.min(...ladder.map((e) => bandDistance(e, area)));
+    return stablePick(ladder.filter((e) => bandDistance(e, area) === best));
+  }
+  const best = Math.min(...pool.map((e) => bandDistance(e, area)));
+  return stablePick(pool.filter((e) => bandDistance(e, area) === best));
 }
 
 /** Street archetype by right-of-way width band. */

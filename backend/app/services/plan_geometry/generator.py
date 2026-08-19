@@ -32,6 +32,7 @@ from app.services.plan_geometry.community_rules import (
     resolve_rules,
 )
 from app.services.plan_geometry.layout_validation import validate_plan
+from app.services.plan_geometry.open_space_archetypes import resolve_open_space_archetype
 from app.services.plan_geometry.parceling import (
     building_mass_for_block,
     clamp_floors_to_ceiling,
@@ -1156,16 +1157,58 @@ def generate_plan_geometry(
         "pond": "stormwater_retention_pond",
     }
 
+    # Generic greens resolve against the catalogue's own area bands. The flat
+    # fallback above named 2 archetypes out of 130 and its thresholds had
+    # drifted from the bands they were mirroring — a 1,200 m2 park was stamped
+    # urban_pocket_park, whose band stops at 900. Ponds and greenways keep
+    # their pinned ids: those are specific programs, not sizes.
+    _BAND_RESOLVED_KINDS = {"central": "park", "pocket": "park", "plaza": "plaza"}
+    green_occurrences: dict[str, int] = {}
+    # Distinct open-space archetypes ONE plan may use per green kind.
+    #
+    # This is a RENDER BUDGET, not a design preference: the pipeline keeps a
+    # bounded set of reference images (~15 — see
+    # test_palette_stays_under_render_caps), and every additional archetype in
+    # a plan spends one. Rotating per polygon looked like more variety and
+    # simply blew the budget by four references.
+    #
+    # So breadth comes from varying ACROSS sites, not from stacking every park
+    # type into one plan: the rotation base is the site hash, so two different
+    # sites draw different parks while each plan stays cheap to render.
+    OPEN_SPACE_VARIETY_PER_PLAN = 1
+
     zone_sort = 500  # after user zones
     for spec in open_plan.specs:
         result.green_m.append(spec.geom_m)
         for poly_m in iter_polygons(spec.geom_m):
             kind = spec.kind
-            archetype_id = (
-                (getattr(palette, "central_archetype_id", None) if kind == "central" else spec.archetype_id)
-                or spec.archetype_id
-                or _PARK_ARCHETYPE_FALLBACK.get(kind)
-            )
+            # An AUTHORED id (palette or Master Planner) pins the green and
+            # pre-empts band resolution. The generic per-kind fallback must
+            # not: passing it as prefer_id made every park short-circuit onto
+            # the same two archetypes, which is the behaviour being fixed.
+            authored_id = (
+                getattr(palette, "central_archetype_id", None) if kind == "central" else None
+            ) or spec.archetype_id
+            archetype_id = authored_id or _PARK_ARCHETYPE_FALLBACK.get(kind)
+            # Public-realm LEGO mode contracts the archetype WITH its variant:
+            # the variant is chosen per ROLE (neighborhood_park_v0 for the
+            # central green) and is only executable for that archetype. Band
+            # resolution — including a legitimate tier downgrade on a small
+            # site — would orphan it. Breadth applies to the catalogue path;
+            # the LEGO path keeps its executable identity untouched.
+            band_space_type = None if public_realm_variants else _BAND_RESOLVED_KINDS.get(kind)
+            if band_space_type is not None:
+                turn = green_occurrences.get(kind, 0)
+                green_occurrences[kind] = turn + 1
+                resolved = resolve_open_space_archetype(
+                    float(poly_m.area),
+                    band_space_type,
+                    structure=palette.landscape.get(_LANDSCAPE_KEY.get(kind, "")),
+                    prefer_id=authored_id,
+                    variety_seed=seed + (turn % OPEN_SPACE_VARIETY_PER_PLAN) * 17,
+                )
+                if resolved is not None:
+                    archetype_id = resolved["id"]
             if public_realm_variants:
                 identity = _lego_park_identity_for_metric_polygon(
                     kind=kind,

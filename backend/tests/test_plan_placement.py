@@ -318,14 +318,27 @@ def test_park_mix_and_archetype_fallback_stamps():
         by_kind.setdefault(str(z["properties"].get("green_kind")), set()).add(
             z["properties"]["green_space_archetype_id"]
         )
-    if "central" in by_kind:
-        assert by_kind["central"] == {"neighborhood_park"}
-    if "pocket" in by_kind:
-        assert by_kind["pocket"] == {"urban_pocket_park"}
-    # Water/linear/plaza ids are untouched by the fallback.
+    # Central and pocket greens resolve against the catalogue's own area bands
+    # rather than a fixed pair of ids, so the contract is catalogue membership
+    # and space type — not one hardcoded archetype per kind. (The tier ladder
+    # and scale-fit rules themselves are pinned in test_open_space_archetypes.)
+    from app.services.plan_geometry.open_space_archetypes import (
+        NOT_AT_GRADE_IDS,
+        open_space_dims_by_id,
+    )
+
+    table = open_space_dims_by_id()
+    for kind in ("central", "pocket"):
+        for archetype_id in by_kind.get(kind, set()):
+            entry = table.get(archetype_id)
+            assert entry is not None, f"{archetype_id} is not in the open-space catalogue"
+            assert entry["space_type"] == "park"
+            assert entry["usable"]
+            assert archetype_id not in NOT_AT_GRADE_IDS
+    # Water/linear/plaza ids stay pinned to their program.
     assert by_kind.get("pond", set()) <= {"stormwater_retention_pond", "fountain_water_feature"}
     assert by_kind.get("greenway", set()) <= {"linear_park_greenway"}
-    assert by_kind.get("plaza", set()) <= {"formal_civic_plaza"}
+    assert by_kind.get("plaza", set()) <= {"formal_civic_plaza", "courtyard_plaza"}
     # Park mix still spans the neighborhood and pocket size bands.
     park_areas = [_metric_area(z, site) for z in greens if z["properties"].get("green_kind") in ("central", "pocket")]
     assert any(a >= 2000.0 for a in park_areas)
