@@ -23,6 +23,7 @@ archetypes.
 from __future__ import annotations
 
 import math
+import re
 from dataclasses import dataclass, field, replace
 from typing import Any
 
@@ -48,21 +49,32 @@ from app.services.plan_geometry.parceling import (
 from app.services.plan_geometry.street_graph import StreetNetwork
 from app.services.site_engine import iter_polygons
 
-# development_type values the palettes may emit — every one exists in
-# buildingArchetypes.json, so the resolver never falls back to mixed_use.
-CATALOG_DEV_TYPES = frozenset(
-    {
-        "residential_single_family",
-        "residential_duplex",
-        "residential_multifamily",
-        "residential_highrise",
-        "mixed_use",
-        "commercial_retail",
-        "commercial_office",
-        "institutional_education",
-        "institutional_health",
-    }
-)
+
+def _catalog_dev_types() -> frozenset[str]:
+    """development_type values a palette may emit.
+
+    DERIVED from the dims table rather than hand-listed. The hand-listed
+    version had drifted to 9 entries against a catalogue carrying 26, which
+    put a hard ceiling on how much of the library a plan could ever use and
+    contradicted the Master Planner — spec.validate_spec already accepts any
+    type in the table, so a planner naming `institutional` or `hotel` produced
+    a plan that the placement tests then rejected.
+
+    The guarantee the hand-list was protecting is preserved and strengthened:
+    every emitted type resolves in the catalogue, so the resolver never falls
+    back to mixed_use. Deriving it also means importing new archetype families
+    widens the palettes automatically instead of silently stranding them.
+    """
+    from app.services.plan_geometry.archetypes import load_dims_table
+
+    return frozenset(_norm_dev_type(entry["development_type"]) for entry in load_dims_table() if entry.get("usable"))
+
+
+def _norm_dev_type(value: object) -> str:
+    return re.sub(r"[\s\-]+", "_", str(value or "").lower().strip())
+
+
+CATALOG_DEV_TYPES = _catalog_dev_types()
 
 # Footprint envelopes per typology — see TypologyDims docstring for the
 # catalog archetypes each row mirrors.
@@ -604,6 +616,7 @@ def plan_blocks(
     base_aesthetic: str | None,
     dna: dict[str, Any] | None = None,
     measured_dims: dict | None = None,
+    variety_seed: int | None = None,
 ) -> dict[int, BlockPlan]:
     """Assign each block a band (anchor > edge > frontage > core > mid), then
     resolve the band's spec to concrete tags. Experts' development_type /
@@ -742,6 +755,13 @@ def plan_blocks(
         # family-aware so ties never mix style families.
         floors_int = max(1, int(round(float(floors))))
 
+        # Same band, different block => a different entry from the SAME
+        # coherent pool. Without this every block that resolves to one tie
+        # group stamps the identical archetype, which is what collapsed a
+        # 224-entry catalogue onto ~26 buildings. Seeded from the site hash
+        # and the block index, so a given site always redraws identically.
+        block_seed = None if variety_seed is None else (variety_seed + ctx.index * 31 + turn) % 1_000_003
+
         def _resolve_entry(dev: str, aes: str, aid: str | None) -> dict | None:
             if aid and (palette.allowed_archetype_ids is None or aid in palette.allowed_archetype_ids):
                 pinned = dims_by_id().get(aid)
@@ -754,6 +774,7 @@ def plan_blocks(
                 prefer_family=palette.style_family,
                 allowed_archetype_ids=palette.allowed_archetype_ids,
                 supported_floors_by_archetype=supported_floors_by_parent,
+                variety_seed=block_seed,
             )
 
         entry = _resolve_entry(development_type, aesthetic, arch_hint)
@@ -1242,9 +1263,8 @@ def select_open_space(
         for i in donors:
             public_park_count = sum(spec.kind in {"central", "pocket"} for spec in specs)
             if (
-                (open_area >= open_target and (target_count is None or public_park_count >= target_count))
-                or pocket_count >= 4
-            ):
+                open_area >= open_target and (target_count is None or public_park_count >= target_count)
+            ) or pocket_count >= 4:
                 break
             block = blocks[i]
             if MIN_BLOCK_M2 <= block.area <= POCKET_PARK_MAX_M2:

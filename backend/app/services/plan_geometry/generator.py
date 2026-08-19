@@ -121,11 +121,7 @@ def _split_building_cell(cell: Polygon, clearance_m: float) -> list[Polygon] | N
     minx, miny, maxx, maxy = work.bounds
     cut_x = (minx + maxx) / 2.0
     cut = box(cut_x - clearance_m / 2.0, miny - 1.0, cut_x + clearance_m / 2.0, maxy + 1.0)
-    pieces = [
-        piece
-        for piece in iter_polygons(make_valid(work.difference(cut)))
-        if piece.area >= 80.0
-    ]
+    pieces = [piece for piece in iter_polygons(make_valid(work.difference(cut))) if piece.area >= 80.0]
     if len(pieces) != 2:
         return None
     return [affinity.rotate(piece, angle, origin=origin) for piece in pieces]
@@ -1255,6 +1251,7 @@ def generate_plan_geometry(
         base_aesthetic=base_aesthetic,
         dna=dna,
         measured_dims=measured_model_dims,
+        variety_seed=seed,
     )
 
     parcels_by_block: list[list[Polygon]] = []

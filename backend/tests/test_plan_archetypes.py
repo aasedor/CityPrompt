@@ -129,3 +129,77 @@ def test_build_measured_dims_prefers_default_variant():
     assert set(measured) == {"a"}
     assert measured["a"].variant_id == "default"
     assert measured["a"].dimensions["long_per_height"] == 0.6
+
+
+# ---------------------------------------------------------------------------
+# Catalogue breadth — seeded rotation and the derived development-type set
+# ---------------------------------------------------------------------------
+
+
+def _pool_for(dev_type: str, aesthetic: str, floors: int) -> set[str]:
+    """Every archetype the resolver will return across a run of seeds."""
+    return {
+        entry["id"]
+        for seed in range(40)
+        if (entry := resolve_building_archetype(dev_type, aesthetic, floors, variety_seed=seed))
+    }
+
+
+def test_unseeded_resolution_is_unchanged_by_the_variety_feature():
+    """The parity contract: no seed means the frontend's exact answer."""
+    for dev_type in ("residential_single_family", "residential_multifamily", "mixed_use"):
+        for floors in (2, 4, 8):
+            assert resolve_building_archetype(dev_type, "contemporary", floors) == resolve_building_archetype(
+                dev_type, "contemporary", floors, variety_seed=None
+            )
+
+
+def test_seeded_rotation_uses_more_than_one_archetype():
+    """A 26-entry pool answering the same query must not collapse onto one
+    building — that is what made a 224-entry catalogue render as ~9."""
+    pool = _pool_for("residential_single_family", "contemporary", 3)
+    assert len(pool) > 1
+
+
+def test_seeded_rotation_is_deterministic():
+    """Same site, same plan — the seed is derived from the site hash."""
+    for seed in (0, 7, 12345):
+        first = resolve_building_archetype("residential_multifamily", "contemporary", 5, variety_seed=seed)
+        second = resolve_building_archetype("residential_multifamily", "contemporary", 5, variety_seed=seed)
+        assert first == second
+
+
+def test_rotation_stays_inside_compatible_style_families():
+    """Variety must not put a machiya beside a Calgary walk-up."""
+    from app.services.plan_geometry.archetypes import compatible_families, family_of
+
+    primary = resolve_building_archetype("residential_single_family", "contemporary", 3)
+    primary_family = family_of(primary["id"])
+    if primary_family is None:
+        pytest.skip("archetype_families.json unavailable; coherence guard is a no-op by design")
+    allowed = compatible_families(primary_family)
+    for archetype_id in _pool_for("residential_single_family", "contemporary", 3):
+        assert family_of(archetype_id) in allowed, archetype_id
+
+
+def test_catalog_dev_types_is_derived_from_the_table():
+    """Hand-listing this set let it drift to 9 entries against a 26-type
+    catalogue, capping how much of the library any plan could reach and
+    contradicting the Master Planner, which validates against the table."""
+    from app.services.plan_geometry.archetypes import load_dims_table
+    from app.services.plan_geometry.placement import CATALOG_DEV_TYPES
+
+    in_table = {e["development_type"] for e in load_dims_table() if e["usable"]}
+    assert CATALOG_DEV_TYPES == in_table
+    assert len(CATALOG_DEV_TYPES) > 20
+
+
+def test_every_catalog_dev_type_actually_resolves():
+    """The guarantee the hand-list was protecting: no emitted type may fall
+    back to mixed_use."""
+    from app.services.plan_geometry.placement import CATALOG_DEV_TYPES
+
+    for dev_type in CATALOG_DEV_TYPES:
+        entry = resolve_building_archetype(dev_type, "", 4)
+        assert entry is not None, dev_type
+        assert entry["development_type"] == dev_type, f"{dev_type} fell back to {entry['development_type']}"

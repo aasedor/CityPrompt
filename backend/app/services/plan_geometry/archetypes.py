@@ -107,10 +107,36 @@ def variants_of(archetype_id: str | None) -> tuple[str, ...]:
     return tuple(entry.get("variant_ids") or ())
 
 
-def _stable_pick(candidates: list[dict]) -> dict | None:
+def _stable_pick(candidates: list[dict], variety_seed: int | None = None) -> dict | None:
+    """Pick one entry from the surviving pool.
+
+    ``variety_seed is None`` reproduces the frontend resolver exactly — always
+    the lexicographically first entry. That default is a parity contract
+    (test_plan_archetypes.py) and must not change.
+
+    A seed instead ROTATES within the pool. The type/aesthetic/floor filters
+    have already run, so every entry here is a legitimate answer to the same
+    question; taking ``[0]`` every time was collapsing a whole tie group onto
+    one archetype and is the main reason a 224-entry catalogue was rendering
+    as ~26 buildings. Rotation stays deterministic — same site, same plan.
+
+    Coherence guard: the rotation pool is narrowed to the style families
+    compatible with the entry the unseeded resolver would have picked, so
+    variety never becomes a Kyoto machiya beside a Calgary walk-up.
+    """
     if not candidates:
         return None
-    return sorted(candidates, key=lambda e: (0 if e.get("has_variants") else 1, e["id"]))[0]
+    ordered = sorted(candidates, key=lambda e: (0 if e.get("has_variants") else 1, e["id"]))
+    if variety_seed is None:
+        return ordered[0]
+
+    primary_family = family_of(ordered[0]["id"])
+    if primary_family:
+        allowed = compatible_families(primary_family)
+        coherent = [entry for entry in ordered if family_of(entry["id"]) in allowed]
+        if coherent:
+            ordered = coherent
+    return ordered[variety_seed % len(ordered)]
 
 
 def resolve_building_archetype(
@@ -120,6 +146,7 @@ def resolve_building_archetype(
     prefer_family: str | None = None,
     allowed_archetype_ids: Collection[str] | None = None,
     supported_floors_by_archetype: Mapping[str, Collection[int]] | None = None,
+    variety_seed: int | None = None,
 ) -> dict | None:
     """Port of resolveBuilding (resolvePlanZoneArchetypes.ts:79-137).
 
@@ -232,7 +259,7 @@ def resolve_building_archetype(
             exact = [e for e in in_family if family_of(e["id"]) == prefer_family]
             pool = exact or in_family
 
-    return _stable_pick(pool)
+    return _stable_pick(pool, variety_seed=variety_seed)
 
 
 def closest_supported_floor(
