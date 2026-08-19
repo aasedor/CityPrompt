@@ -275,6 +275,12 @@ class Settings(BaseSettings):
     # the anonymous daily rate quota. Toronto's ArcGIS server has no key at all.
     vancouver_ods_api_key: str = ""
     urban_dna_agent_model: str = "claude-sonnet-5"
+    # Design Director: the whole-plan design review that runs after the expert
+    # merge (coherence audit + design synthesis). Empty falls back to
+    # urban_dna_agent_model; set a stronger model here to buy design judgement
+    # without changing the four discipline experts.
+    design_director_model: str = ""
+    design_director_enabled: bool = True
     urban_dna_cache_ttl_hours: int = 168  # default TTL when a DatasetSpec has no refresh_days
     # Hard USD ceiling per master-plan generation across all planning-agent calls. 0 disables.
     planning_agents_max_usd: float = 5.0

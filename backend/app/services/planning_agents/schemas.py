@@ -96,6 +96,9 @@ class Recommendation(BaseModel):
     citations: list[PolicyCitationRef] = Field(default_factory=list)
     confidence: float = Field(default=0.6, ge=0.0, le=1.0)
     tension_with: list[str] = Field(default_factory=list)  # parameter_paths it expects to fight
+    # design_doctrine principle_ids this recommendation serves. Unknown ids are
+    # dropped by the runner, so a citation here is always resolvable.
+    principle_ids: list[str] = Field(default_factory=list)
 
 
 class ExpertRecommendationSet(BaseModel):
@@ -113,6 +116,7 @@ class MergedParameter(BaseModel):
     contributors: list[str]  # agent_ids whose recommendation won/joined
     contested: bool = False
     candidates: list[dict[str, Any]] = Field(default_factory=list)  # all positions, kept for the WHY
+    principle_ids: list[str] = Field(default_factory=list)  # doctrine cited by the contributors
 
 
 class ScenarioDefinition(BaseModel):
@@ -155,6 +159,9 @@ class ScenarioResult(BaseModel):
     # Derived statistics (plan_metrics.MetricsReport dump). Parameter mode until
     # a plan is drawn; geometry mode supersedes it after plan generation.
     metrics: Optional[dict[str, Any]] = None
+    # DesignReview dump — the whole-plan design synthesis: the charter, the
+    # coherence defects found in the merged set, and how each was resolved.
+    design_review: Optional[dict[str, Any]] = None
 
     def zone_property_updates(self) -> dict[str, Any]:
         """PlanParameters -> the zone-properties dict the geometry engine reads."""

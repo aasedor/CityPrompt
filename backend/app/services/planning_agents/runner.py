@@ -27,6 +27,7 @@ from pydantic import ValidationError
 
 from app.core.config import get_settings
 from app.core.usage_logger import log_api_usage_sync
+from app.services.planning_agents.design_doctrine import PRINCIPLES, doctrine_prompt_block
 from app.services.planning_agents.philosophy import philosophy_prompt_block
 from app.services.planning_agents.registry import EXPERTS, ExpertSpec
 from app.services.planning_agents.schemas import (
@@ -70,8 +71,13 @@ SHARED_SYSTEM = (
     "- If your recommendation likely conflicts with another discipline (e.g. narrow streets vs "
     "emergency access), list that parameter_path in tension_with.\n"
     "- Frame policy friction as trade-offs, never verdicts.\n"
+    "- Cite the design doctrine: list the principle_ids your recommendation serves. Unknown ids "
+    "are discarded, so cite only what you were given.\n"
     "- 2-5 recommendations. Be concrete and site-specific."
 )
+
+# principle_ids the tool schema will accept — the doctrine is the closed set.
+_KNOWN_PRINCIPLE_IDS = frozenset(principle.principle_id for principle in PRINCIPLES)
 
 
 def _recommendation_tool() -> dict[str, Any]:
@@ -105,6 +111,11 @@ def _recommendation_tool() -> dict[str, Any]:
                             },
                             "confidence": {"type": "number", "minimum": 0, "maximum": 1},
                             "tension_with": {"type": "array", "items": {"type": "string"}},
+                            "principle_ids": {
+                                "type": "array",
+                                "items": {"type": "string", "enum": sorted(_KNOWN_PRINCIPLE_IDS)},
+                                "description": "doctrine principle_ids this recommendation serves",
+                            },
                         },
                         "required": ["parameter_path", "value", "rationale"],
                     },
@@ -163,6 +174,13 @@ async def _run_expert(
     """Returns (recommendation set, usage record). Never raises."""
     # DNA slices differ per expert (dna_sections), so the cacheable prefix is
     # tools+system; experts sharing identical sections also share the DNA block.
+    # The canon this expert argues from. Deterministic for a given
+    # discipline/philosophy pair, so it does not disturb prompt caching.
+    doctrine = doctrine_prompt_block(
+        spec.agent_id,
+        philosophy.primary,
+        philosophy.secondary or "",
+    )
     user_content = [
         {
             "type": "text",
@@ -175,6 +193,7 @@ async def _run_expert(
                 philosophy_prompt_block(philosophy)
                 + (f"\n\nSCENARIO EMPHASIS ({scenario.label}): {scenario.emphasis}" if scenario.emphasis else "")
                 + f"\n\nYOUR ROLE: {spec.title}. {spec.focus_prompt}\n\n{_vocabulary_block(spec)}"
+                + (f"\n\n{doctrine}" if doctrine else "")
             ),
         },
     ]
@@ -254,6 +273,11 @@ async def _run_expert(
                         recommendation.parameter_path,
                     )
                     continue
+                recommendation.principle_ids = [
+                    principle_id
+                    for principle_id in recommendation.principle_ids
+                    if principle_id in _KNOWN_PRINCIPLE_IDS
+                ]
                 if recommendation.claim_type == "policy" and not recommendation.citations:
                     recommendation.claim_type = "best_practice"
                     recommendation.confidence = round(min(recommendation.confidence, 0.5), 2)

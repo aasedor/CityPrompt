@@ -87,6 +87,7 @@ def merge_recommendations(
                 "rationale": rec.rationale,
                 "confidence": rec.confidence,
                 "weight": round(weight, 3),
+                "principle_ids": list(rec.principle_ids),
             }
             for agent_id, rec, weight in candidates
         ]
@@ -110,6 +111,8 @@ def merge_recommendations(
                         rationale=winner_rec.rationale,
                         contributors=[a for a, _, _ in numeric],
                         candidates=candidate_dump,
+                        # Agreement means every contributor's doctrine applies.
+                        principle_ids=sorted({pid for _, r, _ in numeric for pid in r.principle_ids}),
                     )
                     continue
                 # Zero-weight agreement (all confidences 0) is NOT a conflict —
@@ -147,6 +150,7 @@ def merge_recommendations(
             contributors=[winner_agent],
             contested=contested,
             candidates=candidate_dump,
+            principle_ids=list(winner_rec.principle_ids),
         )
 
     return merged, trade_offs

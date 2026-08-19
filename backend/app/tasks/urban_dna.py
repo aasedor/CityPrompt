@@ -414,11 +414,14 @@ def run_urban_dna_scenario(self, scenario_row_id: str) -> dict:
         merge_recommendations,
         write_explanation,
     )
+    from app.services.planning_agents.design_director import context_height_from_dna, run_design_review
     from app.services.planning_agents.runner import estimate_cost_usd, run_expert_panel
     from app.services.planning_agents.scenarios import BASELINE_SCENARIO_ID, resolve_scenario_preset
     from app.services.planning_agents.schemas import MergedParameter, ScenarioDefinition, ScenarioResult
+    from app.core.config import get_settings
     from app.services.urban_dna.schema import ValidationNote
 
+    settings = get_settings()
     session = _get_sync_session()
     row = None
     try:
@@ -456,6 +459,48 @@ def run_urban_dna_scenario(self, scenario_row_id: str) -> dict:
             expert_sets, usage_records, warnings = await run_expert_panel(snapshot.dna, definition)
             plan_parameters, trade_offs = merge_recommendations(expert_sets, definition.philosophy)
 
+            # Site area is needed twice — by the coherence audit's yield check
+            # and by the metrics engine — so it is resolved once, up front.
+            # UrbanDNA v1 doesn't persist it, hence the boundary geometry.
+            from app.services import spatial_engine as se
+
+            site_area_m2 = None
+            try:
+                zone = session.query(SiteZone).filter_by(id=snapshot.zone_id).first()
+                if zone is not None:
+                    site_shape = to_shape(zone.geometry)
+                    site_poly = site_shape if isinstance(site_shape, Polygon) else site_shape.convex_hull
+                    site_area_m2 = se.SiteFrame.from_wgs84(site_poly).area_m2
+            except SoftTimeLimitExceeded:
+                raise
+            except Exception as exc:  # noqa: BLE001 — area is optional to both consumers
+                logger.warning("Site area unavailable for %s: %s", definition.scenario_id, exc)
+
+            # Design Director: the whole-plan review. The coordinator resolves
+            # each parameter independently, so the merged set can be internally
+            # incoherent even when every value is individually well argued.
+            # This is the only step that reads the plan as a plan.
+            design_review = None
+            if getattr(settings, "design_director_enabled", True):
+                plan_parameters, design_review = await run_design_review(
+                    plan_parameters,
+                    definition,
+                    dna_json=snapshot.dna,
+                    metrics=None,
+                    site_area_m2=site_area_m2,
+                    context_height_m=context_height_from_dna(snapshot.dna),
+                )
+                warnings.extend(design_review.notes)
+                usage_records.append(
+                    {
+                        "agent_id": "design_director",
+                        "model": design_review.usage.get("model", ""),
+                        "input_tokens": design_review.usage.get("input_tokens", 0),
+                        "output_tokens": design_review.usage.get("output_tokens", 0),
+                        "status": design_review.usage.get("status", "success"),
+                    }
+                )
+
             baseline_params = None
             if row.scenario_id != BASELINE_SCENARIO_ID:
                 baseline_row = (
@@ -482,23 +527,19 @@ def run_urban_dna_scenario(self, scenario_row_id: str) -> dict:
             changed = diff_scenarios(baseline_params, plan_parameters)
             explanation = await write_explanation(definition, changed, trade_offs)
 
-            # Derived statistics (P1: parameter mode). Site area from the real
-            # boundary geometry — UrbanDNA v1 doesn't persist it.
-            from app.services import spatial_engine as se
+            # Derived statistics (P1: parameter mode), measured on the
+            # design-reviewed parameters so the reported numbers describe the
+            # plan that was actually adopted.
             from app.services.plan_metrics import compute_metrics
 
             metrics_report = None
             try:
-                zone = session.query(SiteZone).filter_by(id=snapshot.zone_id).first()
-                if zone is not None:
-                    site_shape = to_shape(zone.geometry)
-                    site_poly = site_shape if isinstance(site_shape, Polygon) else site_shape.convex_hull
-                    frame = se.SiteFrame.from_wgs84(site_poly)
+                if site_area_m2 is not None:
                     metrics_report = compute_metrics(
                         scenario_id=definition.scenario_id,
                         dna=snapshot.dna,
                         parameters={p: m.model_dump() for p, m in plan_parameters.items()},
-                        geometry_inputs={"site_area_m2": frame.area_m2},
+                        geometry_inputs={"site_area_m2": site_area_m2},
                     )
             except SoftTimeLimitExceeded:
                 raise
@@ -527,6 +568,7 @@ def run_urban_dna_scenario(self, scenario_row_id: str) -> dict:
                 usage={"input_tokens": total_in, "output_tokens": total_out, "estimated_cost_usd": round(cost, 3)},
                 warnings=warnings,
                 metrics=metrics_report.model_dump(mode="json") if metrics_report else None,
+                design_review=design_review.model_dump(mode="json") if design_review else None,
             )
 
         result = asyncio.run(_run())
