@@ -107,6 +107,22 @@ Before changing or batch-generating LEGO building families, read
 `tools/archetype_compiler/high_quality_building_memory.json`; keep the human
 runbook, machine memory, assessor tests, and memory version synchronized.
 
+### AI planner — the Design Director
+
+The planning-agent panel (`backend/app/services/planning_agents/`) advises
+parameters; the layout/master-plan engines draw. The coordinator merges experts
+one parameter at a time, so the merged set can be internally incoherent even
+when every value is well argued. `design_director.py` is the whole-plan review
+that closes that gap, over a citable canon in `design_doctrine.py` and eleven
+LLM-free cross-parameter rules in `coherence.py`.
+
+Before changing experts, philosophies, presets, principles or coherence rules,
+read `docs/URBAN_DESIGN_AGENT.md` — it carries the invariants (bounded
+authority, thresholds live once, nothing fails a scenario run) and the drift
+tests that keep the doctrine aligned with `plan_evaluator` and `plan_metrics`.
+`.claude/agents/urban-design-critic.md` is the subagent that carries this
+expertise for design critique and review.
+
 ### State Management (Zustand)
 - `useAuthStore` — user, login, permissions
 - `useViewerStore` — selected zones, editing state
