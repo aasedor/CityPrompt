@@ -135,6 +135,35 @@ class BandSpec:
 
 
 @dataclass(frozen=True)
+class ProgramSlot:
+    """One piece of non-residential community program.
+
+    A neighbourhood is not only fabric: it has a shop, a school, a clinic, a
+    rec centre. Without them a plan cannot satisfy the doctrine's
+    ``mobility.daily_needs`` (somewhere worth walking to) or
+    ``legibility.civic_hierarchy`` (one building that earns being the
+    exception), and the whole institutional half of the catalogue is
+    unreachable.
+
+    ``min_dwellings`` is the catchment that earns the program — a corner shop
+    needs a few hundred residents, a school a few thousand. Slots are declared
+    largest-catchment first and the plan takes the biggest it qualifies for.
+    """
+
+    development_type: str
+    aesthetic: str
+    floors: float
+    typology: str
+    min_dwellings: float
+    label: str
+    # Exact catalogue building. Pinned because a development_type alone is far
+    # too coarse for program: institutional_education spans a lecture hall to a
+    # parking structure, so an unpinned "school" slot resolved to
+    # university_academic_complex in a 700-home neighbourhood.
+    archetype_id: str | None = None
+
+
+@dataclass(frozen=True)
 class BarOption:
     """One resolved per-bar character (within-block variety). Emitted on
     BlockPlan so the generator can rotate archetypes across the bars of a
@@ -270,6 +299,10 @@ class Palette:
     # Massing for the degenerate one-block site; None keeps the historic
     # perimeter courtyard.
     single_block_typology: str | None = None
+    # Non-residential community program, largest catchment first. The anchor
+    # block takes the biggest slot the plan's dwelling estimate earns; further
+    # slots land on spine-fronting blocks (daily needs belong at the node).
+    program: tuple[ProgramSlot, ...] = ()
     # Runtime-proven LEGO inventory. ``None`` preserves legacy/manual palette
     # behavior; a populated map makes every selection and floor snap stay
     # inside imported, executable families.
@@ -335,6 +368,26 @@ class BlockPlan:
 PALETTES: dict[str, Palette] = {
     # ── Current master-plan philosophies ─────────────────────────────────────
     "economic": Palette(
+        program=(
+            ProgramSlot(
+                "recreational_centre",
+                "contemporary",
+                2.0,
+                "anchor_mass",
+                900.0,
+                "Recreation Centre",
+                "community_recreation_centre",
+            ),
+            ProgramSlot(
+                "commercial_retail",
+                "contemporary",
+                2.0,
+                "anchor_mass",
+                150.0,
+                "Corner Retail",
+                "new_york_corner_bodega",
+            ),
+        ),
         bands={
             "core": BandSpec("residential_multifamily", "contemporary_midrise", 1.0, None, "perimeter_block"),
             "frontage": BandSpec("mixed_use", "contemporary_urban", 0.0, None, "perimeter_block"),
@@ -354,6 +407,35 @@ PALETTES: dict[str, Palette] = {
         },
     ),
     "city_policy": Palette(
+        program=(
+            ProgramSlot(
+                "recreational_centre",
+                "contemporary_urban",
+                2.0,
+                "anchor_mass",
+                900.0,
+                "Recreation Centre",
+                "community_recreation_centre",
+            ),
+            ProgramSlot(
+                "institutional_health",
+                "contemporary_urban",
+                3.0,
+                "anchor_mass",
+                500.0,
+                "Community Clinic",
+                "functionalist_healthcare",
+            ),
+            ProgramSlot(
+                "commercial_retail",
+                "contemporary_urban",
+                2.0,
+                "anchor_mass",
+                150.0,
+                "Corner Retail",
+                "new_york_corner_bodega",
+            ),
+        ),
         bands={
             "core": BandSpec("residential_multifamily", "contemporary_midrise", 1.0, None, "perimeter_block"),
             "frontage": BandSpec("mixed_use", "contemporary_midrise", 1.0, None, "perimeter_block"),
@@ -376,6 +458,26 @@ PALETTES: dict[str, Palette] = {
         },
     ),
     "city_beautiful": Palette(
+        program=(
+            ProgramSlot(
+                "institutional_education",
+                "classical",
+                4.0,
+                "anchor_mass",
+                900.0,
+                "School",
+                "collegiate_gothic",
+            ),
+            ProgramSlot(
+                "institutional",
+                "classical",
+                3.0,
+                "anchor_mass",
+                250.0,
+                "Civic Hall",
+                "civic_classical_building",
+            ),
+        ),
         bands={
             "core": BandSpec("mixed_use", "parisian", 2.0, None, "perimeter_block"),
             "frontage": BandSpec("mixed_use", "haussmann", 1.0, None, "perimeter_block"),
@@ -397,6 +499,35 @@ PALETTES: dict[str, Palette] = {
         },
     ),
     "environmental": Palette(
+        program=(
+            ProgramSlot(
+                "recreational_centre",
+                "biophilic",
+                2.0,
+                "anchor_mass",
+                900.0,
+                "Recreation Centre",
+                "community_recreation_centre",
+            ),
+            ProgramSlot(
+                "institutional_health",
+                "biophilic",
+                3.0,
+                "anchor_mass",
+                500.0,
+                "Community Clinic",
+                "biophilic_healthcare",
+            ),
+            ProgramSlot(
+                "commercial_retail",
+                "biophilic",
+                2.0,
+                "anchor_mass",
+                150.0,
+                "Corner Retail",
+                "new_york_corner_bodega",
+            ),
+        ),
         bands={
             "core": BandSpec("residential_multifamily", "eco_urban_green_architecture", 2.0, None, "perimeter_block"),
             "frontage": BandSpec("mixed_use", "scandinavian_nordic", 1.0, None, "perimeter_block"),
@@ -558,6 +689,62 @@ def _dna_value(dna: dict[str, Any] | None, section: str, fieldname: str) -> Any:
         return None
 
 
+# A plan can afford at most a couple of program buildings before it runs out
+# of render references (see the reference-budget cap in test_plan_placement).
+# Program therefore REPLACES fabric on the blocks it takes rather than being
+# added on top of it, and the anchor block — which already carried a
+# non-residential character — is the first slot rather than an extra one.
+MAX_PROGRAM_SLOTS = 2
+
+
+def estimate_dwellings(contexts: list[BlockContext], rules: RuleProfile) -> float:
+    """Rough dwelling catchment for the plan, on plan_metrics' assumptions.
+
+    Deliberately the same arithmetic the metrics engine reports, so the scale
+    that earns a school is the scale the plan says it has.
+    """
+    from app.services.plan_metrics import ASSUMPTIONS
+
+    developable = sum(ctx.area_m2 for ctx in contexts)
+    efficiency = float(ASSUMPTIONS["residential_efficiency"]["value"])
+    unit_area = float(ASSUMPTIONS["avg_unit_area_m2"]["value"])
+    if unit_area <= 0:
+        return 0.0
+    return developable * rules.coverage_ratio * max(1.0, rules.floors) * efficiency / unit_area
+
+
+def assign_program(
+    contexts: list[BlockContext],
+    palette: Palette,
+    rules: RuleProfile,
+    anchor_index: int | None,
+) -> dict[int, ProgramSlot]:
+    """Which blocks carry community program, by the catchment they serve.
+
+    The anchor takes the largest slot the plan earns — a few hundred homes
+    justify a corner shop, a few thousand a school. Any further slot goes to a
+    spine-fronting block, because daily needs belong at the node where people
+    already walk, not tucked into the quietest corner of the site.
+    """
+    if not palette.program or anchor_index is None:
+        return {}
+    dwellings = estimate_dwellings(contexts, rules)
+    qualifying = [slot for slot in palette.program if dwellings >= slot.min_dwellings]
+    if not qualifying:
+        return {}
+
+    assignments: dict[int, ProgramSlot] = {anchor_index: qualifying[0]}
+    for slot in qualifying[1:MAX_PROGRAM_SLOTS]:
+        candidate = next(
+            (ctx.index for ctx in contexts if ctx.fronts_spine and ctx.index not in assignments),
+            None,
+        )
+        if candidate is None:
+            break
+        assignments[candidate] = slot
+    return assignments
+
+
 def compute_block_contexts(
     *,
     blocks: list[tuple[int, BaseGeometry]],
@@ -646,6 +833,8 @@ def plan_blocks(
         if with_green:
             anchor_index = min(with_green, key=lambda c: (c.dist_to_green_m, c.index)).index
 
+    program_by_block = assign_program(contexts, palette, rules, anchor_index)
+
     context_avg_h = _dna_value(dna, "built_form", "context_avg_height_m")
     band_turns: dict[str, int] = {}
     supported_floors_by_parent = (
@@ -688,11 +877,24 @@ def plan_blocks(
             band = "mid"
 
         spec = palette.bands[band]
+        program_slot = program_by_block.get(ctx.index)
+        if program_slot is not None:
+            # Program replaces the band's character on this block outright:
+            # the school IS the building here, not a housing block wearing a
+            # school's development_type.
+            spec = BandSpec(
+                development_type=program_slot.development_type,
+                aesthetic=program_slot.aesthetic,
+                floors_delta=None,
+                floors_abs=program_slot.floors,
+                typology=program_slot.typology,
+                archetype_id=program_slot.archetype_id,
+            )
         development_type = spec.development_type
         aesthetic = spec.aesthetic
         arch_hint = spec.archetype_id
         variant_hint = spec.variant_id
-        if band == "mid" and (base_type or base_aesthetic):
+        if program_slot is None and band == "mid" and (base_type or base_aesthetic):
             # Expert override changes the character — a pinned id no longer applies.
             arch_hint = None
             variant_hint = None
@@ -706,7 +908,9 @@ def plan_blocks(
         options: list[tuple[str, str, str | None, str | None]] = [
             (development_type, aesthetic, arch_hint, variant_hint)
         ]
-        for raw_character in palette.alternates.get(band, ()):
+        # A program block is that program. Rotating it through the band's
+        # alternates would turn the school back into an apartment block.
+        for raw_character in () if program_slot is not None else palette.alternates.get(band, ()):
             character = _character_tuple(raw_character)
             if character not in options:
                 options.append(character)

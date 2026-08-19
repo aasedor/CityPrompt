@@ -1163,19 +1163,14 @@ def generate_plan_geometry(
     # urban_pocket_park, whose band stops at 900. Ponds and greenways keep
     # their pinned ids: those are specific programs, not sizes.
     _BAND_RESOLVED_KINDS = {"central": "park", "pocket": "park", "plaza": "plaza"}
-    green_occurrences: dict[str, int] = {}
-    # Distinct open-space archetypes ONE plan may use per green kind.
-    #
-    # This is a RENDER BUDGET, not a design preference: the pipeline keeps a
-    # bounded set of reference images (~15 — see
-    # test_palette_stays_under_render_caps), and every additional archetype in
-    # a plan spends one. Rotating per polygon looked like more variety and
-    # simply blew the budget by four references.
-    #
-    # So breadth comes from varying ACROSS sites, not from stacking every park
-    # type into one plan: the rotation base is the site hash, so two different
-    # sites draw different parks while each plan stays cheap to render.
-    OPEN_SPACE_VARIETY_PER_PLAN = 1
+    # One archetype per (green kind, catalogue tier). Greens of the same kind
+    # and size share an identity; a pocket park and a district park legitimately
+    # differ. Keying on the tier rather than counting polygons is what actually
+    # bounds the reference budget — two pocket parks of DIFFERENT areas resolve
+    # from different in-band pools, so a per-polygon counter did not cap
+    # anything and pushed city_policy at 700x520 m from +2 references of
+    # headroom to -1.
+    green_identity: dict[tuple[str, str], str] = {}
 
     zone_sort = 500  # after user zones
     for spec in open_plan.specs:
@@ -1198,17 +1193,23 @@ def generate_plan_geometry(
             # the LEGO path keeps its executable identity untouched.
             band_space_type = None if public_realm_variants else _BAND_RESOLVED_KINDS.get(kind)
             if band_space_type is not None:
-                turn = green_occurrences.get(kind, 0)
-                green_occurrences[kind] = turn + 1
-                resolved = resolve_open_space_archetype(
-                    float(poly_m.area),
-                    band_space_type,
-                    structure=palette.landscape.get(_LANDSCAPE_KEY.get(kind, "")),
-                    prefer_id=authored_id,
-                    variety_seed=seed + (turn % OPEN_SPACE_VARIETY_PER_PLAN) * 17,
-                )
-                if resolved is not None:
-                    archetype_id = resolved["id"]
+                area_m2 = float(poly_m.area)
+                tier = resolve_open_space_archetype(area_m2, band_space_type)
+                cache_key = (kind, tier["id"] if tier else "")
+                cached = green_identity.get(cache_key)
+                if cached is not None:
+                    archetype_id = cached
+                else:
+                    resolved = resolve_open_space_archetype(
+                        area_m2,
+                        band_space_type,
+                        structure=palette.landscape.get(_LANDSCAPE_KEY.get(kind, "")),
+                        prefer_id=authored_id,
+                        variety_seed=seed,
+                    )
+                    if resolved is not None:
+                        archetype_id = resolved["id"]
+                    green_identity[cache_key] = archetype_id
             if public_realm_variants:
                 identity = _lego_park_identity_for_metric_polygon(
                     kind=kind,
