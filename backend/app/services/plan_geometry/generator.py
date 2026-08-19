@@ -19,6 +19,7 @@ from shapely import affinity, set_precision
 from shapely.geometry import LineString, Point, Polygon, box, shape
 from shapely.geometry.base import BaseGeometry
 from shapely.ops import nearest_points, unary_union
+from shapely.errors import GEOSException
 from shapely.validation import make_valid
 
 from app.services.plan_geometry.archetypes import (
@@ -1895,7 +1896,42 @@ def _emit_street_zones(
     from app.services.plan_geometry.parceling import decompose_holed
 
     def _snap(geom):
-        return make_valid(set_precision(geom, 1e-3))
+        # Polygon-only, on the precision grid. make_valid can hand back a
+        # GeometryCollection carrying stray lines/points from a degenerate
+        # corridor; keeping those in the accumulator is what makes a later
+        # overlay unnodeable at EVERY precision.
+        cleaned = make_valid(set_precision(geom, 1e-3))
+        polygons = list(iter_polygons(cleaned))
+        if not polygons:
+            return Polygon()
+        return make_valid(unary_union(polygons))
+
+    def _carve(band_geom, pool):
+        """Intersect a street band with the unclaimed street area, then remove it.
+
+        Connector stubs meet the grid at arbitrary oblique angles, and the
+        buffered corridors around them can produce an overlay GEOS cannot node
+        — a TopologyException that killed the entire plan rather than one
+        street polygon. Snap-rounding at progressively coarser grids is the
+        documented remedy; the coarsest is still 0.1 m, far below anything
+        visible in a master plan. Returns (piece, pool) with piece None when no
+        grid succeeds, so the caller skips that band and keeps the plan.
+        """
+        for grid_size in (None, 1e-3, 1e-2, 1e-1):
+            try:
+                if grid_size is None:
+                    piece_geom = make_valid(band_geom.intersection(pool))
+                else:
+                    piece_geom = make_valid(band_geom.intersection(pool, grid_size=grid_size))
+                if piece_geom.is_empty:
+                    return None, pool
+                if grid_size is None:
+                    return piece_geom, _snap(pool.difference(piece_geom))
+                return piece_geom, _snap(pool.difference(piece_geom, grid_size=grid_size))
+            except GEOSException:
+                continue
+        logger.warning("Street band overlay failed at every precision; band skipped.")
+        return None, pool
 
     public_realm_variants = getattr(palette, "public_realm_variants", None) or {}
 
@@ -1998,7 +2034,7 @@ def _emit_street_zones(
         piece = make_valid(_snap(point.buffer(radius, quad_segs=8)).intersection(remaining))
         if piece.is_empty:
             continue
-        remaining = make_valid(remaining.difference(piece))
+        remaining = _snap(remaining.difference(piece))
         result.zones.extend(
             _street_zone(
                 piece,
@@ -2018,10 +2054,9 @@ def _emit_street_zones(
     spine_segments = [s for s in network.segments if s.role == "spine"]
     for spine_index, segment in enumerate(spine_segments):
         band = _snap(segment.line.buffer(segment.row_width_m / 2, cap_style=2, join_style=2))
-        piece = make_valid(band.intersection(remaining))
-        if piece.is_empty:
+        piece, remaining = _carve(band, remaining)
+        if piece is None:
             continue
-        remaining = make_valid(remaining.difference(piece))
         result.zones.extend(
             _street_zone(
                 piece,
@@ -2042,10 +2077,9 @@ def _emit_street_zones(
     path_counter = 0
     for segment in (s for s in network.segments if s.role == "path"):
         band = _snap(segment.line.buffer(segment.row_width_m / 2, cap_style=2, join_style=2))
-        piece = make_valid(band.intersection(remaining))
-        if piece.is_empty:
+        piece, remaining = _carve(band, remaining)
+        if piece is None:
             continue
-        remaining = make_valid(remaining.difference(piece))
         path_counter += 1
         result.zones.extend(
             _street_zone(
@@ -2070,10 +2104,9 @@ def _emit_street_zones(
     counter = 0
     for segment in (s for s in network.segments if s.role not in ("spine", "path")):
         band = _snap(segment.line.buffer(segment.row_width_m / 2, cap_style=2, join_style=2))
-        piece = make_valid(band.intersection(remaining))
-        if piece.is_empty:
+        piece, remaining = _carve(band, remaining)
+        if piece is None:
             continue
-        remaining = make_valid(remaining.difference(piece))
         counter += 1
         # Crescent precedence: a genuinely bowed local resolves to the crescent
         # street archetype when the palette provides one. Environmental keeps

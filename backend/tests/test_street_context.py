@@ -223,3 +223,74 @@ def test_coherent_context_still_rotates_the_grid():
 def test_bands_are_ordered_widest_last():
     assert list(ROAD_FRONTAGE_BANDS_M) == sorted(ROAD_FRONTAGE_BANDS_M)
     assert ROAD_FRONTAGE_BANDS_M[0] == ROAD_FRONTAGE_PROXIMITY_M
+
+
+# ---------------------------------------------------------------------------
+# Overlay robustness
+# ---------------------------------------------------------------------------
+
+
+def _rotated_context(angle_deg: float, offset_m: float, w: float, h: float) -> list[dict]:
+    """A surrounding grid rotated off the parcel, plus set-back frontages."""
+    from shapely import affinity
+
+    lines = []
+    extent, spacing = 1400.0, 150.0
+    steps = int(extent / spacing)
+    for i in range(-steps, steps + 1):
+        lines.append(LineString([(-extent, i * spacing), (extent, i * spacing)]))
+        lines.append(LineString([(i * spacing, -extent), (i * spacing, extent)]))
+    rotated = [
+        affinity.translate(affinity.rotate(line, angle_deg, origin=(0, 0)), xoff=w / 2, yoff=h / 2) for line in lines
+    ]
+    rotated += [
+        LineString([(-120, -offset_m), (w + 120, -offset_m)]),
+        LineString([(-120, h + offset_m), (w + 120, h + offset_m)]),
+        LineString([(-offset_m, -120), (-offset_m, h + 120)]),
+        LineString([(w + offset_m, -120), (w + offset_m, h + 120)]),
+    ]
+    return _as_features(rotated)
+
+
+def test_oblique_connectors_do_not_kill_the_plan():
+    """Connector stubs meet the grid at arbitrary oblique angles, and their
+    buffered corridors produced an overlay GEOS could not node — a
+    TopologyException that killed the ENTIRE plan, not one street polygon.
+
+    The root cause was make_valid leaking stray lines/points into the street-area
+    accumulator, which then made a later overlay unnodeable at every precision.
+    """
+    width, height = 620.0, 460.0
+    site = Polygon([_wgs(0, 0), _wgs(width, 0), _wgs(width, height), _wgs(0, height)])
+    for scenario_id in ("economic", "city_policy", "city_beautiful", "environmental"):
+        result = generate_plan_geometry(
+            site_polygon_wgs84=site,
+            scenario_id=scenario_id,
+            scenario_label=scenario_id,
+            parameters={"buildings.floors": {"value": 4}, "streets.row_width_m": {"value": 20.0}},
+            road_features=_rotated_context(18.0, 38.0, width, height),
+            path_features=[],
+            district_features=[],
+        )
+        assert result.block_count > 0, scenario_id
+        assert result.building_count > 0, scenario_id
+        streets = [z for z in result.zones if z["properties"].get("_plan_role") == "street"]
+        assert streets, f"{scenario_id} drew no streets"
+
+
+def test_street_bands_survive_a_range_of_setbacks():
+    """38 m crashed while 25 m and 60 m did not — the failure was a specific
+    near-degenerate configuration, so sweep rather than spot-check."""
+    width, height = 620.0, 460.0
+    site = Polygon([_wgs(0, 0), _wgs(width, 0), _wgs(width, height), _wgs(0, height)])
+    for offset in (10.0, 25.0, 38.0, 60.0):
+        result = generate_plan_geometry(
+            site_polygon_wgs84=site,
+            scenario_id="economic",
+            scenario_label="setback sweep",
+            parameters={"buildings.floors": {"value": 4}, "streets.row_width_m": {"value": 20.0}},
+            road_features=_rotated_context(18.0, offset, width, height),
+            path_features=[],
+            district_features=[],
+        )
+        assert result.building_count > 0, f"{offset} m setback produced no buildings"
