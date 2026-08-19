@@ -30,6 +30,18 @@ ENTRY_CONNECTOR_MAX_M = 90.0
 MIN_CONNECTOR_CORRIDOR_COVERAGE = 0.90
 CONNECTION_EPSILON_M = 0.05
 ROAD_FRONTAGE_PROXIMITY_M = 32.0
+# A parcel boundary often sits well back from the street centreline: a wide
+# arterial ROW, a boulevard with a median, a survey line behind the curb. At a
+# fixed 32 m the anchor search was a CLIFF — 31 m away produced four gateways,
+# 33 m produced none at all, and the plan then drew an internal grid connected
+# to nothing without emitting a single warning. Widen in steps instead, and
+# record which band answered so the degradation is visible.
+ROAD_FRONTAGE_BANDS_M = (ROAD_FRONTAGE_PROXIMITY_M, 64.0, 128.0)
+# Vehicle gateways scale with the site: four is right for a single block and
+# far too few for a district with ten real streets around it.
+ROAD_ENTRY_LIMIT_MIN = 4
+ROAD_ENTRY_LIMIT_MAX = 10
+ROAD_ENTRY_PERIMETER_PER_GATEWAY_M = 250.0
 PATH_FRONTAGE_PROXIMITY_M = 24.0
 PATH_CONNECTOR_WIDTH_M = 4.0
 
@@ -139,9 +151,11 @@ def _context_grid_angle_deg(
             clipped = road.intersection(context_area)
         except Exception:  # noqa: BLE001 - context feeds can contain bad geometry
             continue
-        parts = [clipped] if isinstance(clipped, LineString) else [
-            part for part in getattr(clipped, "geoms", ()) if isinstance(part, LineString)
-        ]
+        parts = (
+            [clipped]
+            if isinstance(clipped, LineString)
+            else [part for part in getattr(clipped, "geoms", ()) if isinstance(part, LineString)]
+        )
         for part in parts:
             coordinates = list(part.coords)
             for start, end in zip(coordinates[:-1], coordinates[1:]):
@@ -248,22 +262,52 @@ def _entry_points_from_context_lines(
     return deduped
 
 
-def entry_points_from_roads(road_lines_m: list[LineString], boundary_m: Polygon, limit: int = 4) -> list[Point]:
-    """Road access anchors at crossings and adjacent street frontages.
+def road_entry_limit(boundary_m: Polygon) -> int:
+    """How many vehicle gateways this site should have.
 
-    A context feed often splits one real frontage into many short source
-    features. Treating every fragment as a vehicle entrance creates a fan of
-    overlapping connector streets at the parcel edge. Four well-separated
-    gateways are enough for a district-scale plan; pedestrian/cycle context
-    remains independently connected by entry_points_from_paths.
+    A context feed often splits one real frontage into many short features, so
+    the anchors are deduped and capped — but a flat cap of four meant a
+    district with ten surrounding streets connected to four of them and ignored
+    the rest. Scale with perimeter instead, within sane bounds.
     """
-    return _entry_points_from_context_lines(
-        road_lines_m,
-        boundary_m,
-        proximity_m=ROAD_FRONTAGE_PROXIMITY_M,
-        limit=limit,
-        dedupe_m=50.0,
-    )
+    perimeter = float(boundary_m.exterior.length)
+    scaled = round(perimeter / ROAD_ENTRY_PERIMETER_PER_GATEWAY_M)
+    return int(max(ROAD_ENTRY_LIMIT_MIN, min(ROAD_ENTRY_LIMIT_MAX, scaled)))
+
+
+def road_entry_anchors(
+    road_lines_m: list[LineString],
+    boundary_m: Polygon,
+    limit: int | None = None,
+) -> tuple[list[Point], float | None]:
+    """Road access anchors, widening the search band until some are found.
+
+    Returns ``(anchors, band_used_m)``. ``band_used_m`` is None when there was
+    no road context at all — which is a different failure from "roads exist but
+    none are close enough", and the caller reports them differently.
+    """
+    if limit is None:
+        limit = road_entry_limit(boundary_m)
+    if not road_lines_m:
+        return [], None
+    for band in ROAD_FRONTAGE_BANDS_M:
+        anchors = _entry_points_from_context_lines(
+            road_lines_m,
+            boundary_m,
+            proximity_m=band,
+            limit=limit,
+            dedupe_m=50.0,
+        )
+        if anchors:
+            return anchors, band
+    return [], ROAD_FRONTAGE_BANDS_M[-1]
+
+
+def entry_points_from_roads(
+    road_lines_m: list[LineString], boundary_m: Polygon, limit: int | None = None
+) -> list[Point]:
+    """Road access anchors at crossings and adjacent street frontages."""
+    return road_entry_anchors(road_lines_m, boundary_m, limit)[0]
 
 
 def entry_points_from_paths(path_lines_m: list[LineString], boundary_m: Polygon, limit: int = 8) -> list[Point]:
@@ -321,6 +365,23 @@ def generate_street_network(
     context_orientation = _context_grid_angle_deg(context_road_lines or [], boundary_m)
     if context_orientation is None:
         angle = site_angle
+        if context_road_lines:
+            # Context existed but was too sparse or too directionally mixed to
+            # read as a grid. Falling back to the site rectangle is the right
+            # call; doing it silently is not, because the result looks like the
+            # plan ignored the neighbourhood.
+            network.grid_orientation_source = "site_boundary_context_inconclusive"
+            network.notes.append(
+                {
+                    "code": "CONTEXT_GRID_ORIENTATION_INCONCLUSIVE",
+                    "severity": "info",
+                    "message": (
+                        "Surrounding street bearings were too sparse or too mixed to infer a grid; "
+                        "the internal grid follows the site boundary instead."
+                    ),
+                    "source_phase": "street_graph",
+                }
+            )
     else:
         context_angle, confidence, segment_count = context_orientation
         network.grid_orientation_confidence = confidence

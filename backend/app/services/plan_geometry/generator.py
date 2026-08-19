@@ -55,8 +55,10 @@ from app.services.plan_geometry.placement import (
 from app.services.plan_geometry.street_graph import (
     CRESCENT_SAGITTA_MIN_M,
     StreetNetwork,
+    ROAD_FRONTAGE_BANDS_M,
+    ROAD_FRONTAGE_PROXIMITY_M,
     entry_points_from_paths,
-    entry_points_from_roads,
+    road_entry_anchors,
     generate_street_network,
 )
 from app.services.public_realm_lego import (
@@ -1021,8 +1023,51 @@ def generate_plan_geometry(
         # bikeway datasets supplied by the plan task.
         raw_paths = list(path_features or []) + [feature for feature in raw_roads if _is_path_context_feature(feature)]
         path_lines = _feature_lines_m(raw_paths, to_metric)
-        entries = entry_points_from_roads(road_lines, boundary_m)
+        entries, anchor_band_m = road_entry_anchors(road_lines, boundary_m)
         path_entries = entry_points_from_paths(path_lines, boundary_m)
+        # A plan that reaches none of the real streets around it is a serious
+        # defect, and it used to be silent: CONTEXT_ENTRIES_UNSERVED only fires
+        # when anchors EXIST but cannot be served, so a site whose centrelines
+        # all sat outside the search band produced an isolated internal grid
+        # and no note at all.
+        if not road_lines:
+            result.notes.append(
+                {
+                    "code": "NO_ROAD_CONTEXT",
+                    "severity": "warning",
+                    "message": (
+                        "No surrounding road centrelines were supplied, so the street grid is "
+                        "oriented from the site boundary alone and connects to nothing outside it."
+                    ),
+                    "source_phase": "street_graph",
+                }
+            )
+        elif not entries:
+            result.notes.append(
+                {
+                    "code": "ROAD_CONTEXT_UNREACHABLE",
+                    "severity": "warning",
+                    "message": (
+                        f"{len(road_lines)} surrounding road centreline(s) were found but none within "
+                        f"{ROAD_FRONTAGE_BANDS_M[-1]:g} m of the site boundary, so the plan has no "
+                        "vehicle connection to the existing network."
+                    ),
+                    "source_phase": "street_graph",
+                }
+            )
+        elif anchor_band_m is not None and anchor_band_m > ROAD_FRONTAGE_PROXIMITY_M:
+            result.notes.append(
+                {
+                    "code": "ROAD_CONTEXT_BAND_WIDENED",
+                    "severity": "info",
+                    "message": (
+                        f"Nearest road centrelines sit beyond {ROAD_FRONTAGE_PROXIMITY_M:g} m of the "
+                        f"boundary; gateways were anchored within {anchor_band_m:g} m. Expect a wider "
+                        "setback between the plan's edge streets and the existing ones."
+                    ),
+                    "source_phase": "street_graph",
+                }
+            )
         # Straight baseline always generated — it is the fallback AND the
         # yardstick the curved candidates are judged against.
         network = generate_street_network(
