@@ -23,6 +23,7 @@ from app.services.lego_assembly import (
     AssemblyPlanningError,
     AssemblyRequest,
     ModuleDescriptor,
+    _matches_requested_archetype,
     descriptor_from_library_entry,
     plan_vertical_assembly,
 )
@@ -450,6 +451,21 @@ def build_lego_planning_catalog(entries: Iterable[Any]) -> LegoPlanningCatalog:
             parent = parents.get(parent_id or "")
             if parent is None:
                 continue
+            # The unpinned proof below must preserve competition between every
+            # family that exactly matches this selectable ID, but unrelated
+            # families can never survive the runtime planner's archetype gate.
+            # Pre-filter them once here instead of rescanning the complete
+            # library for every one of the 40 floor-count probes.
+            runtime_families = {
+                descriptor.family
+                for descriptor in descriptors
+                if _matches_requested_archetype(descriptor, archetype_id)
+            }
+            runtime_descriptors = [
+                descriptor
+                for descriptor in descriptors
+                if descriptor.family in runtime_families
+            ]
             # Hybrid render-locked families can carry both modular roles and
             # one exact assembled hero asset. An exact source variant must use
             # that hero asset's native footprint even when modular roles are
@@ -470,7 +486,7 @@ def build_lego_planning_catalog(entries: Iterable[Any]) -> LegoPlanningCatalog:
                 probe_floors=probe_floors,
             )
             supported = _runtime_native_floors(
-                descriptors,
+                runtime_descriptors,
                 family=family,
                 archetype_id=archetype_id,
                 target_width_m=target_width_m,

@@ -733,12 +733,20 @@ def plan_vertical_assembly(
         raise AssemblyPlanningError("Target floors must be at least 1")
 
     descriptors = list(modules)
+    # Catalogue planning calls this function hundreds of times while proving
+    # supported floor counts.  Re-filtering the complete library once for
+    # every family made one ordinary /plan request quadratic in catalogue
+    # size (26+ seconds with the 705-row seed).  Preserve descriptor order in
+    # one index so family discovery and both fit passes stay linear.
+    modules_by_family: dict[str, list[ModuleDescriptor]] = {}
+    for descriptor in descriptors:
+        modules_by_family.setdefault(descriptor.family, []).append(descriptor)
     # The API supplies descriptors in ``created_at DESC`` order. Preserve
     # that stable order so a newly imported, quality-improved family wins an
     # otherwise exact score tie over its older predecessor. Alphabetically
     # sorting the set made V4 beat an audited V5 forever unless the caller
     # knew the internal family slug and explicitly preferred it.
-    families = list(dict.fromkeys(module.family for module in descriptors))
+    families = list(modules_by_family)
     if request.preferred_family:
         families = [f for f in families if f == request.preferred_family]
         if not families:
@@ -755,8 +763,7 @@ def plan_vertical_assembly(
             for family in eligible_families
             if any(
                 _matches_requested_archetype(module, request.archetype_id)
-                for module in descriptors
-                if module.family == family
+                for module in modules_by_family[family]
             )
         ]
         families = exact_families
@@ -768,11 +775,10 @@ def plan_vertical_assembly(
                     for family in eligible_families
                     if any(
                         _matches_requested_archetype(module, candidate_parent)
-                        for module in descriptors
-                        if module.family == family
+                        for module in modules_by_family[family]
                     )
                     and _is_generic_parent_fallback_family(
-                        descriptors,
+                        modules_by_family[family],
                         family,
                         candidate_parent,
                     )
@@ -807,7 +813,7 @@ def plan_vertical_assembly(
     for family, forced in passes:
         if forced and best_plan is not None:
             break
-        family_modules = [m for m in descriptors if m.family == family]
+        family_modules = modules_by_family[family]
         # Fixed landmarks are the most faithful option inside their audited
         # near-native band. Outside it, prefer the semantic LEGO fallback kit
         # so a hand-drawn rectangle does not crush a courtyard, dome, chamfer,
