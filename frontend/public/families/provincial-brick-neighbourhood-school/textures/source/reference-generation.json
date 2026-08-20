@@ -1,0 +1,64 @@
+{
+  "schema": "reference-generation@1",
+  "family": "provincial-brick-neighbourhood-school",
+  "archetype_id": "ecole_republicaine",
+  "variant_id": "ecole-republicaine-provincial-brick",
+  "provider": "CityPrompt registered catalogue asset",
+  "model": "pre-existing-catalogue-reference",
+  "generated_at": "2026-08-20",
+  "status": "catalogue-source-registered",
+  "input_paths": [
+    "/archetypes/buildings/ecole-republicaine/variant_2.png"
+  ],
+  "catalogue_card_path": "/archetypes/buildings/ecole-republicaine/variant_2.png",
+  "source_mode": "existing_catalogue_card_material_and_shape_goalpost",
+  "design_lock": {
+    "native_envelope_dimensions_m": [
+      40.0,
+      28.0,
+      15.0
+    ],
+    "occupied_storeys": 3,
+    "variant_specific_contract": "40 m by 28 m three-storey shallow-U school; two equal classroom wings and one rear connector define a real court, a central arched gateway remains open beneath a bridge, continuous floor bands align grouped windows and one modest clock tower completes the public axis.",
+    "material_zones": "warm buff-red provincial brick; pale limestone base and bands; patinated copper clock and gateway trim; dark bronze window frames; neutral classroom glazing with occupied depth; weathered standing-seam metal roofs",
+    "glass_profile": "neutral_classroom_glass_with_deep_occupied_learning_spaces",
+    "coverage_cohort": "commonplace_standard"
+  },
+  "sources": [
+    {
+      "file": "archetype-goalpost.png",
+      "source_id": "catalogue:ecole_republicaine:ecole-republicaine-provincial-brick",
+      "role": "immutable_shipped_catalogue_goalpost"
+    },
+    {
+      "file": "elevation-source-v1.png",
+      "source_id": "catalogue-crop:ecole-republicaine-provincial-brick:building",
+      "role": "registered_building_crop_for_colour_and_material_scale"
+    },
+    {
+      "file": "occupied-depth-source-v1.png",
+      "source_id": "catalogue-crop:ecole-republicaine-provincial-brick:occupied",
+      "role": "registered_occupied_window_depth_crop"
+    },
+    {
+      "file": "primary-material-source.png",
+      "source_id": "catalogue-crop:ecole-republicaine-provincial-brick:primary",
+      "role": "registered_primary_material_crop"
+    },
+    {
+      "file": "secondary-material-source.png",
+      "source_id": "catalogue-crop:ecole-republicaine-provincial-brick:secondary",
+      "role": "registered_secondary_material_crop"
+    },
+    {
+      "file": "ornament-material-source.png",
+      "source_id": "catalogue-crop:ecole-republicaine-provincial-brick:ornament",
+      "role": "registered_ornament_material_crop"
+    },
+    {
+      "file": "roof-material-source.png",
+      "source_id": "catalogue-crop:ecole-republicaine-provincial-brick:roof",
+      "role": "registered_roof_material_crop"
+    }
+  ]
+}

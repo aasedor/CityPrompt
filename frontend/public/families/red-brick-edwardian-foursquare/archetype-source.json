@@ -1,0 +1,13 @@
+{
+  "catalogue_archetype_id": "edwardian_foursquare",
+  "catalogue_variant_id": "classic_red_brick_foursquare",
+  "catalogue_alias_ids": [
+    "red_brick_edwardian_foursquare"
+  ],
+  "elevation_source": "/families/red-brick-edwardian-foursquare/elevation.jpg",
+  "goalpost": "/families/red-brick-edwardian-foursquare/textures/source/archetype-goalpost.png",
+  "reference_generation": "/families/red-brick-edwardian-foursquare/textures/source/reference-generation.json",
+  "method": "immutable shipped catalogue card; deterministic material extraction; shared true-metric construction kits; physical layered glazing; occupied depth; complete secondary elevations; normalized bottom-centre origin; fixed whole-building landmark and complete-semantic-bay LEGO fallback",
+  "coverage_cohort": "commonplace_standard",
+  "catalogue_card_preserved": true
+}

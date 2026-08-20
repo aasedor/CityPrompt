@@ -1,0 +1,64 @@
+{
+  "schema": "reference-generation@1",
+  "family": "tilt-up-light-industrial-workshop",
+  "archetype_id": "industrial_park_modernism",
+  "variant_id": "industrial_tilt_up_concrete",
+  "provider": "CityPrompt registered catalogue asset",
+  "model": "pre-existing-catalogue-reference",
+  "generated_at": "2026-08-20",
+  "status": "catalogue-source-registered",
+  "input_paths": [
+    "/archetypes/buildings/industrial_park_modernism/variant_0.png"
+  ],
+  "catalogue_card_path": "/archetypes/buildings/industrial_park_modernism/variant_0.png",
+  "source_mode": "existing_catalogue_card_material_and_shape_goalpost",
+  "design_lock": {
+    "native_envelope_dimensions_m": [
+      60.0,
+      35.0,
+      10.5
+    ],
+    "occupied_storeys": 1,
+    "variant_specific_contract": "60 m by 35 m one-storey industrial envelope; complete tilt-up panel modules and joints wrap all sides, a recessed two-level office marks the public front, exactly four deep loading portals line the service side and every canopy and bollard is grounded.",
+    "material_zones": "warm grey tilt-up concrete panels; darker exposed aggregate base; galvanized loading canopies and bollards; charcoal aluminum office frames; neutral industrial glazing with sparse occupied depth; pale membrane roof and dark coping",
+    "glass_profile": "neutral_industrial_office_glass_with_sparse_occupied_depth",
+    "coverage_cohort": "commonplace_standard"
+  },
+  "sources": [
+    {
+      "file": "archetype-goalpost.png",
+      "source_id": "catalogue:industrial_park_modernism:industrial_tilt_up_concrete",
+      "role": "immutable_shipped_catalogue_goalpost"
+    },
+    {
+      "file": "elevation-source-v1.png",
+      "source_id": "catalogue-crop:industrial_tilt_up_concrete:building",
+      "role": "registered_building_crop_for_colour_and_material_scale"
+    },
+    {
+      "file": "occupied-depth-source-v1.png",
+      "source_id": "catalogue-crop:industrial_tilt_up_concrete:occupied",
+      "role": "registered_occupied_window_depth_crop"
+    },
+    {
+      "file": "primary-material-source.png",
+      "source_id": "catalogue-crop:industrial_tilt_up_concrete:primary",
+      "role": "registered_primary_material_crop"
+    },
+    {
+      "file": "secondary-material-source.png",
+      "source_id": "catalogue-crop:industrial_tilt_up_concrete:secondary",
+      "role": "registered_secondary_material_crop"
+    },
+    {
+      "file": "ornament-material-source.png",
+      "source_id": "catalogue-crop:industrial_tilt_up_concrete:ornament",
+      "role": "registered_ornament_material_crop"
+    },
+    {
+      "file": "roof-material-source.png",
+      "source_id": "catalogue-crop:industrial_tilt_up_concrete:roof",
+      "role": "registered_roof_material_crop"
+    }
+  ]
+}

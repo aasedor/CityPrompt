@@ -1,0 +1,64 @@
+{
+  "schema": "reference-generation@1",
+  "family": "victorian-brick-rowhouse-terrace",
+  "archetype_id": "toronto_brick_rowhouse",
+  "variant_id": "toronto_rowhouse_victorian",
+  "provider": "CityPrompt registered catalogue asset",
+  "model": "pre-existing-catalogue-reference",
+  "generated_at": "2026-08-20",
+  "status": "catalogue-source-registered",
+  "input_paths": [
+    "/archetypes/buildings/toronto-brick-rowhouse/variant_0.png"
+  ],
+  "catalogue_card_path": "/archetypes/buildings/toronto-brick-rowhouse/variant_0.png",
+  "source_mode": "existing_catalogue_card_material_and_shape_goalpost",
+  "design_lock": {
+    "native_envelope_dimensions_m": [
+      22.0,
+      12.0,
+      9.0
+    ],
+    "occupied_storeys": 2,
+    "variant_specific_contract": "22 m by 12 m two-storey terrace; exactly four complete dwellings repeat as whole 5.5 m bays with party-wall piers, separate stoops and doors, tall sash and alternating gabled/parapeted roof ends.",
+    "material_zones": "warm red Toronto brick; pale grey sandstone trim; black painted stoop rails; dark bronze sash and door frames; neutral residential glass with varied occupied rooms; dark slate and membrane roofs",
+    "glass_profile": "heritage_rowhouse_sash_with_varied_room_depth",
+    "coverage_cohort": "commonplace_standard"
+  },
+  "sources": [
+    {
+      "file": "archetype-goalpost.png",
+      "source_id": "catalogue:toronto_brick_rowhouse:toronto_rowhouse_victorian",
+      "role": "immutable_shipped_catalogue_goalpost"
+    },
+    {
+      "file": "elevation-source-v1.png",
+      "source_id": "catalogue-crop:toronto_rowhouse_victorian:building",
+      "role": "registered_building_crop_for_colour_and_material_scale"
+    },
+    {
+      "file": "occupied-depth-source-v1.png",
+      "source_id": "catalogue-crop:toronto_rowhouse_victorian:occupied",
+      "role": "registered_occupied_window_depth_crop"
+    },
+    {
+      "file": "primary-material-source.png",
+      "source_id": "catalogue-crop:toronto_rowhouse_victorian:primary",
+      "role": "registered_primary_material_crop"
+    },
+    {
+      "file": "secondary-material-source.png",
+      "source_id": "catalogue-crop:toronto_rowhouse_victorian:secondary",
+      "role": "registered_secondary_material_crop"
+    },
+    {
+      "file": "ornament-material-source.png",
+      "source_id": "catalogue-crop:toronto_rowhouse_victorian:ornament",
+      "role": "registered_ornament_material_crop"
+    },
+    {
+      "file": "roof-material-source.png",
+      "source_id": "catalogue-crop:toronto_rowhouse_victorian:roof",
+      "role": "registered_roof_material_crop"
+    }
+  ]
+}

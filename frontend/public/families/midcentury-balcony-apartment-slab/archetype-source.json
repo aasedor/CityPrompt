@@ -1,0 +1,13 @@
+{
+  "catalogue_archetype_id": "west_end_mid_century_tower",
+  "catalogue_variant_id": "midcentury_balcony_tower",
+  "catalogue_alias_ids": [
+    "midcentury_balcony_apartment_slab"
+  ],
+  "elevation_source": "/families/midcentury-balcony-apartment-slab/elevation.jpg",
+  "goalpost": "/families/midcentury-balcony-apartment-slab/textures/source/archetype-goalpost.png",
+  "reference_generation": "/families/midcentury-balcony-apartment-slab/textures/source/reference-generation.json",
+  "method": "immutable shipped catalogue card; deterministic material extraction; shared true-metric construction kits; physical layered glazing; occupied depth; complete secondary elevations; normalized bottom-centre origin; fixed whole-building landmark and complete-semantic-bay LEGO fallback",
+  "coverage_cohort": "commonplace_standard",
+  "catalogue_card_preserved": true
+}

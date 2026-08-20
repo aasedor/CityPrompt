@@ -1,0 +1,13 @@
+{
+  "catalogue_archetype_id": "new_york_corner_bodega",
+  "catalogue_variant_id": "bodega_classic",
+  "catalogue_alias_ids": [
+    "classic_corner_bodega_mixed_use"
+  ],
+  "elevation_source": "/families/classic-corner-bodega-mixed-use/elevation.jpg",
+  "goalpost": "/families/classic-corner-bodega-mixed-use/textures/source/archetype-goalpost.png",
+  "reference_generation": "/families/classic-corner-bodega-mixed-use/textures/source/reference-generation.json",
+  "method": "immutable shipped catalogue card; deterministic material extraction; shared true-metric construction kits; physical layered glazing; occupied depth; complete secondary elevations; normalized bottom-centre origin; fixed whole-building landmark and complete-semantic-bay LEGO fallback",
+  "coverage_cohort": "commonplace_standard",
+  "catalogue_card_preserved": true
+}

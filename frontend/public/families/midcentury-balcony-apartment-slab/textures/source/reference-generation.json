@@ -1,0 +1,64 @@
+{
+  "schema": "reference-generation@1",
+  "family": "midcentury-balcony-apartment-slab",
+  "archetype_id": "west_end_mid_century_tower",
+  "variant_id": "midcentury_balcony_tower",
+  "provider": "CityPrompt registered catalogue asset",
+  "model": "pre-existing-catalogue-reference",
+  "generated_at": "2026-08-20",
+  "status": "catalogue-source-registered",
+  "input_paths": [
+    "/archetypes/buildings/west-end-mid-century-tower/variant_2.png"
+  ],
+  "catalogue_card_path": "/archetypes/buildings/west-end-mid-century-tower/variant_2.png",
+  "source_mode": "existing_catalogue_card_material_and_shape_goalpost",
+  "design_lock": {
+    "native_envelope_dimensions_m": [
+      20.0,
+      20.0,
+      39.0
+    ],
+    "occupied_storeys": 11,
+    "variant_specific_contract": "20 m by 20 m, eleven occupied levels; continuous concrete balcony plates wrap all four sides, alternating perforated screens conceal service zones, planted brick upstands and clear guards stay attached to real slabs and a transparent retail lobby anchors the ground.",
+    "material_zones": "warm exposed concrete slabs; red-brown brick balcony planters; pale perforated concrete breeze block; dark aluminum frames; neutral clear balcony and apartment glass; pale concrete roof canopy and pergola",
+    "glass_profile": "clear_midcentury_balcony_glass_with_deep_apartment_rooms",
+    "coverage_cohort": "commonplace_standard"
+  },
+  "sources": [
+    {
+      "file": "archetype-goalpost.png",
+      "source_id": "catalogue:west_end_mid_century_tower:midcentury_balcony_tower",
+      "role": "immutable_shipped_catalogue_goalpost"
+    },
+    {
+      "file": "elevation-source-v1.png",
+      "source_id": "catalogue-crop:midcentury_balcony_tower:building",
+      "role": "registered_building_crop_for_colour_and_material_scale"
+    },
+    {
+      "file": "occupied-depth-source-v1.png",
+      "source_id": "catalogue-crop:midcentury_balcony_tower:occupied",
+      "role": "registered_occupied_window_depth_crop"
+    },
+    {
+      "file": "primary-material-source.png",
+      "source_id": "catalogue-crop:midcentury_balcony_tower:primary",
+      "role": "registered_primary_material_crop"
+    },
+    {
+      "file": "secondary-material-source.png",
+      "source_id": "catalogue-crop:midcentury_balcony_tower:secondary",
+      "role": "registered_secondary_material_crop"
+    },
+    {
+      "file": "ornament-material-source.png",
+      "source_id": "catalogue-crop:midcentury_balcony_tower:ornament",
+      "role": "registered_ornament_material_crop"
+    },
+    {
+      "file": "roof-material-source.png",
+      "source_id": "catalogue-crop:midcentury_balcony_tower:roof",
+      "role": "registered_roof_material_crop"
+    }
+  ]
+}

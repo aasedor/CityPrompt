@@ -1,0 +1,1499 @@
+{
+  "manifest_schema": 3,
+  "grammar_schema_version": 3,
+  "generator": {
+    "name": "archetype_compiler/generate_wave16_standard_families.py",
+    "version": "1.0.0",
+    "blender_version": "5.2.0 LTS",
+    "render_engine": "BLENDER_EEVEE"
+  },
+  "created_at": "2026-08-20T13:58:25.905011+00:00",
+  "family": "midcentury-balcony-apartment-slab",
+  "archetype_id": "west_end_mid_century_tower",
+  "archetype_label": "Mid-Century Balcony Apartment Slab",
+  "variant_id": "midcentury_balcony_tower",
+  "generation_archetype_id": "midcentury_balcony_tower",
+  "archetype_aliases": [
+    "west_end_mid_century_tower",
+    "midcentury_balcony_tower",
+    "midcentury_balcony_apartment_slab"
+  ],
+  "aesthetic_category_id": "midcentury_balcony_modernism",
+  "development_type": "residential_highrise",
+  "reuse_keys": [
+    "west_end_mid_century_tower",
+    "midcentury_balcony_tower",
+    "midcentury_balcony_apartment_slab",
+    "Mid-Century Apartment Tower",
+    "Balcony Tower",
+    "Residential High-Rise"
+  ],
+  "generation_tags": [
+    "wave16",
+    "catalogue_expansion_wave3",
+    "commonplace_standard",
+    "existing_catalogue_reference",
+    "fixed_landmark_and_modular_fallback",
+    "physical_separate_glazing",
+    "occupied_interior_depth",
+    "complete_semantic_bay_repeat",
+    "grounding_normalized_bottom_zero",
+    "continuous_wraparound_balcony_slabs",
+    "physical_clear_guards",
+    "real_gap_breeze_block_screens",
+    "integrated_planted_upstands",
+    "transparent_retail_lobby"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 1,
+    "profileRationale": "The complete commonplace building remains fixed through the 0.62x-1.40x band. Larger drawings repeat complete 3.33 m rooms, dwellings, storefronts, classrooms or industrial panels; entrances, stairs, corners, roofs and crowns never stretch independently.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.62,
+      "scaleMax": 1.4,
+      "maxAxisRatio": 1.3
+    },
+    "recommendedWidth_m": [
+      12.4,
+      28.0
+    ],
+    "recommendedDepth_m": [
+      12.4,
+      28.0
+    ],
+    "recommendedFloors": [
+      8,
+      20
+    ],
+    "scaleMin": 0.62,
+    "scaleMax": 1.4,
+    "maxAxisRatio": 1.3,
+    "preferredBayMultiple_m": 3.33,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          12.4,
+          28.0
+        ],
+        "recommendedDepth_m": [
+          12.4,
+          28.0
+        ],
+        "recommendedFloors": [
+          8,
+          20
+        ],
+        "scaleMin": 0.62,
+        "scaleMax": 1.4,
+        "maxAxisRatio": 1.3,
+        "preferredBayMultiple_m": 3.33
+      }
+    }
+  },
+  "coordinate_contract": {
+    "units": "metres",
+    "blender_up": "+Z",
+    "gltf_up": "+Y (export_yup)",
+    "origin": "bottom centre",
+    "front_facade": "-Y in Blender, +Z in glTF",
+    "transforms": "applied"
+  },
+  "textures": [
+    {
+      "key": "near_atlas_albedo",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_facade_albedo.png",
+      "lod": "near",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_atlas_normal",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_facade_normal.png",
+      "lod": "near",
+      "channel": "normal"
+    },
+    {
+      "key": "near_atlas_roughness",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_facade_roughness.png",
+      "lod": "near",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_atlas_ao",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_facade_ao.png",
+      "lod": "near",
+      "channel": "ao"
+    },
+    {
+      "key": "near_atlas_depth",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_facade_depth.png",
+      "lod": "near",
+      "channel": "depth"
+    },
+    {
+      "key": "near_atlas_emissive",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_facade_emissive.png",
+      "lod": "near",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_atlas_glass_mask",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_facade_glass.png",
+      "lod": "near",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_atlas_opaque_mask",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_facade_opaque.png",
+      "lod": "near",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "far_atlas_albedo",
+      "path": "textures/pbr/far/midcentury-balcony-apartment-slab_registered_facade_albedo.png",
+      "lod": "far",
+      "channel": "albedo"
+    },
+    {
+      "key": "far_atlas_normal",
+      "path": "textures/pbr/far/midcentury-balcony-apartment-slab_registered_facade_normal.png",
+      "lod": "far",
+      "channel": "normal"
+    },
+    {
+      "key": "far_atlas_roughness",
+      "path": "textures/pbr/far/midcentury-balcony-apartment-slab_registered_facade_roughness.png",
+      "lod": "far",
+      "channel": "roughness"
+    },
+    {
+      "key": "far_atlas_ao",
+      "path": "textures/pbr/far/midcentury-balcony-apartment-slab_registered_facade_ao.png",
+      "lod": "far",
+      "channel": "ao"
+    },
+    {
+      "key": "far_atlas_depth",
+      "path": "textures/pbr/far/midcentury-balcony-apartment-slab_registered_facade_depth.png",
+      "lod": "far",
+      "channel": "depth"
+    },
+    {
+      "key": "far_atlas_emissive",
+      "path": "textures/pbr/far/midcentury-balcony-apartment-slab_registered_facade_emissive.png",
+      "lod": "far",
+      "channel": "emissive"
+    },
+    {
+      "key": "far_atlas_glass_mask",
+      "path": "textures/pbr/far/midcentury-balcony-apartment-slab_registered_facade_glass.png",
+      "lod": "far",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "far_atlas_opaque_mask",
+      "path": "textures/pbr/far/midcentury-balcony-apartment-slab_registered_facade_opaque.png",
+      "lod": "far",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_facade_albedo",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_facade_albedo.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_facade_normal",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_facade_normal.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "normal"
+    },
+    {
+      "key": "near_facade_roughness",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_facade_roughness.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_facade_ao",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_facade_ao.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "ao"
+    },
+    {
+      "key": "near_facade_depth",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_facade_depth.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "depth"
+    },
+    {
+      "key": "near_facade_emissive",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_facade_emissive.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_facade_glass_mask",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_facade_glass.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_facade_opaque_mask",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_facade_opaque.png",
+      "lod": "near",
+      "zone": "facade",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_podium_albedo",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_podium_albedo.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_podium_normal",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_podium_normal.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "normal"
+    },
+    {
+      "key": "near_podium_roughness",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_podium_roughness.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_podium_ao",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_podium_ao.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "ao"
+    },
+    {
+      "key": "near_podium_depth",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_podium_depth.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "depth"
+    },
+    {
+      "key": "near_podium_emissive",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_podium_emissive.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_podium_glass_mask",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_podium_glass.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_podium_opaque_mask",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_podium_opaque.png",
+      "lod": "near",
+      "zone": "podium",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_floor_a_albedo",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_floor_a_albedo.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_floor_a_normal",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_floor_a_normal.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "normal"
+    },
+    {
+      "key": "near_floor_a_roughness",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_floor_a_roughness.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_floor_a_ao",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_floor_a_ao.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "ao"
+    },
+    {
+      "key": "near_floor_a_depth",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_floor_a_depth.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "depth"
+    },
+    {
+      "key": "near_floor_a_emissive",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_floor_a_emissive.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_floor_a_glass_mask",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_floor_a_glass.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_floor_a_opaque_mask",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_floor_a_opaque.png",
+      "lod": "near",
+      "zone": "floor_a",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_floor_b_albedo",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_floor_b_albedo.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_floor_b_normal",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_floor_b_normal.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "normal"
+    },
+    {
+      "key": "near_floor_b_roughness",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_floor_b_roughness.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_floor_b_ao",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_floor_b_ao.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "ao"
+    },
+    {
+      "key": "near_floor_b_depth",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_floor_b_depth.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "depth"
+    },
+    {
+      "key": "near_floor_b_emissive",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_floor_b_emissive.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_floor_b_glass_mask",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_floor_b_glass.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_floor_b_opaque_mask",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_floor_b_opaque.png",
+      "lod": "near",
+      "zone": "floor_b",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_crown_albedo",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_crown_albedo.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_crown_normal",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_crown_normal.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "normal"
+    },
+    {
+      "key": "near_crown_roughness",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_crown_roughness.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_crown_ao",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_crown_ao.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "ao"
+    },
+    {
+      "key": "near_crown_depth",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_crown_depth.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "depth"
+    },
+    {
+      "key": "near_crown_emissive",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_crown_emissive.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_crown_glass_mask",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_crown_glass.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_crown_opaque_mask",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_crown_opaque.png",
+      "lod": "near",
+      "zone": "crown",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_side_albedo",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_side_albedo.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_side_normal",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_side_normal.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "normal"
+    },
+    {
+      "key": "near_side_roughness",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_side_roughness.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_side_ao",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_side_ao.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "ao"
+    },
+    {
+      "key": "near_side_depth",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_side_depth.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "depth"
+    },
+    {
+      "key": "near_side_emissive",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_side_emissive.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_side_glass_mask",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_side_glass.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_side_opaque_mask",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_side_opaque.png",
+      "lod": "near",
+      "zone": "side",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_interior_albedo",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_occupied_depth_albedo.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_interior_normal",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_occupied_depth_normal.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "normal"
+    },
+    {
+      "key": "near_interior_roughness",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_occupied_depth_roughness.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_interior_ao",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_occupied_depth_ao.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "ao"
+    },
+    {
+      "key": "near_interior_depth",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_occupied_depth_depth.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "depth"
+    },
+    {
+      "key": "near_interior_emissive",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_occupied_depth_emissive.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_interior_glass_mask",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_occupied_depth_glass.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_interior_opaque_mask",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_occupied_depth_opaque.png",
+      "lod": "near",
+      "zone": "interior",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_primary_albedo",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_primary_warm_exposed_concrete_slab_albedo.png",
+      "lod": "near",
+      "zone": "primary",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_primary_normal",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_primary_warm_exposed_concrete_slab_normal.png",
+      "lod": "near",
+      "zone": "primary",
+      "channel": "normal"
+    },
+    {
+      "key": "near_primary_roughness",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_primary_warm_exposed_concrete_slab_roughness.png",
+      "lod": "near",
+      "zone": "primary",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_primary_ao",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_primary_warm_exposed_concrete_slab_ao.png",
+      "lod": "near",
+      "zone": "primary",
+      "channel": "ao"
+    },
+    {
+      "key": "near_primary_depth",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_primary_warm_exposed_concrete_slab_depth.png",
+      "lod": "near",
+      "zone": "primary",
+      "channel": "depth"
+    },
+    {
+      "key": "near_primary_emissive",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_primary_warm_exposed_concrete_slab_emissive.png",
+      "lod": "near",
+      "zone": "primary",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_primary_glass_mask",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_primary_warm_exposed_concrete_slab_glass.png",
+      "lod": "near",
+      "zone": "primary",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_primary_opaque_mask",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_primary_warm_exposed_concrete_slab_opaque.png",
+      "lod": "near",
+      "zone": "primary",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_secondary_albedo",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_secondary_red_brown_brick_planter_albedo.png",
+      "lod": "near",
+      "zone": "secondary",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_secondary_normal",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_secondary_red_brown_brick_planter_normal.png",
+      "lod": "near",
+      "zone": "secondary",
+      "channel": "normal"
+    },
+    {
+      "key": "near_secondary_roughness",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_secondary_red_brown_brick_planter_roughness.png",
+      "lod": "near",
+      "zone": "secondary",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_secondary_ao",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_secondary_red_brown_brick_planter_ao.png",
+      "lod": "near",
+      "zone": "secondary",
+      "channel": "ao"
+    },
+    {
+      "key": "near_secondary_depth",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_secondary_red_brown_brick_planter_depth.png",
+      "lod": "near",
+      "zone": "secondary",
+      "channel": "depth"
+    },
+    {
+      "key": "near_secondary_emissive",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_secondary_red_brown_brick_planter_emissive.png",
+      "lod": "near",
+      "zone": "secondary",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_secondary_glass_mask",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_secondary_red_brown_brick_planter_glass.png",
+      "lod": "near",
+      "zone": "secondary",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_secondary_opaque_mask",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_secondary_red_brown_brick_planter_opaque.png",
+      "lod": "near",
+      "zone": "secondary",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_ornament_albedo",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_ornament_pale_perforated_concrete_breeze_block_albedo.png",
+      "lod": "near",
+      "zone": "ornament",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_ornament_normal",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_ornament_pale_perforated_concrete_breeze_block_normal.png",
+      "lod": "near",
+      "zone": "ornament",
+      "channel": "normal"
+    },
+    {
+      "key": "near_ornament_roughness",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_ornament_pale_perforated_concrete_breeze_block_roughness.png",
+      "lod": "near",
+      "zone": "ornament",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_ornament_ao",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_ornament_pale_perforated_concrete_breeze_block_ao.png",
+      "lod": "near",
+      "zone": "ornament",
+      "channel": "ao"
+    },
+    {
+      "key": "near_ornament_depth",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_ornament_pale_perforated_concrete_breeze_block_depth.png",
+      "lod": "near",
+      "zone": "ornament",
+      "channel": "depth"
+    },
+    {
+      "key": "near_ornament_emissive",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_ornament_pale_perforated_concrete_breeze_block_emissive.png",
+      "lod": "near",
+      "zone": "ornament",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_ornament_glass_mask",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_ornament_pale_perforated_concrete_breeze_block_glass.png",
+      "lod": "near",
+      "zone": "ornament",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_ornament_opaque_mask",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_ornament_pale_perforated_concrete_breeze_block_opaque.png",
+      "lod": "near",
+      "zone": "ornament",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_frame_albedo",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_frame_dark_aluminum_window_frame_albedo.png",
+      "lod": "near",
+      "zone": "frame",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_frame_normal",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_frame_dark_aluminum_window_frame_normal.png",
+      "lod": "near",
+      "zone": "frame",
+      "channel": "normal"
+    },
+    {
+      "key": "near_frame_roughness",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_frame_dark_aluminum_window_frame_roughness.png",
+      "lod": "near",
+      "zone": "frame",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_frame_ao",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_frame_dark_aluminum_window_frame_ao.png",
+      "lod": "near",
+      "zone": "frame",
+      "channel": "ao"
+    },
+    {
+      "key": "near_frame_depth",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_frame_dark_aluminum_window_frame_depth.png",
+      "lod": "near",
+      "zone": "frame",
+      "channel": "depth"
+    },
+    {
+      "key": "near_frame_emissive",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_frame_dark_aluminum_window_frame_emissive.png",
+      "lod": "near",
+      "zone": "frame",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_frame_glass_mask",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_frame_dark_aluminum_window_frame_glass.png",
+      "lod": "near",
+      "zone": "frame",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_frame_opaque_mask",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_frame_dark_aluminum_window_frame_opaque.png",
+      "lod": "near",
+      "zone": "frame",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_glass_albedo",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_glass_neutral_clear_balcony_and_apartment_glass_albedo.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_glass_normal",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_glass_neutral_clear_balcony_and_apartment_glass_normal.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "normal"
+    },
+    {
+      "key": "near_glass_roughness",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_glass_neutral_clear_balcony_and_apartment_glass_roughness.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_glass_ao",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_glass_neutral_clear_balcony_and_apartment_glass_ao.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "ao"
+    },
+    {
+      "key": "near_glass_depth",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_glass_neutral_clear_balcony_and_apartment_glass_depth.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "depth"
+    },
+    {
+      "key": "near_glass_emissive",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_glass_neutral_clear_balcony_and_apartment_glass_emissive.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_glass_glass_mask",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_glass_neutral_clear_balcony_and_apartment_glass_glass.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_glass_opaque_mask",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_glass_neutral_clear_balcony_and_apartment_glass_opaque.png",
+      "lod": "near",
+      "zone": "glass",
+      "channel": "opaque_mask"
+    },
+    {
+      "key": "near_roof_albedo",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_roof_pale_concrete_canopy_and_pergola_albedo.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "albedo"
+    },
+    {
+      "key": "near_roof_normal",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_roof_pale_concrete_canopy_and_pergola_normal.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "normal"
+    },
+    {
+      "key": "near_roof_roughness",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_roof_pale_concrete_canopy_and_pergola_roughness.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "roughness"
+    },
+    {
+      "key": "near_roof_ao",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_roof_pale_concrete_canopy_and_pergola_ao.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "ao"
+    },
+    {
+      "key": "near_roof_depth",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_roof_pale_concrete_canopy_and_pergola_depth.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "depth"
+    },
+    {
+      "key": "near_roof_emissive",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_roof_pale_concrete_canopy_and_pergola_emissive.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "emissive"
+    },
+    {
+      "key": "near_roof_glass_mask",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_roof_pale_concrete_canopy_and_pergola_glass.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "glass_mask"
+    },
+    {
+      "key": "near_roof_opaque_mask",
+      "path": "textures/pbr/near/midcentury-balcony-apartment-slab_roof_pale_concrete_canopy_and_pergola_opaque.png",
+      "lod": "near",
+      "zone": "roof",
+      "channel": "opaque_mask"
+    }
+  ],
+  "facade_sheet": {
+    "schema": "facade-sheet@5",
+    "source_directory": "/families/midcentury-balcony-apartment-slab",
+    "model": "gpt-image-2",
+    "style_reference": "/families/midcentury-balcony-apartment-slab/elevation.jpg",
+    "runtime_material_profile": "pbr_physical_glazing_v2",
+    "geometry_detail_profile": "hero",
+    "pbr_channels": [
+      "albedo",
+      "normal",
+      "roughness",
+      "ao",
+      "depth",
+      "emissive"
+    ],
+    "shadow_neutral": {
+      "enabled": true,
+      "method": "orthographic render-locked design sheet with neutral survey light",
+      "lighting_authority": "City Prompt environment and sun"
+    },
+    "bay_strategy": {
+      "fixed_end_bays": [
+        "integral_public_entrance",
+        "complete_corner_returns",
+        "variant_specific_roof_or_crown",
+        "variant_specific_ornament"
+      ],
+      "repeatable_middle_bays": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "middle_variants": [
+        "typical_a",
+        "typical_b",
+        "typical_c"
+      ],
+      "rule": "Repeat a complete semantic bay containing physical glass, occupied depth, frame, structure or screen, wall return and floor datum; never stretch an individual pane or ornament."
+    },
+    "delivery": {
+      "near_atlas_width_px": 2048,
+      "far_atlas_width_px": 1024,
+      "near_usage": "close-range physical glazing and material reference",
+      "far_usage": "city-scale baked facade reference",
+      "container": "PNG registered PBR atlases embedded in GLB materials"
+    },
+    "assembly_contract": {
+      "fixed": [
+        "podium/entrance",
+        "corner returns",
+        "crown",
+        "roof",
+        "continuous_wraparound_balcony_slabs",
+        "physical_clear_guards",
+        "real_gap_breeze_block_screens",
+        "integrated_planted_upstands",
+        "transparent_retail_lobby"
+      ],
+      "repeatable": [
+        "typical_a",
+        "typical_b",
+        "typical_c"
+      ],
+      "side_elevations": "complete wrapped left and right construction with reference-related but independently scheduled secondary openings",
+      "elevation_coverage": {
+        "front": "complete reference-locked public elevation",
+        "left": "complete wrapped secondary construction",
+        "right": "complete wrapped secondary construction",
+        "rear": "complete occupied service elevation",
+        "roof": "complete variant-specific roof, terraces, courts and crowns"
+      },
+      "variation_policy": "Use the fixed landmark throughout the 0.62–1.40 independent-axis band; oversized targets streetwall-repeat complete long-axis construction bays rather than returning family_incompatible."
+    },
+    "assets": {
+      "skin_manifest": "textures/skin_manifest.json",
+      "source": "textures/source/elevation-source-v1.png",
+      "near": {
+        "albedo": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_facade_albedo.png",
+        "normal": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_facade_normal.png",
+        "roughness": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_facade_roughness.png",
+        "ao": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_facade_ao.png",
+        "depth": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_facade_depth.png",
+        "emissive": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_facade_emissive.png",
+        "glass_mask": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_facade_glass.png",
+        "opaque_mask": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_facade_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/midcentury-balcony-apartment-slab_registered_facade_albedo.png",
+        "normal": "textures/pbr/far/midcentury-balcony-apartment-slab_registered_facade_normal.png",
+        "roughness": "textures/pbr/far/midcentury-balcony-apartment-slab_registered_facade_roughness.png",
+        "ao": "textures/pbr/far/midcentury-balcony-apartment-slab_registered_facade_ao.png",
+        "depth": "textures/pbr/far/midcentury-balcony-apartment-slab_registered_facade_depth.png",
+        "emissive": "textures/pbr/far/midcentury-balcony-apartment-slab_registered_facade_emissive.png",
+        "glass_mask": "textures/pbr/far/midcentury-balcony-apartment-slab_registered_facade_glass.png",
+        "opaque_mask": "textures/pbr/far/midcentury-balcony-apartment-slab_registered_facade_opaque.png"
+      },
+      "semantic_masks": {
+        "glass_mask": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_facade_glass.png",
+        "opaque_mask": "textures/pbr/near/midcentury-balcony-apartment-slab_registered_facade_opaque.png"
+      }
+    },
+    "reference_registration": {
+      "mode": "archetype_specific",
+      "source_archetype_id": "west_end_mid_century_tower",
+      "source_variant_id": "midcentury_balcony_tower",
+      "registered_elevations": [
+        "front",
+        "left",
+        "right",
+        "rear",
+        "roof"
+      ],
+      "registered_surfaces": [
+        "catalogue_card_building_envelope",
+        "physical_recessed_glazing_and_occupied_depth",
+        "complete_grounded_threshold_and_entrance",
+        "variant_specific_roof_and_crown",
+        "wrapped_left_right_and_rear_elevations",
+        "repeatable_complete_construction_bays"
+      ],
+      "uv_strategy": "camera-registered public elevation, true-scale material zones on physical construction, occupied-depth underlay immediately behind registered glazing, and related secondary-elevation schedules wrapped around the complete envelope",
+      "depth_binding": "shader_bump",
+      "generic_tiling_allowed": false
+    },
+    "goalpost_reference": "/families/midcentury-balcony-apartment-slab/textures/source/archetype-goalpost.png",
+    "goalpost_policy": "Locked archetype image controls silhouette, proportions, openings, roof hierarchy, entrance geometry, and material hierarchy.",
+    "variant_id": "midcentury_balcony_tower"
+  },
+  "massing_graph": {
+    "type": "fixed_midcentury_balcony_tower_with_repeatable_complete_common_bays",
+    "variant_id": "midcentury_balcony_tower",
+    "occupied_storeys": 11,
+    "features": [
+      "continuous_wraparound_balcony_slabs",
+      "physical_clear_guards",
+      "real_gap_breeze_block_screens",
+      "integrated_planted_upstands",
+      "transparent_retail_lobby"
+    ],
+    "physical_window_layers": [
+      "occupied_depth",
+      "physical_pane",
+      "separate_frame",
+      "head_and_sill",
+      "floor_datum",
+      "material_return"
+    ],
+    "fallback_policy": "fixed identity ends plus repeatable complete room dwelling storefront classroom or industrial-panel bays"
+  },
+  "quality_standard_evidence": {
+    "standard_id": "haussmann-depth-shape-skin-scale@1",
+    "distinctive_shape_features": [
+      "continuous_wraparound_balcony_slabs",
+      "physical_clear_guards",
+      "real_gap_breeze_block_screens",
+      "integrated_planted_upstands",
+      "transparent_retail_lobby"
+    ],
+    "physical_depth_features": [
+      "occupied_depth",
+      "physical_pane",
+      "separate_frame",
+      "head_and_sill",
+      "floor_datum",
+      "material_return"
+    ],
+    "photoreal_skin_approved": false,
+    "fixed_identity_anchors": [
+      "podium/entrance",
+      "corner returns",
+      "crown",
+      "roof"
+    ],
+    "repeatable_middle_roles": [
+      "floor/typical_a",
+      "floor/typical_b",
+      "floor/typical_c"
+    ],
+    "comparison_views": [
+      "street",
+      "context",
+      "front_elevation",
+      "front_corner_oblique",
+      "rear_corner_oblique",
+      "aerial",
+      "facade_close"
+    ],
+    "comparison_sheet": "midcentury-balcony-apartment-slab_comparison.jpg",
+    "human_visual_approval": false
+  },
+  "material_budget": {
+    "max_assembled_materials": 18,
+    "rationale": "Variant-specific opaque construction, physical glazing, occupied depth, expressed structure, screens, ornament and roof finishes remain separate because their optical contrast carries the catalogue identity."
+  },
+  "dimensions": {
+    "width_m": 21.5,
+    "depth_m": 21.8,
+    "podium_height_m": 3.5,
+    "floor_height_m": 3.15,
+    "setback_height_m": 3.15,
+    "roof_height_m": 1.2,
+    "crown_height_m": 1.0,
+    "default_floors": 11,
+    "min_floors": 8,
+    "max_floors": 20
+  },
+  "native_width_m": 21.5,
+  "native_depth_m": 21.8,
+  "native_height_m": 37.87,
+  "native_floors": 11,
+  "min_floors": 8,
+  "max_floors": 20,
+  "default_floors": 11,
+  "modules": [
+    {
+      "role": "podium",
+      "variant_key": "default",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "midcentury-balcony-apartment-slab_podium.glb",
+      "module_family": "midcentury-balcony-apartment-slab",
+      "width_m": 11.0,
+      "depth_m": 14.285,
+      "height_m": 3.5,
+      "floor_height_m": 3.15,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 120,
+      "material_count": 8,
+      "texture_keys": [
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "frame",
+        "glass",
+        "interior",
+        "ornament",
+        "podium",
+        "primary",
+        "roof",
+        "secondary",
+        "side"
+      ],
+      "texture_lod": "far",
+      "ao_baked": true,
+      "size_bytes": 1104136
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_a",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "midcentury-balcony-apartment-slab_floor_typical_a.glb",
+      "module_family": "midcentury-balcony-apartment-slab",
+      "width_m": 11.0,
+      "depth_m": 14.04,
+      "height_m": 3.15,
+      "floor_height_m": 3.15,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 432,
+      "material_count": 8,
+      "texture_keys": [
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "frame",
+        "glass",
+        "interior",
+        "ornament",
+        "podium",
+        "primary",
+        "roof",
+        "secondary",
+        "side"
+      ],
+      "texture_lod": "far",
+      "ao_baked": true,
+      "size_bytes": 1548260
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_b",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "midcentury-balcony-apartment-slab_floor_typical_b.glb",
+      "module_family": "midcentury-balcony-apartment-slab",
+      "width_m": 11.0,
+      "depth_m": 14.04,
+      "height_m": 3.15,
+      "floor_height_m": 3.15,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 624,
+      "material_count": 8,
+      "texture_keys": [
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "frame",
+        "glass",
+        "interior",
+        "ornament",
+        "podium",
+        "primary",
+        "roof",
+        "secondary",
+        "side"
+      ],
+      "texture_lod": "far",
+      "ao_baked": true,
+      "size_bytes": 1555248
+    },
+    {
+      "role": "floor",
+      "variant_key": "typical_c",
+      "assembly_class": "repeatable_middle",
+      "fixed_semantic": false,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "midcentury-balcony-apartment-slab_floor_typical_c.glb",
+      "module_family": "midcentury-balcony-apartment-slab",
+      "width_m": 11.0,
+      "depth_m": 14.04,
+      "height_m": 3.15,
+      "floor_height_m": 3.15,
+      "repeatable_z": true,
+      "allow_inset_footprint": true,
+      "triangle_count": 816,
+      "material_count": 8,
+      "texture_keys": [
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "frame",
+        "glass",
+        "interior",
+        "ornament",
+        "podium",
+        "primary",
+        "roof",
+        "secondary",
+        "side"
+      ],
+      "texture_lod": "far",
+      "ao_baked": true,
+      "size_bytes": 1562656
+    },
+    {
+      "role": "crown",
+      "variant_key": "crown",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "midcentury-balcony-apartment-slab_crown_crown.glb",
+      "module_family": "midcentury-balcony-apartment-slab",
+      "width_m": 11.0,
+      "depth_m": 13.895,
+      "height_m": 1.0,
+      "floor_height_m": 3.15,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 132,
+      "material_count": 5,
+      "texture_keys": [
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "frame",
+        "glass",
+        "interior",
+        "ornament",
+        "podium",
+        "primary",
+        "roof",
+        "secondary",
+        "side"
+      ],
+      "texture_lod": "far",
+      "ao_baked": true,
+      "size_bytes": 461380
+    },
+    {
+      "role": "roof",
+      "variant_key": "default",
+      "assembly_class": "fixed_semantic",
+      "fixed_semantic": true,
+      "lod": 0,
+      "allowed_levels": [
+        0,
+        1,
+        2
+      ],
+      "filename": "midcentury-balcony-apartment-slab_roof.glb",
+      "module_family": "midcentury-balcony-apartment-slab",
+      "width_m": 11.25,
+      "depth_m": 13.85,
+      "height_m": 1.2,
+      "floor_height_m": 3.15,
+      "repeatable_z": false,
+      "allow_inset_footprint": true,
+      "triangle_count": 96,
+      "material_count": 5,
+      "texture_keys": [
+        "crown",
+        "facade",
+        "floor_a",
+        "floor_b",
+        "frame",
+        "glass",
+        "interior",
+        "ornament",
+        "podium",
+        "primary",
+        "roof",
+        "secondary",
+        "side"
+      ],
+      "texture_lod": "far",
+      "ao_baked": true,
+      "size_bytes": 459308
+    }
+  ],
+  "assembled": {
+    "filename": "midcentury-balcony-apartment-slab_assembled.glb",
+    "module_family": "midcentury-balcony-apartment-slab",
+    "assembly_class": "fixed_landmark",
+    "fixed_semantic": true,
+    "repeatable_z": false,
+    "source_variant_id": "midcentury_balcony_tower",
+    "generation_archetype_id": "midcentury_balcony_tower",
+    "width_m": 21.5,
+    "depth_m": 21.8,
+    "floors": 11,
+    "uses_setback": false,
+    "uses_crown": true,
+    "height_m": 37.87,
+    "triangle_count": 59940,
+    "material_count": 8,
+    "stack": [
+      {
+        "role": "assembled",
+        "variant_key": "reference_locked",
+        "level": 0,
+        "z_m": 0.0,
+        "height_m": 37.87
+      }
+    ],
+    "footprint_profile": "rectangle",
+    "footprint_target": {
+      "width_m": 21.5,
+      "depth_m": 21.8,
+      "segments": [
+        {
+          "id": "complete_fixed_landmark",
+          "centre_x_m": 0.0,
+          "centre_y_m": 0.0,
+          "length_m": 21.5,
+          "thickness_m": 21.8,
+          "rotation_degrees": 0.0
+        }
+      ]
+    },
+    "massing_graph": {
+      "type": "fixed_midcentury_balcony_tower_with_repeatable_complete_common_bays",
+      "variant_id": "midcentury_balcony_tower",
+      "occupied_storeys": 11,
+      "features": [
+        "continuous_wraparound_balcony_slabs",
+        "physical_clear_guards",
+        "real_gap_breeze_block_screens",
+        "integrated_planted_upstands",
+        "transparent_retail_lobby"
+      ],
+      "physical_window_layers": [
+        "occupied_depth",
+        "physical_pane",
+        "separate_frame",
+        "head_and_sill",
+        "floor_datum",
+        "material_return"
+      ],
+      "fallback_policy": "fixed identity ends plus repeatable complete room dwelling storefront classroom or industrial-panel bays"
+    },
+    "texture_keys": [
+      "crown",
+      "facade",
+      "floor_a",
+      "floor_b",
+      "frame",
+      "glass",
+      "interior",
+      "ornament",
+      "podium",
+      "primary",
+      "roof",
+      "secondary",
+      "side"
+    ],
+    "ao_baked": true,
+    "edge_treatment": {
+      "method": "adaptive_physical_delivery_bevel",
+      "segments": 2,
+      "minimum_assembled_triangles": 12000
+    }
+  },
+  "thumbnail": "midcentury-balcony-apartment-slab_preview.png",
+  "renders": [
+    "midcentury-balcony-apartment-slab_preview.png",
+    "midcentury-balcony-apartment-slab_street.png",
+    "midcentury-balcony-apartment-slab_context.png",
+    "midcentury-balcony-apartment-slab_front_corner_oblique.png",
+    "midcentury-balcony-apartment-slab_front_elevation.png",
+    "midcentury-balcony-apartment-slab_rear_corner_oblique.png",
+    "midcentury-balcony-apartment-slab_aerial.png",
+    "midcentury-balcony-apartment-slab_facade_close.png"
+  ],
+  "architectural_identity": "An eleven-storey concrete apartment slab stacks continuous wraparound balcony plates, clear glass rails, dark occupied window walls and vertical perforated breeze-block screens above a transparent neighbourhood retail lobby.",
+  "material_zones": "warm exposed concrete slabs; red-brown brick balcony planters; pale perforated concrete breeze block; dark aluminum frames; neutral clear balcony and apartment glass; pale concrete roof canopy and pergola",
+  "glass_profile": "clear_midcentury_balcony_glass_with_deep_apartment_rooms",
+  "source_provenance": {
+    "catalogue_archetype_id": "west_end_mid_century_tower",
+    "catalogue_variant_id": "midcentury_balcony_tower",
+    "catalogue_alias_ids": [
+      "midcentury_balcony_apartment_slab"
+    ],
+    "elevation_source": "/families/midcentury-balcony-apartment-slab/elevation.jpg",
+    "goalpost": "/families/midcentury-balcony-apartment-slab/textures/source/archetype-goalpost.png",
+    "reference_generation": "/families/midcentury-balcony-apartment-slab/textures/source/reference-generation.json",
+    "method": "immutable shipped catalogue card; deterministic material extraction; shared true-metric construction kits; physical layered glazing; occupied depth; complete secondary elevations; normalized bottom-centre origin; fixed whole-building landmark and complete-semantic-bay LEGO fallback",
+    "coverage_cohort": "commonplace_standard",
+    "catalogue_card_preserved": true
+  }
+}

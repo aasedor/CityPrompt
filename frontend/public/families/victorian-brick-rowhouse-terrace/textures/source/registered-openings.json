@@ -1,0 +1,6 @@
+{
+  "schema": "registered-openings@1",
+  "source": "elevation-source-v1.png",
+  "method": "Every visible opening uses a separate occupied-depth backing, pane, frame, sill and surrounding return. Balconies, stairs, guards, canopies and screens remain independent true-depth geometry.",
+  "physical_geometry_required": true
+}

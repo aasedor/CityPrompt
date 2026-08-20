@@ -1,0 +1,119 @@
+{
+  "family_id": "tilt-up-light-industrial-workshop",
+  "source": {
+    "archetype_id": "industrial_park_modernism",
+    "variant_id": "industrial_tilt_up_concrete",
+    "generation_archetype_id": "industrial_tilt_up_concrete",
+    "reuse_keys": [
+      "industrial_park_modernism",
+      "industrial_tilt_up_concrete",
+      "tilt_up_light_industrial_workshop",
+      "Light Industrial",
+      "Tilt-Up Workshop",
+      "Warehouse and Office"
+    ]
+  },
+  "dimensions": {
+    "width_m": 60.665,
+    "depth_m": 36.875,
+    "podium_height_m": 5.2,
+    "floor_height_m": 5.2,
+    "setback_height_m": 5.2,
+    "roof_height_m": 0.5,
+    "crown_height_m": 0.7,
+    "default_floors": 1,
+    "min_floors": 1,
+    "max_floors": 3
+  },
+  "architectural_signature": {
+    "identity": "A broad tilt-up concrete light-industrial workshop uses real panel joints and tie holes, a recessed two-storey office entrance, ribbon glazing, four deep loading doors, steel canopies, bollards and a screened flat service roof.",
+    "material_zones": "warm grey tilt-up concrete panels; darker exposed aggregate base; galvanized loading canopies and bollards; charcoal aluminum office frames; neutral industrial glazing with sparse occupied depth; pale membrane roof and dark coping",
+    "glass_profile": "neutral_industrial_office_glass_with_sparse_occupied_depth",
+    "kits": [
+      "reference_locked_fixed_landmark",
+      "physical_layered_glazing",
+      "occupied_interior_depth",
+      "semantic_repeatable_middle_bays",
+      "fixed_variant_roof_and_identity_kit",
+      "complete_tilt_up_panel_field",
+      "real_panel_joints_and_tie_holes",
+      "recessed_two_level_office",
+      "four_deep_loading_portals",
+      "grounded_canopies_and_bollards"
+    ]
+  },
+  "archetype_aliases": [
+    "industrial_park_modernism",
+    "industrial_tilt_up_concrete",
+    "tilt_up_light_industrial_workshop"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 1,
+    "profileRationale": "The complete commonplace building remains fixed through the 0.62x-1.40x band. Larger drawings repeat complete 10.00 m rooms, dwellings, storefronts, classrooms or industrial panels; entrances, stairs, corners, roofs and crowns never stretch independently.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.62,
+      "scaleMax": 1.4,
+      "maxAxisRatio": 1.3
+    },
+    "recommendedWidth_m": [
+      37.2,
+      84.0
+    ],
+    "recommendedDepth_m": [
+      21.7,
+      49.0
+    ],
+    "recommendedFloors": [
+      1,
+      3
+    ],
+    "scaleMin": 0.62,
+    "scaleMax": 1.4,
+    "maxAxisRatio": 1.3,
+    "preferredBayMultiple_m": 10.0,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          37.2,
+          84.0
+        ],
+        "recommendedDepth_m": [
+          21.7,
+          49.0
+        ],
+        "recommendedFloors": [
+          1,
+          3
+        ],
+        "scaleMin": 0.62,
+        "scaleMax": 1.4,
+        "maxAxisRatio": 1.3,
+        "preferredBayMultiple_m": 10.0
+      }
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_tilt_up_industrial_with_repeatable_complete_common_bays",
+    "variant_id": "industrial_tilt_up_concrete",
+    "occupied_storeys": 1,
+    "features": [
+      "complete_tilt_up_panel_field",
+      "real_panel_joints_and_tie_holes",
+      "recessed_two_level_office",
+      "four_deep_loading_portals",
+      "grounded_canopies_and_bollards"
+    ],
+    "physical_window_layers": [
+      "occupied_depth",
+      "physical_pane",
+      "separate_frame",
+      "head_and_sill",
+      "floor_datum",
+      "material_return"
+    ],
+    "fallback_policy": "fixed identity ends plus repeatable complete room dwelling storefront classroom or industrial-panel bays"
+  }
+}

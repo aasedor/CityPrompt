@@ -1,0 +1,119 @@
+{
+  "family_id": "midcentury-balcony-apartment-slab",
+  "source": {
+    "archetype_id": "west_end_mid_century_tower",
+    "variant_id": "midcentury_balcony_tower",
+    "generation_archetype_id": "midcentury_balcony_tower",
+    "reuse_keys": [
+      "west_end_mid_century_tower",
+      "midcentury_balcony_tower",
+      "midcentury_balcony_apartment_slab",
+      "Mid-Century Apartment Tower",
+      "Balcony Tower",
+      "Residential High-Rise"
+    ]
+  },
+  "dimensions": {
+    "width_m": 21.5,
+    "depth_m": 21.8,
+    "podium_height_m": 3.5,
+    "floor_height_m": 3.15,
+    "setback_height_m": 3.15,
+    "roof_height_m": 1.2,
+    "crown_height_m": 1.0,
+    "default_floors": 11,
+    "min_floors": 8,
+    "max_floors": 20
+  },
+  "architectural_signature": {
+    "identity": "An eleven-storey concrete apartment slab stacks continuous wraparound balcony plates, clear glass rails, dark occupied window walls and vertical perforated breeze-block screens above a transparent neighbourhood retail lobby.",
+    "material_zones": "warm exposed concrete slabs; red-brown brick balcony planters; pale perforated concrete breeze block; dark aluminum frames; neutral clear balcony and apartment glass; pale concrete roof canopy and pergola",
+    "glass_profile": "clear_midcentury_balcony_glass_with_deep_apartment_rooms",
+    "kits": [
+      "reference_locked_fixed_landmark",
+      "physical_layered_glazing",
+      "occupied_interior_depth",
+      "semantic_repeatable_middle_bays",
+      "fixed_variant_roof_and_identity_kit",
+      "continuous_wraparound_balcony_slabs",
+      "physical_clear_guards",
+      "real_gap_breeze_block_screens",
+      "integrated_planted_upstands",
+      "transparent_retail_lobby"
+    ]
+  },
+  "archetype_aliases": [
+    "west_end_mid_century_tower",
+    "midcentury_balcony_tower",
+    "midcentury_balcony_apartment_slab"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 1,
+    "profileRationale": "The complete commonplace building remains fixed through the 0.62x-1.40x band. Larger drawings repeat complete 3.33 m rooms, dwellings, storefronts, classrooms or industrial panels; entrances, stairs, corners, roofs and crowns never stretch independently.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.62,
+      "scaleMax": 1.4,
+      "maxAxisRatio": 1.3
+    },
+    "recommendedWidth_m": [
+      12.4,
+      28.0
+    ],
+    "recommendedDepth_m": [
+      12.4,
+      28.0
+    ],
+    "recommendedFloors": [
+      8,
+      20
+    ],
+    "scaleMin": 0.62,
+    "scaleMax": 1.4,
+    "maxAxisRatio": 1.3,
+    "preferredBayMultiple_m": 3.33,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          12.4,
+          28.0
+        ],
+        "recommendedDepth_m": [
+          12.4,
+          28.0
+        ],
+        "recommendedFloors": [
+          8,
+          20
+        ],
+        "scaleMin": 0.62,
+        "scaleMax": 1.4,
+        "maxAxisRatio": 1.3,
+        "preferredBayMultiple_m": 3.33
+      }
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_midcentury_balcony_tower_with_repeatable_complete_common_bays",
+    "variant_id": "midcentury_balcony_tower",
+    "occupied_storeys": 11,
+    "features": [
+      "continuous_wraparound_balcony_slabs",
+      "physical_clear_guards",
+      "real_gap_breeze_block_screens",
+      "integrated_planted_upstands",
+      "transparent_retail_lobby"
+    ],
+    "physical_window_layers": [
+      "occupied_depth",
+      "physical_pane",
+      "separate_frame",
+      "head_and_sill",
+      "floor_datum",
+      "material_return"
+    ],
+    "fallback_policy": "fixed identity ends plus repeatable complete room dwelling storefront classroom or industrial-panel bays"
+  }
+}

@@ -1,0 +1,119 @@
+{
+  "family_id": "new-law-brick-walkup",
+  "source": {
+    "archetype_id": "new_york_walk_up_tenement",
+    "variant_id": "tenement_new_law",
+    "generation_archetype_id": "tenement_new_law",
+    "reuse_keys": [
+      "new_york_walk_up_tenement",
+      "tenement_new_law",
+      "new_law_brick_walkup",
+      "Walk-Up Apartment",
+      "Brick Tenement",
+      "Mixed-Use Residential"
+    ]
+  },
+  "dimensions": {
+    "width_m": 26.173,
+    "depth_m": 21.25,
+    "podium_height_m": 3.5,
+    "floor_height_m": 3.15,
+    "setback_height_m": 3.15,
+    "roof_height_m": 0.45,
+    "crown_height_m": 1.0,
+    "default_floors": 5,
+    "min_floors": 4,
+    "max_floors": 6
+  },
+  "architectural_signature": {
+    "identity": "A five-storey red-brick corner walk-up combines a dark framed retail base, repetitive stone-trimmed sash, projecting metal fire escapes, a deep bracketed cornice and complete secondary street and rear elevations.",
+    "material_zones": "aged warm red brick; carved brownstone lintels and cornice; black painted fire-escape steel; dark bronze storefront and sash frames; neutral apartment glass with varied occupied depth; dark built-up roof",
+    "glass_profile": "heritage_apartment_sash_with_varied_occupied_depth",
+    "kits": [
+      "reference_locked_fixed_landmark",
+      "physical_layered_glazing",
+      "occupied_interior_depth",
+      "semantic_repeatable_middle_bays",
+      "fixed_variant_roof_and_identity_kit",
+      "complete_corner_retail_base",
+      "four_residential_window_storeys",
+      "two_supported_fire_escape_stacks",
+      "wrapped_secondary_elevation",
+      "deep_bracketed_cornice"
+    ]
+  },
+  "archetype_aliases": [
+    "new_york_walk_up_tenement",
+    "tenement_new_law",
+    "new_law_brick_walkup"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 1,
+    "profileRationale": "The complete commonplace building remains fixed through the 0.62x-1.40x band. Larger drawings repeat complete 4.00 m rooms, dwellings, storefronts, classrooms or industrial panels; entrances, stairs, corners, roofs and crowns never stretch independently.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.62,
+      "scaleMax": 1.4,
+      "maxAxisRatio": 1.3
+    },
+    "recommendedWidth_m": [
+      14.9,
+      33.6
+    ],
+    "recommendedDepth_m": [
+      12.4,
+      28.0
+    ],
+    "recommendedFloors": [
+      4,
+      6
+    ],
+    "scaleMin": 0.62,
+    "scaleMax": 1.4,
+    "maxAxisRatio": 1.3,
+    "preferredBayMultiple_m": 4.0,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          14.9,
+          33.6
+        ],
+        "recommendedDepth_m": [
+          12.4,
+          28.0
+        ],
+        "recommendedFloors": [
+          4,
+          6
+        ],
+        "scaleMin": 0.62,
+        "scaleMax": 1.4,
+        "maxAxisRatio": 1.3,
+        "preferredBayMultiple_m": 4.0
+      }
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_new_law_tenement_with_repeatable_complete_common_bays",
+    "variant_id": "tenement_new_law",
+    "occupied_storeys": 5,
+    "features": [
+      "complete_corner_retail_base",
+      "four_residential_window_storeys",
+      "two_supported_fire_escape_stacks",
+      "wrapped_secondary_elevation",
+      "deep_bracketed_cornice"
+    ],
+    "physical_window_layers": [
+      "occupied_depth",
+      "physical_pane",
+      "separate_frame",
+      "head_and_sill",
+      "floor_datum",
+      "material_return"
+    ],
+    "fallback_policy": "fixed identity ends plus repeatable complete room dwelling storefront classroom or industrial-panel bays"
+  }
+}

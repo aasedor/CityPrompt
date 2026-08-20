@@ -1,0 +1,13 @@
+{
+  "catalogue_archetype_id": "industrial_park_modernism",
+  "catalogue_variant_id": "industrial_tilt_up_concrete",
+  "catalogue_alias_ids": [
+    "tilt_up_light_industrial_workshop"
+  ],
+  "elevation_source": "/families/tilt-up-light-industrial-workshop/elevation.jpg",
+  "goalpost": "/families/tilt-up-light-industrial-workshop/textures/source/archetype-goalpost.png",
+  "reference_generation": "/families/tilt-up-light-industrial-workshop/textures/source/reference-generation.json",
+  "method": "immutable shipped catalogue card; deterministic material extraction; shared true-metric construction kits; physical layered glazing; occupied depth; complete secondary elevations; normalized bottom-centre origin; fixed whole-building landmark and complete-semantic-bay LEGO fallback",
+  "coverage_cohort": "commonplace_standard",
+  "catalogue_card_preserved": true
+}

@@ -1,0 +1,13 @@
+{
+  "catalogue_archetype_id": "commercial_strip_mall",
+  "catalogue_variant_id": "strip_single_storey_classic",
+  "catalogue_alias_ids": [
+    "classic_neighbourhood_strip_mall"
+  ],
+  "elevation_source": "/families/classic-neighbourhood-strip-mall/elevation.jpg",
+  "goalpost": "/families/classic-neighbourhood-strip-mall/textures/source/archetype-goalpost.png",
+  "reference_generation": "/families/classic-neighbourhood-strip-mall/textures/source/reference-generation.json",
+  "method": "immutable shipped catalogue card; deterministic material extraction; shared true-metric construction kits; physical layered glazing; occupied depth; complete secondary elevations; normalized bottom-centre origin; fixed whole-building landmark and complete-semantic-bay LEGO fallback",
+  "coverage_cohort": "commonplace_standard",
+  "catalogue_card_preserved": true
+}

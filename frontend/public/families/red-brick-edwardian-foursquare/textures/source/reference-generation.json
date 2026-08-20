@@ -1,0 +1,64 @@
+{
+  "schema": "reference-generation@1",
+  "family": "red-brick-edwardian-foursquare",
+  "archetype_id": "edwardian_foursquare",
+  "variant_id": "classic_red_brick_foursquare",
+  "provider": "CityPrompt registered catalogue asset",
+  "model": "pre-existing-catalogue-reference",
+  "generated_at": "2026-08-20",
+  "status": "catalogue-source-registered",
+  "input_paths": [
+    "/archetypes/buildings/edwardian-foursquare/variant_0.png"
+  ],
+  "catalogue_card_path": "/archetypes/buildings/edwardian-foursquare/variant_0.png",
+  "source_mode": "existing_catalogue_card_material_and_shape_goalpost",
+  "design_lock": {
+    "native_envelope_dimensions_m": [
+      11.0,
+      13.0,
+      9.5
+    ],
+    "occupied_storeys": 2,
+    "variant_specific_contract": "11 m by 13 m, two occupied storeys; one square red-brick body, deep four-sided hip, centred front dormer, continuous full-width porch, symmetrical stair and tall vertically proportioned sash remain one composition.",
+    "material_zones": "warm pressed red brick; pale limestone lintels and sills; dark stained porch timber; cream painted sash and columns; neutral heritage glass with warm room depth; dark brown asphalt shingle roof",
+    "glass_profile": "heritage_double_hung_sash_with_warm_room_depth",
+    "coverage_cohort": "commonplace_standard"
+  },
+  "sources": [
+    {
+      "file": "archetype-goalpost.png",
+      "source_id": "catalogue:edwardian_foursquare:classic_red_brick_foursquare",
+      "role": "immutable_shipped_catalogue_goalpost"
+    },
+    {
+      "file": "elevation-source-v1.png",
+      "source_id": "catalogue-crop:classic_red_brick_foursquare:building",
+      "role": "registered_building_crop_for_colour_and_material_scale"
+    },
+    {
+      "file": "occupied-depth-source-v1.png",
+      "source_id": "catalogue-crop:classic_red_brick_foursquare:occupied",
+      "role": "registered_occupied_window_depth_crop"
+    },
+    {
+      "file": "primary-material-source.png",
+      "source_id": "catalogue-crop:classic_red_brick_foursquare:primary",
+      "role": "registered_primary_material_crop"
+    },
+    {
+      "file": "secondary-material-source.png",
+      "source_id": "catalogue-crop:classic_red_brick_foursquare:secondary",
+      "role": "registered_secondary_material_crop"
+    },
+    {
+      "file": "ornament-material-source.png",
+      "source_id": "catalogue-crop:classic_red_brick_foursquare:ornament",
+      "role": "registered_ornament_material_crop"
+    },
+    {
+      "file": "roof-material-source.png",
+      "source_id": "catalogue-crop:classic_red_brick_foursquare:roof",
+      "role": "registered_roof_material_crop"
+    }
+  ]
+}

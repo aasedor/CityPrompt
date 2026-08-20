@@ -1,0 +1,119 @@
+{
+  "family_id": "provincial-brick-neighbourhood-school",
+  "source": {
+    "archetype_id": "ecole_republicaine",
+    "variant_id": "ecole-republicaine-provincial-brick",
+    "generation_archetype_id": "ecole-republicaine-provincial-brick",
+    "reuse_keys": [
+      "ecole_republicaine",
+      "ecole-republicaine-provincial-brick",
+      "provincial_brick_neighbourhood_school",
+      "Neighbourhood School",
+      "Elementary School",
+      "Education"
+    ]
+  },
+  "dimensions": {
+    "width_m": 40.85,
+    "depth_m": 28.31,
+    "podium_height_m": 3.7,
+    "floor_height_m": 3.55,
+    "setback_height_m": 3.55,
+    "roof_height_m": 3.0,
+    "crown_height_m": 0.8,
+    "default_floors": 3,
+    "min_floors": 2,
+    "max_floors": 4
+  },
+  "architectural_signature": {
+    "identity": "A symmetrical three-storey neighbourhood school forms a shallow U around a protected entrance court, with warm brick classroom wings, pale stone base and floor bands, tall grouped windows, pitched metal roofs, an arched gateway and a modest clock-and-bell tower.",
+    "material_zones": "warm buff-red provincial brick; pale limestone base and bands; patinated copper clock and gateway trim; dark bronze window frames; neutral classroom glazing with occupied depth; weathered standing-seam metal roofs",
+    "glass_profile": "neutral_classroom_glass_with_deep_occupied_learning_spaces",
+    "kits": [
+      "reference_locked_fixed_landmark",
+      "physical_layered_glazing",
+      "occupied_interior_depth",
+      "semantic_repeatable_middle_bays",
+      "fixed_variant_roof_and_identity_kit",
+      "two_complete_classroom_wings",
+      "real_open_entry_court",
+      "occupied_gateway_bridge",
+      "aligned_classroom_window_bands",
+      "modest_clock_and_bell_tower"
+    ]
+  },
+  "archetype_aliases": [
+    "ecole_republicaine",
+    "ecole-republicaine-provincial-brick",
+    "provincial_brick_neighbourhood_school"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 1,
+    "profileRationale": "The complete commonplace building remains fixed through the 0.62x-1.40x band. Larger drawings repeat complete 6.67 m rooms, dwellings, storefronts, classrooms or industrial panels; entrances, stairs, corners, roofs and crowns never stretch independently.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.62,
+      "scaleMax": 1.4,
+      "maxAxisRatio": 1.3
+    },
+    "recommendedWidth_m": [
+      24.8,
+      56.0
+    ],
+    "recommendedDepth_m": [
+      17.4,
+      39.2
+    ],
+    "recommendedFloors": [
+      2,
+      4
+    ],
+    "scaleMin": 0.62,
+    "scaleMax": 1.4,
+    "maxAxisRatio": 1.3,
+    "preferredBayMultiple_m": 6.67,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          24.8,
+          56.0
+        ],
+        "recommendedDepth_m": [
+          17.4,
+          39.2
+        ],
+        "recommendedFloors": [
+          2,
+          4
+        ],
+        "scaleMin": 0.62,
+        "scaleMax": 1.4,
+        "maxAxisRatio": 1.3,
+        "preferredBayMultiple_m": 6.67
+      }
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_provincial_brick_school_with_repeatable_complete_common_bays",
+    "variant_id": "ecole-republicaine-provincial-brick",
+    "occupied_storeys": 3,
+    "features": [
+      "two_complete_classroom_wings",
+      "real_open_entry_court",
+      "occupied_gateway_bridge",
+      "aligned_classroom_window_bands",
+      "modest_clock_and_bell_tower"
+    ],
+    "physical_window_layers": [
+      "occupied_depth",
+      "physical_pane",
+      "separate_frame",
+      "head_and_sill",
+      "floor_datum",
+      "material_return"
+    ],
+    "fallback_policy": "fixed identity ends plus repeatable complete room dwelling storefront classroom or industrial-panel bays"
+  }
+}

@@ -1,0 +1,168 @@
+{
+  "status": "pass",
+  "family": "plateau-stone-montreal-duplex",
+  "archetype_id": "montreal_duplex",
+  "reuse_keys": [
+    "montreal_duplex",
+    "montreal_duplex_plateau",
+    "plateau_stone_montreal_duplex",
+    "Montreal Duplex",
+    "Duplex",
+    "Missing Middle Housing"
+  ],
+  "manifest": "plateau-stone-montreal-duplex_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)"
+  ],
+  "modules": [
+    {
+      "file": "plateau-stone-montreal-duplex_podium.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 5.0,
+        "height_y": 3.05,
+        "depth_z": 8.845
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W14_plateau-stone-montreal-duplex_frame",
+        "MAT_W14_plateau-stone-montreal-duplex_glass",
+        "MAT_W14_plateau-stone-montreal-duplex_ornament",
+        "MAT_W14_plateau-stone-montreal-duplex_primary",
+        "MAT_W14_plateau-stone-montreal-duplex_secondary"
+      ],
+      "size_bytes": 1071684
+    },
+    {
+      "file": "plateau-stone-montreal-duplex_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 5.25,
+        "height_y": 3.05,
+        "depth_z": 8.6
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W14_plateau-stone-montreal-duplex_OccupiedDepth",
+        "MAT_W14_plateau-stone-montreal-duplex_frame",
+        "MAT_W14_plateau-stone-montreal-duplex_glass",
+        "MAT_W14_plateau-stone-montreal-duplex_primary",
+        "MAT_W14_plateau-stone-montreal-duplex_secondary"
+      ],
+      "size_bytes": 1371904
+    },
+    {
+      "file": "plateau-stone-montreal-duplex_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 5.05,
+        "height_y": 3.05,
+        "depth_z": 8.6
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W14_plateau-stone-montreal-duplex_OccupiedDepth",
+        "MAT_W14_plateau-stone-montreal-duplex_frame",
+        "MAT_W14_plateau-stone-montreal-duplex_glass",
+        "MAT_W14_plateau-stone-montreal-duplex_primary",
+        "MAT_W14_plateau-stone-montreal-duplex_secondary"
+      ],
+      "size_bytes": 1378752
+    },
+    {
+      "file": "plateau-stone-montreal-duplex_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 5.0,
+        "height_y": 3.05,
+        "depth_z": 8.6
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W14_plateau-stone-montreal-duplex_OccupiedDepth",
+        "MAT_W14_plateau-stone-montreal-duplex_frame",
+        "MAT_W14_plateau-stone-montreal-duplex_glass",
+        "MAT_W14_plateau-stone-montreal-duplex_primary",
+        "MAT_W14_plateau-stone-montreal-duplex_secondary"
+      ],
+      "size_bytes": 1386136
+    },
+    {
+      "file": "plateau-stone-montreal-duplex_crown_crown.glb",
+      "status": "ok",
+      "triangles": 60,
+      "extent_m": {
+        "width_x": 5.0,
+        "height_y": 0.7,
+        "depth_z": 8.455
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W14_plateau-stone-montreal-duplex_ornament",
+        "MAT_W14_plateau-stone-montreal-duplex_secondary"
+      ],
+      "size_bytes": 428464
+    },
+    {
+      "file": "plateau-stone-montreal-duplex_roof.glb",
+      "status": "ok",
+      "triangles": 60,
+      "extent_m": {
+        "width_x": 5.25,
+        "height_y": 0.55,
+        "depth_z": 8.41
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W14_plateau-stone-montreal-duplex_roof",
+        "MAT_W14_plateau-stone-montreal-duplex_secondary"
+      ],
+      "size_bytes": 458968
+    },
+    {
+      "file": "plateau-stone-montreal-duplex_assembled.glb",
+      "status": "ok",
+      "triangles": 17092,
+      "extent_m": {
+        "width_x": 9.5,
+        "height_y": 6.97,
+        "depth_z": 13.93
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W14_plateau-stone-montreal-duplex_OccupiedDepth",
+        "MAT_W14_plateau-stone-montreal-duplex_frame",
+        "MAT_W14_plateau-stone-montreal-duplex_glass",
+        "MAT_W14_plateau-stone-montreal-duplex_ornament",
+        "MAT_W14_plateau-stone-montreal-duplex_primary",
+        "MAT_W14_plateau-stone-montreal-duplex_roof",
+        "MAT_W14_plateau-stone-montreal-duplex_secondary"
+      ],
+      "size_bytes": 7541200,
+      "role": "assembled"
+    }
+  ]
+}

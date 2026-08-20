@@ -1,0 +1,13 @@
+{
+  "catalogue_archetype_id": "toronto_brick_rowhouse",
+  "catalogue_variant_id": "toronto_rowhouse_victorian",
+  "catalogue_alias_ids": [
+    "victorian_brick_rowhouse_terrace"
+  ],
+  "elevation_source": "/families/victorian-brick-rowhouse-terrace/elevation.jpg",
+  "goalpost": "/families/victorian-brick-rowhouse-terrace/textures/source/archetype-goalpost.png",
+  "reference_generation": "/families/victorian-brick-rowhouse-terrace/textures/source/reference-generation.json",
+  "method": "immutable shipped catalogue card; deterministic material extraction; shared true-metric construction kits; physical layered glazing; occupied depth; complete secondary elevations; normalized bottom-centre origin; fixed whole-building landmark and complete-semantic-bay LEGO fallback",
+  "coverage_cohort": "commonplace_standard",
+  "catalogue_card_preserved": true
+}

@@ -1,0 +1,64 @@
+{
+  "schema": "reference-generation@1",
+  "family": "classic-corner-bodega-mixed-use",
+  "archetype_id": "new_york_corner_bodega",
+  "variant_id": "bodega_classic",
+  "provider": "CityPrompt registered catalogue asset",
+  "model": "pre-existing-catalogue-reference",
+  "generated_at": "2026-08-20",
+  "status": "catalogue-source-registered",
+  "input_paths": [
+    "/archetypes/buildings/new-york-corner-bodega/variant_0.png"
+  ],
+  "catalogue_card_path": "/archetypes/buildings/new-york-corner-bodega/variant_0.png",
+  "source_mode": "existing_catalogue_card_material_and_shape_goalpost",
+  "design_lock": {
+    "native_envelope_dimensions_m": [
+      16.0,
+      18.0,
+      14.0
+    ],
+    "occupied_storeys": 4,
+    "variant_specific_contract": "16 m by 18 m four-storey corner building; dark-green storefront and fabric awning wrap both public elevations around one chamfered entry, residential sash align above, a supported fire escape occupies the side and the masonry cornice turns the corner.",
+    "material_zones": "aged warm red brick; weathered dark green timber storefront; warm brownstone window trim; black fire-escape steel; clear retail and neutral apartment glass with occupied depth; dark built-up roof",
+    "glass_profile": "clear_corner_retail_and_heritage_apartment_glass",
+    "coverage_cohort": "commonplace_standard"
+  },
+  "sources": [
+    {
+      "file": "archetype-goalpost.png",
+      "source_id": "catalogue:new_york_corner_bodega:bodega_classic",
+      "role": "immutable_shipped_catalogue_goalpost"
+    },
+    {
+      "file": "elevation-source-v1.png",
+      "source_id": "catalogue-crop:bodega_classic:building",
+      "role": "registered_building_crop_for_colour_and_material_scale"
+    },
+    {
+      "file": "occupied-depth-source-v1.png",
+      "source_id": "catalogue-crop:bodega_classic:occupied",
+      "role": "registered_occupied_window_depth_crop"
+    },
+    {
+      "file": "primary-material-source.png",
+      "source_id": "catalogue-crop:bodega_classic:primary",
+      "role": "registered_primary_material_crop"
+    },
+    {
+      "file": "secondary-material-source.png",
+      "source_id": "catalogue-crop:bodega_classic:secondary",
+      "role": "registered_secondary_material_crop"
+    },
+    {
+      "file": "ornament-material-source.png",
+      "source_id": "catalogue-crop:bodega_classic:ornament",
+      "role": "registered_ornament_material_crop"
+    },
+    {
+      "file": "roof-material-source.png",
+      "source_id": "catalogue-crop:bodega_classic:roof",
+      "role": "registered_roof_material_crop"
+    }
+  ]
+}

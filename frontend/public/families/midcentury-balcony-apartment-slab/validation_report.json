@@ -1,0 +1,170 @@
+{
+  "status": "pass",
+  "family": "midcentury-balcony-apartment-slab",
+  "archetype_id": "west_end_mid_century_tower",
+  "reuse_keys": [
+    "west_end_mid_century_tower",
+    "midcentury_balcony_tower",
+    "midcentury_balcony_apartment_slab",
+    "Mid-Century Apartment Tower",
+    "Balcony Tower",
+    "Residential High-Rise"
+  ],
+  "manifest": "midcentury-balcony-apartment-slab_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "midcentury-balcony-apartment-slab_assembled.glb: 8.7 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "midcentury-balcony-apartment-slab_podium.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 11.0,
+        "height_y": 3.5,
+        "depth_z": 14.285
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W14_midcentury-balcony-apartment-slab_frame",
+        "MAT_W14_midcentury-balcony-apartment-slab_glass",
+        "MAT_W14_midcentury-balcony-apartment-slab_ornament",
+        "MAT_W14_midcentury-balcony-apartment-slab_primary",
+        "MAT_W14_midcentury-balcony-apartment-slab_secondary"
+      ],
+      "size_bytes": 1104136
+    },
+    {
+      "file": "midcentury-balcony-apartment-slab_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 11.0,
+        "height_y": 3.15,
+        "depth_z": 14.04
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W14_midcentury-balcony-apartment-slab_OccupiedDepth",
+        "MAT_W14_midcentury-balcony-apartment-slab_frame",
+        "MAT_W14_midcentury-balcony-apartment-slab_glass",
+        "MAT_W14_midcentury-balcony-apartment-slab_primary",
+        "MAT_W14_midcentury-balcony-apartment-slab_secondary"
+      ],
+      "size_bytes": 1548260
+    },
+    {
+      "file": "midcentury-balcony-apartment-slab_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 11.0,
+        "height_y": 3.15,
+        "depth_z": 14.04
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W14_midcentury-balcony-apartment-slab_OccupiedDepth",
+        "MAT_W14_midcentury-balcony-apartment-slab_frame",
+        "MAT_W14_midcentury-balcony-apartment-slab_glass",
+        "MAT_W14_midcentury-balcony-apartment-slab_primary",
+        "MAT_W14_midcentury-balcony-apartment-slab_secondary"
+      ],
+      "size_bytes": 1555248
+    },
+    {
+      "file": "midcentury-balcony-apartment-slab_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 11.0,
+        "height_y": 3.15,
+        "depth_z": 14.04
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W14_midcentury-balcony-apartment-slab_OccupiedDepth",
+        "MAT_W14_midcentury-balcony-apartment-slab_frame",
+        "MAT_W14_midcentury-balcony-apartment-slab_glass",
+        "MAT_W14_midcentury-balcony-apartment-slab_primary",
+        "MAT_W14_midcentury-balcony-apartment-slab_secondary"
+      ],
+      "size_bytes": 1562656
+    },
+    {
+      "file": "midcentury-balcony-apartment-slab_crown_crown.glb",
+      "status": "ok",
+      "triangles": 60,
+      "extent_m": {
+        "width_x": 11.0,
+        "height_y": 1.0,
+        "depth_z": 13.895
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W14_midcentury-balcony-apartment-slab_ornament",
+        "MAT_W14_midcentury-balcony-apartment-slab_secondary"
+      ],
+      "size_bytes": 461380
+    },
+    {
+      "file": "midcentury-balcony-apartment-slab_roof.glb",
+      "status": "ok",
+      "triangles": 60,
+      "extent_m": {
+        "width_x": 11.25,
+        "height_y": 1.2,
+        "depth_z": 13.85
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W14_midcentury-balcony-apartment-slab_roof",
+        "MAT_W14_midcentury-balcony-apartment-slab_secondary"
+      ],
+      "size_bytes": 459308
+    },
+    {
+      "file": "midcentury-balcony-apartment-slab_assembled.glb",
+      "status": "ok",
+      "triangles": 59940,
+      "extent_m": {
+        "width_x": 21.5,
+        "height_y": 37.87,
+        "depth_z": 21.8
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W14_midcentury-balcony-apartment-slab_OccupiedDepth",
+        "MAT_W14_midcentury-balcony-apartment-slab_frame",
+        "MAT_W14_midcentury-balcony-apartment-slab_glass",
+        "MAT_W14_midcentury-balcony-apartment-slab_ornament",
+        "MAT_W14_midcentury-balcony-apartment-slab_primary",
+        "MAT_W14_midcentury-balcony-apartment-slab_roof",
+        "MAT_W14_midcentury-balcony-apartment-slab_secondary",
+        "MAT_W16_midcentury-balcony-apartment-slab_Planting"
+      ],
+      "size_bytes": 9126184,
+      "role": "assembled"
+    }
+  ]
+}

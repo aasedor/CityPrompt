@@ -1,0 +1,64 @@
+{
+  "schema": "reference-generation@1",
+  "family": "craftsman-brick-bungalow",
+  "archetype_id": "calgary_inner_city_bungalow",
+  "variant_id": "bungalow_craftsman_original",
+  "provider": "CityPrompt registered catalogue asset",
+  "model": "pre-existing-catalogue-reference",
+  "generated_at": "2026-08-20",
+  "status": "catalogue-source-registered",
+  "input_paths": [
+    "/archetypes/buildings/calgary-inner-city-bungalow/variant_0.png"
+  ],
+  "catalogue_card_path": "/archetypes/buildings/calgary-inner-city-bungalow/variant_0.png",
+  "source_mode": "existing_catalogue_card_material_and_shape_goalpost",
+  "design_lock": {
+    "native_envelope_dimensions_m": [
+      10.0,
+      12.0,
+      6.4
+    ],
+    "occupied_storeys": 1,
+    "variant_specific_contract": "10 m by 12 m one-storey house; one broad front-facing main gable, one smaller projecting porch gable, four grounded porch posts, a visible stair and threshold, divided sash, deep eaves and one masonry chimney remain fixed.",
+    "material_zones": "warm red common brick; pale textured stucco; honey-brown porch timber; white painted sash and fascia; neutral residential glass with warm occupied depth; weathered charcoal asphalt shingles",
+    "glass_profile": "clear_residential_sash_with_warm_room_depth",
+    "coverage_cohort": "commonplace_standard"
+  },
+  "sources": [
+    {
+      "file": "archetype-goalpost.png",
+      "source_id": "catalogue:calgary_inner_city_bungalow:bungalow_craftsman_original",
+      "role": "immutable_shipped_catalogue_goalpost"
+    },
+    {
+      "file": "elevation-source-v1.png",
+      "source_id": "catalogue-crop:bungalow_craftsman_original:building",
+      "role": "registered_building_crop_for_colour_and_material_scale"
+    },
+    {
+      "file": "occupied-depth-source-v1.png",
+      "source_id": "catalogue-crop:bungalow_craftsman_original:occupied",
+      "role": "registered_occupied_window_depth_crop"
+    },
+    {
+      "file": "primary-material-source.png",
+      "source_id": "catalogue-crop:bungalow_craftsman_original:primary",
+      "role": "registered_primary_material_crop"
+    },
+    {
+      "file": "secondary-material-source.png",
+      "source_id": "catalogue-crop:bungalow_craftsman_original:secondary",
+      "role": "registered_secondary_material_crop"
+    },
+    {
+      "file": "ornament-material-source.png",
+      "source_id": "catalogue-crop:bungalow_craftsman_original:ornament",
+      "role": "registered_ornament_material_crop"
+    },
+    {
+      "file": "roof-material-source.png",
+      "source_id": "catalogue-crop:bungalow_craftsman_original:roof",
+      "role": "registered_roof_material_crop"
+    }
+  ]
+}

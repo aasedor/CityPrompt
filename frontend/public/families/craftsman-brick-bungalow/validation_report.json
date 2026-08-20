@@ -1,0 +1,168 @@
+{
+  "status": "pass",
+  "family": "craftsman-brick-bungalow",
+  "archetype_id": "calgary_inner_city_bungalow",
+  "reuse_keys": [
+    "calgary_inner_city_bungalow",
+    "bungalow_craftsman_original",
+    "craftsman_brick_bungalow",
+    "Craftsman Bungalow",
+    "Detached House",
+    "Single-Family Residential"
+  ],
+  "manifest": "craftsman-brick-bungalow_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)"
+  ],
+  "modules": [
+    {
+      "file": "craftsman-brick-bungalow_podium.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 5.5,
+        "height_y": 3.15,
+        "depth_z": 8.845
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W14_craftsman-brick-bungalow_frame",
+        "MAT_W14_craftsman-brick-bungalow_glass",
+        "MAT_W14_craftsman-brick-bungalow_ornament",
+        "MAT_W14_craftsman-brick-bungalow_primary",
+        "MAT_W14_craftsman-brick-bungalow_secondary"
+      ],
+      "size_bytes": 5639320
+    },
+    {
+      "file": "craftsman-brick-bungalow_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 5.61,
+        "height_y": 3.15,
+        "depth_z": 8.6
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W14_craftsman-brick-bungalow_OccupiedDepth",
+        "MAT_W14_craftsman-brick-bungalow_frame",
+        "MAT_W14_craftsman-brick-bungalow_glass",
+        "MAT_W14_craftsman-brick-bungalow_primary",
+        "MAT_W14_craftsman-brick-bungalow_secondary"
+      ],
+      "size_bytes": 5887716
+    },
+    {
+      "file": "craftsman-brick-bungalow_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 5.535,
+        "height_y": 3.15,
+        "depth_z": 8.6
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W14_craftsman-brick-bungalow_OccupiedDepth",
+        "MAT_W14_craftsman-brick-bungalow_frame",
+        "MAT_W14_craftsman-brick-bungalow_glass",
+        "MAT_W14_craftsman-brick-bungalow_primary",
+        "MAT_W14_craftsman-brick-bungalow_secondary"
+      ],
+      "size_bytes": 5894612
+    },
+    {
+      "file": "craftsman-brick-bungalow_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 5.5,
+        "height_y": 3.15,
+        "depth_z": 8.6
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W14_craftsman-brick-bungalow_OccupiedDepth",
+        "MAT_W14_craftsman-brick-bungalow_frame",
+        "MAT_W14_craftsman-brick-bungalow_glass",
+        "MAT_W14_craftsman-brick-bungalow_primary",
+        "MAT_W14_craftsman-brick-bungalow_secondary"
+      ],
+      "size_bytes": 5901908
+    },
+    {
+      "file": "craftsman-brick-bungalow_crown_crown.glb",
+      "status": "ok",
+      "triangles": 60,
+      "extent_m": {
+        "width_x": 5.5,
+        "height_y": 0.45,
+        "depth_z": 8.455
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W14_craftsman-brick-bungalow_ornament",
+        "MAT_W14_craftsman-brick-bungalow_secondary"
+      ],
+      "size_bytes": 2261636
+    },
+    {
+      "file": "craftsman-brick-bungalow_roof.glb",
+      "status": "ok",
+      "triangles": 72,
+      "extent_m": {
+        "width_x": 5.647,
+        "height_y": 3.135,
+        "depth_z": 8.46
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W14_craftsman-brick-bungalow_frame",
+        "MAT_W14_craftsman-brick-bungalow_roof"
+      ],
+      "size_bytes": 2260988
+    },
+    {
+      "file": "craftsman-brick-bungalow_assembled.glb",
+      "status": "ok",
+      "triangles": 15272,
+      "extent_m": {
+        "width_x": 10.893,
+        "height_y": 6.3,
+        "depth_z": 14.28
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W14_craftsman-brick-bungalow_OccupiedDepth",
+        "MAT_W14_craftsman-brick-bungalow_frame",
+        "MAT_W14_craftsman-brick-bungalow_glass",
+        "MAT_W14_craftsman-brick-bungalow_ornament",
+        "MAT_W14_craftsman-brick-bungalow_primary",
+        "MAT_W14_craftsman-brick-bungalow_roof",
+        "MAT_W14_craftsman-brick-bungalow_secondary"
+      ],
+      "size_bytes": 7744500,
+      "role": "assembled"
+    }
+  ]
+}

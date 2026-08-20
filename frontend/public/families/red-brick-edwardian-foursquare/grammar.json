@@ -1,0 +1,119 @@
+{
+  "family_id": "red-brick-edwardian-foursquare",
+  "source": {
+    "archetype_id": "edwardian_foursquare",
+    "variant_id": "classic_red_brick_foursquare",
+    "generation_archetype_id": "classic_red_brick_foursquare",
+    "reuse_keys": [
+      "edwardian_foursquare",
+      "classic_red_brick_foursquare",
+      "red_brick_edwardian_foursquare",
+      "Edwardian Foursquare",
+      "Detached House",
+      "Single-Family Residential"
+    ]
+  },
+  "dimensions": {
+    "width_m": 11.95,
+    "depth_m": 14.845,
+    "podium_height_m": 3.05,
+    "floor_height_m": 3.05,
+    "setback_height_m": 3.05,
+    "roof_height_m": 3.0,
+    "crown_height_m": 0.35,
+    "default_floors": 2,
+    "min_floors": 1,
+    "max_floors": 3
+  },
+  "architectural_signature": {
+    "identity": "A compact two-storey red-brick foursquare sits beneath one deep hipped roof and front dormer, with a full-width timber porch, stout classical posts, stone lintels and sills, tall divided sash and a side chimney.",
+    "material_zones": "warm pressed red brick; pale limestone lintels and sills; dark stained porch timber; cream painted sash and columns; neutral heritage glass with warm room depth; dark brown asphalt shingle roof",
+    "glass_profile": "heritage_double_hung_sash_with_warm_room_depth",
+    "kits": [
+      "reference_locked_fixed_landmark",
+      "physical_layered_glazing",
+      "occupied_interior_depth",
+      "semantic_repeatable_middle_bays",
+      "fixed_variant_roof_and_identity_kit",
+      "compact_two_storey_brick_cube",
+      "deep_hipped_roof",
+      "occupied_front_dormer",
+      "full_width_supported_porch",
+      "stone_trimmed_sash"
+    ]
+  },
+  "archetype_aliases": [
+    "edwardian_foursquare",
+    "classic_red_brick_foursquare",
+    "red_brick_edwardian_foursquare"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 1,
+    "profileRationale": "The complete commonplace building remains fixed through the 0.78x-1.24x band. Larger drawings repeat complete 2.75 m rooms, dwellings, storefronts, classrooms or industrial panels; entrances, stairs, corners, roofs and crowns never stretch independently.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.78,
+      "scaleMax": 1.24,
+      "maxAxisRatio": 1.18
+    },
+    "recommendedWidth_m": [
+      8.6,
+      13.6
+    ],
+    "recommendedDepth_m": [
+      10.1,
+      16.1
+    ],
+    "recommendedFloors": [
+      1,
+      3
+    ],
+    "scaleMin": 0.78,
+    "scaleMax": 1.24,
+    "maxAxisRatio": 1.18,
+    "preferredBayMultiple_m": 2.75,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          8.6,
+          13.6
+        ],
+        "recommendedDepth_m": [
+          10.1,
+          16.1
+        ],
+        "recommendedFloors": [
+          1,
+          3
+        ],
+        "scaleMin": 0.78,
+        "scaleMax": 1.24,
+        "maxAxisRatio": 1.18,
+        "preferredBayMultiple_m": 2.75
+      }
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_edwardian_foursquare_with_repeatable_complete_common_bays",
+    "variant_id": "classic_red_brick_foursquare",
+    "occupied_storeys": 2,
+    "features": [
+      "compact_two_storey_brick_cube",
+      "deep_hipped_roof",
+      "occupied_front_dormer",
+      "full_width_supported_porch",
+      "stone_trimmed_sash"
+    ],
+    "physical_window_layers": [
+      "occupied_depth",
+      "physical_pane",
+      "separate_frame",
+      "head_and_sill",
+      "floor_datum",
+      "material_return"
+    ],
+    "fallback_policy": "fixed identity ends plus repeatable complete room dwelling storefront classroom or industrial-panel bays"
+  }
+}

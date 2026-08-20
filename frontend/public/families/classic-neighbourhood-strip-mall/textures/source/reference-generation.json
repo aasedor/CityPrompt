@@ -1,0 +1,64 @@
+{
+  "schema": "reference-generation@1",
+  "family": "classic-neighbourhood-strip-mall",
+  "archetype_id": "commercial_strip_mall",
+  "variant_id": "strip_single_storey_classic",
+  "provider": "CityPrompt registered catalogue asset",
+  "model": "pre-existing-catalogue-reference",
+  "generated_at": "2026-08-20",
+  "status": "catalogue-source-registered",
+  "input_paths": [
+    "/archetypes/buildings/commercial-strip-mall/variant_0.png"
+  ],
+  "catalogue_card_path": "/archetypes/buildings/commercial-strip-mall/variant_0.png",
+  "source_mode": "existing_catalogue_card_material_and_shape_goalpost",
+  "design_lock": {
+    "native_envelope_dimensions_m": [
+      60.0,
+      18.0,
+      7.0
+    ],
+    "occupied_storeys": 1,
+    "variant_specific_contract": "60 m by 18 m one-storey retail bar; exactly six complete tenant storefront bays, a continuous supported canopy, brick pier rhythm, individual entries and one taller anchor tower remain fixed while whole tenant bays may repeat.",
+    "material_zones": "warm beige stucco parapet; red-brown brick piers; pale concrete block base; dark aluminum storefront framing; clear retail glazing with deep occupied shop interiors; charcoal membrane roof and metal coping",
+    "glass_profile": "clear_retail_storefront_with_deep_occupied_shop_depth",
+    "coverage_cohort": "commonplace_standard"
+  },
+  "sources": [
+    {
+      "file": "archetype-goalpost.png",
+      "source_id": "catalogue:commercial_strip_mall:strip_single_storey_classic",
+      "role": "immutable_shipped_catalogue_goalpost"
+    },
+    {
+      "file": "elevation-source-v1.png",
+      "source_id": "catalogue-crop:strip_single_storey_classic:building",
+      "role": "registered_building_crop_for_colour_and_material_scale"
+    },
+    {
+      "file": "occupied-depth-source-v1.png",
+      "source_id": "catalogue-crop:strip_single_storey_classic:occupied",
+      "role": "registered_occupied_window_depth_crop"
+    },
+    {
+      "file": "primary-material-source.png",
+      "source_id": "catalogue-crop:strip_single_storey_classic:primary",
+      "role": "registered_primary_material_crop"
+    },
+    {
+      "file": "secondary-material-source.png",
+      "source_id": "catalogue-crop:strip_single_storey_classic:secondary",
+      "role": "registered_secondary_material_crop"
+    },
+    {
+      "file": "ornament-material-source.png",
+      "source_id": "catalogue-crop:strip_single_storey_classic:ornament",
+      "role": "registered_ornament_material_crop"
+    },
+    {
+      "file": "roof-material-source.png",
+      "source_id": "catalogue-crop:strip_single_storey_classic:roof",
+      "role": "registered_roof_material_crop"
+    }
+  ]
+}

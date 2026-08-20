@@ -1,0 +1,168 @@
+{
+  "status": "pass",
+  "family": "classic-neighbourhood-strip-mall",
+  "archetype_id": "commercial_strip_mall",
+  "reuse_keys": [
+    "commercial_strip_mall",
+    "strip_single_storey_classic",
+    "classic_neighbourhood_strip_mall",
+    "Strip Mall",
+    "Neighbourhood Retail",
+    "Convenience Retail"
+  ],
+  "manifest": "classic-neighbourhood-strip-mall_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)"
+  ],
+  "modules": [
+    {
+      "file": "classic-neighbourhood-strip-mall_podium.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 18.0,
+        "height_y": 4.8,
+        "depth_z": 12.49
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W14_classic-neighbourhood-strip-mall_OccupiedDepth",
+        "MAT_W14_classic-neighbourhood-strip-mall_frame",
+        "MAT_W14_classic-neighbourhood-strip-mall_glass",
+        "MAT_W14_classic-neighbourhood-strip-mall_primary",
+        "MAT_W14_classic-neighbourhood-strip-mall_secondary"
+      ],
+      "size_bytes": 1358048
+    },
+    {
+      "file": "classic-neighbourhood-strip-mall_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 18.0,
+        "height_y": 4.8,
+        "depth_z": 12.68
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W14_classic-neighbourhood-strip-mall_OccupiedDepth",
+        "MAT_W14_classic-neighbourhood-strip-mall_frame",
+        "MAT_W14_classic-neighbourhood-strip-mall_glass",
+        "MAT_W14_classic-neighbourhood-strip-mall_primary",
+        "MAT_W14_classic-neighbourhood-strip-mall_secondary"
+      ],
+      "size_bytes": 1368316
+    },
+    {
+      "file": "classic-neighbourhood-strip-mall_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 18.0,
+        "height_y": 4.8,
+        "depth_z": 12.68
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W14_classic-neighbourhood-strip-mall_OccupiedDepth",
+        "MAT_W14_classic-neighbourhood-strip-mall_frame",
+        "MAT_W14_classic-neighbourhood-strip-mall_glass",
+        "MAT_W14_classic-neighbourhood-strip-mall_primary",
+        "MAT_W14_classic-neighbourhood-strip-mall_secondary"
+      ],
+      "size_bytes": 1375228
+    },
+    {
+      "file": "classic-neighbourhood-strip-mall_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 18.0,
+        "height_y": 4.8,
+        "depth_z": 12.68
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W14_classic-neighbourhood-strip-mall_OccupiedDepth",
+        "MAT_W14_classic-neighbourhood-strip-mall_frame",
+        "MAT_W14_classic-neighbourhood-strip-mall_glass",
+        "MAT_W14_classic-neighbourhood-strip-mall_primary",
+        "MAT_W14_classic-neighbourhood-strip-mall_secondary"
+      ],
+      "size_bytes": 1382556
+    },
+    {
+      "file": "classic-neighbourhood-strip-mall_crown_crown.glb",
+      "status": "ok",
+      "triangles": 60,
+      "extent_m": {
+        "width_x": 18.0,
+        "height_y": 1.1,
+        "depth_z": 12.535
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W14_classic-neighbourhood-strip-mall_ornament",
+        "MAT_W14_classic-neighbourhood-strip-mall_secondary"
+      ],
+      "size_bytes": 461000
+    },
+    {
+      "file": "classic-neighbourhood-strip-mall_roof.glb",
+      "status": "ok",
+      "triangles": 60,
+      "extent_m": {
+        "width_x": 18.25,
+        "height_y": 0.55,
+        "depth_z": 12.49
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W14_classic-neighbourhood-strip-mall_roof",
+        "MAT_W14_classic-neighbourhood-strip-mall_secondary"
+      ],
+      "size_bytes": 423904
+    },
+    {
+      "file": "classic-neighbourhood-strip-mall_assembled.glb",
+      "status": "ok",
+      "triangles": 15416,
+      "extent_m": {
+        "width_x": 59.75,
+        "height_y": 6.3,
+        "depth_z": 18.68
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W14_classic-neighbourhood-strip-mall_OccupiedDepth",
+        "MAT_W14_classic-neighbourhood-strip-mall_frame",
+        "MAT_W14_classic-neighbourhood-strip-mall_glass",
+        "MAT_W14_classic-neighbourhood-strip-mall_ornament",
+        "MAT_W14_classic-neighbourhood-strip-mall_primary",
+        "MAT_W14_classic-neighbourhood-strip-mall_roof",
+        "MAT_W14_classic-neighbourhood-strip-mall_secondary"
+      ],
+      "size_bytes": 7497800,
+      "role": "assembled"
+    }
+  ]
+}

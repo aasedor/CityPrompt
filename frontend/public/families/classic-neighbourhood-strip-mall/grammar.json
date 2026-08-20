@@ -1,0 +1,119 @@
+{
+  "family_id": "classic-neighbourhood-strip-mall",
+  "source": {
+    "archetype_id": "commercial_strip_mall",
+    "variant_id": "strip_single_storey_classic",
+    "generation_archetype_id": "strip_single_storey_classic",
+    "reuse_keys": [
+      "commercial_strip_mall",
+      "strip_single_storey_classic",
+      "classic_neighbourhood_strip_mall",
+      "Strip Mall",
+      "Neighbourhood Retail",
+      "Convenience Retail"
+    ]
+  },
+  "dimensions": {
+    "width_m": 59.75,
+    "depth_m": 18.68,
+    "podium_height_m": 4.8,
+    "floor_height_m": 4.8,
+    "setback_height_m": 4.8,
+    "roof_height_m": 0.5,
+    "crown_height_m": 1.1,
+    "default_floors": 1,
+    "min_floors": 1,
+    "max_floors": 2
+  },
+  "architectural_signature": {
+    "identity": "A one-storey neighbourhood strip mall organizes six complete tenant bays beneath one continuous canopy and stepped stucco parapet, with brick piers, large clear storefronts, individual recessed doors and one taller anchor-store tower.",
+    "material_zones": "warm beige stucco parapet; red-brown brick piers; pale concrete block base; dark aluminum storefront framing; clear retail glazing with deep occupied shop interiors; charcoal membrane roof and metal coping",
+    "glass_profile": "clear_retail_storefront_with_deep_occupied_shop_depth",
+    "kits": [
+      "reference_locked_fixed_landmark",
+      "physical_layered_glazing",
+      "occupied_interior_depth",
+      "semantic_repeatable_middle_bays",
+      "fixed_variant_roof_and_identity_kit",
+      "six_complete_tenant_bays",
+      "continuous_supported_canopy",
+      "grounded_brick_pier_rhythm",
+      "individual_clear_storefronts",
+      "taller_anchor_store_tower"
+    ]
+  },
+  "archetype_aliases": [
+    "commercial_strip_mall",
+    "strip_single_storey_classic",
+    "classic_neighbourhood_strip_mall"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 1,
+    "profileRationale": "The complete commonplace building remains fixed through the 0.62x-1.40x band. Larger drawings repeat complete 10.00 m rooms, dwellings, storefronts, classrooms or industrial panels; entrances, stairs, corners, roofs and crowns never stretch independently.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.62,
+      "scaleMax": 1.4,
+      "maxAxisRatio": 1.3
+    },
+    "recommendedWidth_m": [
+      37.2,
+      84.0
+    ],
+    "recommendedDepth_m": [
+      11.2,
+      25.2
+    ],
+    "recommendedFloors": [
+      1,
+      2
+    ],
+    "scaleMin": 0.62,
+    "scaleMax": 1.4,
+    "maxAxisRatio": 1.3,
+    "preferredBayMultiple_m": 10.0,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          37.2,
+          84.0
+        ],
+        "recommendedDepth_m": [
+          11.2,
+          25.2
+        ],
+        "recommendedFloors": [
+          1,
+          2
+        ],
+        "scaleMin": 0.62,
+        "scaleMax": 1.4,
+        "maxAxisRatio": 1.3,
+        "preferredBayMultiple_m": 10.0
+      }
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_classic_strip_mall_with_repeatable_complete_common_bays",
+    "variant_id": "strip_single_storey_classic",
+    "occupied_storeys": 1,
+    "features": [
+      "six_complete_tenant_bays",
+      "continuous_supported_canopy",
+      "grounded_brick_pier_rhythm",
+      "individual_clear_storefronts",
+      "taller_anchor_store_tower"
+    ],
+    "physical_window_layers": [
+      "occupied_depth",
+      "physical_pane",
+      "separate_frame",
+      "head_and_sill",
+      "floor_datum",
+      "material_return"
+    ],
+    "fallback_policy": "fixed identity ends plus repeatable complete room dwelling storefront classroom or industrial-panel bays"
+  }
+}

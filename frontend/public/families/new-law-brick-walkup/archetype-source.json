@@ -1,0 +1,13 @@
+{
+  "catalogue_archetype_id": "new_york_walk_up_tenement",
+  "catalogue_variant_id": "tenement_new_law",
+  "catalogue_alias_ids": [
+    "new_law_brick_walkup"
+  ],
+  "elevation_source": "/families/new-law-brick-walkup/elevation.jpg",
+  "goalpost": "/families/new-law-brick-walkup/textures/source/archetype-goalpost.png",
+  "reference_generation": "/families/new-law-brick-walkup/textures/source/reference-generation.json",
+  "method": "immutable shipped catalogue card; deterministic material extraction; shared true-metric construction kits; physical layered glazing; occupied depth; complete secondary elevations; normalized bottom-centre origin; fixed whole-building landmark and complete-semantic-bay LEGO fallback",
+  "coverage_cohort": "commonplace_standard",
+  "catalogue_card_preserved": true
+}

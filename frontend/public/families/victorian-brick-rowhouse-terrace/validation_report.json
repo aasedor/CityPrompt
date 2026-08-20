@@ -1,0 +1,169 @@
+{
+  "status": "pass",
+  "family": "victorian-brick-rowhouse-terrace",
+  "archetype_id": "toronto_brick_rowhouse",
+  "reuse_keys": [
+    "toronto_brick_rowhouse",
+    "toronto_rowhouse_victorian",
+    "victorian_brick_rowhouse_terrace",
+    "Victorian Rowhouse",
+    "Brick Terrace",
+    "Missing Middle Housing"
+  ],
+  "manifest": "victorian-brick-rowhouse-terrace_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "victorian-brick-rowhouse-terrace_assembled.glb: 8.1 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "victorian-brick-rowhouse-terrace_podium.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 12.1,
+        "height_y": 3.1,
+        "depth_z": 8.845
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W14_victorian-brick-rowhouse-terrace_frame",
+        "MAT_W14_victorian-brick-rowhouse-terrace_glass",
+        "MAT_W14_victorian-brick-rowhouse-terrace_ornament",
+        "MAT_W14_victorian-brick-rowhouse-terrace_primary",
+        "MAT_W14_victorian-brick-rowhouse-terrace_secondary"
+      ],
+      "size_bytes": 1100520
+    },
+    {
+      "file": "victorian-brick-rowhouse-terrace_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 12.1,
+        "height_y": 3.1,
+        "depth_z": 8.6
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W14_victorian-brick-rowhouse-terrace_OccupiedDepth",
+        "MAT_W14_victorian-brick-rowhouse-terrace_frame",
+        "MAT_W14_victorian-brick-rowhouse-terrace_glass",
+        "MAT_W14_victorian-brick-rowhouse-terrace_primary",
+        "MAT_W14_victorian-brick-rowhouse-terrace_secondary"
+      ],
+      "size_bytes": 1546332
+    },
+    {
+      "file": "victorian-brick-rowhouse-terrace_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 12.1,
+        "height_y": 3.1,
+        "depth_z": 8.6
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W14_victorian-brick-rowhouse-terrace_OccupiedDepth",
+        "MAT_W14_victorian-brick-rowhouse-terrace_frame",
+        "MAT_W14_victorian-brick-rowhouse-terrace_glass",
+        "MAT_W14_victorian-brick-rowhouse-terrace_primary",
+        "MAT_W14_victorian-brick-rowhouse-terrace_secondary"
+      ],
+      "size_bytes": 1553368
+    },
+    {
+      "file": "victorian-brick-rowhouse-terrace_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 12.1,
+        "height_y": 3.1,
+        "depth_z": 8.6
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W14_victorian-brick-rowhouse-terrace_OccupiedDepth",
+        "MAT_W14_victorian-brick-rowhouse-terrace_frame",
+        "MAT_W14_victorian-brick-rowhouse-terrace_glass",
+        "MAT_W14_victorian-brick-rowhouse-terrace_primary",
+        "MAT_W14_victorian-brick-rowhouse-terrace_secondary"
+      ],
+      "size_bytes": 1560824
+    },
+    {
+      "file": "victorian-brick-rowhouse-terrace_crown_crown.glb",
+      "status": "ok",
+      "triangles": 60,
+      "extent_m": {
+        "width_x": 12.1,
+        "height_y": 0.8,
+        "depth_z": 8.455
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W14_victorian-brick-rowhouse-terrace_ornament",
+        "MAT_W14_victorian-brick-rowhouse-terrace_secondary"
+      ],
+      "size_bytes": 428600
+    },
+    {
+      "file": "victorian-brick-rowhouse-terrace_roof.glb",
+      "status": "ok",
+      "triangles": 72,
+      "extent_m": {
+        "width_x": 12.163,
+        "height_y": 2.19,
+        "depth_z": 8.46
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W14_victorian-brick-rowhouse-terrace_frame",
+        "MAT_W14_victorian-brick-rowhouse-terrace_roof"
+      ],
+      "size_bytes": 456068
+    },
+    {
+      "file": "victorian-brick-rowhouse-terrace_assembled.glb",
+      "status": "ok",
+      "triangles": 19808,
+      "extent_m": {
+        "width_x": 22.285,
+        "height_y": 8.679,
+        "depth_z": 13.61
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W14_victorian-brick-rowhouse-terrace_OccupiedDepth",
+        "MAT_W14_victorian-brick-rowhouse-terrace_frame",
+        "MAT_W14_victorian-brick-rowhouse-terrace_glass",
+        "MAT_W14_victorian-brick-rowhouse-terrace_ornament",
+        "MAT_W14_victorian-brick-rowhouse-terrace_primary",
+        "MAT_W14_victorian-brick-rowhouse-terrace_roof",
+        "MAT_W14_victorian-brick-rowhouse-terrace_secondary"
+      ],
+      "size_bytes": 8525368,
+      "role": "assembled"
+    }
+  ]
+}

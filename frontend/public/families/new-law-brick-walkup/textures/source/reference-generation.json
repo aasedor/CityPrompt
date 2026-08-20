@@ -1,0 +1,64 @@
+{
+  "schema": "reference-generation@1",
+  "family": "new-law-brick-walkup",
+  "archetype_id": "new_york_walk_up_tenement",
+  "variant_id": "tenement_new_law",
+  "provider": "CityPrompt registered catalogue asset",
+  "model": "pre-existing-catalogue-reference",
+  "generated_at": "2026-08-20",
+  "status": "catalogue-source-registered",
+  "input_paths": [
+    "/archetypes/buildings/new-york-walk-up-tenement/variant_1.png"
+  ],
+  "catalogue_card_path": "/archetypes/buildings/new-york-walk-up-tenement/variant_1.png",
+  "source_mode": "existing_catalogue_card_material_and_shape_goalpost",
+  "design_lock": {
+    "native_envelope_dimensions_m": [
+      24.0,
+      20.0,
+      18.5
+    ],
+    "occupied_storeys": 5,
+    "variant_specific_contract": "24 m by 20 m five-storey corner block; retail bays occupy the complete ground floor, four repetitive residential storeys sit above, two supported fire-escape stacks remain attached to real window bays and a deep bracketed cornice closes both street elevations.",
+    "material_zones": "aged warm red brick; carved brownstone lintels and cornice; black painted fire-escape steel; dark bronze storefront and sash frames; neutral apartment glass with varied occupied depth; dark built-up roof",
+    "glass_profile": "heritage_apartment_sash_with_varied_occupied_depth",
+    "coverage_cohort": "commonplace_standard"
+  },
+  "sources": [
+    {
+      "file": "archetype-goalpost.png",
+      "source_id": "catalogue:new_york_walk_up_tenement:tenement_new_law",
+      "role": "immutable_shipped_catalogue_goalpost"
+    },
+    {
+      "file": "elevation-source-v1.png",
+      "source_id": "catalogue-crop:tenement_new_law:building",
+      "role": "registered_building_crop_for_colour_and_material_scale"
+    },
+    {
+      "file": "occupied-depth-source-v1.png",
+      "source_id": "catalogue-crop:tenement_new_law:occupied",
+      "role": "registered_occupied_window_depth_crop"
+    },
+    {
+      "file": "primary-material-source.png",
+      "source_id": "catalogue-crop:tenement_new_law:primary",
+      "role": "registered_primary_material_crop"
+    },
+    {
+      "file": "secondary-material-source.png",
+      "source_id": "catalogue-crop:tenement_new_law:secondary",
+      "role": "registered_secondary_material_crop"
+    },
+    {
+      "file": "ornament-material-source.png",
+      "source_id": "catalogue-crop:tenement_new_law:ornament",
+      "role": "registered_ornament_material_crop"
+    },
+    {
+      "file": "roof-material-source.png",
+      "source_id": "catalogue-crop:tenement_new_law:roof",
+      "role": "registered_roof_material_crop"
+    }
+  ]
+}

@@ -1,0 +1,169 @@
+{
+  "status": "pass",
+  "family": "new-law-brick-walkup",
+  "archetype_id": "new_york_walk_up_tenement",
+  "reuse_keys": [
+    "new_york_walk_up_tenement",
+    "tenement_new_law",
+    "new_law_brick_walkup",
+    "Walk-Up Apartment",
+    "Brick Tenement",
+    "Mixed-Use Residential"
+  ],
+  "manifest": "new-law-brick-walkup_manifest.json",
+  "errors": [],
+  "warnings": [
+    "no setback module (optional)",
+    "new-law-brick-walkup_assembled.glb: 8.3 MB exceeds the 8 MB texture budget (shrink texture resolution or drop maps)"
+  ],
+  "modules": [
+    {
+      "file": "new-law-brick-walkup_podium.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 13.2,
+        "height_y": 3.5,
+        "depth_z": 14.285
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_podium_default_Right",
+        "MAT_W14_new-law-brick-walkup_frame",
+        "MAT_W14_new-law-brick-walkup_glass",
+        "MAT_W14_new-law-brick-walkup_ornament",
+        "MAT_W14_new-law-brick-walkup_primary",
+        "MAT_W14_new-law-brick-walkup_secondary"
+      ],
+      "size_bytes": 1064324
+    },
+    {
+      "file": "new-law-brick-walkup_floor_typical_a.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 13.2,
+        "height_y": 3.15,
+        "depth_z": 14.04
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_a_Right",
+        "MAT_W14_new-law-brick-walkup_OccupiedDepth",
+        "MAT_W14_new-law-brick-walkup_frame",
+        "MAT_W14_new-law-brick-walkup_glass",
+        "MAT_W14_new-law-brick-walkup_primary",
+        "MAT_W14_new-law-brick-walkup_secondary"
+      ],
+      "size_bytes": 1610620
+    },
+    {
+      "file": "new-law-brick-walkup_floor_typical_b.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 13.2,
+        "height_y": 3.15,
+        "depth_z": 14.04
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_b_Right",
+        "MAT_W14_new-law-brick-walkup_OccupiedDepth",
+        "MAT_W14_new-law-brick-walkup_frame",
+        "MAT_W14_new-law-brick-walkup_glass",
+        "MAT_W14_new-law-brick-walkup_primary",
+        "MAT_W14_new-law-brick-walkup_secondary"
+      ],
+      "size_bytes": 1617144
+    },
+    {
+      "file": "new-law-brick-walkup_floor_typical_c.glb",
+      "status": "ok",
+      "triangles": 96,
+      "extent_m": {
+        "width_x": 13.2,
+        "height_y": 3.15,
+        "depth_z": 14.04
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Left",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Rear",
+        "MAT_Sheet_Wrapped_Wave3_floor_typical_c_Right",
+        "MAT_W14_new-law-brick-walkup_OccupiedDepth",
+        "MAT_W14_new-law-brick-walkup_frame",
+        "MAT_W14_new-law-brick-walkup_glass",
+        "MAT_W14_new-law-brick-walkup_primary",
+        "MAT_W14_new-law-brick-walkup_secondary"
+      ],
+      "size_bytes": 1624080
+    },
+    {
+      "file": "new-law-brick-walkup_crown_crown.glb",
+      "status": "ok",
+      "triangles": 60,
+      "extent_m": {
+        "width_x": 13.2,
+        "height_y": 1.0,
+        "depth_z": 13.895
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Left",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Rear",
+        "MAT_Sheet_Wrapped_Wave3_crown_crown_Right",
+        "MAT_W14_new-law-brick-walkup_ornament",
+        "MAT_W14_new-law-brick-walkup_secondary"
+      ],
+      "size_bytes": 425416
+    },
+    {
+      "file": "new-law-brick-walkup_roof.glb",
+      "status": "ok",
+      "triangles": 60,
+      "extent_m": {
+        "width_x": 13.45,
+        "height_y": 0.55,
+        "depth_z": 13.85
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Left",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Rear",
+        "MAT_Sheet_Wrapped_Wave3_roof_default_Right",
+        "MAT_W14_new-law-brick-walkup_roof",
+        "MAT_W14_new-law-brick-walkup_secondary"
+      ],
+      "size_bytes": 456560
+    },
+    {
+      "file": "new-law-brick-walkup_assembled.glb",
+      "status": "ok",
+      "triangles": 54028,
+      "extent_m": {
+        "width_x": 26.172,
+        "height_y": 17.88,
+        "depth_z": 21.25
+      },
+      "bottom_y": 0.0,
+      "materials": [
+        "MAT_W14_new-law-brick-walkup_OccupiedDepth",
+        "MAT_W14_new-law-brick-walkup_frame",
+        "MAT_W14_new-law-brick-walkup_glass",
+        "MAT_W14_new-law-brick-walkup_ornament",
+        "MAT_W14_new-law-brick-walkup_primary",
+        "MAT_W14_new-law-brick-walkup_roof",
+        "MAT_W14_new-law-brick-walkup_secondary"
+      ],
+      "size_bytes": 8729936,
+      "role": "assembled"
+    }
+  ]
+}

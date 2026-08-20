@@ -1,0 +1,119 @@
+{
+  "family_id": "craftsman-brick-bungalow",
+  "source": {
+    "archetype_id": "calgary_inner_city_bungalow",
+    "variant_id": "bungalow_craftsman_original",
+    "generation_archetype_id": "bungalow_craftsman_original",
+    "reuse_keys": [
+      "calgary_inner_city_bungalow",
+      "bungalow_craftsman_original",
+      "craftsman_brick_bungalow",
+      "Craftsman Bungalow",
+      "Detached House",
+      "Single-Family Residential"
+    ]
+  },
+  "dimensions": {
+    "width_m": 10.893,
+    "depth_m": 14.28,
+    "podium_height_m": 3.15,
+    "floor_height_m": 3.15,
+    "setback_height_m": 3.15,
+    "roof_height_m": 3.0,
+    "crown_height_m": 0.25,
+    "default_floors": 1,
+    "min_floors": 1,
+    "max_floors": 2
+  },
+  "architectural_signature": {
+    "identity": "A one-storey brick-and-stucco Craftsman bungalow has a broad front gable, deep shingled eaves, a smaller cross-gabled porch, tapered timber posts, a raised masonry base and room-scale divided-light sash windows.",
+    "material_zones": "warm red common brick; pale textured stucco; honey-brown porch timber; white painted sash and fascia; neutral residential glass with warm occupied depth; weathered charcoal asphalt shingles",
+    "glass_profile": "clear_residential_sash_with_warm_room_depth",
+    "kits": [
+      "reference_locked_fixed_landmark",
+      "physical_layered_glazing",
+      "occupied_interior_depth",
+      "semantic_repeatable_middle_bays",
+      "fixed_variant_roof_and_identity_kit",
+      "broad_front_gable",
+      "cross_gabled_supported_porch",
+      "grounded_masonry_base",
+      "divided_residential_sash",
+      "intersecting_masonry_chimney"
+    ]
+  },
+  "archetype_aliases": [
+    "calgary_inner_city_bungalow",
+    "bungalow_craftsman_original",
+    "craftsman_brick_bungalow"
+  ],
+  "footprint_compatibility": {
+    "preferredProfiles": [
+      "rectangle"
+    ],
+    "minimumPreferredProfiles": 1,
+    "profileRationale": "The complete commonplace building remains fixed through the 0.78x-1.24x band. Larger drawings repeat complete 2.50 m rooms, dwellings, storefronts, classrooms or industrial panels; entrances, stairs, corners, roofs and crowns never stretch independently.",
+    "fixedLandmarkScaleBand": {
+      "scaleMin": 0.78,
+      "scaleMax": 1.24,
+      "maxAxisRatio": 1.18
+    },
+    "recommendedWidth_m": [
+      7.8,
+      12.4
+    ],
+    "recommendedDepth_m": [
+      9.4,
+      14.9
+    ],
+    "recommendedFloors": [
+      1,
+      2
+    ],
+    "scaleMin": 0.78,
+    "scaleMax": 1.24,
+    "maxAxisRatio": 1.18,
+    "preferredBayMultiple_m": 2.5,
+    "profiles": {
+      "rectangle": {
+        "recommendedWidth_m": [
+          7.8,
+          12.4
+        ],
+        "recommendedDepth_m": [
+          9.4,
+          14.9
+        ],
+        "recommendedFloors": [
+          1,
+          2
+        ],
+        "scaleMin": 0.78,
+        "scaleMax": 1.24,
+        "maxAxisRatio": 1.18,
+        "preferredBayMultiple_m": 2.5
+      }
+    }
+  },
+  "massing_graph": {
+    "type": "fixed_craftsman_bungalow_with_repeatable_complete_common_bays",
+    "variant_id": "bungalow_craftsman_original",
+    "occupied_storeys": 1,
+    "features": [
+      "broad_front_gable",
+      "cross_gabled_supported_porch",
+      "grounded_masonry_base",
+      "divided_residential_sash",
+      "intersecting_masonry_chimney"
+    ],
+    "physical_window_layers": [
+      "occupied_depth",
+      "physical_pane",
+      "separate_frame",
+      "head_and_sill",
+      "floor_datum",
+      "material_return"
+    ],
+    "fallback_policy": "fixed identity ends plus repeatable complete room dwelling storefront classroom or industrial-panel bays"
+  }
+}

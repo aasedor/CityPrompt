@@ -1,0 +1,366 @@
+{
+  "schema": "plateau-stone-montreal-duplex-skin@1",
+  "family": "plateau-stone-montreal-duplex",
+  "source": "textures/source/elevation-source-v1.png",
+  "source_model": "pre-existing-catalogue-reference",
+  "sources": {
+    "archetype_goalpost": "textures/source/archetype-goalpost.png",
+    "orthographic_elevation": "textures/source/elevation-source-v1.png",
+    "reference_underlay": "textures/source/occupied-depth-source-v1.png",
+    "reference_generation": "textures/source/reference-generation.json",
+    "registered_openings": "textures/source/registered-openings.json",
+    "registered_bands": "textures/source/registered-bands.json"
+  },
+  "registration": "The shipped catalogue card for Plateau Stone Montreal Duplex fixes material, massing and identity. The deterministic geometry owns openings, structure, roof and silhouette: 9 m by 12 m, two occupied levels; paired shallow stone bays, two independent ground thresholds, one complete exterior steel stair and landing, flat roof cornice and narrow party-lot proportions remain fixed.",
+  "reference_registration": {
+    "mode": "archetype_specific",
+    "source_archetype_id": "montreal_duplex",
+    "source_variant_id": "montreal_duplex_plateau",
+    "registered_elevations": [
+      "front",
+      "left",
+      "right",
+      "rear",
+      "roof"
+    ],
+    "registered_surfaces": [
+      "catalogue_card_building_envelope",
+      "physical_recessed_glazing_and_occupied_depth",
+      "complete_grounded_threshold_and_entrance",
+      "variant_specific_roof_and_crown",
+      "wrapped_left_right_and_rear_elevations",
+      "repeatable_complete_construction_bays"
+    ],
+    "uv_strategy": "camera-registered public elevation, true-scale material zones on physical construction, occupied-depth underlay immediately behind registered glazing, and related secondary-elevation schedules wrapped around the complete envelope",
+    "depth_binding": "shader_bump",
+    "generic_tiling_allowed": false
+  },
+  "channels": [
+    "albedo",
+    "normal",
+    "roughness",
+    "ao",
+    "depth",
+    "emissive"
+  ],
+  "semantic_masks": [
+    "glass_mask",
+    "opaque_mask"
+  ],
+  "shadow_neutral": {
+    "passed": true,
+    "method": "multiscale-linear-delighting-before-pbr-derivation"
+  },
+  "zones": {
+    "facade": {
+      "near": {
+        "albedo": "textures/pbr/near/plateau-stone-montreal-duplex_registered_facade_albedo.png",
+        "normal": "textures/pbr/near/plateau-stone-montreal-duplex_registered_facade_normal.png",
+        "roughness": "textures/pbr/near/plateau-stone-montreal-duplex_registered_facade_roughness.png",
+        "ao": "textures/pbr/near/plateau-stone-montreal-duplex_registered_facade_ao.png",
+        "depth": "textures/pbr/near/plateau-stone-montreal-duplex_registered_facade_depth.png",
+        "emissive": "textures/pbr/near/plateau-stone-montreal-duplex_registered_facade_emissive.png",
+        "glass_mask": "textures/pbr/near/plateau-stone-montreal-duplex_registered_facade_glass.png",
+        "opaque_mask": "textures/pbr/near/plateau-stone-montreal-duplex_registered_facade_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/plateau-stone-montreal-duplex_registered_facade_albedo.png",
+        "normal": "textures/pbr/far/plateau-stone-montreal-duplex_registered_facade_normal.png",
+        "roughness": "textures/pbr/far/plateau-stone-montreal-duplex_registered_facade_roughness.png",
+        "ao": "textures/pbr/far/plateau-stone-montreal-duplex_registered_facade_ao.png",
+        "depth": "textures/pbr/far/plateau-stone-montreal-duplex_registered_facade_depth.png",
+        "emissive": "textures/pbr/far/plateau-stone-montreal-duplex_registered_facade_emissive.png",
+        "glass_mask": "textures/pbr/far/plateau-stone-montreal-duplex_registered_facade_glass.png",
+        "opaque_mask": "textures/pbr/far/plateau-stone-montreal-duplex_registered_facade_opaque.png"
+      }
+    },
+    "podium": {
+      "near": {
+        "albedo": "textures/pbr/near/plateau-stone-montreal-duplex_registered_podium_albedo.png",
+        "normal": "textures/pbr/near/plateau-stone-montreal-duplex_registered_podium_normal.png",
+        "roughness": "textures/pbr/near/plateau-stone-montreal-duplex_registered_podium_roughness.png",
+        "ao": "textures/pbr/near/plateau-stone-montreal-duplex_registered_podium_ao.png",
+        "depth": "textures/pbr/near/plateau-stone-montreal-duplex_registered_podium_depth.png",
+        "emissive": "textures/pbr/near/plateau-stone-montreal-duplex_registered_podium_emissive.png",
+        "glass_mask": "textures/pbr/near/plateau-stone-montreal-duplex_registered_podium_glass.png",
+        "opaque_mask": "textures/pbr/near/plateau-stone-montreal-duplex_registered_podium_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/plateau-stone-montreal-duplex_registered_podium_albedo.png",
+        "normal": "textures/pbr/far/plateau-stone-montreal-duplex_registered_podium_normal.png",
+        "roughness": "textures/pbr/far/plateau-stone-montreal-duplex_registered_podium_roughness.png",
+        "ao": "textures/pbr/far/plateau-stone-montreal-duplex_registered_podium_ao.png",
+        "depth": "textures/pbr/far/plateau-stone-montreal-duplex_registered_podium_depth.png",
+        "emissive": "textures/pbr/far/plateau-stone-montreal-duplex_registered_podium_emissive.png",
+        "glass_mask": "textures/pbr/far/plateau-stone-montreal-duplex_registered_podium_glass.png",
+        "opaque_mask": "textures/pbr/far/plateau-stone-montreal-duplex_registered_podium_opaque.png"
+      }
+    },
+    "floor_a": {
+      "near": {
+        "albedo": "textures/pbr/near/plateau-stone-montreal-duplex_registered_floor_a_albedo.png",
+        "normal": "textures/pbr/near/plateau-stone-montreal-duplex_registered_floor_a_normal.png",
+        "roughness": "textures/pbr/near/plateau-stone-montreal-duplex_registered_floor_a_roughness.png",
+        "ao": "textures/pbr/near/plateau-stone-montreal-duplex_registered_floor_a_ao.png",
+        "depth": "textures/pbr/near/plateau-stone-montreal-duplex_registered_floor_a_depth.png",
+        "emissive": "textures/pbr/near/plateau-stone-montreal-duplex_registered_floor_a_emissive.png",
+        "glass_mask": "textures/pbr/near/plateau-stone-montreal-duplex_registered_floor_a_glass.png",
+        "opaque_mask": "textures/pbr/near/plateau-stone-montreal-duplex_registered_floor_a_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/plateau-stone-montreal-duplex_registered_floor_a_albedo.png",
+        "normal": "textures/pbr/far/plateau-stone-montreal-duplex_registered_floor_a_normal.png",
+        "roughness": "textures/pbr/far/plateau-stone-montreal-duplex_registered_floor_a_roughness.png",
+        "ao": "textures/pbr/far/plateau-stone-montreal-duplex_registered_floor_a_ao.png",
+        "depth": "textures/pbr/far/plateau-stone-montreal-duplex_registered_floor_a_depth.png",
+        "emissive": "textures/pbr/far/plateau-stone-montreal-duplex_registered_floor_a_emissive.png",
+        "glass_mask": "textures/pbr/far/plateau-stone-montreal-duplex_registered_floor_a_glass.png",
+        "opaque_mask": "textures/pbr/far/plateau-stone-montreal-duplex_registered_floor_a_opaque.png"
+      }
+    },
+    "floor_b": {
+      "near": {
+        "albedo": "textures/pbr/near/plateau-stone-montreal-duplex_registered_floor_b_albedo.png",
+        "normal": "textures/pbr/near/plateau-stone-montreal-duplex_registered_floor_b_normal.png",
+        "roughness": "textures/pbr/near/plateau-stone-montreal-duplex_registered_floor_b_roughness.png",
+        "ao": "textures/pbr/near/plateau-stone-montreal-duplex_registered_floor_b_ao.png",
+        "depth": "textures/pbr/near/plateau-stone-montreal-duplex_registered_floor_b_depth.png",
+        "emissive": "textures/pbr/near/plateau-stone-montreal-duplex_registered_floor_b_emissive.png",
+        "glass_mask": "textures/pbr/near/plateau-stone-montreal-duplex_registered_floor_b_glass.png",
+        "opaque_mask": "textures/pbr/near/plateau-stone-montreal-duplex_registered_floor_b_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/plateau-stone-montreal-duplex_registered_floor_b_albedo.png",
+        "normal": "textures/pbr/far/plateau-stone-montreal-duplex_registered_floor_b_normal.png",
+        "roughness": "textures/pbr/far/plateau-stone-montreal-duplex_registered_floor_b_roughness.png",
+        "ao": "textures/pbr/far/plateau-stone-montreal-duplex_registered_floor_b_ao.png",
+        "depth": "textures/pbr/far/plateau-stone-montreal-duplex_registered_floor_b_depth.png",
+        "emissive": "textures/pbr/far/plateau-stone-montreal-duplex_registered_floor_b_emissive.png",
+        "glass_mask": "textures/pbr/far/plateau-stone-montreal-duplex_registered_floor_b_glass.png",
+        "opaque_mask": "textures/pbr/far/plateau-stone-montreal-duplex_registered_floor_b_opaque.png"
+      }
+    },
+    "crown": {
+      "near": {
+        "albedo": "textures/pbr/near/plateau-stone-montreal-duplex_registered_crown_albedo.png",
+        "normal": "textures/pbr/near/plateau-stone-montreal-duplex_registered_crown_normal.png",
+        "roughness": "textures/pbr/near/plateau-stone-montreal-duplex_registered_crown_roughness.png",
+        "ao": "textures/pbr/near/plateau-stone-montreal-duplex_registered_crown_ao.png",
+        "depth": "textures/pbr/near/plateau-stone-montreal-duplex_registered_crown_depth.png",
+        "emissive": "textures/pbr/near/plateau-stone-montreal-duplex_registered_crown_emissive.png",
+        "glass_mask": "textures/pbr/near/plateau-stone-montreal-duplex_registered_crown_glass.png",
+        "opaque_mask": "textures/pbr/near/plateau-stone-montreal-duplex_registered_crown_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/plateau-stone-montreal-duplex_registered_crown_albedo.png",
+        "normal": "textures/pbr/far/plateau-stone-montreal-duplex_registered_crown_normal.png",
+        "roughness": "textures/pbr/far/plateau-stone-montreal-duplex_registered_crown_roughness.png",
+        "ao": "textures/pbr/far/plateau-stone-montreal-duplex_registered_crown_ao.png",
+        "depth": "textures/pbr/far/plateau-stone-montreal-duplex_registered_crown_depth.png",
+        "emissive": "textures/pbr/far/plateau-stone-montreal-duplex_registered_crown_emissive.png",
+        "glass_mask": "textures/pbr/far/plateau-stone-montreal-duplex_registered_crown_glass.png",
+        "opaque_mask": "textures/pbr/far/plateau-stone-montreal-duplex_registered_crown_opaque.png"
+      }
+    },
+    "side": {
+      "near": {
+        "albedo": "textures/pbr/near/plateau-stone-montreal-duplex_registered_side_albedo.png",
+        "normal": "textures/pbr/near/plateau-stone-montreal-duplex_registered_side_normal.png",
+        "roughness": "textures/pbr/near/plateau-stone-montreal-duplex_registered_side_roughness.png",
+        "ao": "textures/pbr/near/plateau-stone-montreal-duplex_registered_side_ao.png",
+        "depth": "textures/pbr/near/plateau-stone-montreal-duplex_registered_side_depth.png",
+        "emissive": "textures/pbr/near/plateau-stone-montreal-duplex_registered_side_emissive.png",
+        "glass_mask": "textures/pbr/near/plateau-stone-montreal-duplex_registered_side_glass.png",
+        "opaque_mask": "textures/pbr/near/plateau-stone-montreal-duplex_registered_side_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/plateau-stone-montreal-duplex_registered_side_albedo.png",
+        "normal": "textures/pbr/far/plateau-stone-montreal-duplex_registered_side_normal.png",
+        "roughness": "textures/pbr/far/plateau-stone-montreal-duplex_registered_side_roughness.png",
+        "ao": "textures/pbr/far/plateau-stone-montreal-duplex_registered_side_ao.png",
+        "depth": "textures/pbr/far/plateau-stone-montreal-duplex_registered_side_depth.png",
+        "emissive": "textures/pbr/far/plateau-stone-montreal-duplex_registered_side_emissive.png",
+        "glass_mask": "textures/pbr/far/plateau-stone-montreal-duplex_registered_side_glass.png",
+        "opaque_mask": "textures/pbr/far/plateau-stone-montreal-duplex_registered_side_opaque.png"
+      }
+    },
+    "interior": {
+      "near": {
+        "albedo": "textures/pbr/near/plateau-stone-montreal-duplex_occupied_depth_albedo.png",
+        "normal": "textures/pbr/near/plateau-stone-montreal-duplex_occupied_depth_normal.png",
+        "roughness": "textures/pbr/near/plateau-stone-montreal-duplex_occupied_depth_roughness.png",
+        "ao": "textures/pbr/near/plateau-stone-montreal-duplex_occupied_depth_ao.png",
+        "depth": "textures/pbr/near/plateau-stone-montreal-duplex_occupied_depth_depth.png",
+        "emissive": "textures/pbr/near/plateau-stone-montreal-duplex_occupied_depth_emissive.png",
+        "glass_mask": "textures/pbr/near/plateau-stone-montreal-duplex_occupied_depth_glass.png",
+        "opaque_mask": "textures/pbr/near/plateau-stone-montreal-duplex_occupied_depth_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/plateau-stone-montreal-duplex_occupied_depth_albedo.png",
+        "normal": "textures/pbr/far/plateau-stone-montreal-duplex_occupied_depth_normal.png",
+        "roughness": "textures/pbr/far/plateau-stone-montreal-duplex_occupied_depth_roughness.png",
+        "ao": "textures/pbr/far/plateau-stone-montreal-duplex_occupied_depth_ao.png",
+        "depth": "textures/pbr/far/plateau-stone-montreal-duplex_occupied_depth_depth.png",
+        "emissive": "textures/pbr/far/plateau-stone-montreal-duplex_occupied_depth_emissive.png",
+        "glass_mask": "textures/pbr/far/plateau-stone-montreal-duplex_occupied_depth_glass.png",
+        "opaque_mask": "textures/pbr/far/plateau-stone-montreal-duplex_occupied_depth_opaque.png"
+      }
+    },
+    "primary": {
+      "near": {
+        "albedo": "textures/pbr/near/plateau-stone-montreal-duplex_primary_pale_grey_Montreal_limestone_albedo.png",
+        "normal": "textures/pbr/near/plateau-stone-montreal-duplex_primary_pale_grey_Montreal_limestone_normal.png",
+        "roughness": "textures/pbr/near/plateau-stone-montreal-duplex_primary_pale_grey_Montreal_limestone_roughness.png",
+        "ao": "textures/pbr/near/plateau-stone-montreal-duplex_primary_pale_grey_Montreal_limestone_ao.png",
+        "depth": "textures/pbr/near/plateau-stone-montreal-duplex_primary_pale_grey_Montreal_limestone_depth.png",
+        "emissive": "textures/pbr/near/plateau-stone-montreal-duplex_primary_pale_grey_Montreal_limestone_emissive.png",
+        "glass_mask": "textures/pbr/near/plateau-stone-montreal-duplex_primary_pale_grey_Montreal_limestone_glass.png",
+        "opaque_mask": "textures/pbr/near/plateau-stone-montreal-duplex_primary_pale_grey_Montreal_limestone_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/plateau-stone-montreal-duplex_primary_pale_grey_Montreal_limestone_albedo.png",
+        "normal": "textures/pbr/far/plateau-stone-montreal-duplex_primary_pale_grey_Montreal_limestone_normal.png",
+        "roughness": "textures/pbr/far/plateau-stone-montreal-duplex_primary_pale_grey_Montreal_limestone_roughness.png",
+        "ao": "textures/pbr/far/plateau-stone-montreal-duplex_primary_pale_grey_Montreal_limestone_ao.png",
+        "depth": "textures/pbr/far/plateau-stone-montreal-duplex_primary_pale_grey_Montreal_limestone_depth.png",
+        "emissive": "textures/pbr/far/plateau-stone-montreal-duplex_primary_pale_grey_Montreal_limestone_emissive.png",
+        "glass_mask": "textures/pbr/far/plateau-stone-montreal-duplex_primary_pale_grey_Montreal_limestone_glass.png",
+        "opaque_mask": "textures/pbr/far/plateau-stone-montreal-duplex_primary_pale_grey_Montreal_limestone_opaque.png"
+      }
+    },
+    "secondary": {
+      "near": {
+        "albedo": "textures/pbr/near/plateau-stone-montreal-duplex_secondary_smooth_pale_stone_trim_albedo.png",
+        "normal": "textures/pbr/near/plateau-stone-montreal-duplex_secondary_smooth_pale_stone_trim_normal.png",
+        "roughness": "textures/pbr/near/plateau-stone-montreal-duplex_secondary_smooth_pale_stone_trim_roughness.png",
+        "ao": "textures/pbr/near/plateau-stone-montreal-duplex_secondary_smooth_pale_stone_trim_ao.png",
+        "depth": "textures/pbr/near/plateau-stone-montreal-duplex_secondary_smooth_pale_stone_trim_depth.png",
+        "emissive": "textures/pbr/near/plateau-stone-montreal-duplex_secondary_smooth_pale_stone_trim_emissive.png",
+        "glass_mask": "textures/pbr/near/plateau-stone-montreal-duplex_secondary_smooth_pale_stone_trim_glass.png",
+        "opaque_mask": "textures/pbr/near/plateau-stone-montreal-duplex_secondary_smooth_pale_stone_trim_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/plateau-stone-montreal-duplex_secondary_smooth_pale_stone_trim_albedo.png",
+        "normal": "textures/pbr/far/plateau-stone-montreal-duplex_secondary_smooth_pale_stone_trim_normal.png",
+        "roughness": "textures/pbr/far/plateau-stone-montreal-duplex_secondary_smooth_pale_stone_trim_roughness.png",
+        "ao": "textures/pbr/far/plateau-stone-montreal-duplex_secondary_smooth_pale_stone_trim_ao.png",
+        "depth": "textures/pbr/far/plateau-stone-montreal-duplex_secondary_smooth_pale_stone_trim_depth.png",
+        "emissive": "textures/pbr/far/plateau-stone-montreal-duplex_secondary_smooth_pale_stone_trim_emissive.png",
+        "glass_mask": "textures/pbr/far/plateau-stone-montreal-duplex_secondary_smooth_pale_stone_trim_glass.png",
+        "opaque_mask": "textures/pbr/far/plateau-stone-montreal-duplex_secondary_smooth_pale_stone_trim_opaque.png"
+      }
+    },
+    "ornament": {
+      "near": {
+        "albedo": "textures/pbr/near/plateau-stone-montreal-duplex_ornament_black_painted_exterior_stair_steel_albedo.png",
+        "normal": "textures/pbr/near/plateau-stone-montreal-duplex_ornament_black_painted_exterior_stair_steel_normal.png",
+        "roughness": "textures/pbr/near/plateau-stone-montreal-duplex_ornament_black_painted_exterior_stair_steel_roughness.png",
+        "ao": "textures/pbr/near/plateau-stone-montreal-duplex_ornament_black_painted_exterior_stair_steel_ao.png",
+        "depth": "textures/pbr/near/plateau-stone-montreal-duplex_ornament_black_painted_exterior_stair_steel_depth.png",
+        "emissive": "textures/pbr/near/plateau-stone-montreal-duplex_ornament_black_painted_exterior_stair_steel_emissive.png",
+        "glass_mask": "textures/pbr/near/plateau-stone-montreal-duplex_ornament_black_painted_exterior_stair_steel_glass.png",
+        "opaque_mask": "textures/pbr/near/plateau-stone-montreal-duplex_ornament_black_painted_exterior_stair_steel_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/plateau-stone-montreal-duplex_ornament_black_painted_exterior_stair_steel_albedo.png",
+        "normal": "textures/pbr/far/plateau-stone-montreal-duplex_ornament_black_painted_exterior_stair_steel_normal.png",
+        "roughness": "textures/pbr/far/plateau-stone-montreal-duplex_ornament_black_painted_exterior_stair_steel_roughness.png",
+        "ao": "textures/pbr/far/plateau-stone-montreal-duplex_ornament_black_painted_exterior_stair_steel_ao.png",
+        "depth": "textures/pbr/far/plateau-stone-montreal-duplex_ornament_black_painted_exterior_stair_steel_depth.png",
+        "emissive": "textures/pbr/far/plateau-stone-montreal-duplex_ornament_black_painted_exterior_stair_steel_emissive.png",
+        "glass_mask": "textures/pbr/far/plateau-stone-montreal-duplex_ornament_black_painted_exterior_stair_steel_glass.png",
+        "opaque_mask": "textures/pbr/far/plateau-stone-montreal-duplex_ornament_black_painted_exterior_stair_steel_opaque.png"
+      }
+    },
+    "frame": {
+      "near": {
+        "albedo": "textures/pbr/near/plateau-stone-montreal-duplex_frame_charcoal_sash_and_guard_frame_albedo.png",
+        "normal": "textures/pbr/near/plateau-stone-montreal-duplex_frame_charcoal_sash_and_guard_frame_normal.png",
+        "roughness": "textures/pbr/near/plateau-stone-montreal-duplex_frame_charcoal_sash_and_guard_frame_roughness.png",
+        "ao": "textures/pbr/near/plateau-stone-montreal-duplex_frame_charcoal_sash_and_guard_frame_ao.png",
+        "depth": "textures/pbr/near/plateau-stone-montreal-duplex_frame_charcoal_sash_and_guard_frame_depth.png",
+        "emissive": "textures/pbr/near/plateau-stone-montreal-duplex_frame_charcoal_sash_and_guard_frame_emissive.png",
+        "glass_mask": "textures/pbr/near/plateau-stone-montreal-duplex_frame_charcoal_sash_and_guard_frame_glass.png",
+        "opaque_mask": "textures/pbr/near/plateau-stone-montreal-duplex_frame_charcoal_sash_and_guard_frame_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/plateau-stone-montreal-duplex_frame_charcoal_sash_and_guard_frame_albedo.png",
+        "normal": "textures/pbr/far/plateau-stone-montreal-duplex_frame_charcoal_sash_and_guard_frame_normal.png",
+        "roughness": "textures/pbr/far/plateau-stone-montreal-duplex_frame_charcoal_sash_and_guard_frame_roughness.png",
+        "ao": "textures/pbr/far/plateau-stone-montreal-duplex_frame_charcoal_sash_and_guard_frame_ao.png",
+        "depth": "textures/pbr/far/plateau-stone-montreal-duplex_frame_charcoal_sash_and_guard_frame_depth.png",
+        "emissive": "textures/pbr/far/plateau-stone-montreal-duplex_frame_charcoal_sash_and_guard_frame_emissive.png",
+        "glass_mask": "textures/pbr/far/plateau-stone-montreal-duplex_frame_charcoal_sash_and_guard_frame_glass.png",
+        "opaque_mask": "textures/pbr/far/plateau-stone-montreal-duplex_frame_charcoal_sash_and_guard_frame_opaque.png"
+      }
+    },
+    "glass": {
+      "near": {
+        "albedo": "textures/pbr/near/plateau-stone-montreal-duplex_glass_neutral_heritage_glazing_albedo.png",
+        "normal": "textures/pbr/near/plateau-stone-montreal-duplex_glass_neutral_heritage_glazing_normal.png",
+        "roughness": "textures/pbr/near/plateau-stone-montreal-duplex_glass_neutral_heritage_glazing_roughness.png",
+        "ao": "textures/pbr/near/plateau-stone-montreal-duplex_glass_neutral_heritage_glazing_ao.png",
+        "depth": "textures/pbr/near/plateau-stone-montreal-duplex_glass_neutral_heritage_glazing_depth.png",
+        "emissive": "textures/pbr/near/plateau-stone-montreal-duplex_glass_neutral_heritage_glazing_emissive.png",
+        "glass_mask": "textures/pbr/near/plateau-stone-montreal-duplex_glass_neutral_heritage_glazing_glass.png",
+        "opaque_mask": "textures/pbr/near/plateau-stone-montreal-duplex_glass_neutral_heritage_glazing_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/plateau-stone-montreal-duplex_glass_neutral_heritage_glazing_albedo.png",
+        "normal": "textures/pbr/far/plateau-stone-montreal-duplex_glass_neutral_heritage_glazing_normal.png",
+        "roughness": "textures/pbr/far/plateau-stone-montreal-duplex_glass_neutral_heritage_glazing_roughness.png",
+        "ao": "textures/pbr/far/plateau-stone-montreal-duplex_glass_neutral_heritage_glazing_ao.png",
+        "depth": "textures/pbr/far/plateau-stone-montreal-duplex_glass_neutral_heritage_glazing_depth.png",
+        "emissive": "textures/pbr/far/plateau-stone-montreal-duplex_glass_neutral_heritage_glazing_emissive.png",
+        "glass_mask": "textures/pbr/far/plateau-stone-montreal-duplex_glass_neutral_heritage_glazing_glass.png",
+        "opaque_mask": "textures/pbr/far/plateau-stone-montreal-duplex_glass_neutral_heritage_glazing_opaque.png"
+      }
+    },
+    "roof": {
+      "near": {
+        "albedo": "textures/pbr/near/plateau-stone-montreal-duplex_roof_dark_flat_membrane_albedo.png",
+        "normal": "textures/pbr/near/plateau-stone-montreal-duplex_roof_dark_flat_membrane_normal.png",
+        "roughness": "textures/pbr/near/plateau-stone-montreal-duplex_roof_dark_flat_membrane_roughness.png",
+        "ao": "textures/pbr/near/plateau-stone-montreal-duplex_roof_dark_flat_membrane_ao.png",
+        "depth": "textures/pbr/near/plateau-stone-montreal-duplex_roof_dark_flat_membrane_depth.png",
+        "emissive": "textures/pbr/near/plateau-stone-montreal-duplex_roof_dark_flat_membrane_emissive.png",
+        "glass_mask": "textures/pbr/near/plateau-stone-montreal-duplex_roof_dark_flat_membrane_glass.png",
+        "opaque_mask": "textures/pbr/near/plateau-stone-montreal-duplex_roof_dark_flat_membrane_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/plateau-stone-montreal-duplex_roof_dark_flat_membrane_albedo.png",
+        "normal": "textures/pbr/far/plateau-stone-montreal-duplex_roof_dark_flat_membrane_normal.png",
+        "roughness": "textures/pbr/far/plateau-stone-montreal-duplex_roof_dark_flat_membrane_roughness.png",
+        "ao": "textures/pbr/far/plateau-stone-montreal-duplex_roof_dark_flat_membrane_ao.png",
+        "depth": "textures/pbr/far/plateau-stone-montreal-duplex_roof_dark_flat_membrane_depth.png",
+        "emissive": "textures/pbr/far/plateau-stone-montreal-duplex_roof_dark_flat_membrane_emissive.png",
+        "glass_mask": "textures/pbr/far/plateau-stone-montreal-duplex_roof_dark_flat_membrane_glass.png",
+        "opaque_mask": "textures/pbr/far/plateau-stone-montreal-duplex_roof_dark_flat_membrane_opaque.png"
+      }
+    }
+  },
+  "atlases": {
+    "near": {
+      "albedo": "textures/pbr/near/plateau-stone-montreal-duplex_registered_facade_albedo.png",
+      "normal": "textures/pbr/near/plateau-stone-montreal-duplex_registered_facade_normal.png",
+      "roughness": "textures/pbr/near/plateau-stone-montreal-duplex_registered_facade_roughness.png",
+      "ao": "textures/pbr/near/plateau-stone-montreal-duplex_registered_facade_ao.png",
+      "depth": "textures/pbr/near/plateau-stone-montreal-duplex_registered_facade_depth.png",
+      "emissive": "textures/pbr/near/plateau-stone-montreal-duplex_registered_facade_emissive.png",
+      "glass_mask": "textures/pbr/near/plateau-stone-montreal-duplex_registered_facade_glass.png",
+      "opaque_mask": "textures/pbr/near/plateau-stone-montreal-duplex_registered_facade_opaque.png"
+    },
+    "far": {
+      "albedo": "textures/pbr/far/plateau-stone-montreal-duplex_registered_facade_albedo.png",
+      "normal": "textures/pbr/far/plateau-stone-montreal-duplex_registered_facade_normal.png",
+      "roughness": "textures/pbr/far/plateau-stone-montreal-duplex_registered_facade_roughness.png",
+      "ao": "textures/pbr/far/plateau-stone-montreal-duplex_registered_facade_ao.png",
+      "depth": "textures/pbr/far/plateau-stone-montreal-duplex_registered_facade_depth.png",
+      "emissive": "textures/pbr/far/plateau-stone-montreal-duplex_registered_facade_emissive.png",
+      "glass_mask": "textures/pbr/far/plateau-stone-montreal-duplex_registered_facade_glass.png",
+      "opaque_mask": "textures/pbr/far/plateau-stone-montreal-duplex_registered_facade_opaque.png"
+    }
+  },
+  "source_provider": "CityPrompt registered catalogue asset",
+  "catalogue_card_path": "/archetypes/buildings/montreal-duplex/variant_0.png"
+}

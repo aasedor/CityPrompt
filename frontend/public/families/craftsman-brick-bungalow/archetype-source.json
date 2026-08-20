@@ -1,0 +1,13 @@
+{
+  "catalogue_archetype_id": "calgary_inner_city_bungalow",
+  "catalogue_variant_id": "bungalow_craftsman_original",
+  "catalogue_alias_ids": [
+    "craftsman_brick_bungalow"
+  ],
+  "elevation_source": "/families/craftsman-brick-bungalow/elevation.jpg",
+  "goalpost": "/families/craftsman-brick-bungalow/textures/source/archetype-goalpost.png",
+  "reference_generation": "/families/craftsman-brick-bungalow/textures/source/reference-generation.json",
+  "method": "immutable shipped catalogue card; deterministic material extraction; shared true-metric construction kits; physical layered glazing; occupied depth; complete secondary elevations; normalized bottom-centre origin; fixed whole-building landmark and complete-semantic-bay LEGO fallback",
+  "coverage_cohort": "commonplace_standard",
+  "catalogue_card_preserved": true
+}

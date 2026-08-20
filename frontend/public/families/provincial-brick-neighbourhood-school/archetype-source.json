@@ -1,0 +1,13 @@
+{
+  "catalogue_archetype_id": "ecole_republicaine",
+  "catalogue_variant_id": "ecole-republicaine-provincial-brick",
+  "catalogue_alias_ids": [
+    "provincial_brick_neighbourhood_school"
+  ],
+  "elevation_source": "/families/provincial-brick-neighbourhood-school/elevation.jpg",
+  "goalpost": "/families/provincial-brick-neighbourhood-school/textures/source/archetype-goalpost.png",
+  "reference_generation": "/families/provincial-brick-neighbourhood-school/textures/source/reference-generation.json",
+  "method": "immutable shipped catalogue card; deterministic material extraction; shared true-metric construction kits; physical layered glazing; occupied depth; complete secondary elevations; normalized bottom-centre origin; fixed whole-building landmark and complete-semantic-bay LEGO fallback",
+  "coverage_cohort": "commonplace_standard",
+  "catalogue_card_preserved": true
+}

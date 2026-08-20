@@ -1,0 +1,64 @@
+{
+  "schema": "reference-generation@1",
+  "family": "plateau-stone-montreal-duplex",
+  "archetype_id": "montreal_duplex",
+  "variant_id": "montreal_duplex_plateau",
+  "provider": "CityPrompt registered catalogue asset",
+  "model": "pre-existing-catalogue-reference",
+  "generated_at": "2026-08-20",
+  "status": "catalogue-source-registered",
+  "input_paths": [
+    "/archetypes/buildings/montreal-duplex/variant_0.png"
+  ],
+  "catalogue_card_path": "/archetypes/buildings/montreal-duplex/variant_0.png",
+  "source_mode": "existing_catalogue_card_material_and_shape_goalpost",
+  "design_lock": {
+    "native_envelope_dimensions_m": [
+      9.0,
+      12.0,
+      7.2
+    ],
+    "occupied_storeys": 2,
+    "variant_specific_contract": "9 m by 12 m, two occupied levels; paired shallow stone bays, two independent ground thresholds, one complete exterior steel stair and landing, flat roof cornice and narrow party-lot proportions remain fixed.",
+    "material_zones": "pale grey Montreal limestone; smooth pale stone trim; black painted steel stair and guards; charcoal sash frames; neutral heritage glass with warm occupied depth; dark flat membrane roof",
+    "glass_profile": "clear_heritage_sash_with_warm_duplex_depth",
+    "coverage_cohort": "commonplace_standard"
+  },
+  "sources": [
+    {
+      "file": "archetype-goalpost.png",
+      "source_id": "catalogue:montreal_duplex:montreal_duplex_plateau",
+      "role": "immutable_shipped_catalogue_goalpost"
+    },
+    {
+      "file": "elevation-source-v1.png",
+      "source_id": "catalogue-crop:montreal_duplex_plateau:building",
+      "role": "registered_building_crop_for_colour_and_material_scale"
+    },
+    {
+      "file": "occupied-depth-source-v1.png",
+      "source_id": "catalogue-crop:montreal_duplex_plateau:occupied",
+      "role": "registered_occupied_window_depth_crop"
+    },
+    {
+      "file": "primary-material-source.png",
+      "source_id": "catalogue-crop:montreal_duplex_plateau:primary",
+      "role": "registered_primary_material_crop"
+    },
+    {
+      "file": "secondary-material-source.png",
+      "source_id": "catalogue-crop:montreal_duplex_plateau:secondary",
+      "role": "registered_secondary_material_crop"
+    },
+    {
+      "file": "ornament-material-source.png",
+      "source_id": "catalogue-crop:montreal_duplex_plateau:ornament",
+      "role": "registered_ornament_material_crop"
+    },
+    {
+      "file": "roof-material-source.png",
+      "source_id": "catalogue-crop:montreal_duplex_plateau:roof",
+      "role": "registered_roof_material_crop"
+    }
+  ]
+}

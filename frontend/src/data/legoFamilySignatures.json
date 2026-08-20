@@ -1132,6 +1132,76 @@
                                                  "materialZones": "raw board-formed concrete; charcoal fibre-cement crew wing; deep fire-red insulated apparatus doors; blackened steel lintels and rails; neutral clear operations glazing; warm occupied crew and watch-room depth; dark zinc folded roof and red beacon metal",
                                                  "glassProfile": "neutral_clear_operations_glass_with_deep_crew_room_depth",
                                                  "elevationUrl": "/families/deconstructivist-concrete-fire-station/elevation.jpg"
-                                                      }
+                                                      },
+                     "bungalow_craftsman_original": {
+                                                          "archetypeId": "bungalow_craftsman_original",
+                                                          "identity": "A one-storey brick-and-stucco Craftsman bungalow has a broad front gable, deep shingled eaves, a smaller cross-gabled porch, tapered timber posts, a raised masonry base and room-scale divided-light sash windows.",
+                                                          "materialZones": "warm red common brick; pale textured stucco; honey-brown porch timber; white painted sash and fascia; neutral residential glass with warm occupied depth; weathered charcoal asphalt shingles",
+                                                          "glassProfile": "clear_residential_sash_with_warm_room_depth",
+                                                          "elevationUrl": "/families/craftsman-brick-bungalow/elevation.jpg"
+                                                      },
+                     "classic_red_brick_foursquare": {
+                                                            "archetypeId": "classic_red_brick_foursquare",
+                                                            "identity": "A compact two-storey red-brick foursquare sits beneath one deep hipped roof and front dormer, with a full-width timber porch, stout classical posts, stone lintels and sills, tall divided sash and a side chimney.",
+                                                            "materialZones": "warm pressed red brick; pale limestone lintels and sills; dark stained porch timber; cream painted sash and columns; neutral heritage glass with warm room depth; dark brown asphalt shingle roof",
+                                                            "glassProfile": "heritage_double_hung_sash_with_warm_room_depth",
+                                                            "elevationUrl": "/families/red-brick-edwardian-foursquare/elevation.jpg"
+                                                        },
+                     "montreal_duplex_plateau": {
+                                                     "archetypeId": "montreal_duplex_plateau",
+                                                     "identity": "A two-storey pale-grey Montreal stone duplex has paired shallow canted bays, tall sash, a flat corniced roof and an unmistakable black steel exterior stair rising from the sidewalk to the upper dwelling.",
+                                                     "materialZones": "pale grey Montreal limestone; smooth pale stone trim; black painted steel stair and guards; charcoal sash frames; neutral heritage glass with warm occupied depth; dark flat membrane roof",
+                                                     "glassProfile": "clear_heritage_sash_with_warm_duplex_depth",
+                                                     "elevationUrl": "/families/plateau-stone-montreal-duplex/elevation.jpg"
+                                                 },
+                     "toronto_rowhouse_victorian": {
+                                                        "archetypeId": "toronto_rowhouse_victorian",
+                                                        "identity": "A four-home Victorian brick terrace forms a continuous streetwall of warm red masonry, projecting party-wall piers, stone-trimmed tall sash, individual stoops and recessed doors, alternating parapets and steep front gables.",
+                                                        "materialZones": "warm red Toronto brick; pale grey sandstone trim; black painted stoop rails; dark bronze sash and door frames; neutral residential glass with varied occupied rooms; dark slate and membrane roofs",
+                                                        "glassProfile": "heritage_rowhouse_sash_with_varied_room_depth",
+                                                        "elevationUrl": "/families/victorian-brick-rowhouse-terrace/elevation.jpg"
+                                                    },
+                     "tenement_new_law": {
+                                            "archetypeId": "tenement_new_law",
+                                            "identity": "A five-storey red-brick corner walk-up combines a dark framed retail base, repetitive stone-trimmed sash, projecting metal fire escapes, a deep bracketed cornice and complete secondary street and rear elevations.",
+                                            "materialZones": "aged warm red brick; carved brownstone lintels and cornice; black painted fire-escape steel; dark bronze storefront and sash frames; neutral apartment glass with varied occupied depth; dark built-up roof",
+                                            "glassProfile": "heritage_apartment_sash_with_varied_occupied_depth",
+                                            "elevationUrl": "/families/new-law-brick-walkup/elevation.jpg"
+                                        },
+                     "midcentury_balcony_tower": {
+                                                    "archetypeId": "midcentury_balcony_tower",
+                                                    "identity": "An eleven-storey concrete apartment slab stacks continuous wraparound balcony plates, clear glass rails, dark occupied window walls and vertical perforated breeze-block screens above a transparent neighbourhood retail lobby.",
+                                                    "materialZones": "warm exposed concrete slabs; red-brown brick balcony planters; pale perforated concrete breeze block; dark aluminum frames; neutral clear balcony and apartment glass; pale concrete roof canopy and pergola",
+                                                    "glassProfile": "clear_midcentury_balcony_glass_with_deep_apartment_rooms",
+                                                    "elevationUrl": "/families/midcentury-balcony-apartment-slab/elevation.jpg"
+                                                },
+                     "strip_single_storey_classic": {
+                                                        "archetypeId": "strip_single_storey_classic",
+                                                        "identity": "A one-storey neighbourhood strip mall organizes six complete tenant bays beneath one continuous canopy and stepped stucco parapet, with brick piers, large clear storefronts, individual recessed doors and one taller anchor-store tower.",
+                                                        "materialZones": "warm beige stucco parapet; red-brown brick piers; pale concrete block base; dark aluminum storefront framing; clear retail glazing with deep occupied shop interiors; charcoal membrane roof and metal coping",
+                                                        "glassProfile": "clear_retail_storefront_with_deep_occupied_shop_depth",
+                                                        "elevationUrl": "/families/classic-neighbourhood-strip-mall/elevation.jpg"
+                                                    },
+                     "bodega_classic": {
+                                          "archetypeId": "bodega_classic",
+                                          "identity": "A four-storey red-brick corner apartment building wraps a weathered green bodega storefront and awning around both streets, with a chamfered entry, produce-display ledges, tall upper sash, stone trim, fire escapes and a bracketed cornice.",
+                                          "materialZones": "aged warm red brick; weathered dark green timber storefront; warm brownstone window trim; black fire-escape steel; clear retail and neutral apartment glass with occupied depth; dark built-up roof",
+                                          "glassProfile": "clear_corner_retail_and_heritage_apartment_glass",
+                                          "elevationUrl": "/families/classic-corner-bodega-mixed-use/elevation.jpg"
+                                      },
+                     "industrial_tilt_up_concrete": {
+                                                       "archetypeId": "industrial_tilt_up_concrete",
+                                                       "identity": "A broad tilt-up concrete light-industrial workshop uses real panel joints and tie holes, a recessed two-storey office entrance, ribbon glazing, four deep loading doors, steel canopies, bollards and a screened flat service roof.",
+                                                       "materialZones": "warm grey tilt-up concrete panels; darker exposed aggregate base; galvanized loading canopies and bollards; charcoal aluminum office frames; neutral industrial glazing with sparse occupied depth; pale membrane roof and dark coping",
+                                                       "glassProfile": "neutral_industrial_office_glass_with_sparse_occupied_depth",
+                                                       "elevationUrl": "/families/tilt-up-light-industrial-workshop/elevation.jpg"
+                                                   },
+                     "ecole-republicaine-provincial-brick": {
+                                                               "archetypeId": "ecole-republicaine-provincial-brick",
+                                                               "identity": "A symmetrical three-storey neighbourhood school forms a shallow U around a protected entrance court, with warm brick classroom wings, pale stone base and floor bands, tall grouped windows, pitched metal roofs, an arched gateway and a modest clock-and-bell tower.",
+                                                               "materialZones": "warm buff-red provincial brick; pale limestone base and floor bands; patinated copper clock and gateway trim; dark bronze window frames; neutral classroom glazing with occupied depth; weathered standing-seam metal roofs",
+                                                               "glassProfile": "neutral_classroom_glass_with_deep_occupied_learning_spaces",
+                                                               "elevationUrl": "/families/provincial-brick-neighbourhood-school/elevation.jpg"
+                                                           }
                  }
 }

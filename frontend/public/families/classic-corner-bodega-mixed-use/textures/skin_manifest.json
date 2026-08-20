@@ -1,0 +1,366 @@
+{
+  "schema": "classic-corner-bodega-mixed-use-skin@1",
+  "family": "classic-corner-bodega-mixed-use",
+  "source": "textures/source/elevation-source-v1.png",
+  "source_model": "pre-existing-catalogue-reference",
+  "sources": {
+    "archetype_goalpost": "textures/source/archetype-goalpost.png",
+    "orthographic_elevation": "textures/source/elevation-source-v1.png",
+    "reference_underlay": "textures/source/occupied-depth-source-v1.png",
+    "reference_generation": "textures/source/reference-generation.json",
+    "registered_openings": "textures/source/registered-openings.json",
+    "registered_bands": "textures/source/registered-bands.json"
+  },
+  "registration": "The shipped catalogue card for Classic Corner Bodega Mixed-Use fixes material, massing and identity. The deterministic geometry owns openings, structure, roof and silhouette: 16 m by 18 m four-storey corner building; dark-green storefront and fabric awning wrap both public elevations around one chamfered entry, residential sash align above, a supported fire escape occupies the side and the masonry cornice turns the corner.",
+  "reference_registration": {
+    "mode": "archetype_specific",
+    "source_archetype_id": "new_york_corner_bodega",
+    "source_variant_id": "bodega_classic",
+    "registered_elevations": [
+      "front",
+      "left",
+      "right",
+      "rear",
+      "roof"
+    ],
+    "registered_surfaces": [
+      "catalogue_card_building_envelope",
+      "physical_recessed_glazing_and_occupied_depth",
+      "complete_grounded_threshold_and_entrance",
+      "variant_specific_roof_and_crown",
+      "wrapped_left_right_and_rear_elevations",
+      "repeatable_complete_construction_bays"
+    ],
+    "uv_strategy": "camera-registered public elevation, true-scale material zones on physical construction, occupied-depth underlay immediately behind registered glazing, and related secondary-elevation schedules wrapped around the complete envelope",
+    "depth_binding": "shader_bump",
+    "generic_tiling_allowed": false
+  },
+  "channels": [
+    "albedo",
+    "normal",
+    "roughness",
+    "ao",
+    "depth",
+    "emissive"
+  ],
+  "semantic_masks": [
+    "glass_mask",
+    "opaque_mask"
+  ],
+  "shadow_neutral": {
+    "passed": true,
+    "method": "multiscale-linear-delighting-before-pbr-derivation"
+  },
+  "zones": {
+    "facade": {
+      "near": {
+        "albedo": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_facade_albedo.png",
+        "normal": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_facade_normal.png",
+        "roughness": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_facade_roughness.png",
+        "ao": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_facade_ao.png",
+        "depth": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_facade_depth.png",
+        "emissive": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_facade_emissive.png",
+        "glass_mask": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_facade_glass.png",
+        "opaque_mask": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_facade_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_facade_albedo.png",
+        "normal": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_facade_normal.png",
+        "roughness": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_facade_roughness.png",
+        "ao": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_facade_ao.png",
+        "depth": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_facade_depth.png",
+        "emissive": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_facade_emissive.png",
+        "glass_mask": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_facade_glass.png",
+        "opaque_mask": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_facade_opaque.png"
+      }
+    },
+    "podium": {
+      "near": {
+        "albedo": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_podium_albedo.png",
+        "normal": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_podium_normal.png",
+        "roughness": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_podium_roughness.png",
+        "ao": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_podium_ao.png",
+        "depth": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_podium_depth.png",
+        "emissive": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_podium_emissive.png",
+        "glass_mask": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_podium_glass.png",
+        "opaque_mask": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_podium_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_podium_albedo.png",
+        "normal": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_podium_normal.png",
+        "roughness": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_podium_roughness.png",
+        "ao": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_podium_ao.png",
+        "depth": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_podium_depth.png",
+        "emissive": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_podium_emissive.png",
+        "glass_mask": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_podium_glass.png",
+        "opaque_mask": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_podium_opaque.png"
+      }
+    },
+    "floor_a": {
+      "near": {
+        "albedo": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_floor_a_albedo.png",
+        "normal": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_floor_a_normal.png",
+        "roughness": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_floor_a_roughness.png",
+        "ao": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_floor_a_ao.png",
+        "depth": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_floor_a_depth.png",
+        "emissive": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_floor_a_emissive.png",
+        "glass_mask": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_floor_a_glass.png",
+        "opaque_mask": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_floor_a_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_floor_a_albedo.png",
+        "normal": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_floor_a_normal.png",
+        "roughness": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_floor_a_roughness.png",
+        "ao": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_floor_a_ao.png",
+        "depth": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_floor_a_depth.png",
+        "emissive": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_floor_a_emissive.png",
+        "glass_mask": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_floor_a_glass.png",
+        "opaque_mask": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_floor_a_opaque.png"
+      }
+    },
+    "floor_b": {
+      "near": {
+        "albedo": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_floor_b_albedo.png",
+        "normal": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_floor_b_normal.png",
+        "roughness": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_floor_b_roughness.png",
+        "ao": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_floor_b_ao.png",
+        "depth": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_floor_b_depth.png",
+        "emissive": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_floor_b_emissive.png",
+        "glass_mask": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_floor_b_glass.png",
+        "opaque_mask": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_floor_b_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_floor_b_albedo.png",
+        "normal": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_floor_b_normal.png",
+        "roughness": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_floor_b_roughness.png",
+        "ao": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_floor_b_ao.png",
+        "depth": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_floor_b_depth.png",
+        "emissive": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_floor_b_emissive.png",
+        "glass_mask": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_floor_b_glass.png",
+        "opaque_mask": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_floor_b_opaque.png"
+      }
+    },
+    "crown": {
+      "near": {
+        "albedo": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_crown_albedo.png",
+        "normal": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_crown_normal.png",
+        "roughness": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_crown_roughness.png",
+        "ao": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_crown_ao.png",
+        "depth": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_crown_depth.png",
+        "emissive": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_crown_emissive.png",
+        "glass_mask": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_crown_glass.png",
+        "opaque_mask": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_crown_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_crown_albedo.png",
+        "normal": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_crown_normal.png",
+        "roughness": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_crown_roughness.png",
+        "ao": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_crown_ao.png",
+        "depth": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_crown_depth.png",
+        "emissive": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_crown_emissive.png",
+        "glass_mask": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_crown_glass.png",
+        "opaque_mask": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_crown_opaque.png"
+      }
+    },
+    "side": {
+      "near": {
+        "albedo": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_side_albedo.png",
+        "normal": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_side_normal.png",
+        "roughness": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_side_roughness.png",
+        "ao": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_side_ao.png",
+        "depth": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_side_depth.png",
+        "emissive": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_side_emissive.png",
+        "glass_mask": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_side_glass.png",
+        "opaque_mask": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_side_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_side_albedo.png",
+        "normal": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_side_normal.png",
+        "roughness": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_side_roughness.png",
+        "ao": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_side_ao.png",
+        "depth": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_side_depth.png",
+        "emissive": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_side_emissive.png",
+        "glass_mask": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_side_glass.png",
+        "opaque_mask": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_side_opaque.png"
+      }
+    },
+    "interior": {
+      "near": {
+        "albedo": "textures/pbr/near/classic-corner-bodega-mixed-use_occupied_depth_albedo.png",
+        "normal": "textures/pbr/near/classic-corner-bodega-mixed-use_occupied_depth_normal.png",
+        "roughness": "textures/pbr/near/classic-corner-bodega-mixed-use_occupied_depth_roughness.png",
+        "ao": "textures/pbr/near/classic-corner-bodega-mixed-use_occupied_depth_ao.png",
+        "depth": "textures/pbr/near/classic-corner-bodega-mixed-use_occupied_depth_depth.png",
+        "emissive": "textures/pbr/near/classic-corner-bodega-mixed-use_occupied_depth_emissive.png",
+        "glass_mask": "textures/pbr/near/classic-corner-bodega-mixed-use_occupied_depth_glass.png",
+        "opaque_mask": "textures/pbr/near/classic-corner-bodega-mixed-use_occupied_depth_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/classic-corner-bodega-mixed-use_occupied_depth_albedo.png",
+        "normal": "textures/pbr/far/classic-corner-bodega-mixed-use_occupied_depth_normal.png",
+        "roughness": "textures/pbr/far/classic-corner-bodega-mixed-use_occupied_depth_roughness.png",
+        "ao": "textures/pbr/far/classic-corner-bodega-mixed-use_occupied_depth_ao.png",
+        "depth": "textures/pbr/far/classic-corner-bodega-mixed-use_occupied_depth_depth.png",
+        "emissive": "textures/pbr/far/classic-corner-bodega-mixed-use_occupied_depth_emissive.png",
+        "glass_mask": "textures/pbr/far/classic-corner-bodega-mixed-use_occupied_depth_glass.png",
+        "opaque_mask": "textures/pbr/far/classic-corner-bodega-mixed-use_occupied_depth_opaque.png"
+      }
+    },
+    "primary": {
+      "near": {
+        "albedo": "textures/pbr/near/classic-corner-bodega-mixed-use_primary_aged_warm_red_brick_albedo.png",
+        "normal": "textures/pbr/near/classic-corner-bodega-mixed-use_primary_aged_warm_red_brick_normal.png",
+        "roughness": "textures/pbr/near/classic-corner-bodega-mixed-use_primary_aged_warm_red_brick_roughness.png",
+        "ao": "textures/pbr/near/classic-corner-bodega-mixed-use_primary_aged_warm_red_brick_ao.png",
+        "depth": "textures/pbr/near/classic-corner-bodega-mixed-use_primary_aged_warm_red_brick_depth.png",
+        "emissive": "textures/pbr/near/classic-corner-bodega-mixed-use_primary_aged_warm_red_brick_emissive.png",
+        "glass_mask": "textures/pbr/near/classic-corner-bodega-mixed-use_primary_aged_warm_red_brick_glass.png",
+        "opaque_mask": "textures/pbr/near/classic-corner-bodega-mixed-use_primary_aged_warm_red_brick_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/classic-corner-bodega-mixed-use_primary_aged_warm_red_brick_albedo.png",
+        "normal": "textures/pbr/far/classic-corner-bodega-mixed-use_primary_aged_warm_red_brick_normal.png",
+        "roughness": "textures/pbr/far/classic-corner-bodega-mixed-use_primary_aged_warm_red_brick_roughness.png",
+        "ao": "textures/pbr/far/classic-corner-bodega-mixed-use_primary_aged_warm_red_brick_ao.png",
+        "depth": "textures/pbr/far/classic-corner-bodega-mixed-use_primary_aged_warm_red_brick_depth.png",
+        "emissive": "textures/pbr/far/classic-corner-bodega-mixed-use_primary_aged_warm_red_brick_emissive.png",
+        "glass_mask": "textures/pbr/far/classic-corner-bodega-mixed-use_primary_aged_warm_red_brick_glass.png",
+        "opaque_mask": "textures/pbr/far/classic-corner-bodega-mixed-use_primary_aged_warm_red_brick_opaque.png"
+      }
+    },
+    "secondary": {
+      "near": {
+        "albedo": "textures/pbr/near/classic-corner-bodega-mixed-use_secondary_weathered_dark_green_storefront_timber_albedo.png",
+        "normal": "textures/pbr/near/classic-corner-bodega-mixed-use_secondary_weathered_dark_green_storefront_timber_normal.png",
+        "roughness": "textures/pbr/near/classic-corner-bodega-mixed-use_secondary_weathered_dark_green_storefront_timber_roughness.png",
+        "ao": "textures/pbr/near/classic-corner-bodega-mixed-use_secondary_weathered_dark_green_storefront_timber_ao.png",
+        "depth": "textures/pbr/near/classic-corner-bodega-mixed-use_secondary_weathered_dark_green_storefront_timber_depth.png",
+        "emissive": "textures/pbr/near/classic-corner-bodega-mixed-use_secondary_weathered_dark_green_storefront_timber_emissive.png",
+        "glass_mask": "textures/pbr/near/classic-corner-bodega-mixed-use_secondary_weathered_dark_green_storefront_timber_glass.png",
+        "opaque_mask": "textures/pbr/near/classic-corner-bodega-mixed-use_secondary_weathered_dark_green_storefront_timber_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/classic-corner-bodega-mixed-use_secondary_weathered_dark_green_storefront_timber_albedo.png",
+        "normal": "textures/pbr/far/classic-corner-bodega-mixed-use_secondary_weathered_dark_green_storefront_timber_normal.png",
+        "roughness": "textures/pbr/far/classic-corner-bodega-mixed-use_secondary_weathered_dark_green_storefront_timber_roughness.png",
+        "ao": "textures/pbr/far/classic-corner-bodega-mixed-use_secondary_weathered_dark_green_storefront_timber_ao.png",
+        "depth": "textures/pbr/far/classic-corner-bodega-mixed-use_secondary_weathered_dark_green_storefront_timber_depth.png",
+        "emissive": "textures/pbr/far/classic-corner-bodega-mixed-use_secondary_weathered_dark_green_storefront_timber_emissive.png",
+        "glass_mask": "textures/pbr/far/classic-corner-bodega-mixed-use_secondary_weathered_dark_green_storefront_timber_glass.png",
+        "opaque_mask": "textures/pbr/far/classic-corner-bodega-mixed-use_secondary_weathered_dark_green_storefront_timber_opaque.png"
+      }
+    },
+    "ornament": {
+      "near": {
+        "albedo": "textures/pbr/near/classic-corner-bodega-mixed-use_ornament_warm_brownstone_window_trim_albedo.png",
+        "normal": "textures/pbr/near/classic-corner-bodega-mixed-use_ornament_warm_brownstone_window_trim_normal.png",
+        "roughness": "textures/pbr/near/classic-corner-bodega-mixed-use_ornament_warm_brownstone_window_trim_roughness.png",
+        "ao": "textures/pbr/near/classic-corner-bodega-mixed-use_ornament_warm_brownstone_window_trim_ao.png",
+        "depth": "textures/pbr/near/classic-corner-bodega-mixed-use_ornament_warm_brownstone_window_trim_depth.png",
+        "emissive": "textures/pbr/near/classic-corner-bodega-mixed-use_ornament_warm_brownstone_window_trim_emissive.png",
+        "glass_mask": "textures/pbr/near/classic-corner-bodega-mixed-use_ornament_warm_brownstone_window_trim_glass.png",
+        "opaque_mask": "textures/pbr/near/classic-corner-bodega-mixed-use_ornament_warm_brownstone_window_trim_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/classic-corner-bodega-mixed-use_ornament_warm_brownstone_window_trim_albedo.png",
+        "normal": "textures/pbr/far/classic-corner-bodega-mixed-use_ornament_warm_brownstone_window_trim_normal.png",
+        "roughness": "textures/pbr/far/classic-corner-bodega-mixed-use_ornament_warm_brownstone_window_trim_roughness.png",
+        "ao": "textures/pbr/far/classic-corner-bodega-mixed-use_ornament_warm_brownstone_window_trim_ao.png",
+        "depth": "textures/pbr/far/classic-corner-bodega-mixed-use_ornament_warm_brownstone_window_trim_depth.png",
+        "emissive": "textures/pbr/far/classic-corner-bodega-mixed-use_ornament_warm_brownstone_window_trim_emissive.png",
+        "glass_mask": "textures/pbr/far/classic-corner-bodega-mixed-use_ornament_warm_brownstone_window_trim_glass.png",
+        "opaque_mask": "textures/pbr/far/classic-corner-bodega-mixed-use_ornament_warm_brownstone_window_trim_opaque.png"
+      }
+    },
+    "frame": {
+      "near": {
+        "albedo": "textures/pbr/near/classic-corner-bodega-mixed-use_frame_black_fire_escape_and_storefront_frame_albedo.png",
+        "normal": "textures/pbr/near/classic-corner-bodega-mixed-use_frame_black_fire_escape_and_storefront_frame_normal.png",
+        "roughness": "textures/pbr/near/classic-corner-bodega-mixed-use_frame_black_fire_escape_and_storefront_frame_roughness.png",
+        "ao": "textures/pbr/near/classic-corner-bodega-mixed-use_frame_black_fire_escape_and_storefront_frame_ao.png",
+        "depth": "textures/pbr/near/classic-corner-bodega-mixed-use_frame_black_fire_escape_and_storefront_frame_depth.png",
+        "emissive": "textures/pbr/near/classic-corner-bodega-mixed-use_frame_black_fire_escape_and_storefront_frame_emissive.png",
+        "glass_mask": "textures/pbr/near/classic-corner-bodega-mixed-use_frame_black_fire_escape_and_storefront_frame_glass.png",
+        "opaque_mask": "textures/pbr/near/classic-corner-bodega-mixed-use_frame_black_fire_escape_and_storefront_frame_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/classic-corner-bodega-mixed-use_frame_black_fire_escape_and_storefront_frame_albedo.png",
+        "normal": "textures/pbr/far/classic-corner-bodega-mixed-use_frame_black_fire_escape_and_storefront_frame_normal.png",
+        "roughness": "textures/pbr/far/classic-corner-bodega-mixed-use_frame_black_fire_escape_and_storefront_frame_roughness.png",
+        "ao": "textures/pbr/far/classic-corner-bodega-mixed-use_frame_black_fire_escape_and_storefront_frame_ao.png",
+        "depth": "textures/pbr/far/classic-corner-bodega-mixed-use_frame_black_fire_escape_and_storefront_frame_depth.png",
+        "emissive": "textures/pbr/far/classic-corner-bodega-mixed-use_frame_black_fire_escape_and_storefront_frame_emissive.png",
+        "glass_mask": "textures/pbr/far/classic-corner-bodega-mixed-use_frame_black_fire_escape_and_storefront_frame_glass.png",
+        "opaque_mask": "textures/pbr/far/classic-corner-bodega-mixed-use_frame_black_fire_escape_and_storefront_frame_opaque.png"
+      }
+    },
+    "glass": {
+      "near": {
+        "albedo": "textures/pbr/near/classic-corner-bodega-mixed-use_glass_clear_retail_and_apartment_glass_albedo.png",
+        "normal": "textures/pbr/near/classic-corner-bodega-mixed-use_glass_clear_retail_and_apartment_glass_normal.png",
+        "roughness": "textures/pbr/near/classic-corner-bodega-mixed-use_glass_clear_retail_and_apartment_glass_roughness.png",
+        "ao": "textures/pbr/near/classic-corner-bodega-mixed-use_glass_clear_retail_and_apartment_glass_ao.png",
+        "depth": "textures/pbr/near/classic-corner-bodega-mixed-use_glass_clear_retail_and_apartment_glass_depth.png",
+        "emissive": "textures/pbr/near/classic-corner-bodega-mixed-use_glass_clear_retail_and_apartment_glass_emissive.png",
+        "glass_mask": "textures/pbr/near/classic-corner-bodega-mixed-use_glass_clear_retail_and_apartment_glass_glass.png",
+        "opaque_mask": "textures/pbr/near/classic-corner-bodega-mixed-use_glass_clear_retail_and_apartment_glass_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/classic-corner-bodega-mixed-use_glass_clear_retail_and_apartment_glass_albedo.png",
+        "normal": "textures/pbr/far/classic-corner-bodega-mixed-use_glass_clear_retail_and_apartment_glass_normal.png",
+        "roughness": "textures/pbr/far/classic-corner-bodega-mixed-use_glass_clear_retail_and_apartment_glass_roughness.png",
+        "ao": "textures/pbr/far/classic-corner-bodega-mixed-use_glass_clear_retail_and_apartment_glass_ao.png",
+        "depth": "textures/pbr/far/classic-corner-bodega-mixed-use_glass_clear_retail_and_apartment_glass_depth.png",
+        "emissive": "textures/pbr/far/classic-corner-bodega-mixed-use_glass_clear_retail_and_apartment_glass_emissive.png",
+        "glass_mask": "textures/pbr/far/classic-corner-bodega-mixed-use_glass_clear_retail_and_apartment_glass_glass.png",
+        "opaque_mask": "textures/pbr/far/classic-corner-bodega-mixed-use_glass_clear_retail_and_apartment_glass_opaque.png"
+      }
+    },
+    "roof": {
+      "near": {
+        "albedo": "textures/pbr/near/classic-corner-bodega-mixed-use_roof_dark_built_up_roof_albedo.png",
+        "normal": "textures/pbr/near/classic-corner-bodega-mixed-use_roof_dark_built_up_roof_normal.png",
+        "roughness": "textures/pbr/near/classic-corner-bodega-mixed-use_roof_dark_built_up_roof_roughness.png",
+        "ao": "textures/pbr/near/classic-corner-bodega-mixed-use_roof_dark_built_up_roof_ao.png",
+        "depth": "textures/pbr/near/classic-corner-bodega-mixed-use_roof_dark_built_up_roof_depth.png",
+        "emissive": "textures/pbr/near/classic-corner-bodega-mixed-use_roof_dark_built_up_roof_emissive.png",
+        "glass_mask": "textures/pbr/near/classic-corner-bodega-mixed-use_roof_dark_built_up_roof_glass.png",
+        "opaque_mask": "textures/pbr/near/classic-corner-bodega-mixed-use_roof_dark_built_up_roof_opaque.png"
+      },
+      "far": {
+        "albedo": "textures/pbr/far/classic-corner-bodega-mixed-use_roof_dark_built_up_roof_albedo.png",
+        "normal": "textures/pbr/far/classic-corner-bodega-mixed-use_roof_dark_built_up_roof_normal.png",
+        "roughness": "textures/pbr/far/classic-corner-bodega-mixed-use_roof_dark_built_up_roof_roughness.png",
+        "ao": "textures/pbr/far/classic-corner-bodega-mixed-use_roof_dark_built_up_roof_ao.png",
+        "depth": "textures/pbr/far/classic-corner-bodega-mixed-use_roof_dark_built_up_roof_depth.png",
+        "emissive": "textures/pbr/far/classic-corner-bodega-mixed-use_roof_dark_built_up_roof_emissive.png",
+        "glass_mask": "textures/pbr/far/classic-corner-bodega-mixed-use_roof_dark_built_up_roof_glass.png",
+        "opaque_mask": "textures/pbr/far/classic-corner-bodega-mixed-use_roof_dark_built_up_roof_opaque.png"
+      }
+    }
+  },
+  "atlases": {
+    "near": {
+      "albedo": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_facade_albedo.png",
+      "normal": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_facade_normal.png",
+      "roughness": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_facade_roughness.png",
+      "ao": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_facade_ao.png",
+      "depth": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_facade_depth.png",
+      "emissive": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_facade_emissive.png",
+      "glass_mask": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_facade_glass.png",
+      "opaque_mask": "textures/pbr/near/classic-corner-bodega-mixed-use_registered_facade_opaque.png"
+    },
+    "far": {
+      "albedo": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_facade_albedo.png",
+      "normal": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_facade_normal.png",
+      "roughness": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_facade_roughness.png",
+      "ao": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_facade_ao.png",
+      "depth": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_facade_depth.png",
+      "emissive": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_facade_emissive.png",
+      "glass_mask": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_facade_glass.png",
+      "opaque_mask": "textures/pbr/far/classic-corner-bodega-mixed-use_registered_facade_opaque.png"
+    }
+  },
+  "source_provider": "CityPrompt registered catalogue asset",
+  "catalogue_card_path": "/archetypes/buildings/new-york-corner-bodega/variant_0.png"
+}

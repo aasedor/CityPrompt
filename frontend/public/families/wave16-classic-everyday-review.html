@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CityPrompt — Classic Everyday Buildings</title>
+  <style>
+    :root { color-scheme: light; font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #eeede8; color: #171d24; }
+    main { width: min(1500px, 100%); margin: auto; padding: 32px 24px 64px; }
+    header { display: flex; gap: 24px; justify-content: space-between; align-items: end; margin-bottom: 24px; }
+    h1 { margin: 0 0 8px; font-size: clamp(2rem, 4vw, 4rem); letter-spacing: -.04em; }
+    p { margin: 0; color: #56606a; font-size: 1.05rem; }
+    .badge { white-space: nowrap; background: #baff2c; border: 2px solid #171d24; border-radius: 999px; padding: 10px 16px; font-weight: 800; }
+    .overview, .card { display: block; background: white; border: 2px solid #171d24; border-radius: 18px; overflow: hidden; box-shadow: 7px 7px 0 #171d24; }
+    .overview img, .card img { display: block; width: 100%; height: auto; }
+    .overview { margin-bottom: 34px; }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; }
+    .card { color: inherit; text-decoration: none; transition: transform .15s ease, box-shadow .15s ease; }
+    .card:hover { transform: translate(3px, 3px); box-shadow: 4px 4px 0 #171d24; }
+    .card span { display: block; padding: 14px 16px; font-weight: 800; font-size: 1.1rem; background: #171d24; color: white; }
+    footer { margin-top: 34px; padding: 20px; border: 2px solid #171d24; border-radius: 14px; background: #fff; }
+    @media (max-width: 760px) { header { align-items: start; flex-direction: column; } .grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <h1>Classic everyday buildings</h1>
+        <p>Ten new CityPrompt families. Select any card to inspect its source goalpost and review views.</p>
+      </div>
+      <div class="badge">41 / 41 checks passed</div>
+    </header>
+    <a class="overview" href="wave16-classic-everyday-overview.jpg">
+      <img src="wave16-classic-everyday-overview.jpg" alt="Overview of ten classic everyday CityPrompt buildings">
+    </a>
+    <section class="grid" aria-label="Individual building comparisons">
+      <a class="card" href="craftsman-brick-bungalow/craftsman-brick-bungalow_comparison.jpg"><span>Craftsman Brick Bungalow</span><img src="craftsman-brick-bungalow/craftsman-brick-bungalow_preview.png" alt="Craftsman Brick Bungalow"></a>
+      <a class="card" href="red-brick-edwardian-foursquare/red-brick-edwardian-foursquare_comparison.jpg"><span>Red-Brick Edwardian Foursquare</span><img src="red-brick-edwardian-foursquare/red-brick-edwardian-foursquare_preview.png" alt="Red-Brick Edwardian Foursquare"></a>
+      <a class="card" href="plateau-stone-montreal-duplex/plateau-stone-montreal-duplex_comparison.jpg"><span>Plateau Stone Montreal Duplex</span><img src="plateau-stone-montreal-duplex/plateau-stone-montreal-duplex_preview.png" alt="Plateau Stone Montreal Duplex"></a>
+      <a class="card" href="victorian-brick-rowhouse-terrace/victorian-brick-rowhouse-terrace_comparison.jpg"><span>Victorian Brick Rowhouse Terrace</span><img src="victorian-brick-rowhouse-terrace/victorian-brick-rowhouse-terrace_preview.png" alt="Victorian Brick Rowhouse Terrace"></a>
+      <a class="card" href="new-law-brick-walkup/new-law-brick-walkup_comparison.jpg"><span>New-Law Brick Walk-Up Apartments</span><img src="new-law-brick-walkup/new-law-brick-walkup_preview.png" alt="New-Law Brick Walk-Up Apartments"></a>
+      <a class="card" href="midcentury-balcony-apartment-slab/midcentury-balcony-apartment-slab_comparison.jpg"><span>Mid-Century Balcony Apartment Slab</span><img src="midcentury-balcony-apartment-slab/midcentury-balcony-apartment-slab_preview.png" alt="Mid-Century Balcony Apartment Slab"></a>
+      <a class="card" href="classic-neighbourhood-strip-mall/classic-neighbourhood-strip-mall_comparison.jpg"><span>Classic Neighbourhood Strip Mall</span><img src="classic-neighbourhood-strip-mall/classic-neighbourhood-strip-mall_preview.png" alt="Classic Neighbourhood Strip Mall"></a>
+      <a class="card" href="classic-corner-bodega-mixed-use/classic-corner-bodega-mixed-use_comparison.jpg"><span>Classic Corner Bodega Mixed-Use</span><img src="classic-corner-bodega-mixed-use/classic-corner-bodega-mixed-use_preview.png" alt="Classic Corner Bodega Mixed-Use"></a>
+      <a class="card" href="tilt-up-light-industrial-workshop/tilt-up-light-industrial-workshop_comparison.jpg"><span>Tilt-Up Light-Industrial Workshop</span><img src="tilt-up-light-industrial-workshop/tilt-up-light-industrial-workshop_preview.png" alt="Tilt-Up Light-Industrial Workshop"></a>
+      <a class="card" href="provincial-brick-neighbourhood-school/provincial-brick-neighbourhood-school_comparison.jpg"><span>Provincial Brick Neighbourhood School</span><img src="provincial-brick-neighbourhood-school/provincial-brick-neighbourhood-school_preview.png" alt="Provincial Brick Neighbourhood School"></a>
+    </section>
+    <footer>Local review checkpoint: geometry validation passed; catalogue promotion remains intentionally held for human visual approval.</footer>
+  </main>
+</body>
+</html>

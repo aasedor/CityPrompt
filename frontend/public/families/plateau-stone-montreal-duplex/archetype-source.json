@@ -1,0 +1,13 @@
+{
+  "catalogue_archetype_id": "montreal_duplex",
+  "catalogue_variant_id": "montreal_duplex_plateau",
+  "catalogue_alias_ids": [
+    "plateau_stone_montreal_duplex"
+  ],
+  "elevation_source": "/families/plateau-stone-montreal-duplex/elevation.jpg",
+  "goalpost": "/families/plateau-stone-montreal-duplex/textures/source/archetype-goalpost.png",
+  "reference_generation": "/families/plateau-stone-montreal-duplex/textures/source/reference-generation.json",
+  "method": "immutable shipped catalogue card; deterministic material extraction; shared true-metric construction kits; physical layered glazing; occupied depth; complete secondary elevations; normalized bottom-centre origin; fixed whole-building landmark and complete-semantic-bay LEGO fallback",
+  "coverage_cohort": "commonplace_standard",
+  "catalogue_card_preserved": true
+}
