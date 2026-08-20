@@ -71,7 +71,7 @@ def write_family(tmp_path: Path, *, quality_status: str = "pass") -> Path:
         "created_at": "2026-08-19T00:00:00+00:00",
         "family": family,
         "archetype_id": "test_archetype",
-        "archetype_label": "Test Review Family",
+        "archetype_label": "Test — Review Family",
         "variant_id": "test_variant",
         "generation_archetype_id": "test_variant",
         "archetype_aliases": ["test_archetype", "test_variant"],
@@ -168,6 +168,9 @@ def test_seed_promotion_is_dry_run_by_default_and_idempotent(tmp_path: Path) -> 
     assert applied["rows_after"] == 2
     assert applied["objects_changed"] == 3
     payload = json.loads((seed / "model_library.json").read_text())
+    raw_seed = (seed / "model_library.json").read_text(encoding="utf-8")
+    assert r"\u2014" in raw_seed
+    assert "—" not in raw_seed
     assert payload["count"] == 2
     identities = {
         (

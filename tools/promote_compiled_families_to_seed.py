@@ -415,7 +415,9 @@ def promote(
         payload["count"] = len(result_rows)
         temporary = rows_path.with_suffix(rows_path.suffix + ".tmp")
         temporary.write_text(
-            json.dumps(payload, indent=1, ensure_ascii=False) + "\n",
+            # Preserve the seed's established ASCII-escaped JSON style so a
+            # small promotion does not rewrite every existing Unicode label.
+            json.dumps(payload, indent=1, ensure_ascii=True) + "\n",
             encoding="utf-8",
         )
         os.replace(temporary, rows_path)
