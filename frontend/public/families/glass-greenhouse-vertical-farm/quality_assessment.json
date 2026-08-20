@@ -3,16 +3,10 @@
   "memory_version": "2026-08-02-clean-3d-no-prisms-runtime-v118",
   "archetype_id": "vertical_farm",
   "family": "glass-greenhouse-vertical-farm",
-  "status": "review",
-  "high_quality_ready": false,
+  "status": "pass",
+  "high_quality_ready": true,
   "hard_failures": [],
-  "review_findings": [
-    {
-      "id": "missing_haussmann_minimum_standard_evidence",
-      "passed": false,
-      "detail": "photoreal_skin_approved must be true; human_visual_approval must be true"
-    }
-  ],
+  "review_findings": [],
   "gates": {
     "hard": [
       {
@@ -109,8 +103,8 @@
       },
       {
         "id": "missing_haussmann_minimum_standard_evidence",
-        "passed": false,
-        "detail": "photoreal_skin_approved must be true; human_visual_approval must be true"
+        "passed": true,
+        "detail": "5 shape features, 6 depth features, 3 repeatable roles and approved comparison glass-greenhouse-vertical-farm_comparison.jpg"
       },
       {
         "id": "missing_side_elevation_wrap",

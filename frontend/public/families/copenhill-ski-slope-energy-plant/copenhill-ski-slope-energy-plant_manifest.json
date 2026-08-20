@@ -1471,7 +1471,7 @@
       "floor_datum",
       "material_return"
     ],
-    "photoreal_skin_approved": false,
+    "photoreal_skin_approved": true,
     "fixed_identity_anchors": [
       "podium/entrance",
       "corner returns",
@@ -1493,6 +1493,9 @@
       "facade_close"
     ],
     "comparison_sheet": "copenhill-ski-slope-energy-plant_comparison.jpg",
-    "human_visual_approval": false
+    "human_visual_approval": true,
+    "human_visual_reviewer": "wbesh",
+    "human_visual_reviewed_at": "2026-08-20T05:34:31.117941+00:00",
+    "human_visual_review_notes": "Approved all ten from the local Wave 2 comparison gallery."
   }
 }

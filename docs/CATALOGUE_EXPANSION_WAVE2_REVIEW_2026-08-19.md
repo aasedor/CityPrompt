@@ -7,7 +7,7 @@
 - Local app: `http://127.0.0.1:5174/`
 - Review gallery: `http://127.0.0.1:4174/`
 - Gallery source: ignored `artifacts/catalogue-expansion-wave2/index.html`
-- Publish status: local only; do not push without explicit user approval.
+- Publish status: local only; do not push without an explicit user request.
 
 The ignored root `.env` contains the frontend and server Google Maps keys copied
 from the user's sibling City Prompt folder. The values were never printed or
@@ -33,7 +33,7 @@ six semantic LEGO modules, registered source imagery, near/far PBR atlases,
 locked review renders, a comparison sheet, a manifest, and validation/quality
 reports.
 
-## Verified state
+## Approved and promoted state
 
 - Ten of ten structural validation reports pass with no errors.
 - All 70 declared GLBs have valid `glTF` headers and are below the 75 MB upload cap.
@@ -44,30 +44,45 @@ reports.
 - The latest quality memory is
   `2026-08-02-clean-3d-no-prisms-runtime-v118`.
 - Forty-seven focused Wave 15 and catalogue-workflow regression tests pass.
-- The only remaining quality finding on every family is the intentional visual
-  gate: `photoreal_skin_approved` and `human_visual_approval` are still false.
+- Human approval is recorded for all ten families by `wbesh` with the note
+  "Approved all ten from the local Wave 2 comparison gallery."
+- All ten quality assessments now report `status: pass` and
+  `high_quality_ready: true` with no findings.
+- The durable seed contains 775 rows, including 70 Wave 2 rows. The 70 GLBs and
+  ten previews are hydrated in the local object store.
+- All 70 model URLs returned HTTP 200 with `glTF` magic headers.
+- Promoted seed families are public catalogue modules. This was corrected after
+  a clean-project test proved private seed rows were invisible to other project
+  owners and caused fallback to an older broken market family.
+- Exact-family planning passes for all ten families using the same
+  project-scoped catalogue inventory as the browser.
+- Live terrain QA placed the iron-and-glass market, 25-floor greenhouse tower,
+  and steel-rib intermodal hub as detailed models without massing fallbacks.
+  Their bases stayed on the sampled surface and no component floated, sank, or
+  detached from its assembly.
 
 `tools/archetype_compiler/prepare_family_review.py` safely upgrades older
 manifests to the current evidence schema. It is dry-run-first and cannot grant
 human approval.
 
+## Live QA project
+
+- Project: `Catalogue Wave 2 Terrain QA`
+- Project id: `e861fdf4-1963-4528-a54a-ad90adc67ed1`
+- Current final scene: `steel-rib-intermodal-hub`
+- Earlier successful scene recipes in the same zone:
+  `historic-iron-glass-market` and `glass-greenhouse-vertical-farm`
+
+The tower and hub were deliberately exercised in the original 75.1 × 47.2 m
+market footprint as a stress test, so their UI fit scores are low. Native-size
+planner checks pass at 104.0 for all ten families.
+
 ## Continue safely
 
-1. Open `http://127.0.0.1:4174/` and inspect the overview plus all ten full
-   comparison boards.
-2. Obtain explicit human approval for all ten, or a precise revision list.
-3. If approved, run `approve_family_review.py --apply` for every manifest with
-   the actual reviewer name. Never infer approval from the existence of renders.
-4. Rerun `assess_wave15_families.py`; all ten must report `status: pass` and
-   `high_quality_ready: true` with no findings.
-5. Dry-run and then apply `tools/promote_compiled_families_to_seed.py` for the ten
-   family directories. Confirm 70 unique new rows and object URLs.
-6. Hydrate the running local stack and verify every object URL returns HTTP 200.
-7. Test representative families through the live Draw Polygon → Generate to 3D
-   path with map terrain enabled. Check contact with terrain and contacts between
-   podium, repeatable floors, crown, and roof at several target sizes.
-8. Run the focused compiler, backend, frontend, and TypeScript checks before a
-   final local commit. Push only when explicitly requested.
+1. Treat all ten as approved, promoted, and locally hydrated.
+2. Do not regenerate them unless a deliberate source revision is requested.
+3. Run focused checks and inspect Git LFS status before publication.
+4. Push only when the user explicitly requests it.
 
 If the gallery server is no longer running, restart it from the gallery source
 directory with:

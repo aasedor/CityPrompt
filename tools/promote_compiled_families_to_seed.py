@@ -288,7 +288,12 @@ def prepare_family(family_dir: Path, owner_id: str) -> PreparedFamily:
             "generation_prompt": generation_prompt,
             "generation_engine": "compiler",
             "architectural_style": architectural_style,
-            "is_public": False,
+            # Promoted seed families are the shared CityPrompt catalogue, not
+            # private uploads belonging only to the seed owner. Project-scoped
+            # planning can only see the project owner's private modules plus
+            # public modules, so keeping these private makes clean users fall
+            # back to older families (or plain massing).
+            "is_public": True,
             "use_count": 0,
             "metadata": {"lego": lego},
             "created_at": manifest.get("created_at"),

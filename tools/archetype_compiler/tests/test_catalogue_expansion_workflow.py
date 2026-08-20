@@ -185,6 +185,7 @@ def test_seed_promotion_is_dry_run_by_default_and_idempotent(tmp_path: Path) -> 
         ("test-review-family", "podium", "default"),
         ("test-review-family", "assembled", "default"),
     }
+    assert all(row["is_public"] is True for row in payload["rows"])
 
     repeated = promotion.promote([family], seed_dir=seed, apply=True)
     assert repeated["rows_added"] == 0

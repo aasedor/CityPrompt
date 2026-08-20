@@ -1,125 +1,93 @@
-# Catalogue expansion handoff — 2026-08-19
+# Catalogue expansion handoff — updated 2026-08-20
 
 ## Start here
 
 - Active worktree: `C:\Users\wbesh\OneDrive\Desktop\Projects\CityPrompt-catalogue-wave1`
-- Active branch: `codex/catalogue-expansion-wave1`
-- Pipeline commits before promotion: `da751c76c Add reviewed catalogue expansion pipeline`
-  and `58f42aa66 Document catalogue expansion handoff`
+- Active branch: `codex/catalogue-expansion-wave2`
+- Current local checkpoint before approval/promotion: `737bb2ca6`
 - Canonical integration remote/branch: `cityprompt/main`
-- Generated artifact root: `C:\Users\wbesh\OneDrive\Desktop\Projects\CityPrompt-asset-grounding\artifacts\catalogue-expansion-wave1\families`
+- Full Wave 2 evidence: `docs/CATALOGUE_EXPANSION_WAVE2_REVIEW_2026-08-19.md`
+- Local app: `http://127.0.0.1:5174/`
+- API health: `http://127.0.0.1:8000/health`
+- Wave 2 review gallery: `http://127.0.0.1:4174/`
+- Publish status: local only; do not push without an explicit user request.
 
 Do not use `C:\Users\wbesh\OneDrive\Documents\ChatGPT\Cityprompt` as a source
-worktree. It is only a local redirect for older Codex tasks.
+worktree. It is a redirect for older Codex tasks. The redirect's `AGENTS.md`
+points new tasks here.
 
-## What exists
+The ignored root `.env` contains the frontend/server Google Maps keys copied
+from the user's sibling City Prompt folder. The values were never printed or
+committed. The local browser loaded Google/Landsat tiles successfully.
 
-The bounded pilot contains four Sticker + LEGO building families:
+## Current Wave 2 state
 
-1. `modern-black-screen-machiya`
-2. `red-machiya-cafe-gallery`
-3. `mid-century-wood-stone-pavilion`
-4. `mid-century-white-brise-soleil-pavilion`
+The ten-family Wave 2 batch is human-approved by `wbesh`, quality-passing, and
+promoted into the durable seed catalogue:
 
-Each family has an assembled GLB, six modular GLBs, registered source imagery,
-near/far PBR atlases, manifests, validation output, quality assessment output,
-and multiple Blender review renders. There are 28 GLBs in the pilot.
+1. `copenhill-ski-slope-energy-plant`
+2. `parametric-wave-natatorium`
+3. `second-empire-clocktower-city-hall`
+4. `glass-greenhouse-vertical-farm`
+5. `steel-rib-intermodal-hub`
+6. `monumental-silo-cluster`
+7. `titanium-fold-art-museum`
+8. `historic-iron-glass-market`
+9. `bronze-curve-concert-hall`
+10. `deconstructivist-concrete-fire-station`
 
-## Current quality state
+Each family contains one fixed assembled GLB, six semantic LEGO modules,
+registered source imagery, near/far PBR atlases, locked review renders, a
+comparison sheet, a manifest, and validation/quality reports.
 
-- Structural validation: pass for all four families.
-- Grounding audit: all module and assembled bounds start at `Y = 0.000 m`; no
-  floating, sinking, inverted-normal, or vertical-stack errors were found.
-- Human visual approval: recorded for all four families by `wbesh` on
-  2026-08-19 after reviewing the local comparison gallery.
-- Catalogue quality assessment: `pass`; all four families report
-  `high_quality_ready: true` with no findings.
-- Promotion status: promoted locally. The seed now contains 705 rows, including
-  28 new rows (seven per family), and all 28 promoted GLBs have unique URLs,
-  valid `glTF` headers, files below the 75 MB API cap, and exact `bottom_y = 0`.
-- Live seed status: the local database/object store was hydrated successfully;
-  28 database rows were inserted and the new object URLs return HTTP 200.
-- Publish status: not pushed from this worktree.
+- Seed catalogue: 775 rows total; Wave 2 contributes 70 deterministic rows.
+- Object storage: 80 Wave 2 objects (70 GLBs and 10 previews) are hydrated.
+- Every Wave 2 GLB URL returned HTTP 200 and a `glTF` magic header.
+- All 70 measured bounds begin at `bottom_y = 0.000 m`.
+- All ten structural and quality assessments pass against memory
+  `2026-08-02-clean-3d-no-prisms-runtime-v118`.
+- All ten select their exact family through the project-scoped live catalogue
+  planner at native dimensions.
+- Live Draw/Generate-to-3D testing placed the iron-and-glass market, 25-floor
+  greenhouse tower, and steel-rib intermodal hub as detailed buildings with no
+  massing fallback. Visual map checks showed ground contact and no detached or
+  exploded components.
 
-The live `Generate to 3D` test project built and placed two detailed Machiya
-buildings successfully. Both GLBs loaded without asset errors and visibly sit
-flush on the neutral preview plane. The only browser diagnostic was the known
-terrain-elevation fallback caused by the missing Google Maps frontend key.
+The live test exposed and fixed an important clean-user bug: promotion had
+marked shared seed catalogue rows private to the seed owner, causing a new
+project to select an older broken market family. Promoted families are now
+public by default, with a regression assertion. Existing local Wave 2 rows were
+updated to public and the market rebuilt as `historic-iron-glass-market`.
 
-The modular rebuild path is approximately five times faster than rebuilding
-the complete landmark geometry. Individual modular files were reduced by
-roughly 63–75 percent during the pilot. Treat these as measured pilot results,
-not a guarantee for every future archetype.
+The Windows launcher was also hardened: if the `uvicorn` console shim is not on
+PATH but the Python module is installed, it now starts the API with
+`python -m uvicorn`. The launcher was exercised successfully.
 
-Runtime planning was also optimized for the expanded catalogue. The two live
-`POST /lego-assembly/plan` calls now take 2.59 s and 2.62 s instead of roughly
-26.5 s each (about 10x faster, or a 90% reduction). The complete fresh browser
-flow planned, persisted, and displayed both buildings in about 7.2 s.
+## Wave 1 baseline
 
-## Review locally
+The earlier four-family pilot remains approved and promoted:
 
-The local review gallery is served from the artifact root. If it is not
-running, launch it from PowerShell:
+- `modern-black-screen-machiya`
+- `red-machiya-cafe-gallery`
+- `mid-century-wood-stone-pavilion`
+- `mid-century-white-brise-soleil-pavilion`
 
-```powershell
-python -m http.server 4173 --bind 127.0.0.1 --directory "C:\Users\wbesh\OneDrive\Desktop\Projects\CityPrompt-asset-grounding\artifacts\catalogue-expansion-wave1\families"
-```
+That pilot measured roughly 63–75% smaller modular files, about 5x faster
+modular rebuilds, and planning calls around 2.6 seconds instead of 26.5 seconds
+(about 10x faster). Treat those figures as measured pilot results, not a
+guarantee for every archetype.
 
-Then open `http://127.0.0.1:4173/`.
+## Continue safely
 
-The full local app is served at `http://127.0.0.1:5174/`; its API health check
-is `http://127.0.0.1:8000/health`. The app can run the neutral 3D preview, but
-map/Google Tiles QA still needs a real `VITE_GOOGLE_MAPS_API_KEY`. No usable
-key was found in the accessible sibling CityPrompt folders or OS environment,
-so do not invent or commit one.
+1. Confirm this worktree and branch, then read this file and the Wave 2 review.
+2. Do not repeat visual approval or regenerate the ten families unless their
+   source manifests intentionally change.
+3. Run focused compiler/backend tests and inspect Git LFS status before any
+   publication.
+4. Push only when the user explicitly requests it.
+5. For another catalogue wave, preserve the bounded sequence: generate,
+   validate, render, human review, explicit approval, promote, hydrate, then
+   live map/terrain QA.
 
-Review the overview first, then inspect comparison, corner, street, aerial,
-and context views for every family. Human approval should explicitly check:
-
-- contact with the ground plane;
-- no interpenetration between podium, repeat floors, crown, and roof;
-- facade identity and material continuity around corners;
-- windows, screens, and entrances reading as physical depth rather than flat
-  paint;
-- acceptable repetition across the flexible-height variants.
-
-## Pipeline files on the branch
-
-- `tools/archetype_compiler/approve_family_review.py`
-- `tools/archetype_compiler/create_wave14_comparison_sheets.py`
-- `tools/archetype_compiler/generate_wave14_variant_families.py`
-- `tools/archetype_compiler/tests/test_catalogue_expansion_workflow.py`
-- `tools/promote_compiled_families_to_seed.py`
-
-The approval tool records the human decision. The promotion tool is deliberately
-separate so a generated family cannot silently enter the runtime catalogue.
-
-## Safe continuation sequence
-
-1. Confirm `git status --short --branch` and read `CLAUDE.md` plus
-   `docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md`.
-2. Treat the four-family batch as approved and locally promoted; do not repeat
-   approval or regenerate it unless the source manifests intentionally change.
-3. Review the local commits and Git LFS status, then push only when explicitly
-   requested.
-4. Add the missing local Google Maps key outside Git before map/terrain QA.
-5. For the next catalogue wave, keep the same bounded dry-run, visual-review,
-   approval, promotion, grounding-audit, and live-app sequence.
-
-Verified checks at this handoff:
-
-- catalogue promotion audit: 28/28 rows and 28/28 grounded GLBs passed;
-- catalogue workflow tests: 5 passed;
-- LEGO assembly and Master Planner catalogue tests: 194 passed;
-- frontend runtime tests: 68 passed across six files;
-- frontend TypeScript check: passed;
-- live browser: two detailed buildings placed and GLBs fully loaded.
-
-The older `test_wave14_variant_families.py` fixture still assumes generated
-families live under `frontend/public/families`; this pilot deliberately keeps
-heavy review artifacts external, so its 20 path-based failures are a legacy
-fixture-location mismatch rather than a generated-asset regression.
-
-Never copy API keys into this handoff, source files, generated manifests, or
-Git history. Use the existing local environment files only when the full app is
-tested.
+Never copy API keys into documentation, source, manifests, logs, or Git
+history.
