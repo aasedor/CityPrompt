@@ -13,6 +13,7 @@ from PIL import Image
 
 import approve_family_review
 import create_wave14_comparison_sheets
+import prepare_family_review
 
 
 REPO = Path(__file__).resolve().parents[3]
@@ -248,6 +249,51 @@ def test_visual_approval_requires_every_locked_view_and_is_dry_run(
     (root / f"{family}_street.png").unlink()
     with pytest.raises(ValueError, match="comparison view is missing"):
         approve_family_review.approve_manifest(manifest_path, reviewer="Drew")
+
+
+def test_review_preparation_backfills_evidence_without_approving(
+    tmp_path: Path,
+) -> None:
+    family = "legacy-family"
+    root = tmp_path / family
+    root.mkdir()
+    manifest_path = root / f"{family}_manifest.json"
+    manifest_path.write_text(
+        json.dumps(
+            {
+                "family": family,
+                "massing_graph": {
+                    "features": ["curved public roof"],
+                    "physical_window_layers": ["recessed glazing"],
+                },
+                "modules": [
+                    {
+                        "role": "floor_typical_a",
+                        "variant_key": "default",
+                        "assembly_class": "repeatable_middle",
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    for view in approve_family_review.REQUIRED_VIEWS:
+        write_image(root / f"{family}_{view}.png")
+    write_image(root / f"{family}_comparison.jpg")
+
+    prepared = prepare_family_review.prepare_manifest(manifest_path)
+    evidence = prepared["quality_standard_evidence"]
+    assert "quality_standard_evidence" not in json.loads(manifest_path.read_text())
+    assert evidence["distinctive_shape_features"] == ["curved public roof"]
+    assert evidence["physical_depth_features"] == ["recessed glazing"]
+    assert evidence["repeatable_middle_roles"] == ["floor_typical_a/default"]
+    assert evidence["human_visual_approval"] is False
+    assert evidence["photoreal_skin_approved"] is False
+
+    prepare_family_review.prepare_manifest(manifest_path, apply=True)
+    written = json.loads(manifest_path.read_text())["quality_standard_evidence"]
+    assert written["human_visual_approval"] is False
+    assert written["photoreal_skin_approved"] is False
 
 
 def test_wave14_comparison_sheet_supports_external_artifact_root(

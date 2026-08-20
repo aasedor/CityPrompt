@@ -1476,5 +1476,46 @@
     "reference_generation": "/families/deconstructivist-concrete-fire-station/textures/source/reference-generation.json",
     "method": "variant-locked four-view construction goalpost, separate six-zone material capture, deterministic true-metric geometry, continuous program and roof topology, physical load paths, physical layered glazing, occupied depth, complete secondary elevations, fixed whole-building landmark and complete-semantic-bay LEGO fallback modules",
     "coverage_cohort": "sibling_variant"
+  },
+  "quality_standard_evidence": {
+    "standard_id": "haussmann-depth-shape-skin-scale@1",
+    "distinctive_shape_features": [
+      "three_true_deep_apparatus_portals",
+      "folded_occupied_crew_wing",
+      "sheltered_public_entry",
+      "grounded_leaning_hose_tower",
+      "closed_angular_roof_planes"
+    ],
+    "physical_depth_features": [
+      "occupied_depth",
+      "physical_pane",
+      "separate_frame",
+      "structural_or_screen_layer",
+      "floor_datum",
+      "material_return"
+    ],
+    "photoreal_skin_approved": false,
+    "fixed_identity_anchors": [
+      "podium/entrance",
+      "corner returns",
+      "crown",
+      "roof"
+    ],
+    "repeatable_middle_roles": [
+      "floor/typical_a",
+      "floor/typical_b",
+      "floor/typical_c"
+    ],
+    "comparison_views": [
+      "street",
+      "context",
+      "front_elevation",
+      "front_corner_oblique",
+      "rear_corner_oblique",
+      "aerial",
+      "facade_close"
+    ],
+    "comparison_sheet": "deconstructivist-concrete-fire-station_comparison.jpg",
+    "human_visual_approval": false
   }
 }

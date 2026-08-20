@@ -1453,5 +1453,46 @@
     "reference_generation": "/families/second-empire-clocktower-city-hall/textures/source/reference-generation.json",
     "method": "variant-locked four-view construction goalpost, separate six-zone material capture, deterministic true-metric geometry, continuous program and roof topology, physical load paths, physical layered glazing, occupied depth, complete secondary elevations, fixed whole-building landmark and complete-semantic-bay LEGO fallback modules",
     "coverage_cohort": "uncovered_parent"
+  },
+  "quality_standard_evidence": {
+    "standard_id": "haussmann-depth-shape-skin-scale@1",
+    "distinctive_shape_features": [
+      "deep_triple_arch_civic_portal",
+      "continuous_mansard",
+      "four_corner_turrets",
+      "dormers_and_chimneys",
+      "clock_tower_and_copper_dome"
+    ],
+    "physical_depth_features": [
+      "occupied_depth",
+      "physical_pane",
+      "separate_frame",
+      "structural_or_screen_layer",
+      "floor_datum",
+      "material_return"
+    ],
+    "photoreal_skin_approved": false,
+    "fixed_identity_anchors": [
+      "podium/entrance",
+      "corner returns",
+      "crown",
+      "roof"
+    ],
+    "repeatable_middle_roles": [
+      "floor/typical_a",
+      "floor/typical_b",
+      "floor/typical_c"
+    ],
+    "comparison_views": [
+      "street",
+      "context",
+      "front_elevation",
+      "front_corner_oblique",
+      "rear_corner_oblique",
+      "aerial",
+      "facade_close"
+    ],
+    "comparison_sheet": "second-empire-clocktower-city-hall_comparison.jpg",
+    "human_visual_approval": false
   }
 }

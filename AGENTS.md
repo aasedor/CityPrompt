@@ -48,8 +48,9 @@ of the preserved generated output.
 
 ## Current catalogue expansion
 
-For the active four-family Sticker + LEGO catalogue pilot, read
-`docs/CATALOGUE_EXPANSION_HANDOFF_2026-08-19.md` before continuing. All four
-families are human-approved, quality-passing, and promoted into the local seed
-and runtime catalogue. The review artifacts remain outside this worktree, and
-the branch is still local-only; do not publish it without explicit approval.
+For the active ten-family Wave 2 review, read
+`docs/CATALOGUE_EXPANSION_WAVE2_REVIEW_2026-08-19.md` before continuing. The
+families are structurally valid and grounded, but intentionally remain outside
+the seed/runtime catalogue until explicit human visual approval. The inherited
+four-family pilot is documented in `docs/CATALOGUE_EXPANSION_HANDOFF_2026-08-19.md`.
+Both waves remain local-only; do not publish either without explicit approval.

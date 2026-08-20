@@ -7,12 +7,13 @@ from pathlib import Path
 
 import pytest
 
+from quality_memory import load_quality_memory
 from wave15_mixed_specs import FAMILIES
 
 
 REPO = Path(__file__).resolve().parents[3]
 FAMILIES_ROOT = REPO / "frontend" / "public" / "families"
-MEMORY_VERSION = "2026-08-01-wave15-program-topology-v114"
+MEMORY_VERSION = load_quality_memory()["memory_version"]
 REQUIRED_CHANNELS = {
     "albedo",
     "normal",
@@ -288,5 +289,16 @@ def test_wave15_review_assets_signature_catalogue_and_assessment_bind(family: st
 
     assessment = load_json(root / "quality_assessment.json")
     assert assessment["memory_version"] == MEMORY_VERSION
-    assert assessment["status"] == "pass"
-    assert assessment["high_quality_ready"] is True
+    evidence = load_json(root / f"{family}_manifest.json")[
+        "quality_standard_evidence"
+    ]
+    approved = (
+        evidence["human_visual_approval"] is True
+        and evidence["photoreal_skin_approved"] is True
+    )
+    assert assessment["status"] == ("pass" if approved else "review")
+    assert assessment["high_quality_ready"] is approved
+    if not approved:
+        assert [item["id"] for item in assessment["review_findings"]] == [
+            "missing_haussmann_minimum_standard_evidence"
+        ]

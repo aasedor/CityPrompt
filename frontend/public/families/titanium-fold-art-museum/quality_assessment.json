@@ -1,12 +1,18 @@
 {
   "schema": "high-quality-building-assessment@1",
-  "memory_version": "2026-08-01-wave15-program-topology-v114",
+  "memory_version": "2026-08-02-clean-3d-no-prisms-runtime-v118",
   "archetype_id": "large_art_museum_gallery",
   "family": "titanium-fold-art-museum",
-  "status": "pass",
-  "high_quality_ready": true,
+  "status": "review",
+  "high_quality_ready": false,
   "hard_failures": [],
-  "review_findings": [],
+  "review_findings": [
+    {
+      "id": "missing_haussmann_minimum_standard_evidence",
+      "passed": false,
+      "detail": "photoreal_skin_approved must be true; human_visual_approval must be true"
+    }
+  ],
   "gates": {
     "hard": [
       {
@@ -82,6 +88,11 @@
         "detail": "1 preferred profiles; target is 1; exception rationale: The complete reference landmark tolerates independent-axis drawing error from 0.62x to 1.40x. Oversized targets repeat whole 11.00 m structural or occupied construction bays along the long axis; entrances, structural spring points, process equipment, roof topology, crowns and end conditions remain fixed."
       },
       {
+        "id": "missing_archetype_contain_contract",
+        "passed": true,
+        "detail": "all 6 modules declare allow_inset_footprint=true"
+      },
+      {
         "id": "missing_or_unsafe_fixed_landmark_scale_band",
         "passed": true,
         "detail": "not a fixed-landmark massing graph"
@@ -95,6 +106,11 @@
         "id": "missing_variant_alias_contract",
         "passed": true,
         "detail": "parent and selected variant aliases declared"
+      },
+      {
+        "id": "missing_haussmann_minimum_standard_evidence",
+        "passed": false,
+        "detail": "photoreal_skin_approved must be true; human_visual_approval must be true"
       },
       {
         "id": "missing_side_elevation_wrap",
