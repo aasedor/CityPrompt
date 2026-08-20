@@ -87,6 +87,7 @@ def _exact_count_hints(brief: str) -> dict[str, float]:
             hints[key] = float(value)
     return hints
 
+
 EXPANSION_SYSTEM = (
     "You expand a user's free-text master-plan brief into a structured scenario "
     "definition for a municipal planning expert panel. Extract only what the brief "

@@ -710,9 +710,7 @@ def test_lego_palette_resolves_parent_to_exact_floor_runtime_child():
 
     assert palette.bands["mid"].variant_id == "industrial_brick_original_mill"
     assert "industrial_brick_mixed_use" not in palette.family_pending_archetype_ids
-    assert palette.alternates["mid"] == (
-        ("mixed_use", "parisian", "parisian_boulevard_corner", None),
-    )
+    assert palette.alternates["mid"] == (("mixed_use", "parisian", "parisian_boulevard_corner", None),)
     assert palette.allowed_archetype_ids == frozenset(catalog.parent_ids)
     assert palette.allowed_variant_ids_by_archetype == catalog.variants_by_parent
     assert palette.supported_floors_by_selectable_id == {
@@ -1613,8 +1611,7 @@ def test_single_block_tod_keeps_a_real_park_and_buildable_remainder():
     parks = [
         zone
         for zone in result.zones
-        if zone["properties"].get("_plan_role") == "open_space"
-        and zone["properties"].get("green_kind") == "central"
+        if zone["properties"].get("_plan_role") == "open_space" and zone["properties"].get("green_kind") == "central"
     ]
     buildings = [zone for zone in result.zones if zone["properties"].get("_plan_role") == "building"]
 

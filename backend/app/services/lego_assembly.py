@@ -761,10 +761,7 @@ def plan_vertical_assembly(
         exact_families = [
             family
             for family in eligible_families
-            if any(
-                _matches_requested_archetype(module, request.archetype_id)
-                for module in modules_by_family[family]
-            )
+            if any(_matches_requested_archetype(module, request.archetype_id) for module in modules_by_family[family])
         ]
         families = exact_families
         if not families:
@@ -774,8 +771,7 @@ def plan_vertical_assembly(
                     family
                     for family in eligible_families
                     if any(
-                        _matches_requested_archetype(module, candidate_parent)
-                        for module in modules_by_family[family]
+                        _matches_requested_archetype(module, candidate_parent) for module in modules_by_family[family]
                     )
                     and _is_generic_parent_fallback_family(
                         modules_by_family[family],

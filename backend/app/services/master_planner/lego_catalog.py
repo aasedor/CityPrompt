@@ -461,11 +461,7 @@ def build_lego_planning_catalog(entries: Iterable[Any]) -> LegoPlanningCatalog:
                 for descriptor in descriptors
                 if _matches_requested_archetype(descriptor, archetype_id)
             }
-            runtime_descriptors = [
-                descriptor
-                for descriptor in descriptors
-                if descriptor.family in runtime_families
-            ]
+            runtime_descriptors = [descriptor for descriptor in descriptors if descriptor.family in runtime_families]
             # Hybrid render-locked families can carry both modular roles and
             # one exact assembled hero asset. An exact source variant must use
             # that hero asset's native footprint even when modular roles are
