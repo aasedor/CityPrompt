@@ -10,7 +10,8 @@
 - Local app: `http://127.0.0.1:5174/`
 - API health: `http://127.0.0.1:8000/health`
 - Wave 2 review gallery: `http://127.0.0.1:4174/`
-- Publish status: local only; do not push without an explicit user request.
+- Publish status: pushed to `origin/codex/catalogue-expansion-wave2` on
+  `aasedor/CityPrompt`; not merged into `main`.
 
 Do not use `C:\Users\wbesh\OneDrive\Documents\ChatGPT\Cityprompt` as a source
 worktree. It is a redirect for older Codex tasks. The redirect's `AGENTS.md`
@@ -84,7 +85,8 @@ guarantee for every archetype.
    source manifests intentionally change.
 3. Run focused compiler/backend tests and inspect Git LFS status before any
    publication.
-4. Push only when the user explicitly requests it.
+4. The Wave 2 branch is published. Do not merge it or publish later changes
+   without a new explicit user request.
 5. For another catalogue wave, preserve the bounded sequence: generate,
    validate, render, human review, explicit approval, promote, hydrate, then
    live map/terrain QA.

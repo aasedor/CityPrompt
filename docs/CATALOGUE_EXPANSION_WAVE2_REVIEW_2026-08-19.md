@@ -7,7 +7,8 @@
 - Local app: `http://127.0.0.1:5174/`
 - Review gallery: `http://127.0.0.1:4174/`
 - Gallery source: ignored `artifacts/catalogue-expansion-wave2/index.html`
-- Publish status: local only; do not push without an explicit user request.
+- Publish status: pushed to `origin/codex/catalogue-expansion-wave2` on
+  `aasedor/CityPrompt`; not merged into `main`.
 
 The ignored root `.env` contains the frontend and server Google Maps keys copied
 from the user's sibling City Prompt folder. The values were never printed or
@@ -82,7 +83,8 @@ planner checks pass at 104.0 for all ten families.
 1. Treat all ten as approved, promoted, and locally hydrated.
 2. Do not regenerate them unless a deliberate source revision is requested.
 3. Run focused checks and inspect Git LFS status before publication.
-4. Push only when the user explicitly requests it.
+4. Do not merge the published branch or push later changes without a new
+   explicit user request.
 
 If the gallery server is no longer running, restart it from the gallery source
 directory with:
