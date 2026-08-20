@@ -289,13 +289,33 @@ function Ensure-Backend {
     if (-not $uvicorn) {
         $uvicorn = Get-Command uvicorn -ErrorAction SilentlyContinue
     }
-    if (-not $uvicorn) {
-        throw 'uvicorn is not installed. Install backend/requirements.txt before starting City Prompt.'
+
+    $apiExecutable = $null
+    $apiArguments = @('app.main:app', '--host', '0.0.0.0', '--port', '8000')
+    if ($uvicorn) {
+        $apiExecutable = $uvicorn.Source
+    }
+    else {
+        # Python's Windows app alias can expose installed modules without
+        # publishing their console-script shims on PATH.  Keep the launcher
+        # usable in that common setup by falling back to ``python -m``.
+        $apiPython = Get-Command python.exe -ErrorAction SilentlyContinue
+        if (-not $apiPython) {
+            $apiPython = Get-Command python -ErrorAction SilentlyContinue
+        }
+        if ($apiPython) {
+            & $apiPython.Source -c 'import uvicorn' 2>$null
+        }
+        if (-not $apiPython -or $LASTEXITCODE -ne 0) {
+            throw 'uvicorn is not installed. Install backend/requirements.txt before starting City Prompt.'
+        }
+        $apiExecutable = $apiPython.Source
+        $apiArguments = @('-m', 'uvicorn') + $apiArguments
     }
 
     Write-Host 'Starting City Prompt API...'
-    Start-Process -FilePath $uvicorn.Source `
-        -ArgumentList @('app.main:app', '--host', '0.0.0.0', '--port', '8000') `
+    Start-Process -FilePath $apiExecutable `
+        -ArgumentList $apiArguments `
         -WorkingDirectory $backendRoot `
         -RedirectStandardOutput (Join-Path $artifactRoot 'backend.out.log') `
         -RedirectStandardError (Join-Path $artifactRoot 'backend.err.log') `
