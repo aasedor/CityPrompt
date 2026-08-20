@@ -103,17 +103,24 @@ def _pbr(
     return result
 
 
-def load_palette(folder: Path, cfg: dict) -> tuple[dict[str, bpy.types.Material], dict]:
+def load_palette(
+    folder: Path,
+    cfg: dict,
+    *,
+    texture_lod: str = "near",
+) -> tuple[dict[str, bpy.types.Material], dict]:
     skin = load_skin_manifest(folder)
     if not skin:
         raise FileNotFoundError(folder / "textures" / "skin_manifest.json")
-    near = {zone: values["near"] for zone, values in skin["zones"].items()}
+    if texture_lod not in {"near", "far"}:
+        raise ValueError(f"unsupported texture LOD: {texture_lod}")
+    atlas = {zone: values[texture_lod] for zone, values in skin["zones"].items()}
     mats: dict[str, bpy.types.Material] = {}
     for key, (_description, rgb, kind) in cfg["palette"].items():
         tint = tuple(channel / 255.0 for channel in rgb)
         if key == "glass":
             mats[key] = configure_glass(
-                _pbr(folder, near, cfg, key, f"MAT_W14_{cfg['family']}_{key}", transmission=0.58, normal=0.06),
+                _pbr(folder, atlas, cfg, key, f"MAT_W14_{cfg['family']}_{key}", transmission=0.58, normal=0.06),
                 cfg,
                 tint=tint,
                 transmission=0.76,
@@ -123,13 +130,13 @@ def load_palette(folder: Path, cfg: dict) -> tuple[dict[str, bpy.types.Material]
             metallic = 0.62 if kind == "metal" else 0.0
             roughness = 0.22 if kind == "metal" else 0.64 if kind == "wood" else 0.72
             mats[key] = wash_material(
-                _pbr(folder, near, cfg, key, f"MAT_W14_{cfg['family']}_{key}", metallic=metallic, normal=0.34 if kind == "metal" else 0.52),
+                _pbr(folder, atlas, cfg, key, f"MAT_W14_{cfg['family']}_{key}", metallic=metallic, normal=0.34 if kind == "metal" else 0.52),
                 tint=tint,
                 factor=0.31,
                 roughness=roughness,
             )
     mats["interior"] = configure_occupied(
-        _pbr(folder, near, cfg, "interior", f"MAT_W14_{cfg['family']}_OccupiedDepth", normal=0.08),
+        _pbr(folder, atlas, cfg, "interior", f"MAT_W14_{cfg['family']}_OccupiedDepth", normal=0.08),
         warmth=(0.31, 0.17, 0.055),
         emission=0.14,
     )
@@ -139,7 +146,7 @@ def load_palette(folder: Path, cfg: dict) -> tuple[dict[str, bpy.types.Material]
         0.78,
     )
     for key in ("facade", "podium", "floor_a", "floor_b", "crown", "side"):
-        mats[key + "_skin"] = _pbr(folder, near, cfg, key, f"MAT_W14_{cfg['family']}_{key}_registered", normal=0.12)
+        mats[key + "_skin"] = _pbr(folder, atlas, cfg, key, f"MAT_W14_{cfg['family']}_{key}_registered", normal=0.12)
     return mats, skin
 
 
@@ -1275,6 +1282,8 @@ def module_payload(
     size_bytes: int,
     skin: dict,
     cfg: dict,
+    *,
+    texture_lod: str,
 ) -> dict:
     width, depth, height = bounds_dimensions(objects)
     repeatable = role == "floor"
@@ -1296,12 +1305,20 @@ def module_payload(
         "triangle_count": evaluated_triangle_count(objects),
         "material_count": material_count(objects),
         "texture_keys": sorted(skin["zones"]),
+        "texture_lod": texture_lod,
         "ao_baked": True,
         "size_bytes": size_bytes,
     }
 
 
-def build_modules(folder: Path, mats: dict, skin: dict, cfg: dict) -> list[dict]:
+def build_modules(
+    folder: Path,
+    mats: dict,
+    skin: dict,
+    cfg: dict,
+    *,
+    texture_lod: str,
+) -> list[dict]:
     specs = (("podium", "default"), ("floor", "typical_a"), ("floor", "typical_b"), ("floor", "typical_c"), ("crown", "crown"), ("roof", "default"))
     payloads: list[dict] = []
     for role, variant in specs:
@@ -1311,7 +1328,18 @@ def build_modules(folder: Path, mats: dict, skin: dict, cfg: dict) -> list[dict]
         filename = f"{cfg['family']}_{suffix}.glb"
         destination = folder / filename
         export_glb(destination, objects)
-        payloads.append(module_payload(role, variant, filename, objects, destination.stat().st_size, skin, cfg))
+        payloads.append(
+            module_payload(
+                role,
+                variant,
+                filename,
+                objects,
+                destination.stat().st_size,
+                skin,
+                cfg,
+                texture_lod=texture_lod,
+            )
+        )
         delete_objects(objects)
     return payloads
 
@@ -1402,6 +1430,45 @@ def facade_sheet_contract(skin: dict, cfg: dict) -> dict:
         "variation_policy": "Use the fixed landmark throughout the 0.62–1.40 independent-axis band; oversized targets streetwall-repeat complete long-axis construction bays rather than returning family_incompatible.",
     }
     return contract
+
+
+def quality_standard_evidence(cfg: dict, graph: dict) -> dict:
+    """Declare machine-checkable review evidence without self-approving it.
+
+    Geometry and locked renders can be generated deterministically.  The two
+    approval booleans deliberately remain false until a human has inspected the
+    comparison sheet; quality_memory.py therefore routes a fresh build to
+    review instead of silently promoting it.
+    """
+    family = cfg["family"]
+    return {
+        "standard_id": "haussmann-depth-shape-skin-scale@1",
+        "distinctive_shape_features": list(graph["features"]),
+        "physical_depth_features": list(graph["physical_window_layers"]),
+        "photoreal_skin_approved": False,
+        "fixed_identity_anchors": [
+            "podium/entrance",
+            "corner returns",
+            "crown",
+            "roof",
+        ],
+        "repeatable_middle_roles": [
+            "floor/typical_a",
+            "floor/typical_b",
+            "floor/typical_c",
+        ],
+        "comparison_views": [
+            "street",
+            "context",
+            "front_elevation",
+            "front_corner_oblique",
+            "rear_corner_oblique",
+            "aerial",
+            "facade_close",
+        ],
+        "comparison_sheet": f"{family}_comparison.jpg",
+        "human_visual_approval": False,
+    }
 
 
 def configure_render(cfg: dict) -> list[bpy.types.Object]:
@@ -1532,7 +1599,17 @@ def build_family(
         assembled_materials = int((previous.get("assembled") or {}).get("material_count") or material_count(objects))
     renders = list(previous.get("renders") or []) if skip_renders else render_views(folder, cfg, view_set=view_set)
     delete_objects(objects)
-    modules = list(previous.get("modules") or []) if skip_modules else build_modules(folder, mats, skin, cfg)
+    if skip_modules:
+        modules = list(previous.get("modules") or [])
+    else:
+        module_mats, module_skin = load_palette(folder, cfg, texture_lod="far")
+        modules = build_modules(
+            folder,
+            module_mats,
+            module_skin,
+            cfg,
+            texture_lod="far",
+        )
     footprint = footprint_contract(cfg)
     graph = massing_graph(cfg)
     width, depth, height = actual_native
@@ -1585,6 +1662,7 @@ def build_family(
         "textures": texture_inventory(skin),
         "facade_sheet": facade_sheet_contract(skin, cfg),
         "massing_graph": graph,
+        "quality_standard_evidence": quality_standard_evidence(cfg, graph),
         "material_budget": {"max_assembled_materials": 18, "rationale": "Variant-specific opaque construction, physical glazing, occupied depth, expressed structure, screens, ornament and roof finishes remain separate because their optical contrast carries the catalogue identity."},
         "dimensions": {"width_m": width, "depth_m": depth, "podium_height_m": cfg["podium_height"], "floor_height_m": cfg["floor_height"], "setback_height_m": cfg["floor_height"], "roof_height_m": cfg["roof_height"], "crown_height_m": cfg["crown_height"], "default_floors": cfg["native_floors"], "min_floors": cfg["min_floors"], "max_floors": cfg["max_floors"]},
         "native_width_m": width,

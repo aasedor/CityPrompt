@@ -1,4 +1,5 @@
 """Create phone-readable reference/model comparison sheets for Wave 14."""
+
 from __future__ import annotations
 
 import argparse
@@ -20,6 +21,12 @@ GAP = 22
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--family", choices=sorted(FAMILIES), action="append")
+    parser.add_argument(
+        "--root",
+        type=Path,
+        default=ROOT,
+        help="family output root (defaults to frontend/public/families)",
+    )
     return parser.parse_args()
 
 
@@ -47,30 +54,64 @@ def panel(path: Path, label: str) -> Image.Image:
     return result
 
 
-def create_sheet(family: str) -> Path:
+def _display_path(path: Path) -> str:
+    try:
+        return str(path.relative_to(REPO))
+    except ValueError:
+        return str(path)
+
+
+def create_sheet(family: str, root_dir: Path = ROOT) -> Path:
     spec = FAMILIES[family]
-    root = ROOT / family
+    root_dir = root_dir.resolve()
+    root = root_dir / family
     source = root / "textures" / "source"
     rows = [
         (
-            panel(source / "street-hero-source-v1.png", "REFERENCE - HERO MASSING / VARIANT IDENTITY"),
+            panel(
+                source / "street-hero-source-v1.png",
+                "REFERENCE - HERO MASSING / VARIANT IDENTITY",
+            ),
             panel(root / f"{family}_preview.png", "MODEL - COMPLETE FIXED LANDMARK"),
         ),
         (
-            panel(source / "front-elevation-source-v1.png", "REFERENCE - PUBLIC ELEVATION GOALPOST"),
-            panel(root / f"{family}_front_elevation.png", "MODEL - PHYSICAL FRONT ELEVATION"),
+            panel(
+                source / "front-elevation-source-v1.png",
+                "REFERENCE - PUBLIC ELEVATION GOALPOST",
+            ),
+            panel(
+                root / f"{family}_front_elevation.png",
+                "MODEL - PHYSICAL FRONT ELEVATION",
+            ),
         ),
         (
-            panel(source / "aerial-roof-source-v1.png", "REFERENCE - ROOF / PLAN / LOAD PATH"),
-            panel(root / f"{family}_aerial.png", "MODEL - COMPLETE METRIC ROOF AND PLAN"),
+            panel(
+                source / "aerial-roof-source-v1.png",
+                "REFERENCE - ROOF / PLAN / LOAD PATH",
+            ),
+            panel(
+                root / f"{family}_aerial.png", "MODEL - COMPLETE METRIC ROOF AND PLAN"
+            ),
         ),
         (
-            panel(source / "rear-corner-source-v1.png", "REFERENCE - SECONDARY SIDE / REAR"),
-            panel(root / f"{family}_rear_corner_oblique.png", "MODEL - COMPLETE SECONDARY ELEVATIONS"),
+            panel(
+                source / "rear-corner-source-v1.png",
+                "REFERENCE - SECONDARY SIDE / REAR",
+            ),
+            panel(
+                root / f"{family}_rear_corner_oblique.png",
+                "MODEL - COMPLETE SECONDARY ELEVATIONS",
+            ),
         ),
         (
-            panel(source / "material-construction-source-v1.png", "REFERENCE - CUSTOM MATERIAL / CONSTRUCTION LOCK"),
-            panel(root / f"{family}_facade_close.png", "MODEL - CUSTOM PBR SKIN / PHYSICAL DETAIL"),
+            panel(
+                source / "material-construction-source-v1.png",
+                "REFERENCE - CUSTOM MATERIAL / CONSTRUCTION LOCK",
+            ),
+            panel(
+                root / f"{family}_facade_close.png",
+                "MODEL - CUSTOM PBR SKIN / PHYSICAL DETAIL",
+            ),
         ),
     ]
     title_height = 86
@@ -87,14 +128,15 @@ def create_sheet(family: str) -> Path:
         y += row_height + GAP
     destination = root / f"{family}_comparison.jpg"
     sheet.save(destination, quality=91, optimize=True, progressive=True)
-    root_copy = ROOT / f"wave14-{family}-comparison.jpg"
+    root_copy = root_dir / f"wave14-{family}-comparison.jpg"
     sheet.save(root_copy, quality=91, optimize=True, progressive=True)
-    print(f"[wave14-comparison] {destination.relative_to(REPO)}")
+    print(f"[wave14-comparison] {_display_path(destination)}")
     return destination
 
 
-def create_overview(families: list[str]) -> Path:
+def create_overview(families: list[str], root_dir: Path = ROOT) -> Path:
     """Create one compact two-column visual index for mobile review."""
+    root_dir = root_dir.resolve()
     card_width = 700
     card_height = 470
     card_label = 58
@@ -106,7 +148,7 @@ def create_overview(families: list[str]) -> Path:
     sheet = Image.new("RGB", (width, height), "#e6e5e1")
     ImageDraw.Draw(sheet).text(
         (GAP, 20),
-        "Wave 14 - ten independently modeled catalogue sibling variants",
+        f"Wave 14 - {len(families)} independently modeled catalogue sibling variants",
         fill="#111820",
         font=font(34),
     )
@@ -116,7 +158,7 @@ def create_overview(families: list[str]) -> Path:
         x = GAP + column * (card_width + GAP)
         y = title_height + GAP + row * (card_height + card_label + GAP)
         preview = ImageOps.fit(
-            Image.open(ROOT / family / f"{family}_preview.png").convert("RGB"),
+            Image.open(root_dir / family / f"{family}_preview.png").convert("RGB"),
             (card_width, card_height),
             method=Image.Resampling.LANCZOS,
         )
@@ -131,9 +173,9 @@ def create_overview(families: list[str]) -> Path:
             fill="#f7f4ed",
             font=font(23),
         )
-    destination = ROOT / "wave14-variant-overview.jpg"
+    destination = root_dir / "wave14-variant-overview.jpg"
     sheet.save(destination, quality=91, optimize=True, progressive=True)
-    print(f"[wave14-comparison] {destination.relative_to(REPO)}")
+    print(f"[wave14-comparison] {_display_path(destination)}")
     return destination
 
 
@@ -141,9 +183,9 @@ def main() -> int:
     args = parse_args()
     families = args.family or list(FAMILIES)
     for family in families:
-        create_sheet(family)
+        create_sheet(family, args.root)
     if not args.family:
-        create_overview(families)
+        create_overview(families, args.root)
     return 0
 
 
