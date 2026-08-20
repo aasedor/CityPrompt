@@ -45,3 +45,10 @@ and keep its machine-readable companion synchronized.
 The repository entered recovery on 2026-07-19 after an interrupted Codex turn.
 See `docs/WORKSPACE_RECOVERY_2026-07-19.md` before reorganizing or deleting any
 of the preserved generated output.
+
+## Current catalogue expansion
+
+For the active four-family Sticker + LEGO catalogue pilot, read
+`docs/CATALOGUE_EXPANSION_HANDOFF_2026-08-19.md` before continuing. The review
+artifacts live outside this worktree and still require human visual approval;
+do not promote or publish them merely because automated validation passes.
