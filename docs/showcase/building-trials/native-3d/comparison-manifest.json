@@ -1,0 +1,112 @@
+{
+  "schema": "cityprompt.native-3d-building-trial-comparison@1",
+  "created_on": "2026-08-26",
+  "comparison_sheet": {
+    "bytes": 1158832,
+    "dimensions": [
+      2400,
+      1600
+    ],
+    "filename": "cityprompt-native-3d-comparison-v1.png",
+    "sha256": "f68179aa254c27d0c57d2102a3126801a93369a27ebb0c32d1809a009a8a24ce"
+  },
+  "image_policy": {
+    "ai_enhancement": false,
+    "crop": false,
+    "labels_are_deterministic": true,
+    "source_images_preserved": true
+  },
+  "items": [
+    {
+      "family": "brick-bronze-wave003",
+      "model_authority": {
+        "bytes": 113762765,
+        "kind": "blender_scene",
+        "sha256": "87975a4995e5df47a90b0c8c5d12b817f3b8be8773a41fe4aa3b84fad7f422d6"
+      },
+      "native_render": {
+        "bytes": 691647,
+        "filename": "brick-bronze-wave003-native-front-left.png",
+        "sha256": "c4d017f41c19d61fc7c54bc3b2f9a049bcf6d6331ee040b90dc203791647e019"
+      },
+      "strict_status": "development_fixture_bounds_tolerance_fail"
+    },
+    {
+      "assessment": {
+        "hard_failure_count": 0,
+        "review_findings": [
+          "missing_haussmann_minimum_standard_evidence"
+        ],
+        "status": "review"
+      },
+      "assembled_glb": {
+        "bytes": 43953548,
+        "sha256": "5a785be0b30a37be50c1228cf0e5d00636b13f745bad753a103dcfc77a68bb9c"
+      },
+      "family": "restored-kyoto-machiya",
+      "native_render": {
+        "bytes": 1605468,
+        "filename": "restored-kyoto-machiya-native-front-corner.png",
+        "sha256": "dfe1ebad15a16cef49573cc228b4fe8f98b564ac0ed587d1129b75cf8924b5ae"
+      }
+    },
+    {
+      "assessment": {
+        "hard_failure_count": 0,
+        "review_findings": [
+          "missing_haussmann_minimum_standard_evidence"
+        ],
+        "status": "review"
+      },
+      "assembled_glb": {
+        "bytes": 63654380,
+        "sha256": "9b3d4e763787832a790be2092c0e1137d2148d04dbc3ef1f89c907f6714a3b19"
+      },
+      "family": "art-deco-cream-terracotta-tower",
+      "native_render": {
+        "bytes": 1666386,
+        "filename": "art-deco-cream-terracotta-tower-native-front-corner.png",
+        "sha256": "303213472e6fb04b8ad65331f0c83bd77caa51909a9dc8e8514c4479ed84f880"
+      }
+    },
+    {
+      "assessment": {
+        "hard_failure_count": 0,
+        "review_findings": [
+          "missing_haussmann_minimum_standard_evidence"
+        ],
+        "status": "review"
+      },
+      "assembled_glb": {
+        "bytes": 65691952,
+        "sha256": "776ea336fd0e475501d78e9707c8ae69b38e9583bce0bdc4949885bb183a4dae"
+      },
+      "family": "passive-house-timber-block",
+      "native_render": {
+        "bytes": 1763329,
+        "filename": "passive-house-timber-block-native-front-corner.png",
+        "sha256": "cc154fedf429073f66ea669ca05292ca0b2cffbd77f119f995c32161c88c62a7"
+      }
+    },
+    {
+      "assessment": {
+        "hard_failure_count": 0,
+        "review_findings": [
+          "missing_haussmann_minimum_standard_evidence"
+        ],
+        "status": "review"
+      },
+      "assembled_glb": {
+        "bytes": 42442584,
+        "sha256": "c5c695a63772d0b88fdf10e56e7230abb5b06bc2d3fa84720b5b39f2155a0a98"
+      },
+      "family": "modern-fire-station-mass-timber",
+      "native_render": {
+        "bytes": 1565502,
+        "filename": "modern-fire-station-mass-timber-native-front-corner.png",
+        "sha256": "8ae58eda4c967f07b3dccc0417e4671d3c518ed339c4ec108056ee4b8262b372"
+      }
+    }
+  ],
+  "note": "Native-model comparison only. AI-enhanced presentation concepts are stored outside native-3d and are not geometry evidence."
+}
