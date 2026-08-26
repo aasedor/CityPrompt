@@ -32,6 +32,7 @@ Rules enforced for every assembly, taken from the known failure patterns:
 from __future__ import annotations
 
 import math
+import re
 from dataclasses import dataclass, field
 from typing import Any, Callable, Sequence
 
@@ -503,7 +504,11 @@ def build_arched_opening(
         return []
     x0, x1 = span
     centre_x = (x0 + x1) / 2
-    radius = inner_radius if inner_radius is not None else (x1 - x0) / 2 - 0.5
+    # A springing arch is bounded by the storey it sits in. Without the clamp a
+    # three-bay entrance on a 3.4 m floor produces a hoop crossing the slab above.
+    radius = inner_radius if inner_radius is not None else min(
+        (x1 - x0) / 2 - 0.5, graph.floor_height * 0.42
+    )
     spring_z = graph.storey_z(storey) + graph.floor_height * 0.52
     front_y = -graph.depth / 2
 
@@ -523,7 +528,7 @@ def build_arched_opening(
             radius,
             ring_width,
             0.38,
-            mats["ornament"],
+            mats["secondary"],
             segments=20,
         )
     ]
@@ -544,7 +549,7 @@ def build_arched_opening(
                 f"SIG_Arch_Tracery_{i}",
                 (0.09, 0.14, drop + graph.floor_height * 0.5),
                 (x, front_y - 0.06, spring_z + drop / 2 - graph.floor_height * 0.25),
-                mats["ornament"],
+                mats["secondary"],
             )
         )
     return objects
@@ -630,9 +635,41 @@ _PROSE_SIGNATURES: tuple[tuple[str, str, dict[str, Any]], ...] = (
     ("decorative parapet", "ornamental_parapet", {}),
     ("ornate parapet", "ornamental_parapet", {}),
     ("stepped parapet", "ornamental_parapet", {"step_count": 4}),
+    ("crenellated", "ornamental_parapet", {"step_count": 1}),
+    ("battlement", "ornamental_parapet", {"step_count": 1}),
     ("arched", "arched_opening", {}),
     ("arch ", "arched_opening", {}),
+    ("cornice", "cornice", {}),
+    ("modillion", "cornice", {}),
+    ("balcony", "balcony_course", {}),
+    ("balconies", "balcony_course", {}),
+    ("loggia", "balcony_course", {}),
+    ("rusticated", "rusticated_base", {}),
+    ("stone base", "rusticated_base", {}),
+    ("mansard", "mansard_roof", {}),
+    ("dormer", "mansard_roof", {}),
+    ("chimney", "chimney_stack", {}),
 )
+
+_ORDINAL = {
+    "first": 1, "second": 2, "third": 3, "fourth": 4, "fifth": 5,
+    "sixth": 6, "seventh": 7, "eighth": 8, "ground": 1,
+}
+
+
+def parse_storeys(text: str) -> list[int]:
+    """Recover storey numbers from prose like "balconies at 2nd and 5th floors".
+
+    A reference-defining balcony course sits on named floors; guessing loses the
+    very rhythm that identifies the archetype, so the numbers are read rather
+    than defaulted whenever the catalogue states them.
+    """
+    lowered = text.lower()
+    found = {int(n) for n in re.findall(r"(\d+)(?:st|nd|rd|th)\b", lowered)}
+    for word, value in _ORDINAL.items():
+        if re.search(rf"\b{word}\b(?=[^.]*\bfloor)", lowered):
+            found.add(value)
+    return sorted(found)
 
 
 def derive_signatures(payload: dict[str, Any]) -> list[dict[str, Any]]:
@@ -660,10 +697,311 @@ def derive_signatures(payload: dict[str, Any]) -> list[dict[str, Any]]:
         lowered = text.lower()
         for token, signature_name, params in _PROSE_SIGNATURES:
             if token in lowered and signature_name not in found:
+                resolved = dict(params)
+                if signature_name == "arched_opening" and "groundfloor" in field_name.lower():
+                    resolved.setdefault("storey", 0)
+                if signature_name == "balcony_course":
+                    storeys = parse_storeys(text)
+                    if storeys:
+                        resolved["storeys"] = storeys
                 found[signature_name] = {
                     "type": signature_name,
-                    "params": dict(params),
+                    "params": resolved,
                     "evidence": f'{field_name}: "{text[:80]}"',
                 }
-    order = ["ornamental_parapet", "relief_band", "arched_opening", "marquee", "blade_sign"]
+    # Back to front: wall-plane work first, then projections, then skyline.
+    order = [
+        "rusticated_base", "relief_band", "cornice", "arched_opening",
+        "balcony_course", "ornamental_parapet", "mansard_roof",
+        "chimney_stack", "marquee", "blade_sign",
+    ]
     return [found[name] for name in order if name in found]
+
+
+@signature("cornice")
+def build_cornice(
+    graph: BayGraph,
+    mats: dict[str, Any],
+    reservations: FacadeReservations,
+    *,
+    storey: int | None = None,
+    projection: float = 0.55,
+    depth_height: float = 0.42,
+    modillion_spacing: float = 0.95,
+    wrap_returns: bool = True,
+) -> list[bpy.types.Object]:
+    """Projecting crown moulding carried on modillion brackets.
+
+    The single most reusable assembly in the catalogue: almost every masonry
+    tradition terminates its wall with one. ``storey`` defaults to the parapet
+    so a plain declaration crowns the building.
+    """
+    z = graph.storey_z(graph.floors if storey is None else storey)
+    front_y = -graph.depth / 2
+    reservations.claim(
+        Reservation(-graph.width / 2, graph.width / 2, z - depth_height, z + depth_height,
+                    f"cornice@{storey}", y_near=0.0, y_far=projection),
+        strict=False,
+    )
+
+    objects: list[bpy.types.Object] = []
+    faces = [((graph.width + projection * 2, projection, depth_height), (0.0, front_y - projection / 2, z), "Front")]
+    if wrap_returns:
+        for sign, label in ((-1.0, "Left"), (1.0, "Right")):
+            faces.append((
+                (projection, graph.depth + projection, depth_height),
+                (sign * (graph.width / 2 + projection / 2), 0.0, z),
+                label,
+            ))
+    for size, location, label in faces:
+        objects.append(bg.add_beveled_box(f"SIG_Cornice_{label}", size, location, mats["secondary"], bevel_m=0.03))
+
+    # Modillions: the bracket rhythm is what stops a cornice reading as a slab.
+    count = max(6, int(graph.width / modillion_spacing))
+    for i in range(count):
+        x = -graph.width / 2 + graph.width * (i + 0.5) / count
+        objects.append(
+            bg.add_box(
+                f"SIG_Cornice_Modillion_{i:03d}",
+                (0.16, projection * 0.8, 0.3),
+                (x, front_y - projection * 0.4, z - depth_height / 2 - 0.15),
+                mats["secondary"],
+            )
+        )
+    return objects
+
+
+@signature("balcony_course")
+def build_balcony_course(
+    graph: BayGraph,
+    mats: dict[str, Any],
+    reservations: FacadeReservations,
+    *,
+    storeys: Sequence[int] = (2, 5),
+    projection: float = 0.85,
+    rail_height: float = 0.95,
+    baluster_spacing: float = 0.28,
+) -> list[bpy.types.Object]:
+    """Continuous balcony with a real open railing.
+
+    The memory is explicit that a visually open assembly must be open geometry:
+    "an opaque photograph-wrapped slab is not an acceptable substitute". So the
+    railing is posts and balusters with actual gaps, carried on corbels.
+    """
+    front_y = -graph.depth / 2
+    objects: list[bpy.types.Object] = []
+    for storey in storeys:
+        if storey >= graph.floors + 1:
+            continue
+        z = graph.storey_z(storey)
+        reservations.claim(
+            Reservation(-graph.width / 2, graph.width / 2, z - 0.3, z + rail_height,
+                        f"balcony_course@{storey}", y_near=0.0, y_far=projection),
+            strict=False,
+        )
+        objects.append(
+            bg.add_beveled_box(
+                f"SIG_Balcony_Slab_{storey}",
+                (graph.width + 0.5, projection, 0.16),
+                (0.0, front_y - projection / 2, z),
+                mats["secondary"],
+                bevel_m=0.02,
+            )
+        )
+        for edge, size, offset in (
+            ("Top", (graph.width + 0.5, 0.07, 0.07), rail_height),
+            ("Mid", (graph.width + 0.5, 0.05, 0.05), rail_height * 0.55),
+        ):
+            objects.append(
+                bg.add_box(
+                    f"SIG_Balcony_Rail{edge}_{storey}",
+                    size,
+                    (0.0, front_y - projection + 0.06, z + offset),
+                    mats["ironwork"],
+                )
+            )
+        count = max(10, int(graph.width / baluster_spacing))
+        for i in range(count):
+            x = -graph.width / 2 + graph.width * (i + 0.5) / count
+            objects.append(
+                bg.add_box(
+                    f"SIG_Balcony_Baluster_{storey}_{i:03d}",
+                    (0.035, 0.035, rail_height),
+                    (x, front_y - projection + 0.06, z + rail_height / 2),
+                    mats["ironwork"],
+                )
+            )
+        # Corbels under the slab, on the bay rhythm rather than a free grid.
+        for bay in graph.bays:
+            objects.append(
+                bg.add_box(
+                    f"SIG_Balcony_Corbel_{storey}_{bay.index}",
+                    (0.2, projection * 0.7, 0.3),
+                    (bay.centre_x, front_y - projection * 0.35, z - 0.22),
+                    mats["secondary"],
+                )
+            )
+    return objects
+
+
+@signature("rusticated_base")
+def build_rusticated_base(
+    graph: BayGraph,
+    mats: dict[str, Any],
+    reservations: FacadeReservations,
+    *,
+    course_height: float = 0.55,
+    course_depth: float = 0.09,
+    arched_openings: bool = True,
+) -> list[bpy.types.Object]:
+    """Banded stone ground floor, optionally with arched shop openings."""
+    height = graph.floor_height
+    front_y = -graph.depth / 2
+    reservations.claim(
+        Reservation(-graph.width / 2, graph.width / 2, 0.0, height, "rusticated_base",
+                    y_near=0.0, y_far=course_depth),
+        strict=False,
+    )
+    objects: list[bpy.types.Object] = []
+    courses = max(3, int(height / course_height))
+    for i in range(courses):
+        z = height * (i + 0.5) / courses
+        objects.append(
+            bg.add_box(
+                f"SIG_Rustic_Course_{i:02d}",
+                (graph.width + course_depth, course_depth, height / courses * 0.82),
+                (0.0, front_y - course_depth / 2, z),
+                mats["secondary"],
+            )
+        )
+    if arched_openings:
+        for bay in graph.bays:
+            if bay.role == "entrance":
+                continue
+            radius = bay.width * 0.32
+            objects.append(
+                bg.add_arch_ring(
+                    f"SIG_Rustic_Arch_{bay.index}",
+                    bay.centre_x,
+                    front_y,
+                    height * 0.58,
+                    radius,
+                    0.22,
+                    0.3,
+                    mats["secondary"],
+                    segments=14,
+                )
+            )
+    return objects
+
+
+@signature("mansard_roof")
+def build_mansard_roof(
+    graph: BayGraph,
+    mats: dict[str, Any],
+    reservations: FacadeReservations,
+    *,
+    height: float = 3.4,
+    inset: float = 1.5,
+    dormers: bool = True,
+    dormer_width: float = 1.1,
+) -> list[bpy.types.Object]:
+    """Steep-faced attic storey with dormers.
+
+    Built as a real inset volume rather than an applied cap, so the dormers sit
+    in a surface that exists and the silhouette survives an aerial view.
+    """
+    base_z = graph.storey_z(graph.floors)
+    front_y = -graph.depth / 2
+    objects: list[bpy.types.Object] = []
+
+    steps = 5
+    for i in range(steps):
+        frac = i / steps
+        shrink = inset * frac
+        objects.append(
+            bg.add_box(
+                f"SIG_Mansard_Face_{i}",
+                (graph.width - shrink * 2, graph.depth - shrink * 2, height / steps + 0.02),
+                (0.0, 0.0, base_z + height * (i + 0.5) / steps),
+                mats["roof"],
+            )
+        )
+    objects.append(
+        bg.add_box(
+            "SIG_Mansard_Deck",
+            (graph.width - inset * 2, graph.depth - inset * 2, 0.2),
+            (0.0, 0.0, base_z + height + 0.1),
+            mats["roof"],
+        )
+    )
+    if dormers:
+        for bay in graph.bays:
+            if bay.role == "end":
+                continue
+            objects.append(
+                bg.add_box(
+                    f"SIG_Mansard_Dormer_{bay.index}",
+                    (dormer_width, 0.9, height * 0.62),
+                    (bay.centre_x, front_y + 0.55, base_z + height * 0.38),
+                    mats["roof"],
+                )
+            )
+            objects.append(
+                bg.add_box(
+                    f"SIG_Mansard_DormerGlass_{bay.index}",
+                    (dormer_width - 0.24, 0.08, height * 0.44),
+                    (bay.centre_x, front_y + 0.12, base_z + height * 0.36),
+                    mats["glass"],
+                )
+            )
+            objects.append(
+                bg.add_box(
+                    f"SIG_Mansard_DormerCap_{bay.index}",
+                    (dormer_width + 0.16, 1.0, 0.11),
+                    (bay.centre_x, front_y + 0.55, base_z + height * 0.69),
+                    mats["roof"],
+                )
+            )
+    return objects
+
+
+@signature("chimney_stack")
+def build_chimney_stack(
+    graph: BayGraph,
+    mats: dict[str, Any],
+    reservations: FacadeReservations,
+    *,
+    count: int = 2,
+    height: float = 2.3,
+    width: float = 1.1,
+    pots_per_stack: int = 4,
+    roof_offset: float = 3.6,
+) -> list[bpy.types.Object]:
+    """Clustered stacks with pots — a skyline object, not a facade one."""
+    base_z = graph.storey_z(graph.floors) + roof_offset
+    objects: list[bpy.types.Object] = []
+    for s in range(count):
+        x = -graph.width / 4 + (graph.width / 2) * (s / max(1, count - 1)) if count > 1 else 0.0
+        objects.append(
+            bg.add_beveled_box(
+                f"SIG_Chimney_{s}",
+                (width, width * 0.75, height),
+                (x, 0.0, base_z + height / 2),
+                mats["secondary"],
+                bevel_m=0.02,
+            )
+        )
+        for p in range(pots_per_stack):
+            px = x - width / 2 + width * (p + 0.5) / pots_per_stack
+            objects.append(
+                bg.add_cylinder(
+                    f"SIG_Chimney_Pot_{s}_{p}",
+                    0.11,
+                    0.55,
+                    (px, 0.0, base_z + height + 0.27),
+                    mats["ornament"],
+                    vertices=10,
+                )
+            )
+    return objects

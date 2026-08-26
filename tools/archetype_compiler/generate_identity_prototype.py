@@ -52,15 +52,41 @@ def _material(name: str, hex_value: str, roughness: float, metallic: float = 0.0
     return mat
 
 
+def _ornament_material(payload: dict, palette: dict, secondary: str):
+    """Gilt only where the archetype actually says so.
+
+    A deco movie palace wants gold; a Haussmann block's window surrounds are the
+    same limestone as the wall. Hardcoding one archetype's metal is how a
+    vocabulary stops being reusable.
+    """
+    variant = payload.get("selectedVariant") or {}
+    # Only the fields that describe facade colour count. An accentMaterial
+    # mentioning "brass door hardware" must not gild every window surround --
+    # that is how one archetype's metal leaks across the catalogue.
+    facade = {**(payload.get("facadeDetail") or {}), **(variant.get("facadeDetail") or {})}
+    text = " ".join(
+        str(facade.get(key) or "") for key in ("colorScheme", "secondaryMaterial", "primaryMaterial")
+    ).lower()
+    if any(word in text for word in ("gold", "gilt", "gilded")):
+        return _material("MAT_Ornament_Gilt", palette.get("accent") or "#b08a3c", 0.34, metallic=0.75)
+    return _material("MAT_Ornament_Stone", secondary, 0.62)
+
+
 def build_materials(payload: dict) -> dict:
     variant = payload.get("selectedVariant") or {}
     palette = variant.get("palette") or payload.get("palette") or {}
     primary = palette.get("primary") or "#883907"
+    secondary = palette.get("facadeSecondary") or "#cbbda4"
+    accent = palette.get("accent") or "#34393f"
     return {
-        # Terra cotta is a glazed ceramic: mid roughness, no metal.
-        "primary": _material("MAT_Primary_TerraCotta", primary, 0.52),
-        "secondary": _material("MAT_Secondary_CastStone", "#cbbda4", 0.68),
-        "ornament": _material("MAT_Ornament_Gold", "#b08a3c", 0.34, metallic=0.75),
+        "primary": _material("MAT_Primary", primary, 0.52),
+        "secondary": _material("MAT_Secondary", secondary, 0.68),
+        # Wrought iron: near-black, low spec, so open railings read as metal
+        # rather than as a dark painted band.
+        "ironwork": _material("MAT_Ironwork", "#1b1d20", 0.42, metallic=0.55),
+        # Zinc mansard, aged to a dark grey patina.
+        "roof": _material("MAT_Roof_Zinc", accent, 0.46, metallic=0.35),
+        "ornament": _ornament_material(payload, palette, secondary),
         "signage": _material("MAT_Signage", "#2b1410", 0.45),
         # Lamps and neon are the only emissive surfaces; glazing stays passive.
         "lamp": _material("MAT_Lamp", "#ffe6b0", 0.30, emission="#ffdda0", emission_strength=6.0),
@@ -174,7 +200,9 @@ def build_entrance(graph: BayGraph, mats: dict) -> list[bpy.types.Object]:
 
 def main() -> int:
     parser = argparse.ArgumentParser(prog="generate_identity_prototype.py")
-    parser.add_argument("--source", required=True, type=Path)
+    parser.add_argument("--source", type=Path, help="a family archetype-source.json")
+    parser.add_argument("--archetype-id", help="read the entry straight from buildingArchetypes.json")
+    parser.add_argument("--variant", type=int, default=0)
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--width", type=float, default=None)
     parser.add_argument("--depth", type=float, default=None)
@@ -184,15 +212,39 @@ def main() -> int:
     parser.add_argument("--view-set", default="preview")
     args = parser.parse_args(sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else None)
 
-    payload = json.loads(args.source.read_text(encoding="utf-8"))
+    if args.archetype_id:
+        # Read-only access to the catalogue. Never parse-and-dump this file:
+        # json.dump corrupts thumbnailUrl paths (see CLAUDE.md).
+        catalogue = json.loads(
+            (TOOL_DIR.parents[1] / "frontend/src/data/buildingArchetypes.json").read_text(encoding="utf-8")
+        )
+        matches = [a for a in catalogue["archetypes"] if a.get("id") == args.archetype_id]
+        if not matches:
+            raise SystemExit(f"no archetype {args.archetype_id!r} in the catalogue")
+        payload = dict(matches[0])
+        variants = payload.get("variants") or []
+        if variants:
+            payload["selectedVariant"] = variants[min(args.variant, len(variants) - 1)]
+    elif args.source:
+        payload = json.loads(args.source.read_text(encoding="utf-8"))
+    else:
+        raise SystemExit("pass --source or --archetype-id")
     variant = payload.get("selectedVariant") or {}
     dims = payload.get("dimensions") or {}
-    width = args.width or float(dims.get("suggestedWidth_m") or 20.0)
-    depth = args.depth or float(dims.get("suggestedDepth_m") or 30.0)
-    floors = args.floors or int(variant.get("minFloors") or dims.get("minFloors") or 3)
-    floor_height = float(variant.get("suggestedFloorHeight") or dims.get("suggestedFloorHeight") or 5.0)
 
-    family = str(variant.get("id") or payload.get("archetypeId") or args.source.parent.name)
+    def spec(key: str, fallback: float) -> float:
+        for holder in (variant, dims, payload):
+            value = holder.get(key) if isinstance(holder, dict) else None
+            if value:
+                return float(value)
+        return fallback
+
+    width = args.width or spec("suggestedWidth_m", 20.0)
+    depth = args.depth or spec("suggestedDepth_m", 30.0)
+    floors = args.floors or int(spec("minFloors", 3))
+    floor_height = spec("suggestedFloorHeight", 5.0)
+
+    family = str(variant.get("id") or payload.get("archetypeId") or payload.get("id") or "family")
     signatures = derive_signatures(payload)
 
     print(f"[identity] family        : {family}")

@@ -127,3 +127,47 @@ class TestProseDerivation:
             "selectedVariant": {"description": "Corner shop with a decorative parapet."},
         }
         assert [item["type"] for item in derive_signatures(payload)] == ["ornamental_parapet"]
+
+
+class TestStoreyParsing:
+    def test_reads_numeric_ordinals(self) -> None:
+        assert identity_kit.parse_storeys("wrought iron balconies at 2nd and 5th floors") == [2, 5]
+
+    def test_reads_written_ordinals_near_a_floor_word(self) -> None:
+        assert 3 in identity_kit.parse_storeys("a loggia on the third floor")
+
+    def test_ignores_numbers_that_are_not_storeys(self) -> None:
+        assert identity_kit.parse_storeys("cut limestone facade with aligned window rhythm") == []
+
+    def test_balcony_course_carries_the_parsed_storeys(self) -> None:
+        payload = {
+            "description": "Haussmann block with wrought iron balconies at 2nd and 5th floors.",
+        }
+        balcony = next(s for s in derive_signatures(payload) if s["type"] == "balcony_course")
+        assert balcony["params"]["storeys"] == [2, 5]
+
+
+class TestVocabularyBreadth:
+    def test_a_ground_floor_arch_springs_from_the_ground_floor(self) -> None:
+        """Evidence and geometry must agree: the citing field sets the storey."""
+        payload = {"facadeDetail": {"groundFloor": "rusticated stone base with tall arched entry"}}
+        arch = next(s for s in derive_signatures(payload) if s["type"] == "arched_opening")
+        assert arch["params"]["storey"] == 0
+
+    def test_haussmann_derives_its_defining_assemblies(self) -> None:
+        payload = {
+            "description": "Classic Haussmann apartment block with cut limestone facade, "
+                           "wrought iron balconies at 2nd and 5th floors, zinc mansard roof.",
+            "facadeDetail": {"groundFloor": "rusticated stone base with tall arched entry"},
+        }
+        found = {s["type"] for s in derive_signatures(payload)}
+        assert {"rusticated_base", "balcony_course", "mansard_roof"} <= found
+
+    def test_gothic_battlements_reuse_the_parapet_assembly(self) -> None:
+        payload = {"description": "Limestone ashlar building with crenellated battlements."}
+        assert [s["type"] for s in derive_signatures(payload)] == ["ornamental_parapet"]
+
+    def test_theatre_assemblies_do_not_leak_into_other_families(self) -> None:
+        payload = {"description": "Classic Haussmann apartment block with zinc mansard roof."}
+        found = {s["type"] for s in derive_signatures(payload)}
+        assert not ({"marquee", "blade_sign", "relief_band"} & found)
