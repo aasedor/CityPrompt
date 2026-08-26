@@ -2,7 +2,10 @@
   "schema": "cityprompt.brick-bronze-size-variant-showcase@1",
   "created_on": "2026-08-26",
   "batch_id": "family-wave-004-size-variants",
-  "status": "development_pilot_actual_3d_models",
+  "status": "failed_visual_regression_development_evidence",
+  "production_approved": false,
+  "visual_baseline_allowed": false,
+  "failure_reason": "Primitive facade reconstruction preserved counts and dimensions but regressed from the Sticker Method by discarding registered facade identity and exposing dark occlusion cores.",
   "image_policy": {
     "ai_generation": false,
     "ai_enhancement": false,
@@ -84,5 +87,5 @@
       }
     }
   ],
-  "note": "The published images are actual Blender model evidence. The large .blend scenes remain in local artifact storage and are intentionally not committed as ordinary Git blobs."
+  "note": "The published images are actual Blender model evidence retained for audit, but the approach failed visual review and is not approved for production or showcase use. The large .blend scenes remain in local artifact storage and are intentionally not committed as ordinary Git blobs."
 }

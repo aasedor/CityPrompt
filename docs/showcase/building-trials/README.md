@@ -22,6 +22,12 @@ secondary elevations, and overall model completeness.
 [`brick-bronze-size-variants/`](native-3d/brick-bronze-size-variants/) contains
 three newly generated members of the same semantic building family:
 
+> **Failed visual-regression evidence — not approved showcase work.** These
+> variants proved deterministic size/topology generation, but their primitive
+> façade reconstruction discarded the Sticker Method's registered visual
+> identity and exposed dark occlusion cores. They must not be used as a visual
+> baseline, catalogue-quality example, or production scaling template.
+
 - small rectangle: 18×14 m, 4 floors;
 - large rectangle: 40×25 m, 8 floors;
 - native-height rear-left L: 25×25 m, 6 floors.
@@ -29,7 +35,8 @@ three newly generated members of the same semantic building family:
 Each variant has a direct material render and a temporary-material geometry
 proof. The comparison sheet includes the earlier 25×18 m native building as a
 baseline. All seven PNGs are direct Blender 5.2 outputs or a deterministic
-layout of those outputs; no AI image generation or enhancement was used.
+layout of those outputs; no AI image generation or enhancement was used. They
+are retained only so the failed approach and its regression remain auditable.
 
 - [`brick-bronze-size-variant-comparison-v3.png`](native-3d/brick-bronze-size-variants/brick-bronze-size-variant-comparison-v3.png)
 - [`manifest.json`](native-3d/brick-bronze-size-variants/manifest.json)
