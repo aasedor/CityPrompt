@@ -52,3 +52,35 @@ def test_changed_building_geometry_is_flagged_below_identical():
 def test_review_band_requires_no_catastrophic_frame():
     assert classify_fidelity(60, 45) == "review"
     assert classify_fidelity(74, 50) == "review"
+
+
+def test_geometry_only_scoring_rewards_a_materialized_render():
+    """A successful photoreal finish keeps every edge and changes every surface.
+    The default weighting reads that as drift; geometry-only scoring must not."""
+    clay = np.full((180, 320, 3), 200, dtype=np.uint8)
+    cv2.rectangle(clay, (90, 40), (230, 150), (150, 150, 150), -1)
+
+    # Same silhouette, materialized: darker facade plus fine surface texture.
+    materialized = clay.copy()
+    cv2.rectangle(materialized, (90, 40), (230, 150), (70, 80, 95), -1)
+    rng = np.random.default_rng(11)
+    noise = rng.integers(-18, 18, size=(111, 141, 3), dtype=np.int16)
+    patch = materialized[40:151, 90:231].astype(np.int16) + noise
+    materialized[40:151, 90:231] = np.clip(patch, 0, 255).astype(np.uint8)
+
+    default_score = score_frame_similarity(clay, materialized)
+    geometry_score = score_frame_similarity(clay, materialized, geometry_only=True)
+
+    assert geometry_score > default_score
+
+
+def test_geometry_only_scoring_still_punishes_moved_geometry():
+    reference = np.full((180, 320, 3), 200, dtype=np.uint8)
+    cv2.rectangle(reference, (90, 40), (230, 150), (150, 150, 150), -1)
+
+    # A second building appears and the first one is re-proportioned.
+    drifted = np.full((180, 320, 3), 200, dtype=np.uint8)
+    cv2.rectangle(drifted, (60, 20), (180, 160), (150, 150, 150), -1)
+    cv2.rectangle(drifted, (240, 60), (300, 150), (150, 150, 150), -1)
+
+    assert score_frame_similarity(reference, drifted, geometry_only=True) < 72

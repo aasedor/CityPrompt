@@ -74,4 +74,49 @@ describe('buildVideoSceneContract', () => {
     expect(contract.text).toContain('All non-authored background buildings are immutable captured context');
     expect(contract.text).toContain('never copy, repeat, or propagate an authored facade');
   });
+
+  it('keeps every geometry lock but unlocks appearance in photoreal finish', () => {
+    const zones = [
+      zone('b1', 'building', { floors: 6, height: 18, development_archetype_id: 'custom_midrise_variant_0' }),
+      zone('p1', 'green_space', { plaza_archetype_id: 'custom_garden_variant_0' }),
+    ];
+    const contract = buildVideoSceneContract(zones, 'photoreal');
+
+    expect(contract.finishMode).toBe('photoreal');
+    expect(contract.summary).toBe('1 building archetype · 1 open-space archetype · photoreal finish');
+
+    // Appearance is deliberately unlocked.
+    expect(contract.text).toContain('untextured study massing');
+    expect(contract.text).toContain('materialize its surfaces into photoreal');
+    expect(contract.text).not.toContain('without enhancement');
+
+    // Geometry, topology and count locks survive unchanged.
+    expect(contract.text).toContain('Preserve its exact on-screen footprint');
+    expect(contract.text).toContain('visible courtyards, lightwells, roof voids, and wings');
+    expect(contract.text).toContain('Never lengthen, widen, shrink, merge, split, fill, or invent');
+    expect(contract.text).toContain('ARCHETYPE SCOPE LOCK');
+    expect(contract.text).toContain('GLOBAL FORBIDDEN CHANGES');
+
+    // Archetype identity still never reaches the model.
+    expect(contract.text).not.toContain('custom_midrise_variant_0');
+    expect(contract.text).not.toContain('custom_garden_variant_0');
+    expect(contract.text).toContain('do not invent a named architectural style');
+  });
+
+  it('defaults to massing fidelity and separates the two modes by signature', () => {
+    const zones = [zone('b1', 'building', { floors: 4 })];
+    const locked = buildVideoSceneContract(zones);
+    const photoreal = buildVideoSceneContract(zones, 'photoreal');
+
+    expect(locked.finishMode).toBe('massing_fidelity');
+    expect(locked.text).toBe(buildVideoSceneContract(zones, 'massing_fidelity').text);
+    // A request prepared under one mode must not satisfy the other.
+    expect(locked.signature).not.toBe(photoreal.signature);
+  });
+
+  it('materializes the fallback contract when no zone carries archetype data', () => {
+    const contract = buildVideoSceneContract([], 'photoreal');
+    expect(contract.text).toContain('materialize its untextured study surfaces');
+    expect(contract.text).not.toContain('without adding materials, lighting, detail');
+  });
 });

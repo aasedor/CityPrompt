@@ -32,7 +32,7 @@ import {
   routeSvgPoints,
   type VideoRoutePoint,
 } from './videoRenderPath';
-import { buildVideoSceneContract } from './videoSceneContract';
+import { buildVideoSceneContract, type VideoFinishMode } from './videoSceneContract';
 import {
   type VideoControlMode,
   type VideoRouteCaptureRequest,
@@ -49,6 +49,11 @@ const MOTIONS = [
   { id: 'street_walkby', name: 'Street walk-by', detail: 'Slow + pedestrian height' },
   { id: 'detail_flythrough', name: 'Low detail fly-through', detail: '6 m · between buildings' },
 ] as const;
+
+const FINISH_MODES: Array<{ id: VideoFinishMode; name: string; detail: string }> = [
+  { id: 'massing_fidelity', name: 'Massing fidelity', detail: 'Animate the captured clay exactly' },
+  { id: 'photoreal', name: 'Photoreal finish', detail: 'Materialize the massing into built architecture' },
+];
 
 const CONTROL_MODES: Array<{ id: VideoControlMode; name: string; detail: string }> = [
   { id: 'preview_video', name: 'Preview-video edit', detail: 'Recommended · exact 8-second camera' },
@@ -106,6 +111,7 @@ export interface VideoAttempt {
   provider?: VideoProvider;
   model?: string | null;
   seedance_reference_mode?: SeedanceReferenceMode | null;
+  finish_mode?: VideoFinishMode | null;
   internal_enhance_quality?: InternalEnhanceQuality | null;
   render_quality?: VideoRenderQuality | null;
   capture_profile?: VideoCaptureProfile | null;
@@ -124,6 +130,7 @@ export interface VideoAttempt {
   fidelity_score?: number | null;
   fidelity_min_score?: number | null;
   fidelity_status?: 'pending' | 'stable' | 'review' | 'drift' | 'unavailable' | null;
+  fidelity_geometry_only?: boolean | null;
   fidelity_samples?: Array<{ time_seconds: number; score: number }>;
   is_benchmark?: boolean;
   benchmark_source?: 'automatic' | 'user' | null;
@@ -148,7 +155,7 @@ function videoAttemptLabel(attempt: VideoAttempt): string {
   const provider = providerName(attempt.provider);
   const motion = attempt.camera_motion.split('_').join(' ');
   const control = attempt.provider === 'seedance_mini'
-    ? attempt.seedance_reference_mode === 'preview_plus_keyframes' ? 'Preview + 3 views' : 'Preview only'
+    ? `${attempt.seedance_reference_mode === 'preview_plus_keyframes' ? 'Preview + 3 views' : 'Preview only'}${attempt.finish_mode === 'photoreal' ? ' · photoreal' : ''}`
     : attempt.provider === 'internal_enhance'
       ? 'Source-locked cleanup'
     : attempt.control_mode === 'multi_keyframe'
@@ -214,6 +221,7 @@ interface PreparedVideoRequest {
   project_id: string;
   provider: VideoProvider;
   seedance_reference_mode: SeedanceReferenceMode;
+  finish_mode: VideoFinishMode;
   internal_enhance_quality: InternalEnhanceQuality;
   render_quality: VideoRenderQuality;
   guide_frame_base64: string;
@@ -341,6 +349,7 @@ export function VideoGeneratePanel({
   const [motion, setMotion] = useState<MotionId>('path_follow');
   const [provider, setProvider] = useState<VideoProvider>('omni');
   const [seedanceReferenceMode, setSeedanceReferenceMode] = useState<SeedanceReferenceMode>('preview_plus_keyframes');
+  const [finishMode, setFinishMode] = useState<VideoFinishMode>('massing_fidelity');
   const [internalEnhanceQuality, setInternalEnhanceQuality] = useState<InternalEnhanceQuality>('fast');
   const [renderQuality, setRenderQuality] = useState<VideoRenderQuality>('high');
   const [controlMode, setControlMode] = useState<VideoControlMode>('preview_video');
@@ -367,7 +376,14 @@ export function VideoGeneratePanel({
   const [selectedAttempt, setSelectedAttempt] = useState<VideoAttempt | null>(null);
   const captureStarted = useRef(false);
   const captureSequence = useRef(0);
-  const sceneContract = useMemo(() => buildVideoSceneContract(siteZones), [siteZones]);
+  // Only the Seedance pilot exposes the finish toggle. Omni keeps its own
+  // long-form controlled-finish prompt, so forcing a mode here would silently
+  // change the tuned Omni baseline.
+  const effectiveFinishMode: VideoFinishMode = provider === 'seedance_mini' ? finishMode : 'massing_fidelity';
+  const sceneContract = useMemo(
+    () => buildVideoSceneContract(siteZones, effectiveFinishMode),
+    [effectiveFinishMode, siteZones],
+  );
   const community3DClaims = useMemo(
     () => getCommunity3DCaptureClaims(siteZones, buildings),
     [buildings, siteZones],
@@ -386,11 +402,11 @@ export function VideoGeneratePanel({
   );
 
   const currentSignature = useMemo(
-    () => `${provider}:${seedanceReferenceMode}:${internalEnhanceQuality}:${renderQuality}:${controlMode}:${motion}:${routeSignature(routePoints)}:${sceneContract.signature}:${currentSceneRevisionSignature}`,
-    [controlMode, currentSceneRevisionSignature, internalEnhanceQuality, motion, provider, renderQuality, routePoints, sceneContract.signature, seedanceReferenceMode],
+    () => `${provider}:${seedanceReferenceMode}:${effectiveFinishMode}:${internalEnhanceQuality}:${renderQuality}:${controlMode}:${motion}:${routeSignature(routePoints)}:${sceneContract.signature}:${currentSceneRevisionSignature}`,
+    [controlMode, currentSceneRevisionSignature, effectiveFinishMode, internalEnhanceQuality, motion, provider, renderQuality, routePoints, sceneContract.signature, seedanceReferenceMode],
   );
   const preparedSignature = prepared
-    ? `${prepared.provider}:${prepared.seedance_reference_mode}:${prepared.internal_enhance_quality}:${prepared.render_quality}:${prepared.control_mode}:${prepared.camera_motion}:${routeSignature(prepared.route_points)}:${prepared.scene_brief.startsWith(sceneContract.text) ? sceneContract.signature : 'stale'}:${sceneClaimsSignature(prepared.community_3d_claims, prepared.residual_landscape_claim)}`
+    ? `${prepared.provider}:${prepared.seedance_reference_mode}:${prepared.finish_mode}:${prepared.internal_enhance_quality}:${prepared.render_quality}:${prepared.control_mode}:${prepared.camera_motion}:${routeSignature(prepared.route_points)}:${prepared.scene_brief.startsWith(sceneContract.text) ? sceneContract.signature : 'stale'}:${sceneClaimsSignature(prepared.community_3d_claims, prepared.residual_landscape_claim)}`
     : null;
   const hasValidPreflight = Boolean(preflight?.ready && preparedSignature === currentSignature);
   const providerUsage = pilot.provider_usage[provider];
@@ -523,6 +539,8 @@ export function VideoGeneratePanel({
 
     const sceneBrief = provider === 'internal_enhance'
       ? `${sceneContract.text}\nSOURCE POLICY: The deterministic City Prompt route preview already contains the approved render-locked GLB skins, open-space assets, context buildings, and exact camera timing. Restore only detail present in those pixels. Do not synthesize or reinterpret any object.`
+      : effectiveFinishMode === 'photoreal' && controlMode === 'preview_video'
+      ? `${sceneContract.text}\nSOURCE POLICY: The City Prompt route preview is the exact camera, geography, geometry, and object-count authority; its authored zones are untextured study massing. Materialize those surfaces into photoreal architecture and landscape that matches the captured photographic context. Nothing may move, resize, merge, split, duplicate, or disappear.`
       : controlMode === 'multi_keyframe'
       ? `${sceneContract.text}\nSOURCE POLICY: The ordered City Prompt route images are the only visual authorities. They depict one unchanged scene along the exact desired path. Do not restyle, relight, beautify, materialize, reinterpret, or add detail.`
       : controlMode === 'preview_video'
@@ -542,6 +560,7 @@ export function VideoGeneratePanel({
       project_id: projectId,
       provider,
       seedance_reference_mode: seedanceReferenceMode,
+      finish_mode: effectiveFinishMode,
       internal_enhance_quality: internalEnhanceQuality,
       render_quality: renderQuality,
       guide_frame_base64: routeKeyframes[0] ?? sourceFrame,
@@ -580,7 +599,7 @@ export function VideoGeneratePanel({
         residual_landscape_claim: residualLandscapeClaim,
       } : {}),
     };
-  }, [captureRouteControls, community3DClaims, controlMode, internalEnhanceQuality, motion, projectId, provider, renderQuality, residualLandscapeClaim, routeCaptureSignature, routeControls, routePoints, sceneContract, seedanceReferenceMode, sourceFrame]);
+  }, [captureRouteControls, community3DClaims, controlMode, effectiveFinishMode, internalEnhanceQuality, motion, projectId, provider, renderQuality, residualLandscapeClaim, routeCaptureSignature, routeControls, routePoints, sceneContract, seedanceReferenceMode, sourceFrame]);
 
   const runPreflight = useCallback(async () => {
     setIsPreflighting(true);
@@ -951,6 +970,24 @@ export function VideoGeneratePanel({
                         </button>
                       ))}
                     </div>
+                    <p className="mb-1.5 mt-2.5 text-[9px] font-black uppercase tracking-wider text-[#151515]/50">Finish</p>
+                    <div className="grid grid-cols-2 gap-1.5">
+                      {FINISH_MODES.map((item) => (
+                        <button key={item.id} type="button" aria-pressed={finishMode === item.id} onClick={() => {
+                          setFinishMode(item.id);
+                          setPreflight(null);
+                          setPrepared(null);
+                        }} disabled={isGenerating || isPreflighting} className={`rounded-lg border px-2 py-1.5 text-left ${finishMode === item.id ? 'border-[#28c7e8] bg-white' : 'border-[#151515]/10 bg-white/40'}`}>
+                          <span className="block text-[9px] font-black">{item.name}</span>
+                          <span className="block text-[8px] leading-tight text-[#151515]/45">{item.detail}</span>
+                        </button>
+                      ))}
+                    </div>
+                    <p className="mt-1.5 text-[8px] font-semibold leading-relaxed text-[#315d73]">
+                      {finishMode === 'photoreal'
+                        ? 'Seedance materializes the clay massing into built architecture and may add sparse pedestrians and traffic. Geometry, object counts, and camera timing stay locked to the route preview.'
+                        : 'Seedance animates the captured pixels only. No new materials, lighting, detail, or entourage.'}
+                    </p>
                     <p className="mt-2 text-[8px] font-semibold leading-relaxed text-[#315d73]">Hard server cap: {providerUsage.attempts_used}/{providerUsage.max_attempts} Seedance submissions. No automatic generation retries.</p>
                   </div>
                 )}
@@ -985,7 +1022,9 @@ export function VideoGeneratePanel({
                 <div className="rounded-xl border border-[#151515]/15 bg-white/65 p-3">
                   <p className="text-xs font-black leading-relaxed text-[#151515]/80">{sceneContract.summary}</p>
                   <p className="mt-1 text-[10px] font-semibold leading-relaxed text-[#151515]/55">
-                    The captured pixels lock authored massing, roofs, courtyards, facade rhythm, materials, lighting, Google context buildings, and open-space program. City Prompt adds no moving traffic or pedestrians; any baked Google context remains part of the captured surroundings.
+                    {effectiveFinishMode === 'photoreal'
+                      ? 'The captured pixels lock authored massing, roofs, courtyards, facade rhythm, object counts, Google context buildings, and open-space program. Materials, lighting, and surface detail are deliberately unlocked so the study massing can be materialized, and sparse pedestrians and traffic are permitted.'
+                      : 'The captured pixels lock authored massing, roofs, courtyards, facade rhythm, materials, lighting, Google context buildings, and open-space program. City Prompt adds no moving traffic or pedestrians; any baked Google context remains part of the captured surroundings.'}
                   </p>
                   <p className="mt-1 text-[10px] font-bold leading-relaxed text-[#151515]/55">
                     {provider === 'internal_enhance'
@@ -1068,7 +1107,7 @@ export function VideoGeneratePanel({
                         )}
                         {typeof selectedAttempt.fidelity_score === 'number' && (
                           <span className={`rounded-full px-2 py-0.5 text-[8px] font-black uppercase ${fidelityTone(selectedAttempt.fidelity_status)}`}>
-                            Fidelity {Math.round(selectedAttempt.fidelity_score)}/100 · {selectedAttempt.fidelity_status}
+                            Fidelity {Math.round(selectedAttempt.fidelity_score)}/100 · {selectedAttempt.fidelity_status}{selectedAttempt.fidelity_geometry_only ? ' · geometry only' : ''}
                           </span>
                         )}
                       </div>
@@ -1133,7 +1172,7 @@ export function VideoGeneratePanel({
                           <span className="min-w-0 flex-1 truncate text-[10px] font-bold capitalize">{videoAttemptLabel(attempt)}</span>
                           {attempt.is_benchmark && <Star size={11} fill="currentColor" aria-label="Benchmark" />}
                           {typeof attempt.fidelity_score === 'number' ? (
-                            <span className={`rounded-full px-1.5 py-0.5 text-[8px] font-black ${fidelityTone(attempt.fidelity_status)}`} title={`Fidelity ${attempt.fidelity_score.toFixed(1)} of 100`}>
+                            <span className={`rounded-full px-1.5 py-0.5 text-[8px] font-black ${fidelityTone(attempt.fidelity_status)}`} title={`Fidelity ${attempt.fidelity_score.toFixed(1)} of 100${attempt.fidelity_geometry_only ? ' (geometry only — not comparable with massing-fidelity scores)' : ''}`}>
                               {Math.round(attempt.fidelity_score)}
                             </span>
                           ) : (

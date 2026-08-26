@@ -62,6 +62,8 @@ CameraMotion = Literal["path_follow", "street_walkby", "detail_flythrough"]
 ControlMode = Literal["single_frame", "multi_keyframe", "preview_video"]
 VideoProvider = Literal["omni", "seedance_mini", "internal_enhance"]
 SeedanceReferenceMode = Literal["preview_only", "preview_plus_keyframes"]
+# What the video model may do with City Prompt's captured clay massing.
+FinishMode = Literal["massing_fidelity", "photoreal"]
 InternalEnhanceQuality = Literal["fast", "gpu_detail"]
 RenderQuality = Literal["draft", "high"]
 CaptureEncoder = Literal["webcodecs_h264", "media_recorder_webm"]
@@ -101,6 +103,7 @@ class VideoPilotRequest(BaseModel):
     project_id: uuid.UUID
     provider: VideoProvider = "omni"
     seedance_reference_mode: SeedanceReferenceMode = "preview_only"
+    finish_mode: FinishMode = "massing_fidelity"
     internal_enhance_quality: InternalEnhanceQuality = "fast"
     render_quality: RenderQuality = "high"
     guide_frame_base64: str = Field(..., min_length=100, max_length=20_000_000)
@@ -154,6 +157,7 @@ class VideoAttemptResponse(BaseModel):
     provider: VideoProvider = "omni"
     model: str | None = None
     seedance_reference_mode: SeedanceReferenceMode | None = None
+    finish_mode: FinishMode | None = None
     internal_enhance_quality: InternalEnhanceQuality | None = None
     render_quality: RenderQuality = "draft"
     capture_profile: VideoCaptureProfile | None = None
@@ -173,6 +177,7 @@ class VideoAttemptResponse(BaseModel):
     fidelity_min_score: float | None = None
     fidelity_status: FidelityStatus | Literal["pending"] | None = None
     fidelity_samples: list[dict[str, float]] = Field(default_factory=list)
+    fidelity_geometry_only: bool = False
     is_benchmark: bool = False
     benchmark_source: Literal["automatic", "user"] | None = None
     enhancement_engine: str | None = None
@@ -495,6 +500,7 @@ async def _score_saved_attempt(attempt: dict, project_id: uuid.UUID) -> dict:
         preview_video=preview_bytes,
         preview_mime_type="video/webm" if str(preview_url).endswith(".webm") else "video/mp4",
         route_keyframes=keyframe_bytes,
+        geometry_only=attempt.get("finish_mode") == "photoreal",
     )
     return report.metadata()
 
@@ -544,6 +550,10 @@ def _preflight_values(req: VideoPilotRequest):
                 control_mode=req.control_mode,
                 keyframe_count=len(keyframes) if req.control_mode == "preview_video" else len(keyframes) or 1,
                 provider=req.provider,
+                # The finish toggle is scoped to the bounded Seedance pilot.
+                # Passing None for every other provider preserves Omni's tuned
+                # long-form prompt exactly as it shipped.
+                finish_mode=req.finish_mode if req.provider == "seedance_mini" else None,
             )
         )
     except (ValueError, KeyError) as exc:
@@ -793,11 +803,16 @@ async def generate_video(
         "provider": req.provider,
         "model": _provider_model(req.provider, settings, req.internal_enhance_quality),
         "seedance_reference_mode": req.seedance_reference_mode if req.provider == "seedance_mini" else None,
+        "finish_mode": req.finish_mode if req.provider == "seedance_mini" else None,
         "internal_enhance_quality": (req.internal_enhance_quality if req.provider == "internal_enhance" else None),
         "render_quality": req.render_quality,
         "capture_profile": req.capture_profile.model_dump() if req.capture_profile else None,
         "status": "reserved",
-        "style": "source_fidelity",
+        "style": (
+            "photoreal_finish"
+            if req.provider == "seedance_mini" and req.finish_mode == "photoreal"
+            else "source_fidelity"
+        ),
         "control_mode": req.control_mode,
         "camera_motion": req.camera_motion,
         "duration_seconds": req.duration_seconds,
@@ -957,6 +972,7 @@ async def generate_video(
                     preview_video=preview.data if preview else None,
                     preview_mime_type=preview.mime_type if preview else None,
                     route_keyframes=[frame.data for frame in keyframes],
+                    geometry_only=(req.provider == "seedance_mini" and req.finish_mode == "photoreal"),
                 )
                 fidelity_updates = fidelity_report.metadata()
             except Exception as fidelity_exc:

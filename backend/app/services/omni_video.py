@@ -22,6 +22,11 @@ MAX_ROUTE_IMAGE_BYTES = 36 * 1024 * 1024
 MAX_PREVIEW_VIDEO_BYTES = 24 * 1024 * 1024
 MIN_GUIDE_IMAGE_EDGE = 640
 
+# What the video model may do with City Prompt's captured clay massing.
+# "massing_fidelity" animates the approved pixels and nothing else.
+# "photoreal" materializes the study massing into built architecture.
+FINISH_MODES: tuple[str, ...] = ("massing_fidelity", "photoreal")
+
 MOTION_PROMPTS: dict[str, str] = {
     "path_follow": (
         "Use the drawn route to define heading and curve shape, not the amount of distance to cover. Make an extremely "
@@ -153,14 +158,30 @@ def build_cinematic_prompt(
     control_mode: str = "single_frame",
     keyframe_count: int = 1,
     provider: str = "omni",
+    finish_mode: str | None = None,
 ) -> str:
-    """Build a motion-only prompt used for both preflight and generation."""
+    """Build a motion-only prompt used for both preflight and generation.
+
+    ``finish_mode`` selects what the video model is allowed to do with the
+    captured clay massing. ``"massing_fidelity"`` keeps the appearance lock that
+    treats the provider as an animator of already-final pixels.
+    ``"photoreal"`` instead asks it to materialize the untextured study massing,
+    using the compact prompt recipe derived from Omni Pilot 3. Passing ``None``
+    preserves the historical behaviour exactly: Omni's preview-video path keeps
+    its long-form controlled finish exception, everything else stays locked.
+    """
     prompt_scene_brief = scene_brief.strip()
     motion_prompt = MOTION_PROMPTS[camera_motion]
     route_description = describe_route(route_points)
     is_street = camera_motion == "street_walkby"
     is_detail_flythrough = camera_motion == "detail_flythrough"
-    omni_preview_finish = provider == "omni" and control_mode == "preview_video"
+    explicit_finish = finish_mode if finish_mode in FINISH_MODES else None
+    # Materializing untextured massing only makes sense when the deterministic
+    # route video carries the geometry; without it there is nothing to hold the
+    # silhouette still while the finish changes.
+    compact_photoreal = explicit_finish == "photoreal" and control_mode == "preview_video"
+    legacy_omni_finish = explicit_finish is None and provider == "omni" and control_mode == "preview_video"
+    omni_preview_finish = legacy_omni_finish
     travel_lock = (
         "Match the source video's total travel distance, altitude, speed curve, and camera timing exactly."
         if control_mode == "preview_video"
@@ -301,6 +322,73 @@ def build_cinematic_prompt(
         "If a requested visual enhancement conflicts with the clean plate, fixed geometry, ground contact, or source-video "
         "continuity, preserve the corresponding source-video pixels unchanged."
     )
+
+    if compact_photoreal:
+        # Deliberately short. docs/video-pilots/OMNI_PILOT_3_BASELINE.md records
+        # that the strongest City Prompt result came from a compact prompt with
+        # one countable scene inventory and a single finishing instruction; the
+        # long lock stack below competes with itself when the model is also
+        # being asked to change every surface.
+        body = "\n\n".join(
+            section
+            for section in [
+                (
+                    f"Create one single continuous, unbroken {duration_seconds}-second 16:9 {shot_kind} from the "
+                    "supplied City Prompt control input. This is one coherent camera take—no cuts, montage, jump "
+                    "transitions, or time lapse."
+                ),
+                (
+                    f"FLIGHT PATH: {input_authority}. {route_description} {motion_prompt}. "
+                    f"{flight_instruction} {travel_lock}"
+                ),
+                (
+                    f"SCENE IDENTITY — IMMUTABLE: {prompt_scene_brief} Preserve every authored building and open space "
+                    "at the same location, footprint, height, proportions, setbacks, roofline, opening pattern, path "
+                    "layout, and street relationship in every frame. Count the disconnected building solids and every "
+                    "visible courtyard, lightwell, and roof void in the first frame, then hold those exact counts and "
+                    "their perimeters for the whole shot. Never bridge, merge, split, duplicate, or re-proportion a "
+                    "building; never fill, resize, or invent a courtyard."
+                ),
+                (
+                    "VISUAL FINISH — THIS IS A RENDER, NOT AN ANIMATION: The authored proposal buildings and open "
+                    "spaces arrive as untextured study massing—flat clay-coloured blocks and simplified landscape. "
+                    "Materialize them into photoreal, construction-plausible architecture: physically convincing "
+                    "facade materials, real glazing with restrained reflections, resolved window and door openings on "
+                    "the existing opening pattern, plausible roof materials, natural contact shadows and ambient "
+                    "occlusion, and detailed but disciplined planting. The surrounding captured context is already "
+                    "photographic—match its exact daylight direction, weather, colour temperature, exposure, and level "
+                    "of detail so the authored buildings read as built structures inside the same photograph. "
+                    "Materialization adds surface, material, and lighting detail only. It may never alter a silhouette, "
+                    "footprint, roof form, courtyard, opening position, path, curb, context building, or object count."
+                ),
+                (
+                    "ACTOR AND TRAFFIC DISCIPLINE: A small number of correctly scaled pedestrians and slow-moving "
+                    "vehicles may be added only where appropriate on visible sidewalks and legal road lanes. Their "
+                    "motion must be continuous, orderly, directionally correct, and fully tracked through occlusion. "
+                    "Never spawn, fade, dissolve, teleport, duplicate, resize, or place an actor inside landscaping, a "
+                    "building, or the wrong traffic lane. If continuity cannot be maintained, leave that area empty."
+                ),
+                (
+                    "CONTINUITY: Maintain one stable world coordinate system and physically realistic parallax. Every "
+                    "wall, roof, courtyard edge, tree mass, path, and park surface visible at the start is the same "
+                    "object at the end; normal camera occlusion is the only reason an object may leave frame. No facade "
+                    "warping, sliding textures, floating objects, fisheye distortion, or excessive motion blur. Keep "
+                    "verticals upright, the horizon level, exposure stable, and every foundation, curb, tree base, and "
+                    "landscape edge seated on the source terrain with continuous contact shadows. "
+                    f"{cinematography_lock}"
+                ),
+                (
+                    "FINAL PRIORITY — apply in this order. (1) Clean plate: render no typography or interface graphics "
+                    "anywhere—no zone IDs, route-point numbers, labels, annotations, captions, legends, callouts, leader "
+                    "lines, pins, arrows, borders, watermarks, or logos in any frame. (2) Geometry, object counts, and "
+                    "camera timing from the control input are exact and outrank everything below. (3) Photoreal finish. "
+                    "Wherever finish conflicts with geometry, ground contact, or source-video continuity, preserve the "
+                    "corresponding source-video pixels unchanged."
+                ),
+            ]
+            if section
+        ).strip()
+        return body
 
     body = "\n\n".join(
         section

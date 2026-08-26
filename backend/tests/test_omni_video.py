@@ -509,3 +509,92 @@ def test_fidelity_storage_keys_are_scoped_to_the_authorized_project():
 
     assert _storage_key_from_file_url(own_url, project_id) == own_url.split("/api/v1/files/", 1)[1]
     assert _storage_key_from_file_url(other_url, project_id) is None
+
+
+def _finish_prompt(provider: str, finish_mode: str | None = None) -> str:
+    return build_cinematic_prompt(
+        route_points=[{"x": 0.5, "y": 0.8}, {"x": 0.5, "y": 0.2}],
+        camera_motion="path_follow",
+        scene_brief="SCENE INVENTORY: exactly 2 authored building zone(s).",
+        duration_seconds=8,
+        control_mode="preview_video",
+        keyframe_count=3,
+        provider=provider,
+        finish_mode=finish_mode,
+    )
+
+
+def test_photoreal_finish_asks_seedance_to_materialize_the_massing():
+    prompt = _finish_prompt("seedance_mini", "photoreal")
+
+    assert "VISUAL FINISH — THIS IS A RENDER, NOT AN ANIMATION" in prompt
+    assert "untextured study massing" in prompt
+    assert "Materialize them into photoreal" in prompt
+    # The appearance lock is exactly what this mode exists to remove.
+    assert "ANIMATOR ONLY" not in prompt
+    assert "do not improve, beautify, materialize" not in prompt
+    # Entourage becomes permitted rather than stripped.
+    assert "ACTOR AND TRAFFIC DISCIPLINE" in prompt
+    assert "ACTOR AND TRAFFIC LOCK" not in prompt
+
+
+def test_photoreal_finish_keeps_geometry_and_clean_plate_authority():
+    prompt = _finish_prompt("seedance_mini", "photoreal")
+
+    assert "SCENE IDENTITY — IMMUTABLE" in prompt
+    assert "Never bridge, merge, split, duplicate, or re-proportion a building" in prompt
+    assert "never fill, resize, or invent a courtyard" in prompt
+    assert "FINAL PRIORITY" in prompt
+    assert "no zone IDs, route-point numbers, labels" in prompt
+    # Geometry outranks finish when the two conflict.
+    assert "preserve the corresponding source-video pixels unchanged" in prompt
+
+
+def test_photoreal_finish_is_compact_relative_to_the_locked_prompt():
+    """docs/video-pilots/OMNI_PILOT_3_BASELINE.md: a longer prompt is not a
+    stronger prompt, and competing locks are what a materializing model has to
+    reconcile."""
+    photoreal = _finish_prompt("seedance_mini", "photoreal")
+    locked = _finish_prompt("seedance_mini", "massing_fidelity")
+
+    assert len(photoreal.split()) < len(locked.split()) * 0.75
+
+
+def test_finish_mode_defaults_preserve_shipped_behaviour():
+    # Seedance with no explicit mode stays fully appearance-locked.
+    assert _finish_prompt("seedance_mini") == _finish_prompt("seedance_mini", "massing_fidelity")
+    assert "ANIMATOR ONLY" in _finish_prompt("seedance_mini")
+    # Omni keeps its own long-form controlled-finish exception untouched.
+    omni = _finish_prompt("omni")
+    assert "VISUAL FINISH — CONTROLLED EXCEPTION" in omni
+    assert "ANIMATOR ONLY" not in omni
+
+
+def test_photoreal_finish_requires_the_deterministic_route_video():
+    """Without the route video nothing holds the silhouette still while every
+    surface changes, so the request falls back to the appearance lock."""
+    prompt = build_cinematic_prompt(
+        route_points=[{"x": 0.5, "y": 0.8}, {"x": 0.5, "y": 0.2}],
+        camera_motion="path_follow",
+        scene_brief="SCENE INVENTORY: exactly 2 authored building zone(s).",
+        duration_seconds=8,
+        control_mode="single_frame",
+        provider="seedance_mini",
+        finish_mode="photoreal",
+    )
+
+    assert "ANIMATOR ONLY" in prompt
+    assert "Materialize them into photoreal" not in prompt
+
+
+def test_video_request_accepts_and_defaults_the_finish_mode():
+    base = {
+        "project_id": uuid.uuid4(),
+        "guide_frame_base64": _jpeg_data_url(),
+        "route_points": [{"x": 0.5, "y": 0.8}, {"x": 0.5, "y": 0.2}],
+    }
+
+    assert VideoPilotRequest(**base).finish_mode == "massing_fidelity"
+    assert VideoPilotRequest(**base, finish_mode="photoreal").finish_mode == "photoreal"
+    with pytest.raises(ValidationError):
+        VideoPilotRequest(**base, finish_mode="cinematic")

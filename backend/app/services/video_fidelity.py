@@ -41,6 +41,7 @@ class VideoFidelityReport:
     minimum_score: float
     status: FidelityStatus
     samples: tuple[FidelitySample, ...]
+    geometry_only: bool = False
 
     def metadata(self) -> dict:
         return {
@@ -48,6 +49,9 @@ class VideoFidelityReport:
             "fidelity_min_score": self.minimum_score,
             "fidelity_status": self.status,
             "fidelity_samples": [asdict(sample) for sample in self.samples],
+            # Scores from the two scoring bases are not comparable, so record
+            # which one produced this number.
+            "fidelity_geometry_only": self.geometry_only,
         }
 
 
@@ -118,15 +122,31 @@ def _histogram_similarity(reference: np.ndarray, candidate: np.ndarray) -> float
     return max(0.0, min(1.0, (correlation + 1.0) / 2.0))
 
 
-def score_frame_similarity(reference_frame: np.ndarray, candidate_frame: np.ndarray) -> float:
-    """Return a 0-100 structural-fidelity score for two corresponding frames."""
+def score_frame_similarity(
+    reference_frame: np.ndarray,
+    candidate_frame: np.ndarray,
+    *,
+    geometry_only: bool = False,
+) -> float:
+    """Return a 0-100 structural-fidelity score for two corresponding frames.
+
+    ``geometry_only`` is for photoreal-finish attempts, where the reference is
+    untextured clay massing and the candidate is deliberately materialized. A
+    successful render there changes local luminance and the whole histogram
+    while keeping every silhouette in place, so SSIM and histogram correlation
+    would report drift for exactly the result that was asked for. Edge overlap
+    still measures what must not move.
+    """
     reference = _normalized_gray(reference_frame)
     candidate = _translation_align(reference, _normalized_gray(candidate_frame))
-    score = (
-        0.58 * _ssim(reference, candidate)
-        + 0.32 * _edge_overlap(reference, candidate)
-        + 0.10 * _histogram_similarity(reference, candidate)
-    )
+    if geometry_only:
+        score = 0.85 * _edge_overlap(reference, candidate) + 0.15 * _ssim(reference, candidate)
+    else:
+        score = (
+            0.58 * _ssim(reference, candidate)
+            + 0.32 * _edge_overlap(reference, candidate)
+            + 0.10 * _histogram_similarity(reference, candidate)
+        )
     return round(max(0.0, min(100.0, score * 100.0)), 1)
 
 
@@ -191,6 +211,7 @@ def score_video_fidelity(
     preview_video: bytes | None = None,
     preview_mime_type: str | None = None,
     route_keyframes: Sequence[bytes] = (),
+    geometry_only: bool = False,
 ) -> VideoFidelityReport:
     """Compare generated frames with corresponding deterministic controls."""
     generated_frames = _sample_video(generated_video, SAMPLE_PROGRESS, ".mp4")
@@ -206,7 +227,7 @@ def score_video_fidelity(
     samples = tuple(
         FidelitySample(
             time_seconds=round(progress * duration_seconds, 1),
-            score=score_frame_similarity(reference, generated),
+            score=score_frame_similarity(reference, generated, geometry_only=geometry_only),
         )
         for progress, reference, generated in zip(SAMPLE_PROGRESS, reference_frames, generated_frames, strict=True)
     )
@@ -217,4 +238,5 @@ def score_video_fidelity(
         minimum_score=minimum_score,
         status=classify_fidelity(score, minimum_score),
         samples=samples,
+        geometry_only=geometry_only,
     )
