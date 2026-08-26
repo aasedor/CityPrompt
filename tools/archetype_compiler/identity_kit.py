@@ -682,14 +682,21 @@ def derive_signatures(payload: dict[str, Any]) -> list[dict[str, Any]]:
     variant = payload.get("selectedVariant") or {}
     facade = {**(payload.get("facadeDetail") or {}), **(variant.get("facadeDetail") or {})}
     roof = {**(payload.get("roofDetail") or {}), **(variant.get("roofDetail") or {})}
+    # Every field the catalogue uses to describe the built work. Omitting one
+    # silently under-reads the archetype: entries carry a dedicated
+    # facadeDetail.cornice that an earlier revision of this table never saw.
     sources = {
         "description": str(variant.get("description") or payload.get("description") or ""),
         "facadeDetail.primaryMaterial": str(facade.get("primaryMaterial") or ""),
         "facadeDetail.secondaryMaterial": str(facade.get("secondaryMaterial") or ""),
+        "facadeDetail.accentMaterial": str(facade.get("accentMaterial") or ""),
         "facadeDetail.groundFloor": str(facade.get("groundFloor") or ""),
+        "facadeDetail.upperFloors": str(facade.get("upperFloors") or ""),
+        "facadeDetail.cornice": str(facade.get("cornice") or ""),
         "facadeDetail.colorScheme": str(facade.get("colorScheme") or ""),
         "roofDetail.form": str(roof.get("form") or ""),
         "roofDetail.material": str(roof.get("material") or ""),
+        "roofDetail.features": str(roof.get("features") or ""),
     }
 
     found: dict[str, dict[str, Any]] = {}
