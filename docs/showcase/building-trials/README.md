@@ -51,6 +51,17 @@ The Brick & Bronze image is a development render. Its scene is complete and
 renderable, but its strict fixture audit still records an exterior-bounds
 tolerance mismatch.
 
+### Old Montreal Sticker Method six-bay pilot
+
+[`old-montreal-sticker-six-bay/`](native-3d/old-montreal-sticker-six-bay/)
+contains all nine direct Blender views from the first scaled Sticker Method
+pilot. The model extends the approved Old Montreal family to six complete bays
+without stretching fixed architectural features. Structural validation passed;
+human visual review and delivery optimization remain pending.
+
+These are images of the actual assembled 3D model, with no GPT image generation
+or enhancement.
+
 ## AI-enhanced presentation concepts
 
 The two `*-presentation-v1.png` files in this folder were generated from the

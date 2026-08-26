@@ -1,0 +1,87 @@
+{
+  "schema": "cityprompt.sticker-method-visual-checkpoint@1",
+  "created_on": "2026-08-26",
+  "family": "old-montreal-textile-mill-v98-six-bay-pilot",
+  "method": "sticker_method_v98",
+  "status": "visual_review_pending",
+  "production_approved": false,
+  "visual_baseline_allowed": false,
+  "render_provenance": {
+    "application": "Blender",
+    "version": "5.1.2",
+    "engine": "BLENDER_EEVEE",
+    "actual_3d_model": true,
+    "ai_generation": false,
+    "ai_enhancement": false
+  },
+  "model": {
+    "dimensions_m": [30.0, 20.0, 14.8],
+    "storeys": 3,
+    "complete_front_bays": 6,
+    "bay_width_m": 5.0,
+    "assembled_triangle_count": 36352,
+    "surface_faces_audited": 6541,
+    "surface_ownership_failure_count": 0,
+    "structural_validation": "pass"
+  },
+  "delivery_warnings": [
+    "The assembled GLB has 1,815 materials and requires consolidation.",
+    "The 17.1 MB assembled GLB exceeds the 8 MB production delivery target."
+  ],
+  "renders": [
+    {
+      "filename": "01-preview.png",
+      "bytes": 1872791,
+      "sha256": "7da63f3cc2d776906d4bfe0696e06aec85266c26ba90ae549f357f70952d3674",
+      "dimensions": [1600, 1000]
+    },
+    {
+      "filename": "02-archetype-match.png",
+      "bytes": 1876337,
+      "sha256": "fcfa352279d71bf2ed97ef415ff4affe57a9ce535caf443f1cf37e2999ba595d",
+      "dimensions": [1600, 1000]
+    },
+    {
+      "filename": "03-street.png",
+      "bytes": 2333891,
+      "sha256": "467a66b542a103e88459b4c961db0a49aa01bec42e17019bf075fcbd2fff0666",
+      "dimensions": [1600, 1000]
+    },
+    {
+      "filename": "04-front-corner.png",
+      "bytes": 1882964,
+      "sha256": "5c8efcbe4bd71a83a774c467e3c599bb529b48bdc18e60d8383c85d85ad919cf",
+      "dimensions": [1600, 1000]
+    },
+    {
+      "filename": "05-rear-corner.png",
+      "bytes": 1822740,
+      "sha256": "6b1b06b0b97d165d4cdd7d622fb1ed3412673225786841d8e4f2c113de2af1d7",
+      "dimensions": [1600, 1000]
+    },
+    {
+      "filename": "06-facade-close.png",
+      "bytes": 2577471,
+      "sha256": "ca2850ff7097950b46200c0cf946a59268aaf47421ee96550dfdec8392e27641",
+      "dimensions": [1600, 1000]
+    },
+    {
+      "filename": "07-roof-audit.png",
+      "bytes": 2676765,
+      "sha256": "dd10c031c401064c246d9b5eb2d8209f59ba08db1f0938b66ece1bb96d9fe6d2",
+      "dimensions": [1600, 1000]
+    },
+    {
+      "filename": "08-aerial.png",
+      "bytes": 2221127,
+      "sha256": "3d6971c97ce063983e5e7190f242b4c55288e83e8f233ea9635ab676c13773eb",
+      "dimensions": [1600, 1000]
+    },
+    {
+      "filename": "09-context.png",
+      "bytes": 1973903,
+      "sha256": "db98f27291269488aeac5979ebfb20e5a9ac12468883380ef9c4e8c1aab88920",
+      "dimensions": [1600, 1000]
+    }
+  ]
+}
