@@ -17,6 +17,23 @@ secondary elevations, and overall model completeness.
 - [`passive-house-timber-block-native-front-corner.png`](native-3d/passive-house-timber-block-native-front-corner.png)
 - [`modern-fire-station-mass-timber-native-front-corner.png`](native-3d/modern-fire-station-mass-timber-native-front-corner.png)
 
+### Brick & Bronze size-variant pilot
+
+[`brick-bronze-size-variants/`](native-3d/brick-bronze-size-variants/) contains
+three newly generated members of the same semantic building family:
+
+- small rectangle: 18×14 m, 4 floors;
+- large rectangle: 40×25 m, 8 floors;
+- native-height rear-left L: 25×25 m, 6 floors.
+
+Each variant has a direct material render and a temporary-material geometry
+proof. The comparison sheet includes the earlier 25×18 m native building as a
+baseline. All seven PNGs are direct Blender 5.2 outputs or a deterministic
+layout of those outputs; no AI image generation or enhancement was used.
+
+- [`brick-bronze-size-variant-comparison-v3.png`](native-3d/brick-bronze-size-variants/brick-bronze-size-variant-comparison-v3.png)
+- [`manifest.json`](native-3d/brick-bronze-size-variants/manifest.json)
+
 [`comparison-manifest.json`](native-3d/comparison-manifest.json) records the
 source render and assembled-model hashes used by the comparison sheet. The
 sheet's `hard gates clear` note means the current assessor found zero hard

@@ -1,0 +1,88 @@
+{
+  "schema": "cityprompt.brick-bronze-size-variant-showcase@1",
+  "created_on": "2026-08-26",
+  "batch_id": "family-wave-004-size-variants",
+  "status": "development_pilot_actual_3d_models",
+  "image_policy": {
+    "ai_generation": false,
+    "ai_enhancement": false,
+    "comparison_layout_is_deterministic": true,
+    "geometry_proof_materials_are_temporary": true,
+    "saved_blender_scenes_unchanged_by_proof_render": true
+  },
+  "comparison_sheet": {
+    "filename": "brick-bronze-size-variant-comparison-v3.png",
+    "bytes": 1327964,
+    "sha256": "fc8637bfc04a8f2ddbd3800653681c8c7b3fdb90673c8d28479f81e43c8fadf0",
+    "dimensions": [2560, 1440]
+  },
+  "variants": [
+    {
+      "recipe_id": "bb_rect_small_18x14_f4",
+      "dimensions_m": [18.0, 14.0, 17.2],
+      "occupied_floors": 4,
+      "created_object_count": 769,
+      "occupied_opening_count": 62,
+      "program_sha256": "03ff370764162fbc870a0bf31dc28a0510b7473c67ca2e84740c65c08f810ef4",
+      "local_blender_scene": {
+        "bytes": 113385185,
+        "sha256": "2406f8d1bd5efad906bf1b0f936a88bb847c1f55071875f7a71580232abc7098"
+      },
+      "material_render": {
+        "filename": "bb-small-material-front-corner.png",
+        "bytes": 874456,
+        "sha256": "3a9a029113867d3811dc563204b041777fa99b402a5b14b115e3d788cd245d9f"
+      },
+      "geometry_proof": {
+        "filename": "bb-small-geometry-proof-front-corner.png",
+        "bytes": 747285,
+        "sha256": "ec64a4237d9836defe07a80088544994a7a4c282378959a8798383bdf9a21e5e"
+      }
+    },
+    {
+      "recipe_id": "bb_rect_large_40x25_f8",
+      "dimensions_m": [40.0, 25.0, 30.0],
+      "occupied_floors": 8,
+      "created_object_count": 3153,
+      "occupied_opening_count": 270,
+      "program_sha256": "334c3fa758ac44ea48c96deed996682de7b9f723f625dd4ba04190696a8406b0",
+      "local_blender_scene": {
+        "bytes": 114484546,
+        "sha256": "f85541c406fd3de3c6997207eee4c929885c91a7b1ec3394c58d90775e223945"
+      },
+      "material_render": {
+        "filename": "bb-large-material-front-corner.png",
+        "bytes": 866046,
+        "sha256": "691633c63d932fb7399bb1065f9c6a145016957906db04d7c874a1eee00cd6a3"
+      },
+      "geometry_proof": {
+        "filename": "bb-large-geometry-proof-front-corner.png",
+        "bytes": 759182,
+        "sha256": "bb80acd4ea2ccf52267f2d7af23c6bddfe691271b6d998853cc8da4d7a70783a"
+      }
+    },
+    {
+      "recipe_id": "bb_L_native_rear_left",
+      "dimensions_m": [25.0, 25.0, 23.6],
+      "occupied_floors": 6,
+      "created_object_count": 2011,
+      "occupied_opening_count": 170,
+      "program_sha256": "7a16ed0cc0154332894ec7d3634a0037ccdb69818a17f6efa9d02f512c90b839",
+      "local_blender_scene": {
+        "bytes": 113959976,
+        "sha256": "e115cce6bc15a39aea3546bd67ee1185d57274be91febff9e62552b9a56bd271"
+      },
+      "material_render": {
+        "filename": "bb-l-left-material-front-corner.png",
+        "bytes": 888117,
+        "sha256": "251ef4da8bb22306abdf991fa1164e345cd3b51b500e99da30b559069c7fb4eb"
+      },
+      "geometry_proof": {
+        "filename": "bb-l-left-geometry-proof-front-corner.png",
+        "bytes": 770026,
+        "sha256": "ef077f55d347ad89c4623a506ccb3f16ae47ce42afc773a780558cfa6e43cd47"
+      }
+    }
+  ],
+  "note": "The published images are actual Blender model evidence. The large .blend scenes remain in local artifact storage and are intentionally not committed as ordinary Git blobs."
+}
