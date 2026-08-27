@@ -1,6 +1,6 @@
 # Reference-Locked Atomic Sticker Method (RLASM)
 
-Version: 1.1.0
+Version: 1.2.0
 Status: active, user-approved production direction  
 Machine contract: `reference_locked_atomic_sticker_method.json`
 
@@ -62,6 +62,13 @@ the rejected approach of repeating whole-object or whole-facade photographs.
     into that carrier by a documented physical depth. A fixed world-axis plane
     is forbidden on curved, chamfered, sloped, or otherwise non-planar walls.
     The contact audit must report `floating_count = 0` before review.
+14. **A role name does not make a material reference-specific.** A procedurally
+    drawn palette swatch, flat colour, or generic pattern remains a generic
+    fallback even when it is labeled `cedar`, `fieldstone`, `brick`, or another
+    correct semantic role. Every production material must bind to a hashed crop
+    from the locked reference or to a separately approved reference-matched
+    reconstruction. The manifest must record that provenance and a visual
+    comparison; `generic_fallback_count = 0` is invalid without both.
 
 ## The procedure
 
@@ -96,13 +103,17 @@ Use the following card taxonomy:
 
 | Card type | Purpose | Required constraints |
 | --- | --- | --- |
-| Material swatch | Broad brick, stone, siding, metal, roof, or glass surfaces | Seamless, orthographic, even lighting, world-scale capable |
+| Material swatch | Broad brick, stone, siding, metal, roof, or glass surfaces | Seamless, orthographic, even lighting, world-scale capable, and visibly/provenancially tied to the locked reference |
 | Opening card | A single window, door, storefront, dormer, or occupied-depth view | One opening only; no adjacent facade; aligned and perspective-free |
 | Object card | A unique dome, spire, monitor, chimney, canopy, bridge part, ornament, or trim assembly | Isolated object; neutral background; no people, text, cast shadow, or neighbours |
 | Occupied-depth card | Interior signal behind glazing | Used behind physical glass/mullions; never on the exterior face |
 
 Image generation may assist with cleaning or reconstructing these cards, but
 each result must remain recognisably tied to the locked source reference.
+For each material, record either source-image SHA plus crop coordinates or the
+approved reconstruction input/output hashes. Include a reference-versus-swatch
+comparison. A hand-drawn or procedural pattern chosen only by material class
+and approximate colour is a generic fallback and must fail prework.
 
 Required output: a complete card manifest in which every unique role maps to
 exactly one approved card or clean material binding.
@@ -129,6 +140,8 @@ plus an attached-object contact audit proving zero unsupported/floating parts.
 
 - Keep the role card as the visual authority for that role.
 - Apply clean material swatches to compound shells and broad surfaces.
+- Verify the bound swatch against its reference material zone before rendering;
+  semantic role, approximate hue, and a plausible pattern are not sufficient.
 - Place opening/occupied-depth cards behind physical glazing and frames.
 - Reuse a card only across instances of the same semantic role.
 - Never repeat a whole-facade or whole-object photograph across child faces.
@@ -191,6 +204,8 @@ Stop and create a fresh, non-overwriting candidate when any of these occur:
 - wrong archetype or sibling identity;
 - missing unique role or missing card;
 - generic fallback material/card;
+- unprovenanced, palette-only, or procedurally generic material swatch, even
+  when its filename and semantic role are correct;
 - whole-facade photo used as a building material;
 - whole-object card repeated on component faces;
 - bricked, printed, or flat openings;

@@ -25,7 +25,9 @@
         "seamless",
         "orthographic",
         "even_lighting",
-        "world_scale_capable"
+        "world_scale_capable",
+        "reference_specific_visual_match",
+        "hashed_locked_reference_crop_or_approved_reconstruction_provenance"
       ],
       "use": "broad brick, stone, siding, metal, roof, or glass surfaces"
     },
@@ -63,6 +65,7 @@
     "missing_unique_role",
     "missing_required_card",
     "generic_fallback",
+    "unprovenanced_palette_only_or_procedurally_generic_material_swatch",
     "whole_facade_photo_used_as_material",
     "whole_object_card_repeated_on_component_faces",
     "bricked_printed_or_flat_opening",
@@ -85,6 +88,9 @@
     "attached_object_floating_count_required": 0,
     "attached_object_anchor_source": "actual_carrier_surface_local_tangent_and_normal",
     "fixed_world_axis_attachment_plane_on_nonplanar_carrier_forbidden": true,
+    "material_role_name_or_approximate_palette_is_not_reference_proof": true,
+    "material_source_crop_or_approved_reconstruction_provenance_required": true,
+    "material_reference_comparison_required": true,
     "physical_opening_depth_required": true,
     "same_semantic_role_card_reuse_allowed": true,
     "unique_role_requires_card": true,
@@ -134,6 +140,8 @@
       "required_outputs": [
         "card_manifest",
         "material_swatches",
+        "material_source_crop_or_approved_reconstruction_provenance",
+        "material_reference_comparisons",
         "opening_cards",
         "object_cards",
         "occupied_depth_cards",
@@ -161,6 +169,7 @@
         "binding_audit",
         "zero_missing_roles",
         "zero_generic_fallbacks",
+        "zero_unprovenanced_or_palette_only_materials",
         "opening_cards_behind_physical_glazing"
       ]
     },
@@ -215,5 +224,5 @@
     }
   ],
   "status": "active_user_approved_direction",
-  "version": "1.1.0"
+  "version": "1.2.0"
 }
