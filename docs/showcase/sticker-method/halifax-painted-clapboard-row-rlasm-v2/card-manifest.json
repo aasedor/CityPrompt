@@ -1,0 +1,73 @@
+{
+  "atomic_card_count": 8,
+  "candidate_id": "halifax-painted-clapboard-row-rlasm-v2",
+  "cards": [
+    {
+      "path": "material-heritage-yellow-clapboard.png",
+      "role": "primary-wall",
+      "sha256": "9b8ca0470488f7df7114034001a140386ddd551793291fc8e1369bf854648dcb",
+      "use": "reference_matched_world_scale_repeatable_field"
+    },
+    {
+      "path": "material-warm-white-painted-wood.png",
+      "role": "trim-field",
+      "sha256": "0acb4b6125a31c2781d8807b91919587e1973cdece4a06b8fbb5faa541c1dae2",
+      "use": "reference_matched_world_scale_repeatable_field"
+    },
+    {
+      "path": "material-charcoal-asphalt-shingle.png",
+      "role": "roof-field",
+      "sha256": "194e4d3114fcb8399223509d4329d0c8006793f08553172268020a9ac15d3c8c",
+      "use": "reference_matched_world_scale_repeatable_field"
+    },
+    {
+      "kind": "object",
+      "path": "object-two-storey-front-bay.png",
+      "role": "object-two-storey-front-bay",
+      "sha256": "b5d03eb0d7a6192d7fc8099ac4e832fd6b09a766a1330de1b4eb6d29c052c907",
+      "use": "reference_atom_visual_authority_geometry_owns_depth"
+    },
+    {
+      "kind": "object",
+      "path": "object-bracketed-cornice.png",
+      "role": "object-bracketed-cornice",
+      "sha256": "0258239837017954efb02d5cc3e529d1fbb9fc96f1c1099bbf1e8566ac7dce95",
+      "use": "reference_atom_visual_authority_geometry_owns_depth"
+    },
+    {
+      "kind": "object",
+      "path": "object-blue-entry-porch.png",
+      "role": "object-blue-entry-porch",
+      "sha256": "235f5f83fc662a647854e72807c3bffd79ab1522478dba216e21652d567db223",
+      "use": "reference_atom_visual_authority_geometry_owns_depth"
+    },
+    {
+      "kind": "opening",
+      "path": "opening-main-white-double-hung.png",
+      "role": "opening-main-white-double-hung",
+      "sha256": "0e75332c4ca64a0a6d1796a25c337f22ecd5204202123f37ce59180cd70b0947",
+      "use": "reference_atom_visual_authority_geometry_owns_depth"
+    },
+    {
+      "kind": "opening",
+      "path": "opening-bay-narrow-double-hung.png",
+      "role": "opening-bay-narrow-double-hung",
+      "sha256": "dda107aad552b2847a8f742d72004953c8913661473c5fec90a311e4e46d62e6",
+      "use": "reference_atom_visual_authority_geometry_owns_depth"
+    }
+  ],
+  "generic_fallback_count": 0,
+  "generic_window_family_count": 0,
+  "missing_role_count": 0,
+  "opening_family_card_count": 2,
+  "opening_family_inventory": [
+    "main-white-double-hung",
+    "bay-narrow-double-hung",
+    "side-wall-sash",
+    "gable-sash",
+    "blue-entry-door-and-transom"
+  ],
+  "rlasm_version": "1.4.0",
+  "schema": "cityprompt.rlasm-card-manifest@3",
+  "whole_facade_card_count": 0
+}

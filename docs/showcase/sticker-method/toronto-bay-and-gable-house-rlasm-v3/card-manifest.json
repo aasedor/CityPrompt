@@ -1,0 +1,73 @@
+{
+  "atomic_card_count": 8,
+  "candidate_id": "toronto-bay-and-gable-house-rlasm-v3",
+  "cards": [
+    {
+      "path": "material-warm-red-brick.png",
+      "role": "primary-wall",
+      "sha256": "648adc776c11fdfa6709b3b2a8a79a2fd2720e272599d63794d8ff13afd8f1ed",
+      "use": "reference_matched_world_scale_repeatable_field"
+    },
+    {
+      "path": "material-pale-limestone-foundation.png",
+      "role": "foundation",
+      "sha256": "74b6b5ad379a2dc27b9178a2c4344b2b1667c283e3400a15e2db50a079185000",
+      "use": "reference_matched_world_scale_repeatable_field"
+    },
+    {
+      "path": "material-charcoal-shingle-roof.png",
+      "role": "roof-field",
+      "sha256": "04f19a2edaff95faef720d248516997eca9602e275dc99b30a35b6e5e4173ac6",
+      "use": "reference_matched_world_scale_repeatable_field"
+    },
+    {
+      "kind": "object",
+      "path": "object-projecting-stained-glass-bay.png",
+      "role": "object-projecting-stained-glass-bay",
+      "sha256": "342d03b1303b0a2cee3a525b2dbff9cdce2a872d118fcb42c1f013b70166f861",
+      "use": "reference_atom_visual_authority_geometry_owns_depth"
+    },
+    {
+      "kind": "object",
+      "path": "object-carved-gable-trim.png",
+      "role": "object-carved-gable-trim",
+      "sha256": "d930579d596daba80b983ebc7bfa2bfba52e152c1369bae85c3635ce53765fb6",
+      "use": "reference_atom_visual_authority_geometry_owns_depth"
+    },
+    {
+      "kind": "object",
+      "path": "object-recessed-porch-entry.png",
+      "role": "object-recessed-porch-entry",
+      "sha256": "d4916ea44b6e216c7e98d528457b41dc6bb43cfdb5cf02f2be34e4aa5032df25",
+      "use": "reference_atom_visual_authority_geometry_owns_depth"
+    },
+    {
+      "kind": "opening",
+      "path": "opening-bay-stained-glass-sash.png",
+      "role": "opening-bay-stained-glass-sash",
+      "sha256": "d526968526388a4e15cee7243206e8884d4f30b007f93feb607f8eda72b54fd3",
+      "use": "reference_atom_visual_authority_geometry_owns_depth"
+    },
+    {
+      "kind": "opening",
+      "path": "opening-main-tall-double-hung.png",
+      "role": "opening-main-tall-double-hung",
+      "sha256": "3f0f39506f7a9723915780ffa8c20460924b45ebb1c544adc9b9ab6bfd6e910c",
+      "use": "reference_atom_visual_authority_geometry_owns_depth"
+    }
+  ],
+  "generic_fallback_count": 0,
+  "generic_window_family_count": 0,
+  "missing_role_count": 0,
+  "opening_family_card_count": 2,
+  "opening_family_inventory": [
+    "bay-stained-glass-sash",
+    "main-tall-double-hung",
+    "upper-gable-paired-sash",
+    "porch-entry-door-and-transom",
+    "side-wall-narrow-sash"
+  ],
+  "rlasm_version": "1.4.0",
+  "schema": "cityprompt.rlasm-card-manifest@3",
+  "whole_facade_card_count": 0
+}

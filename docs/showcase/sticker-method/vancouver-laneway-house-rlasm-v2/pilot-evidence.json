@@ -1,0 +1,57 @@
+{
+  "actual_3d_model": true,
+  "author_source": {
+    "path": "C:\\Users\\andre\\OneDrive\\Documents\\PlaygroundNEW\\3D-Maps\\artifacts\\author_rlasm_confirmation_three_v1.py",
+    "sha256": "3663f8568e9bd0e9918eabe898e23b0e798f4f1bd0c980b94cf1685d70e685b0"
+  },
+  "base_author_source": {
+    "path": "C:\\Users\\andre\\OneDrive\\Documents\\PlaygroundNEW\\3D-Maps\\artifacts\\author_rlasm_single_family_batch_v3.py",
+    "sha256": "7e8ebed4a1502ffec67d81f87288f3d66bd0969ed52845abfbcc22ae2f914f4a"
+  },
+  "blend": {
+    "bytes": 152417,
+    "path": "vancouver-laneway-house-rlasm-v2.blend",
+    "sha256": "4ad731c346541d3bdf22dcc6c727cacfbf0abe4d733c1792cc5d07584e2b8349"
+  },
+  "candidate_id": "vancouver-laneway-house-rlasm-v2",
+  "card_manifest_sha256": "f92606ee945ab07d3962d4219f62d28092113d8d5b9b847489963400190e64c9",
+  "floating_count": 0,
+  "generic_fallback_count": 0,
+  "generic_window_family_count": 0,
+  "glb": {
+    "bytes": 6707692,
+    "path": "vancouver-laneway-house-rlasm-v2.glb",
+    "sha256": "223fe983e290bedc112fc17de06d31b23adabbdc219b34d7693f3b6afd6cacbc"
+  },
+  "material_provenance_sha256": "869778d568f6b42ceae7737ef5d7cbce1bc3de6e1893e309b198da8f3d4ec7e5",
+  "next_phase": "USER_VISUAL_REVIEW_BEFORE_ONE_BOUNDED_CORRECTION_OR_GIT_PROMOTION",
+  "physical_opening_assembly_count": 10,
+  "reference_prework_complete": true,
+  "reference_specific_opening_role_count": 5,
+  "renders": [
+    {
+      "bytes": 1905418,
+      "path": "front_corner.png",
+      "sha256": "fd7d22440f290e42b1ea1e3b6d746802aee9df0cee04ecf1251693f15ac8efa6"
+    },
+    {
+      "bytes": 1789489,
+      "path": "front.png",
+      "sha256": "af97c14324c1c2e134e12f456fd5a68af7eafa433f89f6e92910b5786bb8ed10"
+    },
+    {
+      "bytes": 2157910,
+      "path": "side_contact.png",
+      "sha256": "0ce4cd5991ee7b776c2c7f41ea31667186c8a43963d2398f93970775d1460d99"
+    },
+    {
+      "bytes": 2138678,
+      "path": "roof_audit.png",
+      "sha256": "f75f8ab10f0b3393cee3a2c2ebd316970d69a8a97b8ad70210ec41940c13a322"
+    }
+  ],
+  "rlasm_version": "1.4.0",
+  "schema": "cityprompt.rlasm-confirmation-pilot-evidence@1",
+  "status": "PASS_ACTUAL_3D_PILOT_AWAITING_USER_VISUAL_REVIEW",
+  "whole_facade_card_count": 0
+}

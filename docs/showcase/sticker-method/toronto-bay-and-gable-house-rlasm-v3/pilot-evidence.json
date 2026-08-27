@@ -1,0 +1,57 @@
+{
+  "actual_3d_model": true,
+  "author_source": {
+    "path": "C:\\Users\\andre\\OneDrive\\Documents\\PlaygroundNEW\\3D-Maps\\artifacts\\author_rlasm_confirmation_three_v1.py",
+    "sha256": "c5a82671f6099faae7fa686d006f0dbb5410f3010520e3e5412be0199de1e5a2"
+  },
+  "base_author_source": {
+    "path": "C:\\Users\\andre\\OneDrive\\Documents\\PlaygroundNEW\\3D-Maps\\artifacts\\author_rlasm_single_family_batch_v3.py",
+    "sha256": "7e8ebed4a1502ffec67d81f87288f3d66bd0969ed52845abfbcc22ae2f914f4a"
+  },
+  "blend": {
+    "bytes": 202783,
+    "path": "toronto-bay-and-gable-house-rlasm-v3.blend",
+    "sha256": "fc23c281cbb990218a186c0d041ffa00507f7d27f68150bb7b98663f7dc0b149"
+  },
+  "candidate_id": "toronto-bay-and-gable-house-rlasm-v3",
+  "card_manifest_sha256": "9daf43ce76121b77479a74dd974a97da07d7dabeebbc892735a15f5572c480c4",
+  "floating_count": 0,
+  "generic_fallback_count": 0,
+  "generic_window_family_count": 0,
+  "glb": {
+    "bytes": 10768972,
+    "path": "toronto-bay-and-gable-house-rlasm-v3.glb",
+    "sha256": "974ca2907e3152deb588fb818c465788ac537d4979ca799a669aca6837865829"
+  },
+  "material_provenance_sha256": "3ebf4863fbf5ff52009288e04cf1f181bf48a1d7e31a09c240b8bd04495aa170",
+  "next_phase": "USER_VISUAL_REVIEW_BEFORE_ONE_BOUNDED_CORRECTION_OR_GIT_PROMOTION",
+  "physical_opening_assembly_count": 16,
+  "reference_prework_complete": true,
+  "reference_specific_opening_role_count": 5,
+  "renders": [
+    {
+      "bytes": 2301157,
+      "path": "front_corner.png",
+      "sha256": "94edc6302f58eca35eabda88d85f3f7f73b0c9e187878f8f15f557e6b17ad1e9"
+    },
+    {
+      "bytes": 2174321,
+      "path": "front.png",
+      "sha256": "9bfea86508c98663b75cafa0e0186b901715f8d5f445cca561a81709bdb98c0c"
+    },
+    {
+      "bytes": 2418723,
+      "path": "side_contact.png",
+      "sha256": "d37698286b190e04c0dcc40997d4ae006f16d7410c6e2987fee731210a005565"
+    },
+    {
+      "bytes": 2584704,
+      "path": "roof_audit.png",
+      "sha256": "5300b3ac07aa30231c8b6d97ecc8fa9def35c9e8b190424ba270af7e71fb534d"
+    }
+  ],
+  "rlasm_version": "1.4.0",
+  "schema": "cityprompt.rlasm-confirmation-pilot-evidence@1",
+  "status": "PASS_ACTUAL_3D_PILOT_AWAITING_USER_VISUAL_REVIEW",
+  "whole_facade_card_count": 0
+}

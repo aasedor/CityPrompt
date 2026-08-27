@@ -1,0 +1,9 @@
+{
+  "aesthetic_loop_increment": false,
+  "candidate_id": "toronto-bay-and-gable-house-rlasm-v3",
+  "parent_candidate_id": "toronto-bay-and-gable-house-rlasm-v2",
+  "reason": "physical gable closure intersected the paired opening glazing",
+  "repair": "mount all upper-gable opening layers fully outside the physical gable carrier",
+  "required_result": "ZERO_BRICKED_OR_OCCLUDED_OPENINGS",
+  "schema": "cityprompt.rlasm-hard-geometry-repair@1"
+}

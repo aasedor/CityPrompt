@@ -1,0 +1,482 @@
+{
+  "assembly_count": 21,
+  "candidate_id": "toronto-bay-and-gable-house-rlasm-v3",
+  "floating_count": 0,
+  "opening_assembly_count": 16,
+  "opening_roles": [
+    "opening-bay-stained-glass-sash",
+    "opening-main-tall-double-hung",
+    "opening-porch-entry-door-and-transom",
+    "opening-side-wall-narrow-sash",
+    "opening-upper-gable-paired-sash"
+  ],
+  "records": [
+    {
+      "assembly": "CP_BayGable_BayCenterSash_0",
+      "carrier_point": [
+        -1.75,
+        -8.96,
+        2.45
+      ],
+      "floating": false,
+      "historic_inner_muntin": "MAT_BayGable_WarmWoodSash",
+      "historic_outer_frame": "MAT_BayGable_DarkBrownOuterFrame",
+      "normal": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "opening_role": "opening-bay-stained-glass-sash",
+      "part_count": 11,
+      "physical_arched_hood": false,
+      "physical_stone_surround": true,
+      "structural_frame_mount_depth_m": 0.015,
+      "tangent": [
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "assembly": "CP_BayGable_BaySideSash_L_0",
+      "carrier_point": [
+        -3.592695,
+        -8.465419,
+        2.45
+      ],
+      "floating": false,
+      "historic_inner_muntin": "MAT_BayGable_WarmWoodSash",
+      "historic_outer_frame": "MAT_BayGable_DarkBrownOuterFrame",
+      "normal": [
+        -0.406737,
+        -0.913545,
+        0.0
+      ],
+      "opening_role": "opening-bay-stained-glass-sash",
+      "part_count": 8,
+      "physical_arched_hood": false,
+      "physical_stone_surround": false,
+      "structural_frame_mount_depth_m": 0.015,
+      "tangent": [
+        0.913545,
+        -0.406737,
+        0.0
+      ]
+    },
+    {
+      "assembly": "CP_BayGable_BaySideSash_R_0",
+      "carrier_point": [
+        0.092695,
+        -8.465419,
+        2.45
+      ],
+      "floating": false,
+      "historic_inner_muntin": "MAT_BayGable_WarmWoodSash",
+      "historic_outer_frame": "MAT_BayGable_DarkBrownOuterFrame",
+      "normal": [
+        0.406737,
+        -0.913545,
+        0.0
+      ],
+      "opening_role": "opening-bay-stained-glass-sash",
+      "part_count": 8,
+      "physical_arched_hood": false,
+      "physical_stone_surround": false,
+      "structural_frame_mount_depth_m": 0.015,
+      "tangent": [
+        0.913545,
+        0.406737,
+        0.0
+      ]
+    },
+    {
+      "assembly": "CP_BayGable_BayCenterSash_1",
+      "carrier_point": [
+        -1.75,
+        -8.96,
+        5.35
+      ],
+      "floating": false,
+      "historic_inner_muntin": "MAT_BayGable_WarmWoodSash",
+      "historic_outer_frame": "MAT_BayGable_DarkBrownOuterFrame",
+      "normal": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "opening_role": "opening-bay-stained-glass-sash",
+      "part_count": 11,
+      "physical_arched_hood": false,
+      "physical_stone_surround": true,
+      "structural_frame_mount_depth_m": 0.015,
+      "tangent": [
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "assembly": "CP_BayGable_BaySideSash_L_1",
+      "carrier_point": [
+        -3.592695,
+        -8.465419,
+        5.35
+      ],
+      "floating": false,
+      "historic_inner_muntin": "MAT_BayGable_WarmWoodSash",
+      "historic_outer_frame": "MAT_BayGable_DarkBrownOuterFrame",
+      "normal": [
+        -0.406737,
+        -0.913545,
+        0.0
+      ],
+      "opening_role": "opening-bay-stained-glass-sash",
+      "part_count": 8,
+      "physical_arched_hood": false,
+      "physical_stone_surround": false,
+      "structural_frame_mount_depth_m": 0.015,
+      "tangent": [
+        0.913545,
+        -0.406737,
+        0.0
+      ]
+    },
+    {
+      "assembly": "CP_BayGable_BaySideSash_R_1",
+      "carrier_point": [
+        0.092695,
+        -8.465419,
+        5.35
+      ],
+      "floating": false,
+      "historic_inner_muntin": "MAT_BayGable_WarmWoodSash",
+      "historic_outer_frame": "MAT_BayGable_DarkBrownOuterFrame",
+      "normal": [
+        0.406737,
+        -0.913545,
+        0.0
+      ],
+      "opening_role": "opening-bay-stained-glass-sash",
+      "part_count": 8,
+      "physical_arched_hood": false,
+      "physical_stone_surround": false,
+      "structural_frame_mount_depth_m": 0.015,
+      "tangent": [
+        0.913545,
+        0.406737,
+        0.0
+      ]
+    },
+    {
+      "assembly": "CP_BayGable_Entry",
+      "carrier_point": [
+        2.799999952316284,
+        -7.510000228881836,
+        2.180000066757202
+      ],
+      "floating": false,
+      "normal": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "opening_role": "opening-porch-entry-door-and-transom",
+      "part_count": 5,
+      "structural_frame_mount_depth_m": 0.015,
+      "tangent": [
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "assembly": "CP_BayGable_MainSash_0",
+      "carrier_point": [
+        2.85,
+        -7.38,
+        5.25
+      ],
+      "floating": false,
+      "historic_inner_muntin": "MAT_BayGable_WarmWoodSash",
+      "historic_outer_frame": "MAT_BayGable_DarkBrownOuterFrame",
+      "normal": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "opening_role": "opening-main-tall-double-hung",
+      "part_count": 11,
+      "physical_arched_hood": false,
+      "physical_stone_surround": true,
+      "structural_frame_mount_depth_m": 0.015,
+      "tangent": [
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "assembly": "CP_BayGable_MainSash_1",
+      "carrier_point": [
+        -1.72,
+        -8.5,
+        8.1
+      ],
+      "floating": false,
+      "historic_inner_muntin": "MAT_BayGable_WarmWoodSash",
+      "historic_outer_frame": "MAT_BayGable_DarkBrownOuterFrame",
+      "normal": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "opening_role": "opening-upper-gable-paired-sash",
+      "part_count": 11,
+      "physical_arched_hood": false,
+      "physical_stone_surround": true,
+      "structural_frame_mount_depth_m": 0.015,
+      "tangent": [
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "assembly": "CP_BayGable_GablePair_-2.42",
+      "carrier_point": [
+        -2.42,
+        -8.5,
+        8.05
+      ],
+      "floating": false,
+      "historic_inner_muntin": "MAT_BayGable_WarmWoodSash",
+      "historic_outer_frame": "MAT_BayGable_DarkBrownOuterFrame",
+      "normal": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "opening_role": "opening-upper-gable-paired-sash",
+      "part_count": 8,
+      "physical_arched_hood": false,
+      "physical_stone_surround": false,
+      "structural_frame_mount_depth_m": 0.015,
+      "tangent": [
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "assembly": "CP_BayGable_GablePair_-1.02",
+      "carrier_point": [
+        -1.02,
+        -8.5,
+        8.05
+      ],
+      "floating": false,
+      "historic_inner_muntin": "MAT_BayGable_WarmWoodSash",
+      "historic_outer_frame": "MAT_BayGable_DarkBrownOuterFrame",
+      "normal": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "opening_role": "opening-upper-gable-paired-sash",
+      "part_count": 8,
+      "physical_arched_hood": false,
+      "physical_stone_surround": false,
+      "structural_frame_mount_depth_m": 0.015,
+      "tangent": [
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "assembly": "CP_BayGable_SideSash_0",
+      "carrier_point": [
+        4.64,
+        -3.2,
+        2.45
+      ],
+      "floating": false,
+      "historic_inner_muntin": "MAT_BayGable_WarmWoodSash",
+      "historic_outer_frame": "MAT_BayGable_DarkBrownOuterFrame",
+      "normal": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "opening_role": "opening-side-wall-narrow-sash",
+      "part_count": 11,
+      "physical_arched_hood": false,
+      "physical_stone_surround": true,
+      "structural_frame_mount_depth_m": 0.015,
+      "tangent": [
+        0.0,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "assembly": "CP_BayGable_SideSash_1",
+      "carrier_point": [
+        4.64,
+        0.2,
+        2.45
+      ],
+      "floating": false,
+      "historic_inner_muntin": "MAT_BayGable_WarmWoodSash",
+      "historic_outer_frame": "MAT_BayGable_DarkBrownOuterFrame",
+      "normal": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "opening_role": "opening-side-wall-narrow-sash",
+      "part_count": 11,
+      "physical_arched_hood": false,
+      "physical_stone_surround": true,
+      "structural_frame_mount_depth_m": 0.015,
+      "tangent": [
+        0.0,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "assembly": "CP_BayGable_SideSash_2",
+      "carrier_point": [
+        4.64,
+        3.6,
+        2.45
+      ],
+      "floating": false,
+      "historic_inner_muntin": "MAT_BayGable_WarmWoodSash",
+      "historic_outer_frame": "MAT_BayGable_DarkBrownOuterFrame",
+      "normal": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "opening_role": "opening-side-wall-narrow-sash",
+      "part_count": 11,
+      "physical_arched_hood": false,
+      "physical_stone_surround": true,
+      "structural_frame_mount_depth_m": 0.015,
+      "tangent": [
+        0.0,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "assembly": "CP_BayGable_SideSash_3",
+      "carrier_point": [
+        4.64,
+        -3.2,
+        5.25
+      ],
+      "floating": false,
+      "historic_inner_muntin": "MAT_BayGable_WarmWoodSash",
+      "historic_outer_frame": "MAT_BayGable_DarkBrownOuterFrame",
+      "normal": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "opening_role": "opening-side-wall-narrow-sash",
+      "part_count": 11,
+      "physical_arched_hood": false,
+      "physical_stone_surround": true,
+      "structural_frame_mount_depth_m": 0.015,
+      "tangent": [
+        0.0,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "assembly": "CP_BayGable_SideSash_4",
+      "carrier_point": [
+        4.64,
+        1.0,
+        5.25
+      ],
+      "floating": false,
+      "historic_inner_muntin": "MAT_BayGable_WarmWoodSash",
+      "historic_outer_frame": "MAT_BayGable_DarkBrownOuterFrame",
+      "normal": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "opening_role": "opening-side-wall-narrow-sash",
+      "part_count": 11,
+      "physical_arched_hood": false,
+      "physical_stone_surround": true,
+      "structural_frame_mount_depth_m": 0.015,
+      "tangent": [
+        0.0,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "assembly": "front_gable_mass",
+      "carrier_chain": [
+        "foundation",
+        "main_body",
+        "front_gable_body"
+      ],
+      "contact_overlap_m": 1.0,
+      "floating": false
+    },
+    {
+      "assembly": "chimney",
+      "carrier_chain": [
+        "main_body",
+        "roof_penetration",
+        "chimney"
+      ],
+      "contact_overlap_m": 1.1,
+      "floating": false
+    },
+    {
+      "assembly": "projecting_stained_glass_bay",
+      "carrier_chain": [
+        "foundation",
+        "three_bay_carriers",
+        "bay_cap"
+      ],
+      "contact_overlap_m": 0.24,
+      "floating": false
+    },
+    {
+      "assembly": "recessed_porch_entry",
+      "carrier_chain": [
+        "porch_slab",
+        "posts",
+        "canopy",
+        "entry"
+      ],
+      "contact_overlap_m": 0.08,
+      "floating": false
+    },
+    {
+      "assembly": "carved_gable_trim",
+      "carrier_chain": [
+        "front_gable_wall",
+        "rake_trim",
+        "tie_and_drops"
+      ],
+      "contact_overlap_m": 0.05,
+      "floating": false
+    }
+  ],
+  "rlasm_version": "1.4.0",
+  "schema": "cityprompt.rlasm-attached-object-contact-audit@3",
+  "status": "PASS_ZERO_FLOATING_ATTACHMENTS",
+  "support_assembly_count": 5
+}

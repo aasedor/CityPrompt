@@ -1,0 +1,73 @@
+{
+  "atomic_card_count": 8,
+  "candidate_id": "vancouver-laneway-house-rlasm-v2",
+  "cards": [
+    {
+      "path": "material-pale-vertical-cedar.png",
+      "role": "primary-wall",
+      "sha256": "2536e5c598054201b173c1bfc9b5eb4fdcd0db058db1560d9e08247a658851a1",
+      "use": "reference_matched_world_scale_repeatable_field"
+    },
+    {
+      "path": "material-warm-horizontal-cedar.png",
+      "role": "secondary-accent",
+      "sha256": "536f773710bad73f39c9d115a8f4ad82241661c92d8809afd13e6f6fd0fe4648",
+      "use": "reference_matched_world_scale_repeatable_field"
+    },
+    {
+      "path": "material-charcoal-standing-seam.png",
+      "role": "roof-field",
+      "sha256": "01297eecb4e73816627f844e667388f6d5492b65559735706c0d225202215734",
+      "use": "reference_matched_world_scale_repeatable_field"
+    },
+    {
+      "kind": "object",
+      "path": "object-two-storey-corner-glass-stack.png",
+      "role": "object-two-storey-corner-glass-stack",
+      "sha256": "592cc458ea793d568d3e687634334e7997e46f582f5fd595e79df6af869f78af",
+      "use": "reference_atom_visual_authority_geometry_owns_depth"
+    },
+    {
+      "kind": "object",
+      "path": "object-glass-balcony.png",
+      "role": "object-glass-balcony",
+      "sha256": "4e177bde3f3231559c52af0af001ec2ec1ef3b99b45a254e0b3943f6866c4a7f",
+      "use": "reference_atom_visual_authority_geometry_owns_depth"
+    },
+    {
+      "kind": "object",
+      "path": "object-recessed-cedar-entry.png",
+      "role": "object-recessed-cedar-entry",
+      "sha256": "7a1bb5fb0af42f716c7d7902d1096f62217833c826e04d66c08ce525fd7d3e31",
+      "use": "reference_atom_visual_authority_geometry_owns_depth"
+    },
+    {
+      "kind": "opening",
+      "path": "opening-corner-picture-glass.png",
+      "role": "opening-corner-picture-glass",
+      "sha256": "e0b019ee2fded9edff3fe921c9e148c497804792c6ade1901dcc57a23990f292",
+      "use": "reference_atom_visual_authority_geometry_owns_depth"
+    },
+    {
+      "kind": "opening",
+      "path": "opening-side-horizontal-slot.png",
+      "role": "opening-side-horizontal-slot",
+      "sha256": "e618d9d04230afafd643eb72a65dbb0ba63050343f0eb0fb7c1ed2c97122e574",
+      "use": "reference_atom_visual_authority_geometry_owns_depth"
+    }
+  ],
+  "generic_fallback_count": 0,
+  "generic_window_family_count": 0,
+  "missing_role_count": 0,
+  "opening_family_card_count": 2,
+  "opening_family_inventory": [
+    "two-storey-corner-picture-glass",
+    "front-slider-bay",
+    "side-horizontal-slot",
+    "side-vertical-stair-slit",
+    "recessed-entry-door"
+  ],
+  "rlasm_version": "1.4.0",
+  "schema": "cityprompt.rlasm-card-manifest@3",
+  "whole_facade_card_count": 0
+}

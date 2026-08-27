@@ -1,0 +1,462 @@
+{
+  "assembly_count": 19,
+  "candidate_id": "halifax-painted-clapboard-row-rlasm-v2",
+  "floating_count": 0,
+  "opening_assembly_count": 16,
+  "opening_roles": [
+    "opening-bay-narrow-double-hung",
+    "opening-blue-entry-door-and-transom",
+    "opening-gable-sash",
+    "opening-main-white-double-hung",
+    "opening-side-wall-sash"
+  ],
+  "records": [
+    {
+      "assembly": "CP_Halifax_BaySash_0_0",
+      "carrier_point": [
+        -3.35,
+        -8.4,
+        2.3
+      ],
+      "floating": false,
+      "historic_inner_muntin": "MAT_Halifax_WhiteWindowFrame",
+      "historic_outer_frame": "MAT_Halifax_WhiteWindowFrame",
+      "normal": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "opening_role": "opening-bay-narrow-double-hung",
+      "part_count": 11,
+      "physical_arched_hood": false,
+      "physical_stone_surround": true,
+      "structural_frame_mount_depth_m": 0.015,
+      "tangent": [
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "assembly": "CP_Halifax_BaySash_0_1",
+      "carrier_point": [
+        -2.35,
+        -8.4,
+        2.3
+      ],
+      "floating": false,
+      "historic_inner_muntin": "MAT_Halifax_WhiteWindowFrame",
+      "historic_outer_frame": "MAT_Halifax_WhiteWindowFrame",
+      "normal": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "opening_role": "opening-bay-narrow-double-hung",
+      "part_count": 11,
+      "physical_arched_hood": false,
+      "physical_stone_surround": true,
+      "structural_frame_mount_depth_m": 0.015,
+      "tangent": [
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "assembly": "CP_Halifax_BaySash_0_2",
+      "carrier_point": [
+        -1.35,
+        -8.4,
+        2.3
+      ],
+      "floating": false,
+      "historic_inner_muntin": "MAT_Halifax_WhiteWindowFrame",
+      "historic_outer_frame": "MAT_Halifax_WhiteWindowFrame",
+      "normal": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "opening_role": "opening-bay-narrow-double-hung",
+      "part_count": 11,
+      "physical_arched_hood": false,
+      "physical_stone_surround": true,
+      "structural_frame_mount_depth_m": 0.015,
+      "tangent": [
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "assembly": "CP_Halifax_BaySash_1_0",
+      "carrier_point": [
+        -3.35,
+        -8.4,
+        5.05
+      ],
+      "floating": false,
+      "historic_inner_muntin": "MAT_Halifax_WhiteWindowFrame",
+      "historic_outer_frame": "MAT_Halifax_WhiteWindowFrame",
+      "normal": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "opening_role": "opening-bay-narrow-double-hung",
+      "part_count": 11,
+      "physical_arched_hood": false,
+      "physical_stone_surround": true,
+      "structural_frame_mount_depth_m": 0.015,
+      "tangent": [
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "assembly": "CP_Halifax_BaySash_1_1",
+      "carrier_point": [
+        -2.35,
+        -8.4,
+        5.05
+      ],
+      "floating": false,
+      "historic_inner_muntin": "MAT_Halifax_WhiteWindowFrame",
+      "historic_outer_frame": "MAT_Halifax_WhiteWindowFrame",
+      "normal": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "opening_role": "opening-bay-narrow-double-hung",
+      "part_count": 11,
+      "physical_arched_hood": false,
+      "physical_stone_surround": true,
+      "structural_frame_mount_depth_m": 0.015,
+      "tangent": [
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "assembly": "CP_Halifax_BaySash_1_2",
+      "carrier_point": [
+        -1.35,
+        -8.4,
+        5.05
+      ],
+      "floating": false,
+      "historic_inner_muntin": "MAT_Halifax_WhiteWindowFrame",
+      "historic_outer_frame": "MAT_Halifax_WhiteWindowFrame",
+      "normal": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "opening_role": "opening-bay-narrow-double-hung",
+      "part_count": 11,
+      "physical_arched_hood": false,
+      "physical_stone_surround": true,
+      "structural_frame_mount_depth_m": 0.015,
+      "tangent": [
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "assembly": "CP_Halifax_BlueEntry",
+      "carrier_point": [
+        3.549999952316284,
+        -7.289999961853027,
+        2.119999885559082
+      ],
+      "floating": false,
+      "normal": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "opening_role": "opening-blue-entry-door-and-transom",
+      "part_count": 5,
+      "structural_frame_mount_depth_m": 0.015,
+      "tangent": [
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "assembly": "CP_Halifax_MainSash_0",
+      "carrier_point": [
+        1.15,
+        -7.34,
+        2.3
+      ],
+      "floating": false,
+      "historic_inner_muntin": "MAT_Halifax_WhiteWindowFrame",
+      "historic_outer_frame": "MAT_Halifax_WhiteWindowFrame",
+      "normal": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "opening_role": "opening-main-white-double-hung",
+      "part_count": 11,
+      "physical_arched_hood": false,
+      "physical_stone_surround": true,
+      "structural_frame_mount_depth_m": 0.015,
+      "tangent": [
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "assembly": "CP_Halifax_MainSash_1",
+      "carrier_point": [
+        1.15,
+        -7.34,
+        5.05
+      ],
+      "floating": false,
+      "historic_inner_muntin": "MAT_Halifax_WhiteWindowFrame",
+      "historic_outer_frame": "MAT_Halifax_WhiteWindowFrame",
+      "normal": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "opening_role": "opening-main-white-double-hung",
+      "part_count": 11,
+      "physical_arched_hood": false,
+      "physical_stone_surround": true,
+      "structural_frame_mount_depth_m": 0.015,
+      "tangent": [
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "assembly": "CP_Halifax_MainSash_2",
+      "carrier_point": [
+        3.95,
+        -7.34,
+        5.05
+      ],
+      "floating": false,
+      "historic_inner_muntin": "MAT_Halifax_WhiteWindowFrame",
+      "historic_outer_frame": "MAT_Halifax_WhiteWindowFrame",
+      "normal": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "opening_role": "opening-main-white-double-hung",
+      "part_count": 11,
+      "physical_arched_hood": false,
+      "physical_stone_surround": true,
+      "structural_frame_mount_depth_m": 0.015,
+      "tangent": [
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "assembly": "CP_Halifax_GableSash",
+      "carrier_point": [
+        0.0,
+        -7.34,
+        7.55
+      ],
+      "floating": false,
+      "historic_inner_muntin": "MAT_Halifax_WhiteWindowFrame",
+      "historic_outer_frame": "MAT_Halifax_WhiteWindowFrame",
+      "normal": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "opening_role": "opening-gable-sash",
+      "part_count": 11,
+      "physical_arched_hood": false,
+      "physical_stone_surround": true,
+      "structural_frame_mount_depth_m": 0.015,
+      "tangent": [
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "assembly": "CP_Halifax_SideSash_0",
+      "carrier_point": [
+        5.7,
+        -3.5,
+        2.3
+      ],
+      "floating": false,
+      "historic_inner_muntin": "MAT_Halifax_WhiteWindowFrame",
+      "historic_outer_frame": "MAT_Halifax_WhiteWindowFrame",
+      "normal": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "opening_role": "opening-side-wall-sash",
+      "part_count": 11,
+      "physical_arched_hood": false,
+      "physical_stone_surround": true,
+      "structural_frame_mount_depth_m": 0.015,
+      "tangent": [
+        0.0,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "assembly": "CP_Halifax_SideSash_1",
+      "carrier_point": [
+        5.7,
+        0.0,
+        2.3
+      ],
+      "floating": false,
+      "historic_inner_muntin": "MAT_Halifax_WhiteWindowFrame",
+      "historic_outer_frame": "MAT_Halifax_WhiteWindowFrame",
+      "normal": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "opening_role": "opening-side-wall-sash",
+      "part_count": 11,
+      "physical_arched_hood": false,
+      "physical_stone_surround": true,
+      "structural_frame_mount_depth_m": 0.015,
+      "tangent": [
+        0.0,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "assembly": "CP_Halifax_SideSash_2",
+      "carrier_point": [
+        5.7,
+        3.5,
+        2.3
+      ],
+      "floating": false,
+      "historic_inner_muntin": "MAT_Halifax_WhiteWindowFrame",
+      "historic_outer_frame": "MAT_Halifax_WhiteWindowFrame",
+      "normal": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "opening_role": "opening-side-wall-sash",
+      "part_count": 11,
+      "physical_arched_hood": false,
+      "physical_stone_surround": true,
+      "structural_frame_mount_depth_m": 0.015,
+      "tangent": [
+        0.0,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "assembly": "CP_Halifax_SideSash_3",
+      "carrier_point": [
+        5.7,
+        -3.5,
+        5.05
+      ],
+      "floating": false,
+      "historic_inner_muntin": "MAT_Halifax_WhiteWindowFrame",
+      "historic_outer_frame": "MAT_Halifax_WhiteWindowFrame",
+      "normal": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "opening_role": "opening-side-wall-sash",
+      "part_count": 11,
+      "physical_arched_hood": false,
+      "physical_stone_surround": true,
+      "structural_frame_mount_depth_m": 0.015,
+      "tangent": [
+        0.0,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "assembly": "CP_Halifax_SideSash_4",
+      "carrier_point": [
+        5.7,
+        1.0,
+        5.05
+      ],
+      "floating": false,
+      "historic_inner_muntin": "MAT_Halifax_WhiteWindowFrame",
+      "historic_outer_frame": "MAT_Halifax_WhiteWindowFrame",
+      "normal": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "opening_role": "opening-side-wall-sash",
+      "part_count": 11,
+      "physical_arched_hood": false,
+      "physical_stone_surround": true,
+      "structural_frame_mount_depth_m": 0.015,
+      "tangent": [
+        0.0,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "assembly": "two_storey_projecting_bay",
+      "carrier_chain": [
+        "foundation",
+        "bay_center_and_returns",
+        "bay_cap"
+      ],
+      "contact_overlap_m": 0.28,
+      "floating": false
+    },
+    {
+      "assembly": "deep_white_cornice",
+      "carrier_chain": [
+        "main_body",
+        "cornice_band",
+        "eleven_brackets"
+      ],
+      "contact_overlap_m": 0.1,
+      "floating": false
+    },
+    {
+      "assembly": "small_entry_porch",
+      "carrier_chain": [
+        "porch_slab",
+        "white_posts",
+        "canopy",
+        "entry"
+      ],
+      "contact_overlap_m": 0.08,
+      "floating": false
+    }
+  ],
+  "rlasm_version": "1.4.0",
+  "schema": "cityprompt.rlasm-attached-object-contact-audit@3",
+  "status": "PASS_ZERO_FLOATING_ATTACHMENTS",
+  "support_assembly_count": 3
+}

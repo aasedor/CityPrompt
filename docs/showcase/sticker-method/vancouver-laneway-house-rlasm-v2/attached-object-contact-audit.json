@@ -1,0 +1,305 @@
+{
+  "assembly_count": 13,
+  "candidate_id": "vancouver-laneway-house-rlasm-v2",
+  "floating_count": 0,
+  "opening_assembly_count": 10,
+  "opening_roles": [
+    "opening-front-slider-bay",
+    "opening-recessed-entry-door",
+    "opening-side-horizontal-slot",
+    "opening-side-vertical-stair-slit",
+    "opening-two-storey-corner-picture-glass"
+  ],
+  "records": [
+    {
+      "assembly": "CP_Laneway_CornerFront_0",
+      "carrier_point": [
+        2.55,
+        -7.55,
+        2.25
+      ],
+      "floating": false,
+      "historic_inner_muntin": "MAT_Laneway_BlackFrame",
+      "historic_outer_frame": "MAT_Laneway_BlackFrame",
+      "normal": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "opening_role": "opening-two-storey-corner-picture-glass",
+      "part_count": 8,
+      "physical_arched_hood": false,
+      "physical_stone_surround": false,
+      "structural_frame_mount_depth_m": 0.015,
+      "tangent": [
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "assembly": "CP_Laneway_CornerRight_0",
+      "carrier_point": [
+        4.97,
+        -5.85,
+        2.25
+      ],
+      "floating": false,
+      "historic_inner_muntin": "MAT_Laneway_BlackFrame",
+      "historic_outer_frame": "MAT_Laneway_BlackFrame",
+      "normal": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "opening_role": "opening-two-storey-corner-picture-glass",
+      "part_count": 7,
+      "physical_arched_hood": false,
+      "physical_stone_surround": false,
+      "structural_frame_mount_depth_m": 0.015,
+      "tangent": [
+        0.0,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "assembly": "CP_Laneway_CornerFront_1",
+      "carrier_point": [
+        2.55,
+        -7.55,
+        4.8
+      ],
+      "floating": false,
+      "historic_inner_muntin": "MAT_Laneway_BlackFrame",
+      "historic_outer_frame": "MAT_Laneway_BlackFrame",
+      "normal": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "opening_role": "opening-two-storey-corner-picture-glass",
+      "part_count": 8,
+      "physical_arched_hood": false,
+      "physical_stone_surround": false,
+      "structural_frame_mount_depth_m": 0.015,
+      "tangent": [
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "assembly": "CP_Laneway_CornerRight_1",
+      "carrier_point": [
+        4.97,
+        -5.85,
+        4.8
+      ],
+      "floating": false,
+      "historic_inner_muntin": "MAT_Laneway_BlackFrame",
+      "historic_outer_frame": "MAT_Laneway_BlackFrame",
+      "normal": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "opening_role": "opening-two-storey-corner-picture-glass",
+      "part_count": 7,
+      "physical_arched_hood": false,
+      "physical_stone_surround": false,
+      "structural_frame_mount_depth_m": 0.015,
+      "tangent": [
+        0.0,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "assembly": "CP_Laneway_RecessedEntry",
+      "carrier_point": [
+        -2.6500000953674316,
+        -7.429999828338623,
+        1.899999976158142
+      ],
+      "floating": false,
+      "normal": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "opening_role": "opening-recessed-entry-door",
+      "part_count": 5,
+      "structural_frame_mount_depth_m": 0.015,
+      "tangent": [
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "assembly": "CP_Laneway_FrontSlider",
+      "carrier_point": [
+        -1.2,
+        -7.0,
+        4.85
+      ],
+      "floating": false,
+      "historic_inner_muntin": "MAT_Laneway_BlackFrame",
+      "historic_outer_frame": "MAT_Laneway_BlackFrame",
+      "normal": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "opening_role": "opening-front-slider-bay",
+      "part_count": 7,
+      "physical_arched_hood": false,
+      "physical_stone_surround": false,
+      "structural_frame_mount_depth_m": 0.015,
+      "tangent": [
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "assembly": "CP_Laneway_RightSlot_0",
+      "carrier_point": [
+        4.98,
+        -2.5,
+        2.2
+      ],
+      "floating": false,
+      "historic_inner_muntin": "MAT_Laneway_BlackFrame",
+      "historic_outer_frame": "MAT_Laneway_BlackFrame",
+      "normal": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "opening_role": "opening-side-horizontal-slot",
+      "part_count": 7,
+      "physical_arched_hood": false,
+      "physical_stone_surround": false,
+      "structural_frame_mount_depth_m": 0.015,
+      "tangent": [
+        0.0,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "assembly": "CP_Laneway_RightSlot_1",
+      "carrier_point": [
+        4.98,
+        1.1,
+        2.2
+      ],
+      "floating": false,
+      "historic_inner_muntin": "MAT_Laneway_BlackFrame",
+      "historic_outer_frame": "MAT_Laneway_BlackFrame",
+      "normal": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "opening_role": "opening-side-horizontal-slot",
+      "part_count": 7,
+      "physical_arched_hood": false,
+      "physical_stone_surround": false,
+      "structural_frame_mount_depth_m": 0.015,
+      "tangent": [
+        0.0,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "assembly": "CP_Laneway_RightSlot_2",
+      "carrier_point": [
+        4.98,
+        4.2,
+        4.85
+      ],
+      "floating": false,
+      "historic_inner_muntin": "MAT_Laneway_BlackFrame",
+      "historic_outer_frame": "MAT_Laneway_BlackFrame",
+      "normal": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "opening_role": "opening-side-horizontal-slot",
+      "part_count": 7,
+      "physical_arched_hood": false,
+      "physical_stone_surround": false,
+      "structural_frame_mount_depth_m": 0.015,
+      "tangent": [
+        0.0,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "assembly": "CP_Laneway_StairSlit",
+      "carrier_point": [
+        -4.98,
+        -1.2,
+        4.05
+      ],
+      "floating": false,
+      "historic_inner_muntin": "MAT_Laneway_BlackFrame",
+      "historic_outer_frame": "MAT_Laneway_BlackFrame",
+      "normal": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "opening_role": "opening-side-vertical-stair-slit",
+      "part_count": 6,
+      "physical_arched_hood": false,
+      "physical_stone_surround": false,
+      "structural_frame_mount_depth_m": 0.015,
+      "tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ]
+    },
+    {
+      "assembly": "two_storey_corner_glass_stack",
+      "carrier_chain": [
+        "foundation",
+        "corner_carrier",
+        "front_and_side_frames"
+      ],
+      "contact_overlap_m": 0.24,
+      "floating": false
+    },
+    {
+      "assembly": "recessed_cedar_entry",
+      "carrier_chain": [
+        "foundation",
+        "entry_recess",
+        "door_frame"
+      ],
+      "contact_overlap_m": 0.07,
+      "floating": false
+    },
+    {
+      "assembly": "glass_balcony",
+      "carrier_chain": [
+        "main_shell",
+        "cantilevered_slab",
+        "glass_railing"
+      ],
+      "contact_overlap_m": 0.32,
+      "floating": false
+    }
+  ],
+  "rlasm_version": "1.4.0",
+  "schema": "cityprompt.rlasm-attached-object-contact-audit@3",
+  "status": "PASS_ZERO_FLOATING_ATTACHMENTS",
+  "support_assembly_count": 3
+}

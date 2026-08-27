@@ -1,0 +1,57 @@
+{
+  "actual_3d_model": true,
+  "author_source": {
+    "path": "C:\\Users\\andre\\OneDrive\\Documents\\PlaygroundNEW\\3D-Maps\\artifacts\\author_rlasm_confirmation_three_v1.py",
+    "sha256": "3663f8568e9bd0e9918eabe898e23b0e798f4f1bd0c980b94cf1685d70e685b0"
+  },
+  "base_author_source": {
+    "path": "C:\\Users\\andre\\OneDrive\\Documents\\PlaygroundNEW\\3D-Maps\\artifacts\\author_rlasm_single_family_batch_v3.py",
+    "sha256": "7e8ebed4a1502ffec67d81f87288f3d66bd0969ed52845abfbcc22ae2f914f4a"
+  },
+  "blend": {
+    "bytes": 204902,
+    "path": "halifax-painted-clapboard-row-rlasm-v2.blend",
+    "sha256": "905fb001cc8cee83001f7b425ccfbf901e94de0cff294613b2cad6f62ba6f473"
+  },
+  "candidate_id": "halifax-painted-clapboard-row-rlasm-v2",
+  "card_manifest_sha256": "e739c71eb5406abdecdc3ea3576ce08f72645b1dfa194cbf16b02e8d01613418",
+  "floating_count": 0,
+  "generic_fallback_count": 0,
+  "generic_window_family_count": 0,
+  "glb": {
+    "bytes": 7982604,
+    "path": "halifax-painted-clapboard-row-rlasm-v2.glb",
+    "sha256": "b01c7f6024765ab7d27f3520d257376fdd91785e11c5b47964375eb256090b4a"
+  },
+  "material_provenance_sha256": "a1176bcbc38698f6e82900498e8d196ecd4c5bf29dc2de1413fe4c70f2726984",
+  "next_phase": "USER_VISUAL_REVIEW_BEFORE_ONE_BOUNDED_CORRECTION_OR_GIT_PROMOTION",
+  "physical_opening_assembly_count": 16,
+  "reference_prework_complete": true,
+  "reference_specific_opening_role_count": 5,
+  "renders": [
+    {
+      "bytes": 2243212,
+      "path": "front_corner.png",
+      "sha256": "57f07125017b17486ae6bfa7dd9cc70d2ae0f0c6d8762b1b20a38c8b972acd0c"
+    },
+    {
+      "bytes": 2093687,
+      "path": "front.png",
+      "sha256": "de88012f9c1cfd88416271adb8e3c9ee7be9b667449722a71944470407ffa991"
+    },
+    {
+      "bytes": 2123000,
+      "path": "side_contact.png",
+      "sha256": "486c80c60489fa14b50610bf7974983a0c511976eb69df2c36374ba33d1cb93f"
+    },
+    {
+      "bytes": 2520270,
+      "path": "roof_audit.png",
+      "sha256": "ba0d480109cea2ba431e713f8cadfbfd46b469a4deb749f4f6b876e043c6b785"
+    }
+  ],
+  "rlasm_version": "1.4.0",
+  "schema": "cityprompt.rlasm-confirmation-pilot-evidence@1",
+  "status": "PASS_ACTUAL_3D_PILOT_AWAITING_USER_VISUAL_REVIEW",
+  "whole_facade_card_count": 0
+}

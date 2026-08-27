@@ -1,0 +1,50 @@
+{
+  "candidate_id": "toronto-bay-and-gable-house-rlasm-v3",
+  "generic_fallback_count": 0,
+  "locked_reference_sha256": "d95d3c86850b2d98b3e04a4c0b69ea6747979598bff2eb39903e9bec779372f7",
+  "procedural_palette_only_material_count": 0,
+  "records": [
+    {
+      "candidate_card_relative_path": "cards/material-warm-red-brick.png",
+      "candidate_card_sha256": "648adc776c11fdfa6709b3b2a8a79a2fd2720e272599d63794d8ff13afd8f1ed",
+      "description": "warm late-19th-century red clay brick with pale mortar",
+      "field_material_atomicity": "PASS_REPEATABLE_FIELD_ONLY",
+      "generated_source_filename": "exec-91146e1e-803a-4814-90eb-4a3917558777.png",
+      "generated_source_sha256": "648adc776c11fdfa6709b3b2a8a79a2fd2720e272599d63794d8ff13afd8f1ed",
+      "locked_reference_relative_path": "references/variant_0.png",
+      "locked_reference_sha256": "d95d3c86850b2d98b3e04a4c0b69ea6747979598bff2eb39903e9bec779372f7",
+      "method": "built_in_imagegen_reference_preserving_reconstruction",
+      "procedural_palette_only": false,
+      "role": "primary-wall"
+    },
+    {
+      "candidate_card_relative_path": "cards/material-pale-limestone-foundation.png",
+      "candidate_card_sha256": "74b6b5ad379a2dc27b9178a2c4344b2b1667c283e3400a15e2db50a079185000",
+      "description": "pale cool-grey rough-cut limestone foundation",
+      "field_material_atomicity": "PASS_REPEATABLE_FIELD_ONLY",
+      "generated_source_filename": "exec-41abe541-c778-4246-8c81-3e9880be43d1.png",
+      "generated_source_sha256": "74b6b5ad379a2dc27b9178a2c4344b2b1667c283e3400a15e2db50a079185000",
+      "locked_reference_relative_path": "references/variant_0.png",
+      "locked_reference_sha256": "d95d3c86850b2d98b3e04a4c0b69ea6747979598bff2eb39903e9bec779372f7",
+      "method": "built_in_imagegen_reference_preserving_reconstruction",
+      "procedural_palette_only": false,
+      "role": "foundation"
+    },
+    {
+      "candidate_card_relative_path": "cards/material-charcoal-shingle-roof.png",
+      "candidate_card_sha256": "04f19a2edaff95faef720d248516997eca9602e275dc99b30a35b6e5e4173ac6",
+      "description": "dark charcoal-grey small shingle roof field",
+      "field_material_atomicity": "PASS_REPEATABLE_FIELD_ONLY",
+      "generated_source_filename": "exec-6f839afa-01ba-427e-826e-98424324d657.png",
+      "generated_source_sha256": "04f19a2edaff95faef720d248516997eca9602e275dc99b30a35b6e5e4173ac6",
+      "locked_reference_relative_path": "references/variant_0.png",
+      "locked_reference_sha256": "d95d3c86850b2d98b3e04a4c0b69ea6747979598bff2eb39903e9bec779372f7",
+      "method": "built_in_imagegen_reference_preserving_reconstruction",
+      "procedural_palette_only": false,
+      "role": "roof-field"
+    }
+  ],
+  "rlasm_version": "1.4.0",
+  "schema": "cityprompt.rlasm-material-provenance@3",
+  "unique_ornament_embedded_in_repeatable_material_swatch_count": 0
+}

@@ -1,0 +1,38 @@
+{
+  "actual_3d_model_count": 3,
+  "building_count": 3,
+  "candidates": [
+    {
+      "actual_3d_render_sha256": "94edc6302f58eca35eabda88d85f3f7f73b0c9e187878f8f15f557e6b17ad1e9",
+      "candidate_id": "toronto-bay-and-gable-house-rlasm-v3",
+      "comparison_sha256": "0b61b8271f081027e42782f6512b6988ca6665b64835a17914b77e5f9fa331c1",
+      "pilot_status": "PASS_ACTUAL_3D_PILOT_AWAITING_USER_VISUAL_REVIEW",
+      "reference_sha256": "d95d3c86850b2d98b3e04a4c0b69ea6747979598bff2eb39903e9bec779372f7"
+    },
+    {
+      "actual_3d_render_sha256": "fd7d22440f290e42b1ea1e3b6d746802aee9df0cee04ecf1251693f15ac8efa6",
+      "candidate_id": "vancouver-laneway-house-rlasm-v2",
+      "comparison_sha256": "0feb5c6a1c072f1ea089af1b7d3569796a88d9fd0958387fb7b01fcdb3f90145",
+      "pilot_status": "PASS_ACTUAL_3D_PILOT_AWAITING_USER_VISUAL_REVIEW",
+      "reference_sha256": "6bc2fb3d703006bfaa13a723ad57df90aeba2f1447814d1aa1c3ca07762b8298"
+    },
+    {
+      "actual_3d_render_sha256": "57f07125017b17486ae6bfa7dd9cc70d2ae0f0c6d8762b1b20a38c8b972acd0c",
+      "candidate_id": "halifax-painted-clapboard-row-rlasm-v2",
+      "comparison_sha256": "593ff63e866ac46e1e3ec396f25b207cae82f3d69104c48262fcc90d107baef6",
+      "pilot_status": "PASS_ACTUAL_3D_PILOT_AWAITING_USER_VISUAL_REVIEW",
+      "reference_sha256": "3b3ee4fd17c395e1e0e448b39fa3b31b7e28698fc29c5c2673110754f497a423"
+    }
+  ],
+  "city_prompt_integration_authorized": false,
+  "floating_attachment_count": 0,
+  "full_prework_count": 3,
+  "generic_fallback_count": 0,
+  "generic_window_family_count": 0,
+  "mass_production_authorized": false,
+  "next_phase": "USER_VISUAL_REVIEW_OF_THREE_PILOTS_BEFORE_CITY_PROMPT_INTEGRATION_TEST",
+  "rlasm_version": "1.5.0",
+  "schema": "cityprompt.rlasm-three-building-confirmation@1",
+  "status": "READY_FOR_USER_VISUAL_REVIEW",
+  "user_approved_benchmark": "toronto-annex-mansion-rlasm-v4"
+}

@@ -1,0 +1,50 @@
+{
+  "candidate_id": "vancouver-laneway-house-rlasm-v2",
+  "generic_fallback_count": 0,
+  "locked_reference_sha256": "6bc2fb3d703006bfaa13a723ad57df90aeba2f1447814d1aa1c3ca07762b8298",
+  "procedural_palette_only_material_count": 0,
+  "records": [
+    {
+      "candidate_card_relative_path": "cards/material-pale-vertical-cedar.png",
+      "candidate_card_sha256": "2536e5c598054201b173c1bfc9b5eb4fdcd0db058db1560d9e08247a658851a1",
+      "description": "pale weathered vertical cedar rainscreen",
+      "field_material_atomicity": "PASS_REPEATABLE_FIELD_ONLY",
+      "generated_source_filename": "exec-e8b45d52-28c7-46f1-828e-389aa789d7bd.png",
+      "generated_source_sha256": "2536e5c598054201b173c1bfc9b5eb4fdcd0db058db1560d9e08247a658851a1",
+      "locked_reference_relative_path": "references/variant_0.png",
+      "locked_reference_sha256": "6bc2fb3d703006bfaa13a723ad57df90aeba2f1447814d1aa1c3ca07762b8298",
+      "method": "built_in_imagegen_reference_preserving_reconstruction",
+      "procedural_palette_only": false,
+      "role": "primary-wall"
+    },
+    {
+      "candidate_card_relative_path": "cards/material-warm-horizontal-cedar.png",
+      "candidate_card_sha256": "536f773710bad73f39c9d115a8f4ad82241661c92d8809afd13e6f6fd0fe4648",
+      "description": "warm honey-brown horizontal cedar boards",
+      "field_material_atomicity": "PASS_REPEATABLE_FIELD_ONLY",
+      "generated_source_filename": "exec-4b9a6a20-5ed8-4b4b-bbaf-990f365253fe.png",
+      "generated_source_sha256": "536f773710bad73f39c9d115a8f4ad82241661c92d8809afd13e6f6fd0fe4648",
+      "locked_reference_relative_path": "references/variant_0.png",
+      "locked_reference_sha256": "6bc2fb3d703006bfaa13a723ad57df90aeba2f1447814d1aa1c3ca07762b8298",
+      "method": "built_in_imagegen_reference_preserving_reconstruction",
+      "procedural_palette_only": false,
+      "role": "secondary-accent"
+    },
+    {
+      "candidate_card_relative_path": "cards/material-charcoal-standing-seam.png",
+      "candidate_card_sha256": "01297eecb4e73816627f844e667388f6d5492b65559735706c0d225202215734",
+      "description": "matte charcoal standing-seam metal roof field",
+      "field_material_atomicity": "PASS_REPEATABLE_FIELD_ONLY",
+      "generated_source_filename": "exec-8b7da87e-740d-4840-88ec-b6ce5efc4421.png",
+      "generated_source_sha256": "01297eecb4e73816627f844e667388f6d5492b65559735706c0d225202215734",
+      "locked_reference_relative_path": "references/variant_0.png",
+      "locked_reference_sha256": "6bc2fb3d703006bfaa13a723ad57df90aeba2f1447814d1aa1c3ca07762b8298",
+      "method": "built_in_imagegen_reference_preserving_reconstruction",
+      "procedural_palette_only": false,
+      "role": "roof-field"
+    }
+  ],
+  "rlasm_version": "1.4.0",
+  "schema": "cityprompt.rlasm-material-provenance@3",
+  "unique_ornament_embedded_in_repeatable_material_swatch_count": 0
+}

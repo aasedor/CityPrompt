@@ -1,0 +1,50 @@
+{
+  "candidate_id": "halifax-painted-clapboard-row-rlasm-v2",
+  "generic_fallback_count": 0,
+  "locked_reference_sha256": "3b3ee4fd17c395e1e0e448b39fa3b31b7e28698fc29c5c2673110754f497a423",
+  "procedural_palette_only_material_count": 0,
+  "records": [
+    {
+      "candidate_card_relative_path": "cards/material-heritage-yellow-clapboard.png",
+      "candidate_card_sha256": "9b8ca0470488f7df7114034001a140386ddd551793291fc8e1369bf854648dcb",
+      "description": "warm heritage-yellow horizontal painted clapboard",
+      "field_material_atomicity": "PASS_REPEATABLE_FIELD_ONLY",
+      "generated_source_filename": "exec-35c5aa8f-7da9-4b43-8847-70d9d79574f4.png",
+      "generated_source_sha256": "9b8ca0470488f7df7114034001a140386ddd551793291fc8e1369bf854648dcb",
+      "locked_reference_relative_path": "references/variant_0.png",
+      "locked_reference_sha256": "3b3ee4fd17c395e1e0e448b39fa3b31b7e28698fc29c5c2673110754f497a423",
+      "method": "built_in_imagegen_reference_preserving_reconstruction",
+      "procedural_palette_only": false,
+      "role": "primary-wall"
+    },
+    {
+      "candidate_card_relative_path": "cards/material-warm-white-painted-wood.png",
+      "candidate_card_sha256": "0acb4b6125a31c2781d8807b91919587e1973cdece4a06b8fbb5faa541c1dae2",
+      "description": "plain warm-white painted wood trim field",
+      "field_material_atomicity": "PASS_REPEATABLE_FIELD_ONLY",
+      "generated_source_filename": "exec-3fe3024b-2b70-4b1f-89db-a19f84a2fe4f.png",
+      "generated_source_sha256": "0acb4b6125a31c2781d8807b91919587e1973cdece4a06b8fbb5faa541c1dae2",
+      "locked_reference_relative_path": "references/variant_0.png",
+      "locked_reference_sha256": "3b3ee4fd17c395e1e0e448b39fa3b31b7e28698fc29c5c2673110754f497a423",
+      "method": "built_in_imagegen_reference_preserving_reconstruction",
+      "procedural_palette_only": false,
+      "role": "trim-field"
+    },
+    {
+      "candidate_card_relative_path": "cards/material-charcoal-asphalt-shingle.png",
+      "candidate_card_sha256": "194e4d3114fcb8399223509d4329d0c8006793f08553172268020a9ac15d3c8c",
+      "description": "medium charcoal-grey asphalt shingle roof field",
+      "field_material_atomicity": "PASS_REPEATABLE_FIELD_ONLY",
+      "generated_source_filename": "exec-93c8b2d2-8da1-48e6-901b-b6575822ba2f.png",
+      "generated_source_sha256": "194e4d3114fcb8399223509d4329d0c8006793f08553172268020a9ac15d3c8c",
+      "locked_reference_relative_path": "references/variant_0.png",
+      "locked_reference_sha256": "3b3ee4fd17c395e1e0e448b39fa3b31b7e28698fc29c5c2673110754f497a423",
+      "method": "built_in_imagegen_reference_preserving_reconstruction",
+      "procedural_palette_only": false,
+      "role": "roof-field"
+    }
+  ],
+  "rlasm_version": "1.4.0",
+  "schema": "cityprompt.rlasm-material-provenance@3",
+  "unique_ornament_embedded_in_repeatable_material_swatch_count": 0
+}

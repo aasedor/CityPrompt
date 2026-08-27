@@ -1,0 +1,14 @@
+{
+  "candidate_id": "halifax-painted-clapboard-row-rlasm-v2",
+  "changes": [
+    "add physical gable-end closure where required",
+    "remove redundant floating standing-seam bars",
+    "replace nonphysical vertical gable-rake approximation with sloped timber members",
+    "widen review cameras without changing model scale"
+  ],
+  "correction_limit": 1,
+  "correction_ordinal": 1,
+  "parent_candidate_id": "halifax-painted-clapboard-row-rlasm-v1",
+  "preserved_prework": true,
+  "schema": "cityprompt.rlasm-bounded-visual-correction@1"
+}

@@ -1,6 +1,6 @@
 # Reference-Locked Atomic Sticker Method (RLASM)
 
-Version: 1.4.0
+Version: 1.5.0
 Status: active, user-approved production direction  
 Machine contract: `reference_locked_atomic_sticker_method.json`
 
@@ -88,6 +88,20 @@ the rejected approach of repeating whole-object or whole-facade photographs.
     Romanesque, storefront, dormer, or other visibly distinct roles. Cards are
     visual authority only; Blender must construct the corresponding physical
     frames, muntins, sills, lintels, arches, glazing, recesses, and returns.
+18. **Pitched roofs require physical end closure.** A gable roof cannot hover
+    over an empty triangular opening. Every visible gable end must have a
+    physical wall carrier whose material and trim follow the locked reference.
+    Openings mounted to that carrier must sit fully outside it or use a real
+    aperture; the carrier may never intersect glazing or brick over a sash.
+19. **Do not model a texture feature twice.** If a reference-matched roof or
+    siding material already contains a repeatable seam, board, or shingle
+    cadence, extra geometry is added only when it represents real profile
+    depth and is projected onto the carrier. Decorative seam bars floating
+    above a roof are forbidden.
+20. **The primary review camera shows the complete building.** Detail and
+    contact views remain required, but `front_corner.png` and `front.png` must
+    frame the full silhouette, foundation, entrance, and roof. A flattering
+    close crop cannot substitute for whole-building identity review.
 
 ## The procedure
 
@@ -267,6 +281,9 @@ loop. After the bounded loops:
   role-specific openings; commit `9fc1bcdf4`.
 - **Approved direction — Calgary v6:** clean precast construction plus atomic
   opening cards; commit `454657070`.
+- **Approved benchmark — Toronto Annex Mansion RLASM v4:** full prework,
+  reference-specific brick/stone/slate, five physical opening families, and
+  zero floating attachments; commit `d1aa8494b`.
 - **Rejected — Halifax v3:** photo fragments tiled across the building.
 - **Rejected — Calgary v3:** compound photo cards repeated over component
   faces, producing a noisy and structurally implausible result.
