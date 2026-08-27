@@ -1,0 +1,211 @@
+{
+  "acronym": "RLASM",
+  "approved_precedents": [
+    {
+      "candidate": "halifax-terminal-warehouse-recovery-v6-review",
+      "commit": "9fc1bcdf4",
+      "lesson": "clean facade materials plus projected role-specific openings"
+    },
+    {
+      "candidate": "calgary-plus15-office-recovery-v6-review",
+      "commit": "454657070",
+      "lesson": "clean precast construction plus atomic opening cards"
+    }
+  ],
+  "bounded_correction_policy": {
+    "cosmetic_only_debt_may_be_disclosed": true,
+    "genuine_3d_failure_action": "quarantine",
+    "maximum_focused_correction_loops": 2,
+    "pilot_count": 1,
+    "open_ended_generation_loop_allowed": false
+  },
+  "card_taxonomy": {
+    "material_swatch": {
+      "constraints": [
+        "seamless",
+        "orthographic",
+        "even_lighting",
+        "world_scale_capable"
+      ],
+      "use": "broad brick, stone, siding, metal, roof, or glass surfaces"
+    },
+    "object_card": {
+      "constraints": [
+        "isolated_object",
+        "neutral_background",
+        "no_people",
+        "no_text",
+        "no_cast_shadow",
+        "no_adjacent_objects"
+      ],
+      "use": "unique dome, spire, monitor, chimney, canopy, bridge part, ornament, or trim assembly"
+    },
+    "occupied_depth_card": {
+      "constraints": [
+        "behind_physical_glazing",
+        "behind_physical_mullions",
+        "never_on_exterior_face"
+      ],
+      "use": "interior signal behind glazing"
+    },
+    "opening_card": {
+      "constraints": [
+        "one_opening_only",
+        "no_adjacent_facade",
+        "aligned",
+        "perspective_free"
+      ],
+      "use": "single window, door, storefront, dormer, or occupied-depth view"
+    }
+  },
+  "hard_stops": [
+    "wrong_archetype_or_sibling_identity",
+    "missing_unique_role",
+    "missing_required_card",
+    "generic_fallback",
+    "whole_facade_photo_used_as_material",
+    "whole_object_card_repeated_on_component_faces",
+    "bricked_printed_or_flat_opening",
+    "missing_physical_opening_depth",
+    "incomplete_identity_defining_roof_dome_bridge_or_system",
+    "leak_ghost_zfight_stretch_duplicate_stack_broken_glass_or_lost_parallax",
+    "review_image_not_rendered_from_actual_3d_model",
+    "scale_started_before_pilot_approval"
+  ],
+  "invariants": {
+    "actual_3d_render_required_for_review": true,
+    "broad_surface_world_scale_material_required": true,
+    "compound_object_card_repeated_on_child_faces_forbidden": true,
+    "generic_fallback_allowed": false,
+    "git_review_handoff_required": true,
+    "image_generation_scope": "clean reference-matched cards and material swatches only",
+    "non_overwriting_candidates_required": true,
+    "physical_opening_depth_required": true,
+    "same_semantic_role_card_reuse_allowed": true,
+    "unique_role_requires_card": true,
+    "user_visual_approval_before_scale": true,
+    "whole_facade_photo_material_forbidden": true
+  },
+  "name": "Reference-Locked Atomic Sticker Method",
+  "procedure_id": "reference-locked-atomic-sticker-method",
+  "purpose": "Create reference-specific, physically credible, scalable 3D buildings while preserving the successful Sticker Method and forbidding tiled facade-photo shortcuts.",
+  "required_git_review_files": [
+    "preview.png",
+    "prework-reference-sheet.png",
+    "reference-rejected-corrected.png"
+  ],
+  "scale_contract": {
+    "consolidate_materials_by_identical_binding_tuple": true,
+    "material_per_surface_forbidden_in_production_template": true,
+    "maximum_catalogue_target": 500,
+    "one_pilot_before_bounded_scale": true,
+    "optimisation_must_preserve_approved_visual_output": true
+  },
+  "schema": "cityprompt.reference-locked-atomic-sticker-method@1",
+  "stages": [
+    {
+      "id": "reference_lock",
+      "required_outputs": [
+        "reference_inventory",
+        "archetype_id",
+        "variant_id",
+        "identity_statement",
+        "source_provenance"
+      ]
+    },
+    {
+      "id": "prework_reference_sheet",
+      "required_outputs": [
+        "prework-reference-sheet.png",
+        "massing_notes",
+        "storey_and_bay_cadence",
+        "material_zones",
+        "unique_role_inventory",
+        "approved_repeat_roles"
+      ]
+    },
+    {
+      "id": "atomic_card_set",
+      "required_outputs": [
+        "card_manifest",
+        "material_swatches",
+        "opening_cards",
+        "object_cards",
+        "occupied_depth_cards",
+        "complete_role_to_card_or_material_binding"
+      ]
+    },
+    {
+      "id": "physical_construction",
+      "required_outputs": [
+        "massing",
+        "roof_silhouette",
+        "physical_apertures",
+        "returns",
+        "frames",
+        "mullions",
+        "role_specific_geometry"
+      ]
+    },
+    {
+      "id": "semantic_binding",
+      "required_outputs": [
+        "binding_audit",
+        "zero_missing_roles",
+        "zero_generic_fallbacks",
+        "opening_cards_behind_physical_glazing"
+      ]
+    },
+    {
+      "id": "single_non_overwriting_pilot",
+      "required_outputs": [
+        "new_candidate_id",
+        "preview.png",
+        "prework-reference-sheet.png",
+        "reference-rejected-corrected.png",
+        "source_card_scene_and_render_hashes"
+      ]
+    },
+    {
+      "id": "reference_visual_review",
+      "required_outputs": [
+        "identity_review",
+        "silhouette_review",
+        "unique_object_completeness_review",
+        "opening_depth_review",
+        "material_specificity_review",
+        "user_visual_disposition"
+      ]
+    },
+    {
+      "id": "validation_and_evidence_freeze",
+      "required_outputs": [
+        "reference_hashes",
+        "card_hashes",
+        "material_hashes",
+        "role_bindings",
+        "model_hash",
+        "render_hashes",
+        "truthful_validator_results"
+      ]
+    },
+    {
+      "id": "post_approval_optimisation",
+      "required_outputs": [
+        "material_binding_tuple_consolidation",
+        "visual_equivalence_check",
+        "practical_batch_runtime"
+      ]
+    },
+    {
+      "id": "git_review_handoff",
+      "required_outputs": [
+        "reviewed_deliverables_only",
+        "git_lfs_for_large_images",
+        "explicit_push_authorization"
+      ]
+    }
+  ],
+  "status": "active_user_approved_direction",
+  "version": "1.0.0"
+}
