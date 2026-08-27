@@ -1,0 +1,74 @@
+{
+  "actual_3d_model": true,
+  "additive_overview_render": {
+    "bytes": 2341237,
+    "path": "overview.png",
+    "sha256": "724cbbdf149c73f1fbefd57555c632e90d7696f9a3c61ec1e307bf9c1a4f2565"
+  },
+  "blend": {
+    "bytes": 262265,
+    "path": "toronto-annex-mansion-rlasm-v4.blend",
+    "sha256": "61e50d69f3a92dd4528b44174a307176498f2f6841adb26b829c22cbedd1e997"
+  },
+  "candidate_id": "toronto-annex-mansion-rlasm-v4",
+  "floating_count": 0,
+  "generic_fallback_count": 0,
+  "generic_window_family_count": 0,
+  "glb": {
+    "bytes": 11015908,
+    "path": "toronto-annex-mansion-rlasm-v4.glb",
+    "sha256": "50005138ba8eb55526f079fdba61df91baf90876f6852cd0f3bcd87a0d7f4219"
+  },
+  "material_provenance_record_count": 3,
+  "next_phase": "USER_VISUAL_REVIEW_BEFORE_ANY_CORRECTION_OR_SCALE_UP",
+  "phone_review_preview": {
+    "bytes": 2341237,
+    "path": "preview.png",
+    "sha256": "724cbbdf149c73f1fbefd57555c632e90d7696f9a3c61ec1e307bf9c1a4f2565"
+  },
+  "physical_opening_assembly_count": 25,
+  "predecessor_disposition": {
+    "candidate_id": "toronto-annex-mansion-rlasm-v3",
+    "status": "REJECTED_GENERIC_WINDOW_LANGUAGE"
+  },
+  "procedural_palette_only_material_count": 0,
+  "reference_specific_window_family_count": 3,
+  "renders": [
+    {
+      "bytes": 2639459,
+      "path": "front_corner.png",
+      "sha256": "b29f8103ed49f494a756777417e49efabef6ea8e0f12a56ed12b447b70d4936e"
+    },
+    {
+      "bytes": 2407404,
+      "path": "front.png",
+      "sha256": "b12f167e1c0dec4c494fc64a6807baca62f845f928234d78c4d935816a015c32"
+    },
+    {
+      "bytes": 2613269,
+      "path": "side_contact.png",
+      "sha256": "2a00717ec5a048339f4d94c8f81bda76ccb7fc37a223a1226211fa77221b9870"
+    },
+    {
+      "bytes": 2642128,
+      "path": "roof_audit.png",
+      "sha256": "5f7c1819bbf9d2bcad9e92e3c4b2a4636c4f455e25d58242fcc2836c349b1fd3"
+    }
+  ],
+  "review_comparison": {
+    "bytes": 2455369,
+    "path": "reference-actual3d-comparison.png",
+    "sha256": "0f2cbebb454f47f47916d4b0a1482fef78722e869fdc54e9b7cb242ee99faadb"
+  },
+  "rlasm_version": "1.4.0",
+  "schema": "cityprompt.rlasm-single-family-pilot-evidence@2",
+  "status": "PASS_ACTUAL_3D_PILOT_AWAITING_USER_VISUAL_REVIEW",
+  "unique_ornament_embedded_in_repeatable_material_swatch_count": 0,
+  "whole_facade_card_count": 0,
+  "window_specificity_comparison": {
+    "bytes": 1725641,
+    "path": "window-specificity-comparison.png",
+    "sha256": "da9b711fa0c34c7aea497f6b51dfa763fabab735156ab8055d695b9a6e0df450"
+  },
+  "world_scale_object_coordinate_material_count": 3
+}

@@ -57,7 +57,9 @@
         "one_opening_only",
         "no_adjacent_facade",
         "aligned",
-        "perspective_free"
+        "perspective_free",
+        "exact_opening_family_role",
+        "placement_zone_recorded"
       ],
       "use": "single window, door, storefront, dormer, or occupied-depth view"
     }
@@ -74,6 +76,7 @@
     "whole_object_card_repeated_on_component_faces",
     "bricked_printed_or_flat_opening",
     "missing_physical_opening_depth",
+    "generic_window_family_substituted_for_reference_specific_opening_hierarchy",
     "unsupported_or_floating_attachment",
     "incomplete_identity_defining_roof_dome_bridge_or_system",
     "leak_ghost_zfight_stretch_duplicate_stack_broken_glass_or_lost_parallax",
@@ -99,6 +102,18 @@
     "unique_ornament_requires_separate_atomic_card_and_physical_role": true,
     "broad_material_mapping_coordinate_space": "object_or_world_coordinates_or_real_unit_uv",
     "per_object_normalized_generated_coordinates_for_broad_material_forbidden": true,
+    "opening_family_inventory_required_when_reference_contains_multiple_roles": true,
+    "opening_family_inventory_fields": [
+      "shape",
+      "proportion",
+      "outer_frame_material",
+      "inner_muntin_material",
+      "surround_or_hood_geometry",
+      "placement_zone",
+      "occupied_depth_treatment"
+    ],
+    "one_universal_sash_for_distinct_reference_roles_forbidden": true,
+    "physical_frame_muntin_sill_lintel_arch_glazing_recess_and_return_required_as_applicable": true,
     "physical_opening_depth_required": true,
     "same_semantic_role_card_reuse_allowed": true,
     "unique_role_requires_card": true,
@@ -139,6 +154,8 @@
         "massing_notes",
         "storey_and_bay_cadence",
         "material_zones",
+        "opening_family_hierarchy",
+        "opening_family_shape_proportion_material_surround_and_placement_inventory",
         "unique_role_inventory",
         "approved_repeat_roles"
       ]
@@ -153,6 +170,7 @@
         "material_swatch_atomicity_preflight",
         "zero_unique_ornament_embedded_in_repeatable_material_swatches",
         "opening_cards",
+        "opening_family_role_and_placement_bindings",
         "object_cards",
         "occupied_depth_cards",
         "complete_role_to_card_or_material_binding"
@@ -170,6 +188,7 @@
         "returns",
         "frames",
         "mullions",
+        "opening_family_specific_frames_muntins_sills_lintels_arches_and_surrounds",
         "role_specific_geometry"
       ]
     },
@@ -235,5 +254,5 @@
     }
   ],
   "status": "active_user_approved_direction",
-  "version": "1.3.0"
+  "version": "1.4.0"
 }

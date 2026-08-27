@@ -1,6 +1,6 @@
 # Reference-Locked Atomic Sticker Method (RLASM)
 
-Version: 1.3.0
+Version: 1.4.0
 Status: active, user-approved production direction  
 Machine contract: `reference_locked_atomic_sticker_method.json`
 
@@ -80,6 +80,14 @@ the rejected approach of repeating whole-object or whole-facade photographs.
     in real building units. Per-object normalized `Generated` coordinates are
     forbidden for production broad surfaces because the same swatch stretches
     differently across objects with different proportions.
+17. **Opening hierarchies are reference-specific.** When the locked reference
+    contains multiple window or door families, prework must inventory each by
+    shape, proportion, outer-frame material, inner muntin material, surround or
+    hood geometry, placement zone, and occupied-depth treatment. One universal
+    sash cannot stand in for main double-hung, turret-narrow, gable-arched,
+    Romanesque, storefront, dormer, or other visibly distinct roles. Cards are
+    visual authority only; Blender must construct the corresponding physical
+    frames, muntins, sills, lintels, arches, glazing, recesses, and returns.
 
 ## The procedure
 
@@ -101,7 +109,8 @@ Before Blender work, make a reference sheet that records:
 - overall massing, footprint, storeys, roof form, and silhouette;
 - facade hierarchy, bay cadence, vertical and horizontal divisions;
 - material zones and their transitions;
-- all opening families and their proportions;
+- all opening families, proportions, frame and muntin materials, surround or
+  hood geometry, placement zones, and allowed repeat counts;
 - every unique architectural role, including roof-only and rear/side roles;
 - repeated roles that are explicitly allowed to share a card;
 - uncertain or hidden areas that require conservative reconstruction.
@@ -115,7 +124,7 @@ Use the following card taxonomy:
 | Card type | Purpose | Required constraints |
 | --- | --- | --- |
 | Material swatch | Broad brick, stone, siding, metal, roof, or glass surfaces | Seamless, orthographic, even lighting, world-scale capable, visibly/provenancially tied to the locked reference, repeatable field only, and free of unique ornament |
-| Opening card | A single window, door, storefront, dormer, or occupied-depth view | One opening only; no adjacent facade; aligned and perspective-free |
+| Opening card | A single window, door, storefront, dormer, or occupied-depth view | One opening only; no adjacent facade; aligned and perspective-free; labeled with exact opening-family role and placement zone |
 | Object card | A unique dome, spire, monitor, chimney, canopy, bridge part, ornament, or trim assembly | Isolated object; neutral background; no people, text, cast shadow, or neighbours |
 | Occupied-depth card | Interior signal behind glazing | Used behind physical glass/mullions; never on the exterior face |
 
@@ -231,6 +240,9 @@ Stop and create a fresh, non-overwriting candidate when any of these occur:
 - whole-object card repeated on component faces;
 - bricked, printed, or flat openings;
 - missing physical window/door depth;
+- one generic window or door family substituted for a reference-specific
+  hierarchy of distinct opening proportions, frames, muntins, arches, hoods,
+  surrounds, or placement roles;
 - unsupported or floating attachment, including a frame or card that is
   visually near a wall but does not physically contact its carrier surface;
 - incomplete roof, dome, bridge, or other identity-defining system;

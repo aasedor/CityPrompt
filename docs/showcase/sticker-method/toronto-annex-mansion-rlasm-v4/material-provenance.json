@@ -1,0 +1,106 @@
+{
+  "candidate_id": "toronto-annex-mansion-rlasm-v4",
+  "correction_of": "toronto-annex-mansion-rlasm-v3",
+  "generic_fallback_count": 0,
+  "locked_reference_sha256": "239c4b5a2d88739d466be5bac7cae4520f50c67359390f65e0e6f626dd9523f8",
+  "material_reference_comparison_sha256": "6a19f1f3750d8f1f8e0be14de4f906afe613a0c7cf81000558219be6f1a0a300",
+  "opening_card_records": [
+    {
+      "candidate_card_relative_path": "cards/opening-main-tall-double-hung-sash.png",
+      "candidate_card_sha256": "75d7806fccd1dc85fd329e620db8d569d65212a8ba313f23d53befc76abb65ef",
+      "description": "warm wood tall double-hung sash with cream inner muntins, buff stone lintel and sill",
+      "generated_source_filename": "exec-8afdb563-1fb0-457f-9ac7-c70834f19276.png",
+      "generated_source_sha256": "75d7806fccd1dc85fd329e620db8d569d65212a8ba313f23d53befc76abb65ef",
+      "locked_reference_relative_path": "references/variant_0.png",
+      "locked_reference_sha256": "239c4b5a2d88739d466be5bac7cae4520f50c67359390f65e0e6f626dd9523f8",
+      "method": "built_in_imagegen_reference_preserving_reconstruction",
+      "role": "opening-main-tall-double-hung-sash",
+      "visual_approval_status": "AWAITING_USER_PILOT_REVIEW"
+    },
+    {
+      "candidate_card_relative_path": "cards/opening-turret-narrow-sash.png",
+      "candidate_card_sha256": "529a4799f40fd4dc1c3a677aaeb697cbbd26ab5eae07aa6466ed7ac65a89a142",
+      "description": "very narrow turret sash with warm occupied depth and shallow curved buff-stone hood",
+      "generated_source_filename": "exec-57153def-de1e-4030-b3ea-689e13d60d6e.png",
+      "generated_source_sha256": "529a4799f40fd4dc1c3a677aaeb697cbbd26ab5eae07aa6466ed7ac65a89a142",
+      "locked_reference_relative_path": "references/variant_0.png",
+      "locked_reference_sha256": "239c4b5a2d88739d466be5bac7cae4520f50c67359390f65e0e6f626dd9523f8",
+      "method": "built_in_imagegen_reference_preserving_reconstruction",
+      "role": "opening-turret-narrow-sash",
+      "visual_approval_status": "AWAITING_USER_PILOT_REVIEW"
+    },
+    {
+      "candidate_card_relative_path": "cards/opening-upper-gable-arched-pair.png",
+      "candidate_card_sha256": "a049e6c4ae714799ee4e5156d1fdcb0ca96659beda8e498a1048c63bbdd134aa",
+      "description": "paired narrow round-arched gable windows with individual stone hoods and shared sill",
+      "generated_source_filename": "exec-46137c9f-5a4d-4268-8c89-61633dba7044.png",
+      "generated_source_sha256": "a049e6c4ae714799ee4e5156d1fdcb0ca96659beda8e498a1048c63bbdd134aa",
+      "locked_reference_relative_path": "references/variant_0.png",
+      "locked_reference_sha256": "239c4b5a2d88739d466be5bac7cae4520f50c67359390f65e0e6f626dd9523f8",
+      "method": "built_in_imagegen_reference_preserving_reconstruction",
+      "role": "opening-upper-gable-arched-pair",
+      "visual_approval_status": "AWAITING_USER_PILOT_REVIEW"
+    }
+  ],
+  "procedural_palette_only_material_count": 0,
+  "records": [
+    {
+      "candidate_card_relative_path": "cards/material-primary-wall-reference-matched.png",
+      "candidate_card_sha256": "a04408de6383214db5cc5114e55982b30913418f6bfd97d3f80dcdf56270bd4b",
+      "description": "narrow late-19th-century muted red/terracotta brick with pale recessed mortar",
+      "field_material_atomicity": "PASS_REPEATABLE_FIELD_ONLY",
+      "generated_source_filename": "exec-a0068f94-5396-40fb-9fe3-3c89a2d1f522.png",
+      "generated_source_sha256": "a04408de6383214db5cc5114e55982b30913418f6bfd97d3f80dcdf56270bd4b",
+      "locked_reference_relative_path": "references/variant_0.png",
+      "locked_reference_sha256": "239c4b5a2d88739d466be5bac7cae4520f50c67359390f65e0e6f626dd9523f8",
+      "method": "built_in_imagegen_reference_preserving_reconstruction",
+      "procedural_palette_only": false,
+      "prompt": "Reconstruct only the locked Toronto reference's warm muted red late-19th-century clay brick field as a seamless orthographic world-scale material.",
+      "role": "primary-wall",
+      "visual_approval_status": "AWAITING_USER_PILOT_REVIEW"
+    },
+    {
+      "candidate_card_relative_path": "cards/material-secondary-masonry-reference-matched.png",
+      "candidate_card_sha256": "e532ba6f578010fdc50e96beed6ad23a19ad104cea623cfd3a393ac6a4567c35",
+      "description": "plain broad rock-faced buff sandstone field without carved ornament",
+      "field_material_atomicity": "PASS_REPEATABLE_FIELD_ONLY",
+      "generated_source_filename": "exec-cdb52392-ee10-4201-a445-4b0b4a98325a.png",
+      "generated_source_sha256": "e532ba6f578010fdc50e96beed6ad23a19ad104cea623cfd3a393ac6a4567c35",
+      "locked_reference_relative_path": "references/variant_0.png",
+      "locked_reference_sha256": "239c4b5a2d88739d466be5bac7cae4520f50c67359390f65e0e6f626dd9523f8",
+      "method": "built_in_imagegen_reference_preserving_reconstruction",
+      "procedural_palette_only": false,
+      "prompt": "Reconstruct only the plain broad rock-faced buff sandstone field from the locked Toronto reference; no carved ornament, medallions, friezes, bands or arches.",
+      "role": "secondary-masonry",
+      "visual_approval_status": "AWAITING_USER_PILOT_REVIEW"
+    },
+    {
+      "candidate_card_relative_path": "cards/material-roof-field-reference-matched.png",
+      "candidate_card_sha256": "c9332a4be11a6abf247c3f44afdd459cdc7759643b16ffc85086e20b1d8902a0",
+      "description": "cool blue-grey small natural slate shingles in tight courses",
+      "field_material_atomicity": "PASS_REPEATABLE_FIELD_ONLY",
+      "generated_source_filename": "exec-3d4d2228-8adc-4162-8dc1-68751580f870.png",
+      "generated_source_sha256": "c9332a4be11a6abf247c3f44afdd459cdc7759643b16ffc85086e20b1d8902a0",
+      "locked_reference_relative_path": "references/variant_0.png",
+      "locked_reference_sha256": "239c4b5a2d88739d466be5bac7cae4520f50c67359390f65e0e6f626dd9523f8",
+      "method": "built_in_imagegen_reference_preserving_reconstruction",
+      "procedural_palette_only": false,
+      "prompt": "Reconstruct only the repeatable blue-grey natural slate roof field as a seamless orthographic material; no ridge, flashing, chimney, wall or ornament.",
+      "role": "roof-field",
+      "visual_approval_status": "AWAITING_USER_PILOT_REVIEW"
+    }
+  ],
+  "rejected_records": [
+    {
+      "reason": "Decorative carved bands were embedded in the broad repeatable stone field and would tile unique ornament across the building.",
+      "role": "secondary-masonry",
+      "selected": false,
+      "sha256": "d34967abcb19545d8edee200fa2f04bd0b6975394167e10465d26ccb260a2de9",
+      "source": "exec-e247c800-1169-4033-861a-9333e2cea280.png",
+      "status": "REJECTED_ATOMICITY_ORNAMENT_IN_BROAD_SWATCH"
+    }
+  ],
+  "rlasm_version": "1.3.0",
+  "schema": "cityprompt.rlasm-material-provenance@2",
+  "unique_ornament_embedded_in_repeatable_material_swatch_count": 0
+}
