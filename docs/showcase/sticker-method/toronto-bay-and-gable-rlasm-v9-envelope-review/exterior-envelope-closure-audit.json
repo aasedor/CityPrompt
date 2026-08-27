@@ -1,0 +1,110 @@
+{
+  "blend": {
+    "bytes": 228746,
+    "path": "model\\toronto-bay-and-gable-house-rlasm-v9.blend",
+    "sha256": "7e18e35bf62521f28c5d319fa26cf709bb68df1cd8ead1cd9a3eba36cfcf8461"
+  },
+  "candidate_id": "toronto-bay-and-gable-house-rlasm-v9",
+  "closures": [
+    {
+      "bounds": {
+        "x": [
+          -4.625,
+          4.625
+        ],
+        "y": [
+          -7.36,
+          -7.0
+        ],
+        "z": [
+          7.1,
+          10.23
+        ]
+      },
+      "front_ray_samples": [
+        {
+          "hit_object": "CP_BayGable_PhysicalMainFrontGableEnd",
+          "hit_y": -7.36,
+          "x": 1.5,
+          "z": 8.0
+        },
+        {
+          "hit_object": "CP_BayGable_PhysicalMainFrontGableEnd",
+          "hit_y": -7.36,
+          "x": 2.25,
+          "z": 7.65
+        },
+        {
+          "hit_object": "CP_BayGable_PhysicalMainFrontGableEnd",
+          "hit_y": -7.36,
+          "x": 3.15,
+          "z": 7.4
+        },
+        {
+          "hit_object": "CP_BayGable_PhysicalMainFrontGableEnd",
+          "hit_y": -7.36,
+          "x": 1.55,
+          "z": 8.75
+        },
+        {
+          "hit_object": "CP_BayGable_PhysicalMainFrontGableEnd",
+          "hit_y": -7.36,
+          "x": 2.25,
+          "z": 8.1
+        }
+      ],
+      "material": "MAT_BayGable_WarmRedBrick_ReferenceMatched",
+      "object": "CP_BayGable_PhysicalMainFrontGableEnd"
+    },
+    {
+      "bounds": {
+        "x": [
+          -4.625,
+          4.625
+        ],
+        "y": [
+          7.4,
+          7.76
+        ],
+        "z": [
+          7.1,
+          10.23
+        ]
+      },
+      "material": "MAT_BayGable_WarmRedBrick_ReferenceMatched",
+      "object": "CP_BayGable_PhysicalMainRearGableEnd"
+    }
+  ],
+  "hard_rule": "NO_EXPOSED_SKY_THROUGH_EXTERIOR_ENVELOPE_UNLESS_AUTHORED_OPENING",
+  "parent_candidate_id": "toronto-bay-and-gable-house-rlasm-v8",
+  "promotion": {
+    "approved": false,
+    "git_push_allowed": false,
+    "next": "USER_VISUAL_REVIEW_BEFORE_PROMOTION"
+  },
+  "renders": [
+    {
+      "bytes": 1921031,
+      "path": "renders\\front.png",
+      "sha256": "f0875f3df62f9a640018d1bdd37b4b5cff95fab9f4cc6da4fdeb83163b524851"
+    },
+    {
+      "bytes": 1981157,
+      "path": "renders\\front_corner.png",
+      "sha256": "af68cd60ddec096e07a4eb033632ab7daaa5d8e4f91e32ecd0a22e2a9466df67"
+    },
+    {
+      "bytes": 2081747,
+      "path": "renders\\side_contact.png",
+      "sha256": "afea120fa07d7b2982f4563988a5d9fbfdf4204b727c090291fa1acc0359637a"
+    }
+  ],
+  "reported_defect": "large triangular opening at the upper-right front of the Toronto house",
+  "schema": "cityprompt.rlasm-exterior-envelope-closure-audit@1",
+  "source_blend": {
+    "bytes": 221653,
+    "path": "C:\\Users\\andre\\OneDrive\\Documents\\PlaygroundNEW\\3D-Maps\\artifacts\\rlasm-three-building-confirmation-v1\\01-toronto-bay-and-gable-house-rlasm-v8\\model\\toronto-bay-and-gable-house-rlasm-v8.blend",
+    "sha256": "c64348d26eeccc4fb49243338d367b04a6196b1810f3abe3f0bb41c05468f8dd"
+  },
+  "status": "PASS_MAIN_FRONT_AND_REAR_GABLE_ENVELOPE_CLOSED_AWAITING_VISUAL_REVIEW"
+}
