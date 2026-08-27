@@ -1,0 +1,54 @@
+{
+  "candidate_id": "vancouver-craftsman-bungalow-rlasm-v4",
+  "generic_fallback_count": 0,
+  "locked_reference_sha256": "4039b15d52fbc3b8afaa514df5e104b677b1c49d80b5697fe0dfc4b95e8ba9e6",
+  "material_reference_comparison_relative_path": "material-reference-comparison.png",
+  "material_reference_comparison_sha256": "f4079a081be4ef2ec9c880ddc787c7890adffcb20a7a0ac5637733bec6beb671",
+  "procedural_palette_only_material_count": 0,
+  "records": [
+    {
+      "candidate_card_relative_path": "cards/material-primary-wall-reference-matched.png",
+      "candidate_card_sha256": "cb341dcbaa049ce7141b909ef05340f5f4a64b88e44336045cbe243058ddb64c",
+      "description": "warm natural horizontal cedar siding",
+      "generated_source_filename": "exec-b15b316d-8cf7-4c9c-b3f9-d1a63207a9f4.png",
+      "generated_source_sha256": "cb341dcbaa049ce7141b909ef05340f5f4a64b88e44336045cbe243058ddb64c",
+      "locked_reference_relative_path": "references/variant_0.png",
+      "locked_reference_sha256": "4039b15d52fbc3b8afaa514df5e104b677b1c49d80b5697fe0dfc4b95e8ba9e6",
+      "method": "built_in_imagegen_reference_preserving_reconstruction",
+      "procedural_palette_only": false,
+      "prompt": "Reconstruct the locked Craftsman reference's medium honey-brown horizontal cedar siding as a clean seamless orthographic world-scale albedo swatch, preserving board grain and subtle tonal variation.",
+      "role": "primary-wall",
+      "visual_approval_status": "AWAITING_USER_PILOT_REVIEW"
+    },
+    {
+      "candidate_card_relative_path": "cards/material-secondary-masonry-reference-matched.png",
+      "candidate_card_sha256": "6000fdea4a02ae5c41f71ce1c29d3f28870f9ce5e4d319136fd998dfd8e44879",
+      "description": "irregular rounded grey/taupe river fieldstone with recessed mortar",
+      "generated_source_filename": "exec-58bd26e5-6952-4488-9649-94354bc5bc64.png",
+      "generated_source_sha256": "6000fdea4a02ae5c41f71ce1c29d3f28870f9ce5e4d319136fd998dfd8e44879",
+      "locked_reference_relative_path": "references/variant_0.png",
+      "locked_reference_sha256": "4039b15d52fbc3b8afaa514df5e104b677b1c49d80b5697fe0dfc4b95e8ba9e6",
+      "method": "built_in_imagegen_reference_preserving_reconstruction",
+      "procedural_palette_only": false,
+      "prompt": "Reconstruct the locked Craftsman reference's irregular rounded river fieldstone in mixed grey, taupe and muted brown with recessed warm-grey mortar as a seamless orthographic swatch.",
+      "role": "secondary-masonry",
+      "visual_approval_status": "AWAITING_USER_PILOT_REVIEW"
+    },
+    {
+      "candidate_card_relative_path": "cards/material-roof-field-reference-matched.png",
+      "candidate_card_sha256": "6876962b9247bed8087a6741f957f04b0474b609420e6bc5fd84549aef93f33f",
+      "description": "small-scale charcoal-brown asphalt shingles",
+      "generated_source_filename": "exec-015f7c52-318d-4b29-8d93-7489fe3a7c21.png",
+      "generated_source_sha256": "6876962b9247bed8087a6741f957f04b0474b609420e6bc5fd84549aef93f33f",
+      "locked_reference_relative_path": "references/variant_0.png",
+      "locked_reference_sha256": "4039b15d52fbc3b8afaa514df5e104b677b1c49d80b5697fe0dfc4b95e8ba9e6",
+      "method": "built_in_imagegen_reference_preserving_reconstruction",
+      "procedural_palette_only": false,
+      "prompt": "Reconstruct the locked Craftsman reference's small-scale charcoal-brown asphalt shingle roof as a seamless orthographic swatch with subtle granular variation.",
+      "role": "roof-field",
+      "visual_approval_status": "AWAITING_USER_PILOT_REVIEW"
+    }
+  ],
+  "rlasm_version": "1.2.0",
+  "schema": "cityprompt.rlasm-material-provenance@1"
+}

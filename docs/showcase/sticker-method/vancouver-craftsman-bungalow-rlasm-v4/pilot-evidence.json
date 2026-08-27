@@ -1,0 +1,48 @@
+{
+  "actual_3d_model": true,
+  "atomic_card_count": 8,
+  "blend": {
+    "bytes": 188973,
+    "path": "vancouver-craftsman-bungalow-rlasm-v4.blend",
+    "sha256": "ed14c90bf30034a47c381878d6db3150c87d4c0d5459d7f0db7bbaadc7cdeb6e"
+  },
+  "candidate_id": "vancouver-craftsman-bungalow-rlasm-v4",
+  "floating_count": 0,
+  "generic_fallback_count": 0,
+  "glb": {
+    "bytes": 10548036,
+    "path": "vancouver-craftsman-bungalow-rlasm-v4.glb",
+    "sha256": "eff4d2a68cc589c73e7c599f1e1693425d9ef024060e7957d1e7fac7f41407e4"
+  },
+  "material_provenance_record_count": 3,
+  "material_reference_comparison_sha256": "f4079a081be4ef2ec9c880ddc787c7890adffcb20a7a0ac5637733bec6beb671",
+  "next_phase": "USER_VISUAL_REVIEW_BEFORE_OTHER_TWO_HOUSES",
+  "physical_opening_assembly_count": 12,
+  "procedural_palette_only_material_count": 0,
+  "renders": [
+    {
+      "bytes": 2303703,
+      "path": "front_corner.png",
+      "sha256": "9126edc2126770507e9c0823cda97ed536bb4c60b6f2d70617f720bf3fe842e8"
+    },
+    {
+      "bytes": 2075650,
+      "path": "front.png",
+      "sha256": "e8f0ae7bc99fade02ad83c472205c71c7f7d9831e978cc9583d9614116aa98e5"
+    },
+    {
+      "bytes": 2559745,
+      "path": "side_contact.png",
+      "sha256": "89d1035cb5575d07b066851666e04e0f1993d8f132d0d1cd5f5d75fda5087c51"
+    },
+    {
+      "bytes": 2569197,
+      "path": "roof_audit.png",
+      "sha256": "c6b3c007318867ffcf2b20e47507f2ec5d0a1bda3be58a742a0aa8c383b92789"
+    }
+  ],
+  "rlasm_version": "1.2.0",
+  "schema": "cityprompt.rlasm-single-family-pilot-evidence@1",
+  "status": "PASS_ACTUAL_3D_PILOT_AWAITING_USER_VISUAL_REVIEW",
+  "whole_facade_card_count": 0
+}
