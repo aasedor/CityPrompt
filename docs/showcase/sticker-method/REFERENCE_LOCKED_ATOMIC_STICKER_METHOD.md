@@ -1,6 +1,6 @@
 # Reference-Locked Atomic Sticker Method (RLASM)
 
-Version: 1.2.0
+Version: 1.3.0
 Status: active, user-approved production direction  
 Machine contract: `reference_locked_atomic_sticker_method.json`
 
@@ -69,6 +69,17 @@ the rejected approach of repeating whole-object or whole-facade photographs.
     from the locked reference or to a separately approved reference-matched
     reconstruction. The manifest must record that provenance and a visual
     comparison; `generic_fallback_count = 0` is invalid without both.
+15. **Repeatable material fields contain no unique ornament.** A broad brick,
+    stone, siding, metal, or roof swatch may contain only the repeatable field
+    material. Carved bands, medallions, arches, friezes, ridge pieces, finials,
+    decorative panels, and other unique architecture must be separate atomic
+    cards and physical roles. If unique ornament appears in a repeatable swatch,
+    reject that swatch before Blender work rather than tile the mistake.
+16. **World-scale materials use real spatial units.** Broad material mapping
+    must use object/world coordinates or controlled UVs whose scale is measured
+    in real building units. Per-object normalized `Generated` coordinates are
+    forbidden for production broad surfaces because the same swatch stretches
+    differently across objects with different proportions.
 
 ## The procedure
 
@@ -103,7 +114,7 @@ Use the following card taxonomy:
 
 | Card type | Purpose | Required constraints |
 | --- | --- | --- |
-| Material swatch | Broad brick, stone, siding, metal, roof, or glass surfaces | Seamless, orthographic, even lighting, world-scale capable, and visibly/provenancially tied to the locked reference |
+| Material swatch | Broad brick, stone, siding, metal, roof, or glass surfaces | Seamless, orthographic, even lighting, world-scale capable, visibly/provenancially tied to the locked reference, repeatable field only, and free of unique ornament |
 | Opening card | A single window, door, storefront, dormer, or occupied-depth view | One opening only; no adjacent facade; aligned and perspective-free |
 | Object card | A unique dome, spire, monitor, chimney, canopy, bridge part, ornament, or trim assembly | Isolated object; neutral background; no people, text, cast shadow, or neighbours |
 | Occupied-depth card | Interior signal behind glazing | Used behind physical glass/mullions; never on the exterior face |
@@ -114,6 +125,11 @@ For each material, record either source-image SHA plus crop coordinates or the
 approved reconstruction input/output hashes. Include a reference-versus-swatch
 comparison. A hand-drawn or procedural pattern chosen only by material class
 and approximate colour is a generic fallback and must fail prework.
+Run an atomicity preflight on every material swatch. A swatch containing a
+carved band, medallion, decorative arch, finial, roof junction, or any other
+non-repeatable object fails with
+`unique_ornament_embedded_in_repeatable_material_swatch` and is replaced by a
+plain field swatch plus separate atomic geometry/card roles.
 
 Required output: a complete card manifest in which every unique role maps to
 exactly one approved card or clean material binding.
@@ -140,6 +156,8 @@ plus an attached-object contact audit proving zero unsupported/floating parts.
 
 - Keep the role card as the visual authority for that role.
 - Apply clean material swatches to compound shells and broad surfaces.
+- Map those swatches with object/world coordinates or controlled real-unit UVs;
+  do not use per-object normalized `Generated` coordinates on broad surfaces.
 - Verify the bound swatch against its reference material zone before rendering;
   semantic role, approximate hue, and a plausible pattern are not sufficient.
 - Place opening/occupied-depth cards behind physical glazing and frames.
@@ -206,6 +224,9 @@ Stop and create a fresh, non-overwriting candidate when any of these occur:
 - generic fallback material/card;
 - unprovenanced, palette-only, or procedurally generic material swatch, even
   when its filename and semantic role are correct;
+- unique ornament or a unique architectural object embedded in a repeatable
+  broad material swatch;
+- broad material stretched by per-object normalized coordinate mapping;
 - whole-facade photo used as a building material;
 - whole-object card repeated on component faces;
 - bricked, printed, or flat openings;

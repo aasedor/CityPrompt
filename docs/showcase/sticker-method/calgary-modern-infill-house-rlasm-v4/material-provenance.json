@@ -1,0 +1,63 @@
+{
+  "candidate_id": "calgary-modern-infill-house-rlasm-v4",
+  "correction_of": "calgary-modern-infill-house-rlasm-v3",
+  "correction_scope": [
+    "mount_projecting_corner_glass_to_actual_bay_front_carrier",
+    "increase_side_audit_fill_without_changing_materials_or_geometry_contract"
+  ],
+  "generic_fallback_count": 0,
+  "locked_reference_sha256": "2417d853c91b9e997bfdc2a34ec7339b80cea76718fbb05417a1d839789240c8",
+  "material_reference_comparison_sha256": "4dc4574511981089a466ceb2617d79596068e623f39eb332e3c8c2a6491ff4e3",
+  "procedural_palette_only_material_count": 0,
+  "records": [
+    {
+      "candidate_card_relative_path": "cards/material-primary-wall-reference-matched.png",
+      "candidate_card_sha256": "b0ae1c70d5c533e1cb73be16ee76288381b0896ec9d3ac06102f4cdcfeb57996",
+      "description": "matte graphite large-format panel cladding with narrow recessed reveals",
+      "field_material_atomicity": "PASS_REPEATABLE_FIELD_ONLY",
+      "generated_source_filename": "exec-51d04506-b158-412b-a170-3bc85b9b8d92.png",
+      "generated_source_sha256": "b0ae1c70d5c533e1cb73be16ee76288381b0896ec9d3ac06102f4cdcfeb57996",
+      "locked_reference_relative_path": "references/variant_0.png",
+      "locked_reference_sha256": "2417d853c91b9e997bfdc2a34ec7339b80cea76718fbb05417a1d839789240c8",
+      "method": "built_in_imagegen_reference_preserving_reconstruction",
+      "procedural_palette_only": false,
+      "prompt": "Reconstruct only the locked Calgary reference's matte graphite large-format panel cladding as a seamless orthographic world-scale material, preserving fine texture and narrow precise recessed reveals.",
+      "role": "primary-wall",
+      "visual_approval_status": "AWAITING_USER_PILOT_REVIEW"
+    },
+    {
+      "candidate_card_relative_path": "cards/material-secondary-accent-reference-matched.png",
+      "candidate_card_sha256": "7a625c1dde00c158f264ca3db1c082d2da294400b4a24e261e6bc3a4ab233c1f",
+      "description": "medium golden-brown horizontal natural cedar boards",
+      "field_material_atomicity": "PASS_REPEATABLE_FIELD_ONLY",
+      "generated_source_filename": "exec-9a413a08-34de-41ad-ab28-805b998e0ed9.png",
+      "generated_source_sha256": "7a625c1dde00c158f264ca3db1c082d2da294400b4a24e261e6bc3a4ab233c1f",
+      "locked_reference_relative_path": "references/variant_0.png",
+      "locked_reference_sha256": "2417d853c91b9e997bfdc2a34ec7339b80cea76718fbb05417a1d839789240c8",
+      "method": "built_in_imagegen_reference_preserving_reconstruction",
+      "procedural_palette_only": false,
+      "prompt": "Reconstruct only the locked Calgary reference's warm cedar accent cladding and soffit as a seamless orthographic world-scale field of narrow horizontal boards.",
+      "role": "secondary-accent",
+      "visual_approval_status": "AWAITING_USER_PILOT_REVIEW"
+    },
+    {
+      "candidate_card_relative_path": "cards/material-roof-field-reference-matched.png",
+      "candidate_card_sha256": "17c7d48ef5e4697176a4f23087e2221726bfcf9600db0288cc71221eafffe869",
+      "description": "warm medium-grey low-slope mineral membrane with faint broad laps",
+      "field_material_atomicity": "PASS_REPEATABLE_FIELD_ONLY",
+      "generated_source_filename": "exec-319fce97-5292-4a71-9bcf-a39bcbb2e414.png",
+      "generated_source_sha256": "17c7d48ef5e4697176a4f23087e2221726bfcf9600db0288cc71221eafffe869",
+      "locked_reference_relative_path": "references/variant_0.png",
+      "locked_reference_sha256": "2417d853c91b9e997bfdc2a34ec7339b80cea76718fbb05417a1d839789240c8",
+      "method": "built_in_imagegen_reference_preserving_reconstruction",
+      "procedural_palette_only": false,
+      "prompt": "Reconstruct only the locked Calgary reference's low-slope roof membrane as a seamless orthographic field with fine mineral texture and faint broad installation laps.",
+      "role": "roof-field",
+      "visual_approval_status": "AWAITING_USER_PILOT_REVIEW"
+    }
+  ],
+  "rejected_records": [],
+  "rlasm_version": "1.3.0",
+  "schema": "cityprompt.rlasm-material-provenance@2",
+  "unique_ornament_embedded_in_repeatable_material_swatch_count": 0
+}

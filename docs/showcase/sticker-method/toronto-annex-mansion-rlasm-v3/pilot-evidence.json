@@ -1,0 +1,63 @@
+{
+  "actual_3d_model": true,
+  "additive_overview_render": {
+    "bytes": 2299608,
+    "path": "overview.png",
+    "sha256": "f506781464802390408f908e231c8199a40fc5eebfcd5d37d64d2ff60467d123"
+  },
+  "blend": {
+    "bytes": 217366,
+    "path": "toronto-annex-mansion-rlasm-v3.blend",
+    "sha256": "e3d5c2403eacc830f9f6ae6765bc4077cd903f04c7ec67adf69a27c0e36b586c"
+  },
+  "candidate_id": "toronto-annex-mansion-rlasm-v3",
+  "floating_count": 0,
+  "generic_fallback_count": 0,
+  "glb": {
+    "bytes": 10613920,
+    "path": "toronto-annex-mansion-rlasm-v3.glb",
+    "sha256": "e2c0372a84f55258334d0179e247bc2a2e5378ec53e21c9e7048e60873bff801"
+  },
+  "material_provenance_record_count": 3,
+  "next_phase": "USER_VISUAL_REVIEW_BEFORE_ANY_CORRECTION_OR_SCALE_UP",
+  "phone_review_preview": {
+    "bytes": 2299608,
+    "path": "preview.png",
+    "sha256": "f506781464802390408f908e231c8199a40fc5eebfcd5d37d64d2ff60467d123"
+  },
+  "physical_opening_assembly_count": 23,
+  "procedural_palette_only_material_count": 0,
+  "renders": [
+    {
+      "bytes": 2574126,
+      "path": "front_corner.png",
+      "sha256": "36aee8f42ae689edcab1ca9ed80a20ad7f1fb8bf63f5bfe682c04a7868f697ae"
+    },
+    {
+      "bytes": 2292591,
+      "path": "front.png",
+      "sha256": "f4b5a135d57488e49a6de19e9004cf6be27935dc9af80e8124dc0c95da14e401"
+    },
+    {
+      "bytes": 2562907,
+      "path": "side_contact.png",
+      "sha256": "123a80f425710c9830dbe9ccdd652bd7390d15c84f4efbddf19fe0b360f2bbbe"
+    },
+    {
+      "bytes": 2597832,
+      "path": "roof_audit.png",
+      "sha256": "3478876777cc2e0dccbe0dea297f4fc7ae496ec34d47b5eedb719a5da1267cba"
+    }
+  ],
+  "review_comparison": {
+    "bytes": 2434277,
+    "path": "reference-actual3d-comparison.png",
+    "sha256": "b61a0272e3a3efb552a80ae881ed019a410e39c9979a91d9de9ffca77ef6b06a"
+  },
+  "rlasm_version": "1.3.0",
+  "schema": "cityprompt.rlasm-single-family-pilot-evidence@2",
+  "status": "PASS_ACTUAL_3D_PILOT_AWAITING_USER_VISUAL_REVIEW",
+  "unique_ornament_embedded_in_repeatable_material_swatch_count": 0,
+  "whole_facade_card_count": 0,
+  "world_scale_object_coordinate_material_count": 3
+}
