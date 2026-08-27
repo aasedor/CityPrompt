@@ -67,6 +67,7 @@
     "whole_object_card_repeated_on_component_faces",
     "bricked_printed_or_flat_opening",
     "missing_physical_opening_depth",
+    "unsupported_or_floating_attachment",
     "incomplete_identity_defining_roof_dome_bridge_or_system",
     "leak_ghost_zfight_stretch_duplicate_stack_broken_glass_or_lost_parallax",
     "review_image_not_rendered_from_actual_3d_model",
@@ -80,6 +81,10 @@
     "git_review_handoff_required": true,
     "image_generation_scope": "clean reference-matched cards and material swatches only",
     "non_overwriting_candidates_required": true,
+    "attached_object_contact_audit_required": true,
+    "attached_object_floating_count_required": 0,
+    "attached_object_anchor_source": "actual_carrier_surface_local_tangent_and_normal",
+    "fixed_world_axis_attachment_plane_on_nonplanar_carrier_forbidden": true,
     "physical_opening_depth_required": true,
     "same_semantic_role_card_reuse_allowed": true,
     "unique_role_requires_card": true,
@@ -141,6 +146,9 @@
         "massing",
         "roof_silhouette",
         "physical_apertures",
+        "attached_object_contact_audit",
+        "zero_floating_attachments",
+        "carrier_surface_contact_points_tangents_normals_and_mount_depths",
         "returns",
         "frames",
         "mullions",
@@ -207,5 +215,5 @@
     }
   ],
   "status": "active_user_approved_direction",
-  "version": "1.0.0"
+  "version": "1.1.0"
 }

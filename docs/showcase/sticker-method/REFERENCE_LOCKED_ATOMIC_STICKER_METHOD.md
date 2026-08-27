@@ -1,6 +1,6 @@
 # Reference-Locked Atomic Sticker Method (RLASM)
 
-Version: 1.0.0  
+Version: 1.1.0
 Status: active, user-approved production direction  
 Machine contract: `reference_locked_atomic_sticker_method.json`
 
@@ -55,6 +55,13 @@ the rejected approach of repeating whole-object or whole-facade photographs.
 12. **Scale follows visual approval.** Material consolidation and performance
     optimisation happen only after the appearance is approved and must not
     change the approved visual result.
+13. **Every attachment has a load-bearing contact.** Windows, frames, cards,
+    balconies, canopies, rails, roof equipment, ornaments, signs, stairs, and
+    every other attached object must be projected onto its actual carrier
+    surface, aligned to the local surface tangent/normal, and overlap or mount
+    into that carrier by a documented physical depth. A fixed world-axis plane
+    is forbidden on curved, chamfered, sloped, or otherwise non-planar walls.
+    The contact audit must report `floating_count = 0` before review.
 
 ## The procedure
 
@@ -109,8 +116,14 @@ exactly one approved card or clean material binding.
   glazed entrances as their own construction systems.
 - Keep repeated geometry modular, but never stretch or duplicate fixed identity
   pieces merely to make dimensions fit.
+- Derive each attached object's anchor and orientation from the carrier surface
+  rather than from a convenient global X/Y/Z plane. Record carrier ID, contact
+  point, tangent/normal, intentional mount depth, and support relationship.
+- Inspect contact from a dedicated grazing or side camera; a beauty angle is
+  not proof that an attachment is physically connected.
 
-Required output: a physically coherent model with all unique roles present.
+Required output: a physically coherent model with all unique roles present,
+plus an attached-object contact audit proving zero unsupported/floating parts.
 
 ### 5. Bind cards and materials by semantic role
 
@@ -182,6 +195,8 @@ Stop and create a fresh, non-overwriting candidate when any of these occur:
 - whole-object card repeated on component faces;
 - bricked, printed, or flat openings;
 - missing physical window/door depth;
+- unsupported or floating attachment, including a frame or card that is
+  visually near a wall but does not physically contact its carrier surface;
 - incomplete roof, dome, bridge, or other identity-defining system;
 - leak, ghost, z-fight, stretch, duplicate stack, broken glass, or lost
   parallax/state;
