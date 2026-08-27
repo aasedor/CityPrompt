@@ -1,0 +1,128 @@
+{
+  "blend": {
+    "bytes": 159715,
+    "path": "model\\vancouver-laneway-house-rlasm-v8.blend",
+    "sha256": "0ba62062e9d7132489418b773c4bc2375f204240f03306fca7c66791c60c2784"
+  },
+  "candidate_id": "vancouver-laneway-house-rlasm-v8",
+  "depth_policy": {
+    "certified_full_depth_m": 0.16,
+    "certified_full_depth_precondition": "real envelope aperture plus returns plus backing",
+    "legacy_reason": "wall is not cut behind every inherited window; prevent siding bleed",
+    "legacy_safe_depth_m": 0.03,
+    "silent_full_depth_claim_forbidden": true
+  },
+  "glb": {
+    "bytes": 9657100,
+    "path": "model\\vancouver-laneway-house-rlasm-v8.glb",
+    "sha256": "d2ec49bcd5e29667521ae6462c53271041cc2d11ff5351452a47bcec51b263da"
+  },
+  "method": "RLASM_APPROVED_GLASS_MODULE_WITH_LEGACY_SURFACE_ASSEMBLY_DEPTH_GUARD",
+  "opening_photos_on_glass": false,
+  "pane_depth_pairs": [
+    {
+      "depth_class": "LEGACY_SURFACE_ASSEMBLY_NO_SUBSTRATE_BLEED",
+      "depth_m": 0.03,
+      "future_full_depth_requirement": "REAL_APERTURE_AND_RETURNS_REQUIRED",
+      "pane": "CP_Laneway_CornerFront_0_glass",
+      "prefix": "CP_Laneway_CornerFront_0",
+      "room_card": "CP_Laneway_CornerFront_0_occupied"
+    },
+    {
+      "depth_class": "LEGACY_SURFACE_ASSEMBLY_NO_SUBSTRATE_BLEED",
+      "depth_m": 0.03,
+      "future_full_depth_requirement": "REAL_APERTURE_AND_RETURNS_REQUIRED",
+      "pane": "CP_Laneway_CornerFront_1_glass",
+      "prefix": "CP_Laneway_CornerFront_1",
+      "room_card": "CP_Laneway_CornerFront_1_occupied"
+    },
+    {
+      "depth_class": "LEGACY_SURFACE_ASSEMBLY_NO_SUBSTRATE_BLEED",
+      "depth_m": 0.03,
+      "future_full_depth_requirement": "REAL_APERTURE_AND_RETURNS_REQUIRED",
+      "pane": "CP_Laneway_CornerRight_0_glass",
+      "prefix": "CP_Laneway_CornerRight_0",
+      "room_card": "CP_Laneway_CornerRight_0_occupied"
+    },
+    {
+      "depth_class": "LEGACY_SURFACE_ASSEMBLY_NO_SUBSTRATE_BLEED",
+      "depth_m": 0.03,
+      "future_full_depth_requirement": "REAL_APERTURE_AND_RETURNS_REQUIRED",
+      "pane": "CP_Laneway_CornerRight_1_glass",
+      "prefix": "CP_Laneway_CornerRight_1",
+      "room_card": "CP_Laneway_CornerRight_1_occupied"
+    },
+    {
+      "depth_class": "LEGACY_SURFACE_ASSEMBLY_NO_SUBSTRATE_BLEED",
+      "depth_m": 0.03,
+      "future_full_depth_requirement": "REAL_APERTURE_AND_RETURNS_REQUIRED",
+      "pane": "CP_Laneway_FrontSlider_glass",
+      "prefix": "CP_Laneway_FrontSlider",
+      "room_card": "CP_Laneway_FrontSlider_occupied"
+    },
+    {
+      "depth_class": "LEGACY_SURFACE_ASSEMBLY_NO_SUBSTRATE_BLEED",
+      "depth_m": 0.03,
+      "future_full_depth_requirement": "REAL_APERTURE_AND_RETURNS_REQUIRED",
+      "pane": "CP_Laneway_RightSlot_0_glass",
+      "prefix": "CP_Laneway_RightSlot_0",
+      "room_card": "CP_Laneway_RightSlot_0_occupied"
+    },
+    {
+      "depth_class": "LEGACY_SURFACE_ASSEMBLY_NO_SUBSTRATE_BLEED",
+      "depth_m": 0.03,
+      "future_full_depth_requirement": "REAL_APERTURE_AND_RETURNS_REQUIRED",
+      "pane": "CP_Laneway_RightSlot_1_glass",
+      "prefix": "CP_Laneway_RightSlot_1",
+      "room_card": "CP_Laneway_RightSlot_1_occupied"
+    },
+    {
+      "depth_class": "LEGACY_SURFACE_ASSEMBLY_NO_SUBSTRATE_BLEED",
+      "depth_m": 0.03,
+      "future_full_depth_requirement": "REAL_APERTURE_AND_RETURNS_REQUIRED",
+      "pane": "CP_Laneway_RightSlot_2_glass",
+      "prefix": "CP_Laneway_RightSlot_2",
+      "room_card": "CP_Laneway_RightSlot_2_occupied"
+    },
+    {
+      "depth_class": "LEGACY_SURFACE_ASSEMBLY_NO_SUBSTRATE_BLEED",
+      "depth_m": 0.03,
+      "future_full_depth_requirement": "REAL_APERTURE_AND_RETURNS_REQUIRED",
+      "pane": "CP_Laneway_StairSlit_glass",
+      "prefix": "CP_Laneway_StairSlit",
+      "room_card": "CP_Laneway_StairSlit_occupied"
+    }
+  ],
+  "parent_candidate_id": "vancouver-laneway-house-rlasm-v7",
+  "promotion": {
+    "approved": false,
+    "next": "USER_VISUAL_REVIEW_OF_SECOND_ARCHETYPE_TRANSFER",
+    "rlasm_freeze_allowed": false
+  },
+  "reference_specific_room_cards_behind_glass": true,
+  "renders": [
+    {
+      "bytes": 1980232,
+      "path": "renders\\front.png",
+      "sha256": "ac4c8dd2b188784cffd4ce6c831d3e404f8c69c3371f10db6f2fe0300bee0c16"
+    },
+    {
+      "bytes": 2038751,
+      "path": "renders\\front_corner.png",
+      "sha256": "5ecb55e1f0f05e08b4321fcec68b1307e23346dd4c7c6aef3077090cc4fcbf71"
+    },
+    {
+      "bytes": 2274466,
+      "path": "renders\\side_contact.png",
+      "sha256": "a3cc31fc5f925831597337228726d7793edf8ce025d909f33bfbef33164cff33"
+    }
+  ],
+  "schema": "cityprompt.rlasm-no-substrate-bleed-glass-transfer-proof@1",
+  "shared_card": {
+    "bytes": 1250110,
+    "path": "cards\\heritage-low-iron-bluegrey-reflection-card-v1.png",
+    "sha256": "3baefe7422870364b6deb937c3152a33a51582f79a217cf4386ed09f803d53b7"
+  },
+  "shared_module": "rlasm_heritage_low_iron_bluegrey_v1",
+  "status": "AWAITING_USER_VISUAL_REVIEW_SECOND_ARCHETYPE_TRANSFER"
+}
