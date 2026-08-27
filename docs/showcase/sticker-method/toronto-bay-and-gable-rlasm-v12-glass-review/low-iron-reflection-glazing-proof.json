@@ -1,0 +1,154 @@
+{
+  "blend": {
+    "bytes": 230886,
+    "path": "model\\toronto-bay-and-gable-house-rlasm-v12.blend",
+    "sha256": "549528e86cd9a2326a82e691487787d0e2181e5a9f3381852060df5d9ca21b60"
+  },
+  "candidate_id": "toronto-bay-and-gable-house-rlasm-v12",
+  "material_card": {
+    "bytes": 1250110,
+    "kind": "abstract_low_iron_reflection_surface_not_window_photo",
+    "path": "cards\\heritage-low-iron-bluegrey-reflection-card-v1.png",
+    "sha256": "3baefe7422870364b6deb937c3152a33a51582f79a217cf4386ed09f803d53b7"
+  },
+  "method": "RLASM_PHYSICAL_PANE_PLUS_REFLECTION_MATERIAL_CARD_PLUS_ROOM_DEPTH_V1",
+  "pane_depth_pairs": [
+    {
+      "depth_m": 0.16,
+      "glass": "CP_BayGable_BayCenterSash_0_glass",
+      "prefix": "CP_BayGable_BayCenterSash_0",
+      "room_card": "CP_BayGable_BayCenterSash_0_occupied"
+    },
+    {
+      "depth_m": 0.16,
+      "glass": "CP_BayGable_BayCenterSash_1_glass",
+      "prefix": "CP_BayGable_BayCenterSash_1",
+      "room_card": "CP_BayGable_BayCenterSash_1_occupied"
+    },
+    {
+      "depth_m": 0.16,
+      "glass": "CP_BayGable_BaySideSash_L_0_glass",
+      "prefix": "CP_BayGable_BaySideSash_L_0",
+      "room_card": "CP_BayGable_BaySideSash_L_0_occupied"
+    },
+    {
+      "depth_m": 0.16,
+      "glass": "CP_BayGable_BaySideSash_L_1_glass",
+      "prefix": "CP_BayGable_BaySideSash_L_1",
+      "room_card": "CP_BayGable_BaySideSash_L_1_occupied"
+    },
+    {
+      "depth_m": 0.16,
+      "glass": "CP_BayGable_BaySideSash_R_0_glass",
+      "prefix": "CP_BayGable_BaySideSash_R_0",
+      "room_card": "CP_BayGable_BaySideSash_R_0_occupied"
+    },
+    {
+      "depth_m": 0.16,
+      "glass": "CP_BayGable_BaySideSash_R_1_glass",
+      "prefix": "CP_BayGable_BaySideSash_R_1",
+      "room_card": "CP_BayGable_BaySideSash_R_1_occupied"
+    },
+    {
+      "depth_m": 0.16,
+      "glass": "CP_BayGable_GablePair_-1.02_glass",
+      "prefix": "CP_BayGable_GablePair_-1.02",
+      "room_card": "CP_BayGable_GablePair_-1.02_occupied"
+    },
+    {
+      "depth_m": 0.16,
+      "glass": "CP_BayGable_GablePair_-2.42_glass",
+      "prefix": "CP_BayGable_GablePair_-2.42",
+      "room_card": "CP_BayGable_GablePair_-2.42_occupied"
+    },
+    {
+      "depth_m": 0.16,
+      "glass": "CP_BayGable_MainSash_0_glass",
+      "prefix": "CP_BayGable_MainSash_0",
+      "room_card": "CP_BayGable_MainSash_0_occupied"
+    },
+    {
+      "depth_m": 0.16,
+      "glass": "CP_BayGable_MainSash_1_glass",
+      "prefix": "CP_BayGable_MainSash_1",
+      "room_card": "CP_BayGable_MainSash_1_occupied"
+    },
+    {
+      "depth_m": 0.16,
+      "glass": "CP_BayGable_SideSash_0_glass",
+      "prefix": "CP_BayGable_SideSash_0",
+      "room_card": "CP_BayGable_SideSash_0_occupied"
+    },
+    {
+      "depth_m": 0.16,
+      "glass": "CP_BayGable_SideSash_1_glass",
+      "prefix": "CP_BayGable_SideSash_1",
+      "room_card": "CP_BayGable_SideSash_1_occupied"
+    },
+    {
+      "depth_m": 0.16,
+      "glass": "CP_BayGable_SideSash_2_glass",
+      "prefix": "CP_BayGable_SideSash_2",
+      "room_card": "CP_BayGable_SideSash_2_occupied"
+    },
+    {
+      "depth_m": 0.16,
+      "glass": "CP_BayGable_SideSash_3_glass",
+      "prefix": "CP_BayGable_SideSash_3",
+      "room_card": "CP_BayGable_SideSash_3_occupied"
+    },
+    {
+      "depth_m": 0.16,
+      "glass": "CP_BayGable_SideSash_4_glass",
+      "prefix": "CP_BayGable_SideSash_4",
+      "room_card": "CP_BayGable_SideSash_4_occupied"
+    }
+  ],
+  "parent_candidate_id": "toronto-bay-and-gable-house-rlasm-v10",
+  "profile": {
+    "alpha": 1.0,
+    "alpha_strategy": "opaque_physical_transmission",
+    "base_profile_authority": "corten_low_iron_clear_plus_heritage_occupied_depth",
+    "clearcoat": 0.62,
+    "clearcoat_roughness": 0.045,
+    "id": "rlasm_heritage_low_iron_bluegrey_v1",
+    "interior_depth_m": 0.16,
+    "ior": 1.5,
+    "material_card_saturation": 0.72,
+    "material_card_sha256": "3baefe7422870364b6deb937c3152a33a51582f79a217cf4386ed09f803d53b7",
+    "material_card_value_scale": 0.78,
+    "opening_photo_texture": false,
+    "roughness": 0.065,
+    "specular_ior_level": 0.58,
+    "transmission": 0.52
+  },
+  "promotion": {
+    "approved": false,
+    "next": "USER_VISUAL_REVIEW_BEFORE_RLASM_MODULE_FREEZE",
+    "rlasm_freeze_allowed": false
+  },
+  "renders": [
+    {
+      "bytes": 1949050,
+      "path": "renders\\front.png",
+      "sha256": "a2dfffbf8e42c2f4832427f5a73c30ededbf829cc690aed4725cfd962799a0a6"
+    },
+    {
+      "bytes": 1993458,
+      "path": "renders\\front_corner.png",
+      "sha256": "0cdbd976b31333221e3db1e652565b23dd1ce66ebd5a2d9b418f6592fc75834b"
+    },
+    {
+      "bytes": 2109335,
+      "path": "renders\\side_contact.png",
+      "sha256": "4f77396a8aace4014e283e9cbb09d5666a8f16a02a7b3f5e07b4a4e63b024484"
+    }
+  ],
+  "schema": "cityprompt.rlasm-low-iron-reflection-glazing-proof@1",
+  "source_blend": {
+    "bytes": 229527,
+    "path": "C:\\Users\\andre\\OneDrive\\Documents\\PlaygroundNEW\\3D-Maps\\artifacts\\rlasm-three-building-confirmation-v1\\01-toronto-bay-and-gable-house-rlasm-v10\\model\\toronto-bay-and-gable-house-rlasm-v10.blend",
+    "sha256": "60c85d5c2895526362c0dbc329b9377d1c663ee891a87dec2c486f7682690b6c"
+  },
+  "status": "AWAITING_USER_VISUAL_REVIEW"
+}
