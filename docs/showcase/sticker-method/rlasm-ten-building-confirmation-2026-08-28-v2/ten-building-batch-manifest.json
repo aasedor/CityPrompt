@@ -1,0 +1,96 @@
+{
+  "schema": "cityprompt.rlasm.ten-building-confirmation-batch@2",
+  "status": "PASS_FINITE_BATCH_TEN_NEW_BUILDINGS",
+  "method": "RLASM with full prework and generated atomic facade cards on physical Blender carriers",
+  "count": 10,
+  "minimum_score": 95,
+  "comparison_sheet": {
+    "path": "ten-building-comparison-sheet-phone.png",
+    "bytes": 7340246,
+    "sha256": "857b532fd26e435968bc52b80aa8c47e9ee5e6fb7a275dae2309a922a5c2f376"
+  },
+  "buildings": [
+    {
+      "candidate": "01-amsterdam-school-housing-rlasm-v10",
+      "title": "Amsterdam School Housing",
+      "score": 96,
+      "qa_sha256": "f07749d071432a2a85d8080de44ed2a3357ae11c4ecd70f08006ed5acda0ff74",
+      "scene_sha256": "6281bd1ce22bf0c93f0a1356aa72586e69e69245e3b6f04d909f6c9a87dc0c8a",
+      "glb_sha256": "26e6dfe9a3efe7a8f9366c5d7f78f521cb1c5fdfb8c63dec9db1bbce11f019c5"
+    },
+    {
+      "candidate": "02-romanesque-revival-warehouse-rlasm-v3",
+      "title": "Romanesque Revival Warehouse",
+      "score": 96,
+      "qa_sha256": "2858410b52dbecd492fe61f8b7be4481e703e5adf45c3643ee68c601b9bb063c",
+      "scene_sha256": "7662bc1ef704d2c6f76cecd9dbffa52b88d77514a44582a6f1841ab73dab09db",
+      "glb_sha256": "dc9b3ce4516ed8524f1767cebc6698ffccd69b254fffdbfbfdc507a30ffe0594"
+    },
+    {
+      "candidate": "03-mediterranean-arcade-mixed-use-rlasm-v6",
+      "title": "Mediterranean Arcade Mixed Use",
+      "score": 96,
+      "qa_sha256": "4ab8ee7dd16c9be217b41fa1ceb3f2af9de3934c3a67a7ee17aa464ae0042fd5",
+      "scene_sha256": "eaf87f96de44a15f79d7015c6bd9879c617f02f92c8cef1ad47aafc99aeda2d2",
+      "glb_sha256": "8bf80e1d64c4b63adea2d5b36dc62ab2b8f9bb79d8e13a20fefe518bb5be508b"
+    },
+    {
+      "candidate": "04-mid-century-modern-pavilion-block-rlasm-v3",
+      "title": "Mid-Century Modern Pavilion Block",
+      "score": 96,
+      "qa_sha256": "7a0316516a0a43d59c6683340a4dd5d79c5cb5354037962cf3afb8d209a382e7",
+      "scene_sha256": "a4f81069a764b5ae7b469696590539075a4918d759074fb6c0b7ee466ca927cf",
+      "glb_sha256": "89601ca64c0c03b2e9dd82f50945875e5e194dd75e88cd628bede0c4944d2495"
+    },
+    {
+      "candidate": "05-courtyard-family-housing-rlasm-v8",
+      "title": "Courtyard Family Housing",
+      "score": 96,
+      "qa_sha256": "c81a80a1a169cd65254a78e11adb917c11503285428b159f5efa1cc24948599c",
+      "scene_sha256": "299b9adc885b6541797ad5bfb222078d8dfd6b74371541d6e58d6648e1afefda",
+      "glb_sha256": "488f11c9a08713ee329211c429800412ef51eb91a33a7fdbd3305e084072feef"
+    },
+    {
+      "candidate": "06-civic-classical-building-rlasm-v4",
+      "title": "Civic Classical Building",
+      "score": 96,
+      "qa_sha256": "956a3fc06c366c18b87438792c87ddafca9899ec40c54033876301a865b755f8",
+      "scene_sha256": "dacd94db2f4cad9265caee09e1674fb51099dd100ee472b9131bf56b46aef71c",
+      "glb_sha256": "898463096bac8b64364485446f9cb76f73f28aa3dcea0364fb496d06c30257d6"
+    },
+    {
+      "candidate": "07-industrial-brick-mixed-use-rlasm-v8",
+      "title": "Industrial Brick Mixed Use",
+      "score": 95,
+      "qa_sha256": "94b8361805dcbdeff0e14d344fc148bd471860164e943e159609bfa3d7fcb533",
+      "scene_sha256": "f4f140eddffae6fc04fdf6b876480569826656c15c83934a2fe62eae220cd913",
+      "glb_sha256": "d0ac392b31d4871a1114228afb7ee593f1c7f12fc93b49c3620c2796d56f133d"
+    },
+    {
+      "candidate": "08-coastal-breezeway-mixed-use-rlasm-v7",
+      "title": "Coastal Breezeway Mixed Use",
+      "score": 96,
+      "qa_sha256": "80de902ec2def9ecce911512251d9d4fc645c6521fe1d773e88040637c936fe0",
+      "scene_sha256": "17bfbb63fd874f110204707f8de43fcbb0b2391487260c8fad5c53dc4b6a419a",
+      "glb_sha256": "a8d35f47e0eaad82801930007628f842b59dff8e22f5ba42f0828012cd8dfd5d"
+    },
+    {
+      "candidate": "09-chateauesque-grand-railway-hotel-rlasm-v9",
+      "title": "Chateauesque Grand Railway Hotel",
+      "score": 96,
+      "qa_sha256": "1f90603577e59d538b09240291f127475daf4b54c80e5b1c3ef322ea80f8077f",
+      "scene_sha256": "5bbd4aa26e10c855def935978b3d03398ddc1b179a42fff8ea76850120afb359",
+      "glb_sha256": "fa2d31575b8f2edbd70af4af77be4e3631b5e264b9c2b2157cac4f7101c6696e"
+    },
+    {
+      "candidate": "10-ecole-republicaine-rlasm-v7",
+      "title": "\u00c9cole R\u00e9publicaine",
+      "score": 97,
+      "qa_sha256": "f88ba9f591c6db61e394a38d90b268ce0ff0152c9bef2c0fd88f27856944ae3f",
+      "scene_sha256": "c8c538ccd3d5b926de631aa5fc2576c7b0bc52a26c62d37af31b3abd701a9bf0",
+      "glb_sha256": "c1f6e6b1058a85fde7224bbd5411cece80f757c8f33c42c617ac7225376813b3"
+    }
+  ],
+  "source_assets_in_git": "reviewed PNGs, manifests and QA evidence only; heavyweight .blend/.glb remain in ignored artifact storage",
+  "builder_self_approval": false
+}
