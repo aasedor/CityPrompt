@@ -1,0 +1,63 @@
+{
+  "schema": "cityprompt.rlasm.contact-audit@1",
+  "candidate": "03-hydrostone-original-rlasm-v6",
+  "records": [
+    {
+      "role": "asymmetric_overlapping_carriers",
+      "carrier": "four unequal carriers remain physically connected",
+      "floating": false
+    },
+    {
+      "role": "jettied_upper_storey",
+      "carrier": "upper carriers project 0.46m and sit on continuous bearers plus five corbels per section",
+      "floating": false
+    },
+    {
+      "role": "dominant_transverse_roof",
+      "carrier": "one transverse roof overlaps four shallow cross-gables",
+      "floating": false
+    },
+    {
+      "role": "cross_gables",
+      "carrier": "unequal gable infills and frames overlap jettied carriers and cross-roof slopes",
+      "floating": false
+    },
+    {
+      "role": "tudor_panel_grammar",
+      "carrier": "rails, opening-edge studs and short solid-panel braces contact upper carriers",
+      "floating": false
+    },
+    {
+      "role": "projected_window_bays",
+      "carrier": "upper bay heads, cheeks and aprons overlap true aperture frames",
+      "floating": false
+    },
+    {
+      "role": "true_apertures_and_glass",
+      "carrier": "eleven front including peak bays and four side apertures carry neutral physical panes",
+      "floating": false
+    },
+    {
+      "role": "integrated_entry_porch",
+      "carrier": "porch roof and posts overlap entry carrier; leaf is recessed",
+      "floating": false
+    },
+    {
+      "role": "grounded_stoop_and_rails",
+      "carrier": "lower step reaches grade and upper step plus rails overlap",
+      "floating": false
+    },
+    {
+      "role": "enhanced_chimneys",
+      "carrier": "decorative stacks penetrate transverse roof and pots overlap caps",
+      "floating": false
+    },
+    {
+      "role": "long_side_tudor_grid",
+      "carrier": "physical side rails, studs and short braces overlap the jettied right wing and frame all side apertures",
+      "floating": false
+    }
+  ],
+  "floating_count": 0,
+  "status": "PASS_ZERO_FLOATING"
+}

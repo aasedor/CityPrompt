@@ -1,0 +1,32 @@
+{
+  "schema": "cityprompt.rlasm.iteration-lineage@1",
+  "archetype": "hydrostone-original",
+  "accepted_candidate": "03-hydrostone-original-rlasm-v6",
+  "iterations": [
+    {
+      "candidate": "03-hydrostone-original-rlasm-v4",
+      "disposition": "PRESERVED_SUPERSEDED_AFTER_USER_REJECTION",
+      "reason": "The facade used Tudor trim, but the carrier and roof composition still read as a generic rectangular house.",
+      "scene_sha256": "aa4bb49584b1664f91b50775572a3783b481264c23dc7bbedbde069cea68a28d",
+      "glb_sha256": "2a5532834fc7956ad04363df9e43b5022862f1dc700c040c5e34a576f4757e82",
+      "front_render_sha256": "927d9f85370d07e0254c15b1439f3fe903163754202a07b0e8809f7b7b7e7a54"
+    },
+    {
+      "candidate": "03-hydrostone-original-rlasm-v5",
+      "disposition": "PRESERVED_REJECTED_VISUAL_CHECKPOINT",
+      "reason": "The structural jetty and cross-gables were corrected, but upper windows remained too wide, leadwork read as zigzags, the entry roof obscured the stair bay, and the side elevation remained generic.",
+      "scene_sha256": "da097cbd5bd35c5396e206e56087b6219ad6bffdbe255f980034eb2bf1090a89",
+      "glb_sha256": "fbbac184096326b0a2e2113a3fd2d23524a4fab5c6d9a171ffd53c014dafc8ff",
+      "front_render_sha256": "19b768c70b3ea928a1c17fb7fa6e101262de55ae2044c8b84dd66162d43dd4fc"
+    },
+    {
+      "candidate": "03-hydrostone-original-rlasm-v6",
+      "disposition": "PASS_ACCEPTED_FOR_USER_REVIEW_AND_GIT_HANDOFF",
+      "reason": "The completed model reproduces the iconic Tudor cross-gable, jetty, tall grouped window, diamond leadwork, timber-panel and long-wing depth grammar.",
+      "score": 96,
+      "scene_sha256": "c6e35c6ac9aba886263322ffdfc11065a89f21794bba01f81fcb41654bb1542d",
+      "glb_sha256": "73ce1dd194afd6fdfabd798aee1a72e06cdab5ec3765cb27fd23d24062a47e93",
+      "front_render_sha256": "75e37ca992aab895c2898e08c8c88146881e1a6fd4b7d6aa397433dddd76e201"
+    }
+  ]
+}

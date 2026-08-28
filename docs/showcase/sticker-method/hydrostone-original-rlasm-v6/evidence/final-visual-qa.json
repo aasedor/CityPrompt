@@ -1,0 +1,89 @@
+{
+  "schema": "cityprompt.rlasm.final-visual-qa@1",
+  "candidate": "03-hydrostone-original-rlasm-v6",
+  "method": "RLASM 1.7.0",
+  "status": "PASS_REVIEWED_ICONIC_TUDOR_READY_FOR_GIT_HANDOFF",
+  "score": 96,
+  "hard_stops": [],
+  "review": {
+    "reference_identity": "PASS_ICONIC_TUDOR",
+    "dominant_transverse_roof_and_cross_gables": "PASS",
+    "physical_jettied_upper_storey": "PASS_0.46M",
+    "asymmetric_gable_hierarchy": "PASS",
+    "tall_grouped_projected_window_bays": "PASS",
+    "fine_diamond_leaded_lattice": "PASS",
+    "gable_peak_apertures_and_structural_frames": "PASS",
+    "long_side_tudor_panel_grammar": "PASS",
+    "integrated_entry_and_visible_stair_bay": "PASS",
+    "true_apertures_and_returns": "PASS",
+    "neutral_scene_only_physical_glass": "PASS",
+    "baked_reflection_or_photographed_backing": "ABSENT",
+    "generic_material_fallback": 0,
+    "floating_count": 0
+  },
+  "cosmetic_findings": [
+    "The neutral review environment omits the reference's dense garden and neighboring rowhouses.",
+    "Window reflections are intentionally neutral and contextual rather than baked from the reference photograph."
+  ],
+  "iteration_disposition": {
+    "v4": "PRESERVED_SUPERSEDED_AFTER_USER_REJECTION_TUDOR_IDENTITY",
+    "v5": "PRESERVED_REJECTED_VISUAL_CHECKPOINT_WIDE_WINDOWS_GENERIC_SIDE",
+    "v6": "PASS_ACCEPTED_FOR_USER_REVIEW_AND_GIT_HANDOFF"
+  },
+  "artifacts": {
+    "comparison_sheet": {
+      "path": "review-comparison-sheet.png",
+      "bytes": 3136360,
+      "sha256": "a2f0d7dafdd39f3101b3c81f2b686d8d86c2524821f024d20192def282dce535"
+    },
+    "scene": {
+      "path": "model/03-hydrostone-original-rlasm-v6.blend",
+      "bytes": 483859,
+      "sha256": "c6e35c6ac9aba886263322ffdfc11065a89f21794bba01f81fcb41654bb1542d"
+    },
+    "glb": {
+      "path": "model/03-hydrostone-original-rlasm-v6.glb",
+      "bytes": 4858180,
+      "sha256": "73ce1dd194afd6fdfabd798aee1a72e06cdab5ec3765cb27fd23d24062a47e93"
+    },
+    "renders": [
+      {
+        "path": "renders/aerial.png",
+        "bytes": 1452290,
+        "sha256": "3d8b2315dd1f84d03ea200f25c2d94bce09496f7a628c156444ff839a0050d79"
+      },
+      {
+        "path": "renders/facade_close.png",
+        "bytes": 1630981,
+        "sha256": "a593ab07df3aaed960da40d0ca7778624f6639d14f6170c91fc5670ecc5f60d7"
+      },
+      {
+        "path": "renders/front.png",
+        "bytes": 1335234,
+        "sha256": "75e37ca992aab895c2898e08c8c88146881e1a6fd4b7d6aa397433dddd76e201"
+      },
+      {
+        "path": "renders/front_corner.png",
+        "bytes": 1416933,
+        "sha256": "b598cad545ab73e6c22434fc3b5c3f5dcb52692234807d849504f7a40d6b3fa4"
+      },
+      {
+        "path": "renders/glass_close.png",
+        "bytes": 1447074,
+        "sha256": "d5963a0b83dcc1d91d63cd8ff7ba6070646a3fe94e1061c51c9d3ff4db9e0512"
+      },
+      {
+        "path": "renders/preview.png",
+        "bytes": 1416933,
+        "sha256": "b598cad545ab73e6c22434fc3b5c3f5dcb52692234807d849504f7a40d6b3fa4"
+      },
+      {
+        "path": "renders/roof_close.png",
+        "bytes": 1385053,
+        "sha256": "92599dad08a27683cdfe7deec574d68c32e6ad25177e2f94cd19b3f0fdf7fc2c"
+      }
+    ]
+  },
+  "builder_self_approval": false,
+  "reviewer_note": "V6 is evaluated against the locked references and the user's iconic-Tudor correction, not against v4's prior provisional score."
+}

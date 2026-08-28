@@ -1,0 +1,24 @@
+{
+  "schema": "cityprompt.rlasm.correction-prework@1",
+  "candidate": "03-hydrostone-original-rlasm-v5",
+  "method": "RLASM 1.7.0",
+  "status": "PASS_PREWORK_READY_FOR_NON_OVERWRITING_V5_TUDOR_BUILD",
+  "preserved_parent": "03-hydrostone-original-rlasm-v4",
+  "user_finding": "The Tudor style design is iconic, and v4 does not yet read as Tudor.",
+  "root_cause": "V4 applies half-timber decoration to box-like carriers instead of reproducing Tudor jetty, cross-gable, bay-window and structural-panel depth grammar.",
+  "new_role_cards": [
+    "cards/v5-role-cross-gabled-silhouette.png",
+    "cards/v5-role-jettied-upper-storey.png",
+    "cards/v5-role-tall-grouped-windows.png",
+    "cards/v5-role-dense-timber-panels.png",
+    "cards/v5-role-integrated-entry-porch.png",
+    "cards/v5-role-long-side-wing.png"
+  ],
+  "preserved_contracts": [
+    "reference-specific material sources",
+    "neutral scene-only physical glass",
+    "true apertures",
+    "zero floating objects"
+  ],
+  "builder_self_approval": false
+}

@@ -18,11 +18,11 @@
       "lesson": "Mechanics alone are insufficient: generic repeated ornament was rejected and rebuilt."
     },
     {
-      "candidate": "03-hydrostone-original-rlasm-v4",
+      "candidate": "03-hydrostone-original-rlasm-v6",
       "score": 96,
-      "final_visual_qa_sha256": "5a00740d245c7054945c5f1fcb65766eeca5afb0858b4b234b4e7b56e554323d",
-      "comparison_sheet_sha256": "030798c9ee658ba260329b8c546e6d2be5d4366ebec67f937cfd833b3cbe895f",
-      "lesson": "Preserve unequal gable hierarchy, dense aperture groups and a real porch—not a symmetric twin-box shortcut."
+      "final_visual_qa_sha256": "99a3c2f3580feec74afc57c0b93cd3cf01c24d9466637a0b592a6c6938e17da4",
+      "comparison_sheet_sha256": "a2f0d7dafdd39f3101b3c81f2b686d8d86c2524821f024d20192def282dce535",
+      "lesson": "Tudor identity requires a physical jetty, dominant transverse roof, intersecting cross-gables, tall grouped leaded bays and structural panel grammar—not trim on a box."
     }
   ],
   "shared_gates": {
@@ -35,8 +35,8 @@
   },
   "sheet": {
     "path": "three-building-confirmation-sheet.png",
-    "bytes": 2415495,
-    "sha256": "6a9b9d5974871dcc69be58c9b2e2c46174a538c19494a622b2bebbcbd52544d7"
+    "bytes": 2478450,
+    "sha256": "c1704c7c9cb7ee54a9b989549440fbaa00ee671569d111fa0f8ba4accfee4415"
   },
   "builder_self_approval": false
 }

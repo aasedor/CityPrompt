@@ -1,0 +1,27 @@
+{
+  "schema": "cityprompt.rlasm.focused-polish-prework@1",
+  "candidate": "03-hydrostone-original-rlasm-v6",
+  "method": "RLASM 1.7.0",
+  "status": "PASS_PREWORK_READY_FOR_FOCUSED_V6_TUDOR_POLISH",
+  "preserved_parent": "03-hydrostone-original-rlasm-v5",
+  "preserved_parent_disposition": "REJECTED_VISUAL_CHECKPOINT_NOT_PUBLISHED",
+  "preserved_parent_findings": [
+    "upper grouped windows remain too wide and horizontal",
+    "leaded cames read as oversized zigzags instead of a fine diamond lattice",
+    "entry roof obscures the central stair-bay window",
+    "long side upper elevation remains generic and unframed"
+  ],
+  "authorized_delta": [
+    "narrow and heighten upper window groups",
+    "replace zigzag cames with clipped fine diamond lattice",
+    "raise stair-bay window and lower the entry-gable peak",
+    "add physical Tudor rails, studs and short braces to the long side wing"
+  ],
+  "preserved_contracts": [
+    "v5 jettied carriers and cross-gabled roof topology",
+    "reference-specific materials",
+    "neutral scene-only physical glass",
+    "true apertures and zero floating objects"
+  ],
+  "builder_self_approval": false
+}
