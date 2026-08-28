@@ -108,6 +108,9 @@
     "used_building_material_not_reference_specific_finished",
     "saturated_review_context_makes_neutral_glass_appear_tinted",
     "unsupported_or_floating_attachment",
+    "hidden_carrier_box_slab_or_generic_flat_cap_exposed_from_review_camera",
+    "support_geometry_substitutes_for_reference_derived_courtyard_wing_side_rear_or_roof_topology",
+    "reference_material_bound_to_wrong_geometry_role_or_by_unverified_list_position",
     "incomplete_identity_defining_roof_dome_bridge_or_system",
     "leak_ghost_zfight_stretch_duplicate_stack_broken_glass_or_lost_parallax",
     "review_image_not_rendered_from_actual_3d_model",
@@ -136,6 +139,18 @@
     "attached_object_contact_audit_required": true,
     "attached_object_floating_count_required": 0,
     "attached_object_anchor_source": "actual_carrier_surface_local_tangent_and_normal",
+    "support_carrier_geometry_must_remain_inside_reference_derived_silhouette": true,
+    "full_footprint_hidden_box_or_generic_flat_cap_as_topology_substitute_forbidden": true,
+    "carrier_visibility_review_views_required": [
+      "front_corner",
+      "aerial_or_top",
+      "rear_side_or_side"
+    ],
+    "front_view_cannot_waive_exposed_carrier_failure": true,
+    "material_binding_key": "declared_material_role_id",
+    "positional_material_list_unpacking_forbidden": true,
+    "material_role_binding_audit_required": true,
+    "material_role_binding_missing_duplicate_or_mismatch_count_required": 0,
     "fixed_world_axis_attachment_plane_on_nonplanar_carrier_forbidden": true,
     "material_role_name_or_approximate_palette_is_not_reference_proof": true,
     "material_source_crop_or_approved_reconstruction_provenance_required": true,
@@ -287,6 +302,9 @@
       "required_outputs": [
         "massing",
         "roof_silhouette",
+        "reference_derived_side_rear_courtyard_and_roof_topology",
+        "carrier_visibility_audit_from_front_corner_aerial_and_rear_side",
+        "zero_exposed_hidden_carrier_boxes_slabs_or_generic_flat_caps",
         "physical_apertures",
         "attached_object_contact_audit",
         "zero_floating_attachments",
@@ -328,6 +346,8 @@
       "required_outputs": [
         "identity_review",
         "silhouette_review",
+        "aerial_top_carrier_visibility_review",
+        "rear_side_carrier_visibility_review",
         "unique_object_completeness_review",
         "opening_depth_review",
         "material_specificity_review",
@@ -368,5 +388,5 @@
     }
   ],
   "status": "active_user_approved_direction",
-  "version": "1.7.0"
+  "version": "1.8.0"
 }

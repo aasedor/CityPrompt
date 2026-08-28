@@ -1,6 +1,6 @@
 # Reference-Locked Atomic Sticker Method (RLASM)
 
-Version: 1.7.0
+Version: 1.8.0
 Status: active, user-approved production direction  
 Machine contract: `reference_locked_atomic_sticker_method.json`
 
@@ -144,6 +144,18 @@ the rejected approach of repeating whole-object or whole-facade photographs.
     photographic exterior content. Review context must also be sufficiently
     neutral that a saturated lawn or backdrop does not make neutral glazing
     read as green, blue, or amber glass.
+28. **Support carriers are review-visible physical architecture.** A hidden
+    full-footprint box, wall slab, or flat cap may not stand in for the
+    reference's side, rear, courtyard, or roof topology. Every carrier must
+    stay inside the approved silhouette and be reference-derived where it can
+    appear from any review or City Prompt camera. Aerial/top, rear-side, and
+    oblique views are mandatory carrier-visibility gates; a clean front render
+    cannot waive an exposed rectangular support volume.
+29. **Material binding is by declared role ID, never list position.** A valid
+    crop can still be wrong when a builder assigns it to another role (for
+    example coral render on a standing-seam roof). The build audit must map
+    every material ID to its declared geometry roles and reject positional
+    unpacking, missing IDs, duplicate bindings, and role/material mismatch.
 
 ## The procedure
 
@@ -285,6 +297,8 @@ and the corrected actual 3D render. Review:
 - opening proportions and real depth;
 - material specificity rather than generic appearance;
 - side/rear continuity and oblique parallax;
+- aerial/top silhouette, real roof closure, and absence of exposed carrier
+  boxes or slabs;
 - absence of tiled photo fragments, bricked windows, ghosting, leakage,
   z-fighting, stretching, or broken glass.
 - every declared entrance in a building-scale view plus dedicated door
@@ -353,6 +367,12 @@ Stop and create a fresh, non-overwriting candidate when any of these occur:
 - a saturated review lawn/backdrop making neutral glazing read as tinted;
 - unsupported or floating attachment, including a frame or card that is
   visually near a wall but does not physically contact its carrier surface;
+- hidden carrier, full-footprint box, wall slab, or generic flat cap exposed
+  from an aerial, rear-side, oblique, or ordinary City Prompt camera;
+- support geometry that substitutes for a reference-derived courtyard, wing,
+  side/rear envelope, or pitched roof topology;
+- a valid reference material assigned to the wrong geometry role because of
+  positional list ordering or an unverified role/material binding;
 - incomplete roof, dome, bridge, or other identity-defining system;
 - leak, ghost, z-fight, stretch, duplicate stack, broken glass, or lost
   parallax/state;
