@@ -1,0 +1,92 @@
+{
+  "schema": "cityprompt.rlasm.prework-manifest@3",
+  "candidate": "01-viennese-secession-municipal-baths-rlasm-v3",
+  "retry_of": "01-viennese-secession-municipal-baths-rlasm-v2",
+  "retry_reason": "bounded final pilot correction: box-projected atomic material maps, smooth copper dome, and neutral contextual glass polish",
+  "title": "Viennese Secession Municipal Baths",
+  "method": "RLASM v3 reference-lock + atomic-role construction",
+  "status": "PASS_PREWORK_AWAITING_DRY_BUILD",
+  "source_generation": {
+    "tool": "OpenAI built-in image generation",
+    "use_case": "stylized-concept",
+    "reference_sheet_sha256": "e862e4d3a059918f97f0238789b653d88fa3b33c229fd578a92ffefd50d504d7",
+    "unique_role_sheet_sha256": "76641ab58d1794ceee71a9fe33e8bc46eaa0edfe385e2e66181ffe0385caaf18",
+    "material_card_sheet_sha256": "a321e3ea2e8ba0d5449f91b395dc5465c3260854aaf98a9bacd6e00929b73016"
+  },
+  "reference_lock": {
+    "front_identity": "asymmetric domed corner entry beside a long thermal bath hall",
+    "physical_depth": "main hall, domed corner pavilion, lower boiler hall and walled rear court",
+    "roof_topology": "oxidized-copper dome, pitched main hall roof with ridge clerestory, separate rear boiler roof and chimney",
+    "rear_side_contract": "all service volumes roofed and articulated with registered windows and doors",
+    "reflection_contract": "neutral current-scene reflections only; no baked photographic environment"
+  },
+  "unique_roles": [
+    {
+      "id": "domed-corner-entrance-pavilion",
+      "repeatable": false,
+      "physical": true
+    },
+    {
+      "id": "arched-thermal-window-bay",
+      "repeatable": true,
+      "physical": true
+    },
+    {
+      "id": "ceramic-field-and-gold-laurel-frieze",
+      "repeatable": true,
+      "physical": false
+    },
+    {
+      "id": "main-copper-roof-and-ridge-clerestory",
+      "repeatable": false,
+      "physical": true
+    },
+    {
+      "id": "rear-boiler-hall-roof-chimney-and-wall-bay",
+      "repeatable": false,
+      "physical": true
+    },
+    {
+      "id": "recessed-bronze-entry-stair-and-lamps",
+      "repeatable": false,
+      "physical": true
+    }
+  ],
+  "material_roles": [
+    "warm pale cream limestone ashlar",
+    "blue-white glazed Secession ceramic field tile",
+    "aged gold laurel relief frieze",
+    "oxidized green copper standing-seam roof",
+    "dark aged bronze frame metal",
+    "charcoal black-bronze civic door metal",
+    "neutral low-iron physical glass",
+    "occupied interior depth behind glass"
+  ],
+  "physical_massing": [
+    "long rectangular main bath hall",
+    "asymmetric cylindrical corner entrance pavilion",
+    "lower offset boiler and service wing",
+    "walled rear court",
+    "separate dome, main roof, clerestory and boiler roof",
+    "grounded stairs and lamp plinths"
+  ],
+  "mandatory_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "side",
+    "rear_side",
+    "facade_close",
+    "glass_close"
+  ],
+  "hard_gates": [
+    "PASS_ZERO_EXPOSED_GIANT_SUPPORT_BOXES",
+    "PASS_WINDOW_MASK_EXCLUDES_EXTERIOR_TRANSPARENCY",
+    "PASS_ZERO_WINDOWS_OR_OBJECTS_OUTSIDE_PHYSICAL_ENVELOPE",
+    "PASS_EVERY_LARGE_VOLUME_FINISHED_ALL_VISIBLE_SIDES",
+    "PASS_ZERO_GENERIC_MATERIAL_FALLBACKS",
+    "PASS_ZERO_FLOATING_CONTACTS",
+    "PASS_NEUTRAL_CONTEXTUAL_GLASS_NO_BAKED_REFLECTION"
+  ],
+  "builder_self_approval": false
+}

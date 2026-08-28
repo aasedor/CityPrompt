@@ -1,0 +1,33 @@
+{
+  "schema": "cityprompt.rlasm.final-visual-qa@4",
+  "candidate": "01-viennese-secession-municipal-baths-rlasm-v3",
+  "title": "Viennese Secession Municipal Baths",
+  "status": "PASS_PILOT_APPROVED_FOR_BOUNDED_NEXT_NINE",
+  "score": 95,
+  "strict_hard_stops": [],
+  "generic_fallback_count": 0,
+  "floating_count": 0,
+  "giant_exposed_carrier_box_count": 0,
+  "baked_glass_reflection_count": 0,
+  "reference_specific_materials": true,
+  "non_rectangular_massing_verified": true,
+  "views_reviewed": [
+    "front",
+    "front_corner",
+    "aerial",
+    "side",
+    "rear_side",
+    "facade_close",
+    "glass_close"
+  ],
+  "phone_review_sheet": {
+    "path": "review/phone-review-sheet.png",
+    "bytes": 2441332,
+    "sha256": "7cc39344ee5e7ab9b9e1b9b261f87bcac524a6a3400fa075ca27b13cd46d49f5"
+  },
+  "builder_evidence_sha256": "e668729888db62099003aa7da74e770863e8f917d6e5a7b57bb1eefe52101470",
+  "minor_cosmetic_debt": [
+    "simplified ornamental relief at close range"
+  ],
+  "builder_self_approval": false
+}

@@ -1,0 +1,100 @@
+{
+  "schema": "cityprompt.rlasm.atomic-card-manifest@3",
+  "candidate": "01-viennese-secession-municipal-baths-rlasm-v3",
+  "retry_of": "01-viennese-secession-municipal-baths-rlasm-v2",
+  "status": "PASS_ATOMIC_PREWORK_AWAITING_DRY_BUILD",
+  "locked_reference_sha256": "e862e4d3a059918f97f0238789b653d88fa3b33c229fd578a92ffefd50d504d7",
+  "unique_role_sheet_sha256": "76641ab58d1794ceee71a9fe33e8bc46eaa0edfe385e2e66181ffe0385caaf18",
+  "material_sheet_sha256": "a321e3ea2e8ba0d5449f91b395dc5465c3260854aaf98a9bacd6e00929b73016",
+  "front_identity_card": {
+    "id": "generated-front-facade-sticker",
+    "path": "cards/generated-front-facade-sticker.png",
+    "bytes": 944521,
+    "sha256": "8188deb19d1a5a8e457ad5e788c4b1595fe55c8900d7956937337413be830af8",
+    "exterior_transparency": "connected neutral background removed; no sky or context carrier"
+  },
+  "unique_role_cards": [
+    {
+      "id": "domed-corner-entrance-pavilion",
+      "path": "cards/object-domed-corner-entrance-pavilion.png",
+      "bytes": 441430,
+      "sha256": "582f1ba742251e9435717cfed16ab9baa355525a586b4ecc3aa00d64329ddabd"
+    },
+    {
+      "id": "arched-thermal-window-bay",
+      "path": "cards/object-arched-thermal-window-bay.png",
+      "bytes": 442366,
+      "sha256": "e834e04dcc99b438650eb11e85ed420d951f018625e36c4fc4576460356a78fc"
+    },
+    {
+      "id": "ceramic-field-and-gold-laurel-frieze",
+      "path": "cards/object-ceramic-field-and-gold-laurel-frieze.png",
+      "bytes": 480222,
+      "sha256": "3fe8c192b05f7acb2318c0c046cfcd2698ab01199fd931f9f27bed246854157c"
+    },
+    {
+      "id": "main-copper-roof-and-ridge-clerestory",
+      "path": "cards/object-main-copper-roof-and-ridge-clerestory.png",
+      "bytes": 338510,
+      "sha256": "5140f33515ed5fe94aa57d9180f87c54640456aa7376a5952ed37312c8a3ebb0"
+    },
+    {
+      "id": "rear-boiler-hall-roof-chimney-and-wall-bay",
+      "path": "cards/object-rear-boiler-hall-roof-chimney-and-wall-bay.png",
+      "bytes": 344647,
+      "sha256": "80bb0cc0773bdea55967bb941da4e7efe446011ffe23fff11006c9008c0c597a"
+    },
+    {
+      "id": "recessed-bronze-entry-stair-and-lamps",
+      "path": "cards/object-recessed-bronze-entry-stair-and-lamps.png",
+      "bytes": 418151,
+      "sha256": "d6b7c944340290ce176228c748a05ee5997e46f1609afcc7498cf363f0d52e28"
+    }
+  ],
+  "material_cards": [
+    {
+      "id": "warm-cream-limestone-ashlar",
+      "path": "materials/material-warm-cream-limestone-ashlar.png",
+      "bytes": 452016,
+      "sha256": "e1560af52f79a83b6b98b8c899ed52bbabd72a689b334304c4ba1004e4e4991c"
+    },
+    {
+      "id": "blue-white-secession-ceramic-field",
+      "path": "materials/material-blue-white-secession-ceramic-field.png",
+      "bytes": 586306,
+      "sha256": "5338b04a3f6a55d15ee9b7c9b0079cb3ea0cead0310301945f9fe3345f6a6c6d"
+    },
+    {
+      "id": "aged-gold-laurel-relief-frieze",
+      "path": "materials/material-aged-gold-laurel-relief-frieze.png",
+      "bytes": 538010,
+      "sha256": "a7ecb7864f61326ae0ec61e3139af909ded70365a33b13a622039517b744d433"
+    },
+    {
+      "id": "oxidized-green-copper-standing-seam",
+      "path": "materials/material-oxidized-green-copper-standing-seam.png",
+      "bytes": 493660,
+      "sha256": "c582d11823f53d2bde45c39f5aae3dbd3eb4aed9d3f004a96d9c9a2c2c603d6d"
+    },
+    {
+      "id": "dark-aged-bronze-frame-metal",
+      "path": "materials/material-dark-aged-bronze-frame-metal.png",
+      "bytes": 381687,
+      "sha256": "8eafcacd478b95b21cfc5dcfb2d076e69eca7bc89e57d5877105c23286881f70"
+    },
+    {
+      "id": "charcoal-black-bronze-door-metal",
+      "path": "materials/material-charcoal-black-bronze-door-metal.png",
+      "bytes": 428527,
+      "sha256": "04fb2f61e13889795bae732a58b419ee718d368aa6ff4dc9c662b10c3cc0ac71"
+    }
+  ],
+  "rules": {
+    "every_non_repeatable_role_has_card": true,
+    "materials_are_reference_specific": true,
+    "generic_fallbacks_allowed": false,
+    "cards_may_not_replace_required_physical_massing": true,
+    "exterior_transparency_may_not_become_geometry": true
+  },
+  "builder_self_approval": false
+}

@@ -1,0 +1,170 @@
+{
+  "schema": "cityprompt.rlasm.build-evidence@3",
+  "candidate": "01-viennese-secession-municipal-baths-rlasm-v3",
+  "title": "Viennese Secession Municipal Baths",
+  "method": "RLASM v3 reference-lock + atomic-role construction",
+  "status": "PASS_BUILDER_EVIDENCE_AWAITING_VISUAL_QA",
+  "scene": {
+    "path": "model/01-viennese-secession-municipal-baths-rlasm-v3.blend",
+    "bytes": 354281,
+    "sha256": "cec8604415f3d7e7dd01796d3a6e72b52cb2fc1a1097f248828f4bca0ad86d4c"
+  },
+  "glb": {
+    "path": "model/01-viennese-secession-municipal-baths-rlasm-v3.glb",
+    "bytes": 5924576,
+    "sha256": "2038d79389d6d10cd8b0f70f52f9e224e8d95fe6174054440cd2108ad3fc59b2"
+  },
+  "renders": [
+    {
+      "path": "renders/aerial.png",
+      "bytes": 1516767,
+      "sha256": "e19341dac9c4b7bc870b6c95e35fb538d0da6885473aadaea4dcda3c9f63a693"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "bytes": 1644294,
+      "sha256": "efc32a3ebea94a01617ddbd00c34b964350bf03cc13a63af5e064030d8e05b48"
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 1144877,
+      "sha256": "7d66181cd357077dfeb0235c78d0f8be120e0f3eb7920c5729c279071a125e8a"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 1313801,
+      "sha256": "fedee18f4a40523d29a85dfb71d47a814562512c90797554121672de0ae52560"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 1748316,
+      "sha256": "48af660845eb8f3f24dd9c61f61c0cd192c517416fdc1894e767e27b32a1dc85"
+    },
+    {
+      "path": "renders/preview.png",
+      "bytes": 1313801,
+      "sha256": "fedee18f4a40523d29a85dfb71d47a814562512c90797554121672de0ae52560"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "bytes": 1564199,
+      "sha256": "6459613934a25407a658c2d55e09f382218e80ec3c189b50a9d0a11d0f34444c"
+    },
+    {
+      "path": "renders/side.png",
+      "bytes": 1097549,
+      "sha256": "529fe7945e57de25c91dcc51926339b80ed267204ea3cfeb6f285060f33dd04e"
+    }
+  ],
+  "object_count": 405,
+  "material_audit": {
+    "building_material_count": 8,
+    "materials": [
+      {
+        "name": "MAT_VienneseBaths_NeutralLowIron_Physical_v22",
+        "status": "reference_specific_finished",
+        "provenance": "RLASM reusable neutral physical low-iron glass module v22",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_Viennese_BlackBronzeDoor_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 01-viennese-secession-municipal-baths-rlasm-v3 rendered material card material-charcoal-black-bronze-door-metal.png",
+        "source_sha256": "04fb2f61e13889795bae732a58b419ee718d368aa6ff4dc9c662b10c3cc0ac71"
+      },
+      {
+        "name": "MAT_Viennese_BlueWhiteCeramic_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 01-viennese-secession-municipal-baths-rlasm-v3 rendered material card material-blue-white-secession-ceramic-field.png",
+        "source_sha256": "5338b04a3f6a55d15ee9b7c9b0079cb3ea0cead0310301945f9fe3345f6a6c6d"
+      },
+      {
+        "name": "MAT_Viennese_DarkBronzeFrame_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 01-viennese-secession-municipal-baths-rlasm-v3 rendered material card material-dark-aged-bronze-frame-metal.png",
+        "source_sha256": "8eafcacd478b95b21cfc5dcfb2d076e69eca7bc89e57d5877105c23286881f70"
+      },
+      {
+        "name": "MAT_Viennese_GoldLaurelFrieze_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 01-viennese-secession-municipal-baths-rlasm-v3 rendered material card material-aged-gold-laurel-relief-frieze.png",
+        "source_sha256": "a7ecb7864f61326ae0ec61e3139af909ded70365a33b13a622039517b744d433"
+      },
+      {
+        "name": "MAT_Viennese_OccupiedDepth_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "modeled occupied baths interior depth",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_Viennese_OxidizedCopper_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 01-viennese-secession-municipal-baths-rlasm-v3 rendered material card material-oxidized-green-copper-standing-seam.png",
+        "source_sha256": "c582d11823f53d2bde45c39f5aae3dbd3eb4aed9d3f004a96d9c9a2c2c603d6d"
+      },
+      {
+        "name": "MAT_Viennese_WarmCreamLimestone_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 01-viennese-secession-municipal-baths-rlasm-v3 rendered material card material-warm-cream-limestone-ashlar.png",
+        "source_sha256": "e1560af52f79a83b6b98b8c899ed52bbabd72a689b334304c4ba1004e4e4991c"
+      }
+    ],
+    "generic_fallback_count": 0,
+    "all_reference_specific_finished": true,
+    "glass": {
+      "material": "MAT_VienneseBaths_NeutralLowIron_Physical_v22",
+      "image_texture_count": 0,
+      "baked_reflection": false,
+      "reflection_source": "current_scene_world_lights_geometry_only",
+      "neutral_scene_only": true
+    }
+  },
+  "contact_audit": {
+    "schema": "cityprompt.rlasm.contact-audit@3",
+    "candidate": "01-viennese-secession-municipal-baths-rlasm-v3",
+    "records": [
+      {
+        "claim": "main bath hall, domed pavilion, rear connector and boiler hall physically overlap without a giant footprint carrier",
+        "floating": false
+      },
+      {
+        "claim": "all four roof systems seat on their matching wall volumes",
+        "floating": false
+      },
+      {
+        "claim": "ridge clerestory is physically supported by the main copper roof and every rib intersects pane and cap",
+        "floating": false
+      },
+      {
+        "claim": "entry stair reaches grade and both lamp posts terminate on physical plinths",
+        "floating": false
+      },
+      {
+        "claim": "side and rear windows are registered only to their local physical wall planes",
+        "floating": false
+      },
+      {
+        "claim": "rear court remains open and every enclosing wall terminates at grade",
+        "floating": false
+      },
+      {
+        "claim": "neutral glass uses current scene lighting and geometry only with no image texture or baked reflection",
+        "floating": false
+      }
+    ],
+    "floating_count": 0,
+    "status": "PASS_ZERO_FLOATING"
+  },
+  "hard_gates": [
+    "PASS_ZERO_EXPOSED_GIANT_SUPPORT_BOXES",
+    "PASS_WINDOW_MASK_EXCLUDES_EXTERIOR_TRANSPARENCY",
+    "PASS_ZERO_WINDOWS_OR_OBJECTS_OUTSIDE_PHYSICAL_ENVELOPE",
+    "PASS_EVERY_LARGE_VOLUME_FINISHED_ALL_VISIBLE_SIDES",
+    "PASS_ZERO_GENERIC_MATERIAL_FALLBACKS",
+    "PASS_ZERO_FLOATING_CONTACTS",
+    "PASS_NEUTRAL_CONTEXTUAL_GLASS_NO_BAKED_REFLECTION"
+  ],
+  "prework_sha256": "7bbc9e625fc797ab85101cef3622d47e18394912902249eb262794432fde9357",
+  "card_manifest_sha256": "d16c528adc62b368c425105f343c6ff8b5bc220171ec00880a27eb19389284bd",
+  "builder_self_approval": false
+}
