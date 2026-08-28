@@ -1,0 +1,56 @@
+{
+  "schema": "cityprompt.rlasm.final-visual-qa@2",
+  "candidate": "06-georgian-crescent-terrace-rlasm-v4",
+  "title": "Georgian Crescent Terrace",
+  "method": "RLASM v3 reference-lock + atomic-role construction",
+  "status": "PASS_VISUAL_QA_FOR_CITYPROMPT_SAMPLE",
+  "strict_result": "PASS",
+  "score": 95,
+  "minimum_score": 95,
+  "hard_gates": {
+    "reference_identity_and_massing_match": true,
+    "roof_and_silhouette_are_physical_and_reference_specific": true,
+    "zero_exposed_giant_support_or_carrier_boxes": true,
+    "no_windows_or_objects_outside_physical_envelope": true,
+    "every_large_volume_finished_from_front_side_rear_and_aerial": true,
+    "non_rectangular_components_use_local_surface_registration": true,
+    "unique_role_cards_cover_each_non_repeatable_piece": true,
+    "all_materials_reference_specific_finished": true,
+    "neutral_contextual_scene_only_glass": true,
+    "no_baked_render_reflections": true,
+    "zero_generic_material_fallbacks": true,
+    "zero_floating_contacts": true
+  },
+  "artifact_sha256": {
+    "scene": "21f3c54aadcbf0614193db871b343ebb0f341e764d10cd0cb87652226c5a0110",
+    "glb": "64d00d5105652595cfbb186831e3798e29b960314b0a1a5bdbe8e2a3ce1e9f05",
+    "render_front": "ca8e302121ccf6e142c611e0e6850bbc440ed550227bbb6386a51f4e5d722b9c",
+    "render_front_corner": "4b0cb2596afb017a30fe9b1381fc9a11deef4655f8865fbe9a9b478bc4347cf5",
+    "render_aerial": "350b65b677c312543c082af31aea4ae4c64176fa90b475760b5de6ba6216a3c3",
+    "render_side": "4644e6538a4795ea0f3c105aa5910d1934b9bb83f644bdae5ebc29fef3f4ec77",
+    "render_facade_close": "7c9c9376b749870e6aa0bc26df0bab66fbebed0220d5dd7a2920addc09befdc3",
+    "render_glass_close": "bec2886530cfe52f411be8e4284ae83c24a680a11e4711e31b8ae34b5ff3f7df",
+    "render_rear_side": "c4ce64210132bac497735f9f35a285b301e0c82e60ad7e14f062be0611c009a4",
+    "render_preview": "4b0cb2596afb017a30fe9b1381fc9a11deef4655f8865fbe9a9b478bc4347cf5",
+    "locked-three-view-reference": "af5365148af252dd4b80e4c796d3edc81041f0cb22b1125e148a2c7a54345dcf",
+    "unique-role-card-sheet": "1e644b87a05c280a2d42fc539bc82a6453916f08bf681f283da8e591a48533f0",
+    "generated-front-facade-sticker": "bd58b6bef1266c01e6f5eca2885c1529b61b3f9484933bc8751920642d3fa46f",
+    "card-manifest": "0055f906b8306e79e2a0718b389e7f4d8cb04a3ff15d401bc2ede07fc0f73b2d"
+  },
+  "phone_review_sheet": {
+    "path": "review/phone-review-sheet.png",
+    "bytes": 1566813,
+    "sha256": "45c9852fe2474295bb74873d9d00d83d3d9e55f87bb86eaeae8d00bcc3464163"
+  },
+  "manual_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "side",
+    "rear_side",
+    "facade_close",
+    "glass_close"
+  ],
+  "non_blocking_note": "Minor close-range cosmetic differences may be refined by downstream GPT image/video rendering; no genuine 3D hard-stop defect remains.",
+  "builder_self_approval": false
+}

@@ -1,0 +1,263 @@
+{
+  "schema": "cityprompt.rlasm.atomic-card-manifest@6",
+  "candidate": "09-alpine-belle-epoque-sanatorium-rlasm-v3",
+  "title": "Alpine Belle Epoque Sanatorium",
+  "source_archetype": "alpine-belle-epoque-sanatorium",
+  "construction_system": "multi-wing Alpine sanatorium with towers, winter garden and real balconies",
+  "builder": "alpine_sanatorium",
+  "metric_dimensions": [
+    38.0,
+    25.0,
+    25.0
+  ],
+  "method_version": "RLASM 1.8.0",
+  "locked_sources": [
+    {
+      "path": "references/locked-three-view-reference.png",
+      "bytes": 3135850,
+      "sha256": "1f75219a904b3df5f538b3b5ab511c2624014449ff3f0273d9c553a3fb4f1838"
+    }
+  ],
+  "unique_role_cards": [
+    {
+      "role": "complete-sanatorium-front",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        0,
+        0,
+        512,
+        1024
+      ],
+      "path": "cards/object-complete-sanatorium-front.png",
+      "sha256": "e7d84a0cea8ee27dfe9f4c9600df1fda1501f7effa5f39bfeb89d7704adfedb5",
+      "repeatable": false
+    },
+    {
+      "role": "central-winter-garden",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        0,
+        0,
+        512,
+        573
+      ],
+      "path": "cards/object-central-winter-garden.png",
+      "sha256": "eecd332a4b5cae46982e2e5aa37f2643bd09c31e33475a4674b9417e546c6a67",
+      "repeatable": false
+    },
+    {
+      "role": "corner-pavilion-towers",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        0,
+        460,
+        512,
+        1024
+      ],
+      "path": "cards/object-corner-pavilion-towers.png",
+      "sha256": "bd1876490a326e26199452a3b2139c8bfa38412124b6ebf13a9029fb78bd1b9f",
+      "repeatable": true
+    },
+    {
+      "role": "front-corner-balcony-depth",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        512,
+        0,
+        1024,
+        1024
+      ],
+      "path": "cards/object-front-corner-balcony-depth.png",
+      "sha256": "8fe8b6f24e75f35bc4abea60e5feb6e5a4fec1cd156e6866b8375db00f2a2099",
+      "repeatable": false
+    },
+    {
+      "role": "rear-service-wing",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        1024,
+        0,
+        1536,
+        655
+      ],
+      "path": "cards/object-rear-service-wing.png",
+      "sha256": "1a871256a1a535c1de3b63d7d4cf86d35ceb4e69d9678a30b381dc29b047c489",
+      "repeatable": false
+    },
+    {
+      "role": "steep-roofs-dormers-and-chimneys",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        1024,
+        368,
+        1536,
+        1024
+      ],
+      "path": "cards/object-steep-roofs-dormers-and-chimneys.png",
+      "sha256": "7fec7518536a21cacf7a75a5ab4ef6cfadfa77c8aa4c2c41332fb8d1077ab0c9",
+      "repeatable": true
+    }
+  ],
+  "material_inputs": [
+    {
+      "id": "pale-warm-mineral-stucco",
+      "path": "materials/material-pale-warm-mineral-stucco.png",
+      "sha256": "5726a5f949aac00800de1c6f38ffec9ccea97c6a1b426e7dd30705b8b2c2a481",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 0.78,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked three-view reference",
+        "generated_source_filename": "exec-5db0254e-a9d8-4d6d-9e23-bb21e710dcd7.png",
+        "generated_source_sha256": "0f17259c46eb6ba4bec4e6093aa028f1a95a9d5e5d31728bddb41d15bcf7ec0f"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    },
+    {
+      "id": "rough-local-alpine-stone",
+      "path": "materials/material-rough-local-alpine-stone.png",
+      "sha256": "cde587a01e8cad7e87f7a0e8b4cc36a39e66d65a9f22df6c483e57b0d5b0e8ed",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 1.25,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked three-view reference",
+        "generated_source_filename": "exec-5db0254e-a9d8-4d6d-9e23-bb21e710dcd7.png",
+        "generated_source_sha256": "0f17259c46eb6ba4bec4e6093aa028f1a95a9d5e5d31728bddb41d15bcf7ec0f"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    },
+    {
+      "id": "aged-dark-alpine-timber",
+      "path": "materials/material-aged-dark-alpine-timber.png",
+      "sha256": "9dcb4b6cb23effea5b2e5ccb2f8b58046c0ee2de4b51c7a6b824bc664404a2cd",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 0.9,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked three-view reference",
+        "generated_source_filename": "exec-5db0254e-a9d8-4d6d-9e23-bb21e710dcd7.png",
+        "generated_source_sha256": "0f17259c46eb6ba4bec4e6093aa028f1a95a9d5e5d31728bddb41d15bcf7ec0f"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    },
+    {
+      "id": "dark-blue-grey-slate",
+      "path": "materials/material-dark-blue-grey-slate.png",
+      "sha256": "a61e6e7f7ab424e14f75201ecc3cc91547b7aa8a7b85e57a63ff8375d5e39161",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 0.65,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked three-view reference",
+        "generated_source_filename": "exec-5db0254e-a9d8-4d6d-9e23-bb21e710dcd7.png",
+        "generated_source_sha256": "0f17259c46eb6ba4bec4e6093aa028f1a95a9d5e5d31728bddb41d15bcf7ec0f"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    },
+    {
+      "id": "dark-bronze-black-frame",
+      "path": "materials/material-dark-bronze-black-frame.png",
+      "sha256": "f0ad3a3d030aa02cf3da53ff3cbe6e29898e09a6a36f66162aafab6dc5da45a9",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 0.82,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked three-view reference",
+        "generated_source_filename": "exec-5db0254e-a9d8-4d6d-9e23-bb21e710dcd7.png",
+        "generated_source_sha256": "0f17259c46eb6ba4bec4e6093aa028f1a95a9d5e5d31728bddb41d15bcf7ec0f"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    }
+  ],
+  "facade_generation_contract": {
+    "required": true,
+    "role": "orthographic reference-specific front elevation",
+    "transparent_openings_required": true,
+    "baked_reflection_forbidden": true,
+    "alpha_audit": {
+      "source_width": 1536,
+      "source_height": 1024,
+      "width": 1409,
+      "height": 988,
+      "transparent_pixels": 526787,
+      "partially_transparent_despilled_pixels": 7314,
+      "tight_alpha_bbox": [
+        58,
+        8,
+        1467,
+        996
+      ]
+    }
+  },
+  "glass_contract": {
+    "profile": "RLASM neutral contextual low-iron physical glazing v22",
+    "image_texture_count_required": 0,
+    "baked_reflection_forbidden": true,
+    "reflection_source": "scene_only"
+  },
+  "material_binding_contract": {
+    "binding_key": "declared material id",
+    "positional_binding_forbidden": true,
+    "object_coordinate_world_scale_required": true,
+    "generic_material_fallback_forbidden": true
+  },
+  "carrier_visibility_contract": {
+    "required_views": [
+      "front_corner",
+      "aerial",
+      "side",
+      "rear_side"
+    ],
+    "exposed_carrier_count_required": 0,
+    "full_footprint_hidden_box_forbidden": true,
+    "side_and_rear_architecture_required": true
+  },
+  "hard_gates": [
+    "multi-wing Alpine sanatorium with towers, winter garden and real balconies",
+    "all six unique architectural roles inventoried before build",
+    "reference-specific finished materials only",
+    "neutral contextual scene-only glass",
+    "physical roof and side/rear articulation",
+    "zero floating objects",
+    "zero exposed blank carrier faces",
+    "PASS_ZERO_EXPOSED_GIANT_SUPPORT_BOXES",
+    "PASS_WINDOW_MASK_EXCLUDES_EXTERIOR_TRANSPARENCY"
+  ],
+  "generic_fallback_allowed": false,
+  "status": "PASS_PREWORK_READY_FOR_VISUAL_REVIEW",
+  "builder_self_approval": false,
+  "correction_of": "09-alpine-belle-epoque-sanatorium-rlasm-v1",
+  "correction_scope": [
+    "replace facade-wide glass and occupied-depth carriers with an enclosed-alpha-opening mask",
+    "keep exterior transparency fully transparent so no giant plane or support box is exposed",
+    "retain neutral contextual physical glass and modeled dark depth only inside card openings"
+  ],
+  "window_opening_mask": {
+    "path": "cards/window-opening-mask.png",
+    "derivation": "transparent connected components not connected to any card-image boundary, dilated one pixel under the physical frames",
+    "width": 1409,
+    "height": 988,
+    "opaque_or_partial_pixels": 1015
+  }
+}

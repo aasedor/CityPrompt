@@ -1,0 +1,263 @@
+{
+  "schema": "cityprompt.rlasm.atomic-card-manifest@6",
+  "candidate": "10-new-england-shingle-seaside-inn-rlasm-v3",
+  "title": "New England Shingle Style Seaside Inn",
+  "source_archetype": "new-england-shingle-seaside-inn",
+  "construction_system": "irregular Shingle Style inn with turret, gambrels, rear ell and wrap porch",
+  "builder": "shingle_inn",
+  "metric_dimensions": [
+    34.0,
+    25.0,
+    19.5
+  ],
+  "method_version": "RLASM 1.8.0",
+  "locked_sources": [
+    {
+      "path": "references/locked-three-view-reference.png",
+      "bytes": 2805132,
+      "sha256": "ea498d8beb035a397376b358451b195437669429161e8c41f74bb1f121c80c22"
+    }
+  ],
+  "unique_role_cards": [
+    {
+      "role": "complete-shingle-inn-front",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        0,
+        0,
+        557,
+        941
+      ],
+      "path": "cards/object-complete-shingle-inn-front.png",
+      "sha256": "a554cc794a1117bdc3d21c9b3cfbbd3c2245441780e50bf49587411385f0641a",
+      "repeatable": false
+    },
+    {
+      "role": "round-corner-turret",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        0,
+        0,
+        557,
+        526
+      ],
+      "path": "cards/object-round-corner-turret.png",
+      "sha256": "e6dcd53a9c874cd0254ac3399faeb3d3e83968d596fb430f52ee14ccc5410fe7",
+      "repeatable": false
+    },
+    {
+      "role": "wraparound-porch-and-entry",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        0,
+        423,
+        557,
+        941
+      ],
+      "path": "cards/object-wraparound-porch-and-entry.png",
+      "sha256": "cf2b7823326a95935311361ff5eaff329aadfe1cf1f87f34477cb49edf5cb36e",
+      "repeatable": true
+    },
+    {
+      "role": "front-corner-cross-gambrels",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        557,
+        0,
+        1114,
+        941
+      ],
+      "path": "cards/object-front-corner-cross-gambrels.png",
+      "sha256": "1ddab87603c25147a528a94786383882fba911e59c21660fc0a07fe6be8cfe13",
+      "repeatable": false
+    },
+    {
+      "role": "rear-ell-and-service-wing",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        1114,
+        0,
+        1672,
+        602
+      ],
+      "path": "cards/object-rear-ell-and-service-wing.png",
+      "sha256": "359e28913724832303c220941f94381c0fba89d84a95360bb89716ba88e19acf",
+      "repeatable": false
+    },
+    {
+      "role": "widows-walk-and-fieldstone-chimney",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        1114,
+        338,
+        1672,
+        941
+      ],
+      "path": "cards/object-widows-walk-and-fieldstone-chimney.png",
+      "sha256": "26981084224978861724211d1ec9df05ab78d8eb7efb572e32a3f31eb0af4900",
+      "repeatable": true
+    }
+  ],
+  "material_inputs": [
+    {
+      "id": "weathered-cedar-shingle",
+      "path": "materials/material-weathered-cedar-shingle.png",
+      "sha256": "7775d65db8cd24c400f284dfcfe8646a8a09ba37c9b7d055ac2ea1a08810ec35",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 0.78,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked three-view reference",
+        "generated_source_filename": "exec-d306a749-37f6-4a74-9fdf-3fc538389d54.png",
+        "generated_source_sha256": "24c7149c510461128286b5d9746f56454aa0081f15e8c52bb8c54fa816b5c9cb"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    },
+    {
+      "id": "rounded-coastal-fieldstone",
+      "path": "materials/material-rounded-coastal-fieldstone.png",
+      "sha256": "a985a8df0d2306c81f0a7b05ab8e92c3ed693ac01501469abe3dfb42193ed785",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 1.25,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked three-view reference",
+        "generated_source_filename": "exec-d306a749-37f6-4a74-9fdf-3fc538389d54.png",
+        "generated_source_sha256": "24c7149c510461128286b5d9746f56454aa0081f15e8c52bb8c54fa816b5c9cb"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    },
+    {
+      "id": "painted-warm-white-trim",
+      "path": "materials/material-painted-warm-white-trim.png",
+      "sha256": "0b8e7b7fb3ddc1715bfc4aa24d5f2103176a5d5cdaf415fb7bab1288b6fdcb62",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 0.9,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked three-view reference",
+        "generated_source_filename": "exec-d306a749-37f6-4a74-9fdf-3fc538389d54.png",
+        "generated_source_sha256": "24c7149c510461128286b5d9746f56454aa0081f15e8c52bb8c54fa816b5c9cb"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    },
+    {
+      "id": "dark-charcoal-roof-shingle",
+      "path": "materials/material-dark-charcoal-roof-shingle.png",
+      "sha256": "7907518b990a5c74c45845a2148bc3aaa458232e4764c2f1413736aabd03a93b",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 0.65,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked three-view reference",
+        "generated_source_filename": "exec-d306a749-37f6-4a74-9fdf-3fc538389d54.png",
+        "generated_source_sha256": "24c7149c510461128286b5d9746f56454aa0081f15e8c52bb8c54fa816b5c9cb"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    },
+    {
+      "id": "dark-bronze-black-sash",
+      "path": "materials/material-dark-bronze-black-sash.png",
+      "sha256": "b00d0e7b26e1ed9696223d7b94c309628fbea5348d7c6d24b0b5e61349cbad5c",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 0.82,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked three-view reference",
+        "generated_source_filename": "exec-d306a749-37f6-4a74-9fdf-3fc538389d54.png",
+        "generated_source_sha256": "24c7149c510461128286b5d9746f56454aa0081f15e8c52bb8c54fa816b5c9cb"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    }
+  ],
+  "facade_generation_contract": {
+    "required": true,
+    "role": "orthographic reference-specific front elevation",
+    "transparent_openings_required": true,
+    "baked_reflection_forbidden": true,
+    "alpha_audit": {
+      "source_width": 1536,
+      "source_height": 1024,
+      "width": 1472,
+      "height": 803,
+      "transparent_pixels": 855976,
+      "partially_transparent_despilled_pixels": 7932,
+      "tight_alpha_bbox": [
+        40,
+        97,
+        1512,
+        900
+      ]
+    }
+  },
+  "glass_contract": {
+    "profile": "RLASM neutral contextual low-iron physical glazing v22",
+    "image_texture_count_required": 0,
+    "baked_reflection_forbidden": true,
+    "reflection_source": "scene_only"
+  },
+  "material_binding_contract": {
+    "binding_key": "declared material id",
+    "positional_binding_forbidden": true,
+    "object_coordinate_world_scale_required": true,
+    "generic_material_fallback_forbidden": true
+  },
+  "carrier_visibility_contract": {
+    "required_views": [
+      "front_corner",
+      "aerial",
+      "side",
+      "rear_side"
+    ],
+    "exposed_carrier_count_required": 0,
+    "full_footprint_hidden_box_forbidden": true,
+    "side_and_rear_architecture_required": true
+  },
+  "hard_gates": [
+    "irregular Shingle Style inn with turret, gambrels, rear ell and wrap porch",
+    "all six unique architectural roles inventoried before build",
+    "reference-specific finished materials only",
+    "neutral contextual scene-only glass",
+    "physical roof and side/rear articulation",
+    "zero floating objects",
+    "zero exposed blank carrier faces",
+    "PASS_ZERO_EXPOSED_GIANT_SUPPORT_BOXES",
+    "PASS_WINDOW_MASK_EXCLUDES_EXTERIOR_TRANSPARENCY"
+  ],
+  "generic_fallback_allowed": false,
+  "status": "PASS_PREWORK_READY_FOR_VISUAL_REVIEW",
+  "builder_self_approval": false,
+  "correction_of": "10-new-england-shingle-seaside-inn-rlasm-v1",
+  "correction_scope": [
+    "replace facade-wide glass and occupied-depth carriers with an enclosed-alpha-opening mask",
+    "keep exterior transparency fully transparent so no giant plane or support box is exposed",
+    "retain neutral contextual physical glass and modeled dark depth only inside card openings"
+  ],
+  "window_opening_mask": {
+    "path": "cards/window-opening-mask.png",
+    "derivation": "transparent connected components not connected to any card-image boundary, dilated one pixel under the physical frames",
+    "width": 1472,
+    "height": 803,
+    "opaque_or_partial_pixels": 20867
+  }
+}

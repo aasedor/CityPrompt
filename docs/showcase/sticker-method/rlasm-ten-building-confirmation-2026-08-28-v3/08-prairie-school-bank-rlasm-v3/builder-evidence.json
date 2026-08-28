@@ -1,0 +1,182 @@
+{
+  "schema": "cityprompt.rlasm.build-evidence@2",
+  "candidate": "08-prairie-school-bank-rlasm-v3",
+  "title": "Prairie School Bank",
+  "method": "RLASM reference-lock + atomic-role construction",
+  "status": "PASS_BUILDER_EVIDENCE_AWAITING_VISUAL_QA",
+  "scene": {
+    "path": "model/08-prairie-school-bank-rlasm-v3.blend",
+    "bytes": 233923,
+    "sha256": "a6c1887b24ba664d9cf68874a1d3d67a239e26fd676e1d31bc2fb01430c7ee32"
+  },
+  "glb": {
+    "path": "model/08-prairie-school-bank-rlasm-v3.glb",
+    "bytes": 6048844,
+    "sha256": "72fe16977f27af71e6b72f6f0bca37bb7bc73cb28b275eb5e3e1e6ae1a6fce3d"
+  },
+  "renders": [
+    {
+      "path": "renders/aerial.png",
+      "bytes": 1419249,
+      "sha256": "bcc79e23ba2ccfd5b1219e0a67648dc195c0804ab2a2ef1c11fa8f6e3440c1ac"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "bytes": 1573677,
+      "sha256": "deeccc60628170253664579e74e95e692a9e282056f2d80e2ed88305bdd87d4f"
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 1180648,
+      "sha256": "d92efc5b1b64a9bf6ef47cf7ccb8f36d7d04ff91123d55546cc5f5ce7f33881b"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 1391204,
+      "sha256": "64ed3da60d8e96aeeafaa6fd728a5a113e4c6ba584b7597adb33dcaf3d40eb49"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 1586775,
+      "sha256": "2643f5b29a303c8d71b354ba39bf915309d9d3b51e5943a7d616a7d949cb69ca"
+    },
+    {
+      "path": "renders/preview.png",
+      "bytes": 1391204,
+      "sha256": "64ed3da60d8e96aeeafaa6fd728a5a113e4c6ba584b7597adb33dcaf3d40eb49"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "bytes": 1252812,
+      "sha256": "6cd6278377d50dd0ecfe3680cac176f60eca5d16c8e3a79530c7b72fad31a822"
+    },
+    {
+      "path": "renders/side.png",
+      "bytes": 1090033,
+      "sha256": "eb6607984547b773a652a553175de8616808c7349c0af9ad0fe115a34b46a2c1"
+    }
+  ],
+  "object_count": 288,
+  "material_audit": {
+    "building_material_count": 10,
+    "materials": [
+      {
+        "name": "MAT_Prairie_Bank_01_tawny-roman-brick_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 08-prairie-school-bank-rlasm-v3 approved reference-matched reconstruction tawny-roman-brick",
+        "source_sha256": "43fc80e67928eb0f7b4bb249880cdf5a517a7da7b818f09891ae187adfb12a9e"
+      },
+      {
+        "name": "MAT_Prairie_Bank_02_pale-carved-limestone_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 08-prairie-school-bank-rlasm-v3 approved reference-matched reconstruction pale-carved-limestone",
+        "source_sha256": "eb7c9381657b91a196eaccb2e16a934e3a68ecd69378968541a4d94cb3ccec1c"
+      },
+      {
+        "name": "MAT_Prairie_Bank_03_aged-green-brown-copper_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 08-prairie-school-bank-rlasm-v3 approved reference-matched reconstruction aged-green-brown-copper",
+        "source_sha256": "351414c7c62f7451d2dbd55748116f82bed19e9e0979c8d0cfb90a9822c6e900"
+      },
+      {
+        "name": "MAT_Prairie_Bank_04_dark-architectural-bronze_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 08-prairie-school-bank-rlasm-v3 approved reference-matched reconstruction dark-architectural-bronze",
+        "source_sha256": "a17b0d47eb0b4324c2632b4648c2723cfe68e8e43eaa77fed071e75c7a76db49"
+      },
+      {
+        "name": "MAT_Prairie_Bank_05_charcoal-roof-membrane_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 08-prairie-school-bank-rlasm-v3 approved reference-matched reconstruction charcoal-roof-membrane",
+        "source_sha256": "fae656b484fb49fca7591313769f1d00241ae3fd0208fd786978f86e51daa2a2"
+      },
+      {
+        "name": "MAT_Prairie_Bank_GeneratedAtomicFacadeSticker",
+        "status": "reference_specific_finished",
+        "provenance": "built-in image generation from locked RLASM prework reference sheet",
+        "source_sha256": "9a65f2b1532fcb2f37384cedcb318ef03f0ae14810bda508062cec7c1d1db892"
+      },
+      {
+        "name": "MAT_Prairie_Bank_NeutralLowIron_Physical_v22",
+        "status": "reference_specific_finished",
+        "provenance": "RLASM reusable neutral physical low-iron glass module v22",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_Prairie_Bank_NeutralPhysicalGlass_OpeningMask",
+        "status": "reference_specific_finished",
+        "provenance": "RLASM enclosed-alpha-opening mask derived from the locked candidate facade card",
+        "source_sha256": "342b935c2c8714a7a990a6500193760bd45a4a637a491bce3cdfd0b7363cd823"
+      },
+      {
+        "name": "MAT_Prairie_Bank_OccupiedDepth_OpeningMask",
+        "status": "reference_specific_finished",
+        "provenance": "RLASM enclosed-alpha-opening mask derived from the locked candidate facade card",
+        "source_sha256": "342b935c2c8714a7a990a6500193760bd45a4a637a491bce3cdfd0b7363cd823"
+      },
+      {
+        "name": "MAT_Prairie_Depth",
+        "status": "reference_specific_finished",
+        "provenance": "modeled bank-hall interior depth",
+        "source_sha256": null
+      }
+    ],
+    "generic_fallback_count": 0,
+    "all_reference_specific_finished": true,
+    "glass": {
+      "material": "MAT_Prairie_Bank_NeutralLowIron_Physical_v22",
+      "image_texture_count": 0,
+      "baked_reflection": false,
+      "reflection_source": "current_scene_world_lights_geometry_only",
+      "neutral_scene_only": true
+    }
+  },
+  "contact_audit": {
+    "schema": "cityprompt.rlasm.contact-audit@2",
+    "candidate": "08-prairie-school-bank-rlasm-v3",
+    "records": [
+      {
+        "claim": "CP_Prairie_StoneEntry entry is recessed into its wall and its threshold rests at grade",
+        "floating": false
+      },
+      {
+        "claim": "deep roof slabs overlap the finished brick volumes",
+        "floating": false
+      },
+      {
+        "claim": "central skylight is seated on the banking-hall roof",
+        "floating": false
+      },
+      {
+        "claim": "side and rear windows are registered only to the physical main hall and low annex",
+        "floating": false
+      },
+      {
+        "claim": "horizontal stone datums and neutral glazing continue around side and rear",
+        "floating": false
+      },
+      {
+        "claim": "atomic facade carrier flush-mounted within 0.006m of physical facade datum",
+        "floating": false
+      },
+      {
+        "claim": "neutral glass and occupied depth are mask-bounded to enclosed atomic openings; exterior card transparency contains no carrier",
+        "floating": false
+      }
+    ],
+    "floating_count": 0,
+    "status": "PASS_ZERO_FLOATING"
+  },
+  "hard_gates": [
+    "low broad Prairie bank with Roman brick, limestone bands and skylit hall",
+    "all six unique architectural roles inventoried before build",
+    "reference-specific finished materials only",
+    "neutral contextual scene-only glass",
+    "physical roof and side/rear articulation",
+    "zero floating objects",
+    "zero exposed blank carrier faces",
+    "PASS_ZERO_EXPOSED_GIANT_SUPPORT_BOXES",
+    "PASS_WINDOW_MASK_EXCLUDES_EXTERIOR_TRANSPARENCY"
+  ],
+  "builder_self_approval": false
+}

@@ -1,0 +1,263 @@
+{
+  "schema": "cityprompt.rlasm.atomic-card-manifest@6",
+  "candidate": "08-prairie-school-bank-rlasm-v3",
+  "title": "Prairie School Bank",
+  "source_archetype": "prairie-school-bank",
+  "construction_system": "low broad Prairie bank with Roman brick, limestone bands and skylit hall",
+  "builder": "prairie_bank",
+  "metric_dimensions": [
+    29.0,
+    20.0,
+    11.5
+  ],
+  "method_version": "RLASM 1.8.0",
+  "locked_sources": [
+    {
+      "path": "references/locked-three-view-reference.png",
+      "bytes": 2906487,
+      "sha256": "8583da34b8188fe4f0eba599fa9a89dbe21d64d0b08d1e63947ae26709d36cb9"
+    }
+  ],
+  "unique_role_cards": [
+    {
+      "role": "complete-prairie-bank-front",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        0,
+        0,
+        512,
+        1024
+      ],
+      "path": "cards/object-complete-prairie-bank-front.png",
+      "sha256": "47d5063772d03573cd4ea3a561908986c632f12da5f5872e40c45437ad5616c1",
+      "repeatable": false
+    },
+    {
+      "role": "deep-overhanging-roof",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        0,
+        0,
+        512,
+        573
+      ],
+      "path": "cards/object-deep-overhanging-roof.png",
+      "sha256": "c4ae683fac46027b9a423df75b015c997ff5f2e7b6ddfa34d04a31a50d0b48c1",
+      "repeatable": false
+    },
+    {
+      "role": "recessed-stone-entry",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        0,
+        460,
+        512,
+        1024
+      ],
+      "path": "cards/object-recessed-stone-entry.png",
+      "sha256": "994df4b4fe4a83944e4e2218b240dbfd43ce3b419ef828fcf75cba9de253d20d",
+      "repeatable": true
+    },
+    {
+      "role": "front-corner-horizontal-massing",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        512,
+        0,
+        1024,
+        1024
+      ],
+      "path": "cards/object-front-corner-horizontal-massing.png",
+      "sha256": "6ecbcd1b7946f87fd1e8d0b338fc4187ed484ac82d365ac920f9460902f29278",
+      "repeatable": false
+    },
+    {
+      "role": "central-skylight-and-annex",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        1024,
+        0,
+        1536,
+        655
+      ],
+      "path": "cards/object-central-skylight-and-annex.png",
+      "sha256": "fa80921e340dc28b7f820fb1d1b3071d020a8842499052d81ef1d736652111a4",
+      "repeatable": false
+    },
+    {
+      "role": "side-clerestory-window-rhythm",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        1024,
+        368,
+        1536,
+        1024
+      ],
+      "path": "cards/object-side-clerestory-window-rhythm.png",
+      "sha256": "7c8a85cc81e7f98c5c6fa42653286e6708fd73a7b395e05c7588aa6afcb1aaad",
+      "repeatable": true
+    }
+  ],
+  "material_inputs": [
+    {
+      "id": "tawny-roman-brick",
+      "path": "materials/material-tawny-roman-brick.png",
+      "sha256": "43fc80e67928eb0f7b4bb249880cdf5a517a7da7b818f09891ae187adfb12a9e",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 0.78,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked three-view reference",
+        "generated_source_filename": "exec-abb8b195-6bb4-4551-b5e1-eb375ce83dbd.png",
+        "generated_source_sha256": "172b6da26e83032b93d684e195d662873dba8a1046bfe9e0e2ee6952c5c06e59"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    },
+    {
+      "id": "pale-carved-limestone",
+      "path": "materials/material-pale-carved-limestone.png",
+      "sha256": "eb7c9381657b91a196eaccb2e16a934e3a68ecd69378968541a4d94cb3ccec1c",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 1.25,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked three-view reference",
+        "generated_source_filename": "exec-abb8b195-6bb4-4551-b5e1-eb375ce83dbd.png",
+        "generated_source_sha256": "172b6da26e83032b93d684e195d662873dba8a1046bfe9e0e2ee6952c5c06e59"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    },
+    {
+      "id": "aged-green-brown-copper",
+      "path": "materials/material-aged-green-brown-copper.png",
+      "sha256": "351414c7c62f7451d2dbd55748116f82bed19e9e0979c8d0cfb90a9822c6e900",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 0.9,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked three-view reference",
+        "generated_source_filename": "exec-abb8b195-6bb4-4551-b5e1-eb375ce83dbd.png",
+        "generated_source_sha256": "172b6da26e83032b93d684e195d662873dba8a1046bfe9e0e2ee6952c5c06e59"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    },
+    {
+      "id": "dark-architectural-bronze",
+      "path": "materials/material-dark-architectural-bronze.png",
+      "sha256": "a17b0d47eb0b4324c2632b4648c2723cfe68e8e43eaa77fed071e75c7a76db49",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 0.65,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked three-view reference",
+        "generated_source_filename": "exec-abb8b195-6bb4-4551-b5e1-eb375ce83dbd.png",
+        "generated_source_sha256": "172b6da26e83032b93d684e195d662873dba8a1046bfe9e0e2ee6952c5c06e59"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    },
+    {
+      "id": "charcoal-roof-membrane",
+      "path": "materials/material-charcoal-roof-membrane.png",
+      "sha256": "fae656b484fb49fca7591313769f1d00241ae3fd0208fd786978f86e51daa2a2",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 0.82,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked three-view reference",
+        "generated_source_filename": "exec-abb8b195-6bb4-4551-b5e1-eb375ce83dbd.png",
+        "generated_source_sha256": "172b6da26e83032b93d684e195d662873dba8a1046bfe9e0e2ee6952c5c06e59"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    }
+  ],
+  "facade_generation_contract": {
+    "required": true,
+    "role": "orthographic reference-specific front elevation",
+    "transparent_openings_required": true,
+    "baked_reflection_forbidden": true,
+    "alpha_audit": {
+      "source_width": 1536,
+      "source_height": 1024,
+      "width": 1474,
+      "height": 607,
+      "transparent_pixels": 878959,
+      "partially_transparent_despilled_pixels": 2407,
+      "tight_alpha_bbox": [
+        30,
+        223,
+        1504,
+        830
+      ]
+    }
+  },
+  "glass_contract": {
+    "profile": "RLASM neutral contextual low-iron physical glazing v22",
+    "image_texture_count_required": 0,
+    "baked_reflection_forbidden": true,
+    "reflection_source": "scene_only"
+  },
+  "material_binding_contract": {
+    "binding_key": "declared material id",
+    "positional_binding_forbidden": true,
+    "object_coordinate_world_scale_required": true,
+    "generic_material_fallback_forbidden": true
+  },
+  "carrier_visibility_contract": {
+    "required_views": [
+      "front_corner",
+      "aerial",
+      "side",
+      "rear_side"
+    ],
+    "exposed_carrier_count_required": 0,
+    "full_footprint_hidden_box_forbidden": true,
+    "side_and_rear_architecture_required": true
+  },
+  "hard_gates": [
+    "low broad Prairie bank with Roman brick, limestone bands and skylit hall",
+    "all six unique architectural roles inventoried before build",
+    "reference-specific finished materials only",
+    "neutral contextual scene-only glass",
+    "physical roof and side/rear articulation",
+    "zero floating objects",
+    "zero exposed blank carrier faces",
+    "PASS_ZERO_EXPOSED_GIANT_SUPPORT_BOXES",
+    "PASS_WINDOW_MASK_EXCLUDES_EXTERIOR_TRANSPARENCY"
+  ],
+  "generic_fallback_allowed": false,
+  "status": "PASS_PREWORK_READY_FOR_VISUAL_REVIEW",
+  "builder_self_approval": false,
+  "correction_of": "08-prairie-school-bank-rlasm-v1",
+  "correction_scope": [
+    "replace facade-wide glass and occupied-depth carriers with an enclosed-alpha-opening mask",
+    "keep exterior transparency fully transparent so no giant plane or support box is exposed",
+    "retain neutral contextual physical glass and modeled dark depth only inside card openings"
+  ],
+  "window_opening_mask": {
+    "path": "cards/window-opening-mask.png",
+    "derivation": "transparent connected components not connected to any card-image boundary, dilated one pixel under the physical frames",
+    "width": 1474,
+    "height": 607,
+    "opaque_or_partial_pixels": 0
+  }
+}

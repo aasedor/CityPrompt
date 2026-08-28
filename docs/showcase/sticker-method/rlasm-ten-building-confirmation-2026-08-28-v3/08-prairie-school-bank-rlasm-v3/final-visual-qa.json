@@ -1,0 +1,56 @@
+{
+  "schema": "cityprompt.rlasm.final-visual-qa@2",
+  "candidate": "08-prairie-school-bank-rlasm-v3",
+  "title": "Prairie School Bank",
+  "method": "RLASM v3 reference-lock + atomic-role construction",
+  "status": "PASS_VISUAL_QA_FOR_CITYPROMPT_SAMPLE",
+  "strict_result": "PASS",
+  "score": 95,
+  "minimum_score": 95,
+  "hard_gates": {
+    "reference_identity_and_massing_match": true,
+    "roof_and_silhouette_are_physical_and_reference_specific": true,
+    "zero_exposed_giant_support_or_carrier_boxes": true,
+    "no_windows_or_objects_outside_physical_envelope": true,
+    "every_large_volume_finished_from_front_side_rear_and_aerial": true,
+    "non_rectangular_components_use_local_surface_registration": true,
+    "unique_role_cards_cover_each_non_repeatable_piece": true,
+    "all_materials_reference_specific_finished": true,
+    "neutral_contextual_scene_only_glass": true,
+    "no_baked_render_reflections": true,
+    "zero_generic_material_fallbacks": true,
+    "zero_floating_contacts": true
+  },
+  "artifact_sha256": {
+    "scene": "a6c1887b24ba664d9cf68874a1d3d67a239e26fd676e1d31bc2fb01430c7ee32",
+    "glb": "72fe16977f27af71e6b72f6f0bca37bb7bc73cb28b275eb5e3e1e6ae1a6fce3d",
+    "render_front": "d92efc5b1b64a9bf6ef47cf7ccb8f36d7d04ff91123d55546cc5f5ce7f33881b",
+    "render_front_corner": "64ed3da60d8e96aeeafaa6fd728a5a113e4c6ba584b7597adb33dcaf3d40eb49",
+    "render_aerial": "bcc79e23ba2ccfd5b1219e0a67648dc195c0804ab2a2ef1c11fa8f6e3440c1ac",
+    "render_side": "eb6607984547b773a652a553175de8616808c7349c0af9ad0fe115a34b46a2c1",
+    "render_facade_close": "deeccc60628170253664579e74e95e692a9e282056f2d80e2ed88305bdd87d4f",
+    "render_glass_close": "2643f5b29a303c8d71b354ba39bf915309d9d3b51e5943a7d616a7d949cb69ca",
+    "render_rear_side": "6cd6278377d50dd0ecfe3680cac176f60eca5d16c8e3a79530c7b72fad31a822",
+    "render_preview": "64ed3da60d8e96aeeafaa6fd728a5a113e4c6ba584b7597adb33dcaf3d40eb49",
+    "locked-three-view-reference": "8583da34b8188fe4f0eba599fa9a89dbe21d64d0b08d1e63947ae26709d36cb9",
+    "unique-role-card-sheet": "80b78cc5b1156efb2d0c247fbf10fb8005b2137ec2bcafb000896b4f2f86ce84",
+    "generated-front-facade-sticker": "9a65f2b1532fcb2f37384cedcb318ef03f0ae14810bda508062cec7c1d1db892",
+    "card-manifest": "4c4981c3d1ae98e1caf1443a6af8122d2ff175625bfc89352b399f555ae247a8"
+  },
+  "phone_review_sheet": {
+    "path": "review/phone-review-sheet.png",
+    "bytes": 1288539,
+    "sha256": "00a210ae772f1be4ea7f5d8ad034259bac74436a43a2398d8df5c2fb9eb124dc"
+  },
+  "manual_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "side",
+    "rear_side",
+    "facade_close",
+    "glass_close"
+  ],
+  "non_blocking_note": "Minor close-range cosmetic differences may be refined by downstream GPT image/video rendering; no genuine 3D hard-stop defect remains.",
+  "builder_self_approval": false
+}

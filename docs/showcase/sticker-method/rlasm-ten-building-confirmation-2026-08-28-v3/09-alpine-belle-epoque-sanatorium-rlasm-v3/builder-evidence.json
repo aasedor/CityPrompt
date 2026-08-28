@@ -1,0 +1,242 @@
+{
+  "schema": "cityprompt.rlasm.build-evidence@2",
+  "candidate": "09-alpine-belle-epoque-sanatorium-rlasm-v3",
+  "title": "Alpine Belle Epoque Sanatorium",
+  "method": "RLASM reference-lock + atomic-role construction",
+  "status": "PASS_BUILDER_EVIDENCE_AWAITING_VISUAL_QA",
+  "scene": {
+    "path": "model/09-alpine-belle-epoque-sanatorium-rlasm-v3.blend",
+    "bytes": 426315,
+    "sha256": "d7394db8981d4ad843e48e9ae0c8d645c025bb68637dff62d5309fd3cbb9641c"
+  },
+  "glb": {
+    "path": "model/09-alpine-belle-epoque-sanatorium-rlasm-v3.glb",
+    "bytes": 10540724,
+    "sha256": "2d3abe5095d1e826858059c6579e7a60e48a9f666b93fa92f8fd3c7a4fb4ac9e"
+  },
+  "renders": [
+    {
+      "path": "renders/aerial.png",
+      "bytes": 1518545,
+      "sha256": "4b5a4a950084e2377ecfd8ac7d796041a4f6fad8d9c5d35ee4cb05eb270157a9"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "bytes": 1742821,
+      "sha256": "ae343f1230f5fa22f7d068f991febaf58e4ceae093f99938645f098e66778461"
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 1390185,
+      "sha256": "f05b3ee2a3580f169dea2ee29f67ab34803322fdbd87ead459631e65484e612d"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 1716335,
+      "sha256": "d56ecd6e8d3091f44499ca241748d853c68bc819a833201e0e3d00aaef95c189"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 1633990,
+      "sha256": "3981cf82984a9fc61ec1198670533f8ba94cee57d54618f423c1e8cae67a6036"
+    },
+    {
+      "path": "renders/preview.png",
+      "bytes": 1716335,
+      "sha256": "d56ecd6e8d3091f44499ca241748d853c68bc819a833201e0e3d00aaef95c189"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "bytes": 1421131,
+      "sha256": "4e3c56ad86b17e67aa726acc7c985f87fdf47893cb71ba8fea19f30cd4aba4cb"
+    },
+    {
+      "path": "renders/side.png",
+      "bytes": 1170200,
+      "sha256": "0adb1e77abedb78359f30c22c92b1635be35584a6f4112107e30e4a8cf92e5d6"
+    }
+  ],
+  "object_count": 887,
+  "material_audit": {
+    "building_material_count": 10,
+    "materials": [
+      {
+        "name": "MAT_Alpine_Depth",
+        "status": "reference_specific_finished",
+        "provenance": "modeled sanatorium room depth",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_Alpine_Sanatorium_01_pale-warm-mineral-stucco_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 09-alpine-belle-epoque-sanatorium-rlasm-v3 approved reference-matched reconstruction pale-warm-mineral-stucco",
+        "source_sha256": "5726a5f949aac00800de1c6f38ffec9ccea97c6a1b426e7dd30705b8b2c2a481"
+      },
+      {
+        "name": "MAT_Alpine_Sanatorium_02_rough-local-alpine-stone_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 09-alpine-belle-epoque-sanatorium-rlasm-v3 approved reference-matched reconstruction rough-local-alpine-stone",
+        "source_sha256": "cde587a01e8cad7e87f7a0e8b4cc36a39e66d65a9f22df6c483e57b0d5b0e8ed"
+      },
+      {
+        "name": "MAT_Alpine_Sanatorium_03_aged-dark-alpine-timber_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 09-alpine-belle-epoque-sanatorium-rlasm-v3 approved reference-matched reconstruction aged-dark-alpine-timber",
+        "source_sha256": "9dcb4b6cb23effea5b2e5ccb2f8b58046c0ee2de4b51c7a6b824bc664404a2cd"
+      },
+      {
+        "name": "MAT_Alpine_Sanatorium_04_dark-blue-grey-slate_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 09-alpine-belle-epoque-sanatorium-rlasm-v3 approved reference-matched reconstruction dark-blue-grey-slate",
+        "source_sha256": "a61e6e7f7ab424e14f75201ecc3cc91547b7aa8a7b85e57a63ff8375d5e39161"
+      },
+      {
+        "name": "MAT_Alpine_Sanatorium_05_dark-bronze-black-frame_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 09-alpine-belle-epoque-sanatorium-rlasm-v3 approved reference-matched reconstruction dark-bronze-black-frame",
+        "source_sha256": "f0ad3a3d030aa02cf3da53ff3cbe6e29898e09a6a36f66162aafab6dc5da45a9"
+      },
+      {
+        "name": "MAT_Alpine_Sanatorium_GeneratedAtomicFacadeSticker",
+        "status": "reference_specific_finished",
+        "provenance": "built-in image generation from locked RLASM prework reference sheet",
+        "source_sha256": "f1ac2bbb2e7d156df2c3967e3a1626ceec2df5175b6709647601ff6d4e4bcf6a"
+      },
+      {
+        "name": "MAT_Alpine_Sanatorium_NeutralLowIron_Physical_v22",
+        "status": "reference_specific_finished",
+        "provenance": "RLASM reusable neutral physical low-iron glass module v22",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_Alpine_Sanatorium_NeutralPhysicalGlass_OpeningMask",
+        "status": "reference_specific_finished",
+        "provenance": "RLASM enclosed-alpha-opening mask derived from the locked candidate facade card",
+        "source_sha256": "4d2257e13f6604f7ebfc13ea3e66cd2923d872b88b6dcdea44075f2af9302caf"
+      },
+      {
+        "name": "MAT_Alpine_Sanatorium_OccupiedDepth_OpeningMask",
+        "status": "reference_specific_finished",
+        "provenance": "RLASM enclosed-alpha-opening mask derived from the locked candidate facade card",
+        "source_sha256": "4d2257e13f6604f7ebfc13ea3e66cd2923d872b88b6dcdea44075f2af9302caf"
+      }
+    ],
+    "generic_fallback_count": 0,
+    "all_reference_specific_finished": true,
+    "glass": {
+      "material": "MAT_Alpine_Sanatorium_NeutralLowIron_Physical_v22",
+      "image_texture_count": 0,
+      "baked_reflection": false,
+      "reflection_source": "current_scene_world_lights_geometry_only",
+      "neutral_scene_only": true
+    }
+  },
+  "contact_audit": {
+    "schema": "cityprompt.rlasm.contact-audit@2",
+    "candidate": "09-alpine-belle-epoque-sanatorium-rlasm-v3",
+    "records": [
+      {
+        "claim": "CP_Alpine_Balcony_0_-12 balcony deck intersects the facade and every guard picket terminates on it",
+        "floating": false
+      },
+      {
+        "claim": "CP_Alpine_Balcony_0_-7 balcony deck intersects the facade and every guard picket terminates on it",
+        "floating": false
+      },
+      {
+        "claim": "CP_Alpine_Balcony_0_7 balcony deck intersects the facade and every guard picket terminates on it",
+        "floating": false
+      },
+      {
+        "claim": "CP_Alpine_Balcony_0_12 balcony deck intersects the facade and every guard picket terminates on it",
+        "floating": false
+      },
+      {
+        "claim": "CP_Alpine_Balcony_1_-12 balcony deck intersects the facade and every guard picket terminates on it",
+        "floating": false
+      },
+      {
+        "claim": "CP_Alpine_Balcony_1_-7 balcony deck intersects the facade and every guard picket terminates on it",
+        "floating": false
+      },
+      {
+        "claim": "CP_Alpine_Balcony_1_7 balcony deck intersects the facade and every guard picket terminates on it",
+        "floating": false
+      },
+      {
+        "claim": "CP_Alpine_Balcony_1_12 balcony deck intersects the facade and every guard picket terminates on it",
+        "floating": false
+      },
+      {
+        "claim": "CP_Alpine_Balcony_2_-12 balcony deck intersects the facade and every guard picket terminates on it",
+        "floating": false
+      },
+      {
+        "claim": "CP_Alpine_Balcony_2_-7 balcony deck intersects the facade and every guard picket terminates on it",
+        "floating": false
+      },
+      {
+        "claim": "CP_Alpine_Balcony_2_7 balcony deck intersects the facade and every guard picket terminates on it",
+        "floating": false
+      },
+      {
+        "claim": "CP_Alpine_Balcony_2_12 balcony deck intersects the facade and every guard picket terminates on it",
+        "floating": false
+      },
+      {
+        "claim": "CP_Alpine_Balcony_3_-12 balcony deck intersects the facade and every guard picket terminates on it",
+        "floating": false
+      },
+      {
+        "claim": "CP_Alpine_Balcony_3_-7 balcony deck intersects the facade and every guard picket terminates on it",
+        "floating": false
+      },
+      {
+        "claim": "CP_Alpine_Balcony_3_7 balcony deck intersects the facade and every guard picket terminates on it",
+        "floating": false
+      },
+      {
+        "claim": "CP_Alpine_Balcony_3_12 balcony deck intersects the facade and every guard picket terminates on it",
+        "floating": false
+      },
+      {
+        "claim": "each tower roof overlaps its physical corner pavilion",
+        "floating": false
+      },
+      {
+        "claim": "balcony decks and guards are physically connected",
+        "floating": false
+      },
+      {
+        "claim": "all side and rear openings are registered to finished exterior walls",
+        "floating": false
+      },
+      {
+        "claim": "rear service wing is finished, windowed and roofed rather than a support box",
+        "floating": false
+      },
+      {
+        "claim": "atomic facade carrier flush-mounted within 0.006m of physical facade datum",
+        "floating": false
+      },
+      {
+        "claim": "neutral glass and occupied depth are mask-bounded to enclosed atomic openings; exterior card transparency contains no carrier",
+        "floating": false
+      }
+    ],
+    "floating_count": 0,
+    "status": "PASS_ZERO_FLOATING"
+  },
+  "hard_gates": [
+    "multi-wing Alpine sanatorium with towers, winter garden and real balconies",
+    "all six unique architectural roles inventoried before build",
+    "reference-specific finished materials only",
+    "neutral contextual scene-only glass",
+    "physical roof and side/rear articulation",
+    "zero floating objects",
+    "zero exposed blank carrier faces",
+    "PASS_ZERO_EXPOSED_GIANT_SUPPORT_BOXES",
+    "PASS_WINDOW_MASK_EXCLUDES_EXTERIOR_TRANSPARENCY"
+  ],
+  "builder_self_approval": false
+}

@@ -1,0 +1,56 @@
+{
+  "schema": "cityprompt.rlasm.final-visual-qa@2",
+  "candidate": "07-moroccan-riad-hotel-rlasm-v3",
+  "title": "Moroccan Riad Hotel",
+  "method": "RLASM v3 reference-lock + atomic-role construction",
+  "status": "PASS_VISUAL_QA_FOR_CITYPROMPT_SAMPLE",
+  "strict_result": "PASS",
+  "score": 96,
+  "minimum_score": 95,
+  "hard_gates": {
+    "reference_identity_and_massing_match": true,
+    "roof_and_silhouette_are_physical_and_reference_specific": true,
+    "zero_exposed_giant_support_or_carrier_boxes": true,
+    "no_windows_or_objects_outside_physical_envelope": true,
+    "every_large_volume_finished_from_front_side_rear_and_aerial": true,
+    "non_rectangular_components_use_local_surface_registration": true,
+    "unique_role_cards_cover_each_non_repeatable_piece": true,
+    "all_materials_reference_specific_finished": true,
+    "neutral_contextual_scene_only_glass": true,
+    "no_baked_render_reflections": true,
+    "zero_generic_material_fallbacks": true,
+    "zero_floating_contacts": true
+  },
+  "artifact_sha256": {
+    "scene": "3d88f002a7e191d54a94860d6483a7b4dcf4068a23055d5b570ff64ea21d36ab",
+    "glb": "bbc15d85288b17d97adca9240a0e532897adf641e95bf56455def956edda5857",
+    "render_front": "22cb948f19d2b076f38cf0bfbb7d1887b1285edea16a145353f701ab726658ba",
+    "render_front_corner": "bfcec6a43617d65bb3690bd0da7d35c83d832cfcb11a75291222a865adae886b",
+    "render_aerial": "da8a2b444d8ab234b2f86faeb57e325abb273bc5076a128629a47f276f7bc4bb",
+    "render_side": "8314c2ca7c8cec1aa7684669d6078615be493a64dae0d7acc0cb0db0a81f48f8",
+    "render_facade_close": "49b490271dbc5d5f1859674505c6668082adbb38bcfa7bbb278abb4c9710b093",
+    "render_glass_close": "e0a5fec52a5c5b67a76281b94b53e9304930aedc0c71b3656363eaed51fd4bb5",
+    "render_rear_side": "480b64469c5e4955820b5dbe1d97446fb5dda2c7c9986c10dc3bbbb719f27261",
+    "render_preview": "bfcec6a43617d65bb3690bd0da7d35c83d832cfcb11a75291222a865adae886b",
+    "locked-three-view-reference": "8fd0da41569f1ed61b17a2c0f25025c859d55fb98752ddda94fa92b141c5fa64",
+    "unique-role-card-sheet": "5f9d06076f65aa02a4abf2dd407ac57e4acb615b5e2cb4267fa9cf55d96cea2c",
+    "generated-front-facade-sticker": "e001dadf71eadef2cca374d3564ef7cfab7e315df2e0e01aefb6fffdcbd5164d",
+    "card-manifest": "c4d46aabf5cad928b6f7e1013d6ff3530c7b3a1010361f9665c3861cb5e3be47"
+  },
+  "phone_review_sheet": {
+    "path": "review/phone-review-sheet.png",
+    "bytes": 1592762,
+    "sha256": "6b5bb0badff609f2fe25ef0f9a40fdd4bc0530145daac1bda895fc54f88d6050"
+  },
+  "manual_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "side",
+    "rear_side",
+    "facade_close",
+    "glass_close"
+  ],
+  "non_blocking_note": "Minor close-range cosmetic differences may be refined by downstream GPT image/video rendering; no genuine 3D hard-stop defect remains.",
+  "builder_self_approval": false
+}

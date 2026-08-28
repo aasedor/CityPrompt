@@ -1,0 +1,263 @@
+{
+  "schema": "cityprompt.rlasm.atomic-card-manifest@6",
+  "candidate": "07-moroccan-riad-hotel-rlasm-v3",
+  "title": "Moroccan Riad Hotel",
+  "source_archetype": "moroccan-riad-hotel",
+  "construction_system": "rose tadelakt riad hotel formed by four wings around a real open court",
+  "builder": "moroccan_riad",
+  "metric_dimensions": [
+    27.0,
+    25.0,
+    14.5
+  ],
+  "method_version": "RLASM 1.8.0",
+  "locked_sources": [
+    {
+      "path": "references/locked-three-view-reference.png",
+      "bytes": 3047730,
+      "sha256": "8fd0da41569f1ed61b17a2c0f25025c859d55fb98752ddda94fa92b141c5fa64"
+    }
+  ],
+  "unique_role_cards": [
+    {
+      "role": "complete-riad-front",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        0,
+        0,
+        512,
+        1024
+      ],
+      "path": "cards/object-complete-riad-front.png",
+      "sha256": "01d8777e33370959efac6db43cb6488914268b870e6a13b34ae4219a879a4691",
+      "repeatable": false
+    },
+    {
+      "role": "cedar-mashrabiya-bay",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        0,
+        0,
+        512,
+        573
+      ],
+      "path": "cards/object-cedar-mashrabiya-bay.png",
+      "sha256": "9646911d52aacd184fd8d7ea8fc4509ede52db49fbcb49ad62846fc18b56b1be",
+      "repeatable": false
+    },
+    {
+      "role": "carved-horseshoe-portal",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        0,
+        460,
+        512,
+        1024
+      ],
+      "path": "cards/object-carved-horseshoe-portal.png",
+      "sha256": "5da85801464d570e26ce8e6d449fdb19daf38f20631e59e2cf11caa8f47b7d04",
+      "repeatable": true
+    },
+    {
+      "role": "front-corner-parapets",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        512,
+        0,
+        1024,
+        1024
+      ],
+      "path": "cards/object-front-corner-parapets.png",
+      "sha256": "be0654fb1605eaa62d8edc8ded52fd358105b30fcdb411cf3719d3fa1c063d52",
+      "repeatable": false
+    },
+    {
+      "role": "open-courtyard-and-fountain",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        1024,
+        0,
+        1536,
+        655
+      ],
+      "path": "cards/object-open-courtyard-and-fountain.png",
+      "sha256": "3d08fc04bdef0cf25bb5b582dc4cf23ecaf020c4ffa2bce5e28187da8bcf045a",
+      "repeatable": false
+    },
+    {
+      "role": "roof-terrace-and-stair-tower",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        1024,
+        368,
+        1536,
+        1024
+      ],
+      "path": "cards/object-roof-terrace-and-stair-tower.png",
+      "sha256": "4885ad6b8a6c251017d0f7ad22609053052d53fc5d8f68d5038a55babcc3b068",
+      "repeatable": true
+    }
+  ],
+  "material_inputs": [
+    {
+      "id": "rose-tadelakt",
+      "path": "materials/material-rose-tadelakt.png",
+      "sha256": "90d8a61689b9b09329c90fe7ac32d3530f63a3bc14bce6f2d512de577675a3fc",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 0.78,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked three-view reference",
+        "generated_source_filename": "exec-ffdd08ec-752b-42e8-a15d-e84eb397b331.png",
+        "generated_source_sha256": "36c7f723004804f12684d44008a4265c8fd6da9aa82befc7d392f6eb24b5cec0"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    },
+    {
+      "id": "pale-carved-stucco",
+      "path": "materials/material-pale-carved-stucco.png",
+      "sha256": "e76de95e8b53509afa58fdad37bfdb944250c9f18fc2bf377be514220614d6e5",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 1.25,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked three-view reference",
+        "generated_source_filename": "exec-ffdd08ec-752b-42e8-a15d-e84eb397b331.png",
+        "generated_source_sha256": "36c7f723004804f12684d44008a4265c8fd6da9aa82befc7d392f6eb24b5cec0"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    },
+    {
+      "id": "dark-rich-cedar",
+      "path": "materials/material-dark-rich-cedar.png",
+      "sha256": "c03526dcd09c7d3c1d87c64633a3ebc26847b5db6ed29341ffed3117b1c115fd",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 0.9,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked three-view reference",
+        "generated_source_filename": "exec-ffdd08ec-752b-42e8-a15d-e84eb397b331.png",
+        "generated_source_sha256": "36c7f723004804f12684d44008a4265c8fd6da9aa82befc7d392f6eb24b5cec0"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    },
+    {
+      "id": "hand-forged-black-iron",
+      "path": "materials/material-hand-forged-black-iron.png",
+      "sha256": "69b574b0a1e15db5979fcb0d1f9ee9f7cde0faba7ff229b7ca9de6f5f707ad44",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 0.65,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked three-view reference",
+        "generated_source_filename": "exec-ffdd08ec-752b-42e8-a15d-e84eb397b331.png",
+        "generated_source_sha256": "36c7f723004804f12684d44008a4265c8fd6da9aa82befc7d392f6eb24b5cec0"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    },
+    {
+      "id": "jewel-toned-zellige",
+      "path": "materials/material-jewel-toned-zellige.png",
+      "sha256": "66a193cc5763789a2ea23c58f8069ef5a4c32a3c41388676e3c7c7fb9a8db09b",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 0.82,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked three-view reference",
+        "generated_source_filename": "exec-ffdd08ec-752b-42e8-a15d-e84eb397b331.png",
+        "generated_source_sha256": "36c7f723004804f12684d44008a4265c8fd6da9aa82befc7d392f6eb24b5cec0"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    }
+  ],
+  "facade_generation_contract": {
+    "required": true,
+    "role": "orthographic reference-specific front elevation",
+    "transparent_openings_required": true,
+    "baked_reflection_forbidden": true,
+    "alpha_audit": {
+      "source_width": 1536,
+      "source_height": 1024,
+      "width": 1386,
+      "height": 956,
+      "transparent_pixels": 284902,
+      "partially_transparent_despilled_pixels": 3244,
+      "tight_alpha_bbox": [
+        75,
+        38,
+        1461,
+        994
+      ]
+    }
+  },
+  "glass_contract": {
+    "profile": "RLASM neutral contextual low-iron physical glazing v22",
+    "image_texture_count_required": 0,
+    "baked_reflection_forbidden": true,
+    "reflection_source": "scene_only"
+  },
+  "material_binding_contract": {
+    "binding_key": "declared material id",
+    "positional_binding_forbidden": true,
+    "object_coordinate_world_scale_required": true,
+    "generic_material_fallback_forbidden": true
+  },
+  "carrier_visibility_contract": {
+    "required_views": [
+      "front_corner",
+      "aerial",
+      "side",
+      "rear_side"
+    ],
+    "exposed_carrier_count_required": 0,
+    "full_footprint_hidden_box_forbidden": true,
+    "side_and_rear_architecture_required": true
+  },
+  "hard_gates": [
+    "rose tadelakt riad hotel formed by four wings around a real open court",
+    "all six unique architectural roles inventoried before build",
+    "reference-specific finished materials only",
+    "neutral contextual scene-only glass",
+    "physical roof and side/rear articulation",
+    "zero floating objects",
+    "zero exposed blank carrier faces",
+    "PASS_ZERO_EXPOSED_GIANT_SUPPORT_BOXES",
+    "PASS_WINDOW_MASK_EXCLUDES_EXTERIOR_TRANSPARENCY"
+  ],
+  "generic_fallback_allowed": false,
+  "status": "PASS_PREWORK_READY_FOR_VISUAL_REVIEW",
+  "builder_self_approval": false,
+  "correction_of": "07-moroccan-riad-hotel-rlasm-v1",
+  "correction_scope": [
+    "replace facade-wide glass and occupied-depth carriers with an enclosed-alpha-opening mask",
+    "keep exterior transparency fully transparent so no giant plane or support box is exposed",
+    "retain neutral contextual physical glass and modeled dark depth only inside card openings"
+  ],
+  "window_opening_mask": {
+    "path": "cards/window-opening-mask.png",
+    "derivation": "transparent connected components not connected to any card-image boundary, dilated one pixel under the physical frames",
+    "width": 1386,
+    "height": 956,
+    "opaque_or_partial_pixels": 0
+  }
+}

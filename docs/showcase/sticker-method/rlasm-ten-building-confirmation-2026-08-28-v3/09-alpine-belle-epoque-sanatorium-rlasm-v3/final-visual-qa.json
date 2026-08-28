@@ -1,0 +1,56 @@
+{
+  "schema": "cityprompt.rlasm.final-visual-qa@2",
+  "candidate": "09-alpine-belle-epoque-sanatorium-rlasm-v3",
+  "title": "Alpine Belle Epoque Sanatorium",
+  "method": "RLASM v3 reference-lock + atomic-role construction",
+  "status": "PASS_VISUAL_QA_FOR_CITYPROMPT_SAMPLE",
+  "strict_result": "PASS",
+  "score": 96,
+  "minimum_score": 95,
+  "hard_gates": {
+    "reference_identity_and_massing_match": true,
+    "roof_and_silhouette_are_physical_and_reference_specific": true,
+    "zero_exposed_giant_support_or_carrier_boxes": true,
+    "no_windows_or_objects_outside_physical_envelope": true,
+    "every_large_volume_finished_from_front_side_rear_and_aerial": true,
+    "non_rectangular_components_use_local_surface_registration": true,
+    "unique_role_cards_cover_each_non_repeatable_piece": true,
+    "all_materials_reference_specific_finished": true,
+    "neutral_contextual_scene_only_glass": true,
+    "no_baked_render_reflections": true,
+    "zero_generic_material_fallbacks": true,
+    "zero_floating_contacts": true
+  },
+  "artifact_sha256": {
+    "scene": "d7394db8981d4ad843e48e9ae0c8d645c025bb68637dff62d5309fd3cbb9641c",
+    "glb": "2d3abe5095d1e826858059c6579e7a60e48a9f666b93fa92f8fd3c7a4fb4ac9e",
+    "render_front": "f05b3ee2a3580f169dea2ee29f67ab34803322fdbd87ead459631e65484e612d",
+    "render_front_corner": "d56ecd6e8d3091f44499ca241748d853c68bc819a833201e0e3d00aaef95c189",
+    "render_aerial": "4b5a4a950084e2377ecfd8ac7d796041a4f6fad8d9c5d35ee4cb05eb270157a9",
+    "render_side": "0adb1e77abedb78359f30c22c92b1635be35584a6f4112107e30e4a8cf92e5d6",
+    "render_facade_close": "ae343f1230f5fa22f7d068f991febaf58e4ceae093f99938645f098e66778461",
+    "render_glass_close": "3981cf82984a9fc61ec1198670533f8ba94cee57d54618f423c1e8cae67a6036",
+    "render_rear_side": "4e3c56ad86b17e67aa726acc7c985f87fdf47893cb71ba8fea19f30cd4aba4cb",
+    "render_preview": "d56ecd6e8d3091f44499ca241748d853c68bc819a833201e0e3d00aaef95c189",
+    "locked-three-view-reference": "1f75219a904b3df5f538b3b5ab511c2624014449ff3f0273d9c553a3fb4f1838",
+    "unique-role-card-sheet": "f357e73ff64d495026318925115085f7ac3acc2c6c7029588a2751366db955ba",
+    "generated-front-facade-sticker": "f1ac2bbb2e7d156df2c3967e3a1626ceec2df5175b6709647601ff6d4e4bcf6a",
+    "card-manifest": "94721cac9efcd8b5083059643f84e94e5fefb22bc9ac7bbd76e2f7bbce991fec"
+  },
+  "phone_review_sheet": {
+    "path": "review/phone-review-sheet.png",
+    "bytes": 1592228,
+    "sha256": "1be033fc5d27e1b3bd0447703f5800eb55a56182e8db9abab3a29593f6b15f7b"
+  },
+  "manual_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "side",
+    "rear_side",
+    "facade_close",
+    "glass_close"
+  ],
+  "non_blocking_note": "Minor close-range cosmetic differences may be refined by downstream GPT image/video rendering; no genuine 3D hard-stop defect remains.",
+  "builder_self_approval": false
+}

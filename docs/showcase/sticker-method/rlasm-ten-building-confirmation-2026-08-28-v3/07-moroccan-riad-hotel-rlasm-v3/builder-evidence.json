@@ -1,0 +1,176 @@
+{
+  "schema": "cityprompt.rlasm.build-evidence@2",
+  "candidate": "07-moroccan-riad-hotel-rlasm-v3",
+  "title": "Moroccan Riad Hotel",
+  "method": "RLASM reference-lock + atomic-role construction",
+  "status": "PASS_BUILDER_EVIDENCE_AWAITING_VISUAL_QA",
+  "scene": {
+    "path": "model/07-moroccan-riad-hotel-rlasm-v3.blend",
+    "bytes": 380667,
+    "sha256": "3d88f002a7e191d54a94860d6483a7b4dcf4068a23055d5b570ff64ea21d36ab"
+  },
+  "glb": {
+    "path": "model/07-moroccan-riad-hotel-rlasm-v3.glb",
+    "bytes": 9664848,
+    "sha256": "bbc15d85288b17d97adca9240a0e532897adf641e95bf56455def956edda5857"
+  },
+  "renders": [
+    {
+      "path": "renders/aerial.png",
+      "bytes": 1721724,
+      "sha256": "da8a2b444d8ab234b2f86faeb57e325abb273bc5076a128629a47f276f7bc4bb"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "bytes": 1941657,
+      "sha256": "49b490271dbc5d5f1859674505c6668082adbb38bcfa7bbb278abb4c9710b093"
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 1425577,
+      "sha256": "22cb948f19d2b076f38cf0bfbb7d1887b1285edea16a145353f701ab726658ba"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 1687381,
+      "sha256": "bfcec6a43617d65bb3690bd0da7d35c83d832cfcb11a75291222a865adae886b"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 1904833,
+      "sha256": "e0a5fec52a5c5b67a76281b94b53e9304930aedc0c71b3656363eaed51fd4bb5"
+    },
+    {
+      "path": "renders/preview.png",
+      "bytes": 1687381,
+      "sha256": "bfcec6a43617d65bb3690bd0da7d35c83d832cfcb11a75291222a865adae886b"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "bytes": 1441217,
+      "sha256": "480b64469c5e4955820b5dbe1d97446fb5dda2c7c9986c10dc3bbbb719f27261"
+    },
+    {
+      "path": "renders/side.png",
+      "bytes": 1239056,
+      "sha256": "8314c2ca7c8cec1aa7684669d6078615be493a64dae0d7acc0cb0db0a81f48f8"
+    }
+  ],
+  "object_count": 654,
+  "material_audit": {
+    "building_material_count": 9,
+    "materials": [
+      {
+        "name": "MAT_Moroccan_Riad_01_rose-tadelakt_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 07-moroccan-riad-hotel-rlasm-v3 approved reference-matched reconstruction rose-tadelakt",
+        "source_sha256": "90d8a61689b9b09329c90fe7ac32d3530f63a3bc14bce6f2d512de577675a3fc"
+      },
+      {
+        "name": "MAT_Moroccan_Riad_02_pale-carved-stucco_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 07-moroccan-riad-hotel-rlasm-v3 approved reference-matched reconstruction pale-carved-stucco",
+        "source_sha256": "e76de95e8b53509afa58fdad37bfdb944250c9f18fc2bf377be514220614d6e5"
+      },
+      {
+        "name": "MAT_Moroccan_Riad_03_dark-rich-cedar_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 07-moroccan-riad-hotel-rlasm-v3 approved reference-matched reconstruction dark-rich-cedar",
+        "source_sha256": "c03526dcd09c7d3c1d87c64633a3ebc26847b5db6ed29341ffed3117b1c115fd"
+      },
+      {
+        "name": "MAT_Moroccan_Riad_05_jewel-toned-zellige_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 07-moroccan-riad-hotel-rlasm-v3 approved reference-matched reconstruction jewel-toned-zellige",
+        "source_sha256": "66a193cc5763789a2ea23c58f8069ef5a4c32a3c41388676e3c7c7fb9a8db09b"
+      },
+      {
+        "name": "MAT_Moroccan_Riad_GeneratedAtomicFacadeSticker",
+        "status": "reference_specific_finished",
+        "provenance": "built-in image generation from locked RLASM prework reference sheet",
+        "source_sha256": "e001dadf71eadef2cca374d3564ef7cfab7e315df2e0e01aefb6fffdcbd5164d"
+      },
+      {
+        "name": "MAT_Moroccan_Riad_NeutralLowIron_Physical_v22",
+        "status": "reference_specific_finished",
+        "provenance": "RLASM reusable neutral physical low-iron glass module v22",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_Moroccan_Riad_NeutralPhysicalGlass_OpeningMask",
+        "status": "reference_specific_finished",
+        "provenance": "RLASM enclosed-alpha-opening mask derived from the locked candidate facade card",
+        "source_sha256": "2339ee9bd5b28f6ae1b105551e4c8d26734e820d76f711b00829f9b10eea89af"
+      },
+      {
+        "name": "MAT_Moroccan_Riad_OccupiedDepth_OpeningMask",
+        "status": "reference_specific_finished",
+        "provenance": "RLASM enclosed-alpha-opening mask derived from the locked candidate facade card",
+        "source_sha256": "2339ee9bd5b28f6ae1b105551e4c8d26734e820d76f711b00829f9b10eea89af"
+      },
+      {
+        "name": "MAT_Riad_Depth",
+        "status": "reference_specific_finished",
+        "provenance": "modeled shaded riad room depth",
+        "source_sha256": null
+      }
+    ],
+    "generic_fallback_count": 0,
+    "all_reference_specific_finished": true,
+    "glass": {
+      "material": "MAT_Moroccan_Riad_NeutralLowIron_Physical_v22",
+      "image_texture_count": 0,
+      "baked_reflection": false,
+      "reflection_source": "current_scene_world_lights_geometry_only",
+      "neutral_scene_only": true
+    }
+  },
+  "contact_audit": {
+    "schema": "cityprompt.rlasm.contact-audit@2",
+    "candidate": "07-moroccan-riad-hotel-rlasm-v3",
+    "records": [
+      {
+        "claim": "CP_Riad_CarvedPortal entry is recessed into its wall and its threshold rests at grade",
+        "floating": false
+      },
+      {
+        "claim": "four finished wings enclose a genuinely open central court",
+        "floating": false
+      },
+      {
+        "claim": "courtyard fountain rests on grade and has a physical basin",
+        "floating": false
+      },
+      {
+        "claim": "outer side and rear wings are windowed and banded instead of blank carrier walls",
+        "floating": false
+      },
+      {
+        "claim": "roof stair tower intersects the rear and right wings",
+        "floating": false
+      },
+      {
+        "claim": "atomic facade carrier flush-mounted within 0.006m of physical facade datum",
+        "floating": false
+      },
+      {
+        "claim": "neutral glass and occupied depth are mask-bounded to enclosed atomic openings; exterior card transparency contains no carrier",
+        "floating": false
+      }
+    ],
+    "floating_count": 0,
+    "status": "PASS_ZERO_FLOATING"
+  },
+  "hard_gates": [
+    "rose tadelakt riad hotel formed by four wings around a real open court",
+    "all six unique architectural roles inventoried before build",
+    "reference-specific finished materials only",
+    "neutral contextual scene-only glass",
+    "physical roof and side/rear articulation",
+    "zero floating objects",
+    "zero exposed blank carrier faces",
+    "PASS_ZERO_EXPOSED_GIANT_SUPPORT_BOXES",
+    "PASS_WINDOW_MASK_EXCLUDES_EXTERIOR_TRANSPARENCY"
+  ],
+  "builder_self_approval": false
+}

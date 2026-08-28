@@ -1,0 +1,210 @@
+{
+  "schema": "cityprompt.rlasm.build-evidence@2",
+  "candidate": "06-georgian-crescent-terrace-rlasm-v4",
+  "title": "Georgian Crescent Terrace",
+  "method": "RLASM reference-lock + atomic-role construction",
+  "status": "PASS_BUILDER_EVIDENCE_AWAITING_VISUAL_QA",
+  "scene": {
+    "path": "model/06-georgian-crescent-terrace-rlasm-v4.blend",
+    "bytes": 198450,
+    "sha256": "21f3c54aadcbf0614193db871b343ebb0f341e764d10cd0cb87652226c5a0110"
+  },
+  "glb": {
+    "path": "model/06-georgian-crescent-terrace-rlasm-v4.glb",
+    "bytes": 5905116,
+    "sha256": "64d00d5105652595cfbb186831e3798e29b960314b0a1a5bdbe8e2a3ce1e9f05"
+  },
+  "renders": [
+    {
+      "path": "renders/aerial.png",
+      "bytes": 1648732,
+      "sha256": "350b65b677c312543c082af31aea4ae4c64176fa90b475760b5de6ba6216a3c3"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "bytes": 1706375,
+      "sha256": "7c9c9376b749870e6aa0bc26df0bab66fbebed0220d5dd7a2920addc09befdc3"
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 1284906,
+      "sha256": "ca8e302121ccf6e142c611e0e6850bbc440ed550227bbb6386a51f4e5d722b9c"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 1596264,
+      "sha256": "4b0cb2596afb017a30fe9b1381fc9a11deef4655f8865fbe9a9b478bc4347cf5"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 1631160,
+      "sha256": "bec2886530cfe52f411be8e4284ae83c24a680a11e4711e31b8ae34b5ff3f7df"
+    },
+    {
+      "path": "renders/preview.png",
+      "bytes": 1596264,
+      "sha256": "4b0cb2596afb017a30fe9b1381fc9a11deef4655f8865fbe9a9b478bc4347cf5"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "bytes": 1370186,
+      "sha256": "c4ce64210132bac497735f9f35a285b301e0c82e60ad7e14f062be0611c009a4"
+    },
+    {
+      "path": "renders/side.png",
+      "bytes": 1149203,
+      "sha256": "4644e6538a4795ea0f3c105aa5910d1934b9bb83f644bdae5ebc29fef3f4ec77"
+    }
+  ],
+  "object_count": 265,
+  "material_audit": {
+    "building_material_count": 10,
+    "materials": [
+      {
+        "name": "MAT_Georgian_Crescent_01_warm-bath-ashlar_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 06-georgian-crescent-terrace-rlasm-v4 approved reference-matched reconstruction warm-bath-ashlar",
+        "source_sha256": "c2c478f8b788621cb61a6f37148360569eca923a8d77e4d49b39f59b7346e678"
+      },
+      {
+        "name": "MAT_Georgian_Crescent_02_rusticated-bath-stone_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 06-georgian-crescent-terrace-rlasm-v4 approved reference-matched reconstruction rusticated-bath-stone",
+        "source_sha256": "db5a53602eb8956245d07fb0ab6a833dcc53f03ad4ea0ff63327a57725dc1c9e"
+      },
+      {
+        "name": "MAT_Georgian_Crescent_03_painted-white-sash-timber_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 06-georgian-crescent-terrace-rlasm-v4 approved reference-matched reconstruction painted-white-sash-timber",
+        "source_sha256": "42c77fa66de2b1ff29a8068ec1efb52b0ee88ad654518bf9700343297c08129a"
+      },
+      {
+        "name": "MAT_Georgian_Crescent_04_black-wrought-iron_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 06-georgian-crescent-terrace-rlasm-v4 approved reference-matched reconstruction black-wrought-iron",
+        "source_sha256": "50f3bc571fde7b1d84039085de346cb94d907c33d41f716f6f01d0ea30967848"
+      },
+      {
+        "name": "MAT_Georgian_Crescent_05_dark-blue-grey-slate_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 06-georgian-crescent-terrace-rlasm-v4 approved reference-matched reconstruction dark-blue-grey-slate",
+        "source_sha256": "7aaed93705eb3a5d0e93f2bcfde92ab7d8b5d4c38822afc386766958cfa1aa9b"
+      },
+      {
+        "name": "MAT_Georgian_Crescent_GeneratedAtomicFacadeSticker",
+        "status": "reference_specific_finished",
+        "provenance": "built-in image generation from locked RLASM prework reference sheet",
+        "source_sha256": "bd58b6bef1266c01e6f5eca2885c1529b61b3f9484933bc8751920642d3fa46f"
+      },
+      {
+        "name": "MAT_Georgian_Crescent_NeutralLowIron_Physical_v22",
+        "status": "reference_specific_finished",
+        "provenance": "RLASM reusable neutral physical low-iron glass module v22",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_Georgian_Crescent_NeutralPhysicalGlass_OpeningMask",
+        "status": "reference_specific_finished",
+        "provenance": "RLASM enclosed-alpha-opening mask derived from the locked candidate facade card",
+        "source_sha256": "5a40e36be14c757f9717b4de074c9b3a4513db47daccadc5dd170fc1bbada7ed"
+      },
+      {
+        "name": "MAT_Georgian_Crescent_OccupiedDepth_OpeningMask",
+        "status": "reference_specific_finished",
+        "provenance": "RLASM enclosed-alpha-opening mask derived from the locked candidate facade card",
+        "source_sha256": "5a40e36be14c757f9717b4de074c9b3a4513db47daccadc5dd170fc1bbada7ed"
+      },
+      {
+        "name": "MAT_Georgian_Depth",
+        "status": "reference_specific_finished",
+        "provenance": "modeled crescent-house room depth",
+        "source_sha256": null
+      }
+    ],
+    "generic_fallback_count": 0,
+    "all_reference_specific_finished": true,
+    "glass": {
+      "material": "MAT_Georgian_Crescent_NeutralLowIron_Physical_v22",
+      "image_texture_count": 0,
+      "baked_reflection": false,
+      "reflection_source": "current_scene_world_lights_geometry_only",
+      "neutral_scene_only": true
+    }
+  },
+  "contact_audit": {
+    "schema": "cityprompt.rlasm.contact-audit@2",
+    "candidate": "06-georgian-crescent-terrace-rlasm-v4",
+    "records": [
+      {
+        "claim": "CP_Georgian_Door_-10.8 entry is recessed into its wall and its threshold rests at grade",
+        "floating": false
+      },
+      {
+        "claim": "CP_Georgian_Door_0 entry is recessed into its wall and its threshold rests at grade",
+        "floating": false
+      },
+      {
+        "claim": "CP_Georgian_Door_10.8 entry is recessed into its wall and its threshold rests at grade",
+        "floating": false
+      },
+      {
+        "claim": "CP_Georgian_Balcony_0_5.8 balcony deck intersects the facade and every guard picket terminates on it",
+        "floating": false
+      },
+      {
+        "claim": "CP_Georgian_Balcony_0_9.5 balcony deck intersects the facade and every guard picket terminates on it",
+        "floating": false
+      },
+      {
+        "claim": "CP_Georgian_Balcony_1_5.8 balcony deck intersects the facade and every guard picket terminates on it",
+        "floating": false
+      },
+      {
+        "claim": "CP_Georgian_Balcony_1_9.5 balcony deck intersects the facade and every guard picket terminates on it",
+        "floating": false
+      },
+      {
+        "claim": "CP_Georgian_Balcony_2_5.8 balcony deck intersects the facade and every guard picket terminates on it",
+        "floating": false
+      },
+      {
+        "claim": "CP_Georgian_Balcony_2_9.5 balcony deck intersects the facade and every guard picket terminates on it",
+        "floating": false
+      },
+      {
+        "claim": "seven tangent masonry bays form a real crescent instead of a rectangular shell",
+        "floating": false
+      },
+      {
+        "claim": "slate roof segments follow the crescent bay rotations",
+        "floating": false
+      },
+      {
+        "claim": "three windowed and roofed rear service wings join their corresponding houses without exposed support boxes",
+        "floating": false
+      },
+      {
+        "claim": "atomic facade carrier flush-mounted within 0.006m of physical facade datum",
+        "floating": false
+      },
+      {
+        "claim": "neutral glass and occupied depth are mask-bounded to enclosed atomic openings; exterior card transparency contains no carrier",
+        "floating": false
+      }
+    ],
+    "floating_count": 0,
+    "status": "PASS_ZERO_FLOATING"
+  },
+  "hard_gates": [
+    "three attached Bath-stone houses on a genuinely curved crescent plan",
+    "all six unique architectural roles inventoried before build",
+    "reference-specific finished materials only",
+    "neutral contextual scene-only glass",
+    "physical roof and side/rear articulation",
+    "zero floating objects",
+    "zero exposed blank carrier faces",
+    "PASS_ZERO_EXPOSED_GIANT_SUPPORT_BOXES",
+    "PASS_WINDOW_MASK_EXCLUDES_EXTERIOR_TRANSPARENCY"
+  ],
+  "builder_self_approval": false
+}

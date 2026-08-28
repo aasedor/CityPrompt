@@ -1,0 +1,263 @@
+{
+  "schema": "cityprompt.rlasm.atomic-card-manifest@6",
+  "candidate": "06-georgian-crescent-terrace-rlasm-v4",
+  "title": "Georgian Crescent Terrace",
+  "source_archetype": "georgian-crescent-terrace",
+  "construction_system": "three attached Bath-stone houses on a genuinely curved crescent plan",
+  "builder": "georgian_crescent",
+  "metric_dimensions": [
+    34.0,
+    20.0,
+    15.5
+  ],
+  "method_version": "RLASM 1.8.0",
+  "locked_sources": [
+    {
+      "path": "references/locked-three-view-reference.png",
+      "bytes": 3049633,
+      "sha256": "af5365148af252dd4b80e4c796d3edc81041f0cb22b1125e148a2c7a54345dcf"
+    }
+  ],
+  "unique_role_cards": [
+    {
+      "role": "complete-curved-terrace-front",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        0,
+        0,
+        512,
+        1024
+      ],
+      "path": "cards/object-complete-curved-terrace-front.png",
+      "sha256": "766690c081ed05e78c9c915b85b01b9dd218d119dcfeb66eb167d56af4f251f8",
+      "repeatable": false
+    },
+    {
+      "role": "balustrade-and-chimney-line",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        0,
+        0,
+        512,
+        573
+      ],
+      "path": "cards/object-balustrade-and-chimney-line.png",
+      "sha256": "9317c9adad390151d99f246f822ce84b29c536a932f84413353fa2ea0189b3ef",
+      "repeatable": false
+    },
+    {
+      "role": "three-distinct-entry-doors",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        0,
+        460,
+        512,
+        1024
+      ],
+      "path": "cards/object-three-distinct-entry-doors.png",
+      "sha256": "45a524522cd47dff62e0cc95a55027d624fb8cc786c9564030d1aa967b0dcc7a",
+      "repeatable": true
+    },
+    {
+      "role": "tangent-front-corner-depth",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        512,
+        0,
+        1024,
+        1024
+      ],
+      "path": "cards/object-tangent-front-corner-depth.png",
+      "sha256": "e653239523dec3a99a05e2f6d303350783a197d3b383f476959062808eb78e04",
+      "repeatable": false
+    },
+    {
+      "role": "rear-service-wings",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        1024,
+        0,
+        1536,
+        655
+      ],
+      "path": "cards/object-rear-service-wings.png",
+      "sha256": "1df3c7904d04e7578260094a4ccfd8f57cb8df17e228632c422c673486845805",
+      "repeatable": false
+    },
+    {
+      "role": "crescent-plan-and-party-walls",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        1024,
+        368,
+        1536,
+        1024
+      ],
+      "path": "cards/object-crescent-plan-and-party-walls.png",
+      "sha256": "ec32c94efadbe51a3d332d86fe2b6614b830fa1e1fd02642c0d66d744962ceb7",
+      "repeatable": true
+    }
+  ],
+  "material_inputs": [
+    {
+      "id": "warm-bath-ashlar",
+      "path": "materials/material-warm-bath-ashlar.png",
+      "sha256": "c2c478f8b788621cb61a6f37148360569eca923a8d77e4d49b39f59b7346e678",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 0.78,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked three-view reference",
+        "generated_source_filename": "exec-c61b7647-fd94-47b9-95fa-7afbbdb20dec.png",
+        "generated_source_sha256": "f1045d2bc2d4950cfb1f192d57a72ca99e4ce32a317b48b4f861af82827736d4"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    },
+    {
+      "id": "rusticated-bath-stone",
+      "path": "materials/material-rusticated-bath-stone.png",
+      "sha256": "db5a53602eb8956245d07fb0ab6a833dcc53f03ad4ea0ff63327a57725dc1c9e",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 1.25,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked three-view reference",
+        "generated_source_filename": "exec-c61b7647-fd94-47b9-95fa-7afbbdb20dec.png",
+        "generated_source_sha256": "f1045d2bc2d4950cfb1f192d57a72ca99e4ce32a317b48b4f861af82827736d4"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    },
+    {
+      "id": "painted-white-sash-timber",
+      "path": "materials/material-painted-white-sash-timber.png",
+      "sha256": "42c77fa66de2b1ff29a8068ec1efb52b0ee88ad654518bf9700343297c08129a",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 0.9,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked three-view reference",
+        "generated_source_filename": "exec-c61b7647-fd94-47b9-95fa-7afbbdb20dec.png",
+        "generated_source_sha256": "f1045d2bc2d4950cfb1f192d57a72ca99e4ce32a317b48b4f861af82827736d4"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    },
+    {
+      "id": "black-wrought-iron",
+      "path": "materials/material-black-wrought-iron.png",
+      "sha256": "50f3bc571fde7b1d84039085de346cb94d907c33d41f716f6f01d0ea30967848",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 0.65,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked three-view reference",
+        "generated_source_filename": "exec-c61b7647-fd94-47b9-95fa-7afbbdb20dec.png",
+        "generated_source_sha256": "f1045d2bc2d4950cfb1f192d57a72ca99e4ce32a317b48b4f861af82827736d4"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    },
+    {
+      "id": "dark-blue-grey-slate",
+      "path": "materials/material-dark-blue-grey-slate.png",
+      "sha256": "7aaed93705eb3a5d0e93f2bcfde92ab7d8b5d4c38822afc386766958cfa1aa9b",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 0.82,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked three-view reference",
+        "generated_source_filename": "exec-c61b7647-fd94-47b9-95fa-7afbbdb20dec.png",
+        "generated_source_sha256": "f1045d2bc2d4950cfb1f192d57a72ca99e4ce32a317b48b4f861af82827736d4"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    }
+  ],
+  "facade_generation_contract": {
+    "required": true,
+    "role": "orthographic reference-specific front elevation",
+    "transparent_openings_required": true,
+    "baked_reflection_forbidden": true,
+    "alpha_audit": {
+      "source_width": 1536,
+      "source_height": 1024,
+      "width": 1406,
+      "height": 926,
+      "transparent_pixels": 487975,
+      "partially_transparent_despilled_pixels": 4112,
+      "tight_alpha_bbox": [
+        63,
+        43,
+        1469,
+        969
+      ]
+    }
+  },
+  "glass_contract": {
+    "profile": "RLASM neutral contextual low-iron physical glazing v22",
+    "image_texture_count_required": 0,
+    "baked_reflection_forbidden": true,
+    "reflection_source": "scene_only"
+  },
+  "material_binding_contract": {
+    "binding_key": "declared material id",
+    "positional_binding_forbidden": true,
+    "object_coordinate_world_scale_required": true,
+    "generic_material_fallback_forbidden": true
+  },
+  "carrier_visibility_contract": {
+    "required_views": [
+      "front_corner",
+      "aerial",
+      "side",
+      "rear_side"
+    ],
+    "exposed_carrier_count_required": 0,
+    "full_footprint_hidden_box_forbidden": true,
+    "side_and_rear_architecture_required": true
+  },
+  "hard_gates": [
+    "three attached Bath-stone houses on a genuinely curved crescent plan",
+    "all six unique architectural roles inventoried before build",
+    "reference-specific finished materials only",
+    "neutral contextual scene-only glass",
+    "physical roof and side/rear articulation",
+    "zero floating objects",
+    "zero exposed blank carrier faces",
+    "PASS_ZERO_EXPOSED_GIANT_SUPPORT_BOXES",
+    "PASS_WINDOW_MASK_EXCLUDES_EXTERIOR_TRANSPARENCY"
+  ],
+  "generic_fallback_allowed": false,
+  "status": "PASS_PREWORK_READY_FOR_VISUAL_REVIEW",
+  "builder_self_approval": false,
+  "correction_of": "06-georgian-crescent-terrace-rlasm-v1",
+  "correction_scope": [
+    "replace facade-wide glass and occupied-depth carriers with an enclosed-alpha-opening mask",
+    "keep exterior transparency fully transparent so no giant plane or support box is exposed",
+    "retain neutral contextual physical glass and modeled dark depth only inside card openings"
+  ],
+  "window_opening_mask": {
+    "path": "cards/window-opening-mask.png",
+    "derivation": "transparent connected components not connected to any card-image boundary, dilated one pixel under the physical frames",
+    "width": 1406,
+    "height": 926,
+    "opaque_or_partial_pixels": 0
+  }
+}

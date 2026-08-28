@@ -1,0 +1,182 @@
+{
+  "schema": "cityprompt.rlasm.build-evidence@2",
+  "candidate": "10-new-england-shingle-seaside-inn-rlasm-v3",
+  "title": "New England Shingle Style Seaside Inn",
+  "method": "RLASM reference-lock + atomic-role construction",
+  "status": "PASS_BUILDER_EVIDENCE_AWAITING_VISUAL_QA",
+  "scene": {
+    "path": "model/10-new-england-shingle-seaside-inn-rlasm-v3.blend",
+    "bytes": 294273,
+    "sha256": "a342e8b60b7e3d2fb49ce059cfbc3eca7c79863b7a8292fdeb2d038a5c922bc4"
+  },
+  "glb": {
+    "path": "model/10-new-england-shingle-seaside-inn-rlasm-v3.glb",
+    "bytes": 6918112,
+    "sha256": "a0dfc02d374ed994b3dd80494d621e687aa0bc2cdc3febd89d5ccafa7af14d44"
+  },
+  "renders": [
+    {
+      "path": "renders/aerial.png",
+      "bytes": 1491766,
+      "sha256": "facbee8e521242bbfc7523da7830f6f7b2cbe2a2c83d8fc2659c7544050b6f1e"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "bytes": 1734263,
+      "sha256": "6636cf5a0794d81a2017e3f6c185f149964eba8b261efeb4d6c6def5510a79ff"
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 1307071,
+      "sha256": "3fc87f036746ab0cac7eec58f0c8752257592b84931786afde5be28a92455b3e"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 1585672,
+      "sha256": "8ee37d818fdc64a329de726244e372a607c76bde769a72b7fe1311794b3639de"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 1573006,
+      "sha256": "dbe6c51e27d7c19f1727d41080dee1a8cfe3db5e7f3dd2f647962af6f1d4cb34"
+    },
+    {
+      "path": "renders/preview.png",
+      "bytes": 1585672,
+      "sha256": "8ee37d818fdc64a329de726244e372a607c76bde769a72b7fe1311794b3639de"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "bytes": 1389059,
+      "sha256": "e1df9ca8cfb7670b50854c641418358ed2d689e29dcbf463e725313299d780fc"
+    },
+    {
+      "path": "renders/side.png",
+      "bytes": 1202652,
+      "sha256": "74b0ade131f3a77fcea486baffa590b109f161d61954e2378abb1161f1a511bd"
+    }
+  ],
+  "object_count": 426,
+  "material_audit": {
+    "building_material_count": 10,
+    "materials": [
+      {
+        "name": "MAT_Shingle_Depth",
+        "status": "reference_specific_finished",
+        "provenance": "modeled seaside-inn room depth",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_Shingle_Inn_01_weathered-cedar-shingle_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 10-new-england-shingle-seaside-inn-rlasm-v3 approved reference-matched reconstruction weathered-cedar-shingle",
+        "source_sha256": "7775d65db8cd24c400f284dfcfe8646a8a09ba37c9b7d055ac2ea1a08810ec35"
+      },
+      {
+        "name": "MAT_Shingle_Inn_02_rounded-coastal-fieldstone_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 10-new-england-shingle-seaside-inn-rlasm-v3 approved reference-matched reconstruction rounded-coastal-fieldstone",
+        "source_sha256": "a985a8df0d2306c81f0a7b05ab8e92c3ed693ac01501469abe3dfb42193ed785"
+      },
+      {
+        "name": "MAT_Shingle_Inn_03_painted-warm-white-trim_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 10-new-england-shingle-seaside-inn-rlasm-v3 approved reference-matched reconstruction painted-warm-white-trim",
+        "source_sha256": "0b8e7b7fb3ddc1715bfc4aa24d5f2103176a5d5cdaf415fb7bab1288b6fdcb62"
+      },
+      {
+        "name": "MAT_Shingle_Inn_04_dark-charcoal-roof-shingle_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 10-new-england-shingle-seaside-inn-rlasm-v3 approved reference-matched reconstruction dark-charcoal-roof-shingle",
+        "source_sha256": "7907518b990a5c74c45845a2148bc3aaa458232e4764c2f1413736aabd03a93b"
+      },
+      {
+        "name": "MAT_Shingle_Inn_05_dark-bronze-black-sash_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 10-new-england-shingle-seaside-inn-rlasm-v3 approved reference-matched reconstruction dark-bronze-black-sash",
+        "source_sha256": "b00d0e7b26e1ed9696223d7b94c309628fbea5348d7c6d24b0b5e61349cbad5c"
+      },
+      {
+        "name": "MAT_Shingle_Inn_GeneratedAtomicFacadeSticker",
+        "status": "reference_specific_finished",
+        "provenance": "built-in image generation from locked RLASM prework reference sheet",
+        "source_sha256": "8e70366832739bb7fe31f84727739dd2c82531cbef3911f05c953780335cb8a2"
+      },
+      {
+        "name": "MAT_Shingle_Inn_NeutralLowIron_Physical_v22",
+        "status": "reference_specific_finished",
+        "provenance": "RLASM reusable neutral physical low-iron glass module v22",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_Shingle_Inn_NeutralPhysicalGlass_OpeningMask",
+        "status": "reference_specific_finished",
+        "provenance": "RLASM enclosed-alpha-opening mask derived from the locked candidate facade card",
+        "source_sha256": "e7c4b53ab37be9c5a7046e58ff073932b9d7051b42dd5e6995090ba7808b55ff"
+      },
+      {
+        "name": "MAT_Shingle_Inn_OccupiedDepth_OpeningMask",
+        "status": "reference_specific_finished",
+        "provenance": "RLASM enclosed-alpha-opening mask derived from the locked candidate facade card",
+        "source_sha256": "e7c4b53ab37be9c5a7046e58ff073932b9d7051b42dd5e6995090ba7808b55ff"
+      }
+    ],
+    "generic_fallback_count": 0,
+    "all_reference_specific_finished": true,
+    "glass": {
+      "material": "MAT_Shingle_Inn_NeutralLowIron_Physical_v22",
+      "image_texture_count": 0,
+      "baked_reflection": false,
+      "reflection_source": "current_scene_world_lights_geometry_only",
+      "neutral_scene_only": true
+    }
+  },
+  "contact_audit": {
+    "schema": "cityprompt.rlasm.contact-audit@2",
+    "candidate": "10-new-england-shingle-seaside-inn-rlasm-v3",
+    "records": [
+      {
+        "claim": "CP_Shingle_MainEntry entry is recessed into its wall and its threshold rests at grade",
+        "floating": false
+      },
+      {
+        "claim": "irregular main wing, cross wing, rear ell and turret overlap physically",
+        "floating": false
+      },
+      {
+        "claim": "side and rear windows are registered only to the physical irregular volumes",
+        "floating": false
+      },
+      {
+        "claim": "wrap porch decks rest at grade and every post contacts deck and roof",
+        "floating": false
+      },
+      {
+        "claim": "widow's walk is seated on the roof rather than floating",
+        "floating": false
+      },
+      {
+        "claim": "atomic facade carrier flush-mounted within 0.006m of physical facade datum",
+        "floating": false
+      },
+      {
+        "claim": "neutral glass and occupied depth are mask-bounded to enclosed atomic openings; exterior card transparency contains no carrier",
+        "floating": false
+      }
+    ],
+    "floating_count": 0,
+    "status": "PASS_ZERO_FLOATING"
+  },
+  "hard_gates": [
+    "irregular Shingle Style inn with turret, gambrels, rear ell and wrap porch",
+    "all six unique architectural roles inventoried before build",
+    "reference-specific finished materials only",
+    "neutral contextual scene-only glass",
+    "physical roof and side/rear articulation",
+    "zero floating objects",
+    "zero exposed blank carrier faces",
+    "PASS_ZERO_EXPOSED_GIANT_SUPPORT_BOXES",
+    "PASS_WINDOW_MASK_EXCLUDES_EXTERIOR_TRANSPARENCY"
+  ],
+  "builder_self_approval": false
+}

@@ -1,0 +1,56 @@
+{
+  "schema": "cityprompt.rlasm.final-visual-qa@2",
+  "candidate": "10-new-england-shingle-seaside-inn-rlasm-v3",
+  "title": "New England Shingle Style Seaside Inn",
+  "method": "RLASM v3 reference-lock + atomic-role construction",
+  "status": "PASS_VISUAL_QA_FOR_CITYPROMPT_SAMPLE",
+  "strict_result": "PASS",
+  "score": 96,
+  "minimum_score": 95,
+  "hard_gates": {
+    "reference_identity_and_massing_match": true,
+    "roof_and_silhouette_are_physical_and_reference_specific": true,
+    "zero_exposed_giant_support_or_carrier_boxes": true,
+    "no_windows_or_objects_outside_physical_envelope": true,
+    "every_large_volume_finished_from_front_side_rear_and_aerial": true,
+    "non_rectangular_components_use_local_surface_registration": true,
+    "unique_role_cards_cover_each_non_repeatable_piece": true,
+    "all_materials_reference_specific_finished": true,
+    "neutral_contextual_scene_only_glass": true,
+    "no_baked_render_reflections": true,
+    "zero_generic_material_fallbacks": true,
+    "zero_floating_contacts": true
+  },
+  "artifact_sha256": {
+    "scene": "a342e8b60b7e3d2fb49ce059cfbc3eca7c79863b7a8292fdeb2d038a5c922bc4",
+    "glb": "a0dfc02d374ed994b3dd80494d621e687aa0bc2cdc3febd89d5ccafa7af14d44",
+    "render_front": "3fc87f036746ab0cac7eec58f0c8752257592b84931786afde5be28a92455b3e",
+    "render_front_corner": "8ee37d818fdc64a329de726244e372a607c76bde769a72b7fe1311794b3639de",
+    "render_aerial": "facbee8e521242bbfc7523da7830f6f7b2cbe2a2c83d8fc2659c7544050b6f1e",
+    "render_side": "74b0ade131f3a77fcea486baffa590b109f161d61954e2378abb1161f1a511bd",
+    "render_facade_close": "6636cf5a0794d81a2017e3f6c185f149964eba8b261efeb4d6c6def5510a79ff",
+    "render_glass_close": "dbe6c51e27d7c19f1727d41080dee1a8cfe3db5e7f3dd2f647962af6f1d4cb34",
+    "render_rear_side": "e1df9ca8cfb7670b50854c641418358ed2d689e29dcbf463e725313299d780fc",
+    "render_preview": "8ee37d818fdc64a329de726244e372a607c76bde769a72b7fe1311794b3639de",
+    "locked-three-view-reference": "ea498d8beb035a397376b358451b195437669429161e8c41f74bb1f121c80c22",
+    "unique-role-card-sheet": "038b9cf702ea08a8a3cbd0083069734e0cb096dc030f7c402ac168d96da9b653",
+    "generated-front-facade-sticker": "8e70366832739bb7fe31f84727739dd2c82531cbef3911f05c953780335cb8a2",
+    "card-manifest": "5aaf7ec209cb51649225045f3b3accaeb38ded4eba314f6402d3de22b3b20054"
+  },
+  "phone_review_sheet": {
+    "path": "review/phone-review-sheet.png",
+    "bytes": 1648322,
+    "sha256": "aefd3ed6ad201c113fa0a276fedf561dca648b056180900d9d1853af49f1a861"
+  },
+  "manual_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "side",
+    "rear_side",
+    "facade_close",
+    "glass_close"
+  ],
+  "non_blocking_note": "Minor close-range cosmetic differences may be refined by downstream GPT image/video rendering; no genuine 3D hard-stop defect remains.",
+  "builder_self_approval": false
+}
