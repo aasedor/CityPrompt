@@ -1,0 +1,188 @@
+{
+  "schema": "cityprompt.rlasm.build-evidence@2",
+  "candidate": "01-porto-azulejo-merchant-townhouse-rlasm-v7",
+  "title": "Porto Azulejo Merchant Townhouse",
+  "method": "RLASM reference-lock + atomic-role construction",
+  "status": "PASS_BUILDER_EVIDENCE_AWAITING_VISUAL_QA",
+  "scene": {
+    "path": "model/01-porto-azulejo-merchant-townhouse-rlasm-v7.blend",
+    "bytes": 251946,
+    "sha256": "07ba380ba9022a3532467f4055e9a80948811922303419695a081aa4fdddbe4b"
+  },
+  "glb": {
+    "path": "model/01-porto-azulejo-merchant-townhouse-rlasm-v7.glb",
+    "bytes": 5920904,
+    "sha256": "4ad5131c5bcd65c2b82e3718b92c045c69a430dd83a9cd964b13fe996f2969ea"
+  },
+  "renders": [
+    {
+      "path": "renders/aerial.png",
+      "bytes": 1798324,
+      "sha256": "43689624d6ed860c825fde8b58ded62deaa9329f84ebfb44a3ddf686da1ebfcc"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "bytes": 1812950,
+      "sha256": "370a12b4288e20ba067b60ba11c47fa6c3604a183cbef1a127a47fd17f412922"
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 1444397,
+      "sha256": "2add96aae49ff2f83aa5ca8a5a537dc47d902946be051f0579f2a45fe4e7ef8f"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 1653028,
+      "sha256": "71d6d027dbbd7d192c72c606844757bff94aae80d206926130a74348f615cc65"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 1651385,
+      "sha256": "338cbbcc3f30e702e3fc2e96978f545bb531b76f8b44f6efc86acc699c0daab8"
+    },
+    {
+      "path": "renders/preview.png",
+      "bytes": 1653028,
+      "sha256": "71d6d027dbbd7d192c72c606844757bff94aae80d206926130a74348f615cc65"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "bytes": 1776540,
+      "sha256": "072046973583b220471a6385ae120050703c907f1a90a07cd4cefc280c832857"
+    },
+    {
+      "path": "renders/side.png",
+      "bytes": 1808967,
+      "sha256": "8f9a284379e1012a2e727bd854092b35af9cdcdbf91dcd47c1f2488c5b6b6080"
+    }
+  ],
+  "object_count": 404,
+  "material_audit": {
+    "building_material_count": 8,
+    "materials": [
+      {
+        "name": "MAT_Porto_01_blue-white-azulejo-field_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 01-porto-azulejo-merchant-townhouse-rlasm-v7 approved reference-matched reconstruction blue-white-azulejo-field",
+        "source_sha256": "555ce39652d157b17c9302d0b0a4cf4f6467909d02891fc0381c44d267df71e8"
+      },
+      {
+        "name": "MAT_Porto_02_pale-weathered-granite_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 01-porto-azulejo-merchant-townhouse-rlasm-v7 approved reference-matched reconstruction pale-weathered-granite",
+        "source_sha256": "e859f9d0dc2d246605702ca10a77140d29e5aaa53aed18fb244cd2c0d5b08b95"
+      },
+      {
+        "name": "MAT_Porto_03_blackened-wrought-iron_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 01-porto-azulejo-merchant-townhouse-rlasm-v7 approved reference-matched reconstruction blackened-wrought-iron",
+        "source_sha256": "ec8099c9895a15e58048068e87a5b73f9d7c7ce6e904a3d52da58b941a0754fb"
+      },
+      {
+        "name": "MAT_Porto_04_aged-terracotta-roof-tile_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 01-porto-azulejo-merchant-townhouse-rlasm-v7 approved reference-matched reconstruction aged-terracotta-roof-tile",
+        "source_sha256": "796e8ed72561e351dc36e5c0b29d2611bd6b5bc70f0a15261abd909c0a0fe0d1"
+      },
+      {
+        "name": "MAT_Porto_05_dark-warm-timber-sash_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 01-porto-azulejo-merchant-townhouse-rlasm-v7 approved reference-matched reconstruction dark-warm-timber-sash",
+        "source_sha256": "09d7d6f94bc8b0a4289379f22469b2ec65cfb359d682a84cc2d1bfd4bcc992d3"
+      },
+      {
+        "name": "MAT_Porto_GeneratedAtomicFacadeSticker",
+        "status": "reference_specific_finished",
+        "provenance": "built-in image generation from locked RLASM prework reference sheet",
+        "source_sha256": "f2e3a6d34690003dc9c38075c04c7f356e66c9e4b4ff87db6f3620f8aeabf4cf"
+      },
+      {
+        "name": "MAT_Porto_NeutralLowIron_Physical_v22",
+        "status": "reference_specific_finished",
+        "provenance": "RLASM reusable neutral physical low-iron glass module v22",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_Porto_OccupiedDepth",
+        "status": "reference_specific_finished",
+        "provenance": "Porto physical room-depth backing",
+        "source_sha256": null
+      }
+    ],
+    "generic_fallback_count": 0,
+    "all_reference_specific_finished": true,
+    "glass": {
+      "material": "MAT_Porto_NeutralLowIron_Physical_v22",
+      "image_texture_count": 0,
+      "baked_reflection": false,
+      "reflection_source": "current_scene_world_lights_geometry_only",
+      "neutral_scene_only": true
+    }
+  },
+  "contact_audit": {
+    "schema": "cityprompt.rlasm.contact-audit@2",
+    "candidate": "01-porto-azulejo-merchant-townhouse-rlasm-v7",
+    "records": [
+      {
+        "claim": "CP_Porto_FrontBalcony_0 balcony deck intersects the masonry facade and every rail terminates on the deck",
+        "floating": false
+      },
+      {
+        "claim": "CP_Porto_FrontBalcony_1 balcony deck intersects the masonry facade and every rail terminates on the deck",
+        "floating": false
+      },
+      {
+        "claim": "CP_Porto_FrontBalcony_2 balcony deck intersects the masonry facade and every rail terminates on the deck",
+        "floating": false
+      },
+      {
+        "claim": "hipped roof is a closed physical volume overlapping every masonry wall plate",
+        "floating": false
+      },
+      {
+        "claim": "stone chimney intersects the roof volume and its cap intersects the shaft",
+        "floating": false
+      },
+      {
+        "claim": "rear service stair has eleven supported treads per flight and three wall-connected landings",
+        "floating": false
+      },
+      {
+        "claim": "rear stair guardrails terminate on physical flights and landings",
+        "floating": false
+      },
+      {
+        "claim": "rear grade pad rests at grade and the first tread overlaps it",
+        "floating": false
+      },
+      {
+        "claim": "front threshold rests at grade and intersects the recessed entry",
+        "floating": false
+      },
+      {
+        "claim": "all side and rear window surrounds intersect the azulejo masonry shell",
+        "floating": false
+      },
+      {
+        "claim": "no full-footprint hidden support box exists outside the finished azulejo shell",
+        "floating": false
+      },
+      {
+        "claim": "atomic facade carrier flush-mounted within 0.006m of physical facade datum",
+        "floating": false
+      }
+    ],
+    "floating_count": 0,
+    "status": "PASS_ZERO_FLOATING"
+  },
+  "hard_gates": [
+    "narrow deep townhouse proportions",
+    "reference-specific azulejo and carved granite",
+    "physical wrought-iron balconies and neutral glass",
+    "closed hipped terracotta roof with chimney",
+    "rear service stair and long side window rhythm",
+    "zero floating objects",
+    "zero exposed blank carrier faces"
+  ],
+  "builder_self_approval": false
+}

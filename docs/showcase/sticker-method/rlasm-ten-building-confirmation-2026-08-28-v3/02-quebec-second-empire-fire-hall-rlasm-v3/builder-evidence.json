@@ -1,0 +1,168 @@
+{
+  "schema": "cityprompt.rlasm.build-evidence@2",
+  "candidate": "02-quebec-second-empire-fire-hall-rlasm-v3",
+  "title": "Quebec Second Empire Fire Hall",
+  "method": "RLASM reference-lock + atomic-role construction",
+  "status": "PASS_BUILDER_EVIDENCE_AWAITING_VISUAL_QA",
+  "scene": {
+    "path": "model/02-quebec-second-empire-fire-hall-rlasm-v3.blend",
+    "bytes": 255317,
+    "sha256": "4237a475f07398be33dcdf5641ea698b698748f531abea5c558f673171a3289a"
+  },
+  "glb": {
+    "path": "model/02-quebec-second-empire-fire-hall-rlasm-v3.glb",
+    "bytes": 6297152,
+    "sha256": "1db157e754dc86861dabb3c394be9e170eb2821919eb6ef4e5cca4597feeab98"
+  },
+  "renders": [
+    {
+      "path": "renders/aerial.png",
+      "bytes": 1571926,
+      "sha256": "60f6bcbab8b0fb38a9ef29a1246d815341fffe15b39871a97c5f238f03afd2c6"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "bytes": 1663056,
+      "sha256": "18e7758a4cac723288ddf9d37d3a78b0b4bc00c1f857dd24a9d820d7612baba1"
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 1453555,
+      "sha256": "90ee215336681416f2fc9ef7a03aba2602c0dc642c2050788a8ce83122077bfc"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 1810984,
+      "sha256": "daca9a5a169ef6853328f4dd8923f7a5eaef6c77bd83aab21b32b61adebb956b"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 1560835,
+      "sha256": "bb4ab76055749cf53acc0297ba3308c4ddaa9a06cac0e22d4e653423a06fe633"
+    },
+    {
+      "path": "renders/preview.png",
+      "bytes": 1810984,
+      "sha256": "daca9a5a169ef6853328f4dd8923f7a5eaef6c77bd83aab21b32b61adebb956b"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "bytes": 1601018,
+      "sha256": "6700734df21ef34ed87ed0cc53db165f70fa1fd987f72d64d49448e36ad35734"
+    },
+    {
+      "path": "renders/side.png",
+      "bytes": 1316640,
+      "sha256": "edc3892db7510e170da4de2d2a62cac63fbecc06a29baa8f9a219da6c0c0ce34"
+    }
+  ],
+  "object_count": 344,
+  "material_audit": {
+    "building_material_count": 8,
+    "materials": [
+      {
+        "name": "MAT_FireHall_Depth",
+        "status": "reference_specific_finished",
+        "provenance": "modeled fire-hall interior depth",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_Fire_Hall_01_deep-red-fire-brick_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 02-quebec-second-empire-fire-hall-rlasm-v3 approved reference-matched reconstruction deep-red-fire-brick",
+        "source_sha256": "70bb4e3d1321198468ad2f0843fc24de42e22f439d5fdf7d5b66ada68d4eec65"
+      },
+      {
+        "name": "MAT_Fire_Hall_02_pale-cut-limestone_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 02-quebec-second-empire-fire-hall-rlasm-v3 approved reference-matched reconstruction pale-cut-limestone",
+        "source_sha256": "f5b053e40249fe0116b89d1469bae8e339c97fd90bca6b09375996f32820be3a"
+      },
+      {
+        "name": "MAT_Fire_Hall_03_blue-grey-mansard-slate_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 02-quebec-second-empire-fire-hall-rlasm-v3 approved reference-matched reconstruction blue-grey-mansard-slate",
+        "source_sha256": "091ad1f1ebd9bde722178a629057a15103abf4e823e61ab844ba7767d46bc0dd"
+      },
+      {
+        "name": "MAT_Fire_Hall_04_burgundy-painted-door_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 02-quebec-second-empire-fire-hall-rlasm-v3 approved reference-matched reconstruction burgundy-painted-door",
+        "source_sha256": "1327bf135885ab0c86d9e379a3ea52c9b686bd323d31cab958c32a418cc8c6c2"
+      },
+      {
+        "name": "MAT_Fire_Hall_05_black-iron-and-aged-copper_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 02-quebec-second-empire-fire-hall-rlasm-v3 approved reference-matched reconstruction black-iron-and-aged-copper",
+        "source_sha256": "dcd8f8b360e7b790ce381072147970ae14d5826f32fcf58905a13fc00b0ac6aa"
+      },
+      {
+        "name": "MAT_Fire_Hall_GeneratedAtomicFacadeSticker",
+        "status": "reference_specific_finished",
+        "provenance": "built-in image generation from locked RLASM prework reference sheet",
+        "source_sha256": "ebc1afb5a6a3485d5dba55398154d03df53bfd44655ad8bc324fce35ba3ce354"
+      },
+      {
+        "name": "MAT_Fire_Hall_NeutralLowIron_Physical_v22",
+        "status": "reference_specific_finished",
+        "provenance": "RLASM reusable neutral physical low-iron glass module v22",
+        "source_sha256": null
+      }
+    ],
+    "generic_fallback_count": 0,
+    "all_reference_specific_finished": true,
+    "glass": {
+      "material": "MAT_Fire_Hall_NeutralLowIron_Physical_v22",
+      "image_texture_count": 0,
+      "baked_reflection": false,
+      "reflection_source": "current_scene_world_lights_geometry_only",
+      "neutral_scene_only": true
+    }
+  },
+  "contact_audit": {
+    "schema": "cityprompt.rlasm.contact-audit@2",
+    "candidate": "02-quebec-second-empire-fire-hall-rlasm-v3",
+    "records": [
+      {
+        "claim": "CP_FireHall_Apparatus_-7.5 entry is recessed into its wall and its threshold rests at grade",
+        "floating": false
+      },
+      {
+        "claim": "CP_FireHall_Apparatus_0 entry is recessed into its wall and its threshold rests at grade",
+        "floating": false
+      },
+      {
+        "claim": "CP_FireHall_Apparatus_7.5 entry is recessed into its wall and its threshold rests at grade",
+        "floating": false
+      },
+      {
+        "claim": "mansard is a closed physical roof seated on every wall",
+        "floating": false
+      },
+      {
+        "claim": "rear hose tower overlaps the fire-hall shell and has its own roof",
+        "floating": false
+      },
+      {
+        "claim": "no blank carrier box is present",
+        "floating": false
+      },
+      {
+        "claim": "atomic facade carrier flush-mounted within 0.006m of physical facade datum",
+        "floating": false
+      }
+    ],
+    "floating_count": 0,
+    "status": "PASS_ZERO_FLOATING"
+  },
+  "hard_gates": [
+    "Second Empire masonry fire hall with central bell tower and rear hose tower",
+    "all six unique architectural roles inventoried before build",
+    "reference-specific finished materials only",
+    "neutral contextual scene-only glass",
+    "physical roof and side/rear articulation",
+    "zero floating objects",
+    "zero exposed blank carrier faces"
+  ],
+  "builder_self_approval": false
+}

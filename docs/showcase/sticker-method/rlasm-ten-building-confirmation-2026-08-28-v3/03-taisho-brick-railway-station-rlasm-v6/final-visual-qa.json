@@ -1,0 +1,56 @@
+{
+  "schema": "cityprompt.rlasm.final-visual-qa@2",
+  "candidate": "03-taisho-brick-railway-station-rlasm-v6",
+  "title": "Taisho Brick Railway Station",
+  "method": "RLASM v3 reference-lock + atomic-role construction",
+  "status": "PASS_VISUAL_QA_FOR_CITYPROMPT_SAMPLE",
+  "strict_result": "PASS",
+  "score": 96,
+  "minimum_score": 95,
+  "hard_gates": {
+    "reference_identity_and_massing_match": true,
+    "roof_and_silhouette_are_physical_and_reference_specific": true,
+    "zero_exposed_giant_support_or_carrier_boxes": true,
+    "no_windows_or_objects_outside_physical_envelope": true,
+    "every_large_volume_finished_from_front_side_rear_and_aerial": true,
+    "non_rectangular_components_use_local_surface_registration": true,
+    "unique_role_cards_cover_each_non_repeatable_piece": true,
+    "all_materials_reference_specific_finished": true,
+    "neutral_contextual_scene_only_glass": true,
+    "no_baked_render_reflections": true,
+    "zero_generic_material_fallbacks": true,
+    "zero_floating_contacts": true
+  },
+  "artifact_sha256": {
+    "scene": "3779b3780d3041441c17431d5a60e3d31a9272c349bcb3087af2f6e9f72be979",
+    "glb": "6a177756adacc69ba89ea72e5ff5dd43f8a4558daeca7220bce63a494f50bf44",
+    "render_front": "659a9b9708dc5cf970344c9e414f576b5a2ee68b085065f5c0424bda0429b5ed",
+    "render_front_corner": "b051747aca02b0dbca85b9f3c74644277e03359ac5779331ecfbac3705efc46d",
+    "render_aerial": "05c12af6bbaf97d3ac764c9581a5752e02cd43a78b01f6c89926e593258ec7d0",
+    "render_side": "a974513f24b06de578b16605f874184dc1af0de9746d2295bd1a34fdfdd4193c",
+    "render_facade_close": "ff80a4bdfc83ec5aca442b976d7f645280c6e5833c1ed14959e98106f2eb0324",
+    "render_glass_close": "fc39e1342df70cbba1037d8ff3ce836b96354f2812d34c979837834e1d341bf7",
+    "render_rear_side": "62a29fd74c4fa4483a3e9b13e57238a5335885b276d9561f63869035fb06741c",
+    "render_preview": "b051747aca02b0dbca85b9f3c74644277e03359ac5779331ecfbac3705efc46d",
+    "locked-three-view-reference": "8b95c711d06438d7989f9165e4df16a1b864ef5bf6aa95ebb64c2b07eb9a6f12",
+    "unique-role-card-sheet": "6999902e4718f079c71aaf96f7096e18a702ec95218c50c325e3d5f271fba3ff",
+    "generated-front-facade-sticker": "812cb44fcdc844af12b018c31e948f26f185dbbadf9e8b9e9e72e73635d21e77",
+    "card-manifest": "399641d1b17db1e64c419cbe84328b4883a832f1429aa9a322b28ed843075fcc"
+  },
+  "phone_review_sheet": {
+    "path": "review/phone-review-sheet.png",
+    "bytes": 1464216,
+    "sha256": "8e9fc5ae8e06b2b214fdc700999a88f31ff5092b2e0806e1be43c332cf6283ef"
+  },
+  "manual_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "side",
+    "rear_side",
+    "facade_close",
+    "glass_close"
+  ],
+  "non_blocking_note": "Minor close-range cosmetic differences may be refined by downstream GPT image/video rendering; no genuine 3D hard-stop defect remains.",
+  "builder_self_approval": false
+}

@@ -1,0 +1,56 @@
+{
+  "schema": "cityprompt.rlasm.final-visual-qa@2",
+  "candidate": "05-nordic-national-romantic-library-rlasm-v3",
+  "title": "Nordic National Romantic Library",
+  "method": "RLASM v3 reference-lock + atomic-role construction",
+  "status": "PASS_VISUAL_QA_FOR_CITYPROMPT_SAMPLE",
+  "strict_result": "PASS",
+  "score": 95,
+  "minimum_score": 95,
+  "hard_gates": {
+    "reference_identity_and_massing_match": true,
+    "roof_and_silhouette_are_physical_and_reference_specific": true,
+    "zero_exposed_giant_support_or_carrier_boxes": true,
+    "no_windows_or_objects_outside_physical_envelope": true,
+    "every_large_volume_finished_from_front_side_rear_and_aerial": true,
+    "non_rectangular_components_use_local_surface_registration": true,
+    "unique_role_cards_cover_each_non_repeatable_piece": true,
+    "all_materials_reference_specific_finished": true,
+    "neutral_contextual_scene_only_glass": true,
+    "no_baked_render_reflections": true,
+    "zero_generic_material_fallbacks": true,
+    "zero_floating_contacts": true
+  },
+  "artifact_sha256": {
+    "scene": "2a3486cf106325ac4210ef253d59ecfa5a56dca13d55b59b7e140f8ff2560f9e",
+    "glb": "d65e5629a89b8fe819722fd02e084eb16357e67c3ecd981338f8ef61ba48fc5f",
+    "render_front": "d6325cc399e2c3dff930882768a5430371791e482ca9d3e82af54df038366e63",
+    "render_front_corner": "ab3da28d46985af1fa6d5f3d165d6ac2caa1f66f67e6166e99c2dcf8f2440a22",
+    "render_aerial": "b4bebafb7a2142c68ee3a292fd613961ff48959955ba6edc7a7c3efbbcf003a2",
+    "render_side": "807fb3a4536cd3ef51b15a6abc8f52f4c5883f76cb229ed89ae1567879a34ad5",
+    "render_facade_close": "8ec5c0f8eeb8d9f1f4ea77363b60b261990a5cd3d6534e5a791a2465566c0f02",
+    "render_glass_close": "67b6fdb12357d30411e7103558f8dcd95f36ca6e5c51f2ba6739d6616974e5ed",
+    "render_rear_side": "843fcec4fde912a56f5d215e6a9ea85dd9d624a97db3b2bf50c4c586404b0615",
+    "render_preview": "ab3da28d46985af1fa6d5f3d165d6ac2caa1f66f67e6166e99c2dcf8f2440a22",
+    "locked-three-view-reference": "87b469513cfdaada493803cedfff4c6488c473de223c131aa81353a4e664c270",
+    "unique-role-card-sheet": "a5f083a835c3509e842fe0fde4faf13acdd56a2ab54f64854ebd65f628ff391c",
+    "generated-front-facade-sticker": "798e893671871194ef659629fc785c90aa93ac959da0ed0814225137e0e97290",
+    "card-manifest": "18ffb9a8a62882aaede2e76663bcfcbca1788ac77fd4dca71fd33725a0686970"
+  },
+  "phone_review_sheet": {
+    "path": "review/phone-review-sheet.png",
+    "bytes": 1747550,
+    "sha256": "c22e1426c8f16d4ff04bb649729635931b3fc0cf4c12c61ccb553e2bebf53b3b"
+  },
+  "manual_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "side",
+    "rear_side",
+    "facade_close",
+    "glass_close"
+  ],
+  "non_blocking_note": "Minor close-range cosmetic differences may be refined by downstream GPT image/video rendering; no genuine 3D hard-stop defect remains.",
+  "builder_self_approval": false
+}

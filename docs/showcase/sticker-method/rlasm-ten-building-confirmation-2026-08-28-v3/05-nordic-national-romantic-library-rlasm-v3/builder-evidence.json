@@ -1,0 +1,182 @@
+{
+  "schema": "cityprompt.rlasm.build-evidence@2",
+  "candidate": "05-nordic-national-romantic-library-rlasm-v3",
+  "title": "Nordic National Romantic Library",
+  "method": "RLASM reference-lock + atomic-role construction",
+  "status": "PASS_BUILDER_EVIDENCE_AWAITING_VISUAL_QA",
+  "scene": {
+    "path": "model/05-nordic-national-romantic-library-rlasm-v3.blend",
+    "bytes": 263048,
+    "sha256": "2a3486cf106325ac4210ef253d59ecfa5a56dca13d55b59b7e140f8ff2560f9e"
+  },
+  "glb": {
+    "path": "model/05-nordic-national-romantic-library-rlasm-v3.glb",
+    "bytes": 7340548,
+    "sha256": "d65e5629a89b8fe819722fd02e084eb16357e67c3ecd981338f8ef61ba48fc5f"
+  },
+  "renders": [
+    {
+      "path": "renders/aerial.png",
+      "bytes": 1611383,
+      "sha256": "b4bebafb7a2142c68ee3a292fd613961ff48959955ba6edc7a7c3efbbcf003a2"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "bytes": 1794431,
+      "sha256": "8ec5c0f8eeb8d9f1f4ea77363b60b261990a5cd3d6534e5a791a2465566c0f02"
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 1508247,
+      "sha256": "d6325cc399e2c3dff930882768a5430371791e482ca9d3e82af54df038366e63"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 1829965,
+      "sha256": "ab3da28d46985af1fa6d5f3d165d6ac2caa1f66f67e6166e99c2dcf8f2440a22"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 1711902,
+      "sha256": "67b6fdb12357d30411e7103558f8dcd95f36ca6e5c51f2ba6739d6616974e5ed"
+    },
+    {
+      "path": "renders/preview.png",
+      "bytes": 1829965,
+      "sha256": "ab3da28d46985af1fa6d5f3d165d6ac2caa1f66f67e6166e99c2dcf8f2440a22"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "bytes": 1592028,
+      "sha256": "843fcec4fde912a56f5d215e6a9ea85dd9d624a97db3b2bf50c4c586404b0615"
+    },
+    {
+      "path": "renders/side.png",
+      "bytes": 1336663,
+      "sha256": "807fb3a4536cd3ef51b15a6abc8f52f4c5883f76cb229ed89ae1567879a34ad5"
+    }
+  ],
+  "object_count": 358,
+  "material_audit": {
+    "building_material_count": 10,
+    "materials": [
+      {
+        "name": "MAT_Nordic_Depth",
+        "status": "reference_specific_finished",
+        "provenance": "modeled library reading-room depth",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_Nordic_Library_01_dark-rusticated-granite_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 05-nordic-national-romantic-library-rlasm-v3 approved reference-matched reconstruction dark-rusticated-granite",
+        "source_sha256": "fcdab2292b3757900af77f66c5672b837bbe813c7d195581038cc7ac1ae800d0"
+      },
+      {
+        "name": "MAT_Nordic_Library_02_red-brown-national-brick_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 05-nordic-national-romantic-library-rlasm-v3 approved reference-matched reconstruction red-brown-national-brick",
+        "source_sha256": "ee756f53d33564b8aa3f7bf3559c752183eddc063468e1db731c2477d7feb7d9"
+      },
+      {
+        "name": "MAT_Nordic_Library_03_oxidized-copper-roof_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 05-nordic-national-romantic-library-rlasm-v3 approved reference-matched reconstruction oxidized-copper-roof",
+        "source_sha256": "c0a401d6857728c4a7dc8b0f110cf65324312d34458c58be2d5399ffa332ad66"
+      },
+      {
+        "name": "MAT_Nordic_Library_04_dark-carved-oak_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 05-nordic-national-romantic-library-rlasm-v3 approved reference-matched reconstruction dark-carved-oak",
+        "source_sha256": "70af48ace45e4dec088092437af067958633736ad6b55fc26aec0b99c808dde1"
+      },
+      {
+        "name": "MAT_Nordic_Library_05_muted-bronze-green-frame_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 05-nordic-national-romantic-library-rlasm-v3 approved reference-matched reconstruction muted-bronze-green-frame",
+        "source_sha256": "83ab8b73c89b8fc0488fe0db05fff19e469a4a1accbeef2d36c83e6192c69c12"
+      },
+      {
+        "name": "MAT_Nordic_Library_GeneratedAtomicFacadeSticker",
+        "status": "reference_specific_finished",
+        "provenance": "built-in image generation from locked RLASM prework reference sheet",
+        "source_sha256": "798e893671871194ef659629fc785c90aa93ac959da0ed0814225137e0e97290"
+      },
+      {
+        "name": "MAT_Nordic_Library_NeutralLowIron_Physical_v22",
+        "status": "reference_specific_finished",
+        "provenance": "RLASM reusable neutral physical low-iron glass module v22",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_Nordic_Library_NeutralPhysicalGlass_OpeningMask",
+        "status": "reference_specific_finished",
+        "provenance": "RLASM enclosed-alpha-opening mask derived from the locked candidate facade card",
+        "source_sha256": "2210cc5bb1017b205817d66227fe73de7e8ddb77109404e038850e9bb4409cf2"
+      },
+      {
+        "name": "MAT_Nordic_Library_OccupiedDepth_OpeningMask",
+        "status": "reference_specific_finished",
+        "provenance": "RLASM enclosed-alpha-opening mask derived from the locked candidate facade card",
+        "source_sha256": "2210cc5bb1017b205817d66227fe73de7e8ddb77109404e038850e9bb4409cf2"
+      }
+    ],
+    "generic_fallback_count": 0,
+    "all_reference_specific_finished": true,
+    "glass": {
+      "material": "MAT_Nordic_Library_NeutralLowIron_Physical_v22",
+      "image_texture_count": 0,
+      "baked_reflection": false,
+      "reflection_source": "current_scene_world_lights_geometry_only",
+      "neutral_scene_only": true
+    }
+  },
+  "contact_audit": {
+    "schema": "cityprompt.rlasm.contact-audit@2",
+    "candidate": "05-nordic-national-romantic-library-rlasm-v3",
+    "records": [
+      {
+        "claim": "CP_Nordic_StonePortal entry is recessed into its wall and its threshold rests at grade",
+        "floating": false
+      },
+      {
+        "claim": "asymmetric tower overlaps the reading hall and has a closed copper roof",
+        "floating": false
+      },
+      {
+        "claim": "rear stacks wing is a finished brick volume with windows",
+        "floating": false
+      },
+      {
+        "claim": "side and rear windows are registered only to the physical hall, tower and stacks-wing faces",
+        "floating": false
+      },
+      {
+        "claim": "monumental reading glass is physical neutral glazing",
+        "floating": false
+      },
+      {
+        "claim": "atomic facade carrier flush-mounted within 0.006m of physical facade datum",
+        "floating": false
+      },
+      {
+        "claim": "neutral glass and occupied depth are mask-bounded to enclosed atomic openings; exterior card transparency contains no carrier",
+        "floating": false
+      }
+    ],
+    "floating_count": 0,
+    "status": "PASS_ZERO_FLOATING"
+  },
+  "hard_gates": [
+    "National Romantic granite and brick library with asymmetrical copper tower",
+    "all six unique architectural roles inventoried before build",
+    "reference-specific finished materials only",
+    "neutral contextual scene-only glass",
+    "physical roof and side/rear articulation",
+    "zero floating objects",
+    "zero exposed blank carrier faces",
+    "PASS_ZERO_EXPOSED_GIANT_SUPPORT_BOXES",
+    "PASS_WINDOW_MASK_EXCLUDES_EXTERIOR_TRANSPARENCY"
+  ],
+  "builder_self_approval": false
+}

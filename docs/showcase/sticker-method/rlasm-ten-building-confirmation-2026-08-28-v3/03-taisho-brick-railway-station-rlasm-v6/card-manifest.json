@@ -1,0 +1,263 @@
+{
+  "schema": "cityprompt.rlasm.atomic-card-manifest@6",
+  "candidate": "03-taisho-brick-railway-station-rlasm-v6",
+  "title": "Taisho Brick Railway Station",
+  "source_archetype": "taisho-brick-railway-station",
+  "construction_system": "Taisho-era brick railway station with clock gable and physical platform canopies",
+  "builder": "taisho_station",
+  "metric_dimensions": [
+    31.0,
+    18.0,
+    16.5
+  ],
+  "method_version": "RLASM 1.8.0",
+  "locked_sources": [
+    {
+      "path": "references/locked-three-view-reference.png",
+      "bytes": 2805893,
+      "sha256": "8b95c711d06438d7989f9165e4df16a1b864ef5bf6aa95ebb64c2b07eb9a6f12"
+    }
+  ],
+  "unique_role_cards": [
+    {
+      "role": "complete-station-front",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        0,
+        0,
+        512,
+        1024
+      ],
+      "path": "cards/object-complete-station-front.png",
+      "sha256": "d31ada8bfb5bde0e30cda732aaf3d3c7cb2ee59aa4bb91d19f708873b9fdf251",
+      "repeatable": false
+    },
+    {
+      "role": "clock-gable-and-portico",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        0,
+        0,
+        512,
+        573
+      ],
+      "path": "cards/object-clock-gable-and-portico.png",
+      "sha256": "aa9ad1e62572f6e2cb2170debc43de7d4b56d774459c250c558599b5b80e1748",
+      "repeatable": false
+    },
+    {
+      "role": "arched-entry-bay",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        0,
+        460,
+        512,
+        1024
+      ],
+      "path": "cards/object-arched-entry-bay.png",
+      "sha256": "f16a2a64304925cc67c99683b680c544aa15fa45109ba1a49e4f40bb9d7ffa94",
+      "repeatable": true
+    },
+    {
+      "role": "front-corner-interlocking-roofs",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        512,
+        0,
+        1024,
+        1024
+      ],
+      "path": "cards/object-front-corner-interlocking-roofs.png",
+      "sha256": "dda679c84410675371265671c97b4d914b736ca87bf22aadc8c5d5210fa76ac8",
+      "repeatable": false
+    },
+    {
+      "role": "rear-platform-canopies",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        1024,
+        0,
+        1536,
+        655
+      ],
+      "path": "cards/object-rear-platform-canopies.png",
+      "sha256": "dd7a105d707968d7b12700d7da8090fefe0492927bed99df8bc3f244d5c49819",
+      "repeatable": false
+    },
+    {
+      "role": "side-wing-window-rhythm",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        1024,
+        368,
+        1536,
+        1024
+      ],
+      "path": "cards/object-side-wing-window-rhythm.png",
+      "sha256": "0f24b3c38a9e617eaa02c37592e7c783c84b8bfebd778f5c7339a38e6c0e6569",
+      "repeatable": true
+    }
+  ],
+  "material_inputs": [
+    {
+      "id": "taisho-red-brick",
+      "path": "materials/material-taisho-red-brick.png",
+      "sha256": "3b080a9aa8062dc397cff256077e922369e80f048eee2a163fefd40519f11a46",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 0.78,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked three-view reference",
+        "generated_source_filename": "exec-bc1ce982-b12f-4216-80ba-3a766244ff10.png",
+        "generated_source_sha256": "e58e63de1882cf9669da645e6d1e45b510e81fee15bc605fede06c94da93bd2a"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    },
+    {
+      "id": "rough-pale-granite",
+      "path": "materials/material-rough-pale-granite.png",
+      "sha256": "811cac2ae082f18e2d05cea592d096d492bafbfbfccbd07e83a44a38c55233b6",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 1.25,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked three-view reference",
+        "generated_source_filename": "exec-bc1ce982-b12f-4216-80ba-3a766244ff10.png",
+        "generated_source_sha256": "e58e63de1882cf9669da645e6d1e45b510e81fee15bc605fede06c94da93bd2a"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    },
+    {
+      "id": "dark-ceramic-roof-tile",
+      "path": "materials/material-dark-ceramic-roof-tile.png",
+      "sha256": "2b9567c0473325a679f224b52c42cc83cf468702f26a76db30b608d88deebf03",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 0.9,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked three-view reference",
+        "generated_source_filename": "exec-bc1ce982-b12f-4216-80ba-3a766244ff10.png",
+        "generated_source_sha256": "e58e63de1882cf9669da645e6d1e45b510e81fee15bc605fede06c94da93bd2a"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    },
+    {
+      "id": "aged-station-timber",
+      "path": "materials/material-aged-station-timber.png",
+      "sha256": "7049b79b12179e5b54d5b394985d67e28108dd3f33f3435f2b18219b3642f53d",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 0.65,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked three-view reference",
+        "generated_source_filename": "exec-bc1ce982-b12f-4216-80ba-3a766244ff10.png",
+        "generated_source_sha256": "e58e63de1882cf9669da645e6d1e45b510e81fee15bc605fede06c94da93bd2a"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    },
+    {
+      "id": "dark-metal-window-frame",
+      "path": "materials/material-dark-metal-window-frame.png",
+      "sha256": "cde0d02ec8b8f7137c63db6a0f88baeda1f134d5dfd98c2b40cf6e6d57b0ea15",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 0.82,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked three-view reference",
+        "generated_source_filename": "exec-bc1ce982-b12f-4216-80ba-3a766244ff10.png",
+        "generated_source_sha256": "e58e63de1882cf9669da645e6d1e45b510e81fee15bc605fede06c94da93bd2a"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    }
+  ],
+  "facade_generation_contract": {
+    "required": true,
+    "role": "orthographic reference-specific front elevation",
+    "transparent_openings_required": true,
+    "baked_reflection_forbidden": true,
+    "alpha_audit": {
+      "source_width": 1254,
+      "source_height": 1254,
+      "width": 1010,
+      "height": 1112,
+      "transparent_pixels": 864857,
+      "partially_transparent_despilled_pixels": 14269,
+      "tight_alpha_bbox": [
+        121,
+        26,
+        1131,
+        1138
+      ]
+    }
+  },
+  "glass_contract": {
+    "profile": "RLASM neutral contextual low-iron physical glazing v22",
+    "image_texture_count_required": 0,
+    "baked_reflection_forbidden": true,
+    "reflection_source": "scene_only"
+  },
+  "material_binding_contract": {
+    "binding_key": "declared material id",
+    "positional_binding_forbidden": true,
+    "object_coordinate_world_scale_required": true,
+    "generic_material_fallback_forbidden": true
+  },
+  "carrier_visibility_contract": {
+    "required_views": [
+      "front_corner",
+      "aerial",
+      "side",
+      "rear_side"
+    ],
+    "exposed_carrier_count_required": 0,
+    "full_footprint_hidden_box_forbidden": true,
+    "side_and_rear_architecture_required": true
+  },
+  "hard_gates": [
+    "Taisho-era brick railway station with clock gable and physical platform canopies",
+    "all six unique architectural roles inventoried before build",
+    "reference-specific finished materials only",
+    "neutral contextual scene-only glass",
+    "physical roof and side/rear articulation",
+    "zero floating objects",
+    "zero exposed blank carrier faces",
+    "PASS_ZERO_EXPOSED_GIANT_SUPPORT_BOXES",
+    "PASS_WINDOW_MASK_EXCLUDES_EXTERIOR_TRANSPARENCY"
+  ],
+  "generic_fallback_allowed": false,
+  "status": "PASS_PREWORK_READY_FOR_VISUAL_REVIEW",
+  "builder_self_approval": false,
+  "correction_of": "03-taisho-brick-railway-station-rlasm-v1",
+  "correction_scope": [
+    "replace facade-wide glass and occupied-depth carriers with an enclosed-alpha-opening mask",
+    "keep exterior transparency fully transparent so no giant plane or support box is exposed",
+    "retain neutral contextual physical glass and modeled dark depth only inside card openings"
+  ],
+  "window_opening_mask": {
+    "path": "cards/window-opening-mask.png",
+    "derivation": "transparent connected components not connected to any card-image boundary, dilated one pixel under the physical frames",
+    "width": 1010,
+    "height": 1112,
+    "opaque_or_partial_pixels": 65651
+  }
+}

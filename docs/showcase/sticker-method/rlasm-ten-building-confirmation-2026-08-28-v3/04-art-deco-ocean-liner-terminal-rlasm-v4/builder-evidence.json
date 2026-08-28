@@ -1,0 +1,178 @@
+{
+  "schema": "cityprompt.rlasm.build-evidence@2",
+  "candidate": "04-art-deco-ocean-liner-terminal-rlasm-v4",
+  "title": "Art Deco Ocean Liner Terminal",
+  "method": "RLASM reference-lock + atomic-role construction",
+  "status": "PASS_BUILDER_EVIDENCE_AWAITING_VISUAL_QA",
+  "scene": {
+    "path": "model/04-art-deco-ocean-liner-terminal-rlasm-v4.blend",
+    "bytes": 353143,
+    "sha256": "cadbb3c6797875ee08e41f19f2fe4bffb30f6b23837d11f55c2870d6b1efb23d"
+  },
+  "glb": {
+    "path": "model/04-art-deco-ocean-liner-terminal-rlasm-v4.glb",
+    "bytes": 7766588,
+    "sha256": "0b2e654d4ec54c74c5cb8e7038a7ec7152c3d344ff4616edc1f5f048220ef6a4"
+  },
+  "renders": [
+    {
+      "path": "renders/aerial.png",
+      "bytes": 1506078,
+      "sha256": "2a4e6fa3c8fe39b419c9f536afe8e9ce5177bb297b476f1d5ac9dad0507462f2"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "bytes": 1528625,
+      "sha256": "6a0b6c720b14117ce3c56d10b2aac41df46426a68811582b5c889bea5ac92800"
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 1210273,
+      "sha256": "871ffc463c4116ae98e9f8d1c4018fe012e5df41dd5e446b1365a7531d6ca3c4"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 1455164,
+      "sha256": "69cff8131097f0dbb75dee95808e5666d5d3c5acaa69695356103ced5cd75ac7"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 1576362,
+      "sha256": "2857a96218179ebf6ef9240b9838a7aa869dde918cabc4b76bbdff49e9b8586a"
+    },
+    {
+      "path": "renders/preview.png",
+      "bytes": 1455164,
+      "sha256": "69cff8131097f0dbb75dee95808e5666d5d3c5acaa69695356103ced5cd75ac7"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "bytes": 1281655,
+      "sha256": "03d1306491c267b8c5ac287d5eacb1932a1ffd6fd44d53c4870203cc7cec4731"
+    },
+    {
+      "path": "renders/side.png",
+      "bytes": 1111838,
+      "sha256": "a09401ca4ed65bbcdaee85f38d64a2cc7dd282f353c5141d925ba3518ce424a1"
+    }
+  ],
+  "object_count": 580,
+  "material_audit": {
+    "building_material_count": 10,
+    "materials": [
+      {
+        "name": "MAT_ArtDeco_Depth",
+        "status": "reference_specific_finished",
+        "provenance": "modeled terminal concourse depth",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_Art_Deco_Terminal_01_warm-terminal-limestone_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 04-art-deco-ocean-liner-terminal-rlasm-v4 approved reference-matched reconstruction warm-terminal-limestone",
+        "source_sha256": "e7bfb20e5f9cfdaf0d86147f426dd022647f131a7282b55c7c811dc183bf30b6"
+      },
+      {
+        "name": "MAT_Art_Deco_Terminal_02_cream-streamline-stucco_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 04-art-deco-ocean-liner-terminal-rlasm-v4 approved reference-matched reconstruction cream-streamline-stucco",
+        "source_sha256": "a635357087cb4ac66867406dbb25bc9b1a0f164b90a5ceb2a13e2e52bb7fe77e"
+      },
+      {
+        "name": "MAT_Art_Deco_Terminal_03_dark-steel-window-frame_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 04-art-deco-ocean-liner-terminal-rlasm-v4 approved reference-matched reconstruction dark-steel-window-frame",
+        "source_sha256": "e02a28089999a32d80fd00a6fe4345de158010feb9fa220b99eadb329dbdb51e"
+      },
+      {
+        "name": "MAT_Art_Deco_Terminal_04_aged-bronze-detail_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 04-art-deco-ocean-liner-terminal-rlasm-v4 approved reference-matched reconstruction aged-bronze-detail",
+        "source_sha256": "5ba21ae2ce7b59d22f7449fe769c2189176f55e5a17a8b65e022cb4f5321e516"
+      },
+      {
+        "name": "MAT_Art_Deco_Terminal_05_grey-roof-membrane_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 04-art-deco-ocean-liner-terminal-rlasm-v4 approved reference-matched reconstruction grey-roof-membrane",
+        "source_sha256": "363e1fffd0fe2ab5bc798cb112d9c4477019f4f5354beb870e07e0572dd7c39d"
+      },
+      {
+        "name": "MAT_Art_Deco_Terminal_GeneratedAtomicFacadeSticker",
+        "status": "reference_specific_finished",
+        "provenance": "built-in image generation from locked RLASM prework reference sheet",
+        "source_sha256": "d453cd5c67c545edefdc38c2a2ff09fbbfe014c7e89fd7a1dadfdb0e76bf7f8d"
+      },
+      {
+        "name": "MAT_Art_Deco_Terminal_NeutralLowIron_Physical_v22",
+        "status": "reference_specific_finished",
+        "provenance": "RLASM reusable neutral physical low-iron glass module v22",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_Art_Deco_Terminal_NeutralPhysicalGlass_OpeningMask",
+        "status": "reference_specific_finished",
+        "provenance": "RLASM enclosed-alpha-opening mask derived from the locked candidate facade card",
+        "source_sha256": "8dc488d37106a2b13bffab7967593947e3f56d40a4437e6af4631553df008b14"
+      },
+      {
+        "name": "MAT_Art_Deco_Terminal_OccupiedDepth_OpeningMask",
+        "status": "reference_specific_finished",
+        "provenance": "RLASM enclosed-alpha-opening mask derived from the locked candidate facade card",
+        "source_sha256": "8dc488d37106a2b13bffab7967593947e3f56d40a4437e6af4631553df008b14"
+      }
+    ],
+    "generic_fallback_count": 0,
+    "all_reference_specific_finished": true,
+    "glass": {
+      "material": "MAT_Art_Deco_Terminal_NeutralLowIron_Physical_v22",
+      "image_texture_count": 0,
+      "baked_reflection": false,
+      "reflection_source": "current_scene_world_lights_geometry_only",
+      "neutral_scene_only": true
+    }
+  },
+  "contact_audit": {
+    "schema": "cityprompt.rlasm.contact-audit@2",
+    "candidate": "04-art-deco-ocean-liner-terminal-rlasm-v4",
+    "records": [
+      {
+        "claim": "CP_ArtDeco_PassengerEntry entry is recessed into its wall and its threshold rests at grade",
+        "floating": false
+      },
+      {
+        "claim": "streamlined drums intersect the physical concourse",
+        "floating": false
+      },
+      {
+        "claim": "stepped tower rises from the main roof without floating volumes",
+        "floating": false
+      },
+      {
+        "claim": "roof skylights are seated on the terminal roof",
+        "floating": false
+      },
+      {
+        "claim": "atomic facade carrier flush-mounted within 0.006m of physical facade datum",
+        "floating": false
+      },
+      {
+        "claim": "neutral glass and occupied depth are mask-bounded to enclosed atomic openings; exterior card transparency contains no carrier",
+        "floating": false
+      }
+    ],
+    "floating_count": 0,
+    "status": "PASS_ZERO_FLOATING"
+  },
+  "hard_gates": [
+    "streamline moderne passenger terminal with stepped tower, drums and long wings",
+    "all six unique architectural roles inventoried before build",
+    "reference-specific finished materials only",
+    "neutral contextual scene-only glass",
+    "physical roof and side/rear articulation",
+    "zero floating objects",
+    "zero exposed blank carrier faces",
+    "PASS_ZERO_EXPOSED_GIANT_SUPPORT_BOXES",
+    "PASS_WINDOW_MASK_EXCLUDES_EXTERIOR_TRANSPARENCY"
+  ],
+  "builder_self_approval": false
+}

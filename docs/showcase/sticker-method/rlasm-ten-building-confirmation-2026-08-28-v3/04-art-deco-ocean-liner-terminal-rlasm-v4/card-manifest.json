@@ -1,0 +1,263 @@
+{
+  "schema": "cityprompt.rlasm.atomic-card-manifest@6",
+  "candidate": "04-art-deco-ocean-liner-terminal-rlasm-v4",
+  "title": "Art Deco Ocean Liner Terminal",
+  "source_archetype": "art-deco-ocean-liner-terminal",
+  "construction_system": "streamline moderne passenger terminal with stepped tower, drums and long wings",
+  "builder": "art_deco_terminal",
+  "metric_dimensions": [
+    38.0,
+    24.0,
+    20.0
+  ],
+  "method_version": "RLASM 1.8.0",
+  "locked_sources": [
+    {
+      "path": "references/locked-three-view-reference.png",
+      "bytes": 2215627,
+      "sha256": "37170970d1fdcb1a6c5dcebadec4943a65cacdfa82b52b0523139d1a835fe822"
+    }
+  ],
+  "unique_role_cards": [
+    {
+      "role": "complete-terminal-front",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        0,
+        0,
+        557,
+        941
+      ],
+      "path": "cards/object-complete-terminal-front.png",
+      "sha256": "a4c3952ad18f53d923291ca2b59a788ca9e7bcb9eb6f94d4164881cd8c094571",
+      "repeatable": false
+    },
+    {
+      "role": "stepped-central-tower",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        0,
+        0,
+        557,
+        526
+      ],
+      "path": "cards/object-stepped-central-tower.png",
+      "sha256": "b337af784a87764b3a15852f33486e8993773e479ebb28aa0b0de3c355b18c6c",
+      "repeatable": false
+    },
+    {
+      "role": "recessed-passenger-entry",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        0,
+        423,
+        557,
+        941
+      ],
+      "path": "cards/object-recessed-passenger-entry.png",
+      "sha256": "3e7f2c09252a2f1d9b6129f9466a903c2a2778cf41ae97358ca4bb45674418b5",
+      "repeatable": true
+    },
+    {
+      "role": "front-corner-streamlined-drums",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        557,
+        0,
+        1114,
+        941
+      ],
+      "path": "cards/object-front-corner-streamlined-drums.png",
+      "sha256": "e017a931bac57ef6587139ac8b16044bb41b0bd922ac7fb69bf3ff405eeda5ce",
+      "repeatable": false
+    },
+    {
+      "role": "roof-skylights-and-service-blocks",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        1114,
+        0,
+        1672,
+        602
+      ],
+      "path": "cards/object-roof-skylights-and-service-blocks.png",
+      "sha256": "d9f3e6692bc29837e0df40ca0b1a36e49f990dede1654ed87d04383b096946eb",
+      "repeatable": false
+    },
+    {
+      "role": "long-side-window-bands",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        1114,
+        338,
+        1672,
+        941
+      ],
+      "path": "cards/object-long-side-window-bands.png",
+      "sha256": "a66156663dd48fb66eaa8f7b8f1ed07d3e3e979a5f78afc9f317a54823152a0b",
+      "repeatable": true
+    }
+  ],
+  "material_inputs": [
+    {
+      "id": "warm-terminal-limestone",
+      "path": "materials/material-warm-terminal-limestone.png",
+      "sha256": "e7bfb20e5f9cfdaf0d86147f426dd022647f131a7282b55c7c811dc183bf30b6",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 0.78,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked three-view reference",
+        "generated_source_filename": "exec-6a647491-3f67-42f7-8bbf-a9ad8daaf430.png",
+        "generated_source_sha256": "d7d9fac5f0604cdde07d0c30200ea624be235d48d577cd46b609f3b15d35cf3a"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    },
+    {
+      "id": "cream-streamline-stucco",
+      "path": "materials/material-cream-streamline-stucco.png",
+      "sha256": "a635357087cb4ac66867406dbb25bc9b1a0f164b90a5ceb2a13e2e52bb7fe77e",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 1.25,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked three-view reference",
+        "generated_source_filename": "exec-6a647491-3f67-42f7-8bbf-a9ad8daaf430.png",
+        "generated_source_sha256": "d7d9fac5f0604cdde07d0c30200ea624be235d48d577cd46b609f3b15d35cf3a"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    },
+    {
+      "id": "dark-steel-window-frame",
+      "path": "materials/material-dark-steel-window-frame.png",
+      "sha256": "e02a28089999a32d80fd00a6fe4345de158010feb9fa220b99eadb329dbdb51e",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 0.9,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked three-view reference",
+        "generated_source_filename": "exec-6a647491-3f67-42f7-8bbf-a9ad8daaf430.png",
+        "generated_source_sha256": "d7d9fac5f0604cdde07d0c30200ea624be235d48d577cd46b609f3b15d35cf3a"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    },
+    {
+      "id": "aged-bronze-detail",
+      "path": "materials/material-aged-bronze-detail.png",
+      "sha256": "5ba21ae2ce7b59d22f7449fe769c2189176f55e5a17a8b65e022cb4f5321e516",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 0.65,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked three-view reference",
+        "generated_source_filename": "exec-6a647491-3f67-42f7-8bbf-a9ad8daaf430.png",
+        "generated_source_sha256": "d7d9fac5f0604cdde07d0c30200ea624be235d48d577cd46b609f3b15d35cf3a"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    },
+    {
+      "id": "grey-roof-membrane",
+      "path": "materials/material-grey-roof-membrane.png",
+      "sha256": "363e1fffd0fe2ab5bc798cb112d9c4477019f4f5354beb870e07e0572dd7c39d",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 0.82,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked three-view reference",
+        "generated_source_filename": "exec-6a647491-3f67-42f7-8bbf-a9ad8daaf430.png",
+        "generated_source_sha256": "d7d9fac5f0604cdde07d0c30200ea624be235d48d577cd46b609f3b15d35cf3a"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    }
+  ],
+  "facade_generation_contract": {
+    "required": true,
+    "role": "orthographic reference-specific front elevation",
+    "transparent_openings_required": true,
+    "baked_reflection_forbidden": true,
+    "alpha_audit": {
+      "source_width": 1536,
+      "source_height": 1024,
+      "width": 1450,
+      "height": 923,
+      "transparent_pixels": 973107,
+      "partially_transparent_despilled_pixels": 44282,
+      "tight_alpha_bbox": [
+        41,
+        19,
+        1491,
+        942
+      ]
+    }
+  },
+  "glass_contract": {
+    "profile": "RLASM neutral contextual low-iron physical glazing v22",
+    "image_texture_count_required": 0,
+    "baked_reflection_forbidden": true,
+    "reflection_source": "scene_only"
+  },
+  "material_binding_contract": {
+    "binding_key": "declared material id",
+    "positional_binding_forbidden": true,
+    "object_coordinate_world_scale_required": true,
+    "generic_material_fallback_forbidden": true
+  },
+  "carrier_visibility_contract": {
+    "required_views": [
+      "front_corner",
+      "aerial",
+      "side",
+      "rear_side"
+    ],
+    "exposed_carrier_count_required": 0,
+    "full_footprint_hidden_box_forbidden": true,
+    "side_and_rear_architecture_required": true
+  },
+  "hard_gates": [
+    "streamline moderne passenger terminal with stepped tower, drums and long wings",
+    "all six unique architectural roles inventoried before build",
+    "reference-specific finished materials only",
+    "neutral contextual scene-only glass",
+    "physical roof and side/rear articulation",
+    "zero floating objects",
+    "zero exposed blank carrier faces",
+    "PASS_ZERO_EXPOSED_GIANT_SUPPORT_BOXES",
+    "PASS_WINDOW_MASK_EXCLUDES_EXTERIOR_TRANSPARENCY"
+  ],
+  "generic_fallback_allowed": false,
+  "status": "PASS_PREWORK_READY_FOR_VISUAL_REVIEW",
+  "builder_self_approval": false,
+  "correction_of": "04-art-deco-ocean-liner-terminal-rlasm-v1",
+  "correction_scope": [
+    "replace facade-wide glass and occupied-depth carriers with an enclosed-alpha-opening mask",
+    "keep exterior transparency fully transparent so no giant plane or support box is exposed",
+    "retain neutral contextual physical glass and modeled dark depth only inside card openings"
+  ],
+  "window_opening_mask": {
+    "path": "cards/window-opening-mask.png",
+    "derivation": "transparent connected components not connected to any card-image boundary, dilated one pixel under the physical frames",
+    "width": 1450,
+    "height": 923,
+    "opaque_or_partial_pixels": 197189
+  }
+}

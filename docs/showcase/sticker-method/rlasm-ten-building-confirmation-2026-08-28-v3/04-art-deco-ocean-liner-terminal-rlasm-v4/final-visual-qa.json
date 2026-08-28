@@ -1,0 +1,56 @@
+{
+  "schema": "cityprompt.rlasm.final-visual-qa@2",
+  "candidate": "04-art-deco-ocean-liner-terminal-rlasm-v4",
+  "title": "Art Deco Ocean Liner Terminal",
+  "method": "RLASM v3 reference-lock + atomic-role construction",
+  "status": "PASS_VISUAL_QA_FOR_CITYPROMPT_SAMPLE",
+  "strict_result": "PASS",
+  "score": 96,
+  "minimum_score": 95,
+  "hard_gates": {
+    "reference_identity_and_massing_match": true,
+    "roof_and_silhouette_are_physical_and_reference_specific": true,
+    "zero_exposed_giant_support_or_carrier_boxes": true,
+    "no_windows_or_objects_outside_physical_envelope": true,
+    "every_large_volume_finished_from_front_side_rear_and_aerial": true,
+    "non_rectangular_components_use_local_surface_registration": true,
+    "unique_role_cards_cover_each_non_repeatable_piece": true,
+    "all_materials_reference_specific_finished": true,
+    "neutral_contextual_scene_only_glass": true,
+    "no_baked_render_reflections": true,
+    "zero_generic_material_fallbacks": true,
+    "zero_floating_contacts": true
+  },
+  "artifact_sha256": {
+    "scene": "cadbb3c6797875ee08e41f19f2fe4bffb30f6b23837d11f55c2870d6b1efb23d",
+    "glb": "0b2e654d4ec54c74c5cb8e7038a7ec7152c3d344ff4616edc1f5f048220ef6a4",
+    "render_front": "871ffc463c4116ae98e9f8d1c4018fe012e5df41dd5e446b1365a7531d6ca3c4",
+    "render_front_corner": "69cff8131097f0dbb75dee95808e5666d5d3c5acaa69695356103ced5cd75ac7",
+    "render_aerial": "2a4e6fa3c8fe39b419c9f536afe8e9ce5177bb297b476f1d5ac9dad0507462f2",
+    "render_side": "a09401ca4ed65bbcdaee85f38d64a2cc7dd282f353c5141d925ba3518ce424a1",
+    "render_facade_close": "6a0b6c720b14117ce3c56d10b2aac41df46426a68811582b5c889bea5ac92800",
+    "render_glass_close": "2857a96218179ebf6ef9240b9838a7aa869dde918cabc4b76bbdff49e9b8586a",
+    "render_rear_side": "03d1306491c267b8c5ac287d5eacb1932a1ffd6fd44d53c4870203cc7cec4731",
+    "render_preview": "69cff8131097f0dbb75dee95808e5666d5d3c5acaa69695356103ced5cd75ac7",
+    "locked-three-view-reference": "37170970d1fdcb1a6c5dcebadec4943a65cacdfa82b52b0523139d1a835fe822",
+    "unique-role-card-sheet": "62984342e9acde78aeead89ca5a187f516bfbd0c03a7e6d64d71ee4489e1b390",
+    "generated-front-facade-sticker": "d453cd5c67c545edefdc38c2a2ff09fbbfe014c7e89fd7a1dadfdb0e76bf7f8d",
+    "card-manifest": "6aba7d1abf1dc7beca623c162e5cdadfeb372463f200094b9eb01b67b568fc8e"
+  },
+  "phone_review_sheet": {
+    "path": "review/phone-review-sheet.png",
+    "bytes": 1427021,
+    "sha256": "354b97ecbd9ad6bc6a1a2ce1d50b2e5006a8888017529787e19e962f661d9423"
+  },
+  "manual_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "side",
+    "rear_side",
+    "facade_close",
+    "glass_close"
+  ],
+  "non_blocking_note": "Minor close-range cosmetic differences may be refined by downstream GPT image/video rendering; no genuine 3D hard-stop defect remains.",
+  "builder_self_approval": false
+}

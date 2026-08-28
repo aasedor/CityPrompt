@@ -1,0 +1,255 @@
+{
+  "schema": "cityprompt.rlasm.atomic-card-manifest@6",
+  "candidate": "02-quebec-second-empire-fire-hall-rlasm-v3",
+  "title": "Quebec Second Empire Fire Hall",
+  "source_archetype": "quebec-second-empire-fire-hall",
+  "construction_system": "Second Empire masonry fire hall with central bell tower and rear hose tower",
+  "builder": "fire_hall",
+  "metric_dimensions": [
+    26.0,
+    18.0,
+    21.0
+  ],
+  "method_version": "RLASM 1.8.0",
+  "locked_sources": [
+    {
+      "path": "references/locked-three-view-reference.png",
+      "bytes": 2991386,
+      "sha256": "a4e1b4ed5d84d8971e3c8d79f74f1b103418cf5d09e642a4f869d9a6278f20dc"
+    }
+  ],
+  "unique_role_cards": [
+    {
+      "role": "complete-fire-hall-front",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        0,
+        0,
+        512,
+        1024
+      ],
+      "path": "cards/object-complete-fire-hall-front.png",
+      "sha256": "05bd25376981013a2d3b7b38a371a92898ffa832ad531d2c59a79ce63c773d46",
+      "repeatable": false
+    },
+    {
+      "role": "bell-tower-and-cresting",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        0,
+        0,
+        512,
+        573
+      ],
+      "path": "cards/object-bell-tower-and-cresting.png",
+      "sha256": "bb562c44c338227ac334731eb5d4732b5db4848835d8770073284a1b845ebb97",
+      "repeatable": false
+    },
+    {
+      "role": "arched-apparatus-doors",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        0,
+        460,
+        512,
+        1024
+      ],
+      "path": "cards/object-arched-apparatus-doors.png",
+      "sha256": "ae8b89245ab3d9fe80418ed81abb9e7484dddb356970df6835e33a28cdddd0fd",
+      "repeatable": true
+    },
+    {
+      "role": "front-corner-mansard-depth",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        512,
+        0,
+        1024,
+        1024
+      ],
+      "path": "cards/object-front-corner-mansard-depth.png",
+      "sha256": "e0f41045d7923dda949d0b93ded03e08adb5fd026e562088df7395e71b4bdc15",
+      "repeatable": false
+    },
+    {
+      "role": "rear-hose-tower-and-chimney",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        1024,
+        0,
+        1536,
+        655
+      ],
+      "path": "cards/object-rear-hose-tower-and-chimney.png",
+      "sha256": "85a1c8c05c69a20e58821d9b50852eeb99fb4cf2b6b58a2760426cf0b1e4f284",
+      "repeatable": false
+    },
+    {
+      "role": "side-window-and-stone-band-rhythm",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        1024,
+        368,
+        1536,
+        1024
+      ],
+      "path": "cards/object-side-window-and-stone-band-rhythm.png",
+      "sha256": "84e9c7cffbed18161a895d0d65bde56a6a5f5c2008953cf542bdc551d0e36357",
+      "repeatable": true
+    }
+  ],
+  "material_inputs": [
+    {
+      "id": "deep-red-fire-brick",
+      "path": "materials/material-deep-red-fire-brick.png",
+      "sha256": "70bb4e3d1321198468ad2f0843fc24de42e22f439d5fdf7d5b66ada68d4eec65",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 0.78,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked three-view reference",
+        "generated_source_filename": "exec-5690e359-f6aa-4d8c-bbb2-1553346ad0fa.png",
+        "generated_source_sha256": "55ea4e74309e934b1af963a6ea728a96e0ad67b7ec7f3e58d01f66a4f168ef87"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    },
+    {
+      "id": "pale-cut-limestone",
+      "path": "materials/material-pale-cut-limestone.png",
+      "sha256": "f5b053e40249fe0116b89d1469bae8e339c97fd90bca6b09375996f32820be3a",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 1.25,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked three-view reference",
+        "generated_source_filename": "exec-5690e359-f6aa-4d8c-bbb2-1553346ad0fa.png",
+        "generated_source_sha256": "55ea4e74309e934b1af963a6ea728a96e0ad67b7ec7f3e58d01f66a4f168ef87"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    },
+    {
+      "id": "blue-grey-mansard-slate",
+      "path": "materials/material-blue-grey-mansard-slate.png",
+      "sha256": "091ad1f1ebd9bde722178a629057a15103abf4e823e61ab844ba7767d46bc0dd",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 0.9,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked three-view reference",
+        "generated_source_filename": "exec-5690e359-f6aa-4d8c-bbb2-1553346ad0fa.png",
+        "generated_source_sha256": "55ea4e74309e934b1af963a6ea728a96e0ad67b7ec7f3e58d01f66a4f168ef87"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    },
+    {
+      "id": "burgundy-painted-door",
+      "path": "materials/material-burgundy-painted-door.png",
+      "sha256": "1327bf135885ab0c86d9e379a3ea52c9b686bd323d31cab958c32a418cc8c6c2",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 0.65,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked three-view reference",
+        "generated_source_filename": "exec-5690e359-f6aa-4d8c-bbb2-1553346ad0fa.png",
+        "generated_source_sha256": "55ea4e74309e934b1af963a6ea728a96e0ad67b7ec7f3e58d01f66a4f168ef87"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    },
+    {
+      "id": "black-iron-and-aged-copper",
+      "path": "materials/material-black-iron-and-aged-copper.png",
+      "sha256": "dcd8f8b360e7b790ce381072147970ae14d5826f32fcf58905a13fc00b0ac6aa",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 0.82,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked three-view reference",
+        "generated_source_filename": "exec-5690e359-f6aa-4d8c-bbb2-1553346ad0fa.png",
+        "generated_source_sha256": "55ea4e74309e934b1af963a6ea728a96e0ad67b7ec7f3e58d01f66a4f168ef87"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    }
+  ],
+  "facade_generation_contract": {
+    "required": true,
+    "role": "orthographic reference-specific front elevation",
+    "transparent_openings_required": true,
+    "baked_reflection_forbidden": true,
+    "alpha_audit": {
+      "source_width": 1024,
+      "source_height": 1536,
+      "width": 817,
+      "height": 1381,
+      "transparent_pixels": 951311,
+      "partially_transparent_despilled_pixels": 11933,
+      "tight_alpha_bbox": [
+        98,
+        36,
+        915,
+        1417
+      ]
+    }
+  },
+  "glass_contract": {
+    "profile": "RLASM neutral contextual low-iron physical glazing v22",
+    "image_texture_count_required": 0,
+    "baked_reflection_forbidden": true,
+    "reflection_source": "scene_only"
+  },
+  "material_binding_contract": {
+    "binding_key": "declared material id",
+    "positional_binding_forbidden": true,
+    "object_coordinate_world_scale_required": true,
+    "generic_material_fallback_forbidden": true
+  },
+  "carrier_visibility_contract": {
+    "required_views": [
+      "front_corner",
+      "aerial",
+      "side",
+      "rear_side"
+    ],
+    "exposed_carrier_count_required": 0,
+    "full_footprint_hidden_box_forbidden": true,
+    "side_and_rear_architecture_required": true
+  },
+  "hard_gates": [
+    "Second Empire masonry fire hall with central bell tower and rear hose tower",
+    "all six unique architectural roles inventoried before build",
+    "reference-specific finished materials only",
+    "neutral contextual scene-only glass",
+    "physical roof and side/rear articulation",
+    "zero floating objects",
+    "zero exposed blank carrier faces"
+  ],
+  "generic_fallback_allowed": false,
+  "status": "PASS_PREWORK_READY_FOR_VISUAL_REVIEW",
+  "builder_self_approval": false,
+  "correction_of": "02-quebec-second-empire-fire-hall-rlasm-v2",
+  "correction_scope": [
+    "retain the v2 articulated shallow bell tower and recessed apparatus doors",
+    "place neutral physical glass and dark occupied depth between the role card and solid wall",
+    "prevent masonry carrier pixels from reading through atomic window openings",
+    "preserve contextual scene reflection only; no baked reflection is introduced"
+  ]
+}

@@ -1,0 +1,186 @@
+{
+  "schema": "cityprompt.rlasm.build-evidence@2",
+  "candidate": "03-taisho-brick-railway-station-rlasm-v6",
+  "title": "Taisho Brick Railway Station",
+  "method": "RLASM reference-lock + atomic-role construction",
+  "status": "PASS_BUILDER_EVIDENCE_AWAITING_VISUAL_QA",
+  "scene": {
+    "path": "model/03-taisho-brick-railway-station-rlasm-v6.blend",
+    "bytes": 303980,
+    "sha256": "3779b3780d3041441c17431d5a60e3d31a9272c349bcb3087af2f6e9f72be979"
+  },
+  "glb": {
+    "path": "model/03-taisho-brick-railway-station-rlasm-v6.glb",
+    "bytes": 7384152,
+    "sha256": "6a177756adacc69ba89ea72e5ff5dd43f8a4558daeca7220bce63a494f50bf44"
+  },
+  "renders": [
+    {
+      "path": "renders/aerial.png",
+      "bytes": 1517207,
+      "sha256": "05c12af6bbaf97d3ac764c9581a5752e02cd43a78b01f6c89926e593258ec7d0"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "bytes": 1637726,
+      "sha256": "ff80a4bdfc83ec5aca442b976d7f645280c6e5833c1ed14959e98106f2eb0324"
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 1288267,
+      "sha256": "659a9b9708dc5cf970344c9e414f576b5a2ee68b085065f5c0424bda0429b5ed"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 1601656,
+      "sha256": "b051747aca02b0dbca85b9f3c74644277e03359ac5779331ecfbac3705efc46d"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 1526108,
+      "sha256": "fc39e1342df70cbba1037d8ff3ce836b96354f2812d34c979837834e1d341bf7"
+    },
+    {
+      "path": "renders/preview.png",
+      "bytes": 1601656,
+      "sha256": "b051747aca02b0dbca85b9f3c74644277e03359ac5779331ecfbac3705efc46d"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "bytes": 1416374,
+      "sha256": "62a29fd74c4fa4483a3e9b13e57238a5335885b276d9561f63869035fb06741c"
+    },
+    {
+      "path": "renders/side.png",
+      "bytes": 1143045,
+      "sha256": "a974513f24b06de578b16605f874184dc1af0de9746d2295bd1a34fdfdd4193c"
+    }
+  ],
+  "object_count": 454,
+  "material_audit": {
+    "building_material_count": 10,
+    "materials": [
+      {
+        "name": "MAT_Taisho_Depth",
+        "status": "reference_specific_finished",
+        "provenance": "modeled Taisho station interior depth",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_Taisho_Station_01_taisho-red-brick_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 03-taisho-brick-railway-station-rlasm-v6 approved reference-matched reconstruction taisho-red-brick",
+        "source_sha256": "3b080a9aa8062dc397cff256077e922369e80f048eee2a163fefd40519f11a46"
+      },
+      {
+        "name": "MAT_Taisho_Station_02_rough-pale-granite_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 03-taisho-brick-railway-station-rlasm-v6 approved reference-matched reconstruction rough-pale-granite",
+        "source_sha256": "811cac2ae082f18e2d05cea592d096d492bafbfbfccbd07e83a44a38c55233b6"
+      },
+      {
+        "name": "MAT_Taisho_Station_03_dark-ceramic-roof-tile_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 03-taisho-brick-railway-station-rlasm-v6 approved reference-matched reconstruction dark-ceramic-roof-tile",
+        "source_sha256": "2b9567c0473325a679f224b52c42cc83cf468702f26a76db30b608d88deebf03"
+      },
+      {
+        "name": "MAT_Taisho_Station_04_aged-station-timber_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 03-taisho-brick-railway-station-rlasm-v6 approved reference-matched reconstruction aged-station-timber",
+        "source_sha256": "7049b79b12179e5b54d5b394985d67e28108dd3f33f3435f2b18219b3642f53d"
+      },
+      {
+        "name": "MAT_Taisho_Station_05_dark-metal-window-frame_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 03-taisho-brick-railway-station-rlasm-v6 approved reference-matched reconstruction dark-metal-window-frame",
+        "source_sha256": "cde0d02ec8b8f7137c63db6a0f88baeda1f134d5dfd98c2b40cf6e6d57b0ea15"
+      },
+      {
+        "name": "MAT_Taisho_Station_GeneratedAtomicFacadeSticker",
+        "status": "reference_specific_finished",
+        "provenance": "built-in image generation from locked RLASM prework reference sheet",
+        "source_sha256": "812cb44fcdc844af12b018c31e948f26f185dbbadf9e8b9e9e72e73635d21e77"
+      },
+      {
+        "name": "MAT_Taisho_Station_NeutralLowIron_Physical_v22",
+        "status": "reference_specific_finished",
+        "provenance": "RLASM reusable neutral physical low-iron glass module v22",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_Taisho_Station_NeutralPhysicalGlass_OpeningMask",
+        "status": "reference_specific_finished",
+        "provenance": "RLASM enclosed-alpha-opening mask derived from the locked candidate facade card",
+        "source_sha256": "daa90b4683d3b3346e7c75e9c3f32d8f509e10b1d179036a8f83234dc4d8a92a"
+      },
+      {
+        "name": "MAT_Taisho_Station_OccupiedDepth_OpeningMask",
+        "status": "reference_specific_finished",
+        "provenance": "RLASM enclosed-alpha-opening mask derived from the locked candidate facade card",
+        "source_sha256": "daa90b4683d3b3346e7c75e9c3f32d8f509e10b1d179036a8f83234dc4d8a92a"
+      }
+    ],
+    "generic_fallback_count": 0,
+    "all_reference_specific_finished": true,
+    "glass": {
+      "material": "MAT_Taisho_Station_NeutralLowIron_Physical_v22",
+      "image_texture_count": 0,
+      "baked_reflection": false,
+      "reflection_source": "current_scene_world_lights_geometry_only",
+      "neutral_scene_only": true
+    }
+  },
+  "contact_audit": {
+    "schema": "cityprompt.rlasm.contact-audit@2",
+    "candidate": "03-taisho-brick-railway-station-rlasm-v6",
+    "records": [
+      {
+        "claim": "CP_Taisho_PrimaryEntry entry is recessed into its wall and its threshold rests at grade",
+        "floating": false
+      },
+      {
+        "claim": "three roof volumes overlap their matching physical station wings",
+        "floating": false
+      },
+      {
+        "claim": "platform canopies rest on continuous physical post lines",
+        "floating": false
+      },
+      {
+        "claim": "central-hall side walls are articulated by physical windows rather than exposed carrier boxes",
+        "floating": false
+      },
+      {
+        "claim": "rear openings are registered to the central hall and physical station wings without a far-side grid projecting above the roof",
+        "floating": false
+      },
+      {
+        "claim": "no facade-only box is exposed",
+        "floating": false
+      },
+      {
+        "claim": "atomic facade carrier flush-mounted within 0.006m of physical facade datum",
+        "floating": false
+      },
+      {
+        "claim": "neutral glass and occupied depth are mask-bounded to enclosed atomic openings; exterior card transparency contains no carrier",
+        "floating": false
+      }
+    ],
+    "floating_count": 0,
+    "status": "PASS_ZERO_FLOATING"
+  },
+  "hard_gates": [
+    "Taisho-era brick railway station with clock gable and physical platform canopies",
+    "all six unique architectural roles inventoried before build",
+    "reference-specific finished materials only",
+    "neutral contextual scene-only glass",
+    "physical roof and side/rear articulation",
+    "zero floating objects",
+    "zero exposed blank carrier faces",
+    "PASS_ZERO_EXPOSED_GIANT_SUPPORT_BOXES",
+    "PASS_WINDOW_MASK_EXCLUDES_EXTERIOR_TRANSPARENCY"
+  ],
+  "builder_self_approval": false
+}

@@ -1,0 +1,247 @@
+{
+  "schema": "cityprompt.rlasm.atomic-card-manifest@6",
+  "candidate": "01-porto-azulejo-merchant-townhouse-rlasm-v7",
+  "title": "Porto Azulejo Merchant Townhouse",
+  "source_archetype": "porto-azulejo-merchant-townhouse",
+  "construction_system": "narrow Portuguese masonry townhouse with azulejo cladding and rear service stair",
+  "builder": "porto",
+  "metric_dimensions": [
+    9.0,
+    18.0,
+    17.5
+  ],
+  "method_version": "RLASM 1.8.0",
+  "locked_sources": [
+    {
+      "path": "references/porto-azulejo-three-view-locked-reference.png",
+      "bytes": 3428531,
+      "sha256": "88306ccbf60d3ec3bbf9e96c29ed75089cce76d5f58d888560ddd91e33086b7c"
+    }
+  ],
+  "unique_role_cards": [
+    {
+      "role": "complete-front-identity",
+      "source": "porto-azulejo-three-view-locked-reference.png",
+      "crop_pixels": [
+        16,
+        16,
+        492,
+        971
+      ],
+      "path": "cards/object-complete-front-identity.png",
+      "sha256": "d7435f4d9d8e71e624b72d4234d61e3412f6a5af0659b3117dc0539f56b74e1b",
+      "repeatable": false
+    },
+    {
+      "role": "carved-cornice-and-balustrade",
+      "source": "porto-azulejo-three-view-locked-reference.png",
+      "crop_pixels": [
+        68,
+        42,
+        420,
+        192
+      ],
+      "path": "cards/object-carved-cornice-and-balustrade.png",
+      "sha256": "dd989c210dc2088c0fd72cee388628781c5e95b308419b68a1efb6cc7d4a6676",
+      "repeatable": false
+    },
+    {
+      "role": "wrought-iron-balcony-window-bay",
+      "source": "porto-azulejo-three-view-locked-reference.png",
+      "crop_pixels": [
+        104,
+        208,
+        400,
+        563
+      ],
+      "path": "cards/object-wrought-iron-balcony-window-bay.png",
+      "sha256": "3da1532d4d96218e573258b6481060208ad8debdd54bb4bcaa440309167a98ba",
+      "repeatable": true
+    },
+    {
+      "role": "hipped-terracotta-roof-and-chimney",
+      "source": "porto-azulejo-three-view-locked-reference.png",
+      "crop_pixels": [
+        1012,
+        18,
+        1516,
+        395
+      ],
+      "path": "cards/object-hipped-terracotta-roof-and-chimney.png",
+      "sha256": "1f3e2c723e78bc1fecf6ad64548d7bb59a316120b2cd0c08ccd5c060cb5f1e35",
+      "repeatable": false
+    },
+    {
+      "role": "rear-stone-service-stair",
+      "source": "porto-azulejo-three-view-locked-reference.png",
+      "crop_pixels": [
+        1012,
+        322,
+        1518,
+        970
+      ],
+      "path": "cards/object-rear-stone-service-stair.png",
+      "sha256": "58ac42a64a8552960bd4452558ef12e3df3c6711ca0e3e6d14eac4b91f2759c9",
+      "repeatable": false
+    },
+    {
+      "role": "long-side-azulejo-window-rhythm",
+      "source": "porto-azulejo-three-view-locked-reference.png",
+      "crop_pixels": [
+        560,
+        176,
+        988,
+        914
+      ],
+      "path": "cards/object-long-side-azulejo-window-rhythm.png",
+      "sha256": "b8a648b68a35d713d46a35b3412974882765cf401360f42ae92283be3cf560b3",
+      "repeatable": true
+    }
+  ],
+  "material_inputs": [
+    {
+      "id": "blue-white-azulejo-field",
+      "path": "materials/material-blue-white-azulejo-field.png",
+      "sha256": "555ce39652d157b17c9302d0b0a4cf4f6467909d02891fc0381c44d267df71e8",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 0.78,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked Porto three-view reference",
+        "generated_source_filename": "exec-d5975f32-05c5-46ab-8ebd-82948810ebba.png",
+        "generated_source_sha256": "bd388bb1172a4c154710a864e087cc293b94b59dfc205b6c5ecbc4728c51f73e"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    },
+    {
+      "id": "pale-weathered-granite",
+      "path": "materials/material-pale-weathered-granite.png",
+      "sha256": "e859f9d0dc2d246605702ca10a77140d29e5aaa53aed18fb244cd2c0d5b08b95",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 1.35,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked Porto three-view reference",
+        "generated_source_filename": "exec-d5975f32-05c5-46ab-8ebd-82948810ebba.png",
+        "generated_source_sha256": "bd388bb1172a4c154710a864e087cc293b94b59dfc205b6c5ecbc4728c51f73e"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    },
+    {
+      "id": "blackened-wrought-iron",
+      "path": "materials/material-blackened-wrought-iron.png",
+      "sha256": "ec8099c9895a15e58048068e87a5b73f9d7c7ce6e904a3d52da58b941a0754fb",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 0.52,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked Porto three-view reference",
+        "generated_source_filename": "exec-d5975f32-05c5-46ab-8ebd-82948810ebba.png",
+        "generated_source_sha256": "bd388bb1172a4c154710a864e087cc293b94b59dfc205b6c5ecbc4728c51f73e"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    },
+    {
+      "id": "aged-terracotta-roof-tile",
+      "path": "materials/material-aged-terracotta-roof-tile.png",
+      "sha256": "796e8ed72561e351dc36e5c0b29d2611bd6b5bc70f0a15261abd909c0a0fe0d1",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 1.1,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked Porto three-view reference",
+        "generated_source_filename": "exec-d5975f32-05c5-46ab-8ebd-82948810ebba.png",
+        "generated_source_sha256": "bd388bb1172a4c154710a864e087cc293b94b59dfc205b6c5ecbc4728c51f73e"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    },
+    {
+      "id": "dark-warm-timber-sash",
+      "path": "materials/material-dark-warm-timber-sash.png",
+      "sha256": "09d7d6f94bc8b0a4289379f22469b2ec65cfb359d682a84cc2d1bfd4bcc992d3",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 0.72,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked Porto three-view reference",
+        "generated_source_filename": "exec-d5975f32-05c5-46ab-8ebd-82948810ebba.png",
+        "generated_source_sha256": "bd388bb1172a4c154710a864e087cc293b94b59dfc205b6c5ecbc4728c51f73e"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    }
+  ],
+  "facade_generation_contract": {
+    "required": true,
+    "role": "orthographic reference-specific front elevation",
+    "transparent_openings_required": true,
+    "baked_reflection_forbidden": true,
+    "alpha_audit": {
+      "source_width": 1024,
+      "source_height": 1536,
+      "width": 593,
+      "height": 1486,
+      "transparent_pixels": 857917,
+      "partially_transparent_despilled_pixels": 17809,
+      "tight_alpha_bbox": [
+        214,
+        44,
+        807,
+        1530
+      ]
+    }
+  },
+  "glass_contract": {
+    "profile": "RLASM neutral contextual low-iron physical glazing v22",
+    "image_texture_count_required": 0,
+    "baked_reflection_forbidden": true,
+    "reflection_source": "scene_only"
+  },
+  "material_binding_contract": {
+    "binding_key": "declared material id",
+    "positional_binding_forbidden": true,
+    "object_coordinate_world_scale_required": true,
+    "generic_material_fallback_forbidden": true
+  },
+  "carrier_visibility_contract": {
+    "required_views": [
+      "front_corner",
+      "aerial",
+      "side"
+    ],
+    "exposed_carrier_count_required": 0,
+    "full_footprint_hidden_box_forbidden": true,
+    "side_and_rear_architecture_required": true
+  },
+  "hard_gates": [
+    "narrow deep townhouse proportions",
+    "reference-specific azulejo and carved granite",
+    "physical wrought-iron balconies and neutral glass",
+    "closed hipped terracotta roof with chimney",
+    "rear service stair and long side window rhythm",
+    "zero floating objects",
+    "zero exposed blank carrier faces"
+  ],
+  "generic_fallback_allowed": false,
+  "status": "PASS_PREWORK_READY_FOR_VISUAL_REVIEW",
+  "builder_self_approval": false
+}

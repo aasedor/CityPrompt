@@ -1,0 +1,56 @@
+{
+  "schema": "cityprompt.rlasm.final-visual-qa@2",
+  "candidate": "01-porto-azulejo-merchant-townhouse-rlasm-v7",
+  "title": "Porto Azulejo Merchant Townhouse",
+  "method": "RLASM v3 reference-lock + atomic-role construction",
+  "status": "PASS_VISUAL_QA_FOR_CITYPROMPT_SAMPLE",
+  "strict_result": "PASS",
+  "score": 97,
+  "minimum_score": 95,
+  "hard_gates": {
+    "reference_identity_and_massing_match": true,
+    "roof_and_silhouette_are_physical_and_reference_specific": true,
+    "zero_exposed_giant_support_or_carrier_boxes": true,
+    "no_windows_or_objects_outside_physical_envelope": true,
+    "every_large_volume_finished_from_front_side_rear_and_aerial": true,
+    "non_rectangular_components_use_local_surface_registration": true,
+    "unique_role_cards_cover_each_non_repeatable_piece": true,
+    "all_materials_reference_specific_finished": true,
+    "neutral_contextual_scene_only_glass": true,
+    "no_baked_render_reflections": true,
+    "zero_generic_material_fallbacks": true,
+    "zero_floating_contacts": true
+  },
+  "artifact_sha256": {
+    "scene": "07ba380ba9022a3532467f4055e9a80948811922303419695a081aa4fdddbe4b",
+    "glb": "4ad5131c5bcd65c2b82e3718b92c045c69a430dd83a9cd964b13fe996f2969ea",
+    "render_front": "2add96aae49ff2f83aa5ca8a5a537dc47d902946be051f0579f2a45fe4e7ef8f",
+    "render_front_corner": "71d6d027dbbd7d192c72c606844757bff94aae80d206926130a74348f615cc65",
+    "render_aerial": "43689624d6ed860c825fde8b58ded62deaa9329f84ebfb44a3ddf686da1ebfcc",
+    "render_side": "8f9a284379e1012a2e727bd854092b35af9cdcdbf91dcd47c1f2488c5b6b6080",
+    "render_facade_close": "370a12b4288e20ba067b60ba11c47fa6c3604a183cbef1a127a47fd17f412922",
+    "render_glass_close": "338cbbcc3f30e702e3fc2e96978f545bb531b76f8b44f6efc86acc699c0daab8",
+    "render_rear_side": "072046973583b220471a6385ae120050703c907f1a90a07cd4cefc280c832857",
+    "render_preview": "71d6d027dbbd7d192c72c606844757bff94aae80d206926130a74348f615cc65",
+    "porto-azulejo-three-view-locked-reference": "88306ccbf60d3ec3bbf9e96c29ed75089cce76d5f58d888560ddd91e33086b7c",
+    "unique-role-card-sheet": "a09a787944eec8c8469ba2a6e5c446979f2621cdfa3b32e6c6c41209cdf049ed",
+    "generated-front-facade-sticker": "f2e3a6d34690003dc9c38075c04c7f356e66c9e4b4ff87db6f3620f8aeabf4cf",
+    "card-manifest": "8dd3686f98b6bf19ee2e2253b3597bcbb8b6ac0e61f55726c926e937a27981d8"
+  },
+  "phone_review_sheet": {
+    "path": "review/phone-review-sheet.png",
+    "bytes": 1856921,
+    "sha256": "a733f2c48f811d7944865665786c2caf1067769a2a10672beb2d3f806a5bad8b"
+  },
+  "manual_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "side",
+    "rear_side",
+    "facade_close",
+    "glass_close"
+  ],
+  "non_blocking_note": "Minor close-range cosmetic differences may be refined by downstream GPT image/video rendering; no genuine 3D hard-stop defect remains.",
+  "builder_self_approval": false
+}

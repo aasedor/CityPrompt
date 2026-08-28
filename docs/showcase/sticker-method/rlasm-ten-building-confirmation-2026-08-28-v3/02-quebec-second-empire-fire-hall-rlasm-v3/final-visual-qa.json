@@ -1,0 +1,56 @@
+{
+  "schema": "cityprompt.rlasm.final-visual-qa@2",
+  "candidate": "02-quebec-second-empire-fire-hall-rlasm-v3",
+  "title": "Quebec Second Empire Fire Hall",
+  "method": "RLASM v3 reference-lock + atomic-role construction",
+  "status": "PASS_VISUAL_QA_FOR_CITYPROMPT_SAMPLE",
+  "strict_result": "PASS",
+  "score": 95,
+  "minimum_score": 95,
+  "hard_gates": {
+    "reference_identity_and_massing_match": true,
+    "roof_and_silhouette_are_physical_and_reference_specific": true,
+    "zero_exposed_giant_support_or_carrier_boxes": true,
+    "no_windows_or_objects_outside_physical_envelope": true,
+    "every_large_volume_finished_from_front_side_rear_and_aerial": true,
+    "non_rectangular_components_use_local_surface_registration": true,
+    "unique_role_cards_cover_each_non_repeatable_piece": true,
+    "all_materials_reference_specific_finished": true,
+    "neutral_contextual_scene_only_glass": true,
+    "no_baked_render_reflections": true,
+    "zero_generic_material_fallbacks": true,
+    "zero_floating_contacts": true
+  },
+  "artifact_sha256": {
+    "scene": "4237a475f07398be33dcdf5641ea698b698748f531abea5c558f673171a3289a",
+    "glb": "1db157e754dc86861dabb3c394be9e170eb2821919eb6ef4e5cca4597feeab98",
+    "render_front": "90ee215336681416f2fc9ef7a03aba2602c0dc642c2050788a8ce83122077bfc",
+    "render_front_corner": "daca9a5a169ef6853328f4dd8923f7a5eaef6c77bd83aab21b32b61adebb956b",
+    "render_aerial": "60f6bcbab8b0fb38a9ef29a1246d815341fffe15b39871a97c5f238f03afd2c6",
+    "render_side": "edc3892db7510e170da4de2d2a62cac63fbecc06a29baa8f9a219da6c0c0ce34",
+    "render_facade_close": "18e7758a4cac723288ddf9d37d3a78b0b4bc00c1f857dd24a9d820d7612baba1",
+    "render_glass_close": "bb4ab76055749cf53acc0297ba3308c4ddaa9a06cac0e22d4e653423a06fe633",
+    "render_rear_side": "6700734df21ef34ed87ed0cc53db165f70fa1fd987f72d64d49448e36ad35734",
+    "render_preview": "daca9a5a169ef6853328f4dd8923f7a5eaef6c77bd83aab21b32b61adebb956b",
+    "locked-three-view-reference": "a4e1b4ed5d84d8971e3c8d79f74f1b103418cf5d09e642a4f869d9a6278f20dc",
+    "unique-role-card-sheet": "d7956eb5be1f59bbe29416c9c626f2ac4b65f356a084e6dd7957b38dd5499a1c",
+    "generated-front-facade-sticker": "ebc1afb5a6a3485d5dba55398154d03df53bfd44655ad8bc324fce35ba3ce354",
+    "card-manifest": "9f1d1d56792a1376f30ca8dfddd7d3966653a75cdd1390857d8378de17eb0ebf"
+  },
+  "phone_review_sheet": {
+    "path": "review/phone-review-sheet.png",
+    "bytes": 1664543,
+    "sha256": "cf99af6b816063ae07f144292116b53a6baf4e4d5275007555cd7fe8d688b16d"
+  },
+  "manual_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "side",
+    "rear_side",
+    "facade_close",
+    "glass_close"
+  ],
+  "non_blocking_note": "Minor close-range cosmetic differences may be refined by downstream GPT image/video rendering; no genuine 3D hard-stop defect remains.",
+  "builder_self_approval": false
+}

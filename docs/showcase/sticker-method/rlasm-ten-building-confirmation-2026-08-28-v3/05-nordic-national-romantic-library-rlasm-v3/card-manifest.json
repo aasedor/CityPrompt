@@ -1,0 +1,263 @@
+{
+  "schema": "cityprompt.rlasm.atomic-card-manifest@6",
+  "candidate": "05-nordic-national-romantic-library-rlasm-v3",
+  "title": "Nordic National Romantic Library",
+  "source_archetype": "nordic-national-romantic-library",
+  "construction_system": "National Romantic granite and brick library with asymmetrical copper tower",
+  "builder": "nordic_library",
+  "metric_dimensions": [
+    29.0,
+    22.0,
+    24.0
+  ],
+  "method_version": "RLASM 1.8.0",
+  "locked_sources": [
+    {
+      "path": "references/locked-three-view-reference.png",
+      "bytes": 2888504,
+      "sha256": "87b469513cfdaada493803cedfff4c6488c473de223c131aa81353a4e664c270"
+    }
+  ],
+  "unique_role_cards": [
+    {
+      "role": "complete-library-front",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        0,
+        0,
+        512,
+        1024
+      ],
+      "path": "cards/object-complete-library-front.png",
+      "sha256": "1b68b33493ffdaee307d9afe6eabc939930b2cc6eb555150a9fd7e92d706cbac",
+      "repeatable": false
+    },
+    {
+      "role": "asymmetrical-story-tower",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        0,
+        0,
+        512,
+        573
+      ],
+      "path": "cards/object-asymmetrical-story-tower.png",
+      "sha256": "cd7547ab7acb6d9e31d30c370fa0a81c49554a47d6da9a8d35cb443ae1eface2",
+      "repeatable": false
+    },
+    {
+      "role": "monumental-arched-reading-window",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        0,
+        460,
+        512,
+        1024
+      ],
+      "path": "cards/object-monumental-arched-reading-window.png",
+      "sha256": "b89273367bb0155208a090192813647117e6e2271c3929a4f484b34b3586f1fe",
+      "repeatable": true
+    },
+    {
+      "role": "front-corner-copper-roof",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        512,
+        0,
+        1024,
+        1024
+      ],
+      "path": "cards/object-front-corner-copper-roof.png",
+      "sha256": "804fd523d2bc7e4813aaef07701a34d1b54a4200667588d92a6c732e6ea31117",
+      "repeatable": false
+    },
+    {
+      "role": "rear-book-stack-wing",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        1024,
+        0,
+        1536,
+        655
+      ],
+      "path": "cards/object-rear-book-stack-wing.png",
+      "sha256": "7d3b6b8b5abb5d7f28991243946697c56d56e9110e927481acb9f120e76f4190",
+      "repeatable": false
+    },
+    {
+      "role": "folklore-relief-and-stone-portal",
+      "source": "locked-three-view-reference.png",
+      "crop_pixels": [
+        1024,
+        368,
+        1536,
+        1024
+      ],
+      "path": "cards/object-folklore-relief-and-stone-portal.png",
+      "sha256": "a24fe5267e68a3d324347d6251c25810b6f744fec1dbd6ddc80f3120ff25e662",
+      "repeatable": true
+    }
+  ],
+  "material_inputs": [
+    {
+      "id": "dark-rusticated-granite",
+      "path": "materials/material-dark-rusticated-granite.png",
+      "sha256": "fcdab2292b3757900af77f66c5672b837bbe813c7d195581038cc7ac1ae800d0",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 0.78,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked three-view reference",
+        "generated_source_filename": "exec-adfe56a3-22f3-4a90-82eb-f7667ea73dfc.png",
+        "generated_source_sha256": "a92f6c5f52e6b533e90bae0a5f9fd6ddf3d7f8b30ed431b9cb07d3b18e537c1e"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    },
+    {
+      "id": "red-brown-national-brick",
+      "path": "materials/material-red-brown-national-brick.png",
+      "sha256": "ee756f53d33564b8aa3f7bf3559c752183eddc063468e1db731c2477d7feb7d9",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 1.25,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked three-view reference",
+        "generated_source_filename": "exec-adfe56a3-22f3-4a90-82eb-f7667ea73dfc.png",
+        "generated_source_sha256": "a92f6c5f52e6b533e90bae0a5f9fd6ddf3d7f8b30ed431b9cb07d3b18e537c1e"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    },
+    {
+      "id": "oxidized-copper-roof",
+      "path": "materials/material-oxidized-copper-roof.png",
+      "sha256": "c0a401d6857728c4a7dc8b0f110cf65324312d34458c58be2d5399ffa332ad66",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 0.9,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked three-view reference",
+        "generated_source_filename": "exec-adfe56a3-22f3-4a90-82eb-f7667ea73dfc.png",
+        "generated_source_sha256": "a92f6c5f52e6b533e90bae0a5f9fd6ddf3d7f8b30ed431b9cb07d3b18e537c1e"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    },
+    {
+      "id": "dark-carved-oak",
+      "path": "materials/material-dark-carved-oak.png",
+      "sha256": "70af48ace45e4dec088092437af067958633736ad6b55fc26aec0b99c808dde1",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 0.65,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked three-view reference",
+        "generated_source_filename": "exec-adfe56a3-22f3-4a90-82eb-f7667ea73dfc.png",
+        "generated_source_sha256": "a92f6c5f52e6b533e90bae0a5f9fd6ddf3d7f8b30ed431b9cb07d3b18e537c1e"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    },
+    {
+      "id": "muted-bronze-green-frame",
+      "path": "materials/material-muted-bronze-green-frame.png",
+      "sha256": "83ab8b73c89b8fc0488fe0db05fff19e469a4a1accbeef2d36c83e6192c69c12",
+      "status": "reference_specific_finished_input",
+      "world_scale_m": 0.82,
+      "reconstruction": {
+        "schema": "cityprompt.rlasm.reference-matched-material-reconstruction@3",
+        "tool": "OpenAI built-in ImageGen",
+        "method": "clean orthographic material reconstruction derived from the locked three-view reference",
+        "generated_source_filename": "exec-adfe56a3-22f3-4a90-82eb-f7667ea73dfc.png",
+        "generated_source_sha256": "a92f6c5f52e6b533e90bae0a5f9fd6ddf3d7f8b30ed431b9cb07d3b18e537c1e"
+      },
+      "repeatable_field_only_verified": true,
+      "unique_architecture_absent_verified": true,
+      "world_scale_mapping_verified": true,
+      "declared_geometry_role_binding_verified": true
+    }
+  ],
+  "facade_generation_contract": {
+    "required": true,
+    "role": "orthographic reference-specific front elevation",
+    "transparent_openings_required": true,
+    "baked_reflection_forbidden": true,
+    "alpha_audit": {
+      "source_width": 982,
+      "source_height": 1602,
+      "width": 943,
+      "height": 1559,
+      "transparent_pixels": 726386,
+      "partially_transparent_despilled_pixels": 14057,
+      "tight_alpha_bbox": [
+        20,
+        29,
+        963,
+        1588
+      ]
+    }
+  },
+  "glass_contract": {
+    "profile": "RLASM neutral contextual low-iron physical glazing v22",
+    "image_texture_count_required": 0,
+    "baked_reflection_forbidden": true,
+    "reflection_source": "scene_only"
+  },
+  "material_binding_contract": {
+    "binding_key": "declared material id",
+    "positional_binding_forbidden": true,
+    "object_coordinate_world_scale_required": true,
+    "generic_material_fallback_forbidden": true
+  },
+  "carrier_visibility_contract": {
+    "required_views": [
+      "front_corner",
+      "aerial",
+      "side",
+      "rear_side"
+    ],
+    "exposed_carrier_count_required": 0,
+    "full_footprint_hidden_box_forbidden": true,
+    "side_and_rear_architecture_required": true
+  },
+  "hard_gates": [
+    "National Romantic granite and brick library with asymmetrical copper tower",
+    "all six unique architectural roles inventoried before build",
+    "reference-specific finished materials only",
+    "neutral contextual scene-only glass",
+    "physical roof and side/rear articulation",
+    "zero floating objects",
+    "zero exposed blank carrier faces",
+    "PASS_ZERO_EXPOSED_GIANT_SUPPORT_BOXES",
+    "PASS_WINDOW_MASK_EXCLUDES_EXTERIOR_TRANSPARENCY"
+  ],
+  "generic_fallback_allowed": false,
+  "status": "PASS_PREWORK_READY_FOR_VISUAL_REVIEW",
+  "builder_self_approval": false,
+  "correction_of": "05-nordic-national-romantic-library-rlasm-v1",
+  "correction_scope": [
+    "replace facade-wide glass and occupied-depth carriers with an enclosed-alpha-opening mask",
+    "keep exterior transparency fully transparent so no giant plane or support box is exposed",
+    "retain neutral contextual physical glass and modeled dark depth only inside card openings"
+  ],
+  "window_opening_mask": {
+    "path": "cards/window-opening-mask.png",
+    "derivation": "transparent connected components not connected to any card-image boundary, dilated one pixel under the physical frames",
+    "width": 943,
+    "height": 1559,
+    "opaque_or_partial_pixels": 111235
+  }
+}
