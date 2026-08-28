@@ -1,0 +1,58 @@
+{
+  "schema": "cityprompt.rlasm.contact-audit@1",
+  "candidate": "01-montreal-plateau-triplex-rlasm-v2",
+  "records": [
+    {
+      "role": "spiral_stair",
+      "carrier": "central load post + inner/outer continuous stringers + two landing overlaps",
+      "floating": false
+    },
+    {
+      "role": "balcony_slabs",
+      "carrier": "masonry overlap + iron load columns",
+      "floating": false
+    },
+    {
+      "role": "balcony_guards",
+      "carrier": "balcony slab top",
+      "floating": false
+    },
+    {
+      "role": "canopy",
+      "carrier": "masonry overlap + two columns",
+      "floating": false
+    },
+    {
+      "role": "window_surrounds",
+      "carrier": "masonry opening edges",
+      "floating": false
+    },
+    {
+      "role": "window_frames_and_panes",
+      "carrier": "true boolean apertures and internal returns",
+      "floating": false
+    },
+    {
+      "role": "door_hardware",
+      "carrier": "physical door leaf overlap",
+      "floating": false
+    },
+    {
+      "role": "thresholds",
+      "carrier": "opening returns / balcony or grade contact",
+      "floating": false
+    },
+    {
+      "role": "parapet_finials",
+      "carrier": "pediment caps",
+      "floating": false
+    },
+    {
+      "role": "skylights",
+      "carrier": "roof curb",
+      "floating": false
+    }
+  ],
+  "floating_count": 0,
+  "status": "PASS_ZERO_FLOATING"
+}

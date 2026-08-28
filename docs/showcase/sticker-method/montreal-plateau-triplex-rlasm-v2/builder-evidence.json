@@ -1,0 +1,217 @@
+{
+  "schema": "cityprompt.rlasm.build-evidence@1",
+  "candidate": "01-montreal-plateau-triplex-rlasm-v2",
+  "method": "RLASM 1.7.0",
+  "status": "PASS_BUILDER_EVIDENCE_AWAITING_INDEPENDENT_VISUAL_QA",
+  "scene": {
+    "path": "model/01-montreal-plateau-triplex-rlasm-v2.blend",
+    "bytes": 389818,
+    "sha256": "d8ab673af8e9f204f24ce88170d267f10387a4ffacf990990193a616608fe999"
+  },
+  "glb": {
+    "path": "model/01-montreal-plateau-triplex-rlasm-v2.glb",
+    "bytes": 3656044,
+    "sha256": "7071613c65f165dfb49c6966f306671ade54bbdfa9c1205645718431baaba6ed"
+  },
+  "renders": [
+    {
+      "path": "renders/aerial.png",
+      "bytes": 1455792,
+      "sha256": "c3e9607604938f0025355b29472091a535074bc4b483302214bdf3d6362dcb7d"
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 1304836,
+      "sha256": "b348fbf0f0b21603c730b57bf0a84f86255fa994105040d372aa20b421db39f0"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 1373576,
+      "sha256": "1e2f55972a26a72a58df803ef9183de66cac5d1efebede5a0526c699ed549424"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 1549972,
+      "sha256": "6bc5d9761f7af279ad7fe446d02d54a3e7529d1f12e3dcc506baf68aae41d33c"
+    },
+    {
+      "path": "renders/preview.png",
+      "bytes": 1373576,
+      "sha256": "1e2f55972a26a72a58df803ef9183de66cac5d1efebede5a0526c699ed549424"
+    },
+    {
+      "path": "renders/side.png",
+      "bytes": 1342723,
+      "sha256": "445ae32b0614eceb6abc0a1130f35d6ec9abd02e41915d72db1cd023b31c35c5"
+    },
+    {
+      "path": "renders/stair_close.png",
+      "bytes": 1591028,
+      "sha256": "50997690ebce7658f5cfefc7322b4db39dc07707cb4f94bb73da0b980be138d6"
+    }
+  ],
+  "material_audit": {
+    "building_material_count": 13,
+    "materials": [
+      {
+        "name": "MAT_Montreal_DoorHardwareBrass_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked entry hardware finish",
+        "source_sha256": null,
+        "mapping": null
+      },
+      {
+        "name": "MAT_Montreal_FlatRoofMembrane_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked variant_0 aerial roof reconstruction",
+        "source_sha256": "39586294abcdf77263e8633952131f7b01b6edc16d3c9cd8f5c14bca8852daaa",
+        "mapping": "shared_object_coordinate_anchor_real_unit_repeat"
+      },
+      {
+        "name": "MAT_Montreal_GroundEntryGreen_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked ground green entry crop",
+        "source_sha256": null,
+        "mapping": null
+      },
+      {
+        "name": "MAT_Montreal_LimestoneTrim_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked variant_0 front limestone reconstruction",
+        "source_sha256": "8c50766d31b59c5df32b19673729b596db06f958d5795f22188c42ada8581535",
+        "mapping": "shared_object_coordinate_anchor_real_unit_repeat"
+      },
+      {
+        "name": "MAT_Montreal_NeutralLowIron_RLASM_v22Module",
+        "status": "reference_specific_finished",
+        "provenance": "approved reusable physical glass module from Vancouver Laneway RLASM v22; neutral scene-only reflection",
+        "source_sha256": null,
+        "mapping": null
+      },
+      {
+        "name": "MAT_Montreal_PaleMasonry_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked variant_0 oblique palette reconstruction",
+        "source_sha256": "6cd2e2ef1873a86e65c04b4fe1f79ce6a00e06dd3121cce9517fe6d1c47a8f48",
+        "mapping": "shared_object_coordinate_anchor_real_unit_repeat"
+      },
+      {
+        "name": "MAT_Montreal_RoomProxyDeepUmber_v1",
+        "status": "reference_specific_finished",
+        "provenance": "approved RLASM modeled-room proxy module; no photography",
+        "source_sha256": null,
+        "mapping": null
+      },
+      {
+        "name": "MAT_Montreal_RoomProxyLuminaire_v1",
+        "status": "reference_specific_finished",
+        "provenance": "approved RLASM modeled-room proxy module; no photography",
+        "source_sha256": null,
+        "mapping": null
+      },
+      {
+        "name": "MAT_Montreal_RoomProxyOakCue_v1",
+        "status": "reference_specific_finished",
+        "provenance": "approved RLASM modeled-room proxy module; no photography",
+        "source_sha256": null,
+        "mapping": null
+      },
+      {
+        "name": "MAT_Montreal_RoomProxyPartition_v1",
+        "status": "reference_specific_finished",
+        "provenance": "approved RLASM modeled-room proxy module; no photography",
+        "source_sha256": null,
+        "mapping": null
+      },
+      {
+        "name": "MAT_Montreal_UpperEntryRed_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked upper red entry crop",
+        "source_sha256": null,
+        "mapping": null
+      },
+      {
+        "name": "MAT_Montreal_WarmTimberFrame_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked variant_0 window-frame palette reconstruction",
+        "source_sha256": "992d2476cb0a775b9db3650cba31506392689e68541f1c34f863e6b93c59c2ab",
+        "mapping": "shared_object_coordinate_anchor_real_unit_repeat"
+      },
+      {
+        "name": "MAT_Montreal_WroughtIron_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked variant_0 wrought-iron stair/guard optical reconstruction",
+        "source_sha256": null,
+        "mapping": null
+      }
+    ],
+    "generic_fallback_count": 0,
+    "all_reference_specific_finished": true,
+    "glass": {
+      "material": "MAT_Montreal_NeutralLowIron_RLASM_v22Module",
+      "image_texture_count": 0,
+      "linked_base_color_count": 0,
+      "reflection_source": "current_scene_world_lights_geometry_only",
+      "neutral": true
+    }
+  },
+  "contact_audit": {
+    "schema": "cityprompt.rlasm.contact-audit@1",
+    "candidate": "01-montreal-plateau-triplex-rlasm-v2",
+    "records": [
+      {
+        "role": "spiral_stair",
+        "carrier": "central load post + inner/outer continuous stringers + two landing overlaps",
+        "floating": false
+      },
+      {
+        "role": "balcony_slabs",
+        "carrier": "masonry overlap + iron load columns",
+        "floating": false
+      },
+      {
+        "role": "balcony_guards",
+        "carrier": "balcony slab top",
+        "floating": false
+      },
+      {
+        "role": "canopy",
+        "carrier": "masonry overlap + two columns",
+        "floating": false
+      },
+      {
+        "role": "window_surrounds",
+        "carrier": "masonry opening edges",
+        "floating": false
+      },
+      {
+        "role": "window_frames_and_panes",
+        "carrier": "true boolean apertures and internal returns",
+        "floating": false
+      },
+      {
+        "role": "door_hardware",
+        "carrier": "physical door leaf overlap",
+        "floating": false
+      },
+      {
+        "role": "thresholds",
+        "carrier": "opening returns / balcony or grade contact",
+        "floating": false
+      },
+      {
+        "role": "parapet_finials",
+        "carrier": "pediment caps",
+        "floating": false
+      },
+      {
+        "role": "skylights",
+        "carrier": "roof curb",
+        "floating": false
+      }
+    ],
+    "floating_count": 0,
+    "status": "PASS_ZERO_FLOATING"
+  },
+  "builder_self_approval": false
+}
