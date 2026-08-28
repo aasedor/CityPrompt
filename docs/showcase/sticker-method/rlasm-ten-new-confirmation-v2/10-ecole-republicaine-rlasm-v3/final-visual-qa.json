@@ -1,0 +1,44 @@
+{
+  "schema": "cityprompt.rlasm.final-visual-qa@1",
+  "candidate": "10-ecole-republicaine-rlasm-v3",
+  "title": "\u00c9cole R\u00e9publicaine",
+  "status": "PASS_SHOWCASE_RLASM_95_PLUS",
+  "score": 97,
+  "method": "RLASM reference lock, role decomposition, unique cards, physical 3D carrier, neutral contextual glass, rendered comparison, bounded correction",
+  "hard_gates": {
+    "reference_prework_present": true,
+    "atomic_role_card_sheet_present": true,
+    "generated_reference_specific_facade_card_present": true,
+    "actual_blender_scene_present": true,
+    "actual_glb_present": true,
+    "neutral_scene_only_physical_glass": true,
+    "baked_reflection_absent": true,
+    "generic_material_fallback_count": 0,
+    "floating_contact_count": 0,
+    "duplicate_facade_role_count": 0
+  },
+  "visual_review": {
+    "reference_identity_preserved": true,
+    "massing_and_roof_readable": true,
+    "facade_materials_reference_specific": true,
+    "windows_and_doors_registered": true,
+    "front_corner_proves_physical_depth": true,
+    "non_blocking_note": "School inscriptions, carved entry, mansard and dormers remain legible while the physical support stays behind the facade."
+  },
+  "scene": {
+    "path": "model/10-ecole-republicaine-rlasm-v3.blend",
+    "bytes": 168376,
+    "sha256": "1f758b1c25b6911ebf0afda865606247732ecc5ca0870b071ba2e869f3147e9f"
+  },
+  "glb": {
+    "path": "model/10-ecole-republicaine-rlasm-v3.glb",
+    "bytes": 3298784,
+    "sha256": "b0917ea7836317767ca7ace3ac9401ef6a8e2666c0dbedded35be9f97ddd1e66"
+  },
+  "comparison_sheet": {
+    "path": "review-comparison-sheet.png",
+    "bytes": 2642342,
+    "sha256": "0c34ddc6a323d627112bdbdbeb39e44ed6de553e9cdcfc8939c802a5ea0b1b55"
+  },
+  "builder_self_approval": false
+}

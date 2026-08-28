@@ -1,0 +1,44 @@
+{
+  "schema": "cityprompt.rlasm.final-visual-qa@1",
+  "candidate": "05-courtyard-family-housing-rlasm-v2",
+  "title": "Courtyard Family Housing",
+  "status": "PASS_SHOWCASE_RLASM_95_PLUS",
+  "score": 96,
+  "method": "RLASM reference lock, role decomposition, unique cards, physical 3D carrier, neutral contextual glass, rendered comparison, bounded correction",
+  "hard_gates": {
+    "reference_prework_present": true,
+    "atomic_role_card_sheet_present": true,
+    "generated_reference_specific_facade_card_present": true,
+    "actual_blender_scene_present": true,
+    "actual_glb_present": true,
+    "neutral_scene_only_physical_glass": true,
+    "baked_reflection_absent": true,
+    "generic_material_fallback_count": 0,
+    "floating_contact_count": 0,
+    "duplicate_facade_role_count": 0
+  },
+  "visual_review": {
+    "reference_identity_preserved": true,
+    "massing_and_roof_readable": true,
+    "facade_materials_reference_specific": true,
+    "windows_and_doors_registered": true,
+    "front_corner_proves_physical_depth": true,
+    "non_blocking_note": "Open passage, loggia and supported tile caps retain the courtyard topology with no detached roof members."
+  },
+  "scene": {
+    "path": "model/05-courtyard-family-housing-rlasm-v2.blend",
+    "bytes": 118713,
+    "sha256": "db16e0fc442bca521415d90081e672bded9ffbee537e4beae45ffc1b1ef83c94"
+  },
+  "glb": {
+    "path": "model/05-courtyard-family-housing-rlasm-v2.glb",
+    "bytes": 2004872,
+    "sha256": "5a3a243dbddc6ad75afe939938284edb9f0eb015e59290174a44df49edb2314c"
+  },
+  "comparison_sheet": {
+    "path": "review-comparison-sheet.png",
+    "bytes": 2464224,
+    "sha256": "3863b18332c4909bf6fb94daf29b29df1d49b020f9a7066f5a1e132b74672ac8"
+  },
+  "builder_self_approval": false
+}

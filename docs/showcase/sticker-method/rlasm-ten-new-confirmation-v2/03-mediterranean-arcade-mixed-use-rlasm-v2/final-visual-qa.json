@@ -1,0 +1,44 @@
+{
+  "schema": "cityprompt.rlasm.final-visual-qa@1",
+  "candidate": "03-mediterranean-arcade-mixed-use-rlasm-v2",
+  "title": "Mediterranean Arcade Mixed Use",
+  "status": "PASS_SHOWCASE_RLASM_95_PLUS",
+  "score": 96,
+  "method": "RLASM reference lock, role decomposition, unique cards, physical 3D carrier, neutral contextual glass, rendered comparison, bounded correction",
+  "hard_gates": {
+    "reference_prework_present": true,
+    "atomic_role_card_sheet_present": true,
+    "generated_reference_specific_facade_card_present": true,
+    "actual_blender_scene_present": true,
+    "actual_glb_present": true,
+    "neutral_scene_only_physical_glass": true,
+    "baked_reflection_absent": true,
+    "generic_material_fallback_count": 0,
+    "floating_contact_count": 0,
+    "duplicate_facade_role_count": 0
+  },
+  "visual_review": {
+    "reference_identity_preserved": true,
+    "massing_and_roof_readable": true,
+    "facade_materials_reference_specific": true,
+    "windows_and_doors_registered": true,
+    "front_corner_proves_physical_depth": true,
+    "non_blocking_note": "Stone arcade, shutters, tile eaves and wrought balconies remain unified without duplicate foreground columns."
+  },
+  "scene": {
+    "path": "model/03-mediterranean-arcade-mixed-use-rlasm-v2.blend",
+    "bytes": 151597,
+    "sha256": "aa0cb0ea32498ac0c8bc30a464f7cefe300b5bfce833dec10090ab22e5d3988a"
+  },
+  "glb": {
+    "path": "model/03-mediterranean-arcade-mixed-use-rlasm-v2.glb",
+    "bytes": 2990380,
+    "sha256": "ef688e0fabb1f2312cb129c340b0479ef60d2fb2ae31f9943a7c876891e2d23b"
+  },
+  "comparison_sheet": {
+    "path": "review-comparison-sheet.png",
+    "bytes": 2594176,
+    "sha256": "b9c4bec0848270cfe528c1d167486928bd339ad7c6b22f28fc6169dac60cadd3"
+  },
+  "builder_self_approval": false
+}

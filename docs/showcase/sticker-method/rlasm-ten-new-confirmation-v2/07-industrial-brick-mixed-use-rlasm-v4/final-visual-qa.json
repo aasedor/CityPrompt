@@ -1,0 +1,44 @@
+{
+  "schema": "cityprompt.rlasm.final-visual-qa@1",
+  "candidate": "07-industrial-brick-mixed-use-rlasm-v4",
+  "title": "Industrial Brick Mixed Use",
+  "status": "PASS_SHOWCASE_RLASM_95_PLUS",
+  "score": 95,
+  "method": "RLASM reference lock, role decomposition, unique cards, physical 3D carrier, neutral contextual glass, rendered comparison, bounded correction",
+  "hard_gates": {
+    "reference_prework_present": true,
+    "atomic_role_card_sheet_present": true,
+    "generated_reference_specific_facade_card_present": true,
+    "actual_blender_scene_present": true,
+    "actual_glb_present": true,
+    "neutral_scene_only_physical_glass": true,
+    "baked_reflection_absent": true,
+    "generic_material_fallback_count": 0,
+    "floating_contact_count": 0,
+    "duplicate_facade_role_count": 0
+  },
+  "visual_review": {
+    "reference_identity_preserved": true,
+    "massing_and_roof_readable": true,
+    "facade_materials_reference_specific": true,
+    "windows_and_doors_registered": true,
+    "front_corner_proves_physical_depth": true,
+    "non_blocking_note": "Reference-specific mill bays and arched glazing remain unobscured; the physical rear roof is deliberately subordinate."
+  },
+  "scene": {
+    "path": "model/07-industrial-brick-mixed-use-rlasm-v4.blend",
+    "bytes": 171918,
+    "sha256": "f8422e25af79ab8ee3353b70cd02dd75bfa4f77e161dd7e62330ecce8a1e51ed"
+  },
+  "glb": {
+    "path": "model/07-industrial-brick-mixed-use-rlasm-v4.glb",
+    "bytes": 3237444,
+    "sha256": "bc6cc8a92a1d4919a5cd97c127197004b4d78e7c251330f0840d1023fc466790"
+  },
+  "comparison_sheet": {
+    "path": "review-comparison-sheet.png",
+    "bytes": 2657309,
+    "sha256": "78a6bac832ff0d94e530f44bdab1287c645ad8eb7a4237c73b9931af0349fdd6"
+  },
+  "builder_self_approval": false
+}

@@ -1,0 +1,44 @@
+{
+  "schema": "cityprompt.rlasm.final-visual-qa@1",
+  "candidate": "06-civic-classical-building-rlasm-v1",
+  "title": "Civic Classical Building",
+  "status": "PASS_SHOWCASE_RLASM_95_PLUS",
+  "score": 96,
+  "method": "RLASM reference lock, role decomposition, unique cards, physical 3D carrier, neutral contextual glass, rendered comparison, bounded correction",
+  "hard_gates": {
+    "reference_prework_present": true,
+    "atomic_role_card_sheet_present": true,
+    "generated_reference_specific_facade_card_present": true,
+    "actual_blender_scene_present": true,
+    "actual_glb_present": true,
+    "neutral_scene_only_physical_glass": true,
+    "baked_reflection_absent": true,
+    "generic_material_fallback_count": 0,
+    "floating_contact_count": 0,
+    "duplicate_facade_role_count": 0
+  },
+  "visual_review": {
+    "reference_identity_preserved": true,
+    "massing_and_roof_readable": true,
+    "facade_materials_reference_specific": true,
+    "windows_and_doors_registered": true,
+    "front_corner_proves_physical_depth": true,
+    "non_blocking_note": "Ionic portico, pediment, monumental stair and limestone facade remain distinct, grounded architectural roles."
+  },
+  "scene": {
+    "path": "model/06-civic-classical-building-rlasm-v1.blend",
+    "bytes": 164368,
+    "sha256": "aee08fc1d440c56d416bb203531a7b66774c695adb7588449ae8e9b7c2bb651e"
+  },
+  "glb": {
+    "path": "model/06-civic-classical-building-rlasm-v1.glb",
+    "bytes": 2725712,
+    "sha256": "e14ec43fe704a9d9b2ff1ce50764ebbd5f3593f68aab80126c60683e72fe56e4"
+  },
+  "comparison_sheet": {
+    "path": "review-comparison-sheet.png",
+    "bytes": 2352745,
+    "sha256": "65e8531dd38e4ae674dc2138c888e884083c05a1f4d803f0dc2732da25c605e5"
+  },
+  "builder_self_approval": false
+}

@@ -1,0 +1,44 @@
+{
+  "schema": "cityprompt.rlasm.final-visual-qa@1",
+  "candidate": "09-chateauesque-grand-railway-hotel-rlasm-v3",
+  "title": "Chateauesque Grand Railway Hotel",
+  "status": "PASS_SHOWCASE_RLASM_95_PLUS",
+  "score": 96,
+  "method": "RLASM reference lock, role decomposition, unique cards, physical 3D carrier, neutral contextual glass, rendered comparison, bounded correction",
+  "hard_gates": {
+    "reference_prework_present": true,
+    "atomic_role_card_sheet_present": true,
+    "generated_reference_specific_facade_card_present": true,
+    "actual_blender_scene_present": true,
+    "actual_glb_present": true,
+    "neutral_scene_only_physical_glass": true,
+    "baked_reflection_absent": true,
+    "generic_material_fallback_count": 0,
+    "floating_contact_count": 0,
+    "duplicate_facade_role_count": 0
+  },
+  "visual_review": {
+    "reference_identity_preserved": true,
+    "massing_and_roof_readable": true,
+    "facade_materials_reference_specific": true,
+    "windows_and_doors_registered": true,
+    "front_corner_proves_physical_depth": true,
+    "non_blocking_note": "Turrets, stepped gables and central tower are preserved once, with duplicate generic roof masses removed."
+  },
+  "scene": {
+    "path": "model/09-chateauesque-grand-railway-hotel-rlasm-v3.blend",
+    "bytes": 184526,
+    "sha256": "81ddbb93a07bf16cdee3904254c5842055038e4648dbc7278a437b5fcf297d0b"
+  },
+  "glb": {
+    "path": "model/09-chateauesque-grand-railway-hotel-rlasm-v3.glb",
+    "bytes": 3586104,
+    "sha256": "46c67c3bc051e7ef967ba36ae4011d39307562469a79f53a8e5ff8f389c772db"
+  },
+  "comparison_sheet": {
+    "path": "review-comparison-sheet.png",
+    "bytes": 2553060,
+    "sha256": "503922e1aa80c14abc9ab4cd0df0446b0ea9589ac33698aae11faae8ff3dd010"
+  },
+  "builder_self_approval": false
+}
