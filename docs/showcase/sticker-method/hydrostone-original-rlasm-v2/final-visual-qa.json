@@ -1,0 +1,81 @@
+{
+  "schema": "cityprompt.rlasm.final-visual-qa@1",
+  "candidate": "03-hydrostone-original-rlasm-v2",
+  "method": "RLASM 1.7.0",
+  "status": "PASS_REVIEWED_PILOT_READY_FOR_GIT_HANDOFF",
+  "score": 95,
+  "hard_stops": [],
+  "review": {
+    "reference_identity": "PASS",
+    "irregular_connected_massing": "PASS",
+    "physical_multi_volume_roof_and_closed_valleys": "PASS",
+    "distinct_left_right_and_porch_gables": "PASS",
+    "reference_specific_brick_roughcast_timber_and_shingle": "PASS",
+    "true_apertures_and_returns": "PASS",
+    "entry_present_recessed_and_grounded": "PASS",
+    "neutral_scene_only_physical_glass": "PASS",
+    "baked_reflection_or_photographed_backing": "ABSENT",
+    "generic_material_fallback": 0,
+    "floating_count": 0
+  },
+  "cosmetic_findings": [
+    "Garden planting is simplified in the neutral review context; it is not part of the reusable building asset.",
+    "Leaded windows remain intentionally neutral/dark; reflections come only from the current scene."
+  ],
+  "artifacts": {
+    "comparison_sheet": {
+      "path": "review-comparison-sheet.png",
+      "bytes": 3154356,
+      "sha256": "b24f2f1cbe1398b64c4a16771c9f91bf66013405dec53c64f18000f0ed72132b"
+    },
+    "scene": {
+      "path": "model/03-hydrostone-original-rlasm-v2.blend",
+      "bytes": 250470,
+      "sha256": "d362e760f7f8ff24c625192f62d5f6860444f3f63865f0e5ab421519cc7c6a18"
+    },
+    "glb": {
+      "path": "model/03-hydrostone-original-rlasm-v2.glb",
+      "bytes": 1538744,
+      "sha256": "2cd3ff5d585022156c383e7cb7481e2794df11facb7cdd25af561dd5a3b6ccbf"
+    },
+    "renders": [
+      {
+        "path": "renders/aerial.png",
+        "bytes": 1371444,
+        "sha256": "126053a5c6e14076ff9157171708dde305798ac9485dd37cf6676851a10007e6"
+      },
+      {
+        "path": "renders/facade_close.png",
+        "bytes": 1647179,
+        "sha256": "3827cd05ce14e7ed097e8d7942a5998579a0cfbe6151259874660c492cc692d7"
+      },
+      {
+        "path": "renders/front.png",
+        "bytes": 1279192,
+        "sha256": "0426da545eac9f0b1eced177042983d08da147de90932b16f5113ae7b20baa1d"
+      },
+      {
+        "path": "renders/front_corner.png",
+        "bytes": 1336921,
+        "sha256": "28c3064036a7bd59f7c297337a34e5dae0b1983550d661fa1ede40c82db58a8b"
+      },
+      {
+        "path": "renders/glass_close.png",
+        "bytes": 1509125,
+        "sha256": "3fbb61f0894ff506b8af3bc7dff5a8b47f95a9997c94e5ecfc3714f965d9ee8d"
+      },
+      {
+        "path": "renders/preview.png",
+        "bytes": 1336921,
+        "sha256": "28c3064036a7bd59f7c297337a34e5dae0b1983550d661fa1ede40c82db58a8b"
+      },
+      {
+        "path": "renders/roof_close.png",
+        "bytes": 1360451,
+        "sha256": "472b8dc5bba7a53c1a0d8bfe21588fcb10b7b5400cd916e98f1eebf561c33c23"
+      }
+    ]
+  },
+  "builder_self_approval": false,
+  "reviewer_note": "Final visual review follows a preserved v1 rejection and focused v2 roof-valley/massing correction."
+}

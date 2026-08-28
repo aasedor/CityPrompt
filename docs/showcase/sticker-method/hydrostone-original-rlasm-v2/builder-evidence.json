@@ -1,0 +1,207 @@
+{
+  "schema": "cityprompt.rlasm.build-evidence@1",
+  "candidate": "03-hydrostone-original-rlasm-v2",
+  "method": "RLASM 1.7.0",
+  "status": "PASS_BUILDER_EVIDENCE_AWAITING_INDEPENDENT_VISUAL_QA",
+  "scene": {
+    "path": "model/03-hydrostone-original-rlasm-v2.blend",
+    "bytes": 250470,
+    "sha256": "d362e760f7f8ff24c625192f62d5f6860444f3f63865f0e5ab421519cc7c6a18"
+  },
+  "glb": {
+    "path": "model/03-hydrostone-original-rlasm-v2.glb",
+    "bytes": 1538744,
+    "sha256": "2cd3ff5d585022156c383e7cb7481e2794df11facb7cdd25af561dd5a3b6ccbf"
+  },
+  "renders": [
+    {
+      "path": "renders/aerial.png",
+      "bytes": 1371444,
+      "sha256": "126053a5c6e14076ff9157171708dde305798ac9485dd37cf6676851a10007e6"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "bytes": 1647179,
+      "sha256": "3827cd05ce14e7ed097e8d7942a5998579a0cfbe6151259874660c492cc692d7"
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 1279192,
+      "sha256": "0426da545eac9f0b1eced177042983d08da147de90932b16f5113ae7b20baa1d"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 1336921,
+      "sha256": "28c3064036a7bd59f7c297337a34e5dae0b1983550d661fa1ede40c82db58a8b"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 1509125,
+      "sha256": "3fbb61f0894ff506b8af3bc7dff5a8b47f95a9997c94e5ecfc3714f965d9ee8d"
+    },
+    {
+      "path": "renders/preview.png",
+      "bytes": 1336921,
+      "sha256": "28c3064036a7bd59f7c297337a34e5dae0b1983550d661fa1ede40c82db58a8b"
+    },
+    {
+      "path": "renders/roof_close.png",
+      "bytes": 1360451,
+      "sha256": "472b8dc5bba7a53c1a0d8bfe21588fcb10b7b5400cd916e98f1eebf561c33c23"
+    }
+  ],
+  "material_audit": {
+    "building_material_count": 13,
+    "materials": [
+      {
+        "name": "MAT_Hydrostone_AgedEntryHardware_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked oak door hardware",
+        "source_sha256": null,
+        "mapping": null
+      },
+      {
+        "name": "MAT_Hydrostone_CreamRoughcast_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked hydrostone_original cream roughcast infill",
+        "source_sha256": "bdcf5d26c5b43cbee701572b7711a34523228ebe9966c1d14300d9befb2c96aa",
+        "mapping": "shared_object_coordinate_anchor_real_unit_repeat"
+      },
+      {
+        "name": "MAT_Hydrostone_DarkShingle_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked hydrostone_original connected roof reconstruction",
+        "source_sha256": "4b8fcf57957f74240a7372a8c5cc8fbedaab94cbd2d6139b44aaa94d17c0246d",
+        "mapping": "shared_object_coordinate_anchor_real_unit_repeat"
+      },
+      {
+        "name": "MAT_Hydrostone_DarkStructuralTimber_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked hydrostone_original dark structural half-timber",
+        "source_sha256": "7cd8cc79d3d81fe6735e2a007e02c03cb9c8dfe77d836e877762b3926999fa70",
+        "mapping": "shared_object_coordinate_anchor_real_unit_repeat"
+      },
+      {
+        "name": "MAT_Hydrostone_LeadedCame_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked diamond leaded-window came",
+        "source_sha256": null,
+        "mapping": null
+      },
+      {
+        "name": "MAT_Hydrostone_NeutralLowIron_RLASM_v22Module",
+        "status": "reference_specific_finished",
+        "provenance": "approved reusable RLASM 1.7.0 neutral physical low-iron module",
+        "source_sha256": null,
+        "mapping": null
+      },
+      {
+        "name": "MAT_Hydrostone_OakEntry_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked oak entry leaf and porch finish",
+        "source_sha256": null,
+        "mapping": null
+      },
+      {
+        "name": "MAT_Hydrostone_RedBrownBrick_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked hydrostone_original ground-floor brick reconstruction",
+        "source_sha256": "959b4723baed4f183ad7d1646864a6072fc2ae66401e93ac6dbfeda82401e462",
+        "mapping": "shared_object_coordinate_anchor_real_unit_repeat"
+      },
+      {
+        "name": "MAT_Hydrostone_RoomProxyLuminaire_v1",
+        "status": "reference_specific_finished",
+        "provenance": "modeled luminaire proxy; no photography",
+        "source_sha256": null,
+        "mapping": null
+      },
+      {
+        "name": "MAT_Hydrostone_RoomProxyOakFloor_v1",
+        "status": "reference_specific_finished",
+        "provenance": "modeled room proxy; no photography",
+        "source_sha256": null,
+        "mapping": null
+      },
+      {
+        "name": "MAT_Hydrostone_RoomProxyPartition_v1",
+        "status": "reference_specific_finished",
+        "provenance": "modeled room proxy; no photography",
+        "source_sha256": null,
+        "mapping": null
+      },
+      {
+        "name": "MAT_Hydrostone_RoomProxyWarmPlaster_v1",
+        "status": "reference_specific_finished",
+        "provenance": "modeled room proxy; no photography",
+        "source_sha256": null,
+        "mapping": null
+      },
+      {
+        "name": "MAT_Hydrostone_StoopStone_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked entrance stoop and window-sill stone",
+        "source_sha256": null,
+        "mapping": null
+      }
+    ],
+    "generic_fallback_count": 0,
+    "all_reference_specific_finished": true,
+    "glass": {
+      "material": "MAT_Hydrostone_NeutralLowIron_RLASM_v22Module",
+      "image_texture_count": 0,
+      "linked_base_color_count": 0,
+      "reflection_source": "current_scene_world_lights_geometry_only",
+      "neutral": true
+    }
+  },
+  "contact_audit": {
+    "schema": "cityprompt.rlasm.contact-audit@1",
+    "candidate": "03-hydrostone-original-rlasm-v2",
+    "records": [
+      {
+        "role": "irregular_carriers",
+        "carrier": "left/right/connector carriers overlap as one connected envelope",
+        "floating": false
+      },
+      {
+        "role": "connected_roof_volumes",
+        "carrier": "three main roof volumes overlap at ridges/valleys and rest on carriers",
+        "floating": false
+      },
+      {
+        "role": "left_and_right_gables",
+        "carrier": "gable infills rest on upper carriers; rafters meet roof and timber rails",
+        "floating": false
+      },
+      {
+        "role": "entry_porch",
+        "carrier": "porch posts reach grade and roof/gable overlap wall carrier",
+        "floating": false
+      },
+      {
+        "role": "stoop_and_rails",
+        "carrier": "lower step rests at grade; upper step and rails overlap lower carrier",
+        "floating": false
+      },
+      {
+        "role": "chimneys",
+        "carrier": "stacks penetrate roof; caps and pots overlap stacks",
+        "floating": false
+      },
+      {
+        "role": "tudor_timber_fields",
+        "carrier": "rails/studs/braces overlap roughcast carrier",
+        "floating": false
+      },
+      {
+        "role": "windows_and_leaded_glass",
+        "carrier": "true apertures with returns, frames, panes and physical lead cames",
+        "floating": false
+      }
+    ],
+    "floating_count": 0,
+    "status": "PASS_ZERO_FLOATING"
+  },
+  "builder_self_approval": false
+}

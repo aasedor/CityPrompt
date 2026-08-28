@@ -1,0 +1,21 @@
+{
+  "schema": "cityprompt.rlasm.preserved-rejection@1",
+  "candidate": "03-hydrostone-original-rlasm-v1",
+  "status": "REJECTED_VISUAL_PRESERVED_NON_OVERWRITING",
+  "hard_findings": [
+    "Pale connector-carrier caps were visibly exposed inside the roof valleys.",
+    "The two front wing profiles read too uniformly against the locked reference."
+  ],
+  "scene": {
+    "bytes": 249938,
+    "sha256": "1b716411bea91297caddba34caa536a3bcdfffab5beff816a2375b3cc70bf2b4"
+  },
+  "glb": {
+    "bytes": 1530316,
+    "sha256": "c18998f829990de9662f62c049e1179bbd91b19e535b99da727de1e86e803ab0"
+  },
+  "front_render_sha256": "61ec5bb8232be01eeada99d06c00995c92758afdfb9a2e26c5707e1904ce7f2e",
+  "roof_close_render_sha256": "6a9c4f8b668721574fa8b468621c34a0af88445a34b213e8b2a6a176b368e4f0",
+  "correction_scope": "Focused v2 roof-valley closure and left/right wing-profile differentiation only.",
+  "builder_self_approval": false
+}

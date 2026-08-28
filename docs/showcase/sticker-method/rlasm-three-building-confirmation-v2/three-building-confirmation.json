@@ -1,0 +1,42 @@
+{
+  "schema": "cityprompt.rlasm.three-building-confirmation@1",
+  "method": "RLASM 1.7.0",
+  "status": "PASS_THREE_REVIEWED_PILOTS_READY_FOR_BOUNDED_CITYPROMPT_TEST",
+  "pilots": [
+    {
+      "candidate": "01-montreal-plateau-triplex-rlasm-v2",
+      "score": 96,
+      "final_visual_qa_sha256": "d33a2f5d50e043e19f15284c21b4bc5130ff8f41b193713f089316f30e5d8590",
+      "comparison_sheet_sha256": "7abf8061aaff046a0ddaa0411a0dfc83504ce79c4a1068a7178bde2cc910857d",
+      "lesson": "Image lock over prose; physical iron stair and pale masonry calibrated before scale-up."
+    },
+    {
+      "candidate": "02-amsterdam-step-gable-rlasm-v2",
+      "score": 95,
+      "final_visual_qa_sha256": "2ac325541b9e50b6128bfb1f9e0981f4742e6b4fca11049a8d034b6317bc0e92",
+      "comparison_sheet_sha256": "bf0c0cfe8aec9355bc5262f7346140c2a54ac362eaa06411a1d95c39519caca7",
+      "lesson": "Mechanics alone are insufficient: generic repeated ornament was rejected and rebuilt."
+    },
+    {
+      "candidate": "03-hydrostone-original-rlasm-v2",
+      "score": 95,
+      "final_visual_qa_sha256": "fd84b6307096300e39eddcf75c56ed9f96867fc798d6156dfde376f2fe9f8419",
+      "comparison_sheet_sha256": "b24f2f1cbe1398b64c4a16771c9f91bf66013405dec53c64f18000f0ed72132b",
+      "lesson": "Irregular carriers and distinct roof roles need physical valley closure, not one-box massing."
+    }
+  ],
+  "shared_gates": {
+    "reference_and_card_prework": "PASS_ALL_THREE",
+    "actual_blender_scene_and_glb": "PASS_ALL_THREE",
+    "generic_fallback_count": 0,
+    "floating_object_count": 0,
+    "neutral_scene_only_physical_glass": "PASS_ALL_THREE",
+    "baked_reflection_or_photographic_backing": "ABSENT_ALL_THREE"
+  },
+  "sheet": {
+    "path": "three-building-confirmation-sheet.png",
+    "bytes": 2424493,
+    "sha256": "63cd319d2eb1e7b548f73040edc39d52b22c70bdf4681b905caf46088102d128"
+  },
+  "builder_self_approval": false
+}
