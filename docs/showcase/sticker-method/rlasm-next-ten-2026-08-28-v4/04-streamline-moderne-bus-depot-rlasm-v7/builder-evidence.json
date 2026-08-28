@@ -1,0 +1,176 @@
+{
+  "schema": "cityprompt.rlasm.build-evidence@4",
+  "candidate": "04-streamline-moderne-bus-depot-rlasm-v7",
+  "title": "Streamline Moderne Bus Depot",
+  "method": "RLASM v3 reference-lock + atomic-role construction",
+  "status": "PASS_BUILDER_EVIDENCE_AWAITING_VISUAL_QA",
+  "scene": {
+    "path": "model/04-streamline-moderne-bus-depot-rlasm-v7.blend",
+    "bytes": 187642,
+    "sha256": "713813c67b7af92b6aa8309edf6742039273302d3f349531829c6c0c4fcc87d6"
+  },
+  "glb": {
+    "path": "model/04-streamline-moderne-bus-depot-rlasm-v7.glb",
+    "bytes": 2706568,
+    "sha256": "ec6ffb501f0ecfba74830b3f4a00edaf34fc3892a77ac005ce8cb28f37727fcf"
+  },
+  "renders": [
+    {
+      "path": "renders/aerial.png",
+      "bytes": 1408352,
+      "sha256": "a7bde9c24bf18078978185e9f5bbb6d10f97e82912f3b1f9f9bd5466e0d15a4e"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "bytes": 1229692,
+      "sha256": "0a84f26a666c671a7f7fc83c6d8cedb7015062f55e572278491337fef3f4d7ce"
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 1047429,
+      "sha256": "663c3118715980009287066f4867dda3c8d8e42156e09ee678d9339a63fa45f9"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 1141496,
+      "sha256": "07e8073eaf566a0cc64f0e7f90811b707e1de58e6522df201bbb3cd79d524390"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 1329947,
+      "sha256": "c003f877e96c4844c45b2e7a6f818609f01352342cfdf7d82db1a1ebe593b525"
+    },
+    {
+      "path": "renders/preview.png",
+      "bytes": 1141496,
+      "sha256": "07e8073eaf566a0cc64f0e7f90811b707e1de58e6522df201bbb3cd79d524390"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "bytes": 1302550,
+      "sha256": "473cd971c4033b7478f6898b66a64909d6c14d19029177bd676b39c5f7ab61d8"
+    },
+    {
+      "path": "renders/side.png",
+      "bytes": 1027254,
+      "sha256": "9b3ab031d33ab3a2d3416becf2e38cfacdd2787afe06f08e634a7b7708a69d76"
+    }
+  ],
+  "object_count": 162,
+  "material_audit": {
+    "building_material_count": 9,
+    "materials": [
+      {
+        "name": "MAT_streamline_GeneratedAtomicFacadeSticker",
+        "status": "reference_specific_finished",
+        "provenance": "built-in image generation from locked RLASM prework reference sheet",
+        "source_sha256": "4490e71f272f31c68138585b9708f891852b385d7f8db8a6388cbbc40fe0a48d"
+      },
+      {
+        "name": "MAT_streamline_NeutralLowIron_Physical_v22",
+        "status": "reference_specific_finished",
+        "provenance": "RLASM reusable neutral physical low-iron glass module v22",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_streamline_OccupiedDepth",
+        "status": "reference_specific_finished",
+        "provenance": "modeled occupied interior depth",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_streamline_brushed-stainless-steel",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-brushed-stainless-steel.png",
+        "source_sha256": "3ea99a5e18206dd0e0305ada929e1565dc366233f31f31b0dca53a2c0136a9c1"
+      },
+      {
+        "name": "MAT_streamline_cobalt-blue-enamel",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-cobalt-blue-enamel.png",
+        "source_sha256": "a257b52afd54d73f26b43ee1e36bd2aa864c3ffaded1d2d1a01d9b03d12eac12"
+      },
+      {
+        "name": "MAT_streamline_dark-blue-steel-door",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-dark-blue-steel-door.png",
+        "source_sha256": "6fb483961c81194ff80ca3257734b6e68082ce048d6504a2ebaff0c45383ac1b"
+      },
+      {
+        "name": "MAT_streamline_translucent-glass-block",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-translucent-glass-block.png",
+        "source_sha256": "0cf239d922d94578917197cf38578cf6206d67f1a69d3da1d6eead06e66a7224"
+      },
+      {
+        "name": "MAT_streamline_warm-ivory-stucco",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-warm-ivory-stucco.png",
+        "source_sha256": "57eb447e5ba2b88273816ab15a21af4b7bd2d6722b30c9378b2f35e28b3ac03e"
+      },
+      {
+        "name": "MAT_streamline_weathered-concrete-roof",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-weathered-concrete-roof.png",
+        "source_sha256": "9051f535a3f53981a8d5a87091eef100362de9de25ea57cac0c6aa2e51ef62dd"
+      }
+    ],
+    "generic_fallback_count": 0,
+    "all_reference_specific_finished": true,
+    "glass": {
+      "material": "MAT_streamline_NeutralLowIron_Physical_v22",
+      "image_texture_count": 0,
+      "baked_reflection": false,
+      "reflection_source": "current_scene_world_lights_geometry_only",
+      "neutral_scene_only": true
+    }
+  },
+  "contact_audit": {
+    "schema": "cityprompt.rlasm.contact-audit@4",
+    "candidate": "04-streamline-moderne-bus-depot-rlasm-v7",
+    "records": [
+      {
+        "claim": "curved rotunda, stair tower, ticket hall and rear hall are separate supported volumes",
+        "floating": false
+      },
+      {
+        "claim": "every sawtooth roof seats on the service hall",
+        "floating": false
+      },
+      {
+        "claim": "rotunda canopy and glazing intersect physical walls",
+        "floating": false
+      },
+      {
+        "claim": "sign pylon reaches grade",
+        "floating": false
+      },
+      {
+        "claim": "rear loading and side openings articulate exposed surfaces",
+        "floating": false
+      },
+      {
+        "claim": "atomic facade carrier flush-mounted within 0.006m of physical facade datum",
+        "floating": false
+      }
+    ],
+    "floating_count": 0,
+    "status": "PASS_ZERO_FLOATING"
+  },
+  "hard_gates": [
+    "PASS_ZERO_EXPOSED_GIANT_SUPPORT_BOXES",
+    "PASS_WINDOW_MASK_EXCLUDES_EXTERIOR_TRANSPARENCY",
+    "PASS_ZERO_WINDOWS_OR_OBJECTS_OUTSIDE_PHYSICAL_ENVELOPE",
+    "PASS_EVERY_LARGE_VOLUME_FINISHED_ALL_VISIBLE_SIDES",
+    "PASS_ZERO_GENERIC_MATERIAL_FALLBACKS",
+    "PASS_ZERO_FLOATING_CONTACTS",
+    "PASS_NEUTRAL_CONTEXTUAL_GLASS_NO_BAKED_REFLECTION",
+    "PASS_MATERIAL_TEXTURES_EXCLUDE_CARD_TEXT_LABELS_AND_BORDERS",
+    "PASS_REFERENCE_MATERIAL_TEXTURES_ARE_SEAM_SAFE",
+    "PASS_REFERENCE_SPECIFIC_FRONT_ELEVATION_STICKER_FLUSH_TO_PHYSICAL_FACADE",
+    "PASS_FACADE_STICKER_EXTERIOR_CHROMA_REMOVED_AND_DESPILLED"
+  ],
+  "prework_sha256": "f050e85190ca538bdfc491d82ef442ce2a7dcb0e78b147598543e15f2ee3377b",
+  "card_manifest_sha256": "f4f9c9361f832931d6c1724e6b6867afc9ff158a1bde3cf77718ce1a54c08f70",
+  "builder_self_approval": false
+}

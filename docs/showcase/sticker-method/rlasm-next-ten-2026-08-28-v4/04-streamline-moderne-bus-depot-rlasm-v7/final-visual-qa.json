@@ -1,0 +1,35 @@
+{
+  "schema": "cityprompt.rlasm.final-visual-qa@4",
+  "candidate": "04-streamline-moderne-bus-depot-rlasm-v7",
+  "title": "Streamline Moderne Bus Depot",
+  "status": "PASS_FINAL_VISUAL_QA_APPROVED_FOR_CATALOGUE",
+  "score": 96,
+  "strict_hard_stops": [],
+  "generic_fallback_count": 0,
+  "floating_count": 0,
+  "giant_exposed_carrier_box_count": 0,
+  "baked_glass_reflection_count": 0,
+  "reference_specific_materials": true,
+  "reference_specific_front_sticker": true,
+  "finished_visible_envelope": true,
+  "views_reviewed": [
+    "front",
+    "front_corner",
+    "aerial",
+    "side",
+    "rear_side",
+    "facade_close",
+    "glass_close"
+  ],
+  "phone_review_sheet": {
+    "path": "review/phone-review-sheet.png",
+    "bytes": 1891134,
+    "sha256": "63a854d62ea0762153d1b208e724c5d21151b264f85802725c7a7c8264503008"
+  },
+  "builder_evidence_sha256": "5510c93fa6f00073fcbb8ecdc3dc92e1c1b8d5f97b7cc79451ba60cd3a240094",
+  "minor_cosmetic_debt": [
+    "simplified service-yard equipment"
+  ],
+  "review_authority": "root_visual_qa_against_locked_reference",
+  "builder_self_approval": false
+}

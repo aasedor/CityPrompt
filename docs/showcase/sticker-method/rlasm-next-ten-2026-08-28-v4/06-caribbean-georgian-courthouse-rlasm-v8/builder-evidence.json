@@ -1,0 +1,176 @@
+{
+  "schema": "cityprompt.rlasm.build-evidence@4",
+  "candidate": "06-caribbean-georgian-courthouse-rlasm-v8",
+  "title": "Caribbean Georgian Courthouse",
+  "method": "RLASM v3 reference-lock + atomic-role construction",
+  "status": "PASS_BUILDER_EVIDENCE_AWAITING_VISUAL_QA",
+  "scene": {
+    "path": "model/06-caribbean-georgian-courthouse-rlasm-v8.blend",
+    "bytes": 381815,
+    "sha256": "7ba9c2624ae071e48f137c07b5287d49455b7629990531f8d37637242c5af666"
+  },
+  "glb": {
+    "path": "model/06-caribbean-georgian-courthouse-rlasm-v8.glb",
+    "bytes": 6604260,
+    "sha256": "61f0c23d10d7011f65e26574c893ef8d2f5619340ba15b8bfb1e365fbd17ecdc"
+  },
+  "renders": [
+    {
+      "path": "renders/aerial.png",
+      "bytes": 1532379,
+      "sha256": "2ed0ad915d497cf08bdbe990aefae20a99e7d1aa2a9936a517e662106496dddd"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "bytes": 1498772,
+      "sha256": "3f8545dc3dd19d1029577e022d455a5ab50811c43edb510b790cf3852b3c4ebb"
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 1153565,
+      "sha256": "79935a27ac5d17bc229dcb1614e307cc264741e3fd499a67152b6c6b6a76004c"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 1318315,
+      "sha256": "155cd8131e8147151ac644613b2429815642552f33b37652994990160d0df71c"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 1452503,
+      "sha256": "00fc8676a18cef0a6685c5974f27eb72cf0b28cca6a91c9cb077dce7b1854b0f"
+    },
+    {
+      "path": "renders/preview.png",
+      "bytes": 1318315,
+      "sha256": "155cd8131e8147151ac644613b2429815642552f33b37652994990160d0df71c"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "bytes": 1619164,
+      "sha256": "d6676d1d714009f850f52a1b99fb4e280264b5554ae3e8fc29272cfe1fdd2d08"
+    },
+    {
+      "path": "renders/side.png",
+      "bytes": 1179963,
+      "sha256": "2ba2e71104fe9bf837c1800001068955c6ccd6ff7310fc46f5c0581c0ffac8f6"
+    }
+  ],
+  "object_count": 636,
+  "material_audit": {
+    "building_material_count": 9,
+    "materials": [
+      {
+        "name": "MAT_caribbean_GeneratedAtomicFacadeSticker",
+        "status": "reference_specific_finished",
+        "provenance": "built-in image generation from locked RLASM prework reference sheet",
+        "source_sha256": "edf4f9989141b0905028d554e26da298ae78d1319718e89e139a1a1fd4c6da0f"
+      },
+      {
+        "name": "MAT_caribbean_NeutralLowIron_Physical_v22",
+        "status": "reference_specific_finished",
+        "provenance": "RLASM reusable neutral physical low-iron glass module v22",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_caribbean_OccupiedDepth",
+        "status": "reference_specific_finished",
+        "provenance": "modeled occupied interior depth",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_caribbean_coral-pink-lime-stucco",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-coral-pink-lime-stucco.png",
+        "source_sha256": "a3e1ab83722653c227a8cd6f5bb6c8b42cdd3fd1f467dc71c71f791b1e2e2272"
+      },
+      {
+        "name": "MAT_caribbean_dark-tropical-hardwood",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-dark-tropical-hardwood.png",
+        "source_sha256": "ec07c62fbbcae1322360c4d7be2632b7bcc90be25c1768451aeabac6ef6f2bdb"
+      },
+      {
+        "name": "MAT_caribbean_light-grey-standing-seam-metal",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-light-grey-standing-seam-metal.png",
+        "source_sha256": "d99f7f44dd46aa0dffddc5651ba78be20c38f109c70fa69e13f28eee56acf729"
+      },
+      {
+        "name": "MAT_caribbean_pale-weathered-limestone-base",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-pale-weathered-limestone-base.png",
+        "source_sha256": "ce3ebd6dd3d4d1153e224e88c277b61db848ffcae127c2126877267d590791bb"
+      },
+      {
+        "name": "MAT_caribbean_sea-green-painted-timber",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-sea-green-painted-timber.png",
+        "source_sha256": "c0e02f091c6723de79c917f5670d11c11dca6209dfff460e405c2ae38e567655"
+      },
+      {
+        "name": "MAT_caribbean_white-limestone-quoin",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-white-limestone-quoin.png",
+        "source_sha256": "8cfad1397c4bd180553a2ffa8e4fab9d7f12355a5107bbd553faa40a66e2f603"
+      }
+    ],
+    "generic_fallback_count": 0,
+    "all_reference_specific_finished": true,
+    "glass": {
+      "material": "MAT_caribbean_NeutralLowIron_Physical_v22",
+      "image_texture_count": 0,
+      "baked_reflection": false,
+      "reflection_source": "current_scene_world_lights_geometry_only",
+      "neutral_scene_only": true
+    }
+  },
+  "contact_audit": {
+    "schema": "cityprompt.rlasm.contact-audit@4",
+    "candidate": "06-caribbean-georgian-courthouse-rlasm-v8",
+    "records": [
+      {
+        "claim": "H-shaped volumes leave an open ventilated court",
+        "floating": false
+      },
+      {
+        "claim": "veranda columns intersect both slabs and roofs",
+        "floating": false
+      },
+      {
+        "claim": "cupola is supported on the front hip roof",
+        "floating": false
+      },
+      {
+        "claim": "formal stairs reach grade",
+        "floating": false
+      },
+      {
+        "claim": "every exposed wing has local windows and doors",
+        "floating": false
+      },
+      {
+        "claim": "atomic facade carrier flush-mounted within 0.006m of physical facade datum",
+        "floating": false
+      }
+    ],
+    "floating_count": 0,
+    "status": "PASS_ZERO_FLOATING"
+  },
+  "hard_gates": [
+    "PASS_ZERO_EXPOSED_GIANT_SUPPORT_BOXES",
+    "PASS_WINDOW_MASK_EXCLUDES_EXTERIOR_TRANSPARENCY",
+    "PASS_ZERO_WINDOWS_OR_OBJECTS_OUTSIDE_PHYSICAL_ENVELOPE",
+    "PASS_EVERY_LARGE_VOLUME_FINISHED_ALL_VISIBLE_SIDES",
+    "PASS_ZERO_GENERIC_MATERIAL_FALLBACKS",
+    "PASS_ZERO_FLOATING_CONTACTS",
+    "PASS_NEUTRAL_CONTEXTUAL_GLASS_NO_BAKED_REFLECTION",
+    "PASS_MATERIAL_TEXTURES_EXCLUDE_CARD_TEXT_LABELS_AND_BORDERS",
+    "PASS_REFERENCE_MATERIAL_TEXTURES_ARE_SEAM_SAFE",
+    "PASS_REFERENCE_SPECIFIC_FRONT_ELEVATION_STICKER_FLUSH_TO_PHYSICAL_FACADE",
+    "PASS_FACADE_STICKER_EXTERIOR_CHROMA_REMOVED_AND_DESPILLED"
+  ],
+  "prework_sha256": "df53f238ec5e454f8b536eed1609834da912274ada0146e6fdc49b70aeec6777",
+  "card_manifest_sha256": "6b4c572ad6b9c79a4b7e89855b03291a3930fbc15b1a8f270183bec9544b48fa",
+  "builder_self_approval": false
+}

@@ -1,0 +1,198 @@
+{
+  "schema": "cityprompt.rlasm.card-manifest@6",
+  "candidate": "02-andalusian-white-village-town-hall-rlasm-v9",
+  "status": "PASS_COMPLETE_REFERENCE_ROLE_MATERIAL_AND_FACADE_PREWORK",
+  "roles": [
+    {
+      "role": "carved-stone-civic-entry",
+      "source_crop_box": [
+        0,
+        0,
+        362,
+        489
+      ],
+      "path": "cards/object-carved-stone-civic-entry.png",
+      "bytes": 228523,
+      "sha256": "7b68df130577052729f36fe9ca5a57dbafca367ea27953d7f0d7236c8a9699f9"
+    },
+    {
+      "role": "three-arch-arcade-gallery",
+      "source_crop_box": [
+        362,
+        0,
+        724,
+        489
+      ],
+      "path": "cards/object-three-arch-arcade-gallery.png",
+      "bytes": 234403,
+      "sha256": "2250769090c436c6da7d8311dc3bb59e0a8181c85da86f651ffdd6b985c3fa61"
+    },
+    {
+      "role": "clock-bell-tower",
+      "source_crop_box": [
+        724,
+        0,
+        1086,
+        489
+      ],
+      "path": "cards/object-clock-bell-tower.png",
+      "bytes": 192912,
+      "sha256": "48d322e9ec47ccafb30015ba6d9e7f88c30399be68d41236978ce09d1a6597fe"
+    },
+    {
+      "role": "corner-whitewashed-wing",
+      "source_crop_box": [
+        1086,
+        0,
+        1448,
+        489
+      ],
+      "path": "cards/object-corner-whitewashed-wing.png",
+      "bytes": 229579,
+      "sha256": "96ff737953f7a2fbcc93a0ca9056814e4755aaf5e896e447c957b9c93053d1d2"
+    },
+    {
+      "role": "terracotta-roof-intersection",
+      "source_crop_box": [
+        0,
+        467,
+        724,
+        760
+      ],
+      "path": "cards/object-terracotta-roof-intersection.png",
+      "bytes": 314979,
+      "sha256": "980b159db49321096a111ca1ca7a957677bbd7a2ad7e0ae28c978ad2d21f6661"
+    },
+    {
+      "role": "rear-service-wing-courtyard-wall",
+      "source_crop_box": [
+        724,
+        467,
+        1448,
+        760
+      ],
+      "path": "cards/object-rear-service-wing-courtyard-wall.png",
+      "bytes": 250080,
+      "sha256": "e8411da58677944e125004d1ffbb2cbb34958f2d78f81570eb8e4d45b1367d18"
+    }
+  ],
+  "materials": [
+    {
+      "material": "chalky-white-limewash",
+      "source_crop_box": [
+        17,
+        831,
+        224,
+        1026
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-chalky-white-limewash.png",
+      "bytes": 64659,
+      "sha256": "a9db6b7d1a75ebda7ede883d6d356aea1d6f115c4b555fc28fe65ed5bb6c44fa"
+    },
+    {
+      "material": "warm-ochre-limestone",
+      "source_crop_box": [
+        258,
+        831,
+        466,
+        1026
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-warm-ochre-limestone.png",
+      "bytes": 85519,
+      "sha256": "3674e33dec0207667506857e4e5b8df8eaa497d1e35db636c94cd970c8a75baf"
+    },
+    {
+      "material": "weathered-terracotta-tile",
+      "source_crop_box": [
+        500,
+        831,
+        707,
+        1026
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-weathered-terracotta-tile.png",
+      "bytes": 87172,
+      "sha256": "28581818bb03d274a411465cb948efa5d880efee3f025646d3f9430f907488bb"
+    },
+    {
+      "material": "deep-forest-green-timber",
+      "source_crop_box": [
+        741,
+        831,
+        948,
+        1026
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-deep-forest-green-timber.png",
+      "bytes": 47551,
+      "sha256": "d034960f4c3b325347b0785f020ffccf9f2854538a843e5c912f67765f87b81a"
+    },
+    {
+      "material": "black-wrought-iron",
+      "source_crop_box": [
+        982,
+        831,
+        1190,
+        1026
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-black-wrought-iron.png",
+      "bytes": 60490,
+      "sha256": "0a8b58c95a6007294b5f8be07efa64e203849ceb3c2c6b938b8b22cd1e4a8dfe"
+    },
+    {
+      "material": "dark-aged-oak-door",
+      "source_crop_box": [
+        1224,
+        831,
+        1431,
+        1026
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-dark-aged-oak-door.png",
+      "bytes": 71392,
+      "sha256": "a8441e543f5c89cb660def19ff166552b18703c665632abecd3a81deb42c7848"
+    }
+  ],
+  "front_sticker": "cards/generated-front-facade-sticker.png",
+  "material_crop_contract": "specimen-only; card labels and borders excluded",
+  "builder_self_approval": false,
+  "front_sticker_source": "review/generated-front-facade-source.png",
+  "front_sticker_alpha_audit": {
+    "source_dimensions": [
+      1672,
+      941
+    ],
+    "output_dimensions": [
+      1563,
+      897
+    ],
+    "tight_alpha_bbox": [
+      82,
+      1,
+      1645,
+      898
+    ],
+    "source_transparent_pixels": 721463,
+    "source_partially_transparent_despilled_pixels": 3281,
+    "output_transparent_pixels": 550122,
+    "output_partial_pixels": 3281
+  },
+  "front_sticker_baked_reflection": false,
+  "geometry_correction_of": "02-andalusian-white-village-town-hall-rlasm-v8",
+  "geometry_correction": "finish the physical clock tower side and rear elevations with registered openings"
+}

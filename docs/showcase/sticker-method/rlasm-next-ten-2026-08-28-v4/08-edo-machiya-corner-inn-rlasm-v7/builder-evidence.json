@@ -1,0 +1,176 @@
+{
+  "schema": "cityprompt.rlasm.build-evidence@4",
+  "candidate": "08-edo-machiya-corner-inn-rlasm-v7",
+  "title": "Edo Machiya Corner Inn",
+  "method": "RLASM v3 reference-lock + atomic-role construction",
+  "status": "PASS_BUILDER_EVIDENCE_AWAITING_VISUAL_QA",
+  "scene": {
+    "path": "model/08-edo-machiya-corner-inn-rlasm-v7.blend",
+    "bytes": 286816,
+    "sha256": "7c65bd68a77fd4831a049cd659ee596f0ca5dc9d924650e2ee92072a50653255"
+  },
+  "glb": {
+    "path": "model/08-edo-machiya-corner-inn-rlasm-v7.glb",
+    "bytes": 5449952,
+    "sha256": "bfa9e6e6aa81966e8910f0ecc0274a1a7da12a1f340d05ea505addb0149efe5d"
+  },
+  "renders": [
+    {
+      "path": "renders/aerial.png",
+      "bytes": 1496186,
+      "sha256": "e7231455157c75ae3bebacd91ffd0fe029a209076381fff258020607c781721a"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "bytes": 1497351,
+      "sha256": "c2430a30ffaba9a95786f8cdf7b07aa63e2bf8deb6050cb31c9f3298263816c6"
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 1139906,
+      "sha256": "e3b5db404ec8eef65c354e733fe773817eff61e4fb6748c03c6db43a5a53fffa"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 1273814,
+      "sha256": "76e0de2d07c73b4cbc806dc22e8cacdb6f22633b46f73e478a933eccad94802f"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 1363990,
+      "sha256": "3bb9f29df31c712ececee4f1e22e12d3aac81a6ac6de5c9f7d30e482eb16c8ba"
+    },
+    {
+      "path": "renders/preview.png",
+      "bytes": 1273814,
+      "sha256": "76e0de2d07c73b4cbc806dc22e8cacdb6f22633b46f73e478a933eccad94802f"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "bytes": 1439472,
+      "sha256": "0d3b2b14542415ac9b713efe73ada1ad5668c0cdee4089bc12a02c93ca3f4213"
+    },
+    {
+      "path": "renders/side.png",
+      "bytes": 1079482,
+      "sha256": "00f772479e8952153da9202cc9f2643e5e56388177a78004f083d7de353c0c09"
+    }
+  ],
+  "object_count": 425,
+  "material_audit": {
+    "building_material_count": 9,
+    "materials": [
+      {
+        "name": "MAT_edo_GeneratedAtomicFacadeSticker",
+        "status": "reference_specific_finished",
+        "provenance": "built-in image generation from locked RLASM prework reference sheet",
+        "source_sha256": "58c20320b39e5dc32306e814ed3cc5e887d86689097e79b9551643adc9ff8f3e"
+      },
+      {
+        "name": "MAT_edo_NeutralLowIron_Physical_v22",
+        "status": "reference_specific_finished",
+        "provenance": "RLASM reusable neutral physical low-iron glass module v22",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_edo_OccupiedDepth",
+        "status": "reference_specific_finished",
+        "provenance": "modeled occupied interior depth",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_edo_blackened-cedar-plank",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-blackened-cedar-plank.png",
+        "source_sha256": "f46552d09fc69aacece59c751823822ef5b922d9b1dfc864096d1544c5efa37b"
+      },
+      {
+        "name": "MAT_edo_charcoal-kawara-roof-tile",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-charcoal-kawara-roof-tile.png",
+        "source_sha256": "ce0b87e92b1f065bdfc31e5b3c15e719af19ad6be367da73bb50c84a63af3489"
+      },
+      {
+        "name": "MAT_edo_dark-indigo-noren",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-dark-indigo-noren.png",
+        "source_sha256": "dc85a8861461690646002a2a4e4b5da8d0aa2661eed94d32cb7dc58f91fd9157"
+      },
+      {
+        "name": "MAT_edo_grey-granite-threshold",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-grey-granite-threshold.png",
+        "source_sha256": "b317e9757b78bcfe20e10e95f89b0613c0301ae6808708599d76adcb8642f494"
+      },
+      {
+        "name": "MAT_edo_smoked-cedar-lattice",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-smoked-cedar-lattice.png",
+        "source_sha256": "44fee17af590cb415c2c168e039b9433a19cc73c12d88751f2feaee01f345455"
+      },
+      {
+        "name": "MAT_edo_warm-white-fire-plaster",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-warm-white-fire-plaster.png",
+        "source_sha256": "aef07bce28a86779226dad8b105b60432fc30e89239f254989de4c471177a590"
+      }
+    ],
+    "generic_fallback_count": 0,
+    "all_reference_specific_finished": true,
+    "glass": {
+      "material": "MAT_edo_NeutralLowIron_Physical_v22",
+      "image_texture_count": 0,
+      "baked_reflection": false,
+      "reflection_source": "current_scene_world_lights_geometry_only",
+      "neutral_scene_only": true
+    }
+  },
+  "contact_audit": {
+    "schema": "cityprompt.rlasm.contact-audit@4",
+    "candidate": "08-edo-machiya-corner-inn-rlasm-v7",
+    "records": [
+      {
+        "claim": "L-shaped timber volumes leave the stone garden court open",
+        "floating": false
+      },
+      {
+        "claim": "each roof is a distinct seated physical piece",
+        "floating": false
+      },
+      {
+        "claim": "lattice intersects panes and supporting timber frames",
+        "floating": false
+      },
+      {
+        "claim": "noren entry and threshold are grounded",
+        "floating": false
+      },
+      {
+        "claim": "bathhouse, passage, storehouse and rear wall are separately modeled",
+        "floating": false
+      },
+      {
+        "claim": "atomic facade carrier flush-mounted within 0.006m of physical facade datum",
+        "floating": false
+      }
+    ],
+    "floating_count": 0,
+    "status": "PASS_ZERO_FLOATING"
+  },
+  "hard_gates": [
+    "PASS_ZERO_EXPOSED_GIANT_SUPPORT_BOXES",
+    "PASS_WINDOW_MASK_EXCLUDES_EXTERIOR_TRANSPARENCY",
+    "PASS_ZERO_WINDOWS_OR_OBJECTS_OUTSIDE_PHYSICAL_ENVELOPE",
+    "PASS_EVERY_LARGE_VOLUME_FINISHED_ALL_VISIBLE_SIDES",
+    "PASS_ZERO_GENERIC_MATERIAL_FALLBACKS",
+    "PASS_ZERO_FLOATING_CONTACTS",
+    "PASS_NEUTRAL_CONTEXTUAL_GLASS_NO_BAKED_REFLECTION",
+    "PASS_MATERIAL_TEXTURES_EXCLUDE_CARD_TEXT_LABELS_AND_BORDERS",
+    "PASS_REFERENCE_MATERIAL_TEXTURES_ARE_SEAM_SAFE",
+    "PASS_REFERENCE_SPECIFIC_FRONT_ELEVATION_STICKER_FLUSH_TO_PHYSICAL_FACADE",
+    "PASS_FACADE_STICKER_EXTERIOR_CHROMA_REMOVED_AND_DESPILLED"
+  ],
+  "prework_sha256": "e61102fe6a56ab8add1a95e409857f0ed60b43215968bf74ffb6d12f20c5e9ad",
+  "card_manifest_sha256": "445441c16196f3a0a3b4bc976d61fa1a9b7c37a6d056b6391985068c0e71c840",
+  "builder_self_approval": false
+}

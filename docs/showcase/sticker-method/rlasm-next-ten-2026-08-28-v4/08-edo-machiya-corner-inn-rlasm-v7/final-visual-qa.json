@@ -1,0 +1,35 @@
+{
+  "schema": "cityprompt.rlasm.final-visual-qa@4",
+  "candidate": "08-edo-machiya-corner-inn-rlasm-v7",
+  "title": "Edo Machiya Corner Inn",
+  "status": "PASS_FINAL_VISUAL_QA_APPROVED_FOR_CATALOGUE",
+  "score": 95,
+  "strict_hard_stops": [],
+  "generic_fallback_count": 0,
+  "floating_count": 0,
+  "giant_exposed_carrier_box_count": 0,
+  "baked_glass_reflection_count": 0,
+  "reference_specific_materials": true,
+  "reference_specific_front_sticker": true,
+  "finished_visible_envelope": true,
+  "views_reviewed": [
+    "front",
+    "front_corner",
+    "aerial",
+    "side",
+    "rear_side",
+    "facade_close",
+    "glass_close"
+  ],
+  "phone_review_sheet": {
+    "path": "review/phone-review-sheet.png",
+    "bytes": 2332122,
+    "sha256": "efec5ae6c5fc7cfd0240fc7f7e627733a6b7dcf410ab65cfaffc9a84916617a3"
+  },
+  "builder_evidence_sha256": "2868892bbd57b0c36c665e18e867fb9816c24bcf27e38cf5858a10999c602070",
+  "minor_cosmetic_debt": [
+    "dark upper timber screens under neutral QA lighting"
+  ],
+  "review_authority": "root_visual_qa_against_locked_reference",
+  "builder_self_approval": false
+}

@@ -1,0 +1,35 @@
+{
+  "schema": "cityprompt.rlasm.final-visual-qa@4",
+  "candidate": "06-caribbean-georgian-courthouse-rlasm-v8",
+  "title": "Caribbean Georgian Courthouse",
+  "status": "PASS_FINAL_VISUAL_QA_APPROVED_FOR_CATALOGUE",
+  "score": 95,
+  "strict_hard_stops": [],
+  "generic_fallback_count": 0,
+  "floating_count": 0,
+  "giant_exposed_carrier_box_count": 0,
+  "baked_glass_reflection_count": 0,
+  "reference_specific_materials": true,
+  "reference_specific_front_sticker": true,
+  "finished_visible_envelope": true,
+  "views_reviewed": [
+    "front",
+    "front_corner",
+    "aerial",
+    "side",
+    "rear_side",
+    "facade_close",
+    "glass_close"
+  ],
+  "phone_review_sheet": {
+    "path": "review/phone-review-sheet.png",
+    "bytes": 2356671,
+    "sha256": "ffb06d2d838ce5789539382a4a4f806296724864c2a5795bf851f02f7978ee3d"
+  },
+  "builder_evidence_sha256": "76a095165af9821abdbad0e6cdda98b9b0def752b2aef021d7e4453a014260cc",
+  "minor_cosmetic_debt": [
+    "dense veranda rails at distant oblique angles"
+  ],
+  "review_authority": "root_visual_qa_against_locked_reference",
+  "builder_self_approval": false
+}

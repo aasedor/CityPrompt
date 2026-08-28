@@ -1,0 +1,170 @@
+{
+  "schema": "cityprompt.rlasm.build-evidence@4",
+  "candidate": "09-porfirian-iron-market-hall-rlasm-v8",
+  "title": "Porfirian Iron Market Hall",
+  "method": "RLASM v3 reference-lock + atomic-role construction",
+  "status": "PASS_BUILDER_EVIDENCE_AWAITING_VISUAL_QA",
+  "scene": {
+    "path": "model/09-porfirian-iron-market-hall-rlasm-v8.blend",
+    "bytes": 336319,
+    "sha256": "650e41eb8e732b6a3aa4839407e3693129dccf09f1fa2b9e33c8133db5f765d0"
+  },
+  "glb": {
+    "path": "model/09-porfirian-iron-market-hall-rlasm-v8.glb",
+    "bytes": 5751960,
+    "sha256": "78c9744751321ca1c285105d1ebd173b0cda6d7cdc650ff11272fc35ba5cf5bc"
+  },
+  "renders": [
+    {
+      "path": "renders/aerial.png",
+      "bytes": 1549087,
+      "sha256": "16e661591996a5ffd05ee34196cb95a0307b295b7965cac296a8f9dab5cfc3c1"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "bytes": 1626003,
+      "sha256": "ed03abb5e130bb4e2d795b4367d5bf7d8189fdcc5b0e009cb0f26dcf0a68eb02"
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 1172416,
+      "sha256": "d72c252e1cd2120a3c0dd4e11950f47bccb8ed84223d255bad29552de7413210"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 1343601,
+      "sha256": "7c400aa1673a6e3734cc6efb8dc5a94365303d2a3f54ca1e200f04a42227761a"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 1667330,
+      "sha256": "657496b8cf5b5fb72f2f6a5dbfc98418d612541d1d259768fcb2a3f13d4449b5"
+    },
+    {
+      "path": "renders/preview.png",
+      "bytes": 1343601,
+      "sha256": "7c400aa1673a6e3734cc6efb8dc5a94365303d2a3f54ca1e200f04a42227761a"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "bytes": 1674144,
+      "sha256": "d720ee931ba2efda83dc5f2146739bde431f1b0880ceaf63423901ea38c245df"
+    },
+    {
+      "path": "renders/side.png",
+      "bytes": 1060006,
+      "sha256": "3f2b35bad627b9f486d650acfe6a0a14ace0471bb7ce2dd5c678e3f561e927d7"
+    }
+  ],
+  "object_count": 523,
+  "material_audit": {
+    "building_material_count": 8,
+    "materials": [
+      {
+        "name": "MAT_porfirian_GeneratedAtomicFacadeSticker",
+        "status": "reference_specific_finished",
+        "provenance": "built-in image generation from locked RLASM prework reference sheet",
+        "source_sha256": "afc0bbed7085fa1808123fd31c3b47ee46174abf587b72cfe1aa26652eebb35b"
+      },
+      {
+        "name": "MAT_porfirian_NeutralLowIron_Physical_v22",
+        "status": "reference_specific_finished",
+        "provenance": "RLASM reusable neutral physical low-iron glass module v22",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_porfirian_OccupiedDepth",
+        "status": "reference_specific_finished",
+        "provenance": "modeled occupied interior depth",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_porfirian_muted-green-shop-door",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-muted-green-shop-door.png",
+        "source_sha256": "7f9543edd109282adcf01c08ddfd33f754993af796f6b7b1c694494239336a53"
+      },
+      {
+        "name": "MAT_porfirian_pale-grey-volcanic-stone",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-pale-grey-volcanic-stone.png",
+        "source_sha256": "3f95ae473cb60246603683e11b03870a971edf69aea5076dc1fa01bedbca2846"
+      },
+      {
+        "name": "MAT_porfirian_pale-sage-painted-cast-iron",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-pale-sage-painted-cast-iron.png",
+        "source_sha256": "8724173703b0b565d51e42c3b9b350e538f4bfc05c7e2dd493630c89259e6c14"
+      },
+      {
+        "name": "MAT_porfirian_warm-porfirian-red-brick",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-warm-porfirian-red-brick.png",
+        "source_sha256": "65ef31bf526a3d54e1014c7c72db4f5472f1ef1ed5f4a2a02710e5c65ea3e840"
+      },
+      {
+        "name": "MAT_porfirian_weathered-corrugated-zinc",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-weathered-corrugated-zinc.png",
+        "source_sha256": "f2cfef160f3c200223e782d520fb1e6bfe6e548d862171ef696ea41db9241116"
+      }
+    ],
+    "generic_fallback_count": 0,
+    "all_reference_specific_finished": true,
+    "glass": {
+      "material": "MAT_porfirian_NeutralLowIron_Physical_v22",
+      "image_texture_count": 0,
+      "baked_reflection": false,
+      "reflection_source": "current_scene_world_lights_geometry_only",
+      "neutral_scene_only": true
+    }
+  },
+  "contact_audit": {
+    "schema": "cityprompt.rlasm.contact-audit@4",
+    "candidate": "09-porfirian-iron-market-hall-rlasm-v8",
+    "records": [
+      {
+        "claim": "five sawtooth roof bays seat independently on the market nave",
+        "floating": false
+      },
+      {
+        "claim": "iron entry arch and mullions overlap real glazing",
+        "floating": false
+      },
+      {
+        "claim": "arcade columns reach grade and roof line",
+        "floating": false
+      },
+      {
+        "claim": "corner cupolas have separate supported drums",
+        "floating": false
+      },
+      {
+        "claim": "rear loading court remains open and all walls are articulated",
+        "floating": false
+      },
+      {
+        "claim": "atomic facade carrier flush-mounted within 0.006m of physical facade datum",
+        "floating": false
+      }
+    ],
+    "floating_count": 0,
+    "status": "PASS_ZERO_FLOATING"
+  },
+  "hard_gates": [
+    "PASS_ZERO_EXPOSED_GIANT_SUPPORT_BOXES",
+    "PASS_WINDOW_MASK_EXCLUDES_EXTERIOR_TRANSPARENCY",
+    "PASS_ZERO_WINDOWS_OR_OBJECTS_OUTSIDE_PHYSICAL_ENVELOPE",
+    "PASS_EVERY_LARGE_VOLUME_FINISHED_ALL_VISIBLE_SIDES",
+    "PASS_ZERO_GENERIC_MATERIAL_FALLBACKS",
+    "PASS_ZERO_FLOATING_CONTACTS",
+    "PASS_NEUTRAL_CONTEXTUAL_GLASS_NO_BAKED_REFLECTION",
+    "PASS_MATERIAL_TEXTURES_EXCLUDE_CARD_TEXT_LABELS_AND_BORDERS",
+    "PASS_REFERENCE_MATERIAL_TEXTURES_ARE_SEAM_SAFE",
+    "PASS_REFERENCE_SPECIFIC_FRONT_ELEVATION_STICKER_FLUSH_TO_PHYSICAL_FACADE",
+    "PASS_FACADE_STICKER_EXTERIOR_CHROMA_REMOVED_AND_DESPILLED"
+  ],
+  "prework_sha256": "1a73bd8d1b8833c1e3bc15095e935a36439454e545263e00c335c21ad87f17b3",
+  "card_manifest_sha256": "af61d820d5369991919a755cdc99a5fba352dbb982e6c7b015c4a3c2d69bdf77",
+  "builder_self_approval": false
+}

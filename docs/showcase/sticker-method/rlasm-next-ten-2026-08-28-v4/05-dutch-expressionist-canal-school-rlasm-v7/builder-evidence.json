@@ -1,0 +1,164 @@
+{
+  "schema": "cityprompt.rlasm.build-evidence@4",
+  "candidate": "05-dutch-expressionist-canal-school-rlasm-v7",
+  "title": "Dutch Expressionist Canal School",
+  "method": "RLASM v3 reference-lock + atomic-role construction",
+  "status": "PASS_BUILDER_EVIDENCE_AWAITING_VISUAL_QA",
+  "scene": {
+    "path": "model/05-dutch-expressionist-canal-school-rlasm-v7.blend",
+    "bytes": 280434,
+    "sha256": "6c05cb5cf4cf8e752f3585a8906528def75c946eea84a94591a13cbe566e1833"
+  },
+  "glb": {
+    "path": "model/05-dutch-expressionist-canal-school-rlasm-v7.glb",
+    "bytes": 4641312,
+    "sha256": "1847a74164fcf17bf9927521756a7f5443535452651df02d4486227646569d8c"
+  },
+  "renders": [
+    {
+      "path": "renders/aerial.png",
+      "bytes": 1495374,
+      "sha256": "1da9c7e2dd241aaa053cc6de00fd43e1511754a7ae9583f774fb105bcd9dab16"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "bytes": 1742218,
+      "sha256": "09f234a3de349243bd50c351dc8606a27a94b9d541be8f203b097561a428f917"
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 1315904,
+      "sha256": "a7a4a2e519385d2c0c4b2a551518a3a5029b4434615577f465a01c9785bd68b3"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 1595840,
+      "sha256": "f292805e9dd4fdc4039297e8adcd66c9445f688f8623ee09e4b55fcf336e32ac"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 1694509,
+      "sha256": "45ca4a21ce6ace81eb9d04bc6c44877011f751b41100a5fb34d10662b5a530bf"
+    },
+    {
+      "path": "renders/preview.png",
+      "bytes": 1595840,
+      "sha256": "f292805e9dd4fdc4039297e8adcd66c9445f688f8623ee09e4b55fcf336e32ac"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "bytes": 1613912,
+      "sha256": "9097f3a71f185646da395a128ff3871a19570c829955a1db598038aa8e48633b"
+    },
+    {
+      "path": "renders/side.png",
+      "bytes": 1140627,
+      "sha256": "60c3fbfdde4ccdc4f2ce725005da93fbe77f57dfb3f2f39bd34c7c6bf716de41"
+    }
+  ],
+  "object_count": 313,
+  "material_audit": {
+    "building_material_count": 7,
+    "materials": [
+      {
+        "name": "MAT_dutch_GeneratedAtomicFacadeSticker",
+        "status": "reference_specific_finished",
+        "provenance": "built-in image generation from locked RLASM prework reference sheet",
+        "source_sha256": "81d7e4ccddef8ee1d5a84e090d10dc146a97de733df51cd2ba526ad9f9e16de7"
+      },
+      {
+        "name": "MAT_dutch_NeutralLowIron_Physical_v22",
+        "status": "reference_specific_finished",
+        "provenance": "RLASM reusable neutral physical low-iron glass module v22",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_dutch_OccupiedDepth",
+        "status": "reference_specific_finished",
+        "provenance": "modeled occupied interior depth",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_dutch_carved-oak-door",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-carved-oak-door.png",
+        "source_sha256": "785fe45c2e54188e281afb2971ddcbf8cdda32c60c13d3ce45d3fb81d3a70675"
+      },
+      {
+        "name": "MAT_dutch_dark-teal-steel-frame",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-dark-teal-steel-frame.png",
+        "source_sha256": "bab15b51928d13f6c4b502531ac60b05c4f9c1d791e97fb46592a2ee382cffea"
+      },
+      {
+        "name": "MAT_dutch_handmade-red-brown-brick",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-handmade-red-brown-brick.png",
+        "source_sha256": "0b6773d4667075edea876e73658f92a93b4517ff0ee7d4e80c659916dcef828f"
+      },
+      {
+        "name": "MAT_dutch_smoked-clay-roof-tile",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-smoked-clay-roof-tile.png",
+        "source_sha256": "d24cafcbba401431573ff436ac8cc76c86e90f279e27d98c78da0ac766f2117b"
+      }
+    ],
+    "generic_fallback_count": 0,
+    "all_reference_specific_finished": true,
+    "glass": {
+      "material": "MAT_dutch_NeutralLowIron_Physical_v22",
+      "image_texture_count": 0,
+      "baked_reflection": false,
+      "reflection_source": "current_scene_world_lights_geometry_only",
+      "neutral_scene_only": true
+    }
+  },
+  "contact_audit": {
+    "schema": "cityprompt.rlasm.contact-audit@4",
+    "candidate": "05-dutch-expressionist-canal-school-rlasm-v7",
+    "records": [
+      {
+        "claim": "tapered composition uses six distinct physical volumes",
+        "floating": false
+      },
+      {
+        "claim": "tower cap, gable roofs and chimneys seat on their walls",
+        "floating": false
+      },
+      {
+        "claim": "deep entry and classroom bands remain registered",
+        "floating": false
+      },
+      {
+        "claim": "rear arcade and caretaker house articulate the playground court",
+        "floating": false
+      },
+      {
+        "claim": "no footprint-wide backing volume exists",
+        "floating": false
+      },
+      {
+        "claim": "atomic facade carrier flush-mounted within 0.006m of physical facade datum",
+        "floating": false
+      }
+    ],
+    "floating_count": 0,
+    "status": "PASS_ZERO_FLOATING"
+  },
+  "hard_gates": [
+    "PASS_ZERO_EXPOSED_GIANT_SUPPORT_BOXES",
+    "PASS_WINDOW_MASK_EXCLUDES_EXTERIOR_TRANSPARENCY",
+    "PASS_ZERO_WINDOWS_OR_OBJECTS_OUTSIDE_PHYSICAL_ENVELOPE",
+    "PASS_EVERY_LARGE_VOLUME_FINISHED_ALL_VISIBLE_SIDES",
+    "PASS_ZERO_GENERIC_MATERIAL_FALLBACKS",
+    "PASS_ZERO_FLOATING_CONTACTS",
+    "PASS_NEUTRAL_CONTEXTUAL_GLASS_NO_BAKED_REFLECTION",
+    "PASS_MATERIAL_TEXTURES_EXCLUDE_CARD_TEXT_LABELS_AND_BORDERS",
+    "PASS_REFERENCE_MATERIAL_TEXTURES_ARE_SEAM_SAFE",
+    "PASS_REFERENCE_SPECIFIC_FRONT_ELEVATION_STICKER_FLUSH_TO_PHYSICAL_FACADE",
+    "PASS_FACADE_STICKER_EXTERIOR_CHROMA_REMOVED_AND_DESPILLED"
+  ],
+  "prework_sha256": "70be076c120dcee0a7c300cb3c4501133679ae6cfce39db7aa2c4bf582b9953b",
+  "card_manifest_sha256": "539f32c4d16cf5e02afc5b68072a8b887d4dc0817a9113bfdf7ddd6cb1f6867a",
+  "builder_self_approval": false
+}

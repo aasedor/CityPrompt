@@ -1,0 +1,198 @@
+{
+  "schema": "cityprompt.rlasm.card-manifest@6",
+  "candidate": "06-caribbean-georgian-courthouse-rlasm-v8",
+  "status": "PASS_COMPLETE_REFERENCE_ROLE_MATERIAL_AND_FACADE_PREWORK",
+  "roles": [
+    {
+      "role": "central-pediment-double-stair",
+      "source_crop_box": [
+        0,
+        0,
+        384,
+        461
+      ],
+      "path": "cards/object-central-pediment-double-stair.png",
+      "bytes": 218301,
+      "sha256": "bdf14f24c7c6d1b5bd41b0586a2b3ef639d586a05f54e1120067f82bfcb497aa"
+    },
+    {
+      "role": "two-storey-timber-veranda",
+      "source_crop_box": [
+        384,
+        0,
+        768,
+        461
+      ],
+      "path": "cards/object-two-storey-timber-veranda.png",
+      "bytes": 219548,
+      "sha256": "c9bfa4d850b349ec5de721bb070840a4ead077ccfdf64cd35967ce099ed97d1a"
+    },
+    {
+      "role": "raised-coral-stucco-wing",
+      "source_crop_box": [
+        768,
+        0,
+        1152,
+        461
+      ],
+      "path": "cards/object-raised-coral-stucco-wing.png",
+      "bytes": 225280,
+      "sha256": "a427f0e9392a7d0d44d7a25abc7a69176518eec0c67c19bd667ddfe65b19cf91"
+    },
+    {
+      "role": "ventilating-cupola-hip-roof",
+      "source_crop_box": [
+        1152,
+        0,
+        1536,
+        461
+      ],
+      "path": "cards/object-ventilating-cupola-hip-roof.png",
+      "bytes": 191514,
+      "sha256": "ec678e10be503cca5dc3c3da70632bc65b51048a58fc3bc38de7b0c168a95b9d"
+    },
+    {
+      "role": "magistrate-side-wing",
+      "source_crop_box": [
+        0,
+        440,
+        768,
+        717
+      ],
+      "path": "cards/object-magistrate-side-wing.png",
+      "bytes": 312544,
+      "sha256": "d4b52f3632d6e6ad9dd197f9cf904c4e9e30f86d98a33ab9f559e8f821ec4c03"
+    },
+    {
+      "role": "records-annex-court-colonnade",
+      "source_crop_box": [
+        768,
+        440,
+        1536,
+        717
+      ],
+      "path": "cards/object-records-annex-court-colonnade.png",
+      "bytes": 96668,
+      "sha256": "206244a8eee7c393e67031d8746c7692ccb7c20fbed0ac1b1e84c0e9e242a2de"
+    }
+  ],
+  "materials": [
+    {
+      "material": "coral-pink-lime-stucco",
+      "source_crop_box": [
+        18,
+        783,
+        238,
+        968
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-coral-pink-lime-stucco.png",
+      "bytes": 92289,
+      "sha256": "a3e1ab83722653c227a8cd6f5bb6c8b42cdd3fd1f467dc71c71f791b1e2e2272"
+    },
+    {
+      "material": "white-limestone-quoin",
+      "source_crop_box": [
+        274,
+        783,
+        494,
+        968
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-white-limestone-quoin.png",
+      "bytes": 81554,
+      "sha256": "8cfad1397c4bd180553a2ffa8e4fab9d7f12355a5107bbd553faa40a66e2f603"
+    },
+    {
+      "material": "sea-green-painted-timber",
+      "source_crop_box": [
+        530,
+        783,
+        750,
+        968
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-sea-green-painted-timber.png",
+      "bytes": 50938,
+      "sha256": "c0e02f091c6723de79c917f5670d11c11dca6209dfff460e405c2ae38e567655"
+    },
+    {
+      "material": "light-grey-standing-seam-metal",
+      "source_crop_box": [
+        786,
+        783,
+        1006,
+        968
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-light-grey-standing-seam-metal.png",
+      "bytes": 51994,
+      "sha256": "d99f7f44dd46aa0dffddc5651ba78be20c38f109c70fa69e13f28eee56acf729"
+    },
+    {
+      "material": "dark-tropical-hardwood",
+      "source_crop_box": [
+        1042,
+        783,
+        1262,
+        968
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-dark-tropical-hardwood.png",
+      "bytes": 44962,
+      "sha256": "ec07c62fbbcae1322360c4d7be2632b7bcc90be25c1768451aeabac6ef6f2bdb"
+    },
+    {
+      "material": "pale-weathered-limestone-base",
+      "source_crop_box": [
+        1298,
+        783,
+        1518,
+        968
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-pale-weathered-limestone-base.png",
+      "bytes": 87177,
+      "sha256": "ce3ebd6dd3d4d1153e224e88c277b61db848ffcae127c2126877267d590791bb"
+    }
+  ],
+  "front_sticker": "cards/generated-front-facade-sticker.png",
+  "material_crop_contract": "specimen-only; card labels and borders excluded",
+  "builder_self_approval": false,
+  "front_sticker_source": "review/generated-front-facade-source.png",
+  "front_sticker_alpha_audit": {
+    "source_dimensions": [
+      1672,
+      941
+    ],
+    "output_dimensions": [
+      1544,
+      832
+    ],
+    "tight_alpha_bbox": [
+      65,
+      30,
+      1609,
+      862
+    ],
+    "source_transparent_pixels": 650371,
+    "source_partially_transparent_despilled_pixels": 4126,
+    "output_transparent_pixels": 361627,
+    "output_partial_pixels": 4126
+  },
+  "front_sticker_baked_reflection": false,
+  "iteration": "v8-physical-cupola-profile-correction",
+  "iteration_parent": "06-caribbean-georgian-courthouse-rlasm-v7"
+}

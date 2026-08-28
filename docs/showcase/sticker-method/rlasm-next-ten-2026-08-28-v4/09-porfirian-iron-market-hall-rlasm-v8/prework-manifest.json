@@ -1,0 +1,253 @@
+{
+  "schema": "cityprompt.rlasm.prework@6",
+  "candidate": "09-porfirian-iron-market-hall-rlasm-v8",
+  "title": "Porfirian Iron Market Hall",
+  "status": "PASS_COMPLETE_RLASM_PREWORK_AWAITING_DRY_BUILD",
+  "method": "RLASM v3 reference-lock + atomic-role construction",
+  "correction_lineage": {
+    "failed_candidate": "09-porfirian-iron-market-hall-rlasm-v1",
+    "failure": "material crops included atomic-board labels and cell borders",
+    "disposition": "FAIL_PRESERVED_NON_OVERWRITING"
+  },
+  "reference": {
+    "path": "references/locked-three-view-reference.png",
+    "bytes": 2658104,
+    "sha256": "98b56e7e81a2ffffa365b3c6bb6187d60c29a7f490b524c0545a6b9158837983"
+  },
+  "atomic_board": {
+    "path": "review/atomic-role-material-board.png",
+    "bytes": 2370834,
+    "sha256": "88b5ab8d4ffe2d6ffd84cba8a2f1d0f3a104fb1f98685407676df2a49f37d760"
+  },
+  "physical_contract": {
+    "dimensions_m": [
+      50.0,
+      36.0,
+      22.0
+    ],
+    "massing": "iron basilica hall plus masonry pavilions and open rear loading court",
+    "footprint_wide_carrier_forbidden": true,
+    "open_courts_remain_open": true
+  },
+  "roles": [
+    {
+      "role": "monumental-arched-entrance",
+      "source_crop_box": [
+        0,
+        0,
+        362,
+        489
+      ],
+      "path": "cards/object-monumental-arched-entrance.png",
+      "bytes": 280607,
+      "sha256": "e3355941bf8cc3f45660c5e177939bb6b9b56518a2a357ef1de67bc1e5f4c94f"
+    },
+    {
+      "role": "end-pavilion-cupola",
+      "source_crop_box": [
+        362,
+        0,
+        724,
+        489
+      ],
+      "path": "cards/object-end-pavilion-cupola.png",
+      "bytes": 267830,
+      "sha256": "1deb2c8f9851bc79fd7e59b13d1de287f50447cd9e06fdd6a83f9a9a25458f2e"
+    },
+    {
+      "role": "side-cast-iron-arcade",
+      "source_crop_box": [
+        724,
+        0,
+        1086,
+        489
+      ],
+      "path": "cards/object-side-cast-iron-arcade.png",
+      "bytes": 237629,
+      "sha256": "f928f326f240c2379185f8ac84bca7750c1eaf577a42365b016841fe733aebb3"
+    },
+    {
+      "role": "sawtooth-clerestory-roof",
+      "source_crop_box": [
+        1086,
+        0,
+        1448,
+        489
+      ],
+      "path": "cards/object-sawtooth-clerestory-roof.png",
+      "bytes": 265807,
+      "sha256": "60ab18cc686656431f5288b24b4e5de38fbb8dd2a1ae6c54b4b0b2bdab1a975f"
+    },
+    {
+      "role": "corner-cupola-finial",
+      "source_crop_box": [
+        0,
+        467,
+        724,
+        760
+      ],
+      "path": "cards/object-corner-cupola-finial.png",
+      "bytes": 322968,
+      "sha256": "c47ae3111315ff9ced4c1468d5965119ec3152caef32eaddc3c67b17770e3397"
+    },
+    {
+      "role": "rear-loading-wing-service-court",
+      "source_crop_box": [
+        724,
+        467,
+        1448,
+        760
+      ],
+      "path": "cards/object-rear-loading-wing-service-court.png",
+      "bytes": 155940,
+      "sha256": "6011ede2be42809db96304181705679eea1f52961521cadd5dbe290cff5948ce"
+    }
+  ],
+  "materials": [
+    {
+      "material": "warm-porfirian-red-brick",
+      "source_crop_box": [
+        17,
+        831,
+        224,
+        1026
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-warm-porfirian-red-brick.png",
+      "bytes": 77104,
+      "sha256": "65ef31bf526a3d54e1014c7c72db4f5472f1ef1ed5f4a2a02710e5c65ea3e840"
+    },
+    {
+      "material": "pale-grey-volcanic-stone",
+      "source_crop_box": [
+        258,
+        831,
+        466,
+        1026
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-pale-grey-volcanic-stone.png",
+      "bytes": 87855,
+      "sha256": "3f95ae473cb60246603683e11b03870a971edf69aea5076dc1fa01bedbca2846"
+    },
+    {
+      "material": "pale-sage-painted-cast-iron",
+      "source_crop_box": [
+        500,
+        831,
+        707,
+        1026
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-pale-sage-painted-cast-iron.png",
+      "bytes": 71705,
+      "sha256": "8724173703b0b565d51e42c3b9b350e538f4bfc05c7e2dd493630c89259e6c14"
+    },
+    {
+      "material": "weathered-corrugated-zinc",
+      "source_crop_box": [
+        741,
+        831,
+        948,
+        1026
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-weathered-corrugated-zinc.png",
+      "bytes": 74524,
+      "sha256": "f2cfef160f3c200223e782d520fb1e6bfe6e548d862171ef696ea41db9241116"
+    },
+    {
+      "material": "dark-neutral-glazing",
+      "source_crop_box": [
+        982,
+        831,
+        1190,
+        1026
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-dark-neutral-glazing.png",
+      "bytes": 58554,
+      "sha256": "e44214bd77e3504da0748343a15d8be380d24b6940db795c7371da1cf85efcab"
+    },
+    {
+      "material": "muted-green-shop-door",
+      "source_crop_box": [
+        1224,
+        831,
+        1431,
+        1026
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-muted-green-shop-door.png",
+      "bytes": 62299,
+      "sha256": "7f9543edd109282adcf01c08ddfd33f754993af796f6b7b1c694494239336a53"
+    }
+  ],
+  "glass_contract": {
+    "module": "RLASM reusable neutral physical low-iron glass v22",
+    "reflection_source": "current scene world, lights and geometry only",
+    "baked_reflection": false
+  },
+  "hard_gates": [
+    "PASS_ZERO_EXPOSED_GIANT_SUPPORT_BOXES",
+    "PASS_WINDOW_MASK_EXCLUDES_EXTERIOR_TRANSPARENCY",
+    "PASS_ZERO_WINDOWS_OR_OBJECTS_OUTSIDE_PHYSICAL_ENVELOPE",
+    "PASS_EVERY_LARGE_VOLUME_FINISHED_ALL_VISIBLE_SIDES",
+    "PASS_ZERO_GENERIC_MATERIAL_FALLBACKS",
+    "PASS_ZERO_FLOATING_CONTACTS",
+    "PASS_NEUTRAL_CONTEXTUAL_GLASS_NO_BAKED_REFLECTION",
+    "PASS_MATERIAL_TEXTURES_EXCLUDE_CARD_TEXT_LABELS_AND_BORDERS",
+    "PASS_REFERENCE_MATERIAL_TEXTURES_ARE_SEAM_SAFE",
+    "PASS_REFERENCE_SPECIFIC_FRONT_ELEVATION_STICKER_FLUSH_TO_PHYSICAL_FACADE",
+    "PASS_FACADE_STICKER_EXTERIOR_CHROMA_REMOVED_AND_DESPILLED"
+  ],
+  "builder_self_approval": false,
+  "full_prework_lineage": {
+    "source_candidate": "09-porfirian-iron-market-hall-rlasm-v6",
+    "correction": "add dedicated orthographic reference-specific chroma facade sticker",
+    "facade_source": {
+      "path": "review/generated-front-facade-source.png",
+      "bytes": 2049050,
+      "sha256": "92749c7410813cc82661716777599872c4a3615708c3dd9f3fccabb7c461bb88"
+    },
+    "sticker": {
+      "path": "cards/generated-front-facade-sticker.png",
+      "bytes": 1671653,
+      "sha256": "afc0bbed7085fa1808123fd31c3b47ee46174abf587b72cfe1aa26652eebb35b"
+    },
+    "alpha_audit": {
+      "source_dimensions": [
+        1672,
+        941
+      ],
+      "output_dimensions": [
+        1663,
+        795
+      ],
+      "tight_alpha_bbox": [
+        5,
+        42,
+        1668,
+        837
+      ],
+      "source_transparent_pixels": 836654,
+      "source_partially_transparent_despilled_pixels": 11893,
+      "output_transparent_pixels": 585387,
+      "output_partial_pixels": 11893
+    }
+  },
+  "iteration": "v8-physical-cupola-profile-correction",
+  "iteration_parent": "09-porfirian-iron-market-hall-rlasm-v7"
+}

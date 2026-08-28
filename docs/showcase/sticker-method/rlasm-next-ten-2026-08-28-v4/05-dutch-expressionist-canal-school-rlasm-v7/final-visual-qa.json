@@ -1,0 +1,35 @@
+{
+  "schema": "cityprompt.rlasm.final-visual-qa@4",
+  "candidate": "05-dutch-expressionist-canal-school-rlasm-v7",
+  "title": "Dutch Expressionist Canal School",
+  "status": "PASS_FINAL_VISUAL_QA_APPROVED_FOR_CATALOGUE",
+  "score": 96,
+  "strict_hard_stops": [],
+  "generic_fallback_count": 0,
+  "floating_count": 0,
+  "giant_exposed_carrier_box_count": 0,
+  "baked_glass_reflection_count": 0,
+  "reference_specific_materials": true,
+  "reference_specific_front_sticker": true,
+  "finished_visible_envelope": true,
+  "views_reviewed": [
+    "front",
+    "front_corner",
+    "aerial",
+    "side",
+    "rear_side",
+    "facade_close",
+    "glass_close"
+  ],
+  "phone_review_sheet": {
+    "path": "review/phone-review-sheet.png",
+    "bytes": 2436463,
+    "sha256": "a48b3c17323b874501b1e54a274de39937cb1a0c63da38f1f0e8fd438e462791"
+  },
+  "builder_evidence_sha256": "64a7934e78a6b09d2334beb8be3f4d935b343ce26ebc30b1c3ef0652d4bb9b55",
+  "minor_cosmetic_debt": [
+    "subdued rear playground detailing"
+  ],
+  "review_authority": "root_visual_qa_against_locked_reference",
+  "builder_self_approval": false
+}

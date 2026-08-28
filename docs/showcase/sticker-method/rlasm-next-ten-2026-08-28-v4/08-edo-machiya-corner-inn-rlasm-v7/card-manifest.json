@@ -1,0 +1,196 @@
+{
+  "schema": "cityprompt.rlasm.card-manifest@6",
+  "candidate": "08-edo-machiya-corner-inn-rlasm-v7",
+  "status": "PASS_COMPLETE_REFERENCE_ROLE_MATERIAL_AND_FACADE_PREWORK",
+  "roles": [
+    {
+      "role": "recessed-noren-entry",
+      "source_crop_box": [
+        0,
+        0,
+        384,
+        461
+      ],
+      "path": "cards/object-recessed-noren-entry.png",
+      "bytes": 248666,
+      "sha256": "c01933b4cb109029d7612b210ad732c22c817eba6f8eee8df862c893af7d480e"
+    },
+    {
+      "role": "corner-shop-bay",
+      "source_crop_box": [
+        384,
+        0,
+        768,
+        461
+      ],
+      "path": "cards/object-corner-shop-bay.png",
+      "bytes": 273358,
+      "sha256": "b5360cec976710a48582705a19434f80673fcef603be8964334a3653ac953d04"
+    },
+    {
+      "role": "mushiko-lattice-guest-bay",
+      "source_crop_box": [
+        768,
+        0,
+        1152,
+        461
+      ],
+      "path": "cards/object-mushiko-lattice-guest-bay.png",
+      "bytes": 232697,
+      "sha256": "4c559d5578b62e7fee9cbb05fbab34bdc33db2538b9e0897c25d81b0afad002c"
+    },
+    {
+      "role": "irimoya-kirizuma-roof-intersection",
+      "source_crop_box": [
+        1152,
+        0,
+        1536,
+        461
+      ],
+      "path": "cards/object-irimoya-kirizuma-roof-intersection.png",
+      "bytes": 250040,
+      "sha256": "3daa1794560459600950a751f47ef62259bb154f935a62ac2abea4c07234818c"
+    },
+    {
+      "role": "white-plaster-fire-wall",
+      "source_crop_box": [
+        0,
+        440,
+        768,
+        717
+      ],
+      "path": "cards/object-white-plaster-fire-wall.png",
+      "bytes": 324715,
+      "sha256": "60a202b54dd2423867f35ecd52e2fe0f0050bca215e54bdd539707413906dc7e"
+    },
+    {
+      "role": "bathhouse-passage-courtyard-group",
+      "source_crop_box": [
+        768,
+        440,
+        1536,
+        717
+      ],
+      "path": "cards/object-bathhouse-passage-courtyard-group.png",
+      "bytes": 236302,
+      "sha256": "44b8ddbf9f6a785fa72611212570a964e425e46622cbab9dc92dccc08852b27b"
+    }
+  ],
+  "materials": [
+    {
+      "material": "blackened-cedar-plank",
+      "source_crop_box": [
+        18,
+        783,
+        238,
+        968
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-blackened-cedar-plank.png",
+      "bytes": 62440,
+      "sha256": "f46552d09fc69aacece59c751823822ef5b922d9b1dfc864096d1544c5efa37b"
+    },
+    {
+      "material": "smoked-cedar-lattice",
+      "source_crop_box": [
+        274,
+        783,
+        494,
+        968
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-smoked-cedar-lattice.png",
+      "bytes": 53861,
+      "sha256": "44fee17af590cb415c2c168e039b9433a19cc73c12d88751f2feaee01f345455"
+    },
+    {
+      "material": "charcoal-kawara-roof-tile",
+      "source_crop_box": [
+        530,
+        783,
+        750,
+        968
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-charcoal-kawara-roof-tile.png",
+      "bytes": 82706,
+      "sha256": "ce0b87e92b1f065bdfc31e5b3c15e719af19ad6be367da73bb50c84a63af3489"
+    },
+    {
+      "material": "warm-white-fire-plaster",
+      "source_crop_box": [
+        786,
+        783,
+        1006,
+        968
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-warm-white-fire-plaster.png",
+      "bytes": 62534,
+      "sha256": "aef07bce28a86779226dad8b105b60432fc30e89239f254989de4c471177a590"
+    },
+    {
+      "material": "dark-indigo-noren",
+      "source_crop_box": [
+        1042,
+        783,
+        1262,
+        968
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-dark-indigo-noren.png",
+      "bytes": 74538,
+      "sha256": "dc85a8861461690646002a2a4e4b5da8d0aa2661eed94d32cb7dc58f91fd9157"
+    },
+    {
+      "material": "grey-granite-threshold",
+      "source_crop_box": [
+        1298,
+        783,
+        1518,
+        968
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-grey-granite-threshold.png",
+      "bytes": 90902,
+      "sha256": "b317e9757b78bcfe20e10e95f89b0613c0301ae6808708599d76adcb8642f494"
+    }
+  ],
+  "front_sticker": "cards/generated-front-facade-sticker.png",
+  "material_crop_contract": "specimen-only; card labels and borders excluded",
+  "builder_self_approval": false,
+  "front_sticker_source": "review/generated-front-facade-source.png",
+  "front_sticker_alpha_audit": {
+    "source_dimensions": [
+      1672,
+      941
+    ],
+    "output_dimensions": [
+      1632,
+      713
+    ],
+    "tight_alpha_bbox": [
+      18,
+      99,
+      1650,
+      812
+    ],
+    "source_transparent_pixels": 614409,
+    "source_partially_transparent_despilled_pixels": 6558,
+    "output_transparent_pixels": 204673,
+    "output_partial_pixels": 6558
+  },
+  "front_sticker_baked_reflection": false
+}

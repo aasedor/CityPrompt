@@ -1,0 +1,35 @@
+{
+  "schema": "cityprompt.rlasm.final-visual-qa@4",
+  "candidate": "02-andalusian-white-village-town-hall-rlasm-v9",
+  "title": "Andalusian White Village Town Hall",
+  "status": "PASS_FINAL_VISUAL_QA_APPROVED_FOR_CATALOGUE",
+  "score": 96,
+  "strict_hard_stops": [],
+  "generic_fallback_count": 0,
+  "floating_count": 0,
+  "giant_exposed_carrier_box_count": 0,
+  "baked_glass_reflection_count": 0,
+  "reference_specific_materials": true,
+  "reference_specific_front_sticker": true,
+  "finished_visible_envelope": true,
+  "views_reviewed": [
+    "front",
+    "front_corner",
+    "aerial",
+    "side",
+    "rear_side",
+    "facade_close",
+    "glass_close"
+  ],
+  "phone_review_sheet": {
+    "path": "review/phone-review-sheet.png",
+    "bytes": 2406751,
+    "sha256": "85261f6267436da1a92904268af7f98d8951e2ae31ac34b74e08dde7fd366aac"
+  },
+  "builder_evidence_sha256": "4165f925bccd8627900a42e095f6c3acd2ef23f82166077d2e1f49d8ad30d68d",
+  "minor_cosmetic_debt": [
+    "minor roof-texture simplification in the rear court"
+  ],
+  "review_authority": "root_visual_qa_against_locked_reference",
+  "builder_self_approval": false
+}

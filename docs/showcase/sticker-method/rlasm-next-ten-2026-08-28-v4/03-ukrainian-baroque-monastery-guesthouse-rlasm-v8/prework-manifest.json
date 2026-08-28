@@ -1,0 +1,253 @@
+{
+  "schema": "cityprompt.rlasm.prework@6",
+  "candidate": "03-ukrainian-baroque-monastery-guesthouse-rlasm-v8",
+  "title": "Ukrainian Baroque Monastery Guesthouse",
+  "status": "PASS_COMPLETE_RLASM_PREWORK_AWAITING_DRY_BUILD",
+  "method": "RLASM v3 reference-lock + atomic-role construction",
+  "correction_lineage": {
+    "failed_candidate": "03-ukrainian-baroque-monastery-guesthouse-rlasm-v1",
+    "failure": "material crops included atomic-board labels and cell borders",
+    "disposition": "FAIL_PRESERVED_NON_OVERWRITING"
+  },
+  "reference": {
+    "path": "references/locked-three-view-reference.png",
+    "bytes": 2524968,
+    "sha256": "4526e06cebae29e771f79b02fea6831abe59673fbd33fb03abcc17e5eaca77a6"
+  },
+  "atomic_board": {
+    "path": "review/atomic-role-material-board.png",
+    "bytes": 1964045,
+    "sha256": "6197dd4a8e511f82924937360256a6f77da0bb2991250ca29deb1eaddd1b37ef"
+  },
+  "physical_contract": {
+    "dimensions_m": [
+      46.0,
+      34.0,
+      24.0
+    ],
+    "massing": "shallow U around a rear garden court",
+    "footprint_wide_carrier_forbidden": true,
+    "open_courts_remain_open": true
+  },
+  "roles": [
+    {
+      "role": "central-baroque-entry",
+      "source_crop_box": [
+        0,
+        0,
+        362,
+        489
+      ],
+      "path": "cards/object-central-baroque-entry.png",
+      "bytes": 210811,
+      "sha256": "834cf11768a178de480c61af50e125f1a2e05976ec4e8e95736b30a4ec724ca0"
+    },
+    {
+      "role": "pear-copper-cupola",
+      "source_crop_box": [
+        362,
+        0,
+        724,
+        489
+      ],
+      "path": "cards/object-pear-copper-cupola.png",
+      "bytes": 196754,
+      "sha256": "908cdcaea347085ce5437f6201629c79c3e784890dba74fe4377f6c176225336"
+    },
+    {
+      "role": "curved-plaster-pediment",
+      "source_crop_box": [
+        724,
+        0,
+        1086,
+        489
+      ],
+      "path": "cards/object-curved-plaster-pediment.png",
+      "bytes": 215602,
+      "sha256": "1213fb12b8bb062f91dc7411e39539d4a1be7f42ad8215924bc77fdff5eda5c3"
+    },
+    {
+      "role": "finished-guesthouse-wing",
+      "source_crop_box": [
+        1086,
+        0,
+        1448,
+        489
+      ],
+      "path": "cards/object-finished-guesthouse-wing.png",
+      "bytes": 221907,
+      "sha256": "5e053578a9a21ec6730fdfc0d65375d177f0438f897a0cbaa93ce7519f485d55"
+    },
+    {
+      "role": "arched-chapel-wing",
+      "source_crop_box": [
+        0,
+        467,
+        724,
+        760
+      ],
+      "path": "cards/object-arched-chapel-wing.png",
+      "bytes": 272098,
+      "sha256": "fbe228462bc50880aba04f11d77919c3156c84fa018c97bd8c6ba5339e4f0316"
+    },
+    {
+      "role": "rear-gallery-service-group",
+      "source_crop_box": [
+        724,
+        467,
+        1448,
+        760
+      ],
+      "path": "cards/object-rear-gallery-service-group.png",
+      "bytes": 161829,
+      "sha256": "c5cef3a4acb15cc55447c87dc678ecb1d8412ab3343bc64aec63e5978904bd2b"
+    }
+  ],
+  "materials": [
+    {
+      "material": "warm-white-lime-plaster",
+      "source_crop_box": [
+        17,
+        831,
+        224,
+        1026
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-warm-white-lime-plaster.png",
+      "bytes": 62277,
+      "sha256": "a9f7846916dd87b21fcb36388e36c900d4aee7195e7fb92c28db9d31c08445ca"
+    },
+    {
+      "material": "pale-ochre-trim-plaster",
+      "source_crop_box": [
+        258,
+        831,
+        466,
+        1026
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-pale-ochre-trim-plaster.png",
+      "bytes": 74243,
+      "sha256": "55c0dfeee81c105c49320629f033b3fcf8b428b624bb59fbaceaf47b43c7f6e4"
+    },
+    {
+      "material": "dark-blue-grey-roof-metal",
+      "source_crop_box": [
+        500,
+        831,
+        707,
+        1026
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-dark-blue-grey-roof-metal.png",
+      "bytes": 51503,
+      "sha256": "9ffccc2560881d4a2d9ea21645bb8c3e3c88f1093cb50004a7b9e20864427ee0"
+    },
+    {
+      "material": "oxidized-green-copper",
+      "source_crop_box": [
+        741,
+        831,
+        948,
+        1026
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-oxidized-green-copper.png",
+      "bytes": 68319,
+      "sha256": "5a89de1e79bcaed183bb1e146856542a80a45713aed4b5e5c71c9954554ecd9b"
+    },
+    {
+      "material": "dark-carved-oak",
+      "source_crop_box": [
+        982,
+        831,
+        1190,
+        1026
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-dark-carved-oak.png",
+      "bytes": 75986,
+      "sha256": "dc3796dac9cd813e4f36aa716a461bf3b42cbbbb68366dfb4feef404ab1b20db"
+    },
+    {
+      "material": "warm-grey-limestone-base",
+      "source_crop_box": [
+        1224,
+        831,
+        1431,
+        1026
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-warm-grey-limestone-base.png",
+      "bytes": 79117,
+      "sha256": "149584c9214ec1eb1909eb0f406c363d5243ac8af87093a235c97a490f153ab5"
+    }
+  ],
+  "glass_contract": {
+    "module": "RLASM reusable neutral physical low-iron glass v22",
+    "reflection_source": "current scene world, lights and geometry only",
+    "baked_reflection": false
+  },
+  "hard_gates": [
+    "PASS_ZERO_EXPOSED_GIANT_SUPPORT_BOXES",
+    "PASS_WINDOW_MASK_EXCLUDES_EXTERIOR_TRANSPARENCY",
+    "PASS_ZERO_WINDOWS_OR_OBJECTS_OUTSIDE_PHYSICAL_ENVELOPE",
+    "PASS_EVERY_LARGE_VOLUME_FINISHED_ALL_VISIBLE_SIDES",
+    "PASS_ZERO_GENERIC_MATERIAL_FALLBACKS",
+    "PASS_ZERO_FLOATING_CONTACTS",
+    "PASS_NEUTRAL_CONTEXTUAL_GLASS_NO_BAKED_REFLECTION",
+    "PASS_MATERIAL_TEXTURES_EXCLUDE_CARD_TEXT_LABELS_AND_BORDERS",
+    "PASS_REFERENCE_MATERIAL_TEXTURES_ARE_SEAM_SAFE",
+    "PASS_REFERENCE_SPECIFIC_FRONT_ELEVATION_STICKER_FLUSH_TO_PHYSICAL_FACADE",
+    "PASS_FACADE_STICKER_EXTERIOR_CHROMA_REMOVED_AND_DESPILLED"
+  ],
+  "builder_self_approval": false,
+  "full_prework_lineage": {
+    "source_candidate": "03-ukrainian-baroque-monastery-guesthouse-rlasm-v6",
+    "correction": "add dedicated orthographic reference-specific chroma facade sticker",
+    "facade_source": {
+      "path": "review/generated-front-facade-source.png",
+      "bytes": 1684577,
+      "sha256": "becd10274ec726c6e5f1671dc65c668175bfabbaa8bcd15059a37f4c896344af"
+    },
+    "sticker": {
+      "path": "cards/generated-front-facade-sticker.png",
+      "bytes": 1232716,
+      "sha256": "ff15b6c395b4c54c488333b5a3d255b5139bb9d9c5710f88972947d16ecde3f3"
+    },
+    "alpha_audit": {
+      "source_dimensions": [
+        1672,
+        941
+      ],
+      "output_dimensions": [
+        1577,
+        751
+      ],
+      "tight_alpha_bbox": [
+        38,
+        61,
+        1615,
+        812
+      ],
+      "source_transparent_pixels": 873192,
+      "source_partially_transparent_despilled_pixels": 5234,
+      "output_transparent_pixels": 484167,
+      "output_partial_pixels": 5234
+    }
+  },
+  "iteration": "v8-physical-cupola-profile-correction",
+  "iteration_parent": "03-ukrainian-baroque-monastery-guesthouse-rlasm-v7"
+}

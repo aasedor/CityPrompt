@@ -1,0 +1,35 @@
+{
+  "schema": "cityprompt.rlasm.final-visual-qa@4",
+  "candidate": "03-ukrainian-baroque-monastery-guesthouse-rlasm-v8",
+  "title": "Ukrainian Baroque Monastery Guesthouse",
+  "status": "PASS_FINAL_VISUAL_QA_APPROVED_FOR_CATALOGUE",
+  "score": 95,
+  "strict_hard_stops": [],
+  "generic_fallback_count": 0,
+  "floating_count": 0,
+  "giant_exposed_carrier_box_count": 0,
+  "baked_glass_reflection_count": 0,
+  "reference_specific_materials": true,
+  "reference_specific_front_sticker": true,
+  "finished_visible_envelope": true,
+  "views_reviewed": [
+    "front",
+    "front_corner",
+    "aerial",
+    "side",
+    "rear_side",
+    "facade_close",
+    "glass_close"
+  ],
+  "phone_review_sheet": {
+    "path": "review/phone-review-sheet.png",
+    "bytes": 2215055,
+    "sha256": "e3f06bff50dcc01502cdedcae7411f31be1db3eddea9fe9372fdadc33be89cae"
+  },
+  "builder_evidence_sha256": "3747dc3d497559890c2f61a576d7a4ffa48031e7d7a09afbae850d7f6b9765b5",
+  "minor_cosmetic_debt": [
+    "simplified copper patina on the physical cupolas"
+  ],
+  "review_authority": "root_visual_qa_against_locked_reference",
+  "builder_self_approval": false
+}

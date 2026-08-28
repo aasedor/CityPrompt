@@ -1,0 +1,35 @@
+{
+  "schema": "cityprompt.rlasm.final-visual-qa@4",
+  "candidate": "10-cape-dutch-wine-estate-rlasm-v7",
+  "title": "Cape Dutch Wine Estate Manor",
+  "status": "PASS_FINAL_VISUAL_QA_APPROVED_FOR_CATALOGUE",
+  "score": 96,
+  "strict_hard_stops": [],
+  "generic_fallback_count": 0,
+  "floating_count": 0,
+  "giant_exposed_carrier_box_count": 0,
+  "baked_glass_reflection_count": 0,
+  "reference_specific_materials": true,
+  "reference_specific_front_sticker": true,
+  "finished_visible_envelope": true,
+  "views_reviewed": [
+    "front",
+    "front_corner",
+    "aerial",
+    "side",
+    "rear_side",
+    "facade_close",
+    "glass_close"
+  ],
+  "phone_review_sheet": {
+    "path": "review/phone-review-sheet.png",
+    "bytes": 2122124,
+    "sha256": "c1aab5b7b61fbc45469bd6c2be8c30e8f51ae275950d8b05691aa329e60f8446"
+  },
+  "builder_evidence_sha256": "b0c5b5e1d952e34f630019a03a4b0412939e582490c1a2c310737f0660a3b0c9",
+  "minor_cosmetic_debt": [
+    "simplified rear farm-wing joinery"
+  ],
+  "review_authority": "root_visual_qa_against_locked_reference",
+  "builder_self_approval": false
+}

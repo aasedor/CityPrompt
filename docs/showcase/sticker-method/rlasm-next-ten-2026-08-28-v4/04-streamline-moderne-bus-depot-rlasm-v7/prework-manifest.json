@@ -1,0 +1,251 @@
+{
+  "schema": "cityprompt.rlasm.prework@6",
+  "candidate": "04-streamline-moderne-bus-depot-rlasm-v7",
+  "title": "Streamline Moderne Bus Depot",
+  "status": "PASS_COMPLETE_RLASM_PREWORK_AWAITING_DRY_BUILD",
+  "method": "RLASM v3 reference-lock + atomic-role construction",
+  "correction_lineage": {
+    "failed_candidate": "04-streamline-moderne-bus-depot-rlasm-v1",
+    "failure": "material crops included atomic-board labels and cell borders",
+    "disposition": "FAIL_PRESERVED_NON_OVERWRITING"
+  },
+  "reference": {
+    "path": "references/locked-three-view-reference.png",
+    "bytes": 2246298,
+    "sha256": "9e99920edb2e1b2a8dc2b552ebf1b6f6631db1bbca6d67e4e8331c4934fb92d3"
+  },
+  "atomic_board": {
+    "path": "review/atomic-role-material-board.png",
+    "bytes": 1781333,
+    "sha256": "f04050d3436b3d430397e9c8420828c10103650fcbedd787705b99f06a3805b9"
+  },
+  "physical_contract": {
+    "dimensions_m": [
+      48.0,
+      36.0,
+      13.0
+    ],
+    "massing": "curved public concourse plus deep sawtooth service hall and dispatch wing",
+    "footprint_wide_carrier_forbidden": true,
+    "open_courts_remain_open": true
+  },
+  "roles": [
+    {
+      "role": "waiting-room-rotunda",
+      "source_crop_box": [
+        0,
+        0,
+        362,
+        489
+      ],
+      "path": "cards/object-waiting-room-rotunda.png",
+      "bytes": 154000,
+      "sha256": "a5b0545d72c7c0fb2b3d8d747a96471c250734f99fbe53bc2ced74a231b6fed4"
+    },
+    {
+      "role": "glass-block-stair-tower",
+      "source_crop_box": [
+        362,
+        0,
+        724,
+        489
+      ],
+      "path": "cards/object-glass-block-stair-tower.png",
+      "bytes": 163526,
+      "sha256": "a00a9efd8d0fb69fad948e91c6532f62359799f0774eea9747fca4a9384f2f94"
+    },
+    {
+      "role": "vertical-sign-pylon",
+      "source_crop_box": [
+        724,
+        0,
+        1086,
+        489
+      ],
+      "path": "cards/object-vertical-sign-pylon.png",
+      "bytes": 147737,
+      "sha256": "7ea68f3aa9b49807991ec2afb715ad3dd49b975f89c6a5ce3ad3531b1e112a14"
+    },
+    {
+      "role": "ticket-hall-facade-bay",
+      "source_crop_box": [
+        1086,
+        0,
+        1448,
+        489
+      ],
+      "path": "cards/object-ticket-hall-facade-bay.png",
+      "bytes": 186735,
+      "sha256": "04ff449f77f921e33b9ca1e181e720b27b5bd259bd2a50bbb2c77cdd7be300f7"
+    },
+    {
+      "role": "sawtooth-bus-bay-roof",
+      "source_crop_box": [
+        0,
+        467,
+        724,
+        760
+      ],
+      "path": "cards/object-sawtooth-bus-bay-roof.png",
+      "bytes": 235567,
+      "sha256": "78d096288ff5c115513857acdc7cf00d98996ce01975d20150a77b921a8b090e"
+    },
+    {
+      "role": "dispatch-service-wing",
+      "source_crop_box": [
+        724,
+        467,
+        1448,
+        760
+      ],
+      "path": "cards/object-dispatch-service-wing.png",
+      "bytes": 224401,
+      "sha256": "4657fa9e7f58f600bb4c6114fd4b4a8f9e5033776932621293fb7c4e953970ad"
+    }
+  ],
+  "materials": [
+    {
+      "material": "warm-ivory-stucco",
+      "source_crop_box": [
+        17,
+        831,
+        224,
+        1026
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-warm-ivory-stucco.png",
+      "bytes": 68080,
+      "sha256": "57eb447e5ba2b88273816ab15a21af4b7bd2d6722b30c9378b2f35e28b3ac03e"
+    },
+    {
+      "material": "cobalt-blue-enamel",
+      "source_crop_box": [
+        258,
+        831,
+        466,
+        1026
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-cobalt-blue-enamel.png",
+      "bytes": 49501,
+      "sha256": "a257b52afd54d73f26b43ee1e36bd2aa864c3ffaded1d2d1a01d9b03d12eac12"
+    },
+    {
+      "material": "brushed-stainless-steel",
+      "source_crop_box": [
+        500,
+        831,
+        707,
+        1026
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-brushed-stainless-steel.png",
+      "bytes": 50311,
+      "sha256": "3ea99a5e18206dd0e0305ada929e1565dc366233f31f31b0dca53a2c0136a9c1"
+    },
+    {
+      "material": "translucent-glass-block",
+      "source_crop_box": [
+        741,
+        831,
+        948,
+        1026
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-translucent-glass-block.png",
+      "bytes": 62836,
+      "sha256": "0cf239d922d94578917197cf38578cf6206d67f1a69d3da1d6eead06e66a7224"
+    },
+    {
+      "material": "dark-blue-steel-door",
+      "source_crop_box": [
+        982,
+        831,
+        1190,
+        1026
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-dark-blue-steel-door.png",
+      "bytes": 47597,
+      "sha256": "6fb483961c81194ff80ca3257734b6e68082ce048d6504a2ebaff0c45383ac1b"
+    },
+    {
+      "material": "weathered-concrete-roof",
+      "source_crop_box": [
+        1224,
+        831,
+        1431,
+        1026
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-weathered-concrete-roof.png",
+      "bytes": 66921,
+      "sha256": "9051f535a3f53981a8d5a87091eef100362de9de25ea57cac0c6aa2e51ef62dd"
+    }
+  ],
+  "glass_contract": {
+    "module": "RLASM reusable neutral physical low-iron glass v22",
+    "reflection_source": "current scene world, lights and geometry only",
+    "baked_reflection": false
+  },
+  "hard_gates": [
+    "PASS_ZERO_EXPOSED_GIANT_SUPPORT_BOXES",
+    "PASS_WINDOW_MASK_EXCLUDES_EXTERIOR_TRANSPARENCY",
+    "PASS_ZERO_WINDOWS_OR_OBJECTS_OUTSIDE_PHYSICAL_ENVELOPE",
+    "PASS_EVERY_LARGE_VOLUME_FINISHED_ALL_VISIBLE_SIDES",
+    "PASS_ZERO_GENERIC_MATERIAL_FALLBACKS",
+    "PASS_ZERO_FLOATING_CONTACTS",
+    "PASS_NEUTRAL_CONTEXTUAL_GLASS_NO_BAKED_REFLECTION",
+    "PASS_MATERIAL_TEXTURES_EXCLUDE_CARD_TEXT_LABELS_AND_BORDERS",
+    "PASS_REFERENCE_MATERIAL_TEXTURES_ARE_SEAM_SAFE",
+    "PASS_REFERENCE_SPECIFIC_FRONT_ELEVATION_STICKER_FLUSH_TO_PHYSICAL_FACADE",
+    "PASS_FACADE_STICKER_EXTERIOR_CHROMA_REMOVED_AND_DESPILLED"
+  ],
+  "builder_self_approval": false,
+  "full_prework_lineage": {
+    "source_candidate": "04-streamline-moderne-bus-depot-rlasm-v6",
+    "correction": "add dedicated orthographic reference-specific chroma facade sticker",
+    "facade_source": {
+      "path": "review/generated-front-facade-source.png",
+      "bytes": 1587992,
+      "sha256": "eb49cb2bee3427ddd5d37cf8f20661ce8ae2f78f5a5393da722b8c0f6045d6e9"
+    },
+    "sticker": {
+      "path": "cards/generated-front-facade-sticker.png",
+      "bytes": 1204410,
+      "sha256": "4490e71f272f31c68138585b9708f891852b385d7f8db8a6388cbbc40fe0a48d"
+    },
+    "alpha_audit": {
+      "source_dimensions": [
+        1874,
+        839
+      ],
+      "output_dimensions": [
+        1824,
+        786
+      ],
+      "tight_alpha_bbox": [
+        21,
+        19,
+        1845,
+        805
+      ],
+      "source_transparent_pixels": 793213,
+      "source_partially_transparent_despilled_pixels": 2962,
+      "output_transparent_pixels": 654591,
+      "output_partial_pixels": 2962
+    }
+  }
+}

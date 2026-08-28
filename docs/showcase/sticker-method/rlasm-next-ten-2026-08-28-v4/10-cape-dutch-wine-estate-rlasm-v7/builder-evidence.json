@@ -1,0 +1,170 @@
+{
+  "schema": "cityprompt.rlasm.build-evidence@4",
+  "candidate": "10-cape-dutch-wine-estate-rlasm-v7",
+  "title": "Cape Dutch Wine Estate Manor",
+  "method": "RLASM v3 reference-lock + atomic-role construction",
+  "status": "PASS_BUILDER_EVIDENCE_AWAITING_VISUAL_QA",
+  "scene": {
+    "path": "model/10-cape-dutch-wine-estate-rlasm-v7.blend",
+    "bytes": 409856,
+    "sha256": "dcff9d772f7faf965bded13ed9985d49df7f2d3fc77250a6641c5b5175af1bbc"
+  },
+  "glb": {
+    "path": "model/10-cape-dutch-wine-estate-rlasm-v7.glb",
+    "bytes": 4954676,
+    "sha256": "756dec13be68a3549ed33c7545944178f42cbb737c4a25c08f5b44aadbcdf979"
+  },
+  "renders": [
+    {
+      "path": "renders/aerial.png",
+      "bytes": 1454791,
+      "sha256": "c6c528a00174e684930e371547d51708aa82b1819902290d046107dbcb56fb81"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "bytes": 1408196,
+      "sha256": "f8deebb34598b65a9a8fc51479b7e641374031ddced4941df9db87f88b7dd234"
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 1103767,
+      "sha256": "aec867788225cb08dddbae3dd05ec851b5add08b829123c8317ece8987b6afa5"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 1227902,
+      "sha256": "bdfaee1c68dd025e7f407acf325a765b3a28ace0a9435652a10f40f3f416dd17"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 1420112,
+      "sha256": "7a620400defd81982190730e1620387783b0c0f0cea456da9b8a41b2e5aac023"
+    },
+    {
+      "path": "renders/preview.png",
+      "bytes": 1227902,
+      "sha256": "bdfaee1c68dd025e7f407acf325a765b3a28ace0a9435652a10f40f3f416dd17"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "bytes": 1454884,
+      "sha256": "9eb2f28766a81c637818429735cec114fb11bedf8a6b67b1687e0d5f8531c541"
+    },
+    {
+      "path": "renders/side.png",
+      "bytes": 1072855,
+      "sha256": "33769720e4df4177c72f8ab802fe4a675a17970bb8cc671c034582f0c7e8e4b7"
+    }
+  ],
+  "object_count": 417,
+  "material_audit": {
+    "building_material_count": 8,
+    "materials": [
+      {
+        "name": "MAT_cape_GeneratedAtomicFacadeSticker",
+        "status": "reference_specific_finished",
+        "provenance": "built-in image generation from locked RLASM prework reference sheet",
+        "source_sha256": "b3c6f13ee5a490bb6ba6d8852ac4ca1e658557b574590f2aebd9b1c6727827a7"
+      },
+      {
+        "name": "MAT_cape_NeutralLowIron_Physical_v22",
+        "status": "reference_specific_finished",
+        "provenance": "RLASM reusable neutral physical low-iron glass module v22",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_cape_OccupiedDepth",
+        "status": "reference_specific_finished",
+        "provenance": "modeled occupied interior depth",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_cape_black-tar-plinth",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-black-tar-plinth.png",
+        "source_sha256": "69f1eb21f71e185e020d9432ce62b60e8aca807227bdd62bcb276cbf9c849add"
+      },
+      {
+        "name": "MAT_cape_chalky-white-limewash",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-chalky-white-limewash.png",
+        "source_sha256": "53c079804c84e1186d65cbe24b3a3c3c5431c767e774a6c46d0eabf040d54e48"
+      },
+      {
+        "name": "MAT_cape_dark-weathered-cape-thatch",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-dark-weathered-cape-thatch.png",
+        "source_sha256": "b11cce48b5c5349d274e72af37cd0430c3eb9928ff5b01cadfd3868691a7a017"
+      },
+      {
+        "name": "MAT_cape_forest-green-painted-timber",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-forest-green-painted-timber.png",
+        "source_sha256": "f13d465c4c7e1a476623c7ed7293514762aa02aac248457ddf74230b30e6931c"
+      },
+      {
+        "name": "MAT_cape_warm-grey-local-stone",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-warm-grey-local-stone.png",
+        "source_sha256": "83c2eb75f396d04fba2203d2b86497e97e50288e90e1ea568d338e0b91c252ee"
+      }
+    ],
+    "generic_fallback_count": 0,
+    "all_reference_specific_finished": true,
+    "glass": {
+      "material": "MAT_cape_NeutralLowIron_Physical_v22",
+      "image_texture_count": 0,
+      "baked_reflection": false,
+      "reflection_source": "current_scene_world_lights_geometry_only",
+      "neutral_scene_only": true
+    }
+  },
+  "contact_audit": {
+    "schema": "cityprompt.rlasm.contact-audit@4",
+    "candidate": "10-cape-dutch-wine-estate-rlasm-v7",
+    "records": [
+      {
+        "claim": "H-shaped manor, rear tail, winery and wagon house are distinct physical volumes",
+        "floating": false
+      },
+      {
+        "claim": "six thatch roofs seat on matching wall roles",
+        "floating": false
+      },
+      {
+        "claim": "holbol gable, stoep, columns and steps are supported",
+        "floating": false
+      },
+      {
+        "claim": "shutters and sash frames attach to registered openings",
+        "floating": false
+      },
+      {
+        "claim": "curved wall segments and dovecote reach grade",
+        "floating": false
+      },
+      {
+        "claim": "atomic facade carrier flush-mounted within 0.006m of physical facade datum",
+        "floating": false
+      }
+    ],
+    "floating_count": 0,
+    "status": "PASS_ZERO_FLOATING"
+  },
+  "hard_gates": [
+    "PASS_ZERO_EXPOSED_GIANT_SUPPORT_BOXES",
+    "PASS_WINDOW_MASK_EXCLUDES_EXTERIOR_TRANSPARENCY",
+    "PASS_ZERO_WINDOWS_OR_OBJECTS_OUTSIDE_PHYSICAL_ENVELOPE",
+    "PASS_EVERY_LARGE_VOLUME_FINISHED_ALL_VISIBLE_SIDES",
+    "PASS_ZERO_GENERIC_MATERIAL_FALLBACKS",
+    "PASS_ZERO_FLOATING_CONTACTS",
+    "PASS_NEUTRAL_CONTEXTUAL_GLASS_NO_BAKED_REFLECTION",
+    "PASS_MATERIAL_TEXTURES_EXCLUDE_CARD_TEXT_LABELS_AND_BORDERS",
+    "PASS_REFERENCE_MATERIAL_TEXTURES_ARE_SEAM_SAFE",
+    "PASS_REFERENCE_SPECIFIC_FRONT_ELEVATION_STICKER_FLUSH_TO_PHYSICAL_FACADE",
+    "PASS_FACADE_STICKER_EXTERIOR_CHROMA_REMOVED_AND_DESPILLED"
+  ],
+  "prework_sha256": "77832b6827628cc3d0d607bb655d0e14ff2d9f4ee47d87c066ef9f416ba0120b",
+  "card_manifest_sha256": "5ce592be82b1d733598ffab520177a6210f2efd28d2071ea172ce7293308e8d5",
+  "builder_self_approval": false
+}

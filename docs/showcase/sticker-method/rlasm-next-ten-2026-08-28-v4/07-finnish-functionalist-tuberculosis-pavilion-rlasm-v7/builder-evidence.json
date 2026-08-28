@@ -1,0 +1,170 @@
+{
+  "schema": "cityprompt.rlasm.build-evidence@4",
+  "candidate": "07-finnish-functionalist-tuberculosis-pavilion-rlasm-v7",
+  "title": "Finnish Functionalist Tuberculosis Pavilion",
+  "method": "RLASM v3 reference-lock + atomic-role construction",
+  "status": "PASS_BUILDER_EVIDENCE_AWAITING_VISUAL_QA",
+  "scene": {
+    "path": "model/07-finnish-functionalist-tuberculosis-pavilion-rlasm-v7.blend",
+    "bytes": 407116,
+    "sha256": "0b468c37d854c554b8e33fb437178fd70313e7ec6d8879b61a4c2009bbf8e1e9"
+  },
+  "glb": {
+    "path": "model/07-finnish-functionalist-tuberculosis-pavilion-rlasm-v7.glb",
+    "bytes": 6726108,
+    "sha256": "b31f99a16fc01911347c6a2b73b43fc5973378e4ff1ccaeebcf53cc3154afe5f"
+  },
+  "renders": [
+    {
+      "path": "renders/aerial.png",
+      "bytes": 1401172,
+      "sha256": "32fa5ec3846a0c09846237a2120cc8a6ba0a69e3d3ced08f47a687ae7379d47b"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "bytes": 1370229,
+      "sha256": "7c03820179b0c1ecca9546ff8396f3a2847a93123082b78e4618b7083973e53c"
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 1119202,
+      "sha256": "e637b5897bc8bb64afdb93d89d82cac2c6a07dcc09dd603bcab11a014134039a"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 1298740,
+      "sha256": "adcff0e186464c344ceddd227200c1358dcade2878028ad82f4495f94c55c1a2"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 1432029,
+      "sha256": "82f854e83f2d02dd7d2202e4fb9150efccb8091bed26420b1793450489997aac"
+    },
+    {
+      "path": "renders/preview.png",
+      "bytes": 1298740,
+      "sha256": "adcff0e186464c344ceddd227200c1358dcade2878028ad82f4495f94c55c1a2"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "bytes": 1491711,
+      "sha256": "179391d643c285d5fdd8aceff37aa8926ef63388947b81ab3bbf5da5e0091909"
+    },
+    {
+      "path": "renders/side.png",
+      "bytes": 1061958,
+      "sha256": "34092c1448fd01bdd8ab9f514fb73a9d5f21dd8145d8863e0c6b023da803c28e"
+    }
+  ],
+  "object_count": 730,
+  "material_audit": {
+    "building_material_count": 8,
+    "materials": [
+      {
+        "name": "MAT_finnish_GeneratedAtomicFacadeSticker",
+        "status": "reference_specific_finished",
+        "provenance": "built-in image generation from locked RLASM prework reference sheet",
+        "source_sha256": "e601d1db86dd8dfaca70b2ee137e183e4fe8234e3cb5ccbe8c21dcdacfbc08d9"
+      },
+      {
+        "name": "MAT_finnish_NeutralLowIron_Physical_v22",
+        "status": "reference_specific_finished",
+        "provenance": "RLASM reusable neutral physical low-iron glass module v22",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_finnish_OccupiedDepth",
+        "status": "reference_specific_finished",
+        "provenance": "modeled occupied interior depth",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_finnish_charcoal-flat-roof-membrane",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-charcoal-flat-roof-membrane.png",
+        "source_sha256": "10c5df9aed0e57fd0f9ef77916982f6d512a7b2d0bd9649a85e793cd483c6dd4"
+      },
+      {
+        "name": "MAT_finnish_dark-red-service-brick",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-dark-red-service-brick.png",
+        "source_sha256": "4969e410e903742623054e7866d85fc78b7c35467c1c2c5b295a1b99950a23f8"
+      },
+      {
+        "name": "MAT_finnish_muted-blue-tubular-steel",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-muted-blue-tubular-steel.png",
+        "source_sha256": "3ed4e0387047f74629ceb2017558f75581ec63e51640482512802e18428af5a3"
+      },
+      {
+        "name": "MAT_finnish_pale-yellow-balcony-recess",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-pale-yellow-balcony-recess.png",
+        "source_sha256": "8fec66f0723978bcf086aacc1041bca45f25ba0de77d4c95273a87a356f75588"
+      },
+      {
+        "name": "MAT_finnish_warm-white-mineral-render",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-warm-white-mineral-render.png",
+        "source_sha256": "024e63048fae2753ba88e93a4f58c6834b7a4660f8bbf3d7959145a6f210031f"
+      }
+    ],
+    "generic_fallback_count": 0,
+    "all_reference_specific_finished": true,
+    "glass": {
+      "material": "MAT_finnish_NeutralLowIron_Physical_v22",
+      "image_texture_count": 0,
+      "baked_reflection": false,
+      "reflection_source": "current_scene_world_lights_geometry_only",
+      "neutral_scene_only": true
+    }
+  },
+  "contact_audit": {
+    "schema": "cityprompt.rlasm.contact-audit@4",
+    "candidate": "07-finnish-functionalist-tuberculosis-pavilion-rlasm-v7",
+    "records": [
+      {
+        "claim": "bent-plan patient, spine and therapy volumes are independent and connected",
+        "floating": false
+      },
+      {
+        "claim": "every balcony has a real slab, recess and supported rail",
+        "floating": false
+      },
+      {
+        "claim": "curved tower panes lie on the tower envelope",
+        "floating": false
+      },
+      {
+        "claim": "rooftop solarium and porte cochere have physical supports",
+        "floating": false
+      },
+      {
+        "claim": "rear and side walls are fully articulated",
+        "floating": false
+      },
+      {
+        "claim": "atomic facade carrier flush-mounted within 0.006m of physical facade datum",
+        "floating": false
+      }
+    ],
+    "floating_count": 0,
+    "status": "PASS_ZERO_FLOATING"
+  },
+  "hard_gates": [
+    "PASS_ZERO_EXPOSED_GIANT_SUPPORT_BOXES",
+    "PASS_WINDOW_MASK_EXCLUDES_EXTERIOR_TRANSPARENCY",
+    "PASS_ZERO_WINDOWS_OR_OBJECTS_OUTSIDE_PHYSICAL_ENVELOPE",
+    "PASS_EVERY_LARGE_VOLUME_FINISHED_ALL_VISIBLE_SIDES",
+    "PASS_ZERO_GENERIC_MATERIAL_FALLBACKS",
+    "PASS_ZERO_FLOATING_CONTACTS",
+    "PASS_NEUTRAL_CONTEXTUAL_GLASS_NO_BAKED_REFLECTION",
+    "PASS_MATERIAL_TEXTURES_EXCLUDE_CARD_TEXT_LABELS_AND_BORDERS",
+    "PASS_REFERENCE_MATERIAL_TEXTURES_ARE_SEAM_SAFE",
+    "PASS_REFERENCE_SPECIFIC_FRONT_ELEVATION_STICKER_FLUSH_TO_PHYSICAL_FACADE",
+    "PASS_FACADE_STICKER_EXTERIOR_CHROMA_REMOVED_AND_DESPILLED"
+  ],
+  "prework_sha256": "6a3c2623827e3f7f5b3615eee22288e2c82e167f5ed23552c506a0cd7a272742",
+  "card_manifest_sha256": "b42d59301efa198949e085ad781f4217a2c28892c14d9dc815fe4e239ad4f790",
+  "builder_self_approval": false
+}

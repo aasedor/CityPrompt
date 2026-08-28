@@ -1,0 +1,251 @@
+{
+  "schema": "cityprompt.rlasm.prework@6",
+  "candidate": "07-finnish-functionalist-tuberculosis-pavilion-rlasm-v7",
+  "title": "Finnish Functionalist Tuberculosis Pavilion",
+  "status": "PASS_COMPLETE_RLASM_PREWORK_AWAITING_DRY_BUILD",
+  "method": "RLASM v3 reference-lock + atomic-role construction",
+  "correction_lineage": {
+    "failed_candidate": "07-finnish-functionalist-tuberculosis-pavilion-rlasm-v1",
+    "failure": "material crops included atomic-board labels and cell borders",
+    "disposition": "FAIL_PRESERVED_NON_OVERWRITING"
+  },
+  "reference": {
+    "path": "references/locked-three-view-reference.png",
+    "bytes": 2232289,
+    "sha256": "2962238ba8ab51f5cc104fe8d3639c976c1f07be1f3f54d512738e71d38e783b"
+  },
+  "atomic_board": {
+    "path": "review/atomic-role-material-board.png",
+    "bytes": 2313418,
+    "sha256": "59c7615ba0ba49039e24f756185a6873b73187010fe9b4b02de3f1f46f352ef1"
+  },
+  "physical_contract": {
+    "dimensions_m": [
+      48.0,
+      30.0,
+      22.0
+    ],
+    "massing": "bent patient slab linked to a low therapy/service court",
+    "footprint_wide_carrier_forbidden": true,
+    "open_courts_remain_open": true
+  },
+  "roles": [
+    {
+      "role": "patient-sun-balcony-bay",
+      "source_crop_box": [
+        0,
+        0,
+        384,
+        461
+      ],
+      "path": "cards/object-patient-sun-balcony-bay.png",
+      "bytes": 191250,
+      "sha256": "99ab2c7a10dd51dcc830e1a0d229f56be4dd763fa7fabd0fe3a656a904a79cf8"
+    },
+    {
+      "role": "curved-glazed-stair-tower",
+      "source_crop_box": [
+        384,
+        0,
+        768,
+        461
+      ],
+      "path": "cards/object-curved-glazed-stair-tower.png",
+      "bytes": 178843,
+      "sha256": "d5d5f8be5e0ff384d9b03a82e6e52447f0b79c5710d26e03b8752d53b4ee830b"
+    },
+    {
+      "role": "entrance-porte-cochere",
+      "source_crop_box": [
+        768,
+        0,
+        1152,
+        461
+      ],
+      "path": "cards/object-entrance-porte-cochere.png",
+      "bytes": 189369,
+      "sha256": "22b36ff56b997e4e8aab6c16edc380d2ad8ad78e19f08322f04dff2ad3bbb53a"
+    },
+    {
+      "role": "rooftop-solarium-canopy",
+      "source_crop_box": [
+        1152,
+        0,
+        1536,
+        461
+      ],
+      "path": "cards/object-rooftop-solarium-canopy.png",
+      "bytes": 188517,
+      "sha256": "6c4915941cac886841b87bfb08da1826e11cde36d7f1932958b45bf315b838e6"
+    },
+    {
+      "role": "brick-therapy-service-wing",
+      "source_crop_box": [
+        0,
+        440,
+        768,
+        717
+      ],
+      "path": "cards/object-brick-therapy-service-wing.png",
+      "bytes": 324402,
+      "sha256": "55a686136fdcd97a3415d6e803c90652e0b0003825edbd664bd33546e11f9771"
+    },
+    {
+      "role": "rear-bridge-utility-court",
+      "source_crop_box": [
+        768,
+        440,
+        1536,
+        717
+      ],
+      "path": "cards/object-rear-bridge-utility-court.png",
+      "bytes": 271141,
+      "sha256": "5175717a0e575a506e697304a52035ae42a15189773e26837ac5137673edea4d"
+    }
+  ],
+  "materials": [
+    {
+      "material": "warm-white-mineral-render",
+      "source_crop_box": [
+        18,
+        783,
+        238,
+        968
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-warm-white-mineral-render.png",
+      "bytes": 75876,
+      "sha256": "024e63048fae2753ba88e93a4f58c6834b7a4660f8bbf3d7959145a6f210031f"
+    },
+    {
+      "material": "pale-yellow-balcony-recess",
+      "source_crop_box": [
+        274,
+        783,
+        494,
+        968
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-pale-yellow-balcony-recess.png",
+      "bytes": 64742,
+      "sha256": "8fec66f0723978bcf086aacc1041bca45f25ba0de77d4c95273a87a356f75588"
+    },
+    {
+      "material": "muted-blue-tubular-steel",
+      "source_crop_box": [
+        530,
+        783,
+        750,
+        968
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-muted-blue-tubular-steel.png",
+      "bytes": 55890,
+      "sha256": "3ed4e0387047f74629ceb2017558f75581ec63e51640482512802e18428af5a3"
+    },
+    {
+      "material": "neutral-low-iron-glass",
+      "source_crop_box": [
+        786,
+        783,
+        1006,
+        968
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-neutral-low-iron-glass.png",
+      "bytes": 36727,
+      "sha256": "23770d55b1c511b1eb3da25016a318e271db5810c1a666e8d4a2878adda78661"
+    },
+    {
+      "material": "dark-red-service-brick",
+      "source_crop_box": [
+        1042,
+        783,
+        1262,
+        968
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-dark-red-service-brick.png",
+      "bytes": 75826,
+      "sha256": "4969e410e903742623054e7866d85fc78b7c35467c1c2c5b295a1b99950a23f8"
+    },
+    {
+      "material": "charcoal-flat-roof-membrane",
+      "source_crop_box": [
+        1298,
+        783,
+        1518,
+        968
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-charcoal-flat-roof-membrane.png",
+      "bytes": 73634,
+      "sha256": "10c5df9aed0e57fd0f9ef77916982f6d512a7b2d0bd9649a85e793cd483c6dd4"
+    }
+  ],
+  "glass_contract": {
+    "module": "RLASM reusable neutral physical low-iron glass v22",
+    "reflection_source": "current scene world, lights and geometry only",
+    "baked_reflection": false
+  },
+  "hard_gates": [
+    "PASS_ZERO_EXPOSED_GIANT_SUPPORT_BOXES",
+    "PASS_WINDOW_MASK_EXCLUDES_EXTERIOR_TRANSPARENCY",
+    "PASS_ZERO_WINDOWS_OR_OBJECTS_OUTSIDE_PHYSICAL_ENVELOPE",
+    "PASS_EVERY_LARGE_VOLUME_FINISHED_ALL_VISIBLE_SIDES",
+    "PASS_ZERO_GENERIC_MATERIAL_FALLBACKS",
+    "PASS_ZERO_FLOATING_CONTACTS",
+    "PASS_NEUTRAL_CONTEXTUAL_GLASS_NO_BAKED_REFLECTION",
+    "PASS_MATERIAL_TEXTURES_EXCLUDE_CARD_TEXT_LABELS_AND_BORDERS",
+    "PASS_REFERENCE_MATERIAL_TEXTURES_ARE_SEAM_SAFE",
+    "PASS_REFERENCE_SPECIFIC_FRONT_ELEVATION_STICKER_FLUSH_TO_PHYSICAL_FACADE",
+    "PASS_FACADE_STICKER_EXTERIOR_CHROMA_REMOVED_AND_DESPILLED"
+  ],
+  "builder_self_approval": false,
+  "full_prework_lineage": {
+    "source_candidate": "07-finnish-functionalist-tuberculosis-pavilion-rlasm-v6",
+    "correction": "add dedicated orthographic reference-specific chroma facade sticker",
+    "facade_source": {
+      "path": "review/generated-front-facade-source.png",
+      "bytes": 1567767,
+      "sha256": "ec12099778366462f8e4a4b3ac1e43adf2cc22aafbf3948673272593a0fd4547"
+    },
+    "sticker": {
+      "path": "cards/generated-front-facade-sticker.png",
+      "bytes": 1189068,
+      "sha256": "e601d1db86dd8dfaca70b2ee137e183e4fe8234e3cb5ccbe8c21dcdacfbc08d9"
+    },
+    "alpha_audit": {
+      "source_dimensions": [
+        1811,
+        868
+      ],
+      "output_dimensions": [
+        1708,
+        619
+      ],
+      "tight_alpha_bbox": [
+        52,
+        131,
+        1760,
+        750
+      ],
+      "source_transparent_pixels": 794471,
+      "source_partially_transparent_despilled_pixels": 3612,
+      "output_transparent_pixels": 279775,
+      "output_partial_pixels": 3612
+    }
+  }
+}

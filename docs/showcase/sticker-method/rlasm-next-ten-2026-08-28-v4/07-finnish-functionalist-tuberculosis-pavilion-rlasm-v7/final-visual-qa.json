@@ -1,0 +1,35 @@
+{
+  "schema": "cityprompt.rlasm.final-visual-qa@4",
+  "candidate": "07-finnish-functionalist-tuberculosis-pavilion-rlasm-v7",
+  "title": "Finnish Functionalist Tuberculosis Pavilion",
+  "status": "PASS_FINAL_VISUAL_QA_APPROVED_FOR_CATALOGUE",
+  "score": 96,
+  "strict_hard_stops": [],
+  "generic_fallback_count": 0,
+  "floating_count": 0,
+  "giant_exposed_carrier_box_count": 0,
+  "baked_glass_reflection_count": 0,
+  "reference_specific_materials": true,
+  "reference_specific_front_sticker": true,
+  "finished_visible_envelope": true,
+  "views_reviewed": [
+    "front",
+    "front_corner",
+    "aerial",
+    "side",
+    "rear_side",
+    "facade_close",
+    "glass_close"
+  ],
+  "phone_review_sheet": {
+    "path": "review/phone-review-sheet.png",
+    "bytes": 2115079,
+    "sha256": "121b4c5f69f0e056642e25776a5df46edb698129f2eb58141d06e35b12bd9a03"
+  },
+  "builder_evidence_sha256": "1ce14181e0f5c8c27923ab901b2465beb3d14a51977b7283e23db4331e522d18",
+  "minor_cosmetic_debt": [
+    "simplified rooftop plant"
+  ],
+  "review_authority": "root_visual_qa_against_locked_reference",
+  "builder_self_approval": false
+}

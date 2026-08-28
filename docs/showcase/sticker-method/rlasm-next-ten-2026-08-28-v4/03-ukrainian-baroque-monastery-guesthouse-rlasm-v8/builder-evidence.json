@@ -1,0 +1,176 @@
+{
+  "schema": "cityprompt.rlasm.build-evidence@4",
+  "candidate": "03-ukrainian-baroque-monastery-guesthouse-rlasm-v8",
+  "title": "Ukrainian Baroque Monastery Guesthouse",
+  "method": "RLASM v3 reference-lock + atomic-role construction",
+  "status": "PASS_BUILDER_EVIDENCE_AWAITING_VISUAL_QA",
+  "scene": {
+    "path": "model/03-ukrainian-baroque-monastery-guesthouse-rlasm-v8.blend",
+    "bytes": 321308,
+    "sha256": "c63143a4a5a21bbaa2936d744ddbc5be0c2d7299578db0aa088e465c4b745041"
+  },
+  "glb": {
+    "path": "model/03-ukrainian-baroque-monastery-guesthouse-rlasm-v8.glb",
+    "bytes": 5026988,
+    "sha256": "d679cc88c349ead762c3dcf75c5588911086416e2cff22bbf1d558ea8fb979f6"
+  },
+  "renders": [
+    {
+      "path": "renders/aerial.png",
+      "bytes": 1463013,
+      "sha256": "6f7570ea97bfd6b56ef5580257e93d6dc1de68ccdb2c10de8d072d34c8e2dd96"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "bytes": 1498788,
+      "sha256": "1f699bad02f8b77bdcb1ca571c0748a1617c8bf6da76fcee76f88056595525f0"
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 1193160,
+      "sha256": "fa35d32104474c1917962b7e02ade932d6b1207debb61ddbc421d39cd1e8ad39"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 1376540,
+      "sha256": "d608810e3c6632082e85ddabf8117ac5c47d8f973102e64f6ab97b78ab58f263"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 1536234,
+      "sha256": "f9c2baede4db6d09bbb46dc62e7d942f0530d31378f018c6d6ca335c43fa20d9"
+    },
+    {
+      "path": "renders/preview.png",
+      "bytes": 1376540,
+      "sha256": "d608810e3c6632082e85ddabf8117ac5c47d8f973102e64f6ab97b78ab58f263"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "bytes": 1485838,
+      "sha256": "4a4e30b8020f82687191fc813a32ef338ec344a0de86041d82e883113e2abf92"
+    },
+    {
+      "path": "renders/side.png",
+      "bytes": 1082216,
+      "sha256": "80af47b7765648bb7c1f5a005acb5183f567d1df593ffad9eb6a33d961af5740"
+    }
+  ],
+  "object_count": 474,
+  "material_audit": {
+    "building_material_count": 9,
+    "materials": [
+      {
+        "name": "MAT_ukrainian_GeneratedAtomicFacadeSticker",
+        "status": "reference_specific_finished",
+        "provenance": "built-in image generation from locked RLASM prework reference sheet",
+        "source_sha256": "ff15b6c395b4c54c488333b5a3d255b5139bb9d9c5710f88972947d16ecde3f3"
+      },
+      {
+        "name": "MAT_ukrainian_NeutralLowIron_Physical_v22",
+        "status": "reference_specific_finished",
+        "provenance": "RLASM reusable neutral physical low-iron glass module v22",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_ukrainian_OccupiedDepth",
+        "status": "reference_specific_finished",
+        "provenance": "modeled occupied interior depth",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_ukrainian_dark-blue-grey-roof-metal",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-dark-blue-grey-roof-metal.png",
+        "source_sha256": "9ffccc2560881d4a2d9ea21645bb8c3e3c88f1093cb50004a7b9e20864427ee0"
+      },
+      {
+        "name": "MAT_ukrainian_dark-carved-oak",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-dark-carved-oak.png",
+        "source_sha256": "dc3796dac9cd813e4f36aa716a461bf3b42cbbbb68366dfb4feef404ab1b20db"
+      },
+      {
+        "name": "MAT_ukrainian_oxidized-green-copper",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-oxidized-green-copper.png",
+        "source_sha256": "5a89de1e79bcaed183bb1e146856542a80a45713aed4b5e5c71c9954554ecd9b"
+      },
+      {
+        "name": "MAT_ukrainian_pale-ochre-trim-plaster",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-pale-ochre-trim-plaster.png",
+        "source_sha256": "55c0dfeee81c105c49320629f033b3fcf8b428b624bb59fbaceaf47b43c7f6e4"
+      },
+      {
+        "name": "MAT_ukrainian_warm-grey-limestone-base",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-warm-grey-limestone-base.png",
+        "source_sha256": "149584c9214ec1eb1909eb0f406c363d5243ac8af87093a235c97a490f153ab5"
+      },
+      {
+        "name": "MAT_ukrainian_warm-white-lime-plaster",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-warm-white-lime-plaster.png",
+        "source_sha256": "a9f7846916dd87b21fcb36388e36c900d4aee7195e7fb92c28db9d31c08445ca"
+      }
+    ],
+    "generic_fallback_count": 0,
+    "all_reference_specific_finished": true,
+    "glass": {
+      "material": "MAT_ukrainian_NeutralLowIron_Physical_v22",
+      "image_texture_count": 0,
+      "baked_reflection": false,
+      "reflection_source": "current_scene_world_lights_geometry_only",
+      "neutral_scene_only": true
+    }
+  },
+  "contact_audit": {
+    "schema": "cityprompt.rlasm.contact-audit@4",
+    "candidate": "03-ukrainian-baroque-monastery-guesthouse-rlasm-v8",
+    "records": [
+      {
+        "claim": "U-plan volumes leave garden court open",
+        "floating": false
+      },
+      {
+        "claim": "each cupola has its own drum and supported roof",
+        "floating": false
+      },
+      {
+        "claim": "baroque pediments sit on front wall bays",
+        "floating": false
+      },
+      {
+        "claim": "rear gallery slab and rail are physically attached",
+        "floating": false
+      },
+      {
+        "claim": "all exposed sides contain registered openings",
+        "floating": false
+      },
+      {
+        "claim": "atomic facade carrier flush-mounted within 0.006m of physical facade datum",
+        "floating": false
+      }
+    ],
+    "floating_count": 0,
+    "status": "PASS_ZERO_FLOATING"
+  },
+  "hard_gates": [
+    "PASS_ZERO_EXPOSED_GIANT_SUPPORT_BOXES",
+    "PASS_WINDOW_MASK_EXCLUDES_EXTERIOR_TRANSPARENCY",
+    "PASS_ZERO_WINDOWS_OR_OBJECTS_OUTSIDE_PHYSICAL_ENVELOPE",
+    "PASS_EVERY_LARGE_VOLUME_FINISHED_ALL_VISIBLE_SIDES",
+    "PASS_ZERO_GENERIC_MATERIAL_FALLBACKS",
+    "PASS_ZERO_FLOATING_CONTACTS",
+    "PASS_NEUTRAL_CONTEXTUAL_GLASS_NO_BAKED_REFLECTION",
+    "PASS_MATERIAL_TEXTURES_EXCLUDE_CARD_TEXT_LABELS_AND_BORDERS",
+    "PASS_REFERENCE_MATERIAL_TEXTURES_ARE_SEAM_SAFE",
+    "PASS_REFERENCE_SPECIFIC_FRONT_ELEVATION_STICKER_FLUSH_TO_PHYSICAL_FACADE",
+    "PASS_FACADE_STICKER_EXTERIOR_CHROMA_REMOVED_AND_DESPILLED"
+  ],
+  "prework_sha256": "dc1f4709b58e1821ec6ef7b842b9d62c82435e0126dea5ef495a3b3464a4909d",
+  "card_manifest_sha256": "7e498d0807c1b3e2c31a6b3dfe7f3d8b3d3f14ddff30eea2a524e2f82733d190",
+  "builder_self_approval": false
+}

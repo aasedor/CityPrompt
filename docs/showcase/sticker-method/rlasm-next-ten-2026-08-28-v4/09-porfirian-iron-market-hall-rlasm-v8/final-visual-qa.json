@@ -1,0 +1,35 @@
+{
+  "schema": "cityprompt.rlasm.final-visual-qa@4",
+  "candidate": "09-porfirian-iron-market-hall-rlasm-v8",
+  "title": "Porfirian Iron Market Hall",
+  "status": "PASS_FINAL_VISUAL_QA_APPROVED_FOR_CATALOGUE",
+  "score": 95,
+  "strict_hard_stops": [],
+  "generic_fallback_count": 0,
+  "floating_count": 0,
+  "giant_exposed_carrier_box_count": 0,
+  "baked_glass_reflection_count": 0,
+  "reference_specific_materials": true,
+  "reference_specific_front_sticker": true,
+  "finished_visible_envelope": true,
+  "views_reviewed": [
+    "front",
+    "front_corner",
+    "aerial",
+    "side",
+    "rear_side",
+    "facade_close",
+    "glass_close"
+  ],
+  "phone_review_sheet": {
+    "path": "review/phone-review-sheet.png",
+    "bytes": 2333804,
+    "sha256": "a98b35663fadf7ebc8644b9e7b1b5b00d36d709e67cd63c0b3d9009a0e3e4d26"
+  },
+  "builder_evidence_sha256": "3a234abd488ac5e1b677327b0ce25dc609f34fe3ac9ecb4c1466ef2f1ef3f731",
+  "minor_cosmetic_debt": [
+    "simplified clerestory finials and side arcade hardware"
+  ],
+  "review_authority": "root_visual_qa_against_locked_reference",
+  "builder_self_approval": false
+}

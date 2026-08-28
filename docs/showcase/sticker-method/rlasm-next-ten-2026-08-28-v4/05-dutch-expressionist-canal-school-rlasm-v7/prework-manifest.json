@@ -1,0 +1,251 @@
+{
+  "schema": "cityprompt.rlasm.prework@6",
+  "candidate": "05-dutch-expressionist-canal-school-rlasm-v7",
+  "title": "Dutch Expressionist Canal School",
+  "status": "PASS_COMPLETE_RLASM_PREWORK_AWAITING_DRY_BUILD",
+  "method": "RLASM v3 reference-lock + atomic-role construction",
+  "correction_lineage": {
+    "failed_candidate": "05-dutch-expressionist-canal-school-rlasm-v1",
+    "failure": "material crops included atomic-board labels and cell borders",
+    "disposition": "FAIL_PRESERVED_NON_OVERWRITING"
+  },
+  "reference": {
+    "path": "references/locked-three-view-reference.png",
+    "bytes": 2651353,
+    "sha256": "4642ac335b8554afc9bf14ad9cef19fba80a029f12d3512ed12ced5cce5a30c5"
+  },
+  "atomic_board": {
+    "path": "review/atomic-role-material-board.png",
+    "bytes": 2707230,
+    "sha256": "8140f6f6bbef39656a48ca7a3a458d4c9f32f1ba21ec8f4adc6c44f68b51068b"
+  },
+  "physical_contract": {
+    "dimensions_m": [
+      40.0,
+      28.0,
+      22.0
+    ],
+    "massing": "tapered canal-side L with separate playground court",
+    "footprint_wide_carrier_forbidden": true,
+    "open_courts_remain_open": true
+  },
+  "roles": [
+    {
+      "role": "rounded-corner-stair-tower",
+      "source_crop_box": [
+        0,
+        0,
+        384,
+        461
+      ],
+      "path": "cards/object-rounded-corner-stair-tower.png",
+      "bytes": 257842,
+      "sha256": "c36cfbe7ef9489d1c745f3985a90cb5c786277e448a5d91efa16c088a6ae039c"
+    },
+    {
+      "role": "recessed-arched-main-entry",
+      "source_crop_box": [
+        384,
+        0,
+        768,
+        461
+      ],
+      "path": "cards/object-recessed-arched-main-entry.png",
+      "bytes": 255370,
+      "sha256": "5769bed09f7e979cc804a2891f88d0c9c476bdd1270197cc30bc185a188609ea"
+    },
+    {
+      "role": "stepped-gable-classroom-bay",
+      "source_crop_box": [
+        768,
+        0,
+        1152,
+        461
+      ],
+      "path": "cards/object-stepped-gable-classroom-bay.png",
+      "bytes": 270836,
+      "sha256": "e7cde28fd2de0cb0073761a1da899e65590b77d7eedf62846c80c47100b20425"
+    },
+    {
+      "role": "roof-intersection-chimney",
+      "source_crop_box": [
+        1152,
+        0,
+        1536,
+        461
+      ],
+      "path": "cards/object-roof-intersection-chimney.png",
+      "bytes": 303345,
+      "sha256": "285967464e870b98da5e5eef8662f0aed15c2eb1a849342aacc0c33e291f0ba7"
+    },
+    {
+      "role": "rear-playground-arcade",
+      "source_crop_box": [
+        0,
+        440,
+        768,
+        717
+      ],
+      "path": "cards/object-rear-playground-arcade.png",
+      "bytes": 329793,
+      "sha256": "8d07dcc7ef890be0a034cbb8b8f160476670b6825df2cca04e8dee376e7b9f9c"
+    },
+    {
+      "role": "caretaker-house-wall-gate",
+      "source_crop_box": [
+        768,
+        440,
+        1536,
+        717
+      ],
+      "path": "cards/object-caretaker-house-wall-gate.png",
+      "bytes": 218871,
+      "sha256": "1c368b3dd8c37c071551b0719e1556f2e0c3b1ea5b1a42dc89352d60adeb34fd"
+    }
+  ],
+  "materials": [
+    {
+      "material": "handmade-red-brown-brick",
+      "source_crop_box": [
+        18,
+        783,
+        238,
+        968
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-handmade-red-brown-brick.png",
+      "bytes": 84674,
+      "sha256": "0b6773d4667075edea876e73658f92a93b4517ff0ee7d4e80c659916dcef828f"
+    },
+    {
+      "material": "smoked-clay-roof-tile",
+      "source_crop_box": [
+        274,
+        783,
+        494,
+        968
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-smoked-clay-roof-tile.png",
+      "bytes": 69041,
+      "sha256": "d24cafcbba401431573ff436ac8cc76c86e90f279e27d98c78da0ac766f2117b"
+    },
+    {
+      "material": "dark-teal-steel-frame",
+      "source_crop_box": [
+        530,
+        783,
+        750,
+        968
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-dark-teal-steel-frame.png",
+      "bytes": 49690,
+      "sha256": "bab15b51928d13f6c4b502531ac60b05c4f9c1d791e97fb46592a2ee382cffea"
+    },
+    {
+      "material": "carved-oak-door",
+      "source_crop_box": [
+        786,
+        783,
+        1006,
+        968
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-carved-oak-door.png",
+      "bytes": 67435,
+      "sha256": "785fe45c2e54188e281afb2971ddcbf8cdda32c60c13d3ce45d3fb81d3a70675"
+    },
+    {
+      "material": "blackened-bronze-hardware",
+      "source_crop_box": [
+        1042,
+        783,
+        1262,
+        968
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-blackened-bronze-hardware.png",
+      "bytes": 75707,
+      "sha256": "0b815bdedbfd3caeeb806ad68047d73b9dcb4ff9adf8b3da15a1ae3a575e012a"
+    },
+    {
+      "material": "canal-edge-stone",
+      "source_crop_box": [
+        1298,
+        783,
+        1518,
+        968
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-canal-edge-stone.png",
+      "bytes": 86911,
+      "sha256": "60f95629fe9d6895243fda1e846c8506721572aaa057a6702de0b886dee5aeb8"
+    }
+  ],
+  "glass_contract": {
+    "module": "RLASM reusable neutral physical low-iron glass v22",
+    "reflection_source": "current scene world, lights and geometry only",
+    "baked_reflection": false
+  },
+  "hard_gates": [
+    "PASS_ZERO_EXPOSED_GIANT_SUPPORT_BOXES",
+    "PASS_WINDOW_MASK_EXCLUDES_EXTERIOR_TRANSPARENCY",
+    "PASS_ZERO_WINDOWS_OR_OBJECTS_OUTSIDE_PHYSICAL_ENVELOPE",
+    "PASS_EVERY_LARGE_VOLUME_FINISHED_ALL_VISIBLE_SIDES",
+    "PASS_ZERO_GENERIC_MATERIAL_FALLBACKS",
+    "PASS_ZERO_FLOATING_CONTACTS",
+    "PASS_NEUTRAL_CONTEXTUAL_GLASS_NO_BAKED_REFLECTION",
+    "PASS_MATERIAL_TEXTURES_EXCLUDE_CARD_TEXT_LABELS_AND_BORDERS",
+    "PASS_REFERENCE_MATERIAL_TEXTURES_ARE_SEAM_SAFE",
+    "PASS_REFERENCE_SPECIFIC_FRONT_ELEVATION_STICKER_FLUSH_TO_PHYSICAL_FACADE",
+    "PASS_FACADE_STICKER_EXTERIOR_CHROMA_REMOVED_AND_DESPILLED"
+  ],
+  "builder_self_approval": false,
+  "full_prework_lineage": {
+    "source_candidate": "05-dutch-expressionist-canal-school-rlasm-v6",
+    "correction": "add dedicated orthographic reference-specific chroma facade sticker",
+    "facade_source": {
+      "path": "review/generated-front-facade-source.png",
+      "bytes": 2316565,
+      "sha256": "eb57b63aeeba208fe0db26e4598e3a21a52de27babd3eb911e262bd9fb510c1f"
+    },
+    "sticker": {
+      "path": "cards/generated-front-facade-sticker.png",
+      "bytes": 2084262,
+      "sha256": "81d7e4ccddef8ee1d5a84e090d10dc146a97de733df51cd2ba526ad9f9e16de7"
+    },
+    "alpha_audit": {
+      "source_dimensions": [
+        1672,
+        941
+      ],
+      "output_dimensions": [
+        1525,
+        813
+      ],
+      "tight_alpha_bbox": [
+        121,
+        67,
+        1646,
+        880
+      ],
+      "source_transparent_pixels": 701872,
+      "source_partially_transparent_despilled_pixels": 4856,
+      "output_transparent_pixels": 368345,
+      "output_partial_pixels": 4856
+    }
+  }
+}

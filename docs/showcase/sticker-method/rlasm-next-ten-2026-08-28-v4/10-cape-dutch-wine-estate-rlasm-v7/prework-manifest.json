@@ -1,0 +1,251 @@
+{
+  "schema": "cityprompt.rlasm.prework@6",
+  "candidate": "10-cape-dutch-wine-estate-rlasm-v7",
+  "title": "Cape Dutch Wine Estate Manor",
+  "status": "PASS_COMPLETE_RLASM_PREWORK_AWAITING_DRY_BUILD",
+  "method": "RLASM v3 reference-lock + atomic-role construction",
+  "correction_lineage": {
+    "failed_candidate": "10-cape-dutch-wine-estate-rlasm-v1",
+    "failure": "material crops included atomic-board labels and cell borders",
+    "disposition": "FAIL_PRESERVED_NON_OVERWRITING"
+  },
+  "reference": {
+    "path": "references/locked-three-view-reference.png",
+    "bytes": 2452967,
+    "sha256": "6f1b6b57cc2f90dbac8bb6997b6f15c13d4b052c19c10ebaa53bd2a40b34c638"
+  },
+  "atomic_board": {
+    "path": "review/atomic-role-material-board.png",
+    "bytes": 2268683,
+    "sha256": "c3cce1fcf565c33de95001821b9bc7198f8edf7003a534c39180314dc17a06ba"
+  },
+  "physical_contract": {
+    "dimensions_m": [
+      44.0,
+      36.0,
+      18.0
+    ],
+    "massing": "H-shaped manor with rear T-tail, curved wall and detached wagon house",
+    "footprint_wide_carrier_forbidden": true,
+    "open_courts_remain_open": true
+  },
+  "roles": [
+    {
+      "role": "central-holbol-gable-stoep",
+      "source_crop_box": [
+        0,
+        0,
+        384,
+        461
+      ],
+      "path": "cards/object-central-holbol-gable-stoep.png",
+      "bytes": 183928,
+      "sha256": "6e80a843b7282e2139e783059fce461e768aacaf41a5caae49394c6bd5d26332"
+    },
+    {
+      "role": "front-wing-thatch-window-bay",
+      "source_crop_box": [
+        384,
+        0,
+        768,
+        461
+      ],
+      "path": "cards/object-front-wing-thatch-window-bay.png",
+      "bytes": 202980,
+      "sha256": "b42f3774d6835303cabcb700a199c996a6025eb3dab830ba0c9b8ea246255498"
+    },
+    {
+      "role": "thatch-roof-intersection-chimney",
+      "source_crop_box": [
+        768,
+        0,
+        1152,
+        461
+      ],
+      "path": "cards/object-thatch-roof-intersection-chimney.png",
+      "bytes": 222653,
+      "sha256": "0d96cd422cbe27d9a8537dfa34aeaca30ab301f8713e30b575edb76d9191964b"
+    },
+    {
+      "role": "rear-winery-cellar-wing",
+      "source_crop_box": [
+        1152,
+        0,
+        1536,
+        461
+      ],
+      "path": "cards/object-rear-winery-cellar-wing.png",
+      "bytes": 224403,
+      "sha256": "7efc8dec6d4e0bfcd3d8ff506bf39e02090b5bd67547233100673fc3d2c67964"
+    },
+    {
+      "role": "curved-wall-gate-dovecote",
+      "source_crop_box": [
+        0,
+        440,
+        768,
+        717
+      ],
+      "path": "cards/object-curved-wall-gate-dovecote.png",
+      "bytes": 284708,
+      "sha256": "0521872b8e71a87617f41354b6b74d63e6b06e3d9c342d5190d5e0d960bc8e01"
+    },
+    {
+      "role": "detached-wagon-house",
+      "source_crop_box": [
+        768,
+        440,
+        1536,
+        717
+      ],
+      "path": "cards/object-detached-wagon-house.png",
+      "bytes": 120574,
+      "sha256": "52b52b36c94d375049d5851580100dea043f8ac820495fa26168d79433c47075"
+    }
+  ],
+  "materials": [
+    {
+      "material": "chalky-white-limewash",
+      "source_crop_box": [
+        18,
+        783,
+        238,
+        968
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-chalky-white-limewash.png",
+      "bytes": 70567,
+      "sha256": "53c079804c84e1186d65cbe24b3a3c3c5431c767e774a6c46d0eabf040d54e48"
+    },
+    {
+      "material": "dark-weathered-cape-thatch",
+      "source_crop_box": [
+        274,
+        783,
+        494,
+        968
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-dark-weathered-cape-thatch.png",
+      "bytes": 97309,
+      "sha256": "b11cce48b5c5349d274e72af37cd0430c3eb9928ff5b01cadfd3868691a7a017"
+    },
+    {
+      "material": "forest-green-painted-timber",
+      "source_crop_box": [
+        530,
+        783,
+        750,
+        968
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-forest-green-painted-timber.png",
+      "bytes": 57641,
+      "sha256": "f13d465c4c7e1a476623c7ed7293514762aa02aac248457ddf74230b30e6931c"
+    },
+    {
+      "material": "off-white-multipane-sash",
+      "source_crop_box": [
+        786,
+        783,
+        1006,
+        968
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-off-white-multipane-sash.png",
+      "bytes": 45602,
+      "sha256": "f67675d8b644d35270f5bba8f7022a8fa25ec3dfe1c9e76f4bfceee6834eca5d"
+    },
+    {
+      "material": "black-tar-plinth",
+      "source_crop_box": [
+        1042,
+        783,
+        1262,
+        968
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-black-tar-plinth.png",
+      "bytes": 63800,
+      "sha256": "69f1eb21f71e185e020d9432ce62b60e8aca807227bdd62bcb276cbf9c849add"
+    },
+    {
+      "material": "warm-grey-local-stone",
+      "source_crop_box": [
+        1298,
+        783,
+        1518,
+        968
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-warm-grey-local-stone.png",
+      "bytes": 86470,
+      "sha256": "83c2eb75f396d04fba2203d2b86497e97e50288e90e1ea568d338e0b91c252ee"
+    }
+  ],
+  "glass_contract": {
+    "module": "RLASM reusable neutral physical low-iron glass v22",
+    "reflection_source": "current scene world, lights and geometry only",
+    "baked_reflection": false
+  },
+  "hard_gates": [
+    "PASS_ZERO_EXPOSED_GIANT_SUPPORT_BOXES",
+    "PASS_WINDOW_MASK_EXCLUDES_EXTERIOR_TRANSPARENCY",
+    "PASS_ZERO_WINDOWS_OR_OBJECTS_OUTSIDE_PHYSICAL_ENVELOPE",
+    "PASS_EVERY_LARGE_VOLUME_FINISHED_ALL_VISIBLE_SIDES",
+    "PASS_ZERO_GENERIC_MATERIAL_FALLBACKS",
+    "PASS_ZERO_FLOATING_CONTACTS",
+    "PASS_NEUTRAL_CONTEXTUAL_GLASS_NO_BAKED_REFLECTION",
+    "PASS_MATERIAL_TEXTURES_EXCLUDE_CARD_TEXT_LABELS_AND_BORDERS",
+    "PASS_REFERENCE_MATERIAL_TEXTURES_ARE_SEAM_SAFE",
+    "PASS_REFERENCE_SPECIFIC_FRONT_ELEVATION_STICKER_FLUSH_TO_PHYSICAL_FACADE",
+    "PASS_FACADE_STICKER_EXTERIOR_CHROMA_REMOVED_AND_DESPILLED"
+  ],
+  "builder_self_approval": false,
+  "full_prework_lineage": {
+    "source_candidate": "10-cape-dutch-wine-estate-rlasm-v6",
+    "correction": "add dedicated orthographic reference-specific chroma facade sticker",
+    "facade_source": {
+      "path": "review/generated-front-facade-source.png",
+      "bytes": 1731162,
+      "sha256": "a9d5b4b241e3efa6d6a1b86c1e90f172e095b9a0a27c706260eb9d1ac6c94251"
+    },
+    "sticker": {
+      "path": "cards/generated-front-facade-sticker.png",
+      "bytes": 1325428,
+      "sha256": "b3c6f13ee5a490bb6ba6d8852ac4ca1e658557b574590f2aebd9b1c6727827a7"
+    },
+    "alpha_audit": {
+      "source_dimensions": [
+        1672,
+        941
+      ],
+      "output_dimensions": [
+        1418,
+        728
+      ],
+      "tight_alpha_bbox": [
+        127,
+        104,
+        1545,
+        832
+      ],
+      "source_transparent_pixels": 786593,
+      "source_partially_transparent_despilled_pixels": 3584,
+      "output_transparent_pixels": 245545,
+      "output_partial_pixels": 3584
+    }
+  }
+}

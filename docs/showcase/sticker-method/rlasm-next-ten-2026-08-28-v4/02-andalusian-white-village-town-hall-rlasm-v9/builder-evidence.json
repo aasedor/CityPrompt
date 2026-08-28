@@ -1,0 +1,177 @@
+{
+  "schema": "cityprompt.rlasm.build-evidence@4",
+  "candidate": "02-andalusian-white-village-town-hall-rlasm-v9",
+  "title": "Andalusian White Village Town Hall",
+  "method": "RLASM v3 reference-lock + atomic-role construction",
+  "status": "PASS_BUILDER_EVIDENCE_AWAITING_VISUAL_QA",
+  "scene": {
+    "path": "model/02-andalusian-white-village-town-hall-rlasm-v9.blend",
+    "bytes": 265986,
+    "sha256": "8be149ac05bf18f00f4339a1fb33038ac6a36aca81364ddcd6e05a9c766ee72b"
+  },
+  "glb": {
+    "path": "model/02-andalusian-white-village-town-hall-rlasm-v9.glb",
+    "bytes": 4506560,
+    "sha256": "2194997f0553d601ec024201f26a911140e392c5ea5d111647f224ed209d7984"
+  },
+  "renders": [
+    {
+      "path": "renders/aerial.png",
+      "bytes": 1598056,
+      "sha256": "8da52413cc0fc6f4226014269e27f7110196b1c9435727476fc88d7a07fa6f07"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "bytes": 1480589,
+      "sha256": "99b7cc3be23e5aa4653a0da406f2f6f3971010435304c262709b33d49ca90f72"
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 1163895,
+      "sha256": "f362c545b1395bd15d5dce7c0fe064af43f69c91094133140aa1407f64c39a99"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 1327080,
+      "sha256": "e9b0092e32088a55f47b1d828f932eaeede3a9e75723ff849abf54aea0dbaaa7"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 1472270,
+      "sha256": "3dec58f1b343128270d12a36143c84a0587ad6e0c6e158811b9dc7a6aa83886d"
+    },
+    {
+      "path": "renders/preview.png",
+      "bytes": 1327080,
+      "sha256": "e9b0092e32088a55f47b1d828f932eaeede3a9e75723ff849abf54aea0dbaaa7"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "bytes": 1694567,
+      "sha256": "032b431c3722a421a34a3afe614f3bca0d9649ae77667ed4c09a26d9eb2bbff8"
+    },
+    {
+      "path": "renders/side.png",
+      "bytes": 1143018,
+      "sha256": "ec7bbe0d43b787d17d1f955b1fd5766c126d6abc7ca08a04b839c918e15526e5"
+    }
+  ],
+  "object_count": 362,
+  "material_audit": {
+    "building_material_count": 9,
+    "materials": [
+      {
+        "name": "MAT_andalusian_GeneratedAtomicFacadeSticker",
+        "status": "reference_specific_finished",
+        "provenance": "built-in image generation from locked RLASM prework reference sheet",
+        "source_sha256": "8357ecf56e4eac3ea3c2b226dcb6903934378d77166b1176619787ae77ae5b2f"
+      },
+      {
+        "name": "MAT_andalusian_NeutralLowIron_Physical_v22",
+        "status": "reference_specific_finished",
+        "provenance": "RLASM reusable neutral physical low-iron glass module v22",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_andalusian_OccupiedDepth",
+        "status": "reference_specific_finished",
+        "provenance": "modeled occupied interior depth",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_andalusian_black-wrought-iron",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-black-wrought-iron.png",
+        "source_sha256": "0a8b58c95a6007294b5f8be07efa64e203849ceb3c2c6b938b8b22cd1e4a8dfe"
+      },
+      {
+        "name": "MAT_andalusian_chalky-white-limewash",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-chalky-white-limewash.png",
+        "source_sha256": "a9db6b7d1a75ebda7ede883d6d356aea1d6f115c4b555fc28fe65ed5bb6c44fa"
+      },
+      {
+        "name": "MAT_andalusian_dark-aged-oak-door",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-dark-aged-oak-door.png",
+        "source_sha256": "a8441e543f5c89cb660def19ff166552b18703c665632abecd3a81deb42c7848"
+      },
+      {
+        "name": "MAT_andalusian_deep-forest-green-timber",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-deep-forest-green-timber.png",
+        "source_sha256": "d034960f4c3b325347b0785f020ffccf9f2854538a843e5c912f67765f87b81a"
+      },
+      {
+        "name": "MAT_andalusian_warm-ochre-limestone",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-warm-ochre-limestone.png",
+        "source_sha256": "3674e33dec0207667506857e4e5b8df8eaa497d1e35db636c94cd970c8a75baf"
+      },
+      {
+        "name": "MAT_andalusian_weathered-terracotta-tile",
+        "status": "reference_specific_finished",
+        "provenance": "locked atomic material crop material-weathered-terracotta-tile.png",
+        "source_sha256": "28581818bb03d274a411465cb948efa5d880efee3f025646d3f9430f907488bb"
+      }
+    ],
+    "generic_fallback_count": 0,
+    "all_reference_specific_finished": true,
+    "glass": {
+      "material": "MAT_andalusian_NeutralLowIron_Physical_v22",
+      "image_texture_count": 0,
+      "baked_reflection": false,
+      "reflection_source": "current_scene_world_lights_geometry_only",
+      "neutral_scene_only": true
+    }
+  },
+  "contact_audit": {
+    "schema": "cityprompt.rlasm.contact-audit@4",
+    "candidate": "02-andalusian-white-village-town-hall-rlasm-v9",
+    "records": [
+      {
+        "claim": "L-shaped volumes leave a physically open patio",
+        "floating": false
+      },
+      {
+        "claim": "all terracotta roofs seat on their matching walls",
+        "floating": false
+      },
+      {
+        "claim": "tower and finial are supported",
+        "floating": false
+      },
+      {
+        "claim": "arcade columns and balcony intersect their slabs",
+        "floating": false
+      },
+      {
+        "claim": "front, side and rear openings remain on local wall planes",
+        "floating": false
+      },
+      {
+        "claim": "atomic facade carrier flush-mounted within 0.006m of physical facade datum",
+        "floating": false
+      }
+    ],
+    "floating_count": 0,
+    "status": "PASS_ZERO_FLOATING"
+  },
+  "hard_gates": [
+    "PASS_ZERO_EXPOSED_GIANT_SUPPORT_BOXES",
+    "PASS_WINDOW_MASK_EXCLUDES_EXTERIOR_TRANSPARENCY",
+    "PASS_ZERO_WINDOWS_OR_OBJECTS_OUTSIDE_PHYSICAL_ENVELOPE",
+    "PASS_EVERY_LARGE_VOLUME_FINISHED_ALL_VISIBLE_SIDES",
+    "PASS_ZERO_GENERIC_MATERIAL_FALLBACKS",
+    "PASS_ZERO_FLOATING_CONTACTS",
+    "PASS_NEUTRAL_CONTEXTUAL_GLASS_NO_BAKED_REFLECTION",
+    "PASS_MATERIAL_TEXTURES_EXCLUDE_CARD_TEXT_LABELS_AND_BORDERS",
+    "PASS_REFERENCE_MATERIAL_TEXTURES_ARE_SEAM_SAFE",
+    "PASS_REFERENCE_SPECIFIC_FRONT_ELEVATION_STICKER_FLUSH_TO_PHYSICAL_FACADE",
+    "PASS_FACADE_STICKER_EXTERIOR_CHROMA_REMOVED_AND_DESPILLED",
+    "PASS_UNIQUE_FACADE_TOWERS_AND_PROJECTING_ROLES_HAVE_MATCHING_PHYSICAL_SUPPORT_ENVELOPES"
+  ],
+  "prework_sha256": "496964db0a735f4540dc798743f95aee0139432cf62faf26d08bed619bee0836",
+  "card_manifest_sha256": "1b2aff71dc233412811c564a0e8a2777e0e157c16312fcad1cd882f2306cfcd3",
+  "builder_self_approval": false
+}

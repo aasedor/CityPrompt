@@ -1,0 +1,196 @@
+{
+  "schema": "cityprompt.rlasm.card-manifest@6",
+  "candidate": "07-finnish-functionalist-tuberculosis-pavilion-rlasm-v7",
+  "status": "PASS_COMPLETE_REFERENCE_ROLE_MATERIAL_AND_FACADE_PREWORK",
+  "roles": [
+    {
+      "role": "patient-sun-balcony-bay",
+      "source_crop_box": [
+        0,
+        0,
+        384,
+        461
+      ],
+      "path": "cards/object-patient-sun-balcony-bay.png",
+      "bytes": 191250,
+      "sha256": "99ab2c7a10dd51dcc830e1a0d229f56be4dd763fa7fabd0fe3a656a904a79cf8"
+    },
+    {
+      "role": "curved-glazed-stair-tower",
+      "source_crop_box": [
+        384,
+        0,
+        768,
+        461
+      ],
+      "path": "cards/object-curved-glazed-stair-tower.png",
+      "bytes": 178843,
+      "sha256": "d5d5f8be5e0ff384d9b03a82e6e52447f0b79c5710d26e03b8752d53b4ee830b"
+    },
+    {
+      "role": "entrance-porte-cochere",
+      "source_crop_box": [
+        768,
+        0,
+        1152,
+        461
+      ],
+      "path": "cards/object-entrance-porte-cochere.png",
+      "bytes": 189369,
+      "sha256": "22b36ff56b997e4e8aab6c16edc380d2ad8ad78e19f08322f04dff2ad3bbb53a"
+    },
+    {
+      "role": "rooftop-solarium-canopy",
+      "source_crop_box": [
+        1152,
+        0,
+        1536,
+        461
+      ],
+      "path": "cards/object-rooftop-solarium-canopy.png",
+      "bytes": 188517,
+      "sha256": "6c4915941cac886841b87bfb08da1826e11cde36d7f1932958b45bf315b838e6"
+    },
+    {
+      "role": "brick-therapy-service-wing",
+      "source_crop_box": [
+        0,
+        440,
+        768,
+        717
+      ],
+      "path": "cards/object-brick-therapy-service-wing.png",
+      "bytes": 324402,
+      "sha256": "55a686136fdcd97a3415d6e803c90652e0b0003825edbd664bd33546e11f9771"
+    },
+    {
+      "role": "rear-bridge-utility-court",
+      "source_crop_box": [
+        768,
+        440,
+        1536,
+        717
+      ],
+      "path": "cards/object-rear-bridge-utility-court.png",
+      "bytes": 271141,
+      "sha256": "5175717a0e575a506e697304a52035ae42a15189773e26837ac5137673edea4d"
+    }
+  ],
+  "materials": [
+    {
+      "material": "warm-white-mineral-render",
+      "source_crop_box": [
+        18,
+        783,
+        238,
+        968
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-warm-white-mineral-render.png",
+      "bytes": 75876,
+      "sha256": "024e63048fae2753ba88e93a4f58c6834b7a4660f8bbf3d7959145a6f210031f"
+    },
+    {
+      "material": "pale-yellow-balcony-recess",
+      "source_crop_box": [
+        274,
+        783,
+        494,
+        968
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-pale-yellow-balcony-recess.png",
+      "bytes": 64742,
+      "sha256": "8fec66f0723978bcf086aacc1041bca45f25ba0de77d4c95273a87a356f75588"
+    },
+    {
+      "material": "muted-blue-tubular-steel",
+      "source_crop_box": [
+        530,
+        783,
+        750,
+        968
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-muted-blue-tubular-steel.png",
+      "bytes": 55890,
+      "sha256": "3ed4e0387047f74629ceb2017558f75581ec63e51640482512802e18428af5a3"
+    },
+    {
+      "material": "neutral-low-iron-glass",
+      "source_crop_box": [
+        786,
+        783,
+        1006,
+        968
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-neutral-low-iron-glass.png",
+      "bytes": 36727,
+      "sha256": "23770d55b1c511b1eb3da25016a318e271db5810c1a666e8d4a2878adda78661"
+    },
+    {
+      "material": "dark-red-service-brick",
+      "source_crop_box": [
+        1042,
+        783,
+        1262,
+        968
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-dark-red-service-brick.png",
+      "bytes": 75826,
+      "sha256": "4969e410e903742623054e7866d85fc78b7c35467c1c2c5b295a1b99950a23f8"
+    },
+    {
+      "material": "charcoal-flat-roof-membrane",
+      "source_crop_box": [
+        1298,
+        783,
+        1518,
+        968
+      ],
+      "label_and_border_excluded": true,
+      "seam_strategy": "paired wrap-edge feather; specimen interior preserved",
+      "intended_use": "reference-specific PBR specimen only",
+      "path": "materials/material-charcoal-flat-roof-membrane.png",
+      "bytes": 73634,
+      "sha256": "10c5df9aed0e57fd0f9ef77916982f6d512a7b2d0bd9649a85e793cd483c6dd4"
+    }
+  ],
+  "front_sticker": "cards/generated-front-facade-sticker.png",
+  "material_crop_contract": "specimen-only; card labels and borders excluded",
+  "builder_self_approval": false,
+  "front_sticker_source": "review/generated-front-facade-source.png",
+  "front_sticker_alpha_audit": {
+    "source_dimensions": [
+      1811,
+      868
+    ],
+    "output_dimensions": [
+      1708,
+      619
+    ],
+    "tight_alpha_bbox": [
+      52,
+      131,
+      1760,
+      750
+    ],
+    "source_transparent_pixels": 794471,
+    "source_partially_transparent_despilled_pixels": 3612,
+    "output_transparent_pixels": 279775,
+    "output_partial_pixels": 3612
+  },
+  "front_sticker_baked_reflection": false
+}
