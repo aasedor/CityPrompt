@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-08-28-catalogue-conditioned-rlasm-pilot-v119",
+  "memory_version": "2026-08-28-three-family-catalogue-conditioned-rlasm-v120",
   "quality_target": "At least the user-approved Classic Haussmann level of archetype-shaped geometry, real construction depth, photoreal material response and resilient LEGO scaling in a real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "minimum_standard": {
@@ -1087,6 +1087,26 @@
       "symptom": "A roof and footprint look correct in the hero and aerial views but rear-oblique renders reveal dark pockets, open valleys, detached gables or ambiguous junctions",
       "cause": "The review set lacked a dedicated roof-junction camera, or intersecting roof carriers were assumed to be closed because their defects were hidden by the preferred angle.",
       "correction": "Add physical valley and gable closure geometry, then require a rear-oblique proof alongside the aerial. Record whether every dark face is closed shaded construction or an actual void, and do not advance to independent keeper approval while any junction remains ambiguous."
+    },
+    {
+      "symptom": "A prepared building concept has detailed prose and materials but cannot be traced to an exact catalogue archetype, variant and compatible source-image set",
+      "cause": "Text invention was mistaken for a reference lock, so architectural identity could not be verified against immutable source evidence.",
+      "correction": "Reject the concept before building. Require exact catalogue and variant ids plus paths, byte counts, hashes and source roles for every compatible authoritative image."
+    },
+    {
+      "symptom": "A complete crown, flagpole, roof junction or courtyard exists in geometry but is cropped or unreadable in the review package",
+      "cause": "One generic dimension-derived camera formula was reused across unrelated building families.",
+      "correction": "Author a family-specific camera contract before the first build: whole silhouette, front corner, aerial topology, rear side and an identity-junction close view, all checked at phone scale."
+    },
+    {
+      "symptom": "A technically complete building with zero generic material fallbacks still reads as a simplified cousin of the authoritative source",
+      "cause": "Primitive count and physical closure were treated as proxies for family-specific hierarchy, section, joinery, ornament density and material depth.",
+      "correction": "Fail the architectural review separately from geometry. Add high-level family constructors for source-defining shoulders, joined gables, coursed masonry, lifted eaves, gate caps, relief zones and layered landscape, then repeat the phone source/model comparison."
+    },
+    {
+      "symptom": "A source-defining chimney, spandrel band, gable or moon gate exists but dominates incorrectly, disappears behind another mass or reads as attached decoration",
+      "cause": "The identity element was reviewed in only one view or sized independently of the surrounding architectural hierarchy.",
+      "correction": "Review each identity system simultaneously in front, oblique, aerial, rear-side and close views. Correct its section, continuity, supports, intersections and bay-scale segmentation before adding microdetail."
     }
   ]
 }

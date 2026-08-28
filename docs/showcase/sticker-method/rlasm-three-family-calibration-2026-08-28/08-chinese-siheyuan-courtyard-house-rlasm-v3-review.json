@@ -1,0 +1,109 @@
+{
+  "schema": "cityprompt.rlasm.full-geometry-architectural-review@1",
+  "candidate": "08-chinese-siheyuan-courtyard-house-rlasm-v3",
+  "title": "Catalogue Chinese Siheyuan Courtyard House",
+  "review_date": "2026-08-28",
+  "reviewer_role": "builder",
+  "status": "VISUAL_REWORK_REQUIRED_AFTER_FULL_ARCHITECTURAL_REVIEW",
+  "keeper_status": "NOT_A_KEEPER",
+  "source_contract": {
+    "archetype_id": "vernacular_courtyard_chinese_siheyuan",
+    "label": "Chinese Siheyuan",
+    "variant": "variant_0",
+    "catalogue_directory": "archetypes/buildings/vernacular_courtyard_housing",
+    "compatible_view_count": 3,
+    "sources": [
+      {
+        "role": "hero_facade",
+        "path": "references/catalogue/variant_0.png",
+        "bytes": 1323495,
+        "sha256": "ba2a51ea88400d0ed05b69115cedbf9b38c5f0c989a28e360eadee83e3222b8a"
+      },
+      {
+        "role": "oblique_roof",
+        "path": "references/catalogue/variant_0_angle_60.jpg",
+        "bytes": 891488,
+        "sha256": "c938a6b4a68406eefdeca18510182803430c08d4e8f4d58a88e5b686dbf166d2"
+      },
+      {
+        "role": "topology_top",
+        "path": "references/catalogue/variant_0_angle_90.jpg",
+        "bytes": 827577,
+        "sha256": "ef893171b814da692f0c74144839cfc4b2907773571b6d0865b158deb0ba0016"
+      }
+    ]
+  },
+  "locked_reference": {
+    "method": "deterministic exact-pixel composition of the three authoritative catalogue images; no generative redesign",
+    "path": "references/locked-source-board.png",
+    "bytes": 893239,
+    "sha256": "3ad16c8a459e78322b9bd28dd5dcb8a2e4584b117b6cebd684a89998ccf021a7",
+    "fidelity_review": "PASS_EXACT_SOURCE_PIXELS_AND_COMPATIBLE_VARIANT"
+  },
+  "build_evidence_sha256": "e6b8c2a3750e71ecfb9fb1e796089db88504e53a28b98701e9548c71b2606fb0",
+  "scene_sha256": "f96948eca9ca3312beccc560909f04130789a6ffb4e4f0f7fc9d3e89558b98be",
+  "glb_sha256": "4b97e8dc986f72af9fa65b5f1fc6fba81e0722882c8c5963c3b6a93e378220e2",
+  "geometry_review": {
+    "views": [
+      "front.png",
+      "front_corner.png",
+      "aerial.png",
+      "right_side.png",
+      "left_side.png",
+      "rear.png",
+      "rear_side.png",
+      "facade_close.png",
+      "architecture_close.png"
+    ],
+    "status": "PASS_COMPLETE_PHYSICAL_ENVELOPE",
+    "unresolved_blockers": []
+  },
+  "architectural_review": {
+    "source_id": "vernacular_courtyard_chinese_siheyuan / variant_0",
+    "proof": [
+      "real circular walking void",
+      "four hall groups preserve an open court",
+      "outer street and inward gallery layers remain distinct"
+    ],
+    "status": "FAIL_REWORK_REQUIRED",
+    "unresolved_blockers": [
+      "upturned eaves and ceramic roof section remain too weak",
+      "street pavilion hierarchy is flatter than the authoritative source",
+      "courtyard planting, paving and carved gate detail remain overly schematic"
+    ]
+  },
+  "material_review": {
+    "generic_fallback_count": 0,
+    "facade_sticker_count": 0,
+    "photo_projection": false,
+    "status": "PASS"
+  },
+  "discrepancy_ledger": {
+    "rejected_iterations": [
+      {
+        "candidate": "08-korean-hanok-merchant-guild-hall-rlasm-v1",
+        "reason": "text-invented concept without traceable catalogue ids or authoritative source images"
+      },
+      {
+        "candidate": "08-chinese-siheyuan-courtyard-house-rlasm-v2",
+        "reason": "blank street wall, washed-out roof family, weak red timber hierarchy and contaminated moon-gate threshold"
+      }
+    ],
+    "closed_by_final_fixes": [
+      "lower street wall",
+      "street-facing red lattice layer",
+      "darker ceramic roof family",
+      "clean two-step moon-gate threshold",
+      "courtyard-specific cameras"
+    ],
+    "unresolved_blockers": [
+      "upturned eaves and ceramic roof section remain too weak",
+      "street pavilion hierarchy is flatter than the authoritative source",
+      "courtyard planting, paving and carved gate detail remain overly schematic"
+    ]
+  },
+  "independent_keeper_approval": {
+    "status": "BLOCKED_BY_ARCHITECTURAL_REWORK",
+    "builder_self_approval": false
+  }
+}

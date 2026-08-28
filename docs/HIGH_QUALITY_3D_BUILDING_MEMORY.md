@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-08-28-catalogue-conditioned-rlasm-pilot-v119`.
+Current executable memory: `2026-08-28-three-family-catalogue-conditioned-rlasm-v120`.
 
 ## The quality target
 
@@ -1429,6 +1429,36 @@ The polychrome collegiate family added four rules for resizable hero facades:
   comparison must show authoritative source roles beside matching model views,
   state unresolved discrepancies, and remain explicitly not a keeper until an
   independent reviewer approves it.
+
+### Wave 17 three-family source/model calibration lessons
+
+- Reject prepared concepts that cannot name an exact catalogue archetype,
+  variant and immutable compatible source set. Detailed prose is not an
+  architectural source contract and must not enter the build queue.
+- Use deterministic exact-pixel source boards when compatible multi-angle
+  catalogue images already exist. They preserve evidence without introducing a
+  second generative interpretation between the catalogue and the model.
+- Author cameras per construction grammar before the first build. The framing
+  must prove the complete silhouette, roof topology, rear/side envelope and one
+  identity junction; a generic dimension-derived camera is not a review set.
+- A technically complete physical envelope can still be an architectural
+  failure. The Art Deco courthouse retained generic opening/spandrel hierarchy,
+  the log lodge retained an over-broad roof and schematic secondary sides, and
+  the Siheyuan retained weak lifted eaves and a flattened pavilion hierarchy.
+  Phone source/model comparisons exposed these gaps more reliably than isolated
+  full-resolution renders.
+- Treat family identity as high-level construction, not a count of primitives.
+  Civic setbacks need shoulder transitions and carved relief zones; lodge roofs
+  need joined gables, coursed stone and visible timber joinery; Siheyuan roofs
+  need lifted ceramic eave sections, gate caps and layered courtyard landscape.
+- Review identity systems in several views together. A continuous chimney that
+  terminates below the ridge, an existing cross-gable that reads as a detached
+  triangle, or a real circular gate embedded in a blank wall is still a source
+  mismatch.
+- Do not call a pilot builder-approved when its phone comparison reveals obvious
+  source-level hierarchy, proportion, material-depth or ornament-density gaps.
+  Record the complete physical envelope separately from the failed architectural
+  review and retain every rejected iteration as evidence.
 
 ## Updating this memory
 

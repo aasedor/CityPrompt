@@ -1,0 +1,124 @@
+{
+  "schema": "cityprompt.rlasm.keeper-review-task-list@1",
+  "batch": "rlasm-ten-building-confirmation-v5",
+  "keeper_transition_rule": "All mandatory tasks must pass after relevant fixes and repeat review; automated prework, build, contact, material, and geometry checks cannot independently assign keeper status.",
+  "comparison_chain": [
+    "authoritative_catalogue_archetype_images",
+    "locked_multi_view_reference",
+    "model_locked_camera_renders"
+  ],
+  "mandatory_tasks": [
+    {
+      "id": "source_provenance",
+      "requirement": "Record exact catalogue archetype and variant ids plus authoritative image paths, bytes, and SHA-256 hashes.",
+      "hard_failure": "Missing provenance, text-only invented reference, mixed sibling variants, or unavailable authoritative source image."
+    },
+    {
+      "id": "reference_fidelity_review",
+      "requirement": "Compare the locked reference to the archetype images for footprint, massing, floor count, proportions, roof topology, entrance, opening rhythm, material zones, and identity details.",
+      "hard_failure": "Reference redesign or drift from the authoritative archetype."
+    },
+    {
+      "id": "full_geometry_review",
+      "requirement": "Review front, corner, aerial, side, rear-side, facade-close, and glass-close renders; inspect every exterior and courtyard volume, roof junction, opening, projection, support, contact, circulation void, and service elevation.",
+      "hard_failure": "Unfinished, floating, unsupported, hidden, intersecting, generic-carrier, or topologically incorrect geometry."
+    },
+    {
+      "id": "full_architectural_review",
+      "requirement": "Verify structural grammar, program, hierarchy, public entrance, roofline, material character, glazing system, and distinctive silhouette against both source tiers.",
+      "hard_failure": "The model is detailed but represents a different architectural identity or program."
+    },
+    {
+      "id": "relevant_fixes_complete",
+      "requirement": "Record every discrepancy, apply the relevant reference, geometry, architectural, material, and glazing fixes, and regenerate the complete locked review set.",
+      "hard_failure": "Any blocker remains open or only the hero view was corrected."
+    },
+    {
+      "id": "repeat_review_pass",
+      "requirement": "Repeat the complete three-way review against the corrected on-disk GLB and record zero unresolved blockers.",
+      "hard_failure": "Fixes were not re-rendered and independently re-reviewed."
+    },
+    {
+      "id": "independent_keeper_approval",
+      "requirement": "A reviewer other than the builder records the decision, evidence paths, review date, and zero unresolved blockers.",
+      "hard_failure": "Builder self-approval, inferred approval, or promotion from automated checks."
+    }
+  ],
+  "valid_preapproval_states": [
+    "awaiting_visual_qa",
+    "visual_rework_required",
+    "rejected"
+  ],
+  "candidate_tasks": [
+    {
+      "candidate": "01-ottoman-revival-ferry-terminal-rlasm-v3",
+      "state": "visual_rework_required",
+      "mandatory_task_status": "pending_full_review_and_fixes"
+    },
+    {
+      "candidate": "02-basque-regionalist-mountain-hotel-rlasm-v6",
+      "state": "visual_rework_required",
+      "mandatory_task_status": "pending_full_review_and_fixes"
+    },
+    {
+      "candidate": "03-brazilian-colonial-baroque-civic-archive-rlasm-v4",
+      "state": "visual_rework_required",
+      "mandatory_task_status": "pending_full_review_and_fixes"
+    },
+    {
+      "candidate": "04-googie-roadside-motel-rlasm-v2",
+      "state": "visual_rework_required",
+      "mandatory_task_status": "pending_full_review_and_fixes"
+    },
+    {
+      "candidate": "04-highway-motor-hotel-roadside-motel-rlasm-v5",
+      "state": "awaiting_visual_qa",
+      "mandatory_task_status": "builder_geometry_and_architectural_review_passed; independent_keeper_approval_pending"
+    },
+    {
+      "candidate": "05-moroccan-art-deco-post-office-rlasm-v1",
+      "state": "rejected",
+      "mandatory_task_status": "hard_failure_text_invented_without_traceable_catalogue_source"
+    },
+    {
+      "candidate": "05-art-deco-judicial-courthouse-rlasm-v3",
+      "state": "visual_rework_required",
+      "mandatory_task_status": "full_geometry_passed; full_architectural_review_failed; see review/full-geometry-architectural-review.json"
+    },
+    {
+      "candidate": "06-norwegian-dragon-style-mountain-lodge-rlasm-v1",
+      "state": "rejected",
+      "mandatory_task_status": "hard_failure_text_invented_without_traceable_catalogue_source"
+    },
+    {
+      "candidate": "06-grand-log-lodge-rlasm-v6",
+      "state": "visual_rework_required",
+      "mandatory_task_status": "full_geometry_passed; full_architectural_review_failed; see review/full-geometry-architectural-review.json"
+    },
+    {
+      "candidate": "07-indo-saracenic-railway-station-rlasm-v1",
+      "state": "awaiting_visual_qa",
+      "mandatory_task_status": "pending_full_review_and_fixes"
+    },
+    {
+      "candidate": "08-korean-hanok-merchant-guild-hall-rlasm-v1",
+      "state": "rejected",
+      "mandatory_task_status": "hard_failure_text_invented_without_traceable_catalogue_source"
+    },
+    {
+      "candidate": "08-chinese-siheyuan-courtyard-house-rlasm-v3",
+      "state": "visual_rework_required",
+      "mandatory_task_status": "full_geometry_passed; full_architectural_review_failed; see review/full-geometry-architectural-review.json"
+    },
+    {
+      "candidate": "09-italian-rationalist-seaside-colony-rlasm-v1",
+      "state": "awaiting_visual_qa",
+      "mandatory_task_status": "pending_full_review_and_fixes"
+    },
+    {
+      "candidate": "10-quebec-second-empire-fire-hall-rlasm-v1",
+      "state": "awaiting_visual_qa",
+      "mandatory_task_status": "pending_full_review_and_fixes"
+    }
+  ]
+}
