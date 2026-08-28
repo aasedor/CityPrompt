@@ -1,0 +1,29 @@
+{
+  "schema": "cityprompt.rlasm.phone-keeper-comparison@1",
+  "published_date": "2026-08-28",
+  "reviewed_keeper_count": 14,
+  "v4": {
+    "reviewed_keepers": 10,
+    "source_commit": "10e4c88dfd1ac86139eb30ef7bceb5091df5a9a6",
+    "file": "rlasm-reviewed-keepers-v4-phone.png",
+    "width": 1800,
+    "height": 3160,
+    "bytes": 2283527,
+    "sha256": "863f471c464d4e99c064b2f6b1fbf8b150014310339bc292856cfcbbedf05172"
+  },
+  "v5": {
+    "reviewed_keepers": 4,
+    "unfinished_candidates": 6,
+    "candidates": [
+      "01-ottoman-revival-ferry-terminal-rlasm-v3",
+      "02-basque-regionalist-mountain-hotel-rlasm-v6",
+      "03-brazilian-colonial-baroque-civic-archive-rlasm-v4",
+      "04-googie-roadside-motel-rlasm-v2"
+    ],
+    "file": "rlasm-reviewed-keepers-v5-phone.png",
+    "width": 1800,
+    "height": 1640,
+    "bytes": 1493218,
+    "sha256": "7021ab0286af644d0252ffc1c1ab0882347eb07d9cc12a5c485ecfa24af7a1b3"
+  }
+}
