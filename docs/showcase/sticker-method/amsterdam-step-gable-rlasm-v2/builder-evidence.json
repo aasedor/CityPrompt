@@ -1,0 +1,200 @@
+{
+  "schema": "cityprompt.rlasm.build-evidence@1",
+  "candidate": "02-amsterdam-step-gable-rlasm-v2",
+  "method": "RLASM 1.7.0",
+  "status": "PASS_BUILDER_EVIDENCE_AWAITING_INDEPENDENT_VISUAL_QA",
+  "scene": {
+    "path": "model/02-amsterdam-step-gable-rlasm-v2.blend",
+    "bytes": 393152,
+    "sha256": "d73330b127cb0427452603ddbf34f9bf2e285aa2dea1b0fa1dda264c1c991e7d"
+  },
+  "glb": {
+    "path": "model/02-amsterdam-step-gable-rlasm-v2.glb",
+    "bytes": 3887892,
+    "sha256": "723a34845f213cb4bf954aacdfb184ec52f3a90849dad1bc9ddd25db6cde7d41"
+  },
+  "renders": [
+    {
+      "path": "renders/aerial.png",
+      "bytes": 1557653,
+      "sha256": "50f4102a9c3c06e8f144a02e1fbdcd97f3040632a6b987fb144c10f4ba38236b"
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 1337265,
+      "sha256": "2122460c46cd8062cf7b65a21e092eebe2e271ce0eed4d6187f6e12e3b1dc998"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 1611048,
+      "sha256": "ec1c66408a45a3f4bb18d0df9aeb37e43f1bd499bd3d9f346b7be7f91b697edc"
+    },
+    {
+      "path": "renders/gable_close.png",
+      "bytes": 1671082,
+      "sha256": "5c2e6b0afbf861c30e2c6541a35cf4922d1cfa1c451b46b8834b98520c08e2d8"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 1823523,
+      "sha256": "498951c2f4134694894dc02136527593d7f7150f498f1619a2bd39afc8ce8ee8"
+    },
+    {
+      "path": "renders/preview.png",
+      "bytes": 1611048,
+      "sha256": "ec1c66408a45a3f4bb18d0df9aeb37e43f1bd499bd3d9f346b7be7f91b697edc"
+    },
+    {
+      "path": "renders/side.png",
+      "bytes": 1662867,
+      "sha256": "0525d7e6c68ccc56a63d3a438739a4b97bfe39b724d19a1fe3e235adebac8fb4"
+    }
+  ],
+  "material_audit": {
+    "building_material_count": 12,
+    "materials": [
+      {
+        "name": "MAT_Amsterdam_DarkGreenTimber_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked near-black green sash/entry/hoist timber reconstruction",
+        "source_sha256": "4f564e9b4c71b08495a70a47afcb20b7e043deb42c2ff8728653c1ab65881d69",
+        "mapping": "shared_object_coordinate_anchor_real_unit_repeat"
+      },
+      {
+        "name": "MAT_Amsterdam_DarkVariegatedPantile_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked oblique/aerial dark clay pantile reconstruction",
+        "source_sha256": "37cf9273eb5c87c3880e82dfd166c7b06b7a66f2ee0a064e3e80e48d81ce1fc6",
+        "mapping": "shared_object_coordinate_anchor_real_unit_repeat"
+      },
+      {
+        "name": "MAT_Amsterdam_HardwareAgedBrass_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked entry/lantern hardware finish",
+        "source_sha256": null,
+        "mapping": null
+      },
+      {
+        "name": "MAT_Amsterdam_LanternIron_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked Renaissance entry lantern iron",
+        "source_sha256": null,
+        "mapping": null
+      },
+      {
+        "name": "MAT_Amsterdam_NeutralLowIron_RLASM_v22Module",
+        "status": "reference_specific_finished",
+        "provenance": "approved reusable RLASM 1.7.0 physical low-iron glass; neutral current-scene reflections only",
+        "source_sha256": null,
+        "mapping": null
+      },
+      {
+        "name": "MAT_Amsterdam_NeutralLowIron_RLASM_v22Module.001",
+        "status": "reference_specific_finished",
+        "provenance": "approved reusable RLASM 1.7.0 physical low-iron glass; neutral current-scene reflections only",
+        "source_sha256": null,
+        "mapping": null
+      },
+      {
+        "name": "MAT_Amsterdam_RenaissanceBrick_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked step_gable_renaissance red-brown brick reconstruction",
+        "source_sha256": "39f33b52cb127b917b93eb0cbf6bfda7e628ae8535ae57efe8b85715271b69a6",
+        "mapping": "shared_object_coordinate_anchor_real_unit_repeat"
+      },
+      {
+        "name": "MAT_Amsterdam_RoomProxyLuminaire_v1",
+        "status": "reference_specific_finished",
+        "provenance": "modeled luminaire proxy, no photography",
+        "source_sha256": null,
+        "mapping": null
+      },
+      {
+        "name": "MAT_Amsterdam_RoomProxyOakFloor_v1",
+        "status": "reference_specific_finished",
+        "provenance": "modeled room proxy, no photography",
+        "source_sha256": null,
+        "mapping": null
+      },
+      {
+        "name": "MAT_Amsterdam_RoomProxyPartition_v1",
+        "status": "reference_specific_finished",
+        "provenance": "modeled room proxy, no photography",
+        "source_sha256": null,
+        "mapping": null
+      },
+      {
+        "name": "MAT_Amsterdam_RoomProxyWarmPlaster_v1",
+        "status": "reference_specific_finished",
+        "provenance": "modeled room proxy, no photography",
+        "source_sha256": null,
+        "mapping": null
+      },
+      {
+        "name": "MAT_Amsterdam_WarmCarvedSandstone_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked Renaissance sandstone cap/scroll/finial reconstruction",
+        "source_sha256": "8fcc278b4fbbdfbde23410f50146c38f3af17d7469c940b13cff72d70ab23a8c",
+        "mapping": "shared_object_coordinate_anchor_real_unit_repeat"
+      }
+    ],
+    "generic_fallback_count": 0,
+    "all_reference_specific_finished": true,
+    "glass": {
+      "material": "MAT_Amsterdam_NeutralLowIron_RLASM_v22Module",
+      "image_texture_count": 0,
+      "linked_base_color_count": 0,
+      "reflection_source": "current_scene_world_lights_geometry_only",
+      "neutral": true
+    }
+  },
+  "contact_audit": {
+    "schema": "cityprompt.rlasm.contact-audit@1",
+    "candidate": "02-amsterdam-step-gable-rlasm-v2",
+    "records": [
+      {
+        "role": "stepped_gable_tiers",
+        "carrier": "each distinct brick tier overlaps lower tier and sandstone cap",
+        "floating": false
+      },
+      {
+        "role": "scrolls_and_ball_finials",
+        "carrier": "each ornament intersects its authored sandstone pedestal",
+        "floating": false
+      },
+      {
+        "role": "hoisting_beam",
+        "carrier": "passes through apex carrier",
+        "floating": false
+      },
+      {
+        "role": "pitched_roof_slopes",
+        "carrier": "overlap eaves, ridge and front/rear carriers",
+        "floating": false
+      },
+      {
+        "role": "dormer",
+        "carrier": "dormer base penetrates roof slope and cap rests on carrier",
+        "floating": false
+      },
+      {
+        "role": "rear_courtyard_transition",
+        "carrier": "annex overlaps rear carrier; flat roof rests on annex",
+        "floating": false
+      },
+      {
+        "role": "windows_and_glass",
+        "carrier": "true boolean apertures with physical returns and frames",
+        "floating": false
+      },
+      {
+        "role": "door_hardware_and_lanterns",
+        "carrier": "hardware overlaps leaf; lantern brackets intersect facade",
+        "floating": false
+      }
+    ],
+    "floating_count": 0,
+    "status": "PASS_ZERO_FLOATING"
+  },
+  "builder_self_approval": false
+}

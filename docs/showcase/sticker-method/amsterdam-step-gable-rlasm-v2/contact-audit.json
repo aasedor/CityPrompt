@@ -1,0 +1,48 @@
+{
+  "schema": "cityprompt.rlasm.contact-audit@1",
+  "candidate": "02-amsterdam-step-gable-rlasm-v2",
+  "records": [
+    {
+      "role": "stepped_gable_tiers",
+      "carrier": "each distinct brick tier overlaps lower tier and sandstone cap",
+      "floating": false
+    },
+    {
+      "role": "scrolls_and_ball_finials",
+      "carrier": "each ornament intersects its authored sandstone pedestal",
+      "floating": false
+    },
+    {
+      "role": "hoisting_beam",
+      "carrier": "passes through apex carrier",
+      "floating": false
+    },
+    {
+      "role": "pitched_roof_slopes",
+      "carrier": "overlap eaves, ridge and front/rear carriers",
+      "floating": false
+    },
+    {
+      "role": "dormer",
+      "carrier": "dormer base penetrates roof slope and cap rests on carrier",
+      "floating": false
+    },
+    {
+      "role": "rear_courtyard_transition",
+      "carrier": "annex overlaps rear carrier; flat roof rests on annex",
+      "floating": false
+    },
+    {
+      "role": "windows_and_glass",
+      "carrier": "true boolean apertures with physical returns and frames",
+      "floating": false
+    },
+    {
+      "role": "door_hardware_and_lanterns",
+      "carrier": "hardware overlaps leaf; lantern brackets intersect facade",
+      "floating": false
+    }
+  ],
+  "floating_count": 0,
+  "status": "PASS_ZERO_FLOATING"
+}

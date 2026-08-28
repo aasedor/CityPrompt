@@ -1,0 +1,80 @@
+{
+  "schema": "cityprompt.rlasm.final-visual-qa@1",
+  "candidate": "02-amsterdam-step-gable-rlasm-v2",
+  "method": "RLASM 1.7.0",
+  "status": "PASS_REVIEWED_PILOT_READY_FOR_GIT_HANDOFF",
+  "score": 95,
+  "hard_stops": [],
+  "review": {
+    "reference_identity": "PASS",
+    "complete_narrow_deep_massing": "PASS",
+    "physical_step_gable_and_roof": "PASS",
+    "distinct_step_caps_balls_relief_and_apex": "PASS",
+    "true_apertures_and_returns": "PASS",
+    "entry_present_and_recessed": "PASS",
+    "neutral_scene_only_physical_glass": "PASS",
+    "baked_reflection_or_photographed_backing": "ABSENT",
+    "generic_material_fallback": 0,
+    "floating_count": 0
+  },
+  "cosmetic_findings": [
+    "Carved gable relief is stylized for CityPrompt scale rather than a literal high-poly stone sculpture.",
+    "Windows remain intentionally neutral/dark; reflections come only from the current scene."
+  ],
+  "artifacts": {
+    "comparison_sheet": {
+      "path": "review-comparison-sheet.png",
+      "bytes": 3333762,
+      "sha256": "bf0c0cfe8aec9355bc5262f7346140c2a54ac362eaa06411a1d95c39519caca7"
+    },
+    "scene": {
+      "path": "model/02-amsterdam-step-gable-rlasm-v2.blend",
+      "bytes": 393152,
+      "sha256": "d73330b127cb0427452603ddbf34f9bf2e285aa2dea1b0fa1dda264c1c991e7d"
+    },
+    "glb": {
+      "path": "model/02-amsterdam-step-gable-rlasm-v2.glb",
+      "bytes": 3887892,
+      "sha256": "723a34845f213cb4bf954aacdfb184ec52f3a90849dad1bc9ddd25db6cde7d41"
+    },
+    "renders": [
+      {
+        "path": "renders/aerial.png",
+        "bytes": 1557653,
+        "sha256": "50f4102a9c3c06e8f144a02e1fbdcd97f3040632a6b987fb144c10f4ba38236b"
+      },
+      {
+        "path": "renders/front.png",
+        "bytes": 1337265,
+        "sha256": "2122460c46cd8062cf7b65a21e092eebe2e271ce0eed4d6187f6e12e3b1dc998"
+      },
+      {
+        "path": "renders/front_corner.png",
+        "bytes": 1611048,
+        "sha256": "ec1c66408a45a3f4bb18d0df9aeb37e43f1bd499bd3d9f346b7be7f91b697edc"
+      },
+      {
+        "path": "renders/gable_close.png",
+        "bytes": 1671082,
+        "sha256": "5c2e6b0afbf861c30e2c6541a35cf4922d1cfa1c451b46b8834b98520c08e2d8"
+      },
+      {
+        "path": "renders/glass_close.png",
+        "bytes": 1823523,
+        "sha256": "498951c2f4134694894dc02136527593d7f7150f498f1619a2bd39afc8ce8ee8"
+      },
+      {
+        "path": "renders/preview.png",
+        "bytes": 1611048,
+        "sha256": "ec1c66408a45a3f4bb18d0df9aeb37e43f1bd499bd3d9f346b7be7f91b697edc"
+      },
+      {
+        "path": "renders/side.png",
+        "bytes": 1662867,
+        "sha256": "0525d7e6c68ccc56a63d3a438739a4b97bfe39b724d19a1fe3e235adebac8fb4"
+      }
+    ]
+  },
+  "builder_self_approval": false,
+  "reviewer_note": "Final visual review follows a preserved v1 rejection and focused v2 material/ornament correction."
+}

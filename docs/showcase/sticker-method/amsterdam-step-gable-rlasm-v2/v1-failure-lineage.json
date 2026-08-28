@@ -1,0 +1,22 @@
+{
+  "schema": "cityprompt.rlasm.focused-correction-lineage@1",
+  "candidate": "02-amsterdam-step-gable-rlasm-v2",
+  "parent": "02-amsterdam-step-gable-rlasm-v1",
+  "parent_status": "FAIL_VISUAL_GENERIC_GABLE_ORNAMENT",
+  "unchanged": [
+    "massing",
+    "roof planes",
+    "apertures",
+    "windows",
+    "door",
+    "glass",
+    "context",
+    "cameras"
+  ],
+  "authorized_corrections": [
+    "replace repeated round-loop scroll abstraction with nested carved S-volute/leaf relief",
+    "warm the sandstone finish to the locked cream/tan reference family"
+  ],
+  "parent_stone_sha256": "799aeac88f7f8ebd91b8a8f2cd8dd06fc919ae4be5d31a74e377834d38e565c2",
+  "corrected_stone_sha256": "8fcc278b4fbbdfbde23410f50146c38f3af17d7469c940b13cff72d70ab23a8c"
+}
