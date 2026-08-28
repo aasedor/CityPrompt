@@ -1,0 +1,147 @@
+{
+  "schema": "cityprompt.rlasm.build-evidence@2",
+  "candidate": "02-japanese-machiya-mixed-use-rlasm-v4",
+  "title": "Japanese Machiya Mixed Use",
+  "method": "RLASM reference-lock + atomic-role construction",
+  "status": "PASS_BUILDER_EVIDENCE_AWAITING_VISUAL_QA",
+  "scene": {
+    "path": "model/02-japanese-machiya-mixed-use-rlasm-v4.blend",
+    "bytes": 186050,
+    "sha256": "d0f37821b0aa11790e30e18aad4f51ae27abda9ff1e1df41f9e907d85efb92e6"
+  },
+  "glb": {
+    "path": "model/02-japanese-machiya-mixed-use-rlasm-v4.glb",
+    "bytes": 3548060,
+    "sha256": "7098d2afa2a94c77d47daa52b0b9bcb56e45dbfbf98c727ed79b863db5f750d5"
+  },
+  "renders": [
+    {
+      "path": "renders/aerial.png",
+      "bytes": 1319031,
+      "sha256": "0a16f1efa76ffff1915da64bf705e93a7c58fc73b9bbca7a43d4a8ed8d6b4e26"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "bytes": 1350965,
+      "sha256": "1e18fd538075fc2f57031ba45ba0f2b0a22ee3609b8d8bd666256e70fbdc881a"
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 1247317,
+      "sha256": "8568773b0c57f887af0ed02ab464b8ceedbfe2b7eeca4284498136a79959d791"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 1414347,
+      "sha256": "19aa118af9edb79ecc85a7b441a9379b7a0f31a5ab2cb4b9444115f1bb1d98d7"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 1198302,
+      "sha256": "bef9c2cfe65682b34d33577ee524e4ea9843cf6887ad0c13fde1f3743b271ed9"
+    },
+    {
+      "path": "renders/preview.png",
+      "bytes": 1414347,
+      "sha256": "19aa118af9edb79ecc85a7b441a9379b7a0f31a5ab2cb4b9444115f1bb1d98d7"
+    },
+    {
+      "path": "renders/side.png",
+      "bytes": 1117079,
+      "sha256": "18470d68ef2ad51f3172c20d47e9681eab7b6b5005e138cf3c70e07191919875"
+    }
+  ],
+  "object_count": 183,
+  "material_audit": {
+    "building_material_count": 7,
+    "materials": [
+      {
+        "name": "MAT_Machiya_Cedar_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 02-japanese-machiya-mixed-use-rlasm-v4 card-derived material crop",
+        "source_sha256": "0fd7b316f6e5121e4a37fe08e50f050b2eb31d13af226bebaf96e6565db34512"
+      },
+      {
+        "name": "MAT_Machiya_GeneratedAtomicFacadeSticker",
+        "status": "reference_specific_finished",
+        "provenance": "built-in image generation from locked RLASM prework reference sheet",
+        "source_sha256": "657aa5f60de36e8e7b2d81118324aa2b800dd408df9d670a3db4a9fa084f254d"
+      },
+      {
+        "name": "MAT_Machiya_Indigo_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 02-japanese-machiya-mixed-use-rlasm-v4 card-derived material crop",
+        "source_sha256": "17f42b84159aabc2534fe5f0902363ce511a889e0c8d4dc3e2df041ea9a7de17"
+      },
+      {
+        "name": "MAT_Machiya_InteriorShadow",
+        "status": "reference_specific_finished",
+        "provenance": "modeled machiya shadow interior",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_Machiya_Paper_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 02-japanese-machiya-mixed-use-rlasm-v4 card-derived material crop",
+        "source_sha256": "acc4447e2985147ab9d8809e6f65d7abdb1a167201a7c49d97f62eed325d3553"
+      },
+      {
+        "name": "MAT_Machiya_Plaster_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 02-japanese-machiya-mixed-use-rlasm-v4 card-derived material crop",
+        "source_sha256": "a5f9d174dbdff82f559176d617ec497df43a303999a3faa79c698989776b7a60"
+      },
+      {
+        "name": "MAT_Machiya_Tile_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 02-japanese-machiya-mixed-use-rlasm-v4 card-derived material crop",
+        "source_sha256": "13567b9cfada326bcb1e5bc1b9260c3e511bed463a3bee2110584e5decfe764d"
+      }
+    ],
+    "generic_fallback_count": 0,
+    "all_reference_specific_finished": true,
+    "glass": {
+      "material": "MAT_Machiya_NeutralLowIron_Physical_v22",
+      "image_texture_count": 0,
+      "baked_reflection": false,
+      "reflection_source": "current_scene_world_lights_geometry_only",
+      "neutral_scene_only": true
+    }
+  },
+  "contact_audit": {
+    "schema": "cityprompt.rlasm.contact-audit@2",
+    "candidate": "02-japanese-machiya-mixed-use-rlasm-v4",
+    "records": [
+      {
+        "claim": "all lattice rails intersect perimeter frames",
+        "floating": false
+      },
+      {
+        "claim": "ground eave overlaps facade ledger and brackets",
+        "floating": false
+      },
+      {
+        "claim": "roof slabs overlap wall plates",
+        "floating": false
+      },
+      {
+        "claim": "noren rod intersects timber posts",
+        "floating": false
+      },
+      {
+        "claim": "atomic facade sticker carrier intersects physical shell; transparent openings reveal modeled neutral glass",
+        "floating": false
+      }
+    ],
+    "floating_count": 0,
+    "status": "PASS_ZERO_FLOATING"
+  },
+  "hard_gates": [
+    "two distinct lattice densities",
+    "deep tiled eaves",
+    "timber-plaster gable grid",
+    "recessed noren entry",
+    "zero floating lattice"
+  ],
+  "builder_self_approval": false
+}

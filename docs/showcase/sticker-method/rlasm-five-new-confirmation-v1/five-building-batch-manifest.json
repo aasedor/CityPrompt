@@ -1,0 +1,56 @@
+{
+  "schema": "cityprompt.rlasm.five-building-confirmation-batch@1",
+  "status": "PASS_FINITE_BATCH_FIVE_NEW_BUILDINGS",
+  "method": "RLASM with full prework and generated atomic facade cards on physical Blender carriers",
+  "count": 5,
+  "minimum_score": 95,
+  "comparison_sheet": {
+    "path": "five-building-comparison-sheet.png",
+    "bytes": 4174954,
+    "sha256": "7f711c8101c4a836ceeb0b21d240af8387d9993e2ceebd78074539dfa757dbbf"
+  },
+  "buildings": [
+    {
+      "candidate": "01-barcelona-mercat-rlasm-v6",
+      "title": "Barcelona Mercat",
+      "score": 95,
+      "qa_sha256": "aff6ff63568808cf557dc856fcd98a56ca738a14334b4c9d2b707be997cd4027",
+      "scene_sha256": "719f598676daeee38c9840dd35d73807486949e599899a393e76fa91cc237ee1",
+      "glb_sha256": "a15b691a23c95b7569485b7baed48035546cb996470ee0954017f49d6374c451"
+    },
+    {
+      "candidate": "02-japanese-machiya-mixed-use-rlasm-v4",
+      "title": "Japanese Machiya Mixed Use",
+      "score": 96,
+      "qa_sha256": "d7a2d44f39877a9fcaebe73b28c11f8116b34997e279d356c80470f21e9593f7",
+      "scene_sha256": "d0f37821b0aa11790e30e18aad4f51ae27abda9ff1e1df41f9e907d85efb92e6",
+      "glb_sha256": "7098d2afa2a94c77d47daa52b0b9bcb56e45dbfbf98c727ed79b863db5f750d5"
+    },
+    {
+      "candidate": "03-deco-theater-mainstreet-rlasm-v4",
+      "title": "Deco Theater Mainstreet",
+      "score": 96,
+      "qa_sha256": "fb91243264f61370258a7eaf2ad69dc1fbf6e533876f4929a60f094bdd54369c",
+      "scene_sha256": "802fd6feb59f06bbd3e687f3f96dc92e5e1ab680260f247b505a7e41c70b8225",
+      "glb_sha256": "1d5e5930f15f7514e4d4c8d91462b52258f8734d2286941c750c14fedd79243e"
+    },
+    {
+      "candidate": "04-mountain-alpine-chalet-rlasm-v4",
+      "title": "Mountain Alpine Chalet",
+      "score": 96,
+      "qa_sha256": "ce78ed56659aee76a17b3cf5dfda4a282da1548dfe3e756db6f229c29baa5667",
+      "scene_sha256": "c0528ad5639aa2fb578563069045389625f53c87cd6860180bb36ece8ef0fe3b",
+      "glb_sha256": "bcf5310efdedaf75321099c6577cf21783f6178167de07f6c856e50d56f37ce1"
+    },
+    {
+      "candidate": "05-brutalist-institutional-rlasm-v3",
+      "title": "Brutalist Institutional",
+      "score": 95,
+      "qa_sha256": "25a0c013c493a87d39302c3cc82b0e8ac2e840355278f420533f967141cebd00",
+      "scene_sha256": "1e41a04aff6dc69e82ad78aed7d7356c0c5f74cfb1cc0e1baa0fabffb279dbd3",
+      "glb_sha256": "655a8056264cebb7fbf92dce6036ab4d65cb1c454abd20c70110531cc9759136"
+    }
+  ],
+  "source_assets_in_git": "reviewed PNGs, manifests and QA evidence only; heavyweight .blend/.glb remain in ignored artifact storage",
+  "builder_self_approval": false
+}

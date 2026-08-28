@@ -1,0 +1,221 @@
+{
+  "schema": "cityprompt.rlasm.build-evidence@2",
+  "candidate": "01-barcelona-mercat-rlasm-v6",
+  "title": "Barcelona Mercat",
+  "method": "RLASM reference-lock + atomic-role construction",
+  "status": "PASS_BUILDER_EVIDENCE_AWAITING_VISUAL_QA",
+  "scene": {
+    "path": "model/01-barcelona-mercat-rlasm-v6.blend",
+    "bytes": 204370,
+    "sha256": "719f598676daeee38c9840dd35d73807486949e599899a393e76fa91cc237ee1"
+  },
+  "glb": {
+    "path": "model/01-barcelona-mercat-rlasm-v6.glb",
+    "bytes": 3448788,
+    "sha256": "a15b691a23c95b7569485b7baed48035546cb996470ee0954017f49d6374c451"
+  },
+  "renders": [
+    {
+      "path": "renders/aerial.png",
+      "bytes": 1323602,
+      "sha256": "b48baf77f8da54b962cf94881c96f5f64efb57157436d7a4b9f814c395972d76"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "bytes": 1766623,
+      "sha256": "78714a58614bf9079663f1da53392a3d0636b162d97a3cad6e1ed7aa1032403c"
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 1370043,
+      "sha256": "143f493152dad9da283fea92c08df1c2ee6b1c0d51002d929f2fe440bc9f5ab3"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 1531648,
+      "sha256": "49f45e56caf72b85bdb946964bae3c06284e6b2ad8f24bb09eced3e6cd47ff5f"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 1465288,
+      "sha256": "1ebed880fed02e80935ec2eb1233e53a6a8d397599a0c8a25b72c9846a45c801"
+    },
+    {
+      "path": "renders/preview.png",
+      "bytes": 1531648,
+      "sha256": "49f45e56caf72b85bdb946964bae3c06284e6b2ad8f24bb09eced3e6cd47ff5f"
+    },
+    {
+      "path": "renders/side.png",
+      "bytes": 1152001,
+      "sha256": "12c0a1ed2b38ac1680153c8eabf807e90a3547c0d3fcae8f4634af3ea19a239c"
+    }
+  ],
+  "object_count": 191,
+  "material_audit": {
+    "building_material_count": 18,
+    "materials": [
+      {
+        "name": "MAT_Barcelona_AwningBlue_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked striped market awning blue",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_Barcelona_AwningGold_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked striped market awning gold",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_Barcelona_AwningRed_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked striped market awning red",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_Barcelona_CrestGold",
+        "status": "reference_specific_finished",
+        "provenance": "locked polychrome medallion gold",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_Barcelona_CrestRed",
+        "status": "reference_specific_finished",
+        "provenance": "locked polychrome medallion red",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_Barcelona_MarketFloor",
+        "status": "reference_specific_finished",
+        "provenance": "reference-specific market floor",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_Barcelona_MarketInterior",
+        "status": "reference_specific_finished",
+        "provenance": "modeled warm market interior, no photography",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_Barcelona_ProduceCrate",
+        "status": "reference_specific_finished",
+        "provenance": "reference-specific produce stall crate",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_Barcelona_ProduceGold",
+        "status": "reference_specific_finished",
+        "provenance": "locked citrus produce cue",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_Barcelona_ProduceGreen",
+        "status": "reference_specific_finished",
+        "provenance": "locked leafy produce cue",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_Barcelona_ProduceRed",
+        "status": "reference_specific_finished",
+        "provenance": "locked tomato and pepper cue",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_Barcelona_StallLampGlow",
+        "status": "reference_specific_finished",
+        "provenance": "modeled warm market lamp",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_Barcelona_TerracottaRoof_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked warm terracotta market roof card",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_Market_Brick_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 01-barcelona-mercat-rlasm-v6 card-derived material crop",
+        "source_sha256": "3fbbf1615e277419fd36d6c2420ce766721e73b395d6d26f3040d73a82cc87c6"
+      },
+      {
+        "name": "MAT_Market_GeneratedAtomicFacadeSticker",
+        "status": "reference_specific_finished",
+        "provenance": "built-in image generation from locked RLASM prework reference sheet",
+        "source_sha256": "8bfb1c4bf290ee06507b62751970c89831388eea232c7c5382d7e7d641109b8f"
+      },
+      {
+        "name": "MAT_Market_Iron_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 01-barcelona-mercat-rlasm-v6 card-derived material crop",
+        "source_sha256": "a7df22d874c2a5fc424ef11be12e13c7a29fa5141da1a5806ad0808dbea80b85"
+      },
+      {
+        "name": "MAT_Market_NeutralLowIron_Physical_v22",
+        "status": "reference_specific_finished",
+        "provenance": "RLASM reusable neutral physical low-iron glass module v22",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_Market_Stucco_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 01-barcelona-mercat-rlasm-v6 card-derived material crop",
+        "source_sha256": "d139a892f11a7c61b69ceae486dbdb73b88dc56f057e77c49041c36f33793b65"
+      }
+    ],
+    "generic_fallback_count": 0,
+    "all_reference_specific_finished": true,
+    "glass": {
+      "material": "MAT_Market_NeutralLowIron_Physical_v22",
+      "image_texture_count": 0,
+      "baked_reflection": false,
+      "reflection_source": "current_scene_world_lights_geometry_only",
+      "neutral_scene_only": true
+    }
+  },
+  "contact_audit": {
+    "schema": "cityprompt.rlasm.contact-audit@2",
+    "candidate": "01-barcelona-mercat-rlasm-v6",
+    "records": [
+      {
+        "claim": "awnings rear edges intersect spandrels",
+        "floating": false
+      },
+      {
+        "claim": "clerestory lattices intersect frames",
+        "floating": false
+      },
+      {
+        "claim": "roof arms overlap at central ridge",
+        "floating": false
+      },
+      {
+        "claim": "produce counters rest on market slab",
+        "floating": false
+      },
+      {
+        "claim": "upper brick perimeter supports both roof arms",
+        "floating": false
+      },
+      {
+        "claim": "stall lamps hang from spandrel ledger",
+        "floating": false
+      },
+      {
+        "claim": "atomic facade sticker carrier intersects physical shell; transparent openings reveal modeled neutral glass",
+        "floating": false
+      }
+    ],
+    "floating_count": 0,
+    "status": "PASS_ZERO_FLOATING"
+  },
+  "hard_gates": [
+    "double-height iron clerestory",
+    "open market bays",
+    "corner brick piers",
+    "polychrome crest",
+    "zero floating awnings"
+  ],
+  "builder_self_approval": false
+}

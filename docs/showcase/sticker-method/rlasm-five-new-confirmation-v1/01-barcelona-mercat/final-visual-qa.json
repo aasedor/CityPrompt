@@ -1,0 +1,44 @@
+{
+  "schema": "cityprompt.rlasm.final-visual-qa@1",
+  "candidate": "01-barcelona-mercat-rlasm-v6",
+  "title": "Barcelona Mercat",
+  "status": "PASS_SHOWCASE_RLASM_95_PLUS",
+  "score": 95,
+  "method": "RLASM reference lock, role decomposition, unique cards, physical 3D carrier, neutral contextual glass, rendered comparison, bounded correction",
+  "hard_gates": {
+    "reference_prework_present": true,
+    "atomic_role_card_sheet_present": true,
+    "generated_reference_specific_facade_card_present": true,
+    "actual_blender_scene_present": true,
+    "actual_glb_present": true,
+    "neutral_scene_only_physical_glass": true,
+    "baked_reflection_absent": true,
+    "generic_material_fallback_count": 0,
+    "floating_contact_count": 0,
+    "duplicate_facade_role_count": 0
+  },
+  "visual_review": {
+    "reference_identity_preserved": true,
+    "massing_and_roof_readable": true,
+    "facade_materials_reference_specific": true,
+    "windows_and_doors_registered": true,
+    "front_corner_proves_physical_depth": true,
+    "non_blocking_note": "Reference-specific iron clerestory, tiled gables and produce awnings; rear roof carrier is deliberately simplified at CityPrompt scale."
+  },
+  "scene": {
+    "path": "model/01-barcelona-mercat-rlasm-v6.blend",
+    "bytes": 204370,
+    "sha256": "719f598676daeee38c9840dd35d73807486949e599899a393e76fa91cc237ee1"
+  },
+  "glb": {
+    "path": "model/01-barcelona-mercat-rlasm-v6.glb",
+    "bytes": 3448788,
+    "sha256": "a15b691a23c95b7569485b7baed48035546cb996470ee0954017f49d6374c451"
+  },
+  "comparison_sheet": {
+    "path": "review-comparison-sheet.png",
+    "bytes": 2491822,
+    "sha256": "f36d631cc696e4e22f9bbc6f74d05f41c1d9b2cc1654c1127c3bca1a3de30945"
+  },
+  "builder_self_approval": false
+}

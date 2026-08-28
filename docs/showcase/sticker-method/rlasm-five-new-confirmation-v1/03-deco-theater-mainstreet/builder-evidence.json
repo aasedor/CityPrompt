@@ -1,0 +1,151 @@
+{
+  "schema": "cityprompt.rlasm.build-evidence@2",
+  "candidate": "03-deco-theater-mainstreet-rlasm-v4",
+  "title": "Deco Theater Mainstreet",
+  "method": "RLASM reference-lock + atomic-role construction",
+  "status": "PASS_BUILDER_EVIDENCE_AWAITING_VISUAL_QA",
+  "scene": {
+    "path": "model/03-deco-theater-mainstreet-rlasm-v4.blend",
+    "bytes": 166966,
+    "sha256": "802fd6feb59f06bbd3e687f3f96dc92e5e1ab680260f247b505a7e41c70b8225"
+  },
+  "glb": {
+    "path": "model/03-deco-theater-mainstreet-rlasm-v4.glb",
+    "bytes": 2879280,
+    "sha256": "1d5e5930f15f7514e4d4c8d91462b52258f8734d2286941c750c14fedd79243e"
+  },
+  "renders": [
+    {
+      "path": "renders/aerial.png",
+      "bytes": 1837040,
+      "sha256": "00ab92798ea67cb558bc01a2ea944be527533052764553553a7ed26e02654ca6"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "bytes": 1573625,
+      "sha256": "11a6718195039cbd30d949a399c3f7d9dd7b7b546007d9a5598bfefca522b617"
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 1367655,
+      "sha256": "93069123d6e07624a30df236ed9c07edd1e1e04f36da9371573464221a268c08"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 1520823,
+      "sha256": "11c3a9e75ce3ccf0c2275e840222a1cb5713c3d118abe73e7fed9d455d1cf441"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 1371712,
+      "sha256": "af4b990d8197e7140cd913f90f547b39c08bea0f097d21f6007d0d48f2f1dc55"
+    },
+    {
+      "path": "renders/preview.png",
+      "bytes": 1520823,
+      "sha256": "11c3a9e75ce3ccf0c2275e840222a1cb5713c3d118abe73e7fed9d455d1cf441"
+    },
+    {
+      "path": "renders/side.png",
+      "bytes": 1061149,
+      "sha256": "552a429993174bb5c4184c48c52613c5624ce5a19ba5958b59f3825f98fa2a77"
+    }
+  ],
+  "object_count": 124,
+  "material_audit": {
+    "building_material_count": 9,
+    "materials": [
+      {
+        "name": "MAT_DecoTheater_InteriorShadow",
+        "status": "reference_specific_finished",
+        "provenance": "modeled theater interior shadow",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_DecoTheater_NeonGlow",
+        "status": "reference_specific_finished",
+        "provenance": "locked warm neon geometry",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_Theater_Bronze_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 03-deco-theater-mainstreet-rlasm-v4 card-derived material crop",
+        "source_sha256": "5884627ad72065dd5d9f43dd6752a12ce21540edcedadbe8b1fceebe6e5e3026"
+      },
+      {
+        "name": "MAT_Theater_Cream_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 03-deco-theater-mainstreet-rlasm-v4 card-derived material crop",
+        "source_sha256": "95365398db9517c5874885d8ca14a517d8b6341217f4f1b13f286df3d5e99439"
+      },
+      {
+        "name": "MAT_Theater_GeneratedAtomicFacadeSticker",
+        "status": "reference_specific_finished",
+        "provenance": "built-in image generation from locked RLASM prework reference sheet",
+        "source_sha256": "c9613f999ea2eed9322c974ff6c4032dfec16177486fc65eaeab60d7ac93da95"
+      },
+      {
+        "name": "MAT_Theater_Gold_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 03-deco-theater-mainstreet-rlasm-v4 card-derived material crop",
+        "source_sha256": "9721eebfe62444e0de1537bc38037c8b2968d84cb2743d70a0372b947660b0cb"
+      },
+      {
+        "name": "MAT_Theater_Marquee_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 03-deco-theater-mainstreet-rlasm-v4 card-derived material crop",
+        "source_sha256": "f0ddd8ed0cee109a0f87c61199ac3b6ed43a8ebd34d80e884fe9069369d6d588"
+      },
+      {
+        "name": "MAT_Theater_NeutralLowIron_Physical_v22",
+        "status": "reference_specific_finished",
+        "provenance": "RLASM reusable neutral physical low-iron glass module v22",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_Theater_Terracotta_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 03-deco-theater-mainstreet-rlasm-v4 card-derived material crop",
+        "source_sha256": "bc642f20e224eff57394de345e6891b836e4d1783d2152f25f43a91b063804d6"
+      }
+    ],
+    "generic_fallback_count": 0,
+    "all_reference_specific_finished": true,
+    "glass": {
+      "material": "MAT_Theater_NeutralLowIron_Physical_v22",
+      "image_texture_count": 0,
+      "baked_reflection": false,
+      "reflection_source": "current_scene_world_lights_geometry_only",
+      "neutral_scene_only": true
+    }
+  },
+  "contact_audit": {
+    "schema": "cityprompt.rlasm.contact-audit@2",
+    "candidate": "03-deco-theater-mainstreet-rlasm-v4",
+    "records": [
+      {
+        "claim": "marquee overlaps wall ledger",
+        "floating": false
+      },
+      {
+        "claim": "entry doors are registered to recessed bank",
+        "floating": false
+      },
+      {
+        "claim": "atomic facade sticker carrier intersects physical shell; transparent openings reveal modeled neutral glass",
+        "floating": false
+      }
+    ],
+    "floating_count": 0,
+    "status": "PASS_ZERO_FLOATING"
+  },
+  "hard_gates": [
+    "vertical sign tower",
+    "stepped illuminated marquee",
+    "large arched glazing",
+    "recessed door bank",
+    "no floating sign or canopy"
+  ],
+  "builder_self_approval": false
+}

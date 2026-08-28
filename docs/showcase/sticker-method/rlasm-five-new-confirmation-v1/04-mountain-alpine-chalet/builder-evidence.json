@@ -1,0 +1,169 @@
+{
+  "schema": "cityprompt.rlasm.build-evidence@2",
+  "candidate": "04-mountain-alpine-chalet-rlasm-v4",
+  "title": "Mountain Alpine Chalet",
+  "method": "RLASM reference-lock + atomic-role construction",
+  "status": "PASS_BUILDER_EVIDENCE_AWAITING_VISUAL_QA",
+  "scene": {
+    "path": "model/04-mountain-alpine-chalet-rlasm-v4.blend",
+    "bytes": 245338,
+    "sha256": "c0528ad5639aa2fb578563069045389625f53c87cd6860180bb36ece8ef0fe3b"
+  },
+  "glb": {
+    "path": "model/04-mountain-alpine-chalet-rlasm-v4.glb",
+    "bytes": 4648424,
+    "sha256": "bcf5310efdedaf75321099c6577cf21783f6178167de07f6c856e50d56f37ce1"
+  },
+  "renders": [
+    {
+      "path": "renders/aerial.png",
+      "bytes": 1573415,
+      "sha256": "ad22b1e641d4e3af9daf73ee597907f702cf22da516f4e95c62b03262fd84d57"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "bytes": 1577441,
+      "sha256": "b19ab6c89a6b3478d3c6df41fa45cbbbab04f6c483f42352e8ce4f63eb1ce24c"
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 1733184,
+      "sha256": "b9185bcf4fe5c95db3fd3fb4b205552da257bcb0b78f35fe02c6eb9c5367a0bf"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 1760117,
+      "sha256": "ee7a7ea34ecd1ece96b88aca699b4f50246cb80336c1f27d19bc2d469a127688"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 1426307,
+      "sha256": "cb87ce9665728dd535d749dc051b3105ed2a6a52f7004cf9625be4857dad7dcf"
+    },
+    {
+      "path": "renders/preview.png",
+      "bytes": 1760117,
+      "sha256": "ee7a7ea34ecd1ece96b88aca699b4f50246cb80336c1f27d19bc2d469a127688"
+    },
+    {
+      "path": "renders/side.png",
+      "bytes": 1273784,
+      "sha256": "3d6bf8cddbbbdfffd92f42fffc915ddbbcf509d755a676ab12937972c4993660"
+    }
+  ],
+  "object_count": 305,
+  "material_audit": {
+    "building_material_count": 10,
+    "materials": [
+      {
+        "name": "MAT_Chalet_Carved_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 04-mountain-alpine-chalet-rlasm-v4 card-derived material crop",
+        "source_sha256": "42a25b1a053b32e7fe548e17a747ca7bfa6650c61d268e9bb3c47bd37dd75f69"
+      },
+      {
+        "name": "MAT_Chalet_FlowerLeaf",
+        "status": "reference_specific_finished",
+        "provenance": "locked flower foliage accent",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_Chalet_GeneratedAtomicFacadeSticker",
+        "status": "reference_specific_finished",
+        "provenance": "built-in image generation from locked RLASM prework reference sheet",
+        "source_sha256": "6fd6ac5ccff0db07794432ddb3504a36ff118ed17ae29038481e4d2ab383d4e3"
+      },
+      {
+        "name": "MAT_Chalet_GeraniumRed",
+        "status": "reference_specific_finished",
+        "provenance": "locked red geranium flower-box accent",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_Chalet_Mural_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 04-mountain-alpine-chalet-rlasm-v4 card-derived material crop",
+        "source_sha256": "29405b60c3ec0bdc7c337992b5955336d8146a4e9b17c6889a9503a81c981318"
+      },
+      {
+        "name": "MAT_Chalet_NeutralLowIron_Physical_v22",
+        "status": "reference_specific_finished",
+        "provenance": "RLASM reusable neutral physical low-iron glass module v22",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_Chalet_RoomShadow",
+        "status": "reference_specific_finished",
+        "provenance": "modeled chalet room interior",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_Chalet_Shingle_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 04-mountain-alpine-chalet-rlasm-v4 card-derived material crop",
+        "source_sha256": "cb3efada0a3b5af973e18c486b574a29a4e0f0f04e78dea01ff5421e82c9459f"
+      },
+      {
+        "name": "MAT_Chalet_Stone_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 04-mountain-alpine-chalet-rlasm-v4 card-derived material crop",
+        "source_sha256": "ec63df4bc371807b3134582dd2d2e712bdf61ce8b09f5c2234ad83fd100dae0e"
+      },
+      {
+        "name": "MAT_Chalet_Timber_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 04-mountain-alpine-chalet-rlasm-v4 card-derived material crop",
+        "source_sha256": "9bc6e4568a3a8bc918d810890edd65012d0f3db8e3d47d16e58be6f016dde0b1"
+      }
+    ],
+    "generic_fallback_count": 0,
+    "all_reference_specific_finished": true,
+    "glass": {
+      "material": "MAT_Chalet_NeutralLowIron_Physical_v22",
+      "image_texture_count": 0,
+      "baked_reflection": false,
+      "reflection_source": "current_scene_world_lights_geometry_only",
+      "neutral_scene_only": true
+    }
+  },
+  "contact_audit": {
+    "schema": "cityprompt.rlasm.contact-audit@2",
+    "candidate": "04-mountain-alpine-chalet-rlasm-v4",
+    "records": [
+      {
+        "claim": "both roof systems overlap wall plates and one another",
+        "floating": false
+      },
+      {
+        "claim": "balcony slabs penetrate facade and braces",
+        "floating": false
+      },
+      {
+        "claim": "flower boxes touch window sill zones",
+        "floating": false
+      },
+      {
+        "claim": "chimney crosses roof volume",
+        "floating": false
+      },
+      {
+        "claim": "entry voussoirs overlap arched carrier",
+        "floating": false
+      },
+      {
+        "claim": "atomic facade sticker carrier intersects physical shell; transparent openings reveal modeled neutral glass",
+        "floating": false
+      }
+    ],
+    "floating_count": 0,
+    "status": "PASS_ZERO_FLOATING"
+  },
+  "hard_gates": [
+    "asymmetric crossing roofs",
+    "deep bracketed eaves",
+    "carved balcony fronts",
+    "stone arch entry",
+    "zero floating flower boxes"
+  ],
+  "builder_self_approval": false
+}

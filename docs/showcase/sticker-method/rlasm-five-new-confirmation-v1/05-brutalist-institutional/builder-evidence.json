@@ -1,0 +1,151 @@
+{
+  "schema": "cityprompt.rlasm.build-evidence@2",
+  "candidate": "05-brutalist-institutional-rlasm-v3",
+  "title": "Brutalist Institutional",
+  "method": "RLASM reference-lock + atomic-role construction",
+  "status": "PASS_BUILDER_EVIDENCE_AWAITING_VISUAL_QA",
+  "scene": {
+    "path": "model/05-brutalist-institutional-rlasm-v3.blend",
+    "bytes": 163544,
+    "sha256": "1e41a04aff6dc69e82ad78aed7d7356c0c5f74cfb1cc0e1baa0fabffb279dbd3"
+  },
+  "glb": {
+    "path": "model/05-brutalist-institutional-rlasm-v3.glb",
+    "bytes": 2867356,
+    "sha256": "655a8056264cebb7fbf92dce6036ab4d65cb1c454abd20c70110531cc9759136"
+  },
+  "renders": [
+    {
+      "path": "renders/aerial.png",
+      "bytes": 1194850,
+      "sha256": "d122adf226dcecb92f1ac949a322e4317cdb9998756bd7ab3bd908614434d3d9"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "bytes": 1475273,
+      "sha256": "0c6f0c54182b0ba043c1b9ff993b33b5991f426ea9d5062133f645cb8de6e78b"
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 1287971,
+      "sha256": "ca5d74feaca2bcce6b3f0c22523f4a9712d90330aa36adef038f4bc5e5ade81c"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 1393177,
+      "sha256": "5d03a9655673c7e657c6982b275a6bde18ef029f4f85eebf36cd0528d3de1057"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 1372126,
+      "sha256": "362682ab6bced6709ccb099eaa5e18c19e1dec07f645575b9203425c067aa4fe"
+    },
+    {
+      "path": "renders/preview.png",
+      "bytes": 1393177,
+      "sha256": "5d03a9655673c7e657c6982b275a6bde18ef029f4f85eebf36cd0528d3de1057"
+    },
+    {
+      "path": "renders/side.png",
+      "bytes": 1079234,
+      "sha256": "d02f315691964c19df3a8f3f4bc8d12fe5af3434770de4f5778442e2f8153d31"
+    }
+  ],
+  "object_count": 120,
+  "material_audit": {
+    "building_material_count": 7,
+    "materials": [
+      {
+        "name": "MAT_Brutalist_DarkGlass_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 05-brutalist-institutional-rlasm-v3 card-derived material crop",
+        "source_sha256": "d913a42ea26a741dfae4fbff16b04f978146c9cf959ee894aaacceb1d1f554b3"
+      },
+      {
+        "name": "MAT_Brutalist_DeepInterior",
+        "status": "reference_specific_finished",
+        "provenance": "modeled deep civic interior",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_Brutalist_GeneratedAtomicFacadeSticker",
+        "status": "reference_specific_finished",
+        "provenance": "built-in image generation from locked RLASM prework reference sheet",
+        "source_sha256": "62f00bd1e5e7ed07347493f9f1af98df64d26eefa90fda6b2d3a7d0bcbb6948b"
+      },
+      {
+        "name": "MAT_Brutalist_Mullion_ReferenceSpecific",
+        "status": "reference_specific_finished",
+        "provenance": "locked 05-brutalist-institutional-rlasm-v3 card-derived material crop",
+        "source_sha256": "95bab90066769d311d9ac0c33bd6916a079c7f0787ac5e17c683053c38d41598"
+      },
+      {
+        "name": "MAT_Brutalist_NeutralLowIron_Physical_v22",
+        "status": "reference_specific_finished",
+        "provenance": "RLASM reusable neutral physical low-iron glass module v22",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_Brutalist_PaleBoardFormCarrier",
+        "status": "reference_specific_finished",
+        "provenance": "locked pale weathered board-form concrete carrier",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_Brutalist_WeatheredConcreteCarrier",
+        "status": "reference_specific_finished",
+        "provenance": "locked darker weathered concrete support and reveal",
+        "source_sha256": null
+      }
+    ],
+    "generic_fallback_count": 0,
+    "all_reference_specific_finished": true,
+    "glass": {
+      "material": "MAT_Brutalist_NeutralLowIron_Physical_v22",
+      "image_texture_count": 0,
+      "baked_reflection": false,
+      "reflection_source": "current_scene_world_lights_geometry_only",
+      "neutral_scene_only": true
+    }
+  },
+  "contact_audit": {
+    "schema": "cityprompt.rlasm.contact-audit@2",
+    "candidate": "05-brutalist-institutional-rlasm-v3",
+    "records": [
+      {
+        "claim": "upper ring overhang is supported by mushroom capitals",
+        "floating": false
+      },
+      {
+        "claim": "splayed fins intersect upper carrier and heads/sills",
+        "floating": false
+      },
+      {
+        "claim": "entry portal jambs rest on grade and meet head",
+        "floating": false
+      },
+      {
+        "claim": "roof parapets overlap upper ring",
+        "floating": false
+      },
+      {
+        "claim": "service tower rests on roof slab",
+        "floating": false
+      },
+      {
+        "claim": "atomic facade sticker carrier intersects physical shell; transparent openings reveal modeled neutral glass",
+        "floating": false
+      }
+    ],
+    "floating_count": 0,
+    "status": "PASS_ZERO_FLOATING"
+  },
+  "hard_gates": [
+    "true upper cantilever",
+    "splayed window boxes",
+    "mushroom column arcade",
+    "recessed curtain wall",
+    "zero floating concrete fins"
+  ],
+  "builder_self_approval": false
+}

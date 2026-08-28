@@ -1,0 +1,37 @@
+{
+  "schema": "cityprompt.rlasm.generated-facade-prompt-roster@1",
+  "tool": "OpenAI built-in image generation",
+  "shared_constraints": [
+    "clean orthographic front facade card",
+    "reference-specific materials and architectural roles",
+    "transparent exterior and window/door openings",
+    "no context, people, vegetation, shadows, baked reflections or generic substitutions"
+  ],
+  "records": [
+    {
+      "candidate": "01-barcelona-mercat-rlasm-v6",
+      "prompt_summary": "Catalan Modernista market facade with warm brick, dark iron clerestory lattice, terracotta roofs, polychrome crest, produce stalls and striped awnings",
+      "generated_source_sha256": "478e2571e35848403ea990cf6b5c072a515d11e76049944830aa9785fa51efa9"
+    },
+    {
+      "candidate": "02-japanese-machiya-mixed-use-rlasm-v4",
+      "prompt_summary": "Kyoto machiya facade with smoked cedar koshi lattice, white plaster timber grid, kawara eaves and indigo noren",
+      "generated_source_sha256": "ee5c7edf9008b3fdd50f26cc043cc44e1bbc3b744ac6fd55889bde94fb6c7a95"
+    },
+    {
+      "candidate": "03-deco-theater-mainstreet-rlasm-v4",
+      "prompt_summary": "Red terracotta Art Deco theater with arched bronze windows, relief bands, stepped marquee and one vertical DECO sign",
+      "generated_source_sha256": "dce3fbc660958e8405b62725fdec716372feace9a8ba356320d1e88e72a9ae62"
+    },
+    {
+      "candidate": "04-mountain-alpine-chalet-rlasm-v4",
+      "prompt_summary": "Alpine chalet facade with rough stone base, carved dark timber, crossing shingle roofs, folkloric murals, balconies and geranium boxes",
+      "generated_source_sha256": "7ee8d696c62a45a8f92fbaa4cb9a8c424f9bcb921703c2cca532057edb3f7dcc"
+    },
+    {
+      "candidate": "05-brutalist-institutional-rlasm-v3",
+      "prompt_summary": "Pale board-form Brutalist institution with upper cantilever, four splayed windows, mushroom-column arcade, roof court and service tower",
+      "generated_source_sha256": "8378892f4351af1ea4f5fd2ae3ac7fd941338fed2ffafdd36767a4c527682840"
+    }
+  ]
+}
