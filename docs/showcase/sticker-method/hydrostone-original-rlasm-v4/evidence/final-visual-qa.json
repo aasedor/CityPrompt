@@ -1,0 +1,83 @@
+{
+  "schema": "cityprompt.rlasm.final-visual-qa@1",
+  "candidate": "03-hydrostone-original-rlasm-v4",
+  "method": "RLASM 1.7.0",
+  "status": "PASS_REVIEWED_PILOT_READY_FOR_GIT_HANDOFF",
+  "score": 96,
+  "hard_stops": [],
+  "review": {
+    "reference_identity": "PASS",
+    "irregular_connected_massing": "PASS",
+    "physical_multi_volume_roof_and_closed_valleys": "PASS",
+    "distinct_left_main_right_and_porch_gables": "PASS",
+    "seven_front_and_two_side_aperture_groups": "PASS",
+    "v2_visual_regression_corrected": "PASS_MATERIAL_IMPROVEMENT",
+    "reference_specific_brick_roughcast_timber_and_shingle": "PASS",
+    "true_apertures_and_returns": "PASS",
+    "entry_present_recessed_and_grounded": "PASS",
+    "neutral_scene_only_physical_glass": "PASS",
+    "baked_reflection_or_photographed_backing": "ABSENT",
+    "generic_material_fallback": 0,
+    "floating_count": 0
+  },
+  "cosmetic_findings": [
+    "Garden planting is simplified in the neutral review context; it is not part of the reusable building asset.",
+    "Leaded windows remain intentionally neutral/dark; reflections come only from the current scene."
+  ],
+  "artifacts": {
+    "comparison_sheet": {
+      "path": "review-comparison-sheet.png",
+      "bytes": 3084322,
+      "sha256": "030798c9ee658ba260329b8c546e6d2be5d4366ebec67f937cfd833b3cbe895f"
+    },
+    "scene": {
+      "path": "model/03-hydrostone-original-rlasm-v4.blend",
+      "bytes": 376356,
+      "sha256": "aa4bb49584b1664f91b50775572a3783b481264c23dc7bbedbde069cea68a28d"
+    },
+    "glb": {
+      "path": "model/03-hydrostone-original-rlasm-v4.glb",
+      "bytes": 3246076,
+      "sha256": "2a5532834fc7956ad04363df9e43b5022862f1dc700c040c5e34a576f4757e82"
+    },
+    "renders": [
+      {
+        "path": "renders/aerial.png",
+        "bytes": 1374921,
+        "sha256": "e74684fc56dad70c049c235d6e48cfd22a5763e9b1b0892d062a042159597bab"
+      },
+      {
+        "path": "renders/facade_close.png",
+        "bytes": 1666019,
+        "sha256": "609f1d26dc73c8546992c3a27833ca1c99f3a66a1cbf3b63a65aa54a0e06151b"
+      },
+      {
+        "path": "renders/front.png",
+        "bytes": 1260479,
+        "sha256": "927d9f85370d07e0254c15b1439f3fe903163754202a07b0e8809f7b7b7e7a54"
+      },
+      {
+        "path": "renders/front_corner.png",
+        "bytes": 1323664,
+        "sha256": "e96c8358dec95d9246e79b1c55121c31d84b5af5364009445b4f2d000839b428"
+      },
+      {
+        "path": "renders/glass_close.png",
+        "bytes": 1505635,
+        "sha256": "a6fd22cb593e3ac471fc12dcd6442626820145278d3b0f653d7dbac59f8a62a0"
+      },
+      {
+        "path": "renders/preview.png",
+        "bytes": 1323664,
+        "sha256": "e96c8358dec95d9246e79b1c55121c31d84b5af5364009445b4f2d000839b428"
+      },
+      {
+        "path": "renders/roof_close.png",
+        "bytes": 1348795,
+        "sha256": "47d3ea6abc77d32b44a33e6a60938ac7dbf73597b65104c15ba21b3b77da5072"
+      }
+    ]
+  },
+  "builder_self_approval": false,
+  "reviewer_note": "Final visual review follows preserved v1/v2/v3 iterations; v4 materially improves hierarchy, aperture density and entry articulation without changing approved material/glass contracts."
+}

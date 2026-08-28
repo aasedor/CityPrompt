@@ -7,7 +7,7 @@ three unused variants with different architectural risks:
 | --- | --- | --- |
 | Montréal Plateau Triplex | image/prose conflict, pale masonry, physical iron stair | 96/100 |
 | Amsterdam Step-Gable | narrow/deep massing and non-generic carved ornament | 95/100 |
-| Hydrostone Original | irregular connected carriers and multi-volume roof valleys | 95/100 |
+| Hydrostone Original v4 | unequal gable hierarchy, dense aperture groups, real porch and connected roof | 96/100 |
 
 Every pilot completed the full prework sequence before Blender construction:
 variant lock, multi-view reference sheet, unique-role decomposition, atomic
@@ -25,5 +25,6 @@ Shared final gates:
 The batch confirms that RLASM can generalize beyond one family, but it also
 confirms that visual checkpoints remain necessary: Montréal required an image
 lock/material/camera correction, Amsterdam required replacement of generic
-ornament, and Hydrostone required a physical roof-valley correction. These are
+ornament, and Hydrostone required a preserved redesign from the symmetric v2
+facade to a four-carrier, three-gable v4 with nine aperture groups. These are
 bounded family corrections, not open-ended polishing loops.

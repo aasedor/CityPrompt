@@ -1,0 +1,58 @@
+{
+  "schema": "cityprompt.rlasm.contact-audit@1",
+  "candidate": "03-hydrostone-original-rlasm-v4",
+  "records": [
+    {
+      "role": "irregular_carriers",
+      "carrier": "four unequal overlapping carriers form a connected stepped envelope",
+      "floating": false
+    },
+    {
+      "role": "connected_roof_volumes",
+      "carrier": "three unequal gable roofs overlap the cross-roof and recessed valley deck",
+      "floating": false
+    },
+    {
+      "role": "left_main_right_gables",
+      "carrier": "three distinct gable infills rest on carriers; rafters meet roof and timber rails",
+      "floating": false
+    },
+    {
+      "role": "entry_porch",
+      "carrier": "porch posts reach grade and roof/gable overlap wall carrier",
+      "floating": false
+    },
+    {
+      "role": "stoop_and_rails",
+      "carrier": "lower step rests at grade; upper step and rails overlap lower carrier",
+      "floating": false
+    },
+    {
+      "role": "chimneys",
+      "carrier": "stacks penetrate roof; caps and pots overlap stacks",
+      "floating": false
+    },
+    {
+      "role": "tudor_timber_fields",
+      "carrier": "rails/studs/braces overlap roughcast carrier",
+      "floating": false
+    },
+    {
+      "role": "windows_and_leaded_glass",
+      "carrier": "seven front and two side true apertures have frames, panes and dense physical lead cames",
+      "floating": false
+    },
+    {
+      "role": "brick_pilasters_and_overhang",
+      "carrier": "relief pilasters, bearer beams and corbels overlap their wall carriers",
+      "floating": false
+    },
+    {
+      "role": "entry_hardware_and_sconces",
+      "carrier": "door panels and hardware overlap leaf; sconces overlap porch wall",
+      "floating": false
+    }
+  ],
+  "floating_count": 0,
+  "status": "PASS_ZERO_FLOATING"
+}

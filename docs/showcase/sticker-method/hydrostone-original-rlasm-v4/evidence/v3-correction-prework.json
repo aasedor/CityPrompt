@@ -1,0 +1,21 @@
+{
+  "schema": "cityprompt.rlasm.correction-prework@1",
+  "candidate": "03-hydrostone-original-rlasm-v3",
+  "method": "RLASM 1.7.0",
+  "status": "PASS_PREWORK_READY_FOR_NON_OVERWRITING_V3_BUILD",
+  "parent_reviewed_candidate": "03-hydrostone-original-rlasm-v2",
+  "rejected_parent_findings": [
+    "front hierarchy remains too symmetric",
+    "window inventory and group density remain too sparse",
+    "entry porch and main gable do not dominate as in the locked reference"
+  ],
+  "new_role_cards": [
+    "cards/v3-role-dominant-main-gable.png",
+    "cards/v3-role-left-secondary-wing.png",
+    "cards/v3-role-right-wing-entry-transition.png",
+    "cards/v3-role-ground-window-run.png",
+    "cards/v3-role-porch-and-stoop.png"
+  ],
+  "material_and_glass_contract": "byte/source-preserved from reviewed v2 prework",
+  "builder_self_approval": false
+}

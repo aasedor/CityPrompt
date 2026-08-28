@@ -1,0 +1,32 @@
+{
+  "schema": "cityprompt.rlasm.iteration-lineage@1",
+  "archetype": "hydrostone-original",
+  "accepted_candidate": "03-hydrostone-original-rlasm-v4",
+  "iterations": [
+    {
+      "candidate": "03-hydrostone-original-rlasm-v2",
+      "disposition": "PRESERVED_REVIEWED_SUPERSEDED",
+      "reason": "The model was mechanically sound but too simple and symmetric compared with the reference.",
+      "scene_sha256": "d362e760f7f8ff24c625192f62d5f6860444f3f63865f0e5ab421519cc7c6a18",
+      "glb_sha256": "2cd3ff5d585022156c383e7cb7481e2794df11facb7cdd25af561dd5a3b6ccbf",
+      "front_render_sha256": "0426da545eac9f0b1eced177042983d08da147de90932b16f5113ae7b20baa1d"
+    },
+    {
+      "candidate": "03-hydrostone-original-rlasm-v3",
+      "disposition": "PRESERVED_REJECTED_VISUAL",
+      "reason": "The new massing was substantially better, but a blank pale connector slot remained between the main and right gables.",
+      "scene_sha256": "c2bdc3bbeae6ecc6494294e99196f1c87593a2517ca9f598e512b91d4a9a5f9e",
+      "glb_sha256": "af4ced1e17916340a040ca9f4aecda64add23cd59a4508b8d256f98df99b29c7",
+      "front_render_sha256": "1d8ccf90a6bc14841129c44957f6cb462d530629b701b39d6152f359c25cb5d7"
+    },
+    {
+      "candidate": "03-hydrostone-original-rlasm-v4",
+      "disposition": "PASS_ACCEPTED",
+      "reason": "The connector aperture, stair-bay window, Tudor framing, and porch flashing close the remaining visual gap while preserving all mechanical gates.",
+      "score": 96,
+      "scene_sha256": "aa4bb49584b1664f91b50775572a3783b481264c23dc7bbedbde069cea68a28d",
+      "glb_sha256": "2a5532834fc7956ad04363df9e43b5022862f1dc700c040c5e34a576f4757e82",
+      "front_render_sha256": "927d9f85370d07e0254c15b1439f3fe903163754202a07b0e8809f7b7b7e7a54"
+    }
+  ]
+}
