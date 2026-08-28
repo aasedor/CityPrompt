@@ -15,6 +15,12 @@
       "candidate": "vancouver-laneway-house-rlasm-v12",
       "lesson": "complete entry-role inventory, hardware-free door cards, one attached physical latch per door, grounded steps, and fixture-local lighting",
       "status": "PASS_FINAL_ARCHETYPE_VISUAL_QA"
+    },
+    {
+      "candidate": "vancouver-laneway-house-rlasm-v22",
+      "lesson": "all used building materials finished and reference-specific; neutral physical glass reflects only current scene/world/lights; reflection-free modeled room proxies replace photographic window backing",
+      "score": 97,
+      "status": "PASS_FINAL_VISUAL_QA"
     }
   ],
   "bounded_correction_policy": {
@@ -55,7 +61,10 @@
       "constraints": [
         "behind_physical_glazing",
         "behind_physical_mullions",
-        "never_on_exterior_face"
+        "never_on_exterior_face",
+        "interior_signal_only",
+        "photographed_exterior_sky_trees_wires_people_facade_and_reflection_absent",
+        "modeled_room_depth_required_when_clean_interior_only_card_is_unavailable"
       ],
       "use": "interior signal behind glazing"
     },
@@ -93,6 +102,11 @@
     "entry_light_detached_or_clips_locked_material",
     "non_neutral_window_reflection_color_cast_without_reference_proof",
     "baked_architectural_content_in_window_reflection_layer",
+    "reflection_image_or_prior_render_bound_to_physical_pane",
+    "photographed_exterior_content_in_occupied_depth_or_window_backing",
+    "clear_glass_reveals_uncut_facade_carrier_without_room_proxy_or_aperture",
+    "used_building_material_not_reference_specific_finished",
+    "saturated_review_context_makes_neutral_glass_appear_tinted",
     "unsupported_or_floating_attachment",
     "incomplete_identity_defining_roof_dome_bridge_or_system",
     "leak_ghost_zfight_stretch_duplicate_stack_broken_glass_or_lost_parallax",
@@ -108,10 +122,17 @@
     "entry_role_inventory_required": true,
     "generic_fallback_allowed": false,
     "git_review_handoff_required": true,
+    "all_used_building_materials_require_reference_specific_finished_status": true,
+    "context_only_materials_must_be_classified_outside_building_material_roster": true,
     "image_generation_scope": "clean reference-matched cards and material swatches only",
     "non_overwriting_candidates_required": true,
     "independent_final_render_qa_required": true,
     "window_reflection_neutrality_required": true,
+    "physical_glass_reflection_source": "current_scene_world_lights_and_geometry_only",
+    "physical_glass_image_texture_count_required": 0,
+    "physical_glass_base_color_link_count_required": 0,
+    "occupied_depth_exterior_photography_forbidden": true,
+    "reflection_free_modeled_room_proxy_required_when_clear_glass_would_reveal_uncut_carrier": true,
     "attached_object_contact_audit_required": true,
     "attached_object_floating_count_required": 0,
     "attached_object_anchor_source": "actual_carrier_surface_local_tangent_and_normal",
@@ -143,13 +164,29 @@
   },
   "window_reflection_contract": {
     "default_tint": "neutral_low_iron",
-    "interior_warmth_layer": "occupied_depth_behind_physical_pane",
+    "interior_warmth_layer": "interior_only_occupied_depth_or_reflection_free_modeled_room_proxy_behind_physical_pane",
+    "physical_reflection_source": "current_scene_world_lights_and_geometry_only",
+    "physical_pane_base_color_link_count_required": 0,
+    "physical_pane_image_texture_count_required": 0,
     "reflection_content_forbidden": [
       "photographed_room",
       "photographed_facade",
       "baked_frame_or_mullion",
+      "prior_render",
+      "photographed_sky_tree_wire_person_or_neighbouring_building",
       "unreferenced_green_amber_cyan_or_artificial_blue_cast"
     ],
+    "room_proxy_contract": {
+      "allowed": [
+        "modeled_partition",
+        "modeled_furnishing_cue",
+        "restrained_warm_luminaire",
+        "interior_only_clean_card"
+      ],
+      "required_when": "clear_glass_would_expose_uncut_facade_carrier",
+      "photographic_exterior_content_allowed": false
+    },
+    "review_context_saturation_must_preserve_neutral_glass_read": true,
     "reference_proven_tinted_glass_exception_allowed": true,
     "review_required": [
       "front",
@@ -331,5 +368,5 @@
     }
   ],
   "status": "active_user_approved_direction",
-  "version": "1.6.1"
+  "version": "1.7.0"
 }

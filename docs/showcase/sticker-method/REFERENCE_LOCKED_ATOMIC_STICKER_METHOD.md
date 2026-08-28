@@ -1,6 +1,6 @@
 # Reference-Locked Atomic Sticker Method (RLASM)
 
-Version: 1.6.1
+Version: 1.7.0
 Status: active, user-approved production direction  
 Machine contract: `reference_locked_atomic_sticker_method.json`
 
@@ -119,6 +119,31 @@ the rejected approach of repeating whole-object or whole-facade photographs.
     artificial blue colour casts are forbidden unless the locked archetype
     reference explicitly proves tinted glazing. Reflection must not contain a
     photographed room, facade, frame, or other baked architectural content.
+25. **Every visible building material is finished before final render.** The
+    final material audit must enumerate every material used by the building and
+    prove a hashed locked-reference crop or approved reference-matched
+    reconstruction, correct real-unit mapping, and status
+    `reference_specific_finished`. Context-only lawn, road, sidewalk, and trees
+    may remain simplified only when they are explicitly classified outside the
+    building-material roster. A plausible colour or material-class label is
+    not a finished material.
+26. **Glass reflects the rendered scene, never a photograph of the scene.** A
+    physical pane may respond only to the current world, lights, and real scene
+    geometry. No reflection image, photographed sky, tree, facade, room, or
+    prior render may feed glass Base Color, Reflection, Emission, or a backing
+    layer visible as reflection. The final glass audit requires zero image
+    texture nodes and zero linked Base Color inputs on the physical pane unless
+    a separately approved non-reflection optical map is explicitly documented.
+27. **The layer behind glass contains interior signal only.** An occupied-depth
+    card may not contain exterior trees, sky, wires, neighbouring buildings,
+    people, or photographed window reflection. Prefer modeled interior depth.
+    When a card-built facade has no true aperture and clear glass would expose
+    the uncut carrier wall, use a shallow, reflection-free modeled room proxy
+    immediately behind the pane or rebuild the aperture. The proxy may contain
+    restrained physical partitions, furnishings, and warm luminaires, but no
+    photographic exterior content. Review context must also be sufficiently
+    neutral that a saturated lawn or backdrop does not make neutral glazing
+    read as green, blue, or amber glass.
 
 ## The procedure
 
@@ -161,7 +186,7 @@ Use the following card taxonomy:
 | Material swatch | Broad brick, stone, siding, metal, roof, or glass surfaces | Seamless, orthographic, even lighting, world-scale capable, visibly/provenancially tied to the locked reference, repeatable field only, and free of unique ornament |
 | Opening card | A single window, door, storefront, dormer, or occupied-depth view | One opening only; no adjacent facade; aligned and perspective-free; labeled with exact opening-family role and placement zone |
 | Object card | A unique dome, spire, monitor, chimney, canopy, bridge part, ornament, or trim assembly | Isolated object; neutral background; no people, text, cast shadow, or neighbours |
-| Occupied-depth card | Interior signal behind glazing | Used behind physical glass/mullions; never on the exterior face |
+| Occupied-depth card | Interior signal behind glazing | Used behind physical glass/mullions; never on the exterior face; contains no photographed exterior sky, trees, wires, people, facade, or reflection; replace with modeled room depth when a clean interior-only card is unavailable |
 
 Image generation may assist with cleaning or reconstructing these cards, but
 each result must remain recognisably tied to the locked source reference.
@@ -221,6 +246,15 @@ plus an attached-object contact audit proving zero unsupported/floating parts.
 - Place opening/occupied-depth cards behind physical glazing and frames.
 - Keep the reflection layer neutral and separate from the occupied-depth card;
   interior warmth belongs behind the pane, not in the reflection colour.
+- Inspect every occupied-depth source for exterior sky, trees, wires, people,
+  neighbouring buildings, or prior-render reflections. Any such content is a
+  hard failure even when the glass shader itself contains no texture.
+- If a transparent pane exposes an uncut facade carrier, cut the aperture or
+  place a shallow reflection-free modeled room proxy before that carrier. Do
+  not hide the carrier with a photographed window crop.
+- Before final render, enumerate every used building material and require
+  `reference_specific_finished`; classify deliberately simplified site context
+  separately rather than weakening the building-material gate.
 - Reuse a card only across instances of the same semantic role.
 - Never repeat a whole-facade or whole-object photograph across child faces.
 - Never bind baked hardware to a leaf that already has modeled hardware.
@@ -309,6 +343,14 @@ Stop and create a fresh, non-overwriting candidate when any of these occur:
   material appearance;
 - non-neutral window reflection colour cast without locked-reference proof;
 - baked room, facade, or frame content in the glass reflection layer;
+- any reflection image or prior render bound to a physical pane;
+- photographed sky, trees, wires, people, neighbouring facade, or exterior
+  reflection in an occupied-depth or window-backing layer;
+- clear glass revealing an uncut facade carrier where an aperture or
+  reflection-free room proxy is required;
+- a used building material that is generic, unfinished, palette-only, or lacks
+  locked-reference/reconstruction provenance;
+- a saturated review lawn/backdrop making neutral glazing read as tinted;
 - unsupported or floating attachment, including a frame or card that is
   visually near a wall but does not physically contact its carrier surface;
 - incomplete roof, dome, bridge, or other identity-defining system;
@@ -345,6 +387,13 @@ into an unreviewed rebuild or silently relax a hard gate.
   inventory, true recesses, hardware-free leaf cards, one physical latch per
   door, grounded steps, and fixture-local entry lighting; independent final QA
   disposition `PASS_FINAL_ARCHETYPE_VISUAL_QA`.
+- **Approved material/glass polish — Vancouver Laneway House RLASM v22:** all
+  17 used building materials audited as reference-specific and finished;
+  physical low-iron glass uses only path-traced scene/world/light response;
+  photographic exterior backing is removed; ten shallow modeled room proxies
+  supply restrained warm interior cues behind uncut card-built openings;
+  neutral review context prevents false green/blue glass tint; final visual QA
+  `PASS_FINAL_VISUAL_QA` at 97/100.
 - **Rejected — Halifax v3:** photo fragments tiled across the building.
 - **Rejected — Calgary v3:** compound photo cards repeated over component
   faces, producing a noisy and structurally implausible result.

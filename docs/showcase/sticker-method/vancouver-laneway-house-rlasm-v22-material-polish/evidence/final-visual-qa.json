@@ -1,0 +1,135 @@
+{
+  "builder_self_approval": false,
+  "candidate": "vancouver-laneway-house-rlasm-v22",
+  "checks": {
+    "all_visible_building_materials_finished": true,
+    "baked_reflection_image_absent": true,
+    "entry_geometry_and_hardware_preserved": true,
+    "floating_or_detached_objects_observed": false,
+    "generic_building_material_count": 0,
+    "identity_and_geometry_preserved": true,
+    "photographic_window_backing_absent": true,
+    "physical_glass_present": true,
+    "reflection_free_room_proxy_present": true,
+    "reflection_is_neutral": true,
+    "reflection_is_scene_contextual": true
+  },
+  "hard_failures": [],
+  "inspected_views": [
+    "LOCKED REFERENCE",
+    "ACTUAL 3D \u2014 FRONT",
+    "ACTUAL 3D \u2014 FRONT CORNER",
+    "CONTEXTUAL PHYSICAL GLASS",
+    "FINISHED CEDAR / ROOF / METAL",
+    "FINISHED RECESSED ENTRY"
+  ],
+  "minor_non_blocking": [
+    "simplified low-poly site context remains outside the building-material contract",
+    "warm interior proxy cues are deliberately restrained for CityPrompt scale"
+  ],
+  "renders": [
+    {
+      "bytes": 2201223,
+      "mode": "RGBA",
+      "path": "renders/entry_contact_low.png",
+      "sha256": "5b181e670c5d391ba9f372940f4e64e899d3cae5b5c65ead14549c89b52770c1",
+      "size": [
+        1600,
+        1000
+      ]
+    },
+    {
+      "bytes": 2197777,
+      "mode": "RGBA",
+      "path": "renders/entry_review.png",
+      "sha256": "903b067cf3953b9e38a6bcdd4626f174c6ab6974694465d79b0c055e678c7122",
+      "size": [
+        1600,
+        1000
+      ]
+    },
+    {
+      "bytes": 1706475,
+      "mode": "RGBA",
+      "path": "renders/front.png",
+      "sha256": "834872e4fc9602d30368110073cc78ebdd5763290e25c4418cf1ca067a6320c2",
+      "size": [
+        1600,
+        1000
+      ]
+    },
+    {
+      "bytes": 1790155,
+      "mode": "RGBA",
+      "path": "renders/front_corner.png",
+      "sha256": "345c1bae2d66b964f489ab4a40d6d06e476411ca34905334b2e944bf437fadd4",
+      "size": [
+        1600,
+        1000
+      ]
+    },
+    {
+      "bytes": 1892397,
+      "mode": "RGBA",
+      "path": "renders/glass_context_close.png",
+      "sha256": "e623a2b325cb3d423d348350867186fab8dd2cf614c2350581931874f9c82667",
+      "size": [
+        1600,
+        1000
+      ]
+    },
+    {
+      "bytes": 3030543,
+      "mode": "RGB",
+      "path": "renders/material-polish-comparison-sheet.png",
+      "sha256": "e2353ff98b28567d2d4ec4f069e8b3ba2a3f78ee9e961e0bdb9d4ce1f09812f3",
+      "size": [
+        2100,
+        1650
+      ]
+    },
+    {
+      "bytes": 2163973,
+      "mode": "RGBA",
+      "path": "renders/material_close.png",
+      "sha256": "6692e953d58d2ccca3805b2b30ce592dce973f5d058c8b492369bff58c48bff2",
+      "size": [
+        1600,
+        1000
+      ]
+    },
+    {
+      "bytes": 1790155,
+      "mode": "RGBA",
+      "path": "renders/preview.png",
+      "sha256": "345c1bae2d66b964f489ab4a40d6d06e476411ca34905334b2e944bf437fadd4",
+      "size": [
+        1600,
+        1000
+      ]
+    },
+    {
+      "bytes": 1743300,
+      "mode": "RGBA",
+      "path": "renders/primary_entry_close.png",
+      "sha256": "6083b29d64eb612fa3c406360005dbd04f84aa99a49e4a435da0cefe64a7ed22",
+      "size": [
+        1600,
+        1000
+      ]
+    },
+    {
+      "bytes": 2643356,
+      "mode": "RGBA",
+      "path": "renders/side_entry_close.png",
+      "sha256": "97398efbafa4a04ee648628eb62e1c79ce412544b91b66f58768ce1470782334",
+      "size": [
+        1600,
+        1000
+      ]
+    }
+  ],
+  "schema": "cityprompt.rlasm-vancouver-material-polish-final-visual-qa@1",
+  "score": 97,
+  "status": "PASS_FINAL_VISUAL_QA"
+}

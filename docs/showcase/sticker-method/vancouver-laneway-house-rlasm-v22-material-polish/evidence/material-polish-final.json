@@ -1,0 +1,225 @@
+{
+  "blend": {
+    "bytes": 207734,
+    "path": "C:\\Users\\andre\\OneDrive\\Documents\\PlaygroundNEW\\3D-Maps\\artifacts\\rlasm-three-building-confirmation-v1\\02-vancouver-laneway-house-rlasm-v22\\model\\vancouver-laneway-house-rlasm-v22.blend",
+    "sha256": "b87406d1ad4a77dcfa97469b0198668b4d8479cc0ea10de6df55ec3d08ac5ff5"
+  },
+  "builder_self_approval": false,
+  "candidate": "vancouver-laneway-house-rlasm-v22",
+  "finished_building_material_contract": true,
+  "glb": {
+    "bytes": 12326824,
+    "path": "C:\\Users\\andre\\OneDrive\\Documents\\PlaygroundNEW\\3D-Maps\\artifacts\\rlasm-three-building-confirmation-v1\\02-vancouver-laneway-house-rlasm-v22\\model\\vancouver-laneway-house-rlasm-v22.glb",
+    "sha256": "1a1a9be4897961f628f752fb01ee30593018d702a20673d42cee8751e2cfd6c3"
+  },
+  "identity_geometry_and_approved_entry_corrections_preserved": true,
+  "local_reference_bindings": [],
+  "material_audit": {
+    "building_material_count": 17,
+    "building_materials": [
+      {
+        "material": "MAT_Laneway_BlackFrame",
+        "reflection_source": null,
+        "role": null,
+        "source_card": "material-black-powder-coated-metal-reference-reconstruction-v1.png",
+        "status": "reference_specific_finished"
+      },
+      {
+        "material": "MAT_Laneway_CharcoalStandingSeam_ReferenceMatched",
+        "reflection_source": null,
+        "role": null,
+        "source_card": "material-charcoal-standing-seam.png",
+        "status": "reference_specific_finished"
+      },
+      {
+        "material": "MAT_Laneway_Concrete",
+        "reflection_source": null,
+        "role": null,
+        "source_card": "material-architectural-concrete-reference-reconstruction-v1.png",
+        "status": "reference_specific_finished"
+      },
+      {
+        "material": "MAT_Laneway_Glass",
+        "reflection_source": "path_traced_scene_world_lights_and_geometry_only",
+        "role": "large_residential_aperture",
+        "source_card": null,
+        "status": "reference_specific_finished"
+      },
+      {
+        "material": "MAT_Laneway_Glass_RLASM_GuardSubprofile",
+        "reflection_source": "path_traced_scene_world_lights_and_geometry_only",
+        "role": "exterior_balcony_guard",
+        "source_card": null,
+        "status": "reference_specific_finished"
+      },
+      {
+        "material": "MAT_Laneway_PaleVerticalCedar_ReferenceMatched",
+        "reflection_source": null,
+        "role": null,
+        "source_card": "material-pale-vertical-cedar.png",
+        "status": "reference_specific_finished"
+      },
+      {
+        "material": "MAT_Laneway_PrimaryCedarDoor_Card_v2_HandleFree",
+        "reflection_source": null,
+        "role": null,
+        "source_card": "object-primary-cedar-entry-under-balcony-v2-hardware-free.png",
+        "status": "reference_specific_finished"
+      },
+      {
+        "material": "MAT_Laneway_SideCedarDoor_Card_v3_HandleFree",
+        "reflection_source": null,
+        "role": null,
+        "source_card": "object-side-recessed-cedar-door-leaf-v3-handle-free.png",
+        "status": "reference_specific_finished"
+      },
+      {
+        "material": "MAT_Laneway_SideEntrySconce_Diffuser_v13",
+        "reflection_source": null,
+        "role": null,
+        "source_card": "object-side-entry-grey-wall-sconce-v1.png",
+        "status": "reference_specific_finished"
+      },
+      {
+        "material": "MAT_Laneway_SideEntrySconce_Grey_v1",
+        "reflection_source": null,
+        "role": null,
+        "source_card": "object-side-entry-grey-wall-sconce-v1.png",
+        "status": "reference_specific_finished"
+      },
+      {
+        "material": "MAT_Laneway_WarmHorizontalCedar_ReferenceMatched",
+        "reflection_source": null,
+        "role": null,
+        "source_card": "material-warm-horizontal-cedar.png",
+        "status": "reference_specific_finished"
+      },
+      {
+        "material": "MAT_RLASM_VancouverRoomProxy_DeepUmber_v2",
+        "reflection_source": null,
+        "role": "reflection_free_room_proxy_deep_neutral_umber",
+        "source_card": null,
+        "status": "reference_specific_finished"
+      },
+      {
+        "material": "MAT_RLASM_VancouverRoomProxy_Luminaire_v1",
+        "reflection_source": null,
+        "role": "modeled_warm_interior_luminaire",
+        "source_card": null,
+        "status": "reference_specific_finished"
+      },
+      {
+        "material": "MAT_RLASM_VancouverRoomProxy_NeutralCharcoal_v1",
+        "reflection_source": null,
+        "role": "reflection_free_room_proxy_neutral_charcoal",
+        "source_card": null,
+        "status": "reference_specific_finished"
+      },
+      {
+        "material": "MAT_RLASM_VancouverRoomProxy_OakCue_v1",
+        "reflection_source": null,
+        "role": "modeled_oak_interior_cue",
+        "source_card": null,
+        "status": "reference_specific_finished"
+      },
+      {
+        "material": "MAT_RLASM_VancouverRoomProxy_Partition_v1",
+        "reflection_source": null,
+        "role": "modeled_dark_interior_partition",
+        "source_card": null,
+        "status": "reference_specific_finished"
+      },
+      {
+        "material": "MAT_RLASM_VancouverRoomProxy_WarmCharcoal_v1",
+        "reflection_source": null,
+        "role": "reflection_free_room_proxy_warm_charcoal",
+        "source_card": null,
+        "status": "reference_specific_finished"
+      }
+    ],
+    "context_materials": [
+      "MAT_LanewayDrive_ContextConcrete",
+      "MAT_Laneway_ContextAsphalt",
+      "MAT_Laneway_ContextBark",
+      "MAT_Laneway_ContextConcrete",
+      "MAT_Laneway_ContextGreen"
+    ],
+    "generic_building_material_count": 0,
+    "glass": [
+      {
+        "base_color_link_count": 0,
+        "image_texture_count": 0,
+        "material": "MAT_Laneway_Glass",
+        "neutral_reflection": true,
+        "reflection_source": "path_traced_scene_world_lights_and_geometry_only"
+      },
+      {
+        "base_color_link_count": 0,
+        "image_texture_count": 0,
+        "material": "MAT_Laneway_Glass_RLASM_GuardSubprofile",
+        "neutral_reflection": true,
+        "reflection_source": "path_traced_scene_world_lights_and_geometry_only"
+      }
+    ],
+    "photographic_window_backing_count": 0,
+    "room_proxy_material_count": 6
+  },
+  "neutral_reflection_contract": true,
+  "parent_candidate": "vancouver-laneway-house-rlasm-v20",
+  "photographic_window_backing_absent": true,
+  "physical_contextual_glass_contract": true,
+  "renders": [
+    {
+      "bytes": 1706475,
+      "camera": "front",
+      "path": "C:\\Users\\andre\\OneDrive\\Documents\\PlaygroundNEW\\3D-Maps\\artifacts\\rlasm-three-building-confirmation-v1\\02-vancouver-laneway-house-rlasm-v22\\renders\\front.png",
+      "sha256": "834872e4fc9602d30368110073cc78ebdd5763290e25c4418cf1ca067a6320c2"
+    },
+    {
+      "bytes": 1790155,
+      "camera": "front_corner",
+      "path": "C:\\Users\\andre\\OneDrive\\Documents\\PlaygroundNEW\\3D-Maps\\artifacts\\rlasm-three-building-confirmation-v1\\02-vancouver-laneway-house-rlasm-v22\\renders\\front_corner.png",
+      "sha256": "345c1bae2d66b964f489ab4a40d6d06e476411ca34905334b2e944bf437fadd4"
+    },
+    {
+      "bytes": 2197777,
+      "camera": "entry_review",
+      "path": "C:\\Users\\andre\\OneDrive\\Documents\\PlaygroundNEW\\3D-Maps\\artifacts\\rlasm-three-building-confirmation-v1\\02-vancouver-laneway-house-rlasm-v22\\renders\\entry_review.png",
+      "sha256": "903b067cf3953b9e38a6bcdd4626f174c6ab6974694465d79b0c055e678c7122"
+    },
+    {
+      "bytes": 1743300,
+      "camera": "primary_entry_close",
+      "path": "C:\\Users\\andre\\OneDrive\\Documents\\PlaygroundNEW\\3D-Maps\\artifacts\\rlasm-three-building-confirmation-v1\\02-vancouver-laneway-house-rlasm-v22\\renders\\primary_entry_close.png",
+      "sha256": "6083b29d64eb612fa3c406360005dbd04f84aa99a49e4a435da0cefe64a7ed22"
+    },
+    {
+      "bytes": 2643356,
+      "camera": "side_entry_close",
+      "path": "C:\\Users\\andre\\OneDrive\\Documents\\PlaygroundNEW\\3D-Maps\\artifacts\\rlasm-three-building-confirmation-v1\\02-vancouver-laneway-house-rlasm-v22\\renders\\side_entry_close.png",
+      "sha256": "97398efbafa4a04ee648628eb62e1c79ce412544b91b66f58768ce1470782334"
+    },
+    {
+      "bytes": 2201223,
+      "camera": "entry_contact_low",
+      "path": "C:\\Users\\andre\\OneDrive\\Documents\\PlaygroundNEW\\3D-Maps\\artifacts\\rlasm-three-building-confirmation-v1\\02-vancouver-laneway-house-rlasm-v22\\renders\\entry_contact_low.png",
+      "sha256": "5b181e670c5d391ba9f372940f4e64e899d3cae5b5c65ead14549c89b52770c1"
+    },
+    {
+      "bytes": 1892397,
+      "camera": "glass_context_close",
+      "path": "C:\\Users\\andre\\OneDrive\\Documents\\PlaygroundNEW\\3D-Maps\\artifacts\\rlasm-three-building-confirmation-v1\\02-vancouver-laneway-house-rlasm-v22\\renders\\glass_context_close.png",
+      "sha256": "e623a2b325cb3d423d348350867186fab8dd2cf614c2350581931874f9c82667"
+    },
+    {
+      "bytes": 2163973,
+      "camera": "material_close",
+      "path": "C:\\Users\\andre\\OneDrive\\Documents\\PlaygroundNEW\\3D-Maps\\artifacts\\rlasm-three-building-confirmation-v1\\02-vancouver-laneway-house-rlasm-v22\\renders\\material_close.png",
+      "sha256": "6692e953d58d2ccca3805b2b30ce592dce973f5d058c8b492369bff58c48bff2"
+    }
+  ],
+  "review_context_saturation_restrained": true,
+  "schema": "cityprompt.rlasm-vancouver-material-polish-final@1",
+  "source_blend_sha256": "e6bcbaf98230ac0ef15797671b9f60730979f5d4d4b4ecd1fbd72b97f679da22",
+  "status": "PASS_BUILDER_EVIDENCE_AWAITING_FINAL_VISUAL_QA"
+}

@@ -1,0 +1,176 @@
+{
+  "atomic_card_count": 13,
+  "building_material_generic_fallback_count": 0,
+  "candidate_id": "vancouver-laneway-house-rlasm-v13",
+  "cards": [
+    {
+      "path": "material-pale-vertical-cedar.png",
+      "role": "primary-wall",
+      "sha256": "2536e5c598054201b173c1bfc9b5eb4fdcd0db058db1560d9e08247a658851a1",
+      "use": "reference_matched_world_scale_repeatable_field"
+    },
+    {
+      "path": "material-warm-horizontal-cedar.png",
+      "role": "secondary-accent",
+      "sha256": "536f773710bad73f39c9d115a8f4ad82241661c92d8809afd13e6f6fd0fe4648",
+      "use": "reference_matched_world_scale_repeatable_field"
+    },
+    {
+      "path": "material-charcoal-standing-seam.png",
+      "role": "roof-field",
+      "sha256": "01297eecb4e73816627f844e667388f6d5492b65559735706c0d225202215734",
+      "use": "reference_matched_world_scale_repeatable_field"
+    },
+    {
+      "kind": "object",
+      "path": "object-two-storey-corner-glass-stack.png",
+      "role": "object-two-storey-corner-glass-stack",
+      "sha256": "592cc458ea793d568d3e687634334e7997e46f582f5fd595e79df6af869f78af",
+      "use": "reference_atom_visual_authority_geometry_owns_depth"
+    },
+    {
+      "kind": "object",
+      "path": "object-glass-balcony.png",
+      "role": "object-glass-balcony",
+      "sha256": "4e177bde3f3231559c52af0af001ec2ec1ef3b99b45a254e0b3943f6866c4a7f",
+      "use": "reference_atom_visual_authority_geometry_owns_depth"
+    },
+    {
+      "kind": "object",
+      "path": "object-recessed-cedar-entry.png",
+      "role": "object-recessed-cedar-entry",
+      "sha256": "7a1bb5fb0af42f716c7d7902d1096f62217833c826e04d66c08ce525fd7d3e31",
+      "use": "reference_atom_visual_authority_geometry_owns_depth"
+    },
+    {
+      "kind": "opening",
+      "path": "opening-corner-picture-glass.png",
+      "role": "opening-corner-picture-glass",
+      "sha256": "e0b019ee2fded9edff3fe921c9e148c497804792c6ade1901dcc57a23990f292",
+      "use": "reference_atom_visual_authority_geometry_owns_depth"
+    },
+    {
+      "kind": "opening",
+      "path": "opening-side-horizontal-slot.png",
+      "role": "opening-side-horizontal-slot",
+      "sha256": "e618d9d04230afafd643eb72a65dbb0ba63050343f0eb0fb7c1ed2c97122e574",
+      "use": "reference_atom_visual_authority_geometry_owns_depth"
+    },
+    {
+      "baked_hardware_absent": true,
+      "derivation": "reference_locked_handle_removal_for_separate_physical_hardware",
+      "generic_material_substitution": false,
+      "kind": "object",
+      "path": "object-primary-cedar-entry-under-balcony-v2-hardware-free.png",
+      "role": "object-primary-cedar-entry-under-balcony",
+      "sha256": "1e819769c086f20f74c91e4cb738eeb633f766929103588e462497d749709b11",
+      "use": "reference_atom_visual_authority_geometry_owns_depth"
+    },
+    {
+      "baked_hardware_absent": true,
+      "derivation": "reference_locked_handle_removal_for_separate_physical_hardware",
+      "generic_material_substitution": false,
+      "kind": "object",
+      "path": "object-side-recessed-cedar-door-leaf-v3-handle-free.png",
+      "role": "object-side-recessed-cedar-door-leaf",
+      "sha256": "16c3b93172426d20831ab8b5a173ad2f293eed2ff8b5dc30d79790ef88b70b31",
+      "use": "reference_atom_visual_authority_geometry_owns_depth"
+    },
+    {
+      "generic_material_substitution": false,
+      "kind": "object",
+      "path": "object-side-entry-grey-wall-sconce-v1.png",
+      "role": "object-side-entry-grey-wall-sconce",
+      "sha256": "c6e7f878288d400de9e1e155598381d0b336311a4e127150a5868572eb359679",
+      "use": "reference_atom_visual_authority_geometry_owns_depth"
+    },
+    {
+      "derivation": {
+        "crop_xyxy": [
+          600,
+          330,
+          790,
+          785
+        ],
+        "deterministic_reconstruction_seed": 1301,
+        "locked_reference": "variant_0_angle_60.jpg",
+        "locked_reference_sha256": "e753b3c4369a642d4863d8d530a60bd0469a70f3fa4fdbc0ce774272beb60ca2",
+        "median_rgb_srgb": [
+          0.141176,
+          0.141176,
+          0.141176
+        ],
+        "selected_reference_pixel_count": 3808
+      },
+      "generic_material_substitution": false,
+      "kind": "material",
+      "path": "material-black-powder-coated-metal-reference-reconstruction-v1.png",
+      "role": "black-powder-coated-metal",
+      "sha256": "4b901a60c3942ef143bb0d6c165e6be9344b1fd2a15f50428b90bae1601184be",
+      "use": "reference_measured_reconstruction_world_scale"
+    },
+    {
+      "derivation": {
+        "crop_xyxy": [
+          630,
+          690,
+          935,
+          865
+        ],
+        "deterministic_reconstruction_seed": 1302,
+        "locked_reference": "variant_0_angle_60.jpg",
+        "locked_reference_sha256": "e753b3c4369a642d4863d8d530a60bd0469a70f3fa4fdbc0ce774272beb60ca2",
+        "median_rgb_srgb": [
+          0.67451,
+          0.670588,
+          0.654902
+        ],
+        "selected_reference_pixel_count": 19321
+      },
+      "generic_material_substitution": false,
+      "kind": "material",
+      "path": "material-architectural-concrete-reference-reconstruction-v1.png",
+      "role": "architectural-concrete",
+      "sha256": "afc7375b365330f4f39a756bd84a34eaad91f3c8f9f797d8f45c415d922593a3",
+      "use": "reference_measured_reconstruction_world_scale"
+    }
+  ],
+  "door_cards_baked_hardware_absent": true,
+  "entry_atomic_leaf_card_count": 2,
+  "entry_atomic_leaf_card_inventory": [
+    "object-primary-cedar-entry-under-balcony",
+    "object-side-recessed-cedar-door-leaf"
+  ],
+  "entry_role_count": 2,
+  "entry_role_inventory": [
+    "primary-cedar-entry-under-balcony",
+    "side-recessed-cedar-entry"
+  ],
+  "entry_unique_object_inventory": [
+    "primary-cedar-entry-under-balcony",
+    "side-recessed-cedar-entry",
+    "side-entry-grey-wall-sconce"
+  ],
+  "generic_fallback_count": 0,
+  "generic_window_family_count": 0,
+  "missing_role_count": 0,
+  "opening_family_card_count": 2,
+  "opening_family_inventory": [
+    "two-storey-corner-picture-glass",
+    "front-slider-bay",
+    "side-horizontal-slot",
+    "side-vertical-stair-slit",
+    "primary-cedar-entry-under-balcony",
+    "side-recessed-cedar-entry"
+  ],
+  "physical_door_hardware_required": true,
+  "rlasm_version": "1.7.0",
+  "schema": "cityprompt.rlasm-card-manifest@3",
+  "whole_facade_card_count": 0,
+  "window_reflection_contract": {
+    "baked_reflection_card_allowed": false,
+    "contextual_scene_reflection_required": true,
+    "default_tint": "neutral_low_iron",
+    "interior_warmth_layer": "occupied_depth_behind_physical_pane"
+  }
+}
