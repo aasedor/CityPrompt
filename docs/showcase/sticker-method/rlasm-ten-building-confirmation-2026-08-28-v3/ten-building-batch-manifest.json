@@ -1,0 +1,111 @@
+{
+  "schema": "cityprompt.rlasm.ten-building-batch-manifest@3",
+  "batch": "rlasm-ten-building-confirmation-2026-08-28-v3",
+  "method": "RLASM v3 reference-lock + atomic-role construction",
+  "status": "PASS_TEN_BUILDING_CITYPROMPT_SAMPLE",
+  "candidate_count": 10,
+  "minimum_score": 95,
+  "average_score": 95.7,
+  "comparison_sheet": {
+    "path": "ten-building-comparison-sheet-phone.png",
+    "bytes": 5720819,
+    "sha256": "f404dbcc7e6a31102de9e8a9cdb2c0d346ecdeee61db9b367a846600178dd3c1"
+  },
+  "mandatory_checks": [
+    "reference_identity_and_massing_match",
+    "roof_and_silhouette_are_physical_and_reference_specific",
+    "zero_exposed_giant_support_or_carrier_boxes",
+    "no_windows_or_objects_outside_physical_envelope",
+    "every_large_volume_finished_from_front_side_rear_and_aerial",
+    "non_rectangular_components_use_local_surface_registration",
+    "unique_role_cards_cover_each_non_repeatable_piece",
+    "all_materials_reference_specific_finished",
+    "neutral_contextual_scene_only_glass",
+    "no_baked_render_reflections",
+    "zero_generic_material_fallbacks",
+    "zero_floating_contacts"
+  ],
+  "candidates": [
+    {
+      "candidate": "01-porto-azulejo-merchant-townhouse-rlasm-v7",
+      "title": "Porto Azulejo Merchant Townhouse",
+      "score": 97,
+      "final_visual_qa_sha256": "d70bf853fecfb0c6c386992cbaa9665d493a3dd1e9729192d33c9b880ea45bf7",
+      "builder_evidence_sha256": "623a83c5d948f8c7d96df72eb40bb4d10465efabeb843490713bae42e9cd890b",
+      "phone_review_sheet_sha256": "a733f2c48f811d7944865665786c2caf1067769a2a10672beb2d3f806a5bad8b"
+    },
+    {
+      "candidate": "02-quebec-second-empire-fire-hall-rlasm-v3",
+      "title": "Quebec Second Empire Fire Hall",
+      "score": 95,
+      "final_visual_qa_sha256": "1c8fdd64f0e08dc659f1e2544903a51a3e9c05b57c9dc9deda29cc413d929890",
+      "builder_evidence_sha256": "19221111ce812380ccf9b3e647f92de5c6575ceafd9c700162772a47fb4a6465",
+      "phone_review_sheet_sha256": "cf99af6b816063ae07f144292116b53a6baf4e4d5275007555cd7fe8d688b16d"
+    },
+    {
+      "candidate": "03-taisho-brick-railway-station-rlasm-v6",
+      "title": "Taisho Brick Railway Station",
+      "score": 96,
+      "final_visual_qa_sha256": "05270f139487d1cec157af85e83196cdda3f00d9b1c82ae358843067bbc827bc",
+      "builder_evidence_sha256": "f00f1e3e00d283f7107d36aea7adc9d2adc8696f541497988ba1d81e0d5268d3",
+      "phone_review_sheet_sha256": "8e9fc5ae8e06b2b214fdc700999a88f31ff5092b2e0806e1be43c332cf6283ef"
+    },
+    {
+      "candidate": "04-art-deco-ocean-liner-terminal-rlasm-v4",
+      "title": "Art Deco Ocean Liner Terminal",
+      "score": 96,
+      "final_visual_qa_sha256": "dd6d286f07fabe7b0f3b808c5caf8ee527c7662942607682536ecc7b7aa95b37",
+      "builder_evidence_sha256": "4289ab79bc5365cee2c6dff92d8559a8b24330d4d6a5ef48dd5133e4888a607c",
+      "phone_review_sheet_sha256": "354b97ecbd9ad6bc6a1a2ce1d50b2e5006a8888017529787e19e962f661d9423"
+    },
+    {
+      "candidate": "05-nordic-national-romantic-library-rlasm-v3",
+      "title": "Nordic National Romantic Library",
+      "score": 95,
+      "final_visual_qa_sha256": "2ff361008587d6edfa8dc8536b4a813d1cebd8c08112cec76d8048dab0a2fc56",
+      "builder_evidence_sha256": "d658e898cc17a127986562cbdda386ee05b37112fc680de68a9731a98ca77a90",
+      "phone_review_sheet_sha256": "c22e1426c8f16d4ff04bb649729635931b3fc0cf4c12c61ccb553e2bebf53b3b"
+    },
+    {
+      "candidate": "06-georgian-crescent-terrace-rlasm-v4",
+      "title": "Georgian Crescent Terrace",
+      "score": 95,
+      "final_visual_qa_sha256": "23400a135762b2cd4f076e19ca47d4797babd531a5f0a9e961b75d4917adde17",
+      "builder_evidence_sha256": "5d749b46eee8e04d78fa65dd2c4a82f8abc44ff02ca352f7f04b35be0a339158",
+      "phone_review_sheet_sha256": "45c9852fe2474295bb74873d9d00d83d3d9e55f87bb86eaeae8d00bcc3464163"
+    },
+    {
+      "candidate": "07-moroccan-riad-hotel-rlasm-v3",
+      "title": "Moroccan Riad Hotel",
+      "score": 96,
+      "final_visual_qa_sha256": "1b80a39fc00fcb48b3594c24234383355c64770af8fbd6bc8d79119b5aea1f15",
+      "builder_evidence_sha256": "04e3513523a03c8ad615135440911ac3cc2f75de3427f3d71b670d555b738c32",
+      "phone_review_sheet_sha256": "6b5bb0badff609f2fe25ef0f9a40fdd4bc0530145daac1bda895fc54f88d6050"
+    },
+    {
+      "candidate": "08-prairie-school-bank-rlasm-v3",
+      "title": "Prairie School Bank",
+      "score": 95,
+      "final_visual_qa_sha256": "d3e22ab618dd0479ab753ce7cf3ca6debe2e8909bdc5d4845caf12adf08c8c29",
+      "builder_evidence_sha256": "1b050ebfa0708759a75af7435c6ad841686949aa4b4b95287ad7bbdb5cc0654b",
+      "phone_review_sheet_sha256": "00a210ae772f1be4ea7f5d8ad034259bac74436a43a2398d8df5c2fb9eb124dc"
+    },
+    {
+      "candidate": "09-alpine-belle-epoque-sanatorium-rlasm-v3",
+      "title": "Alpine Belle Epoque Sanatorium",
+      "score": 96,
+      "final_visual_qa_sha256": "6eb4fd00d4539108ea7a34d7197c35befca9b25bb4e3fa14e4df8ef16608556f",
+      "builder_evidence_sha256": "98eca737f7d5d91a0e884826ce96e61fcbc6fe78d9a4a6f7e2360c561b0de062",
+      "phone_review_sheet_sha256": "1be033fc5d27e1b3bd0447703f5800eb55a56182e8db9abab3a29593f6b15f7b"
+    },
+    {
+      "candidate": "10-new-england-shingle-seaside-inn-rlasm-v3",
+      "title": "New England Shingle Style Seaside Inn",
+      "score": 96,
+      "final_visual_qa_sha256": "376b529843b8470e5df1aff79128b2c4c1a605bd00b3f57c77f836661d0f316c",
+      "builder_evidence_sha256": "312702c87823c9320d5b00d4f648d43c4b592b12015cfc471308543c3c99a4dd",
+      "phone_review_sheet_sha256": "aefd3ed6ad201c113fa0a276fedf561dca648b056180900d9d1853af49f1a861"
+    }
+  ],
+  "builder_self_approval": false
+}
