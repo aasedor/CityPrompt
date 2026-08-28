@@ -91,6 +91,8 @@
     "floating_entry_hardware_threshold_step_fixture_or_trim",
     "full_black_reveal_occludes_reference_door_leaf",
     "entry_light_detached_or_clips_locked_material",
+    "non_neutral_window_reflection_color_cast_without_reference_proof",
+    "baked_architectural_content_in_window_reflection_layer",
     "unsupported_or_floating_attachment",
     "incomplete_identity_defining_roof_dome_bridge_or_system",
     "leak_ghost_zfight_stretch_duplicate_stack_broken_glass_or_lost_parallax",
@@ -109,6 +111,7 @@
     "image_generation_scope": "clean reference-matched cards and material swatches only",
     "non_overwriting_candidates_required": true,
     "independent_final_render_qa_required": true,
+    "window_reflection_neutrality_required": true,
     "attached_object_contact_audit_required": true,
     "attached_object_floating_count_required": 0,
     "attached_object_anchor_source": "actual_carrier_surface_local_tangent_and_normal",
@@ -137,6 +140,22 @@
     "unique_role_requires_card": true,
     "user_visual_approval_before_scale": true,
     "whole_facade_photo_material_forbidden": true
+  },
+  "window_reflection_contract": {
+    "default_tint": "neutral_low_iron",
+    "interior_warmth_layer": "occupied_depth_behind_physical_pane",
+    "reflection_content_forbidden": [
+      "photographed_room",
+      "photographed_facade",
+      "baked_frame_or_mullion",
+      "unreferenced_green_amber_cyan_or_artificial_blue_cast"
+    ],
+    "reference_proven_tinted_glass_exception_allowed": true,
+    "review_required": [
+      "front",
+      "oblique",
+      "close_window"
+    ]
   },
   "entry_contract": {
     "forbidden": [
@@ -312,5 +331,5 @@
     }
   ],
   "status": "active_user_approved_direction",
-  "version": "1.6.0"
+  "version": "1.6.1"
 }

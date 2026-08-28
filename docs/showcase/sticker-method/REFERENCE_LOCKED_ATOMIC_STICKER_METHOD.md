@@ -1,6 +1,6 @@
 # Reference-Locked Atomic Sticker Method (RLASM)
 
-Version: 1.6.0
+Version: 1.6.1
 Status: active, user-approved production direction  
 Machine contract: `reference_locked_atomic_sticker_method.json`
 
@@ -114,6 +114,11 @@ the rejected approach of repeating whole-object or whole-facade photographs.
     reviewer other than the builder compares the locked reference, role/card
     inventory, actual scene geometry, and entry/contact close-ups. Builder
     evidence is never self-approval.
+24. **Window reflection is neutral.** Use restrained low-iron neutral reflection
+    with scene-dependent light and sky response. Strong green, amber, cyan, or
+    artificial blue colour casts are forbidden unless the locked archetype
+    reference explicitly proves tinted glazing. Reflection must not contain a
+    photographed room, facade, frame, or other baked architectural content.
 
 ## The procedure
 
@@ -214,6 +219,8 @@ plus an attached-object contact audit proving zero unsupported/floating parts.
 - Verify the bound swatch against its reference material zone before rendering;
   semantic role, approximate hue, and a plausible pattern are not sufficient.
 - Place opening/occupied-depth cards behind physical glazing and frames.
+- Keep the reflection layer neutral and separate from the occupied-depth card;
+  interior warmth belongs behind the pane, not in the reflection colour.
 - Reuse a card only across instances of the same semantic role.
 - Never repeat a whole-facade or whole-object photograph across child faces.
 - Never bind baked hardware to a leaf that already has modeled hardware.
@@ -300,6 +307,8 @@ Stop and create a fresh, non-overwriting candidate when any of these occur:
 - a full black reveal plate occluding the referenced door leaf;
 - entry lighting detached from its fixture or clipping/washing out the locked
   material appearance;
+- non-neutral window reflection colour cast without locked-reference proof;
+- baked room, facade, or frame content in the glass reflection layer;
 - unsupported or floating attachment, including a frame or card that is
   visually near a wall but does not physically contact its carrier surface;
 - incomplete roof, dome, bridge, or other identity-defining system;
