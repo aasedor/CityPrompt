@@ -1,0 +1,23 @@
+{
+  "schema": "cityprompt.rlasm.pilot-visual-qa@1",
+  "candidate": "01-porto-azulejo-merchant-townhouse-rlasm-v7",
+  "method": "RLASM 1.8.0",
+  "score": 96,
+  "minimum_score": 95,
+  "status": "PASS_PILOT_VISUAL_QA_FOR_BOUNDED_SCALE",
+  "passes": [
+    "front identity matches the locked Porto azulejo reference",
+    "five reference-specific materials and zero generic fallback",
+    "neutral contextual glass has no image texture or baked reflection",
+    "closed physical hipped roof and intersecting chimney",
+    "side and rear elevations are fully articulated rather than blank carrier faces",
+    "rear service stair is exterior, grounded and connected to three landings",
+    "zero floating objects"
+  ],
+  "review_sheet": {
+    "path": "review/porto-pilot-reviewed-phone-sheet.png",
+    "bytes": 2293325,
+    "sha256": "2f28dcc1f161ad3a784ee81bd1cabb21941e6168c54c3625de097d6625c5df49"
+  },
+  "builder_self_approval": false
+}
