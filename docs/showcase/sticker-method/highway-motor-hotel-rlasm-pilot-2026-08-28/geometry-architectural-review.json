@@ -1,0 +1,88 @@
+{
+  "schema": "cityprompt.rlasm.geometry-architectural-review@1",
+  "candidate": "04-highway-motor-hotel-roadside-motel-rlasm-v5",
+  "review_date": "2026-08-28",
+  "builder_review_status": "PASS_BUILDER_REVIEW_AWAITING_INDEPENDENT_APPROVAL",
+  "keeper_status": "NOT_A_KEEPER",
+  "comparison_chain": {
+    "archetype_id": "highway_motor_hotel",
+    "variant_id": "hotel_roadside_motel",
+    "authoritative_images": [
+      "references/catalogue/variant_0.png",
+      "references/catalogue/variant_0_angle_60.jpg",
+      "references/catalogue/variant_0_angle_90.jpg"
+    ],
+    "locked_reference": "references/locked-four-view-construction-reference.png",
+    "model_review_views": [
+      "renders/front.png",
+      "renders/front_corner.png",
+      "renders/courtyard.png",
+      "renders/elevated_court.png",
+      "renders/aerial.png",
+      "renders/right_side.png",
+      "renders/left_side.png",
+      "renders/rear.png",
+      "renders/rear_side.png",
+      "renders/office_close.png"
+    ]
+  },
+  "mandatory_task_results": {
+    "source_provenance": "PASS",
+    "reference_fidelity_review": "PASS",
+    "full_geometry_review": "PASS_BUILDER",
+    "full_architectural_review": "PASS_BUILDER",
+    "relevant_fixes_complete": "PASS",
+    "repeat_review_pass": "PASS_BUILDER",
+    "independent_keeper_approval": "PENDING"
+  },
+  "geometry_review": {
+    "plan_topology": "PASS — one-storey U-plan, two parallel wings, rear cross-wing, and open road entry match the top catalogue view",
+    "roof_envelope": "PASS — three physical roof carriers seat on occupied walls; two triangular valley closures seal the side/cross-wing junctions",
+    "openings": "PASS — court-facing doors, paired windows, glazing depth, frames, and PTAC units are physical and attached",
+    "office": "PASS — glazed office is embedded in the left road-end wing with grounded canopy and visible vacancy sign",
+    "sign": "PASS — two grounded posts, feet, cabinet, arrow, and mesh lettering form one supported freestanding pylon",
+    "site_contacts": "PASS — court, walks, apron, parking lines, wheel stops, building volumes, and pylon reach grade",
+    "rear_and_sides": "PASS — blank striped right outer wall follows the source; rear and side walls have physical board-and-batten relief and service glazing",
+    "facade_sticker_count": 0,
+    "generic_fallback_count": 0,
+    "floating_count": 0
+  },
+  "architectural_review": {
+    "program": "PASS — direct-to-parking single-storey roadside motor court",
+    "identity": "PASS — office, room rhythm, shallow roofs, cream board walls, red/teal accents, and vintage pylon remain mutually consistent",
+    "material_zoning": "PASS — stripes are confined to source-supported outer/end walls; roof and court use source-calibrated procedural finishes with photo projection forbidden",
+    "unsupported_inventions": "PASS — no pool, second floor, exterior gallery, butterfly roof, breeze-block screen, or detached fantasy lobby",
+    "silhouette": "PASS — low horizontal court and tall sign reproduce the catalogue hierarchy"
+  },
+  "discrepancy_ledger": [
+    {
+      "version": "v1",
+      "finding": "rear roof carrier dominated the model; parking lines were rotated; office sign clipped; pylon obscured the architecture",
+      "resolution": "shortened side roof carriers, lowered rear roof, corrected stall orientation, moved sign text, and reframed cameras",
+      "status": "CLOSED"
+    },
+    {
+      "version": "v2",
+      "finding": "roof and court finishes were visually flat and the hero omitted the identity-bearing pylon",
+      "resolution": "added source-derived material provenance and widened/rebalanced the hero composition",
+      "status": "CLOSED"
+    },
+    {
+      "version": "v3",
+      "finding": "photographic crops tiled visibly and made the roof read as woven fabric",
+      "resolution": "forbade photo projection and replaced it with source-calibrated procedural microstructure",
+      "status": "CLOSED"
+    },
+    {
+      "version": "v4",
+      "finding": "rear oblique exposed overly dark triangular roof-junction pockets",
+      "resolution": "added explicit physical triangular prisms sealing both valley/gable junctions",
+      "status": "CLOSED"
+    }
+  ],
+  "unresolved_blockers": [],
+  "non_blocking_observations": [
+    "Rear-oblique gable and valley faces remain dark under neutral QA lighting, but the on-disk model contains physical closure prisms and no open void at either junction."
+  ],
+  "required_next_task": "Independent reviewer must compare the authoritative catalogue images, locked reference, and v5 render set and record approval before keeper promotion."
+}

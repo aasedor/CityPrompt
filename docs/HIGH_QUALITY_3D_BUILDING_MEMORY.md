@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-08-02-clean-3d-no-prisms-runtime-v118`.
+Current executable memory: `2026-08-28-catalogue-conditioned-rlasm-pilot-v119`.
 
 ## The quality target
 
@@ -1392,6 +1392,43 @@ The polychrome collegiate family added four rules for resizable hero facades:
   to lock the goalpost. Correct the largest program or silhouette mismatch
   first; material microdetail cannot repair a reversed station axis, a flat
   wave crest, an ungrounded tower or a market whose side arcades disappear.
+
+### Wave 16 catalogue-conditioned RLASM review lessons
+
+- Written prompts do not satisfy a reference lock. Pass the actual compatible
+  catalogue images to the reference-generation operation, preserve their
+  hashes and roles, and reject the generated sheet if it changes the program,
+  storey count, footprint topology, roof directions, entrance or identity
+  elements. The top or aerial source governs plan topology when the hero is
+  visually ambiguous.
+- Translate the locked views into an explicit architectural contract before
+  building. For the roadside-motel pilot this meant one storey, a U-shaped
+  motor court, two room wings joined by a rear cross-wing, an open road entry,
+  an embedded front office, direct room access, paired windows, PTAC units,
+  shallow roofs and a freestanding two-post pylon. Every item must survive in
+  physical geometry and in the review views.
+- A source crop is not automatically a construction texture. Audit every crop
+  for perspective, baked shadows, seams and recognizable object fragments. If
+  it cannot tile safely, retain it as provenance and derive a
+  source-calibrated procedural material with explicit physical scale; prohibit
+  projecting the oblique photograph onto the building.
+- Review topology with dedicated cameras, not only the beauty render. Require
+  an aerial view for footprint and roof direction, a court view for entrance
+  and room rhythm, and a rear-oblique view for ridge, valley, gable and closure
+  continuity. Dark faces are acceptable only when the evidence proves they are
+  closed, shaded construction rather than holes.
+- Identity infrastructure belongs to the architectural contract. Parking
+  stalls must orient to the room doors and motor court; a pylon must be
+  physically grounded, legible and present in the hero; and the office must be
+  framed without clipping either the building or sign.
+- Preserve each rejected iteration with its discrepancy ledger. Fix the
+  largest silhouette, topology or material failure first, render the same
+  mandatory views again, and promote only the reviewed evidence—not the whole
+  experiment directory—to Git.
+- “Builder review passed” and “keeper” are separate states. A phone-readable
+  comparison must show authoritative source roles beside matching model views,
+  state unresolved discrepancies, and remain explicitly not a keeper until an
+  independent reviewer approves it.
 
 ## Updating this memory
 

@@ -1,0 +1,91 @@
+{
+  "schema": "cityprompt.rlasm.catalogue-locked-pilot@1",
+  "candidate": "04-highway-motor-hotel-roadside-motel-rlasm-v5",
+  "title": "Highway Motor Hotel — Roadside Motel",
+  "archetype_id": "highway_motor_hotel",
+  "variant_id": "hotel_roadside_motel",
+  "status": "PASS_SOURCE_AND_REFERENCE_LOCK_AWAITING_DRY_BUILD",
+  "source_contract": {
+    "storeys": 1,
+    "plan": "U-shaped motor court with an open road entry",
+    "massing": "two parallel guest-room wings joined by a rear cross-wing",
+    "roof": "continuous shallow gable roofs with perpendicular rear ridge and physical junctions",
+    "office": "small glazed office embedded at the road end of the left wing",
+    "room_frontage": "direct-to-court doors, paired windows, and under-window PTAC units",
+    "sign": "freestanding two-post vintage Highway Motor Hotel / Motel pylon at the right road edge",
+    "forbidden_inventions": [
+      "second storey",
+      "pool court",
+      "exterior gallery",
+      "breeze-block screen",
+      "butterfly roof",
+      "thin hero facade backed by blank masses"
+    ]
+  },
+  "sources": [
+    {
+      "path": "references/catalogue/variant_0.png",
+      "role": "authoritative catalogue hero",
+      "bytes": 1221206,
+      "sha256": "4cc9e6ceff30e8ffeebaeac4da95d31e6e06c307c106cb0bf27487dde0c034c5"
+    },
+    {
+      "path": "references/catalogue/variant_0_angle_60.jpg",
+      "role": "authoritative elevated courtyard and massing view",
+      "bytes": 862465,
+      "sha256": "956ce260b3e57f3d63020188f7ee27ecfaef19a04885a222e976c4999e03975c"
+    },
+    {
+      "path": "references/catalogue/variant_0_angle_90.jpg",
+      "role": "authoritative roof-plan and site-topology view",
+      "bytes": 917415,
+      "sha256": "fe02202f7f846cc966c48569abe8acc5463191d56bcead541058b22f690b3b4f"
+    },
+    {
+      "path": "references/locked-four-view-construction-reference.png",
+      "role": "catalogue-image-conditioned construction reference; geometry checked against all three authoritative images",
+      "bytes": 2517011,
+      "sha256": "94403ff9b74dcf2d098196432ce22dce9b15a09a90b7167d8ad38cbbc52df4ab"
+    }
+  ],
+  "derived_materials": [
+    {
+      "path": "materials/catalogue-charcoal-shingles.jpg",
+      "role": "repeatable roof finish cropped deterministically from the authoritative elevated catalogue view",
+      "bytes": 45103,
+      "sha256": "d12a2ab3f7608c0477e6ff35f52a4e1e4251f969545f485402726d9455138d37"
+    },
+    {
+      "path": "materials/catalogue-motor-court-asphalt.jpg",
+      "role": "repeatable motor-court finish cropped deterministically from the authoritative elevated catalogue view",
+      "bytes": 55880,
+      "sha256": "2ac67fac146036d08cbe1fa0ecec1e07c82c0a8f7a332ff2b82d355444d2744f"
+    },
+    {
+      "path": "materials/material-provenance.json",
+      "role": "deterministic crop provenance and hashes"
+    }
+  ],
+  "reference_fidelity_gate": {
+    "authoritative_images_actually_supplied_to_generation": true,
+    "same_building_identity": true,
+    "same_storey_count": true,
+    "same_u_plan": true,
+    "same_open_road_entry": true,
+    "same_roof_hierarchy": true,
+    "same_office_location": true,
+    "same_room_frontage_rhythm": true,
+    "unsupported_program_added": false,
+    "decision": "PASS_REFERENCE_FIDELITY"
+  },
+  "hard_gates": {
+    "non_overwriting_candidate_root": true,
+    "authoritative_source_hashes_recorded": true,
+    "generated_reference_source_conditioned": true,
+    "generic_material_fallback_allowed": false,
+    "facade_sticker_allowed": false,
+    "full_geometry_review_required": true,
+    "full_architectural_review_required": true,
+    "independent_keeper_approval_required": true
+  }
+}

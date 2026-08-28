@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-08-02-clean-3d-no-prisms-runtime-v118",
+  "memory_version": "2026-08-28-catalogue-conditioned-rlasm-pilot-v119",
   "quality_target": "At least the user-approved Classic Haussmann level of archetype-shaped geometry, real construction depth, photoreal material response and resilient LEGO scaling in a real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "minimum_standard": {
@@ -1072,6 +1072,21 @@
       "symptom": "A civic or industrial landmark contains the right ski path, roof ribs, conveyor gallery, market vault or entrance stair as isolated motifs but the building still looks toy-like and cannot plausibly function",
       "cause": "Program-defining circulation, structure or process equipment was modeled as decorative fragments without continuous geometry, credible supports, landings, clearances or connections to occupied space.",
       "correction": "Trace the complete route or load path from start to finish before adding surface detail. Join every segment to its architectural endpoint, model supports and guards at metric scale, preserve the connected system in the assembled GLB, and prove continuity in front, oblique and aerial comparisons."
+    },
+    {
+      "symptom": "A generated construction reference is richly detailed but changes the catalogue building's footprint, storey count, roof direction, entrance or identity program",
+      "cause": "The reference generator received only a written archetype description, or received incompatible views without locked source roles and hashes, so it invented a plausible sibling instead of reconstructing the selected catalogue contract.",
+      "correction": "Supply the actual compatible catalogue images to the generation operation, record their immutable hashes and front, oblique, side or aerial roles, and compare the result feature by feature. Let the top or aerial source govern plan topology and reject any sheet that changes a program-defining element before geometry work begins."
+    },
+    {
+      "symptom": "A reference-specific roof, paving or wall material repeats as woven fabric, tiled photography, baked perspective or recognizable scene fragments",
+      "cause": "An oblique catalogue crop was treated as an atomic construction texture even though it contained perspective, lighting gradients, seams or multiple architectural elements.",
+      "correction": "Audit every crop for atomicity and seamless repetition. If it is unsafe, retain it as provenance only, prohibit photographic projection, and construct a source-calibrated procedural material with explicit physical scale, palette and microstructure."
+    },
+    {
+      "symptom": "A roof and footprint look correct in the hero and aerial views but rear-oblique renders reveal dark pockets, open valleys, detached gables or ambiguous junctions",
+      "cause": "The review set lacked a dedicated roof-junction camera, or intersecting roof carriers were assumed to be closed because their defects were hidden by the preferred angle.",
+      "correction": "Add physical valley and gable closure geometry, then require a rear-oblique proof alongside the aerial. Record whether every dark face is closed shaded construction or an actual void, and do not advance to independent keeper approval while any junction remains ambiguous."
     }
   ]
 }
