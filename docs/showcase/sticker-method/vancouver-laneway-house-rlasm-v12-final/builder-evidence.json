@@ -1,0 +1,78 @@
+{
+  "blend": {
+    "path": "C:\\Users\\andre\\OneDrive\\Documents\\PlaygroundNEW\\3D-Maps\\artifacts\\rlasm-three-building-confirmation-v1\\02-vancouver-laneway-house-rlasm-v12\\model\\vancouver-laneway-house-rlasm-v12.blend",
+    "sha256": "f1fba3a24c1e8f427f430dec4e29e9a19df2753cee8d4b7893a174c753e94240"
+  },
+  "builder_self_approval": false,
+  "candidate": "vancouver-laneway-house-rlasm-v12",
+  "glb": {
+    "path": "C:\\Users\\andre\\OneDrive\\Documents\\PlaygroundNEW\\3D-Maps\\artifacts\\rlasm-three-building-confirmation-v1\\02-vancouver-laneway-house-rlasm-v12\\model\\vancouver-laneway-house-rlasm-v12.glb",
+    "sha256": "f7eac7baf2a5cc9bff204ea1a5905f182fe1a17ed213d1480f9ddc7fb1b3f6c9"
+  },
+  "hardware": {
+    "primary_physical_only": [
+      "CP_Laneway_PrimaryEntry_handle_mount",
+      "CP_Laneway_PrimaryEntry_handle_lever"
+    ],
+    "side_latch_y": -3.88,
+    "side_physical_only": [
+      "CP_Laneway_SideEntryV12_handle_rosette",
+      "CP_Laneway_SideEntryV12_handle_knob"
+    ]
+  },
+  "parent_candidate": "vancouver-laneway-house-rlasm-v11",
+  "primary_card": {
+    "baked_hardware_absent": true,
+    "path": "object-primary-cedar-entry-under-balcony-v2-hardware-free.png",
+    "sha256": "1e819769c086f20f74c91e4cb738eeb633f766929103588e462497d749709b11"
+  },
+  "renders": [
+    {
+      "camera": "front",
+      "path": "C:\\Users\\andre\\OneDrive\\Documents\\PlaygroundNEW\\3D-Maps\\artifacts\\rlasm-three-building-confirmation-v1\\02-vancouver-laneway-house-rlasm-v12\\renders\\front.png",
+      "sha256": "df3a70aca935dc300c9faca1feb62d1d679dbb57c7085d2b0a60b99b13c613e6"
+    },
+    {
+      "camera": "front_corner",
+      "path": "C:\\Users\\andre\\OneDrive\\Documents\\PlaygroundNEW\\3D-Maps\\artifacts\\rlasm-three-building-confirmation-v1\\02-vancouver-laneway-house-rlasm-v12\\renders\\front_corner.png",
+      "sha256": "597043dbad0f1060de24ece6327a83d0931dfd9dad24615b8f28fa111738530f"
+    },
+    {
+      "camera": "entry_review",
+      "path": "C:\\Users\\andre\\OneDrive\\Documents\\PlaygroundNEW\\3D-Maps\\artifacts\\rlasm-three-building-confirmation-v1\\02-vancouver-laneway-house-rlasm-v12\\renders\\entry_review.png",
+      "sha256": "f90b5c4ba01091ccd92b78a90092e44753e57f8e39f98dcedc1796fd4bde4fcb"
+    },
+    {
+      "camera": "primary_entry_close",
+      "path": "C:\\Users\\andre\\OneDrive\\Documents\\PlaygroundNEW\\3D-Maps\\artifacts\\rlasm-three-building-confirmation-v1\\02-vancouver-laneway-house-rlasm-v12\\renders\\primary_entry_close.png",
+      "sha256": "7395470984dc1180d50e59a1d10d278a96b76e6577a4c4dfed03df2731e5ecb1"
+    },
+    {
+      "camera": "side_entry_close",
+      "path": "C:\\Users\\andre\\OneDrive\\Documents\\PlaygroundNEW\\3D-Maps\\artifacts\\rlasm-three-building-confirmation-v1\\02-vancouver-laneway-house-rlasm-v12\\renders\\side_entry_close.png",
+      "sha256": "92584affd6af4955a3a455a41c77efed70c7d9f826510e9e69a5a0b9cfafa994"
+    },
+    {
+      "camera": "entry_contact_low",
+      "path": "C:\\Users\\andre\\OneDrive\\Documents\\PlaygroundNEW\\3D-Maps\\artifacts\\rlasm-three-building-confirmation-v1\\02-vancouver-laneway-house-rlasm-v12\\renders\\entry_contact_low.png",
+      "sha256": "480ff3a530175fdd1e01a36b23c1cb656f8a0cbfe0532ad257b3fbd5ba0c913a"
+    }
+  ],
+  "schema": "cityprompt.rlasm-vancouver-entry-final-qa-candidate@1",
+  "sconce": {
+    "card": "object-side-entry-grey-wall-sconce-v1.png",
+    "card_sha256": "c6e7f878288d400de9e1e155598381d0b336311a4e127150a5868572eb359679",
+    "energy_watts": 18.0,
+    "location": [
+      -5.21999979019165,
+      -2.619999885559082,
+      2.3499999046325684
+    ]
+  },
+  "side_card": {
+    "baked_hardware_absent": true,
+    "path": "object-side-recessed-cedar-door-leaf-v3-handle-free.png",
+    "sha256": "16c3b93172426d20831ab8b5a173ad2f293eed2ff8b5dc30d79790ef88b70b31"
+  },
+  "status": "PASS_BUILDER_EVIDENCE_AWAITING_INDEPENDENT_FINAL_QA"
+}

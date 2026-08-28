@@ -1,6 +1,6 @@
 # Reference-Locked Atomic Sticker Method (RLASM)
 
-Version: 1.5.0
+Version: 1.6.0
 Status: active, user-approved production direction  
 Machine contract: `reference_locked_atomic_sticker_method.json`
 
@@ -102,6 +102,18 @@ the rejected approach of repeating whole-object or whole-facade photographs.
     contact views remain required, but `front_corner.png` and `front.png` must
     frame the full silhouette, foundation, entrance, and roof. A flattering
     close crop cannot substitute for whole-building identity review.
+21. **Entrances are enumerated, not inferred.** Every distinct primary,
+    secondary, side, rear, service, or recessed entry must appear in the role
+    inventory and receive its own atomic leaf/assembly authority. A unique door
+    hidden inside a broad window or facade card is still a missing role.
+22. **Cards and geometry have exclusive physical responsibilities.** When a
+    handle, knob, lockset, threshold, or sconce is modeled, it must not also be
+    baked into the door-leaf card. Each visible physical object appears exactly
+    once, touches its carrier, and uses the reference-correct latch side.
+23. **Independent final-render QA is required.** Before a pilot can pass, a
+    reviewer other than the builder compares the locked reference, role/card
+    inventory, actual scene geometry, and entry/contact close-ups. Builder
+    evidence is never self-approval.
 
 ## The procedure
 
@@ -125,6 +137,10 @@ Before Blender work, make a reference sheet that records:
 - material zones and their transitions;
 - all opening families, proportions, frame and muntin materials, surround or
   hood geometry, placement zones, and allowed repeat counts;
+- an explicit entry-role inventory covering every primary, secondary, side,
+  rear, service, and recessed door;
+- unique entry-adjacent objects such as hardware, sconces, canopies,
+  thresholds, stoops, mailboxes, and railings;
 - every unique architectural role, including roof-only and rear/side roles;
 - repeated roles that are explicitly allowed to share a card;
 - uncertain or hidden areas that require conservative reconstruction.
@@ -154,6 +170,12 @@ non-repeatable object fails with
 `unique_ornament_embedded_in_repeatable_material_swatch` and is replaced by a
 plain field swatch plus separate atomic geometry/card roles.
 
+Door-leaf cards must be hardware-free whenever handles, knobs, locksets, or
+rosettes will be modeled. Hardware, thresholds, stoops, and sconces are unique
+physical roles: give them their own card or exact material binding and model
+them once. Do not use a broad entry photograph as a substitute for an atomic
+door leaf.
+
 Required output: a complete card manifest in which every unique role maps to
 exactly one approved card or clean material binding.
 
@@ -162,6 +184,14 @@ exactly one approved card or clean material binding.
 - Build massing and roof silhouette first.
 - Model apertures, recesses, returns, frames, mullions, cornices, parapets, and
   role-specific geometry.
+- Prove entry recess direction numerically: the leaf must sit behind the
+  facade plane, never in front as an applique.
+- Attach each physical latch through a rosette or backplate with restrained
+  projection; no floating hardware and no duplicate baked lockset.
+- Extend thresholds, stoops, risers, and steps to the declared grade/contact
+  surface. A shadowed air gap beneath an entrance slab is a hard failure.
+- Place entry lighting at the physical fixture and bound its output so the
+  locked door material remains readable without clipping or colour wash.
 - Treat special systems such as Plus-15 bridges, domes, roof monitors, and
   glazed entrances as their own construction systems.
 - Keep repeated geometry modular, but never stretch or duplicate fixed identity
@@ -186,6 +216,7 @@ plus an attached-object contact audit proving zero unsupported/floating parts.
 - Place opening/occupied-depth cards behind physical glazing and frames.
 - Reuse a card only across instances of the same semantic role.
 - Never repeat a whole-facade or whole-object photograph across child faces.
+- Never bind baked hardware to a leaf that already has modeled hardware.
 
 Required output: a binding audit showing no missing role and no generic
 fallback.
@@ -215,6 +246,11 @@ and the corrected actual 3D render. Review:
 - side/rear continuity and oblique parallax;
 - absence of tiled photo fragments, bricked windows, ghosting, leakage,
   z-fighting, stretching, or broken glass.
+- every declared entrance in a building-scale view plus dedicated door
+  close-ups, an oblique recess view, and a low grade/contact audit;
+- exactly one physical latch per door, correct latch side, attached hardware,
+  grounded thresholds/steps, and no entry-light clipping;
+- an independent PASS/FAIL disposition after builder evidence is complete.
 
 User visual approval is required before scaling to another archetype.
 
@@ -257,6 +293,13 @@ Stop and create a fresh, non-overwriting candidate when any of these occur:
 - one generic window or door family substituted for a reference-specific
   hierarchy of distinct opening proportions, frames, muntins, arches, hoods,
   surrounds, or placement roles;
+- a distinct entrance omitted because it was buried inside a broad card;
+- a door leaf placed in front of the facade plane instead of inside its recess;
+- baked handle, lock, or light content duplicating physical modeled geometry;
+- floating handle, threshold, step, canopy, fixture, window, or trim;
+- a full black reveal plate occluding the referenced door leaf;
+- entry lighting detached from its fixture or clipping/washing out the locked
+  material appearance;
 - unsupported or floating attachment, including a frame or card that is
   visually near a wall but does not physically contact its carrier surface;
 - incomplete roof, dome, bridge, or other identity-defining system;
@@ -275,6 +318,11 @@ loop. After the bounded loops:
 - disclose cosmetic-only debt and hand it to downstream image/video refinement;
 - scale only an approved method and binding contract.
 
+When the user explicitly requests an iterate-until-PASS exception, each extra
+loop must still be finite, non-overwriting, and tied to a new independent
+failure report. It may correct only the bounded failing roles; it cannot widen
+into an unreviewed rebuild or silently relax a hard gate.
+
 ## Approved and rejected precedents
 
 - **Approved direction — Halifax v6:** clean facade materials plus projected,
@@ -284,6 +332,10 @@ loop. After the bounded loops:
 - **Approved benchmark — Toronto Annex Mansion RLASM v4:** full prework,
   reference-specific brick/stone/slate, five physical opening families, and
   zero floating attachments; commit `d1aa8494b`.
+- **Approved pilot — Vancouver Laneway House RLASM v12:** complete two-entry
+  inventory, true recesses, hardware-free leaf cards, one physical latch per
+  door, grounded steps, and fixture-local entry lighting; independent final QA
+  disposition `PASS_FINAL_ARCHETYPE_VISUAL_QA`.
 - **Rejected — Halifax v3:** photo fragments tiled across the building.
 - **Rejected — Calgary v3:** compound photo cards repeated over component
   faces, producing a noisy and structurally implausible result.

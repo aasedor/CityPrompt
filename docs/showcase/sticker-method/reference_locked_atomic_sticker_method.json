@@ -10,10 +10,17 @@
       "candidate": "calgary-plus15-office-recovery-v6-review",
       "commit": "454657070",
       "lesson": "clean precast construction plus atomic opening cards"
+    },
+    {
+      "candidate": "vancouver-laneway-house-rlasm-v12",
+      "lesson": "complete entry-role inventory, hardware-free door cards, one attached physical latch per door, grounded steps, and fixture-local lighting",
+      "status": "PASS_FINAL_ARCHETYPE_VISUAL_QA"
     }
   ],
   "bounded_correction_policy": {
     "cosmetic_only_debt_may_be_disclosed": true,
+    "each_extra_iteration_requires_independent_failure_evidence": true,
+    "explicit_user_iterate_until_pass_exception_allowed": true,
     "genuine_3d_failure_action": "quarantine",
     "maximum_focused_correction_loops": 2,
     "pilot_count": 1,
@@ -59,7 +66,8 @@
         "aligned",
         "perspective_free",
         "exact_opening_family_role",
-        "placement_zone_recorded"
+        "placement_zone_recorded",
+        "hardware_free_when_physical_hardware_is_modeled"
       ],
       "use": "single window, door, storefront, dormer, or occupied-depth view"
     }
@@ -77,6 +85,12 @@
     "bricked_printed_or_flat_opening",
     "missing_physical_opening_depth",
     "generic_window_family_substituted_for_reference_specific_opening_hierarchy",
+    "distinct_entrance_omitted_inside_broad_card",
+    "door_leaf_in_front_of_facade_plane",
+    "baked_hardware_duplicates_physical_geometry",
+    "floating_entry_hardware_threshold_step_fixture_or_trim",
+    "full_black_reveal_occludes_reference_door_leaf",
+    "entry_light_detached_or_clips_locked_material",
     "unsupported_or_floating_attachment",
     "incomplete_identity_defining_roof_dome_bridge_or_system",
     "leak_ghost_zfight_stretch_duplicate_stack_broken_glass_or_lost_parallax",
@@ -87,10 +101,14 @@
     "actual_3d_render_required_for_review": true,
     "broad_surface_world_scale_material_required": true,
     "compound_object_card_repeated_on_child_faces_forbidden": true,
+    "door_card_baked_hardware_forbidden_when_hardware_is_modeled": true,
+    "entry_contact_to_grade_required": true,
+    "entry_role_inventory_required": true,
     "generic_fallback_allowed": false,
     "git_review_handoff_required": true,
     "image_generation_scope": "clean reference-matched cards and material swatches only",
     "non_overwriting_candidates_required": true,
+    "independent_final_render_qa_required": true,
     "attached_object_contact_audit_required": true,
     "attached_object_floating_count_required": 0,
     "attached_object_anchor_source": "actual_carrier_surface_local_tangent_and_normal",
@@ -119,6 +137,35 @@
     "unique_role_requires_card": true,
     "user_visual_approval_before_scale": true,
     "whole_facade_photo_material_forbidden": true
+  },
+  "entry_contract": {
+    "forbidden": [
+      "broad_card_hides_unique_door",
+      "baked_and_modeled_duplicate_hardware",
+      "floating_handle_or_step",
+      "full_plane_black_reveal_in_front_of_leaf",
+      "detached_or_clipping_entry_light"
+    ],
+    "geometry_required": [
+      "leaf_behind_facade_plane",
+      "physical_returns",
+      "one_attached_physical_latch_per_door",
+      "threshold_and_step_contact_grade",
+      "fixture_local_entry_light"
+    ],
+    "independent_final_disposition_required": true,
+    "prework_required": [
+      "complete_entry_role_inventory",
+      "atomic_hardware_free_door_leaf_card_per_unique_leaf",
+      "unique_sconce_canopy_threshold_stoop_mailbox_and_railing_inventory"
+    ],
+    "review_views": [
+      "building_scale_primary_view",
+      "entry_oblique_recess_view",
+      "primary_door_close",
+      "secondary_door_close",
+      "low_grade_contact_audit"
+    ]
   },
   "name": "Reference-Locked Atomic Sticker Method",
   "procedure_id": "reference-locked-atomic-sticker-method",
@@ -156,6 +203,8 @@
         "material_zones",
         "opening_family_hierarchy",
         "opening_family_shape_proportion_material_surround_and_placement_inventory",
+        "entry_role_inventory",
+        "unique_entry_adjacent_object_inventory",
         "unique_role_inventory",
         "approved_repeat_roles"
       ]
@@ -171,6 +220,7 @@
         "zero_unique_ornament_embedded_in_repeatable_material_swatches",
         "opening_cards",
         "opening_family_role_and_placement_bindings",
+        "hardware_free_door_leaf_cards_when_physical_hardware_is_modeled",
         "object_cards",
         "occupied_depth_cards",
         "complete_role_to_card_or_material_binding"
@@ -189,6 +239,10 @@
         "frames",
         "mullions",
         "opening_family_specific_frames_muntins_sills_lintels_arches_and_surrounds",
+        "leaf_behind_facade_plane_audit",
+        "attached_physical_door_hardware",
+        "grounded_entry_thresholds_steps_and_risers",
+        "fixture_local_entry_lighting",
         "role_specific_geometry"
       ]
     },
@@ -221,6 +275,10 @@
         "unique_object_completeness_review",
         "opening_depth_review",
         "material_specificity_review",
+        "entry_role_completeness_review",
+        "door_hardware_exclusivity_review",
+        "entry_grade_contact_review",
+        "independent_final_render_disposition",
         "user_visual_disposition"
       ]
     },
@@ -254,5 +312,5 @@
     }
   ],
   "status": "active_user_approved_direction",
-  "version": "1.4.0"
+  "version": "1.6.0"
 }
