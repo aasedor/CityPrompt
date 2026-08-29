@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-08-28-optical-wall-section-rlasm-v124",
+  "memory_version": "2026-08-29-rlasm-v5-new-family-mapping-v125",
   "quality_target": "At least the user-approved Classic Haussmann level of archetype-shaped geometry, real construction depth, photoreal material response and resilient LEGO scaling in a real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "minimum_standard": {
@@ -247,6 +247,18 @@
     {
       "id": "program_systems_are_connected_topology",
       "rule": "When circulation, long-span structure or industrial transfer equipment defines an archetype, construct it as one continuous usable or load-bearing system with credible landings, supports, clearances and endpoints. A ski path, concourse nave, cable roof, silo gallery or public stair cannot be reduced to disconnected decorative pieces."
+    },
+    {
+      "id": "surface_roles_own_mapping_axes",
+      "rule": "Coursed materials are registered per semantic carrier: front and rear masonry use an explicit X-Z mapping, side masonry uses Y-Z, and roof slopes use their own bounded mapping. Never reuse one orientation blindly across perpendicular faces."
+    },
+    {
+      "id": "deterministic_facades_replace_failing_boolean_chains",
+      "rule": "When repeated booleans hide openings or create ghost outlines, compose the envelope from physical piers and spandrels around the audited bay schedule and terminate the structural core behind the occupied-depth layer."
+    },
+    {
+      "id": "phone_board_is_builder_gate_not_keeper_approval",
+      "rule": "Pair locked source and model front, oblique and top roles plus glazing and construction closes in a phone board before builder approval. Keeper promotion still requires a separate zero-P0 reviewer."
     }
   ],
   "construction_memory": {
@@ -1169,6 +1181,21 @@
       "symptom": "A window contains named reveal, pane and occupied-depth objects but still reads as a projecting box, opaque card or uniformly glowing screen",
       "cause": "The layers were ordered backwards, the structural carrier continued through the cavity, or transmission and emission values were treated as proof without a grazing pixel review.",
       "correction": "Construct the opening from exterior to interior, terminate masonry or log carriers behind the occupied datum, keep glass nearly non-emissive and paper diffusive, place restrained warmth on a separate room plane, and require an oblique glass-close render that visibly separates wall return, screen and room depth."
+    },
+    {
+      "symptom": "Masonry looks correct on the front but becomes vertical stripes or giant blocks on side walls",
+      "cause": "A two-dimensional coursed shader used one coordinate pair and normalized scale for every perpendicular carrier.",
+      "correction": "Create separate front/rear X-Z and side Y-Z material roles, record the mapping axis and course size in metres, and validate both close and whole-envelope cameras."
+    },
+    {
+      "symptom": "A complete render set contains blank close-ups or pale embossed window outlines",
+      "cause": "Geometry rework removed the camera target or a solid carrier continued behind an otherwise valid reveal, pane and occupied-room assembly.",
+      "correction": "Re-audit camera targets after every bay-schedule change. Replace long failing carriers with deterministic piers and spandrels, keep the core behind the room datum, and reject any evidence view whose layers cannot be pointed to in pixels."
+    },
+    {
+      "symptom": "A role-specific crop is hash-valid but still reads like a pasted perspective photograph",
+      "cause": "The derivative included adjacent facade, shadow or unrelated architectural roles instead of the bounded identity datum.",
+      "correction": "Open and inspect the registered derivative before the dry build, crop only the clock, crest, material panel or other named role, and mount it to matching physical construction after massing and bay topology are locked."
     }
   ]
 }

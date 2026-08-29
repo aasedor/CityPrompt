@@ -1585,6 +1585,25 @@ The polychrome collegiate family added four rules for resizable hero facades:
   sets with zero P0 blockers. That independent pixel comparison, not the
   builder counters, is the keeper boundary.
 
+### RLASM v5 new-family constructor lessons
+
+The Victorian station, Rationalist hospital and Second Empire fire-station
+proof batch established four reusable rules:
+
+- A coursed material owns a surface role and mapping axis. Register front/rear
+  masonry in X-Z, side masonry in Y-Z and sloped roofs separately. Record the
+  physical course size; a correct palette with toy-scale blocks still fails.
+- If a long boolean chain hides windows or leaves embossed outlines, stop
+  extending the solid carrier. Assemble the facade from physical piers and
+  spandrels around the audited opening schedule and terminate the core behind
+  the occupied-room datum.
+- Inspect the registered derivative before construction. A valid hash does not
+  excuse adjacent perspective facade, shadows or unrelated roles in a clock,
+  crest or material-panel crop.
+- Re-audit camera targets after every bay change and build the matched phone
+  board before builder approval. Phone-scale source/model agreement is a local
+  gate; independent zero-P0 review is still required for keeper promotion.
+
 ## Updating this memory
 
 When a pilot reveals a reusable lesson:

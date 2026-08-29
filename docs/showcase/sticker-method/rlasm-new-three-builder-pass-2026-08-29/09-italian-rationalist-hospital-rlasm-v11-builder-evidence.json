@@ -1,0 +1,179 @@
+{
+  "schema": "cityprompt.rlasm.proven-new-build-evidence@1",
+  "candidate": "09-italian-rationalist-hospital-rlasm-v11",
+  "title": "Italian Rationalist Marble Hospital",
+  "method": "Reference-Locked Atomic Sticker-and-Massing (RLASM) v5",
+  "status": "PASS_DRY_BUILD_AWAITING_FULL_VISUAL_REVIEW",
+  "source_manifest_sha256": "ba28e436a1f5699fa49975c4cfa2b6dfbed1da5d1a07a60d5577c15f850bc432",
+  "scene": {
+    "path": "model/09-italian-rationalist-hospital-rlasm-v11.blend",
+    "bytes": 685063,
+    "sha256": "f66971f8c56a6bc6be03bec378a28df243088f3d14aede168abab12ae47c3a73"
+  },
+  "glb": {
+    "path": "model/09-italian-rationalist-hospital-rlasm-v11.glb",
+    "bytes": 10636648,
+    "sha256": "e6d3b91489450c9e0bd243ee3e2b76165a5724ae3dfda7c81539f80663adce02"
+  },
+  "renders": [
+    {
+      "path": "renders/aerial.png",
+      "bytes": 1119493,
+      "sha256": "dc6b4367b31c199ba1ae11a380e60c8d8e45381ee7b549e42b1ba90b71ffffc2"
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "bytes": 1143509,
+      "sha256": "76d97d75031f00490bed3219f0abd8b37c4f33317289dbd33a74230e4ce7d040"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "bytes": 1100893,
+      "sha256": "c9731599f7f8a83d6300b4d205011876aac8d106bd56d6f9e2013e82f891a781"
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 1024337,
+      "sha256": "9f39623e82de9e7afe5f03b29ef9cf737b8cc8c1b817e991e3b61a25dfdaad85"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 1106318,
+      "sha256": "e411bc77548b25d0d18713213bdb4d00a0f186c68fab46811383af7db3608226"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 934694,
+      "sha256": "abe2ca912a2154ff57c24c9b6bd695dece3e212b3c0adef8603181be4475e3f8"
+    },
+    {
+      "path": "renders/left_side.png",
+      "bytes": 926657,
+      "sha256": "7cf2195091aa0f975bbdb73756cf4046b07f45f7bc1e82afadb974e9e8099c52"
+    },
+    {
+      "path": "renders/preview.png",
+      "bytes": 1106318,
+      "sha256": "e411bc77548b25d0d18713213bdb4d00a0f186c68fab46811383af7db3608226"
+    },
+    {
+      "path": "renders/rear.png",
+      "bytes": 951941,
+      "sha256": "ecac0f8d9294808f2ae12e5df70f5f8a3ab01e0db4cc39dc79401703598721ad"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "bytes": 1078502,
+      "sha256": "dea78ee1f0d56088c75bc098847cfab2e0e42b3f7a9b2f7be37d814caf9068ca"
+    },
+    {
+      "path": "renders/right_side.png",
+      "bytes": 921814,
+      "sha256": "726949274cb25882dc8e066405226d026d4f1765845525b48714fb2d55a974fc"
+    }
+  ],
+  "object_count": 1392,
+  "material_audit": {
+    "building_material_count": 10,
+    "materials": [
+      {
+        "name": "MAT_Hospital_CarraraPanel",
+        "status": "reference_specific_finished",
+        "provenance": "catalogue palette and construction microstructure; candidate=09-italian-rationalist-hospital-rlasm-v11; role=white Carrara marble cladding with restrained veining",
+        "source_sha256": "80d83cd0623e80205c40c7661e8ff8da76d3fe8507836dd6c714c5abf0964343"
+      },
+      {
+        "name": "MAT_Hospital_CourtLawn",
+        "status": "reference_specific_finished",
+        "provenance": "catalogue-conditioned role for 09-italian-rationalist-hospital-rlasm-v11; clipped formal hospital garden lawn",
+        "source_sha256": "80d83cd0623e80205c40c7661e8ff8da76d3fe8507836dd6c714c5abf0964343"
+      },
+      {
+        "name": "MAT_Hospital_CourtPaving",
+        "status": "reference_specific_finished",
+        "provenance": "catalogue-conditioned role for 09-italian-rationalist-hospital-rlasm-v11; pale rationalist court paving",
+        "source_sha256": "80d83cd0623e80205c40c7661e8ff8da76d3fe8507836dd6c714c5abf0964343"
+      },
+      {
+        "name": "MAT_Hospital_DarkBronzeFrames",
+        "status": "reference_specific_finished",
+        "provenance": "catalogue-conditioned role for 09-italian-rationalist-hospital-rlasm-v11; thin dark Rationalist window frames",
+        "source_sha256": "80d83cd0623e80205c40c7661e8ff8da76d3fe8507836dd6c714c5abf0964343"
+      },
+      {
+        "name": "MAT_Hospital_GreenSerpentine",
+        "status": "reference_specific_finished",
+        "provenance": "catalogue palette and construction microstructure; candidate=09-italian-rationalist-hospital-rlasm-v11; role=dark green serpentine stair core",
+        "source_sha256": "80d83cd0623e80205c40c7661e8ff8da76d3fe8507836dd6c714c5abf0964343"
+      },
+      {
+        "name": "MAT_Hospital_LowIronGlass",
+        "status": "reference_specific_finished",
+        "provenance": "catalogue-conditioned role for 09-italian-rationalist-hospital-rlasm-v11; neutral low-iron hospital glazing",
+        "source_sha256": "80d83cd0623e80205c40c7661e8ff8da76d3fe8507836dd6c714c5abf0964343"
+      },
+      {
+        "name": "MAT_Hospital_OccupiedDepth",
+        "status": "reference_specific_finished",
+        "provenance": "catalogue-conditioned role for 09-italian-rationalist-hospital-rlasm-v11; separate restrained occupied hospital room",
+        "source_sha256": "80d83cd0623e80205c40c7661e8ff8da76d3fe8507836dd6c714c5abf0964343"
+      },
+      {
+        "name": "MAT_Hospital_PanelJoint",
+        "status": "reference_specific_finished",
+        "provenance": "catalogue-conditioned role for 09-italian-rationalist-hospital-rlasm-v11; thin Carrara panel joint shadow",
+        "source_sha256": "80d83cd0623e80205c40c7661e8ff8da76d3fe8507836dd6c714c5abf0964343"
+      },
+      {
+        "name": "MAT_Hospital_RegisteredSerpentineCore",
+        "status": "reference_specific_finished",
+        "provenance": "exact catalogue crop registered only to its matching physical identity datum",
+        "source_sha256": "0549218cdee70180951f7cd34d1e2786668fb131170b8099a657c144092e45cf"
+      },
+      {
+        "name": "MAT_Hospital_WhiteRoofMembrane",
+        "status": "reference_specific_finished",
+        "provenance": "catalogue-conditioned role for 09-italian-rationalist-hospital-rlasm-v11; source-matched pale flat roof membrane",
+        "source_sha256": "80d83cd0623e80205c40c7661e8ff8da76d3fe8507836dd6c714c5abf0964343"
+      }
+    ],
+    "generic_fallback_count": 0,
+    "all_reference_specific_finished": true,
+    "glass": {
+      "material": "MAT_Hospital_LowIronGlass",
+      "image_texture_count": 0,
+      "baked_reflection": null,
+      "reflection_source": null,
+      "neutral_scene_only": true
+    }
+  },
+  "contact_audit": {
+    "schema": "cityprompt.rlasm.contact-audit@7",
+    "candidate": "09-italian-rationalist-hospital-rlasm-v11",
+    "records": [
+      {
+        "claim": "three occupied wings form a physical U around the court",
+        "floating": false
+      },
+      {
+        "claim": "square arcade columns bear on grade and carry the lintel",
+        "floating": false
+      },
+      {
+        "claim": "serpentine identity skin is confined to its stair-core volume",
+        "floating": false
+      },
+      {
+        "claim": "roof houses bear on closed flat roofs",
+        "floating": false
+      }
+    ],
+    "floating_count": 0,
+    "status": "PASS_ZERO_DECLARED_FLOATING_AWAITING_VISUAL_QA"
+  },
+  "registered_identity_count": 1,
+  "generic_fallback_count": 0,
+  "true_opening_contract": true,
+  "builder_self_approval": false,
+  "keeper_status": "NOT_A_KEEPER_AWAITING_INDEPENDENT_REVIEW"
+}

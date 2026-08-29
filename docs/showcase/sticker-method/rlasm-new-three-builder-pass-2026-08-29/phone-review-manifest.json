@@ -1,0 +1,31 @@
+{
+  "schema": "cityprompt.rlasm.phone-review@3",
+  "review_date": "2026-08-29",
+  "status": "PASS_BUILDER_VISUAL_REVIEW_AWAITING_INDEPENDENT_APPROVAL",
+  "records": [
+    {
+      "candidate": "07-victorian-iron-glass-grand-station-rlasm-v9",
+      "path": "07-victorian-iron-glass-grand-station-rlasm-v9-phone-comparison.png",
+      "bytes": 1613608,
+      "sha256": "58b8d5cc8c057924c3487d9d3b0d5bea1ec8daec5ae4751f44f217c52b8144a5"
+    },
+    {
+      "candidate": "09-italian-rationalist-hospital-rlasm-v11",
+      "path": "09-italian-rationalist-hospital-rlasm-v11-phone-comparison.png",
+      "bytes": 1258111,
+      "sha256": "f1b7caea385b6ac8f16e0c0154f4c2dbef9242a3f8c59b63bf81dc5670892363"
+    },
+    {
+      "candidate": "10-second-empire-fire-station-rlasm-v7",
+      "path": "10-second-empire-fire-station-rlasm-v7-phone-comparison.png",
+      "bytes": 1590345,
+      "sha256": "afea51c01a6562da944c38da53e245fe7c69552da68d49881e197cf443e38073"
+    },
+    {
+      "candidate": "three-new-buildings-index",
+      "path": "rlasm-v5-three-new-buildings-phone-index.png",
+      "bytes": 837202,
+      "sha256": "e065392b67de155f83edcdcc4011d0fcc72c18cc0e3256e82452e2f53477a1e2"
+    }
+  ]
+}

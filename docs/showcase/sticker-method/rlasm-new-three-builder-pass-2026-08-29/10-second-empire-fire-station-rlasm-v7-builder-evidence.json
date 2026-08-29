@@ -1,0 +1,185 @@
+{
+  "schema": "cityprompt.rlasm.proven-new-build-evidence@1",
+  "candidate": "10-second-empire-fire-station-rlasm-v7",
+  "title": "Second Empire Granite Fire Station",
+  "method": "Reference-Locked Atomic Sticker-and-Massing (RLASM) v5",
+  "status": "PASS_DRY_BUILD_AWAITING_FULL_VISUAL_REVIEW",
+  "source_manifest_sha256": "500f5b1e2bcafd712164f95dc8c4b609073097f0de638711d14f0bea0e61677a",
+  "scene": {
+    "path": "model/10-second-empire-fire-station-rlasm-v7.blend",
+    "bytes": 309295,
+    "sha256": "94f636391feee5f87427c4c77d61e12fb3264bd0b51652a434c5a5c4f814c24e"
+  },
+  "glb": {
+    "path": "model/10-second-empire-fire-station-rlasm-v7.glb",
+    "bytes": 3485840,
+    "sha256": "0304a955cce086fc5212548e4c99285a3909cf766dce42842e534727ef2bd185"
+  },
+  "renders": [
+    {
+      "path": "renders/aerial.png",
+      "bytes": 1278543,
+      "sha256": "51dfbfb744b2f1bc713d5db2702df03aec31d1fffc028c24636ee028ac2ae3d1"
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "bytes": 1284031,
+      "sha256": "bd2dd7e34fe76128779e98a2b06b216eb558e000c72d267a81d305363b55a483"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "bytes": 1171075,
+      "sha256": "4c80b621d46ab28db20a55d632e6f206b1a5036f45c39bed66c3b896fab01c77"
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 1140320,
+      "sha256": "c414ab380001150006eb708456ac1120431719f7c914651d18deffcfb230cdab"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 1247755,
+      "sha256": "39ea754619251bcf6f957e9d23d8f062c2c167f87641d7060a3be5d1ac91bc16"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 1226634,
+      "sha256": "47e802dc89b8bf774015a087e0bff29a1d51f9e9ee6df9f847dc27826a8e84ab"
+    },
+    {
+      "path": "renders/left_side.png",
+      "bytes": 1132977,
+      "sha256": "fcca700db06e88b229ce372327687df57c48fa6e3b59c488e56a1f781aee7881"
+    },
+    {
+      "path": "renders/preview.png",
+      "bytes": 1247755,
+      "sha256": "39ea754619251bcf6f957e9d23d8f062c2c167f87641d7060a3be5d1ac91bc16"
+    },
+    {
+      "path": "renders/rear.png",
+      "bytes": 1039788,
+      "sha256": "09675b5603956688a1f2b3e4e02e6e37e8fc2c689f2e98fc6366bd5efbc30123"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "bytes": 1390495,
+      "sha256": "d4e1c5c4bdcd1a5983aa004e88ef5935800f8b9720197e8fed6ad14582794eaf"
+    },
+    {
+      "path": "renders/right_side.png",
+      "bytes": 1121806,
+      "sha256": "af373f558839563c87c5916d5028fb396c636e392fedccf213089b3b236978c6"
+    }
+  ],
+  "object_count": 424,
+  "material_audit": {
+    "building_material_count": 11,
+    "materials": [
+      {
+        "name": "MAT_Fire_BlackIron",
+        "status": "reference_specific_finished",
+        "provenance": "catalogue-conditioned role for 10-second-empire-fire-station-rlasm-v7; historic iron cresting, frames and weathervane",
+        "source_sha256": "733736bae1c5359afd2d29a835a985eec936e5c210d99ff281c9e7b24e21e860"
+      },
+      {
+        "name": "MAT_Fire_BlueGreyGraniteAshlar_XZ",
+        "status": "reference_specific_finished",
+        "provenance": "source-conditioned masonry bond",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_Fire_BlueGreyGraniteAshlar_YZ",
+        "status": "reference_specific_finished",
+        "provenance": "source-conditioned masonry bond",
+        "source_sha256": null
+      },
+      {
+        "name": "MAT_Fire_BlueSlateFishScale",
+        "status": "reference_specific_finished",
+        "provenance": "catalogue-matched coursing, joints, palette and roughness; candidate=10-second-empire-fire-station-rlasm-v7; role=small blue-grey slate mansard courses",
+        "source_sha256": "733736bae1c5359afd2d29a835a985eec936e5c210d99ff281c9e7b24e21e860"
+      },
+      {
+        "name": "MAT_Fire_CarvedPaleGranite",
+        "status": "reference_specific_finished",
+        "provenance": "catalogue palette and construction microstructure; candidate=10-second-empire-fire-station-rlasm-v7; role=carved pale granite surrounds and civic relief",
+        "source_sha256": "733736bae1c5359afd2d29a835a985eec936e5c210d99ff281c9e7b24e21e860"
+      },
+      {
+        "name": "MAT_Fire_DarkOakApparatusDoors",
+        "status": "reference_specific_finished",
+        "provenance": "catalogue palette and construction microstructure; candidate=10-second-empire-fire-station-rlasm-v7; role=dark paneled timber apparatus doors with restrained grain",
+        "source_sha256": "733736bae1c5359afd2d29a835a985eec936e5c210d99ff281c9e7b24e21e860"
+      },
+      {
+        "name": "MAT_Fire_GraniteCore",
+        "status": "reference_specific_finished",
+        "provenance": "catalogue-conditioned role for 10-second-empire-fire-station-rlasm-v7; solid blue-grey granite wall core",
+        "source_sha256": "733736bae1c5359afd2d29a835a985eec936e5c210d99ff281c9e7b24e21e860"
+      },
+      {
+        "name": "MAT_Fire_NeutralHistoricGlass",
+        "status": "reference_specific_finished",
+        "provenance": "catalogue-conditioned role for 10-second-empire-fire-station-rlasm-v7; neutral historic civic glazing",
+        "source_sha256": "733736bae1c5359afd2d29a835a985eec936e5c210d99ff281c9e7b24e21e860"
+      },
+      {
+        "name": "MAT_Fire_OccupiedDepth",
+        "status": "reference_specific_finished",
+        "provenance": "catalogue-conditioned role for 10-second-empire-fire-station-rlasm-v7; separate warm occupied fire-station room",
+        "source_sha256": "733736bae1c5359afd2d29a835a985eec936e5c210d99ff281c9e7b24e21e860"
+      },
+      {
+        "name": "MAT_Fire_OxidizedCopperDome",
+        "status": "reference_specific_finished",
+        "provenance": "catalogue palette and construction microstructure; candidate=10-second-empire-fire-station-rlasm-v7; role=weathered warm copper bell dome",
+        "source_sha256": "733736bae1c5359afd2d29a835a985eec936e5c210d99ff281c9e7b24e21e860"
+      },
+      {
+        "name": "MAT_Fire_RegisteredCrest",
+        "status": "reference_specific_finished",
+        "provenance": "exact catalogue crop registered only to its matching physical identity datum",
+        "source_sha256": "49aec3b2b98ffd0073fb48747044cc8ba1ee5889aac30db78fdbcdadc744012d"
+      }
+    ],
+    "generic_fallback_count": 0,
+    "all_reference_specific_finished": true,
+    "glass": {
+      "material": "MAT_Fire_NeutralHistoricGlass",
+      "image_texture_count": 0,
+      "baked_reflection": null,
+      "reflection_source": null,
+      "neutral_scene_only": true
+    }
+  },
+  "contact_audit": {
+    "schema": "cityprompt.rlasm.contact-audit@7",
+    "candidate": "10-second-empire-fire-station-rlasm-v7",
+    "records": [
+      {
+        "claim": "granite envelope bears continuously on grade",
+        "floating": false
+      },
+      {
+        "claim": "mansard slopes close to crown",
+        "floating": false
+      },
+      {
+        "claim": "cupola columns bear on mansard base",
+        "floating": false
+      },
+      {
+        "claim": "registered crest sits on its carved physical carrier",
+        "floating": false
+      }
+    ],
+    "floating_count": 0,
+    "status": "PASS_ZERO_DECLARED_FLOATING_AWAITING_VISUAL_QA"
+  },
+  "registered_identity_count": 1,
+  "generic_fallback_count": 0,
+  "true_opening_contract": true,
+  "builder_self_approval": false,
+  "keeper_status": "NOT_A_KEEPER_AWAITING_INDEPENDENT_REVIEW"
+}
