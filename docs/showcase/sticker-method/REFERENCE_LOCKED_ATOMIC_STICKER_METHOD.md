@@ -1,8 +1,14 @@
 # Reference-Locked Atomic Sticker Method (RLASM)
 
 Version: 1.8.0
-Status: active, user-approved production direction  
-Machine contract: `reference_locked_atomic_sticker_method.json`
+Status: deprecated historical baseline
+Superseded by: [`docs/RLASM_LATEST_METHOD.md`](../../RLASM_LATEST_METHOD.md)
+Historical machine contract: `reference_locked_atomic_sticker_method.json`
+
+> Do not use this file as the current production authority. RLASM v6.0
+> consolidates the later source-lock, architecture, material, opening,
+> contact, evidence, review-scope, and keeper-lifecycle lessons. This document
+> remains intact below so older candidates retain an auditable method record.
 
 ## Purpose
 

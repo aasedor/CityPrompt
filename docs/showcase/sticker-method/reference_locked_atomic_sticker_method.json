@@ -1,5 +1,6 @@
 {
   "acronym": "RLASM",
+  "superseded_by": "docs/RLASM_LATEST_METHOD.md",
   "approved_precedents": [
     {
       "candidate": "halifax-terminal-warehouse-recovery-v6-review",
@@ -387,6 +388,6 @@
       ]
     }
   ],
-  "status": "active_user_approved_direction",
+  "status": "deprecated_historical_baseline",
   "version": "1.8.0"
 }

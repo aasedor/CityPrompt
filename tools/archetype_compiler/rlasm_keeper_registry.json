@@ -1,0 +1,33 @@
+{
+  "schema": "cityprompt.rlasm.keeper-registry@1",
+  "method_version": "6.0",
+  "updated": "2026-08-29",
+  "entries": [
+    {
+      "candidate": "05-art-deco-judicial-courthouse-rlasm-v20",
+      "status": "keeper_approved",
+      "review_scope": "holistic_independent"
+    },
+    {
+      "candidate": "06-grand-log-lodge-rlasm-v25",
+      "status": "keeper_approved",
+      "review_scope": "holistic_independent"
+    },
+    {
+      "candidate": "08-chinese-siheyuan-courtyard-house-rlasm-v18",
+      "status": "keeper_approved",
+      "review_scope": "holistic_independent"
+    },
+    {
+      "candidate": "10-second-empire-fire-station-rlasm-v20",
+      "status": "keeper_approved",
+      "review_scope": "holistic_independent"
+    },
+    {
+      "candidate": "10-second-empire-fire-station-rlasm-v18",
+      "status": "superseded",
+      "superseded_by": "10-second-empire-fire-station-rlasm-v20",
+      "reason": "A material-scoped pass was later invalidated by user-supplied dormer-contact evidence."
+    }
+  ]
+}

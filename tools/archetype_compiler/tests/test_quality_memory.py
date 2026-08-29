@@ -107,7 +107,7 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
     assert memory["schema"] == "high-quality-building-memory@1"
     assert (
         memory["memory_version"]
-        == "2026-08-29-rlasm-v5-roof-opening-contact-v128"
+        == "2026-08-29-rlasm-v6-integrated-method-v129"
     )
     memory_doc = (
         Path(__file__).resolve().parents[3]
@@ -130,6 +130,9 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
     } == set(minimum_standard["pillars"])
     assert "registered_identity_and_supporting_specimens_are_distinct" in principle_ids
     assert "identity_features_have_one_visual_owner" in principle_ids
+    assert "visible_relationships_are_proof" in principle_ids
+    assert "scoped_reviews_cannot_promote_keepers" in principle_ids
+    assert "keeper_status_is_revisable_by_new_visual_evidence" in principle_ids
     assert any(
         "arena, dome or inhabited-arch landmark" in item["symptom"].lower()
         for item in memory["known_failure_patterns"]

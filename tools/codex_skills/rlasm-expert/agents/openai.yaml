@@ -1,0 +1,4 @@
+interface:
+  display_name: "RLASM Expert"
+  short_description: "Build and review source-locked 3D buildings"
+  default_prompt: "Use $rlasm-expert to build or review a source-locked RLASM building."

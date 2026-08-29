@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-08-29-rlasm-v5-roof-opening-contact-v128",
+  "memory_version": "2026-08-29-rlasm-v6-integrated-method-v129",
   "quality_target": "At least the user-approved Classic Haussmann level of archetype-shaped geometry, real construction depth, photoreal material response and resilient LEGO scaling in a real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "minimum_standard": {
@@ -36,6 +36,18 @@
     "human_visual_approval_required": true
   },
   "non_negotiable_principles": [
+    {
+      "id": "visible_relationships_are_proof",
+      "rule": "Source-to-topology, wall-to-opening, roof-to-contact, material-to-substance, transparent-shell-to-program and evidence-to-review relationships must be visible in rendered pixels; object names, hashes, counts and Booleans are supporting audit evidence only."
+    },
+    {
+      "id": "scoped_reviews_cannot_promote_keepers",
+      "rule": "A scoped material, identity, glazing or contact review may close only its named category. RLASM keeper approval requires a separate holistic source-locked adversarial review of the complete render set and phone board with zero unresolved P0 and P1 blockers."
+    },
+    {
+      "id": "keeper_status_is_revisable_by_new_visual_evidence",
+      "rule": "When later visual evidence exposes a missed defect, demote or supersede the keeper, preserve the prior review record and continue with a new bounded candidate; never use earlier metadata to overrule the pixels."
+    },
     {
       "id": "reference_is_goalpost",
       "rule": "Use every compatible archetype view to infer massing, corners, roof, entrances and side elevations; never optimize only for the card image."
@@ -1221,6 +1233,11 @@
       "symptom": "A roof dormer window reads as a finished frame floating outside the mansard, or becomes a blank wall panel after the dormer body is moved into the roof",
       "cause": "The opening was positioned from a nominal roof boundary instead of the actual slope, and the inherited Boolean cutter was shallower than the thickened integrated dormer body, leaving an opaque exterior skin over the optical assembly.",
       "correction": "Derive the dormer datum from the constructed roof plane; make its lower cheeks cross that plane; cut through the complete core, skin, and integrated body depth; then build a visible material-matched return, recessed sash, optical pane, and separate occupied-depth layer. Close the gable, seat and bound the roof cap, assign flashing or apron ownership, and require both side elevations, aerial, and an oblique contact close before promotion."
+    },
+    {
+      "symptom": "A scoped material or contact review records keeper-ready, but a later user close-up exposes an unrelated floating, incomplete or generic assembly",
+      "cause": "Category closure was conflated with whole-candidate approval, so the reviewer did not perform a holistic adversarial regression across the complete source-locked camera set.",
+      "correction": "Preserve the scoped result but rescind whole-candidate promotion. Mark the candidate superseded or visual-rework-required, fix the finite blocker in a new version, rerender every mandatory view and require a separate holistic independent review before keeper approval."
     }
   ]
 }

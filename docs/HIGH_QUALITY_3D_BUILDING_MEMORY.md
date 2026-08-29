@@ -9,7 +9,11 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-08-29-rlasm-v5-roof-opening-contact-v128`.
+Current executable memory: `2026-08-29-rlasm-v6-integrated-method-v129`.
+
+Canonical RLASM authority: [`RLASM_LATEST_METHOD.md`](RLASM_LATEST_METHOD.md).
+Package-local RLASM recipes are historical snapshots and must not compete with
+that file.
 
 Proven execution checklist:
 [`RLASM_PROVEN_BUILD_RECIPE_V5.md`](showcase/sticker-method/rlasm-three-family-independent-pass-2026-08-28/RLASM_PROVEN_BUILD_RECIPE_V5.md).
@@ -1671,6 +1675,32 @@ the thickened dormer body and leaves an opaque exterior skin over the window.
 - Preserve floating and partial-cut candidates and advance a bounded revision.
 
 Fire-station v20 passed this gate with zero independent P0 blockers.
+
+### RLASM v6 integrated authority and review scope
+
+The accumulated station, courthouse, lodge, Siheyuan, and fire-station work
+showed that quality is the visible correctness of relationships: source to
+topology, wall to opening, roof to dormer, material to substance, transparent
+shell to program, and evidence to review claim. Object names, hashes, counts,
+and passing Booleans support an audit but never override pixels.
+
+- `docs/RLASM_LATEST_METHOD.md` and
+  `tools/archetype_compiler/rlasm_method.json` are the single current human and
+  executable RLASM authorities.
+- A production expert may produce a builder pass. An independent verifier must
+  perform the keeper review; the same role never builds and self-approves.
+- A scoped material, contact, glazing, or identity review closes only its named
+  category. It must not emit `keeper_approved`.
+- Keeper promotion requires a holistic source-locked adversarial regression of
+  every mandatory full-resolution render and phone board with zero unresolved
+  P0 and P1 blockers.
+- New visual evidence can demote or supersede an earlier keeper. Preserve the
+  previous record and explain the supersession instead of rewriting history.
+- `high_quality_ready` from the general family assessor is not RLASM keeper
+  approval. Use the dedicated RLASM contract and keeper registry.
+- Corrections are finite and blocker-bounded, but there is no arbitrary maximum
+  number of attempts. Never overwrite a prior candidate or start an open-ended
+  unattended loop.
 
 ## Updating this memory
 
