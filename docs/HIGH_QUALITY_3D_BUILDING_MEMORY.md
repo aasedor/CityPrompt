@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-08-28-source-specific-material-correction-rlasm-v122`.
+Current executable memory: `2026-08-28-optical-wall-section-rlasm-v124`.
 
 ## The quality target
 
@@ -1516,6 +1516,71 @@ The polychrome collegiate family added four rules for resizable hero facades:
 - Rescind a builder pass when later review exposes a material false positive.
   Geometry and constructor lessons may remain valid, but keeper candidacy must
   move back to rework until the corrected GLB is rerendered and reviewed.
+
+### Wave 20 registered-identity binding lessons
+
+- Role-atomic stone, timber, shingle, brick, tile, lacquer and paving specimens
+  are supporting construction assets. They do not reproduce a selected
+  building's bay hierarchy, relief zoning, opening cadence or joinery. Bind a
+  dedicated orthographic render-locked identity source to every principal
+  facade or other identity-bearing semantic surface.
+- Preserve the complete source recipe: exact compatible catalogue inputs and
+  hashes, raw generated output, exact prompt, provider/output record, masking
+  operations, registered derivative and intended model datum. Recreating the
+  approved source must not depend on chat history.
+- Register identity only to matching physical construction. The elevation can
+  carry surface identity, but the model still owns silhouette, openings,
+  recesses, returns, roofs, supports and circulation. A large image plane that
+  hides incorrect massing or unfinished secondary elevations is a hard fail.
+- Give each feature one visual owner. Clear source pixels where physical
+  geometry owns a flagpole, chimney, gate aperture, canopy, pane or other
+  silhouette/depth feature. Duplicate ownership creates ghost geometry;
+  incomplete alpha cleanup creates pale or dark edge halos.
+- Continue the source grammar around side and rear elevations. A registered
+  front paired with generic punched windows, blank returns, black carrier
+  voids or open roof junctions remains an architectural mismatch.
+- Glazing, paper screens and lattice are wall sections: perimeter frame,
+  recessed pane or paper, occupied reveal and physical depth. Require a
+  dedicated glass-close camera alongside matched front, 60-degree oblique,
+  aerial/topology, rear-side, facade-close and family-junction views.
+- The courthouse, lodge and Siheyuan correction showed the proper fix order:
+  rebuild identity massing and topology first; register the exact source;
+  correct feature ownership and alpha edges; finish secondary construction;
+  then tune physical-scale supporting materials and neutral review lighting.
+- A build may report one registered identity surface, zero generic fallbacks,
+  zero declared floating contacts and a complete camera set while still
+  failing visible comparison. Never convert builder metadata into keeper
+  approval; preserve rejected versions and require a separate reviewer to pass
+  the corrected on-disk GLB with zero P0 blockers.
+
+### Wave 21 optical wall-section and carrier lessons
+
+- Audit every opening from exterior to interior: physical wall or cut-log face,
+  jamb/head/sill return, inner sash or lattice, pane or paper, then a separately
+  offset occupied-room plane and short room sidewalls. A deep decorative box
+  projecting outside the wall is not a recess.
+- The structural carrier must terminate behind the room datum. Compose
+  perforated masonry skins over inset cores, split round-log courses at the
+  audited jamb clearance, and pull courtyard hall carriers behind translucent
+  paper screens. Alpha cannot reveal a room when solid mass still fills the
+  cavity.
+- Match the proof camera to the relationship. A slightly oblique glass close
+  must visibly separate wall return, screen, optical layer and occupied depth;
+  object names, non-zero transmission and declared offsets are not evidence.
+- Keep glass nearly non-emissive and paper diffusive. Put restrained warmth on
+  the recessed room plane, and tune transmission only far enough to reveal the
+  physical separation. Uniform dark, grey, cream, amber or glowing rectangles
+  still fail the optical wall-section gate.
+- Run a local pixel gate before independent review. If the wall, pane or paper,
+  and occupied layer cannot be pointed to separately, preserve the bounded
+  revision as rejected and correct the constructor first.
+- Prove every carrier-material replacement in rear-side and aerial views.
+  Family-specific grey masonry plus red timber is a valid Siheyuan envelope;
+  a flat orange depth carrier is not, even when hidden from the hero view.
+- Courthouse v20, lodge v25 and Siheyuan v18 independently passed only after
+  these relationships were visible across their complete source-locked camera
+  sets with zero P0 blockers. That independent pixel comparison, not the
+  builder counters, is the keeper boundary.
 
 ## Updating this memory
 

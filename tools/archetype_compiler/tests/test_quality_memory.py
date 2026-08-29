@@ -107,7 +107,7 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
     assert memory["schema"] == "high-quality-building-memory@1"
     assert (
         memory["memory_version"]
-        == "2026-08-28-source-specific-material-correction-rlasm-v122"
+        == "2026-08-28-optical-wall-section-rlasm-v124"
     )
     memory_doc = (
         Path(__file__).resolve().parents[3]
@@ -128,6 +128,8 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
         "photoreal_skin",
         "lego_scalability",
     } == set(minimum_standard["pillars"])
+    assert "registered_identity_and_supporting_specimens_are_distinct" in principle_ids
+    assert "identity_features_have_one_visual_owner" in principle_ids
     assert any(
         "arena, dome or inhabited-arch landmark" in item["symptom"].lower()
         for item in memory["known_failure_patterns"]
@@ -152,6 +154,21 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
     )
     assert any(
         "floating pale ridge rods" in item["symptom"].lower()
+        for item in memory["known_failure_patterns"]
+    )
+    assert any(
+        "generic member of the style" in item["symptom"].lower()
+        and "orthographic identity source" in item["correction"].lower()
+        for item in memory["known_failure_patterns"]
+    )
+    assert any(
+        "doubled chimneys" in item["symptom"].lower()
+        and "one visual owner" in item["correction"].lower()
+        for item in memory["known_failure_patterns"]
+    )
+    assert any(
+        "black carrier voids" in item["symptom"].lower()
+        and "glass-close" in item["correction"].lower()
         for item in memory["known_failure_patterns"]
     )
     assert any(
@@ -438,6 +455,13 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
     assert any(
         "giant masonry blocks" in item["symptom"].lower()
         and "physical-scale coordinates" in item["correction"].lower()
+        for item in memory["known_failure_patterns"]
+    )
+    assert "optical_wall_sections_follow_exterior_to_interior_order" in principle_ids
+    assert any(
+        "projecting box" in item["symptom"].lower()
+        and "exterior to interior" in item["correction"].lower()
+        and "oblique glass-close" in item["correction"].lower()
         for item in memory["known_failure_patterns"]
     )
     assert any(

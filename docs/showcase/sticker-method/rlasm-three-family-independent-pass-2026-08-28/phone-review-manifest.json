@@ -1,0 +1,24 @@
+{
+  "schema": "cityprompt.rlasm.phone-review@3",
+  "review_date": "2026-08-28",
+  "records": [
+    {
+      "candidate": "05-art-deco-judicial-courthouse-rlasm-v20",
+      "path": "phone-review/independently-passed-pilots-2026-08-28/05-art-deco-judicial-courthouse-rlasm-v20-phone-comparison.png",
+      "bytes": 1608341,
+      "sha256": "19b827a8decb16092dfe9eed03ac5dc55f1cc33c049078d16276d6d0551f2e4a"
+    },
+    {
+      "candidate": "06-grand-log-lodge-rlasm-v25",
+      "path": "phone-review/independently-passed-pilots-2026-08-28/06-grand-log-lodge-rlasm-v25-phone-comparison.png",
+      "bytes": 2039657,
+      "sha256": "9d610ce1d1e9176239a2468714466bd3ec72c9a2d3fd44218486299e2e7754cf"
+    },
+    {
+      "candidate": "08-chinese-siheyuan-courtyard-house-rlasm-v18",
+      "path": "phone-review/independently-passed-pilots-2026-08-28/08-chinese-siheyuan-courtyard-house-rlasm-v18-phone-comparison.png",
+      "bytes": 1857807,
+      "sha256": "7c147fe119e23f2f17aa92502ce4633bee99fff0914d2a59fe8d8fd363ab5176"
+    }
+  ]
+}

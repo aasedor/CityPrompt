@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-08-28-source-specific-material-correction-rlasm-v122",
+  "memory_version": "2026-08-28-optical-wall-section-rlasm-v124",
   "quality_target": "At least the user-approved Classic Haussmann level of archetype-shaped geometry, real construction depth, photoreal material response and resilient LEGO scaling in a real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "minimum_standard": {
@@ -81,6 +81,14 @@
       "rule": "Generic tiled facade materials are not a production skin. Every new archetype uses its compatible reference views to author a render-locked, archetype-specific source; registers that source by elevation and semantic surface; binds depth or displacement in the runtime shader; and forbids generic tiling as the primary identity treatment."
     },
     {
+      "id": "registered_identity_and_supporting_specimens_are_distinct",
+      "rule": "Role-atomic tile-safe specimens support construction on physical walls, roofs, returns and landscape, but they do not replace a dedicated orthographic render-locked identity source registered to each identity-bearing facade or semantic surface."
+    },
+    {
+      "id": "identity_features_have_one_visual_owner",
+      "rule": "Every flagpole, chimney, gate aperture, canopy, opening and other silhouette or depth feature has one visual owner. When physical geometry owns it, clear the competing source pixels and decontaminate alpha edges before registration."
+    },
+    {
       "id": "image_generation_recipe_is_reproducible",
       "rule": "Treat image generation as a reproducible design-source stage. Retain compatible inputs, a labelled goalpost, immutable keeper outputs, exact prompts, provider and model, output roles and geometry-registration targets in the family source package so no approved method depends on chat history or temporary files."
     },
@@ -131,6 +139,10 @@
     {
       "id": "core_respects_facade_cavity",
       "rule": "Every near-range glazing assembly owns an unobstructed service cavity from exterior skin to occupied backplate. Structural massing cores must be inset far enough that panes and room cards never intersect or disappear behind the core."
+    },
+    {
+      "id": "optical_wall_sections_follow_exterior_to_interior_order",
+      "rule": "Every reviewed opening visibly orders exterior wall or cut construction, jamb/head/sill return, inner sash or lattice, pane or translucent paper, then a separately offset occupied-room plane and short room sidewalls. Projecting frame boxes, solid carriers behind alpha and shader metadata without visible separation are prohibited."
     },
     {
       "id": "monumental_glazing_has_sectional_depth",
@@ -1137,6 +1149,26 @@
       "symptom": "A previously recorded builder pass is contradicted by a later phone review that exposes generic material character",
       "cause": "Geometry and architecture were accepted while material fidelity relied on metadata counters instead of the visible source/model comparison.",
       "correction": "Rescind the overall pass, preserve the prior evidence as rejected history, retain only still-valid constructor lessons, rerender the corrected GLB with source-derived materials, and return the candidate to independent approval pending rather than keeper."
+    },
+    {
+      "symptom": "A model uses source-derived stone, timber, brick or tile everywhere but still reads as a generic member of the style rather than the selected catalogue building",
+      "cause": "Role-atomic specimens were mistaken for the render-locked identity skin, so bay cadence, relief zoning, opening hierarchy, joinery and source-specific material transitions were never registered to the facade.",
+      "correction": "Generate and preserve a dedicated orthographic identity source from the exact locked views, register it only to the matching authored facade datum, keep specimens as supporting construction on physical geometry, and repeat matched source/model review."
+    },
+    {
+      "symptom": "A registered facade shows doubled chimneys, flagpoles, gates, windows or pale and dark fringes around a corrected silhouette",
+      "cause": "The identity source and physical model both owned the same feature, or exterior removal left contaminated alpha-edge pixels.",
+      "correction": "Assign one visual owner per feature. Clear source pixels where physical geometry supplies silhouette or depth, erode and inspect the alpha edge, and prove the result in neutral front, oblique and close cameras."
+    },
+    {
+      "symptom": "A registered front is convincing but side, rear, roof or courtyard views expose generic punched openings, black carrier voids or flat paper and glass cards",
+      "cause": "Identity registration was treated as a hero-view finish instead of one layer in a complete building envelope, and the review set omitted secondary elevations or a glass-close wall-section proof.",
+      "correction": "Continue the family-specific grammar around every visible elevation, close roof and carrier volumes, build perimeter frame plus recessed pane or paper and occupied depth, then require matched aerial, rear-side, facade-close and glass-close review before approval."
+    },
+    {
+      "symptom": "A window contains named reveal, pane and occupied-depth objects but still reads as a projecting box, opaque card or uniformly glowing screen",
+      "cause": "The layers were ordered backwards, the structural carrier continued through the cavity, or transmission and emission values were treated as proof without a grazing pixel review.",
+      "correction": "Construct the opening from exterior to interior, terminate masonry or log carriers behind the occupied datum, keep glass nearly non-emissive and paper diffusive, place restrained warmth on a separate room plane, and require an oblique glass-close render that visibly separates wall return, screen and room depth."
     }
   ]
 }
