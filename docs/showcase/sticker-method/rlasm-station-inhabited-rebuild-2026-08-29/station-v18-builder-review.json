@@ -1,0 +1,31 @@
+{
+  "schema": "cityprompt.rlasm.builder-visual-review@3",
+  "candidate": "07-victorian-iron-glass-grand-station-rlasm-v18",
+  "decision": "PASS_BUILDER_SOURCE_IDENTITY_REVIEW_AWAITING_INDEPENDENT_APPROVAL",
+  "p0_blockers": [],
+  "keeper": false,
+  "checks": {
+    "locked_front_oblique_top_compared": true,
+    "architectural_type_matches": true,
+    "continuous_enclosed_glass_vault": true,
+    "monumental_front_and_rear_end_frames": true,
+    "source_specific_side_arcades": true,
+    "low_asymmetrical_headhouse_and_offset_tower": true,
+    "whole_envelope_cameras_valid": true,
+    "true_glazing_depth_visible": true,
+    "inhabited_station_interior_visible": true,
+    "physical_track_beds_sleepers_and_rails": true,
+    "raised_platforms_and_canopies": true,
+    "concourse_arcade_and_gallery_circulation": true,
+    "generic_fallback_count": 0,
+    "registered_identity_count": 2,
+    "registered_identity_hash_verified": true,
+    "source_conditioned_material_hashes_verified": true,
+    "procedural_material_whitelist_regression": 0
+  },
+  "phone_boards": [
+    "phone-reviews/station-source-rebuild-v18/station-v18-source-comparison-phone.png",
+    "phone-reviews/station-source-rebuild-v18/station-v12-v18-before-after-phone.png"
+  ],
+  "independent_review_required": true
+}

@@ -1,0 +1,29 @@
+{
+  "asset": "station-orthographic-clock-sticker-v1.png",
+  "role": "source-conditioned orthographic Victorian tower-clock identity",
+  "created_utc": "2026-08-29",
+  "method": "OpenAI ImageGen precise-object reconstruction from the exact locked archetype",
+  "locked_source": {
+    "path": "07-victorian-iron-glass-grand-station-rlasm-v12/references/catalogue/variant_1.png",
+    "sha256": "7799ccc3246622af2637448d61d08e8eaf4c97f4dcabea19bbde14c8957590fb",
+    "dimensions": "1024x768"
+  },
+  "rejected_perspective_crop": {
+    "path": "07-victorian-iron-glass-grand-station-rlasm-v12/references/registered/registered-identity.png",
+    "sha256": "9b44fda464125a69023d90d807a34bf60c05d0e13b32a5eb6dfe5016a280d817",
+    "dimensions": "39x50",
+    "rejection_reason": "tiny oblique crop carried perspective distortion and adjacent facade detail"
+  },
+  "output": {
+    "sha256": "e82314b96b5b9c87933dc8054eb9142c18dd6be2d28a6b01b01c98155b9d1d2a",
+    "dimensions": "1254x1254",
+    "bytes": 3523891
+  },
+  "prompt": "Use case: precise-object-edit. Asset type: registered orthographic clock identity sticker for a 3D Victorian iron-and-glass grand station. Input images: Image 1 is the exact locked station archetype and sole authority for the clock, sandstone/brick character, and period detail; Image 2 is the current tiny oblique clock crop and defect evidence. Primary request: reconstruct the station clock as a clean, perfectly front-facing orthographic square identity panel. Preserve the exact archetype's pale circular Victorian clock dial, dark hands and numeral rhythm, fine aged surface, and restrained honey-buff masonry surround. Composition/framing: one centered circular clock within a square shallow dressed-stone panel, all four panel edges level and fully visible, symmetrical, no camera perspective. Lighting/mood: diffuse shadow-neutral architectural documentation light, only subtle relief shading. Constraints: exact source-conditioned station identity; no tower, roof, building facade, windows, sky, scenery, cast shadows, lens distortion, readable modern text, new emblem, logo, or watermark. Do not create a generic modern wall clock. The result will map to a physical clock band, so keep a clean square boundary and centered dial.",
+  "registration_contract": [
+    "front and side clock planes only",
+    "one physical stone datum behind each plane",
+    "no perspective crop or adjacent wall pixels",
+    "geometry owns tower silhouette, frame, returns and spire"
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-08-29-rlasm-v5-new-family-mapping-v125",
+  "memory_version": "2026-08-29-rlasm-v5-inhabited-station-envelope-v126",
   "quality_target": "At least the user-approved Classic Haussmann level of archetype-shaped geometry, real construction depth, photoreal material response and resilient LEGO scaling in a real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "minimum_standard": {
@@ -1196,6 +1196,21 @@
       "symptom": "A role-specific crop is hash-valid but still reads like a pasted perspective photograph",
       "cause": "The derivative included adjacent facade, shadow or unrelated architectural roles instead of the bounded identity datum.",
       "correction": "Open and inspect the registered derivative before the dry build, crop only the clock, crest, material panel or other named role, and mount it to matching physical construction after massing and bay topology are locked."
+    },
+    {
+      "symptom": "A grand station reads as a greenhouse cage behind a generic brick strip even though it has a barrel roof, clock and arches",
+      "cause": "The builder matched the family label instead of measuring the locked source's long enclosed shed, monumental glazed end, side-arcade load path, low asymmetrical headhouse and offset tower hierarchy.",
+      "correction": "Solve width, depth, rise, headhouse height and tower offset from front, oblique and top views; build the continuous enclosed glass vault, end frames, trusses, purlins, side arcades and full-depth platforms before constructing the source-specific low frontage."
+    },
+    {
+      "symptom": "A fresh candidate unexpectedly renders procedural brick or another family shader after an exact-source material pass",
+      "cause": "The new revision was omitted from a candidate allowlist, and the material selector failed open to a shader whose metadata still reported zero generic fallbacks.",
+      "correction": "Make source-material enrollment explicit and fail closed for reviewed candidates. Assert the expected material-sheet hashes and names before scene construction, then inspect material scale and morphology in the phone board rather than trusting the fallback counter."
+    },
+    {
+      "symptom": "A transparent train shed has a plausible exterior but reads as an empty conservatory rather than a functioning station",
+      "cause": "The builder treated the glass-and-iron shell as the complete architecture and omitted the program visible through it: track assemblies, raised platforms, supported canopies, concourse openings, furniture and connected circulation.",
+      "correction": "Build the inhabited envelope physically, including ballast, sleepers, paired rails, bounded platforms, canopy columns and roofs, source-backed furniture, an interior concourse arcade, supported guarded galleries and stairs; require dedicated platform-oblique and track-axis renders in addition to the aerial."
     }
   ]
 }

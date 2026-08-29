@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-08-28-optical-wall-section-rlasm-v124`.
+Current executable memory: `2026-08-29-rlasm-v5-inhabited-station-envelope-v126`.
 
 Proven execution checklist:
 [`RLASM_PROVEN_BUILD_RECIPE_V5.md`](showcase/sticker-method/rlasm-three-family-independent-pass-2026-08-28/RLASM_PROVEN_BUILD_RECIPE_V5.md).
@@ -1603,6 +1603,31 @@ proof batch established four reusable rules:
 - Re-audit camera targets after every bay change and build the matched phone
   board before builder approval. Phone-scale source/model agreement is a local
   gate; independent zero-P0 review is still required for keeper promotion.
+
+### RLASM v5 station-type and inhabited-envelope lessons
+
+The Victorian station rebuild established that matching a category label is
+not matching an archetype. A barrel roof, brick strip and clock can still form
+the wrong building type, and a correct transparent shell can still expose an
+empty non-building.
+
+- Solve width, depth, rise, headhouse height, tower offset and frontage depth
+  from the locked front, oblique and top views.
+- Construct the continuous enclosed vault, bounded glazed ends, repeated
+  trusses, purlins, side arcades and the low asymmetrical headhouse in the
+  source hierarchy.
+- Make source-material enrollment fail closed. A new revision omitted from an
+  exact-material allowlist must not silently receive a procedural shader whose
+  metadata happens to report zero generic fallbacks.
+- Treat program visible through glass as primary architecture. Build physical
+  ballast, sleepers, paired rails, raised platforms, supported canopies,
+  source-backed furniture and circulation.
+- Connect the transparent hall to its opaque headhouse with an interior
+  concourse opening schedule; a blank rear carrier is a hard failure.
+- Galleries require supports, guard rails and connected stairs. Require both a
+  platform-oblique and track-axis render in addition to the exterior set.
+- Source-condition oblique clocks into bounded orthographic identities with
+  preserved prompts and hashes, mounted only on matching physical datums.
 
 ## Updating this memory
 
