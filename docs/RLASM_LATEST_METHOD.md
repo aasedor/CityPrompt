@@ -1,7 +1,7 @@
-# RLASM v6.0 — integrated proven methodology
+# RLASM v6.1 — integrated proven methodology
 
 **Method name:** Reference-Locked Atomic Sticker-and-Massing (RLASM)
-**Revision:** v6.0, 2026-08-29
+**Revision:** v6.1, 2026-08-29
 **Purpose:** build source-specific, physically credible, reviewable 3D building
 families without hiding generic construction behind a good hero image.
 
@@ -48,6 +48,9 @@ never override the rendered comparison.
 - Use the top or highest oblique view to solve plan topology and roof ridges.
 - Treat the visible images as topology authority when prose conflicts with
   them; record the conflict instead of averaging it away.
+- A family description may guide interpretation, but visible locked pixels
+  override conflicting prose about storeys, bays, roof form, materials, or
+  program.
 - A plausible family member is not a match. The early station was a convincing
   greenhouse-like shed but not the locked Victorian station.
 
@@ -87,6 +90,13 @@ never override the rendered comparison.
   sign into an isolated front-elevation derivative, preserve native aspect,
   prompt, inputs, hashes, and crop operations, then prove all four edges on its
   physical carrier.
+- Register to the carrier's exterior face, including its actual thickness,
+  rather than to an abstract centre datum. A correctly rectified identity can
+  disappear inside a thick carrier when this offset is omitted.
+- Inspect the generated file's real alpha channel. A checkerboard preview is
+  not proof of transparency. If a generator returns checker pixels, a
+  deterministic, recorded alpha extraction may repair the derivative without
+  changing its identity content.
 - A role card is an authority record, not automatically a surface to mount.
   Mount it only where it supplies bounded identity pixels that geometry and a
   repeating specimen do not own.
@@ -150,17 +160,37 @@ not on a flat glowing pane.
 - Connect the transparent hall to its opaque frontage.
 - Add program-specific interior views, such as platform oblique and track axis;
   an exterior aerial cannot prove occupation or circulation.
+- The program must be unmistakable at review scale. Source-specific presses,
+  tracks, platforms, market stalls, machinery, or other complete workflows
+  cannot be substituted by ambiguous generic benches and furniture.
+- Multi-wing glass roofs, monitors, and lanterns are one weathering envelope:
+  derive one union outline, close every vertical face, assign one continuous
+  curb/flashing owner, and trim all ribs and ridges to bounded junction nodes.
+  Overlapping transparent roof primitives are not an acceptable shortcut.
+- Use one source-conditioned optical/material authority across every sloped,
+  vertical, end, and valley facet of a joined transparent roof. Bounded pane
+  variation is acceptable; unexplained switches between perforated, opaque,
+  white, and black facet families are not.
+- Treat perimeter ironwork, brackets, finials, and crest shoulders as
+  source-bearing architecture. Match their section, cadence, contact profile,
+  silhouette, and elevation-specific variation instead of repeating a generic
+  railing or ornament template around the roof edge.
 
 ### 10. Camera design is part of construction
 
 - Author cameras from actual highest and widest geometry, not nominal dimensions.
 - Whole-side/rear views include grade, complete footprint, all occupied stages,
   roof/crown, and highest termination with neutral margin.
+- "Not cropped" is insufficient: retain visible neutral safety margin beyond
+  the nearest grade/base corner, full footprint, and highest termination.
 - Match source/model roles: front, 60-degree/front-corner, true top/aerial,
   both sides, rear, rear-side, facade close, glass close, and a family-specific
   signature or contact close.
 - Use neutral broad QA lighting. Cropped or underexposed evidence is invalid
   even when the filename exists.
+- Revalidate every camera target and occlusion after geometry changes. A proof
+  camera that was valid before a lantern, tower, tree, or interior machine was
+  added may become blocked or cease to prove its named relationship.
 - Build 1080×1920 phone comparisons. Phone scale exposes silhouette,
   hierarchy, material, and carrier problems that isolated renders conceal.
 
@@ -222,6 +252,9 @@ from a generic family member without referring to materials alone.
 3. Complete sides, rear, gables, valleys, supports, foundations, and passages.
 4. Add transparent program and circulation visible through the shell.
 5. Render clay/neutral topology views and correct all P0 geometry first.
+6. Prove front-, side-, and rear-facing openings in their own orientation;
+   a successful Boolean operation or object count is not visible proof that
+   an orientation-specific cutter reached the intended carrier.
 
 **Gate C:** the unskinned model has the correct silhouette, topology, program,
 load paths, and complete envelope from every mandatory view.
@@ -230,10 +263,13 @@ load paths, and complete envelope from every mandatory view.
 
 1. Create or isolate orthographic identity sources from the locked family.
 2. Record prompts, inputs, hashes, masks, native aspect, physical datums, and UVs.
-3. Enforce one visual owner per feature and decontaminate alpha edges.
-4. Derive tile-safe supporting specimens from the same family.
-5. Register material family IDs and metre-scale mapping axes/phases.
-6. Fail closed if a reviewed candidate is missing exact-source enrollment.
+3. Record the carrier exterior-face datum and verify the mounted identity's
+   four edges; include carrier thickness in the registration calculation.
+4. Enforce one visual owner per feature, inspect actual alpha-channel pixels,
+   and record any deterministic alpha post-process.
+5. Derive tile-safe supporting specimens from the same family.
+6. Register material family IDs and metre-scale mapping axes/phases.
+7. Fail closed if a reviewed candidate is missing exact-source enrollment.
 
 **Gate D:** no visible identity-bearing opaque surface relies on a generic
 fallback, and no identity source hides wrong geometry or unfinished returns.
@@ -311,10 +347,16 @@ review may close a named blocker category but cannot satisfy this gate.
 | Black/flat/glowing window | no visible wall section or carrier blocks it | cut every owner and rebuild exterior-to-interior depth |
 | Dormer floats or becomes blank | body does not cross roof or cutter is too shallow | solve roof contact and full-depth cut in a new version |
 | Roof has shards, rods, or black slots | caps/ridges/valleys have no bounded owner | rebuild the closed weathering graph and prove aerial/rear-side |
+| T or cross lantern is made from overlapping sheds | transparent wings have separate weathering owners | rebuild from one union outline with continuous curb/flashing and bounded members |
+| Joined lantern still reads perforated or checkerboard | facets use conflicting optical/material families | apply one source-conditioned translucent authority across every facet with bounded pane variation |
+| Roof edge looks generically decorative | railing, brackets, finials, or crests repeat a stock profile | rebuild source-scale sections, cadence, contacts, and elevation-specific silhouettes |
 | Glass hall reads as greenhouse | program and circulation were omitted | construct inhabited systems and dedicated interior views |
+| Workshop contains only generic benches | object presence was confused with identifiable program | build and clearly frame a complete source-specific machine or workflow |
+| Correct emblem is buried or partly missing | sticker was registered to carrier centre or alpha was assumed | mount to the exterior-face datum and inspect the real alpha channel |
+| Clay metadata says openings exist but a side remains solid | Boolean success was treated as visual proof | render and inspect orientation-specific front/side/rear openings |
 | Metadata says pass but phone view fails | audit evidence was treated as visual proof | demote or supersede the candidate, record P0s, rerender and independently repeat review |
 | Scoped review says keeper but later view exposes a defect | category closure was confused with holistic promotion | preserve the scoped result, rescind keeper status, run a complete adversarial review |
-| Whole-side camera crops building | camera used nominal dimensions | reframe grade-to-highest object with margin |
+| Whole-side camera crops or touches the frame | camera used nominal dimensions or no safety margin | reframe actual grade-to-highest geometry and full footprint with visible neutral margin |
 
 ## Definition of a keeper
 

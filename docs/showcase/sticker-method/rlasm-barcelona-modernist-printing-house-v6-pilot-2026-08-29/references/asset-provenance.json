@@ -1,0 +1,89 @@
+{
+  "schema": "cityprompt.rlasm.source-conditioned-assets@1",
+  "candidate": "04-barcelona-modernist-printing-house-rlasm-v4",
+  "generator": "built-in image_gen",
+  "source_inputs": [
+    {
+      "path": "catalogue/variant_2.png",
+      "sha256": "5ba2eedc4710d5fd062888fc33d935a9cc36f713b950b9baff4fedd760be721f"
+    },
+    {
+      "path": "catalogue/variant_2_angle_60.jpg",
+      "sha256": "a4f537afa8035153949b5cc53e9d3bedd914d07eeaf11bd303b65d173cac61f2"
+    },
+    {
+      "path": "catalogue/variant_2_angle_90.jpg",
+      "sha256": "0ffcfdd57d6c6f1dfdeb82e9891ce0ec82ab389b293bddcb01c6bae6b4a6243e"
+    },
+    {
+      "path": "catalogue/variant_2-normalized.png",
+      "sha256": "68bf28b91aca4a5b52e25df676d2171e5f5e6f56d29ac236f462290520868749",
+      "derivation": "lossless RGB normalization of exact variant_2.png to work around a decoder-only deflate error; no pixel edits"
+    }
+  ],
+  "assets": [
+    {
+      "role": "warm Barcelona red brick albedo",
+      "path": "materials/barcelona-warm-brick-albedo-v1.png",
+      "sha256": "cf93cfb931d87d35247416c695591d9259924c472976ce1696ac6ae99ea78a68",
+      "prompt": "Derive a square orthographic shadow-neutral seamless material-only albedo of the exact warm Barcelona Modernista printing-house brick from the locked front and 60-degree sources: narrow warm red and muted orange clay bricks, thin warm-grey mortar, restrained soot, age and chipped arris. Exclude architecture, ornament, windows, borders, people, sky and baked light."
+    },
+    {
+      "role": "blackened cast iron albedo",
+      "path": "materials/barcelona-blackened-iron-albedo-v1.png",
+      "sha256": "b8c46049b2a0cad1e15bce00f4974b776a9320abdd6a1eae5d581a330e6435ab",
+      "prompt": "Derive a square orthographic shadow-neutral seamless material-only albedo matching the exact near-black brown-warm oxidized cast iron in the locked front and 60-degree sources, with fine forge texture and restrained wear. Exclude structural shapes, rivet patterns, brick, windows, text and baked light."
+    },
+    {
+      "role": "weathered flat roof albedo",
+      "path": "materials/barcelona-flat-roof-albedo-v1.png",
+      "sha256": "59bf2690a3add634cebf251514cb1a5fee644bb6011034b3c7119c449f507753",
+      "prompt": "Derive a square orthographic shadow-neutral seamless material-only albedo matching the exact dark charcoal-brown aged built-up flat roof inside the parapet in the locked top and 60-degree sources, with broad subtle patch seams at metre scale. Exclude skylight, parapet, railings, vents and baked shadows."
+    },
+    {
+      "role": "warm stone and early concrete albedo",
+      "path": "materials/barcelona-warm-stone-albedo-v1.png",
+      "sha256": "8b6713db7151d395476f4d3aad55e2e81ef0aaa91a5911a453d5de62e98df20c",
+      "prompt": "Derive a square orthographic shadow-neutral seamless material-only albedo matching the pale warm-grey stone or early concrete plinth, sills and returns in the locked front and 60-degree sources, with fine pores and restrained mineral variation. Exclude joints, blocks, architecture and baked light."
+    },
+    {
+      "role": "dark workshop timber albedo",
+      "path": "materials/barcelona-workshop-timber-albedo-v1.png",
+      "sha256": "338e23dca80ab729413dd572bfdc950c66418541d52b9932f49486c106d58c9f",
+      "prompt": "Derive a square orthographic shadow-neutral seamless material-only albedo matching the dark warm walnut-brown timber visible in the exact front and 60-degree sources, with dense restrained grain and satin-matte age. Exclude boards, furniture shapes, facade content and baked light."
+    },
+    {
+      "role": "bounded circular Modernista printing rosette",
+      "path": "registered/printing-rosette-orthographic-v2.png",
+      "sha256": "cdbf6d1f6b67f882eef3c1dedbdb2badebad7bf7662d6edda75e5c507ffb956b",
+      "prompt": "Isolate and rectify only the small circular Modernista printing-house rosette from the locked front and 60-degree sources: one restrained warm-red-brick circular ring with a blackened-iron four-spoke floral printing medallion, perfectly front-facing, complete edge visible, no gable, text, heraldry or surrounding architecture.",
+      "postprocess": "The built-in transparent-background edit returned a painted neutral checker in RGB. prepare_registered_identity.py flood-extracted only connected neutral checker pixels and wrote a real alpha channel; the circular identity pixels were not geometrically altered."
+    },
+    {
+      "role": "aged broad-patched flat roof membrane albedo",
+      "path": "materials/barcelona-aged-roof-membrane-albedo-v2.png",
+      "sha256": "0f705e9dd3750163a8703d415a55d635677c14fa9a5638a276346159546d72cc",
+      "prompt": "Using only the roof material visible in the three exact locked photos, derive one square shadow-neutral seamless aged dark charcoal-brown bituminous membrane with irregular broad repair patches, subtle laps, tar seams, scuffs and non-repeating weather variation; exclude modular tiles, architecture, lantern, parapets, rails and baked light."
+    },
+    {
+      "role": "iron-only bounded printing rosette",
+      "path": "registered/printing-rosette-iron-only-v3.png",
+      "sha256": "fc17b5c99bc9dc30c6ad8e84ecca01749b31677833c8a77988690429bdbc4533",
+      "prompt": "Preserve the exact registered historic blackened wrought-iron circular printing rosette and remove all surrounding brick, mortar, backing and checker pixels; output the complete iron at native aspect on transparent RGBA without redesign.",
+      "imagegen_raw_sha256": "fc4fa0d2fe7fc75a614c890f92b40ed3d5fdc43dd7a951d566bfacd99f249708",
+      "postprocess": "The generator returned checker pixels in RGB. prepare_registered_identity.py flood-extracted only the connected neutral checker and wrote a verified real alpha channel; no rosette geometry was changed."
+    }
+  ],
+  "rejected_assets": [
+    {
+      "path": "rejected/full-parapet-identity-rejected-v1.png",
+      "sha256": "e6dac12709337562c370a93435f65d8636593fa38fff5392e2f01038008e07dc",
+      "reason": "The derivative invented an over-elaborate full parapet and would have duplicated geometry ownership; retained only as rejected evidence."
+    },
+    {
+      "path": "registered/printing-rosette-orthographic-v1.png",
+      "sha256": "ed487e489ed6c897c1c05fcd6b32f8c441519704edc8b24058a2e1a54db88a88",
+      "reason": "First rosette generation retained a painted checker background and is not a production identity."
+    }
+  ]
+}

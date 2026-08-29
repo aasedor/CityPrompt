@@ -1,0 +1,28 @@
+{
+  "schema": "cityprompt.rlasm.builder-visual-review@1",
+  "candidate": "07-barcelona-modernist-printing-house-rlasm-v7",
+  "status": "BUILDER_PASS_COMPLETE",
+  "decision_authority": "builder_only_no_keeper_authority",
+  "p0_blockers": [],
+  "p1_blockers": [],
+  "mandatory_renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/roof_lantern_close.png",
+    "renders/lantern_below_oblique.png",
+    "renders/workshop_interior.png",
+    "renders/printing_press_close.png"
+  ],
+  "phone_boards": [
+    "phone/barcelona-modernist-printing-house-comparison-01.png",
+    "phone/barcelona-modernist-printing-house-details-02.png"
+  ]
+}

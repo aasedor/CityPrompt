@@ -15,7 +15,7 @@ def load_json(relative: str) -> dict:
 def test_rlasm_v6_is_single_executable_authority() -> None:
     method = load_json("tools/archetype_compiler/rlasm_method.json")
     assert method["schema"] == "cityprompt.rlasm.method@6"
-    assert method["version"] == "6.0"
+    assert method["version"] == "6.1"
     assert method["canonical_human_method"] == "docs/RLASM_LATEST_METHOD.md"
     assert (ROOT / method["canonical_human_method"]).is_file()
     assert method["source_contract"]["minimum_compatible_roles"] == [
@@ -52,6 +52,41 @@ def test_required_camera_contract_is_complete() -> None:
     }
 
 
+def test_forward_pilot_registration_and_alpha_contract() -> None:
+    method = load_json("tools/archetype_compiler/rlasm_method.json")
+    registration = method["identity_registration_contract"]
+    assert registration["register_to_carrier_exterior_face_not_center"] is True
+    assert registration["carrier_thickness_in_datum"] is True
+    assert registration["actual_alpha_channel_inspection_required"] is True
+    assert registration["checkerboard_preview_is_alpha_proof"] is False
+
+
+def test_forward_pilot_transparent_roof_and_program_contract() -> None:
+    method = load_json("tools/archetype_compiler/rlasm_method.json")
+    roof = method["transparent_roof_contract"]
+    assert roof["multi_wing_roof_uses_one_union_outline"] is True
+    assert roof["single_continuous_curb_and_flashing_owner"] is True
+    assert roof["single_source_conditioned_optical_family_across_all_facets"] is True
+    assert roof["stark_unexplained_facet_family_switches_allowed"] is False
+    assert roof["overlapping_transparent_roof_primitives_allowed"] is False
+    roof_edge = method["roof_edge_identity_contract"]
+    assert roof_edge["ironwork_section_and_cadence_match_locked_source"] is True
+    assert roof_edge["supports_have_positive_contact"] is True
+    assert roof_edge["generic_repeated_perimeter_template_allowed"] is False
+    assert method["program_contract"][
+        "source_specific_workflow_visibly_identifiable"
+    ] is True
+    assert method["unskinned_gate"][
+        "orientation_specific_openings_visible_in_front_side_and_rear_roles"
+    ] is True
+    assert method["evidence_contract"][
+        "revalidate_camera_targets_and_occlusion_after_geometry_change"
+    ] is True
+    assert method["evidence_contract"][
+        "whole_envelope_views_require_visible_neutral_safety_margin"
+    ] is True
+
+
 def test_registry_preserves_supersession_evidence() -> None:
     registry = load_json("tools/archetype_compiler/rlasm_keeper_registry.json")
     entries = {entry["candidate"]: entry for entry in registry["entries"]}
@@ -59,3 +94,6 @@ def test_registry_preserves_supersession_evidence() -> None:
     older = entries["10-second-empire-fire-station-rlasm-v18"]
     assert older["status"] == "superseded"
     assert older["superseded_by"] == "10-second-empire-fire-station-rlasm-v20"
+    pilot = entries["07-barcelona-modernist-printing-house-rlasm-v7"]
+    assert pilot["status"] == "keeper_approved"
+    assert pilot["source_mode"] == "exact_catalogue_photos_only"

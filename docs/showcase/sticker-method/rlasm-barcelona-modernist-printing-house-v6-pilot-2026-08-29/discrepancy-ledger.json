@@ -1,0 +1,207 @@
+{
+  "schema": "cityprompt.rlasm.discrepancy-ledger@1",
+  "candidate": "07-barcelona-modernist-printing-house-rlasm-v7",
+  "entries": [
+    {
+      "stage": "clay_geometry",
+      "severity": "P0",
+      "finding": "The X-facing upper brick panels rendered without physical arched openings.",
+      "fix": "Replaced the orientation-sensitive profile Boolean with explicit rectangular and circular crown cutters, then rerendered both side envelopes.",
+      "verification": ["clay/left_side.png", "clay/front_corner.png", "renders/left_side.png", "renders/right_side.png"],
+      "status": "resolved"
+    },
+    {
+      "stage": "clay_geometry",
+      "severity": "P0",
+      "finding": "Lantern end faces were visually open and could not prove a closed weathering enclosure.",
+      "fix": "Added glazed gable-end polygons and seated iron end frames to both axes of the source-locked T lantern.",
+      "verification": ["clay/aerial.png", "renders/roof_lantern_close.png"],
+      "status": "resolved"
+    },
+    {
+      "stage": "finished_builder_review",
+      "severity": "P0",
+      "finding": "The registered printing rosette plane was inside the physical carrier thickness and therefore invisible.",
+      "fix": "Registered the derivative to the carrier's audited exterior face rather than its center datum.",
+      "verification": ["renders/front.png", "renders/architecture_close.png"],
+      "status": "resolved"
+    },
+    {
+      "stage": "finished_builder_review",
+      "severity": "P0",
+      "finding": "The upper occupied-depth layer initially read as a flat opaque brown card.",
+      "fix": "Made the room layer restrained and translucent while retaining a separate setback, room sidewalls, warm illumination, and visible furnishings.",
+      "verification": ["renders/glass_close.png", "renders/front.png"],
+      "status": "resolved"
+    },
+    {
+      "stage": "camera_review",
+      "severity": "P1",
+      "finding": "The first side camera cropped the parapet extremities.",
+      "fix": "Moved both orthogonal side cameras outward and rerendered grade-to-parapet with neutral margin.",
+      "verification": ["renders/left_side.png", "renders/right_side.png"],
+      "status": "resolved"
+    },
+    {
+      "stage": "v1_independent_review",
+      "severity": "P0",
+      "finding": "Overlapping lantern sheds produced protruding rods, crossing members, and discontinuous curb ownership.",
+      "fix": "Rebuilt one joined T envelope with a continuous outline, closed vertical faces, mitered central facets, bounded ridges/ribs, and one flashing owner.",
+      "verification": ["renders/aerial.png", "renders/rear_side.png", "renders/roof_lantern_close.png", "renders/lantern_below_oblique.png"],
+      "status": "resolved_in_v2"
+    },
+    {
+      "stage": "v1_independent_review",
+      "severity": "P1",
+      "finding": "Corner posts, railing, cornice, and corbel cadence were generic or oversized.",
+      "fix": "Used lobed brick corner profiles, finer lower diamond ironwork, a thinner cornice, and dense small brackets.",
+      "verification": ["renders/front.png", "renders/front_corner.png", "renders/aerial.png"],
+      "status": "resolved_in_v2"
+    },
+    {
+      "stage": "v1_independent_review",
+      "severity": "P1",
+      "finding": "Bright stone formed invented continuous plinth, sill, cap, and lantern ribbons.",
+      "fix": "Restored dark steel/brick ownership and limited warm-gray stone to structural foot and support roles.",
+      "verification": ["renders/front.png", "renders/left_side.png", "renders/rear.png"],
+      "status": "resolved_in_v2"
+    },
+    {
+      "stage": "v1_independent_review",
+      "severity": "P1",
+      "finding": "Brick stretched across curves and was too coarse/orange.",
+      "fix": "Applied reference-conditioned world tri-planar mapping with corrected course scale and restrained saturation.",
+      "verification": ["renders/architecture_close.png", "renders/facade_close.png", "renders/front_corner.png"],
+      "status": "resolved_in_v2"
+    },
+    {
+      "stage": "v1_independent_review",
+      "severity": "P1",
+      "finding": "Glazing and iron were too dark/noisy for consistent optical proof.",
+      "fix": "Raised neutral exposure, increased pane transmission, softened iron values, and preserved separate occupied depth.",
+      "verification": ["renders/glass_close.png", "renders/front.png", "renders/facade_close.png"],
+      "status": "resolved_in_v2"
+    },
+    {
+      "stage": "v1_independent_review",
+      "severity": "P1",
+      "finding": "The interior read as generic workshop furniture rather than a legible printing workflow.",
+      "fix": "Added and separated complete platen presses, type/paper storage, feed beds, rollers, and flywheels behind primary glazing.",
+      "verification": ["renders/printing_press_close.png", "renders/workshop_interior.png", "renders/front.png"],
+      "status": "resolved_in_v2"
+    },
+    {
+      "stage": "v2_independent_review",
+      "severity": "P0",
+      "finding": "The T lantern remained shallow, had open/free frame ends, ambiguous crossing members, weak flashing proof, and an invalid exterior below camera.",
+      "fix": "Built a taller closed monitor over a full-depth T roof aperture, added closed end frames, interior returns and rectangular flashing laps, removed redundant valley rods, and re-authored an interior-up daylight view.",
+      "verification": ["renders/aerial.png", "renders/rear_side.png", "renders/roof_lantern_close.png", "renders/lantern_below_oblique.png"],
+      "status": "resolved_in_v4"
+    },
+    {
+      "stage": "v2_independent_review",
+      "severity": "P1",
+      "finding": "Corner finials and the under-cornice bracket rhythm remained simplified.",
+      "fix": "Replaced round finials with stepped/notched crossed brick profiles and doubled the seated stem-and-head corbel cadence.",
+      "verification": ["renders/front_corner.png", "renders/architecture_close.png", "renders/rear_side.png"],
+      "status": "resolved_in_v3"
+    },
+    {
+      "stage": "v2_independent_review",
+      "severity": "P1",
+      "finding": "The rosette baked a second orange brick family over a washed envelope brick.",
+      "fix": "Restricted the registered derivative to the iron rosette and restored one darker tawny tri-planar envelope brick authority.",
+      "verification": ["renders/front.png", "renders/architecture_close.png"],
+      "status": "resolved_in_v3"
+    },
+    {
+      "stage": "v2_independent_review",
+      "severity": "P1",
+      "finding": "The roof material read as a clean modular panel grid.",
+      "fix": "Generated and mapped an exact-source-conditioned aged bituminous membrane with broad irregular patches and laps at whole-roof scale.",
+      "verification": ["renders/aerial.png", "renders/roof_lantern_close.png"],
+      "status": "resolved_in_v3"
+    },
+    {
+      "stage": "v2_independent_review_and_v3_builder_gate",
+      "severity": "P1",
+      "finding": "Dither noise and obstructed proof suppressed the optical section and printing program.",
+      "fix": "Used blended pane/occupied layers, balanced a source-consistent press proof light, and re-authored the close camera through a clear pane.",
+      "verification": ["renders/glass_close.png", "renders/workshop_interior.png", "renders/printing_press_close.png"],
+      "status": "resolved_in_v4"
+    },
+    {
+      "stage": "v4_independent_review",
+      "severity": "P0",
+      "finding": "The T-monitor still read as overlapping roofs; bounded joints, continuous weathering ownership, and a full-depth interior aperture were not proven.",
+      "fix": "Rebuilt the monitor as one shared-vertex glazed envelope with a joined flashing skirt, joined curb/roof return, bounded square frame members, explicit valley members, and a resolved central node; widened the occupied-interior proof camera.",
+      "verification": ["renders/roof_lantern_close.png", "renders/lantern_below_oblique.png", "renders/aerial.png", "renders/rear_side.png"],
+      "status": "resolved_in_v5_builder_review"
+    },
+    {
+      "stage": "v4_independent_review",
+      "severity": "P0",
+      "finding": "Aerial and rear-side cameras clipped the visible footprint/base.",
+      "fix": "Pulled both cameras back and raised their framing to retain grade, roof peak, full footprint, and neutral margin.",
+      "verification": ["renders/aerial.png", "renders/rear_side.png"],
+      "status": "resolved_in_v5_builder_review"
+    },
+    {
+      "stage": "v4_independent_review",
+      "severity": "P1",
+      "finding": "The rosette was oversized, corner finials were stepped ziggurats, and detached cuboid corbels did not support the cornice.",
+      "fix": "Reduced the iron-only rosette/carrier, authored compact lobed brick finials, and replaced the corbels with shaped seated brackets that overlap the cornice datum.",
+      "verification": ["renders/front.png", "renders/front_corner.png", "renders/architecture_close.png"],
+      "status": "resolved_in_v5_builder_review"
+    },
+    {
+      "stage": "v4_independent_review",
+      "severity": "P1",
+      "finding": "Facade mullions and glare obstructed the printing press evidence.",
+      "fix": "Moved the proof cameras inside the occupied room, reduced the proof light, and framed the complete press and surrounding workflow without facade obstruction.",
+      "verification": ["renders/workshop_interior.png", "renders/printing_press_close.png"],
+      "status": "resolved_in_v5_builder_review"
+    },
+    {
+      "stage": "v5_independent_review",
+      "severity": "P0",
+      "finding": "Monitor facets split into dark perforated and opaque white surface families, preventing one sealed aged-glass reading at the T node.",
+      "fix": "Assigned one exact-source-calibrated translucent aged-monitor material to every vertical, end, valley, and sloped facet while retaining the joined curb, flashing, gaskets, bounded bars, and explicit T node.",
+      "verification": ["renders/roof_lantern_close.png", "renders/aerial.png", "renders/front_corner.png", "renders/rear_side.png", "renders/lantern_below_oblique.png"],
+      "status": "resolved_in_v6_builder_review"
+    },
+    {
+      "stage": "v5_independent_review",
+      "severity": "P0",
+      "finding": "Front-corner and aerial cameras crowded or clipped the closest base/footprint.",
+      "fix": "Pulled both cameras back and raised the target margin to contain grade-to-monitor and the complete visible footprint.",
+      "verification": ["renders/front_corner.png", "renders/aerial.png"],
+      "status": "resolved_in_v6_builder_review"
+    },
+    {
+      "stage": "v5_independent_review",
+      "severity": "P1",
+      "finding": "Corner finials remained low rounded stumps and cornice brackets remained too blocky.",
+      "fix": "Rebuilt taller faceted pointed brick pinnacles from the locked oblique silhouette and replaced the bracket band with a finer cadence of slender tapered supports seated into the cornice.",
+      "verification": ["renders/front.png", "renders/front_corner.png", "renders/architecture_close.png", "renders/rear_side.png"],
+      "status": "resolved_in_v6_builder_review"
+    },
+    {
+      "stage": "v6_independent_review",
+      "severity": "P1",
+      "finding": "Cornice brackets were seated but still read as flat triangular teeth rather than projecting source consoles.",
+      "fix": "Rebuilt every support as a narrow 3D console with lower wall seat, narrowed neck, projecting head, and positive contact at the cornice underside on front, rear, and sides.",
+      "verification": ["renders/front.png", "renders/front_corner.png", "renders/architecture_close.png", "renders/rear_side.png"],
+      "status": "resolved_in_v7_builder_review"
+    },
+    {
+      "stage": "v6_independent_review",
+      "severity": "P1",
+      "finding": "Coarse large-X railing and one repeated symmetric rosette crest genericized the roof-edge identity.",
+      "fix": "Rebuilt fine two-tier diamond lattice with thinner members; differentiated all visible crest profiles and added bounded triangular shoulder reliefs from the locked front, oblique, and top sources.",
+      "verification": ["renders/front.png", "renders/front_corner.png", "renders/aerial.png", "renders/rear_side.png", "phone/barcelona-modernist-printing-house-comparison-01.png"],
+      "status": "resolved_in_v7_builder_review"
+    }
+  ],
+  "status": "v7_builder_closed_pending_independent_holistic_review"
+}

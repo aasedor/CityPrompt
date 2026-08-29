@@ -1,0 +1,189 @@
+{
+  "schema": "cityprompt.rlasm.v6.prework@1",
+  "candidate": "07-barcelona-modernist-printing-house-rlasm-v7",
+  "title": "Barcelona Modernist Printing House",
+  "status": "keeper_approved",
+  "method": "Reference-Locked Atomic Sticker-and-Massing (RLASM) v6.1",
+  "source_contract": {
+    "archetype_id": "barcelona_modernist_workshop",
+    "variant_id": "modernist_workshop_printing",
+    "variant_index": 2,
+    "sources": [
+      {
+        "role": "front",
+        "path": "references/catalogue/variant_2.png",
+        "bytes": 1586048,
+        "sha256": "5ba2eedc4710d5fd062888fc33d935a9cc36f713b950b9baff4fedd760be721f",
+        "pixel_dimensions": [1024, 768]
+      },
+      {
+        "role": "oblique",
+        "path": "references/catalogue/variant_2_angle_60.jpg",
+        "bytes": 994156,
+        "sha256": "a4f537afa8035153949b5cc53e9d3bedd914d07eeaf11bd303b65d173cac61f2",
+        "pixel_dimensions": [1195, 896]
+      },
+      {
+        "role": "top",
+        "path": "references/catalogue/variant_2_angle_90.jpg",
+        "bytes": 902848,
+        "sha256": "0ffcfdd57d6c6f1dfdeb82e9891ce0ec82ab389b293bddcb01c6bae6b4a6243e",
+        "pixel_dimensions": [1195, 896]
+      }
+    ],
+    "sibling_variant_mixing_allowed": false,
+    "catalogue_pixels_are_tier_one_authority": true
+  },
+  "locked_reference": {
+    "path": "references/locked-source-board.png",
+    "bytes": 2409857,
+    "sha256": "4496902c12201b13e15f1a1e63ffceabe650dff2ed7e834cd586afd3a41b159f"
+  },
+  "identity_statement": "A compact two-storey Barcelona Modernista printing house: warm red brick infill is held inside a black iron structural grid; three front bays and four side bays contain tall ground-floor glazing and upper round arches; four lobed brick parapet centers and corner pylons surround a flat roof with a central T-shaped glazed lantern.",
+  "measured_contract": {
+    "dimensions_m": [15.0, 18.0, 11.4],
+    "floor_datums_m": [0.45, 4.55, 8.65],
+    "parapet_peak_m": 11.4,
+    "front_bay_count": 3,
+    "side_bay_count": 4,
+    "front_bay_width_m": 4.6,
+    "side_bay_width_m": 4.15,
+    "corner_pier_width_m": 0.6,
+    "asymmetry": "street entrance occupies the center front ground bay; the roof lantern forms an offset T plan despite the otherwise four-sided envelope",
+    "source_conflicts": [
+      "The family prose mentions a sawtooth roof, but the exact variant-2 top image proves a flat roof with a T-shaped glazed lantern; the image controls."
+    ]
+  },
+  "plan_and_roof_graph": {
+    "plan": "single closed 15 m x 18 m rectangular workshop envelope",
+    "structure": "black iron corner posts, intermediate bay columns, floor beam, cornice beam, and visible roof-edge frame",
+    "roof": "closed flat weathering plane behind a low brick-and-iron parapet; four centered lobed brick gables; raised brick corner pylons; central T-shaped glazed lantern with pitched panes and closed end walls",
+    "circulation": "center-front double-leaf entrance leads directly into the open printing hall; rear service door remains connected to the same floor plate"
+  },
+  "bay_schedule": {
+    "ground_front": "three full-height glazed/door bays between iron columns, with center delivery entrance",
+    "upper_front": "three tall round-arched multi-lite windows in brick infill",
+    "ground_sides": "four tall glazed workshop bays on each side",
+    "upper_sides": "four round-arched multi-lite windows on each side",
+    "rear": "three-bay continuation of the same structural and opening grammar with one service entrance"
+  },
+  "program_contract": {
+    "visible_use": "late-nineteenth-century printing and typesetting workshop",
+    "required_objects": [
+      "two platen printing presses",
+      "typesetting/work tables",
+      "paper shelving and type cabinets",
+      "upper mezzanine edge and stair",
+      "warm task lighting located inside the room rather than on the glass"
+    ],
+    "transparent_shell_may_be_empty": false
+  },
+  "identity_contract": {
+    "geometry_owners": [
+      "lobed parapet silhouette",
+      "corner pylons",
+      "brick pilasters and cornice",
+      "round arches",
+      "iron structural grid",
+      "roof lantern",
+      "window and entrance depth"
+    ],
+    "registered_identity_roles": [
+      "bounded circular Modernista printing rosette and relief panel centered on each parapet gable"
+    ],
+    "perspective_crops_forbidden": true,
+    "one_visual_owner_per_feature": true
+  },
+  "registered_identity": {
+    "role": "bounded circular Modernista printing rosette",
+    "path": "references/registered/printing-rosette-iron-only-v3.png",
+    "bytes": 1580926,
+    "sha256": "fc17b5c99bc9dc30c6ad8e84ecca01749b31677833c8a77988690429bdbc4533",
+    "mapping": "front-elevation iron-only UV sticker on a physical tawny-brick carrier exterior face; parapet silhouette and all brick remain geometry",
+    "provenance": "references/asset-provenance.json"
+  },
+  "material_contract": {
+    "generic_fallbacks_forbidden": true,
+    "dominant_source_conditioned_roles": [
+      "warm Barcelona red brick",
+      "blackened cast iron",
+      "weathered flat roof membrane",
+      "pale limestone/concrete plinth and opening returns",
+      "dark workshop timber"
+    ],
+    "mapping": {
+      "front_and_rear_brick": "shared X-Z metric datum",
+      "side_brick": "shared Y-Z metric datum",
+      "roof": "shared X-Y metric datum",
+      "iron_and_timber": "object length in real metres with consistent grain/finish scale"
+    },
+    "registered_material_sheets": [
+      {
+        "role": "warm Barcelona red brick",
+        "path": "references/materials/barcelona-warm-brick-albedo-v1.png",
+        "bytes": 3119797,
+        "sha256": "cf93cfb931d87d35247416c695591d9259924c472976ce1696ac6ae99ea78a68"
+      },
+      {
+        "role": "blackened cast iron",
+        "path": "references/materials/barcelona-blackened-iron-albedo-v1.png",
+        "bytes": 2793501,
+        "sha256": "b8c46049b2a0cad1e15bce00f4974b776a9320abdd6a1eae5d581a330e6435ab"
+      },
+      {
+        "role": "weathered flat roof membrane",
+        "path": "references/materials/barcelona-aged-roof-membrane-albedo-v2.png",
+        "bytes": 2572810,
+        "sha256": "0f705e9dd3750163a8703d415a55d635677c14fa9a5638a276346159546d72cc"
+      },
+      {
+        "role": "warm stone and early concrete",
+        "path": "references/materials/barcelona-warm-stone-albedo-v1.png",
+        "bytes": 3027733,
+        "sha256": "8b6713db7151d395476f4d3aad55e2e81ef0aaa91a5911a453d5de62e98df20c"
+      },
+      {
+        "role": "dark workshop timber",
+        "path": "references/materials/barcelona-workshop-timber-albedo-v1.png",
+        "bytes": 2253035,
+        "sha256": "338e23dca80ab729413dd572bfdc950c66418541d52b9932f49486c106d58c9f"
+      }
+    ],
+    "provenance": "references/asset-provenance.json"
+  },
+  "opening_and_contact_contract": {
+    "opening_order": [
+      "cut carrier",
+      "brick/stone return",
+      "recessed iron sash",
+      "neutral optical glass",
+      "separately offset occupied workshop layer",
+      "enclosed room depth"
+    ],
+    "fragile_contacts": [
+      "arched-window head to brick infill",
+      "parapet gable to roof-edge beam",
+      "lantern end wall and glazing to flat roof curb",
+      "iron corner columns to stone plinth and cornice",
+      "entrance threshold to grade"
+    ]
+  },
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "roof_lantern_close",
+    "lantern_below_oblique",
+    "workshop_interior",
+    "printing_press_close"
+  ],
+  "builder_self_approval": false,
+  "keeper_status": "KEEPER_APPROVED"
+}

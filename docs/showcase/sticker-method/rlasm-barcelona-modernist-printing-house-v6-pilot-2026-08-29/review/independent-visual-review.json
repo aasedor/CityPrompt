@@ -1,0 +1,43 @@
+{
+  "schema": "cityprompt.rlasm.independent-visual-review@1",
+  "candidate": "07-barcelona-modernist-printing-house-rlasm-v7",
+  "status": "PASS_ZERO_P0_ZERO_P1_KEEPER_APPROVED",
+  "decision": "keeper_approved",
+  "reviewer_role": "independent_visual_verifier",
+  "review_scope": [
+    "exact locked source board and all three catalogue sources",
+    "every mandatory full-resolution render",
+    "both 1080x1920 phone comparison boards",
+    "holistic adversarial regression across identity geometry materials optics contacts program cameras and prior blockers"
+  ],
+  "p0_blockers": [],
+  "p1_blockers": [],
+  "unresolved_blockers": [],
+  "inspected_renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/roof_lantern_close.png",
+    "renders/lantern_below_oblique.png",
+    "renders/workshop_interior.png",
+    "renders/printing_press_close.png"
+  ],
+  "phone_boards": [
+    "phone/barcelona-modernist-printing-house-comparison-01.png",
+    "phone/barcelona-modernist-printing-house-details-02.png"
+  ],
+  "findings": [
+    "source-specific cornice consoles are seated and match the locked cadence",
+    "fine double-diamond perimeter ironwork and elevation-specific crests match the source grammar",
+    "the T monitor is a sealed joined envelope with a full-depth roof aperture",
+    "physical openings, optical panes, occupied depth, printing program, contacts, and cameras pass holistic regression"
+  ],
+  "approved_at": "2026-08-29"
+}

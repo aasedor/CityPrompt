@@ -1,0 +1,175 @@
+{
+  "schema": "cityprompt.rlasm.v6.builder-evidence@1",
+  "candidate": "07-barcelona-modernist-printing-house-rlasm-v7",
+  "status": "independent_holistic_review_passed",
+  "object_count": 1286,
+  "role_counts": {
+    "foundation": 5,
+    "parapet_support": 8,
+    "roof": 1,
+    "registered_relief_geometry": 8,
+    "identity_geometry": 4,
+    "structural_beam": 8,
+    "window_frame": 196,
+    "optical_glass": 28,
+    "door_leaf": 2,
+    "door_frame": 4,
+    "grade_contact": 2,
+    "structural_column": 18,
+    "weathering_contact": 4,
+    "cornice_support": 104,
+    "parapet_railing": 612,
+    "registered_identity": 4,
+    "identity_carrier": 4,
+    "opening_return": 28,
+    "load_path": 18,
+    "brick_infill": 14,
+    "occupied_depth": 14,
+    "room_enclosure": 28,
+    "floor": 2,
+    "printing_press": 44,
+    "workshop_furniture": 66,
+    "roof_contact": 2,
+    "roof_lantern_frame": 41,
+    "roof_lantern_glass": 1,
+    "printing_program": 4,
+    "circulation": 12
+  },
+  "materials": [
+    {
+      "name": "Barcelona_Aged_Continuous_Monitor_Glass",
+      "status": "exact_source_conditioned_translucent_monitor",
+      "source_sha256": "a4f537afa8035153949b5cc53e9d3bedd914d07eeaf11bd303b65d173cac61f2",
+      "generic_fallback": false
+    },
+    {
+      "name": "Barcelona_Aged_Patched_Roof_Membrane",
+      "status": "reference_specific_finished",
+      "source_sha256": "0f705e9dd3750163a8703d415a55d635677c14fa9a5638a276346159546d72cc",
+      "generic_fallback": false
+    },
+    {
+      "name": "Barcelona_Aged_Printing_Press_Iron",
+      "status": "reference_specific_finished",
+      "source_sha256": "b8c46049b2a0cad1e15bce00f4974b776a9320abdd6a1eae5d581a330e6435ab",
+      "generic_fallback": false
+    },
+    {
+      "name": "Barcelona_Blackened_Iron",
+      "status": "reference_specific_finished",
+      "source_sha256": "b8c46049b2a0cad1e15bce00f4974b776a9320abdd6a1eae5d581a330e6435ab",
+      "generic_fallback": false
+    },
+    {
+      "name": "Barcelona_Limited_Warm_Gray_Stone",
+      "status": "reference_specific_finished",
+      "source_sha256": "8b6713db7151d395476f4d3aad55e2e81ef0aaa91a5911a453d5de62e98df20c",
+      "generic_fallback": false
+    },
+    {
+      "name": "Barcelona_Neutral_Workshop_Glass",
+      "status": "source_specific_optical",
+      "source_sha256": null,
+      "generic_fallback": false
+    },
+    {
+      "name": "Barcelona_Occupied_Workshop_Depth",
+      "status": "source_specific_occupied_depth",
+      "source_sha256": "338e23dca80ab729413dd572bfdc950c66418541d52b9932f49486c106d58c9f",
+      "generic_fallback": false
+    },
+    {
+      "name": "Barcelona_Registered_Iron_Printing_Rosette",
+      "status": "registered_identity",
+      "source_sha256": "fc17b5c99bc9dc30c6ad8e84ecca01749b31677833c8a77988690429bdbc4533",
+      "generic_fallback": false
+    },
+    {
+      "name": "Barcelona_Tawny_Aged_Brick_AllFaces",
+      "status": "reference_specific_finished",
+      "source_sha256": "cf93cfb931d87d35247416c695591d9259924c472976ce1696ac6ae99ea78a68",
+      "generic_fallback": false
+    },
+    {
+      "name": "Barcelona_Workshop_Timber",
+      "status": "reference_specific_finished",
+      "source_sha256": "338e23dca80ab729413dd572bfdc950c66418541d52b9932f49486c106d58c9f",
+      "generic_fallback": false
+    }
+  ],
+  "generic_fallback_count": 0,
+  "registered_identity_count": 4,
+  "renders": [
+    {
+      "path": "renders/aerial.png",
+      "bytes": 1628475,
+      "sha256": "43c01c2d68cc445f4f2ecb2525ee646706f290e0661fdebb1ef8d01a746b1e75"
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "bytes": 2172966,
+      "sha256": "d9120d5ee41a13df6474292f486c42bfcbc48a025669f25cf9379894be7e4e7d"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "bytes": 2409483,
+      "sha256": "50a8e7853e6a04c18d66a78ff08292a84dfc565ecc3c12c2de0cb0d6f4ce7bc7"
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 1961103,
+      "sha256": "e98e978b00b5609707d2de2d7fa0d82211b9c72e1eb564bd88dd7ef5a49998a5"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 1729578,
+      "sha256": "283c0a3862cfb477a04b17b1902fe3664053c66fa7ff6a9255461852e250fed5"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 2381280,
+      "sha256": "e3d00d2b136a715f74c27328b1343421a112deb2b949292ce817e573160eeda9"
+    },
+    {
+      "path": "renders/lantern_below_oblique.png",
+      "bytes": 1729492,
+      "sha256": "d5995a68a180a3b8eb0feebde9640e12f042d331dd0fa1a4173de3adc2cc0810"
+    },
+    {
+      "path": "renders/left_side.png",
+      "bytes": 1821978,
+      "sha256": "71aeff56ac4f859e14672562bbb917919c049136180b17444d6f2e4ee1d9b54e"
+    },
+    {
+      "path": "renders/printing_press_close.png",
+      "bytes": 2163355,
+      "sha256": "476a91352e1db218c4d57a6bc6bdd8f370c0999083c32cead960b72f0b3216d4"
+    },
+    {
+      "path": "renders/rear.png",
+      "bytes": 1818508,
+      "sha256": "e3fd736c7d2736c7f9e9b66bddd45b83e171baec8627077c6858c32bb21a73c8"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "bytes": 1760484,
+      "sha256": "38a1db40624c00de15a263139b5ccb33d6782479f439c1cdc42034dccfcbb006"
+    },
+    {
+      "path": "renders/right_side.png",
+      "bytes": 1755275,
+      "sha256": "9e15a5e75c83232fff4630655abbb5477ebc234bd13b369cc686ee0eaa3cebc1"
+    },
+    {
+      "path": "renders/roof_lantern_close.png",
+      "bytes": 1919528,
+      "sha256": "d375235b3c7c2bae2ceae020cfd0fec37a737815c0e6b3208467d5642575ceac"
+    },
+    {
+      "path": "renders/workshop_interior.png",
+      "bytes": 1919418,
+      "sha256": "06fe35111b4af14d646b70be19e86c19965ef60c71d07eea126535ee328d6955"
+    }
+  ],
+  "keeper_status": "KEEPER_APPROVED"
+}

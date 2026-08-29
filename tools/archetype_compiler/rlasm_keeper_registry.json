@@ -1,6 +1,6 @@
 {
   "schema": "cityprompt.rlasm.keeper-registry@1",
-  "method_version": "6.0",
+  "method_version": "6.1",
   "updated": "2026-08-29",
   "entries": [
     {
@@ -28,6 +28,13 @@
       "status": "superseded",
       "superseded_by": "10-second-empire-fire-station-rlasm-v20",
       "reason": "A material-scoped pass was later invalidated by user-supplied dormer-contact evidence."
+    },
+    {
+      "candidate": "07-barcelona-modernist-printing-house-rlasm-v7",
+      "status": "keeper_approved",
+      "review_scope": "holistic_independent",
+      "source_mode": "exact_catalogue_photos_only",
+      "method_version": "6.1"
     }
   ]
 }

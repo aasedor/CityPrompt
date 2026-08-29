@@ -2,7 +2,7 @@
   "schema": "cityprompt.rlasm.method@6",
   "method": "Reference-Locked Atomic Sticker-and-Massing",
   "acronym": "RLASM",
-  "version": "6.0",
+  "version": "6.1",
   "revision_date": "2026-08-29",
   "canonical_human_method": "docs/RLASM_LATEST_METHOD.md",
   "authority_order": [
@@ -30,7 +30,16 @@
     "enroll_all_available_compatible_views": true,
     "required_fields": ["archetype_id", "variant_id", "role", "path", "bytes", "sha256"],
     "sibling_variant_mixing_allowed": false,
-    "text_invented_reference_allowed": false
+    "text_invented_reference_allowed": false,
+    "visible_locked_pixels_override_conflicting_family_prose": true
+  },
+  "identity_registration_contract": {
+    "register_to_carrier_exterior_face_not_center": true,
+    "carrier_thickness_in_datum": true,
+    "all_four_identity_edges_visibly_verified": true,
+    "actual_alpha_channel_inspection_required": true,
+    "checkerboard_preview_is_alpha_proof": false,
+    "deterministic_alpha_postprocess_allowed_with_provenance": true
   },
   "construction_gates": [
     "source_lock",
@@ -49,6 +58,31 @@
     "separately_offset_occupied_layer",
     "enclosed_room_depth"
   ],
+  "unskinned_gate": {
+    "orientation_specific_openings_visible_in_front_side_and_rear_roles": true,
+    "boolean_success_or_object_count_is_visual_proof": false
+  },
+  "transparent_roof_contract": {
+    "multi_wing_roof_uses_one_union_outline": true,
+    "all_vertical_end_and_side_faces_closed": true,
+    "single_continuous_curb_and_flashing_owner": true,
+    "ribs_ridges_and_frames_trimmed_to_bounded_nodes": true,
+    "single_source_conditioned_optical_family_across_all_facets": true,
+    "stark_unexplained_facet_family_switches_allowed": false,
+    "overlapping_transparent_roof_primitives_allowed": false
+  },
+  "roof_edge_identity_contract": {
+    "ironwork_section_and_cadence_match_locked_source": true,
+    "brackets_finials_and_crests_are_source_bearing_architecture": true,
+    "supports_have_positive_contact": true,
+    "elevation_specific_silhouettes_are_preserved": true,
+    "generic_repeated_perimeter_template_allowed": false
+  },
+  "program_contract": {
+    "source_specific_workflow_visibly_identifiable": true,
+    "generic_furniture_alone_is_program_proof": false,
+    "program_visible_in_close_and_whole_envelope_roles": true
+  },
   "required_baseline_views": [
     "front.png",
     "front_corner.png",
@@ -65,8 +99,10 @@
     "full_resolution_pixel_inspection_required": true,
     "phone_board_dimensions": [1080, 1920],
     "whole_envelope_views_include_grade_to_highest_with_margin": true,
+    "whole_envelope_views_require_visible_neutral_safety_margin": true,
     "family_specific_contact_or_program_views_required": true,
-    "neutral_qa_lighting_required": true
+    "neutral_qa_lighting_required": true,
+    "revalidate_camera_targets_and_occlusion_after_geometry_change": true
   },
   "review_contract": {
     "production_expert_and_verifier_are_separate_roles": true,
