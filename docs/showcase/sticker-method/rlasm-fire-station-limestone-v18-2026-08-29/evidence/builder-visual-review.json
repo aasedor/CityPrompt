@@ -1,0 +1,27 @@
+{
+  "schema": "cityprompt.rlasm.builder-visual-review@3",
+  "candidate": "10-second-empire-fire-station-rlasm-v18",
+  "decision": "PASS_BUILDER_LIMESTONE_MATERIAL_REVIEW_AND_INDEPENDENT_ZERO_P0",
+  "p0_blockers": [],
+  "keeper": false,
+  "checks": {
+    "locked_front_oblique_top_compared": true,
+    "geometry_preserved_from_reviewed_candidate": true,
+    "crest_limestone_is_building_level_masonry_authority": true,
+    "coursed_and_dressed_roles_share_warm_limestone_family": true,
+    "front_side_rear_and_aerial_material_continuity": true,
+    "opening_returns_and_dormers_match_limestone_family": true,
+    "slate_oak_copper_iron_glass_preserved": true,
+    "whole_envelope_cameras_valid": true,
+    "true_glazing_depth_visible": true,
+    "generic_fallback_count": 0,
+    "registered_identity_count": 1,
+    "registered_identity_hash_verified": true,
+    "source_conditioned_material_hashes_verified": true
+  },
+  "phone_boards": [
+    "phone-reviews/fire-station-limestone-v18/fire-station-v18-source-limestone-phone.png",
+    "phone-reviews/fire-station-limestone-v18/fire-station-v14-v18-before-after-phone.png"
+  ],
+  "independent_review_required": false
+}

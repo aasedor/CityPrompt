@@ -1,0 +1,179 @@
+{
+  "schema": "cityprompt.rlasm.proven-new-build-evidence@1",
+  "candidate": "10-second-empire-fire-station-rlasm-v18",
+  "title": "Second Empire Limestone Fire Station",
+  "method": "Reference-Locked Atomic Sticker-and-Massing (RLASM) v5",
+  "status": "PASS_DRY_BUILD_AWAITING_FULL_VISUAL_REVIEW",
+  "source_manifest_sha256": "d8478fe36053cddca81ad23d0d7601703962dda819c4aa5d682656cfdb24246d",
+  "scene": {
+    "path": "model/10-second-empire-fire-station-rlasm-v18.blend",
+    "bytes": 311666,
+    "sha256": "5a3014e28f46a52c9281cdad14f632b1b1bae738b0210ea9e5583aa906a8b344"
+  },
+  "glb": {
+    "path": "model/10-second-empire-fire-station-rlasm-v18.glb",
+    "bytes": 21040828,
+    "sha256": "e57521027f080865d05d69187c32759f43b57d26c9e3ec45b643201cd7b3e632"
+  },
+  "renders": [
+    {
+      "path": "renders/aerial.png",
+      "bytes": 1225829,
+      "sha256": "112adab5cc932ee642cf176f4e0440b129e12f71c2d8755fd581c3f29da556fa"
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "bytes": 1309792,
+      "sha256": "c41487681dc272db7063d69164130d0aefbc86a77eafe4b45733a548ab18c5f8"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "bytes": 1664425,
+      "sha256": "ba7c6a6d7063ab683889e3df0a11a4d0b0dd9f89e524ca5d2387889115d5162d"
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 1189899,
+      "sha256": "a1ac90b4e854987ad6100a3d3c95cff6a855d628043dd5c02e65606a3baa3b65"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 1208631,
+      "sha256": "51ed7e4b6aefb586afcd46aac7906ba20b0b5d9d3db7013e053c2be09ff8b56d"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 1586670,
+      "sha256": "6025dbf5ee8a23646157b51d149acd4fdd5ce8fcb253520dc7c3c77de8c8afa8"
+    },
+    {
+      "path": "renders/left_side.png",
+      "bytes": 1098600,
+      "sha256": "e3fcc6f3f5c39f1785006e74fea28a580f7f3911b74c01133765001be2c36b71"
+    },
+    {
+      "path": "renders/preview.png",
+      "bytes": 1208631,
+      "sha256": "51ed7e4b6aefb586afcd46aac7906ba20b0b5d9d3db7013e053c2be09ff8b56d"
+    },
+    {
+      "path": "renders/rear.png",
+      "bytes": 1084004,
+      "sha256": "785e1b04d68c06f4b2fd2ad80fecf8cffd4e1f389a4357955a3c3bcfd24ba8b1"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "bytes": 1132592,
+      "sha256": "48758f4afb3cee266dfe1bbda1c90faf3a059b88c8548621f9b9fbae95d03954"
+    },
+    {
+      "path": "renders/right_side.png",
+      "bytes": 1067537,
+      "sha256": "ec8a7805e7d39507792dbbae4d10d99749ff41a00f50981883faaf1b4e627ad7"
+    }
+  ],
+  "object_count": 424,
+  "material_audit": {
+    "building_material_count": 10,
+    "materials": [
+      {
+        "name": "MAT_Fire_BlackIron",
+        "status": "reference_specific_finished",
+        "provenance": "catalogue-conditioned role for 10-second-empire-fire-station-rlasm-v18; historic iron cresting frames and weathervane",
+        "source_sha256": "733736bae1c5359afd2d29a835a985eec936e5c210d99ff281c9e7b24e21e860"
+      },
+      {
+        "name": "MAT_Fire_CrestLimestoneAshlar_XZ",
+        "status": "reference_specific_finished",
+        "provenance": "catalogue-derived reviewed seamless material specimen; candidate=10-second-empire-fire-station-rlasm-v18; role=front/rear coursed warm aged limestone governed by the approved crest; specimen=fire-warm-ashlar-albedo.png",
+        "source_sha256": "733736bae1c5359afd2d29a835a985eec936e5c210d99ff281c9e7b24e21e860"
+      },
+      {
+        "name": "MAT_Fire_CrestLimestoneAshlar_YZ",
+        "status": "reference_specific_finished",
+        "provenance": "catalogue-derived reviewed seamless material specimen; candidate=10-second-empire-fire-station-rlasm-v18; role=side coursed warm aged limestone governed by the approved crest; specimen=fire-warm-ashlar-albedo.png",
+        "source_sha256": "733736bae1c5359afd2d29a835a985eec936e5c210d99ff281c9e7b24e21e860"
+      },
+      {
+        "name": "MAT_Fire_CrestLimestoneDressed",
+        "status": "reference_specific_finished",
+        "provenance": "catalogue-derived reviewed seamless material specimen; candidate=10-second-empire-fire-station-rlasm-v18; role=dressed warm aged limestone for the wall core, returns, arches, pilasters, cornices, dormers, cupola columns, and relief carrier governed by the approved crest; specimen=fire-crest-warm-aged-limestone-dressed-v1-albedo.png",
+        "source_sha256": "733736bae1c5359afd2d29a835a985eec936e5c210d99ff281c9e7b24e21e860"
+      },
+      {
+        "name": "MAT_Fire_NeutralHistoricGlass",
+        "status": "reference_specific_finished",
+        "provenance": "catalogue-conditioned role for 10-second-empire-fire-station-rlasm-v18; neutral historic civic glazing",
+        "source_sha256": "733736bae1c5359afd2d29a835a985eec936e5c210d99ff281c9e7b24e21e860"
+      },
+      {
+        "name": "MAT_Fire_OccupiedDepth",
+        "status": "reference_specific_finished",
+        "provenance": "catalogue-conditioned role for 10-second-empire-fire-station-rlasm-v18; separate warm occupied fire-station room",
+        "source_sha256": "733736bae1c5359afd2d29a835a985eec936e5c210d99ff281c9e7b24e21e860"
+      },
+      {
+        "name": "MAT_Fire_RegisteredCrest",
+        "status": "reference_specific_finished",
+        "provenance": "registered identity asset recorded by the candidate prework manifest and confined to its matching physical datum",
+        "source_sha256": "2d5c55c0c94669d20690f0a59e6487afb74a94f5c5f3c7f0afa2283a493b3eeb"
+      },
+      {
+        "name": "MAT_Fire_SourceAgedCopper",
+        "status": "reference_specific_finished",
+        "provenance": "catalogue-derived reviewed seamless material specimen; candidate=10-second-empire-fire-station-rlasm-v18; role=aged rose-brown copper cupola dome; specimen=fire-aged-copper-albedo.png",
+        "source_sha256": "733736bae1c5359afd2d29a835a985eec936e5c210d99ff281c9e7b24e21e860"
+      },
+      {
+        "name": "MAT_Fire_SourceAgedOak",
+        "status": "reference_specific_finished",
+        "provenance": "catalogue-derived reviewed seamless material specimen; candidate=10-second-empire-fire-station-rlasm-v18; role=historic apparatus-door and window oak; specimen=fire-oak-albedo.png",
+        "source_sha256": "733736bae1c5359afd2d29a835a985eec936e5c210d99ff281c9e7b24e21e860"
+      },
+      {
+        "name": "MAT_Fire_SourceBlueGreySlate",
+        "status": "reference_specific_finished",
+        "provenance": "catalogue-derived reviewed seamless material specimen; candidate=10-second-empire-fire-station-rlasm-v18; role=fine staggered blue-grey mansard slate; specimen=fire-slate-albedo.png",
+        "source_sha256": "733736bae1c5359afd2d29a835a985eec936e5c210d99ff281c9e7b24e21e860"
+      }
+    ],
+    "generic_fallback_count": 0,
+    "all_reference_specific_finished": true,
+    "glass": {
+      "material": "MAT_Fire_NeutralHistoricGlass",
+      "image_texture_count": 0,
+      "baked_reflection": null,
+      "reflection_source": null,
+      "neutral_scene_only": true
+    }
+  },
+  "contact_audit": {
+    "schema": "cityprompt.rlasm.contact-audit@7",
+    "candidate": "10-second-empire-fire-station-rlasm-v18",
+    "records": [
+      {
+        "claim": "warm aged limestone envelope bears continuously on grade",
+        "floating": false
+      },
+      {
+        "claim": "mansard slopes close to crown",
+        "floating": false
+      },
+      {
+        "claim": "cupola columns bear on mansard base",
+        "floating": false
+      },
+      {
+        "claim": "registered crest sits on its carved physical carrier",
+        "floating": false
+      }
+    ],
+    "floating_count": 0,
+    "status": "PASS_ZERO_DECLARED_FLOATING_AWAITING_VISUAL_QA"
+  },
+  "registered_identity_count": 1,
+  "generic_fallback_count": 0,
+  "true_opening_contract": true,
+  "builder_self_approval": false,
+  "keeper_status": "NOT_A_KEEPER_AWAITING_INDEPENDENT_REVIEW"
+}

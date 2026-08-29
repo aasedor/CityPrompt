@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-08-29-rlasm-v5-inhabited-station-envelope-v126`.
+Current executable memory: `2026-08-29-rlasm-v5-building-material-family-v127`.
 
 Proven execution checklist:
 [`RLASM_PROVEN_BUILD_RECIPE_V5.md`](showcase/sticker-method/rlasm-three-family-independent-pass-2026-08-28/RLASM_PROVEN_BUILD_RECIPE_V5.md).
@@ -1628,6 +1628,30 @@ empty non-building.
   platform-oblique and track-axis render in addition to the exterior set.
 - Source-condition oblique clocks into bounded orthographic identities with
   preserved prompts and hashes, mounted only on matching physical datums.
+
+### RLASM v5 building-level material-family authority
+
+A source-specific material sheet per semantic role is not sufficient when the
+roles represent one physical substance. The Second Empire fire-station
+material pass established this executable gate:
+
+- Record one bounded, user-approved material-bearing reference as the
+  chromatic and finish authority when appropriate, and preserve its hash.
+- Give every same-substance exterior role one machine-readable family ID:
+  wall/core, façade and side/rear skins, returns, quoins, arches, strings,
+  cornices, dormers, masonry attachments, columns and identity carrier.
+- Preserve role-specific morphology and construction scale. Coursed, dressed
+  and carved variants may change joints, relief, roughness and restrained value
+  while sharing hue, aging and mineral character.
+- Do not force genuinely different materials into the family. Slate, timber,
+  copper, iron and glass keep their source-locked identities.
+- If no existing ornament-free sheet matches the authority, generate a
+  shadow-neutral seamless material-only specimen and preserve input hash,
+  exact prompt, output hash and bytes.
+- Verify front, both sides, rear, aerial, façade close and glass close beside
+  the authority on a phone board. Whole-envelope views run grade-to-finial.
+- Preserve partial revisions. V18 advanced only after independent review
+  recorded zero P0 blockers.
 
 ## Updating this memory
 

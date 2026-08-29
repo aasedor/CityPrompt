@@ -1,0 +1,23 @@
+{
+  "schema": "cityprompt.rlasm.source-conditioned-material-provenance@1",
+  "asset": "fire-crest-warm-aged-limestone-dressed-v1-albedo.png",
+  "use_case": "source-conditioned PBR albedo specimen",
+  "authority": {
+    "kind": "user-approved material-bearing identity reference",
+    "input_path": "C:/Users/andre/.codex/codex-remote-attachments/01a04a0d-bf74-7aa0-a326-bace211520e7/77EE52B9-C107-4A9C-9010-32FFAE7F5123/1-Pasted-Image-1.jpg",
+    "input_sha256": "03435e78656c13ee974066a8e51a6907be93f4a112c7a3c94dcee0faa7600235"
+  },
+  "generation": {
+    "tool": "built-in image_gen",
+    "output_sha256": "2ee52b5ed02e91d556aa4a299612f787c4c1a0bf3dc8e7e05149e0edf2781be2",
+    "output_bytes": 3001767,
+    "prompt": "Use case: precise-object-edit\nAsset type: source-conditioned PBR albedo specimen for a 3D architectural model\nPrimary request: derive a seamless, square, shadow-neutral warm aged limestone surface from the approved limestone visible in the reference crest image.\nInput image: the supplied fire-service crest plaque is the material reference only.\nComposition: flat orthographic surface, edge-to-edge repeatable stone field, no perspective.\nLighting: completely even diffuse capture; remove cast shadows, highlights, ambient occlusion and directional illumination.\nMaterials/textures: preserve the exact warm beige limestone hue, fine mineral grain, subtle age variation and restrained pores from the plaque. The output represents smoothly dressed/carved limestone stock, so do not include block joints or mortar.\nConstraints: seamless/tileable on all edges; material-only albedo; no crest, eagle, shield, relief, border, arch, moulding, ornament, text, cracks, seams, blocks, joints, windows, shadows, watermark, or facade fragments. Keep variation subtle enough for use on quoins, arches, cornices, opening returns, dormer surrounds, cupola columns and a crest carrier."
+  },
+  "review": {
+    "shadow_neutral": true,
+    "orthographic": true,
+    "ornament_free": true,
+    "joint_free": true,
+    "tileable_edges_requested": true
+  }
+}

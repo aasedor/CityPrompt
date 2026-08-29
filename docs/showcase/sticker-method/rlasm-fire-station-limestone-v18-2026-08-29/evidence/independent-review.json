@@ -1,0 +1,21 @@
+{
+  "schema": "cityprompt.rlasm.independent-visual-review@1",
+  "candidate": "10-second-empire-fire-station-rlasm-v18",
+  "review_date": "2026-08-29",
+  "reviewer": "independent_visual_review_agent",
+  "status": "PASS_ZERO_P0_KEEPER_READY",
+  "unresolved_blockers": [],
+  "evidence": {
+    "locked_source_board": "references/locked-source-board.png",
+    "mandatory_render_directory": "renders",
+    "builder_evidence": "evidence/builder-evidence.json",
+    "builder_visual_review": "review/builder-visual-review.json"
+  },
+  "closed_findings": [
+    "The former cool-white secondary stone family is gone; coursed walls and dressed work now read as one warm aged limestone family.",
+    "Quoins, arches, strings, cornices, dormers, cupola columns, crest carrier and supports, jambs, reveals and sills retain only bounded dressed-versus-coursed value variation.",
+    "Slate, oak, copper, iron and glass remain correctly distinct.",
+    "Left, right, rear and rear-side cameras contain the complete grade-to-finial envelope and visible footprint with neutral margin.",
+    "No regression remains in the other mandatory views."
+  ]
+}
