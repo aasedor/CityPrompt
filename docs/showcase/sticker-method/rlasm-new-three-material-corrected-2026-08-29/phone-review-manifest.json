@@ -1,0 +1,32 @@
+{
+  "schema": "cityprompt.rlasm.phone-review@4",
+  "review_date": "2026-08-29",
+  "status": "PASS_BUILDER_MATERIAL_AND_ENVELOPE_REVIEW_AWAITING_INDEPENDENT_APPROVAL",
+  "supersedes": "../rlasm-new-three-builder-pass-2026-08-29/",
+  "records": [
+    {
+      "candidate": "07-victorian-iron-glass-grand-station-rlasm-v12",
+      "path": "07-victorian-iron-glass-grand-station-rlasm-v12-phone-comparison.png",
+      "bytes": 1692311,
+      "sha256": "e6a0338df5b4adf23af9b79ca784acc3f97f7652ff73c5da4fdf23b99935c43f"
+    },
+    {
+      "candidate": "09-italian-rationalist-hospital-rlasm-v16",
+      "path": "09-italian-rationalist-hospital-rlasm-v16-phone-comparison.png",
+      "bytes": 1344880,
+      "sha256": "536a8a417d9018a751f59e96711509b7790aff27fa3a72184b916b54a289faca"
+    },
+    {
+      "candidate": "10-second-empire-fire-station-rlasm-v12",
+      "path": "10-second-empire-fire-station-rlasm-v12-phone-comparison.png",
+      "bytes": 1623971,
+      "sha256": "66111cbe6cb6e44a72f0996f4e10fa4ea64cfd9dd61edec7afd6292158ecf2d9"
+    },
+    {
+      "candidate": "three-new-buildings-material-corrected-index",
+      "path": "rlasm-v5-three-new-buildings-phone-index.png",
+      "bytes": 820572,
+      "sha256": "5dfad37b70903522d4b3677302d2b591ff9271322b1028e7c79605c7793caf47"
+    }
+  ]
+}

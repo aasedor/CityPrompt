@@ -1,5 +1,10 @@
 # Three new RLASM v5 buildings — builder-reviewed proof batch
 
+> **Superseded:** Phone review found that these versions still used visually
+> generic materials. Keep this package as rejected history and use the
+> [exact-source material-corrected package](../rlasm-new-three-material-corrected-2026-08-29/README.md)
+> for current review. None of the candidates in this folder are keepers.
+
 This package records three brand-new buildings made with **Reference-Locked
 Atomic Sticker-and-Massing (RLASM) v5**. Each building is locked to an exact
 catalogue archetype and variant, uses a registered identity source, has a

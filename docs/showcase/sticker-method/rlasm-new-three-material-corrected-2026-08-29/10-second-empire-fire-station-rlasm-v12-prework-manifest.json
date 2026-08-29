@@ -1,0 +1,109 @@
+{
+  "schema": "cityprompt.rlasm.proven-new-build-prework@1",
+  "candidate": "10-second-empire-fire-station-rlasm-v12",
+  "title": "Second Empire Granite Fire Station",
+  "status": "PASS_SOURCE_AND_REFERENCE_LOCK_AWAITING_DRY_BUILD",
+  "method": "Reference-Locked Atomic Sticker-and-Massing (RLASM) v5",
+  "source_contract": {
+    "archetype_id": "second_empire_civic_building",
+    "variant_id": "second_empire_fire_station",
+    "sources": [
+      {
+        "role": "facade",
+        "path": "references/catalogue/variant_3.png",
+        "bytes": 1407252,
+        "sha256": "733736bae1c5359afd2d29a835a985eec936e5c210d99ff281c9e7b24e21e860"
+      },
+      {
+        "role": "oblique",
+        "path": "references/catalogue/variant_3_angle_60.jpg",
+        "bytes": 940812,
+        "sha256": "cbd9519028605ad05dd7350cd0b32a074814b22051627c4a8d74cf57cd836169"
+      },
+      {
+        "role": "topology",
+        "path": "references/catalogue/variant_3_angle_90.jpg",
+        "bytes": 903336,
+        "sha256": "03b412b820c5221d896c90f1316b6242d84048060ff94b0c2d92d5c72736b553"
+      }
+    ]
+  },
+  "locked_reference": {
+    "path": "references/locked-source-board.png",
+    "bytes": 1014893,
+    "sha256": "3a6638b704ed7a40df805aad0e8d72e972869c617b9adc3c7d71a028d9a4a525"
+  },
+  "registered_identity": {
+    "path": "references/registered/registered-identity.png",
+    "bytes": 46645,
+    "sha256": "49aec3b2b98ffd0073fb48747044cc8ba1ee5889aac30db78fdbcdadc744012d",
+    "role": "carved fire-service crest identity",
+    "mapping": "role-only crop mounted to matching physical datum; never a whole-facade perspective projection"
+  },
+  "physical_contract": {
+    "dimensions_m": [
+      32.0,
+      26.0,
+      29.0
+    ],
+    "requirements": [
+      "compact three-bay rough-hewn blue-grey granite fire station",
+      "three true round-arched timber apparatus openings with deep masonry returns",
+      "steep slate mansard with bounded dormers and a closed hipped crown",
+      "corner bell cupola with open arcade, copper dome and weathervane"
+    ],
+    "true_openings_required": true,
+    "complete_envelope_required": true
+  },
+  "material_contract": {
+    "source_specific_roles_only": true,
+    "generic_fallbacks_forbidden": true,
+    "whole_facade_photo_projection_forbidden": true,
+    "registered_material_sheets": [
+      {
+        "path": "references/materials/fire-warm-ashlar-albedo.png",
+        "bytes": 3398853,
+        "sha256": "17c0ede6fed7595ddaff93c9ee098d7ebf94e2571952f130693c7a0c8380ac92",
+        "authority": "exact locked archetype conditioned material sheet"
+      },
+      {
+        "path": "references/materials/fire-carved-granite-albedo.png",
+        "bytes": 3616551,
+        "sha256": "354def12e937335dd588ab4d9aee45c2795d772534ccbc791d7e2b70014fbf33",
+        "authority": "exact locked archetype conditioned material sheet"
+      },
+      {
+        "path": "references/materials/fire-slate-albedo.png",
+        "bytes": 2896913,
+        "sha256": "25ba171cc54747c3a16ce2861afd7b7fe074372ec1474307a739b7d4227d53a3",
+        "authority": "exact locked archetype conditioned material sheet"
+      },
+      {
+        "path": "references/materials/fire-oak-albedo.png",
+        "bytes": 2680414,
+        "sha256": "6e2356efab46000b323c6a4f4f3aed23afdf485482d15bcfb40fdf0b3b446f38",
+        "authority": "exact locked archetype conditioned material sheet"
+      },
+      {
+        "path": "references/materials/fire-aged-copper-albedo.png",
+        "bytes": 2772063,
+        "sha256": "707cc305e35f8b682216a1b5b5d9b18a655f09ffd9a3445e3415c098edf7d80c",
+        "authority": "exact locked archetype conditioned material sheet"
+      }
+    ]
+  },
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "right_side",
+    "left_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "glass_close",
+    "architecture_close"
+  ],
+  "builder_self_approval": false,
+  "keeper_status": "NOT_A_KEEPER"
+}

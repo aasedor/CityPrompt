@@ -1,0 +1,179 @@
+{
+  "schema": "cityprompt.rlasm.proven-new-build-evidence@1",
+  "candidate": "07-victorian-iron-glass-grand-station-rlasm-v12",
+  "title": "Victorian Iron & Glass Grand Station",
+  "method": "Reference-Locked Atomic Sticker-and-Massing (RLASM) v5",
+  "status": "PASS_DRY_BUILD_AWAITING_FULL_VISUAL_REVIEW",
+  "source_manifest_sha256": "c29919187aabd1074e24253128fac7b0bfc9cb89d7bb8fad5786040a91a94c98",
+  "scene": {
+    "path": "model/07-victorian-iron-glass-grand-station-rlasm-v12.blend",
+    "bytes": 265721,
+    "sha256": "2b773ac484feaa5f55da220c0f1b313d8664eed74ec83b0098005c8dd3cfaea2"
+  },
+  "glb": {
+    "path": "model/07-victorian-iron-glass-grand-station-rlasm-v12.glb",
+    "bytes": 12606548,
+    "sha256": "f1f4e840696432bdda04fa3b3eed2225357a20c16db0b8c0a03b240bf1e8e0c7"
+  },
+  "renders": [
+    {
+      "path": "renders/aerial.png",
+      "bytes": 1402632,
+      "sha256": "0375c3d71b59066844b5099687c635d302b2a4986e23277f8e2df75cab01774d"
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "bytes": 1598807,
+      "sha256": "2cab67efe9e1f288733625ae7f92d77e9d3f1827dd904bada749733b51ba27a8"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "bytes": 1281840,
+      "sha256": "95c17067b4a107dba77d93aa257375a0cb2222f42d2c393cb9113f8fef374121"
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 1213727,
+      "sha256": "61ab0f012285f8c8b545e3bead80391687fca96428e710c8f35ea8cbb54ecf2b"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 1392613,
+      "sha256": "ca555a576291d9087b06fec2fa3cb4676237d286c019406624c32df3f54bed5a"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 1593596,
+      "sha256": "596f4bd2ac4a5f1043bec1fd08375c8716a7eaebf78e6c85701b4da381aa567c"
+    },
+    {
+      "path": "renders/left_side.png",
+      "bytes": 1224730,
+      "sha256": "bf5b0d078838cb6c867a6ef54e41f5c9df8666cbe9945a4509b3d7ad373cc37c"
+    },
+    {
+      "path": "renders/preview.png",
+      "bytes": 1392613,
+      "sha256": "ca555a576291d9087b06fec2fa3cb4676237d286c019406624c32df3f54bed5a"
+    },
+    {
+      "path": "renders/rear.png",
+      "bytes": 1164356,
+      "sha256": "3b976ba6877039c2f06f79907483ece32e481a526d8bc78a240016fa33314e6a"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "bytes": 1431988,
+      "sha256": "78416ac316501620aac2cfef484e4a3d52e3756434cd1ca438f5cd4e342cbd03"
+    },
+    {
+      "path": "renders/right_side.png",
+      "bytes": 1173336,
+      "sha256": "bc0d9625aec46a85b36483aa1fd83cf5f479282a338b32a18c3ff8a0402d1a79"
+    }
+  ],
+  "object_count": 339,
+  "material_audit": {
+    "building_material_count": 10,
+    "materials": [
+      {
+        "name": "MAT_Station_BrickCore",
+        "status": "reference_specific_finished",
+        "provenance": "catalogue-conditioned role for 07-victorian-iron-glass-grand-station-rlasm-v12; solid fired-brick wall core behind source-conditioned surface",
+        "source_sha256": "7799ccc3246622af2637448d61d08e8eaf4c97f4dcabea19bbde14c8957590fb"
+      },
+      {
+        "name": "MAT_Station_ClearShedGlass",
+        "status": "reference_specific_finished",
+        "provenance": "catalogue-conditioned role for 07-victorian-iron-glass-grand-station-rlasm-v12; weathered clear train-shed glass infill",
+        "source_sha256": "7799ccc3246622af2637448d61d08e8eaf4c97f4dcabea19bbde14c8957590fb"
+      },
+      {
+        "name": "MAT_Station_GreenIron",
+        "status": "reference_specific_finished",
+        "provenance": "catalogue-conditioned role for 07-victorian-iron-glass-grand-station-rlasm-v12; dark aged green shed columns and gutters",
+        "source_sha256": "7799ccc3246622af2637448d61d08e8eaf4c97f4dcabea19bbde14c8957590fb"
+      },
+      {
+        "name": "MAT_Station_OccupiedDepth",
+        "status": "reference_specific_finished",
+        "provenance": "catalogue-conditioned role for 07-victorian-iron-glass-grand-station-rlasm-v12; separate warm station room and platform depth",
+        "source_sha256": "7799ccc3246622af2637448d61d08e8eaf4c97f4dcabea19bbde14c8957590fb"
+      },
+      {
+        "name": "MAT_Station_RedWroughtIron",
+        "status": "reference_specific_finished",
+        "provenance": "catalogue-conditioned role for 07-victorian-iron-glass-grand-station-rlasm-v12; oxidized deep-red historic wrought iron",
+        "source_sha256": "7799ccc3246622af2637448d61d08e8eaf4c97f4dcabea19bbde14c8957590fb"
+      },
+      {
+        "name": "MAT_Station_RegisteredClockTower",
+        "status": "reference_specific_finished",
+        "provenance": "exact catalogue crop registered only to its matching physical identity datum",
+        "source_sha256": "9b44fda464125a69023d90d807a34bf60c05d0e13b32a5eb6dfe5016a280d817"
+      },
+      {
+        "name": "MAT_Station_SourceCharcoalSlate",
+        "status": "reference_specific_finished",
+        "provenance": "catalogue-derived reviewed seamless material specimen; candidate=07-victorian-iron-glass-grand-station-rlasm-v12; role=fine weathered charcoal headhouse slate; specimen=station-slate-albedo.png",
+        "source_sha256": "7799ccc3246622af2637448d61d08e8eaf4c97f4dcabea19bbde14c8957590fb"
+      },
+      {
+        "name": "MAT_Station_SourceSandstone",
+        "status": "reference_specific_finished",
+        "provenance": "catalogue-derived reviewed seamless material specimen; candidate=07-victorian-iron-glass-grand-station-rlasm-v12; role=weathered honey-buff sandstone dressings; specimen=station-sandstone-albedo.png",
+        "source_sha256": "7799ccc3246622af2637448d61d08e8eaf4c97f4dcabea19bbde14c8957590fb"
+      },
+      {
+        "name": "MAT_Station_SourceVictorianBrick_XZ",
+        "status": "reference_specific_finished",
+        "provenance": "catalogue-derived reviewed seamless material specimen; candidate=07-victorian-iron-glass-grand-station-rlasm-v12; role=front/rear fine Victorian running bond; specimen=station-victorian-brick-albedo.png",
+        "source_sha256": "7799ccc3246622af2637448d61d08e8eaf4c97f4dcabea19bbde14c8957590fb"
+      },
+      {
+        "name": "MAT_Station_SourceVictorianBrick_YZ",
+        "status": "reference_specific_finished",
+        "provenance": "catalogue-derived reviewed seamless material specimen; candidate=07-victorian-iron-glass-grand-station-rlasm-v12; role=side fine Victorian running bond; specimen=station-victorian-brick-albedo.png",
+        "source_sha256": "7799ccc3246622af2637448d61d08e8eaf4c97f4dcabea19bbde14c8957590fb"
+      }
+    ],
+    "generic_fallback_count": 0,
+    "all_reference_specific_finished": true,
+    "glass": {
+      "material": "MAT_Station_ClearShedGlass",
+      "image_texture_count": 0,
+      "baked_reflection": null,
+      "reflection_source": null,
+      "neutral_scene_only": true
+    }
+  },
+  "contact_audit": {
+    "schema": "cityprompt.rlasm.contact-audit@7",
+    "candidate": "07-victorian-iron-glass-grand-station-rlasm-v12",
+    "records": [
+      {
+        "claim": "barrel shell meets every eave column and repeated arch rib",
+        "floating": false
+      },
+      {
+        "claim": "headhouse walls bear on grade",
+        "floating": false
+      },
+      {
+        "claim": "slate pavilion roofs overlap their wall plates",
+        "floating": false
+      },
+      {
+        "claim": "clock identity crop is confined to its physical stone clock datum",
+        "floating": false
+      }
+    ],
+    "floating_count": 0,
+    "status": "PASS_ZERO_DECLARED_FLOATING_AWAITING_VISUAL_QA"
+  },
+  "registered_identity_count": 1,
+  "generic_fallback_count": 0,
+  "true_opening_contract": true,
+  "builder_self_approval": false,
+  "keeper_status": "NOT_A_KEEPER_AWAITING_INDEPENDENT_REVIEW"
+}
