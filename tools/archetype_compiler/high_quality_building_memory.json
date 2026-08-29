@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-08-28-three-family-catalogue-conditioned-rlasm-v120",
+  "memory_version": "2026-08-28-family-constructor-corrections-rlasm-v121",
   "quality_target": "At least the user-approved Classic Haussmann level of archetype-shaped geometry, real construction depth, photoreal material response and resilient LEGO scaling in a real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "minimum_standard": {
@@ -1107,6 +1107,21 @@
       "symptom": "A source-defining chimney, spandrel band, gable or moon gate exists but dominates incorrectly, disappears behind another mass or reads as attached decoration",
       "cause": "The identity element was reviewed in only one view or sized independently of the surrounding architectural hierarchy.",
       "correction": "Review each identity system simultaneously in front, oblique, aerial, rear-side and close views. Correct its section, continuity, supports, intersections and bay-scale segmentation before adding microdetail."
+    },
+    {
+      "symptom": "An Art Deco setback stage is blank or a vertical pier bisects occupied windows even though the overall ziggurat silhouette is correct",
+      "cause": "Setback masses were treated as decorative crown blocks, or piers and windows were generated from the same centerline schedule.",
+      "correction": "Construct every visible setback as an occupied finished envelope. Schedule window bays first and place structural piers only in the spaces between them, then prove front, side, rear and aerial continuity."
+    },
+    {
+      "symptom": "A lodge gable is hidden by shingle material, roof intersections contain detached triangles, or eaves rise away from the walls",
+      "cause": "One closed triangular roof solid supplied both weathering planes and gable end caps, or paired plane rotations used an unverified sign convention.",
+      "correction": "Build two descending roof planes around a shared ridge, keep the occupied gable wall and rake timbers separate, remove internal end caps, and verify ridge-to-eave descent in front, aerial and rear-side renders before the full export."
+    },
+    {
+      "symptom": "A courtyard roof has floating pale ridge rods, ridges extending beyond the roof, or a moon-gate canopy that reads as an oversized slab",
+      "cause": "Generic trim geometry was added independently of the ceramic roof mesh and surrounding pavilion hierarchy.",
+      "correction": "Use the roof-family material for bounded ridges, seat each ridge on its lifted-corner closed roof, size the gate cap from the opening and street pavilion, and review the compound at deterministic phone scale."
     }
   ]
 }

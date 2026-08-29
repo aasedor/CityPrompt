@@ -1,0 +1,109 @@
+{
+  "schema": "cityprompt.rlasm.full-geometry-architectural-review@1",
+  "candidate": "08-chinese-siheyuan-courtyard-house-rlasm-v5",
+  "title": "Catalogue Chinese Siheyuan Courtyard House",
+  "review_date": "2026-08-28",
+  "reviewer_role": "builder",
+  "status": "PASS_BUILDER_REVIEW_AWAITING_INDEPENDENT_APPROVAL",
+  "keeper_status": "NOT_A_KEEPER",
+  "source_contract": {
+    "archetype_id": "vernacular_courtyard_chinese_siheyuan",
+    "label": "Chinese Siheyuan",
+    "variant": "variant_0",
+    "catalogue_directory": "archetypes/buildings/vernacular_courtyard_housing",
+    "compatible_view_count": 3,
+    "sources": [
+      {
+        "role": "hero_facade",
+        "path": "references/catalogue/variant_0.png",
+        "bytes": 1323495,
+        "sha256": "ba2a51ea88400d0ed05b69115cedbf9b38c5f0c989a28e360eadee83e3222b8a"
+      },
+      {
+        "role": "oblique_roof",
+        "path": "references/catalogue/variant_0_angle_60.jpg",
+        "bytes": 891488,
+        "sha256": "c938a6b4a68406eefdeca18510182803430c08d4e8f4d58a88e5b686dbf166d2"
+      },
+      {
+        "role": "topology_top",
+        "path": "references/catalogue/variant_0_angle_90.jpg",
+        "bytes": 827577,
+        "sha256": "ef893171b814da692f0c74144839cfc4b2907773571b6d0865b158deb0ba0016"
+      }
+    ]
+  },
+  "locked_reference": {
+    "method": "deterministic exact-pixel composition of the three authoritative catalogue images; no generative redesign",
+    "path": "references/locked-source-board.png",
+    "bytes": 893239,
+    "sha256": "3ad16c8a459e78322b9bd28dd5dcb8a2e4584b117b6cebd684a89998ccf021a7",
+    "fidelity_review": "PASS_EXACT_SOURCE_PIXELS_AND_COMPATIBLE_VARIANT"
+  },
+  "build_evidence_sha256": "55ec7e9dea2abf3a3c308d093312eb87dc825f33fc9d194ecef3c94d82ec472b",
+  "scene_sha256": "7bbd12fad2330a1e1611e72ec7a832fd78cdc73feafb089d7b1c3f6b93b33b08",
+  "glb_sha256": "d088c1d663ab3f95e3ed97d6d94e83279515d7f423665c0b87fe29aa01f330b5",
+  "geometry_review": {
+    "views": [
+      "front.png",
+      "front_corner.png",
+      "aerial.png",
+      "right_side.png",
+      "left_side.png",
+      "rear.png",
+      "rear_side.png",
+      "facade_close.png",
+      "architecture_close.png"
+    ],
+    "status": "PASS_COMPLETE_PHYSICAL_ENVELOPE",
+    "unresolved_blockers": []
+  },
+  "architectural_review": {
+    "source_id": "vernacular_courtyard_chinese_siheyuan / variant_0",
+    "proof": [
+      "real circular walking void beneath its own supported cap",
+      "six occupied hall volumes preserve an open garden court",
+      "outer street lattice, inward galleries, lifted eaves and rear elevation remain distinct physical layers"
+    ],
+    "status": "PASS",
+    "unresolved_blockers": []
+  },
+  "material_review": {
+    "generic_fallback_count": 0,
+    "facade_sticker_count": 0,
+    "photo_projection": false,
+    "status": "PASS"
+  },
+  "discrepancy_ledger": {
+    "rejected_iterations": [
+      {
+        "candidate": "08-korean-hanok-merchant-guild-hall-rlasm-v1",
+        "reason": "text-invented concept without traceable catalogue ids or authoritative source images"
+      },
+      {
+        "candidate": "08-chinese-siheyuan-courtyard-house-rlasm-v2",
+        "reason": "blank street wall, washed-out roof family, weak red timber hierarchy and contaminated moon-gate threshold"
+      },
+      {
+        "candidate": "08-chinese-siheyuan-courtyard-house-rlasm-v3",
+        "reason": "roof section, street pavilion hierarchy and courtyard detail remained schematic"
+      },
+      {
+        "candidate": "08-chinese-siheyuan-courtyard-house-rlasm-v4",
+        "reason": "floating pale ridge rods, oversized moon-gate cap and unfinished rear principal hall"
+      }
+    ],
+    "closed_by_final_fixes": [
+      "closed lifted-corner roofs with dark bounded ridges",
+      "lowered central street pavilion",
+      "scaled tiled moon-gate cap",
+      "finished outer rear elevation",
+      "layered courtyard garden and galleries"
+    ],
+    "unresolved_blockers": []
+  },
+  "independent_keeper_approval": {
+    "status": "PENDING",
+    "builder_self_approval": false
+  }
+}

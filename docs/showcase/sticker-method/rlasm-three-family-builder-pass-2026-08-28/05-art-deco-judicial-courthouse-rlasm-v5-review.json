@@ -1,0 +1,107 @@
+{
+  "schema": "cityprompt.rlasm.full-geometry-architectural-review@1",
+  "candidate": "05-art-deco-judicial-courthouse-rlasm-v5",
+  "title": "Catalogue Art Deco Judicial Courthouse",
+  "review_date": "2026-08-28",
+  "reviewer_role": "builder",
+  "status": "PASS_BUILDER_REVIEW_AWAITING_INDEPENDENT_APPROVAL",
+  "keeper_status": "NOT_A_KEEPER",
+  "source_contract": {
+    "archetype_id": "courthouse_art_deco",
+    "label": "Art Deco Judicial",
+    "variant": "variant_1",
+    "catalogue_directory": "archetypes/buildings/monumental_courthouse_axis",
+    "compatible_view_count": 3,
+    "sources": [
+      {
+        "role": "hero_facade",
+        "path": "references/catalogue/variant_1.png",
+        "bytes": 1302998,
+        "sha256": "2539d48ad52a226a8210852d6d2040794c29db0acca7e2eceb6121d7d3ef78a9"
+      },
+      {
+        "role": "oblique_roof",
+        "path": "references/catalogue/variant_1_angle_60.jpg",
+        "bytes": 835052,
+        "sha256": "b44ce1eed0d476649f2bb0fdf7b9367bfc8549932168db8530bd42eeb732a2f0"
+      },
+      {
+        "role": "topology_top",
+        "path": "references/catalogue/variant_1_angle_90.jpg",
+        "bytes": 760482,
+        "sha256": "d44adfecb90760702cd5de271be41ac4be713b04f9259b940753ff9a6a24b39f"
+      }
+    ]
+  },
+  "locked_reference": {
+    "method": "deterministic exact-pixel composition of the three authoritative catalogue images; no generative redesign",
+    "path": "references/locked-source-board.png",
+    "bytes": 847714,
+    "sha256": "2a986ca0aa8df686d4c7e802872d7c38b5ffb9e59a3eeb5f57080e003d6ce4f8",
+    "fidelity_review": "PASS_EXACT_SOURCE_PIXELS_AND_COMPATIBLE_VARIANT"
+  },
+  "build_evidence_sha256": "bcbdab5f48406342cee8c474eaa697d6979681d5eab23d2bd9da5aa83d822344",
+  "scene_sha256": "780b8a226f8fd7e94391ecb09e47fbb2315b2b3386460817f038414da1050098",
+  "glb_sha256": "406286bf42abedd0e8cbd4b2c64854f1770cb89cf177865eb4457be1d20e9b34",
+  "geometry_review": {
+    "views": [
+      "front.png",
+      "front_corner.png",
+      "aerial.png",
+      "right_side.png",
+      "left_side.png",
+      "rear.png",
+      "rear_side.png",
+      "facade_close.png",
+      "architecture_close.png"
+    ],
+    "status": "PASS_COMPLETE_PHYSICAL_ENVELOPE",
+    "unresolved_blockers": []
+  },
+  "architectural_review": {
+    "source_id": "courthouse_art_deco / variant_1",
+    "proof": [
+      "vertical limestone piers dominate without bisecting openings",
+      "three occupied setback stages and flagpole fit the frame",
+      "front/side/rear opening grammar is physically continued"
+    ],
+    "status": "PASS",
+    "unresolved_blockers": []
+  },
+  "material_review": {
+    "generic_fallback_count": 0,
+    "facade_sticker_count": 0,
+    "photo_projection": false,
+    "status": "PASS"
+  },
+  "discrepancy_ledger": {
+    "rejected_iterations": [
+      {
+        "candidate": "05-moroccan-art-deco-post-office-rlasm-v1",
+        "reason": "text-invented concept without traceable catalogue ids or authoritative source images"
+      },
+      {
+        "candidate": "05-art-deco-judicial-courthouse-rlasm-v2",
+        "reason": "camera cropped crown and flagpole; continuous aluminum bands inverted the source hierarchy"
+      },
+      {
+        "candidate": "05-art-deco-judicial-courthouse-rlasm-v3",
+        "reason": "setback crown remained mostly blank and the front bay hierarchy was too generic"
+      },
+      {
+        "candidate": "05-art-deco-judicial-courthouse-rlasm-v4",
+        "reason": "vertical piers landed on window centers and bisected occupied bays"
+      }
+    ],
+    "closed_by_final_fixes": [
+      "occupied three-stage setback crown",
+      "piers moved between window bays",
+      "bay-scaled spandrels and complete secondary elevations"
+    ],
+    "unresolved_blockers": []
+  },
+  "independent_keeper_approval": {
+    "status": "PENDING",
+    "builder_self_approval": false
+  }
+}

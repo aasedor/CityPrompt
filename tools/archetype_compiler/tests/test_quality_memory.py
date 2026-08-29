@@ -107,7 +107,7 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
     assert memory["schema"] == "high-quality-building-memory@1"
     assert (
         memory["memory_version"]
-        == "2026-08-28-three-family-catalogue-conditioned-rlasm-v120"
+        == "2026-08-28-family-constructor-corrections-rlasm-v121"
     )
     memory_doc = (
         Path(__file__).resolve().parents[3]
@@ -140,6 +140,18 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
     assert any(
         "entrance staircase" in item["symptom"].lower()
         and "tacked onto the facade" in item["symptom"].lower()
+        for item in memory["known_failure_patterns"]
+    )
+    assert any(
+        "pier bisects occupied windows" in item["symptom"].lower()
+        for item in memory["known_failure_patterns"]
+    )
+    assert any(
+        "eaves rise away" in item["symptom"].lower()
+        for item in memory["known_failure_patterns"]
+    )
+    assert any(
+        "floating pale ridge rods" in item["symptom"].lower()
         for item in memory["known_failure_patterns"]
     )
     assert any(

@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-08-28-three-family-catalogue-conditioned-rlasm-v120`.
+Current executable memory: `2026-08-28-family-constructor-corrections-rlasm-v121`.
 
 ## The quality target
 
@@ -1459,6 +1459,34 @@ The polychrome collegiate family added four rules for resizable hero facades:
   source-level hierarchy, proportion, material-depth or ornament-density gaps.
   Record the complete physical envelope separately from the failed architectural
   review and retain every rejected iteration as evidence.
+
+### Wave 18 family-constructor correction lessons
+
+- Schedule openings and structural piers independently. An Art Deco pier may
+  dominate a bay, but it must land between occupied openings rather than
+  bisecting a window. Treat every setback stage as an occupied, finished
+  envelope and prove its windows and cap on secondary elevations.
+- A closed triangular roof solid is not a safe public-gable constructor: its
+  end cap can cover the timber gable field and become a detached shard inside
+  intersecting roofs. Construct paired descending roof planes, a separate
+  occupied gable wall, rakes, ridge and king post; check the rotation sign so
+  each plane falls from ridge to supported eave.
+- Roof intersection proof requires both aerial and rear-side views. An oblique
+  hero can hide internal end caps, open valleys, rising eaves or disconnected
+  connector roofs even when the facade looks plausible.
+- Courtyard roof ridges inherit the roof material, stop inside the roof
+  footprint and seat on the same lifted-corner mesh. Generic pale ridge rods,
+  rods extending past their carriers and oversized gate-cap slabs are hard
+  architectural failures, not finishing details.
+- Identity parts must be judged as hierarchy, not mere presence. A physically
+  continuous chimney, gate cap, entrance canopy or setback crown still fails
+  if its scale, support or intersection contradicts the source composition.
+- Preserve every failed constructor iteration, including mathematically wrong
+  roof-plane tests. Promote only the rerendered correction that survives the
+  full camera set and a deterministic 1080 × 1920 source/model phone board.
+- `PASS_BUILDER_REVIEW_AWAITING_INDEPENDENT_APPROVAL` is not a keeper state. It
+  records zero builder-visible blockers while explicitly reserving keeper
+  promotion for an independent reviewer.
 
 ## Updating this memory
 
