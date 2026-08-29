@@ -33,12 +33,15 @@ four.
 
 ## Audit records
 
+- [`RLASM_PROVEN_BUILD_RECIPE_V5.md`](RLASM_PROVEN_BUILD_RECIPE_V5.md) is the
+  concrete start-to-finish recipe used for the three passed buildings,
+  including family constructors, commands, visual gates, and promotion steps.
 - `phone-review-manifest.json` records image bytes and SHA-256 hashes.
 - Each `*-independent-review.json` records the separate reviewer, evidence
   roles, zero unresolved blockers and closed findings.
 - `keeper-review-task-list.json` records the current batch states.
-- `RLASM_LATEST_METHOD_V5.md` includes every reusable lesson through the final
-  exterior-to-interior optical wall-section correction.
+- `RLASM_LATEST_METHOD_V5.md` remains the cumulative learning record and links
+  back to the proven execution recipe.
 
 The image panels deliberately include the authoritative source beside the
 locked model camera. Builder object counts, source hashes and zero-fallback

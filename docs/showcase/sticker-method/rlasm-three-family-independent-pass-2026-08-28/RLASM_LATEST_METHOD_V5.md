@@ -1,5 +1,11 @@
 # RLASM latest production method — v5
 
+The concrete start-to-finish sequence that produced the independently passed
+courthouse v20, lodge v25, and Siheyuan v18 is recorded in
+[`RLASM_PROVEN_BUILD_RECIPE_V5.md`](RLASM_PROVEN_BUILD_RECIPE_V5.md). Use that
+recipe as the execution checklist; this file remains the cumulative learning
+record and keeper gate.
+
 This batch uses a bounded reference-locked atomic sticker-and-massing workflow.
 
 1. Lock one coherent three-view reference before modeling.

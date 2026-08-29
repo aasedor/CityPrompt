@@ -11,6 +11,9 @@ The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory
 
 Current executable memory: `2026-08-28-optical-wall-section-rlasm-v124`.
 
+Proven execution checklist:
+[`RLASM_PROVEN_BUILD_RECIPE_V5.md`](showcase/sticker-method/rlasm-three-family-independent-pass-2026-08-28/RLASM_PROVEN_BUILD_RECIPE_V5.md).
+
 ## The quality target
 
 The target is Kinnaird-class architectural identity in a modular real-time asset, not a literal photogrammetric reconstruction. A successful family must read correctly at three distances:
