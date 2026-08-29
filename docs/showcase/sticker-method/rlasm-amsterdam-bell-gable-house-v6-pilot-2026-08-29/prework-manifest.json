@@ -1,0 +1,216 @@
+{
+  "schema": "cityprompt.rlasm.v6.prework@1",
+  "candidate": "10-amsterdam-bell-gable-house-rlasm-v10",
+  "title": "Amsterdam Bell Gable House",
+  "status": "keeper_approved",
+  "method": "Reference-Locked Atomic Sticker-and-Massing (RLASM) v6.1",
+  "source_contract": {
+    "archetype_id": "amsterdam_bell_gable_house",
+    "variant_id": "amsterdam_bell_gable_house_variant_0",
+    "variant_index": 0,
+    "sources": [
+      {
+        "role": "front",
+        "path": "references/catalogue/variant_0.png",
+        "bytes": 1591089,
+        "sha256": "fdd9f2a5633b74cd77efedefa160a17c7abc8760fdd4a1290dab0c6aefbf9221",
+        "pixel_dimensions": [
+          1024,
+          768
+        ]
+      },
+      {
+        "role": "oblique",
+        "path": "references/catalogue/variant_0_angle_60.jpg",
+        "bytes": 1038967,
+        "sha256": "9000d1b5ba769213fa507f1447bfcde148beac186749093c89752b6bfe721464",
+        "pixel_dimensions": [
+          1195,
+          896
+        ]
+      },
+      {
+        "role": "top",
+        "path": "references/catalogue/variant_0_angle_90.jpg",
+        "bytes": 975085,
+        "sha256": "165c01c50563908378a5a798068e1276fc2ab9b8aec61e60a4e227e501e53390",
+        "pixel_dimensions": [
+          1195,
+          896
+        ]
+      }
+    ],
+    "sibling_variant_mixing_allowed": false,
+    "catalogue_pixels_are_tier_one_authority": true,
+    "prebuilt_model_used": false
+  },
+  "locked_reference": {
+    "path": "references/locked-source-board.png",
+    "bytes": 3354349,
+    "sha256": "f19a2006842f73f9d29e6e9466e591d090984a602bdbba6445ef68e25cff4e3d"
+  },
+  "identity_statement": "A narrow three-storey red-brown brick Amsterdam corner canal house whose street facade rises into one continuous curved bell gable with warm sandstone coping, restrained scrolls, a central hoisting beam, tall dark timber sash windows, and a deep longitudinal charcoal pantile roof.",
+  "measured_contract": {
+    "dimensions_m": [
+      8.4,
+      15.2,
+      13.84
+    ],
+    "floor_datums_m": [
+      0.36,
+      3.36,
+      6.42
+    ],
+    "eave_m": 6.55,
+    "roof_ridge_m": 11.68,
+    "bell_gable_finial_m": 13.84,
+    "front_bay_count": 3,
+    "side_bay_count": 4,
+    "asymmetry": "The street facade is symmetric around the center entrance, while the roof carries one source-visible side dormer and the exposed corner side continues a four-bay residential schedule.",
+    "source_conflicts": [
+      "Catalogue family prose mentions white-painted sash and an elevated stoep, but exact variant-0 pixels show dark warm sash/door timber and a near-grade threshold; the images control."
+    ]
+  },
+  "plan_and_roof_graph": {
+    "plan": "one closed narrow rectangular corner-house envelope",
+    "roof": "two closed longitudinal narrow Dutch-tile slopes meeting at one bounded physical ridge-cap course; front bell gable masks the roof end; rear triangular gable closes the opposite end; one exact-source low shed dormer cuts the right slope full-depth and owns cheeks, cap, turned-up step/counterflashing and a visible downslope apron",
+    "circulation": "center-front entrance connects to occupied residential floors through an interior stair"
+  },
+  "bay_schedule": {
+    "front_ground": "two tall sash windows flanking one centered paneled entrance with transom",
+    "front_upper": "one three-window upper wall row, then one larger centered bell-gable window and one smaller hoist window above",
+    "sides": "four residential bays across two full wall levels on both side elevations",
+    "rear": "three residential bays across two full wall levels plus one centered rear-gable attic sash"
+  },
+  "program_contract": {
+    "visible_use": "occupied Amsterdam residential canal house",
+    "required_objects": [
+      "connected interior stair",
+      "living sofa and dining table",
+      "kitchen cabinet run, counter and range",
+      "bed, headboard and wardrobe",
+      "bookcase and two connected stair flights",
+      "restrained warm room lighting behind optical panes"
+    ],
+    "transparent_shell_may_be_empty": false
+  },
+  "identity_contract": {
+    "geometry_owners": [
+      "continuous curved bell-gable silhouette",
+      "sandstone coping and scrolls",
+      "hoisting beam and hook",
+      "three-by-four sash schedule",
+      "longitudinal pantile roof",
+      "integrated side dormer"
+    ],
+    "registered_identity_roles": [],
+    "identity_is_fully_constructed": true,
+    "one_visual_owner_per_feature": true
+  },
+  "material_contract": {
+    "generic_fallbacks_forbidden": true,
+    "dominant_source_conditioned_roles": [
+      "aged red-brown Dutch brick",
+      "weathered medium-pitch charcoal Dutch clay roof tile",
+      "warm Amsterdam sandstone",
+      "dark stained sash timber"
+    ],
+    "registered_material_sheets": [
+      {
+        "role": "aged red-brown Dutch brick",
+        "path": "references/materials/amsterdam-aged-red-brick-albedo-v1.png",
+        "provider": "ImageGen built-in",
+        "prompt_summary": "Exact variant-0 references; seamless narrow handmade running-bond brick; material only; no architecture or lighting.",
+        "bytes": 3493846,
+        "sha256": "11af5ad4efb370d6d5e85eef935040d607dcdd3a1720cb5261ef89455563a3b9",
+        "pixel_dimensions": [
+          1254,
+          1254
+        ],
+        "generic_fallback": false
+      },
+      {
+        "role": "weathered medium-pitch charcoal Dutch clay roof tile",
+        "path": "references/materials/amsterdam-weathered-dutch-roof-tile-albedo-v8.png",
+        "provider": "ImageGen built-in",
+        "prompt_summary": "Exact variant-0 references; seamless orthographic shadow-neutral aged dark charcoal Dutch clay tiles with individually legible medium-width ribs, larger course pitch, restrained soot and phase variation; no architecture or lighting.",
+        "bytes": 2549294,
+        "sha256": "60ba29c6366b19b4b7b0cc068b849fc0378414b49f5899cbff40dbe0f9b0d8eb",
+        "pixel_dimensions": [
+          1254,
+          1254
+        ],
+        "generic_fallback": false
+      },
+      {
+        "role": "warm Amsterdam sandstone",
+        "path": "references/materials/amsterdam-warm-sandstone-albedo-v1.png",
+        "provider": "ImageGen built-in",
+        "prompt_summary": "Exact variant-0 references; seamless fine-grained warm grey-beige sandstone; no carving, border, joint, or lighting.",
+        "bytes": 3112639,
+        "sha256": "ceed2d0caeff15c093e4d2f2983b3148b2a68a997c2bf0251b457c27dfea5edc",
+        "pixel_dimensions": [
+          1254,
+          1254
+        ],
+        "generic_fallback": false
+      },
+      {
+        "role": "dark stained sash timber",
+        "path": "references/materials/amsterdam-stained-timber-albedo-v1.png",
+        "provider": "ImageGen built-in",
+        "prompt_summary": "Exact variant-0 references; seamless dark warm stained hardwood; no door panel, glass, hardware, or lighting.",
+        "bytes": 2541495,
+        "sha256": "ab15f6d5a4120c264e73b7222275c7db8ad9ec8b2a893111f2a76451a68860d5",
+        "pixel_dimensions": [
+          1254,
+          1254
+        ],
+        "generic_fallback": false
+      }
+    ],
+    "provenance": "references/asset-provenance.json"
+  },
+  "opening_and_contact_contract": {
+    "opening_order": [
+      "cut carrier",
+      "stone/brick return",
+      "recessed timber sash",
+      "neutral optical glass",
+      "separately offset occupied layer",
+      "enclosed room depth"
+    ],
+    "fragile_contacts": [
+      "bell-gable coping to brick silhouette",
+      "hoisting beam to gable",
+      "roof slopes to front/rear gables",
+      "dormer cheeks to actual roof plane",
+      "dormer cap and flashing",
+      "threshold and foundation to grade"
+    ]
+  },
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "bell_gable_close",
+    "dormer_contact_close",
+    "true_top",
+    "residential_interior_close",
+    "kitchen_living_close",
+    "bedroom_close"
+    ,"stair_circulation_close"
+    ,"entrance_close"
+    ,"stair_interior_oblique"
+    ,"stair_upper_glass_close"
+  ],
+  "builder_self_approval": false,
+  "keeper_status": "KEEPER_APPROVED"
+}

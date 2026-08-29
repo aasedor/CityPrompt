@@ -1,0 +1,61 @@
+{
+  "schema": "cityprompt.rlasm.discrepancy-ledger@1",
+  "candidate": "10-amsterdam-bell-gable-house-rlasm-v10",
+  "status": "independent_holistic_pass_keeper_approved",
+  "source_conflicts": [
+    "Catalogue family prose mentions white-painted sash and an elevated stoep, but exact variant-0 pixels show dark warm sash/door timber and a near-grade threshold; the images control."
+  ],
+  "finite_blockers": [],
+  "iteration_history": [
+    {
+      "candidate": "01-amsterdam-bell-gable-house-rlasm-v1",
+      "decision": "builder_visual_fail",
+      "notes": "Identity massing, roof direction, bell-gable silhouette, physical facade openings, optical glazing, and occupied residential depth are promising; finite camera, dormer-contact, material-value, and ornament blockers require an immutable v2."
+    },
+    {
+      "candidate": "02-amsterdam-bell-gable-house-rlasm-v2",
+      "decision": "builder_visual_fail",
+      "notes": "Material family, facade ownership, ornament, and whole-envelope camera corrections pass the builder scan; the dormer carrier remains visible through the pane and requires an immutable v3."
+    },
+    {
+      "candidate": "03-amsterdam-bell-gable-house-rlasm-v3",
+      "decision": "independent_holistic_fail",
+      "notes": "Independent raw-source review found three P0 and three P1 groups: wrong floor/gable hierarchy, invalid perspective top proof, wrong dormer family/contact, invented gable trim language, opening/roof finish artifacts, and ambiguous domestic program."
+    },
+    {
+      "candidate": "04-amsterdam-bell-gable-house-rlasm-v4",
+      "decision": "builder_visual_fail",
+      "notes": "The corrected two-level body, lower bell-gable start, source box/shed dormer family, true orthographic top view, and staggered slate material are materially closer. Pixel review still found an oversized/unsealed dormer cut with protruding flashing, thin jamb seams, weak domestic proof framing, and oversized crest/hoist hardware."
+    },
+    {
+      "candidate": "05-amsterdam-bell-gable-house-rlasm-v5",
+      "decision": "independent_holistic_fail",
+      "notes": "Independent review accepted the corrected body hierarchy, bay schedule, whole-envelope continuity, true top, brick bond, ordinary opening depth, domestic room recognition, and camera margins. It found two P0 groups (dormer flashing proof and connected stair proof) plus three P1 identity groups (gable/hoist profile, Dutch roof-tile morphology/ridge cap, and paneled oak entrance/warm trim)."
+    },
+    {
+      "candidate": "06-amsterdam-bell-gable-house-rlasm-v6",
+      "decision": "builder_visual_fail",
+      "notes": "The new exact-source Dutch tile material, ridge caps, rounded bell crown, compact crest, paneled glazed oak entrance, and domestic rooms pass the builder scan. The dormer flashing still reads as disconnected tabs, the stair proof misses the stair, and the shoulder scrolls expose dark voids; immutable v7 is required."
+    },
+    {
+      "candidate": "07-amsterdam-bell-gable-house-rlasm-v7",
+      "decision": "independent_holistic_fail",
+      "notes": "Independent source-locked review accepted the corrected body hierarchy, full evidence cameras, ridge cap, physical dormer cut/cap/flashing, ordinary openings, domestic rooms, and interior stair construction. It found two P0 groups (segmented coping and invalid exterior stair proof) and three P1 groups (generic gable identity, inaccurate entrance, and roof/dormer finish)."
+    },
+    {
+      "candidate": "08-amsterdam-bell-gable-house-rlasm-v8",
+      "decision": "independent_holistic_fail",
+      "notes": "Independent review found zero P0 and three finite P1 groups: roof courses too large/deep, gable coping/volutes/crest too coarse, and door inset/transom cadence not exact. All structural, contact, opening, program, circulation and camera categories passed."
+    },
+    {
+      "candidate": "09-amsterdam-bell-gable-house-rlasm-v9",
+      "decision": "independent_holistic_fail",
+      "notes": "Independent review accepted every v8 correction and all structural/contact/program/camera regressions, but found one P1: pale stone gable coping/scroll/crest contradicts the exact target's warm integrated terracotta identity, and the shell remains too large and separately pedestaled."
+    },
+    {
+      "candidate": "10-amsterdam-bell-gable-house-rlasm-v10",
+      "decision": "independent_holistic_pass_keeper_approved",
+      "notes": "Independent reviewer directly inspected all three exact sources, the locked board, all 20 full-resolution renders, and both phone boards while ignoring metadata as proof. It found zero P0 and zero P1: the final terracotta gable group is closed and all massing, envelope, roof, dormer, opening, program, circulation, camera and contact categories pass without regression."
+    }
+  ]
+}

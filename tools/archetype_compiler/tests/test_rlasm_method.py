@@ -23,6 +23,10 @@ def test_rlasm_v6_is_single_executable_authority() -> None:
         "oblique",
         "top",
     ]
+    assert method["reference_keeper_examples"] == [
+        "07-barcelona-modernist-printing-house-rlasm-v7",
+        "10-amsterdam-bell-gable-house-rlasm-v10",
+    ]
 
 
 def test_keeper_requires_holistic_independent_review() -> None:
@@ -97,3 +101,8 @@ def test_registry_preserves_supersession_evidence() -> None:
     pilot = entries["07-barcelona-modernist-printing-house-rlasm-v7"]
     assert pilot["status"] == "keeper_approved"
     assert pilot["source_mode"] == "exact_catalogue_photos_only"
+    amsterdam = entries["10-amsterdam-bell-gable-house-rlasm-v10"]
+    assert amsterdam["status"] == "keeper_approved"
+    assert amsterdam["review_scope"] == "holistic_independent"
+    assert amsterdam["source_mode"] == "exact_catalogue_photos_only"
+    assert amsterdam["standard_role"] == "raw_photo_forward_standard"

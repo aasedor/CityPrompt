@@ -1,0 +1,200 @@
+{
+  "schema": "cityprompt.rlasm.v6.builder-evidence@1",
+  "candidate": "10-amsterdam-bell-gable-house-rlasm-v10",
+  "status": "independent_holistic_pass_keeper_approved",
+  "object_count": 553,
+  "role_counts": {
+    "weathering_contact": 44,
+    "opening_return": 125,
+    "window_frame": 186,
+    "occupied_depth": 32,
+    "optical_glass": 33,
+    "identity_geometry": 11,
+    "brick_infill": 5,
+    "circulation": 54,
+    "foundation": 1,
+    "residential_program": 25,
+    "door_leaf": 17,
+    "door_hardware": 1,
+    "door_frame": 6,
+    "grade_contact": 1,
+    "load_path": 2,
+    "roof": 2,
+    "floor": 3,
+    "room_enclosure": 2,
+    "roof_contact": 3
+  },
+  "materials": [
+    {
+      "name": "Amsterdam_Aged_Zinc",
+      "status": "source_specific_finished",
+      "source_sha256": "9000d1b5ba769213fa507f1447bfcde148beac186749093c89752b6bfe721464",
+      "generic_fallback": false
+    },
+    {
+      "name": "Amsterdam_Domestic_Textile",
+      "status": "source_specific_finished",
+      "source_sha256": "fdd9f2a5633b74cd77efedefa160a17c7abc8760fdd4a1290dab0c6aefbf9221",
+      "generic_fallback": false
+    },
+    {
+      "name": "Amsterdam_Neutral_Occupied_Sash_Glass",
+      "status": "source_specific_optical",
+      "source_sha256": "fdd9f2a5633b74cd77efedefa160a17c7abc8760fdd4a1290dab0c6aefbf9221",
+      "generic_fallback": false
+    },
+    {
+      "name": "Amsterdam_Occupied_Residential_Depth",
+      "status": "source_specific_occupied_depth",
+      "source_sha256": "ab15f6d5a4120c264e73b7222275c7db8ad9ec8b2a893111f2a76451a68860d5",
+      "generic_fallback": false
+    },
+    {
+      "name": "Amsterdam_Variant0_Aged_Red_Brick",
+      "status": "reference_specific_finished",
+      "source_sha256": "11af5ad4efb370d6d5e85eef935040d607dcdd3a1720cb5261ef89455563a3b9",
+      "generic_fallback": false
+    },
+    {
+      "name": "Amsterdam_Variant0_Integrated_Terracotta_Dressing",
+      "status": "reference_specific_finished",
+      "source_sha256": "11af5ad4efb370d6d5e85eef935040d607dcdd3a1720cb5261ef89455563a3b9",
+      "generic_fallback": false
+    },
+    {
+      "name": "Amsterdam_Variant0_Stained_Timber",
+      "status": "reference_specific_finished",
+      "source_sha256": "ab15f6d5a4120c264e73b7222275c7db8ad9ec8b2a893111f2a76451a68860d5",
+      "generic_fallback": false
+    },
+    {
+      "name": "Amsterdam_Variant0_Warm_Oak_Door",
+      "status": "reference_specific_finished",
+      "source_sha256": "ab15f6d5a4120c264e73b7222275c7db8ad9ec8b2a893111f2a76451a68860d5",
+      "generic_fallback": false
+    },
+    {
+      "name": "Amsterdam_Variant0_Warm_Sandstone",
+      "status": "reference_specific_finished",
+      "source_sha256": "ceed2d0caeff15c093e4d2f2983b3148b2a68a997c2bf0251b457c27dfea5edc",
+      "generic_fallback": false
+    },
+    {
+      "name": "Amsterdam_Variant0_Weathered_Dutch_Roof_Tile",
+      "status": "reference_specific_finished",
+      "source_sha256": "60ba29c6366b19b4b7b0cc068b849fc0378414b49f5899cbff40dbe0f9b0d8eb",
+      "generic_fallback": false
+    },
+    {
+      "name": "Amsterdam_Warm_Interior_Plaster",
+      "status": "source_specific_finished",
+      "source_sha256": "fdd9f2a5633b74cd77efedefa160a17c7abc8760fdd4a1290dab0c6aefbf9221",
+      "generic_fallback": false
+    }
+  ],
+  "generic_fallback_count": 0,
+  "registered_identity_count": 0,
+  "renders": [
+    {
+      "path": "renders/aerial.png",
+      "bytes": 1308605,
+      "sha256": "497509884b69079354bcd430edbbcdfb811ea6cfa50c590f2c44e23178f98eae"
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "bytes": 1886265,
+      "sha256": "206df6a00ce75c31205ec2b1c86d7c66772b201547e5e69fc4f4b05dcbd2f1cc"
+    },
+    {
+      "path": "renders/bedroom_close.png",
+      "bytes": 2408286,
+      "sha256": "14dedca4fc0232328401e873937a5ff49cc0c4caf153897c55e219bcbf90044b"
+    },
+    {
+      "path": "renders/bell_gable_close.png",
+      "bytes": 1991212,
+      "sha256": "90993cb76df7cf6a018186b732fa93a578c93f6580138932488af58c6b099092"
+    },
+    {
+      "path": "renders/dormer_contact_close.png",
+      "bytes": 1985349,
+      "sha256": "7c5cd94546d36c6546aa320e39f63e7b59b543f46d26536809ed19b65e19ad5f"
+    },
+    {
+      "path": "renders/entrance_close.png",
+      "bytes": 2655729,
+      "sha256": "6c38c056c9e7347dc190c2f6e55dbf05ac56a21bc3fb356d3aa6ca9d934ded4e"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "bytes": 2497187,
+      "sha256": "9391c8ac2dbc67299ced6c0350f72ad7e6f1df5c3c682de7f192fc2c99696248"
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 1352991,
+      "sha256": "a575d0d6dae982112d81267458f0ff1896b5d2e44bca3cabc6de43f25e674038"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 1500461,
+      "sha256": "66dd98ca20c6ec11e8bed8ae22f1d1552a5f248f63feb2befc33fe4d8b1e5238"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 2723971,
+      "sha256": "112344ec163bd94d48c97a758d4ea5b6baf56e7a51f8b2e1eebcd1077632ff68"
+    },
+    {
+      "path": "renders/kitchen_living_close.png",
+      "bytes": 2642911,
+      "sha256": "84a6ee9d07c686d10c9afe4732b842ca61df15e517118bdb2bbaee937c239c25"
+    },
+    {
+      "path": "renders/left_side.png",
+      "bytes": 1527706,
+      "sha256": "eb14360a2e96efc6340e7c7c420cb8c65a9513883fe6e00779e3c74c9c761ba6"
+    },
+    {
+      "path": "renders/rear.png",
+      "bytes": 1262535,
+      "sha256": "c6553c82fa0d55bc1a6f0d27441b0e1a5eba28e74e008d5a4c3b4f30fca70699"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "bytes": 1439417,
+      "sha256": "0906e0f6fa9e6a468b51c2ad597c6d8f1bde2a1c8371873acb8979c40666271a"
+    },
+    {
+      "path": "renders/residential_interior_close.png",
+      "bytes": 1996091,
+      "sha256": "eac1e65a3801533bad9172255fc5da24533daa48568847d35a707a84b7ad2c86"
+    },
+    {
+      "path": "renders/right_side.png",
+      "bytes": 1476627,
+      "sha256": "67df012da1b4213c2ef0b07b1ad3ce903ab30b245a3a8395ef118965a7d52aae"
+    },
+    {
+      "path": "renders/stair_circulation_close.png",
+      "bytes": 2710509,
+      "sha256": "2034bc152e04a1b3d937ea5010b1737f1d2b0c58b7fb7e230c62dec8f34762db"
+    },
+    {
+      "path": "renders/stair_interior_oblique.png",
+      "bytes": 2129263,
+      "sha256": "eebe42aef551830a85d8a96e72d372602f9aa5755e8bf105f9a91c48ab2fbfd2"
+    },
+    {
+      "path": "renders/stair_upper_glass_close.png",
+      "bytes": 2681494,
+      "sha256": "4b315064175389c4b030375986a2462922213d8aec152363577af8e46c0b0950"
+    },
+    {
+      "path": "renders/true_top.png",
+      "bytes": 1802502,
+      "sha256": "dd6d4f5f73c5b4464ab59934a7c6d51cbe4a93c220be3212cd80e32877b8e9a2"
+    }
+  ],
+  "keeper_status": "KEEPER_APPROVED"
+}

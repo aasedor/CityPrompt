@@ -1,0 +1,17 @@
+{
+  "schema": "cityprompt.rlasm.builder-visual-review@1",
+  "candidate": "10-amsterdam-bell-gable-house-rlasm-v10",
+  "decision": "PASS_PENDING_INDEPENDENT",
+  "review_scope": "Exact three catalogue sources, locked board, all 20 full-resolution renders, and both regenerated phone boards",
+  "p0_count": 0,
+  "p1_count": 0,
+  "passes": [
+    "warm source-derived terracotta/brick authority now owns the bell coping, scroll dressing and crest",
+    "smaller seven-flute shell is directly seated into an integrated terracotta base at the coping crown",
+    "no pale stone outline or separate pale pedestal remains",
+    "all v9 accepted roof, entrance, massing, envelope, dormer, opening, program, circulation, camera and phone-board categories remain stable"
+  ],
+  "blockers": [],
+  "keeper_ready": false,
+  "keeper_withheld_reason": "Independent holistic zero-P0/P1 review has not yet been completed."
+}

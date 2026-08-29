@@ -1,0 +1,93 @@
+{
+  "schema": "cityprompt.rlasm.asset-provenance@1",
+  "candidate": "10-amsterdam-bell-gable-house-rlasm-v10",
+  "catalogue_sources": [
+    {
+      "role": "front",
+      "path": "references/catalogue/variant_0.png",
+      "bytes": 1591089,
+      "sha256": "fdd9f2a5633b74cd77efedefa160a17c7abc8760fdd4a1290dab0c6aefbf9221",
+      "pixel_dimensions": [
+        1024,
+        768
+      ]
+    },
+    {
+      "role": "oblique",
+      "path": "references/catalogue/variant_0_angle_60.jpg",
+      "bytes": 1038967,
+      "sha256": "9000d1b5ba769213fa507f1447bfcde148beac186749093c89752b6bfe721464",
+      "pixel_dimensions": [
+        1195,
+        896
+      ]
+    },
+    {
+      "role": "top",
+      "path": "references/catalogue/variant_0_angle_90.jpg",
+      "bytes": 975085,
+      "sha256": "165c01c50563908378a5a798068e1276fc2ab9b8aec61e60a4e227e501e53390",
+      "pixel_dimensions": [
+        1195,
+        896
+      ]
+    }
+  ],
+  "material_derivatives": [
+    {
+      "role": "aged red-brown Dutch brick",
+      "path": "references/materials/amsterdam-aged-red-brick-albedo-v1.png",
+      "provider": "ImageGen built-in",
+      "prompt_summary": "Exact variant-0 references; seamless narrow handmade running-bond brick; material only; no architecture or lighting.",
+      "bytes": 3493846,
+      "sha256": "11af5ad4efb370d6d5e85eef935040d607dcdd3a1720cb5261ef89455563a3b9",
+      "pixel_dimensions": [
+        1254,
+        1254
+      ],
+      "generic_fallback": false
+    },
+    {
+      "role": "weathered medium-pitch charcoal Dutch clay roof tile",
+      "path": "references/materials/amsterdam-weathered-dutch-roof-tile-albedo-v8.png",
+      "provider": "ImageGen built-in",
+      "prompt_summary": "Exact variant-0 references; seamless orthographic shadow-neutral aged dark charcoal Dutch clay tiles with individually legible medium-width ribs, larger course pitch, restrained soot and phase variation; no architecture or lighting.",
+      "bytes": 2549294,
+      "sha256": "60ba29c6366b19b4b7b0cc068b849fc0378414b49f5899cbff40dbe0f9b0d8eb",
+      "pixel_dimensions": [
+        1254,
+        1254
+      ],
+      "generic_fallback": false
+    },
+    {
+      "role": "warm Amsterdam sandstone",
+      "path": "references/materials/amsterdam-warm-sandstone-albedo-v1.png",
+      "provider": "ImageGen built-in",
+      "prompt_summary": "Exact variant-0 references; seamless fine-grained warm grey-beige sandstone; no carving, border, joint, or lighting.",
+      "bytes": 3112639,
+      "sha256": "ceed2d0caeff15c093e4d2f2983b3148b2a68a997c2bf0251b457c27dfea5edc",
+      "pixel_dimensions": [
+        1254,
+        1254
+      ],
+      "generic_fallback": false
+    },
+    {
+      "role": "dark stained sash timber",
+      "path": "references/materials/amsterdam-stained-timber-albedo-v1.png",
+      "provider": "ImageGen built-in",
+      "prompt_summary": "Exact variant-0 references; seamless dark warm stained hardwood; no door panel, glass, hardware, or lighting.",
+      "bytes": 2541495,
+      "sha256": "ab15f6d5a4120c264e73b7222275c7db8ad9ec8b2a893111f2a76451a68860d5",
+      "pixel_dimensions": [
+        1254,
+        1254
+      ],
+      "generic_fallback": false
+    }
+  ],
+  "identity_derivatives": [],
+  "whole_facade_generation_used": false,
+  "prebuilt_model_used": false
+}

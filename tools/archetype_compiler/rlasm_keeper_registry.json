@@ -35,6 +35,14 @@
       "review_scope": "holistic_independent",
       "source_mode": "exact_catalogue_photos_only",
       "method_version": "6.1"
+    },
+    {
+      "candidate": "10-amsterdam-bell-gable-house-rlasm-v10",
+      "status": "keeper_approved",
+      "review_scope": "holistic_independent",
+      "source_mode": "exact_catalogue_photos_only",
+      "method_version": "6.1",
+      "standard_role": "raw_photo_forward_standard"
     }
   ]
 }

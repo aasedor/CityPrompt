@@ -376,3 +376,21 @@ A keeper answers yes to every question:
 - Rejected history, hashes, reviews, and reviewed deliverables preserved?
 
 If any answer is no, the building is a candidate—not a keeper.
+
+## Current forward-standard exemplars
+
+The following raw-photo-only pilots are the current RLASM v6.1 reference
+keepers. Each began with exact catalogue photographs and no prebuilt model,
+then passed a separate holistic source-locked review with zero P0 and P1
+blockers:
+
+- `07-barcelona-modernist-printing-house-rlasm-v7`: transparent workshop
+  program, one sealed T-monitor weathering envelope, source-scale roof-edge
+  ironwork, and complete physical openings.
+- `10-amsterdam-bell-gable-house-rlasm-v10`: exact floor/bay hierarchy,
+  continuous bell-gable weathering construction, source-scale Dutch roof
+  material, integrated shed dormer, and visible residential circulation.
+
+These exemplars define the present visual and evidentiary floor. They are not
+generic templates: each new building must still solve its own locked geometry,
+materials, program, contacts, and identity from source pixels.

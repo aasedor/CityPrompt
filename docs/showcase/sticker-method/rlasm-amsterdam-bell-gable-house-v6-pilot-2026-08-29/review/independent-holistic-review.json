@@ -1,0 +1,19 @@
+{
+  "schema": "cityprompt.rlasm.independent-holistic-review@1",
+  "candidate": "10-amsterdam-bell-gable-house-rlasm-v10",
+  "decision": "PASS",
+  "scope": "Exact three catalogue sources, locked source board, all 20 full-resolution renders, and both 1080x1920 phone boards; metadata and prior claims ignored as visual proof",
+  "p0_count": 0,
+  "p1_count": 0,
+  "passes": [
+    "one warm source-derived brick/terracotta authority across coping, scrolls, crest base and fluted shell",
+    "compact shell reduced about 30 percent and continuously seated into the coping",
+    "exact narrow two-level body and front bell hierarchy with 3-front/4-side schedules",
+    "complete side/rear envelopes, longitudinal ridge and fine Dutch tile cadence",
+    "true orthographic top and full-depth shed dormer with cheeks, seated cap, apron and flashing",
+    "physical masonry returns, recessed timber sash, transmissive panes and offset occupied depth",
+    "seated hoisting beam, source entrance identity, domestic rooms and connected multi-level stair",
+    "valid whole-envelope cameras, neutral visibility and no floating/contact/topology regression"
+  ],
+  "keeper": true
+}

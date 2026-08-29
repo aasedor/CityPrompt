@@ -5,6 +5,10 @@
   "version": "6.1",
   "revision_date": "2026-08-29",
   "canonical_human_method": "docs/RLASM_LATEST_METHOD.md",
+  "reference_keeper_examples": [
+    "07-barcelona-modernist-printing-house-rlasm-v7",
+    "10-amsterdam-bell-gable-house-rlasm-v10"
+  ],
   "authority_order": [
     "exact_locked_catalogue_pixels_and_hashes",
     "canonical_human_and_machine_method",

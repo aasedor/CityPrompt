@@ -1,0 +1,58 @@
+{
+  "schema": "cityprompt.rlasm.keeper-manifest@1",
+  "candidate": "10-amsterdam-bell-gable-house-rlasm-v10",
+  "building": "Amsterdam Bell Gable House",
+  "method": "RLASM v6.1",
+  "source_mode": "exact_variant_photos_only",
+  "prebuilt_model_used": false,
+  "generic_material_fallbacks": 0,
+  "decision": "INDEPENDENT_HOLISTIC_PASS",
+  "keeper": true,
+  "review": {
+    "p0_count": 0,
+    "p1_count": 0,
+    "evidence_file": "review/independent-holistic-review.json",
+    "full_resolution_render_count": 20,
+    "phone_board_count": 2
+  },
+  "locked_sources": [
+    {
+      "path": "references/catalogue/variant_0.png",
+      "sha256": "fdd9f2a5633b74cd77efedefa160a17c7abc8760fdd4a1290dab0c6aefbf9221"
+    },
+    {
+      "path": "references/catalogue/variant_0_angle_60.jpg",
+      "sha256": "9000d1b5ba769213fa507f1447bfcde148beac186749093c89752b6bfe721464"
+    },
+    {
+      "path": "references/catalogue/variant_0_angle_90.jpg",
+      "sha256": "165c01c50563908378a5a798068e1276fc2ab9b8aec61e60a4e227e501e53390"
+    }
+  ],
+  "models": [
+    {
+      "path": "amsterdam-bell-gable-house-v10.blend",
+      "storage": "external_artifact",
+      "repository_included": false,
+      "sha256": "be9a99c8947b32a59579cb946f945aec0ac43f26f1391db912474145ce545fc2"
+    },
+    {
+      "path": "amsterdam-bell-gable-house-v10.glb",
+      "storage": "external_artifact",
+      "repository_included": false,
+      "sha256": "f520baee059320e9372c124532081ba4dd57b7349d31bd47d69864dd02340353"
+    }
+  ],
+  "phone_boards": [
+    {
+      "path": "phone/amsterdam-bell-gable-house-comparison-01.png",
+      "dimensions": "1080x1920",
+      "sha256": "e416a161098f06b6bac1664ad5659c2fdbb0a32c9e18de07ab08b83febaaf164"
+    },
+    {
+      "path": "phone/amsterdam-bell-gable-house-details-02.png",
+      "dimensions": "1080x1920",
+      "sha256": "ea0aa7a76e9b5381504d4f14194db2433d008d0e6de7cad68b80c35a561a2b26"
+    }
+  ]
+}

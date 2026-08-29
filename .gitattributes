@@ -33,6 +33,7 @@ docs/archetype_owned_park_lego_batch3/*.png filter=lfs diff=lfs merge=lfs -text
 docs/shared_park_equipment_v1/*.png filter=lfs diff=lfs merge=lfs -text
 docs/cityprompt_five_park_trials_v2/*.png filter=lfs diff=lfs merge=lfs -text
 docs/showcase/**/*.png filter=lfs diff=lfs merge=lfs -text
+docs/showcase/**/*.jpg filter=lfs diff=lfs merge=lfs -text
 docs/showcase/**/*.mp4 filter=lfs diff=lfs merge=lfs -text
 docs/reviews/catalogue-rollout-v98/**/*.png filter=lfs diff=lfs merge=lfs -text
 tools/archetype_compiler/sticker_assets/old_montreal_textile_v98/*.png filter=lfs diff=lfs merge=lfs -text
