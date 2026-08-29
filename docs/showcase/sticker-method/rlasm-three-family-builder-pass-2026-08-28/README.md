@@ -1,5 +1,11 @@
 # RLASM three-family builder-pass review
 
+> **Superseded material decision.** The geometry and constructor findings in
+> this package remain valid, but the overall builder-pass label was rescinded
+> after independent phone review exposed shared generic material recipes. Use
+> the adjacent `rlasm-three-family-material-correction-2026-08-28` package for
+> the corrected courthouse v8, lodge v13, and Siheyuan v8 evidence.
+
 This package contains the deterministic phone-scale source/model comparison
 that followed the rejected three-family calibration package. Each model uses
 the exact compatible catalogue images recorded in its review evidence, a

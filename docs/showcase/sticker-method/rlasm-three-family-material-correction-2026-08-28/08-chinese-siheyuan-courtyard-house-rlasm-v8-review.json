@@ -1,0 +1,139 @@
+{
+  "schema": "cityprompt.rlasm.full-geometry-architectural-review@1",
+  "candidate": "08-chinese-siheyuan-courtyard-house-rlasm-v8",
+  "title": "Catalogue Chinese Siheyuan Courtyard House",
+  "review_date": "2026-08-28",
+  "reviewer_role": "builder",
+  "status": "PASS_BUILDER_REVIEW_AWAITING_INDEPENDENT_APPROVAL",
+  "keeper_status": "NOT_A_KEEPER",
+  "source_contract": {
+    "archetype_id": "vernacular_courtyard_chinese_siheyuan",
+    "label": "Chinese Siheyuan",
+    "variant": "variant_0",
+    "catalogue_directory": "archetypes/buildings/vernacular_courtyard_housing",
+    "compatible_view_count": 3,
+    "sources": [
+      {
+        "role": "hero_facade",
+        "path": "references/catalogue/variant_0.png",
+        "bytes": 1323495,
+        "sha256": "ba2a51ea88400d0ed05b69115cedbf9b38c5f0c989a28e360eadee83e3222b8a"
+      },
+      {
+        "role": "oblique_roof",
+        "path": "references/catalogue/variant_0_angle_60.jpg",
+        "bytes": 891488,
+        "sha256": "c938a6b4a68406eefdeca18510182803430c08d4e8f4d58a88e5b686dbf166d2"
+      },
+      {
+        "role": "topology_top",
+        "path": "references/catalogue/variant_0_angle_90.jpg",
+        "bytes": 827577,
+        "sha256": "ef893171b814da692f0c74144839cfc4b2907773571b6d0865b158deb0ba0016"
+      }
+    ]
+  },
+  "locked_reference": {
+    "method": "deterministic exact-pixel composition of the three authoritative catalogue images; no generative redesign",
+    "path": "references/locked-source-board.png",
+    "bytes": 893239,
+    "sha256": "3ad16c8a459e78322b9bd28dd5dcb8a2e4584b117b6cebd684a89998ccf021a7",
+    "fidelity_review": "PASS_EXACT_SOURCE_PIXELS_AND_COMPATIBLE_VARIANT"
+  },
+  "build_evidence_sha256": "7cc809c6c3cdbdf703b0e39707d2af2316c2f84bfbaad9e84e7373142e7a2aef",
+  "scene_sha256": "451b0ee879052426ffd6b6cc82cdba55ce271f870c6ed4c762cf036455978e2c",
+  "glb_sha256": "8785c5d2c11949c808e9540287158ed25315feb65fc3a771ade063358f50a965",
+  "geometry_review": {
+    "views": [
+      "front.png",
+      "front_corner.png",
+      "aerial.png",
+      "right_side.png",
+      "left_side.png",
+      "rear.png",
+      "rear_side.png",
+      "facade_close.png",
+      "architecture_close.png"
+    ],
+    "status": "PASS_COMPLETE_PHYSICAL_ENVELOPE",
+    "unresolved_blockers": []
+  },
+  "architectural_review": {
+    "source_id": "vernacular_courtyard_chinese_siheyuan / variant_0",
+    "proof": [
+      "roof tile, grey brick, red lacquer, dark lattice and paving read as separate roles",
+      "human-scale paving preserves a walkable open garden court",
+      "moon gate, lifted eaves, inward galleries and rear elevation remain distinct physical layers"
+    ],
+    "status": "PASS",
+    "unresolved_blockers": []
+  },
+  "material_review": {
+    "generic_fallback_count": 0,
+    "facade_sticker_count": 0,
+    "photo_projection": false,
+    "source_derived_specimens": [
+      {
+        "path": "material-specimens/siheyuan-cool-grey-brick.png",
+        "sha256": "8189913cf65d72ccb8f48638471388d11f5312179bffa6a39292d18759dcf486"
+      },
+      {
+        "path": "material-specimens/siheyuan-grey-ceramic-roof-tile.png",
+        "sha256": "f3d7cf44f7861909d4d0cff2780036d11e5a25074e85556c0591cb5a1e21adbb"
+      },
+      {
+        "path": "material-specimens/siheyuan-red-lacquer-timber.png",
+        "sha256": "859f591d7f2167958e49551a23b27c99f2582fa5fe44386c23544ac539b1f1a9"
+      },
+      {
+        "path": "material-specimens/siheyuan-courtyard-paving.png",
+        "sha256": "3cd85d5cd59d924ad06e8b6415360d76a253fa350eebc3cb49b5c580042b93ee"
+      }
+    ],
+    "visual_scale_review": "PASS_ROLE_SPECIFIC_SCALE_AND_DISTINCTION",
+    "status": "PASS"
+  },
+  "discrepancy_ledger": {
+    "rejected_iterations": [
+      {
+        "candidate": "08-korean-hanok-merchant-guild-hall-rlasm-v1",
+        "reason": "text-invented concept without traceable catalogue ids or authoritative source images"
+      },
+      {
+        "candidate": "08-chinese-siheyuan-courtyard-house-rlasm-v2",
+        "reason": "blank street wall, washed-out roof family, weak red timber hierarchy and contaminated moon-gate threshold"
+      },
+      {
+        "candidate": "08-chinese-siheyuan-courtyard-house-rlasm-v3",
+        "reason": "roof section, street pavilion hierarchy and courtyard detail remained schematic"
+      },
+      {
+        "candidate": "08-chinese-siheyuan-courtyard-house-rlasm-v4",
+        "reason": "floating pale ridge rods, oversized moon-gate cap and unfinished rear principal hall"
+      },
+      {
+        "candidate": "08-chinese-siheyuan-courtyard-house-rlasm-v5",
+        "reason": "builder geometry passed, but wall, roof, timber and paving materials remained generic procedural recipes"
+      },
+      {
+        "candidate": "08-chinese-siheyuan-courtyard-house-rlasm-v6",
+        "reason": "procedural brick and tile collapsed into vertical striping and high-contrast printed grids"
+      },
+      {
+        "candidate": "08-chinese-siheyuan-courtyard-house-rlasm-v7",
+        "reason": "source-derived wall, roof and lacquer passed, but courtyard paving remained an oversized generic grid"
+      }
+    ],
+    "closed_by_final_fixes": [
+      "source-derived blue-grey ceramic tile",
+      "cool grey brick and cinnabar timber specimens",
+      "world-scaled human-size courtyard paving",
+      "closed lifted-corner roofs and finished outer rear elevation"
+    ],
+    "unresolved_blockers": []
+  },
+  "independent_keeper_approval": {
+    "status": "PENDING",
+    "builder_self_approval": false
+  }
+}

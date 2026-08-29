@@ -1,0 +1,127 @@
+{
+  "schema": "cityprompt.rlasm.full-geometry-architectural-review@1",
+  "candidate": "05-art-deco-judicial-courthouse-rlasm-v8",
+  "title": "Catalogue Art Deco Judicial Courthouse",
+  "review_date": "2026-08-28",
+  "reviewer_role": "builder",
+  "status": "PASS_BUILDER_REVIEW_AWAITING_INDEPENDENT_APPROVAL",
+  "keeper_status": "NOT_A_KEEPER",
+  "source_contract": {
+    "archetype_id": "courthouse_art_deco",
+    "label": "Art Deco Judicial",
+    "variant": "variant_1",
+    "catalogue_directory": "archetypes/buildings/monumental_courthouse_axis",
+    "compatible_view_count": 3,
+    "sources": [
+      {
+        "role": "hero_facade",
+        "path": "references/catalogue/variant_1.png",
+        "bytes": 1302998,
+        "sha256": "2539d48ad52a226a8210852d6d2040794c29db0acca7e2eceb6121d7d3ef78a9"
+      },
+      {
+        "role": "oblique_roof",
+        "path": "references/catalogue/variant_1_angle_60.jpg",
+        "bytes": 835052,
+        "sha256": "b44ce1eed0d476649f2bb0fdf7b9367bfc8549932168db8530bd42eeb732a2f0"
+      },
+      {
+        "role": "topology_top",
+        "path": "references/catalogue/variant_1_angle_90.jpg",
+        "bytes": 760482,
+        "sha256": "d44adfecb90760702cd5de271be41ac4be713b04f9259b940753ff9a6a24b39f"
+      }
+    ]
+  },
+  "locked_reference": {
+    "method": "deterministic exact-pixel composition of the three authoritative catalogue images; no generative redesign",
+    "path": "references/locked-source-board.png",
+    "bytes": 847714,
+    "sha256": "2a986ca0aa8df686d4c7e802872d7c38b5ffb9e59a3eeb5f57080e003d6ce4f8",
+    "fidelity_review": "PASS_EXACT_SOURCE_PIXELS_AND_COMPATIBLE_VARIANT"
+  },
+  "build_evidence_sha256": "e64cfe7a86d0cd6e76781488d063d0a79373ecd0e391029329e71ef3c79ea2cc",
+  "scene_sha256": "f1503acf3c8caac2688047fb80873333c001b140da7b3f2dbb2bcab9bc04df29",
+  "glb_sha256": "6ac6075266140855f26dde76deae481bd7bab07a43710bee6a3f5218de6e0017",
+  "geometry_review": {
+    "views": [
+      "front.png",
+      "front_corner.png",
+      "aerial.png",
+      "right_side.png",
+      "left_side.png",
+      "rear.png",
+      "rear_side.png",
+      "facade_close.png",
+      "architecture_close.png"
+    ],
+    "status": "PASS_COMPLETE_PHYSICAL_ENVELOPE",
+    "unresolved_blockers": []
+  },
+  "architectural_review": {
+    "source_id": "courthouse_art_deco / variant_1",
+    "proof": [
+      "buff ashlar has legible joints and low-contrast stone variation",
+      "pale carved members remain distinct from aluminum and bronze",
+      "three occupied setback stages and complete secondary elevations remain visible"
+    ],
+    "status": "PASS",
+    "unresolved_blockers": []
+  },
+  "material_review": {
+    "generic_fallback_count": 0,
+    "facade_sticker_count": 0,
+    "photo_projection": false,
+    "source_derived_specimens": [
+      {
+        "path": "material-specimens/art-deco-buff-limestone-ashlar.png",
+        "sha256": "1e81b5e32ffb928264038c94f570ed6663c5c6064b6f690afd72886023f29c9c"
+      }
+    ],
+    "visual_scale_review": "PASS_ROLE_SPECIFIC_SCALE_AND_DISTINCTION",
+    "status": "PASS"
+  },
+  "discrepancy_ledger": {
+    "rejected_iterations": [
+      {
+        "candidate": "05-moroccan-art-deco-post-office-rlasm-v1",
+        "reason": "text-invented concept without traceable catalogue ids or authoritative source images"
+      },
+      {
+        "candidate": "05-art-deco-judicial-courthouse-rlasm-v2",
+        "reason": "camera cropped crown and flagpole; continuous aluminum bands inverted the source hierarchy"
+      },
+      {
+        "candidate": "05-art-deco-judicial-courthouse-rlasm-v3",
+        "reason": "setback crown remained mostly blank and the front bay hierarchy was too generic"
+      },
+      {
+        "candidate": "05-art-deco-judicial-courthouse-rlasm-v4",
+        "reason": "vertical piers landed on window centers and bisected occupied bays"
+      },
+      {
+        "candidate": "05-art-deco-judicial-courthouse-rlasm-v5",
+        "reason": "builder geometry passed, but the dominant limestone was still a shared generic noise recipe"
+      },
+      {
+        "candidate": "05-art-deco-judicial-courthouse-rlasm-v6",
+        "reason": "procedural coursing collapsed to dark flat masonry and unreadable joints"
+      },
+      {
+        "candidate": "05-art-deco-judicial-courthouse-rlasm-v7",
+        "reason": "source-derived ashlar passed, but pale carved members and step stone remained materially flat"
+      }
+    ],
+    "closed_by_final_fixes": [
+      "occupied three-stage setback crown",
+      "piers moved between window bays",
+      "source-derived buff ashlar",
+      "graded carved stone and source-matched civic stair stone"
+    ],
+    "unresolved_blockers": []
+  },
+  "independent_keeper_approval": {
+    "status": "PENDING",
+    "builder_self_approval": false
+  }
+}

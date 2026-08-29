@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-08-28-family-constructor-corrections-rlasm-v121`.
+Current executable memory: `2026-08-28-source-specific-material-correction-rlasm-v122`.
 
 ## The quality target
 
@@ -1409,9 +1409,10 @@ The polychrome collegiate family added four rules for resizable hero facades:
   physical geometry and in the review views.
 - A source crop is not automatically a construction texture. Audit every crop
   for perspective, baked shadows, seams and recognizable object fragments. If
-  it cannot tile safely, retain it as provenance and derive a
-  source-calibrated procedural material with explicit physical scale; prohibit
-  projecting the oblique photograph onto the building.
+  it cannot tile safely, retain it as provenance and author a clean
+  source-derived orthographic specimen with explicit physical scale; prohibit
+  projecting the oblique photograph onto the building. A generic procedural
+  recipe remains diagnostic evidence, not a material pass.
 - Review topology with dedicated cameras, not only the beauty render. Require
   an aerial view for footprint and roof direction, a court view for entrance
   and room rhythm, and a rear-oblique view for ridge, valley, gable and closure
@@ -1487,6 +1488,34 @@ The polychrome collegiate family added four rules for resizable hero facades:
 - `PASS_BUILDER_REVIEW_AWAITING_INDEPENDENT_APPROVAL` is not a keeper state. It
   records zero builder-visible blockers while explicitly reserving keeper
   promotion for an independent reviewer.
+
+### Wave 19 source-specific material correction lessons
+
+- A zero generic-fallback counter is not material evidence when the audit only
+  checks material names or metadata. A shared noise, wave or brick recipe stays
+  generic after it is renamed for limestone, timber, shingles or ceramic tile.
+- Review dominant opaque roles visually in both a construction close-up and a
+  phone source/model frame. Masonry, timber, shingles, ceramic tile, lacquer,
+  metal and paving must remain distinct by pattern, joint behavior, palette,
+  roughness and physical scale.
+- Record immutable hashes for every source-derived material specimen used by a
+  reviewed candidate. Specimens must be orthographic, shadow-neutral,
+  role-atomic, edge-safe and free of windows, doors or other facade fragments;
+  map them to physical geometry rather than using facade-photo projection.
+- Normalized object-local coordinates can change construction scale on every
+  repeated block. Use a shared world-scale mapping with an explicit tile size
+  in metres for continuous masonry and paving, then inspect chimney shafts,
+  corner blocks, porch piers and courtyard slabs in the same frame.
+- Preserve rejected material diagnostics. Dark flat courthouse coursing,
+  vertically striped Siheyuan walls, printed roof grids, oversized paving and
+  distorted lodge fieldstone explain why the material gate exists and prevent
+  the same procedural shortcut from returning.
+- A flat source-calibrated PBR material remains valid for inherently smooth
+  glass, occupied depth and small metal trim. It cannot substitute for
+  identity-bearing stone, logs, shingles, brick, roof tile or paving.
+- Rescind a builder pass when later review exposes a material false positive.
+  Geometry and constructor lessons may remain valid, but keeper candidacy must
+  move back to rework until the corrected GLB is rerendered and reviewed.
 
 ## Updating this memory
 

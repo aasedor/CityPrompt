@@ -1,0 +1,155 @@
+{
+  "schema": "cityprompt.rlasm.full-geometry-architectural-review@1",
+  "candidate": "06-grand-log-lodge-rlasm-v13",
+  "title": "Catalogue Grand Log Lodge",
+  "review_date": "2026-08-28",
+  "reviewer_role": "builder",
+  "status": "PASS_BUILDER_REVIEW_AWAITING_INDEPENDENT_APPROVAL",
+  "keeper_status": "NOT_A_KEEPER",
+  "source_contract": {
+    "archetype_id": "grand_log_lodge",
+    "label": "Grand Log Lodge",
+    "variant": "variant_0",
+    "catalogue_directory": "archetypes/buildings/parkitecture",
+    "compatible_view_count": 3,
+    "sources": [
+      {
+        "role": "hero_facade",
+        "path": "references/catalogue/variant_0.png",
+        "bytes": 1354534,
+        "sha256": "07e0375e14f1662dba62aca64ea202623efdf710a3a915af93540a1639a376f8"
+      },
+      {
+        "role": "oblique_roof",
+        "path": "references/catalogue/variant_0_angle_60.jpg",
+        "bytes": 958687,
+        "sha256": "93fc707002b31b56e9ee08ab6234dc5b58192e75253278468de52c21d4a45083"
+      },
+      {
+        "role": "topology_top",
+        "path": "references/catalogue/variant_0_angle_90.jpg",
+        "bytes": 900867,
+        "sha256": "f11c3c77946b6b862807aaf151ed39e28d52b87703bfa374b1bb43820cd63762"
+      }
+    ]
+  },
+  "locked_reference": {
+    "method": "deterministic exact-pixel composition of the three authoritative catalogue images; no generative redesign",
+    "path": "references/locked-source-board.png",
+    "bytes": 990482,
+    "sha256": "7e13c39de4a0d968e9d517e939077e6eb803728bf3e4f17f25e826195bdc068b",
+    "fidelity_review": "PASS_EXACT_SOURCE_PIXELS_AND_COMPATIBLE_VARIANT"
+  },
+  "build_evidence_sha256": "c9da845b9993c07b554ce0e2c0a5f6be445c97acd26d253c7341ce1e8e756915",
+  "scene_sha256": "0edadca964a06a8f345fc86b523953a185839aaf2c2bbc1387c350c0f87f3f4a",
+  "glb_sha256": "dc1f3fa2916ee4c52ccf1d6ef69811083290e1d812347d241b3955836772912b",
+  "geometry_review": {
+    "views": [
+      "front.png",
+      "front_corner.png",
+      "aerial.png",
+      "right_side.png",
+      "left_side.png",
+      "rear.png",
+      "rear_side.png",
+      "facade_close.png",
+      "architecture_close.png"
+    ],
+    "status": "PASS_COMPLETE_PHYSICAL_ENVELOPE",
+    "unresolved_blockers": []
+  },
+  "architectural_review": {
+    "source_id": "grand_log_lodge / variant_0",
+    "proof": [
+      "logs, shingles and fieldstone are visibly separate construction systems",
+      "fieldstone holds one physical scale across chimney, blocks and porch piers",
+      "timber gables, supported eaves and complete secondary elevations remain connected"
+    ],
+    "status": "PASS",
+    "unresolved_blockers": []
+  },
+  "material_review": {
+    "generic_fallback_count": 0,
+    "facade_sticker_count": 0,
+    "photo_projection": false,
+    "source_derived_specimens": [
+      {
+        "path": "material-specimens/grand-log-lodge-dark-timber.png",
+        "sha256": "a06ef980a893808be66cd31a83c2ea86258c21bc6dca1d293c9a7b833ab3b826"
+      },
+      {
+        "path": "material-specimens/grand-log-lodge-fieldstone.png",
+        "sha256": "a8c71fd17c37d2b9ca97a7ed6d58cbeda8d14b22b13366ba2254668c303ddf83"
+      },
+      {
+        "path": "material-specimens/grand-log-lodge-wood-shingles.png",
+        "sha256": "5f737b96955fc26843ab37417c25d25f2f552ae4fb03d2bc414ad45530133ae2"
+      }
+    ],
+    "visual_scale_review": "PASS_ROLE_SPECIFIC_SCALE_AND_DISTINCTION",
+    "status": "PASS"
+  },
+  "discrepancy_ledger": {
+    "rejected_iterations": [
+      {
+        "candidate": "06-norwegian-dragon-style-mountain-lodge-rlasm-v1",
+        "reason": "text-invented concept without traceable catalogue ids or authoritative source images"
+      },
+      {
+        "candidate": "06-grand-log-lodge-rlasm-v2",
+        "reason": "cropped framing, buried porch and flat unarticulated log fields"
+      },
+      {
+        "candidate": "06-grand-log-lodge-rlasm-v3",
+        "reason": "central chimney hidden by roof and identity-bearing cross-gable topology too weak"
+      },
+      {
+        "candidate": "06-grand-log-lodge-rlasm-v4",
+        "reason": "chimney still read as a roof cap; lodge section remained too squat"
+      },
+      {
+        "candidate": "06-grand-log-lodge-rlasm-v5",
+        "reason": "correct vertical section but smooth chimney slab and cap below main ridge contradicted source"
+      },
+      {
+        "candidate": "06-grand-log-lodge-rlasm-v6",
+        "reason": "blanket roof and weak cross-gable hierarchy remained below source"
+      },
+      {
+        "candidate": "06-grand-log-lodge-rlasm-v7",
+        "reason": "upper windows were buried under the gable overhang and the chimney was oversized"
+      },
+      {
+        "candidate": "06-grand-log-lodge-rlasm-v8",
+        "reason": "closed roof solids hid timber gable fields and created detached-looking rear triangles"
+      },
+      {
+        "candidate": "06-grand-log-lodge-rlasm-v9",
+        "reason": "roof-plane rotation signs were inverted, lifting eaves away from their supports"
+      },
+      {
+        "candidate": "06-grand-log-lodge-rlasm-v10",
+        "reason": "builder geometry passed, but logs, shingles, fieldstone and timber still shared generic procedural recipes"
+      },
+      {
+        "candidate": "06-grand-log-lodge-rlasm-v11",
+        "reason": "prepared structured-shader diagnostic inherited the failed procedural material strategy"
+      },
+      {
+        "candidate": "06-grand-log-lodge-rlasm-v12",
+        "reason": "source-derived materials were distinct, but object-local fieldstone scale distorted the chimney and corner blocks"
+      }
+    ],
+    "closed_by_final_fixes": [
+      "paired descending roof planes",
+      "source-derived dark timber and staggered shingles",
+      "world-scaled fieldstone on chimney, piers and steps",
+      "supported wrap porch and entrance gable"
+    ],
+    "unresolved_blockers": []
+  },
+  "independent_keeper_approval": {
+    "status": "PENDING",
+    "builder_self_approval": false
+  }
+}

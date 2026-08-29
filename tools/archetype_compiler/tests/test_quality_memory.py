@@ -107,7 +107,7 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
     assert memory["schema"] == "high-quality-building-memory@1"
     assert (
         memory["memory_version"]
-        == "2026-08-28-family-constructor-corrections-rlasm-v121"
+        == "2026-08-28-source-specific-material-correction-rlasm-v122"
     )
     memory_doc = (
         Path(__file__).resolve().parents[3]
@@ -152,6 +152,21 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
     )
     assert any(
         "floating pale ridge rods" in item["symptom"].lower()
+        for item in memory["known_failure_patterns"]
+    )
+    assert any(
+        "zero generic material fallbacks" in item["symptom"].lower()
+        and "source-derived specimens" in item["correction"].lower()
+        for item in memory["known_failure_patterns"]
+    )
+    assert any(
+        "fieldstone, brick or paving changes scale" in item["symptom"].lower()
+        and "tile size in metres" in item["correction"].lower()
+        for item in memory["known_failure_patterns"]
+    )
+    assert any(
+        "previously recorded builder pass" in item["symptom"].lower()
+        and "rescind" in item["correction"].lower()
         for item in memory["known_failure_patterns"]
     )
     assert any(

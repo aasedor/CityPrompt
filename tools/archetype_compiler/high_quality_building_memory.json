@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-08-28-family-constructor-corrections-rlasm-v121",
+  "memory_version": "2026-08-28-source-specific-material-correction-rlasm-v122",
   "quality_target": "At least the user-approved Classic Haussmann level of archetype-shaped geometry, real construction depth, photoreal material response and resilient LEGO scaling in a real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "minimum_standard": {
@@ -1122,6 +1122,21 @@
       "symptom": "A courtyard roof has floating pale ridge rods, ridges extending beyond the roof, or a moon-gate canopy that reads as an oversized slab",
       "cause": "Generic trim geometry was added independently of the ceramic roof mesh and surrounding pavilion hierarchy.",
       "correction": "Use the roof-family material for bounded ridges, seat each ridge on its lifted-corner closed roof, size the gate cap from the opening and street pavilion, and review the compound at deterministic phone scale."
+    },
+    {
+      "symptom": "A building reports zero generic material fallbacks but limestone, timber, shingles, brick, ceramic tile and paving still look like the same renamed procedural surface",
+      "cause": "The audit trusted family-specific material names, source hashes and generic-fallback flags while several dominant roles shared noise, wave or brick node recipes with no visual source-specificity gate.",
+      "correction": "Require hashed source-derived specimens for every dominant opaque construction role, review close and phone-scale renders for role distinction, joints and physical scale, and treat shared procedural recipes as diagnostic-only even when their metadata is source-locked."
+    },
+    {
+      "symptom": "Fieldstone, brick or paving changes scale on every block, smears across a chimney shaft or becomes an oversized grid across a courtyard",
+      "cause": "A tile-safe specimen was mapped through normalized object-local coordinates, so each object independently stretched one full image across its own bounds.",
+      "correction": "Use shared world-scale coordinates with an explicit tile size in metres for continuous masonry and paving. Compare main shafts, corner blocks, piers, steps and slabs together, and reject any candidate whose construction scale changes by object size."
+    },
+    {
+      "symptom": "A previously recorded builder pass is contradicted by a later phone review that exposes generic material character",
+      "cause": "Geometry and architecture were accepted while material fidelity relied on metadata counters instead of the visible source/model comparison.",
+      "correction": "Rescind the overall pass, preserve the prior evidence as rejected history, retain only still-valid constructor lessons, rerender the corrected GLB with source-derived materials, and return the candidate to independent approval pending rather than keeper."
     }
   ]
 }
