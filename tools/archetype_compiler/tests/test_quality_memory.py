@@ -107,7 +107,7 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
     assert memory["schema"] == "high-quality-building-memory@1"
     assert (
         memory["memory_version"]
-        == "2026-08-28-optical-wall-section-rlasm-v124"
+        == "2026-08-29-rlasm-v5-roof-opening-contact-v128"
     )
     memory_doc = (
         Path(__file__).resolve().parents[3]

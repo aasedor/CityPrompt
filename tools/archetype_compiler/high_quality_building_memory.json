@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-08-29-rlasm-v5-building-material-family-v127",
+  "memory_version": "2026-08-29-rlasm-v5-roof-opening-contact-v128",
   "quality_target": "At least the user-approved Classic Haussmann level of archetype-shaped geometry, real construction depth, photoreal material response and resilient LEGO scaling in a real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "minimum_standard": {
@@ -1216,6 +1216,11 @@
       "symptom": "A building uses plausible source-specific stone sheets but its walls, returns, trim, dormers or identity carrier still read as different masonry families",
       "cause": "Materials were approved independently by semantic role, so value and hue transforms on the wall core, coursed ashlar and dressed or carved stone diverged even though the architecture intended one physical material.",
       "correction": "Record one bounded user-approved material-bearing reference as the building-level chromatic and finish authority; assign one material-family ID to every same-substance exterior role; preserve role-specific joints, relief, roughness and physical scale while keeping hue, aging and mineral character continuous. If no ornament-free sheet matches, generate a shadow-neutral seamless material-only specimen and preserve the input hash, exact prompt, output hash and bytes. Verify front, both sides, rear, aerial, facade close and glass close beside the authority on a phone board."
+    },
+    {
+      "symptom": "A roof dormer window reads as a finished frame floating outside the mansard, or becomes a blank wall panel after the dormer body is moved into the roof",
+      "cause": "The opening was positioned from a nominal roof boundary instead of the actual slope, and the inherited Boolean cutter was shallower than the thickened integrated dormer body, leaving an opaque exterior skin over the optical assembly.",
+      "correction": "Derive the dormer datum from the constructed roof plane; make its lower cheeks cross that plane; cut through the complete core, skin, and integrated body depth; then build a visible material-matched return, recessed sash, optical pane, and separate occupied-depth layer. Close the gable, seat and bound the roof cap, assign flashing or apron ownership, and require both side elevations, aerial, and an oblique contact close before promotion."
     }
   ]
 }

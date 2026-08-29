@@ -1,0 +1,21 @@
+{
+  "schema": "cityprompt.rlasm.independent-visual-review@1",
+  "candidate": "10-second-empire-fire-station-rlasm-v20",
+  "review_date": "2026-08-29",
+  "reviewer": "independent_visual_review_agent",
+  "status": "PASS_ZERO_P0_KEEPER_READY",
+  "unresolved_blockers": [],
+  "review_scope": [
+    "exact locked front, 60-degree, and top catalogue sources",
+    "every mandatory whole-envelope and close render",
+    "dormer_contact_close.png",
+    "both 1080x1920 phone comparison boards"
+  ],
+  "pixel_findings": [
+    "Both side elevations show complete integrated dormer bodies whose cheeks cross into the mansard; no window or carrier floats outside the roof.",
+    "The contact close shows full wall cuts with warm limestone jamb and sill returns, inset oak sash, neutral pane, and a separately recessed occupied-depth layer; no residual face skin covers an aperture.",
+    "The limestone gables close to their peaks, the slate caps bear continuously on the walls and penetrate into the mansard, and the bounded roof-joint bands do not read as open gaps.",
+    "The accepted limestone, slate, oak, copper, iron, glass, registered crest, geometry, and whole-envelope cameras show no regression."
+  ],
+  "decision": "No further correction is required for the targeted dormer-contact issue."
+}

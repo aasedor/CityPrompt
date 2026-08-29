@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-08-29-rlasm-v5-building-material-family-v127`.
+Current executable memory: `2026-08-29-rlasm-v5-roof-opening-contact-v128`.
 
 Proven execution checklist:
 [`RLASM_PROVEN_BUILD_RECIPE_V5.md`](showcase/sticker-method/rlasm-three-family-independent-pass-2026-08-28/RLASM_PROVEN_BUILD_RECIPE_V5.md).
@@ -1652,6 +1652,25 @@ material pass established this executable gate:
   the authority on a phone board. Whole-envelope views run grade-to-finial.
 - Preserve partial revisions. V18 advanced only after independent review
   recorded zero P0 blockers.
+
+### RLASM v5 roof-mounted opening contact section
+
+A dormer may contain source-specific materials, a sash, glass, and occupied
+depth while remaining physically detached from its roof. A second failure can
+appear after integration when an inherited Boolean cutter is shallower than
+the thickened dormer body and leaves an opaque exterior skin over the window.
+
+- Derive the opening datum from the constructed sloped roof plane.
+- Make the lower dormer cheeks cross that plane and close the gable/end field.
+- Size the cutter against the complete opaque body depth, not an earlier wall.
+- Inspect the raw cut, then build the material-matched return, recessed sash,
+  optical pane, and separately offset occupied room layer.
+- Seat and bound the roof cap and assign flashing/apron ownership at the joint.
+- Require complete left/right elevations, aerial, and an oblique contact close
+  that proves roof penetration and opening depth in the same pixels.
+- Preserve floating and partial-cut candidates and advance a bounded revision.
+
+Fire-station v20 passed this gate with zero independent P0 blockers.
 
 ## Updating this memory
 

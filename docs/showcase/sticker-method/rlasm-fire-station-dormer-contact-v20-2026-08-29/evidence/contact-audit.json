@@ -1,0 +1,28 @@
+{
+  "schema": "cityprompt.rlasm.contact-audit@7",
+  "candidate": "10-second-empire-fire-station-rlasm-v20",
+  "records": [
+    {
+      "claim": "warm aged limestone envelope bears continuously on grade",
+      "floating": false
+    },
+    {
+      "claim": "mansard slopes close to crown",
+      "floating": false
+    },
+    {
+      "claim": "cupola columns bear on mansard base",
+      "floating": false
+    },
+    {
+      "claim": "registered crest sits on its carved physical carrier",
+      "floating": false
+    },
+    {
+      "claim": "side dormer cheeks penetrate the mansard plane and their closed gables, seated slate caps and flashing aprons complete the roof load path",
+      "floating": false
+    }
+  ],
+  "floating_count": 0,
+  "status": "PASS_ZERO_DECLARED_FLOATING_AWAITING_VISUAL_QA"
+}

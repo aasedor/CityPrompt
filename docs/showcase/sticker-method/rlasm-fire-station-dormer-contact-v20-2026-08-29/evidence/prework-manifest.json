@@ -1,0 +1,130 @@
+{
+  "schema": "cityprompt.rlasm.proven-new-build-prework@1",
+  "candidate": "10-second-empire-fire-station-rlasm-v20",
+  "title": "Second Empire Limestone Fire Station",
+  "status": "PASS_SOURCE_AND_REFERENCE_LOCK_AWAITING_DRY_BUILD",
+  "method": "Reference-Locked Atomic Sticker-and-Massing (RLASM) v5",
+  "source_contract": {
+    "archetype_id": "second_empire_civic_building",
+    "variant_id": "second_empire_fire_station",
+    "sources": [
+      {
+        "role": "facade",
+        "path": "references/catalogue/variant_3.png",
+        "bytes": 1407252,
+        "sha256": "733736bae1c5359afd2d29a835a985eec936e5c210d99ff281c9e7b24e21e860"
+      },
+      {
+        "role": "oblique",
+        "path": "references/catalogue/variant_3_angle_60.jpg",
+        "bytes": 940812,
+        "sha256": "cbd9519028605ad05dd7350cd0b32a074814b22051627c4a8d74cf57cd836169"
+      },
+      {
+        "role": "topology",
+        "path": "references/catalogue/variant_3_angle_90.jpg",
+        "bytes": 903336,
+        "sha256": "03b412b820c5221d896c90f1316b6242d84048060ff94b0c2d92d5c72736b553"
+      }
+    ]
+  },
+  "locked_reference": {
+    "path": "references/locked-source-board.png",
+    "bytes": 1014799,
+    "sha256": "b1b11792c6ea26b44f57729c021992e28194956a5145e8aa382a3513f88542e2"
+  },
+  "registered_identity": {
+    "path": "references/registered/registered-identity.png",
+    "bytes": 2795911,
+    "sha256": "2d5c55c0c94669d20690f0a59e6487afb74a94f5c5f3c7f0afa2283a493b3eeb",
+    "role": "source-conditioned orthographic carved fire-service crest identity",
+    "mapping": "orthographic role-only sticker mounted to its matching carved physical datum; no perspective facade pixels",
+    "authority": {
+      "kind": "source-conditioned orthographic derivative",
+      "source_path": "source-conditioned-identities-2026-08-29/fire-station-orthographic-crest-sticker-v2-cropped.png",
+      "source_sha256": "2d5c55c0c94669d20690f0a59e6487afb74a94f5c5f3c7f0afa2283a493b3eeb",
+      "rectification": "front-elevation isolation from the exact locked facade source; surrounding perspective facade excluded",
+      "provenance_path": "source-conditioned-identities-2026-08-29/fire-station-orthographic-crest-sticker-provenance.json",
+      "provenance_sha256": "9994e9032adcacb8c81aeede2fe8f1b0c17de67f1c5021e5a95831a46c880c4e"
+    }
+  },
+  "physical_contract": {
+    "dimensions_m": [
+      32.0,
+      26.0,
+      34.0
+    ],
+    "requirements": [
+      "three true round-arched timber apparatus openings with deep masonry returns",
+      "steep slate mansard with bounded dormers and a closed hipped crown",
+      "corner bell cupola with open arcade, copper dome and weathervane",
+      "Treat the approved orthographic crest's warm aged limestone as the building-level exterior masonry authority.",
+      "Use that one limestone family for wall cores and returns, coursed ashlar, quoins, arches, strings, cornices, dormer masonry, cupola columns, and the crest carrier; vary dressing and relief only by physical role.",
+      "Preserve the source-specific slate, oak, copper, iron, glass, geometry, openings, and registered crest without alteration.",
+      "Dressed limestone and exposed wall returns must share the crest-authorized warm hue; no pale-grey or white secondary stone family may remain.",
+      "Use the crest-derived shadow-neutral dressed-limestone specimen for every exposed core, return, quoin, arch, string, cornice, dormer surround, masonry roof attachment, cupola column, crest carrier, and support.",
+      "Frame left, right, rear, and rear-side evidence from grade to finial with the complete footprint and neutral margin.",
+      "Embed every side dormer body through the mansard roof plane so its lower cheeks are physically captured by the roof rather than floating outside it.",
+      "Give every side dormer a closed limestone gable field, seated slate gable roof, and bounded flashing/apron at the roof intersection.",
+      "Prove the dormer-to-mansard contact in both whole-side views, aerial, and a dedicated oblique dormer-contact close-up.",
+      "Cut every side-dormer opening completely through the integrated dormer body; no residual exterior masonry skin may cover the sash or pane.",
+      "Seat the limestone reveal, oak sash, glass, and occupied-depth layer inside the outward dormer face while preserving the roof-plane penetration, closed gable, and flashing contact."
+    ],
+    "true_openings_required": true,
+    "complete_envelope_required": true
+  },
+  "material_contract": {
+    "source_specific_roles_only": true,
+    "generic_fallbacks_forbidden": true,
+    "whole_facade_photo_projection_forbidden": true,
+    "registered_material_sheets": [
+      {
+        "path": "references/materials/fire-warm-ashlar-albedo.png",
+        "bytes": 3398853,
+        "sha256": "17c0ede6fed7595ddaff93c9ee098d7ebf94e2571952f130693c7a0c8380ac92",
+        "authority": "exact locked archetype conditioned material sheet"
+      },
+      {
+        "path": "references/materials/fire-crest-warm-aged-limestone-dressed-v1-albedo.png",
+        "bytes": 3001767,
+        "sha256": "2ee52b5ed02e91d556aa4a299612f787c4c1a0bf3dc8e7e05149e0edf2781be2",
+        "authority": "user-approved identity-conditioned material sheet",
+        "provenance_path": "references/materials/fire-crest-warm-aged-limestone-dressed-v1-provenance.json",
+        "provenance_sha256": "3ea128cc302ee10865b2057dd9cdfa5369aceeb20d657b279ad790ec3b7b8765"
+      },
+      {
+        "path": "references/materials/fire-slate-albedo.png",
+        "bytes": 2896913,
+        "sha256": "25ba171cc54747c3a16ce2861afd7b7fe074372ec1474307a739b7d4227d53a3",
+        "authority": "exact locked archetype conditioned material sheet"
+      },
+      {
+        "path": "references/materials/fire-oak-albedo.png",
+        "bytes": 2680414,
+        "sha256": "6e2356efab46000b323c6a4f4f3aed23afdf485482d15bcfb40fdf0b3b446f38",
+        "authority": "exact locked archetype conditioned material sheet"
+      },
+      {
+        "path": "references/materials/fire-aged-copper-albedo.png",
+        "bytes": 2772063,
+        "sha256": "707cc305e35f8b682216a1b5b5d9b18a655f09ffd9a3445e3415c098edf7d80c",
+        "authority": "exact locked archetype conditioned material sheet"
+      }
+    ]
+  },
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "right_side",
+    "left_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "glass_close",
+    "architecture_close",
+    "dormer_contact_close"
+  ],
+  "builder_self_approval": false,
+  "keeper_status": "NOT_A_KEEPER"
+}

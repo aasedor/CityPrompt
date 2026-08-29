@@ -1,0 +1,26 @@
+{
+  "schema": "cityprompt.rlasm.builder-visual-review@3",
+  "candidate": "10-second-empire-fire-station-rlasm-v20",
+  "decision": "PASS_BUILDER_AND_INDEPENDENT_ZERO_P0_DORMER_CONTACT_REVIEW",
+  "p0_blockers": [],
+  "keeper": true,
+  "checks": {
+    "locked_front_oblique_top_compared": true,
+    "side_dormer_cheeks_cross_mansard_plane": true,
+    "side_dormer_openings_cut_completely_through_wall": true,
+    "limestone_reveal_sash_glass_and_room_depth_visible": true,
+    "closed_gable_and_seated_slate_cap_visible": true,
+    "both_sides_aerial_and_contact_close_reviewed": true,
+    "whole_envelope_cameras_valid": true,
+    "accepted_front_material_and_identity_preserved": true,
+    "generic_fallback_count": 0,
+    "registered_identity_count": 1,
+    "registered_identity_hash_verified": true,
+    "source_conditioned_material_hashes_verified": true
+  },
+  "phone_boards": [
+    "phone-reviews/fire-station-dormer-contact-v20/fire-station-v18-v20-dormer-contact-phone.png",
+    "phone-reviews/fire-station-dormer-contact-v20/fire-station-v20-dormer-contact-close-phone.png"
+  ],
+  "independent_review_required": false
+}
