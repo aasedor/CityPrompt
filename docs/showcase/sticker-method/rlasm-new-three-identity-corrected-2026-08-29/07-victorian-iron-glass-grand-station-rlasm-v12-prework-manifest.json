@@ -1,0 +1,97 @@
+{
+  "schema": "cityprompt.rlasm.proven-new-build-prework@1",
+  "candidate": "07-victorian-iron-glass-grand-station-rlasm-v12",
+  "title": "Victorian Iron & Glass Grand Station",
+  "status": "PASS_SOURCE_AND_REFERENCE_LOCK_AWAITING_DRY_BUILD",
+  "method": "Reference-Locked Atomic Sticker-and-Massing (RLASM) v5",
+  "source_contract": {
+    "archetype_id": "historic_grand_station",
+    "variant_id": "station_victorian_iron_glass",
+    "sources": [
+      {
+        "role": "facade",
+        "path": "references/catalogue/variant_1.png",
+        "bytes": 1345064,
+        "sha256": "7799ccc3246622af2637448d61d08e8eaf4c97f4dcabea19bbde14c8957590fb"
+      },
+      {
+        "role": "oblique",
+        "path": "references/catalogue/variant_1_angle_60.jpg",
+        "bytes": 967228,
+        "sha256": "995b11e41e157ce95cce34c91a9b23b633f4f7058efad6c7a59d16d06e42c784"
+      },
+      {
+        "role": "topology",
+        "path": "references/catalogue/variant_1_angle_90.jpg",
+        "bytes": 944707,
+        "sha256": "a31e8f92c8c0d20881a765642e489bd782238880a8fbe9c8bdf75739dcd7608e"
+      }
+    ]
+  },
+  "locked_reference": {
+    "path": "references/locked-source-board.png",
+    "bytes": 983383,
+    "sha256": "93a5147e44642ec0bfb4872daff539dd3aa701b77045c27d1f01dab312059b7e"
+  },
+  "registered_identity": {
+    "path": "references/registered/registered-identity.png",
+    "bytes": 4557,
+    "sha256": "9b44fda464125a69023d90d807a34bf60c05d0e13b32a5eb6dfe5016a280d817",
+    "role": "clock-tower-and-arched-headhouse identity",
+    "mapping": "role-only crop mounted to matching physical datum; never a whole-facade perspective projection"
+  },
+  "physical_contract": {
+    "dimensions_m": [
+      66.0,
+      44.0,
+      34.0
+    ],
+    "requirements": [
+      "enormous single-span iron-and-glass barrel train shed with an unobstructed arched end",
+      "modest asymmetrical Victorian brick headhouse with pointed gables and a clock tower",
+      "physical wrought-iron ribs, lattice chords, side arcade columns and glass infill",
+      "slate headhouse roofs, arched brick openings, platform depth and finished rear shed end"
+    ],
+    "true_openings_required": true,
+    "complete_envelope_required": true
+  },
+  "material_contract": {
+    "source_specific_roles_only": true,
+    "generic_fallbacks_forbidden": true,
+    "whole_facade_photo_projection_forbidden": true,
+    "registered_material_sheets": [
+      {
+        "path": "references/materials/station-victorian-brick-albedo.png",
+        "bytes": 3696868,
+        "sha256": "274aab833754e3499546044c26e5d729441de8a105c3ef9b189afe322ac441d2",
+        "authority": "exact locked archetype conditioned material sheet"
+      },
+      {
+        "path": "references/materials/station-sandstone-albedo.png",
+        "bytes": 3285669,
+        "sha256": "5e76eb4a76ba8c8fb996859174733c75f146af53c4206219ab012d81ab45bf7f",
+        "authority": "exact locked archetype conditioned material sheet"
+      },
+      {
+        "path": "references/materials/station-slate-albedo.png",
+        "bytes": 2813647,
+        "sha256": "be41970c444b094e01fb65eb812fb90c8d09426dab5d960d8210630ddf9795f6",
+        "authority": "exact locked archetype conditioned material sheet"
+      }
+    ]
+  },
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "right_side",
+    "left_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "glass_close",
+    "architecture_close"
+  ],
+  "builder_self_approval": false,
+  "keeper_status": "NOT_A_KEEPER"
+}

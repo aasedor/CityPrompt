@@ -1,0 +1,20 @@
+{
+  "schema": "cityprompt.rlasm.phone-review-package@2",
+  "package": "rlasm-new-three-identity-corrected-2026-08-29",
+  "method": "Reference-Locked Atomic Sticker-and-Massing (RLASM) v5",
+  "supersedes_fire_station_candidate": "10-second-empire-fire-station-rlasm-v12",
+  "current_fire_station_candidate": "10-second-empire-fire-station-rlasm-v14",
+  "keeper_status": false,
+  "files": [
+    {"path": "rlasm-v5-three-new-buildings-phone-index.png", "bytes": 819448, "sha256": "f66d99421e2206eaea9659967763552b208b7d1f941bb5cd1673bab740f7f10a"},
+    {"path": "07-victorian-iron-glass-grand-station-rlasm-v12-phone-comparison.png", "bytes": 1692189, "sha256": "5ead07a7a47f7c2649595e1130cf045701cd55d0aa356fdf00966d8243240822"},
+    {"path": "09-italian-rationalist-hospital-rlasm-v16-phone-comparison.png", "bytes": 1344777, "sha256": "c3083082a04df11f06443c038f1442b12dc1fed11fc5e878c173e3c63f8baead"},
+    {"path": "10-second-empire-fire-station-rlasm-v14-phone-comparison.png", "bytes": 1657662, "sha256": "c7495f35e04da8d62ffad3522638210a4dae1f8642102f1db1a01dfc40eb7fed"},
+    {"path": "10-second-empire-fire-station-rlasm-v14-registered-orthographic-crest.png", "bytes": 2795911, "sha256": "2d5c55c0c94669d20690f0a59e6487afb74a94f5c5f3c7f0afa2283a493b3eeb"},
+    {"path": "10-second-empire-fire-station-rlasm-v14-facade_close.png", "bytes": 1647425, "sha256": "0bc8748c50cb075b3550e4fc71593d785df5c5568c6a28d37fbcd905bfa9848a"},
+    {"path": "10-second-empire-fire-station-rlasm-v14-prework-manifest.json", "bytes": 4763, "sha256": "cb697e9324890df5dbd6786d93c8d272a07ca5a954c32afcbf7005b7f8fe495a"},
+    {"path": "10-second-empire-fire-station-rlasm-v14-builder-evidence.json", "bytes": 8180, "sha256": "6e5bc2d9aa0827dea7294c71a68cccb35cdcbbea32c405956c71734d5e698c22"},
+    {"path": "10-second-empire-fire-station-rlasm-v14-builder-review.json", "bytes": 1062, "sha256": "c2b22eda8096d85fd6e01291ef15e3fe144dc5b5c83eec1b4550131057e6f5ab"},
+    {"path": "10-second-empire-fire-station-rlasm-v14-crest-provenance.json", "bytes": 3275, "sha256": "9994e9032adcacb8c81aeede2fe8f1b0c17de67f1c5021e5a95831a46c880c4e"}
+  ]
+}

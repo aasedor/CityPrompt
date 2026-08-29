@@ -1,0 +1,24 @@
+{
+  "schema": "cityprompt.rlasm.builder-visual-review@2",
+  "candidate": "10-second-empire-fire-station-rlasm-v14",
+  "method": "Reference-Locked Atomic Sticker-and-Massing (RLASM) v5",
+  "decision": "PASS_BUILDER_MATERIAL_AND_ENVELOPE_REVIEW_AWAITING_INDEPENDENT_APPROVAL",
+  "p0_blockers": [],
+  "checks": {
+    "locked_source_compared": true,
+    "front_corner_aerial_matched": true,
+    "whole_envelope_reviewed": true,
+    "glazing_depth_visible": true,
+    "generic_fallback_count": 0,
+    "registered_identity_count": 1,
+    "registered_identity_hash_verified": true,
+    "orthographic_identity_rectification_verified": true,
+    "perspective_facade_fragments_in_registered_identity": 0,
+    "identity_close_contains_all_four_edges": true,
+    "source_conditioned_material_sheet_count": 5,
+    "source_conditioned_material_hashes_verified": true,
+    "blank_carrier_regressions": 0
+  },
+  "keeper": false,
+  "phone_board": "phone-reviews/new-three-identity-corrected/10-second-empire-fire-station-rlasm-v14-phone-comparison.png"
+}

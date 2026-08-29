@@ -1,0 +1,43 @@
+{
+  "schema": "cityprompt.rlasm.source-conditioned-identity@1",
+  "created_on": "2026-08-29",
+  "provider": "Codex built-in ImageGen",
+  "use_case": "precise-object-edit",
+  "asset_role": "registered orthographic carved fire-service crest sticker",
+  "source_authority": [
+    {
+      "path": "10-second-empire-fire-station-rlasm-v12/references/catalogue/variant_3.png",
+      "sha256": "733736bae1c5359afd2d29a835a985eec936e5c210d99ff281c9e7b24e21e860",
+      "role": "exact locked archetype and sole authority for identity, ornament, and material"
+    },
+    {
+      "path": "10-second-empire-fire-station-rlasm-v12/references/registered/registered-identity.png",
+      "sha256": "49aec3b2b98ffd0073fb48747044cc8ba1ee5889aac30db78fdbcdadc744012d",
+      "role": "rejected oblique crop supplied only as defect evidence"
+    }
+  ],
+  "prompt": "Use case: precise-object-edit. Asset type: registered orthographic facade sticker for a 3D Second Empire fire-station model. Image 1 is the exact locked archetype reference and sole authority for identity, material, and ornament; Image 2 is the current perspective crest crop and evidence of what must be rectified. Reconstruct the exact central carved fire-service crest from the reference as a clean, front-facing orthographic stone relief plaque. Preserve the source crest's distinctive heraldic composition, shield, surrounding sculpted figures and carved warm grey-beige limestone character. Correct the perspective so the plaque, border, arch, relief axis, and stone courses are level, centered, symmetrical, and square to camera. One isolated rectangular plaque filling most of the canvas, aspect ratio approximately 6:5 horizontal; perfectly frontal elevation; evenly spaced margin on all sides. Shadow-neutral diffuse conservation-documentation lighting; shallow relief shading only, no directional cast shadows. Preserve the exact emblem identity from the supplied source; no surrounding building facade, windows, doors, dormers, trees, sky, street, frame carrier, brackets, perspective, lens distortion, readable signage, new symbols, watermark, or text. All four outer edges must be straight, level, and fully visible.",
+  "raw_output": {
+    "path": "source-conditioned-identities-2026-08-29/fire-station-orthographic-crest-sticker-v1.png",
+    "bytes": 3000492,
+    "sha256": "4458051670a2b238040061d8b955a553eb912f38650770dc9fe6fe90a82e0669",
+    "pixel_size": [1402, 1122]
+  },
+  "deterministic_registration_crop": {
+    "operation": "remove only near-white external export padding; no identity pixels repainted",
+    "threshold_difference_from_white": 18,
+    "crop_box_xyxy": [84, 19, 1317, 1106],
+    "registered_path": "source-conditioned-identities-2026-08-29/fire-station-orthographic-crest-sticker-v2-cropped.png",
+    "registered_bytes": 2795911,
+    "registered_sha256": "2d5c55c0c94669d20690f0a59e6487afb74a94f5c5f3c7f0afa2283a493b3eeb",
+    "registered_pixel_size": [1233, 1087]
+  },
+  "mapping_contract": {
+    "physical_carrier": "Fire_CrestCarrier",
+    "registered_plane": "Fire_RegisteredCivicCrest",
+    "plane_dimensions_m": [4.54, 4.0],
+    "aspect_policy": "native registered aspect preserved",
+    "review_view": "renders/facade_close.png",
+    "whole_facade_projection_forbidden": true
+  }
+}

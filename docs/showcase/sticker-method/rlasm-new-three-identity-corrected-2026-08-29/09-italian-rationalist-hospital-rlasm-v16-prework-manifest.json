@@ -1,0 +1,91 @@
+{
+  "schema": "cityprompt.rlasm.proven-new-build-prework@1",
+  "candidate": "09-italian-rationalist-hospital-rlasm-v16",
+  "title": "Italian Rationalist Marble Hospital",
+  "status": "PASS_SOURCE_AND_REFERENCE_LOCK_AWAITING_DRY_BUILD",
+  "method": "Reference-Locked Atomic Sticker-and-Massing (RLASM) v5",
+  "source_contract": {
+    "archetype_id": "functionalist_healthcare",
+    "variant_id": "healthcare_rationalism",
+    "sources": [
+      {
+        "role": "facade",
+        "path": "references/catalogue/variant_3.png",
+        "bytes": 998090,
+        "sha256": "80d83cd0623e80205c40c7661e8ff8da76d3fe8507836dd6c714c5abf0964343"
+      },
+      {
+        "role": "oblique",
+        "path": "references/catalogue/variant_3_angle_60.jpg",
+        "bytes": 844557,
+        "sha256": "92b95240addf1d0c20c4116e4c5edf8b83b6f4d3492c1e140e669de652ea1e85"
+      },
+      {
+        "role": "topology",
+        "path": "references/catalogue/variant_3_angle_90.jpg",
+        "bytes": 826631,
+        "sha256": "3f6a008ca57dc628bae8655e9fbff054424d9dafe8245f385ecccbd08a5cea3b"
+      }
+    ]
+  },
+  "locked_reference": {
+    "path": "references/locked-source-board.png",
+    "bytes": 838407,
+    "sha256": "da87e701a5c1a52a6f865b3483dbcf04bacd99c56118d043ea892589bd7bd381"
+  },
+  "registered_identity": {
+    "path": "references/registered/registered-identity.png",
+    "bytes": 35767,
+    "sha256": "0549218cdee70180951f7cd34d1e2786668fb131170b8099a657c144092e45cf",
+    "role": "dark-green serpentine stair-core identity",
+    "mapping": "role-only crop mounted to matching physical datum; never a whole-facade perspective projection"
+  },
+  "physical_contract": {
+    "dimensions_m": [
+      52.0,
+      42.0,
+      22.0
+    ],
+    "requirements": [
+      "U-shaped white-marble hospital enclosing a deep rectangular garden court",
+      "monumental square-column ground arcade wrapping the public edges",
+      "precise recessed punched-window grid and thin marble panel joints",
+      "dark-green serpentine stair core, clean parapets and source-matched rooftop volumes"
+    ],
+    "true_openings_required": true,
+    "complete_envelope_required": true
+  },
+  "material_contract": {
+    "source_specific_roles_only": true,
+    "generic_fallbacks_forbidden": true,
+    "whole_facade_photo_projection_forbidden": true,
+    "registered_material_sheets": [
+      {
+        "path": "references/materials/hospital-carrara-panel-albedo.png",
+        "bytes": 1756497,
+        "sha256": "69e73cdf928d870681101a182edfcc158f20752ac705bbbc1092a4071cd7e4c7",
+        "authority": "exact locked archetype conditioned material sheet"
+      },
+      {
+        "path": "references/materials/hospital-serpentine-albedo.png",
+        "bytes": 3116131,
+        "sha256": "e9c79584192d3c94786044ee808c6f8bb7b9e206675c3b16ad01b6804eca0b4a",
+        "authority": "exact locked archetype conditioned material sheet"
+      }
+    ]
+  },
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "right_side",
+    "left_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "glass_close",
+    "architecture_close"
+  ],
+  "builder_self_approval": false,
+  "keeper_status": "NOT_A_KEEPER"
+}

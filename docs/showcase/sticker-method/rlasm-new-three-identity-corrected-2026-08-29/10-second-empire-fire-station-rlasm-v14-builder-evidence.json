@@ -1,0 +1,185 @@
+{
+  "schema": "cityprompt.rlasm.proven-new-build-evidence@1",
+  "candidate": "10-second-empire-fire-station-rlasm-v14",
+  "title": "Second Empire Granite Fire Station",
+  "method": "Reference-Locked Atomic Sticker-and-Massing (RLASM) v5",
+  "status": "PASS_DRY_BUILD_AWAITING_FULL_VISUAL_REVIEW",
+  "source_manifest_sha256": "cb697e9324890df5dbd6786d93c8d272a07ca5a954c32afcbf7005b7f8fe495a",
+  "scene": {
+    "path": "model/10-second-empire-fire-station-rlasm-v14.blend",
+    "bytes": 311261,
+    "sha256": "4d1a43764dc395f0e18a3bc444ed7f5dc453b2cc04407aacb3c8e689599c933f"
+  },
+  "glb": {
+    "path": "model/10-second-empire-fire-station-rlasm-v14.glb",
+    "bytes": 21656000,
+    "sha256": "0f5b08e70551ea7f70af12165c473bbe530abff709f23a5cd66889660cc2a82c"
+  },
+  "renders": [
+    {
+      "path": "renders/aerial.png",
+      "bytes": 1213078,
+      "sha256": "3b4117d37ae64369591a40f6ad3ae0c9a0ab8dc71bd8677668177c6afe8ab88c"
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "bytes": 1301595,
+      "sha256": "60d8080d9eca8eef601bfc8b9e2ca845e6d80a27396a45029b6936eb8b4a7e8a"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "bytes": 1647425,
+      "sha256": "0bc8748c50cb075b3550e4fc71593d785df5c5568c6a28d37fbcd905bfa9848a"
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 1177447,
+      "sha256": "350a52948cceec99032ebab7cb4ba10e1811f96960f9d2cb780d5e44df9354b0"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 1193504,
+      "sha256": "ff6cf8648ae848e0ba4d1ab37a664a4d74687a40c2825f80b80fbed4992a9e9c"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 1485200,
+      "sha256": "44c14b19331a3574da2f43e87f3f557dcf67e8f289a6e703b8ddef29e5815b66"
+    },
+    {
+      "path": "renders/left_side.png",
+      "bytes": 1234974,
+      "sha256": "8930ddde92889f0019058d647a44c3012831be7bce2a8bfbbcc665b169ea180a"
+    },
+    {
+      "path": "renders/preview.png",
+      "bytes": 1193504,
+      "sha256": "ff6cf8648ae848e0ba4d1ab37a664a4d74687a40c2825f80b80fbed4992a9e9c"
+    },
+    {
+      "path": "renders/rear.png",
+      "bytes": 1202769,
+      "sha256": "f8bef5f4d3c6e61192ad2544d33dde55bbbae407ea98f05b30130e35a61780d3"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "bytes": 1482649,
+      "sha256": "3247b0ff5b2c4af7c80b42b7087a2ad2d5e8f42ef3a168043f73713a7bee84dd"
+    },
+    {
+      "path": "renders/right_side.png",
+      "bytes": 1193517,
+      "sha256": "0cc10300fbb47a8b65a3ec2cc6ea0e682be4fa5744aa63bb94d840af6a3f972f"
+    }
+  ],
+  "object_count": 424,
+  "material_audit": {
+    "building_material_count": 11,
+    "materials": [
+      {
+        "name": "MAT_Fire_BlackIron",
+        "status": "reference_specific_finished",
+        "provenance": "catalogue-conditioned role for 10-second-empire-fire-station-rlasm-v14; historic iron cresting frames and weathervane",
+        "source_sha256": "733736bae1c5359afd2d29a835a985eec936e5c210d99ff281c9e7b24e21e860"
+      },
+      {
+        "name": "MAT_Fire_DressedCarvedGranite",
+        "status": "reference_specific_finished",
+        "provenance": "catalogue-derived reviewed seamless material specimen; candidate=10-second-empire-fire-station-rlasm-v14; role=dressed arches pilasters cornices dormers and civic relief; specimen=fire-carved-granite-albedo.png",
+        "source_sha256": "733736bae1c5359afd2d29a835a985eec936e5c210d99ff281c9e7b24e21e860"
+      },
+      {
+        "name": "MAT_Fire_NeutralHistoricGlass",
+        "status": "reference_specific_finished",
+        "provenance": "catalogue-conditioned role for 10-second-empire-fire-station-rlasm-v14; neutral historic civic glazing",
+        "source_sha256": "733736bae1c5359afd2d29a835a985eec936e5c210d99ff281c9e7b24e21e860"
+      },
+      {
+        "name": "MAT_Fire_OccupiedDepth",
+        "status": "reference_specific_finished",
+        "provenance": "catalogue-conditioned role for 10-second-empire-fire-station-rlasm-v14; separate warm occupied fire-station room",
+        "source_sha256": "733736bae1c5359afd2d29a835a985eec936e5c210d99ff281c9e7b24e21e860"
+      },
+      {
+        "name": "MAT_Fire_RegisteredCrest",
+        "status": "reference_specific_finished",
+        "provenance": "registered identity asset recorded by the candidate prework manifest and confined to its matching physical datum",
+        "source_sha256": "2d5c55c0c94669d20690f0a59e6487afb74a94f5c5f3c7f0afa2283a493b3eeb"
+      },
+      {
+        "name": "MAT_Fire_SourceAgedCopper",
+        "status": "reference_specific_finished",
+        "provenance": "catalogue-derived reviewed seamless material specimen; candidate=10-second-empire-fire-station-rlasm-v14; role=aged rose-brown copper cupola dome; specimen=fire-aged-copper-albedo.png",
+        "source_sha256": "733736bae1c5359afd2d29a835a985eec936e5c210d99ff281c9e7b24e21e860"
+      },
+      {
+        "name": "MAT_Fire_SourceAgedOak",
+        "status": "reference_specific_finished",
+        "provenance": "catalogue-derived reviewed seamless material specimen; candidate=10-second-empire-fire-station-rlasm-v14; role=historic apparatus-door and window oak; specimen=fire-oak-albedo.png",
+        "source_sha256": "733736bae1c5359afd2d29a835a985eec936e5c210d99ff281c9e7b24e21e860"
+      },
+      {
+        "name": "MAT_Fire_SourceBlueGreySlate",
+        "status": "reference_specific_finished",
+        "provenance": "catalogue-derived reviewed seamless material specimen; candidate=10-second-empire-fire-station-rlasm-v14; role=fine staggered blue-grey mansard slate; specimen=fire-slate-albedo.png",
+        "source_sha256": "733736bae1c5359afd2d29a835a985eec936e5c210d99ff281c9e7b24e21e860"
+      },
+      {
+        "name": "MAT_Fire_WarmAgedAshlar_XZ",
+        "status": "reference_specific_finished",
+        "provenance": "catalogue-derived reviewed seamless material specimen; candidate=10-second-empire-fire-station-rlasm-v14; role=front/rear warm aged granite ashlar; specimen=fire-warm-ashlar-albedo.png",
+        "source_sha256": "733736bae1c5359afd2d29a835a985eec936e5c210d99ff281c9e7b24e21e860"
+      },
+      {
+        "name": "MAT_Fire_WarmAgedAshlar_YZ",
+        "status": "reference_specific_finished",
+        "provenance": "catalogue-derived reviewed seamless material specimen; candidate=10-second-empire-fire-station-rlasm-v14; role=side warm aged granite ashlar; specimen=fire-warm-ashlar-albedo.png",
+        "source_sha256": "733736bae1c5359afd2d29a835a985eec936e5c210d99ff281c9e7b24e21e860"
+      },
+      {
+        "name": "MAT_Fire_WarmGraniteCore",
+        "status": "reference_specific_finished",
+        "provenance": "catalogue-conditioned role for 10-second-empire-fire-station-rlasm-v14; solid warm granite wall core behind source-conditioned surfaces",
+        "source_sha256": "733736bae1c5359afd2d29a835a985eec936e5c210d99ff281c9e7b24e21e860"
+      }
+    ],
+    "generic_fallback_count": 0,
+    "all_reference_specific_finished": true,
+    "glass": {
+      "material": "MAT_Fire_NeutralHistoricGlass",
+      "image_texture_count": 0,
+      "baked_reflection": null,
+      "reflection_source": null,
+      "neutral_scene_only": true
+    }
+  },
+  "contact_audit": {
+    "schema": "cityprompt.rlasm.contact-audit@7",
+    "candidate": "10-second-empire-fire-station-rlasm-v14",
+    "records": [
+      {
+        "claim": "granite envelope bears continuously on grade",
+        "floating": false
+      },
+      {
+        "claim": "mansard slopes close to crown",
+        "floating": false
+      },
+      {
+        "claim": "cupola columns bear on mansard base",
+        "floating": false
+      },
+      {
+        "claim": "registered crest sits on its carved physical carrier",
+        "floating": false
+      }
+    ],
+    "floating_count": 0,
+    "status": "PASS_ZERO_DECLARED_FLOATING_AWAITING_VISUAL_QA"
+  },
+  "registered_identity_count": 1,
+  "generic_fallback_count": 0,
+  "true_opening_contract": true,
+  "builder_self_approval": false,
+  "keeper_status": "NOT_A_KEEPER_AWAITING_INDEPENDENT_REVIEW"
+}
