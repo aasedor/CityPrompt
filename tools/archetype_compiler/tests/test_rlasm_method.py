@@ -115,6 +115,9 @@ def test_registry_preserves_supersession_evidence() -> None:
         "formal_courtyard_and_pantile_forward_standard"
     )
     assert (ROOT / hofje["package"] / "keeper-manifest.json").is_file()
+    assert (ROOT / hofje["package"] / "KEEPER.json").is_file()
+    status = load_json(f"{hofje['package']}/review/status.json")
+    assert status["state"] == "keeper_approved"
 
 
 def test_rlasm_repository_hygiene_contract() -> None:

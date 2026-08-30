@@ -25,6 +25,8 @@ resolution.
 - `phone/` contains the two accepted 1080 x 1920 proof boards.
 - `review/` contains technical preflight, builder review, independent holistic
   review, and final keeper lifecycle state.
+- `KEEPER.json` records the canonical lifecycle promotion; `keeper-manifest.json`
+  binds the compact repository package to the externally stored model hashes.
 - `discrepancy-ledger.json` preserves the finite correction history through
   v023. Rejected render candidates remain in ignored local artifact storage.
 

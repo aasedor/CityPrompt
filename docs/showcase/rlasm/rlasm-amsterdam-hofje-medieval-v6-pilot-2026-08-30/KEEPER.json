@@ -1,0 +1,77 @@
+{
+  "schema": "cityprompt.rlasm.keeper@6.1",
+  "candidate_id": "rlasm-amsterdam-hofje-medieval-v023",
+  "target": {
+    "archetype": "amsterdam_hofje",
+    "variant": "hofje_medieval",
+    "catalogue_variant": 0
+  },
+  "promotion": {
+    "date": "2026-08-30",
+    "method": "canonical RLASM v6.1 complete source-locked holistic promotion",
+    "builder_gate": {"p0": 0, "p1": 0, "p2": 4, "decision": "pass"},
+    "independent_holistic_review": {"p0": 0, "p1": 0, "p2": 4, "decision": "pass", "keeper_eligible": true},
+    "threshold": "zero P0 and zero P1",
+    "threshold_met": true,
+    "scoped_pass_used_for_promotion": false
+  },
+  "source_lock": {
+    "references/catalogue/variant_0.png": {"sha256": "99728a7d685f0427a20b5b1946be1589c5308a847e027113d330bd904ac6f925", "bytes": 1392974},
+    "references/catalogue/variant_0_angle_60.jpg": {"sha256": "b4311cde0a2e955989ff5956157442b83df465a3a5aaee6333fce60e6cdec75a", "bytes": 990503},
+    "references/catalogue/variant_0_angle_90.jpg": {"sha256": "79228135938f59c2632c4b1ff6d545c8592d516937667ef387ff5d1b6e69f482", "bytes": 942936},
+    "references/locked-source-board.png": {"sha256": "da7cf6c5b05edfae4466eed0341198a50f7f52cea53bc0ef082e06529caa0705", "bytes": 2790526}
+  },
+  "material_generation": {
+    "provenance": "references/asset-provenance.json",
+    "provenance_sha256": "3a05c5967c1d118d3fe4f169a4cec50cb5087ddea6f3257da7e4252a9d7cd9e9",
+    "material_roles": 13,
+    "generic_fallback_count": 0,
+    "mounted_perspective_photograph_count": 0,
+    "source_conditioned_material_board": {"path": "references/source-conditioned-material-board.png", "sha256": "8f0ff7f61c9c6c036bba327ab495816ad6ac3fccf041072847823c68dfe85f76", "bytes": 1835432}
+  },
+  "models": {
+    "model/amsterdam-hofje-medieval-v023.blend": {"sha256": "550d751a1baaf09868ff66a0ea4dc065a9bb0c443a259417957848ece4a55496", "bytes": 1853910, "validation": "Blender 5.2.0 opened; 3957 objects, 18 materials"},
+    "model/amsterdam-hofje-medieval-v023.glb": {"sha256": "2cd9e5ef8e396ddaad1545cde43f189937c16bae587f6ba7e9158709126160b3", "bytes": 32318008, "validation": "glTF 2.0"}
+  },
+  "renders": {
+    "dimensions_px": [1280, 960],
+    "count": 16,
+    "files": {
+      "renders/aerial.png": "9b6a3ed15d84e9a79fa74f9ce2c534d8cbbf0e8d845bb26f4a87342d3318b423",
+      "renders/architecture_close.png": "3c243f191e9c386cde8688ef31c9d28c3142918fa9389eb78a09cca2f488f011",
+      "renders/courtyard_axis.png": "2634590ade997b3935ab51bde6e7d8534aafdddbed75aa48444dafefd65d0e25",
+      "renders/dormer_contact_close.png": "5be719bef8ce744ff9c1449786969af9b2f0241890f2c84853afd655a0d6ccfd",
+      "renders/facade_close.png": "f3590d71d1f8db74acc6a5ba0fe219dadb7bad5856e4498d824ad98298640bf4",
+      "renders/front_corner.png": "a94789a43bfe7e893f2172795c11eedb5501b8e746838a5bec4f34e5b23e9d3f",
+      "renders/front.png": "1fe786417d9bb6fd43d48c6d054f683b6b5f8582c9b2b18afe79ff38b8d0afbd",
+      "renders/gate_contact_close.png": "430e413c06fd55a1f3cb3e2c361cba7893717ead7c1cef66299afcdbb033c56b",
+      "renders/glass_close.png": "f7e2e2557d58d770e88a7ad5fc96afc885d064e282b7e85fde6eccae88d3442f",
+      "renders/left_side.png": "d8ef351bee380bc56ab0a9800fba6fbedc7ae0eb134cf8f2dc9404606d0d3397",
+      "renders/program_interior.png": "9b24b78fa821d408c744b9d260c0e9e27ec9dc0a07a7355c71304a0626ecb462",
+      "renders/rear_side.png": "cdcec6d33c955ebe4bcf43267db4c9bab274925b6608ce65cea5af1ee496790b",
+      "renders/rear.png": "719fd90a94681a53bdf88288b8e10fff0887d8e79a6fe7cfa4b74cbf5a1e0786",
+      "renders/right_side.png": "5890a4ce3bbbfb66f47b6afd9de90c0dea0c3a211c8797d0c9b4671430f13717",
+      "renders/roof_contact_close.png": "40d0dcce2ea6f048d3f8405b22d8c59cba53120fddadda2b7a9c55b474c5bc0d",
+      "renders/true_top.png": "18cd730c8430f1d31a0bd64ebeb2f2258762a41cb41f7557a124087aec63a757"
+    }
+  },
+  "phone_boards": {
+    "dimensions_px": [1080, 1920],
+    "phone/amsterdam-hofje-medieval-comparison-01.png": {"sha256": "8088b386b2533ac867841d479ee793921a7ac48275f9605e28736f0409a2507e", "bytes": 1490992},
+    "phone/amsterdam-hofje-medieval-details-02.png": {"sha256": "2c74bc2ea6d1298a8d2b7fb88badbc155d0768f3deddac9038cda6399c6afe34", "bytes": 1829519}
+  },
+  "records": {
+    "prework": "prework-manifest.json",
+    "technical_preflight": {"path": "review/technical-preflight.json", "sha256": "bc5ff592e086d045a9a4fcbe60cf5c4b9368aee2bf6bccbd0cddb855ae1eea40"},
+    "builder_review": {"path": "review/builder-review.json", "sha256": "9a0a4882959c96f303bbb3f5269d50c12a35e02a881f1164783bea25289f8071"},
+    "independent_review": {"path": "review/independent-visual-review.json", "sha256": "fc62782e626742d2ade500ad46bf2df89a80c3d41f856c59717404a685edd4d3"},
+    "discrepancy_ledger": "discrepancy-ledger.json"
+  },
+  "accepted_p2_debt": [
+    "stylized perennial foliage and smooth clipped hedge crowns",
+    "faceted pavilion, gate voussoir and pump detail profiles",
+    "minor pane, door and secondary-elevation finish variation",
+    "coarse kitchen assets and non-matched comparison-board camera alignment"
+  ],
+  "keeper": true
+}
