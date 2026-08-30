@@ -1,0 +1,157 @@
+{
+  "schema": "cityprompt.rlasm.method@6",
+  "method": "Reference-Locked Atomic Sticker-and-Massing",
+  "acronym": "RLASM",
+  "version": "6.1",
+  "revision_date": "2026-08-29",
+  "canonical_human_method": "docs/RLASM_LATEST_METHOD.md",
+  "reference_keeper_examples": [
+    "07-barcelona-modernist-printing-house-rlasm-v7",
+    "10-amsterdam-bell-gable-house-rlasm-v10"
+  ],
+  "authority_order": [
+    "exact_locked_catalogue_pixels_and_hashes",
+    "canonical_human_and_machine_method",
+    "immutable_candidate_records",
+    "current_holistic_independent_review",
+    "historical_recipes_and_general_memory"
+  ],
+  "principles": {
+    "visible_relationships_are_proof": true,
+    "metadata_never_overrides_pixels": true,
+    "exact_variant_not_family_label": true,
+    "geometry_owns_silhouette_depth_contact_and_circulation": true,
+    "identity_pixels_are_bounded_and_orthographic": true,
+    "one_visual_owner_per_feature": true,
+    "generic_fallbacks_allowed": false,
+    "general_high_quality_ready_is_keeper_approval": false,
+    "builder_may_self_approve_keeper": false,
+    "scoped_review_may_promote_keeper": false,
+    "later_evidence_may_demote_or_supersede_keeper": true
+  },
+  "source_contract": {
+    "minimum_compatible_roles": ["front", "oblique", "top"],
+    "enroll_all_available_compatible_views": true,
+    "required_fields": ["archetype_id", "variant_id", "role", "path", "bytes", "sha256"],
+    "sibling_variant_mixing_allowed": false,
+    "text_invented_reference_allowed": false,
+    "visible_locked_pixels_override_conflicting_family_prose": true
+  },
+  "identity_registration_contract": {
+    "register_to_carrier_exterior_face_not_center": true,
+    "carrier_thickness_in_datum": true,
+    "all_four_identity_edges_visibly_verified": true,
+    "actual_alpha_channel_inspection_required": true,
+    "checkerboard_preview_is_alpha_proof": false,
+    "deterministic_alpha_postprocess_allowed_with_provenance": true
+  },
+  "construction_gates": [
+    "source_lock",
+    "measured_plan_roof_bay_and_program_contract",
+    "complete_unskinned_envelope",
+    "registered_identity_and_source_specific_materials",
+    "opening_and_contact_sections",
+    "complete_full_resolution_and_phone_evidence",
+    "holistic_independent_review"
+  ],
+  "opening_section_order": [
+    "cut_opaque_carrier",
+    "jamb_head_and_sill_return",
+    "recessed_sash_frame_or_lattice",
+    "optical_pane_or_translucent_screen",
+    "separately_offset_occupied_layer",
+    "enclosed_room_depth"
+  ],
+  "unskinned_gate": {
+    "orientation_specific_openings_visible_in_front_side_and_rear_roles": true,
+    "boolean_success_or_object_count_is_visual_proof": false
+  },
+  "transparent_roof_contract": {
+    "multi_wing_roof_uses_one_union_outline": true,
+    "all_vertical_end_and_side_faces_closed": true,
+    "single_continuous_curb_and_flashing_owner": true,
+    "ribs_ridges_and_frames_trimmed_to_bounded_nodes": true,
+    "single_source_conditioned_optical_family_across_all_facets": true,
+    "stark_unexplained_facet_family_switches_allowed": false,
+    "overlapping_transparent_roof_primitives_allowed": false
+  },
+  "roof_edge_identity_contract": {
+    "ironwork_section_and_cadence_match_locked_source": true,
+    "brackets_finials_and_crests_are_source_bearing_architecture": true,
+    "supports_have_positive_contact": true,
+    "elevation_specific_silhouettes_are_preserved": true,
+    "generic_repeated_perimeter_template_allowed": false
+  },
+  "program_contract": {
+    "source_specific_workflow_visibly_identifiable": true,
+    "generic_furniture_alone_is_program_proof": false,
+    "program_visible_in_close_and_whole_envelope_roles": true
+  },
+  "required_baseline_views": [
+    "front.png",
+    "front_corner.png",
+    "aerial.png",
+    "left_side.png",
+    "right_side.png",
+    "rear.png",
+    "rear_side.png",
+    "facade_close.png",
+    "architecture_close.png",
+    "glass_close.png"
+  ],
+  "evidence_contract": {
+    "full_resolution_pixel_inspection_required": true,
+    "phone_board_dimensions": [1080, 1920],
+    "whole_envelope_views_include_grade_to_highest_with_margin": true,
+    "whole_envelope_views_require_visible_neutral_safety_margin": true,
+    "family_specific_contact_or_program_views_required": true,
+    "neutral_qa_lighting_required": true,
+    "revalidate_camera_targets_and_occlusion_after_geometry_change": true
+  },
+  "review_contract": {
+    "production_expert_and_verifier_are_separate_roles": true,
+    "builder_result": "builder_pass_only",
+    "scoped_result": "category_closure_only",
+    "keeper_promotion_requires": [
+      "separate_reviewer",
+      "exact_source_board",
+      "complete_camera_set",
+      "phone_board",
+      "holistic_adversarial_regression",
+      "zero_unresolved_p0",
+      "zero_unresolved_p1"
+    ],
+    "reviewer_ignores_metadata_as_visual_proof": true,
+    "severity_definitions": {
+      "p0": "A source-identity, topology, envelope, opening, contact, program, camera, provenance, or lifecycle defect that invalidates the candidate or its proof.",
+      "p1": "A clearly visible fidelity, material, optical, finish, landscape, or coherence defect that prevents production-quality keeper approval.",
+      "p2": "Non-blocking polish that may be recorded after keeper approval only when it does not weaken source identity, construction, visibility, or evidence."
+    }
+  },
+  "lifecycle_states": [
+    "prework",
+    "building",
+    "build_valid",
+    "visual_review_ready",
+    "independent_review_pending",
+    "visual_rework_required",
+    "keeper_approved",
+    "superseded",
+    "rejected",
+    "archived"
+  ],
+  "iteration_contract": {
+    "overwrite_existing_candidate": false,
+    "open_ended_generation_loop": false,
+    "arbitrary_maximum_correction_loops": null,
+    "each_iteration_is_bounded_by_finite_blockers": true,
+    "rerender_complete_camera_set_after_fix": true,
+    "preserve_failure_evidence": true
+  },
+  "archive_contract": {
+    "keeper_manifest_before_removal": true,
+    "external_copy_before_active_cleanup": true,
+    "sha256_verification_required": true,
+    "remove_only_confirmed_active_duplicates": true
+  }
+}
