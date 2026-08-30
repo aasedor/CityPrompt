@@ -104,12 +104,18 @@ The CI workflow runs the gate against the pull-request delta using full Git
 history. Existing historical blobs are not rewritten by this check; their
 migration follows `docs/GIT_HISTORY_MIGRATION_RUNBOOK.md`.
 
+PR #10 squash-merged these controls at
+`3246067fa9324bfab34ec686ff8391f27601a80e`. The `main` branch now requires a
+strict, current-base pass from `backend`, `frontend`, `browser`, `docker`, and
+`repository-hygiene`. Protection applies to administrators, requires linear
+history and resolved conversations, and disables force-pushes and branch
+deletion.
+
 ## Remaining bounded work
 
-1. Merge this consolidation initiative after its required checks pass.
-2. Review and checkpoint the protected five-file family-wave memory initiative.
-3. Resolve permission-locked pytest/scratch roots with their owning Windows
+1. Review and checkpoint the protected five-file family-wave memory initiative.
+2. Resolve permission-locked pytest/scratch roots with their owning Windows
    account; do not bypass ownership from an automated cleanup.
-4. Run the history migration rehearsal in a mirror clone.
-5. Enable branch protection after the repository-hygiene job lands and require
-   all canonical CI jobs.
+3. Run the history migration rehearsal in a mirror clone. Do not perform the
+   cutover or rewrite shared refs without the separate approval required by the
+   migration runbook.
