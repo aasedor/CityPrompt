@@ -44,6 +44,10 @@ ID, lifecycle state, source hashes, file hashes, review decision, creation
 date, and the keeper or successor that closed it. Verify the external copy
 before removing the active duplicate.
 
+Use `scripts/archive_content_addressed.ps1` for local externalization. It
+hashes the complete source tree, copies through a staging object, rehashes every
+destination file, and permits source removal only after verification.
+
 ## Historical methods
 
 Sticker Method/V98 records may remain temporarily when current runtime code or
