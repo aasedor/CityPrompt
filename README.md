@@ -10,7 +10,7 @@ The application combines:
 - a FastAPI backend with PostgreSQL/PostGIS, Redis, Celery, and S3-compatible
   storage;
 - building, street, park, and plaza catalogues;
-- modular LEGO assembly and Sticker Method 3D assets; and
+- modular LEGO assembly and RLASM source-locked 3D assets; and
 - optional AI providers for document interpretation, images, 3D generation,
   and video.
 
@@ -27,7 +27,7 @@ Once the local stack is running, a student can:
 4. assign building, street, park, and plaza archetypes;
 5. generate and refine a master plan;
 6. inspect the design in 2D and 3D;
-7. use available LEGO and Sticker Method families; and
+7. use available LEGO and RLASM keeper families; and
 8. create optional AI renders when the relevant provider key is configured.
 
 See [the user guide](docs/USER_GUIDE.md) for the product walkthrough and
@@ -158,10 +158,12 @@ frontend/public/archetypes/openspaces/
 frontend/public/archetypes/streets/
 ~~~
 
-LEGO and Sticker Method work must follow
-[the high-quality building memory](docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md) and
-the repository's dry-run, one-archetype pilot, visual-review, then bounded
-scale-up sequence.
+All new building-family work must follow the canonical
+[RLASM v6.1 method](docs/RLASM_LATEST_METHOD.md),
+[the RLASM repository policy](docs/RLASM_REPOSITORY_POLICY.md), and
+[the high-quality building memory](docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md).
+Older Sticker Method/V98 packages are historical compatibility records, not
+authority for new construction or keeper promotion.
 
 ## Contributing
 
