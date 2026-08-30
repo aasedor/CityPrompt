@@ -1,0 +1,33 @@
+{
+  "schema": "cityprompt.rlasm.builder-pixel-review@6.1",
+  "candidate_id": "rlasm-amsterdam-hofje-medieval-v023",
+  "scope": "complete_source_locked_holistic",
+  "inspection": {
+    "exact_sources_directly_opened": 3,
+    "full_resolution_renders_directly_opened": 16,
+    "phone_boards_directly_opened": 2,
+    "exact_visual_manifest_count": 21,
+    "metadata_or_filename_claims_used_as_visual_proof": false
+  },
+  "decision": "PASS_TO_INDEPENDENT_HOLISTIC_REVIEW",
+  "keeper_eligible": false,
+  "counts": {"P0": 0, "P1": 0, "P2": 4},
+  "passed_contracts": [
+    "all eight whole-envelope cameras contain the complete footprint and grade-to-highest-element envelope with neutral margin",
+    "true_top is orthographic and contains the complete plan",
+    "the source-locked U-plan, raised pavilion gable, connected orange-red pantile graph, chimney cadence, dormers, gates, four-bed court and pump remain visually coherent",
+    "the v022 formal-court blocker is closed by low non-periodic turf, continuous clipped hedge owners, integrated asymmetric open perennial shrubs and granular warm paths without changing the accepted circulation",
+    "the v022 roof-finish blocker is closed by a coherent orange-red curved pantile field without rectangular pink phase blocks",
+    "dormers retain bounded roof penetration, cheeks, rolled hood, flashing, recessed pane and separate dark occupied depth while using pale source-conditioned lead and a pale two-by-three light sash",
+    "representative residential openings visibly resolve carrier cut, return, recessed frame, separate pane and separately occupied room depth",
+    "the right gate is a physically open, grade-continuous full-depth street-to-court passage",
+    "the communal kitchen remains visually recognizable and both final 1080x1920 boards are legible and exact"
+  ],
+  "p2_notes": [
+    "perennial leaf and blossom geometry remains stylized at close range",
+    "pale rolled lead is slightly brighter than the weathered source under studio lighting",
+    "pavilion ornamental profiling and gate voussoirs remain deliberately faceted",
+    "secondary doors, pane luminance and the comparison-board model scale retain minor finish debt"
+  ],
+  "promotion_rule": "This holistic builder pass authorizes only a fresh independent holistic source-locked review; it does not promote a keeper."
+}

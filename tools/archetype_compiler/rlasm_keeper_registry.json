@@ -1,7 +1,7 @@
 {
   "schema": "cityprompt.rlasm.keeper-registry@1",
   "method_version": "6.1",
-  "updated": "2026-08-29",
+  "updated": "2026-08-30",
   "entries": [
     {
       "candidate": "05-art-deco-judicial-courthouse-rlasm-v20",
@@ -43,6 +43,15 @@
       "source_mode": "exact_catalogue_photos_only",
       "method_version": "6.1",
       "standard_role": "raw_photo_forward_standard"
+    },
+    {
+      "candidate": "rlasm-amsterdam-hofje-medieval-v023",
+      "status": "keeper_approved",
+      "review_scope": "holistic_independent",
+      "source_mode": "exact_catalogue_photos_only",
+      "method_version": "6.1",
+      "standard_role": "formal_courtyard_and_pantile_forward_standard",
+      "package": "docs/showcase/sticker-method/rlasm-amsterdam-hofje-medieval-v6-pilot-2026-08-30"
     }
   ]
 }

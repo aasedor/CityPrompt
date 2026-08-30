@@ -1,0 +1,60 @@
+{
+  "schema": "cityprompt.rlasm.keeper-manifest@1",
+  "candidate": "rlasm-amsterdam-hofje-medieval-v023",
+  "building": "Amsterdam Hofje Medieval",
+  "method": "RLASM v6.1",
+  "source_mode": "exact_variant_photos_only",
+  "prebuilt_model_used": false,
+  "generic_material_fallbacks": 0,
+  "mounted_perspective_photographs": 0,
+  "decision": "INDEPENDENT_HOLISTIC_PASS",
+  "keeper": true,
+  "review": {
+    "p0_count": 0,
+    "p1_count": 0,
+    "p2_count": 4,
+    "evidence_file": "review/independent-visual-review.json",
+    "full_resolution_render_count": 16,
+    "phone_board_count": 2
+  },
+  "locked_sources": [
+    {
+      "path": "references/catalogue/variant_0.png",
+      "sha256": "99728a7d685f0427a20b5b1946be1589c5308a847e027113d330bd904ac6f925"
+    },
+    {
+      "path": "references/catalogue/variant_0_angle_60.jpg",
+      "sha256": "b4311cde0a2e955989ff5956157442b83df465a3a5aaee6333fce60e6cdec75a"
+    },
+    {
+      "path": "references/catalogue/variant_0_angle_90.jpg",
+      "sha256": "79228135938f59c2632c4b1ff6d545c8592d516937667ef387ff5d1b6e69f482"
+    }
+  ],
+  "models": [
+    {
+      "path": "amsterdam-hofje-medieval-v023.blend",
+      "storage": "external_artifact",
+      "repository_included": false,
+      "sha256": "550d751a1baaf09868ff66a0ea4dc065a9bb0c443a259417957848ece4a55496"
+    },
+    {
+      "path": "amsterdam-hofje-medieval-v023.glb",
+      "storage": "external_artifact",
+      "repository_included": false,
+      "sha256": "2cd9e5ef8e396ddaad1545cde43f189937c16bae587f6ba7e9158709126160b3"
+    }
+  ],
+  "phone_boards": [
+    {
+      "path": "phone/amsterdam-hofje-medieval-comparison-01.png",
+      "dimensions": "1080x1920",
+      "sha256": "8088b386b2533ac867841d479ee793921a7ac48275f9605e28736f0409a2507e"
+    },
+    {
+      "path": "phone/amsterdam-hofje-medieval-details-02.png",
+      "dimensions": "1080x1920",
+      "sha256": "2c74bc2ea6d1298a8d2b7fb88badbc155d0768f3deddac9038cda6399c6afe34"
+    }
+  ]
+}

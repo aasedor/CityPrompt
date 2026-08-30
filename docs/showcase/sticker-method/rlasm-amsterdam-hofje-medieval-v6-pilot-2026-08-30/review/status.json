@@ -1,0 +1,8 @@
+{
+  "schema": "cityprompt.rlasm.lifecycle@6.1",
+  "candidate_id": "rlasm-amsterdam-hofje-medieval-v023",
+  "state": "keeper_promoted",
+  "builder_gate": "pass_0_p0_0_p1_4_p2",
+  "independent_holistic_review": "pass_0_p0_0_p1_4_p2",
+  "keeper": true
+}

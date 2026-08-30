@@ -1,0 +1,38 @@
+{
+  "schema": "cityprompt.rlasm.builder-evidence@6.1",
+  "candidate_id": "rlasm-amsterdam-hofje-medieval-v023",
+  "lifecycle_state": "visual_review_ready",
+  "generic_fallback_count": 0,
+  "source_specific_material_fallbacks": 0,
+  "mounted_perspective_photographs": 0,
+  "opening_section_order": [
+    "cut segmented carrier",
+    "returns",
+    "recessed frame",
+    "separate pane",
+    "offset occupied layer",
+    "enclosed room depth"
+  ],
+  "program": "12-unit charitable residential hofje with communal kitchen, bedrooms, stairs, garden and pump visibly modeled",
+  "render_files": [
+    "aerial.png",
+    "architecture_close.png",
+    "courtyard_axis.png",
+    "dormer_contact_close.png",
+    "facade_close.png",
+    "front.png",
+    "front_corner.png",
+    "gate_contact_close.png",
+    "glass_close.png",
+    "left_side.png",
+    "program_interior.png",
+    "rear.png",
+    "rear_side.png",
+    "right_side.png",
+    "roof_contact_close.png",
+    "true_top.png"
+  ],
+  "glb_bytes": 32318008,
+  "builder_decision": "pass_to_independent_holistic_review_0_p0_0_p1_4_p2",
+  "keeper": true
+}

@@ -7,7 +7,8 @@
   "canonical_human_method": "docs/RLASM_LATEST_METHOD.md",
   "reference_keeper_examples": [
     "07-barcelona-modernist-printing-house-rlasm-v7",
-    "10-amsterdam-bell-gable-house-rlasm-v10"
+    "10-amsterdam-bell-gable-house-rlasm-v10",
+    "rlasm-amsterdam-hofje-medieval-v023"
   ],
   "authority_order": [
     "exact_locked_catalogue_pixels_and_hashes",

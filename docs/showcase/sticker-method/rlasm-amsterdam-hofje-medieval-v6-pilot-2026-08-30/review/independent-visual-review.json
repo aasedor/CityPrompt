@@ -1,0 +1,163 @@
+{
+  "schema": "cityprompt.rlasm.independent-visual-review@6.1",
+  "candidate": "rlasm-amsterdam-hofje-medieval-v023",
+  "reviewer": "/root/independent_rlasm_review_v023",
+  "review_date": "2026-08-30",
+  "method": "canonical RLASM v6.1 holistic source-locked independent visual review",
+  "holistic": true,
+  "scoped_review": false,
+  "status": "PASS",
+  "decision": "independent_holistic_pass_zero_p0_zero_p1",
+  "keeper_eligible": true,
+  "review_scope": "Independent adversarial pixel review of all three exact locked catalogue photographs, all sixteen final full-resolution renders, and both exact 1080x1920 phone boards. All 21 required visual assets were directly opened at original resolution. Source identity, pavilion hierarchy, U-plan and roof graph, all envelope elevations, camera containment, formal court, source-specific materials, opening sections, occupied depth, gate circulation, dormer and roof contacts, skyline/load paths, recognizable program and both boards were judged together in one holistic regression. Builder claims, metadata, filenames, object names, counts and technical preflight were treated only as audit records and never as visual proof.",
+  "blocker_counts": {
+    "p0": 0,
+    "p1": 0,
+    "p2": 4
+  },
+  "direct_inspection": {
+    "all_files_directly_opened_at_original_resolution": true,
+    "exact_locked_catalogue_sources_opened": 3,
+    "native_full_resolution_renders_opened": 16,
+    "phone_boards_opened": 2,
+    "exact_visual_manifest_count": 21,
+    "required_visual_files_missing": 0,
+    "metadata_accepted_as_visual_proof": false
+  },
+  "inspection_manifest": [
+    "references/catalogue/variant_0.png",
+    "references/catalogue/variant_0_angle_60.jpg",
+    "references/catalogue/variant_0_angle_90.jpg",
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/true_top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/gate_contact_close.png",
+    "renders/roof_contact_close.png",
+    "renders/dormer_contact_close.png",
+    "renders/program_interior.png",
+    "renders/courtyard_axis.png",
+    "evidence/source-model-comparison-phone.png",
+    "evidence/physical-material-detail-proof-phone.png"
+  ],
+  "source_locked_pixel_summary": "The exact catalogue photographs establish a warm aged Dutch brick hofje organized as an asymmetric U around an open formal four-bed court. Its southeast street pavilion, raised stepped/shouldered gable, compact pediment, tall attic sash and roundels dominate the front identity. Connected orange-red pantile roofs carry substantial brick chimneys and quiet pale rolled-lead dormers. Tall multi-light sash openings, green doors, full-depth brick gates, living clipped hedges, flowering perennial masses, granular paths and a central stone pump complete the source contract.",
+  "passed_contracts": [
+    "The candidate is unmistakably the exact locked hofje rather than a generic Dutch courtyard building: the asymmetric U-plan, open south court, southeast street pavilion, three connected pitched bars, gate locations, four formal beds and central pump stay coherent across front, corner, aerial and true-top roles.",
+    "The source-dominant pavilion is a real projecting two-storey mass with a raised stepped/shouldered masonry gable, attic sash, compact pediment, roundels and pale cornice bands. Its cross-gable remains visibly behind the raised facade carrier and introduces no false A-frame or detached roof volume.",
+    "The connected roof graph, orange-red Dutch pantile identity, eaves, valleys, gables, chimney cadence and bounded roof contacts remain coherent in front, side, rear, aerial, true-top and both roof closes. No open valley, black slot, detached shard or exposed gable fin is visible.",
+    "All eight whole-envelope cameras contain the complete visible footprint and grade-to-highest-element envelope with neutral margin. The true-top image is visually orthographic and contains the complete plan, roof graph, court and boundary work.",
+    "Front, courtyard, left, right and rear elevations are complete, occupied and materially coherent; no exposed face is a blank carrier, angled photograph or generic fallback wall.",
+    "The v022 courtyard blocker is closed. The accepted four-bed geometry and circulation now read as living formal landscape through continuous clipped hedge owners, subdued non-periodic turf, integrated asymmetric perennial masses with open foliage and blossom points, and source-warm granular paths seated around the pump and gates.",
+    "The v022 pantile/dormer finish blocker is closed. The roof field is a coherent aged orange-red overlapping pantile system without the former pink rectangular phase blocks, and the dormer uses quieter pale lead cheeks, a rounded rolled hood, pale multi-light sash, bounded apron and visually subordinate recessed depth.",
+    "The v021 false orange dormer undertray crescent remains absent in roof_contact_close.png, dormer_contact_close.png and the physical-proof board. The body visibly penetrates the roof and preserves separate hood, cheeks, flashing, frame, pane and dark occupied room depth without introducing a new contact blocker.",
+    "Representative residential openings visibly resolve cut brick carrier, deep returns, recessed narrow sash, separate optical pane, separately offset furniture/occupied layer and enclosed room depth. The glass close provides direct pixel proof rather than relying on object claims.",
+    "The southeast gate is a physically open, grade-continuous full-depth route from street to court with masonry jambs, deep soffit, repeated inner arch, continuous paving and a separate iron leaf.",
+    "Chimneys visibly pass through and bear on the roof fields with bounded base flashings, and the garden wall, iron fence, pavilion and gate piers visibly carry to grade.",
+    "The communal kitchen/dining program is visually recognizable through cabinets, counters, island, sink and faucet, hob and hood, appliances, shelving, dining table, chairs, doors and windows; it is a coherent occupied room, not a metadata-only claim.",
+    "Both exact final 1080x1920 phone boards are legible, use v023 final pixels and expose the source/model, opening, gate, dormer, pavilion, program and material relationships required for the holistic decision."
+  ],
+  "pixel_findings": {
+    "p0": [],
+    "p1": [],
+    "p2": [
+      {
+        "id": "P2-01",
+        "category": "court_vegetation_polish",
+        "views": [
+          "references/catalogue/variant_0.png",
+          "references/catalogue/variant_0_angle_60.jpg",
+          "renders/front_corner.png",
+          "renders/aerial.png",
+          "renders/true_top.png",
+          "renders/courtyard_axis.png"
+        ],
+        "symptom": "The court now passes as a coherent living formal landscape, but individual perennial leaves and blossom points remain visibly stylized and the clipped hedge crowns are smoother than the irregular source foliage at close scale.",
+        "optional_polish": "In a future non-blocking art pass, add restrained source-positioned leaf-scale variation and soften only the hedge crown silhouette while preserving the accepted continuous hedge bodies, bed outlines and circulation."
+      },
+      {
+        "id": "P2-02",
+        "category": "pavilion_gate_and_pump_profiling",
+        "views": [
+          "renders/architecture_close.png",
+          "renders/facade_close.png",
+          "renders/gate_contact_close.png",
+          "renders/courtyard_axis.png"
+        ],
+        "symptom": "The pavilion, gate and pump contracts pass, while shoulder steps, roundels, cornice profiles, gate voussoirs and pump hardware retain a deliberately faceted real-time treatment compared with the finer source masonry.",
+        "optional_polish": "Refine source-supported profile radii, arch bond and pump spout/basin hardware without changing the accepted pavilion silhouette, gate route or load paths."
+      },
+      {
+        "id": "P2-03",
+        "category": "joinery_optics_and_secondary_finish",
+        "views": [
+          "renders/glass_close.png",
+          "renders/courtyard_axis.png",
+          "renders/left_side.png",
+          "renders/right_side.png",
+          "renders/rear.png",
+          "renders/rear_side.png"
+        ],
+        "symptom": "The opening chain and occupied depth pass, but whole-envelope panes still alternate somewhat abruptly between dark and warm rooms, several green doors remain simply modeled and secondary-elevation cadence is restrained.",
+        "optional_polish": "Temper pane luminance transitions and add conservative door panel, overlight, threshold and hardware articulation while retaining the proven physical opening section."
+      },
+      {
+        "id": "P2-04",
+        "category": "phone_comparison_and_interior_asset_polish",
+        "views": [
+          "renders/program_interior.png",
+          "evidence/source-model-comparison-phone.png",
+          "evidence/physical-material-detail-proof-phone.png"
+        ],
+        "symptom": "The program and both boards pass, though kitchen furniture/appliance forms remain coarse and the source/model board's model front is smaller and more elevated than the locked front, reducing direct proportion comparison efficiency.",
+        "optional_polish": "If a presentation-only board is revised later, use a closer still-contained front role with a source-nearer azimuth/elevation and refine cabinet/appliance profiles without obscuring the workflow."
+      }
+    ]
+  },
+  "contract_audit": {
+    "exact_source_lock_and_provenance": "pass",
+    "source_dominant_pavilion_identity": "pass_with_p2_polish",
+    "u_plan_and_roof_graph": "pass",
+    "complete_envelope_and_camera_containment": "pass",
+    "true_orthographic_top": "pass",
+    "front_side_rear_elevation_coverage": "pass_with_p2_finish",
+    "formal_court_landscape": "pass_with_p2_polish",
+    "source_specific_material_roles": "pass",
+    "pantile_and_dormer_source_identity": "pass_with_p2_brightness_polish",
+    "dormer_penetration_and_false_crescent_regression": "pass",
+    "physical_opening_chain_and_separate_occupied_depth": "pass_with_p2_optical_polish",
+    "full_depth_gate_and_circulation": "pass_with_p2_finish",
+    "chimney_contacts_and_load_paths": "pass",
+    "recognizable_occupied_program": "pass_with_p2_finish",
+    "phone_board_legibility_and_exactness": "pass_with_p2_alignment"
+  },
+  "technical_record_validation": {
+    "technical_preflight_read": true,
+    "builder_review_read": true,
+    "status_record_read": true,
+    "prework_and_provenance_records_read": true,
+    "candidate_json_parse_check": "pass_before_independent_record_write_9_of_9",
+    "source_hashes_directly_rechecked": true,
+    "board_hashes_directly_rechecked": true,
+    "blend_and_glb_hashes_directly_rechecked": true,
+    "material_generation_prompt_and_operations_present": true,
+    "material_role_hashes_directly_rechecked": "13_of_13_match",
+    "recorded_source_board_model_and_provenance_hashes_match": true,
+    "render_dimensions": "16_of_16_are_1280x960",
+    "phone_board_dimensions": "2_of_2_are_1080x1920",
+    "blend_validation": "Blender 5.2.0 open validation recorded as successful",
+    "glb_validation": "glTF 2.0 header recorded and hash rechecked",
+    "generic_fallback_count": 0,
+    "mounted_perspective_photograph_count": 0,
+    "technical_records_used_as_visual_proof": false
+  },
+  "unresolved_blockers": [],
+  "finite_v024_guidance": null,
+  "promotion_boundary": "This independent record establishes keeper eligibility because the complete holistic source-locked pass found zero P0 and zero P1 blockers. The production expert remains responsible for lifecycle promotion and KEEPER.json; this reviewer did not create or modify either."
+}
