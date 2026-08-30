@@ -14,6 +14,23 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  repository-hygiene:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
+
+      - name: Test repository blob policy
+        run: python -m unittest discover -s scripts/tests -p "test_check_repository_blob_policy.py"
+
+      - name: Reject oversized ordinary Git blobs
+        run: python scripts/check_repository_blob_policy.py
+
   # -------------------------------------------------------
   # Backend: lint, type-check, test
   # -------------------------------------------------------
