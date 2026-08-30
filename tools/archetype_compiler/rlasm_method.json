@@ -153,5 +153,15 @@
     "external_copy_before_active_cleanup": true,
     "sha256_verification_required": true,
     "remove_only_confirmed_active_duplicates": true
+  },
+  "repository_hygiene_contract": {
+    "active_building_method": "RLASM v6.1",
+    "superseded_method_packages_allowed_in_active_tree": false,
+    "promote_only_independently_approved_keepers": true,
+    "failed_candidate_storage": "external_content_addressed_artifact",
+    "heavy_model_storage": "external_artifact",
+    "legacy_v98_status": "compatibility_only_pending_bounded_retirement",
+    "canonical_remote": "https://github.com/aasedor/CityPrompt.git",
+    "canonical_branch": "origin/main"
   }
 }
