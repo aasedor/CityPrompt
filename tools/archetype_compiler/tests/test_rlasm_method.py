@@ -26,6 +26,7 @@ def test_rlasm_v6_is_single_executable_authority() -> None:
     assert method["reference_keeper_examples"] == [
         "07-barcelona-modernist-printing-house-rlasm-v7",
         "10-amsterdam-bell-gable-house-rlasm-v10",
+        "rlasm-amsterdam-hofje-medieval-v023",
     ]
 
 
@@ -106,6 +107,17 @@ def test_registry_preserves_supersession_evidence() -> None:
     assert amsterdam["review_scope"] == "holistic_independent"
     assert amsterdam["source_mode"] == "exact_catalogue_photos_only"
     assert amsterdam["standard_role"] == "raw_photo_forward_standard"
+    hofje = entries["rlasm-amsterdam-hofje-medieval-v023"]
+    assert hofje["status"] == "keeper_approved"
+    assert hofje["review_scope"] == "holistic_independent"
+    assert hofje["source_mode"] == "exact_catalogue_photos_only"
+    assert hofje["standard_role"] == (
+        "formal_courtyard_and_pantile_forward_standard"
+    )
+    assert (ROOT / hofje["package"] / "keeper-manifest.json").is_file()
+    assert (ROOT / hofje["package"] / "KEEPER.json").is_file()
+    status = load_json(f"{hofje['package']}/review/status.json")
+    assert status["state"] == "keeper_approved"
 
 
 def test_rlasm_repository_hygiene_contract() -> None:

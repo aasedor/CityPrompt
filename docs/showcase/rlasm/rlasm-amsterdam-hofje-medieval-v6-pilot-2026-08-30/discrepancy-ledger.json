@@ -1,0 +1,402 @@
+{
+  "schema": "cityprompt.rlasm.discrepancy-ledger@6.1",
+  "candidate_id": "rlasm-amsterdam-hofje-medieval-v023",
+  "versions": [
+    {
+      "version": "v002",
+      "state": "rejected_builder_gate",
+      "input_blockers": ["v001 technical preflight failure: invalid render engine enum"],
+      "corrections": ["use Blender 5.2 BLENDER_EEVEE enum; rerun full evidence set"],
+      "supersedes": "rlasm-amsterdam-hofje-medieval-v001",
+      "superseded_by": "rlasm-amsterdam-hofje-medieval-v003"
+    },
+    {
+      "version": "v003",
+      "state": "rejected_builder_gate",
+      "input_blockers": [
+        "P0 source brick rendered as vertical striping from flat texture projection",
+        "P1 dominant street pavilion gable hierarchy and roof axis diverged from source",
+        "P1 court and street windows were underscaled and under-divided",
+        "P0 program interior camera was entirely occluded"
+      ],
+      "corrections": [
+        "box-project every source-conditioned construction texture",
+        "rebuild pavilion with four segmented aperture-bearing facades and north-south roof ridge",
+        "increase opening proportions and physical multi-light muntin schedule",
+        "relight the complete evidence set and place program camera inside the occupied pavilion"
+      ],
+      "supersedes": "rlasm-amsterdam-hofje-medieval-v002",
+      "superseded_by": "rlasm-amsterdam-hofje-medieval-v004"
+    },
+    {
+      "version": "v004",
+      "state": "rejected_builder_gate",
+      "input_blockers": [
+        "P0 program interior remained visually unrecognizable",
+        "P1 source brick used inconsistent per-object normalized scale",
+        "P1 room enclosure layers crossed exterior planes",
+        "P1 brick and pantile values were too pale against locked sources"
+      ],
+      "corrections": [
+        "use metre-based object coordinates for global physical material scale",
+        "move all room enclosure layers wholly behind the inner wall face",
+        "add visibly recognizable communal kitchen fixtures, dining furniture and task lights",
+        "chromatically normalize exact-source brick and pantile populations toward locked midpoints"
+      ],
+      "supersedes": "rlasm-amsterdam-hofje-medieval-v003",
+      "superseded_by": "rlasm-amsterdam-hofje-medieval-v005"
+    },
+    {
+      "version": "v005",
+      "state": "rejected_builder_gate",
+      "input_blockers": [
+        "P0 program camera was immediately behind the south-window room-back plane",
+        "P1 occupied-depth planes read too brightly at pavilion junctions"
+      ],
+      "corrections": [
+        "place the program camera inside the central pavilion beyond both south and east room-back planes",
+        "darken source-derived warm occupied-depth material while retaining local program lighting"
+      ],
+      "supersedes": "rlasm-amsterdam-hofje-medieval-v004",
+      "superseded_by": "rlasm-amsterdam-hofje-medieval-v006"
+    },
+    {
+      "version": "v006",
+      "state": "rejected_independent_holistic_review",
+      "input_blockers": [
+        "P0 56 mm program frame was filled by cabinet backs and did not identify the communal kitchen"
+      ],
+      "corrections": [
+        "use a 28 mm interior lens from a higher setback within the valid central pavilion volume",
+        "add one bounded warm point light for readable kitchen fixtures",
+        "make occupied-depth closure non-emissive so exterior recesses remain optically subordinate"
+      ],
+      "supersedes": "rlasm-amsterdam-hofje-medieval-v005",
+      "superseded_by": "rlasm-amsterdam-hofje-medieval-v007"
+    },
+    {
+      "version": "v007",
+      "state": "rejected_builder_gate",
+      "input_blockers": [
+        "independent v006 review recorded 4 P0 and 6 P1 blockers"
+      ],
+      "corrections": [
+        "fit all whole-envelope cameras with neutral margin",
+        "rebuild glazing depth, open gate route, source dormers and pavilion gable",
+        "regenerate finer source-conditioned materials and formal court",
+        "recompose the communal kitchen"
+      ],
+      "supersedes": "rlasm-amsterdam-hofje-medieval-v006",
+      "superseded_by": "rlasm-amsterdam-hofje-medieval-v008"
+    },
+    {
+      "version": "v008",
+      "state": "rejected_independent_holistic_review",
+      "input_blockers": [
+        "v007 program camera terminated against a pavilion room enclosure"
+      ],
+      "corrections": [
+        "re-site program camera in clear pavilion volume and add visible island sink, faucet and hob",
+        "thin repeated joinery and age pale trim",
+        "refine clipped court curves, hedge borders and physical source-palette flowers",
+        "rerender the complete 16-view roster and both phone boards"
+      ],
+      "supersedes": "rlasm-amsterdam-hofje-medieval-v007",
+      "superseded_by": "rlasm-amsterdam-hofje-medieval-v009"
+    },
+    {
+      "version": "v009",
+      "state": "rejected_independent_holistic_review",
+      "input_blockers": [
+        "independent v008 review recorded 4 P0, 7 P1 and 2 P2 findings",
+        "occupied depth was not visually separate behind the glazing family",
+        "east gate did not continue through the pavilion carrier",
+        "dormers sat on the roof without full-depth cuts or legible glazing",
+        "pavilion-to-wing overlap exposed an unowned grey slit",
+        "gable, garden, material finish, joinery, chimneys and communal program remained below source identity"
+      ],
+      "corrections": [
+        "cut one level street-to-court passage through the pavilion west bay with two masonry arches, returns, soffit and continuous paving",
+        "terminate the east wing at the pavilion return and remove overlapping carriers",
+        "propagate deeper optical opening sections and use the shared communal kitchen as pavilion occupied depth",
+        "boolean-cut five full-depth dormer penetrations and seat glazed sashes, cheeks, occupied layers and bounded flashing",
+        "rebuild the tall segmented gable carrier, restrained pediment, medallions, finials, tall stacks and grouped pots",
+        "replace court slabs with separate lawn, clipped hedge, gravel and perennial-border owners",
+        "world-register exact-source material sheets and retune only from locked source populations"
+      ],
+      "supersedes": "rlasm-amsterdam-hofje-medieval-v008",
+      "superseded_by": "rlasm-amsterdam-hofje-medieval-v010"
+    },
+    {
+      "version": "v010",
+      "state": "rejected_independent_holistic_review",
+      "input_blockers": [
+        "independent v009 review recorded 3 P0, 6 P1 and 2 P2 findings",
+        "pavilion roof prism visually overpowered the source-defining raised gable",
+        "pavilion and junction opening layers read as gray plugs or black grids",
+        "dormer roof cuts and bounded flashing were not legible from the submitted close views",
+        "materials, court planting, dormers, joinery, chimneys and communal program remained visually coarse"
+      ],
+      "corrections": [
+        "drop and narrow the cross roof behind the raised source-profile gable",
+        "remove carrier and roof-patch seam artifacts while tightening source material morphology",
+        "make dormers smaller with descending lead cheeks, exposed cut edges and bounded head, step and apron flashing",
+        "relight pavilion and wing occupied depth and use lower contact-proof cameras",
+        "vary chimney stacks and grouped pots, reduce hedge mass and extend restrained perennial borders",
+        "add explicit refrigerator, oven, pantry, splashback and workflow cues to the communal kitchen",
+        "rerender the complete evidence roster and both new v010 phone boards before a fresh holistic review"
+      ],
+      "supersedes": "rlasm-amsterdam-hofje-medieval-v009",
+      "superseded_by": "rlasm-amsterdam-hofje-medieval-v011"
+    },
+    {
+      "version": "v011",
+      "state": "rejected_builder_pixel_gate",
+      "input_blockers": [
+        "independent v010 review recorded 2 P0, 6 P1 and 2 P2 findings",
+        "signature pavilion remained a broad generic A-gable instead of the locked raised Dutch/classical gable",
+        "dormer cut holes retained open side and rear throat gaps without continuous weathering laps",
+        "materials, court, dormers, joinery, skyline and shared kitchen remained below keeper finish"
+      ],
+      "corrections": [
+        "rebuild a narrow vertically dominant raised gable with shaped shoulders, small inset roundels, tall attic sash and compact pediment in front of the roof",
+        "close dormer throats with rear head saddles, overlapping side step pieces and thin downslope aprons while retaining visible cut edges",
+        "increase exact-source micro-relief and weathering by material role without introducing fallback textures",
+        "expand the formal beds, narrow pale-gravel paths and add dense irregular clipped hedge crowns and varied perennials",
+        "thin sash profiles, panel the green doors and strengthen irregular chimney shafts and pot groups",
+        "line solid communal-room carriers with source-conditioned plaster and refine the hood, backsplash and workflow",
+        "rerender the complete sixteen-view roster and both v011 boards before fresh holistic review"
+      ],
+      "supersedes": "rlasm-amsterdam-hofje-medieval-v010",
+      "superseded_by": "rlasm-amsterdam-hofje-medieval-v012"
+    },
+    {
+      "version": "v012",
+      "state": "rejected_independent_holistic_review",
+      "input_blockers": [
+        "builder v011 review recorded 1 P0, 3 P1 and 1 P2 findings",
+        "pavilion cross roof projected in front of the raised gable and recreated a false dark A-frame",
+        "dormer collars remained heavy, formal beds flat, and communal kitchen lining coarse"
+      ],
+      "corrections": [
+        "shorten the cross roof so both ends remain physically behind the raised gable carriers",
+        "remove facade-profile bevel shadows and retain a continuous brick shoulder, neck and solid pediment silhouette",
+        "reduce dormer hood and flashing bulk without reopening the bounded penetration",
+        "increase continuous clipped hedge depth and irregular crown density",
+        "split communal-room lining into plaster, timber wainscot and stone chair-rail roles",
+        "rerender a bounded gable, dormer, court and program pilot before any complete evidence set"
+      ],
+      "supersedes": "rlasm-amsterdam-hofje-medieval-v011",
+      "superseded_by": "rlasm-amsterdam-hofje-medieval-v013"
+    },
+    {
+      "version": "v013",
+      "state": "rejected_builder_pixel_gate",
+      "input_blockers": [
+        "independent v012 review recorded 0 P0, 7 P1 and 2 P2 findings",
+        "pavilion proportions/detail, source weathering, court, dormers, joinery/elevations, skyline and communal program remained below keeper finish"
+      ],
+      "corrections": [
+        "narrow and raise the pavilion neck, tighten shoulders, inset roundels and build a compact solid pediment while retaining the roof-behind-gable topology",
+        "regenerate warmer brick and directional non-stamped pantile morphology only from locked pixels and age stone, lead and roof edges",
+        "make the court lush with warmer granular gravel, dense source-positioned perennials and continuous irregular clipped foliage",
+        "reduce dormer projection, cheek, hood, sash and flashing weight without reopening bounded cuts",
+        "warm thin joinery and doors and light coherent depth behind side, rear and adjacent pavilion bays",
+        "enlarge and vary chimney shafts, crowns, pots and visible roof flashings",
+        "rescale and articulate the kitchen hood, appliances, storage, shelves, work triangle and dining clearance",
+        "rerender a bounded holistic pilot, then all sixteen views and both new boards before fresh builder and independent review"
+      ],
+      "supersedes": "rlasm-amsterdam-hofje-medieval-v012",
+      "superseded_by": "rlasm-amsterdam-hofje-medieval-v014",
+      "builder_gate_result": "0 P0, 6 P1, 1 P2; nine-view native-resolution pilot preserved; independent review not started"
+    },
+    {
+      "version": "v014",
+      "state": "rejected_builder_pixel_gate",
+      "input_blockers": [
+        "builder v013 review recorded 0 P0, 6 P1 and 1 P2 findings",
+        "pavilion cap and vertical hierarchy, court maturity, roof repetition, dormer weight, opening grammar and communal kitchen remained below keeper finish"
+      ],
+      "corrections": [
+        "raise and narrow the source-defining brick neck and replace the broad open cap with a compact solid brick tympanum and thin stone coping",
+        "crown physical lawn beds and combine continuous clipped hedge bodies with irregular smooth crowns and non-uniform perennial groups",
+        "suppress stamped pantile color variation and retain curved exact-source roll and overlap morphology with lower bump relief",
+        "thin the complete dormer well, cheeks, hood, jambs, saddle, side laps, steps and apron without reopening the physical roof cut",
+        "warm and quiet the source-conditioned timber sections while preserving every opening section and occupied-depth layer",
+        "finish the communal kitchen and replace generic chimney rods with varied tapered source-brick pots",
+        "rerender a bounded holistic pilot before any complete evidence set"
+      ],
+      "supersedes": "rlasm-amsterdam-hofje-medieval-v013",
+      "superseded_by": "rlasm-amsterdam-hofje-medieval-v015",
+      "builder_gate_result": "1 P0, 2 P1, 1 P2; nine-view native-resolution pilot preserved; independent review not started"
+    },
+    {
+      "version": "v015",
+      "state": "rejected_builder_pixel_gate",
+      "input_blockers": [
+        "builder v014 review recorded 1 P0, 2 P1 and 1 P2 findings",
+        "the revised dormer exposed an oversized raw cut, court crowns became repeated discs, and tall kitchen storage blocked the program foreground"
+      ],
+      "corrections": [
+        "tighten every segmented dormer roof opening to the revised lead-envelope footprint while preserving visible physical penetration",
+        "replace crown spheres with softly beveled continuous clipped hedge top masses and retain irregular perennials as separate owners",
+        "relocate tall kitchen storage to the north service wall and shorten the counter to preserve circulation and visual integration",
+        "restore moderate bump to the calmer exact-source pantile morphology",
+        "rerender the bounded holistic pilot before any full evidence set"
+      ],
+      "supersedes": "rlasm-amsterdam-hofje-medieval-v014",
+      "superseded_by": "rlasm-amsterdam-hofje-medieval-v016",
+      "builder_gate_result": "0 P0, 2 P1; nine-view native-resolution pilot preserved; independent review not started"
+    },
+    {
+      "version": "v016",
+      "state": "rejected_independent_holistic_review",
+      "input_blockers": [
+        "builder v015 review recorded 0 P0 and 2 P1 findings",
+        "the formal court remained diagrammatic and tall kitchen units still occupied the proof foreground"
+      ],
+      "corrections": [
+        "replace regular flower cadence with finite irregular perennial masses at the exact top source's two right-hand-bed concentrations and sparse asymmetric secondary positions",
+        "remove all tall communal-kitchen storage from the visual foreground",
+        "give the refrigerator and oven physical under-counter appliance fronts and retain pantry ownership as shallow source-timber shelves with stone crockery",
+        "rerender the bounded holistic pilot before any full evidence set"
+      ],
+      "supersedes": "rlasm-amsterdam-hofje-medieval-v015",
+      "superseded_by": "rlasm-amsterdam-hofje-medieval-v017",
+      "builder_gate_result": "pass 0 P0, 0 P1, 3 P2",
+      "independent_holistic_result": "fail 0 P0, 4 P1, 3 P2; keeper ineligible"
+    },
+    {
+      "version": "v017",
+      "state": "rejected_builder_pixel_gate",
+      "input_blockers": [
+        "independent v016 review recorded 0 P0, 4 P1 and 3 P2 findings",
+        "pavilion hierarchy, formal-court maturity, pantile/dormer finish and opening/elevation/occupied-depth coherence remained below keeper finish"
+      ],
+      "corrections": [
+        "raise and tighten the source-defining pavilion gable, widen its two-light attic sash and rebuild its neck cornice and compact pediment datums",
+        "retain the accepted four-bed plan while narrowing paths, adding non-periodic exact-source lawn patina, continuous lower hedges, irregular crowns and denser source-positioned perennials",
+        "regenerate a 2048-pixel variable-phase exact-source pantile sheet and quiet every dormer with a shallower lead hood, finer sash, broader layered laps and lower interior light",
+        "thin and warm joinery, differentiate attic/court/service pane schedules, articulate thresholds and door hardware, and place one continuous occupied room behind adjacent court openings",
+        "rerender a bounded holistic pilot before any complete evidence set or review promotion"
+      ],
+      "supersedes": "rlasm-amsterdam-hofje-medieval-v016",
+      "superseded_by": "rlasm-amsterdam-hofje-medieval-v018",
+      "builder_gate_result": "fail 0 P0, 4 P1, 1 P2 after thirteen-view native-resolution holistic pilot",
+      "independent_holistic_result": "not authorized"
+    },
+    {
+      "version": "v018",
+      "state": "rejected_builder_pixel_gate",
+      "input_blockers": [
+        "builder v017 review recorded 0 P0, 4 P1 and 1 P2 findings",
+        "rounded pavilion shoulders, bead-chain court crowns, over-fine pantiles/dark dormers and sparse heavy opening optics remained below keeper finish"
+      ],
+      "corrections": [
+        "replace the rounded pavilion shoulder approximation with a stepped source silhouette and shorten/widen the two-light attic opening beneath a compact pediment",
+        "sink smaller irregular hedge crowns into continuous clipped hedge bodies so the court reads as living garden structure rather than a bead chain",
+        "increase the exact-source pantile cadence, lighten the locked-source lead role, add full sloped undertrays around every bounded cut and reduce dormer light",
+        "thin and warm the full opening joinery schedule and add source-material reading furniture aligned behind the adjacent shared-room proof panes",
+        "rerender a bounded holistic pilot before any complete evidence set"
+      ],
+      "supersedes": "rlasm-amsterdam-hofje-medieval-v017",
+      "superseded_by": "rlasm-amsterdam-hofje-medieval-v019",
+      "builder_gate_result": "fail 0 P0, 4 P1 after eight-view native-resolution holistic pilot",
+      "independent_holistic_result": "not authorized"
+    },
+    {
+      "version":"v019",
+      "state":"rejected_builder_pixel_gate",
+      "input_blockers":[
+        "builder v018 review recorded 0 P0 and 4 P1 findings",
+        "dormer side optics, pale court finish, overlong pavilion sash and hidden shared-room furniture remained blocking"
+      ],
+      "corrections":[
+        "close each dormer's full side depth with opaque source-lead cheeks while retaining the recessed pane and occupied back layer",
+        "warm and roughen exact-source court gravel and add sparse physical grass-blade parallax inside the accepted four-bed schedule",
+        "shorten the pavilion attic sash and fill the upper carrier above it without altering the accepted stepped gable silhouette",
+        "move the glass proof camera toward a frontal shared-room axis so furniture behind adjacent openings is visibly legible",
+        "rerender a bounded holistic pilot before any complete evidence set"
+      ],
+      "supersedes":"rlasm-amsterdam-hofje-medieval-v018",
+      "superseded_by":"rlasm-amsterdam-hofje-medieval-v020",
+      "builder_gate_result":"fail 0 P0, 2 P1 after six-view native-resolution holistic pilot",
+      "independent_holistic_result":"not authorized"
+    },
+    {
+      "version":"v020",
+      "state":"rejected_builder_pixel_gate",
+      "input_blockers":[
+        "builder v019 review recorded 0 P0 and 2 P1 findings",
+        "physical lawn blades read as black L markers and the dormer occupied back read as an orange semicircle"
+      ],
+      "corrections":[
+        "remove the failed lawn-blade geometry while retaining the non-periodic source-conditioned lawn sheet and continuous physical hedge structure",
+        "lower and shrink the dormer occupied back wall, reduce its light and preserve the separate desk/book depth behind the recessed pane",
+        "slightly deepen the warm exact-source gravel value without changing path geometry",
+        "rerender blocker pilot, then complete all sixteen views and both boards only after builder pixel pass"
+      ],
+      "supersedes":"rlasm-amsterdam-hofje-medieval-v019",
+      "superseded_by":"rlasm-amsterdam-hofje-medieval-v021",
+      "builder_gate_result":"fail 0 P0, 1 P1 after four-view native-resolution blocker pilot",
+      "independent_holistic_result":"not authorized"
+    },
+    {
+      "version":"v021",
+      "state":"rejected_builder_pixel_gate",
+      "input_blockers":[
+        "builder v020 review recorded 0 P0 and 1 P1 finding",
+        "the upslope pantile field remained visible as an orange semicircle immediately behind the dormer"
+      ],
+      "corrections":[
+        "extend the segmented physical roof void from 1.30 m to 1.58 m upslope on every dormer-bearing field",
+        "extend the source-lead undertray to 1.40 m, move the rear saddle to the new upslope boundary and lengthen side closures and step laps",
+        "retain all v020 pavilion, court, material, opening and occupied-program passes unchanged",
+        "rerender the dormer blocker close, then complete the full evidence set only on direct pixel pass"
+      ],
+      "supersedes":"rlasm-amsterdam-hofje-medieval-v020",
+      "superseded_by":"rlasm-amsterdam-hofje-medieval-v022",
+      "builder_gate_result":"fail 1 P0, 1 P1 after contact pilot and exact pixel-ray diagnosis",
+      "independent_holistic_result":"not authorized"
+    },
+    {
+      "version":"v022",
+      "state":"keeper_promoted",
+      "input_blockers":[
+        "builder v021 review recorded 1 P0 and 1 P1",
+        "exact ray testing identified the sloped lead undertray as the false crescent's pixel owner after the room back was lowered"
+      ],
+      "corrections":[
+        "branch from the last stable v020 roof topology and discard the failed v021 enlarged cut only in the new candidate",
+        "place a close full-height source-conditioned shadow-room wall behind each pane so high sightlines resolve vertical occupied depth before the sloped undertray",
+        "keep a separately offset physical desk and book in front of that wall and reduce dormer light to prevent emissive optics",
+        "retain all accepted pavilion, court, opening, roof material and program work unchanged",
+        "rerender the exact dormer contact blocker before any full evidence expansion"
+      ],
+      "supersedes":"rlasm-amsterdam-hofje-medieval-v021",
+      "superseded_by":"rlasm-amsterdam-hofje-medieval-v023",
+      "builder_gate_result":"pass 0 P0, 0 P1, 3 P2 after direct inspection of all 21 exact visual assets",
+      "independent_holistic_result":"fail 0 P0, 2 P1, 4 P2; keeper ineligible"
+    },
+    {
+      "version":"v023",
+      "state":"builder_pass_independent_pending",
+      "input_blockers":[
+        "independent v022 review recorded 0 P0, 2 P1 and 4 P2 findings",
+        "the formal court remained diagrammatic and the pantile/dormer finish remained materially unlike the locked sources"
+      ],
+      "corrections":[
+        "retain every v022 architectural, opening, contact, program and camera pass unchanged",
+        "replace the raised lawn trays and bead-like crowns with low non-periodic turf, continuous merged clipped hedge crowns and denser open source-positioned perennial shrubs",
+        "regenerate warm granular exact-source gravel and narrow the accepted south and cross path readings without changing circulation",
+        "recondition the exact-source pantile sheet to an orange-red S-roll field with subordinate phase variation",
+        "lighten and quiet the exact-source lead, reduce dormer cheek and hood weight and use a pale multi-light source-conditioned sash while preserving the v022 cut and shadow-room correction",
+        "render a bounded blocker pilot before any complete evidence expansion"
+      ],
+      "supersedes":"rlasm-amsterdam-hofje-medieval-v022",
+      "superseded_by":null,
+      "builder_gate_result":"complete holistic pass 0 P0, 0 P1, 4 P2 after direct inspection of all 21 exact visual assets",
+      "independent_holistic_result":"pass 0 P0, 0 P1, 4 P2; keeper eligible and promoted"
+    }
+  ]
+}

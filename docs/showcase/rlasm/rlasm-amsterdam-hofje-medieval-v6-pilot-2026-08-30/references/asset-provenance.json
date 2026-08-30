@@ -1,0 +1,299 @@
+{
+  "schema": "cityprompt.rlasm.asset-provenance@6.1",
+  "candidate_id": "rlasm-amsterdam-hofje-medieval-v023",
+  "sources": [
+    {
+      "role": "front",
+      "path": "references\\catalogue\\variant_0.png",
+      "bytes": 1392974,
+      "sha256": "99728a7d685f0427a20b5b1946be1589c5308a847e027113d330bd904ac6f925"
+    },
+    {
+      "role": "front_corner_60",
+      "path": "references\\catalogue\\variant_0_angle_60.jpg",
+      "bytes": 990503,
+      "sha256": "b4311cde0a2e955989ff5956157442b83df465a3a5aaee6333fce60e6cdec75a"
+    },
+    {
+      "role": "true_top",
+      "path": "references\\catalogue\\variant_0_angle_90.jpg",
+      "bytes": 942936,
+      "sha256": "79228135938f59c2632c4b1ff6d545c8592d516937667ef387ff5d1b6e69f482"
+    }
+  ],
+  "identity_derivatives": [
+    {
+      "source": "references\\catalogue\\variant_0_angle_60.jpg",
+      "source_quad_px": [
+        [
+          278,
+          300
+        ],
+        [
+          785,
+          330
+        ],
+        [
+          784,
+          616
+        ],
+        [
+          272,
+          603
+        ]
+      ],
+      "output_size_px": [
+        1600,
+        800
+      ],
+      "operation": "four-point projective rectification of the courtyard-facing north elevation",
+      "mounted": false,
+      "reason": "registration/measurement authority only; physical openings and carriers own the facade"
+    }
+  ],
+  "material_generation": {
+    "provider": "deterministic local OpenCV/Pillow conditioning",
+    "model": null,
+    "generative_ai_used": false,
+    "prompt": "Rectify exact locked hofje pixels to shadow-neutral wall/roof coordinates; isolate repeating substance morphology; remove perspective context by bounded crop and projective transform; preserve brick bond, mortar scale, pantile cadence, age, roughness cues and source hue; create no invented facade fragments, windows, lighting, text or generic fallback material.",
+    "operations": [
+      "four-point rectification",
+      "bounded exact-source crops",
+      "mirror seam conditioning",
+      "restrained tonal normalization"
+    ],
+    "materials": [
+      {
+        "role": "brick_carriers_returns_chimneys",
+        "path": "references\\materials\\hofje-medieval-aged-stretcher-brick-albedo-v1.png",
+        "source": "references/catalogue/variant_0.png",
+        "source_regions_px": [
+          [
+            600,
+            120,
+            900,
+            590
+          ]
+        ],
+        "morphology": "source-measured warm red-brown stretcher bond; approximately 210 x 55 mm fired units with pale 10 mm joints, alternating half-bond phase and worn arrises",
+        "operation": "deterministic exact-source pixel population mapped into the observed bond; sun-biased values chromatically normalized to the locked facade midpoint; no photographed architectural fragment retained",
+        "physical_scale_m": [
+          2.4,
+          3.2
+        ],
+        "axes": "wall-local X-Z or Y-Z with one shared phase per wing",
+        "sha256": "94b7406ce7ddfe73b2772a650e00b6ade536f05b9da371b2730149b4e604fc89"
+      },
+      {
+        "role": "pantile_roof",
+        "path": "references\\materials\\hofje-medieval-weathered-pantile-albedo-v1.png",
+        "source": "references/catalogue/variant_0_angle_90.jpg",
+        "source_regions_px": [
+          [
+            310,
+            45,
+            890,
+            315
+          ]
+        ],
+        "morphology": "source-measured overlapping warm-dark Dutch pantile rows with alternating half-tile phase, rounded lower edges and weathered S-profile highlights",
+        "operation": "deterministic exact-source pixel population mapped into observed pantile cadence; sun-biased values chromatically normalized to the locked roof midpoint; no dormer, chimney, eave, sky or neighbouring building retained",
+        "physical_scale_m": [
+          2.2,
+          3.0
+        ],
+        "axes": "slope-local across/down-slope",
+        "sha256": "3e723bb77db65a3ece496e66d925af1f7559064cfd976e7108b4878e8dd0cf36"
+      },
+      {
+        "path": "references\\materials\\hofje-medieval-pale-stone-trim-albedo-v1.png",
+        "source": "references/catalogue/variant_0.png",
+        "crop_px": [
+          646,
+          302,
+          858,
+          327
+        ],
+        "operation": "exact-source robust pixel-distribution swatch; photographed objects and perspective removed; deterministic seed 61029",
+        "sha256": "657de509f62f1fd8963d1d8e2be79de5c60e86f085023abfa09b4f3e460f47ce",
+        "role": "pale_stone_trim",
+        "physical_scale_m": [
+          0.8,
+          0.8
+        ]
+      },
+      {
+        "path": "references\\materials\\hofje-medieval-deep-green-painted-timber-albedo-v1.png",
+        "source": "references/catalogue/variant_0.png",
+        "crop_px": [
+          500,
+          500,
+          548,
+          624
+        ],
+        "operation": "exact-source robust pixel-distribution swatch; photographed objects and perspective removed; deterministic seed 61029",
+        "sha256": "aef9b19f95655c548f284bf52729f27a57f82e0a91be15710f643cfde9b9e235",
+        "role": "painted_timber",
+        "physical_scale_m": [
+          0.25,
+          0.25
+        ]
+      },
+      {
+        "path": "references\\materials\\hofje-medieval-wrought-iron-albedo-v1.png",
+        "source": "references/catalogue/variant_0.png",
+        "crop_px": [
+          565,
+          593,
+          682,
+          681
+        ],
+        "operation": "exact-source robust pixel-distribution swatch; photographed objects and perspective removed; deterministic seed 61029",
+        "sha256": "7ac8340ad11b370f35ad9a6fbb9331410b5a8a9e27507bd8f922d918662458e1",
+        "role": "wrought_iron",
+        "physical_scale_m": [
+          0.45,
+          0.45
+        ]
+      },
+      {
+        "path": "references\\materials\\hofje-medieval-residential-glass-tint-v1.png",
+        "source": "references/catalogue/variant_0.png",
+        "crop_px": [
+          686,
+          356,
+          735,
+          474
+        ],
+        "operation": "exact-source robust pixel-distribution swatch; photographed objects and perspective removed; deterministic seed 61029",
+        "sha256": "ac51d518e33a74e7f5571f753bd5a65795cb316e1b9f0d9635b7ede62f447ba4",
+        "role": "low_iron_glass_tint",
+        "physical_scale_m": [
+          0.45,
+          0.45
+        ]
+      },
+      {
+        "path": "references\\materials\\hofje-medieval-aged-lead-albedo-v1.png",
+        "source": "references/catalogue/variant_0.png",
+        "crop_px": [
+          350,
+          95,
+          880,
+          430
+        ],
+        "operation": "exact-source robust pixel-distribution swatch; photographed objects and perspective removed; deterministic seed 61029",
+        "sha256": "672ad92cabc7bac13b8d966f59a9c16612dc2c178bb1ba769b8d2b000ff8f1c7",
+        "role": "aged_lead_dormer_flashings",
+        "physical_scale_m": [
+          0.65,
+          0.65
+        ]
+      },
+      {
+        "path": "references\\materials\\hofje-medieval-pale-painted-dormer-sash-v1.png",
+        "source": "references/catalogue/variant_0.png",
+        "crop_px": [
+          350,
+          95,
+          880,
+          430
+        ],
+        "operation": "exact-source robust pixel-distribution swatch; photographed objects and perspective removed; deterministic seed 61029",
+        "sha256": "1f652eb147c699e0b548fc7ed02fd68ccb87f9f64fa946e133436e42a2eb1b9a",
+        "role": "pale_painted_dormer_sash",
+        "physical_scale_m": [
+          0.25,
+          0.25
+        ]
+      },
+      {
+        "path": "references\\materials\\hofje-medieval-courtyard-gravel-albedo-v1.png",
+        "source": "references/catalogue/variant_0.png",
+        "crop_px": [
+          510,
+          330,
+          800,
+          625
+        ],
+        "operation": "deterministic exact-source warm path population with source-scale granular aggregate; no photographed object or generic paving",
+        "sha256": "fe8cb94495fb2e3786f66f9c8e2fcbe2785159f9356c84ed02cad264fdeab0f8",
+        "role": "courtyard_gravel",
+        "physical_scale_m": [
+          1.2,
+          1.2
+        ]
+      },
+      {
+        "path": "references\\materials\\hofje-medieval-courtyard-lawn-albedo-v1.png",
+        "source": "references/catalogue/variant_0.png",
+        "crop_px": [
+          510,
+          360,
+          770,
+          690
+        ],
+        "operation": "deterministic non-periodic exact-source green population; multi-scale patina and sparse source-family tufts; no photographed object or generic turf",
+        "sha256": "703665684b672737376f0132fee6534b2ef230ba86076861f3ba474929fd5051",
+        "role": "garden_lawn",
+        "physical_scale_m": [
+          1.3,
+          1.3
+        ]
+      },
+      {
+        "path": "references\\materials\\hofje-medieval-clipped-hedge-albedo-v1.png",
+        "source": "references/catalogue/variant_0.png",
+        "crop_px": [
+          350,
+          559,
+          485,
+          602
+        ],
+        "operation": "exact-source robust pixel-distribution swatch; photographed objects and perspective removed; deterministic seed 61029",
+        "sha256": "429c42a0224a5aa4d82d040c98cccfb40e491c12557d2d52b5dfa60ee105f8cd",
+        "role": "hedge_foliage",
+        "physical_scale_m": [
+          0.8,
+          0.8
+        ]
+      },
+      {
+        "path": "references\\materials\\hofje-medieval-courtyard-flower-albedo-v1.png",
+        "source": "references/catalogue/variant_0.png",
+        "crop_px": [
+          338,
+          540,
+          620,
+          646
+        ],
+        "operation": "exact-source robust pixel-distribution swatch; photographed objects and perspective removed; deterministic seed 61029",
+        "sha256": "828e96c372784d2c8e01c205064713a6d3023b23817a934c12020b67eca1ae4f",
+        "role": "courtyard_flowers",
+        "physical_scale_m": [
+          0.18,
+          0.18
+        ]
+      },
+      {
+        "path": "references\\materials\\hofje-medieval-warm-interior-plaster-albedo-v1.png",
+        "source": "references/catalogue/variant_0.png",
+        "crop_px": [
+          580,
+          250,
+          900,
+          570
+        ],
+        "operation": "exact-source robust pixel-distribution swatch; photographed objects and perspective removed; deterministic seed 61029",
+        "sha256": "abbb476891e73dda3a2c82d2c5aa5938b94b9119bf1c7f3cb0833358fe81b00f",
+        "role": "warm_interior_plaster",
+        "physical_scale_m": [
+          0.9,
+          0.9
+        ]
+      }
+    ]
+  },
+  "one_visual_owner_per_feature": true,
+  "perspective_crop_mounted_on_facade": false
+}

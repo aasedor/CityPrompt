@@ -1,0 +1,235 @@
+{
+  "schema": "cityprompt.rlasm.candidate-prework@6.1",
+  "candidate_id": "rlasm-amsterdam-hofje-medieval-v023",
+  "lifecycle_state": "prework",
+  "created_at": "2026-08-29T23:30:00-06:00",
+  "method": {
+    "name": "Reference-Locked Atomic Sticker-and-Massing",
+    "version": "6.1",
+    "canonical_commit": "f52046158",
+    "human_authority": "docs/RLASM_LATEST_METHOD.md",
+    "machine_authority": "tools/archetype_compiler/rlasm_method.json"
+  },
+  "source_contract": {
+    "lock_policy": "exact catalogue pixels only; SHA-256 and byte length must match locked copies",
+    "sources": [
+      {
+        "role": "front",
+        "path": "references/catalogue/variant_0.png",
+        "bytes": 1392974,
+        "sha256": "99728a7d685f0427a20b5b1946be1589c5308a847e027113d330bd904ac6f925"
+      },
+      {
+        "role": "oblique",
+        "path": "references/catalogue/variant_0_angle_60.jpg",
+        "bytes": 990503,
+        "sha256": "b4311cde0a2e955989ff5956157442b83df465a3a5aaee6333fce60e6cdec75a"
+      },
+      {
+        "role": "top",
+        "path": "references/catalogue/variant_0_angle_90.jpg",
+        "bytes": 942936,
+        "sha256": "79228135938f59c2632c4b1ff6d545c8592d516937667ef387ff5d1b6e69f482"
+      }
+    ]
+  },
+  "target": {
+    "archetype_id": "amsterdam_hofje",
+    "variant_id": "hofje_medieval",
+    "variant_index": 0,
+    "catalogue_source_root": "frontend/public/archetypes/buildings/amsterdam-hofje",
+    "selection_reason": "Unbuilt photo-only exact variant with a coherent front, 60-degree high oblique, and true-top set. The three pixels agree on one U-shaped Dutch brick almshouse court, roof graph, gates, garden, and street pavilion.",
+    "catalogue_text_conflict": "The variant prose says irregular medieval fabric, but the exact locked pixels show a formal, substantially uniform brick hofje. Per RLASM authority order, locked pixels govern this build.",
+    "contamination_audit": {
+      "working_tree_model_or_candidate_hits": 0,
+      "seed_model_library_hits": 0,
+      "artifact_candidate_hits": 0,
+      "relevant_git_ref_model_or_candidate_hits": 0,
+      "checked_refs": [
+        "HEAD",
+        "origin/main",
+        "cityprompt-authorized/main",
+        "origin/codex/rlasm-v6-amsterdam-bell-pilot",
+        "origin/codex/sticker-reproduction-reset"
+      ],
+      "allowed_metadata_mentions_only": true,
+      "result": "photo_only_forward_test_clear"
+    }
+  },
+  "sources": [
+    {
+      "role": "front",
+      "path": "C:/Users/andre/OneDrive/Documents/CityPrompt/frontend/public/archetypes/buildings/amsterdam-hofje/variant_0.png",
+      "locked_copy": "references/catalogue/variant_0.png",
+      "bytes": 1392974,
+      "dimensions_px": [1024, 768],
+      "sha256": "99728a7d685f0427a20b5b1946be1589c5308a847e027113d330bd904ac6f925"
+    },
+    {
+      "role": "front_corner_60",
+      "path": "C:/Users/andre/OneDrive/Documents/CityPrompt/frontend/public/archetypes/buildings/amsterdam-hofje/variant_0_angle_60.jpg",
+      "locked_copy": "references/catalogue/variant_0_angle_60.jpg",
+      "bytes": 990503,
+      "dimensions_px": [1195, 896],
+      "sha256": "b4311cde0a2e955989ff5956157442b83df465a3a5aaee6333fce60e6cdec75a"
+    },
+    {
+      "role": "true_top",
+      "path": "C:/Users/andre/OneDrive/Documents/CityPrompt/frontend/public/archetypes/buildings/amsterdam-hofje/variant_0_angle_90.jpg",
+      "locked_copy": "references/catalogue/variant_0_angle_90.jpg",
+      "bytes": 942936,
+      "dimensions_px": [1195, 896],
+      "sha256": "79228135938f59c2632c4b1ff6d545c8592d516937667ef387ff5d1b6e69f482"
+    }
+  ],
+  "benchmarks": {
+    "method_only": [
+      "Barcelona Modernist Printing House v7",
+      "Amsterdam Bell-Gable House v10",
+      "Barcelona Mercat Market Hall v11"
+    ],
+    "geometry_donors": [],
+    "material_donors": []
+  },
+  "measurements": {
+    "confidence": "source-constrained inferred",
+    "metric_envelope_m": {"width": 34.0, "depth": 30.0, "highest_element": 13.8},
+    "plan_graph": {
+      "type": "asymmetric U around an open south court",
+      "outer_bounds": {"x": [-17.0, 17.0], "y": [-15.0, 15.0]},
+      "rear_north_wing": {"width": 34.0, "depth": 6.8},
+      "east_street_wing": {"width": 7.0, "depth": 30.0},
+      "west_wing": {"width": 6.6, "depth": 23.5, "south_end_y": -8.5},
+      "open_courtyard": {"width": 20.4, "depth": 17.6, "open_to": "south street through wall and gates"},
+      "street_pavilion": {"location": "south-east", "width": 8.2, "depth": 9.0, "projection": 1.2},
+      "passages": ["south-east brick arch gate", "south-west brick arch gate", "west side service arch"]
+    },
+    "floor_schedule": {
+      "grade": 0.0,
+      "ground_floor": [0.0, 3.15],
+      "upper_floor": [3.15, 6.20],
+      "eave": 6.45,
+      "ordinary_ridge": 9.65,
+      "pavilion_ridge": 11.85,
+      "gable_apex": 12.95,
+      "chimney_top": 13.8
+    },
+    "base_middle_crown": {
+      "base": "0.00-0.55 m brick plinth and thresholds",
+      "middle": "0.55-6.20 m two occupied domestic storeys",
+      "crown": "6.20-9.65 m cornice, gutter, pantile roof and dormers; pavilion gable continues to 12.95 m",
+      "ratios_to_ordinary_ridge": [0.057, 0.586, 0.357]
+    },
+    "bay_schedule": {
+      "rear_courtyard": {"count": 8, "module_m": 3.45, "doors_at": [2, 6]},
+      "east_courtyard": {"count": 7, "module_m": 3.20, "doors_at": [2, 5]},
+      "west_courtyard": {"count": 5, "module_m": 3.20, "doors_at": [2, 4]},
+      "east_street": {"count": 8, "module_m": 3.15, "doors_at": [2, 6]},
+      "rear_exterior": {"count": 7, "module_m": 3.60, "service_door_at": 4},
+      "pavilion": {"ground": "one arched gate plus one sash bay", "upper": "two tall sash bays", "attic": "one central double sash"}
+    },
+    "roof_graph": {
+      "ordinary": "three connected gable-roof bars terminating at bounded corner hip/valley nodes",
+      "ridges": ["north wing east-west", "east wing north-south", "west wing north-south"],
+      "junctions": ["north-east closed hip/valley", "north-west closed hip/valley", "pavilion cross-gable seated into east roof"],
+      "dormers": {"courtyard": 5, "street": 3, "type": "lead-cheeked segmental shed dormer"},
+      "chimneys": {"count": 8, "ownership": "brick stacks crossing roof body with bounded lead flashing and caps"},
+      "drainage": "continuous courtyard and street eave gutters with downpipes at junctions"
+    },
+    "elevation_contract": {
+      "court": "warm red-brown stretcher-bond brick, tall vertically proportioned sash openings, restrained pale stone sills/headers, dark green doors, simple pale eave band",
+      "street": "same brick/material authority with quieter service cadence and bicycle-scale thresholds",
+      "pavilion": "projecting brick volume, tall sash pairs, triangular/curved Dutch gable shoulders, pale cornice bands and two circular stone medallions",
+      "rear": "complete occupied brick elevation with sparser service openings; no blank carrier"
+    },
+    "opening_contract": {
+      "section_order": ["segmented cut carrier", "brick/stone jamb-head-sill returns", "recessed painted timber sash", "separate low-iron pane", "offset curtain/furniture/room layer", "enclosed occupied room depth"],
+      "window_recess_m": 0.18,
+      "frame_recess_m": 0.25,
+      "pane_recess_m": 0.32,
+      "occupied_layer_recess_m": 0.85,
+      "room_depth_m": 3.2
+    },
+    "signature_details": [
+      "formal four-quadrant clipped hedge garden",
+      "central octagonal pump/well",
+      "south-east Dutch gabled street pavilion",
+      "three visibly traversable brick arch gates",
+      "lead-cheeked roof dormers",
+      "continuous clay pantile roof with chimney cadence",
+      "courtyard-facing paired green doors and tall sash rhythm"
+    ],
+    "contacts_and_load_paths": [
+      "all walls bear continuously on brick plinth and grade",
+      "pavilion projects through both occupied floors to its own cross-gable roof",
+      "dormer cheeks penetrate roof plane and caps seat on complete bodies",
+      "chimney stacks penetrate roof and continue visually to occupied wall zones",
+      "gate arches spring from full brick piers and expose soffit depth",
+      "gutters seat on eaves and downpipes terminate at courtyard drains",
+      "garden wall and iron fence bear on continuous brick curb"
+    ],
+    "program": {
+      "type": "historic charitable residential hofje",
+      "units": 12,
+      "ground_floor": ["six domestic kitchen/living rooms", "shared laundry", "caretaker room", "communal kitchen in pavilion"],
+      "upper_floor": ["bedrooms", "small sitting rooms", "corner stair landings"],
+      "attic": ["two occupied pavilion rooms", "storage behind dormers"],
+      "shared": ["garden paths", "central pump/well", "benches", "entrance passages", "bicycle/service edge"],
+      "visual_proof": "tables, chairs, cabinets, beds, curtains, lamps, stairs, landings and the communal kitchen are modeled at real depth and visible through selected openings and the program-interior camera"
+    }
+  },
+  "identity_strategy": {
+    "mounted_perspective_photographs": false,
+    "rectified_reference_derivative": "references/identity/rectified-courtyard-facade-reference.png",
+    "mounted_identity_stickers": [],
+    "reason_no_mounted_sticker": "The exact identity is carried by physical plan, bay schedule, openings, pavilion gable, gates, dormers, roof graph, garden and source-conditioned construction materials. Mounting a full facade crop would duplicate physical windows and contacts.",
+    "one_visual_owner_per_feature": true
+  },
+  "camera_roster": [
+    "front.png",
+    "front_corner.png",
+    "aerial.png",
+    "true_top.png",
+    "left_side.png",
+    "right_side.png",
+    "rear.png",
+    "rear_side.png",
+    "facade_close.png",
+    "architecture_close.png",
+    "glass_close.png",
+    "gate_contact_close.png",
+    "roof_contact_close.png",
+    "dormer_contact_close.png",
+    "program_interior.png",
+    "courtyard_axis.png"
+  ],
+  "camera_contract": "Every whole-envelope view is derived from actual object bounds after construction and must include the complete visible footprint, grade, highest chimney/gable and neutral margin.",
+  "correction_budget": {
+    "mode": "finite blocker-led versions",
+    "v001": "rejected technical attempt: obsolete Eevee enum; zero renders",
+    "v002": "rejected at builder pixel gate: facade texture projection, pavilion hierarchy, window scale and interior camera blockers",
+    "v003": "rejected at builder pixel gate: inconsistent per-carrier material scale, exterior-crossing room layers and unrecognizable program view",
+    "v004": "rejected at builder pixel gate: program camera remained behind a room-back plane and occupied-depth layers were optically too bright",
+    "v005": "rejected at builder pixel gate: tight interior field of view remained filled by cabinet backs",
+    "v006": "rejected by independent holistic review: containment, occupied-depth, gate-route, dormer-contact, gable, material, court, joinery and program blockers",
+    "v007": "rejected at builder pixel gate: program camera remained obstructed by a pavilion room enclosure",
+    "v008": "preserved independent rejection: 4 P0 and 7 P1; no promotion",
+    "v009": "preserved independent rejection: 3 P0 and 6 P1; no promotion",
+    "v010": "preserved independent rejection: 2 P0 and 6 P1; no promotion",
+    "v011": "rejected builder gate: pavilion roof projected in front of the raised gable and created false diagonal A-frame identity",
+    "v012": "preserved independent rejection: 0 P0 and 7 P1; topology/contact chains pass but holistic finish remains blocked",
+    "v013": "rejected at builder pixel gate: 0 P0, 6 P1 and 1 P2 after the bounded nine-view holistic pilot",
+    "v014": "rejected at builder pixel gate: 1 P0, 2 P1 and 1 P2 after the bounded nine-view holistic pilot",
+    "v015": "rejected at builder pixel gate: 0 P0 and 2 P1 after the bounded nine-view holistic pilot",
+    "v016": "independent rejection: 0 P0, 4 P1 and 3 P2; no promotion",
+    "v017": "builder rejection: 0 P0, 4 P1 and 1 P2 after thirteen-view pilot",
+    "v018": "builder rejection: 0 P0 and 4 P1 after eight-view pilot",
+    "v019": "builder rejection: 0 P0 and 2 P1 after six-view pilot",
+    "v020": "builder rejection: 0 P0 and 1 P1 after four-view blocker pilot",
+    "v021": "builder rejection: 1 P0 and 1 P1 after contact pilot and exact pixel-ray diagnosis",
+    "v022": "independent holistic rejection: 0 P0, 2 P1, 4 P2; dormer contact passed, formal court and pantile/dormer finish remained blocking",
+    "v023": "bounded living-court and exact-source roof/dormer finish correction while retaining all v022 architectural/contact passes",
+    "next_version_only_if": "builder or independent holistic review records a finite P0/P1 blocker list",
+    "overwrite_failed_candidate": false
+  }
+}

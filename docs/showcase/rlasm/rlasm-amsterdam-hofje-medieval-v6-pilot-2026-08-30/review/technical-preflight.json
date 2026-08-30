@@ -1,0 +1,23 @@
+{
+  "schema": "cityprompt.rlasm.technical-preflight@6.1",
+  "candidate_id": "rlasm-amsterdam-hofje-medieval-v023",
+  "result": "PASS",
+  "source_lock": {
+    "references/catalogue/variant_0.png": {"bytes": 1392974, "sha256": "99728a7d685f0427a20b5b1946be1589c5308a847e027113d330bd904ac6f925"},
+    "references/catalogue/variant_0_angle_60.jpg": {"bytes": 990503, "sha256": "b4311cde0a2e955989ff5956157442b83df465a3a5aaee6333fce60e6cdec75a"},
+    "references/catalogue/variant_0_angle_90.jpg": {"bytes": 942936, "sha256": "79228135938f59c2632c4b1ff6d545c8592d516937667ef387ff5d1b6e69f482"}
+  },
+  "renders": {"count": 16, "dimensions_px": [1280, 960], "all_openable": true},
+  "boards": {
+    "evidence/source-model-comparison-phone.png": {"bytes": 1490992, "sha256": "8088b386b2533ac867841d479ee793921a7ac48275f9605e28736f0409a2507e", "dimensions_px": [1080, 1920]},
+    "evidence/physical-material-detail-proof-phone.png": {"bytes": 1829519, "sha256": "2c74bc2ea6d1298a8d2b7fb88badbc155d0768f3deddac9038cda6399c6afe34", "dimensions_px": [1080, 1920]}
+  },
+  "models": {
+    "model/amsterdam-hofje-medieval-v023.blend": {"bytes": 1853910, "sha256": "550d751a1baaf09868ff66a0ea4dc065a9bb0c443a259417957848ece4a55496", "validation": "Blender 5.2.0 opened successfully; 3957 objects, 18 materials, 1 collection"},
+    "model/amsterdam-hofje-medieval-v023.glb": {"bytes": 32318008, "sha256": "2cd9e5ef8e396ddaad1545cde43f189937c16bae587f6ba7e9158709126160b3", "header": "glTF 2.0"}
+  },
+  "material_provenance": {"path": "references/asset-provenance.json", "sha256": "3a05c5967c1d118d3fe4f169a4cec50cb5087ddea6f3257da7e4252a9d7cd9e9", "candidate_id_valid": true, "material_roles": 13},
+  "json_validation": "all seven candidate JSON files present at preflight parse",
+  "generic_fallback_count": 0,
+  "mounted_perspective_photograph_count": 0
+}

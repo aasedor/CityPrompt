@@ -395,6 +395,9 @@ blockers:
 - `10-amsterdam-bell-gable-house-rlasm-v10`: exact floor/bay hierarchy,
   continuous bell-gable weathering construction, source-scale Dutch roof
   material, integrated shed dormer, and visible residential circulation.
+- `rlasm-amsterdam-hofje-medieval-v023`: enclosed charitable-housing court,
+  full-depth gate passage, clipped living garden, source-conditioned curved
+  pantiles, pale rolled-lead dormers, and visibly occupied residential depth.
 
 These exemplars define the present visual and evidentiary floor. They are not
 generic templates: each new building must still solve its own locked geometry,
