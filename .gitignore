@@ -49,6 +49,20 @@ htmlcov/
 .pytest_cache/
 /frontend/playwright-report/
 /frontend/test-results/
+
+# Agent and test scratch roots
+#
+# These are disposable local execution products, never source or review
+# evidence. RLASM candidate evidence belongs under ignored /artifacts/ until a
+# reviewed keeper package is intentionally promoted.
+/.codex-tmp/
+/.codex_pytest_*/
+/.codex-pytest-*/
+/.codex_pycache*/
+/.codex-pycache-*/
+/.pytest-tmp-*/
+/.pytest_tmp_*/
+/.tmp/
 # Generated models
 *.glb
 *.gltf

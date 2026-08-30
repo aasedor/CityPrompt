@@ -115,3 +115,21 @@ def test_registry_preserves_supersession_evidence() -> None:
         "formal_courtyard_and_pantile_forward_standard"
     )
     assert (ROOT / hofje["package"] / "keeper-manifest.json").is_file()
+
+
+def test_rlasm_repository_hygiene_contract() -> None:
+    method = load_json("tools/archetype_compiler/rlasm_method.json")
+    hygiene = method["repository_hygiene_contract"]
+    assert hygiene["active_building_method"] == "RLASM v6.1"
+    assert hygiene["superseded_method_packages_allowed_in_active_tree"] is False
+    assert hygiene["promote_only_independently_approved_keepers"] is True
+    assert hygiene["failed_candidate_storage"] == (
+        "external_content_addressed_artifact"
+    )
+    assert hygiene["canonical_remote"] == (
+        "https://github.com/aasedor/CityPrompt.git"
+    )
+    assert hygiene["canonical_branch"] == "origin/main"
+    assert not (ROOT / "skills/sticker-method").exists()
+    assert not (ROOT / "skills/sticker-method.zip").exists()
+    assert not (ROOT / "skills/sticker-method.zip.sha256").exists()

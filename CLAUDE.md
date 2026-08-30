@@ -31,7 +31,7 @@ cd frontend && npm run type-check && npm run lint
 `json.dump()` corrupts `thumbnailUrl` paths (underscores → hyphens). When adding archetypes, use TEXT-LEVEL insertion — splice new entries as raw text before the closing `]`. Never parse-modify-dump.
 
 ### Use only the authoritative archetype image roots
-All catalogue references, generators, Sticker Method evidence locks, and UI
+All catalogue references, generators, RLASM evidence locks, and UI
 thumbnail URLs must use `frontend/public/archetypes/buildings`,
 `frontend/public/archetypes/openspaces`, or
 `frontend/public/archetypes/streets`. Legacy sibling folders such as
@@ -43,14 +43,23 @@ new assets to them.
 Always verify on localhost:5174 before committing. Check that cards load, renders work, no console errors.
 
 ### Canonical remote and branch
-- `cityprompt` → `aasedor/CityPrompt`
-- `cityprompt/main` is the canonical integration and release branch.
-- `origin` and `claude-2d-maps2` are historical comparison remotes, not release
-  destinations.
+- `origin` → `https://github.com/aasedor/CityPrompt.git`
+- `origin/main` is the canonical integration and release branch.
+- `cityprompt-authorized`, `upstream`, and any other remotes are comparison or
+  upstream sources. Do not push to them unless the user explicitly changes the
+  authorized destination.
 
-Before pushing, fetch `cityprompt`, confirm the local branch is based on
-`cityprompt/main`, and run the complete relevant checks. Never force-push the
+Before pushing, fetch `origin`, confirm the local branch is based on
+`origin/main`, and run the complete relevant checks. Never force-push the
 shared `main` branch.
+
+### Canonical building method
+All new building-family construction, rebuilds, and keeper reviews use
+`docs/RLASM_LATEST_METHOD.md` and
+`tools/archetype_compiler/rlasm_method.json`. Sticker Method/V98 material is
+legacy compatibility evidence only. A legacy package cannot become a keeper
+without a new canonical RLASM holistic review with zero P0 and zero P1
+blockers.
 
 ### Render prompt guidelines
 - Do NOT send temperature on Gemini 3 image calls (official guidance: keep the

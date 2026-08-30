@@ -10,6 +10,11 @@ This is the single canonical current method. Earlier package-local
 instructions. The executable companion is
 `tools/archetype_compiler/rlasm_method.json`.
 
+Active-tree storage and retirement rules are defined by
+`docs/RLASM_REPOSITORY_POLICY.md`. Failed candidate evidence remains immutable
+but belongs in content-addressed artifact storage rather than the active Git
+tree. Only reviewed keeper packages are promoted into Git.
+
 ## Authority and review boundaries
 
 When records disagree, use this order:

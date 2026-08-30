@@ -2,8 +2,11 @@
 
 Read `CLAUDE.md` before substantial work; it contains repository architecture,
 commands, visual-generation rules, and the pilot-before-scale workflow. For
-LEGO building-family work, also read `docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md`
-and keep its machine-readable companion synchronized.
+building-family work, also read `docs/RLASM_LATEST_METHOD.md`,
+`docs/RLASM_REPOSITORY_POLICY.md`, and
+`docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md`, and keep their machine-readable
+companions synchronized. RLASM v6.1 is the only active building method;
+Sticker Method/V98 material is historical compatibility evidence.
 
 ## Start safely
 
