@@ -107,6 +107,7 @@
     "src/components/viewer/globe/renderLabelBudget.ts",
     "src/components/viewer/globe/renderZoneVisibility.ts",
     "src/components/viewer/globe/residualLandscape.ts",
+    "src/components/viewer/globe/rlasmPresentation.ts",
     "src/components/viewer/globe/sitePreparationSurface.ts",
     "src/components/viewer/globe/skateParkFit.ts",
     "src/components/viewer/globe/streetDetailLod.ts",
