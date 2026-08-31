@@ -1498,10 +1498,7 @@ def _is_source_locked_rlasm_model(building: Building | None) -> bool:
         return False
     specifications = building.specifications if isinstance(building.specifications, dict) else {}
     rlasm = specifications.get("rlasm")
-    has_model = bool(
-        building.model_url
-        or (isinstance(building.lod_urls, dict) and building.lod_urls.get("0"))
-    )
+    has_model = bool(building.model_url or (isinstance(building.lod_urls, dict) and building.lod_urls.get("0")))
     return bool(isinstance(rlasm, dict) and rlasm.get("source_locked") is True and has_model)
 
 
