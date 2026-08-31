@@ -8,6 +8,7 @@ provider-first presentation mode deliberately omits that mask from generation.
 
 from __future__ import annotations
 
+import math
 import re
 import uuid
 from typing import Literal
@@ -107,6 +108,51 @@ class Direct3DInstanceDescriptor(BaseModel):
         return source_zone_ids
 
 
+class Direct3DMaterialDescriptor(BaseModel):
+    """One capture-local source material represented by an exact ID color."""
+
+    material_id: str = Field(
+        ...,
+        min_length=1,
+        max_length=180,
+        pattern=r"^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+    )
+    label: str = Field(..., min_length=1, max_length=180)
+    semantic_class: Direct3DSemanticClass
+    material_family_id: str | None = Field(default=None, min_length=1, max_length=180)
+    source_specific: bool = False
+
+
+class Direct3DCameraManifest(BaseModel):
+    """Exact renderer camera used by every v2 control pass."""
+
+    projection: Literal["perspective", "orthographic", "other"]
+    projection_matrix: list[float] = Field(..., min_length=16, max_length=16)
+    matrix_world: list[float] = Field(..., min_length=16, max_length=16)
+    position: tuple[float, float, float]
+    quaternion: tuple[float, float, float, float]
+    near: float | None = Field(default=None, gt=0)
+    far: float | None = Field(default=None, gt=0)
+    fov: float | None = Field(default=None, gt=0, lt=180)
+    aspect: float | None = Field(default=None, gt=0)
+    zoom: float | None = Field(default=None, gt=0)
+
+    @model_validator(mode="after")
+    def validate_finite_camera(self) -> "Direct3DCameraManifest":
+        values = [
+            *self.projection_matrix,
+            *self.matrix_world,
+            *self.position,
+            *self.quaternion,
+            *(value for value in (self.near, self.far, self.fov, self.aspect, self.zoom) if value is not None),
+        ]
+        if not all(math.isfinite(value) for value in values):
+            raise ValueError("camera values must be finite")
+        if self.near is not None and self.far is not None and self.far <= self.near:
+            raise ValueError("camera far must be greater than near")
+        return self
+
+
 class Direct3DArchetypeReference(BaseModel):
     """Authored archetype artwork attached to the provider call.
 
@@ -122,6 +168,13 @@ class Direct3DArchetypeReference(BaseModel):
 class Direct3DRenderRequest(BaseModel):
     """A clean 3D capture plus mode-specific presentation and design authority."""
 
+    control_bundle_version: Literal[1, 2] = Field(
+        default=1,
+        description=(
+            "Version 2 supplies same-camera depth, normal, material-ID, and camera controls. "
+            "Version 1 remains accepted for saved legacy requests."
+        ),
+    )
     beauty_image_base64: str = Field(
         ...,
         min_length=32,
@@ -199,6 +252,14 @@ class Direct3DRenderRequest(BaseModel):
             "Map from #RRGGBB instance colors to exact authored instance, " "semantic, zone, and building identities."
         ),
     )
+    depth_image_base64: str | None = Field(default=None, min_length=32, max_length=20_000_000)
+    normal_image_base64: str | None = Field(default=None, min_length=32, max_length=20_000_000)
+    material_id_image_base64: str | None = Field(default=None, min_length=32, max_length=20_000_000)
+    material_id_manifest: dict[str, Direct3DMaterialDescriptor] | None = Field(
+        default=None,
+        description="Map from exact material-ID colors to capture-local source materials.",
+    )
+    camera: Direct3DCameraManifest | None = None
     fidelity_policy: Direct3DFidelityPolicy = Field(
         default="balanced",
         description=(
@@ -265,6 +326,32 @@ class Direct3DRenderRequest(BaseModel):
             instance_ids.add(descriptor.instance_id)
         return normalized
 
+    @field_validator("material_id_manifest")
+    @classmethod
+    def validate_material_id_manifest(
+        cls,
+        manifest: dict[str, Direct3DMaterialDescriptor] | None,
+    ) -> dict[str, Direct3DMaterialDescriptor] | None:
+        if manifest is None:
+            return None
+        if not 1 <= len(manifest) <= 2048:
+            raise ValueError("material_id_manifest must contain between 1 and 2048 colors")
+        normalized: dict[str, Direct3DMaterialDescriptor] = {}
+        material_ids: set[str] = set()
+        for color, descriptor in manifest.items():
+            if not re.fullmatch(r"#[0-9a-fA-F]{6}", color):
+                raise ValueError(f"Invalid material-ID color {color!r}; expected #RRGGBB")
+            normalized_color = color.upper()
+            if normalized_color == "#000000":
+                raise ValueError("#000000 is reserved for non-material pixels")
+            if normalized_color in normalized:
+                raise ValueError(f"Duplicate material-ID color {normalized_color}")
+            if descriptor.material_id in material_ids:
+                raise ValueError("material_id_manifest may contain each material_id only once")
+            normalized[normalized_color] = descriptor
+            material_ids.add(descriptor.material_id)
+        return normalized
+
     @model_validator(mode="after")
     def validate_object_id_pair(self) -> "Direct3DRenderRequest":
         if self.view_mode == "street" and self.presentation_mode != "scene":
@@ -277,6 +364,22 @@ class Direct3DRenderRequest(BaseModel):
             raise ValueError("instance_id_image_base64 and instance_id_manifest must be " "supplied together")
         if self.presentation_mode in {"scene", "reproject"} and not self.instance_id_image_base64:
             raise ValueError("scene and reproject require instance_id_image_base64 and " "instance_id_manifest")
+        if bool(self.material_id_image_base64) != bool(self.material_id_manifest):
+            raise ValueError("material_id_image_base64 and material_id_manifest must be supplied together")
+        if self.control_bundle_version == 2:
+            missing = [
+                name
+                for name, value in (
+                    ("depth_image_base64", self.depth_image_base64),
+                    ("normal_image_base64", self.normal_image_base64),
+                    ("material_id_image_base64", self.material_id_image_base64),
+                    ("material_id_manifest", self.material_id_manifest),
+                    ("camera", self.camera),
+                )
+                if value is None
+            ]
+            if missing:
+                raise ValueError("control_bundle_version=2 requires " + ", ".join(missing))
         zone_ids = [claim.zone_id for claim in self.community_3d_claims]
         if len(zone_ids) != len(set(zone_ids)):
             raise ValueError("community_3d_claims may contain each zone only once")
@@ -451,6 +554,7 @@ class Direct3DFinishFusionDiagnostics(BaseModel):
 
 
 class Direct3DRenderDiagnostics(BaseModel):
+    control_bundle_version: Literal[1, 2] = 1
     processing_mode: Direct3DPresentationMode = "source_anchored"
     view_lock: Literal[
         "source_pixel_locked",
@@ -475,6 +579,11 @@ class Direct3DRenderDiagnostics(BaseModel):
     minimum_object_id_proposal_iou: float | None = None
     instance_id_attached: bool = False
     instance_count: int = 0
+    depth_attached: bool = False
+    normal_attached: bool = False
+    material_id_attached: bool = False
+    material_count: int = 0
+    camera_attached: bool = False
     provider_raw_instance_source_presence: dict[str, object] | None = None
     provider_raw_unsupported_structure: dict[str, object] | None = None
     returned_safety_strategy: (
@@ -483,6 +592,7 @@ class Direct3DRenderDiagnostics(BaseModel):
             "source_envelope_all_authored_interiors",
             "source_envelope_building_interiors",
             "provider_full_scene",
+            "provider_full_scene_rlasm_pixel_lock",
             "provider_full_scene_local_repairs",
             "global_tone_with_safe_building_interiors",
             "global_tone_only",
@@ -495,6 +605,9 @@ class Direct3DRenderDiagnostics(BaseModel):
     instance_source_presence: dict[str, object] | None = None
     unsupported_structure: dict[str, object] | None = None
     server_inventory: dict[str, int] | None = None
+    source_locked_rlasm_instance_count: int = 0
+    source_locked_rlasm_pixel_lock_applied: bool = False
+    source_locked_rlasm_pixel_coverage: float | None = None
     scene_lower_context_coverage: float | None = None
     minimum_scene_lower_context_coverage: float | None = None
     structural_edge_guide_attached: Literal[True] = True

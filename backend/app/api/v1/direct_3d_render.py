@@ -10,6 +10,7 @@ from __future__ import annotations
 import base64
 import logging
 import math
+import re
 from datetime import datetime, timezone
 
 import boto3
@@ -279,6 +280,10 @@ def _validate_direct_3d_project_zones(
     server_inventory = (
         _bind_instance_manifest_to_server_zones(req, physical_zones, zones) if bind_capture_instances else []
     )
+    server_inventory = _annotate_source_locked_rlasm_inventory(
+        server_inventory,
+        available_buildings,
+    )
     if len(boundaries) > 1:
         raise _direct_state_conflict(
             "Direct 3D requires one authoritative site boundary. Resolve duplicate "
@@ -333,6 +338,40 @@ def _validate_direct_3d_project_zones(
             "spending on a Direct render."
         )
     return server_inventory
+
+
+def _annotate_source_locked_rlasm_inventory(
+    server_inventory: list[dict[str, object]],
+    available_buildings: dict[str, Building],
+) -> list[dict[str, object]]:
+    """Attach a trusted pixel-lock marker to reviewed RLASM instances.
+
+    The browser may describe only screen-space identity. Whether a linked GLB
+    is a reviewed RLASM delivery remains server-owned state, so this marker is
+    attached only after the normal project, representation-hash, and
+    building-ID checks have passed.
+    """
+
+    annotated: list[dict[str, object]] = []
+    for raw_item in server_inventory:
+        item = dict(raw_item)
+        building_id = str(item.get("building_id") or "")
+        building = available_buildings.get(building_id)
+        specifications = building.specifications if building is not None else None
+        rlasm = specifications.get("rlasm") if isinstance(specifications, dict) else None
+        source_locked = bool(
+            building is not None
+            and str(getattr(building, "generation_engine", None) or "").lower() == "rlasm"
+            and isinstance(rlasm, dict)
+            and rlasm.get("source_locked") is True
+        )
+        if source_locked:
+            item["source_locked_rlasm"] = True
+            delivery_sha256 = str(rlasm.get("delivery_sha256") or "").lower()
+            if re.fullmatch(r"[a-f0-9]{64}", delivery_sha256):
+                item["rlasm_delivery_sha256"] = delivery_sha256
+        annotated.append(item)
+    return annotated
 
 
 def _fnv1a32(value: str) -> int:
@@ -1213,6 +1252,7 @@ async def generate_direct_3d_render(
         capture.normalized_beauty.height,
         object_id_attached=capture.normalized_object_id is not None,
         instance_id_attached=capture.normalized_instance_id is not None,
+        control_bundle_version=req.control_bundle_version,
     )
 
     reservation = await _reserve_direct_render(

@@ -4,14 +4,16 @@ from __future__ import annotations
 
 import asyncio
 import hashlib
+import json
 import logging
+import re
 import uuid
 from datetime import datetime, timezone
 from decimal import Decimal
-from typing import Literal
+from typing import Any, Literal
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -20,8 +22,12 @@ from app.core.database import get_db
 from app.core.security import check_project_permission, is_admin_or_above, require_auth
 from app.models.models import ApiUsageLog, Building, Project, SiteZone, User
 from app.schemas.direct_3d_render import (
+    Direct3DCameraManifest,
     Direct3DCommunityZoneClaim,
+    Direct3DInstanceDescriptor,
+    Direct3DMaterialDescriptor,
     Direct3DResidualLandscapeClaim,
+    Direct3DSemanticClass,
 )
 from app.services.internal_video import (
     INTERNAL_VIDEO_MODEL,
@@ -65,6 +71,7 @@ SeedanceReferenceMode = Literal["preview_only", "preview_plus_keyframes"]
 InternalEnhanceQuality = Literal["fast", "gpu_detail"]
 RenderQuality = Literal["draft", "high"]
 CaptureEncoder = Literal["webcodecs_h264", "media_recorder_webm"]
+MAX_GEOMETRY_CONTROL_BYTES = 96 * 1024 * 1024
 
 
 class RoutePoint(BaseModel):
@@ -92,7 +99,41 @@ class VideoCaptureProfile(BaseModel):
     instance_checkpoint_count: int = Field(default=0, ge=0, le=6)
     depth_checkpoint_count: int = Field(default=0, ge=0, le=6)
     normal_checkpoint_count: int = Field(default=0, ge=0, le=6)
+    material_checkpoint_count: int = Field(default=0, ge=0, le=6)
     motion_frame_count: int = Field(default=0, ge=0, le=192)
+
+
+class VideoGeometryCheckpoint(BaseModel):
+    """Same-camera renderer facts persisted for temporal geometry review."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    progress: float = Field(..., ge=0, le=1)
+    beauty_image_base64: str = Field(..., min_length=32, max_length=20_000_000)
+    object_id_image_base64: str = Field(..., min_length=32, max_length=20_000_000)
+    object_id_manifest: dict[str, Direct3DSemanticClass]
+    instance_id_image_base64: str = Field(..., min_length=32, max_length=20_000_000)
+    instance_id_manifest: dict[str, Direct3DInstanceDescriptor]
+    depth_image_base64: str = Field(..., min_length=32, max_length=20_000_000)
+    normal_image_base64: str = Field(..., min_length=32, max_length=20_000_000)
+    material_id_image_base64: str = Field(..., min_length=32, max_length=20_000_000)
+    material_id_manifest: dict[str, Direct3DMaterialDescriptor]
+    camera: Direct3DCameraManifest
+
+    @model_validator(mode="after")
+    def validate_manifests(self) -> "VideoGeometryCheckpoint":
+        for label, manifest in (
+            ("object_id_manifest", self.object_id_manifest),
+            ("instance_id_manifest", self.instance_id_manifest),
+            ("material_id_manifest", self.material_id_manifest),
+        ):
+            if not 1 <= len(manifest) <= 2048:
+                raise ValueError(f"{label} must contain between 1 and 2048 colors")
+            if any(not re.fullmatch(r"#[0-9a-fA-F]{6}", color) for color in manifest):
+                raise ValueError(f"{label} colors must use #RRGGBB")
+            if any(color.upper() == "#000000" for color in manifest):
+                raise ValueError(f"{label} reserves #000000 for context")
+        return self
 
 
 class VideoPilotRequest(BaseModel):
@@ -108,6 +149,7 @@ class VideoPilotRequest(BaseModel):
     route_keyframes_base64: list[str] = Field(default_factory=list, max_length=6)
     preview_video_base64: str | None = Field(default=None, max_length=34_000_000)
     preview_video_mime_type: str | None = Field(default=None, max_length=100)
+    geometry_checkpoints: list[VideoGeometryCheckpoint] = Field(default_factory=list, max_length=6)
     capture_profile: VideoCaptureProfile | None = None
     route_points: list[RoutePoint] = Field(..., min_length=2, max_length=24)
     camera_motion: CameraMotion = "path_follow"
@@ -145,6 +187,7 @@ class VideoPreflightResponse(BaseModel):
     estimated_cost_usd: float
     model: str
     reference_image_count: int
+    geometry_checkpoint_count: int = 0
     scene_revision_sha256: str = Field(..., pattern=r"^[a-fA-F0-9]{64}$")
 
 
@@ -173,6 +216,8 @@ class VideoAttemptResponse(BaseModel):
     fidelity_min_score: float | None = None
     fidelity_status: FidelityStatus | Literal["pending"] | None = None
     fidelity_samples: list[dict[str, float]] = Field(default_factory=list)
+    protected_instance_min_score: float | None = None
+    temporal_consistency_score: float | None = None
     is_benchmark: bool = False
     benchmark_source: Literal["automatic", "user"] | None = None
     enhancement_engine: str | None = None
@@ -488,6 +533,17 @@ async def _score_saved_attempt(attempt: dict, project_id: uuid.UUID) -> dict:
         if keyframe_urls
         else []
     )
+    checkpoint_controls = list(attempt.get("geometry_checkpoint_controls") or [])
+    instance_map_urls = [
+        str(control.get("images", {}).get("instance_id") or "")
+        for control in checkpoint_controls
+        if control.get("images", {}).get("instance_id")
+    ]
+    instance_map_bytes = (
+        await asyncio.gather(*(asyncio.to_thread(_read_storage_file, url, project_id) for url in instance_map_urls))
+        if instance_map_urls
+        else []
+    )
     report = await asyncio.to_thread(
         score_video_fidelity,
         generated_video=video_bytes,
@@ -495,8 +551,51 @@ async def _score_saved_attempt(attempt: dict, project_id: uuid.UUID) -> dict:
         preview_video=preview_bytes,
         preview_mime_type="video/webm" if str(preview_url).endswith(".webm") else "video/mp4",
         route_keyframes=keyframe_bytes,
+        instance_id_maps=instance_map_bytes,
     )
     return report.metadata()
+
+
+def _decode_geometry_checkpoints(req: VideoPilotRequest) -> list[dict[str, Any]]:
+    decoded: list[dict[str, Any]] = []
+    total_bytes = 0
+    previous_progress = -1.0
+    for index, checkpoint in enumerate(req.geometry_checkpoints, start=1):
+        if checkpoint.progress <= previous_progress:
+            raise ValueError("Geometry checkpoint progress values must be strictly increasing.")
+        previous_progress = checkpoint.progress
+        images = {
+            "beauty": decode_guide_image(checkpoint.beauty_image_base64),
+            "object_id": decode_guide_image(checkpoint.object_id_image_base64),
+            "instance_id": decode_guide_image(checkpoint.instance_id_image_base64),
+            "depth": decode_guide_image(checkpoint.depth_image_base64),
+            "normal": decode_guide_image(checkpoint.normal_image_base64),
+            "material_id": decode_guide_image(checkpoint.material_id_image_base64),
+        }
+        dimensions = {(image.width, image.height) for image in images.values()}
+        if len(dimensions) != 1:
+            raise ValueError(f"Geometry checkpoint {index} images must have identical dimensions.")
+        metadata_keys = {"object_id", "instance_id", "depth", "normal", "material_id"}
+        if any(images[key].mime_type != "image/png" for key in metadata_keys):
+            raise ValueError(f"Geometry checkpoint {index} metadata passes must be PNG.")
+        total_bytes += sum(len(image.data) for image in images.values())
+        decoded.append({"progress": checkpoint.progress, "images": images, "claim": checkpoint})
+    if total_bytes > MAX_GEOMETRY_CONTROL_BYTES:
+        raise ValueError("Geometry checkpoints exceed the 96 MB pilot limit.")
+    if req.capture_profile:
+        claimed = req.capture_profile.geometry_checkpoint_count
+        if claimed != len(decoded):
+            raise ValueError("The geometry checkpoint count does not match the capture profile.")
+        expected_counts = (
+            req.capture_profile.semantic_checkpoint_count,
+            req.capture_profile.instance_checkpoint_count,
+            req.capture_profile.depth_checkpoint_count,
+            req.capture_profile.normal_checkpoint_count,
+            req.capture_profile.material_checkpoint_count,
+        )
+        if any(count != len(decoded) for count in expected_counts):
+            raise ValueError("The geometry pass counts do not match the supplied checkpoints.")
+    return decoded
 
 
 def _preflight_values(req: VideoPilotRequest):
@@ -510,6 +609,7 @@ def _preflight_values(req: VideoPilotRequest):
             if req.preview_video_base64
             else None
         )
+        geometry_checkpoints = _decode_geometry_checkpoints(req)
         if req.control_mode == "single_frame" and (keyframes or preview):
             raise ValueError("Single-frame mode cannot include route keyframes or a preview video.")
         if req.control_mode == "multi_keyframe":
@@ -548,7 +648,7 @@ def _preflight_values(req: VideoPilotRequest):
         )
     except (ValueError, KeyError) as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
-    return guide, keyframes, preview, prompt
+    return guide, keyframes, preview, geometry_checkpoints, prompt
 
 
 @router.post("/preflight", response_model=VideoPreflightResponse)
@@ -564,7 +664,7 @@ async def preflight_video(
         raise HTTPException(status_code=503, detail="GEMINI_API_KEY is not configured.")
     if req.provider == "seedance_mini" and not settings.fal_key:
         raise HTTPException(status_code=503, detail="FAL_KEY is not configured.")
-    guide, keyframes, preview, prompt = _preflight_values(req)
+    guide, keyframes, preview, geometry_checkpoints, prompt = _preflight_values(req)
     if req.provider == "seedance_mini" and preview:
         runtime_error = seedance_runtime_error(preview.mime_type)
         if runtime_error:
@@ -610,6 +710,7 @@ async def preflight_video(
         estimated_cost_usd=estimated_cost,
         model=_provider_model(req.provider, settings, req.internal_enhance_quality),
         reference_image_count=len(keyframes),
+        geometry_checkpoint_count=len(geometry_checkpoints),
         scene_revision_sha256=scene_revision_sha256,
     )
 
@@ -724,7 +825,7 @@ async def generate_video(
         raise HTTPException(status_code=503, detail="GEMINI_API_KEY is not configured.")
     if req.provider == "seedance_mini" and not settings.fal_key:
         raise HTTPException(status_code=503, detail="FAL_KEY is not configured.")
-    guide, keyframes, preview, prompt = _preflight_values(req)
+    guide, keyframes, preview, geometry_checkpoints, prompt = _preflight_values(req)
     if req.provider == "seedance_mini" and preview:
         runtime_error = seedance_runtime_error(preview.mime_type)
         if runtime_error:
@@ -774,6 +875,26 @@ async def generate_video(
         control_hash.update(frame.data)
     if preview:
         control_hash.update(preview.data)
+    for checkpoint in geometry_checkpoints:
+        for image in checkpoint["images"].values():
+            control_hash.update(image.data)
+        control_hash.update(
+            json.dumps(
+                checkpoint["claim"].model_dump(
+                    mode="json",
+                    exclude={
+                        "beauty_image_base64",
+                        "object_id_image_base64",
+                        "instance_id_image_base64",
+                        "depth_image_base64",
+                        "normal_image_base64",
+                        "material_id_image_base64",
+                    },
+                ),
+                sort_keys=True,
+                separators=(",", ":"),
+            ).encode("utf-8")
+        )
     guide_hash = control_hash.hexdigest()
     if req.provider == "seedance_mini":
         estimated_cost = estimate_seedance_mini_cost(
@@ -811,6 +932,7 @@ async def generate_video(
         "guide_sha256": guide_hash,
         "scene_revision_sha256": scene_revision_sha256,
         "reference_image_count": len(keyframes),
+        "geometry_checkpoint_count": len(geometry_checkpoints),
         "fidelity_status": "pending" if preview or len(keyframes) >= 2 else None,
         **resource_updates,
     }
@@ -846,6 +968,38 @@ async def generate_video(
             )
             await _upload_to_storage(preview_key, preview.data, preview.mime_type)
             preview_video_url = f"/api/v1/files/{preview_key}"
+        geometry_checkpoint_controls: list[dict[str, Any]] = []
+        for index, checkpoint in enumerate(geometry_checkpoints, start=1):
+            base_key = f"projects/{req.project_id}/video-render/{attempt_id}/controls/geometry-{index:02d}"
+            image_urls: dict[str, str] = {}
+            for role, image in checkpoint["images"].items():
+                image_key = f"{base_key}/{role}.png"
+                await _upload_to_storage(image_key, image.data, "image/png")
+                image_urls[role] = f"/api/v1/files/{image_key}"
+            manifest_key = f"{base_key}/control.json"
+            manifest_payload = json.dumps(
+                checkpoint["claim"].model_dump(
+                    mode="json",
+                    exclude={
+                        "beauty_image_base64",
+                        "object_id_image_base64",
+                        "instance_id_image_base64",
+                        "depth_image_base64",
+                        "normal_image_base64",
+                        "material_id_image_base64",
+                    },
+                ),
+                sort_keys=True,
+                separators=(",", ":"),
+            ).encode("utf-8")
+            await _upload_to_storage(manifest_key, manifest_payload, "application/json")
+            geometry_checkpoint_controls.append(
+                {
+                    "progress": checkpoint["progress"],
+                    "images": image_urls,
+                    "manifest_url": f"/api/v1/files/{manifest_key}",
+                }
+            )
         entry = await _update_attempt(
             db,
             req.project_id,
@@ -853,6 +1007,7 @@ async def generate_video(
             guide_image_url=guide_url,
             route_keyframe_urls=route_keyframe_urls,
             preview_video_url=preview_video_url,
+            geometry_checkpoint_controls=geometry_checkpoint_controls,
         )
     except Exception as exc:
         logger.exception("Video guide persistence failed before provider call")
@@ -957,6 +1112,7 @@ async def generate_video(
                     preview_video=preview.data if preview else None,
                     preview_mime_type=preview.mime_type if preview else None,
                     route_keyframes=[frame.data for frame in keyframes],
+                    instance_id_maps=[checkpoint["images"]["instance_id"].data for checkpoint in geometry_checkpoints],
                 )
                 fidelity_updates = fidelity_report.metadata()
             except Exception as fidelity_exc:

@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-export const DIRECT_3D_CAPTURE_SCHEMA = 'siteforge.direct-3d-capture/v1' as const;
+export const DIRECT_3D_CAPTURE_SCHEMA = 'siteforge.direct-3d-capture/v2' as const;
 export const DIRECT_3D_PROPOSAL_ROLE_KEY = 'siteforgeDirect3DProposalRole';
 export const DIRECT_3D_INSTANCE_KEY = 'siteforgeDirect3DInstance';
 export const DIRECT_3D_CAPTURE_EXCLUDE_KEY = 'siteforgeExcludeFromDirect3DCapture';
@@ -22,6 +22,27 @@ export interface Direct3DInstanceDescriptor {
   zone_id?: string;
   building_id?: string;
   source_zone_ids?: string[];
+}
+
+export interface Direct3DMaterialDescriptor {
+  material_id: string;
+  label: string;
+  semantic_class: Direct3DProposalRole;
+  material_family_id?: string;
+  source_specific: boolean;
+}
+
+export interface Direct3DCameraManifest {
+  projection: 'perspective' | 'orthographic' | 'other';
+  projection_matrix: number[];
+  matrix_world: number[];
+  position: [number, number, number];
+  quaternion: [number, number, number, number];
+  near?: number;
+  far?: number;
+  fov?: number;
+  aspect?: number;
+  zoom?: number;
 }
 
 /**
@@ -54,6 +75,9 @@ export interface Direct3DCaptureBundle {
   /** Optional renderer-space geometry controls used by video enhancement. */
   depthImageBase64?: string;
   normalImageBase64?: string;
+  materialIdImageBase64?: string;
+  materialIdManifest?: Readonly<Record<string, Direct3DMaterialDescriptor>>;
+  camera: Direct3DCameraManifest;
   width: number;
   height: number;
   proposalPixelCount: number;
@@ -174,6 +198,12 @@ interface RenderableSnapshot {
 export interface Direct3DInstanceColorAssignment {
   color: string;
   descriptor: Direct3DInstanceDescriptor;
+}
+
+export interface Direct3DMaterialColorAssignment {
+  color: string;
+  descriptor: Direct3DMaterialDescriptor;
+  material: THREE.Material;
 }
 
 interface InstanceCaptureAnalysis {
@@ -516,7 +546,7 @@ export function getDirect3DTargetSampleCount(
   return 2;
 }
 
-export type Direct3DRenderPass = 'beauty' | 'class-id' | 'instance-id' | 'depth' | 'normal';
+export type Direct3DRenderPass = 'beauty' | 'class-id' | 'instance-id' | 'material-id' | 'depth' | 'normal';
 
 function readTargetPixels(
   renderer: THREE.WebGLRenderer,
@@ -652,6 +682,221 @@ export function buildDirect3DInstanceColorManifest(
     assignments.map(({ color, descriptor }) => [color, descriptor]),
   ) as Record<string, Direct3DInstanceDescriptor>);
   return { assignments, manifest };
+}
+
+function materialColorForRoleOrdinal(
+  role: Direct3DProposalRole,
+  ordinal: number,
+): string {
+  const roleIndex = DIRECT_3D_PROPOSAL_ROLES.indexOf(role);
+  const local = Math.max(0, ordinal - 1) & 0x7ff;
+  // Reserve a separate red-channel band for every semantic class. The low
+  // red bits plus quantized green/blue provide 2,048 exact colors per role,
+  // while keeping renderer/PNG rounding inside the owning semantic band.
+  const red = 24 + roleIndex * 42 + ((local >>> 8) & 0x7) * 4;
+  const green = INSTANCE_COLOR_LEVELS[(local >>> 4) & 0xf];
+  const blue = INSTANCE_COLOR_LEVELS[local & 0xf];
+  return `#${[red, green, blue]
+    .map((channel) => channel.toString(16).padStart(2, '0'))
+    .join('')}`.toUpperCase();
+}
+
+function materialStringMetadata(material: THREE.Material, key: string): string | undefined {
+  const value = material.userData?.[key];
+  return typeof value === 'string' && value.trim() ? value.trim() : undefined;
+}
+
+function direct3DMaterialFamilyKey(
+  material: THREE.Material,
+  role: Direct3DProposalRole,
+): string {
+  const materialFamilyId = materialStringMetadata(material, 'material_family_id')
+    ?? materialStringMetadata(material, 'materialFamilyId');
+  if (materialFamilyId) return `${role}:family:${materialFamilyId}`;
+
+  const pbr = material as THREE.Material & {
+    color?: THREE.Color;
+    emissive?: THREE.Color;
+    roughness?: number;
+    metalness?: number;
+    transmission?: number;
+    opacity?: number;
+    map?: THREE.Texture | null;
+  };
+  const label = (material.name || material.type || 'material').trim().toLowerCase();
+  const mapLabel = (pbr.map?.name || '').trim().toLowerCase();
+  return [
+    role,
+    label,
+    material.type,
+    pbr.color?.getHexString() ?? '',
+    pbr.emissive?.getHexString() ?? '',
+    Number.isFinite(pbr.roughness) ? pbr.roughness!.toFixed(4) : '',
+    Number.isFinite(pbr.metalness) ? pbr.metalness!.toFixed(4) : '',
+    Number.isFinite(pbr.transmission) ? pbr.transmission!.toFixed(4) : '',
+    Number.isFinite(pbr.opacity) ? pbr.opacity!.toFixed(4) : '',
+    mapLabel,
+  ].join(':');
+}
+
+export function buildDirect3DMaterialColorManifest(
+  snapshots: readonly RenderableSnapshot[],
+): {
+  assignments: Direct3DMaterialColorAssignment[];
+  manifest: Readonly<Record<string, Direct3DMaterialDescriptor>>;
+} {
+  const materialFamilies = new Map<string, {
+    materials: THREE.Material[];
+    role: Direct3DProposalRole;
+    materialFamilyId?: string;
+    sourceSpecific: boolean;
+    label: string;
+  }>();
+  for (const snapshot of snapshots) {
+    if (!snapshot.role || !snapshot.effectivelyVisible || snapshot.excluded || !snapshot.material) continue;
+    const entries = Array.isArray(snapshot.material) ? snapshot.material : [snapshot.material];
+    for (const material of entries) {
+      const key = direct3DMaterialFamilyKey(material, snapshot.role);
+      const materialFamilyId = materialStringMetadata(material, 'material_family_id')
+        ?? materialStringMetadata(material, 'materialFamilyId');
+      const explicitSourceSpecific = material.userData?.source_specific === true
+        || material.userData?.sourceSpecific === true
+        || material.userData?.rlasm_source_specific === true;
+      const current = materialFamilies.get(key);
+      if (current) {
+        if (!current.materials.some((entry) => entry.uuid === material.uuid)) current.materials.push(material);
+        current.sourceSpecific ||= explicitSourceSpecific || Boolean(materialFamilyId);
+      } else {
+        materialFamilies.set(key, {
+          materials: [material],
+          role: snapshot.role,
+          ...(materialFamilyId ? { materialFamilyId } : {}),
+          sourceSpecific: explicitSourceSpecific || Boolean(materialFamilyId),
+          label: (material.name || material.type || 'material').trim().slice(0, 180),
+        });
+      }
+    }
+  }
+  if (materialFamilies.size > MAX_DIRECT_3D_INSTANCES) {
+    throw new Direct3DCaptureError(
+      'capture_failed',
+      `Direct 3D capture supports at most ${MAX_DIRECT_3D_INSTANCES.toLocaleString()} visible source materials.`,
+    );
+  }
+  const sorted = [...materialFamilies.entries()].sort(([left], [right]) => (
+    left < right ? -1 : left > right ? 1 : 0
+  ));
+  const roleOrdinals = new Map<Direct3DProposalRole, number>();
+  const assignments = sorted.flatMap(([familyKey, family], index) => {
+    const ordinal = (roleOrdinals.get(family.role) ?? 0) + 1;
+    roleOrdinals.set(family.role, ordinal);
+    const color = materialColorForRoleOrdinal(family.role, ordinal);
+    const descriptor: Direct3DMaterialDescriptor = {
+      material_id: `material:${fnv1a32(familyKey).toString(16).padStart(8, '0')}`,
+      label: family.label || `material-${index + 1}`,
+      semantic_class: family.role,
+      ...(family.materialFamilyId ? { material_family_id: family.materialFamilyId.slice(0, 180) } : {}),
+      source_specific: family.sourceSpecific,
+    };
+    return family.materials.map((material) => ({ color, material, descriptor }));
+  });
+  return {
+    assignments,
+    manifest: Object.freeze(Object.fromEntries(
+      assignments.map(({ color, descriptor }) => [color, descriptor]),
+    ) as Record<string, Direct3DMaterialDescriptor>),
+  };
+}
+
+export function analyzeDirect3DMaterialPixels(
+  bottomUpPixels: Uint8Array | Uint8ClampedArray,
+  width: number,
+  height: number,
+  manifest: Readonly<Record<string, Direct3DMaterialDescriptor>>,
+  classIdPixels?: Uint8ClampedArray,
+): Uint8ClampedArray {
+  if (bottomUpPixels.length !== width * height * 4) {
+    throw new Direct3DCaptureError('capture_failed', 'Direct 3D material buffer dimensions do not match.');
+  }
+  if (classIdPixels && classIdPixels.length !== width * height * 4) {
+    throw new Direct3DCaptureError(
+      'capture_failed',
+      'Direct 3D class and material buffers must have matching dimensions.',
+    );
+  }
+  const source = flipRgbaRows(bottomUpPixels, width, height);
+  const output = new Uint8ClampedArray(source.length);
+  const candidates = Object.entries(manifest).map(([color, descriptor]) => ({
+    descriptor,
+    rgb: parseHexColor(color),
+  }));
+  const candidatesByRole = new Map<Direct3DProposalRole, typeof candidates>();
+  for (const role of DIRECT_3D_PROPOSAL_ROLES) {
+    candidatesByRole.set(role, candidates.filter((candidate) => candidate.descriptor.semantic_class === role));
+  }
+  const roleByClassColor = new Map(DIRECT_3D_PROPOSAL_ROLES.map((role) => {
+    const [red, green, blue] = CLASS_RGB[role];
+    return [(red << 16) | (green << 8) | blue, role] as const;
+  }));
+  const nearestCache = new Map<string, typeof candidates[number] | null>();
+  for (let index = 0; index < source.length; index += 4) {
+    output[index + 3] = 255;
+    const alpha = source[index + 3];
+    if (alpha < MASK_SOLID_ALPHA || candidates.length === 0) continue;
+    const alphaScale = 255 / Math.max(alpha, 1);
+    const red = Math.round(Math.min(255, source[index] * alphaScale));
+    const green = Math.round(Math.min(255, source[index + 1] * alphaScale));
+    const blue = Math.round(Math.min(255, source[index + 2] * alphaScale));
+    const cacheKey = (red << 16) | (green << 8) | blue;
+    const classKey = classIdPixels
+      ? (classIdPixels[index] << 16) | (classIdPixels[index + 1] << 8) | classIdPixels[index + 2]
+      : null;
+    const semanticRole = classKey === null ? null : roleByClassColor.get(classKey) ?? null;
+    const eligibleCandidates = semanticRole ? candidatesByRole.get(semanticRole) ?? [] : candidates;
+    if (eligibleCandidates.length === 0) continue;
+    const scopedCacheKey = `${semanticRole ?? '*'}:${cacheKey}`;
+    let nearest = nearestCache.get(scopedCacheKey);
+    if (nearest === undefined) {
+      nearest = null;
+      let bestDistance = Number.POSITIVE_INFINITY;
+      for (const candidate of eligibleCandidates) {
+        const distance = (red - candidate.rgb[0]) ** 2
+          + (green - candidate.rgb[1]) ** 2
+          + (blue - candidate.rgb[2]) ** 2;
+        if (distance < bestDistance) {
+          nearest = candidate;
+          bestDistance = distance;
+        }
+      }
+      nearestCache.set(scopedCacheKey, nearest);
+    }
+    if (!nearest) continue;
+    output[index] = nearest.rgb[0];
+    output[index + 1] = nearest.rgb[1];
+    output[index + 2] = nearest.rgb[2];
+  }
+  return output;
+}
+
+function captureCameraManifest(camera: THREE.Camera): Direct3DCameraManifest {
+  const perspective = camera as THREE.PerspectiveCamera;
+  const orthographic = camera as THREE.OrthographicCamera;
+  return {
+    projection: perspective.isPerspectiveCamera
+      ? 'perspective'
+      : orthographic.isOrthographicCamera ? 'orthographic' : 'other',
+    projection_matrix: [...camera.projectionMatrix.elements],
+    matrix_world: [...camera.matrixWorld.elements],
+    position: [camera.position.x, camera.position.y, camera.position.z],
+    quaternion: [camera.quaternion.x, camera.quaternion.y, camera.quaternion.z, camera.quaternion.w],
+    ...('near' in camera && Number.isFinite((camera as THREE.PerspectiveCamera).near)
+      ? { near: (camera as THREE.PerspectiveCamera).near } : {}),
+    ...('far' in camera && Number.isFinite((camera as THREE.PerspectiveCamera).far)
+      ? { far: (camera as THREE.PerspectiveCamera).far } : {}),
+    ...(perspective.isPerspectiveCamera
+      ? { fov: perspective.fov, aspect: perspective.aspect, zoom: perspective.zoom }
+      : orthographic.isOrthographicCamera ? { zoom: orthographic.zoom } : {}),
+  };
 }
 
 function closestProposalRole(red: number, green: number, blue: number): Direct3DProposalRole {
@@ -1031,6 +1276,7 @@ type MaterialWithAlphaTextures = THREE.Material & {
   scale?: number;
   dashSize?: number;
   gapSize?: number;
+  transmission?: number;
 };
 
 function copyMaterialPolicy(source: THREE.Material, target: THREE.Material): void {
@@ -1066,6 +1312,15 @@ function semanticObjectKind(object: THREE.Object3D): 'mesh' | 'line' | 'points' 
   if (typed.isPoints) return 'points';
   if (typed.isSprite) return 'sprite';
   return 'mesh';
+}
+
+function semanticSurfaceOwnsOpaqueId(
+  source: MaterialWithAlphaTextures,
+  kind: ReturnType<typeof semanticObjectKind>,
+): boolean {
+  if (kind !== 'mesh' || source.alphaTest > 0 || source.alphaMap) return false;
+  return (source.transmission ?? 0) > 0
+    || /glass|glaz|window|pane/i.test(source.name || '');
 }
 
 function createSingleDirect3DSemanticMaterial(
@@ -1129,6 +1384,15 @@ function createSingleDirect3DSemanticMaterial(
   target.name = `siteforge-direct3d-${role}-${source.name || source.type}`;
   copyMaterialPolicy(source, target);
   preserveTextureAlphaWithoutBeautyColor(target, sourceTyped);
+  // Transparent architectural glazing still physically owns a surface in ID
+  // space. Letting it alpha-blend with the class/material behind it makes the
+  // exact-color material pass disagree with the class pass, especially at
+  // close range. Cut-out foliage/cards retain their alpha policy above.
+  if (semanticSurfaceOwnsOpaqueId(sourceTyped, kind)) {
+    target.transparent = false;
+    target.opacity = 1;
+    target.depthWrite = true;
+  }
   target.needsUpdate = true;
   return target;
 }
@@ -1243,10 +1507,13 @@ export async function captureDirect3DScene(
   let beautyTarget: THREE.WebGLRenderTarget | null = null;
   let depthTarget: THREE.WebGLRenderTarget | null = null;
   let normalTarget: THREE.WebGLRenderTarget | null = null;
+  let materialTarget: THREE.WebGLRenderTarget | null = null;
   let classTarget: THREE.WebGLRenderTarget | null = null;
   let instanceTarget: THREE.WebGLRenderTarget | null = null;
   let depthImageBase64: string | undefined;
   let normalImageBase64: string | undefined;
+  let materialIdImageBase64: string | undefined;
+  let materialIdManifest: Readonly<Record<string, Direct3DMaterialDescriptor>> | undefined;
   const depthMaterial = options.includeGeometryPasses
     ? new THREE.MeshDepthMaterial({ depthPacking: THREE.RGBADepthPacking })
     : null;
@@ -1457,6 +1724,59 @@ export async function captureDirect3DScene(
       instanceIdManifest,
     );
 
+    if (options.includeGeometryPasses) {
+      const materialCapture = buildDirect3DMaterialColorManifest(renderables);
+      materialIdManifest = materialCapture.manifest;
+      const assignmentByUuid = new Map(materialCapture.assignments.map((assignment) => (
+        [`${assignment.descriptor.semantic_class}:${assignment.material.uuid}`, assignment]
+      )));
+      for (const snapshot of renderables) {
+        snapshot.object.visible = snapshot.role === null && snapshot.effectivelyVisible && !snapshot.excluded;
+        if (snapshot.material !== undefined) snapshot.object.material = snapshot.material;
+      }
+      scene.fog = rendererSnapshot.fog;
+      scene.overrideMaterial = rendererSnapshot.overrideMaterial;
+      renderer.autoClear = true;
+      materialTarget = createCaptureTarget(renderer, width, height, 'material-id');
+      renderer.setRenderTarget(materialTarget);
+      renderer.setScissorTest(false);
+      renderer.setViewport(0, 0, width, height);
+      renderer.setClearColor(0x000000, 0);
+      renderer.render(scene, camera);
+      scene.fog = null;
+      scene.overrideMaterial = null;
+      renderer.autoClear = false;
+      renderer.clear(true, false, false);
+      for (const role of DIRECT_3D_PROPOSAL_ROLES) {
+        for (const snapshot of renderables) {
+          const visible = snapshot.role === role && snapshot.effectivelyVisible && !snapshot.excluded;
+          snapshot.object.visible = visible;
+          if (!visible || snapshot.material === undefined) continue;
+          const sources = Array.isArray(snapshot.material) ? snapshot.material : [snapshot.material];
+          const replacements = sources.map((material) => {
+            const assignment = assignmentByUuid.get(`${role}:${material.uuid}`);
+            return assignment
+              ? semanticMaterials.get(material, role, snapshot.object, assignment.color) as THREE.Material
+              : material;
+          });
+          snapshot.object.material = Array.isArray(snapshot.material) ? replacements : replacements[0];
+        }
+        renderer.render(scene, camera);
+        assertContextAvailable(renderer);
+      }
+      const materialPixels = analyzeDirect3DMaterialPixels(
+        readTargetPixels(renderer, materialTarget, width, height),
+        width,
+        height,
+        materialIdManifest,
+        analysis.classIdPixels,
+      );
+      materialIdImageBase64 = rgbaToPngDataUrl(materialPixels, width, height);
+      renderer.setRenderTarget(rendererSnapshot.renderTarget);
+      materialTarget.dispose();
+      materialTarget = null;
+    }
+
     return {
       schema: DIRECT_3D_CAPTURE_SCHEMA,
       beautyImageBase64,
@@ -1467,6 +1787,9 @@ export async function captureDirect3DScene(
       instanceIdManifest,
       depthImageBase64,
       normalImageBase64,
+      materialIdImageBase64,
+      materialIdManifest,
+      camera: captureCameraManifest(camera),
       width,
       height,
       proposalPixelCount: analysis.proposalPixelCount,
@@ -1510,7 +1833,7 @@ export async function captureDirect3DScene(
         cleanupFailure ??= error;
       }
     }
-    for (const target of [beautyTarget, depthTarget, normalTarget, classTarget, instanceTarget]) {
+    for (const target of [beautyTarget, depthTarget, normalTarget, materialTarget, classTarget, instanceTarget]) {
       try {
         target?.dispose();
       } catch (error) {

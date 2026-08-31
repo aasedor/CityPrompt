@@ -106,6 +106,7 @@ export interface Direct3DRenderDiagnostics {
     | 'source_envelope_all_authored_interiors'
     | 'source_envelope_building_interiors'
     | 'provider_full_scene'
+    | 'provider_full_scene_rlasm_pixel_lock'
     | 'provider_full_scene_local_repairs'
     | 'global_tone_with_safe_building_interiors'
     | 'global_tone_only'
@@ -134,6 +135,9 @@ export interface Direct3DRenderDiagnostics {
     landscape?: number;
     [key: string]: number | undefined;
   } | null;
+  source_locked_rlasm_instance_count?: number;
+  source_locked_rlasm_pixel_lock_applied?: boolean;
+  source_locked_rlasm_pixel_coverage?: number | null;
   source_width: number;
   source_height: number;
   normalized_width: number;
@@ -363,7 +367,18 @@ export function useDirect3DRender() {
     const presentationMode = viewMode === 'street'
       ? 'scene'
       : resolveDirect3DPresentationMode(options.style);
+    if (
+      !capture.depthImageBase64
+      || !capture.normalImageBase64
+      || !capture.materialIdImageBase64
+      || !capture.materialIdManifest
+    ) {
+      throw new Error(
+        'Direct 3D high-resolution rendering requires a complete geometry control capture.',
+      );
+    }
     const response = await rendersApi.generateDirect3D({
+      control_bundle_version: 2,
       view_mode: viewMode,
       ...(options.archetypeReferences?.length
         ? { archetype_references: options.archetypeReferences.slice(0, 8) }
@@ -374,6 +389,11 @@ export function useDirect3DRender() {
       object_id_manifest: { ...capture.classIdManifest },
       instance_id_image_base64: capture.instanceIdImageBase64,
       instance_id_manifest: { ...capture.instanceIdManifest },
+      depth_image_base64: capture.depthImageBase64,
+      normal_image_base64: capture.normalImageBase64,
+      material_id_image_base64: capture.materialIdImageBase64,
+      material_id_manifest: { ...capture.materialIdManifest },
+      camera: capture.camera,
       capture: {
         width: capture.width,
         height: capture.height,

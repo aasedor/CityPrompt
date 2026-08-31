@@ -207,6 +207,7 @@ interface VideoCaptureProfile {
   instance_checkpoint_count: number;
   depth_checkpoint_count: number;
   normal_checkpoint_count: number;
+  material_checkpoint_count: number;
   motion_frame_count: number;
 }
 
@@ -221,6 +222,19 @@ interface PreparedVideoRequest {
   route_keyframes_base64: string[];
   preview_video_base64?: string;
   preview_video_mime_type?: string;
+  geometry_checkpoints?: Array<{
+    progress: number;
+    beauty_image_base64: string;
+    object_id_image_base64: string;
+    object_id_manifest: Record<string, string>;
+    instance_id_image_base64: string;
+    instance_id_manifest: Record<string, unknown>;
+    depth_image_base64: string;
+    normal_image_base64: string;
+    material_id_image_base64: string;
+    material_id_manifest: Record<string, unknown>;
+    camera: NonNullable<VideoRouteCaptureResult['geometryCheckpoints']>[number]['camera'];
+  }>;
   capture_profile?: VideoCaptureProfile;
   route_points: VideoRoutePoint[];
   camera_motion: MotionId;
@@ -551,6 +565,21 @@ export function VideoGeneratePanel({
         preview_video_base64: activeControls.previewVideoBase64,
         preview_video_mime_type: activeControls.previewVideoMimeType,
       } : {}),
+      ...(activeControls?.geometryCheckpoints?.length ? {
+        geometry_checkpoints: activeControls.geometryCheckpoints.map((checkpoint) => ({
+          progress: checkpoint.progress,
+          beauty_image_base64: checkpoint.beautyImageBase64,
+          object_id_image_base64: checkpoint.classIdImageBase64,
+          object_id_manifest: { ...checkpoint.classIdManifest },
+          instance_id_image_base64: checkpoint.instanceIdImageBase64,
+          instance_id_manifest: { ...checkpoint.instanceIdManifest },
+          depth_image_base64: checkpoint.depthImageBase64,
+          normal_image_base64: checkpoint.normalImageBase64,
+          material_id_image_base64: checkpoint.materialIdImageBase64,
+          material_id_manifest: { ...checkpoint.materialIdManifest },
+          camera: checkpoint.camera,
+        })),
+      } : {}),
       ...(activeControls?.previewCaptureProfile ? {
         capture_profile: {
           encoder: activeControls.previewCaptureProfile.encoder,
@@ -568,6 +597,7 @@ export function VideoGeneratePanel({
           instance_checkpoint_count: activeControls.geometryPassProfile?.instanceCheckpointCount ?? 0,
           depth_checkpoint_count: activeControls.geometryPassProfile?.depthCheckpointCount ?? 0,
           normal_checkpoint_count: activeControls.geometryPassProfile?.normalCheckpointCount ?? 0,
+          material_checkpoint_count: activeControls.geometryPassProfile?.materialCheckpointCount ?? 0,
           motion_frame_count: activeControls.geometryPassProfile?.motionFrameCount ?? 0,
         },
       } : {}),

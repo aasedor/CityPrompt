@@ -1329,6 +1329,7 @@ export const rendersApi = {
   /** Isolated current-camera refinement for an already compiled 3D scene.
    * This endpoint never routes through the Classic colored-zone renderer. */
   generateDirect3D: async (request: {
+    control_bundle_version: 2;
     beauty_image_base64: string;
     proposal_mask_base64: string;
     prompt: string;
@@ -1351,6 +1352,28 @@ export const rendersApi = {
       building_id?: string;
       source_zone_ids?: string[];
     }>;
+    depth_image_base64: string;
+    normal_image_base64: string;
+    material_id_image_base64: string;
+    material_id_manifest: Record<string, {
+      material_id: string;
+      label: string;
+      semantic_class: 'ground' | 'landscape' | 'street' | 'park' | 'building';
+      material_family_id?: string;
+      source_specific: boolean;
+    }>;
+    camera: {
+      projection: 'perspective' | 'orthographic' | 'other';
+      projection_matrix: number[];
+      matrix_world: number[];
+      position: [number, number, number];
+      quaternion: [number, number, number, number];
+      near?: number;
+      far?: number;
+      fov?: number;
+      aspect?: number;
+      zoom?: number;
+    };
     fidelity_policy: 'precise' | 'balanced' | 'expressive';
     capture: {
       width: number;
@@ -1376,6 +1399,7 @@ export const rendersApi = {
     capture_fingerprint: string;
     output_fingerprint: string;
     diagnostics: {
+      control_bundle_version?: 1 | 2;
       /** Optional so saved/legacy source-anchored responses remain readable. */
       processing_mode?: 'source_anchored' | 'scene' | 'reproject';
       view_lock?: 'source_pixel_locked' | 'camera_registered' | 'not_applicable_layout_guided';
@@ -1384,6 +1408,11 @@ export const rendersApi = {
       provider_spatial_pixels_retained?: boolean;
       fidelity_policy?: 'precise' | 'balanced' | 'expressive';
       instance_id_attached?: boolean;
+      depth_attached?: boolean;
+      normal_attached?: boolean;
+      material_id_attached?: boolean;
+      material_count?: number;
+      camera_attached?: boolean;
       instance_count?: number;
       provider_raw_instance_source_presence?: {
         passed: boolean;
