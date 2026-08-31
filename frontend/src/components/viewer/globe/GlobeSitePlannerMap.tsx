@@ -2562,6 +2562,11 @@ export function GlobeSitePlannerMap({
     try {
       return await captureDirect3DScene(renderer, scene, camera, {
         ...options,
+        // Direct 3D v2 requires the same registered geometry controls at
+        // street level as it does for aerial/current-camera renders.  Keep
+        // callers free to request a cheaper diagnostic capture explicitly,
+        // but make the production street path complete by default.
+        includeGeometryPasses: options.includeGeometryPasses ?? true,
         minMaskCoverage: 0,
         maxMaskCoverage: 1,
       });
@@ -2789,10 +2794,12 @@ export function GlobeSitePlannerMap({
       }
 
       const keyframesBase64: string[] = [];
+      const geometryCheckpoints: NonNullable<VideoRouteCaptureResult['geometryCheckpoints']> = [];
       let semanticCheckpointCount = 0;
       let instanceCheckpointCount = 0;
       let depthCheckpointCount = 0;
       let normalCheckpointCount = 0;
+      let materialCheckpointCount = 0;
       for (let index = 0; index < sampledRoute.length; index += 1) {
         applyRoutePose(cinematicRouteProgress(index / (sampledRoute.length - 1)));
         await twoFrames();
@@ -2816,6 +2823,27 @@ export function GlobeSitePlannerMap({
           instanceCheckpointCount += capture.instanceIdImageBase64 ? 1 : 0;
           depthCheckpointCount += capture.depthImageBase64 ? 1 : 0;
           normalCheckpointCount += capture.normalImageBase64 ? 1 : 0;
+          materialCheckpointCount += capture.materialIdImageBase64 ? 1 : 0;
+          if (
+            capture.depthImageBase64
+            && capture.normalImageBase64
+            && capture.materialIdImageBase64
+            && capture.materialIdManifest
+          ) {
+            geometryCheckpoints.push({
+              progress: index / (sampledRoute.length - 1),
+              beautyImageBase64: capture.beautyImageBase64,
+              classIdImageBase64: capture.classIdImageBase64,
+              classIdManifest: capture.classIdManifest,
+              instanceIdImageBase64: capture.instanceIdImageBase64,
+              instanceIdManifest: capture.instanceIdManifest,
+              depthImageBase64: capture.depthImageBase64,
+              normalImageBase64: capture.normalImageBase64,
+              materialIdImageBase64: capture.materialIdImageBase64,
+              materialIdManifest: capture.materialIdManifest,
+              camera: capture.camera,
+            });
+          }
         } else {
           renderer.setRenderTarget(null);
           renderer.render(scene, camera);
@@ -2875,6 +2903,7 @@ export function GlobeSitePlannerMap({
         keyframesBase64,
         previewVideoBase64,
         previewVideoMimeType: previewBlob.type,
+        geometryCheckpoints,
         previewCaptureProfile: {
           encoder: previewCapture.encoder,
           frameCount: previewCapture.frameCount,
@@ -2893,11 +2922,13 @@ export function GlobeSitePlannerMap({
             instanceCheckpointCount,
             depthCheckpointCount,
             normalCheckpointCount,
+            materialCheckpointCount,
           ),
           semanticCheckpointCount,
           instanceCheckpointCount,
           depthCheckpointCount,
           normalCheckpointCount,
+          materialCheckpointCount,
           motionFrameCount: previewCapture.frameCount,
         },
         streetRenderReadiness,

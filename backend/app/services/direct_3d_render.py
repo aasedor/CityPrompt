@@ -29,10 +29,11 @@ logger = logging.getLogger(__name__)
 
 DIRECT_3D_MODEL = "gpt-image-2"
 # Presentation-first contract (product decision 2026-07-24): the provider image
-# IS the product. Scene/reproject renders return it untouched — no registration,
-# inventory gates, local repairs, or source-lock fallbacks. The legacy gate
-# machinery below stays compilable behind this flag for one-line reversal and
-# for the regression suite, which pins it False.
+# is the product for ordinary scene/reproject renders. Server-certified,
+# source-locked RLASM scenes are the narrow exception: their exact instance
+# pixels remain authoritative, while projection-changing views require review.
+# The legacy gate machinery below stays compilable behind this flag for
+# one-line reversal and for the regression suite, which pins it False.
 DIRECT_3D_PRESENTATION_FIRST = True
 _OPENAI_EDIT_URL = "https://api.openai.com/v1/images/edits"
 _MIN_PROVIDER_PIXELS = 655_360
@@ -48,6 +49,9 @@ DIRECT_3D_BASE_INPUT_TOKENS = 4
 DIRECT_3D_CLASS_ID_INPUT_TOKENS = 2
 DIRECT_3D_INSTANCE_ID_INPUT_TOKENS = 2
 DIRECT_3D_STRUCTURAL_GUIDE_INPUT_TOKENS = 2
+DIRECT_3D_DEPTH_INPUT_TOKENS = 2
+DIRECT_3D_NORMAL_INPUT_TOKENS = 2
+DIRECT_3D_MATERIAL_ID_INPUT_TOKENS = 2
 DIRECT_3D_MIN_TOKEN_COST = 13
 _MAX_PROVIDER_PIXELS = DIRECT_3D_MAX_PROVIDER_PIXELS
 _MAX_PROVIDER_EDGE = DIRECT_3D_MAX_SOURCE_EDGE
@@ -191,6 +195,9 @@ class PreparedDirect3DCapture:
     normalized_proposal_mask: Image.Image
     normalized_object_id: Image.Image | None
     normalized_instance_id: Image.Image | None
+    normalized_depth: Image.Image | None
+    normalized_normal: Image.Image | None
+    normalized_material_id: Image.Image | None
     proposal_coverage: float
     object_id_coverage: float | None
     object_id_proposal_recall: float | None
@@ -199,6 +206,7 @@ class PreparedDirect3DCapture:
     instance_id_proposal_recall: float | None
     instance_id_proposal_iou: float | None
     instance_count: int
+    material_count: int
     scene_lower_context_coverage: float | None
     capture_fingerprint: str
     audit_input_base64: str
@@ -345,6 +353,7 @@ def estimate_direct_3d_token_cost(
     *,
     object_id_attached: bool,
     instance_id_attached: bool = False,
+    control_bundle_version: Literal[1, 2] = 1,
 ) -> int:
     """Return the conservative credit reservation for one Direct 3D edit."""
 
@@ -356,6 +365,13 @@ def estimate_direct_3d_token_cost(
         + DIRECT_3D_BASE_INPUT_TOKENS
         + (DIRECT_3D_CLASS_ID_INPUT_TOKENS if object_id_attached else 0)
         + (DIRECT_3D_INSTANCE_ID_INPUT_TOKENS if instance_id_attached else 0)
+        + (
+            DIRECT_3D_DEPTH_INPUT_TOKENS
+            + DIRECT_3D_NORMAL_INPUT_TOKENS
+            + DIRECT_3D_MATERIAL_ID_INPUT_TOKENS
+            if control_bundle_version == 2
+            else 0
+        )
         + DIRECT_3D_STRUCTURAL_GUIDE_INPUT_TOKENS
     )
     return max(DIRECT_3D_MIN_TOKEN_COST, estimated)
@@ -517,8 +533,14 @@ def _capture_fingerprint(
     manifest: dict[str, str] | None,
     instance_id: Image.Image | None = None,
     instance_manifest: dict[str, Any] | None = None,
+    depth: Image.Image | None = None,
+    normal: Image.Image | None = None,
+    material_id: Image.Image | None = None,
+    material_manifest: dict[str, Any] | None = None,
+    camera: Any | None = None,
+    bundle_version: Literal[1, 2] = 1,
 ) -> str:
-    digest = hashlib.sha256(b"siteforge-direct-3d-capture-v1\0")
+    digest = hashlib.sha256(f"siteforge-direct-3d-capture-v{bundle_version}\0".encode("ascii"))
     digest.update(beauty.width.to_bytes(4, "big"))
     digest.update(beauty.height.to_bytes(4, "big"))
     digest.update(beauty.tobytes())
@@ -541,6 +563,20 @@ def _capture_fingerprint(
                 separators=(",", ":"),
             ).encode("utf-8")
         )
+    for image in (depth, normal, material_id):
+        if image is not None:
+            digest.update(image.tobytes())
+    if material_manifest:
+        serializable_materials = {
+            color: (descriptor.model_dump(mode="json") if hasattr(descriptor, "model_dump") else descriptor)
+            for color, descriptor in material_manifest.items()
+        }
+        digest.update(
+            json.dumps(serializable_materials, sort_keys=True, separators=(",", ":")).encode("utf-8")
+        )
+    if camera is not None:
+        serializable_camera = camera.model_dump(mode="json") if hasattr(camera, "model_dump") else camera
+        digest.update(json.dumps(serializable_camera, sort_keys=True, separators=(",", ":")).encode("utf-8"))
     return digest.hexdigest()
 
 
@@ -715,6 +751,91 @@ def prepare_direct_3d_capture(req: Direct3DRenderRequest) -> PreparedDirect3DCap
     elif req.presentation_mode in {"scene", "reproject"}:
         raise Direct3DValidationError("Presentation modes require an instance-ID image and manifest")
 
+    depth_image: Image.Image | None = None
+    normal_image: Image.Image | None = None
+    for field_name, payload in (
+        ("depth_image_base64", req.depth_image_base64),
+        ("normal_image_base64", req.normal_image_base64),
+    ):
+        if not payload:
+            continue
+        image = _load_image(
+            _decode_base64_payload(payload, label=field_name),
+            label=field_name,
+            allowed_formats={"PNG"},
+        ).convert("RGB")
+        if image.size != beauty_image.size:
+            raise Direct3DValidationError(
+                f"{field_name} dimensions must exactly match the beauty capture"
+            )
+        if field_name == "depth_image_base64":
+            depth_image = image
+        else:
+            normal_image = image
+
+    material_id_image: Image.Image | None = None
+    if req.material_id_image_base64 and req.material_id_manifest:
+        material_id_image = _load_image(
+            _decode_base64_payload(
+                req.material_id_image_base64,
+                label="material_id_image_base64",
+            ),
+            label="material_id_image_base64",
+            allowed_formats={"PNG"},
+        ).convert("RGB")
+        if material_id_image.size != beauty_image.size:
+            raise Direct3DValidationError(
+                "Material-ID image dimensions must exactly match the beauty capture"
+            )
+        material_pixels = np.asarray(material_id_image)
+        classified_materials = np.zeros((height, width), dtype=bool)
+        semantic_pixels = np.asarray(object_id_image) if object_id_image is not None else None
+        semantic_colors: dict[str, np.ndarray] = {}
+        if req.object_id_manifest and semantic_pixels is not None:
+            for color, semantic_class in req.object_id_manifest.items():
+                semantic_colors[semantic_class] = semantic_colors.get(
+                    semantic_class,
+                    np.zeros((height, width), dtype=bool),
+                ) | np.all(
+                    semantic_pixels == np.asarray(_hex_to_rgb(color), dtype=np.uint8),
+                    axis=2,
+                )
+        for color, descriptor in req.material_id_manifest.items():
+            matches = np.all(
+                material_pixels == np.asarray(_hex_to_rgb(color), dtype=np.uint8),
+                axis=2,
+            )
+            classified_materials |= matches
+            if np.any(matches) and semantic_colors:
+                expected_semantic = semantic_colors.get(
+                    descriptor.semantic_class,
+                    np.zeros((height, width), dtype=bool),
+                )
+                agreement = float(np.mean(expected_semantic[matches]))
+                if agreement < 0.90:
+                    raise Direct3DValidationError(
+                        "Material-ID semantic class conflicts with the class-ID image "
+                        f"for {descriptor.material_id!r} (agreement {agreement:.3f})"
+                    )
+        non_black = np.any(material_pixels != 0, axis=2)
+        unmanifested_count = int(np.count_nonzero(non_black & ~classified_materials))
+        if unmanifested_count:
+            raise Direct3DValidationError(
+                "Material-ID image contains non-black colors absent from "
+                f"material_id_manifest ({unmanifested_count} pixels)"
+            )
+        proposal_active = proposal_values >= 0.5
+        intersection_count = int(np.count_nonzero(classified_materials & proposal_active))
+        proposal_count = int(np.count_nonzero(proposal_active))
+        union_count = int(np.count_nonzero(classified_materials | proposal_active))
+        material_recall = float(intersection_count / max(1, proposal_count))
+        material_iou = float(intersection_count / max(1, union_count))
+        if material_recall < 0.85 or material_iou < 0.84:
+            raise Direct3DValidationError(
+                "Material-ID classes must cover the proposal "
+                f"(recall {material_recall:.3f}, IoU {material_iou:.3f})"
+            )
+
     normalized_size = _normalized_dimensions(width, height)
     normalized_beauty = beauty_image.resize(normalized_size, Image.Resampling.LANCZOS)
     normalized_mask = proposal_mask.resize(normalized_size, Image.Resampling.LANCZOS)
@@ -744,6 +865,17 @@ def prepare_direct_3d_capture(req: Direct3DRenderRequest) -> PreparedDirect3DCap
     normalized_instance_id = (
         instance_id_image.resize(normalized_size, Image.Resampling.NEAREST) if instance_id_image is not None else None
     )
+    normalized_depth = (
+        depth_image.resize(normalized_size, Image.Resampling.NEAREST) if depth_image is not None else None
+    )
+    normalized_normal = (
+        normal_image.resize(normalized_size, Image.Resampling.NEAREST) if normal_image is not None else None
+    )
+    normalized_material_id = (
+        material_id_image.resize(normalized_size, Image.Resampling.NEAREST)
+        if material_id_image is not None
+        else None
+    )
     capture_fingerprint = _capture_fingerprint(
         beauty_image,
         proposal_mask,
@@ -751,6 +883,12 @@ def prepare_direct_3d_capture(req: Direct3DRenderRequest) -> PreparedDirect3DCap
         req.object_id_manifest,
         instance_id_image,
         req.instance_id_manifest,
+        depth_image,
+        normal_image,
+        material_id_image,
+        req.material_id_manifest,
+        req.camera,
+        req.control_bundle_version,
     )
     if req.capture and req.capture.fingerprint:
         if req.capture.fingerprint.lower() != capture_fingerprint:
@@ -763,6 +901,9 @@ def prepare_direct_3d_capture(req: Direct3DRenderRequest) -> PreparedDirect3DCap
         normalized_proposal_mask=normalized_mask,
         normalized_object_id=normalized_object_id,
         normalized_instance_id=normalized_instance_id,
+        normalized_depth=normalized_depth,
+        normalized_normal=normalized_normal,
+        normalized_material_id=normalized_material_id,
         proposal_coverage=proposal_coverage,
         object_id_coverage=object_id_coverage,
         object_id_proposal_recall=object_id_proposal_recall,
@@ -771,6 +912,7 @@ def prepare_direct_3d_capture(req: Direct3DRenderRequest) -> PreparedDirect3DCap
         instance_id_proposal_recall=instance_id_proposal_recall,
         instance_id_proposal_iou=instance_id_proposal_iou,
         instance_count=len(req.instance_id_manifest or {}),
+        material_count=len(req.material_id_manifest or {}),
         scene_lower_context_coverage=scene_lower_context_coverage,
         capture_fingerprint=capture_fingerprint,
         audit_input_base64=base64.b64encode(_png_bytes(beauty_image)).decode("ascii"),
@@ -3084,13 +3226,16 @@ def _presentation_prompt(
     visible_component_summary: dict[str, int] | None = None,
     view_mode: Literal["aerial", "street"] = "aerial",
     archetype_reference_labels: list[str] | None = None,
+    control_bundle_version: Literal[1, 2] = 1,
 ) -> str:
     """Build a natural provider-first prompt with one final design lock."""
 
     del visible_component_summary
     has_object_id = bool(object_id_manifest)
     has_instance_id = bool(instance_id_manifest)
-    guide_number = 2 + int(has_object_id) + int(has_instance_id)
+    base_guide_number = 2 + int(has_object_id) + int(has_instance_id)
+    geometry_control_count = 3 if control_bundle_version == 2 else 0
+    guide_number = base_guide_number + geometry_control_count
     image_roles = [
         "Image 1 is the clean 3D source and primary visual reference",
     ]
@@ -3101,6 +3246,14 @@ def _presentation_prompt(
         image_roles.append(
             f"Image {instance_number} is instance-ID metadata in which each "
             "non-black colour is one authored instance"
+        )
+    if control_bundle_version == 2:
+        image_roles.extend(
+            [
+                f"Image {base_guide_number} is renderer depth metadata",
+                f"Image {base_guide_number + 1} is renderer view-normal metadata",
+                f"Image {base_guide_number + 2} is exact source-material ID metadata",
+            ]
         )
     image_roles.append(f"Image {guide_number} is monochrome structure and layout metadata")
     guide = (
@@ -3231,10 +3384,13 @@ def _authoritative_prompt(
     server_inventory: list[dict[str, Any]] | None = None,
     visible_component_summary: dict[str, int] | None = None,
     archetype_reference_labels: list[str] | None = None,
+    control_bundle_version: Literal[1, 2] = 1,
 ) -> str:
     has_object_id = bool(object_id_manifest)
     has_instance_id = bool(instance_id_manifest)
-    structural_guide_number = 2 + int(has_object_id) + int(has_instance_id)
+    base_guide_number = 2 + int(has_object_id) + int(has_instance_id)
+    geometry_control_count = 3 if control_bundle_version == 2 else 0
+    structural_guide_number = base_guide_number + geometry_control_count
     id_guidance = (
         " Image 2 is a machine-readable class-ID guide only; use its classes to "
         "understand object ownership. Its legend is metadata only: never reproduce, "
@@ -3253,6 +3409,15 @@ def _authoritative_prompt(
             f" Image {instance_number} is exact instance-ID metadata only. "
             "Every non-black color denotes one existing authored instance; "
             "preserve each exactly once and never reproduce these colors."
+        )
+    geometry_guidance = ""
+    if control_bundle_version == 2:
+        geometry_guidance = (
+            f" Images {base_guide_number}, {base_guide_number + 1}, and "
+            f"{base_guide_number + 2} are same-camera depth, view-normal, and "
+            "source-material ID metadata. Use them to preserve occlusion, surface "
+            "orientation, material boundaries, returns, and contacts; never reproduce "
+            "their encoded colors."
         )
     edge_guidance = (
         f" Image {structural_guide_number} is the authoritative monochrome structural-edge "
@@ -3304,6 +3469,7 @@ def _authoritative_prompt(
         "not a redesigned scene."
         + id_guidance
         + instance_guidance
+        + geometry_guidance
         + edge_guidance
         + component_guidance
         + reference_lock
@@ -3672,6 +3838,69 @@ def _server_inventory_counts(
     return counts
 
 
+def _source_locked_rlasm_instance_ids(
+    server_inventory: list[dict[str, Any]] | None,
+) -> tuple[str, ...]:
+    return tuple(
+        sorted(
+            {
+                str(item.get("instance_id") or "")
+                for item in (server_inventory or [])
+                if item.get("source_locked_rlasm") is True
+                and str(item.get("instance_id") or "")
+            }
+        )
+    )
+
+
+def _restore_source_locked_instances(
+    source: Image.Image,
+    candidate: Image.Image,
+    instance_id_image: Image.Image | None,
+    instance_id_manifest: dict[str, Any] | None,
+    protected_instance_ids: tuple[str, ...],
+) -> tuple[Image.Image, float]:
+    """Restore exact source pixels for server-certified RLASM instances."""
+
+    if not protected_instance_ids:
+        return candidate.convert("RGB"), 0.0
+    if instance_id_image is None or not instance_id_manifest:
+        raise Direct3DValidationError(
+            "Source-locked RLASM rendering requires the exact instance-ID pass"
+        )
+    if source.size != candidate.size or source.size != instance_id_image.size:
+        raise Direct3DValidationError(
+            "Source-locked RLASM source, candidate, and instance-ID images must align"
+        )
+
+    protected = set(protected_instance_ids)
+    instance_pixels = np.asarray(instance_id_image.convert("RGB"))
+    mask = np.zeros(instance_pixels.shape[:2], dtype=bool)
+    matched: set[str] = set()
+    for color, descriptor in instance_id_manifest.items():
+        instance_id = str(getattr(descriptor, "instance_id", "") or "")
+        if instance_id not in protected:
+            continue
+        rgb = tuple(int(color[index : index + 2], 16) for index in (1, 3, 5))
+        mask |= np.all(instance_pixels == np.asarray(rgb, dtype=np.uint8), axis=2)
+        matched.add(instance_id)
+    if matched != protected:
+        missing = ", ".join(sorted(protected - matched))
+        raise Direct3DValidationError(
+            f"Source-locked RLASM instance mask is missing {missing}"
+        )
+    if not np.any(mask):
+        raise Direct3DValidationError("Source-locked RLASM instance masks contain no pixels")
+
+    source_pixels = np.asarray(source.convert("RGB"))
+    candidate_pixels = np.asarray(candidate.convert("RGB")).copy()
+    candidate_pixels[mask] = source_pixels[mask]
+    return (
+        Image.fromarray(candidate_pixels, mode="RGB"),
+        float(np.count_nonzero(mask) / mask.size),
+    )
+
+
 class Direct3DRenderService:
     def __init__(self, api_key: str):
         self.api_key = api_key
@@ -3724,6 +3953,20 @@ class Direct3DRenderService:
                     ),
                 )
             )
+        if req.control_bundle_version == 2:
+            geometry_controls = (
+                ("direct-3d-depth.png", capture.normalized_depth),
+                ("direct-3d-normal.png", capture.normalized_normal),
+                ("direct-3d-material-id.png", capture.normalized_material_id),
+            )
+            for filename, image in geometry_controls:
+                if image is None:
+                    raise Direct3DValidationError(
+                        f"Control bundle v2 is missing prepared {filename}"
+                    )
+                files.append(
+                    ("image[]", (filename, _png_bytes(image), "image/png"))
+                )
         files.append(
             (
                 "image[]",
@@ -3765,6 +4008,7 @@ class Direct3DRenderService:
                 server_inventory=server_inventory,
                 visible_component_summary=visible_component_summary,
                 archetype_reference_labels=[reference.label for reference in req.archetype_references],
+                control_bundle_version=req.control_bundle_version,
             )
             if req.presentation_mode == "source_anchored"
             else _presentation_prompt(
@@ -3777,6 +4021,7 @@ class Direct3DRenderService:
                 visible_component_summary=visible_component_summary,
                 view_mode=req.view_mode,
                 archetype_reference_labels=[reference.label for reference in req.archetype_references],
+                control_bundle_version=req.control_bundle_version,
             )
         )
         data = {
@@ -3905,6 +4150,7 @@ class Direct3DRenderService:
         try:
             provider_image_base64 = base64.b64encode(_png_bytes(generated)).decode("ascii")
             common_diagnostics: dict[str, Any] = {
+                "control_bundle_version": req.control_bundle_version,
                 "processing_mode": req.presentation_mode,
                 "fidelity_policy": req.fidelity_policy,
                 "source_width": capture.source_beauty.width,
@@ -3929,9 +4175,19 @@ class Direct3DRenderService:
                 ),
                 "instance_id_attached": (capture.normalized_instance_id is not None),
                 "instance_count": capture.instance_count,
+                "depth_attached": capture.normalized_depth is not None,
+                "normal_attached": capture.normalized_normal is not None,
+                "material_id_attached": capture.normalized_material_id is not None,
+                "material_count": capture.material_count,
+                "camera_attached": req.camera is not None,
                 "instance_source_presence": None,
                 "unsupported_structure": None,
                 "server_inventory": _server_inventory_counts(server_inventory),
+                "source_locked_rlasm_instance_count": len(
+                    _source_locked_rlasm_instance_ids(server_inventory)
+                ),
+                "source_locked_rlasm_pixel_lock_applied": False,
+                "source_locked_rlasm_pixel_coverage": None,
                 "scene_lower_context_coverage": (capture.scene_lower_context_coverage),
                 "minimum_scene_lower_context_coverage": (
                     _MIN_SCENE_LOWER_CONTEXT_COVERAGE if req.presentation_mode == "scene" else None
@@ -3949,6 +4205,7 @@ class Direct3DRenderService:
                 "inward_feather_px": None,
                 "mask_retry_used": False,
             }
+            source_locked_rlasm_ids = _source_locked_rlasm_instance_ids(server_inventory)
 
             if req.view_mode == "street":
                 # Street v1 is review-first even under presentation-first: the
@@ -3985,6 +4242,15 @@ class Direct3DRenderService:
                         "Street-level Direct 3D renders are review-first in this "
                         "version: compare the candidate against the source "
                         "capture before saving.",
+                        *(
+                            (
+                                "Source-locked RLASM buildings are present. Street-level "
+                                "camera changes cannot be pixel-locked, so exact architectural "
+                                "identity requires direct visual review.",
+                            )
+                            if source_locked_rlasm_ids
+                            else ()
+                        ),
                     ),
                     diagnostics={
                         **common_diagnostics,
@@ -4009,6 +4275,108 @@ class Direct3DRenderService:
                             "minimum_occupied_edge_cells": (_MIN_REPROJECT_OCCUPIED_EDGE_CELLS),
                             "semantic_inventory_proxy_only": True,
                         },
+                    },
+                )
+
+            if (
+                DIRECT_3D_PRESENTATION_FIRST
+                and source_locked_rlasm_ids
+                and req.presentation_mode == "scene"
+            ):
+                registration: RegistrationResult | None = None
+                registration_error: str | None = None
+                try:
+                    registration = register_generated_image(
+                        capture.normalized_beauty,
+                        generated,
+                        capture.normalized_proposal_mask,
+                        enforce_transform_limits=False,
+                    )
+                    presentation, protected_coverage = _restore_source_locked_instances(
+                        capture.normalized_beauty,
+                        registration.image,
+                        capture.normalized_instance_id,
+                        req.instance_id_manifest,
+                        source_locked_rlasm_ids,
+                    )
+                    strategy = "provider_full_scene_rlasm_pixel_lock"
+                    provider_pixels_retained = True
+                except Direct3DValidationError as exc:
+                    registration_error = str(exc)
+                    presentation = capture.normalized_beauty.convert("RGB")
+                    protected_coverage = 1.0
+                    strategy = "authoritative_source"
+                    provider_pixels_retained = False
+
+                output_png = _png_bytes(presentation)
+                warnings = [
+                    "Server-certified source-locked RLASM building pixels were "
+                    "protected. Review the remaining AI-finished public realm and context."
+                ]
+                if registration_error:
+                    warnings.append(
+                        "The provider image could not be registered safely; the authoritative "
+                        f"source capture was returned instead ({registration_error})."
+                    )
+                return Direct3DServiceResult(
+                    image_base64=base64.b64encode(output_png).decode("ascii"),
+                    audit_input_base64=capture.audit_input_base64,
+                    capture_fingerprint=capture.capture_fingerprint,
+                    output_fingerprint=hashlib.sha256(output_png).hexdigest(),
+                    outcome="review_required",
+                    provider_image_base64=provider_image_base64,
+                    warnings=tuple(warnings),
+                    diagnostics={
+                        **common_diagnostics,
+                        "view_lock": "source_pixel_locked",
+                        "context_restyled": provider_pixels_retained,
+                        "provider_first": provider_pixels_retained,
+                        "provider_spatial_pixels_retained": provider_pixels_retained,
+                        "returned_safety_strategy": strategy,
+                        "source_locked_rlasm_pixel_lock_applied": True,
+                        "source_locked_rlasm_pixel_coverage": protected_coverage,
+                        "registration": (
+                            {
+                                "method": registration.method,
+                                "score": registration.score,
+                                "score_metric": registration.score_metric,
+                                "photometric_score": registration.photometric_score,
+                                "structural_context_score": registration.structural_context_score,
+                                "translation_x_px": registration.translation_x_px,
+                                "translation_y_px": registration.translation_y_px,
+                                "rotation_degrees": registration.rotation_degrees,
+                            }
+                            if registration is not None
+                            else None
+                        ),
+                    },
+                )
+
+            if (
+                DIRECT_3D_PRESENTATION_FIRST
+                and source_locked_rlasm_ids
+                and req.presentation_mode == "reproject"
+            ):
+                output_png = _png_bytes(generated)
+                return Direct3DServiceResult(
+                    image_base64=base64.b64encode(output_png).decode("ascii"),
+                    audit_input_base64=capture.audit_input_base64,
+                    capture_fingerprint=capture.capture_fingerprint,
+                    output_fingerprint=hashlib.sha256(output_png).hexdigest(),
+                    outcome="review_required",
+                    provider_image_base64=provider_image_base64,
+                    warnings=(
+                        "Projection-changing output contains source-locked RLASM buildings, "
+                        "but their pixels cannot be registered to the original capture. "
+                        "Exact identity requires direct visual review.",
+                    ),
+                    diagnostics={
+                        **common_diagnostics,
+                        "view_lock": "not_applicable_layout_guided",
+                        "context_restyled": True,
+                        "provider_first": True,
+                        "provider_spatial_pixels_retained": True,
+                        "returned_safety_strategy": "provider_full_scene",
                     },
                 )
 

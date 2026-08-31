@@ -143,7 +143,11 @@ interface GlobeAIRenderPanelProps {
   /** Hide/show placed models — used for polygon-only captures. */
   setBuildingModelsVisible?: (visible: boolean) => void;
   /** Capture the compiled current-camera scene for the isolated Direct 3D pipeline. */
-  captureDirect3D?: () => Promise<Direct3DCaptureBundle>;
+  captureDirect3D?: (options?: {
+    skipTileWait?: boolean;
+    includeGeometryPasses?: boolean;
+    maxLongEdge?: number;
+  }) => Promise<Direct3DCaptureBundle>;
   onRenderComplete?: (result: GlobeRenderResult) => void;
   onBeforeRender?: () => void | Promise<void>;
   dragHandleProps?: HTMLAttributes<HTMLDivElement>;
@@ -850,7 +854,7 @@ export function GlobeAIRenderPanel({
     setError(null);
     try {
       await onBeforeRender?.();
-      const capture = await captureDirect3D();
+      const capture = await captureDirect3D({ includeGeometryPasses: true });
       setDirectCapturePreview(await createDirect3DCaptureQAPreview(capture));
     } catch (err: unknown) {
       setDirectCapturePreview(null);
@@ -883,7 +887,7 @@ export function GlobeAIRenderPanel({
       // reused because the user may have moved the camera in the meantime.
       await onBeforeRender?.();
       setDirectCapturePreview(null);
-      const capture = await captureDirect3D();
+      const capture = await captureDirect3D({ includeGeometryPasses: true });
       setIsPreparingCapture(false);
       // Authored archetype artwork (facade sheets / catalogue cards) pushes
       // each building toward its archetype's real character instead of a

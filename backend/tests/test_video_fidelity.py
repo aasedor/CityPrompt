@@ -3,7 +3,12 @@ import pytest
 
 cv2 = pytest.importorskip("cv2")
 
-from app.services.video_fidelity import classify_fidelity, score_frame_similarity  # noqa: E402
+from app.services.video_fidelity import (  # noqa: E402
+    _score_protected_region,
+    _temporal_consistency,
+    classify_fidelity,
+    score_frame_similarity,
+)
 
 
 def _architectural_frame() -> np.ndarray:
@@ -52,3 +57,30 @@ def test_changed_building_geometry_is_flagged_below_identical():
 def test_review_band_requires_no_catastrophic_frame():
     assert classify_fidelity(60, 45) == "review"
     assert classify_fidelity(74, 50) == "review"
+
+
+def test_protected_instance_region_detects_local_building_drift():
+    reference = _architectural_frame()
+    changed = reference.copy()
+    cv2.rectangle(changed, (45, 55), (275, 320), (20, 20, 20), -1)
+    instance_map = np.zeros_like(reference)
+    cv2.rectangle(instance_map, (45, 55), (275, 320), (1, 0, 1), -1)
+
+    identical = _score_protected_region(reference, reference, instance_map)
+    drifted = _score_protected_region(reference, changed, instance_map)
+
+    assert identical is not None and identical >= 99
+    assert drifted is not None and drifted < identical
+
+
+def test_temporal_consistency_penalizes_motion_pumping():
+    reference = _architectural_frame()
+    shifted = np.roll(reference, 8, axis=1)
+    stable = _temporal_consistency([reference, shifted], [reference, shifted])
+    pumped = _temporal_consistency(
+        [reference, shifted],
+        [reference, np.full_like(reference, 5)],
+    )
+
+    assert stable >= 99
+    assert pumped < stable

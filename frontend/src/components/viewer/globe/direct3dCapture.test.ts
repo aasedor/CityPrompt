@@ -3,6 +3,8 @@ import * as THREE from 'three';
 import {
   analyzeDirect3DClassPixels,
   analyzeDirect3DInstancePixels,
+  analyzeDirect3DMaterialPixels,
+  buildDirect3DMaterialColorManifest,
   buildDirect3DInstanceColorManifest,
   computeDirect3DCaptureSize,
   createDirect3DSemanticMaterial,
@@ -47,6 +49,95 @@ describe('Direct 3D capture helpers', () => {
     expect(getDirect3DTargetSampleCount(true, 'normal')).toBe(0);
     expect(getDirect3DTargetSampleCount(false, 'beauty')).toBe(0);
     expect(getDirect3DTargetSampleCount(false, 'class-id')).toBe(0);
+  });
+
+  it('collapses cloned materials into stable source families before the 2,048-color gate', () => {
+    const source = new THREE.MeshStandardMaterial({ color: 0xa47f66, roughness: 0.72 });
+    source.name = 'RLASM_Source_Stucco';
+    source.userData = { source_specific: true };
+    const clones = Array.from({ length: MAX_DIRECT_3D_INSTANCES + 1 }, () => source.clone());
+    const geometry = new THREE.BoxGeometry();
+    const result = buildDirect3DMaterialColorManifest(clones.map((material) => ({
+      object: new THREE.Mesh(geometry, material),
+      visible: true,
+      effectivelyVisible: true,
+      material,
+      role: 'building' as const,
+      instance: null,
+      excluded: false,
+    })));
+
+    expect(result.assignments).toHaveLength(MAX_DIRECT_3D_INSTANCES + 1);
+    expect(Object.keys(result.manifest)).toHaveLength(1);
+    expect(Object.values(result.manifest)[0]).toMatchObject({
+      label: 'RLASM_Source_Stucco',
+      semantic_class: 'building',
+      source_specific: true,
+    });
+
+    for (const material of clones) material.dispose();
+    geometry.dispose();
+    source.dispose();
+  });
+
+  it('partitions exact material colors by semantic role', () => {
+    const material = new THREE.MeshStandardMaterial({ color: 0x777777 });
+    material.name = 'Shared neutral';
+    const geometry = new THREE.BoxGeometry();
+    const result = buildDirect3DMaterialColorManifest((['street', 'building'] as const).map((role) => ({
+      object: new THREE.Mesh(geometry, material),
+      visible: true,
+      effectivelyVisible: true,
+      material,
+      role,
+      instance: null,
+      excluded: false,
+    })));
+    const colors = Object.keys(result.manifest);
+    const red = colors.map((color) => Number.parseInt(color.slice(1, 3), 16));
+
+    expect(Object.values(result.manifest).map((entry) => entry.semantic_class).sort()).toEqual([
+      'building',
+      'street',
+    ]);
+    expect(Math.abs(red[0] - red[1])).toBeGreaterThan(10);
+
+    geometry.dispose();
+    material.dispose();
+  });
+
+  it('uses the class pass to disambiguate material-color blends at semantic boundaries', () => {
+    const material = new THREE.MeshStandardMaterial({ color: 0x777777 });
+    material.name = 'Shared neutral';
+    const geometry = new THREE.BoxGeometry();
+    const { manifest } = buildDirect3DMaterialColorManifest((['street', 'building'] as const).map((role) => ({
+      object: new THREE.Mesh(geometry, material),
+      visible: true,
+      effectivelyVisible: true,
+      material,
+      role,
+      instance: null,
+      excluded: false,
+    })));
+    const materialColorByRole = new Map(Object.entries(manifest).map(([color, descriptor]) => (
+      [descriptor.semantic_class, hexRgb(color)]
+    )));
+    const streetMaterial = materialColorByRole.get('street') as [number, number, number];
+    const buildingMaterial = materialColorByRole.get('building') as [number, number, number];
+    const buildingClass = hexRgb(DIRECT_3D_CLASS_COLORS.building);
+
+    const result = analyzeDirect3DMaterialPixels(
+      new Uint8Array([...streetMaterial, 255]),
+      1,
+      1,
+      manifest,
+      new Uint8ClampedArray([...buildingClass, 255]),
+    );
+
+    expect([...result.slice(0, 3)]).toEqual(buildingMaterial);
+
+    geometry.dispose();
+    material.dispose();
   });
 
   it('inherits proposal roles and editor exclusions from named scene roots', () => {
@@ -230,6 +321,26 @@ describe('Direct 3D capture helpers', () => {
     mesh.geometry.dispose();
     points.geometry.dispose();
     map.dispose();
+  });
+
+  it('makes physical glazing opaque in exact-color ID passes', () => {
+    const glass = new THREE.MeshPhysicalMaterial({
+      transparent: true,
+      opacity: 0.62,
+      transmission: 0.48,
+      depthWrite: false,
+    });
+    glass.name = 'RLASM_Window_Glass';
+    const mesh = new THREE.Mesh(new THREE.PlaneGeometry(), glass);
+    const semantic = createDirect3DSemanticMaterial(glass, 'building', mesh) as THREE.Material;
+
+    expect(semantic.transparent).toBe(false);
+    expect(semantic.opacity).toBe(1);
+    expect(semantic.depthWrite).toBe(true);
+
+    semantic.dispose();
+    glass.dispose();
+    mesh.geometry.dispose();
   });
 
   it('turns the bottom-up semantic pass into exact top-down mask and class PNG pixels', () => {

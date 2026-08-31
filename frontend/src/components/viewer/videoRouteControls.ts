@@ -1,5 +1,11 @@
 import type { StreetRenderReadiness } from './globe/streetRenderReadiness';
 import type { VideoRenderQuality } from './videoRenderQuality';
+import type {
+  Direct3DCameraManifest,
+  Direct3DInstanceDescriptor,
+  Direct3DMaterialDescriptor,
+  Direct3DProposalRole,
+} from './globe/direct3dCapture';
 
 export type VideoControlMode = 'single_frame' | 'multi_keyframe' | 'preview_video';
 
@@ -20,6 +26,19 @@ export interface VideoRouteCaptureResult {
   keyframesBase64: string[];
   previewVideoBase64: string;
   previewVideoMimeType: string;
+  geometryCheckpoints?: Array<{
+    progress: number;
+    beautyImageBase64: string;
+    classIdImageBase64: string;
+    classIdManifest: Readonly<Record<string, Direct3DProposalRole>>;
+    instanceIdImageBase64: string;
+    instanceIdManifest: Readonly<Record<string, Direct3DInstanceDescriptor>>;
+    depthImageBase64: string;
+    normalImageBase64: string;
+    materialIdImageBase64: string;
+    materialIdManifest: Readonly<Record<string, Direct3DMaterialDescriptor>>;
+    camera: Direct3DCameraManifest;
+  }>;
   previewCaptureProfile?: {
     encoder: 'webcodecs_h264' | 'media_recorder_webm';
     frameCount: number;
@@ -38,6 +57,7 @@ export interface VideoRouteCaptureResult {
     instanceCheckpointCount: number;
     depthCheckpointCount: number;
     normalCheckpointCount: number;
+    materialCheckpointCount: number;
     motionFrameCount: number;
   };
   streetRenderReadiness?: StreetRenderReadiness;

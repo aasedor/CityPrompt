@@ -1,0 +1,178 @@
+{
+  "schema": "cityprompt.rlasm.high_res_media_pilot.v1",
+  "created_at": "2026-08-31",
+  "status": "review_evidence_not_keeper",
+  "project": {
+    "id": "e7e01e0b-993d-4336-8dfb-2341f078dfd5",
+    "name": "RLASM Scale + Public Realm Trial v001",
+    "shared_terrain_elevation": 1025.677204212151,
+    "tile_mask": false
+  },
+  "authorized_provider_calls": {
+    "images": 4,
+    "videos": 2
+  },
+  "actual_provider_calls": {
+    "images": 4,
+    "videos": 2
+  },
+  "source_locks": [
+    {
+      "role": "calgary_bungalow_source_glb",
+      "path": "artifacts/rlasm-calgary-inner-city-bungalow-v020/model/calgary-inner-city-bungalow-v020.glb",
+      "sha256": "94794941a0b266797e87a78d246087d84b0d9eeb8143761a57071e7254ce3987"
+    },
+    {
+      "role": "calgary_bungalow_delivery_glb",
+      "path": "artifacts/cityprompt-rlasm-delivery-2026-08-31/models/calgary-bungalow-v020-cityprompt-v001.glb",
+      "sha256": "d5b32558a15d4771f28efb84c81b06fcf3b7e98fc59abf7aab1dae62c6628416"
+    },
+    {
+      "role": "farnsworth_pavilion_source_glb",
+      "path": "artifacts/rlasm-farnsworth-house-glass-pavilion-v004/model/farnsworth-house-glass-pavilion-v004.glb",
+      "sha256": "3d6beea2a8eca8f70e90d63813a70401fe74ac5fc7b19e121ca4b081aabce774"
+    },
+    {
+      "role": "farnsworth_pavilion_delivery_glb",
+      "path": "artifacts/cityprompt-rlasm-delivery-2026-08-31/models/farnsworth-v004-cityprompt-v002.glb",
+      "sha256": "6a5a1cde4b6839eb32ba6ee9734c5dec1f2f76d93a3612f3e84fa7aa46ff2515"
+    },
+    {
+      "role": "farnsworth_glass_optical_source",
+      "sha256": "54134892f4dbd5317d39d6eb1fcd1ada26eda698ead6baa64f95161def32a1ac"
+    }
+  ],
+  "image_renders": [
+    {
+      "index": 1,
+      "provider_model": "gpt-image-2",
+      "audit_id": "4c828f6c-90b5-4ed4-9b5e-d960da3599fd",
+      "tokens_spent": 92,
+      "path": "renders/01-bungalow-rear-documentary.png",
+      "sha256": "254064e7ad8630fad9eb53a56bf68a1a20d0a7d57406435598d8a7463b816b68",
+      "gate": "review_p1"
+    },
+    {
+      "index": 2,
+      "provider_model": "gpt-image-2",
+      "audit_id": "27c5363d-06c6-4fd0-9a0d-2932b5ee6603",
+      "tokens_spent": 92,
+      "path": "renders/02-bungalow-porch-angle-documentary.png",
+      "sha256": "b6cb24e5dabef7fdcfaacf0ee911b692e98d7691ae769a043ca31bd35d99eb96",
+      "gate": "review_p1"
+    },
+    {
+      "index": 3,
+      "provider_model": "gpt-image-2",
+      "audit_id": "75f352ef-60c1-4659-b39f-060be6ea3217",
+      "tokens_spent": 92,
+      "path": "renders/03-pavilion-glass-depth-safety-return.png",
+      "sha256": "adb29610873ac593dc9da9574a045e7991dcd9f10d17a8bbaa55fbaf81e57029",
+      "gate": "fail_p0_provider_drift_source_return_exposes_carrier"
+    },
+    {
+      "index": 4,
+      "provider_model": "gpt-image-2",
+      "audit_id": "61767c66-5cc6-4d4e-8b5d-16a8ebb49d70",
+      "tokens_spent": 92,
+      "path": "renders/04-pavilion-stair-glass-south-documentary.png",
+      "sha256": "a9085ed4c0bf72b037f4ba14ce30598fda50ba40d7460f3fc9b76d1f10ecbbb9",
+      "gate": "fail_p0_target_missing"
+    }
+  ],
+  "video_renders": [
+    {
+      "index": 1,
+      "provider_model": "gemini-omni-flash-preview",
+      "trial_id": "8435879e-78f2-4fbd-ad5c-ea218db2756c",
+      "route": "street_walkby",
+      "duration_seconds": 8,
+      "source_frames": 192,
+      "source_fps": 24,
+      "source_render": "2560x1440",
+      "provider_input": "1920x1080_h264",
+      "fidelity_score": 58.9,
+      "checkpoint_scores": [57.3, 53.9, 51.1, 61.2, 70.9],
+      "gate": "review_p1_source_identity"
+    },
+    {
+      "index": 2,
+      "provider_model": "gemini-omni-flash-preview",
+      "trial_id": "6b4e33da-4902-4efb-9497-083a27ce5881",
+      "route": "detail_flythrough",
+      "duration_seconds": 8,
+      "source_frames": 192,
+      "source_fps": 24,
+      "source_render": "2560x1440",
+      "provider_input": "1920x1080_h264",
+      "fidelity_score": 68.0,
+      "checkpoint_scores": [73.0, 59.4, 62.7, 70.2, 74.8],
+      "gate": "review_p1_wrong_target"
+    }
+  ],
+  "technical_preflight": {
+    "building_meshes": 2057,
+    "pbr_materials": 2116,
+    "instanced_detail_meshes": 44,
+    "shadow_casters": 2087,
+    "max_visible_building_texture_px": 1254,
+    "close_detail_texture_target_px": 2048,
+    "clipped_route_rejected_before_provider": true
+  },
+  "builder_gate": {
+    "p0": [
+      "pavilion_target_missing_in_image_4",
+      "pavilion_authoritative_source_frame_exposes_carrier_pad"
+    ],
+    "p1": [
+      "camera_not_bound_to_selected_model_architectural_target",
+      "provider_genericizes_source_identity_and_materials",
+      "visible_source_texture_below_2k_close_detail_target",
+      "opening_depth_and_signature_contacts_not_all_legible"
+    ],
+    "keeper": false,
+    "keeper_json_created": false,
+    "independent_keeper_review": "deferred_until_builder_zero_p0_p1"
+  },
+  "local_trial_account": {
+    "id": "e09e909f-0793-425e-836b-fad244c7870c",
+    "role": "editor",
+    "scope": "local_project_only",
+    "render_credits_remaining_after_six_calls": 532,
+    "credentials_recorded": false
+  },
+  "render_files": {
+    "renders/01-bungalow-rear-documentary.png": "254064e7ad8630fad9eb53a56bf68a1a20d0a7d57406435598d8a7463b816b68",
+    "renders/02-bungalow-porch-angle-documentary.png": "b6cb24e5dabef7fdcfaacf0ee911b692e98d7691ae769a043ca31bd35d99eb96",
+    "renders/03-pavilion-glass-depth-safety-return.png": "adb29610873ac593dc9da9574a045e7991dcd9f10d17a8bbaa55fbaf81e57029",
+    "renders/04-pavilion-stair-glass-south-documentary.png": "a9085ed4c0bf72b037f4ba14ce30598fda50ba40d7460f3fc9b76d1f10ecbbb9"
+  },
+  "process_files": {
+    "process/01-bungalow-street-camera-direct3d.png": "82ed21171b41035012b8660e70beee6011981fdebc2b1236f04d80354e83b157",
+    "process/02-still-1-result-ui.png": "1c172765c335f00ee91715f4082572b3045d77ed2cf5038ee1c3325f3e3ea497",
+    "process/03-still-1-retry-result-ui.png": "bcfc58815382dee8dda28529a4ed913c0cf588c8dcaae41575389fd8fd171124",
+    "process/04-bungalow-camera-reloaded.png": "db1a1b3b43ffd3f5f4cb96549d13ae86d88d7cfb172b815db3d8f927b4696562",
+    "process/05-bungalow-closeup-raw-cityprompt.png": "a02de4f4023c4b31724dada00d1b7565b3d21ebf706ac5a711e26677f05619ef",
+    "process/06-bungalow-complete-envelope-camera.png": "c190582b3f2abfb3958bfe93d015470b65a58bcb1d549894170b562459068e09",
+    "process/07-bungalow-preflight-pass.png": "6d6f4fd82c6207924603aff0c4830dfe6dfd54126c2e853a66ab6ad47181819d",
+    "process/08-bungalow-street-direct3d-ready.png": "d63da269c34ef6accf9890ef5727cd14a16dd68ba66aed6c54214dfae5e0915d",
+    "process/09-image-1-result-ui.png": "0cf1884d4804978fa4bf3b5461263d159e59ddf9d1995f21dbbf75c268a6cf2f",
+    "process/10-bungalow-porch-angle-ready.png": "5b511b17afbb5caf108a1e4b4dd69334d8429107efc85c6c3f465f6bc52dbf71",
+    "process/11-bungalow-porch-angle-retry-ready.png": "a27dc0ba705298b2260ec587dc20102b8d56496ef412f53095f0c68922a77fdb",
+    "process/12-bungalow-angle-material-gate-fixed.png": "2d7c0d3d7c85d5c9f74ce438266b62dc13c3ccacfb2ae23c77a12a8d81e6ed13",
+    "process/13-image-2-result-ui.png": "ba3ffcbc161c97346df53ed0d6518ea06153940adfde3e2606ccea72fb98993f",
+    "process/14-pavilion-glass-depth-camera.png": "d0eb31927804b6e2cf86fac8fcb04d03238016b7d427a9eface940c18138ce4c",
+    "process/15-pavilion-direct3d-preflight-pass.png": "7016ffbc9490a4188494db6bd22587782528daf5d705010da6809630699156e1",
+    "process/16-image-3-safety-review-ui.png": "52390344f8eb0095cb6549c7b905c64d0c7e764a9a6d1f54d55d61b04b08ad1b",
+    "process/17-pavilion-street-south-ready.png": "fd44d00b2e138c4e73cbb8cc4ec72873617a904bd7f7b3618350fb9200766060",
+    "process/18-image-4-result-ui.png": "42dc784f6ab7637cbaabafbed848f95a276a3e05bbf03e29014c8b30b9ebc134",
+    "process/19-video-1-street-walkby-route.png": "0320cc47aa2aebc28e3de2d8cf2244e974ddb2dc27ae0406417c0ea729248da3",
+    "process/20-video-1-preflight-pass.png": "7756fd5e06810ebcbfb284cd3cc66a1bd03c890763ce9e584d14b7b9df24a4f2",
+    "process/21-video-1-result-fidelity-59.png": "ac03905111122d48c0ce25421c0068004cd75c79187da7f06220990bcce0018e",
+    "process/22-video-2-low-detail-route.png": "0ee6c7967b9366893dd4761b265e94ef25f39b2323ee63a20f65b3a1d192729a",
+    "process/23-video-2-preflight-clipped-frame-failure.png": "7d7ff2741de31d2cfb03e5a092dc06682cb0a7e81dde7f627e035dca3f45be8c",
+    "process/24-video-2-route-corrected.png": "8e078a132464605b50a7c2b443978ae25063882da176b5caee8b444e00ffc6d9",
+    "process/25-video-2-preflight-pass.png": "6b7b70940a8ec152a07fdf8998f84d44357589766a3055c0a0d23855e9be4f20",
+    "process/26-video-2-result-fidelity-68.png": "c5b5fa18e8bbca6badd753b73f9713fab92351e16e33103310252179b264e0f1"
+  }
+}

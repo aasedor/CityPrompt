@@ -4296,3 +4296,65 @@ def test_presentation_prompt_omits_reference_clause_without_references():
     )
     assert "ARCHETYPE REFERENCES" not in prompt
     assert "ARCHETYPE IDENTITY LOCK" not in prompt
+
+
+def test_control_bundle_v2_prepares_same_camera_geometry_and_material_controls():
+    beauty, mask = _capture_images()
+    active = np.asarray(mask.convert("L")) >= 128
+    object_pixels = np.zeros((beauty.height, beauty.width, 3), dtype=np.uint8)
+    object_pixels[active] = (255, 0, 0)
+    instance_pixels = np.zeros_like(object_pixels)
+    instance_pixels[active] = (1, 0, 1)
+    material_pixels = np.zeros_like(object_pixels)
+    material_pixels[active] = (2, 0, 2)
+    base = _request(
+        beauty=beauty,
+        mask=mask,
+        object_id=Image.fromarray(object_pixels, mode="RGB"),
+        instance_id=Image.fromarray(instance_pixels, mode="RGB"),
+        presentation_mode="scene",
+    )
+    identity = [1.0 if index % 5 == 0 else 0.0 for index in range(16)]
+    request = Direct3DRenderRequest(
+        **{
+            **base.model_dump(),
+            "control_bundle_version": 2,
+            "depth_image_base64": _png_b64(Image.new("RGB", beauty.size, (128, 128, 128))),
+            "normal_image_base64": _png_b64(Image.new("RGB", beauty.size, (128, 128, 255))),
+            "material_id_image_base64": _png_b64(Image.fromarray(material_pixels, mode="RGB")),
+            "material_id_manifest": {
+                "#020002": {
+                    "material_id": "material:source-wall",
+                    "label": "Source wall",
+                    "semantic_class": "building",
+                    "material_family_id": "rlasm-source-wall",
+                    "source_specific": True,
+                }
+            },
+            "camera": {
+                "projection": "perspective",
+                "projection_matrix": identity,
+                "matrix_world": identity,
+                "position": [0, 0, 10],
+                "quaternion": [0, 0, 0, 1],
+                "near": 0.1,
+                "far": 10_000,
+                "fov": 50,
+                "aspect": 1,
+                "zoom": 1,
+            },
+        }
+    )
+
+    prepared = prepare_direct_3d_capture(request)
+
+    assert prepared.normalized_depth is not None
+    assert prepared.normalized_normal is not None
+    assert prepared.normalized_material_id is not None
+    assert prepared.material_count == 1
+
+
+def test_control_bundle_v2_rejects_incomplete_geometry_controls():
+    base = _request(presentation_mode="scene")
+    with pytest.raises(ValidationError, match="control_bundle_version=2 requires"):
+        Direct3DRenderRequest(**{**base.model_dump(), "control_bundle_version": 2})

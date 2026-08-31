@@ -50,7 +50,8 @@ import {
 import { buildLegoMassingMeshData, legoMassingColor } from './legoMassingGeometry';
 import {
   GENERATED_BUILDING_DETAIL_BUDGET,
-  partitionGeneratedBuildingLod,
+  partitionGeneratedBuildingLodWithPins,
+  resolveGeneratedBuildingLodUrl,
 } from './generatedBuildingLod';
 import { modelAssetAvailable } from './modelAssetAvailability';
 import { LocalModelSelectionOutline } from './GlobeModelSelectionOutline';
@@ -118,6 +119,10 @@ function setsEqual(a: ReadonlySet<string>, b: ReadonlySet<string>): boolean {
   return a.size === b.size && [...a].every((value) => b.has(value));
 }
 
+function mapsEqual(a: ReadonlyMap<string, string>, b: ReadonlyMap<string, string>): boolean {
+  return a.size === b.size && [...a].every(([key, value]) => b.get(key) === value);
+}
+
 function stableFrameOffset(id: string, modulo: number): number {
   let hash = 0;
   for (let index = 0; index < id.length; index += 1) {
@@ -128,6 +133,7 @@ function stableFrameOffset(id: string, modulo: number): number {
 
 function BuildingModelInstance({
   building,
+  modelUrl,
   zone,
   ring,
   frame,
@@ -140,6 +146,7 @@ function BuildingModelInstance({
   onBuildingClick,
 }: {
   building: Building;
+  modelUrl: string;
   zone: SiteZone | undefined;
   ring: number[][];
   frame: FootprintFrame;
@@ -151,7 +158,7 @@ function BuildingModelInstance({
   proposalForDirect3D: boolean;
   onBuildingClick?: (buildingId: string) => void;
 }) {
-  const url = resolveApiFileUrl(building.lod_urls?.['0'] ?? building.model_url ?? '');
+  const url = resolveApiFileUrl(modelUrl);
   const gl = useThree((state) => state.gl);
   const extendLoader = useMemo(() => createKtx2LoaderExtension(gl), [gl]);
   const { scene } = useGLTF(url, true, true, extendLoader);
@@ -165,7 +172,7 @@ function BuildingModelInstance({
   const preserveSourceMaterials = building.generation_engine?.toLowerCase() === 'rlasm';
 
   const cloned = useMemo(() => {
-    return prepareArchitecturalClone(scene, {
+    const prepared = prepareArchitecturalClone(scene, {
       renderOrder: MODEL_RENDER_ORDER,
       maxAnisotropy,
       // RLASM keepers carry source-locked material roles even when a finish is
@@ -175,7 +182,19 @@ function BuildingModelInstance({
       preserveSourcePbr: preserveSourceMaterials,
       restyleUntextured: !preserveSourceMaterials,
     });
-  }, [maxAnisotropy, preserveSourceMaterials, scene]);
+    if (preserveSourceMaterials) {
+      prepared.traverse((object) => {
+        const material = (object as THREE.Mesh).material;
+        const materials = Array.isArray(material) ? material : material ? [material] : [];
+        for (const entry of materials) {
+          entry.userData.source_specific = true;
+          entry.userData.material_family_id = entry.userData.material_family_id
+            ?? `rlasm:${building.id}:${entry.name || entry.type}`;
+        }
+      });
+    }
+    return prepared;
+  }, [building.id, maxAnisotropy, preserveSourceMaterials, scene]);
   useEffect(() => () => disposeArchitecturalCloneMaterials(cloned), [cloned]);
 
   const placement = useMemo(
@@ -507,30 +526,55 @@ export function GlobeBuildingModelsLayer({
     return positions;
   }, [entries, terrainHeight]);
 
-  const selectDetailedIds = useCallback((cameraPosition: THREE.Vector3) => {
-    const selection = partitionGeneratedBuildingLod(
-      entries,
-      (entry) => entryWorldPositions.get(entry.building.id)?.distanceToSquared(cameraPosition) ?? Infinity,
+  const selectDetailedState = useCallback((cameraPosition: THREE.Vector3) => {
+    const distanceSquaredFor = (entry: typeof entries[number]) => (
+      entryWorldPositions.get(entry.building.id)?.distanceToSquared(cameraPosition) ?? Infinity
     );
-    return new Set(selection.detailed.map((entry) => entry.building.id));
-  }, [entries, entryWorldPositions]);
+    const selection = partitionGeneratedBuildingLodWithPins(
+      entries,
+      distanceSquaredFor,
+      (entry) => direct3DProposalBuildingIds?.has(entry.building.id) ?? false,
+    );
+    const ids = new Set(selection.detailed.map((entry) => entry.building.id));
+    const modelUrls = new Map<string, string>();
+    for (const entry of selection.detailed) {
+      const distance = Math.sqrt(distanceSquaredFor(entry));
+      const capturePinned = direct3DProposalBuildingIds?.has(entry.building.id) ?? false;
+      const resolved = resolveGeneratedBuildingLodUrl(
+        entry.building.lod_urls,
+        entry.building.model_url,
+        distance,
+        capturePinned,
+      );
+      if (resolved) modelUrls.set(entry.building.id, resolveApiFileUrl(resolved.url));
+    }
+    return { ids, modelUrls };
+  }, [direct3DProposalBuildingIds, entries, entryWorldPositions]);
   const [detailedIds, setDetailedIds] = useState<Set<string>>(() => new Set());
+  const [selectedModelUrls, setSelectedModelUrls] = useState<Map<string, string>>(() => new Map());
   const [availableModelUrls, setAvailableModelUrls] = useState<Set<string>>(() => new Set());
   const lodFrameRef = useRef(0);
   useEffect(() => {
-    setDetailedIds(selectDetailedIds(camera.position));
-  }, [camera, selectDetailedIds]);
+    const next = selectDetailedState(camera.position);
+    setDetailedIds(next.ids);
+    setSelectedModelUrls(next.modelUrls);
+  }, [camera, selectDetailedState]);
   useFrame(() => {
     lodFrameRef.current += 1;
     if (lodFrameRef.current % 60 !== 0) return;
-    const next = selectDetailedIds(camera.position);
-    setDetailedIds((previous) => (setsEqual(previous, next) ? previous : next));
+    const next = selectDetailedState(camera.position);
+    setDetailedIds((previous) => (setsEqual(previous, next.ids) ? previous : next.ids));
+    setSelectedModelUrls((previous) => (
+      mapsEqual(previous, next.modelUrls) ? previous : next.modelUrls
+    ));
   });
 
   useEffect(() => {
     let cancelled = false;
-    const urls = [...new Set(entries.map(({ building }) => (
-      resolveApiFileUrl(building.lod_urls?.['0'] ?? building.model_url ?? '')
+    const urls = [...new Set(entries.flatMap(({ building }) => (
+      [building.model_url, ...Object.values(building.lod_urls ?? {})]
+        .filter((value): value is string => Boolean(value))
+        .map(resolveApiFileUrl)
     )))].filter(Boolean);
     setAvailableModelUrls(new Set());
     void Promise.all(urls.map(async (url) => ({
@@ -584,7 +628,7 @@ export function GlobeBuildingModelsLayer({
   return (
     <>
       {entries.map(({ building, zone, ring, frame }) => {
-        const modelUrl = resolveApiFileUrl(building.lod_urls?.['0'] ?? building.model_url ?? '');
+        const modelUrl = selectedModelUrls.get(building.id) ?? '';
         const massing = (
           <GeneratedBuildingMassing
             building={building}
@@ -623,6 +667,7 @@ export function GlobeBuildingModelsLayer({
             <Suspense fallback={massing}>
               <BuildingModelInstance
                 building={building}
+                modelUrl={modelUrl}
                 zone={zone}
                 ring={ring}
                 frame={frame}
