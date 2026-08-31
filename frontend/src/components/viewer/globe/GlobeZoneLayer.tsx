@@ -1331,7 +1331,7 @@ export function GlobeZoneLayer({
               lightweight={lightweight}
               suppressed={Boolean(zone.building_id && suppressedBuildingIds?.has(zone.building_id))}
               planningOverlaysVisible={showPlanningOverlays}
-              boundaryOverlayVisible={!overlaysHidden}
+              boundaryOverlayVisible={showPlanningOverlays}
               sitePrepared={sitePrepared}
             />
           </group>

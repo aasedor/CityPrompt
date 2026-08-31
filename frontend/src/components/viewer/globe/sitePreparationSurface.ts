@@ -10,7 +10,10 @@ export function hasCompiledCommunity(zones: SiteZone[]): boolean {
 
 export function getPreparedSiteBoundaryIds(zones: SiteZone[]): Set<string> {
   const activeBoundary = getActiveSiteBoundary(zones);
-  return activeBoundary ? new Set([activeBoundary.id]) : new Set();
+  const properties = activeBoundary?.properties as Record<string, unknown> | undefined;
+  return activeBoundary && properties?.community_3d_mask_existing_tiles !== false
+    ? new Set([activeBoundary.id])
+    : new Set();
 }
 
 /** One authoritative elevation for both the whole-site tile mask and its

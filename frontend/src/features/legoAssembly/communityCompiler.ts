@@ -42,6 +42,15 @@ export function isCommunityBuildingZone(zone: SiteZone): boolean {
     );
 }
 
+/** The server validates the linked Building's RLASM engine, locked provenance,
+ * and GLB URL before returning a detailed-model representation. This zone
+ * marker lets the client accept that valid result without treating every
+ * arbitrary historical model URL as current. */
+export function isSourceLockedRlasmZone(zone: SiteZone): boolean {
+  return typeof zone.properties?.rlasm_keeper === 'string'
+    && zone.properties.rlasm_keeper.trim().length > 0;
+}
+
 export interface GroundBuildItem {
   zone: SiteZone;
   kind: Extract<Community3DKind, 'park' | 'street'>;
@@ -254,7 +263,10 @@ export function deriveItems(zones: SiteZone[]): ZoneBuildItem[] {
       // Deleting a generated Building leaves the planning polygon available
       // for another design.  A historical compile marker alone must not make
       // the builder think the now-unlinked model is still placed.
-      placeState: communityMeta?.generator === 'lego_assembly' && Boolean(zone.building_id)
+      placeState: (
+        communityMeta?.generator === 'lego_assembly'
+        || communityMeta?.generator === 'meshy'
+      ) && Boolean(zone.building_id)
         ? 'placed' as const
         : undefined,
       massingState: communityMeta?.generator === 'planned_massing' ? 'compiled' as const : undefined,
@@ -543,7 +555,9 @@ export async function compileMixedCommunity3D(
       generators: new Set<CommunityCompileGenerator>(
         planResults[index]?.status === 'fulfilled'
           ? ['lego_assembly']
-          : ['planned_massing'],
+          : isSourceLockedRlasmZone(item.zone)
+            ? ['meshy']
+            : ['planned_massing'],
       ),
     }));
   const groundItems = deriveGroundItems(zones);
@@ -613,7 +627,9 @@ export async function compileMixedCommunity3D(
   });
   return {
     response,
-    detailedBuildings: response.items.filter((item) => item.generator === 'lego_assembly').length,
+    detailedBuildings: response.items.filter((item) => (
+      item.generator === 'lego_assembly' || item.generator === 'meshy'
+    )).length,
     plannedMasses: response.items.filter((item) => item.generator === 'planned_massing').length,
     parks: response.counts.park,
     streets: response.counts.street,

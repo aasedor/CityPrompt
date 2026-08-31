@@ -1486,6 +1486,35 @@ def _planned_massing_dimensions(zone: SiteZone) -> tuple[int | None, float]:
     return floors, _column_height_meters(height)
 
 
+def _is_source_locked_rlasm_model(building: Building | None) -> bool:
+    """Recognize a reviewed RLASM GLB as the zone's detailed representation.
+
+    An arbitrary historical model URL must not be recertified after a plan or
+    archetype change. RLASM imports are different: their explicit source-lock
+    marker and generation engine state that the linked GLB is the approved
+    model the user intentionally placed on this exact zone.
+    """
+    if building is None or str(building.generation_engine or "").lower() != "rlasm":
+        return False
+    specifications = building.specifications if isinstance(building.specifications, dict) else {}
+    rlasm = specifications.get("rlasm")
+    has_model = bool(building.model_url or (isinstance(building.lod_urls, dict) and building.lod_urls.get("0")))
+    return bool(isinstance(rlasm, dict) and rlasm.get("source_locked") is True and has_model)
+
+
+def _place_source_locked_rlasm_on_zone(zone: SiteZone, building: Building) -> Building:
+    """Keep the reviewed GLB current while synchronizing its placement shell."""
+    floors, height = _planned_massing_dimensions(zone)
+    building.footprint = zone.geometry
+    building.floor_count = floors
+    building.height_meters = height
+    specifications = dict(building.specifications or {})
+    specifications.pop(PLANNED_MASSING_SPEC_KEY, None)
+    building.specifications = specifications
+    flag_modified(building, "specifications")
+    return building
+
+
 async def _place_planned_massing_on_zone(
     db: AsyncSession,
     zone: SiteZone,
@@ -1863,6 +1892,7 @@ async def place_community_3d(
     # so any later compile failure rolls the cleanup back too.
     project_buildings_result = await db.execute(select(Building).where(Building.project_id == project_id))
     project_buildings = list(project_buildings_result.scalars().all())
+    project_buildings_by_id = {str(building.id): building for building in project_buildings}
     stale_buildings = stale_community_3d_buildings(
         project_buildings,
         (zone.id for zone in project_zones if _community_3d_kind(zone) == "building"),
@@ -1935,8 +1965,13 @@ async def place_community_3d(
             if item.recipe is not None:
                 building, building_created = await _place_recipe_on_zone(db, zone, item.recipe)
             else:
-                building, building_created = await _place_planned_massing_on_zone(db, zone)
-                building_generator = "planned_massing"
+                source_locked_rlasm = project_buildings_by_id.get(str(zone.building_id))
+                if _is_source_locked_rlasm_model(source_locked_rlasm):
+                    building = _place_source_locked_rlasm_on_zone(zone, source_locked_rlasm)
+                    building_generator = "meshy"
+                else:
+                    building, building_created = await _place_planned_massing_on_zone(db, zone)
+                    building_generator = "planned_massing"
             building_id = str(building.id)
 
         _stamp_community_3d(

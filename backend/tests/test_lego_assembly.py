@@ -6127,6 +6127,70 @@ async def test_place_community_does_not_recertify_old_lod_after_archetype_switch
 
 
 @pytest.mark.anyio
+async def test_place_community_certifies_source_locked_rlasm_glb_as_current_model(
+    client, mock_db, test_user, auth_headers
+):
+    project = FakeProject(owner_id=test_user.id)
+    building = Building(
+        id=uuid.uuid4(),
+        project_id=project.id,
+        name="Source-locked RLASM keeper",
+        footprint="SRID=4326;POLYGON((0 0,2 0,2 2,0 2,0 0))",
+        height_meters=5,
+        floor_count=1,
+        model_url="/api/v1/files/rlasm-keeper.glb",
+        lod_urls={"0": "/api/v1/files/rlasm-keeper.glb"},
+        generation_engine="rlasm",
+        specifications={
+            "rlasm": {
+                "method": "canonical RLASM v6.1",
+                "source_locked": True,
+                "sha256": "a" * 64,
+            },
+            "plannedMassing": {"source": "stale-fallback"},
+        },
+    )
+    zone = _make_zone(
+        project,
+        building_id=building.id,
+        building_ids=[str(building.id)],
+        properties={
+            "_plan_role": "building",
+            "floors": 2,
+            "height": 6.2,
+        },
+    )
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(zone),
+            _scalar_result(project),
+            _scalar_result(project.id),
+            _scalars_result([zone]),
+            _scalars_result([building]),
+        ]
+    )
+
+    response = await client.post(
+        "/api/v1/lego-assembly/place-community",
+        headers=auth_headers,
+        json={"items": [_community_item(zone)]},
+    )
+
+    assert response.status_code == 200, response.text
+    assert response.json()["items"][0]["generator"] == "meshy"
+    assert zone.properties["community_3d"]["generator"] == "meshy"
+    assert building.footprint == zone.geometry
+    assert building.floor_count == 2
+    assert building.height_meters == 6.2
+    assert building.model_url == "/api/v1/files/rlasm-keeper.glb"
+    assert building.specifications["rlasm"]["source_locked"] is True
+    assert "plannedMassing" not in building.specifications
+    assert building.specifications["community3DRepresentation"]["generator"] == "meshy"
+    mock_db.add.assert_not_called()
+
+
+@pytest.mark.anyio
 async def test_place_community_rebuild_upgrades_massing_without_losing_public_realm(
     client, mock_db, test_user, auth_headers
 ):
