@@ -144,6 +144,7 @@ import {
   restoreStreetCameraProjection,
 } from './streetRenderProfile';
 import { inspectStreetRenderReadiness } from './streetRenderReadiness';
+import { getArchitecturalLightingProfile } from './rlasmPresentation';
 
 import { elevationApi } from '@/services/api';
 
@@ -1581,6 +1582,13 @@ export function GlobeSitePlannerMap({
   const selectedRenderedBuildingId = selectedBuildingId
     ?? siteZones.find((zone) => zone.id === selectedZoneId)?.building_id
     ?? null;
+  const selectedInspectionZone = useMemo(
+    () => siteZones.find((zone) => (
+      zone.id === selectedZoneId
+      || (selectedRenderedBuildingId != null && zone.building_id === selectedRenderedBuildingId)
+    )) ?? null,
+    [selectedRenderedBuildingId, selectedZoneId, siteZones],
+  );
   // Coexistence: a building with a renderable LEGO recipe renders as a module
   // stack — it is excluded from the Meshy model layer (the stack wins).
   // Buildings with a saved recipe or an honest planned-massing fallback mount
@@ -1606,6 +1614,10 @@ export function GlobeSitePlannerMap({
   );
   const hasPlaceableModels = Boolean(buildings?.some((b) => b.lod_urls?.['0'] ?? b.model_url))
     || legoLayerBuildings.length > 0;
+  const architecturalLighting = useMemo(
+    () => getArchitecturalLightingProfile(buildings),
+    [buildings],
+  );
   // Prism suppression + outward "has real 3D massing" set = Meshy ∪ LEGO.
   const suppressedBuildingIds = useMemo(() => {
     const merged = new Set(modeledBuildingIds);
@@ -3667,6 +3679,7 @@ export function GlobeSitePlannerMap({
         role="application"
         style={{ visibility: isInitialCameraApplied ? 'visible' : 'hidden' }}
         camera={initialThreeCamera}
+        dpr={[1, 2]}
         shadows
         gl={{ antialias: true, logarithmicDepthBuffer: true, preserveDrawingBuffer: true, stencil: true }}
         onPointerMissed={() => {
@@ -3797,11 +3810,11 @@ export function GlobeSitePlannerMap({
           />
         ) : (
           <>
-            <ambientLight intensity={1.35} />
-            <hemisphereLight args={['#f8fbff', '#5b6775', 1.5]} />
+            <ambientLight intensity={architecturalLighting.ambientIntensity} />
+            <hemisphereLight args={['#f8fbff', '#5b6775', architecturalLighting.hemisphereIntensity]} />
             <directionalLight
               position={[8_000_000, 10_000_000, 7_000_000]}
-              intensity={1.8}
+              intensity={architecturalLighting.directionalIntensity}
               color="#fff7d6"
             />
           </>
@@ -3816,7 +3829,13 @@ export function GlobeSitePlannerMap({
         />
         {/* IBL for placed GLB models (PBR materials only) — tiles and zone
             overlays are unlit basic materials, so they're unaffected. */}
-        {hasPlaceableModels && <Environment preset="city" background={false} />}
+        {hasPlaceableModels && (
+          <Environment
+            preset="city"
+            background={false}
+            environmentIntensity={architecturalLighting.environmentIntensity}
+          />
+        )}
         <TilesRenderer>
           {/* autoRefreshToken: Google 3D Tiles sessions expire after a few hours;
               without it every tile fetch 400s (pale background polygons through
@@ -4176,6 +4195,21 @@ export function GlobeSitePlannerMap({
             <div className="h-2 w-2 rounded-full bg-amber-400 animate-pulse" />
             <span className="text-[10px] font-black uppercase text-[#151515]/70">Loading tiles...</span>
           </div>
+        )}
+        {selectedInspectionZone && isBuildingZoneType(selectedInspectionZone.zone_type) && (
+          <button
+            type="button"
+            onClick={() => {
+              setZoneOverlaysVisible(false);
+              void requestProjectFrame([{
+                coordinates: selectedInspectionZone.coordinates as [number, number][],
+              }], 'manual');
+            }}
+            className="rounded-full border-2 border-[#151515] bg-[#c9ff3d] px-3 py-1.5 text-[11px] font-black uppercase text-[#151515] shadow-[3px_3px_0_0_#151515] backdrop-blur-xl transition hover:bg-[#d8ff72]"
+            title="Hide planning polygons and focus on the selected building"
+          >
+            Focus building
+          </button>
         )}
         {siteZones.length > 0 && (
           <button
