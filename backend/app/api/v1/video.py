@@ -540,9 +540,7 @@ async def _score_saved_attempt(attempt: dict, project_id: uuid.UUID) -> dict:
         if control.get("images", {}).get("instance_id")
     ]
     instance_map_bytes = (
-        await asyncio.gather(
-            *(asyncio.to_thread(_read_storage_file, url, project_id) for url in instance_map_urls)
-        )
+        await asyncio.gather(*(asyncio.to_thread(_read_storage_file, url, project_id) for url in instance_map_urls))
         if instance_map_urls
         else []
     )
@@ -1114,10 +1112,7 @@ async def generate_video(
                     preview_video=preview.data if preview else None,
                     preview_mime_type=preview.mime_type if preview else None,
                     route_keyframes=[frame.data for frame in keyframes],
-                    instance_id_maps=[
-                        checkpoint["images"]["instance_id"].data
-                        for checkpoint in geometry_checkpoints
-                    ],
+                    instance_id_maps=[checkpoint["images"]["instance_id"].data for checkpoint in geometry_checkpoints],
                 )
                 fidelity_updates = fidelity_report.metadata()
             except Exception as fidelity_exc:

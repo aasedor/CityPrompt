@@ -144,11 +144,7 @@ class Direct3DCameraManifest(BaseModel):
             *self.matrix_world,
             *self.position,
             *self.quaternion,
-            *(
-                value
-                for value in (self.near, self.far, self.fov, self.aspect, self.zoom)
-                if value is not None
-            ),
+            *(value for value in (self.near, self.far, self.fov, self.aspect, self.zoom) if value is not None),
         ]
         if not all(math.isfinite(value) for value in values):
             raise ValueError("camera values must be finite")
@@ -369,9 +365,7 @@ class Direct3DRenderRequest(BaseModel):
         if self.presentation_mode in {"scene", "reproject"} and not self.instance_id_image_base64:
             raise ValueError("scene and reproject require instance_id_image_base64 and " "instance_id_manifest")
         if bool(self.material_id_image_base64) != bool(self.material_id_manifest):
-            raise ValueError(
-                "material_id_image_base64 and material_id_manifest must be supplied together"
-            )
+            raise ValueError("material_id_image_base64 and material_id_manifest must be supplied together")
         if self.control_bundle_version == 2:
             missing = [
                 name
@@ -385,9 +379,7 @@ class Direct3DRenderRequest(BaseModel):
                 if value is None
             ]
             if missing:
-                raise ValueError(
-                    "control_bundle_version=2 requires " + ", ".join(missing)
-                )
+                raise ValueError("control_bundle_version=2 requires " + ", ".join(missing))
         zone_ids = [claim.zone_id for claim in self.community_3d_claims]
         if len(zone_ids) != len(set(zone_ids)):
             raise ValueError("community_3d_claims may contain each zone only once")

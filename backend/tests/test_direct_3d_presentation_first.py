@@ -141,9 +141,7 @@ async def test_source_locked_rlasm_scene_restores_exact_instance_pixels(monkeypa
     assert result.diagnostics["source_locked_rlasm_pixel_coverage"] == pytest.approx(
         float(np.count_nonzero(protected) / protected.size)
     )
-    assert result.diagnostics["returned_safety_strategy"] == (
-        "provider_full_scene_rlasm_pixel_lock"
-    )
+    assert result.diagnostics["returned_safety_strategy"] == ("provider_full_scene_rlasm_pixel_lock")
     Direct3DRenderDiagnostics.model_validate(result.diagnostics)
 
 

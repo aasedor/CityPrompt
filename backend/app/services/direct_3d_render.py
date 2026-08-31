@@ -366,9 +366,7 @@ def estimate_direct_3d_token_cost(
         + (DIRECT_3D_CLASS_ID_INPUT_TOKENS if object_id_attached else 0)
         + (DIRECT_3D_INSTANCE_ID_INPUT_TOKENS if instance_id_attached else 0)
         + (
-            DIRECT_3D_DEPTH_INPUT_TOKENS
-            + DIRECT_3D_NORMAL_INPUT_TOKENS
-            + DIRECT_3D_MATERIAL_ID_INPUT_TOKENS
+            DIRECT_3D_DEPTH_INPUT_TOKENS + DIRECT_3D_NORMAL_INPUT_TOKENS + DIRECT_3D_MATERIAL_ID_INPUT_TOKENS
             if control_bundle_version == 2
             else 0
         )
@@ -571,9 +569,7 @@ def _capture_fingerprint(
             color: (descriptor.model_dump(mode="json") if hasattr(descriptor, "model_dump") else descriptor)
             for color, descriptor in material_manifest.items()
         }
-        digest.update(
-            json.dumps(serializable_materials, sort_keys=True, separators=(",", ":")).encode("utf-8")
-        )
+        digest.update(json.dumps(serializable_materials, sort_keys=True, separators=(",", ":")).encode("utf-8"))
     if camera is not None:
         serializable_camera = camera.model_dump(mode="json") if hasattr(camera, "model_dump") else camera
         digest.update(json.dumps(serializable_camera, sort_keys=True, separators=(",", ":")).encode("utf-8"))
@@ -765,9 +761,7 @@ def prepare_direct_3d_capture(req: Direct3DRenderRequest) -> PreparedDirect3DCap
             allowed_formats={"PNG"},
         ).convert("RGB")
         if image.size != beauty_image.size:
-            raise Direct3DValidationError(
-                f"{field_name} dimensions must exactly match the beauty capture"
-            )
+            raise Direct3DValidationError(f"{field_name} dimensions must exactly match the beauty capture")
         if field_name == "depth_image_base64":
             depth_image = image
         else:
@@ -784,9 +778,7 @@ def prepare_direct_3d_capture(req: Direct3DRenderRequest) -> PreparedDirect3DCap
             allowed_formats={"PNG"},
         ).convert("RGB")
         if material_id_image.size != beauty_image.size:
-            raise Direct3DValidationError(
-                "Material-ID image dimensions must exactly match the beauty capture"
-            )
+            raise Direct3DValidationError("Material-ID image dimensions must exactly match the beauty capture")
         material_pixels = np.asarray(material_id_image)
         classified_materials = np.zeros((height, width), dtype=bool)
         semantic_pixels = np.asarray(object_id_image) if object_id_image is not None else None
@@ -832,8 +824,7 @@ def prepare_direct_3d_capture(req: Direct3DRenderRequest) -> PreparedDirect3DCap
         material_iou = float(intersection_count / max(1, union_count))
         if material_recall < 0.85 or material_iou < 0.84:
             raise Direct3DValidationError(
-                "Material-ID classes must cover the proposal "
-                f"(recall {material_recall:.3f}, IoU {material_iou:.3f})"
+                "Material-ID classes must cover the proposal " f"(recall {material_recall:.3f}, IoU {material_iou:.3f})"
             )
 
     normalized_size = _normalized_dimensions(width, height)
@@ -872,9 +863,7 @@ def prepare_direct_3d_capture(req: Direct3DRenderRequest) -> PreparedDirect3DCap
         normal_image.resize(normalized_size, Image.Resampling.NEAREST) if normal_image is not None else None
     )
     normalized_material_id = (
-        material_id_image.resize(normalized_size, Image.Resampling.NEAREST)
-        if material_id_image is not None
-        else None
+        material_id_image.resize(normalized_size, Image.Resampling.NEAREST) if material_id_image is not None else None
     )
     capture_fingerprint = _capture_fingerprint(
         beauty_image,
@@ -3846,8 +3835,7 @@ def _source_locked_rlasm_instance_ids(
             {
                 str(item.get("instance_id") or "")
                 for item in (server_inventory or [])
-                if item.get("source_locked_rlasm") is True
-                and str(item.get("instance_id") or "")
+                if item.get("source_locked_rlasm") is True and str(item.get("instance_id") or "")
             }
         )
     )
@@ -3865,13 +3853,9 @@ def _restore_source_locked_instances(
     if not protected_instance_ids:
         return candidate.convert("RGB"), 0.0
     if instance_id_image is None or not instance_id_manifest:
-        raise Direct3DValidationError(
-            "Source-locked RLASM rendering requires the exact instance-ID pass"
-        )
+        raise Direct3DValidationError("Source-locked RLASM rendering requires the exact instance-ID pass")
     if source.size != candidate.size or source.size != instance_id_image.size:
-        raise Direct3DValidationError(
-            "Source-locked RLASM source, candidate, and instance-ID images must align"
-        )
+        raise Direct3DValidationError("Source-locked RLASM source, candidate, and instance-ID images must align")
 
     protected = set(protected_instance_ids)
     instance_pixels = np.asarray(instance_id_image.convert("RGB"))
@@ -3886,9 +3870,7 @@ def _restore_source_locked_instances(
         matched.add(instance_id)
     if matched != protected:
         missing = ", ".join(sorted(protected - matched))
-        raise Direct3DValidationError(
-            f"Source-locked RLASM instance mask is missing {missing}"
-        )
+        raise Direct3DValidationError(f"Source-locked RLASM instance mask is missing {missing}")
     if not np.any(mask):
         raise Direct3DValidationError("Source-locked RLASM instance masks contain no pixels")
 
@@ -3961,12 +3943,8 @@ class Direct3DRenderService:
             )
             for filename, image in geometry_controls:
                 if image is None:
-                    raise Direct3DValidationError(
-                        f"Control bundle v2 is missing prepared {filename}"
-                    )
-                files.append(
-                    ("image[]", (filename, _png_bytes(image), "image/png"))
-                )
+                    raise Direct3DValidationError(f"Control bundle v2 is missing prepared {filename}")
+                files.append(("image[]", (filename, _png_bytes(image), "image/png")))
         files.append(
             (
                 "image[]",
@@ -4183,9 +4161,7 @@ class Direct3DRenderService:
                 "instance_source_presence": None,
                 "unsupported_structure": None,
                 "server_inventory": _server_inventory_counts(server_inventory),
-                "source_locked_rlasm_instance_count": len(
-                    _source_locked_rlasm_instance_ids(server_inventory)
-                ),
+                "source_locked_rlasm_instance_count": len(_source_locked_rlasm_instance_ids(server_inventory)),
                 "source_locked_rlasm_pixel_lock_applied": False,
                 "source_locked_rlasm_pixel_coverage": None,
                 "scene_lower_context_coverage": (capture.scene_lower_context_coverage),
@@ -4278,11 +4254,7 @@ class Direct3DRenderService:
                     },
                 )
 
-            if (
-                DIRECT_3D_PRESENTATION_FIRST
-                and source_locked_rlasm_ids
-                and req.presentation_mode == "scene"
-            ):
+            if DIRECT_3D_PRESENTATION_FIRST and source_locked_rlasm_ids and req.presentation_mode == "scene":
                 registration: RegistrationResult | None = None
                 registration_error: str | None = None
                 try:
@@ -4352,11 +4324,7 @@ class Direct3DRenderService:
                     },
                 )
 
-            if (
-                DIRECT_3D_PRESENTATION_FIRST
-                and source_locked_rlasm_ids
-                and req.presentation_mode == "reproject"
-            ):
+            if DIRECT_3D_PRESENTATION_FIRST and source_locked_rlasm_ids and req.presentation_mode == "reproject":
                 output_png = _png_bytes(generated)
                 return Direct3DServiceResult(
                     image_base64=base64.b64encode(output_png).decode("ascii"),
