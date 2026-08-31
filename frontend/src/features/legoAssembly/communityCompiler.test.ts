@@ -591,6 +591,37 @@ describe('mixed community compiler', () => {
     );
   });
 
+  it('accepts the server-certified detailed GLB for a source-locked RLASM zone', async () => {
+    const generated = zone('rlasm-generated', 'building', {
+      _plan_role: 'building',
+      rlasm_keeper: 'calgary-inner-city-bungalow-v020',
+      floors: 2,
+    });
+    generated.building_id = 'b-rlasm';
+    vi.spyOn(legoAssemblyApi, 'plan').mockRejectedValue({
+      response: {
+        status: 422,
+        headers: { 'x-city-prompt-error-code': 'MODULE_FAMILY_MISSING' },
+      },
+    });
+    vi.spyOn(legoAssemblyApi, 'compileCommunity').mockResolvedValue({
+      status: 'compiled',
+      compiled_at: '2026-08-30T00:00:00Z',
+      counts: { building: 1, park: 0, street: 0 },
+      items: [{
+        zone_id: generated.id,
+        kind: 'building',
+        building_id: 'b-rlasm',
+        building_created: false,
+        generator: 'meshy',
+      }],
+    });
+
+    const result = await compileMixedCommunity3D([generated]);
+
+    expect(result).toMatchObject({ detailedBuildings: 1, plannedMasses: 0 });
+  });
+
   it('probes each explicitly missing family once instead of repeating hundreds of 422s', async () => {
     const archetypeIds = [
       'vernacular_courtyard_housing',

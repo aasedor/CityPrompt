@@ -162,14 +162,20 @@ function BuildingModelInstance({
   const bbox = useMemo(() => new THREE.Box3().setFromObject(scene), [scene]);
   const size = useMemo(() => bbox.getSize(new THREE.Vector3()), [bbox]);
   const center = useMemo(() => bbox.getCenter(new THREE.Vector3()), [bbox]);
+  const preserveSourceMaterials = building.generation_engine?.toLowerCase() === 'rlasm';
 
   const cloned = useMemo(() => {
     return prepareArchitecturalClone(scene, {
       renderOrder: MODEL_RENDER_ORDER,
       maxAnisotropy,
-      restyleUntextured: true,
+      // RLASM keepers carry source-locked material roles even when a finish is
+      // represented by PBR colour rather than a bitmap. Preserve the complete
+      // authored material state; globe lighting may illuminate it, but must
+      // not reinterpret its maps, finish values, glass, alpha, or visibility.
+      preserveSourcePbr: preserveSourceMaterials,
+      restyleUntextured: !preserveSourceMaterials,
     });
-  }, [maxAnisotropy, scene]);
+  }, [maxAnisotropy, preserveSourceMaterials, scene]);
   useEffect(() => () => disposeArchitecturalCloneMaterials(cloned), [cloned]);
 
   const placement = useMemo(
@@ -217,7 +223,7 @@ function BuildingModelInstance({
   const glazingLodRef = useRef<ArchitecturalGlazingLod>('far');
 
   useFrame(({ camera }) => {
-    if (modelRootRef.current) {
+    if (!preserveSourceMaterials && modelRootRef.current) {
       modelRootRef.current.getWorldPosition(modelWorldPositionRef.current);
       const distance = camera.position.distanceTo(modelWorldPositionRef.current);
       const nextLod = resolveArchitecturalGlazingLod(distance, glazingLodRef.current);

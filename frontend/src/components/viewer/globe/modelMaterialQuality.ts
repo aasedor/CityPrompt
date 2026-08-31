@@ -223,6 +223,10 @@ export interface ArchitecturalCloneOptions {
   renderOrder: number;
   maxAnisotropy?: number;
   restyleUntextured?: boolean;
+  /** Keep an externally authored model's complete PBR state authoritative.
+   * Materials are still cloned so the GLTF cache cannot be mutated, but no
+   * colours, maps, optical values, alpha settings, or visibility are changed. */
+  preserveSourcePbr?: boolean;
   /** Legacy LEGO compiler assets can contain effectively black ambient-
    * occlusion maps. Keep AO for authored standalone/Meshy models by default,
    * and disable it only for the LEGO assembly path where the preview already
@@ -484,6 +488,7 @@ export function prepareArchitecturalClone(
     renderOrder,
     maxAnisotropy = 8,
     restyleUntextured = false,
+    preserveSourcePbr = false,
     ambientOcclusion = 'preserve',
   }: ArchitecturalCloneOptions,
 ): THREE.Object3D {
@@ -498,11 +503,13 @@ export function prepareArchitecturalClone(
     mesh.receiveShadow = true;
     const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
     const tuned = materials.map((material) => (
-      tuneMaterial(material, maxAnisotropy, restyleUntextured, ambientOcclusion)
+      preserveSourcePbr
+        ? material.clone()
+        : tuneMaterial(material, maxAnisotropy, restyleUntextured, ambientOcclusion)
     ));
     mesh.material = Array.isArray(mesh.material) ? tuned : tuned[0];
   });
-  setArchitecturalGlazingLod(clone, 'far');
+  if (!preserveSourcePbr) setArchitecturalGlazingLod(clone, 'far');
   return clone;
 }
 

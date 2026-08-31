@@ -28,6 +28,7 @@ import {
   deriveItems,
   compileMixedCommunity3D,
   isCommunity3DSourceRevisionConflict,
+  isSourceLockedRlasmZone,
   recipeFromPlan,
   type CommunityCompileExpectation,
   type GroundBuildItem,
@@ -197,7 +198,11 @@ export function LegoBuilderPanel({
         zoneId: item.zone.id,
         label: item.label,
         kind: 'building' as const,
-        generators: new Set(['planned_massing'] as const),
+        generators: new Set(
+          isSourceLockedRlasmZone(item.zone)
+            ? ['meshy'] as const
+            : ['planned_massing'] as const,
+        ),
       })),
       ...groundToCompile.map((item) => ({
         zoneId: item.zone.id,
@@ -305,7 +310,10 @@ export function LegoBuilderPanel({
         const base = recoveredById.get(item.zone.id) ?? item;
         const zone = authoritativeZone(item.zone.id);
         const representation = representationById.get(item.zone.id);
-        if (representation?.generator === 'lego_assembly') {
+        if (
+          representation?.generator === 'lego_assembly'
+          || representation?.generator === 'meshy'
+        ) {
           return { ...base, zone, placeState: 'placed', massingState: undefined };
         }
         if (representation?.generator === 'planned_massing') {
@@ -325,7 +333,9 @@ export function LegoBuilderPanel({
           : item
       )));
       const groundCount = result.counts.park + result.counts.street;
-      const detailedCount = result.items.filter((item) => item.generator === 'lego_assembly').length;
+      const detailedCount = result.items.filter((item) => (
+        item.generator === 'lego_assembly' || item.generator === 'meshy'
+      )).length;
       const massingCount = result.items.filter((item) => item.generator === 'planned_massing').length;
       const residual = result.residual_landscape;
       const residualSummary = residual && residual.boundary_count > 0

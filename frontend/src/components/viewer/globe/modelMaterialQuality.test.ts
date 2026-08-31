@@ -54,6 +54,78 @@ describe('prepareArchitecturalClone', () => {
     );
   });
 
+  it('preserves every authored PBR and texture value in source-authoritative mode', () => {
+    const albedo = new THREE.Texture();
+    albedo.colorSpace = THREE.LinearSRGBColorSpace;
+    albedo.anisotropy = 2;
+    const normal = new THREE.Texture();
+    const roughness = new THREE.Texture();
+    const metalness = new THREE.Texture();
+    const ao = new THREE.Texture();
+    const emissive = new THREE.Texture();
+    const sourceMaterial = new THREE.MeshPhysicalMaterial({
+      color: '#7c5238',
+      map: albedo,
+      normalMap: normal,
+      roughness: 0.63,
+      roughnessMap: roughness,
+      metalness: 0.27,
+      metalnessMap: metalness,
+      aoMap: ao,
+      aoMapIntensity: 0.41,
+      emissive: '#26150d',
+      emissiveMap: emissive,
+      emissiveIntensity: 0.17,
+      transmission: 0.46,
+      thickness: 0.031,
+      ior: 1.51,
+      clearcoat: 0.23,
+      clearcoatRoughness: 0.19,
+      opacity: 0.72,
+      transparent: true,
+      depthWrite: false,
+      envMapIntensity: 1.37,
+    });
+    sourceMaterial.name = 'MAT_GlassOverlay_SourceSpecific';
+    sourceMaterial.visible = true;
+    sourceMaterial.userData.glazing_lod = 'physical';
+    const source = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), sourceMaterial);
+
+    const clone = prepareArchitecturalClone(source, {
+      renderOrder: 150,
+      maxAnisotropy: 16,
+      restyleUntextured: true,
+      ambientOcclusion: 'disable',
+      preserveSourcePbr: true,
+    }) as THREE.Mesh;
+    const material = clone.material as THREE.MeshPhysicalMaterial;
+
+    expect(material).not.toBe(sourceMaterial);
+    expect(material.color.getHex()).toBe(sourceMaterial.color.getHex());
+    expect(material.map).toBe(albedo);
+    expect(material.normalMap).toBe(normal);
+    expect(material.roughnessMap).toBe(roughness);
+    expect(material.metalnessMap).toBe(metalness);
+    expect(material.aoMap).toBe(ao);
+    expect(material.emissiveMap).toBe(emissive);
+    expect(material.roughness).toBe(0.63);
+    expect(material.metalness).toBe(0.27);
+    expect(material.aoMapIntensity).toBe(0.41);
+    expect(material.emissiveIntensity).toBe(0.17);
+    expect(material.transmission).toBe(0.46);
+    expect(material.thickness).toBe(0.031);
+    expect(material.ior).toBe(1.51);
+    expect(material.clearcoat).toBe(0.23);
+    expect(material.clearcoatRoughness).toBe(0.19);
+    expect(material.opacity).toBe(0.72);
+    expect(material.transparent).toBe(true);
+    expect(material.depthWrite).toBe(false);
+    expect(material.envMapIntensity).toBe(1.37);
+    expect(material.visible).toBe(true);
+    expect(albedo.colorSpace).toBe(THREE.LinearSRGBColorSpace);
+    expect(albedo.anisotropy).toBe(2);
+  });
+
   it('disables legacy near-black AO only for the explicit LEGO policy', () => {
     const ao = new THREE.Texture();
     const sourceMaterial = new THREE.MeshStandardMaterial({

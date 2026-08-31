@@ -1663,10 +1663,10 @@ export function GlobeSitePlannerMap({
   const [terrainElevation, setTerrainElevation] = useState(DEFAULT_TERRAIN_ELEVATION);
   const preparedSiteTerrainHeight = useMemo(() => {
     const boundary = getActiveSiteBoundary(siteZones);
-    return boundary
+    return boundary && preparedSiteBoundaryIds.has(boundary.id)
       ? resolvePreparedSiteTerrainHeight(boundary, terrainElevation)
       : null;
-  }, [siteZones, terrainElevation]);
+  }, [preparedSiteBoundaryIds, siteZones, terrainElevation]);
   const [isTerrainReady, setIsTerrainReady] = useState(false);
   const terrainElevationRef = useRef(DEFAULT_TERRAIN_ELEVATION);
   terrainElevationRef.current = terrainElevation;
@@ -2217,6 +2217,20 @@ export function GlobeSitePlannerMap({
       window.clearTimeout(timeoutId);
     };
   }, [applyCameraPose, applyCameraView, globeControlsReady, initialRevealFallbackReady, initialView, isSceneSettled, isTerrainReady, preferredCameraPose, preferredView, revealCanvasAfterPose, sceneReady]);
+
+  // A healthy WebGL scene can mount proposal models while the external tile
+  // renderer never reports a settled frame. Do not leave that usable scene
+  // permanently hidden behind the startup overlay: once terrain, controls and
+  // the bounded reveal timeout are ready, expose the current camera pose.
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      hasVisibleInitialCameraRef.current = true;
+      setIsInitialCameraApplied(true);
+      revealCanvasAfterPose();
+    }, INITIAL_CAMERA_REVEAL_FALLBACK_MS * 2);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [revealCanvasAfterPose]);
 
   // The basic initial-pose path can run before asynchronously loaded zones
   // exist, leaving a reopened project at city scale. Queue projection-verified

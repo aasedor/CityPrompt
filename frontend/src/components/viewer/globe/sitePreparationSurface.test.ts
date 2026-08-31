@@ -83,6 +83,17 @@ describe('compiled site preparation', () => {
     expect(getPreparedSiteBoundaryIds([inactive, boundary])).toEqual(new Set(['boundary']));
   });
 
+  it('does not create a synthetic prepared surface for an explicitly retained empty parcel', () => {
+    const retainedGroundBoundary = {
+      ...zone('boundary', 'site_boundary', {
+        community_3d_mask_existing_tiles: false,
+      }),
+      is_active_boundary: true,
+    };
+
+    expect(getPreparedSiteBoundaryIds([retainedGroundBoundary])).toEqual(new Set());
+  });
+
   it('adds deterministic natural variation without mutating source geometry', () => {
     const source = new THREE.PlaneGeometry(20, 20, 2, 2);
     const preparedA = createSitePreparationGeometry(source, 'boundary-1');
