@@ -1,0 +1,66 @@
+{
+  "trial_id": "semantic-lego-v4-documentary-video-v004",
+  "provider_call_count": 1,
+  "model": "gemini-omni-1.1-flash",
+  "task": "edit",
+  "response_format": {
+    "type": "video",
+    "resolution": "1080p",
+    "delivery": "uri"
+  },
+  "store": true,
+  "source_path": "city-prompt-deterministic-source-00-04s-v004.mp4",
+  "source_sha256": "bd045021f7bfed7a2593a74dc11ac0ebcad9ad6c75a085e1f220cb91d0834ba6",
+  "source_bytes": 22276879,
+  "prompt": "[# Sources <VIDEO_0>@Video1]\n\nApply a restrained documentary photographic finish to @Video1: flat natural daylight, honest true-to-life colour, realistic source-specific material response, restrained glazing reflections, subtle contact shadows, and very light natural film grain. Change only lighting, exposure, material response, glazing reflections, contact shadows, and subtle natural film grain. Keep everything else exactly the same. Preserve @Video1's camera path, timing, geometry, roof shapes, building count, facade bays, doors, windows, storefront colours, site layout, terrain, and background exactly. Single continuous unbroken shot. No scene cuts. No new objects, people, vehicles, signage, architectural features, camera motion, dialogue, music, or typography.",
+  "status": "complete",
+  "video_generated": true,
+  "interaction_id_recorded_locally": true,
+  "output_path": "city-prompt-omni-documentary-v004.mp4",
+  "output_sha256": "9865c99a3b2ac0122f6a36790fed4af11da481b4886270dfde146dae081c23c7",
+  "output_bytes": 5215131,
+  "output_mime_type": "video/mp4",
+  "technical_preflight": {
+    "source_resolution": "1920x1080",
+    "source_duration_seconds": 4.0,
+    "source_fps": 24,
+    "output_resolution": "1920x1080",
+    "output_duration_seconds": 4.0,
+    "output_fps": 24,
+    "output_audio": "effectively silent AAC stereo; mean -91.0 dB, peak -84.3 dB"
+  },
+  "fidelity": {
+    "score": 71.4,
+    "minimum_score": 57.1,
+    "status": "review",
+    "samples": [
+      {"time_seconds": 0.0, "score": 82.0},
+      {"time_seconds": 1.0, "score": 82.3},
+      {"time_seconds": 2.0, "score": 72.5},
+      {"time_seconds": 3.0, "score": 63.0},
+      {"time_seconds": 4.0, "score": 57.1}
+    ],
+    "temporal_consistency_score": 80.5
+  },
+  "builder_review": {
+    "scope": "source-locked Omni documentary finishing trial",
+    "decision": "visual_rework_required",
+    "passed": [
+      "requested 1080p delivery",
+      "single continuous four-second shot",
+      "three distinct building masses and open separations remain legible",
+      "flat-roof character is retained instead of the prior hipped-roof redesign",
+      "green storefront colour identity remains recognizable",
+      "the pale site apron is visually integrated"
+    ],
+    "p0_blockers": [
+      "camera and source-frame registration drift progressively; fidelity falls to 57.1 at the final checkpoint",
+      "roof construction and facade geometry are reinterpreted rather than preserved exactly"
+    ],
+    "p1_blockers": [
+      "parked cars and rooftop equipment are invented despite the explicit no-new-objects instruction",
+      "roof finish, parapets, storefront details, and surrounding site surfaces change from the deterministic source"
+    ],
+    "promotion_eligible": false
+  }
+}

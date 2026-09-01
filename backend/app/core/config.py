@@ -195,7 +195,7 @@ class Settings(BaseSettings):
     # substitutes for a paid text-mode generation (Meshy only fills gaps).
     model_library_first_enabled: bool = True
     gemini_api_key: str = ""
-    omni_video_model: str = "gemini-omni-flash-preview"
+    omni_video_model: str = "gemini-omni-1.1-flash"
     omni_video_timeout_seconds: int = 600
     seedance_video_timeout_seconds: int = 900
     google_maps_api_key: str = ""

@@ -250,7 +250,12 @@ def test_omni_payload_supports_deterministic_preview_video_edit():
     assert "Match the source video's total travel distance" in prompt
     assert payload["generation_config"] == {"video_config": {"task": "edit"}}
     assert [item["type"] for item in payload["input"]] == ["video", "text"]
-    assert payload["response_format"] == {"type": "video"}
+    assert payload["response_format"] == {
+        "type": "video",
+        "resolution": "1080p",
+        "delivery": "uri",
+    }
+    assert payload["store"] is True
 
 
 def test_documentary_finish_is_photographic_only_and_keeps_architecture_locked():
@@ -264,12 +269,16 @@ def test_documentary_finish_is_photographic_only_and_keeps_architecture_locked()
         finish_style="documentary",
     )
 
-    assert "DOCUMENTARY VISUAL FINISH — CONTROLLED EXCEPTION" in prompt
+    assert prompt.startswith("[# Sources <VIDEO_0>@Video1]")
+    assert len(prompt.split()) < 110
     assert "flat natural daylight" in prompt
-    assert "restrained true-to-life colour" in prompt
-    assert "new signage, blind windows, extra doors" in prompt
-    assert "bay count, entrance assembly" in prompt
-    assert "Do not apply a photographic or artistic style" not in prompt
+    assert "realistic source-specific material response" in prompt
+    assert "Keep everything else exactly the same" in prompt
+    assert "roof shapes, building count, facade bays, doors, windows" in prompt
+    assert "Single continuous unbroken shot. No scene cuts." in prompt
+    assert "No new objects, people, vehicles, signage, architectural features" in prompt
+    assert "scene_brief" not in prompt
+    assert "Three RLASM buildings" not in prompt
 
 
 def test_street_walkby_is_pedestrian_height_and_detail_locked():

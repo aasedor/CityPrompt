@@ -79,6 +79,30 @@ phone review:
 - [`video-03-documentary-still-06s-occluded.png`](video-03-documentary-still-06s-occluded.png)
 - [`video-03-documentary-still-08s-occluded.png`](video-03-documentary-still-08s-occluded.png)
 
+## Stable Omni 1.1 documentary edit trial
+
+The next bounded trial replaced the long video-edit prompt with one short,
+source-locked photographic-finish instruction, moved the provider to
+`gemini-omni-1.1-flash`, and explicitly requested 1080p URI delivery. The one
+successful generation returned 1920×1080 at 24 fps for the unobstructed first
+four seconds of the same deterministic route.
+
+The output preserves three separate buildings, their whole-bay size
+differences, recognizable green storefront identity, and flat-roof character.
+It also integrates the conspicuous pale site apron more convincingly. It is
+not keeper evidence: average source fidelity is 71.4/100 and declines from
+82.0 to 57.1 across the shot; parked cars and rooftop equipment are invented,
+and roof, facade, camera, and site details drift from the deterministic source.
+The scoped decision is `visual_rework_required`.
+
+- [`video-04-omni-documentary-1080p-still-00s.png`](video-04-omni-documentary-1080p-still-00s.png)
+- [`video-04-omni-documentary-1080p-still-01s.png`](video-04-omni-documentary-1080p-still-01s.png)
+- [`video-04-omni-documentary-1080p-still-02s.png`](video-04-omni-documentary-1080p-still-02s.png)
+- [`video-04-omni-documentary-1080p-still-03s.png`](video-04-omni-documentary-1080p-still-03s.png)
+- [`video-04-omni-documentary-1080p-still-04s.png`](video-04-omni-documentary-1080p-still-04s.png)
+- [`video-04-omni-documentary-1080p-result.json`](video-04-omni-documentary-1080p-result.json)
+- [`video-04-omni-documentary-1080p-review.md`](video-04-omni-documentary-1080p-review.md)
+
 ## Process screenshots
 
 - [`video-01-preflight-passed.png`](video-01-preflight-passed.png)

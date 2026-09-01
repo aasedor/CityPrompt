@@ -163,6 +163,21 @@ def build_cinematic_prompt(
     is_detail_flythrough = camera_motion == "detail_flythrough"
     omni_preview_finish = provider == "omni" and control_mode == "preview_video"
     documentary_finish = omni_preview_finish and finish_style == "documentary"
+    if documentary_finish:
+        # Omni's editing contract is intentionally narrow. The deterministic
+        # preview already owns geometry, geography, camera, and timing; a long
+        # restatement gives the model more opportunities to reinterpret them.
+        return (
+            "[# Sources <VIDEO_0>@Video1]\n\n"
+            "Apply a restrained documentary photographic finish to @Video1: flat natural daylight, honest "
+            "true-to-life colour, realistic source-specific material response, restrained glazing reflections, "
+            "subtle contact shadows, and very light natural film grain. Change only lighting, exposure, material "
+            "response, glazing reflections, contact shadows, and subtle natural film grain. Keep everything else "
+            "exactly the same. Preserve @Video1's camera path, timing, geometry, roof shapes, building count, facade "
+            "bays, doors, windows, storefront colours, site layout, terrain, and background exactly. Single continuous "
+            "unbroken shot. No scene cuts. No new objects, people, vehicles, signage, architectural features, camera "
+            "motion, dialogue, music, or typography."
+        )
     travel_lock = (
         "Match the source video's total travel distance, altitude, speed curve, and camera timing exactly."
         if control_mode == "preview_video"
@@ -427,7 +442,11 @@ def build_omni_payload(
         task = "image_to_video"
     input_items.append({"type": "text", "text": prompt})
     response_format = (
-        {"type": "video"}
+        {
+            "type": "video",
+            "resolution": "1080p",
+            "delivery": "uri",
+        }
         if control_mode == "preview_video"
         else {
             "type": "video",
@@ -442,7 +461,9 @@ def build_omni_payload(
         "generation_config": {"video_config": {"task": task}},
         "response_format": response_format,
         "background": False,
-        "store": False,
+        # URI-delivered Omni video requires a stored interaction. Inline
+        # image-to-video requests remain ephemeral.
+        "store": control_mode == "preview_video",
         "stream": False,
     }
 
