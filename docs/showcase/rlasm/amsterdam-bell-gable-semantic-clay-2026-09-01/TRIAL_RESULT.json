@@ -1,0 +1,82 @@
+{
+  "schema": "cityprompt.rlasm.semantic-clay-trial@1",
+  "candidate": "amsterdam-bell-gable-house-semantic-clay-v001",
+  "status": "BUILDER_VERIFIED_FOR_USER_VISUAL_REVIEW",
+  "keeper_claimed": false,
+  "source_keeper": {
+    "candidate": "10-amsterdam-bell-gable-house-rlasm-v10",
+    "method": "RLASM v6.1",
+    "source_mode": "exact_catalogue_photos_only",
+    "source_package_ref": "origin/codex/rlasm-v6-amsterdam-bell-pilot@9d476fe58",
+    "locked_reference_count": 3,
+    "locked_reference_hashes_match": true,
+    "regenerated_full_glb": {
+      "bytes": 15347168,
+      "sha256": "15f2bccce925c27536f9e57b363483e4f78b5fb26b8ac55ce89656fe9d950714",
+      "reviewed_binary_hash_reproduced": false,
+      "note": "The exact approved construction script and locked source assets were rerun in Blender 5.2; this regenerated binary has its own hash."
+    }
+  },
+  "semantic_clay": {
+    "storage": "external_artifact",
+    "workspace_path": "artifacts/amsterdam-bell-gable-semantic-clay-2026-09-01/amsterdam-bell-gable-house-semantic-clay-v001.glb",
+    "bytes": 3719376,
+    "sha256": "b99d041449327e726a510e16583f528093248339ec6bb89a3b06c075f21f369d",
+    "reduction_percent": 75.8,
+    "mesh_objects": 553,
+    "polygons": 51060,
+    "images": 0,
+    "textures": 0,
+    "semantic_materials": [
+      "masonry",
+      "trim",
+      "roof",
+      "glass",
+      "timber",
+      "interior",
+      "hardware"
+    ],
+    "bounds_m": {
+      "min": [-4.62, -9.16, 0.0],
+      "max": [4.62, 8.02, 14.05]
+    }
+  },
+  "scope_validation": {
+    "source_renderable_objects": 555,
+    "marked_building_objects": 553,
+    "removed_review_context_objects": 2,
+    "retained_renderable_objects": 553,
+    "review_ground_or_street_present": false,
+    "bottom_grounded_at_zero": true,
+    "glb_header_valid": true,
+    "round_trip_import_valid": true
+  },
+  "rlasm_phase_reuse": {
+    "phase_a_source_lock": "reused",
+    "phase_b_measurement_and_spec": "reused",
+    "phase_c_complete_unskinned_building": "reused",
+    "phase_d_identity_and_materials": "geometry_reused_material_finish_replaced_by_semantic_roles",
+    "phase_e_openings_and_contacts": "reused",
+    "phase_f_render_and_qa": "five_view_clay_qa_rerun",
+    "phase_g_independent_review": "not_inherited_user_review_pending"
+  },
+  "semantic_size_grammar": {
+    "mode": "fixed_identity_complete_house_module",
+    "stretching_allowed": false,
+    "width_growth": "repeat_complete_house_modules_side_by_side",
+    "fixed_roles": [
+      "entrance",
+      "bell_gable",
+      "roof",
+      "dormer",
+      "front_and_side_opening_schedule"
+    ]
+  },
+  "qa_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "rear_corner",
+    "true_top"
+  ]
+}

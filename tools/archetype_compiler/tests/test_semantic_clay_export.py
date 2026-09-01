@@ -54,3 +54,29 @@ def test_source_material_names_map_to_stable_semantic_roles(monkeypatch) -> None
     assert exporter.semantic_role("Interior warm light") == "interior"
     assert exporter.semantic_role("Black metal hardware") == "hardware"
     assert exporter.semantic_role("Mineral stucco") == "wall"
+
+
+def test_amsterdam_keeper_materials_map_to_distinct_clay_roles(monkeypatch) -> None:
+    exporter = load_exporter(monkeypatch)
+    assert exporter.semantic_role("Amsterdam_Variant0_Aged_Red_Brick") == "masonry"
+    assert exporter.semantic_role("Amsterdam_Variant0_Weathered_Dutch_Roof_Tile") == "roof"
+    assert exporter.semantic_role("Amsterdam_Variant0_Warm_Sandstone") == "trim"
+    assert exporter.semantic_role("Amsterdam_Variant0_Integrated_Terracotta_Dressing") == "trim"
+    assert exporter.semantic_role("Amsterdam_Variant0_Stained_Timber") == "timber"
+    assert exporter.semantic_role("Amsterdam_Variant0_Warm_Oak_Door") == "timber"
+    assert exporter.semantic_role("Amsterdam_Aged_Zinc") == "hardware"
+    assert exporter.semantic_role("Amsterdam_Neutral_Occupied_Sash_Glass") == "glass"
+    assert exporter.semantic_role("Amsterdam_Occupied_Residential_Depth") == "interior"
+    assert exporter.semantic_role("Amsterdam_Warm_Interior_Plaster") == "interior"
+    assert exporter.semantic_role("Amsterdam_Domestic_Textile") == "interior"
+
+
+def test_exporter_declares_full_clay_qa_view_set(monkeypatch) -> None:
+    exporter = load_exporter(monkeypatch)
+    assert exporter.QA_VIEWS == (
+        "front",
+        "front_corner",
+        "aerial",
+        "rear_corner",
+        "true_top",
+    )
