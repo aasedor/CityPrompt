@@ -1,0 +1,44 @@
+[
+  {
+    "id": "guide-polygon",
+    "index": "1A",
+    "title": "Polygon guide",
+    "src": "../guides/01-colored-polygon.png",
+    "href": "../guides/01-colored-polygon.png"
+  },
+  {
+    "id": "guide-clay",
+    "index": "2A",
+    "title": "Clay guide",
+    "src": "../guides/02-architectural-clay.png",
+    "href": "../guides/02-architectural-clay.png"
+  },
+  {
+    "id": "guide-full",
+    "index": "3A",
+    "title": "Full RLASM guide",
+    "src": "../guides/03-full-rlasm.png",
+    "href": "../guides/03-full-rlasm.png"
+  },
+  {
+    "id": "result-polygon",
+    "index": "1B",
+    "title": "Polygon result",
+    "src": "../generated/01-colored-polygon-result.png",
+    "href": "../generated/01-colored-polygon-result.png"
+  },
+  {
+    "id": "result-clay",
+    "index": "2B",
+    "title": "Clay result",
+    "src": "../generated/02-architectural-clay-result.png",
+    "href": "../generated/02-architectural-clay-result.png"
+  },
+  {
+    "id": "result-full",
+    "index": "3B",
+    "title": "Full RLASM result",
+    "src": "../generated/03-full-rlasm-result.png",
+    "href": "../generated/03-full-rlasm-result.png"
+  }
+]

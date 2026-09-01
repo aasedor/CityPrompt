@@ -1,0 +1,86 @@
+{
+  "experiment_id": "cityprompt-building-conditioning-trial-2026-09-01",
+  "status": "complete_single_sample",
+  "subject": {
+    "candidate": "rlasm-calgary-inner-city-bungalow-v020",
+    "lifecycle": "keeper_approved",
+    "source_blend": {
+      "storage": "external_local_artifact_not_promoted",
+      "original_path": "artifacts/rlasm-calgary-inner-city-bungalow-v020/model/calgary-inner-city-bungalow-v020.blend",
+      "sha256": "a09eaa95caec13b893f8b23b96dea8483cb6affc569c4c22daec5d3cc4d2ecd6"
+    },
+    "locked_source_board": {
+      "path": "references/locked-source-board.png",
+      "dimensions": [1920, 1080],
+      "sha256": "2877e8fda1fe00918a049529d87e02d4d3f41c2ff23eaa9338b118aec0412bd7"
+    }
+  },
+  "controls": {
+    "camera": "camera_front_corner_60",
+    "lens_mm": 54,
+    "guide_dimensions": [1280, 960],
+    "target_aspect_ratio": "4:3 landscape",
+    "target_brief": "PROMPTS.md",
+    "image_generation_calls": 3,
+    "calls_per_lane": 1,
+    "automatic_retries": 0,
+    "cross_lane_result_conditioning": false,
+    "known_minor_confounds": [
+      "The clay call submitted the common brief before its lane interpretation; the polygon and full-RLASM calls submitted the lane interpretation first. Prompt content was unchanged.",
+      "This is one subject and one stochastic call per lane, so it is a directional pilot rather than a statistical benchmark."
+    ]
+  },
+  "lanes": [
+    {
+      "id": "colored_polygon",
+      "guide": {
+        "path": "guides/01-colored-polygon.png",
+        "sha256": "a48579ff2ef6871913f40e43278dc43546871769a44b3e8d3d1fa64c9e3f90f0"
+      },
+      "result": {
+        "path": "generated/01-colored-polygon-result.png",
+        "dimensions": [1448, 1086],
+        "sha256": "204973c8df6b9b015e990e1107ec01caf045afcb59b85261ed0e9d8f3c59e56e"
+      },
+      "critical_lock_review": {
+        "pass": ["front upper gable and picture-window identity", "porch on brick piers", "left chimney", "source-like material palette"],
+        "partial": ["gross footprint and massing"],
+        "fail": ["locked camera side", "approved roof graph", "right roof-plane dormer", "side-opening cadence"]
+      }
+    },
+    {
+      "id": "architectural_clay",
+      "guide": {
+        "path": "guides/02-architectural-clay.png",
+        "sha256": "2973ed0b64282c5242ca280e725f9bb723e1139be897d9de65b2bf404d945b10"
+      },
+      "result": {
+        "path": "generated/02-architectural-clay-result.png",
+        "dimensions": [1448, 1086],
+        "sha256": "a2689bdbb9b975ee5bf2a85dec6f9f6bb4bb39e6a73530b94aeb425f641db195"
+      },
+      "critical_lock_review": {
+        "pass": ["camera side and composition", "footprint and massing", "approved roof graph", "front projection", "porch construction", "right roof-plane dormer", "left chimney", "side-opening cadence", "source-like material palette"],
+        "partial": ["exact material topology at the dormer and some fine trim"],
+        "fail": []
+      }
+    },
+    {
+      "id": "full_rlasm",
+      "guide": {
+        "path": "guides/03-full-rlasm.png",
+        "sha256": "c495dd3ebd23fe37bfce59c5e2999cc27503b4c972ba61d43cca0e9400adb931"
+      },
+      "result": {
+        "path": "generated/03-full-rlasm-result.png",
+        "dimensions": [1448, 1086],
+        "sha256": "9d8d804974f33a62c9bab09d9249e870df0dcae151b495931460d23b00da2f0d"
+      },
+      "critical_lock_review": {
+        "pass": ["camera side and composition", "footprint and massing", "approved roof graph", "front projection", "porch construction", "right roof-plane dormer", "left chimney", "side-opening cadence", "material-role topology"],
+        "partial": ["minor generative softening of small construction details"],
+        "fail": []
+      }
+    }
+  ]
+}

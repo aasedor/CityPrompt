@@ -1,0 +1,12 @@
+{
+  "preset": "image-wall",
+  "title": "CityPrompt building conditioning — one-call comparison",
+  "showCaptions": true,
+  "showPrompts": false,
+  "showControls": false,
+  "minTileWidth": 420,
+  "output": "review-board.html",
+  "contactSheetColumns": 3,
+  "contactSheetThumb": 420,
+  "contactSheetOutput": "comparison-contact-sheet.png"
+}

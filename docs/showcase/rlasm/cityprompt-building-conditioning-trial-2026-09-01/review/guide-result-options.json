@@ -1,0 +1,12 @@
+{
+  "preset": "image-wall",
+  "title": "CityPrompt conditioning guides and one-call results",
+  "showCaptions": true,
+  "showPrompts": false,
+  "showControls": false,
+  "minTileWidth": 380,
+  "output": "guide-result-board.html",
+  "contactSheetColumns": 3,
+  "contactSheetThumb": 390,
+  "contactSheetOutput": "guide-result-contact-sheet.png"
+}

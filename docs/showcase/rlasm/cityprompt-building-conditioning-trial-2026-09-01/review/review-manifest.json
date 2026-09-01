@@ -1,0 +1,32 @@
+[
+  {
+    "id": "lane-01-colored-polygon",
+    "index": 1,
+    "title": "Coloured polygon",
+    "routeName": "Footprint-only conditioning",
+    "src": "../generated/01-colored-polygon-result.png",
+    "href": "../generated/01-colored-polygon-result.png",
+    "output": "01-colored-polygon-result.png",
+    "prompt": "One native call. The guide supplied only the measured red footprint, site position, orientation, and camera; vertical architecture came from the locked source board and fixed target brief."
+  },
+  {
+    "id": "lane-02-architectural-clay",
+    "index": 2,
+    "title": "Architectural clay",
+    "routeName": "Exact geometry, unmaterialed",
+    "src": "../generated/02-architectural-clay-result.png",
+    "href": "../generated/02-architectural-clay-result.png",
+    "output": "02-architectural-clay-result.png",
+    "prompt": "One native call. The guide supplied the complete approved architectural geometry and camera in neutral clay; appearance came from the locked source board and fixed target brief."
+  },
+  {
+    "id": "lane-03-full-rlasm",
+    "index": 3,
+    "title": "Full RLASM",
+    "routeName": "Exact geometry and material roles",
+    "src": "../generated/03-full-rlasm-result.png",
+    "href": "../generated/03-full-rlasm-result.png",
+    "output": "03-full-rlasm-result.png",
+    "prompt": "One native call. The approved RLASM guide supplied both complete architectural geometry and material-role placement; the model added photorealism and neighbourhood integration."
+  }
+]
