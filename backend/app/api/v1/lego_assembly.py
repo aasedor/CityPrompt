@@ -116,6 +116,10 @@ class LegoRecipeRequest(BaseModel):
     instances: list[dict[str, Any]]
     assembled_height_m: float | None = None
     fit: dict[str, Any] | None = None
+    # V4 horizontal assembly proof. Persist this with the recipe so Direct 3D,
+    # diagnostics, and future edits can verify that fixed semantic anchors
+    # remained singletons while only whole repeatable bays changed count.
+    semantic_invariants: dict[str, Any] | None = None
     assembled_preview_url: str | None = None
     # AI Master Planner zones carry the exact executable catalogue revision
     # used to bind their archetype and geometry.  Manual recipes omit this
@@ -296,8 +300,16 @@ def _locked_building_target(zone: SiteZone) -> tuple[float, float, int, str, flo
     """Read an AI binder target or measure an ordinary authored polygon."""
 
     properties = zone.properties or {}
+    frontage_lock = properties.get("_lego_semantic_frontage_lock")
+    frontage_edge_index = None
+    if (
+        isinstance(frontage_lock, dict)
+        and frontage_lock.get("schema_version") == 1
+        and isinstance(frontage_lock.get("frontage_edge_index"), int)
+    ):
+        frontage_edge_index = int(frontage_lock["frontage_edge_index"])
     is_ai_zone = bool(str(properties.get("_plan_scenario") or "").strip())
-    if is_ai_zone:
+    if is_ai_zone and frontage_edge_index is None:
         try:
             width = float(properties["target_w_m"])
             depth = float(properties["target_d_m"])
@@ -335,7 +347,10 @@ def _locked_building_target(zone: SiteZone) -> tuple[float, float, int, str, flo
         if geometry.geom_type == "MultiPolygon":
             geometry = max(geometry.geoms, key=lambda item: item.area)
         exterior = getattr(geometry, "exterior", None)
-        analysis = frontend_footprint_analysis(list(exterior.coords) if exterior is not None else None)
+        analysis = frontend_footprint_analysis(
+            list(exterior.coords) if exterior is not None else None,
+            frontage_edge_index,
+        )
         try:
             floors = _positive_half_up_int(properties.get("floors") or 1)
             if floors is None:
@@ -599,6 +614,16 @@ class LegoModuleMetadataRequest(BaseModel):
     variant_key: str = Field(default="default", pattern="^[a-z0-9][a-z0-9_]{0,49}$")
     lod: int = Field(default=0, ge=0)
     allowed_levels: list[int] = Field(default_factory=list)
+    assembly_axis: str | None = Field(default=None, pattern="^x$")
+    semantic_role: str | None = Field(
+        default=None,
+        pattern="^(left_end|middle|entrance|right_end)$",
+    )
+    repeatable_x: bool = False
+    required_once: bool = False
+    min_repeats: int | None = Field(default=None, ge=0)
+    max_repeats: int | None = Field(default=None, ge=0)
+    native_repeat_count: int | None = Field(default=None, ge=0)
 
 
 async def _accessible_entries(
@@ -680,6 +705,13 @@ async def list_lego_modules(
                     "variant_key": descriptor.variant_key,
                     "lod": descriptor.lod,
                     "allowed_levels": list(descriptor.allowed_levels),
+                    "assembly_axis": descriptor.assembly_axis,
+                    "semantic_role": descriptor.semantic_role,
+                    "repeatable_x": descriptor.repeatable_x,
+                    "required_once": descriptor.required_once,
+                    "min_repeats": descriptor.min_repeats,
+                    "max_repeats": descriptor.max_repeats,
+                    "native_repeat_count": descriptor.native_repeat_count,
                 }
             )
     return {"modules": descriptors, "count": len(descriptors)}
@@ -720,6 +752,13 @@ async def configure_lego_module(
         "variant_key": body.variant_key,
         "lod": body.lod,
         "allowed_levels": body.allowed_levels,
+        "assembly_axis": body.assembly_axis,
+        "semantic_role": body.semantic_role,
+        "repeatable_x": body.repeatable_x,
+        "required_once": body.required_once,
+        "min_repeats": body.min_repeats,
+        "max_repeats": body.max_repeats,
+        "native_repeat_count": body.native_repeat_count,
     }
     entry.metadata_ = metadata
     await db.flush()
@@ -1445,6 +1484,46 @@ async def _place_recipe_on_zone(
     specifications["lego_placed"] = True
     building.specifications = specifications
     flag_modified(building, "specifications")
+    if (
+        isinstance(body.fit, dict)
+        and body.fit.get("assembly_mode") == "semantic_bay_grid"
+        and isinstance(body.semantic_invariants, dict)
+        and body.semantic_invariants.get("integer_bays_only") is True
+    ):
+        properties = dict(zone.properties or {})
+        prior_lock = properties.get("_lego_semantic_frontage_lock")
+        frontage_edge_index = (
+            prior_lock.get("frontage_edge_index")
+            if isinstance(prior_lock, dict)
+            and prior_lock.get("schema_version") == 1
+            and isinstance(prior_lock.get("frontage_edge_index"), int)
+            else None
+        )
+        if frontage_edge_index is None:
+            geometry = _community_source_geometry(zone)
+            if geometry.geom_type == "MultiPolygon":
+                geometry = max(geometry.geoms, key=lambda item: item.area)
+            exterior = getattr(geometry, "exterior", None)
+            coordinates = list(exterior.coords) if exterior is not None else None
+            candidates: list[tuple[float, int]] = []
+            if coordinates is not None:
+                for edge_index in range(max(0, len(coordinates) - 1)):
+                    analysis = frontend_footprint_analysis(coordinates, edge_index)
+                    if analysis is None:
+                        continue
+                    measured_width, measured_depth, _ = analysis
+                    error = abs(measured_width - body.target.width_m) + abs(measured_depth - body.target.depth_m)
+                    candidates.append((error, edge_index))
+            if candidates:
+                frontage_edge_index = min(candidates)[1]
+        if frontage_edge_index is not None:
+            properties["_lego_semantic_frontage_lock"] = {
+                "schema_version": 1,
+                "frontage_edge_index": frontage_edge_index,
+                "meaning": "polygon edge controlling repeatable facade bay count",
+            }
+            zone.properties = properties
+            flag_modified(zone, "properties")
     return building, created
 
 

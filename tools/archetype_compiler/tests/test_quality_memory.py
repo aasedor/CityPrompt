@@ -107,7 +107,7 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
     assert memory["schema"] == "high-quality-building-memory@1"
     assert (
         memory["memory_version"]
-        == "2026-08-02-clean-3d-no-prisms-runtime-v118"
+        == "2026-08-31-semantic-lego-v4-runtime-v119"
     )
     memory_doc = (
         Path(__file__).resolve().parents[3]
@@ -305,6 +305,7 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
         "archetype_envelope_not_parcel_fill",
         "all_placed_families_remain_authored_geometry",
         "authored_buildings_hide_planning_volumes",
+        "semantic_lego_is_discrete_construction",
         "identity_aliases_are_explicit",
         "monumental_glazing_has_sectional_depth",
         "multi_aisle_roofs_are_complete_systems",

@@ -24,6 +24,7 @@
     "geometry_owns_silhouette_depth_contact_and_circulation": true,
     "identity_pixels_are_bounded_and_orthographic": true,
     "one_visual_owner_per_feature": true,
+    "semantic_lego_uses_integer_units_without_continuous_resize": true,
     "generic_fallbacks_allowed": false,
     "general_high_quality_ready_is_keeper_approval": false,
     "builder_may_self_approve_keeper": false,
@@ -66,6 +67,18 @@
   "unskinned_gate": {
     "orientation_specific_openings_visible_in_front_side_and_rear_roles": true,
     "boolean_success_or_object_count_is_visual_proof": false
+  },
+  "semantic_lego_contract": {
+    "required_fixed_roles": ["left_end", "entrance", "right_end"],
+    "minimum_repeatable_middle_roles": 1,
+    "fixed_anchor_count_each": 1,
+    "repeatable_bay_count_is_integer": true,
+    "instance_scale": [1.0, 1.0, 1.0],
+    "balanced_about_entrance_datum": true,
+    "fractional_remainder_policy": "symmetric_site_setback",
+    "unsupported_target_policy": "fail_closed",
+    "legacy_forced_fit_allowed": false,
+    "complete_building_repetition_allowed": false
   },
   "transparent_roof_contract": {
     "multi_wing_roof_uses_one_union_outline": true,

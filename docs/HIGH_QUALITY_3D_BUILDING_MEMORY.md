@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-08-02-clean-3d-no-prisms-runtime-v118`.
+Current executable memory: `2026-08-31-semantic-lego-v4-runtime-v119`.
 
 ## The quality target
 
@@ -58,9 +58,10 @@ It establishes four inseparable acceptance pillars:
    render-locked PBR skin, layered glazing and occupied depth remain convincing
    in the live City Prompt lighting stack at facade-close and oblique cameras.
 4. **Resilient LEGO scaling:** fixed entrances, corners, crowns and roofs retain
-   authored proportions while complete middle bays absorb ordinary width,
-   depth and floor variation; oversized targets use the authored fallback or
-   streetwall repeat instead of stretching the identity.
+   authored dimensions while complete middle bays and floors absorb ordinary
+   variation as integer construction units. Fractional polygon remainder is
+   left as real site setback; unsupported targets fail closed instead of
+   stretching the identity or repeating a complete building.
 
 A family that succeeds in only one or two pillars is not production-ready.
 Every keeper manifest records `quality_standard_evidence` naming distinctive
@@ -98,7 +99,14 @@ Every family is decomposed into:
 | roof, dormers and skyline | additional seam-safe variants |
 | landmark pavilion or tower | neutral infill bays |
 
-When a user's polygon changes size, only the middle expands or repeats. Entrances, corners, crowns and roofs keep authored proportions. This rule is the main defense against stretched, computer-generated buildings.
+When a user's polygon changes size, only complete middle bays or floors repeat.
+Entrances, corners, crowns and roofs keep authored dimensions, and their runtime
+scale remains `1×1×1`. The solver subtracts fixed anchors, chooses an integer
+bay count, balances bays around the entrance datum, and leaves any remainder as
+site setback. It must never duplicate the podium/entrance, repeat a complete
+building, stretch a rectified elevation, or force an unsupported target to fit.
+This discrete construction rule is the main defense against stretched,
+computer-generated buildings.
 
 ### 3. Put the correct information in geometry
 

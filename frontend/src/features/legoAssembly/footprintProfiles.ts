@@ -79,6 +79,7 @@ function classifyProfile(
 export function analyzeLegoFootprint(
   coordinates: number[][] | undefined,
   compatibility?: FootprintCompatibility,
+  frontageEdgeIndex?: number,
 ): FootprintAnalysis | null {
   const ring = validRing(coordinates);
   if (ring.length < 3) return null;
@@ -90,12 +91,22 @@ export function analyzeLegoFootprint(
     y: (lat - centroidLat) * METRES_PER_DEG_LAT,
   }));
 
+  const lockedEdge = Number.isInteger(frontageEdgeIndex)
+    && Number(frontageEdgeIndex) >= 0
+    && Number(frontageEdgeIndex) < local.length
+    ? Number(frontageEdgeIndex)
+    : null;
   let longest = 0;
   let angle = 0;
   for (let i = 0; i < local.length; i += 1) {
     const a = local[i];
     const b = local[(i + 1) % local.length];
     const length = Math.hypot(b.x - a.x, b.y - a.y);
+    if (lockedEdge === i) {
+      angle = Math.atan2(b.y - a.y, b.x - a.x);
+      longest = Number.POSITIVE_INFINITY;
+      break;
+    }
     if (length > longest) {
       longest = length;
       angle = Math.atan2(b.y - a.y, b.x - a.x);
@@ -110,7 +121,8 @@ export function analyzeLegoFootprint(
     uMin = Math.min(uMin, u); uMax = Math.max(uMax, u);
     vMin = Math.min(vMin, v); vMax = Math.max(vMax, v);
   }
-  const dimensions = [uMax - uMin, vMax - vMin].sort((a, b) => b - a);
+  const dimensions = [uMax - uMin, vMax - vMin];
+  if (lockedEdge === null) dimensions.sort((a, b) => b - a);
   const width = Math.max(1, dimensions[0]);
   const depth = Math.max(1, dimensions[1]);
   const concaveVertices = concaveVertexCount(local);

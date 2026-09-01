@@ -3,6 +3,7 @@ from __future__ import annotations
 import math
 from types import SimpleNamespace
 
+import pytest
 from shapely.geometry import Polygon
 
 from app.services.master_planner.lego_catalog import build_lego_planning_catalog
@@ -142,6 +143,20 @@ def test_actual_footprint_analysis_matches_browser_near_rectangle_rule():
 
     assert analysis is not None
     assert analysis[2] == "rectangle"
+
+
+def test_actual_footprint_analysis_keeps_frontage_axis_when_it_becomes_longer_than_depth():
+    native = _frontend_footprint_analysis(
+        _geographic([(0, 0), (15, 0), (15, 24), (0, 24), (0, 0)]),
+        0,
+    )
+    expanded = _frontend_footprint_analysis(
+        _geographic([(0, 0), (30, 0), (30, 24), (0, 24), (0, 0)]),
+        0,
+    )
+
+    assert native is not None and native[:2] == pytest.approx((15.0, 24.0), abs=0.1)
+    assert expanded is not None and expanded[:2] == pytest.approx((30.0, 24.0), abs=0.1)
 
 
 def test_actual_footprint_analysis_preserves_a_material_l_shape():

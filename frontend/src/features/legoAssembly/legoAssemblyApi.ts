@@ -2,6 +2,7 @@ import { api } from '@/services/api';
 import type { SiteZoneProperties } from '@/types';
 
 export type LegoModuleRole = 'podium' | 'floor' | 'setback' | 'crown' | 'roof' | 'attachment' | 'assembled';
+export type LegoSemanticRole = 'left_end' | 'middle' | 'entrance' | 'right_end';
 export type LegoFootprintProfile = 'rectangle' | 'l_shape' | 'u_shape' | 'courtyard';
 
 export interface LegoModule {
@@ -10,6 +11,7 @@ export interface LegoModule {
   model_url: string;
   family: string;
   role: LegoModuleRole;
+  semantic_role?: LegoSemanticRole;
   width_m: number;
   depth_m: number;
   height_m: number;
@@ -29,6 +31,7 @@ export interface LegoAssemblyInstance {
   model_url: string;
   family: string;
   role: LegoModuleRole;
+  semantic_role?: LegoSemanticRole;
   variant_key?: string;
   lod?: number;
   level: number;
@@ -64,10 +67,21 @@ export interface LegoAssemblyPlan {
     score: number;
     profile?: LegoFootprintProfile;
     segment_count?: number;
-    assembly_mode?: 'fixed_landmark';
+    assembly_mode?: 'fixed_landmark' | 'semantic_bay_grid';
     compatibility_source?: string;
     /** The authored form is uniformly scaled and centred inside the polygon. */
-    footprint_mode?: 'archetype_contain' | 'envelope_fill';
+    footprint_mode?: 'archetype_contain' | 'envelope_fill' | 'whole_bays_inside_site_envelope';
+    occupied_width_m?: number;
+    occupied_depth_m?: number;
+    site_margin_width_each_m?: number;
+    site_margin_depth_each_m?: number;
+  };
+  semantic_invariants?: {
+    fixed_anchor_counts: Record<'left_end' | 'entrance' | 'right_end', number>;
+    repeatable_middle_count: number;
+    native_repeatable_middle_count: number;
+    integer_bays_only: true;
+    continuous_resize_allowed: false;
   };
   footprint_segments?: Array<{
     id: string;

@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-08-02-clean-3d-no-prisms-runtime-v118",
+  "memory_version": "2026-08-31-semantic-lego-v4-runtime-v119",
   "quality_target": "At least the user-approved Classic Haussmann level of archetype-shaped geometry, real construction depth, photoreal material response and resilient LEGO scaling in a real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "minimum_standard": {
@@ -12,7 +12,7 @@
       "archetype_shape": "Distinctive corners, courts, setbacks, roof profile and identity-bearing masses must form the archetype silhouette instead of decorating a generic box.",
       "physical_depth": "Open railings, balcony slabs, recesses, returns, cornices, dormers, entrances and other shadow-casting construction must project or recede at believable metric depth.",
       "photoreal_skin": "An archetype-specific render-locked PBR skin, layered glazing and occupied depth must remain convincing in the live City Prompt lighting stack.",
-      "lego_scalability": "Fixed identity anchors retain authored proportions while complete repeatable middle bays and an authored fallback absorb ordinary user-drawn variation."
+      "lego_scalability": "Fixed identity anchors retain authored dimensions while complete repeatable middle bays and floors absorb ordinary variation as integer units; fractional remainder becomes site setback and unsupported targets fail closed."
     },
     "minimum_distinctive_shape_features": 2,
     "minimum_physical_depth_features": 2,
@@ -54,7 +54,11 @@
     },
     {
       "id": "fixed_ends_repeat_middle",
-      "rule": "Keep corner, entrance, podium, crown and roof assemblies fixed. Repeat or stretch only authored middle bays."
+      "rule": "Keep corner, entrance, podium, crown and roof assemblies fixed at authored dimensions. Repeat only complete authored middle bays or floors; never continuously stretch them."
+    },
+    {
+      "id": "semantic_lego_is_discrete_construction",
+      "rule": "A semantic LEGO solver subtracts one required instance of every fixed anchor, chooses an integer repeat count inside the site envelope, balances repeatable bays around the entrance datum, and leaves fractional remainder as real setback. Every instance remains at 1x1x1 scale; unsupported width, depth or floor count fails closed even when legacy forced-fit is enabled."
     },
     {
       "id": "entrances_and_passages_are_subtractive",

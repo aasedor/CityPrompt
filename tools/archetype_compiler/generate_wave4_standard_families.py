@@ -105,6 +105,11 @@ def parse_args() -> argparse.Namespace:
         help="Bounded visual pilot: export/render only the canonical assembled model.",
     )
     parser.add_argument("--render-existing", action="store_true")
+    parser.add_argument(
+        "--semantic-only",
+        action="store_true",
+        help="Re-export only the v4 horizontal semantic kit and update its manifest entries.",
+    )
     return parser.parse_args(sys.argv[sys.argv.index("--") + 1 :] if "--" in sys.argv else [])
 
 
@@ -392,6 +397,7 @@ def facade_panel(
     height: float,
     mat: bpy.types.Material,
     flip_u: bool = False,
+    u_range: tuple[float, float] = (0.0, 1.0),
 ) -> bpy.types.Object:
     """Create one rectified facade plane with deterministic 0..1 UVs."""
     cx, cy, cz = centre
@@ -432,7 +438,8 @@ def facade_panel(
     mesh.from_pydata(vertices, [], [(0, 1, 2, 3)])
     mesh.materials.append(mat)
     uv = mesh.uv_layers.new(name="UVMap")
-    values = ((0, 0), (1, 0), (1, 1), (0, 1))
+    u0, u1 = u_range
+    values = ((u0, 0), (u1, 0), (u1, 1), (u0, 1))
     if flip_u:
         values = tuple((1 - u, v) for u, v in values)
     for loop_index, value in enumerate(values):
@@ -1521,6 +1528,296 @@ def build_canonical(mats: dict[str, bpy.types.Material]) -> list[bpy.types.Objec
     return objs
 
 
+SEMANTIC_MODULE_HEIGHT_M = CONFIG["dimensions"][2]
+# The structural wall is 22.0 m deep; 0.25 m at front/rear belongs to authored
+# thresholds, sills and flashing. The runtime envelope includes those contacts.
+SEMANTIC_MODULE_DEPTH_M = 22.50
+
+
+def _semantic_front_bands(
+    name: str,
+    width: float,
+    u_range: tuple[float, float],
+    mats: dict[str, bpy.types.Material],
+    *,
+    floor_skin: str = "floor_a",
+) -> list[bpy.types.Object]:
+    """Registered orthographic source crops at their original metre scale."""
+
+    podium_h = CONFIG["podium_height_m"]
+    floor_h = CONFIG["floor_height_m"]
+    crown_h = CONFIG["crown_height_m"]
+    return [
+        facade_panel(
+            f"{name}_PodiumSourceCrop",
+            axis="front",
+            centre=(0.0, -10.83, podium_h / 2),
+            span=width,
+            height=podium_h,
+            mat=mats["podium_skin"],
+            u_range=u_range,
+        ),
+        facade_panel(
+            f"{name}_UpperSourceCrop",
+            axis="front",
+            centre=(0.0, -10.83, podium_h + floor_h / 2),
+            span=width,
+            height=floor_h,
+            mat=mats[floor_skin],
+            u_range=u_range,
+        ),
+        facade_panel(
+            f"{name}_CrownSourceCrop",
+            axis="front",
+            centre=(0.0, -10.84, podium_h + floor_h + crown_h / 2),
+            span=width,
+            height=crown_h,
+            mat=mats["crown_skin"],
+            u_range=u_range,
+        ),
+    ]
+
+
+def _semantic_envelope(
+    name: str,
+    width: float,
+    mats: dict[str, bpy.types.Material],
+) -> list[bpy.types.Object]:
+    """Seam-safe structure, rear elevation, slabs, roof field and contacts."""
+
+    podium_h = CONFIG["podium_height_m"]
+    floor_h = CONFIG["floor_height_m"]
+    crown_base = podium_h + floor_h
+    roof_base = crown_base + CONFIG["crown_height_m"]
+    objs: list[bpy.types.Object] = [
+        box(f"{name}_RearWall", (width, 0.30, roof_base), (0, 10.70, roof_base / 2), mats["brick"]),
+        box(f"{name}_GroundContact", (width, 21.35, 0.16), (0, 0, 0.08), mats["brick"]),
+        box(f"{name}_PodiumCeiling", (width, 21.35, 0.14), (0, 0, podium_h - 0.07), mats["brick"]),
+        box(
+            f"{name}_UpperCeiling",
+            (width, 21.35, 0.14),
+            (0, 0, crown_base - 0.07),
+            mats["brick"],
+        ),
+        box(
+            f"{name}_ServiceRoofField",
+            (width, 20.50, 0.18),
+            (0, 0.35, roof_base + 0.94),
+            mats["roof_skin"],
+            bevel=0.025,
+        ),
+        box(
+            f"{name}_FrontCornice",
+            (width, 0.34, 0.18),
+            (0, -10.98, crown_base + 0.88),
+            mats["stone_light"],
+            bevel=0.025,
+        ),
+        box(
+            f"{name}_ParapetCap",
+            (width, 0.40, 0.16),
+            (0, -10.98, roof_base - 0.08),
+            mats["stone_light"],
+            bevel=0.025,
+        ),
+    ]
+    # Rear opening is visibly layered even though this pilot's ceremonial
+    # front is the identity authority.
+    objs.extend(
+        heritage_arch_window(
+            f"{name}_RearOccupiedWindow",
+            axis="rear",
+            lateral=0.0,
+            plane=10.87,
+            sill_z=podium_h + 0.55,
+            width=min(1.18, width * 0.62),
+            height=2.20,
+            mats=mats,
+            interior_key="warm_alt",
+        )
+    )
+    return objs
+
+
+def _semantic_display_window(
+    name: str,
+    x: float,
+    width: float,
+    mats: dict[str, bpy.types.Material],
+) -> list[bpy.types.Object]:
+    objs = [
+        box(f"{name}_Cavity", (width + 0.12, 0.12, 2.78), (x, -10.53, 1.67), mats["dark"]),
+        box(f"{name}_OccupiedDepth", (width, 0.06, 2.60), (x, -10.48, 1.67), mats["warm_alt"]),
+        box(f"{name}_Glass", (width, 0.055, 2.64), (x, -10.75, 1.69), mats["glass"], bevel=0.018),
+        box(f"{name}_Head", (width + 0.18, 0.18, 0.12), (x, -10.91, 3.06), mats["green"], bevel=0.018),
+        box(f"{name}_Sill", (width + 0.18, 0.18, 0.16), (x, -10.91, 0.34), mats["green"], bevel=0.018),
+    ]
+    for side in (-1, 1):
+        objs.append(
+            box(
+                f"{name}_Jamb_{side:+d}",
+                (0.10, 0.18, 2.72),
+                (x + side * (width / 2 + 0.05), -10.91, 1.70),
+                mats["green"],
+                bevel=0.018,
+            )
+        )
+    return objs
+
+
+def build_semantic_middle_module(
+    mats: dict[str, bpy.types.Material],
+    variant: str,
+) -> list[bpy.types.Object]:
+    width = 2.10
+    source_range = (0.09, 0.23) if variant == "middle_a" else (0.77, 0.91)
+    floor_skin = "floor_a" if variant == "middle_a" else "floor_b"
+    name = f"Semantic_{variant}"
+    objs = _semantic_front_bands(name, width, source_range, mats, floor_skin=floor_skin)
+    objs.extend(_semantic_envelope(name, width, mats))
+    objs.extend(_semantic_display_window(f"{name}_Display", 0.0, 1.62, mats))
+    objs.extend(
+        heritage_arch_window(
+            f"{name}_UpperArch",
+            axis="front",
+            lateral=0.0,
+            plane=-10.84,
+            sill_z=CONFIG["podium_height_m"] + 1.20,
+            width=1.18,
+            height=2.28,
+            mats=mats,
+            interior_key="warm" if variant == "middle_a" else "warm_alt",
+        )
+    )
+    return objs
+
+
+def build_semantic_entrance_module(
+    mats: dict[str, bpy.types.Material],
+) -> list[bpy.types.Object]:
+    width = 8.10
+    name = "Semantic_EntranceAssembly"
+    objs = _semantic_front_bands(name, width, (0.23, 0.77), mats, floor_skin="floor_c")
+    objs.extend(_semantic_envelope(name, width, mats))
+    # This is one fixed public storefront assembly.  It retains the source's
+    # two recessed door leaves and never multiplies when frontage grows.
+    objs.extend(storefront_door(f"{name}_DoorLeft", -3.15, 0.0, mats))
+    objs.extend(storefront_door(f"{name}_DoorRight", 3.00, 0.0, mats))
+    for index, x in enumerate((-1.94, -0.68, 0.68, 1.94)):
+        objs.extend(_semantic_display_window(f"{name}_Display_{index}", x, 1.02, mats))
+    for index, x in enumerate((-3.375, -1.92, 1.56, 3.375)):
+        objs.extend(
+            heritage_arch_window(
+                f"{name}_UpperArch_{index}",
+                axis="front",
+                lateral=x,
+                plane=-10.84,
+                sill_z=CONFIG["podium_height_m"] + 1.20,
+                width=1.17,
+                height=2.28,
+                mats=mats,
+                interior_key="warm" if index % 2 else "warm_alt",
+            )
+        )
+    # Visually recognizable shop program behind the transparent storefront.
+    for index, x in enumerate((-1.45, 0.0, 1.45)):
+        objs.append(
+            box(
+                f"{name}_RetailCounter_{index}",
+                (1.05, 0.62, 0.82),
+                (x, -8.95, 0.49),
+                mats["timber"],
+                bevel=0.035,
+            )
+        )
+    for index, x in enumerate((-2.3, 2.3)):
+        objs.append(
+            box(
+                f"{name}_DisplayShelf_{index}",
+                (1.35, 0.28, 1.75),
+                (x, -9.65, 1.02),
+                mats["green_dark"],
+                bevel=0.025,
+            )
+        )
+    return objs
+
+
+def build_semantic_end_module(
+    mats: dict[str, bpy.types.Material],
+    side: str,
+) -> list[bpy.types.Object]:
+    width = 1.35
+    is_left = side == "left_end"
+    source_range = (0.0, 0.09) if is_left else (0.91, 1.0)
+    name = f"Semantic_{side}"
+    objs = _semantic_front_bands(name, width, source_range, mats)
+    objs.extend(_semantic_envelope(name, width, mats))
+    edge_x = -width / 2 if is_left else width / 2
+    axis = "left" if is_left else "right"
+    objs.extend(
+        [
+            box(
+                f"{name}_StructuralReturn",
+                (0.30, 21.40, 8.85),
+                (edge_x, 0.0, 4.425),
+                mats["brick"],
+                bevel=0.025,
+            ),
+            facade_panel(
+                f"{name}_SourceConditionedReturn",
+                axis=axis,
+                centre=(edge_x + (-0.16 if is_left else 0.16), 0.0, 4.425),
+                span=21.40,
+                height=8.85,
+                mat=mats["side_skin"],
+                flip_u=is_left,
+            ),
+            box(
+                f"{name}_StorefrontTerminalPier",
+                (0.42, 0.48, 3.78),
+                (0.0, -10.96, 1.92),
+                mats["green"],
+                bevel=0.04,
+            ),
+        ]
+    )
+    for index, y in enumerate((-6.20, -0.50, 5.20)):
+        objs.extend(
+            heritage_arch_window(
+                f"{name}_SideWindow_{index}",
+                axis=axis,
+                lateral=y,
+                plane=edge_x + (-0.17 if is_left else 0.17),
+                sill_z=CONFIG["podium_height_m"] + 0.52,
+                width=1.20,
+                height=2.24,
+                mats=mats,
+                interior_key="warm" if index % 2 else "warm_alt",
+            )
+        )
+    if is_left:
+        objs.extend(
+            [
+                box(
+                    f"{name}_Chimney",
+                    (0.95, 0.95, 1.72),
+                    (0.0, 4.65, 10.31),
+                    mats["brick"],
+                    bevel=0.035,
+                ),
+                box(
+                    f"{name}_ChimneyCap",
+                    (1.12, 1.12, 0.18),
+                    (0.0, 4.65, 11.16),
+                    mats["stone_light"],
+                    bevel=0.025,
+                ),
+            ]
+        )
+    return objs
+
+
 def material_count(objects: list[bpy.types.Object]) -> int:
     return len(
         {
@@ -1563,6 +1860,47 @@ def module_payload(
         "texture_keys": sorted(skin["zones"]),
         "ao_baked": True,
         "size_bytes": size_bytes,
+    }
+
+
+def semantic_module_payload(
+    semantic_role: str,
+    variant: str,
+    filename: str,
+    width: float,
+    objects: list[bpy.types.Object],
+    size_bytes: int,
+    skin: dict,
+) -> dict:
+    repeatable = semantic_role == "middle"
+    return {
+        "role": "attachment",
+        "variant_key": variant,
+        "assembly_class": "repeatable_middle" if repeatable else "fixed_anchor",
+        "assembly_axis": "x",
+        "semantic_role": semantic_role,
+        "required_once": not repeatable,
+        "repeatable_x": repeatable,
+        "repeatable_z": False,
+        "min_repeats": 2 if repeatable else None,
+        "max_repeats": 20 if repeatable else None,
+        "native_repeat_count": 2 if repeatable else None,
+        "lod": 0,
+        "allowed_levels": [0],
+        "filename": filename,
+        "module_family": FAMILY,
+        "width_m": width,
+        "depth_m": SEMANTIC_MODULE_DEPTH_M,
+        "height_m": SEMANTIC_MODULE_HEIGHT_M,
+        "floor_height_m": CONFIG["floor_height_m"],
+        "native_floors": 2,
+        "allow_inset_footprint": True,
+        "triangle_count": triangle_count(objects),
+        "material_count": material_count(objects),
+        "texture_keys": sorted(skin["zones"]),
+        "ao_baked": True,
+        "size_bytes": size_bytes,
+        "continuous_resize_allowed": False,
     }
 
 
@@ -1865,6 +2203,36 @@ def build_family(
         )
         delete_objects(objects)
 
+    semantic_specs = (
+        ("left_end", "left_end", 1.35),
+        ("middle", "middle_a", 2.10),
+        ("middle", "middle_b", 2.10),
+        ("entrance", "entrance_assembly", 8.10),
+        ("right_end", "right_end", 1.35),
+    )
+    for semantic_role, variant, module_width in semantic_specs:
+        if semantic_role == "middle":
+            objects = build_semantic_middle_module(mats, variant)
+        elif semantic_role == "entrance":
+            objects = build_semantic_entrance_module(mats)
+        else:
+            objects = build_semantic_end_module(mats, semantic_role)
+        filename = f"{FAMILY}_semantic_{variant}.glb"
+        destination = family_dir / filename
+        export_glb(destination, objects)
+        modules.append(
+            semantic_module_payload(
+                semantic_role,
+                variant,
+                filename,
+                module_width,
+                objects,
+                destination.stat().st_size,
+                skin,
+            )
+        )
+        delete_objects(objects)
+
     podium_h = CONFIG["podium_height_m"]
     floor_h = CONFIG["floor_height_m"]
     crown_h = CONFIG["crown_height_m"]
@@ -1934,8 +2302,8 @@ def build_family(
         "ao_baked": True,
     }
     manifest = {
-        "manifest_schema": 3,
-        "grammar_schema_version": 3,
+        "manifest_schema": 4,
+        "grammar_schema_version": 4,
         "generator": {
             "name": "archetype_compiler/generate_wave4_standard_families.py",
             "version": "1.0.0",
@@ -1964,14 +2332,22 @@ def build_family(
         "textures": texture_inventory(skin),
         "facade_sheet": facade_contract(skin),
         "massing_graph": {
-            "type": "modular_streetwall",
-            "profile": "victorian_polychrome_main_street_v2",
+            "type": "semantic_bay_grid",
+            "profile": "victorian_polychrome_main_street_v4",
             "render_locked": True,
             "goalpost": (
                 "/archetypes/buildings/historical_brick_main_street/variant_0.png"
             ),
             "fixed": ["podium/entrance", "corner returns", "crown", "roof"],
             "repeatable": ["typical_a", "typical_b", "typical_c"],
+            "horizontal_grammar": {
+                "sequence": ["left_end", "middle*", "entrance", "middle*", "right_end"],
+                "fixed_anchor_counts": {"left_end": 1, "entrance": 1, "right_end": 1},
+                "native_middle_count": 2,
+                "middle_bay_width_m": 2.10,
+                "continuous_resize_allowed": False,
+                "fractional_remainder_policy": "symmetric_site_setback",
+            },
         },
         "material_budget": {
             "max_assembled_materials": 24,
@@ -2069,10 +2445,60 @@ def render_existing(output_root: Path, view_set: str) -> None:
     print(f"[wave4-standard-render] {FAMILY}: {len(renders)} renders", flush=True)
 
 
+def rebuild_semantic_modules(output_root: Path) -> None:
+    """Fast bounded correction pass for the v4 pieces only."""
+
+    clear_scene()
+    family_dir = output_root / FAMILY
+    manifest_path = family_dir / f"{FAMILY}_manifest.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    mats, skin = palette(family_dir)
+    semantic_specs = (
+        ("left_end", "left_end", 1.35),
+        ("middle", "middle_a", 2.10),
+        ("middle", "middle_b", 2.10),
+        ("entrance", "entrance_assembly", 8.10),
+        ("right_end", "right_end", 1.35),
+    )
+    semantic_modules: list[dict] = []
+    for semantic_role, variant, module_width in semantic_specs:
+        if semantic_role == "middle":
+            objects = build_semantic_middle_module(mats, variant)
+        elif semantic_role == "entrance":
+            objects = build_semantic_entrance_module(mats)
+        else:
+            objects = build_semantic_end_module(mats, semantic_role)
+        filename = f"{FAMILY}_semantic_{variant}.glb"
+        destination = family_dir / filename
+        export_glb(destination, objects)
+        semantic_modules.append(
+            semantic_module_payload(
+                semantic_role,
+                variant,
+                filename,
+                module_width,
+                objects,
+                destination.stat().st_size,
+                skin,
+            )
+        )
+        delete_objects(objects)
+    manifest["manifest_schema"] = 4
+    manifest["grammar_schema_version"] = 4
+    manifest["modules"] = [
+        module for module in manifest["modules"] if module.get("assembly_axis") != "x"
+    ] + semantic_modules
+    manifest["created_at"] = datetime.now(timezone.utc).isoformat()
+    manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+    print(f"[wave4-semantic-only] {FAMILY}: {len(semantic_modules)} modules", flush=True)
+
+
 def main() -> int:
     args = parse_args()
     output_root = args.output_root.resolve()
-    if args.render_existing:
+    if args.semantic_only:
+        rebuild_semantic_modules(output_root)
+    elif args.render_existing:
         render_existing(output_root, args.view_set)
     else:
         build_family(

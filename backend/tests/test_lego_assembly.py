@@ -9,7 +9,7 @@ from unittest.mock import AsyncMock, MagicMock
 import pytest
 from geoalchemy2 import WKTElement
 
-from app.api.v1.lego_assembly import _strict_locked_building_plan
+from app.api.v1.lego_assembly import _locked_building_target, _strict_locked_building_plan
 from app.models.models import Building, ModelLibraryEntry
 from app.services.community_3d_artifacts import (
     community_3d_buildings_for_zones,
@@ -4124,6 +4124,11 @@ def _recipe_body():
         ],
         "assembled_height_m": 18.0,
         "fit": {"scale_x": 1.0, "scale_y": 1.0},
+        "semantic_invariants": {
+            "integer_bays_only": True,
+            "continuous_resize_allowed": False,
+            "fixed_anchor_counts": {"entrance": 1},
+        },
         "assembled_preview_url": None,
     }
 
@@ -4374,10 +4379,53 @@ async def test_place_creates_and_links_building_when_zone_has_none(client, mock_
     saved = building.specifications["legoAssembly"]
     assert saved["module_family"] == body["module_family"]
     assert saved["instances"] == body["instances"]
+    assert saved["semantic_invariants"] == body["semantic_invariants"]
     assert "building_name" not in saved
     assert building.specifications["lego_placed"] is True
     assert zone.properties["community_3d"]["kind"] == "building"
     assert zone.properties["community_3d"]["generator"] == "lego_assembly"
+
+
+@pytest.mark.anyio
+async def test_semantic_place_locks_frontage_edge_without_freezing_parcel_width(
+    client,
+    mock_db,
+    test_user,
+    auth_headers,
+):
+    project = FakeProject(owner_id=test_user.id)
+    zone = _make_zone(
+        project,
+        properties={"floors": 2},
+        geometry=_calgary_rectangle_ewkt(15, 24),
+    )
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(zone),
+            _scalar_result(project),
+            _scalar_result(project.id),
+        ]
+    )
+    body = {
+        **_recipe_body(),
+        "target": {"width_m": 15, "depth_m": 24, "floors": 2},
+        "fit": {
+            "assembly_mode": "semantic_bay_grid",
+            "scale_x": 1.0,
+            "scale_y": 1.0,
+        },
+    }
+
+    response = await client.post(f"/api/v1/lego-assembly/place/{zone.id}", headers=auth_headers, json=body)
+
+    assert response.status_code == 200, response.text
+    lock = zone.properties["_lego_semantic_frontage_lock"]
+    assert lock["schema_version"] == 1
+    assert lock["frontage_edge_index"] in {0, 2}
+    width, depth, floors, profile, wing = _locked_building_target(zone)
+    assert (width, depth) == pytest.approx((15.0, 24.0), abs=0.11)
+    assert (floors, profile, wing) == (2, "rectangle", None)
 
 
 @pytest.mark.anyio

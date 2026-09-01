@@ -220,9 +220,19 @@ export function deriveItems(zones: SiteZone[]): ZoneBuildItem[] {
     // when an older catalogue option has no footprintCompatibility metadata.
     // Falling back to the catalogue's nominal 25 x 20 m box made a 44 x 36 m
     // parcel render at roughly half size and broke the render-to-model loop.
+    const frontageLock = zone.properties?._lego_semantic_frontage_lock;
+    const frontageEdgeIndex = (
+      frontageLock
+      && typeof frontageLock === 'object'
+      && 'schema_version' in frontageLock
+      && frontageLock.schema_version === 1
+      && 'frontage_edge_index' in frontageLock
+      && typeof frontageLock.frontage_edge_index === 'number'
+    ) ? frontageLock.frontage_edge_index : undefined;
     const footprint = analyzeLegoFootprint(
       zone.coordinates,
       option?.footprintCompatibility,
+      frontageEdgeIndex,
     );
     const persistedWingDepth = zone.properties?._lego_actual_wing_depth_m;
     const authoritativeWingDepth = typeof persistedWingDepth === 'number'

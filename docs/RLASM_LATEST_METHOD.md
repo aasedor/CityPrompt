@@ -246,6 +246,9 @@ enrolled; no text-invented reference substitutes for catalogue proof.
 3. List identity-bearing geometry, identity surfaces, repeating material roles,
    transparent program, circulation, landscape, and contact requirements.
 4. Author the full camera roster before building.
+5. For a resizable family, lock the semantic LEGO grammar: fixed left/right
+   ends and entrance, exact repeatable bay/floor periods, native counts, join
+   datums, supported count ranges, and the fractional-remainder setback rule.
 
 **Gate B:** a reviewer can explain what makes this exact building different
 from a generic family member without referring to materials alone.
@@ -260,6 +263,11 @@ from a generic family member without referring to materials alone.
 6. Prove front-, side-, and rear-facing openings in their own orientation;
    a successful Boolean operation or object count is not visible proof that
    an orientation-specific cutter reached the intended carrier.
+7. Export fixed anchors and seam-safe repeatable pieces at authored metric
+   scale. Trial native, wider, and oversized envelopes with every instance at
+   `1×1×1`; width growth must add complete bays while preserving exactly one
+   entrance and one of each end condition. Reject targets that cannot accept
+   the complete construction sequence.
 
 **Gate C:** the unskinned model has the correct silhouette, topology, program,
 load paths, and complete envelope from every mandatory view.

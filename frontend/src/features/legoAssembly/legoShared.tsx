@@ -109,7 +109,8 @@ export function fitIsStretched(fit: LegoAssemblyPlan['fit'] | null | undefined):
 export function fitPreservesArchetypeForm(
   fit: LegoAssemblyPlan['fit'] | null | undefined,
 ): boolean {
-  return fit?.footprint_mode === 'archetype_contain';
+  return fit?.footprint_mode === 'archetype_contain'
+    || fit?.footprint_mode === 'whole_bays_inside_site_envelope';
 }
 
 export function Progress() {

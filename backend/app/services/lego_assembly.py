@@ -69,8 +69,8 @@ FIXED_LANDMARK_CONTAIN_MAX_AXIS_RATIO = 2.00
 FIXED_LANDMARK_CONTAIN_MAX_ENVELOPE_SCALE = 1.80
 
 # Manifest schema emitted by tools/archetype_compiler/blender_generate.py.
-SUPPORTED_MANIFEST_SCHEMA = 3
-SUPPORTED_MANIFEST_SCHEMAS = {2, SUPPORTED_MANIFEST_SCHEMA}
+SUPPORTED_MANIFEST_SCHEMA = 4
+SUPPORTED_MANIFEST_SCHEMAS = {2, 3, SUPPORTED_MANIFEST_SCHEMA}
 
 
 @dataclass(frozen=True)
@@ -102,6 +102,17 @@ class ModuleDescriptor:
     # chamfers, entrance recesses, sculptural roofs) and must not be stretched
     # independently back to the parcel edges at runtime.
     allow_inset_footprint: bool = False
+    # RLASM semantic-LEGO v4 modules are authored construction pieces, not
+    # complete buildings that may be stretched to a polygon.  ``semantic_role``
+    # names the horizontal job owned by this GLB; the v4 solver requires one
+    # left end, one entrance, one right end, and whole repeatable middle bays.
+    assembly_axis: str | None = None
+    semantic_role: str | None = None
+    repeatable_x: bool = False
+    required_once: bool = False
+    min_repeats: int | None = None
+    max_repeats: int | None = None
+    native_repeat_count: int | None = None
 
 
 @dataclass(frozen=True)
@@ -208,6 +219,13 @@ def descriptor_from_library_entry(entry: Any) -> ModuleDescriptor | None:
             lego.get("placement_contract") if isinstance(lego.get("placement_contract"), dict) else None
         ),
         allow_inset_footprint=bool(lego.get("allow_inset_footprint", False)),
+        assembly_axis=(str(lego.get("assembly_axis")) if lego.get("assembly_axis") else None),
+        semantic_role=(str(lego.get("semantic_role")) if lego.get("semantic_role") else None),
+        repeatable_x=bool(lego.get("repeatable_x", False)),
+        required_once=bool(lego.get("required_once", False)),
+        min_repeats=_as_int_or_none(lego.get("min_repeats")),
+        max_repeats=_as_int_or_none(lego.get("max_repeats")),
+        native_repeat_count=_as_int_or_none(lego.get("native_repeat_count")),
     )
 
 
@@ -709,6 +727,200 @@ def _rectangle_repeat_segments(
     return best[1] if best else None
 
 
+_SEMANTIC_BAY_FIXED_ROLES = ("left_end", "entrance", "right_end")
+
+
+def _semantic_bay_grid_plan(
+    family_modules: list[ModuleDescriptor],
+    request: AssemblyRequest,
+) -> dict[str, Any] | None:
+    """Assemble an RLASM v4 frontage from fixed anchors and whole bays.
+
+    No transform scale is computed here.  The drawn polygon is a site envelope:
+    fixed architectural anchors retain their authored dimensions, middle bays
+    repeat as complete GLBs, and any fractional remainder becomes a symmetric
+    setback.  A target that cannot hold the construction kit returns ``None``
+    so the caller can reject it instead of entering the legacy forced-fit path.
+    """
+
+    semantic_modules = [
+        module
+        for module in family_modules
+        if module.assembly_axis == "x" and module.semantic_role
+    ]
+    if not semantic_modules:
+        return None
+    if request.footprint_profile != "rectangle":
+        return None
+
+    by_role: dict[str, list[ModuleDescriptor]] = {}
+    for module in semantic_modules:
+        by_role.setdefault(str(module.semantic_role), []).append(module)
+    if any(role not in by_role for role in (*_SEMANTIC_BAY_FIXED_ROLES, "middle")):
+        return None
+
+    fixed: dict[str, ModuleDescriptor] = {}
+    for role in _SEMANTIC_BAY_FIXED_ROLES:
+        candidates = [
+            module
+            for module in by_role[role]
+            if module.required_once and _valid_for_floor_count(module, request.target_floors)
+        ]
+        if not candidates:
+            return None
+        fixed[role] = max(candidates, key=lambda module: (_module_score(module, request), -module.lod))
+
+    middle_variants = [
+        module
+        for module in by_role["middle"]
+        if module.repeatable_x and _valid_for_floor_count(module, request.target_floors)
+    ]
+    if not middle_variants:
+        return None
+    # Preserve authored variant order while keeping one best render LOD for
+    # each identity.  This is visual alternation, never a dimensional choice.
+    selected_middle = [
+        max(
+            (candidate for candidate in middle_variants if candidate.variant_key == variant),
+            key=lambda module: (_module_score(module, request), -module.lod),
+        )
+        for variant in sorted({module.variant_key for module in middle_variants})
+    ]
+    bay_width = selected_middle[0].width_m
+    native_depth = max(
+        module.depth_m for module in (*fixed.values(), *selected_middle)
+    )
+    if any(not math.isclose(module.width_m, bay_width, abs_tol=1e-4) for module in selected_middle):
+        return None
+    if any(not math.isclose(module.depth_m, native_depth, abs_tol=1e-4) for module in (*fixed.values(), *selected_middle)):
+        return None
+
+    fixed_width = sum(module.width_m for module in fixed.values())
+    minimum_repeats = max(module.min_repeats or 0 for module in selected_middle)
+    maximum_repeats = min(module.max_repeats or 64 for module in selected_middle)
+    native_repeats = max(module.native_repeat_count or minimum_repeats for module in selected_middle)
+
+    candidates: list[tuple[float, float, float]] = []
+    for rotation, available_width, available_depth in (
+        (0.0, request.target_width_m, request.target_depth_m),
+        (90.0, request.target_depth_m, request.target_width_m),
+    ):
+        if available_depth + 1e-6 < native_depth or available_width + 1e-6 < fixed_width:
+            continue
+        repeat_count = min(maximum_repeats, int(math.floor((available_width - fixed_width + 1e-6) / bay_width)))
+        # Entrance-centred kits add bays in balanced pairs.  Keeping the native
+        # parity prevents a supposedly rational wider building from walking
+        # the one public entrance off its authored datum.
+        if (repeat_count - native_repeats) % 2:
+            repeat_count -= 1
+        if repeat_count < minimum_repeats:
+            continue
+        occupied_width = fixed_width + repeat_count * bay_width
+        candidates.append((available_width - occupied_width, rotation, float(repeat_count)))
+    if not candidates:
+        return None
+
+    # Polygon measurement reports the long axis as width in normal City Prompt
+    # placement. Preserve that authored street frontage whenever it fits;
+    # quarter-turn only rescues a genuinely transposed narrow rectangle.
+    remainder, rotation, repeat_count_float = min(candidates, key=lambda item: (item[1] != 0.0, item[0]))
+    repeat_count = int(repeat_count_float)
+    occupied_width = fixed_width + repeat_count * bay_width
+    available_width = request.target_width_m if rotation == 0.0 else request.target_depth_m
+    available_depth = request.target_depth_m if rotation == 0.0 else request.target_width_m
+    left_count = repeat_count // 2
+    right_count = repeat_count - left_count
+    sequence: list[ModuleDescriptor] = [fixed["left_end"]]
+    sequence.extend(selected_middle[index % len(selected_middle)] for index in range(left_count))
+    sequence.append(fixed["entrance"])
+    sequence.extend(
+        selected_middle[(left_count + index) % len(selected_middle)] for index in range(right_count)
+    )
+    sequence.append(fixed["right_end"])
+
+    theta = math.radians(rotation)
+    cursor = -occupied_width / 2.0
+    instances: list[dict[str, Any]] = []
+    semantic_counts: dict[str, int] = {}
+    for index, module in enumerate(sequence):
+        local_x = cursor + module.width_m / 2.0
+        cursor += module.width_m
+        local_y = 0.0
+        x = local_x * math.cos(theta) - local_y * math.sin(theta)
+        y = local_x * math.sin(theta) + local_y * math.cos(theta)
+        semantic_role = str(module.semantic_role)
+        semantic_counts[semantic_role] = semantic_counts.get(semantic_role, 0) + 1
+        instances.append(
+            {
+                "asset_id": module.id,
+                "asset_name": module.name,
+                "model_url": module.model_url,
+                "family": module.family,
+                "role": module.role,
+                "semantic_role": semantic_role,
+                "variant_key": module.variant_key,
+                "lod": module.lod,
+                "level": 0,
+                "segment_id": f"bay_{index:02d}",
+                "position": [round(x, 4), round(y, 4), 0.0],
+                "rotation_degrees": rotation,
+                "scale": [1.0, 1.0, 1.0],
+                "native_dimensions_m": [module.width_m, module.depth_m, module.height_m],
+            }
+        )
+
+    assembled_height = max(module.height_m for module in sequence)
+    score = 150.0 + sum(_module_score(module, request) for module in fixed.values())
+    return {
+        "version": 4,
+        "family": fixed["entrance"].family,
+        "archetype_id": request.archetype_id,
+        "reuse_keys": list(request.reuse_keys),
+        "target": {
+            "width_m": request.target_width_m,
+            "depth_m": request.target_depth_m,
+            "floors": request.target_floors,
+            "footprint_profile": "rectangle",
+            "wing_depth_m": native_depth,
+        },
+        "assembled_height_m": round(assembled_height, 4),
+        "instances": instances,
+        "fit": {
+            "scale_x": 1.0,
+            "scale_y": 1.0,
+            "envelope_scale_x": round(available_width / occupied_width, 5),
+            "envelope_scale_y": round(available_depth / native_depth, 5),
+            "score": round(score, 5),
+            "profile": "rectangle",
+            "segment_count": len(instances),
+            "assembly_mode": "semantic_bay_grid",
+            "footprint_mode": "whole_bays_inside_site_envelope",
+            "compatibility_source": "rlasm_semantic_lego_v4",
+            "occupied_width_m": round(occupied_width, 4),
+            "occupied_depth_m": round(native_depth, 4),
+            "site_margin_width_each_m": round(remainder / 2.0, 4),
+            "site_margin_depth_each_m": round((available_depth - native_depth) / 2.0, 4),
+        },
+        "semantic_invariants": {
+            "fixed_anchor_counts": {role: semantic_counts.get(role, 0) for role in _SEMANTIC_BAY_FIXED_ROLES},
+            "repeatable_middle_count": semantic_counts.get("middle", 0),
+            "native_repeatable_middle_count": native_repeats,
+            "integer_bays_only": True,
+            "continuous_resize_allowed": False,
+        },
+        "footprint_segments": [
+            {
+                "id": "semantic_frontage",
+                "centre_x_m": 0.0,
+                "centre_y_m": 0.0,
+                "length_m": round(occupied_width, 4),
+                "thickness_m": round(native_depth, 4),
+                "rotation_degrees": rotation,
+            }
+        ],
+    }
+
+
 def plan_vertical_assembly(
     modules: Iterable[ModuleDescriptor],
     request: AssemblyRequest,
@@ -810,6 +1022,21 @@ def plan_vertical_assembly(
         if forced and best_plan is not None:
             break
         family_modules = modules_by_family[family]
+        has_semantic_bay_kit = any(
+            module.assembly_axis == "x" and module.semantic_role
+            for module in family_modules
+        )
+        if has_semantic_bay_kit:
+            semantic_plan = _semantic_bay_grid_plan(family_modules, request)
+            if semantic_plan is not None:
+                semantic_score = float(semantic_plan["fit"]["score"])
+                if semantic_score > best_score:
+                    best_score = semantic_score
+                    best_plan = semantic_plan
+            # A v4 family is a hard semantic contract. Never fall through to
+            # its legacy full-width stack or the forced-fit pass when the site
+            # cannot accept complete authored pieces.
+            continue
         # Fixed landmarks are the most faithful option inside their audited
         # near-native band. Outside it, prefer the semantic LEGO fallback kit
         # so a hand-drawn rectangle does not crush a courtyard, dome, chamfer,
@@ -1264,6 +1491,7 @@ def manifest_validation_errors(manifest: Any) -> list[str]:
         errors.append("modules must be a non-empty list")
     else:
         identities: set[tuple[str, str, int]] = set()
+        semantic_counts: dict[str, int] = {}
         for index, module in enumerate(modules):
             if not isinstance(module, dict) or not module.get("role") or not module.get("filename"):
                 errors.append(f"modules[{index}] must be an object with 'role' and 'filename'")
@@ -1284,6 +1512,29 @@ def manifest_validation_errors(manifest: Any) -> list[str]:
             if identity in identities:
                 errors.append(f"modules[{index}] duplicates module identity {identity}")
             identities.add(identity)
+            semantic_role = str(module.get("semantic_role") or "").strip()
+            if semantic_role:
+                semantic_counts[semantic_role] = semantic_counts.get(semantic_role, 0) + 1
+                if module.get("assembly_axis") != "x":
+                    errors.append(f"modules[{index}] semantic module must declare assembly_axis='x'")
+                if role != "attachment":
+                    errors.append(f"modules[{index}] semantic module role must be 'attachment'")
+                if semantic_role == "middle":
+                    if module.get("repeatable_x") is not True:
+                        errors.append(f"modules[{index}] middle module must declare repeatable_x=true")
+                elif semantic_role in _SEMANTIC_BAY_FIXED_ROLES:
+                    if module.get("required_once") is not True:
+                        errors.append(f"modules[{index}] fixed semantic anchor must declare required_once=true")
+                else:
+                    errors.append(f"modules[{index}].semantic_role {semantic_role!r} is not supported")
+        if semantic_counts:
+            for semantic_role in _SEMANTIC_BAY_FIXED_ROLES:
+                if semantic_counts.get(semantic_role) != 1:
+                    errors.append(
+                        f"semantic bay grid requires exactly one {semantic_role!r} module identity"
+                    )
+            if semantic_counts.get("middle", 0) < 1:
+                errors.append("semantic bay grid requires at least one repeatable 'middle' module")
     return errors
 
 
@@ -1317,6 +1568,11 @@ def lego_metadata_from_manifest(
     generator = manifest.get("generator") or {}
     return {
         "enabled": resolved_role in STACKABLE_ROLES
+        or (
+            resolved_role == "attachment"
+            and module.get("assembly_axis") == "x"
+            and bool(module.get("semantic_role"))
+        )
         or (resolved_role == "assembled" and bool(manifest.get("massing_graph"))),
         "role": resolved_role,
         "family": str(manifest.get("family") or ""),
@@ -1343,6 +1599,13 @@ def lego_metadata_from_manifest(
         "footprint_compatibility": manifest.get("footprint_compatibility") or {},
         "placement_contract": manifest.get("placement_contract") or {},
         "allow_inset_footprint": bool(module.get("allow_inset_footprint", False)),
+        "assembly_axis": module.get("assembly_axis"),
+        "semantic_role": module.get("semantic_role"),
+        "repeatable_x": bool(module.get("repeatable_x", False)),
+        "required_once": bool(module.get("required_once", False)),
+        "min_repeats": _as_int_or_none(module.get("min_repeats")),
+        "max_repeats": _as_int_or_none(module.get("max_repeats")),
+        "native_repeat_count": _as_int_or_none(module.get("native_repeat_count")),
         "source_variant_id": variant_id,
         "generation_archetype_id": generation_archetype_id,
         "asset_kind": "lego_module",

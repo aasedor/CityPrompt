@@ -127,6 +127,31 @@ afterEach(() => {
 });
 
 describe('mixed community compiler', () => {
+  it('uses the persisted semantic frontage edge instead of sorting the long axis', () => {
+    const semantic = zone('semantic-frontage', 'building', {
+      floors: 2,
+      development_archetype_id: 'supported_building',
+      _lego_semantic_frontage_lock: {
+        schema_version: 1,
+        frontage_edge_index: 0,
+      },
+    });
+    const origin = semantic.coordinates[0];
+    semantic.coordinates = [
+      origin,
+      [origin[0] + 15 / 70000, origin[1]],
+      [origin[0] + 15 / 70000, origin[1] + 24 / 110540],
+      [origin[0], origin[1] + 24 / 110540],
+      origin,
+    ];
+
+    expect(deriveItems([semantic])[0].targets).toMatchObject({
+      width_m: 15,
+      depth_m: 24,
+      floors: 2,
+    });
+  });
+
   it('carries the AI catalogue revision into the persisted LEGO recipe only when stamped', () => {
     const fingerprint = 'a'.repeat(64);
     const currentFingerprint = 'b'.repeat(64);

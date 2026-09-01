@@ -48,6 +48,7 @@ class LegoGeometryBindingReport:
 
 def frontend_footprint_analysis(
     coordinates: object,
+    frontage_edge_index: int | None = None,
 ) -> tuple[float, float, str] | None:
     """Mirror the browser's dimensions and topology-profile classification."""
 
@@ -79,6 +80,11 @@ def frontend_footprint_analysis(
         for lng, lat in ring
     ]
 
+    locked_edge = (
+        frontage_edge_index
+        if isinstance(frontage_edge_index, int) and 0 <= frontage_edge_index < len(local)
+        else None
+    )
     longest = 0.0
     angle = 0.0
     for index, current in enumerate(local):
@@ -86,6 +92,10 @@ def frontend_footprint_analysis(
         dx = following[0] - current[0]
         dy = following[1] - current[1]
         length = math.hypot(dx, dy)
+        if locked_edge == index:
+            angle = math.atan2(dy, dx)
+            longest = math.inf
+            break
         if length > longest:
             longest = length
             angle = math.atan2(dy, dx)
@@ -93,10 +103,9 @@ def frontend_footprint_analysis(
     sin_angle = math.sin(angle)
     u_values = [x * cos_angle + y * sin_angle for x, y in local]
     v_values = [-x * sin_angle + y * cos_angle for x, y in local]
-    dimensions = sorted(
-        (max(u_values) - min(u_values), max(v_values) - min(v_values)),
-        reverse=True,
-    )
+    dimensions = (max(u_values) - min(u_values), max(v_values) - min(v_values))
+    if locked_edge is None:
+        dimensions = tuple(sorted(dimensions, reverse=True))
     # JavaScript Math.round semantics for the positive dimensions consumed by
     # the browser (Python round uses bankers' rounding at exact .05 ties).
     raw_width = max(1.0, dimensions[0])

@@ -25,6 +25,18 @@ describe('analyzeLegoFootprint', () => {
     expect(result?.within_recommended_size).toBe(true);
   });
 
+  it('keeps a locked frontage axis while a semantic parcel grows past its depth', () => {
+    const native = analyzeLegoFootprint(geographic([
+      [0, 0], [15, 0], [15, 24], [0, 24], [0, 0],
+    ]), undefined, 0);
+    const expanded = analyzeLegoFootprint(geographic([
+      [0, 0], [30, 0], [30, 24], [0, 24], [0, 0],
+    ]), undefined, 0);
+
+    expect(native).toMatchObject({ width_m: 15, depth_m: 24 });
+    expect(expanded).toMatchObject({ width_m: 30, depth_m: 24 });
+  });
+
   it('recognizes an L-shaped parcel and supplies the archetype wing depth', () => {
     const result = analyzeLegoFootprint(geographic([
       [-18, -14], [18, -14], [18, -4], [-8, -4], [-8, 14], [-18, 14],
