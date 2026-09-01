@@ -4,6 +4,7 @@ import {
   analyzeDirect3DClassPixels,
   analyzeDirect3DInstancePixels,
   analyzeDirect3DMaterialPixels,
+  assessSourceLockedRlasmFraming,
   buildDirect3DMaterialColorManifest,
   buildDirect3DInstanceColorManifest,
   computeDirect3DCaptureSize,
@@ -24,6 +25,7 @@ import {
   getDirect3DTargetSampleCount,
   isExcludedFromDirect3DCapture,
   MAX_DIRECT_3D_INSTANCES,
+  MIN_SOURCE_LOCKED_RLASM_BUILDING_FRAME_COVERAGE,
   requireDirect3DInstanceDescriptor,
   validateDirect3DInstanceSemanticAgreement,
   validateDirect3DMaskCoverage,
@@ -35,6 +37,22 @@ function hexRgb(hex: string): [number, number, number] {
 }
 
 describe('Direct 3D capture helpers', () => {
+  it('fails closed before spend when source-locked RLASM buildings are too small', () => {
+    const weak = assessSourceLockedRlasmFraming(
+      { classCoverage: { building: 0.061 } },
+      true,
+    );
+    expect(weak).toMatchObject({ passed: false, buildingCoverage: 0.061 });
+    expect(weak?.message).toContain('Move closer');
+
+    const ready = assessSourceLockedRlasmFraming(
+      { classCoverage: { building: MIN_SOURCE_LOCKED_RLASM_BUILDING_FRAME_COVERAGE } },
+      true,
+    );
+    expect(ready).toMatchObject({ passed: true, message: null });
+    expect(assessSourceLockedRlasmFraming({ classCoverage: {} }, false)).toBeNull();
+  });
+
   it('caps the long edge without changing aspect ratio or upscaling', () => {
     expect(computeDirect3DCaptureSize(4096, 2048)).toEqual({ width: 2048, height: 1024 });
     expect(computeDirect3DCaptureSize(1600, 900)).toEqual({ width: 1600, height: 900 });

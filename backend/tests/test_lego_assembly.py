@@ -1004,6 +1004,102 @@ def test_larger_site_leaves_setback_instead_of_swelling_landmark_to_edges():
     assert plan["instances"][0]["native_dimensions_m"][1] * 1.2 == pytest.approx(42)
 
 
+def test_semantic_bungalow_variants_add_bays_without_scaling_the_door():
+    variants = []
+    for key, width, depth, width_bays, depth_bays in (
+        ("native", 11.8, 13.6, 0, 0),
+        ("wide_2", 16.6, 13.6, 2, 0),
+        ("wide_3", 19.0, 13.6, 3, 0),
+        ("wide_4", 21.4, 13.6, 4, 0),
+    ):
+        raw = entry(key, key, "assembled", height=7.41, width=width, depth=depth)
+        raw.metadata_["lego"].update(
+            {
+                "family": "calgary-bungalow-semantic-scale",
+                "archetype_ids": ["calgary_inner_city_bungalow", "bungalow_craftsman_original"],
+                "native_floors": 2,
+                "source_variant_id": "bungalow_craftsman_original",
+                "variant_key": key,
+                "horizontal_bay_contract": {
+                    "width_bays": width_bays,
+                    "depth_bays": depth_bays,
+                    "width_bay_m": 2.4,
+                    "depth_bay_m": 2.6,
+                    "fixed_entrance_count": 1,
+                },
+            }
+        )
+        descriptor = descriptor_from_library_entry(raw)
+        assert descriptor is not None
+        variants.append(descriptor)
+
+    plan = plan_vertical_assembly(
+        variants,
+        AssemblyRequest(
+            target_width_m=21.0,
+            target_depth_m=17.9,
+            target_floors=2,
+            archetype_id="bungalow_craftsman_original",
+        ),
+        allow_forced_fit=False,
+    )
+
+    assert plan["version"] == 4
+    assert plan["fit"]["assembly_mode"] == "semantic_horizontal_bays"
+    assert plan["fit"]["compatibility_source"] == "semantic_integer_bay_containment"
+    assert plan["fit"]["selected_variant_key"] == "wide_3"
+    assert plan["fit"]["horizontal_bay_contract"]["fixed_entrance_count"] == 1
+    assert plan["instances"][0]["scale"] == [1.0, 1.0, 1.0]
+    assert plan["instances"][0]["native_dimensions_m"][:2] == [19.0, 13.6]
+
+    parent_plan = plan_vertical_assembly(
+        variants,
+        AssemblyRequest(
+            target_width_m=21.0,
+            target_depth_m=17.9,
+            target_floors=2,
+            archetype_id="calgary_inner_city_bungalow",
+        ),
+        allow_forced_fit=False,
+    )
+    assert parent_plan["fit"]["selected_variant_key"] == "wide_3"
+    assert parent_plan["instances"][0]["scale"] == [1.0, 1.0, 1.0]
+
+
+def test_semantic_bungalow_variant_can_quarter_turn_but_never_axis_stretch():
+    raw = entry("deep", "Deep bungalow", "assembled", height=7.41, width=11.8, depth=16.2)
+    raw.metadata_["lego"].update(
+        {
+            "family": "calgary-bungalow-semantic-scale",
+            "archetype_ids": ["calgary_inner_city_bungalow", "bungalow_craftsman_original"],
+            "native_floors": 2,
+            "source_variant_id": "bungalow_craftsman_original",
+            "variant_key": "deep_1",
+            "horizontal_bay_contract": {
+                "width_bays": 0,
+                "depth_bays": 1,
+                "fixed_entrance_count": 1,
+            },
+        }
+    )
+    descriptor = descriptor_from_library_entry(raw)
+    assert descriptor is not None
+
+    plan = plan_vertical_assembly(
+        [descriptor],
+        AssemblyRequest(
+            target_width_m=17.0,
+            target_depth_m=12.0,
+            target_floors=2,
+            archetype_id="bungalow_craftsman_original",
+        ),
+        allow_forced_fit=False,
+    )
+
+    assert plan["instances"][0]["rotation_degrees"] == 90.0
+    assert plan["instances"][0]["scale"] == [1.0, 1.0, 1.0]
+
+
 def test_oversized_parcel_builds_as_streetwall_grid():
     """60 x 40 m on 24 x 18 m natives assembles as a 3 x 2 bar grid."""
     modules = [

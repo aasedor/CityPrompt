@@ -100,6 +100,38 @@ export interface Direct3DCaptureQAPreview {
   };
 }
 
+export const MIN_SOURCE_LOCKED_RLASM_BUILDING_FRAME_COVERAGE = 0.12;
+
+export interface SourceLockedRlasmFramingAssessment {
+  passed: boolean;
+  buildingCoverage: number;
+  minimumBuildingCoverage: number;
+  message: string | null;
+}
+
+/**
+ * Keep paid RLASM finishing countable: the exact authored architecture must
+ * occupy enough pixels to inspect windows, doors, porch rhythm, and contacts.
+ * Complete-envelope and grade requirements remain camera/operator concerns;
+ * this cheap class-pass check catches the former blue-void long shot.
+ */
+export function assessSourceLockedRlasmFraming(
+  capture: Pick<Direct3DCaptureBundle, 'classCoverage'>,
+  required: boolean,
+): SourceLockedRlasmFramingAssessment | null {
+  if (!required) return null;
+  const buildingCoverage = capture.classCoverage.building ?? 0;
+  const passed = buildingCoverage >= MIN_SOURCE_LOCKED_RLASM_BUILDING_FRAME_COVERAGE;
+  return {
+    passed,
+    buildingCoverage,
+    minimumBuildingCoverage: MIN_SOURCE_LOCKED_RLASM_BUILDING_FRAME_COVERAGE,
+    message: passed
+      ? null
+      : `RLASM buildings occupy ${(buildingCoverage * 100).toFixed(1)}% of the frame. Move closer until they occupy at least ${(MIN_SOURCE_LOCKED_RLASM_BUILDING_FRAME_COVERAGE * 100).toFixed(0)}%, while keeping every complete building and its grade contact visible.`,
+  };
+}
+
 async function downscaleCapturePreview(
   source: string,
   maxLongEdge: number,

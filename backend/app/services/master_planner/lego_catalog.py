@@ -183,7 +183,17 @@ def _assembled_native_dimensions(
                 descriptor.generation_archetype_id,
             }
         ),
-        key=lambda descriptor: (descriptor.lod, descriptor.id),
+        key=lambda descriptor: (
+            (
+                int(descriptor.horizontal_bay_contract.get("width_bays") or 0)
+                + int(descriptor.horizontal_bay_contract.get("depth_bays") or 0)
+                if isinstance(descriptor.horizontal_bay_contract, dict)
+                else 1_000_000
+            ),
+            descriptor.variant_key != "native",
+            descriptor.lod,
+            descriptor.id,
+        ),
     )
     if not matches:
         return None

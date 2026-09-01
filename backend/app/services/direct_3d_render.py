@@ -108,6 +108,13 @@ _MIN_SCENE_CONTEXT_PHOTOMETRIC_RESIDUAL_P95 = 4.0
 _MIN_SCENE_CONTEXT_DETAIL_DELTA_P75 = 0.75
 _SCENE_CONTEXT_TOP_FRACTION = 0.45
 _MIN_SCENE_LOWER_CONTEXT_COVERAGE = 0.08
+# A source-locked detached-house proof must make the authored architecture
+# inspectable before any paid provider call. The earlier bungalow trial spent
+# most of the frame on a blank background, so semantic bays and entrances could
+# not be reviewed even though the GLBs themselves were correct.
+MIN_SOURCE_LOCKED_RLASM_BUILDING_COVERAGE = 0.12
+MIN_SOURCE_LOCKED_RLASM_CONTEXT_LUMA_STD = 6.0
+MIN_SOURCE_LOCKED_RLASM_CONTEXT_LUMA_P90_SPAN = 18.0
 _MAX_SCENE_LOCAL_REPAIR_COVERAGE = 0.30
 _MIN_REPROJECT_WHOLE_FRAME_MEAN_ABSOLUTE_DELTA = 8.0
 _MIN_REPROJECT_LUMINANCE_STANDARD_DEVIATION = 10.0
@@ -210,6 +217,15 @@ class PreparedDirect3DCapture:
     scene_lower_context_coverage: float | None
     capture_fingerprint: str
     audit_input_base64: str
+
+
+@dataclass(frozen=True)
+class SourceLockedCaptureReadiness:
+    building_coverage: float
+    context_luma_std: float | None
+    context_luma_p90_span: float | None
+    passed: bool
+    reasons: tuple[str, ...]
 
 
 @dataclass(frozen=True)
@@ -3216,6 +3232,7 @@ def _presentation_prompt(
     view_mode: Literal["aerial", "street"] = "aerial",
     archetype_reference_labels: list[str] | None = None,
     control_bundle_version: Literal[1, 2] = 1,
+    source_locked_context_only: bool = False,
 ) -> str:
     """Build a natural provider-first prompt with one final design lock."""
 
@@ -3285,7 +3302,15 @@ def _presentation_prompt(
         _PRESENTATION_STYLE_TREATMENTS["photorealistic"],
     )
     if presentation_mode == "scene":
-        if view_mode == "street":
+        if source_locked_context_only:
+            task = (
+                f"CONTEXT-ONLY TASK: Image 1 contains server-certified, source-locked RLASM buildings "
+                f"whose visible pixels are immutable. Finish only the transparent surroundings as {treatment}: "
+                "terrain, grade, sidewalks, streets, planting, sky, contact shadows cast onto the editable ground, "
+                "and restrained temporary entourage. Blend those editable pixels cleanly to the exact building "
+                "silhouettes without repainting, relighting, extending, duplicating, or replacing any building pixel."
+            )
+        elif view_mode == "street":
             task = (
                 f"FULL-FRAME TASK: Image 1 is a street-level, eye-height (~1.7 m) "
                 f"pedestrian view of the authored development standing in real "
@@ -3325,6 +3350,12 @@ def _presentation_prompt(
             "form, improving only photographic clarity. Never re-clad, restyle, "
             "modernize or replace a neighbouring building."
         )
+        if source_locked_context_only:
+            final_lock += (
+                " SOURCE-LOCKED PIXEL CONTRACT: the opaque RLASM building islands in the edit mask are final "
+                "delivery pixels. Do not redraw their roofs, facades, windows, doors, porches, chimneys, materials, "
+                "edges, or interiors. Add no new permanent building anywhere in the editable context."
+            )
         if view_mode == "street":
             final_lock += (
                 " Respect Image 1's depth ordering exactly: nearer volumes "
@@ -3841,21 +3872,15 @@ def _source_locked_rlasm_instance_ids(
     )
 
 
-def _restore_source_locked_instances(
-    source: Image.Image,
-    candidate: Image.Image,
+def _source_locked_instance_mask(
     instance_id_image: Image.Image | None,
     instance_id_manifest: dict[str, Any] | None,
     protected_instance_ids: tuple[str, ...],
-) -> tuple[Image.Image, float]:
-    """Restore exact source pixels for server-certified RLASM instances."""
-
+) -> np.ndarray:
     if not protected_instance_ids:
-        return candidate.convert("RGB"), 0.0
+        raise Direct3DValidationError("Source-locked RLASM rendering requires at least one protected instance")
     if instance_id_image is None or not instance_id_manifest:
         raise Direct3DValidationError("Source-locked RLASM rendering requires the exact instance-ID pass")
-    if source.size != candidate.size or source.size != instance_id_image.size:
-        raise Direct3DValidationError("Source-locked RLASM source, candidate, and instance-ID images must align")
 
     protected = set(protected_instance_ids)
     instance_pixels = np.asarray(instance_id_image.convert("RGB"))
@@ -3873,6 +3898,117 @@ def _restore_source_locked_instances(
         raise Direct3DValidationError(f"Source-locked RLASM instance mask is missing {missing}")
     if not np.any(mask):
         raise Direct3DValidationError("Source-locked RLASM instance masks contain no pixels")
+    return mask
+
+
+def build_source_locked_context_edit_mask(
+    instance_id_image: Image.Image | None,
+    instance_id_manifest: dict[str, Any] | None,
+    protected_instance_ids: tuple[str, ...],
+) -> Image.Image:
+    """Make only non-RLASM context transparent/editable for OpenAI.
+
+    The edit API changes transparent pixels. Exact source-locked building
+    silhouettes therefore remain fully opaque in this mask, while terrain,
+    public realm, sky, and other context may be finished around them.
+    """
+
+    protected = _source_locked_instance_mask(
+        instance_id_image,
+        instance_id_manifest,
+        protected_instance_ids,
+    )
+    alpha = np.where(protected, 255, 0).astype(np.uint8)
+    edit_mask = Image.new("RGBA", instance_id_image.size, (0, 0, 0, 255))
+    edit_mask.putalpha(Image.fromarray(alpha, mode="L"))
+    return edit_mask
+
+
+def assess_source_locked_capture_readiness(
+    capture: PreparedDirect3DCapture,
+    request: Direct3DRenderRequest,
+    server_inventory: list[dict[str, Any]] | None,
+) -> SourceLockedCaptureReadiness | None:
+    """Fail closed before spend when RLASM proof framing or terrain is weak."""
+
+    protected_ids = _source_locked_rlasm_instance_ids(server_inventory)
+    if request.presentation_mode != "scene" or not protected_ids:
+        return None
+
+    protected = _source_locked_instance_mask(
+        capture.normalized_instance_id,
+        request.instance_id_manifest,
+        protected_ids,
+    )
+    building_coverage = float(np.count_nonzero(protected) / protected.size)
+    reasons: list[str] = []
+    if building_coverage < MIN_SOURCE_LOCKED_RLASM_BUILDING_COVERAGE:
+        reasons.append(
+            "Source-locked RLASM buildings must occupy at least "
+            f"{MIN_SOURCE_LOCKED_RLASM_BUILDING_COVERAGE:.0%} of the frame for countable facade proof; "
+            f"received {building_coverage:.1%}. Move closer while keeping complete envelopes and grade visible."
+        )
+
+    context_luma_std: float | None = None
+    context_luma_p90_span: float | None = None
+    # Street captures can legitimately fill the lower frame with authored
+    # pavement. Aerial/oblique captures, however, require visibly loaded terrain
+    # rather than the uniform blue renderer fallback before a paid image call.
+    if request.view_mode != "street":
+        context = _scene_lower_context_mask(capture.normalized_proposal_mask) > 0
+        context_pixels = np.asarray(capture.normalized_beauty.convert("RGB"), dtype=np.float32)[context]
+        if context_pixels.size:
+            luma = (
+                context_pixels[:, 0] * 0.2126
+                + context_pixels[:, 1] * 0.7152
+                + context_pixels[:, 2] * 0.0722
+            )
+            context_luma_std = float(np.std(luma))
+            p10, p90 = np.percentile(luma, (10, 90))
+            context_luma_p90_span = float(p90 - p10)
+        else:
+            context_luma_std = 0.0
+            context_luma_p90_span = 0.0
+        if (
+            context_luma_std < MIN_SOURCE_LOCKED_RLASM_CONTEXT_LUMA_STD
+            or context_luma_p90_span < MIN_SOURCE_LOCKED_RLASM_CONTEXT_LUMA_P90_SPAN
+        ):
+            reasons.append(
+                "Source-locked RLASM rendering requires visibly loaded terrain and grade context; "
+                "the lower frame is still uniform or blank. Restore Google Tiles or authored public realm "
+                "before rendering so ground contact is evidence rather than AI invention."
+            )
+
+    return SourceLockedCaptureReadiness(
+        building_coverage=building_coverage,
+        context_luma_std=context_luma_std,
+        context_luma_p90_span=context_luma_p90_span,
+        passed=not reasons,
+        reasons=tuple(reasons),
+    )
+
+
+def _restore_source_locked_instances(
+    source: Image.Image,
+    candidate: Image.Image,
+    instance_id_image: Image.Image | None,
+    instance_id_manifest: dict[str, Any] | None,
+    protected_instance_ids: tuple[str, ...],
+) -> tuple[Image.Image, float]:
+    """Restore exact source pixels for server-certified RLASM instances."""
+
+    if not protected_instance_ids:
+        return candidate.convert("RGB"), 0.0
+    if instance_id_image is None or not instance_id_manifest:
+        raise Direct3DValidationError("Source-locked RLASM rendering requires the exact instance-ID pass")
+    if source.size != candidate.size or source.size != instance_id_image.size:
+        raise Direct3DValidationError("Source-locked RLASM source, candidate, and instance-ID images must align")
+
+    mask = _source_locked_instance_mask(
+        instance_id_image,
+        instance_id_manifest,
+        protected_instance_ids,
+    )
 
     source_pixels = np.asarray(source.convert("RGB"))
     candidate_pixels = np.asarray(candidate.convert("RGB")).copy()
@@ -3913,6 +4049,10 @@ class Direct3DRenderService:
         visible_component_summary, _component_labels = _visible_semantic_components(
             capture.normalized_object_id,
             req.object_id_manifest,
+        )
+        source_locked_rlasm_ids = _source_locked_rlasm_instance_ids(server_inventory)
+        source_locked_context_only = bool(
+            req.presentation_mode == "scene" and source_locked_rlasm_ids
         )
         files: list[tuple[str, tuple[str, bytes, str]]] = [
             ("image[]", ("direct-3d-beauty.png", beauty_png, "image/png")),
@@ -3978,6 +4118,24 @@ class Direct3DRenderService:
                     ("direct-3d-edit-mask.png", edit_mask_png, "image/png"),
                 )
             )
+        elif source_locked_context_only:
+            context_edit_mask_png = _png_bytes(
+                build_source_locked_context_edit_mask(
+                    capture.normalized_instance_id,
+                    req.instance_id_manifest,
+                    source_locked_rlasm_ids,
+                )
+            )
+            files.append(
+                (
+                    "mask",
+                    (
+                        "direct-3d-rlasm-context-only-mask.png",
+                        context_edit_mask_png,
+                        "image/png",
+                    ),
+                )
+            )
         prompt = (
             _authoritative_prompt(
                 req.prompt,
@@ -4000,6 +4158,7 @@ class Direct3DRenderService:
                 view_mode=req.view_mode,
                 archetype_reference_labels=[reference.label for reference in req.archetype_references],
                 control_bundle_version=req.control_bundle_version,
+                source_locked_context_only=source_locked_context_only,
             )
         )
         data = {
@@ -4034,9 +4193,10 @@ class Direct3DRenderService:
             sum(item["bytes"] for item in attachment_inventory),
         )
 
-        # Exactly one provider call. Legacy source-anchored mode includes its
-        # strict edit mask; provider-first presentation modes deliberately omit
-        # it. No mode retries with a different mask contract.
+        # Exactly one provider call. Legacy source-anchored mode edits authored
+        # proposal pixels. Source-locked RLASM scenes invert that contract:
+        # their building pixels are opaque/final and only context is editable.
+        # No mode retries with a different mask contract.
         try:
             async with httpx.AsyncClient(timeout=300.0) as client:
                 response = await client.post(
@@ -4164,6 +4324,7 @@ class Direct3DRenderService:
                 "source_locked_rlasm_instance_count": len(_source_locked_rlasm_instance_ids(server_inventory)),
                 "source_locked_rlasm_pixel_lock_applied": False,
                 "source_locked_rlasm_pixel_coverage": None,
+                "source_locked_context_edit_mask_applied": False,
                 "scene_lower_context_coverage": (capture.scene_lower_context_coverage),
                 "minimum_scene_lower_context_coverage": (
                     _MIN_SCENE_LOWER_CONTEXT_COVERAGE if req.presentation_mode == "scene" else None
@@ -4255,41 +4416,26 @@ class Direct3DRenderService:
                 )
 
             if DIRECT_3D_PRESENTATION_FIRST and source_locked_rlasm_ids and req.presentation_mode == "scene":
-                registration: RegistrationResult | None = None
-                registration_error: str | None = None
-                try:
-                    registration = register_generated_image(
-                        capture.normalized_beauty,
-                        generated,
-                        capture.normalized_proposal_mask,
-                        enforce_transform_limits=False,
-                    )
-                    presentation, protected_coverage = _restore_source_locked_instances(
-                        capture.normalized_beauty,
-                        registration.image,
-                        capture.normalized_instance_id,
-                        req.instance_id_manifest,
-                        source_locked_rlasm_ids,
-                    )
-                    strategy = "provider_full_scene_rlasm_pixel_lock"
-                    provider_pixels_retained = True
-                except Direct3DValidationError as exc:
-                    registration_error = str(exc)
-                    presentation = capture.normalized_beauty.convert("RGB")
-                    protected_coverage = 1.0
-                    strategy = "authoritative_source"
-                    provider_pixels_retained = False
+                # The provider call was constrained by an inverse edit mask:
+                # only non-RLASM context could be generated. Reapply the exact
+                # source building pixels anyway so provider mask softness can
+                # never alter a roof edge, opening, material, or entrance.
+                presentation, protected_coverage = _restore_source_locked_instances(
+                    capture.normalized_beauty,
+                    generated,
+                    capture.normalized_instance_id,
+                    req.instance_id_manifest,
+                    source_locked_rlasm_ids,
+                )
+                strategy = "context_only_rlasm_pixel_lock"
+                provider_pixels_retained = True
 
                 output_png = _png_bytes(presentation)
-                warnings = [
-                    "Server-certified source-locked RLASM building pixels were "
-                    "protected. Review the remaining AI-finished public realm and context."
-                ]
-                if registration_error:
-                    warnings.append(
-                        "The provider image could not be registered safely; the authoritative "
-                        f"source capture was returned instead ({registration_error})."
-                    )
+                warnings = (
+                    "Server-certified source-locked RLASM building pixels were kept exact. "
+                    "The provider edited context only; review terrain seams, contact shadows, "
+                    "and public realm before saving.",
+                )
                 return Direct3DServiceResult(
                     image_base64=base64.b64encode(output_png).decode("ascii"),
                     audit_input_base64=capture.audit_input_base64,
@@ -4297,7 +4443,7 @@ class Direct3DRenderService:
                     output_fingerprint=hashlib.sha256(output_png).hexdigest(),
                     outcome="review_required",
                     provider_image_base64=provider_image_base64,
-                    warnings=tuple(warnings),
+                    warnings=warnings,
                     diagnostics={
                         **common_diagnostics,
                         "view_lock": "source_pixel_locked",
@@ -4307,20 +4453,8 @@ class Direct3DRenderService:
                         "returned_safety_strategy": strategy,
                         "source_locked_rlasm_pixel_lock_applied": True,
                         "source_locked_rlasm_pixel_coverage": protected_coverage,
-                        "registration": (
-                            {
-                                "method": registration.method,
-                                "score": registration.score,
-                                "score_metric": registration.score_metric,
-                                "photometric_score": registration.photometric_score,
-                                "structural_context_score": registration.structural_context_score,
-                                "translation_x_px": registration.translation_x_px,
-                                "translation_y_px": registration.translation_y_px,
-                                "rotation_degrees": registration.rotation_degrees,
-                            }
-                            if registration is not None
-                            else None
-                        ),
+                        "source_locked_context_edit_mask_applied": True,
+                        "registration": None,
                     },
                 )
 

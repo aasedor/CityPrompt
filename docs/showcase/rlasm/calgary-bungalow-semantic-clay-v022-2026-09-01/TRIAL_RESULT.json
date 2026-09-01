@@ -1,0 +1,47 @@
+{
+  "schema": "cityprompt.rlasm.semantic-clay-trial@1",
+  "candidate": "calgary-inner-city-bungalow-semantic-clay-v022",
+  "recorded_date": "2026-09-01",
+  "method": "RLASM v6.1",
+  "status": "builder_pass_only",
+  "lifecycle": ["build_valid", "visual_review_ready", "independent_review_pending"],
+  "source_geometry_family": "calgary-inner-city-bungalow-v021-semantic-scale",
+  "runtime": {
+    "project_id": "08947f8b-5fac-4e54-8100-e1757be21074",
+    "city_prompt_loaded": true,
+    "variant_count": 3,
+    "all_instance_scales": [1.0, 1.0, 1.0],
+    "selected_variants": ["native", "wide_2", "wide_4"],
+    "fixed_entrance_count": 1,
+    "external_tiles_status": "http_400_elevation_fallback"
+  },
+  "material_handoff": {
+    "source_material_count": 21,
+    "semantic_material_count": 8,
+    "semantic_roles": ["masonry", "wall", "trim", "roof", "glass", "timber", "interior", "hardware"],
+    "embedded_images": 0,
+    "embedded_textures": 0
+  },
+  "asset_bytes": {
+    "full_rlasm_total": 66839780,
+    "semantic_clay_total": 28075548,
+    "reduction_percent": 58.0,
+    "variants": [
+      {"key": "native", "full_rlasm": 20879652, "semantic_clay": 7858068, "reduction_percent": 62.4},
+      {"key": "wide_2", "full_rlasm": 22313064, "semantic_clay": 9401408, "reduction_percent": 57.9},
+      {"key": "wide_4", "full_rlasm": 23647064, "semantic_clay": 10816072, "reduction_percent": 54.3}
+    ]
+  },
+  "image_trial": {
+    "mode": "built_in_image_generation_edit",
+    "calls": 3,
+    "renders_complete": 3,
+    "geometry_identity_result": "builder_pass",
+    "known_interpretive_zones": ["window_muntins", "minor_trim_joins", "planting", "weathering"]
+  },
+  "approval_boundary": {
+    "keeper_approved": false,
+    "catalogue_published": false,
+    "independent_holistic_review_required": true
+  }
+}

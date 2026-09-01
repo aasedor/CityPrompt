@@ -102,6 +102,11 @@ class ModuleDescriptor:
     # chamfers, entrance recesses, sculptural roofs) and must not be stretched
     # independently back to the parcel edges at runtime.
     allow_inset_footprint: bool = False
+    # Optional source-authored proof that this complete variant was rebuilt by
+    # inserting integer horizontal bays around fixed semantic owners. These
+    # variants are selected at native scale; the parcel is an envelope, not a
+    # mould that stretches doors, windows or material courses.
+    horizontal_bay_contract: dict[str, Any] | None = None
 
 
 @dataclass(frozen=True)
@@ -208,7 +213,53 @@ def descriptor_from_library_entry(entry: Any) -> ModuleDescriptor | None:
             lego.get("placement_contract") if isinstance(lego.get("placement_contract"), dict) else None
         ),
         allow_inset_footprint=bool(lego.get("allow_inset_footprint", False)),
+        horizontal_bay_contract=(
+            lego.get("horizontal_bay_contract")
+            if isinstance(lego.get("horizontal_bay_contract"), dict)
+            else None
+        ),
     )
+
+
+def _semantic_horizontal_variant_fit(
+    modules: Iterable[ModuleDescriptor],
+    request: AssemblyRequest,
+) -> tuple[ModuleDescriptor, float, float, float, float, float] | None:
+    """Choose the largest integer-bay variant contained by the target.
+
+    A source-locked low-rise family cannot honestly resize by applying an X/Y
+    mesh scale. Its compiler may instead publish a finite set of complete
+    variants whose contract records fixed entrances and whole repeated bays.
+    This chooser keeps every selected asset at exactly 1.0 plan scale and
+    leaves any fractional remainder as real setback inside the drawn parcel.
+    """
+
+    fits: list[tuple[tuple[float, float, float, str], ModuleDescriptor, float, float, float, float, float]] = []
+    for module in modules:
+        contract = module.horizontal_bay_contract
+        if not isinstance(contract, dict) or int(contract.get("fixed_entrance_count") or 0) != 1:
+            continue
+        orientations = (
+            (0.0, module.width_m, module.depth_m, request.target_width_m, request.target_depth_m),
+            (90.0, module.depth_m, module.width_m, request.target_width_m, request.target_depth_m),
+        )
+        for rotation, occupied_width, occupied_depth, target_width, target_depth in orientations:
+            if occupied_width > target_width + 1e-6 or occupied_depth > target_depth + 1e-6:
+                continue
+            occupied_area = occupied_width * occupied_depth
+            leftover = (target_width - occupied_width) + (target_depth - occupied_depth)
+            bay_count = float(contract.get("width_bays") or 0) + float(contract.get("depth_bays") or 0)
+            # Area dominates; leftover and rotation are deterministic ties.
+            key = (occupied_area, -leftover, bay_count, module.variant_key)
+            scale_x = target_width / module.width_m if rotation == 0.0 else target_depth / module.width_m
+            scale_y = target_depth / module.depth_m if rotation == 0.0 else target_width / module.depth_m
+            segment_length = target_width if rotation == 0.0 else target_depth
+            segment_thickness = target_depth if rotation == 0.0 else target_width
+            fits.append((key, module, scale_x, scale_y, rotation, segment_length, segment_thickness))
+    if not fits:
+        return None
+    _, module, scale_x, scale_y, rotation, segment_length, segment_thickness = max(fits, key=lambda item: item[0])
+    return module, scale_x, scale_y, rotation, segment_length, segment_thickness
 
 
 def _dimension_score(module: ModuleDescriptor, request: AssemblyRequest) -> float:
@@ -825,44 +876,58 @@ def plan_vertical_assembly(
             )
         )
         executable_archetype_ids = tuple(value for value in (request.archetype_id, parent_alias_id) if value)
-        assembled = _best(
-            (
-                module
-                for module in family_modules
-                if module.role == "assembled"
-                and module.native_floors == request.target_floors
-                and request.footprint_profile == "rectangle"
-                and request.archetype_id
-                and any(
-                    _semantic_id(candidate) == _semantic_id(executable_id)
-                    for candidate in (
-                        module.source_variant_id,
-                        module.generation_archetype_id,
-                    )
-                    if candidate
-                    for executable_id in executable_archetype_ids
+        assembled_candidates = [
+            module
+            for module in family_modules
+            if module.role == "assembled"
+            and module.native_floors == request.target_floors
+            and request.footprint_profile == "rectangle"
+            and request.archetype_id
+            and any(
+                _semantic_id(candidate) == _semantic_id(executable_id)
+                for candidate in (
+                    *(
+                        module.archetype_ids
+                        if isinstance(module.horizontal_bay_contract, dict)
+                        else ()
+                    ),
+                    module.source_variant_id,
+                    module.generation_archetype_id,
                 )
-            ),
-            request,
-        )
+                if candidate
+                for executable_id in executable_archetype_ids
+            )
+        ]
+        semantic_variant_fit = _semantic_horizontal_variant_fit(assembled_candidates, request)
+        assembled = semantic_variant_fit[0] if semantic_variant_fit else _best(assembled_candidates, request)
         if assembled:
             (
                 landmark_scale_min,
                 landmark_scale_max,
                 landmark_max_axis_ratio,
             ) = _fixed_landmark_scale_contract(assembled)
-            (
-                scale_x,
-                scale_y,
-                rectangle_rotation,
-                segment_length,
-                segment_thickness,
-            ) = _rectangle_orientation(
-                assembled,
-                request,
-                scale_min=landmark_scale_min,
-                scale_max=landmark_scale_max,
-            )
+            if semantic_variant_fit:
+                (
+                    _,
+                    scale_x,
+                    scale_y,
+                    rectangle_rotation,
+                    segment_length,
+                    segment_thickness,
+                ) = semantic_variant_fit
+            else:
+                (
+                    scale_x,
+                    scale_y,
+                    rectangle_rotation,
+                    segment_length,
+                    segment_thickness,
+                ) = _rectangle_orientation(
+                    assembled,
+                    request,
+                    scale_min=landmark_scale_min,
+                    scale_max=landmark_scale_max,
+                )
             axis_ratio = max(
                 scale_x / max(scale_y, 1e-9),
                 scale_y / max(scale_x, 1e-9),
@@ -874,7 +939,7 @@ def plan_vertical_assembly(
             # to swell until it touches an edge. Cap the applied scale at the
             # family's audited maximum and leave the remaining land as a real
             # setback inside the site envelope.
-            contain_scale = min(raw_contain_scale, landmark_scale_max)
+            contain_scale = 1.0 if semantic_variant_fit else min(raw_contain_scale, landmark_scale_max)
             near_native_fit = (
                 landmark_scale_min <= scale_x <= landmark_scale_max
                 and landmark_scale_min <= scale_y <= landmark_scale_max
@@ -893,7 +958,7 @@ def plan_vertical_assembly(
             forced_landmark_fit = (
                 forced and not has_stack_fallback and not _fixed_landmark_is_select_and_place(assembled)
             )
-            if near_native_fit or uniform_contain_fit or forced_landmark_fit:
+            if semantic_variant_fit or near_native_fit or uniform_contain_fit or forced_landmark_fit:
                 # The polygon is a site envelope, not an extrusion mould.
                 # Preserve the reviewed landmark proportions and centre the
                 # complete authored form inside the available rectangle.
@@ -901,7 +966,7 @@ def plan_vertical_assembly(
                 if forced:
                     family_score -= 2.0 * (abs(math.log(max(scale_x, 1e-9))) + abs(math.log(max(scale_y, 1e-9))))
                 plan = {
-                    "version": 3,
+                    "version": 4 if semantic_variant_fit else 3,
                     "family": family,
                     "archetype_id": request.archetype_id,
                     "reuse_keys": list(request.reuse_keys),
@@ -947,10 +1012,14 @@ def plan_vertical_assembly(
                         "score": round(family_score, 5),
                         "profile": "rectangle",
                         "segment_count": 1,
-                        "assembly_mode": "fixed_landmark",
+                        "assembly_mode": (
+                            "semantic_horizontal_bays" if semantic_variant_fit else "fixed_landmark"
+                        ),
                         "footprint_mode": "archetype_contain",
                         "compatibility_source": (
-                            "forced_fit"
+                            "semantic_integer_bay_containment"
+                            if semantic_variant_fit
+                            else "forced_fit"
                             if forced and not (near_native_fit or uniform_contain_fit)
                             else (
                                 "fixed_landmark_native"
@@ -969,6 +1038,14 @@ def plan_vertical_assembly(
                             "max_envelope_axis_ratio": (FIXED_LANDMARK_CONTAIN_MAX_AXIS_RATIO),
                             "max_envelope_scale": (FIXED_LANDMARK_CONTAIN_MAX_ENVELOPE_SCALE),
                         },
+                        **(
+                            {
+                                "selected_variant_key": assembled.variant_key,
+                                "horizontal_bay_contract": assembled.horizontal_bay_contract,
+                            }
+                            if semantic_variant_fit
+                            else {}
+                        ),
                     },
                     "footprint_segments": [
                         {
@@ -1343,6 +1420,11 @@ def lego_metadata_from_manifest(
         "footprint_compatibility": manifest.get("footprint_compatibility") or {},
         "placement_contract": manifest.get("placement_contract") or {},
         "allow_inset_footprint": bool(module.get("allow_inset_footprint", False)),
+        "horizontal_bay_contract": (
+            module.get("horizontal_bay_contract")
+            if isinstance(module.get("horizontal_bay_contract"), dict)
+            else None
+        ),
         "source_variant_id": variant_id,
         "generation_archetype_id": generation_archetype_id,
         "asset_kind": "lego_module",

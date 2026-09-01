@@ -10,16 +10,23 @@ regression coverage in test_direct_3d_render.py with the flag pinned False.
 import base64
 import hashlib
 import io
+from dataclasses import replace
 from types import SimpleNamespace
 
 import numpy as np
 import pytest
-from PIL import Image
+from PIL import Image, ImageDraw
 
 from app.api.v1 import direct_3d_render as direct_api
 from app.schemas.direct_3d_render import Direct3DRenderDiagnostics
 from app.services import direct_3d_render as direct_service
-from app.services.direct_3d_render import Direct3DRenderService, prepare_direct_3d_capture
+from app.services.direct_3d_render import (
+    Direct3DRenderService,
+    MIN_SOURCE_LOCKED_RLASM_BUILDING_COVERAGE,
+    assess_source_locked_capture_readiness,
+    build_source_locked_context_edit_mask,
+    prepare_direct_3d_capture,
+)
 
 from tests.test_direct_3d_render import (
     _png_b64,
@@ -141,8 +148,79 @@ async def test_source_locked_rlasm_scene_restores_exact_instance_pixels(monkeypa
     assert result.diagnostics["source_locked_rlasm_pixel_coverage"] == pytest.approx(
         float(np.count_nonzero(protected) / protected.size)
     )
-    assert result.diagnostics["returned_safety_strategy"] == ("provider_full_scene_rlasm_pixel_lock")
+    assert result.diagnostics["returned_safety_strategy"] == "context_only_rlasm_pixel_lock"
+    assert result.diagnostics["source_locked_context_edit_mask_applied"] is True
+    assert result.diagnostics["registration"] is None
     Direct3DRenderDiagnostics.model_validate(result.diagnostics)
+
+
+def test_source_locked_rlasm_edit_mask_exposes_context_only():
+    request = _request(presentation_mode="scene", style="photorealistic")
+    capture = prepare_direct_3d_capture(request)
+
+    edit_mask = build_source_locked_context_edit_mask(
+        capture.normalized_instance_id,
+        request.instance_id_manifest,
+        ("zone:test-building:building",),
+    )
+
+    instance_pixels = np.asarray(capture.normalized_instance_id.convert("RGB"))
+    protected = np.all(instance_pixels == np.asarray((1, 0, 1), dtype=np.uint8), axis=2)
+    alpha = np.asarray(edit_mask.getchannel("A"))
+    assert np.all(alpha[protected] == 255)
+    assert np.all(alpha[~protected] == 0)
+
+
+def test_source_locked_rlasm_pre_spend_gate_rejects_weak_framing_and_blank_ground():
+    request = _request(presentation_mode="scene", style="photorealistic")
+    capture = prepare_direct_3d_capture(request)
+    instance_id = Image.new("RGB", capture.normalized_beauty.size, (0, 0, 0))
+    # Deliberately too small for countable facade review.
+    ImageDraw.Draw(instance_id).rectangle((20, 20, 70, 70), fill=(1, 0, 1))
+    blank = Image.new("RGB", capture.normalized_beauty.size, (72, 91, 102))
+    capture = replace(
+        capture,
+        normalized_beauty=blank,
+        normalized_instance_id=instance_id,
+    )
+    inventory = [{"instance_id": "zone:test-building:building", "source_locked_rlasm": True}]
+
+    readiness = assess_source_locked_capture_readiness(capture, request, inventory)
+
+    assert readiness is not None
+    assert readiness.passed is False
+    assert readiness.building_coverage < MIN_SOURCE_LOCKED_RLASM_BUILDING_COVERAGE
+    assert any("Move closer" in reason for reason in readiness.reasons)
+    assert any("loaded terrain" in reason for reason in readiness.reasons)
+
+
+def test_source_locked_rlasm_pre_spend_gate_accepts_reviewable_building_and_context():
+    request = _request(presentation_mode="scene", style="photorealistic")
+    capture = prepare_direct_3d_capture(request)
+    width, height = capture.normalized_beauty.size
+    instance_id = Image.new("RGB", (width, height), (0, 0, 0))
+    ImageDraw.Draw(instance_id).rectangle(
+        (round(width * 0.2), round(height * 0.2), round(width * 0.8), round(height * 0.58)),
+        fill=(1, 0, 1),
+    )
+    textured = Image.new("RGB", (width, height), (80, 105, 130))
+    texture_draw = ImageDraw.Draw(textured)
+    for y in range(round(height * 0.45), height, 24):
+        tone = 45 if (y // 24) % 2 else 185
+        texture_draw.rectangle((0, y, width, min(height, y + 23)), fill=(tone, tone, tone))
+    capture = replace(
+        capture,
+        normalized_beauty=textured,
+        normalized_instance_id=instance_id,
+    )
+    inventory = [{"instance_id": "zone:test-building:building", "source_locked_rlasm": True}]
+
+    readiness = assess_source_locked_capture_readiness(capture, request, inventory)
+
+    assert readiness is not None
+    assert readiness.passed is True
+    assert readiness.building_coverage >= MIN_SOURCE_LOCKED_RLASM_BUILDING_COVERAGE
+    assert readiness.reasons == ()
 
 
 @pytest.mark.asyncio

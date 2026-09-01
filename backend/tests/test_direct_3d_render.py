@@ -2734,6 +2734,42 @@ async def test_provider_first_payload_omits_mask_and_keeps_one_concise_authority
 
 
 @pytest.mark.asyncio
+async def test_source_locked_rlasm_provider_payload_edits_context_only(monkeypatch):
+    request = _request(presentation_mode="scene", style="documentary")
+    capture = prepare_direct_3d_capture(request)
+    _RecordingClient.calls = []
+    _RecordingClient.response = _FakeResponse(
+        200,
+        {"data": [{"b64_json": _png_b64(capture.normalized_beauty)}]},
+    )
+    monkeypatch.setattr(direct_service.httpx, "AsyncClient", _RecordingClient)
+    inventory = [
+        {
+            "instance_id": "zone:test-building:building",
+            "semantic_class": "building",
+            "source_locked_rlasm": True,
+        }
+    ]
+
+    await Direct3DRenderService("test-key")._call_openai(
+        request,
+        capture,
+        server_inventory=inventory,
+    )
+
+    call = _RecordingClient.calls[0]
+    mask_file = next(item for item in call["files"] if item[0] == "mask")
+    assert mask_file[1][0] == "direct-3d-rlasm-context-only-mask.png"
+    alpha = np.asarray(Image.open(io.BytesIO(mask_file[1][1])).getchannel("A"))
+    instance_pixels = np.asarray(capture.normalized_instance_id.convert("RGB"))
+    protected = np.all(instance_pixels == np.asarray((1, 0, 1), dtype=np.uint8), axis=2)
+    assert np.all(alpha[protected] == 255)
+    assert np.all(alpha[~protected] == 0)
+    assert "CONTEXT-ONLY TASK" in call["data"]["prompt"]
+    assert "opaque RLASM building islands" in call["data"]["prompt"]
+
+
+@pytest.mark.asyncio
 async def test_provider_receives_exact_instance_guide_and_server_owned_inventory(monkeypatch):
     request = _request(
         presentation_mode="scene",

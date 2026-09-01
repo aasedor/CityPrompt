@@ -41,10 +41,12 @@ import {
 } from '@/features/legoAssembly/communityCompiler';
 import { estimateCurrentViewRenderCalls } from './renderCost';
 import {
+  assessSourceLockedRlasmFraming,
   createDirect3DCaptureQAPreview,
   type Direct3DCaptureBundle,
   type Direct3DCaptureQAPreview,
 } from './direct3dCapture';
+import { hasPlacedRlasmModel } from './rlasmPresentation';
 import {
   getCurrentResidualLandscapeClaim,
   hasCurrentResidualLandscapeRecipe,
@@ -291,6 +293,21 @@ export function GlobeAIRenderPanel({
   const [directDiagnostics, setDirectDiagnostics] = useState<Direct3DRenderDiagnostics | null>(null);
   const [directFidelityPolicy, setDirectFidelityPolicy] = useState<Direct3DFidelityPolicy>('balanced');
   const [directReview, setDirectReview] = useState<Direct3DReview | null>(null);
+  const hasSourceLockedRlasmModels = useMemo(
+    () => hasPlacedRlasmModel(buildings),
+    [buildings],
+  );
+  const requiresSourceLockedRlasmFraming = hasSourceLockedRlasmModels
+    && resolveDirect3DPresentationMode(selectedStyle) === 'scene';
+  const sourceLockedRlasmFraming = useMemo(
+    () => directCapturePreview
+      ? assessSourceLockedRlasmFraming(
+          directCapturePreview,
+          requiresSourceLockedRlasmFraming,
+        )
+      : null,
+    [directCapturePreview, requiresSourceLockedRlasmFraming],
+  );
   // Development mode gate: at least one zone in the scene is backed by real
   // massing (placed LEGO stack or mounted 3D model) that the capture shows.
   const hasPlacedMassing = useMemo(
@@ -855,14 +872,27 @@ export function GlobeAIRenderPanel({
     try {
       await onBeforeRender?.();
       const capture = await captureDirect3D({ includeGeometryPasses: true });
-      setDirectCapturePreview(await createDirect3DCaptureQAPreview(capture));
+      const preview = await createDirect3DCaptureQAPreview(capture);
+      setDirectCapturePreview(preview);
+      const framing = assessSourceLockedRlasmFraming(
+        capture,
+        requiresSourceLockedRlasmFraming,
+      );
+      if (framing && !framing.passed) setError(framing.message);
     } catch (err: unknown) {
       setDirectCapturePreview(null);
       setError(apiErrorMessage(err, 'Direct 3D capture check failed.'));
     } finally {
       setIsCheckingDirectCapture(false);
     }
-  }, [captureDirect3D, direct3DAvailable, isCheckingDirectCapture, isRendering, onBeforeRender]);
+  }, [
+    captureDirect3D,
+    direct3DAvailable,
+    isCheckingDirectCapture,
+    isRendering,
+    onBeforeRender,
+    requiresSourceLockedRlasmFraming,
+  ]);
 
   const handleDirectRender = useCallback(async () => {
     if (!captureDirect3D || !direct3DAvailable || isRendering) return;
@@ -888,6 +918,13 @@ export function GlobeAIRenderPanel({
       await onBeforeRender?.();
       setDirectCapturePreview(null);
       const capture = await captureDirect3D({ includeGeometryPasses: true });
+      const framing = assessSourceLockedRlasmFraming(
+        capture,
+        requiresSourceLockedRlasmFraming,
+      );
+      if (framing && !framing.passed) {
+        throw new Error(framing.message ?? 'Move closer before rendering the source-locked RLASM buildings.');
+      }
       setIsPreparingCapture(false);
       // Authored archetype artwork (facade sheets / catalogue cards) pushes
       // each building toward its archetype's real character instead of a
@@ -948,6 +985,7 @@ export function GlobeAIRenderPanel({
     projectId,
     residualLandscapeClaim,
     renderDirect3D,
+    requiresSourceLockedRlasmFraming,
     selectedStyle,
     siteZones,
     stalePlanMessage,
@@ -1407,6 +1445,16 @@ export function GlobeAIRenderPanel({
                   <span key={role}>{role} {((coverage ?? 0) * 100).toFixed(1)}%</span>
                 ))}
               </div>
+              {sourceLockedRlasmFraming && (
+                <p className={`mb-1.5 rounded border px-2 py-1 text-[9px] font-bold ${sourceLockedRlasmFraming.passed
+                  ? 'border-emerald-300/35 bg-emerald-300/10 text-emerald-100'
+                  : 'border-amber-300/40 bg-amber-300/10 text-amber-100'
+                }`}>
+                  {sourceLockedRlasmFraming.passed
+                    ? `RLASM facade framing ready · ${(sourceLockedRlasmFraming.buildingCoverage * 100).toFixed(1)}% of frame`
+                    : sourceLockedRlasmFraming.message}
+                </p>
+              )}
               <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-4">
                 {[
                   ['Beauty', directCapturePreview.thumbnails.beauty],

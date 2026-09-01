@@ -833,7 +833,11 @@ def test_saved_render_watermark_and_provenance():
 
     from PIL import Image
 
-    from app.api.v1.render import SaveRenderRequest, _watermark_and_provenance
+    from app.api.v1.render import (
+        SAVED_RENDER_WATERMARK_PREFIX,
+        SaveRenderRequest,
+        _watermark_and_provenance,
+    )
 
     source = Image.new("RGB", (640, 360), (200, 200, 200))
     buffer = BytesIO()
@@ -845,6 +849,7 @@ def test_saved_render_watermark_and_provenance():
 
     out = Image.open(BytesIO(out_bytes))
     assert out.size == (640, 360)
+    assert SAVED_RENDER_WATERMARK_PREFIX.isascii()
     provenance = out.text.get("cityprompt:provenance")  # PNG tEXt chunk
     assert provenance and "NOT an approved design" not in provenance  # sanity: JSON not prose
     assert '"model": "gemini"' in provenance and '"seed": 42' in provenance

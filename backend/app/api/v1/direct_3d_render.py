@@ -42,6 +42,7 @@ from app.services.direct_3d_render import (
     Direct3DRenderService,
     Direct3DValidationError,
     PreparedDirect3DCapture,
+    assess_source_locked_capture_readiness,
     estimate_direct_3d_token_cost,
     prepare_direct_3d_capture,
 )
@@ -1246,6 +1247,26 @@ async def generate_direct_3d_render(
     except Direct3DValidationError as exc:
         logger.info("Direct 3D capture rejected: %s", exc)
         raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+    try:
+        readiness = assess_source_locked_capture_readiness(
+            capture,
+            req,
+            server_inventory,
+        )
+    except Direct3DValidationError as exc:
+        logger.info("Source-locked RLASM capture rejected: %s", exc)
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    if readiness is not None and not readiness.passed:
+        detail = " ".join(readiness.reasons)
+        logger.info(
+            "Source-locked RLASM pre-spend gate rejected capture: coverage=%.4f context_std=%s context_span=%s reasons=%s",
+            readiness.building_coverage,
+            readiness.context_luma_std,
+            readiness.context_luma_p90_span,
+            readiness.reasons,
+        )
+        raise HTTPException(status_code=400, detail=detail)
 
     token_cost = estimate_direct_3d_token_cost(
         capture.normalized_beauty.width,

@@ -1218,6 +1218,9 @@ class SavedRenderResponse(BaseModel):
     )
 
 
+SAVED_RENDER_WATERMARK_PREFIX = "ILLUSTRATIVE - NOT AN APPROVED DESIGN | City Prompt | "
+
+
 def _watermark_and_provenance(image_bytes: bytes, req: "SaveRenderRequest") -> bytes:
     """Burn the ILLUSTRATIVE banner onto a saved render and embed provenance
     as a PNG tEXt chunk. Saved renders are the shareable artifact — the
@@ -1229,7 +1232,10 @@ def _watermark_and_provenance(image_bytes: bytes, req: "SaveRenderRequest") -> b
     try:
         img = Image.open(io.BytesIO(image_bytes)).convert("RGB")
         draw = ImageDraw.Draw(img, "RGBA")
-        text = "ILLUSTRATIVE — NOT AN APPROVED DESIGN · City Prompt · " + datetime.now(timezone.utc).strftime(
+        # Pillow's bundled fallback font does not contain em-dash or middle-dot
+        # glyphs on every Windows host. Keep the burned banner ASCII so saved
+        # phone media never shows square replacement characters.
+        text = SAVED_RENDER_WATERMARK_PREFIX + datetime.now(timezone.utc).strftime(
             "%Y-%m-%d"
         )
         font_size = max(12, img.width // 90)

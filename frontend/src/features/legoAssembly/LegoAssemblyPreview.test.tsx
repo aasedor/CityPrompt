@@ -303,6 +303,39 @@ describe('LegoAssemblyPreview', () => {
     expect(screen.queryByText(/Modules are stretched to fit/i)).not.toBeInTheDocument();
   });
 
+  it('explains semantic bungalow scaling without claiming the model was stretched', async () => {
+    apiPost.mockResolvedValueOnce({
+      data: {
+        ...planFixture,
+        fit: {
+          ...planFixture.fit,
+          scale_x: 1,
+          scale_y: 1,
+          envelope_scale_x: 1,
+          envelope_scale_y: 1,
+          footprint_mode: 'archetype_contain',
+          assembly_mode: 'semantic_horizontal_bays',
+          selected_variant_key: 'wide_3',
+          horizontal_bay_contract: {
+            width_bays: 3,
+            depth_bays: 0,
+            width_bay_m: 2.4,
+            depth_bay_m: 2.6,
+            fixed_entrance_count: 1,
+          },
+        },
+      },
+    });
+
+    render(<LegoAssemblyPreview zone={makeZone()} onClose={vi.fn()} />);
+    fireEvent.click(screen.getByRole('button', { name: /auto assemble/i }));
+
+    expect(await screen.findByText(/one fixed entrance and complete occupied bays/i)).toBeInTheDocument();
+    expect(screen.getByText(/Fractional parcel space remains as setback/i)).toBeInTheDocument();
+    expect(screen.queryByText(/uniformly scaled/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Modules are stretched to fit/i)).not.toBeInTheDocument();
+  });
+
   it('scopes planning to the zone project module inventory', async () => {
     apiPost.mockResolvedValueOnce({ data: planFixture });
 

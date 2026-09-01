@@ -107,6 +107,7 @@ export interface Direct3DRenderDiagnostics {
     | 'source_envelope_building_interiors'
     | 'provider_full_scene'
     | 'provider_full_scene_rlasm_pixel_lock'
+    | 'context_only_rlasm_pixel_lock'
     | 'provider_full_scene_local_repairs'
     | 'global_tone_with_safe_building_interiors'
     | 'global_tone_only'
@@ -138,6 +139,7 @@ export interface Direct3DRenderDiagnostics {
   source_locked_rlasm_instance_count?: number;
   source_locked_rlasm_pixel_lock_applied?: boolean;
   source_locked_rlasm_pixel_coverage?: number | null;
+  source_locked_context_edit_mask_applied?: boolean;
   source_width: number;
   source_height: number;
   normalized_width: number;

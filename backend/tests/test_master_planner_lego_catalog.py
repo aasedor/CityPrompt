@@ -37,6 +37,8 @@ def _entry(
     native_floors: int | None = None,
     source_variant_id: str | None = None,
     generation_archetype_id: str | None = None,
+    variant_key: str = "default",
+    horizontal_bay_contract: dict | None = None,
     enabled: bool = True,
 ):
     return SimpleNamespace(
@@ -59,7 +61,8 @@ def _entry(
                 "native_floors": native_floors,
                 "source_variant_id": source_variant_id,
                 "generation_archetype_id": generation_archetype_id,
-                "variant_key": "default",
+                "variant_key": variant_key,
+                "horizontal_bay_contract": horizontal_bay_contract,
                 "lod": 0,
             }
         },
@@ -300,6 +303,39 @@ def test_historic_market_catalog_advertises_only_native_two_floor_landmark():
     assert catalog.supported_floors_by_parent[MARKET_PARENT] == (2,)
     assert catalog.supported_floors_by_selectable_id[MARKET_VARIANT] == (2,)
     assert catalog.target_dimensions_by_selectable_id[MARKET_VARIANT] == (45.0, 60.0)
+
+
+def test_semantic_variant_family_advertises_native_zero_bay_dimensions():
+    entries = []
+    for key, width, width_bays in (
+        ("wide_3", 19.0, 3),
+        ("native", 11.8, 0),
+        ("wide_1", 14.2, 1),
+    ):
+        entries.append(
+            _entry(
+                key,
+                family="calgary-bungalow-semantic-scale",
+                role="assembled",
+                width_m=width,
+                depth_m=13.6,
+                height_m=7.41,
+                archetype_ids=["calgary_inner_city_bungalow", "bungalow_craftsman_original"],
+                native_floors=2,
+                source_variant_id="bungalow_craftsman_original",
+                generation_archetype_id="bungalow_craftsman_original",
+                variant_key=key,
+                horizontal_bay_contract={
+                    "width_bays": width_bays,
+                    "depth_bays": 0,
+                    "fixed_entrance_count": 1,
+                },
+            )
+        )
+
+    catalog = build_lego_planning_catalog(entries)
+
+    assert catalog.target_dimensions_by_selectable_id["bungalow_craftsman_original"] == (11.8, 13.6)
 
 
 def test_hybrid_exact_variant_uses_assembled_native_dimensions():

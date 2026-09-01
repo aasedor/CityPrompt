@@ -434,11 +434,18 @@ export function LegoAssemblyPreview({
             </div>
           )}
 
-          {plan?.fit.footprint_mode === 'archetype_contain' && (
+          {plan?.fit.assembly_mode === 'semantic_horizontal_bays' && (
+            <div className="mt-2 rounded border border-emerald-300 bg-emerald-50 p-2 text-[11px] font-semibold text-emerald-800">
+              LEGO scale preserved: one fixed entrance and complete occupied bays were selected at native size. Fractional parcel space remains as setback.
+            </div>
+          )}
+
+          {plan?.fit.footprint_mode === 'archetype_contain'
+            && plan.fit.assembly_mode !== 'semantic_horizontal_bays' && (
             <div className="mt-2 rounded border border-emerald-300 bg-emerald-50 p-2 text-[11px] font-semibold text-emerald-800">
               Archetype form preserved: the building is uniformly scaled and contained inside the drawn site envelope.
             </div>
-          )}
+            )}
 
           <button
             type="button"
