@@ -1,18 +1,18 @@
 /**
- * BuildingModelViewer — a modal that renders a generated Meshy/Tripo .glb
- * (building.model_url) with orbit controls. The main planner never displayed
- * the AI 3D models; this is the first in-app viewer for them.
- *
- * The model_url is served through the /api/v1/files proxy (resolveApiFileUrl
- * handles dev vs prod); the raw MinIO endpoint isn't browser-reachable.
+ * BuildingModelViewer — a modal for the building representation that owns the
+ * live scene. Persisted LEGO assemblies take precedence over historical whole-
+ * model URLs, matching the globe's authored-model ownership contract.
  */
 
 import { Component, Suspense, useEffect, useMemo, type ReactNode } from 'react';
+import { createPortal } from 'react-dom';
 import { Canvas, useThree } from '@react-three/fiber';
 import { Bounds, Center, Environment, Html, OrbitControls, useGLTF, useProgress } from '@react-three/drei';
 import { Loader2, X } from 'lucide-react';
 import { resolveApiFileUrl } from '@/services/api';
 import { createKtx2LoaderExtension } from '@/lib/ktx2GltfLoader';
+import type { BuildingModelSource } from '@/features/legoAssembly/buildingModelSource';
+import { ModuleInstance } from '@/features/legoAssembly/legoShared';
 import {
   disposeArchitecturalCloneMaterials,
   prepareArchitecturalClone,
@@ -33,6 +33,19 @@ function Model({ url }: { url: string }) {
   }, [gl, scene]);
   useEffect(() => () => disposeArchitecturalCloneMaterials(model), [model]);
   return <primitive object={model} />;
+}
+
+function AssemblyModel({ source }: { source: Extract<BuildingModelSource, { kind: 'lego_assembly' }> }) {
+  return (
+    <group>
+      {source.recipe.instances.map((instance, index) => (
+        <ModuleInstance
+          key={`${instance.asset_id}-${instance.level}-${index}`}
+          instance={instance}
+        />
+      ))}
+    </group>
+  );
 }
 
 function LoadProgress() {
@@ -68,17 +81,25 @@ class ModelErrorBoundary extends Component<{ children: ReactNode }, { failed: bo
 }
 
 export function BuildingModelViewer({
-  modelUrl,
+  source,
   name,
   onClose,
 }: {
-  modelUrl: string;
+  source: BuildingModelSource;
   name: string;
   onClose: () => void;
 }) {
-  const url = resolveApiFileUrl(modelUrl);
+  const legacyUrl = source.kind === 'legacy_model'
+    ? resolveApiFileUrl(source.modelUrl)
+    : null;
+  const downloadUrl = source.downloadUrl ? resolveApiFileUrl(source.downloadUrl) : null;
+  const presentationLabel = source.presentation === 'architectural_clay'
+    ? 'architectural clay'
+    : source.presentation === 'assembly'
+      ? 'architectural assembly'
+      : '3D model';
 
-  return (
+  return createPortal(
     <div
       className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-4"
       onClick={onClose}
@@ -88,7 +109,10 @@ export function BuildingModelViewer({
         onClick={(e) => e.stopPropagation()}
       >
         <div className="absolute inset-x-0 top-0 z-10 flex items-center justify-between bg-black/50 px-3 py-2">
-          <span className="truncate text-xs font-black uppercase text-white">{name} · 3D model</span>
+          <span className="truncate text-xs font-black uppercase text-white">
+            {name} · {presentationLabel}
+            {source.variantKey ? ` · ${source.variantKey.replace(/_/g, ' ')}` : ''}
+          </span>
           <button
             type="button"
             onClick={onClose}
@@ -110,7 +134,9 @@ export function BuildingModelViewer({
                   scale/offset, so a fixed camera would miss most of them. */}
               <Bounds fit clip observe margin={1.2}>
                 <Center>
-                  <Model url={url} />
+                  {source.kind === 'lego_assembly'
+                    ? <AssemblyModel source={source} />
+                    : <Model url={legacyUrl!} />}
                 </Center>
               </Bounds>
             </Suspense>
@@ -118,17 +144,20 @@ export function BuildingModelViewer({
           <OrbitControls makeDefault autoRotate autoRotateSpeed={0.7} enablePan />
         </Canvas>
 
-        <a
-          href={url}
-          download
-          className="absolute bottom-3 right-3 z-10 rounded border-2 border-[#151515] bg-[#c9ff3d] px-2.5 py-1 text-[11px] font-black uppercase text-[#151515] shadow-[2px_2px_0_0_#151515] transition hover:bg-[#d8ff70]"
-        >
-          Download .glb
-        </a>
+        {downloadUrl && (
+          <a
+            href={downloadUrl}
+            download
+            className="absolute bottom-3 right-3 z-10 rounded border-2 border-[#151515] bg-[#c9ff3d] px-2.5 py-1 text-[11px] font-black uppercase text-[#151515] shadow-[2px_2px_0_0_#151515] transition hover:bg-[#d8ff70]"
+          >
+            Download .glb
+          </a>
+        )}
         <span className="pointer-events-none absolute bottom-3 left-3 z-10 text-[10px] font-semibold text-white/40">
           drag to orbit · scroll to zoom
         </span>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

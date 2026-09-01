@@ -1,7 +1,11 @@
+import type { BuildingSpecifications } from '@/types';
+import { resolveBuildingModelSource } from '@/features/legoAssembly/buildingModelSource';
+
 export interface RlasmPresentationBuilding {
   generation_engine?: string | null;
   model_url?: string | null;
   lod_urls?: Record<string, string> | null;
+  specifications?: BuildingSpecifications | null;
 }
 
 export interface ArchitecturalLightingProfile {
@@ -25,16 +29,16 @@ export const RLASM_ARCHITECTURAL_LIGHTING: ArchitecturalLightingProfile = {
   environmentIntensity: 0.7,
 };
 
-function hasRenderableModel(building: RlasmPresentationBuilding): boolean {
-  return Boolean(building.model_url || Object.values(building.lod_urls ?? {}).some(Boolean));
-}
-
 export function hasPlacedRlasmModel(
   buildings: readonly RlasmPresentationBuilding[] | null | undefined,
 ): boolean {
   return Boolean(buildings?.some((building) => (
     building.generation_engine?.trim().toLowerCase() === 'rlasm'
-    && hasRenderableModel(building)
+    && resolveBuildingModelSource({
+      lod_urls: building.lod_urls ?? undefined,
+      model_url: building.model_url ?? undefined,
+      specifications: building.specifications ?? undefined,
+    }) !== null
   )));
 }
 

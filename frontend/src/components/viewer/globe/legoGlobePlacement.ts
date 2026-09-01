@@ -18,6 +18,7 @@
 
 import type { Building } from '@/types';
 import type { LegoAssemblyInstance, LegoAssemblyRecipe } from '@/features/legoAssembly/legoAssemblyApi';
+import { extractLegoAssemblyRecipe } from '@/features/legoAssembly/buildingModelSource';
 
 const DEG_TO_RAD = Math.PI / 180;
 
@@ -30,22 +31,6 @@ export interface PlannedMassingSpec {
   height_meters: number;
 }
 
-function isFiniteTriple(value: unknown): value is [number, number, number] {
-  return Array.isArray(value) && value.length === 3 && value.every((n) => Number.isFinite(n));
-}
-
-function isValidInstance(value: unknown): value is LegoAssemblyInstance {
-  if (!value || typeof value !== 'object') return false;
-  const instance = value as Partial<LegoAssemblyInstance>;
-  return (
-    typeof instance.model_url === 'string'
-    && instance.model_url.length > 0
-    && isFiniteTriple(instance.position)
-    && isFiniteTriple(instance.scale)
-    && (instance.rotation_degrees === undefined || Number.isFinite(instance.rotation_degrees))
-  );
-}
-
 /**
  * Parse + validate the saved assembly recipe off a building's specifications.
  * Tolerates both snake_case (backend contract) and camelCase version keys.
@@ -54,16 +39,7 @@ function isValidInstance(value: unknown): value is LegoAssemblyInstance {
  * crash the globe.
  */
 export function extractLegoRecipe(building: Building): LegoAssemblyRecipe | null {
-  const raw = building.specifications?.legoAssembly;
-  if (!raw || typeof raw !== 'object') return null;
-  const recipe = raw as Partial<LegoAssemblyRecipe> & { schemaVersion?: number };
-  const version = recipe.schema_version ?? recipe.schemaVersion;
-  if (version !== 1) return null;
-  if (!Array.isArray(recipe.instances) || recipe.instances.length === 0) return null;
-  if (!recipe.instances.every(isValidInstance)) return null;
-  const target = recipe.target;
-  if (!target || !(Number(target.width_m) > 0) || !(Number(target.depth_m) > 0)) return null;
-  return recipe as LegoAssemblyRecipe;
+  return extractLegoAssemblyRecipe(building);
 }
 
 /** Parse the honest exact-footprint fallback used while an archetype family is

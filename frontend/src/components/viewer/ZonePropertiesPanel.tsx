@@ -13,6 +13,7 @@ import { undoableActionMatchesZoneId, useUndoRedoStore } from '@/store/undoRedo'
 import { LayoutPreviewPanel } from './LayoutPreviewPanel';
 import { SiteIntelligencePanel } from './SiteIntelligencePanel';
 import { BuildingModelViewer } from './BuildingModelViewer';
+import { resolveBuildingModelSource } from '@/features/legoAssembly/buildingModelSource';
 import { isPersistedZoneId } from '@/utils/zoneIdentity';
 import { formatArea, polygonDimensionsMeters } from './mapEngine/geoUtils';
 import { compileBoundaryCommunity3D } from '@/features/legoAssembly/communityCompiler';
@@ -4096,6 +4097,7 @@ function QuickRegenerateSection({ building }: { building: Building }) {
   const [regenerating, setRegenerating] = useState(false);
   const [saving, setSaving] = useState(false);
   const [showModel, setShowModel] = useState(false);
+  const modelSource = resolveBuildingModelSource(building);
 
   useEffect(() => {
     setPrompt(building.generation_prompt || '');
@@ -4135,18 +4137,22 @@ function QuickRegenerateSection({ building }: { building: Building }) {
 
   return (
     <div className="rounded-lg border border-purple-200 bg-purple-50/50 p-2.5">
-      {building.model_url && (
+      {modelSource && (
         <>
           <button
             onClick={() => setShowModel(true)}
             className="mb-1.5 flex w-full items-center justify-center gap-1.5 rounded-lg border-2 border-[#151515] bg-[#28c7e8] px-3 py-1.5 text-xs font-black uppercase text-[#151515] shadow-[2px_2px_0_0_#151515] transition hover:bg-[#4dd4ef]"
           >
             <Box size={13} />
-            View 3D Model
+            {modelSource.presentation === 'architectural_clay'
+              ? 'View Architectural Clay'
+              : modelSource.kind === 'lego_assembly'
+                ? 'View Architectural Assembly'
+                : 'View 3D Model'}
           </button>
           {showModel && (
             <BuildingModelViewer
-              modelUrl={building.model_url}
+              source={modelSource}
               name={building.name || 'Building'}
               onClose={() => setShowModel(false)}
             />
