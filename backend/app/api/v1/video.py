@@ -70,6 +70,7 @@ VideoProvider = Literal["omni", "seedance_mini", "internal_enhance"]
 SeedanceReferenceMode = Literal["preview_only", "preview_plus_keyframes"]
 InternalEnhanceQuality = Literal["fast", "gpu_detail"]
 RenderQuality = Literal["draft", "high"]
+VideoFinishStyle = Literal["source_fidelity", "documentary"]
 CaptureEncoder = Literal["webcodecs_h264", "media_recorder_webm"]
 MAX_GEOMETRY_CONTROL_BYTES = 96 * 1024 * 1024
 
@@ -144,6 +145,7 @@ class VideoPilotRequest(BaseModel):
     seedance_reference_mode: SeedanceReferenceMode = "preview_only"
     internal_enhance_quality: InternalEnhanceQuality = "fast"
     render_quality: RenderQuality = "high"
+    finish_style: VideoFinishStyle = "source_fidelity"
     guide_frame_base64: str = Field(..., min_length=100, max_length=20_000_000)
     control_mode: ControlMode = "single_frame"
     route_keyframes_base64: list[str] = Field(default_factory=list, max_length=6)
@@ -633,6 +635,10 @@ def _preflight_values(req: VideoPilotRequest):
             raise ValueError("The bounded Seedance pilot requires preview-video mode.")
         if req.provider == "internal_enhance" and req.control_mode != "preview_video":
             raise ValueError("Internal Enhance requires the deterministic preview-video mode.")
+        if req.finish_style == "documentary" and (
+            req.provider != "omni" or req.control_mode != "preview_video"
+        ):
+            raise ValueError("Documentary finish currently requires Omni preview-video edit mode.")
         prompt = (
             build_internal_video_contract(req.scene_brief)
             if req.provider == "internal_enhance"
@@ -644,6 +650,7 @@ def _preflight_values(req: VideoPilotRequest):
                 control_mode=req.control_mode,
                 keyframe_count=len(keyframes) if req.control_mode == "preview_video" else len(keyframes) or 1,
                 provider=req.provider,
+                finish_style=req.finish_style,
             )
         )
     except (ValueError, KeyError) as exc:
@@ -918,7 +925,7 @@ async def generate_video(
         "render_quality": req.render_quality,
         "capture_profile": req.capture_profile.model_dump() if req.capture_profile else None,
         "status": "reserved",
-        "style": "source_fidelity",
+        "style": req.finish_style,
         "control_mode": req.control_mode,
         "camera_motion": req.camera_motion,
         "duration_seconds": req.duration_seconds,

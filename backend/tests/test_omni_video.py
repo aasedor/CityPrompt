@@ -54,8 +54,9 @@ def test_decode_preview_video_accepts_browser_webm_and_rejects_mime_mismatch():
         decode_preview_video(encoded, "video/mp4")
 
 
-def test_video_request_exposes_motion_not_visual_style_or_reference_images():
+def test_video_request_exposes_only_bounded_finish_style_not_arbitrary_visual_style():
     assert "style" not in VideoPilotRequest.model_fields
+    assert "finish_style" in VideoPilotRequest.model_fields
     assert "reference_images_base64" not in VideoPilotRequest.model_fields
 
     with pytest.raises(ValidationError):
@@ -72,6 +73,14 @@ def test_video_request_exposes_motion_not_visual_style_or_reference_images():
             guide_frame_base64=_jpeg_data_url(),
             route_points=[{"x": 0.4, "y": 0.6}, {"x": 0.6, "y": 0.4}],
             style="watercolour",
+        )
+
+    with pytest.raises(ValidationError):
+        VideoPilotRequest(
+            project_id="00000000-0000-0000-0000-000000000001",
+            guide_frame_base64=_jpeg_data_url(),
+            route_points=[{"x": 0.4, "y": 0.6}, {"x": 0.6, "y": 0.4}],
+            finish_style="watercolour",
         )
 
 
@@ -242,6 +251,25 @@ def test_omni_payload_supports_deterministic_preview_video_edit():
     assert payload["generation_config"] == {"video_config": {"task": "edit"}}
     assert [item["type"] for item in payload["input"]] == ["video", "text"]
     assert payload["response_format"] == {"type": "video"}
+
+
+def test_documentary_finish_is_photographic_only_and_keeps_architecture_locked():
+    prompt = build_cinematic_prompt(
+        route_points=[{"x": 0.4, "y": 0.6}, {"x": 0.6, "y": 0.4}],
+        camera_motion="path_follow",
+        scene_brief="Three RLASM buildings at different whole-bay widths.",
+        duration_seconds=8,
+        control_mode="preview_video",
+        provider="omni",
+        finish_style="documentary",
+    )
+
+    assert "DOCUMENTARY VISUAL FINISH — CONTROLLED EXCEPTION" in prompt
+    assert "flat natural daylight" in prompt
+    assert "restrained true-to-life colour" in prompt
+    assert "new signage, blind windows, extra doors" in prompt
+    assert "bay count, entrance assembly" in prompt
+    assert "Do not apply a photographic or artistic style" not in prompt
 
 
 def test_street_walkby_is_pedestrian_height_and_detail_locked():

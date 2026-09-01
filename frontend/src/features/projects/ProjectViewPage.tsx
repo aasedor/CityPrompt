@@ -1762,7 +1762,7 @@ function ProjectRendersTray({ renders, videos, open, onToggle, onClose, onSelect
       <button
         type="button"
         onClick={onToggle}
-        className="absolute bottom-3 left-3 z-30 flex items-center gap-2 rounded-lg bg-gray-900/90 px-3 py-2 text-sm font-semibold text-white shadow-lg backdrop-blur-sm transition hover:bg-gray-800/95"
+        className="absolute bottom-3 left-3 z-30 flex items-center gap-2 rounded-lg bg-gray-900/90 px-3 py-2 text-sm font-semibold text-white shadow-lg backdrop-blur-sm transition hover:bg-gray-800/95 lg:left-[18rem]"
         title="Open project renders"
       >
         <Camera size={16} className="text-amber-300" />

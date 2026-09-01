@@ -60,11 +60,17 @@ type MotionId = typeof MOTIONS[number]['id'];
 type VideoProvider = 'omni' | 'seedance_mini' | 'internal_enhance';
 type SeedanceReferenceMode = 'preview_only' | 'preview_plus_keyframes';
 type InternalEnhanceQuality = 'fast' | 'gpu_detail';
+type VideoFinishStyle = 'source_fidelity' | 'documentary';
 
 const PROVIDERS: Array<{ id: VideoProvider; name: string; detail: string }> = [
   { id: 'omni', name: 'Gemini Omni', detail: 'Video-to-video finish · $0.80 estimate' },
   { id: 'seedance_mini', name: 'Seedance Mini', detail: 'fal pilot · maximum 4 calls' },
   { id: 'internal_enhance', name: 'Internal Enhance', detail: 'Self-hosted · exact skins · $0' },
+];
+
+const FINISH_STYLES: Array<{ id: VideoFinishStyle; name: string; detail: string }> = [
+  { id: 'source_fidelity', name: 'Source fidelity', detail: 'Existing benchmark · restrained finish' },
+  { id: 'documentary', name: 'Documentary', detail: 'Flat daylight · honest colour · no redesign' },
 ];
 
 function providerName(provider?: VideoProvider): string {
@@ -217,6 +223,7 @@ interface PreparedVideoRequest {
   seedance_reference_mode: SeedanceReferenceMode;
   internal_enhance_quality: InternalEnhanceQuality;
   render_quality: VideoRenderQuality;
+  finish_style: VideoFinishStyle;
   guide_frame_base64: string;
   control_mode: VideoControlMode;
   route_keyframes_base64: string[];
@@ -357,6 +364,7 @@ export function VideoGeneratePanel({
   const [seedanceReferenceMode, setSeedanceReferenceMode] = useState<SeedanceReferenceMode>('preview_plus_keyframes');
   const [internalEnhanceQuality, setInternalEnhanceQuality] = useState<InternalEnhanceQuality>('fast');
   const [renderQuality, setRenderQuality] = useState<VideoRenderQuality>('high');
+  const [finishStyle, setFinishStyle] = useState<VideoFinishStyle>('source_fidelity');
   const [controlMode, setControlMode] = useState<VideoControlMode>('preview_video');
   const [routeControls, setRouteControls] = useState<(VideoRouteCaptureResult & { signature: string }) | null>(null);
   const [isPreparingControls, setIsPreparingControls] = useState(false);
@@ -400,11 +408,11 @@ export function VideoGeneratePanel({
   );
 
   const currentSignature = useMemo(
-    () => `${provider}:${seedanceReferenceMode}:${internalEnhanceQuality}:${renderQuality}:${controlMode}:${motion}:${routeSignature(routePoints)}:${sceneContract.signature}:${currentSceneRevisionSignature}`,
-    [controlMode, currentSceneRevisionSignature, internalEnhanceQuality, motion, provider, renderQuality, routePoints, sceneContract.signature, seedanceReferenceMode],
+    () => `${provider}:${seedanceReferenceMode}:${internalEnhanceQuality}:${renderQuality}:${finishStyle}:${controlMode}:${motion}:${routeSignature(routePoints)}:${sceneContract.signature}:${currentSceneRevisionSignature}`,
+    [controlMode, currentSceneRevisionSignature, finishStyle, internalEnhanceQuality, motion, provider, renderQuality, routePoints, sceneContract.signature, seedanceReferenceMode],
   );
   const preparedSignature = prepared
-    ? `${prepared.provider}:${prepared.seedance_reference_mode}:${prepared.internal_enhance_quality}:${prepared.render_quality}:${prepared.control_mode}:${prepared.camera_motion}:${routeSignature(prepared.route_points)}:${prepared.scene_brief.startsWith(sceneContract.text) ? sceneContract.signature : 'stale'}:${sceneClaimsSignature(prepared.community_3d_claims, prepared.residual_landscape_claim)}`
+    ? `${prepared.provider}:${prepared.seedance_reference_mode}:${prepared.internal_enhance_quality}:${prepared.render_quality}:${prepared.finish_style}:${prepared.control_mode}:${prepared.camera_motion}:${routeSignature(prepared.route_points)}:${prepared.scene_brief.startsWith(sceneContract.text) ? sceneContract.signature : 'stale'}:${sceneClaimsSignature(prepared.community_3d_claims, prepared.residual_landscape_claim)}`
     : null;
   const hasValidPreflight = Boolean(preflight?.ready && preparedSignature === currentSignature);
   const providerUsage = pilot.provider_usage[provider];
@@ -558,6 +566,7 @@ export function VideoGeneratePanel({
       seedance_reference_mode: seedanceReferenceMode,
       internal_enhance_quality: internalEnhanceQuality,
       render_quality: renderQuality,
+      finish_style: finishStyle,
       guide_frame_base64: routeKeyframes[0] ?? sourceFrame,
       control_mode: controlMode,
       route_keyframes_base64: routeKeyframes,
@@ -610,7 +619,7 @@ export function VideoGeneratePanel({
         residual_landscape_claim: residualLandscapeClaim,
       } : {}),
     };
-  }, [captureRouteControls, community3DClaims, controlMode, internalEnhanceQuality, motion, projectId, provider, renderQuality, residualLandscapeClaim, routeCaptureSignature, routeControls, routePoints, sceneContract, seedanceReferenceMode, sourceFrame]);
+  }, [captureRouteControls, community3DClaims, controlMode, finishStyle, internalEnhanceQuality, motion, projectId, provider, renderQuality, residualLandscapeClaim, routeCaptureSignature, routeControls, routePoints, sceneContract, seedanceReferenceMode, sourceFrame]);
 
   const runPreflight = useCallback(async () => {
     setIsPreflighting(true);
@@ -948,12 +957,37 @@ export function VideoGeneratePanel({
               </div>
 
               <div>
+                <p className="mb-2 text-[10px] font-black uppercase tracking-[0.14em] text-[#151515]/45">Visual finish</p>
+                <div className="grid grid-cols-2 gap-2">
+                  {FINISH_STYLES.map((item) => {
+                    const disabled = item.id === 'documentary' && (provider !== 'omni' || controlMode !== 'preview_video');
+                    return (
+                      <button key={item.id} type="button" aria-pressed={finishStyle === item.id} onClick={() => {
+                        if (disabled) return;
+                        setFinishStyle(item.id);
+                        setPreflight(null);
+                        setPrepared(null);
+                        setError(null);
+                      }} disabled={isGenerating || isPreflighting || disabled} className={`rounded-xl border-2 p-2.5 text-left transition disabled:cursor-not-allowed disabled:opacity-35 ${finishStyle === item.id ? 'border-[#151515] bg-[#fff0bf] shadow-[2px_2px_0_0_#151515]' : 'border-[#151515]/15 bg-white/45 hover:bg-white'}`}>
+                        <span className="block text-[10px] font-black">{item.name}</span>
+                        <span className="mt-0.5 block text-[8px] leading-tight text-[#151515]/50">{item.detail}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+                <p className="mt-1.5 text-[8px] font-semibold leading-relaxed text-[#151515]/45">
+                  Documentary changes photographic finish only. Geometry, roofs, facade cadence, entrance assemblies, materials, context and camera timing remain locked to the route video.
+                </p>
+              </div>
+
+              <div>
                 <p className="mb-2 text-[10px] font-black uppercase tracking-[0.14em] text-[#151515]/45">Video provider</p>
                 <div className="grid grid-cols-3 gap-2">
                   {PROVIDERS.map((item) => (
                     <button key={item.id} type="button" aria-pressed={provider === item.id} onClick={() => {
                       setProvider(item.id);
                       if (item.id !== 'omni') setControlMode('preview_video');
+                      if (item.id !== 'omni') setFinishStyle('source_fidelity');
                       setPreflight(null);
                       setPrepared(null);
                       setError(null);
@@ -1018,7 +1052,9 @@ export function VideoGeneratePanel({
                     The captured pixels lock authored massing, roofs, courtyards, facade rhythm, materials, lighting, Google context buildings, and open-space program. City Prompt adds no moving traffic or pedestrians; any baked Google context remains part of the captured surroundings.
                   </p>
                   <p className="mt-1 text-[10px] font-bold leading-relaxed text-[#151515]/55">
-                    {provider === 'internal_enhance'
+                    {finishStyle === 'documentary'
+                      ? 'Omni receives the deterministic route video as geometry and timing authority, then applies only the restrained Documentary photographic finish.'
+                      : provider === 'internal_enhance'
                       ? motion === 'street_walkby'
                         ? 'Internal Enhance processes the deterministic route locally. Original GLBs, PBR skins, open-space assets, vegetation, and lighting remain authoritative inside the proposal; captured Google Tiles remain the surrounding context.'
                         : 'Internal Enhance processes the deterministic route video locally. Its captured render-locked building skins, open-space assets, Google context, geometry, and timing remain authoritative.'
@@ -1109,7 +1145,7 @@ export function VideoGeneratePanel({
                           : ''}
                       </p>
                     </div>
-                    {selectedAttempt.provider === 'omni' && !selectedAttempt.is_benchmark && (
+                    {selectedAttempt.provider === 'omni' && selectedAttempt.style === 'source_fidelity' && !selectedAttempt.is_benchmark && (
                       <button type="button" onClick={() => void setBenchmark(selectedAttempt)} disabled={isBenchmarking} className="inline-flex items-center gap-1 rounded-full border-2 border-[#151515] px-2.5 py-2 text-[9px] font-black uppercase hover:bg-[#f7f2e8] disabled:opacity-40" aria-label="Set as Omni benchmark" title="Set as Omni benchmark">
                         {isBenchmarking ? <Loader2 size={13} className="animate-spin" /> : <Star size={13} />} Benchmark
                       </button>

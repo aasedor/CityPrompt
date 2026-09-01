@@ -153,6 +153,7 @@ def build_cinematic_prompt(
     control_mode: str = "single_frame",
     keyframe_count: int = 1,
     provider: str = "omni",
+    finish_style: str = "source_fidelity",
 ) -> str:
     """Build a motion-only prompt used for both preflight and generation."""
     prompt_scene_brief = scene_brief.strip()
@@ -161,6 +162,7 @@ def build_cinematic_prompt(
     is_street = camera_motion == "street_walkby"
     is_detail_flythrough = camera_motion == "detail_flythrough"
     omni_preview_finish = provider == "omni" and control_mode == "preview_video"
+    documentary_finish = omni_preview_finish and finish_style == "documentary"
     travel_lock = (
         "Match the source video's total travel distance, altitude, speed curve, and camera timing exactly."
         if control_mode == "preview_video"
@@ -235,6 +237,21 @@ def build_cinematic_prompt(
 
     appearance_lock = (
         (
+            "DOCUMENTARY VISUAL FINISH — CONTROLLED EXCEPTION: The supplied route video is the exact geometry, geography, "
+            "composition, camera, and timing authority. Finish it as calm documentary architectural photography in the same "
+            "visual language as City Prompt's Documentary still: flat natural daylight, restrained true-to-life colour, "
+            "honest source-specific material variation, ordinary inhabited character, stable exposure, subtle natural film "
+            "grain, and no cinematic dramatization. Preserve the existing red-and-cream masonry cadence, painted storefront "
+            "colour, glazing character, roof material and every other authored material identity. Improve only photographic "
+            "integration, physically plausible surface response, restrained glazing reflections, contact shadows, ambient "
+            "occlusion, and conservative landscape finish. Do not introduce golden hour, dramatic contrast, glossy CGI sheen, "
+            "new signage, blind windows, extra doors, decorative facade features, or a different architectural period. This "
+            "documentary direction governs finish only; it may not change any silhouette, footprint, roof, courtyard, opening, "
+            "bay count, entrance assembly, path, curb, context building, object count, or spatial relationship. All finishing "
+            "changes must remain temporally stable and source-consistent."
+        )
+        if documentary_finish
+        else (
             "VISUAL FINISH — CONTROLLED EXCEPTION: The supplied route video is the exact geometry, geography, composition, "
             "camera, and timing authority. Improve only the visual finish: physically convincing facade materials; realistic "
             "glazing with restrained reflections; natural contact shadows and ambient occlusion; detailed but disciplined "

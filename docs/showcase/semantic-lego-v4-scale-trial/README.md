@@ -41,9 +41,9 @@ or occupied program; they are not deterministic geometry evidence.
 
 ## Video comparison
 
-Two and only two authorized provider calls were made. Both used a 2560×1440
-high-quality source pass downsampled to 1920×1080, 192 fixed frames, a frozen
-Google context, and six depth/normal checkpoints.
+Three authorized provider calls were made. All used a 2560×1440 high-quality
+source pass downsampled to 1920×1080, 192 fixed frames, a frozen Google
+context, and six depth/normal checkpoints.
 
 1. [`video-01-preview-edit-fidelity-57.mp4`](video-01-preview-edit-fidelity-57.mp4)
    used the deterministic City Prompt route video. City Prompt scored it
@@ -53,9 +53,31 @@ Google context, and six depth/normal checkpoints.
    used six exact ordered City Prompt route images. City Prompt scored it
    40.3/100 (`drift`). It stays closer to the authored material character but
    loses realism and temporal detail, so it is not a keeper.
+3. The third call used the deterministic preview-video path with the opt-in
+   `documentary` finish. City Prompt scored it 85.8/100 (`stable`), with
+   checkpoint scores from 79.5 to 90.6. The first four seconds are materially
+   more coherent, but the result changes the source roof topology, simplifies
+   storefront identity, retains the pale site surface, and is occluded by an
+   existing Google-tile structure from roughly six seconds onward. The route
+   occlusion is already present in the deterministic source. The provider also
+   returned 1280×720 despite receiving a 1920×1080 source. This result is
+   therefore evidence of progress, not a keeper.
 
 The first video remains the benchmark only because its measured score is
-higher. Neither video is promoted as source-locked architectural proof.
+higher among source-fidelity attempts. Documentary results are intentionally
+ineligible to replace that benchmark. None of the three videos is promoted as
+source-locked architectural proof.
+
+## Documentary video stills
+
+The exact extracted frames from the third provider result are preserved for
+phone review:
+
+- [`video-03-documentary-still-00s.png`](video-03-documentary-still-00s.png)
+- [`video-03-documentary-still-02s.png`](video-03-documentary-still-02s.png)
+- [`video-03-documentary-still-04s.png`](video-03-documentary-still-04s.png)
+- [`video-03-documentary-still-06s-occluded.png`](video-03-documentary-still-06s-occluded.png)
+- [`video-03-documentary-still-08s-occluded.png`](video-03-documentary-still-08s-occluded.png)
 
 ## Process screenshots
 
@@ -70,6 +92,7 @@ The semantic LEGO implementation passes the scale behavior under test: larger
 polygons add whole bays while the door-sized entrance module, end conditions,
 depth, height, and all module scales remain fixed. The remaining weakness is in
 the generative media stage, not the deterministic 3D assembly. The next media
-iteration should prefer the deterministic preview-video control path and add a
-hard entrance-instance mask or entrance-count visual gate before a provider
-output can be called a keeper.
+iteration should add a route visibility gate that rejects Google-tile
+occlusion, enforce roof topology and storefront identity against the locked
+source, reject visible site-apron surfaces, and verify the returned resolution
+before a provider output can be called a keeper.
