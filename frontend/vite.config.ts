@@ -48,6 +48,7 @@ function resolveEnvDir(): string {
   // worktree root. Existence alone must not shadow the repository's shared,
   // ignored key store and boot Vite without Maps/API credentials.
   const sharedGitDir = gitCommonDir(projectRoot);
+  const primaryCheckoutRoot = sharedGitDir ? path.dirname(sharedGitDir) : null;
   return selectViteEnvDir({
     explicitEnvDir,
     projectRoot,
@@ -57,14 +58,18 @@ function resolveEnvDir(): string {
     sharedEnvExists: Boolean(
       sharedGitDir && fs.existsSync(path.join(sharedGitDir, '.env')),
     ),
+    primaryCheckoutRoot,
+    primaryEnvExists: Boolean(
+      primaryCheckoutRoot && hasEnvAssignments(path.join(primaryCheckoutRoot, '.env')),
+    ),
     fallbackEnvDir: __dirname,
   });
 }
 
 export default defineConfig({
-  // Worktrees share browser API keys through the repository's ignored Git
-  // common directory. VITE_ENV_DIR and a worktree-root .env remain explicit
-  // overrides for unusual local or CI setups.
+  // Worktrees share browser API keys through the primary checkout's ignored
+  // .env (with the historical .git/.env store as fallback). VITE_ENV_DIR
+  // remains the explicit override for unusual local or CI setups.
   envDir: resolveEnvDir(),
   plugins: [react()],
   resolve: {

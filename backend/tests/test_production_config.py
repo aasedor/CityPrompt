@@ -1,5 +1,6 @@
 import pytest
 
+import app.core.config as config_module
 from app.core.config import Settings, _git_common_dir, _settings_env_files
 
 
@@ -29,7 +30,27 @@ def test_linked_worktree_resolves_primary_checkout_shared_env(tmp_path):
     (admin_dir / "commondir").write_text("../..\n", encoding="utf-8")
 
     assert _git_common_dir(project_root) == common_dir.resolve()
-    assert _settings_env_files(backend_root)[0] == str(common_dir / ".env")
+    assert _settings_env_files(backend_root) == (
+        str(common_dir / ".env"),
+        str(common_dir.parent / ".env"),
+        str(project_root / ".env"),
+        str(backend_root / ".env"),
+    )
+
+
+def test_linked_worktree_reads_rotated_maps_key_from_primary_checkout(tmp_path, monkeypatch):
+    primary_root = tmp_path / "primary"
+    common_dir = primary_root / ".git"
+    admin_dir = common_dir / "worktrees" / "workflow"
+    project_root = tmp_path / "workflow"
+    admin_dir.mkdir(parents=True)
+    project_root.mkdir(parents=True)
+    (project_root / ".git").write_text(f"gitdir: {admin_dir}\n", encoding="utf-8")
+    (admin_dir / "commondir").write_text("../..\n", encoding="utf-8")
+    (primary_root / ".env").write_text("VITE_GOOGLE_MAPS_API_KEY=rotated-local-key\n", encoding="utf-8")
+    monkeypatch.setattr(config_module, "_PROJECT_ROOT", project_root)
+
+    assert config_module._primary_checkout_env_value("VITE_GOOGLE_MAPS_API_KEY") == "rotated-local-key"
 
 
 def test_production_rejects_default_jwt_secret():

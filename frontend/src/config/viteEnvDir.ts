@@ -5,6 +5,8 @@ export interface ViteEnvDirCandidates {
   projectEnvHasAssignments: boolean;
   sharedGitDir: string | null;
   sharedEnvExists: boolean;
+  primaryCheckoutRoot?: string | null;
+  primaryEnvExists?: boolean;
   fallbackEnvDir: string;
 }
 
@@ -16,9 +18,12 @@ export function selectViteEnvDir({
   projectEnvHasAssignments,
   sharedGitDir,
   sharedEnvExists,
+  primaryCheckoutRoot,
+  primaryEnvExists,
   fallbackEnvDir,
 }: ViteEnvDirCandidates): string {
   if (explicitEnvDir) return explicitEnvDir;
+  if (primaryCheckoutRoot && primaryEnvExists) return primaryCheckoutRoot;
   if (projectEnvHasAssignments) return projectRoot;
   if (sharedGitDir && sharedEnvExists) return sharedGitDir;
   // Preserve mode-specific worktree env discovery when no shared store exists.

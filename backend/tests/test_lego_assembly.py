@@ -743,9 +743,18 @@ def test_architectural_clay_manifest_enables_only_its_exact_source_locked_varian
         ),
     )
     assert plan["family"] == "amsterdam-bell-gable-semantic-clay-v001"
-    assert plan["fit"]["assembly_mode"] == "fixed_landmark"
-    assert plan["instances"][0]["role"] == "assembled"
-    assert plan["instances"][0]["scale"][0] == plan["instances"][0]["scale"][1]
+    assert plan["version"] == 5
+    assert plan["fit"]["assembly_mode"] == "whole_building_repeat"
+    assert plan["fit"]["compatibility_source"] == "architectural_clay_whole_module_repeat"
+    assert plan["fit"]["copy_count"] == 2
+    assert len(plan["instances"]) == 2
+    assert {instance["role"] for instance in plan["instances"]} == {"assembled"}
+    assert {instance["model_url"] for instance in plan["instances"]} == {"/amsterdam-clay.glb"}
+    assert all(instance["scale"][0] == instance["scale"][1] for instance in plan["instances"])
+    first_xy = plan["instances"][0]["position"][:2]
+    second_xy = plan["instances"][1]["position"][:2]
+    assert first_xy != [0.0, 0.0]
+    assert second_xy == pytest.approx([-first_xy[0], -first_xy[1]])
 
     with pytest.raises(AssemblyPlanningError) as sibling_error:
         plan_vertical_assembly(
@@ -758,6 +767,84 @@ def test_architectural_clay_manifest_enables_only_its_exact_source_locked_varian
             ),
         )
     assert sibling_error.value.code == "family_not_found"
+
+
+def test_architectural_clay_repeat_preserves_complete_models_for_a_large_drawn_footprint():
+    raw = entry(
+        "inglewood-clay",
+        "Inglewood Heritage Commercial — Architectural Clay",
+        "assembled",
+        height=13.328187,
+        width=20.4,
+        depth=24.0,
+    )
+    raw.model_url = "/inglewood-clay.glb"
+    raw.metadata_["lego"].update(
+        {
+            "family": "inglewood-victorian-brick-commercial-semantic-clay-v001",
+            "archetype_ids": ["inglewood_heritage_brick_commercial"],
+            "native_floors": 2,
+            "min_floors": 2,
+            "max_floors": 2,
+            "source_variant_id": "inglewood_victorian_brick",
+            "generation_archetype_id": "inglewood_heritage_brick_commercial",
+            "representation_kind": "architectural_clay",
+        }
+    )
+    clay = descriptor_from_library_entry(raw)
+    assert clay is not None
+    assert clay.representation_kind == "architectural_clay"
+
+    plan = plan_vertical_assembly(
+        [clay],
+        AssemblyRequest(
+            target_width_m=53.6,
+            target_depth_m=34.8,
+            target_floors=2,
+            archetype_id="inglewood_victorian_brick",
+        ),
+    )
+
+    assert plan["fit"]["assembly_mode"] == "whole_building_repeat"
+    assert plan["fit"]["copy_count"] == 2
+    assert plan["fit"]["segment_count"] == 2
+    assert plan["fit"]["scale_x"] == pytest.approx(1.2)
+    assert plan["fit"]["scale_y"] == pytest.approx(1.2)
+    assert plan["fit"]["occupied_width_m"] == pytest.approx(48.96)
+    assert plan["fit"]["occupied_depth_m"] == pytest.approx(28.8)
+    assert [instance["position"][0] for instance in plan["instances"]] == pytest.approx([-12.24, 12.24])
+    assert all(instance["scale"] == [1.2, 1.2, 1.0] for instance in plan["instances"])
+
+
+def test_architectural_clay_repeat_scales_to_a_bounded_two_dimensional_lego_grid():
+    raw = entry("grid-clay", "Grid Clay", "assembled", height=9.0, width=10.0, depth=10.0)
+    raw.metadata_["lego"].update(
+        {
+            "family": "grid-clay-family",
+            "archetype_ids": ["grid_clay"],
+            "native_floors": 3,
+            "min_floors": 3,
+            "max_floors": 3,
+            "source_variant_id": "grid_clay",
+            "representation_kind": "architectural_clay",
+        }
+    )
+    clay = descriptor_from_library_entry(raw)
+    assert clay is not None
+
+    plan = plan_vertical_assembly(
+        [clay],
+        AssemblyRequest(40.0, 30.0, 3, archetype_id="grid_clay"),
+    )
+
+    assert plan["fit"]["assembly_mode"] == "whole_building_repeat"
+    assert plan["fit"]["column_count"] == 4
+    assert plan["fit"]["row_count"] == 3
+    assert plan["fit"]["copy_count"] == 12
+    assert plan["fit"]["utilization"] == pytest.approx(1.0)
+    assert len(plan["instances"]) == 12
+    assert len({tuple(instance["position"][:2]) for instance in plan["instances"]}) == 12
+    assert all(instance["scale"] == [1.0, 1.0, 1.0] for instance in plan["instances"])
 
 
 def test_manifest_validation_rejects_path_syntax_in_family_and_role():
@@ -4110,6 +4197,7 @@ async def test_module_list_uses_project_owner_inventory_for_an_authorized_editor
     ]
     assert payload["modules"][0]["source_variant_id"] == "bell_gable_traditional_red"
     assert payload["modules"][0]["native_floors"] == 4
+    assert payload["modules"][0]["representation_kind"] == "architectural_clay"
     library_query = mock_db.execute.await_args_list[-1].args[0]
     owner_values = [
         value
@@ -4117,6 +4205,51 @@ async def test_module_list_uses_project_owner_inventory_for_an_authorized_editor
         if isinstance(value, (list, set, tuple))
     ]
     assert any(project.owner_id in values and test_user.id not in values for values in owner_values)
+
+
+@pytest.mark.anyio
+async def test_plan_api_returns_whole_module_repeat_for_rescaled_architectural_clay(
+    client, mock_db, test_user, auth_headers
+):
+    clay = entry("clay", "Exact architectural clay", "assembled", height=14.05, width=9.24, depth=17.18)
+    clay.metadata_["lego"].update(
+        {
+            "family": "amsterdam-bell-gable-semantic-clay-v001",
+            "archetype_ids": ["amsterdam_bell_gable_house", "bell_gable_traditional_red"],
+            "native_floors": 4,
+            "min_floors": 4,
+            "max_floors": 4,
+            "source_variant_id": "bell_gable_traditional_red",
+            "generation_archetype_id": "amsterdam_bell_gable_house",
+            "representation_kind": "architectural_clay",
+        }
+    )
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalars_result([clay]),
+        ]
+    )
+
+    response = await client.post(
+        "/api/v1/lego-assembly/plan",
+        headers=auth_headers,
+        json={
+            "target_width_m": 22.6,
+            "target_depth_m": 17.0,
+            "target_floors": 4,
+            "archetype_id": "bell_gable_traditional_red",
+            "allow_forced_fit": True,
+        },
+    )
+
+    assert response.status_code == 200, response.text
+    plan = response.json()
+    assert plan["version"] == 5
+    assert plan["fit"]["assembly_mode"] == "whole_building_repeat"
+    assert plan["fit"]["copy_count"] == 2
+    assert len(plan["instances"]) == 2
+    assert plan["instances"][0]["position"][0] < 0 < plan["instances"][1]["position"][0]
 
 
 def _multipart(manifest_dict, glb_names, *, thumbnail=False, report=None):

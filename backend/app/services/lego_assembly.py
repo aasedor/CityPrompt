@@ -113,6 +113,10 @@ class ModuleDescriptor:
     # variants are selected at native scale; the parcel is an envelope, not a
     # mould that stretches doors, windows or material courses.
     horizontal_bay_contract: dict[str, Any] | None = None
+    # Runtime behavior must be opt-in. Ordinary assembled landmarks remain
+    # select-and-place assets; only source-locked architectural clay may repeat
+    # as complete whole-building LEGO modules.
+    representation_kind: str | None = None
 
 
 @dataclass(frozen=True)
@@ -222,6 +226,11 @@ def descriptor_from_library_entry(entry: Any) -> ModuleDescriptor | None:
         horizontal_bay_contract=(
             lego.get("horizontal_bay_contract")
             if isinstance(lego.get("horizontal_bay_contract"), dict)
+            else None
+        ),
+        representation_kind=(
+            str(lego.get("representation_kind")).strip().lower()
+            if lego.get("representation_kind")
             else None
         ),
     )
@@ -685,6 +694,119 @@ def _fixed_landmark_is_select_and_place(module: ModuleDescriptor) -> bool:
     return bool(fixed_non_resizable or footprint_mode == "select_and_place" or footprint.get("polygonFit") is False)
 
 
+_CLAY_REPEAT_MIN_PLAN_SCALE = 0.75
+_CLAY_REPEAT_MAX_PLAN_SCALE = 1.20
+_CLAY_REPEAT_MAX_COPIES = 16
+
+
+def _architectural_clay_whole_module_repeat(
+    module: ModuleDescriptor,
+    request: AssemblyRequest,
+) -> dict[str, Any] | None:
+    """Fit two or more complete clay buildings inside a drawn rectangle.
+
+    Architectural clay deliberately has no deformable facade parts. Scaling a
+    single GLB to an arbitrary parcel would stretch its entrance, windows and
+    roof identity. Repeating the complete, source-locked model is the safe LEGO
+    operation already supported by the Three.js composer: one downloaded GLB,
+    cloned at integer positions, with only a bounded uniform plan scale.
+    """
+
+    if module.representation_kind != ARCHITECTURAL_CLAY_REPRESENTATION:
+        return None
+    if request.footprint_profile != "rectangle" or module.native_floors != request.target_floors:
+        return None
+
+    target_area = request.target_width_m * request.target_depth_m
+    candidates: list[tuple[tuple[float, ...], dict[str, Any]]] = []
+    for rotation, oriented_width, oriented_depth in (
+        (0.0, module.width_m, module.depth_m),
+        (90.0, module.depth_m, module.width_m),
+    ):
+        for columns in range(1, _CLAY_REPEAT_MAX_COPIES + 1):
+            for rows in range(1, _CLAY_REPEAT_MAX_COPIES + 1):
+                count = columns * rows
+                if count < 2 or count > _CLAY_REPEAT_MAX_COPIES:
+                    continue
+                plan_scale = min(
+                    request.target_width_m / (columns * oriented_width),
+                    request.target_depth_m / (rows * oriented_depth),
+                    _CLAY_REPEAT_MAX_PLAN_SCALE,
+                )
+                if plan_scale < _CLAY_REPEAT_MIN_PLAN_SCALE - 1e-9:
+                    continue
+
+                copy_width = oriented_width * plan_scale
+                copy_depth = oriented_depth * plan_scale
+                occupied_width = columns * copy_width
+                occupied_depth = rows * copy_depth
+                occupied_area = occupied_width * occupied_depth
+                utilization = occupied_area / max(target_area, 1e-9)
+                # Prefer large, legible copies. A small utilization gain must
+                # not create a crowded grid of miniatures, so count carries a
+                # modest explicit cost after containment and authored scale are
+                # satisfied.
+                quality_score = (
+                    utilization
+                    - 0.05 * (count - 1)
+                    - 0.20 * abs(math.log(max(plan_scale, 1e-9)))
+                )
+                instances: list[dict[str, Any]] = []
+                segments: list[dict[str, Any]] = []
+                for row in range(rows):
+                    centre_y = -occupied_depth / 2 + copy_depth * (row + 0.5)
+                    for column in range(columns):
+                        centre_x = -occupied_width / 2 + copy_width * (column + 0.5)
+                        segment_id = f"clay_repeat_r{row + 1}_c{column + 1}"
+                        instances.append(
+                            {
+                                "asset_id": module.id,
+                                "asset_name": module.name,
+                                "model_url": module.model_url,
+                                "family": module.family,
+                                "role": "assembled",
+                                "variant_key": module.variant_key,
+                                "lod": module.lod,
+                                "level": 0,
+                                "segment_id": segment_id,
+                                "position": [round(centre_x, 4), round(centre_y, 4), 0.0],
+                                "rotation_degrees": rotation,
+                                "scale": [round(plan_scale, 5), round(plan_scale, 5), 1.0],
+                                "native_dimensions_m": [module.width_m, module.depth_m, module.height_m],
+                            }
+                        )
+                        segments.append(
+                            {
+                                "id": segment_id,
+                                "centre_x_m": round(centre_x, 4),
+                                "centre_y_m": round(centre_y, 4),
+                                "length_m": round(copy_width, 4),
+                                "thickness_m": round(copy_depth, 4),
+                                "rotation_degrees": 0.0,
+                            }
+                        )
+                result = {
+                    "rotation_degrees": rotation,
+                    "plan_scale": plan_scale,
+                    "copy_count": count,
+                    "column_count": columns,
+                    "row_count": rows,
+                    "occupied_width_m": occupied_width,
+                    "occupied_depth_m": occupied_depth,
+                    "utilization": utilization,
+                    "instances": instances,
+                    "segments": segments,
+                }
+                # Deterministic ties: quality, utilization, larger copies,
+                # fewer copies/rows. Direct orientation wins the final tie.
+                key = (quality_score, utilization, plan_scale, -count, -rows, -rotation)
+                candidates.append((key, result))
+
+    if not candidates:
+        return None
+    return max(candidates, key=lambda item: item[0])[1]
+
+
 # Streetwall repeat: bars validate against the same relaxed band multi-wing
 # profiles already use — repeated bars keep authored facade proportions, so the
 # strict single-bar production band would be needlessly conservative here.
@@ -907,6 +1029,55 @@ def plan_vertical_assembly(
         semantic_variant_fit = _semantic_horizontal_variant_fit(assembled_candidates, request)
         assembled = semantic_variant_fit[0] if semantic_variant_fit else _best(assembled_candidates, request)
         if assembled:
+            clay_repeat = _architectural_clay_whole_module_repeat(assembled, request)
+            if clay_repeat:
+                family_score = 110.0 + _module_score(assembled, request) + float(clay_repeat["utilization"])
+                plan_scale = float(clay_repeat["plan_scale"])
+                plan = {
+                    "version": 5,
+                    "family": family,
+                    "archetype_id": request.archetype_id,
+                    "reuse_keys": list(request.reuse_keys),
+                    "target": {
+                        "width_m": request.target_width_m,
+                        "depth_m": request.target_depth_m,
+                        "floors": request.target_floors,
+                        "footprint_profile": request.footprint_profile,
+                        "wing_depth_m": request.target_depth_m,
+                    },
+                    "assembled_height_m": round(assembled.height_m, 4),
+                    "instances": clay_repeat["instances"],
+                    "fit": {
+                        "scale_x": round(plan_scale, 5),
+                        "scale_y": round(plan_scale, 5),
+                        "envelope_scale_x": round(request.target_width_m / assembled.width_m, 5),
+                        "envelope_scale_y": round(request.target_depth_m / assembled.depth_m, 5),
+                        "axis_ratio": 1.0,
+                        "score": round(family_score, 5),
+                        "profile": "rectangle",
+                        "segment_count": int(clay_repeat["copy_count"]),
+                        "assembly_mode": "whole_building_repeat",
+                        "footprint_mode": "whole_module_containment",
+                        "compatibility_source": "architectural_clay_whole_module_repeat",
+                        "representation_kind": ARCHITECTURAL_CLAY_REPRESENTATION,
+                        "copy_count": int(clay_repeat["copy_count"]),
+                        "column_count": int(clay_repeat["column_count"]),
+                        "row_count": int(clay_repeat["row_count"]),
+                        "occupied_width_m": round(float(clay_repeat["occupied_width_m"]), 4),
+                        "occupied_depth_m": round(float(clay_repeat["occupied_depth_m"]), 4),
+                        "utilization": round(float(clay_repeat["utilization"]), 5),
+                        "scale_band": {
+                            "min": _CLAY_REPEAT_MIN_PLAN_SCALE,
+                            "max": _CLAY_REPEAT_MAX_PLAN_SCALE,
+                            "uniform_plan_scale": True,
+                        },
+                    },
+                    "footprint_segments": clay_repeat["segments"],
+                }
+                if family_score > best_score:
+                    best_score = family_score
+                    best_plan = plan
+                continue
             (
                 landmark_scale_min,
                 landmark_scale_max,

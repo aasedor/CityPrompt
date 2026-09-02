@@ -25,6 +25,7 @@ export interface LegoModule {
   source_variant_id?: string | null;
   generation_archetype_id?: string | null;
   horizontal_bay_contract?: LegoHorizontalBayContract | null;
+  representation_kind?: 'architectural_clay' | null;
 }
 
 export interface LegoHorizontalBayContract {
@@ -78,12 +79,12 @@ export interface LegoAssemblyPlan {
     score: number;
     profile?: LegoFootprintProfile;
     segment_count?: number;
-    assembly_mode?: 'fixed_landmark' | 'semantic_horizontal_bays';
+    assembly_mode?: 'fixed_landmark' | 'semantic_horizontal_bays' | 'whole_building_repeat';
     selected_variant_key?: string;
     horizontal_bay_contract?: LegoHorizontalBayContract;
     compatibility_source?: string;
     /** The authored form is uniformly scaled and centred inside the polygon. */
-    footprint_mode?: 'archetype_contain' | 'envelope_fill';
+    footprint_mode?: 'archetype_contain' | 'envelope_fill' | 'whole_module_containment';
   };
   footprint_segments?: Array<{
     id: string;

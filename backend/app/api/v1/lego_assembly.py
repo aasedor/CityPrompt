@@ -694,6 +694,7 @@ async def list_lego_modules(
                     "source_variant_id": descriptor.source_variant_id,
                     "generation_archetype_id": descriptor.generation_archetype_id,
                     "horizontal_bay_contract": descriptor.horizontal_bay_contract,
+                    "representation_kind": descriptor.representation_kind,
                 }
             )
     return {"modules": descriptors, "count": len(descriptors)}

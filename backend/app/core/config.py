@@ -60,11 +60,26 @@ def _settings_env_files(backend_root: Path) -> tuple[str, ...]:
     candidates: list[Path] = []
     if common_dir := _git_common_dir(project_root):
         candidates.append(common_dir / _SHARED_ENV_FILENAME)
+        # A linked worktree's common directory is ``<primary>/.git``. Users
+        # naturally update ``<primary>/.env``; include it after the historical
+        # ``.git/.env`` store so a freshly rotated key takes effect without
+        # copying secrets into every worktree.
+        candidates.append(common_dir.parent / _SHARED_ENV_FILENAME)
     candidates.extend((project_root / ".env", backend_root / ".env"))
-    return tuple(str(candidate) for candidate in candidates)
+    return tuple(str(candidate) for candidate in dict.fromkeys(candidates))
 
 
 _SETTINGS_ENV_FILES = _settings_env_files(_BACKEND_ROOT)
+
+
+def _primary_checkout_env_value(name: str) -> str:
+    """Read one shared value for a linked worktree without exposing it."""
+    if not (_PROJECT_ROOT / ".git").is_file():
+        return ""
+    common_dir = _git_common_dir(_PROJECT_ROOT)
+    if common_dir is None:
+        return ""
+    return str(dotenv_values(common_dir.parent / _SHARED_ENV_FILENAME).get(name) or "")
 
 # Pre-load GOOGLE_APPLICATION_CREDENTIALS from the same dotenv chain so that
 # google.auth.default() can discover it before Settings is constructed.
@@ -224,9 +239,17 @@ class Settings(BaseSettings):
         ``GOOGLE_MAPS_API_KEY`` when present, but must not silently behave as
         unconfigured when only the established Vite name exists.
         """
-        if not self.google_maps_api_key:
+        primary_maps_key = _primary_checkout_env_value("VITE_GOOGLE_MAPS_API_KEY")
+        if primary_maps_key:
+            # Linked worktrees can retain old ignored backend/worktree dotenv
+            # copies. The primary checkout is the user-facing local key store,
+            # so a rotation there must win immediately after restart.
+            self.google_maps_api_key = primary_maps_key
+        elif not self.google_maps_api_key:
             self.google_maps_api_key = (
-                os.environ.get("VITE_GOOGLE_MAPS_API_KEY", "") or _dotenv.get("VITE_GOOGLE_MAPS_API_KEY", "") or ""
+                _dotenv.get("VITE_GOOGLE_MAPS_API_KEY", "")
+                or os.environ.get("VITE_GOOGLE_MAPS_API_KEY", "")
+                or ""
             )
         return self
 

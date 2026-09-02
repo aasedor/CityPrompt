@@ -7,19 +7,37 @@ const baseCandidates = {
   projectEnvExists: true,
   projectEnvHasAssignments: false,
   sharedGitDir: 'C:/repo/.git',
-  sharedEnvExists: true,
+  sharedEnvExists: false,
+  primaryCheckoutRoot: 'C:/repo',
+  primaryEnvExists: true,
   fallbackEnvDir: 'C:/worktree/frontend',
 };
 
 describe('Vite environment directory resolution', () => {
   it('does not let an empty recovery .env shadow the shared Git key store', () => {
-    expect(selectViteEnvDir(baseCandidates)).toBe('C:/repo/.git');
+    expect(selectViteEnvDir(baseCandidates)).toBe('C:/repo');
   });
 
-  it('keeps a populated worktree .env as an explicit override', () => {
+  it('falls back to the historical Git key store when the primary checkout has no env', () => {
+    expect(selectViteEnvDir({
+      ...baseCandidates,
+      primaryEnvExists: false,
+      sharedEnvExists: true,
+    })).toBe('C:/repo/.git');
+  });
+
+  it('keeps the primary checkout key store ahead of a stale populated worktree env', () => {
     expect(selectViteEnvDir({
       ...baseCandidates,
       projectEnvHasAssignments: true,
+    })).toBe('C:/repo');
+  });
+
+  it('uses a populated worktree env when no primary checkout env exists', () => {
+    expect(selectViteEnvDir({
+      ...baseCandidates,
+      projectEnvHasAssignments: true,
+      primaryEnvExists: false,
     })).toBe('C:/worktree');
   });
 
