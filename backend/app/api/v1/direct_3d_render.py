@@ -291,9 +291,14 @@ def _validate_direct_3d_project_zones(
             "boundaries and run Generate to 3D again before rendering."
         )
     if not boundaries:
-        if req.residual_landscape_claim is not None or len(physical_zones) > 1:
+        # Manually authored building/park/street collections do not require a
+        # parcel boundary. Every physical layer is already bound above to its
+        # current source and representation hashes, so a boundaryless scene is
+        # safe regardless of zone count. A residual-landscape claim, however,
+        # can only be validated against its owning persisted boundary.
+        if req.residual_landscape_claim is not None:
             raise _direct_state_conflict(
-                "This multi-zone project no longer has its compiled site boundary. "
+                "This boundaryless project carries a residual-landscape claim that can no longer be validated. "
                 "Refresh and rebuild the scene with Generate to 3D before rendering."
             )
         return server_inventory

@@ -1302,7 +1302,7 @@ def test_paid_project_preflight_rejects_partial_visible_plan_layer():
     assert exc_info.value.detail["billed"] is False
 
 
-def test_paid_project_preflight_rejects_unrepresented_or_boundaryless_multi_zone_plan():
+def test_paid_project_preflight_rejects_unrepresented_but_allows_boundaryless_manual_multi_zone_scene():
     project_id = uuid.uuid4()
     boundary_id = uuid.uuid4()
     source_hash = "e" * 64
@@ -1352,12 +1352,25 @@ def test_paid_project_preflight_rejects_unrepresented_or_boundaryless_multi_zone
         _compiled_zone("building", building_id=building_id),
         _compiled_zone("green_space", properties={"_plan_role": "open_space"}),
     ]
-    with pytest.raises(HTTPException, match="no longer has"):
+    inventory = direct_api._validate_direct_3d_project_zones(
+        _project_request(project_id, community_claims=_claims_for(multi_zones)),
+        multi_zones,
+        {str(building_id): _compiled_building(building_id)},
+    )
+    assert {item["zone_id"] for item in inventory} == {str(zone.id) for zone in multi_zones}
+
+    with pytest.raises(HTTPException, match="residual-landscape claim") as stale_boundary:
         direct_api._validate_direct_3d_project_zones(
-            _project_request(project_id, community_claims=_claims_for(multi_zones)),
+            _project_request(
+                project_id,
+                uuid.uuid4(),
+                "f" * 64,
+                community_claims=_claims_for(multi_zones),
+            ),
             multi_zones,
             {str(building_id): _compiled_building(building_id)},
         )
+    assert stale_boundary.value.detail["billed"] is False
 
 
 def test_paid_project_preflight_rejects_same_kind_edit_and_missing_model():
