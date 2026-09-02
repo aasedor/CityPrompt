@@ -70,7 +70,7 @@ import { TileStencilPatcher } from './TileStencilPatcher';
 import { GlobeTileMaskLayer } from './GlobeTileMaskLayer';
 import {
   getPreparedSiteBoundaryIds,
-  resolvePreparedSiteTerrainHeight,
+  readStoredPreparedSiteTerrainHeight,
   shouldMaskReplacementBuildingTiles,
 } from './sitePreparationSurface';
 import {
@@ -1676,9 +1676,9 @@ export function GlobeSitePlannerMap({
   const preparedSiteTerrainHeight = useMemo(() => {
     const boundary = getActiveSiteBoundary(siteZones);
     return boundary && preparedSiteBoundaryIds.has(boundary.id)
-      ? resolvePreparedSiteTerrainHeight(boundary, terrainElevation)
+      ? readStoredPreparedSiteTerrainHeight(boundary)
       : null;
-  }, [preparedSiteBoundaryIds, siteZones, terrainElevation]);
+  }, [preparedSiteBoundaryIds, siteZones]);
   const [isTerrainReady, setIsTerrainReady] = useState(false);
   const terrainElevationRef = useRef(DEFAULT_TERRAIN_ELEVATION);
   terrainElevationRef.current = terrainElevation;

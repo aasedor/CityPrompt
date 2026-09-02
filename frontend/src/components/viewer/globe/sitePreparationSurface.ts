@@ -16,6 +16,23 @@ export function getPreparedSiteBoundaryIds(zones: SiteZone[]): Set<string> {
     : new Set();
 }
 
+/** A prepared-site datum may override every child building only when it was
+ * explicitly persisted on the boundary. The project-level elevation response
+ * is a coarse loading frame (its approximate geoid conversion can differ from
+ * the streamed photogrammetry by several metres), so promoting that fallback
+ * to an authoritative site datum sinks otherwise correctly raycast models. */
+export function readStoredPreparedSiteTerrainHeight(
+  boundary: SiteZone,
+): number | null {
+  const properties = boundary.properties as Record<string, unknown> | undefined;
+  const stored = Number(
+    properties?.terrain_elevation_m
+    ?? properties?.terrain_height
+    ?? properties?.terrainElevation,
+  );
+  return Number.isFinite(stored) ? stored : null;
+}
+
 /** One authoritative elevation for both the whole-site tile mask and its
  * prepared replacement surface. Letting either side independently raycast
  * photogrammetry shifts their projected edges apart and exposes a blue/sky
@@ -24,13 +41,7 @@ export function resolvePreparedSiteTerrainHeight(
   boundary: SiteZone,
   fallbackTerrainHeight: number,
 ): number {
-  const properties = boundary.properties as Record<string, unknown> | undefined;
-  const stored = Number(
-    properties?.terrain_elevation_m
-    ?? properties?.terrain_height
-    ?? properties?.terrainElevation,
-  );
-  return Number.isFinite(stored) ? stored : fallbackTerrainHeight;
+  return readStoredPreparedSiteTerrainHeight(boundary) ?? fallbackTerrainHeight;
 }
 
 /** A standalone replacement building still clips the source Google mesh, but

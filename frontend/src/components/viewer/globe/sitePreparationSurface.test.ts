@@ -8,6 +8,7 @@ import {
   getPreparedSiteBoundaryIds,
   hasCompiledCommunity,
   overlapPreparedGroundEdges,
+  readStoredPreparedSiteTerrainHeight,
   resolvePreparedSiteTerrainHeight,
   shouldMaskReplacementBuildingTiles,
   shouldRenderReplacementFootprintGround,
@@ -39,11 +40,12 @@ const compiledPark = {
 
 describe('compiled site preparation', () => {
   it('shares one stored terrain datum between the site mask and replacement surface', () => {
-    expect(resolvePreparedSiteTerrainHeight(
-      zone('boundary', 'site_boundary', { terrain_elevation_m: 1044.75 }),
-      1000,
-    )).toBe(1044.75);
-    expect(resolvePreparedSiteTerrainHeight(zone('boundary', 'site_boundary'), 1000)).toBe(1000);
+    const storedBoundary = zone('boundary', 'site_boundary', { terrain_elevation_m: 1044.75 });
+    const unstoredBoundary = zone('boundary', 'site_boundary');
+    expect(readStoredPreparedSiteTerrainHeight(storedBoundary)).toBe(1044.75);
+    expect(readStoredPreparedSiteTerrainHeight(unstoredBoundary)).toBeNull();
+    expect(resolvePreparedSiteTerrainHeight(storedBoundary, 1000)).toBe(1044.75);
+    expect(resolvePreparedSiteTerrainHeight(unstoredBoundary, 1000)).toBe(1000);
   });
 
   it('covers a clipped standalone building only without a prepared site boundary', () => {

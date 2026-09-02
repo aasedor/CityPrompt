@@ -21,6 +21,9 @@ export interface LegoModule {
   variant_key?: string;
   lod?: number;
   allowed_levels?: number[];
+  native_floors?: number | null;
+  source_variant_id?: string | null;
+  generation_archetype_id?: string | null;
   horizontal_bay_contract?: LegoHorizontalBayContract | null;
 }
 
@@ -262,7 +265,8 @@ export function legoArchetypeContextFromZone(
   const archetypeId = (properties.development_selected_variant_id as string | undefined)
     || (properties.development_archetype_id as string | undefined)
     || generationInput?.archetypeId
-    || (properties.development_subcategory as string | undefined);
+    || (properties.development_subcategory as string | undefined)
+    || (properties.architectural_clay_archetype_id as string | undefined);
 
   const reuseKeys = generationInput?.downstreamHints?.reuseKeys;
   const massingText = String(generationInput?.styleProfile?.massing || '').toLowerCase();
@@ -285,13 +289,17 @@ export function legoArchetypeContextFromZone(
       properties.development_aesthetic_category,
       properties.development_selected_variant_id,
       properties.development_archetype_id,
+      properties.architectural_clay_archetype_id,
         ].filter((value): value is string => typeof value === 'string' && value.length > 0),
   };
 }
 
 export const legoAssemblyApi = {
-  async listModules(): Promise<LegoModule[]> {
-    const response = await api.get<{ modules: LegoModule[] }>('/api/v1/lego-assembly/modules');
+  async listModules(projectId?: string): Promise<LegoModule[]> {
+    const response = await api.get<{ modules: LegoModule[] }>(
+      '/api/v1/lego-assembly/modules',
+      projectId ? { params: { project_id: projectId } } : undefined,
+    );
     return response.data.modules;
   },
 

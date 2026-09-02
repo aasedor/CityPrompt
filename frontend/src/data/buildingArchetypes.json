@@ -16142,6 +16142,8 @@
           "id": "bell_gable_traditional_red",
           "label": "Traditional Red Brick",
           "thumbnailUrl": "/archetypes/buildings/amsterdam-bell-gable-house/variant_0.png",
+          "minFloors": 4,
+          "maxFloors": 4,
           "description": "Classic red-brown brick bell gable with restrained sandstone scrollwork, simple pediment, and traditional white-painted sash windows. The most common bell gable type found along the Herengracht and Keizersgracht canals, dating from approximately 1680-1750.",
           "facadeDetail": {
             "primaryMaterial": "traditional red-brown Dutch brick, hand-formed",
@@ -23456,6 +23458,8 @@
                       "id": "inglewood_victorian_brick",
                       "label": "Victorian Brick",
                       "thumbnailUrl": "/archetypes/buildings/inglewood-heritage-brick-commercial/variant_0.png",
+                      "minFloors": 2,
+                      "maxFloors": 2,
                       "description": "Earlier Victorian-era brick commercial building (1890s-1905) with more ornamental character — polychrome brick with corbelled cornices, segmental-arched windows, decorative brick pilasters, and elaborate pressed-metal cornice. Represents Inglewood's earliest commercial development at the confluence of the Bow and Elbow Rivers.",
                       "facadeDetail": {
                             "primaryMaterial": "polychrome brick — red with cream brick banding and decorative patterns",

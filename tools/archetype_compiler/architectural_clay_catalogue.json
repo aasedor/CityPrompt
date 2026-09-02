@@ -34,8 +34,33 @@
       "status": "BUILDER_VERIFIED_FOR_USER_VISUAL_REVIEW",
       "documentation": "docs/showcase/rlasm/amsterdam-bell-gable-semantic-clay-2026-09-01/README.md",
       "source_candidate": "10-amsterdam-bell-gable-house-rlasm-v10",
+      "source_archetype": "amsterdam_bell_gable_house",
+      "source_variant": "bell_gable_traditional_red",
       "runtime_seed_allowed": false,
       "independent_keeper_review": "pending",
+      "runtime_trial": {
+        "scope": "private_local",
+        "planner_selectable": true,
+        "exact_variant_id": "bell_gable_traditional_red",
+        "generated_only_after_compile": true
+      },
+      "source_lock": [
+        {
+          "view": "front",
+          "repo_path": "frontend/public/archetypes/buildings/amsterdam-bell-gable-house/variant_0.png",
+          "sha256": "fdd9f2a5633b74cd77efedefa160a17c7abc8760fdd4a1290dab0c6aefbf9221"
+        },
+        {
+          "view": "oblique_aerial",
+          "repo_path": "frontend/public/archetypes/buildings/amsterdam-bell-gable-house/variant_0_angle_60.jpg",
+          "sha256": "9000d1b5ba769213fa507f1447bfcde148beac186749093c89752b6bfe721464"
+        },
+        {
+          "view": "near_true_top",
+          "repo_path": "frontend/public/archetypes/buildings/amsterdam-bell-gable-house/variant_0_angle_90.jpg",
+          "sha256": "165c01c50563908378a5a798068e1276fc2ab9b8aec61e60a4e227e501e53390"
+        }
+      ],
       "semantic_roles": ["masonry", "trim", "roof", "glass", "timber", "interior", "hardware"],
       "runtime": {
         "mesh_objects": 553,
@@ -54,10 +79,16 @@
       "status": "BUILDER_VERIFIED_FOR_USER_VISUAL_REVIEW",
       "documentation": "docs/showcase/rlasm/inglewood-victorian-brick-clay-first-2026-09-01/README.md",
       "build_script": "tools/archetype_compiler/build_inglewood_heritage_clay.py",
-      "source_archetype": "inglewood-heritage-brick-commercial",
+      "source_archetype": "inglewood_heritage_brick_commercial",
       "source_variant": "inglewood_victorian_brick",
       "runtime_seed_allowed": false,
       "independent_keeper_review": "pending",
+      "runtime_trial": {
+        "scope": "private_local",
+        "planner_selectable": true,
+        "exact_variant_id": "inglewood_victorian_brick",
+        "generated_only_after_compile": true
+      },
       "source_lock": [
         {
           "view": "front",

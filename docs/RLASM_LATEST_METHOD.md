@@ -32,6 +32,32 @@ who inspects every required view may promote a candidate to `keeper_approved`.
 A later image may expose a missed defect; the keeper is then demoted or
 superseded, never defended by its earlier metadata.
 
+## Architectural-clay product contract
+
+Architectural clay is a lighter RLASM representation, not a separate generic
+building method. It keeps the exact source lock, measured silhouette, complete
+envelope, roof graph, physical openings, contacts, circulation, and semantic
+material ownership while omitting final source-specific PBR texture work.
+
+City Prompt uses it through one compile-gated workflow:
+
+1. A user draws and edits a coloured planning volume.
+2. The user binds one catalogue archetype and one exact design variant.
+3. Generate to 3D may replace the planning volume only with an executable clay
+   family source-locked to that exact variant and native storey count.
+4. Image and video rendering require a current compiled scene.
+
+An ordinary assembled preview remains planner-disabled. A clay manifest must
+explicitly declare `representation_kind: architectural_clay`, one exact
+`variant_id`, a hashed source lock, positive native dimensions, and one native
+storey count for each assembled size module. Parent-level similarity never
+permits sibling substitution.
+Whole-building clay preserves its proportions through uniform containment;
+true width or depth growth must repeat complete audited semantic bays or whole
+building modules rather than stretching identity geometry. Enabling a private
+local trial does not promote the asset into the runtime seed catalogue or grant
+keeper approval.
+
 ## The central lesson
 
 Quality is not the presence of named objects or source-labelled materials. It

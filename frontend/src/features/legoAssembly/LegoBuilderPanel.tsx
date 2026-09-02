@@ -28,6 +28,7 @@ import {
   deriveItems,
   compileMixedCommunity3D,
   isCommunity3DSourceRevisionConflict,
+  isPlacedArchitecturalClayZone,
   isSourceLockedRlasmZone,
   recipeFromPlan,
   type CommunityCompileExpectation,
@@ -199,9 +200,11 @@ export function LegoBuilderPanel({
         label: item.label,
         kind: 'building' as const,
         generators: new Set(
-          isSourceLockedRlasmZone(item.zone)
-            ? ['meshy'] as const
-            : ['planned_massing'] as const,
+          isPlacedArchitecturalClayZone(item.zone)
+            ? ['lego_assembly'] as const
+            : isSourceLockedRlasmZone(item.zone)
+              ? ['meshy'] as const
+              : ['planned_massing'] as const,
         ),
       })),
       ...groundToCompile.map((item) => ({
@@ -314,7 +317,15 @@ export function LegoBuilderPanel({
           representation?.generator === 'lego_assembly'
           || representation?.generator === 'meshy'
         ) {
-          return { ...base, zone, placeState: 'placed', massingState: undefined };
+          return {
+            ...base,
+            zone,
+            error: undefined,
+            familyMissing: undefined,
+            familyIncompatible: undefined,
+            placeState: 'placed',
+            massingState: undefined,
+          };
         }
         if (representation?.generator === 'planned_massing') {
           return {
@@ -522,9 +533,15 @@ export function LegoBuilderPanel({
   }, [autoGenerate, handlePlaceAll, initialPlanningComplete]);
 
   const assembledCount = items.filter((item) => item.plan).length;
-  const missingFamilyCount = items.filter((item) => item.familyMissing).length;
-  const incompatibleFamilyCount = items.filter((item) => item.familyIncompatible).length;
-  const massingFallbackCount = missingFamilyCount + incompatibleFamilyCount;
+  const preservedClayCount = items.filter((item) => (
+    !item.plan
+    && isPlacedArchitecturalClayZone(item.zone)
+    && (item.familyMissing || item.familyIncompatible)
+  )).length;
+  const massingFallbackCount = items.filter((item) => (
+    !isPlacedArchitecturalClayZone(item.zone)
+    && (item.familyMissing || item.familyIncompatible)
+  )).length;
   const issueCount = items.filter((item) => (
     item.error && !item.familyMissing && !item.familyIncompatible
   )).length;
@@ -539,13 +556,22 @@ export function LegoBuilderPanel({
   ).length;
   const uncompiledMassingCount = items.filter((item) => (
     !item.plan
+    && !isPlacedArchitecturalClayZone(item.zone)
     && (item.familyMissing || item.familyIncompatible)
     && item.offset
     && item.massingState !== 'compiled'
   )).length;
+  const uncompiledPreservedClayCount = items.filter((item) => (
+    !item.plan
+    && isPlacedArchitecturalClayZone(item.zone)
+    && (item.familyMissing || item.familyIncompatible)
+    && item.offset
+    && item.placeState !== 'placed'
+  )).length;
   const canBuildCommunity = (
     unplacedDetailedCount > 0
     || uncompiledMassingCount > 0
+    || uncompiledPreservedClayCount > 0
     || compiledGroundCount < groundItems.length
   );
   const hasPlaceableSceneContent = items.some((item) => Boolean(item.offset))
@@ -630,7 +656,7 @@ export function LegoBuilderPanel({
               {`${items.length} buildings · ${parkCount} parks · ${streetCount} streets`}
             </p>
             <p className="mt-1 text-[11px] font-bold text-black/55">
-              {`Detailed ${assembledCount} · Massing ready ${massingFallbackCount} · Needs footprint ${skippedCount}`}
+              {`Detailed ${assembledCount + preservedClayCount} · Massing ready ${massingFallbackCount} · Needs footprint ${skippedCount}`}
               {issueCount > 0 ? ` · Needs review ${issueCount}` : ''}
             </p>
             {planning && (
@@ -654,7 +680,9 @@ export function LegoBuilderPanel({
               </p>
             )}
 
-            {items.map((item) => (
+            {items.map((item) => {
+              const preservesArchitecturalClay = isPlacedArchitecturalClayZone(item.zone);
+              return (
               <div
                 key={item.zone.id}
                 className={`rounded border-2 p-2 text-[11px] ${
@@ -687,13 +715,15 @@ export function LegoBuilderPanel({
                           : 'bg-sky-100 text-sky-800'
                     }`}>
                       {item.massingState === 'compiling'
-                        ? 'massing...'
-                        : item.massingState === 'compiled' ? '3D massing' : 'retry massing'}
+                        ? preservesArchitecturalClay ? 'retaining clay...' : 'massing...'
+                        : item.massingState === 'compiled'
+                          ? preservesArchitecturalClay ? 'clay retained' : '3D massing'
+                          : preservesArchitecturalClay ? 'retry clay' : 'retry massing'}
                     </span>
                   )}
                   {!item.plan && !item.massingState && (item.familyMissing || item.familyIncompatible) && (
                     <span className="shrink-0 rounded bg-sky-100 px-1.5 py-0.5 text-[10px] font-bold text-sky-800">
-                      massing ready
+                      {preservesArchitecturalClay ? 'saved clay ready' : 'massing ready'}
                     </span>
                   )}
                 </div>
@@ -731,15 +761,34 @@ export function LegoBuilderPanel({
                 )}
                 {item.familyMissing && (
                   <p className="mt-0.5 text-amber-950">
-                    <span className="font-black">Detailed family to add. </span>
-                    Generate to 3D uses this exact footprint and {item.targets.floors}-floor height now;
-                    importing its reviewed Sticker/LEGO family later upgrades it in place.
+                    {preservesArchitecturalClay ? (
+                      <>
+                        <span className="font-black">Saved architectural clay retained. </span>
+                        Generate to 3D keeps the authored model at native proportions and re-seats it on the edited footprint;
+                        it will not replace the valid clay recipe with neutral massing.
+                      </>
+                    ) : (
+                      <>
+                        <span className="font-black">Detailed family to add. </span>
+                        Generate to 3D uses this exact footprint and {item.targets.floors}-floor height now;
+                        importing its reviewed Sticker/LEGO family later upgrades it in place.
+                      </>
+                    )}
                   </p>
                 )}
                 {item.familyIncompatible && (
                   <p className="mt-0.5 text-amber-950">
-                    <span className="font-black">Detailed family outside its reviewed fit. </span>
-                    {item.error} Correctly sized {item.targets.floors}-floor massing remains ready for this parcel.
+                    {preservesArchitecturalClay ? (
+                      <>
+                        <span className="font-black">Saved architectural clay retained. </span>
+                        The fixed clay model stays at native proportions on this edited footprint; a repeatable-bay clay family is required to lengthen it without distortion.
+                      </>
+                    ) : (
+                      <>
+                        <span className="font-black">Detailed family outside its reviewed fit. </span>
+                        {item.error} Correctly sized {item.targets.floors}-floor massing remains ready for this parcel.
+                      </>
+                    )}
                   </p>
                 )}
                 {item.error && !item.familyMissing && !item.familyIncompatible && (
@@ -752,7 +801,8 @@ export function LegoBuilderPanel({
                   <p className="mt-0.5 text-black/50">No polygon coordinates — listed only, not placed in the scene.</p>
                 )}
               </div>
-            ))}
+              );
+            })}
 
             {groundItems.length > 0 && (
               <div className="pt-1">

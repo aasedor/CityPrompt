@@ -9,6 +9,12 @@ Status: `BUILDER_VERIFIED_FOR_USER_VISUAL_REVIEW`. The source RLASM keeper is
 approved, but that approval does not automatically make this new clay export a
 keeper.
 
+The exact `bell_gable_traditional_red` variant is enabled only in the private
+local City Prompt trial. It remains outside the runtime seed catalogue. In the
+product workflow the drawn building stays a coloured planning volume until
+Generate to 3D compiles this source-locked clay family; sibling bell-gable
+variants are not allowed to borrow it.
+
 | Front | Front corner |
 | --- | --- |
 | ![Front architectural-clay view](01-front.png) | ![Front-corner architectural-clay view](02-front-corner.png) |

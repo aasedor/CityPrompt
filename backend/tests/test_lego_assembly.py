@@ -663,6 +663,103 @@ def test_manifest_validation_reports_actionable_errors():
     assert "modules" in joined
 
 
+def test_architectural_clay_manifest_requires_exact_variant_source_lock_and_native_shape():
+    manifest = _manifest(
+        representation_kind="architectural_clay",
+        variant_id=None,
+        source_lock=[],
+        modules=[
+            {
+                "role": "assembled",
+                "filename": "clay.glb",
+                "variant_key": "native",
+                "lod": 0,
+                "width_m": 0,
+                "depth_m": 17.18,
+                "height_m": 14.05,
+                "native_floors": 0,
+            }
+        ],
+        assembled={},
+    )
+
+    joined = "; ".join(manifest_validation_errors(manifest))
+
+    assert "require variant_id" in joined
+    assert "non-empty source_lock" in joined
+    assert "positive width_m" in joined
+
+
+def test_architectural_clay_manifest_enables_only_its_exact_source_locked_variant():
+    manifest = _manifest(
+        family="amsterdam-bell-gable-semantic-clay-v001",
+        archetype_id="amsterdam_bell_gable_house",
+        variant_id="bell_gable_traditional_red",
+        generation_archetype_id="amsterdam_bell_gable_house_variant_0",
+        representation_kind="architectural_clay",
+        source_lock=[
+            {
+                "path": "frontend/public/archetypes/buildings/amsterdam-bell-gable-house/variant_0.png",
+                "sha256": "f" * 64,
+            }
+        ],
+        modules=[
+            {
+                "role": "assembled",
+                "filename": "amsterdam-clay.glb",
+                "variant_key": "native",
+                "lod": 0,
+                "width_m": 9.24,
+                "depth_m": 17.18,
+                "height_m": 14.05,
+                "native_floors": 4,
+                "repeatable_z": False,
+            }
+        ],
+        assembled={},
+    )
+    assert manifest_validation_errors(manifest) == []
+    metadata = lego_metadata_from_manifest(manifest, manifest["modules"][0], validation_status="pass")
+    assert metadata["enabled"] is True
+    assert metadata["representation_kind"] == "architectural_clay"
+    assert metadata["source_lock"] == manifest["source_lock"]
+    assert metadata["source_variant_id"] == "bell_gable_traditional_red"
+
+    clay = descriptor_from_library_entry(
+        SimpleNamespace(
+            id="amsterdam-clay",
+            name="Amsterdam Traditional Red — Architectural Clay",
+            model_url="/amsterdam-clay.glb",
+            metadata_={"lego": metadata},
+        )
+    )
+    plan = plan_vertical_assembly(
+        [clay] if clay else [],
+        AssemblyRequest(
+            target_width_m=18.0,
+            target_depth_m=20.0,
+            target_floors=4,
+            archetype_id="bell_gable_traditional_red",
+        ),
+    )
+    assert plan["family"] == "amsterdam-bell-gable-semantic-clay-v001"
+    assert plan["fit"]["assembly_mode"] == "fixed_landmark"
+    assert plan["instances"][0]["role"] == "assembled"
+    assert plan["instances"][0]["scale"][0] == plan["instances"][0]["scale"][1]
+
+    with pytest.raises(AssemblyPlanningError) as sibling_error:
+        plan_vertical_assembly(
+            [clay] if clay else [],
+            AssemblyRequest(
+                target_width_m=18.0,
+                target_depth_m=20.0,
+                target_floors=4,
+                archetype_id="bell_gable_sandstone_decorated",
+            ),
+        )
+    assert sibling_error.value.code == "family_not_found"
+
+
 def test_manifest_validation_rejects_path_syntax_in_family_and_role():
     """family/role become storage-key segments — path syntax must never pass."""
     for bad_family in ("../evil", "a/b", "a\\b", "UPPER", "dots.dots"):
@@ -748,6 +845,8 @@ def test_lego_metadata_from_manifest_builds_planner_shape():
     )
     assert assembled_meta["enabled"] is False
     assert assembled_meta["role"] == "assembled"
+    assert assembled_meta["representation_kind"] is None
+    assert assembled_meta["source_lock"] == []
 
     landmark_manifest = _manifest(
         variant_id="collegiate_gothic_tudor",
@@ -3971,6 +4070,55 @@ async def test_plan_api_uses_only_project_owner_modules_for_an_authorized_editor
     assert any(project.owner_id in values and test_user.id not in values for values in owner_values)
 
 
+@pytest.mark.anyio
+async def test_module_list_uses_project_owner_inventory_for_an_authorized_editor(
+    client, mock_db, test_user, auth_headers
+):
+    project = FakeProject(owner_id=uuid.uuid4())
+    share = SimpleNamespace(permission="editor")
+    clay = entry("clay", "Exact architectural clay", "assembled", height=14.05, width=9.24, depth=17.18)
+    clay.metadata_["lego"].update(
+        {
+            "family": "amsterdam-bell-gable-semantic-clay-v001",
+            "archetype_ids": ["amsterdam_bell_gable_house", "bell_gable_traditional_red"],
+            "native_floors": 4,
+            "source_variant_id": "bell_gable_traditional_red",
+            "representation_kind": "architectural_clay",
+        }
+    )
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(project),
+            _scalar_result(share),
+            _scalars_result([clay]),
+        ]
+    )
+
+    response = await client.get(
+        "/api/v1/lego-assembly/modules",
+        headers=auth_headers,
+        params={"project_id": str(project.id)},
+    )
+
+    assert response.status_code == 200, response.text
+    payload = response.json()
+    assert payload["count"] == 1
+    assert payload["modules"][0]["archetype_ids"] == [
+        "amsterdam_bell_gable_house",
+        "bell_gable_traditional_red",
+    ]
+    assert payload["modules"][0]["source_variant_id"] == "bell_gable_traditional_red"
+    assert payload["modules"][0]["native_floors"] == 4
+    library_query = mock_db.execute.await_args_list[-1].args[0]
+    owner_values = [
+        value
+        for value in library_query.compile().params.values()
+        if isinstance(value, (list, set, tuple))
+    ]
+    assert any(project.owner_id in values and test_user.id not in values for values in owner_values)
+
+
 def _multipart(manifest_dict, glb_names, *, thumbnail=False, report=None):
     parts = [("manifest", ("manifest.json", json.dumps(manifest_dict).encode(), "application/json"))]
     for name in glb_names:
@@ -6283,6 +6431,137 @@ async def test_place_community_certifies_source_locked_rlasm_glb_as_current_mode
     assert building.specifications["rlasm"]["source_locked"] is True
     assert "plannedMassing" not in building.specifications
     assert building.specifications["community3DRepresentation"]["generator"] == "meshy"
+    mock_db.add.assert_not_called()
+
+
+@pytest.mark.anyio
+async def test_place_community_preserves_matching_private_architectural_clay_recipe(
+    client, mock_db, test_user, auth_headers
+):
+    project = FakeProject(owner_id=test_user.id)
+    family = "amsterdam-bell-gable-semantic-clay-v001"
+    archetype_id = "amsterdam-bell-gable-house"
+    recipe = {
+        **_recipe_body(),
+        "module_family": family,
+        "archetype_id": archetype_id,
+        "reuse_keys": ["rlasm", "architectural-clay", "semantic-clay"],
+        "target": {"width_m": 9.24, "depth_m": 17.18, "floors": 4},
+        "instances": [
+            {
+                "role": "assembled",
+                "model_url": "/api/v1/files/amsterdam-clay.glb",
+                "variant_key": "native",
+            }
+        ],
+        "assembled_height_m": 14.05,
+    }
+    building = Building(
+        id=uuid.uuid4(),
+        project_id=project.id,
+        name="Amsterdam Bell-Gable Clay",
+        footprint="SRID=4326;POLYGON((0 0,2 0,2 2,0 2,0 0))",
+        floor_count=4,
+        height_meters=14.05,
+        specifications={
+            "legoAssembly": recipe,
+            "lego_placed": True,
+            "plannedMassing": {"source": "stale-fallback"},
+        },
+    )
+    zone = _make_zone(
+        project,
+        geometry=_calgary_rectangle_ewkt(18.48, 17.18),
+        building_id=building.id,
+        building_ids=[str(building.id)],
+        properties={
+            "_plan_role": "building",
+            "architectural_clay_family": family,
+            "architectural_clay_archetype_id": archetype_id,
+            "floors": 4,
+            "height_m": 14.05,
+        },
+    )
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(zone),
+            _scalar_result(project),
+            _scalar_result(project.id),
+            _scalars_result([zone]),
+            _scalars_result([building]),
+        ]
+    )
+
+    response = await client.post(
+        "/api/v1/lego-assembly/place-community",
+        headers=auth_headers,
+        json={"items": [_community_item(zone)]},
+    )
+
+    assert response.status_code == 200, response.text
+    assert response.json()["items"][0]["generator"] == "lego_assembly"
+    assert zone.properties["community_3d"]["generator"] == "lego_assembly"
+    assert building.footprint == zone.geometry
+    assert building.floor_count == 4
+    assert building.height_meters == 14.05
+    assert building.specifications["legoAssembly"]["module_family"] == family
+    assert building.specifications["legoAssembly"]["archetype_id"] == archetype_id
+    assert building.specifications["lego_placed"] is True
+    assert "plannedMassing" not in building.specifications
+    assert building.specifications["community3DRepresentation"]["generator"] == "lego_assembly"
+    mock_db.add.assert_not_called()
+
+
+@pytest.mark.anyio
+async def test_place_community_refuses_to_downgrade_clay_marker_when_recipe_is_missing(
+    client, mock_db, test_user, auth_headers
+):
+    project = FakeProject(owner_id=test_user.id)
+    family = "amsterdam-bell-gable-semantic-clay-v001"
+    archetype_id = "amsterdam-bell-gable-house"
+    original_massing = {"source": "existing-fallback"}
+    building = Building(
+        id=uuid.uuid4(),
+        project_id=project.id,
+        name="Amsterdam Bell-Gable Clay",
+        footprint="SRID=4326;POLYGON((0 0,2 0,2 2,0 2,0 0))",
+        floor_count=4,
+        height_meters=14.05,
+        specifications={"plannedMassing": original_massing},
+    )
+    zone = _make_zone(
+        project,
+        building_id=building.id,
+        building_ids=[str(building.id)],
+        properties={
+            "_plan_role": "building",
+            "architectural_clay_family": family,
+            "architectural_clay_archetype_id": archetype_id,
+            "floors": 4,
+        },
+    )
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(zone),
+            _scalar_result(project),
+            _scalar_result(project.id),
+            _scalars_result([zone]),
+            _scalars_result([building]),
+        ]
+    )
+
+    response = await client.post(
+        "/api/v1/lego-assembly/place-community",
+        headers=auth_headers,
+        json={"items": [_community_item(zone)]},
+    )
+
+    assert response.status_code == 409, response.text
+    assert response.json()["detail"]["code"] == "architectural_clay_recipe_missing"
+    assert building.specifications == {"plannedMassing": original_massing}
+    assert "community_3d" not in zone.properties
     mock_db.add.assert_not_called()
 
 

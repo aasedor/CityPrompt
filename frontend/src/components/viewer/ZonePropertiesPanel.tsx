@@ -1456,6 +1456,7 @@ const resolveOptionCategory = (
                   <label className={panelLabelClass}>Building Sub-Category</label>
                   <div className="mt-1">
                     <DevelopmentAestheticPicker
+                      projectId={zone.project_id}
                       value={(props.development_aesthetic as string) || undefined}
                       selectedReferenceId={(props.development_archetype_id as string) || undefined}
                       selectedVariantId={(props.development_selected_variant_id as string) || undefined}
@@ -1890,6 +1891,7 @@ const resolveOptionCategory = (
                   <label className={panelLabelClass}>Building Sub-Category</label>
                   <div className="mt-1">
                     <DevelopmentAestheticPicker
+                      projectId={zone.project_id}
                       value={(props.development_aesthetic as string) || undefined}
                       selectedReferenceId={(props.development_archetype_id as string) || undefined}
                       selectedVariantId={(props.development_selected_variant_id as string) || undefined}
@@ -2886,10 +2888,10 @@ function dedupeImageSources(sources: Array<string | null | undefined>): string[]
   return deduped;
 }
 
-function useLegoReadyArchetypeIds(): ReadonlySet<string> {
+function useLegoReadyArchetypeIds(projectId: string): ReadonlySet<string> {
   const { data: modules = [] } = useQuery({
-    queryKey: ['lego-assembly', 'modules'],
-    queryFn: () => legoAssemblyApi.listModules(),
+    queryKey: ['lego-assembly', 'modules', projectId],
+    queryFn: () => legoAssemblyApi.listModules(projectId),
     staleTime: 15_000,
     retry: 1,
   });
@@ -2897,7 +2899,15 @@ function useLegoReadyArchetypeIds(): ReadonlySet<string> {
   return useMemo(() => {
     const ids = new Set<string>();
     for (const module of modules) {
-      for (const archetypeId of module.archetype_ids) {
+      // A whole-building clay/landmark may carry a broad parent alias only for
+      // catalogue grouping. Readiness belongs to its exact source/generation
+      // variant; marking the parent ready would make every sibling look
+      // executable even though the planner correctly rejects substitution.
+      const executableIds = module.role === 'assembled'
+        ? [module.source_variant_id, module.generation_archetype_id]
+        : module.archetype_ids;
+      for (const archetypeId of executableIds) {
+        if (!archetypeId) continue;
         const normalized = normalizeExactLegoArchetypeId(archetypeId);
         if (normalized) ids.add(normalized);
       }
@@ -3279,6 +3289,7 @@ function AestheticOptionCard({
   );
 }
 function DevelopmentAestheticPicker({
+  projectId,
   value,
   selectedReferenceId,
   selectedVariantId,
@@ -3287,6 +3298,7 @@ function DevelopmentAestheticPicker({
   areaSqm,
   onChange,
 }: {
+  projectId: string;
   value?: string;
   selectedReferenceId?: string;
   selectedVariantId?: string;
@@ -3321,7 +3333,7 @@ function DevelopmentAestheticPicker({
     areaSqm ?? 0,
   )?.isGoodFit).length;
   const visibleStickerPilotCount = rankedOptions.filter((option) => STICKER_METHOD_BUILDING_IDS.has(option.id)).length;
-  const legoReadyArchetypeIds = useLegoReadyArchetypeIds();
+  const legoReadyArchetypeIds = useLegoReadyArchetypeIds(projectId);
 
   return (
     <div className="space-y-2">

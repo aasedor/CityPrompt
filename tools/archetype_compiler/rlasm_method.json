@@ -38,6 +38,23 @@
     "text_invented_reference_allowed": false,
     "visible_locked_pixels_override_conflicting_family_prose": true
   },
+  "architectural_clay_runtime_contract": {
+    "is_lighter_rlasm_representation_not_generic_method": true,
+    "precompile_representation": "coloured_planning_volume",
+    "selection_requires_exact_archetype_and_variant": true,
+    "manifest_representation_kind": "architectural_clay",
+    "manifest_requires_hashed_source_lock": true,
+    "manifest_requires_one_or_more_assembled_modules": true,
+    "manifest_requires_native_dimensions_and_storeys": true,
+    "ordinary_assembled_preview_planner_enabled": false,
+    "sibling_variant_substitution_allowed": false,
+    "postcompile_representation": "source_locked_architectural_clay",
+    "render_requires_current_compiled_scene": true,
+    "whole_building_nonuniform_stretch_allowed": false,
+    "semantic_bay_or_whole_module_repeat_required_for_true_growth": true,
+    "private_local_trial_implies_runtime_seed_approval": false,
+    "private_local_trial_implies_keeper_approval": false
+  },
   "identity_registration_contract": {
     "register_to_carrier_exterior_face_not_center": true,
     "carrier_thickness_in_datum": true,

@@ -51,6 +51,25 @@ export function isSourceLockedRlasmZone(zone: SiteZone): boolean {
     && zone.properties.rlasm_keeper.trim().length > 0;
 }
 
+/** A deliberately placed architectural-clay assembly is an authored detailed
+ * representation, even when its private trial family remains planner-disabled.
+ * Generate to 3D may re-seat that saved assembly on an edited footprint, but
+ * it must never reinterpret a planner capability miss as permission to replace
+ * the saved recipe with neutral massing. The backend revalidates the linked
+ * Building recipe against both identity fields before certifying it. */
+export function isPlacedArchitecturalClayZone(zone: SiteZone): boolean {
+  const family = zone.properties?.architectural_clay_family;
+  const archetypeId = zone.properties?.architectural_clay_archetype_id;
+  return Boolean(
+    typeof zone.building_id === 'string'
+    && zone.building_id.trim().length > 0
+    && typeof family === 'string'
+    && family.trim().length > 0
+    && typeof archetypeId === 'string'
+    && archetypeId.trim().length > 0
+  );
+}
+
 export interface GroundBuildItem {
   zone: SiteZone;
   kind: Extract<Community3DKind, 'park' | 'street'>;
@@ -555,9 +574,11 @@ export async function compileMixedCommunity3D(
       generators: new Set<CommunityCompileGenerator>(
         planResults[index]?.status === 'fulfilled'
           ? ['lego_assembly']
-          : isSourceLockedRlasmZone(item.zone)
-            ? ['meshy']
-            : ['planned_massing'],
+          : isPlacedArchitecturalClayZone(item.zone)
+            ? ['lego_assembly']
+            : isSourceLockedRlasmZone(item.zone)
+              ? ['meshy']
+              : ['planned_massing'],
       ),
     }));
   const groundItems = deriveGroundItems(zones);
@@ -612,9 +633,26 @@ export async function compileMixedCommunity3D(
   }
   assertCommunityCompileResponse(expectedItems, response);
   announceCommunity3DPresentationReady(scopeZoneIds);
+  const representationByZoneId = new Map(
+    response.items.map((item) => [item.zone_id, item] as const),
+  );
   const resolvedBuildings = buildingItems.map((item, index) => {
     const result = planResults[index];
     if (result?.status === 'fulfilled') return { ...item, plan: result.value };
+    const representation = representationByZoneId.get(item.zone.id);
+    if (
+      representation?.generator === 'lego_assembly'
+      || representation?.generator === 'meshy'
+    ) {
+      return {
+        ...item,
+        error: undefined,
+        familyMissing: undefined,
+        familyIncompatible: undefined,
+        placeState: 'placed' as const,
+        massingState: undefined,
+      };
+    }
     const planningFailure = result?.status === 'rejected'
       ? getLegoPlanningFailure(result.reason)
       : null;

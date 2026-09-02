@@ -41,6 +41,22 @@ def test_keeper_requires_holistic_independent_review() -> None:
     ]
 
 
+def test_architectural_clay_runtime_is_exact_variant_and_compile_gated() -> None:
+    method = load_json("tools/archetype_compiler/rlasm_method.json")
+    contract = method["architectural_clay_runtime_contract"]
+    assert contract["precompile_representation"] == "coloured_planning_volume"
+    assert contract["selection_requires_exact_archetype_and_variant"] is True
+    assert contract["manifest_representation_kind"] == "architectural_clay"
+    assert contract["manifest_requires_one_or_more_assembled_modules"] is True
+    assert contract["ordinary_assembled_preview_planner_enabled"] is False
+    assert contract["sibling_variant_substitution_allowed"] is False
+    assert contract["postcompile_representation"] == "source_locked_architectural_clay"
+    assert contract["render_requires_current_compiled_scene"] is True
+    assert contract["whole_building_nonuniform_stretch_allowed"] is False
+    assert contract["private_local_trial_implies_runtime_seed_approval"] is False
+    assert contract["private_local_trial_implies_keeper_approval"] is False
+
+
 def test_required_camera_contract_is_complete() -> None:
     method = load_json("tools/archetype_compiler/rlasm_method.json")
     assert set(method["required_baseline_views"]) == {

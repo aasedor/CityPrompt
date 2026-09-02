@@ -147,6 +147,9 @@ class Community3DCompileItem(BaseModel):
     source_updated_at: datetime
     # Supported buildings carry an assembly recipe. An unsupported building
     # intentionally omits it and becomes persisted exact-footprint massing.
+    # A linked architectural-clay zone also omits it: the server revalidates
+    # and preserves its already-saved private assembly instead of trusting a
+    # client round-trip or downgrading it after a planner capability miss.
     # Deterministic ground systems also derive from the zone and omit it.
     recipe: LegoPlaceRequest | None = None
 
@@ -653,12 +656,13 @@ async def _accessible_entries(
 
 @router.get("/modules")
 async def list_lego_modules(
+    project_id: uuid.UUID | None = Query(default=None),
     user: User = Depends(require_auth),
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, Any]:
-    """List model-library items currently configured as LEGO modules."""
+    """List LEGO modules visible in the current user or project workspace."""
     descriptors = []
-    for entry in await _accessible_entries(db, user):
+    for entry in await _accessible_entries(db, user, project_id):
         descriptor = descriptor_from_library_entry(entry)
         if descriptor:
             descriptors.append(
@@ -680,6 +684,10 @@ async def list_lego_modules(
                     "variant_key": descriptor.variant_key,
                     "lod": descriptor.lod,
                     "allowed_levels": list(descriptor.allowed_levels),
+                    "native_floors": descriptor.native_floors,
+                    "source_variant_id": descriptor.source_variant_id,
+                    "generation_archetype_id": descriptor.generation_archetype_id,
+                    "horizontal_bay_contract": descriptor.horizontal_bay_contract,
                 }
             )
     return {"modules": descriptors, "count": len(descriptors)}
@@ -1502,6 +1510,70 @@ def _is_source_locked_rlasm_model(building: Building | None) -> bool:
     return bool(isinstance(rlasm, dict) and rlasm.get("source_locked") is True and has_model)
 
 
+def _architectural_clay_identity(zone: SiteZone) -> tuple[str, str] | None:
+    """Return the explicit private clay identity persisted on the source zone."""
+    properties = zone.properties if isinstance(zone.properties, dict) else {}
+    family = properties.get("architectural_clay_family")
+    archetype_id = properties.get("architectural_clay_archetype_id")
+    if not isinstance(family, str) or not family.strip():
+        return None
+    if not isinstance(archetype_id, str) or not archetype_id.strip():
+        return None
+    return family.strip(), archetype_id.strip()
+
+
+def _matching_architectural_clay_recipe(
+    zone: SiteZone,
+    building: Building | None,
+) -> LegoRecipeRequest | None:
+    """Validate the saved recipe that owns a planner-disabled clay placement.
+
+    Both zone identity fields must match the persisted recipe. This narrow
+    contract preserves an intentionally placed private clay assembly while an
+    ordinary archetype switch still invalidates an old LEGO recipe and routes
+    to honest massing.
+    """
+    identity = _architectural_clay_identity(zone)
+    if identity is None or building is None:
+        return None
+    specifications = building.specifications if isinstance(building.specifications, dict) else {}
+    raw_recipe = specifications.get(RECIPE_SPEC_KEY)
+    if not isinstance(raw_recipe, dict):
+        return None
+    try:
+        recipe = LegoRecipeRequest.model_validate(raw_recipe)
+    except ValueError:
+        return None
+    family, archetype_id = identity
+    if recipe.module_family != family or recipe.archetype_id != archetype_id:
+        return None
+    if not recipe.instances or any(
+        not isinstance(instance.get("model_url"), str) or not instance["model_url"].strip()
+        for instance in recipe.instances
+    ):
+        return None
+    return recipe
+
+
+def _place_existing_architectural_clay_on_zone(
+    zone: SiteZone,
+    building: Building,
+    recipe: LegoRecipeRequest,
+) -> Building:
+    """Re-seat a valid fixed clay assembly without distorting or replacing it."""
+    building.footprint = zone.geometry
+    building.floor_count = recipe.target.floors
+    assembled_height = _positive_float(recipe.assembled_height_m)
+    if assembled_height is not None:
+        building.height_meters = _column_height_meters(assembled_height)
+    specifications = dict(building.specifications or {})
+    specifications.pop(PLANNED_MASSING_SPEC_KEY, None)
+    specifications["lego_placed"] = True
+    building.specifications = specifications
+    flag_modified(building, "specifications")
+    return building
+
+
 def _place_source_locked_rlasm_on_zone(zone: SiteZone, building: Building) -> Building:
     """Keep the reviewed GLB current while synchronizing its placement shell."""
     floors, height = _planned_massing_dimensions(zone)
@@ -1965,9 +2037,31 @@ async def place_community_3d(
             if item.recipe is not None:
                 building, building_created = await _place_recipe_on_zone(db, zone, item.recipe)
             else:
-                source_locked_rlasm = project_buildings_by_id.get(str(zone.building_id))
-                if _is_source_locked_rlasm_model(source_locked_rlasm):
-                    building = _place_source_locked_rlasm_on_zone(zone, source_locked_rlasm)
+                linked_building = project_buildings_by_id.get(str(zone.building_id))
+                clay_identity = _architectural_clay_identity(zone)
+                clay_recipe = _matching_architectural_clay_recipe(zone, linked_building)
+                if clay_identity is not None:
+                    if linked_building is None or clay_recipe is None:
+                        raise HTTPException(
+                            status_code=409,
+                            detail={
+                                "code": "architectural_clay_recipe_missing",
+                                "message": (
+                                    "This zone is linked to an architectural-clay model, but its saved "
+                                    "recipe is missing or no longer matches the clay family. Nothing was "
+                                    "replaced; restore the saved clay assembly before rebuilding."
+                                ),
+                                "zone_id": str(zone.id),
+                            },
+                        )
+                    building = _place_existing_architectural_clay_on_zone(
+                        zone,
+                        linked_building,
+                        clay_recipe,
+                    )
+                    building_generator = "lego_assembly"
+                elif _is_source_locked_rlasm_model(linked_building):
+                    building = _place_source_locked_rlasm_on_zone(zone, linked_building)
                     building_generator = "meshy"
                 else:
                     building, building_created = await _place_planned_massing_on_zone(db, zone)

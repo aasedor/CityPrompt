@@ -34,6 +34,17 @@ describe('legoAssemblyApi', () => {
     vi.resetAllMocks();
   });
 
+  it('listModules() scopes private family readiness to the current project', async () => {
+    apiGet.mockResolvedValue({ data: { modules: [] } });
+
+    await expect(legoAssemblyApi.listModules('project-1')).resolves.toEqual([]);
+
+    expect(apiGet).toHaveBeenCalledWith(
+      '/api/v1/lego-assembly/modules',
+      { params: { project_id: 'project-1' } },
+    );
+  });
+
   it('plan() posts the request (including allow_setback) and returns the plan', async () => {
     const plan = { version: 1, family: 'f', reuse_keys: [], target: { width_m: 1, depth_m: 1, floors: 1 }, assembled_height_m: 3, instances: [], fit: { scale_x: 1, scale_y: 1, score: 1 } };
     apiPost.mockResolvedValue({ data: plan });
@@ -288,6 +299,16 @@ describe('legoArchetypeContextFromZone', () => {
     expect(context.archetype_id).toBe('nordic_timber_midrise');
     expect(context.allow_setback).toBe(false);
     expect(context.reuse_keys).toEqual(['midrise', 'timber', 'nordic_timber_midrise']);
+  });
+
+  it('retains the exact architectural-clay archetype when the private family is planner-disabled', () => {
+    const context = legoArchetypeContextFromZone({
+      architectural_clay_archetype_id: 'amsterdam-bell-gable-house',
+      architectural_clay_family: 'amsterdam-bell-gable-semantic-clay-v001',
+    });
+
+    expect(context.archetype_id).toBe('amsterdam-bell-gable-house');
+    expect(context.reuse_keys).toEqual(['amsterdam-bell-gable-house']);
   });
 
   it('allows setbacks only when the archetype grammar explicitly asks for them', () => {

@@ -31,3 +31,19 @@ def test_no_saved_clay_candidate_is_implicitly_runtime_approved() -> None:
     for asset in catalogue["assets"]:
         assert asset["runtime_seed_allowed"] is False
         assert asset["independent_keeper_review"] == "pending"
+
+
+def test_private_runtime_trials_are_exact_variant_and_compile_gated() -> None:
+    catalogue = load_catalogue()
+    trials = [asset for asset in catalogue["assets"] if asset.get("runtime_trial")]
+    assert {asset["source_variant"] for asset in trials} == {
+        "bell_gable_traditional_red",
+        "inglewood_victorian_brick",
+    }
+    for asset in trials:
+        trial = asset["runtime_trial"]
+        assert trial["scope"] == "private_local"
+        assert trial["planner_selectable"] is True
+        assert trial["exact_variant_id"] == asset["source_variant"]
+        assert trial["generated_only_after_compile"] is True
+        assert len(asset["source_lock"]) == 3

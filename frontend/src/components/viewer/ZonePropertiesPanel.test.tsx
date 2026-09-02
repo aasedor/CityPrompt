@@ -698,6 +698,41 @@ describe('ZonePropertiesPanel LEGO selection handoff', () => {
     );
   });
 
+  it('marks only an assembled clay module exact variant ready in the project inventory', async () => {
+    listLegoModulesMock.mockResolvedValue([{
+      id: 'industrial-brick-brewery-clay',
+      name: 'Industrial Brick Brewery Architectural Clay',
+      model_url: '/families/industrial-brick-brewery/clay.glb',
+      family: 'industrial-brick-brewery-semantic-clay-v001',
+      role: 'assembled',
+      width_m: 40,
+      depth_m: 26,
+      height_m: 16,
+      archetype_ids: ['industrial_brick_mixed_use', 'industrial_brick_brewery'],
+      source_variant_id: 'industrial_brick_brewery',
+      reuse_keys: [],
+      repeatable_z: false,
+    }]);
+    const { container } = renderPanel(
+      <ZonePropertiesPanel
+        zone={industrialZone()}
+        onUpdate={vi.fn()}
+        onDelete={vi.fn()}
+        onClose={vi.fn()}
+      />,
+    );
+
+    fireEvent.click(screen.getAllByRole('button', { name: /archetype/i })[0]);
+
+    const card = container.querySelector('[data-aesthetic-option-id="industrial_brick_mixed_use"]');
+    const brewery = screen.getByTitle(/^Brewery — click to select/);
+    const originalMill = screen.getByTitle(/^Original Mill — click to select/);
+    await waitFor(() => expect(brewery).toHaveAttribute('data-lego-ready', 'true'));
+    expect(originalMill).toHaveAttribute('data-lego-ready', 'false');
+    expect(card).not.toHaveAttribute('data-lego-family-available');
+    expect(listLegoModulesMock).toHaveBeenCalledWith(industrialZone().project_id);
+  });
+
   it('uses the explicit photoreal card render for the selected traditional Machiya zone', () => {
     const { container } = renderPanel(
       <ZonePropertiesPanel

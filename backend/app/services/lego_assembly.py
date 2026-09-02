@@ -51,6 +51,12 @@ _VARIANT_SLUG_RE = re.compile(r"^[a-z0-9][a-z0-9_]{0,49}$")
 # is browsable but never picked by ``plan_vertical_assembly``.
 STACKABLE_ROLES = ("podium", "floor", "setback", "crown", "roof")
 
+# A whole-building clay asset is intentionally lighter than a full RLASM
+# keeper, but it is still an exact, source-locked architectural identity.  A
+# manifest must opt into this representation explicitly; an ordinary assembled
+# preview remains browse-only and cannot silently become planner executable.
+ARCHITECTURAL_CLAY_REPRESENTATION = "architectural_clay"
+
 # Exact render-locked landmarks carry their own corners, entrance, crown and
 # roof. Preserve that whole-building asset for realistically imprecise parcel
 # drawings, but only inside a near-native band. Large or strongly anisotropic
@@ -1361,6 +1367,56 @@ def manifest_validation_errors(manifest: Any) -> list[str]:
             if identity in identities:
                 errors.append(f"modules[{index}] duplicates module identity {identity}")
             identities.add(identity)
+
+    representation_kind = str(manifest.get("representation_kind") or "").strip().lower()
+    if representation_kind and representation_kind != ARCHITECTURAL_CLAY_REPRESENTATION:
+        errors.append(
+            "representation_kind must be 'architectural_clay' when provided "
+            f"(got {manifest.get('representation_kind')!r})"
+        )
+    if representation_kind == ARCHITECTURAL_CLAY_REPRESENTATION:
+        if not str(manifest.get("variant_id") or "").strip():
+            errors.append(
+                "architectural_clay manifests require variant_id so Generate to 3D "
+                "cannot substitute a sibling archetype variant"
+            )
+        source_lock = manifest.get("source_lock")
+        if not isinstance(source_lock, list) or not source_lock:
+            errors.append("architectural_clay manifests require a non-empty source_lock")
+        elif any(
+            not isinstance(source, dict)
+            or not str(source.get("path") or "").strip()
+            or not re.fullmatch(r"[a-fA-F0-9]{64}", str(source.get("sha256") or ""))
+            for source in source_lock
+        ):
+            errors.append(
+                "architectural_clay source_lock entries require path and a 64-character sha256"
+            )
+
+        clay_modules = [
+            module
+            for module in modules or []
+            if isinstance(module, dict)
+            and str(module.get("role") or "").strip().lower() == "assembled"
+        ]
+        if not clay_modules:
+            errors.append("architectural_clay manifests require at least one assembled module")
+        for clay_module in clay_modules:
+            if any(
+                _as_float(clay_module.get(field)) <= 0
+                for field in ("width_m", "depth_m", "height_m")
+            ):
+                errors.append(
+                    "architectural_clay assembled modules require positive width_m, depth_m, and height_m"
+                )
+            if (_as_int_or_none(clay_module.get("native_floors")) or 0) < 1:
+                errors.append("architectural_clay assembled modules require native_floors >= 1")
+        assembled_preview = manifest.get("assembled")
+        if isinstance(assembled_preview, dict) and assembled_preview.get("filename"):
+            errors.append(
+                "architectural_clay must declare its runtime GLBs as assembled modules, "
+                "not as a second assembled preview"
+            )
     return errors
 
 
@@ -1374,8 +1430,9 @@ def lego_metadata_from_manifest(
     """Build the ``metadata_["lego"]`` payload for one manifest module.
 
     ``module`` is either an entry of ``manifest["modules"]`` or a synthesized
-    dict for the pre-assembled GLB. Landmark massing graphs enable that asset
-    for exact-variant/canonical-size planning; ordinary previews stay disabled.
+    dict for the pre-assembled GLB. Landmark massing graphs and explicitly
+    source-locked architectural-clay manifests enable that asset for exact-
+    variant planning; ordinary previews stay disabled.
     """
     resolved_role = str(role or module.get("role") or "").strip().lower()
     archetype_ids = [str(manifest.get("archetype_id"))]
@@ -1392,9 +1449,20 @@ def lego_metadata_from_manifest(
 
     dimensions = manifest.get("dimensions") or {}
     generator = manifest.get("generator") or {}
+    representation_kind = str(manifest.get("representation_kind") or "").strip().lower()
+    source_lock = manifest.get("source_lock")
+    is_architectural_clay = (
+        representation_kind == ARCHITECTURAL_CLAY_REPRESENTATION
+        and bool(variant_id)
+        and isinstance(source_lock, list)
+        and bool(source_lock)
+    )
     return {
         "enabled": resolved_role in STACKABLE_ROLES
-        or (resolved_role == "assembled" and bool(manifest.get("massing_graph"))),
+        or (
+            resolved_role == "assembled"
+            and (bool(manifest.get("massing_graph")) or is_architectural_clay)
+        ),
         "role": resolved_role,
         "family": str(manifest.get("family") or ""),
         "width_m": module.get("width_m"),
@@ -1427,6 +1495,8 @@ def lego_metadata_from_manifest(
         ),
         "source_variant_id": variant_id,
         "generation_archetype_id": generation_archetype_id,
+        "representation_kind": representation_kind or None,
+        "source_lock": source_lock if is_architectural_clay else [],
         "asset_kind": "lego_module",
     }
 

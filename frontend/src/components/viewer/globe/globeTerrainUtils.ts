@@ -139,6 +139,23 @@ export function resolveReplacementGroundAnchor(
   return rise > EXCAVATION_REJECT_METERS ? projectTerrain as number : local;
 }
 
+/** Seat an authored building on a current local tile reading whenever one is
+ * available. Unlike a clipping mask, a model has an explicit bottom datum and
+ * cannot safely use a coarse project elevation to reject a higher local
+ * sample: regional geoid approximation error alone can exceed one storey and
+ * bury the model. Stored terrain still protects against roof hits; the project
+ * value is used only while no local source has resolved. */
+export function resolveAuthoredBuildingGroundAnchor(
+  sampled: number | null | undefined,
+  stored: number | null | undefined,
+  projectTerrain: number | null | undefined,
+  thresholdMeters = OBJECT_HEIGHT_FILTER_THRESHOLD_METERS,
+): number | null {
+  const local = preferLowerGroundAnchor(sampled, stored, thresholdMeters);
+  if (local !== null) return local;
+  return Number.isFinite(projectTerrain) ? projectTerrain as number : null;
+}
+
 /** Public realm follows the current streamed tile surface when it agrees with
  * persisted/project terrain. A replacement building benefits from a stable
  * stored base, but a park or street pinned even one metre below current terrain

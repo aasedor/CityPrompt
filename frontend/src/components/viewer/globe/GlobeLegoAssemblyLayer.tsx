@@ -41,7 +41,7 @@ import { raycastTerrainHeightAtLatLng } from './GlobeZoneLayer';
 import {
   getObjectFilteredTerrainHeight,
   isPlausibleTerrainAnchor,
-  resolveReplacementGroundAnchor,
+  resolveAuthoredBuildingGroundAnchor,
   resolveZoneTerrainHeight,
 } from './globeTerrainUtils';
 import {
@@ -249,9 +249,9 @@ function LegoMassingStack({
       frozenRef.current = true;
       return;
     }
-    attemptsRef.current += 1;
     const tilesGroup = tiles?.group;
     if (!tilesGroup || tilesGroup.children.length === 0) return;
+    attemptsRef.current += 1;
 
     const step = Math.max(1, Math.floor(ring.length / 4));
     const probes: Array<[number, number]> = [[frame.centroidLng, frame.centroidLat]];
@@ -262,7 +262,7 @@ function LegoMassingStack({
       raycastTerrainHeightAtLatLng(longitude, latitude, tilesGroup, raycasterRef.current)
     ));
     const filtered = getObjectFilteredTerrainHeight(samples, storedTerrain);
-    const groundCandidate = resolveReplacementGroundAnchor(
+    const groundCandidate = resolveAuthoredBuildingGroundAnchor(
       filtered,
       storedTerrain,
       fallbackTerrainHeight,
@@ -464,9 +464,9 @@ function LegoStackInstance({
       frozenRef.current = true;
       return;
     }
-    attemptsRef.current += 1;
     const tilesGroup = tiles?.group;
     if (!tilesGroup || tilesGroup.children.length === 0) return;
+    attemptsRef.current += 1;
 
     const step = Math.max(1, Math.floor(ring.length / 4));
     const probes: Array<[number, number]> = [[frame.centroidLng, frame.centroidLat]];
@@ -477,7 +477,7 @@ function LegoStackInstance({
       raycastTerrainHeightAtLatLng(lng, lat, tilesGroup, raycasterRef.current)
     ));
     const filtered = getObjectFilteredTerrainHeight(samples, storedTerrain);
-    const groundCandidate = resolveReplacementGroundAnchor(
+    const groundCandidate = resolveAuthoredBuildingGroundAnchor(
       filtered,
       storedTerrain,
       fallbackTerrainHeight,

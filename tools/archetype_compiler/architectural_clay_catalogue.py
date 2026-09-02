@@ -67,6 +67,29 @@ def validate_catalogue(catalogue: dict, root: Path = ROOT) -> list[str]:
             if "sha256" in runtime and not SHA256.fullmatch(str(runtime["sha256"])):
                 errors.append(f"{label}.runtime.sha256 must be lowercase SHA-256")
 
+        runtime_trial = asset.get("runtime_trial")
+        if runtime_trial is not None:
+            if not isinstance(runtime_trial, dict):
+                errors.append(f"{label}.runtime_trial must be an object")
+            else:
+                source_variant = asset.get("source_variant")
+                if runtime_trial.get("scope") != "private_local":
+                    errors.append(f"{label}.runtime_trial.scope must remain private_local")
+                if runtime_trial.get("planner_selectable") is not True:
+                    errors.append(f"{label}.runtime_trial.planner_selectable must be true")
+                if runtime_trial.get("generated_only_after_compile") is not True:
+                    errors.append(f"{label}.runtime_trial must remain compile-gated")
+                if not source_variant or runtime_trial.get("exact_variant_id") != source_variant:
+                    errors.append(f"{label}.runtime_trial must bind the exact source_variant")
+
+            source_lock = asset.get("source_lock")
+            if not isinstance(source_lock, list) or len(source_lock) < 3:
+                errors.append(f"{label}.runtime_trial requires front, oblique, and top source locks")
+            else:
+                for item in source_lock:
+                    if not SHA256.fullmatch(str(item.get("sha256", ""))):
+                        errors.append(f"{label}.runtime_trial source_lock contains an invalid SHA-256")
+
         if asset.get("generation_mode") == "clay_first":
             source_lock = asset.get("source_lock")
             if not isinstance(source_lock, list) or len(source_lock) < 3:

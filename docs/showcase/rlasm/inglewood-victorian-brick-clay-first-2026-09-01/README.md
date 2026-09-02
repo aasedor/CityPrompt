@@ -7,7 +7,11 @@ parts the image model must not invent, while omitting final textures and PBR
 material authorship.
 
 Status: `BUILDER_VERIFIED_FOR_USER_VISUAL_REVIEW`. This is a saved candidate,
-not a keeper and not a live runtime-catalogue entry.
+not a keeper and not a runtime seed-catalogue entry. The exact
+`inglewood_victorian_brick` variant is enabled only in the private local City
+Prompt workflow trial. The drawn building remains a coloured planning volume
+until Generate to 3D compiles this source-locked clay family; the Edwardian,
+Art Deco, and Converted Creative siblings cannot silently substitute it.
 
 | Front | Front corner |
 | --- | --- |

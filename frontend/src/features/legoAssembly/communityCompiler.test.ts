@@ -17,6 +17,7 @@ import {
   compileMixedCommunity3D,
   deriveGroundItems,
   deriveItems,
+  isPlacedArchitecturalClayZone,
   recipeFromPlan,
 } from './communityCompiler';
 import { resetProjectCommunityCompileCoordinatorForTests } from './projectCommunityCompile';
@@ -620,6 +621,48 @@ describe('mixed community compiler', () => {
     const result = await compileMixedCommunity3D([generated]);
 
     expect(result).toMatchObject({ detailedBuildings: 1, plannedMasses: 0 });
+  });
+
+  it('preserves a linked architectural-clay recipe when its private family is planner-disabled', async () => {
+    const clay = zone('architectural-clay', 'building', {
+      _plan_role: 'building',
+      architectural_clay_family: 'amsterdam-bell-gable-semantic-clay-v001',
+      architectural_clay_archetype_id: 'amsterdam-bell-gable-house',
+      floors: 4,
+    });
+    clay.building_id = 'b-clay';
+    expect(isPlacedArchitecturalClayZone(clay)).toBe(true);
+    vi.spyOn(legoAssemblyApi, 'plan').mockRejectedValue({
+      response: {
+        status: 422,
+        data: { detail: { code: 'family_not_found', message: 'private family is planner-disabled' } },
+      },
+    });
+    const compile = vi.spyOn(legoAssemblyApi, 'compileCommunity').mockResolvedValue({
+      status: 'compiled',
+      compiled_at: '2026-09-01T00:00:00Z',
+      counts: { building: 1, park: 0, street: 0 },
+      items: [{
+        zone_id: clay.id,
+        kind: 'building',
+        building_id: clay.building_id,
+        building_created: false,
+        generator: 'lego_assembly',
+      }],
+    });
+
+    const result = await compileMixedCommunity3D([clay]);
+
+    expect(compile).toHaveBeenCalledWith(
+      [{ zone_id: clay.id, source_updated_at: clay.updated_at }],
+      [clay.id],
+    );
+    expect(result).toMatchObject({ detailedBuildings: 1, plannedMasses: 0 });
+    expect(result.resolvedBuildings?.[0]).toMatchObject({
+      placeState: 'placed',
+      familyMissing: undefined,
+      familyIncompatible: undefined,
+    });
   });
 
   it('probes each explicitly missing family once instead of repeating hundreds of 422s', async () => {

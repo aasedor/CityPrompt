@@ -6,6 +6,7 @@ import {
   MAX_ANCHOR_DEVIATION_METERS,
   preferLowerGroundAnchor,
   rejectRaisedObjectTop,
+  resolveAuthoredBuildingGroundAnchor,
   resolvePublicRealmGroundAnchor,
   resolveReplacementGroundAnchor,
   shouldFilterObjectTerrainHeight,
@@ -89,6 +90,22 @@ describe('resolveReplacementGroundAnchor', () => {
 
   it('falls back to the project terrain when no local reading exists', () => {
     expect(resolveReplacementGroundAnchor(null, null, 1097.205)).toBe(1097.205);
+  });
+});
+
+describe('resolveAuthoredBuildingGroundAnchor', () => {
+  it('trusts current tile ground over a coarse project geoid fallback', () => {
+    // Calgary regression: the Elevation API loading frame can sit several
+    // metres below the streamed ECEF surface. It must not bury an authored GLB.
+    expect(resolveAuthoredBuildingGroundAnchor(1025.2, null, 1017.4)).toBe(1025.2);
+  });
+
+  it('still rejects a sampled roof when a stored ground datum exists', () => {
+    expect(resolveAuthoredBuildingGroundAnchor(1038, 1025.2, 1017.4)).toBe(1025.2);
+  });
+
+  it('uses project terrain only until a local source resolves', () => {
+    expect(resolveAuthoredBuildingGroundAnchor(null, null, 1017.4)).toBe(1017.4);
   });
 });
 
