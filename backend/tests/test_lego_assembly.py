@@ -5914,6 +5914,80 @@ async def test_place_community_rejects_wrong_current_recipe_for_manual_catalogue
 
 
 @pytest.mark.anyio
+async def test_place_community_accepts_browser_reuse_keys_for_manual_architectural_clay(
+    client, mock_db, test_user, auth_headers
+):
+    project = FakeProject(owner_id=test_user.id)
+    entries = _ai_recipe_inventory()
+    catalog = build_lego_planning_catalog(entries)
+    variant_id = "nordic_timber_midrise"
+    parent_id = "nordic_timber_midrise_parent"
+    # This is the exact fallback order emitted by
+    # legoArchetypeContextFromZone. The clay marker commonly repeats the
+    # selected variant, as it does on the Amsterdam and Inglewood trial zones.
+    browser_reuse_keys = (variant_id, parent_id, variant_id)
+    descriptors = [
+        descriptor
+        for item in entries
+        if (descriptor := descriptor_from_library_entry(item)) is not None
+    ]
+    plan = plan_vertical_assembly(
+        descriptors,
+        AssemblyRequest(
+            target_width_m=24,
+            target_depth_m=18,
+            target_floors=6,
+            archetype_id=variant_id,
+            reuse_keys=browser_reuse_keys,
+            allow_setback=False,
+        ),
+    )
+    zone = _make_zone(
+        project,
+        geometry=_calgary_rectangle_ewkt(24, 18.1),
+        properties={
+            "_plan_role": "building",
+            "development_selected_variant_id": variant_id,
+            "development_archetype_id": parent_id,
+            "architectural_clay_archetype_id": variant_id,
+            "architectural_clay_family": "nordic-semantic-clay-v001",
+            "floors": 6,
+        },
+    )
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(zone),
+            _scalar_result(project),
+            _scalar_result(project.id),
+            _scalars_result([zone]),
+            _scalar_result(project),
+            _scalars_result(entries),
+            _scalars_result([]),
+        ]
+    )
+
+    response = await client.post(
+        "/api/v1/lego-assembly/place-community",
+        headers=auth_headers,
+        json={
+            "items": [
+                _community_item(
+                    zone,
+                    recipe=_recipe_from_plan(plan, catalog.fingerprint),
+                )
+            ]
+        },
+    )
+
+    assert response.status_code == 200, response.text
+    assert response.json()["items"][0]["generator"] == "lego_assembly"
+    assert zone.properties["community_3d"]["generator"] == "lego_assembly"
+    created = mock_db.add.call_args.args[0]
+    assert created.specifications["legoAssembly"]["reuse_keys"] == list(browser_reuse_keys)
+
+
+@pytest.mark.anyio
 @pytest.mark.parametrize(
     ("field", "value"),
     [("width_m", 23.0), ("depth_m", 17.0), ("floors", 5), ("footprint_profile", "u_shape")],

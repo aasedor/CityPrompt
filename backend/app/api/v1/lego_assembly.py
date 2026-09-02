@@ -256,6 +256,12 @@ def _building_reuse_keys(properties: dict[str, Any]) -> tuple[str, ...]:
             properties.get("development_aesthetic_category"),
             properties.get("development_selected_variant_id"),
             properties.get("development_archetype_id"),
+            # Keep the server-side freshness replan byte-for-byte aligned
+            # with legoArchetypeContextFromZone in the browser. Architectural
+            # clay trials can carry this exact variant alongside the authored
+            # catalogue selection, including the intentional duplicate when
+            # both fields name the same variant.
+            properties.get("architectural_clay_archetype_id"),
         )
         if isinstance(value, str) and value
     )
