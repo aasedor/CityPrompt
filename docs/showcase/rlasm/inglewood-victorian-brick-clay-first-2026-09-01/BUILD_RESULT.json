@@ -1,0 +1,117 @@
+{
+  "schema": "cityprompt.rlasm.semantic-clay-build-result@1",
+  "candidate": "inglewood-victorian-brick-commercial-semantic-clay-v001",
+  "recorded_date": "2026-09-01",
+  "status": "BUILDER_VERIFIED_FOR_USER_VISUAL_REVIEW",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "method": "RLASM v6.1 clay-first",
+  "source_mode": "exact_catalogue_triplet_only",
+  "source_lock": [
+    {
+      "view": "front",
+      "repo_path": "frontend/public/archetypes/buildings/inglewood-heritage-brick-commercial/variant_0.png",
+      "bytes": 1446464,
+      "sha256": "e5122ce4dc9277ade776a994de8cf6eb173a3458657e3d2c5c45f3edab4287ab"
+    },
+    {
+      "view": "oblique_aerial",
+      "repo_path": "frontend/public/archetypes/buildings/inglewood-heritage-brick-commercial/variant_0_angle_60.jpg",
+      "bytes": 943353,
+      "sha256": "26d1413d8434fcdbcdfaab8dc151cd346daab3fda486738b04fa067eca7747b9"
+    },
+    {
+      "view": "near_true_top",
+      "repo_path": "frontend/public/archetypes/buildings/inglewood-heritage-brick-commercial/variant_0_angle_90.jpg",
+      "bytes": 812731,
+      "sha256": "67b91bf68860537f9fb0f2022e506f025fc9ed5ceaada2e30a04ae468ed2fa7e"
+    }
+  ],
+  "measured_spec_m": {
+    "width": 20.4,
+    "depth": 24.0,
+    "parapet_height": 10.35,
+    "gable_height": 13.25,
+    "storeys": 2,
+    "front_bays_per_side": 3,
+    "depth_bays": 6
+  },
+  "source_boundary": {
+    "front_sides_and_roof": "source_observed",
+    "rear_service_facade": "conservative_inference",
+    "context_exported": false
+  },
+  "authoring": {
+    "storage": "external_artifact",
+    "artifact_uri": "artifact://inglewood-heritage-clay-first-2026-09-01/inglewood-victorian-brick-commercial-semantic-clay-v001-authoring.blend",
+    "bytes": 518342,
+    "sha256": "bee2006fea4113fe168d9f1edd3c4e1ad9aac60761cafea1a7e67f6fa15f0ece",
+    "mesh_objects": 553,
+    "vertices": 44204,
+    "polygons": 39924,
+    "modular_by_bay": true
+  },
+  "runtime_glb": {
+    "storage": "external_artifact",
+    "artifact_uri": "artifact://inglewood-heritage-clay-first-2026-09-01/inglewood-victorian-brick-commercial-semantic-clay-v001.glb",
+    "bytes": 6193032,
+    "sha256": "e767f2327f50e78482fe3bef31cc2954d42a2a5b2c3cc8ed4875f79191e6ca2a",
+    "mesh_objects": 8,
+    "glb_nodes": 8,
+    "vertices": 44204,
+    "polygons": 39924,
+    "materials": 8,
+    "images": 0,
+    "textures": 0,
+    "semantic_roles": [
+      "masonry",
+      "wall",
+      "trim",
+      "roof",
+      "glass",
+      "timber",
+      "interior",
+      "hardware"
+    ]
+  },
+  "bounds_m": {
+    "min": [-10.34, -12.75, 0.0],
+    "max": [10.34, 13.129999, 13.328187]
+  },
+  "semantic_size_grammar": {
+    "mode": "fixed_central_entry_plus_repeatable_whole_bays",
+    "stretching_allowed": false,
+    "native_front_bays_per_side": 3,
+    "native_depth_bays": 6,
+    "width_growth": "insert_or_remove_matching_storefront_and_upper_window_bay_pairs_symmetrically",
+    "depth_growth": "insert_or_remove_complete_side_and_roof_bays_before_the_fixed_rear_module",
+    "fixed_roles": [
+      "central_entry",
+      "gable",
+      "corner_piers",
+      "cornice_returns",
+      "rear_service_entry"
+    ]
+  },
+  "qa_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "left",
+    "right",
+    "rear",
+    "rear_corner",
+    "true_top",
+    "entrance_close",
+    "facade_close",
+    "roof_close"
+  ],
+  "validation": {
+    "builder_pass": true,
+    "glb_header_valid": true,
+    "round_trip_import_valid": true,
+    "bottom_grounded_at_zero": true,
+    "review_context_absent": true,
+    "independent_keeper_review": "pending"
+  }
+}

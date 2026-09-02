@@ -1,0 +1,102 @@
+{
+  "schema": "cityprompt.rlasm.architectural-clay-catalogue@1",
+  "purpose": "Saved architectural-clay candidates awaiting explicit human visual approval before runtime catalogue promotion.",
+  "policy": {
+    "runtime_seed_by_default": false,
+    "independent_keeper_review_required": true,
+    "binary_storage": "external_artifact_until_approved",
+    "scaling": "repeat_or_remove_complete_semantic_modules_never_stretch_identity_geometry"
+  },
+  "assets": [
+    {
+      "candidate": "calgary-inner-city-bungalow-semantic-clay-v022",
+      "recorded_date": "2026-09-01",
+      "generation_mode": "converted_from_rlasm_geometry",
+      "method": "RLASM v6.1 semantic clay",
+      "status": "BUILDER_VERIFIED_FOR_USER_VISUAL_REVIEW",
+      "documentation": "docs/showcase/rlasm/calgary-bungalow-semantic-clay-v022-2026-09-01/README.md",
+      "source_candidate": "calgary-inner-city-bungalow-v021-semantic-scale",
+      "runtime_seed_allowed": false,
+      "independent_keeper_review": "pending",
+      "semantic_roles": ["masonry", "wall", "trim", "roof", "glass", "timber", "interior", "hardware"],
+      "runtime": {
+        "variant_count": 3,
+        "bytes_total": 28075548,
+        "images": 0,
+        "textures": 0
+      }
+    },
+    {
+      "candidate": "amsterdam-bell-gable-house-semantic-clay-v001",
+      "recorded_date": "2026-09-01",
+      "generation_mode": "converted_from_approved_rlasm_geometry",
+      "method": "RLASM v6.1 semantic clay",
+      "status": "BUILDER_VERIFIED_FOR_USER_VISUAL_REVIEW",
+      "documentation": "docs/showcase/rlasm/amsterdam-bell-gable-semantic-clay-2026-09-01/README.md",
+      "source_candidate": "10-amsterdam-bell-gable-house-rlasm-v10",
+      "runtime_seed_allowed": false,
+      "independent_keeper_review": "pending",
+      "semantic_roles": ["masonry", "trim", "roof", "glass", "timber", "interior", "hardware"],
+      "runtime": {
+        "mesh_objects": 553,
+        "polygons": 51060,
+        "bytes": 3719376,
+        "sha256": "b99d041449327e726a510e16583f528093248339ec6bb89a3b06c075f21f369d",
+        "images": 0,
+        "textures": 0
+      }
+    },
+    {
+      "candidate": "inglewood-victorian-brick-commercial-semantic-clay-v001",
+      "recorded_date": "2026-09-01",
+      "generation_mode": "clay_first",
+      "method": "RLASM v6.1 clay-first",
+      "status": "BUILDER_VERIFIED_FOR_USER_VISUAL_REVIEW",
+      "documentation": "docs/showcase/rlasm/inglewood-victorian-brick-clay-first-2026-09-01/README.md",
+      "build_script": "tools/archetype_compiler/build_inglewood_heritage_clay.py",
+      "source_archetype": "inglewood-heritage-brick-commercial",
+      "source_variant": "inglewood_victorian_brick",
+      "runtime_seed_allowed": false,
+      "independent_keeper_review": "pending",
+      "source_lock": [
+        {
+          "view": "front",
+          "repo_path": "frontend/public/archetypes/buildings/inglewood-heritage-brick-commercial/variant_0.png",
+          "sha256": "e5122ce4dc9277ade776a994de8cf6eb173a3458657e3d2c5c45f3edab4287ab"
+        },
+        {
+          "view": "oblique_aerial",
+          "repo_path": "frontend/public/archetypes/buildings/inglewood-heritage-brick-commercial/variant_0_angle_60.jpg",
+          "sha256": "26d1413d8434fcdbcdfaab8dc151cd346daab3fda486738b04fa067eca7747b9"
+        },
+        {
+          "view": "near_true_top",
+          "repo_path": "frontend/public/archetypes/buildings/inglewood-heritage-brick-commercial/variant_0_angle_90.jpg",
+          "sha256": "67b91bf68860537f9fb0f2022e506f025fc9ed5ceaada2e30a04ae468ed2fa7e"
+        }
+      ],
+      "semantic_roles": ["masonry", "wall", "trim", "roof", "glass", "timber", "interior", "hardware"],
+      "authoring": {
+        "mesh_objects": 553,
+        "polygons": 39924,
+        "bytes": 518342,
+        "sha256": "bee2006fea4113fe168d9f1edd3c4e1ad9aac60761cafea1a7e67f6fa15f0ece",
+        "modular_by_bay": true
+      },
+      "runtime": {
+        "mesh_objects": 8,
+        "polygons": 39924,
+        "bytes": 6193032,
+        "sha256": "e767f2327f50e78482fe3bef31cc2954d42a2a5b2c3cc8ed4875f79191e6ca2a",
+        "images": 0,
+        "textures": 0
+      },
+      "semantic_size_grammar": {
+        "mode": "fixed_central_entry_plus_repeatable_whole_bays",
+        "stretching_allowed": false,
+        "native_front_bays_per_side": 3,
+        "native_depth_bays": 6
+      }
+    }
+  ]
+}
