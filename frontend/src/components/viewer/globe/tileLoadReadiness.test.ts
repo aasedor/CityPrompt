@@ -3,6 +3,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import {
   holdTileQueueUpdates,
   type SceneTileRenderer,
+  waitForCaptureTileReadiness,
   waitForTileDisplayReady,
   waitForTilesSettled,
   waitForVisibleTileCoverage,
@@ -11,6 +12,7 @@ import {
 class FakeTiles implements SceneTileRenderer {
   isLoading = false;
   visibleTiles = new Set<unknown>();
+  errorTarget = 16;
   downloadQueue?: SceneTileRenderer['downloadQueue'];
   parseQueue?: SceneTileRenderer['parseQueue'];
 
@@ -184,6 +186,45 @@ describe('waitForVisibleTileCoverage', () => {
     await vi.advanceTimersByTimeAsync(500);
     await expect(result).resolves.toBe(false);
   });
+});
+
+describe('waitForCaptureTileReadiness', () => {
+  afterEach(() => vi.useRealTimers());
+
+  it('allows a paid-action capture after visible tiles settle while off-camera work continues', async () => {
+    vi.useFakeTimers();
+    const tiles = new FakeTiles();
+    tiles.isLoading = true;
+    tiles.visibleTiles.add({ id: 'drawn-context', traversal: { error: 8 } });
+    const result = waitForCaptureTileReadiness(tiles);
+    await vi.advanceTimersByTimeAsync(900);
+    await expect(result).resolves.toBe(true);
+    expect(tiles.isLoading).toBe(true);
+  });
+
+  it('returns a bounded failure when visible coverage keeps changing', async () => {
+    vi.useFakeTimers();
+    const tiles = new FakeTiles();
+    tiles.visibleTiles.add({ id: 0, traversal: { error: 8 } });
+    const result = waitForCaptureTileReadiness(tiles, { stableMs: 500, timeoutMs: 1_000 });
+    for (let index = 1; index < 10; index += 1) {
+      await vi.advanceTimersByTimeAsync(100);
+      tiles.visibleTiles.clear();
+      tiles.visibleTiles.add({ id: index, traversal: { error: 8 } });
+    }
+    await vi.advanceTimersByTimeAsync(100);
+    await expect(result).resolves.toBe(false);
+    expect(vi.getTimerCount()).toBe(0);
+  });
+
+  it('never accepts an empty visible context even when global loading is idle', async () => {
+    vi.useFakeTimers();
+    const result = waitForCaptureTileReadiness(new FakeTiles(), { timeoutMs: 1_000 });
+    await vi.advanceTimersByTimeAsync(1_000);
+    await expect(result).resolves.toBe(false);
+    await expect(waitForCaptureTileReadiness(null)).resolves.toBe(false);
+  });
+
 });
 
 describe('waitForTileDisplayReady', () => {

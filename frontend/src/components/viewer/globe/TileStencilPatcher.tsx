@@ -9,11 +9,7 @@
 import { useEffect, useContext, useMemo, useRef } from 'react';
 import * as THREE from 'three';
 import { TilesRendererContext } from '3d-tiles-renderer/r3f';
-import {
-  patchMaterialForStencil,
-  shouldCreateTileStencilMask,
-  unpatchMaterialStencil,
-} from './StencilMaskPlugin';
+import { unpatchMaterialStencil } from './StencilMaskPlugin';
 import type { SiteZone } from '@/types';
 import {
   createTileSpatialMaskSetConfig,
@@ -21,6 +17,7 @@ import {
   unpatchMaterialSpatialMask,
 } from './TileSpatialMaskPlugin';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
+import { resolvePreparedSiteTerrainHeight } from './sitePreparationSurface';
 
 interface TileStencilPatcherProps {
   /** Only patch when there are zones that need tile masking. */
@@ -36,13 +33,10 @@ export function TileStencilPatcher({ zones, terrainHeight }: TileStencilPatcherP
       const siteBoundary = getActiveSiteBoundary(zones);
       return createTileSpatialMaskSetConfig(
         siteBoundary ? [siteBoundary] : zones,
-        terrainHeight,
+        siteBoundary ? resolvePreparedSiteTerrainHeight(siteBoundary, terrainHeight) : terrainHeight,
       );
     },
     [zones, terrainHeight],
-  );
-  const hasStencilZones = !spatialMask && zones.some(
-    (zone) => shouldCreateTileStencilMask(zone.zone_type) && zone.coordinates.length >= 3,
   );
 
   useEffect(() => {
@@ -54,19 +48,16 @@ export function TileStencilPatcher({ zones, terrainHeight }: TileStencilPatcherP
       patchedMaterials.current.clear();
     };
 
-    if (!tiles || (!spatialMask && !hasStencilZones)) {
-      // Unpatch all if no zones need masking.
+    if (!tiles || !spatialMask) {
+      // Unsupported/invalid geometry retains real context. Projected stencil
+      // fallback would clear pixels outside the actual site in oblique views.
       unpatchAll();
       return;
     }
 
     const patchMaterial = (material: THREE.Material) => {
       if (patchedMaterials.current.has(material)) return;
-      if (spatialMask) {
-        patchMaterialForSpatialMask(material, spatialMask);
-      } else {
-        patchMaterialForStencil(material);
-      }
+      patchMaterialForSpatialMask(material, spatialMask);
       patchedMaterials.current.add(material);
     };
 
@@ -105,7 +96,7 @@ export function TileStencilPatcher({ zones, terrainHeight }: TileStencilPatcherP
       tiles.removeEventListener('load-model', handleLoadModel);
       unpatchAll();
     };
-  }, [hasStencilZones, spatialMask, tiles]);
+  }, [spatialMask, tiles]);
 
   return null;
 }

@@ -19,7 +19,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import get_settings
 from app.core.database import get_db
-from app.core.security import check_project_permission, is_admin_or_above, require_auth
+from app.core.security import (
+    check_project_permission,
+    check_project_read_access,
+    get_current_user,
+    is_admin_or_above,
+    require_auth,
+)
 from app.models.models import ApiUsageLog, Building, Project, SiteZone, User
 from app.schemas.direct_3d_render import (
     Direct3DCameraManifest,
@@ -718,12 +724,28 @@ async def preflight_video(
 @router.get("/projects/{project_id}", response_model=VideoPilotStateResponse)
 async def list_video_attempts(
     project_id: uuid.UUID,
-    user: User = Depends(require_auth),
+    user: User | None = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
+    share_token: str | None = None,
 ):
-    await check_project_permission(project_id, user, db, required="viewer")
+    await check_project_read_access(project_id, user, db, share_token)
     project = await db.get(Project, project_id)
     attempts = [dict(item) for item in (project.metadata_ or {}).get("video_pilot_attempts", [])] if project else []
+    if share_token:
+        # Public presentations contain completed videos, not failed attempts,
+        # provider prompts, capture inputs, or interaction identifiers.
+        attempts = [
+            {
+                **item,
+                "prompt": None,
+                "error": None,
+                "guide_image_url": None,
+                "interaction_id": None,
+                "request_id": "",
+            }
+            for item in attempts
+            if item.get("status") == "complete" and item.get("video_url")
+        ]
     omni_usage = _provider_usage(attempts, "omni")
     return VideoPilotStateResponse(
         attempts=[_public_attempt(item) for item in reversed(attempts)],

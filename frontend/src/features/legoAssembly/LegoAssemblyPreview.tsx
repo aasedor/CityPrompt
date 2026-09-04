@@ -6,6 +6,8 @@ import { Bounds, Environment, Grid, OrbitControls } from '@react-three/drei';
 import { AlertTriangle, Bookmark, Box, Check, Loader2, MapPin, Minus, Plus, RefreshCw, Save, Trash2, X } from 'lucide-react';
 import { getApiErrorMessage, siteZonesApi } from '@/services/api';
 import type { SiteZone, SiteZoneProperties } from '@/types';
+import { detachedPlotCoordinates, isDetachedArchetype } from './detachedPlot';
+import { computeFootprintFrame } from '@/components/viewer/globe/buildingPlacement';
 import {
   legoArchetypeContextFromZone,
   legoAssemblyApi,
@@ -111,7 +113,12 @@ export function LegoAssemblyPreview({
     || 'No archetype selected';
 
   // Catalogue-derived defaults, computed once on open; explicit props win.
-  const [defaultTargets] = useState(() => deriveZoneTargets(catalogOption, zoneProperties));
+  const [defaultTargets] = useState(() => {
+    const defaults = deriveZoneTargets(catalogOption, zoneProperties);
+    const frame = isDetachedArchetype(archetypeContext.archetype_id) && zone?.coordinates
+      ? computeFootprintFrame(zone.coordinates) : null;
+    return frame ? { ...defaults, width_m: frame.longDim, depth_m: frame.shortDim } : defaults;
+  });
   const [targetWidth, setTargetWidth] = useState(() =>
     clamp(widthM ?? defaultTargets.width_m, MIN_DIMENSION_M, MAX_DIMENSION_M));
   const [targetDepth, setTargetDepth] = useState(() =>
@@ -165,6 +172,7 @@ export function LegoAssemblyPreview({
         target_width_m: width,
         target_depth_m: depth,
         target_floors: floorCount,
+        footprint_local_m: detachedPlotCoordinates(archetypeContext.archetype_id, zone?.coordinates, { width_m: width, depth_m: depth }),
         ...(zone?.project_id ? { project_id: zone.project_id } : {}),
         ...archetypeContext,
         allow_setback: allowSetback,
@@ -421,6 +429,7 @@ export function LegoAssemblyPreview({
               <div className="flex justify-between"><dt>Fit score</dt><dd className="font-bold">{plan.fit.score.toFixed(2)}</dd></div>
               <div className="flex justify-between"><dt>Height</dt><dd className="font-bold">{plan.assembled_height_m.toFixed(1)} m</dd></div>
               <div className="flex justify-between"><dt>Modules</dt><dd className="font-bold">{plan.instances.length}</dd></div>
+              {plan.fit.placement_mode === 'detached_lots' && <div className="flex justify-between"><dt>Separate homes</dt><dd className="font-bold">{plan.fit.dwelling_count}</dd></div>}
             </dl>
           )}
 
@@ -439,6 +448,9 @@ export function LegoAssemblyPreview({
               Archetype form preserved: the building is uniformly scaled and contained inside the drawn site envelope.
             </div>
           )}
+          {plan?.fit.placement_mode === 'detached_lots' && <p className="mt-2 rounded border border-emerald-300 bg-emerald-50 p-2 text-xs text-emerald-900">
+            {plan.fit.dwelling_count} separate homes fit within your drawn plot. Gaps between homes are a starting point for your design; check local requirements in your planning report.
+          </p>}
 
           <button
             type="button"

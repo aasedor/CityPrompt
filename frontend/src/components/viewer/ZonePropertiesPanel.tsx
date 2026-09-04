@@ -1,4 +1,4 @@
-﻿import { useState, useEffect, useMemo, useRef } from 'react';
+import { useState, useEffect, useLayoutEffect, useCallback, useMemo, useRef } from 'react';
 import type { ReactNode } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Trash2, Sparkles, Loader2, X, RefreshCw, Building2, Route, TreePine, Droplets, ParkingCircle, MapPin, LayoutGrid, ChevronDown, ArrowDownToLine, Check, BookmarkPlus, Library, Box } from 'lucide-react';
@@ -51,6 +51,7 @@ const SHOW_LEGACY_SITE_BOUNDARY_TOOLS =
 
 interface ZonePropertiesPanelProps {
   zone: SiteZone;
+  savedVersionReload?: ZonePropertiesReload;
   onUpdate: (zoneId: string, data: { name?: string; color?: string; properties?: SiteZoneProperties }) => void;
   onDelete: (zoneId: string) => void;
   onClose: () => void;
@@ -58,6 +59,51 @@ interface ZonePropertiesPanelProps {
   buildings?: Building[];
   allZones?: SiteZone[];
   onOpenBlockEditor?: (draftZone: SiteZone) => void;
+}
+
+interface ZonePropertiesReload {
+  control: { generation: number; pending: boolean };
+  result?: { generation: number; status: 'loading' | 'success' | 'failed'; zone?: SiteZone };
+}
+
+/** Only an explicit successful reload resets local form edits. The mutable
+ * generation also cancels old debounce/unmount saves before React commits. */
+export function useZonePropertiesReload(
+  projectId: string | undefined,
+  zoneId: string | null,
+  reload: () => Promise<{ data?: SiteZone[]; error?: unknown; status: string }>,
+) {
+  const request = useRef(0);
+  const control = useRef({ generation: 0, pending: false });
+  const [result, setResult] = useState<ZonePropertiesReload['result']>();
+  useLayoutEffect(() => {
+    request.current += 1;
+    control.current.pending = false;
+    setResult(undefined);
+    return () => { request.current += 1; };
+  }, [projectId, zoneId]);
+  const reloadSavedVersion = useCallback(async () => {
+    const token = ++request.current;
+    const generation = ++control.current.generation;
+    control.current.pending = true;
+    setResult({ generation, status: 'loading' });
+    try {
+      const response = await reload();
+      if (request.current !== token) return false;
+      control.current.pending = false;
+      const success = !response.error && response.status === 'success';
+      setResult({ generation, status: success ? 'success' : 'failed',
+        zone: success ? response.data?.find((item) => item.id === zoneId) : undefined });
+      return success;
+    } catch {
+      if (request.current === token) {
+        control.current.pending = false;
+        setResult({ generation, status: 'failed' });
+      }
+      return false;
+    }
+  }, [reload, zoneId]);
+  return { savedVersionReload: { control: control.current, result }, reloadSavedVersion };
 }
 
 type DevelopmentAestheticCategory = {
@@ -440,7 +486,7 @@ function getFrontDayArchetypeImage(images: CatalogArchetypeImage[]): CatalogArch
   return images.find((image) => image.id.endsWith(`_${FRONT_DAY_VARIANT_ID}`));
 }
 
-export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGenerate, buildings, allZones, onOpenBlockEditor }: ZonePropertiesPanelProps) {
+export function ZonePropertiesPanel({ zone, savedVersionReload, onUpdate, onDelete, onClose, onAIGenerate, buildings, allZones, onOpenBlockEditor }: ZonePropertiesPanelProps) {
   const config = ZONE_TYPE_CONFIG[zone.zone_type];
   const osmContext = useViewerStore((s) => s.osmContext);
   const layoutPreview = useViewerStore((s) => s.layoutPreview);
@@ -455,6 +501,11 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
   const handleSaveRef = useRef<(closeAfterSave?: boolean) => void>(() => {});
   const customStyleSaveTimerRef = useRef<number | null>(null);
   const customStyleSavePendingRef = useRef(false);
+  const customStyleSaveGenerationRef = useRef(0);
+  const reloadControlRef = useRef(savedVersionReload?.control);
+  reloadControlRef.current = savedVersionReload?.control;
+  const resettingFormRef = useRef<{ name: string; props: SiteZoneProperties } | null>(null);
+  const lastReloadResultRef = useRef<ZonePropertiesReload['result']>();
   const prevCustomStyleKeyRef = useRef<string | undefined>(undefined);
   const prevAestheticSelectionKeyRef = useRef<string | undefined>(undefined);
   const usesBuildingWorkflow = zone.zone_type === 'building' || zone.zone_type === 'residential' || zone.zone_type === 'development_area';
@@ -473,6 +524,33 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
     setProps(zone.properties || {});
     setActiveBuildingStep(1);
   }, [zone.id]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useLayoutEffect(() => {
+    const result = savedVersionReload?.result;
+    if (!result || result === lastReloadResultRef.current) return;
+    lastReloadResultRef.current = result;
+    if (customStyleSaveTimerRef.current) window.clearTimeout(customStyleSaveTimerRef.current);
+    customStyleSaveTimerRef.current = null;
+    customStyleSavePendingRef.current = false;
+    if (result.status === 'success' && result.zone?.id === zone.id) {
+      const restored = { name: result.zone.name || '', props: result.zone.properties || {} };
+      resettingFormRef.current = restored;
+      prevCustomStyleKeyRef.current = customStyleKeyOf(restored.props);
+      prevAestheticSelectionKeyRef.current = aestheticSelectionKeyOf(restored.props);
+      setName(restored.name);
+      setProps(restored.props);
+    } else {
+      // Failed reloads leave the visible edits intact. Cancel the old debounce;
+      // further edits or an explicit Save can submit those values again.
+      resettingFormRef.current = null;
+      prevCustomStyleKeyRef.current = customStyleKeyOf(props);
+      prevAestheticSelectionKeyRef.current = aestheticSelectionKeyOf(props);
+    }
+  }, [savedVersionReload?.result, zone.id, props]);
+  useEffect(() => {
+    const restored = resettingFormRef.current;
+    if (restored && name === restored.name && props === restored.props) resettingFormRef.current = null;
+  }, [name, props]);
 
   useEffect(() => {
     if (usesBuildingWorkflow && !props.development_type && activeBuildingStep > 1) {
@@ -496,6 +574,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
   }, [lastAppliedUndoRedoAction, undoRedoHistoryVersion, zone.id, zone.name, zone.properties]);
 
   const handleSave = (closeAfterSave = false) => {
+    if (reloadControlRef.current?.pending || resettingFormRef.current) return;
     // Unsaved zones carry an optimistic temp- id while the create round-trip
     // is in flight; every zone endpoint UUID-validates its path and 422s on
     // them. Edits stay in local state — the panel remounts with the real id
@@ -587,6 +666,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
   // parent archetype itself did not change.
   const aestheticSelectionKey = aestheticSelectionKeyOf(props);
   useEffect(() => {
+    if (reloadControlRef.current?.pending || resettingFormRef.current) return;
     // Skip initial mount and zone resets. The latest-save ref is updated during
     // render, so this effect always persists the fully computed next props.
     if (prevAestheticSelectionKeyRef.current === undefined) {
@@ -600,6 +680,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
 
   // Auto-save custom-style edits (debounced — the prompt textarea fires on every keystroke)
   useEffect(() => {
+    if (reloadControlRef.current?.pending || resettingFormRef.current) return;
     const key = customStyleKeyOf(props);
     // Skip initial mount (panel remounts per zone via key={zone.id})
     if (prevCustomStyleKeyRef.current === undefined) {
@@ -610,19 +691,23 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
     prevCustomStyleKeyRef.current = key;
 
     if (customStyleSaveTimerRef.current) window.clearTimeout(customStyleSaveTimerRef.current);
+    customStyleSaveGenerationRef.current = reloadControlRef.current?.generation ?? 0;
     customStyleSavePendingRef.current = true;
     customStyleSaveTimerRef.current = window.setTimeout(() => {
       customStyleSavePendingRef.current = false;
-      handleSaveRef.current();
+      if (customStyleSaveGenerationRef.current === (reloadControlRef.current?.generation ?? 0)) handleSaveRef.current();
     }, 800);
   }, [props.custom_style_enabled, props.custom_style_prompt, props.custom_style_expanded_prompt, props.custom_style_expanded_edited, props.custom_style_expansion_hash, props.custom_style_attachments]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // FLUSH (never discard) a pending custom-style save on unmount — the panel
-  // unmounts on zone switch/close, and dropping the timer would silently lose
+  // Flush pending custom-style edits on ordinary unmount. An explicit reload
+  // invalidates its earlier debounce, so rejected values cannot be re-saved.
+  // The panel unmounts on zone switch/close, and dropping the timer would lose
   // everything typed in the last 800ms (or the whole setup if never idle).
   useEffect(() => () => {
     if (customStyleSaveTimerRef.current) window.clearTimeout(customStyleSaveTimerRef.current);
-    if (customStyleSavePendingRef.current) {
+    if (customStyleSavePendingRef.current
+        && customStyleSaveGenerationRef.current === (reloadControlRef.current?.generation ?? 0)
+        && !reloadControlRef.current?.pending) {
       customStyleSavePendingRef.current = false;
       handleSaveRef.current();
     }

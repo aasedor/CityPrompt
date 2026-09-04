@@ -1,8 +1,11 @@
 import type { QueryClient } from '@tanstack/react-query';
 import { useProjectStore, useViewerStore } from '@/store';
 import { useGenerationStore } from '@/store/generationStore';
+import { useUndoRedoStore } from '@/store/undoRedo';
 
 export function resetSessionState(queryClient?: QueryClient) {
+  useUndoRedoStore.getState().setProjectScope(null);
+  useUndoRedoStore.getState().clearHistory();
   queryClient?.clear();
   useProjectStore.setState({
     projects: [],

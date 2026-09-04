@@ -56,6 +56,8 @@ export interface LegoAssemblyPlan {
   assembled_height_m: number;
   instances: LegoAssemblyInstance[];
   fit: {
+    placement_mode?: 'detached_lots';
+    dwelling_count?: number;
     scale_x: number;
     scale_y: number;
     /** Raw parcel-envelope ratios before archetype-preserving containment. */
@@ -83,6 +85,7 @@ export interface LegoPlanRequest {
   target_width_m: number;
   target_depth_m: number;
   target_floors: number;
+  footprint_local_m?: number[][];
   archetype_id?: string;
   reuse_keys?: string[];
   preferred_family?: string;

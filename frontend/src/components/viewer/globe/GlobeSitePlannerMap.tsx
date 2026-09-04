@@ -31,6 +31,8 @@ import type { Building, SiteZone, SiteZoneType, SiteZoneProperties } from '@/typ
 import { ZONE_TYPE_CONFIG } from '@/types';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { useViewerStore } from '@/store';
+import { GlobeReferenceLayer } from '@/features/referenceLayers/GlobeReferenceLayer';
+import type { ReferenceLayer } from '@/features/referenceLayers/api';
 import { GlobeZoneLayer } from './GlobeZoneLayer';
 import { GlobeBuildingModelsLayer } from './GlobeBuildingModelsLayer';
 import { GlobeLegoAssemblyLayer } from './GlobeLegoAssemblyLayer';
@@ -52,7 +54,7 @@ import { SceneSettledMonitor } from './useSceneSettled';
 import {
   holdTileQueueUpdates,
   type SceneTileRenderer,
-  waitForTilesSettled,
+  waitForCaptureTileReadiness,
   waitForVisibleTileCoverage,
 } from './tileLoadReadiness';
 import {
@@ -999,6 +1001,11 @@ function TilesExposer({
   const tiles = useContext(TilesRendererContext);
   useEffect(() => {
     tilesRef.current = tiles as SceneTileRenderer | null;
+    if (import.meta.env.DEV) {
+      const debug = ((window as unknown as Record<string, unknown>).__globeDebug ??= {}) as Record<string, unknown>;
+      debug.tiles = tiles;
+      return () => { if (debug.tiles === tiles) delete debug.tiles; };
+    }
   }, [tiles, tilesRef]);
   return null;
 }
@@ -1398,6 +1405,7 @@ function MeasurementOverlay({
 }
 
 interface GlobeSitePlannerMapProps {
+  referenceLayers?: ReferenceLayer[];
   latitude?: number;
   longitude?: number;
   preferredView?: GlobePreferredView;
@@ -1486,6 +1494,7 @@ export interface GlobeAIRenderViewport {
 }
 
 export function GlobeSitePlannerMap({
+  referenceLayers = [],
   latitude: _latitude = 51.045,
   longitude: _longitude = -114.07,
   preferredView,
@@ -1520,6 +1529,7 @@ export function GlobeSitePlannerMap({
   const linear = isLinearTool(activeSitePlannerTool);
 
   // LOD settlement state â€” true when 3D tiles have fully loaded
+  const referenceOverlayGroup = useRef<THREE.Group>(null);
   const [isSceneSettled, setIsSceneSettled] = useState(false);
   // The loading badge can release once visible context is usable; capture
   // continues to rely on the stricter scene-settled signal below.
@@ -2461,7 +2471,7 @@ export function GlobeSitePlannerMap({
   ]);
 
   const waitForCurrentTiles = useCallback(
-    () => waitForTilesSettled(tilesRendererRef.current),
+    () => waitForCaptureTileReadiness(tilesRendererRef.current),
     [],
   );
 
@@ -2514,7 +2524,8 @@ export function GlobeSitePlannerMap({
         );
       }
 
-      const previousOverlaysVisible = zoneOverlaysVisibleRef.current;
+      const previousReferenceVisibility = referenceOverlayGroup.current?.visible;
+    const previousOverlaysVisible = zoneOverlaysVisibleRef.current;
       const previousSelectedBuildingId = selectedBuildingIdRef.current;
       try {
         // Direct capture consumes the compiled 3D scene, never editable color
@@ -2534,8 +2545,10 @@ export function GlobeSitePlannerMap({
         return await captureDirect3DScene(renderer, scene, camera, {
           includeGeometryPasses: options.includeGeometryPasses,
           maxLongEdge: options.maxLongEdge,
+          minVisibleContextCoverage: 0.01,
         });
       } finally {
+        if (referenceOverlayGroup.current && previousReferenceVisibility !== undefined) referenceOverlayGroup.current.visible = previousReferenceVisibility;
         setZoneOverlaysVisible(previousOverlaysVisible);
         setSelectedBuildingId(previousSelectedBuildingId);
       }
@@ -2665,6 +2678,7 @@ export function GlobeSitePlannerMap({
       ? centerWorld.clone().addScaledVector(streetUp, 7)
       : null;
     const pathCurve = new THREE.CatmullRomCurve3(routeSurfacePoints, false, 'centripetal');
+    const previousReferenceVisibility = referenceOverlayGroup.current?.visible;
     const previousOverlaysVisible = zoneOverlaysVisibleRef.current;
     const previousSelectedBuildingId = selectedBuildingIdRef.current;
     const previousModelsVisible = buildingModelsVisibleRef.current;
@@ -2721,6 +2735,7 @@ export function GlobeSitePlannerMap({
 
     try {
       if (previousControlsEnabled !== null) controlsTarget.enabled = false;
+      if (referenceOverlayGroup.current) referenceOverlayGroup.current.visible = false;
       setStreetCapturePegmanHidden(true);
       setZoneOverlaysVisible(false);
       setSelectedBuildingId(null);
@@ -2970,6 +2985,7 @@ export function GlobeSitePlannerMap({
       controls?.update?.();
       setStreetCapturePegmanHidden(false);
       setStreetRenderProfileActive(false);
+      if (referenceOverlayGroup.current && previousReferenceVisibility !== undefined) referenceOverlayGroup.current.visible = previousReferenceVisibility;
       setZoneOverlaysVisible(previousOverlaysVisible);
       setSelectedBuildingId(previousSelectedBuildingId);
       setBuildingModelsVisible(previousModelsVisible);
@@ -2985,6 +3001,7 @@ export function GlobeSitePlannerMap({
     const kind: 'model3d' | 'context3d' = streetCaptureHas3DModelsRef.current
       ? 'model3d'
       : 'context3d';
+    const previousReferenceVisibility = referenceOverlayGroup.current?.visible;
     const previousOverlaysVisible = zoneOverlaysVisibleRef.current;
     const previousSelectedBuildingId = selectedBuildingIdRef.current;
     const previousModelsVisible = buildingModelsVisibleRef.current;
@@ -2993,6 +3010,7 @@ export function GlobeSitePlannerMap({
     const previousFadeDuration = fadePlugin?.fadeDuration ?? null;
     let previousProjection: ReturnType<typeof applyStreetCameraProjection> = null;
     try {
+      if (referenceOverlayGroup.current) referenceOverlayGroup.current.visible = false;
       setStreetCapturePegmanHidden(true);
       setSelectedBuildingId(null);
       if (kind === 'model3d') {
@@ -3018,6 +3036,7 @@ export function GlobeSitePlannerMap({
       setStreetCapturePegmanHidden(false);
       setStreetRenderProfileActive(false);
       setSelectedBuildingId(previousSelectedBuildingId);
+      if (referenceOverlayGroup.current && previousReferenceVisibility !== undefined) referenceOverlayGroup.current.visible = previousReferenceVisibility;
       setZoneOverlaysVisible(previousOverlaysVisible);
       setBuildingModelsVisible(previousModelsVisible);
       if (fadePlugin && previousFadeDuration !== null) fadePlugin.fadeDuration = previousFadeDuration;
@@ -3894,6 +3913,7 @@ export function GlobeSitePlannerMap({
             onSettledChange={setIsSceneSettled}
             onDisplayReadyChange={setAreTilesDisplayReady}
           />
+          <group ref={referenceOverlayGroup}><GlobeReferenceLayer layers={referenceLayers} terrainHeight={terrainElevation} /></group>
           <TileStencilPatcher zones={tileMaskZones} terrainHeight={terrainElevation} />
           <GlobeTileMaskLayer zones={tileMaskZones} terrainHeight={terrainElevation} />
           {/* Camera starts at project location via Canvas camera prop */}
@@ -3981,7 +4001,6 @@ export function GlobeSitePlannerMap({
                 zones={siteZones}
                 direct3DProposalBuildingIds={direct3DProposalBuildingIds}
                 terrainHeight={terrainElevation}
-                preparedSiteTerrainHeight={preparedSiteTerrainHeight}
                 onLoadedIdsChange={handleLegoIdsChange}
                 selectedBuildingId={selectedRenderedBuildingId}
                 onBuildingClick={handleBuildingModelClick}
@@ -4194,7 +4213,7 @@ export function GlobeSitePlannerMap({
       })()}
 
       {!hasDrawingTool && streetViewPegman && (
-        <div className="absolute left-1/2 top-4 z-30 -translate-x-1/2 rounded-full border-2 border-[#151515] bg-[#fff9ec]/95 px-3 py-1.5 text-center text-[11px] font-black uppercase text-[#151515] shadow-[4px_4px_0_0_#151515] backdrop-blur-xl">
+        <div className="absolute left-1/2 top-28 z-30 max-w-[min(38rem,calc(100%-2rem))] -translate-x-1/2 rounded-xl border-2 border-[#151515] bg-[#fff9ec]/95 px-3 py-1.5 text-center text-xs font-semibold text-[#151515] shadow-[4px_4px_0_0_#151515] backdrop-blur-xl">
           {streetViewPegman?.position
             ? 'Arrow keys to rotate view | Esc to remove pegman'
             : 'Click to place street view camera'}
@@ -4203,14 +4222,14 @@ export function GlobeSitePlannerMap({
 
       {/* 3D Globe badge + pitch + LOD status â€” offset below back button */}
       {!hasDrawingTool && !streetViewPegman && !measureModeActive && (
-        <div className="pointer-events-none absolute left-1/2 top-4 z-30 hidden -translate-x-1/2 rounded-full border-2 border-[#151515] bg-[#fff9ec]/95 px-3 py-1.5 text-center text-[11px] font-black text-[#151515]/70 shadow-[4px_4px_0_0_#151515] backdrop-blur-xl select-none sm:block">
+        <div className="pointer-events-none absolute bottom-4 left-1/2 z-20 hidden max-w-[min(38rem,calc(100%-36rem))] -translate-x-1/2 rounded-xl border border-slate-300 bg-white/95 px-3 py-2 text-center text-xs font-medium text-slate-700 shadow-lg backdrop-blur-xl select-none lg:block">
           {selectedBuildingId && selectedZoneId
             ? '3D model selected | Edit type/floors in the panel, then Regenerate | Drag body/vertices or amber handle to move/reshape/rotate | Delete removes the model | Esc to deselect'
             : selectedBuildingId
             ? '3D model selected | Delete/Backspace to remove | Esc to deselect'
             : selectedZoneId
             ? 'Drag body to move | Drag vertices to reshape | Drag amber handle or Q/E to rotate buildings | WASD/Arrows to nudge relative to view | Ctrl+C/Ctrl+V or toolbar Copy/Paste | Delete to remove'
-            : 'Click a zone or 3D model to select | Drag to orbit | Scroll to zoom | WASD/Arrows to move | Shift/Ctrl to rise/lower'}
+            : 'Click to select · Drag to orbit · Scroll to zoom · Arrow keys to move'}
         </div>
       )}
 

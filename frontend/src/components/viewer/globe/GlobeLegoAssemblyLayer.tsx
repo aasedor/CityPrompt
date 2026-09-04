@@ -38,6 +38,7 @@ import { resolveApiFileUrl } from '@/services/api';
 import { createKtx2LoaderExtension } from '@/lib/ktx2GltfLoader';
 import { computeFootprintFrame, type FootprintFrame } from './buildingPlacement';
 import { raycastTerrainHeightAtLatLng } from './GlobeZoneLayer';
+import { resolvePreparedSiteTerrainForZone } from './sitePreparationSurface';
 import {
   getObjectFilteredTerrainHeight,
   isPlausibleTerrainAnchor,
@@ -119,8 +120,6 @@ interface GlobeLegoAssemblyLayerProps {
   direct3DProposalBuildingIds?: ReadonlySet<string>;
   /** Site-level elevation fallback (from the map's elevation fetch). */
   terrainHeight: number;
-  /** Authoritative prepared-site datum; overrides legacy per-zone elevations. */
-  preparedSiteTerrainHeight?: number | null;
   /** Buildings whose stack is actually mounted — drives prism suppression. */
   onLoadedIdsChange: (ids: Set<string>) => void;
   selectedBuildingId?: string | null;
@@ -549,7 +548,6 @@ export function GlobeLegoAssemblyLayer({
   zones,
   direct3DProposalBuildingIds,
   terrainHeight,
-  preparedSiteTerrainHeight = null,
   onLoadedIdsChange,
   selectedBuildingId = null,
   onBuildingClick,
@@ -645,6 +643,7 @@ export function GlobeLegoAssemblyLayer({
     const map = new Map<string, SiteZone>();
     for (const zone of zones) {
       if (zone.building_id) map.set(zone.building_id, zone);
+      for (const buildingId of zone.building_ids ?? []) map.set(buildingId, zone);
     }
     return map;
   }, [zones]);
@@ -751,6 +750,9 @@ export function GlobeLegoAssemblyLayer({
       {entries.map((entry) => {
         const { building, ring, frame } = entry;
         const zone = zoneByBuildingId.get(building.id);
+        // A boundary must not flatten unrelated buildings or those in its notch.
+        // Detail, loading fallback and distance massing use the same datum.
+        const preparedSiteTerrainHeight = resolvePreparedSiteTerrainForZone(zone, zones, terrainHeight);
         if (entry.kind === 'massing') {
           return (
             <LegoMassingStack

@@ -413,7 +413,10 @@ export function useDirect3DRender() {
         prompt,
         model: response.model,
         imageQuality: 'high',
-        providerLabel: viewMode === 'street'
+        savedRender: response.saved_render ?? undefined,
+        providerLabel: response.diagnostics.returned_safety_strategy === 'authoritative_source'
+          ? 'Original 3D view · AI finish needs review'
+          : viewMode === 'street'
           ? 'Direct 3D Street · GPT Image 2'
           : 'Direct 3D · GPT Image 2',
       },
@@ -422,7 +425,7 @@ export function useDirect3DRender() {
       outputFingerprint: response.output_fingerprint,
       outcome: response.outcome,
       warnings: [...response.warnings],
-      sourceImageUrl: capture.beautyImageBase64,
+      sourceImageUrl: capture.beautyImageBase64.startsWith('data:') ? capture.beautyImageBase64 : `data:image/png;base64,${capture.beautyImageBase64}`,
       fidelityPolicy,
     };
   }, []);

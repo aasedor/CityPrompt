@@ -20,13 +20,19 @@ import type { VideoRouteCaptureRequest, VideoRouteCaptureResult } from '@/compon
 import { nearestAspectRatio, useGlobeAIRender } from '@/components/viewer/globe/useGlobeAIRender';
 import type { StreetCaptureResult } from '@/components/viewer/useStreetViewRender';
 import { useGlobeCamera } from '@/components/viewer/globe/useGlobeCamera';
-import { ZonePropertiesPanel } from '@/components/viewer/ZonePropertiesPanel';
+import { ZonePropertiesPanel, useZonePropertiesReload } from '@/components/viewer/ZonePropertiesPanel';
 import { AIRenderPanel } from '@/components/viewer/AIRenderPanel';
 import { RenderResultModal } from '@/components/viewer/RenderResultModal';
 import { RenderEditModal } from '@/components/viewer/RenderEditModal';
 import { ZoneLegend } from '@/components/viewer/ZoneLegend';
 import { StreetViewPanel } from '@/components/viewer/StreetViewPanel';
 import { WorkflowStepper } from '@/components/viewer/WorkflowStepper';
+import { StudioControls, StudioDialog, StudioSaveStatus } from './StudioControls';
+import { ReadOnlyProject } from './ReadOnlyProject';
+import { StudentPlanningReport } from '@/features/studentReports/StudentPlanningReport';
+import { useReferenceLayers } from '@/features/referenceLayers/useReferenceLayers';
+import { ReferenceLayersPanel } from '@/features/referenceLayers/ReferenceLayersPanel';
+import { SiteElevation } from '@/features/referenceLayers/SiteElevation';
 import { ShapefileImportButton } from './ShapefileImportButton';
 import { LayersPanel } from './LayersPanel';
 import { OnboardingTour } from '@/components/viewer/OnboardingTour';
@@ -37,6 +43,7 @@ import { useUndoRedoKeyboard } from '@/hooks/useUndoRedoKeyboard';
 import { rebufferRoadOnUpdate } from '@/utils/roadGeometry';
 import { ImageLightbox } from '@/components/ui/ImageLightbox';
 import { getRenderImageKey, saveRenderedImage } from '@/utils/renderPersistence';
+import { savedRenderIsSource, savedRenderNeedsReview, savedRenderNotice } from '@/utils/renderPresentation';
 import { isTextEntryTarget } from '@/utils/domEvents';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { isPersistedZoneId } from '@/utils/zoneIdentity';
@@ -62,6 +69,10 @@ export function ProjectViewPage() {
   const { id } = useParams<{ id: string }>();
   const [showAddBuilding, setShowAddBuilding] = useState(false);
   const [showShare, setShowShare] = useState(false);
+  const [showReferenceLayers, setShowReferenceLayers] = useState(false);
+  const [showPlanningReport, setShowPlanningReport] = useState(false);
+  const closePlanningReport = useCallback(() => setShowPlanningReport(false), []);
+  const references = useReferenceLayers(id);
   const [aiGenerateBuildingId, setAiGenerateBuildingId] = useState<string | null>(null);
   const [legoZone, setLegoZone] = useState<SiteZone | null>(null);
   const [showLegoBuilder, setShowLegoBuilder] = useState(false);
@@ -190,11 +201,13 @@ export function ProjectViewPage() {
   const {
     siteZones,
     siteZonesLoading,
+    siteZonesError, reloadZones, pendingDrafts, retryDraft, isSaving, draftsPersistOnDevice, discardableDrafts, discardDraft, saveError,
     updateZone,
     deleteZone,
     handleZoneCreated,
     handleZoneUpdated,
   } = useSiteZones(id);
+  const { savedVersionReload, reloadSavedVersion } = useZonePropertiesReload(id, selectedZoneId, reloadZones);
 
   const initializedSiteToolProjectRef = useRef<string | null>(null);
 
@@ -363,17 +376,18 @@ export function ProjectViewPage() {
     }
   }, [cityPromptWorkflow.canRender, setWorkflowStep, siteZonesLoading, workflowStep]);
 
-  // Activate the planner immediately; the first drawing tool is selected only
-  // after the project's zones have loaded so a new site starts with its
-  // boundary while an existing site opens in neutral selection mode.
-  // Load saved renders for this project
+  // A project opens in selection mode. Late responses from a previous project
+  // must not replace this project's media tray after navigation.
   useEffect(() => {
     if (!id) return;
-    rendersApi.list(id).then(setSavedRenders).catch(() => {});
+    let cancelled = false;
+    setSavedRenders([]); setSavedVideos([]); setRenderLightbox(null); setVideoLightbox(null);
+    rendersApi.list(id).then((items) => { if (!cancelled) setSavedRenders(items); }).catch(() => {});
     videoRenderApi.list(id).then((result) => {
       const state = result as { attempts?: VideoAttempt[] };
-      setSavedVideos((state.attempts ?? []).filter((attempt) => attempt.status === 'complete' && attempt.video_url));
+      if (!cancelled) setSavedVideos((state.attempts ?? []).filter((attempt) => attempt.status === 'complete' && attempt.video_url));
     }).catch(() => {});
+    return () => { cancelled = true; };
   }, [id]);
 
   useEffect(() => {
@@ -390,9 +404,8 @@ export function ProjectViewPage() {
   useEffect(() => {
     if (!id || siteZonesLoading || initializedSiteToolProjectRef.current === id) return;
     initializedSiteToolProjectRef.current = id;
-    const boundary = getActiveSiteBoundary(siteZones);
     selectZone(null);
-    setActiveSitePlannerTool(boundary ? null : 'site_boundary');
+    setActiveSitePlannerTool(null);
   }, [id, selectZone, setActiveSitePlannerTool, siteZones, siteZonesLoading]);
 
   const handleZoneSelected = useCallback((zoneId: string | null) => {
@@ -802,10 +815,12 @@ export function ProjectViewPage() {
   const stepRenderLightbox = useCallback((direction: -1 | 1) => {
     setRenderLightbox((current) => {
       if (!current || savedRenders.length < 2) return current;
-      const currentIndex = savedRenders.findIndex((render) => render.id === current.id);
+      const sequence = current.variant === 'provider_original' ? savedRenders
+        : savedRenders.filter((render) => render.variant !== 'provider_original');
+      const currentIndex = sequence.findIndex((render) => render.id === current.id);
       const startIndex = currentIndex >= 0 ? currentIndex : 0;
-      const nextIndex = (startIndex + direction + savedRenders.length) % savedRenders.length;
-      return savedRenders[nextIndex] ?? current;
+      const nextIndex = (startIndex + direction + sequence.length) % sequence.length;
+      return sequence[nextIndex] ?? current;
     });
   }, [savedRenders]);
 
@@ -852,7 +867,7 @@ export function ProjectViewPage() {
       return () => window.removeEventListener('keydown', handleKeyDown, true);
   }, [renderLightbox, stepRenderLightbox]);
 
-  const { data: project, isLoading } = useQuery({
+  const { data: project, isLoading, error: projectError, refetch: reloadProject } = useQuery({
     queryKey: ['project', id],
     queryFn: () => projectsApi.get(id!),
     enabled: !!id,
@@ -862,7 +877,7 @@ export function ProjectViewPage() {
       const hasGenerating = data.buildings?.some(
         (b: { generation_status?: string }) => b.generation_status === 'generating'
       );
-      return hasGenerating ? 3000 : false;
+      return hasGenerating ? 3000 : 10 * 60 * 1000;
     },
   });
 
@@ -907,7 +922,14 @@ export function ProjectViewPage() {
   }, [project?.documents]);
 
   if (isLoading) return <div className="text-center text-primary-950/50">Loading project...</div>;
-  if (!project) return <div className="text-center text-primary-950/50">Project not found</div>;
+  if (!project) return <div role="alert" className="mx-auto max-w-lg space-y-4 rounded-xl bg-white p-6 text-slate-800">
+    <h1 className="text-xl font-semibold">{projectError ? 'Your project could not load' : 'Project not found'}</h1>
+    <p>{projectError ? 'Check your connection and try again. A loading problem does not mean your saved work has been deleted.' : 'The project may have been removed or your access may have changed.'}</p>
+    <button onClick={() => { void reloadProject(); }} className="btn-primary min-h-11">Try again</button>
+    <Link to="/projects" className="ml-4 underline">Your projects</Link>
+  </div>;
+
+  if (project.permission === 'viewer') return <ReadOnlyProject project={project} zones={siteZones} renders={savedRenders} videos={savedVideos} />;
 
   const globeRenderZones = withModeledBuildingRenderZones(
     visibleZones,
@@ -919,11 +941,12 @@ export function ProjectViewPage() {
   // --- Globe mode: full-screen Google 3D Tiles ---
   if (settings.mapMode === 'globe') {
     return (
-      <div className="fixed inset-0 z-50 bg-black" style={{ top: 0 }}>
+      <div className="fixed inset-x-0 bottom-0 top-16 z-50 bg-black">
         <GlobeSitePlannerMap
           latitude={project.location?.latitude}
           longitude={project.location?.longitude}
           siteZones={visibleZones}
+          referenceLayers={references.visibleLayers}
           buildings={visibleBuildings}
           onZoneCreated={handleZoneCreated}
           onZoneUpdated={handleZoneUpdated}
@@ -933,7 +956,7 @@ export function ProjectViewPage() {
           onGlobeReady={setGlobeRefs}
           onModeledBuildingsChange={setModeledBuildingIds}
           measureModeActive={measureActive}
-          interactionPaused={renderViewerActive}
+          interactionPaused={renderViewerActive || showPlanningReport || showShare || showTour || showReferenceLayers}
           onMeasureModeChange={handleMeasureModeChange}
         />
 
@@ -941,13 +964,14 @@ export function ProjectViewPage() {
         <div
           className={`pointer-events-none absolute inset-x-3 z-30 min-h-0 overflow-y-auto overscroll-contain sm:inset-x-auto sm:left-4 sm:bottom-4 sm:w-64 sm:max-h-none sm:overflow-y-auto sm:pr-2 ${activeSitePlannerTool ? 'hidden sm:block' : 'bottom-3 max-h-[38vh]'}`}
           style={{
-            top: 'clamp(5rem, 22dvh, 17rem)',
+            top: 'clamp(5rem, 12dvh, 8rem)',
           }}
         >
           <div className="pointer-events-auto">
             <SitePlannerToolbar
               layout="sidebar"
               isGlobeMode
+              onShowGuide={() => setShowTour(true)}
               onToggleHistory={handleToggleHistory}
               historyOpen={showHistory}
               measureActive={measureActive}
@@ -955,16 +979,11 @@ export function ProjectViewPage() {
               onMasterPlan={handleMasterPlan}
               masterPlanActive={masterPlanActive}
               onSiteBoundary={handleSiteBoundary}
-              uploadSlot={
-                <ShapefileImportButton
-                  projectId={project.id}
-                  iconSize={14}
-                  className="site-planner-tool-button flex items-center gap-1.5 rounded-full border-2 border-[#151515] bg-white px-2.5 py-1.5 text-[11px] font-black uppercase text-[#151515] transition-all hover:bg-[#fff9ec] hover:shadow-[2px_2px_0_0_#151515] disabled:opacity-60"
-                />
-              }
               bottomSlot={
                 !showGlobeRender && !showVideoRender ? (
                   <div className="flex flex-col gap-2">
+                    <StudioSaveStatus saving={isSaving} draftCount={pendingDrafts.length} draftsPersistOnDevice={draftsPersistOnDevice} loadError={Boolean(siteZonesError)} onRetry={() => pendingDrafts.forEach(retryDraft)} onReload={() => { void reloadSavedVersion(); }}
+                      discardableCount={discardableDrafts.length} onDiscardRejected={() => discardableDrafts.forEach(discardDraft)} saveError={saveError} />
                     <WorkflowStepper
                       state={cityPromptWorkflow}
                       activeStep={showLegoBuilder ? 3 : cityPromptWorkflow.currentStep}
@@ -972,6 +991,7 @@ export function ProjectViewPage() {
                       compact
                     />
                     <button
+                      data-tour="generate-3d-btn"
                       onClick={handleOpenGenerate3D}
                       disabled={!cityPromptWorkflow.canGenerate3D || isPreparingGenerate3D}
                       title={cityPromptWorkflow.generationReason}
@@ -982,6 +1002,7 @@ export function ProjectViewPage() {
                     </button>
                     <div className="grid grid-cols-2 gap-2">
                       <button
+                        data-tour="ai-render-btn"
                         onClick={handleOpenGlobeRender}
                         disabled={!cityPromptWorkflow.canRender}
                         title={cityPromptWorkflow.renderReason}
@@ -1007,24 +1028,33 @@ export function ProjectViewPage() {
           </div>
         </div>
 
-        {/* Imported layers panel (top-right; yields to the zone properties panel) */}
-        {!selectedZone && !showHistory && !measureActive && (
-          <div className="absolute right-4 top-16 z-40 max-w-[calc(100vw-2rem)]">
-            <LayersPanel
-              siteZones={siteZones}
-              hiddenLayers={hiddenLayers}
-              onToggleLayer={toggleLayer}
-              onDeleteLayer={deleteLayer}
-              deletingLayer={deletingLayer}
-            />
-          </div>
-        )}
+        <div className="absolute right-3 top-16 z-40 max-w-[calc(100vw-1.5rem)] sm:right-4 sm:top-4">
+          <StudioControls layersOpen={showReferenceLayers} onLayers={() => { selectZone(null); setShowReferenceLayers((open) => !open); }}
+            onReport={() => { setActiveSitePlannerTool(null); setShowPlanningReport(true); }} onTeam={() => setShowShare(true)} onHelp={() => setShowTour(true)} />
+        </div>
+        {showReferenceLayers && !showPlanningReport && <aside aria-label="Map layers" className="absolute bottom-20 right-3 top-32 z-40 flex max-w-[calc(100vw-1.5rem)] flex-col gap-3 overflow-y-auto rounded-xl bg-white/95 p-3 shadow-xl sm:right-4 sm:top-20">
+          <div className="sticky -top-3 z-10 flex items-center justify-between bg-white py-1"><h2 className="font-semibold text-slate-900">Map layers</h2><button onClick={() => setShowReferenceLayers(false)} aria-label="Close layers" className="flex h-11 w-11 items-center justify-center"><X size={18} /></button></div>
+          <ShapefileImportButton projectId={project.id} />
+          <ReferenceLayersPanel layers={references.layers} hiddenIds={references.hiddenIds} onToggle={references.toggleLayer}
+            onDelete={references.canEdit ? references.removeLayer : undefined} deletingId={references.deletingId}
+            isLoading={references.isLoading} error={references.error} onRetry={() => { void references.refetch(); }} />
+          <LayersPanel siteZones={siteZones} hiddenLayers={hiddenLayers} onToggleLayer={toggleLayer} onDeleteLayer={deleteLayer} deletingLayer={deletingLayer} />
+          <SiteElevation lat={project.location?.latitude} lon={project.location?.longitude} />
+        </aside>}
+        {showPlanningReport && <StudioDialog title="Planning report" onClose={closePlanningReport}>
+          <StudentPlanningReport projectId={project.id} zoneIds={visibleZones.filter((zone) => isPersistedZoneId(zone.id)).map((zone) => zone.id)}
+            planChangeToken={siteZones.map((zone) => `${zone.id}:${zone.updated_at}`).join('|')} canEdit
+            onSelectZone={(zoneId) => { closePlanningReport(); selectZone(zoneId); }} />
+        </StudioDialog>}
+        {showShare && <ShareModal projectId={project.id} projectName={project.name} onClose={() => setShowShare(false)} />}
+        {showTour && <OnboardingTour forceShow onComplete={() => setShowTour(false)} />}
 
         {/* Zone properties panel */}
         {selectedZone && !showHistory && !measureActive && (
           <ZonePropertiesPanel
             key={selectedZone.id}
             zone={selectedZone}
+            savedVersionReload={savedVersionReload}
             onUpdate={(zoneId, data) => {
               const previousZone = siteZones.find((z) => z.id === zoneId);
               updateZone.mutate({
@@ -1176,6 +1206,7 @@ export function ProjectViewPage() {
                   {new Date(renderLightbox.created_at).toLocaleDateString()}
                   {renderLightbox.style && ` · ${renderLightbox.style}`}
                 </p>
+                <RenderSourceNote render={renderLightbox} />
               </div>
               <div className="absolute top-3 right-3 flex gap-2">
                 <button
@@ -1353,6 +1384,7 @@ export function ProjectViewPage() {
             <ZonePropertiesPanel
               key={selectedZone.id}
               zone={selectedZone}
+              savedVersionReload={savedVersionReload}
               onUpdate={(zoneId, data) => {
                 const previousZone = siteZones.find((z) => z.id === zoneId);
                 updateZone.mutate({
@@ -1630,6 +1662,7 @@ export function ProjectViewPage() {
                 {new Date(renderLightbox.created_at).toLocaleDateString()}
                 {renderLightbox.style && ` · ${renderLightbox.style}`}
               </p>
+              <RenderSourceNote render={renderLightbox} />
             </div>
             <div className="absolute top-3 right-3 flex gap-2">
               <button
@@ -1717,6 +1750,14 @@ interface ProjectRendersTrayProps {
   onSelectVideo: (video: VideoAttempt) => void;
 }
 
+function RenderSourceNote({ render }: { render: SavedRender }) {
+  return <p className="mt-2 text-xs text-white/90">
+    {savedRenderNotice(render)}
+    {render.provenance_url && <a href={resolveApiFileUrl(render.provenance_url)} target="_blank" rel="noreferrer"
+      className="ml-2 inline-flex min-h-8 items-center underline">View source record</a>}
+  </p>;
+}
+
 function videoDownloadUrl(video: VideoAttempt): string {
   const source = resolveApiFileUrl(video.video_url ?? '');
   const separator = source.includes('?') ? '&' : '?';
@@ -1752,8 +1793,11 @@ function videoRenderLabel(video: VideoAttempt): string {
 }
 
 function ProjectRendersTray({ renders, videos, open, onToggle, onClose, onSelect, onSelectVideo }: ProjectRendersTrayProps) {
+  const [showAiAttempts, setShowAiAttempts] = useState(false);
+  const attemptCount = renders.filter((render) => render.variant === 'provider_original').length;
   const items = [
-    ...renders.map((render) => ({ kind: 'image' as const, created_at: render.created_at, render })),
+    ...renders.filter((render) => showAiAttempts || render.variant !== 'provider_original')
+      .map((render) => ({ kind: 'image' as const, created_at: render.created_at, render })),
     ...videos.map((video) => ({ kind: 'video' as const, created_at: video.created_at, video })),
   ].sort((left, right) => new Date(right.created_at).getTime() - new Date(left.created_at).getTime());
 
@@ -1791,6 +1835,10 @@ function ProjectRendersTray({ renders, videos, open, onToggle, onClose, onSelect
       </div>
 
       <div className="min-h-0 flex-1 overflow-y-auto p-3">
+        {attemptCount > 0 && <label className="mb-3 flex min-h-11 items-center gap-2 text-xs text-slate-700">
+          <input type="checkbox" checked={showAiAttempts} onChange={(event) => setShowAiAttempts(event.target.checked)} />
+          Show original AI attempts ({attemptCount})
+        </label>}
         {items.length === 0 ? (
           <div className="flex min-h-36 flex-col items-center justify-center rounded-lg border border-dashed border-primary-950/[0.12] px-4 py-6 text-center">
             <Sparkles size={22} className="text-primary-950/25" />
@@ -1802,6 +1850,9 @@ function ProjectRendersTray({ renders, videos, open, onToggle, onClose, onSelect
             {items.map((item) => item.kind === 'image' ? (
               <button key={`image-${item.render.id}`} type="button" onClick={() => onSelect(item.render)} className="group relative overflow-hidden rounded-lg border border-primary-950/[0.08] bg-primary-950/[0.03] text-left transition hover:border-amber-400/80">
                 <img src={resolveApiFileUrl(item.render.image_url)} alt={item.render.prompt || 'Saved render'} className="aspect-square w-full object-cover" />
+                {savedRenderNeedsReview(item.render) && <span className="absolute left-1 top-1 rounded bg-amber-100 px-1.5 py-1 text-[10px] font-bold text-amber-950">
+                  {item.render.variant === 'provider_original' ? 'Original AI attempt' : savedRenderIsSource(item.render) ? '3D source' : 'Review before presenting'}
+                </span>}
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 to-transparent p-2 opacity-0 transition group-hover:opacity-100">
                   <p className="truncate text-[10px] font-semibold text-white">{item.render.style || 'render'}</p>
                   <p className="text-[10px] text-white/65">{new Date(item.render.created_at).toLocaleDateString()}</p>

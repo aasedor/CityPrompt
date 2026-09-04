@@ -24,6 +24,7 @@ import {
 import { extractRenderableStreetCenterline, effectiveRoadWidth } from '@/utils/roadGeometry';
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 import { raycastTerrainHeightAtLatLng } from './GlobeZoneLayer';
+import { resolvePreparedSiteTerrainForZone } from './sitePreparationSurface';
 import {
   getObjectFilteredTerrainHeight,
   isPlausibleTerrainAnchor,
@@ -140,6 +141,7 @@ function zoneStoredTerrain(zone: SiteZone): number | null {
 function StreetRibbonDetail({
   zone,
   fallbackTerrainHeight,
+  preparedTerrain = null,
   intersectionNodes,
   renderFamilyFurniture,
   renderFamilyTrees,
@@ -149,6 +151,7 @@ function StreetRibbonDetail({
   intersectionNodes: FourWayStreetIntersection[];
   renderFamilyFurniture: boolean;
   renderFamilyTrees: boolean;
+  preparedTerrain?: number | null;
 }) {
   const tiles = useContext(TilesRendererContext);
   const raycasterRef = useRef(new THREE.Raycaster());
@@ -275,7 +278,7 @@ function StreetRibbonDetail({
   const [sampledTerrain, setSampledTerrain] = useState<number | null>(null);
   const hitFlagsRef = useRef<boolean[] | null>(null);
   const passRef = useRef(0);
-  const frameElevation = resolveZoneTerrainHeight(sampledTerrain, storedTerrain, fallbackTerrainHeight);
+  const frameElevation = preparedTerrain ?? resolveZoneTerrainHeight(sampledTerrain, storedTerrain, fallbackTerrainHeight);
 
   // Geometry edits (vertex drag commits, re-buffering) change coordinates
   // under the SAME zone id — the frozen drape state must restart or curbs
@@ -296,7 +299,7 @@ function StreetRibbonDetail({
   // consecutive-frame sampling right after mount rays against coarse LOD
   // tiles and bakes garbage; missed stations get re-sampled across passes.
   useFrame(() => {
-    if (frozenRef.current || !centerLngLat || !centroid) return;
+    if (preparedTerrain !== null || frozenRef.current || !centerLngLat || !centroid) return;
     frameCountRef.current += 1;
     if (frameCountRef.current % TERRAIN_SAMPLE_FRAME_INTERVAL !== 0) return;
     const tilesGroup = tiles?.group;
@@ -841,9 +844,11 @@ function StreetRibbonDetail({
 function RoundaboutDetail({
   zone,
   fallbackTerrainHeight,
+  preparedTerrain = null,
 }: {
   zone: SiteZone;
   fallbackTerrainHeight: number;
+  preparedTerrain?: number | null;
 }) {
   const tiles = useContext(TilesRendererContext);
   const raycasterRef = useRef(new THREE.Raycaster());
@@ -891,7 +896,7 @@ function RoundaboutDetail({
 
   const frame = useMemo(() => computeFootprintFrame(zone.coordinates), [zone.coordinates]);
   const storedTerrain = zoneStoredTerrain(zone);
-  const terrain = resolveZoneTerrainHeight(sampledTerrain, storedTerrain, fallbackTerrainHeight);
+  const terrain = preparedTerrain ?? resolveZoneTerrainHeight(sampledTerrain, storedTerrain, fallbackTerrainHeight);
   const geometry = useMemo(() => {
     if (!frame) return null;
     const inscribed = Math.min(frame.longDim, frame.shortDim) / 2;
@@ -939,7 +944,7 @@ function RoundaboutDetail({
   }, [frame]);
 
   useFrame(() => {
-    if (frozenRef.current || !frame) return;
+    if (preparedTerrain !== null || frozenRef.current || !frame) return;
     frameCountRef.current += 1;
     if (frameCountRef.current % TERRAIN_SAMPLE_FRAME_INTERVAL !== 0) return;
     if (attemptsRef.current >= TERRAIN_SAMPLE_MAX_ATTEMPTS) {
@@ -1169,10 +1174,12 @@ function AccessibleFourWayIntersectionDetail({
   node,
   zones,
   fallbackTerrainHeight,
+  preparedTerrain = null,
 }: {
   node: FourWayStreetIntersection;
   zones: SiteZone[];
   fallbackTerrainHeight: number;
+  preparedTerrain?: number | null;
 }) {
   const tiles = useContext(TilesRendererContext);
   const raycasterRef = useRef(new THREE.Raycaster());
@@ -1194,7 +1201,7 @@ function AccessibleFourWayIntersectionDetail({
     return values.length > 0 ? values.reduce((sum, value) => sum + value, 0) / values.length : null;
   }, [connectedZones]);
   const appearance = STREET_APPEARANCE_KITS[node.appearanceKitId];
-  const terrain = resolveZoneTerrainHeight(sampledTerrain, storedTerrain, fallbackTerrainHeight);
+  const terrain = preparedTerrain ?? resolveZoneTerrainHeight(sampledTerrain, storedTerrain, fallbackTerrainHeight);
   const geometry = useMemo(() => {
     const result = buildAccessibleFourWayIntersectionGeometry(
       node.axisABearingRad,
@@ -1225,7 +1232,7 @@ function AccessibleFourWayIntersectionDetail({
   ]);
 
   useFrame(() => {
-    if (frozenRef.current) return;
+    if (preparedTerrain !== null || frozenRef.current) return;
     frameCountRef.current += 1;
     if (frameCountRef.current % TERRAIN_SAMPLE_FRAME_INTERVAL !== 0) return;
     if (attemptsRef.current >= TERRAIN_SAMPLE_MAX_ATTEMPTS) {
@@ -1365,11 +1372,13 @@ export function GlobeStreetDetailLayer({
           userData={direct3DInstanceUserData(direct3DZoneInstanceDescriptor(zone.id, 'street'))}
         >
           {isRoundaboutZone(zone) ? (
-            <RoundaboutDetail zone={zone} fallbackTerrainHeight={terrainHeight} />
+            <RoundaboutDetail key={`${zone.id}:${resolvePreparedSiteTerrainForZone(zone, zones, terrainHeight)}`} zone={zone} fallbackTerrainHeight={terrainHeight} preparedTerrain={resolvePreparedSiteTerrainForZone(zone, zones, terrainHeight)} />
           ) : (
             <StreetRibbonDetail
+              key={`${zone.id}:${resolvePreparedSiteTerrainForZone(zone, zones, terrainHeight)}`}
               zone={zone}
               fallbackTerrainHeight={terrainHeight}
+              preparedTerrain={resolvePreparedSiteTerrainForZone(zone, zones, terrainHeight)}
               intersectionNodes={intersectionNodes}
               renderFamilyFurniture={furnitureStreetIds.has(zone.id)}
               renderFamilyTrees={treeStreetIds.has(zone.id)}
@@ -1386,9 +1395,13 @@ export function GlobeStreetDetailLayer({
           )}
         >
           <AccessibleFourWayIntersectionDetail
+            key={`${node.id}:${node.zoneIds.map((id) => resolvePreparedSiteTerrainForZone(zones.find((zone) => zone.id === id), zones, terrainHeight)).join(':')}`}
             node={node}
             zones={detailedRoadZones}
             fallbackTerrainHeight={terrainHeight}
+            preparedTerrain={node.zoneIds.every((id) => resolvePreparedSiteTerrainForZone(zones.find((zone) => zone.id === id), zones, terrainHeight) !== null)
+              ? resolvePreparedSiteTerrainForZone(zones.find((zone) => zone.id === node.zoneIds[0]), zones, terrainHeight)
+              : null}
           />
         </group>
       ))}

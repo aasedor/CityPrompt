@@ -3,6 +3,8 @@ Site Zone management API endpoints.
 """
 
 import logging
+import hashlib
+import json
 import math
 import re
 import uuid
@@ -22,7 +24,12 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm.attributes import flag_modified
 
 from app.core.database import get_db
-from app.core.security import is_admin_or_above, require_auth
+from app.core.security import (
+    check_project_read_access,
+    get_current_user,
+    is_admin_or_above,
+    require_auth,
+)
 from app.models.models import (
     Building,
     Project,
@@ -829,7 +836,7 @@ async def _ensure_project_access(
     share_result = await db.execute(
         select(ProjectShare).where(
             ProjectShare.project_id == project_id,
-            (ProjectShare.user_id == user.id) | (ProjectShare.email == user.email),
+            ProjectShare.user_id == user.id,
             permission_filter,
         )
     )
@@ -844,8 +851,11 @@ async def _ensure_project_access(
 async def list_zones(
     project_id: uuid.UUID,
     db: AsyncSession = Depends(get_db),
+    user: User | None = Depends(get_current_user),
+    share_token: str | None = None,
 ):
     """List all site zones in a project, ordered by sort_order."""
+    await check_project_read_access(project_id, user, db, share_token)
     result = await db.execute(
         select(SiteZone)
         .where(SiteZone.project_id == project_id)
@@ -853,6 +863,31 @@ async def list_zones(
     )
     zones = result.scalars().all()
     return [_zone_to_response(z) for z in zones]
+
+
+_CREATE_REQUEST_FIELDS = {"_client_request_id", "_client_request_hash"}
+
+
+def _create_request_hash(zone_in: SiteZoneCreate) -> str:
+    payload = zone_in.model_dump(mode="json", exclude={"client_request_id"})
+    payload["properties"] = {
+        key: value for key, value in (payload.get("properties") or {}).items() if key not in _CREATE_REQUEST_FIELDS
+    }
+    return hashlib.sha256(
+        json.dumps(payload, sort_keys=True, separators=(",", ":"), allow_nan=False).encode()
+    ).hexdigest()
+
+
+def _check_expected_zone_version(zone: SiteZone, expected: datetime | None) -> None:
+    if expected is None:
+        return
+    if expected.tzinfo is None:
+        raise HTTPException(status_code=422, detail="expected_updated_at must include a timezone")
+    if zone.updated_at != expected:
+        raise HTTPException(
+            status_code=409,
+            detail="This zone changed after you loaded it. Refresh before applying your edit.",
+        )
 
 
 @router.post(
@@ -879,7 +914,7 @@ async def create_zone(
         share_result = await db.execute(
             select(ProjectShare).where(
                 ProjectShare.project_id == project_id,
-                (ProjectShare.user_id == user.id) | (ProjectShare.email == user.email),
+                ProjectShare.user_id == user.id,
                 ProjectShare.permission == "editor",
             )
         )
@@ -887,6 +922,24 @@ async def create_zone(
             raise HTTPException(status_code=403, detail="Not authorized to add zones to this project")
 
     await lock_residual_landscape_project(db, project_id)
+
+    request_id = getattr(zone_in, "client_request_id", None)
+    request_hash = _create_request_hash(zone_in) if request_id else None
+    if request_id:
+        previous = await db.execute(
+            select(SiteZone).where(
+                SiteZone.project_id == project_id,
+                SiteZone.properties["_client_request_id"].astext == str(request_id),
+            )
+        )
+        existing = previous.scalar_one_or_none()
+        if existing:
+            if (existing.properties or {}).get("_client_request_hash") != request_hash:
+                raise HTTPException(
+                    status_code=409,
+                    detail="This save request ID was used for a different zone",
+                )
+            return _zone_to_response(existing)
 
     # Convert coordinates to a valid WKT POLYGON. Invalid rings used to be
     # accepted by PostGIS and fail much later in the master planner.
@@ -932,7 +985,17 @@ async def create_zone(
         zone_type=zone_in.zone_type,
         geometry=WKTElement(f"POLYGON(({coords_str}))", srid=4326),
         color=zone_in.color,
-        properties=zone_in.properties,
+        properties={
+            **{key: value for key, value in (zone_in.properties or {}).items() if key not in _CREATE_REQUEST_FIELDS},
+            **(
+                {
+                    "_client_request_id": str(request_id),
+                    "_client_request_hash": request_hash,
+                }
+                if request_id
+                else {}
+            ),
+        },
         is_active_boundary=zone_in.zone_type == "site_boundary",
         sort_order=zone_in.sort_order,
     )
@@ -1065,7 +1128,7 @@ async def update_zone(
         share_result = await db.execute(
             select(ProjectShare).where(
                 ProjectShare.project_id == zone.project_id,
-                (ProjectShare.user_id == user.id) | (ProjectShare.email == user.email),
+                ProjectShare.user_id == user.id,
                 ProjectShare.permission == "editor",
             )
         )
@@ -1074,11 +1137,21 @@ async def update_zone(
 
     await lock_residual_landscape_project(db, zone.project_id)
     await db.refresh(zone)
+    _check_expected_zone_version(zone, getattr(zone_in, "expected_updated_at", None))
 
     # Capture state BEFORE the update for diff / revert
     before_snapshot = _snapshot_from_zone(zone)
 
-    update_data = zone_in.model_dump(exclude_unset=True)
+    update_data = zone_in.model_dump(exclude_unset=True, exclude={"expected_updated_at"})
+    if "properties" in update_data:
+        update_data["properties"] = {
+            **{
+                key: value
+                for key, value in (update_data["properties"] or {}).items()
+                if key not in _CREATE_REQUEST_FIELDS
+            },
+            **{key: value for key, value in (zone.properties or {}).items() if key in _CREATE_REQUEST_FIELDS},
+        }
     requested_zone_type = update_data.get("zone_type", zone.zone_type)
     if requested_zone_type != zone.zone_type and (
         requested_zone_type == "site_boundary" or zone.zone_type == "site_boundary"
@@ -1126,6 +1199,7 @@ async def update_zone(
 
     for field, value in update_data.items():
         setattr(zone, field, value)
+    zone.updated_at = datetime.now(timezone.utc)
 
     before_coordinates = _open_ring(before_snapshot.get("coordinates"))
     after_coordinates = _open_ring(updated_coordinates or before_coordinates)
@@ -1205,9 +1279,16 @@ async def update_zone(
 
     # Record history with before/after (skip during undo/redo)
     if not request.headers.get("x-skip-history"):
-        changed = list(zone_in.model_dump(exclude_unset=True).keys())
+        changed = list(zone_in.model_dump(exclude_unset=True, exclude={"expected_updated_at"}).keys())
         desc_parts = ", ".join(changed[:3])
-        await _record_zone_history(db, zone, "update", user, f"Updated {desc_parts}", previous_snapshot=before_snapshot)
+        await _record_zone_history(
+            db,
+            zone,
+            "update",
+            user,
+            f"Updated {desc_parts}",
+            previous_snapshot=before_snapshot,
+        )
 
     return _zone_to_response(zone)
 
@@ -1218,6 +1299,7 @@ async def delete_zone(
     request: Request,
     user: User = Depends(require_auth),
     db: AsyncSession = Depends(get_db),
+    expected_updated_at: datetime | None = None,
 ):
     """Delete a site zone."""
     result = await db.execute(select(SiteZone).where(SiteZone.id == zone_id))
@@ -1232,7 +1314,7 @@ async def delete_zone(
         share_result = await db.execute(
             select(ProjectShare).where(
                 ProjectShare.project_id == zone.project_id,
-                (ProjectShare.user_id == user.id) | (ProjectShare.email == user.email),
+                ProjectShare.user_id == user.id,
                 ProjectShare.permission == "editor",
             )
         )
@@ -1241,11 +1323,16 @@ async def delete_zone(
 
     await lock_residual_landscape_project(db, zone.project_id)
     await db.refresh(zone)
+    _check_expected_zone_version(zone, expected_updated_at)
 
     # Record history before deletion (skip during undo/redo)
     if not request.headers.get("x-skip-history"):
         await _record_zone_history(
-            db, zone, "delete", user, f"Deleted {zone.zone_type} zone{(' ' + zone.name) if zone.name else ''}"
+            db,
+            zone,
+            "delete",
+            user,
+            f"Deleted {zone.zone_type} zone{(' ' + zone.name) if zone.name else ''}",
         )
 
     if zone.zone_type != "site_boundary":
@@ -1492,7 +1579,8 @@ async def preview_layouts(
 
     if zone.zone_type not in ("building", "residential", "development_area"):
         raise HTTPException(
-            status_code=400, detail="Only building, residential, or development_area zones support layout preview"
+            status_code=400,
+            detail="Only building, residential, or development_area zones support layout preview",
         )
 
     # Check editor permission
@@ -1502,7 +1590,7 @@ async def preview_layouts(
         share_result = await db.execute(
             select(ProjectShare).where(
                 ProjectShare.project_id == zone.project_id,
-                (ProjectShare.user_id == user.id) | (ProjectShare.email == user.email),
+                ProjectShare.user_id == user.id,
                 ProjectShare.permission == "editor",
             )
         )
@@ -1575,7 +1663,7 @@ async def render_layout_preview(
         share_result = await db.execute(
             select(ProjectShare).where(
                 ProjectShare.project_id == zone.project_id,
-                (ProjectShare.user_id == user.id) | (ProjectShare.email == user.email),
+                ProjectShare.user_id == user.id,
                 ProjectShare.permission == "editor",
             )
         )
@@ -1688,7 +1776,7 @@ async def render_site_preview(
         share_result = await db.execute(
             select(ProjectShare).where(
                 ProjectShare.project_id == boundary_zone.project_id,
-                (ProjectShare.user_id == user.id) | (ProjectShare.email == user.email),
+                ProjectShare.user_id == user.id,
                 ProjectShare.permission == "editor",
             )
         )
@@ -1834,7 +1922,11 @@ async def render_site_preview(
         )
         await db.commit()
 
-        return {"image_url": image_url, "zone_id": str(zone_id), "option_index": option_index}
+        return {
+            "image_url": image_url,
+            "zone_id": str(zone_id),
+            "option_index": option_index,
+        }
     except Exception as e:
         logger.error("Site preview image generation failed for boundary %s: %s", zone_id, e)
         raise HTTPException(status_code=500, detail=f"Image generation failed: {e}")
@@ -1859,7 +1951,8 @@ async def apply_layout(
 
     if zone.zone_type not in ("building", "residential", "development_area"):
         raise HTTPException(
-            status_code=400, detail="Only building, residential, or development_area zones can apply layouts"
+            status_code=400,
+            detail="Only building, residential, or development_area zones can apply layouts",
         )
 
     # Check editor permission
@@ -1869,7 +1962,7 @@ async def apply_layout(
         share_result = await db.execute(
             select(ProjectShare).where(
                 ProjectShare.project_id == zone.project_id,
-                (ProjectShare.user_id == user.id) | (ProjectShare.email == user.email),
+                ProjectShare.user_id == user.id,
                 ProjectShare.permission == "editor",
             )
         )
@@ -1979,7 +2072,8 @@ async def regenerate_layout(
 
     if zone.zone_type not in ("building", "residential", "development_area"):
         raise HTTPException(
-            status_code=400, detail="Only building, residential, or development_area zones support layout regeneration"
+            status_code=400,
+            detail="Only building, residential, or development_area zones support layout regeneration",
         )
 
     # Check editor permission
@@ -1989,7 +2083,7 @@ async def regenerate_layout(
         share_result = await db.execute(
             select(ProjectShare).where(
                 ProjectShare.project_id == zone.project_id,
-                (ProjectShare.user_id == user.id) | (ProjectShare.email == user.email),
+                ProjectShare.user_id == user.id,
                 ProjectShare.permission == "editor",
             )
         )
@@ -2069,7 +2163,10 @@ async def create_building_from_zone(
         raise HTTPException(status_code=404, detail="Zone not found")
 
     if zone.zone_type not in ("building", "residential", "development_area"):
-        raise HTTPException(status_code=400, detail="Only building or residential zones can create buildings")
+        raise HTTPException(
+            status_code=400,
+            detail="Only building or residential zones can create buildings",
+        )
 
     # Check editor permission on parent project (admins bypass)
     proj_result = await db.execute(select(Project).where(Project.id == zone.project_id))
@@ -2078,7 +2175,7 @@ async def create_building_from_zone(
         share_result = await db.execute(
             select(ProjectShare).where(
                 ProjectShare.project_id == zone.project_id,
-                (ProjectShare.user_id == user.id) | (ProjectShare.email == user.email),
+                ProjectShare.user_id == user.id,
                 ProjectShare.permission == "editor",
             )
         )
@@ -2402,7 +2499,7 @@ def compose_zone_prompt(zone: SiteZone, all_zones: list | None = None, site_cont
         if ctx_parts:
             parts.append("SITE CONTEXT: " + ". ".join(ctx_parts))
 
-        # Urban DNA planning directives (applied scenario) — advisory guidance
+        # Urban DNA planning directives (applied scenario) â€” advisory guidance
         # the planning-agent panel produced; the layout engine still draws.
         directives = site_context.get("planning_directives")
         if isinstance(directives, dict) and directives.get("parameters"):
@@ -2488,7 +2585,7 @@ def _build_site_context(boundary_zone: SiteZone, contained_zones: list[SiteZone]
     }
 
     # Urban DNA planning directives (written by POST /urban-dna/scenarios/{id}/apply).
-    # Absent for zones that never applied a scenario — output is unchanged then.
+    # Absent for zones that never applied a scenario â€” output is unchanged then.
     directives = boundary_props.get("_urban_dna_directives")
     if isinstance(directives, dict) and directives.get("parameters"):
         context["planning_directives"] = directives
@@ -2515,12 +2612,15 @@ def _compute_zone_area(zone: SiteZone) -> float:
 async def boundary_analysis(
     zone_id: uuid.UUID,
     db: AsyncSession = Depends(get_db),
+    user: User | None = Depends(get_current_user),
+    share_token: str | None = None,
 ):
     """Analyze a site boundary: find all zones within it and return summary."""
     result = await db.execute(select(SiteZone).where(SiteZone.id == zone_id))
     boundary = result.scalar_one_or_none()
     if not boundary:
         raise HTTPException(status_code=404, detail="Zone not found")
+    await check_project_read_access(boundary.project_id, user, db, share_token)
     if boundary.zone_type != "site_boundary":
         raise HTTPException(status_code=400, detail="Zone is not a site_boundary")
     if not getattr(boundary, "is_active_boundary", True):
@@ -2624,7 +2724,7 @@ async def generate_all(
         share_result = await db.execute(
             select(ProjectShare).where(
                 ProjectShare.project_id == project_id,
-                (ProjectShare.user_id == user.id) | (ProjectShare.email == user.email),
+                ProjectShare.user_id == user.id,
                 ProjectShare.permission == "editor",
             )
         )
@@ -2746,12 +2846,24 @@ async def generate_all(
                         else:
                             await queue_ai_generation_task(db, building, prompt, countdown=countdown)
                         generations_queued += 1
-                        queued_buildings.append({"id": str(building.id), "name": building.name or "Building"})
+                        queued_buildings.append(
+                            {
+                                "id": str(building.id),
+                                "name": building.name or "Building",
+                            }
+                        )
                     except Exception as e:
-                        logger.warning("Failed to queue generation for building %s: %s", building.id, e)
+                        logger.warning(
+                            "Failed to queue generation for building %s: %s",
+                            building.id,
+                            e,
+                        )
                 continue
             elif zone.building_ids:
-                logger.warning("Zone %s had invalid building_ids payload; regenerating from zone geometry", zone.id)
+                logger.warning(
+                    "Zone %s had invalid building_ids payload; regenerating from zone geometry",
+                    zone.id,
+                )
                 zone.building_id = None
                 zone.building_ids = []
                 await db.flush()
@@ -2784,7 +2896,9 @@ async def generate_all(
                     layout = await _generate_layout_for_zone(zone, unit_count, all_zones)
                 except Exception as layout_err:
                     logger.warning(
-                        "Layout gen failed for zone %s in batch, falling back to grid: %s", zone.id, layout_err
+                        "Layout gen failed for zone %s in batch, falling back to grid: %s",
+                        zone.id,
+                        layout_err,
                     )
                     grid_positions = compute_unit_positions(zone.geometry, unit_count)
                     all_building_ids_fb: list[str] = []
@@ -2836,9 +2950,18 @@ async def generate_all(
                         else:
                             await queue_ai_generation_task(db, building, prompt, countdown=countdown)
                         generations_queued += 1
-                        queued_buildings.append({"id": str(building.id), "name": building.name or "Building"})
+                        queued_buildings.append(
+                            {
+                                "id": str(building.id),
+                                "name": building.name or "Building",
+                            }
+                        )
                     except Exception as e:
-                        logger.warning("Failed to queue generation for building %s: %s", building.id, e)
+                        logger.warning(
+                            "Failed to queue generation for building %s: %s",
+                            building.id,
+                            e,
+                        )
                     continue
 
                 # Use AI layout to create buildings
@@ -2852,7 +2975,12 @@ async def generate_all(
                     abs_cx = centroid.x + lb.center_x
                     abs_cy = centroid.y + lb.center_y
                     footprint_wkt = _make_rotated_footprint(
-                        abs_cx, abs_cy, lb.width_m / 2, lb.depth_m / 2, lb.rotation_deg, center_lat
+                        abs_cx,
+                        abs_cy,
+                        lb.width_m / 2,
+                        lb.depth_m / 2,
+                        lb.rotation_deg,
+                        center_lat,
                     )
 
                     b = Building(
@@ -2924,7 +3052,13 @@ async def generate_all(
 
         except Exception as zone_err:
             logger.exception("Batch generation failed for zone %s: %s", zone.id, zone_err)
-            failed_zones.append({"zone_id": str(zone.id), "zone_name": zone.name, "error": str(zone_err)})
+            failed_zones.append(
+                {
+                    "zone_id": str(zone.id),
+                    "zone_name": zone.name,
+                    "error": str(zone_err),
+                }
+            )
             continue
 
     return {
@@ -3308,7 +3442,7 @@ async def revert_to_version(
     if entry.action == "update" and entry.previous_snapshot:
         snapshot = entry.previous_snapshot
     elif entry.action == "update":
-        # No previous_snapshot stored — find the prior entry for this zone
+        # No previous_snapshot stored â€” find the prior entry for this zone
         prev_result = await db.execute(
             select(ZoneHistory)
             .where(ZoneHistory.zone_id == entry.zone_id)

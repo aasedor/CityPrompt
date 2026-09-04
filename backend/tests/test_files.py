@@ -1,4 +1,5 @@
 import pytest
+from unittest.mock import AsyncMock
 from fastapi import HTTPException
 
 from app.api.v1 import files
@@ -56,6 +57,7 @@ async def test_get_file_can_force_a_named_download(monkeypatch) -> None:
             return {"Body": FakeBody(), "ContentType": "video/mp4"}
 
     monkeypatch.setattr(files, "_s3_client", lambda: FakeS3())
+    monkeypatch.setattr(files, "_authorize_file", AsyncMock(return_value=False))
     response = await files.get_file(
         "projects/example/video-render/attempt/omni.mp4",
         download=True,

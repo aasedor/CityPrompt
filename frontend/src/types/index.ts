@@ -26,6 +26,7 @@ export interface Project {
   created_at: string;
   updated_at: string;
   owner_id: string;
+  permission?: 'owner' | 'editor' | 'viewer';
   owner_email?: string;
   buildings?: Building[];
   documents?: Document[];
@@ -72,6 +73,14 @@ export interface SavedRender {
   model?: string;
   image_quality?: 'auto' | 'low' | 'medium' | 'high';
   scene_revision_sha256?: string;
+  plan_revision_sha256?: string;
+  camera_revision_sha256?: string;
+  capture_fingerprint?: string;
+  output_fingerprint?: string;
+  provenance_url?: string;
+  variant?: 'returned' | 'provider_original' | string;
+  outcome?: string | null;
+  presentation_strategy?: string | null;
   created_at: string;
 }
 

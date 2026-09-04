@@ -40,6 +40,7 @@ import {
 } from '@/components/viewer/globe/streetNetworkGroundTexture';
 import { usesArchetypeOwnedParkSurface } from '@/components/viewer/globe/parkLegoFamilies';
 import { compileProjectCommunity3D } from './projectCommunityCompile';
+import { detachedPlotCoordinates } from './detachedPlot';
 
 function BuilderScene({ items }: { items: ZoneBuildItem[] }) {
   const placed = items.filter(
@@ -411,6 +412,7 @@ export function LegoBuilderPanel({
           target_depth_m: item.targets.depth_m,
           target_floors: item.targets.floors,
           footprint_profile: item.targets.footprint_profile,
+          footprint_local_m: detachedPlotCoordinates(item.archetypeId, item.zone.coordinates, item.targets),
           wing_depth_m: item.targets.wing_depth_m,
           project_id: item.zone.project_id,
           // A manually drawn parcel is an intentional design target. Match the
@@ -704,7 +706,9 @@ export function LegoBuilderPanel({
                 {item.plan && (
                   <div className="mt-0.5 flex items-center justify-between gap-2">
                     <p className="min-w-0 truncate text-black/60" title={item.plan.family}>
-                      {item.plan.family} · fit {item.plan.fit.score.toFixed(2)}
+                      {item.plan.fit.placement_mode === 'detached_lots'
+                        ? `${item.plan.fit.dwelling_count} separate homes within your plot`
+                        : `${item.plan.family} · fit ${item.plan.fit.score.toFixed(2)}`}
                     </p>
                     {item.placeState === 'placed' ? (
                       <span className="flex shrink-0 items-center gap-1 rounded bg-emerald-100 px-1.5 py-0.5 text-[10px] font-bold text-emerald-800">

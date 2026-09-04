@@ -42,9 +42,11 @@ import {
 } from '@/features/community3d/community3d';
 import {
   createSitePreparationGeometry,
+  createPreparedSiteBackingGeometry,
   createSitePreparationTexture,
   createWoonerfPaverTexture,
   getPreparedSiteBoundaryIds,
+  resolvePreparedSiteTerrainForZone,
   resolvePreparedSiteTerrainHeight,
   overlapPreparedGroundEdges,
   shouldRenderReplacementFootprintGround,
@@ -404,7 +406,7 @@ function getTerrainProbePoints(
   return probes;
 }
 
-function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabled, lightweight = false, suppressed = false, planningOverlaysVisible = true, boundaryOverlayVisible = true, sitePrepared = false }: {
+function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabled, lightweight = false, suppressed = false, planningOverlaysVisible = true, boundaryOverlayVisible = true, sitePrepared = false, preparedTerrain = null }: {
   zone: SiteZone;
   isSelected: boolean;
   terrainHeight: number;
@@ -415,6 +417,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   planningOverlaysVisible?: boolean;
   boundaryOverlayVisible?: boolean;
   sitePrepared?: boolean;
+  preparedTerrain?: number | null;
 }) {
   const color = resolveZoneColor(zone);
   const label = resolveZoneLabel(zone);
@@ -639,7 +642,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   const preparedSiteGeo = useMemo(
     () => {
       if (!isPreparedBoundary || !geoData?.flatTopGeo) return null;
-      const geometry = createSitePreparationGeometry(geoData.flatTopGeo, zone.id);
+      const geometry = createPreparedSiteBackingGeometry(geoData.flatTopGeo, zone.id);
       if (residualLandscapeRecipe) {
         applyResidualLandscapeUVs(geometry, geoData.fillCoords, zone.coordinates);
       }
@@ -692,7 +695,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   // Generated buildings never use flat fill geometry. Pre-generation building
   // footprints intentionally share the live terrain-drape path, while the
   // external bare-earth bake stays reserved for imported reference overlays.
-  const shouldBakeImportedTerrain = isImported && !isBuilding && !isCompiledGround;
+  const shouldBakeImportedTerrain = preparedTerrain === null && isImported && !isBuilding && !isCompiledGround;
   const hasBakedElevationRelief = (
     shouldBakeImportedTerrain && hasUsableElevationRelief(bakedElevations)
   );
@@ -724,13 +727,13 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   // (no per-frame raycasting, no re-storm on navigation). The drape-and-freeze.
   const frozenRef = useRef(false);
   const [sampledTerrainHeight, setSampledTerrainHeight] = useState<number | null>(null);
-  const zoneTerrainHeight = isPreparedBoundary
+  const zoneTerrainHeight = preparedTerrain ?? (isPreparedBoundary
     ? resolvePreparedSiteTerrainHeight(zone, terrainHeight)
     : resolveZoneTerrainHeight(
       sampledTerrainHeight,
       storedTerrainHeight,
       terrainHeight,
-    );
+    ));
   const terrainReferenceHeight = storedTerrainHeight ?? terrainHeight;
   const hasAuthoredGroundTextureMeta = Boolean(
     zoneProps?.park_ground_texture || zoneProps?.street_network_ground_texture,
@@ -748,6 +751,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   const lastDragVersionRef = useRef(0);
 
   const sampleZoneTerrainHeight = useCallback(() => {
+    if (preparedTerrain !== null) return false;
     const tilesGroup = tiles?.group;
     if (!tilesGroup || tilesGroup.children.length === 0) return false;
 
@@ -794,7 +798,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
         : trustedSampledHeight
     ));
     return true;
-  }, [centroid, communityKind, filterObjectHeights, isCompiledGround, isPreparedBoundary, storedTerrainHeight, terrainHeight, terrainReferenceHeight, tiles, zone.coordinates]);
+  }, [centroid, communityKind, filterObjectHeights, isCompiledGround, isPreparedBoundary, preparedTerrain, storedTerrainHeight, terrainHeight, terrainReferenceHeight, tiles, zone.coordinates]);
 
   useFrame(() => {
     const drag = dragRef.current;
@@ -853,6 +857,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   });
 
   const drapeToTerrain = useCallback(() => {
+    if (preparedTerrain !== null) return;
     // A persisted height may have been captured from a photogrammetry roof.
     // Do not deform or freeze the surface until a current, plausible tile
     // sample has anchored this render session.
@@ -964,7 +969,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
         drapedRef.current = true;
       }
     }
-  }, [tiles, geoData, isExtrudedBuilding, hasBakedElevationRelief, sampledTerrainHeight, filterObjectHeights, renderCoordinates, zoneTerrainHeight, freezeDrape]);
+  }, [tiles, geoData, isExtrudedBuilding, hasBakedElevationRelief, sampledTerrainHeight, filterObjectHeights, renderCoordinates, zoneTerrainHeight, freezeDrape, preparedTerrain]);
 
   useEffect(() => {
     if (sampledTerrainHeight !== null) return undefined;
@@ -1309,6 +1314,7 @@ export function GlobeZoneLayer({
     <>
       {zones.map((zone) => {
         const role = direct3DGroundRoleForCommunityKind(resolveCommunity3DKind(zone));
+        const preparedTerrain = resolvePreparedSiteTerrainForZone(zone, zones, terrainHeight);
         return (
           <group
             key={zone.id}
@@ -1323,6 +1329,7 @@ export function GlobeZoneLayer({
             }}
           >
             <ZoneMesh
+              key={`${zone.id}:${preparedTerrain ?? 'terrain'}`}
               zone={zone}
               isSelected={zone.id === selectedZoneId}
               terrainHeight={terrainHeight}
@@ -1333,6 +1340,7 @@ export function GlobeZoneLayer({
               planningOverlaysVisible={showPlanningOverlays}
               boundaryOverlayVisible={showPlanningOverlays}
               sitePrepared={sitePrepared}
+              preparedTerrain={preparedTerrain}
             />
           </group>
         );

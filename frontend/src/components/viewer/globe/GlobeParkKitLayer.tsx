@@ -32,6 +32,7 @@ import {
 import { resolveApiFileUrl } from '@/services/api';
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 import { raycastTerrainHeightAtLatLng } from './GlobeZoneLayer';
+import { resolvePreparedSiteTerrainForZone } from './sitePreparationSurface';
 import {
   getObjectFilteredTerrainHeight,
   isPlausibleTerrainAnchor,
@@ -1926,9 +1927,11 @@ function hasCoreFixedParkProgram(zone: SiteZone): boolean {
 function ParkKitInstance({
   zone,
   fallbackTerrainHeight,
+  preparedTerrain = null,
 }: {
   zone: SiteZone;
   fallbackTerrainHeight: number;
+  preparedTerrain?: number | null;
 }) {
   const tiles = useContext(TilesRendererContext);
   const raycasterRef = useRef(new THREE.Raycaster());
@@ -2140,7 +2143,7 @@ function ParkKitInstance({
   // instance rays missed at freeze time or the centroid drifted, re-drape.
   useEffect(() => {
     const tilesRenderer = tiles;
-    if (!tilesRenderer) return;
+    if (!tilesRenderer || preparedTerrain !== null) return;
     const handleLoadEnd = () => {
       if (!frozenRef.current || redrapesRef.current >= 3) return;
       const tilesGroup = tilesRenderer.group;
@@ -2173,12 +2176,12 @@ function ParkKitInstance({
     return () => {
       tilesRenderer.removeEventListener('tiles-load-end', handleLoadEnd);
     };
-  }, [tiles, centroid.lat, centroid.lng, sampledTerrain]);
+  }, [tiles, centroid.lat, centroid.lng, sampledTerrain, preparedTerrain]);
 
   // Anchor the frame, then seat instances in interval-gated batches
   // (drape-and-freeze; z accumulates in refs, state set once at freeze).
   useFrame(() => {
-    if (frozenRef.current || terrainTargets.length === 0) return;
+    if (preparedTerrain !== null || frozenRef.current || terrainTargets.length === 0) return;
     frameCountRef.current += 1;
     if (frameCountRef.current % TERRAIN_SAMPLE_FRAME_INTERVAL !== 0) return;
     const tilesGroup = tiles?.group;
@@ -2291,7 +2294,7 @@ function ParkKitInstance({
     });
   }, [instanceZ, microdetailPlacements.length, placements.length, specialtyTerrainAnchors]);
   if (terrainTargets.length === 0) return null;
-  const terrain = resolveZoneTerrainHeight(sampledTerrain, storedTerrain, fallbackTerrainHeight);
+  const terrain = preparedTerrain ?? resolveZoneTerrainHeight(sampledTerrain, storedTerrain, fallbackTerrainHeight);
   const microdetailZ = instanceZ
     ? instanceZ.slice(placements.length, placements.length + microdetailPlacements.length)
     : null;
@@ -2399,7 +2402,12 @@ export function GlobeParkKitLayer({
           name={`siteforge-direct3d-park-${zone.id}`}
           userData={direct3DInstanceUserData(direct3DZoneInstanceDescriptor(zone.id, 'park'))}
         >
-          <ParkKitInstance zone={zone} fallbackTerrainHeight={terrainHeight} />
+          <ParkKitInstance
+            key={`${zone.id}:${resolvePreparedSiteTerrainForZone(zone, zones, terrainHeight)}`}
+            zone={zone}
+            fallbackTerrainHeight={terrainHeight}
+            preparedTerrain={resolvePreparedSiteTerrainForZone(zone, zones, terrainHeight)}
+          />
         </group>
       ))}
     </>

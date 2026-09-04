@@ -1,8 +1,8 @@
 import '@testing-library/jest-dom/vitest';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
-import type { ReactElement } from 'react';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { act, cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
+import type { ComponentProps, ReactElement } from 'react';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 const { compileBoundaryCommunity3DMock, listLegoModulesMock } = vi.hoisted(() => ({
   compileBoundaryCommunity3DMock: vi.fn(),
@@ -264,7 +264,7 @@ vi.mock('@/services/api', async (importOriginal) => {
   };
 });
 
-import { ZonePropertiesPanel } from './ZonePropertiesPanel';
+import { ZonePropertiesPanel, useZonePropertiesReload } from './ZonePropertiesPanel';
 import type { SiteZone } from '@/types';
 import { modelLibraryApi, siteZonesApi, urbanDnaApi } from '@/services/api';
 import { useViewerStore } from '@/store';
@@ -376,6 +376,150 @@ function publicRealmZone(zoneType: 'road' | 'green_space'): SiteZone {
     updated_at: '2026-07-22T00:00:00Z',
   };
 }
+
+type ReloadResponse = { data?: SiteZone[]; error?: unknown; status: string };
+
+function deferredReload() {
+  let resolve!: (response: ReloadResponse) => void;
+  let reject!: (error: Error) => void;
+  const promise = new Promise<ReloadResponse>((resolvePromise, rejectPromise) => {
+    resolve = resolvePromise;
+    reject = rejectPromise;
+  });
+  return { resolve, reject, reload: vi.fn(() => promise) };
+}
+
+function customParkZone(): SiteZone {
+  return {
+    ...publicRealmZone('green_space'),
+    properties: { custom_style_enabled: true, custom_style_domain: 'open_space', custom_style_prompt: 'Saved park description' },
+  };
+}
+
+function ReloadPanel({ zone, reload, onUpdate, onClose }: {
+  zone: SiteZone;
+  reload: () => Promise<ReloadResponse>;
+  onUpdate: ComponentProps<typeof ZonePropertiesPanel>['onUpdate'];
+  onClose: ComponentProps<typeof ZonePropertiesPanel>['onClose'];
+}) {
+  const { savedVersionReload, reloadSavedVersion } = useZonePropertiesReload(zone.project_id, zone.id, reload);
+  return <>
+    <button onClick={() => { void reloadSavedVersion(); }}>Reload saved version</button>
+    <ZonePropertiesPanel key={zone.id} zone={zone} savedVersionReload={savedVersionReload}
+      onUpdate={onUpdate} onDelete={vi.fn()} onClose={onClose} />
+  </>;
+}
+
+describe('ZonePropertiesPanel explicit saved-version reload', () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    Object.defineProperty(HTMLElement.prototype, 'scrollTo', { configurable: true, value: vi.fn() });
+  });
+  afterEach(() => {
+    cleanup();
+    vi.useRealTimers();
+  });
+
+  function setup() {
+    const zone = customParkZone();
+    const pending = deferredReload();
+    const onUpdate = vi.fn();
+    const onClose = vi.fn();
+    const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+    const view = render(<ReloadPanel zone={zone} reload={pending.reload} onUpdate={onUpdate} onClose={onClose} />, {
+      wrapper: ({ children }) => <QueryClientProvider client={client}>{children}</QueryClientProvider>,
+    });
+    return { zone, pending, onUpdate, onClose, ...view };
+  }
+
+  function editForm() {
+    fireEvent.change(screen.getByDisplayValue('Test Park'), { target: { value: 'Rejected park name' } });
+    fireEvent.change(screen.getByDisplayValue('Saved park description'), { target: { value: 'Rejected park description' } });
+  }
+
+  it('only resets fields after successful explicit reload and never autosaves the rejected or restored values', async () => {
+    const view = setup();
+    editForm();
+    const saved = { ...view.zone, name: 'Server park name', properties: { ...view.zone.properties, custom_style_prompt: 'Server park description' } };
+    // Query background refreshes must still preserve in-progress local edits.
+    view.rerender(<ReloadPanel zone={saved} reload={view.pending.reload} onUpdate={view.onUpdate} onClose={view.onClose} />);
+    expect(screen.getByDisplayValue('Rejected park description')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Reload saved version' }));
+    expect(screen.getByDisplayValue('Rejected park name')).toBeInTheDocument();
+    await act(async () => { view.pending.resolve({ status: 'success', data: [saved] }); });
+    expect(screen.getByDisplayValue('Server park name')).toBeInTheDocument();
+    expect(screen.getByDisplayValue('Server park description')).toBeInTheDocument();
+    await act(async () => { await vi.advanceTimersByTimeAsync(1000); });
+    view.unmount();
+    expect(view.onUpdate).not.toHaveBeenCalled();
+    expect(view.onClose).not.toHaveBeenCalled();
+  });
+
+  it.each(['error result', 'rejected request'])('preserves failed edits but cancels their old debounce after a reload %s', async (failure) => {
+    const view = setup();
+    editForm();
+    fireEvent.click(screen.getByRole('button', { name: 'Reload saved version' }));
+    await act(async () => {
+      if (failure === 'error result') view.pending.resolve({ status: 'error', error: new Error('offline') });
+      else view.pending.reject(new Error('offline'));
+    });
+    expect(screen.getByDisplayValue('Rejected park name')).toBeInTheDocument();
+    expect(screen.getByDisplayValue('Rejected park description')).toBeInTheDocument();
+    await act(async () => { await vi.advanceTimersByTimeAsync(1000); });
+    view.unmount();
+    expect(view.onUpdate).not.toHaveBeenCalled();
+    expect(view.onClose).not.toHaveBeenCalled();
+  });
+
+  it('permits a fresh edit to autosave after a failed reload', async () => {
+    const view = setup();
+    editForm();
+    fireEvent.click(screen.getByRole('button', { name: 'Reload saved version' }));
+    await act(async () => { view.pending.resolve({ status: 'error', error: new Error('offline') }); });
+    fireEvent.change(screen.getByDisplayValue('Rejected park description'), { target: { value: 'Revised park description' } });
+    await act(async () => { await vi.advanceTimersByTimeAsync(800); });
+    expect(view.onUpdate).toHaveBeenCalledExactlyOnceWith(view.zone.id, expect.objectContaining({
+      name: 'Rejected park name', properties: expect.objectContaining({ custom_style_prompt: 'Revised park description' }),
+    }));
+  });
+
+  it('cancels stale unmount saves even when unmounted before the reload state commits', async () => {
+    const view = setup();
+    editForm();
+    act(() => {
+      fireEvent.click(screen.getByRole('button', { name: 'Reload saved version' }));
+      view.unmount();
+    });
+    await act(async () => { view.pending.resolve({ status: 'success', data: [view.zone] }); });
+    expect(view.onUpdate).not.toHaveBeenCalled();
+  });
+
+  it('ignores a late project A reload and preserves project B edits and their own autosave', async () => {
+    const view = setup();
+    editForm();
+    fireEvent.click(screen.getByRole('button', { name: 'Reload saved version' }));
+    const other = { ...view.zone, id: '55555555-5555-4555-8555-555555555555', project_id: '66666666-6666-4666-8666-666666666666', name: 'Project B park' };
+    view.rerender(<ReloadPanel zone={other} reload={view.pending.reload} onUpdate={view.onUpdate} onClose={view.onClose} />);
+    fireEvent.change(screen.getByDisplayValue('Saved park description'), { target: { value: 'Project B local description' } });
+    await act(async () => { view.pending.resolve({ status: 'success', data: [view.zone] }); });
+    expect(screen.getByDisplayValue('Project B park')).toBeInTheDocument();
+    expect(screen.getByDisplayValue('Project B local description')).toBeInTheDocument();
+    await act(async () => { await vi.advanceTimersByTimeAsync(800); });
+    expect(view.onUpdate).toHaveBeenCalledExactlyOnceWith(other.id, expect.objectContaining({
+      properties: expect.objectContaining({ custom_style_prompt: 'Project B local description' }),
+    }));
+    expect(view.onClose).not.toHaveBeenCalled();
+  });
+
+  it('still flushes ordinary pending custom-style edits when leaving without an explicit reload', () => {
+    const view = setup();
+    editForm();
+    view.unmount();
+    expect(view.onUpdate).toHaveBeenCalledExactlyOnceWith(view.zone.id, expect.objectContaining({
+      name: 'Rejected park name', properties: expect.objectContaining({ custom_style_prompt: 'Rejected park description' }),
+    }));
+  });
+});
 
 describe('ZonePropertiesPanel viewport containment', () => {
   it('owns its desktop positioning and remains bounded by the viewport', () => {

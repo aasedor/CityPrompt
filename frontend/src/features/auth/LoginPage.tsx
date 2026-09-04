@@ -4,6 +4,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { Eye, EyeOff, Loader2 } from 'lucide-react';
 import { authApi } from '@/services/api';
+import { safeReturnTo } from './returnTo';
 import { useAuthStore } from '@/store';
 import { resetSessionState } from '@/utils/sessionReset';
 import { OAuthButtons } from './OAuthButtons';
@@ -41,13 +42,13 @@ export function LoginForm({ returnTo = '/projects', showSignupPrompt = true }: L
       resetSessionState(queryClient);
       setUser(result.user);
       toast.success(`Welcome back, ${result.user.full_name || result.user.email}!`);
-      navigate(returnTo, { replace: true });
+      navigate(safeReturnTo(returnTo), { replace: true });
     } catch (err: any) {
       const detail = err?.response?.data?.detail;
       if (typeof detail === 'string' && detail.trim()) {
         setError(detail);
       } else if (err?.code === 'ERR_NETWORK' || !err?.response) {
-        setError('Unable to reach the API server. Make sure backend is running on http://localhost:8000.');
+        setError('City Prompt could not connect. Check your connection and try signing in again.');
       } else {
         setError('Login failed');
       }
@@ -125,7 +126,7 @@ export function LoginForm({ returnTo = '/projects', showSignupPrompt = true }: L
       {showSignupPrompt && (
         <p className="mt-5 text-center text-sm font-semibold text-[#151515]/60">
           Don't have an account?{' '}
-          <Link to="/register" className="font-black text-[#0aa6a6] hover:text-[#151515]">
+          <Link to={`/register?returnTo=${encodeURIComponent(safeReturnTo(returnTo))}`} className="font-black text-[#0aa6a6] hover:text-[#151515]">
             Sign up
           </Link>
         </p>
@@ -137,9 +138,9 @@ export function LoginForm({ returnTo = '/projects', showSignupPrompt = true }: L
 export function LoginPage() {
   const location = useLocation();
   const fromLocation = (location.state as any)?.from;
-  const from = fromLocation
+  const from = safeReturnTo(new URLSearchParams(location.search).get('returnTo') || (fromLocation
     ? `${fromLocation.pathname || '/projects'}${fromLocation.search || ''}${fromLocation.hash || ''}`
-    : '/projects';
+    : '/projects'));
 
   return (
     <AuthPageShell

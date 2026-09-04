@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { inheritTileSpatialMask } from './TileSpatialMaskPlugin';
 
 export const DIRECT_3D_CAPTURE_SCHEMA = 'siteforge.direct-3d-capture/v2' as const;
 export const DIRECT_3D_PROPOSAL_ROLE_KEY = 'siteforgeDirect3DProposalRole';
@@ -174,6 +175,8 @@ export interface Direct3DCaptureOptions {
   minMaskCoverage?: number;
   maxMaskCoverage?: number;
   includeGeometryPasses?: boolean;
+  /** Globe captures require actual drawn context, not a sky-only coarse tile. */
+  minVisibleContextCoverage?: number;
 }
 
 interface CaptureAnalysis {
@@ -455,6 +458,22 @@ function isEffectivelyVisible(object: THREE.Object3D): boolean {
   return true;
 }
 
+export function validateDirect3DVisibleContextPixels(
+  pixels: Uint8Array,
+  minimumCoverage: number,
+): void {
+  let opaquePixels = 0;
+  for (let index = 3; index < pixels.length; index += 4) {
+    if (pixels[index] >= 128) opaquePixels += 1;
+  }
+  if (!pixels.length || opaquePixels / (pixels.length / 4) < minimumCoverage) {
+    throw new Direct3DCaptureError(
+      'capture_failed',
+      'The surrounding map has not drawn enough visible context yet. Keep this view still, then try again. No image request was sent.',
+    );
+  }
+}
+
 function collectRenderableSnapshots(scene: THREE.Scene): RenderableSnapshot[] {
   const snapshots: RenderableSnapshot[] = [];
   scene.traverse((object) => {
@@ -530,7 +549,11 @@ function createCaptureTarget(
     format: THREE.RGBAFormat,
     type: THREE.UnsignedByteType,
   });
-  target.texture.colorSpace = renderer.outputColorSpace;
+  // Packed depth and encoded normals are numeric data. Display gamma would
+  // corrupt them; semantic colors and beauty retain their display encoding.
+  target.texture.colorSpace = pass === 'depth' || pass === 'normal'
+    ? THREE.NoColorSpace
+    : renderer.outputColorSpace;
   target.texture.generateMipmaps = false;
   target.samples = getDirect3DTargetSampleCount(renderer.capabilities.isWebGL2, pass);
   return target;
@@ -1289,6 +1312,93 @@ function copyMaterialPolicy(source: THREE.Material, target: THREE.Material): voi
   }
 }
 
+/** A geometry pass must depict the same visible site as beauty. A global
+ * overrideMaterial loses tile demolition cuts, cutout foliage, sidedness and
+ * depth policy, causing control images to resurrect occluded source buildings. */
+export function createDirect3DGeometryMaterial(
+  source: THREE.Material,
+  pass: 'depth' | 'normal',
+): THREE.Material {
+  const target = pass === 'depth'
+    // Canvas2D PNG encoding premultiplies alpha. RGBA depth stores fractional
+    // depth bits in alpha (often zero), losing its RGB on export. RGB packing
+    // keeps 24-bit depth and an opaque alpha channel through the PNG encoder.
+    ? new THREE.MeshDepthMaterial({ depthPacking: THREE.RGBDepthPacking })
+    : new THREE.MeshNormalMaterial();
+  copyMaterialPolicy(source, target);
+  const sourceRecord = source as unknown as Record<string, unknown>;
+  const targetRecord = target as unknown as Record<string, unknown>;
+  for (const key of [
+    'map', 'alphaMap', 'wireframe', 'wireframeLinewidth', 'flatShading',
+    'displacementMap', 'displacementScale', 'displacementBias',
+  ]) {
+    if (sourceRecord[key] !== undefined) targetRecord[key] = sourceRecord[key];
+  }
+  if (pass === 'normal') {
+    // Depth material has no normal/bump uniforms. Adding these properties to
+    // it makes Three's common uniform refresh crash on real textured models.
+    for (const key of ['normalMap', 'normalMapType', 'normalScale', 'bumpMap', 'bumpScale']) {
+      if (sourceRecord[key] !== undefined) targetRecord[key] = sourceRecord[key];
+    }
+    // Three's normal material omits alpha chunks and their uniforms. Reuse the
+    // source texture alpha only; its RGB must never tint renderer normals.
+    const textures = source as MaterialWithAlphaTextures;
+    for (const texture of [textures.map, textures.alphaMap]) {
+      if (texture?.matrixAutoUpdate) texture.updateMatrix();
+    }
+    target.onBeforeCompile = (shader) => {
+      shader.uniforms.map = { value: textures.map ?? null };
+      shader.uniforms.mapTransform = { value: textures.map?.matrix ?? new THREE.Matrix3() };
+      shader.uniforms.alphaMap = { value: textures.alphaMap ?? null };
+      shader.uniforms.alphaMapTransform = { value: textures.alphaMap?.matrix ?? new THREE.Matrix3() };
+      shader.uniforms.alphaTest = { value: source.alphaTest };
+      shader.fragmentShader = `
+#include <map_pars_fragment>
+#include <alphamap_pars_fragment>
+#include <alphatest_pars_fragment>
+#include <alphahash_pars_fragment>
+#ifdef USE_ALPHAHASH
+varying vec3 vPosition;
+#endif
+${shader.fragmentShader}`.replace('#include <normal_fragment_begin>', `
+${MAP_ALPHA_ONLY_FRAGMENT}
+#include <alphamap_fragment>
+#include <alphatest_fragment>
+#include <alphahash_fragment>
+#include <normal_fragment_begin>`);
+    };
+    target.customProgramCacheKey = () => 'direct3d-normal-source-alpha-v1';
+  }
+  inheritTileSpatialMask(source, target);
+  target.name = `direct3d-${pass}-${source.name || source.type}`;
+  target.needsUpdate = true;
+  return target;
+}
+
+function createGeometryMaterialCache() {
+  const cached = new WeakMap<THREE.Material, Map<'depth' | 'normal', THREE.Material>>();
+  const created = new Set<THREE.Material>();
+  const getSingle = (source: THREE.Material, pass: 'depth' | 'normal') => {
+    let variants = cached.get(source);
+    if (!variants) {
+      variants = new Map();
+      cached.set(source, variants);
+    }
+    const existing = variants.get(pass);
+    if (existing) return existing;
+    const material = createDirect3DGeometryMaterial(source, pass);
+    variants.set(pass, material);
+    created.add(material);
+    return material;
+  };
+  return {
+    get: (source: Direct3DSemanticMaterial, pass: 'depth' | 'normal'): Direct3DSemanticMaterial => (
+      Array.isArray(source) ? source.map((material) => getSingle(material, pass)) : getSingle(source, pass)
+    ),
+    dispose: () => created.forEach((material) => material.dispose()),
+  };
+}
+
 function preserveTextureAlphaWithoutBeautyColor(
   target: THREE.Material,
   source: MaterialWithAlphaTextures,
@@ -1504,6 +1614,7 @@ export async function captureDirect3DScene(
 
   const rendererSnapshot = snapshotRenderer(renderer, scene);
   const semanticMaterials = createSemanticMaterialCache();
+  const geometryMaterials = createGeometryMaterialCache();
   let beautyTarget: THREE.WebGLRenderTarget | null = null;
   let depthTarget: THREE.WebGLRenderTarget | null = null;
   let normalTarget: THREE.WebGLRenderTarget | null = null;
@@ -1514,14 +1625,6 @@ export async function captureDirect3DScene(
   let normalImageBase64: string | undefined;
   let materialIdImageBase64: string | undefined;
   let materialIdManifest: Readonly<Record<string, Direct3DMaterialDescriptor>> | undefined;
-  const depthMaterial = options.includeGeometryPasses
-    ? new THREE.MeshDepthMaterial({ depthPacking: THREE.RGBADepthPacking })
-    : null;
-  const normalMaterial = options.includeGeometryPasses
-    ? new THREE.MeshNormalMaterial()
-    : null;
-  if (depthMaterial) depthMaterial.side = THREE.DoubleSide;
-  if (normalMaterial) normalMaterial.side = THREE.DoubleSide;
   let captureFailure: Direct3DCaptureError | null = null;
 
   try {
@@ -1551,7 +1654,7 @@ export async function captureDirect3DScene(
     beautyTarget.dispose();
     beautyTarget = null;
 
-    if (options.includeGeometryPasses && depthMaterial && normalMaterial) {
+    if (options.includeGeometryPasses) {
       // Geometry controls are renderer-space facts, not appearance guidance.
       // They use the exact same camera and visible scene as the beauty pass.
       // Targets are allocated and released serially to keep peak GPU memory
@@ -1562,7 +1665,10 @@ export async function captureDirect3DScene(
       renderer.setScissorTest(false);
       renderer.setViewport(0, 0, width, height);
 
-      scene.overrideMaterial = depthMaterial;
+      scene.overrideMaterial = null;
+      for (const snapshot of renderables) {
+        if (snapshot.material !== undefined) snapshot.object.material = geometryMaterials.get(snapshot.material, 'depth');
+      }
       depthTarget = createCaptureTarget(renderer, width, height, 'depth');
       renderer.setRenderTarget(depthTarget);
       renderer.setClearColor(0xffffff, 1);
@@ -1576,10 +1682,12 @@ export async function captureDirect3DScene(
       depthTarget.dispose();
       depthTarget = null;
 
-      scene.overrideMaterial = normalMaterial;
+      for (const snapshot of renderables) {
+        if (snapshot.material !== undefined) snapshot.object.material = geometryMaterials.get(snapshot.material, 'normal');
+      }
       normalTarget = createCaptureTarget(renderer, width, height, 'normal');
       renderer.setRenderTarget(normalTarget);
-      renderer.setClearColor(0x8080ff, 1);
+      renderer.setClearColor(new THREE.Color(0.5, 0.5, 1), 1);
       renderer.render(scene, camera);
       normalImageBase64 = rgbaToPngDataUrl(
         flipRgbaRows(readTargetPixels(renderer, normalTarget, width, height), width, height),
@@ -1591,6 +1699,9 @@ export async function captureDirect3DScene(
       normalTarget = null;
 
       scene.overrideMaterial = rendererSnapshot.overrideMaterial;
+      for (const snapshot of renderables) {
+        if (snapshot.material !== undefined) snapshot.object.material = snapshot.material;
+      }
       scene.background = rendererSnapshot.background;
       scene.fog = rendererSnapshot.fog;
     }
@@ -1615,6 +1726,13 @@ export async function captureDirect3DScene(
     renderer.setClearColor(0x000000, 0);
     renderer.render(scene, camera);
     assertContextAvailable(renderer);
+
+    if ((options.minVisibleContextCoverage ?? 0) > 0) {
+      validateDirect3DVisibleContextPixels(
+        readTargetPixels(renderer, classTarget, width, height),
+        options.minVisibleContextCoverage!,
+      );
+    }
 
     scene.fog = null;
     scene.overrideMaterial = null;
@@ -1826,12 +1944,10 @@ export async function captureDirect3DScene(
     } catch (error) {
       cleanupFailure ??= error;
     }
-    for (const material of [depthMaterial, normalMaterial]) {
-      try {
-        material?.dispose();
-      } catch (error) {
-        cleanupFailure ??= error;
-      }
+    try {
+      geometryMaterials.dispose();
+    } catch (error) {
+      cleanupFailure ??= error;
     }
     for (const target of [beautyTarget, depthTarget, normalTarget, materialTarget, classTarget, instanceTarget]) {
       try {

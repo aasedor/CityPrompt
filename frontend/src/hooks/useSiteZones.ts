@@ -1,11 +1,12 @@
-import { useCallback } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useQuery, useMutation, useQueryClient, useIsMutating } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { getApiErrorMessage, siteZonesApi } from '@/services/api';
 import { isPersistedZoneId } from '@/utils/zoneIdentity';
 import type { SiteZone, SiteZoneType, SiteZoneProperties } from '@/types';
 import { ZONE_TYPE_CONFIG } from '@/types';
-import { useViewerStore } from '@/store';
+import { useViewerStore, useAuthStore } from '@/store';
+import { draftToZone, isDiscardableDraft, useZoneDrafts, type ZoneDraft } from './zoneDrafts';
 import { useUndoRedoStore } from '@/store/undoRedo';
 import {
   createZoneCreateAction,
@@ -18,46 +19,106 @@ function apiStatus(error: unknown): number | undefined {
   return (error as { response?: { status?: number } } | undefined)?.response?.status;
 }
 
+function createRejection(error: unknown): Pick<ZoneDraft, 'rejectionStatus' | 'rejectionReason'> {
+  const status = apiStatus(error);
+  if (status === 400 || status === 422) return { rejectionStatus: status };
+  const detail = (error as { response?: { data?: { detail?: unknown } } } | undefined)?.response?.data?.detail;
+  // This exact create guard runs before insertion and after request-ID lookup.
+  // Other 409s can refer to already-saved work and must remain protected.
+  if (status === 409 && detail === 'The new zone must stay completely inside the active site boundary.') {
+    return { rejectionStatus: 409, rejectionReason: 'outside_site_boundary' };
+  }
+  return {};
+}
+
 export function useSiteZones(projectId: string | undefined) {
   const queryClient = useQueryClient();
   const { selectZone } = useViewerStore();
+  const userId = useAuthStore((state) => state.user?.id);
+  const currentProject = useRef(projectId);
+  const editOrder = useRef(0);
+  const latestEdits = useRef(new Map<string, number>());
+  const [failedEdits, setFailedEdits] = useState<Record<string, string>>({});
+  const beginEdit = useCallback((zoneId: string) => {
+    const attempt = ++editOrder.current;
+    latestEdits.current.set(zoneId, attempt);
+    return attempt;
+  }, []);
+  const recordFailedEdit = useCallback((zoneId: string, error: unknown, attempt?: number) => {
+    if (currentProject.current !== projectId
+        || (attempt !== undefined && latestEdits.current.get(zoneId) !== attempt)) return;
+    setFailedEdits((previous) => ({ ...previous, [zoneId]: getApiErrorMessage(error) }));
+  }, [projectId]);
+  const clearFailedEdit = useCallback((zoneId?: string, attempt?: number) => {
+    if (currentProject.current !== projectId
+        || (zoneId && attempt !== undefined && latestEdits.current.get(zoneId) !== attempt)) return;
+    setFailedEdits((previous) => zoneId
+      ? Object.fromEntries(Object.entries(previous).filter(([id]) => id !== zoneId)) : {});
+  }, [projectId]);
+  const failedMessages = Object.values(failedEdits);
+  const saveError = failedMessages.length
+    ? `${failedMessages.length === 1 ? 'A drawing change was' : `${failedMessages.length} drawing changes were`} not saved. ${failedMessages[0]}`
+    : null;
+  const { drafts, upsertDraft, removeDraft, discardRejectedDraft, draftsPersistOnDevice } = useZoneDrafts(projectId, userId);
+  const discardableDrafts = useMemo(() => drafts.filter(isDiscardableDraft), [drafts]);
+  const discardDraft = useCallback((draft: ZoneDraft): boolean => {
+    const discarded = discardRejectedDraft(draft.requestId);
+    if (discarded && useViewerStore.getState().selectedZoneId === `temp-${draft.requestId}`
+        && useUndoRedoStore.getState().projectId === projectId) selectZone(null);
+    return discarded;
+  }, [discardRejectedDraft, projectId, selectZone]);
+  useLayoutEffect(() => {
+    currentProject.current = projectId;
+    latestEdits.current.clear();
+    setFailedEdits({});
+    useUndoRedoStore.getState().setProjectScope(projectId ?? null);
+    selectZone(null);
+  }, [projectId, selectZone]);
+  const isSaving = useIsMutating({ mutationKey: ['save-zone', projectId] }) > 0;
 
-  const { data: siteZones = [], isLoading: siteZonesLoading } = useQuery({
+  const { data: savedZones = [], isLoading: siteZonesLoading, error: siteZonesError, refetch: refetchZones } = useQuery({
     queryKey: ['site-zones', projectId],
     queryFn: () => siteZonesApi.list(projectId!),
     enabled: !!projectId,
   });
+  const reloadZones = useCallback(async () => {
+    const result = await refetchZones();
+    if (!result.error && result.status === 'success') clearFailedEdit();
+    return result;
+  }, [refetchZones, clearFailedEdit]);
+
+  const siteZones = useMemo(() => {
+    const savedRequests = new Set(savedZones.map((zone) => zone.properties?._client_request_id));
+    return [...savedZones, ...drafts.filter((draft) => !savedRequests.has(draft.requestId))
+      .map((draft) => draftToZone(draft, projectId ?? ''))];
+  }, [savedZones, drafts, projectId]);
 
   const createZone = useMutation({
-    mutationFn: (vars: { coordinates: number[][]; zone_type: SiteZoneType; properties?: SiteZoneProperties }) =>
+    mutationKey: ['save-zone', projectId],
+    mutationFn: (vars: { coordinates: number[][]; zone_type: SiteZoneType; properties?: SiteZoneProperties; requestId?: string; createdAt?: string }) =>
       siteZonesApi.create(projectId!, {
+        client_request_id: vars.requestId,
         zone_type: vars.zone_type,
         coordinates: vars.coordinates,
         color: ZONE_TYPE_CONFIG[vars.zone_type].color,
         properties: vars.properties ?? ZONE_TYPE_CONFIG[vars.zone_type].defaultProperties,
         is_active_boundary: vars.zone_type === 'site_boundary',
       }),
-    onMutate: async (vars) => {
-      // Cancel outgoing refetches so they don't overwrite optimistic update
-      await queryClient.cancelQueries({ queryKey: ['site-zones', projectId] });
-      const previous = queryClient.getQueryData<SiteZone[]>(['site-zones', projectId]);
-      // Optimistic zone so the map renders it immediately
-      const optimisticId = `temp-${Date.now()}`;
-      const optimistic: SiteZone = {
-        id: optimisticId,
-        project_id: projectId!,
-        zone_type: vars.zone_type,
-        coordinates: vars.coordinates,
-        color: ZONE_TYPE_CONFIG[vars.zone_type].color,
-        properties: vars.properties ?? ZONE_TYPE_CONFIG[vars.zone_type].defaultProperties,
-        sort_order: (previous?.length ?? 0),
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
+    onMutate: (vars) => {
+      // Assign once before the first network request. A lost response and its
+      // retry carry the same ID, so the server cannot create two drawings.
+      vars.requestId ??= crypto.randomUUID();
+      vars.createdAt ??= new Date().toISOString();
+      const draft: ZoneDraft = {
+        requestId: vars.requestId, createdAt: vars.createdAt,
+        coordinates: vars.coordinates, zoneType: vars.zone_type,
+        properties: vars.properties,
       };
-      queryClient.setQueryData<SiteZone[]>(['site-zones', projectId], (old) => [...(old ?? []), optimistic]);
-      return { previous, optimisticId };
+      upsertDraft(draft);
+      return { draft, optimisticId: `temp-${vars.requestId}` };
     },
     onSuccess: (createdZone, _vars, context) => {
+      if (context?.draft) removeDraft(context.draft.requestId);
       // Replace the exact optimistic polygon with the authoritative response
       // before refetching. This removes the temp-id gap so selection-dependent
       // panels can open as soon as the create request succeeds.
@@ -66,9 +127,11 @@ export function useSiteZones(projectId: string | undefined) {
         return [...withoutOptimistic.filter((zone) => zone.id !== createdZone.id), createdZone];
       });
       void queryClient.invalidateQueries({ queryKey: ['site-zones', projectId] });
-      toast.success('Zone created');
-      // Push undo action (skip if this was triggered by undo/redo system)
-      if (!useUndoRedoStore.getState()._isSystemAction && projectId) {
+      if (useUndoRedoStore.getState().projectId !== projectId) return;
+      toast.success('Drawing saved');
+      // Undo/redo calls the API directly. Every successful authored mutation
+      // in this hook retains its own undo action, even during another undo.
+      if (projectId) {
         useUndoRedoStore.getState().pushAction(
           createZoneCreateAction(projectId, createdZone, queryClient),
         );
@@ -92,6 +155,7 @@ export function useSiteZones(projectId: string | undefined) {
         // the user waiting or tempt them to submit a duplicate boundary.
         toast.success('Site boundary saved. Loading surrounding context…');
         void siteZonesApi.fetchContext(createdZone.id).then((context) => {
+          if (useUndoRedoStore.getState().projectId !== projectId) return;
           const { setOSMContext } = useViewerStore.getState();
           setOSMContext(context);
           void queryClient.invalidateQueries({ queryKey: ['site-zones', projectId] });
@@ -104,29 +168,43 @@ export function useSiteZones(projectId: string | undefined) {
       }
     },
     onError: (error: unknown, _vars, context) => {
-      // Roll back to previous state on failure
-      if (context?.previous) {
-        queryClient.setQueryData(['site-zones', projectId], context.previous);
-      }
-      toast.error(`Failed to create zone: ${getApiErrorMessage(error)}`);
+      const message = getApiErrorMessage(error);
+      const persisted = context?.draft && upsertDraft({ ...context.draft, error: message,
+        ...createRejection(error),
+      });
+      toast.error(persisted ? `Drawing kept on this device. Save again when ready: ${message}`
+        : `Drawing kept in this tab. Keep it open and save again: ${message}`);
     },
   });
 
   const updateZone = useMutation({
+    mutationKey: ['save-zone', projectId],
+    onMutate: (vars) => beginEdit(vars.zoneId),
     mutationFn: (vars: { zoneId: string; data: { name?: string; color?: string; properties?: SiteZoneProperties }; previousData?: { name?: string; color?: string; properties?: SiteZoneProperties } }) =>
-      siteZonesApi.update(vars.zoneId, vars.data),
-    onSuccess: async (_result, vars) => {
+      siteZonesApi.update(vars.zoneId, {
+        ...vars.data,
+        expected_updated_at: queryClient.getQueryData<SiteZone[]>(['site-zones', projectId])
+          ?.find((zone) => zone.id === vars.zoneId)?.updated_at,
+      }),
+    onSuccess: async (result, vars, attempt) => {
+      clearFailedEdit(vars.zoneId, attempt);
       // Await refetch so the cache is fresh before the user can click away
       await queryClient.refetchQueries({ queryKey: ['site-zones', projectId] });
       toast.success('Zone updated');
       // Push undo action
-      if (!useUndoRedoStore.getState()._isSystemAction && projectId && vars.previousData) {
+      if (projectId && currentProject.current === projectId && vars.previousData) {
         useUndoRedoStore.getState().pushAction(
-          createZoneUpdateAction(projectId, vars.zoneId, vars.previousData, vars.data, queryClient),
+          createZoneUpdateAction(projectId, vars.zoneId, vars.previousData, vars.data, queryClient, result.updated_at),
         );
       }
     },
-    onError: async (err: unknown) => {
+    onError: async (err: unknown, vars, attempt) => {
+      recordFailedEdit(vars.zoneId, err, attempt);
+      if (apiStatus(err) === 409) {
+        await queryClient.refetchQueries({ queryKey: ['site-zones', projectId] });
+        toast.error('This drawing changed in another session. Review the latest version before applying your change again.');
+        return;
+      }
       if (apiStatus(err) === 404) {
         // A backend restart or another tab can invalidate a cached polygon.
         // Reconcile immediately instead of leaving a selectable ghost zone
@@ -141,32 +219,43 @@ export function useSiteZones(projectId: string | undefined) {
   });
 
   const deleteZone = useMutation({
-    // Unsaved optimistic zones (temp- id, create still in flight) don't exist
-    // server-side — the endpoint 422s on non-UUID ids. Resolve locally; the
-    // onSuccess invalidate drops the optimistic entry from the cache. (If the
-    // in-flight create lands afterwards the zone reappears persisted — rare
-    // sub-second race, and it can then be deleted normally.)
-    mutationFn: (zoneId: string) =>
-      isPersistedZoneId(zoneId) ? siteZonesApi.delete(zoneId) : Promise.resolve(),
+    mutationKey: ['save-zone', projectId],
+    // Keep an unsaved drawing until its in-flight request has been reconciled.
+    // Silently removing it could make a successful delayed save reappear.
+    mutationFn: async (zoneId: string) => {
+      if (isPersistedZoneId(zoneId)) {
+        await siteZonesApi.delete(zoneId, savedZones.find((zone) => zone.id === zoneId)?.updated_at);
+        return 'deleted';
+      }
+      const draft = drafts.find((item) => `temp-${item.requestId}` === zoneId);
+      if (draft && discardDraft(draft)) return 'discarded';
+      throw new Error('Save this drawing before deleting it. Your draft is kept on this device.');
+    },
     onMutate: (zoneId) => {
       // Capture zone snapshot before deletion for undo
       const zones = queryClient.getQueryData<SiteZone[]>(['site-zones', projectId]);
       const deletedZone = zones?.find((z) => z.id === zoneId);
       return { deletedZone };
     },
-    onSuccess: (_data, _zoneId, context) => {
+    onSuccess: (outcome, zoneId, context) => {
+      clearFailedEdit(zoneId);
       queryClient.invalidateQueries({ queryKey: ['site-zones', projectId] });
-      selectZone(null);
-      toast.success('Zone deleted');
+      if (useUndoRedoStore.getState().projectId === projectId) selectZone(null);
+      toast.success(outcome === 'discarded' ? 'Rejected drawing discarded' : 'Zone deleted');
       // Push undo action
-      if (!useUndoRedoStore.getState()._isSystemAction && projectId && context?.deletedZone) {
+      if (outcome === 'deleted' && projectId && currentProject.current === projectId && context?.deletedZone) {
         useUndoRedoStore.getState().pushAction(
           createZoneDeleteAction(projectId, context.deletedZone, queryClient),
         );
       }
     },
-    onError: (err: Error) => {
-      toast.error(`Failed to delete zone: ${err.message}`);
+    onError: async (err: Error) => {
+      if (apiStatus(err) === 409) {
+        await queryClient.refetchQueries({ queryKey: ['site-zones', projectId] });
+        toast.error('This drawing changed in another session. Review it before deleting.');
+        return;
+      }
+      toast.error(`Failed to delete zone: ${getApiErrorMessage(err)}`);
     },
   });
 
@@ -175,12 +264,26 @@ export function useSiteZones(projectId: string | undefined) {
     createZone.mutate({ coordinates, zone_type: zoneType, properties: toolProps ?? undefined });
   }, [createZone]);
 
+  const coordinateUpdate = useMutation({
+    mutationKey: ['save-zone', projectId],
+    onMutate: (vars) => beginEdit(vars.zoneId),
+    mutationFn: (vars: { zoneId: string; coordinates: number[][]; revision?: string }) =>
+      siteZonesApi.update(vars.zoneId, { coordinates: vars.coordinates,
+        ...(vars.revision ? { expected_updated_at: vars.revision } : {}) }),
+    onSuccess: (_result, vars, attempt) => clearFailedEdit(vars.zoneId, attempt),
+    onError: (error, vars, attempt) => recordFailedEdit(vars.zoneId, error, attempt),
+  });
+  const updateCoordinates = coordinateUpdate.mutateAsync;
   const handleZoneUpdated = useCallback((zoneId: string, coordinates: number[][]) => {
     // Unsaved optimistic zones (temp- id, create still in flight) can't be
     // updated server-side — the endpoint 422s on non-UUID ids, and this used
     // to surface as an uncaught promise rejection. Update the cache only so
     // the drag doesn't visually snap back; the next refetch reconciles.
     if (!isPersistedZoneId(zoneId)) {
+      if (drafts.some((draft) => `temp-${draft.requestId}` === zoneId)) {
+        toast.error('Save this drawing before moving it. Your draft is kept on this device.');
+        return;
+      }
       queryClient.setQueryData<SiteZone[]>(['site-zones', projectId], (old) =>
         (old ?? []).map((z) => (z.id === zoneId ? { ...z, coordinates } : z)));
       return;
@@ -191,15 +294,20 @@ export function useSiteZones(projectId: string | undefined) {
     const prevZone = zones?.find((z) => z.id === zoneId);
     const prevCoords = prevZone?.coordinates;
 
-    siteZonesApi.update(zoneId, { coordinates }).then(() => {
+    updateCoordinates({ zoneId, coordinates, revision: prevZone?.updated_at }).then((result) => {
       queryClient.invalidateQueries({ queryKey: ['site-zones', projectId] });
       // Push undo action for coordinate change
-      if (!useUndoRedoStore.getState()._isSystemAction && projectId && prevCoords) {
+      if (projectId && currentProject.current === projectId && prevCoords) {
         useUndoRedoStore.getState().pushAction(
-          createZoneCoordinatesAction(projectId, zoneId, prevCoords, coordinates, queryClient),
+          createZoneCoordinatesAction(projectId, zoneId, prevCoords, coordinates, queryClient, result.updated_at),
         );
       }
     }).catch(async (err: unknown) => {
+      if (apiStatus(err) === 409) {
+        await queryClient.refetchQueries({ queryKey: ['site-zones', projectId] });
+        toast.error('This drawing changed in another session. Review the latest shape before moving it again.');
+        return;
+      }
       if (apiStatus(err) === 404) {
         await queryClient.refetchQueries({ queryKey: ['site-zones', projectId] });
         selectZone(null);
@@ -208,10 +316,24 @@ export function useSiteZones(projectId: string | undefined) {
       }
       toast.error(`Failed to update zone geometry: ${getApiErrorMessage(err)}`);
     });
-  }, [queryClient, projectId, selectZone]);
+  }, [queryClient, projectId, selectZone, drafts, updateCoordinates]);
+
+  const retryDraft = (draft: ZoneDraft) => createZone.mutate({
+    requestId: draft.requestId, createdAt: draft.createdAt, coordinates: draft.coordinates,
+    zone_type: draft.zoneType, properties: draft.properties,
+  });
 
   return {
     siteZones,
+    siteZonesError,
+    reloadZones,
+    pendingDrafts: drafts,
+    discardableDrafts,
+    discardDraft,
+    draftsPersistOnDevice,
+    retryDraft,
+    isSaving,
+    saveError,
     siteZonesLoading,
     createZone,
     updateZone,

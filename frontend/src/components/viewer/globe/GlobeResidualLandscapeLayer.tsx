@@ -17,6 +17,7 @@ import {
   type ResidualLandscapeRecipe,
 } from './residualLandscape';
 import { resolveParkTreeVariant } from './publicRealmPropPalettes';
+import { resolvePreparedSiteTerrainForZone } from './sitePreparationSurface';
 
 const DEG_TO_RAD = Math.PI / 180;
 const TERRAIN_SAMPLE_INTERVAL_FRAMES = 30;
@@ -32,10 +33,12 @@ function ResidualLandscapeInstance({
   zone,
   recipe,
   fallbackTerrainHeight,
+  preparedTerrain,
 }: {
   zone: SiteZone;
   recipe: ResidualLandscapeRecipe;
   fallbackTerrainHeight: number;
+  preparedTerrain: number | null;
 }) {
   const tiles = useContext(TilesRendererContext);
   const raycasterRef = useRef(new THREE.Raycaster());
@@ -48,7 +51,7 @@ function ResidualLandscapeInstance({
     () => computeCentroid(zone.coordinates),
     [zone.coordinates],
   );
-  const frameHeight = storedTerrainHeight(zone) ?? fallbackTerrainHeight;
+  const frameHeight = preparedTerrain ?? storedTerrainHeight(zone) ?? fallbackTerrainHeight;
 
   useEffect(() => {
     nextPlacementRef.current = 0;
@@ -56,7 +59,7 @@ function ResidualLandscapeInstance({
   }, [recipe.placements]);
 
   useFrame(() => {
-    if (nextPlacementRef.current >= recipe.placements.length) return;
+    if (preparedTerrain !== null || nextPlacementRef.current >= recipe.placements.length) return;
     frameRef.current += 1;
     if (frameRef.current % TERRAIN_SAMPLE_INTERVAL_FRAMES !== 0) return;
     const tilesGroup = tiles?.group;
@@ -128,10 +131,11 @@ export function GlobeResidualLandscapeLayer({
         if (!recipe || !recipe.placements.length) return null;
         return (
           <ResidualLandscapeInstance
-            key={`${zone.id}-${recipe.source_hash}`}
+            key={`${zone.id}-${recipe.source_hash}-${resolvePreparedSiteTerrainForZone(zone, zones, terrainHeight)}`}
             zone={zone}
             recipe={recipe}
             fallbackTerrainHeight={terrainHeight}
+            preparedTerrain={resolvePreparedSiteTerrainForZone(zone, zones, terrainHeight)}
           />
         );
       })}

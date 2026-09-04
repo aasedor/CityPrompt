@@ -8,6 +8,7 @@ the Classic path's maskless comparison fallback.
 from __future__ import annotations
 
 import base64
+import hashlib
 import logging
 import math
 import re
@@ -55,6 +56,7 @@ from app.services.public_realm_lego import (
     public_realm_recipe_identity,
 )
 from app.services.render_audit_images import put_image_with_thumbnail
+from app.services.render_provenance import build_render_source_snapshot
 from app.services.scene_revision import compiled_scene_revision_sha256
 from app.services.residual_landscape import (
     ResidualSourceZone,
@@ -1218,21 +1220,25 @@ async def generate_direct_3d_render(
 
     settings = get_settings()
 
-    await check_project_permission(req.project_id, user, db, required="viewer")
+    await check_project_permission(req.project_id, user, db, required="editor")
     await lock_residual_landscape_project(db, req.project_id)
     zones_result = await db.execute(
         select(SiteZone).where(SiteZone.project_id == req.project_id).execution_options(populate_existing=True)
     )
     buildings_result = await db.execute(select(Building).where(Building.project_id == req.project_id))
     current_buildings = list(buildings_result.scalars().all())
+    current_zones = list(zones_result.scalars().all())
     server_inventory = _validate_direct_3d_project_zones(
         req,
-        list(zones_result.scalars().all()),
+        current_zones,
         {str(building.id): building for building in current_buildings},
     )
     scene_revision_sha256 = compiled_scene_revision_sha256(
         req.community_3d_claims,
         req.residual_landscape_claim,
+    )
+    source_snapshot = build_render_source_snapshot(
+        req, current_zones, current_buildings, captured_at=datetime.now(timezone.utc).isoformat(),
     )
 
     if not settings.openai_api_key:
@@ -1356,9 +1362,11 @@ async def generate_direct_3d_render(
     # project gallery, and keep the untouched provider image whenever a safety
     # fallback replaced it (parity with pasting the capture into an external
     # image chat). Gallery failures never block returning the render.
+    saved_render = None
+    provider_original_render = None
     try:
         strategy = result.diagnostics.get("returned_safety_strategy")
-        await persist_render_to_gallery(
+        saved_render = await persist_render_to_gallery(
             db,
             req.project_id,
             SaveRenderRequest(
@@ -1369,14 +1377,18 @@ async def generate_direct_3d_render(
                 image_quality="high",
             ),
             variant="final",
-            outcome=(f"{result.outcome} · {strategy}" if strategy else str(result.outcome)),
+            outcome=result.outcome,
+            presentation_strategy=strategy,
             scene_revision_sha256=scene_revision_sha256,
+            source_snapshot=source_snapshot,
+            capture_fingerprint=result.capture_fingerprint,
+            output_fingerprint=result.output_fingerprint,
         )
         if result.provider_image_base64 and strategy not in (
             None,
             "provider_full_scene",
         ):
-            await persist_render_to_gallery(
+            provider_original_render = await persist_render_to_gallery(
                 db,
                 req.project_id,
                 SaveRenderRequest(
@@ -1388,12 +1400,18 @@ async def generate_direct_3d_render(
                 ),
                 variant="provider_original",
                 outcome="review_required",
+                presentation_strategy="provider_original",
                 scene_revision_sha256=scene_revision_sha256,
+                source_snapshot=source_snapshot,
+                capture_fingerprint=result.capture_fingerprint,
+                output_fingerprint=hashlib.sha256(base64.b64decode(result.provider_image_base64)).hexdigest(),
             )
     except Exception as gallery_exc:
         logger.warning("Failed to auto-save Direct 3D render to gallery: %s", gallery_exc)
 
     return Direct3DRenderResponse(
+        saved_render=saved_render,
+        provider_original_render=provider_original_render,
         image_base64=result.image_base64,
         outcome=result.outcome,
         warnings=list(result.warnings),

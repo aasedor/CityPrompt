@@ -12,7 +12,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import get_settings
 from app.core.database import get_db
-from app.core.security import require_auth
+from app.core.security import (
+    check_project_asset_access,
+    check_project_permission,
+    check_project_read_access,
+    get_current_user,
+    require_auth,
+)
 from app.tasks.worker import celery_app
 from app.generation.styles import ARCHITECTURAL_STYLES, get_style
 from app.models.models import Building, Project, ProjectShare, RenderPreview, User
@@ -131,8 +137,11 @@ def _check_engine_available(engine: str) -> None:
 async def list_buildings(
     project_id: uuid.UUID,
     db: AsyncSession = Depends(get_db),
+    user: User | None = Depends(get_current_user),
+    share_token: str | None = None,
 ):
     """List all buildings in a project."""
+    await check_project_read_access(project_id, user, db, share_token)
     result = await db.execute(select(Building).where(Building.project_id == project_id).order_by(Building.created_at))
     return [_building_to_response(b) for b in result.scalars().all()]
 
@@ -160,12 +169,15 @@ async def create_building(
         share_result = await db.execute(
             select(ProjectShare).where(
                 ProjectShare.project_id == project_id,
-                (ProjectShare.user_id == user.id) | (ProjectShare.email == user.email),
+                ProjectShare.user_id == user.id,
                 ProjectShare.permission == "editor",
             )
         )
         if not share_result.scalar_one_or_none():
-            raise HTTPException(status_code=403, detail="Not authorized to add buildings to this project")
+            raise HTTPException(
+                status_code=403,
+                detail="Not authorized to add buildings to this project",
+            )
 
     building = Building(
         project_id=project_id,
@@ -196,7 +208,13 @@ async def create_building(
     # Log activity
     from app.api.v1.activity import log_activity
 
-    await log_activity(db, project_id, "building_created", user_id=user.id, details={"name": building.name})
+    await log_activity(
+        db,
+        project_id,
+        "building_created",
+        user_id=user.id,
+        details={"name": building.name},
+    )
 
     return _building_to_response(building)
 
@@ -205,12 +223,15 @@ async def create_building(
 async def get_building(
     building_id: uuid.UUID,
     db: AsyncSession = Depends(get_db),
+    user: User | None = Depends(get_current_user),
+    share_token: str | None = None,
 ):
     """Get building details."""
     result = await db.execute(select(Building).where(Building.id == building_id))
     building = result.scalar_one_or_none()
     if not building:
         raise HTTPException(status_code=404, detail="Building not found")
+    await check_project_read_access(building.project_id, user, db, share_token)
     return _building_to_response(building)
 
 
@@ -234,12 +255,15 @@ async def update_building(
         share_result = await db.execute(
             select(ProjectShare).where(
                 ProjectShare.project_id == building.project_id,
-                (ProjectShare.user_id == user.id) | (ProjectShare.email == user.email),
+                ProjectShare.user_id == user.id,
                 ProjectShare.permission == "editor",
             )
         )
         if not share_result.scalar_one_or_none():
-            raise HTTPException(status_code=403, detail="Not authorized to edit buildings in this project")
+            raise HTTPException(
+                status_code=403,
+                detail="Not authorized to edit buildings in this project",
+            )
 
     update_data = building_in.model_dump(exclude_unset=True)
     representation_changed = bool(
@@ -309,12 +333,15 @@ async def delete_building(
         share_result = await db.execute(
             select(ProjectShare).where(
                 ProjectShare.project_id == building.project_id,
-                (ProjectShare.user_id == user.id) | (ProjectShare.email == user.email),
+                ProjectShare.user_id == user.id,
                 ProjectShare.permission == "editor",
             )
         )
         if not share_result.scalar_one_or_none():
-            raise HTTPException(status_code=403, detail="Not authorized to delete buildings in this project")
+            raise HTTPException(
+                status_code=403,
+                detail="Not authorized to delete buildings in this project",
+            )
 
     # Serialize model deletion with Community compile and paid Direct
     # preflight. A request validated before this lock may finish against its
@@ -335,12 +362,15 @@ async def delete_building(
 async def get_building_model(
     building_id: uuid.UUID,
     db: AsyncSession = Depends(get_db),
+    user: User | None = Depends(get_current_user),
+    share_token: str | None = None,
 ):
     """Get the 3D model URL for a building."""
     result = await db.execute(select(Building).where(Building.id == building_id))
     building = result.scalar_one_or_none()
     if not building:
         raise HTTPException(status_code=404, detail="Building not found")
+    await check_project_read_access(building.project_id, user, db, share_token)
     if not building.model_url:
         raise HTTPException(status_code=404, detail="3D model not yet generated")
     return {"model_url": building.model_url}
@@ -351,6 +381,9 @@ async def get_building_model_file(
     building_id: uuid.UUID,
     lod: int = 0,
     db: AsyncSession = Depends(get_db),
+    user: User | None = Depends(get_current_user),
+    share_token: str | None = None,
+    asset_ticket: str | None = None,
 ):
     """Proxy the GLB model file from MinIO storage.
 
@@ -361,6 +394,13 @@ async def get_building_model_file(
     building = result.scalar_one_or_none()
     if not building:
         raise HTTPException(status_code=404, detail="Building not found")
+    await check_project_asset_access(
+        building.project_id,
+        user,
+        db,
+        share_token=share_token,
+        asset_ticket=asset_ticket,
+    )
     if not building.model_url:
         raise HTTPException(status_code=404, detail="3D model not yet generated")
 
@@ -411,7 +451,8 @@ async def get_building_model_file(
         media_type="model/gltf-binary",
         headers={
             "Content-Disposition": f'inline; filename="{building_id}_lod{lod}.glb"',
-            "Access-Control-Allow-Origin": "*",
+            "Cache-Control": "private, no-store",
+            "Referrer-Policy": "no-referrer",
         },
     )
 
@@ -546,7 +587,7 @@ async def generate_from_text(
         share_result = await db.execute(
             select(ProjectShare).where(
                 ProjectShare.project_id == building.project_id,
-                (ProjectShare.user_id == user.id) | (ProjectShare.email == user.email),
+                ProjectShare.user_id == user.id,
                 ProjectShare.permission == "editor",
             )
         )
@@ -620,7 +661,7 @@ async def generate_from_image(
         share_result = await db.execute(
             select(ProjectShare).where(
                 ProjectShare.project_id == building.project_id,
-                (ProjectShare.user_id == user.id) | (ProjectShare.email == user.email),
+                ProjectShare.user_id == user.id,
                 ProjectShare.permission == "editor",
             )
         )
@@ -656,12 +697,14 @@ async def generate_from_image(
 async def get_generation_status(
     building_id: uuid.UUID,
     db: AsyncSession = Depends(get_db),
+    user: User = Depends(require_auth),
 ):
     """Get the current AI generation status for a building."""
     result = await db.execute(select(Building).where(Building.id == building_id))
     building = result.scalar_one_or_none()
     if not building:
         raise HTTPException(status_code=404, detail="Building not found")
+    await check_project_permission(building.project_id, user, db)
 
     # Try to get real progress from Celery task
     progress = None
@@ -700,6 +743,7 @@ async def cancel_generation(
     building = result.scalar_one_or_none()
     if not building:
         raise HTTPException(status_code=404, detail="Building not found")
+    await check_project_permission(building.project_id, user, db, required="editor")
 
     if building.generation_status != "generating":
         return {"status": "not_generating", "building_id": str(building_id)}
@@ -725,24 +769,32 @@ async def batch_cancel_generation(
 ):
     """Cancel in-progress 3D generation for multiple buildings at once."""
     building_ids = body.get("building_ids", [])
-    cancelled = 0
-
-    for bid in building_ids:
-        try:
-            result = await db.execute(select(Building).where(Building.id == uuid.UUID(bid)))
-            building = result.scalar_one_or_none()
-            if not building or building.generation_status != "generating":
-                continue
-
-            celery_task_id = (building.specifications or {}).get("celery_task_id")
-            if celery_task_id:
-                celery_app.control.revoke(celery_task_id, terminate=True)
-
-            building.generation_status = "idle"
-            building.meshy_task_id = None
-            cancelled += 1
-        except Exception:
+    if not isinstance(building_ids, list) or len(building_ids) > 100:
+        raise HTTPException(status_code=422, detail="Provide at most 100 building IDs")
+    try:
+        ids = list(dict.fromkeys(uuid.UUID(str(bid)) for bid in building_ids))
+    except (ValueError, TypeError, AttributeError):
+        raise HTTPException(status_code=422, detail="Invalid building ID") from None
+    buildings = []
+    # Authorize the whole batch before any task is revoked.
+    for bid in ids:
+        result = await db.execute(select(Building).where(Building.id == bid))
+        building = result.scalar_one_or_none()
+        if building is None:
             continue
+        await check_project_permission(building.project_id, user, db, required="editor")
+        buildings.append(building)
+
+    cancelled = 0
+    for building in buildings:
+        if building.generation_status != "generating":
+            continue
+        celery_task_id = (building.specifications or {}).get("celery_task_id")
+        if celery_task_id:
+            celery_app.control.revoke(celery_task_id, terminate=True)
+        building.generation_status = "idle"
+        building.meshy_task_id = None
+        cancelled += 1
 
     await db.commit()
     return {"status": "cancelled", "cancelled_count": cancelled}
@@ -779,7 +831,7 @@ async def generate_render_preview(
         share_result = await db.execute(
             select(ProjectShare).where(
                 ProjectShare.project_id == building.project_id,
-                (ProjectShare.user_id == user.id) | (ProjectShare.email == user.email),
+                ProjectShare.user_id == user.id,
                 ProjectShare.permission == "editor",
             )
         )
@@ -827,8 +879,15 @@ async def generate_render_preview(
 async def get_render_previews(
     building_id: uuid.UUID,
     db: AsyncSession = Depends(get_db),
+    user: User | None = Depends(get_current_user),
+    share_token: str | None = None,
 ):
     """Get all render previews for a building."""
+    building_result = await db.execute(select(Building).where(Building.id == building_id))
+    building = building_result.scalar_one_or_none()
+    if building is None:
+        raise HTTPException(status_code=404, detail="Building not found")
+    await check_project_read_access(building.project_id, user, db, share_token)
     result = await db.execute(
         select(RenderPreview).where(RenderPreview.building_id == building_id).order_by(RenderPreview.created_at.desc())
     )

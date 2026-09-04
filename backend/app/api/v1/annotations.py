@@ -9,8 +9,8 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
-from app.core.security import require_auth
-from app.models.models import Annotation, Project, User
+from app.core.security import check_project_permission, require_auth
+from app.models.models import Annotation, Building, User
 from app.schemas.schemas import AnnotationCreate, AnnotationResponse, AnnotationUpdate
 
 router = APIRouter()
@@ -21,8 +21,10 @@ async def list_annotations(
     project_id: uuid.UUID,
     resolved: bool | None = None,
     db: AsyncSession = Depends(get_db),
+    user: User = Depends(require_auth),
 ):
     """List all annotations for a project."""
+    await check_project_permission(project_id, user, db)
     query = select(Annotation).where(Annotation.project_id == project_id)
     if resolved is not None:
         query = query.where(Annotation.resolved == resolved)
@@ -43,10 +45,16 @@ async def create_annotation(
     db: AsyncSession = Depends(get_db),
 ):
     """Create a new annotation at a 3D position."""
-    # Verify project exists
-    result = await db.execute(select(Project).where(Project.id == project_id))
-    if not result.scalar_one_or_none():
-        raise HTTPException(status_code=404, detail="Project not found")
+    await check_project_permission(project_id, user, db, required="editor")
+    if annotation_in.building_id:
+        result = await db.execute(
+            select(Building).where(
+                Building.id == annotation_in.building_id,
+                Building.project_id == project_id,
+            )
+        )
+        if result.scalar_one_or_none() is None:
+            raise HTTPException(status_code=400, detail="Building does not belong to this project")
 
     annotation = Annotation(
         project_id=project_id,
@@ -75,6 +83,7 @@ async def update_annotation(
     annotation = result.scalar_one_or_none()
     if not annotation:
         raise HTTPException(status_code=404, detail="Annotation not found")
+    await check_project_permission(annotation.project_id, user, db, required="editor")
 
     for field, value in annotation_in.model_dump(exclude_unset=True).items():
         setattr(annotation, field, value)
@@ -95,5 +104,6 @@ async def delete_annotation(
     annotation = result.scalar_one_or_none()
     if not annotation:
         raise HTTPException(status_code=404, detail="Annotation not found")
+    await check_project_permission(annotation.project_id, user, db, required="editor")
 
     await db.delete(annotation)

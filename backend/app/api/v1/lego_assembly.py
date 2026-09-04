@@ -34,7 +34,9 @@ from app.services.community_3d_scope import (
 from app.services.lego_assembly import (
     AssemblyPlanningError,
     AssemblyRequest,
+    DETACHED_ARCHETYPE_IDS,
     catalog_parent_archetype_id,
+    detached_plot_local_coordinates,
     descriptor_from_library_entry,
     find_family_module_entry,
     lego_metadata_from_manifest,
@@ -92,6 +94,7 @@ class LegoAssemblyPlanRequest(BaseModel):
     allow_forced_fit: bool = True
     footprint_profile: Literal["rectangle", "l_shape", "u_shape", "courtyard"] = "rectangle"
     wing_depth_m: float | None = Field(default=None, gt=0)
+    footprint_local_m: list[tuple[float, float]] | None = Field(default=None, min_length=3, max_length=2048)
     # When planning for a shared project, use the same owner-visible private
     # module inventory that the AI Master Planner used for that project.
     project_id: uuid.UUID | None = None
@@ -366,8 +369,15 @@ def _strict_locked_building_plan(
     properties: dict[str, Any],
     *,
     allow_forced_fit: bool = False,
+    zone: SiteZone | None = None,
 ) -> dict[str, Any]:
     width, depth, floors, profile, _ = target
+    plot_coordinates = None
+    if zone is not None and catalog_parent_archetype_id(identity) in DETACHED_ARCHETYPE_IDS:
+        geometry = _community_source_geometry(zone)
+        if geometry.geom_type != "Polygon" or len(geometry.interiors):
+            raise AssemblyPlanningError("Detached placement requires one polygon without interior holes.")
+        plot_coordinates = detached_plot_local_coordinates(geometry.exterior.coords, width, depth)
     # Wing depth is intentionally omitted: the current imported family owns
     # the deterministic native/default thickness. The returned target is then
     # the independent value against which a submitted shaped recipe is bound.
@@ -381,6 +391,7 @@ def _strict_locked_building_plan(
             reuse_keys=_building_reuse_keys(properties),
             footprint_profile=profile,
             allow_setback=_building_allows_setback(properties),
+            footprint_local_m=plot_coordinates,
         ),
         allow_forced_fit=allow_forced_fit,
     )
@@ -453,6 +464,7 @@ async def _assert_ai_lego_recipes_are_current(
                 _locked_building_target(zone),
                 zone.properties or {},
                 allow_forced_fit=not is_ai_zone,
+                zone=zone,
             )
         except AssemblyPlanningError as exc:
             if exc.code in {"family_not_found", "family_incompatible"}:
@@ -518,6 +530,7 @@ async def _assert_ai_lego_recipes_are_current(
                 target,
                 properties,
                 allow_forced_fit=not is_ai_zone,
+                zone=zone,
             )
         except AssemblyPlanningError as exc:
             raise HTTPException(
@@ -624,7 +637,7 @@ async def _accessible_entries(
             share_result = await db.execute(
                 select(ProjectShare).where(
                     ProjectShare.project_id == project_id,
-                    (ProjectShare.user_id == user.id) | (ProjectShare.email == user.email),
+                    ProjectShare.user_id == user.id,
                 )
             )
             if share_result.scalar_one_or_none() is None:
@@ -779,6 +792,7 @@ async def create_lego_assembly_plan(
                 allow_setback=body.allow_setback,
                 footprint_profile=body.footprint_profile,
                 wing_depth_m=body.wing_depth_m,
+                footprint_local_m=tuple(body.footprint_local_m) if body.footprint_local_m is not None else None,
             ),
             allow_forced_fit=body.allow_forced_fit,
         )
@@ -1063,7 +1077,7 @@ async def _get_building_with_access(
     if project.owner_id != user.id:
         conditions = [
             ProjectShare.project_id == building.project_id,
-            (ProjectShare.user_id == user.id) | (ProjectShare.email == user.email),
+            ProjectShare.user_id == user.id,
         ]
         if require_editor:
             conditions.append(ProjectShare.permission == "editor")
@@ -1101,7 +1115,7 @@ async def _get_zone_with_access(
     if project.owner_id != user.id:
         conditions = [
             ProjectShare.project_id == zone.project_id,
-            (ProjectShare.user_id == user.id) | (ProjectShare.email == user.email),
+            ProjectShare.user_id == user.id,
         ]
         if require_editor:
             conditions.append(ProjectShare.permission == "editor")
@@ -1438,6 +1452,10 @@ async def _place_recipe_on_zone(
         building.floor_count = body.target.floors
         building.height_meters = assembled_height_meters
 
+    if (body.fit or {}).get("placement_mode") == "detached_lots":
+        # Per-dwelling orientations already conform to the current plot. An
+        # inherited whole-building yaw would rotate houses outside that plot.
+        building.rotation_degrees = 0.0
     specifications = dict(building.specifications or {})
     # A real family recipe upgrades the honest conceptual fallback in place.
     specifications.pop(PLANNED_MASSING_SPEC_KEY, None)

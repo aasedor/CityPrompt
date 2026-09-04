@@ -2138,6 +2138,18 @@ async def test_wave9_house_api_plans_parent_variant_and_oversized_streetwall(
     assert native_parent.status_code == 200
     native_plan = native_parent.json()
     assert native_plan["family"] == family
+    if family == "spanish-colonial-villa":
+        # Detached dwellings now retain native geometry and gaps rather than
+        # using the attached streetwall fallback from this legacy wave test.
+        assert native_plan["fit"]["compatibility_source"] == "native_detached_lots"
+        assert native_plan["fit"]["dwelling_count"] == 1
+        assert hand_drawn_variant.status_code == 422
+        assert oversized.status_code == 200
+        oversized_plan = oversized.json()
+        assert oversized_plan["fit"]["dwelling_count"] >= 2
+        assert oversized_plan["fit"]["compatibility_source"] == "native_detached_lots"
+        assert all(instance["scale"] == [1, 1, 1] for instance in oversized_plan["instances"])
+        return
     assert native_plan["fit"]["compatibility_source"] == ("manifest_shape_matrix")
     assert hand_drawn_variant.status_code == 200
     hand_drawn_plan = hand_drawn_variant.json()

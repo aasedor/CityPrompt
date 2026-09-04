@@ -14,7 +14,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import get_settings
 from app.core.database import get_db
-from app.core.security import require_auth
+from app.core.security import (
+    check_project_permission,
+    require_auth,
+    visible_project_ids,
+)
 from app.models.models import Building, ModelLibraryEntry, Project, User
 from app.services.residual_landscape import (
     lock_residual_landscape_project,
@@ -73,6 +77,7 @@ async def save_to_library(
     building = result.scalar_one_or_none()
     if not building:
         raise HTTPException(status_code=404, detail="Building not found")
+    await check_project_permission(building.project_id, user, db)
     if not building.model_url:
         raise HTTPException(status_code=400, detail="Building has no 3D model to save")
 
@@ -205,7 +210,7 @@ async def apply_library_model(
         share_result = await db.execute(
             select(ProjectShare).where(
                 ProjectShare.project_id == building.project_id,
-                or_(ProjectShare.user_id == user.id, ProjectShare.email == user.email),
+                ProjectShare.user_id == user.id,
                 ProjectShare.permission == "editor",
             )
         )
@@ -309,6 +314,7 @@ async def bulk_import_to_library(
     # Get all buildings with completed models
     result = await db.execute(
         select(Building).where(
+            Building.project_id.in_(visible_project_ids(user)),
             Building.model_url.isnot(None),
             Building.generation_status == "completed",
         )
@@ -430,6 +436,7 @@ async def archetype_previews(
     result = await db.execute(
         select(Building)
         .where(
+            Building.project_id.in_(visible_project_ids(user)),
             Building.preview_url.isnot(None),
             Building.model_url.isnot(None),
             Building.generation_status == "completed",

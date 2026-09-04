@@ -34,6 +34,7 @@ import { resolveApiFileUrl } from '@/services/api';
 import { createKtx2LoaderExtension } from '@/lib/ktx2GltfLoader';
 import { computeFootprintFrame, computeModelPlacement, type FootprintFrame } from './buildingPlacement';
 import { raycastTerrainHeightAtLatLng } from './GlobeZoneLayer';
+import { resolvePreparedSiteTerrainForZone } from './sitePreparationSurface';
 import {
   getObjectFilteredTerrainHeight,
   isPlausibleTerrainAnchor,
@@ -489,6 +490,17 @@ export function GlobeBuildingModelsLayer({
     }
     return map;
   }, [zones]);
+  // Secondary compiled buildings retain their own stored footprints; this
+  // expanded ownership lookup changes only their prepared-site datum.
+  const terrainZoneByBuildingId = useMemo(() => {
+    const map = new Map<string, SiteZone>();
+    for (const zone of zones) {
+      for (const id of [zone.building_id, ...(zone.building_ids ?? [])]) {
+        if (id) map.set(id, zone);
+      }
+    }
+    return map;
+  }, [zones]);
 
   const entries = useMemo(() => buildings
     .map((building) => {
@@ -574,7 +586,7 @@ export function GlobeBuildingModelsLayer({
     const urls = [...new Set(entries.flatMap(({ building }) => (
       [building.model_url, ...Object.values(building.lod_urls ?? {})]
         .filter((value): value is string => Boolean(value))
-        .map(resolveApiFileUrl)
+        .map((url) => resolveApiFileUrl(url))
     )))].filter(Boolean);
     setAvailableModelUrls(new Set());
     void Promise.all(urls.map(async (url) => ({
@@ -629,6 +641,8 @@ export function GlobeBuildingModelsLayer({
     <>
       {entries.map(({ building, zone, ring, frame }) => {
         const modelUrl = selectedModelUrls.get(building.id) ?? '';
+        const zonePreparedTerrain = preparedSiteTerrainHeight === null ? null
+          : resolvePreparedSiteTerrainForZone(terrainZoneByBuildingId.get(building.id), zones, preparedSiteTerrainHeight);
         const massing = (
           <GeneratedBuildingMassing
             building={building}
@@ -636,7 +650,7 @@ export function GlobeBuildingModelsLayer({
             ring={ring}
             frame={frame}
             fallbackTerrainHeight={terrainHeight}
-            preparedSiteTerrainHeight={preparedSiteTerrainHeight}
+            preparedSiteTerrainHeight={zonePreparedTerrain}
             onLoaded={handleLoaded}
             onUnloaded={handleUnloaded}
             selected={selectedBuildingId === building.id}
@@ -653,7 +667,7 @@ export function GlobeBuildingModelsLayer({
               ring={ring}
               frame={frame}
               fallbackTerrainHeight={terrainHeight}
-              preparedSiteTerrainHeight={preparedSiteTerrainHeight}
+              preparedSiteTerrainHeight={zonePreparedTerrain}
               onLoaded={handleLoaded}
               onUnloaded={handleUnloaded}
               selected={selectedBuildingId === building.id}
@@ -672,7 +686,7 @@ export function GlobeBuildingModelsLayer({
                 ring={ring}
                 frame={frame}
                 fallbackTerrainHeight={terrainHeight}
-                preparedSiteTerrainHeight={preparedSiteTerrainHeight}
+                preparedSiteTerrainHeight={zonePreparedTerrain}
                 onLoaded={handleLoaded}
                 onUnloaded={handleUnloaded}
                 selected={selectedBuildingId === building.id}

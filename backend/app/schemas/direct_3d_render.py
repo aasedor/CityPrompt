@@ -15,6 +15,8 @@ from typing import Literal
 
 from pydantic import BaseModel, Field, field_validator, model_validator
 
+from app.schemas.render_media import SavedRenderResponse
+
 
 Direct3DSemanticClass = Literal["ground", "landscape", "street", "park", "building"]
 Direct3DPresentationMode = Literal["source_anchored", "scene", "reproject"]
@@ -56,6 +58,7 @@ DIRECT_3D_REPROJECT_STYLES = frozenset(
         "clay-maquette",
     }
 )
+
 
 
 class Direct3DCaptureClaim(BaseModel):
@@ -491,7 +494,7 @@ class Direct3DVisualChangeDiagnostics(BaseModel):
 class Direct3DReprojectOutputSanityDiagnostics(BaseModel):
     """Minimum non-empty/content evidence for projection-changing output."""
 
-    passed: Literal[True]
+    passed: bool
     whole_frame_mean_absolute_delta: float
     luminance_standard_deviation: float
     luminance_dynamic_range_p90: float
@@ -625,6 +628,8 @@ class Direct3DRenderDiagnostics(BaseModel):
 
 
 class Direct3DRenderResponse(BaseModel):
+    saved_render: SavedRenderResponse | None = None
+    provider_original_render: SavedRenderResponse | None = None
     image_base64: str
     model: Literal["gpt-image-2"] = "gpt-image-2"
     outcome: Direct3DRenderOutcome = "accepted"

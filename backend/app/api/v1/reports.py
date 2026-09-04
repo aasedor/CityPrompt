@@ -13,7 +13,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
 from app.core.database import get_db
-from app.models.models import Project
+from app.core.security import check_project_permission, require_auth
+from app.models.models import Project, User
 
 router = APIRouter()
 
@@ -40,8 +41,10 @@ class ProjectReport(FPDF):
 async def generate_project_report(
     project_id: uuid.UUID,
     db: AsyncSession = Depends(get_db),
+    user: User = Depends(require_auth),
 ):
     """Generate a PDF summary report for a project."""
+    await check_project_permission(project_id, user, db)
     result = await db.execute(
         select(Project)
         .where(Project.id == project_id)
@@ -64,7 +67,13 @@ async def generate_project_report(
 
     pdf.set_font("Helvetica", "", 10)
     pdf.set_text_color(100, 100, 100)
-    pdf.cell(0, 6, f"Generated: {datetime.now().strftime('%B %d, %Y at %H:%M')}", new_x="LMARGIN", new_y="NEXT")
+    pdf.cell(
+        0,
+        6,
+        f"Generated: {datetime.now().strftime('%B %d, %Y at %H:%M')}",
+        new_x="LMARGIN",
+        new_y="NEXT",
+    )
     pdf.cell(0, 6, f"Status: {project.status.capitalize()}", new_x="LMARGIN", new_y="NEXT")
     pdf.ln(6)
 
@@ -90,7 +99,10 @@ async def generate_project_report(
     summary_data = [
         ("Total Buildings", str(len(buildings))),
         ("Documents Uploaded", str(len(documents))),
-        ("Documents Processed", str(sum(1 for d in documents if d.processing_status == "completed"))),
+        (
+            "Documents Processed",
+            str(sum(1 for d in documents if d.processing_status == "completed")),
+        ),
     ]
 
     total_area = sum((b.specifications or {}).get("total_area_sqm", 0) or 0 for b in buildings)

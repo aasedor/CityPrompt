@@ -62,6 +62,9 @@ function resolveEnvDir(): string {
 }
 
 export default defineConfig({
+  // Isolated source worktrees can reuse the large, already hydrated asset
+  // directory without duplicating it or changing production asset URLs.
+  publicDir: process.env.CITYPROMPT_PUBLIC_DIR || 'public',
   // Worktrees share browser API keys through the repository's ignored Git
   // common directory. VITE_ENV_DIR and a worktree-root .env remain explicit
   // overrides for unusual local or CI setups.

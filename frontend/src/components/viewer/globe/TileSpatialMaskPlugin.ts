@@ -6,15 +6,17 @@ import {
   METERS_PER_DEG_LAT,
   metersPerDegLon,
 } from '../mapEngine/geoUtils';
+import { normalizeTileMaskRing, pointInTileMaskRing } from './tileMaskGeometry';
 
 const MAX_SITE_MASKS = 8;
-const MAX_SITE_HALF_SPACES = 32;
+const MAX_SITE_EDGES = 32;
 const SPATIAL_PATCH_STATE_KEY = '__cityPromptTileSpatialMaskPatch';
 const DEG_TO_RAD = Math.PI / 180;
 
 export interface TileSpatialMaskConfig {
   worldToLocal: THREE.Matrix4;
-  halfSpaces: THREE.Vector3[];
+  /** Directed polygon edges; ranges preserve concave rings without a hull. */
+  edges: THREE.Vector4[];
   maskRanges: THREE.Vector2[];
   maskCount: number;
   minHeight: number;
@@ -44,47 +46,7 @@ export function shouldUseSpatialTileMask(zone: SiteZone): boolean {
 interface SpatialPatchState {
   onBeforeCompile: THREE.Material['onBeforeCompile'];
   customProgramCacheKey: THREE.Material['customProgramCacheKey'];
-}
-
-interface Point2 {
-  x: number;
-  y: number;
-}
-
-function cross(origin: Point2, a: Point2, b: Point2): number {
-  return (a.x - origin.x) * (b.y - origin.y) - (a.y - origin.y) * (b.x - origin.x);
-}
-
-/** Monotonic-chain convex hull. Site boundaries are usually convex parcels;
- * for a concave input the hull deliberately clears the small inflection too,
- * avoiding seams in a redevelopment demolition envelope. */
-export function convexHull(points: Point2[]): Point2[] {
-  const sorted = [...points]
-    .filter((point) => Number.isFinite(point.x) && Number.isFinite(point.y))
-    .sort((a, b) => a.x - b.x || a.y - b.y)
-    .filter((point, index, all) => (
-      index === 0 || point.x !== all[index - 1].x || point.y !== all[index - 1].y
-    ));
-  if (sorted.length <= 3) return sorted;
-
-  const lower: Point2[] = [];
-  for (const point of sorted) {
-    while (lower.length >= 2 && cross(lower[lower.length - 2], lower[lower.length - 1], point) <= 0) {
-      lower.pop();
-    }
-    lower.push(point);
-  }
-  const upper: Point2[] = [];
-  for (let index = sorted.length - 1; index >= 0; index -= 1) {
-    const point = sorted[index];
-    while (upper.length >= 2 && cross(upper[upper.length - 2], upper[upper.length - 1], point) <= 0) {
-      upper.pop();
-    }
-    upper.push(point);
-  }
-  lower.pop();
-  upper.pop();
-  return [...lower, ...upper];
+  config: TileSpatialMaskConfig;
 }
 
 export function createTileSpatialMaskConfig(
@@ -103,36 +65,30 @@ export function createTileSpatialMaskSetConfig(
   terrainHeight: number,
 ): TileSpatialMaskConfig | null {
   const usable = boundaries.filter(shouldUseSpatialTileMask);
-  if (usable.length === 0 || usable.length > MAX_SITE_MASKS) return null;
+  if (usable.length === 0 || usable.length > MAX_SITE_MASKS || !Number.isFinite(terrainHeight)) return null;
   const allCoordinates = usable.flatMap((boundary) => boundary.coordinates);
+  if (allCoordinates.some(([lng, lat]) => !Number.isFinite(lng) || !Number.isFinite(lat))) return null;
   const centroid = computeCentroid(allCoordinates);
   const mPerLon = metersPerDegLon(centroid[1]);
-  const halfSpaces: THREE.Vector3[] = [];
+  const edges: THREE.Vector4[] = [];
   const maskRanges: THREE.Vector2[] = [];
   for (const boundary of usable) {
-    const hull = convexHull(boundary.coordinates.map(([lng, lat]) => ({
+    const ring = normalizeTileMaskRing(boundary.coordinates.map(([lng, lat]) => ({
       x: (lng - centroid[0]) * mPerLon,
       y: (lat - centroid[1]) * METERS_PER_DEG_LAT,
     })));
     if (
-      hull.length < 3
-      || halfSpaces.length + hull.length > MAX_SITE_HALF_SPACES
+      !ring
+      || edges.length + ring.length > MAX_SITE_EDGES
     ) {
       return null;
     }
-    const offset = halfSpaces.length;
-    // Hull is counter-clockwise. Each left-hand normal points inward, and its
-    // dot-product threshold is the half-space boundary used in the shader.
-    hull.forEach((point, index) => {
-      const next = hull[(index + 1) % hull.length];
-      const dx = next.x - point.x;
-      const dy = next.y - point.y;
-      const length = Math.hypot(dx, dy) || 1;
-      const nx = -dy / length;
-      const ny = dx / length;
-      halfSpaces.push(new THREE.Vector3(nx, ny, nx * point.x + ny * point.y));
+    const offset = edges.length;
+    ring.forEach((point, index) => {
+      const next = ring[(index + 1) % ring.length];
+      edges.push(new THREE.Vector4(point.x, point.y, next.x, next.y));
     });
-    maskRanges.push(new THREE.Vector2(offset, hull.length));
+    maskRanges.push(new THREE.Vector2(offset, ring.length));
   }
 
   const localToWorld = new THREE.Matrix4();
@@ -150,14 +106,18 @@ export function createTileSpatialMaskSetConfig(
   const minHeight = -120;
   const maxHeight = 180;
   const cacheKey = [
+    'exact-polygon-v2',
     ...usable.map((boundary) => boundary.id),
+    // Location is part of the mask identity even if a translated site's local
+    // shape is unchanged. Reusing its old program otherwise keeps old uniforms.
+    ...centroid.map((value) => value.toFixed(10)),
     terrainHeight.toFixed(2),
     ...maskRanges.flatMap((range) => [range.x, range.y]),
-    ...halfSpaces.flatMap((space) => [space.x.toFixed(3), space.y.toFixed(3), space.z.toFixed(3)]),
+    ...edges.flatMap((edge) => [edge.x, edge.y, edge.z, edge.w].map((value) => value.toFixed(6))),
   ].join(':');
   return {
     worldToLocal,
-    halfSpaces,
+    edges,
     maskRanges,
     maskCount: maskRanges.length,
     minHeight,
@@ -173,11 +133,9 @@ export function isPointInsideSpatialMask(
   return point.z >= config.minHeight
     && point.z <= config.maxHeight
     && config.maskRanges.some((range) => (
-      config.halfSpaces
+      pointInTileMaskRing(point, config.edges
         .slice(range.x, range.x + range.y)
-        .every((space) => (
-          space.x * point.x + space.y * point.y >= space.z - 1e-6
-        ))
+        .map((edge) => ({ x: edge.x, y: edge.y })))
     ));
 }
 
@@ -190,9 +148,11 @@ export function patchMaterialForSpatialMask(
     state = {
       onBeforeCompile: material.onBeforeCompile,
       customProgramCacheKey: material.customProgramCacheKey,
+      config,
     };
     material.userData[SPATIAL_PATCH_STATE_KEY] = state;
   }
+  state.config = config;
 
   const previousOnBeforeCompile = state.onBeforeCompile;
   const previousCacheKey = state.customProgramCacheKey;
@@ -203,13 +163,13 @@ export function patchMaterialForSpatialMask(
     // only the active parcel edges leaves undefined entries and can lose the
     // WebGL context while flattening the uniform, so always pad to the fixed
     // shader capacity and use the count uniform to ignore the padding.
-    shader.uniforms.siteMaskHalfSpaces = {
+    shader.uniforms.siteMaskEdges = {
       value: Array.from(
-        { length: MAX_SITE_HALF_SPACES },
-        (_, index) => config.halfSpaces[index] ?? new THREE.Vector3(),
+        { length: MAX_SITE_EDGES },
+        (_, index) => config.edges[index] ?? new THREE.Vector4(),
       ),
     };
-    shader.uniforms.siteMaskHalfSpaceCount = { value: config.halfSpaces.length };
+    shader.uniforms.siteMaskEdgeCount = { value: config.edges.length };
     shader.uniforms.siteMaskRanges = {
       value: Array.from(
         { length: MAX_SITE_MASKS },
@@ -226,21 +186,64 @@ export function patchMaterialForSpatialMask(
         `#include <common>\nuniform mat4 siteMaskWorldToLocal;\nvarying vec3 vSiteMaskLocalPosition;`,
       )
       .replace(
-        '#include <worldpos_vertex>',
-        `#include <worldpos_vertex>\nvSiteMaskLocalPosition = (siteMaskWorldToLocal * modelMatrix * vec4(transformed, 1.0)).xyz;`,
+        '#include <project_vertex>',
+        `#include <project_vertex>
+vec4 siteMaskPosition = vec4(transformed, 1.0);
+#ifdef USE_BATCHING
+  siteMaskPosition = batchingMatrix * siteMaskPosition;
+#endif
+#ifdef USE_INSTANCING
+  siteMaskPosition = instanceMatrix * siteMaskPosition;
+#endif
+vSiteMaskLocalPosition = (siteMaskWorldToLocal * modelMatrix * siteMaskPosition).xyz;`,
       );
-    shader.fragmentShader = shader.fragmentShader
-      .replace(
-        '#include <common>',
-        `#include <common>\n#define MAX_SITE_MASKS ${MAX_SITE_MASKS}\n#define MAX_SITE_HALF_SPACES ${MAX_SITE_HALF_SPACES}\nuniform vec3 siteMaskHalfSpaces[MAX_SITE_HALF_SPACES];\nuniform int siteMaskHalfSpaceCount;\nuniform vec2 siteMaskRanges[MAX_SITE_MASKS];\nuniform int siteMaskCount;\nuniform vec2 siteMaskHeightRange;\nvarying vec3 vSiteMaskLocalPosition;`,
-      )
+    const fragmentDeclarations = `#define MAX_SITE_MASKS ${MAX_SITE_MASKS}\n#define MAX_SITE_EDGES ${MAX_SITE_EDGES}\nuniform vec4 siteMaskEdges[MAX_SITE_EDGES];\nuniform int siteMaskEdgeCount;\nuniform vec2 siteMaskRanges[MAX_SITE_MASKS];\nuniform int siteMaskCount;\nuniform vec2 siteMaskHeightRange;\nvarying vec3 vSiteMaskLocalPosition;`;
+    // MeshNormalMaterial has no <common> fragment chunk. Prefix declarations
+    // so beauty, depth and normal variants all receive the same coverage test.
+    shader.fragmentShader = `${fragmentDeclarations}\n${shader.fragmentShader}`
       .replace(
         '#include <clipping_planes_fragment>',
-        `#include <clipping_planes_fragment>\nbool insideAnySiteMask = false;\nfor (int siteMask = 0; siteMask < MAX_SITE_MASKS; siteMask++) {\n  if (siteMask < siteMaskCount) {\n    vec2 siteRange = siteMaskRanges[siteMask];\n    bool insideCurrentSiteMask = true;\n    for (int sitePlane = 0; sitePlane < MAX_SITE_HALF_SPACES; sitePlane++) {\n      float sitePlaneIndex = float(sitePlane);\n      if (sitePlane < siteMaskHalfSpaceCount && sitePlaneIndex >= siteRange.x && sitePlaneIndex < siteRange.x + siteRange.y) {\n        vec3 halfSpace = siteMaskHalfSpaces[sitePlane];\n        if (dot(halfSpace.xy, vSiteMaskLocalPosition.xy) < halfSpace.z) insideCurrentSiteMask = false;\n      }\n    }\n    if (insideCurrentSiteMask) insideAnySiteMask = true;\n  }\n}\nif (insideAnySiteMask && vSiteMaskLocalPosition.z >= siteMaskHeightRange.x && vSiteMaskLocalPosition.z <= siteMaskHeightRange.y) discard;`,
+        `#include <clipping_planes_fragment>
+bool insideAnySiteMask = false;
+vec2 sitePoint = vSiteMaskLocalPosition.xy;
+for (int siteMask = 0; siteMask < MAX_SITE_MASKS; siteMask++) {
+  if (siteMask < siteMaskCount) {
+    vec2 siteRange = siteMaskRanges[siteMask];
+    bool insideCurrentSiteMask = false;
+    bool onSiteBoundary = false;
+    for (int siteEdge = 0; siteEdge < MAX_SITE_EDGES; siteEdge++) {
+      float siteEdgeIndex = float(siteEdge);
+      if (siteEdge < siteMaskEdgeCount && siteEdgeIndex >= siteRange.x && siteEdgeIndex < siteRange.x + siteRange.y) {
+        vec4 edge = siteMaskEdges[siteEdge];
+        vec2 a = edge.xy;
+        vec2 b = edge.zw;
+        vec2 direction = b - a;
+        float edgeCross = direction.x * (sitePoint.y - a.y) - direction.y * (sitePoint.x - a.x);
+        if (abs(edgeCross) <= 0.000001 * max(1.0, length(direction))
+            && all(greaterThanEqual(sitePoint, min(a, b) - vec2(0.000001)))
+            && all(lessThanEqual(sitePoint, max(a, b) + vec2(0.000001)))) onSiteBoundary = true;
+        // Horizontal edges never divide by zero. The half-open crossing rule
+        // counts shared vertices once and preserves re-entrant corners.
+        if ((a.y > sitePoint.y) != (b.y > sitePoint.y)) {
+          float crossingX = direction.x * (sitePoint.y - a.y) / direction.y + a.x;
+          if (sitePoint.x < crossingX) insideCurrentSiteMask = !insideCurrentSiteMask;
+        }
+      }
+    }
+    if (insideCurrentSiteMask || onSiteBoundary) insideAnySiteMask = true;
+  }
+}
+if (insideAnySiteMask && vSiteMaskLocalPosition.z >= siteMaskHeightRange.x && vSiteMaskLocalPosition.z <= siteMaskHeightRange.y) discard;`,
       );
   };
   material.customProgramCacheKey = () => `${previousCacheKey.call(material)}|site-mask:${config.cacheKey}`;
   material.needsUpdate = true;
+}
+
+/** Capture depth/normal variants must apply the same spatial cut as beauty. */
+export function inheritTileSpatialMask(source: THREE.Material, target: THREE.Material): void {
+  const state = source.userData[SPATIAL_PATCH_STATE_KEY] as SpatialPatchState | undefined;
+  if (state) patchMaterialForSpatialMask(target, state.config);
 }
 
 export function unpatchMaterialSpatialMask(material: THREE.Material): void {

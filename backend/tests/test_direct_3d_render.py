@@ -46,6 +46,7 @@ from app.services.direct_3d_render import (
     prepare_direct_3d_capture,
     register_generated_image,
 )
+from app.services.render_fidelity import RENDER_PRESERVATION_LOCK
 from app.services.direct_3d_identity import direct_3d_zone_design_identity
 from app.services.public_realm_lego import (
     PUBLIC_REALM_FALLBACK_PROPERTY,
@@ -1622,7 +1623,9 @@ def _project_preflight_db(monkeypatch):
     empty_result = MagicMock()
     empty_result.scalars.return_value.all.return_value = []
     db = AsyncMock()
-    db.execute = AsyncMock(side_effect=[empty_result, empty_result])
+    zones_result = MagicMock()
+    zones_result.scalars.return_value.all.return_value = [_zone(TEST_ZONE_ID, "building")]
+    db.execute = AsyncMock(side_effect=[zones_result, empty_result])
     return db
 
 
@@ -1883,14 +1886,13 @@ def test_provider_first_prompts_use_one_concise_natural_design_lock():
     assert "#FF0000" not in scene
     assert "Visible guide regions" not in scene
     assert "BALANCED FIDELITY" not in scene
-    assert len(scene) < 2_500
-    # The lock now closes with the context-identity clause (2026-07-25): the
-    # neighbouring-building protection must be the final, most-recent text.
-    assert scene.rstrip().endswith("Never re-clad, restyle, modernize or replace a neighbouring building.")
+    assert len(scene) < 3_500
+    # Final authority now includes custom-style and natural-occlusion limits.
+    assert scene.rstrip().endswith(RENDER_PRESERVATION_LOCK)
     assert reproject.count("FINAL PRESERVATION LOCK") == 1
     assert "30-degree axonometric" in reproject
     assert "Apply only the requested projection change" in reproject
-    assert len(reproject) < 2_000
+    assert len(reproject) < 3_000
 
 
 def test_provider_first_prompt_truncates_art_direction_without_losing_final_lock():
@@ -1903,7 +1905,7 @@ def test_provider_first_prompt_truncates_art_direction_without_losing_final_lock
 
     assert len(prompt) == 31_900
     assert prompt.count("FINAL PRESERVATION LOCK") == 1
-    assert prompt.rstrip().endswith("Never re-clad, restyle, modernize or replace a neighbouring building.")
+    assert prompt.rstrip().endswith(RENDER_PRESERVATION_LOCK)
 
 
 def test_structural_guide_is_deterministic_binary_and_includes_semantic_edges():
@@ -2730,7 +2732,7 @@ async def test_provider_first_payload_omits_mask_and_keeps_one_concise_authority
     assert call["data"]["size"] == (f"{capture.normalized_beauty.width}x{capture.normalized_beauty.height}")
     assert call["data"]["prompt"].count("FINAL PRESERVATION LOCK") == 1
     assert call["data"]["prompt"].count(request.prompt) == 1
-    assert len(call["data"]["prompt"]) < 2_500
+    assert len(call["data"]["prompt"]) < 3_500
 
 
 @pytest.mark.asyncio
@@ -4284,7 +4286,7 @@ def test_presentation_prompt_numbers_archetype_references_after_metadata():
     assert "appearance-strict but capacity-flexible" in prompt
     assert "Generic art-direction material examples apply only" in prompt
     # The design lock must still close the prompt.
-    assert prompt.rstrip().endswith("Never re-clad, restyle, modernize or replace a neighbouring building.")
+    assert prompt.rstrip().endswith(RENDER_PRESERVATION_LOCK)
 
 
 def test_presentation_prompt_omits_reference_clause_without_references():

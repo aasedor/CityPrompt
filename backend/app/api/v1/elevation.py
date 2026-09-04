@@ -5,9 +5,12 @@ Avoids exposing the Google API key to the frontend.
 Returns terrain elevation and an estimated WGS84 ellipsoidal height.
 """
 
+import math
+from typing import Literal
+
 import httpx
 from fastapi import APIRouter, Query, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 
 from app.core.config import get_settings
 
@@ -18,14 +21,76 @@ class ElevationResponse(BaseModel):
     elevation: float  # meters above sea level
     ellipsoidal_height: float  # estimated WGS84 ellipsoidal height
     resolution: float  # data resolution in meters
+    status: Literal["available", "unavailable"]
+    source: Literal["google_elevation", "renderer_fallback"]
+    approximate: bool = True
+    vertical_reference: Literal["mean_sea_level"] = "mean_sea_level"
+    unavailable_reason: Literal["not_configured", "network_error", "provider_error", "invalid_response"] | None = None
 
 
 class BatchElevationRequest(BaseModel):
     points: list[list[float]]  # [[lng, lat], ...]
 
+    @field_validator("points", mode="before")
+    @classmethod
+    def valid_coordinates(cls, points):
+        if not isinstance(points, list):
+            raise ValueError("Points must be a list of longitude/latitude pairs.")
+        for point in points:
+            if not isinstance(point, (list, tuple)) or len(point) != 2 or not all(_finite_number(value) for value in point):
+                raise ValueError("Each point must contain two finite longitude/latitude numbers.")
+            if not (-180 <= point[0] <= 180 and -90 <= point[1] <= 90):
+                raise ValueError("Coordinates must be within longitude/latitude bounds.")
+        return points
+
 
 class BatchElevationResponse(BaseModel):
     elevations: list[float]  # WGS84 ellipsoidal heights, aligned with input points
+    statuses: list[Literal["available", "unavailable"]]
+    sources: list[Literal["google_elevation", "renderer_fallback"]]
+
+
+def _finite_number(value) -> bool:
+    try:
+        return not isinstance(value, bool) and isinstance(value, (float, int)) and math.isfinite(value)
+    except OverflowError:
+        return False
+
+
+def _unavailable(lat: float, lng: float, reason: str) -> ElevationResponse:
+    # These numbers are compatibility defaults for existing renderers. The
+    # explicit metadata prevents them from being presented as measured data.
+    return ElevationResponse(elevation=0, ellipsoidal_height=estimate_geoid_undulation(lat, lng),
+                             resolution=1000, status="unavailable", source="renderer_fallback",
+                             unavailable_reason=reason)
+
+
+async def _google_results(client: httpx.AsyncClient, locations: str, api_key: str, count: int):
+    try:
+        response = await client.get("https://maps.googleapis.com/maps/api/elevation/json",
+                                    params={"locations": locations, "key": api_key})
+    except httpx.RequestError:
+        return None, "network_error"
+    if response.status_code != 200:
+        return None, "provider_error"
+    try:
+        data = response.json()
+    except ValueError:
+        return None, "invalid_response"
+    if not isinstance(data, dict):
+        return None, "invalid_response"
+    if data.get("status") != "OK":
+        return None, "provider_error"
+    results = data.get("results")
+    if not isinstance(results, list) or len(results) != count:
+        return None, "invalid_response"
+    for result in results:
+        if not isinstance(result, dict) or not _finite_number(result.get("elevation")):
+            return None, "invalid_response"
+        resolution = result.get("resolution", 0)
+        if not _finite_number(resolution) or resolution < 0:
+            return None, "invalid_response"
+    return results, None
 
 
 # Approximate geoid undulations for quick lookup
@@ -66,66 +131,20 @@ async def get_elevation(
 
     Returns both elevation above sea level and estimated WGS84 ellipsoidal height.
     """
-    # Try Google Elevation API first
     s = get_settings()
     # Prefer dedicated Maps key, fallback to Gemini key
     api_key = s.google_maps_api_key or s.gemini_api_key
     if not api_key:
-        # Fallback: no elevation API key configured
-        geoid = estimate_geoid_undulation(lat, lng)
-        return ElevationResponse(
-            elevation=0,
-            ellipsoidal_height=geoid,
-            resolution=1000,
-        )
-
-    try:
-        async with httpx.AsyncClient(timeout=10.0) as client:
-            resp = await client.get(
-                "https://maps.googleapis.com/maps/api/elevation/json",
-                params={
-                    "locations": f"{lat},{lng}",
-                    "key": api_key,
-                },
-            )
-
-        if resp.status_code != 200:
-            raise HTTPException(status_code=502, detail="Elevation API error")
-
-        data = resp.json()
-        if data.get("status") != "OK" or not data.get("results"):
-            # API might not have Elevation API enabled — use fallback
-            geoid = estimate_geoid_undulation(lat, lng)
-            return ElevationResponse(
-                elevation=0,
-                ellipsoidal_height=geoid,
-                resolution=1000,
-            )
-
-        result = data["results"][0]
-        elevation_msl = result["elevation"]  # meters above sea level
-        resolution = result.get("resolution", 0)
-
-        # Compute estimated ellipsoidal height:
-        # h ≈ H + N
-        # h: ellipsoidal height, H: orthometric (MSL) elevation, N: geoid undulation
-        geoid = estimate_geoid_undulation(lat, lng)
-        ellipsoidal_height = elevation_msl + geoid
-
-        return ElevationResponse(
-            elevation=elevation_msl,
-            ellipsoidal_height=ellipsoidal_height,
-            resolution=resolution,
-        )
-
-    except httpx.TimeoutException:
-        # Timeout fallback
-        geoid = estimate_geoid_undulation(lat, lng)
-        return ElevationResponse(
-            elevation=0,
-            ellipsoidal_height=geoid,
-            resolution=1000,
-        )
+        return _unavailable(lat, lng, "not_configured")
+    async with httpx.AsyncClient(timeout=10.0) as client:
+        results, reason = await _google_results(client, f"{lat},{lng}", api_key, 1)
+    if results is None:
+        return _unavailable(lat, lng, reason)
+    result = results[0]
+    elevation_msl = result["elevation"]
+    return ElevationResponse(elevation=elevation_msl,
+                             ellipsoidal_height=elevation_msl + estimate_geoid_undulation(lat, lng),
+                             resolution=result.get("resolution", 0), status="available", source="google_elevation")
 
 
 @router.post("/batch", response_model=BatchElevationResponse)
@@ -138,7 +157,7 @@ async def get_elevation_batch(body: BatchElevationRequest):
     """
     points = body.points
     if not points:
-        return BatchElevationResponse(elevations=[])
+        return BatchElevationResponse(elevations=[], statuses=[], sources=[])
     if len(points) > 4000:
         raise HTTPException(status_code=400, detail="Too many points (max 4000).")
 
@@ -146,29 +165,27 @@ async def get_elevation_batch(body: BatchElevationRequest):
     api_key = s.google_maps_api_key or s.gemini_api_key
     if not api_key:
         # No key: best-effort flat geoid so callers degrade rather than fail.
-        return BatchElevationResponse(elevations=[estimate_geoid_undulation(lat, lng) for lng, lat in points])
+        return BatchElevationResponse(elevations=[estimate_geoid_undulation(lat, lng) for lng, lat in points],
+                                      statuses=["unavailable"] * len(points), sources=["renderer_fallback"] * len(points))
 
     chunk_size = 250  # keep the GET URL well under length limits
     elevations: list[float] = []
+    statuses: list[Literal["available", "unavailable"]] = []
+    sources: list[Literal["google_elevation", "renderer_fallback"]] = []
     async with httpx.AsyncClient(timeout=20.0) as client:
         for start in range(0, len(points), chunk_size):
             chunk = points[start : start + chunk_size]
             locations = "|".join(f"{lat},{lng}" for lng, lat in chunk)
-            try:
-                resp = await client.get(
-                    "https://maps.googleapis.com/maps/api/elevation/json",
-                    params={"locations": locations, "key": api_key},
-                )
-                data = resp.json() if resp.status_code == 200 else {}
-            except httpx.TimeoutException:
-                data = {}
-
-            results = data.get("results") if data.get("status") == "OK" else None
-            if not results or len(results) != len(chunk):
+            results, _ = await _google_results(client, locations, api_key, len(chunk))
+            if results is None:
                 # Degrade this chunk to geoid estimates rather than abort the import.
                 elevations.extend(estimate_geoid_undulation(lat, lng) for lng, lat in chunk)
+                statuses.extend(["unavailable"] * len(chunk))
+                sources.extend(["renderer_fallback"] * len(chunk))
                 continue
             for (lng, lat), result in zip(chunk, results):
                 elevations.append(result["elevation"] + estimate_geoid_undulation(lat, lng))
+                statuses.append("available")
+                sources.append("google_elevation")
 
-    return BatchElevationResponse(elevations=elevations)
+    return BatchElevationResponse(elevations=elevations, statuses=statuses, sources=sources)

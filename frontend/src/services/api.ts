@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { shouldAttemptTokenRefresh } from './authRefreshPolicy';
+import { isPublicReadRequest, shouldAttemptTokenRefresh } from './authRefreshPolicy';
+import { assetAccountIdentity, createAssetAccess, type AssetContext } from './assetAccess';
 import type {
   Project,
   Building,
@@ -60,14 +61,21 @@ export const api = axios.create({
  * pointing at the backend. In dev the Vite proxy handles /api/ routes, but
  * in production the frontend and backend are on different domains.
  */
-export function resolveApiFileUrl(url: string): string {
-  if (!url) return url;
-  if (url.startsWith('http://') || url.startsWith('https://')) return url;
-  if (url.startsWith('/api/') && API_BASE_URL && API_BASE_URL !== 'http://localhost:8000') {
-    return `${API_BASE_URL}${url}`;
-  }
-  return url;
+const assetAccess = createAssetAccess({
+  baseUrl: API_BASE_URL,
+  origin: () => window.location.origin,
+  session: () => assetAccountIdentity(localStorage.getItem('access_token')),
+  projectTicket: async (id) => (await api.post(`/api/v1/shares/projects/${id}/asset-ticket`)).data,
+  fileTicket: async (file_path) => (await api.post('/api/v1/files/read-ticket', { file_path })).data,
+});
+
+export function resolveApiFileUrl(url: string, context?: AssetContext): string {
+  return assetAccess.resolve(url, context);
 }
+
+export const subscribeAssetTicketChanges = assetAccess.subscribe;
+export const getAssetTicketRevision = assetAccess.getRevision;
+export const refreshAssetTickets = assetAccess.refresh;
 
 function normalizeSavedRender(render: SavedRender): SavedRender {
   return {
@@ -113,17 +121,12 @@ export function getApiErrorMessage(error: unknown, fallback = 'Something went wr
   );
 }
 // Request interceptor for auth token
-/** Set by the undo/redo store during system actions to skip history recording. */
-let _skipHistoryFlag = false;
-export function setSkipHistory(v: boolean) { _skipHistoryFlag = v; }
-
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('access_token');
-  if (token) {
+  if (token && !isPublicReadRequest(config.url, config.method, config.params)) {
     config.headers.Authorization = `Bearer ${token}`;
-  }
-  if (_skipHistoryFlag) {
-    config.headers['X-Skip-History'] = '1';
+  } else if (isPublicReadRequest(config.url, config.method, config.params)) {
+    delete config.headers.Authorization;
   }
   return config;
 });
@@ -133,7 +136,7 @@ api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-    if (shouldAttemptTokenRefresh(
+    if (!isPublicReadRequest(originalRequest?.url, originalRequest?.method, originalRequest?.params) && shouldAttemptTokenRefresh(
       error.response?.status,
       originalRequest?.url,
       originalRequest?._retry,
@@ -152,13 +155,25 @@ api.interceptors.response.use(
         } catch {
           localStorage.removeItem('access_token');
           localStorage.removeItem('refresh_token');
-          window.location.href = '/login';
+          assetAccess.clear();
+          if (!/^\/(?:shared|invite)\//.test(window.location.pathname)) window.location.href = '/login';
         }
       }
     }
     return Promise.reject(error);
   }
 );
+
+api.interceptors.response.use(async (response) => {
+  if (!response.data || typeof response.data !== 'object' || response.data instanceof Blob
+      || response.data instanceof ArrayBuffer || /(?:asset-ticket|read-ticket)$/.test(response.config.url || '')) return response;
+  const route = response.config.url || '';
+  const publicToken = route.match(/\/shares\/shared\/([^/?]+)/)?.[1] || response.config.params?.share_token;
+  const projectId = route.match(/\/projects\/([0-9a-f-]{36})(?:\/|$)/i)?.[1]
+    || (publicToken ? response.data.id : undefined);
+  response.data = await assetAccess.prepare(response.data, { projectId, shareToken: publicToken });
+  return response;
+});
 
 // =============================================================================
 // Auth
@@ -201,6 +216,7 @@ export const authApi = {
   logout: () => {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
+    assetAccess.clear();
   },
 
   me: async (): Promise<AuthUser> => {
@@ -533,6 +549,14 @@ export interface PublicLinkInfo {
 }
 
 export const sharesApi = {
+  getInvitation: async (token: string): Promise<{ project_name: string; email: string; permission: string; accepted: boolean }> => {
+    const { data } = await api.get(`/api/v1/shares/invitations/${encodeURIComponent(token)}`);
+    return data;
+  },
+  acceptInvitation: async (token: string): Promise<ProjectShareInfo> => {
+    const { data } = await api.post(`/api/v1/shares/invitations/${encodeURIComponent(token)}/accept`);
+    return data;
+  },
   share: async (projectId: string, email: string, permission = 'viewer'): Promise<ProjectShareInfo> => {
     const { data } = await api.post(`/api/v1/shares/projects/${projectId}/shares`, {
       email,
@@ -594,6 +618,15 @@ export const activityApi = {
 // Site Zones
 // =============================================================================
 
+export interface ZoneMutationOptions {
+  /** Explicitly scoped to an undo/redo request, never a global UI flag. */
+  skipHistory?: boolean;
+}
+
+function zoneHistoryConfig(options?: ZoneMutationOptions) {
+  return options?.skipHistory ? { headers: { 'X-Skip-History': '1' } } : {};
+}
+
 export const siteZonesApi = {
   list: async (projectId: string): Promise<SiteZone[]> => {
     const { data } = await api.get(`/api/v1/site-zones/projects/${projectId}/zones`);
@@ -601,6 +634,7 @@ export const siteZonesApi = {
   },
 
   create: async (projectId: string, zone: {
+    client_request_id?: string;
     name?: string;
     zone_type: SiteZoneType;
     coordinates: number[][];
@@ -608,25 +642,28 @@ export const siteZonesApi = {
     properties?: SiteZoneProperties;
     sort_order?: number;
     is_active_boundary?: boolean;
-  }): Promise<SiteZone> => {
-    const { data } = await api.post(`/api/v1/site-zones/projects/${projectId}/zones`, zone);
+  }, options?: ZoneMutationOptions): Promise<SiteZone> => {
+    const { data } = await api.post(`/api/v1/site-zones/projects/${projectId}/zones`, zone, zoneHistoryConfig(options));
     return data;
   },
 
   update: async (zoneId: string, update: {
+    expected_updated_at?: string;
     name?: string;
     zone_type?: SiteZoneType;
     coordinates?: number[][];
     color?: string;
     properties?: SiteZoneProperties;
     sort_order?: number;
-  }): Promise<SiteZone> => {
-    const { data } = await api.put(`/api/v1/site-zones/${zoneId}`, update);
+  }, options?: ZoneMutationOptions): Promise<SiteZone> => {
+    const { data } = await api.put(`/api/v1/site-zones/${zoneId}`, update, zoneHistoryConfig(options));
     return data;
   },
 
-  delete: async (zoneId: string): Promise<void> => {
-    await api.delete(`/api/v1/site-zones/${zoneId}`);
+  delete: async (zoneId: string, expectedUpdatedAt?: string, options?: ZoneMutationOptions): Promise<void> => {
+    await api.delete(`/api/v1/site-zones/${zoneId}`, {
+      params: { expected_updated_at: expectedUpdatedAt }, ...zoneHistoryConfig(options),
+    });
   },
 
   createBuildingFromZone: async (zoneId: string): Promise<Building> => {
@@ -1398,6 +1435,8 @@ export const rendersApi = {
     warnings: string[];
     capture_fingerprint: string;
     output_fingerprint: string;
+    saved_render?: SavedRender | null;
+    provider_original_render?: SavedRender | null;
     diagnostics: {
       control_bundle_version?: 1 | 2;
       /** Optional so saved/legacy source-anchored responses remain readable. */

@@ -188,6 +188,21 @@ export function waitForVisibleTileCoverage(
   });
 }
 
+/** Capture the settled visible context without waiting for off-camera downloads.
+ * Unlike the display indicator, this never accepts changing or empty coverage
+ * merely because its deadline expired. */
+export function waitForCaptureTileReadiness(
+  tiles: SceneTileRenderer | null | undefined,
+  options: WaitForTileDisplayReadyOptions = {},
+): Promise<boolean> {
+  return waitForVisibleTileCoverage(tiles, {
+    stableMs: 900,
+    timeoutMs: 8_000,
+    ...options,
+    acceptVisibleCoverageAtTimeout: false,
+  });
+}
+
 /**
  * Bound the user-facing loading indicator without weakening capture gates.
  *

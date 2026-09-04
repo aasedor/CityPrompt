@@ -41,6 +41,8 @@ Phases 2, 3, and 5 can be developed independently with root integration of share
 
 **Sharing:** accepted members use individual accounts; merely registering an invited address is not enough to access a project. Public viewing has its own revocable scope. Asset access must continue to work for images, video, and 3D loaders without exposing an account access token in URLs.
 
+The unused legacy anonymous WebSocket relay is closed in this implementation. Optional live presence/edit broadcasting can return only with authenticated connection identity, project membership, edit authorization and revocation handling. Existing authenticated sharing and revision-checked saved edits remain the January foundation. Production release also requires review of the inherited OAuth state validation, video accounting and worker setup.
+
 ## Verification strategy
 
 Use focused Vitest/pytest tests for each changed boundary, then TypeScript checking and lint for the integrated frontend. New persistence paths need local PostgreSQL verification in addition to mocks. Browser checks cover actual UI → API → database → reload and the resulting visible state. Generated media requires visual inspection, not just a successful HTTP response. Test failures are resolved before their checkpoint is described as complete.
@@ -51,7 +53,7 @@ The full release still needs an observed novice/student pilot and testing on the
 
 Implemented locally: the compact student toolbar and guide; reference-only GeoJSON/shapefile layers; optional sourced elevation; advisory report with persisted student decisions and printable plan; invitation acceptance and read-only viewing; scoped media downloads; atomic render credit admission; revision-aware drawing saves and undo; detached-house repetition inside the actual plot; concave boundary masks; same-camera geometry controls; server-recorded render provenance and conservative image review/fallback.
 
-Integration verification is in progress. The production bundle and TypeScript check have passed an initial integration run. PostgreSQL probes cover concurrent credit reservation, repeated drawing saves, stale edits and invitation access; both new migrations passed upgrade/downgrade in a separate database. Real WebGL testing found and fixed packed-depth information disappearing during PNG conversion. Final results, remaining limitations and live API spending belong in the verification record beside this plan.
+Local integration verification passed TypeScript, the production bundle, focused frontend/backend regressions and real browser/API/database flows. PostgreSQL probes cover concurrent credit reservation, repeated drawing saves, stale edits and invitation access; both new migrations passed upgrade/downgrade in a separate database. Real WebGL testing found and fixed packed-depth information disappearing during PNG conversion, and mixed-scene testing corrected shared site elevation. One paid image pilot cost approximately US$0.28 and correctly returned the source when the AI changed the design; a recorded local replay verified the final saved-result labels. See [the verification record](STUDENT_STUDIO_VERIFICATION_2026-09-04.md) for evidence and remaining limitations. The polished faithful-render acceptance gate remains open.
 
 ## Completing the full vision
 
