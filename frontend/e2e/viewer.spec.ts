@@ -1,5 +1,5 @@
 import type { Page } from '@playwright/test';
-import { test, expect } from './fixtures/test';
+import { test, expect, revealPlanningTools } from './fixtures/test';
 
 /**
  * Helper: mock auth endpoints and seed localStorage with a fake token
@@ -92,6 +92,7 @@ test.describe('Integrated project workspace', () => {
 
   test('loads the project in the integrated workspace', async ({ page }) => {
     await page.goto('/projects/proj-1');
+    await revealPlanningTools(page);
 
     await expect(page).toHaveURL(/\/projects\/proj-1$/);
     await expect(page.getByText('Riverside Development', { exact: true })).toBeVisible();
@@ -100,6 +101,7 @@ test.describe('Integrated project workspace', () => {
 
   test('shows the current plan, 3D, image, and video workflow controls', async ({ page }) => {
     await page.goto('/projects/proj-1');
+    await revealPlanningTools(page);
 
     await expect(page.getByText('Master Plan', { exact: true }).first()).toBeVisible();
     await expect(page.getByRole('button', { name: 'Generate to 3D' })).toBeVisible();
@@ -109,6 +111,7 @@ test.describe('Integrated project workspace', () => {
 
   test('prevents 3D generation until the planning workflow is complete', async ({ page }) => {
     await page.goto('/projects/proj-1');
+    await revealPlanningTools(page);
 
     const generate3D = page.getByRole('button', { name: 'Generate to 3D' });
     await expect(generate3D).toBeDisabled();
@@ -117,6 +120,7 @@ test.describe('Integrated project workspace', () => {
 
   test('provides a route back to the project list', async ({ page }) => {
     await page.goto('/projects/proj-1');
+    await revealPlanningTools(page);
 
     const projectsLink = page.locator('a[href="/projects"]').first();
     await expect(projectsLink).toBeVisible();

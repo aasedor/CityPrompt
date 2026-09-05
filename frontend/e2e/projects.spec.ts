@@ -1,5 +1,5 @@
 import type { Page } from '@playwright/test';
-import { test, expect } from './fixtures/test';
+import { test, expect, revealPlanningTools } from './fixtures/test';
 
 /**
  * Helper: mock the auth endpoints and set a fake token in localStorage
@@ -216,6 +216,7 @@ test.describe('Project management', () => {
     });
 
     await page.goto('/projects/proj-1');
+    await revealPlanningTools(page);
 
     await expect(page).toHaveURL(/\/projects\/proj-1$/);
     await expect(page.getByText('Riverside Development', { exact: true })).toBeVisible();
@@ -251,6 +252,7 @@ test.describe('Project management', () => {
     });
 
     await page.goto('/projects/proj-1');
+    await revealPlanningTools(page);
 
     await expect(page).toHaveURL(/\/projects\/proj-1$/);
     const generate3D = page.getByRole('button', { name: 'Generate to 3D' });

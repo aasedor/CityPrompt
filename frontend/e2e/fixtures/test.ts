@@ -1,4 +1,4 @@
-import { test as base, expect } from '@playwright/test';
+import { test as base, expect, type Page } from '@playwright/test';
 
 type CityPromptFixtures = {
   browserErrors: string[];
@@ -35,6 +35,14 @@ export const test = base.extend<CityPromptFixtures>({
         body: '[]',
       });
     });
+    // Reference layers are optional project context, loaded on workspace entry.
+    await page.route('**/api/v1/reference-layers/projects/*', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ layers: [], can_edit: true }),
+      });
+    });
 
     await use();
   }, { auto: true }],
@@ -62,3 +70,10 @@ export const test = base.extend<CityPromptFixtures>({
 });
 
 export { expect };
+
+/** Reveal optional tools in both the Google globe and the fallback map. */
+export async function revealPlanningTools(page: Page) {
+  await page.getByRole('button', { name: 'More Tools', exact: true }).click();
+  const customTools = page.locator('summary').filter({ hasText: '3D tools for custom drawings' });
+  if (await customTools.count()) await customTools.click();
+}
