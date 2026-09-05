@@ -1,6 +1,7 @@
 """Bind terrain evidence to the current retained boundary before provider spend."""
 
 from datetime import datetime, timezone
+from math import isclose
 from typing import Any, Iterable
 
 from fastapi import HTTPException
@@ -21,6 +22,17 @@ def _open_ring(points) -> list[tuple[float, float]]:
     return ring[:-1] if len(ring) > 1 and ring[0] == ring[-1] else ring
 
 
+def _same_ring(left, right) -> bool:
+    # PostGIS/GeoJSON/JavaScript round-trips can differ in the last binary
+    # digit. One trillionth of a degree is sub-micrometre noise, not a site
+    # edit. Never use relative tolerance on longitude-sized numbers.
+    a, b = _open_ring(left), _open_ring(right)
+    return len(a) == len(b) and all(
+        isclose(x, y, rel_tol=0, abs_tol=1e-12)
+        for p, q in zip(a, b) for x, y in zip(p, q)
+    )
+
+
 def bind_shared_ground_snapshot(snapshot: SharedGroundSnapshot, zones: Iterable[Any]) -> dict:
     """Validate boundary identity/geometry/revision. Heights, quality and cache
     signatures remain client measurements; the server does not resample tiles."""
@@ -35,7 +47,7 @@ def bind_shared_ground_snapshot(snapshot: SharedGroundSnapshot, zones: Iterable[
                 and _utc(boundary.updated_at) == _utc(snapshot.boundaryUpdatedAt)
                 and geometry.geom_type == "Polygon"
                 and not len(geometry.interiors)
-                and _open_ring(geometry.exterior.coords) == _open_ring(snapshot.boundaryCoordinates)
+                and _same_ring(geometry.exterior.coords, snapshot.boundaryCoordinates)
             )
         except (TypeError, ValueError, AttributeError):
             valid = False

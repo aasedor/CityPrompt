@@ -56,7 +56,7 @@ describe('LoginPage', () => {
     renderLogin();
     const link = screen.getByText('Sign up');
     expect(link).toBeDefined();
-    expect(link.getAttribute('href')).toBe('/register');
+    expect(link.getAttribute('href')).toBe('/register?returnTo=%2Fprojects');
   });
 
   it('requires email and password fields', () => {
@@ -116,7 +116,7 @@ describe('LoginPage', () => {
 
     await waitFor(() => {
       expect(
-        screen.getByText('Unable to reach the API server. Make sure backend is running on http://localhost:8000.')
+        screen.getByText('City Prompt could not connect. Check your connection and try signing in again.')
       ).toBeDefined();
     });
   });

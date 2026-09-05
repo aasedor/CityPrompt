@@ -49,6 +49,21 @@ def test_exact_measured_snapshot_frozen_with_current_boundary_without_height_cer
     assert changed["plan"]["shared_ground_snapshot"]["signature"] == raw["signature"]
 
 
+def test_geojson_roundtrip_noise_does_not_reject_an_unchanged_site():
+    _, zones, _, raw = inputs()
+    raw["boundaryCoordinates"][0][0] += 2e-14
+    result = bind_shared_ground_snapshot(SharedGroundSnapshot.model_validate(raw), zones)
+    assert result["boundaryId"] == raw["boundaryId"]
+
+
+def test_actual_boundary_movement_still_requires_a_fresh_capture():
+    _, zones, _, raw = inputs()
+    raw["boundaryCoordinates"][0][0] -= 1e-8
+    with pytest.raises(HTTPException) as exc:
+        bind_shared_ground_snapshot(SharedGroundSnapshot.model_validate(raw), zones)
+    assert exc.value.status_code == 409
+
+
 @pytest.mark.parametrize("change", ["missing", "unknown", "stale", "inactive", "prepared", "duplicate_active", "geometry", "hole", "wrong_type"])
 def test_shared_ground_must_match_the_current_active_retained_boundary(change):
     _, zones, _, raw = inputs()

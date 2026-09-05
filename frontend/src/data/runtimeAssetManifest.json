@@ -53,6 +53,7 @@
     "src/components/viewer/globe/GlobeLandscapeKit.tsx",
     "src/components/viewer/globe/GlobeLegoAssemblyLayer.tsx",
     "src/components/viewer/globe/GlobeModelSelectionOutline.tsx",
+    "src/components/viewer/globe/GlobeNeighborhoodParkPilot.tsx",
     "src/components/viewer/globe/GlobeNeighborhoodParkV0StickerAssembly.tsx",
     "src/components/viewer/globe/GlobeParkBatch5Assembly.tsx",
     "src/components/viewer/globe/GlobeParkKitLayer.tsx",
@@ -69,15 +70,18 @@
     "src/components/viewer/globe/GlobeStreetVehicleInstances.tsx",
     "src/components/viewer/globe/GlobeTileMaskLayer.tsx",
     "src/components/viewer/globe/GlobeZoneLayer.tsx",
+    "src/components/viewer/globe/SharedSiteGroundProvider.tsx",
     "src/components/viewer/globe/StencilMaskPlugin.ts",
     "src/components/viewer/globe/TileSpatialMaskPlugin.ts",
     "src/components/viewer/globe/TileStencilPatcher.tsx",
+    "src/components/viewer/globe/buildingGroundContact.ts",
     "src/components/viewer/globe/buildingPlacement.ts",
     "src/components/viewer/globe/direct3dArchetypeReferences.ts",
     "src/components/viewer/globe/direct3dCapture.ts",
     "src/components/viewer/globe/drawingGeometry.ts",
     "src/components/viewer/globe/generatedBuildingLod.ts",
     "src/components/viewer/globe/globeTerrainUtils.ts",
+    "src/components/viewer/globe/importedBuildingGround.ts",
     "src/components/viewer/globe/landscapeKitProfiles.ts",
     "src/components/viewer/globe/legoGlobePlacement.ts",
     "src/components/viewer/globe/legoMassingGeometry.ts",
@@ -86,6 +90,10 @@
     "src/components/viewer/globe/modelAssetAvailability.ts",
     "src/components/viewer/globe/modelMaterialQuality.ts",
     "src/components/viewer/globe/modelRenderZones.ts",
+    "src/components/viewer/globe/neighborhoodParkGeometry.ts",
+    "src/components/viewer/globe/neighborhoodParkLayout.ts",
+    "src/components/viewer/globe/parkAccessBridgeGeometry.ts",
+    "src/components/viewer/globe/parkAccessConnections.ts",
     "src/components/viewer/globe/parkArchetypeOwnedKits.ts",
     "src/components/viewer/globe/parkBatch4Skins.ts",
     "src/components/viewer/globe/parkBatch5Skins.ts",
@@ -95,6 +103,7 @@
     "src/components/viewer/globe/parkGroundTexture.ts",
     "src/components/viewer/globe/parkLegoFamilies.ts",
     "src/components/viewer/globe/parkMicrodetailFamilies.ts",
+    "src/components/viewer/globe/parkPlantingGeometry.ts",
     "src/components/viewer/globe/parkProgramAssets.ts",
     "src/components/viewer/globe/parkScatter.ts",
     "src/components/viewer/globe/parkSpecialtyGeometry.ts",
@@ -108,6 +117,10 @@
     "src/components/viewer/globe/renderZoneVisibility.ts",
     "src/components/viewer/globe/residualLandscape.ts",
     "src/components/viewer/globe/rlasmPresentation.ts",
+    "src/components/viewer/globe/sharedGroundCapture.ts",
+    "src/components/viewer/globe/sharedGroundGeometry.ts",
+    "src/components/viewer/globe/sharedGroundSelection.ts",
+    "src/components/viewer/globe/sharedSiteGround.ts",
     "src/components/viewer/globe/sitePreparationSurface.ts",
     "src/components/viewer/globe/skateParkFit.ts",
     "src/components/viewer/globe/streetDetailLod.ts",
@@ -115,17 +128,20 @@
     "src/components/viewer/globe/streetFamilyFurniture.ts",
     "src/components/viewer/globe/streetGraphIntersections.ts",
     "src/components/viewer/globe/streetIntersectionControlPolicy.ts",
+    "src/components/viewer/globe/streetJunctionGeometry.ts",
     "src/components/viewer/globe/streetLegoContract.ts",
     "src/components/viewer/globe/streetMesh3D.ts",
     "src/components/viewer/globe/streetNetworkGroundTexture.ts",
     "src/components/viewer/globe/streetRenderProfile.ts",
     "src/components/viewer/globe/streetRenderReadiness.ts",
     "src/components/viewer/globe/streetSectionProfiles.ts",
+    "src/components/viewer/globe/streetSharedGround.ts",
     "src/components/viewer/globe/streetSurfaceMaterials.ts",
     "src/components/viewer/globe/strictModeResourceDisposal.ts",
     "src/components/viewer/globe/terrainContactProfile.ts",
     "src/components/viewer/globe/terrainGroundMesh.ts",
     "src/components/viewer/globe/tileLoadReadiness.ts",
+    "src/components/viewer/globe/tileMaskGeometry.ts",
     "src/components/viewer/globe/useDirect3DRender.ts",
     "src/components/viewer/globe/useGlobeAIRender.ts",
     "src/components/viewer/globe/useGlobeCamera.ts",
@@ -137,6 +153,7 @@
     "src/components/viewer/siteIntelligencePlanStatus.ts",
     "src/components/viewer/useAIRender.ts",
     "src/components/viewer/useStreetViewRender.ts",
+    "src/components/viewer/videoCaptureInventory.ts",
     "src/components/viewer/videoRenderPath.ts",
     "src/components/viewer/videoRenderQuality.ts",
     "src/components/viewer/videoRouteControls.ts",
@@ -183,6 +200,9 @@
     "src/features/auth/OAuthCallbackPage.tsx",
     "src/features/auth/RegisterPage.tsx",
     "src/features/auth/ResetPasswordPage.tsx",
+    "src/features/auth/returnTo.ts",
+    "src/features/calgaryCatalogue/CatalogueBrowser.tsx",
+    "src/features/calgaryCatalogue/guide.ts",
     "src/features/community3d/community3d.ts",
     "src/features/community3d/community3dPresentation.ts",
     "src/features/community3d/planBoundaryAlignment.ts",
@@ -191,25 +211,50 @@
     "src/features/legoAssembly/LegoBuilderPanel.tsx",
     "src/features/legoAssembly/allSettledWithConcurrency.ts",
     "src/features/legoAssembly/communityCompiler.ts",
+    "src/features/legoAssembly/detachedPlot.ts",
     "src/features/legoAssembly/footprintProfiles.ts",
     "src/features/legoAssembly/legoAssemblyApi.ts",
     "src/features/legoAssembly/legoShared.tsx",
+    "src/features/legoAssembly/nativeClayPlacement.ts",
     "src/features/legoAssembly/projectCommunityCompile.ts",
+    "src/features/pickPlace/GlobePlacementPreview.tsx",
+    "src/features/pickPlace/PlacementPalette.tsx",
+    "src/features/pickPlace/ReshapePanel.tsx",
+    "src/features/pickPlace/StreetRoutePanel.tsx",
+    "src/features/pickPlace/catalogue.ts",
+    "src/features/pickPlace/geometry.ts",
+    "src/features/pickPlace/streetPlacement.ts",
+    "src/features/pickPlace/useAutomatic3D.ts",
+    "src/features/projects/InvitationPage.tsx",
     "src/features/projects/LayersPanel.tsx",
     "src/features/projects/ProjectEditModal.tsx",
     "src/features/projects/ProjectListPage.tsx",
     "src/features/projects/ProjectViewPage.tsx",
+    "src/features/projects/ReadOnlyProject.tsx",
     "src/features/projects/ShapefileImportButton.tsx",
+    "src/features/projects/SharedPlanPreview.tsx",
     "src/features/projects/SharedProjectPage.tsx",
+    "src/features/projects/StudioControls.tsx",
+    "src/features/referenceLayers/GlobeReferenceLayer.tsx",
+    "src/features/referenceLayers/ReferenceImportButton.tsx",
+    "src/features/referenceLayers/ReferenceLayersPanel.tsx",
+    "src/features/referenceLayers/SiteElevation.tsx",
+    "src/features/referenceLayers/api.ts",
+    "src/features/referenceLayers/referenceGeometry.ts",
+    "src/features/referenceLayers/useReferenceLayers.ts",
+    "src/features/studentReports/StudentPlanningReport.tsx",
+    "src/features/studentReports/studentReportsApi.ts",
     "src/features/workflow/cityPromptWorkflow.ts",
     "src/hooks/useGenerationPolling.ts",
     "src/hooks/useSiteZones.ts",
     "src/hooks/useUndoRedoKeyboard.ts",
     "src/hooks/useZoneHistory.ts",
+    "src/hooks/zoneDrafts.ts",
     "src/index.css",
     "src/lib/ktx2GltfLoader.ts",
     "src/main.tsx",
     "src/services/api.ts",
+    "src/services/assetAccess.ts",
     "src/services/authRefreshPolicy.ts",
     "src/services/geocoding.ts",
     "src/store/generationStore.ts",
@@ -221,6 +266,7 @@
     "src/utils/coordTransform.ts",
     "src/utils/domEvents.ts",
     "src/utils/renderPersistence.ts",
+    "src/utils/renderPresentation.ts",
     "src/utils/roadGeometry.ts",
     "src/utils/seededRandom.ts",
     "src/utils/sessionReset.ts",
@@ -229,9 +275,9 @@
   ],
   "coverage": {
     "explicitReferenceCount": 2606,
-    "dynamicCollectionCount": 3,
-    "requiredFileCount": 4440,
-    "requiredLogicalBytes": 11203088303,
+    "dynamicCollectionCount": 4,
+    "requiredFileCount": 4451,
+    "requiredLogicalBytes": 11207817652,
     "missingReferenceCount": 0
   },
   "explicitReferences": [
@@ -1940,7 +1986,8 @@
       "url": "/archetypes/buildings/calgary-modern-infill-house/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/catalogue.ts"
       ],
       "logicalBytes": 1399202,
       "lfsOid": "2417d853c91b9e997bfdc2a34ec7339b80cea76718fbb05417a1d839789240c8"
@@ -9158,7 +9205,8 @@
       "url": "/archetypes/buildings/vancouver-craftsman-bungalow/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/catalogue.ts"
       ],
       "logicalBytes": 1470571,
       "lfsOid": "4039b15d52fbc3b8afaa514df5e104b677b1c49d80b5697fe0dfc4b95e8ba9e6"
@@ -12724,7 +12772,8 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/neighborhoodParkV0StickerKit.json",
-        "src/data/openSpaceArchetypes.json"
+        "src/data/openSpaceArchetypes.json",
+        "src/features/pickPlace/catalogue.ts"
       ],
       "logicalBytes": 1545419
     },
@@ -23085,8 +23134,7 @@
         "public/manifest.json",
         "src/components/layout/Layout.tsx",
         "src/features/auth/AuthPageShell.tsx",
-        "src/features/landing/LandingPage.tsx",
-        "src/features/projects/SharedProjectPage.tsx"
+        "src/features/landing/LandingPage.tsx"
       ],
       "logicalBytes": 104692
     },
@@ -23167,6 +23215,12 @@
       ]
     },
     {
+      "url": "/landscape-pilots/neighborhood-rustic-v5",
+      "sources": [
+        "src/components/viewer/globe/GlobeNeighborhoodParkPilot.tsx"
+      ]
+    },
+    {
       "url": "/park-kits/shared-park-equipment-v1",
       "sources": [
         "src/data/sharedParkEquipment.ts"
@@ -23181,6 +23235,7 @@
     {
       "url": "/park-skins/neighborhood-park-rustic-v0/adaptive-v1",
       "sources": [
+        "src/components/viewer/globe/GlobeNeighborhoodParkPilot.tsx",
         "src/data/neighborhoodParkV0StickerKit.json"
       ]
     },
@@ -23312,6 +23367,16 @@
       "fileCount": 1317,
       "logicalBytes": 74323427,
       "pathDigest": "ac31a5a6dd8a23a65ecc4630e09e7375cdcbc83c665c10b6287f3e17ca9fbc2b"
+    },
+    {
+      "name": "neighbourhood-park-pilot",
+      "roots": [
+        "/landscape-pilots/neighborhood-rustic-v5/"
+      ],
+      "reason": "Reviewed park components selected by the adaptive neighbourhood park renderer.",
+      "fileCount": 11,
+      "logicalBytes": 4729349,
+      "pathDigest": "50318e6f6dff65d2d5a7fce21d29bd08909f6f26336756b8942ac9b4cf99af2f"
     }
   ],
   "cleanupCandidates": {

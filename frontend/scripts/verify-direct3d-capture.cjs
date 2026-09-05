@@ -68,3 +68,4 @@ const baseUrl=process.env.CAPTURE_QA_BASE_URL || 'http://127.0.0.1:5173';
  }catch(e){console.log('HARNESS_ERROR',e.message);console.log(JSON.stringify(errors));process.exitCode=1}
  finally{fs.writeFileSync(path.join(out,'gpu-errors.json'),JSON.stringify(errors,null,2));await browser.close()}
 })();
+/* global document, createImageBitmap -- callbacks execute in the browser page */

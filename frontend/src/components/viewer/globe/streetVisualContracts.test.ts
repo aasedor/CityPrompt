@@ -16,7 +16,7 @@ import {
 declare const process: { cwd: () => string; env: Record<string, string | undefined> };
 
 function frontendRoot(): string {
-  return existsSync(resolve(process.cwd(), 'public'))
+  return existsSync(resolve(process.cwd(), 'src/main.tsx'))
     ? process.cwd()
     : resolve(process.cwd(), 'frontend');
 }
