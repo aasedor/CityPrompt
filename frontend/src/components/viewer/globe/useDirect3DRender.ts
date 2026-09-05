@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 
 import { rendersApi } from '@/services/api';
+import type { SavedRender } from '@/types';
 import type { Community3DCaptureClaim } from '@/features/community3d/community3d';
 import {
   GLOBE_STYLE_PROMPTS,
@@ -292,6 +293,7 @@ export interface Direct3DRenderDiagnostics {
 
 export interface Direct3DRenderResult {
   render: GlobeRenderResult;
+  providerOriginalRender?: SavedRender;
   diagnostics: Direct3DRenderDiagnostics;
   captureFingerprint: string;
   outputFingerprint: string;
@@ -423,6 +425,7 @@ export function useDirect3DRender() {
           : 'Direct 3D · GPT Image 2',
       },
       diagnostics: response.diagnostics,
+      providerOriginalRender: response.provider_original_render ?? undefined,
       captureFingerprint: response.capture_fingerprint,
       outputFingerprint: response.output_fingerprint,
       outcome: response.outcome,

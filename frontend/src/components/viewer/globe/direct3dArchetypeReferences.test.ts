@@ -139,7 +139,7 @@ describe('collectDirect3DArchetypeReferences', () => {
     expect(references[0].label).toContain('"Block B"');
   });
 
-  it('attaches exact park and street appearances with size-aware fit rules', async () => {
+  it('uses park and street references for finish without reopening compiled layout or capacity', async () => {
     const fetchMock = vi.fn(async () => imageResponse());
     vi.stubGlobal('fetch', fetchMock);
 
@@ -159,9 +159,11 @@ describe('collectDirect3DArchetypeReferences', () => {
     );
     expect(references[0].label).toContain('Natural Meadow');
     expect(references[0].label).toContain('79.8 by 8.7 metre polygon');
-    expect(references[0].label).toContain('one complete facility or one landscape room');
+    expect(references[0].label).toContain('already resolved capacity');
+    expect(references[0].label).toContain('do not copy the reference layout');
     expect(references[1].label).toContain('Green Corridor');
     expect(references[1].label).toContain('Keep the compiled cross-section exact');
+    expect(references[1].label).toContain('captured count and positions');
     expect(references.every((reference) => reference.label.length <= 600)).toBe(true);
   });
 });

@@ -160,6 +160,7 @@ describe('public-realm generation context', () => {
     expect(prompt).toContain('park "Courtyard Park"');
     expect(prompt).toContain('street "Main Street"');
     expect(prompt).toContain('captured Google-tile scene and mounted 3D buildings');
+    expect(prompt).toContain('Missing connections remain missing');
     expect(prompt).not.toContain('Remote Tower');
   });
 });

@@ -3269,7 +3269,7 @@ def _presentation_prompt(
             + ". Unlike the metadata above, these are authored design sources: "
             "apply every BUILDING reference strictly to its named building; "
             "apply every PARK or STREET reference to its named public-realm "
-            "zone using the capacity rule stated in that reference label. "
+            "zone for material finish only. Capacity and placement are already resolved in Image 1. "
             "Reference identity overrides generic material examples while "
             "Image 1 remains authoritative for geometry, massing, position, "
             "polygon extent, cross-section and camera."
@@ -3279,9 +3279,9 @@ def _presentation_prompt(
         "preserve their selected architectural language, material hierarchy, "
         "facade rhythm, openings, roof character and detailing; never replace "
         "them with another period or style. Attached park and street references "
-        "are appearance-strict but capacity-flexible: preserve their planting, "
-        "surface, edge and furnishing language while using only complete program "
-        "elements that fit the compiled polygon or cross-section. Generic art-"
+        "provide surface and material detail only: retain Image 1's exact path, "
+        "pavilion, play-feature, tree and furnishing positions and counts. Do not "
+        "copy the reference layout or exchange facilities. Generic art-"
         "direction material examples apply only when that material already exists "
         "in Image 1 or its attached reference."
         if archetype_reference_labels
@@ -3452,8 +3452,8 @@ def _authoritative_prompt(
         )
         reference_lock = (
             " ARCHETYPE IDENTITY LOCK: apply building references strictly to "
-            "their named buildings. Apply park and street references with their "
-            "stated size-aware capacity rules. Their selected material, planting, "
+            "their named buildings. Use park and street references for material finish only; "
+            "capacity and placement are already resolved in Image 1. Their selected material, planting, "
             "surface and furnishing identities override generic style examples."
         )
     authority = (
@@ -4310,82 +4310,16 @@ class Direct3DRenderService:
             source_locked_rlasm_ids = _source_locked_rlasm_instance_ids(server_inventory)
 
             if req.view_mode == "street":
-                # Street v1 is review-first even under presentation-first: the
-                # aerial gates (registration, macro planform fidelity,
-                # visual-change) encode top-down assumptions, so run only
-                # generic content sanity and hand the candidate to human
-                # review with the source for comparison. Must precede the
-                # presentation-first return so street keeps its outcome.
-                street_sanity = assess_reproject_output_sanity(
-                    capture.normalized_beauty,
-                    generated,
-                    capture.normalized_object_id,
-                    req.object_id_manifest,
+                # The input was already captured at eye level. Finishing it
+                # must not change cameras or expose hidden facilities. Use
+                # the same registered, masked, source-preserving checks as
+                # any other same-camera image, rather than content sanity
+                # alone. Sparse street evidence safely falls back to source.
+                street_result = _same_camera_presentation_result(
+                    req, capture, generated, common_diagnostics, source_locked_rlasm_ids,
                 )
-                if not street_sanity.passed:
-                    output_png = _png_bytes(capture.normalized_beauty)
-                    return Direct3DServiceResult(
-                        image_base64=base64.b64encode(output_png).decode("ascii"),
-                        audit_input_base64=capture.audit_input_base64,
-                        capture_fingerprint=capture.capture_fingerprint,
-                        output_fingerprint=hashlib.sha256(output_png).hexdigest(),
-                        outcome="review_required", provider_image_base64=provider_image_base64,
-                        warnings=("Clean street-level 3D source returned because the provider image failed minimum content checks. "
-                                  "The original source camera is preserved; the provider original is retained for review.",),
-                        diagnostics={
-                            **common_diagnostics, "view_lock": "source_pixel_locked",
-                            "provider_first": False, "provider_spatial_pixels_retained": False,
-                            "context_restyled": False, "returned_safety_strategy": "authoritative_source",
-                            "reproject_output_sanity": _reproject_sanity_diagnostics(street_sanity),
-                        },
-                    )
-                output_png = _png_bytes(generated)
-                return Direct3DServiceResult(
-                    image_base64=base64.b64encode(output_png).decode("ascii"),
-                    audit_input_base64=capture.audit_input_base64,
-                    capture_fingerprint=capture.capture_fingerprint,
-                    output_fingerprint=hashlib.sha256(output_png).hexdigest(),
-                    outcome="review_required",
-                    provider_image_base64=provider_image_base64,
-                    warnings=(
-                        "Street-level Direct 3D renders are review-first in this "
-                        "version: compare the candidate against the source "
-                        "capture before presenting.",
-                        *(
-                            (
-                                "Source-locked RLASM buildings are present. Street-level "
-                                "camera changes cannot be pixel-locked, so exact architectural "
-                                "identity requires direct visual review.",
-                            )
-                            if source_locked_rlasm_ids
-                            else ()
-                        ),
-                    ),
-                    diagnostics={
-                        **common_diagnostics,
-                        "view_mode": "street",
-                        "view_lock": "not_applicable_layout_guided",
-                        "context_restyled": True,
-                        "provider_first": True,
-                        "reproject_output_sanity": {
-                            "passed": True,
-                            "whole_frame_mean_absolute_delta": (street_sanity.whole_frame_mean_absolute_delta),
-                            "luminance_standard_deviation": (street_sanity.luminance_standard_deviation),
-                            "luminance_dynamic_range_p90": (street_sanity.luminance_dynamic_range_p90),
-                            "structural_edge_coverage": (street_sanity.structural_edge_coverage),
-                            "occupied_edge_cells": (street_sanity.occupied_edge_cells),
-                            "significant_edge_component_count": (street_sanity.significant_edge_component_count),
-                            "required_edge_component_count": (street_sanity.required_edge_component_count),
-                            "minimum_whole_frame_mean_absolute_delta": (_MIN_REPROJECT_WHOLE_FRAME_MEAN_ABSOLUTE_DELTA),
-                            "minimum_luminance_standard_deviation": (_MIN_REPROJECT_LUMINANCE_STANDARD_DEVIATION),
-                            "minimum_luminance_dynamic_range_p90": (_MIN_REPROJECT_LUMINANCE_DYNAMIC_RANGE_P90),
-                            "minimum_structural_edge_coverage": (_MIN_REPROJECT_STRUCTURAL_EDGE_COVERAGE),
-                            "maximum_structural_edge_coverage": (_MAX_REPROJECT_STRUCTURAL_EDGE_COVERAGE),
-                            "minimum_occupied_edge_cells": (_MIN_REPROJECT_OCCUPIED_EDGE_CELLS),
-                            "semantic_inventory_proxy_only": True,
-                        },
-                    },
-                )
+                street_result.diagnostics["view_mode"] = "street"
+                return street_result
 
             if DIRECT_3D_PRESENTATION_FIRST and req.presentation_mode == "scene":
                 return _same_camera_presentation_result(

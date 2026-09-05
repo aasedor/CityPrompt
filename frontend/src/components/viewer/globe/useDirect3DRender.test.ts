@@ -173,6 +173,22 @@ describe('Direct 3D presentation adapter', () => {
     vi.mocked(rendersApi.generateDirect3D).mockResolvedValue(response);
   });
 
+  it('retains the saved AI attempt when the returned image is the source fallback', async () => {
+    const original = { id: 'original-1', image_url: '/api/v1/files/original.png', prompt: 'finish', created_at: '2026-09-05', variant: 'provider_original' };
+    vi.mocked(rendersApi.generateDirect3D).mockResolvedValue({
+      ...response, outcome: 'review_required', provider_original_render: original,
+      diagnostics: { ...response.diagnostics, returned_safety_strategy: 'authoritative_source' },
+    });
+    const { result } = renderHook(() => useDirect3DRender());
+    const direct = await result.current.renderDirect3D(capture, {
+      style: 'photorealistic', projectId: 'project-1', community3DClaims,
+    });
+    expect(direct.providerOriginalRender).toEqual(original);
+    expect(direct.render.providerLabel).toContain('Original 3D view');
+    expect(direct.outcome).toBe('review_required');
+    expect(rendersApi.generateDirect3D).toHaveBeenCalledTimes(1);
+  });
+
   it('uses the same complete 22-style catalogue as Classic without changing Classic prompting', () => {
     expect(DIRECT_3D_STYLE_IDS).toHaveLength(22);
     expect(new Set(DIRECT_3D_STYLE_IDS)).toEqual(new Set(Object.keys(GLOBE_STYLE_PROMPTS)));

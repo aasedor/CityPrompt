@@ -1866,7 +1866,7 @@ def test_authoritative_prompt_numbers_and_locks_exact_archetype_references():
     assert "Image 6: PARK APPEARANCE REFERENCE - Natural meadow; capacity-flexible" in prompt
     assert "authored design sources, not metadata images" in prompt
     assert "apply building references strictly" in prompt
-    assert "stated size-aware capacity rules" in prompt
+    assert "capacity and placement are already resolved in Image 1" in prompt
     assert "override generic style examples" in prompt
 
 
@@ -4302,7 +4302,8 @@ def test_presentation_prompt_numbers_archetype_references_after_metadata():
     assert "apply every BUILDING reference strictly" in prompt
     assert "PARK or STREET reference" in prompt
     assert "ARCHETYPE IDENTITY LOCK" in prompt
-    assert "appearance-strict but capacity-flexible" in prompt
+    assert "Do not copy the reference layout or exchange facilities" in prompt
+    assert "appearance-strict but capacity-flexible" not in prompt
     assert "Generic art-direction material examples apply only" in prompt
     # The design lock must still close the prompt.
     assert prompt.rstrip().endswith(RENDER_PRESERVATION_LOCK)

@@ -3,8 +3,8 @@
  *
  * Buildings are bound to their exact selected variant and authored facade
  * source whenever one exists. Parks and streets carry the selected catalogue
- * appearance too, but their labels explicitly allow the metric program to
- * respond to the drawn polygon without squeezing or inventing facilities.
+ * appearance too, but only for material finish. Their capacity and facility
+ * layout have already been resolved in the captured 3D scene.
  */
 import type { SiteZone } from '@/types';
 import archetypeReferenceAvailability from '@/data/archetypeReferenceAvailability.json';
@@ -182,8 +182,8 @@ function candidateLabel(candidate: ReferenceCandidate, facadeSource: boolean): s
   const binding = candidate.kind === 'building'
     ? 'BINDING BUILDING IDENTITY: reproduce this selected variant\'s architectural language, material hierarchy, facade rhythm, openings, roof character and detailing. It overrides generic material examples; never substitute an unrelated architectural style.'
     : candidate.kind === 'park'
-      ? `BINDING APPEARANCE, FLEXIBLE CAPACITY: preserve this variant's planting, surface and furniture language. Fit only complete program elements to the actual ${candidate.targetDescription ?? 'drawn park polygon'}; never crop, squeeze or multiply equipment to imitate the reference. Small polygons may carry one complete facility or one landscape room.`
-      : `BINDING CORRIDOR IDENTITY: preserve this variant's surface, planting, edge and furnishing language across the actual ${candidate.targetDescription ?? 'drawn street segment'}. Keep the compiled cross-section exact; corridor length may change only the count and spacing of complete repeated furnishings.`;
+      ? `APPEARANCE ONLY: use this variant's planting, surface and furniture materials within the ${candidate.targetDescription ?? 'compiled park'}. The captured 3D scene has already resolved capacity. Keep every path, pavilion, play feature and tree in its captured position; do not copy the reference layout, add facilities or swap their positions.`
+      : `APPEARANCE ONLY: use this variant's surface and furnishing materials on the ${candidate.targetDescription ?? 'compiled street'}. Keep the compiled cross-section exact, including the captured count and positions of trees and furnishings. Do not add roads, crossings or connections from this reference.`;
   const identity = candidate.signature?.identity
     ? ` AUTHORED IDENTITY: ${candidate.signature.identity}${candidate.signature.materialZones ? ` Materials: ${candidate.signature.materialZones}.` : ''}`
     : candidate.variant?.description ? ` SELECTED VARIANT: ${candidate.variant.description}` : '';

@@ -249,6 +249,7 @@ type Direct3DReview = {
   sourceImageUrl: string;
   fidelityPolicy: Direct3DFidelityPolicy;
   style: string;
+  providerOriginalRender?: SavedRender;
 };
 
 export function GlobeAIRenderPanel({
@@ -911,6 +912,7 @@ export function GlobeAIRenderPanel({
       setSelectedPreviewIndex(0);
       setResult(direct.render);
       setDirectDiagnostics(direct.diagnostics);
+      if (direct.providerOriginalRender) rememberSavedRender(direct.providerOriginalRender);
       if (direct.render.savedRender) {
         rememberSavedRender(direct.render.savedRender);
         setSaveStatus('saved');
@@ -922,6 +924,7 @@ export function GlobeAIRenderPanel({
             sourceImageUrl: direct.sourceImageUrl,
             fidelityPolicy: direct.fidelityPolicy,
             style: selectedStyle,
+            providerOriginalRender: direct.providerOriginalRender,
           }
         : null);
       if (shouldAutoSaveDirect3D(direct.outcome)) {
@@ -1499,6 +1502,12 @@ export function GlobeAIRenderPanel({
                 <ul className="mt-1 list-disc space-y-0.5 pl-4 text-[9px] font-semibold text-amber-100/75">
                   {directReview.warnings.map((warning) => <li key={warning}>{warning}</li>)}
                 </ul>
+              )}
+              {directReview.providerOriginalRender && (
+                <button type="button" className="mt-2 rounded border border-amber-200/50 px-2 py-1 text-[10px] font-bold"
+                  onClick={() => openSavedRenderLightbox(directReview.providerOriginalRender!)}>
+                  View AI attempt · unverified
+                </button>
               )}
             </div>
           )}

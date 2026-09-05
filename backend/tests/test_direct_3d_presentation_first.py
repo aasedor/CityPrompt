@@ -297,7 +297,33 @@ async def test_street_provider_content_failure_keeps_street_source_camera(monkey
     monkeypatch.setattr(Direct3DRenderService, "_call_openai", fake)
     result = await Direct3DRenderService("test-key").generate(request)
     assert result.diagnostics["returned_safety_strategy"] == "authoritative_source"
-    assert result.diagnostics["reproject_output_sanity"]["passed"] is False
+    assert result.diagnostics["view_mode"] == "street"
     assert _png_b64(_decoded(result.image_base64)) == _png_b64(capture.normalized_beauty)
-    assert "street-level" in result.warnings[0]
+    assert result.outcome == "review_required"
     Direct3DRenderDiagnostics.model_validate(result.diagnostics)
+
+
+@pytest.mark.asyncio
+async def test_street_finish_cannot_relocate_hidden_facilities_into_source_context(monkeypatch):
+    request = _scene_request(presentation_mode="scene").model_copy(update={"view_mode": "street"})
+    capture = prepare_direct_3d_capture(request)
+    provider = capture.normalized_beauty.copy()
+    # A plausible detailed output still must not introduce a facility in the
+    # un-authored context behind the houses, as the live street pilot did.
+    from PIL import ImageDraw
+    draw = ImageDraw.Draw(provider)
+    draw.rectangle((15, 15, 110, 105), fill="#b8a07e", outline="#222222", width=4)
+    for x in range(25, 105, 18):
+        draw.rectangle((x, 25, x + 8, 85), fill="#303840")
+
+    async def fake(self, req, prepared, *, server_inventory=None):
+        return provider
+
+    monkeypatch.setattr(Direct3DRenderService, "_call_openai", fake)
+    result = await Direct3DRenderService("test-key").generate(request)
+    exterior = np.asarray(capture.normalized_proposal_mask) == 0
+    np.testing.assert_array_equal(np.asarray(_decoded(result.image_base64))[exterior], np.asarray(capture.normalized_beauty)[exterior])
+    assert result.diagnostics["returned_safety_strategy"] is not None
+    assert result.diagnostics["view_mode"] == "street"
+    assert result.outcome == "review_required"
+    assert result.provider_image_base64 is not None
