@@ -36,6 +36,7 @@ import { EastNorthUpFrame, TilesRendererContext } from '3d-tiles-renderer/r3f';
 import type { Building, SiteZone } from '@/types';
 import type { LegoAssemblyRecipe } from '@/features/legoAssembly/legoAssemblyApi';
 import { centreNativeClayClone, isNativeClayPlan } from '@/features/legoAssembly/nativeClayPlacement';
+import { authoredHomePlotFrame } from '@/features/legoAssembly/detachedPlot';
 import { resolveApiFileUrl } from '@/services/api';
 import { createKtx2LoaderExtension } from '@/lib/ktx2GltfLoader';
 import { computeFootprintFrame, type FootprintFrame } from './buildingPlacement';
@@ -457,7 +458,9 @@ function LegoStackInstance({
       .filter((entry): entry is NonNullable<typeof entry> => entry !== null);
   }, [maxAnisotropy, recipe, sceneByUrl, urls]);
   const detailedReady = isCompleteLegoModuleStack(recipe.instances.length, modules.length);
-  const yawRad = computeLegoStackYaw(frame.bearingRad, recipe.target, building.rotation_degrees);
+  const authoredPlot = zone?.properties?.native_home_plot === true ? authoredHomePlotFrame(ring) : undefined;
+  const yawRad = authoredPlot ? authoredPlot.yawRad + (building.rotation_degrees ?? 0) * DEG_TO_RAD
+    : computeLegoStackYaw(frame.bearingRad, recipe.target, building.rotation_degrees);
   const groundFootprints = useMemo(() => isNativeClayPlan(recipe) || recipe.fit?.placement_mode === 'detached_lots'
     ? placedNativeFootprints(modules, yawRad, frame.rectCenterLocal)
     : [geographicFootprint(ring, frame.centroidLng, frame.centroidLat)],

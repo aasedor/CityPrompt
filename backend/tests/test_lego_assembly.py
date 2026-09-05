@@ -6408,7 +6408,8 @@ async def test_place_community_rejects_framework_overlay_without_mutating_it(cli
 
 
 @pytest.mark.anyio
-async def test_place_community_derives_residual_from_all_project_zones(client, mock_db, test_user, auth_headers):
+@pytest.mark.parametrize('include_landscape', [True, False])
+async def test_place_community_derives_residual_from_all_project_zones(client, mock_db, test_user, auth_headers, include_landscape):
     from geoalchemy2.shape import from_shape, to_shape
     from shapely.geometry import box
     from shapely.ops import unary_union
@@ -6462,11 +6463,16 @@ async def test_place_community_derives_residual_from_all_project_zones(client, m
     response = await client.post(
         "/api/v1/lego-assembly/place-community",
         headers=auth_headers,
-        json={"items": [_community_item(building_zone)]},
+        json={"items": [_community_item(building_zone)], "include_residual_landscape": include_landscape},
     )
 
     assert response.status_code == 200, response.text
     payload = response.json()
+    if not include_landscape:
+        assert payload['residual_landscape']['boundary_count'] == 0
+        assert 'community_3d_landscape' not in boundary.properties
+        assert boundary.properties['community_3d_landscape_mode'] == 'placed_objects_only'
+        return
     assert payload["residual_landscape"]["boundary_count"] == 1
     assert payload["residual_landscape"]["area_sqm"] > 0
     recipe = boundary.properties["community_3d_landscape"]

@@ -63,6 +63,8 @@ describe('shared retained-site terrain', () => {
     const changed = boundary(); changed.is_active_boundary = false;
     expect(sharedSiteGroundSourceSignature(changed)).not.toBe(layout.sourceSignature);
     changed.is_active_boundary = true; changed.updated_at = '2026-09-05';
+    expect(sharedSiteGroundSourceSignature(changed)).toBe(layout.sourceSignature);
+    changed.coordinates[0][0] += .00001;
     expect(sharedSiteGroundSourceSignature(changed)).not.toBe(layout.sourceSignature);
   });
   it('bounds the grid while retaining declared metric spacing, and refuses excessively large or invalid sites', () => {

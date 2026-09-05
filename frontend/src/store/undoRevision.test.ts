@@ -1,11 +1,20 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { QueryClient } from '@tanstack/react-query';
 import { siteZonesApi } from '@/services/api';
-import { createZoneUpdateAction, createZoneCreateAction, createZoneDeleteAction, createZoneCoordinatesAction } from './undoActions';
+import { createZoneUpdateAction, createZoneCreateAction, createZoneDeleteAction, createZoneCoordinatesAction, advanceDerivedZoneRevision } from './undoActions';
 import type { SiteZone } from '@/types';
 
 vi.mock('@/services/api', () => ({ siteZonesApi: { create: vi.fn(), update: vi.fn(), delete: vi.fn() }, buildingsApi: {} }));
 describe('zone undo revision checks', () => {
+  it('accepts our derived compile revision but not a compile over a teammate edit', async () => {
+    const client = new QueryClient();
+    const action = createZoneCoordinatesAction('project','zone',[[1,2]],[[3,4]],client,'ours');
+    advanceDerivedZoneRevision(client,'project','zone','teammate','foreign-compile');
+    advanceDerivedZoneRevision(client,'project','zone','ours','our-compile');
+    vi.mocked(siteZonesApi.update).mockResolvedValue({updated_at:'undone'} as SiteZone);
+    await action.undo();
+    expect(siteZonesApi.update).toHaveBeenCalledWith('zone',{coordinates:[[1,2]],expected_updated_at:'our-compile'},{skipHistory:true});
+  });
   beforeEach(() => vi.clearAllMocks());
   it('follows revisions produced by successive local undos', async () => {
     const client = new QueryClient();

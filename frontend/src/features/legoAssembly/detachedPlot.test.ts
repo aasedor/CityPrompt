@@ -1,6 +1,7 @@
 import { expect, it } from 'vitest';
 import { computeFootprintFrame } from '@/components/viewer/globe/buildingPlacement';
-import { assemblyFootprintCoordinates, detachedPlotCoordinates, isDetachedArchetype } from './detachedPlot';
+import { assemblyFootprintCoordinates, authoredHomePlotFrame, detachedPlotCoordinates, isDetachedArchetype } from './detachedPlot';
+import { rectangleAt } from '@/features/pickPlace/geometry';
 
 it('retains a rotated concave plot in the actual globe instance frame', () => {
   const angle = 0.46;
@@ -32,4 +33,19 @@ it('provides the actual concave footprint to non-detached clay plans too', () =>
   expect(local).toEqual(detachedPlotCoordinates('vancouver_laneway_house', ring, target));
   expect(assemblyFootprintCoordinates([[NaN, 51], ...ring], target)).toBeUndefined();
   expect(assemblyFootprintCoordinates(undefined, target)).toBeUndefined();
+});
+
+it('keeps the chosen frontage through aspect-ratio changes and a full turn', () => {
+  for (const width of [12, 16, 36]) for (const degrees of [0, 15, 90, 135, 180, 270]) {
+    const ring = rectangleAt([-114, 51], width, 16, degrees);
+    const frame = authoredHomePlotFrame(ring)!;
+    expect(frame.width_m).toBe(width);
+    expect(frame.depth_m).toBe(16);
+    expect(Math.cos(frame.yawRad)).toBeCloseTo(Math.cos(degrees*Math.PI/180), 8);
+    const local = assemblyFootprintCoordinates(ring, frame, true)!;
+    expect(local[0][0]).toBeCloseTo(-width/2, 4);
+    expect(local[0][1]).toBeCloseTo(8, 4);
+    expect(local[1][0]).toBeCloseTo(width/2, 4);
+    expect(local[1][1]).toBeCloseTo(8, 4);
+  }
 });

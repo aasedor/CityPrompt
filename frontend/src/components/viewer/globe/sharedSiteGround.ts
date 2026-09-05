@@ -39,7 +39,9 @@ function signature(value: unknown): string {
 }
 
 export function sharedSiteGroundSourceSignature(boundary: SiteZone): string {
-  return signature([boundary.id, boundary.updated_at, boundary.coordinates, boundary.is_active_boundary,
+  // A compiled landscape or label changes the row revision, not the ground.
+  // Capture provenance binds the latest row revision separately in the provider.
+  return signature([boundary.id, boundary.coordinates, boundary.is_active_boundary,
     boundary.properties?.community_3d_mask_existing_tiles]);
 }
 

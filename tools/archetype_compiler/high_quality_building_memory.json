@@ -1,6 +1,19 @@
 {
   "schema": "high-quality-building-memory@1",
   "memory_version": "2026-08-02-clean-3d-no-prisms-runtime-v118",
+  "runtime_placement_pilot": {
+    "id": "pick-place-reshape-2026-09-05",
+    "status": "local_pilot",
+    "explicit_home_plot_flag": "native_home_plot",
+    "eligible_parents": "DETACHED_ARCHETYPE_IDS",
+    "exact_variant_required": true,
+    "whole_building_copies_only": true,
+    "frontage_axis": "authored_first_edge",
+    "instance_scale": [1, 1, 1],
+    "default_clay_instance_count": 1,
+    "asset_promotion": false,
+    "evidence": "docs/PICK_PLACE_RESHAPE_PILOT_2026-09-05.md"
+  },
   "quality_target": "At least the user-approved Classic Haussmann level of archetype-shaped geometry, real construction depth, photoreal material response and resilient LEGO scaling in a real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "minimum_standard": {

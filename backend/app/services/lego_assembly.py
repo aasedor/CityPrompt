@@ -120,6 +120,7 @@ class AssemblyRequest:
     # Actual plot ring in the centered, metre-based recipe XY frame. The API
     # derives this from the zone; dimension-only callers retain rectangle fit.
     footprint_local_m: tuple[tuple[float, float], ...] | None = None
+    native_home_plot: bool = False
 
 
 AssemblyPlanningErrorCode = Literal["family_not_found", "family_incompatible"]
@@ -797,6 +798,7 @@ def detached_plot_local_coordinates(
     coordinates: Iterable[tuple[float, float]],
     target_width_m: float,
     target_depth_m: float,
+    preserve_authored_axes: bool = False,
 ) -> tuple[tuple[float, float], ...]:
     """Mirror computeFootprintFrame + Rx(90) recipe placement, including Y reflection."""
     ring = [(float(point[0]), float(point[1])) for point in coordinates]
@@ -828,6 +830,8 @@ def detached_plot_local_coordinates(
         angle = fold(angle + math.pi / 2)
     if target_width_m < target_depth_m:
         angle += math.pi / 2
+    if preserve_authored_axes and len(ring) == 4:
+        angle = math.atan2(local[1][1] - local[0][1], local[1][0] - local[0][0])
     c, s = math.cos(angle), math.sin(angle)
     return tuple(
         (round((x - centre_x) * c + (y - centre_y) * s, 6), round((x - centre_x) * s - (y - centre_y) * c, 6))
@@ -1052,6 +1056,15 @@ def plan_vertical_assembly(
     allow_forced_fit: bool = True,
 ) -> dict[str, Any]:
     modules = list(modules)
+    # An explicit home plot groups whole independent copies. It does not grant
+    # a clay asset a repeatable floor/bay contract or allow mesh deformation.
+    if request.native_home_plot:
+        parent_id = _catalog_parent_archetype_id(request.archetype_id) if request.archetype_id else None
+        if parent_id not in DETACHED_ARCHETYPE_IDS:
+            raise AssemblyPlanningError("Only detached-home archetypes can form a home plot.")
+        if not all(math.isfinite(value) and value > 0 for value in (request.target_width_m, request.target_depth_m)):
+            raise AssemblyPlanningError("Target width and depth must be finite and positive")
+        return _plan_detached_assembly(modules, request, parent_id)
     # Clay has no approved repetition contract, even when its catalogue parent
     # is detached housing. One selected variant remains one native building.
     if any(

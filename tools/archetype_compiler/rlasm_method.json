@@ -3,6 +3,19 @@
   "method": "Reference-Locked Atomic Sticker-and-Massing",
   "acronym": "RLASM",
   "version": "6.1",
+  "runtime_placement_pilot": {
+    "id": "pick-place-reshape-2026-09-05",
+    "status": "local_pilot",
+    "explicit_home_plot_flag": "native_home_plot",
+    "eligible_parents": "DETACHED_ARCHETYPE_IDS",
+    "exact_variant_required": true,
+    "whole_building_copies_only": true,
+    "frontage_axis": "authored_first_edge",
+    "instance_scale": [1, 1, 1],
+    "default_clay_instance_count": 1,
+    "asset_promotion": false,
+    "evidence": "docs/PICK_PLACE_RESHAPE_PILOT_2026-09-05.md"
+  },
   "revision_date": "2026-09-03",
   "canonical_human_method": "docs/RLASM_LATEST_METHOD.md",
   "reference_keeper_examples": [

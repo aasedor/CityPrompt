@@ -171,7 +171,8 @@ export function SharedSiteGroundProvider({ zones, children, onChange }: {
   const state = useMemo<SharedSiteGroundState>(() => {
     if (!boundary) return INACTIVE_SHARED_SITE_GROUND;
     const matching = result.source === sourceSignature;
-    const snapshot = matching && result.status === 'ready' ? result.snapshot : null;
+    const measured = matching && result.status === 'ready' ? result.snapshot : null;
+    const snapshot = measured ? { ...measured, boundaryUpdatedAt: boundary.updated_at } : null;
     const ring = layout?.boundaryCoordinates ?? boundary.coordinates.map(([lng, lat]): [number, number] => [lng, lat]);
     return { status: matching ? result.status : layout ? 'sampling' : 'unavailable', snapshot,
       contains: (lng, lat) => sharedSiteGroundContains(ring, lng, lat),
@@ -179,7 +180,7 @@ export function SharedSiteGroundProvider({ zones, children, onChange }: {
       revision: `${sourceSignature}:${result.generation}:${snapshot?.signature ?? (matching ? result.status : 'sampling')}` };
     // Source identity freezes the boundary ring across unrelated parent renders.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sourceSignature, layout, result]);
+  }, [sourceSignature, layout, result, boundary?.updated_at]);
   useEffect(() => { onChangeRef.current?.(state); }, [state]);
   return <Context.Provider value={state}>{children}</Context.Provider>;
 }

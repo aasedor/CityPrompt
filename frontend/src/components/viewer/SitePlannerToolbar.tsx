@@ -28,6 +28,8 @@ interface SitePlannerToolbarProps {
   onMasterPlan?: () => void;
   masterPlanActive?: boolean;
   onSiteBoundary?: () => void;
+  placementSlot?: ReactNode;
+  onLeavePlacement?: () => void;
 }
 function mapToolToCoreTool(tool: SiteZoneType | null): CoreToolId | null {
   if (tool === 'site_boundary') return 'siteBoundary';
@@ -38,7 +40,7 @@ function mapToolToCoreTool(tool: SiteZoneType | null): CoreToolId | null {
 }
 export function SitePlannerToolbar({ onShowGuide, onToggleHistory, historyOpen, measureActive = false,
   onMeasureModeChange, isGlobeMode = false, layout = 'default', bottomSlot, uploadSlot,
-  onMasterPlan, masterPlanActive = false, onSiteBoundary }: SitePlannerToolbarProps) {
+  onMasterPlan, masterPlanActive = false, onSiteBoundary, placementSlot, onLeavePlacement }: SitePlannerToolbarProps) {
   const { activeSitePlannerTool, setActiveSitePlannerTool, streetViewPegman, setStreetViewActive,
     settings, updateSettings } = useViewerStore();
   const [parksSubtype, setParksSubtype] = useState<ParksSubtype>('park');
@@ -52,6 +54,7 @@ export function SitePlannerToolbar({ onShowGuide, onToggleHistory, historyOpen, 
     focusStyle, active ? 'bg-[#c9ff3d] shadow-[2px_2px_0_0_#151515]' : 'bg-white hover:bg-[#fff9ec]',
   ].join(' ');
   const leaveOtherModes = () => {
+    onLeavePlacement?.();
     if (streetViewPegman) setStreetViewActive(false);
     onMeasureModeChange?.(false);
   };
@@ -68,9 +71,10 @@ export function SitePlannerToolbar({ onShowGuide, onToggleHistory, historyOpen, 
   };
 
   return <div aria-label="Drawing tools" className={['site-planner-toolbar', isSidebar ? 'site-planner-toolbar--sidebar' : 'site-planner-toolbar--default', 'flex min-h-0 w-full flex-col gap-2 overflow-y-auto overscroll-contain rounded-xl border-2 border-[#151515] bg-[#fff9ec]/95 p-2.5 shadow-[4px_4px_0_0_#151515] backdrop-blur-xl'].join(' ')}>
-    <p className="px-1 text-sm font-semibold text-[#151515]">Draw your community</p>
+    {placementSlot}
+    <p className="px-1 text-sm font-semibold text-[#151515]">{placementSlot ? 'Connect your community' : 'Draw your community'}</p>
     <div className={['site-planner-core-grid grid gap-2', isSidebar ? 'grid-cols-3 sm:grid-cols-1' : 'grid-cols-3'].join(' ')}>
-      {CORE_TOOLS.map((tool) => {
+      {CORE_TOOLS.filter(tool => !placementSlot || tool.id === 'streetsPaths').map((tool) => {
         const active = activeCoreTool === tool.id;
         const isPlaza = tool.id === 'parksPlazas' && selectedParksSubtype === 'plaza';
         const label = isPlaza ? 'Plaza' : tool.label;
@@ -79,7 +83,7 @@ export function SitePlannerToolbar({ onShowGuide, onToggleHistory, historyOpen, 
           className={['site-planner-core-tool group flex min-h-14 items-center gap-2.5 rounded-lg border-2 border-[#151515] px-2.5 py-2 text-left flex-col justify-center sm:flex-row sm:justify-start', focusStyle, active ? 'bg-[#c9ff3d] shadow-[2px_2px_0_0_#151515]' : 'bg-white hover:bg-[#fff9ec]'].join(' ')}>
           <img src={tool.icon} alt="" aria-hidden className="site-planner-core-icon h-8 w-8 shrink-0 rounded-md object-cover" />
           <span className="min-w-0"><span className="site-planner-core-label block text-sm font-bold text-[#151515]">{label}</span>
-            <span className="site-planner-core-drawtype hidden text-xs leading-snug text-slate-600 sm:block">{isPlaza ? 'Draw a public space' : tool.description}</span></span>
+            {!placementSlot && <span className="site-planner-core-drawtype hidden text-xs leading-snug text-slate-600 sm:block">{isPlaza ? 'Draw a public space' : tool.description}</span>}</span>
         </button>;
       })}
     </div>
@@ -100,6 +104,7 @@ export function SitePlannerToolbar({ onShowGuide, onToggleHistory, historyOpen, 
 
     {showAdvanced && <div id="site-planner-advanced-tools" className="site-planner-advanced-row space-y-2 rounded-lg border border-slate-300 bg-white p-2">
       <p className="text-sm font-semibold text-slate-800">Optional tools</p>
+      {placementSlot && <div className="grid gap-2"><button className={buttonStyle()} onClick={()=>activateAdvanced('building')}>Draw custom building</button><button className={buttonStyle()} onClick={()=>activateAdvanced('green_space')}>Draw custom park</button></div>}
       <p className="text-xs leading-relaxed text-slate-600">You can start drawing without a site boundary or imported data.</p>
       <div className={['grid gap-2', isSidebar ? 'grid-cols-1' : 'grid-cols-2 sm:grid-cols-3'].join(' ')}>
         <button type="button" data-tour="tool-siteBoundary" aria-pressed={activeCoreTool === 'siteBoundary'} onClick={() => activateCoreTool('siteBoundary')} className={'site-planner-core-tool ' + buttonStyle(activeCoreTool === 'siteBoundary')} title="Draw or select your site boundary"><img src={siteBoundaryIcon} alt="" aria-hidden className="site-planner-core-icon h-6 w-6" /><span className="site-planner-core-label">Site Boundary</span></button>

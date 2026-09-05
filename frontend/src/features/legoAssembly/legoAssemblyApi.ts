@@ -85,6 +85,8 @@ export interface LegoAssemblyPlan {
 }
 
 export interface LegoPlanRequest {
+  /** Explicit plot of complete, unscaled houses; never repeat floors or landmarks. */
+  native_home_plot?: boolean;
   target_width_m: number;
   target_depth_m: number;
   target_floors: number;
@@ -335,6 +337,7 @@ export const legoAssemblyApi = {
     }>,
     scopeZoneIds?: string[],
     scopeBoundaryId?: string,
+    includeResidualLandscape?: boolean,
   ): Promise<Community3DCompileResponse> {
     const response = await api.post<Community3DCompileResponse>(
       '/api/v1/lego-assembly/place-community',
@@ -342,6 +345,7 @@ export const legoAssemblyApi = {
         items,
         ...(scopeZoneIds !== undefined ? { scope_zone_ids: scopeZoneIds } : {}),
         ...(scopeBoundaryId !== undefined ? { scope_boundary_id: scopeBoundaryId } : {}),
+        ...(includeResidualLandscape !== undefined ? { include_residual_landscape: includeResidualLandscape } : {}),
       },
     );
     return response.data;

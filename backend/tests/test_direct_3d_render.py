@@ -1207,6 +1207,25 @@ def test_paid_project_preflight_requires_matching_current_residual_claim():
     assert geometry_changed.value.detail["billed"] is False
 
 
+def test_paid_project_preflight_accepts_explicit_unfilled_site_and_still_checks_sources():
+    boundary = _zone(uuid.uuid4(), "site_boundary")
+    boundary.properties["community_3d_landscape_mode"] = "placed_objects_only"
+    building_id = uuid.uuid4()
+    building_zone = _compiled_zone("building", building_id=building_id)
+    zones = [boundary, building_zone]
+    request = _project_request(uuid.uuid4(), boundary.id, "a" * 64, community_claims=_claims_for(zones))
+    request.residual_landscape_claim = None
+    buildings = {str(building_id): _compiled_building(building_id)}
+    direct_api._validate_direct_3d_project_zones(request, zones, buildings)
+    boundary.properties["community_3d_landscape"] = {"state": "stale"}
+    with pytest.raises(HTTPException, match="Residual landscaping"):
+        direct_api._validate_direct_3d_project_zones(request, zones, buildings)
+    boundary.properties.pop("community_3d_landscape")
+    building_zone.properties["community_3d"]["state"] = "stale"
+    with pytest.raises(HTTPException):
+        direct_api._validate_direct_3d_project_zones(request, zones, buildings)
+
+
 def test_paid_project_preflight_accepts_one_complete_visible_plan_layer():
     project_id = uuid.uuid4()
     boundary_id = uuid.uuid4()

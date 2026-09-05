@@ -7,6 +7,7 @@
 
 import { useContext, useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import * as THREE from 'three';
+import { GlobePlacementPreview } from '@/features/pickPlace/GlobePlacementPreview';
 import { Canvas, useThree } from '@react-three/fiber';
 import {
   TilesRenderer,
@@ -1411,6 +1412,9 @@ function MeasurementOverlay({
 }
 
 interface GlobeSitePlannerMapProps {
+  placementDraft?: import('@/features/pickPlace/GlobePlacementPreview').PlacementDraft | null;
+  onPlaceAsset?: (lngLat: [number, number], height: number) => void;
+  onCancelPlacement?: () => void;
   referenceLayers?: ReferenceLayer[];
   latitude?: number;
   longitude?: number;
@@ -1422,7 +1426,7 @@ interface GlobeSitePlannerMapProps {
   buildings?: Building[];
   massingFeatures?: unknown[];
   onZoneCreated: (coordinates: number[][], zoneType: SiteZoneType, properties?: SiteZoneProperties) => void;
-  onZoneUpdated: (zoneId: string, coordinates: number[][]) => void;
+  onZoneUpdated: (zoneId: string, coordinates: number[][]) => boolean | void;
   onZoneSelected: (zoneId: string | null) => void;
   onZoneDeleted?: (zoneId: string) => void;
   onBuildingDeleted?: (buildingId: string) => void;
@@ -1502,6 +1506,9 @@ export interface GlobeAIRenderViewport {
 }
 
 export function GlobeSitePlannerMap({
+  placementDraft,
+  onPlaceAsset,
+  onCancelPlacement,
   referenceLayers = [],
   latitude: _latitude = 51.045,
   longitude: _longitude = -114.07,
@@ -3637,6 +3644,12 @@ export function GlobeSitePlannerMap({
     if (!clickSurface) return;
     const { lngLat: clickLngLat, height: clickHeight } = clickSurface;
 
+    if (placementDraft) {
+      // Touch users position the map under the preview, then confirm explicitly.
+      if (rect.width >= 640) onPlaceAsset?.(clickLngLat, clickHeight);
+      return;
+    }
+
     if (measureModeActive) {
       const newPts = [...measurePointsRef.current, clickLngLat];
       const newHeights = [...measurePointHeightsRef.current, clickHeight];
@@ -3741,9 +3754,10 @@ export function GlobeSitePlannerMap({
     setDrawingPoints(newPts);
     setDrawingPointHeights(newHeights);
     requestAnimationFrame(updateCenterConnectionState);
-  }, [activeSitePlannerTool, cancelDrawing, hasDrawingTool, interactionPaused, linear, markUserInteracted, measureModeActive, onZoneSelected, raycastSurfacePoint, setStreetViewPosition, siteZones, streetViewPegman, updateCenterConnectionState]);
+  }, [placementDraft, onPlaceAsset, activeSitePlannerTool, cancelDrawing, hasDrawingTool, interactionPaused, linear, markUserInteracted, measureModeActive, onZoneSelected, raycastSurfacePoint, setStreetViewPosition, siteZones, streetViewPegman, updateCenterConnectionState]);
 
   const handleZoneMeshClick = useCallback((zoneId: string) => {
+    if (placementDraft) return;
     if (interactionPaused) return;
     if (hasDrawingTool || measureModeActive) return;
     // Street View pegman-drop mode: let the click fall through to the canvas
@@ -3752,9 +3766,10 @@ export function GlobeSitePlannerMap({
     ignoreNextCanvasClickRef.current = true;
     setSelectedBuildingId(null);
     onZoneSelected(zoneId);
-  }, [hasDrawingTool, interactionPaused, measureModeActive, onZoneSelected, streetViewPegman]);
+  }, [placementDraft, hasDrawingTool, interactionPaused, measureModeActive, onZoneSelected, streetViewPegman]);
 
   const handleBuildingModelClick = useCallback((buildingId: string) => {
+    if (placementDraft) return;
     if (interactionPaused || hasDrawingTool || measureModeActive) return;
     // Street View pegman-drop mode owns the canvas click. Generated building
     // meshes must not select themselves and swallow placement when the user
@@ -3767,7 +3782,7 @@ export function GlobeSitePlannerMap({
     const owningZone = siteZones.find((zone) => zone.building_id === buildingId);
     onZoneSelected(owningZone ? owningZone.id : null);
     setSelectedBuildingId(buildingId);
-  }, [hasDrawingTool, interactionPaused, measureModeActive, onZoneSelected, siteZones, streetViewPegman]);
+  }, [placementDraft, hasDrawingTool, interactionPaused, measureModeActive, onZoneSelected, siteZones, streetViewPegman]);
 
   useEffect(() => {
     if (!selectedBuildingId) return;
@@ -4102,6 +4117,7 @@ export function GlobeSitePlannerMap({
           </group>
 
           <group name="siteforge-direct3d-editor-ui" userData={DIRECT_3D_CAPTURE_EXCLUDE_USER_DATA}>
+            {placementDraft && !interactionPaused && <GlobePlacementPreview draft={placementDraft} zones={allSiteZones} />}
             {/* Drawing preview dots */}
             <DrawingDots
               points={drawingPoints}
@@ -4118,7 +4134,7 @@ export function GlobeSitePlannerMap({
             />
 
           {/* Edit mode â€” vertex handles when zone selected in Select mode */}
-            {!interactionPaused && !hasDrawingTool && !measureModeActive && selectedZoneId && (() => {
+            {!placementDraft && !interactionPaused && !hasDrawingTool && !measureModeActive && selectedZoneId && (() => {
               const zone = siteZones.find(z => z.id === selectedZoneId);
               return zone ? (
                 <GlobeEditMode
@@ -4166,6 +4182,13 @@ export function GlobeSitePlannerMap({
         </div>
       )}
 
+      {placementDraft && !interactionPaused && <>
+        <div aria-hidden className="pointer-events-none absolute left-1/2 top-1/2 z-30 -translate-x-1/2 -translate-y-1/2 text-3xl font-light text-white drop-shadow sm:hidden">+</div>
+        <div className="absolute bottom-6 left-1/2 z-40 w-80 max-w-[90vw] -translate-x-1/2 rounded-xl bg-white p-3 text-center text-sm text-slate-900 shadow-xl">
+          <p className="hidden sm:block">Click a clear space to place. Red means it will not fit.</p><p className="sm:hidden">Move the map to position your object. Red means it will not fit.</p>
+          <div className="mt-2 flex justify-center gap-2"><button className="min-h-11 rounded-lg bg-lime-200 px-3 sm:hidden" onClick={()=>{const surface=raycastSurfacePoint(0,0);if(surface) onPlaceAsset?.(surface.lngLat,surface.height);}}>Place at centre</button><button className="min-h-11 rounded-lg border px-3" onClick={onCancelPlacement}>Cancel</button></div>
+        </div>
+      </>}
       {measureModeActive && (
         <div className="absolute left-1/2 bottom-24 z-30 -translate-x-1/2 rounded-lg border border-sky-400/40 bg-gray-900/90 px-3 py-2 text-center text-xs text-white shadow-lg backdrop-blur-sm">
           <div className="flex items-center gap-2">
@@ -4332,7 +4355,7 @@ export function GlobeSitePlannerMap({
         </div>
       )}
 
-      <div className="absolute top-14 left-4 z-20 flex items-center gap-2">
+      <div className="absolute top-32 left-4 right-4 z-20 flex items-center gap-2 overflow-x-auto [&>*]:shrink-0 sm:top-14 sm:right-auto">
         <div className="rounded-full border-2 border-[#151515] bg-[#c9ff3d] px-3 py-1.5 shadow-[3px_3px_0_0_#151515] backdrop-blur-xl">
           <span className="text-[11px] font-black uppercase text-[#151515]">3D Globe</span>
         </div>

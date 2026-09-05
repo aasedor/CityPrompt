@@ -11,6 +11,12 @@ import { LegoBuilderPanel } from '@/features/legoAssembly/LegoBuilderPanel';
 import { AddBuildingModal } from '@/components/buildings/AddBuildingModal';
 import { ShareModal } from '@/components/sharing/ShareModal';
 import { SitePlannerToolbar } from '@/components/viewer/SitePlannerToolbar';
+import { PlacementPalette } from '@/features/pickPlace/PlacementPalette';
+import { ReshapePanel } from '@/features/pickPlace/ReshapePanel';
+import { assetForZone, placeAsset, placementProperties, type PlaceAssetId } from '@/features/pickPlace/catalogue';
+import { placementProblem, rectangleAt } from '@/features/pickPlace/geometry';
+import { useAutomatic3D } from '@/features/pickPlace/useAutomatic3D';
+import type { PlacementDraft } from '@/features/pickPlace/GlobePlacementPreview';
 import { HistoryPanel } from '@/components/viewer/HistoryPanel';
 import { GlobeAIRenderPanel } from '@/components/viewer/globe/GlobeAIRenderPanel';
 import { VideoGeneratePanel, type VideoAttempt } from '@/components/viewer/VideoGeneratePanel';
@@ -76,6 +82,9 @@ function planLayerStorageKey(projectId: string): string {
 
 export function ProjectViewPage() {
   const { id } = useParams<{ id: string }>();
+  const [placementDraft, setPlacementDraft] = useState<PlacementDraft | null>(null);
+  const [advancedZoneId, setAdvancedZoneId] = useState<string | null>(null);
+  const placementPending = useRef(false);
   const [showAddBuilding, setShowAddBuilding] = useState(false);
   const [showShare, setShowShare] = useState(false);
   const [showReferenceLayers, setShowReferenceLayers] = useState(false);
@@ -213,6 +222,7 @@ export function ProjectViewPage() {
     siteZonesLoading,
     siteZonesError, reloadZones, pendingDrafts, retryDraft, isSaving, draftsPersistOnDevice, discardableDrafts, discardDraft, saveError,
     updateZone,
+    createZone,
     deleteZone,
     handleZoneCreated,
     handleZoneUpdated,
@@ -222,6 +232,46 @@ export function ProjectViewPage() {
   const initializedSiteToolProjectRef = useRef<string | null>(null);
 
   const selectedZone = siteZones.find((z) => z.id === selectedZoneId) || null;
+  const cancelPlacement = useCallback(() => setPlacementDraft(null), []);
+  const pickObject = (assetId: PlaceAssetId, width?: number, depth?: number, degrees = 0) => {
+    const asset = placeAsset(assetId);
+    setActiveSitePlannerTool(null); selectZone(null); setMeasureActive(false);
+    useViewerStore.getState().setStreetViewActive(false);
+    setPlacementDraft({ assetId, width: width ?? asset.width, depth: depth ?? asset.depth, degrees });
+  };
+  useEffect(() => {
+    if (!placementDraft) return;
+    const cancel = (event: KeyboardEvent) => { if(event.key === 'Escape' && !isTextEntryTarget(event.target)) cancelPlacement(); };
+    window.addEventListener('keydown', cancel);
+    return () => window.removeEventListener('keydown', cancel);
+  }, [placementDraft, cancelPlacement]);
+  useEffect(() => { setPlacementDraft(null); setAdvancedZoneId(null); }, [id]);
+  const placeObject = async (point: [number, number], height: number) => {
+    if (!placementDraft || placementPending.current || isSaving) return;
+    const coordinates = rectangleAt(point, placementDraft.width, placementDraft.depth, placementDraft.degrees);
+    const problem = placementProblem(coordinates, siteZones, getActiveSiteBoundary(siteZones));
+    if(problem) { toast.error(problem, { position: 'top-center' }); return; }
+    placementPending.current = true;
+    try {
+      const zone = await createZone.mutateAsync({ coordinates, zone_type: placeAsset(placementDraft.assetId).zoneType,
+        properties: placementProperties(placeAsset(placementDraft.assetId), height) });
+      setPlacementDraft(null); setAdvancedZoneId(null); selectZone(zone.id);
+    } catch {
+      // Retrying uses the saved draft's idempotency key, not a second placement.
+      setPlacementDraft(null);
+    }
+    finally { placementPending.current = false; }
+  };
+  const reshapeObject = (zoneId: string, coordinates: number[][]): boolean => {
+    const zone = siteZones.find(item => item.id === zoneId);
+    if (zone && assetForZone(zone)) {
+      if (isSaving) { toast.error('Wait for this edit to save.'); return false; }
+      const problem = placementProblem(coordinates, siteZones, getActiveSiteBoundary(siteZones), zoneId);
+      if(problem) { toast.error(problem, { position: 'top-center' }); return false; }
+    }
+    handleZoneUpdated(zoneId, coordinates);
+    return true;
+  };
 
   // --- Imported shapefile "layers" (zones grouped by properties._imported_from) ---
   const [hiddenLayers, setHiddenLayers] = useState<Set<string>>(new Set());
@@ -899,6 +949,7 @@ export function ProjectViewPage() {
     ),
     [project?.buildings, siteZones, visibleZones],
   );
+  const automatic3D = useAutomatic3D(project && project.permission !== 'viewer' && settings.mapMode === 'globe' ? id : undefined, siteZones, isSaving);
   videoCaptureSceneRef.current = { projectId: id, zones: visibleZones, buildings: visibleBuildings };
 
   const deleteModeledBuilding = useMutation({
@@ -955,14 +1006,23 @@ export function ProjectViewPage() {
       <div className="fixed inset-x-0 bottom-0 top-16 z-50 bg-black">
         <Suspense fallback={<MapLoadingFallback mode="3D" />}>
           <GlobeSitePlannerMap
+            placementDraft={placementDraft}
+            onPlaceAsset={placeObject}
+            onCancelPlacement={cancelPlacement}
             latitude={project.location?.latitude}
             longitude={project.location?.longitude}
             siteZones={visibleZones}
             allSiteZones={siteZones}
             referenceLayers={references.visibleLayers}
             buildings={visibleBuildings}
-            onZoneCreated={handleZoneCreated}
-            onZoneUpdated={handleZoneUpdated}
+            onZoneCreated={(coordinates, type, properties) => handleZoneCreated(coordinates, type,
+              type === 'road' ? {
+                road_archetype_id: 'narrow_residential_street',
+                road_selected_variant_id: 'narrow_residential_street_v0',
+                sidewalks: 'both', has_sidewalks: true,
+                ...properties, pick_place_automatic_3d: true,
+              } : properties)}
+            onZoneUpdated={reshapeObject}
             onZoneSelected={(zoneId) => { if (zoneId) selectZone(zoneId); else selectZone(null); }}
             onZoneDeleted={(zoneId) => deleteZone.mutate(zoneId)}
             onBuildingDeleted={(buildingId) => deleteModeledBuilding.mutate(buildingId)}
@@ -976,13 +1036,13 @@ export function ProjectViewPage() {
 
         {/* Toolbar - hidden on phones during focused vertex placement. */}
         <div
-          className={`pointer-events-none absolute inset-x-3 z-30 min-h-0 overflow-y-auto overscroll-contain sm:inset-x-auto sm:left-4 sm:bottom-4 sm:w-64 sm:max-h-none sm:overflow-y-auto sm:pr-2 ${activeSitePlannerTool ? 'hidden sm:block' : 'bottom-3 max-h-[38vh]'}`}
-          style={{
-            top: 'clamp(5rem, 12dvh, 8rem)',
-          }}
+          className={`pointer-events-none absolute inset-x-3 top-44 z-30 min-h-0 overflow-y-auto overscroll-contain sm:inset-x-auto sm:left-4 sm:top-[clamp(5rem,12dvh,8rem)] sm:bottom-4 sm:w-64 sm:max-h-none sm:overflow-y-auto sm:pr-2 ${activeSitePlannerTool || placementDraft ? 'hidden sm:block' : 'bottom-3 max-h-[38vh]'}`}
         >
           <div className="pointer-events-auto">
             <SitePlannerToolbar
+              placementSlot={<PlacementPalette selected={placementDraft?.assetId ?? null} onPick={pickObject} onCancel={cancelPlacement}
+                status={automatic3D.status} message={automatic3D.message} onRetry={automatic3D.retry} />}
+              onLeavePlacement={cancelPlacement}
               layout="sidebar"
               isGlobeMode
               onShowGuide={() => setShowTour(true)}
@@ -1004,7 +1064,7 @@ export function ProjectViewPage() {
                       onStepClick={handleWorkflowStepClick}
                       compact
                     />
-                    <button
+                    <details><summary className="cursor-pointer py-2 text-xs text-slate-700">3D tools for custom drawings</summary><button
                       data-tour="generate-3d-btn"
                       onClick={handleOpenGenerate3D}
                       disabled={!cityPromptWorkflow.canGenerate3D || isPreparingGenerate3D}
@@ -1013,7 +1073,7 @@ export function ProjectViewPage() {
                     >
                       <Blocks size={16} />
                       {isPreparingGenerate3D ? 'Preparing…' : 'Generate to 3D'}
-                    </button>
+                    </button></details>
                     <div className="grid grid-cols-2 gap-2">
                       <button
                         data-tour="ai-render-btn"
@@ -1061,10 +1121,15 @@ export function ProjectViewPage() {
             onSelectZone={(zoneId) => { closePlanningReport(); selectZone(zoneId); }} />
         </StudioDialog>}
         {showShare && <ShareModal projectId={project.id} projectName={project.name} onClose={() => setShowShare(false)} />}
-        {showTour && <OnboardingTour forceShow onComplete={() => setShowTour(false)} />}
+        {showTour && <OnboardingTour placementMode forceShow onComplete={() => setShowTour(false)} />}
 
         {/* Zone properties panel */}
-        {selectedZone && !showHistory && !measureActive && (
+        {selectedZone && assetForZone(selectedZone) && advancedZoneId !== selectedZone.id && !placementDraft && !showHistory && !measureActive && (
+          <ReshapePanel key={`${selectedZone.id}:${JSON.stringify(selectedZone.coordinates)}`} zone={selectedZone} disabled={isSaving}
+            onReshape={coordinates => reshapeObject(selectedZone.id, coordinates)} onClose={() => selectZone(null)}
+            onDelete={() => deleteZone.mutate(selectedZone.id)} onDuplicate={pickObject} onMore={() => setAdvancedZoneId(selectedZone.id)} />
+        )}
+        {selectedZone && (!assetForZone(selectedZone) || advancedZoneId === selectedZone.id) && !showHistory && !measureActive && (
           <ZonePropertiesPanel
             key={selectedZone.id}
             zone={selectedZone}

@@ -83,6 +83,7 @@ _MAX_UPLOAD_BYTES = 75 * 1024 * 1024
 
 
 class LegoAssemblyPlanRequest(BaseModel):
+    native_home_plot: bool = False
     target_width_m: float = Field(gt=0)
     target_depth_m: float = Field(gt=0)
     target_floors: int = Field(ge=1, le=100)
@@ -157,6 +158,9 @@ class Community3DCompileItem(BaseModel):
 
 
 class Community3DCompileRequest(BaseModel):
+    # Direct placement authors only the chosen objects. Landscape infill is
+    # still available to existing explicit whole-community compilation.
+    include_residual_landscape: bool = True
     # District plans can legitimately contain hundreds of buildings plus
     # public-realm zones. Keep the atomic all-or-nothing contract for a full
     # master plan instead of forcing large communities into partial batches.
@@ -353,6 +357,13 @@ def _locked_building_target(zone: SiteZone) -> tuple[float, float, int, str, flo
                 detail="This building has no measurable footprint; repair it before compiling Community 3D.",
             )
         width, depth, profile = analysis
+        if properties.get("native_home_plot") is True and exterior is not None:
+            ring = list(exterior.coords)[:-1]
+            if len(ring) == 4:
+                lat = sum(p[1] for p in ring) / 4
+                east = 111_320 * math.cos(math.radians(lat))
+                width = round(math.hypot((ring[1][0]-ring[0][0])*east, (ring[1][1]-ring[0][1])*111_320), 1)
+                depth = round(math.hypot((ring[2][0]-ring[1][0])*east, (ring[2][1]-ring[1][1])*111_320), 1)
         bound_wing = None
     if width <= 0 or depth <= 0 or profile not in {"rectangle", "l_shape", "u_shape", "courtyard"}:
         raise HTTPException(
@@ -382,7 +393,8 @@ def _strict_locked_building_plan(
         geometry = _community_source_geometry(zone)
         if geometry.geom_type != "Polygon" or len(geometry.interiors):
             raise AssemblyPlanningError("Native building placement requires one polygon without interior holes.")
-        plot_coordinates = detached_plot_local_coordinates(geometry.exterior.coords, width, depth)
+        plot_coordinates = detached_plot_local_coordinates(geometry.exterior.coords, width, depth,
+            preserve_authored_axes=properties.get("native_home_plot") is True)
     # Wing depth is intentionally omitted: the current imported family owns
     # the deterministic native/default thickness. The returned target is then
     # the independent value against which a submitted shaped recipe is bound.
@@ -397,6 +409,7 @@ def _strict_locked_building_plan(
             footprint_profile=profile,
             allow_setback=_building_allows_setback(properties),
             footprint_local_m=plot_coordinates,
+            native_home_plot=properties.get("native_home_plot") is True,
         ),
         allow_forced_fit=allow_forced_fit,
     )
@@ -816,6 +829,7 @@ async def create_lego_assembly_plan(
                 footprint_profile=body.footprint_profile,
                 wing_depth_m=body.wing_depth_m,
                 footprint_local_m=tuple(body.footprint_local_m) if body.footprint_local_m is not None else None,
+                native_home_plot=body.native_home_plot,
             ),
             allow_forced_fit=body.allow_forced_fit,
         )
@@ -2000,6 +2014,14 @@ async def place_community_3d(
     boundary_recipes: list[tuple[SiteZone, dict[str, Any]]] = []
     try:
         for boundary in boundaries:
+            if not body.include_residual_landscape:
+                if "community_3d_landscape" in (boundary.properties or {}) or (boundary.properties or {}).get("community_3d_landscape_mode") != "placed_objects_only":
+                    properties = dict(boundary.properties or {})
+                    properties.pop("community_3d_landscape", None)
+                    properties["community_3d_landscape_mode"] = "placed_objects_only"
+                    boundary.properties = properties
+                    flag_modified(boundary, "properties")
+                continue
             if (boundary.properties or {}).get(
                 "_derived_site_boundary"
             ) is True and boundary.name == "Generated Site Boundary":
@@ -2080,6 +2102,7 @@ async def place_community_3d(
 
     for boundary, recipe in boundary_recipes:
         properties = dict(boundary.properties or {})
+        properties.pop("community_3d_landscape_mode", None)
         properties["community_3d_landscape"] = recipe
         boundary.properties = properties
         flag_modified(boundary, "properties")

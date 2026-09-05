@@ -374,6 +374,14 @@ architectural-clay rows are eligible as detailed building models; an
 archetype without a reviewed clay model falls back to honest planned massing,
 not a textured legacy or sibling substitute.
 
+The local pick/place pilot additionally supports an explicit `native_home_plot`
+setting for detached homes, with frontage direction preserved from the first
+footprint edge. It arranges complete copies of the exact selected
+variant with native dimensions and gaps; it never repeats floors, stretches a
+mesh, substitutes a sibling, or grants a landmark a repetition contract.
+Ordinary clay placement still produces one building. This is a local runtime
+pilot, not catalogue promotion; see `docs/PICK_PLACE_RESHAPE_PILOT_2026-09-05.md`.
+
 ## Hard-stop failure catalogue
 
 | Symptom | Root cause | Required response |

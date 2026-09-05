@@ -171,7 +171,11 @@ export function hasCurrentResidualLandscapeRecipe(zones: SiteZone[]): boolean {
     ));
     return physicalZones.length > 0;
   }
-  return boundaries.length === 1 && getResidualLandscapeRecipe(boundaries[0]) !== null;
+  return boundaries.length === 1 && (
+    (boundaries[0].properties?.community_3d_landscape_mode === 'placed_objects_only'
+      && boundaries[0].properties?.community_3d_landscape == null)
+    || getResidualLandscapeRecipe(boundaries[0]) !== null
+  );
 }
 
 export function getCurrentResidualLandscapeClaim(

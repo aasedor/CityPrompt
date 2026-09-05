@@ -15,6 +15,8 @@ import { EastNorthUpFrame, TilesRendererContext } from '3d-tiles-renderer/r3f';
 import { Html } from '@react-three/drei';
 import { Ellipsoid, WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import type { SiteZone } from '@/types';
+import { assetForZone } from '@/features/pickPlace/catalogue';
+import { resizeRectangleCorner } from '@/features/pickPlace/geometry';
 import { computeCentroid, METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 import { useGlobeDragRef } from './useGlobeDragRef';
 import {
@@ -37,7 +39,7 @@ function isBuildableZoneType(zoneType: string | null | undefined): boolean {
 interface GlobeEditModeProps {
   zone: SiteZone;
   terrainHeight: number;
-  onZoneUpdated: (zoneId: string, coordinates: number[][]) => void;
+  onZoneUpdated: (zoneId: string, coordinates: number[][]) => boolean | void;
   globeControlsRef?: React.RefObject<any>;
   onInteractionStart?: () => void;
 }
@@ -376,7 +378,7 @@ export function GlobeEditMode({
       // Commit final coordinates to React state (one re-render)
       if (finalCoords) {
         setPendingCommitCoords(finalCoords);
-        onZoneUpdated(zone.id, finalCoords);
+        if (onZoneUpdated(zone.id, finalCoords) === false) { setPendingCommitCoords(null); setLiveCoords(null); }
       } else {
         setPendingCommitCoords(null);
         setLiveCoords(null);
@@ -428,7 +430,7 @@ export function GlobeEditMode({
   }, [renderedCoords]);
 
   const rotationHandle = useMemo(() => {
-    if (!isBuildableZoneType(zone.zone_type) || renderedCoords.length < 3) return null;
+    if ((!isBuildableZoneType(zone.zone_type) && !assetForZone(zone)) || renderedCoords.length < 3) return null;
 
     const centroid = computeCentroid(renderedCoords);
     const metersPerLon = Math.max(1, Math.abs(metersPerDegLon(centroid[1])));
@@ -502,7 +504,7 @@ export function GlobeEditMode({
         0.9,
       ),
     };
-  }, [renderedCoords, zone.zone_type]);
+  }, [renderedCoords, zone]);
 
   const handleRotationPointerDown = useCallback((e: any) => {
     if (!rotationHandle) return;
@@ -573,7 +575,7 @@ export function GlobeEditMode({
 
       if (finalCoords) {
         setPendingCommitCoords(finalCoords);
-        onZoneUpdated(zone.id, finalCoords);
+        if (onZoneUpdated(zone.id, finalCoords) === false) { setPendingCommitCoords(null); setLiveCoords(null); }
       } else {
         setPendingCommitCoords(null);
         setLiveCoords(null);
@@ -630,9 +632,10 @@ export function GlobeEditMode({
       const lngLat = pointerToLatLng(pe);
       if (!lngLat || !originalCoordsRef.current) return;
 
-      const newCoords = originalCoordsRef.current.map((c, i) =>
-        i === index ? [...lngLat] : [...c]
-      );
+      const asset = assetForZone(zone);
+      const newCoords = asset && originalCoordsRef.current.length === 4
+        ? resizeRectangleCorner(originalCoordsRef.current, index, lngLat, asset)
+        : originalCoordsRef.current.map((c, i) => i === index ? [...lngLat] : [...c]);
 
       // Write to drag ref (no React state update)
       dragRef.current.zoneId = zone.id;
@@ -651,7 +654,7 @@ export function GlobeEditMode({
       // Commit final coordinates to React state
       if (finalCoords) {
         setPendingCommitCoords(finalCoords);
-        onZoneUpdated(zone.id, finalCoords);
+        if (onZoneUpdated(zone.id, finalCoords) === false) { setPendingCommitCoords(null); setLiveCoords(null); }
       } else {
         setPendingCommitCoords(null);
         setLiveCoords(null);

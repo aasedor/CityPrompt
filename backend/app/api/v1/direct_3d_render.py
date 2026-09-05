@@ -302,6 +302,10 @@ def _validate_direct_3d_project_zones(
     boundary = boundaries[0]
     stored = (boundary.properties or {}).get("community_3d_landscape")
     claim = req.residual_landscape_claim
+    if (boundary.properties or {}).get("community_3d_landscape_mode") == "placed_objects_only" and stored is None and claim is None:
+        # Physical source hashes, representation hashes and instance ownership
+        # have already been checked above. This mode intentionally has no fill.
+        return server_inventory
     if not isinstance(stored, dict) or stored.get("state") != "compiled" or claim is None:
         raise _direct_state_conflict("Residual landscaping is not current. Run Generate to 3D again before rendering.")
     stored_hash = stored.get("source_hash")

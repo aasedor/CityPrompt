@@ -27,6 +27,13 @@ function currentRevision(client: QueryClient, projectId: string, zoneId: string,
   return localRevisions.get(client)?.get(`${projectId}:${zoneId}`) ?? fallback;
 }
 
+/** A locally compiled representation is not an intervening authored edit. */
+export function advanceDerivedZoneRevision(client: QueryClient, projectId: string, zoneId: string, before: string, after: string) {
+  const revisions = localRevisions.get(client);
+  const key = `${projectId}:${zoneId}`;
+  if (revisions?.get(key) === before) revisions.set(key, after);
+}
+
 function invalidateZones(queryClient: QueryClient, projectId: string) {
   return queryClient.invalidateQueries({ queryKey: ['site-zones', projectId] });
 }

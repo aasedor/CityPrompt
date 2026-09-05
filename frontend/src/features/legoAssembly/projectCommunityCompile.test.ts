@@ -190,6 +190,15 @@ describe('project Community 3D compile coordination', () => {
     expect(compile).toHaveBeenCalledTimes(2);
   });
 
+  it('keeps placed objects separate from a request to fill the remaining site', async () => {
+    const compile = vi.spyOn(legoAssemblyApi, 'compileCommunity').mockResolvedValue(response);
+    await compileProjectCommunity3D('project-1', sourceItems, undefined, undefined, false);
+    await compileProjectCommunity3D('project-1', sourceItems, undefined, undefined, true);
+    expect(compile).toHaveBeenCalledTimes(2);
+    expect(compile).toHaveBeenNthCalledWith(1, sourceItems, undefined, undefined, false);
+    expect(compile).toHaveBeenNthCalledWith(2, sourceItems, undefined, undefined, true);
+  });
+
   it('keeps an omitted boundary distinct from an explicitly empty boundary', async () => {
     const compile = vi.spyOn(legoAssemblyApi, 'compileCommunity').mockResolvedValue(response);
 

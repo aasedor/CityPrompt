@@ -274,6 +274,7 @@ def community_3d_source_properties(
         return _compact_semantic_mapping(
             {
                 **common,
+                **({"native_home_plot": True} if props.get("native_home_plot") is True else {}),
                 "dimensions": _compact_semantic_mapping(
                     {
                         "floors": _semantic_number(props.get("floors"), positive=True),

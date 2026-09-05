@@ -59,6 +59,14 @@ const STEPS: TourStep[] = [
   },
 ];
 
+const PLACEMENT_STEPS: TourStep[] = [
+  {target:'[data-tour="place-infill_home"]',title:'Pick and place a home',body:'Choose Infill homes, move the preview over an empty part of your site, then click to place it. On a phone, move the map under the crosshair and tap Place at centre. Red means the object does not fit there.',placement:'right'},
+  {target:'[data-tour="place-neighbourhood_park"]',title:'Make room for a park',body:'Choose Neighbourhood park and place it beside your homes. The park appears in 3D automatically. Keep some space for streets and connections.',placement:'right'},
+  {target:'[data-tour="select-btn"]',title:'Reshape your ideas',body:'Select an object. Drag its body to move, a white corner to resize, or the orange handle to rotate. You can also enter dimensions in the side panel. A wider home plot fits more whole houses; a park rearranges its paths and equipment.',placement:'right'},
+  {target:'[data-tour="tool-streetsPaths"]',title:'Connect the places',body:'Choose Road, click at least two points along the route, then press Enter. Roads update in 3D automatically. More Tools contains custom outlines and optional planning tools.',placement:'right'},
+  {target:'[data-tour="ai-render-btn"]',title:'Present your community',body:'Once your objects have saved and 3D has updated, choose Render. Review your image settings before starting. Undo and Redo let you explore alternatives; your placed objects remain in the saved project.',placement:'right'},
+];
+
 // ---------------------------------------------------------------------------
 // Mini SVG animations for each step
 // ---------------------------------------------------------------------------
@@ -465,11 +473,13 @@ function TourTooltip({ step, stepIndex, total, targetRect, onNext, onBack, onSki
 
 const STORAGE_KEY = 'onboarding-tour-completed';
 interface OnboardingTourProps {
+  placementMode?: boolean;
   /** Force-show even if previously dismissed; false keeps the guide closed. */
   forceShow?: boolean;
   onComplete?: () => void;
 }
-export function OnboardingTour({ forceShow, onComplete }: OnboardingTourProps) {
+export function OnboardingTour({ forceShow, onComplete, placementMode = false }: OnboardingTourProps) {
+  const steps = placementMode ? PLACEMENT_STEPS : STEPS;
   const [active, setActive] = useState(false);
   const [stepIndex, setStepIndex] = useState(0);
   const [targetRect, setTargetRect] = useState<DOMRect | null>(null);
@@ -486,7 +496,7 @@ export function OnboardingTour({ forceShow, onComplete }: OnboardingTourProps) {
   }, [forceShow]);
   useEffect(() => {
     if (!active) return;
-    const step = STEPS[stepIndex];
+    const step = steps[stepIndex];
     document.querySelector(step.target)?.scrollIntoView?.({ block: 'nearest', inline: 'nearest' });
     const track = () => {
       const element = document.querySelector(step.target);
@@ -502,22 +512,22 @@ export function OnboardingTour({ forceShow, onComplete }: OnboardingTourProps) {
     };
     track();
     return () => cancelAnimationFrame(rafRef.current);
-  }, [active, stepIndex]);
+  }, [active, stepIndex, steps]);
   const dismiss = useCallback(() => {
     setActive(false);
     try { localStorage.setItem(STORAGE_KEY, 'true'); } catch { /* optional preference */ }
     onComplete?.();
   }, [onComplete]);
   const handleNext = useCallback(() => {
-    if (stepIndex < STEPS.length - 1) setStepIndex((index) => index + 1);
+    if (stepIndex < steps.length - 1) setStepIndex((index) => index + 1);
     else dismiss();
-  }, [stepIndex, dismiss]);
+  }, [stepIndex, dismiss, steps]);
   const handleBack = useCallback(() => setStepIndex((index) => Math.max(0, index - 1)), []);
   if (!active) return null;
   return createPortal(<>
     <SpotlightOverlay rect={targetRect} />
     <div aria-hidden className="fixed inset-0 z-[998]" />
-    <TourTooltip step={STEPS[stepIndex]} stepIndex={stepIndex} total={STEPS.length}
+    <TourTooltip step={steps[stepIndex]} stepIndex={stepIndex} total={steps.length}
       targetRect={targetRect} onNext={handleNext} onBack={handleBack} onSkip={dismiss} />
   </>, document.body);
 }
