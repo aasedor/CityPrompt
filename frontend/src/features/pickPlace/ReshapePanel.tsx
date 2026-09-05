@@ -21,7 +21,7 @@ export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onD
   const valid = Number.isFinite(Number(width)) && Number.isFinite(Number(depth)) && Number.isFinite(Number(degrees))
     && Number(width)>=asset.minWidth && Number(depth)>=asset.minDepth && Number(width)<=asset.maxSize && Number(depth)<=asset.maxSize;
   const button = 'min-h-11 rounded-lg border border-slate-700 bg-white px-3 text-sm font-semibold text-slate-900 disabled:opacity-40';
-  return <aside aria-label="Reshape object" className="absolute bottom-4 right-4 top-auto z-40 max-h-[55vh] w-72 max-w-[calc(100vw-2rem)] overflow-y-auto rounded-xl border-2 border-slate-900 bg-[#fff9ec] p-3 shadow-xl sm:bottom-auto sm:top-20 sm:max-h-[80vh]">
+  return <aside aria-label="Reshape object" className="absolute bottom-4 inset-x-4 top-auto z-40 max-h-[42dvh] overflow-y-auto overscroll-contain rounded-xl border-2 border-slate-900 bg-[#fff9ec] p-3 shadow-xl sm:left-auto sm:w-72 sm:bottom-auto sm:top-20 sm:max-h-[80vh]">
     <div className="flex items-center justify-between"><h2 className="font-bold text-slate-900">{asset.label}</h2><button aria-label="Close reshape" onClick={onClose} className="flex h-11 w-11 items-center justify-center text-slate-900"><X size={18}/></button></div>
     <p className="mb-3 text-xs text-slate-600">Drag the object to move it. Drag a corner to reshape; use the orange handle to turn it.</p>
     {park && <div role={park.loop.length?'status':'alert'} className="mb-3 rounded-lg bg-white p-2 text-xs text-slate-800">

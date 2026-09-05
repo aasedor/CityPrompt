@@ -8,7 +8,7 @@ export function StreetRoutePanel({ zone, disabled, onReshape, onClose, onDelete,
 }) {
   const bend = addStreetBend(zone);
   const button = 'min-h-11 rounded-lg border border-slate-700 bg-white px-3 text-sm font-semibold text-slate-900 disabled:opacity-40';
-  return <aside aria-label="Reshape street" className="absolute bottom-4 right-4 z-40 max-h-[55vh] w-72 max-w-[calc(100vw-2rem)] overflow-y-auto rounded-xl border-2 border-slate-900 bg-[#fff9ec] p-3 shadow-xl sm:bottom-auto sm:top-20 sm:max-h-[80vh]">
+  return <aside aria-label="Reshape street" className="absolute bottom-4 inset-x-4 z-40 max-h-[42dvh] overflow-y-auto overscroll-contain rounded-xl border-2 border-slate-900 bg-[#fff9ec] p-3 shadow-xl sm:left-auto sm:w-72 sm:bottom-auto sm:top-20 sm:max-h-[80vh]">
     <div className="flex items-center justify-between"><h2 className="font-bold text-slate-900">Calgary local street</h2><button className={button} aria-label="Close street settings" onClick={onClose}>×</button></div>
     <p className="my-3 text-sm text-slate-800">Drag a white route point to bend or extend the street. Drag the street to move it.</p>
     <p className="mb-3 text-xs text-slate-600">The 16 m section keeps two 3.25 m lanes, sidewalks and tree boulevards. Keep points 16 m apart. Use another section for a different width.</p>

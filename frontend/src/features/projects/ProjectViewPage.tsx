@@ -1039,7 +1039,7 @@ export function ProjectViewPage() {
 
         {/* Toolbar - hidden on phones during focused vertex placement. */}
         <div
-          className={`pointer-events-none absolute inset-x-3 top-44 z-30 min-h-0 overflow-y-auto overscroll-contain sm:inset-x-auto sm:left-4 sm:top-[clamp(5rem,12dvh,8rem)] sm:bottom-16 sm:w-64 sm:max-h-none sm:overflow-y-auto sm:pr-2 ${activeSitePlannerTool || placementDraft ? 'hidden sm:block' : 'bottom-3 max-h-[38vh]'}`}
+          className={`pointer-events-none absolute inset-x-3 top-44 z-30 min-h-0 overflow-y-auto overscroll-contain sm:inset-x-auto sm:left-4 sm:top-[clamp(5rem,12dvh,8rem)] sm:bottom-16 sm:w-64 sm:max-h-none sm:overflow-y-auto sm:pr-2 ${activeSitePlannerTool || placementDraft || (selectedZone && (assetForZone(selectedZone) || isCalgaryLocalRoute(selectedZone))) ? 'hidden sm:block' : 'bottom-3 max-h-[38vh]'}`}
         >
           <div className="pointer-events-auto">
             <SitePlannerToolbar

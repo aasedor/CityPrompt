@@ -198,3 +198,22 @@ refreshes retained the changes. One initial park click produced only its
 preview; a second click placed it. That interaction is recorded, not counted
 as a flawless first-click trial. UI evidence remains ignored under
 `artifacts/catalogue-cycle/student-*`.
+
+## CAT-08 finding — small-screen editing
+
+The 390 × 844 browser trial selected a home, moved the map under the centre
+crosshair and placed it using the visible confirmation button. It saved as
+`2eb9ff69-8613-4d06-b629-b8a753e7f4e0`, compiled automatically, and survived
+reloading. The saved scene now contains four individual homes across three
+plots, one park and one street (four distinct catalogue choices).
+
+After placement, the palette and reshape panel occupied most of the phone
+screen. The palette now hides while an object/street is selected, and the
+reshape panel uses a full-width scrolling bottom panel capped at 42dvh.
+Desktop layout remains the existing sidebar. The browser verified rotation
+editing and an overlap rejection without creating a duplicate. The edit
+layout was rechecked after a full reload; initial positioning was done at
+desktop width for this second check. The original phone placement used the
+phone controls throughout. This is a narrow-viewport browser trial, not a
+claim of testing a physical touch device. 26 relevant frontend tests,
+TypeScript and scoped ESLint passed.
