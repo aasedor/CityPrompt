@@ -1023,7 +1023,12 @@ async def create_zone(
     if not request.headers.get("x-skip-history"):
         await _record_zone_history(db, zone, "create", user, f"Created {zone_in.zone_type} zone")
 
-    return _zone_to_response(zone)
+    response = _zone_to_response(zone)
+    # The next browser read must see this drawing. On newer FastAPI, yield
+    # dependency cleanup runs after sending the response, too late to commit
+    # a save or report a commit failure to the student.
+    await db.commit()
+    return response
 
 
 # =============================================================================
@@ -1290,7 +1295,9 @@ async def update_zone(
             previous_snapshot=before_snapshot,
         )
 
-    return _zone_to_response(zone)
+    response = _zone_to_response(zone)
+    await db.commit()
+    return response
 
 
 @router.delete("/{zone_id}", status_code=status.HTTP_204_NO_CONTENT)
@@ -1344,6 +1351,7 @@ async def delete_zone(
         )
 
     await db.delete(zone)
+    await db.commit()
 
 
 def _parse_unit_count_from_text(text: str) -> int:

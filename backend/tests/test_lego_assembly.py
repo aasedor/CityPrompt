@@ -4555,7 +4555,7 @@ async def test_place_community_compiles_mixed_plan_with_one_server_timestamp(cli
     assert street_zone.properties["road_archetype_id"] == "main_street_complete"
     assert park_zone.properties["community_3d"]["generator"] == "park_kit"
     assert street_zone.properties["community_3d"]["generator"] == "street_section"
-    mock_db.commit.assert_not_awaited()
+    mock_db.commit.assert_awaited_once()
 
 
 @pytest.mark.anyio
@@ -4681,7 +4681,7 @@ async def test_place_community_atomically_compiles_mixed_ai_exact_and_family_pen
     assert "public_realm_lego" not in pending_park.properties
     assert "public_realm_lego" not in pending_street.properties
     assert {zone.properties["community_3d"]["compiled_at"] for zone in zones} == {payload["compiled_at"]}
-    mock_db.commit.assert_not_awaited()
+    mock_db.commit.assert_awaited_once()
 
 
 @pytest.mark.anyio
@@ -5971,7 +5971,7 @@ async def test_place_community_preserves_all_six_public_realm_archetype_contract
         assert zone.properties["community_3d"]["state"] == "compiled"
         assert zone.properties["community_3d"]["generator"] == "park_kit"
     mock_db.add.assert_not_called()
-    mock_db.commit.assert_not_awaited()
+    mock_db.commit.assert_awaited_once()
 
 
 @pytest.mark.anyio
@@ -6024,7 +6024,7 @@ async def test_place_community_persists_exact_footprint_massing_without_family_r
     assert fallback["archetype_id"] == "new_york_corner_bodega"
     assert fallback["height_meters"] == 10.5
     assert "legoAssembly" not in building.specifications
-    mock_db.commit.assert_not_awaited()
+    mock_db.commit.assert_awaited_once()
 
 
 @pytest.mark.anyio
@@ -6312,7 +6312,7 @@ async def test_place_community_rebuild_upgrades_massing_without_losing_public_re
         park_zone.properties["community_3d"]["compiled_at"],
     } == {payload["compiled_at"]}
     mock_db.add.assert_not_called()
-    mock_db.commit.assert_not_awaited()
+    mock_db.commit.assert_awaited_once()
 
 
 @pytest.mark.anyio

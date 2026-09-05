@@ -2110,6 +2110,9 @@ async def place_community_3d(
     await db.flush()
     residual_area = round(sum(recipe["area_sqm"] for _, recipe in boundary_recipes), 2)
     residual_placements = sum(len(recipe["placements"]) for _, recipe in boundary_recipes)
+    # Publish the whole compiled scene atomically before the client's immediate
+    # zone/project reads; dependency teardown may occur after the HTTP response.
+    await db.commit()
     return {
         "status": "compiled",
         "compiled_at": compiled_at,

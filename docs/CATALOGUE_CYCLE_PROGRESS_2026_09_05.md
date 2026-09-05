@@ -170,3 +170,31 @@ Follow existing terrain. Existing saved projects keep their chosen mode;
 students can still select Clear site for redevelopment. The fresh test site's
 setting was changed through its visible Site ground control before placement.
 This is a new-drawing default, not a change to the measured-ground algorithm.
+
+## CAT-08 finding — save-before-refresh race
+
+The new UI-created project `9535da89-4b5c-4839-aa7f-ccde56f1eded` exposed a
+saved bungalow missing from the client cache until the next placement. No work
+was lost. The local Python environment has FastAPI 0.140.0, whereas the pinned
+requirements specify 0.115.6. With the newer dependency lifetime, the existing
+`get_db` commit can occur after the successful HTTP response. The immediate
+list refresh can therefore read the preceding transaction state. This matches
+the observed saved-server/old-client mismatch. See the official
+[FastAPI dependency lifecycle explanation](https://fastapi.tiangolo.com/advanced/advanced-dependencies/).
+
+Create/update/delete now commit before returning success; mixed-community
+compilation commits once after all validation, compilation and persistence.
+There is no commit inside its item loop. Six delayed/failed-commit regression
+cases failed before this correction and passed afterwards. Together with
+existing source-conflict and mixed-community cases, 60 narrow backend tests
+passed. Existing successful-batch assertions now require the final commit;
+failure-path tests retain their no-commit requirement. Libraries were not
+upgraded or downgraded. Other endpoints are outside this correction's scope.
+
+The local backend was restarted with paid media providers disabled. In the
+actual browser, the existing bungalow plot widened to two whole homes, the
+infill rotated, and a new park and 16 m street saved and compiled. Immediate
+refreshes retained the changes. One initial park click produced only its
+preview; a second click placed it. That interaction is recorded, not counted
+as a flawless first-click trial. UI evidence remains ignored under
+`artifacts/catalogue-cycle/student-*`.
