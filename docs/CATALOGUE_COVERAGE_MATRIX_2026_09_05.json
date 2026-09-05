@@ -1,0 +1,2206 @@
+{
+  "schema": "cityprompt.catalogue-coverage-plan@1",
+  "date": "2026-09-05",
+  "status": "proposed_plan_not_production_authorization",
+  "scope": "Calgary-informed student browsing collections; minimum two geometrically/programmatically distinct placeable choices per asset collection",
+  "assumptions": [
+    "Architectural styles remain filters, not separate quotas.",
+    "Custom building ideas is an import/design workflow, not a fixed-asset collection; its two placeholders do not count as finished models.",
+    "The broad civic collection has two total choices in this first pass, not two of every school, hospital and arena subtype.",
+    "Existing extra reviewed assets are retained; no need to build every reference image.",
+    "Candidate labels and pair differences are nominations, subject to exact source review."
+  ],
+  "excluded_navigation_groups": [
+    {
+      "group_id": "building_other",
+      "reason": "Two custom/prompt placeholders; preserve the workflow, do not count placeholders as models."
+    }
+  ],
+  "counts": {
+    "building": {
+      "groups": 13,
+      "target_choices": 26,
+      "source_parents": 224,
+      "source_variants": 896
+    },
+    "park_plaza": {
+      "groups": 10,
+      "target_choices": 20,
+      "source_parents": 130,
+      "source_variants": 520
+    },
+    "street_pathway": {
+      "groups": 9,
+      "target_choices": 18,
+      "source_parents": 115,
+      "source_variants": 355
+    }
+  },
+  "total_groups": 32,
+  "total_target_choices": 64,
+  "origin_counts": {
+    "existing_reviewed_clay_manifest": 6,
+    "catalogue_reference_nomination": 50,
+    "functional_park_pilot_not_approved": 1,
+    "authored_draft_street_section": 7
+  },
+  "current_pick_place_cards": [
+    "calgary_modern_infill_house/infill_flat_roof_minimal",
+    "neighborhood_park/neighborhood_park_v0"
+  ],
+  "inventory_evidence": [
+    {
+      "path": "frontend/src/features/calgaryCatalogue/guide.ts",
+      "sha256": "730a6b5b5dbddbd5a44d32a442bee9c3857ad29e62dd125efba091e234d19dea"
+    },
+    {
+      "path": "frontend/src/data/buildingArchetypes.json",
+      "sha256": "fc1a88d1a2bacfca4d1e078bd1b6c964c88e4b247fe27e0943bd7451be1ed307"
+    },
+    {
+      "path": "frontend/src/data/openSpaceArchetypes.json",
+      "sha256": "e3e59a8173d528b40ca790f5a67f06f7a265bf62f6575c35d1379c6d64d4c0da"
+    },
+    {
+      "path": "frontend/src/data/streetPathArchetypes.json",
+      "sha256": "3293941ac1f55da0bdff88b09c62d42e80227fd90ac07f1741c37cbe92bcf07b"
+    },
+    {
+      "path": "C:/Users/andre/OneDrive/Documents/CityPrompt/seed/model-library/rlasm-architectural-clay/library.json",
+      "sha256": "bde010609296f5219cfd2f44212740657730ff89e6bfcce0646d5dc9def6ad35",
+      "scope": "Read-only inventory of the separate original checkout; not imported or promoted."
+    }
+  ],
+  "reviewed_clay_manifest_inventory": [
+    {
+      "archetype_id": "vancouver_special",
+      "variant_id": "special_original_1970s",
+      "candidate": "vancouver-special-original-1970s-clay-v007",
+      "declared_runtime_enabled": true,
+      "declared_review": "PASS_ARCHITECTURAL_CLAY_ONLY",
+      "model_sha256": "bb3d391b4fa7d2a4c2f2d8b7f8105294da8180bcc4d9abefc4eed38249840241",
+      "in_minimum_set": false
+    },
+    {
+      "archetype_id": "montreal_depanneur",
+      "variant_id": "montreal_depanneur_classic",
+      "candidate": "montreal-depanneur-classic-corner-clay-v007",
+      "declared_runtime_enabled": true,
+      "declared_review": "PASS_ARCHITECTURAL_CLAY_ONLY",
+      "model_sha256": "7e2763aa8ace3d57fbd4e23b04c9daa04f50cb3653d7c1f7e52091b8fc65d1b0",
+      "in_minimum_set": true
+    },
+    {
+      "archetype_id": "calgary_modern_infill_house",
+      "variant_id": "infill_flat_roof_minimal",
+      "candidate": "calgary-infill-flat-roof-minimal-clay-v006",
+      "declared_runtime_enabled": true,
+      "declared_review": "PASS_ARCHITECTURAL_CLAY_ONLY",
+      "model_sha256": "eeb0d1d878ec474e6743a1e1aeef7bf84dfda360c1150662b60430095f26ac37",
+      "in_minimum_set": true
+    },
+    {
+      "archetype_id": "vancouver_laneway_house",
+      "variant_id": "laneway_gabled_traditional",
+      "candidate": "vancouver-laneway-gabled-traditional-clay-v004",
+      "declared_runtime_enabled": true,
+      "declared_review": "PASS_ARCHITECTURAL_CLAY",
+      "model_sha256": "1512b90922cc8cdadfcd3eb4f1f7b07f1d3a9047d3037142766d4e520fed6199",
+      "in_minimum_set": false
+    },
+    {
+      "archetype_id": "amsterdam_brown_cafe",
+      "variant_id": "brown_cafe_corner",
+      "candidate": "amsterdam-brown-cafe-corner-clay-v005",
+      "declared_runtime_enabled": true,
+      "declared_review": "PASS_ARCHITECTURAL_CLAY_ONLY",
+      "model_sha256": "f875d44e8b3a50600cf40b955729e1ff597a9cf5c7a728d2bf38fadb2343345d",
+      "in_minimum_set": false
+    },
+    {
+      "archetype_id": "commercial_strip_mall",
+      "variant_id": "strip_single_storey_classic",
+      "candidate": "commercial-strip-single-storey-classic-clay-v002",
+      "declared_runtime_enabled": true,
+      "declared_review": "PASS_ARCHITECTURAL_CLAY_ONLY",
+      "model_sha256": "f4f4f5cd300f178c394650265aedfc3f7dbc19dacdb9641c7dc356f0e258ea44",
+      "in_minimum_set": true
+    },
+    {
+      "archetype_id": "corrugated_vernacular_industrial",
+      "variant_id": "industrial_gabled_metal_shed",
+      "candidate": "industrial-gabled-metal-shed-clay-v002",
+      "declared_runtime_enabled": true,
+      "declared_review": "PASS_ARCHITECTURAL_CLAY_ONLY",
+      "model_sha256": "351e93b7b9d5dc4b04801a69979d155199a21da781f6a3247db831f54377ce2d",
+      "in_minimum_set": true
+    },
+    {
+      "archetype_id": "rural_gas_station",
+      "variant_id": "gas_vintage_service_station",
+      "candidate": "rural-gas-vintage-service-station-clay-v008",
+      "declared_runtime_enabled": true,
+      "declared_review": "PASS_ARCHITECTURAL_CLAY_ONLY",
+      "model_sha256": "d0b49ea81078a63eddd7458964ca33d0ef3cc09a298b4f19a6fa666033d353d0",
+      "in_minimum_set": false
+    },
+    {
+      "archetype_id": "vancouver_craftsman_bungalow",
+      "variant_id": "craftsman_classic",
+      "candidate": "vancouver-craftsman-classic-clay-v006",
+      "declared_runtime_enabled": true,
+      "declared_review": "PASS_ARCHITECTURAL_CLAY_ONLY",
+      "model_sha256": "08e2c40e4af611e3e7c9e3ad1e987e8adeb2d1b5443a510211f00a8f70e3d014",
+      "in_minimum_set": true
+    },
+    {
+      "archetype_id": "vernacular_courtyard_housing",
+      "variant_id": "vernacular_courtyard_chinese_siheyuan",
+      "candidate": "chinese-siheyuan-courtyard-clay-v004",
+      "declared_runtime_enabled": true,
+      "declared_review": "PASS_ARCHITECTURAL_CLAY_ONLY",
+      "model_sha256": "efab2b93d53e303e9ac398cc80005df9f018d1de1bf90c4a259a188c67f64e6b",
+      "in_minimum_set": true
+    }
+  ],
+  "groups": [
+    {
+      "group_id": "detached",
+      "domain": "building",
+      "label": "Detached homes",
+      "target": 2,
+      "wave": 1,
+      "intended_distinction": "Narrow contemporary two-storey home versus a low Craftsman bungalow with porch.",
+      "pair_distinction_status": "proposed_requires_source_and_3d_review",
+      "district_examples_to_investigate": [
+        "R-C1",
+        "R-C1N",
+        "R-1",
+        "R-CG"
+      ],
+      "source_ids": [
+        "lowDensity"
+      ],
+      "choices": [
+        {
+          "slot": "detached_1",
+          "label": "Modern flat-roof infill home",
+          "archetype_id": "calgary_modern_infill_house",
+          "variant_id": "infill_flat_roof_minimal",
+          "existing_parent_group": "detached",
+          "variant_group_override_required": false,
+          "origin": "existing_reviewed_clay_manifest",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "recorded_in_existing_manifest_reverify_exact_files",
+          "existing_clay": {
+            "candidate": "calgary-infill-flat-roof-minimal-clay-v006",
+            "declared_runtime_enabled": true,
+            "review_status": "PASS_ARCHITECTURAL_CLAY_ONLY",
+            "model_sha256": "eeb0d1d878ec474e6743a1e1aeef7bf84dfda360c1150662b60430095f26ac37",
+            "bytes": 909656,
+            "triangles": 16112,
+            "native_dimensions_m": {
+              "width": 8.45,
+              "depth": 11.75,
+              "height": 6.98001
+            }
+          },
+          "reshape_contract": "native_geometry_then_verified_whole_home_plot_repetition",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        },
+        {
+          "slot": "detached_2",
+          "label": "Craftsman bungalow",
+          "archetype_id": "vancouver_craftsman_bungalow",
+          "variant_id": "craftsman_classic",
+          "existing_parent_group": "detached",
+          "variant_group_override_required": false,
+          "origin": "existing_reviewed_clay_manifest",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "recorded_in_existing_manifest_reverify_exact_files",
+          "existing_clay": {
+            "candidate": "vancouver-craftsman-classic-clay-v006",
+            "declared_runtime_enabled": true,
+            "review_status": "PASS_ARCHITECTURAL_CLAY_ONLY",
+            "model_sha256": "08e2c40e4af611e3e7c9e3ad1e987e8adeb2d1b5443a510211f00a8f70e3d014",
+            "bytes": 1058796,
+            "triangles": 17502,
+            "native_dimensions_m": {
+              "width": 11.84718,
+              "depth": 20.69,
+              "height": 8.72
+            }
+          },
+          "reshape_contract": "native_geometry_then_verified_whole_home_plot_repetition",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        }
+      ]
+    },
+    {
+      "group_id": "two_home",
+      "domain": "building",
+      "label": "Duplexes & semi-detached homes",
+      "target": 2,
+      "wave": 1,
+      "intended_distinction": "Side-by-side infill versus stacked dwellings with an exterior stair; verify the chosen sources and component uses.",
+      "pair_distinction_status": "proposed_requires_source_and_3d_review",
+      "district_examples_to_investigate": [
+        "R-C2",
+        "R-2",
+        "R-CG"
+      ],
+      "source_ids": [
+        "lowDensity"
+      ],
+      "choices": [
+        {
+          "slot": "two_home_1",
+          "label": "Side-by-side duplex infill",
+          "archetype_id": "calgary_modern_infill_house",
+          "variant_id": "infill_duplex",
+          "existing_parent_group": "detached",
+          "variant_group_override_required": true,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "native_geometry_first_explicit_modules_or_size_options_only_after_verification",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        },
+        {
+          "slot": "two_home_2",
+          "label": "Stacked Montreal duplex",
+          "archetype_id": "montreal_duplex",
+          "variant_id": "montreal_duplex_plateau",
+          "existing_parent_group": "two_home",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "native_geometry_first_explicit_modules_or_size_options_only_after_verification",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        }
+      ]
+    },
+    {
+      "group_id": "ground_housing",
+      "domain": "building",
+      "label": "Rowhouses & townhomes",
+      "target": 2,
+      "wave": 1,
+      "intended_distinction": "Street-facing row of homes versus inward-facing courtyard housing; courtyard membership does not assert a legal dwelling count.",
+      "pair_distinction_status": "proposed_requires_source_and_3d_review",
+      "district_examples_to_investigate": [
+        "R-CG",
+        "H-GO",
+        "M-CG",
+        "M-G"
+      ],
+      "source_ids": [
+        "lowDensity",
+        "apartments",
+        "districts"
+      ],
+      "choices": [
+        {
+          "slot": "ground_housing_1",
+          "label": "Contemporary street-facing townhomes",
+          "archetype_id": "rndsqr_missing_middle_townhomes",
+          "variant_id": "rndsqr_townhome_dark_wood_metal",
+          "existing_parent_group": "ground_housing",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "native_geometry_first_explicit_modules_or_size_options_only_after_verification",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        },
+        {
+          "slot": "ground_housing_2",
+          "label": "Siheyuan courtyard housing",
+          "archetype_id": "vernacular_courtyard_housing",
+          "variant_id": "vernacular_courtyard_chinese_siheyuan",
+          "existing_parent_group": "ground_housing",
+          "variant_group_override_required": false,
+          "origin": "existing_reviewed_clay_manifest",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "recorded_in_existing_manifest_reverify_exact_files",
+          "existing_clay": {
+            "candidate": "chinese-siheyuan-courtyard-clay-v004",
+            "declared_runtime_enabled": true,
+            "review_status": "PASS_ARCHITECTURAL_CLAY_ONLY",
+            "model_sha256": "efab2b93d53e303e9ac398cc80005df9f018d1de1bf90c4a259a188c67f64e6b",
+            "bytes": 4769504,
+            "triangles": 80048,
+            "native_dimensions_m": {
+              "width": 31.08,
+              "depth": 38.33,
+              "height": 10.59809
+            }
+          },
+          "reshape_contract": "native_geometry_first_explicit_modules_or_size_options_only_after_verification",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        }
+      ]
+    },
+    {
+      "group_id": "apartments",
+      "domain": "building",
+      "label": "Apartments",
+      "target": 2,
+      "wave": 1,
+      "intended_distinction": "Compact mid-rise block versus a courtyard arrangement with shared outdoor space.",
+      "pair_distinction_status": "proposed_requires_source_and_3d_review",
+      "district_examples_to_investigate": [
+        "M-C1",
+        "M-C2",
+        "M-1",
+        "M-2",
+        "M-H1",
+        "M-H2"
+      ],
+      "source_ids": [
+        "apartments"
+      ],
+      "choices": [
+        {
+          "slot": "apartments_1",
+          "label": "Timber-and-glass mid-rise apartments",
+          "archetype_id": "contemporary_midrise_residential",
+          "variant_id": "contemporary_midrise_variant_timber_glass",
+          "existing_parent_group": "apartments",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "native_geometry_first_explicit_modules_or_size_options_only_after_verification",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        },
+        {
+          "slot": "apartments_2",
+          "label": "Brick courtyard apartments",
+          "archetype_id": "courtyard_family_housing",
+          "variant_id": "courtyard_family_brick_modern",
+          "existing_parent_group": "apartments",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "native_geometry_first_explicit_modules_or_size_options_only_after_verification",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        }
+      ]
+    },
+    {
+      "group_id": "towers",
+      "domain": "building",
+      "label": "Residential towers",
+      "target": 2,
+      "wave": 3,
+      "intended_distinction": "Slender tower over a street-facing podium versus a slab tower with continuous balconies.",
+      "pair_distinction_status": "proposed_requires_source_and_3d_review",
+      "district_examples_to_investigate": [
+        "M-H2",
+        "M-H3"
+      ],
+      "source_ids": [
+        "apartments"
+      ],
+      "choices": [
+        {
+          "slot": "towers_1",
+          "label": "Slender residential tower with podium",
+          "archetype_id": "vancouverism_tower_podium",
+          "variant_id": "vancouverism_classic",
+          "existing_parent_group": "towers",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "native_geometry_first_explicit_modules_or_size_options_only_after_verification",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        },
+        {
+          "slot": "towers_2",
+          "label": "Balcony slab residential tower",
+          "archetype_id": "west_end_mid_century_tower",
+          "variant_id": "midcentury_concrete_slab",
+          "existing_parent_group": "towers",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "native_geometry_first_explicit_modules_or_size_options_only_after_verification",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        }
+      ]
+    },
+    {
+      "group_id": "mixed",
+      "domain": "building",
+      "label": "Homes over shops & mixed use",
+      "target": 2,
+      "wave": 2,
+      "intended_distinction": "Purpose-built mixed-use courtyard versus an industrial conversion; explicitly author component uses.",
+      "pair_distinction_status": "proposed_requires_source_and_3d_review",
+      "district_examples_to_investigate": [
+        "MU-1",
+        "MU-2",
+        "C-COR1"
+      ],
+      "source_ids": [
+        "districts"
+      ],
+      "choices": [
+        {
+          "slot": "mixed_1",
+          "label": "Courtyard mixed-use block",
+          "archetype_id": "rndsqr_terraced_mixed_use_midrise",
+          "variant_id": "rndsqr_midrise_courtyard",
+          "existing_parent_group": "mixed",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "native_geometry_first_explicit_modules_or_size_options_only_after_verification",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        },
+        {
+          "slot": "mixed_2",
+          "label": "Converted mill mixed-use block",
+          "archetype_id": "industrial_brick_mixed_use",
+          "variant_id": "industrial_brick_original_mill",
+          "existing_parent_group": "mixed",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "native_geometry_first_explicit_modules_or_size_options_only_after_verification",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        }
+      ]
+    },
+    {
+      "group_id": "shops",
+      "domain": "building",
+      "label": "Shops & services",
+      "target": 2,
+      "wave": 1,
+      "intended_distinction": "Corner neighbourhood shop versus a single-storey multi-unit retail strip.",
+      "pair_distinction_status": "proposed_requires_source_and_3d_review",
+      "district_examples_to_investigate": [
+        "C-N1",
+        "C-N2",
+        "C-C1",
+        "C-C2",
+        "C-COR2"
+      ],
+      "source_ids": [
+        "districts"
+      ],
+      "choices": [
+        {
+          "slot": "shops_1",
+          "label": "Corner neighbourhood shop",
+          "archetype_id": "montreal_depanneur",
+          "variant_id": "montreal_depanneur_classic",
+          "existing_parent_group": "shops",
+          "variant_group_override_required": false,
+          "origin": "existing_reviewed_clay_manifest",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "recorded_in_existing_manifest_reverify_exact_files",
+          "existing_clay": {
+            "candidate": "montreal-depanneur-classic-corner-clay-v007",
+            "declared_runtime_enabled": true,
+            "review_status": "PASS_ARCHITECTURAL_CLAY_ONLY",
+            "model_sha256": "7e2763aa8ace3d57fbd4e23b04c9daa04f50cb3653d7c1f7e52091b8fc65d1b0",
+            "bytes": 1197784,
+            "triangles": 22854,
+            "native_dimensions_m": {
+              "width": 9.65951,
+              "depth": 10.25951,
+              "height": 7.845
+            }
+          },
+          "reshape_contract": "native_geometry_first_explicit_modules_or_size_options_only_after_verification",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        },
+        {
+          "slot": "shops_2",
+          "label": "Single-storey retail strip",
+          "archetype_id": "commercial_strip_mall",
+          "variant_id": "strip_single_storey_classic",
+          "existing_parent_group": "shops",
+          "variant_group_override_required": false,
+          "origin": "existing_reviewed_clay_manifest",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "recorded_in_existing_manifest_reverify_exact_files",
+          "existing_clay": {
+            "candidate": "commercial-strip-single-storey-classic-clay-v002",
+            "declared_runtime_enabled": true,
+            "review_status": "PASS_ARCHITECTURAL_CLAY_ONLY",
+            "model_sha256": "f4f4f5cd300f178c394650265aedfc3f7dbc19dacdb9641c7dc356f0e258ea44",
+            "bytes": 1532400,
+            "triangles": 32894,
+            "native_dimensions_m": {
+              "width": 32.70001,
+              "depth": 18.65001,
+              "height": 6.54001
+            }
+          },
+          "reshape_contract": "native_geometry_first_explicit_modules_or_size_options_only_after_verification",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        }
+      ]
+    },
+    {
+      "group_id": "hotels",
+      "domain": "building",
+      "label": "Hotels & visitor accommodation",
+      "target": 2,
+      "wave": 3,
+      "intended_distinction": "Urban corner hotel versus a lower lodge form.",
+      "pair_distinction_status": "proposed_requires_source_and_3d_review",
+      "district_examples_to_investigate": [
+        "C-C2",
+        "C-COR1",
+        "C-COR2",
+        "MU-1",
+        "MU-2"
+      ],
+      "source_ids": [
+        "hotelUse",
+        "useGroups",
+        "districts"
+      ],
+      "choices": [
+        {
+          "slot": "hotels_1",
+          "label": "Urban corner hotel",
+          "archetype_id": "boutique_hotel",
+          "variant_id": "industrial_loft_corner",
+          "existing_parent_group": "hotels",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "native_geometry_first_explicit_modules_or_size_options_only_after_verification",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        },
+        {
+          "slot": "hotels_2",
+          "label": "Timber lodge hotel",
+          "archetype_id": "highway_motor_hotel",
+          "variant_id": "hotel_timber_lodge",
+          "existing_parent_group": "hotels",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "native_geometry_first_explicit_modules_or_size_options_only_after_verification",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        }
+      ]
+    },
+    {
+      "group_id": "offices",
+      "domain": "building",
+      "label": "Offices",
+      "target": 2,
+      "wave": 3,
+      "intended_distinction": "Compact urban office versus a lower campus arrangement.",
+      "pair_distinction_status": "proposed_requires_source_and_3d_review",
+      "district_examples_to_investigate": [
+        "C-O",
+        "C-COR2"
+      ],
+      "source_ids": [
+        "districts"
+      ],
+      "choices": [
+        {
+          "slot": "offices_1",
+          "label": "Urban office block",
+          "archetype_id": "modern_glass_office_institutional",
+          "variant_id": "glass_office_terracotta_fins",
+          "existing_parent_group": "offices",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "native_geometry_first_explicit_modules_or_size_options_only_after_verification",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        },
+        {
+          "slot": "offices_2",
+          "label": "Timber office campus",
+          "archetype_id": "corporate_office_campus_headquarters",
+          "variant_id": "biophilic_mass_timber_campus",
+          "existing_parent_group": "offices",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "native_geometry_first_explicit_modules_or_size_options_only_after_verification",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        }
+      ]
+    },
+    {
+      "group_id": "civic",
+      "domain": "building",
+      "label": "Schools, civic & recreation",
+      "target": 2,
+      "wave": 2,
+      "intended_distinction": "Neighbourhood school versus a community recreation/gathering hall.",
+      "pair_distinction_status": "proposed_requires_source_and_3d_review",
+      "district_examples_to_investigate": [
+        "S-CI",
+        "S-CS",
+        "S-SPR",
+        "S-R"
+      ],
+      "source_ids": [
+        "districts"
+      ],
+      "choices": [
+        {
+          "slot": "civic_1",
+          "label": "Brick neighbourhood school",
+          "archetype_id": "ecole_republicaine",
+          "variant_id": "ecole-republicaine-provincial-brick",
+          "existing_parent_group": "civic",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "native_geometry_first_explicit_modules_or_size_options_only_after_verification",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        },
+        {
+          "slot": "civic_2",
+          "label": "Timber community hall",
+          "archetype_id": "community_recreation_centre",
+          "variant_id": "rec_centre_timber_hall",
+          "existing_parent_group": "civic",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "native_geometry_first_explicit_modules_or_size_options_only_after_verification",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        }
+      ]
+    },
+    {
+      "group_id": "industry",
+      "domain": "building",
+      "label": "Industry & warehouses",
+      "target": 2,
+      "wave": 2,
+      "intended_distinction": "Gabled workshop/shed versus a larger tilt-wall warehouse and loading arrangement.",
+      "pair_distinction_status": "proposed_requires_source_and_3d_review",
+      "district_examples_to_investigate": [
+        "I-G",
+        "I-B",
+        "I-H"
+      ],
+      "source_ids": [
+        "districts"
+      ],
+      "choices": [
+        {
+          "slot": "industry_1",
+          "label": "Gabled industrial workshop",
+          "archetype_id": "corrugated_vernacular_industrial",
+          "variant_id": "industrial_gabled_metal_shed",
+          "existing_parent_group": "industry",
+          "variant_group_override_required": false,
+          "origin": "existing_reviewed_clay_manifest",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "recorded_in_existing_manifest_reverify_exact_files",
+          "existing_clay": {
+            "candidate": "industrial-gabled-metal-shed-clay-v002",
+            "declared_runtime_enabled": true,
+            "review_status": "PASS_ARCHITECTURAL_CLAY_ONLY",
+            "model_sha256": "351e93b7b9d5dc4b04801a69979d155199a21da781f6a3247db831f54377ce2d",
+            "bytes": 1231548,
+            "triangles": 24280,
+            "native_dimensions_m": {
+              "width": 13.37001,
+              "depth": 21.71501,
+              "height": 8.65001
+            }
+          },
+          "reshape_contract": "native_geometry_first_explicit_modules_or_size_options_only_after_verification",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        },
+        {
+          "slot": "industry_2",
+          "label": "Tilt-wall warehouse",
+          "archetype_id": "modern_bigbox_warehouse",
+          "variant_id": "warehouse_tilt_wall_mega",
+          "existing_parent_group": "industry",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "native_geometry_first_explicit_modules_or_size_options_only_after_verification",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        }
+      ]
+    },
+    {
+      "group_id": "indoor_food",
+      "domain": "building",
+      "label": "Indoor farms & food production",
+      "target": 2,
+      "wave": 3,
+      "intended_distinction": "Enclosed indoor grow building versus greenhouses above a warehouse; distinct forms rather than duplicate parent listings.",
+      "pair_distinction_status": "proposed_requires_source_and_3d_review",
+      "district_examples_to_investigate": [],
+      "source_ids": [
+        "foodProduction",
+        "useGroups",
+        "districts"
+      ],
+      "choices": [
+        {
+          "slot": "indoor_food_1",
+          "label": "Enclosed indoor farm",
+          "archetype_id": "vertical_farm",
+          "variant_id": "farm_led_indoor",
+          "existing_parent_group": "indoor_food",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "native_geometry_first_explicit_modules_or_size_options_only_after_verification",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        },
+        {
+          "slot": "indoor_food_2",
+          "label": "Warehouse with rooftop greenhouses",
+          "archetype_id": "vertical_farm",
+          "variant_id": "farm_rooftop_greenhouse",
+          "existing_parent_group": "indoor_food",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "native_geometry_first_explicit_modules_or_size_options_only_after_verification",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        }
+      ]
+    },
+    {
+      "group_id": "infrastructure",
+      "domain": "building",
+      "label": "Transit & utilities",
+      "target": 2,
+      "wave": 3,
+      "intended_distinction": "Transit platform and shelter versus a civic energy/utility building; transit track/interface ownership is explicit.",
+      "pair_distinction_status": "proposed_requires_source_and_3d_review",
+      "district_examples_to_investigate": [
+        "S-CRI",
+        "S-TUC"
+      ],
+      "source_ids": [
+        "districts"
+      ],
+      "choices": [
+        {
+          "slot": "infrastructure_1",
+          "label": "Urban CTrain platform and shelter",
+          "archetype_id": "calgary_ctrain_station",
+          "variant_id": "ctrain_downtown_platform",
+          "existing_parent_group": "infrastructure",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "native_geometry_first_explicit_modules_or_size_options_only_after_verification",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        },
+        {
+          "slot": "infrastructure_2",
+          "label": "Civic energy centre",
+          "archetype_id": "central_utilities_plant_energy_centre",
+          "variant_id": "contemporary_civic_energy_hub",
+          "existing_parent_group": "infrastructure",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "native_geometry_first_explicit_modules_or_size_options_only_after_verification",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        }
+      ]
+    },
+    {
+      "group_id": "small_park",
+      "domain": "park_plaza",
+      "label": "Pocket & sub-neighbourhood parks",
+      "target": 2,
+      "wave": 2,
+      "intended_distinction": "Timber-and-gravel gathering pocket versus meadow-led pocket; qualify as distinct only if the source layouts and programmes differ.",
+      "pair_distinction_status": "proposed_requires_source_and_3d_review",
+      "district_examples_to_investigate": [],
+      "source_ids": [
+        "parks",
+        "parkTypes"
+      ],
+      "choices": [
+        {
+          "slot": "small_park_1",
+          "label": "Timber-and-gravel pocket park",
+          "archetype_id": "urban_pocket_park",
+          "variant_id": "urban_pocket_park_v0",
+          "existing_parent_group": "small_park",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "adaptive_layout_fixed_metric_components_explicit_minimums_and_omissions",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        },
+        {
+          "slot": "small_park_2",
+          "label": "Meadow pocket park",
+          "archetype_id": "urban_pocket_park",
+          "variant_id": "urban_pocket_park_v2",
+          "existing_parent_group": "small_park",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "adaptive_layout_fixed_metric_components_explicit_minimums_and_omissions",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        }
+      ]
+    },
+    {
+      "group_id": "neighbourhood",
+      "domain": "park_plaza",
+      "label": "Neighbourhood & community parks",
+      "target": 2,
+      "wave": 1,
+      "intended_distinction": "Rustic play-and-picnic loop versus a pastoral community park; source audit must establish a distinct layout/programme, not just planting.",
+      "pair_distinction_status": "proposed_requires_source_and_3d_review",
+      "district_examples_to_investigate": [],
+      "source_ids": [
+        "parks",
+        "parkTypes"
+      ],
+      "choices": [
+        {
+          "slot": "neighbourhood_1",
+          "label": "Rustic neighbourhood park",
+          "archetype_id": "neighborhood_park",
+          "variant_id": "neighborhood_park_v0",
+          "existing_parent_group": "neighbourhood",
+          "variant_group_override_required": false,
+          "origin": "functional_park_pilot_not_approved",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "adaptive_layout_fixed_metric_components_explicit_minimums_and_omissions",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        },
+        {
+          "slot": "neighbourhood_2",
+          "label": "Pastoral community park",
+          "archetype_id": "community_park",
+          "variant_id": "community_park_v0",
+          "existing_parent_group": "neighbourhood",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "adaptive_layout_fixed_metric_components_explicit_minimums_and_omissions",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        }
+      ]
+    },
+    {
+      "group_id": "regional",
+      "domain": "park_plaza",
+      "label": "Regional & destination parks",
+      "target": 2,
+      "wave": 3,
+      "intended_distinction": "Pastoral destination park versus an industrial-reuse destination landscape.",
+      "pair_distinction_status": "proposed_requires_source_and_3d_review",
+      "district_examples_to_investigate": [],
+      "source_ids": [
+        "parks",
+        "parkTypes"
+      ],
+      "choices": [
+        {
+          "slot": "regional_1",
+          "label": "Pastoral destination park",
+          "archetype_id": "regional_park",
+          "variant_id": "regional_park_v0",
+          "existing_parent_group": "regional",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "adaptive_layout_fixed_metric_components_explicit_minimums_and_omissions",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        },
+        {
+          "slot": "regional_2",
+          "label": "Industrial-reuse destination park",
+          "archetype_id": "reclaimed_industrial_park",
+          "variant_id": "reclaimed_industrial_park_v1",
+          "existing_parent_group": "regional",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "adaptive_layout_fixed_metric_components_explicit_minimums_and_omissions",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        }
+      ]
+    },
+    {
+      "group_id": "linear",
+      "domain": "park_plaza",
+      "label": "Linear parks & green connections",
+      "target": 2,
+      "wave": 2,
+      "intended_distinction": "Rail-trail greenway versus a river-edge greenway with different edge conditions.",
+      "pair_distinction_status": "proposed_requires_source_and_3d_review",
+      "district_examples_to_investigate": [],
+      "source_ids": [
+        "parkTypes",
+        "streets"
+      ],
+      "choices": [
+        {
+          "slot": "linear_1",
+          "label": "Rail-trail greenway",
+          "archetype_id": "linear_park_greenway",
+          "variant_id": "linear_park_greenway_v0",
+          "existing_parent_group": "linear",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "adaptive_layout_fixed_metric_components_explicit_minimums_and_omissions",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        },
+        {
+          "slot": "linear_2",
+          "label": "Riverfront greenway",
+          "archetype_id": "linear_park_greenway",
+          "variant_id": "linear_park_greenway_v1",
+          "existing_parent_group": "linear",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "adaptive_layout_fixed_metric_components_explicit_minimums_and_omissions",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        }
+      ]
+    },
+    {
+      "group_id": "nature",
+      "domain": "park_plaza",
+      "label": "Natural areas & restoration",
+      "target": 2,
+      "wave": 3,
+      "intended_distinction": "Native woodland structure versus open prairie restoration.",
+      "pair_distinction_status": "proposed_requires_source_and_3d_review",
+      "district_examples_to_investigate": [
+        "S-UN"
+      ],
+      "source_ids": [
+        "parks",
+        "districts"
+      ],
+      "choices": [
+        {
+          "slot": "nature_1",
+          "label": "Native urban woodland",
+          "archetype_id": "urban_forest",
+          "variant_id": "urban_forest_v0",
+          "existing_parent_group": "nature",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "adaptive_layout_fixed_metric_components_explicit_minimums_and_omissions",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        },
+        {
+          "slot": "nature_2",
+          "label": "Prairie pollinator meadow",
+          "archetype_id": "pollinator_meadow",
+          "variant_id": "pollinator_meadow_v0",
+          "existing_parent_group": "nature",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "adaptive_layout_fixed_metric_components_explicit_minimums_and_omissions",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        }
+      ]
+    },
+    {
+      "group_id": "plazas",
+      "domain": "park_plaza",
+      "label": "Plazas & gathering places",
+      "target": 2,
+      "wave": 1,
+      "intended_distinction": "Formal civic forecourt versus open market/event square.",
+      "pair_distinction_status": "proposed_requires_source_and_3d_review",
+      "district_examples_to_investigate": [],
+      "source_ids": [
+        "parkTypes"
+      ],
+      "choices": [
+        {
+          "slot": "plazas_1",
+          "label": "Formal civic plaza",
+          "archetype_id": "formal_civic_plaza",
+          "variant_id": "formal_civic_plaza_v0",
+          "existing_parent_group": "plazas",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "adaptive_layout_fixed_metric_components_explicit_minimums_and_omissions",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        },
+        {
+          "slot": "plazas_2",
+          "label": "Market and event square",
+          "archetype_id": "market_square",
+          "variant_id": "market_square_v1",
+          "existing_parent_group": "plazas",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "adaptive_layout_fixed_metric_components_explicit_minimums_and_omissions",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        }
+      ]
+    },
+    {
+      "group_id": "play_sport",
+      "domain": "park_plaza",
+      "label": "Play & sport amenities",
+      "target": 2,
+      "wave": 2,
+      "intended_distinction": "Measured basketball court versus accessible-play concept with distinct equipment and circulation.",
+      "pair_distinction_status": "proposed_requires_source_and_3d_review",
+      "district_examples_to_investigate": [],
+      "source_ids": [
+        "parks",
+        "specifications"
+      ],
+      "choices": [
+        {
+          "slot": "play_sport_1",
+          "label": "Classic basketball court",
+          "archetype_id": "basketball_court",
+          "variant_id": "basketball_court_v0",
+          "existing_parent_group": "play_sport",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "adaptive_layout_fixed_metric_components_explicit_minimums_and_omissions",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        },
+        {
+          "slot": "play_sport_2",
+          "label": "Inclusive playground concept",
+          "archetype_id": "inclusive_playground",
+          "variant_id": "inclusive_playground_v0",
+          "existing_parent_group": "play_sport",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "adaptive_layout_fixed_metric_components_explicit_minimums_and_omissions",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        }
+      ]
+    },
+    {
+      "group_id": "gardens",
+      "domain": "park_plaza",
+      "label": "Gardens & quiet spaces",
+      "target": 2,
+      "wave": 2,
+      "intended_distinction": "Community food-growing plots versus a quiet ornamental garden.",
+      "pair_distinction_status": "proposed_requires_source_and_3d_review",
+      "district_examples_to_investigate": [],
+      "source_ids": [
+        "parks",
+        "specifications"
+      ],
+      "choices": [
+        {
+          "slot": "gardens_1",
+          "label": "Community growing garden",
+          "archetype_id": "community_garden",
+          "variant_id": "community_garden_v0",
+          "existing_parent_group": "gardens",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "adaptive_layout_fixed_metric_components_explicit_minimums_and_omissions",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        },
+        {
+          "slot": "gardens_2",
+          "label": "Quiet Japanese garden",
+          "archetype_id": "japanese_garden",
+          "variant_id": "japanese_garden_v0",
+          "existing_parent_group": "gardens",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "adaptive_layout_fixed_metric_components_explicit_minimums_and_omissions",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        }
+      ]
+    },
+    {
+      "group_id": "water",
+      "domain": "park_plaza",
+      "label": "Waterfront & stormwater spaces",
+      "target": 2,
+      "wave": 3,
+      "intended_distinction": "Wetland/rain-garden landscape versus a riparian promenade; hydrology remains a reported design assumption.",
+      "pair_distinction_status": "proposed_requires_source_and_3d_review",
+      "district_examples_to_investigate": [],
+      "source_ids": [
+        "parks",
+        "specifications"
+      ],
+      "choices": [
+        {
+          "slot": "water_1",
+          "label": "Wetland and rain garden",
+          "archetype_id": "wetland_rain_garden",
+          "variant_id": "wetland_rain_garden_v0",
+          "existing_parent_group": "water",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "adaptive_layout_fixed_metric_components_explicit_minimums_and_omissions",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        },
+        {
+          "slot": "water_2",
+          "label": "Naturalized riparian promenade",
+          "archetype_id": "promenade_boardwalk",
+          "variant_id": "promenade_boardwalk_v3",
+          "existing_parent_group": "water",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "adaptive_layout_fixed_metric_components_explicit_minimums_and_omissions",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        }
+      ]
+    },
+    {
+      "group_id": "space_other",
+      "domain": "park_plaza",
+      "label": "Parking, special sites & custom spaces",
+      "target": 2,
+      "wave": 3,
+      "intended_distinction": "Conventional parking court versus parking with planted drainage cells; no claim that either is a park.",
+      "pair_distinction_status": "proposed_requires_source_and_3d_review",
+      "district_examples_to_investigate": [],
+      "source_ids": [
+        "districts",
+        "specifications"
+      ],
+      "choices": [
+        {
+          "slot": "space_other_1",
+          "label": "Conventional parking court",
+          "archetype_id": "surface_parking_lot",
+          "variant_id": "surface_parking_lot_v0",
+          "existing_parent_group": "space_other",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "adaptive_layout_fixed_metric_components_explicit_minimums_and_omissions",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        },
+        {
+          "slot": "space_other_2",
+          "label": "Planted parking court",
+          "archetype_id": "green_parking_lot",
+          "variant_id": "green_parking_lot_v1",
+          "existing_parent_group": "space_other",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "adaptive_layout_fixed_metric_components_explicit_minimums_and_omissions",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        }
+      ]
+    },
+    {
+      "group_id": "local",
+      "domain": "street_pathway",
+      "label": "Local & residential streets",
+      "target": 2,
+      "wave": 1,
+      "intended_distinction": "Draft figures 2 and 4: 16 m local versus 21 m high-activity local section.",
+      "pair_distinction_status": "proposed_requires_source_and_3d_review",
+      "district_examples_to_investigate": [],
+      "source_ids": [
+        "streets",
+        "streetManual"
+      ],
+      "choices": [
+        {
+          "slot": "local_1",
+          "label": "Calgary local — 16 m",
+          "archetype_id": "calgary_local",
+          "variant_id": "calgary_local_v0",
+          "existing_parent_group": "local",
+          "variant_group_override_required": false,
+          "origin": "authored_draft_street_section",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "route_and_length_editing_fixed_or_explicitly_custom_cross_section",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        },
+        {
+          "slot": "local_2",
+          "label": "Calgary high-activity local — 21 m",
+          "archetype_id": "calgary_local_high_activity",
+          "variant_id": "calgary_local_high_activity_v0",
+          "existing_parent_group": "local",
+          "variant_group_override_required": false,
+          "origin": "authored_draft_street_section",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "route_and_length_editing_fixed_or_explicitly_custom_cross_section",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        }
+      ]
+    },
+    {
+      "group_id": "collector",
+      "domain": "street_pathway",
+      "label": "Collector streets",
+      "target": 2,
+      "wave": 2,
+      "intended_distinction": "Draft figures 6 and 8: 20 m collector versus 27 m high-activity collector.",
+      "pair_distinction_status": "proposed_requires_source_and_3d_review",
+      "district_examples_to_investigate": [],
+      "source_ids": [
+        "streets",
+        "streetManual"
+      ],
+      "choices": [
+        {
+          "slot": "collector_1",
+          "label": "Calgary collector — 20 m",
+          "archetype_id": "calgary_collector",
+          "variant_id": "calgary_collector_v0",
+          "existing_parent_group": "collector",
+          "variant_group_override_required": false,
+          "origin": "authored_draft_street_section",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "route_and_length_editing_fixed_or_explicitly_custom_cross_section",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        },
+        {
+          "slot": "collector_2",
+          "label": "Calgary high-activity collector — 27 m",
+          "archetype_id": "calgary_collector_high_activity",
+          "variant_id": "calgary_collector_high_activity_v0",
+          "existing_parent_group": "collector",
+          "variant_group_override_required": false,
+          "origin": "authored_draft_street_section",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "route_and_length_editing_fixed_or_explicitly_custom_cross_section",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        }
+      ]
+    },
+    {
+      "group_id": "arterial",
+      "domain": "street_pathway",
+      "label": "Arterial & major streets",
+      "target": 2,
+      "wave": 3,
+      "intended_distinction": "Draft figures 9 and 11: 33 m four-lane divided section versus 36 m high-activity section.",
+      "pair_distinction_status": "proposed_requires_source_and_3d_review",
+      "district_examples_to_investigate": [],
+      "source_ids": [
+        "streets",
+        "streetManual"
+      ],
+      "choices": [
+        {
+          "slot": "arterial_1",
+          "label": "Calgary four-lane arterial — 33 m",
+          "archetype_id": "calgary_arterial_4lane_50",
+          "variant_id": "calgary_arterial_4lane_50_v0",
+          "existing_parent_group": "arterial",
+          "variant_group_override_required": false,
+          "origin": "authored_draft_street_section",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "route_and_length_editing_fixed_or_explicitly_custom_cross_section",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        },
+        {
+          "slot": "arterial_2",
+          "label": "Calgary high-activity arterial — 36 m",
+          "archetype_id": "calgary_arterial_high_activity",
+          "variant_id": "calgary_arterial_high_activity_v0",
+          "existing_parent_group": "arterial",
+          "variant_group_override_required": false,
+          "origin": "authored_draft_street_section",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "route_and_length_editing_fixed_or_explicitly_custom_cross_section",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        }
+      ]
+    },
+    {
+      "group_id": "alley",
+      "domain": "street_pathway",
+      "label": "Alleys & service lanes",
+      "target": 2,
+      "wave": 2,
+      "intended_distinction": "Draft figure 1 alley versus a custom planted bioswale alley; do not invent a second Calgary manual standard.",
+      "pair_distinction_status": "proposed_requires_source_and_3d_review",
+      "district_examples_to_investigate": [],
+      "source_ids": [
+        "streets",
+        "streetManual"
+      ],
+      "choices": [
+        {
+          "slot": "alley_1",
+          "label": "Calgary alley — source figure 1",
+          "archetype_id": "calgary_alley",
+          "variant_id": "calgary_alley_v0",
+          "existing_parent_group": "alley",
+          "variant_group_override_required": false,
+          "origin": "authored_draft_street_section",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "route_and_length_editing_fixed_or_explicitly_custom_cross_section",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        },
+        {
+          "slot": "alley_2",
+          "label": "Custom bioswale alley",
+          "archetype_id": "green_alley",
+          "variant_id": "green_alley_v1",
+          "existing_parent_group": "alley",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "route_and_length_editing_fixed_or_explicitly_custom_cross_section",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        }
+      ]
+    },
+    {
+      "group_id": "active",
+      "domain": "street_pathway",
+      "label": "Walking, wheeling & shared streets",
+      "target": 2,
+      "wave": 1,
+      "intended_distinction": "Shared green-corridor path versus a separated two-way cycle track with explicit street-edge interface.",
+      "pair_distinction_status": "proposed_requires_source_and_3d_review",
+      "district_examples_to_investigate": [],
+      "source_ids": [
+        "streets"
+      ],
+      "choices": [
+        {
+          "slot": "active_1",
+          "label": "Green-corridor multi-use pathway",
+          "archetype_id": "multi_use_trail",
+          "variant_id": "multi_use_trail_v1",
+          "existing_parent_group": "active",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "route_and_length_editing_fixed_or_explicitly_custom_cross_section",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        },
+        {
+          "slot": "active_2",
+          "label": "Protected two-way cycle track",
+          "archetype_id": "protected_bike_lane_bidirectional",
+          "variant_id": "protected_bike_lane_bidirectional_v0",
+          "existing_parent_group": "active",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "route_and_length_editing_fixed_or_explicitly_custom_cross_section",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        }
+      ]
+    },
+    {
+      "group_id": "transit",
+      "domain": "street_pathway",
+      "label": "Transit corridors",
+      "target": 2,
+      "wave": 3,
+      "intended_distinction": "Bus transit corridor versus a rail/tram avenue; different track/lane and stop geometry.",
+      "pair_distinction_status": "proposed_requires_source_and_3d_review",
+      "district_examples_to_investigate": [],
+      "source_ids": [
+        "streets"
+      ],
+      "choices": [
+        {
+          "slot": "transit_1",
+          "label": "Bus rapid-transit corridor",
+          "archetype_id": "brt_bus_rapid_transit_corridor",
+          "variant_id": "brt_bus_rapid_transit_corridor_v0",
+          "existing_parent_group": "transit",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "route_and_length_editing_fixed_or_explicitly_custom_cross_section",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        },
+        {
+          "slot": "transit_2",
+          "label": "Tram avenue",
+          "archetype_id": "light_rail_tram_avenue",
+          "variant_id": "light_rail_tram_avenue_v1",
+          "existing_parent_group": "transit",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "route_and_length_editing_fixed_or_explicitly_custom_cross_section",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        }
+      ]
+    },
+    {
+      "group_id": "intersection",
+      "domain": "street_pathway",
+      "label": "Intersections & crossings",
+      "target": 2,
+      "wave": 2,
+      "intended_distinction": "Protected corner-island intersection versus a compact single-lane roundabout.",
+      "pair_distinction_status": "proposed_requires_source_and_3d_review",
+      "district_examples_to_investigate": [],
+      "source_ids": [
+        "streets",
+        "streetManual"
+      ],
+      "choices": [
+        {
+          "slot": "intersection_1",
+          "label": "Protected corner-island intersection",
+          "archetype_id": "protected_intersection",
+          "variant_id": "protected_intersection_v0",
+          "existing_parent_group": "intersection",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "network_attached_treatment_with_supported_approach_sections",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        },
+        {
+          "slot": "intersection_2",
+          "label": "Compact single-lane roundabout",
+          "archetype_id": "compact_safety_roundabout",
+          "variant_id": "compact_safety_roundabout_v0",
+          "existing_parent_group": "intersection",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "network_attached_treatment_with_supported_approach_sections",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        }
+      ]
+    },
+    {
+      "group_id": "calming",
+      "domain": "street_pathway",
+      "label": "Traffic calming & safer streets",
+      "target": 2,
+      "wave": 2,
+      "intended_distinction": "Planted curb extensions versus a raised crossing; authored network treatments rather than freestanding street pictures.",
+      "pair_distinction_status": "proposed_requires_source_and_3d_review",
+      "district_examples_to_investigate": [],
+      "source_ids": [
+        "streets",
+        "streetManual"
+      ],
+      "choices": [
+        {
+          "slot": "calming_1",
+          "label": "Planted curb-extension crossing",
+          "archetype_id": "curb_extension_crossing_street",
+          "variant_id": "curb_extension_crossing_street_v0",
+          "existing_parent_group": "calming",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "network_attached_treatment_with_supported_approach_sections",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        },
+        {
+          "slot": "calming_2",
+          "label": "Raised crossing",
+          "archetype_id": "raised_crossing_collector",
+          "variant_id": "raised_crossing_collector_v0",
+          "existing_parent_group": "calming",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "network_attached_treatment_with_supported_approach_sections",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        }
+      ]
+    },
+    {
+      "group_id": "street_other",
+      "domain": "street_pathway",
+      "label": "Other streets & global inspiration",
+      "target": 2,
+      "wave": 3,
+      "intended_distinction": "Urban main-street reference versus landscape-led parkway; custom design references, not certified Calgary sections.",
+      "pair_distinction_status": "proposed_requires_source_and_3d_review",
+      "district_examples_to_investigate": [],
+      "source_ids": [
+        "streets"
+      ],
+      "choices": [
+        {
+          "slot": "street_other_1",
+          "label": "Tree-lined main street",
+          "archetype_id": "main_street_complete",
+          "variant_id": "main_street_complete_v0",
+          "existing_parent_group": "street_other",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "route_and_length_editing_fixed_or_explicitly_custom_cross_section",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        },
+        {
+          "slot": "street_other_2",
+          "label": "Scenic parkway",
+          "archetype_id": "scenic_parkway",
+          "variant_id": "scenic_parkway_v0",
+          "existing_parent_group": "street_other",
+          "variant_group_override_required": false,
+          "origin": "catalogue_reference_nomination",
+          "release_status": "not_verified_for_catalogue_release_in_this_plan",
+          "source_lock_status": "audit_pending",
+          "existing_clay": null,
+          "reshape_contract": "route_and_length_editing_fixed_or_explicitly_custom_cross_section",
+          "evidence_required": [
+            "exact_source_and_programme",
+            "visually_distinct_from_sibling_choice",
+            "geometry_and_grounding",
+            "student_placement_reshape_save_reload",
+            "scene_and_render_identity",
+            "performance",
+            "independent_review_and_required_activation"
+          ]
+        }
+      ]
+    }
+  ]
+}
