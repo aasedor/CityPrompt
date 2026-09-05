@@ -6,6 +6,7 @@ import openSpaceArchetypeLibrary from '@/data/openSpaceArchetypes.json';
 import archetypeVisualSystem from '@/data/archetypeVisualSystem.json';
 import archetypeReferenceAvailability from '@/data/archetypeReferenceAvailability.json';
 import { TRANSPORT_STANDARDS, type TransportStandardEntry } from '@/data/transportStandards';
+import { classifyCalgaryAsset, type CalgaryClassification } from '@/features/calgaryCatalogue/guide';
 
 export type AestheticCategory = {
   id: string;
@@ -142,6 +143,7 @@ export type FootprintCompatibility = {
 
 export type AestheticOption = {
   id: string;
+  calgaryGuide?: CalgaryClassification;
   categoryId?: string;
   label: string;
   description: string;
@@ -475,6 +477,7 @@ function toAestheticOption(
 
   return {
     id: seed.id,
+    calgaryGuide: classifyCalgaryAsset(domain, seed),
     categoryId: category,
     label: seed.title,
     description: seed.description,

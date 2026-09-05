@@ -1,4 +1,5 @@
 import type { SiteZone, SiteZoneProperties } from '@/types';
+import { classifyCalgaryAsset, type CalgaryClassification } from '@/features/calgaryCatalogue/guide';
 
 export type PlaceAssetId = 'infill_home' | 'neighbourhood_park';
 export interface PlaceAsset {
@@ -13,12 +14,14 @@ export interface PlaceAsset {
   minDepth: number;
   maxSize: number;
   properties: SiteZoneProperties;
+  calgaryGuide: CalgaryClassification;
 }
 
 // Reuse catalogue identities; this pilot does not promote new RLASM families.
 export const PLACE_ASSETS: PlaceAsset[] = [
   {
     id: 'infill_home', label: 'Infill homes',
+    calgaryGuide: classifyCalgaryAsset('building', { id: 'calgary_modern_infill_house', developmentType: 'residential_single_family' }),
     description: 'Two-storey homes. Widen the plot to fit more.',
     thumbnail: '/archetypes/buildings/calgary-modern-infill-house/variant_0.png',
     zoneType: 'building', width: 12, depth: 16, minWidth: 12, minDepth: 15, maxSize: 100,
@@ -29,6 +32,7 @@ export const PLACE_ASSETS: PlaceAsset[] = [
   },
   {
     id: 'neighbourhood_park', label: 'Neighbourhood park',
+    calgaryGuide: classifyCalgaryAsset('park_plaza', { id: 'neighborhood_park' }),
     description: 'Paths, trees and play spaces adapt to your area.',
     thumbnail: '/archetypes/openspaces/neighborhood-park/variant_0.png',
     zoneType: 'green_space', width: 40, depth: 35, minWidth: 30, minDepth: 30, maxSize: 110,

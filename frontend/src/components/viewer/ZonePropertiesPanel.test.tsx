@@ -571,6 +571,23 @@ describe('ZonePropertiesPanel viewport containment', () => {
 });
 
 describe('ZonePropertiesPanel LEGO selection handoff', () => {
+  it.each(['road', 'green_space'] as const)('browses %s without clearing or saving the selected asset', async (zoneType) => {
+    const zone = publicRealmZone(zoneType);
+    zone.properties = zoneType === 'road'
+      ? { road_archetype_id: 'narrow_residential_street', width: 10 }
+      : { green_space_archetype_id: 'neighborhood_park' };
+    const saved = structuredClone(zone);
+    const onUpdate = vi.fn();
+    const view = renderPanel(<ZonePropertiesPanel zone={zone} onUpdate={onUpdate} onDelete={vi.fn()} onClose={vi.fn()} />);
+    expect(screen.getByRole('button', { name: zoneType === 'road' ? 'Clear Streets and Paths Aesthetic' : 'Clear Typology' })).not.toBeDisabled();
+    fireEvent.change(screen.getByRole('searchbox', { name: 'Search catalogue or district code' }), { target: { value: 'no matching idea' } });
+    expect(screen.getByText(/0 choices/)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Reset filters' }));
+    await act(async () => {});
+    view.unmount();
+    expect(onUpdate).not.toHaveBeenCalled();
+    expect(zone).toEqual(saved);
+  });
   beforeEach(() => {
     vi.clearAllMocks();
     useViewerStore.getState().clearSitePreview();

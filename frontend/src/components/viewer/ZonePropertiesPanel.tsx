@@ -17,6 +17,8 @@ import { isPersistedZoneId } from '@/utils/zoneIdentity';
 import { formatArea, polygonDimensionsMeters } from './mapEngine/geoUtils';
 import { compileBoundaryCommunity3D } from '@/features/legoAssembly/communityCompiler';
 import { legoAssemblyApi } from '@/features/legoAssembly/legoAssemblyApi';
+import { CatalogueBrowserControls, CalgaryGuideDetails, useCatalogueBrowser } from '@/features/calgaryCatalogue/CatalogueBrowser';
+import type { CalgaryClassification } from '@/features/calgaryCatalogue/guide';
 import stickerMethodPilots from '@/data/stickerMethodPilots.json';
 import neighborhoodParkV0StickerKit from '@/data/neighborhoodParkV0StickerKit.json';
 import { ARCHETYPE_OWNED_PARK_KITS } from './globe/parkArchetypeOwnedKits';
@@ -146,6 +148,7 @@ type TransportModeKey = CatalogTransportModeKey;
 
 type DevelopmentAestheticOption = {
   id: string;
+  calgaryGuide?: CalgaryClassification;
   categoryId?: string;
   label: string;
   description: string;
@@ -431,55 +434,6 @@ function BuildingWorkflowPager({
       </button>
     </div>
   );
-}
-
-const LEGACY_CATEGORY_ALIASES: Record<'development_aesthetic' | 'road_aesthetic' | 'green_space_aesthetic' | 'plaza_aesthetic', Record<string, string>> = {
-  development_aesthetic: {
-    historic: 'historical',
-    contemporary: 'contemporary_urban',
-    glass_modern: 'glass_tower_modern',
-  },
-  road_aesthetic: {
-    transportation: 'complete_streets',
-    transit_corridor: 'transit_priority',
-    complete_street: 'complete_streets',
-    walkable_street: 'historic_walkways',
-  },
-  green_space_aesthetic: {
-    historic_landscape: 'landscape_parks',
-    historic_landscape_park: 'landscape_parks',
-    historic_gardens: 'landscape_parks',
-    english_landscape: 'landscape_parks',
-    ecological_park: 'ecological_resilience',
-    ecological_landscape: 'ecological_resilience',
-    neighborhood_park: 'neighborhood_public_realm',
-    waterfront: 'waterfront_spaces',
-  },
-  plaza_aesthetic: {
-    civic_square: 'civic_plazas',
-    urban_square: 'civic_plazas',
-    event_plaza: 'social_event_spaces',
-    festival_space: 'social_event_spaces',
-  },
-};
-
-function normalizeLegacyCategoryValue(value: string): string {
-  return value
-    .trim()
-    .toLowerCase()
-    .replace(/[\s/-]+/g, '_')
-    .replace(/[^a-z0-9_]/g, '');
-}
-
-function normalizeAestheticCategory(
-  key: 'development_aesthetic' | 'road_aesthetic' | 'green_space_aesthetic' | 'plaza_aesthetic',
-  value: string | undefined,
-): string | undefined {
-  if (!value) return undefined;
-
-  const normalized = normalizeLegacyCategoryValue(value);
-  const aliases = LEGACY_CATEGORY_ALIASES[key] || {};
-  return aliases[normalized] || value;
 }
 
 function getFrontDayArchetypeImage(images: CatalogArchetypeImage[]): CatalogArchetypeImage | undefined {
@@ -1017,39 +971,13 @@ const buildAestheticSelectionProps = (
   return nextProps;
 };
 
-const resolveOptionCategory = (
-    options: DevelopmentAestheticOption[],
-    aestheticId?: string,
-  ): string | undefined => {
-    if (!aestheticId) return undefined;
-    return options.find((o) => o.id === aestheticId)?.categoryId;
-  };
-
-  const selectedRoadAestheticCategory = normalizeAestheticCategory(
-    'road_aesthetic',
-    (props.road_aesthetic_category as string)
-      || resolveOptionCategory(ROADWAY_AESTHETIC_OPTIONS, (props.road_aesthetic as string) || undefined),
-  );
-
-  const selectedGreenSpaceCategory = normalizeAestheticCategory(
-    'green_space_aesthetic',
-    (props.green_space_aesthetic_category as string)
-      || resolveOptionCategory(GREEN_SPACE_AESTHETIC_OPTIONS, (props.green_space_aesthetic as string) || undefined),
-  );
-
-  const selectedPlazaCategory = normalizeAestheticCategory(
-    'plaza_aesthetic',
-    (props.plaza_aesthetic_category as string)
-      || resolveOptionCategory(PLAZA_AESTHETIC_OPTIONS, (props.plaza_aesthetic as string) || undefined),
-  );
-
   const selectedRoadReferenceId = ((props.road_selected_reference as { id?: string } | undefined)?.id) || (props.road_archetype_id as string) || undefined;
   const selectedGreenSpaceReferenceId = ((props.green_space_selected_reference as { id?: string } | undefined)?.id) || (props.green_space_archetype_id as string) || undefined;
   const selectedPlazaReferenceId = ((props.plaza_selected_reference as { id?: string } | undefined)?.id) || (props.plaza_archetype_id as string) || undefined;
 
   // Unified Parks / Plazas selection — reads from whichever prefix has data
-  const selectedOpenSpaceAesthetic = (props.green_space_aesthetic as string) || (props.plaza_aesthetic as string) || undefined;
-  const selectedOpenSpaceCategory = selectedGreenSpaceCategory || selectedPlazaCategory;
+  const selectedOpenSpaceAesthetic = (props.green_space_aesthetic as string) || (props.green_space_archetype_id as string)
+    || (props.plaza_aesthetic as string) || (props.plaza_archetype_id as string) || undefined;
   const selectedOpenSpaceReferenceId = selectedGreenSpaceReferenceId || selectedPlazaReferenceId;
   const selectedOpenSpaceVariantId = (props.green_space_selected_variant_id as string) || (props.plaza_selected_variant_id as string) || undefined;
 
@@ -1170,31 +1098,6 @@ const resolveOptionCategory = (
     </div>
   );
 
-  const applyRoadAestheticCategory = (nextCategory: string | undefined) => {
-    setProps((p) => {
-      const selectedCategory = normalizeAestheticCategory('road_aesthetic', nextCategory || undefined);
-      const nextProps: SiteZoneProperties = {
-        ...p,
-        road_aesthetic_category: selectedCategory,
-      };
-
-      const currentAesthetic = (p.road_aesthetic as string) || undefined;
-      if (!currentAesthetic) {
-        return nextProps;
-      }
-
-      const optionsForCategory = selectedCategory
-        ? ROADWAY_AESTHETIC_OPTIONS.filter((o) => o.categoryId === selectedCategory)
-        : ROADWAY_AESTHETIC_OPTIONS;
-
-      if (optionsForCategory.some((o) => o.id === currentAesthetic)) {
-        return nextProps;
-      }
-
-      return buildAestheticSelectionProps(nextProps, 'road_aesthetic', undefined, ROADWAY_AESTHETIC_OPTIONS);
-    });
-  };
-
   const applyRoadAesthetic = (next: string | undefined, selectedArchetypeImageId?: string, selectedVariantId?: string) => {
     setProps((p) => {
       let nextProps = buildAestheticSelectionProps(
@@ -1232,31 +1135,6 @@ const resolveOptionCategory = (
     });
   };
 
-  const applyGreenSpaceCategory = (nextCategory: string | undefined) => {
-    setProps((p) => {
-      const selectedCategory = normalizeAestheticCategory('green_space_aesthetic', nextCategory || undefined);
-      const nextProps: SiteZoneProperties = {
-        ...p,
-        green_space_aesthetic_category: selectedCategory,
-      };
-
-      const currentAesthetic = (p.green_space_aesthetic as string) || undefined;
-      if (!currentAesthetic) {
-        return nextProps;
-      }
-
-      const optionsForCategory = selectedCategory
-        ? GREEN_SPACE_AESTHETIC_OPTIONS.filter((o) => o.categoryId === selectedCategory)
-        : GREEN_SPACE_AESTHETIC_OPTIONS;
-
-      if (optionsForCategory.some((o) => o.id === currentAesthetic)) {
-        return nextProps;
-      }
-
-      return buildAestheticSelectionProps(nextProps, 'green_space_aesthetic', undefined, GREEN_SPACE_AESTHETIC_OPTIONS);
-    });
-  };
-
   const applyGreenSpaceAesthetic = (next: string | undefined, selectedArchetypeImageId?: string, selectedVariantId?: string) => {
     setProps((p) => {
       const nextProps = buildAestheticSelectionProps(
@@ -1274,31 +1152,6 @@ const resolveOptionCategory = (
         nextProps.green_space_aesthetic_category = selectedOption.categoryId;
       }
       return nextProps;
-    });
-  };
-
-  const applyPlazaCategory = (nextCategory: string | undefined) => {
-    setProps((p) => {
-      const selectedCategory = normalizeAestheticCategory('plaza_aesthetic', nextCategory || undefined);
-      const nextProps: SiteZoneProperties = {
-        ...p,
-        plaza_aesthetic_category: selectedCategory,
-      };
-
-      const currentAesthetic = (p.plaza_aesthetic as string) || undefined;
-      if (!currentAesthetic) {
-        return nextProps;
-      }
-
-      const optionsForCategory = selectedCategory
-        ? PLAZA_AESTHETIC_OPTIONS.filter((o) => o.categoryId === selectedCategory)
-        : PLAZA_AESTHETIC_OPTIONS;
-
-      if (optionsForCategory.some((o) => o.id === currentAesthetic)) {
-        return nextProps;
-      }
-
-      return buildAestheticSelectionProps(nextProps, 'plaza_aesthetic', undefined, PLAZA_AESTHETIC_OPTIONS);
     });
   };
 
@@ -1327,11 +1180,6 @@ const resolveOptionCategory = (
   // green_space, plaza) and picks up whichever has data, so it doesn't matter
   // for rendering which prefix the data lands in — but we keep the data tidy
   // by clearing the OTHER prefix when switching spaceTypes.
-  const applyOpenSpaceCategory = (nextCategory: string | undefined) => {
-    applyGreenSpaceCategory(nextCategory);
-    applyPlazaCategory(nextCategory);
-  };
-
   const applyOpenSpaceAesthetic = (next: string | undefined, archetypeImageId?: string, variantId?: string) => {
     if (!next) {
       applyGreenSpaceAesthetic(undefined);
@@ -1561,7 +1409,7 @@ const resolveOptionCategory = (
                   <label className={panelLabelClass}>Building Sub-Category</label>
                   <div className="mt-1">
                     <DevelopmentAestheticPicker
-                      value={(props.development_aesthetic as string) || undefined}
+                      value={(props.development_aesthetic as string) || (props.development_archetype_id as string) || undefined}
                       selectedReferenceId={(props.development_archetype_id as string) || undefined}
                       selectedVariantId={(props.development_selected_variant_id as string) || undefined}
                       zoneType={zone.zone_type}
@@ -1748,31 +1596,10 @@ const resolveOptionCategory = (
             ) : (
             <>
             <div>
-              <label className={panelLabelClass}>Park / Plaza Category</label>
-              <select
-                value={selectedOpenSpaceCategory || ''}
-                onChange={(e) => applyOpenSpaceCategory(e.target.value || undefined)}
-                className={panelFieldClass}
-              >
-                <option value="">-- Select Category --</option>
-                {OPENSPACE_AESTHETIC_CATEGORIES.map((category) => (
-                  <option key={category.id} value={category.id}>
-                    {category.label}
-                  </option>
-                ))}
-              </select>
-              {selectedOpenSpaceCategory && (
-                <p className="mt-0.5 text-[10px] text-primary-950/50">
-                  {OPENSPACE_AESTHETIC_CATEGORIES.find((item) => item.id === selectedOpenSpaceCategory)?.description}
-                </p>
-              )}
-            </div>
-            <div>
               <label className={panelLabelClass}>Park / Plaza Typology</label>
               <div className="mt-1">
                 <OpenSpaceAestheticPicker
                   value={selectedOpenSpaceAesthetic}
-                  category={selectedOpenSpaceCategory}
                   selectedReferenceId={selectedOpenSpaceReferenceId}
                   selectedVariantId={selectedOpenSpaceVariantId}
                   areaSqm={area}
@@ -1859,34 +1686,13 @@ const resolveOptionCategory = (
             ) : (
             <>
             {/* Transportation Aesthetic Category */}
-            <div>
-              <label className={panelLabelClass}>Streets and Paths Category</label>
-              <select
-                value={selectedRoadAestheticCategory || ''}
-                onChange={(e) => applyRoadAestheticCategory(e.target.value || undefined)}
-                className={panelFieldClass}
-              >
-                <option value="">-- Select Category --</option>
-                {ROADWAY_AESTHETIC_CATEGORIES.map((category) => (
-                  <option key={category.id} value={category.id}>
-                    {category.label}
-                  </option>
-                ))}
-              </select>
-              {selectedRoadAestheticCategory && (
-                <p className="mt-0.5 text-[10px] text-primary-950/50">
-                  {ROADWAY_AESTHETIC_CATEGORIES.find((item) => item.id === selectedRoadAestheticCategory)?.description}
-                </p>
-              )}
-            </div>
 
             {/* Transportation Aesthetic */}
             <div>
-              <label className={panelLabelClass}>Streets and Paths Aesthetic (Top 20)</label>
+              <label className={panelLabelClass}>Street or pathway type</label>
               <div className="mt-1">
                 <RoadwayAestheticPicker
-                  value={(props.road_aesthetic as string) || undefined}
-                  category={selectedRoadAestheticCategory}
+                  value={(props.road_aesthetic as string) || (props.road_archetype_id as string) || undefined}
                   selectedReferenceId={selectedRoadReferenceId}
                   selectedVariantId={(props.road_selected_variant_id as string) || undefined}
                   onChange={applyRoadAesthetic}
@@ -2009,7 +1815,7 @@ const resolveOptionCategory = (
                   <label className={panelLabelClass}>Building Sub-Category</label>
                   <div className="mt-1">
                     <DevelopmentAestheticPicker
-                      value={(props.development_aesthetic as string) || undefined}
+                      value={(props.development_aesthetic as string) || (props.development_archetype_id as string) || undefined}
                       selectedReferenceId={(props.development_archetype_id as string) || undefined}
                       selectedVariantId={(props.development_selected_variant_id as string) || undefined}
                       zoneType={zone.zone_type}
@@ -3257,7 +3063,7 @@ function AestheticOptionCard({
           <p className="line-clamp-2 text-[10px] text-primary-950/50">{option.description}</p>
           {option.standardSection && (
             <div className="mt-1.5 rounded border border-sky-700/20 bg-sky-50 px-1.5 py-1 text-[9px] font-semibold leading-tight text-sky-950/70">
-              <span className="font-black uppercase">Manual section</span>
+              <span className="font-black uppercase">{option.calgaryGuide?.basis === 'draft_manual' ? 'Draft manual section' : 'Reference section'}</span>
               {option.standardSection.rowM ? ` · ${option.standardSection.rowM} m ROW` : ''}
               {option.standardSection.targetSpeedKmh ? ` · ${option.standardSection.targetSpeedKmh} km/h` : ''}
               {option.standardSection.citation ? (
@@ -3299,6 +3105,7 @@ function AestheticOptionCard({
         </div>
       </button>
 
+      {isSelected && <CalgaryGuideDetails classification={option.calgaryGuide} />}
       <div className="px-2 pb-1.5">
         {hasDesignVariants && (
           <button
@@ -3416,7 +3223,8 @@ function DevelopmentAestheticPicker({
 }) {
   const allowedTypes = getAllowedDevelopmentTypes(zoneType || 'building', developmentType);
   const categoryOptions = filterOptionsByDevelopmentType(DEVELOPMENT_AESTHETIC_OPTIONS, allowedTypes);
-  const rankedOptions = [...categoryOptions].sort((a, b) => {
+  const browser = useCatalogueBrowser(categoryOptions);
+  const rankedOptions = [...browser.options].sort((a, b) => {
     const pilotDelta = Number(STICKER_METHOD_BUILDING_IDS.has(b.id)) - Number(STICKER_METHOD_BUILDING_IDS.has(a.id));
     if (pilotDelta !== 0) return pilotDelta;
     const aFit = getAestheticAreaFit(
@@ -3444,6 +3252,7 @@ function DevelopmentAestheticPicker({
 
   return (
     <div className="space-y-2">
+      <CatalogueBrowserControls domain="building" categories={DEVELOPMENT_AESTHETIC_CATEGORIES} {...browser.props} />
       {categoryOptions.length === 0 && (
         <div className="rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-2 text-[11px] text-primary-950/60">
           No sub-categories found for this development type.
@@ -3473,7 +3282,7 @@ function DevelopmentAestheticPicker({
 
       {rankedOptions.length > 0 && (
         <div className="grid grid-cols-2 gap-2">
-          {rankedOptions.map((option) => (
+          {rankedOptions.slice(0, browser.limit).map((option) => (
             <AestheticOptionCard
               key={option.id}
               option={option}
@@ -3489,6 +3298,7 @@ function DevelopmentAestheticPicker({
         </div>
       )}
 
+      {browser.more}
       <button
         type="button"
         onClick={() => onChange(undefined)}
@@ -3502,38 +3312,25 @@ function DevelopmentAestheticPicker({
 }
 function RoadwayAestheticPicker({
   value,
-  category,
   selectedReferenceId,
   selectedVariantId,
   onChange,
 }: {
   value?: string;
-  category?: string;
   selectedReferenceId?: string;
   selectedVariantId?: string;
   onChange: (next: string | undefined, archetypeImageId?: string, variantId?: string) => void;
 }) {
-  const categoryOptions = category
-    ? ROADWAY_AESTHETIC_OPTIONS.filter((option) => option.categoryId === category)
-    : [];
+  const browser = useCatalogueBrowser(ROADWAY_AESTHETIC_OPTIONS);
+  const categoryOptions = browser.options;
 
   return (
     <div className="space-y-2">
-      {!category && (
-        <div className="rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-2 text-[11px] text-primary-950/60">
-          Select a transportation category to view typologies.
-        </div>
-      )}
-
-      {category && categoryOptions.length === 0 && (
-        <div className="rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-2 text-[11px] text-primary-950/60">
-          No transportation typologies found for this category.
-        </div>
-      )}
+      <CatalogueBrowserControls domain="street_pathway" categories={ROADWAY_AESTHETIC_CATEGORIES} {...browser.props} />
 
       {categoryOptions.length > 0 && (
         <div className="grid grid-cols-2 gap-2">
-          {categoryOptions.map((option) => (
+          {categoryOptions.slice(0, browser.limit).map((option) => (
             <AestheticOptionCard
               key={option.id}
               option={option}
@@ -3547,6 +3344,7 @@ function RoadwayAestheticPicker({
         </div>
       )}
 
+      {browser.more}
       <button
         type="button"
         onClick={() => onChange(undefined)}
@@ -3570,22 +3368,19 @@ function RoadwayAestheticPicker({
  */
 function OpenSpaceAestheticPicker({
   value,
-  category,
   selectedReferenceId,
   selectedVariantId,
   areaSqm,
   onChange,
 }: {
   value?: string;
-  category?: string;
   selectedReferenceId?: string;
   selectedVariantId?: string;
   areaSqm?: number;
   onChange: (next: string | undefined, archetypeImageId?: string, variantId?: string) => void;
 }) {
-  const categoryOptions = category
-    ? OPENSPACE_AESTHETIC_OPTIONS.filter((option) => option.categoryId === category)
-    : [];
+  const browser = useCatalogueBrowser(OPENSPACE_AESTHETIC_OPTIONS);
+  const categoryOptions = browser.options;
   const rankedOptions = [...categoryOptions].sort((a, b) => {
     const pilotDelta = Number(STICKER_METHOD_PARK_IDS.has(b.id)) - Number(STICKER_METHOD_PARK_IDS.has(a.id));
     if (pilotDelta !== 0) return pilotDelta;
@@ -3612,17 +3407,7 @@ function OpenSpaceAestheticPicker({
 
   return (
     <div className="space-y-2">
-      {!category && (
-        <div className="rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-2 text-[11px] text-primary-950/60">
-          Select a category to view typologies.
-        </div>
-      )}
-
-      {category && categoryOptions.length === 0 && (
-        <div className="rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-2 text-[11px] text-primary-950/60">
-          No typologies found for this category.
-        </div>
-      )}
+      <CatalogueBrowserControls domain="park_plaza" categories={OPENSPACE_AESTHETIC_CATEGORIES} {...browser.props} />
 
       {rankedOptions.length > 0 && (
         <div className="rounded border border-primary-950/[0.08] bg-primary-950/[0.03] px-2 py-1.5 text-[10px] font-semibold text-primary-950/55">
@@ -3640,7 +3425,7 @@ function OpenSpaceAestheticPicker({
 
       {rankedOptions.length > 0 && (
         <div className="grid grid-cols-2 gap-2">
-          {rankedOptions.map((option) => (
+          {rankedOptions.slice(0, browser.limit).map((option) => (
             <AestheticOptionCard
               key={option.id}
               option={option}
@@ -3655,6 +3440,7 @@ function OpenSpaceAestheticPicker({
           ))}
         </div>
       )}
+      {browser.more}
       <button
         type="button"
         onClick={() => onChange(undefined)}
