@@ -3,6 +3,12 @@ import { buildNeighborhoodParkLayout, envelopeFits, envelopesOverlap, type ParkP
 
 const rectangle = (w: number, h: number): ParkPoint[] => [{ x: 0, y: 0 }, { x: w, y: 0 }, { x: w, y: h }, { x: 0, y: h }];
 describe('reference-locked neighbourhood park composition', () => {
+  it.each([30,31,32])('keeps a contained walking loop at the advertised 30 m minimum (%s m depth)', depth => {
+    const boundary=rectangle(40,depth),layout=buildNeighborhoodParkLayout(boundary);
+    expect(layout.loop).toHaveLength(64);
+    expect(envelopeFits(layout.loop,boundary,layout.pathWidth/2)).toBe(true);
+    expect(layout.notes.join(' ')).toContain('Compact arrangement');
+  });
   for (const [w, h] of [[40, 35], [70, 55], [105, 75]]) it(`composes ${w} × ${h} m without stretching or overlapping equipment`, () => {
     const boundary = rectangle(w, h), layout = buildNeighborhoodParkLayout(boundary);
     expect(layout.loop).toHaveLength(64);

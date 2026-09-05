@@ -79,7 +79,10 @@ export function buildNeighborhoodParkLayout(input: readonly ParkPoint[]): Neighb
   let best: { lawn: ParkPoint[]; loop: ParkPoint[]; modules: ParkModule[]; score: number } | null = null;
   for (const scale of [1, .86, .72, .6]) {
     for (const shift of [0, -.16, .16]) {
-      const lx = cx + shift * w, ly = cy - .12 * h, rx = Math.max(4, w * .29 * scale), ry = Math.max(4, h * .26 * scale);
+      const rx = Math.max(4, w * .29 * scale), ry = Math.max(4, h * .26 * scale);
+      // Preserve the source's lawn offset where it fits, but reserve the full
+      // loop edge before shifting it on a compact 30–31 m plot.
+      const lx = cx + shift * w, ly = cy - Math.min(.12*h, Math.max(0,h/2-ry-3-.9));
       if (Math.PI * rx * ry < w * h * .20) continue;
       const lawn = ellipse(lx, ly, rx, ry), loop = ellipse(lx, ly, rx + 1.3, ry + 1.3), reserve = ellipse(lx, ly, rx + 3, ry + 3);
       if (!envelopeFits(reserve, ring, .8)) continue;

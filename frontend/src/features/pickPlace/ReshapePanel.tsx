@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { X } from 'lucide-react';
 import type { SiteZone } from '@/types';
 import { assetForZone, type PlaceAssetId } from './catalogue';
 import { rectangleAt, rectangleDimensions } from './geometry';
+import { neighborhoodParkLayoutForZone } from '@/components/viewer/globe/neighborhoodParkLayout';
 
 export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onDuplicate, onMore }: {
   zone: SiteZone; disabled: boolean;
@@ -12,6 +13,8 @@ export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onD
 }) {
   const asset = assetForZone(zone)!;
   const dimensions = rectangleDimensions(zone.coordinates);
+  const park = useMemo(() => asset.id === 'neighbourhood_park' ? neighborhoodParkLayoutForZone(zone,
+    {lng:zone.coordinates[0][0],lat:zone.coordinates[0][1]}) : null, [asset.id, zone]);
   const [width,setWidth] = useState(dimensions.width.toFixed(1));
   const [depth,setDepth] = useState(dimensions.depth.toFixed(1));
   const [degrees,setDegrees] = useState(dimensions.degrees.toFixed(0));
@@ -21,6 +24,10 @@ export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onD
   return <aside aria-label="Reshape object" className="absolute bottom-4 right-4 top-auto z-40 max-h-[55vh] w-72 max-w-[calc(100vw-2rem)] overflow-y-auto rounded-xl border-2 border-slate-900 bg-[#fff9ec] p-3 shadow-xl sm:bottom-auto sm:top-20 sm:max-h-[80vh]">
     <div className="flex items-center justify-between"><h2 className="font-bold text-slate-900">{asset.label}</h2><button aria-label="Close reshape" onClick={onClose} className="flex h-11 w-11 items-center justify-center text-slate-900"><X size={18}/></button></div>
     <p className="mb-3 text-xs text-slate-600">Drag the object to move it. Drag a corner to reshape; use the orange handle to turn it.</p>
+    {park && <div role={park.loop.length?'status':'alert'} className="mb-3 rounded-lg bg-white p-2 text-xs text-slate-800">
+      <p className="font-semibold">Current park · {park.status==='full'?'full programme':park.status==='compact'?'compact arrangement':park.loop.length?'reduced programme':'needs more room'}</p>
+      {park.notes.map(note=><p className="mt-1" key={note}>{note}</p>)}
+    </div>}
     <form onSubmit={event => { event.preventDefault(); if(valid) onReshape(rectangleAt(dimensions.center,Number(width),Number(depth),Number(degrees))); }}>
       <div className="grid grid-cols-2 gap-2">
         <label className="text-xs font-semibold text-slate-800">Plot width (m)<input aria-label="Plot width (m)" type="number" min={asset.minWidth} max={asset.maxSize} step="0.1" value={width} onChange={e=>setWidth(e.target.value)} className="mt-1 min-h-11 w-full rounded border border-slate-400 bg-white px-2 text-base text-slate-900" /></label>

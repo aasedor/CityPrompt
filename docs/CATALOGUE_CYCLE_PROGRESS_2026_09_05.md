@@ -143,3 +143,20 @@ Full pedestrian park/street contact remains part of the integrated CAT-08
 trial. That trial also found a 40 × 30 m park returning an unexplained empty
 lawn; this is recorded for correction before release. No paid calls or
 production publication occurred.
+
+## CAT-08 finding — compact park feedback
+
+On `codex/catalogue-compact-park-feedback`, the advertised 30 m minimum exposed
+a lawn-offset edge case: 40 × 30 m and 40 × 31 m returned no walking loop.
+Regression checks reproduced both failures. The lawn offset now reserves the
+complete loop edge before shifting it, preserving larger existing layouts.
+Both sizes retain a contained loop after the fix. Equipment stays metric and
+may be omitted; the 40 × 30 m saved scene has one swing and no pavilion/play
+towers. The reshape panel now shows the actual saved programme and explains
+omissions or an unusable outline. No substitute assets are inserted.
+
+33 targeted park/layout/access tests, TypeScript and scoped ESLint passed.
+The actual 40 × 30 m park was reviewed in Google Tiles with the Calgary street
+and the two detached-home types. Source changes are small layout/feedback
+changes; the v5 GLB assets are unchanged. The saved local scene and ignored
+`park-40x30-feedback.png` capture are evidence, not a production release.
