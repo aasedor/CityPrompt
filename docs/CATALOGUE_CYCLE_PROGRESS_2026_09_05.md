@@ -160,3 +160,13 @@ The actual 40 × 30 m park was reviewed in Google Tiles with the Calgary street
 and the two detached-home types. Source changes are small layout/feedback
 changes; the v5 GLB assets are unchanged. The saved local scene and ignored
 `park-40x30-feedback.png` capture are evidence, not a production release.
+
+## CAT-08 finding — new site ground default
+
+A fresh project revealed that a newly drawn boundary inherited the historical
+Clear site behavior when no ground-mode property was present. On
+`codex/catalogue-default-site-ground`, new drawing defaults explicitly choose
+Follow existing terrain. Existing saved projects keep their chosen mode;
+students can still select Clear site for redevelopment. The fresh test site's
+setting was changed through its visible Site ground control before placement.
+This is a new-drawing default, not a change to the measured-ground algorithm.
