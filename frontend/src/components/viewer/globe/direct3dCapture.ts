@@ -88,6 +88,8 @@ export interface Direct3DCaptureBundle {
   classIdManifest: Readonly<Record<string, Direct3DProposalRole>>;
   instanceIdImageBase64: string;
   instanceIdManifest: Readonly<Record<string, Direct3DInstanceDescriptor>>;
+  /** Same-camera depth-tested visibility; manifest membership alone includes hidden objects. */
+  instancePixelCounts?: Readonly<Record<string, number>>;
   /** Optional renderer-space geometry controls used by video enhancement. */
   depthImageBase64?: string;
   normalImageBase64?: string;
@@ -1932,6 +1934,7 @@ export async function captureDirect3DScene(
       instanceIdImageBase64: rgbaToPngDataUrl(instanceAnalysis.instanceIdPixels, width, height),
       instanceIdManifest,
       depthImageBase64,
+      instancePixelCounts: instanceAnalysis.pixelCounts,
       normalImageBase64,
       materialIdImageBase64,
       materialIdManifest,

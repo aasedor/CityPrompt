@@ -3407,7 +3407,7 @@ def _authoritative_prompt(
         instance_guidance = (
             f" Image {instance_number} is exact instance-ID metadata only. "
             "Every non-black color denotes one existing authored instance; "
-            "preserve each exactly once and never reproduce these colors."
+            "preserve only its visible pixels and never reproduce these colors."
         )
     geometry_guidance = ""
     if control_bundle_version == 2:
@@ -3495,10 +3495,10 @@ def _authoritative_prompt(
 def _server_inventory_prompt(
     server_inventory: list[dict[str, Any]] | None,
 ) -> str:
-    """Summarize server-validated inventory without provider-irrelevant IDs."""
+    """Summarize camera-visible groups, never demand hidden geometry be shown."""
 
     if not server_inventory:
-        return "SERVER-VALIDATED AUTHORED INVENTORY: no separately listed instances."
+        return "CAMERA-VISIBLE INVENTORY: use only the visible surfaces in Image 1."
     counts: dict[str, int] = {}
     for item in server_inventory:
         semantic_class = str(item["semantic_class"])
@@ -3506,7 +3506,8 @@ def _server_inventory_prompt(
     count_text = ", ".join(f"{semantic_class}={count}" for semantic_class, count in sorted(counts.items()))
     identity_counts: dict[str, int] = {}
     for item in server_inventory:
-        identity = item.get("design_identity")
+        # Park identities may name facilities hidden inside a visible park.
+        identity = item.get("design_identity") if item["semantic_class"] == "building" else None
         if isinstance(identity, str) and identity.strip():
             normalized = identity.strip()
             identity_counts[normalized] = identity_counts.get(normalized, 0) + 1
@@ -3516,9 +3517,27 @@ def _server_inventory_prompt(
             f"{count}x {identity}" for identity, count in sorted(identity_counts.items())
         )
     return (
-        "SERVER-VALIDATED AUTHORED INVENTORY (binding): "
-        f"{count_text}{identity_text}; preserve every instance exactly once."
+        "CAMERA-VISIBLE AUTHORED GROUPS: "
+        f"{count_text}{identity_text}; these are visible groups, not physical object counts. "
+        "Preserve only their visible portions. Never reveal, relocate or complete "
+        "off-frame or occluded objects, including facilities inside a partly visible park."
     )
+
+
+def _camera_visible_manifest(
+    instance_image: Image.Image | None,
+    manifest: dict[str, Any] | None,
+) -> dict[str, Any]:
+    """Use actual submitted pixels; off-camera manifest entries have zero pixels.
+
+    Pack RGB once rather than scanning the full image separately for each
+    instance. A one-pixel sliver remains visible; missing evidence fails closed.
+    """
+    if instance_image is None or not manifest:
+        return {}
+    rgb = np.asarray(instance_image.convert("RGB"), dtype=np.uint32)
+    colors = set(np.unique((rgb[:, :, 0] << 16) | (rgb[:, :, 1] << 8) | rgb[:, :, 2]).tolist())
+    return {color: descriptor for color, descriptor in manifest.items() if int(color.lstrip("#"), 16) in colors}
 
 
 def _masked_correlation(
@@ -4026,6 +4045,20 @@ class Direct3DRenderService:
                 billing_status="unproduced",
             )
 
+        # Keep full server inventory untouched for validation, source protection
+        # and audit. Only provider conditioning is camera-specific.
+        visible_manifest = _camera_visible_manifest(capture.normalized_instance_id, req.instance_id_manifest)
+        visible_ids = {descriptor.instance_id for descriptor in visible_manifest.values()}
+        visible_inventory = [item for item in (server_inventory or []) if item.get("instance_id") in visible_ids]
+        visible_building_zones = {
+            str(descriptor.zone_id) for descriptor in visible_manifest.values()
+            if descriptor.semantic_class == "building" and descriptor.zone_id
+        }
+        references = [
+            reference for reference in req.archetype_references
+            if reference.zone_ids and set(reference.zone_ids).issubset(visible_building_zones)
+        ]
+
         normalized_width, normalized_height = capture.normalized_beauty.size
         beauty_png = _png_bytes(capture.normalized_beauty.convert("RGB"))
         structural_guide_png = _png_bytes(
@@ -4080,7 +4113,7 @@ class Direct3DRenderService:
         # Authored archetype artwork rides after the metadata passes so the
         # prompt's ARCHETYPE REFERENCES numbering lines up with attachment
         # order. These are design sources the provider applies, not metadata.
-        for reference_index, reference in enumerate(req.archetype_references):
+        for reference_index, reference in enumerate(references):
             try:
                 reference_bytes = base64.b64decode(reference.image_base64.split(",", 1)[-1])
             except (ValueError, binascii.Error) as exc:
@@ -4109,9 +4142,9 @@ class Direct3DRenderService:
                 req.prompt,
                 object_id_manifest=req.object_id_manifest,
                 instance_id_manifest=req.instance_id_manifest,
-                server_inventory=server_inventory,
+                server_inventory=visible_inventory,
                 visible_component_summary=visible_component_summary,
-                archetype_reference_labels=[reference.label for reference in req.archetype_references],
+                archetype_reference_labels=[reference.label for reference in references],
                 control_bundle_version=req.control_bundle_version,
             )
             if req.presentation_mode == "source_anchored"
@@ -4121,10 +4154,10 @@ class Direct3DRenderService:
                 style=req.style,
                 object_id_manifest=req.object_id_manifest,
                 instance_id_manifest=req.instance_id_manifest,
-                server_inventory=server_inventory,
+                server_inventory=visible_inventory,
                 visible_component_summary=visible_component_summary,
                 view_mode=req.view_mode,
-                archetype_reference_labels=[reference.label for reference in req.archetype_references],
+                archetype_reference_labels=[reference.label for reference in references],
                 control_bundle_version=req.control_bundle_version,
             )
         )

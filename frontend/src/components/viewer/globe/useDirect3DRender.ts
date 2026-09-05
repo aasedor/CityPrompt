@@ -342,7 +342,7 @@ export function useDirect3DRender() {
       viewMode?: 'aerial' | 'street';
       /** Authored archetype artwork (facade sheets, catalogue cards) the
        *  provider applies to the named buildings. Max 8, server-enforced. */
-      archetypeReferences?: Array<{ image_base64: string; label: string }>;
+      archetypeReferences?: Array<{ image_base64: string; label: string; zone_ids?: string[] }>;
       /** Measured park/street/building interfaces derived from source zones. */
       publicRealmContext?: string;
     },

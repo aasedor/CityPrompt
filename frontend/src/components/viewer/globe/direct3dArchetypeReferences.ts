@@ -2,11 +2,12 @@
  * Authored archetype artwork for Direct 3D renders.
  *
  * Buildings are bound to their exact selected variant and authored facade
- * source whenever one exists. Parks and streets carry the selected catalogue
- * appearance too, but only for material finish. Their capacity and facility
- * layout have already been resolved in the captured 3D scene.
+ * source whenever one exists. Camera-aware scene renders include only visible
+ * building references. Park/street catalogue compositions are omitted because
+ * they can reveal facilities hidden within an otherwise visible zone.
  */
 import type { SiteZone } from '@/types';
+import type { Direct3DCaptureBundle } from './direct3dCapture';
 import archetypeReferenceAvailability from '@/data/archetypeReferenceAvailability.json';
 import buildingCatalog from '@/data/buildingArchetypes.json';
 import legoFamilySignatures from '@/data/legoFamilySignatures.json';
@@ -16,6 +17,7 @@ import streetCatalog from '@/data/streetPathArchetypes.json';
 export interface Direct3DArchetypeReference {
   image_base64: string;
   label: string;
+  zone_ids: string[];
 }
 
 interface FamilySignature {
@@ -48,6 +50,7 @@ interface ReferenceCandidate {
   signature?: FamilySignature;
   variant?: CatalogVariant;
   zoneNames: string[];
+  zoneIds: string[];
   targetDescription?: string;
 }
 
@@ -204,6 +207,7 @@ function addCandidate(
   if (zoneName && existing.zoneNames.length < 3 && !existing.zoneNames.includes(zoneName)) {
     existing.zoneNames.push(zoneName);
   }
+  existing.zoneIds.push(...candidate.zoneIds.filter((id) => !existing.zoneIds.includes(id)));
 }
 
 function collectCandidates(zones: SiteZone[]): ReferenceCandidate[] {
@@ -243,6 +247,7 @@ function collectCandidates(zones: SiteZone[]): ReferenceCandidate[] {
         signature,
         variant,
         zoneNames: [],
+        zoneIds: [zone.id],
       }, zone.name);
       continue;
     }
@@ -264,6 +269,7 @@ function collectCandidates(zones: SiteZone[]): ReferenceCandidate[] {
         imageUrl: variant?.thumbnailUrl ?? entry?.thumbnailUrl,
         variant,
         zoneNames: [],
+        zoneIds: [zone.id],
         targetDescription: targetDescription(props, 'park'),
       }, zone.name);
       continue;
@@ -282,6 +288,7 @@ function collectCandidates(zones: SiteZone[]): ReferenceCandidate[] {
       imageUrl: variant?.thumbnailUrl ?? entry?.thumbnailUrl,
       variant,
       zoneNames: [],
+      zoneIds: [zone.id],
       targetDescription: targetDescription(props, 'street'),
     }, zone.name);
   }
@@ -297,15 +304,27 @@ function collectCandidates(zones: SiteZone[]): ReferenceCandidate[] {
 export async function collectDirect3DArchetypeReferences(
   zones: SiteZone[],
   limit: number = MAX_REFERENCES,
+  capture?: Pick<Direct3DCaptureBundle, 'instanceIdManifest' | 'instancePixelCounts'>,
 ): Promise<Direct3DArchetypeReference[]> {
   const references: Direct3DArchetypeReference[] = [];
-  for (const candidate of collectCandidates(zones)) {
+  // Filter before grouping so a shared archetype never names a hidden house.
+  // Whole park/street cards reveal facilities that may be hidden within a
+  // partly visible zone. Their captured 3D materials remain the reference.
+  const visibleBuildings = new Set(Object.values(capture?.instanceIdManifest ?? {})
+    .filter((instance) => instance.semantic_class === 'building'
+      && (capture?.instancePixelCounts?.[instance.instance_id] ?? 0) > 0)
+    .map((instance) => instance.zone_id));
+  const referenceZones = capture
+    ? zones.filter((zone) => zone.zone_type === 'building' && visibleBuildings.has(zone.id))
+    : zones;
+  for (const candidate of collectCandidates(referenceZones)) {
     if (references.length >= limit) break;
     if (!candidate.imageUrl) continue;
     const image = await fetchImageBase64(candidate.imageUrl);
     if (!image) continue;
     references.push({
       image_base64: image,
+      zone_ids: candidate.zoneIds,
       label: candidateLabel(
         candidate,
         candidate.kind === 'building' && candidate.imageUrl === candidate.signature?.elevationUrl,

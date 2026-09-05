@@ -56,7 +56,6 @@ import {
   type Direct3DFidelityPolicy,
   type Direct3DRenderDiagnostics,
 } from './useDirect3DRender';
-import { buildPublicRealmSceneContextPrompt } from './publicRealmGenerationContext';
 
 // Community compilation now has one canonical top-level entry point. Keep the
 // former render-panel controls available only as an explicit recovery switch
@@ -893,11 +892,7 @@ export function GlobeAIRenderPanel({
       // Authored archetype artwork (facade sheets / catalogue cards) pushes
       // each building toward its archetype's real character instead of a
       // generic palette-preserving restyle.
-      const archetypeReferences = await collectDirect3DArchetypeReferences(siteZones);
-      const publicRealmContext = buildPublicRealmSceneContextPrompt(
-        siteZones,
-        { sceneReferenceAttached: true },
-      );
+      const archetypeReferences = await collectDirect3DArchetypeReferences(siteZones, 8, capture);
       const direct = await renderDirect3D(capture, {
         style: selectedStyle,
         fidelityPolicy: directFidelityPolicy,
@@ -906,7 +901,6 @@ export function GlobeAIRenderPanel({
         community3DClaims: community3DCaptureClaims!,
         residualLandscapeClaim,
         archetypeReferences,
-        publicRealmContext,
       });
       setPreviews([direct.render]);
       setSelectedPreviewIndex(0);

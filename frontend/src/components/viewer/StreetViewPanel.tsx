@@ -319,7 +319,7 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
         }
         const directLabel = 'Direct 3D Street';
         try {
-          const archetypeReferences = await collectDirect3DArchetypeReferences(siteZones);
+          const archetypeReferences = await collectDirect3DArchetypeReferences(siteZones, 8, bundle);
           const direct = await renderDirect3D(bundle, {
             style: resolveDirect3DStreetStyle(selectedStyle),
             projectId,

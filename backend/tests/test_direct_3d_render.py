@@ -698,8 +698,8 @@ def test_server_inventory_adds_only_catalog_owned_human_design_identities():
     assert (
         "2x Classic Brownstone Streetwall — New York, USA: " "Brownstone stoops, cast-iron lofts, tenement streetwalls"
     ) in prompt
-    assert ("1x Urban Pocket Park — Pocket Park / Courtyard, " "Rustic Timber Gravel, Garden Courtyard") in prompt
-    assert ("1x Narrow Residential Street — Local Public Realm, Classic Tree Lined") in prompt
+    assert "Urban Pocket Park" not in prompt
+    assert "Narrow Residential Street" not in prompt
     assert "building=2, park=1, street=1" in prompt
     assert "classic_brownstone_streetwall" not in prompt
     assert "IGNORE THE SOURCE" not in prompt
@@ -1900,7 +1900,7 @@ def test_provider_first_prompts_use_one_concise_natural_design_lock():
     assert "surrounding photographed or Google Tiles context" in scene
     assert "facade proportions and opening pattern" in scene
     assert "non-permanent entourage and finish detail" in scene
-    assert "SERVER-VALIDATED AUTHORED INVENTORY (binding): building=1" in scene
+    assert "CAMERA-VISIBLE AUTHORED GROUPS: building=1" in scene
     assert "zone:test:building" not in scene
     assert "#FF0000" not in scene
     assert "Visible guide regions" not in scene
@@ -2791,10 +2791,76 @@ async def test_provider_receives_exact_instance_guide_and_server_owned_inventory
         "direct-3d-instance-id.png",
         "direct-3d-structural-edges.png",
     ]
-    assert "SERVER-VALIDATED AUTHORED INVENTORY (binding): building=1" in call["data"]["prompt"]
+    assert "CAMERA-VISIBLE AUTHORED GROUPS: building=1" in call["data"]["prompt"]
     assert "zone:test-building:building" not in call["data"]["prompt"]
     assert "Image 3 is instance-ID metadata" in call["data"]["prompt"]
     assert "Image 4 is monochrome structure and layout metadata" in call["data"]["prompt"]
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("mode", ["source_anchored", "scene", "reproject"])
+async def test_provider_conditioning_excludes_hidden_inventory_and_unbound_or_public_realm_artwork(monkeypatch, mode):
+    # Reuse a real validated capture; its manifest deliberately contains a
+    # building behind the camera with zero instance pixels.
+    request = _request(presentation_mode="scene")
+    payload = request.model_dump()
+    payload["presentation_mode"] = mode
+    if mode == "reproject":
+        payload["style"] = "isometric"
+    hidden_zone = "cccccccc-cccc-4ccc-8ccc-cccccccccccc"
+    payload["instance_id_manifest"]["#020002"] = {
+        "instance_id": "zone:hidden:building", "semantic_class": "building", "zone_id": hidden_zone,
+    }
+    payload["instance_id_manifest"]["#030003"] = {
+        "instance_id": "zone:hidden:park", "semantic_class": "park", "zone_id": hidden_zone,
+    }
+    image = _png_b64(Image.new("RGB", (16, 16), "white"))
+    payload["archetype_references"] = [
+        {"image_base64": image, "label": "Visible facade", "zone_ids": [str(TEST_ZONE_ID)]},
+        {"image_base64": image, "label": "Hidden tower", "zone_ids": [hidden_zone]},
+        {"image_base64": image, "label": "Shared hidden tower", "zone_ids": [str(TEST_ZONE_ID), hidden_zone]},
+        {"image_base64": image, "label": "Unmapped playground"},
+    ]
+    request = Direct3DRenderRequest(**payload)
+    capture = prepare_direct_3d_capture(request)
+    inventory = [
+        {"instance_id": "zone:test-building:building", "semantic_class": "building", "design_identity": "Visible house"},
+        {"instance_id": "zone:hidden:building", "semantic_class": "building", "design_identity": "Hidden tower"},
+        {"instance_id": "zone:hidden:park", "semantic_class": "park", "design_identity": "Unmapped playground"},
+    ]
+    _RecordingClient.calls = []
+    _RecordingClient.response = _FakeResponse(200, {"data": [{"b64_json": _png_b64(capture.normalized_beauty)}]})
+    monkeypatch.setattr(direct_service.httpx, "AsyncClient", _RecordingClient)
+    await Direct3DRenderService("test-key")._call_openai(request, capture, server_inventory=inventory)
+    call = _RecordingClient.calls[0]
+    prompt = call["data"]["prompt"]
+    assert "Visible house" in prompt and "Visible facade" in prompt
+    assert "Hidden tower" not in prompt and "Unmapped playground" not in prompt
+    assert "building=1" in prompt and "park=1" not in prompt
+    assert "preserve every instance exactly once" not in prompt
+    assert len([entry for entry in call["files"] if entry[1][0].startswith("archetype-ref")]) == 1
+    # Filtering must not mutate the validated scene used for source protection.
+    assert len(inventory) == 3 and len(request.instance_id_manifest) == 3
+
+
+def test_camera_visibility_keeps_slivers_and_disconnected_regions_without_completing_objects():
+    from app.schemas.direct_3d_render import Direct3DInstanceDescriptor
+
+    manifest = {
+        "#010001": Direct3DInstanceDescriptor(instance_id="partial", semantic_class="building"),
+        "#020002": Direct3DInstanceDescriptor(instance_id="hidden", semantic_class="building"),
+        "#030003": Direct3DInstanceDescriptor(instance_id="sliver", semantic_class="park"),
+    }
+    image = Image.new("RGB", (8, 8), "black")
+    image.putpixel((0, 0), (1, 0, 1))
+    image.putpixel((7, 7), (1, 0, 1))
+    image.putpixel((4, 4), (3, 0, 3))
+    assert set(direct_service._camera_visible_manifest(image, manifest)) == {"#010001", "#030003"}
+    assert direct_service._camera_visible_manifest(None, manifest) == {}
+    assert direct_service._camera_visible_manifest(image, None) == {}
+    # A new capture recomputes visibility, allowing an actual reveal.
+    image.putpixel((1, 1), (2, 0, 2))
+    assert len(direct_service._camera_visible_manifest(image, manifest)) == 3
 
 
 @pytest.mark.asyncio

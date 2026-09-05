@@ -1,6 +1,17 @@
 # Occlusion render pilot
 
-Status: implementation and trial plan, 5 September 2026. No new paid requests were made while preparing this plan. Local initiative: `codex/occlusion-render-pilot`.
+Status: visibility-conditioning fix implemented and locally verified, 5 September 2026. Paid A/B trials remain pending. Local initiative: `codex/occlusion-render-pilot`.
+
+## Implementation checkpoint
+
+- Reuse depth-tested instance pixel counts from the fresh native capture to filter frontend references before grouping shared archetypes. The backend independently derives visibility from the submitted normalized instance image. Full project inventory, validation and source protection remain intact.
+- Replace the whole-project “every instance exactly once” instruction with visible-group/visible-portion guidance. Omit park/street design identity prose that can name hidden facilities.
+- Bind reference images to explicit zone IDs. Exclude hidden/unbound references and mixed visible/hidden bindings. Omit park/street catalogue compositions, even for visible zones, until component-specific conditioning is proven. Remove automatic whole-project public-realm context from Direct aerial requests. Classic rendering is unchanged.
+- Local browser verification reproduced the previous north-facing street camera. The park had zero visible instance pixels; only two building-family references remained. Four houses across three building plots and the street were visible. Native capture and visibility evidence are ignored under `artifacts/occlusion-pilot/`. The camera was restored after the diagnostic capture. No paid request was made.
+- Verification: 173 backend tests, 60 frontend tests and TypeScript checking passed. React review: visibility work reuses capture-time analysis; no new render-loop computation, effects or event listeners. Backend payload tests cover scene, source-anchored and reproject modes, hidden inventory, reference bindings and preservation of full validation inventory. Pixel tests cover partial/disconnected visibility, slivers, missing evidence and a later reveal.
+- Remaining: paid visual A/B evaluation, finer park-component/repeated-house identities, and partial-occlusion/reveal trials. This removes a concrete source of contradictory conditioning; it does not certify that an image model will never hallucinate. Existing protected delivery and raw-AI comparison remain necessary.
+
+The implementation below stays local until the subsequent main-branch integration. Generated evidence is not committed; source changes belong to this initiative only.
 
 ## Product rule
 

@@ -179,6 +179,7 @@ class Direct3DArchetypeReference(BaseModel):
 
     image_base64: str = Field(min_length=1)
     label: str = Field(min_length=1, max_length=600)
+    zone_ids: list[str] = Field(default_factory=list, max_length=2048)
 
 
 class Direct3DRenderRequest(BaseModel):
