@@ -2809,10 +2809,14 @@ async def test_provider_conditioning_excludes_hidden_inventory_and_unbound_or_pu
         payload["style"] = "isometric"
     hidden_zone = "cccccccc-cccc-4ccc-8ccc-cccccccccccc"
     payload["instance_id_manifest"]["#020002"] = {
-        "instance_id": "zone:hidden:building", "semantic_class": "building", "zone_id": hidden_zone,
+        "instance_id": "zone:hidden:building",
+        "semantic_class": "building",
+        "zone_id": hidden_zone,
     }
     payload["instance_id_manifest"]["#030003"] = {
-        "instance_id": "zone:hidden:park", "semantic_class": "park", "zone_id": hidden_zone,
+        "instance_id": "zone:hidden:park",
+        "semantic_class": "park",
+        "zone_id": hidden_zone,
     }
     image = _png_b64(Image.new("RGB", (16, 16), "white"))
     payload["archetype_references"] = [
@@ -2824,7 +2828,11 @@ async def test_provider_conditioning_excludes_hidden_inventory_and_unbound_or_pu
     request = Direct3DRenderRequest(**payload)
     capture = prepare_direct_3d_capture(request)
     inventory = [
-        {"instance_id": "zone:test-building:building", "semantic_class": "building", "design_identity": "Visible house"},
+        {
+            "instance_id": "zone:test-building:building",
+            "semantic_class": "building",
+            "design_identity": "Visible house",
+        },
         {"instance_id": "zone:hidden:building", "semantic_class": "building", "design_identity": "Hidden tower"},
         {"instance_id": "zone:hidden:park", "semantic_class": "park", "design_identity": "Unmapped playground"},
     ]
@@ -4450,27 +4458,30 @@ def test_control_bundle_v2_rejects_incomplete_geometry_controls():
 
 def _tee_street_zones():
     return [
-        _compiled_zone("street", properties=_supported_street_properties(10,
-            [[-114.081, 51.04], [-114.079, 51.04]])),
-        _compiled_zone("street", properties=_supported_street_properties(10,
-            [[-114.08, 51.04], [-114.08, 51.041]])),
+        _compiled_zone("street", properties=_supported_street_properties(10, [[-114.081, 51.04], [-114.079, 51.04]])),
+        _compiled_zone("street", properties=_supported_street_properties(10, [[-114.08, 51.04], [-114.08, 51.041]])),
     ]
 
 
 def _junction_topology(streets, *, arms=3, longitude=-114.08, latitude=51.04):
     from app.schemas.direct_3d_render import Direct3DJunctionTopology
+
     parts = []
     for zone in sorted(streets, key=lambda item: str(item.id)):
         meta = zone.properties["community_3d"]
         parts.append(f"{zone.id}:{meta['source_hash'].lower()}:{meta['representation_hash'].lower()}")
-    return Direct3DJunctionTopology(version=1, arm_count=arms, longitude=longitude, latitude=latitude,
-        source_fingerprint="sj1|" + "|".join(parts))
+    return Direct3DJunctionTopology(
+        version=1, arm_count=arms, longitude=longitude, latitude=latitude, source_fingerprint="sj1|" + "|".join(parts)
+    )
 
 
 def _connected_junction_request(streets, topology, source_streets=None):
     sources = streets if source_streets is None else source_streets
-    request = _street_junction_request(streets, source_zone_ids=[zone.id for zone in sources],
-        junction_id=direct_api._canonical_junction_instance_id([str(zone.id) for zone in sources], topology))
+    request = _street_junction_request(
+        streets,
+        source_zone_ids=[zone.id for zone in sources],
+        junction_id=direct_api._canonical_junction_instance_id([str(zone.id) for zone in sources], topology),
+    )
     descriptor = next(item for item in request.instance_id_manifest.values() if item.zone_id is None)
     descriptor.junction_topology = topology
     return request
@@ -4507,8 +4518,9 @@ def test_connected_junction_rejects_false_or_stale_claims_before_generation(chan
 
 def test_connected_junction_rejects_omitted_fourth_approach():
     sources = _tee_street_zones()
-    fourth = _zone(uuid.uuid4(), "street", properties=_supported_street_properties(10,
-        [[-114.08, 51.04], [-114.08, 51.039]]))
+    fourth = _zone(
+        uuid.uuid4(), "street", properties=_supported_street_properties(10, [[-114.08, 51.04], [-114.08, 51.039]])
+    )
     streets = [*sources, fourth]
     request = _connected_junction_request(streets, _junction_topology(sources), sources)
     with pytest.raises(HTTPException, match="topology, anchor, or source revision"):
@@ -4517,8 +4529,9 @@ def test_connected_junction_rejects_omitted_fourth_approach():
 
 def test_connected_junction_allows_distant_other_streets():
     sources = _tee_street_zones()
-    distant = _zone(uuid.uuid4(), "street", properties=_supported_street_properties(10,
-        [[-114.085, 51.04], [-114.085, 51.039]]))
+    distant = _zone(
+        uuid.uuid4(), "street", properties=_supported_street_properties(10, [[-114.085, 51.04], [-114.085, 51.039]])
+    )
     streets = [*sources, distant]
     request = _connected_junction_request(streets, _junction_topology(sources), sources)
     assert direct_api._bind_instance_manifest_to_server_zones(request, streets, streets)
@@ -4535,16 +4548,24 @@ def test_connected_junction_anchor_changes_identity_and_legacy_id_stays_stable()
 
 def test_connected_junction_ignores_nonvehicle_path_as_a_fourth_road_arm():
     sources = _tee_street_zones()
-    path = _zone(uuid.uuid4(), "street", properties={"width": 4, "lane_count": 0,
-        "road_archetype_id": "multi_use_trail", "plan_centerline": [[-114.08, 51.04], [-114.08, 51.039]]})
+    path = _zone(
+        uuid.uuid4(),
+        "street",
+        properties={
+            "width": 4,
+            "lane_count": 0,
+            "road_archetype_id": "multi_use_trail",
+            "plan_centerline": [[-114.08, 51.04], [-114.08, 51.039]],
+        },
+    )
     assert direct_api._validate_junction_topology(sources, [*sources, path], _junction_topology(sources))
 
 
 def test_connected_junction_rejects_bent_through_arms_hidden_by_bearing_grouping():
-    west = _compiled_zone("street", properties=_supported_street_properties(10,
-        [[-114.081, 51.0399], [-114.08, 51.04]]))
-    east = _compiled_zone("street", properties=_supported_street_properties(10,
-        [[-114.08, 51.04], [-114.079, 51.04]]))
+    west = _compiled_zone(
+        "street", properties=_supported_street_properties(10, [[-114.081, 51.0399], [-114.08, 51.04]])
+    )
+    east = _compiled_zone("street", properties=_supported_street_properties(10, [[-114.08, 51.04], [-114.079, 51.04]]))
     stem = _tee_street_zones()[1]
     streets = [west, east, stem]
     assert not direct_api._street_sources_form_junction(streets, _junction_topology(streets))

@@ -20,10 +20,20 @@ def compiled_fixture(user):
     project = FakeProject(owner_id=user.id)
     zone = _make_zone(project, properties={"_plan_role": "building"})
     body = _recipe_body()
-    building = Building(id=uuid.uuid4(), project_id=project.id, name="Saved house",
-        footprint=zone.geometry, height_meters=18, floor_count=6, rotation_degrees=0,
-        specifications={"legoAssembly": endpoint._recipe_payload(endpoint.LegoRecipeRequest.model_validate(body)),
-            "lego_placed": True, "other_workflow": {"preserved": True}})
+    building = Building(
+        id=uuid.uuid4(),
+        project_id=project.id,
+        name="Saved house",
+        footprint=zone.geometry,
+        height_meters=18,
+        floor_count=6,
+        rotation_degrees=0,
+        specifications={
+            "legoAssembly": endpoint._recipe_payload(endpoint.LegoRecipeRequest.model_validate(body)),
+            "lego_placed": True,
+            "other_workflow": {"preserved": True},
+        },
+    )
     zone.building_id = building.id
     zone.building_ids = [str(building.id)]
     endpoint._stamp_community_3d(zone, "building", "2026-09-05T01:00:00Z", building=building)
@@ -54,8 +64,12 @@ def test_wing_depth_is_semantic_only_for_shaped_footprints():
 
 
 @pytest.mark.anyio
-@pytest.mark.parametrize("noise", ["identical", "target_defaults", "transport_ticket", "display_and_preview", "already_stale"])
-async def test_repeated_recipe_save_keeps_original_compiled_proof(client, mock_db, test_user, auth_headers, monkeypatch, noise):
+@pytest.mark.parametrize(
+    "noise", ["identical", "target_defaults", "transport_ticket", "display_and_preview", "already_stale"]
+)
+async def test_repeated_recipe_save_keeps_original_compiled_proof(
+    client, mock_db, test_user, auth_headers, monkeypatch, noise
+):
     _, zone, building, body = compiled_fixture(test_user)
     if noise == "target_defaults":
         body["target"].update(footprint_profile="rectangle", wing_depth_m=None)
@@ -80,15 +94,36 @@ async def test_repeated_recipe_save_keeps_original_compiled_proof(client, mock_d
     assert building.specifications == original_spec
     assert zone.properties == original_zone
     meta = zone.properties["community_3d"]
-    assert community_3d_representation_hash(kind="building", generator="lego_assembly", source_hash=meta["source_hash"], building=building) == meta["representation_hash"]
+    assert (
+        community_3d_representation_hash(
+            kind="building", generator="lego_assembly", source_hash=meta["source_hash"], building=building
+        )
+        == meta["representation_hash"]
+    )
     assert building.specifications["community3DRepresentation"]["representation_hash"] == meta["representation_hash"]
     stale.assert_not_awaited()
     mock_db.flush.assert_not_awaited()
 
 
 @pytest.mark.anyio
-@pytest.mark.parametrize("change", ["scale", "position", "rotation", "asset_path", "asset_version", "floors", "height", "fit", "family", "removed_instance"])
-async def test_real_recipe_changes_still_invalidate_compiled_proposal(client, mock_db, test_user, auth_headers, monkeypatch, change):
+@pytest.mark.parametrize(
+    "change",
+    [
+        "scale",
+        "position",
+        "rotation",
+        "asset_path",
+        "asset_version",
+        "floors",
+        "height",
+        "fit",
+        "family",
+        "removed_instance",
+    ],
+)
+async def test_real_recipe_changes_still_invalidate_compiled_proposal(
+    client, mock_db, test_user, auth_headers, monkeypatch, change
+):
     _, zone, building, body = compiled_fixture(test_user)
     if change == "scale":
         body["instances"][0]["scale"] = [2, 1, 1]
@@ -122,21 +157,52 @@ async def test_real_recipe_changes_still_invalidate_compiled_proposal(client, mo
 @pytest.mark.anyio
 @pytest.mark.parametrize("change", ["same", "ticket_and_defaults", "disabled_catalogue", "changed_source"])
 async def test_native_recipe_noop_keeps_proof_but_still_validates_current_source_and_catalogue(
-    client, mock_db, test_user, auth_headers, monkeypatch, change,
+    client,
+    mock_db,
+    test_user,
+    auth_headers,
+    monkeypatch,
+    change,
 ):
     project = FakeProject(owner_id=test_user.id)
-    zone = _make_zone(project, properties={"_plan_role": "building",
-        "development_selected_variant_id": "infill_flat_roof_minimal", "floors": 2})
+    zone = _make_zone(
+        project,
+        properties={
+            "_plan_role": "building",
+            "development_selected_variant_id": "infill_flat_roof_minimal",
+            "floors": 2,
+        },
+    )
     inventory = select_runtime_architecture_entries([clay_entry()])
-    plan = endpoint._strict_locked_building_plan([descriptor_from_library_entry(inventory[0])],
-        "infill_flat_roof_minimal", endpoint._locked_building_target(zone), zone.properties, zone=zone, allow_forced_fit=True)
-    recipe = endpoint.LegoPlaceRequest.model_validate({**plan, "module_family": plan["family"],
-        "catalog_fingerprint": build_lego_planning_catalog(inventory).fingerprint})
+    plan = endpoint._strict_locked_building_plan(
+        [descriptor_from_library_entry(inventory[0])],
+        "infill_flat_roof_minimal",
+        endpoint._locked_building_target(zone),
+        zone.properties,
+        zone=zone,
+        allow_forced_fit=True,
+    )
+    recipe = endpoint.LegoPlaceRequest.model_validate(
+        {
+            **plan,
+            "module_family": plan["family"],
+            "catalog_fingerprint": build_lego_planning_catalog(inventory).fingerprint,
+        }
+    )
     item = endpoint.Community3DCompileItem(zone_id=zone.id, source_updated_at=zone.updated_at, recipe=recipe)
-    await endpoint._assert_ai_lego_recipes_are_current(mock_db, test_user, project.id, [(item, zone, "building")], entries=inventory)
-    building = Building(id=uuid.uuid4(), project_id=project.id, name="Native house", footprint=zone.geometry,
-        height_meters=recipe.assembled_height_m, floor_count=2, rotation_degrees=0,
-        specifications={"legoAssembly": endpoint._recipe_payload(recipe), "lego_placed": True})
+    await endpoint._assert_ai_lego_recipes_are_current(
+        mock_db, test_user, project.id, [(item, zone, "building")], entries=inventory
+    )
+    building = Building(
+        id=uuid.uuid4(),
+        project_id=project.id,
+        name="Native house",
+        footprint=zone.geometry,
+        height_meters=recipe.assembled_height_m,
+        floor_count=2,
+        rotation_degrees=0,
+        specifications={"legoAssembly": endpoint._recipe_payload(recipe), "lego_placed": True},
+    )
     zone.building_id = building.id
     zone.building_ids = [str(building.id)]
     endpoint._stamp_community_3d(zone, "building", "2026-09-05T01:00:00Z", building=building)

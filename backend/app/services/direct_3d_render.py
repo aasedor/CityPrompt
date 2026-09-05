@@ -3353,8 +3353,7 @@ def _presentation_prompt(
             "rooflines, site layout, street, intersection and path topology, park "
             "boundaries, water bodies and adjacency relationships. Do not add, "
             "remove, split, merge, move or redesign any permanent building, road, "
-            "park, water body or site feature." + archetype_identity_lock
-            + " " + RENDER_PRESERVATION_LOCK
+            "park, water body or site feature." + archetype_identity_lock + " " + RENDER_PRESERVATION_LOCK
         )
     prompt_prefix = "\n".join(
         [
@@ -3950,31 +3949,51 @@ def _same_camera_presentation_result(
             field.name: getattr(registration, field.name) for field in fields(registration) if field.name != "image"
         }
         raw_presence = assess_instance_source_presence(
-            capture.normalized_beauty, registration.image, capture.normalized_proposal_mask,
-            capture.normalized_instance_id, req.instance_id_manifest, fidelity_policy=req.fidelity_policy,
+            capture.normalized_beauty,
+            registration.image,
+            capture.normalized_proposal_mask,
+            capture.normalized_instance_id,
+            req.instance_id_manifest,
+            fidelity_policy=req.fidelity_policy,
         )
         diagnostics["provider_raw_instance_source_presence"] = _instance_presence_diagnostics(raw_presence)
         presentation, exterior_count, exterior_delta = hard_composite_direct_3d(
-            capture.normalized_beauty, registration.image, capture.normalized_proposal_mask,
+            capture.normalized_beauty,
+            registration.image,
+            capture.normalized_proposal_mask,
         )
         diagnostics.update(exterior_pixel_count=exterior_count, exterior_max_channel_delta=exterior_delta)
         protected_coverage = 0.0
         if source_locked_rlasm_ids:
             presentation, protected_coverage = _restore_source_locked_instances(
-                capture.normalized_beauty, presentation, capture.normalized_instance_id,
-                req.instance_id_manifest, source_locked_rlasm_ids,
+                capture.normalized_beauty,
+                presentation,
+                capture.normalized_instance_id,
+                req.instance_id_manifest,
+                source_locked_rlasm_ids,
             )
         macro = assess_macro_design_fidelity(
-            capture.normalized_beauty, presentation, capture.normalized_proposal_mask,
-            capture.normalized_object_id, req.object_id_manifest, fidelity_policy=req.fidelity_policy,
+            capture.normalized_beauty,
+            presentation,
+            capture.normalized_proposal_mask,
+            capture.normalized_object_id,
+            req.object_id_manifest,
+            fidelity_policy=req.fidelity_policy,
         )
         presence = assess_instance_source_presence(
-            capture.normalized_beauty, presentation, capture.normalized_proposal_mask,
-            capture.normalized_instance_id, req.instance_id_manifest, fidelity_policy=req.fidelity_policy,
+            capture.normalized_beauty,
+            presentation,
+            capture.normalized_proposal_mask,
+            capture.normalized_instance_id,
+            req.instance_id_manifest,
+            fidelity_policy=req.fidelity_policy,
         )
         unsupported = assess_unsupported_coarse_structure(
-            capture.normalized_beauty, presentation, capture.normalized_proposal_mask,
-            capture.normalized_instance_id, req.instance_id_manifest,
+            capture.normalized_beauty,
+            presentation,
+            capture.normalized_proposal_mask,
+            capture.normalized_instance_id,
+            req.instance_id_manifest,
             detect_slender_additions=True,
         )
         diagnostics.update(
@@ -3991,10 +4010,15 @@ def _same_camera_presentation_result(
             failures.append("new unsupported structure was detected")
         if failures:
             raise Direct3DValidationError("; ".join(failures))
-        strategy = "provider_full_scene_rlasm_pixel_lock" if source_locked_rlasm_ids else "provider_full_scene_local_repairs"
+        strategy = (
+            "provider_full_scene_rlasm_pixel_lock" if source_locked_rlasm_ids else "provider_full_scene_local_repairs"
+        )
         diagnostics.update(
-            view_lock="camera_registered", context_restyled=False, provider_first=True,
-            provider_spatial_pixels_retained=True, returned_safety_strategy=strategy,
+            view_lock="camera_registered",
+            context_restyled=False,
+            provider_first=True,
+            provider_spatial_pixels_retained=True,
+            returned_safety_strategy=strategy,
             source_locked_rlasm_pixel_lock_applied=bool(source_locked_rlasm_ids),
             source_locked_rlasm_pixel_coverage=protected_coverage,
         )
@@ -4004,12 +4028,17 @@ def _same_camera_presentation_result(
             "and public realm against the clean 3D source. These checks do not certify exact geometry."
         )
         if presence.evaluated_instance_count == 0:
-            warnings.append("No visible instance had enough edge evidence for an individual check; hidden objects remain hidden.")
+            warnings.append(
+                "No visible instance had enough edge evidence for an individual check; hidden objects remain hidden."
+            )
     except Direct3DValidationError as exc:
         presentation = capture.normalized_beauty.convert("RGB")
         diagnostics.update(
-            view_lock="source_pixel_locked", context_restyled=False, provider_first=False,
-            provider_spatial_pixels_retained=False, returned_safety_strategy="authoritative_source",
+            view_lock="source_pixel_locked",
+            context_restyled=False,
+            provider_first=False,
+            provider_spatial_pixels_retained=False,
+            returned_safety_strategy="authoritative_source",
             source_locked_rlasm_pixel_lock_applied=bool(source_locked_rlasm_ids),
             source_locked_rlasm_pixel_coverage=1.0 if source_locked_rlasm_ids else None,
         )
@@ -4023,7 +4052,9 @@ def _same_camera_presentation_result(
         audit_input_base64=capture.audit_input_base64,
         capture_fingerprint=capture.capture_fingerprint,
         output_fingerprint=hashlib.sha256(output_png).hexdigest(),
-        outcome="review_required", warnings=tuple(warnings), diagnostics=diagnostics,
+        outcome="review_required",
+        warnings=tuple(warnings),
+        diagnostics=diagnostics,
         provider_image_base64=base64.b64encode(_png_bytes(generated)).decode("ascii"),
     )
 
@@ -4051,11 +4082,13 @@ class Direct3DRenderService:
         visible_ids = {descriptor.instance_id for descriptor in visible_manifest.values()}
         visible_inventory = [item for item in (server_inventory or []) if item.get("instance_id") in visible_ids]
         visible_building_zones = {
-            str(descriptor.zone_id) for descriptor in visible_manifest.values()
+            str(descriptor.zone_id)
+            for descriptor in visible_manifest.values()
             if descriptor.semantic_class == "building" and descriptor.zone_id
         }
         references = [
-            reference for reference in req.archetype_references
+            reference
+            for reference in req.archetype_references
             if reference.zone_ids and set(reference.zone_ids).issubset(visible_building_zones)
         ]
 
@@ -4349,27 +4382,38 @@ class Direct3DRenderService:
                 # any other same-camera image, rather than content sanity
                 # alone. Sparse street evidence safely falls back to source.
                 street_result = _same_camera_presentation_result(
-                    req, capture, generated, common_diagnostics, source_locked_rlasm_ids,
+                    req,
+                    capture,
+                    generated,
+                    common_diagnostics,
+                    source_locked_rlasm_ids,
                 )
                 street_result.diagnostics["view_mode"] = "street"
                 return street_result
 
             if DIRECT_3D_PRESENTATION_FIRST and req.presentation_mode == "scene":
                 return _same_camera_presentation_result(
-                    req, capture, generated, common_diagnostics, source_locked_rlasm_ids,
+                    req,
+                    capture,
+                    generated,
+                    common_diagnostics,
+                    source_locked_rlasm_ids,
                 )
 
             if DIRECT_3D_PRESENTATION_FIRST and req.presentation_mode == "reproject":
                 sanity = assess_reproject_output_sanity(
-                    capture.normalized_beauty, generated, capture.normalized_object_id, req.object_id_manifest,
+                    capture.normalized_beauty,
+                    generated,
+                    capture.normalized_object_id,
+                    req.object_id_manifest,
                 )
                 presentation = generated if sanity.passed else capture.normalized_beauty
                 output_png = _png_bytes(presentation)
                 warning = (
                     "Projection-changing output cannot be registered to the original capture. "
                     "Review the source inventory, heights, footprints and occlusions; exact identity is not verified."
-                    if sanity.passed else
-                    "Clean 3D source returned because the provider output failed minimum image-content checks. "
+                    if sanity.passed
+                    else "Clean 3D source returned because the provider output failed minimum image-content checks. "
                     "This retains the source camera, not the requested new projection. The provider original is retained for review."
                 )
                 return Direct3DServiceResult(
@@ -4377,7 +4421,8 @@ class Direct3DRenderService:
                     audit_input_base64=capture.audit_input_base64,
                     capture_fingerprint=capture.capture_fingerprint,
                     output_fingerprint=hashlib.sha256(output_png).hexdigest(),
-                    outcome="review_required", provider_image_base64=provider_image_base64,
+                    outcome="review_required",
+                    provider_image_base64=provider_image_base64,
                     warnings=(warning,),
                     diagnostics={
                         **common_diagnostics,

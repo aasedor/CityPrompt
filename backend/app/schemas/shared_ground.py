@@ -60,10 +60,14 @@ class SharedGroundSnapshot(SharedGroundModel):
         south = min(point[1] for point in self.boundaryCoordinates)
         east = max(point[0] for point in self.boundaryCoordinates)
         north = max(point[1] for point in self.boundaryCoordinates)
-        if any(abs(actual - expected) > 1e-9 for actual, expected in (
-            (self.grid.west, west), (self.grid.south, south),
-            (self.grid.west + (self.grid.columns - 1) * self.grid.stepLng, east),
-            (self.grid.south + (self.grid.rows - 1) * self.grid.stepLat, north),
-        )):
+        if any(
+            abs(actual - expected) > 1e-9
+            for actual, expected in (
+                (self.grid.west, west),
+                (self.grid.south, south),
+                (self.grid.west + (self.grid.columns - 1) * self.grid.stepLng, east),
+                (self.grid.south + (self.grid.rows - 1) * self.grid.stepLat, north),
+            )
+        ):
             raise ValueError("Shared ground support grid must span its boundary bounds")
         return self

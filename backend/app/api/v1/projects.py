@@ -118,9 +118,7 @@ async def list_projects(
         return [_project_to_dict(p, owner_email=email) for p, email in rows]
 
     # Get IDs of projects shared with this user
-    shared_result = await db.execute(
-        select(ProjectShare.project_id).where(ProjectShare.user_id == user.id)
-    )
+    shared_result = await db.execute(select(ProjectShare.project_id).where(ProjectShare.user_id == user.id))
     shared_ids = [row[0] for row in shared_result.all()]
 
     from sqlalchemy import or_

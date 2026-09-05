@@ -19,7 +19,16 @@ def result(value):
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
     "operation",
-    ["classic", "direct_3d", "save", "delete", "video_preflight", "video_backfill", "video_benchmark", "video_generate"],
+    [
+        "classic",
+        "direct_3d",
+        "save",
+        "delete",
+        "video_preflight",
+        "video_backfill",
+        "video_benchmark",
+        "video_generate",
+    ],
 )
 async def test_project_viewer_cannot_start_or_mutate_media(operation, mock_db, test_user):
     project = FakeProject()

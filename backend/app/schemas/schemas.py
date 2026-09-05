@@ -382,7 +382,9 @@ class SiteZoneCreate(BaseModel):
 class SiteZoneUpdate(BaseModel):
     """Update a site zone. All fields are optional."""
 
-    expected_updated_at: Optional[datetime] = Field(None, description="Reject changes when the saved zone has changed since this version")
+    expected_updated_at: Optional[datetime] = Field(
+        None, description="Reject changes when the saved zone has changed since this version"
+    )
     name: Optional[str] = Field(None, description="Updated zone label")
     zone_type: Optional[SiteZoneType] = Field(
         None, description="Updated zone type; paths and trails use road with road_type metadata"

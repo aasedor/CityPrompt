@@ -8,9 +8,7 @@ from fastapi import APIRouter, WebSocket
 
 router = APIRouter()
 
-COLLABORATION_UNAVAILABLE_REASON = (
-    "Live collaboration is paused; use authenticated project APIs."
-)
+COLLABORATION_UNAVAILABLE_REASON = "Live collaboration is paused; use authenticated project APIs."
 
 
 @router.websocket("/ws/projects/{project_id}")

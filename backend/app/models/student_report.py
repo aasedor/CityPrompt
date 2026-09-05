@@ -13,9 +13,7 @@ from app.core.database import Base
 class StudentPlanningReport(Base):
     __tablename__ = "student_planning_reports"
 
-    id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), primary_key=True, default=uuid.uuid4
-    )
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     project_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True), ForeignKey("projects.id", ondelete="CASCADE"), index=True
     )
@@ -29,6 +27,4 @@ class StudentPlanningReport(Base):
     decisions: Mapped[dict] = mapped_column(JSONB, default=dict)
     decision_history: Mapped[list] = mapped_column(JSONB, default=list)
     response_revision: Mapped[int] = mapped_column(Integer, default=0)
-    created_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), server_default=func.now()
-    )
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())

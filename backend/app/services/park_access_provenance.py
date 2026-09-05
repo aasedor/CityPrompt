@@ -21,7 +21,9 @@ def bind_park_access_snapshot(snapshot: ParkAccessSnapshot, zones: Iterable[Any]
     current = {str(zone.id): zone for zone in zones}
     source_ids = [str(UUID(source.zoneId)) for source in snapshot.sources]
     if len(source_ids) != len(set(source_ids)) or set(source_ids) != set(current):
-        raise HTTPException(status_code=409, detail="Park access source inventory changed; refresh the whole project and capture again.")
+        raise HTTPException(
+            status_code=409, detail="Park access source inventory changed; refresh the whole project and capture again."
+        )
     for source in snapshot.sources:
         zone = current[str(UUID(source.zoneId))]
         try:
@@ -45,7 +47,9 @@ def bind_park_access_snapshot(snapshot: ParkAccessSnapshot, zones: Iterable[Any]
         if len(connection_ids) != len(set(connection_ids)) or any(
             str(connection.streetZoneId) not in eligible_streets for connection in park.connections
         ):
-            raise HTTPException(status_code=409, detail="Park access references an unknown or duplicate street connection.")
+            raise HTTPException(
+                status_code=409, detail="Park access references an unknown or duplicate street connection."
+            )
     # Preserve optional-field presence and the submitted cache signatures. They
     # are recorded as evidence, never used to assert server geometric approval.
     return snapshot.model_dump(mode="json", exclude_unset=True)

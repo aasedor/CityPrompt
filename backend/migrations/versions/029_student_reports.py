@@ -31,12 +31,8 @@ def upgrade() -> None:
         sa.Column("snapshot", postgresql.JSONB(), nullable=False),
         sa.Column("analysis", postgresql.JSONB(), nullable=False),
         sa.Column("decisions", postgresql.JSONB(), nullable=False, server_default="{}"),
-        sa.Column(
-            "decision_history", postgresql.JSONB(), nullable=False, server_default="[]"
-        ),
-        sa.Column(
-            "response_revision", sa.Integer(), nullable=False, server_default="0"
-        ),
+        sa.Column("decision_history", postgresql.JSONB(), nullable=False, server_default="[]"),
+        sa.Column("response_revision", sa.Integer(), nullable=False, server_default="0"),
         sa.Column(
             "created_at",
             sa.DateTime(timezone=True),

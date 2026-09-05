@@ -18,16 +18,33 @@ from tests.test_render_fidelity_provenance import _snapshot_inputs
 def inputs():
     req, building_zone, building = _snapshot_inputs()
     now = datetime(2026, 9, 5, 0, 3, 34, 431612, tzinfo=timezone.utc)
-    boundary = SimpleNamespace(id=uuid.uuid4(), zone_type="site_boundary", updated_at=now,
-        geometry=box(-114.1, 51, -114.0998, 51.0002), is_active_boundary=True,
-        properties={"community_3d_mask_existing_tiles": False})
-    raw = {"version": 1, "source": "google_3d_tiles", "verticalReference": "WGS84_ellipsoid",
-        "boundaryId": str(boundary.id), "boundaryUpdatedAt": now.isoformat(),
+    boundary = SimpleNamespace(
+        id=uuid.uuid4(),
+        zone_type="site_boundary",
+        updated_at=now,
+        geometry=box(-114.1, 51, -114.0998, 51.0002),
+        is_active_boundary=True,
+        properties={"community_3d_mask_existing_tiles": False},
+    )
+    raw = {
+        "version": 1,
+        "source": "google_3d_tiles",
+        "verticalReference": "WGS84_ellipsoid",
+        "boundaryId": str(boundary.id),
+        "boundaryUpdatedAt": now.isoformat(),
         "boundaryCoordinates": [list(point) for point in boundary.geometry.exterior.coords][:-1],
-        "sourceSignature": "client-source-cache", "signature": "client-surface-cache",
+        "sourceSignature": "client-source-cache",
+        "signature": "client-surface-cache",
         "grid": {"west": -114.1, "south": 51, "columns": 2, "rows": 2, "stepLng": 0.0002, "stepLat": 0.0002},
         "heights": [1031.3, 1031.4, 1031.3, 1031.4],
-        "quality": {"sampleCount": 4, "stablePasses": 2, "maxPassDeltaM": 0.01, "maxSlope": 0.01, "maxLocalResidualM": 0.01}}
+        "quality": {
+            "sampleCount": 4,
+            "stablePasses": 2,
+            "maxPassDeltaM": 0.01,
+            "maxSlope": 0.01,
+            "maxLocalResidualM": 0.01,
+        },
+    }
     return req, [building_zone, boundary], building, raw
 
 
@@ -64,7 +81,10 @@ def test_actual_boundary_movement_still_requires_a_fresh_capture():
     assert exc.value.status_code == 409
 
 
-@pytest.mark.parametrize("change", ["missing", "unknown", "stale", "inactive", "prepared", "duplicate_active", "geometry", "hole", "wrong_type"])
+@pytest.mark.parametrize(
+    "change",
+    ["missing", "unknown", "stale", "inactive", "prepared", "duplicate_active", "geometry", "hole", "wrong_type"],
+)
 def test_shared_ground_must_match_the_current_active_retained_boundary(change):
     _, zones, _, raw = inputs()
     boundary = zones[-1]
@@ -83,7 +103,9 @@ def test_shared_ground_must_match_the_current_active_retained_boundary(change):
     elif change == "geometry":
         boundary.geometry = box(-114.1, 51, -114.0997, 51.0002)
     elif change == "hole":
-        boundary.geometry = Polygon(boundary.geometry.exterior, [box(-114.09995, 51.00005, -114.0999, 51.0001).exterior])
+        boundary.geometry = Polygon(
+            boundary.geometry.exterior, [box(-114.09995, 51.00005, -114.0999, 51.0001).exterior]
+        )
     elif change == "wrong_type":
         boundary.zone_type = "green_space"
     with pytest.raises(HTTPException) as exc:
@@ -91,7 +113,23 @@ def test_shared_ground_must_match_the_current_active_retained_boundary(change):
     assert exc.value.status_code == 409
 
 
-@pytest.mark.parametrize("change", ["nan", "inf", "too_many", "missing_height", "wrong_count", "zero_step", "wrong_grid", "wrong_reference", "low_stability", "excess_slope", "naive_time", "extra"])
+@pytest.mark.parametrize(
+    "change",
+    [
+        "nan",
+        "inf",
+        "too_many",
+        "missing_height",
+        "wrong_count",
+        "zero_step",
+        "wrong_grid",
+        "wrong_reference",
+        "low_stability",
+        "excess_slope",
+        "naive_time",
+        "extra",
+    ],
+)
 def test_shared_ground_schema_finite_bounded_and_complete(change):
     _, _, _, raw = inputs()
     if change == "nan":

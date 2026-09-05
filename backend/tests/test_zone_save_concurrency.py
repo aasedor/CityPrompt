@@ -113,7 +113,11 @@ async def test_stale_update_and_delete_reject_after_lock_refresh(mock_db, test_u
 @pytest.mark.parametrize("operation", ["create", "update", "delete"])
 @pytest.mark.parametrize("commit_fails", [False, True])
 async def test_authored_save_waits_for_durable_commit(
-    mock_db, test_user, monkeypatch, operation, commit_fails,
+    mock_db,
+    test_user,
+    monkeypatch,
+    operation,
+    commit_fails,
 ):
     """A successful HTTP result must be immediately visible to the next read.
 
@@ -122,15 +126,24 @@ async def test_authored_save_waits_for_durable_commit(
     a failed commit must still reach the request's error handler.
     """
     project = FakeProject(owner_id=test_user.id)
-    zone = SimpleNamespace(id=uuid.uuid4(), project_id=project.id, name="Park",
-                           zone_type="green_space", properties={}, updated_at=datetime.now(timezone.utc))
-    mock_db.execute.side_effect = ([result(project), result(None)] if operation == "create"
-                                   else [result(zone), result(project)])
+    zone = SimpleNamespace(
+        id=uuid.uuid4(),
+        project_id=project.id,
+        name="Park",
+        zone_type="green_space",
+        properties={},
+        updated_at=datetime.now(timezone.utc),
+    )
+    mock_db.execute.side_effect = (
+        [result(project), result(None)] if operation == "create" else [result(zone), result(project)]
+    )
     monkeypatch.setattr(site_zones, "lock_residual_landscape_project", AsyncMock())
     monkeypatch.setattr(site_zones, "_active_site_boundary", AsyncMock(return_value=None))
     monkeypatch.setattr(site_zones, "_invalidate_residual_landscape", AsyncMock())
     monkeypatch.setattr(site_zones, "_record_zone_history", AsyncMock())
-    monkeypatch.setattr(site_zones, "_snapshot_from_zone", lambda z: {"zone_type": z.zone_type, "properties": z.properties})
+    monkeypatch.setattr(
+        site_zones, "_snapshot_from_zone", lambda z: {"zone_type": z.zone_type, "properties": z.properties}
+    )
     monkeypatch.setattr(site_zones, "_zone_to_response", lambda z: {"id": str(z.id)})
     entered, release = asyncio.Event(), asyncio.Event()
 
@@ -152,8 +165,7 @@ async def test_authored_save_waits_for_durable_commit(
     gate = asyncio.create_task(entered.wait())
     try:
         # Let either the route complete prematurely or reach the commit gate.
-        await asyncio.wait({task, gate}, timeout=0.2,
-                           return_when=asyncio.FIRST_COMPLETED)
+        await asyncio.wait({task, gate}, timeout=0.2, return_when=asyncio.FIRST_COMPLETED)
         assert entered.is_set(), "The route returned before committing its authored change"
         assert not task.done(), "The route announced success while the commit was pending"
         release.set()

@@ -72,9 +72,7 @@ def _scene_request(**kwargs):
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("policy", ["precise", "balanced", "expressive"])
-async def test_same_camera_finish_has_measured_checks_and_source_context(
-    monkeypatch, policy
-):
+async def test_same_camera_finish_has_measured_checks_and_source_context(monkeypatch, policy):
     request = _scene_request(presentation_mode="scene", fidelity_policy=policy)
     capture = prepare_direct_3d_capture(request)
     provider = capture.normalized_beauty.point(lambda v: min(255, v + 17))
@@ -85,37 +83,23 @@ async def test_same_camera_finish_has_measured_checks_and_source_context(
     monkeypatch.setattr(Direct3DRenderService, "_call_openai", fake)
     result = await Direct3DRenderService("test-key").generate(request)
     assert result.outcome == "review_required"
-    assert (
-        result.diagnostics["returned_safety_strategy"]
-        == "provider_full_scene_local_repairs"
-    )
+    assert result.diagnostics["returned_safety_strategy"] == "provider_full_scene_local_repairs"
     assert result.diagnostics["registration"] is not None
     assert result.diagnostics["macro_design_fidelity"]["passed"] is True
-    assert (
-        result.diagnostics["instance_source_presence"]["evaluated_instance_count"] > 0
-    )
+    assert result.diagnostics["instance_source_presence"]["evaluated_instance_count"] > 0
     assert result.diagnostics["view_lock"] == "camera_registered"
     returned = np.asarray(_decoded(result.image_base64))
     exterior = np.asarray(capture.normalized_proposal_mask) == 0
-    assert np.array_equal(
-        returned[exterior], np.asarray(capture.normalized_beauty)[exterior]
-    )
-    assert not np.array_equal(
-        returned[~exterior], np.asarray(capture.normalized_beauty)[~exterior]
-    )
+    assert np.array_equal(returned[exterior], np.asarray(capture.normalized_beauty)[exterior])
+    assert not np.array_equal(returned[~exterior], np.asarray(capture.normalized_beauty)[~exterior])
     assert result.diagnostics["exterior_max_channel_delta"] == 0
-    assert (
-        hashlib.sha256(base64.b64decode(result.image_base64)).hexdigest()
-        == result.output_fingerprint
-    )
+    assert hashlib.sha256(base64.b64decode(result.image_base64)).hexdigest() == result.output_fingerprint
     Direct3DRenderDiagnostics.model_validate(result.diagnostics)
 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("failure", ["missing-building", "blank", "new-tower"])
-async def test_redesigned_candidate_returns_clean_source_and_retains_provider(
-    monkeypatch, failure
-):
+async def test_redesigned_candidate_returns_clean_source_and_retains_provider(monkeypatch, failure):
     from PIL import ImageDraw
 
     request = _scene_request(presentation_mode="scene")
@@ -126,9 +110,7 @@ async def test_redesigned_candidate_returns_clean_source_and_retains_provider(
     if failure == "blank":
         provider = Image.new("RGB", provider.size, "white")
     elif failure == "missing-building":
-        draw.rectangle(
-            tuple(round(v * scale) for v in (75, 72, 231, 250)), fill=(126, 142, 116)
-        )
+        draw.rectangle(tuple(round(v * scale) for v in (75, 72, 231, 250)), fill=(126, 142, 116))
     else:
         draw.rectangle(
             tuple(round(v * scale) for v in (231, 120, 278, 390)),
@@ -145,9 +127,7 @@ async def test_redesigned_candidate_returns_clean_source_and_retains_provider(
     assert result.outcome == "review_required"
     assert result.diagnostics["returned_safety_strategy"] == "authoritative_source"
     assert result.diagnostics["view_lock"] == "source_pixel_locked"
-    assert _png_b64(_decoded(result.image_base64)) == _png_b64(
-        capture.normalized_beauty
-    )
+    assert _png_b64(_decoded(result.image_base64)) == _png_b64(capture.normalized_beauty)
     assert result.provider_image_base64 == _png_b64(provider)
     assert "Clean 3D source" in result.warnings[0]
     Direct3DRenderDiagnostics.model_validate(result.diagnostics)
@@ -155,9 +135,7 @@ async def test_redesigned_candidate_returns_clean_source_and_retains_provider(
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("blank", [False, True])
-async def test_reproject_has_no_false_registration_or_auto_acceptance(
-    monkeypatch, blank
-):
+async def test_reproject_has_no_false_registration_or_auto_acceptance(monkeypatch, blank):
     request = _scene_request(presentation_mode="reproject", style="isometric")
     capture = prepare_direct_3d_capture(request)
     provider = (
@@ -183,9 +161,7 @@ async def test_reproject_has_no_false_registration_or_auto_acceptance(
 async def test_source_locked_rlasm_scene_restores_exact_instance_pixels(monkeypatch):
     request = _scene_request(presentation_mode="scene", style="photorealistic")
     capture = prepare_direct_3d_capture(request)
-    provider = capture.normalized_beauty.copy().point(
-        lambda value: min(255, value + 29)
-    )
+    provider = capture.normalized_beauty.copy().point(lambda value: min(255, value + 29))
 
     async def _fake_call_openai(self, req, prepared, *, server_inventory=None):
         return provider.convert("RGB")
@@ -218,18 +194,14 @@ async def test_source_locked_rlasm_scene_restores_exact_instance_pixels(monkeypa
     assert result.diagnostics["source_locked_rlasm_pixel_coverage"] == pytest.approx(
         float(np.count_nonzero(protected) / protected.size)
     )
-    assert result.diagnostics["returned_safety_strategy"] == (
-        "provider_full_scene_rlasm_pixel_lock"
-    )
+    assert result.diagnostics["returned_safety_strategy"] == ("provider_full_scene_rlasm_pixel_lock")
     Direct3DRenderDiagnostics.model_validate(result.diagnostics)
 
 
 @pytest.mark.asyncio
 async def test_source_locked_rlasm_reproject_is_never_auto_accepted(monkeypatch):
     request = _scene_request(presentation_mode="reproject", style="isometric")
-    provider = prepare_direct_3d_capture(request).normalized_beauty.point(
-        lambda value: min(255, value + 17)
-    )
+    provider = prepare_direct_3d_capture(request).normalized_beauty.point(lambda value: min(255, value + 17))
 
     async def _fake_call_openai(self, req, capture, *, server_inventory=None):
         return provider.convert("RGB")
@@ -311,6 +283,7 @@ async def test_street_finish_cannot_relocate_hidden_facilities_into_source_conte
     # A plausible detailed output still must not introduce a facility in the
     # un-authored context behind the houses, as the live street pilot did.
     from PIL import ImageDraw
+
     draw = ImageDraw.Draw(provider)
     draw.rectangle((15, 15, 110, 105), fill="#b8a07e", outline="#222222", width=4)
     for x in range(25, 105, 18):
@@ -322,7 +295,9 @@ async def test_street_finish_cannot_relocate_hidden_facilities_into_source_conte
     monkeypatch.setattr(Direct3DRenderService, "_call_openai", fake)
     result = await Direct3DRenderService("test-key").generate(request)
     exterior = np.asarray(capture.normalized_proposal_mask) == 0
-    np.testing.assert_array_equal(np.asarray(_decoded(result.image_base64))[exterior], np.asarray(capture.normalized_beauty)[exterior])
+    np.testing.assert_array_equal(
+        np.asarray(_decoded(result.image_base64))[exterior], np.asarray(capture.normalized_beauty)[exterior]
+    )
     assert result.diagnostics["returned_safety_strategy"] is not None
     assert result.diagnostics["view_mode"] == "street"
     assert result.outcome == "review_required"

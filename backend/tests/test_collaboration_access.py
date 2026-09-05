@@ -40,8 +40,10 @@ async def test_relay_never_accepts_receives_or_broadcasts():
     await project_collaboration(websocket, "private-project")
 
     receive.assert_not_awaited()
-    send.assert_awaited_once_with({
-        "type": "websocket.close",
-        "code": 1008,
-        "reason": COLLABORATION_UNAVAILABLE_REASON,
-    })
+    send.assert_awaited_once_with(
+        {
+            "type": "websocket.close",
+            "code": 1008,
+            "reason": COLLABORATION_UNAVAILABLE_REASON,
+        }
+    )

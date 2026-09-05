@@ -21,17 +21,45 @@ def inputs():
     building_zone.updated_at = now
     zones = [building_zone]
     for kind in ("green_space", "road", "site_boundary"):
-        zones.append(SimpleNamespace(id=uuid.uuid4(), zone_type=kind, updated_at=now,
-            geometry=box(-114.1, 51, -114.09, 51.01), properties={"hidden_barrier": kind == "site_boundary"}))
+        zones.append(
+            SimpleNamespace(
+                id=uuid.uuid4(),
+                zone_type=kind,
+                updated_at=now,
+                geometry=box(-114.1, 51, -114.09, 51.01),
+                properties={"hidden_barrier": kind == "site_boundary"},
+            )
+        )
     point = [-114.095, 51.005]
-    snapshot = {"version": 1, "sourceSignature": "client-cache-key-only",
+    snapshot = {
+        "version": 1,
+        "sourceSignature": "client-cache-key-only",
         "settings": {"maxGapM": 8, "pathWidthM": 2.2, "obstacleClearanceM": 0.25, "maxConnections": 2, "gridStepM": 2},
         "eligibleStreetZoneIds": [str(zones[2].id)],
-        "sources": [{"zoneId": str(zone.id), "updatedAt": now.isoformat(), "geometrySignature": "client-geometry-key"} for zone in zones],
-        "parks": [{"parkZoneId": str(zones[1].id), "status": "connected",
-            "connections": [{"id": "test-route", "streetZoneId": str(zones[2].id), "streetBand": "sidewalk",
-                "streetPoint": point, "gateway": point, "path": [point, point], "widthM": 2.2, "streetLiftM": 0.17}],
-            "paths": [{"points": [point, point], "widthM": 2.2}]}]}
+        "sources": [
+            {"zoneId": str(zone.id), "updatedAt": now.isoformat(), "geometrySignature": "client-geometry-key"}
+            for zone in zones
+        ],
+        "parks": [
+            {
+                "parkZoneId": str(zones[1].id),
+                "status": "connected",
+                "connections": [
+                    {
+                        "id": "test-route",
+                        "streetZoneId": str(zones[2].id),
+                        "streetBand": "sidewalk",
+                        "streetPoint": point,
+                        "gateway": point,
+                        "path": [point, point],
+                        "widthM": 2.2,
+                        "streetLiftM": 0.17,
+                    }
+                ],
+                "paths": [{"points": [point, point], "widthM": 2.2}],
+            }
+        ],
+    }
     return request, zones, building, snapshot
 
 
@@ -53,7 +81,21 @@ def test_snapshot_preserves_exact_routes_and_freezes_all_sources_without_claimin
     assert changed["plan"]["park_access_snapshot"]["sourceSignature"] == raw["sourceSignature"]
 
 
-@pytest.mark.parametrize("change", ["missing", "unknown", "duplicate", "stale_hidden", "unknown_park", "unknown_street", "ineligible_street", "duplicate_eligible", "nonroad_eligible", "duplicate_park"])
+@pytest.mark.parametrize(
+    "change",
+    [
+        "missing",
+        "unknown",
+        "duplicate",
+        "stale_hidden",
+        "unknown_park",
+        "unknown_street",
+        "ineligible_street",
+        "duplicate_eligible",
+        "nonroad_eligible",
+        "duplicate_park",
+    ],
+)
 def test_sources_and_route_references_must_bind_to_current_project_inventory(change):
     _, zones, _, raw = inputs()
     if change == "missing":
@@ -81,7 +123,9 @@ def test_sources_and_route_references_must_bind_to_current_project_inventory(cha
     assert exc.value.status_code == 409
 
 
-@pytest.mark.parametrize("change", ["nan", "huge_sources", "huge_path", "huge_width", "bad_coordinate", "naive_time", "extra_field"])
+@pytest.mark.parametrize(
+    "change", ["nan", "huge_sources", "huge_path", "huge_width", "bad_coordinate", "naive_time", "extra_field"]
+)
 def test_park_snapshot_schema_is_finite_and_bounded(change):
     _, _, _, raw = inputs()
     if change == "nan":

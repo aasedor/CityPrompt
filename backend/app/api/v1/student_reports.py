@@ -35,39 +35,19 @@ from app.services.student_report import (
 router = APIRouter(prefix="/student-reports", tags=["student reports"])
 
 
-async def _snapshot(
-    db: AsyncSession, project_id: uuid.UUID, zone_ids: list[str] | None
-) -> dict:
-    project = (
-        await db.execute(select(Project).where(Project.id == project_id))
-    ).scalar_one_or_none()
+async def _snapshot(db: AsyncSession, project_id: uuid.UUID, zone_ids: list[str] | None) -> dict:
+    project = (await db.execute(select(Project).where(Project.id == project_id))).scalar_one_or_none()
     if project is None:
         raise HTTPException(404, "Project not found")
-    zones = list(
-        (await db.execute(select(SiteZone).where(SiteZone.project_id == project_id)))
-        .scalars()
-        .all()
-    )
-    buildings = list(
-        (await db.execute(select(Building).where(Building.project_id == project_id)))
-        .scalars()
-        .all()
-    )
+    zones = list((await db.execute(select(SiteZone).where(SiteZone.project_id == project_id))).scalars().all())
+    buildings = list((await db.execute(select(Building).where(Building.project_id == project_id))).scalars().all())
     references = list(
-        (
-            await db.execute(
-                select(ReferenceLayer).where(ReferenceLayer.project_id == project_id)
-            )
-        )
-        .scalars()
-        .all()
+        (await db.execute(select(ReferenceLayer).where(ReferenceLayer.project_id == project_id))).scalars().all()
     )
     return build_snapshot(project, zones, buildings, references, zone_ids)
 
 
-async def _policy_sources(
-    db: AsyncSession, project_id: uuid.UUID, snapshot: dict
-) -> list[dict]:
+async def _policy_sources(db: AsyncSession, project_id: uuid.UUID, snapshot: dict) -> list[dict]:
     boundary = boundary_record(snapshot)
     if not boundary or boundary["id"] == "project-boundary":
         return []
@@ -113,10 +93,7 @@ async def _policy_sources(
         for chunk, document in results
     ]
     land_use = ((dna_row.dna or {}).get("land_use") or {}).get("fields") or {}
-    facts = {
-        key: (land_use.get(key) or {}).get("value")
-        for key in ("districts", "lap_name", "community_name")
-    }
+    facts = {key: (land_use.get(key) or {}).get("value") for key in ("districts", "lap_name", "community_name")}
     sources = select_policy_sources(records, facts)
     for source in sources:
         source["context_snapshot_id"] = str(dna_row.id)
@@ -149,9 +126,7 @@ async def _authorized_report(
     row = (await db.execute(query)).scalar_one_or_none()
     if row is None:
         raise HTTPException(404, "Report not found")
-    await check_project_permission(
-        row.project_id, user, db, required="editor" if editor else "viewer"
-    )
+    await check_project_permission(row.project_id, user, db, required="editor" if editor else "viewer")
     return row
 
 
@@ -166,17 +141,13 @@ async def latest_report(
         await db.execute(
             select(StudentPlanningReport)
             .where(StudentPlanningReport.project_id == project_id)
-            .order_by(
-                StudentPlanningReport.created_at.desc(), StudentPlanningReport.id.desc()
-            )
+            .order_by(StudentPlanningReport.created_at.desc(), StudentPlanningReport.id.desc())
             .limit(1)
         )
     ).scalar_one_or_none()
     if row is None:
         return None
-    return _view(
-        row, await _snapshot(db, project_id, row.snapshot.get("scope_zone_ids"))
-    )
+    return _view(row, await _snapshot(db, project_id, row.snapshot.get("scope_zone_ids")))
 
 
 @router.get("/project/{project_id}/history")
@@ -220,11 +191,7 @@ async def create_report(
     user: User = Depends(require_auth),
 ):
     await check_project_permission(project_id, user, db, required="editor")
-    ids = (
-        [str(value) for value in request.zone_ids]
-        if request.zone_ids is not None
-        else None
-    )
+    ids = [str(value) for value in request.zone_ids] if request.zone_ids is not None else None
     snapshot = await _snapshot(db, project_id, ids)
     if ids is not None and set(ids) - {zone["id"] for zone in snapshot["zones"]}:
         raise HTTPException(
@@ -259,9 +226,7 @@ async def get_report(
     user: User = Depends(require_auth),
 ):
     row = await _authorized_report(report_id, user, db)
-    return _view(
-        row, await _snapshot(db, row.project_id, row.snapshot.get("scope_zone_ids"))
-    )
+    return _view(row, await _snapshot(db, row.project_id, row.snapshot.get("scope_zone_ids")))
 
 
 @router.patch("/{report_id}/findings/{finding_id}")
@@ -295,9 +260,7 @@ async def respond_to_finding(
     ]
     row.response_revision += 1
     await db.flush()
-    return _view(
-        row, await _snapshot(db, row.project_id, row.snapshot.get("scope_zone_ids"))
-    )
+    return _view(row, await _snapshot(db, row.project_id, row.snapshot.get("scope_zone_ids")))
 
 
 @router.get("/{report_id}/export", response_class=HTMLResponse)

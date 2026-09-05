@@ -1190,9 +1190,11 @@ class SaveRenderRequest(BaseModel):
     )
 
 
-
 def _watermark_and_provenance(
-    image_bytes: bytes, req: "SaveRenderRequest", *, server_provenance: dict | None = None,
+    image_bytes: bytes,
+    req: "SaveRenderRequest",
+    *,
+    server_provenance: dict | None = None,
 ) -> bytes:
     """Burn the ILLUSTRATIVE banner onto a saved render and embed provenance
     as a PNG tEXt chunk. Saved renders are the shareable artifact — the
@@ -1318,18 +1320,35 @@ async def persist_render_to_gallery(
     if source_snapshot is not None:
         from app.services.render_provenance import canonical_json
 
-        await _upload_to_storage(provenance_key, canonical_json({
-            **source_identity, "source_snapshot": source_snapshot, "variant": variant, "outcome": outcome,
-            "presentation_strategy": presentation_strategy,
-            "original_output_sha256": image_hash,
-            "prompt_sha256": hashlib.sha256(req.prompt.encode("utf-8")).hexdigest(),
-            "image_note": "Gallery PNG includes a visible illustrative label; output fingerprint identifies the original pixels.",
-        }).encode("utf-8"), "application/json")
+        await _upload_to_storage(
+            provenance_key,
+            canonical_json(
+                {
+                    **source_identity,
+                    "source_snapshot": source_snapshot,
+                    "variant": variant,
+                    "outcome": outcome,
+                    "presentation_strategy": presentation_strategy,
+                    "original_output_sha256": image_hash,
+                    "prompt_sha256": hashlib.sha256(req.prompt.encode("utf-8")).hexdigest(),
+                    "image_note": "Gallery PNG includes a visible illustrative label; output fingerprint identifies the original pixels.",
+                }
+            ).encode("utf-8"),
+            "application/json",
+        )
     image_bytes = _watermark_and_provenance(
-        image_bytes, req, server_provenance={
-            **source_identity, "variant": variant, "outcome": outcome,
-            "presentation_strategy": presentation_strategy,
-        } if source_snapshot else None,
+        image_bytes,
+        req,
+        server_provenance=(
+            {
+                **source_identity,
+                "variant": variant,
+                "outcome": outcome,
+                "presentation_strategy": presentation_strategy,
+            }
+            if source_snapshot
+            else None
+        ),
     )
     await _upload_to_storage(file_key, image_bytes, "image/png")
 

@@ -266,10 +266,12 @@ def select_runtime_architecture_entries(entries: Iterable[Any]) -> RuntimeArchit
     )
     if installed:
         return RuntimeArchitectureEntries(
-            (entry for entry in materialized if is_runtime_rlasm_architectural_clay_entry(entry)), clay_installed=True,
+            (entry for entry in materialized if is_runtime_rlasm_architectural_clay_entry(entry)),
+            clay_installed=True,
         )
     return RuntimeArchitectureEntries(
-        (entry for entry in materialized if descriptor_from_library_entry(entry) is not None), clay_installed=False,
+        (entry for entry in materialized if descriptor_from_library_entry(entry) is not None),
+        clay_installed=False,
     )
 
 
@@ -1204,9 +1206,10 @@ def _plan_vertical_assembly_core(
                 for module in family_modules
                 if module.role == "assembled"
                 and module.native_floors == request.target_floors
-                and (request.footprint_profile == "rectangle" or (
-                    _fixed_landmark_is_select_and_place(module) and request.footprint_local_m is not None
-                ))
+                and (
+                    request.footprint_profile == "rectangle"
+                    or (_fixed_landmark_is_select_and_place(module) and request.footprint_local_m is not None)
+                )
                 and request.archetype_id
                 and any(
                     _semantic_id(candidate) == _semantic_id(executable_id)
@@ -1246,14 +1249,20 @@ def _plan_vertical_assembly_core(
                 from shapely.geometry import box
 
                 plot = _detached_plot(request)
-                envelope = box(-assembled.width_m / 2, -assembled.depth_m / 2, assembled.width_m / 2, assembled.depth_m / 2)
-                rotations = [angle for angle in (rectangle_rotation, (rectangle_rotation + 90) % 180)
-                             if plot.buffer(1e-7).covers(rotate(envelope, angle, origin=(0, 0)))]
+                envelope = box(
+                    -assembled.width_m / 2, -assembled.depth_m / 2, assembled.width_m / 2, assembled.depth_m / 2
+                )
+                rotations = [
+                    angle
+                    for angle in (rectangle_rotation, (rectangle_rotation + 90) % 180)
+                    if plot.buffer(1e-7).covers(rotate(envelope, angle, origin=(0, 0)))
+                ]
                 if not rotations:
                     continue
                 rectangle_rotation = rotations[0]
                 segment_length, segment_thickness = (
-                    (request.target_width_m, request.target_depth_m) if rectangle_rotation == 0
+                    (request.target_width_m, request.target_depth_m)
+                    if rectangle_rotation == 0
                     else (request.target_depth_m, request.target_width_m)
                 )
                 scale_x = segment_length / assembled.width_m
@@ -1287,9 +1296,7 @@ def _plan_vertical_assembly_core(
                 and max(authored_axis_scale_x, authored_axis_scale_y) <= FIXED_LANDMARK_CONTAIN_MAX_ENVELOPE_SCALE
                 and axis_ratio <= FIXED_LANDMARK_CONTAIN_MAX_AXIS_RATIO
             )
-            forced_landmark_fit = (
-                forced and not has_stack_fallback and not select_and_place
-            )
+            forced_landmark_fit = forced and not has_stack_fallback and not select_and_place
             native_site_envelope_fit = select_and_place and min(scale_x, scale_y) >= 1.0 - 1e-7
             if native_site_envelope_fit or near_native_fit or uniform_contain_fit or forced_landmark_fit:
                 # The polygon is a site envelope, not an extrusion mould.
@@ -1355,8 +1362,11 @@ def _plan_vertical_assembly_core(
                             else (
                                 "fixed_landmark_native"
                                 if math.isclose(scale_x, 1.0, abs_tol=1e-6) and math.isclose(scale_y, 1.0, abs_tol=1e-6)
-                                else "fixed_landmark_native_envelope" if select_and_place
-                                else "fixed_landmark_tolerance" if near_native_fit else "fixed_landmark_contain"
+                                else (
+                                    "fixed_landmark_native_envelope"
+                                    if select_and_place
+                                    else "fixed_landmark_tolerance" if near_native_fit else "fixed_landmark_contain"
+                                )
                             )
                         ),
                         "scale_band": {
@@ -1607,7 +1617,11 @@ def _plan_vertical_assembly_core(
             best_plan = plan
 
     if best_plan is None:
-        if any(module.delivery_format == RLASM_ARCHITECTURAL_CLAY_FORMAT for family in families for module in modules_by_family[family]):
+        if any(
+            module.delivery_format == RLASM_ARCHITECTURAL_CLAY_FORMAT
+            for family in families
+            for module in modules_by_family[family]
+        ):
             raise AssemblyPlanningError(
                 "The selected architectural clay is fixed at its native size and floor count. "
                 "Use a plot containing the complete building or keep this proposal as planned massing.",

@@ -18,7 +18,12 @@ def upgrade() -> None:
     op.create_table(
         "reference_layers",
         sa.Column("id", postgresql.UUID(as_uuid=True), primary_key=True),
-        sa.Column("project_id", postgresql.UUID(as_uuid=True), sa.ForeignKey("projects.id", ondelete="CASCADE"), nullable=False),
+        sa.Column(
+            "project_id",
+            postgresql.UUID(as_uuid=True),
+            sa.ForeignKey("projects.id", ondelete="CASCADE"),
+            nullable=False,
+        ),
         sa.Column("created_by", postgresql.UUID(as_uuid=True), sa.ForeignKey("users.id", ondelete="SET NULL")),
         sa.Column("name", sa.String(160), nullable=False),
         sa.Column("source_filename", sa.String(255), nullable=False),

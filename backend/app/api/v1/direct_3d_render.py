@@ -302,7 +302,11 @@ def _validate_direct_3d_project_zones(
     boundary = boundaries[0]
     stored = (boundary.properties or {}).get("community_3d_landscape")
     claim = req.residual_landscape_claim
-    if (boundary.properties or {}).get("community_3d_landscape_mode") == "placed_objects_only" and stored is None and claim is None:
+    if (
+        (boundary.properties or {}).get("community_3d_landscape_mode") == "placed_objects_only"
+        and stored is None
+        and claim is None
+    ):
         # Physical source hashes, representation hashes and instance ownership
         # have already been checked above. This mode intentionally has no fill.
         return server_inventory
@@ -390,7 +394,9 @@ def _fnv1a32(value: str) -> int:
     return value_hash
 
 
-def _canonical_junction_instance_id(source_zone_ids: list[str], topology: Direct3DJunctionTopology | None = None) -> str:
+def _canonical_junction_instance_id(
+    source_zone_ids: list[str], topology: Direct3DJunctionTopology | None = None
+) -> str:
     normalized = sorted({str(value).strip() for value in source_zone_ids if str(value).strip()})
     source_hash = _fnv1a32(":".join(normalized))
     if topology is not None:
@@ -658,7 +664,8 @@ def _street_sources_form_four_arm_junction(street_zones: list[SiteZone]) -> bool
 
 
 def _street_sources_form_junction(
-    street_zones: list[SiteZone], topology: Direct3DJunctionTopology | None = None,
+    street_zones: list[SiteZone],
+    topology: Direct3DJunctionTopology | None = None,
 ) -> bool:
     """Independently reconstruct arm count and the exact captured node anchor."""
     if len(street_zones) < 2:
@@ -813,10 +820,14 @@ def _street_sources_form_junction(
 
     expected_zone_ids = {str(zone.id) for zone in street_zones}
     for cluster in clusters:
-        if topology is not None and math.hypot(
-            (topology.longitude - origin_longitude) * meters_per_longitude - float(cluster["x"]),
-            (topology.latitude - origin_latitude) * 111_320 - float(cluster["y"]),
-        ) > 0.5:
+        if (
+            topology is not None
+            and math.hypot(
+                (topology.longitude - origin_longitude) * meters_per_longitude - float(cluster["x"]),
+                (topology.latitude - origin_latitude) * 111_320 - float(cluster["y"]),
+            )
+            > 0.5
+        ):
             continue
         arms: list[dict[str, object]] = []
         contributing_zone_ids: set[str] = set()
@@ -855,14 +866,21 @@ def _street_sources_form_junction(
             at_first_end = segment_index == 0 and (best[2] * length < 2 if topology else best[2] < 0.08)
             at_last_end = segment_index == len(points) - 2 and ((1 - best[2]) * length < 2 if topology else best[2] > 0.92)  # type: ignore[arg-type]
             if not at_last_end:
-                arms.append({"bearing": bearing, "width": float(axis["width"]),
-                    "reach": (end[0] - float(cluster["x"])) * math.cos(bearing) + (end[1] - float(cluster["y"])) * math.sin(bearing)})
+                arms.append(
+                    {
+                        "bearing": bearing,
+                        "width": float(axis["width"]),
+                        "reach": (end[0] - float(cluster["x"])) * math.cos(bearing)
+                        + (end[1] - float(cluster["y"])) * math.sin(bearing),
+                    }
+                )
             if not at_first_end:
                 arms.append(
                     {
                         "bearing": (bearing + math.pi) % (math.pi * 2),
                         "width": float(axis["width"]),
-                        "reach": -(start[0] - float(cluster["x"])) * math.cos(bearing) - (start[1] - float(cluster["y"])) * math.sin(bearing),
+                        "reach": -(start[0] - float(cluster["x"])) * math.cos(bearing)
+                        - (start[1] - float(cluster["y"])) * math.sin(bearing),
                     }
                 )
         if contributing_zone_ids != expected_zone_ids:
@@ -899,11 +917,19 @@ def _street_sources_form_junction(
             continue
         separation = _undirected_angle_distance(orientations[0], orientations[1])
         if topology is not None:
-            if any(arm["reach"] + 0.01 < max(other["width"] / 2 + 4 for other in grouped_arms
-                if _undirected_angle_distance(arm["bearing"], other["bearing"]) >= math.pi / 6) for arm in grouped_arms):
+            if any(
+                arm["reach"] + 0.01
+                < max(
+                    other["width"] / 2 + 4
+                    for other in grouped_arms
+                    if _undirected_angle_distance(arm["bearing"], other["bearing"]) >= math.pi / 6
+                )
+                for arm in grouped_arms
+            ):
                 continue
             if abs(separation - math.pi / 2) <= math.pi / 180 and all(
-                min(_undirected_angle_distance(float(arm["bearing"]), orientation) for orientation in orientations) <= math.pi / 180
+                min(_undirected_angle_distance(float(arm["bearing"]), orientation) for orientation in orientations)
+                <= math.pi / 180
                 for arm in arms
             ):
                 return True
@@ -913,7 +939,9 @@ def _street_sources_form_junction(
 
 
 def _validate_junction_topology(
-    source_streets: list[SiteZone], scene_streets: list[SiteZone], topology: Direct3DJunctionTopology,
+    source_streets: list[SiteZone],
+    scene_streets: list[SiteZone],
+    topology: Direct3DJunctionTopology,
 ) -> bool:
     source_ids = {str(zone.id) for zone in source_streets}
     parts = []
@@ -923,7 +951,10 @@ def _validate_junction_topology(
             return False
         source_hash = str(meta.get("source_hash", "")).lower()
         representation_hash = str(meta.get("representation_hash", "")).lower()
-        if any(len(value) != 64 or any(character not in "0123456789abcdef" for character in value) for value in (source_hash, representation_hash)):
+        if any(
+            len(value) != 64 or any(character not in "0123456789abcdef" for character in value)
+            for value in (source_hash, representation_hash)
+        ):
             return False
         parts.append(f"{zone.id}:{source_hash}:{representation_hash}")
     if topology.source_fingerprint != "sj1|" + "|".join(parts):
@@ -937,15 +968,27 @@ def _validate_junction_topology(
         properties = zone.properties or {}
         recipe = properties.get("public_realm_lego")
         recipe = recipe if isinstance(recipe, dict) else {}
-        semantic = " ".join(str(value or "").lower().replace("-", "_") for value in (
-            properties.get("street_role"), properties.get("road_archetype_id"), recipe.get("archetype_id"), recipe.get("family_id")))
-        if _effective_street_width(zone) < 6 or any(token in semantic for token in ("trail", "path", "laneway", "alley", "roundabout")):
+        semantic = " ".join(
+            str(value or "").lower().replace("-", "_")
+            for value in (
+                properties.get("street_role"),
+                properties.get("road_archetype_id"),
+                recipe.get("archetype_id"),
+                recipe.get("family_id"),
+            )
+        )
+        if _effective_street_width(zone) < 6 or any(
+            token in semantic for token in ("trail", "path", "laneway", "alley", "roundabout")
+        ):
             continue
         line = _street_zone_centerline(zone)
         if line is None:
             continue
         local = [((p[0] - topology.longitude) * m_lon, (p[1] - topology.latitude) * 111_320) for p in line]
-        if any(_closest_point_on_segment((0, 0), a, b)[3] <= max(node_tolerance, _effective_street_width(zone) / 2 + 2) for a, b in zip(local, local[1:])):
+        if any(
+            _closest_point_on_segment((0, 0), a, b)[3] <= max(node_tolerance, _effective_street_width(zone) / 2 + 2)
+            for a, b in zip(local, local[1:])
+        ):
             return False
     return _street_sources_form_junction(source_streets, topology)
 
@@ -1077,7 +1120,11 @@ def _bind_instance_manifest_to_server_zones(
                     )
                 source_streets = [all_zones_by_id[source_id] for source_id in source_zone_ids]
                 if descriptor.junction_topology is not None:
-                    scene_streets = [zone for zone in physical_zones if community_3d_kind_for_source(zone.zone_type, zone.properties) == "street"]
+                    scene_streets = [
+                        zone
+                        for zone in physical_zones
+                        if community_3d_kind_for_source(zone.zone_type, zone.properties) == "street"
+                    ]
                     if not _validate_junction_topology(source_streets, scene_streets, descriptor.junction_topology):
                         raise _direct_state_conflict(
                             "The street-junction topology, anchor, or source revision no longer matches the compiled scene. Refresh the scene before rendering."
@@ -1089,7 +1136,9 @@ def _bind_instance_manifest_to_server_zones(
                     )
         else:
             if descriptor.junction_topology is not None:
-                raise _direct_state_conflict("Zone-bound instances cannot claim junction topology. Refresh the scene before rendering.")
+                raise _direct_state_conflict(
+                    "Zone-bound instances cannot claim junction topology. Refresh the scene before rendering."
+                )
             if zone_id not in all_zone_ids:
                 raise _direct_state_conflict(
                     "The instance inventory references a zone that is no longer "
@@ -1147,7 +1196,11 @@ def _bind_instance_manifest_to_server_zones(
                 "zone_id": zone_id,
                 "building_id": (str(descriptor.building_id) if descriptor.building_id else None),
                 "source_zone_ids": source_zone_ids,
-                **({"junction_topology": descriptor.junction_topology.model_dump()} if descriptor.junction_topology is not None else {}),
+                **(
+                    {"junction_topology": descriptor.junction_topology.model_dump()}
+                    if descriptor.junction_topology is not None
+                    else {}
+                ),
                 "design_identity": (
                     expected_item["design_identity"]
                     if expected_item is not None and not is_supplemental_surface
@@ -1317,7 +1370,10 @@ async def generate_direct_3d_render(
         req.residual_landscape_claim,
     )
     source_snapshot = build_render_source_snapshot(
-        req, current_zones, current_buildings, captured_at=datetime.now(timezone.utc).isoformat(),
+        req,
+        current_zones,
+        current_buildings,
+        captured_at=datetime.now(timezone.utc).isoformat(),
     )
 
     if not settings.openai_api_key:

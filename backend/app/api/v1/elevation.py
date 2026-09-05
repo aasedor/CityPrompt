@@ -37,7 +37,11 @@ class BatchElevationRequest(BaseModel):
         if not isinstance(points, list):
             raise ValueError("Points must be a list of longitude/latitude pairs.")
         for point in points:
-            if not isinstance(point, (list, tuple)) or len(point) != 2 or not all(_finite_number(value) for value in point):
+            if (
+                not isinstance(point, (list, tuple))
+                or len(point) != 2
+                or not all(_finite_number(value) for value in point)
+            ):
                 raise ValueError("Each point must contain two finite longitude/latitude numbers.")
             if not (-180 <= point[0] <= 180 and -90 <= point[1] <= 90):
                 raise ValueError("Coordinates must be within longitude/latitude bounds.")
@@ -60,15 +64,21 @@ def _finite_number(value) -> bool:
 def _unavailable(lat: float, lng: float, reason: str) -> ElevationResponse:
     # These numbers are compatibility defaults for existing renderers. The
     # explicit metadata prevents them from being presented as measured data.
-    return ElevationResponse(elevation=0, ellipsoidal_height=estimate_geoid_undulation(lat, lng),
-                             resolution=1000, status="unavailable", source="renderer_fallback",
-                             unavailable_reason=reason)
+    return ElevationResponse(
+        elevation=0,
+        ellipsoidal_height=estimate_geoid_undulation(lat, lng),
+        resolution=1000,
+        status="unavailable",
+        source="renderer_fallback",
+        unavailable_reason=reason,
+    )
 
 
 async def _google_results(client: httpx.AsyncClient, locations: str, api_key: str, count: int):
     try:
-        response = await client.get("https://maps.googleapis.com/maps/api/elevation/json",
-                                    params={"locations": locations, "key": api_key})
+        response = await client.get(
+            "https://maps.googleapis.com/maps/api/elevation/json", params={"locations": locations, "key": api_key}
+        )
     except httpx.RequestError:
         return None, "network_error"
     if response.status_code != 200:
@@ -142,9 +152,13 @@ async def get_elevation(
         return _unavailable(lat, lng, reason)
     result = results[0]
     elevation_msl = result["elevation"]
-    return ElevationResponse(elevation=elevation_msl,
-                             ellipsoidal_height=elevation_msl + estimate_geoid_undulation(lat, lng),
-                             resolution=result.get("resolution", 0), status="available", source="google_elevation")
+    return ElevationResponse(
+        elevation=elevation_msl,
+        ellipsoidal_height=elevation_msl + estimate_geoid_undulation(lat, lng),
+        resolution=result.get("resolution", 0),
+        status="available",
+        source="google_elevation",
+    )
 
 
 @router.post("/batch", response_model=BatchElevationResponse)
@@ -165,8 +179,11 @@ async def get_elevation_batch(body: BatchElevationRequest):
     api_key = s.google_maps_api_key or s.gemini_api_key
     if not api_key:
         # No key: best-effort flat geoid so callers degrade rather than fail.
-        return BatchElevationResponse(elevations=[estimate_geoid_undulation(lat, lng) for lng, lat in points],
-                                      statuses=["unavailable"] * len(points), sources=["renderer_fallback"] * len(points))
+        return BatchElevationResponse(
+            elevations=[estimate_geoid_undulation(lat, lng) for lng, lat in points],
+            statuses=["unavailable"] * len(points),
+            sources=["renderer_fallback"] * len(points),
+        )
 
     chunk_size = 250  # keep the GET URL well under length limits
     elevations: list[float] = []

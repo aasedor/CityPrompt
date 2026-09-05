@@ -30,8 +30,13 @@ MAX_POSITIONS = 100_000
 MAX_STORED_BYTES = 4 * 1024 * 1024
 MAX_ATTRIBUTE_BYTES = 32 * 1024
 GEOMETRY_TYPES = {
-    "Point", "MultiPoint", "LineString", "MultiLineString",
-    "Polygon", "MultiPolygon", "GeometryCollection",
+    "Point",
+    "MultiPoint",
+    "LineString",
+    "MultiLineString",
+    "Polygon",
+    "MultiPolygon",
+    "GeometryCollection",
 }
 
 
@@ -45,7 +50,10 @@ def _finite_number(value: Any) -> bool:
 def _geometry_members(geometry: dict) -> dict:
     """Keep geometry, excluding unvalidated foreign members such as custom bbox."""
     if geometry["type"] == "GeometryCollection":
-        return {"type": "GeometryCollection", "geometries": [_geometry_members(child) for child in geometry["geometries"]]}
+        return {
+            "type": "GeometryCollection",
+            "geometries": [_geometry_members(child) for child in geometry["geometries"]],
+        }
     return {"type": geometry["type"], "coordinates": geometry["coordinates"]}
 
 
@@ -99,8 +107,7 @@ def _positions(geometry: dict, depth: int = 0):
             yield from _positions(child, depth + 1)
         return
 
-    dimensions = {"Point": 0, "MultiPoint": 1, "LineString": 1,
-                  "MultiLineString": 2, "Polygon": 2, "MultiPolygon": 3}
+    dimensions = {"Point": 0, "MultiPoint": 1, "LineString": 1, "MultiLineString": 2, "Polygon": 2, "MultiPolygon": 3}
 
     def walk(coords: Any, remaining: int):
         if not isinstance(coords, (list, tuple)):
@@ -122,7 +129,9 @@ def _finish(features: list[dict], source_crs: str, warnings: list[str]) -> Parse
     if not features:
         raise ReferenceImportError("The file contains no non-empty reference features.")
     if len(features) > MAX_FEATURES:
-        raise ReferenceImportError(f"A reference layer supports up to {MAX_FEATURES:,} features. Export a smaller area.")
+        raise ReferenceImportError(
+            f"A reference layer supports up to {MAX_FEATURES:,} features. Export a smaller area."
+        )
     bounds = [180.0, 90.0, -180.0, -90.0]
     position_count = 0
     for index, feature in enumerate(features, 1):
@@ -134,15 +143,23 @@ def _finish(features: list[dict], source_crs: str, warnings: list[str]) -> Parse
         for position in _positions(geometry):
             position_count += 1
             if position_count > MAX_POSITIONS:
-                raise ReferenceImportError(f"A layer supports up to {MAX_POSITIONS:,} coordinates. Export a smaller area.")
-            bounds = [min(bounds[0], position[0]), min(bounds[1], position[1]),
-                      max(bounds[2], position[0]), max(bounds[3], position[1])]
+                raise ReferenceImportError(
+                    f"A layer supports up to {MAX_POSITIONS:,} coordinates. Export a smaller area."
+                )
+            bounds = [
+                min(bounds[0], position[0]),
+                min(bounds[1], position[1]),
+                max(bounds[2], position[0]),
+                max(bounds[3], position[1]),
+            ]
         try:
             geom = shape(geometry)
             if geom.is_empty or not geom.is_valid:
                 raise ValueError("empty or invalid geometry")
         except (ValueError, TypeError, KeyError, IndexError, ShapelyError) as exc:
-            raise ReferenceImportError(f"Feature {index} has invalid geometry; correct the source before importing.") from exc
+            raise ReferenceImportError(
+                f"Feature {index} has invalid geometry; correct the source before importing."
+            ) from exc
         feature["geometry"] = _geometry_members(geometry)
         properties = feature.get("properties")
         if properties is None:
@@ -159,10 +176,13 @@ def _finish(features: list[dict], source_crs: str, warnings: list[str]) -> Parse
             raise ReferenceImportError(f"Feature {index} ID must be finite.")
     # Normalize tuples to JSON arrays, and exclude foreign members that the
     # parser has not validated. Attributes and supported feature IDs survive.
-    collection = {"type": "FeatureCollection", "features": [
-        {key: feature[key] for key in ("type", "geometry", "properties", "id") if key in feature}
-        for feature in features
-    ]}
+    collection = {
+        "type": "FeatureCollection",
+        "features": [
+            {key: feature[key] for key in ("type", "geometry", "properties", "id") if key in feature}
+            for feature in features
+        ],
+    }
     encoded = json.dumps(collection, ensure_ascii=False, allow_nan=False, separators=(",", ":")).encode("utf-8")
     if len(encoded) > MAX_STORED_BYTES:
         raise ReferenceImportError("The reference data exceeds 4 MB after parsing. Export a smaller area.")
@@ -186,7 +206,9 @@ def parse_geojson_reference(data: bytes) -> ParsedReference:
             if not source.equals(CRS.from_epsg(4326), ignore_axis_order=True):
                 raise ValueError("not WGS84")
         except Exception as exc:
-            raise ReferenceImportError("GeoJSON must use WGS84 longitude/latitude. Reproject it or import a shapefile with its .prj.") from exc
+            raise ReferenceImportError(
+                "GeoJSON must use WGS84 longitude/latitude. Reproject it or import a shapefile with its .prj."
+            ) from exc
     if document.get("type") == "FeatureCollection":
         features = document.get("features")
         if not isinstance(features, list):
@@ -220,7 +242,9 @@ def parse_shapefile_reference(data: bytes) -> ParsedReference:
         base = shps[0][:-4]
         dbf, shx, prj = (_sibling(names, base, ext) for ext in (".dbf", ".shx", ".prj"))
         if not dbf or not shx:
-            raise ReferenceImportError("The ZIP must contain matching .shp, .shx and .dbf files; include .prj for the source CRS.")
+            raise ReferenceImportError(
+                "The ZIP must contain matching .shp, .shx and .dbf files; include .prj for the source CRS."
+            )
         warnings: list[str] = []
         if prj:
             try:
@@ -238,10 +262,16 @@ def parse_shapefile_reference(data: bytes) -> ParsedReference:
                 code_page = archive.read(cpg).decode("ascii").strip()
                 encoding = "utf-8" if code_page == "65001" else f"cp{code_page}" if code_page.isdigit() else code_page
                 codecs.lookup(encoding)
-            reader = shapefile.Reader(shp=io.BytesIO(archive.read(shps[0])),
-                                      shx=io.BytesIO(archive.read(shx)), dbf=io.BytesIO(archive.read(dbf)), encoding=encoding)
+            reader = shapefile.Reader(
+                shp=io.BytesIO(archive.read(shps[0])),
+                shx=io.BytesIO(archive.read(shx)),
+                dbf=io.BytesIO(archive.read(dbf)),
+                encoding=encoding,
+            )
             if len(reader) > MAX_FEATURES:
-                raise ReferenceImportError(f"A reference layer supports up to {MAX_FEATURES:,} features. Export a smaller area.")
+                raise ReferenceImportError(
+                    f"A reference layer supports up to {MAX_FEATURES:,} features. Export a smaller area."
+                )
             features = []
             for index, record in enumerate(reader.iterShapeRecords(), 1):
                 if record.shape.shapeType == shapefile.NULL:
@@ -267,13 +297,14 @@ def parse_shapefile_reference(data: bytes) -> ParsedReference:
                     warning = "Shapefile measure values are retained as additional _shapefile_m_values attributes, not used as heights."
                     if warning not in warnings:
                         warnings.append(warning)
-                features.append({"type": "Feature", "geometry": mapping(projected),
-                                 "properties": properties})
+                features.append({"type": "Feature", "geometry": mapping(projected), "properties": properties})
             reader.close()
         except ReferenceImportError:
             raise
         except Exception as exc:
-            raise ReferenceImportError("The shapefile could not be read or reprojected. Check its geometry, encoding and sidecar files.") from exc
+            raise ReferenceImportError(
+                "The shapefile could not be read or reprojected. Check its geometry, encoding and sidecar files."
+            ) from exc
     return _finish(features, (source.name or str(source))[:255], warnings)
 
 

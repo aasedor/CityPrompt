@@ -362,8 +362,8 @@ def _locked_building_target(zone: SiteZone) -> tuple[float, float, int, str, flo
             if len(ring) == 4:
                 lat = sum(p[1] for p in ring) / 4
                 east = 111_320 * math.cos(math.radians(lat))
-                width = round(math.hypot((ring[1][0]-ring[0][0])*east, (ring[1][1]-ring[0][1])*111_320), 1)
-                depth = round(math.hypot((ring[2][0]-ring[1][0])*east, (ring[2][1]-ring[1][1])*111_320), 1)
+                width = round(math.hypot((ring[1][0] - ring[0][0]) * east, (ring[1][1] - ring[0][1]) * 111_320), 1)
+                depth = round(math.hypot((ring[2][0] - ring[1][0]) * east, (ring[2][1] - ring[1][1]) * 111_320), 1)
         bound_wing = None
     if width <= 0 or depth <= 0 or profile not in {"rectangle", "l_shape", "u_shape", "courtyard"}:
         raise HTTPException(
@@ -393,8 +393,9 @@ def _strict_locked_building_plan(
         geometry = _community_source_geometry(zone)
         if geometry.geom_type != "Polygon" or len(geometry.interiors):
             raise AssemblyPlanningError("Native building placement requires one polygon without interior holes.")
-        plot_coordinates = detached_plot_local_coordinates(geometry.exterior.coords, width, depth,
-            preserve_authored_axes=properties.get("native_home_plot") is True)
+        plot_coordinates = detached_plot_local_coordinates(
+            geometry.exterior.coords, width, depth, preserve_authored_axes=properties.get("native_home_plot") is True
+        )
     # Wing depth is intentionally omitted: the current imported family owns
     # the deterministic native/default thickness. The returned target is then
     # the independent value against which a submitted shaped recipe is bound.
@@ -597,7 +598,8 @@ async def _assert_ai_lego_recipes_are_current(
         if (
             current_plan["family"] != recipe.module_family
             or current_plan["reuse_keys"] != recipe.reuse_keys
-            or _stable_recipe_instances(current_plan["instances"], compare=True) != _stable_recipe_instances(recipe.instances, compare=True)
+            or _stable_recipe_instances(current_plan["instances"], compare=True)
+            != _stable_recipe_instances(recipe.instances, compare=True)
             or current_plan["assembled_height_m"] != recipe.assembled_height_m
             or current_plan["fit"] != recipe.fit
         ):
@@ -1426,8 +1428,11 @@ def _stable_asset_url(value: str | None) -> str | None:
     if not value:
         return value
     parsed = urlsplit(value)
-    query = [(key, val) for key, val in parse_qsl(parsed.query, keep_blank_values=True)
-             if key not in {"file_ticket", "asset_ticket", "share_token"}]
+    query = [
+        (key, val)
+        for key, val in parse_qsl(parsed.query, keep_blank_values=True)
+        if key not in {"file_ticket", "asset_ticket", "share_token"}
+    ]
     return urlunsplit((parsed.scheme, parsed.netloc, parsed.path, urlencode(query), parsed.fragment))
 
 
@@ -2015,7 +2020,10 @@ async def place_community_3d(
     try:
         for boundary in boundaries:
             if not body.include_residual_landscape:
-                if "community_3d_landscape" in (boundary.properties or {}) or (boundary.properties or {}).get("community_3d_landscape_mode") != "placed_objects_only":
+                if (
+                    "community_3d_landscape" in (boundary.properties or {})
+                    or (boundary.properties or {}).get("community_3d_landscape_mode") != "placed_objects_only"
+                ):
                     properties = dict(boundary.properties or {})
                     properties.pop("community_3d_landscape", None)
                     properties["community_3d_landscape_mode"] = "placed_objects_only"
@@ -2143,17 +2151,26 @@ async def save_lego_recipe(
 
     entries = await _accessible_entries(db, user, building.project_id, lock_for_update=True)
     if select_runtime_architecture_entries(entries).clay_installed:
-        result = await db.execute(select(SiteZone).where(
-            SiteZone.project_id == building.project_id, SiteZone.building_id == building.id,
-        ))
+        result = await db.execute(
+            select(SiteZone).where(
+                SiteZone.project_id == building.project_id,
+                SiteZone.building_id == building.id,
+            )
+        )
         linked_zones = list(result.scalars().all())
         if len(linked_zones) != 1:
-            raise HTTPException(status_code=409, detail="A clay recipe must be rebuilt on its single current source plot.")
+            raise HTTPException(
+                status_code=409, detail="A clay recipe must be rebuilt on its single current source plot."
+            )
         zone = linked_zones[0]
         recipe = LegoPlaceRequest.model_validate(body.model_dump())
         item = Community3DCompileItem(zone_id=zone.id, source_updated_at=zone.updated_at, recipe=recipe)
         await _assert_ai_lego_recipes_are_current(
-            db, user, building.project_id, [(item, zone, "building")], entries=entries,
+            db,
+            user,
+            building.project_id,
+            [(item, zone, "building")],
+            entries=entries,
         )
         body = recipe
 

@@ -62,7 +62,6 @@ DIRECT_3D_REPROJECT_STYLES = frozenset(
 )
 
 
-
 class Direct3DCaptureClaim(BaseModel):
     """Optional client measurements which the server verifies against pixels."""
 

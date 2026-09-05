@@ -42,16 +42,10 @@ def revision_sha256(value: Any) -> str:
 
 
 def _geometry(value: Any) -> dict | None:
-    return (
-        mapping(value if hasattr(value, "geom_type") else to_shape(value))
-        if value is not None
-        else None
-    )
+    return mapping(value if hasattr(value, "geom_type") else to_shape(value)) if value is not None else None
 
 
-def build_render_source_snapshot(
-    req: Any, zones: Iterable[Any], buildings: Iterable[Any], *, captured_at: str
-) -> dict:
+def build_render_source_snapshot(req: Any, zones: Iterable[Any], buildings: Iterable[Any], *, captured_at: str) -> dict:
     """Call only after project scope and compiled claims pass server validation."""
     zones = list(zones)
     park_access = getattr(req, "park_access_snapshot", None)
@@ -87,7 +81,12 @@ def build_render_source_snapshot(
                 "properties": dict(zone.properties or {}),
                 "is_active_boundary": bool(getattr(zone, "is_active_boundary", False)),
                 "building_ids": sorted(set(str(value) for value in linked_ids)),
-                **({"updated_at": zone.updated_at} if bound_park_access is not None or (bound_shared_ground is not None and str(zone.id) == str(shared_ground.boundaryId)) else {}),
+                **(
+                    {"updated_at": zone.updated_at}
+                    if bound_park_access is not None
+                    or (bound_shared_ground is not None and str(zone.id) == str(shared_ground.boundaryId))
+                    else {}
+                ),
             }
         )
     missing = zone_ids - {zone["id"] for zone in source_zones}
@@ -119,9 +118,7 @@ def build_render_source_snapshot(
             }
         )
     if building_ids - {building["id"] for building in source_buildings}:
-        raise ValueError(
-            "Validated render snapshot references missing linked buildings"
-        )
+        raise ValueError("Validated render snapshot references missing linked buildings")
     plan = json.loads(
         canonical_json(
             {
@@ -143,19 +140,19 @@ def build_render_source_snapshot(
         "schema_version": 1,
         "captured_at": captured_at,
         "plan_revision_sha256": revision_sha256(plan),
-        "camera_revision_sha256": revision_sha256(capture)
-        if camera is not None
-        else None,
+        "camera_revision_sha256": revision_sha256(capture) if camera is not None else None,
         "plan": plan,
         "capture": capture,
-        "camera_evidence": "validated_client_capture_manifest"
-        if camera is not None
-        else "not_supplied",
+        "camera_evidence": "validated_client_capture_manifest" if camera is not None else "not_supplied",
         "plan_evidence": "server_project_state_after_claim_validation",
         "scope": (
-            "all_project_zones_and_linked_buildings_for_park_access" if bound_park_access is not None
-            else "rendered_zones_active_ground_boundary_and_linked_buildings" if bound_shared_ground is not None
-            else "rendered_zones_and_linked_buildings"
+            "all_project_zones_and_linked_buildings_for_park_access"
+            if bound_park_access is not None
+            else (
+                "rendered_zones_active_ground_boundary_and_linked_buildings"
+                if bound_shared_ground is not None
+                else "rendered_zones_and_linked_buildings"
+            )
         ),
         **({"park_access_evidence": PARK_ACCESS_EVIDENCE} if bound_park_access is not None else {}),
         **({"shared_ground_evidence": SHARED_GROUND_EVIDENCE} if bound_shared_ground is not None else {}),

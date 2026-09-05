@@ -23,14 +23,34 @@ from app.services.master_planner.lego_catalog import build_lego_planning_catalog
 
 def clay_entry(parent="calgary_modern_infill_house", variant="infill_flat_roof_minimal"):
     return SimpleNamespace(
-        id="clay", name="Exact reviewed clay", model_url="/api/v1/files/library/clay.glb", is_public=True,
+        id="clay",
+        name="Exact reviewed clay",
+        model_url="/api/v1/files/library/clay.glb",
+        is_public=True,
         metadata_={
-            "rlasm": {"method_version": "6.1", "delivery_format": "architectural_clay", "runtime_enabled": True,
-                      "variant_id": variant, "continuous_resize_allowed": False},
-            "lego": {"enabled": True, "family": "native-clay", "role": "assembled", "width_m": 10.0,
-                     "depth_m": 8.0, "height_m": 7.0, "native_floors": 2, "min_floors": 2, "max_floors": 2,
-                     "repeatable_z": False, "archetype_ids": [parent, variant], "reuse_keys": [parent],
-                     "source_variant_id": variant, "generation_archetype_id": variant},
+            "rlasm": {
+                "method_version": "6.1",
+                "delivery_format": "architectural_clay",
+                "runtime_enabled": True,
+                "variant_id": variant,
+                "continuous_resize_allowed": False,
+            },
+            "lego": {
+                "enabled": True,
+                "family": "native-clay",
+                "role": "assembled",
+                "width_m": 10.0,
+                "depth_m": 8.0,
+                "height_m": 7.0,
+                "native_floors": 2,
+                "min_floors": 2,
+                "max_floors": 2,
+                "repeatable_z": False,
+                "archetype_ids": [parent, variant],
+                "reuse_keys": [parent],
+                "source_variant_id": variant,
+                "generation_archetype_id": variant,
+            },
         },
     )
 
@@ -58,18 +78,25 @@ def test_exact_clay_has_one_unscaled_instance_even_on_a_detached_block(width, de
     assert actual["footprint_segments"][0]["thickness_m"] == 8.0
 
 
-@pytest.mark.parametrize("changes", [
-    {"target_width_m": 9.5, "target_depth_m": 7.5},
-    {"target_width_m": 2.0, "target_depth_m": 100},
-    {"target_floors": 1}, {"target_floors": 3},
-])
+@pytest.mark.parametrize(
+    "changes",
+    [
+        {"target_width_m": 9.5, "target_depth_m": 7.5},
+        {"target_width_m": 2.0, "target_depth_m": 100},
+        {"target_floors": 1},
+        {"target_floors": 3},
+    ],
+)
 def test_incompatible_clay_never_forces_scale_or_floor_substitution(changes):
     with pytest.raises(AssemblyPlanningError) as exc:
         plan(**changes)
     assert exc.value.code == "family_incompatible"
 
 
-@pytest.mark.parametrize("identity", ["calgary_modern_infill_house", "calgary_modern_infill_house_variant_0", "infill_gabled_modern", "unknown_sibling"])
+@pytest.mark.parametrize(
+    "identity",
+    ["calgary_modern_infill_house", "calgary_modern_infill_house_variant_0", "infill_gabled_modern", "unknown_sibling"],
+)
 def test_parent_alias_or_other_variant_cannot_select_exact_clay(identity):
     with pytest.raises(AssemblyPlanningError) as exc:
         plan(archetype_id=identity)
@@ -82,16 +109,28 @@ def test_clay_containment_uses_actual_concave_polygon_not_its_large_bounds():
         plan(target_width_m=40, target_depth_m=40, footprint_local_m=tuple(notched.exterior.coords))
     assert exc.value.code == "family_incompatible"
     contained = box(-20, -20, 20, 20).difference(box(12, 12, 20, 20))
-    actual = plan(target_width_m=40, target_depth_m=40, footprint_profile="l_shape", footprint_local_m=tuple(contained.exterior.coords))
+    actual = plan(
+        target_width_m=40,
+        target_depth_m=40,
+        footprint_profile="l_shape",
+        footprint_local_m=tuple(contained.exterior.coords),
+    )
     assert actual["instances"][0]["scale"] == [1.0, 1.0, 1.0]
 
 
-@pytest.mark.parametrize("section,key,value", [
-    ("rlasm", "runtime_enabled", False), ("rlasm", "method_version", "6.0"),
-    ("rlasm", "continuous_resize_allowed", True), ("lego", "source_variant_id", "sibling"),
-    ("lego", "native_floors", None), ("lego", "repeatable_z", True),
-    ("lego", "role", "floor"), ("lego", "width_m", float("nan")),
-])
+@pytest.mark.parametrize(
+    "section,key,value",
+    [
+        ("rlasm", "runtime_enabled", False),
+        ("rlasm", "method_version", "6.0"),
+        ("rlasm", "continuous_resize_allowed", True),
+        ("lego", "source_variant_id", "sibling"),
+        ("lego", "native_floors", None),
+        ("lego", "repeatable_z", True),
+        ("lego", "role", "floor"),
+        ("lego", "width_m", float("nan")),
+    ],
+)
 def test_disabled_or_inconsistent_clay_cannot_become_an_ordinary_module(section, key, value):
     raw = clay_entry()
     raw.metadata_[section][key] = value
@@ -113,7 +152,13 @@ def test_master_planner_advertises_same_exact_clay_catalogue_as_runtime():
     legacy = copy.deepcopy(clay)
     legacy.id = "legacy"
     legacy.metadata_.pop("rlasm")
-    legacy.metadata_["lego"].update({"family": "legacy", "source_variant_id": "infill_gabled_modern", "generation_archetype_id": "infill_gabled_modern"})
+    legacy.metadata_["lego"].update(
+        {
+            "family": "legacy",
+            "source_variant_id": "infill_gabled_modern",
+            "generation_archetype_id": "infill_gabled_modern",
+        }
+    )
     raw = [legacy, clay]
     actual = build_lego_planning_catalog(raw)
     assert actual.fingerprint == build_lego_planning_catalog(select_runtime_architecture_entries(raw)).fingerprint
@@ -124,19 +169,40 @@ def test_master_planner_advertises_same_exact_clay_catalogue_as_runtime():
 
 
 @pytest.mark.anyio
-async def test_clay_tier_keeps_unsupported_choice_as_massing_even_when_legacy_family_exists(client, mock_db, test_user, auth_headers):
+async def test_clay_tier_keeps_unsupported_choice_as_massing_even_when_legacy_family_exists(
+    client, mock_db, test_user, auth_headers
+):
     from tests.conftest import FakeProject
     from tests.test_lego_assembly import _community_item, _make_zone, entry
 
     project = FakeProject(owner_id=test_user.id)
-    zone = _make_zone(project, properties={"_plan_role": "building", "development_archetype_id": "new_york_corner_bodega", "floors": 3, "floor_height": 3.5})
+    zone = _make_zone(
+        project,
+        properties={
+            "_plan_role": "building",
+            "development_archetype_id": "new_york_corner_bodega",
+            "floors": 3,
+            "floor_height": 3.5,
+        },
+    )
     legacy = [entry(role, role, role, height=3.5) for role in ("podium", "floor", "roof")]
     for item in legacy:
         item.metadata_["lego"]["archetype_ids"] = ["new_york_corner_bodega"]
     added = []
     mock_db.add.side_effect = added.append
-    mock_db.execute.side_effect = [scalar(test_user), scalar(zone), scalar(project), scalar(project.id), scalar([zone]), scalar(project), scalar([*legacy, clay_entry()]), scalar([])]
-    response = await client.post("/api/v1/lego-assembly/place-community", headers=auth_headers, json={"items": [_community_item(zone)]})
+    mock_db.execute.side_effect = [
+        scalar(test_user),
+        scalar(zone),
+        scalar(project),
+        scalar(project.id),
+        scalar([zone]),
+        scalar(project),
+        scalar([*legacy, clay_entry()]),
+        scalar([]),
+    ]
+    response = await client.post(
+        "/api/v1/lego-assembly/place-community", headers=auth_headers, json={"items": [_community_item(zone)]}
+    )
     assert response.status_code == 200, response.text
     assert response.json()["items"][0]["generator"] == "planned_massing"
     assert len(added) == 1
@@ -152,7 +218,9 @@ def test_non_detached_clay_certification_derives_real_zone_coordinates(monkeypat
     monkeypatch.setattr(endpoint, "detached_plot_local_coordinates", derive)
     zone = SimpleNamespace(geometry=from_shape(box(-114.1, 51.0, -114.0, 51.1), srid=4326))
     with pytest.raises(AssemblyPlanningError):
-        endpoint._strict_locked_building_plan([descriptor], "special_original_1970s", (40, 40, 2, "rectangle", None), {}, zone=zone)
+        endpoint._strict_locked_building_plan(
+            [descriptor], "special_original_1970s", (40, 40, 2, "rectangle", None), {}, zone=zone
+        )
     derive.assert_called_once()
 
 
@@ -165,13 +233,22 @@ def scalar(value):
 
 @pytest.mark.anyio
 @pytest.mark.parametrize("floors,status", [(2, 200), (3, 422)])
-async def test_plan_api_enforces_native_clay_despite_forced_fit(client, mock_db, test_user, auth_headers, floors, status):
+async def test_plan_api_enforces_native_clay_despite_forced_fit(
+    client, mock_db, test_user, auth_headers, floors, status
+):
     mock_db.execute.side_effect = [scalar(test_user), scalar([clay_entry()])]
-    response = await client.post("/api/v1/lego-assembly/plan", headers=auth_headers, json={
-        "target_width_m": 40, "target_depth_m": 30, "target_floors": floors,
-        "archetype_id": "infill_flat_roof_minimal", "allow_forced_fit": True,
-        "footprint_local_m": [[-20, -15], [20, -15], [20, 15], [-20, 15]],
-    })
+    response = await client.post(
+        "/api/v1/lego-assembly/plan",
+        headers=auth_headers,
+        json={
+            "target_width_m": 40,
+            "target_depth_m": 30,
+            "target_floors": floors,
+            "archetype_id": "infill_flat_roof_minimal",
+            "allow_forced_fit": True,
+            "footprint_local_m": [[-20, -15], [20, -15], [20, 15], [-20, 15]],
+        },
+    )
     assert response.status_code == status, response.text
     if status == 200:
         assert response.json()["instances"][0]["scale"] == [1, 1, 1]
@@ -181,9 +258,28 @@ async def test_plan_api_enforces_native_clay_despite_forced_fit(client, mock_db,
 
 
 @pytest.mark.anyio
-@pytest.mark.parametrize("change", ["none", "ticket_and_display_name", "different_path", "different_version", "scale", "unflagged", "old_family", "unknown_identity", "missing_link", "disabled"])
+@pytest.mark.parametrize(
+    "change",
+    [
+        "none",
+        "ticket_and_display_name",
+        "different_path",
+        "different_version",
+        "scale",
+        "unflagged",
+        "old_family",
+        "unknown_identity",
+        "missing_link",
+        "disabled",
+    ],
+)
 async def test_saved_recipe_cannot_evade_activated_clay_native_contract(
-    client, mock_db, test_user, auth_headers, monkeypatch, change,
+    client,
+    mock_db,
+    test_user,
+    auth_headers,
+    monkeypatch,
+    change,
 ):
     from app.models.models import Building
     from tests.conftest import FakeProject
@@ -191,17 +287,31 @@ async def test_saved_recipe_cannot_evade_activated_clay_native_contract(
 
     project = FakeProject(owner_id=test_user.id)
     building = Building(id=uuid.uuid4(), project_id=project.id, specifications={"existing": "preserved"})
-    zone = _make_zone(project, building_id=building.id, properties={
-        "_plan_role": "building", "development_selected_variant_id": "infill_flat_roof_minimal", "floors": 2,
-    })
+    zone = _make_zone(
+        project,
+        building_id=building.id,
+        properties={
+            "_plan_role": "building",
+            "development_selected_variant_id": "infill_flat_roof_minimal",
+            "floors": 2,
+        },
+    )
     inventory = select_runtime_architecture_entries([clay_entry()])
     descriptor = descriptor_from_library_entry(inventory[0])
     actual = endpoint._strict_locked_building_plan(
-        [descriptor], "infill_flat_roof_minimal", endpoint._locked_building_target(zone), zone.properties, zone=zone,
+        [descriptor],
+        "infill_flat_roof_minimal",
+        endpoint._locked_building_target(zone),
+        zone.properties,
+        zone=zone,
         allow_forced_fit=True,
     )
-    body = {**actual, "module_family": actual["family"], "archetype_id": "infill_flat_roof_minimal",
-            "catalog_fingerprint": build_lego_planning_catalog(inventory).fingerprint}
+    body = {
+        **actual,
+        "module_family": actual["family"],
+        "archetype_id": "infill_flat_roof_minimal",
+        "catalog_fingerprint": build_lego_planning_catalog(inventory).fingerprint,
+    }
     if change == "scale":
         body["instances"][0]["scale"] = [2, 2, 2]
     elif change == "ticket_and_display_name":
@@ -247,9 +357,17 @@ async def test_untrusted_manual_zone_cannot_apply_legacy_recipe_after_clay_activ
 
     project = FakeProject(owner_id=test_user.id)
     zone = _make_zone(project, properties={"_plan_role": "building"})
-    item = endpoint.Community3DCompileItem(zone_id=zone.id, source_updated_at=zone.updated_at,
-        recipe=endpoint.LegoPlaceRequest.model_validate(_recipe_body()))
+    item = endpoint.Community3DCompileItem(
+        zone_id=zone.id,
+        source_updated_at=zone.updated_at,
+        recipe=endpoint.LegoPlaceRequest.model_validate(_recipe_body()),
+    )
     with pytest.raises(HTTPException) as exc:
-        await endpoint._assert_ai_lego_recipes_are_current(mock_db, test_user, project.id,
-            [(item, zone, "building")], entries=select_runtime_architecture_entries([clay_entry()]))
+        await endpoint._assert_ai_lego_recipes_are_current(
+            mock_db,
+            test_user,
+            project.id,
+            [(item, zone, "building")],
+            entries=select_runtime_architecture_entries([clay_entry()]),
+        )
     assert exc.value.status_code == 409

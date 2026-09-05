@@ -15,8 +15,12 @@ class ReferenceLayer(Base):
     __table_args__ = (UniqueConstraint("project_id", "content_hash", name="uq_reference_layer_content"),)
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    project_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("projects.id", ondelete="CASCADE"), index=True)
-    created_by: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="SET NULL"))
+    project_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("projects.id", ondelete="CASCADE"), index=True
+    )
+    created_by: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("users.id", ondelete="SET NULL")
+    )
     name: Mapped[str] = mapped_column(String(160))
     source_filename: Mapped[str] = mapped_column(String(255))
     source_crs: Mapped[str] = mapped_column(String(255))
