@@ -1,7 +1,7 @@
 {
   "schema": "cityprompt.catalogue-coverage-plan@1",
   "date": "2026-09-05",
-  "status": "proposed_plan_not_production_authorization",
+  "status": "approved_plan_local_first_cycle_in_progress",
   "scope": "Calgary-informed student browsing collections; minimum two geometrically/programmatically distinct placeable choices per asset collection",
   "assumptions": [
     "Architectural styles remain filters, not separate quotas.",
@@ -46,6 +46,7 @@
   },
   "current_pick_place_cards": [
     "calgary_modern_infill_house/infill_flat_roof_minimal",
+    "vancouver_craftsman_bungalow/craftsman_classic",
     "neighborhood_park/neighborhood_park_v0"
   ],
   "inventory_evidence": [
@@ -171,7 +172,7 @@
       "target": 2,
       "wave": 1,
       "intended_distinction": "Narrow contemporary two-storey home versus a low Craftsman bungalow with porch.",
-      "pair_distinction_status": "proposed_requires_source_and_3d_review",
+      "pair_distinction_status": "visually_distinct_native_models_local_ui_verified_not_production_released",
       "district_examples_to_investigate": [
         "R-C1",
         "R-C1N",
@@ -190,8 +191,8 @@
           "existing_parent_group": "detached",
           "variant_group_override_required": false,
           "origin": "existing_reviewed_clay_manifest",
-          "release_status": "not_verified_for_catalogue_release_in_this_plan",
-          "source_lock_status": "recorded_in_existing_manifest_reverify_exact_files",
+          "release_status": "local_pilot_verified_not_production_released",
+          "source_lock_status": "exact_source_model_review_hashes_reverified",
           "existing_clay": {
             "candidate": "calgary-infill-flat-roof-minimal-clay-v006",
             "declared_runtime_enabled": true,
@@ -214,7 +215,14 @@
             "scene_and_render_identity",
             "performance",
             "independent_review_and_required_activation"
-          ]
+          ],
+          "cycle_evidence": {
+            "record": "docs/CATALOGUE_CYCLE_REVIEW_2026_09_05.md",
+            "native_scale": true,
+            "whole_home_repetition_verified": true,
+            "direct_capture": true,
+            "paid_ai_fidelity_verified": false
+          }
         },
         {
           "slot": "detached_2",
@@ -224,8 +232,8 @@
           "existing_parent_group": "detached",
           "variant_group_override_required": false,
           "origin": "existing_reviewed_clay_manifest",
-          "release_status": "not_verified_for_catalogue_release_in_this_plan",
-          "source_lock_status": "recorded_in_existing_manifest_reverify_exact_files",
+          "release_status": "local_pilot_verified_not_production_released",
+          "source_lock_status": "exact_source_model_review_hashes_reverified",
           "existing_clay": {
             "candidate": "vancouver-craftsman-classic-clay-v006",
             "declared_runtime_enabled": true,
@@ -248,7 +256,14 @@
             "scene_and_render_identity",
             "performance",
             "independent_review_and_required_activation"
-          ]
+          ],
+          "cycle_evidence": {
+            "record": "docs/CATALOGUE_CYCLE_REVIEW_2026_09_05.md",
+            "native_scale": true,
+            "whole_home_repetition_verified": true,
+            "direct_capture": true,
+            "paid_ai_fidelity_verified": false
+          }
         }
       ]
     },
@@ -277,10 +292,10 @@
           "existing_parent_group": "detached",
           "variant_group_override_required": true,
           "origin": "catalogue_reference_nomination",
-          "release_status": "not_verified_for_catalogue_release_in_this_plan",
-          "source_lock_status": "audit_pending",
+          "release_status": "independently_reviewed_clay_awaiting_human_activation_and_runtime_integration",
+          "source_lock_status": "exact_front_oblique_top_locked",
           "existing_clay": null,
-          "reshape_contract": "native_geometry_first_explicit_modules_or_size_options_only_after_verification",
+          "reshape_contract": "one_fixed_native_two_home_assembly_17_by_25_m_proposed_plot_terrain_fit_unverified",
           "evidence_required": [
             "exact_source_and_programme",
             "visually_distinct_from_sibling_choice",
@@ -289,7 +304,8 @@
             "scene_and_render_identity",
             "performance",
             "independent_review_and_required_activation"
-          ]
+          ],
+          "candidate_record": "tools/catalogue_duplex_pilot/candidate.json"
         },
         {
           "slot": "two_home_2",
@@ -1146,8 +1162,8 @@
           "existing_parent_group": "neighbourhood",
           "variant_group_override_required": false,
           "origin": "functional_park_pilot_not_approved",
-          "release_status": "not_verified_for_catalogue_release_in_this_plan",
-          "source_lock_status": "audit_pending",
+          "release_status": "adaptive_v5_local_trial_verified_visual_acceptance_pending",
+          "source_lock_status": "kit_hashes_license_and_source_provenance_recorded",
           "existing_clay": null,
           "reshape_contract": "adaptive_layout_fixed_metric_components_explicit_minimums_and_omissions",
           "evidence_required": [
@@ -1158,7 +1174,13 @@
             "scene_and_render_identity",
             "performance",
             "independent_review_and_required_activation"
-          ]
+          ],
+          "cycle_evidence": {
+            "record": "docs/CATALOGUE_CYCLE_REVIEW_2026_09_05.md",
+            "candidate_manifest": "tools/neighborhood_park_pilot/candidate-manifest.json",
+            "street_access_verified": true,
+            "production_approved": false
+          }
         },
         {
           "slot": "neighbourhood_2",
@@ -1687,8 +1709,8 @@
           "existing_parent_group": "local",
           "variant_group_override_required": false,
           "origin": "authored_draft_street_section",
-          "release_status": "not_verified_for_catalogue_release_in_this_plan",
-          "source_lock_status": "audit_pending",
+          "release_status": "draft_16m_section_local_placement_verified_not_production_released",
+          "source_lock_status": "existing_draft_figure_2_section_preserved",
           "existing_clay": null,
           "reshape_contract": "route_and_length_editing_fixed_or_explicitly_custom_cross_section",
           "evidence_required": [
@@ -1699,7 +1721,14 @@
             "scene_and_render_identity",
             "performance",
             "independent_review_and_required_activation"
-          ]
+          ],
+          "cycle_evidence": {
+            "record": "docs/CATALOGUE_CYCLE_REVIEW_2026_09_05.md",
+            "width_m": 16,
+            "straight_and_bent_route_verified": true,
+            "park_access_verified": true,
+            "legal_compliance_claim": false
+          }
         },
         {
           "slot": "local_2",
@@ -2202,5 +2231,28 @@
         }
       ]
     }
-  ]
+  ],
+  "inventory_evidence_scope": "Original planning-time inventory; hashes are preserved baseline evidence, not a claim that subsequently edited files have these hashes.",
+  "current_street_placement_choices": [
+    "calgary_local/calgary_local_v0"
+  ],
+  "implementation_cycle": {
+    "date": "2026-09-05",
+    "status": "four_choices_local_trial_passed_duplex_activation_pending",
+    "runtime_model_promotion": false,
+    "production_release": false,
+    "target_choices": 5,
+    "placeable_choices": 4,
+    "review_record": "docs/CATALOGUE_CYCLE_REVIEW_2026_09_05.md",
+    "local_project_id": "9535da89-4b5c-4839-aa7f-ccde56f1eded",
+    "source_checkout": "C:/dev/CityPrompt-place",
+    "runtime_public_root": "C:/dev-artifacts/CityPrompt/catalogue-cycle-2026-09-05/runtime-v4/public",
+    "duplex_candidate": "tools/catalogue_duplex_pilot/candidate.json",
+    "pending": [
+      "Human visual activation of the exact duplex, then exact-variant integration and terrain/student trial",
+      "Standalone asset delivery beyond the current explicit source-junction runtime",
+      "Paid image fidelity/video continuity validation; reconcile the prior $10 total allowance first",
+      "Long-session memory and classroom concurrency testing before production release"
+    ]
+  }
 }
