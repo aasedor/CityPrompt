@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo, useRef, useEffect, type PointerEvent as ReactPointerEvent } from 'react';
+import { lazy, Suspense, useState, useCallback, useMemo, useRef, useEffect, type PointerEvent as ReactPointerEvent } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
@@ -10,10 +10,8 @@ import { LegoAssemblyPreview } from '@/features/legoAssembly/LegoAssemblyPreview
 import { LegoBuilderPanel } from '@/features/legoAssembly/LegoBuilderPanel';
 import { AddBuildingModal } from '@/components/buildings/AddBuildingModal';
 import { ShareModal } from '@/components/sharing/ShareModal';
-import { SitePlannerMap } from '@/components/viewer/SitePlannerMap';
 import { SitePlannerToolbar } from '@/components/viewer/SitePlannerToolbar';
 import { HistoryPanel } from '@/components/viewer/HistoryPanel';
-import { GlobeSitePlannerMap } from '@/components/viewer/globe/GlobeSitePlannerMap';
 import { GlobeAIRenderPanel } from '@/components/viewer/globe/GlobeAIRenderPanel';
 import { VideoGeneratePanel, type VideoAttempt } from '@/components/viewer/VideoGeneratePanel';
 import { captureCompleteVideoFrame, type VideoCaptureScene } from '@/components/viewer/videoCaptureInventory';
@@ -61,6 +59,16 @@ import type {
 
 const GLOBE_RENDER_PANEL_WIDTH = 704;
 const PLAN_LAYER_PREFIX = 'Plan — ';
+const SitePlannerMap = lazy(() => import('@/components/viewer/SitePlannerMap').then((module) => ({ default: module.SitePlannerMap })));
+const GlobeSitePlannerMap = lazy(() => import('@/components/viewer/globe/GlobeSitePlannerMap').then((module) => ({ default: module.GlobeSitePlannerMap })));
+
+function MapLoadingFallback({ mode }: { mode: '2D' | '3D' }) {
+  return (
+    <div className="flex h-full w-full items-center justify-center bg-slate-950 text-sm font-semibold text-white" role="status">
+      Loading {mode} site…
+    </div>
+  );
+}
 
 function planLayerStorageKey(projectId: string): string {
   return `cityprompt:active-plan-layer:${projectId}`;
@@ -945,24 +953,26 @@ export function ProjectViewPage() {
   if (settings.mapMode === 'globe') {
     return (
       <div className="fixed inset-x-0 bottom-0 top-16 z-50 bg-black">
-        <GlobeSitePlannerMap
-          latitude={project.location?.latitude}
-          longitude={project.location?.longitude}
-          siteZones={visibleZones}
-          allSiteZones={siteZones}
-          referenceLayers={references.visibleLayers}
-          buildings={visibleBuildings}
-          onZoneCreated={handleZoneCreated}
-          onZoneUpdated={handleZoneUpdated}
-          onZoneSelected={(zoneId) => { if (zoneId) selectZone(zoneId); else selectZone(null); }}
-          onZoneDeleted={(zoneId) => deleteZone.mutate(zoneId)}
-          onBuildingDeleted={(buildingId) => deleteModeledBuilding.mutate(buildingId)}
-          onGlobeReady={setGlobeRefs}
-          onModeledBuildingsChange={setModeledBuildingIds}
-          measureModeActive={measureActive}
-          interactionPaused={renderViewerActive || showPlanningReport || showShare || showTour || showReferenceLayers}
-          onMeasureModeChange={handleMeasureModeChange}
-        />
+        <Suspense fallback={<MapLoadingFallback mode="3D" />}>
+          <GlobeSitePlannerMap
+            latitude={project.location?.latitude}
+            longitude={project.location?.longitude}
+            siteZones={visibleZones}
+            allSiteZones={siteZones}
+            referenceLayers={references.visibleLayers}
+            buildings={visibleBuildings}
+            onZoneCreated={handleZoneCreated}
+            onZoneUpdated={handleZoneUpdated}
+            onZoneSelected={(zoneId) => { if (zoneId) selectZone(zoneId); else selectZone(null); }}
+            onZoneDeleted={(zoneId) => deleteZone.mutate(zoneId)}
+            onBuildingDeleted={(buildingId) => deleteModeledBuilding.mutate(buildingId)}
+            onGlobeReady={setGlobeRefs}
+            onModeledBuildingsChange={setModeledBuildingIds}
+            measureModeActive={measureActive}
+            interactionPaused={renderViewerActive || showPlanningReport || showShare || showTour || showReferenceLayers}
+            onMeasureModeChange={handleMeasureModeChange}
+          />
+        </Suspense>
 
         {/* Toolbar - hidden on phones during focused vertex placement. */}
         <div
@@ -1359,16 +1369,18 @@ export function ProjectViewPage() {
         />
 
         <div className="relative h-[56vh] min-h-[430px] sm:h-[62vh] lg:h-[68vh]">
-          <SitePlannerMap
-            latitude={project.location?.latitude}
-            longitude={project.location?.longitude}
-            siteZones={siteZones}
-            onZoneCreated={handleZoneCreated}
-            onZoneUpdated={handleZoneUpdated}
-            onZoneSelected={handleZoneSelected}
-            onZoneDeleted={(zoneId) => deleteZone.mutate(zoneId)}
-            interactionPaused={renderViewerActive}
-          />
+          <Suspense fallback={<MapLoadingFallback mode="2D" />}>
+            <SitePlannerMap
+              latitude={project.location?.latitude}
+              longitude={project.location?.longitude}
+              siteZones={siteZones}
+              onZoneCreated={handleZoneCreated}
+              onZoneUpdated={handleZoneUpdated}
+              onZoneSelected={handleZoneSelected}
+              onZoneDeleted={(zoneId) => deleteZone.mutate(zoneId)}
+              interactionPaused={renderViewerActive}
+            />
+          </Suspense>
           {/* GIS color legend */}
           <ZoneLegend siteZones={siteZones} />
 
