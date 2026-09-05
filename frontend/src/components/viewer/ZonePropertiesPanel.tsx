@@ -1440,6 +1440,25 @@ const resolveOptionCategory = (
         {/* ============================================================= */}
         {zone.zone_type === 'site_boundary' && (
           <>
+            <div>
+              <label htmlFor="site-ground-mode" className={panelLabelClass}>Site ground</label>
+              <select
+                id="site-ground-mode"
+                className={panelFieldClass}
+                value={props.community_3d_mask_existing_tiles === false ? 'retain' : 'clear'}
+                onChange={(event) => setProps((current) => ({
+                  ...current, community_3d_mask_existing_tiles: event.target.value === 'clear',
+                }))}
+              >
+                <option value="retain">Follow existing terrain — open sites</option>
+                <option value="clear">Clear site for redevelopment</option>
+              </select>
+              <p className="mt-2 text-xs text-text-muted">
+                {props.community_3d_mask_existing_tiles === false
+                  ? 'Buildings, parks and roads align to the visible Google ground after you save. Choose an open site without existing buildings.'
+                  : 'Replaces the existing site with a level surface. Use Follow existing terrain to build on an open site.'}
+              </p>
+            </div>
             <SiteIntelligencePanel zone={zone} />
             {SHOW_LEGACY_SITE_BOUNDARY_TOOLS && (
               <SiteBoundarySection

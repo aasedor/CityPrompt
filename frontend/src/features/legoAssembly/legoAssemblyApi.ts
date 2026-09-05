@@ -21,6 +21,7 @@ export interface LegoModule {
   variant_key?: string;
   lod?: number;
   allowed_levels?: number[];
+  delivery_format?: string;
 }
 
 export interface LegoAssemblyInstance {
@@ -67,6 +68,8 @@ export interface LegoAssemblyPlan {
     profile?: LegoFootprintProfile;
     segment_count?: number;
     assembly_mode?: 'fixed_landmark';
+    native_scale_locked?: boolean;
+    delivery_format?: string;
     compatibility_source?: string;
     /** The authored form is uniformly scaled and centred inside the polygon. */
     footprint_mode?: 'archetype_contain' | 'envelope_fill';

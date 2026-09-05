@@ -9,7 +9,7 @@ import {
 import { announceCommunity3DPresentationReady } from '@/features/community3d/community3dPresentation';
 import { allSettledWithConcurrency } from './allSettledWithConcurrency';
 import { analyzeLegoFootprint } from './footprintProfiles';
-import { detachedPlotCoordinates } from './detachedPlot';
+import { assemblyFootprintCoordinates } from './detachedPlot';
 import {
   legoArchetypeContextFromZone,
   legoAssemblyApi,
@@ -428,7 +428,7 @@ function planRequestForItem(item: ZoneBuildItem) {
     target_depth_m: item.targets.depth_m,
     target_floors: item.targets.floors,
     footprint_profile: item.targets.footprint_profile,
-    footprint_local_m: detachedPlotCoordinates(item.archetypeId, item.zone.coordinates, item.targets),
+    footprint_local_m: assemblyFootprintCoordinates(item.zone.coordinates, item.targets),
     // Let the selected LEGO family's native podium depth determine wing
     // thickness, matching the backend's final-footprint proof exactly.
     project_id: item.zone.project_id,

@@ -638,3 +638,15 @@ describe('Direct 3D capture helpers', () => {
     );
   });
 });
+
+
+it('retains revision-bound T metadata and distinguishes different anchors for the same sources', () => {
+  const topology = { version: 1 as const, arm_count: 3 as const, longitude: -114.08, latitude: 51.04,
+    source_fingerprint: `sj1|street-a:${'a'.repeat(64)}:${'b'.repeat(64)}|street-b:${'c'.repeat(64)}:${'d'.repeat(64)}` };
+  const first = direct3DStreetJunctionInstanceDescriptor(['street-b', 'street-a'], topology);
+  const mesh = new THREE.Mesh(); mesh.userData = direct3DInstanceUserData(first);
+  expect(getDirect3DInstanceDescriptor(mesh)).toEqual(first);
+  expect(first.instance_id).not.toEqual(direct3DStreetJunctionInstanceDescriptor(['street-a', 'street-b'],
+    { ...topology, latitude: 51.0401 }).instance_id);
+  expect(() => direct3DInstanceUserData({ ...first, junction_topology: { ...topology, latitude: NaN } })).toThrow();
+});

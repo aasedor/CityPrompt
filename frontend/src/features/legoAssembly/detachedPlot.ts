@@ -15,7 +15,16 @@ export function detachedPlotCoordinates(
   coordinates: number[][] | undefined,
   target: { width_m: number; depth_m: number },
 ): number[][] | undefined {
-  if (!isDetachedArchetype(archetypeId) || !coordinates?.length) return undefined;
+  return isDetachedArchetype(archetypeId) ? assemblyFootprintCoordinates(coordinates, target) : undefined;
+}
+
+/** All fixed-native clay families need the actual polygon, including its
+ * concavities, rather than only the bounding rectangle's width and depth. */
+export function assemblyFootprintCoordinates(
+  coordinates: number[][] | undefined,
+  target: { width_m: number; depth_m: number },
+): number[][] | undefined {
+  if (!coordinates?.length) return undefined;
   const ring = coordinates.map((point) => point.slice(0, 2));
   if (ring.some((point) => point.length < 2 || !point.every(Number.isFinite))) return undefined;
   const last = ring[ring.length - 1];

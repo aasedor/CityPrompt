@@ -1367,6 +1367,8 @@ export const rendersApi = {
    * This endpoint never routes through the Classic colored-zone renderer. */
   generateDirect3D: async (request: {
     control_bundle_version: 2;
+    park_access_snapshot?: import('@/components/viewer/globe/parkAccessConnections').ParkAccessSnapshot;
+    shared_ground_snapshot?: import('@/components/viewer/globe/sharedSiteGround').SharedSiteGroundSnapshot;
     beauty_image_base64: string;
     proposal_mask_base64: string;
     prompt: string;
@@ -1388,6 +1390,7 @@ export const rendersApi = {
       zone_id?: string;
       building_id?: string;
       source_zone_ids?: string[];
+      junction_topology?: import('@/components/viewer/globe/direct3dCapture').Direct3DJunctionTopology;
     }>;
     depth_image_base64: string;
     normal_image_base64: string;

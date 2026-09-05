@@ -16,6 +16,7 @@ import { HistoryPanel } from '@/components/viewer/HistoryPanel';
 import { GlobeSitePlannerMap } from '@/components/viewer/globe/GlobeSitePlannerMap';
 import { GlobeAIRenderPanel } from '@/components/viewer/globe/GlobeAIRenderPanel';
 import { VideoGeneratePanel, type VideoAttempt } from '@/components/viewer/VideoGeneratePanel';
+import { captureCompleteVideoFrame, type VideoCaptureScene } from '@/components/viewer/videoCaptureInventory';
 import type { VideoRouteCaptureRequest, VideoRouteCaptureResult } from '@/components/viewer/videoRouteControls';
 import { nearestAspectRatio, useGlobeAIRender } from '@/components/viewer/globe/useGlobeAIRender';
 import type { StreetCaptureResult } from '@/components/viewer/useStreetViewRender';
@@ -111,6 +112,7 @@ export function ProjectViewPage() {
   // Buildings whose generated GLB is currently placed on the globe — the
   // render panel keys "render with 3D models" behavior off this set.
   const [modeledBuildingIds, setModeledBuildingIds] = useState<Set<string>>(() => new Set());
+  const videoCaptureSceneRef = useRef<VideoCaptureScene>({ projectId: id, zones: [], buildings: [] });
   const queryClient = useQueryClient();
   const prevStatusMap = useRef<Record<string, string>>({});
   const globeRenderDragRef = useRef<{ startX: number; startY: number; originX: number; originY: number } | null>(null);
@@ -167,9 +169,9 @@ export function ProjectViewPage() {
   }, [globeRefs, captureStreetView, flyToStreetLevel, restoreAerialView, saveCameraState]);
 
   const captureVideoAerialFrame = useCallback(async (): Promise<string | null> => {
-    if (!globeRefs?.captureDirect3D) return null;
-    const capture = await globeRefs.captureDirect3D({ skipTileWait: true });
-    return capture.beautyImageBase64;
+    const capture = globeRefs?.captureDirect3D;
+    if (!capture) throw new Error('Wait for your 3D scene to finish loading, then capture your video again.');
+    return captureCompleteVideoFrame(() => capture({ skipTileWait: true }), () => videoCaptureSceneRef.current);
   }, [globeRefs]);
 
   const captureVideoRouteControls = useCallback(async (
@@ -889,6 +891,7 @@ export function ProjectViewPage() {
     ),
     [project?.buildings, siteZones, visibleZones],
   );
+  videoCaptureSceneRef.current = { projectId: id, zones: visibleZones, buildings: visibleBuildings };
 
   const deleteModeledBuilding = useMutation({
     mutationFn: (buildingId: string) => buildingsApi.delete(buildingId),
@@ -946,6 +949,7 @@ export function ProjectViewPage() {
           latitude={project.location?.latitude}
           longitude={project.location?.longitude}
           siteZones={visibleZones}
+          allSiteZones={siteZones}
           referenceLayers={references.visibleLayers}
           buildings={visibleBuildings}
           onZoneCreated={handleZoneCreated}

@@ -1,5 +1,7 @@
 import * as THREE from 'three';
 import { inheritTileSpatialMask } from './TileSpatialMaskPlugin';
+import type { ParkAccessSnapshot } from './parkAccessConnections';
+import type { SharedSiteGroundSnapshot } from './sharedSiteGround';
 
 export const DIRECT_3D_CAPTURE_SCHEMA = 'siteforge.direct-3d-capture/v2' as const;
 export const DIRECT_3D_PROPOSAL_ROLE_KEY = 'siteforgeDirect3DProposalRole';
@@ -17,12 +19,21 @@ export const DIRECT_3D_PROPOSAL_ROLES = [
 
 export type Direct3DProposalRole = (typeof DIRECT_3D_PROPOSAL_ROLES)[number];
 
+export interface Direct3DJunctionTopology {
+  version: 1;
+  arm_count: 3 | 4;
+  longitude: number;
+  latitude: number;
+  source_fingerprint: string;
+}
+
 export interface Direct3DInstanceDescriptor {
   instance_id: string;
   semantic_class: Direct3DProposalRole;
   zone_id?: string;
   building_id?: string;
   source_zone_ids?: string[];
+  junction_topology?: Direct3DJunctionTopology;
 }
 
 export interface Direct3DMaterialDescriptor {
@@ -67,6 +78,10 @@ export const DIRECT_3D_CLASS_ID_MANIFEST: Readonly<Record<string, Direct3DPropos
 
 export interface Direct3DCaptureBundle {
   schema: typeof DIRECT_3D_CAPTURE_SCHEMA;
+  /** Client-derived routes captured with this scene, bound to saved sources on submission. */
+  parkAccessSnapshot?: ParkAccessSnapshot;
+  /** Measured tile terrain used by the captured proposal; never an API datum. */
+  sharedGroundSnapshot?: SharedSiteGroundSnapshot;
   beautyImageBase64: string;
   proposalMaskBase64: string;
   classIdImageBase64: string;
@@ -269,6 +284,15 @@ function normalizeInstanceDescriptor(
       .sort();
     if (sourceZoneIds.length > 0) descriptor.source_zone_ids = sourceZoneIds;
   }
+  if (value.junction_topology && typeof value.junction_topology === 'object') {
+    const topology = value.junction_topology as Direct3DJunctionTopology;
+    if (topology.version !== 1 || ![3, 4].includes(topology.arm_count)
+      || !Number.isFinite(topology.longitude) || !Number.isFinite(topology.latitude)
+      || Math.abs(topology.longitude) > 180 || Math.abs(topology.latitude) > 90
+      || typeof topology.source_fingerprint !== 'string' || topology.source_fingerprint.length > 1000) return null;
+    descriptor.junction_topology = { version: 1, arm_count: topology.arm_count,
+      longitude: topology.longitude, latitude: topology.latitude, source_fingerprint: topology.source_fingerprint };
+  }
   return descriptor;
 }
 
@@ -302,6 +326,7 @@ function fnv1a32(value: string): number {
  * verifies that these persisted street sources form a four-arm node. */
 export function direct3DStreetJunctionInstanceDescriptor(
   sourceZoneIds: readonly string[],
+  topology?: Direct3DJunctionTopology,
 ): Direct3DInstanceDescriptor {
   const normalized = [...new Set(sourceZoneIds.map((value) => value.trim()).filter(Boolean))].sort();
   if (normalized.length < 2) {
@@ -312,9 +337,12 @@ export function direct3DStreetJunctionInstanceDescriptor(
   }
   const hash = fnv1a32(normalized.join(':')).toString(16).padStart(8, '0');
   return {
-    instance_id: `junction:zones-${hash}:street`,
+    instance_id: topology
+      ? `junction:zones-${hash}:node-${fnv1a32(`${topology.longitude.toFixed(7)}:${topology.latitude.toFixed(7)}:${topology.arm_count}`).toString(16).padStart(8, '0')}:street`
+      : `junction:zones-${hash}:street`,
     semantic_class: 'street',
     source_zone_ids: normalized,
+    ...(topology ? { junction_topology: topology } : {}),
   };
 }
 

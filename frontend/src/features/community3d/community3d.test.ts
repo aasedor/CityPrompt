@@ -213,6 +213,9 @@ describe('community 3D plan contract', () => {
     expect(shouldMaskCommunityGroundTiles(zone('green_space', {
       community_3d_mask_existing_tiles: false,
     }))).toBe(false);
+    expect(shouldMaskCommunityGroundTiles(zone('green_space'), false)).toBe(false);
+    expect(shouldMaskCommunityGroundTiles(zone('road'), false)).toBe(false);
+    expect(shouldMaskCommunityGroundTiles(zone('green_space', { community_3d_mask_existing_tiles: true }), false)).toBe(true);
   });
 
   it('clears source tiles beneath procedural parks while compiled streets remain opt-in', () => {

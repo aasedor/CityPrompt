@@ -521,6 +521,29 @@ describe('ZonePropertiesPanel explicit saved-version reload', () => {
   });
 });
 
+describe('ZonePropertiesPanel site ground', () => {
+  afterEach(cleanup);
+
+  it('preserves legacy ground until the student explicitly saves a terrain choice', () => {
+    Object.defineProperty(HTMLElement.prototype, 'scrollTo', { configurable: true, value: vi.fn() });
+    const zone = siteBoundaryZone();
+    const onUpdate = vi.fn();
+    renderPanel(<ZonePropertiesPanel zone={zone} onUpdate={onUpdate} onDelete={vi.fn()} onClose={vi.fn()} />);
+    expect(screen.getByLabelText('Site ground')).toHaveValue('clear');
+    fireEvent.change(screen.getByLabelText('Site ground'), { target: { value: 'retain' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Save Changes' }));
+    expect(onUpdate).toHaveBeenCalledWith(zone.id, expect.objectContaining({
+      properties: expect.objectContaining({ community_3d_mask_existing_tiles: false }),
+    }));
+  });
+
+  it('restores a saved retained terrain choice', () => {
+    const zone = { ...siteBoundaryZone(), properties: { community_3d_mask_existing_tiles: false } };
+    renderPanel(<ZonePropertiesPanel zone={zone} onUpdate={vi.fn()} onDelete={vi.fn()} onClose={vi.fn()} />);
+    expect(screen.getByLabelText('Site ground')).toHaveValue('retain');
+  });
+});
+
 describe('ZonePropertiesPanel viewport containment', () => {
   it('owns its desktop positioning and remains bounded by the viewport', () => {
     Object.defineProperty(HTMLElement.prototype, 'scrollTo', {

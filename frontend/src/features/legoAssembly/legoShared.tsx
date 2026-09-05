@@ -13,6 +13,7 @@ import {
   setArchitecturalGlazingLod,
 } from '@/components/viewer/globe/modelMaterialQuality';
 import type { LegoAssemblyInstance, LegoAssemblyPlan } from './legoAssemblyApi';
+import { centreNativeClayClone } from './nativeClayPlacement';
 
 // Shared building blocks for the single-zone composer (LegoAssemblyPreview)
 // and the plan-level builder (LegoBuilderPanel).
@@ -235,7 +236,7 @@ export function normalizeLegoModuleMaterials(root: THREE.Object3D): void {
  * One planned module GLB. Backend plans are Z-up while three.js is Y-up —
  * hence the [x, z, y] position and [sx, sz, sy] scale swizzle.
  */
-export function ModuleInstance({ instance }: { instance: LegoAssemblyInstance }) {
+export function ModuleInstance({ instance, nativeScaleLocked = false }: { instance: LegoAssemblyInstance; nativeScaleLocked?: boolean }) {
   const url = resolveApiFileUrl(instance.model_url);
   const gl = useThree((state) => state.gl);
   const extendLoader = useMemo(() => createKtx2LoaderExtension(gl), [gl]);
@@ -243,8 +244,8 @@ export function ModuleInstance({ instance }: { instance: LegoAssemblyInstance })
   const model = useMemo(() => {
     const cloned = scene.clone(true);
     normalizeLegoModuleMaterials(cloned);
-    return cloned;
-  }, [scene]);
+    return nativeScaleLocked ? centreNativeClayClone(cloned) : cloned;
+  }, [scene, nativeScaleLocked]);
   useEffect(() => () => disposeArchitecturalCloneMaterials(model), [model]);
   const [sx, sy, sz] = instance.scale;
   const [x, y, z] = instance.position;

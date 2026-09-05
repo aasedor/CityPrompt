@@ -18,6 +18,7 @@ import { useFrame } from '@react-three/fiber';
 import { EastNorthUpFrame, TilesRendererContext } from '3d-tiles-renderer/r3f';
 import type { SiteZone } from '@/types';
 import {
+  getCommunity3DMeta,
   resolveCommunity3DKind,
   shouldRenderCommunityGround,
 } from '@/features/community3d/community3d';
@@ -75,9 +76,11 @@ import {
   GlobeLandscapeTreeStand,
 } from './GlobeLandscapeKit';
 import {
-  detectFourWayStreetIntersections,
+  detectConnectedStreetIntersections,
+  type ConnectedStreetIntersection,
   type FourWayStreetIntersection,
 } from './streetGraphIntersections';
+import { buildStreetJunctionSurface, clipStreetGeometryOutsideJunction, resolveStreetJunctionLayout, type StreetJunctionLayout } from './streetJunctionGeometry';
 import { STREET_APPEARANCE_KITS } from './streetFamilyCatalog';
 import {
   direct3DInstanceUserData,
@@ -98,14 +101,17 @@ import { GlobeStreetVehicleInstances } from './GlobeStreetVehicleInstances';
 import { GlobeStreetTransitShelterInstances } from './GlobeStreetTransitShelterInstances';
 import { resolveFourWayIntersectionControl } from './streetIntersectionControlPolicy';
 import {
-  createStreetSurfacePaletteTint,
   createStreetSurfaceMaterialResources,
-  resolveStreetAppearanceMaterialKind,
-  resolveStreetSurfaceMaterialKind,
+  resolveStreetBandMaterial,
   type StreetSurfaceMaterialResources,
 } from './streetSurfaceMaterials';
 import { retainResourceForDeferredDisposal } from './strictModeResourceDisposal';
 import { getStreetNetworkGroundMeta } from './streetNetworkGroundTexture';
+import { useSharedSiteGround } from './SharedSiteGroundProvider';
+import { createSharedGroundTriangulation } from './sharedGroundGeometry';
+import { applySharedStreetGround, createStreetGroundOffset, seatStreetFamilyFixtures, seatStreetFixture, sharedStreetStationTerrain } from './streetSharedGround';
+
+type RenderStreetIntersection = ConnectedStreetIntersection & { surfaceLayout: StreetJunctionLayout | null };
 
 const DEG_TO_RAD = Math.PI / 180;
 const TERRAIN_SAMPLE_FRAME_INTERVAL = 30;
@@ -137,6 +143,21 @@ function zoneStoredTerrain(zone: SiteZone): number | null {
   return Number.isFinite(raw) ? raw : null;
 }
 
+function useStreetGround(longitude?: number, latitude?: number, coordinates: number[][] = []) {
+  const shared = useSharedSiteGround();
+  const active = shared.status !== 'inactive' && ((longitude !== undefined && latitude !== undefined && shared.contains(longitude, latitude))
+    || coordinates.some(([lng, lat]) => shared.contains(lng, lat)));
+  const height = active && shared.status === 'ready' && longitude !== undefined && latitude !== undefined
+    ? shared.heightAt(longitude, latitude) : null;
+  const offsetAt = useMemo(() => height !== null && longitude !== undefined && latitude !== undefined
+    ? createStreetGroundOffset(longitude, latitude, height, shared.heightAt) : null,
+  [height, longitude, latitude, shared.heightAt]);
+  const grid = useMemo(() => shared.snapshot && longitude !== undefined && latitude !== undefined
+    ? createSharedGroundTriangulation(shared.snapshot, longitude, latitude) : undefined,
+  [shared.snapshot, longitude, latitude]);
+  return { active, height, offsetAt, grid, revision: shared.revision, blocked: active && offsetAt === null };
+}
+
 /** One road zone's curbs + dashes, draped station-by-station. */
 function StreetRibbonDetail({
   zone,
@@ -148,7 +169,7 @@ function StreetRibbonDetail({
 }: {
   zone: SiteZone;
   fallbackTerrainHeight: number;
-  intersectionNodes: FourWayStreetIntersection[];
+  intersectionNodes: RenderStreetIntersection[];
   renderFamilyFurniture: boolean;
   renderFamilyTrees: boolean;
   preparedTerrain?: number | null;
@@ -178,44 +199,10 @@ function StreetRibbonDetail({
     return sectionProfile.bands
       .filter((band) => band.sourceType !== 'setback')
       .map((band) => {
-      const baseKind = resolveStreetSurfaceMaterialKind({
-        kind: band.kind,
-        sourceType: band.sourceType,
-        surface: band.surface,
-        label: band.label,
-      });
-      const kind = resolveStreetAppearanceMaterialKind(
-        baseKind,
-        sectionProfile.appearanceKitId,
-        band.kind,
-      );
-      const palette = sectionProfile.appearance?.palette;
-      const paletteColor = (() => {
-        if (!palette) return band.color;
-        switch (band.kind) {
-          case 'motor': return palette.motor;
-          case 'parking': return palette.parking;
-          case 'cycle': return palette.cycle;
-          case 'sidewalk': return palette.sidewalk;
-          case 'planting':
-          case 'median': return palette.planting;
-          case 'buffer': return palette.buffer;
-          case 'shoulder': return palette.shoulder;
-          case 'path': return palette.path;
-          default: return band.color;
-        }
-      })();
-      const tint = createStreetSurfacePaletteTint(paletteColor);
-      const key = [kind, tint.getHexString(), band.roughness, band.metalness].join('|');
-      const existing = resourcesByKey.get(key);
+      const recipe = resolveStreetBandMaterial(sectionProfile, band);
+      const existing = resourcesByKey.get(recipe.cacheKey);
       if (existing) return existing;
-      const resources = createStreetSurfaceMaterialResources(kind, {
-        seed: `${sectionProfile.archetypeId}:${sectionProfile.variantId ?? 'base'}:${kind}`,
-        tint,
-        roughness: band.roughness,
-        metalness: band.metalness,
-        anisotropy: 8,
-      });
+      const resources = createStreetSurfaceMaterialResources(recipe.kind, recipe.options);
       Object.assign(resources.material, {
         depthTest: PUBLIC_REALM_DETAIL_DEPTH.depthTest,
         depthWrite: PUBLIC_REALM_DETAIL_DEPTH.depthWrite,
@@ -223,7 +210,7 @@ function StreetRibbonDetail({
         polygonOffsetFactor: -3,
         polygonOffsetUnits: -6,
       });
-      resourcesByKey.set(key, resources);
+      resourcesByKey.set(recipe.cacheKey, resources);
       return resources;
     });
   }, [sectionProfile]);
@@ -278,7 +265,13 @@ function StreetRibbonDetail({
   const [sampledTerrain, setSampledTerrain] = useState<number | null>(null);
   const hitFlagsRef = useRef<boolean[] | null>(null);
   const passRef = useRef(0);
-  const frameElevation = preparedTerrain ?? resolveZoneTerrainHeight(sampledTerrain, storedTerrain, fallbackTerrainHeight);
+  const sharedGround = useStreetGround(centroid?.lng, centroid?.lat, zone.coordinates);
+  const frameElevation = sharedGround.height ?? preparedTerrain ?? resolveZoneTerrainHeight(sampledTerrain, storedTerrain, fallbackTerrainHeight);
+  const sharedStations = useMemo(() => centerLngLat && sharedGround.offsetAt
+    ? sharedStreetStationTerrain(centerLngLat.local, centerLngLat.normals, halfWidth, sharedGround.offsetAt) : null,
+  [centerLngLat, halfWidth, sharedGround.offsetAt]);
+  const sharedBlocked = sharedGround.blocked || (sharedGround.active && sharedStations === null);
+  const placementTerrain = sharedGround.active ? undefined : stationTerrain;
 
   // Geometry edits (vertex drag commits, re-buffering) change coordinates
   // under the SAME zone id — the frozen drape state must restart or curbs
@@ -292,14 +285,14 @@ function StreetRibbonDetail({
     hitFlagsRef.current = null;
     setStationTerrain(null);
     setSampledTerrain(null);
-  }, [centerLngLat]);
+  }, [centerLngLat, sharedGround.revision]);
 
   // Drape-and-freeze: first resolve the frame anchor, then batch-sample
   // per-station elevations relative to it. Batches are interval-gated too —
   // consecutive-frame sampling right after mount rays against coarse LOD
   // tiles and bakes garbage; missed stations get re-sampled across passes.
   useFrame(() => {
-    if (preparedTerrain !== null || frozenRef.current || !centerLngLat || !centroid) return;
+    if (sharedGround.active || preparedTerrain !== null || frozenRef.current || !centerLngLat || !centroid) return;
     frameCountRef.current += 1;
     if (frameCountRef.current % TERRAIN_SAMPLE_FRAME_INTERVAL !== 0) return;
     const tilesGroup = tiles?.group;
@@ -423,12 +416,12 @@ function StreetRibbonDetail({
   });
 
   const geometries = useMemo(() => {
-    if (!centerLngLat) return null;
-    const zs = stationTerrain ?? undefined;
+    if (!centerLngLat || sharedBlocked) return null;
+    const zs = sharedGround.active ? undefined : stationTerrain ?? undefined;
     const mPerLon = centroid ? metersPerDegLon(centroid.lat) : 1;
     const connectedIntersectionNodes = intersectionNodes.filter((node) => node.zoneIds.includes(zone.id));
     const curbRampClearanceMask = centerLngLat.local.map((point) => (
-      Boolean(centroid) && connectedIntersectionNodes.some((node) => {
+      Boolean(centroid) && connectedIntersectionNodes.filter((node) => !node.surfaceLayout).some((node) => {
         const localX = (node.longitude - centroid!.lng) * mPerLon;
         const localY = (node.latitude - centroid!.lat) * METERS_PER_DEG_LAT;
         const clearanceM = Math.max(node.axisAHalfWidthM, node.axisBHalfWidthM) + 4;
@@ -504,7 +497,7 @@ function StreetRibbonDetail({
         curbRampClearanceMask,
       )
       : null;
-    return {
+    const result = {
       curbs: sectionProfile
         ? (sectionProfile.renderCurbs
           ? buildOffsetCurbGeometry(
@@ -522,7 +515,35 @@ function StreetRibbonDetail({
       parkingMarkings,
       sharrows,
     };
-  }, [centerLngLat, centroid, halfWidth, intersectionNodes, sectionProfile, sectionScale, stationTerrain, zone.id]);
+    // The node owns its junction footprint once. Clip all overlapping flatwork,
+    // markings and curb walls exactly, including long sparsely sampled segments.
+    if (centroid) {
+      const trim = (source: THREE.BufferGeometry | null) => {
+        let geometry = source;
+        for (const node of connectedIntersectionNodes) {
+          if (!geometry || !node.surfaceLayout) continue;
+          const next = clipStreetGeometryOutsideJunction(geometry, node.surfaceLayout,
+            (node.longitude - centroid.lng) * mPerLon,
+            (node.latitude - centroid.lat) * METERS_PER_DEG_LAT);
+          geometry.dispose(); geometry = next;
+        }
+        return geometry;
+      };
+      result.curbs = trim(result.curbs); result.dashes = trim(result.dashes);
+      result.sharrows = trim(result.sharrows);
+      result.bands.forEach((item) => { item.geometry = trim(item.geometry)!; });
+      result.markings.forEach((item) => { item.geometry = trim(item.geometry)!; });
+      result.parkingMarkings = result.parkingMarkings.map((item) => trim(item)!);
+    }
+    if (sharedGround.offsetAt) {
+      const items = [result.curbs, result.dashes, result.sharrows, ...result.bands.map((item) => item.geometry),
+        ...result.markings.map((item) => item.geometry), ...result.parkingMarkings].filter((item): item is THREE.BufferGeometry => item !== null);
+      if (items.some((item) => !applySharedStreetGround(item, sharedGround.offsetAt!, 0, 0, sharedGround.grid))) {
+        items.forEach((item) => item.dispose()); return null;
+      }
+    }
+    return result;
+  }, [centerLngLat, centroid, halfWidth, intersectionNodes, sectionProfile, sectionScale, stationTerrain, zone.id, sharedGround.active, sharedGround.offsetAt, sharedGround.grid, sharedBlocked]);
 
   const woonerfPlanters = useMemo(() => {
     if (
@@ -530,8 +551,8 @@ function StreetRibbonDetail({
       || !sectionProfile
       || !['woonerf_shared_street', 'yield_street'].includes(sectionProfile.archetypeId)
     ) return [];
-    return buildWoonerfPlanterPlacements(centerLngLat.local, halfWidth, stationTerrain);
-  }, [centerLngLat, halfWidth, sectionProfile, stationTerrain]);
+    return buildWoonerfPlanterPlacements(centerLngLat.local, halfWidth, placementTerrain);
+  }, [centerLngLat, halfWidth, sectionProfile, placementTerrain]);
 
   const woonerfTrees = useMemo(
     () => woonerfPlanters.map((placement, index) => ({
@@ -553,9 +574,9 @@ function StreetRibbonDetail({
 
   const yieldStreetSigns = useMemo(() => (
     centerLngLat && sectionProfile?.archetypeId === 'yield_street'
-      ? buildYieldStreetEntrySignPlacements(centerLngLat.local, halfWidth, stationTerrain)
+      ? buildYieldStreetEntrySignPlacements(centerLngLat.local, halfWidth, placementTerrain)
       : []
-  ), [centerLngLat, halfWidth, sectionProfile?.archetypeId, stationTerrain]);
+  ), [centerLngLat, halfWidth, sectionProfile?.archetypeId, placementTerrain]);
 
   const woonerfBenches = useMemo(
     () => woonerfPlanters
@@ -575,9 +596,9 @@ function StreetRibbonDetail({
 
   const familyFixtures = useMemo(() => {
     const mPerLon = centroid ? metersPerDegLon(centroid.lat) : 1;
-    return buildStreetFamilyFixturePlacements({
+    const fixtures = buildStreetFamilyFixturePlacements({
       points: centerLngLat?.local ?? [],
-      stationZ: stationTerrain,
+      stationZ: placementTerrain,
       profile: sectionProfile,
       sectionScale,
       enabled: renderFamilyFurniture,
@@ -590,6 +611,8 @@ function StreetRibbonDetail({
           }))
         : [],
     });
+    if (!sharedGround.offsetAt) return fixtures;
+    return seatStreetFamilyFixtures(fixtures, sharedGround.offsetAt);
   }, [
     centerLngLat,
     centroid,
@@ -597,7 +620,8 @@ function StreetRibbonDetail({
     renderFamilyFurniture,
     sectionProfile,
     sectionScale,
-    stationTerrain,
+    placementTerrain,
+    sharedGround.offsetAt,
     zone.id,
   ]);
 
@@ -616,6 +640,8 @@ function StreetRibbonDetail({
   }, [geometries]);
 
   if (!centerLngLat || !centroid || !geometries) return null;
+  const seat = <T extends { x: number; y: number; z: number }>(poses: T[]) => sharedGround.offsetAt
+    ? poses.flatMap((pose) => { const seated = seatStreetFixture(pose, sharedGround.offsetAt!); return seated ? [seated] : []; }) : poses;
 
   return (
     <EastNorthUpFrame
@@ -695,8 +721,8 @@ function StreetRibbonDetail({
           />
         </mesh>
       )}
-      <GlobeLandscapeTreeStand placements={woonerfTrees} renderOrder={RENDER_ORDER_FURNITURE} />
-      <GlobeLandscapeBenchStand placements={woonerfBenches} renderOrder={RENDER_ORDER_FURNITURE} />
+      <GlobeLandscapeTreeStand placements={seat(woonerfTrees)} renderOrder={RENDER_ORDER_FURNITURE} />
+      <GlobeLandscapeBenchStand placements={seat(woonerfBenches)} renderOrder={RENDER_ORDER_FURNITURE} />
       <GlobeLandscapeTreeStand
         placements={renderFamilyTrees ? familyFixtures.trees : []}
         renderOrder={RENDER_ORDER_FURNITURE}
@@ -723,7 +749,7 @@ function StreetRibbonDetail({
         }))}
         renderOrder={RENDER_ORDER_FURNITURE + 3}
       />
-      {yieldStreetSigns.map((placement, index) => (
+      {seat(yieldStreetSigns).map((placement, index) => (
         <group
           key={`yield-street-entry-sign-${index}`}
           position={[placement.x, placement.y, placement.z]}
@@ -747,7 +773,7 @@ function StreetRibbonDetail({
           </mesh>
         </group>
       ))}
-      {woonerfPlayNodes.map((placement, index) => (
+      {seat(woonerfPlayNodes).map((placement, index) => (
         <group
           key={`woonerf-play-node-${index}`}
           position={[placement.x, placement.y, placement.z]}
@@ -779,10 +805,10 @@ function StreetRibbonDetail({
           </mesh>
         </group>
       ))}
-      {woonerfPlanters.map((placement, index) => (
+      {seat(woonerfPlanters).map((placement, index) => (
         <group key={`woonerf-planter-${index}`}>
           <mesh
-            position={[placement.centerX, placement.centerY, placement.centerZ + 0.17]}
+            position={[placement.centerX, placement.centerY, placement.centerZ + (sharedGround.offsetAt?.(placement.centerX, placement.centerY) ?? 0) + 0.17]}
             rotation={[0, 0, placement.rotation]}
             renderOrder={RENDER_ORDER_FURNITURE}
           >
@@ -896,13 +922,14 @@ function RoundaboutDetail({
 
   const frame = useMemo(() => computeFootprintFrame(zone.coordinates), [zone.coordinates]);
   const storedTerrain = zoneStoredTerrain(zone);
-  const terrain = preparedTerrain ?? resolveZoneTerrainHeight(sampledTerrain, storedTerrain, fallbackTerrainHeight);
+  const sharedGround = useStreetGround(frame?.centroidLng, frame?.centroidLat, zone.coordinates);
+  const terrain = sharedGround.height ?? preparedTerrain ?? resolveZoneTerrainHeight(sampledTerrain, storedTerrain, fallbackTerrainHeight);
   const geometry = useMemo(() => {
-    if (!frame) return null;
+    if (!frame || sharedGround.blocked) return null;
     const inscribed = Math.min(frame.longDim, frame.shortDim) / 2;
     const result = buildRoundaboutGeometry(inscribed, frame.bearingRad);
-    if (!result || !terrainPlane) return result;
-    for (const item of [
+    if (!result) return result;
+    const items = [
       result.ring,
       result.apron,
       result.island,
@@ -910,7 +937,15 @@ function RoundaboutDetail({
       result.splitterPlanting,
       result.sidewalks,
       result.approachMarkings,
-    ]) {
+    ];
+    if (sharedGround.offsetAt) {
+      if (items.some((item) => !applySharedStreetGround(item, sharedGround.offsetAt!, frame.rectCenterLocal[0], frame.rectCenterLocal[1], sharedGround.grid))) {
+        items.forEach((item) => item.dispose()); return null;
+      }
+      return result;
+    }
+    if (!terrainPlane) return result;
+    for (const item of items) {
       applyTerrainPlaneToStreetGeometry(
         item,
         terrainPlane,
@@ -920,7 +955,7 @@ function RoundaboutDetail({
       );
     }
     return result;
-  }, [frame, terrain, terrainPlane]);
+  }, [frame, terrain, terrainPlane, sharedGround.blocked, sharedGround.offsetAt, sharedGround.grid]);
 
   useEffect(() => {
     if (!geometry) return undefined;
@@ -941,10 +976,10 @@ function RoundaboutDetail({
     attemptsRef.current = 0;
     setSampledTerrain(null);
     setTerrainPlane(null);
-  }, [frame]);
+  }, [frame, sharedGround.revision]);
 
   useFrame(() => {
-    if (preparedTerrain !== null || frozenRef.current || !frame) return;
+    if (sharedGround.active || preparedTerrain !== null || frozenRef.current || !frame) return;
     frameCountRef.current += 1;
     if (frameCountRef.current % TERRAIN_SAMPLE_FRAME_INTERVAL !== 0) return;
     if (attemptsRef.current >= TERRAIN_SAMPLE_MAX_ATTEMPTS) {
@@ -994,7 +1029,9 @@ function RoundaboutDetail({
   });
 
   if (!frame || !geometry) return null;
-  const roundaboutTerrainZ = (x: number, y: number): number => terrainPlane
+  const roundaboutTerrainZ = (x: number, y: number): number => sharedGround.offsetAt
+    ? sharedGround.offsetAt(x + frame.rectCenterLocal[0], y + frame.rectCenterLocal[1]) ?? Number.NaN
+    : terrainPlane
     ? terrainPlane.originZ + samplePlaneOffset(
       terrainPlane,
       x + frame.rectCenterLocal[0],
@@ -1089,6 +1126,8 @@ function RoundaboutDetail({
     });
   }).flat();
 
+  if (sharedGround.active && (!Number.isFinite(roundaboutTerrainZ(0, 0))
+    || [...approachSigns, ...approachLights, ...approachTrees].some((pose) => !Number.isFinite(pose.z)))) return null;
   return (
     <EastNorthUpFrame
       lat={frame.centroidLat * DEG_TO_RAD}
@@ -1176,7 +1215,7 @@ function AccessibleFourWayIntersectionDetail({
   fallbackTerrainHeight,
   preparedTerrain = null,
 }: {
-  node: FourWayStreetIntersection;
+  node: RenderStreetIntersection;
   zones: SiteZone[];
   fallbackTerrainHeight: number;
   preparedTerrain?: number | null;
@@ -1200,21 +1239,52 @@ function AccessibleFourWayIntersectionDetail({
     const values = connectedZones.map(zoneStoredTerrain).filter((value): value is number => value !== null);
     return values.length > 0 ? values.reduce((sum, value) => sum + value, 0) / values.length : null;
   }, [connectedZones]);
-  const appearance = STREET_APPEARANCE_KITS[node.appearanceKitId];
-  const terrain = preparedTerrain ?? resolveZoneTerrainHeight(sampledTerrain, storedTerrain, fallbackTerrainHeight);
+  const surfaceProfile = useMemo(() => {
+    const source = connectedZones.find((zone) => zone.id === node.surfaceLayout?.surfaceZoneId);
+    return source ? resolvePilotStreetSectionProfile(source) : null;
+  }, [connectedZones, node.surfaceLayout?.surfaceZoneId]);
+  const surfaceMaterials = useMemo(() => {
+    if (!surfaceProfile) return null;
+    const make = (kind: 'motor' | 'sidewalk') => {
+      const band = surfaceProfile.bands.find((item) => item.kind === kind);
+      if (!band) return null;
+      const recipe = resolveStreetBandMaterial(surfaceProfile, band);
+      return createStreetSurfaceMaterialResources(recipe.kind, recipe.options);
+    };
+    return { pavement: make('motor'), sidewalks: make('sidewalk') };
+  }, [surfaceProfile]);
+  useEffect(() => surfaceMaterials ? retainResourceForDeferredDisposal(surfaceMaterials, (owned) => {
+    owned.pavement?.dispose(); owned.sidewalks?.dispose();
+  }) : undefined, [surfaceMaterials]);
+  const appearance = surfaceProfile?.appearance ?? STREET_APPEARANCE_KITS[node.appearanceKitId];
+  const sharedGround = useStreetGround(node.longitude, node.latitude);
+  const terrain = sharedGround.height ?? preparedTerrain ?? resolveZoneTerrainHeight(sampledTerrain, storedTerrain, fallbackTerrainHeight);
   const geometry = useMemo(() => {
+    if (sharedGround.blocked) return null;
     const result = buildAccessibleFourWayIntersectionGeometry(
       node.axisABearingRad,
       node.axisBBearingRad,
-      node.axisAHalfWidthM,
-      node.axisBHalfWidthM,
+      node.surfaceLayout?.roadA ?? node.axisAHalfWidthM,
+      node.surfaceLayout?.roadB ?? node.axisBHalfWidthM,
+      node.approachSides,
+      node.surfaceLayout ? { crossingSetbackM: 2.9, rampDepthM: 1.8 } : {},
     );
-    if (!result || !terrainPlane) return result;
-    for (const item of [result.crosswalks, result.curbRamps, result.tactilePads]) {
+    if (!result) return null;
+    const surface = node.surfaceLayout ? buildStreetJunctionSurface(node.surfaceLayout) : null;
+    const geometry = { ...result, ...surface };
+    if (sharedGround.offsetAt) {
+      const items = Object.values(geometry);
+      if (items.some((item) => !applySharedStreetGround(item, sharedGround.offsetAt!, 0, 0, sharedGround.grid))) {
+        items.forEach((item) => item.dispose()); return null;
+      }
+      return geometry;
+    }
+    if (!terrainPlane) return geometry;
+    for (const item of Object.values(geometry)) {
       applyTerrainPlaneToStreetGeometry(item, terrainPlane, terrain);
     }
-    return result;
-  }, [node, terrain, terrainPlane]);
+    return geometry;
+  }, [node, terrain, terrainPlane, sharedGround.blocked, sharedGround.offsetAt, sharedGround.grid]);
 
   useEffect(() => {
     frozenRef.current = false;
@@ -1229,10 +1299,11 @@ function AccessibleFourWayIntersectionDetail({
     node.axisBBearingRad,
     node.axisAHalfWidthM,
     node.axisBHalfWidthM,
+    sharedGround.revision,
   ]);
 
   useFrame(() => {
-    if (preparedTerrain !== null || frozenRef.current) return;
+    if (sharedGround.active || preparedTerrain !== null || frozenRef.current) return;
     frameCountRef.current += 1;
     if (frameCountRef.current % TERRAIN_SAMPLE_FRAME_INTERVAL !== 0) return;
     if (attemptsRef.current >= TERRAIN_SAMPLE_MAX_ATTEMPTS) {
@@ -1291,6 +1362,9 @@ function AccessibleFourWayIntersectionDetail({
       ownedGeometry.crosswalks.dispose();
       ownedGeometry.curbRamps.dispose();
       ownedGeometry.tactilePads.dispose();
+      ownedGeometry.pavement?.dispose();
+      ownedGeometry.sidewalks?.dispose();
+      ownedGeometry.curbs?.dispose();
     });
   }, [geometry]);
 
@@ -1301,6 +1375,17 @@ function AccessibleFourWayIntersectionDetail({
       lon={node.longitude * DEG_TO_RAD}
       height={terrain}
     >
+      {geometry.pavement && <mesh geometry={geometry.pavement} renderOrder={RENDER_ORDER_FLATWORK} frustumCulled={false}>
+        {surfaceMaterials?.pavement ? <primitive object={surfaceMaterials.pavement.material} attach="material" />
+          : <meshStandardMaterial color={appearance.palette.motor} roughness={0.97} metalness={0} side={THREE.DoubleSide} />}
+      </mesh>}
+      {geometry.sidewalks && <mesh geometry={geometry.sidewalks} renderOrder={RENDER_ORDER_FLATWORK} frustumCulled={false}>
+        {surfaceMaterials?.sidewalks ? <primitive object={surfaceMaterials.sidewalks.material} attach="material" />
+          : <meshStandardMaterial color={appearance.palette.sidewalk} roughness={0.94} metalness={0} side={THREE.DoubleSide} />}
+      </mesh>}
+      {geometry.curbs && <mesh geometry={geometry.curbs} renderOrder={RENDER_ORDER_RAISED} frustumCulled={false}>
+        <meshStandardMaterial color={appearance.palette.curb} roughness={0.94} metalness={0} side={THREE.DoubleSide} />
+      </mesh>}
       <mesh geometry={geometry.crosswalks} renderOrder={RENDER_ORDER_DASHES + 2} frustumCulled={false}>
         <meshStandardMaterial
           color={appearance.palette.marking}
@@ -1320,12 +1405,13 @@ function AccessibleFourWayIntersectionDetail({
       <mesh geometry={geometry.tactilePads} renderOrder={RENDER_ORDER_RAISED + 2} frustumCulled={false}>
         <meshStandardMaterial color={appearance.palette.tactile} roughness={0.82} metalness={0} />
       </mesh>
-      {intersectionControl === 'traffic_signal' ? (
+      {node.armCount === 4 && intersectionControl === 'traffic_signal' ? (
         <GlobeIntersectionSignalInstances
-          node={node}
+          node={node as FourWayStreetIntersection}
           metalColor={appearance.palette.fixtureMetal}
           renderOrder={RENDER_ORDER_FURNITURE}
-          terrainPlane={terrainPlane}
+          terrainPlane={sharedGround.active ? null : terrainPlane}
+          terrainOffsetAt={sharedGround.offsetAt ?? undefined}
           frameElevation={terrain}
         />
       ) : null}
@@ -1352,7 +1438,9 @@ export function GlobeStreetDetailLayer({
     [roadZones],
   );
   const intersectionNodes = useMemo(
-    () => detectFourWayStreetIntersections(detailedRoadZones),
+    () => detectConnectedStreetIntersections(detailedRoadZones)
+      .map((node) => ({ ...node, surfaceLayout: resolveStreetJunctionLayout(node, detailedRoadZones) }))
+      .filter((node) => node.armCount === 4 || node.surfaceLayout !== null),
     [detailedRoadZones],
   );
   const furnitureStreetIds = useMemo(
@@ -1391,7 +1479,14 @@ export function GlobeStreetDetailLayer({
           key={node.id}
           name={`siteforge-direct3d-junction-${node.id}`}
           userData={direct3DInstanceUserData(
-            direct3DStreetJunctionInstanceDescriptor(node.zoneIds),
+            direct3DStreetJunctionInstanceDescriptor(node.zoneIds, node.armCount === 3 ? {
+              version: 1, arm_count: 3, longitude: node.longitude, latitude: node.latitude,
+              source_fingerprint: `sj1|${node.zoneIds.map((id) => {
+                const zone = zones.find((item) => item.id === id);
+                const meta = zone ? getCommunity3DMeta(zone) : null;
+                return `${id}:${meta?.source_hash?.toLowerCase() ?? ''}:${meta?.representation_hash?.toLowerCase() ?? ''}`;
+              }).join('|')}`,
+            } : undefined),
           )}
         >
           <AccessibleFourWayIntersectionDetail

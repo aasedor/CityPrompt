@@ -16,6 +16,8 @@ from typing import Literal
 from pydantic import BaseModel, Field, field_validator, model_validator
 
 from app.schemas.render_media import SavedRenderResponse
+from app.schemas.park_access import ParkAccessSnapshot
+from app.schemas.shared_ground import SharedGroundSnapshot
 
 
 Direct3DSemanticClass = Literal["ground", "landscape", "street", "park", "building"]
@@ -86,6 +88,16 @@ class Direct3DCommunityZoneClaim(BaseModel):
     building_id: uuid.UUID | None = None
 
 
+class Direct3DJunctionTopology(BaseModel):
+    """Revision-bound directed street node; verified against server geometry."""
+
+    version: Literal[1]
+    arm_count: Literal[3, 4]
+    longitude: float = Field(..., ge=-180, le=180, allow_inf_nan=False)
+    latitude: float = Field(..., ge=-90, le=90, allow_inf_nan=False)
+    source_fingerprint: str = Field(..., min_length=3, max_length=1000)
+
+
 class Direct3DInstanceDescriptor(BaseModel):
     """One exact, server-bindable authored instance in the capture pass."""
 
@@ -99,6 +111,7 @@ class Direct3DInstanceDescriptor(BaseModel):
     zone_id: uuid.UUID | None = None
     building_id: uuid.UUID | None = None
     source_zone_ids: list[uuid.UUID] = Field(default_factory=list, max_length=2000)
+    junction_topology: Direct3DJunctionTopology | None = None
 
     @field_validator("source_zone_ids")
     @classmethod
@@ -170,6 +183,9 @@ class Direct3DArchetypeReference(BaseModel):
 
 class Direct3DRenderRequest(BaseModel):
     """A clean 3D capture plus mode-specific presentation and design authority."""
+
+    park_access_snapshot: ParkAccessSnapshot | None = None
+    shared_ground_snapshot: SharedGroundSnapshot | None = None
 
     control_bundle_version: Literal[1, 2] = Field(
         default=1,

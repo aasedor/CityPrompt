@@ -4175,6 +4175,8 @@ async def test_recipe_save_get_roundtrip_preserves_instances(client, mock_db, te
             _scalar_result(building),  # POST: building lookup
             _scalar_result(project),  # POST: project lookup (owner -> no share query)
             _scalar_result(project.id),  # POST: project mutation lock
+            _scalar_result(project),  # POST: current inventory project scope
+            _scalars_result([]),  # POST: no installed clay tier; retain legacy save
             _scalars_result([linked_zone]),  # POST: linked Community 3D zones
             _scalar_result(test_user),  # GET: require_auth
             _scalar_result(building),  # GET: building lookup
@@ -4360,6 +4362,8 @@ async def test_place_creates_and_links_building_when_zone_has_none(client, mock_
             _scalar_result(zone),  # zone lookup
             _scalar_result(project),  # project lookup (owner -> no share query)
             _scalar_result(project.id),  # project mutation lock
+            _scalar_result(project),  # manual recipe inventory scope
+            _scalars_result([]),  # legacy mode: no installed clay tier
         ]
     )
 
@@ -4411,6 +4415,8 @@ async def test_place_reuses_existing_building_and_preserves_specifications(clien
             _scalar_result(zone),  # zone lookup
             _scalar_result(project),  # project lookup
             _scalar_result(project.id),  # project mutation lock
+            _scalar_result(project),  # manual recipe inventory scope
+            _scalars_result([]),  # legacy mode: no installed clay tier
             _scalar_result(building),  # existing building lookup
         ]
     )
@@ -4518,6 +4524,8 @@ async def test_place_community_compiles_mixed_plan_with_one_server_timestamp(cli
             _scalar_result(project),
             _scalar_result(project.id),  # serialize project-wide compilation
             _scalars_result([building_zone, park_zone, street_zone]),
+            _scalar_result(project),  # manual recipe inventory scope
+            _scalars_result([]),  # legacy mode: no installed clay tier
             _scalars_result([]),  # project buildings: no stale derived artifacts
         ]
     )
@@ -5056,6 +5064,8 @@ async def test_place_community_removes_only_stale_marked_buildings(client, mock_
             _scalar_result(project),
             _scalar_result(project.id),
             _scalars_result([current_zone]),
+            _scalar_result(project),  # manual recipe inventory scope
+            _scalars_result([]),  # legacy mode: no installed clay tier
             _scalars_result([stale_building, user_building]),
         ]
     )
@@ -6857,6 +6867,8 @@ async def test_place_backfills_missing_footprint_from_zone(client, mock_db, test
             _scalar_result(zone),
             _scalar_result(project),
             _scalar_result(project.id),
+            _scalar_result(project),  # manual recipe inventory scope
+            _scalars_result([]),  # legacy mode: no installed clay tier
             _scalar_result(building),
         ]
     )

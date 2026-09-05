@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import type { StreetSectionBand, StreetSectionProfile } from './streetSectionProfiles';
 
 /** Surface identities are semantic rather than visual-variant names. A later
  * family recipe can tint or replace one material without changing the metric
@@ -326,6 +327,23 @@ export function createStreetSurfaceAlbedoTexture(
   };
   texture.needsUpdate = true;
   return texture;
+}
+
+/** One material recipe shared by segment bands and node-owned flatwork. */
+export function resolveStreetBandMaterial(
+  profile: Pick<StreetSectionProfile, 'archetypeId' | 'variantId' | 'appearanceKitId' | 'appearance'>,
+  band: Pick<StreetSectionBand, 'kind' | 'sourceType' | 'surface' | 'label' | 'color' | 'roughness' | 'metalness'>,
+): {
+  kind: StreetSurfaceMaterialKind; options: StreetSurfaceMaterialOptions; cacheKey: string;
+} {
+  const kind = resolveStreetAppearanceMaterialKind(resolveStreetSurfaceMaterialKind(band), profile.appearanceKitId, band.kind);
+  const palette = profile.appearance?.palette;
+  const paletteKind = band.kind === 'median' ? 'planting' : band.kind;
+  const color = palette && paletteKind in palette ? palette[paletteKind as keyof typeof palette] : band.color;
+  const tint = createStreetSurfacePaletteTint(typeof color === 'string' ? color : band.color);
+  const seed = `${profile.archetypeId}:${profile.variantId ?? 'base'}:${kind}`;
+  return { kind, cacheKey: [kind, tint.getHexString(), band.roughness, band.metalness, seed].join('|'),
+    options: { seed, tint, roughness: band.roughness, metalness: band.metalness, anisotropy: 8 } };
 }
 
 /** Allocate a material and its owned albedo texture with an explicit,

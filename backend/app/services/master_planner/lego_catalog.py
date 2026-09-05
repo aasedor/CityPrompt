@@ -26,6 +26,7 @@ from app.services.lego_assembly import (
     _matches_requested_archetype,
     descriptor_from_library_entry,
     plan_vertical_assembly,
+    select_runtime_architecture_entries,
 )
 from app.services.plan_geometry.archetypes import load_dims_table
 
@@ -379,7 +380,7 @@ def build_lego_planning_catalog(entries: Iterable[Any]) -> LegoPlanningCatalog:
 
     # Match the runtime assembly API's newest-first inventory order.  Tests and
     # offline callers without timestamps still get deterministic ID ordering.
-    ordered_entries = sorted(list(entries), key=entry_order, reverse=True)
+    ordered_entries = sorted(select_runtime_architecture_entries(entries), key=entry_order, reverse=True)
     descriptors = [
         descriptor for entry in ordered_entries if (descriptor := descriptor_from_library_entry(entry)) is not None
     ]

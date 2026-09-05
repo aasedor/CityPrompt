@@ -39,6 +39,7 @@ from app.services.plan_geometry.archetypes import load_dims_table
 
 VALID_ROLES = {"podium", "floor", "setback", "crown", "roof", "attachment", "assembled"}
 VALID_FOOTPRINT_PROFILES = {"rectangle", "l_shape", "u_shape", "courtyard"}
+RLASM_ARCHITECTURAL_CLAY_FORMAT = "architectural_clay"
 
 # family/role/variant/LOD become storage-key path segments
 # so they must be plain slugs — no slashes, dots, or other path syntax.
@@ -102,6 +103,7 @@ class ModuleDescriptor:
     # chamfers, entrance recesses, sculptural roofs) and must not be stretched
     # independently back to the parcel edges at runtime.
     allow_inset_footprint: bool = False
+    delivery_format: str | None = None
 
 
 @dataclass(frozen=True)
@@ -166,6 +168,24 @@ def descriptor_from_library_entry(entry: Any) -> ModuleDescriptor | None:
     if not isinstance(lego, dict) or not lego.get("enabled", False):
         return None
 
+    rlasm = metadata.get("rlasm") or {}
+    is_clay = isinstance(rlasm, dict) and rlasm.get("delivery_format") == RLASM_ARCHITECTURAL_CLAY_FORMAT
+    if is_clay and not (
+        rlasm.get("method_version") == "6.1"
+        and rlasm.get("runtime_enabled") is True
+        and rlasm.get("continuous_resize_allowed") is False
+        and lego.get("role") == "assembled"
+        and lego.get("repeatable_z") is False
+        and isinstance(lego.get("native_floors"), int)
+        and lego["native_floors"] >= 1
+        and lego.get("min_floors") == lego["native_floors"]
+        and lego.get("max_floors") == lego["native_floors"]
+        and bool(rlasm.get("variant_id"))
+        and lego.get("source_variant_id") == rlasm["variant_id"]
+        and lego.get("generation_archetype_id") == rlasm["variant_id"]
+    ):
+        return None
+
     role = str(lego.get("role") or "").strip().lower()
     family = str(lego.get("family") or "").strip()
     if role not in VALID_ROLES or not family:
@@ -174,7 +194,7 @@ def descriptor_from_library_entry(entry: Any) -> ModuleDescriptor | None:
     width_m = _as_float(lego.get("width_m"))
     depth_m = _as_float(lego.get("depth_m"))
     height_m = _as_float(lego.get("height_m"))
-    if width_m <= 0 or depth_m <= 0 or height_m <= 0:
+    if any(not math.isfinite(value) or value <= 0 for value in (width_m, depth_m, height_m)):
         return None
 
     return ModuleDescriptor(
@@ -211,6 +231,44 @@ def descriptor_from_library_entry(entry: Any) -> ModuleDescriptor | None:
             lego.get("placement_contract") if isinstance(lego.get("placement_contract"), dict) else None
         ),
         allow_inset_footprint=bool(lego.get("allow_inset_footprint", False)),
+        delivery_format=RLASM_ARCHITECTURAL_CLAY_FORMAT if is_clay else None,
+    )
+
+
+def is_runtime_rlasm_architectural_clay_entry(entry: Any) -> bool:
+    descriptor = descriptor_from_library_entry(entry)
+    return descriptor is not None and descriptor.delivery_format == RLASM_ARCHITECTURAL_CLAY_FORMAT
+
+
+class RuntimeArchitectureEntries(list):
+    """Retain the installed-tier marker even when all clay rows are disabled."""
+
+    def __init__(self, entries: Iterable[Any], *, clay_installed: bool):
+        super().__init__(entries)
+        self.clay_installed = clay_installed
+
+
+def select_runtime_architecture_entries(entries: Iterable[Any]) -> RuntimeArchitectureEntries:
+    """An installed public clay tier never falls back to legacy detailed models.
+
+    Disabled/malformed clay rows cannot become ordinary LEGO descriptors. Keep
+    the tier active when its last public row is disabled, so revocation leaves
+    honest massing rather than resurrecting unrelated legacy architecture.
+    """
+    materialized = list(entries)
+    installed = getattr(entries, "clay_installed", False) or any(
+        getattr(entry, "is_public", False)
+        and isinstance(getattr(entry, "metadata_", None), dict)
+        and isinstance(entry.metadata_.get("rlasm"), dict)
+        and entry.metadata_["rlasm"].get("delivery_format") == RLASM_ARCHITECTURAL_CLAY_FORMAT
+        for entry in materialized
+    )
+    if installed:
+        return RuntimeArchitectureEntries(
+            (entry for entry in materialized if is_runtime_rlasm_architectural_clay_entry(entry)), clay_installed=True,
+        )
+    return RuntimeArchitectureEntries(
+        (entry for entry in materialized if descriptor_from_library_entry(entry) is not None), clay_installed=False,
     )
 
 
@@ -253,6 +311,8 @@ def _strip_card_variant_suffix(semantic_id: str) -> str:
 
 
 def _matches_requested_archetype(module: ModuleDescriptor, archetype_id: str) -> bool:
+    if module.delivery_format == RLASM_ARCHITECTURAL_CLAY_FORMAT:
+        return bool(module.source_variant_id and _semantic_id(archetype_id) == _semantic_id(module.source_variant_id))
     requested = _strip_card_variant_suffix(_semantic_id(archetype_id))
     candidates = (
         *module.archetype_ids,
@@ -623,6 +683,8 @@ def _fixed_landmark_is_select_and_place(module: ModuleDescriptor) -> bool:
     re-imports share the same runtime behavior.
     """
 
+    if module.delivery_format == RLASM_ARCHITECTURAL_CLAY_FORMAT:
+        return True
     placement = module.placement_contract or {}
     footprint = module.footprint_compatibility or {}
     placement_mode = _semantic_id(str(placement.get("mode") or ""))
@@ -989,11 +1051,21 @@ def plan_vertical_assembly(
     *,
     allow_forced_fit: bool = True,
 ) -> dict[str, Any]:
+    modules = list(modules)
+    # Clay has no approved repetition contract, even when its catalogue parent
+    # is detached housing. One selected variant remains one native building.
+    if any(
+        module.delivery_format == RLASM_ARCHITECTURAL_CLAY_FORMAT
+        and request.archetype_id
+        and _matches_requested_archetype(module, request.archetype_id)
+        for module in modules
+    ):
+        return _plan_vertical_assembly_core(modules, request, allow_forced_fit=False)
     parent_id = _catalog_parent_archetype_id(request.archetype_id) if request.archetype_id else None
     if parent_id in DETACHED_ARCHETYPE_IDS:
         if not all(math.isfinite(value) and value > 0 for value in (request.target_width_m, request.target_depth_m)):
             raise AssemblyPlanningError("Target width and depth must be finite and positive")
-        return _plan_detached_assembly(list(modules), request, parent_id)
+        return _plan_detached_assembly(modules, request, parent_id)
     return _plan_vertical_assembly_core(modules, request, allow_forced_fit=allow_forced_fit)
 
 
@@ -1015,7 +1087,7 @@ def _plan_vertical_assembly_core(
     vertical position and scale. A future Three.js composer or GLB baking worker
     can consume the same recipe.
     """
-    if request.target_width_m <= 0 or request.target_depth_m <= 0:
+    if any(not math.isfinite(value) or value <= 0 for value in (request.target_width_m, request.target_depth_m)):
         raise AssemblyPlanningError("Target width and depth must be positive")
     if request.target_floors < 1:
         raise AssemblyPlanningError("Target floors must be at least 1")
@@ -1119,7 +1191,9 @@ def _plan_vertical_assembly_core(
                 for module in family_modules
                 if module.role == "assembled"
                 and module.native_floors == request.target_floors
-                and request.footprint_profile == "rectangle"
+                and (request.footprint_profile == "rectangle" or (
+                    _fixed_landmark_is_select_and_place(module) and request.footprint_local_m is not None
+                ))
                 and request.archetype_id
                 and any(
                     _semantic_id(candidate) == _semantic_id(executable_id)
@@ -1134,11 +1208,14 @@ def _plan_vertical_assembly_core(
             request,
         )
         if assembled:
+            select_and_place = _fixed_landmark_is_select_and_place(assembled)
             (
                 landmark_scale_min,
                 landmark_scale_max,
                 landmark_max_axis_ratio,
             ) = _fixed_landmark_scale_contract(assembled)
+            if select_and_place:
+                landmark_scale_min = landmark_scale_max = landmark_max_axis_ratio = 1.0
             (
                 scale_x,
                 scale_y,
@@ -1148,9 +1225,26 @@ def _plan_vertical_assembly_core(
             ) = _rectangle_orientation(
                 assembled,
                 request,
-                scale_min=landmark_scale_min,
-                scale_max=landmark_scale_max,
+                scale_min=1.0 if select_and_place else landmark_scale_min,
+                scale_max=float("inf") if select_and_place else landmark_scale_max,
             )
+            if select_and_place and request.footprint_local_m is not None:
+                from shapely.affinity import rotate
+                from shapely.geometry import box
+
+                plot = _detached_plot(request)
+                envelope = box(-assembled.width_m / 2, -assembled.depth_m / 2, assembled.width_m / 2, assembled.depth_m / 2)
+                rotations = [angle for angle in (rectangle_rotation, (rectangle_rotation + 90) % 180)
+                             if plot.buffer(1e-7).covers(rotate(envelope, angle, origin=(0, 0)))]
+                if not rotations:
+                    continue
+                rectangle_rotation = rotations[0]
+                segment_length, segment_thickness = (
+                    (request.target_width_m, request.target_depth_m) if rectangle_rotation == 0
+                    else (request.target_depth_m, request.target_width_m)
+                )
+                scale_x = segment_length / assembled.width_m
+                scale_y = segment_thickness / assembled.depth_m
             axis_ratio = max(
                 scale_x / max(scale_y, 1e-9),
                 scale_y / max(scale_x, 1e-9),
@@ -1162,14 +1256,16 @@ def _plan_vertical_assembly_core(
             # to swell until it touches an edge. Cap the applied scale at the
             # family's audited maximum and leave the remaining land as a real
             # setback inside the site envelope.
-            contain_scale = min(raw_contain_scale, landmark_scale_max)
+            contain_scale = 1.0 if select_and_place else min(raw_contain_scale, landmark_scale_max)
             near_native_fit = (
-                landmark_scale_min <= scale_x <= landmark_scale_max
+                not select_and_place
+                and landmark_scale_min <= scale_x <= landmark_scale_max
                 and landmark_scale_min <= scale_y <= landmark_scale_max
                 and axis_ratio <= landmark_max_axis_ratio
             )
             uniform_contain_fit = (
-                FIXED_LANDMARK_CONTAIN_SCALE_MIN <= raw_contain_scale
+                not select_and_place
+                and FIXED_LANDMARK_CONTAIN_SCALE_MIN <= raw_contain_scale
                 and max(scale_x, scale_y) <= FIXED_LANDMARK_CONTAIN_MAX_ENVELOPE_SCALE
                 # Do not let a 90-degree trial disguise a genuinely oversized
                 # authored axis. Large sites still belong on the LEGO
@@ -1179,9 +1275,10 @@ def _plan_vertical_assembly_core(
                 and axis_ratio <= FIXED_LANDMARK_CONTAIN_MAX_AXIS_RATIO
             )
             forced_landmark_fit = (
-                forced and not has_stack_fallback and not _fixed_landmark_is_select_and_place(assembled)
+                forced and not has_stack_fallback and not select_and_place
             )
-            if near_native_fit or uniform_contain_fit or forced_landmark_fit:
+            native_site_envelope_fit = select_and_place and min(scale_x, scale_y) >= 1.0 - 1e-7
+            if native_site_envelope_fit or near_native_fit or uniform_contain_fit or forced_landmark_fit:
                 # The polygon is a site envelope, not an extrusion mould.
                 # Preserve the reviewed landmark proportions and centre the
                 # complete authored form inside the available rectangle.
@@ -1236,13 +1333,16 @@ def _plan_vertical_assembly_core(
                         "profile": "rectangle",
                         "segment_count": 1,
                         "assembly_mode": "fixed_landmark",
+                        "native_scale_locked": select_and_place,
+                        "delivery_format": assembled.delivery_format,
                         "footprint_mode": "archetype_contain",
                         "compatibility_source": (
                             "forced_fit"
-                            if forced and not (near_native_fit or uniform_contain_fit)
+                            if forced and not (native_site_envelope_fit or near_native_fit or uniform_contain_fit)
                             else (
                                 "fixed_landmark_native"
                                 if math.isclose(scale_x, 1.0, abs_tol=1e-6) and math.isclose(scale_y, 1.0, abs_tol=1e-6)
+                                else "fixed_landmark_native_envelope" if select_and_place
                                 else "fixed_landmark_tolerance" if near_native_fit else "fixed_landmark_contain"
                             )
                         ),
@@ -1263,8 +1363,8 @@ def _plan_vertical_assembly_core(
                             "id": "landmark",
                             "centre_x_m": 0.0,
                             "centre_y_m": 0.0,
-                            "length_m": segment_length,
-                            "thickness_m": segment_thickness,
+                            "length_m": assembled.width_m if select_and_place else segment_length,
+                            "thickness_m": assembled.depth_m if select_and_place else segment_thickness,
                             "rotation_degrees": rectangle_rotation,
                         }
                     ],
@@ -1494,6 +1594,14 @@ def _plan_vertical_assembly_core(
             best_plan = plan
 
     if best_plan is None:
+        if any(module.delivery_format == RLASM_ARCHITECTURAL_CLAY_FORMAT for family in families for module in modules_by_family[family]):
+            raise AssemblyPlanningError(
+                "The selected architectural clay is fixed at its native size and floor count. "
+                "Use a plot containing the complete building or keep this proposal as planned massing.",
+                code="family_incompatible",
+                requested=_requested_target_metadata(request),
+                supported_families=_supported_family_metadata(descriptors, families),
+            )
         raise AssemblyPlanningError(
             "No compatible module family found. Add podium, repeatable floor, and roof modules "
             "whose native footprint is within 20% of the target.",

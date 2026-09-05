@@ -6,7 +6,8 @@ import { Bounds, Environment, Grid, OrbitControls } from '@react-three/drei';
 import { AlertTriangle, Bookmark, Box, Check, Loader2, MapPin, Minus, Plus, RefreshCw, Save, Trash2, X } from 'lucide-react';
 import { getApiErrorMessage, siteZonesApi } from '@/services/api';
 import type { SiteZone, SiteZoneProperties } from '@/types';
-import { detachedPlotCoordinates, isDetachedArchetype } from './detachedPlot';
+import { assemblyFootprintCoordinates, isDetachedArchetype } from './detachedPlot';
+import { isNativeClayPlan } from './nativeClayPlacement';
 import { computeFootprintFrame } from '@/components/viewer/globe/buildingPlacement';
 import {
   legoArchetypeContextFromZone,
@@ -43,7 +44,7 @@ function AssemblyScene({ plan }: { plan: LegoAssemblyPlan }) {
       <Bounds fit clip observe margin={1.25}>
         <group>
           {plan.instances.map((instance, index) => (
-            <ModuleInstance key={`${instance.asset_id}-${instance.level}-${index}`} instance={instance} />
+            <ModuleInstance key={`${instance.asset_id}-${instance.level}-${index}`} instance={instance} nativeScaleLocked={isNativeClayPlan(plan)} />
           ))}
         </group>
       </Bounds>
@@ -172,7 +173,7 @@ export function LegoAssemblyPreview({
         target_width_m: width,
         target_depth_m: depth,
         target_floors: floorCount,
-        footprint_local_m: detachedPlotCoordinates(archetypeContext.archetype_id, zone?.coordinates, { width_m: width, depth_m: depth }),
+        footprint_local_m: assemblyFootprintCoordinates(zone?.coordinates, { width_m: width, depth_m: depth }),
         ...(zone?.project_id ? { project_id: zone.project_id } : {}),
         ...archetypeContext,
         allow_setback: allowSetback,

@@ -50,6 +50,7 @@ import {
   resolvePreparedSiteTerrainHeight,
   overlapPreparedGroundEdges,
   shouldRenderReplacementFootprintGround,
+  getActiveBoundaryTileMaskPreference,
 } from './sitePreparationSurface';
 import { buildContainedTerrainGroundMesh } from './terrainGroundMesh';
 import { retainResourceForDeferredDisposal } from './strictModeResourceDisposal';
@@ -75,6 +76,8 @@ import {
   type StreetSurfaceMaterialKind,
 } from './streetSurfaceMaterials';
 import { resolveBuildingExtrudeHeight, resolveZoneSurfaceMode } from './zoneSurfaceMode';
+import { useSharedSiteGround } from './SharedSiteGroundProvider';
+import { createSharedGroundTriangulation, drapeSharedGroundGeometry } from './sharedGroundGeometry';
 
 const DEG_TO_RAD = Math.PI / 180;
 const OBJECT_FILTER_SAMPLE_RADIUS_METERS = 8;
@@ -406,7 +409,7 @@ function getTerrainProbePoints(
   return probes;
 }
 
-function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabled, lightweight = false, suppressed = false, planningOverlaysVisible = true, boundaryOverlayVisible = true, sitePrepared = false, preparedTerrain = null }: {
+function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabled, lightweight = false, suppressed = false, planningOverlaysVisible = true, boundaryOverlayVisible = true, sitePrepared = false, preparedTerrain = null, inheritedMaskPreference = null }: {
   zone: SiteZone;
   isSelected: boolean;
   terrainHeight: number;
@@ -418,12 +421,15 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   boundaryOverlayVisible?: boolean;
   sitePrepared?: boolean;
   preparedTerrain?: number | null;
+  inheritedMaskPreference?: boolean | null;
 }) {
   const color = resolveZoneColor(zone);
   const label = resolveZoneLabel(zone);
   const centroid = computeCentroid(zone.coordinates);
   const tiles = useContext(TilesRendererContext);
   const zoneProps = zone.properties as Record<string, unknown> | undefined;
+  const retainsGoogleGround = (typeof zoneProps?.community_3d_mask_existing_tiles === 'boolean'
+    ? zoneProps.community_3d_mask_existing_tiles : inheritedMaskPreference) === false;
   const storedTerrain = Number(
     zoneProps?.terrain_elevation_m
     ?? zoneProps?.terrain_height
@@ -450,6 +456,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     zone,
     suppressed,
     sitePrepared,
+    inheritedMaskPreference,
   );
   const isCompiledCommunity = isCommunity3DCompiled(zone);
   const isCompiledGround = (
@@ -586,9 +593,9 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     () => {
       if (!publicRealmBaseKind || !geoData?.flatTopGeo) return null;
       const geometry = createMetricSurfaceGeometry(geoData.flatTopGeo);
-      return isCompiledGround ? overlapPreparedGroundEdges(geometry) : geometry;
+      return isCompiledGround && !retainsGoogleGround ? overlapPreparedGroundEdges(geometry) : geometry;
     },
-    [geoData, isCompiledGround, publicRealmBaseKind],
+    [geoData, isCompiledGround, publicRealmBaseKind, retainsGoogleGround],
   );
   useDeferredDisposable(publicRealmBaseGeo);
   // Compiled zones with no textured base kit fall through to the raw polygon,
@@ -597,10 +604,10 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   const compiledGroundGeo = useMemo(
     () => (
       isCompiledGround && !publicRealmBaseKind && geoData?.flatTopGeo
-        ? overlapPreparedGroundEdges(geoData.flatTopGeo.clone())
+        ? (retainsGoogleGround ? geoData.flatTopGeo.clone() : overlapPreparedGroundEdges(geoData.flatTopGeo.clone()))
         : null
     ),
-    [geoData, isCompiledGround, publicRealmBaseKind],
+    [geoData, isCompiledGround, publicRealmBaseKind, retainsGoogleGround],
   );
   useDeferredDisposable(compiledGroundGeo);
   const publicRealmBaseTexture = useMemo(
@@ -695,7 +702,15 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   // Generated buildings never use flat fill geometry. Pre-generation building
   // footprints intentionally share the live terrain-drape path, while the
   // external bare-earth bake stays reserved for imported reference overlays.
-  const shouldBakeImportedTerrain = preparedTerrain === null && isImported && !isBuilding && !isCompiledGround;
+  const sharedGround = useSharedSiteGround();
+  const usesSharedGround = sharedGround.status !== 'inactive'
+    && zone.coordinates.length > 0
+    && zone.coordinates.every(([lng, lat]) => sharedGround.contains(lng, lat));
+  const sharedFrameHeight = usesSharedGround
+    ? sharedGround.heightAt(centroid[0], centroid[1])
+      ?? sharedGround.heightAt(zone.coordinates[0][0], zone.coordinates[0][1])
+    : null;
+  const shouldBakeImportedTerrain = !usesSharedGround && preparedTerrain === null && isImported && !isBuilding && !isCompiledGround;
   const hasBakedElevationRelief = (
     shouldBakeImportedTerrain && hasUsableElevationRelief(bakedElevations)
   );
@@ -727,7 +742,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   // (no per-frame raycasting, no re-storm on navigation). The drape-and-freeze.
   const frozenRef = useRef(false);
   const [sampledTerrainHeight, setSampledTerrainHeight] = useState<number | null>(null);
-  const zoneTerrainHeight = preparedTerrain ?? (isPreparedBoundary
+  const zoneTerrainHeight = sharedFrameHeight ?? preparedTerrain ?? (isPreparedBoundary
     ? resolvePreparedSiteTerrainHeight(zone, terrainHeight)
     : resolveZoneTerrainHeight(
       sampledTerrainHeight,
@@ -751,7 +766,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   const lastDragVersionRef = useRef(0);
 
   const sampleZoneTerrainHeight = useCallback(() => {
-    if (preparedTerrain !== null) return false;
+    if (usesSharedGround || preparedTerrain !== null) return false;
     const tilesGroup = tiles?.group;
     if (!tilesGroup || tilesGroup.children.length === 0) return false;
 
@@ -798,7 +813,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
         : trustedSampledHeight
     ));
     return true;
-  }, [centroid, communityKind, filterObjectHeights, isCompiledGround, isPreparedBoundary, preparedTerrain, storedTerrainHeight, terrainHeight, terrainReferenceHeight, tiles, zone.coordinates]);
+  }, [centroid, communityKind, filterObjectHeights, isCompiledGround, isPreparedBoundary, preparedTerrain, storedTerrainHeight, terrainHeight, terrainReferenceHeight, tiles, usesSharedGround, zone.coordinates]);
 
   useFrame(() => {
     const drag = dragRef.current;
@@ -857,7 +872,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   });
 
   const drapeToTerrain = useCallback(() => {
-    if (preparedTerrain !== null) return;
+    if (usesSharedGround || preparedTerrain !== null) return;
     // A persisted height may have been captured from a photogrammetry roof.
     // Do not deform or freeze the surface until a current, plausible tile
     // sample has anchored this render session.
@@ -969,7 +984,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
         drapedRef.current = true;
       }
     }
-  }, [tiles, geoData, isExtrudedBuilding, hasBakedElevationRelief, sampledTerrainHeight, filterObjectHeights, renderCoordinates, zoneTerrainHeight, freezeDrape, preparedTerrain]);
+  }, [tiles, geoData, isExtrudedBuilding, hasBakedElevationRelief, sampledTerrainHeight, filterObjectHeights, renderCoordinates, zoneTerrainHeight, freezeDrape, preparedTerrain, usesSharedGround]);
 
   useEffect(() => {
     if (sampledTerrainHeight !== null) return undefined;
@@ -1099,7 +1114,50 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   }, [hasBakedElevationRelief, geoData, bakedElevations, bakedReference, renderCoordinates]);
   useDeferredDisposable(importedOutlineGeo);
 
-  if (!geoData) return null;
+  // Every ground vertex uses the same measured surface as street stations,
+  // junctions and park props. Clone owned geometry so late tile refinement
+  // replaces one coherent surface instead of leaving a partially draped mesh.
+  const sharedFillGeo = useMemo(() => {
+    if (!usesSharedGround || sharedFrameHeight === null || isExtrudedBuilding) return null;
+    const source = importedOrthoGeo ?? orthoGeo ?? importedFillGeo ?? preparedSiteGeo
+      ?? woonerfGroundGeo ?? publicRealmBaseGeo ?? compiledGroundGeo ?? geoData?.flatTopGeo;
+    if (!source) return null;
+    // A zone can enter a retained boundary after its old live drape mutated
+    // the mounted geometry. Recover authored flat lift, not that old relief.
+    const authored = source.clone();
+    const positions = authored.getAttribute('position');
+    for (let i = 0; i < positions.count; i += 1) positions.setZ(i, PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS);
+    const east = metersPerDegLon(centroid[1]);
+    const conformed = drapeSharedGroundGeometry(authored, (x, y) => {
+      const height = sharedGround.heightAt(
+        centroid[0] + x / east,
+        centroid[1] + y / METERS_PER_DEG_LAT,
+      );
+      return height === null ? null : height - sharedFrameHeight;
+    }, 4, 60000, createSharedGroundTriangulation(sharedGround.snapshot!, centroid[0], centroid[1]));
+    authored.dispose();
+    return conformed;
+  }, [usesSharedGround, sharedFrameHeight, sharedGround, isExtrudedBuilding, importedOrthoGeo, orthoGeo,
+    importedFillGeo, preparedSiteGeo, woonerfGroundGeo, publicRealmBaseGeo, compiledGroundGeo, geoData, centroid]);
+  useDeferredDisposable(sharedFillGeo);
+
+  const sharedOutlineGeo = useMemo(() => {
+    if (!usesSharedGround || sharedFrameHeight === null || !geoData?.outlineGeo) return null;
+    const geometry = geoData.outlineGeo.clone();
+    const positions = geometry.getAttribute('position');
+    const east = metersPerDegLon(centroid[1]);
+    for (let index = 0; index < positions.count; index += 1) {
+      const height = sharedGround.heightAt(centroid[0] + positions.getX(index) / east,
+        centroid[1] + positions.getY(index) / METERS_PER_DEG_LAT);
+      if (height !== null) positions.setZ(index, height - sharedFrameHeight + FLAT_ZONE_OUTLINE_LIFT_METERS);
+    }
+    geometry.computeBoundingSphere();
+    return geometry;
+  }, [usesSharedGround, sharedFrameHeight, sharedGround, geoData, centroid]);
+  useDeferredDisposable(sharedOutlineGeo);
+
+  if (!geoData || (usesSharedGround && (sharedGround.status !== 'ready'
+    || (!isExtrudedBuilding && !sharedFillGeo)))) return null;
 
   const authoredGroundTexture = drapeActive
     ? groundTexture
@@ -1123,7 +1181,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
       {!isExtrudedBuilding && geoData.flatTopGeo && (showThisPlanningOverlay || drapeActive || isCompiledGround || isPreparedBoundary) && (
         <mesh
           ref={flatMeshRef}
-          geometry={importedOrthoGeo ?? orthoGeo ?? importedFillGeo ?? preparedSiteGeo ?? woonerfGroundGeo ?? publicRealmBaseGeo ?? compiledGroundGeo ?? geoData.flatTopGeo}
+          geometry={sharedFillGeo ?? importedOrthoGeo ?? orthoGeo ?? importedFillGeo ?? preparedSiteGeo ?? woonerfGroundGeo ?? publicRealmBaseGeo ?? compiledGroundGeo ?? geoData.flatTopGeo}
           renderOrder={isSiteBoundary ? 100 : communityKind === 'park' ? 120.5 : 120}
           frustumCulled={false}
           onPointerDown={handleZonePointerDown}
@@ -1251,7 +1309,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
       {showThisPlanningOverlay && !isSiteBoundary && !(isBuilding && suppressed) && (
         <line
           ref={isExtrudedBuilding ? buildingOutlineRef : flatOutlineRef as any}
-          {...({ geometry: !isExtrudedBuilding ? (importedOutlineGeo ?? geoData.outlineGeo) : geoData.outlineGeo } as any)}
+          {...({ geometry: !isExtrudedBuilding ? (sharedOutlineGeo ?? importedOutlineGeo ?? geoData.outlineGeo) : geoData.outlineGeo } as any)}
           renderOrder={isBuilding ? 201 : communityKind === 'park' ? 120.6 : 121}
           frustumCulled={false}
           onPointerDown={handleZonePointerDown}
@@ -1339,8 +1397,9 @@ export function GlobeZoneLayer({
               suppressed={Boolean(zone.building_id && suppressedBuildingIds?.has(zone.building_id))}
               planningOverlaysVisible={showPlanningOverlays}
               boundaryOverlayVisible={showPlanningOverlays}
-              sitePrepared={sitePrepared}
+              sitePrepared={sitePrepared && preparedTerrain !== null}
               preparedTerrain={preparedTerrain}
+              inheritedMaskPreference={getActiveBoundaryTileMaskPreference(zones, zone)}
             />
           </group>
         );

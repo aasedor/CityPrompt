@@ -2059,6 +2059,9 @@ export function parkGroundSourceSignature(
         : candidate
     ))
     : [];
+  const derivedAccess = props.park_access_connections as { version?: number; sourceSignature?: string } | undefined;
+  const manualAccess = !Array.isArray(props.park_access_points) && derivedAccess?.version === 1
+    && typeof derivedAccess.sourceSignature === 'string' ? derivedAccess.sourceSignature : undefined;
   const canonicalLegoContract = legoContract?.source === 'public_realm_lego'
     && legoContract.supported
     ? legoContract
@@ -2077,6 +2080,7 @@ export function parkGroundSourceSignature(
       plazaVariant: normalizeId(props.plaza_selected_variant_id),
       planting: legacyParkPlantingStructureForSignature(zone),
       access,
+      ...(manualAccess ? { manualAccess } : {}),
       coordinates,
     }), 6);
   }
@@ -2102,6 +2106,7 @@ export function parkGroundSourceSignature(
     },
     planting: resolveParkPlantingStructure(zone),
     access,
+    ...(manualAccess ? { manualAccess } : {}),
     coordinates,
   }), 7);
 }

@@ -57,6 +57,14 @@ Local integration verification passed TypeScript, the production bundle, focused
 
 ## Completing the full vision
 
+The subsequent [mixed-neighbourhood ground pilot](MIXED_NEIGHBOURHOOD_PILOT_2026-09-04.md)
+integrates exact native clay, a T junction and connected park on a clear real
+site. It adds a saved existing-terrain choice, one measured Google height field,
+terrain-conforming public realm, footprint-specific foundations and captured
+ground provenance. Its measured contact checks and remaining limits are
+recorded separately; the initial downtown replacement surface is not evidence
+of correct real-site grounding.
+
 The product has three connected experiences: **design the community**, **experience and present it**, and **explain how to make it real**. The January release prioritizes a dependable version of all three. It does not require every advanced feature to be enabled at once.
 
 | Delivery | Concrete implementation | Acceptance check |

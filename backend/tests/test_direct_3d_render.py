@@ -4360,3 +4360,111 @@ def test_control_bundle_v2_rejects_incomplete_geometry_controls():
     base = _request(presentation_mode="scene")
     with pytest.raises(ValidationError, match="control_bundle_version=2 requires"):
         Direct3DRenderRequest(**{**base.model_dump(), "control_bundle_version": 2})
+
+
+def _tee_street_zones():
+    return [
+        _compiled_zone("street", properties=_supported_street_properties(10,
+            [[-114.081, 51.04], [-114.079, 51.04]])),
+        _compiled_zone("street", properties=_supported_street_properties(10,
+            [[-114.08, 51.04], [-114.08, 51.041]])),
+    ]
+
+
+def _junction_topology(streets, *, arms=3, longitude=-114.08, latitude=51.04):
+    from app.schemas.direct_3d_render import Direct3DJunctionTopology
+    parts = []
+    for zone in sorted(streets, key=lambda item: str(item.id)):
+        meta = zone.properties["community_3d"]
+        parts.append(f"{zone.id}:{meta['source_hash'].lower()}:{meta['representation_hash'].lower()}")
+    return Direct3DJunctionTopology(version=1, arm_count=arms, longitude=longitude, latitude=latitude,
+        source_fingerprint="sj1|" + "|".join(parts))
+
+
+def _connected_junction_request(streets, topology, source_streets=None):
+    sources = streets if source_streets is None else source_streets
+    request = _street_junction_request(streets, source_zone_ids=[zone.id for zone in sources],
+        junction_id=direct_api._canonical_junction_instance_id([str(zone.id) for zone in sources], topology))
+    descriptor = next(item for item in request.instance_id_manifest.values() if item.zone_id is None)
+    descriptor.junction_topology = topology
+    return request
+
+
+def test_connected_junction_accepts_three_arms_and_preserves_verified_metadata():
+    streets = _tee_street_zones()
+    topology = _junction_topology(streets)
+    request = _connected_junction_request(streets, topology)
+    result = direct_api._bind_instance_manifest_to_server_zones(request, streets, streets)
+    node = next(item for item in result if item["zone_id"] is None)
+    assert node["junction_topology"] == topology.model_dump()
+    assert node["source_zone_ids"] == sorted(str(zone.id) for zone in streets)
+    assert not direct_api._street_sources_form_four_arm_junction(streets)
+
+
+@pytest.mark.parametrize("change", ["count", "anchor", "source_revision", "skew"])
+def test_connected_junction_rejects_false_or_stale_claims_before_generation(change):
+    streets = _tee_street_zones()
+    topology = _junction_topology(streets)
+    if change == "count":
+        topology.arm_count = 4
+    elif change == "anchor":
+        topology.latitude += 0.0001
+    elif change == "source_revision":
+        streets[0].properties["community_3d"]["source_hash"] = "f" * 64
+    else:
+        streets[1].properties["plan_centerline"][1][0] += 0.001
+    request = _connected_junction_request(streets, topology)
+    with pytest.raises(HTTPException, match="topology, anchor, or source revision") as error:
+        direct_api._bind_instance_manifest_to_server_zones(request, streets, streets)
+    assert error.value.status_code == 409
+
+
+def test_connected_junction_rejects_omitted_fourth_approach():
+    sources = _tee_street_zones()
+    fourth = _zone(uuid.uuid4(), "street", properties=_supported_street_properties(10,
+        [[-114.08, 51.04], [-114.08, 51.039]]))
+    streets = [*sources, fourth]
+    request = _connected_junction_request(streets, _junction_topology(sources), sources)
+    with pytest.raises(HTTPException, match="topology, anchor, or source revision"):
+        direct_api._bind_instance_manifest_to_server_zones(request, streets, streets)
+
+
+def test_connected_junction_allows_distant_other_streets():
+    sources = _tee_street_zones()
+    distant = _zone(uuid.uuid4(), "street", properties=_supported_street_properties(10,
+        [[-114.085, 51.04], [-114.085, 51.039]]))
+    streets = [*sources, distant]
+    request = _connected_junction_request(streets, _junction_topology(sources), sources)
+    assert direct_api._bind_instance_manifest_to_server_zones(request, streets, streets)
+
+
+def test_connected_junction_anchor_changes_identity_and_legacy_id_stays_stable():
+    streets = _tee_street_zones()
+    sources = [str(zone.id) for zone in streets]
+    a = direct_api._canonical_junction_instance_id(sources, _junction_topology(streets))
+    b = direct_api._canonical_junction_instance_id(sources, _junction_topology(streets, latitude=51.0401))
+    assert a != b
+    assert ":node-" not in direct_api._canonical_junction_instance_id(sources)
+
+
+def test_connected_junction_ignores_nonvehicle_path_as_a_fourth_road_arm():
+    sources = _tee_street_zones()
+    path = _zone(uuid.uuid4(), "street", properties={"width": 4, "lane_count": 0,
+        "road_archetype_id": "multi_use_trail", "plan_centerline": [[-114.08, 51.04], [-114.08, 51.039]]})
+    assert direct_api._validate_junction_topology(sources, [*sources, path], _junction_topology(sources))
+
+
+def test_connected_junction_rejects_bent_through_arms_hidden_by_bearing_grouping():
+    west = _compiled_zone("street", properties=_supported_street_properties(10,
+        [[-114.081, 51.0399], [-114.08, 51.04]]))
+    east = _compiled_zone("street", properties=_supported_street_properties(10,
+        [[-114.08, 51.04], [-114.079, 51.04]]))
+    stem = _tee_street_zones()[1]
+    streets = [west, east, stem]
+    assert not direct_api._street_sources_form_junction(streets, _junction_topology(streets))
+
+
+def test_connected_junction_rejects_stub_too_short_for_an_actual_third_approach():
+    streets = _tee_street_zones()
+    streets[1].properties["plan_centerline"][1][1] = 51.04005
+    assert not direct_api._street_sources_form_junction(streets, _junction_topology(streets))

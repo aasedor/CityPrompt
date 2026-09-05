@@ -9,6 +9,9 @@ import {
   resolvePublicRealmGroundAnchor,
   resolveReplacementGroundAnchor,
   shouldFilterObjectTerrainHeight,
+  corroboratedTerrainHeight,
+  resolveMeasuredReplacementGround,
+  terrainAnchorRevisionKey,
 } from './globeTerrainUtils';
 
 describe('getObjectFilteredTerrainHeight', () => {
@@ -62,8 +65,8 @@ describe('rejectRaisedObjectTop', () => {
 });
 
 describe('resolveReplacementGroundAnchor', () => {
-  it('does not frame a replacement park on a roof stored by an earlier click', () => {
-    expect(resolveReplacementGroundAnchor(1132, 1131, 1120)).toBe(1120);
+  it('rejects roof clicks using independently measured surrounding ground', () => {
+    expect(resolveReplacementGroundAnchor(1132, 1131, 1111.6, 2, 1120)).toBe(1120);
   });
 
   it('keeps a stable local ground reading when all references agree', () => {
@@ -83,12 +86,40 @@ describe('resolveReplacementGroundAnchor', () => {
     expect(resolveReplacementGroundAnchor(1100.5, 1100.596, 1097.205)).toBe(1100.596);
   });
 
-  it('still rejects a local anchor left standing a storey above the site average', () => {
-    expect(resolveReplacementGroundAnchor(1131.5, 1131, 1120)).toBe(1120);
+  it('does not mistake the measured Calgary geoid offset for a roof', () => {
+    expect(resolveReplacementGroundAnchor(1031.3, 1031.3, 1022.89)).toBe(1031.3);
+    expect(resolveReplacementGroundAnchor(1031.3, 1022.89, 1022.89, 2, 1031.2)).toBe(1031.3);
   });
 
   it('falls back to the project terrain when no local reading exists', () => {
     expect(resolveReplacementGroundAnchor(null, null, 1097.205)).toBe(1097.205);
+  });
+});
+
+describe('measured replacement grounding', () => {
+  it('rejects a single excavation and roof outliers in surrounding terrain', () => {
+    expect(corroboratedTerrainHeight([1025, 1031.1, 1031.2, 1031.3, 1106, null], 1022.89)).toBe(1031.2);
+    expect(resolveMeasuredReplacementGround([1105, 1106, 1106.2, 1106.3], [1025, 1031.1, 1031.2, 1031.3, 1106], 1106, 1022.89)).toBe(1031.2);
+  });
+
+  it('does not cache a fallback before missing or unrefined tiles become ground', () => {
+    expect(resolveMeasuredReplacementGround([null], [null, null, null], 1022.89, 1022.89)).toBeNull();
+    expect(resolveMeasuredReplacementGround([-28090], [-28090, -28090, -28090], 1022.89, 1022.89)).toBeNull();
+    expect(resolveMeasuredReplacementGround([1031.2, 1031.3, 1031.4], [1031.1, 1031.2, 1031.3], 1022.89, 1022.89)).toBe(1031.3);
+  });
+
+  it('leaves insufficient or widely varying surroundings unresolved', () => {
+    expect(corroboratedTerrainHeight([1031, 1032], 1022.89)).toBeNull();
+    expect(corroboratedTerrainHeight([1025, 1031, 1040, 1106], 1022.89)).toBeNull();
+  });
+
+  it('invalidates cached anchors when position, authored revision, grade or API fallback changes', () => {
+    const key = terrainAnchorRevisionKey('building', -114.07, 51.04, 'revision-a', 1031.3, 1022.89);
+    expect(terrainAnchorRevisionKey('building', -114.07, 51.04, 'revision-a', 1031.3, 1022.89)).toBe(key);
+    expect(terrainAnchorRevisionKey('building', -114.071, 51.04, 'revision-a', 1031.3, 1022.89)).not.toBe(key);
+    expect(terrainAnchorRevisionKey('building', -114.07, 51.04, 'revision-b', 1031.3, 1022.89)).not.toBe(key);
+    expect(terrainAnchorRevisionKey('building', -114.07, 51.04, 'revision-a', 1032, 1022.89)).not.toBe(key);
+    expect(terrainAnchorRevisionKey('building', -114.07, 51.04, 'revision-a', 1031.3, 1023)).not.toBe(key);
   });
 });
 

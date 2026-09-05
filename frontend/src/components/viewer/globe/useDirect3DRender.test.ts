@@ -21,6 +21,7 @@ import {
   DIRECT_3D_CLASS_ID_MANIFEST,
   type Direct3DCaptureBundle,
 } from './direct3dCapture';
+import type { SharedSiteGroundSnapshot } from './sharedSiteGround';
 
 vi.mock('@/services/api', () => ({
   rendersApi: { generateDirect3D: vi.fn() },
@@ -281,6 +282,36 @@ describe('Direct 3D presentation adapter', () => {
     expect(direct.diagnostics.macro_design_fidelity?.silhouette_edge_recall).toBe(0.94);
     expect(direct.outcome).toBe('accepted');
     expect(direct.sourceImageUrl).toBe(capture.beautyImageBase64);
+  });
+
+  it('submits the frozen park access snapshot captured with the image for server revision validation', async () => {
+    const snapshot = { version: 1 as const, sourceSignature: 'pac1-12345678',
+      eligibleStreetZoneIds: [],
+      settings: { maxGapM: 8, pathWidthM: 2.2, obstacleClearanceM: 0.25, maxConnections: 2, gridStepM: 2 },
+      sources: [{ zoneId: 'zone-building-1', updatedAt: '2026-09-04T18:00:00Z', geometrySignature: 'pac1-abcdef12' }],
+      parks: [] };
+    const { result } = renderHook(() => useDirect3DRender());
+    await result.current.renderDirect3D({ ...capture, parkAccessSnapshot: snapshot }, {
+      style: 'photorealistic', projectId: 'project-1', community3DClaims,
+    });
+    expect(rendersApi.generateDirect3D).toHaveBeenCalledWith(expect.objectContaining({ park_access_snapshot: snapshot }));
+  });
+
+  it('submits the exact measured ground captured with the scene', async () => {
+    const snapshot: SharedSiteGroundSnapshot = {
+      version: 1, source: 'google_3d_tiles', verticalReference: 'WGS84_ellipsoid',
+      boundaryId: 'site-1', boundaryUpdatedAt: '2026-09-04T18:00:00Z',
+      boundaryCoordinates: [[0, 0], [.0001, 0], [.0001, .0001], [0, .0001]],
+      sourceSignature: 'ssg1-source', signature: 'ssg1-measured',
+      grid: { west: 0, south: 0, rows: 2, columns: 2, stepLng: .0001, stepLat: .0001 },
+      heights: [1025.1, 1025.2, 1025.3, 1025.4],
+      quality: { sampleCount: 4, stablePasses: 2, maxPassDeltaM: .001, maxSlope: .03, maxLocalResidualM: 0 },
+    };
+    const { result } = renderHook(() => useDirect3DRender());
+    await result.current.renderDirect3D({ ...capture, sharedGroundSnapshot: snapshot }, {
+      style: 'photorealistic', projectId: 'project-1', community3DClaims,
+    });
+    expect(rendersApi.generateDirect3D).toHaveBeenCalledWith(expect.objectContaining({ shared_ground_snapshot: snapshot }));
   });
 
   it('accepts every catalogue style and sends its exact deterministic mode and Direct default', async () => {

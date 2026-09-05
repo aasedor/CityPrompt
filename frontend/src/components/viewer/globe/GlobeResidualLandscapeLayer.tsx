@@ -18,6 +18,7 @@ import {
 } from './residualLandscape';
 import { resolveParkTreeVariant } from './publicRealmPropPalettes';
 import { resolvePreparedSiteTerrainForZone } from './sitePreparationSurface';
+import { useSharedSiteGround } from './SharedSiteGroundProvider';
 
 const DEG_TO_RAD = Math.PI / 180;
 const TERRAIN_SAMPLE_INTERVAL_FRAMES = 30;
@@ -51,7 +52,12 @@ function ResidualLandscapeInstance({
     () => computeCentroid(zone.coordinates),
     [zone.coordinates],
   );
-  const frameHeight = preparedTerrain ?? storedTerrainHeight(zone) ?? fallbackTerrainHeight;
+  const sharedGround = useSharedSiteGround();
+  const sharedActive = sharedGround.status !== 'inactive'
+    && recipe.placements.every((placement) => sharedGround.contains(placement.lng, placement.lat));
+  const sharedFrame = sharedActive ? sharedGround.heightAt(centroid[0], centroid[1])
+    ?? sharedGround.heightAt(recipe.placements[0].lng, recipe.placements[0].lat) : null;
+  const frameHeight = sharedFrame ?? preparedTerrain ?? storedTerrainHeight(zone) ?? fallbackTerrainHeight;
 
   useEffect(() => {
     nextPlacementRef.current = 0;
@@ -59,7 +65,7 @@ function ResidualLandscapeInstance({
   }, [recipe.placements]);
 
   useFrame(() => {
-    if (preparedTerrain !== null || nextPlacementRef.current >= recipe.placements.length) return;
+    if (sharedActive || preparedTerrain !== null || nextPlacementRef.current >= recipe.placements.length) return;
     frameRef.current += 1;
     if (frameRef.current % TERRAIN_SAMPLE_INTERVAL_FRAMES !== 0) return;
     const tilesGroup = tiles?.group;
@@ -93,7 +99,7 @@ function ResidualLandscapeInstance({
     return recipe.placements.map((placement, index) => ({
       x: (placement.lng - centroid[0]) * metresPerLongitudeDegree,
       y: (placement.lat - centroid[1]) * METERS_PER_DEG_LAT,
-      z: zOffsets[index] ?? 0,
+      z: sharedActive ? (sharedGround.heightAt(placement.lng, placement.lat) ?? frameHeight) - frameHeight : zOffsets[index] ?? 0,
       yawRad: placement.yaw_rad,
       scale: placement.scale,
       treeVariant: resolveParkTreeVariant(
@@ -101,9 +107,9 @@ function ResidualLandscapeInstance({
         `${zone.id}:${placement.id}:${index}`,
       ),
     }));
-  }, [centroid, recipe.placements, zone.id, zOffsets]);
+  }, [centroid, recipe.placements, zone.id, zOffsets, sharedActive, sharedGround, frameHeight]);
 
-  if (!placements.length) return null;
+  if (!placements.length || (sharedActive && sharedGround.status !== 'ready')) return null;
   return (
     <EastNorthUpFrame
       lat={centroid[1] * DEG_TO_RAD}

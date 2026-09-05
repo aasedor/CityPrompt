@@ -19,6 +19,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useId,
   useMemo,
   useRef,
   useState,
@@ -35,6 +36,9 @@ import { createKtx2LoaderExtension } from '@/lib/ktx2GltfLoader';
 import { computeFootprintFrame, computeModelPlacement, type FootprintFrame } from './buildingPlacement';
 import { raycastTerrainHeightAtLatLng } from './GlobeZoneLayer';
 import { resolvePreparedSiteTerrainForZone } from './sitePreparationSurface';
+import { useSharedSiteGround } from './SharedSiteGroundProvider';
+import { importedModelGroundFootprints } from './importedBuildingGround';
+import { currentBuildingGroundingIssues, geographicFootprint, resolveBuildingGroundContact, updateBuildingGroundingIssues, type GroundPoint, type LegoGroundingIssue } from './buildingGroundContact';
 import {
   getObjectFilteredTerrainHeight,
   isPlausibleTerrainAnchor,
@@ -95,6 +99,7 @@ interface GlobeBuildingModelsLayerProps {
   preparedSiteTerrainHeight?: number | null;
   /** Buildings whose detailed or massing representation is mounted. */
   onLoadedIdsChange: (ids: Set<string>) => void;
+  onGroundingIssuesChange?: (issues: LegoGroundingIssue[]) => void;
   selectedBuildingId?: string | null;
   onBuildingClick?: (buildingId: string) => void;
 }
@@ -132,6 +137,30 @@ function stableFrameOffset(id: string, modulo: number): number {
   return Math.abs(hash) % modulo;
 }
 
+type GroundingStatusReporter = (buildingId: string, rendererId: string, reason: string | null) => void;
+
+function useModelFoundation(footprints: GroundPoint[][], frame: FootprintFrame, buildingId: string, report: GroundingStatusReporter) {
+  const sharedGround = useSharedSiteGround();
+  const rendererId = useId();
+  const contact = useMemo(() => resolveBuildingGroundContact(footprints, frame.centroidLng, frame.centroidLat, sharedGround),
+    [footprints, frame.centroidLng, frame.centroidLat, sharedGround]);
+  const geometry = useMemo(() => {
+    if (contact.status !== 'ready') return null;
+    const result = new THREE.BufferGeometry();
+    result.setAttribute('position', new THREE.Float32BufferAttribute(contact.positions, 3));
+    result.setIndex(contact.indices);
+    result.computeVertexNormals(); result.computeBoundingSphere();
+    return result;
+  }, [contact]);
+  useEffect(() => () => geometry?.dispose(), [geometry]);
+  const reason = contact.status === 'unresolved' ? contact.reason ?? 'incomplete_footprint_ground' : null;
+  useEffect(() => {
+    report(buildingId, rendererId, reason);
+    return () => report(buildingId, rendererId, null);
+  }, [buildingId, rendererId, reason, report]);
+  return { contact, geometry };
+}
+
 function BuildingModelInstance({
   building,
   modelUrl,
@@ -142,6 +171,7 @@ function BuildingModelInstance({
   preparedSiteTerrainHeight,
   onLoaded,
   onUnloaded,
+  onGroundingStatus,
   selected,
   proposalForDirect3D,
   onBuildingClick,
@@ -155,6 +185,7 @@ function BuildingModelInstance({
   preparedSiteTerrainHeight?: number | null;
   onLoaded: (id: string) => void;
   onUnloaded: (id: string) => void;
+  onGroundingStatus: GroundingStatusReporter;
   selected: boolean;
   proposalForDirect3D: boolean;
   onBuildingClick?: (buildingId: string) => void;
@@ -202,6 +233,8 @@ function BuildingModelInstance({
     () => computeModelPlacement(frame, size, building.height_meters, building.rotation_degrees),
     [frame, size, building.height_meters, building.rotation_degrees],
   );
+  const groundFootprints = useMemo(() => importedModelGroundFootprints(bbox, placement, frame), [bbox, placement, frame]);
+  const foundation = useModelFoundation(groundFootprints, frame, building.id, onGroundingStatus);
 
   useEffect(() => {
     if (placement?.heightWarning) {
@@ -214,10 +247,10 @@ function BuildingModelInstance({
 
   // Prism suppression: only while this GLB is actually mounted.
   useEffect(() => {
-    if (!placement) return undefined;
+    if (!placement || foundation.contact.status === 'unresolved') return undefined;
     onLoaded(building.id);
     return () => onUnloaded(building.id);
-  }, [building.id, onLoaded, onUnloaded, placement]);
+  }, [building.id, onLoaded, onUnloaded, placement, foundation.contact.status]);
 
   // Terrain seating: reconcile a stored elevation with lower-quartile tile
   // probes and take the lower material surface (ground beats a legacy roof
@@ -252,7 +285,7 @@ function BuildingModelInstance({
         glazingLodRef.current = nextLod;
       }
     }
-    if (frozenRef.current) return;
+    if (foundation.contact.status !== 'outside' || preparedSiteTerrainHeight != null || frozenRef.current) return;
     frameCountRef.current += 1;
     if (frameCountRef.current % TERRAIN_SAMPLE_FRAME_INTERVAL !== 0) return;
     if (attemptsRef.current >= TERRAIN_SAMPLE_MAX_ATTEMPTS) {
@@ -289,9 +322,9 @@ function BuildingModelInstance({
     }
   });
 
-  if (!placement) return null;
+  if (!placement || foundation.contact.status === 'unresolved') return null;
 
-  const terrain = preparedSiteTerrainHeight
+  const terrain = (foundation.contact.status === 'ready' ? foundation.contact.anchorHeight : null) ?? preparedSiteTerrainHeight
     ?? resolveZoneTerrainHeight(sampledTerrain, storedTerrain, fallbackTerrainHeight);
 
   return (
@@ -321,6 +354,10 @@ function BuildingModelInstance({
           </group>
         </group>
       </group>
+      {foundation.geometry && <mesh geometry={foundation.geometry} renderOrder={MODEL_RENDER_ORDER}
+        userData={proposalForDirect3D ? direct3DBuildingInstanceUserData(building, zone) : DIRECT_3D_CAPTURE_CONTEXT_USER_DATA}>
+        <meshStandardMaterial color="#8f8c84" roughness={0.95} side={THREE.DoubleSide} />
+      </mesh>}
       {selected && <LocalModelSelectionOutline ring={ring} frame={frame} />}
     </EastNorthUpFrame>
   );
@@ -335,6 +372,7 @@ function GeneratedBuildingMassing({
   preparedSiteTerrainHeight,
   onLoaded,
   onUnloaded,
+  onGroundingStatus,
   selected,
   proposalForDirect3D,
   onBuildingClick,
@@ -347,6 +385,7 @@ function GeneratedBuildingMassing({
   preparedSiteTerrainHeight?: number | null;
   onLoaded: (id: string) => void;
   onUnloaded: (id: string) => void;
+  onGroundingStatus: GroundingStatusReporter;
   selected: boolean;
   proposalForDirect3D: boolean;
   onBuildingClick?: (buildingId: string) => void;
@@ -368,6 +407,9 @@ function GeneratedBuildingMassing({
     return next;
   }, [frame.centroidLat, frame.centroidLng, height, ring]);
   useEffect(() => () => geometry?.dispose(), [geometry]);
+
+  const groundFootprints = useMemo(() => [geographicFootprint(ring, frame.centroidLng, frame.centroidLat)], [ring, frame.centroidLng, frame.centroidLat]);
+  const foundation = useModelFoundation(groundFootprints, frame, building.id, onGroundingStatus);
 
   const tiles = useContext(TilesRendererContext);
   const properties = zone?.properties as Record<string, unknown> | undefined;
@@ -393,7 +435,7 @@ function GeneratedBuildingMassing({
   }, [anchorKey]);
 
   useFrame(() => {
-    if (frozenRef.current || !geometry) return;
+    if (foundation.contact.status !== 'outside' || preparedSiteTerrainHeight != null || frozenRef.current || !geometry) return;
     frameCountRef.current += 1;
     if (frameCountRef.current % MASSING_TERRAIN_SAMPLE_FRAME_INTERVAL !== 0) return;
     if (attemptsRef.current >= MASSING_TERRAIN_SAMPLE_MAX_ATTEMPTS) {
@@ -428,13 +470,13 @@ function GeneratedBuildingMassing({
   });
 
   useEffect(() => {
-    if (!geometry) return undefined;
+    if (!geometry || foundation.contact.status === 'unresolved') return undefined;
     onLoaded(building.id);
     return () => onUnloaded(building.id);
-  }, [building.id, geometry, onLoaded, onUnloaded]);
+  }, [building.id, geometry, onLoaded, onUnloaded, foundation.contact.status]);
 
-  if (!geometry) return null;
-  const terrain = preparedSiteTerrainHeight ?? resolveZoneTerrainHeight(
+  if (!geometry || foundation.contact.status === 'unresolved') return null;
+  const terrain = (foundation.contact.status === 'ready' ? foundation.contact.anchorHeight : null) ?? preparedSiteTerrainHeight ?? resolveZoneTerrainHeight(
     sampledTerrain,
     storedTerrain,
     fallbackTerrainHeight,
@@ -465,6 +507,10 @@ function GeneratedBuildingMassing({
           side={THREE.DoubleSide}
         />
       </mesh>
+      {foundation.geometry && <mesh geometry={foundation.geometry} renderOrder={MODEL_RENDER_ORDER}
+        userData={proposalForDirect3D ? direct3DBuildingInstanceUserData(building, zone) : DIRECT_3D_CAPTURE_CONTEXT_USER_DATA}>
+        <meshStandardMaterial color="#8f8c84" roughness={0.95} side={THREE.DoubleSide} />
+      </mesh>}
       {selected && <LocalModelSelectionOutline ring={ring} frame={frame} />}
     </EastNorthUpFrame>
   );
@@ -477,10 +523,19 @@ export function GlobeBuildingModelsLayer({
   terrainHeight,
   preparedSiteTerrainHeight = null,
   onLoadedIdsChange,
+  onGroundingIssuesChange,
   selectedBuildingId = null,
   onBuildingClick,
 }: GlobeBuildingModelsLayerProps) {
   const [loadedIds, setLoadedIds] = useState<Set<string>>(() => new Set());
+  const [groundingIssues, setGroundingIssues] = useState<ReadonlyMap<string, LegoGroundingIssue>>(() => new Map());
+  const handleGroundingStatus = useCallback<GroundingStatusReporter>((buildingId, rendererId, reason) => {
+    setGroundingIssues((previous) => updateBuildingGroundingIssues(previous, buildingId, rendererId, reason));
+  }, []);
+  useEffect(() => {
+    onGroundingIssuesChange?.(currentBuildingGroundingIssues(groundingIssues, new Set(buildings.map((building) => building.id))));
+  }, [buildings, groundingIssues, onGroundingIssuesChange]);
+  useEffect(() => () => onGroundingIssuesChange?.([]), [onGroundingIssuesChange]);
   const camera = useThree((state) => state.camera);
 
   const zoneByBuildingId = useMemo(() => {
@@ -653,6 +708,7 @@ export function GlobeBuildingModelsLayer({
             preparedSiteTerrainHeight={zonePreparedTerrain}
             onLoaded={handleLoaded}
             onUnloaded={handleUnloaded}
+            onGroundingStatus={handleGroundingStatus}
             selected={selectedBuildingId === building.id}
             proposalForDirect3D={direct3DProposalBuildingIds?.has(building.id) ?? false}
             onBuildingClick={onBuildingClick}
@@ -670,6 +726,7 @@ export function GlobeBuildingModelsLayer({
               preparedSiteTerrainHeight={zonePreparedTerrain}
               onLoaded={handleLoaded}
               onUnloaded={handleUnloaded}
+              onGroundingStatus={handleGroundingStatus}
               selected={selectedBuildingId === building.id}
               proposalForDirect3D={direct3DProposalBuildingIds?.has(building.id) ?? false}
               onBuildingClick={onBuildingClick}
@@ -689,6 +746,7 @@ export function GlobeBuildingModelsLayer({
                 preparedSiteTerrainHeight={zonePreparedTerrain}
                 onLoaded={handleLoaded}
                 onUnloaded={handleUnloaded}
+                onGroundingStatus={handleGroundingStatus}
                 selected={selectedBuildingId === building.id}
                 proposalForDirect3D={direct3DProposalBuildingIds?.has(building.id) ?? false}
                 onBuildingClick={onBuildingClick}

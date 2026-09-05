@@ -113,30 +113,64 @@ export function preferLowerGroundAnchor(
   return storedValue;
 }
 
-/** Choose the safest bare-ground frame origin for replacement development.
- * A current tile ray or a stored zone height may each have landed on a roof, so
- * material disagreement between those two still resolves to the lower plausible
- * elevation.
- *
- * The project terrain is different in kind: it is a site-wide elevation-API
- * average, so it can never be a roof hit, and on a site whose local grade sits
- * above the site mean it is legitimately the lowest of the three. Ranking it by
- * "lower wins" therefore let a coarse average override a corroborated local
- * reading and buried every model by the difference (measured 3.4m at Olympic
- * Plaza). It may now only reject a local anchor standing a storey or more above
- * it — the roof case it was introduced for — and otherwise serves as the
- * fallback for a missing local reading. */
+/** The regional elevation/geoid estimate is a loading fallback, not a ceiling
+ * on measured local grade. Roof rejection requires independent nearby mesh
+ * evidence; a height difference from the coarse API cannot establish a roof. */
 export function resolveReplacementGroundAnchor(
   sampled: number | null | undefined,
   stored: number | null | undefined,
   projectTerrain: number | null | undefined,
   thresholdMeters = OBJECT_HEIGHT_FILTER_THRESHOLD_METERS,
+  surroundingGround?: number | null,
 ): number | null {
+  if (Number.isFinite(surroundingGround)) {
+    const nearby = surroundingGround as number;
+    if (Number.isFinite(sampled) && Math.abs((sampled as number) - nearby) <= thresholdMeters) {
+      // Live local and surrounding ground agree. An old stored API height
+      // must not drag both measurements back below the actual mesh.
+      return Number.isFinite(stored) && Math.abs((stored as number) - (sampled as number)) <= thresholdMeters
+        ? stored as number : sampled as number;
+    }
+    const local = preferLowerGroundAnchor(sampled, stored, thresholdMeters);
+    return local !== null && Math.abs(local - nearby) <= thresholdMeters ? local : nearby;
+  }
   const local = preferLowerGroundAnchor(sampled, stored, thresholdMeters);
   if (local === null) return Number.isFinite(projectTerrain) ? projectTerrain as number : null;
-  if (!Number.isFinite(projectTerrain)) return local;
-  const rise = local - (projectTerrain as number);
-  return rise > EXCAVATION_REJECT_METERS ? projectTerrain as number : local;
+  return local;
+}
+
+/** Require several nearby hits in the same lower height band, so one ditch
+ * or unrefined tile cannot become the persisted building anchor. This is
+ * mesh-surface corroboration, not semantic proof that all roofs were excluded. */
+export function corroboratedTerrainHeight(
+  samples: Array<number | null | undefined>, reference: number | null | undefined,
+): number | null {
+  const finite = samples.filter((height): height is number => isPlausibleTerrainAnchor(height, reference)).sort((a, b) => a - b);
+  for (let start = 0; start < finite.length - 2; start += 1) {
+    const cluster = finite.slice(start).filter((height) => height - finite[start] <= 1.5);
+    if (cluster.length >= 3) return getRepresentativeTerrainHeight(cluster, cluster[0]);
+  }
+  return null;
+}
+
+/** Only actual surrounding mesh samples can complete/cache a building anchor.
+ * Missing tiles keep the fallback temporary so later refinement can recover. */
+export function resolveMeasuredReplacementGround(
+  localSamples: Array<number | null | undefined>, surroundingSamples: Array<number | null | undefined>,
+  stored: number | null | undefined, projectTerrain: number,
+): number | null {
+  const reference = Number.isFinite(stored) ? stored : projectTerrain;
+  const nearby = corroboratedTerrainHeight(surroundingSamples, reference);
+  if (nearby === null) return null;
+  const local = corroboratedTerrainHeight(localSamples, reference);
+  return resolveReplacementGroundAnchor(local, stored, projectTerrain, OBJECT_HEIGHT_FILTER_THRESHOLD_METERS, nearby);
+}
+
+export function terrainAnchorRevisionKey(
+  buildingId: string, longitude: number, latitude: number,
+  sourceRevision: string | undefined, stored: number | null, fallback: number,
+): string {
+  return JSON.stringify([buildingId, longitude.toFixed(6), latitude.toFixed(6), sourceRevision, stored, fallback]);
 }
 
 /** Public realm follows the current streamed tile surface when it agrees with

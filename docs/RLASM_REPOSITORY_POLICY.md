@@ -23,18 +23,32 @@ The active repository may contain:
 - deterministic preparation and build scripts;
 - the final complete render set and two phone boards;
 - final builder and independent holistic reviews; and
-- the keeper manifest and discrepancy ledger.
+- the keeper manifest and discrepancy ledger;
+- the canonical `seed/model-library/rlasm-architectural-clay/` manifest and
+  deterministic loader; and
+- one Git-LFS GLB per explicitly activated, independently passed
+  architectural-clay runtime delivery.
 
 A promoted keeper must have a complete independent holistic review with zero
 P0 and zero P1 blockers. Scoped material, contact, roof, or optical passes do
 not authorize promotion.
+
+An architectural-clay runtime delivery is a separate, narrower promotion
+class. It must satisfy the clay delivery profile in
+`docs/RLASM_LATEST_METHOD.md`, retain zero unresolved P0/P1 clay findings, and
+be explicitly activated by a human. It remains labelled architectural clay,
+never `keeper_approved`. Its GLB must be texture-free, exact-variant,
+hash-locked, fixed-native-scale, and stored under the canonical clay seed
+folder through Git LFS. Catalogue references remain the picker and render
+authority. Unapproved or scoped-only clay models stay external.
 
 ## External artifact contents
 
 Keep these outside the active Git tree in content-addressed artifact storage:
 
 - rejected and superseded candidate versions;
-- `.blend`, `.glb`, raw render batches, clay studies, and diagnostic movies;
+- `.blend`, unpromoted `.glb`, raw render batches, clay studies, and diagnostic
+  movies;
 - transient source/material generation attempts;
 - browser profiles, test fixtures, caches, and temporary worktrees; and
 - full legacy-method snapshots retained only for reproducibility.
@@ -102,3 +116,9 @@ Before committing a keeper package:
 6. run `git diff --check`, inspect `git diff --stat`, and inspect the complete
    staged file list; and
 7. push only to the explicitly authorized remote and feature branch.
+
+For an architectural-clay runtime delivery, apply the same checklist with the
+clay-specific independent review in place of a textured-keeper decision, then
+also verify `python tools/seed_model_library.py --rlasm-clay-only --dry-run`
+and the RLASM clay library contract tests. Never promote a scoped-only clay
+pass by changing its label.

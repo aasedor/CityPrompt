@@ -34,6 +34,15 @@ export function resolvePreparedSiteTerrainHeight(
   return Number.isFinite(stored) ? stored : fallbackTerrainHeight;
 }
 
+/** A retained site's ground preference applies only to objects inside it.
+ * Individual zones may explicitly override it. */
+export function getActiveBoundaryTileMaskPreference(zones: SiteZone[], zone?: SiteZone): boolean | null {
+  const boundary = getActiveSiteBoundary(zones);
+  if (!boundary || (zone && zone.id !== boundary.id && !preparedSiteContainsZone(boundary, zone))) return null;
+  const preference = (boundary.properties as Record<string, unknown> | undefined)?.community_3d_mask_existing_tiles;
+  return typeof preference === 'boolean' ? preference : null;
+}
+
 /** Authored objects wholly inside a cleared site share its declared datum.
  * Existing context and zones in a concave notch retain their own terrain. */
 export function resolvePreparedSiteTerrainForZone(
@@ -95,8 +104,9 @@ export function shouldRenderReplacementFootprintGround(
   zone: SiteZone,
   suppressed: boolean,
   sitePrepared: boolean,
+  inheritedMaskPreference: boolean | null = null,
 ): boolean {
-  return shouldMaskReplacementBuildingTiles(zone, suppressed)
+  return shouldMaskReplacementBuildingTiles(zone, suppressed, inheritedMaskPreference)
     && !sitePrepared
     && zone.coordinates.length >= 3;
 }
@@ -108,10 +118,13 @@ export function shouldRenderReplacementFootprintGround(
 export function shouldMaskReplacementBuildingTiles(
   zone: SiteZone,
   suppressed: boolean,
+  inheritedMaskPreference: boolean | null = null,
 ): boolean {
   const props = zone.properties as Record<string, unknown> | undefined;
+  const maskPreference = typeof props?.community_3d_mask_existing_tiles === 'boolean'
+    ? props.community_3d_mask_existing_tiles : inheritedMaskPreference;
   return suppressed
-    && props?.community_3d_mask_existing_tiles !== false
+    && maskPreference !== false
     && ['building', 'residential', 'development_area', 'development'].includes(zone.zone_type);
 }
 

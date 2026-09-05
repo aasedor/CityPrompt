@@ -40,7 +40,8 @@ import {
 } from '@/components/viewer/globe/streetNetworkGroundTexture';
 import { usesArchetypeOwnedParkSurface } from '@/components/viewer/globe/parkLegoFamilies';
 import { compileProjectCommunity3D } from './projectCommunityCompile';
-import { detachedPlotCoordinates } from './detachedPlot';
+import { assemblyFootprintCoordinates } from './detachedPlot';
+import { isNativeClayPlan } from './nativeClayPlacement';
 
 function BuilderScene({ items }: { items: ZoneBuildItem[] }) {
   const placed = items.filter(
@@ -69,6 +70,7 @@ function BuilderScene({ items }: { items: ZoneBuildItem[] }) {
                 <ModuleInstance
                   key={`${item.zone.id}-${instance.asset_id}-${instance.level}-${index}`}
                   instance={instance}
+                  nativeScaleLocked={isNativeClayPlan(item.plan)}
                 />
               ))}
             </group>
@@ -412,7 +414,7 @@ export function LegoBuilderPanel({
           target_depth_m: item.targets.depth_m,
           target_floors: item.targets.floors,
           footprint_profile: item.targets.footprint_profile,
-          footprint_local_m: detachedPlotCoordinates(item.archetypeId, item.zone.coordinates, item.targets),
+          footprint_local_m: assemblyFootprintCoordinates(item.zone.coordinates, item.targets),
           wing_depth_m: item.targets.wing_depth_m,
           project_id: item.zone.project_id,
           // A manually drawn parcel is an intentional design target. Match the
@@ -574,6 +576,7 @@ export function LegoBuilderPanel({
         return legoAssemblyApi.saveRecipe(buildingId, {
           schema_version: 1,
           module_family: item.plan.family,
+          ...(item.plan.catalog_fingerprint ? { catalog_fingerprint: item.plan.catalog_fingerprint } : {}),
           archetype_id: item.plan.archetype_id ?? context.archetype_id ?? null,
           reuse_keys: item.plan.reuse_keys,
           target: item.plan.target,

@@ -15,6 +15,7 @@ import type { SiteZone } from '@/types';
 import { api, documentsApi, rendersApi, siteZonesApi } from '@/services/api';
 import { isCommunity3DCompiled } from '@/features/community3d/community3d';
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
+import { derivedParkAccessGuides, getDerivedParkAccess } from './parkAccessConnections';
 import {
   computeParkPlacements,
   resolveParkRecipeForZone,
@@ -260,7 +261,7 @@ const MARKER_COLORS = {
 
 function parkAccessPoints(zone: SiteZone): Array<[number, number]> {
   const raw = (zone.properties as Record<string, unknown> | undefined)?.park_access_points;
-  if (!Array.isArray(raw)) return [];
+  if (!Array.isArray(raw)) return getDerivedParkAccess(zone)?.connections.map((connection) => connection.gateway) ?? [];
   return raw.flatMap((candidate) => {
     if (!Array.isArray(candidate) || candidate.length < 2) return [];
     const lng = Number(candidate[0]);
@@ -1490,7 +1491,7 @@ export function buildParkDiagram(
       profile.archetypeId,
       legoAppearance,
     );
-    drawProceduralPathNetwork(
+    if (!getDerivedParkAccess(zone)) drawProceduralPathNetwork(
       ctx,
       accessPointsPx,
       centroidPx,
@@ -1502,9 +1503,10 @@ export function buildParkDiagram(
       legoAppearance,
     );
   }
+  const connectedGuides = [...guideFit.guides, ...derivedParkAccessGuides(zone)];
   const executableGuides = mode === 'procedural'
-    ? styleExecutableParkGuides(guideFit.guides, legoAppearance)
-    : guideFit.guides;
+    ? styleExecutableParkGuides(connectedGuides, legoAppearance)
+    : connectedGuides;
   drawParkGuides(
     ctx,
     mode === 'procedural'
@@ -1624,7 +1626,7 @@ export function buildParkDiagram(
     },
     sizeM: { width: widthM, height: heightM },
     markers,
-    guides: guideFit.guides,
+    guides: connectedGuides,
     fitInstruction,
   };
 }
@@ -1667,7 +1669,9 @@ export function buildParkGroundPrompt(
       ? 'Include a small circular paved plaza where the paths meet. '
       : '';
   const accessCount = markers.access ?? 0;
-  const accessBlock = accessCount > 0
+  const accessBlock = getDerivedParkAccess(zone)
+    ? 'The diagram contains exact derived pedestrian gateways and complete, whole-width paths to the park network. Preserve every path centerline and width exactly, absorb the pale-cream gateway markers into that path material, and do not add shortcuts through the fixed lawn or program areas. '
+    : accessCount > 0
     ? `The ${accessCount} PALE-CREAM circle${accessCount === 1 ? '' : 's'} on the parcel edge mark exact pedestrian gateways into the surrounding street/path network. Extend a continuous path centerline to every gateway, absorb each circle into the path material, and do not leave isolated circular pads. `
     : profile.guideLegend.length > 0
       ? 'The diagram already contains the complete path topology. Do not add any new path, spur, axis, ring, radial connection, plaza or entrance beyond the colored path guides. '

@@ -7,6 +7,7 @@ import {
   createSitePreparationTexture,
   createWoonerfPaverTexture,
   getPreparedSiteBoundaryIds,
+  getActiveBoundaryTileMaskPreference,
   hasCompiledCommunity,
   overlapPreparedGroundEdges,
   resolvePreparedSiteTerrainHeight,
@@ -42,6 +43,19 @@ const compiledPark = {
 };
 
 describe('compiled site preparation', () => {
+  it('inherits retained ground inside the boundary, permits an explicit override, and leaves outside objects independent', () => {
+    const boundary = { ...zone('site', 'site_boundary', { community_3d_mask_existing_tiles: false }), is_active_boundary: true,
+      coordinates: [[0, 0], [10, 0], [10, 10], [0, 10]] as [number, number][] };
+    const building = { ...zone('inside', 'building'), coordinates: [[1, 1], [3, 1], [3, 3], [1, 3]] as [number, number][] };
+    const inherited = getActiveBoundaryTileMaskPreference([boundary, building], building);
+    expect(inherited).toBe(false);
+    expect(shouldMaskReplacementBuildingTiles(building, true, inherited)).toBe(false);
+    expect(shouldRenderReplacementFootprintGround(building, true, false, inherited)).toBe(false);
+    expect(shouldMaskReplacementBuildingTiles({ ...building, properties: { community_3d_mask_existing_tiles: true } }, true, inherited)).toBe(true);
+    expect(getActiveBoundaryTileMaskPreference([boundary], { ...building, coordinates: [[11, 1], [13, 1], [13, 3], [11, 3]] })).toBeNull();
+    expect(getActiveBoundaryTileMaskPreference([{ ...boundary, is_active_boundary: false }], building)).toBeNull();
+    expect(getActiveBoundaryTileMaskPreference([{ ...boundary, properties: {} }], building)).toBeNull();
+  });
   it('places prepared backing physically below authored fill without changing its footprint or source', () => {
     const source = new THREE.BufferGeometry();
     source.setAttribute('position', new THREE.Float32BufferAttribute([0, 0, 0.08, 10, 0, 0.08, 0, 10, 0.08], 3));

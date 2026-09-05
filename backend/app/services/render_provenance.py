@@ -15,6 +15,9 @@ from typing import Any, Iterable
 from geoalchemy2.shape import to_shape
 from shapely.geometry import mapping
 
+from app.services.park_access_provenance import PARK_ACCESS_EVIDENCE, bind_park_access_snapshot
+from app.services.shared_ground_provenance import SHARED_GROUND_EVIDENCE, bind_shared_ground_snapshot
+
 
 def _json_default(value: Any) -> Any:
     if isinstance(value, Decimal):
@@ -50,6 +53,11 @@ def build_render_source_snapshot(
     req: Any, zones: Iterable[Any], buildings: Iterable[Any], *, captured_at: str
 ) -> dict:
     """Call only after project scope and compiled claims pass server validation."""
+    zones = list(zones)
+    park_access = getattr(req, "park_access_snapshot", None)
+    bound_park_access = bind_park_access_snapshot(park_access, zones) if park_access is not None else None
+    shared_ground = getattr(req, "shared_ground_snapshot", None)
+    bound_shared_ground = bind_shared_ground_snapshot(shared_ground, zones) if shared_ground is not None else None
     zone_ids = {str(claim.zone_id) for claim in req.community_3d_claims}
     if req.residual_landscape_claim:
         zone_ids.add(str(req.residual_landscape_claim.boundary_id))
@@ -57,6 +65,10 @@ def build_render_source_snapshot(
         if descriptor.zone_id:
             zone_ids.add(str(descriptor.zone_id))
         zone_ids.update(str(value) for value in descriptor.source_zone_ids)
+    if bound_park_access is not None:
+        zone_ids.update(str(zone.id) for zone in zones)
+    if bound_shared_ground is not None:
+        zone_ids.add(str(shared_ground.boundaryId))
     source_zones = []
     building_ids = set()
     for zone in sorted(zones, key=lambda item: str(item.id)):
@@ -75,6 +87,7 @@ def build_render_source_snapshot(
                 "properties": dict(zone.properties or {}),
                 "is_active_boundary": bool(getattr(zone, "is_active_boundary", False)),
                 "building_ids": sorted(set(str(value) for value in linked_ids)),
+                **({"updated_at": zone.updated_at} if bound_park_access is not None or (bound_shared_ground is not None and str(zone.id) == str(shared_ground.boundaryId)) else {}),
             }
         )
     missing = zone_ids - {zone["id"] for zone in source_zones}
@@ -115,6 +128,8 @@ def build_render_source_snapshot(
                 "project_id": str(req.project_id),
                 "zones": source_zones,
                 "buildings": source_buildings,
+                **({"park_access_snapshot": bound_park_access} if bound_park_access is not None else {}),
+                **({"shared_ground_snapshot": bound_shared_ground} if bound_shared_ground is not None else {}),
             }
         )
     )
@@ -137,5 +152,11 @@ def build_render_source_snapshot(
         if camera is not None
         else "not_supplied",
         "plan_evidence": "server_project_state_after_claim_validation",
-        "scope": "rendered_zones_and_linked_buildings",
+        "scope": (
+            "all_project_zones_and_linked_buildings_for_park_access" if bound_park_access is not None
+            else "rendered_zones_active_ground_boundary_and_linked_buildings" if bound_shared_ground is not None
+            else "rendered_zones_and_linked_buildings"
+        ),
+        **({"park_access_evidence": PARK_ACCESS_EVIDENCE} if bound_park_access is not None else {}),
+        **({"shared_ground_evidence": SHARED_GROUND_EVIDENCE} if bound_shared_ground is not None else {}),
     }

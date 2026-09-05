@@ -1,6 +1,6 @@
 import { expect, it } from 'vitest';
 import { computeFootprintFrame } from '@/components/viewer/globe/buildingPlacement';
-import { detachedPlotCoordinates, isDetachedArchetype } from './detachedPlot';
+import { assemblyFootprintCoordinates, detachedPlotCoordinates, isDetachedArchetype } from './detachedPlot';
 
 it('retains a rotated concave plot in the actual globe instance frame', () => {
   const angle = 0.46;
@@ -22,4 +22,14 @@ it('only enables dwelling lots for known detached families and their exact varia
   expect(isDetachedArchetype('vancouver_laneway_house_variant_3')).toBe(true);
   expect(isDetachedArchetype('urban_skyscraper')).toBe(false);
   expect(detachedPlotCoordinates('urban_skyscraper', [[0, 0], [1, 0], [1, 1]], { width_m: 100, depth_m: 100 })).toBeUndefined();
+});
+
+it('provides the actual concave footprint to non-detached clay plans too', () => {
+  const ring = [[-114, 51], [-113.999, 51], [-113.999, 51.0002], [-113.9996, 51.0002], [-113.9996, 51.0005], [-114, 51.0005]];
+  const target = { width_m: 70, depth_m: 56 };
+  const local = assemblyFootprintCoordinates([...ring, ring[0]], target);
+  expect(local).toHaveLength(6);
+  expect(local).toEqual(detachedPlotCoordinates('vancouver_laneway_house', ring, target));
+  expect(assemblyFootprintCoordinates([[NaN, 51], ...ring], target)).toBeUndefined();
+  expect(assemblyFootprintCoordinates(undefined, target)).toBeUndefined();
 });

@@ -405,6 +405,8 @@ export function useDirect3DRender() {
       presentation_mode: presentationMode,
       project_id: options.projectId,
       community_3d_claims: options.community3DClaims,
+        park_access_snapshot: capture.parkAccessSnapshot,
+        shared_ground_snapshot: capture.sharedGroundSnapshot,
       residual_landscape_claim: options.residualLandscapeClaim ?? undefined,
     });
     return {
