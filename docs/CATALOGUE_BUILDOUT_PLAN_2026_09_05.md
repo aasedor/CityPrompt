@@ -2,6 +2,8 @@
 
 Proposed September 5, 2026. Teaching target: January 2027, 60 students working in approximately eight groups. This is a coverage and implementation plan, not an asset approval or a generation run.
 
+The user accepted this catalogue direction. The immediate execution sequence is recorded in [Catalogue next steps](C:/dev/CityPrompt-place/docs/CATALOGUE_NEXT_STEPS_2026_09_05.md): a five-choice empty-lot pilot before completing the 18-choice starter release.
+
 ## Outcome and scope
 
 Give students **at least two meaningfully different, reviewed, placeable choices in every defined asset collection**, with a consistent pick, place and reshape experience. Complete useful coverage before producing third and fourth alternatives. Existing additional approved choices remain available; this is a minimum, not a cap.
