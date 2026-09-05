@@ -67,6 +67,44 @@ async def test_import_persists_reference_only_even_outside_site(ref_client, sess
 
 
 @pytest.mark.asyncio
+async def test_source_provenance_survives_import_and_metadata_update(ref_client, session):
+    project = SimpleNamespace(id=PROJECT, owner_id=USER.id)
+    session.execute.side_effect = [result(project), result(), result(values=[])]
+    source = "https://data.calgary.ca/Base-Maps/Land-Use-Districts/qe6k-p9nh"
+    imported = await ref_client.post(
+        f"/api/v1/reference-layers/projects/{PROJECT}/import",
+        files={"file": ("zoning.geojson", json.dumps(COLLECTION))},
+        data={"kind": "zoning", "name": "Calgary zoning", "source_url": source},
+    )
+    assert imported.status_code == 201, imported.text
+    assert imported.json()["source_url"] == source
+    layer = session.add.call_args.args[0]
+    assert layer.source_url == source
+    session.get.return_value = layer
+    session.execute.side_effect = [result(project)]
+    updated = await ref_client.put(
+        f"/api/v1/reference-layers/{layer.id}",
+        json={"name": layer.name, "kind": "zoning", "source_url": source, "description": "Dated study-area extract"},
+    )
+    assert updated.status_code == 200, updated.text
+    assert updated.json()["source_url"] == source
+    assert updated.json()["description"] == "Dated study-area extract"
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("source", ["not-a-url", "ftp://example.com/data", "https://example.com/" + "x" * 2030])
+async def test_invalid_source_link_is_validation_error_without_writes(ref_client, session, source):
+    session.execute.side_effect = [result(SimpleNamespace(id=PROJECT, owner_id=USER.id))]
+    response = await ref_client.post(
+        f"/api/v1/reference-layers/projects/{PROJECT}/import",
+        files={"file": ("zoning.geojson", json.dumps(COLLECTION))},
+        data={"source_url": source},
+    )
+    assert response.status_code == 422, response.text
+    session.add.assert_not_called()
+
+
+@pytest.mark.asyncio
 async def test_editor_import_uses_project_share(ref_client, session):
     project = SimpleNamespace(id=PROJECT, owner_id=uuid.uuid4())
     session.execute.side_effect = [result(project), result(SimpleNamespace(permission="editor")), result(), result(values=[])]

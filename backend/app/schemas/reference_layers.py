@@ -8,7 +8,7 @@ from pydantic import BaseModel, ConfigDict, Field, HttpUrl, field_validator
 class ReferenceLayerMetadata(BaseModel):
     name: str = Field(min_length=1, max_length=160)
     kind: Literal["reference", "zoning"] = "reference"
-    source_url: HttpUrl | None = Field(default=None, max_length=2048)
+    source_url: HttpUrl | None = None
     description: str | None = Field(default=None, max_length=2000)
     color: str = Field(default="#7c3aed", pattern=r"^#[0-9a-fA-F]{6}$")
     opacity: float = Field(default=0.8, ge=0.1, le=1)
@@ -19,6 +19,15 @@ class ReferenceLayerMetadata(BaseModel):
         value = value.strip()
         if not value:
             raise ValueError("A layer name is required.")
+        return value
+
+    @field_validator("source_url")
+    @classmethod
+    def bounded_source_url(cls, value: HttpUrl | None) -> HttpUrl | None:
+        # HttpUrl is a parsed object, so Field(max_length=...) cannot call len()
+        # on it. Bound the serialized URL that is written to the database.
+        if value is not None and len(str(value)) > 2048:
+            raise ValueError("Source URLs must be 2048 characters or fewer.")
         return value
 
 

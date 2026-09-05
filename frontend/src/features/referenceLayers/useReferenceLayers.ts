@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { getApiErrorMessage } from '@/services/api';
@@ -18,6 +18,10 @@ export function useReferenceLayers(projectId: string | undefined) {
   const queryClient = useQueryClient();
   const [hiddenByProject, setHiddenByProject] = useState<Record<string, Set<string>>>({});
   const hiddenIds = useMemo(() => projectId ? hiddenByProject[projectId] ?? readHidden(projectId) : new Set<string>(), [hiddenByProject, projectId]);
+  useEffect(() => {
+    if (!projectId || !hiddenByProject[projectId]) return;
+    try { localStorage.setItem(keyFor(projectId), JSON.stringify([...hiddenByProject[projectId]])); } catch { /* private browsing can disable storage */ }
+  }, [hiddenByProject, projectId]);
   const query = useQuery({
     queryKey: referenceLayerQueryKey(projectId),
     queryFn: () => referenceLayersApi.list(projectId!),
@@ -28,13 +32,14 @@ export function useReferenceLayers(projectId: string | undefined) {
   const toggleLayer = useCallback((layerId: string) => {
     if (!projectId) return;
     setHiddenByProject((previous) => {
-      const next = new Set(previous[projectId] ?? readHidden(projectId));
+      // React may replay an updater. Use the same snapshot each time and
+      // persist only the committed state in the effect above.
+      const next = new Set(previous[projectId] ?? hiddenIds);
       if (next.has(layerId)) next.delete(layerId);
       else next.add(layerId);
-      try { localStorage.setItem(keyFor(projectId), JSON.stringify([...next])); } catch { /* private browsing can disable storage */ }
       return { ...previous, [projectId]: next };
     });
-  }, [projectId]);
+  }, [projectId, hiddenIds]);
   const deletion = useMutation({
     mutationFn: referenceLayersApi.remove,
     onSuccess: () => queryClient.invalidateQueries({ queryKey: referenceLayerQueryKey(projectId) }),
