@@ -13,7 +13,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import get_settings
 from app.core.database import get_db
-from app.core.security import get_current_user, require_auth
+from app.core.security import check_project_asset_access, get_current_user, require_auth
 from app.models.models import Document, Project, ProjectShare, User
 from app.schemas.schemas import DocumentResponse, ProcessingStatusResponse
 from app.tasks.worker import celery_app
@@ -46,7 +46,7 @@ async def upload_document(
     project_id: uuid.UUID,
     file: UploadFile = File(...),
     process_mode: str = "full",
-    user: User | None = Depends(get_current_user),
+    user: User = Depends(require_auth),
     db: AsyncSession = Depends(get_db),
 ):
     """Upload a document to a project for processing.
@@ -68,7 +68,7 @@ async def upload_document(
         share_result = await db.execute(
             select(ProjectShare).where(
                 ProjectShare.project_id == project_id,
-                (ProjectShare.user_id == user.id) | (ProjectShare.email == user.email),
+                ProjectShare.user_id == user.id,
                 ProjectShare.permission == "editor",
             )
         )
@@ -153,12 +153,15 @@ async def trigger_processing(
         share_result = await db.execute(
             select(ProjectShare).where(
                 ProjectShare.project_id == document.project_id,
-                (ProjectShare.user_id == user.id) | (ProjectShare.email == user.email),
+                ProjectShare.user_id == user.id,
                 ProjectShare.permission == "editor",
             )
         )
         if not share_result.scalar_one_or_none():
-            raise HTTPException(status_code=403, detail="Not authorized to process documents in this project")
+            raise HTTPException(
+                status_code=403,
+                detail="Not authorized to process documents in this project",
+            )
 
     document.processing_status = "pending"
     await db.flush()
@@ -248,12 +251,15 @@ async def delete_document(
         share_result = await db.execute(
             select(ProjectShare).where(
                 ProjectShare.project_id == document.project_id,
-                (ProjectShare.user_id == user.id) | (ProjectShare.email == user.email),
+                ProjectShare.user_id == user.id,
                 ProjectShare.permission == "editor",
             )
         )
         if not share_result.scalar_one_or_none():
-            raise HTTPException(status_code=403, detail="Not authorized to delete documents in this project")
+            raise HTTPException(
+                status_code=403,
+                detail="Not authorized to delete documents in this project",
+            )
 
     # Delete file from S3
     try:
@@ -282,12 +288,24 @@ async def delete_document(
 async def get_document_file(
     document_id: uuid.UUID,
     db: AsyncSession = Depends(get_db),
+    user: User | None = Depends(get_current_user),
+    share_token: str | None = None,
+    asset_ticket: str | None = None,
 ):
     """Serve the uploaded file by proxying from MinIO storage."""
     result = await db.execute(select(Document).where(Document.id == document_id))
     document = result.scalar_one_or_none()
     if not document:
         raise HTTPException(status_code=404, detail="Document not found")
+    if share_token:
+        raise HTTPException(status_code=403, detail="Source documents are private")
+    await check_project_asset_access(
+        document.project_id,
+        user,
+        db,
+        share_token=share_token,
+        asset_ticket=asset_ticket,
+    )
 
     import boto3
     from botocore.config import Config
@@ -315,7 +333,14 @@ async def get_document_file(
     except Exception:
         raise HTTPException(status_code=404, detail="File not found in storage")
 
-    return Response(content=file_data, media_type=content_type)
+    return Response(
+        content=file_data,
+        media_type=content_type,
+        headers={
+            "Cache-Control": "private, no-store",
+            "Referrer-Policy": "no-referrer",
+        },
+    )
 
 
 @router.get("/{document_id}", response_model=DocumentResponse)
@@ -337,11 +362,14 @@ async def get_document(
         share_result = await db.execute(
             select(ProjectShare).where(
                 ProjectShare.project_id == document.project_id,
-                (ProjectShare.user_id == user.id) | (ProjectShare.email == user.email),
+                ProjectShare.user_id == user.id,
             )
         )
         if not share_result.scalar_one_or_none():
-            raise HTTPException(status_code=403, detail="Not authorized to view documents in this project")
+            raise HTTPException(
+                status_code=403,
+                detail="Not authorized to view documents in this project",
+            )
 
     return document
 

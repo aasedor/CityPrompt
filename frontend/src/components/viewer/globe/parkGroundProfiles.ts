@@ -6,6 +6,7 @@ import {
   type ParkLegoFamilyId,
 } from './parkLegoFamilies';
 import { archetypeOwnedParkKitForFamily } from './parkArchetypeOwnedKits';
+import { isNeighborhoodParkPilot, neighborhoodParkGuides, neighborhoodParkLayoutForZone } from './neighborhoodParkLayout';
 
 export type ParkGuideKind =
   | 'ellipse'
@@ -1666,7 +1667,7 @@ export function buildParkRenderQualityInstruction(
   return `${common} OBLIQUE QUALITY: build convincing canopy depth through foreground, middle-distance and background layers, translucent crown edges and grounded contact shadows; paths, clearings, water and destination structures remain readable through deliberate canopy openings.`;
 }
 
-type ParkProfileZone = Pick<SiteZone, 'properties'> & Partial<Pick<SiteZone, 'zone_type'>>;
+type ParkProfileZone = Pick<SiteZone, 'properties'> & Partial<Pick<SiteZone, 'zone_type' | 'coordinates'>>;
 
 function basketballVariantProfile(
   variantId: string,
@@ -1820,7 +1821,18 @@ export function resolveParkGroundProfile(zone: ParkProfileZone): ParkGroundProfi
   const variantOwnsProgram = archetypeId === 'basketball_court';
   const neighborhoodStickerV0 = archetypeId === 'neighborhood_park'
     && variantId === 'neighborhood_park_v0';
-  const resolvedExact = neighborhoodStickerV0
+  const pilot = isNeighborhoodParkPilot(zone) && (zone.coordinates?.length ?? 0) >= 3;
+  const pilotLayout = pilot ? neighborhoodParkLayoutForZone(zone as SiteZone, { lng: zone.coordinates![0][0], lat: zone.coordinates![0][1] }) : null;
+  const resolvedExact = pilotLayout
+    ? { ...exact, id: 'neighborhood-park-adaptive-rustic-v1', version: 1,
+        programDescription: `Reference-locked rustic neighbourhood park. ${pilotLayout.notes.join(' ')}`,
+        groundDescription: 'An open mown lawn surrounded by a continuous warm gravel walking loop, distinct timber play pockets and a pitched-roof picnic pavilion. Wildflower and woodland planting occupies residual perimeter space.',
+        criticalConstraints: `Preserve the exact 3D layout, including the lawn, every route and every visible or occluded object. ${pilotLayout.notes.join(' ')} Never relocate a hidden object, add a pavilion or tower, enlarge furniture, fill the lawn with play surfacing, invent entrances or move anything outside the boundary. Stylize only materials, light and seasonal appearance.`,
+        guides: neighborhoodParkGuides(zone as SiteZone),
+        guideLegend: ['Warm gravel lines are the authored connected paths; separate pads belong to metric equipment. The open interior remains lawn.'],
+        renderSummary: `Rustic neighbourhood park, ${pilotLayout.status} arrangement; ${pilotLayout.notes.join(' ')}`,
+      }
+    : neighborhoodStickerV0
     ? {
         ...exact,
         programDescription:
@@ -2059,6 +2071,9 @@ export function parkGroundSourceSignature(
         : candidate
     ))
     : [];
+  const derivedAccess = props.park_access_connections as { version?: number; sourceSignature?: string } | undefined;
+  const manualAccess = !Array.isArray(props.park_access_points) && derivedAccess?.version === 1
+    && typeof derivedAccess.sourceSignature === 'string' ? derivedAccess.sourceSignature : undefined;
   const canonicalLegoContract = legoContract?.source === 'public_realm_lego'
     && legoContract.supported
     ? legoContract
@@ -2077,6 +2092,7 @@ export function parkGroundSourceSignature(
       plazaVariant: normalizeId(props.plaza_selected_variant_id),
       planting: legacyParkPlantingStructureForSignature(zone),
       access,
+      ...(manualAccess ? { manualAccess } : {}),
       coordinates,
     }), 6);
   }
@@ -2102,6 +2118,7 @@ export function parkGroundSourceSignature(
     },
     planting: resolveParkPlantingStructure(zone),
     access,
+    ...(manualAccess ? { manualAccess } : {}),
     coordinates,
   }), 7);
 }

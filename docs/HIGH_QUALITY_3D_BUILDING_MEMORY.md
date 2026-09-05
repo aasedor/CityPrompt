@@ -11,6 +11,15 @@ The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory
 
 Current executable memory: `2026-08-02-clean-3d-no-prisms-runtime-v118`.
 
+Local runtime pilot, 2026-09-05: `native_home_plot` explicitly arranges whole,
+unscaled copies of an exact detached-home variant. Its first footprint edge owns
+frontage direction through resizing and full-turn rotation. Default clay placement remains
+one building; floor/bay repetition, mesh stretching and landmark duplication
+are not enabled by this plot option. The matching `runtime_placement_pilot`
+record in both machine companions describes this limited experiment. It does
+not change asset approval or promotion status. See
+`docs/PICK_PLACE_RESHAPE_PILOT_2026-09-05.md` for evidence and limits.
+
 ## The quality target
 
 The target is Kinnaird-class architectural identity in a modular real-time asset, not a literal photogrammetric reconstruction. A successful family must read correctly at three distances:

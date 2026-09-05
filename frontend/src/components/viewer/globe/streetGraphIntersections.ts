@@ -25,7 +25,7 @@ interface NodeCandidate {
   zoneIds: [string, string];
 }
 
-export interface FourWayStreetIntersection {
+interface StreetIntersectionBase {
   id: string;
   longitude: number;
   latitude: number;
@@ -34,12 +34,37 @@ export interface FourWayStreetIntersection {
   axisAHalfWidthM: number;
   axisBHalfWidthM: number;
   zoneIds: string[];
-  familyId: 'street_four_way_intersection';
+  familyId: 'street_four_way_intersection' | 'street_t_intersection';
   familyVersion: typeof PUBLIC_REALM_STREET_FAMILY_VERSION;
   archetypeId: 'protected_intersection';
   variantId: 'protected_intersection_v0';
   appearanceKitId: 'dutch_corner_islands_v1';
   rendererFingerprint: string;
+}
+
+export interface FourWayStreetIntersection extends StreetIntersectionBase {
+  familyId: 'street_four_way_intersection';
+}
+
+/** Directed approaches are authoritative: a T never borrows its absent fourth arm. */
+export interface ConnectedStreetIntersection extends StreetIntersectionBase {
+  armCount: 3 | 4;
+  approachSides: [Array<-1 | 1>, Array<-1 | 1>];
+  orthogonal: boolean;
+}
+
+export function detectFourWayStreetIntersections(zones: SiteZone[]): FourWayStreetIntersection[] {
+  return detectStreetIntersections(zones, false) as FourWayStreetIntersection[];
+}
+
+/** Bounded connected surface pilot: T nodes must be orthogonal within one degree.
+ * Existing skew four-way details remain available, without a new surface patch. */
+export function detectConnectedStreetIntersections(zones: SiteZone[]): ConnectedStreetIntersection[] {
+  const legacy = detectStreetIntersections(zones, false);
+  const tees = detectStreetIntersections(zones, true).filter((node) => node.armCount === 3
+    && !legacy.some((existing) => Math.hypot((existing.longitude - node.longitude) * metersPerDegLon(node.latitude),
+      (existing.latitude - node.latitude) * METERS_PER_DEG_LAT) < 4));
+  return [...legacy, ...tees].sort((a, b) => a.id.localeCompare(b.id));
 }
 
 function normalizeAngle(angle: number): number {
@@ -111,10 +136,11 @@ function stableNodeId(longitude: number, latitude: number): string {
  * ordered-subtraction form emitted by the planner (opposing local fragments
  * ending at the edge of a continuous main-street band).
  */
-export function detectFourWayStreetIntersections(
+function detectStreetIntersections(
   zones: SiteZone[],
-): FourWayStreetIntersection[] {
-  const eligibleZones = zones.filter((zone) => {
+  includeThreeArm: boolean,
+): ConnectedStreetIntersection[] {
+  const eligibleZones = [...zones].sort((a, b) => a.id.localeCompare(b.id)).filter((zone) => {
     const props = zone.properties as Record<string, unknown> | undefined;
     const lego = props?.public_realm_lego && typeof props.public_realm_lego === 'object'
       ? props.public_realm_lego as Record<string, unknown>
@@ -245,8 +271,9 @@ export function detectFourWayStreetIntersections(
       const start = axis.points[best.segmentIndex];
       const end = axis.points[best.segmentIndex + 1];
       const bearing = Math.atan2(end.y - start.y, end.x - start.x);
-      const atFirstEnd = best.segmentIndex === 0 && best.t < 0.08;
-      const atLastEnd = best.segmentIndex === axis.points.length - 2 && best.t > 0.92;
+      const length = Math.hypot(end.x - start.x, end.y - start.y);
+      const atFirstEnd = best.segmentIndex === 0 && (includeThreeArm ? best.t * length < 2 : best.t < 0.08);
+      const atLastEnd = best.segmentIndex === axis.points.length - 2 && (includeThreeArm ? (1 - best.t) * length < 2 : best.t > 0.92);
       if (!atLastEnd) arms.push({ bearing, widthM: axis.widthM, zoneId: axis.zoneId });
       if (!atFirstEnd) arms.push({ bearing: normalizeAngle(bearing + Math.PI), widthM: axis.widthM, zoneId: axis.zoneId });
     }
@@ -263,7 +290,7 @@ export function detectFourWayStreetIntersections(
         groupedArms.push({ ...arm });
       }
     }
-    if (groupedArms.length !== 4) return [];
+    if (groupedArms.length !== 4 && !(includeThreeArm && groupedArms.length === 3)) return [];
     const orientations: Array<{ bearing: number; halfWidthM: number }> = [];
     for (const arm of groupedArms) {
       const orientation = undirectedAngle(arm.bearing);
@@ -274,24 +301,39 @@ export function detectFourWayStreetIntersections(
       else orientations.push({ bearing: orientation, halfWidthM: arm.widthM / 2 });
     }
     if (orientations.length !== 2) return [];
+    // For a T, axis A is the through street; this makes its closed back edge explicit.
+    orientations.sort((a, b) => {
+      const count = (bearing: number) => groupedArms.filter((arm) => undirectedAngleDistance(arm.bearing, bearing) < Math.PI / 12).length;
+      return count(b.bearing) - count(a.bearing) || a.bearing - b.bearing;
+    });
     const axisA = orientations[0];
     const axisB = orientations.find((candidate) => {
       const separation = undirectedAngleDistance(axisA.bearing, candidate.bearing);
       return separation >= Math.PI / 6 && separation <= Math.PI * 5 / 6;
     });
     if (!axisB) return [];
+    const orthogonal = Math.abs(undirectedAngleDistance(axisA.bearing, axisB.bearing) - Math.PI / 2) <= Math.PI / 180;
+    if (groupedArms.length === 3 && (!orthogonal || arms.some((arm) =>
+      Math.min(undirectedAngleDistance(arm.bearing, axisA.bearing), undirectedAngleDistance(arm.bearing, axisB.bearing)) > Math.PI / 180))) return [];
+    const approachSides = [axisA, axisB].map((axis) => ([-1, 1] as const).filter((side) => (
+      groupedArms.some((arm) => angleDistance(arm.bearing, axis.bearing + (side === -1 ? Math.PI : 0)) < Math.PI / 12)
+    ))) as ConnectedStreetIntersection['approachSides'];
+    if (approachSides[0].length + approachSides[1].length !== groupedArms.length) return [];
     const longitude = originLng + cluster.x / mPerLon;
     const latitude = originLat + cluster.y / METERS_PER_DEG_LAT;
     return [{
-      id: stableNodeId(longitude, latitude),
+      id: groupedArms.length === 4 ? stableNodeId(longitude, latitude) : stableNodeId(longitude, latitude).replace('four-way', 'three-way'),
+      armCount: groupedArms.length as 3 | 4,
+      approachSides,
+      orthogonal,
       longitude,
       latitude,
       axisABearingRad: axisA.bearing,
       axisBBearingRad: axisB.bearing,
       axisAHalfWidthM: axisA.halfWidthM,
       axisBHalfWidthM: axisB.halfWidthM,
-      zoneIds: [...new Set(groupedArms.map((arm) => arm.zoneId))].sort(),
-      familyId: 'street_four_way_intersection' as const,
+      zoneIds: [...new Set(contributingAxes.map((axis) => axis.zoneId))].sort(),
+      familyId: groupedArms.length === 4 ? 'street_four_way_intersection' as const : 'street_t_intersection' as const,
       familyVersion: PUBLIC_REALM_STREET_FAMILY_VERSION,
       archetypeId: 'protected_intersection' as const,
       variantId: 'protected_intersection_v0' as const,

@@ -36,6 +36,9 @@ vi.mock('@/services/api', () => ({
 
 // Deterministic catalogue entry so default width/depth/floors are known.
 vi.mock('@/components/viewer/aestheticCatalog', () => ({
+  ROADWAY_AESTHETIC_OPTIONS_V2: [],
+  GREEN_SPACE_AESTHETIC_OPTIONS_V2: [],
+  PLAZA_AESTHETIC_OPTIONS_V2: [],
   BUILDING_AESTHETIC_OPTIONS_V2: [
     {
       id: 'nordic_timber_midrise',

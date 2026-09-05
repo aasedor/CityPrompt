@@ -16,7 +16,7 @@ import io
 import json
 import logging
 import math
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass, fields
 from typing import Any, Literal
 
 import httpx
@@ -24,16 +24,15 @@ import numpy as np
 from PIL import Image, ImageDraw
 
 from app.schemas.direct_3d_render import Direct3DRenderRequest
+from app.services.render_fidelity import RENDER_PRESERVATION_LOCK
 
 logger = logging.getLogger(__name__)
 
 DIRECT_3D_MODEL = "gpt-image-2"
-# Presentation-first contract (product decision 2026-07-24): the provider image
-# is the product for ordinary scene/reproject renders. Server-certified,
-# source-locked RLASM scenes are the narrow exception: their exact instance
-# pixels remain authoritative, while projection-changing views require review.
-# The legacy gate machinery below stays compilable behind this flag for
-# one-line reversal and for the regression suite, which pins it False.
+# Presentation-first keeps photographic finish rather than transferring only
+# tone. Same-camera finishes must now pass measured source agreement, and
+# uncertain/failed checks return the clean source. All generative views remain
+# review-required; a 2D comparison cannot certify exact 3D identity.
 DIRECT_3D_PRESENTATION_FIRST = True
 _OPENAI_EDIT_URL = "https://api.openai.com/v1/images/edits"
 _MIN_PROVIDER_PIXELS = 655_360
@@ -2055,7 +2054,7 @@ def assess_macro_design_fidelity(
 
     def recall(reference: np.ndarray) -> float:
         if not np.any(reference):
-            return 1.0
+            return 0.0
         return float(np.mean(distance_to_candidate[reference] <= tolerance_px))
 
     # Directed source recall alone can be gamed by replacing the proposal with
@@ -2175,7 +2174,8 @@ def assess_macro_design_fidelity(
     semantic_pass = semantic_recall is None or semantic_recall >= thresholds.minimum_semantic_edge_recall
     component_pass = component_min is None or component_min >= thresholds.minimum_semantic_component_recall
     passed = (
-        silhouette_pass
+        coarse_count >= 16
+        and silhouette_pass
         and coarse_recall >= thresholds.minimum_coarse_edge_recall
         and semantic_pass
         and component_pass
@@ -2353,6 +2353,8 @@ def _unsupported_coarse_structure_analysis(
     proposal_mask: Image.Image,
     instance_id: Image.Image | None = None,
     instance_id_manifest: dict[str, Any] | None = None,
+    *,
+    detect_slender_additions: bool = False,
 ) -> tuple[UnsupportedStructureResult, Image.Image]:
     """Detect unsupported components and return a bounded local repair mask."""
 
@@ -2433,8 +2435,11 @@ def _unsupported_coarse_structure_analysis(
     component_floor = max(48, min(96, round(frame_pixels * 0.00012)))
     bbox_area_floor = max(256, min(900, round(frame_pixels * 0.00030)))
     bbox_min_span = max(8, min(16, round(min(source.size) * 0.01)))
-    minimum_component_density = 0.08
-    minimum_component_aspect_ratio = 0.24
+    # A slender tower or long new street is still permanent structure. A
+    # perimeter's density decreases with its size, so the earlier 8%/0.24
+    # thresholds discarded coherent elongated additions at capture resolution.
+    minimum_component_density = 0.04 if detect_slender_additions else 0.08
+    minimum_component_aspect_ratio = 0.12 if detect_slender_additions else 0.24
     proposal = np.asarray(proposal_mask.convert("L"), dtype=np.uint8) >= 128
     proposal_components = 0
     context_components = 0
@@ -2584,6 +2589,8 @@ def assess_unsupported_coarse_structure(
     proposal_mask: Image.Image,
     instance_id: Image.Image | None = None,
     instance_id_manifest: dict[str, Any] | None = None,
+    *,
+    detect_slender_additions: bool = False,
 ) -> UnsupportedStructureResult:
     """Detect large new coarse components outside approved building envelopes."""
 
@@ -2593,6 +2600,7 @@ def assess_unsupported_coarse_structure(
         proposal_mask,
         instance_id,
         instance_id_manifest,
+        detect_slender_additions=detect_slender_additions,
     )
     return result
 
@@ -3261,7 +3269,7 @@ def _presentation_prompt(
             + ". Unlike the metadata above, these are authored design sources: "
             "apply every BUILDING reference strictly to its named building; "
             "apply every PARK or STREET reference to its named public-realm "
-            "zone using the capacity rule stated in that reference label. "
+            "zone for material finish only. Capacity and placement are already resolved in Image 1. "
             "Reference identity overrides generic material examples while "
             "Image 1 remains authoritative for geometry, massing, position, "
             "polygon extent, cross-section and camera."
@@ -3271,9 +3279,9 @@ def _presentation_prompt(
         "preserve their selected architectural language, material hierarchy, "
         "facade rhythm, openings, roof character and detailing; never replace "
         "them with another period or style. Attached park and street references "
-        "are appearance-strict but capacity-flexible: preserve their planting, "
-        "surface, edge and furnishing language while using only complete program "
-        "elements that fit the compiled polygon or cross-section. Generic art-"
+        "provide surface and material detail only: retain Image 1's exact path, "
+        "pavilion, play-feature, tree and furnishing positions and counts. Do not "
+        "copy the reference layout or exchange facilities. Generic art-"
         "direction material examples apply only when that material already exists "
         "in Image 1 or its attached reference."
         if archetype_reference_labels
@@ -3324,6 +3332,7 @@ def _presentation_prompt(
             "with its own cladding colours, materials, window pattern and roof "
             "form, improving only photographic clarity. Never re-clad, restyle, "
             "modernize or replace a neighbouring building."
+            " " + RENDER_PRESERVATION_LOCK
         )
         if view_mode == "street":
             final_lock += (
@@ -3344,7 +3353,7 @@ def _presentation_prompt(
             "rooflines, site layout, street, intersection and path topology, park "
             "boundaries, water bodies and adjacency relationships. Do not add, "
             "remove, split, merge, move or redesign any permanent building, road, "
-            "park, water body or site feature." + archetype_identity_lock
+            "park, water body or site feature." + archetype_identity_lock + " " + RENDER_PRESERVATION_LOCK
         )
     prompt_prefix = "\n".join(
         [
@@ -3397,7 +3406,7 @@ def _authoritative_prompt(
         instance_guidance = (
             f" Image {instance_number} is exact instance-ID metadata only. "
             "Every non-black color denotes one existing authored instance; "
-            "preserve each exactly once and never reproduce these colors."
+            "preserve only its visible pixels and never reproduce these colors."
         )
     geometry_guidance = ""
     if control_bundle_version == 2:
@@ -3442,8 +3451,8 @@ def _authoritative_prompt(
         )
         reference_lock = (
             " ARCHETYPE IDENTITY LOCK: apply building references strictly to "
-            "their named buildings. Apply park and street references with their "
-            "stated size-aware capacity rules. Their selected material, planting, "
+            "their named buildings. Use park and street references for material finish only; "
+            "capacity and placement are already resolved in Image 1. Their selected material, planting, "
             "surface and furnishing identities override generic style examples."
         )
     authority = (
@@ -3485,10 +3494,10 @@ def _authoritative_prompt(
 def _server_inventory_prompt(
     server_inventory: list[dict[str, Any]] | None,
 ) -> str:
-    """Summarize server-validated inventory without provider-irrelevant IDs."""
+    """Summarize camera-visible groups, never demand hidden geometry be shown."""
 
     if not server_inventory:
-        return "SERVER-VALIDATED AUTHORED INVENTORY: no separately listed instances."
+        return "CAMERA-VISIBLE INVENTORY: use only the visible surfaces in Image 1."
     counts: dict[str, int] = {}
     for item in server_inventory:
         semantic_class = str(item["semantic_class"])
@@ -3496,7 +3505,8 @@ def _server_inventory_prompt(
     count_text = ", ".join(f"{semantic_class}={count}" for semantic_class, count in sorted(counts.items()))
     identity_counts: dict[str, int] = {}
     for item in server_inventory:
-        identity = item.get("design_identity")
+        # Park identities may name facilities hidden inside a visible park.
+        identity = item.get("design_identity") if item["semantic_class"] == "building" else None
         if isinstance(identity, str) and identity.strip():
             normalized = identity.strip()
             identity_counts[normalized] = identity_counts.get(normalized, 0) + 1
@@ -3506,9 +3516,27 @@ def _server_inventory_prompt(
             f"{count}x {identity}" for identity, count in sorted(identity_counts.items())
         )
     return (
-        "SERVER-VALIDATED AUTHORED INVENTORY (binding): "
-        f"{count_text}{identity_text}; preserve every instance exactly once."
+        "CAMERA-VISIBLE AUTHORED GROUPS: "
+        f"{count_text}{identity_text}; these are visible groups, not physical object counts. "
+        "Preserve only their visible portions. Never reveal, relocate or complete "
+        "off-frame or occluded objects, including facilities inside a partly visible park."
     )
+
+
+def _camera_visible_manifest(
+    instance_image: Image.Image | None,
+    manifest: dict[str, Any] | None,
+) -> dict[str, Any]:
+    """Use actual submitted pixels; off-camera manifest entries have zero pixels.
+
+    Pack RGB once rather than scanning the full image separately for each
+    instance. A one-pixel sliver remains visible; missing evidence fails closed.
+    """
+    if instance_image is None or not manifest:
+        return {}
+    rgb = np.asarray(instance_image.convert("RGB"), dtype=np.uint32)
+    colors = set(np.unique((rgb[:, :, 0] << 16) | (rgb[:, :, 1] << 8) | rgb[:, :, 2]).tolist())
+    return {color: descriptor for color, descriptor in manifest.items() if int(color.lstrip("#"), 16) in colors}
 
 
 def _masked_correlation(
@@ -3769,7 +3797,8 @@ def _instance_presence_diagnostics(
     result: InstanceSourcePresenceResult,
 ) -> dict[str, Any]:
     return {
-        "passed": result.passed,
+        "passed": result.passed if result.evaluated_instance_count else None,
+        "status": ("passed" if result.passed else "failed") if result.evaluated_instance_count else "not_evaluated",
         "evaluated_instance_count": result.evaluated_instance_count,
         "weakest_instance_recall": result.weakest_instance_recall,
         "missing_instance_ids": list(result.missing_instance_ids),
@@ -3883,6 +3912,153 @@ def _restore_source_locked_instances(
     )
 
 
+def _reproject_sanity_diagnostics(result: ReprojectOutputSanityResult) -> dict[str, Any]:
+    return {
+        **asdict(result),
+        "minimum_whole_frame_mean_absolute_delta": _MIN_REPROJECT_WHOLE_FRAME_MEAN_ABSOLUTE_DELTA,
+        "minimum_luminance_standard_deviation": _MIN_REPROJECT_LUMINANCE_STANDARD_DEVIATION,
+        "minimum_luminance_dynamic_range_p90": _MIN_REPROJECT_LUMINANCE_DYNAMIC_RANGE_P90,
+        "minimum_structural_edge_coverage": _MIN_REPROJECT_STRUCTURAL_EDGE_COVERAGE,
+        "maximum_structural_edge_coverage": _MAX_REPROJECT_STRUCTURAL_EDGE_COVERAGE,
+        "minimum_occupied_edge_cells": _MIN_REPROJECT_OCCUPIED_EDGE_CELLS,
+        "semantic_inventory_proxy_only": True,
+    }
+
+
+def _same_camera_presentation_result(
+    req: Direct3DRenderRequest,
+    capture: PreparedDirect3DCapture,
+    generated: Image.Image,
+    common_diagnostics: dict[str, Any],
+    source_locked_rlasm_ids: tuple[str, ...],
+) -> Direct3DServiceResult:
+    """Measure a same-camera finish and preserve source-owned context/occlusion.
+
+    These image checks detect drift; they are not proof of three-dimensional
+    identity. Never demand visibility from fully occluded inventory entries.
+    """
+    diagnostics = dict(common_diagnostics)
+    warnings = []
+    try:
+        registration = register_generated_image(
+            capture.normalized_beauty,
+            generated,
+            capture.normalized_proposal_mask,
+        )
+        diagnostics["registration"] = {
+            field.name: getattr(registration, field.name) for field in fields(registration) if field.name != "image"
+        }
+        raw_presence = assess_instance_source_presence(
+            capture.normalized_beauty,
+            registration.image,
+            capture.normalized_proposal_mask,
+            capture.normalized_instance_id,
+            req.instance_id_manifest,
+            fidelity_policy=req.fidelity_policy,
+        )
+        diagnostics["provider_raw_instance_source_presence"] = _instance_presence_diagnostics(raw_presence)
+        presentation, exterior_count, exterior_delta = hard_composite_direct_3d(
+            capture.normalized_beauty,
+            registration.image,
+            capture.normalized_proposal_mask,
+        )
+        diagnostics.update(exterior_pixel_count=exterior_count, exterior_max_channel_delta=exterior_delta)
+        protected_coverage = 0.0
+        if source_locked_rlasm_ids:
+            presentation, protected_coverage = _restore_source_locked_instances(
+                capture.normalized_beauty,
+                presentation,
+                capture.normalized_instance_id,
+                req.instance_id_manifest,
+                source_locked_rlasm_ids,
+            )
+        macro = assess_macro_design_fidelity(
+            capture.normalized_beauty,
+            presentation,
+            capture.normalized_proposal_mask,
+            capture.normalized_object_id,
+            req.object_id_manifest,
+            fidelity_policy=req.fidelity_policy,
+        )
+        presence = assess_instance_source_presence(
+            capture.normalized_beauty,
+            presentation,
+            capture.normalized_proposal_mask,
+            capture.normalized_instance_id,
+            req.instance_id_manifest,
+            fidelity_policy=req.fidelity_policy,
+        )
+        unsupported = assess_unsupported_coarse_structure(
+            capture.normalized_beauty,
+            presentation,
+            capture.normalized_proposal_mask,
+            capture.normalized_instance_id,
+            req.instance_id_manifest,
+            detect_slender_additions=True,
+        )
+        diagnostics.update(
+            macro_design_fidelity=_macro_diagnostics(macro, req.fidelity_policy),
+            instance_source_presence=_instance_presence_diagnostics(presence),
+            unsupported_structure=_unsupported_structure_diagnostics(unsupported),
+        )
+        failures = []
+        if not macro.passed:
+            failures.append("source silhouette/layout agreement was insufficient")
+        if not presence.passed:
+            failures.append("visible source instances lost structural evidence")
+        if not unsupported.passed:
+            failures.append("new unsupported structure was detected")
+        if failures:
+            raise Direct3DValidationError("; ".join(failures))
+        strategy = (
+            "provider_full_scene_rlasm_pixel_lock" if source_locked_rlasm_ids else "provider_full_scene_local_repairs"
+        )
+        diagnostics.update(
+            view_lock="camera_registered",
+            context_restyled=False,
+            provider_first=True,
+            provider_spatial_pixels_retained=True,
+            returned_safety_strategy=strategy,
+            source_locked_rlasm_pixel_lock_applied=bool(source_locked_rlasm_ids),
+            source_locked_rlasm_pixel_coverage=protected_coverage,
+        )
+        warnings.append(
+            "AI finish passed the available image checks. Source context and foreground occlusions "
+            "outside the visible proposal remain unchanged; review building heights, footprints "
+            "and public realm against the clean 3D source. These checks do not certify exact geometry."
+        )
+        if presence.evaluated_instance_count == 0:
+            warnings.append(
+                "No visible instance had enough edge evidence for an individual check; hidden objects remain hidden."
+            )
+    except Direct3DValidationError as exc:
+        presentation = capture.normalized_beauty.convert("RGB")
+        diagnostics.update(
+            view_lock="source_pixel_locked",
+            context_restyled=False,
+            provider_first=False,
+            provider_spatial_pixels_retained=False,
+            returned_safety_strategy="authoritative_source",
+            source_locked_rlasm_pixel_lock_applied=bool(source_locked_rlasm_ids),
+            source_locked_rlasm_pixel_coverage=1.0 if source_locked_rlasm_ids else None,
+        )
+        warnings.append(
+            "Clean 3D source returned because the AI finish could not be verified: "
+            f"{exc}. The provider original is retained separately for review."
+        )
+    output_png = _png_bytes(presentation)
+    return Direct3DServiceResult(
+        image_base64=base64.b64encode(output_png).decode("ascii"),
+        audit_input_base64=capture.audit_input_base64,
+        capture_fingerprint=capture.capture_fingerprint,
+        output_fingerprint=hashlib.sha256(output_png).hexdigest(),
+        outcome="review_required",
+        warnings=tuple(warnings),
+        diagnostics=diagnostics,
+        provider_image_base64=base64.b64encode(_png_bytes(generated)).decode("ascii"),
+    )
+
+
 class Direct3DRenderService:
     def __init__(self, api_key: str):
         self.api_key = api_key
@@ -3899,6 +4075,22 @@ class Direct3DRenderService:
                 "OpenAI is not configured",
                 billing_status="unproduced",
             )
+
+        # Keep full server inventory untouched for validation, source protection
+        # and audit. Only provider conditioning is camera-specific.
+        visible_manifest = _camera_visible_manifest(capture.normalized_instance_id, req.instance_id_manifest)
+        visible_ids = {descriptor.instance_id for descriptor in visible_manifest.values()}
+        visible_inventory = [item for item in (server_inventory or []) if item.get("instance_id") in visible_ids]
+        visible_building_zones = {
+            str(descriptor.zone_id)
+            for descriptor in visible_manifest.values()
+            if descriptor.semantic_class == "building" and descriptor.zone_id
+        }
+        references = [
+            reference
+            for reference in req.archetype_references
+            if reference.zone_ids and set(reference.zone_ids).issubset(visible_building_zones)
+        ]
 
         normalized_width, normalized_height = capture.normalized_beauty.size
         beauty_png = _png_bytes(capture.normalized_beauty.convert("RGB"))
@@ -3954,7 +4146,7 @@ class Direct3DRenderService:
         # Authored archetype artwork rides after the metadata passes so the
         # prompt's ARCHETYPE REFERENCES numbering lines up with attachment
         # order. These are design sources the provider applies, not metadata.
-        for reference_index, reference in enumerate(req.archetype_references):
+        for reference_index, reference in enumerate(references):
             try:
                 reference_bytes = base64.b64decode(reference.image_base64.split(",", 1)[-1])
             except (ValueError, binascii.Error) as exc:
@@ -3983,9 +4175,9 @@ class Direct3DRenderService:
                 req.prompt,
                 object_id_manifest=req.object_id_manifest,
                 instance_id_manifest=req.instance_id_manifest,
-                server_inventory=server_inventory,
+                server_inventory=visible_inventory,
                 visible_component_summary=visible_component_summary,
-                archetype_reference_labels=[reference.label for reference in req.archetype_references],
+                archetype_reference_labels=[reference.label for reference in references],
                 control_bundle_version=req.control_bundle_version,
             )
             if req.presentation_mode == "source_anchored"
@@ -3995,10 +4187,10 @@ class Direct3DRenderService:
                 style=req.style,
                 object_id_manifest=req.object_id_manifest,
                 instance_id_manifest=req.instance_id_manifest,
-                server_inventory=server_inventory,
+                server_inventory=visible_inventory,
                 visible_component_summary=visible_component_summary,
                 view_mode=req.view_mode,
-                archetype_reference_labels=[reference.label for reference in req.archetype_references],
+                archetype_reference_labels=[reference.label for reference in references],
                 control_bundle_version=req.control_bundle_version,
             )
         )
@@ -4184,112 +4376,46 @@ class Direct3DRenderService:
             source_locked_rlasm_ids = _source_locked_rlasm_instance_ids(server_inventory)
 
             if req.view_mode == "street":
-                # Street v1 is review-first even under presentation-first: the
-                # aerial gates (registration, macro planform fidelity,
-                # visual-change) encode top-down assumptions, so run only
-                # generic content sanity and hand the candidate to human
-                # review with the source for comparison. Must precede the
-                # presentation-first return so street keeps its outcome.
-                street_sanity = assess_reproject_output_sanity(
+                # The input was already captured at eye level. Finishing it
+                # must not change cameras or expose hidden facilities. Use
+                # the same registered, masked, source-preserving checks as
+                # any other same-camera image, rather than content sanity
+                # alone. Sparse street evidence safely falls back to source.
+                street_result = _same_camera_presentation_result(
+                    req,
+                    capture,
+                    generated,
+                    common_diagnostics,
+                    source_locked_rlasm_ids,
+                )
+                street_result.diagnostics["view_mode"] = "street"
+                return street_result
+
+            if DIRECT_3D_PRESENTATION_FIRST and req.presentation_mode == "scene":
+                return _same_camera_presentation_result(
+                    req,
+                    capture,
+                    generated,
+                    common_diagnostics,
+                    source_locked_rlasm_ids,
+                )
+
+            if DIRECT_3D_PRESENTATION_FIRST and req.presentation_mode == "reproject":
+                sanity = assess_reproject_output_sanity(
                     capture.normalized_beauty,
                     generated,
                     capture.normalized_object_id,
                     req.object_id_manifest,
                 )
-                if not street_sanity.passed:
-                    raise Direct3DValidationError(
-                        "Provider street output failed minimum content sanity "
-                        f"(whole-frame MAD "
-                        f"{street_sanity.whole_frame_mean_absolute_delta:.3f}, "
-                        "luminance std "
-                        f"{street_sanity.luminance_standard_deviation:.3f}, "
-                        "edge coverage "
-                        f"{street_sanity.structural_edge_coverage:.5f})"
-                    )
-                output_png = _png_bytes(generated)
-                return Direct3DServiceResult(
-                    image_base64=base64.b64encode(output_png).decode("ascii"),
-                    audit_input_base64=capture.audit_input_base64,
-                    capture_fingerprint=capture.capture_fingerprint,
-                    output_fingerprint=hashlib.sha256(output_png).hexdigest(),
-                    outcome="review_required",
-                    provider_image_base64=provider_image_base64,
-                    warnings=(
-                        "Street-level Direct 3D renders are review-first in this "
-                        "version: compare the candidate against the source "
-                        "capture before saving.",
-                        *(
-                            (
-                                "Source-locked RLASM buildings are present. Street-level "
-                                "camera changes cannot be pixel-locked, so exact architectural "
-                                "identity requires direct visual review.",
-                            )
-                            if source_locked_rlasm_ids
-                            else ()
-                        ),
-                    ),
-                    diagnostics={
-                        **common_diagnostics,
-                        "view_mode": "street",
-                        "view_lock": "not_applicable_layout_guided",
-                        "context_restyled": True,
-                        "provider_first": True,
-                        "reproject_output_sanity": {
-                            "passed": True,
-                            "whole_frame_mean_absolute_delta": (street_sanity.whole_frame_mean_absolute_delta),
-                            "luminance_standard_deviation": (street_sanity.luminance_standard_deviation),
-                            "luminance_dynamic_range_p90": (street_sanity.luminance_dynamic_range_p90),
-                            "structural_edge_coverage": (street_sanity.structural_edge_coverage),
-                            "occupied_edge_cells": (street_sanity.occupied_edge_cells),
-                            "significant_edge_component_count": (street_sanity.significant_edge_component_count),
-                            "required_edge_component_count": (street_sanity.required_edge_component_count),
-                            "minimum_whole_frame_mean_absolute_delta": (_MIN_REPROJECT_WHOLE_FRAME_MEAN_ABSOLUTE_DELTA),
-                            "minimum_luminance_standard_deviation": (_MIN_REPROJECT_LUMINANCE_STANDARD_DEVIATION),
-                            "minimum_luminance_dynamic_range_p90": (_MIN_REPROJECT_LUMINANCE_DYNAMIC_RANGE_P90),
-                            "minimum_structural_edge_coverage": (_MIN_REPROJECT_STRUCTURAL_EDGE_COVERAGE),
-                            "maximum_structural_edge_coverage": (_MAX_REPROJECT_STRUCTURAL_EDGE_COVERAGE),
-                            "minimum_occupied_edge_cells": (_MIN_REPROJECT_OCCUPIED_EDGE_CELLS),
-                            "semantic_inventory_proxy_only": True,
-                        },
-                    },
-                )
-
-            if DIRECT_3D_PRESENTATION_FIRST and source_locked_rlasm_ids and req.presentation_mode == "scene":
-                registration: RegistrationResult | None = None
-                registration_error: str | None = None
-                try:
-                    registration = register_generated_image(
-                        capture.normalized_beauty,
-                        generated,
-                        capture.normalized_proposal_mask,
-                        enforce_transform_limits=False,
-                    )
-                    presentation, protected_coverage = _restore_source_locked_instances(
-                        capture.normalized_beauty,
-                        registration.image,
-                        capture.normalized_instance_id,
-                        req.instance_id_manifest,
-                        source_locked_rlasm_ids,
-                    )
-                    strategy = "provider_full_scene_rlasm_pixel_lock"
-                    provider_pixels_retained = True
-                except Direct3DValidationError as exc:
-                    registration_error = str(exc)
-                    presentation = capture.normalized_beauty.convert("RGB")
-                    protected_coverage = 1.0
-                    strategy = "authoritative_source"
-                    provider_pixels_retained = False
-
+                presentation = generated if sanity.passed else capture.normalized_beauty
                 output_png = _png_bytes(presentation)
-                warnings = [
-                    "Server-certified source-locked RLASM building pixels were "
-                    "protected. Review the remaining AI-finished public realm and context."
-                ]
-                if registration_error:
-                    warnings.append(
-                        "The provider image could not be registered safely; the authoritative "
-                        f"source capture was returned instead ({registration_error})."
-                    )
+                warning = (
+                    "Projection-changing output cannot be registered to the original capture. "
+                    "Review the source inventory, heights, footprints and occlusions; exact identity is not verified."
+                    if sanity.passed
+                    else "Clean 3D source returned because the provider output failed minimum image-content checks. "
+                    "This retains the source camera, not the requested new projection. The provider original is retained for review."
+                )
                 return Direct3DServiceResult(
                     image_base64=base64.b64encode(output_png).decode("ascii"),
                     audit_input_base64=capture.audit_input_base64,
@@ -4297,79 +4423,15 @@ class Direct3DRenderService:
                     output_fingerprint=hashlib.sha256(output_png).hexdigest(),
                     outcome="review_required",
                     provider_image_base64=provider_image_base64,
-                    warnings=tuple(warnings),
+                    warnings=(warning,),
                     diagnostics={
                         **common_diagnostics,
-                        "view_lock": "source_pixel_locked",
-                        "context_restyled": provider_pixels_retained,
-                        "provider_first": provider_pixels_retained,
-                        "provider_spatial_pixels_retained": provider_pixels_retained,
-                        "returned_safety_strategy": strategy,
-                        "source_locked_rlasm_pixel_lock_applied": True,
-                        "source_locked_rlasm_pixel_coverage": protected_coverage,
-                        "registration": (
-                            {
-                                "method": registration.method,
-                                "score": registration.score,
-                                "score_metric": registration.score_metric,
-                                "photometric_score": registration.photometric_score,
-                                "structural_context_score": registration.structural_context_score,
-                                "translation_x_px": registration.translation_x_px,
-                                "translation_y_px": registration.translation_y_px,
-                                "rotation_degrees": registration.rotation_degrees,
-                            }
-                            if registration is not None
-                            else None
-                        ),
-                    },
-                )
-
-            if DIRECT_3D_PRESENTATION_FIRST and source_locked_rlasm_ids and req.presentation_mode == "reproject":
-                output_png = _png_bytes(generated)
-                return Direct3DServiceResult(
-                    image_base64=base64.b64encode(output_png).decode("ascii"),
-                    audit_input_base64=capture.audit_input_base64,
-                    capture_fingerprint=capture.capture_fingerprint,
-                    output_fingerprint=hashlib.sha256(output_png).hexdigest(),
-                    outcome="review_required",
-                    provider_image_base64=provider_image_base64,
-                    warnings=(
-                        "Projection-changing output contains source-locked RLASM buildings, "
-                        "but their pixels cannot be registered to the original capture. "
-                        "Exact identity requires direct visual review.",
-                    ),
-                    diagnostics={
-                        **common_diagnostics,
-                        "view_lock": "not_applicable_layout_guided",
-                        "context_restyled": True,
-                        "provider_first": True,
-                        "provider_spatial_pixels_retained": True,
-                        "returned_safety_strategy": "provider_full_scene",
-                    },
-                )
-
-            if DIRECT_3D_PRESENTATION_FIRST and req.presentation_mode in {"scene", "reproject"}:
-                # The provider image is returned untouched. Style choice governs
-                # appearance; the capture/claim validation that already ran
-                # before spend remains the only structural contract.
-                output_png = _png_bytes(generated)
-                return Direct3DServiceResult(
-                    image_base64=base64.b64encode(output_png).decode("ascii"),
-                    audit_input_base64=capture.audit_input_base64,
-                    capture_fingerprint=capture.capture_fingerprint,
-                    output_fingerprint=hashlib.sha256(output_png).hexdigest(),
-                    outcome="accepted",
-                    provider_image_base64=provider_image_base64,
-                    warnings=(),
-                    diagnostics={
-                        **common_diagnostics,
-                        "view_lock": (
-                            "camera_registered" if req.presentation_mode == "scene" else "not_applicable_layout_guided"
-                        ),
-                        "context_restyled": True,
-                        "provider_first": True,
-                        "provider_spatial_pixels_retained": True,
-                        "returned_safety_strategy": "provider_full_scene",
+                        "view_lock": "not_applicable_layout_guided" if sanity.passed else "source_pixel_locked",
+                        "context_restyled": sanity.passed,
+                        "provider_first": sanity.passed,
+                        "provider_spatial_pixels_retained": sanity.passed,
+                        "returned_safety_strategy": "provider_full_scene" if sanity.passed else "authoritative_source",
+                        "reproject_output_sanity": _reproject_sanity_diagnostics(sanity),
                     },
                 )
 

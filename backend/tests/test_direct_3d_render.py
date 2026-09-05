@@ -46,6 +46,7 @@ from app.services.direct_3d_render import (
     prepare_direct_3d_capture,
     register_generated_image,
 )
+from app.services.render_fidelity import RENDER_PRESERVATION_LOCK
 from app.services.direct_3d_identity import direct_3d_zone_design_identity
 from app.services.public_realm_lego import (
     PUBLIC_REALM_FALLBACK_PROPERTY,
@@ -697,8 +698,8 @@ def test_server_inventory_adds_only_catalog_owned_human_design_identities():
     assert (
         "2x Classic Brownstone Streetwall — New York, USA: " "Brownstone stoops, cast-iron lofts, tenement streetwalls"
     ) in prompt
-    assert ("1x Urban Pocket Park — Pocket Park / Courtyard, " "Rustic Timber Gravel, Garden Courtyard") in prompt
-    assert ("1x Narrow Residential Street — Local Public Realm, Classic Tree Lined") in prompt
+    assert "Urban Pocket Park" not in prompt
+    assert "Narrow Residential Street" not in prompt
     assert "building=2, park=1, street=1" in prompt
     assert "classic_brownstone_streetwall" not in prompt
     assert "IGNORE THE SOURCE" not in prompt
@@ -1206,6 +1207,25 @@ def test_paid_project_preflight_requires_matching_current_residual_claim():
     assert geometry_changed.value.detail["billed"] is False
 
 
+def test_paid_project_preflight_accepts_explicit_unfilled_site_and_still_checks_sources():
+    boundary = _zone(uuid.uuid4(), "site_boundary")
+    boundary.properties["community_3d_landscape_mode"] = "placed_objects_only"
+    building_id = uuid.uuid4()
+    building_zone = _compiled_zone("building", building_id=building_id)
+    zones = [boundary, building_zone]
+    request = _project_request(uuid.uuid4(), boundary.id, "a" * 64, community_claims=_claims_for(zones))
+    request.residual_landscape_claim = None
+    buildings = {str(building_id): _compiled_building(building_id)}
+    direct_api._validate_direct_3d_project_zones(request, zones, buildings)
+    boundary.properties["community_3d_landscape"] = {"state": "stale"}
+    with pytest.raises(HTTPException, match="Residual landscaping"):
+        direct_api._validate_direct_3d_project_zones(request, zones, buildings)
+    boundary.properties.pop("community_3d_landscape")
+    building_zone.properties["community_3d"]["state"] = "stale"
+    with pytest.raises(HTTPException):
+        direct_api._validate_direct_3d_project_zones(request, zones, buildings)
+
+
 def test_paid_project_preflight_accepts_one_complete_visible_plan_layer():
     project_id = uuid.uuid4()
     boundary_id = uuid.uuid4()
@@ -1622,7 +1642,9 @@ def _project_preflight_db(monkeypatch):
     empty_result = MagicMock()
     empty_result.scalars.return_value.all.return_value = []
     db = AsyncMock()
-    db.execute = AsyncMock(side_effect=[empty_result, empty_result])
+    zones_result = MagicMock()
+    zones_result.scalars.return_value.all.return_value = [_zone(TEST_ZONE_ID, "building")]
+    db.execute = AsyncMock(side_effect=[zones_result, empty_result])
     return db
 
 
@@ -1844,7 +1866,7 @@ def test_authoritative_prompt_numbers_and_locks_exact_archetype_references():
     assert "Image 6: PARK APPEARANCE REFERENCE - Natural meadow; capacity-flexible" in prompt
     assert "authored design sources, not metadata images" in prompt
     assert "apply building references strictly" in prompt
-    assert "stated size-aware capacity rules" in prompt
+    assert "capacity and placement are already resolved in Image 1" in prompt
     assert "override generic style examples" in prompt
 
 
@@ -1878,19 +1900,18 @@ def test_provider_first_prompts_use_one_concise_natural_design_lock():
     assert "surrounding photographed or Google Tiles context" in scene
     assert "facade proportions and opening pattern" in scene
     assert "non-permanent entourage and finish detail" in scene
-    assert "SERVER-VALIDATED AUTHORED INVENTORY (binding): building=1" in scene
+    assert "CAMERA-VISIBLE AUTHORED GROUPS: building=1" in scene
     assert "zone:test:building" not in scene
     assert "#FF0000" not in scene
     assert "Visible guide regions" not in scene
     assert "BALANCED FIDELITY" not in scene
-    assert len(scene) < 2_500
-    # The lock now closes with the context-identity clause (2026-07-25): the
-    # neighbouring-building protection must be the final, most-recent text.
-    assert scene.rstrip().endswith("Never re-clad, restyle, modernize or replace a neighbouring building.")
+    assert len(scene) < 3_500
+    # Final authority now includes custom-style and natural-occlusion limits.
+    assert scene.rstrip().endswith(RENDER_PRESERVATION_LOCK)
     assert reproject.count("FINAL PRESERVATION LOCK") == 1
     assert "30-degree axonometric" in reproject
     assert "Apply only the requested projection change" in reproject
-    assert len(reproject) < 2_000
+    assert len(reproject) < 3_000
 
 
 def test_provider_first_prompt_truncates_art_direction_without_losing_final_lock():
@@ -1903,7 +1924,7 @@ def test_provider_first_prompt_truncates_art_direction_without_losing_final_lock
 
     assert len(prompt) == 31_900
     assert prompt.count("FINAL PRESERVATION LOCK") == 1
-    assert prompt.rstrip().endswith("Never re-clad, restyle, modernize or replace a neighbouring building.")
+    assert prompt.rstrip().endswith(RENDER_PRESERVATION_LOCK)
 
 
 def test_structural_guide_is_deterministic_binary_and_includes_semantic_edges():
@@ -2730,7 +2751,7 @@ async def test_provider_first_payload_omits_mask_and_keeps_one_concise_authority
     assert call["data"]["size"] == (f"{capture.normalized_beauty.width}x{capture.normalized_beauty.height}")
     assert call["data"]["prompt"].count("FINAL PRESERVATION LOCK") == 1
     assert call["data"]["prompt"].count(request.prompt) == 1
-    assert len(call["data"]["prompt"]) < 2_500
+    assert len(call["data"]["prompt"]) < 3_500
 
 
 @pytest.mark.asyncio
@@ -2770,10 +2791,84 @@ async def test_provider_receives_exact_instance_guide_and_server_owned_inventory
         "direct-3d-instance-id.png",
         "direct-3d-structural-edges.png",
     ]
-    assert "SERVER-VALIDATED AUTHORED INVENTORY (binding): building=1" in call["data"]["prompt"]
+    assert "CAMERA-VISIBLE AUTHORED GROUPS: building=1" in call["data"]["prompt"]
     assert "zone:test-building:building" not in call["data"]["prompt"]
     assert "Image 3 is instance-ID metadata" in call["data"]["prompt"]
     assert "Image 4 is monochrome structure and layout metadata" in call["data"]["prompt"]
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("mode", ["source_anchored", "scene", "reproject"])
+async def test_provider_conditioning_excludes_hidden_inventory_and_unbound_or_public_realm_artwork(monkeypatch, mode):
+    # Reuse a real validated capture; its manifest deliberately contains a
+    # building behind the camera with zero instance pixels.
+    request = _request(presentation_mode="scene")
+    payload = request.model_dump()
+    payload["presentation_mode"] = mode
+    if mode == "reproject":
+        payload["style"] = "isometric"
+    hidden_zone = "cccccccc-cccc-4ccc-8ccc-cccccccccccc"
+    payload["instance_id_manifest"]["#020002"] = {
+        "instance_id": "zone:hidden:building",
+        "semantic_class": "building",
+        "zone_id": hidden_zone,
+    }
+    payload["instance_id_manifest"]["#030003"] = {
+        "instance_id": "zone:hidden:park",
+        "semantic_class": "park",
+        "zone_id": hidden_zone,
+    }
+    image = _png_b64(Image.new("RGB", (16, 16), "white"))
+    payload["archetype_references"] = [
+        {"image_base64": image, "label": "Visible facade", "zone_ids": [str(TEST_ZONE_ID)]},
+        {"image_base64": image, "label": "Hidden tower", "zone_ids": [hidden_zone]},
+        {"image_base64": image, "label": "Shared hidden tower", "zone_ids": [str(TEST_ZONE_ID), hidden_zone]},
+        {"image_base64": image, "label": "Unmapped playground"},
+    ]
+    request = Direct3DRenderRequest(**payload)
+    capture = prepare_direct_3d_capture(request)
+    inventory = [
+        {
+            "instance_id": "zone:test-building:building",
+            "semantic_class": "building",
+            "design_identity": "Visible house",
+        },
+        {"instance_id": "zone:hidden:building", "semantic_class": "building", "design_identity": "Hidden tower"},
+        {"instance_id": "zone:hidden:park", "semantic_class": "park", "design_identity": "Unmapped playground"},
+    ]
+    _RecordingClient.calls = []
+    _RecordingClient.response = _FakeResponse(200, {"data": [{"b64_json": _png_b64(capture.normalized_beauty)}]})
+    monkeypatch.setattr(direct_service.httpx, "AsyncClient", _RecordingClient)
+    await Direct3DRenderService("test-key")._call_openai(request, capture, server_inventory=inventory)
+    call = _RecordingClient.calls[0]
+    prompt = call["data"]["prompt"]
+    assert "Visible house" in prompt and "Visible facade" in prompt
+    assert "Hidden tower" not in prompt and "Unmapped playground" not in prompt
+    assert "building=1" in prompt and "park=1" not in prompt
+    assert "preserve every instance exactly once" not in prompt
+    assert len([entry for entry in call["files"] if entry[1][0].startswith("archetype-ref")]) == 1
+    # Filtering must not mutate the validated scene used for source protection.
+    assert len(inventory) == 3 and len(request.instance_id_manifest) == 3
+
+
+def test_camera_visibility_keeps_slivers_and_disconnected_regions_without_completing_objects():
+    from app.schemas.direct_3d_render import Direct3DInstanceDescriptor
+
+    manifest = {
+        "#010001": Direct3DInstanceDescriptor(instance_id="partial", semantic_class="building"),
+        "#020002": Direct3DInstanceDescriptor(instance_id="hidden", semantic_class="building"),
+        "#030003": Direct3DInstanceDescriptor(instance_id="sliver", semantic_class="park"),
+    }
+    image = Image.new("RGB", (8, 8), "black")
+    image.putpixel((0, 0), (1, 0, 1))
+    image.putpixel((7, 7), (1, 0, 1))
+    image.putpixel((4, 4), (3, 0, 3))
+    assert set(direct_service._camera_visible_manifest(image, manifest)) == {"#010001", "#030003"}
+    assert direct_service._camera_visible_manifest(None, manifest) == {}
+    assert direct_service._camera_visible_manifest(image, None) == {}
+    # A new capture recomputes visibility, allowing an actual reveal.
+    image.putpixel((1, 1), (2, 0, 2))
+    assert len(direct_service._camera_visible_manifest(image, manifest)) == 3
 
 
 @pytest.mark.asyncio
@@ -4281,10 +4376,11 @@ def test_presentation_prompt_numbers_archetype_references_after_metadata():
     assert "apply every BUILDING reference strictly" in prompt
     assert "PARK or STREET reference" in prompt
     assert "ARCHETYPE IDENTITY LOCK" in prompt
-    assert "appearance-strict but capacity-flexible" in prompt
+    assert "Do not copy the reference layout or exchange facilities" in prompt
+    assert "appearance-strict but capacity-flexible" not in prompt
     assert "Generic art-direction material examples apply only" in prompt
     # The design lock must still close the prompt.
-    assert prompt.rstrip().endswith("Never re-clad, restyle, modernize or replace a neighbouring building.")
+    assert prompt.rstrip().endswith(RENDER_PRESERVATION_LOCK)
 
 
 def test_presentation_prompt_omits_reference_clause_without_references():
@@ -4358,3 +4454,124 @@ def test_control_bundle_v2_rejects_incomplete_geometry_controls():
     base = _request(presentation_mode="scene")
     with pytest.raises(ValidationError, match="control_bundle_version=2 requires"):
         Direct3DRenderRequest(**{**base.model_dump(), "control_bundle_version": 2})
+
+
+def _tee_street_zones():
+    return [
+        _compiled_zone("street", properties=_supported_street_properties(10, [[-114.081, 51.04], [-114.079, 51.04]])),
+        _compiled_zone("street", properties=_supported_street_properties(10, [[-114.08, 51.04], [-114.08, 51.041]])),
+    ]
+
+
+def _junction_topology(streets, *, arms=3, longitude=-114.08, latitude=51.04):
+    from app.schemas.direct_3d_render import Direct3DJunctionTopology
+
+    parts = []
+    for zone in sorted(streets, key=lambda item: str(item.id)):
+        meta = zone.properties["community_3d"]
+        parts.append(f"{zone.id}:{meta['source_hash'].lower()}:{meta['representation_hash'].lower()}")
+    return Direct3DJunctionTopology(
+        version=1, arm_count=arms, longitude=longitude, latitude=latitude, source_fingerprint="sj1|" + "|".join(parts)
+    )
+
+
+def _connected_junction_request(streets, topology, source_streets=None):
+    sources = streets if source_streets is None else source_streets
+    request = _street_junction_request(
+        streets,
+        source_zone_ids=[zone.id for zone in sources],
+        junction_id=direct_api._canonical_junction_instance_id([str(zone.id) for zone in sources], topology),
+    )
+    descriptor = next(item for item in request.instance_id_manifest.values() if item.zone_id is None)
+    descriptor.junction_topology = topology
+    return request
+
+
+def test_connected_junction_accepts_three_arms_and_preserves_verified_metadata():
+    streets = _tee_street_zones()
+    topology = _junction_topology(streets)
+    request = _connected_junction_request(streets, topology)
+    result = direct_api._bind_instance_manifest_to_server_zones(request, streets, streets)
+    node = next(item for item in result if item["zone_id"] is None)
+    assert node["junction_topology"] == topology.model_dump()
+    assert node["source_zone_ids"] == sorted(str(zone.id) for zone in streets)
+    assert not direct_api._street_sources_form_four_arm_junction(streets)
+
+
+@pytest.mark.parametrize("change", ["count", "anchor", "source_revision", "skew"])
+def test_connected_junction_rejects_false_or_stale_claims_before_generation(change):
+    streets = _tee_street_zones()
+    topology = _junction_topology(streets)
+    if change == "count":
+        topology.arm_count = 4
+    elif change == "anchor":
+        topology.latitude += 0.0001
+    elif change == "source_revision":
+        streets[0].properties["community_3d"]["source_hash"] = "f" * 64
+    else:
+        streets[1].properties["plan_centerline"][1][0] += 0.001
+    request = _connected_junction_request(streets, topology)
+    with pytest.raises(HTTPException, match="topology, anchor, or source revision") as error:
+        direct_api._bind_instance_manifest_to_server_zones(request, streets, streets)
+    assert error.value.status_code == 409
+
+
+def test_connected_junction_rejects_omitted_fourth_approach():
+    sources = _tee_street_zones()
+    fourth = _zone(
+        uuid.uuid4(), "street", properties=_supported_street_properties(10, [[-114.08, 51.04], [-114.08, 51.039]])
+    )
+    streets = [*sources, fourth]
+    request = _connected_junction_request(streets, _junction_topology(sources), sources)
+    with pytest.raises(HTTPException, match="topology, anchor, or source revision"):
+        direct_api._bind_instance_manifest_to_server_zones(request, streets, streets)
+
+
+def test_connected_junction_allows_distant_other_streets():
+    sources = _tee_street_zones()
+    distant = _zone(
+        uuid.uuid4(), "street", properties=_supported_street_properties(10, [[-114.085, 51.04], [-114.085, 51.039]])
+    )
+    streets = [*sources, distant]
+    request = _connected_junction_request(streets, _junction_topology(sources), sources)
+    assert direct_api._bind_instance_manifest_to_server_zones(request, streets, streets)
+
+
+def test_connected_junction_anchor_changes_identity_and_legacy_id_stays_stable():
+    streets = _tee_street_zones()
+    sources = [str(zone.id) for zone in streets]
+    a = direct_api._canonical_junction_instance_id(sources, _junction_topology(streets))
+    b = direct_api._canonical_junction_instance_id(sources, _junction_topology(streets, latitude=51.0401))
+    assert a != b
+    assert ":node-" not in direct_api._canonical_junction_instance_id(sources)
+
+
+def test_connected_junction_ignores_nonvehicle_path_as_a_fourth_road_arm():
+    sources = _tee_street_zones()
+    path = _zone(
+        uuid.uuid4(),
+        "street",
+        properties={
+            "width": 4,
+            "lane_count": 0,
+            "road_archetype_id": "multi_use_trail",
+            "plan_centerline": [[-114.08, 51.04], [-114.08, 51.039]],
+        },
+    )
+    assert direct_api._validate_junction_topology(sources, [*sources, path], _junction_topology(sources))
+
+
+def test_connected_junction_rejects_bent_through_arms_hidden_by_bearing_grouping():
+    west = _compiled_zone(
+        "street", properties=_supported_street_properties(10, [[-114.081, 51.0399], [-114.08, 51.04]])
+    )
+    east = _compiled_zone("street", properties=_supported_street_properties(10, [[-114.08, 51.04], [-114.079, 51.04]]))
+    stem = _tee_street_zones()[1]
+    streets = [west, east, stem]
+    assert not direct_api._street_sources_form_junction(streets, _junction_topology(streets))
+
+
+def test_connected_junction_rejects_stub_too_short_for_an_actual_third_approach():
+    streets = _tee_street_zones()
+    streets[1].properties["plan_centerline"][1][1] = 51.04005
+    assert not direct_api._street_sources_form_junction(streets, _junction_topology(streets))

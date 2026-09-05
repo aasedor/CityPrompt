@@ -9,7 +9,7 @@ from jose import JWTError, jwt
 from passlib.context import CryptContext
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
-from sqlalchemy import select
+from sqlalchemy import or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import get_settings
@@ -137,6 +137,17 @@ require_admin = require_role("admin")
 require_cofounder = require_role("cofounder")
 
 
+def visible_project_ids(user):
+    """A query usable by resource lists without first exposing other tenants' IDs."""
+    from app.models.models import Project, ProjectShare
+
+    query = select(Project.id)
+    if is_admin_or_above(user):
+        return query
+    accepted = select(ProjectShare.project_id).where(ProjectShare.user_id == user.id)
+    return query.where(or_(Project.owner_id == user.id, Project.id.in_(accepted)))
+
+
 async def check_project_permission(
     project_id: uuid.UUID,
     user,
@@ -151,6 +162,9 @@ async def check_project_permission(
     Permission hierarchy: owner > editor > viewer
     """
     from app.models.models import Project, ProjectShare
+
+    if required not in {"viewer", "editor"}:
+        raise ValueError("Project permission must be viewer or editor")
 
     # Load project
     result = await db.execute(select(Project).where(Project.id == project_id))
@@ -171,7 +185,7 @@ async def check_project_permission(
         share_result = await db.execute(
             select(ProjectShare).where(
                 ProjectShare.project_id == project_id,
-                (ProjectShare.user_id == user.id) | (ProjectShare.email == user.email),
+                ProjectShare.user_id == user.id,
             )
         )
         share = share_result.scalar_one_or_none()
@@ -190,3 +204,87 @@ async def check_project_permission(
         status_code=status.HTTP_403_FORBIDDEN,
         detail="Not authorized to access this project",
     )
+
+
+async def check_project_read_access(
+    project_id: uuid.UUID,
+    user,
+    db: AsyncSession,
+    share_token: str | None = None,
+) -> None:
+    """A public link grants read access only to its own project while it exists."""
+    from app.models.models import ProjectShare
+
+    if share_token:
+        result = await db.execute(
+            select(ProjectShare).where(
+                ProjectShare.project_id == project_id,
+                ProjectShare.invite_token == share_token,
+                ProjectShare.is_public_link.is_(True),
+            )
+        )
+        if result.scalar_one_or_none():
+            return
+        raise HTTPException(status_code=403, detail="Invalid or revoked public share link")
+    if user is None:
+        raise HTTPException(status_code=401, detail="Authentication required")
+    await check_project_permission(project_id, user, db, required="viewer")
+
+
+def create_project_asset_ticket(project_id: uuid.UUID, user_id: uuid.UUID) -> str:
+    """Issue a short-lived read-only credential, never a login credential."""
+    return jwt.encode(
+        {
+            "type": "project_asset",
+            "sub": str(user_id),
+            "project_id": str(project_id),
+            "exp": datetime.now(timezone.utc) + timedelta(minutes=15),
+        },
+        settings.jwt_secret_key,
+        algorithm=settings.jwt_algorithm,
+    )
+
+
+def create_file_asset_ticket(file_path: str, user_id: uuid.UUID) -> str:
+    """Limit URL authentication to one stored object for fifteen minutes."""
+    return jwt.encode(
+        {
+            "type": "file_asset",
+            "sub": str(user_id),
+            "file_path": file_path,
+            "exp": datetime.now(timezone.utc) + timedelta(minutes=15),
+        },
+        settings.jwt_secret_key,
+        algorithm=settings.jwt_algorithm,
+    )
+
+
+async def check_project_asset_access(
+    project_id: uuid.UUID,
+    user,
+    db: AsyncSession,
+    *,
+    share_token: str | None = None,
+    asset_ticket: str | None = None,
+) -> None:
+    """Recheck membership on every asset request so revocation stays effective."""
+    from app.models.models import User
+
+    if share_token or user is not None:
+        await check_project_read_access(project_id, user, db, share_token)
+        return
+    if asset_ticket:
+        payload = decode_token(asset_ticket)
+        if payload.get("type") != "project_asset" or payload.get("project_id") != str(project_id):
+            raise HTTPException(status_code=403, detail="Asset ticket does not cover this project")
+        try:
+            user_id = uuid.UUID(payload["sub"])
+        except (KeyError, ValueError, TypeError):
+            raise HTTPException(status_code=401, detail="Invalid asset ticket") from None
+        result = await db.execute(select(User).where(User.id == user_id))
+        ticket_user = result.scalar_one_or_none()
+        if not ticket_user or not ticket_user.is_active:
+            raise HTTPException(status_code=401, detail="Asset ticket account is inactive")
+        await check_project_permission(project_id, ticket_user, db, required="viewer")
+        return
+    raise HTTPException(status_code=401, detail="Authentication required")

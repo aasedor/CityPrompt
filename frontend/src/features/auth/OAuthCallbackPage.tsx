@@ -6,6 +6,7 @@ import { Loader2 } from 'lucide-react';
 import { authApi } from '@/services/api';
 import { useAuthStore } from '@/store';
 import { resetSessionState } from '@/utils/sessionReset';
+import { safeReturnTo } from './returnTo';
 
 export function scrubOAuthCallbackUrl(): void {
   window.history.replaceState(window.history.state, '', '/oauth/callback');
@@ -61,7 +62,7 @@ export function OAuthCallbackPage() {
         toast.success(`Welcome, ${user.full_name || user.email}!`);
         const returnTo = localStorage.getItem('oauth_return_to');
         localStorage.removeItem('oauth_return_to');
-        navigate(returnTo?.startsWith('/') ? returnTo : '/projects', { replace: true });
+        navigate(safeReturnTo(returnTo), { replace: true });
       })
       .catch(() => {
         toast.error('Failed to load user profile after OAuth login');

@@ -13,12 +13,18 @@ import {
   streetVisualContractKey,
 } from './streetVisualContracts';
 
-declare const process: { cwd: () => string };
+declare const process: { cwd: () => string; env: Record<string, string | undefined> };
 
 function frontendRoot(): string {
-  return existsSync(resolve(process.cwd(), 'public'))
+  return existsSync(resolve(process.cwd(), 'src/main.tsx'))
     ? process.cwd()
     : resolve(process.cwd(), 'frontend');
+}
+
+// Match Vite's explicit asset root for isolated source worktrees. The same
+// reference files are still checked; no missing assets are silently skipped.
+function publicRoot(): string {
+  return process.env.CITYPROMPT_PUBLIC_DIR || resolve(frontendRoot(), 'public');
 }
 
 describe('street visual QA contracts', () => {
@@ -46,7 +52,7 @@ describe('street visual QA contracts', () => {
     for (const contract of STREET_VISUAL_CONTRACTS) {
       expect(contract.referenceViews.map((view) => view.angleDeg)).toEqual([30, 60, 90]);
       for (const view of contract.referenceViews) {
-        const localPath = resolve(frontendRoot(), 'public', view.path.replace(/^\/+/, ''));
+        const localPath = resolve(publicRoot(), view.path.replace(/^\/+/, ''));
         expect(existsSync(localPath), `${contract.contractId}: ${localPath}`).toBe(true);
       }
     }

@@ -2,7 +2,8 @@ import { describe, expect, it } from 'vitest';
 
 import type { SiteZone } from '@/types';
 import { bufferLineToPolygon } from '@/utils/roadGeometry';
-import { detectFourWayStreetIntersections } from './streetGraphIntersections';
+import { detectConnectedStreetIntersections, detectFourWayStreetIntersections } from './streetGraphIntersections';
+import { resolveStreetJunctionLayout } from './streetJunctionGeometry';
 
 function street(
   id: string,
@@ -169,4 +170,60 @@ describe('four-way street graph adapter', () => {
     ]);
     expect(nodes).toEqual([]);
   });
+});
+
+
+describe('bounded connected T graph', () => {
+  const main = () => street('main', [[-114.101, 51], [-114.099, 51]], 16);
+  const stem = (north = true) => street('stem', [[-114.1, 51], [-114.1, north ? 51.001 : 50.999]], 14);
+
+  it.each([true, false])('retains exactly three directed arms, north=%s', (north) => {
+    const zones = [main(), stem(north)];
+    const node = detectConnectedStreetIntersections(zones)[0];
+    expect(node.armCount).toBe(3);
+    expect(node.familyId).toBe('street_t_intersection');
+    expect(node.approachSides[0]).toEqual([-1, 1]);
+    expect(node.approachSides[1]).toEqual([north ? 1 : -1]);
+    const layout = resolveStreetJunctionLayout(node, zones);
+    expect(layout).not.toBeNull();
+    expect(layout!.roadA).toBeLessThan(layout!.rowA);
+    expect(layout!.roadB).toBeLessThan(layout!.rowB);
+    expect(detectConnectedStreetIntersections([...zones].reverse())).toEqual([node]);
+    expect(detectFourWayStreetIntersections(zones)).toEqual([]);
+  });
+
+  it('rejects a skew T rather than inventing an orthogonal arm', () => {
+    const diagonal = street('stem', [[-114.1, 51], [-114.099, 51.001]], 14);
+    expect(detectConnectedStreetIntersections([main(), diagonal])).toEqual([]);
+  });
+
+  it('reconstructs a three-source T with split through arms', () => {
+    const zones = [street('west', [[-114.101, 51], [-114.1, 51]], 16),
+      street('east', [[-114.1, 51], [-114.099, 51]], 16), stem()];
+    const [node] = detectConnectedStreetIntersections(zones);
+    expect(node.armCount).toBe(3);
+    expect(node.zoneIds).toEqual(['east', 'stem', 'west']);
+  });
+
+  it('keeps the existing four-way identity and eligibility', () => {
+    const zones = [main(), street('cross', [[-114.1, 50.999], [-114.1, 51.001]], 14)];
+    expect(detectConnectedStreetIntersections(zones)).toEqual(detectFourWayStreetIntersections(zones));
+  });
+});
+
+
+it('does not disguise a bent through street as an orthogonal T by grouping bearings', () => {
+  const zones = [street('west', [[-114.101, 50.9999], [-114.1, 51]], 16),
+    street('east', [[-114.1, 51], [-114.099, 51]], 16),
+    street('stem', [[-114.1, 51], [-114.1, 51.001]], 14)];
+  expect(detectConnectedStreetIntersections(zones)).toEqual([]);
+});
+
+
+it('does not extend a tiny T stem beyond its authored footprint to fit a junction', () => {
+  const zones = [street('main', [[-114.101, 51], [-114.099, 51]], 16),
+    street('stem', [[-114.1, 51], [-114.1, 51.00005]], 14)];
+  const [node] = detectConnectedStreetIntersections(zones);
+  expect(node?.armCount).toBe(3);
+  expect(resolveStreetJunctionLayout(node, zones)).toBeNull();
 });

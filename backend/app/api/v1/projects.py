@@ -118,9 +118,7 @@ async def list_projects(
         return [_project_to_dict(p, owner_email=email) for p, email in rows]
 
     # Get IDs of projects shared with this user
-    shared_result = await db.execute(
-        select(ProjectShare.project_id).where((ProjectShare.user_id == user.id) | (ProjectShare.email == user.email))
-    )
+    shared_result = await db.execute(select(ProjectShare.project_id).where(ProjectShare.user_id == user.id))
     shared_ids = [row[0] for row in shared_result.all()]
 
     from sqlalchemy import or_
@@ -148,7 +146,7 @@ async def get_project(
     db: AsyncSession = Depends(get_db),
 ):
     """Get project details including buildings and documents. Requires viewer permission."""
-    await check_project_permission(project_id, user, db, required="viewer")
+    permission = await check_project_permission(project_id, user, db, required="viewer")
 
     result = await db.execute(
         select(Project)
@@ -158,7 +156,7 @@ async def get_project(
     project = result.scalar_one_or_none()
     if not project:
         raise HTTPException(status_code=404, detail="Project not found")
-    return _project_to_dict(project, include_relations=True)
+    return {**_project_to_dict(project, include_relations=True), "permission": permission}
 
 
 @router.put("/{project_id}", response_model=ProjectListResponse)

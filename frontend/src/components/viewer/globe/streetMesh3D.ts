@@ -658,7 +658,11 @@ function appendQuad(
     centerY - axisX.y * halfX + axisY.y * halfY,
     z,
   );
-  indices.push(base, base + 1, base + 2, base, base + 2, base + 3);
+  if (axisX.x * axisY.y - axisX.y * axisY.x < 0) {
+    indices.push(base, base + 2, base + 1, base, base + 3, base + 2);
+  } else {
+    indices.push(base, base + 1, base + 2, base, base + 2, base + 3);
+  }
 }
 
 function appendRampWedge(
@@ -688,6 +692,7 @@ function appendRampWedge(
     outerX + along.x * halfWidth, outerY + along.y * halfWidth, PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS,
     outerX - along.x * halfWidth, outerY - along.y * halfWidth, PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS,
   );
+  const indexStart = indices.length;
   indices.push(
     base, base + 1, base + 2, base, base + 2, base + 3,
     base + 4, base + 5, base + 1, base + 4, base + 1, base,
@@ -695,6 +700,13 @@ function appendRampWedge(
     base + 6, base + 7, base + 3, base + 6, base + 3, base + 2,
     base + 7, base + 4, base, base + 7, base, base + 3,
   );
+  // Mirroring an outward basis changes handedness. Preserve outward winding
+  // so both sides of the street retain visible, depth-owning ramp tops.
+  if (along.x * outward.y - along.y * outward.x < 0) {
+    for (let i = indexStart; i < indices.length; i += 3) {
+      [indices[i + 1], indices[i + 2]] = [indices[i + 2], indices[i + 1]];
+    }
+  }
 }
 
 /**
@@ -708,6 +720,8 @@ export function buildAccessibleFourWayIntersectionGeometry(
   axisBBearingRad: number,
   axisAHalfWidthM: number,
   axisBHalfWidthM: number,
+  approachSides: readonly (readonly number[])[] = [[-1, 1], [-1, 1]],
+  options: { crossingSetbackM?: number; rampDepthM?: number } = {},
 ): AccessibleFourWayIntersectionGeometry | null {
   if (
     axisAHalfWidthM < 1.5
@@ -725,11 +739,11 @@ export function buildAccessibleFourWayIntersectionGeometry(
     { bearing: axisABearingRad, roadHalfWidth: axisAHalfWidthM, crossingHalfWidth: axisBHalfWidthM },
     { bearing: axisBBearingRad, roadHalfWidth: axisBHalfWidthM, crossingHalfWidth: axisAHalfWidthM },
   ];
-  for (const axis of axes) {
+  for (const [axisIndex, axis] of axes.entries()) {
     const along = { x: Math.cos(axis.bearing), y: Math.sin(axis.bearing) };
     const across = { x: -along.y, y: along.x };
-    for (const approachSide of [-1, 1]) {
-      const crosswalkCenterDistance = axis.crossingHalfWidth + 1.8;
+    for (const approachSide of approachSides[axisIndex] ?? []) {
+      const crosswalkCenterDistance = axis.crossingHalfWidth + (options.crossingSetbackM ?? 1.8);
       const crosswalkCenterX = along.x * approachSide * crosswalkCenterDistance;
       const crosswalkCenterY = along.y * approachSide * crosswalkCenterDistance;
       // Seven 300 mm zebra bars over a 3 m walking corridor.
@@ -749,7 +763,8 @@ export function buildAccessibleFourWayIntersectionGeometry(
       }
       for (const curbSide of [-1, 1]) {
         const outward = { x: across.x * curbSide, y: across.y * curbSide };
-        const rampCenterDistance = axis.roadHalfWidth + 0.55;
+        const rampDepth = options.rampDepthM ?? 1.1;
+        const rampCenterDistance = axis.roadHalfWidth + rampDepth / 2;
         const rampCenterX = crosswalkCenterX + outward.x * rampCenterDistance;
         const rampCenterY = crosswalkCenterY + outward.y * rampCenterDistance;
         appendRampWedge(
@@ -760,13 +775,13 @@ export function buildAccessibleFourWayIntersectionGeometry(
           along,
           outward,
           0.9,
-          1.1,
+          rampDepth,
         );
         appendQuad(
           tactilePositions,
           tactileIndices,
-          rampCenterX + outward.x * 0.22,
-          rampCenterY + outward.y * 0.22,
+          rampCenterX + outward.x * (rampDepth / 2 - 0.33),
+          rampCenterY + outward.y * (rampDepth / 2 - 0.33),
           along,
           outward,
           0.62,

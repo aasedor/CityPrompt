@@ -6,6 +6,8 @@ from fastapi import APIRouter
 
 from app.api.v1 import (
     projects,
+    reference_layers,
+    student_reports,
     documents,
     buildings,
     auth,
@@ -66,3 +68,6 @@ api_router.include_router(geocoding.router, prefix="/geocoding", tags=["Geocodin
 api_router.include_router(shapefiles.router, prefix="/shapefiles", tags=["Shapefile Import"])
 api_router.include_router(custom_style.router, prefix="/custom-style", tags=["Custom Style"])
 api_router.include_router(urban_dna.router, prefix="/urban-dna", tags=["Urban Intelligence DNA"])
+
+api_router.include_router(reference_layers.router, prefix="/reference-layers", tags=["Reference layers"])
+api_router.include_router(student_reports.router)

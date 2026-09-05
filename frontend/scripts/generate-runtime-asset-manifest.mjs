@@ -20,6 +20,7 @@ const runtimePrefixes = Object.freeze([
   '/families/',
   '/images/',
   '/park-kits/',
+  '/landscape-pilots/',
   '/park-skins/',
 ]);
 const sourceExtensions = new Set(['.html', '.js', '.json', '.ts', '.tsx']);
@@ -180,7 +181,7 @@ const sourceFiles = [
 ].filter(existsSync);
 
 const references = new Map();
-const urlPattern = /\/(?:archetypes|assets|entourage|families|images|park-kits|park-skins)\/[^\s"'`<>)\]}]+/g;
+const urlPattern = /\/(?:archetypes|assets|entourage|families|images|park-kits|park-skins|landscape-pilots)\/[^\s"'`<>)\]}]+/g;
 for (const filePath of sourceFiles) {
   if (catalogPaths.has(filePath)) continue;
   const text = readFileSync(filePath, 'utf8');
@@ -300,6 +301,11 @@ const collections = [
     'public-realm-skins',
     ['/park-skins/'],
     'Park skin roles and adaptive sizes are composed into URLs at runtime.',
+  ),
+  summarizeCollection(
+    'neighbourhood-park-pilot',
+    ['/landscape-pilots/neighborhood-rustic-v5/'],
+    'Reviewed park components selected by the adaptive neighbourhood park renderer.',
   ),
 ];
 

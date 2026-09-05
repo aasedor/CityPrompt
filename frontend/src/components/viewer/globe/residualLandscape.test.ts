@@ -169,6 +169,14 @@ describe('residual landscape recipe', () => {
     })).toBe(true);
   });
 
+  it('allows an explicitly unfilled site but still blocks conflicting stale landscape', () => {
+    const emptySite = { ...boundary, properties: { community_3d_landscape_mode: 'placed_objects_only' } };
+    expect(hasCurrentResidualLandscapeRecipe([emptySite])).toBe(true);
+    expect(getCurrentResidualLandscapeClaim([emptySite])).toBeNull();
+    expect(hasCurrentResidualLandscapeRecipe([{ ...withRecipe({ ...recipe, state: 'stale' }),
+      properties: { ...withRecipe({ ...recipe, state: 'stale' }).properties, community_3d_landscape_mode: 'placed_objects_only' } }])).toBe(false);
+  });
+
   it('paints only classified residual pixels and leaves holes neutral', () => {
     const texture = createResidualLandscapeTexture(boundary, recipe, 32);
     const lawn = pixel(texture, 13, 26); // lng~4.2, lat~8.3

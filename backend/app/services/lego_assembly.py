@@ -30,7 +30,7 @@ from __future__ import annotations
 
 import math
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from functools import lru_cache
 from typing import Any, Iterable, Literal
 
@@ -39,6 +39,7 @@ from app.services.plan_geometry.archetypes import load_dims_table
 
 VALID_ROLES = {"podium", "floor", "setback", "crown", "roof", "attachment", "assembled"}
 VALID_FOOTPRINT_PROFILES = {"rectangle", "l_shape", "u_shape", "courtyard"}
+RLASM_ARCHITECTURAL_CLAY_FORMAT = "architectural_clay"
 
 # family/role/variant/LOD become storage-key path segments
 # so they must be plain slugs — no slashes, dots, or other path syntax.
@@ -102,6 +103,7 @@ class ModuleDescriptor:
     # chamfers, entrance recesses, sculptural roofs) and must not be stretched
     # independently back to the parcel edges at runtime.
     allow_inset_footprint: bool = False
+    delivery_format: str | None = None
 
 
 @dataclass(frozen=True)
@@ -115,6 +117,10 @@ class AssemblyRequest:
     allow_setback: bool = True
     footprint_profile: str = "rectangle"
     wing_depth_m: float | None = None
+    # Actual plot ring in the centered, metre-based recipe XY frame. The API
+    # derives this from the zone; dimension-only callers retain rectangle fit.
+    footprint_local_m: tuple[tuple[float, float], ...] | None = None
+    native_home_plot: bool = False
 
 
 AssemblyPlanningErrorCode = Literal["family_not_found", "family_incompatible"]
@@ -163,6 +169,24 @@ def descriptor_from_library_entry(entry: Any) -> ModuleDescriptor | None:
     if not isinstance(lego, dict) or not lego.get("enabled", False):
         return None
 
+    rlasm = metadata.get("rlasm") or {}
+    is_clay = isinstance(rlasm, dict) and rlasm.get("delivery_format") == RLASM_ARCHITECTURAL_CLAY_FORMAT
+    if is_clay and not (
+        rlasm.get("method_version") == "6.1"
+        and rlasm.get("runtime_enabled") is True
+        and rlasm.get("continuous_resize_allowed") is False
+        and lego.get("role") == "assembled"
+        and lego.get("repeatable_z") is False
+        and isinstance(lego.get("native_floors"), int)
+        and lego["native_floors"] >= 1
+        and lego.get("min_floors") == lego["native_floors"]
+        and lego.get("max_floors") == lego["native_floors"]
+        and bool(rlasm.get("variant_id"))
+        and lego.get("source_variant_id") == rlasm["variant_id"]
+        and lego.get("generation_archetype_id") == rlasm["variant_id"]
+    ):
+        return None
+
     role = str(lego.get("role") or "").strip().lower()
     family = str(lego.get("family") or "").strip()
     if role not in VALID_ROLES or not family:
@@ -171,7 +195,7 @@ def descriptor_from_library_entry(entry: Any) -> ModuleDescriptor | None:
     width_m = _as_float(lego.get("width_m"))
     depth_m = _as_float(lego.get("depth_m"))
     height_m = _as_float(lego.get("height_m"))
-    if width_m <= 0 or depth_m <= 0 or height_m <= 0:
+    if any(not math.isfinite(value) or value <= 0 for value in (width_m, depth_m, height_m)):
         return None
 
     return ModuleDescriptor(
@@ -208,6 +232,46 @@ def descriptor_from_library_entry(entry: Any) -> ModuleDescriptor | None:
             lego.get("placement_contract") if isinstance(lego.get("placement_contract"), dict) else None
         ),
         allow_inset_footprint=bool(lego.get("allow_inset_footprint", False)),
+        delivery_format=RLASM_ARCHITECTURAL_CLAY_FORMAT if is_clay else None,
+    )
+
+
+def is_runtime_rlasm_architectural_clay_entry(entry: Any) -> bool:
+    descriptor = descriptor_from_library_entry(entry)
+    return descriptor is not None and descriptor.delivery_format == RLASM_ARCHITECTURAL_CLAY_FORMAT
+
+
+class RuntimeArchitectureEntries(list):
+    """Retain the installed-tier marker even when all clay rows are disabled."""
+
+    def __init__(self, entries: Iterable[Any], *, clay_installed: bool):
+        super().__init__(entries)
+        self.clay_installed = clay_installed
+
+
+def select_runtime_architecture_entries(entries: Iterable[Any]) -> RuntimeArchitectureEntries:
+    """An installed public clay tier never falls back to legacy detailed models.
+
+    Disabled/malformed clay rows cannot become ordinary LEGO descriptors. Keep
+    the tier active when its last public row is disabled, so revocation leaves
+    honest massing rather than resurrecting unrelated legacy architecture.
+    """
+    materialized = list(entries)
+    installed = getattr(entries, "clay_installed", False) or any(
+        getattr(entry, "is_public", False)
+        and isinstance(getattr(entry, "metadata_", None), dict)
+        and isinstance(entry.metadata_.get("rlasm"), dict)
+        and entry.metadata_["rlasm"].get("delivery_format") == RLASM_ARCHITECTURAL_CLAY_FORMAT
+        for entry in materialized
+    )
+    if installed:
+        return RuntimeArchitectureEntries(
+            (entry for entry in materialized if is_runtime_rlasm_architectural_clay_entry(entry)),
+            clay_installed=True,
+        )
+    return RuntimeArchitectureEntries(
+        (entry for entry in materialized if descriptor_from_library_entry(entry) is not None),
+        clay_installed=False,
     )
 
 
@@ -250,6 +314,8 @@ def _strip_card_variant_suffix(semantic_id: str) -> str:
 
 
 def _matches_requested_archetype(module: ModuleDescriptor, archetype_id: str) -> bool:
+    if module.delivery_format == RLASM_ARCHITECTURAL_CLAY_FORMAT:
+        return bool(module.source_variant_id and _semantic_id(archetype_id) == _semantic_id(module.source_variant_id))
     requested = _strip_card_variant_suffix(_semantic_id(archetype_id))
     candidates = (
         *module.archetype_ids,
@@ -620,6 +686,8 @@ def _fixed_landmark_is_select_and_place(module: ModuleDescriptor) -> bool:
     re-imports share the same runtime behavior.
     """
 
+    if module.delivery_format == RLASM_ARCHITECTURAL_CLAY_FORMAT:
+        return True
     placement = module.placement_contract or {}
     footprint = module.footprint_compatibility or {}
     placement_mode = _semantic_id(str(placement.get("mode") or ""))
@@ -709,7 +777,314 @@ def _rectangle_repeat_segments(
     return best[1] if best else None
 
 
+# Explicit catalogue identities: single-family alone is insufficient because
+# that category also contains attached canal houses and protected landmarks.
+DETACHED_ARCHETYPE_IDS = frozenset(
+    {
+        "calgary_inner_city_bungalow",
+        "calgary_modern_infill_house",
+        "detached_contemporary_infill",
+        "mediterranean_villa_estate",
+        "vancouver_craftsman_bungalow",
+        "vancouver_laneway_house",
+    }
+)
+DETACHED_SIDE_GAP_M = 3.0
+DETACHED_ROW_GAP_M = 6.0
+DETACHED_EDGE_SETBACK_M = 1.5
+MAX_DETACHED_DWELLINGS = 256
+_MAX_DETACHED_GRID_CANDIDATES = 4096
+
+
+def detached_plot_local_coordinates(
+    coordinates: Iterable[tuple[float, float]],
+    target_width_m: float,
+    target_depth_m: float,
+    preserve_authored_axes: bool = False,
+) -> tuple[tuple[float, float], ...]:
+    """Mirror computeFootprintFrame + Rx(90) recipe placement, including Y reflection."""
+    ring = [(float(point[0]), float(point[1])) for point in coordinates]
+    if len(ring) > 3 and all(abs(a - b) < 1e-12 for a, b in zip(ring[0], ring[-1])):
+        ring.pop()
+    if len(ring) < 3 or any(not all(math.isfinite(value) for value in point) for point in ring):
+        raise AssemblyPlanningError("Detached placement requires a finite geographic polygon.")
+    mean_lng = sum(point[0] for point in ring) / len(ring)
+    mean_lat = sum(point[1] for point in ring) / len(ring)
+    metres_per_lng = 111_320.0 * math.cos(math.radians(mean_lat))
+    local = [((lng - mean_lng) * metres_per_lng, (lat - mean_lat) * 111_320.0) for lng, lat in ring]
+    angle, longest = 0.0, 0.0
+    for a, b in zip(local, local[1:] + local[:1]):
+        dx, dy = b[0] - a[0], b[1] - a[1]
+        length = math.hypot(dx, dy)
+        if length > longest:
+            longest, angle = length, math.atan2(dy, dx)
+
+    def fold(value):
+        return (value + math.pi / 2) % math.pi - math.pi / 2
+
+    angle = fold(angle)
+    c, s = math.cos(angle), math.sin(angle)
+    u = [x * c + y * s for x, y in local]
+    v = [-x * s + y * c for x, y in local]
+    cu, cv = (min(u) + max(u)) / 2, (min(v) + max(v)) / 2
+    centre_x, centre_y = cu * c - cv * s, cu * s + cv * c
+    if max(v) - min(v) > max(u) - min(u):
+        angle = fold(angle + math.pi / 2)
+    if target_width_m < target_depth_m:
+        angle += math.pi / 2
+    if preserve_authored_axes and len(ring) == 4:
+        angle = math.atan2(local[1][1] - local[0][1], local[1][0] - local[0][0])
+    c, s = math.cos(angle), math.sin(angle)
+    return tuple(
+        (round((x - centre_x) * c + (y - centre_y) * s, 6), round((x - centre_x) * s - (y - centre_y) * c, 6))
+        for x, y in local
+    )
+
+
+def _detached_plot(request: AssemblyRequest):
+    from shapely.geometry import Polygon, box
+
+    if request.footprint_local_m is not None:
+        ring = request.footprint_local_m
+        if not 3 <= len(ring) <= 2048 or any(
+            len(point) != 2 or not all(math.isfinite(value) for value in point) for point in ring
+        ):
+            raise AssemblyPlanningError("Detached placement needs 3–2048 finite local XY plot vertices.")
+        plot = Polygon(ring)
+    elif request.footprint_profile == "rectangle":
+        plot = box(
+            -request.target_width_m / 2,
+            -request.target_depth_m / 2,
+            request.target_width_m / 2,
+            request.target_depth_m / 2,
+        )
+    else:
+        raise AssemblyPlanningError("Detached placement on a shaped plot requires its actual polygon.")
+    if plot.is_empty or not plot.is_valid or plot.area <= 0:
+        raise AssemblyPlanningError("Detached placement requires a valid non-self-intersecting plot polygon.")
+    return plot
+
+
+def _detached_lot_segments(plot, width: float, depth: float) -> list[dict[str, Any]]:
+    """Bounded native-size grids; retain only fully contained dwelling envelopes."""
+    from shapely.affinity import rotate
+    from shapely.geometry import box
+
+    corners = list(plot.minimum_rotated_rectangle.exterior.coords)
+    angles = {0.0, 90.0}
+    for first, second in zip(corners, corners[1:]):
+        angle = math.degrees(math.atan2(second[1] - first[1], second[0] - first[0])) % 180
+        angles.add(round(angle, 8) % 180)
+        angles.add(round((angle + 90) % 180, 8) % 180)
+    best: list[dict[str, Any]] = []
+    exceeded_grid_limit = False
+    for angle in sorted(angles):
+        local_plot = rotate(plot, -angle, origin=(0, 0))
+        xmin, ymin, xmax, ymax = local_plot.bounds
+        # Narrow strips may already trace native house depth. Keep the native
+        # envelope and inter-house gaps; reduce conceptual outer setbacks
+        # instead of stretching one house along the whole strip.
+        edge_x = min(DETACHED_EDGE_SETBACK_M, max(0.0, (xmax - xmin - width) / 2))
+        edge_y = min(DETACHED_EDGE_SETBACK_M, max(0.0, (ymax - ymin - depth) / 2))
+        usable_width = xmax - xmin - 2 * edge_x
+        usable_depth = ymax - ymin - 2 * edge_y
+        nx = max(0, math.floor((usable_width + DETACHED_SIDE_GAP_M + 1e-7) / (width + DETACHED_SIDE_GAP_M)))
+        ny = max(0, math.floor((usable_depth + DETACHED_ROW_GAP_M + 1e-7) / (depth + DETACHED_ROW_GAP_M)))
+        if nx * ny > _MAX_DETACHED_GRID_CANDIDATES:
+            exceeded_grid_limit = True
+            continue
+        total_width = nx * width + max(0, nx - 1) * DETACHED_SIDE_GAP_M
+        total_depth = ny * depth + max(0, ny - 1) * DETACHED_ROW_GAP_M
+        start_x = (xmin + xmax - total_width + width) / 2
+        start_y = (ymin + ymax - total_depth + depth) / 2
+        segments = []
+        theta = math.radians(angle)
+        # tolerance covers only floating-point rotation drift, not a setback.
+        contained_by = local_plot.buffer(1e-7)
+        for row in range(ny):
+            for col in range(nx):
+                x = start_x + col * (width + DETACHED_SIDE_GAP_M)
+                y = start_y + row * (depth + DETACHED_ROW_GAP_M)
+                envelope = box(
+                    x - width / 2 - edge_x, y - depth / 2 - edge_y, x + width / 2 + edge_x, y + depth / 2 + edge_y
+                )
+                if not contained_by.covers(envelope):
+                    continue
+                segments.append(
+                    {
+                        "id": f"dwelling_r{row}_c{col}",
+                        "centre_x_m": x * math.cos(theta) - y * math.sin(theta),
+                        "centre_y_m": x * math.sin(theta) + y * math.cos(theta),
+                        "length_m": width,
+                        "thickness_m": depth,
+                        "rotation_degrees": angle,
+                    }
+                )
+        if len(segments) > len(best):
+            best = segments
+    if len(best) > MAX_DETACHED_DWELLINGS or exceeded_grid_limit:
+        raise AssemblyPlanningError(
+            f"Divide this housing plot into smaller areas (maximum {MAX_DETACHED_DWELLINGS} dwellings per plot)."
+        )
+    if best:
+        return best
+    # A parcel drawn around one native house is still a valid single placement.
+    # This keeps native catalogue probes and existing exact-footprint drawings
+    # usable; a tight single parcel does not imply a compliant legal setback.
+    for angle in sorted(angles):
+        centre = plot.centroid
+        dwelling = rotate(box(-width / 2, -depth / 2, width / 2, depth / 2), angle, origin=(0, 0))
+        from shapely.affinity import translate
+
+        if plot.buffer(1e-7).covers(translate(dwelling, centre.x, centre.y)):
+            return [
+                {
+                    "id": "dwelling_r0_c0",
+                    "centre_x_m": centre.x,
+                    "centre_y_m": centre.y,
+                    "length_m": width,
+                    "thickness_m": depth,
+                    "rotation_degrees": angle,
+                }
+            ]
+    raise AssemblyPlanningError("No native-size detached dwelling fits inside this plot; enlarge or reshape it.")
+
+
+def _plan_detached_assembly(
+    modules: list[ModuleDescriptor], request: AssemblyRequest, parent_id: str
+) -> dict[str, Any]:
+    from shapely.affinity import rotate, translate
+    from shapely.geometry import box
+    from shapely.ops import unary_union
+
+    catalogue = next(entry for entry in load_dims_table() if entry["id"] == parent_id)
+    if not float(catalogue["min_floors"]) <= request.target_floors <= float(catalogue["max_floors"]):
+        raise AssemblyPlanningError(
+            f"{catalogue['title']} supports {int(catalogue['min_floors'])}–{int(catalogue['max_floors'])} floors; detached houses cannot be stretched into towers."
+        )
+    plot = _detached_plot(request)
+    eligible = [m for m in modules if not request.preferred_family or m.family == request.preferred_family]
+    exact = [m for m in eligible if _matches_requested_archetype(m, request.archetype_id or parent_id)]
+    candidates = exact or [m for m in eligible if _matches_requested_archetype(m, parent_id)]
+    anchors = [m for m in candidates if m.role in {"podium", "assembled"}]
+    best_plan = None
+    best_score = float("-inf")
+    last_error = None
+    for anchor in anchors:
+        try:
+            native_request = replace(
+                request,
+                target_width_m=anchor.width_m,
+                target_depth_m=anchor.depth_m,
+                preferred_family=anchor.family,
+                footprint_profile="rectangle",
+                footprint_local_m=None,
+            )
+            base = _plan_vertical_assembly_core(modules, native_request, allow_forced_fit=False)
+            if len({item["segment_id"] for item in base["instances"]}) != 1:
+                continue
+            envelopes = []
+            for item in base["instances"]:
+                w, d, _ = item["native_dimensions_m"]
+                shape = rotate(box(-w / 2, -d / 2, w / 2, d / 2), item["rotation_degrees"], origin=(0, 0))
+                envelopes.append(translate(shape, item["position"][0], item["position"][1]))
+            xmin, ymin, xmax, ymax = unary_union(envelopes).bounds
+            width, depth = 2 * max(abs(xmin), abs(xmax)), 2 * max(abs(ymin), abs(ymax))
+            segments = _detached_lot_segments(plot, width, depth)
+        except AssemblyPlanningError as exc:
+            last_error = exc
+            continue
+        instances = []
+        for segment in segments:
+            theta = math.radians(segment["rotation_degrees"])
+            for item in base["instances"]:
+                x, y, z = item["position"]
+                instances.append(
+                    {
+                        **item,
+                        "segment_id": segment["id"],
+                        "position": [
+                            segment["centre_x_m"] + x * math.cos(theta) - y * math.sin(theta),
+                            segment["centre_y_m"] + x * math.sin(theta) + y * math.cos(theta),
+                            z,
+                        ],
+                        "rotation_degrees": (item["rotation_degrees"] + segment["rotation_degrees"]) % 360,
+                        "scale": [1.0, 1.0, 1.0],
+                    }
+                )
+        score = float(base["fit"].get("score", 0))
+        if best_plan is None or score > best_score:
+            best_score = score
+            best_plan = {
+                **base,
+                "target": {
+                    **base["target"],
+                    "width_m": request.target_width_m,
+                    "depth_m": request.target_depth_m,
+                    "footprint_profile": request.footprint_profile,
+                },
+                "instances": instances,
+                "footprint_segments": segments,
+                "fit": {
+                    **base["fit"],
+                    "placement_mode": "detached_lots",
+                    "footprint_mode": "detached_lots",
+                    "assembly_mode": "detached_dwellings",
+                    "compatibility_source": "native_detached_lots",
+                    "scale_x": 1.0,
+                    "scale_y": 1.0,
+                    "dwelling_count": len(segments),
+                    "segment_count": len(segments),
+                    "native_dwelling_width_m": width,
+                    "native_dwelling_depth_m": depth,
+                    "side_gap_m": DETACHED_SIDE_GAP_M,
+                    "row_gap_m": DETACHED_ROW_GAP_M,
+                    "concept_edge_setback_m": DETACHED_EDGE_SETBACK_M,
+                    "setback_compliance": "not_assessed",
+                    "polygon_contained": True,
+                },
+            }
+    if best_plan is not None:
+        return best_plan
+    if last_error is not None:
+        raise last_error
+    raise AssemblyPlanningError("No compatible native detached-house family is available.", code="family_not_found")
+
+
 def plan_vertical_assembly(
+    modules: Iterable[ModuleDescriptor],
+    request: AssemblyRequest,
+    *,
+    allow_forced_fit: bool = True,
+) -> dict[str, Any]:
+    modules = list(modules)
+    # An explicit home plot groups whole independent copies. It does not grant
+    # a clay asset a repeatable floor/bay contract or allow mesh deformation.
+    if request.native_home_plot:
+        parent_id = _catalog_parent_archetype_id(request.archetype_id) if request.archetype_id else None
+        if parent_id not in DETACHED_ARCHETYPE_IDS:
+            raise AssemblyPlanningError("Only detached-home archetypes can form a home plot.")
+        if not all(math.isfinite(value) and value > 0 for value in (request.target_width_m, request.target_depth_m)):
+            raise AssemblyPlanningError("Target width and depth must be finite and positive")
+        return _plan_detached_assembly(modules, request, parent_id)
+    # Clay has no approved repetition contract, even when its catalogue parent
+    # is detached housing. One selected variant remains one native building.
+    if any(
+        module.delivery_format == RLASM_ARCHITECTURAL_CLAY_FORMAT
+        and request.archetype_id
+        and _matches_requested_archetype(module, request.archetype_id)
+        for module in modules
+    ):
+        return _plan_vertical_assembly_core(modules, request, allow_forced_fit=False)
+    parent_id = _catalog_parent_archetype_id(request.archetype_id) if request.archetype_id else None
+    if parent_id in DETACHED_ARCHETYPE_IDS:
+        if not all(math.isfinite(value) and value > 0 for value in (request.target_width_m, request.target_depth_m)):
+            raise AssemblyPlanningError("Target width and depth must be finite and positive")
+        return _plan_detached_assembly(modules, request, parent_id)
+    return _plan_vertical_assembly_core(modules, request, allow_forced_fit=allow_forced_fit)
+
+
+def _plan_vertical_assembly_core(
     modules: Iterable[ModuleDescriptor],
     request: AssemblyRequest,
     *,
@@ -727,7 +1102,7 @@ def plan_vertical_assembly(
     vertical position and scale. A future Three.js composer or GLB baking worker
     can consume the same recipe.
     """
-    if request.target_width_m <= 0 or request.target_depth_m <= 0:
+    if any(not math.isfinite(value) or value <= 0 for value in (request.target_width_m, request.target_depth_m)):
         raise AssemblyPlanningError("Target width and depth must be positive")
     if request.target_floors < 1:
         raise AssemblyPlanningError("Target floors must be at least 1")
@@ -831,7 +1206,10 @@ def plan_vertical_assembly(
                 for module in family_modules
                 if module.role == "assembled"
                 and module.native_floors == request.target_floors
-                and request.footprint_profile == "rectangle"
+                and (
+                    request.footprint_profile == "rectangle"
+                    or (_fixed_landmark_is_select_and_place(module) and request.footprint_local_m is not None)
+                )
                 and request.archetype_id
                 and any(
                     _semantic_id(candidate) == _semantic_id(executable_id)
@@ -846,11 +1224,14 @@ def plan_vertical_assembly(
             request,
         )
         if assembled:
+            select_and_place = _fixed_landmark_is_select_and_place(assembled)
             (
                 landmark_scale_min,
                 landmark_scale_max,
                 landmark_max_axis_ratio,
             ) = _fixed_landmark_scale_contract(assembled)
+            if select_and_place:
+                landmark_scale_min = landmark_scale_max = landmark_max_axis_ratio = 1.0
             (
                 scale_x,
                 scale_y,
@@ -860,9 +1241,32 @@ def plan_vertical_assembly(
             ) = _rectangle_orientation(
                 assembled,
                 request,
-                scale_min=landmark_scale_min,
-                scale_max=landmark_scale_max,
+                scale_min=1.0 if select_and_place else landmark_scale_min,
+                scale_max=float("inf") if select_and_place else landmark_scale_max,
             )
+            if select_and_place and request.footprint_local_m is not None:
+                from shapely.affinity import rotate
+                from shapely.geometry import box
+
+                plot = _detached_plot(request)
+                envelope = box(
+                    -assembled.width_m / 2, -assembled.depth_m / 2, assembled.width_m / 2, assembled.depth_m / 2
+                )
+                rotations = [
+                    angle
+                    for angle in (rectangle_rotation, (rectangle_rotation + 90) % 180)
+                    if plot.buffer(1e-7).covers(rotate(envelope, angle, origin=(0, 0)))
+                ]
+                if not rotations:
+                    continue
+                rectangle_rotation = rotations[0]
+                segment_length, segment_thickness = (
+                    (request.target_width_m, request.target_depth_m)
+                    if rectangle_rotation == 0
+                    else (request.target_depth_m, request.target_width_m)
+                )
+                scale_x = segment_length / assembled.width_m
+                scale_y = segment_thickness / assembled.depth_m
             axis_ratio = max(
                 scale_x / max(scale_y, 1e-9),
                 scale_y / max(scale_x, 1e-9),
@@ -874,14 +1278,16 @@ def plan_vertical_assembly(
             # to swell until it touches an edge. Cap the applied scale at the
             # family's audited maximum and leave the remaining land as a real
             # setback inside the site envelope.
-            contain_scale = min(raw_contain_scale, landmark_scale_max)
+            contain_scale = 1.0 if select_and_place else min(raw_contain_scale, landmark_scale_max)
             near_native_fit = (
-                landmark_scale_min <= scale_x <= landmark_scale_max
+                not select_and_place
+                and landmark_scale_min <= scale_x <= landmark_scale_max
                 and landmark_scale_min <= scale_y <= landmark_scale_max
                 and axis_ratio <= landmark_max_axis_ratio
             )
             uniform_contain_fit = (
-                FIXED_LANDMARK_CONTAIN_SCALE_MIN <= raw_contain_scale
+                not select_and_place
+                and FIXED_LANDMARK_CONTAIN_SCALE_MIN <= raw_contain_scale
                 and max(scale_x, scale_y) <= FIXED_LANDMARK_CONTAIN_MAX_ENVELOPE_SCALE
                 # Do not let a 90-degree trial disguise a genuinely oversized
                 # authored axis. Large sites still belong on the LEGO
@@ -890,10 +1296,9 @@ def plan_vertical_assembly(
                 and max(authored_axis_scale_x, authored_axis_scale_y) <= FIXED_LANDMARK_CONTAIN_MAX_ENVELOPE_SCALE
                 and axis_ratio <= FIXED_LANDMARK_CONTAIN_MAX_AXIS_RATIO
             )
-            forced_landmark_fit = (
-                forced and not has_stack_fallback and not _fixed_landmark_is_select_and_place(assembled)
-            )
-            if near_native_fit or uniform_contain_fit or forced_landmark_fit:
+            forced_landmark_fit = forced and not has_stack_fallback and not select_and_place
+            native_site_envelope_fit = select_and_place and min(scale_x, scale_y) >= 1.0 - 1e-7
+            if native_site_envelope_fit or near_native_fit or uniform_contain_fit or forced_landmark_fit:
                 # The polygon is a site envelope, not an extrusion mould.
                 # Preserve the reviewed landmark proportions and centre the
                 # complete authored form inside the available rectangle.
@@ -948,14 +1353,20 @@ def plan_vertical_assembly(
                         "profile": "rectangle",
                         "segment_count": 1,
                         "assembly_mode": "fixed_landmark",
+                        "native_scale_locked": select_and_place,
+                        "delivery_format": assembled.delivery_format,
                         "footprint_mode": "archetype_contain",
                         "compatibility_source": (
                             "forced_fit"
-                            if forced and not (near_native_fit or uniform_contain_fit)
+                            if forced and not (native_site_envelope_fit or near_native_fit or uniform_contain_fit)
                             else (
                                 "fixed_landmark_native"
                                 if math.isclose(scale_x, 1.0, abs_tol=1e-6) and math.isclose(scale_y, 1.0, abs_tol=1e-6)
-                                else "fixed_landmark_tolerance" if near_native_fit else "fixed_landmark_contain"
+                                else (
+                                    "fixed_landmark_native_envelope"
+                                    if select_and_place
+                                    else "fixed_landmark_tolerance" if near_native_fit else "fixed_landmark_contain"
+                                )
                             )
                         ),
                         "scale_band": {
@@ -975,8 +1386,8 @@ def plan_vertical_assembly(
                             "id": "landmark",
                             "centre_x_m": 0.0,
                             "centre_y_m": 0.0,
-                            "length_m": segment_length,
-                            "thickness_m": segment_thickness,
+                            "length_m": assembled.width_m if select_and_place else segment_length,
+                            "thickness_m": assembled.depth_m if select_and_place else segment_thickness,
                             "rotation_degrees": rectangle_rotation,
                         }
                     ],
@@ -1206,6 +1617,18 @@ def plan_vertical_assembly(
             best_plan = plan
 
     if best_plan is None:
+        if any(
+            module.delivery_format == RLASM_ARCHITECTURAL_CLAY_FORMAT
+            for family in families
+            for module in modules_by_family[family]
+        ):
+            raise AssemblyPlanningError(
+                "The selected architectural clay is fixed at its native size and floor count. "
+                "Use a plot containing the complete building or keep this proposal as planned massing.",
+                code="family_incompatible",
+                requested=_requested_target_metadata(request),
+                supported_families=_supported_family_metadata(descriptors, families),
+            )
         raise AssemblyPlanningError(
             "No compatible module family found. Add podium, repeatable floor, and roof modules "
             "whose native footprint is within 20% of the target.",

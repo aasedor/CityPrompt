@@ -1,10 +1,11 @@
-﻿import { useState, useEffect, useMemo, useRef } from 'react';
+import { useState, useEffect, useLayoutEffect, useCallback, useMemo, useRef } from 'react';
 import type { ReactNode } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Trash2, Sparkles, Loader2, X, RefreshCw, Building2, Route, TreePine, Droplets, ParkingCircle, MapPin, LayoutGrid, ChevronDown, ArrowDownToLine, Check, BookmarkPlus, Library, Box } from 'lucide-react';
 import toast from 'react-hot-toast';
 import type { SiteZone, SiteZoneProperties, Building, BoundaryAnalysisResponse, LayoutOption, PreviewHistoryEntry, ModelLibraryEntry, CustomStyleDomain } from '@/types';
 import { ZONE_TYPE_CONFIG } from '@/types';
+import { isCalgaryLocalRoute, CALGARY_LOCAL_WIDTH_M } from '@/features/pickPlace/streetPlacement';
 import { getShadeForArchetype, getCustomZoneShade } from '@/data/archetypeShadeMap';
 import { CustomStyleEditor } from './CustomStyleEditor';
 import { siteZonesApi, buildingsApi, getApiErrorMessage, modelLibraryApi, resolveApiFileUrl } from '@/services/api';
@@ -17,6 +18,8 @@ import { isPersistedZoneId } from '@/utils/zoneIdentity';
 import { formatArea, polygonDimensionsMeters } from './mapEngine/geoUtils';
 import { compileBoundaryCommunity3D } from '@/features/legoAssembly/communityCompiler';
 import { legoAssemblyApi } from '@/features/legoAssembly/legoAssemblyApi';
+import { CatalogueBrowserControls, CalgaryGuideDetails, useCatalogueBrowser } from '@/features/calgaryCatalogue/CatalogueBrowser';
+import type { CalgaryClassification } from '@/features/calgaryCatalogue/guide';
 import stickerMethodPilots from '@/data/stickerMethodPilots.json';
 import neighborhoodParkV0StickerKit from '@/data/neighborhoodParkV0StickerKit.json';
 import { ARCHETYPE_OWNED_PARK_KITS } from './globe/parkArchetypeOwnedKits';
@@ -51,6 +54,7 @@ const SHOW_LEGACY_SITE_BOUNDARY_TOOLS =
 
 interface ZonePropertiesPanelProps {
   zone: SiteZone;
+  savedVersionReload?: ZonePropertiesReload;
   onUpdate: (zoneId: string, data: { name?: string; color?: string; properties?: SiteZoneProperties }) => void;
   onDelete: (zoneId: string) => void;
   onClose: () => void;
@@ -58,6 +62,51 @@ interface ZonePropertiesPanelProps {
   buildings?: Building[];
   allZones?: SiteZone[];
   onOpenBlockEditor?: (draftZone: SiteZone) => void;
+}
+
+interface ZonePropertiesReload {
+  control: { generation: number; pending: boolean };
+  result?: { generation: number; status: 'loading' | 'success' | 'failed'; zone?: SiteZone };
+}
+
+/** Only an explicit successful reload resets local form edits. The mutable
+ * generation also cancels old debounce/unmount saves before React commits. */
+export function useZonePropertiesReload(
+  projectId: string | undefined,
+  zoneId: string | null,
+  reload: () => Promise<{ data?: SiteZone[]; error?: unknown; status: string }>,
+) {
+  const request = useRef(0);
+  const control = useRef({ generation: 0, pending: false });
+  const [result, setResult] = useState<ZonePropertiesReload['result']>();
+  useLayoutEffect(() => {
+    request.current += 1;
+    control.current.pending = false;
+    setResult(undefined);
+    return () => { request.current += 1; };
+  }, [projectId, zoneId]);
+  const reloadSavedVersion = useCallback(async () => {
+    const token = ++request.current;
+    const generation = ++control.current.generation;
+    control.current.pending = true;
+    setResult({ generation, status: 'loading' });
+    try {
+      const response = await reload();
+      if (request.current !== token) return false;
+      control.current.pending = false;
+      const success = !response.error && response.status === 'success';
+      setResult({ generation, status: success ? 'success' : 'failed',
+        zone: success ? response.data?.find((item) => item.id === zoneId) : undefined });
+      return success;
+    } catch {
+      if (request.current === token) {
+        control.current.pending = false;
+        setResult({ generation, status: 'failed' });
+      }
+      return false;
+    }
+  }, [reload, zoneId]);
+  return { savedVersionReload: { control: control.current, result }, reloadSavedVersion };
 }
 
 type DevelopmentAestheticCategory = {
@@ -100,6 +149,7 @@ type TransportModeKey = CatalogTransportModeKey;
 
 type DevelopmentAestheticOption = {
   id: string;
+  calgaryGuide?: CalgaryClassification;
   categoryId?: string;
   label: string;
   description: string;
@@ -259,7 +309,7 @@ function getAestheticAreaFit(
   const ratio = best.ratio;
   const pct = ratio == null ? null : Math.round((ratio - 1) * 100);
   const message = best.isGoodFit
-    ? pct == null ? 'Good fit' : `Good fit (${pct > 0 ? '+' : ''}${pct}%)`
+    ? pct == null ? 'Area match' : `Area match (${pct > 0 ? '+' : ''}${pct}%)`
     : best.tooSmall
       ? pct == null ? 'Small for this archetype' : `Small (${pct}%)`
       : pct == null ? 'Large for this archetype' : `Large (+${pct}%)`;
@@ -325,7 +375,7 @@ function BuildingWorkflowStepper({
     <div className="rounded-lg border-2 border-[#151515] bg-white/80 p-2 shadow-[3px_3px_0_0_rgba(21,21,21,0.16)]">
       <div className="grid grid-cols-4 gap-1">
         {BUILDING_WORKFLOW_STEPS.map(({ step, label }) => {
-          const disabled = step > 1 && !developmentSelected;
+          const disabled = (step === 2 || step === 4) && !developmentSelected;
           const active = activeStep === step;
           return (
             <button
@@ -387,60 +437,11 @@ function BuildingWorkflowPager({
   );
 }
 
-const LEGACY_CATEGORY_ALIASES: Record<'development_aesthetic' | 'road_aesthetic' | 'green_space_aesthetic' | 'plaza_aesthetic', Record<string, string>> = {
-  development_aesthetic: {
-    historic: 'historical',
-    contemporary: 'contemporary_urban',
-    glass_modern: 'glass_tower_modern',
-  },
-  road_aesthetic: {
-    transportation: 'complete_streets',
-    transit_corridor: 'transit_priority',
-    complete_street: 'complete_streets',
-    walkable_street: 'historic_walkways',
-  },
-  green_space_aesthetic: {
-    historic_landscape: 'landscape_parks',
-    historic_landscape_park: 'landscape_parks',
-    historic_gardens: 'landscape_parks',
-    english_landscape: 'landscape_parks',
-    ecological_park: 'ecological_resilience',
-    ecological_landscape: 'ecological_resilience',
-    neighborhood_park: 'neighborhood_public_realm',
-    waterfront: 'waterfront_spaces',
-  },
-  plaza_aesthetic: {
-    civic_square: 'civic_plazas',
-    urban_square: 'civic_plazas',
-    event_plaza: 'social_event_spaces',
-    festival_space: 'social_event_spaces',
-  },
-};
-
-function normalizeLegacyCategoryValue(value: string): string {
-  return value
-    .trim()
-    .toLowerCase()
-    .replace(/[\s/-]+/g, '_')
-    .replace(/[^a-z0-9_]/g, '');
-}
-
-function normalizeAestheticCategory(
-  key: 'development_aesthetic' | 'road_aesthetic' | 'green_space_aesthetic' | 'plaza_aesthetic',
-  value: string | undefined,
-): string | undefined {
-  if (!value) return undefined;
-
-  const normalized = normalizeLegacyCategoryValue(value);
-  const aliases = LEGACY_CATEGORY_ALIASES[key] || {};
-  return aliases[normalized] || value;
-}
-
 function getFrontDayArchetypeImage(images: CatalogArchetypeImage[]): CatalogArchetypeImage | undefined {
   return images.find((image) => image.id.endsWith(`_${FRONT_DAY_VARIANT_ID}`));
 }
 
-export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGenerate, buildings, allZones, onOpenBlockEditor }: ZonePropertiesPanelProps) {
+export function ZonePropertiesPanel({ zone, savedVersionReload, onUpdate, onDelete, onClose, onAIGenerate, buildings, allZones, onOpenBlockEditor }: ZonePropertiesPanelProps) {
   const config = ZONE_TYPE_CONFIG[zone.zone_type];
   const osmContext = useViewerStore((s) => s.osmContext);
   const layoutPreview = useViewerStore((s) => s.layoutPreview);
@@ -455,6 +456,11 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
   const handleSaveRef = useRef<(closeAfterSave?: boolean) => void>(() => {});
   const customStyleSaveTimerRef = useRef<number | null>(null);
   const customStyleSavePendingRef = useRef(false);
+  const customStyleSaveGenerationRef = useRef(0);
+  const reloadControlRef = useRef(savedVersionReload?.control);
+  reloadControlRef.current = savedVersionReload?.control;
+  const resettingFormRef = useRef<{ name: string; props: SiteZoneProperties } | null>(null);
+  const lastReloadResultRef = useRef<ZonePropertiesReload['result']>();
   const prevCustomStyleKeyRef = useRef<string | undefined>(undefined);
   const prevAestheticSelectionKeyRef = useRef<string | undefined>(undefined);
   const usesBuildingWorkflow = zone.zone_type === 'building' || zone.zone_type === 'residential' || zone.zone_type === 'development_area';
@@ -474,8 +480,35 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
     setActiveBuildingStep(1);
   }, [zone.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  useLayoutEffect(() => {
+    const result = savedVersionReload?.result;
+    if (!result || result === lastReloadResultRef.current) return;
+    lastReloadResultRef.current = result;
+    if (customStyleSaveTimerRef.current) window.clearTimeout(customStyleSaveTimerRef.current);
+    customStyleSaveTimerRef.current = null;
+    customStyleSavePendingRef.current = false;
+    if (result.status === 'success' && result.zone?.id === zone.id) {
+      const restored = { name: result.zone.name || '', props: result.zone.properties || {} };
+      resettingFormRef.current = restored;
+      prevCustomStyleKeyRef.current = customStyleKeyOf(restored.props);
+      prevAestheticSelectionKeyRef.current = aestheticSelectionKeyOf(restored.props);
+      setName(restored.name);
+      setProps(restored.props);
+    } else {
+      // Failed reloads leave the visible edits intact. Cancel the old debounce;
+      // further edits or an explicit Save can submit those values again.
+      resettingFormRef.current = null;
+      prevCustomStyleKeyRef.current = customStyleKeyOf(props);
+      prevAestheticSelectionKeyRef.current = aestheticSelectionKeyOf(props);
+    }
+  }, [savedVersionReload?.result, zone.id, props]);
   useEffect(() => {
-    if (usesBuildingWorkflow && !props.development_type && activeBuildingStep > 1) {
+    const restored = resettingFormRef.current;
+    if (restored && name === restored.name && props === restored.props) resettingFormRef.current = null;
+  }, [name, props]);
+
+  useEffect(() => {
+    if (usesBuildingWorkflow && !props.development_type && (activeBuildingStep === 2 || activeBuildingStep === 4)) {
       setActiveBuildingStep(1);
     }
   }, [activeBuildingStep, props.development_type, usesBuildingWorkflow]);
@@ -496,6 +529,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
   }, [lastAppliedUndoRedoAction, undoRedoHistoryVersion, zone.id, zone.name, zone.properties]);
 
   const handleSave = (closeAfterSave = false) => {
+    if (reloadControlRef.current?.pending || resettingFormRef.current) return;
     // Unsaved zones carry an optimistic temp- id while the create round-trip
     // is in flight; every zone endpoint UUID-validates its path and 422s on
     // them. Edits stay in local state — the panel remounts with the real id
@@ -587,6 +621,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
   // parent archetype itself did not change.
   const aestheticSelectionKey = aestheticSelectionKeyOf(props);
   useEffect(() => {
+    if (reloadControlRef.current?.pending || resettingFormRef.current) return;
     // Skip initial mount and zone resets. The latest-save ref is updated during
     // render, so this effect always persists the fully computed next props.
     if (prevAestheticSelectionKeyRef.current === undefined) {
@@ -600,6 +635,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
 
   // Auto-save custom-style edits (debounced — the prompt textarea fires on every keystroke)
   useEffect(() => {
+    if (reloadControlRef.current?.pending || resettingFormRef.current) return;
     const key = customStyleKeyOf(props);
     // Skip initial mount (panel remounts per zone via key={zone.id})
     if (prevCustomStyleKeyRef.current === undefined) {
@@ -610,19 +646,23 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
     prevCustomStyleKeyRef.current = key;
 
     if (customStyleSaveTimerRef.current) window.clearTimeout(customStyleSaveTimerRef.current);
+    customStyleSaveGenerationRef.current = reloadControlRef.current?.generation ?? 0;
     customStyleSavePendingRef.current = true;
     customStyleSaveTimerRef.current = window.setTimeout(() => {
       customStyleSavePendingRef.current = false;
-      handleSaveRef.current();
+      if (customStyleSaveGenerationRef.current === (reloadControlRef.current?.generation ?? 0)) handleSaveRef.current();
     }, 800);
   }, [props.custom_style_enabled, props.custom_style_prompt, props.custom_style_expanded_prompt, props.custom_style_expanded_edited, props.custom_style_expansion_hash, props.custom_style_attachments]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // FLUSH (never discard) a pending custom-style save on unmount — the panel
-  // unmounts on zone switch/close, and dropping the timer would silently lose
+  // Flush pending custom-style edits on ordinary unmount. An explicit reload
+  // invalidates its earlier debounce, so rejected values cannot be re-saved.
+  // The panel unmounts on zone switch/close, and dropping the timer would lose
   // everything typed in the last 800ms (or the whole setup if never idle).
   useEffect(() => () => {
     if (customStyleSaveTimerRef.current) window.clearTimeout(customStyleSaveTimerRef.current);
-    if (customStyleSavePendingRef.current) {
+    if (customStyleSavePendingRef.current
+        && customStyleSaveGenerationRef.current === (reloadControlRef.current?.generation ?? 0)
+        && !reloadControlRef.current?.pending) {
       customStyleSavePendingRef.current = false;
       handleSaveRef.current();
     }
@@ -932,39 +972,13 @@ const buildAestheticSelectionProps = (
   return nextProps;
 };
 
-const resolveOptionCategory = (
-    options: DevelopmentAestheticOption[],
-    aestheticId?: string,
-  ): string | undefined => {
-    if (!aestheticId) return undefined;
-    return options.find((o) => o.id === aestheticId)?.categoryId;
-  };
-
-  const selectedRoadAestheticCategory = normalizeAestheticCategory(
-    'road_aesthetic',
-    (props.road_aesthetic_category as string)
-      || resolveOptionCategory(ROADWAY_AESTHETIC_OPTIONS, (props.road_aesthetic as string) || undefined),
-  );
-
-  const selectedGreenSpaceCategory = normalizeAestheticCategory(
-    'green_space_aesthetic',
-    (props.green_space_aesthetic_category as string)
-      || resolveOptionCategory(GREEN_SPACE_AESTHETIC_OPTIONS, (props.green_space_aesthetic as string) || undefined),
-  );
-
-  const selectedPlazaCategory = normalizeAestheticCategory(
-    'plaza_aesthetic',
-    (props.plaza_aesthetic_category as string)
-      || resolveOptionCategory(PLAZA_AESTHETIC_OPTIONS, (props.plaza_aesthetic as string) || undefined),
-  );
-
   const selectedRoadReferenceId = ((props.road_selected_reference as { id?: string } | undefined)?.id) || (props.road_archetype_id as string) || undefined;
   const selectedGreenSpaceReferenceId = ((props.green_space_selected_reference as { id?: string } | undefined)?.id) || (props.green_space_archetype_id as string) || undefined;
   const selectedPlazaReferenceId = ((props.plaza_selected_reference as { id?: string } | undefined)?.id) || (props.plaza_archetype_id as string) || undefined;
 
   // Unified Parks / Plazas selection — reads from whichever prefix has data
-  const selectedOpenSpaceAesthetic = (props.green_space_aesthetic as string) || (props.plaza_aesthetic as string) || undefined;
-  const selectedOpenSpaceCategory = selectedGreenSpaceCategory || selectedPlazaCategory;
+  const selectedOpenSpaceAesthetic = (props.green_space_aesthetic as string) || (props.green_space_archetype_id as string)
+    || (props.plaza_aesthetic as string) || (props.plaza_archetype_id as string) || undefined;
   const selectedOpenSpaceReferenceId = selectedGreenSpaceReferenceId || selectedPlazaReferenceId;
   const selectedOpenSpaceVariantId = (props.green_space_selected_variant_id as string) || (props.plaza_selected_variant_id as string) || undefined;
 
@@ -1035,8 +1049,10 @@ const resolveOptionCategory = (
         const floorH = variantFloorHeight || (p.floor_height as number) || archetypeFloorHeight || 3;
         nextProps.floor_height = floorH;
         nextProps.height = Math.round(suggestedFloors * floorH * 10) / 10;
-      } else if (selectedOption?.minFloors && selectedOption?.maxFloors && !p.floors) {
-        // Fallback to archetype-level floors only when floors haven't been set
+      } else if (selectedOption?.minFloors && selectedOption?.maxFloors
+        && (!p.floors || Number(p.floors) < selectedOption.minFloors || Number(p.floors) > selectedOption.maxFloors)) {
+        // A newly chosen house must not inherit the generic ten-storey default.
+        // Preserve the student's floor count when it fits the chosen archetype.
         const suggestedFloors = Math.floor((selectedOption.minFloors + selectedOption.maxFloors) / 2);
         nextProps.floors = suggestedFloors;
         const floorH = (p.floor_height as number) || archetypeFloorHeight || 3;
@@ -1083,31 +1099,6 @@ const resolveOptionCategory = (
     </div>
   );
 
-  const applyRoadAestheticCategory = (nextCategory: string | undefined) => {
-    setProps((p) => {
-      const selectedCategory = normalizeAestheticCategory('road_aesthetic', nextCategory || undefined);
-      const nextProps: SiteZoneProperties = {
-        ...p,
-        road_aesthetic_category: selectedCategory,
-      };
-
-      const currentAesthetic = (p.road_aesthetic as string) || undefined;
-      if (!currentAesthetic) {
-        return nextProps;
-      }
-
-      const optionsForCategory = selectedCategory
-        ? ROADWAY_AESTHETIC_OPTIONS.filter((o) => o.categoryId === selectedCategory)
-        : ROADWAY_AESTHETIC_OPTIONS;
-
-      if (optionsForCategory.some((o) => o.id === currentAesthetic)) {
-        return nextProps;
-      }
-
-      return buildAestheticSelectionProps(nextProps, 'road_aesthetic', undefined, ROADWAY_AESTHETIC_OPTIONS);
-    });
-  };
-
   const applyRoadAesthetic = (next: string | undefined, selectedArchetypeImageId?: string, selectedVariantId?: string) => {
     setProps((p) => {
       let nextProps = buildAestheticSelectionProps(
@@ -1145,31 +1136,6 @@ const resolveOptionCategory = (
     });
   };
 
-  const applyGreenSpaceCategory = (nextCategory: string | undefined) => {
-    setProps((p) => {
-      const selectedCategory = normalizeAestheticCategory('green_space_aesthetic', nextCategory || undefined);
-      const nextProps: SiteZoneProperties = {
-        ...p,
-        green_space_aesthetic_category: selectedCategory,
-      };
-
-      const currentAesthetic = (p.green_space_aesthetic as string) || undefined;
-      if (!currentAesthetic) {
-        return nextProps;
-      }
-
-      const optionsForCategory = selectedCategory
-        ? GREEN_SPACE_AESTHETIC_OPTIONS.filter((o) => o.categoryId === selectedCategory)
-        : GREEN_SPACE_AESTHETIC_OPTIONS;
-
-      if (optionsForCategory.some((o) => o.id === currentAesthetic)) {
-        return nextProps;
-      }
-
-      return buildAestheticSelectionProps(nextProps, 'green_space_aesthetic', undefined, GREEN_SPACE_AESTHETIC_OPTIONS);
-    });
-  };
-
   const applyGreenSpaceAesthetic = (next: string | undefined, selectedArchetypeImageId?: string, selectedVariantId?: string) => {
     setProps((p) => {
       const nextProps = buildAestheticSelectionProps(
@@ -1187,31 +1153,6 @@ const resolveOptionCategory = (
         nextProps.green_space_aesthetic_category = selectedOption.categoryId;
       }
       return nextProps;
-    });
-  };
-
-  const applyPlazaCategory = (nextCategory: string | undefined) => {
-    setProps((p) => {
-      const selectedCategory = normalizeAestheticCategory('plaza_aesthetic', nextCategory || undefined);
-      const nextProps: SiteZoneProperties = {
-        ...p,
-        plaza_aesthetic_category: selectedCategory,
-      };
-
-      const currentAesthetic = (p.plaza_aesthetic as string) || undefined;
-      if (!currentAesthetic) {
-        return nextProps;
-      }
-
-      const optionsForCategory = selectedCategory
-        ? PLAZA_AESTHETIC_OPTIONS.filter((o) => o.categoryId === selectedCategory)
-        : PLAZA_AESTHETIC_OPTIONS;
-
-      if (optionsForCategory.some((o) => o.id === currentAesthetic)) {
-        return nextProps;
-      }
-
-      return buildAestheticSelectionProps(nextProps, 'plaza_aesthetic', undefined, PLAZA_AESTHETIC_OPTIONS);
     });
   };
 
@@ -1240,11 +1181,6 @@ const resolveOptionCategory = (
   // green_space, plaza) and picks up whichever has data, so it doesn't matter
   // for rendering which prefix the data lands in — but we keep the data tidy
   // by clearing the OTHER prefix when switching spaceTypes.
-  const applyOpenSpaceCategory = (nextCategory: string | undefined) => {
-    applyGreenSpaceCategory(nextCategory);
-    applyPlazaCategory(nextCategory);
-  };
-
   const applyOpenSpaceAesthetic = (next: string | undefined, archetypeImageId?: string, variantId?: string) => {
     if (!next) {
       applyGreenSpaceAesthetic(undefined);
@@ -1355,6 +1291,25 @@ const resolveOptionCategory = (
         {/* ============================================================= */}
         {zone.zone_type === 'site_boundary' && (
           <>
+            <div>
+              <label htmlFor="site-ground-mode" className={panelLabelClass}>Site ground</label>
+              <select
+                id="site-ground-mode"
+                className={panelFieldClass}
+                value={props.community_3d_mask_existing_tiles === false ? 'retain' : 'clear'}
+                onChange={(event) => setProps((current) => ({
+                  ...current, community_3d_mask_existing_tiles: event.target.value === 'clear',
+                }))}
+              >
+                <option value="retain">Follow existing terrain — open sites</option>
+                <option value="clear">Clear site for redevelopment</option>
+              </select>
+              <p className="mt-2 text-xs text-text-muted">
+                {props.community_3d_mask_existing_tiles === false
+                  ? 'Buildings, parks and roads align to the visible Google ground after you save. Choose an open site without existing buildings.'
+                  : 'Replaces the existing site with a level surface. Use Follow existing terrain to build on an open site.'}
+              </p>
+            </div>
             <SiteIntelligencePanel zone={zone} />
             {SHOW_LEGACY_SITE_BOUNDARY_TOOLS && (
               <SiteBoundarySection
@@ -1455,7 +1410,7 @@ const resolveOptionCategory = (
                   <label className={panelLabelClass}>Building Sub-Category</label>
                   <div className="mt-1">
                     <DevelopmentAestheticPicker
-                      value={(props.development_aesthetic as string) || undefined}
+                      value={(props.development_aesthetic as string) || (props.development_archetype_id as string) || undefined}
                       selectedReferenceId={(props.development_archetype_id as string) || undefined}
                       selectedVariantId={(props.development_selected_variant_id as string) || undefined}
                       zoneType={zone.zone_type}
@@ -1503,8 +1458,9 @@ const resolveOptionCategory = (
               return (
                 <PanelStep step="3" title="Tune height and scale">
                   <div>
-                    <label className={panelLabelClass}>Floors</label>
+                    <label htmlFor="building-floors" className={panelLabelClass}>Floors</label>
                     <input
+                      id="building-floors"
                       type="number"
                       step="1"
                       min={archMinFloors ?? 1}
@@ -1528,8 +1484,9 @@ const resolveOptionCategory = (
                     )}
                   </div>
                   <div>
-                    <label className={panelLabelClass}>Height (m)</label>
+                    <label htmlFor="building-height" className={panelLabelClass}>Height (m)</label>
                     <input
+                      id="building-height"
                       type="number"
                       step="1"
                       value={props.height ?? config?.defaultProperties.height ?? ''}
@@ -1552,6 +1509,11 @@ const resolveOptionCategory = (
                       return null;
                     })()}
                   </div>
+                  <div className="rounded border border-primary-950/[0.08] px-2 py-2 text-xs">
+                    <p className="font-bold">Change the footprint</p>
+                    <p>Choose Top view. With Select active, drag the white corner handles of the selected building. Its dimensions and area update as you reshape it.</p>
+                    <p className="mt-1">Draw separate outlines for separate buildings. Detailed 3D models have their own size limits; an area match does not guarantee a model fits.</p>
+                  </div>
                   {archSuggestedArea != null && (() => {
                     const ratio = area / archSuggestedArea;
                     const pct = Math.round((ratio - 1) * 100);
@@ -1568,7 +1530,7 @@ const resolveOptionCategory = (
                         </div>
                         <div className={`mt-1 text-[10px] font-medium ${isClose ? 'text-green-600' : 'text-orange-500'}`}>
                           {isClose
-                            ? `Good fit (${pct > 0 ? '+' : ''}${pct}%)`
+                            ? `Area match (${pct > 0 ? '+' : ''}${pct}%)`
                             : ratio < 0.7
                               ? `Zone is small for this archetype (${pct}%) — render may look cramped`
                               : `Zone is large for this archetype (+${pct}%) — render may look sparse`}
@@ -1635,31 +1597,10 @@ const resolveOptionCategory = (
             ) : (
             <>
             <div>
-              <label className={panelLabelClass}>Park / Plaza Category</label>
-              <select
-                value={selectedOpenSpaceCategory || ''}
-                onChange={(e) => applyOpenSpaceCategory(e.target.value || undefined)}
-                className={panelFieldClass}
-              >
-                <option value="">-- Select Category --</option>
-                {OPENSPACE_AESTHETIC_CATEGORIES.map((category) => (
-                  <option key={category.id} value={category.id}>
-                    {category.label}
-                  </option>
-                ))}
-              </select>
-              {selectedOpenSpaceCategory && (
-                <p className="mt-0.5 text-[10px] text-primary-950/50">
-                  {OPENSPACE_AESTHETIC_CATEGORIES.find((item) => item.id === selectedOpenSpaceCategory)?.description}
-                </p>
-              )}
-            </div>
-            <div>
               <label className={panelLabelClass}>Park / Plaza Typology</label>
               <div className="mt-1">
                 <OpenSpaceAestheticPicker
                   value={selectedOpenSpaceAesthetic}
-                  category={selectedOpenSpaceCategory}
                   selectedReferenceId={selectedOpenSpaceReferenceId}
                   selectedVariantId={selectedOpenSpaceVariantId}
                   areaSqm={area}
@@ -1667,6 +1608,13 @@ const resolveOptionCategory = (
                 />
               </div>
             </div>
+            {selectedOpenSpaceReferenceId === 'neighborhood_park' && selectedOpenSpaceVariantId === 'neighborhood_park_v0' && (
+              <label className="flex items-start gap-2 rounded border border-primary-950/15 p-2 text-xs">
+                <input type="checkbox" className="mt-0.5" checked={props.neighborhood_park_layout === 'adaptive_rustic_v1'}
+                  onChange={event => setProps(p => ({ ...p, neighborhood_park_layout: event.target.checked ? 'adaptive_rustic_v1' : undefined }))} />
+                <span><strong>Adapt the park to my site</strong><br />Pilot: keep a lawn and walking loop; arrange the timber play areas and pavilion at their real sizes.</span>
+              </label>
+            )}
             {/* Area size check for selected archetype (works across both spaceTypes) */}
             {(() => {
               const selectedOption = OPENSPACE_AESTHETIC_OPTIONS.find(
@@ -1739,34 +1687,13 @@ const resolveOptionCategory = (
             ) : (
             <>
             {/* Transportation Aesthetic Category */}
-            <div>
-              <label className={panelLabelClass}>Streets and Paths Category</label>
-              <select
-                value={selectedRoadAestheticCategory || ''}
-                onChange={(e) => applyRoadAestheticCategory(e.target.value || undefined)}
-                className={panelFieldClass}
-              >
-                <option value="">-- Select Category --</option>
-                {ROADWAY_AESTHETIC_CATEGORIES.map((category) => (
-                  <option key={category.id} value={category.id}>
-                    {category.label}
-                  </option>
-                ))}
-              </select>
-              {selectedRoadAestheticCategory && (
-                <p className="mt-0.5 text-[10px] text-primary-950/50">
-                  {ROADWAY_AESTHETIC_CATEGORIES.find((item) => item.id === selectedRoadAestheticCategory)?.description}
-                </p>
-              )}
-            </div>
 
             {/* Transportation Aesthetic */}
             <div>
-              <label className={panelLabelClass}>Streets and Paths Aesthetic (Top 20)</label>
+              <label className={panelLabelClass}>Street or pathway type</label>
               <div className="mt-1">
                 <RoadwayAestheticPicker
-                  value={(props.road_aesthetic as string) || undefined}
-                  category={selectedRoadAestheticCategory}
+                  value={(props.road_aesthetic as string) || (props.road_archetype_id as string) || undefined}
                   selectedReferenceId={selectedRoadReferenceId}
                   selectedVariantId={(props.road_selected_variant_id as string) || undefined}
                   onChange={applyRoadAesthetic}
@@ -1796,10 +1723,12 @@ const resolveOptionCategory = (
               <input
                 type="number"
                 step="1"
-                value={props.width ?? config?.defaultProperties.width ?? 10}
+                value={isCalgaryLocalRoute({zone_type:zone.zone_type, properties:props}) ? CALGARY_LOCAL_WIDTH_M : props.width ?? config?.defaultProperties.width ?? 10}
+                disabled={isCalgaryLocalRoute({zone_type:zone.zone_type, properties:props})}
                 onChange={(e) => setProps((p) => ({ ...p, width: parseFloat(e.target.value) || undefined }))}
                 className={panelFieldClass}
               />
+              {isCalgaryLocalRoute({zone_type:zone.zone_type, properties:props}) && <p className="mt-1 text-xs text-slate-600">This section stays 16 m wide. Choose another street type to change the section.</p>}
             </div>
           </>
         )}
@@ -1889,7 +1818,7 @@ const resolveOptionCategory = (
                   <label className={panelLabelClass}>Building Sub-Category</label>
                   <div className="mt-1">
                     <DevelopmentAestheticPicker
-                      value={(props.development_aesthetic as string) || undefined}
+                      value={(props.development_aesthetic as string) || (props.development_archetype_id as string) || undefined}
                       selectedReferenceId={(props.development_archetype_id as string) || undefined}
                       selectedVariantId={(props.development_selected_variant_id as string) || undefined}
                       zoneType={zone.zone_type}
@@ -3126,7 +3055,7 @@ function AestheticOptionCard({
                   : 'bg-orange-100 text-orange-700'
                 : 'bg-white/85 text-[#151515]/55'
             }`}>
-              {areaFit ? (areaFit.isGoodFit ? 'Good fit' : areaFit.message.split(' ')[0]) : 'No data'}
+              {areaFit ? (areaFit.isGoodFit ? 'Area match' : areaFit.message.split(' ')[0]) : 'No data'}
             </div>
           )}
           <div className="absolute inset-x-0 bottom-0 p-2">
@@ -3137,7 +3066,7 @@ function AestheticOptionCard({
           <p className="line-clamp-2 text-[10px] text-primary-950/50">{option.description}</p>
           {option.standardSection && (
             <div className="mt-1.5 rounded border border-sky-700/20 bg-sky-50 px-1.5 py-1 text-[9px] font-semibold leading-tight text-sky-950/70">
-              <span className="font-black uppercase">Manual section</span>
+              <span className="font-black uppercase">{option.calgaryGuide?.basis === 'draft_manual' ? 'Draft manual section' : 'Reference section'}</span>
               {option.standardSection.rowM ? ` · ${option.standardSection.rowM} m ROW` : ''}
               {option.standardSection.targetSpeedKmh ? ` · ${option.standardSection.targetSpeedKmh} km/h` : ''}
               {option.standardSection.citation ? (
@@ -3154,7 +3083,7 @@ function AestheticOptionCard({
                 : 'border-primary-950/[0.08] bg-primary-950/[0.03] text-primary-950/45'
             }`}>
               <div className="flex items-center justify-between gap-1">
-                <span className="text-[9px] font-black uppercase">Site fit</span>
+                <span className="text-[9px] font-black uppercase">Area comparison</span>
                 <span className="text-[10px] font-black">{areaFit?.message || 'No area data'}</span>
               </div>
               <div className="mt-0.5 text-[9px] font-semibold leading-tight opacity-80">
@@ -3179,6 +3108,7 @@ function AestheticOptionCard({
         </div>
       </button>
 
+      {isSelected && <CalgaryGuideDetails classification={option.calgaryGuide} />}
       <div className="px-2 pb-1.5">
         {hasDesignVariants && (
           <button
@@ -3296,7 +3226,8 @@ function DevelopmentAestheticPicker({
 }) {
   const allowedTypes = getAllowedDevelopmentTypes(zoneType || 'building', developmentType);
   const categoryOptions = filterOptionsByDevelopmentType(DEVELOPMENT_AESTHETIC_OPTIONS, allowedTypes);
-  const rankedOptions = [...categoryOptions].sort((a, b) => {
+  const browser = useCatalogueBrowser(categoryOptions);
+  const rankedOptions = [...browser.options].sort((a, b) => {
     const pilotDelta = Number(STICKER_METHOD_BUILDING_IDS.has(b.id)) - Number(STICKER_METHOD_BUILDING_IDS.has(a.id));
     if (pilotDelta !== 0) return pilotDelta;
     const aFit = getAestheticAreaFit(
@@ -3324,6 +3255,7 @@ function DevelopmentAestheticPicker({
 
   return (
     <div className="space-y-2">
+      <CatalogueBrowserControls domain="building" categories={DEVELOPMENT_AESTHETIC_CATEGORIES} {...browser.props} />
       {categoryOptions.length === 0 && (
         <div className="rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-2 text-[11px] text-primary-950/60">
           No sub-categories found for this development type.
@@ -3332,8 +3264,9 @@ function DevelopmentAestheticPicker({
 
       {rankedOptions.length > 0 && (
         <div className="rounded border border-primary-950/[0.08] bg-primary-950/[0.03] px-2 py-1.5 text-[10px] font-semibold text-primary-950/55">
-          Best fits are sorted first for this drawn zone
-          {bestFitCount > 0 ? ` · ${bestFitCount} likely fit${bestFitCount === 1 ? '' : 's'}` : ''}.
+          Sorted by similar area, with reviewed pilots first.
+          {bestFitCount > 0 ? ` ${bestFitCount} area match${bestFitCount === 1 ? '' : 'es'}.` : ''}
+          {' '}Actual model fit also depends on shape, dimensions and floors.
         </div>
       )}
 
@@ -3352,7 +3285,7 @@ function DevelopmentAestheticPicker({
 
       {rankedOptions.length > 0 && (
         <div className="grid grid-cols-2 gap-2">
-          {rankedOptions.map((option) => (
+          {rankedOptions.slice(0, browser.limit).map((option) => (
             <AestheticOptionCard
               key={option.id}
               option={option}
@@ -3368,6 +3301,7 @@ function DevelopmentAestheticPicker({
         </div>
       )}
 
+      {browser.more}
       <button
         type="button"
         onClick={() => onChange(undefined)}
@@ -3381,38 +3315,25 @@ function DevelopmentAestheticPicker({
 }
 function RoadwayAestheticPicker({
   value,
-  category,
   selectedReferenceId,
   selectedVariantId,
   onChange,
 }: {
   value?: string;
-  category?: string;
   selectedReferenceId?: string;
   selectedVariantId?: string;
   onChange: (next: string | undefined, archetypeImageId?: string, variantId?: string) => void;
 }) {
-  const categoryOptions = category
-    ? ROADWAY_AESTHETIC_OPTIONS.filter((option) => option.categoryId === category)
-    : [];
+  const browser = useCatalogueBrowser(ROADWAY_AESTHETIC_OPTIONS);
+  const categoryOptions = browser.options;
 
   return (
     <div className="space-y-2">
-      {!category && (
-        <div className="rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-2 text-[11px] text-primary-950/60">
-          Select a transportation category to view typologies.
-        </div>
-      )}
-
-      {category && categoryOptions.length === 0 && (
-        <div className="rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-2 text-[11px] text-primary-950/60">
-          No transportation typologies found for this category.
-        </div>
-      )}
+      <CatalogueBrowserControls domain="street_pathway" categories={ROADWAY_AESTHETIC_CATEGORIES} {...browser.props} />
 
       {categoryOptions.length > 0 && (
         <div className="grid grid-cols-2 gap-2">
-          {categoryOptions.map((option) => (
+          {categoryOptions.slice(0, browser.limit).map((option) => (
             <AestheticOptionCard
               key={option.id}
               option={option}
@@ -3426,6 +3347,7 @@ function RoadwayAestheticPicker({
         </div>
       )}
 
+      {browser.more}
       <button
         type="button"
         onClick={() => onChange(undefined)}
@@ -3449,22 +3371,19 @@ function RoadwayAestheticPicker({
  */
 function OpenSpaceAestheticPicker({
   value,
-  category,
   selectedReferenceId,
   selectedVariantId,
   areaSqm,
   onChange,
 }: {
   value?: string;
-  category?: string;
   selectedReferenceId?: string;
   selectedVariantId?: string;
   areaSqm?: number;
   onChange: (next: string | undefined, archetypeImageId?: string, variantId?: string) => void;
 }) {
-  const categoryOptions = category
-    ? OPENSPACE_AESTHETIC_OPTIONS.filter((option) => option.categoryId === category)
-    : [];
+  const browser = useCatalogueBrowser(OPENSPACE_AESTHETIC_OPTIONS);
+  const categoryOptions = browser.options;
   const rankedOptions = [...categoryOptions].sort((a, b) => {
     const pilotDelta = Number(STICKER_METHOD_PARK_IDS.has(b.id)) - Number(STICKER_METHOD_PARK_IDS.has(a.id));
     if (pilotDelta !== 0) return pilotDelta;
@@ -3491,17 +3410,7 @@ function OpenSpaceAestheticPicker({
 
   return (
     <div className="space-y-2">
-      {!category && (
-        <div className="rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-2 text-[11px] text-primary-950/60">
-          Select a category to view typologies.
-        </div>
-      )}
-
-      {category && categoryOptions.length === 0 && (
-        <div className="rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-2 text-[11px] text-primary-950/60">
-          No typologies found for this category.
-        </div>
-      )}
+      <CatalogueBrowserControls domain="park_plaza" categories={OPENSPACE_AESTHETIC_CATEGORIES} {...browser.props} />
 
       {rankedOptions.length > 0 && (
         <div className="rounded border border-primary-950/[0.08] bg-primary-950/[0.03] px-2 py-1.5 text-[10px] font-semibold text-primary-950/55">
@@ -3519,7 +3428,7 @@ function OpenSpaceAestheticPicker({
 
       {rankedOptions.length > 0 && (
         <div className="grid grid-cols-2 gap-2">
-          {rankedOptions.map((option) => (
+          {rankedOptions.slice(0, browser.limit).map((option) => (
             <AestheticOptionCard
               key={option.id}
               option={option}
@@ -3534,6 +3443,7 @@ function OpenSpaceAestheticPicker({
           ))}
         </div>
       )}
+      {browser.more}
       <button
         type="button"
         onClick={() => onChange(undefined)}

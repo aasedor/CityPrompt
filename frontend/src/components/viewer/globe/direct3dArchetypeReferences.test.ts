@@ -54,6 +54,35 @@ afterEach(() => {
 });
 
 describe('collectDirect3DArchetypeReferences', () => {
+  it('uses visible pixels before grouping shared references and omits public-realm cards', async () => {
+    vi.stubGlobal('fetch', vi.fn(async () => imageResponse()));
+    const visible = zone('Visible house', 'parisian_midrise_block');
+    const hidden = zone('Hidden house', 'parisian_midrise_block');
+    const park = publicRealmZone('Partly visible park', 'park', 'urban_pocket_park', 'urban_pocket_park_v2');
+    const references = await collectDirect3DArchetypeReferences([visible, hidden, park], 8, {
+      instanceIdManifest: {
+        '#010001': { instance_id: 'visible', semantic_class: 'building', zone_id: visible.id },
+        '#010002': { instance_id: 'hidden', semantic_class: 'building', zone_id: hidden.id },
+        '#010003': { instance_id: 'park', semantic_class: 'park', zone_id: park.id },
+      },
+      instancePixelCounts: { visible: 1, hidden: 0, park: 100 },
+    });
+    expect(references).toHaveLength(1);
+    expect(references[0].zone_ids).toEqual([visible.id]);
+    expect(references[0].label).toContain('Visible house');
+    expect(references[0].label).not.toContain('Hidden house');
+    expect(fetch).toHaveBeenCalledTimes(1);
+  });
+
+  it('omits optional artwork when a capture has no measured visibility', async () => {
+    const fetchMock = vi.fn();
+    vi.stubGlobal('fetch', fetchMock);
+    expect(await collectDirect3DArchetypeReferences([zone('House', 'parisian_midrise_block')], 8, {
+      instanceIdManifest: {},
+    })).toEqual([]);
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
   it('prefers the authored facade elevation sheet and binds it to the building name', async () => {
     const fetchMock = vi.fn(async () => imageResponse());
     vi.stubGlobal('fetch', fetchMock);
@@ -139,7 +168,7 @@ describe('collectDirect3DArchetypeReferences', () => {
     expect(references[0].label).toContain('"Block B"');
   });
 
-  it('attaches exact park and street appearances with size-aware fit rules', async () => {
+  it('uses park and street references for finish without reopening compiled layout or capacity', async () => {
     const fetchMock = vi.fn(async () => imageResponse());
     vi.stubGlobal('fetch', fetchMock);
 
@@ -159,9 +188,11 @@ describe('collectDirect3DArchetypeReferences', () => {
     );
     expect(references[0].label).toContain('Natural Meadow');
     expect(references[0].label).toContain('79.8 by 8.7 metre polygon');
-    expect(references[0].label).toContain('one complete facility or one landscape room');
+    expect(references[0].label).toContain('already resolved capacity');
+    expect(references[0].label).toContain('do not copy the reference layout');
     expect(references[1].label).toContain('Green Corridor');
     expect(references[1].label).toContain('Keep the compiled cross-section exact');
+    expect(references[1].label).toContain('captured count and positions');
     expect(references.every((reference) => reference.label.length <= 600)).toBe(true);
   });
 });

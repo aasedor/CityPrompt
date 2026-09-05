@@ -9,6 +9,7 @@ import {
 import { announceCommunity3DPresentationReady } from '@/features/community3d/community3dPresentation';
 import { allSettledWithConcurrency } from './allSettledWithConcurrency';
 import { analyzeLegoFootprint } from './footprintProfiles';
+import { assemblyFootprintCoordinates, authoredHomePlotFrame } from './detachedPlot';
 import {
   legoArchetypeContextFromZone,
   legoAssemblyApi,
@@ -224,6 +225,7 @@ export function deriveItems(zones: SiteZone[]): ZoneBuildItem[] {
       zone.coordinates,
       option?.footprintCompatibility,
     );
+    const authoredPlot = zone.properties?.native_home_plot === true ? authoredHomePlotFrame(zone.coordinates) : undefined;
     const persistedWingDepth = zone.properties?._lego_actual_wing_depth_m;
     const authoritativeWingDepth = typeof persistedWingDepth === 'number'
       && Number.isFinite(persistedWingDepth)
@@ -245,8 +247,8 @@ export function deriveItems(zones: SiteZone[]): ZoneBuildItem[] {
       archetypeId: context.archetype_id,
       targets: {
         ...defaults,
-        width_m: footprint?.width_m ?? defaults.width_m,
-        depth_m: footprint?.depth_m ?? defaults.depth_m,
+        width_m: authoredPlot?.width_m ?? footprint?.width_m ?? defaults.width_m,
+        depth_m: authoredPlot?.depth_m ?? footprint?.depth_m ?? defaults.depth_m,
         footprint_profile: footprint?.profile ?? 'rectangle',
         // AI binding persists the exact shaped-family thickness returned by
         // its strict plan. A catalogue compatibility midpoint is guidance,
@@ -291,6 +293,7 @@ export interface MixedCommunityCompileSummary {
 }
 
 export interface MixedCommunityCompileOptions {
+  includeResidualLandscape?: boolean;
   /** Complete visible physical-zone scope used for residual landscaping.
    * Incremental `Complete` requests compile only unfinished items, but must
    * still reserve every already-compiled visible building/park/street. */
@@ -423,10 +426,12 @@ function isExplicitlyMissingFamily(error: unknown, archetypeId: string | undefin
 
 function planRequestForItem(item: ZoneBuildItem) {
   return legoAssemblyApi.plan({
+    native_home_plot: item.zone.properties?.native_home_plot === true,
     target_width_m: item.targets.width_m,
     target_depth_m: item.targets.depth_m,
     target_floors: item.targets.floors,
     footprint_profile: item.targets.footprint_profile,
+    footprint_local_m: assemblyFootprintCoordinates(item.zone.coordinates, item.targets, item.zone.properties?.native_home_plot === true),
     // Let the selected LEGO family's native podium depth determine wing
     // thickness, matching the backend's final-footprint proof exactly.
     project_id: item.zone.project_id,
@@ -598,6 +603,7 @@ export async function compileMixedCommunity3D(
       compileItems,
       scopeZoneIds,
       options.scopeBoundaryId,
+      options.includeResidualLandscape,
     );
   } catch (error) {
     if (options.recoverSourceChanges === false || !isCommunity3DSourceRevisionConflict(error)) {

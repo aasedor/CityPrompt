@@ -8,6 +8,7 @@ import logging
 import math
 import re
 import uuid
+from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 from datetime import datetime, timezone
 from typing import Any, Literal
 
@@ -34,12 +35,15 @@ from app.services.community_3d_scope import (
 from app.services.lego_assembly import (
     AssemblyPlanningError,
     AssemblyRequest,
+    DETACHED_ARCHETYPE_IDS,
     catalog_parent_archetype_id,
+    detached_plot_local_coordinates,
     descriptor_from_library_entry,
     find_family_module_entry,
     lego_metadata_from_manifest,
     manifest_validation_errors,
     plan_vertical_assembly,
+    select_runtime_architecture_entries,
 )
 from app.services.master_planner.lego_catalog import build_lego_planning_catalog
 from app.services.public_realm_lego import (
@@ -79,6 +83,7 @@ _MAX_UPLOAD_BYTES = 75 * 1024 * 1024
 
 
 class LegoAssemblyPlanRequest(BaseModel):
+    native_home_plot: bool = False
     target_width_m: float = Field(gt=0)
     target_depth_m: float = Field(gt=0)
     target_floors: int = Field(ge=1, le=100)
@@ -92,6 +97,7 @@ class LegoAssemblyPlanRequest(BaseModel):
     allow_forced_fit: bool = True
     footprint_profile: Literal["rectangle", "l_shape", "u_shape", "courtyard"] = "rectangle"
     wing_depth_m: float | None = Field(default=None, gt=0)
+    footprint_local_m: list[tuple[float, float]] | None = Field(default=None, min_length=3, max_length=2048)
     # When planning for a shared project, use the same owner-visible private
     # module inventory that the AI Master Planner used for that project.
     project_id: uuid.UUID | None = None
@@ -152,6 +158,9 @@ class Community3DCompileItem(BaseModel):
 
 
 class Community3DCompileRequest(BaseModel):
+    # Direct placement authors only the chosen objects. Landscape infill is
+    # still available to existing explicit whole-community compilation.
+    include_residual_landscape: bool = True
     # District plans can legitimately contain hundreds of buildings plus
     # public-realm zones. Keep the atomic all-or-nothing contract for a full
     # master plan instead of forcing large communities into partial batches.
@@ -348,6 +357,13 @@ def _locked_building_target(zone: SiteZone) -> tuple[float, float, int, str, flo
                 detail="This building has no measurable footprint; repair it before compiling Community 3D.",
             )
         width, depth, profile = analysis
+        if properties.get("native_home_plot") is True and exterior is not None:
+            ring = list(exterior.coords)[:-1]
+            if len(ring) == 4:
+                lat = sum(p[1] for p in ring) / 4
+                east = 111_320 * math.cos(math.radians(lat))
+                width = round(math.hypot((ring[1][0] - ring[0][0]) * east, (ring[1][1] - ring[0][1]) * 111_320), 1)
+                depth = round(math.hypot((ring[2][0] - ring[1][0]) * east, (ring[2][1] - ring[1][1]) * 111_320), 1)
         bound_wing = None
     if width <= 0 or depth <= 0 or profile not in {"rectangle", "l_shape", "u_shape", "courtyard"}:
         raise HTTPException(
@@ -366,8 +382,20 @@ def _strict_locked_building_plan(
     properties: dict[str, Any],
     *,
     allow_forced_fit: bool = False,
+    zone: SiteZone | None = None,
 ) -> dict[str, Any]:
     width, depth, floors, profile, _ = target
+    plot_coordinates = None
+    needs_actual_plot = catalog_parent_archetype_id(identity) in DETACHED_ARCHETYPE_IDS or any(
+        descriptor.delivery_format == "architectural_clay" for descriptor in descriptors
+    )
+    if zone is not None and needs_actual_plot:
+        geometry = _community_source_geometry(zone)
+        if geometry.geom_type != "Polygon" or len(geometry.interiors):
+            raise AssemblyPlanningError("Native building placement requires one polygon without interior holes.")
+        plot_coordinates = detached_plot_local_coordinates(
+            geometry.exterior.coords, width, depth, preserve_authored_axes=properties.get("native_home_plot") is True
+        )
     # Wing depth is intentionally omitted: the current imported family owns
     # the deterministic native/default thickness. The returned target is then
     # the independent value against which a submitted shaped recipe is bound.
@@ -381,6 +409,8 @@ def _strict_locked_building_plan(
             reuse_keys=_building_reuse_keys(properties),
             footprint_profile=profile,
             allow_setback=_building_allows_setback(properties),
+            footprint_local_m=plot_coordinates,
+            native_home_plot=properties.get("native_home_plot") is True,
         ),
         allow_forced_fit=allow_forced_fit,
     )
@@ -391,11 +421,14 @@ async def _assert_ai_lego_recipes_are_current(
     user: User,
     project_id: uuid.UUID,
     resolved_items: list[tuple[Community3DCompileItem, SiteZone, Literal["building", "park", "street"]]],
+    *,
+    entries: list[Any] | None = None,
 ) -> None:
     """Certify recipes and recipe-less fallbacks against locked inventory."""
 
     protected: list[tuple[Community3DCompileItem, SiteZone]] = []
     omissions: list[tuple[SiteZone, str]] = []
+    unbound_recipes: list[tuple[Community3DCompileItem, SiteZone]] = []
     for item, zone, kind in resolved_items:
         if kind != "building":
             continue
@@ -420,6 +453,7 @@ async def _assert_ai_lego_recipes_are_current(
                 omissions.append((zone, trusted_identity))
             continue
         if not is_ai_zone and trusted_identity is None:
+            unbound_recipes.append((item, zone))
             continue
         if is_ai_zone:
             _zone_lego_catalog_fingerprint(zone)
@@ -433,10 +467,16 @@ async def _assert_ai_lego_recipes_are_current(
             )
         protected.append((item, zone))
 
-    if not protected and not omissions:
+    if not protected and not omissions and not unbound_recipes:
         return
 
-    entries = await _accessible_entries(db, user, project_id, lock_for_update=True)
+    if entries is None:
+        entries = await _accessible_entries(db, user, project_id, lock_for_update=True)
+    if select_runtime_architecture_entries(entries).clay_installed and unbound_recipes:
+        raise HTTPException(
+            status_code=409,
+            detail="A clay recipe requires its exact selected catalogue variant and current source plot; rebuild Community 3D.",
+        )
     current_catalog = build_lego_planning_catalog(entries)
     descriptors = [descriptor for entry in entries if (descriptor := descriptor_from_library_entry(entry)) is not None]
 
@@ -453,6 +493,7 @@ async def _assert_ai_lego_recipes_are_current(
                 _locked_building_target(zone),
                 zone.properties or {},
                 allow_forced_fit=not is_ai_zone,
+                zone=zone,
             )
         except AssemblyPlanningError as exc:
             if exc.code in {"family_not_found", "family_incompatible"}:
@@ -518,6 +559,7 @@ async def _assert_ai_lego_recipes_are_current(
                 target,
                 properties,
                 allow_forced_fit=not is_ai_zone,
+                zone=zone,
             )
         except AssemblyPlanningError as exc:
             raise HTTPException(
@@ -556,7 +598,8 @@ async def _assert_ai_lego_recipes_are_current(
         if (
             current_plan["family"] != recipe.module_family
             or current_plan["reuse_keys"] != recipe.reuse_keys
-            or current_plan["instances"] != recipe.instances
+            or _stable_recipe_instances(current_plan["instances"], compare=True)
+            != _stable_recipe_instances(recipe.instances, compare=True)
             or current_plan["assembled_height_m"] != recipe.assembled_height_m
             or current_plan["fit"] != recipe.fit
         ):
@@ -567,6 +610,12 @@ async def _assert_ai_lego_recipes_are_current(
                     "recipes were being prepared; refresh and retry."
                 ),
             )
+
+        # Browser resource loaders may attach short-lived access tickets. Their
+        # bytes and display labels are not asset identity; save locked server
+        # instances after all paths, versions, geometry and fit passed above.
+        recipe.instances = current_plan["instances"]
+        recipe.assembled_preview_url = current_plan.get("assembled_preview_url")
 
         rebound = dict(zone.properties or {})
         rebound["_lego_catalog_fingerprint"] = current_catalog.fingerprint
@@ -580,8 +629,9 @@ async def _assert_ai_lego_recipes_are_current(
             rebound["_lego_actual_wing_depth_m"] = float(expected_wing)
         rebound.pop("_lego_family_pending", None)
         rebound.pop("_lego_family_pending_reason", None)
-        zone.properties = rebound
-        flag_modified(zone, "properties")
+        if rebound != (zone.properties or {}):
+            zone.properties = rebound
+            flag_modified(zone, "properties")
 
 
 class LegoModuleMetadataRequest(BaseModel):
@@ -624,7 +674,7 @@ async def _accessible_entries(
             share_result = await db.execute(
                 select(ProjectShare).where(
                     ProjectShare.project_id == project_id,
-                    (ProjectShare.user_id == user.id) | (ProjectShare.email == user.email),
+                    ProjectShare.user_id == user.id,
                 )
             )
             if share_result.scalar_one_or_none() is None:
@@ -648,7 +698,7 @@ async def _accessible_entries(
         # freshness validation and Building persistence.
         query = query.with_for_update()
     result = await db.execute(query)
-    return list(result.scalars().all())
+    return select_runtime_architecture_entries(result.scalars().all())
 
 
 @router.get("/modules")
@@ -680,6 +730,7 @@ async def list_lego_modules(
                     "variant_key": descriptor.variant_key,
                     "lod": descriptor.lod,
                     "allowed_levels": list(descriptor.allowed_levels),
+                    "delivery_format": descriptor.delivery_format,
                 }
             )
     return {"modules": descriptors, "count": len(descriptors)}
@@ -779,6 +830,8 @@ async def create_lego_assembly_plan(
                 allow_setback=body.allow_setback,
                 footprint_profile=body.footprint_profile,
                 wing_depth_m=body.wing_depth_m,
+                footprint_local_m=tuple(body.footprint_local_m) if body.footprint_local_m is not None else None,
+                native_home_plot=body.native_home_plot,
             ),
             allow_forced_fit=body.allow_forced_fit,
         )
@@ -1063,7 +1116,7 @@ async def _get_building_with_access(
     if project.owner_id != user.id:
         conditions = [
             ProjectShare.project_id == building.project_id,
-            (ProjectShare.user_id == user.id) | (ProjectShare.email == user.email),
+            ProjectShare.user_id == user.id,
         ]
         if require_editor:
             conditions.append(ProjectShare.permission == "editor")
@@ -1101,7 +1154,7 @@ async def _get_zone_with_access(
     if project.owner_id != user.id:
         conditions = [
             ProjectShare.project_id == zone.project_id,
-            (ProjectShare.user_id == user.id) | (ProjectShare.email == user.email),
+            ProjectShare.user_id == user.id,
         ]
         if require_editor:
             conditions.append(ProjectShare.permission == "editor")
@@ -1371,6 +1424,30 @@ def _stamp_community_3d(
         flag_modified(building, "specifications")
 
 
+def _stable_asset_url(value: str | None) -> str | None:
+    if not value:
+        return value
+    parsed = urlsplit(value)
+    query = [
+        (key, val)
+        for key, val in parse_qsl(parsed.query, keep_blank_values=True)
+        if key not in {"file_ticket", "asset_ticket", "share_token"}
+    ]
+    return urlunsplit((parsed.scheme, parsed.netloc, parsed.path, urlencode(query), parsed.fragment))
+
+
+def _stable_recipe_instances(instances: list[dict[str, Any]], *, compare: bool = False) -> list[dict[str, Any]]:
+    result = []
+    for instance in instances:
+        stable = dict(instance)
+        if isinstance(stable.get("model_url"), str):
+            stable["model_url"] = _stable_asset_url(stable["model_url"])
+        if compare:
+            stable.pop("asset_name", None)
+        result.append(stable)
+    return result
+
+
 def _recipe_payload(body: LegoRecipeRequest) -> dict[str, Any]:
     """Serialize a recipe without inventing optional target fields.
 
@@ -1381,7 +1458,28 @@ def _recipe_payload(body: LegoRecipeRequest) -> dict[str, Any]:
     """
     payload = body.model_dump(exclude={"building_name", "source_updated_at"})
     payload["target"] = body.target.model_dump(exclude_unset=True)
+    payload["instances"] = _stable_recipe_instances(payload["instances"])
+    payload["assembled_preview_url"] = _stable_asset_url(payload.get("assembled_preview_url"))
     return payload
+
+
+def _recipe_save_identity(payload: dict[str, Any]) -> dict[str, Any]:
+    """Compare executable recipe content, normalizing transport/default noise.
+
+    The caller preserves the original stored bytes on equality: changing even
+    cosmetic serialization would invalidate its existing representation hash.
+    Display labels and preview links do not alter the globe's placed modules.
+    """
+    normalized = LegoRecipeRequest.model_validate(payload).model_dump()
+    # Rectangle planners may serialize an unused inferred wing depth, whereas
+    # older clients omit it. Only shaped footprints consume this parameter.
+    if normalized["target"]["footprint_profile"] == "rectangle":
+        normalized["target"]["wing_depth_m"] = None
+    normalized["instances"] = _stable_recipe_instances(normalized["instances"], compare=True)
+    normalized.pop("assembled_preview_url", None)
+    if normalized.get("catalog_fingerprint"):
+        normalized["catalog_fingerprint"] = normalized["catalog_fingerprint"].lower()
+    return normalized
 
 
 def _preferred_building_name(*candidates: object) -> str | None:
@@ -1438,6 +1536,10 @@ async def _place_recipe_on_zone(
         building.floor_count = body.target.floors
         building.height_meters = assembled_height_meters
 
+    if (body.fit or {}).get("placement_mode") == "detached_lots":
+        # Per-dwelling orientations already conform to the current plot. An
+        # inherited whole-building yaw would rotate houses outside that plot.
+        building.rotation_degrees = 0.0
     specifications = dict(building.specifications or {})
     # A real family recipe upgrades the honest conceptual fallback in place.
     specifications.pop(PLANNED_MASSING_SPEC_KEY, None)
@@ -1917,6 +2019,17 @@ async def place_community_3d(
     boundary_recipes: list[tuple[SiteZone, dict[str, Any]]] = []
     try:
         for boundary in boundaries:
+            if not body.include_residual_landscape:
+                if (
+                    "community_3d_landscape" in (boundary.properties or {})
+                    or (boundary.properties or {}).get("community_3d_landscape_mode") != "placed_objects_only"
+                ):
+                    properties = dict(boundary.properties or {})
+                    properties.pop("community_3d_landscape", None)
+                    properties["community_3d_landscape_mode"] = "placed_objects_only"
+                    boundary.properties = properties
+                    flag_modified(boundary, "properties")
+                continue
             if (boundary.properties or {}).get(
                 "_derived_site_boundary"
             ) is True and boundary.name == "Generated Site Boundary":
@@ -1997,6 +2110,7 @@ async def place_community_3d(
 
     for boundary, recipe in boundary_recipes:
         properties = dict(boundary.properties or {})
+        properties.pop("community_3d_landscape_mode", None)
         properties["community_3d_landscape"] = recipe
         boundary.properties = properties
         flag_modified(boundary, "properties")
@@ -2004,6 +2118,9 @@ async def place_community_3d(
     await db.flush()
     residual_area = round(sum(recipe["area_sqm"] for _, recipe in boundary_recipes), 2)
     residual_placements = sum(len(recipe["placements"]) for _, recipe in boundary_recipes)
+    # Publish the whole compiled scene atomically before the client's immediate
+    # zone/project reads; dependency teardown may occur after the HTTP response.
+    await db.commit()
     return {
         "status": "compiled",
         "compiled_at": compiled_at,
@@ -2032,8 +2149,46 @@ async def save_lego_recipe(
     await lock_residual_landscape_project(db, building.project_id)
     await db.refresh(building)
 
+    entries = await _accessible_entries(db, user, building.project_id, lock_for_update=True)
+    if select_runtime_architecture_entries(entries).clay_installed:
+        result = await db.execute(
+            select(SiteZone).where(
+                SiteZone.project_id == building.project_id,
+                SiteZone.building_id == building.id,
+            )
+        )
+        linked_zones = list(result.scalars().all())
+        if len(linked_zones) != 1:
+            raise HTTPException(
+                status_code=409, detail="A clay recipe must be rebuilt on its single current source plot."
+            )
+        zone = linked_zones[0]
+        recipe = LegoPlaceRequest.model_validate(body.model_dump())
+        item = Community3DCompileItem(zone_id=zone.id, source_updated_at=zone.updated_at, recipe=recipe)
+        await _assert_ai_lego_recipes_are_current(
+            db,
+            user,
+            building.project_id,
+            [(item, zone, "building")],
+            entries=entries,
+        )
+        body = recipe
+
     specifications = dict(building.specifications or {})
-    specifications[RECIPE_SPEC_KEY] = _recipe_payload(body)
+    payload = _recipe_payload(body)
+    previous = specifications.get(RECIPE_SPEC_KEY)
+    try:
+        unchanged = isinstance(previous, dict) and _recipe_save_identity(previous) == _recipe_save_identity(payload)
+    except ValueError:
+        unchanged = False
+    if unchanged:
+        return {
+            "status": "saved",
+            "changed": False,
+            "building_id": str(building.id),
+            RECIPE_SPEC_KEY: previous,
+        }
+    specifications[RECIPE_SPEC_KEY] = payload
     building.specifications = specifications
     flag_modified(building, "specifications")
     await mark_linked_community_3d_stale(
@@ -2046,6 +2201,7 @@ async def save_lego_recipe(
 
     return {
         "status": "saved",
+        "changed": True,
         "building_id": str(building.id),
         RECIPE_SPEC_KEY: specifications[RECIPE_SPEC_KEY],
     }

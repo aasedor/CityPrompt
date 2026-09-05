@@ -42,6 +42,7 @@ function requestFingerprint(
   items: CommunityCompileItems,
   scopeZoneIds?: string[],
   scopeBoundaryId?: string,
+  includeResidualLandscape?: boolean,
 ): string {
   const canonicalItems = items
     .map((item) => canonicalizeJson(item))
@@ -49,6 +50,7 @@ function requestFingerprint(
       JSON.stringify(left).localeCompare(JSON.stringify(right))
     ));
   return JSON.stringify({
+    include_residual_landscape: includeResidualLandscape ?? true,
     items: canonicalItems,
     scope_zone_ids: scopeZoneIds === undefined
       ? { state: 'omitted' }
@@ -136,8 +138,9 @@ export function compileProjectCommunity3D(
   items: CommunityCompileItems,
   scopeZoneIds?: string[],
   scopeBoundaryId?: string,
+  includeResidualLandscape?: boolean,
 ): Promise<Community3DCompileResponse> {
-  const fingerprint = requestFingerprint(items, scopeZoneIds, scopeBoundaryId);
+  const fingerprint = requestFingerprint(items, scopeZoneIds, scopeBoundaryId, includeResidualLandscape);
   const inFlight = projectCompiles.get(projectId) ?? new Map<string, ProjectCompileInFlight>();
   const duplicate = inFlight.get(fingerprint);
   if (duplicate) return duplicate.promise;
@@ -153,7 +156,9 @@ export function compileProjectCommunity3D(
       const recent = readRecentCompile(projectId);
       if (recent?.requestFingerprint === fingerprint) return recent.response;
 
-      const response = scopeBoundaryId !== undefined
+      const response = includeResidualLandscape !== undefined
+        ? await legoAssemblyApi.compileCommunity(items, scopeZoneIds, scopeBoundaryId, includeResidualLandscape)
+        : scopeBoundaryId !== undefined
         ? await legoAssemblyApi.compileCommunity(items, scopeZoneIds, scopeBoundaryId)
         : scopeZoneIds !== undefined
           ? await legoAssemblyApi.compileCommunity(items, scopeZoneIds)

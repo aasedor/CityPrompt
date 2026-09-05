@@ -2,11 +2,12 @@
  * Authored archetype artwork for Direct 3D renders.
  *
  * Buildings are bound to their exact selected variant and authored facade
- * source whenever one exists. Parks and streets carry the selected catalogue
- * appearance too, but their labels explicitly allow the metric program to
- * respond to the drawn polygon without squeezing or inventing facilities.
+ * source whenever one exists. Camera-aware scene renders include only visible
+ * building references. Park/street catalogue compositions are omitted because
+ * they can reveal facilities hidden within an otherwise visible zone.
  */
 import type { SiteZone } from '@/types';
+import type { Direct3DCaptureBundle } from './direct3dCapture';
 import archetypeReferenceAvailability from '@/data/archetypeReferenceAvailability.json';
 import buildingCatalog from '@/data/buildingArchetypes.json';
 import legoFamilySignatures from '@/data/legoFamilySignatures.json';
@@ -16,6 +17,7 @@ import streetCatalog from '@/data/streetPathArchetypes.json';
 export interface Direct3DArchetypeReference {
   image_base64: string;
   label: string;
+  zone_ids: string[];
 }
 
 interface FamilySignature {
@@ -48,6 +50,7 @@ interface ReferenceCandidate {
   signature?: FamilySignature;
   variant?: CatalogVariant;
   zoneNames: string[];
+  zoneIds: string[];
   targetDescription?: string;
 }
 
@@ -182,8 +185,8 @@ function candidateLabel(candidate: ReferenceCandidate, facadeSource: boolean): s
   const binding = candidate.kind === 'building'
     ? 'BINDING BUILDING IDENTITY: reproduce this selected variant\'s architectural language, material hierarchy, facade rhythm, openings, roof character and detailing. It overrides generic material examples; never substitute an unrelated architectural style.'
     : candidate.kind === 'park'
-      ? `BINDING APPEARANCE, FLEXIBLE CAPACITY: preserve this variant's planting, surface and furniture language. Fit only complete program elements to the actual ${candidate.targetDescription ?? 'drawn park polygon'}; never crop, squeeze or multiply equipment to imitate the reference. Small polygons may carry one complete facility or one landscape room.`
-      : `BINDING CORRIDOR IDENTITY: preserve this variant's surface, planting, edge and furnishing language across the actual ${candidate.targetDescription ?? 'drawn street segment'}. Keep the compiled cross-section exact; corridor length may change only the count and spacing of complete repeated furnishings.`;
+      ? `APPEARANCE ONLY: use this variant's planting, surface and furniture materials within the ${candidate.targetDescription ?? 'compiled park'}. The captured 3D scene has already resolved capacity. Keep every path, pavilion, play feature and tree in its captured position; do not copy the reference layout, add facilities or swap their positions.`
+      : `APPEARANCE ONLY: use this variant's surface and furnishing materials on the ${candidate.targetDescription ?? 'compiled street'}. Keep the compiled cross-section exact, including the captured count and positions of trees and furnishings. Do not add roads, crossings or connections from this reference.`;
   const identity = candidate.signature?.identity
     ? ` AUTHORED IDENTITY: ${candidate.signature.identity}${candidate.signature.materialZones ? ` Materials: ${candidate.signature.materialZones}.` : ''}`
     : candidate.variant?.description ? ` SELECTED VARIANT: ${candidate.variant.description}` : '';
@@ -204,6 +207,7 @@ function addCandidate(
   if (zoneName && existing.zoneNames.length < 3 && !existing.zoneNames.includes(zoneName)) {
     existing.zoneNames.push(zoneName);
   }
+  existing.zoneIds.push(...candidate.zoneIds.filter((id) => !existing.zoneIds.includes(id)));
 }
 
 function collectCandidates(zones: SiteZone[]): ReferenceCandidate[] {
@@ -243,6 +247,7 @@ function collectCandidates(zones: SiteZone[]): ReferenceCandidate[] {
         signature,
         variant,
         zoneNames: [],
+        zoneIds: [zone.id],
       }, zone.name);
       continue;
     }
@@ -264,6 +269,7 @@ function collectCandidates(zones: SiteZone[]): ReferenceCandidate[] {
         imageUrl: variant?.thumbnailUrl ?? entry?.thumbnailUrl,
         variant,
         zoneNames: [],
+        zoneIds: [zone.id],
         targetDescription: targetDescription(props, 'park'),
       }, zone.name);
       continue;
@@ -282,6 +288,7 @@ function collectCandidates(zones: SiteZone[]): ReferenceCandidate[] {
       imageUrl: variant?.thumbnailUrl ?? entry?.thumbnailUrl,
       variant,
       zoneNames: [],
+      zoneIds: [zone.id],
       targetDescription: targetDescription(props, 'street'),
     }, zone.name);
   }
@@ -297,15 +304,27 @@ function collectCandidates(zones: SiteZone[]): ReferenceCandidate[] {
 export async function collectDirect3DArchetypeReferences(
   zones: SiteZone[],
   limit: number = MAX_REFERENCES,
+  capture?: Pick<Direct3DCaptureBundle, 'instanceIdManifest' | 'instancePixelCounts'>,
 ): Promise<Direct3DArchetypeReference[]> {
   const references: Direct3DArchetypeReference[] = [];
-  for (const candidate of collectCandidates(zones)) {
+  // Filter before grouping so a shared archetype never names a hidden house.
+  // Whole park/street cards reveal facilities that may be hidden within a
+  // partly visible zone. Their captured 3D materials remain the reference.
+  const visibleBuildings = new Set(Object.values(capture?.instanceIdManifest ?? {})
+    .filter((instance) => instance.semantic_class === 'building'
+      && (capture?.instancePixelCounts?.[instance.instance_id] ?? 0) > 0)
+    .map((instance) => instance.zone_id));
+  const referenceZones = capture
+    ? zones.filter((zone) => zone.zone_type === 'building' && visibleBuildings.has(zone.id))
+    : zones;
+  for (const candidate of collectCandidates(referenceZones)) {
     if (references.length >= limit) break;
     if (!candidate.imageUrl) continue;
     const image = await fetchImageBase64(candidate.imageUrl);
     if (!image) continue;
     references.push({
       image_base64: image,
+      zone_ids: candidate.zoneIds,
       label: candidateLabel(
         candidate,
         candidate.kind === 'building' && candidate.imageUrl === candidate.signature?.elevationUrl,

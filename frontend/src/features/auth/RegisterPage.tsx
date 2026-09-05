@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { Eye, EyeOff, Loader2 } from 'lucide-react';
 import { authApi } from '@/services/api';
+import { safeReturnTo } from './returnTo';
 import {
   AuthPageShell,
   authErrorClassName,
@@ -14,6 +15,9 @@ import {
 
 export function RegisterPage() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const returnTo = safeReturnTo(new URLSearchParams(location.search).get('returnTo'));
+  const loginUrl = `/login?returnTo=${encodeURIComponent(returnTo)}`;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
@@ -29,7 +33,7 @@ export function RegisterPage() {
     try {
       await authApi.register(email, password, fullName || undefined);
       toast.success('Account created! Please sign in.');
-      navigate('/login');
+      navigate(loginUrl);
     } catch (err: any) {
       setError(err.response?.data?.detail || 'Registration failed');
     } finally {
@@ -110,7 +114,7 @@ export function RegisterPage() {
 
       <p className="mt-5 text-center text-sm font-semibold text-[#151515]/60">
         Already have an account?{' '}
-        <Link to="/login" className="font-black text-[#0aa6a6] hover:text-[#151515]">
+        <Link to={loginUrl} className="font-black text-[#0aa6a6] hover:text-[#151515]">
           Sign in
         </Link>
       </p>

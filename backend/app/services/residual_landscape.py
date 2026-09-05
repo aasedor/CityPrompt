@@ -274,6 +274,7 @@ def community_3d_source_properties(
         return _compact_semantic_mapping(
             {
                 **common,
+                **({"native_home_plot": True} if props.get("native_home_plot") is True else {}),
                 "dimensions": _compact_semantic_mapping(
                     {
                         "floors": _semantic_number(props.get("floors"), positive=True),
@@ -360,6 +361,9 @@ def community_3d_source_properties(
                         "planting_structure": _canonical_semantic_value(props.get("planting_structure")),
                         "tree_density": _semantic_number(props.get("tree_density")),
                         "park_access_points": _canonical_semantic_value(props.get("park_access_points")),
+                        "neighborhood_park_layout": _semantic_text(
+                            props.get("neighborhood_park_layout"), identifier=True
+                        ),
                         "paving_type": _canonical_semantic_value(props.get("paving_type")),
                         "planting_type": _canonical_semantic_value(props.get("planting_type")),
                         "water_features": _canonical_semantic_value(props.get("water_features")),

@@ -7,6 +7,7 @@ import {
   buildDirect3DMaterialColorManifest,
   buildDirect3DInstanceColorManifest,
   computeDirect3DCaptureSize,
+  createDirect3DGeometryMaterial,
   createDirect3DSemanticMaterial,
   DIRECT_3D_CAPTURE_CONTEXT_USER_DATA,
   DIRECT_3D_CAPTURE_EXCLUDE_USER_DATA,
@@ -27,7 +28,10 @@ import {
   requireDirect3DInstanceDescriptor,
   validateDirect3DInstanceSemanticAgreement,
   validateDirect3DMaskCoverage,
+  validateDirect3DVisibleContextPixels,
 } from './direct3dCapture';
+import { createTileSpatialMaskConfig, patchMaterialForSpatialMask } from './TileSpatialMaskPlugin';
+import type { SiteZone } from '@/types';
 
 function hexRgb(hex: string): [number, number, number] {
   const value = Number.parseInt(hex.slice(1), 16);
@@ -35,6 +39,95 @@ function hexRgb(hex: string): [number, number, number] {
 }
 
 describe('Direct 3D capture helpers', () => {
+  it('rejects sky-only context even when proposal geometry would produce a nonblank beauty', () => {
+    const context = new Uint8Array(400);
+    expect(() => validateDirect3DVisibleContextPixels(context, 0.05)).toThrow(/surrounding map/);
+    // Ten real context pixels are sufficient; transparent clear-color pixels
+    // and an almost transparent fade-in cannot stand in for loaded context.
+    for (let pixel = 0; pixel < 10; pixel += 1) context[pixel * 4 + 3] = 255;
+    expect(() => validateDirect3DVisibleContextPixels(context, 0.05)).not.toThrow();
+    for (let pixel = 0; pixel < 10; pixel += 1) context[pixel * 4 + 3] = 1;
+    expect(() => validateDirect3DVisibleContextPixels(context, 0.05)).toThrow(/surrounding map/);
+  });
+  it('exports packed depth with opaque alpha so PNG encoding preserves its values', () => {
+    const source = new THREE.MeshBasicMaterial();
+    const depth = createDirect3DGeometryMaterial(source, 'depth') as THREE.MeshDepthMaterial;
+    expect(depth.depthPacking).toBe(THREE.RGBDepthPacking);
+    expect(depth.depthPacking).not.toBe(THREE.RGBADepthPacking);
+    depth.dispose();
+    source.dispose();
+  });
+  it('retains facade normal and bump maps only in the normal pass', () => {
+    const normalMap = new THREE.Texture();
+    const bumpMap = new THREE.Texture();
+    const source = new THREE.MeshStandardMaterial({ normalMap, bumpMap, bumpScale: 0.25 });
+    const depth = createDirect3DGeometryMaterial(source, 'depth');
+    const normal = createDirect3DGeometryMaterial(source, 'normal') as THREE.MeshNormalMaterial;
+    expect((depth as unknown as Record<string, unknown>).normalMap).toBeUndefined();
+    expect((depth as unknown as Record<string, unknown>).bumpMap).toBeUndefined();
+    expect(normal.normalMap).toBe(normalMap);
+    expect(normal.bumpMap).toBe(bumpMap);
+    expect(normal.bumpScale).toBe(0.25);
+    depth.dispose(); normal.dispose(); source.dispose(); normalMap.dispose(); bumpMap.dispose();
+  });
+
+  it.each(['depth', 'normal'] as const)('keeps concave tile clipping in the %s control pass', (pass) => {
+    const source = new THREE.MeshBasicMaterial();
+    const zone = {
+      id: 'L-shaped-site', zone_type: 'site_boundary',
+      coordinates: [[-114, 51], [-113.999, 51], [-113.999, 51.0003], [-113.9997, 51.0003], [-113.9997, 51.001], [-114, 51.001]],
+    } as SiteZone;
+    const config = createTileSpatialMaskConfig(zone, 1045)!;
+    patchMaterialForSpatialMask(source, config);
+    const beautyHook = source.onBeforeCompile;
+    const control = createDirect3DGeometryMaterial(source, pass);
+    const sourceShader = THREE.ShaderLib[pass];
+    const shader = {
+      vertexShader: sourceShader.vertexShader,
+      fragmentShader: sourceShader.fragmentShader,
+      uniforms: THREE.UniformsUtils.clone(sourceShader.uniforms),
+    };
+    control.onBeforeCompile(shader as never, {} as never);
+    expect(shader.uniforms.siteMaskEdgeCount.value).toBe(6);
+    expect(shader.fragmentShader).toContain('uniform vec4 siteMaskEdges');
+    expect(shader.fragmentShader).toContain('insideCurrentSiteMask = !insideCurrentSiteMask');
+    // Neither built-in control shader contains <worldpos_vertex>; the new
+    // project-vertex hook still assigns its exact local-space mask position.
+    expect(shader.vertexShader).toContain('vSiteMaskLocalPosition =');
+    expect(control.customProgramCacheKey()).toContain(config.cacheKey);
+    expect(source.onBeforeCompile).toBe(beautyHook);
+    control.dispose();
+    source.dispose();
+  });
+
+  it.each(['depth', 'normal'] as const)('preserves cutout textures, depth and sidedness in the %s pass', (pass) => {
+    const map = new THREE.Texture();
+    const alphaMap = new THREE.Texture();
+    const source = new THREE.MeshStandardMaterial({
+      map, alphaMap, alphaTest: .4, side: THREE.FrontSide, depthWrite: false,
+      polygonOffset: true, polygonOffsetFactor: -2,
+    });
+    const control = createDirect3DGeometryMaterial(source, pass) as THREE.Material & { map: THREE.Texture; alphaMap: THREE.Texture };
+    expect(control.map).toBe(map);
+    expect(control.alphaMap).toBe(alphaMap);
+    expect(control.alphaTest).toBe(.4);
+    expect(control.side).toBe(THREE.FrontSide);
+    expect(control.depthWrite).toBe(false);
+    expect(control.polygonOffsetFactor).toBe(-2);
+    if (pass === 'normal') {
+      const shader = { ...THREE.ShaderLib.normal, uniforms: THREE.UniformsUtils.clone(THREE.ShaderLib.normal.uniforms) };
+      control.onBeforeCompile(shader as never, {} as never);
+      expect(shader.uniforms.alphaMap.value).toBe(alphaMap);
+      expect(shader.uniforms.alphaTest.value).toBe(.4);
+      expect(shader.fragmentShader).toContain('diffuseColor.a *= sampledDiffuseColor.a');
+      expect(shader.fragmentShader).toContain('#include <alphatest_fragment>');
+    }
+    control.dispose();
+    source.dispose();
+    map.dispose();
+    alphaMap.dispose();
+  });
+
   it('caps the long edge without changing aspect ratio or upscaling', () => {
     expect(computeDirect3DCaptureSize(4096, 2048)).toEqual({ width: 2048, height: 1024 });
     expect(computeDirect3DCaptureSize(1600, 900)).toEqual({ width: 1600, height: 900 });
@@ -544,4 +637,16 @@ describe('Direct 3D capture helpers', () => {
       expect.objectContaining({ code: 'capture_failed' }),
     );
   });
+});
+
+
+it('retains revision-bound T metadata and distinguishes different anchors for the same sources', () => {
+  const topology = { version: 1 as const, arm_count: 3 as const, longitude: -114.08, latitude: 51.04,
+    source_fingerprint: `sj1|street-a:${'a'.repeat(64)}:${'b'.repeat(64)}|street-b:${'c'.repeat(64)}:${'d'.repeat(64)}` };
+  const first = direct3DStreetJunctionInstanceDescriptor(['street-b', 'street-a'], topology);
+  const mesh = new THREE.Mesh(); mesh.userData = direct3DInstanceUserData(first);
+  expect(getDirect3DInstanceDescriptor(mesh)).toEqual(first);
+  expect(first.instance_id).not.toEqual(direct3DStreetJunctionInstanceDescriptor(['street-a', 'street-b'],
+    { ...topology, latitude: 51.0401 }).instance_id);
+  expect(() => direct3DInstanceUserData({ ...first, junction_topology: { ...topology, latitude: NaN } })).toThrow();
 });

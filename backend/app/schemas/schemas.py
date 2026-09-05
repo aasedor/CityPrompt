@@ -159,6 +159,7 @@ class ProjectResponse(BaseModel):
     created_at: datetime = Field(description="Creation timestamp")
     updated_at: datetime = Field(description="Last update timestamp")
     owner_id: uuid.UUID = Field(description="Owner user ID")
+    permission: Optional[str] = Field(None, description="Current reader's project access: owner, editor, or viewer")
     buildings: list["BuildingResponse"] = Field(default=[], description="Buildings in this project")
     documents: list["DocumentResponse"] = Field(default=[], description="Uploaded documents")
 
@@ -362,6 +363,7 @@ SiteZoneType = Literal[
 class SiteZoneCreate(BaseModel):
     """Create a site zone within a project."""
 
+    client_request_id: Optional[uuid.UUID] = Field(None, description="Stable request identifier for safe save retries")
     name: Optional[str] = Field(None, description="Zone label")
     zone_type: SiteZoneType = Field(
         description=(
@@ -380,6 +382,9 @@ class SiteZoneCreate(BaseModel):
 class SiteZoneUpdate(BaseModel):
     """Update a site zone. All fields are optional."""
 
+    expected_updated_at: Optional[datetime] = Field(
+        None, description="Reject changes when the saved zone has changed since this version"
+    )
     name: Optional[str] = Field(None, description="Updated zone label")
     zone_type: Optional[SiteZoneType] = Field(
         None, description="Updated zone type; paths and trails use road with road_type metadata"

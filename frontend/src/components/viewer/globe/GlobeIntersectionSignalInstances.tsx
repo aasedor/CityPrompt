@@ -10,12 +10,14 @@ export function GlobeIntersectionSignalInstances({
   metalColor,
   renderOrder,
   terrainPlane,
+  terrainOffsetAt,
   frameElevation,
 }: {
   node: FourWayStreetIntersection;
   metalColor: string;
   renderOrder: number;
   terrainPlane?: TerrainContactPlane | null;
+  terrainOffsetAt?: (x: number, y: number) => number | null;
   frameElevation: number;
 }) {
   const poles = useRef<THREE.InstancedMesh>(null);
@@ -39,17 +41,19 @@ export function GlobeIntersectionSignalInstances({
   const placements = useMemo(() => {
     const axisA = { x: Math.cos(node.axisABearingRad), y: Math.sin(node.axisABearingRad) };
     const axisB = { x: Math.cos(node.axisBBearingRad), y: Math.sin(node.axisBBearingRad) };
-    return [-1, 1].flatMap((sideA) => [-1, 1].map((sideB) => {
+    return [-1, 1].flatMap((sideA) => [-1, 1].flatMap((sideB) => {
       const x = axisA.x * sideA * (node.axisBHalfWidthM + 1.05)
         + axisB.x * sideB * (node.axisAHalfWidthM + 1.05);
       const y = axisA.y * sideA * (node.axisBHalfWidthM + 1.05)
         + axisB.y * sideB * (node.axisAHalfWidthM + 1.05);
-      const terrainZ = terrainPlane
+      const sharedOffset = terrainOffsetAt?.(x, y);
+      if (terrainOffsetAt && sharedOffset == null) return [];
+      const terrainZ = sharedOffset ?? (terrainPlane
         ? terrainPlane.originZ + samplePlaneOffset(terrainPlane, x, y) - frameElevation
-        : 0;
-      return { x, y, yaw: Math.atan2(-y, -x), terrainZ };
+        : 0);
+      return [{ x, y, yaw: Math.atan2(-y, -x), terrainZ }];
     }));
-  }, [frameElevation, node, terrainPlane]);
+  }, [frameElevation, node, terrainPlane, terrainOffsetAt]);
 
   useEffect(() => {
     const matrix = new THREE.Matrix4();

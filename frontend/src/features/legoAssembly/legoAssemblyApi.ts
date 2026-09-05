@@ -21,6 +21,7 @@ export interface LegoModule {
   variant_key?: string;
   lod?: number;
   allowed_levels?: number[];
+  delivery_format?: string;
 }
 
 export interface LegoAssemblyInstance {
@@ -56,6 +57,8 @@ export interface LegoAssemblyPlan {
   assembled_height_m: number;
   instances: LegoAssemblyInstance[];
   fit: {
+    placement_mode?: 'detached_lots';
+    dwelling_count?: number;
     scale_x: number;
     scale_y: number;
     /** Raw parcel-envelope ratios before archetype-preserving containment. */
@@ -65,6 +68,8 @@ export interface LegoAssemblyPlan {
     profile?: LegoFootprintProfile;
     segment_count?: number;
     assembly_mode?: 'fixed_landmark';
+    native_scale_locked?: boolean;
+    delivery_format?: string;
     compatibility_source?: string;
     /** The authored form is uniformly scaled and centred inside the polygon. */
     footprint_mode?: 'archetype_contain' | 'envelope_fill';
@@ -80,9 +85,12 @@ export interface LegoAssemblyPlan {
 }
 
 export interface LegoPlanRequest {
+  /** Explicit plot of complete, unscaled houses; never repeat floors or landmarks. */
+  native_home_plot?: boolean;
   target_width_m: number;
   target_depth_m: number;
   target_floors: number;
+  footprint_local_m?: number[][];
   archetype_id?: string;
   reuse_keys?: string[];
   preferred_family?: string;
@@ -329,6 +337,7 @@ export const legoAssemblyApi = {
     }>,
     scopeZoneIds?: string[],
     scopeBoundaryId?: string,
+    includeResidualLandscape?: boolean,
   ): Promise<Community3DCompileResponse> {
     const response = await api.post<Community3DCompileResponse>(
       '/api/v1/lego-assembly/place-community',
@@ -336,6 +345,7 @@ export const legoAssemblyApi = {
         items,
         ...(scopeZoneIds !== undefined ? { scope_zone_ids: scopeZoneIds } : {}),
         ...(scopeBoundaryId !== undefined ? { scope_boundary_id: scopeBoundaryId } : {}),
+        ...(includeResidualLandscape !== undefined ? { include_residual_landscape: includeResidualLandscape } : {}),
       },
     );
     return response.data;

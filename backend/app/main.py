@@ -59,7 +59,7 @@ Transform architectural documents (PDFs, images, CAD files) into interactive 3D 
 - **Document Processing**: Upload PDFs, images, DXF, spreadsheets, GeoJSON — AI extracts building data
 - **3D Generation**: Automatic GLB model generation with LOD variants
 - **Project Management**: CRUD for projects, buildings, documents, and annotations
-- **Real-time Collaboration**: WebSocket-based presence and edit broadcasting
+- **Live Collaboration**: Presence and edit broadcasting are paused; use authenticated project APIs
 - **Sharing**: Email invitations and public share links with viewer/editor permissions
 
 ### Authentication

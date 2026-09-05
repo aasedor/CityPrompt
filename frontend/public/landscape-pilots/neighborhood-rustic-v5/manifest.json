@@ -1,0 +1,167 @@
+{
+  "schemaVersion": 1,
+  "method": "RLASM-v6.1-landscape-pilot",
+  "status": "candidate-not-catalogue-approved",
+  "archetypeId": "neighborhood_park",
+  "variantId": "neighborhood_park_v0",
+  "assets": {
+    "pavilion": {
+      "url": "/landscape-pilots/neighborhood-rustic-v5/gable-pavilion.glb",
+      "sha256": "f66bbf5c2355e911bdf1f4f0a5b0f6e685a3b0d6ebec5c58159c383e2f67c4ad",
+      "bytes": 735852,
+      "dimensionsM": [
+        7.807090759277344,
+        5.800000190734863,
+        4.300000190734863
+      ],
+      "bottomM": 0,
+      "nonuniformScalingAllowed": false,
+      "meshCount": 4
+    },
+    "tower": {
+      "url": "/landscape-pilots/neighborhood-rustic-v5/timber-play-tower.glb",
+      "sha256": "97b717873a30d94c77612392a2560bd707ffabd88a2b4485117a561b23f28dd9",
+      "bytes": 424388,
+      "dimensionsM": [
+        7.721090793609619,
+        2.3499999046325684,
+        4.349999904632568
+      ],
+      "bottomM": 0,
+      "nonuniformScalingAllowed": false,
+      "meshCount": 2
+    },
+    "swing": {
+      "url": "/landscape-pilots/neighborhood-rustic-v5/timber-swing.glb",
+      "sha256": "000dc4c20e312c638597175d7f624a41f738f6df8695e4cf09108253b6a95e77",
+      "bytes": 573684,
+      "dimensionsM": [
+        5.099999904632568,
+        2.8983774185180664,
+        3.336198091506958
+      ],
+      "bottomM": 0,
+      "nonuniformScalingAllowed": false,
+      "meshCount": 3
+    },
+    "fence": {
+      "url": "/landscape-pilots/neighborhood-rustic-v5/split-rail.glb",
+      "sha256": "ccd7da27ace4645cf81b83b174457bbab6757eeac070ba1a189b11dfaee7d18d",
+      "bytes": 363148,
+      "dimensionsM": [
+        4.32757568359375,
+        0.20074723660945892,
+        1.5614290237426758
+      ],
+      "bottomM": 0,
+      "nonuniformScalingAllowed": false,
+      "meshCount": 2
+    },
+    "boulders": {
+      "url": "/landscape-pilots/neighborhood-rustic-v5/boulders.glb",
+      "sha256": "b4ddd1de1e18d549a7e55984caa34efaba00929910bacf17f1f6d1fa91f53bef",
+      "bytes": 357708,
+      "dimensionsM": [
+        4.309675216674805,
+        2.812452793121338,
+        1.2400000095367432
+      ],
+      "bottomM": 0,
+      "nonuniformScalingAllowed": false,
+      "meshCount": 1
+    },
+    "bench": {
+      "url": "/landscape-pilots/neighborhood-rustic-v5/timber-bench.glb",
+      "sha256": "71a4a5b0850c9b5fa34e370b1a2f9540ff6c39d635de780ac655e32e2c9fe8bc",
+      "bytes": 698344,
+      "dimensionsM": [
+        1.899999976158142,
+        0.5850000381469727,
+        1.0750000476837158
+      ],
+      "bottomM": 0,
+      "nonuniformScalingAllowed": false,
+      "meshCount": 2
+    },
+    "tree0": {
+      "url": "/landscape-pilots/neighborhood-rustic-v5/oak-0.glb",
+      "sha256": "1ad88f57ec42fd7c016c559a6b924dd066c78c2495ca3bb8b6a616d2f587e7df",
+      "bytes": 522732,
+      "dimensionsM": [
+        5.953219413757324,
+        5.852931022644043,
+        9.693857192993164
+      ],
+      "bottomM": 0,
+      "nonuniformScalingAllowed": false,
+      "meshCount": 2
+    },
+    "tree1": {
+      "url": "/landscape-pilots/neighborhood-rustic-v5/oak-1.glb",
+      "sha256": "dcf6f2eb9a03f8ea785c023f8636e272080a81d7aeff56ba03940a74725c19bc",
+      "bytes": 518952,
+      "dimensionsM": [
+        5.964360237121582,
+        5.606419563293457,
+        9.609349250793457
+      ],
+      "bottomM": 0,
+      "nonuniformScalingAllowed": false,
+      "meshCount": 2
+    },
+    "tree2": {
+      "url": "/landscape-pilots/neighborhood-rustic-v5/oak-2.glb",
+      "sha256": "2bc81800969aa53c872490238753eae0de60aead63b0bd6a085860736163fc0c",
+      "bytes": 527916,
+      "dimensionsM": [
+        5.927737236022949,
+        5.685396671295166,
+        9.036965370178223
+      ],
+      "bottomM": 0,
+      "nonuniformScalingAllowed": false,
+      "meshCount": 2
+    }
+  },
+  "sources": [
+    {
+      "path": "frontend/public/archetypes/openspaces/neighborhood-park/variant_0.png",
+      "sha256": "38c1079127126017edb7945f77f47d73c4d0dde1fe5a566ac5dc0e791473d5c3",
+      "role": "material-and-human-scale"
+    },
+    {
+      "path": "frontend/public/archetypes/openspaces/neighborhood-park/variant_0_angle_60.jpg",
+      "sha256": "a239db7cde28707b697829e0b6e3f52e577231769c938a7e7868fe45dbfc014e",
+      "role": "primary-topology"
+    },
+    {
+      "path": "frontend/public/archetypes/openspaces/neighborhood-park/variant_0_angle_90.jpg",
+      "sha256": "01310ece390d1c696271b5610c0668b70e56e0ba231b0834dab0822ca5fa811d",
+      "role": "primary-topology"
+    }
+  ],
+  "inferences": [
+    "Equipment dimensions are design assumptions, not a survey.",
+    "Repeated timber towers interpret the two aerial play pockets.",
+    "Oak branch topology and species are inferred; foliage texture is licensed supporting material.",
+    "Play clearances are pilot design allowances, not playground certification."
+  ],
+  "preserved": [
+    "dominant lawn",
+    "continuous walking loop",
+    "two separate play pockets on full-size sites",
+    "one gabled pavilion",
+    "one swing",
+    "woodland/wildflower perimeter"
+  ],
+  "legacyBuilderSha256": "262332f023798d779383f192de2321e9587ba1a051fa5427b24fa2ea864b8a3d",
+  "candidateBuilderSha256": "9df8175736d968d0fe38147b75ed41d3ede961c662aaf42c6c61525d6b4fc988",
+  "foliageTextureSha256": "24451223cf396d22910a4932b8bb996a7274e63d81e24128c96a430ab67822b1",
+  "vegetationContract": {
+    "maxNativeCrownRadiusM": 3.0,
+    "maxRuntimeUniformScale": 1.08,
+    "treeBoundaryClearanceM": 3.3,
+    "drawCallsPerTreeVariant": 2,
+    "branching": "curved tapered trunk, unequal leaders and secondary branches"
+  }
+}

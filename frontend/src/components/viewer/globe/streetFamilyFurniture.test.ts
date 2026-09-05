@@ -37,6 +37,37 @@ import {
 } from './streetFamilyFurniture';
 import { resolvePilotStreetSectionProfile } from './streetSectionProfiles';
 import { STREET_APPEARANCE_KITS, type StreetAppearanceKitId } from './streetFamilyCatalog';
+import { seatStreetFamilyFixtures } from './streetSharedGround';
+
+describe('street fixture builder shared-ground handoff', () => {
+  it.each([mainStreetProfile, narrowResidentialProfile])('preserves metadata when the live terrain becomes ready', (makeProfile) => {
+    const fixtures = buildStreetFamilyFixturePlacements({ points: straightPoints(160), profile: makeProfile(), sectionScale: 1, enabled: true });
+    expect(fixtures.stationCount).toBeGreaterThan(0);
+    const before = structuredClone(fixtures);
+    const offsetAt = (x: number, y: number) => x * 0.015 + y * 0.02;
+    const seated = seatStreetFamilyFixtures(fixtures, offsetAt);
+    expect(seated.stationCount).toBe(fixtures.stationCount);
+    let poseCount = 0;
+    for (const [key, poses] of Object.entries(fixtures)) {
+      if (!Array.isArray(poses)) continue;
+      const result = seated[key as keyof typeof seated] as StreetFixturePose[];
+      expect(result).toHaveLength(poses.length);
+      poses.forEach((pose, index) => {
+        expect(result[index]).toEqual({ ...pose, z: pose.z + offsetAt(pose.x, pose.y) });
+        poseCount += 1;
+      });
+    }
+    expect(poseCount).toBeGreaterThan(0);
+    expect(fixtures).toEqual(before);
+    const refined = seatStreetFamilyFixtures(fixtures, () => 2);
+    expect(refined.lights[0].z).toBeCloseTo(fixtures.lights[0].z + 2);
+  });
+  it('handles the actual disabled-builder output and never replaces metadata with an array', () => {
+    const empty = buildStreetFamilyFixturePlacements({ points: [], profile: null, sectionScale: 1, enabled: false });
+    expect(seatStreetFamilyFixtures(empty, () => 2)).toEqual(empty);
+    expect(seatStreetFamilyFixtures(empty, () => 2).stationCount).toBe(0);
+  });
+});
 
 function mainStreetProfile() {
   return resolvePilotStreetSectionProfile({

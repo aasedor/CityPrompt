@@ -2138,6 +2138,18 @@ async def test_wave9_house_api_plans_parent_variant_and_oversized_streetwall(
     assert native_parent.status_code == 200
     native_plan = native_parent.json()
     assert native_plan["family"] == family
+    if family == "spanish-colonial-villa":
+        # Detached dwellings now retain native geometry and gaps rather than
+        # using the attached streetwall fallback from this legacy wave test.
+        assert native_plan["fit"]["compatibility_source"] == "native_detached_lots"
+        assert native_plan["fit"]["dwelling_count"] == 1
+        assert hand_drawn_variant.status_code == 422
+        assert oversized.status_code == 200
+        oversized_plan = oversized.json()
+        assert oversized_plan["fit"]["dwelling_count"] >= 2
+        assert oversized_plan["fit"]["compatibility_source"] == "native_detached_lots"
+        assert all(instance["scale"] == [1, 1, 1] for instance in oversized_plan["instances"])
+        return
     assert native_plan["fit"]["compatibility_source"] == ("manifest_shape_matrix")
     assert hand_drawn_variant.status_code == 200
     hand_drawn_plan = hand_drawn_variant.json()
@@ -4163,6 +4175,8 @@ async def test_recipe_save_get_roundtrip_preserves_instances(client, mock_db, te
             _scalar_result(building),  # POST: building lookup
             _scalar_result(project),  # POST: project lookup (owner -> no share query)
             _scalar_result(project.id),  # POST: project mutation lock
+            _scalar_result(project),  # POST: current inventory project scope
+            _scalars_result([]),  # POST: no installed clay tier; retain legacy save
             _scalars_result([linked_zone]),  # POST: linked Community 3D zones
             _scalar_result(test_user),  # GET: require_auth
             _scalar_result(building),  # GET: building lookup
@@ -4348,6 +4362,8 @@ async def test_place_creates_and_links_building_when_zone_has_none(client, mock_
             _scalar_result(zone),  # zone lookup
             _scalar_result(project),  # project lookup (owner -> no share query)
             _scalar_result(project.id),  # project mutation lock
+            _scalar_result(project),  # manual recipe inventory scope
+            _scalars_result([]),  # legacy mode: no installed clay tier
         ]
     )
 
@@ -4399,6 +4415,8 @@ async def test_place_reuses_existing_building_and_preserves_specifications(clien
             _scalar_result(zone),  # zone lookup
             _scalar_result(project),  # project lookup
             _scalar_result(project.id),  # project mutation lock
+            _scalar_result(project),  # manual recipe inventory scope
+            _scalars_result([]),  # legacy mode: no installed clay tier
             _scalar_result(building),  # existing building lookup
         ]
     )
@@ -4506,6 +4524,8 @@ async def test_place_community_compiles_mixed_plan_with_one_server_timestamp(cli
             _scalar_result(project),
             _scalar_result(project.id),  # serialize project-wide compilation
             _scalars_result([building_zone, park_zone, street_zone]),
+            _scalar_result(project),  # manual recipe inventory scope
+            _scalars_result([]),  # legacy mode: no installed clay tier
             _scalars_result([]),  # project buildings: no stale derived artifacts
         ]
     )
@@ -4535,7 +4555,7 @@ async def test_place_community_compiles_mixed_plan_with_one_server_timestamp(cli
     assert street_zone.properties["road_archetype_id"] == "main_street_complete"
     assert park_zone.properties["community_3d"]["generator"] == "park_kit"
     assert street_zone.properties["community_3d"]["generator"] == "street_section"
-    mock_db.commit.assert_not_awaited()
+    mock_db.commit.assert_awaited_once()
 
 
 @pytest.mark.anyio
@@ -4661,7 +4681,7 @@ async def test_place_community_atomically_compiles_mixed_ai_exact_and_family_pen
     assert "public_realm_lego" not in pending_park.properties
     assert "public_realm_lego" not in pending_street.properties
     assert {zone.properties["community_3d"]["compiled_at"] for zone in zones} == {payload["compiled_at"]}
-    mock_db.commit.assert_not_awaited()
+    mock_db.commit.assert_awaited_once()
 
 
 @pytest.mark.anyio
@@ -5044,6 +5064,8 @@ async def test_place_community_removes_only_stale_marked_buildings(client, mock_
             _scalar_result(project),
             _scalar_result(project.id),
             _scalars_result([current_zone]),
+            _scalar_result(project),  # manual recipe inventory scope
+            _scalars_result([]),  # legacy mode: no installed clay tier
             _scalars_result([stale_building, user_building]),
         ]
     )
@@ -5949,7 +5971,7 @@ async def test_place_community_preserves_all_six_public_realm_archetype_contract
         assert zone.properties["community_3d"]["state"] == "compiled"
         assert zone.properties["community_3d"]["generator"] == "park_kit"
     mock_db.add.assert_not_called()
-    mock_db.commit.assert_not_awaited()
+    mock_db.commit.assert_awaited_once()
 
 
 @pytest.mark.anyio
@@ -6002,7 +6024,7 @@ async def test_place_community_persists_exact_footprint_massing_without_family_r
     assert fallback["archetype_id"] == "new_york_corner_bodega"
     assert fallback["height_meters"] == 10.5
     assert "legoAssembly" not in building.specifications
-    mock_db.commit.assert_not_awaited()
+    mock_db.commit.assert_awaited_once()
 
 
 @pytest.mark.anyio
@@ -6290,7 +6312,7 @@ async def test_place_community_rebuild_upgrades_massing_without_losing_public_re
         park_zone.properties["community_3d"]["compiled_at"],
     } == {payload["compiled_at"]}
     mock_db.add.assert_not_called()
-    mock_db.commit.assert_not_awaited()
+    mock_db.commit.assert_awaited_once()
 
 
 @pytest.mark.anyio
@@ -6386,7 +6408,10 @@ async def test_place_community_rejects_framework_overlay_without_mutating_it(cli
 
 
 @pytest.mark.anyio
-async def test_place_community_derives_residual_from_all_project_zones(client, mock_db, test_user, auth_headers):
+@pytest.mark.parametrize("include_landscape", [True, False])
+async def test_place_community_derives_residual_from_all_project_zones(
+    client, mock_db, test_user, auth_headers, include_landscape
+):
     from geoalchemy2.shape import from_shape, to_shape
     from shapely.geometry import box
     from shapely.ops import unary_union
@@ -6440,11 +6465,16 @@ async def test_place_community_derives_residual_from_all_project_zones(client, m
     response = await client.post(
         "/api/v1/lego-assembly/place-community",
         headers=auth_headers,
-        json={"items": [_community_item(building_zone)]},
+        json={"items": [_community_item(building_zone)], "include_residual_landscape": include_landscape},
     )
 
     assert response.status_code == 200, response.text
     payload = response.json()
+    if not include_landscape:
+        assert payload["residual_landscape"]["boundary_count"] == 0
+        assert "community_3d_landscape" not in boundary.properties
+        assert boundary.properties["community_3d_landscape_mode"] == "placed_objects_only"
+        return
     assert payload["residual_landscape"]["boundary_count"] == 1
     assert payload["residual_landscape"]["area_sqm"] > 0
     recipe = boundary.properties["community_3d_landscape"]
@@ -6845,6 +6875,8 @@ async def test_place_backfills_missing_footprint_from_zone(client, mock_db, test
             _scalar_result(zone),
             _scalar_result(project),
             _scalar_result(project.id),
+            _scalar_result(project),  # manual recipe inventory scope
+            _scalars_result([]),  # legacy mode: no installed clay tier
             _scalar_result(building),
         ]
     )

@@ -396,7 +396,7 @@ export function buildPublicRealmSceneContextPrompt(
     'PUBLIC-REALM EDGE COORDINATION:',
     ...lines,
     ...(omitted > 0 ? [`- ${omitted} additional public-realm zone${omitted === 1 ? '' : 's'} remain governed by the same edge rules and visible image geometry.`] : []),
-    'Use these measured relationships to align park gates, sidewalks, crossings, curbs, cycle tracks, paths and building entrances. Preserve the exact authored/compiled geometry; coordinate interfaces instead of redesigning footprints or street sections.',
+    'Use these measured relationships to identify the captured interfaces. Preserve existing park gates, sidewalks, crossings, curbs, paths and building entrances in their captured positions. Missing connections remain missing: recommend them in the planning report rather than drawing them into this render.',
     options.sceneReferenceAttached
       ? 'The captured Google-tile scene and mounted 3D buildings are the visual authority for existing grade, adjacent roadway position, façade scale, lighting and edge materials.'
       : 'No live Google-tile scene is attached; do not invent existing off-site features.',

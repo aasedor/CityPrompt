@@ -9,6 +9,7 @@ import {
   createStreetSurfaceMaterialResources,
   resolveStreetAppearanceMaterialKind,
   resolveStreetSurfaceMaterialKind,
+  resolveStreetBandMaterial,
   type StreetSurfaceMaterialKind,
 } from './streetSurfaceMaterials';
 
@@ -189,4 +190,21 @@ describe('street surface material ownership', () => {
     first.dispose();
     second.dispose();
   });
+});
+
+
+it('uses one exact material recipe for a source band and its node-owned counterpart', () => {
+  const profile = { archetypeId: 'calgary_local', variantId: 'calgary_local_v0' };
+  const band = { kind: 'motor' as const, sourceType: 'travel_lane', surface: 'asphalt', label: 'Travel',
+    color: '#536472', roughness: 0.91, metalness: 0 };
+  const recipe = resolveStreetBandMaterial(profile, band);
+  expect(recipe.kind).toBe('asphalt');
+  expect(recipe.options.seed).toBe('calgary_local:calgary_local_v0:asphalt');
+  const segment = createStreetSurfaceMaterialResources(recipe.kind, { ...recipe.options, size: 32 });
+  const junction = createStreetSurfaceMaterialResources(recipe.kind, { ...recipe.options, size: 32 });
+  expect(pixels(junction.albedo)).toEqual(pixels(segment.albedo));
+  expect(junction.albedo.repeat.toArray()).toEqual([0.25, 0.25]);
+  expect(junction.material.color).toEqual(segment.material.color);
+  expect(junction.material.depthTest && junction.material.depthWrite).toBe(true);
+  segment.dispose(); junction.dispose();
 });

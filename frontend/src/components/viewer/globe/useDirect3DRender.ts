@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 
 import { rendersApi } from '@/services/api';
+import type { SavedRender } from '@/types';
 import type { Community3DCaptureClaim } from '@/features/community3d/community3d';
 import {
   GLOBE_STYLE_PROMPTS,
@@ -292,6 +293,7 @@ export interface Direct3DRenderDiagnostics {
 
 export interface Direct3DRenderResult {
   render: GlobeRenderResult;
+  providerOriginalRender?: SavedRender;
   diagnostics: Direct3DRenderDiagnostics;
   captureFingerprint: string;
   outputFingerprint: string;
@@ -340,7 +342,7 @@ export function useDirect3DRender() {
       viewMode?: 'aerial' | 'street';
       /** Authored archetype artwork (facade sheets, catalogue cards) the
        *  provider applies to the named buildings. Max 8, server-enforced. */
-      archetypeReferences?: Array<{ image_base64: string; label: string }>;
+      archetypeReferences?: Array<{ image_base64: string; label: string; zone_ids?: string[] }>;
       /** Measured park/street/building interfaces derived from source zones. */
       publicRealmContext?: string;
     },
@@ -405,6 +407,8 @@ export function useDirect3DRender() {
       presentation_mode: presentationMode,
       project_id: options.projectId,
       community_3d_claims: options.community3DClaims,
+        park_access_snapshot: capture.parkAccessSnapshot,
+        shared_ground_snapshot: capture.sharedGroundSnapshot,
       residual_landscape_claim: options.residualLandscapeClaim ?? undefined,
     });
     return {
@@ -413,16 +417,20 @@ export function useDirect3DRender() {
         prompt,
         model: response.model,
         imageQuality: 'high',
-        providerLabel: viewMode === 'street'
+        savedRender: response.saved_render ?? undefined,
+        providerLabel: response.diagnostics.returned_safety_strategy === 'authoritative_source'
+          ? 'Original 3D view · AI finish needs review'
+          : viewMode === 'street'
           ? 'Direct 3D Street · GPT Image 2'
           : 'Direct 3D · GPT Image 2',
       },
       diagnostics: response.diagnostics,
+      providerOriginalRender: response.provider_original_render ?? undefined,
       captureFingerprint: response.capture_fingerprint,
       outputFingerprint: response.output_fingerprint,
       outcome: response.outcome,
       warnings: [...response.warnings],
-      sourceImageUrl: capture.beautyImageBase64,
+      sourceImageUrl: capture.beautyImageBase64.startsWith('data:') ? capture.beautyImageBase64 : `data:image/png;base64,${capture.beautyImageBase64}`,
       fidelityPolicy,
     };
   }, []);

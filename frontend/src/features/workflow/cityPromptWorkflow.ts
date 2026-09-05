@@ -25,6 +25,9 @@ export interface CityPromptWorkflowState {
 }
 
 function hasCompiledResidualLandscape(boundary: SiteZone | null): boolean {
+  // Direct placement deliberately leaves unassigned land in its real context.
+  if (boundary?.properties?.community_3d_landscape_mode === 'placed_objects_only'
+      && boundary.properties?.community_3d_landscape == null) return true;
   const raw = (boundary?.properties as Record<string, unknown> | undefined)
     ?.community_3d_landscape;
   if (!raw || typeof raw !== 'object') return false;

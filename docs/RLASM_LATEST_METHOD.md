@@ -1,7 +1,7 @@
 # RLASM v6.1 — integrated proven methodology
 
 **Method name:** Reference-Locked Atomic Sticker-and-Massing (RLASM)
-**Revision:** v6.1, 2026-08-29
+**Revision:** v6.1, 2026-09-03
 **Purpose:** build source-specific, physically credible, reviewable 3D building
 families without hiding generic construction behind a good hero image.
 
@@ -13,7 +13,8 @@ instructions. The executable companion is
 Active-tree storage and retirement rules are defined by
 `docs/RLASM_REPOSITORY_POLICY.md`. Failed candidate evidence remains immutable
 but belongs in content-addressed artifact storage rather than the active Git
-tree. Only reviewed keeper packages are promoted into Git.
+tree. Only reviewed keeper packages or explicitly approved architectural-clay
+runtime deliveries are promoted into Git.
 
 ## Authority and review boundaries
 
@@ -340,6 +341,46 @@ review may close a named blocker category but cannot satisfy this gate.
    version assertion test together.
 4. Preserve rejected history and external heavyweight artifacts.
 5. Begin a finite next batch only after the representative passes.
+
+## Architectural-clay runtime delivery profile
+
+Architectural clay is a bounded RLASM delivery profile, not a weaker synonym
+for a fully textured keeper. It may become a City Prompt runtime model when all
+of the following are true:
+
+1. the exact parent/variant and compatible front, oblique, and top source bytes
+   are locked;
+2. the complete building was authored clay-first and the delivered GLB has no
+   images or textures;
+3. review renders came from a reimport of that exact GLB and every required
+   image was inspected at full resolution;
+4. a separate architectural-clay reviewer recorded zero unresolved P0 and P1
+   findings;
+5. deterministic delivery checks, model/reference hashes, native dimensions,
+   floor count, limitations, and hidden-view assumptions are preserved; and
+6. a human explicitly activates the architectural-clay runtime tier.
+
+This profile does not grant `keeper_approved`, textured-keeper approval,
+engineering approval, arbitrary resizing, terrain fit, or generic sibling use.
+The runtime entry must remain exact-variant and fixed native scale. A larger
+site envelope may contain the unscaled building; a smaller site is
+incompatible. Until a separately tested resizing or repetition contract is
+promoted, continuous scaling is forbidden.
+
+City Prompt keeps the authored catalogue references as the user-selection and
+render-conditioning images. Clay previews never replace those references.
+When the clay runtime tier is installed, only enabled RLASM v6.1
+architectural-clay rows are eligible as detailed building models; an
+archetype without a reviewed clay model falls back to honest planned massing,
+not a textured legacy or sibling substitute.
+
+The local pick/place pilot additionally supports an explicit `native_home_plot`
+setting for detached homes, with frontage direction preserved from the first
+footprint edge. It arranges complete copies of the exact selected
+variant with native dimensions and gaps; it never repeats floors, stretches a
+mesh, substitutes a sibling, or grants a landmark a repetition contract.
+Ordinary clay placement still produces one building. This is a local runtime
+pilot, not catalogue promotion; see `docs/PICK_PLACE_RESHAPE_PILOT_2026-09-05.md`.
 
 ## Hard-stop failure catalogue
 

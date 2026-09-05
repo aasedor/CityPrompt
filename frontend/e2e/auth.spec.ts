@@ -14,7 +14,7 @@ test.describe('Auth flow', () => {
     // Link to register page exists
     const registerLink = page.getByRole('link', { name: 'Sign up' });
     await expect(registerLink).toBeVisible();
-    await expect(registerLink).toHaveAttribute('href', '/register');
+    await expect(registerLink).toHaveAttribute('href', '/register?returnTo=%2Fprojects');
   });
 
   test('register page shows create-account form with link to login', async ({ page }) => {
@@ -30,7 +30,7 @@ test.describe('Auth flow', () => {
     // Link back to login
     const loginLink = page.getByRole('link', { name: 'Sign in' });
     await expect(loginLink).toBeVisible();
-    await expect(loginLink).toHaveAttribute('href', '/login');
+    await expect(loginLink).toHaveAttribute('href', '/login?returnTo=%2Fprojects');
   });
 
   test('register with email and password, verify redirect to login', async ({ page }) => {

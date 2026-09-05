@@ -181,7 +181,7 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
   const { renderDirect3D } = useDirect3DRender();
   // Inventory-locked single-call street render through the Direct 3D endpoint
   // (review-first). Off = the classic Gemini + GPT two-provider flow.
-  const [directStreetMode, setDirectStreetMode] = useState(false);
+  const [directStreetMode, setDirectStreetMode] = useState(Boolean(globeCapture));
   const [isGenerating, setIsGenerating] = useState(false);
   const [result, setResult] = useState<StreetViewResult | null>(null);
   const [previews, setPreviews] = useState<StreetViewResult[]>([]);
@@ -196,6 +196,24 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
   const [includePeople, setIncludePeople] = useState(false);
   const [includeVehicles, setIncludeVehicles] = useState(false);
   const [editTarget, setEditTarget] = useState<SavedRender | null>(null);
+  const [sourcePreview, setSourcePreview] = useState<{ imageUrl: string; position: string; angle: number } | null>(null);
+  const [isPreviewing, setIsPreviewing] = useState(false);
+  const previewStreetSource = async () => {
+    if (!globeCapture || !streetViewPegman?.position || isPreviewing) return;
+    const position = JSON.stringify(streetViewPegman.position);
+    const angle = streetViewPegman.angle;
+    setIsPreviewing(true);
+    try {
+      const source = await globeCapture();
+      if (!source) throw new Error('The 3D view is not ready. Wait for the scene to load.');
+      setSourcePreview({
+        imageUrl: source.imageBase64.startsWith('data:') ? source.imageBase64 : `data:image/png;base64,${source.imageBase64}`,
+        position, angle,
+      });
+    } catch (error) {
+      toast.error(getApiErrorMessage(error, 'Could not preview this street view.'));
+    } finally { setIsPreviewing(false); }
+  };
 
   const toEditableStreetViewRender = useCallback((render: StreetViewResult): SavedRender => ({
     id: `street-view-${getRenderImageKey(render)}`,
@@ -282,8 +300,8 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
       }
 
       // Inventory-locked street render: one call through the Direct 3D
-      // endpoint with the full pass stack. Review-first — no auto-save unless
-      // the server ever returns 'accepted'.
+      // endpoint with the full pass stack. The server saves both the returned
+      // view and any separate AI attempt; neither bypasses visual review.
       if (directStreetMode) {
         const bundle = streetCapture?.direct3d;
         if (!projectId) {
@@ -301,7 +319,7 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
         }
         const directLabel = 'Direct 3D Street';
         try {
-          const archetypeReferences = await collectDirect3DArchetypeReferences(siteZones);
+          const archetypeReferences = await collectDirect3DArchetypeReferences(siteZones, 8, bundle);
           const direct = await renderDirect3D(bundle, {
             style: resolveDirect3DStreetStyle(selectedStyle),
             projectId,
@@ -309,6 +327,11 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
             residualLandscapeClaim: getCurrentResidualLandscapeClaim(siteZones),
             viewMode: 'street',
             archetypeReferences,
+            customPrompt: [
+              includePeople ? 'Include a few pedestrians on existing walking surfaces.' : 'Do not add people.',
+              includeVehicles ? 'Include a few vehicles on existing carriageways only.' : 'Do not add vehicles.',
+              'Keep all buildings, facilities, paths and streets in their captured positions.',
+            ].join(' '),
           });
           const reviewSuffix = direct.outcome === 'review_required' ? ' · review' : '';
           const directResult: StreetViewResult = {
@@ -318,13 +341,28 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
             imageQuality: 'high',
             providerLabel: `${direct.render.providerLabel}${reviewSuffix}`,
           };
-          setPreviews([directResult]);
+          const original = direct.providerOriginalRender;
+          const originalPreview: StreetViewResult | undefined = original ? {
+            imageUrl: resolveApiFileUrl(original.image_url),
+            prompt: original.prompt,
+            model: original.model,
+            imageQuality: original.image_quality,
+            providerLabel: 'AI attempt · unverified',
+          } : undefined;
+          setPreviews(originalPreview ? [directResult, originalPreview] : [directResult]);
           setSelectedPreviewIndex(0);
           setResult(directResult);
-          if (direct.outcome === 'accepted' && projectId) {
-            await saveStreetViewRender(directResult);
-          } else {
-            toast('Review-first render: compare against the 3D capture, then Save if it holds up.', { icon: '🔍' });
+          // The endpoint already saves both outputs. Notify the gallery and
+          // mark their preview keys so Save cannot create duplicate records.
+          if (direct.render.savedRender) onRenderSaved?.(direct.render.savedRender);
+          if (original) onRenderSaved?.(original);
+          setSavedImageKeys((previous) => new Set([
+            ...previous,
+            ...(direct.render.savedRender ? [getRenderImageKey(directResult)] : []),
+            ...(originalPreview ? [getRenderImageKey(originalPreview)] : []),
+          ]));
+          if (direct.outcome === 'review_required') {
+            toast('Saved for review. Compare the AI attempt with the original 3D view before presenting.', { icon: '🔍' });
           }
         } catch (err) {
           const message = getApiErrorMessage(err, 'Direct 3D street render failed.');
@@ -412,7 +450,7 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
     } finally {
       setIsGenerating(false);
     }
-  }, [streetViewPegman, siteZones, generateStreetView, renderDirect3D, directStreetMode, buildings, selectedStyle, useRealContext, includePeople, includeVehicles, result, globeCapture, projectId, saveStreetViewRender]);
+  }, [streetViewPegman, siteZones, generateStreetView, renderDirect3D, directStreetMode, buildings, selectedStyle, useRealContext, includePeople, includeVehicles, result, globeCapture, projectId, saveStreetViewRender, onRenderSaved]);
 
   const handleDownload = useCallback(() => {
     if (!result?.imageUrl || result.error) return;
@@ -698,6 +736,13 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
   // Floating panel on the map
   return (
     <div className="absolute bottom-4 left-1/2 z-40 w-[min(94vw,760px)] -translate-x-1/2">
+      {sourcePreview && sourcePreview.position === JSON.stringify(streetViewPegman.position) && sourcePreview.angle === streetViewPegman.angle && (
+        <figure className="relative mx-auto mb-2 w-[min(100%,560px)] overflow-hidden rounded-lg bg-black shadow-xl">
+          <img src={sourcePreview.imageUrl} alt="Street view 3D preview" className="max-h-[38vh] w-full object-contain" />
+          <figcaption className="px-3 py-1 text-center text-xs text-white">Your 3D view · no AI render used</figcaption>
+          <button type="button" aria-label="Close 3D preview" onClick={() => setSourcePreview(null)} className="absolute right-2 top-2 rounded bg-black/75 p-2 text-white"><X size={16} /></button>
+        </figure>
+      )}
       <div className="street-view-card street-view-card--panel flex flex-wrap items-center justify-center gap-3 rounded-lg px-4 py-3 backdrop-blur-xl">
         {/* Direction controls */}
         <button
@@ -770,7 +815,7 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
 
         {/* Real-world context toggle — colour inherits the always-cream card; an explicit
             text-[#151515] would get flipped to near-white by dark mode and vanish on the card. */}
-        <label className="flex max-w-[150px] cursor-pointer items-center gap-2 text-[10px] font-black uppercase leading-tight">
+        {!directStreetMode && <label className="flex max-w-[150px] cursor-pointer items-center gap-2 text-[10px] font-black uppercase leading-tight">
           <input
             type="checkbox"
             checked={useRealContext}
@@ -782,7 +827,7 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
             <br />
             (Google Street View API)
           </span>
-        </label>
+        </label>}
 
         {/* Direct 3D street: single inventory-locked call via the Direct 3D
             endpoint (review-first). Only meaningful on the globe mount. */}
@@ -795,7 +840,7 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
               directStreetMode ? 'bg-[#c9ff3d] text-black' : 'bg-black/5 text-black/55 hover:bg-black/10'
             }`}
           >
-            {directStreetMode ? '✓ Direct 3D' : 'Direct 3D'}
+            {directStreetMode ? '✓ Direct 3D · 1 image' : 'Classic comparison · 2 images'}
           </button>
         )}
 
@@ -825,9 +870,12 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
         <div className="street-view-divider hidden h-16 w-px sm:block" />
 
         {/* Generate button */}
+        {globeCapture && <button type="button" onClick={() => void previewStreetSource()} disabled={isGenerating || isPreviewing} className="rounded-full border-2 border-[#151515] px-3 py-2 text-xs font-bold disabled:opacity-50">
+          {isPreviewing ? 'Preparing 3D view…' : 'Preview 3D view'}
+        </button>}
         <button
           onClick={handleGenerate}
-          disabled={isGenerating}
+          disabled={isGenerating || isPreviewing}
           className="street-view-generate-button flex min-h-12 items-center gap-2 rounded-full px-5 py-3 text-sm font-black uppercase transition disabled:opacity-50"
         >
           {isGenerating ? (

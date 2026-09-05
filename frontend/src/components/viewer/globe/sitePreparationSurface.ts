@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import type { SiteZone } from '@/types';
 import { isCommunity3DCompiled } from '@/features/community3d/community3d';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
+import { normalizeTileMaskRing, pointInTileMaskRing, type TileMaskPoint } from './tileMaskGeometry';
 
 /** Whether this scene already contains compiled authored 3D content. */
 export function hasCompiledCommunity(zones: SiteZone[]): boolean {
@@ -33,6 +34,67 @@ export function resolvePreparedSiteTerrainHeight(
   return Number.isFinite(stored) ? stored : fallbackTerrainHeight;
 }
 
+/** A retained site's ground preference applies only to objects inside it.
+ * Individual zones may explicitly override it. */
+export function getActiveBoundaryTileMaskPreference(zones: SiteZone[], zone?: SiteZone): boolean | null {
+  const boundary = getActiveSiteBoundary(zones);
+  if (!boundary || (zone && zone.id !== boundary.id && !preparedSiteContainsZone(boundary, zone))) return null;
+  const preference = (boundary.properties as Record<string, unknown> | undefined)?.community_3d_mask_existing_tiles;
+  return typeof preference === 'boolean' ? preference : null;
+}
+
+/** Authored objects wholly inside a cleared site share its declared datum.
+ * Existing context and zones in a concave notch retain their own terrain. */
+export function resolvePreparedSiteTerrainForZone(
+  zone: SiteZone | undefined,
+  zones: SiteZone[],
+  fallbackTerrainHeight: number,
+): number | null {
+  const boundary = getActiveSiteBoundary(zones);
+  if (!zone || !boundary || !getPreparedSiteBoundaryIds(zones).has(boundary.id)) return null;
+  if (zone.id !== boundary.id && !preparedSiteContainsZone(boundary, zone)) return null;
+  return resolvePreparedSiteTerrainHeight(boundary, fallbackTerrainHeight);
+}
+
+/** Split every authored edge at boundary intersections, then test every open
+ * interval. Vertex/quartile sampling can miss a narrow concave notch. */
+export function preparedSiteContainsZone(boundary: SiteZone, zone: SiteZone): boolean {
+  const origin = boundary.coordinates[0];
+  if (!origin) return false;
+  const east = 111320 * Math.cos(origin[1] * Math.PI / 180);
+  const local = (ring: number[][]) => normalizeTileMaskRing(ring.map(([lng, lat]) => ({
+    x: (lng - origin[0]) * east, y: (lat - origin[1]) * 111320,
+  })));
+  const outer = local(boundary.coordinates), inner = local(zone.coordinates);
+  if (!outer || !inner || !inner.every((point) => pointInTileMaskRing(point, outer))) return false;
+  const cross = (a: TileMaskPoint, b: TileMaskPoint) => a.x * b.y - a.y * b.x;
+  for (let index = 0; index < inner.length; index += 1) {
+    const a = inner[index], b = inner[(index + 1) % inner.length];
+    const r = { x: b.x - a.x, y: b.y - a.y };
+    const cuts = [0, 1];
+    for (let edge = 0; edge < outer.length; edge += 1) {
+      const c = outer[edge], d = outer[(edge + 1) % outer.length];
+      const s = { x: d.x - c.x, y: d.y - c.y }, delta = { x: c.x - a.x, y: c.y - a.y };
+      const denominator = cross(r, s);
+      if (Math.abs(denominator) < 1e-10) continue;
+      const t = cross(delta, s) / denominator, u = cross(delta, r) / denominator;
+      if (t > 0 && t < 1 && u >= 0 && u <= 1) cuts.push(t);
+    }
+    cuts.sort((left, right) => left - right);
+    for (let cut = 1; cut < cuts.length; cut += 1) {
+      const t = (cuts[cut - 1] + cuts[cut]) / 2;
+      if (!pointInTileMaskRing({ x: a.x + r.x * t, y: a.y + r.y * t }, outer)) return false;
+    }
+  }
+  return true;
+}
+
+export const PREPARED_SITE_BACKING_SEPARATION_METERS = 0.06;
+
+export function createPreparedSiteBackingGeometry(source: THREE.BufferGeometry, seed: string): THREE.BufferGeometry {
+  return createSitePreparationGeometry(source, seed).translate(0, 0, -PREPARED_SITE_BACKING_SEPARATION_METERS);
+}
+
 /** A standalone replacement building still clips the source Google mesh, but
  * older/manual projects may not have a separate site-boundary zone whose
  * prepared surface can cover the cleared footprint. In that case mount a
@@ -42,8 +104,9 @@ export function shouldRenderReplacementFootprintGround(
   zone: SiteZone,
   suppressed: boolean,
   sitePrepared: boolean,
+  inheritedMaskPreference: boolean | null = null,
 ): boolean {
-  return shouldMaskReplacementBuildingTiles(zone, suppressed)
+  return shouldMaskReplacementBuildingTiles(zone, suppressed, inheritedMaskPreference)
     && !sitePrepared
     && zone.coordinates.length >= 3;
 }
@@ -55,10 +118,13 @@ export function shouldRenderReplacementFootprintGround(
 export function shouldMaskReplacementBuildingTiles(
   zone: SiteZone,
   suppressed: boolean,
+  inheritedMaskPreference: boolean | null = null,
 ): boolean {
   const props = zone.properties as Record<string, unknown> | undefined;
+  const maskPreference = typeof props?.community_3d_mask_existing_tiles === 'boolean'
+    ? props.community_3d_mask_existing_tiles : inheritedMaskPreference;
   return suppressed
-    && props?.community_3d_mask_existing_tiles !== false
+    && maskPreference !== false
     && ['building', 'residential', 'development_area', 'development'].includes(zone.zone_type);
 }
 

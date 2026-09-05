@@ -13,6 +13,7 @@
     "test": "vitest",
     "test:e2e": "playwright test --project chromium --reporter=line",
     "test:ui": "vitest --ui",
+    "verify:direct3d-capture": "node scripts/verify-direct3d-capture.cjs",
     "check:archetype-assets": "node scripts/check-archetype-assets.mjs",
     "check:sticker-pilot-assets": "node scripts/check-sticker-pilot-assets.mjs",
     "generate:archetype-availability": "node scripts/generate-archetype-availability.mjs",

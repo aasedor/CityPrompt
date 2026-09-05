@@ -2,6 +2,7 @@ import type { QueryClient } from '@tanstack/react-query';
 import { siteZonesApi, buildingsApi } from '@/services/api';
 import type { SiteZone, SiteZoneProperties } from '@/types';
 import type { UndoableAction } from './undoRedo';
+import { streetCoordinateUpdate } from '@/features/pickPlace/streetPlacement';
 
 // =============================================================================
 // Helpers
@@ -10,6 +11,28 @@ import type { UndoableAction } from './undoRedo';
 /** Mutable ID reference — handles server reassigning IDs after delete+recreate */
 interface IdRef {
   current: string;
+  revision?: string;
+}
+
+// Track only revisions produced by this tab's own actions. Reading the newest
+// query cache here would silently accept a teammate's intervening edit. Sharing
+// this reference also allows several consecutive local edits to be undone.
+const localRevisions = new WeakMap<QueryClient, Map<string, string>>();
+function rememberRevision(client: QueryClient, projectId: string, zoneId: string, revision?: string) {
+  if (!revision) return;
+  let revisions = localRevisions.get(client);
+  if (!revisions) { revisions = new Map(); localRevisions.set(client, revisions); }
+  revisions.set(`${projectId}:${zoneId}`, revision);
+}
+function currentRevision(client: QueryClient, projectId: string, zoneId: string, fallback?: string) {
+  return localRevisions.get(client)?.get(`${projectId}:${zoneId}`) ?? fallback;
+}
+
+/** A locally compiled representation is not an intervening authored edit. */
+export function advanceDerivedZoneRevision(client: QueryClient, projectId: string, zoneId: string, before: string, after: string) {
+  const revisions = localRevisions.get(client);
+  const key = `${projectId}:${zoneId}`;
+  if (revisions?.get(key) === before) revisions.set(key, after);
 }
 
 function invalidateZones(queryClient: QueryClient, projectId: string) {
@@ -30,14 +53,16 @@ export function createZoneCreateAction(
   queryClient: QueryClient,
 ): UndoableAction {
   const originalZoneId = createdZone.id;
-  const idRef: IdRef = { current: createdZone.id };
+  const idRef: IdRef = { current: createdZone.id, revision: createdZone.updated_at };
+  rememberRevision(queryClient, projectId, createdZone.id, createdZone.updated_at);
 
   return {
+    projectId,
     label: 'Create zone',
     getZoneId: () => idRef.current,
     matchesZoneId: (zoneId) => zoneId === originalZoneId || zoneId === idRef.current,
     undo: async () => {
-      await siteZonesApi.delete(idRef.current);
+      await siteZonesApi.delete(idRef.current, currentRevision(queryClient, projectId, idRef.current, idRef.revision), { skipHistory: true });
       await invalidateZones(queryClient, projectId);
     },
     redo: async () => {
@@ -48,8 +73,10 @@ export function createZoneCreateAction(
         color: createdZone.color,
         properties: createdZone.properties,
         sort_order: createdZone.sort_order,
-      });
+      }, { skipHistory: true });
       idRef.current = zone.id;
+      idRef.revision = zone.updated_at;
+      rememberRevision(queryClient, projectId, zone.id, zone.updated_at);
       await invalidateZones(queryClient, projectId);
     },
   };
@@ -61,9 +88,10 @@ export function createZoneDeleteAction(
   queryClient: QueryClient,
 ): UndoableAction {
   const originalZoneId = deletedZone.id;
-  const idRef: IdRef = { current: deletedZone.id };
+  const idRef: IdRef = { current: deletedZone.id, revision: deletedZone.updated_at };
 
   return {
+    projectId,
     label: 'Delete zone',
     getZoneId: () => idRef.current,
     matchesZoneId: (zoneId) => zoneId === originalZoneId || zoneId === idRef.current,
@@ -75,12 +103,14 @@ export function createZoneDeleteAction(
         color: deletedZone.color,
         properties: deletedZone.properties,
         sort_order: deletedZone.sort_order,
-      });
+      }, { skipHistory: true });
       idRef.current = zone.id;
+      idRef.revision = zone.updated_at;
+      rememberRevision(queryClient, projectId, zone.id, zone.updated_at);
       await invalidateZones(queryClient, projectId);
     },
     redo: async () => {
-      await siteZonesApi.delete(idRef.current);
+      await siteZonesApi.delete(idRef.current, currentRevision(queryClient, projectId, idRef.current, idRef.revision), { skipHistory: true });
       await invalidateZones(queryClient, projectId);
     },
   };
@@ -92,16 +122,24 @@ export function createZoneUpdateAction(
   prevData: { name?: string; color?: string; properties?: SiteZoneProperties },
   newData: { name?: string; color?: string; properties?: SiteZoneProperties },
   queryClient: QueryClient,
+  savedRevision?: string,
 ): UndoableAction {
+  let revision = savedRevision;
+  rememberRevision(queryClient, projectId, zoneId, revision);
   return {
+    projectId,
     label: 'Update zone',
     zoneId,
     undo: async () => {
-      await siteZonesApi.update(zoneId, prevData);
+      const zone = await siteZonesApi.update(zoneId, { ...prevData, expected_updated_at: currentRevision(queryClient, projectId, zoneId, revision) }, { skipHistory: true });
+      revision = zone.updated_at;
+      rememberRevision(queryClient, projectId, zoneId, revision);
       await invalidateZones(queryClient, projectId);
     },
     redo: async () => {
-      await siteZonesApi.update(zoneId, newData);
+      const zone = await siteZonesApi.update(zoneId, { ...newData, expected_updated_at: currentRevision(queryClient, projectId, zoneId, revision) }, { skipHistory: true });
+      revision = zone.updated_at;
+      rememberRevision(queryClient, projectId, zoneId, revision);
       await invalidateZones(queryClient, projectId);
     },
   };
@@ -113,16 +151,26 @@ export function createZoneCoordinatesAction(
   prevCoords: number[][],
   newCoords: number[][],
   queryClient: QueryClient,
+  savedRevision?: string,
 ): UndoableAction {
+  let revision = savedRevision;
+  rememberRevision(queryClient, projectId, zoneId, revision);
   return {
+    projectId,
     label: 'Move zone',
     zoneId,
     undo: async () => {
-      await siteZonesApi.update(zoneId, { coordinates: prevCoords });
+      const current = queryClient.getQueryData<SiteZone[]>(['site-zones', projectId])?.find(zone => zone.id === zoneId);
+      const zone = await siteZonesApi.update(zoneId, { ...streetCoordinateUpdate(current, prevCoords), expected_updated_at: currentRevision(queryClient, projectId, zoneId, revision) }, { skipHistory: true });
+      revision = zone.updated_at;
+      rememberRevision(queryClient, projectId, zoneId, revision);
       await invalidateZones(queryClient, projectId);
     },
     redo: async () => {
-      await siteZonesApi.update(zoneId, { coordinates: newCoords });
+      const current = queryClient.getQueryData<SiteZone[]>(['site-zones', projectId])?.find(zone => zone.id === zoneId);
+      const zone = await siteZonesApi.update(zoneId, { ...streetCoordinateUpdate(current, newCoords), expected_updated_at: currentRevision(queryClient, projectId, zoneId, revision) }, { skipHistory: true });
+      revision = zone.updated_at;
+      rememberRevision(queryClient, projectId, zoneId, revision);
       await invalidateZones(queryClient, projectId);
     },
   };
@@ -154,6 +202,7 @@ export function createBuildingDeleteAction(
   const idRef: IdRef = { current: building.id };
 
   return {
+    projectId,
     label: 'Delete building',
     undo: async () => {
       const created = await buildingsApi.create(projectId, {
@@ -185,6 +234,7 @@ export function createBuildingUpdateAction(
   queryClient: QueryClient,
 ): UndoableAction {
   return {
+    projectId,
     label,
     undo: async () => {
       await buildingsApi.update(buildingId, prevData);

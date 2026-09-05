@@ -12,7 +12,7 @@
 import { useCallback, useRef } from 'react';
 import * as THREE from 'three';
 import { WGS84_ELLIPSOID } from '3d-tiles-renderer';
-import type { SiteZone } from '@/types';
+import type { SavedRender, SiteZone } from '@/types';
 import { ZONE_TYPE_CONFIG } from '@/types';
 import { api, resolveApiFileUrl } from '@/services/api';
 import { useViewerStore } from '@/store';
@@ -151,6 +151,7 @@ export interface GlobeRenderResult {
   imageQuality?: OpenAIImageQuality;
   providerLabel?: string;
   error?: string;
+  savedRender?: SavedRender;
 }
 
 export interface GlobeRenderVariant {

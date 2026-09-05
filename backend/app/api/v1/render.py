@@ -26,14 +26,22 @@ import httpx
 from PIL import Image, ImageDraw, ImageEnhance, ImageFont, PngImagePlugin
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, Field
-from sqlalchemy import func, select
+from sqlalchemy import func, select, text
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.schemas.render_media import SavedRenderResponse
 from app.core.config import get_settings
 from app.core.database import get_db
-from app.core.security import require_auth, check_project_permission, is_admin_or_above
+from app.core.security import (
+    require_auth,
+    check_project_permission,
+    check_project_read_access,
+    get_current_user,
+    is_admin_or_above,
+)
 from app.models.models import Project, RenderAuditLog, User
 from app.services.render_audit_images import put_image_with_thumbnail
+from app.services.render_fidelity import append_render_preservation_lock
 
 logger = logging.getLogger(__name__)
 
@@ -256,13 +264,14 @@ async def _save_render_audit(
     output_b64: str | None,
     prompt_preview: str | None = None,
     project_id: _uuid.UUID | None = None,
+    reservation: RenderAuditLog | None = None,
 ):
     """Save input/output images to S3 and create an audit log row."""
     import boto3
     from botocore.config import Config as BotoConfig
 
     settings = get_settings()
-    audit_id = _uuid.uuid4()
+    audit_id = reservation.id if reservation is not None else _uuid.uuid4()
 
     s3 = boto3.client(
         "s3",
@@ -290,17 +299,17 @@ async def _save_render_audit(
         output_key = f"render-audit/{audit_id}/output.png"
         put_image_with_thumbnail(s3, bucket, output_key, base64.b64decode(output_b64))
 
-    log = RenderAuditLog(
+    log = reservation or RenderAuditLog(
         id=audit_id,
         user_id=user.id,
         user_email=user.email,
         model=render_model,
         tokens_spent=token_cost,
         project_id=project_id,
-        input_image_key=input_key,
-        output_image_key=output_key,
-        prompt_preview=prompt_preview,
     )
+    log.input_image_key = input_key
+    log.output_image_key = output_key
+    log.prompt_preview = prompt_preview
     db.add(log)
     await db.commit()
     logger.info("Render audit saved: %s for %s", audit_id, user.email)
@@ -380,7 +389,7 @@ def _build_gemini_url(settings, model: str | None = None) -> str:
             f"?key={settings.gemini_api_key}"
         )
     else:
-        # Vertex AI path — requires Generative AI API enabled on project
+        # Vertex AI path â€” requires Generative AI API enabled on project
         location = "us-central1"
         return (
             f"https://{location}-aiplatform.googleapis.com/v1/"
@@ -399,7 +408,7 @@ def _get_auth_headers(settings) -> dict[str, str]:
     headers = {"Content-Type": "application/json"}
 
     if not settings.gemini_api_key:
-        # Vertex AI — need Bearer token
+        # Vertex AI â€” need Bearer token
         import google.auth
         import google.auth.transport.requests
 
@@ -632,8 +641,7 @@ async def _call_openai_image_edit(
             "signage, vegetation. The camera position, angle and framing must come from "
             "Image 1 EXACTLY; do not adopt the viewpoint of any context photograph.\n" + site_pack["prompt_block"]
         )
-    if len(prompt_text) > 32_000:
-        prompt_text = prompt_text[:31_900] + "\n\n[Prompt truncated to fit the OpenAI image prompt limit.]"
+    prompt_text = append_render_preservation_lock(prompt_text)
 
     image_quality = req.image_quality or "auto"
     data = {
@@ -740,54 +748,69 @@ async def _generate_openai_render(req: RenderRequest, settings, render_model: st
     raise HTTPException(status_code=502, detail="OpenAI image response did not include b64_json or url.")
 
 
-async def _finalize_render_success(
-    db: AsyncSession,
-    user: User,
-    req: RenderRequest,
-    render_model: str,
-    token_cost: int,
-    image_b64: str,
-) -> RenderResponse:
-    if req.post_process:
-        image_b64 = _post_process(image_b64)
+# Shared advisory lock value with Direct 3D. Every reservation is committed
+# before provider work, making it visible to both pipelines' daily-cap checks.
+_RENDER_CAP_LOCK = 23_140_785_570_739
 
-    # Deduct tokens for non-admin users
-    if not is_admin_or_above(user):
-        user.render_credits = max(0, user.render_credits - token_cost)
-        db.add(user)
-        await db.commit()
-        logger.info(
-            "User %s: %d tokens deducted (%s) — %d remaining",
-            user.email,
-            token_cost,
-            render_model,
-            user.render_credits,
-        )
 
-    # Save audit log with input/output images to S3
+async def _reserve_render(db, user, req, render_model, token_cost, daily_cap):
     try:
-        await _save_render_audit(
-            db=db,
-            user=user,
-            render_model=render_model,
-            token_cost=token_cost,
-            input_b64=req.image_base64,
-            output_b64=image_b64,
-            prompt_preview=req.prompt[:500] if req.prompt else None,
+        if daily_cap > 0:
+            await db.execute(
+                text("SELECT pg_advisory_xact_lock(:lock_key)"),
+                {"lock_key": _RENDER_CAP_LOCK},
+            )
+            await _enforce_global_daily_render_cap(db, token_cost, daily_cap)
+        if not is_admin_or_above(user):
+            await db.refresh(user, with_for_update=True)
+            now = datetime.now(timezone.utc)
+            if user.credits_reset_at is None or (now - user.credits_reset_at).days >= 7:
+                user.render_credits = _WEEKLY_TOKEN_ALLOWANCE
+                user.credits_reset_at = now
+            if user.render_credits < token_cost:
+                raise HTTPException(
+                    status_code=403,
+                    detail="Not enough render tokens. Tokens reset weekly.",
+                )
+            user.render_credits -= token_cost
+            db.add(user)
+        reservation = RenderAuditLog(
+            id=_uuid.uuid4(),
+            user_id=user.id,
+            user_email=user.email,
+            model=render_model,
+            tokens_spent=token_cost,
             project_id=req.project_id,
+            prompt_preview=f"[Classic reserved] {req.prompt[:470]}",
         )
-    except Exception as audit_exc:
-        logger.warning("Failed to save render audit log: %s", audit_exc)
+        db.add(reservation)
+        await db.commit()
+        return reservation
+    except Exception:
+        await db.rollback()
+        raise
 
-    return RenderResponse(
-        image_base64=image_b64,
-        seed=req.seed,
-    )
 
-
-# ---------------------------------------------------------------------------
-# Endpoint
-# ---------------------------------------------------------------------------
+async def _refund_render(db, user, reservation):
+    """Refund once when no image was produced, including concurrent retry safety."""
+    try:
+        await db.refresh(reservation, with_for_update=True)
+        amount = reservation.tokens_spent
+        if amount <= 0:
+            await db.commit()
+            return
+        if not is_admin_or_above(user):
+            await db.refresh(user, with_for_update=True)
+            user.render_credits += amount
+            db.add(user)
+        reservation.tokens_spent = 0
+        reservation.prompt_preview = "[Classic unbilled failure] Provider produced no image"
+        db.add(reservation)
+        await db.commit()
+    except Exception:
+        await db.rollback()
+        logger.exception("Failed to refund render reservation %s", reservation.id)
+        raise
 
 
 @router.post("/generate", response_model=RenderResponse)
@@ -796,60 +819,51 @@ async def generate_render(
     user: User = Depends(require_auth),
     db: AsyncSession = Depends(get_db),
 ):
-    """Generate a photorealistic architectural render via Gemini or OpenAI.
-
-    Sends the map screenshot + prompt to the selected image edit model.
-    Requires authentication. Non-admin users must have render tokens.
-    """
-    # Weekly token reset for non-admin users.
-    if not is_admin_or_above(user):
-        now = datetime.now(timezone.utc)
-        if user.credits_reset_at is None or (now - user.credits_reset_at).days >= 7:
-            user.render_credits = _WEEKLY_TOKEN_ALLOWANCE
-            user.credits_reset_at = now
-            db.add(user)
-            await db.commit()
-            await db.refresh(user)
-            logger.info("Weekly token reset for %s — %d tokens", user.email, user.render_credits)
-
-    # Calculate cost for this render
-    render_model = req.model if req.model and req.model in _ALLOWED_MODELS else _GEMINI_RENDER_MODEL
-    token_cost = _MODEL_TOKEN_COST.get(render_model, _DEFAULT_TOKEN_COST)
-    settings = get_settings()
-
+    """Reserve budget atomically, release the transaction, then call the provider."""
     if req.project_id:
-        await check_project_permission(req.project_id, user, db, required="viewer")
-
-    await _enforce_global_daily_render_cap(
-        db,
-        token_cost,
-        settings.render_global_daily_token_cap,
-    )
-
-    # Check render tokens for non-admin users
-    if not is_admin_or_above(user) and user.render_credits < token_cost:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail=f"Not enough tokens. This render costs {token_cost} tokens but you have {user.render_credits}. Tokens reset weekly.",
+        await check_project_permission(req.project_id, user, db, required="editor")
+    settings = get_settings()
+    render_model = req.model if req.model in _ALLOWED_MODELS else _GEMINI_RENDER_MODEL
+    token_cost = _MODEL_TOKEN_COST.get(render_model, _DEFAULT_TOKEN_COST)
+    reservation = await _reserve_render(db, user, req, render_model, token_cost, settings.render_global_daily_token_cap)
+    try:
+        image_b64 = await _generate_render_image(req, settings, render_model)
+    except Exception:
+        await _refund_render(db, user, reservation)
+        raise
+    # An image exists: optional image polish or audit storage failure must not
+    # trigger a refund or another paid generation.
+    if req.post_process:
+        try:
+            image_b64 = _post_process(image_b64)
+        except Exception:
+            logger.exception("Render post-processing failed; returning provider image")
+    try:
+        reservation.prompt_preview = f"[Classic completed] {req.prompt[:470]}"
+        db.add(reservation)
+        await db.commit()
+        await _save_render_audit(
+            db,
+            user,
+            render_model,
+            token_cost,
+            req.image_base64,
+            image_b64,
+            prompt_preview=reservation.prompt_preview,
+            project_id=req.project_id,
+            reservation=reservation,
         )
+    except Exception:
+        await db.rollback()
+        logger.exception("Render image produced but audit image storage failed: %s", reservation.id)
+    return RenderResponse(image_base64=image_b64, seed=req.seed)
 
+
+async def _generate_render_image(req: RenderRequest, settings, render_model: str) -> str:
     if _is_openai_model(render_model):
-        image_b64 = await _generate_openai_render(req, settings, render_model)
-        return await _finalize_render_success(
-            db=db,
-            user=user,
-            req=req,
-            render_model=render_model,
-            token_cost=token_cost,
-            image_b64=image_b64,
-        )
-
+        return await _generate_openai_render(req, settings, render_model)
     if not settings.gemini_api_key and not settings.vertex_ai_project:
-        raise HTTPException(
-            status_code=503,
-            detail="Gemini is not configured. Set GEMINI_API_KEY in .env "
-            "(get one free at https://aistudio.google.com/apikey).",
-        )
+        raise HTTPException(status_code=503, detail="Image generation is not configured.")
 
     # --- Build payload ---
     parts: list[dict] = []
@@ -994,11 +1008,12 @@ async def generate_render(
     # Build the final prompt text
     prompt_text = _prompt_with_negative(req)
 
-    # Site-context constraints go LAST — Gemini weights later instructions
-    # more heavily (CLAUDE.md render rule; proven in the lane-count pilots).
+    # Site context follows custom art direction; the final shared lock keeps
+    # source geometry authoritative across every supplied instruction.
     if site_pack:
         prompt_text = prompt_text + "\n\n" + site_pack["prompt_block"]
 
+    prompt_text = append_render_preservation_lock(prompt_text)
     parts.append({"text": prompt_text})
 
     # No temperature: Gemini 3 image docs list no temperature parameter, and the
@@ -1024,7 +1039,18 @@ async def generate_render(
     # Thread the requested aspect ratio through to Gemini. Unset, the LAST
     # image in the payload governs the output frame — a silent geometry
     # distorter for zone polygons.
-    _SUPPORTED_RATIOS = {"1:1", "2:3", "3:2", "3:4", "4:3", "4:5", "5:4", "9:16", "16:9", "21:9"}
+    _SUPPORTED_RATIOS = {
+        "1:1",
+        "2:3",
+        "3:2",
+        "3:4",
+        "4:3",
+        "4:5",
+        "5:4",
+        "9:16",
+        "16:9",
+        "21:9",
+    }
     if req.aspect_ratio in _SUPPORTED_RATIOS and render_model in _HIRES_MODELS:
         gen_config.setdefault("imageConfig", {})["aspectRatio"] = req.aspect_ratio
 
@@ -1138,41 +1164,7 @@ async def generate_render(
         except Exception as dim_exc:
             logger.warning("Could not compare dimensions: %s", dim_exc)
 
-        if req.post_process:
-            image_b64 = _post_process(image_b64)
-
-        # Deduct tokens for non-admin users
-        if not is_admin_or_above(user):
-            user.render_credits = max(0, user.render_credits - token_cost)
-            db.add(user)
-            await db.commit()
-            logger.info(
-                "User %s: %d tokens deducted (%s) — %d remaining",
-                user.email,
-                token_cost,
-                render_model,
-                user.render_credits,
-            )
-
-        # Save audit log with input/output images to S3
-        try:
-            await _save_render_audit(
-                db=db,
-                user=user,
-                render_model=render_model,
-                token_cost=token_cost,
-                input_b64=req.image_base64,
-                output_b64=image_b64,
-                prompt_preview=req.prompt[:500] if req.prompt else None,
-                project_id=req.project_id,
-            )
-        except Exception as audit_exc:
-            logger.warning("Failed to save render audit log: %s", audit_exc)
-
-        return RenderResponse(
-            image_base64=image_b64,
-            seed=req.seed,
-        )
+        return image_b64
 
     except (ValueError, KeyError, IndexError) as exc:
         logger.error("Failed to parse Gemini response: %s", exc)
@@ -1198,27 +1190,12 @@ class SaveRenderRequest(BaseModel):
     )
 
 
-class SavedRenderResponse(BaseModel):
-    id: str
-    image_url: str
-    prompt: str
-    style: Optional[str] = None
-    seed: Optional[int] = None
-    model: Optional[str] = None
-    image_quality: Optional[str] = None
-    created_at: str
-    # Direct 3D auto-saves: "final" (what the pipeline returned) or
-    # "provider_original" (the untouched paid provider image when a safety
-    # fallback replaced it). Manual gallery saves leave these unset.
-    variant: Optional[str] = None
-    outcome: Optional[str] = None
-    scene_revision_sha256: Optional[str] = Field(
-        default=None,
-        pattern=r"^[a-fA-F0-9]{64}$",
-    )
-
-
-def _watermark_and_provenance(image_bytes: bytes, req: "SaveRenderRequest") -> bytes:
+def _watermark_and_provenance(
+    image_bytes: bytes,
+    req: "SaveRenderRequest",
+    *,
+    server_provenance: dict | None = None,
+) -> bytes:
     """Burn the ILLUSTRATIVE banner onto a saved render and embed provenance
     as a PNG tEXt chunk. Saved renders are the shareable artifact — the
     watermark/provenance pair is the designed safeguard for AI-generated
@@ -1254,6 +1231,7 @@ def _watermark_and_provenance(image_bytes: bytes, req: "SaveRenderRequest") -> b
             "seed": req.seed,
             "prompt_sha256": hashlib.sha256((req.prompt or "").encode("utf-8")).hexdigest(),
             "saved_at": datetime.now(timezone.utc).isoformat(),
+            "source": server_provenance,
         }
         png_info = PngImagePlugin.PngInfo()
         png_info.add_text("cityprompt:provenance", json.dumps(provenance))
@@ -1273,7 +1251,11 @@ async def persist_render_to_gallery(
     *,
     variant: Optional[str] = None,
     outcome: Optional[str] = None,
+    presentation_strategy: Optional[str] = None,
     scene_revision_sha256: Optional[str] = None,
+    source_snapshot: dict | None = None,
+    capture_fingerprint: str | None = None,
+    output_fingerprint: str | None = None,
 ) -> SavedRenderResponse:
     """Core gallery save: watermark, dedupe, upload, append to project metadata.
 
@@ -1294,11 +1276,29 @@ async def persist_render_to_gallery(
     # Dedupe on the ORIGINAL bytes: the watermark embeds a save timestamp, so
     # hashing afterwards would defeat same-image dedupe.
     image_hash = hashlib.sha256(image_bytes).hexdigest()
-    image_bytes = _watermark_and_provenance(image_bytes, req)
     meta = dict(project.metadata_) if project.metadata_ else {}
     renders = list(meta.get("saved_renders", []))
+    # Equal pixels do not imply an equal result: a provider rejection can return
+    # the same clean source as a previous pass. Preserve the treatment and all
+    # authoritative revision claims instead of reusing a misleading gallery row.
+    dedup_identity = {
+        "image_hash": image_hash,
+        "variant": variant,
+        "outcome": outcome,
+        "presentation_strategy": presentation_strategy,
+        "capture_fingerprint": capture_fingerprint,
+        "output_fingerprint": output_fingerprint,
+        "scene_revision_sha256": scene_revision_sha256,
+        "plan_revision_sha256": (source_snapshot or {}).get("plan_revision_sha256"),
+        "camera_revision_sha256": (source_snapshot or {}).get("camera_revision_sha256"),
+        "prompt": req.prompt,
+        "style": req.style,
+        "seed": req.seed,
+        "model": req.model,
+        "image_quality": req.image_quality,
+    }
     for existing in renders:
-        if existing.get("image_hash") == image_hash:
+        if all(existing.get(key) == value for key, value in dedup_identity.items()):
             return SavedRenderResponse(**existing)
 
     render_id = str(_uuid.uuid4())
@@ -1306,6 +1306,50 @@ async def persist_render_to_gallery(
 
     from app.api.v1.documents import _upload_to_storage
 
+    # These are server-only function arguments. SaveRenderRequest deliberately
+    # offers no way to attach an authoritative snapshot or acceptance outcome.
+    provenance_key = f"projects/{project_id}/renders/{render_id}.provenance.json"
+    source_identity = {
+        "scene_revision_sha256": scene_revision_sha256,
+        "plan_revision_sha256": (source_snapshot or {}).get("plan_revision_sha256"),
+        "camera_revision_sha256": (source_snapshot or {}).get("camera_revision_sha256"),
+        "capture_fingerprint": capture_fingerprint,
+        "output_fingerprint": output_fingerprint,
+        "provenance_url": f"/api/v1/files/{provenance_key}" if source_snapshot else None,
+    }
+    if source_snapshot is not None:
+        from app.services.render_provenance import canonical_json
+
+        await _upload_to_storage(
+            provenance_key,
+            canonical_json(
+                {
+                    **source_identity,
+                    "source_snapshot": source_snapshot,
+                    "variant": variant,
+                    "outcome": outcome,
+                    "presentation_strategy": presentation_strategy,
+                    "original_output_sha256": image_hash,
+                    "prompt_sha256": hashlib.sha256(req.prompt.encode("utf-8")).hexdigest(),
+                    "image_note": "Gallery PNG includes a visible illustrative label; output fingerprint identifies the original pixels.",
+                }
+            ).encode("utf-8"),
+            "application/json",
+        )
+    image_bytes = _watermark_and_provenance(
+        image_bytes,
+        req,
+        server_provenance=(
+            {
+                **source_identity,
+                "variant": variant,
+                "outcome": outcome,
+                "presentation_strategy": presentation_strategy,
+            }
+            if source_snapshot
+            else None
+        ),
+    )
     await _upload_to_storage(file_key, image_bytes, "image/png")
 
     image_url = f"/api/v1/files/{file_key}"
@@ -1323,7 +1367,8 @@ async def persist_render_to_gallery(
         "created_at": now,
         "variant": variant,
         "outcome": outcome,
-        "scene_revision_sha256": scene_revision_sha256,
+        "presentation_strategy": presentation_strategy,
+        **source_identity,
     }
 
     renders.insert(0, entry)
@@ -1358,11 +1403,12 @@ async def save_render(
 @router.get("/projects/{project_id}/renders", response_model=list[SavedRenderResponse])
 async def list_renders(
     project_id: _uuid.UUID,
-    user: User = Depends(require_auth),
+    user: User | None = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
+    share_token: str | None = None,
 ):
     """List all saved renders for a project."""
-    await check_project_permission(project_id, user, db, required="viewer")
+    await check_project_read_access(project_id, user, db, share_token)
 
     project = await db.get(Project, project_id)
     if not project:
@@ -1370,7 +1416,11 @@ async def list_renders(
 
     meta = project.metadata_ or {}
     renders = meta.get("saved_renders", [])
-    return [SavedRenderResponse(**r) for r in renders]
+    return [
+        SavedRenderResponse(**({**r, "prompt": ""} if share_token else r))
+        for r in renders
+        if not share_token or r.get("variant") != "provider_original"
+    ]
 
 
 @router.delete("/projects/{project_id}/renders/{render_id}", status_code=status.HTTP_204_NO_CONTENT)

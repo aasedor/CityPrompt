@@ -37,7 +37,7 @@ async def _require_project_access(project: Project, user: User, db: AsyncSession
     result = await db.execute(
         select(ProjectShare).where(
             ProjectShare.project_id == project.id,
-            (ProjectShare.user_id == user.id) | (ProjectShare.email == user.email),
+            ProjectShare.user_id == user.id,
         )
     )
     share = result.scalar_one_or_none()

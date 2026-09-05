@@ -4,11 +4,12 @@ Activity feed / change log API endpoints.
 
 import uuid
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
+from app.core.security import check_project_permission, require_auth
 from app.models.models import ActivityLog, User
 
 router = APIRouter()
@@ -17,10 +18,12 @@ router = APIRouter()
 @router.get("/projects/{project_id}/activity")
 async def get_project_activity(
     project_id: uuid.UUID,
-    limit: int = 50,
+    limit: int = Query(50, ge=1, le=200),
     db: AsyncSession = Depends(get_db),
+    user: User = Depends(require_auth),
 ):
     """Get recent activity for a project."""
+    await check_project_permission(project_id, user, db)
     result = await db.execute(
         select(ActivityLog, User.email, User.full_name)
         .outerjoin(User, ActivityLog.user_id == User.id)

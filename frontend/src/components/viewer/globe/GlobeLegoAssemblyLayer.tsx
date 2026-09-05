@@ -22,6 +22,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useId,
   useMemo,
   useRef,
   useState,
@@ -34,15 +35,20 @@ import { WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import { EastNorthUpFrame, TilesRendererContext } from '3d-tiles-renderer/r3f';
 import type { Building, SiteZone } from '@/types';
 import type { LegoAssemblyRecipe } from '@/features/legoAssembly/legoAssemblyApi';
+import { centreNativeClayClone, isNativeClayPlan } from '@/features/legoAssembly/nativeClayPlacement';
+import { authoredHomePlotFrame } from '@/features/legoAssembly/detachedPlot';
 import { resolveApiFileUrl } from '@/services/api';
 import { createKtx2LoaderExtension } from '@/lib/ktx2GltfLoader';
 import { computeFootprintFrame, type FootprintFrame } from './buildingPlacement';
 import { raycastTerrainHeightAtLatLng } from './GlobeZoneLayer';
+import { resolvePreparedSiteTerrainForZone } from './sitePreparationSurface';
+import { useSharedSiteGround } from './SharedSiteGroundProvider';
+import { currentBuildingGroundingIssues, geographicFootprint, placedNativeFootprints, resolveBuildingGroundContact, updateBuildingGroundingIssues, type GroundPoint, type LegoGroundingIssue } from './buildingGroundContact';
 import {
-  getObjectFilteredTerrainHeight,
   isPlausibleTerrainAnchor,
-  resolveReplacementGroundAnchor,
+  resolveMeasuredReplacementGround,
   resolveZoneTerrainHeight,
+  terrainAnchorRevisionKey,
 } from './globeTerrainUtils';
 import {
   computeLegoStackBaseLift,
@@ -89,14 +95,34 @@ const MASSING_TERRAIN_SAMPLE_FRAME_INTERVAL = 300;
 const MASSING_TERRAIN_SAMPLE_MAX_ATTEMPTS = 8;
 const legoTerrainSampleCache = new Map<string, number>();
 
-/** Terrain anchors are frozen per placement LOCATION, not per building: the
- *  key carries the quantized centroid so moving a zone invalidates the cached
- *  sample and the stack re-seats on the new ground (sinking-on-move fix). */
-function terrainAnchorKey(
-  buildingId: string,
+/** Corroborate plot hits with an independent ring outside its footprint.
+ * Google photogrammetry includes roofs, so centre/corner rays alone cannot
+ * establish the ground under a replacement building. */
+function sampleReplacementGround(
+  ring: number[][],
   frame: { centroidLat: number; centroidLng: number },
-): string {
-  return `${buildingId}:${frame.centroidLat.toFixed(6)}:${frame.centroidLng.toFixed(6)}`;
+  tilesGroup: THREE.Object3D,
+  raycaster: THREE.Raycaster,
+  stored: number | null,
+  fallback: number,
+): number | null {
+  if (ring.length < 3) return null;
+  const local: Array<[number, number]> = [[frame.centroidLng, frame.centroidLat]];
+  const step = Math.max(1, Math.floor(ring.length / 4));
+  for (let index = 0; index < ring.length && local.length < 5; index += step) local.push([ring[index][0], ring[index][1]]);
+  const longitudePadding = 8 / Math.max(1, 111320 * Math.cos(frame.centroidLat * DEG_TO_RAD));
+  const latitudePadding = 8 / 111320;
+  const west = Math.min(...ring.map((point) => point[0])) - longitudePadding;
+  const east = Math.max(...ring.map((point) => point[0])) + longitudePadding;
+  const south = Math.min(...ring.map((point) => point[1])) - latitudePadding;
+  const north = Math.max(...ring.map((point) => point[1])) + latitudePadding;
+  const surrounding: Array<[number, number]> = [
+    [west, south], [west, north], [east, south], [east, north],
+    [(west + east) / 2, south], [(west + east) / 2, north],
+    [west, (south + north) / 2], [east, (south + north) / 2],
+  ];
+  const heights = (points: Array<[number, number]>) => points.map(([lng, lat]) => raycastTerrainHeightAtLatLng(lng, lat, tilesGroup, raycaster));
+  return resolveMeasuredReplacementGround(heights(local), heights(surrounding), stored, fallback);
 }
 
 function direct3DBuildingInstanceUserData(
@@ -112,6 +138,9 @@ function direct3DBuildingInstanceUserData(
     });
 }
 
+export type { LegoGroundingIssue } from './buildingGroundContact';
+type GroundingStatusReporter = (buildingId: string, rendererId: string, reason: string | null) => void;
+
 interface GlobeLegoAssemblyLayerProps {
   buildings: Building[];
   zones: SiteZone[];
@@ -119,10 +148,10 @@ interface GlobeLegoAssemblyLayerProps {
   direct3DProposalBuildingIds?: ReadonlySet<string>;
   /** Site-level elevation fallback (from the map's elevation fetch). */
   terrainHeight: number;
-  /** Authoritative prepared-site datum; overrides legacy per-zone elevations. */
-  preparedSiteTerrainHeight?: number | null;
   /** Buildings whose stack is actually mounted — drives prism suppression. */
   onLoadedIdsChange: (ids: Set<string>) => void;
+  /** Blocking contact issues, separate from asset-loading/prism suppression. */
+  onGroundingIssuesChange?: (issues: LegoGroundingIssue[]) => void;
   selectedBuildingId?: string | null;
   onBuildingClick?: (buildingId: string) => void;
 }
@@ -166,6 +195,29 @@ function stableFrameOffset(id: string, modulo: number): number {
   return Math.abs(hash) % modulo;
 }
 
+function useBuildingFoundation(footprints: GroundPoint[][], frame: FootprintFrame, buildingId: string, report?: GroundingStatusReporter) {
+  const sharedGround = useSharedSiteGround();
+  const rendererId = useId();
+  const contact = useMemo(() => resolveBuildingGroundContact(footprints, frame.centroidLng, frame.centroidLat, sharedGround),
+    [footprints, frame.centroidLng, frame.centroidLat, sharedGround]);
+  const geometry = useMemo(() => {
+    if (contact.status !== 'ready') return null;
+    const result = new THREE.BufferGeometry();
+    result.setAttribute('position', new THREE.Float32BufferAttribute(contact.positions, 3));
+    result.setIndex(contact.indices);
+    result.computeVertexNormals();
+    result.computeBoundingSphere();
+    return result;
+  }, [contact]);
+  useEffect(() => () => geometry?.dispose(), [geometry]);
+  const reason = contact.status === 'unresolved' ? contact.reason ?? 'incomplete_footprint_ground' : null;
+  useEffect(() => {
+    report?.(buildingId, rendererId, reason);
+    return () => report?.(buildingId, rendererId, null);
+  }, [buildingId, rendererId, reason, report]);
+  return { contact, geometry };
+}
+
 function LegoMassingStack({
   building,
   heightMeters,
@@ -177,6 +229,7 @@ function LegoMassingStack({
   preparedSiteTerrainHeight,
   onLoaded,
   onUnloaded,
+  onGroundingStatus,
   selected,
   proposalForDirect3D,
   onBuildingClick,
@@ -191,6 +244,7 @@ function LegoMassingStack({
   preparedSiteTerrainHeight?: number | null;
   onLoaded?: (id: string) => void;
   onUnloaded?: (id: string) => void;
+  onGroundingStatus?: GroundingStatusReporter;
   selected: boolean;
   proposalForDirect3D: boolean;
   onBuildingClick?: (buildingId: string) => void;
@@ -219,11 +273,14 @@ function LegoMassingStack({
   }, [frame.centroidLat, frame.centroidLng, height, ring]);
   useEffect(() => () => geometry?.dispose(), [geometry]);
 
+  const groundFootprints = useMemo(() => [geographicFootprint(ring, frame.centroidLng, frame.centroidLat)], [ring, frame.centroidLng, frame.centroidLat]);
+  const foundation = useBuildingFoundation(groundFootprints, frame, building.id, onGroundingStatus);
+
   const tiles = useContext(TilesRendererContext);
   const properties = zone?.properties as Record<string, unknown> | undefined;
   const storedRaw = Number(properties?.terrain_elevation_m ?? properties?.terrain_height);
   const storedTerrain = Number.isFinite(storedRaw) ? storedRaw : null;
-  const anchorKey = terrainAnchorKey(building.id, frame);
+  const anchorKey = terrainAnchorRevisionKey(building.id, frame.centroidLng, frame.centroidLat, zone?.updated_at, storedTerrain, fallbackTerrainHeight);
   const [sampledTerrain, setSampledTerrain] = useState<number | null>(
     () => legoTerrainSampleCache.get(anchorKey) ?? null,
   );
@@ -241,8 +298,18 @@ function LegoMassingStack({
     frozenRef.current = cached !== null;
     attemptsRef.current = 0;
   }, [anchorKey]);
+  useEffect(() => {
+    if (!tiles) return undefined;
+    const refresh = () => {
+      legoTerrainSampleCache.delete(anchorKey);
+      frozenRef.current = false;
+      attemptsRef.current = 0;
+    };
+    tiles.addEventListener('tiles-load-end', refresh);
+    return () => tiles.removeEventListener('tiles-load-end', refresh);
+  }, [tiles, anchorKey]);
   useFrame(() => {
-    if (frozenRef.current || !geometry) return;
+    if (foundation.contact.status !== 'outside' || preparedSiteTerrainHeight != null || frozenRef.current || !geometry) return;
     frameCountRef.current += 1;
     if (frameCountRef.current % MASSING_TERRAIN_SAMPLE_FRAME_INTERVAL !== 0) return;
     if (attemptsRef.current >= MASSING_TERRAIN_SAMPLE_MAX_ATTEMPTS) {
@@ -253,20 +320,7 @@ function LegoMassingStack({
     const tilesGroup = tiles?.group;
     if (!tilesGroup || tilesGroup.children.length === 0) return;
 
-    const step = Math.max(1, Math.floor(ring.length / 4));
-    const probes: Array<[number, number]> = [[frame.centroidLng, frame.centroidLat]];
-    for (let index = 0; index < ring.length && probes.length < 5; index += step) {
-      probes.push([ring[index][0], ring[index][1]]);
-    }
-    const samples = probes.map(([longitude, latitude]) => (
-      raycastTerrainHeightAtLatLng(longitude, latitude, tilesGroup, raycasterRef.current)
-    ));
-    const filtered = getObjectFilteredTerrainHeight(samples, storedTerrain);
-    const groundCandidate = resolveReplacementGroundAnchor(
-      filtered,
-      storedTerrain,
-      fallbackTerrainHeight,
-    );
+    const groundCandidate = sampleReplacementGround(ring, frame, tilesGroup, raycasterRef.current, storedTerrain, fallbackTerrainHeight);
     if (
       groundCandidate !== null
       && isPlausibleTerrainAnchor(
@@ -281,13 +335,13 @@ function LegoMassingStack({
   });
 
   useEffect(() => {
-    if (!geometry) return undefined;
+    if (!geometry || foundation.contact.status === 'unresolved') return undefined;
     onLoaded?.(building.id);
     return () => onUnloaded?.(building.id);
-  }, [building.id, geometry, onLoaded, onUnloaded]);
+  }, [building.id, geometry, foundation.contact.status, onLoaded, onUnloaded]);
 
-  if (!geometry) return null;
-  const terrain = preparedSiteTerrainHeight ?? resolveZoneTerrainHeight(
+  if (!geometry || foundation.contact.status === 'unresolved') return null;
+  const terrain = (foundation.contact.status === 'ready' ? foundation.contact.anchorHeight : null) ?? preparedSiteTerrainHeight ?? resolveZoneTerrainHeight(
     sampledTerrain,
     storedTerrain,
     fallbackTerrainHeight,
@@ -318,6 +372,10 @@ function LegoMassingStack({
           side={THREE.DoubleSide}
         />
       </mesh>
+      {foundation.geometry && <mesh geometry={foundation.geometry} renderOrder={LEGO_RENDER_ORDER}
+        userData={proposalForDirect3D ? direct3DBuildingInstanceUserData(building, zone) : DIRECT_3D_CAPTURE_CONTEXT_USER_DATA}>
+        <meshStandardMaterial color="#8f8c84" roughness={0.95} side={THREE.DoubleSide} />
+      </mesh>}
       {selected && <LocalModelSelectionOutline ring={ring} frame={frame} />}
     </EastNorthUpFrame>
   );
@@ -333,6 +391,7 @@ function LegoStackInstance({
   preparedSiteTerrainHeight,
   onLoaded,
   onUnloaded,
+  onGroundingStatus,
   selected,
   proposalForDirect3D,
   onBuildingClick,
@@ -347,6 +406,7 @@ function LegoStackInstance({
   preparedSiteTerrainHeight?: number | null;
   onLoaded: (id: string) => void;
   onUnloaded: (id: string) => void;
+  onGroundingStatus?: GroundingStatusReporter;
   selected: boolean;
   proposalForDirect3D: boolean;
   onBuildingClick?: (buildingId: string) => void;
@@ -380,21 +440,32 @@ function LegoStackInstance({
       .map((instance, index) => {
         const scene = sceneByUrl.get(resolveApiFileUrl(instance.model_url));
         if (!scene) return null;
-        const cloned = prepareArchitecturalClone(scene, {
+        const prepared = prepareArchitecturalClone(scene, {
           renderOrder: LEGO_RENDER_ORDER,
           maxAnisotropy,
           ambientOcclusion: 'disable',
         });
+        const cloned = isNativeClayPlan(recipe) ? centreNativeClayClone(prepared) : prepared;
         return {
           key: `${instance.asset_id}-${instance.level}-${index}`,
           cloned,
           transform: legoInstanceTransform(instance),
-          bounds: new THREE.Box3().setFromObject(scene),
+          bounds: isNativeClayPlan(recipe)
+            ? new THREE.Box3().setFromObject(cloned, true)
+            : new THREE.Box3().setFromObject(scene),
         };
       })
       .filter((entry): entry is NonNullable<typeof entry> => entry !== null);
   }, [maxAnisotropy, recipe, sceneByUrl, urls]);
   const detailedReady = isCompleteLegoModuleStack(recipe.instances.length, modules.length);
+  const authoredPlot = zone?.properties?.native_home_plot === true ? authoredHomePlotFrame(ring) : undefined;
+  const yawRad = authoredPlot ? authoredPlot.yawRad + (building.rotation_degrees ?? 0) * DEG_TO_RAD
+    : computeLegoStackYaw(frame.bearingRad, recipe.target, building.rotation_degrees);
+  const groundFootprints = useMemo(() => isNativeClayPlan(recipe) || recipe.fit?.placement_mode === 'detached_lots'
+    ? placedNativeFootprints(modules, yawRad, frame.rectCenterLocal)
+    : [geographicFootprint(ring, frame.centroidLng, frame.centroidLat)],
+  [recipe, modules, yawRad, frame.rectCenterLocal, ring, frame.centroidLng, frame.centroidLat]);
+  const foundation = useBuildingFoundation(groundFootprints, frame, building.id, onGroundingStatus);
   const stackBaseLift = useMemo(() => computeLegoStackBaseLift(
     modules.map(({ bounds, transform }) => ({
       positionY: transform.position[1],
@@ -409,10 +480,10 @@ function LegoStackInstance({
 
   // Prism suppression: only while this stack is actually mounted AND placeable.
   useEffect(() => {
-    if (!detailedReady) return undefined;
+    if (!detailedReady || foundation.contact.status === 'unresolved') return undefined;
     onLoaded?.(building.id);
     return () => onUnloaded?.(building.id);
-  }, [building.id, detailedReady, onLoaded, onUnloaded]);
+  }, [building.id, detailedReady, foundation.contact.status, onLoaded, onUnloaded]);
 
   useEffect(() => {
     if (detailedReady || !import.meta.env.DEV) return;
@@ -428,7 +499,7 @@ function LegoStackInstance({
   const zoneProps = zone?.properties as Record<string, unknown> | undefined;
   const storedRaw = Number(zoneProps?.terrain_elevation_m ?? zoneProps?.terrain_height);
   const storedTerrain = Number.isFinite(storedRaw) ? storedRaw : null;
-  const anchorKey = frame ? terrainAnchorKey(building.id, frame) : building.id;
+  const anchorKey = terrainAnchorRevisionKey(building.id, frame?.centroidLng ?? 0, frame?.centroidLat ?? 0, zone?.updated_at, storedTerrain, fallbackTerrainHeight);
   const [sampledTerrain, setSampledTerrain] = useState<number | null>(
     () => legoTerrainSampleCache.get(anchorKey) ?? null,
   );
@@ -443,6 +514,16 @@ function LegoStackInstance({
     frozenRef.current = cached !== null;
     attemptsRef.current = 0;
   }, [anchorKey]);
+  useEffect(() => {
+    if (!tiles) return undefined;
+    const refresh = () => {
+      legoTerrainSampleCache.delete(anchorKey);
+      frozenRef.current = false;
+      attemptsRef.current = 0;
+    };
+    tiles.addEventListener('tiles-load-end', refresh);
+    return () => tiles.removeEventListener('tiles-load-end', refresh);
+  }, [tiles, anchorKey]);
   const stackRef = useRef<THREE.Group>(null);
   const stackWorldPositionRef = useRef(new THREE.Vector3());
   const glazingLodRef = useRef<ArchitecturalGlazingLod>('far');
@@ -457,7 +538,7 @@ function LegoStackInstance({
         glazingLodRef.current = nextLod;
       }
     }
-    if (frozenRef.current || !frame) return;
+    if (foundation.contact.status !== 'outside' || preparedSiteTerrainHeight != null || frozenRef.current || !frame) return;
     frameCountRef.current += 1;
     if (frameCountRef.current % TERRAIN_SAMPLE_FRAME_INTERVAL !== 0) return;
     if (attemptsRef.current >= TERRAIN_SAMPLE_MAX_ATTEMPTS) {
@@ -468,20 +549,7 @@ function LegoStackInstance({
     const tilesGroup = tiles?.group;
     if (!tilesGroup || tilesGroup.children.length === 0) return;
 
-    const step = Math.max(1, Math.floor(ring.length / 4));
-    const probes: Array<[number, number]> = [[frame.centroidLng, frame.centroidLat]];
-    for (let i = 0; i < ring.length && probes.length < 5; i += step) {
-      probes.push([ring[i][0], ring[i][1]]);
-    }
-    const samples = probes.map(([lng, lat]) => (
-      raycastTerrainHeightAtLatLng(lng, lat, tilesGroup, raycasterRef.current)
-    ));
-    const filtered = getObjectFilteredTerrainHeight(samples, storedTerrain);
-    const groundCandidate = resolveReplacementGroundAnchor(
-      filtered,
-      storedTerrain,
-      fallbackTerrainHeight,
-    );
+    const groundCandidate = sampleReplacementGround(ring, frame, tilesGroup, raycasterRef.current, storedTerrain, fallbackTerrainHeight);
     // Unrefined-root-tile guard: implausible samples burn an attempt and retry.
     if (
       groundCandidate !== null
@@ -494,13 +562,13 @@ function LegoStackInstance({
   });
 
   if (!detailedReady) return incompleteFallback;
+  if (foundation.contact.status === 'unresolved') return null;
 
-  const terrain = preparedSiteTerrainHeight
+  const terrain = (foundation.contact.status === 'ready' ? foundation.contact.anchorHeight : null) ?? preparedSiteTerrainHeight
     ?? resolveZoneTerrainHeight(sampledTerrain, storedTerrain, fallbackTerrainHeight);
   // Recipe target width (stack X) vs depth (stack Z) fixes the plan
   // orientation, so the stack's long axis lands on the footprint's long axis
   // and the module front facade (+Z glTF) faces the short-axis street side.
-  const yawRad = computeLegoStackYaw(frame.bearingRad, recipe.target, building.rotation_degrees);
 
   return (
     <EastNorthUpFrame
@@ -522,9 +590,9 @@ function LegoStackInstance({
       >
         {/* Rx(+90°): glTF Y-up -> ENU Z-up (stack Y becomes Up, Z becomes -North).
             Inside, the stack is built in glTF Y-up space per the legoShared
-            ModuleInstance conventions. Modules are bottom-centre origin and the
-            recipe origin is the building's bottom-centre, so no recentering:
-            the frame transform alone positions the stack. */}
+            ModuleInstance conventions. Native clay clones have been translated
+            to bottom-centre without scaling; legacy modules retain their
+            authored stack origins. */}
         <group rotation={[Math.PI / 2, 0, 0]}>
           <group position={[0, stackBaseLift, 0]}>
             {modules.map(({ key, cloned, transform }) => (
@@ -539,6 +607,10 @@ function LegoStackInstance({
           </group>
         </group>
       </group>
+      {foundation.geometry && <mesh geometry={foundation.geometry} renderOrder={LEGO_RENDER_ORDER}
+        userData={proposalForDirect3D ? direct3DBuildingInstanceUserData(building, zone) : DIRECT_3D_CAPTURE_CONTEXT_USER_DATA}>
+        <meshStandardMaterial color="#8f8c84" roughness={0.95} side={THREE.DoubleSide} />
+      </mesh>}
       {selected && <LocalModelSelectionOutline ring={ring} frame={frame} />}
     </EastNorthUpFrame>
   );
@@ -549,14 +621,25 @@ export function GlobeLegoAssemblyLayer({
   zones,
   direct3DProposalBuildingIds,
   terrainHeight,
-  preparedSiteTerrainHeight = null,
   onLoadedIdsChange,
+  onGroundingIssuesChange,
   selectedBuildingId = null,
   onBuildingClick,
 }: GlobeLegoAssemblyLayerProps) {
   const [loadedIds, setLoadedIds] = useState<Set<string>>(() => new Set());
   const [detailedReadyIds, setDetailedReadyIds] = useState<Set<string>>(() => new Set());
   const [temporaryFallbackIds, setTemporaryFallbackIds] = useState<Set<string>>(() => new Set());
+  // Renderer identity prevents a departing Suspense fallback from clearing a
+  // still-unresolved detailed renderer for the same building.
+  const [groundingIssues, setGroundingIssues] = useState<ReadonlyMap<string, LegoGroundingIssue>>(() => new Map());
+  const handleGroundingStatus = useCallback<GroundingStatusReporter>((buildingId, rendererId, reason) => {
+    setGroundingIssues((previous) => updateBuildingGroundingIssues(previous, buildingId, rendererId, reason));
+  }, []);
+  useEffect(() => {
+    const ids = new Set(buildings.map((building) => building.id));
+    onGroundingIssuesChange?.(currentBuildingGroundingIssues(groundingIssues, ids));
+  }, [buildings, groundingIssues, onGroundingIssuesChange]);
+  useEffect(() => () => onGroundingIssuesChange?.([]), [onGroundingIssuesChange]);
   const camera = useThree((state) => state.camera);
 
   const zoneRingByBuildingId = useMemo(() => {
@@ -645,6 +728,7 @@ export function GlobeLegoAssemblyLayer({
     const map = new Map<string, SiteZone>();
     for (const zone of zones) {
       if (zone.building_id) map.set(zone.building_id, zone);
+      for (const buildingId of zone.building_ids ?? []) map.set(buildingId, zone);
     }
     return map;
   }, [zones]);
@@ -751,6 +835,9 @@ export function GlobeLegoAssemblyLayer({
       {entries.map((entry) => {
         const { building, ring, frame } = entry;
         const zone = zoneByBuildingId.get(building.id);
+        // A boundary must not flatten unrelated buildings or those in its notch.
+        // Detail, loading fallback and distance massing use the same datum.
+        const preparedSiteTerrainHeight = resolvePreparedSiteTerrainForZone(zone, zones, terrainHeight);
         if (entry.kind === 'massing') {
           return (
             <LegoMassingStack
@@ -765,6 +852,7 @@ export function GlobeLegoAssemblyLayer({
               preparedSiteTerrainHeight={preparedSiteTerrainHeight}
               onLoaded={handleLoaded}
               onUnloaded={handleUnloaded}
+              onGroundingStatus={handleGroundingStatus}
               selected={selectedBuildingId === building.id}
               proposalForDirect3D={direct3DProposalBuildingIds?.has(building.id) ?? false}
               onBuildingClick={onBuildingClick}
@@ -784,6 +872,7 @@ export function GlobeLegoAssemblyLayer({
             preparedSiteTerrainHeight={preparedSiteTerrainHeight}
             onLoaded={handleFallbackLoaded}
             onUnloaded={handleFallbackUnloaded}
+            onGroundingStatus={handleGroundingStatus}
             selected={selectedBuildingId === building.id}
             proposalForDirect3D={direct3DProposalBuildingIds?.has(building.id) ?? false}
             onBuildingClick={onBuildingClick}
@@ -802,6 +891,7 @@ export function GlobeLegoAssemblyLayer({
             preparedSiteTerrainHeight={preparedSiteTerrainHeight}
             onLoaded={handleLoaded}
             onUnloaded={handleUnloaded}
+            onGroundingStatus={handleGroundingStatus}
             selected={selectedBuildingId === building.id}
             proposalForDirect3D={direct3DProposalBuildingIds?.has(building.id) ?? false}
             onBuildingClick={onBuildingClick}
@@ -820,6 +910,7 @@ export function GlobeLegoAssemblyLayer({
                 preparedSiteTerrainHeight={preparedSiteTerrainHeight}
                 onLoaded={handleDetailedLoaded}
                 onUnloaded={handleDetailedUnloaded}
+                onGroundingStatus={handleGroundingStatus}
                 selected={selectedBuildingId === building.id}
                 proposalForDirect3D={direct3DProposalBuildingIds?.has(building.id) ?? false}
                 onBuildingClick={onBuildingClick}

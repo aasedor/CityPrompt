@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef, useLayoutEffect } from 'react';
+import { useState, useEffect, useCallback, useRef, useLayoutEffect, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 
 // ---------------------------------------------------------------------------
@@ -18,39 +18,53 @@ interface TourStep {
 
 const STEPS: TourStep[] = [
   {
-    target: '[data-tour="more-tools-btn"]',
-    title: 'Optional Site Boundary',
-    body: 'Use More Tools > Site Boundary when you want a parcel-wide planning and landscaping scope. You can also start directly with a park, building, or street.',
+    target: '[data-tour="tool-buildings"]',
+    title: 'Start with one building',
+    body: 'Choose Building and click at least 3 corners on the map. Press Enter or double-click to finish. On a phone, move the map under the crosshair, place points, then tap Finish. Try this after closing the guide.',
+    animation: 'place-building',
+    placement: 'top',
+  },
+  {
+    target: '[data-tour="tool-parksPlazas"]',
+    title: 'Add a park',
+    body: 'Choose Park and draw an outline the same way. Leave room for people to walk, gather and play. Backspace removes the last point while drawing; Escape clears an unfinished drawing.',
     animation: 'draw-boundary',
     placement: 'top',
   },
   {
     target: '[data-tour="tool-streetsPaths"]',
-    title: 'Draw Roads & Paths',
-    body: 'Click to draw a path for streets and walkways. Each click adds a point — double-click or press Enter to finish the road.',
+    title: 'Connect places with a road',
+    body: 'Choose Road and click at least 2 points along its route. Each click adds a bend. Press Enter or double-click to finish, then use Select to change the street or path settings.',
     animation: 'draw-road',
     placement: 'top',
   },
   {
-    target: '[data-tour="tool-buildings"]',
-    title: 'Place Buildings',
-    body: 'Draw polygons to place building zones. If you added a site boundary, keep them inside it. Click to add corners, double-click or press Enter to finish.',
-    animation: 'place-building',
+    target: '[data-tour="select-btn"]',
+    title: 'Make it yours',
+    body: 'Choose Select, then click a drawing to edit its settings. Try a different building type or number of floors. Undo and Redo help you explore. More Tools holds optional site boundaries, measuring and other drawing tools.',
     placement: 'top',
   },
   {
-    target: '[data-tour="select-btn"]',
-    title: 'Select & Customize',
-    body: 'Switch to Select mode to click on any zone you\'ve drawn. You can edit its properties — height, style, materials, and more.',
+    target: '[data-tour="generate-3d-btn"]',
+    title: 'Build your 3D scene',
+    body: 'When your drawings are ready, choose Generate 3D. Review the scene from different angles. If you change a drawing afterward, generate the scene again before making your final image.',
     placement: 'top',
   },
   {
     target: '[data-tour="ai-render-btn"]',
-    title: 'Generate AI Render',
-    body: 'Once your zones are placed, hit AI Render to bring your site plan to life with a photorealistic aerial view.',
+    title: 'Create a presentation image',
+    body: 'Choose AI Render after generating 3D, then review the image settings before starting. Check the result against your design before presenting it. Start small: one building, one park and one road. Reopen this guide from Help whenever you need it.',
     animation: 'ai-render',
     placement: 'top',
   },
+];
+
+const PLACEMENT_STEPS: TourStep[] = [
+  {target:'[data-tour="place-infill_home"]',title:'Pick and place a home',body:'Choose Infill homes, move the preview over an empty part of your site, then click to place it. On a phone, move the map under the crosshair and tap Place at centre. Red means the object does not fit there.',placement:'right'},
+  {target:'[data-tour="place-neighbourhood_park"]',title:'Make room for a park',body:'Choose Neighbourhood park and place it beside your homes. The park appears in 3D automatically. Keep some space for streets and connections.',placement:'right'},
+  {target:'[data-tour="select-btn"]',title:'Reshape your ideas',body:'Select an object. Drag its body to move, a white corner to resize, or the orange handle to rotate. You can also enter dimensions in the side panel. A wider home plot fits more whole houses; a park rearranges its paths and equipment.',placement:'right'},
+  {target:'[data-tour="tool-streetsPaths"]',title:'Connect the places',body:'Choose Road, click at least two points along the route, then press Enter. Roads update in 3D automatically. More Tools contains custom outlines and optional planning tools.',placement:'right'},
+  {target:'[data-tour="ai-render-btn"]',title:'Present your community',body:'Once your objects have saved and 3D has updated, choose Render. Review your image settings before starting. Undo and Redo let you explore alternatives; your placed objects remain in the saved project.',placement:'right'},
 ];
 
 // ---------------------------------------------------------------------------
@@ -225,7 +239,7 @@ function useDrawAnimation(canvasRef: React.RefObject<HTMLCanvasElement | null>, 
 function StepAnimation({ type }: { type: TourStep['animation'] }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  const config: DrawConfig | null = type === 'draw-boundary' ? {
+  const config: DrawConfig | null = useMemo(() => type === 'draw-boundary' ? {
     shapes: [{
       points: [[60,120],[100,25],[240,18],[340,55],[320,130],[160,140]],
       closed: true,
@@ -263,7 +277,7 @@ function StepAnimation({ type }: { type: TourStep['animation'] }) {
     msPerVertex: 770,
     msFill: 660,
     msPause: 1300,
-  } : null;
+  } : null, [type]);
 
   useDrawAnimation(canvasRef, config ?? {
     shapes: [],
@@ -369,258 +383,151 @@ function SpotlightOverlay({ rect }: { rect: DOMRect | null }) {
   );
 }
 
-// ---------------------------------------------------------------------------
-// Click blocker — prevents clicks passing through the overlay except on
-// the spotlighted element area
-// ---------------------------------------------------------------------------
-
-function ClickBlocker({ rect }: { rect: DOMRect | null }) {
-  const handleClick = useCallback((e: React.MouseEvent) => {
-    // If clicking inside the spotlight hole, let it through
-    if (rect) {
-      const pad = 8;
-      const x = rect.left - pad;
-      const y = rect.top - pad;
-      const w = rect.width + pad * 2;
-      const h = rect.height + pad * 2;
-      if (e.clientX >= x && e.clientX <= x + w && e.clientY >= y && e.clientY <= y + h) {
-        return; // allow
-      }
-    }
-    e.stopPropagation();
-    e.preventDefault();
-  }, [rect]);
-
-  return (
-    <div
-      className="fixed inset-0 z-[998]"
-      onClick={handleClick}
-    />
-  );
-}
-
-// ---------------------------------------------------------------------------
-// Tooltip card
-// ---------------------------------------------------------------------------
-
 interface TooltipProps {
   step: TourStep;
   stepIndex: number;
   total: number;
   targetRect: DOMRect | null;
   onNext: () => void;
+  onBack: () => void;
   onSkip: () => void;
 }
-
-function TourTooltip({ step, stepIndex, total, targetRect, onNext, onSkip }: TooltipProps) {
+function TourTooltip({ step, stepIndex, total, targetRect, onNext, onBack, onSkip }: TooltipProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const [pos, setPos] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
-
+  const [pos, setPos] = useState({ top: 12, left: 12 });
+  const [reducedMotion, setReducedMotion] = useState(() => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false);
+  useEffect(() => {
+    const media = window.matchMedia?.('(prefers-reduced-motion: reduce)');
+    const update = () => setReducedMotion(Boolean(media?.matches));
+    media?.addEventListener?.('change', update);
+    return () => media?.removeEventListener?.('change', update);
+  }, []);
   useLayoutEffect(() => {
-    if (!targetRect || !ref.current) return;
-    const card = ref.current.getBoundingClientRect();
+    const card = ref.current?.getBoundingClientRect();
+    if (!card) return;
     const pad = 16;
-
-    let top = 0;
-    let left = targetRect.left + targetRect.width / 2 - card.width / 2;
-
-    const placement = step.placement ?? 'top';
-    if (placement === 'top') {
+    let left = (window.innerWidth - card.width) / 2;
+    let top = (window.innerHeight - card.height) / 2;
+    if (targetRect) {
+      left = targetRect.left + targetRect.width / 2 - card.width / 2;
       top = targetRect.top - card.height - pad;
-      // If not enough room above, go below
       if (top < 12) top = targetRect.bottom + pad;
-    } else {
-      top = targetRect.bottom + pad;
-      // If not enough room below, go above
-      if (top + card.height > window.innerHeight - 12) {
-        top = targetRect.top - card.height - pad;
-      }
     }
+    setPos({
+      left: Math.max(12, Math.min(left, window.innerWidth - card.width - 12)),
+      top: Math.max(12, Math.min(top, window.innerHeight - card.height - 12)),
+    });
+  }, [targetRect, stepIndex, reducedMotion]);
+  useEffect(() => {
+    const previous = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    ref.current?.focus();
+    return () => previous?.focus();
+  }, []);
+  useEffect(() => {
+    const handler = (event: KeyboardEvent) => {
+      // The guide is a modal: its keys must not finish drawings or trigger map shortcuts.
+      event.stopImmediatePropagation();
+      if (event.key === 'Escape') { event.preventDefault(); onSkip(); }
+      else if (event.key === 'ArrowRight') { event.preventDefault(); onNext(); }
+      else if (event.key === 'ArrowLeft') { event.preventDefault(); onBack(); }
+      else if (event.key === 'Tab') {
+        const buttons = [...(ref.current?.querySelectorAll<HTMLButtonElement>('button:not(:disabled)') ?? [])];
+        const first = buttons[0];
+        const last = buttons[buttons.length - 1];
+        if (!first) { event.preventDefault(); return; }
+        if (event.shiftKey && (document.activeElement === first || document.activeElement === ref.current)) {
+          event.preventDefault(); last.focus();
+        } else if (!event.shiftKey && (document.activeElement === last || document.activeElement === ref.current)) {
+          event.preventDefault(); first.focus();
+        } else if (!ref.current?.contains(document.activeElement)) {
+          event.preventDefault(); first.focus();
+        }
+      }
+      // Enter/Space retain native button behavior, so Back never also advances.
+    };
+    window.addEventListener('keydown', handler, true);
+    return () => window.removeEventListener('keydown', handler, true);
+  }, [onNext, onBack, onSkip]);
 
-    // Clamp to viewport
-    left = Math.max(12, Math.min(left, window.innerWidth - card.width - 12));
-    top = Math.max(12, Math.min(top, window.innerHeight - card.height - 12));
-
-    setPos({ top, left });
-  }, [targetRect, step.placement, stepIndex]);
-
-  const isLast = stepIndex === total - 1;
-
-  return (
-    <div
-      ref={ref}
-      className="fixed z-[999] w-80 rounded-xl bg-white shadow-2xl ring-1 ring-black/5 transition-all duration-300"
-      style={{ top: pos.top, left: pos.left }}
-    >
-      {/* Step animation */}
-      {step.animation && (
-        <div className="px-4 pt-4">
-          <StepAnimation type={step.animation} />
-        </div>
-      )}
-
-      <div className="px-4 pt-3 pb-4">
-        {/* Step counter */}
-        <div className="mb-1 flex items-center gap-2">
-          <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-amber-500 text-[10px] font-bold text-white">
-            {stepIndex + 1}
-          </span>
-          <span className="text-[11px] font-medium text-primary-950/40">
-            Step {stepIndex + 1} of {total}
-          </span>
-        </div>
-
-        <h3 className="text-sm font-bold text-primary-950">{step.title}</h3>
-        <p className="mt-1 text-xs leading-relaxed text-primary-950/60">{step.body}</p>
-
-        {/* Progress dots */}
-        <div className="mt-3 flex items-center gap-1">
-          {Array.from({ length: total }).map((_, i) => (
-            <div
-              key={i}
-              className={`h-1.5 rounded-full transition-all duration-300 ${
-                i === stepIndex ? 'w-6 bg-amber-500' : i < stepIndex ? 'w-1.5 bg-amber-500/40' : 'w-1.5 bg-primary-950/10'
-              }`}
-            />
-          ))}
-        </div>
-
-        {/* Buttons */}
-        <div className="mt-3 flex items-center justify-between">
-          <button
-            onClick={onSkip}
-            className="text-xs font-medium text-primary-950/40 hover:text-primary-950/70 transition"
-          >
-            Skip tour
-          </button>
-          <button
-            onClick={onNext}
-            className="rounded-lg bg-amber-500 px-4 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-amber-400 transition"
-          >
-            {isLast ? 'Get Started' : 'Next'}
-          </button>
+  const buttonClass = 'min-h-11 rounded-lg px-3 py-2 text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900';
+  return <div ref={ref} role="dialog" aria-modal="true" aria-labelledby="cityprompt-tour-title"
+    aria-describedby="cityprompt-tour-body" tabIndex={-1}
+    className="fixed z-[999] max-h-[calc(100dvh-24px)] w-96 max-w-[calc(100vw-24px)] overflow-y-auto rounded-xl bg-white text-slate-900 shadow-2xl outline-none"
+    style={{ top: pos.top, left: pos.left }}>
+    {step.animation && !reducedMotion && <div aria-hidden className="px-5 pt-4"><StepAnimation type={step.animation} /></div>}
+    <div className="p-5">
+      <p className="text-sm font-semibold text-slate-600" aria-live="polite">Quick guide · Step {stepIndex + 1} of {total}</p>
+      <h2 id="cityprompt-tour-title" className="mt-2 text-xl font-bold">{step.title}</h2>
+      <p id="cityprompt-tour-body" className="mt-2 text-base leading-relaxed text-slate-700">{step.body}</p>
+      <p className="mt-3 text-xs text-slate-500">Close the guide to try it. Nothing is generated during this guide.</p>
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-2">
+        <button type="button" onClick={onSkip} className={buttonClass + ' text-slate-700 hover:bg-slate-100'}>Close guide</button>
+        <div className="flex gap-2">
+          <button type="button" disabled={stepIndex === 0} onClick={onBack} className={buttonClass + ' border border-slate-300 disabled:opacity-40 hover:bg-slate-100'}>Back</button>
+          <button type="button" onClick={onNext} className={buttonClass + ' bg-slate-900 text-white hover:bg-slate-700'}>{stepIndex === total - 1 ? 'Start drawing' : 'Next'}</button>
         </div>
       </div>
     </div>
-  );
+  </div>;
 }
 
-// ---------------------------------------------------------------------------
-// Main OnboardingTour component
-// ---------------------------------------------------------------------------
-
 const STORAGE_KEY = 'onboarding-tour-completed';
-
 interface OnboardingTourProps {
-  /** Force-show even if previously dismissed */
+  placementMode?: boolean;
+  /** Force-show even if previously dismissed; false keeps the guide closed. */
   forceShow?: boolean;
   onComplete?: () => void;
 }
-
-export function OnboardingTour({ forceShow, onComplete }: OnboardingTourProps) {
+export function OnboardingTour({ forceShow, onComplete, placementMode = false }: OnboardingTourProps) {
+  const steps = placementMode ? PLACEMENT_STEPS : STEPS;
   const [active, setActive] = useState(false);
   const [stepIndex, setStepIndex] = useState(0);
   const [targetRect, setTargetRect] = useState<DOMRect | null>(null);
   const rafRef = useRef<number>(0);
-
-  // Show tour on mount if not completed, or when forceShow changes
   useEffect(() => {
-    if (forceShow) {
-      setActive(true);
-      setStepIndex(0);
-      return;
-    }
+    if (forceShow === false) { setActive(false); return; }
+    if (forceShow) { setActive(true); setStepIndex(0); return; }
     try {
       if (localStorage.getItem(STORAGE_KEY) !== 'true') {
-        const t = setTimeout(() => setActive(true), 800);
-        return () => clearTimeout(t);
+        const timer = setTimeout(() => setActive(true), 800);
+        return () => clearTimeout(timer);
       }
-    } catch {
-      // ignore
-    }
+    } catch { /* Help can still open the guide when browser storage is unavailable. */ }
   }, [forceShow]);
-
-  // Continuously track the target element position via rAF so the
-  // spotlight stays locked to the button even when scrolling
   useEffect(() => {
     if (!active) return;
-
-    const step = STEPS[stepIndex];
-    if (!step) return;
-
+    const step = steps[stepIndex];
+    document.querySelector(step.target)?.scrollIntoView?.({ block: 'nearest', inline: 'nearest' });
     const track = () => {
-      const el = document.querySelector(step.target);
-      if (el) {
-        const r = el.getBoundingClientRect();
-        setTargetRect((prev) => {
-          // Only update state if the rect actually changed to avoid re-renders
-          if (
-            prev &&
-            Math.abs(prev.top - r.top) < 0.5 &&
-            Math.abs(prev.left - r.left) < 0.5 &&
-            Math.abs(prev.width - r.width) < 0.5 &&
-            Math.abs(prev.height - r.height) < 0.5
-          ) {
-            return prev;
-          }
-          return r;
-        });
-      } else {
-        setTargetRect(null);
-      }
+      const element = document.querySelector(step.target);
+      const rect = element?.getBoundingClientRect();
+      const visible = rect && rect.width > 0 && rect.height > 0 ? rect : null;
+      setTargetRect((previous) => {
+        if (previous && visible && Math.abs(previous.top - visible.top) < 0.5 &&
+          Math.abs(previous.left - visible.left) < 0.5 && Math.abs(previous.width - visible.width) < 0.5 &&
+          Math.abs(previous.height - visible.height) < 0.5) return previous;
+        return visible;
+      });
       rafRef.current = requestAnimationFrame(track);
     };
-
-    rafRef.current = requestAnimationFrame(track);
+    track();
     return () => cancelAnimationFrame(rafRef.current);
-  }, [active, stepIndex]);
-
+  }, [active, stepIndex, steps]);
   const dismiss = useCallback(() => {
     setActive(false);
-    try {
-      localStorage.setItem(STORAGE_KEY, 'true');
-    } catch {
-      // ignore
-    }
+    try { localStorage.setItem(STORAGE_KEY, 'true'); } catch { /* optional preference */ }
     onComplete?.();
   }, [onComplete]);
-
   const handleNext = useCallback(() => {
-    if (stepIndex < STEPS.length - 1) {
-      setStepIndex((i) => i + 1);
-    } else {
-      dismiss();
-    }
-  }, [stepIndex, dismiss]);
-
-  // Keyboard: Escape to skip, Enter/Arrow-Right to advance
-  useEffect(() => {
-    if (!active) return;
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') dismiss();
-      if (e.key === 'Enter' || e.key === 'ArrowRight') handleNext();
-    };
-    window.addEventListener('keydown', handler);
-    return () => window.removeEventListener('keydown', handler);
-  }, [active, dismiss, handleNext]);
-
+    if (stepIndex < steps.length - 1) setStepIndex((index) => index + 1);
+    else dismiss();
+  }, [stepIndex, dismiss, steps]);
+  const handleBack = useCallback(() => setStepIndex((index) => Math.max(0, index - 1)), []);
   if (!active) return null;
-
-  // Render via portal to document.body so that position:fixed works correctly
-  // even when parent elements have CSS transforms (e.g. Mapbox containers)
-  return createPortal(
-    <>
-      <SpotlightOverlay rect={targetRect} />
-      <ClickBlocker rect={targetRect} />
-      <TourTooltip
-        step={STEPS[stepIndex]}
-        stepIndex={stepIndex}
-        total={STEPS.length}
-        targetRect={targetRect}
-        onNext={handleNext}
-        onSkip={dismiss}
-      />
-    </>,
-    document.body,
-  );
+  return createPortal(<>
+    <SpotlightOverlay rect={targetRect} />
+    <div aria-hidden className="fixed inset-0 z-[998]" />
+    <TourTooltip step={steps[stepIndex]} stepIndex={stepIndex} total={steps.length}
+      targetRect={targetRect} onNext={handleNext} onBack={handleBack} onSkip={dismiss} />
+  </>, document.body);
 }

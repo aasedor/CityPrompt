@@ -62,6 +62,9 @@ function resolveEnvDir(): string {
 }
 
 export default defineConfig({
+  // Isolated source worktrees can reuse the large, already hydrated asset
+  // directory without duplicating it or changing production asset URLs.
+  publicDir: process.env.CITYPROMPT_PUBLIC_DIR || 'public',
   // Worktrees share browser API keys through the repository's ignored Git
   // common directory. VITE_ENV_DIR and a worktree-root .env remain explicit
   // overrides for unusual local or CI setups.
@@ -77,15 +80,11 @@ export default defineConfig({
     watch: {
       usePolling: true,
       interval: 1000,
-      // Do NOT watch the generated archetype/entourage image dirs. The polling
-      // watcher repeatedly accesses these 1000+ binaries every second, which on
-      // Windows collides with `git stash` / branch-switch file deletions and
-      // causes "failed to remove" lock failures (see CLAUDE.md). These are static
-      // generated assets that don't need HMR, so ignoring them is free.
-      ignored: [
-        '**/public/archetypes/**',
-        '**/public/entourage/**',
-      ],
+      // Public assets are served verbatim and never need HMR. Polling the
+      // hydrated catalogue (more than 25,000 files locally) every second makes
+      // Windows/OneDrive development needlessly expensive and can hold file
+      // handles during branch switches.
+      ignored: ['**/public/**'],
     },
     proxy: {
       '/api': {
@@ -98,14 +97,26 @@ export default defineConfig({
     },
   },
   build: {
+    // Keep the route graph available to the bundle budget check. Render does
+    // not serve this file to application code, and the file is only a few KB.
+    manifest: true,
     // Performance budget: warn if any chunk exceeds 500KB
     chunkSizeWarningLimit: 500,
     rollupOptions: {
       output: {
-        manualChunks: {
-          three: ['three'],
-          'react-three': ['@react-three/fiber', '@react-three/drei'],
-          mapbox: ['mapbox-gl'],
+        onlyExplicitManualChunks: true,
+        // Assign packages by their own module id. Rollup's object form also
+        // absorbs dependencies of each entry, which pulled React into the
+        // react-three chunk and made every page download the 3D runtime.
+        manualChunks(id) {
+          const normalizedId = id.replace(/\\/g, '/');
+          if (normalizedId.includes('/node_modules/@react-three/')) return 'react-three';
+          if (
+            normalizedId.includes('/node_modules/three/')
+            || normalizedId.includes('/node_modules/three-stdlib/')
+          ) return 'three';
+          if (normalizedId.includes('/node_modules/mapbox-gl/')) return 'mapbox';
+          return undefined;
         },
       },
     },

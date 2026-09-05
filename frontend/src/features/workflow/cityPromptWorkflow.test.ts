@@ -52,6 +52,12 @@ function compiledBuilding(): SiteZone {
 }
 
 describe('deriveCityPromptWorkflow', () => {
+  it('allows an explicitly object-only scene without requiring automatic landscaping', () => {
+    const boundary = activeBoundary();
+    boundary.properties = { community_3d_landscape_mode: 'placed_objects_only' };
+    expect(deriveCityPromptWorkflow([boundary, compiledBuilding()]).canRender).toBe(true);
+    expect(deriveCityPromptWorkflow([boundary, zone('draft','building')]).canRender).toBe(false);
+  });
   it('starts with the site boundary', () => {
     const state = deriveCityPromptWorkflow([]);
     expect(state.currentStep).toBe(1);

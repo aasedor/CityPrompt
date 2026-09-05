@@ -1,0 +1,834 @@
+{
+  "schema": "cityprompt.rlasm.independent-architectural-clay-review@1",
+  "candidate": "calgary-side-by-side-duplex-clay-v004",
+  "candidate_directory": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004",
+  "archetype_id": "calgary_modern_infill_house",
+  "variant_id": "infill_duplex",
+  "reviewer": {
+    "id": "/root/duplex_clay_review",
+    "role": "separate independent RLASM architectural-clay verifier",
+    "authored_candidate": false,
+    "modified_geometry": false
+  },
+  "date_utc": "2026-09-05T17:34:35.039197+00:00",
+  "method": "RLASM v6.1",
+  "status": "architectural_clay_reviewed",
+  "result": "PASS_ARCHITECTURAL_CLAY_ONLY",
+  "decision": "The exact v004 GLB and evidence package pass a complete independent source-locked architectural-clay review with zero unresolved P0 and zero unresolved P1 findings. D01-D06 are closed in fresh complete-image regression. This decision does not approve a textured keeper, runtime seed, catalogue activation or runtime integration.",
+  "scope": {
+    "type": "holistic architectural-clay review",
+    "holistic": true,
+    "review_profile": "architectural_clay",
+    "exact_scope": "Adversarial review of the complete exact-variant texture-free GLB reimport: source identity/ratios, footprint and above-grade floor hierarchy, every exterior elevation, roof topology/weathering closure, full envelope, front/side/rear openings, optics and depth, contacts/supports, floors/landings/circulation, inferred residential program, semantic material/identity ownership, neutral cameras, phone comparisons, provenance and D01-D06 regressions.",
+    "excluded_approvals": [
+      "textured keeper",
+      "photoreal materials",
+      "engineering",
+      "survey",
+      "below-grade occupied basement reconstruction",
+      "terrain fit",
+      "continuous scaling",
+      "generic sibling reuse",
+      "runtime integration",
+      "runtime activation",
+      "catalogue promotion"
+    ]
+  },
+  "model": {
+    "path": "calgary-side-by-side-duplex-clay-v004.glb",
+    "sha256": "1414b17d3ebec4aa87529da16dcc3a8f10305b51eaa3d129fb5a5c6c0d296f92",
+    "bytes": 3110128,
+    "textures": 0,
+    "images": 0,
+    "render_source": "actual exact GLB reimport; no geometry/material replacement",
+    "native_bounds_authoring_xyz_m": [
+      [
+        -6.670000076293945,
+        -11.300000190734863,
+        0.0
+      ],
+      [
+        6.670000076293945,
+        10.17199993133545,
+        9.0
+      ]
+    ],
+    "complete_native_extent_m": [
+      13.34,
+      21.472,
+      9.0
+    ],
+    "extent_note": "Includes coping, side projections, front walks and rear stairs. Wall dimensions12.2 x15.6 m differ from the complete delivered extent. Highest actual point9.0 m;8.84 m is a nominal perimeter roof datum. Fixed native scale only.",
+    "above_grade_visible_storeys": 2,
+    "dwelling_units": 2
+  },
+  "model_sha256": "1414b17d3ebec4aa87529da16dcc3a8f10305b51eaa3d129fb5a5c6c0d296f92",
+  "inspected_files": [
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\sources\\variant_2.png",
+      "bytes": 1403041,
+      "sha256": "e5a2f4d6f6836643c65b5ee740c2b08f12e3ba9f8c52ac991eadf00d2a5447dc",
+      "inspection": "Reopened native pixels with view_image detail=original for v004; compared to matched render roles",
+      "role": "front locked source",
+      "native_dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\sources\\variant_2_angle_60.jpg",
+      "bytes": 955606,
+      "sha256": "b9b67f5f53d507681994c506213a73986c8e55553576cf5da997ff7e6376b74f",
+      "inspection": "Reopened native pixels with view_image detail=original for v004; compared to matched render roles",
+      "role": "oblique locked source"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\sources\\variant_2_angle_90.jpg",
+      "bytes": 858902,
+      "sha256": "747c1802087cf9ace4c2ded7aee7af91f11f3c0b94257d9c772117c612078002",
+      "inspection": "Reopened native pixels with view_image detail=original for v004; compared to matched render roles",
+      "role": "top locked source"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\renders\\front.png",
+      "bytes": 1339524,
+      "sha256": "ceee14563626e331d4f728d3fdbeb27de0b9046d36f163dfc1aa5ae374f30465",
+      "inspection": "Individually opened complete native 1440x1080 image with view_image detail=original; fresh v004 visual inspection",
+      "role": "front exact GLB reimport render",
+      "native_dimensions_px": [
+        1440,
+        1080
+      ]
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\renders\\front_corner.png",
+      "bytes": 1428102,
+      "sha256": "93e5bfd0b16bf77dca81929bc161f5f5f71a6f1a6656ca77d3f402df967333eb",
+      "inspection": "Individually opened complete native 1440x1080 image with view_image detail=original; fresh v004 visual inspection",
+      "role": "front_corner exact GLB reimport render",
+      "native_dimensions_px": [
+        1440,
+        1080
+      ]
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\renders\\aerial.png",
+      "bytes": 1477773,
+      "sha256": "f6030dbc8266f8bfc682504bbeaf62ab8bae00a46b887e10e2746b46a416d6f4",
+      "inspection": "Individually opened complete native 1440x1080 image with view_image detail=original; fresh v004 visual inspection",
+      "role": "aerial exact GLB reimport render",
+      "native_dimensions_px": [
+        1440,
+        1080
+      ]
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\renders\\top.png",
+      "bytes": 1257634,
+      "sha256": "f063c6fe49dce513175a479664fcf867e2da88777545d5b65badf8a2c8bedbcf",
+      "inspection": "Individually opened complete native 1440x1080 image with view_image detail=original; fresh v004 visual inspection",
+      "role": "top exact GLB reimport render",
+      "native_dimensions_px": [
+        1440,
+        1080
+      ]
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\renders\\left_side.png",
+      "bytes": 1329872,
+      "sha256": "84f60fefa6cfcbc6de32af400d57289d541570df95592c99fb3a3bd0842c7e8a",
+      "inspection": "Individually opened complete native 1440x1080 image with view_image detail=original; fresh v004 visual inspection",
+      "role": "left_side exact GLB reimport render",
+      "native_dimensions_px": [
+        1440,
+        1080
+      ]
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\renders\\right_side.png",
+      "bytes": 1325562,
+      "sha256": "4ef9d6d0b0c876da1a6c998f01da4c7e0f663bfbe0f0ffd64a3cd32a97ffe39b",
+      "inspection": "Individually opened complete native 1440x1080 image with view_image detail=original; fresh v004 visual inspection",
+      "role": "right_side exact GLB reimport render",
+      "native_dimensions_px": [
+        1440,
+        1080
+      ]
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\renders\\rear.png",
+      "bytes": 1335224,
+      "sha256": "fb99c82ea08528bc52711d0100425725ac500927551486584bc5091d3ea75a47",
+      "inspection": "Individually opened complete native 1440x1080 image with view_image detail=original; fresh v004 visual inspection",
+      "role": "rear exact GLB reimport render",
+      "native_dimensions_px": [
+        1440,
+        1080
+      ]
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\renders\\rear_side.png",
+      "bytes": 1443978,
+      "sha256": "2e96ca15cba0ae2ddcf19ac32304f7fcb3ab436ec39fb6b2ca7214098c3e5549",
+      "inspection": "Individually opened complete native 1440x1080 image with view_image detail=original; fresh v004 visual inspection",
+      "role": "rear_side exact GLB reimport render",
+      "native_dimensions_px": [
+        1440,
+        1080
+      ]
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\renders\\facade_close.png",
+      "bytes": 1643718,
+      "sha256": "94846ff8d64eebb0b40417865b2f2d04f83bf8287870d729bb5661e3e9442d78",
+      "inspection": "Individually opened complete native 1440x1080 image with view_image detail=original; fresh v004 visual inspection",
+      "role": "facade_close exact GLB reimport render",
+      "native_dimensions_px": [
+        1440,
+        1080
+      ]
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\renders\\architecture_close.png",
+      "bytes": 1492901,
+      "sha256": "67dc805f6a951ddb8fb58d3431b2cf6ebf0419b99b63694c5e4afdbb181e75a7",
+      "inspection": "Individually opened complete native 1440x1080 image with view_image detail=original; fresh v004 visual inspection",
+      "role": "architecture_close exact GLB reimport render",
+      "native_dimensions_px": [
+        1440,
+        1080
+      ]
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\renders\\glass_close.png",
+      "bytes": 1481426,
+      "sha256": "4ba568bf2d0845a749e9e5f692c4876a701170f851ef20e6e46be0dce58ee47d",
+      "inspection": "Individually opened complete native 1440x1080 image with view_image detail=original; fresh v004 visual inspection",
+      "role": "glass_close exact GLB reimport render",
+      "native_dimensions_px": [
+        1440,
+        1080
+      ]
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\renders\\roof_contact.png",
+      "bytes": 1519320,
+      "sha256": "fd412033dd1e72ad4598969006285fe30318cd8f26442e8b65a9a99dc44aeb17",
+      "inspection": "Individually opened complete native 1440x1080 image with view_image detail=original; fresh v004 visual inspection",
+      "role": "roof_contact exact GLB reimport render",
+      "native_dimensions_px": [
+        1440,
+        1080
+      ]
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\renders\\side_projection.png",
+      "bytes": 1427106,
+      "sha256": "5e645719ff69780492d151cf44dd1a493bd4439925ed50b69751020d6adb97e4",
+      "inspection": "Individually opened complete native 1440x1080 image with view_image detail=original; fresh v004 visual inspection",
+      "role": "side_projection exact GLB reimport render",
+      "native_dimensions_px": [
+        1440,
+        1080
+      ]
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\boards\\locked-source-board.png",
+      "bytes": 1522209,
+      "sha256": "d6bd0fa1395f46315f16a600c04d7128f041be68cd91f3b273becfe8feb4c08c",
+      "inspection": "Opened complete board with view_image detail=original; inspected labels, source/model comparisons and visibility",
+      "role": "comparison evidence",
+      "native_dimensions_px": [
+        1800,
+        570
+      ]
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\boards\\phone-source-comparison.png",
+      "bytes": 1630044,
+      "sha256": "78ea74f8f06d6ab0bc5bf47f6696007106b3156e21ebcbbf9a24983b698d1032",
+      "inspection": "Opened complete board with view_image detail=original; inspected labels, source/model comparisons and visibility",
+      "role": "comparison evidence",
+      "native_dimensions_px": [
+        1080,
+        1920
+      ]
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\boards\\phone-construction.png",
+      "bytes": 1023699,
+      "sha256": "18eba17161de5feba5ddac3a66143e258a9e04bfcf87cc88597a9950d78ca3b2",
+      "inspection": "Opened complete board with view_image detail=original; inspected labels, source/model comparisons and visibility",
+      "role": "comparison evidence",
+      "native_dimensions_px": [
+        1080,
+        1920
+      ]
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\boards\\all-views-contact.png",
+      "bytes": 1535127,
+      "sha256": "287d7fb3110f9bafb55b28bbdf75726cb4ea6afc5d220d50b7605badb2f2753e",
+      "inspection": "Opened complete board with view_image detail=original; inspected labels, source/model comparisons and visibility",
+      "role": "comparison evidence",
+      "native_dimensions_px": [
+        1920,
+        1690
+      ]
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\prework-manifest.json",
+      "bytes": 9779,
+      "sha256": "03a0353adc0e6333bc9a98ff73b1d2ffd3339102f03f45aa26cb13973710bb4a",
+      "inspection": "Read/parsed supporting structured evidence; cross-checked source, hashes, dimensions, camera roster, aperture and lifecycle evidence",
+      "role": "supporting evidence"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\source-entry.json",
+      "bytes": 1215,
+      "sha256": "432363bbde19e73639fef82bc7aec96e70347a66ad274dfef547cc810ae2726f",
+      "inspection": "Read/parsed supporting structured evidence; cross-checked source, hashes, dimensions, camera roster, aperture and lifecycle evidence",
+      "role": "supporting evidence"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\build-report.json",
+      "bytes": 166025,
+      "sha256": "64b039e334c7416c47bb11742252b494cac9edbc53c60fdb431d978862fbba40",
+      "inspection": "Read/parsed supporting structured evidence; cross-checked source, hashes, dimensions, camera roster, aperture and lifecycle evidence",
+      "role": "supporting evidence"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\evidence\\builder-evidence.json",
+      "bytes": 166193,
+      "sha256": "4a3925c153b4e3f8b22e93a07b1ec70c50be6475fc38d32db8a80abf8b617c37",
+      "inspection": "Read/parsed supporting structured evidence; cross-checked source, hashes, dimensions, camera roster, aperture and lifecycle evidence",
+      "role": "supporting evidence"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\evidence\\carrier-aperture-audit.json",
+      "bytes": 4431,
+      "sha256": "be4a40ed61e2fa825e8ca2f7b9f2fca746a4ffdf77702cf39141b3db602e0921",
+      "inspection": "Read/parsed supporting structured evidence; cross-checked source, hashes, dimensions, camera roster, aperture and lifecycle evidence",
+      "role": "supporting evidence"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\evidence\\delivery-verification.json",
+      "bytes": 1463,
+      "sha256": "bafd96016aafd3f42e3830b2509c0f5807ba862d429a9918cdba72757093fe41",
+      "inspection": "Read/parsed supporting structured evidence; cross-checked source, hashes, dimensions, camera roster, aperture and lifecycle evidence",
+      "role": "supporting evidence"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\boards\\layout-provenance.json",
+      "bytes": 2392,
+      "sha256": "5493817e305d42d56dbe7fdc54c5cdaf5970b3b2cf98f391ea199033bdc7c452",
+      "inspection": "Read/parsed supporting structured evidence; cross-checked source, hashes, dimensions, camera roster, aperture and lifecycle evidence",
+      "role": "supporting evidence"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\review\\builder-visual-review.json",
+      "bytes": 962,
+      "sha256": "ab989f97e3128e33c7d44e4f653ee9f490fe80f83b3779b5ac4eb87bedecd6ea",
+      "inspection": "Read/parsed supporting structured evidence; cross-checked source, hashes, dimensions, camera roster, aperture and lifecycle evidence",
+      "role": "supporting evidence"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\scripts\\build.py",
+      "bytes": 20041,
+      "sha256": "79c5f681224f03e50175fa8d7e4953e708afacd6970b37e0910ec3cadd3962ba",
+      "inspection": "Read construction/export/reimport sections in the review sequence; compared v003/v004 build script and verified unchanged shared-core hash",
+      "role": "construction/provenance"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\scripts\\clay_core.py",
+      "bytes": 26464,
+      "sha256": "19c432bdf42ce005a540d23776fcba1a860aa6101e3940eec8dd505f3187de33",
+      "inspection": "Read construction/export/reimport sections in the review sequence; compared v003/v004 build script and verified unchanged shared-core hash",
+      "role": "construction/provenance"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\calgary-side-by-side-duplex-clay-v004.glb",
+      "bytes": 3110128,
+      "sha256": "1414b17d3ebec4aa87529da16dcc3a8f10305b51eaa3d129fb5a5c6c0d296f92",
+      "inspection": "Parsed GLB JSON and binary POSITION accessors read-only; checked clay delivery and positive central coping contact; visual proof is the exact-GLB reimport render set",
+      "role": "delivered model"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v001\\review\\builder-visual-review.json",
+      "bytes": 661,
+      "sha256": "82747cdc6d358810d1dfea4a8f2807bcf1b0c0e567dc711e74e0eb32787f163c",
+      "inspection": "Read prior finite blocker list during review sequence; checked all findings against fresh v004 pixels",
+      "role": "immutable prior review"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v002\\review\\builder-visual-review.json",
+      "bytes": 694,
+      "sha256": "897521c3b9ac25ed0e749fb1afb6378b6f30129f27c330a3cd27bab153c1287c",
+      "inspection": "Read prior finite blocker list during review sequence; checked all findings against fresh v004 pixels",
+      "role": "immutable prior review"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v003\\review\\builder-visual-review.json",
+      "bytes": 895,
+      "sha256": "567b26b46af2b354623f23b9ab09f03b3965068b2a8792d08ae062a4108819a6",
+      "inspection": "Read prior finite blocker list during review sequence; checked all findings against fresh v004 pixels",
+      "role": "immutable prior review"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v003\\review\\independent-visual-review.json",
+      "bytes": 36800,
+      "sha256": "ae7dda5655137d51407bf20295b6d98e2dba9f288baaacc4652916cbc2246621",
+      "inspection": "Read immutable v003 independent decision and finite D05/D06 list; preserve unchanged",
+      "role": "previous independent review"
+    },
+    {
+      "path": "C:\\dev\\CityPrompt-place\\AGENTS.md",
+      "bytes": 2980,
+      "sha256": "51c76b1d2b93836b47718baa72e6d5bf7f0afbbb0f01cb40b8144096aeacb654",
+      "inspection": "Read in this continuous independent review sequence; unchanged SHA-256 reverified for v004",
+      "role": "review authority"
+    },
+    {
+      "path": "C:\\dev\\CityPrompt-place\\CLAUDE.md",
+      "bytes": 9145,
+      "sha256": "dc1c2351148b99f06951ca5d54c8796ac533682f20a06b24d1595a4d45bf1041",
+      "inspection": "Read in this continuous independent review sequence; unchanged SHA-256 reverified for v004",
+      "role": "review authority"
+    },
+    {
+      "path": "C:\\dev\\CityPrompt-place\\docs\\RLASM_LATEST_METHOD.md",
+      "bytes": 24961,
+      "sha256": "98a9ed0ccfc0c995303f1099d964f55dece1b9eac4013c8cb8915403e15c4b9d",
+      "inspection": "Read in this continuous independent review sequence; unchanged SHA-256 reverified for v004",
+      "role": "review authority"
+    },
+    {
+      "path": "C:\\dev\\CityPrompt-place\\tools\\archetype_compiler\\rlasm_method.json",
+      "bytes": 8912,
+      "sha256": "94c4d58137108ac612e2e19bb06667e90701044b14d0b2eebbaf1a3322bb43fe",
+      "inspection": "Read in this continuous independent review sequence; unchanged SHA-256 reverified for v004",
+      "role": "review authority"
+    },
+    {
+      "path": "C:\\dev\\CityPrompt-place\\docs\\RLASM_REPOSITORY_POLICY.md",
+      "bytes": 5834,
+      "sha256": "9f5a875efee98ddf1984c5eb4896ea4fabd165e504e16e630fe32701d2e3c7ef",
+      "inspection": "Read in this continuous independent review sequence; unchanged SHA-256 reverified for v004",
+      "role": "review authority"
+    },
+    {
+      "path": "C:\\dev\\CityPrompt-place\\docs\\WORKSPACE_RECOVERY_2026-07-19.md",
+      "bytes": 2737,
+      "sha256": "c1f1e2b392356098b7ed63ce71ff4c537318772c36d7b15c84affff7086dc8f5",
+      "inspection": "Read in this continuous independent review sequence; unchanged SHA-256 reverified for v004",
+      "role": "review authority"
+    },
+    {
+      "path": "C:\\Users\\andre\\.codex\\skills\\rlasm-expert\\SKILL.md",
+      "bytes": 5491,
+      "sha256": "092265e3f2e0016bd75613df8b3160a4dfc77b8588bd0c74eef8beaf5a36f5b1",
+      "inspection": "Read in this continuous independent review sequence; unchanged SHA-256 reverified for v004",
+      "role": "review authority"
+    },
+    {
+      "path": "C:\\Users\\andre\\.codex\\skills\\rlasm-expert\\references\\review-contract.md",
+      "bytes": 2086,
+      "sha256": "1aac3785c193f453e6447ec62f4701464732345492fab974cd224dd38ec17f37",
+      "inspection": "Read in this continuous independent review sequence; unchanged SHA-256 reverified for v004",
+      "role": "review authority"
+    }
+  ],
+  "image_inspection": {
+    "native_render_count": 13,
+    "native_source_count": 3,
+    "phone_board_count": 2,
+    "all_mandatory_images_individually_opened": true,
+    "full_resolution_required_and_used": true,
+    "fresh_v004_review_not_carried_forward": true,
+    "metadata_used_as_visual_proof": false
+  },
+  "pixel_findings": [
+    {
+      "category": "source identity, proportions and floor hierarchy",
+      "result": "pass_architectural_clay_scope",
+      "observations": "The exact duplex reads as two homes with two visible above-grade storeys, taller upper outer glazing, paired central cedar entry recesses/slits, independent stairs, a dark centre divider and a slightly advanced right front half. Restored low glazing bands now continue the photographed base cadence. Source pixels correctly govern the prose conflict about three storeys and stucco. Absolute dimensions remain conceptual.",
+      "evidence": [
+        "sources/variant_2.png",
+        "sources/variant_2_angle_60.jpg",
+        "sources/variant_2_angle_90.jpg",
+        "renders/front.png",
+        "renders/front_corner.png",
+        "boards/phone-source-comparison.png"
+      ]
+    },
+    {
+      "category": "footprint, roof graph and complete envelope",
+      "result": "pass_architectural_clay_scope",
+      "observations": "Two continuous flat decks, raised centre division, stepped outer edges above the cedar side extensions and three small penetrations agree with the locked topology. Front, both sides, rear and rear-side show a complete building. The roof-contact and rear-side images now show solid support beneath the centre coping without the v003 daylight slot. No new roof, wall or cap discontinuity is visible.",
+      "evidence": [
+        "renders/aerial.png",
+        "renders/top.png",
+        "renders/left_side.png",
+        "renders/right_side.png",
+        "renders/rear.png",
+        "renders/rear_side.png",
+        "renders/roof_contact.png"
+      ]
+    },
+    {
+      "category": "openings, returns, optical layers and occupied depth",
+      "result": "pass_architectural_clay_scope",
+      "observations": "Main front windows, cedar entry slits, both side orientations, cedar projections and rear openings retain recessed frames, sills and physical wall-section depth. The two restored base openings show two separate optical panes, a centre mullion and recessed dark depth. They sit below the ground-floor slab and above the plinth. Large front windows show curtain strips separated from the pane and faint furniture/room depth; rear glazing reads into enclosed space. The restrained semantic-clay optics are not a photoreal glazing claim.",
+      "evidence": [
+        "renders/front.png",
+        "renders/facade_close.png",
+        "renders/architecture_close.png",
+        "renders/glass_close.png",
+        "renders/left_side.png",
+        "renders/right_side.png",
+        "renders/rear_side.png",
+        "renders/side_projection.png"
+      ]
+    },
+    {
+      "category": "stairs, walks, landings, canopies, foundation and slab contact",
+      "result": "pass_architectural_clay_scope",
+      "observations": "Front stair/walk pairs and canopies remain separate, with connected threshold landings and no duplicated floor shelf inside the cedar recess. Stair blocks touch their walk/grade and landing surfaces; rail posts meet the stair bodies. The continuous brick carriers do not expose the former occupied-slab/foundation stripe. The plinth remains below the brick base, and the new glazing does not displace it. Inferred rear stairs and rails remain grounded and connected.",
+      "evidence": [
+        "renders/architecture_close.png",
+        "renders/front_corner.png",
+        "renders/aerial.png",
+        "renders/left_side.png",
+        "renders/right_side.png",
+        "renders/rear_side.png"
+      ]
+    },
+    {
+      "category": "side projections, floors and residential program",
+      "result": "pass_with_declared_inferences",
+      "observations": "Both cedar upper bays have enclosed side/end returns, seated occupied-floor edges and recessed small openings. Two independent homes, entries and modest residential room depth remain legible. Read-only geometry review preserves independent internal stair runs with upper-slab endpoints. Rear windows/rooms, left-side opening details and hidden circulation are inferred. The shallow enclosure behind the new base bands does not claim a modeled full basement; below-grade rooms and excavations are expressly excluded.",
+      "evidence": [
+        "renders/side_projection.png",
+        "renders/rear.png",
+        "renders/rear_side.png",
+        "renders/glass_close.png",
+        "renders/architecture_close.png",
+        "scripts/build.py",
+        "prework-manifest.json"
+      ]
+    },
+    {
+      "category": "semantic materials and one-owner identity",
+      "result": "pass_architectural_clay_scope",
+      "observations": "Geometric facade bays, courses, timber joints, window cadence and roof form carry identity. Wall/timber/metal/concrete/glass zones continue around the envelope. The actual GLB contains no images or textures. PBR morphology, photographic ageing, exact source reflections and textured identity derivatives remain outside this bounded clay profile.",
+      "evidence": [
+        "renders/facade_close.png",
+        "renders/glass_close.png",
+        "renders/side_projection.png",
+        "calgary-side-by-side-duplex-clay-v004.glb"
+      ]
+    },
+    {
+      "category": "review cameras and visibility",
+      "result": "pass",
+      "observations": "All 13 mandatory native renders were individually opened afresh. Every whole-building role includes grade, the complete building/step footprint and highest termination with visible neutral margin. The low front-corner and aerial roles separately compare to the street and oblique sources; the true top view resolves roof topology. Close views expose their named opening/contact relationships without an obstructing addition. The repaired roof section is clearly visible in roof_contact and rear_side.",
+      "evidence": [
+        "renders/front.png",
+        "renders/front_corner.png",
+        "renders/aerial.png",
+        "renders/top.png",
+        "renders/left_side.png",
+        "renders/right_side.png",
+        "renders/rear.png",
+        "renders/rear_side.png",
+        "renders/facade_close.png",
+        "renders/architecture_close.png",
+        "renders/glass_close.png",
+        "renders/roof_contact.png",
+        "renders/side_projection.png"
+      ]
+    },
+    {
+      "category": "source board and phone-scale comparison",
+      "result": "pass",
+      "observations": "The exact locked source board and both native 1080x1920 phone boards were opened. The phone source comparison retains twin-home hierarchy, stepped footprint, roof division and restored base openings. The construction board shows the stair/landing separation, opening depth, seated centre roof coping and side extensions. Labels correctly identify v004 and declare clay/inferred-view limitations.",
+      "evidence": [
+        "boards/locked-source-board.png",
+        "boards/phone-source-comparison.png",
+        "boards/phone-construction.png",
+        "boards/all-views-contact.png"
+      ]
+    },
+    {
+      "category": "landscape/context limits",
+      "result": "declared_exclusions_respected",
+      "observations": "Neighbouring houses, garages, street, planting and mature contextual trees remain excluded from this individual building asset. Their exclusion does not create a terrain, landscape, site design or surveyed-model approval."
+    },
+    {
+      "category": "provenance and lifecycle",
+      "result": "pass_architectural_clay_scope",
+      "observations": "All original source and local copy hashes agree. Script and board-input hashes agree with the inspected files. Build, delivery, builder and independently computed GLB hashes match. The documented renderer removes authored meshes, reimports the exact exported GLB and applies no post-export material replacement. Deterministic checks support, but do not replace, this fresh complete pixel review. The builder remains a separate role; no keeper or runtime promotion is performed."
+    }
+  ],
+  "coverage": [
+    {
+      "category": "source identity, proportions and floor hierarchy",
+      "result": "pass_architectural_clay_scope",
+      "observations": "The exact duplex reads as two homes with two visible above-grade storeys, taller upper outer glazing, paired central cedar entry recesses/slits, independent stairs, a dark centre divider and a slightly advanced right front half. Restored low glazing bands now continue the photographed base cadence. Source pixels correctly govern the prose conflict about three storeys and stucco. Absolute dimensions remain conceptual.",
+      "evidence": [
+        "sources/variant_2.png",
+        "sources/variant_2_angle_60.jpg",
+        "sources/variant_2_angle_90.jpg",
+        "renders/front.png",
+        "renders/front_corner.png",
+        "boards/phone-source-comparison.png"
+      ]
+    },
+    {
+      "category": "footprint, roof graph and complete envelope",
+      "result": "pass_architectural_clay_scope",
+      "observations": "Two continuous flat decks, raised centre division, stepped outer edges above the cedar side extensions and three small penetrations agree with the locked topology. Front, both sides, rear and rear-side show a complete building. The roof-contact and rear-side images now show solid support beneath the centre coping without the v003 daylight slot. No new roof, wall or cap discontinuity is visible.",
+      "evidence": [
+        "renders/aerial.png",
+        "renders/top.png",
+        "renders/left_side.png",
+        "renders/right_side.png",
+        "renders/rear.png",
+        "renders/rear_side.png",
+        "renders/roof_contact.png"
+      ]
+    },
+    {
+      "category": "openings, returns, optical layers and occupied depth",
+      "result": "pass_architectural_clay_scope",
+      "observations": "Main front windows, cedar entry slits, both side orientations, cedar projections and rear openings retain recessed frames, sills and physical wall-section depth. The two restored base openings show two separate optical panes, a centre mullion and recessed dark depth. They sit below the ground-floor slab and above the plinth. Large front windows show curtain strips separated from the pane and faint furniture/room depth; rear glazing reads into enclosed space. The restrained semantic-clay optics are not a photoreal glazing claim.",
+      "evidence": [
+        "renders/front.png",
+        "renders/facade_close.png",
+        "renders/architecture_close.png",
+        "renders/glass_close.png",
+        "renders/left_side.png",
+        "renders/right_side.png",
+        "renders/rear_side.png",
+        "renders/side_projection.png"
+      ]
+    },
+    {
+      "category": "stairs, walks, landings, canopies, foundation and slab contact",
+      "result": "pass_architectural_clay_scope",
+      "observations": "Front stair/walk pairs and canopies remain separate, with connected threshold landings and no duplicated floor shelf inside the cedar recess. Stair blocks touch their walk/grade and landing surfaces; rail posts meet the stair bodies. The continuous brick carriers do not expose the former occupied-slab/foundation stripe. The plinth remains below the brick base, and the new glazing does not displace it. Inferred rear stairs and rails remain grounded and connected.",
+      "evidence": [
+        "renders/architecture_close.png",
+        "renders/front_corner.png",
+        "renders/aerial.png",
+        "renders/left_side.png",
+        "renders/right_side.png",
+        "renders/rear_side.png"
+      ]
+    },
+    {
+      "category": "side projections, floors and residential program",
+      "result": "pass_with_declared_inferences",
+      "observations": "Both cedar upper bays have enclosed side/end returns, seated occupied-floor edges and recessed small openings. Two independent homes, entries and modest residential room depth remain legible. Read-only geometry review preserves independent internal stair runs with upper-slab endpoints. Rear windows/rooms, left-side opening details and hidden circulation are inferred. The shallow enclosure behind the new base bands does not claim a modeled full basement; below-grade rooms and excavations are expressly excluded.",
+      "evidence": [
+        "renders/side_projection.png",
+        "renders/rear.png",
+        "renders/rear_side.png",
+        "renders/glass_close.png",
+        "renders/architecture_close.png",
+        "scripts/build.py",
+        "prework-manifest.json"
+      ]
+    },
+    {
+      "category": "semantic materials and one-owner identity",
+      "result": "pass_architectural_clay_scope",
+      "observations": "Geometric facade bays, courses, timber joints, window cadence and roof form carry identity. Wall/timber/metal/concrete/glass zones continue around the envelope. The actual GLB contains no images or textures. PBR morphology, photographic ageing, exact source reflections and textured identity derivatives remain outside this bounded clay profile.",
+      "evidence": [
+        "renders/facade_close.png",
+        "renders/glass_close.png",
+        "renders/side_projection.png",
+        "calgary-side-by-side-duplex-clay-v004.glb"
+      ]
+    },
+    {
+      "category": "review cameras and visibility",
+      "result": "pass",
+      "observations": "All 13 mandatory native renders were individually opened afresh. Every whole-building role includes grade, the complete building/step footprint and highest termination with visible neutral margin. The low front-corner and aerial roles separately compare to the street and oblique sources; the true top view resolves roof topology. Close views expose their named opening/contact relationships without an obstructing addition. The repaired roof section is clearly visible in roof_contact and rear_side.",
+      "evidence": [
+        "renders/front.png",
+        "renders/front_corner.png",
+        "renders/aerial.png",
+        "renders/top.png",
+        "renders/left_side.png",
+        "renders/right_side.png",
+        "renders/rear.png",
+        "renders/rear_side.png",
+        "renders/facade_close.png",
+        "renders/architecture_close.png",
+        "renders/glass_close.png",
+        "renders/roof_contact.png",
+        "renders/side_projection.png"
+      ]
+    },
+    {
+      "category": "source board and phone-scale comparison",
+      "result": "pass",
+      "observations": "The exact locked source board and both native 1080x1920 phone boards were opened. The phone source comparison retains twin-home hierarchy, stepped footprint, roof division and restored base openings. The construction board shows the stair/landing separation, opening depth, seated centre roof coping and side extensions. Labels correctly identify v004 and declare clay/inferred-view limitations.",
+      "evidence": [
+        "boards/locked-source-board.png",
+        "boards/phone-source-comparison.png",
+        "boards/phone-construction.png",
+        "boards/all-views-contact.png"
+      ]
+    },
+    {
+      "category": "landscape/context limits",
+      "result": "declared_exclusions_respected",
+      "observations": "Neighbouring houses, garages, street, planting and mature contextual trees remain excluded from this individual building asset. Their exclusion does not create a terrain, landscape, site design or surveyed-model approval."
+    },
+    {
+      "category": "provenance and lifecycle",
+      "result": "pass_architectural_clay_scope",
+      "observations": "All original source and local copy hashes agree. Script and board-input hashes agree with the inspected files. Build, delivery, builder and independently computed GLB hashes match. The documented renderer removes authored meshes, reimports the exact exported GLB and applies no post-export material replacement. Deterministic checks support, but do not replace, this fresh complete pixel review. The builder remains a separate role; no keeper or runtime promotion is performed."
+    }
+  ],
+  "regression_checks": [
+    {
+      "id": "D01",
+      "prior_priority": "P0",
+      "status": "closed",
+      "basis": "Separate canopies/stairs/walks and touching non-overlapping tread/landing top ownership remain visible in architecture_close and aerial."
+    },
+    {
+      "id": "D02",
+      "prior_priority": "P1",
+      "status": "closed",
+      "basis": "No duplicate upper floor shelf in the entry recess; canopy, threshold, first/last riser and floor relationships remain coherent."
+    },
+    {
+      "id": "D03",
+      "prior_priority": "P0",
+      "status": "closed",
+      "basis": "Full front/side/rear elevations remain free of coplanar floor-material or full-height foundation stripes across the brick carrier."
+    },
+    {
+      "id": "D04",
+      "prior_priority": "P1",
+      "status": "closed",
+      "basis": "Street-height front_corner retained; aerial/top/roof_contact retain three unambiguous pipe fittings, one left and two right."
+    },
+    {
+      "id": "D05",
+      "prior_priority": "P1",
+      "status": "closed",
+      "basis": "Two low source-visible glazing bands are restored under the living windows. front, front_corner and architecture_close show actual recesses, sills and two panes; the old continuous brick strip is gone. New openings span z=.30-.70 m, below the slab underside .74 m and above the plinth .18 m. Below-grade program remains excluded rather than asserted."
+    },
+    {
+      "id": "D06",
+      "prior_priority": "P0",
+      "status": "closed",
+      "basis": "roof_contact and rear_side show an uninterrupted wall/upstand beneath the centre cap, with no continuous daylight slot. Delivered GLB positions put the wall top at8.86 m and cap underside at8.84 m, confirming20 mm positive overlap."
+    }
+  ],
+  "independent_integrity_checks": {
+    "source front": true,
+    "source oblique": true,
+    "source top": true,
+    "scripts/clay_core.py": true,
+    "scripts/build.py": true,
+    "board input sources\\variant_2.png": true,
+    "board input sources\\variant_2_angle_60.jpg": true,
+    "board input sources\\variant_2_angle_90.jpg": true,
+    "board input renders\\aerial.png": true,
+    "board input renders\\architecture_close.png": true,
+    "board input renders\\facade_close.png": true,
+    "board input renders\\front.png": true,
+    "board input renders\\front_corner.png": true,
+    "board input renders\\glass_close.png": true,
+    "board input renders\\left_side.png": true,
+    "board input renders\\rear.png": true,
+    "board input renders\\rear_side.png": true,
+    "board input renders\\right_side.png": true,
+    "board input renders\\roof_contact.png": true,
+    "board input renders\\side_projection.png": true,
+    "board input renders\\top.png": true,
+    "model": true,
+    "supporting reports agree": true,
+    "render front": true,
+    "render front_corner": true,
+    "render aerial": true,
+    "render top": true,
+    "render left_side": true,
+    "render right_side": true,
+    "render rear": true,
+    "render rear_side": true,
+    "render facade_close": true,
+    "render architecture_close": true,
+    "render glass_close": true,
+    "render roof_contact": true,
+    "render side_projection": true,
+    "phone-source-comparison.png": true,
+    "phone-construction.png": true,
+    "carrier apertures": true,
+    "GLB header": true,
+    "GLB textures/images absent": true,
+    "GLB self contained": true,
+    "GLB no QA camera/lights": true,
+    "finite GLB positions": true,
+    "central wall support overlaps cap": true,
+    "builder record complete": true,
+    "all required delivery checks": true
+  },
+  "delivery_checks_status": "PASS_DELIVERY_CHECKS",
+  "delivery_checks_are_visual_approval": false,
+  "supporting_geometry_observation": {
+    "central_wall_top_m": 8.86,
+    "central_coping_underside_m": 8.84,
+    "positive_overlap_m": 0.02,
+    "new_base_opening_bottom_m": 0.3,
+    "new_base_opening_top_m": 0.7,
+    "occupied_slab_underside_m": 0.74,
+    "plinth_top_m": 0.18,
+    "verification": "Read-only GLB POSITION accessor decoding plus construction schedule; each asserted visible relationship independently confirmed in native render pixels."
+  },
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "unresolved_blockers": [],
+  "architectural_clay_pass": true,
+  "keeper_approved": false,
+  "runtime_seed_allowed": false,
+  "runtime_approved": false,
+  "human_runtime_activation_required": true,
+  "runtime_integration_verified": false,
+  "limitations": [
+    "Rear fenestration and internal partitions are inferred consistently from two separate homes; not claimed as photographed.",
+    "Left upper side projection repeats the stepped outline visible in top view; its windows are inferred.",
+    "Two separate residential circulation routes and modest furniture are inferred behind visible glazing.",
+    "Only the above-grade basement glazing bands are visible; below-grade rooms and excavations are outside this asset. The bands open into the enclosed shallow volume below the ground-floor slab.",
+    "Neighbouring buildings, alley garages, public street and mature contextual trees are excluded from this building asset.",
+    "Conceptual dimensions are inferred from source references, not survey.",
+    "This full review covers architectural clay only; source-conditioned PBR and photoreal finishes are omitted by design.",
+    "Native fixed scale only; no terrain fit, resizing, sibling substitution or repetition contract is approved."
+  ],
+  "previous_review": {
+    "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v003\\review\\independent-visual-review.json",
+    "sha256": "ae7dda5655137d51407bf20295b6d98e2dba9f288baaacc4652916cbc2246621",
+    "decision_preserved": "visual_rework_required",
+    "closed_blockers_in_new_candidate": [
+      "D05",
+      "D06"
+    ]
+  },
+  "immutability": {
+    "write_mode": "exclusive create; do not overwrite or relabel",
+    "future_evidence_policy": "Preserve this decision. Later contradictory evidence can reopen/demote it; corrections require a new bounded candidate and complete independent review."
+  },
+  "changes": {
+    "repository_files_changed": false,
+    "candidate_geometry_changed": false,
+    "only_written_file": "review/independent-visual-review.json",
+    "commit_created": false,
+    "push_performed": false
+  }
+}

@@ -854,10 +854,11 @@ describe('LegoBuilderPanel', () => {
   });
 
   it('saves recipes only for zones with building ids and reports the saved count', async () => {
+    const currentCatalogue = 'c'.repeat(64);
     apiPost.mockImplementation((url: string) =>
       url.includes('/recipes/')
         ? Promise.resolve({ data: { status: 'saved', building_id: 'bldg-1', legoAssembly: {} } })
-        : Promise.resolve({ data: planFixture }),
+        : Promise.resolve({ data: { ...planFixture, catalog_fingerprint: currentCatalogue } }),
     );
 
     const zones = [
@@ -881,6 +882,7 @@ describe('LegoBuilderPanel', () => {
       expect.objectContaining({
         schema_version: 1,
         module_family: 'nordic_timber_midrise_family',
+        catalog_fingerprint: currentCatalogue,
         archetype_id: 'nordic_timber_midrise',
         instances: planFixture.instances,
         target: planFixture.target,

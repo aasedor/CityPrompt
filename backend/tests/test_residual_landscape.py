@@ -303,6 +303,7 @@ def test_community_source_fingerprint_tracks_park_and_street_semantics():
         ("green_space_selected_variant_id", "variant_2"),
         ("planting_structure", "formal allee"),
         ("tree_density", 0.8),
+        ("neighborhood_park_layout", "adaptive_rustic_v1"),
         ("park_access_points", [[-114.079, 51.041]]),
     ):
         assert source_fingerprint("green_space", {**park, key: value}) != park_hash

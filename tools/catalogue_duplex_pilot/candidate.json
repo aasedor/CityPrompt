@@ -1,0 +1,84 @@
+{
+  "schema": "cityprompt.catalogue-clay-candidate@1",
+  "candidate": "calgary-side-by-side-duplex-clay-v004",
+  "method": "RLASM v6.1",
+  "archetypeId": "calgary_modern_infill_house",
+  "variantId": "infill_duplex",
+  "status": "architectural_clay_reviewed",
+  "runtimeActivated": false,
+  "keeperApproved": false,
+  "externalPackage": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004",
+  "model": {
+    "path": "calgary-side-by-side-duplex-clay-v004.glb",
+    "bytes": 3110128,
+    "sha256": "1414b17d3ebec4aa87529da16dcc3a8f10305b51eaa3d129fb5a5c6c0d296f92",
+    "meshes": 12,
+    "materials": 12,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 12,
+    "vertices": 33859,
+    "polygons": 27138,
+    "triangles": 53282
+  },
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\buildings\\calgary-modern-infill-house\\variant_2.png",
+      "path": "sources/variant_2.png",
+      "bytes": 1403041,
+      "sha256": "e5a2f4d6f6836643c65b5ee740c2b08f12e3ba9f8c52ac991eadf00d2a5447dc"
+    },
+    {
+      "role": "oblique",
+      "original_path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\buildings\\calgary-modern-infill-house\\variant_2_angle_60.jpg",
+      "path": "sources/variant_2_angle_60.jpg",
+      "bytes": 955606,
+      "sha256": "b9b67f5f53d507681994c506213a73986c8e55553576cf5da997ff7e6376b74f"
+    },
+    {
+      "role": "top",
+      "original_path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\buildings\\calgary-modern-infill-house\\variant_2_angle_90.jpg",
+      "path": "sources/variant_2_angle_90.jpg",
+      "bytes": 858902,
+      "sha256": "747c1802087cf9ace4c2ded7aee7af91f11f3c0b94257d9c772117c612078002"
+    }
+  ],
+  "nativeBoundsM": [
+    [
+      -6.670000076293945,
+      -11.300000190734863,
+      0.0
+    ],
+    [
+      6.670000076293945,
+      10.17199993133545,
+      9.0
+    ]
+  ],
+  "completeDimensionsM": [
+    13.34,
+    21.472,
+    9.0
+  ],
+  "programme": {
+    "visibleStoreys": 2,
+    "dwellings": 2,
+    "placement": "one fixed native assembly",
+    "nativeHomePlot": false
+  },
+  "proposedPlotM": [
+    17,
+    25
+  ],
+  "independentReview": {
+    "path": "independent-review-v004.json",
+    "sha256": "fee1e07eae8bea1d7cd154d1f01a9572eebc3f624ffe12c4d02e02c8139d1577",
+    "result": "PASS_ARCHITECTURAL_CLAY_ONLY"
+  },
+  "pending": [
+    "Human activation of this exact candidate",
+    "Exact-variant catalogue mapping and local student placement",
+    "Shared-ground and integrated scene trial"
+  ]
+}

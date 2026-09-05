@@ -432,21 +432,23 @@ export function shouldRenderCommunityProps(zone: SiteZone): boolean {
  * Compiled streets retain the conservative opt-in contract because their
  * sections may intentionally preserve adjoining source terrain and context.
  */
-export function shouldMaskCommunityGroundTiles(zone: SiteZone): boolean {
+export function shouldMaskCommunityGroundTiles(zone: SiteZone, inheritedMaskPreference: boolean | null = null): boolean {
   const kind = resolveCommunity3DKind(zone);
   if (kind !== 'park' && kind !== 'street') return false;
   const props = propertiesOf(zone);
+  const maskPreference = typeof props.community_3d_mask_existing_tiles === 'boolean'
+    ? props.community_3d_mask_existing_tiles : inheritedMaskPreference;
   if (kind === 'park') {
-    return props.community_3d_mask_existing_tiles !== false;
+    return maskPreference !== false;
   }
   // The editable plan polygon is still a deliberate replacement for the
   // source tile inside its footprint. Masking the tile is what keeps that
   // plain colour wash visible on an oblique photogrammetry globe; it does not
   // opt the zone into any generated ground, texture, or standing LEGO parts.
   if (!isCommunity3DCompiled(zone)) {
-    return props.community_3d_mask_existing_tiles !== false;
+    return maskPreference !== false;
   }
-  return props.community_3d_mask_existing_tiles === true;
+  return maskPreference === true;
 }
 
 export function generatorForKind(

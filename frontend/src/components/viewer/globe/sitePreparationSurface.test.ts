@@ -3,12 +3,17 @@ import * as THREE from 'three';
 import type { SiteZone } from '@/types';
 import {
   createSitePreparationGeometry,
+  createPreparedSiteBackingGeometry,
   createSitePreparationTexture,
   createWoonerfPaverTexture,
   getPreparedSiteBoundaryIds,
+  getActiveBoundaryTileMaskPreference,
   hasCompiledCommunity,
   overlapPreparedGroundEdges,
   resolvePreparedSiteTerrainHeight,
+  resolvePreparedSiteTerrainForZone,
+  preparedSiteContainsZone,
+  PREPARED_SITE_BACKING_SEPARATION_METERS,
   shouldMaskReplacementBuildingTiles,
   shouldRenderReplacementFootprintGround,
 } from './sitePreparationSurface';
@@ -38,6 +43,56 @@ const compiledPark = {
 };
 
 describe('compiled site preparation', () => {
+  it('inherits retained ground inside the boundary, permits an explicit override, and leaves outside objects independent', () => {
+    const boundary = { ...zone('site', 'site_boundary', { community_3d_mask_existing_tiles: false }), is_active_boundary: true,
+      coordinates: [[0, 0], [10, 0], [10, 10], [0, 10]] as [number, number][] };
+    const building = { ...zone('inside', 'building'), coordinates: [[1, 1], [3, 1], [3, 3], [1, 3]] as [number, number][] };
+    const inherited = getActiveBoundaryTileMaskPreference([boundary, building], building);
+    expect(inherited).toBe(false);
+    expect(shouldMaskReplacementBuildingTiles(building, true, inherited)).toBe(false);
+    expect(shouldRenderReplacementFootprintGround(building, true, false, inherited)).toBe(false);
+    expect(shouldMaskReplacementBuildingTiles({ ...building, properties: { community_3d_mask_existing_tiles: true } }, true, inherited)).toBe(true);
+    expect(getActiveBoundaryTileMaskPreference([boundary], { ...building, coordinates: [[11, 1], [13, 1], [13, 3], [11, 3]] })).toBeNull();
+    expect(getActiveBoundaryTileMaskPreference([{ ...boundary, is_active_boundary: false }], building)).toBeNull();
+    expect(getActiveBoundaryTileMaskPreference([{ ...boundary, properties: {} }], building)).toBeNull();
+  });
+  it('places prepared backing physically below authored fill without changing its footprint or source', () => {
+    const source = new THREE.BufferGeometry();
+    source.setAttribute('position', new THREE.Float32BufferAttribute([0, 0, 0.08, 10, 0, 0.08, 0, 10, 0.08], 3));
+    const backing = createPreparedSiteBackingGeometry(source, 'site');
+    const input = source.getAttribute('position'), output = backing.getAttribute('position');
+    for (let index = 0; index < input.count; index += 1) {
+      expect(output.getX(index)).toBe(input.getX(index));
+      expect(output.getY(index)).toBe(input.getY(index));
+      expect(input.getZ(index)).toBeCloseTo(0.08);
+      expect(output.getZ(index)).toBeCloseTo(0.08 - PREPARED_SITE_BACKING_SEPARATION_METERS);
+      expect(output.getZ(index)).toBeGreaterThan(0);
+    }
+    source.dispose(); backing.dispose();
+  });
+
+  it('shares the active prepared datum only with contained authored zones', () => {
+    const boundary = { ...zone('site', 'site_boundary', { terrain_elevation_m: 1031.25 }), is_active_boundary: true,
+      coordinates: [[0, 0], [10, 0], [10, 4], [4, 4], [4, 10], [0, 10]] as [number, number][] };
+    for (const type of ['building', 'road', 'green_space'] as const) {
+      const contained = { ...zone(type, type, { terrain_elevation_m: 1090 }), coordinates: [[1, 1], [3, 1], [3, 3], [1, 3]] as [number, number][] };
+      expect(resolvePreparedSiteTerrainForZone(contained, [boundary, contained], 999)).toBe(1031.25);
+    }
+    const notch = { ...zone('notch', 'building'), coordinates: [[6, 6], [8, 6], [8, 8], [6, 8]] as [number, number][] };
+    expect(resolvePreparedSiteTerrainForZone(notch, [boundary, notch], 999)).toBeNull();
+    expect(resolvePreparedSiteTerrainForZone(undefined, [boundary], 999)).toBeNull();
+    expect(resolvePreparedSiteTerrainForZone(boundary, [{ ...boundary, is_active_boundary: false }], 999)).toBeNull();
+    expect(resolvePreparedSiteTerrainForZone(boundary, [{ ...boundary, properties: { community_3d_mask_existing_tiles: false } }], 999)).toBeNull();
+  });
+
+  it('rejects an edge crossing a narrow concave notch even when all vertices and quartiles are inside', () => {
+    const boundary = { ...zone('site', 'site_boundary'), coordinates: [[0, 0], [10, 0], [10, 10], [2.2, 10], [2.2, 1], [2.1, 1], [2.1, 10], [0, 10]] as [number, number][] };
+    const bridge = { ...zone('bridge', 'road'), coordinates: [[1, 4], [9, 4], [9, 5], [1, 5]] as [number, number][] };
+    expect(preparedSiteContainsZone(boundary, bridge)).toBe(false);
+    expect(preparedSiteContainsZone(boundary, { ...bridge, coordinates: [[3, 4], [9, 4], [9, 5], [3, 5]] })).toBe(true);
+    expect(preparedSiteContainsZone(boundary, { ...bridge, coordinates: [[0, 0], [10, 0], [10, 1], [0, 1]] })).toBe(true);
+  });
+
   it('shares one stored terrain datum between the site mask and replacement surface', () => {
     expect(resolvePreparedSiteTerrainHeight(
       zone('boundary', 'site_boundary', { terrain_elevation_m: 1044.75 }),

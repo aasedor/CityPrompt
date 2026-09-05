@@ -56,7 +56,6 @@ import {
   type Direct3DFidelityPolicy,
   type Direct3DRenderDiagnostics,
 } from './useDirect3DRender';
-import { buildPublicRealmSceneContextPrompt } from './publicRealmGenerationContext';
 
 // Community compilation now has one canonical top-level entry point. Keep the
 // former render-panel controls available only as an explicit recovery switch
@@ -249,6 +248,7 @@ type Direct3DReview = {
   sourceImageUrl: string;
   fidelityPolicy: Direct3DFidelityPolicy;
   style: string;
+  providerOriginalRender?: SavedRender;
 };
 
 export function GlobeAIRenderPanel({
@@ -892,11 +892,7 @@ export function GlobeAIRenderPanel({
       // Authored archetype artwork (facade sheets / catalogue cards) pushes
       // each building toward its archetype's real character instead of a
       // generic palette-preserving restyle.
-      const archetypeReferences = await collectDirect3DArchetypeReferences(siteZones);
-      const publicRealmContext = buildPublicRealmSceneContextPrompt(
-        siteZones,
-        { sceneReferenceAttached: true },
-      );
+      const archetypeReferences = await collectDirect3DArchetypeReferences(siteZones, 8, capture);
       const direct = await renderDirect3D(capture, {
         style: selectedStyle,
         fidelityPolicy: directFidelityPolicy,
@@ -905,12 +901,16 @@ export function GlobeAIRenderPanel({
         community3DClaims: community3DCaptureClaims!,
         residualLandscapeClaim,
         archetypeReferences,
-        publicRealmContext,
       });
       setPreviews([direct.render]);
       setSelectedPreviewIndex(0);
       setResult(direct.render);
       setDirectDiagnostics(direct.diagnostics);
+      if (direct.providerOriginalRender) rememberSavedRender(direct.providerOriginalRender);
+      if (direct.render.savedRender) {
+        rememberSavedRender(direct.render.savedRender);
+        setSaveStatus('saved');
+      }
       setDirectReview(direct.outcome === 'review_required'
         ? {
             outcome: direct.outcome,
@@ -918,6 +918,7 @@ export function GlobeAIRenderPanel({
             sourceImageUrl: direct.sourceImageUrl,
             fidelityPolicy: direct.fidelityPolicy,
             style: selectedStyle,
+            providerOriginalRender: direct.providerOriginalRender,
           }
         : null);
       if (shouldAutoSaveDirect3D(direct.outcome)) {
@@ -948,6 +949,7 @@ export function GlobeAIRenderPanel({
     projectId,
     residualLandscapeClaim,
     renderDirect3D,
+    rememberSavedRender,
     selectedStyle,
     siteZones,
     stalePlanMessage,
@@ -1480,18 +1482,26 @@ export function GlobeAIRenderPanel({
           {directReview?.outcome === 'review_required' && (
             <div className="mb-2 rounded-lg border-2 border-amber-300/45 bg-amber-300/10 px-3 py-2 text-amber-50">
               <div className="flex items-center justify-between gap-2">
-                <span className="text-[11px] font-black uppercase">Review required before saving</span>
+                <span className="text-[11px] font-black uppercase">Review before presenting</span>
                 <span className="rounded-full border border-amber-200/40 px-2 py-0.5 text-[9px] font-black uppercase">
                   {directReview.style} · {directReview.fidelityPolicy}
                 </span>
               </div>
               <p className="mt-1 text-[10px] font-semibold text-amber-50/75">
-                Compare the authored source and candidate. Confirm that no permanent building or major feature was added, removed, split, or merged.
+                {directDiagnostics?.returned_safety_strategy === 'authoritative_source'
+                  ? 'The AI finish did not pass the scene checks. This result keeps your original 3D view. The AI attempt is retained separately for comparison.'
+                  : 'Compare with your 3D view: check building identity, height, footprint, roads and parks. Hidden features should stay hidden. Image checks cannot confirm every detail.'}
               </p>
               {directReview.warnings.length > 0 && (
                 <ul className="mt-1 list-disc space-y-0.5 pl-4 text-[9px] font-semibold text-amber-100/75">
                   {directReview.warnings.map((warning) => <li key={warning}>{warning}</li>)}
                 </ul>
+              )}
+              {directReview.providerOriginalRender && (
+                <button type="button" className="mt-2 rounded border border-amber-200/50 px-2 py-1 text-[10px] font-bold"
+                  onClick={() => openSavedRenderLightbox(directReview.providerOriginalRender!)}>
+                  View AI attempt · unverified
+                </button>
               )}
             </div>
           )}
@@ -1524,7 +1534,7 @@ export function GlobeAIRenderPanel({
             )}
             {directReview?.outcome === 'review_required' && (
               <span className="pointer-events-none absolute right-2 top-2 z-10 rounded bg-amber-300 px-2 py-1 text-[9px] font-black uppercase text-[#151515]">
-                Candidate
+                {directDiagnostics?.returned_safety_strategy === 'authoritative_source' ? 'Original 3D view' : 'AI finish · review'}
               </span>
             )}
             <img
