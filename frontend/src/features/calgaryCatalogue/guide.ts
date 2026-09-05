@@ -7,6 +7,9 @@ export const CALGARY_SOURCES = {
   lowDensity: { label: 'Land Use Bylaw · low density housing', url: 'https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=5', status: 'Bylaw · includes August 2026 amendments' },
   apartments: { label: 'Land Use Bylaw · multi-residential', url: 'https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=6', status: 'Bylaw' },
   districts: { label: 'Calgary land use districts', url: 'https://www.calgary.ca/planning/land-use/districts.html', status: 'City district summaries' },
+  useGroups: { label: 'Land Use Bylaw · groups of uses', url: 'https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?div=A&part=S', status: 'Schedule A · activities, separate from districts' },
+  hotelUse: { label: 'Hotel · defined use', url: 'https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?alphaSearch=209&div=2&part=4', status: 'Part 4 · section 209' },
+  foodProduction: { label: 'Food Production · defined use', url: 'https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?alphaSearch=198.1&div=2&part=4', status: 'Part 4 · section 198.1' },
   streets: { label: 'Complete Streets Policy & Guide', url: 'https://www.calgary.ca/planning/transportation/complete-streets.html', status: 'Council approved · 2014' },
   streetManual: { label: 'Street Manual', url: 'https://www.calgary.ca/planning/city-building-program/city-building-program/the-street-manual.html', status: 'Draft · final approval anticipated Q2 2027' },
   parks: { label: 'Connect: Calgary’s Parks Plan', url: 'https://www.calgary.ca/planning/parks-rec/parks-plan.html', status: 'Council approved · May 2025' },
@@ -34,10 +37,12 @@ export const CALGARY_GROUPS: CalgaryGroup[] = [
   group('apartments', 'building', 'Apartments', ['M-C1', 'M-C2', 'M-1', 'M-2', 'M-H1', 'M-H2'], 'Explore multi-residential districts according to height, density and location.', ['apartments']),
   group('towers', 'building', 'Residential towers', ['M-H2', 'M-H3'], 'A tower form needs a district and site-specific scale review.', ['apartments']),
   group('mixed', 'building', 'Homes over shops & mixed use', ['MU-1', 'MU-2', 'C-COR1'], 'Consider the ground-floor uses and how entrances meet the street. MU-2 has active commercial frontage requirements.', ['districts']),
-  group('shops', 'building', 'Shops, services & hotels', ['C-N1', 'C-N2', 'C-C1', 'C-C2', 'C-COR2'], 'These are commercial district starting points. The individual use, size and location need review.', ['districts']),
+  group('shops', 'building', 'Shops & services', ['C-N1', 'C-N2', 'C-C1', 'C-C2', 'C-COR2'], 'These are commercial district starting points. The individual use, size and location need review.', ['districts']),
+  group('hotels', 'building', 'Hotels & visitor accommodation', ['C-C2', 'C-COR1', 'C-COR2', 'MU-1', 'MU-2'], 'Hotel belongs to the bylaw’s Residential Group. That use group is separate from a parcel’s district. Check room count, neighbouring uses and any restaurant component.', ['hotelUse', 'useGroups', 'districts']),
   group('offices', 'building', 'Offices', ['C-O', 'C-COR2'], 'Explore office and corridor districts, including their site-specific limits.', ['districts']),
   group('civic', 'building', 'Schools, civic & recreation', ['S-CI', 'S-CS', 'S-SPR', 'S-R'], 'Public, private and reserve-land facilities have different district requirements. A civic appearance does not decide the designation.', ['districts']),
   group('industry', 'building', 'Industry & warehouses', ['I-G', 'I-B', 'I-H'], 'Match the actual industrial activity and its impacts to a district.', ['districts']),
+  group('indoor_food', 'building', 'Indoor farms & food production', [], 'Food Production covers growing food inside a building, including vertical growing and hydroponics, within the General Industrial Group. Confirm the operation and parcel district; outdoor growing needs its own use review.', ['foodProduction', 'useGroups', 'districts']),
   group('infrastructure', 'building', 'Transit & utilities', ['S-CRI', 'S-TUC'], 'Infrastructure has its own ownership, servicing and approval context.', ['districts']),
   group('building_other', 'building', 'Other building ideas', [], 'Custom and unusual concepts remain available. Start with the intended use and relevant local plan.', ['districts', 'localPlans']),
   group('small_park', 'park_plaza', 'Pocket & sub-neighbourhood parks', [], 'Small local spaces complement the wider park network. This is a design grouping, not an automatic official park designation.', ['parks', 'parkTypes']),
@@ -65,8 +70,13 @@ export interface CalgaryClassification { groupId: string; basis: 'form_reference
 export interface CatalogueSeed {
   id: string; developmentType?: string; developmentTypes?: string[]; aestheticCategory?: string; spaceType?: string;
 }
-// Deliberate form corrections: legacy developmentType conflates rowhouses and duplexes.
-const FORM_OVERRIDES: Record<string, string> = {
+// Reviewed parent-program/form corrections from the September 2 study.
+// See docs/CALGARY_RESEARCH_RECONCILIATION_2026_09_05.md. These are browsing
+// defaults, not legal use assignments; variants can change the actual program.
+const BUILDING_OVERRIDES: Record<string, string> = {
+  transit_oriented_station_block: 'mixed', transit_podium_residential: 'mixed',
+  old_montreal_warehouse_loft: 'apartments', junction_converted_industrial_loft: 'mixed',
+  vertical_farm: 'indoor_food', vertical_farm_indoor_agriculture: 'indoor_food',
   brownstone_rowhouse_frontage: 'ground_housing', classic_brownstone_streetwall: 'ground_housing',
   victorian_heritage_avenue: 'ground_housing', contemporary_townhouse_courtyard: 'ground_housing',
   vernacular_courtyard_housing: 'ground_housing', minimalist_infill_townhouse: 'ground_housing',
@@ -78,7 +88,7 @@ const FORM_OVERRIDES: Record<string, string> = {
 const BUILDING_TYPES: Record<string, string> = {
   residential_single_family: 'detached', residential_duplex: 'two_home', residential_multifamily: 'apartments',
   residential_highrise: 'towers', mixed_use: 'mixed', 'mixed-use': 'mixed', commercial_office: 'offices',
-  commercial: 'shops', commercial_light: 'shops', commercial_retail: 'shops', hotel: 'shops',
+  commercial: 'shops', commercial_light: 'shops', commercial_retail: 'shops', hotel: 'hotels',
   institutional: 'civic', institutional_education: 'civic', institutional_health: 'civic',
   recreational: 'civic', recreational_centre: 'civic', sports_arena: 'civic',
   industrial: 'industry', industrial_light: 'industry', industrial_heavy: 'industry', industrial_warehouse: 'industry',
@@ -98,12 +108,14 @@ const PARK_OVERRIDES: Record<string, string> = {
 const STREET_OVERRIDES: Record<string, string> = {
   narrow_residential_street: 'local', suburban_residential_street: 'local', cul_de_sac: 'local', yield_street: 'local',
   calgary_local: 'local', calgary_local_industrial: 'local', collector_road: 'collector', calgary_collector: 'collector',
+  calgary_local_high_activity: 'local', calgary_local_rural: 'local',
+  calgary_collector_industrial: 'collector', calgary_collector_high_activity: 'collector',
   calgary_alley: 'alley', back_alley_service_lane: 'alley', green_alley: 'alley', commercial_alley_laneway: 'alley',
   arterial_boulevard: 'arterial', downtown_thoroughfare: 'arterial', highway_freeway: 'arterial', calgary_skeletal: 'arterial',
 };
 export function classifyCalgaryAsset(domain: CatalogueDomain, seed: CatalogueSeed): CalgaryClassification {
   if (domain === 'building') return {
-    groupId: FORM_OVERRIDES[seed.id] ?? BUILDING_TYPES[seed.developmentType ?? seed.developmentTypes?.[0] ?? ''] ?? 'building_other',
+    groupId: BUILDING_OVERRIDES[seed.id] ?? BUILDING_TYPES[seed.developmentType ?? seed.developmentTypes?.[0] ?? ''] ?? 'building_other',
     basis: 'form_reference',
   };
   const category = seed.aestheticCategory ?? '';

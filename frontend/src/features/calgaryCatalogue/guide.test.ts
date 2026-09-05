@@ -21,6 +21,15 @@ describe('Calgary catalogue guide', () => {
     ['toronto_brick_rowhouse', 'ground_housing'],
     ['montreal_duplex', 'two_home'],
     ['rndsqr_missing_middle_townhomes', 'ground_housing'],
+    ['transit_oriented_station_block', 'mixed'],
+    ['transit_podium_residential', 'mixed'],
+    ['old_montreal_warehouse_loft', 'apartments'],
+    ['junction_converted_industrial_loft', 'mixed'],
+    ['vertical_farm', 'indoor_food'],
+    ['vertical_farm_indoor_agriculture', 'indoor_food'],
+    ['boutique_hotel', 'hotels'],
+    // A hotel particulier is a house; never classify by an ambiguous name alone.
+    ['hotel_particulier', 'detached'],
   ])('separates form from legacy development labels for %s', (id, expected) => {
     expect(classifyCalgaryAsset('building', buildings.archetypes.find(item => item.id === id)!).groupId).toBe(expected);
   });
@@ -55,6 +64,20 @@ describe('Calgary catalogue guide', () => {
     for (const domain of ['building', 'park_plaza', 'street_pathway'] as CatalogueDomain[]) {
       const classification = classifyCalgaryAsset(domain, { id: 'future_unknown_asset' });
       expect(calgaryGroup(classification)?.districts).toEqual([]);
+    }
+  });
+
+  it('finds all 13 authored Calgary sections in their street-role groups', () => {
+    const expected: Record<string, string[]> = {
+      alley: ['calgary_alley'],
+      local: ['calgary_local', 'calgary_local_industrial', 'calgary_local_high_activity', 'calgary_local_rural'],
+      collector: ['calgary_collector', 'calgary_collector_industrial', 'calgary_collector_high_activity'],
+      arterial: ['calgary_arterial_4lane_50', 'calgary_arterial_4lane_70', 'calgary_arterial_high_activity', 'calgary_arterial_6lane', 'calgary_skeletal'],
+    };
+    for (const [group, ids] of Object.entries(expected)) {
+      const results = filterCalgaryCatalogue(ROADWAY_AESTHETIC_OPTIONS_V2, group, 'Calgary');
+      expect(results.map(item => item.id).sort()).toEqual([...ids].sort());
+      expect(results.every(item => item.calgaryGuide?.basis === 'draft_manual')).toBe(true);
     }
   });
 

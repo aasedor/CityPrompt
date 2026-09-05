@@ -6,11 +6,17 @@ Students browse by the purpose of a place, then choose its appearance. Calgary
 districts and design documents provide references for explaining a proposal;
 they do not constrain the student's drawing or certify permission on a parcel.
 
+Read the [recovered research and reconciliation](CALGARY_RESEARCH_RECONCILIATION_2026_09_05.md)
+before extending this guide. It indexes the prior 224-parent bylaw crosswalk and
+13-section street research, the corrections carried into this implementation,
+and the variant-level classification work that remains.
+
 ## Student experience
 
 - Buildings: detached homes; duplexes and semi-detached homes; rowhouses and
   townhomes; apartments; residential towers; mixed use; shops and services;
-  offices; civic and recreation; industry; infrastructure; other ideas.
+  hotels; offices; civic and recreation; industry; indoor food production;
+  infrastructure; other ideas.
 - Parks: small local parks; neighbourhood/community parks; regional/destination
   parks; green connections; natural areas; plazas; play/sport amenities; gardens;
   water spaces; parking and special sites. These are City Prompt browsing groups,
@@ -60,8 +66,9 @@ outside all geometry, prompts and persistence presets. The source catalogue JSON
 image URLs, generation identity, floor ranges and asset availability are untouched.
 
 Existing development-type metadata supplies the initial building groups. Explicit
-exceptions separate known rowhouse/townhouse forms from legacy labels that put
-them under duplex or single-family categories. This is a browsing crosswalk,
+exceptions separate known rowhouse/townhouse forms, indoor farms, transit-adjacent
+housing and converted lofts from misleading legacy labels. Hotels have a separate
+collection and a defined-use reference. This is a browsing crosswalk,
 not a comprehensive legal interpretation of all 223 available building references.
 Unusual concepts remain available and need individual review.
 References attach to the parent archetype, not a legally assessed use for every
@@ -73,6 +80,8 @@ separates legacy parking/transport entries from plazas. International references
 retain their names and appearance; they are not presented as City-approved designs.
 Only the existing `calgary_street_manual` group receives `draft_manual` provenance;
 other street concepts are design references, with their existing citations retained.
+All 13 Calgary sections are mapped by street role, including the high-activity,
+rural and industrial local/collector sections.
 
 No zoning overlay, parcel lookup, dimensional compliance check, automatic rezoning
 recommendation, report generation, new model production or live provider generation
