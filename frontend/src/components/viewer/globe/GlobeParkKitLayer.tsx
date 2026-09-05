@@ -13,6 +13,7 @@
 import {
   Component,
   Suspense,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -91,6 +92,8 @@ import { buildParkAccessBridgeGeometry } from './parkAccessBridgeGeometry';
 import { retainResourceForDeferredDisposal } from './strictModeResourceDisposal';
 import { useSharedSiteGround } from './SharedSiteGroundProvider';
 import { createSharedGroundTriangulation, type SharedGroundTriangulation } from './sharedGroundGeometry';
+import { GlobeNeighborhoodParkPilot } from './GlobeNeighborhoodParkPilot';
+import { isNeighborhoodParkPilot, neighborhoodParkLayoutForZone } from './neighborhoodParkLayout';
 import {
   parkTerrainSampleOffset,
   selectBudgetedLiveParkZones,
@@ -814,12 +817,14 @@ function ParkSpecialtyStructures({
   centroid,
   terrainPlane,
   sharedTerrainZ,
+  groundGrid,
 }: {
   structureKind: ParkSpecialtyStructureKind | null;
   zone: SiteZone;
   centroid: { lng: number; lat: number };
   terrainPlane: TerrainContactPlane | null;
   sharedTerrainZ?: (x: number, y: number) => number | null;
+  groundGrid?: SharedGroundTriangulation | null;
 }) {
   const coordinates = zone.coordinates;
   const programFrame = useMemo(
@@ -838,7 +843,7 @@ function ParkSpecialtyStructures({
     [programGuideFit],
   );
 
-  const terrainZ = (x: number, y: number): number => {
+  const terrainZ = useCallback((x: number, y: number): number => {
     if (sharedTerrainZ) {
       const height = sharedTerrainZ(x, y);
       // An older specialty assembly can request an extra support outside its
@@ -848,7 +853,7 @@ function ParkSpecialtyStructures({
       return height;
     }
     return terrainPlane ? terrainPlane.originZ + samplePlaneOffset(terrainPlane, x, y) : 0;
-  };
+  }, [sharedTerrainZ, terrainPlane]);
 
   if (structureKind === 'skate_park_v0_assembly') {
     return (
@@ -864,10 +869,12 @@ function ParkSpecialtyStructures({
     return (
       <SilentKitBoundary fallback={null}>
         <Suspense fallback={null}>
-          <GlobeNeighborhoodParkV0StickerAssembly
+          {isNeighborhoodParkPilot(zone) ? <GlobeNeighborhoodParkPilot
+            zone={zone} centroid={centroid} terrainZ={terrainZ} groundGrid={groundGrid}
+          /> : <GlobeNeighborhoodParkV0StickerAssembly
             boundary={programFrame.points}
             terrainZ={terrainZ}
-          />
+          />}
         </Suspense>
       </SilentKitBoundary>
     );
@@ -2068,7 +2075,7 @@ function ParkKitInstance({
     )),
     ...computeParkProgramAssetPlacements(zone),
   ].filter((placement) => (
-    !shouldDeferParkFinishingProp(zone, placement.propId)
+    !isNeighborhoodParkPilot(zone) && !shouldDeferParkFinishingProp(zone, placement.propId)
     && !(
       specialtyStructureKind === 'neighborhood_park_v0_sticker_assembly'
       && (placement.propId === 'playground' || placement.propId === 'pavilion')
@@ -2082,6 +2089,7 @@ function ParkKitInstance({
     zone,
   ]);
   const microdetailPlacements = useMemo<ParkMicrodetailPlacement[]>(() => {
+    if (isNeighborhoodParkPilot(zone)) return [];
     if (
       specialtyStructureKind === 'cricket_ground_assembly'
       || specialtyStructureKind === 'basketball_court_assembly'
@@ -2114,7 +2122,7 @@ function ParkKitInstance({
       maxPlacements: 72,
       collisionClearanceM: 0.22,
     });
-  }, [centroid, dressingFamilyId, fittedMicrodetailGuides, localProgramFrame.points, placements, specialtyStructureKind, zone.id]);
+  }, [centroid, dressingFamilyId, fittedMicrodetailGuides, localProgramFrame.points, placements, specialtyStructureKind, zone]);
 
   const specialtyProgramGuides = useMemo(
     () => specialtyStructureKind === 'cricket_ground_assembly'
@@ -2123,11 +2131,16 @@ function ParkKitInstance({
     [fittedProgramGuides, programGuideFit, specialtyStructureKind],
   );
 
-  const specialtyTerrainAnchors = useMemo(() => buildParkSpecialtyTerrainAnchors(
+  const specialtyTerrainAnchors = useMemo(() => isNeighborhoodParkPilot(zone)
+    ? (() => {
+        const layout = neighborhoodParkLayoutForZone(zone, centroid);
+        return [...layout.boundary, ...layout.modules.flatMap(m => [m.center, ...m.envelope]), ...layout.trees];
+      })()
+    : buildParkSpecialtyTerrainAnchors(
     specialtyStructureKind,
     specialtyProgramGuides,
     localProgramFrame,
-  ), [localProgramFrame, specialtyProgramGuides, specialtyStructureKind]);
+  ), [localProgramFrame, specialtyProgramGuides, specialtyStructureKind, zone, centroid]);
 
   const accessConnections = useMemo(() => getDerivedParkAccess(zone)?.connections ?? [], [zone]);
 
@@ -2375,6 +2388,7 @@ function ParkKitInstance({
           centroid={centroid}
           terrainPlane={specialtyTerrainPlane}
           sharedTerrainZ={sharedTerrainZ}
+          groundGrid={sharedTerrainGrid}
         />
       </SilentKitBoundary>
       <GlobeParkMicrodetailInstances

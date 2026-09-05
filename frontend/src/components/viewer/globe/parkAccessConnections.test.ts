@@ -91,6 +91,22 @@ describe('manual park access planning', () => {
     expect(resolveParkGroundProfile(derived).guides).toEqual(before);
     expect(snapshot.parks[0].paths).toHaveLength(snapshot.parks[0].connections.length);
   });
+  it('connects the opt-in rustic pilot to a sidewalk without changing its composed programme', () => {
+    const { street, boundary } = fixture();
+    const park = zone('park', 'green_space', [[0, 0], [70, 0], [70, 55], [0, 55]], {
+      green_space_archetype_id: 'neighborhood_park', green_space_selected_variant_id: 'neighborhood_park_v0',
+      neighborhood_park_layout: 'adaptive_rustic_v1',
+    });
+    const profile = resolveParkGroundProfile(park);
+    const snapshot = resolveManualParkAccess([park, street, boundary]);
+    expect(snapshot.parks[0].status).toBe('connected');
+    expect(snapshot.parks[0].connections[0].streetBand).toBe('sidewalk');
+    const connected = applyManualParkAccessSnapshot([park, street, boundary], snapshot)[0];
+    expect(resolveParkGroundProfile(connected).guides).toEqual(profile.guides);
+    expect(parkGroundSourceSignature(connected)).not.toBe(parkGroundSourceSignature(park));
+    const barrier = zone('barrier', 'building', [[-20, -.9], [90, -.9], [90, -.1], [-20, -.1]]);
+    expect(resolveManualParkAccess([park, street, boundary, barrier]).parks[0].connections).toEqual([]);
+  });
   it('connects to both safe arms of a T while keeping gateway separation and determinism', () => {
     const { zones } = fixture();
     const line = [[-6, -6], [-6, 45]].map(ll);

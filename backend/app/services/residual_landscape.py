@@ -360,6 +360,7 @@ def community_3d_source_properties(
                         "planting_structure": _canonical_semantic_value(props.get("planting_structure")),
                         "tree_density": _semantic_number(props.get("tree_density")),
                         "park_access_points": _canonical_semantic_value(props.get("park_access_points")),
+                        "neighborhood_park_layout": _semantic_text(props.get("neighborhood_park_layout"), identifier=True),
                         "paving_type": _canonical_semantic_value(props.get("paving_type")),
                         "planting_type": _canonical_semantic_value(props.get("planting_type")),
                         "water_features": _canonical_semantic_value(props.get("water_features")),

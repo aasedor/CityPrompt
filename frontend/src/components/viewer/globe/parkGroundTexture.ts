@@ -16,6 +16,7 @@ import { api, documentsApi, rendersApi, siteZonesApi } from '@/services/api';
 import { isCommunity3DCompiled } from '@/features/community3d/community3d';
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 import { derivedParkAccessGuides, getDerivedParkAccess } from './parkAccessConnections';
+import { isNeighborhoodParkPilot } from './neighborhoodParkLayout';
 import {
   computeParkPlacements,
   resolveParkRecipeForZone,
@@ -1460,7 +1461,7 @@ export function buildParkDiagram(
     coordinates: ring,
     zone_type: zone.zone_type,
   });
-  const placements = computeParkPlacements(
+  const placements = isNeighborhoodParkPilot(zone) ? [] : computeParkPlacements(
     { id: zone.id, coordinates: ring },
     recipe,
     plantingStructure,
@@ -1491,7 +1492,7 @@ export function buildParkDiagram(
       profile.archetypeId,
       legoAppearance,
     );
-    if (!getDerivedParkAccess(zone)) drawProceduralPathNetwork(
+    if (!isNeighborhoodParkPilot(zone) && !getDerivedParkAccess(zone)) drawProceduralPathNetwork(
       ctx,
       accessPointsPx,
       centroidPx,
@@ -1504,7 +1505,7 @@ export function buildParkDiagram(
     );
   }
   const connectedGuides = [...guideFit.guides, ...derivedParkAccessGuides(zone)];
-  const executableGuides = mode === 'procedural'
+  const executableGuides = mode === 'procedural' && !isNeighborhoodParkPilot(zone)
     ? styleExecutableParkGuides(connectedGuides, legoAppearance)
     : connectedGuides;
   drawParkGuides(

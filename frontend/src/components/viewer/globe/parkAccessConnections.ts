@@ -5,6 +5,7 @@ import { METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 import { fitParkGroundGuides, resolveParkGroundProfile, resolveParkGuideDimensionsM, type ParkGroundGuide } from './parkGroundProfiles';
 import { resolvePilotStreetSectionProfile } from './streetSectionProfiles';
 import { computeParkPlacements, resolveParkRecipeForZone } from './parkScatter';
+import { isNeighborhoodParkPilot } from './neighborhoodParkLayout';
 import { PARK_PROGRAM_MODULE_SPEC, resolveParkProgramAnchorLayout } from './parkLegoFamilies';
 import { preparedSiteContainsZone } from './sitePreparationSurface';
 
@@ -146,7 +147,7 @@ function supported(zone: SiteZone): boolean {
   if (zone.zone_type !== 'green_space') return false;
   const profile = resolveParkGroundProfile(zone);
   return (profile.archetypeId.startsWith('urban_pocket_park') || profile.archetypeId.startsWith('neighborhood_park'))
-    && (profile.variantId ?? zone.properties?.green_space_selected_variant_id) !== 'neighborhood_park_v0';
+    && (isNeighborhoodParkPilot(zone) || (profile.variantId ?? zone.properties?.green_space_selected_variant_id) !== 'neighborhood_park_v0');
 }
 
 function solvePark(park: SiteZone, zones: readonly SiteZone[], settings: ParkAccessSettings, eligibleStreetZoneIds: ReadonlySet<string>): ParkAccessPlan {
@@ -180,7 +181,7 @@ function solvePark(park: SiteZone, zones: readonly SiteZone[], settings: ParkAcc
     return points.map(([x, y]) => add(center, [x * Math.cos(angle) - y * Math.sin(angle), x * Math.sin(angle) + y * Math.cos(angle)]));
   };
   const fixed = fit.guides.filter((g) => !['line', 'axis', 'polyline', 'path_loop'].includes(g.kind)).map((g) => guidePolygon(g));
-  for (const placement of computeParkPlacements(park, resolveParkRecipeForZone(park), profile.plantingStructure, resolveParkProgramAnchorLayout(park))) {
+  for (const placement of isNeighborhoodParkPilot(park) ? [] : computeParkPlacements(park, resolveParkRecipeForZone(park), profile.plantingStructure, resolveParkProgramAnchorLayout(park))) {
     if (placement.propId !== 'playground' && placement.propId !== 'pavilion') continue;
     const radius = placement.propId === 'playground' ? PARK_PROGRAM_MODULE_SPEC.playground.safetyDiameterM / 2
       : Math.hypot(PARK_PROGRAM_MODULE_SPEC.pavilion.widthM, PARK_PROGRAM_MODULE_SPEC.pavilion.depthM) / 2;

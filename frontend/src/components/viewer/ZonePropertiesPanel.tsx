@@ -1780,6 +1780,13 @@ const resolveOptionCategory = (
                 />
               </div>
             </div>
+            {selectedOpenSpaceReferenceId === 'neighborhood_park' && selectedOpenSpaceVariantId === 'neighborhood_park_v0' && (
+              <label className="flex items-start gap-2 rounded border border-primary-950/15 p-2 text-xs">
+                <input type="checkbox" className="mt-0.5" checked={props.neighborhood_park_layout === 'adaptive_rustic_v1'}
+                  onChange={event => setProps(p => ({ ...p, neighborhood_park_layout: event.target.checked ? 'adaptive_rustic_v1' : undefined }))} />
+                <span><strong>Adapt the park to my site</strong><br />Pilot: keep a lawn and walking loop; arrange the timber play areas and pavilion at their real sizes.</span>
+              </label>
+            )}
             {/* Area size check for selected archetype (works across both spaceTypes) */}
             {(() => {
               const selectedOption = OPENSPACE_AESTHETIC_OPTIONS.find(
