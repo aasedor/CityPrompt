@@ -36,6 +36,14 @@ Twenty-six targeted tests passed across provider lifecycle, selection coverage, 
 
 Before/after observations and images are ignored under `artifacts/catalogue-cycle/`, including `pedestrian-before.json`, `pedestrian-after.json` and `cold-pedestrian.json`. The initial broad warmed orbit/scene benchmark still needs a final comparison after all five choices are integrated.
 
+## CAT-04 — detached-home pair integration
+
+The picker now includes the reviewed `vancouver_craftsman_bungalow / craftsman_classic`. Its 15 × 24 m plot minimum contains the complete 11.84718 × 20.69 m delivered envelope with at least 1.5 m conceptual clearance per edge; these are placement clearances, not legal setbacks. The infill retains its existing dimensions. Preview requests and their cache identities now include the exact selected variant, authored floor count and native-plot policy. Loading/error previews use a wireframe of that asset's native envelope. Reshape instructions are asset-specific, and the card list scrolls independently of status/actions.
+
+Browser testing placed, rotated and duplicated the bungalow on the existing empty-field fixture, rejected a 5 m plot width, and reloaded the exact saved variant. Live local planner requests returned one native assembly at each default size; at 36 m width, three infills or two bungalows, all at scale `[1,1,1]`. Seventeen targeted tests, TypeScript checking and scoped ESLint passed. No new building model was promoted in this step.
+
+One rapid rotate/duplicate sequence displayed an update error and lost selection; a reload recovered the persisted models. The error response was not captured in that initial run. Subsequent instrumented rotation and duplicate trials returned no failing API responses and retained the reshape panel. This intermittent finding remains open for CAT-08; the collection is not marked release-complete. Large repeated bungalow placement through the UI, move/undo/redo, narrow-screen verification and integrated ground-contact review remain part of that trial. Evidence and scripts are ignored under `artifacts/catalogue-cycle/`.
+
 ## Remaining work
 
-CAT-04 detached-home pair integration, CAT-05 new duplex, CAT-06 park refinement, CAT-07 sourced street placement and CAT-08 full novice trial remain pending. The accepted scope and exact candidates are unchanged.
+CAT-05 new duplex, CAT-06 park refinement, CAT-07 sourced street placement and CAT-08 full novice trial remain pending. CAT-04 is implemented with the above release checks still open. The accepted scope and exact candidates are unchanged.

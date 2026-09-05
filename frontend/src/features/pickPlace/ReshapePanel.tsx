@@ -27,7 +27,7 @@ export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onD
         <label className="text-xs font-semibold text-slate-800">Plot depth (m)<input aria-label="Plot depth (m)" type="number" min={asset.minDepth} max={asset.maxSize} step="0.1" value={depth} onChange={e=>setDepth(e.target.value)} className="mt-1 min-h-11 w-full rounded border border-slate-400 bg-white px-2 text-base text-slate-900" /></label>
       </div>
       <label className="mt-2 block text-xs font-semibold text-slate-800">Rotation (°)<input aria-label="Rotation (degrees)" type="number" step="1" value={degrees} onChange={e=>setDegrees(e.target.value)} className="ml-2 min-h-11 w-20 rounded border border-slate-400 bg-white px-2 text-base text-slate-900" /></label>
-      <p className="my-3 text-xs text-slate-600">{asset.id==='infill_home'?'Homes stay two storeys and retain their proportions. A larger plot fits additional homes with space between them.':'Play equipment keeps its real size. The park rearranges paths, trees and activity areas to fit.'}</p>
+      <p className="my-3 text-xs text-slate-600">{asset.reshapeDescription}</p>
       {!valid && <p role="alert" className="mb-2 text-xs text-red-700">Use a width of {asset.minWidth}–{asset.maxSize} m and depth of {asset.minDepth}–{asset.maxSize} m.</p>}
       <button disabled={disabled||!valid} className={`${button} w-full !bg-[#c9ff3d]`}>{disabled?'Saving…':'Apply shape'}</button>
     </form>

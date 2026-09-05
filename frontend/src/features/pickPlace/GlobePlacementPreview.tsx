@@ -12,7 +12,7 @@ import { createKtx2LoaderExtension } from '@/lib/ktx2GltfLoader';
 import { resolveApiFileUrl } from '@/services/api';
 import { GlobeNeighborhoodParkPilot } from '@/components/viewer/globe/GlobeNeighborhoodParkPilot';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
-import { placeAsset, placementProperties, type PlaceAssetId } from './catalogue';
+import { placeAsset, placementPlanRequest, placementProperties, type PlaceAssetId } from './catalogue';
 import { placementProblem, rectangleAt } from './geometry';
 
 export interface PlacementDraft { assetId: PlaceAssetId; width: number; depth: number; degrees: number }
@@ -41,10 +41,10 @@ export function GlobePlacementPreview({ draft, zones }: {draft: PlacementDraft; 
   const [surface,setSurface]=useState<{lng:number;lat:number;height:number}|null>(null);
   const asset=placeAsset(draft.assetId);
   const projectId=zones[0]?.project_id;
-  const {data:plan}=useQuery({queryKey:['placement-home-plan',projectId,draft.width,draft.depth],
-    queryFn:()=>legoAssemblyApi.plan({target_width_m:draft.width,target_depth_m:draft.depth,target_floors:2,
-      archetype_id:'infill_flat_roof_minimal',native_home_plot:true,allow_forced_fit:false,project_id:projectId}),
-    retry:false,staleTime:300000,enabled:draft.assetId==='infill_home'});
+  const request=placementPlanRequest(asset,draft.width,draft.depth,projectId);
+  const {data:plan}=useQuery({queryKey:['placement-home-plan',request],
+    queryFn:()=>legoAssemblyApi.plan(request!),
+    retry:false,staleTime:300000,enabled:request!==null});
   useEffect(()=>{
     const update=(e:PointerEvent)=>{const rect=gl.domElement.getBoundingClientRect();
       if(rect.width<640) pointer.current.set(0,0);
@@ -69,12 +69,13 @@ export function GlobePlacementPreview({ draft, zones }: {draft: PlacementDraft; 
     properties:placementProperties(asset)} as SiteZone),[asset,draft.width,draft.depth]);
   if(!surface) return null;
   const invalid=placementProblem(rectangleAt([surface.lng,surface.lat],draft.width,draft.depth,draft.degrees),zones,getActiveSiteBoundary(zones));
-  const fallback=<mesh position={[0,0,3.5]}><boxGeometry args={[8.45,11.75,7]}/><meshStandardMaterial color="#dbd2bb" transparent opacity={.7}/></mesh>;
+  const envelope=asset.nativeDimensions ?? [draft.width,draft.depth,.1];
+  const fallback=<mesh position={[0,0,envelope[2]/2]}><boxGeometry args={[envelope[0],envelope[1],envelope[2]]}/><meshBasicMaterial color="#64748b" wireframe/></mesh>;
   return <EastNorthUpFrame lat={surface.lat*Math.PI/180} lon={surface.lng*Math.PI/180} height={surface.height+.12}>
     <group rotation={[0,0,draft.degrees*Math.PI/180]} name="placement-preview" raycast={()=>null}>
       <mesh position={[0,0,.1]}><planeGeometry args={[draft.width,draft.depth]}/><meshBasicMaterial color={invalid?'#ef4444':'#c9ff3d'} transparent opacity={.3} side={THREE.DoubleSide} depthWrite={false}/></mesh>
-      <PreviewFallback fallback={fallback}><Suspense fallback={fallback}>
-        {asset.id==='infill_home' ? plan ? plan.instances.map((instance,index)=><group key={`${instance.asset_id}-${index}`}
+      <PreviewFallback key={asset.id} fallback={fallback}><Suspense fallback={fallback}>
+        {asset.zoneType==='building' ? plan ? plan.instances.map((instance,index)=><group key={`${instance.asset_id}-${index}`}
           position={[instance.position[0],-instance.position[1],instance.position[2]]} rotation={[0,0,-instance.rotation_degrees*Math.PI/180]}>
           <Home url={instance.model_url}/></group>) : fallback
           : <GlobeNeighborhoodParkPilot zone={previewZone} centroid={ORIGIN} terrainZ={flatGround}/>}
