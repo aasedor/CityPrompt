@@ -26,6 +26,16 @@ A three-second warmed stationary observation recorded 170 frames, mean 17.74 ms 
 
 Source changes are the two runtime preparation/start scripts and this progress record. Audit JSON, timing/camera data and screenshots are ignored under `artifacts/catalogue-cycle/`; copied model assets remain external. No paid image/video calls were made.
 
+## CAT-03 — site-bounded ground continuity
+
+Implemented on `codex/catalogue-ground-continuity`. A fixed, site-sized orthographic selection camera now requests terrain coverage for the entire sampling grid while the student views the site from ground level. It selects tiles but does not create a second rendered viewport or supply substitute elevations. Its resolution is capped at 1024 pixels per dimension and it is removed when its provider/site unmounts. Real tile changes intersecting the site still invalidate sampling and capture; off-site events no longer clear an already measured surface.
+
+Before the fix, the recorded 1.7 m pedestrian-camera test became unavailable after four passes, with 102 missing samples. The equivalent post-fix test remained ready with zero missing samples. A fresh renderer reload with the test harness holding the camera at 1.7 m progressed from sampling to ready, also with zero missing samples; browser network caches were retained. The harness held the view because normal startup restores an aerial camera. Final evidence records 1,190 samples, two stable passes, zero maximum between-pass delta and approximately 0.165 m local residual. These are visible-tile stability/contact measurements, not survey accuracy or validation of arbitrary terrain.
+
+Twenty-six targeted tests passed across provider lifecycle, selection coverage, sample quality, triangulation and capture guards; TypeScript checking and scoped ESLint passed. Tests include off-site event retention, selection-camera cleanup and source-geometry invalidation. Browser errors were empty. The stricter capture guards remain unchanged: actual relevant terrain refinements require a fresh, complete two-pass surface.
+
+Before/after observations and images are ignored under `artifacts/catalogue-cycle/`, including `pedestrian-before.json`, `pedestrian-after.json` and `cold-pedestrian.json`. The initial broad warmed orbit/scene benchmark still needs a final comparison after all five choices are integrated.
+
 ## Remaining work
 
-CAT-03 shared-ground continuity, CAT-04 detached-home pair integration, CAT-05 new duplex, CAT-06 park refinement, CAT-07 sourced street placement and CAT-08 full novice trial remain pending. The accepted scope and exact candidates are unchanged.
+CAT-04 detached-home pair integration, CAT-05 new duplex, CAT-06 park refinement, CAT-07 sourced street placement and CAT-08 full novice trial remain pending. The accepted scope and exact candidates are unchanged.

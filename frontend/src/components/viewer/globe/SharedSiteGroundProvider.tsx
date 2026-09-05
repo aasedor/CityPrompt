@@ -4,6 +4,7 @@ import { TilesRendererContext } from '3d-tiles-renderer/r3f';
 import { WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import * as THREE from 'three';
 import type { SiteZone } from '@/types';
+import { createGroundSelection } from './sharedGroundSelection';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { createSharedSiteGroundLayout, createSharedSiteGroundSnapshot, sampleSharedSiteGround,
   sharedSiteGroundContains, sharedSiteGroundGridPoint, sharedSiteGroundSourceSignature, validateSharedSiteGroundPass,
@@ -46,8 +47,8 @@ function visibleTileHit(object: THREE.Object3D, tileGroup: THREE.Object3D, visib
   return false;
 }
 
-/** Samples only the tile group, never proposed buildings/parks. LOD changes
- * invalidate the whole surface; a capture must wait for the next ready revision.
+/** Samples only the tile group, never proposed buildings/parks. Relevant LOD changes
+ * invalidate the surface; a capture must wait for the next ready revision.
  * Full coverage and repeatability establish visible-mesh contact, not surveyed
  * bare earth. No unknown or outlier sample is synthesized. */
 export function SharedSiteGroundProvider({ zones, children, onChange }: {
@@ -70,6 +71,11 @@ export function SharedSiteGroundProvider({ zones, children, onChange }: {
     previous: null as Array<number | null> | null, values: [] as Array<number | null>, nextPassAt: 0, done: false,
     visibleScenes: new Set<THREE.Object3D>() });
   const diagnostics = useRef<SharedGroundDiagnostics | null>(null);
+  const selection = useMemo(() => layout ? createGroundSelection(layout,
+    Number(boundary?.properties?.terrain_elevation_m ?? 1500)) : null,
+    // A row metadata write does not move this fixed site-coverage camera.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [layout]);
   const diagnose = (patch: Partial<SharedGroundDiagnostics>) => {
     if (!import.meta.env.DEV || typeof window === 'undefined') return;
     diagnostics.current ??= { source: '', generation: 0, status: 'inactive', layout: null, passes: 0, index: 0, missCount: 0,
@@ -85,12 +91,19 @@ export function SharedSiteGroundProvider({ zones, children, onChange }: {
   }, []);
 
   useEffect(() => {
-    const invalidate = (event?: { type?: string }) => {
+    const invalidate = (event?: { type?: string; scene?: THREE.Object3D }) => {
+      // Previously even a download behind the camera cleared every assembly.
+      // Keep the last measured surface when the changed model cannot cover it.
+      if (event?.scene && selection && !selection.intersects(event.scene)) return;
       run.current.dirty = true; run.current.changedAt = Date.now();
       diagnose({ lastInvalidation: { type: event?.type ?? 'source_or_renderer', at: Date.now() } });
     };
     invalidate();
     if (!tiles) return;
+    if (selection) {
+      tiles.setCamera(selection.camera);
+      tiles.setResolution(selection.camera, ...selection.resolution);
+    }
     tiles.addEventListener('load-model', invalidate);
     tiles.addEventListener('dispose-model', invalidate);
     tiles.addEventListener('tile-visibility-change', invalidate);
@@ -98,8 +111,9 @@ export function SharedSiteGroundProvider({ zones, children, onChange }: {
       tiles.removeEventListener('load-model', invalidate);
       tiles.removeEventListener('dispose-model', invalidate);
       tiles.removeEventListener('tile-visibility-change', invalidate);
+      if (selection) tiles.deleteCamera(selection.camera);
     };
-  }, [tiles, sourceSignature]);
+  }, [tiles, sourceSignature, selection]);
 
   useFrame(() => {
     const current = run.current, now = Date.now();
@@ -128,7 +142,9 @@ export function SharedSiteGroundProvider({ zones, children, onChange }: {
     const count = layout.grid.columns * layout.grid.rows;
     if (current.index === 0) {
       current.visibleScenes.clear();
-      tiles.forEachLoadedModel((scene, tile) => { if (tiles.visibleTiles.has(tile)) current.visibleScenes.add(scene); });
+      tiles.forEachLoadedModel((scene, tile) => {
+        if (tiles.visibleTiles.has(tile) && (!selection || selection.intersects(scene))) current.visibleScenes.add(scene);
+      });
     }
     const batchStarted = performance.now();
     for (let processed = 0; current.index < count && processed < MAX_SAMPLES_PER_FRAME; processed += 1) {

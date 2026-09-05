@@ -27,14 +27,16 @@ let state: SharedSiteGroundState;
 let hitObject: THREE.Object3D;
 function Read() { state = useSharedSiteGround(); return null; }
 function tileFixture() {
-  const events = new Map<string, Set<() => void>>();
+  type Event = { type?: string; scene?: THREE.Object3D };
+  const events = new Map<string, Set<(event?: Event) => void>>();
   const group = new THREE.Group(), tile = {}, scene = new THREE.Group();
   scene.add(hitObject); group.add(scene);
   return { group, scene, isLoading: false, visibleTiles: new Set([tile]),
+    setCamera: vi.fn(), setResolution: vi.fn(), deleteCamera: vi.fn(),
     forEachLoadedModel: (callback: (scene: THREE.Object3D, tile: object) => void) => callback(scene, tile),
-    addEventListener: (event: string, fn: () => void) => { if (!events.has(event)) events.set(event, new Set()); events.get(event)!.add(fn); },
-    removeEventListener: (event: string, fn: () => void) => events.get(event)?.delete(fn),
-    emit: (event: string) => events.get(event)?.forEach((fn) => fn()) };
+    addEventListener: (event: string, fn: (value?: Event) => void) => { if (!events.has(event)) events.set(event, new Set()); events.get(event)!.add(fn); },
+    removeEventListener: (event: string, fn: (value?: Event) => void) => events.get(event)?.delete(fn),
+    emit: (event: string, value?: Event) => events.get(event)?.forEach((fn) => fn(value)) };
 }
 const tick = (ms = 1000) => act(() => { vi.advanceTimersByTime(ms); frame.current(); });
 
@@ -62,6 +64,18 @@ describe('shared ground provider lifecycle', () => {
     act(() => tiles.emit('load-model')); tick(0);
     expect(state.status).toBe('sampling'); expect(state.heightAt(-114, 51)).toBeNull(); expect(state.revision).not.toBe(previous);
     tick(); tick(); expect(state.status).toBe('ready');
+  });
+  it('retains measured ground for off-site tile events and releases its selection camera on unmount', () => {
+    const tiles = tileFixture(), TestContext = TilesRendererContext as ReturnType<typeof createContext<unknown>>;
+    const view = render(<TestContext.Provider value={tiles}><SharedSiteGroundProvider zones={[site]}><Read /></SharedSiteGroundProvider></TestContext.Provider>);
+    tick(0); tick(); tick();
+    const revision = state.revision, snapshot = state.snapshot;
+    const remote = new THREE.Mesh(new THREE.BoxGeometry(1,1,1)); remote.position.set(1e7,1e7,1e7);
+    act(() => tiles.emit('tile-visibility-change', { type: 'tile-visibility-change', scene: remote })); tick();
+    expect(state.status).toBe('ready'); expect(state.revision).toBe(revision); expect(state.snapshot).toBe(snapshot);
+    expect(tiles.setCamera).toHaveBeenCalledTimes(1); expect(tiles.setResolution).toHaveBeenCalledTimes(1);
+    view.unmount(); expect(tiles.deleteCamera).toHaveBeenCalledWith(tiles.setCamera.mock.calls[0][0]);
+    remote.geometry.dispose();
   });
   it('bounds retries for missing cells and keeps the owned boundary unavailable', () => {
     vi.mocked(THREE.Raycaster.prototype.intersectObject).mockReturnValue([]);
