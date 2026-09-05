@@ -132,7 +132,8 @@ export function buildNeighborhoodParkLayout(input: readonly ParkPoint[]): Neighb
       || best.loop.some((q, i) => distanceToSegment(p, q, best!.loop[(i + 1) % 64]) < 3)
       || connectedModules.some(m => pointInPark(p, m.envelope) || edgeDistance(p, m.envelope) < 2)
       || paths.some(path => distanceToSegment(p, path[0], path[1]) < 2.5)) continue;
-    if (edge > 3.1 && trees.length < 70 && trees.every(q => Math.hypot(p.x - q.x, p.y - q.y) > 5.8)) trees.push(p);
+    // v3 crown radius <= 3 m; runtime size variation is capped at 1.08.
+    if (edge > 3.3 && trees.length < 70 && trees.every(q => Math.hypot(p.x - q.x, p.y - q.y) > 5.8)) trees.push(p);
     else if (shrubs.length < 260 && jitter > .2) shrubs.push(p);
   }
   const world = (p: ParkPoint) => rotate(p, angle);

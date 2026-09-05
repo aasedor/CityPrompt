@@ -7,7 +7,9 @@ $ErrorActionPreference = 'Stop'
 $pilotRepo = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
 $sourceRepo = (Resolve-Path -LiteralPath $SourceRoot).Path
 $pilotPublic = Join-Path $pilotRepo 'artifacts/park-pilot/public'
-$candidateManifest = Join-Path $pilotPublic 'landscape-pilots/neighborhood-rustic-v2/manifest.json'
+$trackedManifest = Get-Content -Raw -LiteralPath (Join-Path $PSScriptRoot 'candidate-manifest.json') | ConvertFrom-Json
+$candidateDirectory = ([string]$trackedManifest.assets.pavilion.url).TrimStart('/') -replace '/[^/]+$', ''
+$candidateManifest = Join-Path $pilotPublic "$candidateDirectory/manifest.json"
 if (-not (Test-Path -LiteralPath $candidateManifest)) {
     throw 'Build the nine candidate assets first; see docs/NEIGHBOURHOOD_PARK_PILOT_2026-09-05.md.'
 }

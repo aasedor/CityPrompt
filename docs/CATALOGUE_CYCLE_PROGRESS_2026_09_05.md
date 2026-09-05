@@ -69,9 +69,35 @@ review are recorded under `tools/catalogue_duplex_pilot/`. Heavy sources,
 Blender files, GLBs and review images remain outside Git at
 `C:/dev-artifacts/CityPrompt/catalogue-cycle-2026-09-05/duplex/`.
 
+## CAT-06 — adaptive park planting and export contact
+
+Implemented on `codex/catalogue-park-planting-pilot`. The v5 candidate improves
+the tree crowns, branching and meadow scale while preserving the exact rustic
+park's lawn, loop and metric equipment programme. Actual-vertex export
+verification discovered and fixed a 0.357923 m boulder grounding error in the
+inherited kit. All four rocks now contact their declared plane. Nine GLBs total
+4,722,724 bytes; rejected v3/v4 output is retained externally.
+
+Ten targeted geometry/layout tests, TypeScript and scoped ESLint passed.
+Actual exported bounds, hashes, ground contacts and alpha-mask contracts pass.
+Nine browser lab cases were visually inspected: standard aerial/overhead/
+pedestrian/detail, 3% slope, compact, large, rotated-L and too-narrow. An 8 × 80 m
+site explicitly omits equipment instead of stretching it. The 40 × 35 m case
+retains two equipment modules; standard and large retain four. Fresh interaction
+errors were empty; the historical global browser error buffer is not cleared
+evidence. See `tools/neighborhood_park_pilot/README.md` for reproduction and limits.
+
+The integrated empty-field scene loaded all nine v5 assets with correct sizes
+and GLB signatures. Aerial and 1.7 m views were inspected. Relevant Google tile
+refinement briefly returned shared ground to sampling, then ready with two
+passes and zero missing samples. Final street connections, performance and
+student interaction checks remain in CAT-07/08. Candidate assets are external
+under `C:/dev-artifacts/CityPrompt/catalogue-cycle-2026-09-05/park-v5/`; the current
+prepared runtime is `runtime-v4/public`. No production activation is implied.
+
 ## Remaining work
 
 CAT-05 authoring/review is complete; exact-candidate activation and integration
-remain. CAT-06 park refinement, CAT-07 sourced street placement and CAT-08 full
+remain. CAT-06 refinement is implemented; CAT-07 sourced street placement and CAT-08 full
 novice trial remain pending. CAT-04 is implemented with the above release checks
 still open. The accepted scope and exact candidates are unchanged.

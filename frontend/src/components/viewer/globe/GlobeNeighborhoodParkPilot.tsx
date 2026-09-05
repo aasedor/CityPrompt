@@ -7,8 +7,9 @@ import { neighborhoodParkLayoutForZone, distanceToSegment, envelopeFits, pointIn
 import { getDerivedParkAccess } from './parkAccessConnections';
 import { drapeSharedGroundGeometry, type SharedGroundTriangulation } from './sharedGroundGeometry';
 import { parkApproachGround, parkPadDatum, roundedParkPad } from './neighborhoodParkGeometry';
+import { createMeadowPatch } from './parkPlantingGeometry';
 
-const ROOT = '/landscape-pilots/neighborhood-rustic-v2';
+const ROOT = '/landscape-pilots/neighborhood-rustic-v5';
 const SKIN = '/park-skins/neighborhood-park-rustic-v0/adaptive-v1';
 const OBJECTS = { pavilion: 'gable-pavilion', tower: 'timber-play-tower', swing: 'timber-swing' };
 const LIFT = .084;
@@ -157,24 +158,7 @@ function Woodland({ points, variant, terrainZ }: { points: readonly ParkPoint[];
 }
 
 function Wildflowers({ points, terrainZ }: { points: readonly ParkPoint[]; terrainZ: Ground }) {
-  const geometry = useMemo(() => {
-    const coords: number[] = [], colors: number[] = [];
-    const color = new THREE.Color();
-    for (let i = 0; i < 35; i++) {
-      const x = Math.cos(i * 2.4) * (i % 7) * .08, y = Math.sin(i * 2.4) * (i % 7) * .08, z = .25 + (i % 5) * .09;
-      const radius = .10, petals = 5;
-      color.set(i % 4 === 0 ? '#d8c159' : i % 4 === 1 ? '#e0d9b7' : '#64804b');
-      for (let j = 0; j < petals; j++) {
-        const a = j * Math.PI * 2 / petals, b = (j + 1) * Math.PI * 2 / petals;
-        coords.push(x, y, z, x + Math.cos(a) * radius, y + Math.sin(a) * radius, z -.06, x + Math.cos(b) * radius, y + Math.sin(b) * radius, z -.06);
-        for (let k = 0; k < 3; k++) colors.push(color.r, color.g, color.b);
-      }
-      color.set('#52683e');
-      coords.push(x -.04, y, 0, x + .04, y, 0, x, y, z);
-      for (let k = 0; k < 3; k++) colors.push(color.r, color.g, color.b);
-    }
-    const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(coords, 3)); g.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3)); g.computeVertexNormals(); return g;
-  }, []);
+  const geometry = useMemo(createMeadowPatch, []);
   const material = useMemo(() => new THREE.MeshStandardMaterial({ vertexColors: true, side: THREE.DoubleSide, roughness: .9 }), []);
   useEffect(() => () => { geometry.dispose(); material.dispose(); }, [geometry, material]);
   return <Instances geometry={geometry} material={material} points={points} terrainZ={terrainZ} />;
@@ -189,7 +173,7 @@ export function GlobeNeighborhoodParkPilot({ zone, centroid, terrainZ, groundGri
   const approaches = useMemo(() => layout.paths.map((path,i) => parkApproachGround(layout.modules[i],path,terrainZ)), [layout,terrainZ]);
   const clearOfEntrances = (p: ParkPoint, clearance: number) => entryPaths.every(path => path.every((q, i) => i === 0 || distanceToSegment(p, path[i - 1], q) > clearance));
   const trees = layout.trees.filter(p => clearOfEntrances(p, 3));
-  const flowers = layout.shrubs.filter(p => clearOfEntrances(p, 1.8));
+  const flowers = layout.shrubs.filter(p => clearOfEntrances(p, 2.2));
   const details = useMemo(() => {
     if (!layout.loop.length) return [];
     const center = layout.loop.reduce((a,p) => ({x:a.x+p.x/64,y:a.y+p.y/64}),{x:0,y:0});

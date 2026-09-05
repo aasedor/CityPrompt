@@ -2,6 +2,7 @@ param(
     [Parameter(Mandatory=$true)][string]$SourceRoot,
     [Parameter(Mandatory=$true)][string]$ParkPublicRoot,
     [Parameter(Mandatory=$true)][string]$OutputRoot,
+    [string]$CandidateManifest,
     [switch]$DryRun
 )
 $ErrorActionPreference = 'Stop'
@@ -16,15 +17,19 @@ foreach ($source in @($basePublic, $parkPublic)) {
         throw 'Output must be separate from both source trees.'
     }
 }
-$manifestPath = Join-Path $PSScriptRoot '../neighborhood_park_pilot/candidate-manifest.json'
+$manifestPath = if ($CandidateManifest) { (Resolve-Path -LiteralPath $CandidateManifest).Path } else { Join-Path $PSScriptRoot '../neighborhood_park_pilot/candidate-manifest.json' }
 $manifest = Get-Content -Raw -LiteralPath $manifestPath | ConvertFrom-Json
 $files = [Collections.Generic.List[object]]::new()
+$bundleDirectory = $null
 foreach ($asset in $manifest.assets.PSObject.Properties.Value) {
     $relative = [string]$asset.url
-    if ($relative -notmatch '^/landscape-pilots/neighborhood-rustic-v2/[a-z0-9-]+\.glb$') {
+    if ($relative -notmatch '^/landscape-pilots/neighborhood-rustic-v[0-9]+/[a-z0-9-]+\.glb$') {
         throw "Unexpected pilot asset URL: $relative"
     }
     $relative = $relative.TrimStart('/')
+    $assetDirectory = $relative.Substring(0, $relative.LastIndexOf('/'))
+    if ($bundleDirectory -and $bundleDirectory -ne $assetDirectory) { throw 'A prepared park bundle must use one exact revision directory.' }
+    $bundleDirectory = $assetDirectory
     $source = Join-Path $parkPublic $relative
     if (-not (Test-Path -LiteralPath $source -PathType Leaf)) { throw "Missing asset: $source" }
     $hash = (Get-FileHash -LiteralPath $source -Algorithm SHA256).Hash.ToLowerInvariant()
@@ -33,8 +38,9 @@ foreach ($asset in $manifest.assets.PSObject.Properties.Value) {
     }
     $files.Add(@{ source=$source; relative=$relative; sha256=$hash; bytes=$asset.bytes })
 }
+if (-not $bundleDirectory) { throw 'Candidate manifest contains no park assets.' }
 foreach ($name in @('manifest.json','FOLIAGE_LICENSE.txt')) {
-    $relative = "landscape-pilots/neighborhood-rustic-v2/$name"
+    $relative = "$bundleDirectory/$name"
     $source = Join-Path $parkPublic $relative
     $hash = (Get-FileHash -LiteralPath $source -Algorithm SHA256).Hash.ToLowerInvariant()
     if ($name -eq 'manifest.json') {

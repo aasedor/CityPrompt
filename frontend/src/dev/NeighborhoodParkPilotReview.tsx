@@ -14,6 +14,7 @@ const SHAPES: Record<string,number[][]> = {
   standard:[[-35,-27.5],[35,-27.5],[35,27.5],[-35,27.5]],
   large:[[-52.5,-37.5],[52.5,-37.5],[52.5,37.5],[-52.5,37.5]],
   irregular:[[-40,-30],[40,-30],[40,0],[15,0],[15,30],[-40,30]],
+  narrow:[[-4,-40],[4,-40],[4,40],[-4,40]],
 };
 function Pose({view,scale}:{view:string;scale:number}) {
   const {camera}=useThree();
@@ -41,7 +42,7 @@ function App(){
     geometry.computeVertexNormals();return geometry;
   },[ground]);
   React.useEffect(()=>()=>floor.dispose(),[floor]);
-  const labels={compact:'40 × 35 m · compact',standard:'70 × 55 m · full programme',large:'105 × 75 m · large',irregular:'Rotated L-shaped site'};
+  const labels={compact:'40 × 35 m · compact',standard:'70 × 55 m · full programme',large:'105 × 75 m · large',irregular:'Rotated L-shaped site',narrow:'8 × 80 m · too narrow'};
   const scale=size==='large'?1.35:size==='compact'?.75:1;
   return <main style={{fontFamily:'Arial,sans-serif',height:'100vh',background:'#f6f4eb',color:'#203529',display:'flex',flexDirection:'column'}}>
     <header style={{padding:'20px 28px',display:'flex',alignItems:'center',justifyContent:'space-between',borderBottom:'1px solid #ccd1c2'}}>

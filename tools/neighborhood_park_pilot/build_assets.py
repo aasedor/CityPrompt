@@ -88,29 +88,60 @@ def tree(seed):
     links.new(tex.outputs['Alpha'], shader.inputs['Alpha'])
     leaves.surface_render_method = 'DITHERED'
     # glTF exporter maps the clip extras below to MASK after export.
-    leaf_vertices, leaf_faces, leaf_uv = [], [], []
-    top = 8.5 + rng.random() * 2
-    legacy.tube_between('Living trunk', (0, 0, 0), (.18, -.1, top * .72), .17, wood, 'tree_trunk', 'bark', vertices=9)
-    for branch in range(34):
-        angle = branch * 2.39996 + rng.random() * .4
-        z = 3 + branch / 34 * (top - 4)
-        spread = (2.9 - (z - 5.1) ** 2 * .15) * rng.uniform(.8, 1.1)
-        start = Vector((.12, -.05, z - 1.25))
-        end = Vector((math.cos(angle) * spread, math.sin(angle) * spread, z + .65))
-        legacy.tube_between(f'Limb {branch}', start, end, .065 * (1 - branch / 48), wood, 'tree_branch', 'bark', vertices=6)
-        for twig in range(5):
-            a = angle + (twig - 2) * .4
-            tip = end + Vector((math.cos(a) * rng.uniform(.4, 1.1), math.sin(a) * rng.uniform(.4, 1.1), rng.uniform(-.2, .7)))
-            legacy.tube_between('Twig', start.lerp(end, .65), tip, .014, wood, 'tree_twig', 'bark', vertices=5)
-            for card in range(10):
-                c = tip + Vector((rng.uniform(-.55, .55), rng.uniform(-.55, .55), rng.uniform(-.4, .55)))
-                yaw, tilt = rng.uniform(0, math.tau), rng.uniform(-.5, .9)
-                width, height = rng.uniform(.6, .95), rng.uniform(.5, .8)
-                u = Vector((math.cos(yaw), math.sin(yaw), 0)) * width
-                v = Vector((-math.sin(yaw) * math.sin(tilt), math.cos(yaw) * math.sin(tilt), math.cos(tilt))) * height
-                n = len(leaf_vertices)
-                leaf_vertices.extend([tuple(c - u - v), tuple(c + u - v), tuple(c + u + v), tuple(c - u + v)])
-                leaf_faces.append((n, n + 1, n + 2, n + 3))
+    leaf_vertices, leaf_faces = [], []
+    top = rng.uniform(8.0, 9.4)
+
+    def branch_mesh(name, points, radii, sides=7):
+        """Continuous curved, tapered wood, with closed end faces."""
+        verts, faces = [], []
+        for i, (point, radius) in enumerate(zip(points, radii)):
+            tangent = (points[min(i+1,len(points)-1)] - points[max(0,i-1)]).normalized()
+            helper = Vector((0,1,0)) if abs(tangent.y) < .9 else Vector((1,0,0))
+            u = tangent.cross(helper).normalized(); v = tangent.cross(u).normalized()
+            for j in range(sides):
+                angle = j * math.tau / sides
+                verts.append(tuple(point + radius*(math.cos(angle)*u + math.sin(angle)*v)))
+        faces.append(tuple(reversed(range(sides))))
+        for i in range(len(points)-1):
+            for j in range(sides):
+                a=i*sides+j; b=i*sides+(j+1)%sides
+                faces.append((a,b,b+sides,a+sides))
+        faces.append(tuple((len(points)-1)*sides+j for j in range(sides)))
+        mesh=bpy.data.meshes.new(name); mesh.from_pydata(verts,[],faces); mesh.update()
+        obj=bpy.data.objects.new(name,mesh); bpy.context.collection.objects.link(obj); obj.data.materials.append(wood)
+        for face in mesh.polygons: face.use_smooth=True
+
+    trunk=[Vector((0,0,0)),Vector((.05,-.06,1.9)),Vector((-.10,.04,3.1)),
+           Vector((.14,.08,top*.55)),Vector((.08,-.12,top*.77))]
+    branch_mesh('Curved oak trunk',trunk,[.24,.21,.16,.10,.035],9)
+    # Eight unequal leaders emerge at actual trunk nodes, then divide again.
+    # This avoids the old 34-spoke fan and leaves clear trunk below the crown.
+    for index in range(8):
+        angle=index*2.39996+rng.uniform(-.42,.42)
+        start=trunk[2 if index<5 else 3].copy()
+        crown_z=top*rng.uniform(.57,.76) if index<5 else top*rng.uniform(.78,.91)
+        reach=rng.uniform(1.65,2.15) if index<5 else rng.uniform(.65,1.35)
+        end=Vector((math.cos(angle)*reach,math.sin(angle)*reach,crown_z))
+        bend=start.lerp(end,.55)+Vector((-.1*math.sin(angle),.1*math.cos(angle),-.25))
+        branch_mesh(f'Oak leader {index}',[start,bend,end],[.105,.065,.021])
+        for twig in range(6):
+            yaw=angle+rng.uniform(-.85,.85)
+            origin=bend.lerp(end,rng.uniform(.28,.92))
+            tip=end+Vector((math.cos(yaw)*rng.uniform(.05,.38),math.sin(yaw)*rng.uniform(.05,.38),rng.uniform(-.12,.48)))
+            branch_mesh('Secondary curved branch',[origin,origin.lerp(tip,.58)+Vector((0,0,.08)),tip],[.025,.016,.006],5)
+            for card in range(42):
+                # Overlapping volumes along each outer branch form one crown,
+                # rather than a separate clipped pom-pom at every twig tip.
+                c=origin.lerp(tip,rng.uniform(.35,1.0))+Vector((rng.uniform(-.90,.90),rng.uniform(-.90,.90),rng.uniform(-.70,.95)))
+                yaw,tilt=rng.uniform(0,math.tau),rng.uniform(-1.15,1.15)
+                width,height=rng.uniform(.32,.49),rng.uniform(.29,.46)
+                u=Vector((math.cos(yaw),math.sin(yaw),0))*width
+                v=Vector((-math.sin(yaw)*math.sin(tilt),math.cos(yaw)*math.sin(tilt),math.cos(tilt)))*height
+                quad=[c-u-v,c+u-v,c+u+v,c-u+v]
+                # A bounded crown radius is also the live planting clearance.
+                if max(math.hypot(p.x,p.y) for p in quad)>3.0: continue
+                n=len(leaf_vertices);leaf_vertices.extend(tuple(p) for p in quad)
+                leaf_faces.append((n,n+1,n+2,n+3))
     mesh = bpy.data.meshes.new('Leaf twigs')
     mesh.from_pydata(leaf_vertices, [], leaf_faces)
     mesh.uv_layers.new(name='UVMap')
@@ -126,7 +157,20 @@ def export(name, builder, material_kit=True):
     builder(legacy.materials()) if material_kit else builder()
     bpy.context.view_layer.update()
     objects = [obj for obj in bpy.context.scene.objects if obj.type == 'MESH']
-    world = [obj.matrix_world @ Vector(corner) for obj in objects for corner in obj.bound_box]
+    # Evaluate bevels and measure real vertices before normalising the anchor.
+    # Rotated bounding-box corners overestimated the boulders' lower bound,
+    # leaving the old exported group 0.36 m above its declared ground plane.
+    bpy.ops.object.select_all(action='DESELECT')
+    for obj in objects: obj.select_set(True)
+    bpy.context.view_layer.objects.active=objects[0]
+    bpy.ops.object.convert(target='MESH')
+    objects=[obj for obj in bpy.context.scene.objects if obj.type=='MESH']
+    bpy.context.view_layer.update()
+    if name == 'boulders':
+        for obj in objects:
+            obj.location.z -= min((obj.matrix_world @ vertex.co).z for vertex in obj.data.vertices)
+        bpy.context.view_layer.update()
+    world = [obj.matrix_world @ vertex.co for obj in objects for vertex in obj.data.vertices]
     minimum = Vector(tuple(min(v[i] for v in world) for i in range(3)))
     maximum = Vector(tuple(max(v[i] for v in world) for i in range(3)))
     offset = Vector(((minimum.x + maximum.x) / 2, (minimum.y + maximum.y) / 2, minimum.z))
@@ -153,8 +197,8 @@ def export(name, builder, material_kit=True):
     data = json.loads(raw[20:20 + length])
     for mat in data.get('materials', []):
         if mat.get('name') == 'Oak leaf twigs':
-            mat.update(alphaMode='MASK', alphaCutoff=.40, doubleSided=True)
-            mat['pbrMetallicRoughness']['baseColorFactor'] = [.55, .65, .42, 1]
+            mat.update(alphaMode='MASK', alphaCutoff=.25, doubleSided=True)
+            mat['pbrMetallicRoughness']['baseColorFactor'] = [.78, .86, .60, 1]
     encoded = json.dumps(data, separators=(',', ':')).encode()
     encoded += b' ' * (-len(encoded) % 4)
     tail = raw[20 + length:]
@@ -180,7 +224,13 @@ manifest = {'schemaVersion': 1, 'method': 'RLASM-v6.1-landscape-pilot', 'status'
             'inferences': ['Equipment dimensions are design assumptions, not a survey.', 'Repeated timber towers interpret the two aerial play pockets.',
                            'Oak branch topology and species are inferred; foliage texture is licensed supporting material.', 'Play clearances are pilot design allowances, not playground certification.'],
             'preserved': ['dominant lawn', 'continuous walking loop', 'two separate play pockets on full-size sites', 'one gabled pavilion', 'one swing', 'woodland/wildflower perimeter'],
-            'legacyBuilderSha256': digest(legacy_path)}
+            'legacyBuilderSha256': digest(legacy_path),
+            'candidateBuilderSha256': digest(Path(__file__)),
+            'foliageTextureSha256': digest(required[1]),
+            'vegetationContract': {'maxNativeCrownRadiusM': 3.0, 'maxRuntimeUniformScale': 1.08,
+                                   'treeBoundaryClearanceM': 3.3, 'drawCallsPerTreeVariant': 2,
+                                   'branching': 'curved tapered trunk, unequal leaders and secondary branches'}}
 (output / 'manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
 shutil.copy2(root / 'frontend/node_modules/@dgreenheck/ez-tree/LICENSE', output / 'FOLIAGE_LICENSE.txt')
+shutil.copy2(__file__, output / 'build_assets.py')
 print(json.dumps({'output': str(output), 'totalBytes': sum(v['bytes'] for v in assets.values()), 'assets': len(assets)}))
