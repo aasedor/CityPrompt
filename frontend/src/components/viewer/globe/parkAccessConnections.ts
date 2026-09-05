@@ -276,7 +276,10 @@ function solvePark(park: SiteZone, zones: readonly SiteZone[], settings: ParkAcc
               const start = center[segmentIndex]; const segmentLength = distance(start, end);
               if (segmentLength < EPS) return [];
               const segmentNormal: P = [-(end[1] - start[1]) / segmentLength, (end[0] - start[0]) / segmentLength];
-              return section.bands.filter((other) => other !== band).map((other) => [
+              // The Calgary section's 0.3 m outer margin lies beyond its
+              // sidewalk. A path may bridge that margin to the park; motor,
+              // cycle, parking and planted bands still block an approach.
+              return section.bands.filter((other) => other !== band && other.sourceType !== 'setback').map((other) => [
                 add(start, mul(segmentNormal, other.startM * scale)), add(end, mul(segmentNormal, other.startM * scale)),
                 add(end, mul(segmentNormal, other.endM * scale)), add(start, mul(segmentNormal, other.endM * scale)),
               ]);

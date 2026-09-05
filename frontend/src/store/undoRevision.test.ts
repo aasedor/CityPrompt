@@ -3,9 +3,22 @@ import { QueryClient } from '@tanstack/react-query';
 import { siteZonesApi } from '@/services/api';
 import { createZoneUpdateAction, createZoneCreateAction, createZoneDeleteAction, createZoneCoordinatesAction, advanceDerivedZoneRevision } from './undoActions';
 import type { SiteZone } from '@/types';
+import { CALGARY_LOCAL_PLACEMENT } from '@/features/pickPlace/streetPlacement';
+import { bufferLineToPolygon, extractCenterline } from '@/utils/roadGeometry';
 
 vi.mock('@/services/api', () => ({ siteZonesApi: { create: vi.fn(), update: vi.fn(), delete: vi.fn() }, buildingsApi: {} }));
 describe('zone undo revision checks', () => {
+  it('undoes and redoes a native street route and its centreline in the same revision-checked request',async()=>{
+    const client=new QueryClient();
+    const before=bufferLineToPolygon([[-114,51],[-113.999,51]],16);
+    const after=before.map(([x,y])=>[x,y+.0002]);
+    client.setQueryData(['site-zones','project'],[{id:'zone',zone_type:'road',properties:CALGARY_LOCAL_PLACEMENT.properties}]);
+    const action=createZoneCoordinatesAction('project','zone',before,after,client,'r1');
+    vi.mocked(siteZonesApi.update).mockResolvedValueOnce({updated_at:'r2'} as SiteZone).mockResolvedValueOnce({updated_at:'r3'} as SiteZone);
+    await action.undo();await action.redo();
+    expect(siteZonesApi.update).toHaveBeenNthCalledWith(1,'zone',expect.objectContaining({coordinates:before,expected_updated_at:'r1',properties:expect.objectContaining({plan_centerline:extractCenterline(before),width:16})}),{skipHistory:true});
+    expect(siteZonesApi.update).toHaveBeenNthCalledWith(2,'zone',expect.objectContaining({coordinates:after,expected_updated_at:'r2',properties:expect.objectContaining({plan_centerline:extractCenterline(after),width:16})}),{skipHistory:true});
+  });
   it('accepts our derived compile revision but not a compile over a teammate edit', async () => {
     const client = new QueryClient();
     const action = createZoneCoordinatesAction('project','zone',[[1,2]],[[3,4]],client,'ours');

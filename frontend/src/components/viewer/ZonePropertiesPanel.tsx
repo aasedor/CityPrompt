@@ -5,6 +5,7 @@ import { Trash2, Sparkles, Loader2, X, RefreshCw, Building2, Route, TreePine, Dr
 import toast from 'react-hot-toast';
 import type { SiteZone, SiteZoneProperties, Building, BoundaryAnalysisResponse, LayoutOption, PreviewHistoryEntry, ModelLibraryEntry, CustomStyleDomain } from '@/types';
 import { ZONE_TYPE_CONFIG } from '@/types';
+import { isCalgaryLocalRoute, CALGARY_LOCAL_WIDTH_M } from '@/features/pickPlace/streetPlacement';
 import { getShadeForArchetype, getCustomZoneShade } from '@/data/archetypeShadeMap';
 import { CustomStyleEditor } from './CustomStyleEditor';
 import { siteZonesApi, buildingsApi, getApiErrorMessage, modelLibraryApi, resolveApiFileUrl } from '@/services/api';
@@ -1722,10 +1723,12 @@ const buildAestheticSelectionProps = (
               <input
                 type="number"
                 step="1"
-                value={props.width ?? config?.defaultProperties.width ?? 10}
+                value={isCalgaryLocalRoute({zone_type:zone.zone_type, properties:props}) ? CALGARY_LOCAL_WIDTH_M : props.width ?? config?.defaultProperties.width ?? 10}
+                disabled={isCalgaryLocalRoute({zone_type:zone.zone_type, properties:props})}
                 onChange={(e) => setProps((p) => ({ ...p, width: parseFloat(e.target.value) || undefined }))}
                 className={panelFieldClass}
               />
+              {isCalgaryLocalRoute({zone_type:zone.zone_type, properties:props}) && <p className="mt-1 text-xs text-slate-600">This section stays 16 m wide. Choose another street type to change the section.</p>}
             </div>
           </>
         )}

@@ -104,21 +104,21 @@ export function bufferLineToPolygon(points: number[][], widthMeters: number): nu
   const left: number[][] = [];
   const right: number[][] = [];
   for (let i = 0; i < points.length; i++) {
-    let dx: number, dy: number;
-    if (i === 0) {
-      dx = points[1][0] - points[0][0];
-      dy = points[1][1] - points[0][1];
-    } else if (i === points.length - 1) {
-      dx = points[i][0] - points[i - 1][0];
-      dy = points[i][1] - points[i - 1][1];
-    } else {
-      dx = points[i + 1][0] - points[i - 1][0];
-      dy = points[i + 1][1] - points[i - 1][1];
-    }
-    const len = Math.sqrt(dx * dx + dy * dy);
-    if (len === 0) continue;
-    const perpLng = (-dy / len) * (halfWidth / metersPerDegLon);
-    const perpLat = (dx / len) * (halfWidth / metersPerDegLat);
+    const direction = (a: number[], b: number[]) => {
+      const dx = (b[0]-a[0])*metersPerDegLon, dy = (b[1]-a[1])*metersPerDegLat;
+      const length = Math.hypot(dx, dy) || 1;
+      return [dx/length, dy/length];
+    };
+    const incoming = i === 0 ? direction(points[0], points[1]) : direction(points[i-1], points[i]);
+    const outgoing = i === points.length-1 ? incoming : direction(points[i], points[i+1]);
+    // Metric normals and a bounded miter preserve perpendicular width through
+    // ordinary bends. Degree-space normals narrowed diagonal Calgary streets.
+    const nx = -incoming[1]-outgoing[1], ny = incoming[0]+outgoing[0];
+    const length = Math.hypot(nx, ny) || 1;
+    const bx = nx/length, by = ny/length;
+    const offset = halfWidth/Math.max(.25, bx*(-outgoing[1])+by*outgoing[0]);
+    const perpLng = bx * offset / metersPerDegLon;
+    const perpLat = by * offset / metersPerDegLat;
     left.push([points[i][0] + perpLng, points[i][1] + perpLat]);
     right.push([points[i][0] - perpLng, points[i][1] - perpLat]);
   }

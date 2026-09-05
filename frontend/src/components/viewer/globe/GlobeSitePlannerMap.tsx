@@ -1425,7 +1425,7 @@ interface GlobeSitePlannerMapProps {
   /** Project buildings — those with generated GLBs get placed on the globe. */
   buildings?: Building[];
   massingFeatures?: unknown[];
-  onZoneCreated: (coordinates: number[][], zoneType: SiteZoneType, properties?: SiteZoneProperties) => void;
+  onZoneCreated: (coordinates: number[][], zoneType: SiteZoneType, properties?: SiteZoneProperties) => boolean | void;
   onZoneUpdated: (zoneId: string, coordinates: number[][]) => boolean | void;
   onZoneSelected: (zoneId: string | null) => void;
   onZoneDeleted?: (zoneId: string) => void;
@@ -3252,9 +3252,10 @@ export function GlobeSitePlannerMap({
 
     let finalCoords: number[][];
     if (linear) {
-      const smoothed = smoothPolyline(pts);
+      const smoothed = zoneProperties.pick_place_street_section ? pts : smoothPolyline(pts);
       const width = (zoneProperties.width as number) || 10;
       finalCoords = sanitizeCoords(bufferLineToPolygon(smoothed, width));
+      if (zoneProperties.pick_place_street_section) zoneProperties.plan_centerline = smoothed;
     } else {
       finalCoords = [...pts];
     }
@@ -3264,13 +3265,13 @@ export function GlobeSitePlannerMap({
       return;
     }
 
-    onZoneCreated(finalCoords, activeSitePlannerTool, zoneProperties);
+    if (onZoneCreated(finalCoords, activeSitePlannerTool, zoneProperties) === false) return;
     setDrawingPoints([]);
     setDrawingPointHeights([]);
     setCenterNearStartVertex(false);
     drawingPointsRef.current = [];
     drawingPointHeightsRef.current = [];
-    if (isMobileDrawingViewport()) {
+    if (isMobileDrawingViewport() || zoneProperties.pick_place_street_section) {
       setActiveSitePlannerTool(null);
     }
   }, [activeSitePlannerTool, activeToolProperties, linear, onZoneCreated, setActiveSitePlannerTool, terrainElevation]);

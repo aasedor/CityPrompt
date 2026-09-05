@@ -1,6 +1,7 @@
 import { useState, type ReactNode } from 'react';
 import { Brain, MousePointer, HelpCircle, Layers3, Eye, Building2, History, Ruler } from 'lucide-react';
-import type { SiteZoneType } from '@/types';
+import type { SiteZoneType, SiteZoneProperties } from '@/types';
+import { CalgaryGuideDetails } from '@/features/calgaryCatalogue/CatalogueBrowser';
 import { useViewerStore } from '@/store';
 import { UndoRedoButtons } from '@/components/ui/UndoRedoButtons';
 import buildingsIcon from '@/assets/site-planner-tools/buildings.svg';
@@ -30,6 +31,7 @@ interface SitePlannerToolbarProps {
   onSiteBoundary?: () => void;
   placementSlot?: ReactNode;
   onLeavePlacement?: () => void;
+  streetPlacement?: { label: string; description: string; properties: SiteZoneProperties };
 }
 function mapToolToCoreTool(tool: SiteZoneType | null): CoreToolId | null {
   if (tool === 'site_boundary') return 'siteBoundary';
@@ -40,7 +42,7 @@ function mapToolToCoreTool(tool: SiteZoneType | null): CoreToolId | null {
 }
 export function SitePlannerToolbar({ onShowGuide, onToggleHistory, historyOpen, measureActive = false,
   onMeasureModeChange, isGlobeMode = false, layout = 'default', bottomSlot, uploadSlot,
-  onMasterPlan, masterPlanActive = false, onSiteBoundary, placementSlot, onLeavePlacement }: SitePlannerToolbarProps) {
+  onMasterPlan, masterPlanActive = false, onSiteBoundary, placementSlot, onLeavePlacement, streetPlacement }: SitePlannerToolbarProps) {
   const { activeSitePlannerTool, setActiveSitePlannerTool, streetViewPegman, setStreetViewActive,
     settings, updateSettings } = useViewerStore();
   const [parksSubtype, setParksSubtype] = useState<ParksSubtype>('park');
@@ -63,7 +65,8 @@ export function SitePlannerToolbar({ onShowGuide, onToggleHistory, historyOpen, 
     if (id === 'siteBoundary' && onSiteBoundary) { onSiteBoundary(); return; }
     const zoneType = id === 'siteBoundary' ? 'site_boundary' : id === 'buildings' ? 'building'
       : id === 'streetsPaths' ? 'road' : selectedParksSubtype === 'plaza' ? 'parking' : 'green_space';
-    setActiveSitePlannerTool(activeSitePlannerTool === zoneType ? null : zoneType);
+    setActiveSitePlannerTool(activeSitePlannerTool === zoneType ? null : zoneType,
+      zoneType === 'road' ? streetPlacement?.properties : undefined);
   };
   const activateAdvanced = (type: SiteZoneType) => {
     leaveOtherModes();
@@ -77,17 +80,19 @@ export function SitePlannerToolbar({ onShowGuide, onToggleHistory, historyOpen, 
       {CORE_TOOLS.filter(tool => !placementSlot || tool.id === 'streetsPaths').map((tool) => {
         const active = activeCoreTool === tool.id;
         const isPlaza = tool.id === 'parksPlazas' && selectedParksSubtype === 'plaza';
-        const label = isPlaza ? 'Plaza' : tool.label;
+        const label = tool.id === 'streetsPaths' && streetPlacement ? streetPlacement.label : isPlaza ? 'Plaza' : tool.label;
         return <button key={tool.id} type="button" data-tour={'tool-' + tool.id} aria-label={label} aria-pressed={active}
           onClick={() => activateCoreTool(tool.id)} title={isPlaza ? 'Draw a plaza outline' : tool.description}
           className={['site-planner-core-tool group flex min-h-14 items-center gap-2.5 rounded-lg border-2 border-[#151515] px-2.5 py-2 text-left flex-col justify-center sm:flex-row sm:justify-start', focusStyle, active ? 'bg-[#c9ff3d] shadow-[2px_2px_0_0_#151515]' : 'bg-white hover:bg-[#fff9ec]'].join(' ')}>
           <img src={tool.icon} alt="" aria-hidden className="site-planner-core-icon h-8 w-8 shrink-0 rounded-md object-cover" />
           <span className="min-w-0"><span className="site-planner-core-label block text-sm font-bold text-[#151515]">{label}</span>
+            {tool.id === 'streetsPaths' && streetPlacement && <span className="block text-xs text-slate-600">{streetPlacement.description}</span>}
             {!placementSlot && <span className="site-planner-core-drawtype hidden text-xs leading-snug text-slate-600 sm:block">{isPlaza ? 'Draw a public space' : tool.description}</span>}</span>
         </button>;
       })}
     </div>
 
+    {streetPlacement && <CalgaryGuideDetails classification={{ groupId: 'local', basis: 'draft_manual' }} />}
     {activeSitePlannerTool && <div role="status" className="rounded-lg bg-white px-3 py-2 text-sm leading-relaxed text-slate-800">
       <p className="hidden sm:block">{activeSitePlannerTool === 'road' ? 'Click at least 2 points along the road.' : 'Click at least 3 corners around the area.'} Press <strong>Enter</strong> to finish, or double-click.</p>
       <p className="sm:hidden">{isGlobeMode ? 'Move the map under the crosshair. Tap to place each point, then tap Finish.' : 'Tap each corner, then double-tap to finish.'}</p>

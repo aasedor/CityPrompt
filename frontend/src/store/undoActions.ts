@@ -2,6 +2,7 @@ import type { QueryClient } from '@tanstack/react-query';
 import { siteZonesApi, buildingsApi } from '@/services/api';
 import type { SiteZone, SiteZoneProperties } from '@/types';
 import type { UndoableAction } from './undoRedo';
+import { streetCoordinateUpdate } from '@/features/pickPlace/streetPlacement';
 
 // =============================================================================
 // Helpers
@@ -159,13 +160,15 @@ export function createZoneCoordinatesAction(
     label: 'Move zone',
     zoneId,
     undo: async () => {
-      const zone = await siteZonesApi.update(zoneId, { coordinates: prevCoords, expected_updated_at: currentRevision(queryClient, projectId, zoneId, revision) }, { skipHistory: true });
+      const current = queryClient.getQueryData<SiteZone[]>(['site-zones', projectId])?.find(zone => zone.id === zoneId);
+      const zone = await siteZonesApi.update(zoneId, { ...streetCoordinateUpdate(current, prevCoords), expected_updated_at: currentRevision(queryClient, projectId, zoneId, revision) }, { skipHistory: true });
       revision = zone.updated_at;
       rememberRevision(queryClient, projectId, zoneId, revision);
       await invalidateZones(queryClient, projectId);
     },
     redo: async () => {
-      const zone = await siteZonesApi.update(zoneId, { coordinates: newCoords, expected_updated_at: currentRevision(queryClient, projectId, zoneId, revision) }, { skipHistory: true });
+      const current = queryClient.getQueryData<SiteZone[]>(['site-zones', projectId])?.find(zone => zone.id === zoneId);
+      const zone = await siteZonesApi.update(zoneId, { ...streetCoordinateUpdate(current, newCoords), expected_updated_at: currentRevision(queryClient, projectId, zoneId, revision) }, { skipHistory: true });
       revision = zone.updated_at;
       rememberRevision(queryClient, projectId, zoneId, revision);
       await invalidateZones(queryClient, projectId);

@@ -101,3 +101,45 @@ CAT-05 authoring/review is complete; exact-candidate activation and integration
 remain. CAT-06 refinement is implemented; CAT-07 sourced street placement and CAT-08 full
 novice trial remain pending. CAT-04 is implemented with the above release checks
 still open. The accepted scope and exact candidates are unchanged.
+
+## CAT-07 — Calgary local route pilot
+
+Implemented on `codex/catalogue-calgary-local-street`. The primary street button
+now selects the existing `calgary_local / calgary_local_v0`, with its 16 m width
+and draft Street Manual source visible. The native section is chosen before
+buffering the first line. Its route points are persisted before compilation;
+the drawing exits to Select after completion. Rejected routes retain their
+points and give an explanation. A compact street panel exposes route handles,
+an Add bend point action and the existing advanced catalogue. Width remains
+16 m while this exact pilot is selected.
+
+Metric normal/miter calculations fix diagonal route widths. Coordinate saves,
+undo and redo update the buffer and persisted centreline atomically, preventing
+a compiled street from remaining at its previous location. The access solver
+can cross the section's 0.3 m outer sidewalk margin; carriageways, cycle bands,
+parking and planted bands still block an approach. This is geometric connection
+logic, not construction or parcel permission. Tight switchbacks and segments
+under 16 m produce an explicit pilot limitation.
+
+The real UI created a straight 68 m street on the empty-field fixture, added a
+bend point and moved its end north. Its exact variant and 16 m section compiled
+successfully. Undo restored the straight route; redo and reload restored the
+same bent centreline and polygon. A rejected 8 m attempt kept its drawing and
+showed the minimum-length message. The older test road was deleted through the
+keyboard. UI tooling dismissed its native delete confirmation, so that button
+path is not claimed verified. Source edits during Vite HMR temporarily left
+stale canvas listeners; the recorded drawing/edit trial used a full reload.
+
+126 targeted tests across nine files passed, including metric diagonal/bend
+widths, atomic undo, near-side access, unsafe crossings, section contracts and
+shared ground. TypeScript and scoped ESLint passed. The asset-integrity suite
+requires `CITYPROMPT_PUBLIC_DIR` pointing to the explicit prepared runtime;
+the first run without it failed on absent local public assets, and the correctly
+configured run checked the actual sources successfully.
+
+Current street ID: `97f304f2-adbd-4d69-af30-a8361b8893f8`. UI images and saved
+route/undo evidence are ignored under `artifacts/catalogue-cycle/street-*`.
+Full pedestrian park/street contact remains part of the integrated CAT-08
+trial. That trial also found a 40 × 30 m park returning an unexplained empty
+lawn; this is recorded for correction before release. No paid calls or
+production publication occurred.

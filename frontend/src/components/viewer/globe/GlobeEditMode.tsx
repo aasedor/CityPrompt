@@ -17,6 +17,8 @@ import { Ellipsoid, WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import type { SiteZone } from '@/types';
 import { assetForZone } from '@/features/pickPlace/catalogue';
 import { resizeRectangleCorner } from '@/features/pickPlace/geometry';
+import { isCalgaryLocalRoute, reshapeStreetPoint } from '@/features/pickPlace/streetPlacement';
+import { extractCenterline } from '@/utils/roadGeometry';
 import { computeCentroid, METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 import { useGlobeDragRef } from './useGlobeDragRef';
 import {
@@ -188,6 +190,8 @@ export function GlobeEditMode({
   const [isRotating, setIsRotating] = useState(false);
   const dragRef = useGlobeDragRef();
   const renderedCoords = liveCoords ?? zone.coordinates;
+  const routeEditing = isCalgaryLocalRoute(zone);
+  const handleCoords = routeEditing ? extractCenterline(renderedCoords) : renderedCoords;
   const zoneCentroid = useMemo(() => computeCentroid(zone.coordinates), [zone.coordinates]);
 
   // Disable/enable GlobeControls during drag
@@ -633,7 +637,9 @@ export function GlobeEditMode({
       if (!lngLat || !originalCoordsRef.current) return;
 
       const asset = assetForZone(zone);
-      const newCoords = asset && originalCoordsRef.current.length === 4
+      const newCoords = isCalgaryLocalRoute(zone)
+        ? reshapeStreetPoint(originalCoordsRef.current, index, lngLat)
+        : asset && originalCoordsRef.current.length === 4
         ? resizeRectangleCorner(originalCoordsRef.current, index, lngLat, asset)
         : originalCoordsRef.current.map((c, i) => i === index ? [...lngLat] : [...c]);
 
@@ -769,7 +775,7 @@ export function GlobeEditMode({
         </EastNorthUpFrame>
       )}
 
-      {renderedCoords.map((coord, i) => (
+      {handleCoords.map((coord, i) => (
         <EastNorthUpFrame
           key={`edit-v-${i}`}
           lat={coord[1] * DEG_TO_RAD}
@@ -805,6 +811,7 @@ export function GlobeEditMode({
                     : 'h-5 w-5 border-white bg-white/90'
               }`}
               style={{ cursor: dragIndex === i ? 'grabbing' : 'grab' }}
+              title={routeEditing ? `Drag route point ${i+1}` : `Drag corner ${i+1}`}
               onPointerDown={(e) => {
                 e.stopPropagation();
                 handleVertexPointerDown(i, e as any);

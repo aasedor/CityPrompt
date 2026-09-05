@@ -3,8 +3,15 @@ import { act, fireEvent, render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { useViewerStore } from '@/store';
 import { SitePlannerToolbar } from './SitePlannerToolbar';
+import { CALGARY_LOCAL_PLACEMENT } from '@/features/pickPlace/streetPlacement';
 
 describe('Student drawing toolbar', () => {
+  it('selects the sourced 16 m street before the first route point is drawn', () => {
+    render(<SitePlannerToolbar placementSlot={<span>Objects</span>} streetPlacement={CALGARY_LOCAL_PLACEMENT} />);
+    fireEvent.click(screen.getByRole('button', {name:'Calgary local street'}));
+    expect(useViewerStore.getState().activeToolProperties).toMatchObject({width:16,road_archetype_id:'calgary_local',road_selected_variant_id:'calgary_local_v0'});
+    expect(screen.getByText(/based on a draft Street Manual/)).toBeInTheDocument();
+  });
   beforeEach(() => useViewerStore.setState({ activeSitePlannerTool: null, streetViewPegman: null }));
   it('starts with building, park and road, keeping optional tools available', () => {
     const boundary = vi.fn();

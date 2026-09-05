@@ -2,6 +2,7 @@ import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useQuery, useMutation, useQueryClient, useIsMutating } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { getApiErrorMessage, siteZonesApi } from '@/services/api';
+import { streetCoordinateUpdate } from '@/features/pickPlace/streetPlacement';
 import { isPersistedZoneId } from '@/utils/zoneIdentity';
 import type { SiteZone, SiteZoneType, SiteZoneProperties } from '@/types';
 import { ZONE_TYPE_CONFIG } from '@/types';
@@ -268,7 +269,8 @@ export function useSiteZones(projectId: string | undefined) {
     mutationKey: ['save-zone', projectId],
     onMutate: (vars) => beginEdit(vars.zoneId),
     mutationFn: (vars: { zoneId: string; coordinates: number[][]; revision?: string }) =>
-      siteZonesApi.update(vars.zoneId, { coordinates: vars.coordinates,
+      siteZonesApi.update(vars.zoneId, { ...streetCoordinateUpdate(
+        queryClient.getQueryData<SiteZone[]>(['site-zones', projectId])?.find(zone => zone.id === vars.zoneId), vars.coordinates),
         ...(vars.revision ? { expected_updated_at: vars.revision } : {}) }),
     onSuccess: (_result, vars, attempt) => clearFailedEdit(vars.zoneId, attempt),
     onError: (error, vars, attempt) => recordFailedEdit(vars.zoneId, error, attempt),
