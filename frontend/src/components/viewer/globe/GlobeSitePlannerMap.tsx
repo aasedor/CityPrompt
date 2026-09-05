@@ -605,6 +605,7 @@ export function computeCameraPose(
   lng: number,
   heightAboveGroundMeters: number,
   terrainHeightMeters: number = 0,
+  pitchDegrees: number = DEFAULT_INITIAL_CAMERA_PITCH_DEGREES,
 ): GlobeCameraPose {
   const surfacePos = new THREE.Vector3();
   WGS84_ELLIPSOID.getCartographicToPosition(
@@ -629,7 +630,8 @@ export function computeCameraPose(
 
   const cameraPos = surfacePos.clone().add(normal.clone().multiplyScalar(heightAboveGroundMeters));
   const eastSkew = 0.25;
-  const horizontalOffset = heightAboveGroundMeters * Math.tan(DEFAULT_INITIAL_CAMERA_PITCH_DEGREES * DEG_TO_RAD);
+  const cameraUp = pitchDegrees === 0 ? north.clone() : normal;
+  const horizontalOffset = heightAboveGroundMeters * Math.tan(pitchDegrees * DEG_TO_RAD);
   const northOffset = horizontalOffset / Math.hypot(1, eastSkew);
   cameraPos.add(north.multiplyScalar(-northOffset));
   cameraPos.add(east.multiplyScalar(northOffset * eastSkew));
@@ -638,7 +640,7 @@ export function computeCameraPose(
   // supplied; returning it here keeps the type uniform across all return
   // paths so callers can read pose.cameraUp without TypeScript flagging
   // it as missing on this branch.
-  return { cameraPos, surfacePos, normal, cameraUp: normal };
+  return { cameraPos, surfacePos, normal, cameraUp };
 }
 
 function computeBearingFromCamera(
@@ -3277,7 +3279,13 @@ export function GlobeSitePlannerMap({
       if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
       if ((e.target as HTMLElement)?.isContentEditable) return;
 
-      if (e.key === 'Enter') finishDrawing();
+      if (e.key === 'Enter' && drawingPointsRef.current.length > 0) {
+        // Canvas clicks leave toolbar focus in place. Consume Enter so finishing
+        // cannot also reopen Guide or toggle the active drawing tool off.
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        finishDrawing();
+      }
       else if (e.key === 'Escape') {
         e.preventDefault();
         setDrawingPoints([]);
@@ -4279,11 +4287,11 @@ export function GlobeSitePlannerMap({
 
         let desktopHint: string;
         if (n === 0) {
-          desktopHint = `Click to place first ${label} point | Drag to orbit | Scroll to zoom`;
+          desktopHint = `Click to place first ${label} point | Drag to pan | Right-drag to orbit | Scroll to zoom`;
         } else if (n < min) {
-          desktopHint = `${n} point${n > 1 ? 's' : ''} - need ${min} min - Drag to orbit - Backspace to undo`;
+          desktopHint = `${n} point${n > 1 ? 's' : ''} - need ${min} min - Drag to pan - Backspace to undo`;
         } else {
-          desktopHint = `${n} points${measurement ? ` - ${measurement}` : ''} - Drag to orbit - Double-click or Enter to finish - Esc to cancel`;
+          desktopHint = `${n} points${measurement ? ` - ${measurement}` : ''} - Drag to pan - Double-click or Enter to finish - Esc to cancel`;
         }
 
         return (
@@ -4293,6 +4301,11 @@ export function GlobeSitePlannerMap({
             </div>
             <div className="absolute left-1/2 bottom-24 z-30 hidden -translate-x-1/2 rounded-lg bg-gray-900/90 px-4 py-2 text-center text-xs text-white backdrop-blur-sm border border-amber-500/30 sm:block">
               {desktopHint}
+              {drawingPoints.length >= min && (
+                <button type="button" onClick={finishDrawing} className="ml-3 rounded bg-[#c9ff3d] px-3 py-1 font-bold text-black">
+                  Finish drawing
+                </button>
+              )}
             </div>
           </>
         );
@@ -4315,7 +4328,7 @@ export function GlobeSitePlannerMap({
             ? '3D model selected | Delete/Backspace to remove | Esc to deselect'
             : selectedZoneId
             ? 'Drag body to move | Drag vertices to reshape | Drag amber handle or Q/E to rotate buildings | WASD/Arrows to nudge relative to view | Ctrl+C/Ctrl+V or toolbar Copy/Paste | Delete to remove'
-            : 'Click to select · Drag to orbit · Scroll to zoom · Arrow keys to move'}
+            : 'Click to select · Drag to pan · Right-drag to orbit · Scroll to zoom · Arrow keys to move'}
         </div>
       )}
 
@@ -4326,6 +4339,24 @@ export function GlobeSitePlannerMap({
         <div className={`rounded-full border-2 border-[#151515] bg-[#fff9ec]/95 px-3 py-1.5 text-[11px] font-black uppercase shadow-[3px_3px_0_0_#151515] backdrop-blur-xl ${cameraElevationBadge.textClass}`}>
           {cameraElevation}° {cameraElevationBadge.label}
         </div>
+        <button
+          type="button"
+          onClick={() => {
+            const camera = cameraRef.current;
+            const hit = raycastSurfacePoint(0, 0);
+            if (!camera || !hit) return;
+            const [lng, lat] = hit.lngLat;
+            const surface = new THREE.Vector3();
+            WGS84_ELLIPSOID.getCartographicToPosition(lat * DEG_TO_RAD, lng * DEG_TO_RAD, hit.height, surface);
+            const nextPitch = cameraElevation >= 85 ? DEFAULT_INITIAL_CAMERA_PITCH_DEGREES : 0;
+            const height = Math.max(20, camera.position.distanceTo(surface) * Math.cos(nextPitch * DEG_TO_RAD));
+            applyCameraPose(computeCameraPose(lat, lng, height, hit.height, nextPitch));
+          }}
+          className="rounded-full border-2 border-[#151515] bg-[#fff9ec]/95 px-3 py-1.5 text-[11px] font-black uppercase shadow-[3px_3px_0_0_#151515] hover:bg-white"
+          title={cameraElevation >= 85 ? 'See your community from an angle' : 'Look straight down to draw and resize footprints'}
+        >
+          {cameraElevation >= 85 ? '3D view' : 'Top view'}
+        </button>
         {!areTilesDisplayReady && (
           <div className="flex items-center gap-1.5 rounded-full border-2 border-[#151515] bg-[#fff9ec]/95 px-3 py-1.5 shadow-[3px_3px_0_0_#151515] backdrop-blur-xl">
             <div className="h-2 w-2 rounded-full bg-amber-400 animate-pulse" />

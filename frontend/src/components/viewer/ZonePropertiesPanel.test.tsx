@@ -779,6 +779,40 @@ describe('ZonePropertiesPanel LEGO selection handoff', () => {
     expect(screen.getByText(/exact park variant has a reviewed 3D kit/i)).toBeInTheDocument();
   });
 
+  it('lets a student set height before choosing a development type', async () => {
+    const onUpdate = vi.fn();
+    const zone = industrialZone();
+    zone.properties = { floors: 10, height: 30, floor_height: 3 };
+    renderPanel(<ZonePropertiesPanel zone={zone} onUpdate={onUpdate} onDelete={vi.fn()} onClose={vi.fn()} />);
+    fireEvent.click(screen.getByRole('button', { name: /3\s*scale/i }));
+    fireEvent.change(screen.getByLabelText('Floors'), { target: { value: '3' } });
+    expect(screen.getByLabelText('Height (m)')).toHaveValue(9);
+    fireEvent.click(screen.getByRole('button', { name: /save changes/i }));
+    await waitFor(() => expect(onUpdate).toHaveBeenCalledWith(zone.id, expect.objectContaining({
+      properties: expect.objectContaining({ floors: 3, height: 9 }),
+    })));
+  });
+
+  it('replaces an incompatible inherited height when choosing an archetype without variant floor overrides', async () => {
+    const onUpdate = vi.fn();
+    const zone = industrialZone();
+    zone.properties = { ...zone.properties, floors: 30, height: 105 };
+    const { container } = renderPanel(
+      <ZonePropertiesPanel zone={zone} onUpdate={onUpdate} onDelete={vi.fn()} onClose={vi.fn()} />,
+    );
+    fireEvent.click(screen.getAllByRole('button', { name: /archetype/i })[0]);
+    const card = container.querySelector('[data-aesthetic-option-id="industrial_brick_mixed_use"]')!;
+    fireEvent.click(within(card as HTMLElement).getByRole('button', { name: /^Automatic \/ best-fitting family/i }));
+    fireEvent.click(screen.getByRole('button', { name: /3\s*scale/i }));
+    expect(screen.getByLabelText('Floors')).toHaveValue(6);
+    expect(screen.getByLabelText('Height (m)')).toHaveValue(21);
+    expect(screen.getByText(/drag the white corner handles/i)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /save changes/i }));
+    await waitFor(() => expect(onUpdate).toHaveBeenCalledWith(zone.id, expect.objectContaining({
+      properties: expect.objectContaining({ floors: 6, height: 21 }),
+    })));
+  });
+
   it('persists Brewery -> Automatic and opens LEGO from the current draft without a refetch', async () => {
     const onUpdate = vi.fn();
     const onOpenBlockEditor = vi.fn();

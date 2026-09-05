@@ -305,7 +305,7 @@ function getAestheticAreaFit(
   const ratio = best.ratio;
   const pct = ratio == null ? null : Math.round((ratio - 1) * 100);
   const message = best.isGoodFit
-    ? pct == null ? 'Good fit' : `Good fit (${pct > 0 ? '+' : ''}${pct}%)`
+    ? pct == null ? 'Area match' : `Area match (${pct > 0 ? '+' : ''}${pct}%)`
     : best.tooSmall
       ? pct == null ? 'Small for this archetype' : `Small (${pct}%)`
       : pct == null ? 'Large for this archetype' : `Large (+${pct}%)`;
@@ -371,7 +371,7 @@ function BuildingWorkflowStepper({
     <div className="rounded-lg border-2 border-[#151515] bg-white/80 p-2 shadow-[3px_3px_0_0_rgba(21,21,21,0.16)]">
       <div className="grid grid-cols-4 gap-1">
         {BUILDING_WORKFLOW_STEPS.map(({ step, label }) => {
-          const disabled = step > 1 && !developmentSelected;
+          const disabled = (step === 2 || step === 4) && !developmentSelected;
           const active = activeStep === step;
           return (
             <button
@@ -553,7 +553,7 @@ export function ZonePropertiesPanel({ zone, savedVersionReload, onUpdate, onDele
   }, [name, props]);
 
   useEffect(() => {
-    if (usesBuildingWorkflow && !props.development_type && activeBuildingStep > 1) {
+    if (usesBuildingWorkflow && !props.development_type && (activeBuildingStep === 2 || activeBuildingStep === 4)) {
       setActiveBuildingStep(1);
     }
   }, [activeBuildingStep, props.development_type, usesBuildingWorkflow]);
@@ -1120,8 +1120,10 @@ const resolveOptionCategory = (
         const floorH = variantFloorHeight || (p.floor_height as number) || archetypeFloorHeight || 3;
         nextProps.floor_height = floorH;
         nextProps.height = Math.round(suggestedFloors * floorH * 10) / 10;
-      } else if (selectedOption?.minFloors && selectedOption?.maxFloors && !p.floors) {
-        // Fallback to archetype-level floors only when floors haven't been set
+      } else if (selectedOption?.minFloors && selectedOption?.maxFloors
+        && (!p.floors || Number(p.floors) < selectedOption.minFloors || Number(p.floors) > selectedOption.maxFloors)) {
+        // A newly chosen house must not inherit the generic ten-storey default.
+        // Preserve the student's floor count when it fits the chosen archetype.
         const suggestedFloors = Math.floor((selectedOption.minFloors + selectedOption.maxFloors) / 2);
         nextProps.floors = suggestedFloors;
         const floorH = (p.floor_height as number) || archetypeFloorHeight || 3;
@@ -1607,8 +1609,9 @@ const resolveOptionCategory = (
               return (
                 <PanelStep step="3" title="Tune height and scale">
                   <div>
-                    <label className={panelLabelClass}>Floors</label>
+                    <label htmlFor="building-floors" className={panelLabelClass}>Floors</label>
                     <input
+                      id="building-floors"
                       type="number"
                       step="1"
                       min={archMinFloors ?? 1}
@@ -1632,8 +1635,9 @@ const resolveOptionCategory = (
                     )}
                   </div>
                   <div>
-                    <label className={panelLabelClass}>Height (m)</label>
+                    <label htmlFor="building-height" className={panelLabelClass}>Height (m)</label>
                     <input
+                      id="building-height"
                       type="number"
                       step="1"
                       value={props.height ?? config?.defaultProperties.height ?? ''}
@@ -1656,6 +1660,11 @@ const resolveOptionCategory = (
                       return null;
                     })()}
                   </div>
+                  <div className="rounded border border-primary-950/[0.08] px-2 py-2 text-xs">
+                    <p className="font-bold">Change the footprint</p>
+                    <p>Choose Top view. With Select active, drag the white corner handles of the selected building. Its dimensions and area update as you reshape it.</p>
+                    <p className="mt-1">Draw separate outlines for separate buildings. Detailed 3D models have their own size limits; an area match does not guarantee a model fits.</p>
+                  </div>
                   {archSuggestedArea != null && (() => {
                     const ratio = area / archSuggestedArea;
                     const pct = Math.round((ratio - 1) * 100);
@@ -1672,7 +1681,7 @@ const resolveOptionCategory = (
                         </div>
                         <div className={`mt-1 text-[10px] font-medium ${isClose ? 'text-green-600' : 'text-orange-500'}`}>
                           {isClose
-                            ? `Good fit (${pct > 0 ? '+' : ''}${pct}%)`
+                            ? `Area match (${pct > 0 ? '+' : ''}${pct}%)`
                             : ratio < 0.7
                               ? `Zone is small for this archetype (${pct}%) — render may look cramped`
                               : `Zone is large for this archetype (+${pct}%) — render may look sparse`}
@@ -3230,7 +3239,7 @@ function AestheticOptionCard({
                   : 'bg-orange-100 text-orange-700'
                 : 'bg-white/85 text-[#151515]/55'
             }`}>
-              {areaFit ? (areaFit.isGoodFit ? 'Good fit' : areaFit.message.split(' ')[0]) : 'No data'}
+              {areaFit ? (areaFit.isGoodFit ? 'Area match' : areaFit.message.split(' ')[0]) : 'No data'}
             </div>
           )}
           <div className="absolute inset-x-0 bottom-0 p-2">
@@ -3258,7 +3267,7 @@ function AestheticOptionCard({
                 : 'border-primary-950/[0.08] bg-primary-950/[0.03] text-primary-950/45'
             }`}>
               <div className="flex items-center justify-between gap-1">
-                <span className="text-[9px] font-black uppercase">Site fit</span>
+                <span className="text-[9px] font-black uppercase">Area comparison</span>
                 <span className="text-[10px] font-black">{areaFit?.message || 'No area data'}</span>
               </div>
               <div className="mt-0.5 text-[9px] font-semibold leading-tight opacity-80">
@@ -3436,8 +3445,9 @@ function DevelopmentAestheticPicker({
 
       {rankedOptions.length > 0 && (
         <div className="rounded border border-primary-950/[0.08] bg-primary-950/[0.03] px-2 py-1.5 text-[10px] font-semibold text-primary-950/55">
-          Best fits are sorted first for this drawn zone
-          {bestFitCount > 0 ? ` · ${bestFitCount} likely fit${bestFitCount === 1 ? '' : 's'}` : ''}.
+          Sorted by similar area, with reviewed pilots first.
+          {bestFitCount > 0 ? ` ${bestFitCount} area match${bestFitCount === 1 ? '' : 'es'}.` : ''}
+          {' '}Actual model fit also depends on shape, dimensions and floors.
         </div>
       )}
 
