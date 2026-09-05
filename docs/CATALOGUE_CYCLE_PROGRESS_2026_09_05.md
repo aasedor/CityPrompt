@@ -44,6 +44,34 @@ Browser testing placed, rotated and duplicated the bungalow on the existing empt
 
 One rapid rotate/duplicate sequence displayed an update error and lost selection; a reload recovered the persisted models. The error response was not captured in that initial run. Subsequent instrumented rotation and duplicate trials returned no failing API responses and retained the reshape panel. This intermittent finding remains open for CAT-08; the collection is not marked release-complete. Large repeated bungalow placement through the UI, move/undo/redo, narrow-screen verification and integrated ground-contact review remain part of that trial. Evidence and scripts are ignored under `artifacts/catalogue-cycle/`.
 
+## CAT-05 — exact duplex clay candidate
+
+Implemented on `codex/catalogue-duplex-clay-pilot`. The new source-specific
+`calgary_modern_infill_house / infill_duplex` is constructed from its three
+locked catalogue views. Those pixels show two visible storeys with dark brick,
+cedar entry recesses, paired front glazing and two flat roofs; conflicting
+three-storey/stucco catalogue prose is recorded, not used to change the model.
+
+Four finite local candidates are preserved externally. Version 004 passes
+the complete separate architectural-clay review with zero unresolved P0/P1.
+The review closed overlapping entrance/slab surfaces, missing near-grade
+glazing and an unsupported central roof cap. All 13 views came from the actual
+GLB reimport. Source/script hashes, texture-free export, finite/nondegenerate
+geometry, physical carrier apertures, framing and unchanged roundtrip bounds
+pass deterministic checks. This does not grant textured-keeper status.
+
+The GLB is 3,110,128 bytes with complete dimensions 13.34 × 21.472 × 9.0 m.
+It represents one fixed two-home assembly. A proposed 17 × 25 m plot leaves
+conceptual clearance, but native placement and terrain contact remain to be
+verified. No runtime seed or catalogue activation has occurred. The concrete
+candidate, exact source/model/review hashes, replay instructions and independent
+review are recorded under `tools/catalogue_duplex_pilot/`. Heavy sources,
+Blender files, GLBs and review images remain outside Git at
+`C:/dev-artifacts/CityPrompt/catalogue-cycle-2026-09-05/duplex/`.
+
 ## Remaining work
 
-CAT-05 new duplex, CAT-06 park refinement, CAT-07 sourced street placement and CAT-08 full novice trial remain pending. CAT-04 is implemented with the above release checks still open. The accepted scope and exact candidates are unchanged.
+CAT-05 authoring/review is complete; exact-candidate activation and integration
+remain. CAT-06 park refinement, CAT-07 sourced street placement and CAT-08 full
+novice trial remain pending. CAT-04 is implemented with the above release checks
+still open. The accepted scope and exact candidates are unchanged.
