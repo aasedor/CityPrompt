@@ -1,4 +1,5 @@
 import type { SiteZoneProperties } from '@/types';
+import { LOCAL_TRIO_ASSETS } from './localTrioAssets';
 import streetCatalogue from '@/data/streetPathArchetypes.json';
 import { classifyCalgaryAsset, calgaryGroup, CALGARY_GROUPS, type CalgaryClassification } from '@/features/calgaryCatalogue/guide';
 
@@ -97,7 +98,8 @@ export const LOCAL_STREET_ASSET: StreetAsset = {
   },
 };
 
-export const CATALOGUE_ASSETS: CatalogueAsset[] = [...OBJECT_ASSETS, LOCAL_STREET_ASSET];
+export const CATALOGUE_ASSETS: CatalogueAsset[] = [...OBJECT_ASSETS, LOCAL_STREET_ASSET,
+  ...(import.meta.env.DEV && import.meta.env.VITE_LOCAL_TRIO_TRIAL === '1' ? LOCAL_TRIO_ASSETS : [])];
 /** Pilot visibility preserves the existing local trial; it is not release approval. */
 export function isPlaceable(asset: CatalogueAsset): boolean {
   return asset.readiness === 'pilot' || asset.readiness === 'ready';
