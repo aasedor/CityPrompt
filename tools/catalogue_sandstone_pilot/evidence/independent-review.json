@@ -1,0 +1,264 @@
+{
+  "schema": "rlasm-independent-architectural-clay-review-v1",
+  "candidate": "calgary-sandstone-heritage-clay-v007",
+  "reviewer": "independent reviewer /root/montreal_clay_review",
+  "reviewed_utc": "2026-09-06T20:26:17.205067+00:00",
+  "method": "RLASM v6.1",
+  "scope": "Native source-locked architectural clay; actual delivered/reimported GLB evidence. Not a textured-keeper or runtime review.",
+  "holistic_review_performed": true,
+  "decision": "architectural_clay_pass",
+  "state": "architectural_clay_reviewed",
+  "architectural_clay_pass": true,
+  "keeper_approved": false,
+  "runtime_activation_approved": false,
+  "canonical_promotion_approved": false,
+  "human_activation_required": true,
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "findings": [],
+  "delivery_status": "PASS_DELIVERY_CHECKS",
+  "delivery_is_not_visual_approval": true,
+  "model_sha256": "9fa4d89e657c053ca5dea6b9ca22db1422bcc67762b7765cd0c72f6cb0635c44",
+  "source_hashes_verified": true,
+  "builder_script_hashes_verified": true,
+  "texture_free_glb_verified": true,
+  "individual_full_resolution_render_count": 13,
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "phone_boards_inspected": [
+    "boards/phone-source-comparison.png",
+    "boards/phone-construction.png"
+  ],
+  "inspected_files": [
+    {
+      "path": "sources/variant_0.png",
+      "sha256": "629de326189254e092f55158bcf48ffa15404aef28ac7e6fc9f98272e322027d",
+      "bytes": 1406587,
+      "inspection": "direct image pixels; locked source originals/board reused by identical hash"
+    },
+    {
+      "path": "sources/variant_0_angle_60.jpg",
+      "sha256": "2fdc718649d51b41c15b269b0aa3adc38d994e44a985905a776fa122d68de8c6",
+      "bytes": 955727,
+      "inspection": "direct image pixels; locked source originals/board reused by identical hash"
+    },
+    {
+      "path": "sources/variant_0_angle_90.jpg",
+      "sha256": "c73923f39bcfd440a6df2b7384cf9b15a0ffea08f6a2558600eabc1a5ec3539d",
+      "bytes": 860843,
+      "inspection": "direct image pixels; locked source originals/board reused by identical hash"
+    },
+    {
+      "path": "renders/aerial.png",
+      "sha256": "be3381a426a420749f41e2216c39abad6d6a3a4019780573fc2d44039b22ac2a",
+      "bytes": 1444164,
+      "inspection": "direct image pixels; locked source originals/board reused by identical hash"
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "sha256": "e08957f50c0d0b1dd4c4bc7bffb5dfbc102313058eef09e06713e431920db20c",
+      "bytes": 1464405,
+      "inspection": "direct image pixels; locked source originals/board reused by identical hash"
+    },
+    {
+      "path": "renders/courtyard_tower.png",
+      "sha256": "fa39d8043433307fbd8b4208cb2369bc03d57eca0f63526f3a59e9d7dca6022b",
+      "bytes": 1554508,
+      "inspection": "direct image pixels; locked source originals/board reused by identical hash"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "sha256": "88c10fc299fb93bc51560cb5e6ae6eb4b526b81cc75c5905c0f0e1a3f88453aa",
+      "bytes": 1650466,
+      "inspection": "direct image pixels; locked source originals/board reused by identical hash"
+    },
+    {
+      "path": "renders/front.png",
+      "sha256": "a1932ada3853c6c9e137c8a43a2fccc1076fa4be1eaecda454d7e89afc9432db",
+      "bytes": 1390478,
+      "inspection": "direct image pixels; locked source originals/board reused by identical hash"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "sha256": "5961dec180c7e3c068f03a43c82258d0f52f0de2852bf9abc04496ffdae9d260",
+      "bytes": 1448911,
+      "inspection": "direct image pixels; locked source originals/board reused by identical hash"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "sha256": "63bbaf044e1b9877541f768a8e795f9f29367851e2dd01e41fbe15e313e96d8f",
+      "bytes": 1467308,
+      "inspection": "direct image pixels; locked source originals/board reused by identical hash"
+    },
+    {
+      "path": "renders/left_side.png",
+      "sha256": "39e532308dfe1550fef729c10ebd6ef115a4475caeaa043ea0a7ef54f46e8b05",
+      "bytes": 1356809,
+      "inspection": "direct image pixels; locked source originals/board reused by identical hash"
+    },
+    {
+      "path": "renders/rear.png",
+      "sha256": "86d18f3057e7973f4c4d4594644ac0c2a956460817d5bd48c3adc37e24b2c6d0",
+      "bytes": 1368198,
+      "inspection": "direct image pixels; locked source originals/board reused by identical hash"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "sha256": "42741a7f1bef1301fef7fe6a0b62f02680d604690be61340b530676f56837279",
+      "bytes": 1444472,
+      "inspection": "direct image pixels; locked source originals/board reused by identical hash"
+    },
+    {
+      "path": "renders/right_side.png",
+      "sha256": "045b00df0c6fbdf835433ee638b41e8ab3de7be1dfa4db3582a0d630dd279c0e",
+      "bytes": 1372942,
+      "inspection": "direct image pixels; locked source originals/board reused by identical hash"
+    },
+    {
+      "path": "renders/roof_contact.png",
+      "sha256": "b442be60858f40dad9dfe9ab3aecb0d4ce2ca6f17bf023cba4cf50882e50f98f",
+      "bytes": 1688804,
+      "inspection": "direct image pixels; locked source originals/board reused by identical hash"
+    },
+    {
+      "path": "renders/top.png",
+      "sha256": "351f0272794e2325bfde72149e34b44ed689be3feae64c4bbfa5e57f2857139c",
+      "bytes": 1312803,
+      "inspection": "direct image pixels; locked source originals/board reused by identical hash"
+    },
+    {
+      "path": "boards/all-views-contact.png",
+      "sha256": "d934b7c4ae6ccef94057b9c31b46ab8168166c076544e4d0ceca2c1166c2621e",
+      "bytes": 1578126,
+      "inspection": "direct image pixels; locked source originals/board reused by identical hash"
+    },
+    {
+      "path": "boards/layout-provenance.json",
+      "sha256": "47d57e5035b0cb398b46130b04d4fee59789ef6aa0e2e5b004799b9f248bb627",
+      "bytes": 2392,
+      "inspection": "metadata, provenance or binary verification"
+    },
+    {
+      "path": "boards/locked-source-board.png",
+      "sha256": "2ca38d6c4897e33e297da60e668d6df755b571575157cf3e38af756ec910cec5",
+      "bytes": 1548263,
+      "inspection": "direct image pixels; locked source originals/board reused by identical hash"
+    },
+    {
+      "path": "boards/phone-construction.png",
+      "sha256": "93a87575b52fdcdcec20ddf01adffa16bf11830a4b8379cf0bdb154380fcc374",
+      "bytes": 1079511,
+      "inspection": "direct image pixels; locked source originals/board reused by identical hash"
+    },
+    {
+      "path": "boards/phone-source-comparison.png",
+      "sha256": "ec65c3a3ccc96c0d0ddf8181d6828bc189b5bfc46435f4863bd1550ed8c0c9f1",
+      "bytes": 1631924,
+      "inspection": "direct image pixels; locked source originals/board reused by identical hash"
+    },
+    {
+      "path": "prework-manifest.json",
+      "sha256": "aa76aa41255ab96aba2aba72cae26248e648b5cda79ee209b320958c25e7cac8",
+      "bytes": 8003,
+      "inspection": "metadata, provenance or binary verification"
+    },
+    {
+      "path": "source-entry.json",
+      "sha256": "25cace7ee74b3b3ff6ca870b0958585bf4ca64b1ddea414567bd03ab25384bb4",
+      "bytes": 1226,
+      "inspection": "metadata, provenance or binary verification"
+    },
+    {
+      "path": "build-report.json",
+      "sha256": "b69de503b4c8db80f8dea0335017ea30c32c9c27ab7279bf17914699cfcf058e",
+      "bytes": 493120,
+      "inspection": "metadata, provenance or binary verification"
+    },
+    {
+      "path": "calgary-sandstone-heritage-clay-v007.glb",
+      "sha256": "9fa4d89e657c053ca5dea6b9ca22db1422bcc67762b7765cd0c72f6cb0635c44",
+      "bytes": 12252792,
+      "inspection": "metadata, provenance or binary verification"
+    },
+    {
+      "path": "evidence/builder-evidence.json",
+      "sha256": "3eab0314b3ed5d7c4abd546c3559f2d5ad016a82ff275bcfc5269cff7f40a742",
+      "bytes": 493288,
+      "inspection": "metadata, provenance or binary verification"
+    },
+    {
+      "path": "evidence/builder-pixel-review.json",
+      "sha256": "59370a5566d32a027ce7794cf5f1ad5af44029d1e12b422fd8519cf0a2253fb6",
+      "bytes": 3033,
+      "inspection": "metadata, provenance or binary verification"
+    },
+    {
+      "path": "evidence/carrier-aperture-audit.json",
+      "sha256": "a4024c935d7b7cd170f8533ac5d50bf8a0a99359e6f89a618e1e058400c01a3b",
+      "bytes": 36570,
+      "inspection": "metadata, provenance or binary verification"
+    },
+    {
+      "path": "evidence/delivery-verification.json",
+      "sha256": "2c8c48ab90bdb84e9516ddd946dff424155efd75d9ea9f22bda7a0379e2476dc",
+      "bytes": 1503,
+      "inspection": "metadata, provenance or binary verification"
+    },
+    {
+      "path": "scripts/build.py",
+      "sha256": "3eaafe0a28032e899c01136cefdc07eaee6fef61ee655f67345778c04c78ffb2",
+      "bytes": 16840,
+      "inspection": "metadata, provenance or binary verification"
+    },
+    {
+      "path": "scripts/clay_core.py",
+      "sha256": "19c432bdf42ce005a540d23776fcba1a860aa6101e3940eec8dd505f3187de33",
+      "bytes": 26464,
+      "inspection": "metadata, provenance or binary verification"
+    },
+    {
+      "path": "scripts/proof.py",
+      "sha256": "1f6f1c4355d683a28d9eb87d9ffd7228fe03a7be90f3642877a8374daafb3466",
+      "bytes": 6739,
+      "inspection": "metadata, provenance or binary verification"
+    },
+    {
+      "path": "scripts/support.py",
+      "sha256": "a9564b8dc6bd825a40f67fa0d1c2525127cfe8bcd848f083ee61c9fb904c0bde",
+      "bytes": 6427,
+      "inspection": "metadata, provenance or binary verification"
+    }
+  ],
+  "builder_visual_review_status": "Separate builder-pixel-review.json pass inspected and hashed; exact model and inspected-image hashes verified.",
+  "positive_observations": [
+    "Raised projecting front pavilions retain grouped openings and break the lower eave.",
+    "Buttresses remain in opaque pier zones; no repeated window overlap.",
+    "Front and clock-tower arched entries and courtyard access remain connected to stairs and thresholds.",
+    "Solid pavilion cheeks now contact roof caps without v004 black seam; v006 black-strip regression absent.",
+    "Courtyard roof ring, inserted tower, clock faces, arched belfry and copper crown remain coherent.",
+    "All 13 full-resolution final GLB renders plus updated phone/source and construction/contact boards reviewed; no unresolved P0/P1 within native architectural-clay scope."
+  ],
+  "limitations": [
+    "Conceptual civic building, not a surveyed historical reconstruction; footprint, hidden rooms, simplified stone ornament and rear schedule are disclosed inferences.",
+    "Architectural-clay pass only: no textured-keeper, runtime terrain/stretch/performance or canonical activation approval.",
+    "Native detailed model around 12.3MB requires runtime performance consideration before broad catalogue use.",
+    "Identical-hash locked source originals and locked-source board reused from prior direct pixel inspection; all final GLB views and updated boards reviewed directly."
+  ],
+  "resolved_previous_findings": [
+    "F1 masonry bond now visible on all facades, piers and chimney",
+    "F2 paired front sash fine divisions implemented but endpoints still need contact",
+    "F3 cheek shingles and most dormer eave added; remaining rear segment listed",
+    "F4 skirting and heavier handrail restore source porch assembly"
+  ],
+  "source_image_review_reused_by_identical_hash": true,
+  "source_interpretation_note": "Visible right-side lower front aperture is narrower than neighbors; prior uniform-size wording was too broad. Hero/oblique side-opening schedules differ. Builder must explicitly record its right-side inference before approval; rear/left and porch-column inference already recorded.",
+  "resolved_prior_findings": [
+    "S1: no buttress crosses window apertures in final repeated facades",
+    "S2: raised projecting front pavilions own grouped openings and interrupt connecting eave",
+    "S3: tower side arched door and continuous steps now present",
+    "S4: front and rear cheek upper boundaries now intersect cap, visible seam closed",
+    "S5: full source rebuild removes black material-strip regression from aborted incremental v006"
+  ]
+}
