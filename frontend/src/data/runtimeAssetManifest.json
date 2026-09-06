@@ -224,6 +224,7 @@
     "src/features/pickPlace/assetRegistry.ts",
     "src/features/pickPlace/catalogue.ts",
     "src/features/pickPlace/geometry.ts",
+    "src/features/pickPlace/publishedBuildingAssets.ts",
     "src/features/pickPlace/streetPlacement.ts",
     "src/features/pickPlace/useAutomatic3D.ts",
     "src/features/projects/InvitationPage.tsx",
@@ -1960,7 +1961,8 @@
       "url": "/archetypes/buildings/calgary-inner-city-bungalow/variant_2.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1514720,
       "lfsOid": "99dddd58994ef0c0f1c1d9abd472420cae16837759c885e9b85c7dca5b8d7ba8"
@@ -2118,7 +2120,8 @@
       "url": "/archetypes/buildings/calgary-sandstone-heritage/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1406587,
       "lfsOid": "629de326189254e092f55158bcf48ffa15404aef28ac7e6fc9f98272e322027d"
@@ -8797,7 +8800,8 @@
       "url": "/archetypes/buildings/toronto-edwardian-foursquare/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1447263,
       "lfsOid": "5e714abb64cbb8b507dbd128c311ae0061ddb010d80bc240b8a13a17ccf48e54"
