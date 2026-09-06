@@ -57,3 +57,11 @@ families are structurally valid and grounded, but intentionally remain outside
 the seed/runtime catalogue until explicit human visual approval. The inherited
 four-family pilot is documented in `docs/CATALOGUE_EXPANSION_HANDOFF_2026-08-19.md`.
 Both waves remain local-only; do not publish either without explicit approval.
+
+## Repeatable building catalogue publication
+
+Follow `docs/BUILDING_CATALOGUE_WORKFLOW.md` for reviewed local pilots, exact-byte
+activation, generated picker cards, selective seeding/readback and a checked PR
+to main. `python -m tools.catalogue_promotion check` is the publication preflight.
+Trial entries cannot pass publication CI. This workflow does not change the RLASM
+6.1 visual method or grant keeper approval.

@@ -1,6 +1,6 @@
 import { expect, it } from 'vitest';
 import { computeFootprintFrame } from '@/components/viewer/globe/buildingPlacement';
-import { assemblyFootprintCoordinates, authoredHomePlotFrame, detachedPlotCoordinates, isDetachedArchetype } from './detachedPlot';
+import { assemblyFootprintCoordinates, authoredHomePlotFrame, detachedPlotCoordinates, isDetachedArchetype, preservesAuthoredPlotAxes } from './detachedPlot';
 import { rectangleAt } from '@/features/pickPlace/geometry';
 
 it('retains a rotated concave plot in the actual globe instance frame', () => {
@@ -48,4 +48,16 @@ it('keeps the chosen frontage through aspect-ratio changes and a full turn', () 
     expect(local[1][0]).toBeCloseTo(width/2, 4);
     expect(local[1][1]).toBeCloseTo(8, 4);
   }
+});
+
+it('preserves landmark frontage independently of the detached-home repeat contract', () => {
+  const properties = { native_plot_axes: true };
+  expect(preservesAuthoredPlotAxes(properties)).toBe(true);
+  expect(preservesAuthoredPlotAxes({ native_home_plot: true })).toBe(true);
+  expect(preservesAuthoredPlotAxes({ native_plot_axes: false })).toBe(false);
+  const first = authoredHomePlotFrame(rectangleAt([-114,51],29,42,25))!;
+  const flipped = authoredHomePlotFrame(rectangleAt([-114,51],29,42,205))!;
+  expect(Math.cos(flipped.yawRad-first.yawRad)).toBeCloseTo(-1, 8);
+  expect(flipped.width_m).toBe(29);
+  expect(flipped.depth_m).toBe(42);
 });

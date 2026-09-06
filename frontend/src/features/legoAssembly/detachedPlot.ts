@@ -9,6 +9,11 @@ export function isDetachedArchetype(id?: string): boolean {
   return Boolean(id && DETACHED.has(id.replace(/_front_day$/, '').replace(/_variant_\d+$/, '')));
 }
 
+/** Native landmark frontage is directional too; this does not enable home repetition. */
+export function preservesAuthoredPlotAxes(properties?: Record<string, unknown> | null): boolean {
+  return properties?.native_home_plot === true || properties?.native_plot_axes === true;
+}
+
 /** Exact drawn plot in the same metre frame used to place LEGO instances. */
 export function detachedPlotCoordinates(
   archetypeId: string | undefined,

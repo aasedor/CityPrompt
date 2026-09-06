@@ -33,12 +33,15 @@ is passed, so re-running is safe.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import pathlib
 import sys
+from urllib.parse import urlparse
 
-from rlasm_clay_library import clay_seed_objects, clay_seed_rows, load_library
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+from tools.rlasm_clay_library import clay_seed_objects, clay_seed_rows, load_library
 
 SEED_DIR = pathlib.Path(__file__).resolve().parents[1] / "seed" / "model-library"
 ROWS_FILE = SEED_DIR / "model_library.json"
@@ -82,7 +85,77 @@ def parse_args() -> argparse.Namespace:
         help="seed only the canonical RLASM architectural-clay building collection",
     )
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument(
+        "--candidate",
+        action="append",
+        help="exact clay candidate to install; repeat for a finite batch (requires --rlasm-clay-only)",
+    )
+    parser.add_argument(
+        "--verify", action="store_true", help="read back GLB hashes and public database bindings without writing"
+    )
+    parser.add_argument(
+        "--local-trial", action="store_true", help="allow reviewed unpublished pilots on loopback storage/database only"
+    )
     return parser.parse_args()
+
+
+def remote_hash(s3, bucket, key):
+    body = s3.get_object(Bucket=bucket, Key=key)["Body"]
+    digest = hashlib.sha256()
+    try:
+        for block in iter(lambda: body.read(1024 * 1024), b""):
+            digest.update(block)
+    finally:
+        body.close()
+    return digest.hexdigest()
+
+
+def select_candidates(payload, candidates):
+    if not candidates:
+        return payload
+    selected = set(candidates)
+    missing = selected - {entry["candidate"] for entry in payload["entries"]}
+    if missing:
+        raise ValueError(f"Unknown clay candidates: {sorted(missing)}")
+    return {**payload, "entries": [entry for entry in payload["entries"] if entry["candidate"] in selected]}
+
+
+def verify_install(args, payload):
+    import boto3
+    import sqlalchemy as sa
+
+    s3 = boto3.client(
+        "s3", endpoint_url=args.endpoint, aws_access_key_id=args.access_key, aws_secret_access_key=args.secret_key
+    )
+    engine = sa.create_engine(args.database_url)
+    try:
+        with engine.connect() as conn:
+            for entry, row in zip(payload["entries"], clay_seed_rows(payload)):
+                key = "library/rlasm-architectural-clay/" + pathlib.PurePosixPath(entry["model"]["path"]).name
+                if remote_hash(s3, args.bucket, key) != entry["model"]["sha256"]:
+                    raise ValueError(f"Stored GLB mismatch: {entry['candidate']}")
+                stored = (
+                    conn.execute(
+                        sa.text("SELECT model_url, is_public, metadata FROM model_library WHERE id = :id"),
+                        {"id": row["id"]},
+                    )
+                    .mappings()
+                    .first()
+                )
+                if not stored or stored["model_url"] != row["model_url"] or not stored["is_public"]:
+                    raise ValueError(f"Missing or incorrect public binding: {entry['candidate']}")
+                metadata = stored["metadata"]
+                if isinstance(metadata, str):
+                    metadata = json.loads(metadata)
+                if (
+                    metadata.get("rlasm", {}).get("model_sha256") != entry["model"]["sha256"]
+                    or metadata.get("lego", {}).get("variant_key") != entry["variant_id"]
+                ):
+                    raise ValueError(f"Stale model metadata: {entry['candidate']}")
+                print(f"verified: {entry['candidate']}")
+    finally:
+        engine.dispose()
+    return 0
 
 
 def upload_objects(args: argparse.Namespace, clay_payload: dict) -> int:
@@ -93,24 +166,22 @@ def upload_objects(args: argparse.Namespace, clay_payload: dict) -> int:
         print(f"!! {OBJECTS_DIR} is missing -- did `git lfs pull` finish?")
         return 1
 
-    objects = [] if args.rlasm_clay_only else [
-        (path, OBJECT_PREFIX + path.relative_to(OBJECTS_DIR).as_posix())
-        for path in sorted(OBJECTS_DIR.rglob("*"))
-        if path.is_file()
-    ]
-    objects.extend(
-        (item.source, item.storage_key) for item in clay_seed_objects(clay_payload)
+    objects = (
+        []
+        if args.rlasm_clay_only
+        else [
+            (path, OBJECT_PREFIX + path.relative_to(OBJECTS_DIR).as_posix())
+            for path in sorted(OBJECTS_DIR.rglob("*"))
+            if path.is_file()
+        ]
     )
+    objects.extend((item.source, item.storage_key) for item in clay_seed_objects(clay_payload))
     total = sum(path.stat().st_size for path, _ in objects)
     print(f"objects : {len(objects)} files, {total / 1073741824:.2f} GB")
 
     # A pointer stub is ~130 bytes of text; a real GLB never is. Catching this
     # here beats a runtime 200 that returns unusable geometry.
-    stubs = [
-        path
-        for path, _ in objects
-        if path.stat().st_size < 200 and path.suffix.lower() == ".glb"
-    ]
+    stubs = [path for path, _ in objects if path.stat().st_size < 200 and path.suffix.lower() == ".glb"]
     if stubs:
         print(f"!! {len(stubs)} GLB files are still Git LFS pointer stubs. Run: git lfs pull")
         return 1
@@ -133,11 +204,16 @@ def upload_objects(args: argparse.Namespace, clay_payload: dict) -> int:
         s3.create_bucket(Bucket=args.bucket)
 
     sent = 0
+    clay_hashes = {
+        "library/rlasm-architectural-clay/" + pathlib.PurePosixPath(e["model"]["path"]).name: e["model"]["sha256"]
+        for e in clay_payload["entries"]
+    }
     for path, key in objects:
         try:
             existing = s3.head_object(Bucket=args.bucket, Key=key)
             if existing["ContentLength"] == path.stat().st_size:
-                continue
+                if key not in clay_hashes or remote_hash(s3, args.bucket, key) == clay_hashes[key]:
+                    continue
         except Exception:
             pass
         s3.upload_file(str(path), args.bucket, key)
@@ -151,21 +227,21 @@ def upload_objects(args: argparse.Namespace, clay_payload: dict) -> int:
 def insert_rows(args: argparse.Namespace, clay_payload: dict) -> int:
     import sqlalchemy as sa
 
-    if not ROWS_FILE.is_file():
-        print(f"!! {ROWS_FILE} is missing")
-        return 1
-
-    payload = json.loads(ROWS_FILE.read_text(encoding="utf-8"))
-    columns = payload["columns"]
-    legacy_rows = [] if args.rlasm_clay_only else list(payload["rows"])
     clay_rows = list(clay_seed_rows(clay_payload))
+    if args.rlasm_clay_only:
+        columns = list(clay_rows[0])
+        legacy_rows = []
+    else:
+        if not ROWS_FILE.is_file():
+            print(f"!! {ROWS_FILE} is missing")
+            return 1
+        payload = json.loads(ROWS_FILE.read_text(encoding="utf-8"))
+        columns = payload["columns"]
+        legacy_rows = list(payload["rows"])
     rows = [*legacy_rows, *clay_rows]
     if args.owner_id:
         rows = [{**row, "owner_id": args.owner_id} for row in rows]
-    print(
-        f"rows    : {len(rows)} catalogue entries "
-        f"({len(clay_rows)} canonical RLASM clay)"
-    )
+    print(f"rows    : {len(rows)} catalogue entries " f"({len(clay_rows)} canonical RLASM clay)")
 
     if args.dry_run:
         print("   (dry run -- nothing written)")
@@ -177,24 +253,13 @@ def insert_rows(args: argparse.Namespace, clay_payload: dict) -> int:
     placeholders = ", ".join(f":{c}" for c in columns)
 
     with engine.begin() as conn:
-        available_owners = {
-            str(r[0])
-            for r in conn.execute(sa.text("SELECT id FROM users"))
-        }
-        missing_owners = sorted(
-            {str(row["owner_id"]) for row in rows} - available_owners
-        )
+        available_owners = {str(r[0]) for r in conn.execute(sa.text("SELECT id FROM users"))}
+        missing_owners = sorted({str(row["owner_id"]) for row in rows} - available_owners)
         if missing_owners:
-            print(
-                "!! seeded owner UUID(s) do not exist in users: "
-                + ", ".join(missing_owners)
-            )
+            print("!! seeded owner UUID(s) do not exist in users: " + ", ".join(missing_owners))
             print("   pass --owner-id with an existing local users.id UUID")
             return 1
-        present = {
-            str(r[0])
-            for r in conn.execute(sa.text("SELECT id FROM model_library"))
-        }
+        present = {str(r[0]) for r in conn.execute(sa.text("SELECT id FROM model_library"))}
         for row in rows:
             rid = str(row["id"])
             if rid in present:
@@ -203,10 +268,7 @@ def insert_rows(args: argparse.Namespace, clay_payload: dict) -> int:
                     continue
                 conn.execute(sa.text("DELETE FROM model_library WHERE id = :id"), {"id": rid})
                 replaced += 1
-            params = {
-                c: (json.dumps(row[c]) if c in JSON_COLUMNS and row[c] is not None else row[c])
-                for c in columns
-            }
+            params = {c: (json.dumps(row[c]) if c in JSON_COLUMNS and row[c] is not None else row[c]) for c in columns}
             conn.execute(
                 sa.text(f"INSERT INTO model_library ({col_list}) VALUES ({placeholders})"),
                 params,
@@ -221,15 +283,42 @@ def insert_rows(args: argparse.Namespace, clay_payload: dict) -> int:
 
 def main() -> int:
     args = parse_args()
+    if (args.candidate or args.verify) and not args.rlasm_clay_only:
+        raise ValueError("--candidate and --verify require --rlasm-clay-only")
+    if args.verify and (args.dry_run or args.objects_only or args.rows_only or args.replace):
+        raise ValueError("--verify is a standalone read-only action")
     clay_payload = load_library()
+    clay_payload = select_candidates(clay_payload, args.candidate)
+    if args.local_trial:
+        if (
+            not args.rlasm_clay_only
+            or not args.candidate
+            or any(
+                urlparse(url).hostname not in {"localhost", "127.0.0.1", "::1"}
+                for url in (args.endpoint, args.database_url)
+            )
+        ):
+            raise ValueError("Local trials require selected candidates and loopback storage/database")
+    elif any(entry.get("local_trial_only") for entry in clay_payload["entries"]):
+        raise ValueError("Unpublished pilot: use --local-trial with isolated loopback services")
+    # Verify the actual independent review, not just the manifest's PASS label.
+    from tools.catalogue_promotion import validate_review
+
+    for entry in clay_payload["entries"]:
+        validate_review(entry, SEED_DIR.parent.parent)
     print(f"endpoint: {args.endpoint}   bucket: {args.bucket}")
+    if args.verify:
+        return verify_install(args, clay_payload)
     status = 0
     if not args.rows_only:
         status |= upload_objects(args, clay_payload)
     if not args.objects_only and status == 0:
         status |= insert_rows(args, clay_payload)
     if status == 0:
-        print("\nDone. Restart the backend, then Generate to 3D on a building zone.")
+        if args.dry_run:
+            print("\nDry run passed. No files uploaded or database rows changed.")
+            return 0
+        print("\nDone. Refresh City Prompt, select the building and place it on an empty site.")
         path = "rlasm-architectural-clay" if args.rlasm_clay_only else "lego or rlasm-architectural-clay"
         print(f"A 200 on a /api/v1/files/library/{path}/... request confirms the library is live.")
     return status

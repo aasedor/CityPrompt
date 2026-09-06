@@ -20,6 +20,13 @@ import {
   recipeFromPlan,
 } from './communityCompiler';
 import { resetProjectCommunityCompileCoordinatorForTests } from './projectCommunityCompile';
+import { rectangleAt } from '@/features/pickPlace/geometry';
+
+it.each([25, 115, 205, 295])('keeps fixed native plot axes at %s degrees', (degrees) => {
+  const plot=zone('motel','building',{development_selected_variant_id:'hotel_roadside_motel',floors:1,native_plot_axes:true});
+  plot.coordinates=rectangleAt([-114,51],29,42,degrees);
+  expect(deriveItems([plot])[0].targets).toMatchObject({width_m:29,depth_m:42,floors:1});
+});
 
 function zone(
   id: string,

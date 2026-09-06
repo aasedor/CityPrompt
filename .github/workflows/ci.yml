@@ -77,6 +77,12 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Check building promotion workflow and catalogue drift
+        run: |
+          cd ..
+          python -m pytest tools/archetype_compiler/tests/test_catalogue_promotion.py -q
+          python -m tools.catalogue_promotion check --metadata-only
+
       - name: Lint with ruff
         run: ruff check .
 

@@ -1817,7 +1817,8 @@
       "url": "/archetypes/buildings/calgary-beltline-mid-rise/variant_1.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1331259,
       "lfsOid": "39f3dd9260e14f262498e67a1923c07b09d3265873f9e5f0908185ce8b856bc3"
@@ -3752,9 +3753,11 @@
       "url": "/archetypes/buildings/detached_contemporary_infill/variant_3.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
-      "logicalBytes": 1341589
+      "logicalBytes": 1341589,
+      "lfsOid": "88491e473c936ba553e1729a8c52e8c21b486a044c3ae2832e575ab65da30eab"
     },
     {
       "url": "/archetypes/buildings/e-commerce-fulfillment-center/hero.png",
@@ -4911,7 +4914,8 @@
       "url": "/archetypes/buildings/highway-motor-hotel/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1221206,
       "lfsOid": "4cc9e6ceff30e8ffeebaeac4da95d31e6e06c307c106cb0bf27487dde0c034c5"

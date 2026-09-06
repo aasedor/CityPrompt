@@ -1,4 +1,5 @@
 {
+  "catalogue_publication_workflow": {"runbook": "docs/BUILDING_CATALOGUE_WORKFLOW.md", "tool": "tools/catalogue_promotion.py", "source_of_truth": "seed/model-library/rlasm-architectural-clay/library.json", "local_trial_before_activation": true, "exact_byte_review_required": true, "human_activation_required": true, "git_merge_is_not_database_install": true},
   "published_building_trio_2026_09_06": {
     "activation": "human_user",
     "delivery_format": "architectural_clay",

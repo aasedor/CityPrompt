@@ -1,0 +1,206 @@
+{
+  "schema": "cityprompt.rlasm.independent-architectural-clay-review@1",
+  "candidate": "calgary-beltline-mid-rise-clay-v003",
+  "reviewer": "independent RLASM verifier /root/building_review",
+  "reviewed_utc": "2026-09-06T22:52:58.3018318Z",
+  "method": "RLASM v6.1",
+  "scope": "Holistic architectural-clay source fidelity, ratios, topology, envelope, occupied openings, contacts, circulation, evidence cameras, phone comparison and delivery provenance; not textured keeper review",
+  "holistic_review_performed": true,
+  "full_resolution_render_inspection": true,
+  "mandatory_renders_inspected": 13,
+  "architectural_clay_pass": true,
+  "decision": "architectural_clay_reviewed",
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "model_sha256": "1ed0f47bb38a6879233fe54d441ba734f60f533f97a21b5e894a0706472cef41",
+  "inspected_files": [
+    {
+      "path": "sources/variant_1.png",
+      "sha256": "39f3dd9260e14f262498e67a1923c07b09d3265873f9e5f0908185ce8b856bc3"
+    },
+    {
+      "path": "sources/variant_1_angle_60.jpg",
+      "sha256": "95a0ae40934152fdb2de1586fb5741e8afe3c99c9f669ab30bc3454d47aea2c3"
+    },
+    {
+      "path": "sources/variant_1_angle_90.jpg",
+      "sha256": "a3dd6eb5a6246a3613c8fa9de81d52b921e1fdd9ab1eb43c90e024f4a2ad0714"
+    },
+    {
+      "path": "renders/front.png",
+      "sha256": "929a534ed2f84849760f37e6f0326a89a63747172557a7cb3a43cdc3a2da0ceb"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "sha256": "9d7e1d71065dc7ab0b0616271c80e166187b902ce721c7696b4627edb2ca5ceb"
+    },
+    {
+      "path": "renders/aerial.png",
+      "sha256": "d1cbd6451e6c6e0715c4b5bec0266b9ab0eb5e6a81573490468c4a54a57d4573"
+    },
+    {
+      "path": "renders/top.png",
+      "sha256": "163fd0b0b0787474db24d17becec5e85dd34ab5f3b48b88095e5fa8f2efcfbc5"
+    },
+    {
+      "path": "renders/left_side.png",
+      "sha256": "5883111f950a6fccb5c99625b61a7edb506a903a26b65447b486e30918e86426"
+    },
+    {
+      "path": "renders/right_side.png",
+      "sha256": "783076310b808aa8c98c236d1fa81a06ff6072d1e11cb0e27e0fa02905cdc7e2"
+    },
+    {
+      "path": "renders/rear.png",
+      "sha256": "ff9c6acb370bddbf240b065ad4058d2c1f1d8740894f3b880360395c740b62b5"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "sha256": "553c9e094ceec1b4468e0a7ea3c1481d6757cbafdeeebe3f5dff3523abeb3378"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "sha256": "5035955277496d24568089c28692d967b555a24a6cced3c8ddf5ad5aea70af9d"
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "sha256": "17b1f559d418760ceb13a18f52906e54340489da515d98b8d2c44d09bc370352"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "sha256": "3bdcea20f9aa5128bf30a1ab12ed1f21a559210403f0a1c1224cd4ca15f74d3e"
+    },
+    {
+      "path": "renders/roof_contact.png",
+      "sha256": "3855bd559c8941049c800370816b56fa328f09e5bd8c812348c520be74a95e42"
+    },
+    {
+      "path": "renders/terrace_contact.png",
+      "sha256": "4bc6fe46bb256d27b08f691843ccfc26541a8ef574b43e05a700517ec5788266"
+    },
+    {
+      "path": "boards/locked-source-board.png",
+      "sha256": "a80a805d105d2f8659185d97a7dfcf0ee5dd5d75eefe11aa034b964d90b151df"
+    },
+    {
+      "path": "boards/phone-source-comparison.png",
+      "sha256": "48d3c753eee2f9b9864a0e0b3709f285a856bbc850a325ab80cbacb5ca27a4f1"
+    },
+    {
+      "path": "boards/phone-construction.png",
+      "sha256": "0939fdb3a5af2cc9f71c743f94a3c1725e6137e0c32a6d6872588d4f2adb8361"
+    },
+    {
+      "path": "prework-manifest.json",
+      "sha256": "374b368e31a80695348390626b8cb493dd89aa0dba7e68613b55de625195cf2d"
+    },
+    {
+      "path": "build-report.json",
+      "sha256": "e6a16b4d0da4f71dea4b766347d5106f1c8307c4fed34ec89b50b98c0897f434"
+    },
+    {
+      "path": "evidence/delivery-verification.json",
+      "sha256": "4f0d070ad1b6207f6b7d14d925ce727d122dd8d55102c5844fb2314a771b42b5"
+    },
+    {
+      "path": "calgary-beltline-mid-rise-clay-v003.glb",
+      "sha256": "1ed0f47bb38a6879233fe54d441ba734f60f533f97a21b5e894a0706472cef41"
+    }
+  ],
+  "verification": {
+    "source_hashes_match_manifest": true,
+    "source_hashes_match_original_catalogue": true,
+    "model_hash_matches_build_report": true,
+    "glb_images": 0,
+    "glb_textures": 0,
+    "glb_transformed_nodes": 0,
+    "reported_native_dimensions_m": [
+      34.15999984741211,
+      34.15999984741211,
+      20.43000030517578
+    ],
+    "reported_bottom_center_m": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "native_report_consistent_with_reported_bounds": true,
+    "render_provenance": "actual optimized GLB reimport; no geometry/material replacement",
+    "independently_checked_gltf_accessor_bounds": {
+      "all_12_mesh_nodes_untransformed": true,
+      "gltf_y_up_min": [
+        -17.079999923706055,
+        0,
+        -17.079999923706055
+      ],
+      "gltf_y_up_max": [
+        17.079999923706055,
+        20.43000030517578,
+        17.079999923706055
+      ],
+      "matches_reported_native_dimensions": true
+    }
+  },
+  "findings": [],
+  "positive_findings": [
+    "Five-storey hierarchy, central facade projections, three-storey brick body, continuous corner glazing and occupied metal-clad setback storey preserve the source identity.",
+    "Both source-side balcony stacks, upper terrace slabs and glass guards, physical doors, enclosed glazing depth, supported ground canopies and grounded envelope are visible.",
+    "Roof has one closed cross outline with four central projections, continuous coping, ribbed service enclosure, bounded equipment and two framed rooflight openings.",
+    "All 13 exact-v003 full-resolution renders, three individual exact sources, source board and both phone boards were inspected at original resolution.",
+    "Source bytes match manifest and authoritative catalogue; exact GLB SHA matches build report; zero image/texture arrays and independent untransformed accessor bounds agree with native dimensions.",
+    "Holistic regression reveals no unresolved P0 or P1 architectural-clay issue."
+  ],
+  "limitations": [
+    "Absolute scale, hidden room/rear arrangements and secondary roof equipment are inferred or simplified for architectural clay.",
+    "Street context, neighbouring buildings, cars and vegetation are excluded from building-only scope.",
+    "This review applies to the exact hashed GLB and supplied render evidence; subsequent geometry changes require renewed evidence.",
+    "No textured keeper, runtime activation, engineering, terrain-fitting or arbitrary scaling approval is granted."
+  ],
+  "keeper_approved": false,
+  "textured_keeper_approved": false,
+  "runtime_activation_approved": false,
+  "next_review": "No architectural-clay blocker remains. Textured keeper and runtime activation remain separate gates.",
+  "prior_blocker_closures": [
+    {
+      "prior_id": "P0-01",
+      "status": "resolved",
+      "evidence": [
+        "renders/right_side.png",
+        "renders/front_corner.png",
+        "renders/aerial.png",
+        "renders/terrace_contact.png",
+        "build-report.json"
+      ],
+      "finding": "Both three-level right-side balcony stacks have actual recessed floor space, enclosed returns/heads, back glazed doors and glass guards. Right-side elevation proves all six; contact view proves floor and guard depth. Front/corner and aerial now face the source balcony side."
+    },
+    {
+      "prior_id": "P1-01",
+      "status": "resolved",
+      "evidence": [
+        "renders/architecture_close.png",
+        "renders/roof_contact.png",
+        "renders/rear_side.png"
+      ],
+      "finding": "Full-height vertical seams cover opaque upper metal fields and service enclosure, with omissions at opening apertures and clean corner returns."
+    },
+    {
+      "prior_id": "P1-02",
+      "status": "resolved",
+      "evidence": [
+        "renders/front.png",
+        "renders/facade_close.png",
+        "renders/right_side.png"
+      ],
+      "finding": "Substantial continuous metal piers and metal floor spandrels now frame the central glazed spine; former broad brick interruptions no longer break its vertical identity."
+    },
+    {
+      "prior_id": "P1-03",
+      "status": "resolved",
+      "evidence": [
+        "renders/front_corner.png",
+        "renders/facade_close.png"
+      ],
+      "finding": "Metal corner floor spandrels now own the intervals between glazing levels and vertical corner framing reads continuously. Primary pale podium and terrace bands remain."
+    }
+  ]
+}

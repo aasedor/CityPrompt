@@ -1,0 +1,122 @@
+{
+  "schema": "cityprompt.building-batch-review@1",
+  "method": "RLASM 6.1 architectural clay",
+  "date": "2026-09-06",
+  "entries": [
+    {
+      "candidate": "detached_contemporary_infill-clay-v003",
+      "model_sha256": "4c198bf2caed851c04e77f4c731a38c73077df5a43a44c1880bc0a3075dbc6d5",
+      "comparison_board": "docs/showcase/building-next-three/infill-source-comparison.png",
+      "comparison_sha256": "b9408d6fa4a5e87f6547ae250bf16a5ca3c55a6675d3701d9896d8e9882777aa",
+      "trial": {
+        "model_sha256": "4c198bf2caed851c04e77f4c731a38c73077df5a43a44c1880bc0a3075dbc6d5",
+        "project_url": "http://127.0.0.1:5177/projects/3b3953e7-00b3-4fa5-8f55-4abb0e3e3486",
+        "tested_by": "Codex student UI trial and independent architectural-clay reviewer",
+        "tested_at": "2026-09-06T23:10:13.777044+00:00",
+        "evidence": [
+          "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\infill-final-detail.png",
+          "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\infill-close-capture.png",
+          "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\infill-larger-rotated.png",
+          "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\trial-final-reloaded.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        },
+        "limitations": [
+          "Free direct-capture preview only; no paid AI finish or video tested.",
+          "Baseline plot aprons remain flat on uneven Google terrain; model feet contact their authored grade/support.",
+          "UI placement/drag/reshape plus equivalent focus-camera debug helper for repeatable capture framing.",
+          "Initial two pilot zones received native_plot_axes through scoped local setup; no other project data changed."
+        ]
+      }
+    },
+    {
+      "candidate": "highway-motor-hotel-clay-v002",
+      "model_sha256": "48d9129f2dd1b38f421ae05bafefec0ed684f16d134ede33b48790fef07a2a3f",
+      "comparison_board": "docs/showcase/building-next-three/motel-source-comparison.png",
+      "comparison_sha256": "e7bca1f246a685bf71107ef82dd1b92dcbead36b68dcc9d03b41d2f304110854",
+      "trial": {
+        "model_sha256": "48d9129f2dd1b38f421ae05bafefec0ed684f16d134ede33b48790fef07a2a3f",
+        "project_url": "http://127.0.0.1:5177/projects/3b3953e7-00b3-4fa5-8f55-4abb0e3e3486",
+        "tested_by": "Codex student UI trial and independent architectural-clay reviewer",
+        "tested_at": "2026-09-06T23:10:13.783054+00:00",
+        "evidence": [
+          "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\motel-front-detail.png",
+          "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\motel-capture-check.png",
+          "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\motel-25.png",
+          "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\motel-205.png",
+          "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\trial-final-reloaded.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        },
+        "limitations": [
+          "Free direct-capture preview only; no paid AI finish or video tested.",
+          "Baseline plot aprons remain flat on uneven Google terrain; model feet contact their authored grade/support.",
+          "UI placement/drag/reshape plus equivalent focus-camera debug helper for repeatable capture framing.",
+          "Initial two pilot zones received native_plot_axes through scoped local setup; no other project data changed."
+        ]
+      }
+    },
+    {
+      "candidate": "calgary-beltline-mid-rise-clay-v003",
+      "model_sha256": "1ed0f47bb38a6879233fe54d441ba734f60f533f97a21b5e894a0706472cef41",
+      "comparison_board": "docs/showcase/building-next-three/beltline-source-comparison.png",
+      "comparison_sha256": "48d3c753eee2f9b9864a0e0b3709f285a856bbc850a325ab80cbacb5ca27a4f1",
+      "trial": {
+        "model_sha256": "1ed0f47bb38a6879233fe54d441ba734f60f533f97a21b5e894a0706472cef41",
+        "project_url": "http://127.0.0.1:5177/projects/3b3953e7-00b3-4fa5-8f55-4abb0e3e3486",
+        "tested_by": "Codex student UI trial and independent architectural-clay reviewer",
+        "tested_at": "2026-09-06T23:10:13.794170+00:00",
+        "evidence": [
+          "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\beltline-detail.png",
+          "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\beltline-capture-check.png",
+          "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\beltline-halfturn.png",
+          "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\trial-final-reloaded.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        },
+        "limitations": [
+          "Free direct-capture preview only; no paid AI finish or video tested.",
+          "Baseline plot aprons remain flat on uneven Google terrain; model feet contact their authored grade/support.",
+          "UI placement/drag/reshape plus equivalent focus-camera debug helper for repeatable capture framing.",
+          "Initial two pilot zones received native_plot_axes through scoped local setup; no other project data changed."
+        ]
+      }
+    }
+  ],
+  "lifecycle": {
+    "infill-v001": "independently rejected",
+    "infill-v002": "superseded: contact and native-envelope corrections",
+    "infill-v003": "independent pass; local trial pass; approved for publication",
+    "motel-v001": "independently rejected",
+    "motel-v002": "independent pass; local trial pass; approved for publication",
+    "beltline-v001": "independently rejected",
+    "beltline-v002": "superseded: camera and roof-service ribbing corrections",
+    "beltline-v003": "independent pass; local trial pass; approved for publication"
+  },
+  "external_evidence": "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06",
+  "external_evidence_backup": "Full Blender/render experiments remain on this workstation; selected comparison boards and exact independent reviews accompany the Git release."
+}
