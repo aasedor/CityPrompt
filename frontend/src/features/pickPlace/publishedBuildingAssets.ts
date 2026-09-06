@@ -121,5 +121,125 @@ export const PUBLISHED_BUILDING_ASSETS: PlaceAsset[] = [
       "floor_count": 3,
       "native_plot_axes": true
     }
+  },
+  {
+    "id": "clay_rammed_earth_infill",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Rammed-earth timber infill",
+    "description": "Three-storey rammed-earth home with shaded loggias and timber screens.",
+    "thumbnail": "/archetypes/buildings/detached_contemporary_infill/variant_3.png",
+    "model": {
+      "variantId": "detached_infill_rammed_earth",
+      "revision": "detached_contemporary_infill-clay-v003",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "detached",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 18.0,
+    "depth": 24.0,
+    "minWidth": 18.0,
+    "minDepth": 24.0,
+    "maxSize": 100.0,
+    "nativeDimensions": [
+      13.375,
+      19.600000381469727,
+      10.149999618530273
+    ],
+    "reshapeDescription": "Resize the plot around one complete building. The building keeps its three storeys and authored proportions.",
+    "properties": {
+      "building_archetype_id": "detached_contemporary_infill",
+      "development_archetype_id": "detached_contemporary_infill",
+      "development_selected_variant_id": "detached_infill_rammed_earth",
+      "development_archetype_label": "Rammed-earth timber infill",
+      "floors": 3,
+      "floor_count": 3,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "clay_classic_courtyard_motel",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Classic courtyard motel",
+    "description": "Single-storey motor court with colourful doors, reception and a vintage roadside sign.",
+    "thumbnail": "/archetypes/buildings/highway-motor-hotel/variant_0.png",
+    "model": {
+      "variantId": "hotel_roadside_motel",
+      "revision": "highway-motor-hotel-clay-v002",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "hotels",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 29.0,
+    "depth": 42.0,
+    "minWidth": 29.0,
+    "minDepth": 42.0,
+    "maxSize": 120.0,
+    "nativeDimensions": [
+      24.8799991607666,
+      37.7400016784668,
+      7.21999979019165
+    ],
+    "reshapeDescription": "Resize the plot around the complete motel. Wings, guest rooms and sign keep their authored proportions.",
+    "properties": {
+      "building_archetype_id": "highway_motor_hotel",
+      "development_archetype_id": "highway_motor_hotel",
+      "development_selected_variant_id": "hotel_roadside_motel",
+      "development_archetype_label": "Classic courtyard motel",
+      "floors": 1,
+      "floor_count": 1,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "clay_beltline_brick_midrise",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Beltline brick mixed-use mid-rise",
+    "description": "Five-storey brick corner building with shops, recessed balconies and a metal-clad upper floor.",
+    "thumbnail": "/archetypes/buildings/calgary-beltline-mid-rise/variant_1.png",
+    "model": {
+      "variantId": "beltline_brick_modern",
+      "revision": "calgary-beltline-mid-rise-clay-v003",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "mixed",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 39.0,
+    "depth": 39.0,
+    "minWidth": 39.0,
+    "minDepth": 39.0,
+    "maxSize": 120.0,
+    "nativeDimensions": [
+      34.15999984741211,
+      34.15999984741211,
+      20.43000030517578
+    ],
+    "reshapeDescription": "Resize the plot around the complete building. Shops, balconies and roof retain their authored proportions.",
+    "properties": {
+      "building_archetype_id": "calgary_beltline_mid_rise",
+      "development_archetype_id": "calgary_beltline_mid_rise",
+      "development_selected_variant_id": "beltline_brick_modern",
+      "development_archetype_label": "Beltline brick mixed-use mid-rise",
+      "floors": 5,
+      "floor_count": 5,
+      "native_plot_axes": true
+    }
   }
 ];

@@ -1,0 +1,192 @@
+{
+  "schema": "cityprompt.rlasm.independent-architectural-clay-review@1",
+  "candidate": "highway-motor-hotel-clay-v002",
+  "reviewer": "independent RLASM verifier /root/building_review",
+  "reviewed_utc": "2026-09-06T22:41:01.1046569Z",
+  "method": "RLASM v6.1",
+  "scope": "Holistic architectural-clay source fidelity, ratios, topology, complete envelope, openings, occupied depth, program, contacts, circulation, evidence cameras, phone comparison, and delivery provenance; not textured keeper review",
+  "holistic_review_performed": true,
+  "full_resolution_render_inspection": true,
+  "mandatory_renders_inspected": 13,
+  "architectural_clay_pass": true,
+  "decision": "architectural_clay_reviewed",
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "model_sha256": "48d9129f2dd1b38f421ae05bafefec0ed684f16d134ede33b48790fef07a2a3f",
+  "inspected_files": [
+    {
+      "path": "sources/variant_0.png",
+      "sha256": "4cc9e6ceff30e8ffeebaeac4da95d31e6e06c307c106cb0bf27487dde0c034c5"
+    },
+    {
+      "path": "sources/variant_0_angle_60.jpg",
+      "sha256": "956ce260b3e57f3d63020188f7ee27ecfaef19a04885a222e976c4999e03975c"
+    },
+    {
+      "path": "sources/variant_0_angle_90.jpg",
+      "sha256": "fe02202f7f846cc966c48569abe8acc5463191d56bcead541058b22f690b3b4f"
+    },
+    {
+      "path": "renders/front.png",
+      "sha256": "8c6768040f55787c6adda1a23e951f7dbd070877532b8abcf83abf439a2df7af"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "sha256": "cf5cda5bc59db0f51725c3ddd97650bd0cef31f353e2f365de244a926cc57adb"
+    },
+    {
+      "path": "renders/aerial.png",
+      "sha256": "ac78f119d5a939c922d6f2ba55189088cb01e630dd6f1a8180db7b2e58827a8c"
+    },
+    {
+      "path": "renders/top.png",
+      "sha256": "128f3a1ffdc79ecd9916ea47cd6f529bfd4688f3cbbb19fd303c2726e871d1c6"
+    },
+    {
+      "path": "renders/left_side.png",
+      "sha256": "9ae3da31c3c44d45022a20e35770246b2354245e448377be32e51dd7339ec629"
+    },
+    {
+      "path": "renders/right_side.png",
+      "sha256": "fc7fbd729f4e6986f6f96b9944c15ab996a018c1f734c624f7fb9cf4f706042c"
+    },
+    {
+      "path": "renders/rear.png",
+      "sha256": "9c50e3ae0745175bfa9d93c7a2a53ec745a8efb083ab14f3c74a0bba3d646d0c"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "sha256": "ff1dce49117c051180a6644696e54cde96853a0b72af7513d2b0910f5159d536"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "sha256": "08b5a4e2705d5373d2ee90a729c0bf07ff08e7a3a1e5122924a2bbfc311a3509"
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "sha256": "0267a6ba04943f47fb51eb525008c5c011ffcc687de3af47b1f01a1d974b4eb2"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "sha256": "9b0b7f28257eb35b74f32971161fcb28a96914458824917600350b2577e157ce"
+    },
+    {
+      "path": "renders/roof_contact.png",
+      "sha256": "e3dd25d728262ebf8df7668de2fd04ca848344a1df4c28cef112cfb9fc469260"
+    },
+    {
+      "path": "renders/sign_contact.png",
+      "sha256": "80b117993031ec57538a977c8978755c0128cee9456bf212b6158ce526c77d9f"
+    },
+    {
+      "path": "boards/locked-source-board.png",
+      "sha256": "2b5788f68589a5a2f425b14fc365da541c4fc343d5f41b1bea9e12bfa32b50b3"
+    },
+    {
+      "path": "boards/phone-source-comparison.png",
+      "sha256": "e7bca1f246a685bf71107ef82dd1b92dcbead36b68dcc9d03b41d2f304110854"
+    },
+    {
+      "path": "boards/phone-construction.png",
+      "sha256": "97b273363af3fd71bd90bcd101b6fe092bac146b974fcf14be075e480cd3b646"
+    },
+    {
+      "path": "prework-manifest.json",
+      "sha256": "cb5285c878a959250e30f40b84d58c317a97deb33d2f0b60cd3d2cb6e751b7e8"
+    },
+    {
+      "path": "build-report.json",
+      "sha256": "068e87cdb06d416dda7189c2a3b0172acfb0144aa55d35ff8a2d99417bc0ae4c"
+    },
+    {
+      "path": "evidence/delivery-verification.json",
+      "sha256": "3122041e202bedc7ac029d70e953976f60dde0b544b211240f3b676ef141d4b4"
+    },
+    {
+      "path": "highway-motor-hotel-clay-v002.glb",
+      "sha256": "48d9129f2dd1b38f421ae05bafefec0ed684f16d134ede33b48790fef07a2a3f"
+    }
+  ],
+  "verification": {
+    "source_hashes_match_manifest": true,
+    "source_hashes_match_original_catalogue": true,
+    "model_hash_matches_build_report": true,
+    "glb_images": 0,
+    "glb_textures": 0,
+    "reported_native_dimensions_m": [
+      24.8799991607666,
+      37.7400016784668,
+      7.21999979019165
+    ],
+    "reported_bottom_center_m": [
+      0.0,
+      -0.4200000762939453,
+      0.0
+    ],
+    "native_report_consistent_with_reported_bounds": true,
+    "render_provenance": "Build report identifies exact optimized GLB reimport; review applies only to the inspected hashed files."
+  },
+  "findings": [],
+  "positive_findings": [
+    "The revised continuous U-roof has shared ridge/hip junctions, a real open court and no crossed-gable fins or slots.",
+    "Court-facing red/teal door pairs, intervening window groups, under-window AC units, and connected raised access strips are physically present.",
+    "Left-front reception now wraps glazing to its court entry and contains a check-in counter with visible enclosed room depth.",
+    "Sign panel, arrow, blade and support posts are connected and reach isolated footings.",
+    "Whole-building renders include grade, full envelope and sign with safety margin; 13full renders and both1080x1920phone boards were individually inspected.",
+    "Source bytes and GLB hashes match; GLB has no image or texture arrays.",
+    "All 13 exact-v002 full-resolution renders and all three v002 proof boards were individually inspected. Original source images inspected in v001 are byte-identical to v002 locked copies and verified against the authoritative catalogue."
+  ],
+  "nonblocking_polish": [
+    "Whole-building cameras leave generous empty space. Tighten framing while preserving neutral margin so the low-rise mass and pylon read more clearly on the phone board."
+  ],
+  "limitations": [
+    "Source top contains a second sign, an extra road and a modest wing-front setback; front/oblique establish the principal sign. Context remains excluded under the building-only scope.",
+    "Absolute dimensions and unobserved interior/rear/left arrangements are inferred.",
+    "Vehicles, road, vegetation and parking surface are intentionally excluded from the building-only delivery.",
+    "No textured material keeper, runtime activation, engineering, terrain-fitting or arbitrary-resizing approval is granted."
+  ],
+  "keeper_approved": false,
+  "textured_keeper_approved": false,
+  "runtime_activation_approved": false,
+  "next_review": "No architectural-clay blocker remains. Texture keeper and runtime activation are separate gates.",
+  "prior_blocker_closures": [
+    {
+      "prior_id": "P1-01",
+      "status": "resolved",
+      "evidence": [
+        "renders/top.png",
+        "renders/aerial.png",
+        "boards/phone-source-comparison.png"
+      ],
+      "finding": "Roof footprint approximately 24.76m wide by34.86m deep gives depth/width1.41 against source approximately1.44. Clear9.2m court in24m body preserves source approximately0.38 transverse ratio."
+    },
+    {
+      "prior_id": "P1-02",
+      "status": "resolved",
+      "evidence": [
+        "renders/front.png",
+        "renders/front_corner.png",
+        "renders/sign_contact.png"
+      ],
+      "finding": "Both front gables have visible cream boarded infill; roof skin terminates above rather than masking triangles."
+    },
+    {
+      "prior_id": "P1-03",
+      "status": "resolved",
+      "evidence": [
+        "renders/right_side.png",
+        "renders/front_corner.png"
+      ],
+      "finding": "Source-visible right exterior is blank above continuous red/teal stripe."
+    },
+    {
+      "prior_id": "P1-04",
+      "status": "resolved",
+      "evidence": [
+        "renders/sign_contact.png",
+        "renders/front.png"
+      ],
+      "finding": "Larger physical lettering restores dominant nearly panel-wide MOTEL and readable source hierarchy; arrow, blade, stepped panels, posts and footings remain connected."
+    }
+  ]
+}

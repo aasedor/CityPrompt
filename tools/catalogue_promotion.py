@@ -192,8 +192,8 @@ def prepare(root: Path, package: Path, *, apply: bool = False, trial_only: bool 
     spec = read(package)
     entry = copy.deepcopy(spec["entry"])
     candidate = entry["candidate"]
-    if not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", candidate):
-        raise ValueError("Candidate must be a versioned lowercase slug")
+    if not re.fullmatch(r"[a-z0-9]+(?:[-_][a-z0-9]+)*", candidate):
+        raise ValueError("Candidate must be a lowercase identifier with hyphens or underscores")
     source = (package.parent / spec["model_file"]).resolve()
     review = (package.parent / spec["review_file"]).resolve()
     model_hash = digest(source)

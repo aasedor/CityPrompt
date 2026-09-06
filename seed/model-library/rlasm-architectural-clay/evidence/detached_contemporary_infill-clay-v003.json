@@ -1,0 +1,199 @@
+{
+  "schema": "cityprompt.rlasm.independent-architectural-clay-review@1",
+  "candidate": "detached_contemporary_infill-clay-v003",
+  "reviewer": "independent RLASM verifier /root/building_review",
+  "reviewed_utc": "2026-09-06T22:25:42.3529989Z",
+  "method": "RLASM v6.1",
+  "scope": "Holistic architectural-clay source fidelity, topology, complete envelope, openings, optical room depth, program, contacts, circulation, evidence cameras, phone comparison, and delivery provenance; not textured keeper review",
+  "holistic_review_performed": true,
+  "full_resolution_render_inspection": true,
+  "mandatory_renders_inspected": 13,
+  "architectural_clay_pass": true,
+  "decision": "architectural_clay_reviewed",
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "model_sha256": "4c198bf2caed851c04e77f4c731a38c73077df5a43a44c1880bc0a3075dbc6d5",
+  "inspected_files": [
+    {
+      "path": "sources/variant_3.png",
+      "sha256": "88491e473c936ba553e1729a8c52e8c21b486a044c3ae2832e575ab65da30eab"
+    },
+    {
+      "path": "sources/variant_3_angle_60.jpg",
+      "sha256": "9fc265dbbe3d94885ac77d88f6940b1688bba75207eab61e7226e0f636c5faac"
+    },
+    {
+      "path": "sources/variant_3_angle_90.jpg",
+      "sha256": "58ab7ac98c84b329e8e673bd1f90bd2541fca71849f1393b09a07509cb30232d"
+    },
+    {
+      "path": "renders/front.png",
+      "sha256": "aa509af5d2cc4e0100fe52d3c23f7b667b2d4100533f7ce568568c9aab69aee0"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "sha256": "13925ed7eeffb6148657dffb29ecc9e14b5a4a33903b510c2ab2e98d79f28cd2"
+    },
+    {
+      "path": "renders/aerial.png",
+      "sha256": "ec2728e60382ca709d3e2f075dc2f80dde6ba52bf236d249cfa1a67f0738a661"
+    },
+    {
+      "path": "renders/top.png",
+      "sha256": "411786ac107c49cc787c48f474ad0f9d927abf36e99c8886225a403ad9750e82"
+    },
+    {
+      "path": "renders/left_side.png",
+      "sha256": "26bf815e3a645880245e3e4c05dfa75ed0d01b182e10aa9cd5595dbbcd09d326"
+    },
+    {
+      "path": "renders/right_side.png",
+      "sha256": "02635ad7f8d85586d4956aa3c432f374199368a46f75e2b23da07eb69d390ff9"
+    },
+    {
+      "path": "renders/rear.png",
+      "sha256": "7198bb194c5e32d063331608352966f2c6849f18065d533ce6570f640e156f45"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "sha256": "4cb9a7c2c7fe027054f5d49268531016cf672775d28d37405cb82ec2b4dc9e06"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "sha256": "c61d9b9001c6c4073b71885e19be3390b21c819b03f441cff95baccb99134416"
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "sha256": "1770a300d5fff4403cc53dc58982043141281356c713f1ecaf9b1b4f981a2e44"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "sha256": "3ba126b52a37bb64e74d4e1e9cab7839acbebc021bfb5990a5ca8bab910bc288"
+    },
+    {
+      "path": "renders/roof_contact.png",
+      "sha256": "69c9e1da411134416b8dd5c266a949fdf44b2ac559bae2f39d215b1bb36544de"
+    },
+    {
+      "path": "renders/balcony_contact.png",
+      "sha256": "19d2875cd89d639a6c6c4909b7b2c806e149f50700bbace95a9a655ed6dc919c"
+    },
+    {
+      "path": "boards/locked-source-board.png",
+      "sha256": "b5ce9856e06718501a7dd3a77fef16a26336c63526c0ff7163ea76b865f49c25"
+    },
+    {
+      "path": "boards/phone-source-comparison.png",
+      "sha256": "b9408d6fa4a5e87f6547ae250bf16a5ca3c55a6675d3701d9896d8e9882777aa"
+    },
+    {
+      "path": "boards/phone-construction.png",
+      "sha256": "25cdae44bcb0b0200de05208e555769c5bd44621406f84322fe41f28a94d9add"
+    },
+    {
+      "path": "build-report.json",
+      "sha256": "4d4ceb24ea7816c6fa68fe4a019f7a83770cfafab60668ea1b586ea789c2447d"
+    },
+    {
+      "path": "evidence/delivery-verification.json",
+      "sha256": "be04c40f1141258d9ad2b6db260d0ccef2620420023e67cc2a4f694dc827fcee"
+    },
+    {
+      "path": "detached_contemporary_infill-clay-v003.glb",
+      "sha256": "4c198bf2caed851c04e77f4c731a38c73077df5a43a44c1880bc0a3075dbc6d5"
+    }
+  ],
+  "verification": {
+    "source_hashes_match_manifest": true,
+    "source_hashes_match_original_catalogue": true,
+    "model_hash_matches_build_report": true,
+    "glb_images": 0,
+    "glb_textures": 0,
+    "render_provenance": "Exact optimized GLB reimport named in build report; review applies only to the inspected hashed files",
+    "native_dimensions_m": {
+      "width": 13.375,
+      "depth": 19.600000381469727,
+      "height": 10.149999618530273
+    },
+    "native_bottom_center_m": [
+      0.3874998092651367,
+      0,
+      0
+    ],
+    "bounds_check": "Independently inspected GLB POSITION accessor extents and all eleven untransformed mesh nodes; glTF Y-up extents converted to authoring Z-up agree with reported native envelope."
+  },
+  "findings": [],
+  "prior_blocker_closures": [
+    {
+      "prior_id": "v001/P0-01",
+      "status": "closed",
+      "evidence": [
+        "renders/right_side.png",
+        "renders/rear_side.png",
+        "renders/balcony_contact.png",
+        "renders/top.png"
+      ],
+      "finding": "Continuous tall outer battens span the stacked side balconies, with clear screen gaps, connected floor edges, guarded end returns, and occupied depth behind. Enlarged floor/guard assembly reaches both tall glazed doors at each level."
+    },
+    {
+      "prior_id": "v001/P0-02",
+      "status": "closed",
+      "evidence": [
+        "renders/front_corner.png",
+        "renders/aerial.png",
+        "boards/phone-source-comparison.png"
+      ],
+      "finding": "Front corner and aerial now show the source-visible right side, exposing the loggia corner and side screen in the same elevation roles as the locked source."
+    },
+    {
+      "prior_id": "v001/P0-03",
+      "status": "closed",
+      "evidence": [
+        "build-report.json",
+        "detached_contemporary_infill-clay-v003.glb"
+      ],
+      "finding": "Native dimensions now equal complete delivered bounds, including the asymmetric balcony projection; design estimates remain separately labeled and bottom-center offset is explicit."
+    },
+    {
+      "prior_id": "v001/P1-01",
+      "status": "closed",
+      "evidence": [
+        "renders/front.png",
+        "renders/facade_close.png",
+        "renders/architecture_close.png"
+      ],
+      "finding": "Substantial continuous central earth pier and wider right bay restore source facade hierarchy. Both close views show clean full-depth pier returns without the reported v002 overlapping-face defect."
+    },
+    {
+      "prior_id": "v001/P1-02",
+      "status": "closed",
+      "evidence": [
+        "renders/front.png",
+        "renders/right_side.png",
+        "renders/facade_close.png",
+        "boards/phone-source-comparison.png"
+      ],
+      "finding": "Reduced stratum contrast preserves a unified earth mass; bands no longer dominate the building as high-contrast applied striping."
+    }
+  ],
+  "holistic_findings": [
+    "Three occupied storeys, deep rectangular plan, asymmetric paired front loggias, recessed right ground entrance, and side balcony enclosure retain the locked variant identity.",
+    "Front loggia walls and parapets terminate at real openings; floors, posts, beams and roof have visible positive contact.",
+    "Shallow roof is continuously closed beneath its transverse framing, bounded by metal perimeter and longitudinal spine, with no open pergola or detached roof parts.",
+    "Both sides and rear retain closed walls, coherent floor datums and physical recessed openings; no blank secondary envelope failure was observed.",
+    "Front and side glass reveals enclosed occupied room depth; glass close shows independent pane, frame, return, room, floor and furniture layers.",
+    "Whole-building views retain complete grade-to-roof extents and neutral safety margin; family contact views and both 1080x1920 phone boards were examined.",
+    "No new visible P0 or P1 regression was found after the finite corrections."
+  ],
+  "limitations": [
+    "Exact source is detached_contemporary_infill variant_3 / detached_infill_rammed_earth; this review does not generalize to siblings.",
+    "Metric dimensions and unobserved rear/left elevations and interiors remain architectural inferences, not surveyed facts.",
+    "Secondary fine roof framing and material morphology are simplified for texture-free architectural clay.",
+    "Catalogue images remain selection/render-conditioning authority; clay preview does not replace them.",
+    "Use fixed native geometry and complete recorded envelope with its origin offset. This review does not authorize arbitrary scaling, engineering, terrain fit, textured keeper status, or runtime activation.",
+    "A human activation decision and separate runtime integration checks remain necessary for publication."
+  ],
+  "keeper_approved": false,
+  "textured_keeper_approved": false,
+  "runtime_activation_approved": false
+}

@@ -1,7 +1,7 @@
 {
   "schema": "cityprompt.rlasm-architectural-clay-library@1",
   "created_at": "2026-09-06T00:00:00Z",
-  "updated_at": "2026-09-06T00:00:00Z",
+  "updated_at": "2026-09-06",
   "method": "RLASM",
   "method_version": "6.1",
   "delivery_format": "architectural_clay",
@@ -224,6 +224,313 @@
         "width": 64.0,
         "depth": 66.0,
         "max_size": 100.0
+      }
+    },
+    {
+      "candidate": "detached_contemporary_infill-clay-v003",
+      "family": "rammed-earth-infill",
+      "archetype_id": "detached_contemporary_infill",
+      "archetype_label": "Contemporary infill",
+      "variant_id": "detached_infill_rammed_earth",
+      "variant_label": "Rammed-earth timber infill",
+      "runtime_enabled": true,
+      "native_floors": 3,
+      "design_dimensions_m": {
+        "width": 13,
+        "depth": 20,
+        "height": 10.2
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/detached_contemporary_infill/variant_3.png",
+          "bytes": 1341589,
+          "sha256": "88491e473c936ba553e1729a8c52e8c21b486a044c3ae2832e575ab65da30eab"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/detached_contemporary_infill/variant_3_angle_60.jpg",
+          "bytes": 903742,
+          "sha256": "9fc265dbbe3d94885ac77d88f6940b1688bba75207eab61e7226e0f636c5faac"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/detached_contemporary_infill/variant_3_angle_90.jpg",
+          "bytes": 857584,
+          "sha256": "58ab7ac98c84b329e8e673bd1f90bd2541fca71849f1393b09a07509cb30232d"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\infill-v003",
+      "picker": {
+        "id": "clay_rammed_earth_infill",
+        "description": "Three-storey rammed-earth home with shaded loggias and timber screens.",
+        "group_id": "detached",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Resize the plot around one complete building. The building keeps its three storeys and authored proportions.",
+        "width": 18,
+        "depth": 24,
+        "max_size": 100
+      },
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Can we do 3 more buildings? If they work well, we can push everything to main as a package",
+        "date": "2026-09-06",
+        "model_sha256": "4c198bf2caed851c04e77f4c731a38c73077df5a43a44c1880bc0a3075dbc6d5"
+      },
+      "local_trial": {
+        "model_sha256": "4c198bf2caed851c04e77f4c731a38c73077df5a43a44c1880bc0a3075dbc6d5",
+        "project_url": "http://127.0.0.1:5177/projects/3b3953e7-00b3-4fa5-8f55-4abb0e3e3486",
+        "tested_by": "Codex student UI trial and independent architectural-clay reviewer",
+        "tested_at": "2026-09-06T23:10:13.777044+00:00",
+        "evidence": [
+          "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\infill-final-detail.png",
+          "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\infill-close-capture.png",
+          "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\infill-larger-rotated.png",
+          "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\trial-final-reloaded.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        },
+        "limitations": [
+          "Free direct-capture preview only; no paid AI finish or video tested.",
+          "Baseline plot aprons remain flat on uneven Google terrain; model feet contact their authored grade/support.",
+          "UI placement/drag/reshape plus equivalent focus-camera debug helper for repeatable capture framing.",
+          "Initial two pilot zones received native_plot_axes through scoped local setup; no other project data changed."
+        ]
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/detached_contemporary_infill-clay-v003.glb",
+        "bytes": 1490264,
+        "sha256": "4c198bf2caed851c04e77f4c731a38c73077df5a43a44c1880bc0a3075dbc6d5",
+        "native_dimensions_m": {
+          "width": 13.375,
+          "height": 10.149999618530273,
+          "depth": 19.600000381469727
+        },
+        "mesh_count": 11,
+        "material_count": 11,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/detached_contemporary_infill-clay-v003.json",
+        "sha256": "9485d44ee29aedb22ca9653b6b5a40b2fee9e5f16152e7196333e4c1c4e11ea4",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "highway-motor-hotel-clay-v002",
+      "family": "classic-courtyard-motel",
+      "archetype_id": "highway_motor_hotel",
+      "archetype_label": "Highway motor hotel",
+      "variant_id": "hotel_roadside_motel",
+      "variant_label": "Classic courtyard motel",
+      "runtime_enabled": true,
+      "native_floors": 1,
+      "design_dimensions_m": {
+        "width": 24,
+        "depth": 38,
+        "height": 7.3
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/highway-motor-hotel/variant_0.png",
+          "bytes": 1221206,
+          "sha256": "4cc9e6ceff30e8ffeebaeac4da95d31e6e06c307c106cb0bf27487dde0c034c5"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/highway-motor-hotel/variant_0_angle_60.jpg",
+          "bytes": 862465,
+          "sha256": "956ce260b3e57f3d63020188f7ee27ecfaef19a04885a222e976c4999e03975c"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/highway-motor-hotel/variant_0_angle_90.jpg",
+          "bytes": 917415,
+          "sha256": "fe02202f7f846cc966c48569abe8acc5463191d56bcead541058b22f690b3b4f"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\motel-v002",
+      "picker": {
+        "id": "clay_classic_courtyard_motel",
+        "description": "Single-storey motor court with colourful doors, reception and a vintage roadside sign.",
+        "group_id": "hotels",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Resize the plot around the complete motel. Wings, guest rooms and sign keep their authored proportions.",
+        "width": 29,
+        "depth": 42,
+        "max_size": 120
+      },
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Can we do 3 more buildings? If they work well, we can push everything to main as a package",
+        "date": "2026-09-06",
+        "model_sha256": "48d9129f2dd1b38f421ae05bafefec0ed684f16d134ede33b48790fef07a2a3f"
+      },
+      "local_trial": {
+        "model_sha256": "48d9129f2dd1b38f421ae05bafefec0ed684f16d134ede33b48790fef07a2a3f",
+        "project_url": "http://127.0.0.1:5177/projects/3b3953e7-00b3-4fa5-8f55-4abb0e3e3486",
+        "tested_by": "Codex student UI trial and independent architectural-clay reviewer",
+        "tested_at": "2026-09-06T23:10:13.783054+00:00",
+        "evidence": [
+          "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\motel-front-detail.png",
+          "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\motel-capture-check.png",
+          "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\motel-25.png",
+          "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\motel-205.png",
+          "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\trial-final-reloaded.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        },
+        "limitations": [
+          "Free direct-capture preview only; no paid AI finish or video tested.",
+          "Baseline plot aprons remain flat on uneven Google terrain; model feet contact their authored grade/support.",
+          "UI placement/drag/reshape plus equivalent focus-camera debug helper for repeatable capture framing.",
+          "Initial two pilot zones received native_plot_axes through scoped local setup; no other project data changed."
+        ]
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/highway-motor-hotel-clay-v002.glb",
+        "bytes": 1295564,
+        "sha256": "48d9129f2dd1b38f421ae05bafefec0ed684f16d134ede33b48790fef07a2a3f",
+        "native_dimensions_m": {
+          "width": 24.8799991607666,
+          "height": 7.21999979019165,
+          "depth": 37.7400016784668
+        },
+        "mesh_count": 14,
+        "material_count": 14,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/highway-motor-hotel-clay-v002.json",
+        "sha256": "c3ce3977d709876bd0a522bcd33f5eca078bda11cbf3d602e0199a3279a36511",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "calgary-beltline-mid-rise-clay-v003",
+      "family": "beltline-brick-midrise",
+      "archetype_id": "calgary_beltline_mid_rise",
+      "archetype_label": "Calgary Beltline mid-rise",
+      "variant_id": "beltline_brick_modern",
+      "variant_label": "Beltline brick mixed-use mid-rise",
+      "runtime_enabled": true,
+      "native_floors": 5,
+      "design_dimensions_m": {
+        "width": 31,
+        "depth": 31,
+        "height": 20
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/calgary-beltline-mid-rise/variant_1.png",
+          "bytes": 1331259,
+          "sha256": "39f3dd9260e14f262498e67a1923c07b09d3265873f9e5f0908185ce8b856bc3"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/calgary-beltline-mid-rise/variant_1_angle_60.jpg",
+          "bytes": 921981,
+          "sha256": "95a0ae40934152fdb2de1586fb5741e8afe3c99c9f669ab30bc3454d47aea2c3"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/calgary-beltline-mid-rise/variant_1_angle_90.jpg",
+          "bytes": 819036,
+          "sha256": "a3dd6eb5a6246a3613c8fa9de81d52b921e1fdd9ab1eb43c90e024f4a2ad0714"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\beltline-v003",
+      "picker": {
+        "id": "clay_beltline_brick_midrise",
+        "description": "Five-storey brick corner building with shops, recessed balconies and a metal-clad upper floor.",
+        "group_id": "mixed",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Resize the plot around the complete building. Shops, balconies and roof retain their authored proportions.",
+        "width": 39,
+        "depth": 39,
+        "max_size": 120
+      },
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Can we do 3 more buildings? If they work well, we can push everything to main as a package",
+        "date": "2026-09-06",
+        "model_sha256": "1ed0f47bb38a6879233fe54d441ba734f60f533f97a21b5e894a0706472cef41"
+      },
+      "local_trial": {
+        "model_sha256": "1ed0f47bb38a6879233fe54d441ba734f60f533f97a21b5e894a0706472cef41",
+        "project_url": "http://127.0.0.1:5177/projects/3b3953e7-00b3-4fa5-8f55-4abb0e3e3486",
+        "tested_by": "Codex student UI trial and independent architectural-clay reviewer",
+        "tested_at": "2026-09-06T23:10:13.794170+00:00",
+        "evidence": [
+          "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\beltline-detail.png",
+          "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\beltline-capture-check.png",
+          "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\beltline-halfturn.png",
+          "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\trial-final-reloaded.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        },
+        "limitations": [
+          "Free direct-capture preview only; no paid AI finish or video tested.",
+          "Baseline plot aprons remain flat on uneven Google terrain; model feet contact their authored grade/support.",
+          "UI placement/drag/reshape plus equivalent focus-camera debug helper for repeatable capture framing.",
+          "Initial two pilot zones received native_plot_axes through scoped local setup; no other project data changed."
+        ]
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/calgary-beltline-mid-rise-clay-v003.glb",
+        "bytes": 5022608,
+        "sha256": "1ed0f47bb38a6879233fe54d441ba734f60f533f97a21b5e894a0706472cef41",
+        "native_dimensions_m": {
+          "width": 34.15999984741211,
+          "height": 20.43000030517578,
+          "depth": 34.15999984741211
+        },
+        "mesh_count": 12,
+        "material_count": 12,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/calgary-beltline-mid-rise-clay-v003.json",
+        "sha256": "057d02506643b20f8951d7c196660084e459d734f73a34981fdc43753687edb6",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
       }
     }
   ],

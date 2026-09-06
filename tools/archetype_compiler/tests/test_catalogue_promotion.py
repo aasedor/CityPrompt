@@ -116,6 +116,29 @@ def test_dry_run_then_apply_and_duplicate_is_rejected(package):
         prepare(root, path, apply=True)
 
 
+def test_preserves_source_family_underscore_identity(package):
+    root, path = package
+    spec = read(path)
+    spec['entry']['candidate'] = 'detached_contemporary_infill-clay-v003'
+    review_path = path.parent / spec['review_file']
+    review = read(review_path)
+    review['candidate'] = spec['entry']['candidate']
+    review_path.write_text(encoded(review))
+    path.write_text(encoded(spec))
+    prepare(root, path, apply=True)
+    assert check(root)['entries'][-1]['candidate'] == review['candidate']
+
+
+@pytest.mark.parametrize('candidate', ['../escape', 'family/escape', 'C:\\escape', 'family..v001'])
+def test_candidate_paths_cannot_escape_package(package, candidate):
+    root, path = package
+    spec = read(path)
+    spec['entry']['candidate'] = candidate
+    path.write_text(encoded(spec))
+    with pytest.raises(ValueError, match='lowercase identifier'):
+        prepare(root, path, apply=True)
+
+
 @pytest.mark.parametrize("failure", ["approval", "trial", "review", "model", "small_plot", "duplicate_id"])
 def test_rejects_bad_packages_without_partial_writes(package, failure):
     root, path = package
