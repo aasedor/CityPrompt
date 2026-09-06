@@ -1,0 +1,8 @@
+{
+  "candidate": "toronto-edwardian-foursquare-clay-v004",
+  "oblique": "High oblique establishes three side bays on each occupied storey, with the leading ground opening narrower. The adjacent rear extension is excluded.",
+  "priority": "Front paired sash, two storeys, full porch, hip and centred dormer are retained across the three sources.",
+  "hero": "Hero front oblique has narrow leading side windows and differing sash heights; roof partly masks the upper row in the high oblique.",
+  "scope": "Supplement to prework source reconciliation; no geometry or reference hashes changed",
+  "authored": "Three side bays at 2.2, 5.8 and 9.7 m; leading ground opening 0.9 m, remaining 1.15 m. Floor heights and clear openings regularized from unsurveyed generated source views. This is an explicit conceptual inference, not exact surveyed side dimensions."
+}

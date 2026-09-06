@@ -1,0 +1,28 @@
+{
+  "archetype_id": "toronto_edwardian_foursquare",
+  "variant_id": "toronto_foursquare_red_brick",
+  "directory": ".",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\buildings\\toronto-edwardian-foursquare\\variant_0.png",
+      "path": "sources/variant_0.png",
+      "bytes": 1447263,
+      "sha256": "5e714abb64cbb8b507dbd128c311ae0061ddb010d80bc240b8a13a17ccf48e54"
+    },
+    {
+      "role": "oblique",
+      "original_path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\buildings\\toronto-edwardian-foursquare\\variant_0_angle_60.jpg",
+      "path": "sources/variant_0_angle_60.jpg",
+      "bytes": 941139,
+      "sha256": "e19d1457ddc7b2b186b4a05929e762b976b171ec69133341635752eab3c2e272"
+    },
+    {
+      "role": "top",
+      "original_path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\buildings\\toronto-edwardian-foursquare\\variant_0_angle_90.jpg",
+      "path": "sources/variant_0_angle_90.jpg",
+      "bytes": 881215,
+      "sha256": "05d8438b3b08729d13d70ee57081fafd4ddfd17c831e897cf823295e508f3381"
+    }
+  ]
+}

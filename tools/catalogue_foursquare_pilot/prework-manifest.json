@@ -1,0 +1,289 @@
+{
+  "candidate": "toronto-edwardian-foursquare-clay-v004",
+  "title": "Edwardian Foursquare",
+  "method": "RLASM v6.1 clay-first",
+  "representation_kind": "architectural_clay",
+  "archetype_id": "toronto_edwardian_foursquare",
+  "variant_id": "toronto_foursquare_red_brick",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 11.2,
+      "depth": 16.2,
+      "height": 11.1
+    },
+    "storeys": 2,
+    "source_measurements": {
+      "front": "Two-storey red brick Foursquare, paired upper windows, full-width porch and centred hipped dormer.",
+      "oblique": "Long rectangular hipped roof, front dormer, chimney on right slope, brick porch piers and pale railing.",
+      "top": "Single main hip; shorter ridge; one front hipped dormer and long shallow porch shed roof.",
+      "roof": "Main hip with full-depth dormer opening, constructed dormer cheeks and unioned hip cap; separate porch shed.",
+      "programme": "One family house; two occupied storeys and an inferred attic room."
+    },
+    "hidden_assumptions": [
+      "Dimensions are conceptual, inferred from doors and floors.",
+      "Rear and left openings, attic interior and partitions inferred.",
+      "Front hero has two main porch piers; oblique adds pale secondary columns. Main corner piers retained as stable source identity.",
+      "Gardens, neighbours and public sidewalk excluded."
+    ]
+  },
+  "roof_contract": "Main hip with full-depth dormer opening, constructed dormer cheeks and unioned hip cap; separate porch shed.",
+  "material_contract": {
+    "profile": "texture-free source-palette architectural clay",
+    "generic_texture_fallback": false
+  },
+  "identity_contract": {
+    "owner": "family-specific constructed silhouette, openings, roof and architectural relief",
+    "bitmap_stickers": "not used in architectural clay"
+  },
+  "programme_contract": "One family house; two occupied storeys and an inferred attic room.",
+  "contact_contract": [
+    "Foundation meets grade; stairs reach porch.",
+    "Brick porch piers and rear ledger support shed roof.",
+    "Dormer cheeks penetrate actual roof plane; carrier aperture cut before glazing."
+  ],
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        0.0,
+        -45.35999999999999,
+        7.29
+      ],
+      "target": [
+        0,
+        0,
+        5.106
+      ]
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        -34.02,
+        -40.5,
+        18.63
+      ],
+      "target": [
+        0,
+        0,
+        5.106
+      ]
+    },
+    {
+      "name": "aerial",
+      "location": [
+        -32.4,
+        -38.879999999999995,
+        40.5
+      ],
+      "target": [
+        0,
+        0,
+        5.106
+      ]
+    },
+    {
+      "name": "top",
+      "location": [
+        0.0,
+        -0.0162,
+        53.459999999999994
+      ],
+      "target": [
+        0,
+        0,
+        5.106
+      ],
+      "ortho_scale": 24.299999999999997
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -48.599999999999994,
+        0.0,
+        8.1
+      ],
+      "target": [
+        0,
+        0,
+        5.106
+      ]
+    },
+    {
+      "name": "right_side",
+      "location": [
+        48.599999999999994,
+        0.0,
+        8.1
+      ],
+      "target": [
+        0,
+        0,
+        5.106
+      ]
+    },
+    {
+      "name": "rear",
+      "location": [
+        0.0,
+        48.599999999999994,
+        8.1
+      ],
+      "target": [
+        0,
+        0,
+        5.106
+      ]
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        32.4,
+        42.12,
+        21.06
+      ],
+      "target": [
+        0,
+        0,
+        5.106
+      ]
+    },
+    {
+      "name": "facade_close",
+      "location": [
+        -13,
+        -23,
+        10
+      ],
+      "target": [
+        0,
+        -6.3,
+        4.8
+      ],
+      "whole": false
+    },
+    {
+      "name": "architecture_close",
+      "location": [
+        9,
+        -17,
+        6
+      ],
+      "target": [
+        0,
+        -8,
+        2.7
+      ],
+      "whole": false
+    },
+    {
+      "name": "glass_close",
+      "location": [
+        -6,
+        -14,
+        6.2
+      ],
+      "target": [
+        -2.5,
+        -6.2,
+        5.3
+      ],
+      "whole": false,
+      "lens": 62
+    },
+    {
+      "name": "roof_contact",
+      "location": [
+        11,
+        -16,
+        15
+      ],
+      "target": [
+        0,
+        -3.8,
+        8.8
+      ],
+      "whole": false
+    },
+    {
+      "name": "dormer_section",
+      "location": [
+        -7,
+        -12,
+        10.4
+      ],
+      "target": [
+        0,
+        -4.65,
+        8.45
+      ],
+      "whole": false,
+      "lens": 64
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "roof_contact",
+    "dormer_section"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\buildings\\toronto-edwardian-foursquare\\variant_0.png",
+        "path": "sources/variant_0.png",
+        "bytes": 1447263,
+        "sha256": "5e714abb64cbb8b507dbd128c311ae0061ddb010d80bc240b8a13a17ccf48e54"
+      },
+      {
+        "role": "oblique",
+        "original_path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\buildings\\toronto-edwardian-foursquare\\variant_0_angle_60.jpg",
+        "path": "sources/variant_0_angle_60.jpg",
+        "bytes": 941139,
+        "sha256": "e19d1457ddc7b2b186b4a05929e762b976b171ec69133341635752eab3c2e272"
+      },
+      {
+        "role": "top",
+        "original_path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\buildings\\toronto-edwardian-foursquare\\variant_0_angle_90.jpg",
+        "path": "sources/variant_0_angle_90.jpg",
+        "bytes": 881215,
+        "sha256": "05d8438b3b08729d13d70ee57081fafd4ddfd17c831e897cf823295e508f3381"
+      }
+    ],
+    "exact_variant_only": true,
+    "no_generated_substitute_references": true
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "19c432bdf42ce005a540d23776fcba1a860aa6101e3940eec8dd505f3187de33"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "b08f2d0df792229db90f889da253454b83d902a9f55472245219125ca0f977b4"
+      },
+      {
+        "path": "scripts/support.py",
+        "sha256": "a9564b8dc6bd825a40f67fa0d1c2525127cfe8bcd848f083ee61c9fb904c0bde"
+      }
+    ],
+    "blender_version": "5.2.0 LTS",
+    "python_version": "3.13.13 (main, May  8 2026, 12:37:03) [MSC v.1944 64 bit (AMD64)]",
+    "generation_api_calls": 0,
+    "build_started_utc": "2026-09-06T19:41:00.507262+00:00",
+    "render_source": "actual optimized GLB reimport only"
+  }
+}
