@@ -60,8 +60,8 @@ const STEPS: TourStep[] = [
 ];
 
 const PLACEMENT_STEPS: TourStep[] = [
-  {target:'[data-tour="place-infill_home"]',title:'Pick and place a home',body:'Choose Infill homes, move the preview over an empty part of your site, then click to place it. On a phone, move the map under the crosshair and tap Place at centre. Red means the object does not fit there.',placement:'right'},
-  {target:'[data-tour="place-neighbourhood_park"]',title:'Make room for a park',body:'Choose Neighbourhood park and place it beside your homes. The park appears in 3D automatically. Keep some space for streets and connections.',placement:'right'},
+  {target:'[data-tour="place-infill_home"]',title:'Pick and place a home',body:'Open Buildings, choose Infill homes from the catalogue, then move the preview over an empty part of your site, then click to place it. On a phone, move the map under the crosshair and tap Place at centre. Red means the object does not fit there.',placement:'right'},
+  {target:'[data-tour="place-neighbourhood_park"]',title:'Make room for a park',body:'Open Parks, choose Neighbourhood park, and place it beside your homes. The park appears in 3D automatically. Keep some space for streets and connections.',placement:'right'},
   {target:'[data-tour="select-btn"]',title:'Reshape your ideas',body:'Select an object. Drag its body to move, a white corner to resize, or the orange handle to rotate. You can also enter dimensions in the side panel. A wider home plot fits more whole houses; a park rearranges its paths and equipment.',placement:'right'},
   {target:'[data-tour="tool-streetsPaths"]',title:'Connect the places',body:'Choose Road, click at least two points along the route, then press Enter. Roads update in 3D automatically. More Tools contains custom outlines and optional planning tools.',placement:'right'},
   {target:'[data-tour="ai-render-btn"]',title:'Present your community',body:'Once your objects have saved and 3D has updated, choose Render. Review your image settings before starting. Undo and Redo let you explore alternatives; your placed objects remain in the saved project.',placement:'right'},

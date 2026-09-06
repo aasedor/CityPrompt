@@ -74,7 +74,8 @@ export function SitePlannerToolbar({ onShowGuide, onToggleHistory, historyOpen, 
     setActiveSitePlannerTool(activeSitePlannerTool === type ? null : type);
   };
 
-  return <div aria-label="Drawing tools" className={['site-planner-toolbar', isSidebar ? 'site-planner-toolbar--sidebar' : 'site-planner-toolbar--default', 'flex min-h-0 w-full flex-col gap-2 overflow-y-auto overscroll-contain rounded-xl border-2 border-[#151515] bg-[#fff9ec]/95 p-2.5 shadow-[4px_4px_0_0_#151515] backdrop-blur-xl'].join(' ')}>
+  return <div aria-label="Drawing tools" className={['site-planner-toolbar', isSidebar ? 'site-planner-toolbar--sidebar' : 'site-planner-toolbar--default', 'flex min-h-0 max-h-full w-full flex-col gap-2 overflow-hidden rounded-xl border-2 border-[#151515] bg-[#fff9ec]/95 p-2.5 shadow-[4px_4px_0_0_#151515] backdrop-blur-xl'].join(' ')}>
+    <div className="min-h-0 space-y-2 overflow-y-auto overscroll-contain">
     {placementSlot}
     {!streetInPlacement && <><p className="px-1 text-sm font-semibold text-[#151515]">{placementSlot ? 'Connect your community' : 'Draw your community'}</p>
     <div className={['site-planner-core-grid grid gap-2', isSidebar ? 'grid-cols-3 sm:grid-cols-1' : 'grid-cols-3'].join(' ')}>
@@ -132,6 +133,7 @@ export function SitePlannerToolbar({ onShowGuide, onToggleHistory, historyOpen, 
       </div>
       {uploadSlot}
     </div>}
-    {bottomSlot}
+    </div>
+    {bottomSlot && <div className="max-h-[45dvh] shrink-0 overflow-y-auto overscroll-contain border-t border-slate-300 pt-1">{bottomSlot}</div>}
   </div>;
 }
