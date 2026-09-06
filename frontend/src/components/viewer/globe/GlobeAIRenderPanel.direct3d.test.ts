@@ -37,11 +37,12 @@ describe('Globe AI render panel Direct 3D styles', () => {
     expect(new Set(groupedIds)).toEqual(new Set(STYLES.map((style) => style.id)));
   });
 
-  it('explains the presentation-first contract before spend', () => {
+  it('explains source verification and fallback before spend', () => {
     expect(DIRECT_3D_PIPELINE_DESCRIPTION).toContain('One-call AI finish');
     expect(DIRECT_3D_PIPELINE_DESCRIPTION).toContain('style you pick governs the look');
     expect(DIRECT_3D_SCOPE_DESCRIPTION).toContain('Pick a style and render');
-    expect(DIRECT_3D_SCOPE_DESCRIPTION).toContain('returned exactly as generated');
+    expect(DIRECT_3D_SCOPE_DESCRIPTION).toContain('checked against your 3D scene');
+    expect(DIRECT_3D_SCOPE_DESCRIPTION).toContain('original 3D view is returned');
     expect(DIRECT_3D_CALL_DESCRIPTION).toContain('1 image call');
     expect(DIRECT_3D_CALL_DESCRIPTION).toContain('saved to Project Renders');
   });

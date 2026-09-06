@@ -4081,6 +4081,15 @@ class Direct3DRenderService:
         visible_manifest = _camera_visible_manifest(capture.normalized_instance_id, req.instance_id_manifest)
         visible_ids = {descriptor.instance_id for descriptor in visible_manifest.values()}
         visible_inventory = [item for item in (server_inventory or []) if item.get("instance_id") in visible_ids]
+        source_geometry_only = req.presentation_mode == "scene" and req.fidelity_policy == "precise"
+        if source_geometry_only:
+            # Catalogue names/prose and whole-building pictures can prescribe
+            # different openings, porches or roofs than the placed 3D model.
+            # A precise scene finish takes its design from the captured pixels.
+            # Project validation and source protection still use the full inventory.
+            visible_inventory = [
+                {key: value for key, value in item.items() if key != "design_identity"} for item in visible_inventory
+            ]
         visible_building_zones = {
             str(descriptor.zone_id)
             for descriptor in visible_manifest.values()
@@ -4089,7 +4098,9 @@ class Direct3DRenderService:
         references = [
             reference
             for reference in req.archetype_references
-            if reference.zone_ids and set(reference.zone_ids).issubset(visible_building_zones)
+            if not source_geometry_only
+            and reference.zone_ids
+            and set(reference.zone_ids).issubset(visible_building_zones)
         ]
 
         normalized_width, normalized_height = capture.normalized_beauty.size

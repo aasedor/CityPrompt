@@ -2798,13 +2798,24 @@ async def test_provider_receives_exact_instance_guide_and_server_owned_inventory
 
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("mode", ["source_anchored", "scene", "reproject"])
-async def test_provider_conditioning_excludes_hidden_inventory_and_unbound_or_public_realm_artwork(monkeypatch, mode):
+@pytest.mark.parametrize(
+    "mode,fidelity,allow_design_references",
+    [
+        ("source_anchored", "precise", True),
+        ("scene", "balanced", True),
+        ("scene", "precise", False),
+        ("reproject", "precise", True),
+    ],
+)
+async def test_provider_conditioning_excludes_hidden_inventory_and_unbound_or_public_realm_artwork(
+    monkeypatch, mode, fidelity, allow_design_references
+):
     # Reuse a real validated capture; its manifest deliberately contains a
     # building behind the camera with zero instance pixels.
     request = _request(presentation_mode="scene")
     payload = request.model_dump()
     payload["presentation_mode"] = mode
+    payload["fidelity_policy"] = fidelity
     if mode == "reproject":
         payload["style"] = "isometric"
     hidden_zone = "cccccccc-cccc-4ccc-8ccc-cccccccccccc"
@@ -2820,7 +2831,11 @@ async def test_provider_conditioning_excludes_hidden_inventory_and_unbound_or_pu
     }
     image = _png_b64(Image.new("RGB", (16, 16), "white"))
     payload["archetype_references"] = [
-        {"image_base64": image, "label": "Visible facade", "zone_ids": [str(TEST_ZONE_ID)]},
+        {
+            "image_base64": image,
+            "label": "Visible facade: reproduce a full-width porch and gable window",
+            "zone_ids": [str(TEST_ZONE_ID)],
+        },
         {"image_base64": image, "label": "Hidden tower", "zone_ids": [hidden_zone]},
         {"image_base64": image, "label": "Shared hidden tower", "zone_ids": [str(TEST_ZONE_ID), hidden_zone]},
         {"image_base64": image, "label": "Unmapped playground"},
@@ -2842,13 +2857,19 @@ async def test_provider_conditioning_excludes_hidden_inventory_and_unbound_or_pu
     await Direct3DRenderService("test-key")._call_openai(request, capture, server_inventory=inventory)
     call = _RecordingClient.calls[0]
     prompt = call["data"]["prompt"]
-    assert "Visible house" in prompt and "Visible facade" in prompt
+    assert ("Visible house" in prompt) is allow_design_references
+    assert ("Visible facade" in prompt) is allow_design_references
+    assert ("full-width porch and gable window" in prompt) is allow_design_references
     assert "Hidden tower" not in prompt and "Unmapped playground" not in prompt
     assert "building=1" in prompt and "park=1" not in prompt
     assert "preserve every instance exactly once" not in prompt
-    assert len([entry for entry in call["files"] if entry[1][0].startswith("archetype-ref")]) == 1
+    assert len([entry for entry in call["files"] if entry[1][0].startswith("archetype-ref")]) == int(
+        allow_design_references
+    )
     # Filtering must not mutate the validated scene used for source protection.
     assert len(inventory) == 3 and len(request.instance_id_manifest) == 3
+    assert inventory[0]["design_identity"] == "Visible house"
+    assert len(request.archetype_references) == 4
 
 
 def test_camera_visibility_keeps_slivers_and_disconnected_regions_without_completing_objects():

@@ -28,7 +28,7 @@ export const DIRECT_3D_ALLOWED_STYLES = new Set(DIRECT_3D_STYLE_IDS);
  * unchanged for the colored-polygon pipeline.
  */
 export const DIRECT_3D_DEFAULT_ART_DIRECTIONS: Readonly<Record<string, string>> = Object.freeze({
-  photorealistic: 'Create a high-end contemporary architectural competition visualization. Keep the existing material palette of every building but render each surface with convincing real-world texture: brick with visible mortar depth, timber with warm grain, metal panels with soft sheen, concrete with subtle tonal variation, and clear floor-to-ceiling glazing with believable reflections and slightly warm interior illumination visible through the glass. Use a bright, softly overcast daytime atmosphere with a pale blue sky, gentle directional sunlight, soft contact shadows and natural atmospheric depth toward the horizon. Add realistic public-realm activity at true pedestrian scale: people walking and sitting, cyclists, cafe seating, ornamental grasses, young street trees and understated contemporary street furniture. The composition should feel calm, elegant, civic and inviting, with clean architectural lines, restrained landscaping, balanced exposure, muted natural colours, crisp facade detail and a subtly softened photographic finish with gentle depth of field. Avoid dramatic sunset lighting, oversaturated colours, glossy CGI materials, distorted people and dense overgrown landscaping.',
+  photorealistic: 'Create a high-end contemporary architectural competition visualization. Keep the existing material palette of every building but render each surface with convincing real-world texture: brick with visible mortar depth, timber with warm grain, metal panels with soft sheen, concrete with subtle tonal variation, and the existing glazing with believable reflections and slightly warm interior illumination visible through the glass. Use a bright, softly overcast daytime atmosphere with a pale blue sky, gentle directional sunlight, soft contact shadows and natural atmospheric depth toward the horizon. Keep the existing window and door openings, rooflines, porches, paths, planting and street furniture in their authored shapes and positions. Do not add permanent landscape features or change the design. The composition should feel calm, elegant, civic and inviting, with clean architectural lines, restrained landscaping, balanced exposure, muted natural colours, crisp facade detail and a subtly softened photographic finish with gentle depth of field. Avoid dramatic sunset lighting, oversaturated colours, glossy CGI materials, distorted people and dense overgrown landscaping.',
   photomontage: 'Create a professional architectural photomontage that reads as a real drone photograph of the completed proposal. Match material response, sun direction, shadow length, atmospheric haze, lens character, grain and colour temperature across the proposal and surrounding city so there is no visible compositing seam. Keep the existing material palette but give every surface true photographic texture, with glazing reflecting the actual sky. Add modest believable street life: pedestrians at accurate scale, parked and moving cars, and street trees consistent with the neighbourhood. Balanced exposure and muted natural colours, like an honest planning-submission photomontage.',
   development: 'Create a polished completed-development marketing visualization of institutional quality. Render the buildings as newly finished construction: crisp facades in their existing material palette, clean glazing with warm interior light, welcoming entrances with signage-scale detail, and a freshly landscaped public realm with young street trees, planting beds, benches and clear paving patterns. Bright optimistic daylight with gentle directional sun and soft shadows. Populate lightly with pedestrians, cyclists and cafe activity at accurate scale so the proposal feels built, occupied and integrated. Aspirational but credible, with clean lines and minimal clutter; avoid oversaturation and glossy CGI sheen.',
   atmospheric: 'Create cinematic architectural photography with warm late-day directional light raking across the facades, long soft shadows, gentle golden haze and layered atmospheric depth between foreground and horizon. Bring out material texture in the existing palette; let interior lights begin to glow warmly through the glazing. Add sparse contemplative street life: a few pedestrians, a cyclist, people lingering on benches. Keep the mood serene and restrained with muted warm colours, soft highlights and natural film-like grain, elegant rather than theatrical or oversaturated.',
@@ -56,7 +56,6 @@ export function resolveDirect3DPresentationMode(style: string): Direct3DActivePr
   return REPROJECTING_STYLES.has(style) ? 'reproject' : 'scene';
 }
 
-const PRECISE_DIRECT_3D_STYLES = new Set(['survey', 'documentary']);
 const EXPRESSIVE_DIRECT_3D_STYLES = new Set([
   'site-plan',
   'site-plan-watercolor',
@@ -74,9 +73,8 @@ const EXPRESSIVE_DIRECT_3D_STYLES = new Set([
 ]);
 
 export function resolveDirect3DFidelityPolicy(style: string): Direct3DFidelityPolicy {
-  if (PRECISE_DIRECT_3D_STYLES.has(style)) return 'precise';
   if (REPROJECTING_STYLES.has(style) || EXPRESSIVE_DIRECT_3D_STYLES.has(style)) return 'expressive';
-  return 'balanced';
+  return 'precise';
 }
 
 export interface Direct3DRenderDiagnostics {
@@ -382,7 +380,7 @@ export function useDirect3DRender() {
     const response = await rendersApi.generateDirect3D({
       control_bundle_version: 2,
       view_mode: viewMode,
-      ...(options.archetypeReferences?.length
+      ...(options.archetypeReferences?.length && !(presentationMode === 'scene' && fidelityPolicy === 'precise')
         ? { archetype_references: options.archetypeReferences.slice(0, 8) }
         : {}),
       beauty_image_base64: capture.beautyImageBase64,
