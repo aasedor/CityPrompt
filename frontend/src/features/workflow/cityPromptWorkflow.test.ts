@@ -52,6 +52,20 @@ function compiledBuilding(): SiteZone {
 }
 
 describe('deriveCityPromptWorkflow', () => {
+  it('renders saved catalogue objects directly and asks for automatic updates while stale', () => {
+    const home = compiledBuilding();
+    home.properties!.pick_place_asset = 'infill_home';
+    const ready = deriveCityPromptWorkflow([home]);
+    expect(ready.canRender).toBe(true);
+    expect(ready.generationReason).not.toContain('Generate to 3D');
+    home.properties!.community_3d = undefined;
+    const pending = deriveCityPromptWorkflow([home]);
+    expect(pending.canRender).toBe(false);
+    expect(pending.renderReason).toContain('automatically');
+    expect(pending.renderReason).not.toContain('Generate to 3D');
+    const mixed = deriveCityPromptWorkflow([home, zone('custom', 'building')]);
+    expect(mixed.renderReason).toContain('Generate to 3D');
+  });
   it('allows an explicitly object-only scene without requiring automatic landscaping', () => {
     const boundary = activeBoundary();
     boundary.properties = { community_3d_landscape_mode: 'placed_objects_only' };

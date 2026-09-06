@@ -1,3 +1,4 @@
+import { isCatalogueOnlyScene, CATALOGUE_UPDATE_GUIDANCE } from '@/features/pickPlace/catalogue';
 /**
  * GlobeAIRenderPanel.tsx — Simplified AI render controls for the 3D globe.
  *
@@ -399,10 +400,13 @@ export function GlobeAIRenderPanel({
     && unsupportedDirect3DZones.length === 0
     && hasAllCompiledBuildingMassing,
   );
+  const catalogueOnly = isCatalogueOnlyScene(authoritativeZones);
   const direct3DUnavailableReason = !captureDirect3D
     ? 'The globe capture is not ready yet.'
     : !projectId
       ? 'Save this project before using Direct 3D.'
+    : catalogueOnly && (!hasCompiledCommunity || !hasAllCompiledSourceFingerprints || !hasCurrentResidualLandscape)
+      ? CATALOGUE_UPDATE_GUIDANCE
     : !hasCompiledCommunity
       ? 'Run Generate to 3D first.'
     : !hasAllCompiledSourceFingerprints
@@ -1326,7 +1330,7 @@ export function GlobeAIRenderPanel({
                         }}
                         disabled={disabled}
                         title={disabled
-                          ? 'Development mode needs placed 3D massing — run Generate to 3D first.'
+                          ? catalogueOnly ? CATALOGUE_UPDATE_GUIDANCE : 'Development mode needs placed 3D massing — run Generate to 3D first.'
                           : renderPipeline === 'direct3d' && presentationMode === 'reproject'
                             ? 'Experimental reproject: the compiled scene guides inventory and layout, but screen-space geometry proof is impossible after the camera transform. Visually verify the result.'
                             : s.id === 'development'

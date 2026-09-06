@@ -1,3 +1,4 @@
+import { isCatalogueOnlyScene, CATALOGUE_UPDATE_GUIDANCE } from '@/features/pickPlace/catalogue';
 import {
   Check,
   Clapperboard,
@@ -504,7 +505,7 @@ export function VideoGeneratePanel({
     if (!sourceFrame) throw new Error('Capture the scene before validating.');
     if (routePoints.length < 2) throw new Error('Draw a route with a start and finish.');
     if (!community3DClaims || community3DClaims.length === 0) {
-      throw new Error('The compiled scene changed. Close Video Render, run Generate to 3D, and capture it again.');
+      throw new Error(isCatalogueOnlyScene(siteZones) ? CATALOGUE_UPDATE_GUIDANCE : 'The compiled scene changed. Close Video Render, run Generate to 3D, and capture it again.');
     }
     let activeControls = routeControls?.signature === routeCaptureSignature ? routeControls : null;
     if (controlMode !== 'single_frame' && !activeControls) {
@@ -610,7 +611,7 @@ export function VideoGeneratePanel({
         residual_landscape_claim: residualLandscapeClaim,
       } : {}),
     };
-  }, [captureRouteControls, community3DClaims, controlMode, internalEnhanceQuality, motion, projectId, provider, renderQuality, residualLandscapeClaim, routeCaptureSignature, routeControls, routePoints, sceneContract, seedanceReferenceMode, sourceFrame]);
+  }, [captureRouteControls, community3DClaims, controlMode, internalEnhanceQuality, motion, projectId, provider, renderQuality, residualLandscapeClaim, routeCaptureSignature, routeControls, routePoints, sceneContract, seedanceReferenceMode, sourceFrame, siteZones]);
 
   const runPreflight = useCallback(async () => {
     setIsPreflighting(true);
