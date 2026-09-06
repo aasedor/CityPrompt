@@ -292,7 +292,14 @@ def _validate_direct_3d_project_zones(
             "boundaries and run Generate to 3D again before rendering."
         )
     if not boundaries:
-        if req.residual_landscape_claim is not None or len(physical_zones) > 1:
+        # Manual placement compiles without a parcel or residual landscape.
+        # A generated plan, however, may have lost its previously compiled
+        # boundary. Keep rejecting that case instead of silently dropping fill.
+        has_plan_context = any(
+            any((zone.properties or {}).get(key) for key in ("_plan_role", "_plan_snapshot_id", "_plan_scenario"))
+            for zone in physical_zones
+        )
+        if req.residual_landscape_claim is not None or (len(physical_zones) > 1 and has_plan_context):
             raise _direct_state_conflict(
                 "This multi-zone project no longer has its compiled site boundary. "
                 "Refresh and rebuild the scene with Generate to 3D before rendering."

@@ -1226,6 +1226,26 @@ def test_paid_project_preflight_accepts_explicit_unfilled_site_and_still_checks_
         direct_api._validate_direct_3d_project_zones(request, zones, buildings)
 
 
+@pytest.mark.parametrize("bind_capture_instances", [True, False])
+def test_paid_project_preflight_accepts_boundaryless_manual_scene_and_checks_sources(bind_capture_instances):
+    building_id = uuid.uuid4()
+    building = _compiled_zone("building", building_id=building_id, properties={"pick_place_asset": "infill_home"})
+    park = _compiled_zone("green_space", properties={"pick_place_asset": "neighbourhood_park"})
+    zones = [building, park]
+    request = _project_request(uuid.uuid4(), community_claims=_claims_for(zones))
+    buildings = {str(building_id): _compiled_building(building_id)}
+    direct_api._validate_direct_3d_project_zones(
+        request, zones, buildings, bind_capture_instances=bind_capture_instances
+    )
+    park.properties["community_3d"]["state"] = "stale"
+    with pytest.raises(HTTPException) as stale:
+        direct_api._validate_direct_3d_project_zones(
+            request, zones, buildings, bind_capture_instances=bind_capture_instances
+        )
+    assert stale.value.status_code == 409
+    assert stale.value.detail["billed"] is False
+
+
 def test_paid_project_preflight_accepts_one_complete_visible_plan_layer():
     project_id = uuid.uuid4()
     boundary_id = uuid.uuid4()
