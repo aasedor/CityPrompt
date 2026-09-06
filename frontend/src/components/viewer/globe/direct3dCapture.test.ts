@@ -586,6 +586,9 @@ describe('Direct 3D capture helpers', () => {
       expect.objectContaining({ code: 'invalid_mask_coverage' }),
     );
     expect(() => validateDirect3DMaskCoverage(0.35, 10_000)).not.toThrow();
+    // Current-camera scene capture opts into close-ups; empty captures stay invalid.
+    expect(() => validateDirect3DMaskCoverage(1, 10_000, undefined, 1)).not.toThrow();
+    expect(() => validateDirect3DMaskCoverage(0, 0, undefined, 1)).toThrow();
   });
 
   it('exports a unique, stable semantic color manifest', () => {
