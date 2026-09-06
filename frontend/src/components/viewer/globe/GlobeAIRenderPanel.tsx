@@ -1607,14 +1607,18 @@ export function GlobeAIRenderPanel({
                 <span className="col-span-2">
                   AI candidate inventory {directDiagnostics.provider_raw_instance_source_presence.passed
                     ? 'preserved'
-                    : 'changed — corrected before return'}
+                    : directDiagnostics.returned_safety_strategy === 'authoritative_source'
+                      ? 'changed — original 3D view returned'
+                      : 'changed — corrected before return'}
                 </span>
               )}
               {directDiagnostics.provider_raw_unsupported_structure && (
                 <span className="col-span-2">
                   AI candidate no-additions check {directDiagnostics.provider_raw_unsupported_structure.passed
                     ? 'passed'
-                    : 'failed — corrected before return'}
+                    : directDiagnostics.returned_safety_strategy === 'authoritative_source'
+                      ? 'failed — original 3D view returned'
+                      : 'failed — corrected before return'}
                 </span>
               )}
               {directDiagnostics.returned_safety_strategy && (
@@ -1622,7 +1626,7 @@ export function GlobeAIRenderPanel({
                   Returned safety strategy {directDiagnostics.returned_safety_strategy.replace(/_/g, ' ')}
                 </span>
               )}
-              {directDiagnostics.instance_source_presence && (
+              {directDiagnostics.returned_safety_strategy !== 'authoritative_source' && directDiagnostics.instance_source_presence && (
                 <span className="col-span-2">
                   Returned instance presence {directDiagnostics.instance_source_presence.passed ? 'passed' : 'needs review'}
                   {directDiagnostics.instance_source_presence.missing_instance_ids?.length
@@ -1630,7 +1634,7 @@ export function GlobeAIRenderPanel({
                     : ''}
                 </span>
               )}
-              {directDiagnostics.unsupported_structure && (
+              {directDiagnostics.returned_safety_strategy !== 'authoritative_source' && directDiagnostics.unsupported_structure && (
                 <span className="col-span-2">
                   Returned no-invention check {directDiagnostics.unsupported_structure.passed ? 'passed' : 'needs review'}
                 </span>
