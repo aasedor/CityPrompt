@@ -94,3 +94,31 @@ def test_home_frontage_survives_resize_rotation_and_server_replay(width, degrees
     local = detached_plot_local_coordinates(ring, width, 16, preserve_authored_axes=True)
     assert local[0] == pytest.approx((-width / 2, 8), abs=1e-5)
     assert local[1] == pytest.approx((width / 2, 8), abs=1e-5)
+
+
+@pytest.mark.parametrize('degrees', [25, 115, 205, 295])
+def test_fixed_landmark_axes_survive_server_replay_without_repeating_homes(degrees):
+    angle=math.radians(degrees)
+    ring=[(-114+(x*math.cos(angle)-y*math.sin(angle))/(111320*math.cos(math.radians(51))),
+           51+(x*math.sin(angle)+y*math.cos(angle))/111320) for x,y in [(-7,-10),(7,-10),(7,10),(-7,10)]]
+    props={'native_plot_axes':True,'floors':2,'development_selected_variant_id':'brown_cafe_corner'}
+    zone=SimpleNamespace(geometry=from_shape(Polygon(ring),srid=4326),properties=props)
+    target=_locked_building_target(zone)
+    assert target[:3] == (14,20,2)
+    result=_strict_locked_building_plan([descriptor_from_library_entry(clay_entry('amsterdam_brown_cafe','brown_cafe_corner'))],
+                                      'brown_cafe_corner',target,props,zone=zone)
+    assert len(result['instances']) == 1
+    assert result['instances'][0]['scale'] == [1,1,1]
+    # The fixture is wider than deep, so its local fit turns 90 degrees. That
+    # local fit must stay identical while the authored world heading changes.
+    assert result['instances'][0]['rotation_degrees'] == 90
+
+
+def test_half_turn_of_identical_native_plot_invalidates_source_hash():
+    ring=[(-114,51),(-113.9998,51),(-113.9998,51.0003),(-114,51.0003)]
+    original=Polygon(ring);flipped=Polygon(ring[2:]+ring[:2])
+    assert original.equals(flipped)
+    for flag in ('native_home_plot','native_plot_axes'):
+        props={flag:True,'floors':2}
+        assert community_3d_source_hash('building',original,props) != community_3d_source_hash('building',flipped,props)
+    assert community_3d_source_hash('building',original,{}) == community_3d_source_hash('building',flipped,{})

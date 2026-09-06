@@ -118,7 +118,8 @@ export const PUBLISHED_BUILDING_ASSETS: PlaceAsset[] = [
       "development_selected_variant_id": "sandstone_romanesque_revival",
       "development_archetype_label": "Sandstone civic hall",
       "floors": 3,
-      "floor_count": 3
+      "floor_count": 3,
+      "native_plot_axes": true
     }
   }
 ];

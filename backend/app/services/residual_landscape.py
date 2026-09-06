@@ -275,6 +275,7 @@ def community_3d_source_properties(
             {
                 **common,
                 **({"native_home_plot": True} if props.get("native_home_plot") is True else {}),
+                **({"native_plot_axes": True} if props.get("native_plot_axes") is True else {}),
                 "dimensions": _compact_semantic_mapping(
                     {
                         "floors": _semantic_number(props.get("floors"), positive=True),
@@ -626,6 +627,13 @@ def community_3d_source_hash(
         ),
         "design": community_3d_source_properties(zone_type, properties),
     }
+    # Geometric normalization intentionally erases the starting vertex. For
+    # placed native assets that edge owns frontage, so a 180-degree turn must
+    # invalidate a compiled recipe even though the occupied polygon is equal.
+    props = properties or {}
+    if payload['kind'] == 'building' and (props.get('native_home_plot') is True or props.get('native_plot_axes') is True):
+        if geometry.geom_type == 'Polygon' and len(geometry.exterior.coords) == 5:
+            payload['authored_front_edge'] = [[round(float(v), 7) for v in point[:2]] for point in list(geometry.exterior.coords)[:2]]
     return hashlib.sha256(
         json.dumps(
             payload,

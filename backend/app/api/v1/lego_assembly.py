@@ -357,7 +357,7 @@ def _locked_building_target(zone: SiteZone) -> tuple[float, float, int, str, flo
                 detail="This building has no measurable footprint; repair it before compiling Community 3D.",
             )
         width, depth, profile = analysis
-        if properties.get("native_home_plot") is True and exterior is not None:
+        if (properties.get("native_home_plot") is True or properties.get("native_plot_axes") is True) and exterior is not None:
             ring = list(exterior.coords)[:-1]
             if len(ring) == 4:
                 lat = sum(p[1] for p in ring) / 4
@@ -394,7 +394,8 @@ def _strict_locked_building_plan(
         if geometry.geom_type != "Polygon" or len(geometry.interiors):
             raise AssemblyPlanningError("Native building placement requires one polygon without interior holes.")
         plot_coordinates = detached_plot_local_coordinates(
-            geometry.exterior.coords, width, depth, preserve_authored_axes=properties.get("native_home_plot") is True
+            geometry.exterior.coords, width, depth,
+            preserve_authored_axes=properties.get("native_home_plot") is True or properties.get("native_plot_axes") is True,
         )
     # Wing depth is intentionally omitted: the current imported family owns
     # the deterministic native/default thickness. The returned target is then

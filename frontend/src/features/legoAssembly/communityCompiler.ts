@@ -9,7 +9,7 @@ import {
 import { announceCommunity3DPresentationReady } from '@/features/community3d/community3dPresentation';
 import { allSettledWithConcurrency } from './allSettledWithConcurrency';
 import { analyzeLegoFootprint } from './footprintProfiles';
-import { assemblyFootprintCoordinates, authoredHomePlotFrame } from './detachedPlot';
+import { assemblyFootprintCoordinates, authoredHomePlotFrame, preservesAuthoredPlotAxes } from './detachedPlot';
 import {
   legoArchetypeContextFromZone,
   legoAssemblyApi,
@@ -225,7 +225,7 @@ export function deriveItems(zones: SiteZone[]): ZoneBuildItem[] {
       zone.coordinates,
       option?.footprintCompatibility,
     );
-    const authoredPlot = zone.properties?.native_home_plot === true ? authoredHomePlotFrame(zone.coordinates) : undefined;
+    const authoredPlot = preservesAuthoredPlotAxes(zone.properties) ? authoredHomePlotFrame(zone.coordinates) : undefined;
     const persistedWingDepth = zone.properties?._lego_actual_wing_depth_m;
     const authoritativeWingDepth = typeof persistedWingDepth === 'number'
       && Number.isFinite(persistedWingDepth)
@@ -431,7 +431,7 @@ function planRequestForItem(item: ZoneBuildItem) {
     target_depth_m: item.targets.depth_m,
     target_floors: item.targets.floors,
     footprint_profile: item.targets.footprint_profile,
-    footprint_local_m: assemblyFootprintCoordinates(item.zone.coordinates, item.targets, item.zone.properties?.native_home_plot === true),
+    footprint_local_m: assemblyFootprintCoordinates(item.zone.coordinates, item.targets, preservesAuthoredPlotAxes(item.zone.properties)),
     // Let the selected LEGO family's native podium depth determine wing
     // thickness, matching the backend's final-footprint proof exactly.
     project_id: item.zone.project_id,

@@ -101,6 +101,8 @@ def picker_assets(payload: dict) -> list[dict]:
         }
         if p["reshape_mode"] == "repeat_native":
             props["native_home_plot"] = True
+        else:
+            props["native_plot_axes"] = True
         assets.append(
             {
                 "id": p["id"],
