@@ -1414,3 +1414,7 @@ When a pilot reveals a reusable lesson:
 6. regenerate one approved representative before scaling the change.
 
 Do not encode one building's ornament as a universal rule. Store universal construction principles in this memory, family identity in `architectural_signature_profiles.json`, and variant-specific dimensions/reference roles in the catalogue or massing graph.
+
+## Building trio activation — 2026-09-06
+
+The user approved the post-war bungalow v005, Edwardian Foursquare v004 and sandstone civic hall v007 for the main architectural-clay catalogue after independent review and local placement trials. Their exact GLBs, native dimensions and review hashes are locked in seed/model-library/rlasm-architectural-clay/library.json. See [publication record](BUILDING_TRIO_PUBLICATION_2026-09-06.md). This is clay runtime activation, not textured-keeper approval. Wider house plots repeat complete native homes; the civic hall retains its complete native size.

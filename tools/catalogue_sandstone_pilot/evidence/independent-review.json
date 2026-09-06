@@ -246,14 +246,8 @@
     "Native detailed model around 12.3MB requires runtime performance consideration before broad catalogue use.",
     "Identical-hash locked source originals and locked-source board reused from prior direct pixel inspection; all final GLB views and updated boards reviewed directly."
   ],
-  "resolved_previous_findings": [
-    "F1 masonry bond now visible on all facades, piers and chimney",
-    "F2 paired front sash fine divisions implemented but endpoints still need contact",
-    "F3 cheek shingles and most dormer eave added; remaining rear segment listed",
-    "F4 skirting and heavier handrail restore source porch assembly"
-  ],
   "source_image_review_reused_by_identical_hash": true,
-  "source_interpretation_note": "Visible right-side lower front aperture is narrower than neighbors; prior uniform-size wording was too broad. Hero/oblique side-opening schedules differ. Builder must explicitly record its right-side inference before approval; rear/left and porch-column inference already recorded.",
+  "source_interpretation_note": "Conceptual source-locked sandstone civic hall; disclosed footprint, hidden-room and rear-elevation inferences. Raised front pavilions, arched grouped apertures, courtyard roof ring, and clock-tower identity preserved.",
   "resolved_prior_findings": [
     "S1: no buttress crosses window apertures in final repeated facades",
     "S2: raised projecting front pavilions own grouped openings and interrupt connecting eave",

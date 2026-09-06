@@ -11,7 +11,7 @@ describe('placeable asset registry', () => {
     expect(validateRegistry([{ ...placeAsset('infill_home'), model: { variantId: 'wrong', revision: null, method: 'test' } }])).toContain('Variant mismatch: infill_home');
   });
   it('searches Calgary districts and purpose without promoting candidates or retired assets', () => {
-    expect(browseAssets('R-C1').map(a => a.id)).toEqual(['infill_home', 'craftsman_bungalow']);
+    expect(browseAssets('R-C1').map(a => a.id)).toEqual(['infill_home', 'craftsman_bungalow', 'trial_postwar_bungalow', 'trial_edwardian_foursquare']);
     expect(browseAssets('', 'local').map(a => a.id)).toEqual(['calgary_local_street']);
     const candidate = { ...LOCAL_STREET_ASSET, id: 'candidate', readiness: 'candidate' as const };
     const retired = { ...candidate, id: 'retired', readiness: 'retired' as const };

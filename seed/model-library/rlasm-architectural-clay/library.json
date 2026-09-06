@@ -1,0 +1,201 @@
+{
+  "schema": "cityprompt.rlasm-architectural-clay-library@1",
+  "created_at": "2026-09-06T00:00:00Z",
+  "updated_at": "2026-09-06T00:00:00Z",
+  "method": "RLASM",
+  "method_version": "6.1",
+  "delivery_format": "architectural_clay",
+  "reference_authority": "frontend/public/archetypes/buildings",
+  "runtime_policy": {
+    "building_detail_mode": "rlasm_architectural_clay_only",
+    "unsupported_archetype_fallback": "planned_massing",
+    "reference_images_drive_user_selection": true,
+    "reference_images_drive_render_conditioning": true,
+    "clay_previews_may_replace_catalogue_references": false,
+    "continuous_resize_allowed": false,
+    "terrain_fit_verified": false,
+    "scaling_verified": false
+  },
+  "activation": {
+    "authorized_by": "human_user",
+    "authorized_on": "2026-09-06",
+    "scope": "User: Publish them to the main catalogue. Three independently reviewed and locally trialed architectural-clay buildings; no other local candidates included.",
+    "keeper_approval_implied": false,
+    "terrain_fit_implied": false,
+    "scaling_implied": false
+  },
+  "entries": [
+    {
+      "candidate": "calgary-inner-city-bungalow-clay-v005",
+      "family": "rlasm-clay-bungalow-postwar-ranch",
+      "archetype_id": "calgary_inner_city_bungalow",
+      "archetype_label": "Post-war bungalow",
+      "variant_id": "bungalow_postwar_ranch",
+      "variant_label": "Post-war bungalow",
+      "runtime_enabled": true,
+      "native_floors": 1,
+      "design_dimensions_m": {
+        "width": 10.6,
+        "depth": 15.0,
+        "height": 6.0
+      },
+      "model": {
+        "path": "models/calgary-inner-city-bungalow-clay-v005.glb",
+        "bytes": 1168176,
+        "sha256": "f601299cdb32072119e5484fe3206ddc4aa2263e88cea703a79158f018238153",
+        "native_dimensions_m": {
+          "width": 10.898324012756348,
+          "height": 6.360000133514404,
+          "depth": 16.050000190734863
+        },
+        "mesh_count": 12,
+        "material_count": 12,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/calgary-inner-city-bungalow/variant_2.png",
+          "bytes": 1514720,
+          "sha256": "99dddd58994ef0c0f1c1d9abd472420cae16837759c885e9b85c7dca5b8d7ba8"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/calgary-inner-city-bungalow/variant_2_angle_60.jpg",
+          "bytes": 1020876,
+          "sha256": "324c81ba58c7638e57de92f69c29682cb61efae3f5bfa2ce60d5b5d5486994b6"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/calgary-inner-city-bungalow/variant_2_angle_90.jpg",
+          "bytes": 929664,
+          "sha256": "7b2861fbddcd7bfe8bc43794f8f105379552de5f4613332319520ff51df3c7c1"
+        }
+      ],
+      "review": {
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0,
+        "sha256": "86f3a5579369f8bebf9486d38700358fad6348f3f3a45916de7dbc2b8627655b",
+        "repo_path": "tools/catalogue_ranch_pilot/evidence/independent-review.json"
+      },
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\ranch-v005"
+    },
+    {
+      "candidate": "toronto-edwardian-foursquare-clay-v004",
+      "family": "rlasm-clay-toronto-foursquare-red-brick",
+      "archetype_id": "toronto_edwardian_foursquare",
+      "archetype_label": "Edwardian Foursquare",
+      "variant_id": "toronto_foursquare_red_brick",
+      "variant_label": "Edwardian Foursquare",
+      "runtime_enabled": true,
+      "native_floors": 2,
+      "design_dimensions_m": {
+        "width": 11.2,
+        "depth": 16.2,
+        "height": 11.1
+      },
+      "model": {
+        "path": "models/toronto-edwardian-foursquare-clay-v004.glb",
+        "bytes": 10282872,
+        "sha256": "3a6848fc6aa78151f3059b75f441092c4c1ff60ef4c17ccd0028ea27153c9dd7",
+        "native_dimensions_m": {
+          "width": 11.069999694824219,
+          "height": 10.8100004196167,
+          "depth": 17.93000030517578
+        },
+        "mesh_count": 12,
+        "material_count": 12,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/toronto-edwardian-foursquare/variant_0.png",
+          "bytes": 1447263,
+          "sha256": "5e714abb64cbb8b507dbd128c311ae0061ddb010d80bc240b8a13a17ccf48e54"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/toronto-edwardian-foursquare/variant_0_angle_60.jpg",
+          "bytes": 941139,
+          "sha256": "e19d1457ddc7b2b186b4a05929e762b976b171ec69133341635752eab3c2e272"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/toronto-edwardian-foursquare/variant_0_angle_90.jpg",
+          "bytes": 881215,
+          "sha256": "05d8438b3b08729d13d70ee57081fafd4ddfd17c831e897cf823295e508f3381"
+        }
+      ],
+      "review": {
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0,
+        "sha256": "6dff58ab4ef76b9e2cfa2feac390bd6e3297eae0effc1759d995343a2f8fd51d",
+        "repo_path": "tools/catalogue_foursquare_pilot/evidence/independent-review.json"
+      },
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\foursquare-v004"
+    },
+    {
+      "candidate": "calgary-sandstone-heritage-clay-v007",
+      "family": "rlasm-clay-sandstone-romanesque-revival",
+      "archetype_id": "calgary_sandstone_heritage",
+      "archetype_label": "Sandstone civic hall",
+      "variant_id": "sandstone_romanesque_revival",
+      "variant_label": "Sandstone civic hall",
+      "runtime_enabled": true,
+      "native_floors": 3,
+      "design_dimensions_m": {
+        "width": 57,
+        "depth": 59,
+        "height": 44
+      },
+      "model": {
+        "path": "models/calgary-sandstone-heritage-clay-v007.glb",
+        "bytes": 12252792,
+        "sha256": "9fa4d89e657c053ca5dea6b9ca22db1422bcc67762b7765cd0c72f6cb0635c44",
+        "native_dimensions_m": {
+          "width": 59.40999984741211,
+          "height": 44.0,
+          "depth": 60.010000228881836
+        },
+        "mesh_count": 12,
+        "material_count": 12,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/calgary-sandstone-heritage/variant_0.png",
+          "bytes": 1406587,
+          "sha256": "629de326189254e092f55158bcf48ffa15404aef28ac7e6fc9f98272e322027d"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/calgary-sandstone-heritage/variant_0_angle_60.jpg",
+          "bytes": 955727,
+          "sha256": "2fdc718649d51b41c15b269b0aa3adc38d994e44a985905a776fa122d68de8c6"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/calgary-sandstone-heritage/variant_0_angle_90.jpg",
+          "bytes": 860843,
+          "sha256": "c73923f39bcfd440a6df2b7384cf9b15a0ffea08f6a2558600eabc1a5ec3539d"
+        }
+      ],
+      "review": {
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0,
+        "sha256": "6893ea8fcd029634c0391e2277d2bbe56a6fc4cfc33c7d8df1c03a4a068e95f7",
+        "repo_path": "tools/catalogue_sandstone_pilot/evidence/independent-review.json"
+      },
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\sandstone-v007"
+    }
+  ],
+  "review_only_archive": []
+}

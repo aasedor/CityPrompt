@@ -1,10 +1,10 @@
 import type { PlaceAsset } from './assetRegistry';
 
-/** Explicit local trial only. These models are not part of the released seed. */
-export const LOCAL_TRIO_ASSETS: PlaceAsset[] = [
+/** Human-activated RLASM 6.1 buildings. Stable IDs preserve existing trial projects. */
+export const PUBLISHED_BUILDING_ASSETS: PlaceAsset[] = [
   {
-    id: 'trial_postwar_bungalow', kind: 'object', definitionVersion: 1, readiness: 'pilot',
-    label: 'Post-war bungalow · trial', description: 'Easy · one-storey brick home with a sheltered porch.',
+    id: 'trial_postwar_bungalow', kind: 'object', definitionVersion: 1, readiness: 'ready',
+    label: 'Post-war bungalow', description: 'One-storey brick home with a sheltered porch.',
     thumbnail: '/archetypes/buildings/calgary-inner-city-bungalow/variant_2.png',
     model: { variantId: 'bungalow_postwar_ranch', revision: 'clay-v005-2026-09-06', method: 'RLASM 6.1' },
     calgaryGuide: { groupId: 'detached', basis: 'form_reference' }, zoneType: 'building',
@@ -14,8 +14,8 @@ export const LOCAL_TRIO_ASSETS: PlaceAsset[] = [
     properties: { building_archetype_id: 'calgary_inner_city_bungalow', development_archetype_id: 'calgary_inner_city_bungalow', development_selected_variant_id: 'bungalow_postwar_ranch', development_archetype_label: 'Post-war bungalow', native_home_plot: true, floors: 1, floor_count: 1 },
   },
   {
-    id: 'trial_edwardian_foursquare', kind: 'object', definitionVersion: 1, readiness: 'pilot',
-    label: 'Edwardian Foursquare · trial', description: 'Medium · two-storey brick home with a porch and dormer.',
+    id: 'trial_edwardian_foursquare', kind: 'object', definitionVersion: 1, readiness: 'ready',
+    label: 'Edwardian Foursquare', description: 'Two-storey brick home with a porch and dormer.',
     thumbnail: '/archetypes/buildings/toronto-edwardian-foursquare/variant_0.png',
     model: { variantId: 'toronto_foursquare_red_brick', revision: 'clay-v004-2026-09-06', method: 'RLASM 6.1' },
     calgaryGuide: { groupId: 'detached', basis: 'form_reference' }, zoneType: 'building',
@@ -25,8 +25,8 @@ export const LOCAL_TRIO_ASSETS: PlaceAsset[] = [
     properties: { building_archetype_id: 'toronto_edwardian_foursquare', development_archetype_id: 'toronto_edwardian_foursquare', development_selected_variant_id: 'toronto_foursquare_red_brick', development_archetype_label: 'Edwardian Foursquare', native_home_plot: true, floors: 2, floor_count: 2 },
   },
   {
-    id: 'trial_sandstone_civic', kind: 'object', definitionVersion: 1, readiness: 'pilot',
-    label: 'Sandstone civic hall · trial', description: 'Complex · courtyard institution with an arched facade and clock tower.',
+    id: 'trial_sandstone_civic', kind: 'object', definitionVersion: 1, readiness: 'ready',
+    label: 'Sandstone civic hall', description: 'Courtyard institution with an arched facade and clock tower.',
     thumbnail: '/archetypes/buildings/calgary-sandstone-heritage/variant_0.png',
     model: { variantId: 'sandstone_romanesque_revival', revision: 'clay-v007-2026-09-06', method: 'RLASM 6.1' },
     calgaryGuide: { groupId: 'civic', basis: 'form_reference' }, zoneType: 'building',

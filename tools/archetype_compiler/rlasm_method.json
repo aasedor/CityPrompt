@@ -1,5 +1,16 @@
 {
-  "schema": "cityprompt.rlasm.method@6",
+  "published_building_trio_2026_09_06": {
+    "activation": "human_user",
+    "delivery_format": "architectural_clay",
+    "manifest": "seed/model-library/rlasm-architectural-clay/library.json",
+    "candidates": ["calgary-inner-city-bungalow-clay-v005", "toronto-edwardian-foursquare-clay-v004", "calgary-sandstone-heritage-clay-v007"],
+    "independent_unresolved_p0": 0,
+    "independent_unresolved_p1": 0,
+    "keeper_approval_implied": false,
+    "placement": "native houses repeat in plots; civic landmark stays fixed",
+    "evidence": "docs/BUILDING_TRIO_PUBLICATION_2026-09-06.md"
+  },
+"schema": "cityprompt.rlasm.method@6",
   "method": "Reference-Locked Atomic Sticker-and-Massing",
   "acronym": "RLASM",
   "version": "6.1",
