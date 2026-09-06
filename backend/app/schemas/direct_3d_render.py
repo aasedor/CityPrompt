@@ -230,9 +230,9 @@ class Direct3DRenderRequest(BaseModel):
     view_mode: Literal["aerial", "street"] = Field(
         default="aerial",
         description=(
-            "Camera family of the capture. 'aerial' (default) keeps every "
-            "historical behavior. 'street' marks an eye-level capture: the "
-            "aerial lower-frame-context gate is skipped, the prompt asserts a "
+            "Camera family of the capture. Both families allow close-up scene "
+            "framing without surrounding context. 'street' marks an eye-level "
+            "capture: the prompt asserts a "
             "pedestrian standpoint, and the outcome is always review_required "
             "in this first version. Street requires presentation_mode='scene'."
         ),

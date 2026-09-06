@@ -106,7 +106,7 @@ _MIN_SCENE_CONTEXT_MEAN_ABSOLUTE_DELTA = 4.0
 _MIN_SCENE_CONTEXT_PHOTOMETRIC_RESIDUAL_P95 = 4.0
 _MIN_SCENE_CONTEXT_DETAIL_DELTA_P75 = 0.75
 _SCENE_CONTEXT_TOP_FRACTION = 0.45
-_MIN_SCENE_LOWER_CONTEXT_COVERAGE = 0.08
+_MIN_SCENE_CONTEXT_QUALITY_COVERAGE = 0.08
 _MAX_SCENE_LOCAL_REPAIR_COVERAGE = 0.30
 _MIN_REPROJECT_WHOLE_FRAME_MEAN_ABSOLUTE_DELTA = 8.0
 _MIN_REPROJECT_LUMINANCE_STANDARD_DEVIATION = 10.0
@@ -604,10 +604,11 @@ def prepare_direct_3d_capture(req: Direct3DRenderRequest) -> PreparedDirect3DCap
     proposal_mask = _extract_proposal_alpha(mask_image)
     proposal_values = np.asarray(proposal_mask, dtype=np.float32) / 255.0
     proposal_coverage = float(proposal_values.mean())
-    if not (_MIN_PROPOSAL_COVERAGE <= proposal_coverage <= _MAX_PROPOSAL_COVERAGE):
+    maximum_proposal_coverage = 1.0 if req.presentation_mode == "scene" else _MAX_PROPOSAL_COVERAGE
+    if not (_MIN_PROPOSAL_COVERAGE <= proposal_coverage <= maximum_proposal_coverage):
         raise Direct3DValidationError(
             "Proposal coverage must be between "
-            f"{_MIN_PROPOSAL_COVERAGE:.2%} and {_MAX_PROPOSAL_COVERAGE:.0%}; "
+            f"{_MIN_PROPOSAL_COVERAGE:.2%} and {maximum_proposal_coverage:.0%}; "
             f"received {proposal_coverage:.2%}"
         )
 
@@ -832,23 +833,19 @@ def prepare_direct_3d_capture(req: Direct3DRenderRequest) -> PreparedDirect3DCap
     immutable_context_coverage = float(
         np.count_nonzero(_registration_context_mask(normalized_mask)) / (normalized_mask.width * normalized_mask.height)
     )
-    if immutable_context_coverage < 0.10:
+    if req.presentation_mode != "scene" and immutable_context_coverage < 0.10:
         raise Direct3DValidationError("Proposal mask must preserve at least 10% fully immutable context")
     scene_lower_context_coverage: float | None = None
-    # The lower-frame-context gate encodes an AERIAL framing assumption (site
-    # ground ringed by real context). A street capture legitimately fills the
-    # lower band with proposal street surface, so street view skips the gate.
-    if req.presentation_mode == "scene" and req.view_mode != "street":
+    # Camera framing is the student's choice. Close-ups can contain proposal
+    # geometry across the entire lower frame (or the entire image). Retain this
+    # measurement for diagnostics, not as a preflight requirement. Scene output
+    # still undergoes geometry checks; unavailable registration selects the
+    # existing source-locked fallback rather than trusting unverified AI geometry.
+    if req.presentation_mode == "scene":
         scene_lower_context_coverage = float(
             np.count_nonzero(_scene_lower_context_mask(normalized_mask))
             / (normalized_mask.width * normalized_mask.height)
         )
-        if scene_lower_context_coverage < _MIN_SCENE_LOWER_CONTEXT_COVERAGE:
-            raise Direct3DValidationError(
-                "Scene capture must preserve at least "
-                f"{_MIN_SCENE_LOWER_CONTEXT_COVERAGE:.0%} lower-frame context; "
-                f"received {scene_lower_context_coverage:.2%}"
-            )
     normalized_object_id = (
         object_id_image.resize(normalized_size, Image.Resampling.NEAREST) if object_id_image is not None else None
     )
@@ -3049,10 +3046,17 @@ def assess_scene_visual_change(
             or novel_edge_coverage >= _MIN_SCENE_NOVEL_DETAIL_EDGE_COVERAGE
         )
         and (
-            context_mad >= _MIN_SCENE_CONTEXT_MEAN_ABSOLUTE_DELTA
-            or context_photometric_residual_p95 >= _MIN_SCENE_CONTEXT_PHOTOMETRIC_RESIDUAL_P95
+            # Judge context enhancement only when enough surrounding ground is
+            # visible. A close-up should improve the proposal, not invent context.
+            context_pixel_count / active.size < _MIN_SCENE_CONTEXT_QUALITY_COVERAGE
+            or (
+                (
+                    context_mad >= _MIN_SCENE_CONTEXT_MEAN_ABSOLUTE_DELTA
+                    or context_photometric_residual_p95 >= _MIN_SCENE_CONTEXT_PHOTOMETRIC_RESIDUAL_P95
+                )
+                and context_detail_delta_p75 >= _MIN_SCENE_CONTEXT_DETAIL_DELTA_P75
+            )
         )
-        and context_detail_delta_p75 >= _MIN_SCENE_CONTEXT_DETAIL_DELTA_P75
     )
     return VisualChangeResult(
         passed=passed,
@@ -4368,9 +4372,7 @@ class Direct3DRenderService:
                 "source_locked_rlasm_pixel_lock_applied": False,
                 "source_locked_rlasm_pixel_coverage": None,
                 "scene_lower_context_coverage": (capture.scene_lower_context_coverage),
-                "minimum_scene_lower_context_coverage": (
-                    _MIN_SCENE_LOWER_CONTEXT_COVERAGE if req.presentation_mode == "scene" else None
-                ),
+                "minimum_scene_lower_context_coverage": (0.0 if req.presentation_mode == "scene" else None),
                 "structural_edge_guide_attached": True,
                 "finish_fusion": None,
                 "provider_raw_structural_edge_fidelity": None,

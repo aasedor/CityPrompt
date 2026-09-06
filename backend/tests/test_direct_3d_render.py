@@ -1226,6 +1226,26 @@ def test_paid_project_preflight_accepts_explicit_unfilled_site_and_still_checks_
         direct_api._validate_direct_3d_project_zones(request, zones, buildings)
 
 
+@pytest.mark.parametrize("bind_capture_instances", [True, False])
+def test_paid_project_preflight_accepts_boundaryless_manual_scene_and_checks_sources(bind_capture_instances):
+    building_id = uuid.uuid4()
+    building = _compiled_zone("building", building_id=building_id, properties={"pick_place_asset": "infill_home"})
+    park = _compiled_zone("green_space", properties={"pick_place_asset": "neighbourhood_park"})
+    zones = [building, park]
+    request = _project_request(uuid.uuid4(), community_claims=_claims_for(zones))
+    buildings = {str(building_id): _compiled_building(building_id)}
+    direct_api._validate_direct_3d_project_zones(
+        request, zones, buildings, bind_capture_instances=bind_capture_instances
+    )
+    park.properties["community_3d"]["state"] = "stale"
+    with pytest.raises(HTTPException) as stale:
+        direct_api._validate_direct_3d_project_zones(
+            request, zones, buildings, bind_capture_instances=bind_capture_instances
+        )
+    assert stale.value.status_code == 409
+    assert stale.value.detail["billed"] is False
+
+
 def test_paid_project_preflight_accepts_one_complete_visible_plan_layer():
     project_id = uuid.uuid4()
     boundary_id = uuid.uuid4()
@@ -1817,7 +1837,7 @@ def test_presentation_object_id_reports_conservative_coverage_metrics():
     assert capture.object_id_proposal_iou == pytest.approx(1.0)
 
 
-def test_scene_prepare_rejects_insufficient_lower_frame_context():
+def test_scene_prepare_accepts_closeup_without_lower_frame_context():
     beauty = Image.new("RGB", (512, 512), (80, 100, 120))
     mask = Image.new("L", beauty.size, 0)
     ImageDraw.Draw(mask).rectangle((0, 160, 511, 511), fill=255)
@@ -1828,11 +1848,28 @@ def test_scene_prepare_rejects_insufficient_lower_frame_context():
         style="documentary",
     )
 
-    with pytest.raises(Direct3DValidationError, match="lower-frame context"):
-        prepare_direct_3d_capture(request)
+    capture = prepare_direct_3d_capture(request)
+    assert capture.scene_lower_context_coverage == 0.0
 
     legacy_capture = prepare_direct_3d_capture(_request(beauty=beauty, mask=mask))
     assert legacy_capture.scene_lower_context_coverage is None
+
+
+@pytest.mark.parametrize("view_mode", ["aerial", "street"])
+def test_scene_prepare_accepts_proposal_filling_frame_but_rejects_empty_capture(view_mode):
+    beauty = Image.new("RGB", (512, 512), (80, 100, 120))
+    full = Image.new("L", beauty.size, 255)
+    capture = prepare_direct_3d_capture(
+        _request(beauty=beauty, mask=full, presentation_mode="scene").model_copy(update={"view_mode": view_mode})
+    )
+    assert capture.proposal_coverage == 1.0
+    assert capture.scene_lower_context_coverage == 0.0
+    with pytest.raises(Direct3DValidationError, match="Proposal coverage"):
+        prepare_direct_3d_capture(
+            _request(beauty=beauty, mask=Image.new("L", beauty.size, 0), presentation_mode="scene").model_copy(
+                update={"view_mode": view_mode}
+            )
+        )
 
 
 def test_authoritative_prompt_includes_each_object_id_mapping_exactly_once():
@@ -2168,6 +2205,16 @@ def test_unsupported_structure_remains_sensitive_to_small_buildings_at_capture_r
 
     assert unsupported.passed is False
     assert unsupported.proposal_component_count >= 1
+
+
+def test_scene_closeup_quality_does_not_require_invented_context():
+    beauty, _, _ = _structured_scene()
+    mask = Image.new("L", beauty.size, 255)
+    detailed = _provider_first_finish_without_geometry_change(beauty)
+    result = assess_scene_visual_change(beauty, detailed, mask)
+    assert result.context_pixel_count == 0
+    assert result.passed is True
+    assert assess_scene_visual_change(beauty, beauty, mask).passed is False
 
 
 def test_scene_visual_change_rejects_colour_grade_only_and_accepts_new_detail():
@@ -3179,7 +3226,7 @@ async def test_scene_mode_keeps_provider_pixels_and_allows_context_restyling(mon
     assert result.diagnostics["minimum_object_id_proposal_recall"] == 0.85
     assert result.diagnostics["minimum_object_id_proposal_iou"] == 0.84
     assert result.diagnostics["scene_lower_context_coverage"] >= 0.08
-    assert result.diagnostics["minimum_scene_lower_context_coverage"] == 0.08
+    assert result.diagnostics["minimum_scene_lower_context_coverage"] == 0.0
     assert result.diagnostics["macro_design_fidelity"]["passed"] is True
     assert result.diagnostics["macro_design_fidelity"]["building_internal_edges_required"] is False
     assert result.diagnostics["visual_change"]["passed"] is True

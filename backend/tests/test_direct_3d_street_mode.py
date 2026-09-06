@@ -7,7 +7,6 @@ from pydantic import ValidationError
 
 from app.schemas.direct_3d_render import Direct3DRenderRequest
 from app.services.direct_3d_render import (
-    Direct3DValidationError,
     _presentation_prompt,
     prepare_direct_3d_capture,
 )
@@ -36,8 +35,8 @@ def test_street_with_scene_is_valid():
 def _street_framed_mask(size: tuple[int, int]) -> Image.Image:
     """Proposal fills everything below a context (sky) band — a street frame.
 
-    The top 30% context keeps the global >=10% immutable-context gate happy
-    while leaving ZERO context in the lower band the aerial scene gate checks.
+    The top 30% is context, with no context in the lower band.
+    Both aerial close-ups and street views legitimately use this framing.
     """
     width, height = size
     pixels = np.full((height, width), 255, dtype=np.uint8)
@@ -45,17 +44,16 @@ def _street_framed_mask(size: tuple[int, int]) -> Image.Image:
     return Image.fromarray(pixels, mode="L")
 
 
-def test_prepare_skips_lower_context_gate_for_street():
+def test_prepare_accepts_closeup_framing_for_aerial_and_street():
     beauty = _capture_images()[0]
     mask = _street_framed_mask(beauty.size)
 
     aerial = _request(beauty=beauty, mask=mask, presentation_mode="scene")
-    with pytest.raises(Direct3DValidationError, match="lower-frame context"):
-        prepare_direct_3d_capture(aerial)
+    assert prepare_direct_3d_capture(aerial).scene_lower_context_coverage == 0.0
 
     street = Direct3DRenderRequest(**{**aerial.model_dump(), "view_mode": "street"})
     capture = prepare_direct_3d_capture(street)
-    assert capture.scene_lower_context_coverage is None
+    assert capture.scene_lower_context_coverage == 0.0
 
 
 def test_presentation_prompt_street_framing():

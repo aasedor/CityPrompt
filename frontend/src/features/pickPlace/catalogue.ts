@@ -1,3 +1,4 @@
+import { resolveCommunity3DKind } from '@/features/community3d/community3d';
 import type { SiteZone, SiteZoneProperties } from '@/types';
 import type { LegoPlanRequest } from '@/features/legoAssembly/legoAssemblyApi';
 import { CATALOGUE_ASSETS, isPlaceable, type PlaceAsset, type PlaceAssetId } from './assetRegistry';
@@ -29,3 +30,10 @@ export function placementProperties(asset: PlaceAsset, elevation?: number): Site
     pick_place_definition_version: asset.definitionVersion,
     ...(Number.isFinite(elevation) ? { terrain_elevation_m: elevation } : {}) };
 }
+
+/** Presentation guidance only; readiness still requires current compiled geometry. */
+export function isCatalogueOnlyScene(zones: SiteZone[]): boolean {
+  const physical = zones.filter(zone => resolveCommunity3DKind(zone) !== null);
+  return physical.length > 0 && physical.every(zone => Boolean(assetForZone(zone)) || zone.properties?.pick_place_automatic_3d === true);
+}
+export const CATALOGUE_UPDATE_GUIDANCE = 'Your catalogue objects update in 3D automatically. Wait for “3D saved”, then try again. If an update failed, use “Retry 3D update” in the sidebar.';

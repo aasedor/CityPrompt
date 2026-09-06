@@ -2615,7 +2615,10 @@ export function GlobeSitePlannerMap({
         const captured = await captureDirect3DScene(renderer, scene, camera, {
           includeGeometryPasses: options.includeGeometryPasses,
           maxLongEdge: options.maxLongEdge,
-          minVisibleContextCoverage: 0.01,
+          // Close-up scene framing may contain only the proposal. The server
+          // applies presentation-specific geometry checks and source fallback.
+          maxMaskCoverage: 1,
+          minVisibleContextCoverage: 0,
         });
         if (accessSnapshot.sourceSignature !== parkAccessSnapshotRef.current.sourceSignature) {
           throw new Direct3DCaptureError('capture_failed', 'The plan changed during capture. Let the scene settle and try again.');
