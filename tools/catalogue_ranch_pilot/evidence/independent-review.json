@@ -1,0 +1,264 @@
+{
+  "schema": "rlasm-independent-architectural-clay-review-v1",
+  "candidate": "calgary-inner-city-bungalow-clay-v005",
+  "reviewer": "independent reviewer /root/montreal_clay_review",
+  "reviewed_utc": "2026-09-06T19:45:41.519964+00:00",
+  "method": "RLASM v6.1",
+  "scope": "Native source-locked architectural clay; actual delivered/reimported GLB evidence. Not a textured-keeper or runtime review.",
+  "holistic_review_performed": true,
+  "decision": "architectural_clay_pass",
+  "state": "architectural_clay_reviewed",
+  "architectural_clay_pass": true,
+  "keeper_approved": false,
+  "runtime_activation_approved": false,
+  "canonical_promotion_approved": false,
+  "human_activation_required": true,
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "findings": [],
+  "delivery_status": "PASS_DELIVERY_CHECKS",
+  "delivery_is_not_visual_approval": true,
+  "model_sha256": "f601299cdb32072119e5484fe3206ddc4aa2263e88cea703a79158f018238153",
+  "source_hashes_verified": true,
+  "builder_script_hashes_verified": true,
+  "texture_free_glb_verified": true,
+  "individual_full_resolution_render_count": 13,
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "phone_boards_inspected": [
+    "boards/phone-source-comparison.png",
+    "boards/phone-construction.png"
+  ],
+  "inspected_files": [
+    {
+      "path": "sources/variant_2.png",
+      "sha256": "99dddd58994ef0c0f1c1d9abd472420cae16837759c885e9b85c7dca5b8d7ba8",
+      "bytes": 1514720,
+      "inspection": "direct pixels; locked originals/source board reused by identical hash"
+    },
+    {
+      "path": "sources/variant_2_angle_60.jpg",
+      "sha256": "324c81ba58c7638e57de92f69c29682cb61efae3f5bfa2ce60d5b5d5486994b6",
+      "bytes": 1020876,
+      "inspection": "direct pixels; locked originals/source board reused by identical hash"
+    },
+    {
+      "path": "sources/variant_2_angle_90.jpg",
+      "sha256": "7b2861fbddcd7bfe8bc43794f8f105379552de5f4613332319520ff51df3c7c1",
+      "bytes": 929664,
+      "inspection": "direct pixels; locked originals/source board reused by identical hash"
+    },
+    {
+      "path": "renders/aerial.png",
+      "sha256": "3c2bb07be4f2719387948fb8e5e2c23c5c9b3f341f2f92fbc77e33944f43237d",
+      "bytes": 1334590,
+      "inspection": "direct pixels; locked originals/source board reused by identical hash"
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "sha256": "6a521ecb961e4b4f678622e00ec261dcb6fb9006677231704dc4c202bb7e24dd",
+      "bytes": 1690428,
+      "inspection": "direct pixels; locked originals/source board reused by identical hash"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "sha256": "5ff4da71f1e5d0317efcb37f1d7127db256615fa53232a3155f702152cf46677",
+      "bytes": 1524234,
+      "inspection": "direct pixels; locked originals/source board reused by identical hash"
+    },
+    {
+      "path": "renders/front.png",
+      "sha256": "7e92990f807d15afc6ac75190ea2fe828b3eecda5cbeb2261190eac3a3c5ab46",
+      "bytes": 1312400,
+      "inspection": "direct pixels; locked originals/source board reused by identical hash"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "sha256": "92440bbadbcf752325302830302c3f9e74b7084eacc4197b3ff9faa0cc671d52",
+      "bytes": 1314032,
+      "inspection": "direct pixels; locked originals/source board reused by identical hash"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "sha256": "b557b826ba3f0fffadd5ac48035d265bf9888a031f871e1276399b8a53030496",
+      "bytes": 1478594,
+      "inspection": "direct pixels; locked originals/source board reused by identical hash"
+    },
+    {
+      "path": "renders/left_side.png",
+      "sha256": "c15eb2c1e2c40678511e2c74662d741fb1525b89103a7aeac04b0fc283e5af43",
+      "bytes": 1270537,
+      "inspection": "direct pixels; locked originals/source board reused by identical hash"
+    },
+    {
+      "path": "renders/porch_contact.png",
+      "sha256": "dfd46c1151beefac840b4b53de31e6ab96adf4819b3260deddc8ad309efd86d6",
+      "bytes": 1593623,
+      "inspection": "direct pixels; locked originals/source board reused by identical hash"
+    },
+    {
+      "path": "renders/rear.png",
+      "sha256": "2dd0f2d9c4c22517a9de78f876a60464875ddda4c227134f1791ff84907b19e1",
+      "bytes": 1259011,
+      "inspection": "direct pixels; locked originals/source board reused by identical hash"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "sha256": "4b3efa4f0bf667afa2875f3b095a6643ce921e3337dcaf63061a003f27a631d9",
+      "bytes": 1273993,
+      "inspection": "direct pixels; locked originals/source board reused by identical hash"
+    },
+    {
+      "path": "renders/right_side.png",
+      "sha256": "9022b7a09eb45519415aa826146139e4ccc239b7a81064d209840a2901dfd9b5",
+      "bytes": 1262981,
+      "inspection": "direct pixels; locked originals/source board reused by identical hash"
+    },
+    {
+      "path": "renders/roof_contact.png",
+      "sha256": "ab10bf209886505cd0f068d6a6fd66dc5e8366c53d90299516527ff5709100db",
+      "bytes": 1555442,
+      "inspection": "direct pixels; locked originals/source board reused by identical hash"
+    },
+    {
+      "path": "renders/top.png",
+      "sha256": "549638ad4b93949289a5dc9426da568b6293531d6e97576492ee05c9ddf60232",
+      "bytes": 1249015,
+      "inspection": "direct pixels; locked originals/source board reused by identical hash"
+    },
+    {
+      "path": "boards/all-views-contact.png",
+      "sha256": "85b148506d28824279a0c71350d62b0c0d84f0b4a1771173ae62e79fb9b19583",
+      "bytes": 1530733,
+      "inspection": "direct pixels; locked originals/source board reused by identical hash"
+    },
+    {
+      "path": "boards/layout-provenance.json",
+      "sha256": "ec82d45e57a2581a84a662c76d11a779e00a7d4c6331f52bf2238d3eccc85dd8",
+      "bytes": 2390,
+      "inspection": "metadata, provenance or binary verification"
+    },
+    {
+      "path": "boards/locked-source-board.png",
+      "sha256": "6e79cbc9125fe6008958e8d270cde15eef76c7e1a99f0c4c67c061e317e395bc",
+      "bytes": 1653208,
+      "inspection": "direct pixels; locked originals/source board reused by identical hash"
+    },
+    {
+      "path": "boards/phone-construction.png",
+      "sha256": "23ab7b2ac2e98a6a3410e6f70a4656d5f7cabcd294e974f1aefd024db30ae00f",
+      "bytes": 1076048,
+      "inspection": "direct pixels; locked originals/source board reused by identical hash"
+    },
+    {
+      "path": "boards/phone-source-comparison.png",
+      "sha256": "3903cc8d492499e71d52b512b5d371951e7b0a6fc09d5931f7fbd575277d6d8e",
+      "bytes": 1668792,
+      "inspection": "direct pixels; locked originals/source board reused by identical hash"
+    },
+    {
+      "path": "prework-manifest.json",
+      "sha256": "f50c4be5fa1cfd9a31dada605c4a73971afe8870dbd1300dc3aa873fc7df05e4",
+      "bytes": 7037,
+      "inspection": "metadata, provenance or binary verification"
+    },
+    {
+      "path": "source-entry.json",
+      "sha256": "8804bada65fcf834e532e698f7c8caccac54ce9409ea1fe5603df6534c8c18a8",
+      "bytes": 1225,
+      "inspection": "metadata, provenance or binary verification"
+    },
+    {
+      "path": "build-report.json",
+      "sha256": "a8759846f1892fe258dcf8dc3d6b13f54aac6628b05a9dd619bb09183e435596",
+      "bytes": 61716,
+      "inspection": "metadata, provenance or binary verification"
+    },
+    {
+      "path": "calgary-inner-city-bungalow-clay-v005.glb",
+      "sha256": "f601299cdb32072119e5484fe3206ddc4aa2263e88cea703a79158f018238153",
+      "bytes": 1168176,
+      "inspection": "metadata, provenance or binary verification"
+    },
+    {
+      "path": "evidence/builder-evidence.json",
+      "sha256": "56b98a73da5777f850c6d768e586d476fe3c98d483d0a1e561d01f3da1180b9f",
+      "bytes": 61884,
+      "inspection": "metadata, provenance or binary verification"
+    },
+    {
+      "path": "evidence/builder-pixel-review.json",
+      "sha256": "9b62895aa91e8653ca5dc35a1bee064548fd55546896a03b78a4fc3feb4d6a78",
+      "bytes": 1185,
+      "inspection": "metadata, provenance or binary verification"
+    },
+    {
+      "path": "evidence/carrier-aperture-audit.json",
+      "sha256": "ff12dc362b6ae5039a0881d2bd461900ac0a6629ed29ead051ab155b09fbc2e8",
+      "bytes": 1538,
+      "inspection": "metadata, provenance or binary verification"
+    },
+    {
+      "path": "evidence/delivery-verification.json",
+      "sha256": "aeab2a4c830191dc0d40d480fe0225bbf6e31a80443fa5c54b1a4c1679d1104e",
+      "bytes": 1501,
+      "inspection": "metadata, provenance or binary verification"
+    },
+    {
+      "path": "scripts/build.py",
+      "sha256": "f152f8226fd1a4a3f991fa33b39eccdc79b5dd1c2b57532cff8af01827be882d",
+      "bytes": 7087,
+      "inspection": "metadata, provenance or binary verification"
+    },
+    {
+      "path": "scripts/clay_core.py",
+      "sha256": "19c432bdf42ce005a540d23776fcba1a860aa6101e3940eec8dd505f3187de33",
+      "bytes": 26464,
+      "inspection": "metadata, provenance or binary verification"
+    },
+    {
+      "path": "scripts/proof.py",
+      "sha256": "1f6f1c4355d683a28d9eb87d9ffd7228fe03a7be90f3642877a8374daafb3466",
+      "bytes": 6739,
+      "inspection": "metadata, provenance or binary verification"
+    },
+    {
+      "path": "scripts/support.py",
+      "sha256": "a9564b8dc6bd825a40f67fa0d1c2525127cfe8bcd848f083ee61c9fb904c0bde",
+      "bytes": 6427,
+      "inspection": "metadata, provenance or binary verification"
+    }
+  ],
+  "builder_visual_review_status": "pass; separate root builder-pixel-review.json inspected and hash recorded",
+  "positive_observations": [
+    "Door has explicit pale glazed leaf, opaque lower kick panel, threshold and hardware.",
+    "Living window now has broad center and narrow sidelights; front-right room has undivided picture window.",
+    "Continuous stair/landing/door route has no void; porch guard and post terminate into supports.",
+    "Brick bond, projecting bedroom and pale vertical gable retain exact left-bungalow source identity.",
+    "Front gable intersects main hip without rear cliff; whole envelope and inferred rear remain coherent.",
+    "All 13 delivered/reimported GLB full-resolution views reviewed; no unresolved P0 or P1 in native architectural-clay scope."
+  ],
+  "limitations": [
+    "Architectural clay only; no textured-keeper, runtime placement, terrain, stretch or canonical activation approval.",
+    "Native dimensions and hidden room/rear layouts are inferred rather than surveyed.",
+    "Source target is the bungalow on the left; neighboring modern infill excluded.",
+    "Generated builder-evidence pending label is superseded by separately inspected builder-pixel-review.json."
+  ],
+  "resolved_previous_findings": [
+    "R1 landing now continuous under complete entry",
+    "R2 front brick bond and vertical gable boarding now evident; remaining plain chimney is minor clay simplification",
+    "R4 right room projects ahead of porch facade",
+    "R5 gable slopes now meet hip without vertical cliff"
+  ],
+  "source_image_review_reused_by_identical_hash": true,
+  "resolved_prior_findings": [
+    "R1",
+    "R2",
+    "R3a",
+    "R3b",
+    "R4",
+    "R5"
+  ]
+}
