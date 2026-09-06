@@ -34,6 +34,13 @@ See [the user guide](docs/USER_GUIDE.md) for the product walkthrough and
 [the local setup guide](docs/LOCAL_SETUP_GUIDE.md) for a beginner-friendly
 installation.
 
+## Catalogue contributors
+
+Expanding the buildings, parks/plazas or streets/pathways catalogue? Start with
+[the catalogue contributor guide](docs/CATALOGUE_CONTRIBUTOR_GUIDE.md). It includes
+a copyable assistant prompt, the product vision, existing-work inventory, asset
+requirements, and the pilot/approval process.
+
 ## Prerequisites
 
 - Git 2.40+ and Git LFS
