@@ -1,22 +1,10 @@
-import streetCatalogue from '@/data/streetPathArchetypes.json';
-import type { SiteZone, SiteZoneProperties } from '@/types';
+import { LOCAL_STREET_ASSET } from './assetRegistry';
+import type { SiteZone } from '@/types';
 import { bufferLineToPolygon, extractCenterline, extractZoneCenterline } from '@/utils/roadGeometry';
 import { metersPerDegLon, METERS_PER_DEG_LAT } from '@/components/viewer/mapEngine/geoUtils';
 
-const source = streetCatalogue.archetypes.find(entry => entry.id === 'calgary_local')!;
-export const CALGARY_LOCAL_PLACEMENT = {
-  label: 'Calgary local street',
-  description: '16 m wide · sidewalks and tree boulevards',
-  properties: {
-    ...source.propertyPresets,
-    road_archetype_id: source.id,
-    road_selected_variant_id: 'calgary_local_v0',
-    pick_place_street_section: 'calgary_local_v0',
-    pick_place_automatic_3d: true,
-    road_standard_citation: 'Street Manual Draft 4.0, Figure 2',
-  } as SiteZoneProperties,
-};
-export const CALGARY_LOCAL_WIDTH_M = source.section!.row_m;
+export const CALGARY_LOCAL_PLACEMENT = LOCAL_STREET_ASSET;
+export const CALGARY_LOCAL_WIDTH_M = LOCAL_STREET_ASSET.sectionWidth;
 
 export function isCalgaryLocalRoute(zone: Pick<SiteZone, 'zone_type' | 'properties'>) {
   return zone.zone_type === 'road' && zone.properties?.pick_place_street_section === 'calgary_local_v0'

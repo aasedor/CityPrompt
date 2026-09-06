@@ -31,6 +31,7 @@ interface SitePlannerToolbarProps {
   onSiteBoundary?: () => void;
   placementSlot?: ReactNode;
   onLeavePlacement?: () => void;
+  streetInPlacement?: boolean;
   streetPlacement?: { label: string; description: string; properties: SiteZoneProperties };
 }
 function mapToolToCoreTool(tool: SiteZoneType | null): CoreToolId | null {
@@ -42,7 +43,7 @@ function mapToolToCoreTool(tool: SiteZoneType | null): CoreToolId | null {
 }
 export function SitePlannerToolbar({ onShowGuide, onToggleHistory, historyOpen, measureActive = false,
   onMeasureModeChange, isGlobeMode = false, layout = 'default', bottomSlot, uploadSlot,
-  onMasterPlan, masterPlanActive = false, onSiteBoundary, placementSlot, onLeavePlacement, streetPlacement }: SitePlannerToolbarProps) {
+  onMasterPlan, masterPlanActive = false, onSiteBoundary, placementSlot, onLeavePlacement, streetPlacement, streetInPlacement = false }: SitePlannerToolbarProps) {
   const { activeSitePlannerTool, setActiveSitePlannerTool, streetViewPegman, setStreetViewActive,
     settings, updateSettings } = useViewerStore();
   const [parksSubtype, setParksSubtype] = useState<ParksSubtype>('park');
@@ -75,7 +76,7 @@ export function SitePlannerToolbar({ onShowGuide, onToggleHistory, historyOpen, 
 
   return <div aria-label="Drawing tools" className={['site-planner-toolbar', isSidebar ? 'site-planner-toolbar--sidebar' : 'site-planner-toolbar--default', 'flex min-h-0 w-full flex-col gap-2 overflow-y-auto overscroll-contain rounded-xl border-2 border-[#151515] bg-[#fff9ec]/95 p-2.5 shadow-[4px_4px_0_0_#151515] backdrop-blur-xl'].join(' ')}>
     {placementSlot}
-    <p className="px-1 text-sm font-semibold text-[#151515]">{placementSlot ? 'Connect your community' : 'Draw your community'}</p>
+    {!streetInPlacement && <><p className="px-1 text-sm font-semibold text-[#151515]">{placementSlot ? 'Connect your community' : 'Draw your community'}</p>
     <div className={['site-planner-core-grid grid gap-2', isSidebar ? 'grid-cols-3 sm:grid-cols-1' : 'grid-cols-3'].join(' ')}>
       {CORE_TOOLS.filter(tool => !placementSlot || tool.id === 'streetsPaths').map((tool) => {
         const active = activeCoreTool === tool.id;
@@ -92,7 +93,7 @@ export function SitePlannerToolbar({ onShowGuide, onToggleHistory, historyOpen, 
       })}
     </div>
 
-    {streetPlacement && <CalgaryGuideDetails classification={{ groupId: 'local', basis: 'draft_manual' }} />}
+    {streetPlacement && <CalgaryGuideDetails classification={{ groupId: 'local', basis: 'draft_manual' }} />}</>}
     {activeSitePlannerTool && <div role="status" className="rounded-lg bg-white px-3 py-2 text-sm leading-relaxed text-slate-800">
       <p className="hidden sm:block">{activeSitePlannerTool === 'road' ? 'Click at least 2 points along the road.' : 'Click at least 3 corners around the area.'} Press <strong>Enter</strong> to finish, or double-click.</p>
       <p className="sm:hidden">{isGlobeMode ? 'Move the map under the crosshair. Tap to place each point, then tap Finish.' : 'Tap each corner, then double-tap to finish.'}</p>

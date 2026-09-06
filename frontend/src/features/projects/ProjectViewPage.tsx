@@ -1044,8 +1044,15 @@ export function ProjectViewPage() {
           <div className="pointer-events-auto">
             <SitePlannerToolbar
               streetPlacement={CALGARY_LOCAL_PLACEMENT}
+              streetInPlacement
               placementSlot={<PlacementPalette selected={placementDraft?.assetId ?? null} onPick={pickObject} onCancel={cancelPlacement}
-                status={automatic3D.status} message={automatic3D.message} onRetry={automatic3D.retry} />}
+                status={automatic3D.status} message={automatic3D.message} onRetry={automatic3D.retry}
+                streetActive={activeSitePlannerTool === 'road'}
+                onPickStreet={asset => {
+                  cancelPlacement(); selectZone(null); setMeasureActive(false);
+                  useViewerStore.getState().setStreetViewActive(false);
+                  setActiveSitePlannerTool(activeSitePlannerTool === 'road' ? null : 'road', asset.properties);
+                }} />}
               onLeavePlacement={cancelPlacement}
               layout="sidebar"
               isGlobeMode
