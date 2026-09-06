@@ -47,7 +47,7 @@ function pathGeometry(points: readonly ParkPoint[], width: number, closed: boole
   return geometry;
 }
 
-function Surface({ ring, pathWidth, closed = false, role, terrainZ, grid, tint, extraLift = 0 }: {
+export function Surface({ ring, pathWidth, closed = false, role, terrainZ, grid, tint, extraLift = 0 }: {
   ring: readonly ParkPoint[]; pathWidth?: number; closed?: boolean;
   role: 'lawn' | 'safety' | 'paver'; terrainZ: Ground; grid?: SharedGroundTriangulation | null;
   tint?: string;
@@ -141,7 +141,7 @@ function Instances({ geometry, material, points, terrainZ, size = 1 }: {
   return <instancedMesh ref={ref} args={[geometry, material, points.length]} castShadow receiveShadow />;
 }
 
-function Woodland({ points, variant, terrainZ }: { points: readonly ParkPoint[]; variant: number; terrainZ: Ground }) {
+export function Woodland({ points, variant, terrainZ }: { points: readonly ParkPoint[]; variant: number; terrainZ: Ground }) {
   const { scene } = useGLTF(`${ROOT}/oak-${variant}.glb`);
   const parts = useMemo(() => {
     scene.updateMatrixWorld(true);

@@ -1,3 +1,4 @@
+import { isParkTrio } from './parkTrioLayout';
 import type { SiteZone } from '@/types';
 import { effectiveRoadWidth, extractRenderableStreetCenterline } from '@/utils/roadGeometry';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
@@ -145,6 +146,7 @@ function validRing(zone: SiteZone): boolean {
 }
 function supported(zone: SiteZone): boolean {
   if (zone.zone_type !== 'green_space') return false;
+  if (isParkTrio(zone)) return true;
   const profile = resolveParkGroundProfile(zone);
   return (profile.archetypeId.startsWith('urban_pocket_park') || profile.archetypeId.startsWith('neighborhood_park'))
     && (isNeighborhoodParkPilot(zone) || (profile.variantId ?? zone.properties?.green_space_selected_variant_id) !== 'neighborhood_park_v0');
@@ -181,7 +183,7 @@ function solvePark(park: SiteZone, zones: readonly SiteZone[], settings: ParkAcc
     return points.map(([x, y]) => add(center, [x * Math.cos(angle) - y * Math.sin(angle), x * Math.sin(angle) + y * Math.cos(angle)]));
   };
   const fixed = fit.guides.filter((g) => !['line', 'axis', 'polyline', 'path_loop'].includes(g.kind)).map((g) => guidePolygon(g));
-  for (const placement of isNeighborhoodParkPilot(park) ? [] : computeParkPlacements(park, resolveParkRecipeForZone(park), profile.plantingStructure, resolveParkProgramAnchorLayout(park))) {
+  for (const placement of (isNeighborhoodParkPilot(park) || isParkTrio(park)) ? [] : computeParkPlacements(park, resolveParkRecipeForZone(park), profile.plantingStructure, resolveParkProgramAnchorLayout(park))) {
     if (placement.propId !== 'playground' && placement.propId !== 'pavilion') continue;
     const radius = placement.propId === 'playground' ? PARK_PROGRAM_MODULE_SPEC.playground.safetyDiameterM / 2
       : Math.hypot(PARK_PROGRAM_MODULE_SPEC.pavilion.widthM, PARK_PROGRAM_MODULE_SPEC.pavilion.depthM) / 2;

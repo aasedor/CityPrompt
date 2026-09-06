@@ -12,7 +12,7 @@ const automaticZone = (zone: SiteZone) => (assetForZone(zone) || zone.properties
 export function authoredPlacementKey(zones: SiteZone[]): string {
   return JSON.stringify(zones.map(zone => ({ id: zone.id, coordinates: zone.coordinates,
     design: Object.fromEntries(Object.entries(zone.properties ?? {})
-      .filter(([name]) => /^(pick_place|native_home|development_|green_space_|road_|width$|floors$|floor_height$|height|custom_style_|generation_style_input$|neighborhood_park_layout$)/.test(name))
+      .filter(([name]) => /^(pick_place|native_home|development_|green_space_|road_|width$|floors$|floor_height$|height|custom_style_|generation_style_input$|neighborhood_park_layout$|park_trio_layout$)/.test(name))
       .sort(([a],[b]) => a.localeCompare(b))) })).sort((a,b) => a.id.localeCompare(b.id)));
 }
 

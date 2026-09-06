@@ -11,6 +11,8 @@ import { centreNativeClayClone } from '@/features/legoAssembly/nativeClayPlaceme
 import { createKtx2LoaderExtension } from '@/lib/ktx2GltfLoader';
 import { resolveApiFileUrl } from '@/services/api';
 import { GlobeNeighborhoodParkPilot } from '@/components/viewer/globe/GlobeNeighborhoodParkPilot';
+import { GlobeParkTrioPilot } from '@/components/viewer/globe/GlobeParkTrioPilot';
+import { isParkTrio } from '@/components/viewer/globe/parkTrioLayout';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { placeAsset, placementPlanRequest, placementProperties, type PlaceAssetId } from './catalogue';
 import { placementProblem, rectangleAt } from './geometry';
@@ -78,7 +80,9 @@ export function GlobePlacementPreview({ draft, zones }: {draft: PlacementDraft; 
         {asset.zoneType==='building' ? plan ? plan.instances.map((instance,index)=><group key={`${instance.asset_id}-${index}`}
           position={[instance.position[0],-instance.position[1],instance.position[2]]} rotation={[0,0,-instance.rotation_degrees*Math.PI/180]}>
           <Home url={instance.model_url}/></group>) : fallback
-          : <GlobeNeighborhoodParkPilot zone={previewZone} centroid={ORIGIN} terrainZ={flatGround}/>}
+          : isParkTrio(previewZone)
+            ? <GlobeParkTrioPilot zone={previewZone} centroid={ORIGIN} terrainZ={flatGround}/>
+            : <GlobeNeighborhoodParkPilot zone={previewZone} centroid={ORIGIN} terrainZ={flatGround}/>}
       </Suspense></PreviewFallback>
     </group>
   </EastNorthUpFrame>;

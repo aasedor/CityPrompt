@@ -1,0 +1,50 @@
+import type { PlaceAsset } from "./assetRegistry";
+import {
+  PARK_TRIO,
+  PARK_TRIO_REVISION,
+  type ParkTrioKind,
+} from "@/components/viewer/globe/parkTrioLayout";
+
+/** Explicit local pilot; source references remain the student's selection images. */
+export const PARK_TRIO_ASSETS: PlaceAsset[] = (
+  Object.keys(PARK_TRIO) as ParkTrioKind[]
+).map((kind) => {
+  const p = PARK_TRIO[kind];
+  return {
+    id: `park_trio_${kind}`,
+    kind: "object",
+    definitionVersion: 1,
+    readiness: "pilot",
+    label: p.label,
+    description:
+      kind === "cinema"
+        ? "A fixed cinema screen, seating and an open viewing lawn."
+        : kind === "garden"
+          ? "Planted demonstration beds and a curved timber teaching shelter."
+          : "A sculpted metal canopy, stage, seating and an open audience lawn.",
+    thumbnail: p.image,
+    model: {
+      variantId: p.variant,
+      revision: PARK_TRIO_REVISION,
+      method: "source-informed metric landscape",
+    },
+    calgaryGuide: {
+      groupId: kind === "garden" ? "gardens" : kind === "concert" ? "regional" : "neighbourhood",
+      basis: "form_reference",
+    },
+    zoneType: "green_space",
+    reshapeMode: "adaptive_layout",
+    width: p.min[0],
+    depth: p.min[1],
+    minWidth: p.min[0],
+    minDepth: p.min[1],
+    maxSize: 160,
+    reshapeDescription:
+      "Structures keep their real size. Paths, planting and whole activity elements adapt to the plot; unsuitable shapes are reported.",
+    properties: {
+      green_space_archetype_id: p.parent,
+      green_space_selected_variant_id: p.variant,
+      park_trio_layout: PARK_TRIO_REVISION,
+    },
+  };
+});

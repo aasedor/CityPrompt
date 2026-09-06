@@ -1,3 +1,5 @@
+import { GlobeParkTrioPilot } from './GlobeParkTrioPilot';
+import { isParkTrio, parkTrioLayout } from './parkTrioLayout';
 /**
  * GlobeParkKitLayer — mounts only fixed, programmed park structures in the
  * editable Google Tiles scene, including deterministic live canopy and
@@ -854,6 +856,8 @@ function ParkSpecialtyStructures({
     }
     return terrainPlane ? terrainPlane.originZ + samplePlaneOffset(terrainPlane, x, y) : 0;
   }, [sharedTerrainZ, terrainPlane]);
+
+  if (structureKind === 'park_trio_assembly') return <SilentKitBoundary fallback={null}><Suspense fallback={null}><GlobeParkTrioPilot zone={zone} centroid={centroid} terrainZ={terrainZ} groundGrid={groundGrid}/></Suspense></SilentKitBoundary>;
 
   if (structureKind === 'skate_park_v0_assembly') {
     return (
@@ -2075,7 +2079,7 @@ function ParkKitInstance({
     )),
     ...computeParkProgramAssetPlacements(zone),
   ].filter((placement) => (
-    !isNeighborhoodParkPilot(zone) && !shouldDeferParkFinishingProp(zone, placement.propId)
+    !isNeighborhoodParkPilot(zone) && !isParkTrio(zone) && !shouldDeferParkFinishingProp(zone, placement.propId)
     && !(
       specialtyStructureKind === 'neighborhood_park_v0_sticker_assembly'
       && (placement.propId === 'playground' || placement.propId === 'pavilion')
@@ -2089,7 +2093,7 @@ function ParkKitInstance({
     zone,
   ]);
   const microdetailPlacements = useMemo<ParkMicrodetailPlacement[]>(() => {
-    if (isNeighborhoodParkPilot(zone)) return [];
+    if (isNeighborhoodParkPilot(zone) || isParkTrio(zone)) return [];
     if (
       specialtyStructureKind === 'cricket_ground_assembly'
       || specialtyStructureKind === 'basketball_court_assembly'
@@ -2131,7 +2135,7 @@ function ParkKitInstance({
     [fittedProgramGuides, programGuideFit, specialtyStructureKind],
   );
 
-  const specialtyTerrainAnchors = useMemo(() => isNeighborhoodParkPilot(zone)
+  const specialtyTerrainAnchors = useMemo(() => isParkTrio(zone) ? (() => { const layout = parkTrioLayout(zone, centroid); return [...layout.boundary, ...layout.modules.flatMap(m => [m.center, ...m.envelope]), ...layout.trees]; })() : isNeighborhoodParkPilot(zone)
     ? (() => {
         const layout = neighborhoodParkLayoutForZone(zone, centroid);
         return [...layout.boundary, ...layout.modules.flatMap(m => [m.center, ...m.envelope]), ...layout.trees];

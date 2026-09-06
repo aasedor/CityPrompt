@@ -1,0 +1,78 @@
+{
+  "park": "cinema",
+  "archetypeId": "outdoor_cinema_lawn",
+  "variantId": "outdoor_cinema_lawn_v1",
+  "status": "local-pilot-not-approved",
+  "sources": [
+    {
+      "path": "frontend/public/archetypes/openspaces/outdoor-cinema-lawn/variant_1.png",
+      "role": "ground",
+      "sha256": "9c2a14084655bfd8609b0f94dd57c7cb857dd7986cd0ad971c80b131366e6978",
+      "bytes": 1650019
+    },
+    {
+      "path": "frontend/public/archetypes/openspaces/outdoor-cinema-lawn/variant_1_angle_60.jpg",
+      "role": "oblique",
+      "sha256": "a44a94835f142c4ed1feedc9c42541e1b1f76b26d204f129d12ca5cfdf97ce50",
+      "bytes": 1007290
+    },
+    {
+      "path": "frontend/public/archetypes/openspaces/outdoor-cinema-lawn/variant_1_angle_90.jpg",
+      "role": "top",
+      "sha256": "8299b6224c8d41ef65ee19c30f9d2b90e4bf9d0b41618d7a002e5fd62377e2f3",
+      "bytes": 1011032
+    }
+  ],
+  "assets": {
+    "screen": {
+      "file": "screen.glb",
+      "sha256": "17fc87e6011720c818f8a3d9d8515db3702809816a2215bae714967b4f6a9591",
+      "bytes": 159912,
+      "boundsXYZ": [
+        [
+          -5.449999809265137,
+          -0.8600000143051147,
+          0
+        ],
+        [
+          5.460000038146973,
+          1.75,
+          6.913651627488434
+        ]
+      ],
+      "nativeScale": [
+        1,
+        1,
+        1
+      ],
+      "meshCount": 4
+    },
+    "booth": {
+      "file": "booth.glb",
+      "sha256": "2ececfab797e8a5b70dbd5fb4b88377d032e5192538d2bfe6133eb092079b930",
+      "bytes": 138448,
+      "boundsXYZ": [
+        [
+          -1.8250000476837158,
+          -1.9900000095367432,
+          0
+        ],
+        [
+          1.8250000476837158,
+          1.9900000095367432,
+          2.809999942779541
+        ]
+      ],
+      "nativeScale": [
+        1,
+        1,
+        1
+      ],
+      "meshCount": 5
+    }
+  },
+  "inferences": [
+    "Metric dimensions inferred for student design; not surveyed or construction-approved.",
+    "No people, projected source photographs or invented text in the model."
+  ]
+}
