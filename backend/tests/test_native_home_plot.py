@@ -30,8 +30,10 @@ def test_explicit_home_plot_repeats_whole_exact_houses_with_gaps():
 def test_foursquare_home_plot_repeats_exact_variant_without_stretching():
     actual = plan(
         clay_entry("toronto_edwardian_foursquare", "toronto_foursquare_red_brick"),
-        archetype_id="toronto_foursquare_red_brick", native_home_plot=True,
-        target_width_m=30, target_depth_m=22,
+        archetype_id="toronto_foursquare_red_brick",
+        native_home_plot=True,
+        target_width_m=30,
+        target_depth_m=22,
     )
     shapes = dwelling_footprints(actual)
     assert len(shapes) == 2
