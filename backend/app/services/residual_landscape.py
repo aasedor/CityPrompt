@@ -631,9 +631,13 @@ def community_3d_source_hash(
     # placed native assets that edge owns frontage, so a 180-degree turn must
     # invalidate a compiled recipe even though the occupied polygon is equal.
     props = properties or {}
-    if payload['kind'] == 'building' and (props.get('native_home_plot') is True or props.get('native_plot_axes') is True):
-        if geometry.geom_type == 'Polygon' and len(geometry.exterior.coords) == 5:
-            payload['authored_front_edge'] = [[round(float(v), 7) for v in point[:2]] for point in list(geometry.exterior.coords)[:2]]
+    if payload["kind"] == "building" and (
+        props.get("native_home_plot") is True or props.get("native_plot_axes") is True
+    ):
+        if geometry.geom_type == "Polygon" and len(geometry.exterior.coords) == 5:
+            payload["authored_front_edge"] = [
+                [round(float(v), 7) for v in point[:2]] for point in list(geometry.exterior.coords)[:2]
+            ]
     return hashlib.sha256(
         json.dumps(
             payload,
