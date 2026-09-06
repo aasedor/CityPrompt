@@ -221,6 +221,7 @@
     "src/features/pickPlace/PlacementPalette.tsx",
     "src/features/pickPlace/ReshapePanel.tsx",
     "src/features/pickPlace/StreetRoutePanel.tsx",
+    "src/features/pickPlace/assetRegistry.ts",
     "src/features/pickPlace/catalogue.ts",
     "src/features/pickPlace/geometry.ts",
     "src/features/pickPlace/streetPlacement.ts",
@@ -1987,7 +1988,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
-        "src/features/pickPlace/catalogue.ts"
+        "src/features/pickPlace/assetRegistry.ts"
       ],
       "logicalBytes": 1399202,
       "lfsOid": "2417d853c91b9e997bfdc2a34ec7339b80cea76718fbb05417a1d839789240c8"
@@ -9206,7 +9207,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
-        "src/features/pickPlace/catalogue.ts"
+        "src/features/pickPlace/assetRegistry.ts"
       ],
       "logicalBytes": 1470571,
       "lfsOid": "4039b15d52fbc3b8afaa514df5e104b677b1c49d80b5697fe0dfc4b95e8ba9e6"
@@ -12773,7 +12774,7 @@
         "src/data/archetypeReferenceAvailability.json",
         "src/data/neighborhoodParkV0StickerKit.json",
         "src/data/openSpaceArchetypes.json",
-        "src/features/pickPlace/catalogue.ts"
+        "src/features/pickPlace/assetRegistry.ts"
       ],
       "logicalBytes": 1545419
     },
@@ -16644,7 +16645,8 @@
       "url": "/archetypes/streets/calgary-local/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/streetPathArchetypes.json"
+        "src/data/streetPathArchetypes.json",
+        "src/features/pickPlace/assetRegistry.ts"
       ],
       "logicalBytes": 1418980,
       "lfsOid": "caa608c1be23e1c8cd002d820ef32d413712e98e6630cd99e5df6af3a6cbb61c"

@@ -201,7 +201,7 @@ export type GlobeRenderPipeline = 'classic' | 'direct3d';
 export const DIRECT_3D_PIPELINE_DESCRIPTION =
   'One-call AI finish of the compiled 3D scene. The style you pick governs the look; the compiled models and public realm anchor the layout.';
 export const DIRECT_3D_SCOPE_DESCRIPTION =
-  'Pick a style and render. The AI image is returned exactly as generated — visually check reprojected views, since the camera transform cannot be proven from the source.';
+  'Pick a style and render. Same-camera results are checked against your 3D scene; if the finish cannot be verified, the original 3D view is returned. Review AI originals and reframed views before presenting.';
 export const DIRECT_3D_CALL_DESCRIPTION =
   '1 image call · every result is saved to Project Renders, including the untouched AI original';
 
@@ -210,7 +210,7 @@ export const DIRECT_3D_FIDELITY_OPTIONS: ReadonlyArray<{
   label: string;
   description: string;
 }> = [
-  { id: 'precise', label: 'Precise', description: 'Survey-grade structure lock' },
+  { id: 'precise', label: 'Precise', description: 'Keep the placed 3D design; check the finish against the source' },
   { id: 'balanced', label: 'Balanced', description: 'Better finish with modest edge freedom' },
   { id: 'expressive', label: 'Expressive', description: 'Artistic interpretation; review required' },
 ];
@@ -289,7 +289,7 @@ export function GlobeAIRenderPanel({
   const [isCheckingDirectCapture, setIsCheckingDirectCapture] = useState(false);
   const [directCapturePreview, setDirectCapturePreview] = useState<Direct3DCaptureQAPreview | null>(null);
   const [directDiagnostics, setDirectDiagnostics] = useState<Direct3DRenderDiagnostics | null>(null);
-  const [directFidelityPolicy, setDirectFidelityPolicy] = useState<Direct3DFidelityPolicy>('balanced');
+  const [directFidelityPolicy, setDirectFidelityPolicy] = useState<Direct3DFidelityPolicy>('precise');
   const [directReview, setDirectReview] = useState<Direct3DReview | null>(null);
   // Development mode gate: at least one zone in the scene is backed by real
   // massing (placed LEGO stack or mounted 3D model) that the capture shows.
@@ -889,10 +889,13 @@ export function GlobeAIRenderPanel({
       setDirectCapturePreview(null);
       const capture = await captureDirect3D({ includeGeometryPasses: true });
       setIsPreparingCapture(false);
-      // Authored archetype artwork (facade sheets / catalogue cards) pushes
-      // each building toward its archetype's real character instead of a
-      // generic palette-preserving restyle.
-      const archetypeReferences = await collectDirect3DArchetypeReferences(siteZones, 8, capture);
+      // Precise same-camera finishes use the placed design; catalogue views
+      // can prescribe different openings or roofs. Avoid fetching them here.
+      const sourceGeometryOnly = directFidelityPolicy === 'precise'
+        && resolveDirect3DPresentationMode(selectedStyle) === 'scene';
+      const archetypeReferences = sourceGeometryOnly
+        ? []
+        : await collectDirect3DArchetypeReferences(siteZones, 8, capture);
       const direct = await renderDirect3D(capture, {
         style: selectedStyle,
         fidelityPolicy: directFidelityPolicy,
@@ -1604,14 +1607,18 @@ export function GlobeAIRenderPanel({
                 <span className="col-span-2">
                   AI candidate inventory {directDiagnostics.provider_raw_instance_source_presence.passed
                     ? 'preserved'
-                    : 'changed — corrected before return'}
+                    : directDiagnostics.returned_safety_strategy === 'authoritative_source'
+                      ? 'changed — original 3D view returned'
+                      : 'changed — corrected before return'}
                 </span>
               )}
               {directDiagnostics.provider_raw_unsupported_structure && (
                 <span className="col-span-2">
                   AI candidate no-additions check {directDiagnostics.provider_raw_unsupported_structure.passed
                     ? 'passed'
-                    : 'failed — corrected before return'}
+                    : directDiagnostics.returned_safety_strategy === 'authoritative_source'
+                      ? 'failed — original 3D view returned'
+                      : 'failed — corrected before return'}
                 </span>
               )}
               {directDiagnostics.returned_safety_strategy && (
@@ -1619,7 +1626,7 @@ export function GlobeAIRenderPanel({
                   Returned safety strategy {directDiagnostics.returned_safety_strategy.replace(/_/g, ' ')}
                 </span>
               )}
-              {directDiagnostics.instance_source_presence && (
+              {directDiagnostics.returned_safety_strategy !== 'authoritative_source' && directDiagnostics.instance_source_presence && (
                 <span className="col-span-2">
                   Returned instance presence {directDiagnostics.instance_source_presence.passed ? 'passed' : 'needs review'}
                   {directDiagnostics.instance_source_presence.missing_instance_ids?.length
@@ -1627,7 +1634,7 @@ export function GlobeAIRenderPanel({
                     : ''}
                 </span>
               )}
-              {directDiagnostics.unsupported_structure && (
+              {directDiagnostics.returned_safety_strategy !== 'authoritative_source' && directDiagnostics.unsupported_structure && (
                 <span className="col-span-2">
                   Returned no-invention check {directDiagnostics.unsupported_structure.passed ? 'passed' : 'needs review'}
                 </span>

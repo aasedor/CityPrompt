@@ -4346,7 +4346,9 @@ export function GlobeSitePlannerMap({
       {/* 3D Globe badge + pitch + LOD status â€” offset below back button */}
       {!hasDrawingTool && !streetViewPegman && !measureModeActive && (
         <div className="pointer-events-none absolute bottom-4 left-1/2 z-20 hidden max-w-[min(38rem,calc(100%-36rem))] -translate-x-1/2 rounded-xl border border-slate-300 bg-white/95 px-3 py-2 text-center text-xs font-medium text-slate-700 shadow-lg backdrop-blur-xl select-none lg:block">
-          {selectedBuildingId && selectedZoneId
+          {siteZones.some(zone => zone.id === selectedZoneId && zone.properties?.pick_place_asset)
+            ? 'Drag to move | Use the reshape panel to resize or rotate | 3D updates automatically after saving | Esc to deselect'
+            : selectedBuildingId && selectedZoneId
             ? '3D model selected | Edit type/floors in the panel, then Regenerate | Drag body/vertices or amber handle to move/reshape/rotate | Delete removes the model | Esc to deselect'
             : selectedBuildingId
             ? '3D model selected | Delete/Backspace to remove | Esc to deselect'

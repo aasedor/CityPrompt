@@ -244,13 +244,16 @@ describe('Direct 3D presentation adapter', () => {
     expect(prompt).not.toContain('Golden hour');
     expect(prompt).not.toContain('ray-traced');
     expect(prompt).not.toContain('colored polygon');
+    expect(prompt).toContain('existing window and door openings');
+    expect(prompt).not.toContain('floor-to-ceiling');
+    expect(prompt).not.toContain('Add realistic public-realm activity');
   });
 
   it('separates aesthetic style from the default fidelity policy', () => {
     expect(resolveDirect3DFidelityPolicy('survey')).toBe('precise');
     expect(resolveDirect3DFidelityPolicy('documentary')).toBe('precise');
-    expect(resolveDirect3DFidelityPolicy('photorealistic')).toBe('balanced');
-    expect(resolveDirect3DFidelityPolicy('winter')).toBe('balanced');
+    expect(resolveDirect3DFidelityPolicy('photorealistic')).toBe('precise');
+    expect(resolveDirect3DFidelityPolicy('winter')).toBe('precise');
     expect(resolveDirect3DFidelityPolicy('watercolour')).toBe('expressive');
     expect(resolveDirect3DFidelityPolicy('isometric')).toBe('expressive');
     expect(resolveDirect3DFidelityPolicy('site-plan-photo')).toBe('expressive');
@@ -279,7 +282,7 @@ describe('Direct 3D presentation adapter', () => {
       instance_id_image_base64: capture.instanceIdImageBase64,
       instance_id_manifest: capture.instanceIdManifest,
       style: 'photorealistic',
-      fidelity_policy: 'balanced',
+      fidelity_policy: 'precise',
       presentation_mode: 'scene',
       project_id: 'project-1',
       community_3d_claims: community3DClaims,
@@ -298,6 +301,21 @@ describe('Direct 3D presentation adapter', () => {
     expect(direct.diagnostics.macro_design_fidelity?.silhouette_edge_recall).toBe(0.94);
     expect(direct.outcome).toBe('accepted');
     expect(direct.sourceImageUrl).toBe(capture.beautyImageBase64);
+  });
+
+  it.each(['precise', 'balanced'] as const)('conditions %s scene requests without changing their source controls', async (fidelityPolicy) => {
+    const { result } = renderHook(() => useDirect3DRender());
+    const references = [{ image_base64: 'catalogue-photo', label: 'Different porch and roof', zone_ids: ['zone-1'] }];
+    await result.current.renderDirect3D(capture, {
+      style: 'photorealistic', projectId: 'project-1', community3DClaims,
+      fidelityPolicy, archetypeReferences: references,
+    });
+    const request = vi.mocked(rendersApi.generateDirect3D).mock.calls[0][0];
+    expect(request.archetype_references).toEqual(fidelityPolicy === 'precise' ? undefined : references);
+    expect(request.beauty_image_base64).toBe(capture.beautyImageBase64);
+    expect(request.instance_id_manifest).toEqual(capture.instanceIdManifest);
+    expect(request.depth_image_base64).toBe(capture.depthImageBase64);
+    expect(references).toHaveLength(1);
   });
 
   it('submits the frozen park access snapshot captured with the image for server revision validation', async () => {

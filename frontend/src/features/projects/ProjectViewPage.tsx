@@ -105,6 +105,7 @@ export function ProjectViewPage() {
   const [renderEditTarget, setRenderEditTarget] = useState<SavedRender | null>(null);
   const [showProjectRenders, setShowProjectRenders] = useState(false);
   const [showTour, setShowTour] = useState(false);
+  const [showCatalogue, setShowCatalogue] = useState(false);
   const [showGlobeRender, setShowGlobeRender] = useState(false);
   const [showVideoRender, setShowVideoRender] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
@@ -1032,20 +1033,28 @@ export function ProjectViewPage() {
             onGlobeReady={setGlobeRefs}
             onModeledBuildingsChange={setModeledBuildingIds}
             measureModeActive={measureActive}
-            interactionPaused={renderViewerActive || showPlanningReport || showShare || showTour || showReferenceLayers}
+            interactionPaused={renderViewerActive || showPlanningReport || showShare || showTour || showReferenceLayers || showCatalogue}
             onMeasureModeChange={handleMeasureModeChange}
           />
         </Suspense>
 
         {/* Toolbar - hidden on phones during focused vertex placement. */}
         <div
-          className={`pointer-events-none absolute inset-x-3 top-44 z-30 min-h-0 overflow-y-auto overscroll-contain sm:inset-x-auto sm:left-4 sm:top-[clamp(5rem,12dvh,8rem)] sm:bottom-16 sm:w-64 sm:max-h-none sm:overflow-y-auto sm:pr-2 ${activeSitePlannerTool || placementDraft || (selectedZone && (assetForZone(selectedZone) || isCalgaryLocalRoute(selectedZone))) ? 'hidden sm:block' : 'bottom-3 max-h-[38vh]'}`}
+          className={`pointer-events-none absolute inset-x-3 top-44 z-30 min-h-0 overflow-y-auto overscroll-contain sm:inset-x-auto sm:left-4 sm:top-24 sm:bottom-16 sm:w-64 sm:max-h-none sm:overflow-y-auto sm:pr-2 ${activeSitePlannerTool || placementDraft || (selectedZone && (assetForZone(selectedZone) || isCalgaryLocalRoute(selectedZone))) ? 'hidden sm:block' : 'bottom-3 max-h-[60dvh]'}`}
         >
-          <div className="pointer-events-auto">
+          <div className="pointer-events-auto h-full">
             <SitePlannerToolbar
               streetPlacement={CALGARY_LOCAL_PLACEMENT}
+              streetInPlacement
               placementSlot={<PlacementPalette selected={placementDraft?.assetId ?? null} onPick={pickObject} onCancel={cancelPlacement}
-                status={automatic3D.status} message={automatic3D.message} onRetry={automatic3D.retry} />}
+                status={automatic3D.status} message={automatic3D.message} onRetry={automatic3D.retry}
+                onBrowseChange={setShowCatalogue}
+                streetActive={activeSitePlannerTool === 'road'}
+                onPickStreet={asset => {
+                  cancelPlacement(); selectZone(null); setMeasureActive(false);
+                  useViewerStore.getState().setStreetViewActive(false);
+                  setActiveSitePlannerTool(activeSitePlannerTool === 'road' ? null : 'road', asset.properties);
+                }} />}
               onLeavePlacement={cancelPlacement}
               layout="sidebar"
               isGlobeMode
@@ -1059,16 +1068,17 @@ export function ProjectViewPage() {
               onSiteBoundary={handleSiteBoundary}
               bottomSlot={
                 !showGlobeRender && !showVideoRender ? (
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-1">
                     <StudioSaveStatus saving={isSaving} draftCount={pendingDrafts.length} draftsPersistOnDevice={draftsPersistOnDevice} loadError={Boolean(siteZonesError)} onRetry={() => pendingDrafts.forEach(retryDraft)} onReload={() => { void reloadSavedVersion(); }}
                       discardableCount={discardableDrafts.length} onDiscardRejected={() => discardableDrafts.forEach(discardDraft)} saveError={saveError} />
+                    <details><summary className="min-h-11 cursor-pointer py-3 text-xs text-slate-700">Project steps &amp; custom 3D</summary>
                     <WorkflowStepper
                       state={cityPromptWorkflow}
                       activeStep={showLegoBuilder ? 3 : cityPromptWorkflow.currentStep}
                       onStepClick={handleWorkflowStepClick}
                       compact
                     />
-                    <details><summary className="cursor-pointer py-2 text-xs text-slate-700">3D tools for custom drawings</summary><button
+                    <button
                       data-tour="generate-3d-btn"
                       onClick={handleOpenGenerate3D}
                       disabled={!cityPromptWorkflow.canGenerate3D || isPreparingGenerate3D}
@@ -1084,7 +1094,7 @@ export function ProjectViewPage() {
                         onClick={handleOpenGlobeRender}
                         disabled={!cityPromptWorkflow.canRender}
                         title={cityPromptWorkflow.renderReason}
-                        className="flex w-full items-center justify-center gap-1.5 rounded-full border-2 border-[#151515] bg-white px-2 py-2 text-xs font-black uppercase text-[#151515] shadow-[3px_3px_0_0_#151515] transition hover:bg-[#fff9ec] disabled:cursor-not-allowed disabled:opacity-40"
+                        className="flex w-full items-center justify-center min-h-11 gap-1.5 rounded-full border-2 border-[#151515] bg-white px-2 py-2 text-xs font-black uppercase text-[#151515] shadow-[3px_3px_0_0_#151515] transition hover:bg-[#fff9ec] disabled:cursor-not-allowed disabled:opacity-40"
                       >
                         <Camera size={14} />
                         Render
@@ -1093,7 +1103,7 @@ export function ProjectViewPage() {
                         onClick={handleOpenVideoRender}
                         disabled={!cityPromptWorkflow.canRender}
                         title={cityPromptWorkflow.renderReason}
-                        className="flex w-full items-center justify-center gap-1.5 rounded-full border-2 border-[#151515] bg-[#151515] px-2 py-2 text-xs font-black uppercase text-white shadow-[3px_3px_0_0_#28c7e8] transition hover:bg-[#2b2b2b] disabled:cursor-not-allowed disabled:opacity-40"
+                        className="flex w-full items-center justify-center min-h-11 gap-1.5 rounded-full border-2 border-[#151515] bg-[#151515] px-2 py-2 text-xs font-black uppercase text-white shadow-[3px_3px_0_0_#28c7e8] transition hover:bg-[#2b2b2b] disabled:cursor-not-allowed disabled:opacity-40"
                       >
                         <Video size={14} />
                         Video

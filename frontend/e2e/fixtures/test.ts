@@ -74,6 +74,6 @@ export { expect };
 /** Reveal optional tools in both the Google globe and the fallback map. */
 export async function revealPlanningTools(page: Page) {
   await page.getByRole('button', { name: 'More Tools', exact: true }).click();
-  const customTools = page.locator('summary').filter({ hasText: '3D tools for custom drawings' });
+  const customTools = page.locator('summary').filter({ hasText: /Project steps & custom 3D|3D tools for custom drawings/ });
   if (await customTools.count()) await customTools.click();
 }
