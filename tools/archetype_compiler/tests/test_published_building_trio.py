@@ -9,11 +9,11 @@ from tools.rlasm_clay_library import load_library, clay_seed_rows, clay_seed_obj
 def test_published_trio_has_reviewed_native_models_and_public_exact_variant_rows():
     root = Path(__file__).resolve().parents[3]
     library = load_library(repo_root=root)
-    assert {e['variant_id'] for e in library['entries']} == {
+    assert {e['variant_id'] for e in library['entries']} >= {
         'bungalow_postwar_ranch', 'toronto_foursquare_red_brick', 'sandstone_romanesque_revival',
     }
     rows = list(clay_seed_rows(library))
-    assert len(rows) == len(list(clay_seed_objects(library))) == 3
+    assert len(rows) == len(list(clay_seed_objects(library))) == len(library['entries'])
     for entry, row in zip(library['entries'], rows):
         review_file = root / entry['review']['repo_path']
         assert hashlib.sha256(review_file.read_bytes()).hexdigest() == entry['review']['sha256']

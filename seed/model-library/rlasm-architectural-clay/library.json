@@ -80,7 +80,17 @@
         "sha256": "86f3a5579369f8bebf9486d38700358fad6348f3f3a45916de7dbc2b8627655b",
         "repo_path": "tools/catalogue_ranch_pilot/evidence/independent-review.json"
       },
-      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\ranch-v005"
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\ranch-v005",
+      "picker": {
+        "id": "trial_postwar_bungalow",
+        "description": "One-storey brick home with a sheltered porch.",
+        "group_id": "detached",
+        "reshape_mode": "repeat_native",
+        "reshape_description": "Widen the plot to add complete houses. Each house keeps its authored proportions.",
+        "width": 15.0,
+        "depth": 20.0,
+        "max_size": 100.0
+      }
     },
     {
       "candidate": "toronto-edwardian-foursquare-clay-v004",
@@ -137,7 +147,17 @@
         "sha256": "6dff58ab4ef76b9e2cfa2feac390bd6e3297eae0effc1759d995343a2f8fd51d",
         "repo_path": "tools/catalogue_foursquare_pilot/evidence/independent-review.json"
       },
-      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\foursquare-v004"
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\foursquare-v004",
+      "picker": {
+        "id": "trial_edwardian_foursquare",
+        "description": "Two-storey brick home with a porch and dormer.",
+        "group_id": "detached",
+        "reshape_mode": "repeat_native",
+        "reshape_description": "Widen the plot to add complete houses. The porch, dormer and two storeys keep their proportions.",
+        "width": 15.0,
+        "depth": 22.0,
+        "max_size": 100.0
+      }
     },
     {
       "candidate": "calgary-sandstone-heritage-clay-v007",
@@ -194,7 +214,17 @@
         "sha256": "6893ea8fcd029634c0391e2277d2bbe56a6fc4cfc33c7d8df1c03a4a068e95f7",
         "repo_path": "tools/catalogue_sandstone_pilot/evidence/independent-review.json"
       },
-      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\sandstone-v007"
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\sandstone-v007",
+      "picker": {
+        "id": "trial_sandstone_civic",
+        "description": "Courtyard institution with an arched facade and clock tower.",
+        "group_id": "civic",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "A complete landmark at its authored size. Move or rotate it; the courtyard and tower retain their proportions.",
+        "width": 64.0,
+        "depth": 66.0,
+        "max_size": 100.0
+      }
     }
   ],
   "review_only_archive": []

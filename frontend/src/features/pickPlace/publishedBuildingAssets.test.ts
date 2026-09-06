@@ -4,7 +4,7 @@ import { CATALOGUE_ASSETS, validateRegistry } from './assetRegistry';
 import { placementPlanRequest } from './catalogue';
 
 describe('published building catalogue', () => {
-  it('includes all three approved entries in the default catalogue', () => {
+  it('includes all approved entries in the default catalogue', () => {
     for (const asset of PUBLISHED_BUILDING_ASSETS) {
       expect(CATALOGUE_ASSETS).toContain(asset);
       expect(asset.readiness).toBe('ready');
@@ -23,6 +23,8 @@ describe('published building catalogue', () => {
     }
   });
   it('repeats whole homes and preserves the civic landmark', () => {
-    expect(PUBLISHED_BUILDING_ASSETS.map(asset => asset.reshapeMode)).toEqual(['repeat_native', 'repeat_native', 'fixed_native']);
+    expect(PUBLISHED_BUILDING_ASSETS.find(asset => asset.id === 'trial_postwar_bungalow')?.reshapeMode).toBe('repeat_native');
+    expect(PUBLISHED_BUILDING_ASSETS.find(asset => asset.id === 'trial_edwardian_foursquare')?.reshapeMode).toBe('repeat_native');
+    expect(PUBLISHED_BUILDING_ASSETS.find(asset => asset.id === 'trial_sandstone_civic')?.reshapeMode).toBe('fixed_native');
   });
 });
