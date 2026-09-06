@@ -1,0 +1,36 @@
+{
+  "findings": [
+    "Paired front sash top muntins now meet window rails.",
+    "Dormer eave perimeter and shingle cheeks are constructed and seated.",
+    "Porch landing, door, rails and skirt coherent.",
+    "Brick bonding reads as masonry.",
+    "Right-side schedule is a conceptual regularization, documented in source-reconciliation.json."
+  ],
+  "boards_inspected": [
+    "phone-source-comparison.png",
+    "phone-construction.png"
+  ],
+  "limitations": [
+    "Detailed brick relief increases model to 10.3 MB; actual runtime performance needs trial."
+  ],
+  "candidate": "toronto-edwardian-foursquare-clay-v004",
+  "model_sha256": "3a6848fc6aa78151f3059b75f441092c4c1ff60ef4c17ccd0028ea27153c9dd7",
+  "reviewer": "root builder",
+  "independent_approval": false,
+  "builder_visual_review": "pass",
+  "views_inspected": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/roof_contact.png",
+    "renders/dormer_section.png"
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "candidate": "calgary-sandstone-heritage-clay-v007",
+  "method": "RLASM 6.1",
+  "scope": "architectural clay; local trial only",
+  "canonical_promotion_approved": false,
+  "external_directory": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\sandstone-v007",
+  "model_sha256": "9fa4d89e657c053ca5dea6b9ca22db1422bcc67762b7765cd0c72f6cb0635c44",
+  "model_bytes": 12252792,
+  "delivered_bounds_m": [
+    [
+      -28.454999923706055,
+      -31.55500030517578,
+      0.0
+    ],
+    [
+      30.954999923706055,
+      28.454999923706055,
+      44.0
+    ]
+  ],
+  "independent_review_sha256": "ea5d384eab55011073bfdd688e90d1e06288ff485fcb437fcb4e84a7ee14f0f5",
+  "runtime": {
+    "path": "calgary-sandstone-heritage-clay-v007.glb",
+    "bytes": 12252792,
+    "sha256": "9fa4d89e657c053ca5dea6b9ca22db1422bcc67762b7765cd0c72f6cb0635c44",
+    "meshes": 12,
+    "materials": 12,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 12,
+    "vertices": 131253,
+    "polygons": 209170,
+    "triangles": 209170
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "archetype_id": "calgary_sandstone_heritage",
+  "variant_id": "sandstone_romanesque_revival",
+  "directory": ".",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\buildings\\calgary-sandstone-heritage\\variant_0.png",
+      "path": "sources/variant_0.png",
+      "bytes": 1406587,
+      "sha256": "629de326189254e092f55158bcf48ffa15404aef28ac7e6fc9f98272e322027d"
+    },
+    {
+      "role": "oblique",
+      "original_path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\buildings\\calgary-sandstone-heritage\\variant_0_angle_60.jpg",
+      "path": "sources/variant_0_angle_60.jpg",
+      "bytes": 955727,
+      "sha256": "2fdc718649d51b41c15b269b0aa3adc38d994e44a985905a776fa122d68de8c6"
+    },
+    {
+      "role": "top",
+      "original_path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\buildings\\calgary-sandstone-heritage\\variant_0_angle_90.jpg",
+      "path": "sources/variant_0_angle_90.jpg",
+      "bytes": 860843,
+      "sha256": "c73923f39bcfd440a6df2b7384cf9b15a0ffea08f6a2558600eabc1a5ec3539d"
+    }
+  ]
+}

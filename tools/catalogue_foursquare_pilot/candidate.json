@@ -1,0 +1,35 @@
+{
+  "candidate": "toronto-edwardian-foursquare-clay-v004",
+  "method": "RLASM 6.1",
+  "scope": "architectural clay; local trial only",
+  "canonical_promotion_approved": false,
+  "external_directory": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\foursquare-v004",
+  "model_sha256": "3a6848fc6aa78151f3059b75f441092c4c1ff60ef4c17ccd0028ea27153c9dd7",
+  "model_bytes": 10282872,
+  "delivered_bounds_m": [
+    [
+      -5.534999847412109,
+      -10.255000114440918,
+      0.0
+    ],
+    [
+      5.534999847412109,
+      7.675000190734863,
+      10.8100004196167
+    ]
+  ],
+  "independent_review_sha256": "6dff58ab4ef76b9e2cfa2feac390bd6e3297eae0effc1759d995343a2f8fd51d",
+  "runtime": {
+    "path": "toronto-edwardian-foursquare-clay-v004.glb",
+    "bytes": 10282872,
+    "sha256": "3a6848fc6aa78151f3059b75f441092c4c1ff60ef4c17ccd0028ea27153c9dd7",
+    "meshes": 12,
+    "materials": 12,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 12,
+    "vertices": 112029,
+    "polygons": 170930,
+    "triangles": 170930
+  }
+}

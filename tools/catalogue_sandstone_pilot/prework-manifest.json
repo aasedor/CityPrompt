@@ -1,0 +1,289 @@
+{
+  "candidate": "calgary-sandstone-heritage-clay-v007",
+  "title": "Sandstone courtyard civic hall",
+  "method": "RLASM v6.1 clay-first",
+  "representation_kind": "architectural_clay",
+  "archetype_id": "calgary_sandstone_heritage",
+  "variant_id": "sandstone_romanesque_revival",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 57,
+      "depth": 59,
+      "height": 44
+    },
+    "storeys": 3,
+    "source_measurements": {
+      "front": "Sandstone Romanesque civic institution: three principal gabled facade pavilions, tall paired arches, recessed arched entrance and right-side clock tower.",
+      "oblique": "Square open courtyard with four enclosed wings, steep grey slate roof ring, corner and central gables, copper conical tower roof and four pinnacles.",
+      "top": "Open square courtyard inside a continuous roof ring; clock tower rises from centre of right wing, not courtyard.",
+      "roof": "Closed mitred ring roof with real courtyard void; pavilion hips unioned into ring; tower cuts ring before insertion. Separate conical copper crown seats on octagonal belfry.",
+      "programme": "Three occupied institutional storeys, enclosed wing rooms, courtyard, ground entries, clock chamber and open arched belfry."
+    },
+    "hidden_assumptions": [
+      "Conceptual 54 m square plan, 18 m courtyard, three storeys and 44 m tower inferred from source proportions; not a survey of a named historic property.",
+      "Hidden rear continues the observed sandstone opening grammar; room subdivisions and clock mechanism inferred.",
+      "Fine stone ornament simplified to constructed voussoirs, courses, buttresses, gable relief and finials; no perspective texture cards.",
+      "Street, trees and surrounding buildings excluded. Grade is native zero; courtyard paving belongs to this building."
+    ]
+  },
+  "roof_contract": "Closed mitred ring roof with real courtyard void; pavilion hips unioned into ring; tower cuts ring before insertion. Separate conical copper crown seats on octagonal belfry.",
+  "material_contract": {
+    "profile": "texture-free source-palette architectural clay",
+    "generic_texture_fallback": false
+  },
+  "identity_contract": {
+    "owner": "family-specific constructed silhouette, openings, roof and architectural relief",
+    "bitmap_stickers": "not used in architectural clay"
+  },
+  "programme_contract": "Three occupied institutional storeys, enclosed wing rooms, courtyard, ground entries, clock chamber and open arched belfry.",
+  "contact_contract": [
+    "Continuous masonry wing foundations meet grade.",
+    "Window and door arches are true carrier apertures with recessed optical or timber layers.",
+    "Roof ring is a closed manifold solid with open courtyard; roof solids unioned at pavilion joints.",
+    "Clock shaft passes through a full roof cut and supports the belfry, copper cone and pinnacles."
+  ],
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        0,
+        -165.2,
+        26.55
+      ],
+      "target": [
+        0,
+        0,
+        20.240000000000002
+      ]
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        123.9,
+        -147.5,
+        67.85
+      ],
+      "target": [
+        0,
+        0,
+        20.240000000000002
+      ]
+    },
+    {
+      "name": "aerial",
+      "location": [
+        118,
+        -141.6,
+        147.5
+      ],
+      "target": [
+        0,
+        0,
+        20.240000000000002
+      ]
+    },
+    {
+      "name": "top",
+      "location": [
+        0,
+        -0.059000000000000004,
+        194.7
+      ],
+      "target": [
+        0,
+        0,
+        20.240000000000002
+      ],
+      "ortho_scale": 88.5
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -177,
+        0,
+        29.5
+      ],
+      "target": [
+        0,
+        0,
+        20.240000000000002
+      ]
+    },
+    {
+      "name": "right_side",
+      "location": [
+        177,
+        0,
+        29.5
+      ],
+      "target": [
+        0,
+        0,
+        20.240000000000002
+      ]
+    },
+    {
+      "name": "rear",
+      "location": [
+        0,
+        177,
+        29.5
+      ],
+      "target": [
+        0,
+        0,
+        20.240000000000002
+      ]
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        118,
+        153.4,
+        76.7
+      ],
+      "target": [
+        0,
+        0,
+        20.240000000000002
+      ]
+    },
+    {
+      "name": "facade_close",
+      "location": [
+        36,
+        -70,
+        23
+      ],
+      "target": [
+        0,
+        -27,
+        9
+      ],
+      "whole": false
+    },
+    {
+      "name": "architecture_close",
+      "location": [
+        7,
+        -43,
+        9
+      ],
+      "target": [
+        0,
+        -29,
+        4.5
+      ],
+      "whole": false
+    },
+    {
+      "name": "glass_close",
+      "location": [
+        24,
+        -42,
+        14
+      ],
+      "target": [
+        21,
+        -27,
+        9
+      ],
+      "whole": false,
+      "lens": 60
+    },
+    {
+      "name": "roof_contact",
+      "location": [
+        57,
+        -27,
+        44
+      ],
+      "target": [
+        26,
+        0,
+        24
+      ],
+      "whole": false
+    },
+    {
+      "name": "courtyard_tower",
+      "location": [
+        42,
+        30,
+        53
+      ],
+      "target": [
+        4,
+        1,
+        20
+      ],
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "roof_contact",
+    "courtyard_tower"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\buildings\\calgary-sandstone-heritage\\variant_0.png",
+        "path": "sources/variant_0.png",
+        "bytes": 1406587,
+        "sha256": "629de326189254e092f55158bcf48ffa15404aef28ac7e6fc9f98272e322027d"
+      },
+      {
+        "role": "oblique",
+        "original_path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\buildings\\calgary-sandstone-heritage\\variant_0_angle_60.jpg",
+        "path": "sources/variant_0_angle_60.jpg",
+        "bytes": 955727,
+        "sha256": "2fdc718649d51b41c15b269b0aa3adc38d994e44a985905a776fa122d68de8c6"
+      },
+      {
+        "role": "top",
+        "original_path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\buildings\\calgary-sandstone-heritage\\variant_0_angle_90.jpg",
+        "path": "sources/variant_0_angle_90.jpg",
+        "bytes": 860843,
+        "sha256": "c73923f39bcfd440a6df2b7384cf9b15a0ffea08f6a2558600eabc1a5ec3539d"
+      }
+    ],
+    "exact_variant_only": true,
+    "no_generated_substitute_references": true
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "19c432bdf42ce005a540d23776fcba1a860aa6101e3940eec8dd505f3187de33"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "3eaafe0a28032e899c01136cefdc07eaee6fef61ee655f67345778c04c78ffb2"
+      },
+      {
+        "path": "scripts/support.py",
+        "sha256": "a9564b8dc6bd825a40f67fa0d1c2525127cfe8bcd848f083ee61c9fb904c0bde"
+      }
+    ],
+    "blender_version": "5.2.0 LTS",
+    "python_version": "3.13.13 (main, May  8 2026, 12:37:03) [MSC v.1944 64 bit (AMD64)]",
+    "generation_api_calls": 0,
+    "build_started_utc": "2026-09-06T20:17:11.583779+00:00",
+    "render_source": "actual optimized GLB reimport only"
+  }
+}

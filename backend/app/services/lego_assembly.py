@@ -785,6 +785,7 @@ DETACHED_ARCHETYPE_IDS = frozenset(
         "calgary_modern_infill_house",
         "detached_contemporary_infill",
         "mediterranean_villa_estate",
+        "toronto_edwardian_foursquare",
         "vancouver_craftsman_bungalow",
         "vancouver_laneway_house",
     }

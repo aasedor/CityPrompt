@@ -27,6 +27,21 @@ def test_explicit_home_plot_repeats_whole_exact_houses_with_gaps():
     assert actual["fit"]["dwelling_count"] == len(shapes)
 
 
+def test_foursquare_home_plot_repeats_exact_variant_without_stretching():
+    actual = plan(
+        clay_entry("toronto_edwardian_foursquare", "toronto_foursquare_red_brick"),
+        archetype_id="toronto_foursquare_red_brick",
+        native_home_plot=True,
+        target_width_m=30,
+        target_depth_m=22,
+    )
+    shapes = dwelling_footprints(actual)
+    assert len(shapes) == 2
+    assert all(box(-15, -11, 15, 11).covers(shape) for shape in shapes)
+    assert shapes[0].distance(shapes[1]) >= 3 - 1e-6
+    assert all(item["scale"] == [1, 1, 1] and item["asset_id"] == "clay" for item in actual["instances"])
+
+
 def test_home_plot_is_opt_in_and_never_repeats_landmarks_or_invents_variant():
     assert len(plan(target_width_m=60, target_depth_m=30)["instances"]) == 1
     with pytest.raises(AssemblyPlanningError):

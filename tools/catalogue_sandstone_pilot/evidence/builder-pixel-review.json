@@ -1,0 +1,78 @@
+{
+  "candidate": "calgary-sandstone-heritage-clay-v007",
+  "scope": "builder pixel review, not independent approval",
+  "builder_pass": true,
+  "model_sha256": "9fa4d89e657c053ca5dea6b9ca22db1422bcc67762b7765cd0c72f6cb0635c44",
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "inspected": [
+    {
+      "path": "renders/front.png",
+      "sha256": "a1932ada3853c6c9e137c8a43a2fccc1076fa4be1eaecda454d7e89afc9432db"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "sha256": "5961dec180c7e3c068f03a43c82258d0f52f0de2852bf9abc04496ffdae9d260"
+    },
+    {
+      "path": "renders/aerial.png",
+      "sha256": "be3381a426a420749f41e2216c39abad6d6a3a4019780573fc2d44039b22ac2a"
+    },
+    {
+      "path": "renders/top.png",
+      "sha256": "351f0272794e2325bfde72149e34b44ed689be3feae64c4bbfa5e57f2857139c"
+    },
+    {
+      "path": "renders/left_side.png",
+      "sha256": "39e532308dfe1550fef729c10ebd6ef115a4475caeaa043ea0a7ef54f46e8b05"
+    },
+    {
+      "path": "renders/right_side.png",
+      "sha256": "045b00df0c6fbdf835433ee638b41e8ab3de7be1dfa4db3582a0d630dd279c0e"
+    },
+    {
+      "path": "renders/rear.png",
+      "sha256": "86d18f3057e7973f4c4d4594644ac0c2a956460817d5bd48c3adc37e24b2c6d0"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "sha256": "42741a7f1bef1301fef7fe6a0b62f02680d604690be61340b530676f56837279"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "sha256": "88c10fc299fb93bc51560cb5e6ae6eb4b526b81cc75c5905c0f0e1a3f88453aa"
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "sha256": "e08957f50c0d0b1dd4c4bc7bffb5dfbc102313058eef09e06713e431920db20c"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "sha256": "63bbaf044e1b9877541f768a8e795f9f29367851e2dd01e41fbe15e313e96d8f"
+    },
+    {
+      "path": "renders/roof_contact.png",
+      "sha256": "b442be60858f40dad9dfe9ab3aecb0d4ce2ca6f17bf023cba4cf50882e50f98f"
+    },
+    {
+      "path": "renders/courtyard_tower.png",
+      "sha256": "fa39d8043433307fbd8b4208cb2369bc03d57eca0f63526f3a59e9d7dca6022b"
+    },
+    {
+      "path": "boards/phone-source-comparison.png",
+      "sha256": "ec65c3a3ccc96c0d0ddf8181d6828bc189b5bfc46435f4863bd1550ed8c0c9f1"
+    },
+    {
+      "path": "boards/phone-construction.png",
+      "sha256": "93a87575b52fdcdcec20ddf01adffa16bf11830a4b8379cf0bdb154380fcc374"
+    }
+  ],
+  "notes": [
+    "Three raised projecting front pavilions, transparent recessed arch windows and visible native stone bonding.",
+    "Buttresses align with solid masonry. Front/tower/courtyard entries have aligned steps.",
+    "Full source rebuild closes roof-cheek seams without black facade strips; closed roof ring preserves courtyard void.",
+    "Clock tower, slate roof and copper crown meet physically. Rear regularization is conceptual and disclosed.",
+    "Native detailed model is 12.3 MB; lower detail is recommended before mass catalogue population."
+  ],
+  "canonical_promotion_approved": false
+}

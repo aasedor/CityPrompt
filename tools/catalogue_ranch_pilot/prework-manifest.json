@@ -1,0 +1,287 @@
+{
+  "candidate": "calgary-inner-city-bungalow-clay-v005",
+  "title": "Calgary post-war bungalow",
+  "method": "RLASM v6.1 clay-first",
+  "representation_kind": "architectural_clay",
+  "archetype_id": "calgary_inner_city_bungalow",
+  "variant_id": "bungalow_postwar_ranch",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 10.6,
+      "depth": 15.0,
+      "height": 6.0
+    },
+    "storeys": 1,
+    "source_measurements": {
+      "front": "One-storey bungalow left of unrelated modern infill; low hipped roof, small white front-right gable, left porch and centre door.",
+      "oblique": "Brick facade, pale horizontal side siding, narrow left chimney; porch stair at right edge of timber rail.",
+      "top": "Single long rectangular hipped roof and one shallow front-right gable. The neighbouring flat-roof house is excluded.",
+      "roof": "Closed four-plane hip unioned with a smaller forward gable; no dormer.",
+      "programme": "One dwelling, porch and rear secondary entry."
+    },
+    "hidden_assumptions": [
+      "Metric sizes inferred from door/window proportions, not surveyed.",
+      "Back and partly hidden side openings and room partitions inferred.",
+      "Neighbouring modern infill, garages, garden and public sidewalk excluded."
+    ]
+  },
+  "roof_contract": "Closed four-plane hip unioned with a smaller forward gable; no dormer.",
+  "material_contract": {
+    "profile": "texture-free source-palette architectural clay",
+    "generic_texture_fallback": false
+  },
+  "identity_contract": {
+    "owner": "family-specific constructed silhouette, openings, roof and architectural relief",
+    "bitmap_stickers": "not used in architectural clay"
+  },
+  "programme_contract": "One dwelling, porch and rear secondary entry.",
+  "contact_contract": [
+    "Foundation at zero.",
+    "Porch posts support eave; stair meets porch.",
+    "Gable and main hip form a closed Boolean union."
+  ],
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        0.0,
+        -42.0,
+        6.75
+      ],
+      "target": [
+        0,
+        0,
+        2.7600000000000002
+      ]
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        -31.5,
+        -37.5,
+        17.25
+      ],
+      "target": [
+        0,
+        0,
+        2.7600000000000002
+      ]
+    },
+    {
+      "name": "aerial",
+      "location": [
+        -30.0,
+        -36.0,
+        37.5
+      ],
+      "target": [
+        0,
+        0,
+        2.7600000000000002
+      ]
+    },
+    {
+      "name": "top",
+      "location": [
+        0.0,
+        -0.015,
+        49.5
+      ],
+      "target": [
+        0,
+        0,
+        2.7600000000000002
+      ],
+      "ortho_scale": 22.5
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -45.0,
+        0.0,
+        7.5
+      ],
+      "target": [
+        0,
+        0,
+        2.7600000000000002
+      ]
+    },
+    {
+      "name": "right_side",
+      "location": [
+        45.0,
+        0.0,
+        7.5
+      ],
+      "target": [
+        0,
+        0,
+        2.7600000000000002
+      ]
+    },
+    {
+      "name": "rear",
+      "location": [
+        0.0,
+        45.0,
+        7.5
+      ],
+      "target": [
+        0,
+        0,
+        2.7600000000000002
+      ]
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        30.0,
+        39.0,
+        19.5
+      ],
+      "target": [
+        0,
+        0,
+        2.7600000000000002
+      ]
+    },
+    {
+      "name": "facade_close",
+      "location": [
+        -10,
+        -19,
+        6
+      ],
+      "target": [
+        -1,
+        -6.4,
+        2
+      ],
+      "whole": false
+    },
+    {
+      "name": "architecture_close",
+      "location": [
+        6,
+        -14,
+        5
+      ],
+      "target": [
+        -0.5,
+        -7,
+        1.6
+      ],
+      "whole": false
+    },
+    {
+      "name": "glass_close",
+      "location": [
+        -4,
+        -13,
+        3.2
+      ],
+      "target": [
+        -2.6,
+        -6.2,
+        2
+      ],
+      "whole": false,
+      "lens": 62
+    },
+    {
+      "name": "roof_contact",
+      "location": [
+        13,
+        -16,
+        12
+      ],
+      "target": [
+        2,
+        -4,
+        4
+      ],
+      "whole": false
+    },
+    {
+      "name": "porch_contact",
+      "location": [
+        -7,
+        -14,
+        4
+      ],
+      "target": [
+        -1.7,
+        -7,
+        1.8
+      ],
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "roof_contact",
+    "porch_contact"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\buildings\\calgary-inner-city-bungalow\\variant_2.png",
+        "path": "sources/variant_2.png",
+        "bytes": 1514720,
+        "sha256": "99dddd58994ef0c0f1c1d9abd472420cae16837759c885e9b85c7dca5b8d7ba8"
+      },
+      {
+        "role": "oblique",
+        "original_path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\buildings\\calgary-inner-city-bungalow\\variant_2_angle_60.jpg",
+        "path": "sources/variant_2_angle_60.jpg",
+        "bytes": 1020876,
+        "sha256": "324c81ba58c7638e57de92f69c29682cb61efae3f5bfa2ce60d5b5d5486994b6"
+      },
+      {
+        "role": "top",
+        "original_path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\buildings\\calgary-inner-city-bungalow\\variant_2_angle_90.jpg",
+        "path": "sources/variant_2_angle_90.jpg",
+        "bytes": 929664,
+        "sha256": "7b2861fbddcd7bfe8bc43794f8f105379552de5f4613332319520ff51df3c7c1"
+      }
+    ],
+    "exact_variant_only": true,
+    "no_generated_substitute_references": true
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "19c432bdf42ce005a540d23776fcba1a860aa6101e3940eec8dd505f3187de33"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "f152f8226fd1a4a3f991fa33b39eccdc79b5dd1c2b57532cff8af01827be882d"
+      },
+      {
+        "path": "scripts/support.py",
+        "sha256": "a9564b8dc6bd825a40f67fa0d1c2525127cfe8bcd848f083ee61c9fb904c0bde"
+      }
+    ],
+    "blender_version": "5.2.0 LTS",
+    "python_version": "3.13.13 (main, May  8 2026, 12:37:03) [MSC v.1944 64 bit (AMD64)]",
+    "generation_api_calls": 0,
+    "build_started_utc": "2026-09-06T19:38:33.402611+00:00",
+    "render_source": "actual optimized GLB reimport only"
+  }
+}

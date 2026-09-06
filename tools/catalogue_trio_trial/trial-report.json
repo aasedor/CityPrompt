@@ -1,0 +1,120 @@
+{
+  "date": "2026-09-06",
+  "scope": "User-authorized isolated local catalogue trial; no canonical catalogue promotion",
+  "project_id": "0c5c0816-3c68-4eea-8b74-150b84c59259",
+  "project_url": "http://127.0.0.1:5174/projects/0c5c0816-3c68-4eea-8b74-150b84c59259",
+  "site": "Open field at Fort Calgary; no existing building underneath the placed models",
+  "status": "PASS_LOCAL_PLACEMENT_AND_PERSISTENCE",
+  "models": [
+    {
+      "name": "Edwardian Foursquare",
+      "instances": 2,
+      "native_scale_locked": true,
+      "model_url": "/api/v1/files/library/local-trio-2026-09-06/toronto-edwardian-foursquare-clay-v004.glb",
+      "native_dimensions_m": [
+        11.069999694824219,
+        17.93000030517578,
+        10.8100004196167
+      ]
+    },
+    {
+      "name": "Calgary Inner-City Bungalow",
+      "instances": 2,
+      "native_scale_locked": true,
+      "model_url": "/api/v1/files/library/local-trio-2026-09-06/calgary-inner-city-bungalow-clay-v005.glb",
+      "native_dimensions_m": [
+        10.898324012756348,
+        16.050000190734863,
+        6.360000133514404
+      ]
+    },
+    {
+      "name": "Calgary Sandstone Heritage",
+      "instances": 1,
+      "native_scale_locked": true,
+      "model_url": "/api/v1/files/library/local-trio-2026-09-06/calgary-sandstone-heritage-clay-v007.glb",
+      "native_dimensions_m": [
+        59.40999984741211,
+        60.010000228881836,
+        44.0
+      ]
+    }
+  ],
+  "checks": {
+    "independent_clay_reviews": "3 passes; zero unresolved P0/P1",
+    "ui_selection_and_placement": "All three selected from the actual catalogue and placed through canvas events",
+    "home_plot_reshape": "30x20 m bungalow and 30x22 m Foursquare plots each contain two complete native homes",
+    "rotation": "Foursquare 20 degrees; civic hall 10 degrees",
+    "civic_plot_reshape": "70x70 m plot retains one native 59.41x60.01x44 m civic model",
+    "undersized_plot": "1 m width disables Apply shape; valid width restored",
+    "reload": "All three saved zones and five native instances survived browser reload",
+    "scene_grounding": "No reported grounding issues; scene settled; saved per-site terrain elevations",
+    "browser_errors": "No uncaught application errors reported",
+    "backend": "37 narrow tests passed",
+    "frontend": "10 narrow tests passed; type-check passed"
+  },
+  "fixes": [
+    "Added missing Foursquare family to native detached-home assembly allowlist, with regression coverage",
+    "Corrected civic facade/roof construction during bounded visual review before installation"
+  ],
+  "limitations": [
+    "Detailed Foursquare and civic models are approximately 10.3 MB and 12.3 MB; distance LODs and larger-scene performance testing remain before broad rollout.",
+    "Existing flat ground pads have visible edges and can cover adjacent terrain/path detail; this batch does not replace the separate ground-apron initiative.",
+    "Native model geometry and placement were tested; no paid image or video consistency trial was run.",
+    "Browser automation used canvas-dispatched pointer/click and wheel events because separate CLI mouse calls did not reliably constitute a click or zoom. Human mouse/touch ergonomics are not fully verified.",
+    "These are conceptual catalogue archetypes, not surveyed replicas or zoning approvals."
+  ],
+  "paid_media_calls": 0,
+  "canonical_promotion_approved": false,
+  "source_commits": {
+    "bungalow": "23b095e86",
+    "foursquare": "6b3c73fd9",
+    "civic": "37083f277"
+  },
+  "evidence": [
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\before-civic-placement.png",
+      "sha256": "0170709b345dc9e75a9c63a1c72a857d18cf1dfd8157ac74e73ba2b65c1e3c72"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\houses-ground-contact.png",
+      "sha256": "04a5076e4e09edc12cd2d7077dd0cc40e5d3d383d0d6706d5b514baa41762047"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\houses-repeat-rotated.png",
+      "sha256": "094bf3dbad4e027f50b29a1280daebe3279b2eb70a68d6bbe3e64418739f0fcc"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\undersized-plot-guard.png",
+      "sha256": "78aa7b5e19457d1e09b50baa0bd76db0bd5094c475fd196fc3099fcdf1b07064"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\civic-detail.png",
+      "sha256": "1f618c0bf764028a54c5c51151c15dd27bf55db9c23a13e6be1e791f0cfb3f21"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\civic-front-trial.png",
+      "sha256": "8bcb9ad4f8639af73223530898872a90404c4b86528e92dd04d0c77d93678ba9"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\trio-reloaded-overview.png",
+      "sha256": "3ca542fdccdb088c0e2ab7e4a010acba558249a643209fb3e04ef106fd2ff32b"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\trial-data.json",
+      "sha256": "4545135f5ba2585b6e7dd8e0d3fde5b428e343bb7717f0589f8e3813089a8024"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\ranch-install.json",
+      "sha256": "5376a75833dcf66c7f76758f735eda98db4b28cbda9ccae002ba0827bbfcee95"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\foursquare-install.json",
+      "sha256": "6b293e52b8de529540a1798c79094e713dfa209a761319e0874a6da75a963b5e"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\sandstone-install.json",
+      "sha256": "7079b3e395b87be7ac3a87c8c78ef8de4b9e8f313a35b2e6cb904c2e82fa0109"
+    }
+  ]
+}

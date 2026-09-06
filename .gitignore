@@ -152,3 +152,6 @@ tools/archetype_compiler/sticker_assets/**/.*.tmp.png
 # The shared 3D model library seed is deliberately versioned so a clean clone
 # can build detailed buildings. Restored with tools/seed_model_library.py.
 !seed/model-library/objects/**/*.glb
+
+# Human-activated architectural-clay runtime assets (Git LFS).
+!seed/model-library/rlasm-architectural-clay/models/*.glb

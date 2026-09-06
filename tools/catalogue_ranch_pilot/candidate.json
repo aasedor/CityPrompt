@@ -1,0 +1,35 @@
+{
+  "candidate": "calgary-inner-city-bungalow-clay-v005",
+  "method": "RLASM 6.1",
+  "scope": "architectural clay; local trial only",
+  "canonical_promotion_approved": false,
+  "external_directory": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\ranch-v005",
+  "model_sha256": "f601299cdb32072119e5484fe3206ddc4aa2263e88cea703a79158f018238153",
+  "model_bytes": 1168176,
+  "delivered_bounds_m": [
+    [
+      -5.430000305175781,
+      -8.664999961853027,
+      0.0
+    ],
+    [
+      5.468323707580566,
+      7.385000228881836,
+      6.360000133514404
+    ]
+  ],
+  "independent_review_sha256": "86f3a5579369f8bebf9486d38700358fad6348f3f3a45916de7dbc2b8627655b",
+  "runtime": {
+    "path": "calgary-inner-city-bungalow-clay-v005.glb",
+    "bytes": 1168176,
+    "sha256": "f601299cdb32072119e5484fe3206ddc4aa2263e88cea703a79158f018238153",
+    "meshes": 12,
+    "materials": 12,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 12,
+    "vertices": 12880,
+    "polygons": 20512,
+    "triangles": 20512
+  }
+}

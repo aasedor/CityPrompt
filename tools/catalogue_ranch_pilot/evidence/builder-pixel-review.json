@@ -1,0 +1,33 @@
+{
+  "findings": [
+    "Continuous landing reaches operable glazed door; no entry void.",
+    "Brick bond and asymmetrical living-room window match dominant source grammar.",
+    "Right bedroom projection and vertical-board gable retained.",
+    "Rear gable intersects hip without exposed vertical cliff.",
+    "All whole views preserve building envelope; rear and side room schedule remains inferred."
+  ],
+  "views_inspected": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/roof_contact.png",
+    "renders/porch_contact.png"
+  ],
+  "reviewer": "root builder",
+  "model_sha256": "f601299cdb32072119e5484fe3206ddc4aa2263e88cea703a79158f018238153",
+  "boards_inspected": [
+    "phone-source-comparison.png",
+    "phone-construction.png"
+  ],
+  "independent_approval": false,
+  "candidate": "calgary-inner-city-bungalow-clay-v005",
+  "builder_visual_review": "pass"
+}
