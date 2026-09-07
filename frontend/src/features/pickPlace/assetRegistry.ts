@@ -94,6 +94,7 @@ export const LOCAL_STREET_ASSET: StreetAsset = {
     road_selected_variant_id: 'calgary_local_v0',
     pick_place_street_section: 'calgary_local_v0',
     pick_place_automatic_3d: true,
+    community_3d_mask_existing_tiles: true,
     pick_place_definition_version: 1,
     road_standard_citation: 'Street Manual Draft 4.0, Figure 2',
   },
@@ -115,6 +116,7 @@ function additionalStreet(archetypeId: string, label: string, description: strin
       ...source.propertyPresets, road_archetype_id: archetypeId,
       road_selected_variant_id: variantId, pick_place_street_section: variantId,
       pick_place_automatic_3d: true, pick_place_definition_version: 1,
+      community_3d_mask_existing_tiles: true,
       road_standard_citation: archetypeId === 'calgary_collector'
         ? 'Street Manual Draft 4.0, Figure 6' : 'City Prompt representative teaching section',
     },

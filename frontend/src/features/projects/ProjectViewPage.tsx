@@ -14,6 +14,7 @@ import { SitePlannerToolbar } from '@/components/viewer/SitePlannerToolbar';
 import { PlacementPalette } from '@/features/pickPlace/PlacementPalette';
 import { ReshapePanel } from '@/features/pickPlace/ReshapePanel';
 import { StreetRoutePanel } from '@/features/pickPlace/StreetRoutePanel';
+import { publicRoadConnectionFits } from '@/features/pickPlace/publicRoadConnection';
 import { ConnectionEditor } from '@/features/pickPlace/ConnectionEditor';
 import { TerraceEditor } from '@/features/pickPlace/TerraceEditor';
 import { saveAutomaticParkGround } from '@/features/pickPlace/saveAutomaticParkGround';
@@ -281,7 +282,8 @@ export function ProjectViewPage() {
     if (zone && (assetForZone(zone) || isFixedSectionStreet(zone))) {
       if (isSaving) { toast.error('Wait for this edit to save.'); return false; }
       const problem = (isFixedSectionStreet(zone) ? streetRouteProblem(coordinates, streetSectionWidth(zone)) : null)
-        ?? placementProblem(coordinates, siteZones, getActiveSiteBoundary(siteZones), zoneId);
+        ?? placementProblem(coordinates, siteZones,
+          publicRoadConnectionFits(zone, coordinates, getActiveSiteBoundary(siteZones)) ? null : getActiveSiteBoundary(siteZones), zoneId);
       if(problem) { toast.error(problem, { position: 'top-center' }); return false; }
     }
     handleZoneUpdated(zoneId, coordinates);
@@ -1192,6 +1194,10 @@ export function ProjectViewPage() {
         )}
         {selectedZone && isFixedSectionStreet(selectedZone) && advancedZoneId !== selectedZone.id && !placementDraft && !showHistory && !measureActive && (
           <StreetRoutePanel zone={selectedZone} disabled={isSaving} onReshape={coords=>reshapeObject(selectedZone.id, coords)}
+            connectionLeavesSite={publicRoadConnectionFits(selectedZone, selectedZone.coordinates, getActiveSiteBoundary(siteZones))}
+            onPublicConnection={enabled => updateZone.mutate({zoneId: selectedZone.id, data: {
+              properties: {...selectedZone.properties, connect_to_public_road: enabled},
+            }, previousData: { properties: selectedZone.properties }})}
             onConnections={()=>setConnectionZoneId(selectedZone.id)}
             onClose={()=>selectZone(null)} onDelete={()=>deleteZone.mutate(selectedZone.id)} onMore={()=>setAdvancedZoneId(selectedZone.id)} />
         )}

@@ -1,12 +1,48 @@
 import { describe, expect, it } from 'vitest';
 import * as THREE from 'three';
-import { buildStreetJunctionSurface, clipStreetGeometryOutsideJunction, type StreetJunctionLayout } from './streetJunctionGeometry';
+import { buildSectionJunctionGeometry, buildStreetJunctionSurface, clipStreetGeometryOutsideJunction, streetJunctionContainsPoint, type StreetJunctionLayout } from './streetJunctionGeometry';
 import { buildAccessibleFourWayIntersectionGeometry } from './streetMesh3D';
 
 const tee: StreetJunctionLayout = {
   bearing: 0, rowA: 8, rowB: 7, roadA: 4, roadB: 3.5, sidesB: [1],
   bounds: [{ minX: -11, maxX: 11, minY: -8, maxY: 8 }, { minX: -7, maxX: 7, minY: 0, maxY: 12 }],
 };
+
+describe('catalogue cross-section junctions', () => {
+  it('clears furniture from the full rotated junction and its ramp approaches', () => {
+    const rotated = {...tee,bearing:Math.PI/2};
+    expect(streetJunctionContainsPoint(rotated,-11,0,2)).toBe(true);
+    expect(streetJunctionContainsPoint(rotated,-15,0,2)).toBe(false);
+    expect(streetJunctionContainsPoint(tee,0,-11,0)).toBe(false);
+  });
+  const layout: StreetJunctionLayout = { ...tee, sections: [
+    { low: -2, high: 4, roadZ: 0.1, edgeZ: 0.245, raised: true },
+    { low: -2.7, high: 2.7, roadZ: 0.11, edgeZ: 0.09, raised: false },
+  ] };
+  it('keeps an offset carriageway, cuts six ramps and does not invent a fourth arm', () => {
+    const g = buildSectionJunctionGeometry(layout);
+    expect(covers(g.pavement, -8, 3.8)).toBe(true);
+    expect(covers(g.pavement, -8, -3)).toBe(false);
+    expect(covers(g.sidewalks, -8, -3)).toBe(true);
+    expect(covers(g.pavement, 0, -10)).toBe(false);
+    expect(covers(g.sidewalks, -5.6, 4.8)).toBe(false);
+    expect(covers(g.curbRamps, -5.6, 4.8)).toBe(true);
+    // Six warning pads, two upward-facing triangles each.
+    expect(g.tactilePads.getAttribute('position').count).toBe(36);
+    const normals = g.tactilePads.getAttribute('normal');
+    for (let i = 0; i < normals.count; i++) expect(normals.getZ(i)).toBeGreaterThan(0.9);
+    Object.values(g).forEach(item => item.dispose());
+  });
+  it('keeps shared/shared junctions level, with no fake ramps or raised curb', () => {
+    const section = {low: -2.7, high: 2.7, roadZ: 0.11, edgeZ: 0.09, raised: false};
+    const g = buildSectionJunctionGeometry({...layout, sections: [section, section]});
+    expect(g.curbRamps.getAttribute('position').count).toBe(0);
+    expect(g.crosswalks.getAttribute('position').count).toBe(3 * 7 * 6);
+    const p = g.pavement.getAttribute('position');
+    for (let i = 0; i < p.count; i++) expect(p.getZ(i)).toBeCloseTo(0.11, 6);
+    Object.values(g).forEach(item => item.dispose());
+  });
+});
 function area(geometry: THREE.BufferGeometry) {
   const vertices = geometry.getAttribute('position'); const index = geometry.getIndex();
   let sum = 0;

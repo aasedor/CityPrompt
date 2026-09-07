@@ -41,6 +41,7 @@ import { elevationApi } from '@/services/api';
 import {
   isCommunity3DCompiled,
   resolveCommunity3DKind,
+  shouldRenderCommunityGround,
 } from '@/features/community3d/community3d';
 import {
   createSitePreparationGeometry,
@@ -80,6 +81,9 @@ import {
 import { resolveBuildingExtrudeHeight, resolveZoneSurfaceMode } from './zoneSurfaceMode';
 import { useParkGround } from './useParkGround';
 import { createSharedGroundTriangulation, drapeSharedGroundGeometry } from './sharedGroundGeometry';
+import { selectDetailedStreetZones } from './streetDetailLod';
+import { resolvePilotStreetSectionProfile } from './streetSectionProfiles';
+import { extractRenderableStreetCenterline } from '@/utils/roadGeometry';
 
 const DEG_TO_RAD = Math.PI / 180;
 const OBJECT_FILTER_SAMPLE_RADIUS_METERS = 8;
@@ -414,7 +418,7 @@ function getTerrainProbePoints(
   return probes;
 }
 
-function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabled, lightweight = false, suppressed = false, planningOverlaysVisible = true, boundaryOverlayVisible = true, sitePrepared = false, preparedTerrain = null, inheritedMaskPreference = null, preparedGroundCutouts }: {
+function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabled, lightweight = false, suppressed = false, planningOverlaysVisible = true, boundaryOverlayVisible = true, sitePrepared = false, preparedTerrain = null, inheritedMaskPreference = null, preparedGroundCutouts, sectionOwnsGround = false }: {
   preparedGroundCutouts?: number[][][];
   zone: SiteZone;
   isSelected: boolean;
@@ -424,6 +428,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   lightweight?: boolean;
   suppressed?: boolean;
   planningOverlaysVisible?: boolean;
+  sectionOwnsGround?: boolean;
   boundaryOverlayVisible?: boolean;
   sitePrepared?: boolean;
   preparedTerrain?: number | null;
@@ -1209,14 +1214,18 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
           // captures so they never tint the render. Compiled/drape surfaces
           // stay captured — they ARE the designed ground.
           userData={
-            !isPreparedBoundary && !isCompiledGround && !drapeActive && !isWoonerfGround
+            sectionOwnsGround || (!isPreparedBoundary && !isCompiledGround && !drapeActive && !isWoonerfGround)
               ? DIRECT_3D_CAPTURE_EXCLUDE_USER_DATA
               : undefined
           }
         >
           {/* key remounts the material when the ground drape toggles so the
               map define recompiles (toggling `map` in place leaves it white) */}
-          {isPreparedBoundary ? (
+          {sectionOwnsGround ? (
+            // Retain the editor hit target, but not an independently seated
+            // slab covering the measured street bands or entering captures.
+            <meshBasicMaterial colorWrite={false} depthWrite={false} />
+          ) : isPreparedBoundary ? (
             <meshStandardMaterial
               key="prepared-site"
               color="#d5d0c6"
@@ -1383,6 +1392,11 @@ export function GlobeZoneLayer({
     return () => window.removeEventListener('cityprompt:hide-zone-overlays', onToggle);
   }, []);
   const showPlanningOverlays = planningOverlaysVisible && !overlaysHidden;
+  const sectionGroundIds = useMemo(() => new Set(selectDetailedStreetZones(zones.filter(zone =>
+    resolveCommunity3DKind(zone) === 'street' && zone.coordinates.length >= 4 && shouldRenderCommunityGround(zone)))
+    .filter(zone => zone.properties?.connect_to_public_road === true
+      && Boolean(resolvePilotStreetSectionProfile(zone)) && extractRenderableStreetCenterline(zone).length >= 2)
+    .map(zone => zone.id)), [zones]);
   const sitePrepared = useMemo(
     () => getPreparedSiteBoundaryIds(zones).size > 0,
     [zones],
@@ -1408,6 +1422,7 @@ export function GlobeZoneLayer({
             }}
           >
             <ZoneMesh
+              sectionOwnsGround={sectionGroundIds.has(zone.id)}
               preparedGroundCutouts={preparedGroundCutouts}
               key={`${zone.id}:${preparedTerrain ?? 'terrain'}`}
               zone={zone}

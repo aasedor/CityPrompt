@@ -554,6 +554,18 @@ def _street_supports_v1_four_way_junction(zone: SiteZone) -> bool:
         if "_plan_snapshot_id" in properties or "_imported_from" in properties:
             return False
     raw_recipe = properties.get(PUBLIC_REALM_RECIPE_PROPERTY)
+    # The fixed 20 m catalogue collector has a metric section but no promoted
+    # LEGO family yet. Accept only that exact fallback, never arbitrary legacy
+    # roads. The capture inventory separately verifies its compiled source hash.
+    fallback = properties.get("public_realm_fallback")
+    if (
+        properties.get("road_archetype_id") == "calgary_collector"
+        and properties.get("road_selected_variant_id") == "calgary_collector_v0"
+        and _effective_street_width(zone) == 20
+        and isinstance(fallback, dict)
+        and fallback.get("state") == "family_pending"
+    ):
+        return True
     if not isinstance(raw_recipe, dict):
         return False
     identity = public_realm_recipe_identity(raw_recipe)
@@ -596,8 +608,9 @@ def _street_supports_v1_four_way_junction(zone: SiteZone) -> bool:
             recipe.get("family_id"),
         )
     )
-    return _effective_street_width(zone) >= 6 and not any(
-        token in semantic for token in ("trail", "path", "laneway", "alley", "roundabout")
+    alley = properties.get("road_archetype_id") == "green_alley" and _effective_street_width(zone) == 5
+    return _effective_street_width(zone) >= (5 if alley else 6) and not any(
+        token in semantic for token in ("trail", "path", "roundabout", *(("laneway", "alley") if not alley else ()))
     )
 
 
@@ -984,8 +997,9 @@ def _validate_junction_topology(
                 recipe.get("family_id"),
             )
         )
-        if _effective_street_width(zone) < 6 or any(
-            token in semantic for token in ("trail", "path", "laneway", "alley", "roundabout")
+        alley = properties.get("road_archetype_id") == "green_alley" and _effective_street_width(zone) == 5
+        if _effective_street_width(zone) < (5 if alley else 6) or any(
+            token in semantic for token in ("trail", "path", "roundabout", *(("laneway", "alley") if not alley else ()))
         ):
             continue
         line = _street_zone_centerline(zone)

@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { TilesRendererContext } from '3d-tiles-renderer/r3f';
 import { WGS84_ELLIPSOID } from '3d-tiles-renderer';
@@ -7,6 +7,7 @@ import type { SiteZone } from '@/types';
 import type { GroundReview } from './groundReview';
 import { createGroundSelection } from './sharedGroundSelection';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
+import { alignStreetGroundLayout, anchoredStreetGroundHeight } from './streetGroundExtension';
 import { createSharedSiteGroundLayout, createSharedSiteGroundSnapshot, sampleSharedSiteGround,
   sharedSiteGroundContains, sharedSiteGroundGridPoint, sharedSiteGroundSourceSignature, validateSharedSiteGroundPass,
   type SharedSiteGroundLayout, type SharedSiteGroundPassQuality, type SharedSiteGroundSnapshot } from './sharedSiteGround';
@@ -59,15 +60,19 @@ function visibleTileHit(object: THREE.Object3D, tileGroup: THREE.Object3D, visib
  * invalidate the surface; a capture must wait for the next ready revision.
  * Full coverage and repeatability establish visible-mesh contact, not surveyed
  * bare earth. No unknown or outlier sample is synthesized. */
-export function SharedSiteGroundProvider({ zones, children, onChange, inspectPrepared = false, sampleSpacingM }: {
+export function SharedSiteGroundProvider({ zones, children, onChange, inspectPrepared = false, sampleSpacingM, anchorSnapshot, publishDiagnostics = true }: {
   zones: SiteZone[]; children: ReactNode; onChange?: (state: SharedSiteGroundState) => void; inspectPrepared?: boolean; sampleSpacingM?: number;
+  anchorSnapshot?: SharedSiteGroundSnapshot; publishDiagnostics?: boolean;
 }) {
   const tiles = useContext(TilesRendererContext);
   const active = getActiveSiteBoundary(zones);
   const inspectionOnly = Boolean(active && (active.properties?.community_3d_mask_existing_tiles !== false || active.properties?.terrain_strategy === 'landscape'));
   const boundary = !inspectionOnly || inspectPrepared ? active : null;
-  const sourceSignature = boundary ? sharedSiteGroundSourceSignature(boundary, sampleSpacingM) : 'inactive';
-  const layout = useMemo(() => boundary ? createSharedSiteGroundLayout(boundary, sampleSpacingM) : null,
+  const sourceSignature = boundary ? `${sharedSiteGroundSourceSignature(boundary, sampleSpacingM)}${anchorSnapshot ? `:${anchorSnapshot.signature}` : ''}` : 'inactive';
+  const layout = useMemo(() => {
+    const base = boundary ? createSharedSiteGroundLayout(boundary, sampleSpacingM) : null;
+    return base && anchorSnapshot ? alignStreetGroundLayout(base, anchorSnapshot) : base;
+  },
     // Properties unrelated to the site's revision/geometry do not restart sampling.
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [sourceSignature]);
@@ -86,15 +91,15 @@ export function SharedSiteGroundProvider({ zones, children, onChange, inspectPre
     // A row metadata write does not move this fixed site-coverage camera.
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [layout]);
-  const diagnose = (patch: Partial<SharedGroundDiagnostics>) => {
-    if (!import.meta.env.DEV || typeof window === 'undefined') return;
+  const diagnose = useCallback((patch: Partial<SharedGroundDiagnostics>) => {
+    if (!publishDiagnostics || !import.meta.env.DEV || typeof window === 'undefined') return;
     diagnostics.current ??= { source: '', generation: 0, status: 'inactive', layout: null, passes: 0, index: 0, missCount: 0,
       elapsedMs: 0, settledForMs: 0, deadlineAt: 0, deadlineReason: null, passQuality: null, maxPassDeltaM: null,
       latestCompletedRawValues: null, visibleTileCount: 0, visibleSceneCount: 0, sampledFrames: 0, lastBatchMs: 0,
       lastInvalidation: null };
     Object.assign(diagnostics.current, patch);
     window.__sharedGroundDiagnostics = diagnostics.current;
-  };
+  }, [publishDiagnostics]);
   useEffect(() => () => {
     if (import.meta.env.DEV && typeof window !== 'undefined' && window.__sharedGroundDiagnostics === diagnostics.current)
       delete window.__sharedGroundDiagnostics;
@@ -123,7 +128,7 @@ export function SharedSiteGroundProvider({ zones, children, onChange, inspectPre
       tiles.removeEventListener('tile-visibility-change', invalidate);
       if (selection) tiles.deleteCamera(selection.camera);
     };
-  }, [tiles, sourceSignature, selection]);
+  }, [tiles, sourceSignature, selection, diagnose]);
 
   useFrame(() => {
     const current = run.current, now = Date.now();
@@ -160,6 +165,10 @@ export function SharedSiteGroundProvider({ zones, children, onChange, inspectPre
     const batchStarted = performance.now();
     for (let processed = 0; current.index < count && processed < MAX_SAMPLES_PER_FRAME; processed += 1) {
       const [lng, lat] = sharedSiteGroundGridPoint(layout, current.index);
+      const anchored = anchorSnapshot ? anchoredStreetGroundHeight(anchorSnapshot, lng, lat) : null;
+      if (anchored !== null) {
+        current.values.push(anchored); current.index += 1; continue;
+      }
       WGS84_ELLIPSOID.getCartographicToPosition(lat * Math.PI / 180, lng * Math.PI / 180, 50000, origin.current);
       WGS84_ELLIPSOID.getCartographicToNormal(lat * Math.PI / 180, lng * Math.PI / 180, normal.current);
       raycaster.current.set(origin.current, normal.current.negate()); raycaster.current.far = 100000;
