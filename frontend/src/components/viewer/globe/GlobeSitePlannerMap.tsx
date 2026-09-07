@@ -37,7 +37,7 @@ import { EMPTY_TRANSPORT, type ExistingTransport } from '@/features/referenceLay
 import type { ReferenceLayer } from '@/features/referenceLayers/api';
 import { GlobeZoneLayer } from './GlobeZoneLayer';
 import { SharedSiteGroundProvider, INACTIVE_SHARED_SITE_GROUND, type SharedSiteGroundState } from './SharedSiteGroundProvider';
-import { captureSharedGround, assertSharedGroundUnchanged } from './sharedGroundCapture';
+import { captureSharedGround, assertSharedGroundUnchanged, groundReadinessMessage } from './sharedGroundCapture';
 import { GlobeBuildingModelsLayer } from './GlobeBuildingModelsLayer';
 import { GlobeLegoAssemblyLayer, type LegoGroundingIssue } from './GlobeLegoAssemblyLayer';
 import {
@@ -1600,6 +1600,7 @@ export function GlobeSitePlannerMap({
   // without colored polygon fills baked into it. Default true so users
   // normally see their drawn zones.
   const [zoneOverlaysVisible, setZoneOverlaysVisible] = useState(true);
+  const [captureOverlaysHidden, setCaptureOverlaysHidden] = useState(false);
   const zoneOverlaysVisibleRef = useRef(true);
   zoneOverlaysVisibleRef.current = zoneOverlaysVisible;
   const parkAccessSnapshot = useMemo(() => resolveManualParkAccess(
@@ -2601,13 +2602,14 @@ export function GlobeSitePlannerMap({
       }
 
       const previousReferenceVisibility = referenceOverlayGroup.current?.visible;
-    const previousOverlaysVisible = zoneOverlaysVisibleRef.current;
+      const previousOverlaysVisible = zoneOverlaysVisibleRef.current;
       const previousSelectedBuildingId = selectedBuildingIdRef.current;
       try {
         // Direct capture consumes the compiled 3D scene, never editable color
         // polygons or selection affordances. Two frames let React commit the
         // clean state before the deterministic off-screen passes begin.
         setZoneOverlaysVisible(false);
+        setCaptureOverlaysHidden(true);
         setSelectedBuildingId(null);
         await new Promise<void>((resolve) => {
           requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
@@ -2635,6 +2637,7 @@ export function GlobeSitePlannerMap({
       } finally {
         if (referenceOverlayGroup.current && previousReferenceVisibility !== undefined) referenceOverlayGroup.current.visible = previousReferenceVisibility;
         setZoneOverlaysVisible(previousOverlaysVisible);
+        setCaptureOverlaysHidden(false);
         setSelectedBuildingId(previousSelectedBuildingId);
       }
     })().finally(() => {
@@ -2831,6 +2834,7 @@ export function GlobeSitePlannerMap({
       if (previousControlsEnabled !== null) controlsTarget.enabled = false;
       if (referenceOverlayGroup.current) referenceOverlayGroup.current.visible = false;
       setStreetCapturePegmanHidden(true);
+      setCaptureOverlaysHidden(true);
       setZoneOverlaysVisible(false);
       setSelectedBuildingId(null);
       setBuildingModelsVisible(true);
@@ -3082,6 +3086,7 @@ export function GlobeSitePlannerMap({
       if (previousControlsEnabled !== null) controlsTarget.enabled = previousControlsEnabled;
       controls?.update?.();
       setStreetCapturePegmanHidden(false);
+      setCaptureOverlaysHidden(false);
       setStreetRenderProfileActive(false);
       if (referenceOverlayGroup.current && previousReferenceVisibility !== undefined) referenceOverlayGroup.current.visible = previousReferenceVisibility;
       setZoneOverlaysVisible(previousOverlaysVisible);
@@ -3110,6 +3115,7 @@ export function GlobeSitePlannerMap({
     try {
       if (referenceOverlayGroup.current) referenceOverlayGroup.current.visible = false;
       setStreetCapturePegmanHidden(true);
+      setCaptureOverlaysHidden(true);
       setSelectedBuildingId(null);
       if (kind === 'model3d') {
         // The authored models carry the design — colored zone overlays would
@@ -3132,6 +3138,7 @@ export function GlobeSitePlannerMap({
       return await fn(kind);
     } finally {
       setStreetCapturePegmanHidden(false);
+      setCaptureOverlaysHidden(false);
       setStreetRenderProfileActive(false);
       setSelectedBuildingId(previousSelectedBuildingId);
       if (referenceOverlayGroup.current && previousReferenceVisibility !== undefined) referenceOverlayGroup.current.visible = previousReferenceVisibility;
@@ -4046,6 +4053,7 @@ export function GlobeSitePlannerMap({
               selectionEnabled={!interactionPaused && !hasDrawingTool && !measureModeActive}
               suppressedBuildingIds={suppressedBuildingIds}
               planningOverlaysVisible={zoneOverlaysVisible}
+              placementBoundaryVisible={!captureOverlaysHidden && (Boolean(placementDraft) || activeSitePlannerTool === 'road')}
             />
           </group>
 
@@ -4458,8 +4466,8 @@ export function GlobeSitePlannerMap({
           </button>
         )}
         {(sharedGroundState.status === 'sampling' || sharedGroundState.status === 'unavailable') && (
-          <span role="status" className="rounded-full border-2 border-[#151515] bg-[#fff9ec]/95 px-3 py-1.5 text-[11px] font-bold text-[#151515]">
-            {sharedGroundState.status === 'sampling' ? 'Aligning to ground…' : 'Ground alignment needs a clear view of the site'}
+          <span role="status" className="max-w-sm rounded-xl border-2 border-[#151515] bg-[#fff9ec]/95 px-3 py-1.5 text-[11px] font-bold text-[#151515]">
+            {groundReadinessMessage(sharedGroundState)}
           </span>
         )}
         {sharedGroundState.status === 'ready' && buildingGroundingIssues.some((issue) => issue.reason !== 'ground_not_ready') && (

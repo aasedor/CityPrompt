@@ -16,6 +16,7 @@ export interface SharedSiteGroundState {
   heightAt: (lng: number, lat: number) => number | null;
   contains: (lng: number, lat: number) => boolean;
   revision: string;
+  failureReason?: string | null;
 }
 export const INACTIVE_SHARED_SITE_GROUND: SharedSiteGroundState = Object.freeze({
   status: 'inactive', snapshot: null, heightAt: () => null, contains: () => false, revision: 'inactive',
@@ -62,7 +63,7 @@ export function SharedSiteGroundProvider({ zones, children, onChange }: {
     // Properties unrelated to the site's revision/geometry do not restart sampling.
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [sourceSignature]);
-  const [result, setResult] = useState<{ source: string; status: SharedSiteGroundState['status']; snapshot: SharedSiteGroundSnapshot | null; generation: number }>(
+  const [result, setResult] = useState<{ source: string; status: SharedSiteGroundState['status']; snapshot: SharedSiteGroundSnapshot | null; generation: number; failureReason?: string | null }>(
     { source: 'inactive', status: 'inactive', snapshot: null, generation: 0 });
   const onChangeRef = useRef(onChange); onChangeRef.current = onChange;
   const raycaster = useRef(new THREE.Raycaster());
@@ -133,7 +134,7 @@ export function SharedSiteGroundProvider({ zones, children, onChange }: {
     const unavailable = (reason: string) => {
       current.done = true;
       diagnose({ status: 'unavailable', deadlineReason: reason });
-      setResult({ source: sourceSignature, status: 'unavailable', snapshot: null, generation: current.generation });
+      setResult({ source: sourceSignature, status: 'unavailable', snapshot: null, generation: current.generation, failureReason: reason });
     };
     if (now - current.startedAt > TIMEOUT_MS) { unavailable('sampling_deadline'); return; }
     // Match capture readiness: a nonempty visible tile set must be unchanged
@@ -191,6 +192,7 @@ export function SharedSiteGroundProvider({ zones, children, onChange }: {
     const snapshot = measured ? { ...measured, boundaryUpdatedAt: boundary.updated_at } : null;
     const ring = layout?.boundaryCoordinates ?? boundary.coordinates.map(([lng, lat]): [number, number] => [lng, lat]);
     return { status: matching ? result.status : layout ? 'sampling' : 'unavailable', snapshot,
+      failureReason: matching && result.status === 'unavailable' ? result.failureReason : null,
       contains: (lng, lat) => sharedSiteGroundContains(ring, lng, lat),
       heightAt: (lng, lat) => sampleSharedSiteGround(snapshot, lng, lat),
       revision: `${sourceSignature}:${result.generation}:${snapshot?.signature ?? (matching ? result.status : 'sampling')}` };

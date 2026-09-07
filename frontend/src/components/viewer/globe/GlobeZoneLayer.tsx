@@ -120,6 +120,8 @@ interface GlobeZoneLayerProps {
   /** Planning fills/outlines/labels can be hidden while generated park
    * orthophotos remain mounted as authored proposal content. */
   planningOverlaysVisible?: boolean;
+  /** Keep placement limits legible without exposing every planning fill. */
+  placementBoundaryVisible?: boolean;
 }
 
 function coordinatesNearlyEqual(a: number[], b: number[]): boolean {
@@ -1349,6 +1351,7 @@ export function GlobeZoneLayer({
   selectionEnabled = true,
   suppressedBuildingIds,
   planningOverlaysVisible = true,
+  placementBoundaryVisible = false,
 }: GlobeZoneLayerProps) {
   // Render-time clean capture (cc_clean_composite): useGlobeAIRender hides the
   // zone overlays for one frame so the composite-back base holds real tiles,
@@ -1396,7 +1399,7 @@ export function GlobeZoneLayer({
               lightweight={lightweight}
               suppressed={Boolean(zone.building_id && suppressedBuildingIds?.has(zone.building_id))}
               planningOverlaysVisible={showPlanningOverlays}
-              boundaryOverlayVisible={showPlanningOverlays}
+              boundaryOverlayVisible={!overlaysHidden && (showPlanningOverlays || placementBoundaryVisible)}
               sitePrepared={sitePrepared && preparedTerrain !== null}
               preparedTerrain={preparedTerrain}
               inheritedMaskPreference={getActiveBoundaryTileMaskPreference(zones, zone)}

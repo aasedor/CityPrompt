@@ -1,4 +1,5 @@
 import { isCatalogueOnlyScene, CATALOGUE_UPDATE_GUIDANCE } from '@/features/pickPlace/catalogue';
+import { useRenderDraft } from './useRenderDraft';
 /**
  * GlobeAIRenderPanel.tsx — Simplified AI render controls for the 3D globe.
  *
@@ -280,8 +281,8 @@ export function GlobeAIRenderPanel({
   const [result, setResult] = useState<GlobeRenderResult | null>(null);
   const [previews, setPreviews] = useState<GlobeRenderResult[]>([]);
   const [selectedPreviewIndex, setSelectedPreviewIndex] = useState<number | null>(null);
-  const [selectedStyle, setSelectedStyle] = useState('photorealistic');
-  const [customPrompt, setCustomPrompt] = useState('');
+  const draftStyleIds = useMemo(() => STYLES.map(style => style.id), []);
+  const { selectedStyle, setSelectedStyle, customPrompt, setCustomPrompt } = useRenderDraft(projectId, draftStyleIds);
   const [highFidelity, setHighFidelity] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [renderPipeline, setRenderPipeline] = useState<GlobeRenderPipeline>(
@@ -303,7 +304,7 @@ export function GlobeAIRenderPanel({
     if (renderPipeline === 'classic' && selectedStyle === 'development' && !hasPlacedMassing) {
       setSelectedStyle('photorealistic');
     }
-  }, [renderPipeline, selectedStyle, hasPlacedMassing]);
+  }, [renderPipeline, selectedStyle, hasPlacedMassing, setSelectedStyle]);
   const [saving, setSaving] = useState(false);
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saved' | 'error'>('idle');
   const [savedRenders, setSavedRenders] = useState<SavedRender[]>([]);
