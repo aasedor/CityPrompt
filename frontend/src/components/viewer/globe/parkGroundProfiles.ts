@@ -1902,6 +1902,10 @@ export function resolveParkSpecialtyStructureKind(
   zone: ParkProfileZone,
 ): ParkSpecialtyStructureKind | null {
   if (isParkTrio(zone)) return 'park_trio_assembly';
+  // The explicitly selected adaptive pilot owns its procedural geometry even
+  // when the server records a pending external asset family. Catalogue IDs
+  // alone still must not opt generic fallback parks into a legacy assembly.
+  if (isNeighborhoodParkPilot(zone)) return 'neighborhood_park_v0_sticker_assembly';
   const properties = (zone.properties ?? {}) as Record<string, unknown>;
   // A family-pending marker certifies the generic source-fitted fallback, not
   // any fixed legacy assembly inferred from the selected catalogue IDs.

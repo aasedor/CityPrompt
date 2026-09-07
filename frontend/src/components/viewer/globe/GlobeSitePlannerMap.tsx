@@ -53,6 +53,8 @@ import { GlobeParkKitLayer } from './GlobeParkKitLayer';
 import { applyManualParkAccessSnapshot, resolveManualParkAccess } from './parkAccessConnections';
 import { resolvePedestrianConnections } from '@/features/pickPlace/pedestrianConnections';
 import { GlobePedestrianConnections } from './GlobePedestrianConnections';
+import { GlobeTerraces } from './GlobeTerraces';
+import { buildTerraceScene } from './terraceScene';
 import { GlobeResidualLandscapeLayer } from './GlobeResidualLandscapeLayer';
 import { GlobeStreetRenderProfile } from './GlobeStreetRenderProfile';
 import { getResidualLandscapeRecipe } from './residualLandscape';
@@ -1763,6 +1765,11 @@ export function GlobeSitePlannerMap({
 
   // Dynamic terrain elevation â€” fetched from Google Elevation API on mount
   const [terrainElevation, setTerrainElevation] = useState(DEFAULT_TERRAIN_ELEVATION);
+  const terraceScene = useMemo(() => buildTerraceScene(connectedSceneZones, terrainElevation), [connectedSceneZones, terrainElevation]);
+  const preparedGroundCutouts = useMemo(() => [...terraceScene.terraces.map(z => z.coordinates), ...terraceScene.paths.filter(p => p.status === 'connected').map(p => p.rampFootprint)], [terraceScene]);
+  const terraceParkZones = useMemo(() => connectedSceneZones.map(zone => ({...zone, properties:{...zone.properties,
+    terrace_access_clearances: terraceScene.paths.filter(p => p.status === 'connected' && (p.ownerId === zone.id || p.targetId === zone.id)).map(p => ({widthM:p.widthM, points:(p.ownerId === zone.id ? p.points.slice(0,2) : p.points.slice(2)).map(v => v.slice(0,2))}))
+  }})), [connectedSceneZones, terraceScene]);
   const preparedSiteTerrainHeight = useMemo(() => {
     const boundary = getActiveSiteBoundary(siteZones);
     return boundary && preparedSiteBoundaryIds.has(boundary.id)
@@ -4054,6 +4061,7 @@ export function GlobeSitePlannerMap({
               proposal ground (alongside models, street sections and props). */}
           <group name="siteforge-direct3d-ground" userData={direct3DProposalUserData('ground')}>
             <GlobeZoneLayer
+              preparedGroundCutouts={preparedGroundCutouts}
               zones={connectedSceneZones}
               selectedZoneId={interactionPaused ? null : selectedZoneId}
               terrainHeight={terrainElevation}
@@ -4096,13 +4104,14 @@ export function GlobeSitePlannerMap({
           <group name="siteforge-direct3d-street" userData={direct3DProposalUserData('street')}>
             <GlobeStreetDetailLayer zones={siteZones} terrainHeight={terrainElevation} />
             <GlobePedestrianConnections results={pedestrianConnections} zones={connectedSceneZones} terrainHeight={terrainElevation} />
+            <GlobeTerraces scene={terraceScene} zones={connectedSceneZones} />
           </group>
 
           {/* Park-program structures (playgrounds/pavilions/bridges) — sibling
               of the zone-overlay group like the building models. Trees and
               benches stay render-only so they cannot collide with paths. */}
           <group name="siteforge-direct3d-park" userData={direct3DProposalUserData('park')}>
-            <GlobeParkKitLayer zones={connectedSceneZones} terrainHeight={terrainElevation} />
+            <GlobeParkKitLayer zones={terraceParkZones} terrainHeight={terrainElevation} />
           </group>
 
           {/* Generated 3D building models — sibling of the zone-overlay group

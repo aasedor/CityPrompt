@@ -15,6 +15,8 @@ import { PlacementPalette } from '@/features/pickPlace/PlacementPalette';
 import { ReshapePanel } from '@/features/pickPlace/ReshapePanel';
 import { StreetRoutePanel } from '@/features/pickPlace/StreetRoutePanel';
 import { ConnectionEditor } from '@/features/pickPlace/ConnectionEditor';
+import { TerraceEditor } from '@/features/pickPlace/TerraceEditor';
+import { TerraceSummary } from '@/features/pickPlace/TerraceSummary';
 import { CALGARY_LOCAL_PLACEMENT, isCalgaryLocalRoute, streetRouteProblem } from '@/features/pickPlace/streetPlacement';
 import { assetForZone, placeAsset, placementProperties, type PlaceAssetId } from '@/features/pickPlace/catalogue';
 import { placementProblem, rectangleAt } from '@/features/pickPlace/geometry';
@@ -241,6 +243,8 @@ export function ProjectViewPage() {
   const selectedZone = siteZones.find((z) => z.id === selectedZoneId) || null;
   const [connectionZoneId, setConnectionZoneId] = useState<string | null>(null);
   const connectionZone = siteZones.find(zone=>zone.id===connectionZoneId);
+  const [terraceZoneId,setTerraceZoneId]=useState<string|null>(null);
+  const terraceZone=siteZones.find(zone=>zone.id===terraceZoneId);
   const cancelPlacement = useCallback(() => setPlacementDraft(null), []);
   const pickObject = (assetId: PlaceAssetId, width?: number, depth?: number, degrees = 0) => {
     const asset = placeAsset(assetId);
@@ -1150,6 +1154,7 @@ export function ProjectViewPage() {
           <SiteElevation lat={project.location?.latitude} lon={project.location?.longitude} />
         </aside>}
         {showPlanningReport && <StudioDialog title="Planning report" onClose={closePlanningReport}>
+          <TerraceSummary zones={siteZones}/>
           <StudentPlanningReport projectId={project.id} zoneIds={visibleZones.filter((zone) => isPersistedZoneId(zone.id)).map((zone) => zone.id)}
             planChangeToken={siteZones.map((zone) => `${zone.id}:${zone.updated_at}`).join('|')} canEdit
             onSelectZone={(zoneId) => { closePlanningReport(); selectZone(zoneId); }} />
@@ -1160,6 +1165,7 @@ export function ProjectViewPage() {
         {/* Zone properties panel */}
         {selectedZone && assetForZone(selectedZone) && advancedZoneId !== selectedZone.id && !placementDraft && !showHistory && !measureActive && (
           <ReshapePanel key={`${selectedZone.id}:${JSON.stringify(selectedZone.coordinates)}`} zone={selectedZone} disabled={isSaving}
+            onTerrace={['building','residential','green_space'].includes(selectedZone.zone_type)?()=>setTerraceZoneId(selectedZone.id):undefined}
             onConnections={()=>setConnectionZoneId(selectedZone.id)}
             onReshape={coordinates => reshapeObject(selectedZone.id, coordinates)} onClose={() => selectZone(null)}
             onDelete={() => deleteZone.mutate(selectedZone.id)} onDuplicate={pickObject} onMore={() => setAdvancedZoneId(selectedZone.id)} />
@@ -1195,6 +1201,9 @@ export function ProjectViewPage() {
           />
         )}
 
+        {terraceZone && <TerraceEditor key={terraceZone.id} zone={terraceZone} zones={siteZones} disabled={isSaving} onClose={()=>setTerraceZoneId(null)} onSave={async properties=>{
+          await updateZone.mutateAsync({zoneId:terraceZone.id,data:{properties},previousData:{properties:terraceZone.properties}});
+        }}/>}
         {connectionZone && <ConnectionEditor key={connectionZone.id} zone={connectionZone} zones={siteZones} transportContext={transportContext} visibleIds={visibleZones.map(zone=>zone.id)} disabled={isSaving}
           onClose={()=>setConnectionZoneId(null)} onSave={async properties=>{
             await updateZone.mutateAsync({zoneId:connectionZone.id,data:{properties},previousData:{properties:connectionZone.properties}});

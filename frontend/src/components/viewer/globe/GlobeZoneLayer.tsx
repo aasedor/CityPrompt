@@ -15,6 +15,7 @@ import { WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import { EastNorthUpFrame, TilesRendererContext } from '3d-tiles-renderer/r3f';
 import type { SiteZone } from '@/types';
 import { createPreparedEdgeGeometry, readPreparedEdges } from './preparedSiteEdges';
+import { cutGeometry } from './terraceGeometry';
 import { applyParkGroundUVs, useParkGroundTexture } from './parkGroundTexture';
 import { useStreetNetworkGroundTexture } from './streetNetworkGroundTexture';
 import {
@@ -110,6 +111,7 @@ function stableDelay(seed: string, spread = TERRAIN_DRAPE_SPREAD_MS): number {
 }
 
 interface GlobeZoneLayerProps {
+  preparedGroundCutouts?: number[][][];
   zones: SiteZone[];
   selectedZoneId: string | null;
   terrainHeight?: number;
@@ -412,7 +414,8 @@ function getTerrainProbePoints(
   return probes;
 }
 
-function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabled, lightweight = false, suppressed = false, planningOverlaysVisible = true, boundaryOverlayVisible = true, sitePrepared = false, preparedTerrain = null, inheritedMaskPreference = null }: {
+function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabled, lightweight = false, suppressed = false, planningOverlaysVisible = true, boundaryOverlayVisible = true, sitePrepared = false, preparedTerrain = null, inheritedMaskPreference = null, preparedGroundCutouts }: {
+  preparedGroundCutouts?: number[][][];
   zone: SiteZone;
   isSelected: boolean;
   terrainHeight: number;
@@ -650,19 +653,24 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   useDeferredLocalGeometryDisposal(geoData);
 
   const preparedEdgeProfile = useMemo(() => isPreparedBoundary ? readPreparedEdges(zone) : null, [isPreparedBoundary, zone]);
+  const [preparedOriginLng, preparedOriginLat] = centroid;
   const preparedSiteGeo = useMemo(
     () => {
       if (!isPreparedBoundary || !geoData?.flatTopGeo) return null;
-      const geometry = createPreparedSiteBackingGeometry(geoData.flatTopGeo, zone.id);
+      const clipped = preparedGroundCutouts?.length ? cutGeometry(geoData.flatTopGeo, preparedGroundCutouts.map(ring => ring.map(p => [(p[0]-preparedOriginLng)*metersPerDegLon(preparedOriginLat), (p[1]-preparedOriginLat)*METERS_PER_DEG_LAT]))) : null;
+      const geometry = createPreparedSiteBackingGeometry(clipped ?? geoData.flatTopGeo, zone.id);
+      clipped?.dispose();
       if (residualLandscapeRecipe) {
-        applyResidualLandscapeUVs(geometry, geoData.fillCoords, zone.coordinates);
+        const positions = geometry.getAttribute('position');
+        const fillCoords = Array.from({length:positions.count}, (_,i) => [preparedOriginLng+positions.getX(i)/metersPerDegLon(preparedOriginLat),preparedOriginLat+positions.getY(i)/METERS_PER_DEG_LAT] as [number,number]);
+        applyResidualLandscapeUVs(geometry, fillCoords, zone.coordinates);
       }
       // The Google-Tiles spatial mask and replacement surface are rasterized
       // independently. A tightly coincident edge can reveal a one-pixel white
       // seam; the bounded excess remains hidden below surviving source tiles.
-      return preparedEdgeProfile ? geometry : overlapPreparedGroundEdges(geometry);
+      return preparedEdgeProfile || preparedGroundCutouts?.length ? geometry : overlapPreparedGroundEdges(geometry);
     },
-    [geoData, isPreparedBoundary, residualLandscapeRecipe, zone.coordinates, zone.id, preparedEdgeProfile],
+    [geoData, isPreparedBoundary, residualLandscapeRecipe, zone.coordinates, zone.id, preparedEdgeProfile, preparedGroundCutouts, preparedOriginLng, preparedOriginLat],
   );
   useDeferredDisposable(preparedSiteGeo);
   const preparedSiteTexture = useMemo(
@@ -1353,6 +1361,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
 }
 
 export function GlobeZoneLayer({
+  preparedGroundCutouts,
   zones,
   selectedZoneId,
   terrainHeight = 1045,
@@ -1399,6 +1408,7 @@ export function GlobeZoneLayer({
             }}
           >
             <ZoneMesh
+              preparedGroundCutouts={preparedGroundCutouts}
               key={`${zone.id}:${preparedTerrain ?? 'terrain'}`}
               zone={zone}
               isSelected={zone.id === selectedZoneId}

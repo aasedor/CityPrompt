@@ -8,7 +8,7 @@ import { resolvePilotStreetSectionProfile } from './streetSectionProfiles';
 import { computeParkPlacements, resolveParkRecipeForZone } from './parkScatter';
 import { isNeighborhoodParkPilot } from './neighborhoodParkLayout';
 import { PARK_PROGRAM_MODULE_SPEC, resolveParkProgramAnchorLayout } from './parkLegoFamilies';
-import { preparedSiteContainsZone } from './sitePreparationSurface';
+import { preparedSiteContainsZone, resolvePreparedSiteTerrainForZone } from './sitePreparationSurface';
 import { EMPTY_TRANSPORT, type ExistingTransport } from '@/features/referenceLayers/existingTransport';
 
 export type ParkAccessPoint = [number, number];
@@ -332,6 +332,8 @@ function solvePark(park: SiteZone, zones: readonly SiteZone[], settings: ParkAcc
     }
     if(!candidates.length)return empty('unresolved','No clear connection within 8 m. Keep the approach inside the site, on this side of existing roads, and check the entrance edge.');
   }
+  const level=resolvePreparedSiteTerrainForZone(park,[...zones],0),base=resolvePreparedSiteTerrainForZone(boundary,[...zones],0);
+  if(level!==null&&base!==null&&Math.abs(level-base)>.02)return empty('unresolved','This park has a separate terrace level. Its sidewalk entrance needs a graded approach and retaining-edge opening; the terrace pilot currently connects building and park plots only.');
   const connections: ParkAccessConnection[] = [];
   for (const candidate of candidates.sort((a, b) => a.gap - b.gap || a.street.id.localeCompare(b.street.id) || a.gateway[0] - b.gateway[0] || a.gateway[1] - b.gateway[1]).slice(0, 32)) {
     if (connections.some((c) => c.streetZoneId === candidate.street.id || distance(local(c.gateway), candidate.gateway) < settings.pathWidthM * 3)) continue;

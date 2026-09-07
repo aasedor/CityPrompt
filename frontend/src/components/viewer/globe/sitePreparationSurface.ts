@@ -3,6 +3,7 @@ import type { SiteZone } from '@/types';
 import { isCommunity3DCompiled } from '@/features/community3d/community3d';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { normalizeTileMaskRing, pointInTileMaskRing, type TileMaskPoint } from './tileMaskGeometry';
+import { terraceOffset } from './terraceDefinition';
 
 /** Whether this scene already contains compiled authored 3D content. */
 export function hasCompiledCommunity(zones: SiteZone[]): boolean {
@@ -53,7 +54,7 @@ export function resolvePreparedSiteTerrainForZone(
   const boundary = getActiveSiteBoundary(zones);
   if (!zone || !boundary || !getPreparedSiteBoundaryIds(zones).has(boundary.id)) return null;
   if (zone.id !== boundary.id && !preparedSiteContainsZone(boundary, zone)) return null;
-  return resolvePreparedSiteTerrainHeight(boundary, fallbackTerrainHeight);
+  return resolvePreparedSiteTerrainHeight(boundary, fallbackTerrainHeight) + (zone.id === boundary.id ? 0 : terraceOffset(zone) ?? 0);
 }
 
 /** Split every authored edge at boundary intersections, then test every open

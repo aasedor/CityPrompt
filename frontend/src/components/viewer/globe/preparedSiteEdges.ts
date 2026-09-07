@@ -75,7 +75,7 @@ export function preparedEdgeSummary(profile: PreparedEdgeProfile, level: number)
 
 /** A concept retaining face on the exact boundary. Cut and fill faces split at
  * grade crossings; no inverted bow-tie quads or walls across concave notches. */
-export function createPreparedEdgeGeometry(profile: PreparedEdgeProfile, level: number, origin: [number, number]): THREE.BufferGeometry {
+export function createPreparedEdgeGeometry(profile: Pick<PreparedEdgeProfile, 'samples'>, level: number, origin: [number, number], closed = true): THREE.BufferGeometry {
   const positions: number[] = [], uvs: number[] = [];
   const local = ([lng, lat, h]: number[]) => [(lng - origin[0]) * metersPerDegLon(origin[1]), (lat - origin[1]) * METERS_PER_DEG_LAT, h - level];
   const face = (a: number[], b: number[]) => {
@@ -85,7 +85,7 @@ export function createPreparedEdgeGeometry(profile: PreparedEdgeProfile, level: 
     const verts = [[a[0],a[1],lowA], [b[0],b[1],lowB], [b[0],b[1],highB], [a[0],a[1],highA]];
     for (const i of [0,1,2,0,2,3]) { positions.push(...verts[i]); uvs.push(i === 0 || i === 3 ? 0 : Math.hypot(b[0]-a[0],b[1]-a[1]), verts[i][2]); }
   };
-  for (let i = 0; i < profile.samples.length; i++) {
+  for (let i = 0; i < profile.samples.length - (closed ? 0 : 1); i++) {
     const a = local(profile.samples[i]), b = local(profile.samples[(i + 1) % profile.samples.length]);
     if (a[2] * b[2] < 0) {
       const t = a[2] / (a[2] - b[2]), cross = [a[0]+t*(b[0]-a[0]),a[1]+t*(b[1]-a[1]),0];

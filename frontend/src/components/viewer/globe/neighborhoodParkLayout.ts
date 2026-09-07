@@ -149,12 +149,26 @@ export function buildNeighborhoodParkLayout(input: readonly ParkPoint[]): Neighb
 }
 
 const layoutCache = new Map<string, NeighborhoodParkLayout>();
+const canonicalLayoutCache = new Map<string, NeighborhoodParkLayout>();
 export function neighborhoodParkLayoutForZone(zone: SiteZone, origin: { lng: number; lat: number }): NeighborhoodParkLayout {
   const key = JSON.stringify([zone.coordinates, origin.lng, origin.lat]);
   const cached = layoutCache.get(key);
   if (cached) return cached;
-  const east = metersPerDegLon(origin.lat);
-  const result = buildNeighborhoodParkLayout(zone.coordinates.map(([lng, lat]) => ({ x: (lng - origin.lng) * east, y: (lat - origin.lat) * METERS_PER_DEG_LAT })));
+  // Build once in the plot's own frame. Rebuilding in each caller's frame can
+  // flip the longest-edge choice on square plots and reseed the planting.
+  const anchor=zone.coordinates[0]??[origin.lng,origin.lat],canonicalEast=metersPerDegLon(anchor[1]);
+  const sourceKey=JSON.stringify(zone.coordinates);
+  let canonical=canonicalLayoutCache.get(sourceKey);
+  if(!canonical){
+    canonical=buildNeighborhoodParkLayout(zone.coordinates.map(([lng,lat])=>({x:(lng-anchor[0])*canonicalEast,y:(lat-anchor[1])*METERS_PER_DEG_LAT})));
+    if(canonicalLayoutCache.size>=32)canonicalLayoutCache.delete(canonicalLayoutCache.keys().next().value!);
+    canonicalLayoutCache.set(sourceKey,canonical);
+  }
+  const east=metersPerDegLon(origin.lat),ratio=east/canonicalEast;
+  const point=(p:ParkPoint):ParkPoint=>({x:(anchor[0]-origin.lng)*east+p.x*ratio,y:(anchor[1]-origin.lat)*METERS_PER_DEG_LAT+p.y});
+  const result:NeighborhoodParkLayout={...canonical,boundary:canonical.boundary.map(point),lawn:canonical.lawn.map(point),loop:canonical.loop.map(point),paths:canonical.paths.map(path=>path.map(point)),
+    modules:canonical.modules.map(m=>({...m,center:point(m.center),arrival:m.arrival?point(m.arrival):undefined,envelope:m.envelope.map(point),yaw:Math.atan2(Math.sin(m.yaw),Math.cos(m.yaw)*ratio)})),
+    trees:canonical.trees.map(point),shrubs:canonical.shrubs.map(point)};
   if (layoutCache.size >= 32) layoutCache.delete(layoutCache.keys().next().value!);
   layoutCache.set(key, result);
   return result;

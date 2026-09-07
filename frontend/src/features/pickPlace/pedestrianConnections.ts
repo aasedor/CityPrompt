@@ -5,6 +5,7 @@ import { effectiveRoadWidth, extractRenderableStreetCenterline } from '@/utils/r
 import { resolvePilotStreetSectionProfile } from '@/components/viewer/globe/streetSectionProfiles';
 import { corridorInside, corridorOverlaps, pointInside } from '@/components/viewer/globe/parkAccessConnections';
 import { rectangleDimensions } from './geometry';
+import { resolvePreparedSiteTerrainForZone } from '@/components/viewer/globe/sitePreparationSurface';
 
 export type Point = [number, number];
 /** Door coordinates are in the plot's rotating local metre frame. Native houses
@@ -141,6 +142,11 @@ export function resolvePedestrianConnections(zones: readonly SiteZone[], visible
         if (!entrance || !anchor) continue;
         const street = zones.find(z => z.id === entrance.streetId && z.zone_type === 'road' && visible.has(z.id));
         if (!street) { result.reason = 'The chosen street is missing or hidden. Choose another target.'; continue; }
+        const ownerLevel=resolvePreparedSiteTerrainForZone(owner,[...zones],0),streetLevel=resolvePreparedSiteTerrainForZone(street,[...zones],0);
+        if(ownerLevel!==null&&streetLevel!==null&&Math.abs(ownerLevel-streetLevel)>.02){
+          result.reason='This sidewalk connection changes terrace level. Design a graded approach and retaining-edge opening; the terrace pilot currently connects building and park plots only.';
+          continue;
+        }
         const section = resolvePilotStreetSectionProfile(street);
         if (!section) { result.reason = 'The chosen street has no supported pedestrian section.'; continue; }
         const scale = section.metricWidthLocked ? (section.targetRowM ?? section.rowM) / section.rowM : effectiveRoadWidth(street.properties) / section.rowM;

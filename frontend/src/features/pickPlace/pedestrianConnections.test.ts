@@ -18,6 +18,12 @@ function fixture(){
   return {house,street,boundary,entrance,zones:[house,street,boundary]};
 }
 describe('saved pedestrian relationships',()=>{
+  it('does not label a path through a terrace wall as connected',()=>{
+    const f=fixture();f.house.properties={...f.house.properties,proposed_terrace:{version:1,offsetM:1}};
+    expect(resolvePedestrianConnections(f.zones)[0]).toMatchObject({status:'unresolved',strips:[]});
+    f.boundary.properties={community_3d_mask_existing_tiles:false};
+    expect(resolvePedestrianConnections(f.zones)[0].status).toBe('connected');
+  });
   it('joins the near sidewalk, follows translation, and leaves the source data unchanged',()=>{
     const f=fixture(),before=JSON.stringify(f.zones),first=resolvePedestrianConnections(f.zones)[0];
     expect(first.status).toBe('connected');expect(first.strips).toHaveLength(1);

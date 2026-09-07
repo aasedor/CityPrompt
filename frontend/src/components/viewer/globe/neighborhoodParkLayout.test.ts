@@ -1,8 +1,19 @@
 import { describe, expect, it } from 'vitest';
-import { buildNeighborhoodParkLayout, envelopeFits, envelopesOverlap, type ParkPoint } from './neighborhoodParkLayout';
+import { buildNeighborhoodParkLayout, neighborhoodParkLayoutForZone, envelopeFits, envelopesOverlap, type ParkPoint } from './neighborhoodParkLayout';
+import {metersPerDegLon,METERS_PER_DEG_LAT} from '../mapEngine/geoUtils';
+import type {SiteZone} from '@/types';
 
 const rectangle = (w: number, h: number): ParkPoint[] => [{ x: 0, y: 0 }, { x: w, y: 0 }, { x: w, y: h }, { x: 0, y: h }];
 describe('reference-locked neighbourhood park composition', () => {
+  it.each([30,40])('uses the same world geometry from a park, building or capture origin (%s m)',width=>{
+    const zone={coordinates:rectangle(width,width).map(p=>[-114+p.x/metersPerDegLon(51),51+p.y/METERS_PER_DEG_LAT])} as SiteZone;
+    const origins=[{lng:-114,lat:51},{lng:-114.002,lat:51.001},{lng:-113.9998,lat:51.0001}];
+    const world=origins.map(origin=>{const layout=neighborhoodParkLayoutForZone(zone,origin);return [...layout.loop,...layout.trees,...layout.modules.flatMap(m=>[m.center,...m.envelope])].map(p=>[origin.lng+p.x/metersPerDegLon(origin.lat),origin.lat+p.y/METERS_PER_DEG_LAT]);});
+    for(const points of world.slice(1)){
+      expect(points).toHaveLength(world[0].length);
+      points.forEach((p,i)=>{expect(p[0]).toBeCloseTo(world[0][i][0],10);expect(p[1]).toBeCloseTo(world[0][i][1],10);});
+    }
+  });
   it.each([30,31,32])('keeps a contained walking loop at the advertised 30 m minimum (%s m depth)', depth => {
     const boundary=rectangle(40,depth),layout=buildNeighborhoodParkLayout(boundary);
     expect(layout.loop).toHaveLength(64);
