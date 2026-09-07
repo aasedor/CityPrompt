@@ -60,7 +60,7 @@ export function GroundReviewPanel({ boundary, ground, onClose, onApply, parks = 
           catch { setError('Could not finish saving the terrain settings. Reopen this review to check and retry.'); }
           finally { setPending(false); }
         }}>Use measured park terrain</button>
-        <p className="text-xs">This pilot supports neighbourhood parks. Moving or resizing a park requires another ground review; its measured slope will never be stretched to a new location.</p>
+        <p className="text-xs">This pilot supports neighbourhood parks. Moving or resizing a park updates its ground automatically. You can keep designing while it aligns.</p>
       </section>}
       <button disabled={pending} className="min-h-11 rounded-lg border p-2" onClick={() => void apply(false)}>Follow existing terrain</button>
       <fieldset className="space-y-2 rounded-lg border p-3" disabled={pending}>

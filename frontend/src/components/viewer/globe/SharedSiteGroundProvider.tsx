@@ -12,6 +12,10 @@ import { createSharedSiteGroundLayout, createSharedSiteGroundSnapshot, sampleSha
   type SharedSiteGroundLayout, type SharedSiteGroundPassQuality, type SharedSiteGroundSnapshot } from './sharedSiteGround';
 
 export interface SharedSiteGroundState {
+  /** Visible design draft only; never evidence for a final capture. */
+  preview?: boolean;
+  /** Shared triangles for an approximate visible draft; not capture evidence. */
+  draftLayout?: SharedSiteGroundLayout;
   status: 'inactive' | 'sampling' | 'ready' | 'unavailable';
   snapshot: SharedSiteGroundSnapshot | null;
   heightAt: (lng: number, lat: number) => number | null;
@@ -55,15 +59,15 @@ function visibleTileHit(object: THREE.Object3D, tileGroup: THREE.Object3D, visib
  * invalidate the surface; a capture must wait for the next ready revision.
  * Full coverage and repeatability establish visible-mesh contact, not surveyed
  * bare earth. No unknown or outlier sample is synthesized. */
-export function SharedSiteGroundProvider({ zones, children, onChange, inspectPrepared = false }: {
-  zones: SiteZone[]; children: ReactNode; onChange?: (state: SharedSiteGroundState) => void; inspectPrepared?: boolean;
+export function SharedSiteGroundProvider({ zones, children, onChange, inspectPrepared = false, sampleSpacingM }: {
+  zones: SiteZone[]; children: ReactNode; onChange?: (state: SharedSiteGroundState) => void; inspectPrepared?: boolean; sampleSpacingM?: number;
 }) {
   const tiles = useContext(TilesRendererContext);
   const active = getActiveSiteBoundary(zones);
   const inspectionOnly = Boolean(active && (active.properties?.community_3d_mask_existing_tiles !== false || active.properties?.terrain_strategy === 'landscape'));
   const boundary = !inspectionOnly || inspectPrepared ? active : null;
-  const sourceSignature = boundary ? sharedSiteGroundSourceSignature(boundary) : 'inactive';
-  const layout = useMemo(() => boundary ? createSharedSiteGroundLayout(boundary) : null,
+  const sourceSignature = boundary ? sharedSiteGroundSourceSignature(boundary, sampleSpacingM) : 'inactive';
+  const layout = useMemo(() => boundary ? createSharedSiteGroundLayout(boundary, sampleSpacingM) : null,
     // Properties unrelated to the site's revision/geometry do not restart sampling.
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [sourceSignature]);

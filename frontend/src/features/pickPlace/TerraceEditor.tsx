@@ -33,7 +33,7 @@ export function TerraceEditor({zone,zones,disabled,onSave,onClose}:{zone:SiteZon
   const input='mt-1 min-h-11 w-full rounded border border-slate-400 bg-white px-2 text-base text-slate-900';
   const numberField=(label:string,key:'sourceEdge'|'targetEdge'|'sourcePosition'|'targetPosition'|'widthM'|'approachM',min:number,max:number,step:number)=> <label className="text-xs font-semibold">{label}<input aria-label={label} className={input} type="number" min={min} max={max} step={step} value={Number.isFinite(path[key])?path[key]:''} onChange={e=>setPath({...path,[key]:e.target.valueAsNumber})}/></label>;
   if(zone.properties?.park_terrain) return <aside aria-label="Park terrain" className="absolute right-4 top-20 z-50 w-[min(24rem,calc(100%-2rem))] rounded-xl border-2 border-slate-900 bg-[#fff9ec] p-4 text-slate-900 shadow-xl">
-    <h2 className="font-bold">This park follows the hillside</h2><p className="my-3 text-sm">Lawn and paths use the measured ground. Only activity pads stay level. After moving or resizing the park, open Review ground to measure its new location. The old terrace connector needs a new graded alignment.</p>
+    <h2 className="font-bold">This park follows the hillside</h2><p className="my-3 text-sm">Lawn and paths use the measured ground. Only activity pads stay level. Ground alignment updates automatically after moving or resizing the park. The old terrace connector needs a new graded alignment.</p>
     <button className="min-h-11 px-3" onClick={onClose}>Close</button>
   </aside>;
   return <aside aria-label="Terrace and path" className="absolute right-4 top-20 z-50 max-h-[80dvh] w-[min(24rem,calc(100%-2rem))] overflow-y-auto rounded-xl border-2 border-slate-900 bg-[#fff9ec] p-4 text-slate-900 shadow-xl">

@@ -21,6 +21,15 @@ function sloped() {
 }
 
 describe('shared retained-site terrain', () => {
+  it('uses finer bounded sampling for curved parks without changing default site sampling', () => {
+    const site = boundary(), coarse = createSharedSiteGroundLayout(site)!, fine = createSharedSiteGroundLayout(site, 1.25)!;
+    expect(fine.grid.columns).toBeGreaterThan(coarse.grid.columns);
+    expect(fine.grid.columns * fine.grid.rows).toBeLessThanOrEqual(1200);
+    expect(fine.sourceSignature).not.toBe(coarse.sourceSignature);
+    const large = createSharedSiteGroundLayout(boundary([[0,0],[200,0],[200,200],[0,200]]), 1.25)!;
+    expect(large.grid.columns * large.grid.rows).toBeLessThanOrEqual(1200);
+    expect(createSharedSiteGroundLayout(site, 0)).toBeNull();
+  });
   it('ignores remote bounding-box cliffs but still rejects discontinuities in boundary support cells', () => {
     const layout = createSharedSiteGroundLayout(boundary([[0,10],[10,0],[20,10],[10,20]]))!;
     const heights = Array<number>(layout.grid.columns * layout.grid.rows).fill(1030);

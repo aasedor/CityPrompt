@@ -38,11 +38,11 @@ function signature(value: unknown): string {
   return `ssg1-${(hash >>> 0).toString(16).padStart(8, '0')}`;
 }
 
-export function sharedSiteGroundSourceSignature(boundary: SiteZone): string {
+export function sharedSiteGroundSourceSignature(boundary: SiteZone, spacingM?: number): string {
   // A compiled landscape or label changes the row revision, not the ground.
   // Capture provenance binds the latest row revision separately in the provider.
   return signature([boundary.id, boundary.coordinates, boundary.is_active_boundary,
-    boundary.properties?.community_3d_mask_existing_tiles]);
+    boundary.properties?.community_3d_mask_existing_tiles, ...(spacingM === undefined ? [] : [spacingM])]);
 }
 
 /** Boundary-inclusive domain test; a concave notch never becomes terrain. */
@@ -61,7 +61,7 @@ export function sharedSiteGroundContains(ring: readonly SharedGroundPoint[], lng
 
 /** The rectangular support grid is fully measured, including boundary cells.
  * Interpolation is exposed only within the exact geographic boundary. */
-export function createSharedSiteGroundLayout(boundary: SiteZone): SharedSiteGroundLayout | null {
+export function createSharedSiteGroundLayout(boundary: SiteZone, spacingM?: number): SharedSiteGroundLayout | null {
   const ring = boundary.coordinates.map((point): SharedGroundPoint => [point[0], point[1]]);
   if (ring.length < 3 || ring.length > 2048 || ring.some(([lng, lat]) => !Number.isFinite(lng) || !Number.isFinite(lat)
     || Math.abs(lng) > 180 || Math.abs(lat) > 85)) return null;
@@ -69,7 +69,8 @@ export function createSharedSiteGroundLayout(boundary: SiteZone): SharedSiteGrou
   const south = Math.min(...ring.map((p) => p[1])), north = Math.max(...ring.map((p) => p[1]));
   const width = (east - west) * metersPerDegLon((north + south) / 2), height = (north - south) * METERS_PER_DEG_LAT;
   if (width < 0.1 || height < 0.1) return null;
-  let spacing = SHARED_SITE_GROUND_LIMITS.targetSpacingM;
+  let spacing = spacingM ?? SHARED_SITE_GROUND_LIMITS.targetSpacingM;
+  if (!Number.isFinite(spacing) || spacing <= 0 || spacing > SHARED_SITE_GROUND_LIMITS.maxSpacingM) return null;
   let columns = Math.ceil(width / spacing) + 1, rows = Math.ceil(height / spacing) + 1;
   while (columns * rows > SHARED_SITE_GROUND_LIMITS.maxSamples) {
     spacing *= 1.05;
@@ -77,7 +78,7 @@ export function createSharedSiteGroundLayout(boundary: SiteZone): SharedSiteGrou
     columns = Math.ceil(width / spacing) + 1; rows = Math.ceil(height / spacing) + 1;
   }
   return { boundaryId: boundary.id, boundaryUpdatedAt: boundary.updated_at, boundaryCoordinates: ring,
-    sourceSignature: sharedSiteGroundSourceSignature(boundary),
+    sourceSignature: sharedSiteGroundSourceSignature(boundary, spacingM),
     grid: { west, south, columns, rows, stepLng: (east - west) / (columns - 1), stepLat: (north - south) / (rows - 1) } };
 }
 

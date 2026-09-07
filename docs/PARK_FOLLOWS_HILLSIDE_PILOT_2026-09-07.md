@@ -1,5 +1,9 @@
 # Park follows the hillside — corrected pilot
 
+Follow-up: [Automatic park ground alignment](AUTOMATIC_PARK_GROUND_2026-09-07.md)
+implements automatic remeasurement and supersedes the manual refresh requirement
+and landscape slope cap described in this historical checkpoint.
+
 User correction: parks should match the slope, not sit on a flat table.
 This supersedes the whole-park terrace approach in the previous experiment.
 

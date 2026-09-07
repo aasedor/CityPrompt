@@ -3,11 +3,13 @@ import type { GroundReview } from './groundReview';
 import { sharedSiteGroundContains, validateSharedSiteGroundPass, SHARED_SITE_GROUND_LIMITS, type SharedSiteGroundSnapshot } from './sharedSiteGround';
 
 export interface ParkTerrainProfile { version: 1; snapshot: SharedSiteGroundSnapshot }
-// A reviewed landscape can be steeper than a walkable route. Keep the existing
-// abrupt-surface and repeatability tests; never classify a tree as bare earth.
+export const parkFootprintKey = (zone: SiteZone) => JSON.stringify([zone.id,zone.coordinates]);
+// Landscape slope is not a walkability limit. Preserve the measured hillside;
+// still reject incomplete, unstable, implausible or abruptly protruding samples.
+// Google mesh contact is not evidence of surveyed bare earth.
 function landscapeQuality(snapshot: SharedSiteGroundSnapshot) {
   const q = validateSharedSiteGroundPass(snapshot, snapshot.heights);
-  return (q.valid || q.reason === 'discontinuity') && q.maxSlope <= 1
+  return (q.valid || q.reason === 'discontinuity') && Number.isFinite(q.maxSlope)
     && q.maxLocalResidualM <= SHARED_SITE_GROUND_LIMITS.maxLocalResidualM;
 }
 export function measureParkTerrain(zone: SiteZone, review?: GroundReview | null): ParkTerrainProfile | null {
@@ -17,7 +19,7 @@ export function measureParkTerrain(zone: SiteZone, review?: GroundReview | null)
   const ys = zone.coordinates.map(p => (p[1] - g.south) / g.stepLat);
   const x0 = Math.max(0, Math.floor(Math.min(...xs))), x1 = Math.min(g.columns - 1, Math.ceil(Math.max(...xs)));
   const y0 = Math.max(0, Math.floor(Math.min(...ys))), y1 = Math.min(g.rows - 1, Math.ceil(Math.max(...ys)));
-  if (Math.min(...xs) < 0 || Math.max(...xs) > g.columns - 1 || Math.min(...ys) < 0 || Math.max(...ys) > g.rows - 1 || x1 <= x0 || y1 <= y0) return null;
+  if (Math.min(...xs) < -1e-7 || Math.max(...xs) > g.columns - 1 + 1e-7 || Math.min(...ys) < -1e-7 || Math.max(...ys) > g.rows - 1 + 1e-7 || x1 <= x0 || y1 <= y0) return null;
   const heights: number[] = []; let delta = 0;
   for (let y = y0; y <= y1; y++) for (let x = x0; x <= x1; x++) {
     const i = y * g.columns + x, a = review.heights[i], b = review.previousHeights[i];

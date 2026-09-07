@@ -13,7 +13,7 @@ export function TerraceSummary({zones}:{zones:SiteZone[]}) {
   const lines=scene.terraces.map(z=>`${name(z.id)}: ${terraceOffset(z)!.toFixed(1)} m relative to the site level.`);
   for(const park of parks) {
     const s=readParkTerrain(park);
-    lines.push(`${name(park.id)}: ${s ? 'lawn and paths follow saved hillside measurements; local activity pads remain level. Review path grades and landings.' : 'ground needs review after a move or resize.'}`);
+    lines.push(`${name(park.id)}: ${s ? 'lawn and paths follow saved hillside measurements; local activity pads remain level. Review path grades and landings.' : 'ground alignment is updating after a move or resize.'}`);
   }
   for(const p of scene.paths)lines.push(`${name(p.ownerId)} → ${name(p.targetId)}: ${p.reason}`);
   const notes='Live concept grading review. Check building entrances, drainage, retaining edges, landings and connections to existing sidewalks. This is not an accessibility or engineering assessment. No routes to existing Google sidewalks are inferred.';

@@ -34,7 +34,7 @@ describe('reviewed terrain-following park',()=>{
   });
   it('permits a reviewed steep natural landscape without pretending it is a walkable path',()=>{
     expect(measureParkTerrain(park,review(.7))?.snapshot.quality.maxSlope).toBeCloseTo(.7,3);
-    expect(measureParkTerrain(park,review(1.2))).toBeNull();
+    expect(measureParkTerrain(park,review(1.2))?.snapshot.quality.maxSlope).toBeCloseTo(1.2,3);
   });
   it('rejects missing, unstable and abrupt measurements instead of filling them',()=>{
     const r=review(), i=Math.floor(r.layout.grid.rows/2)*r.layout.grid.columns+Math.floor(r.layout.grid.columns/2);

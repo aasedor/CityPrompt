@@ -1150,7 +1150,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
         centroid[1] + y / METERS_PER_DEG_LAT,
       );
       return height === null ? null : height - sharedFrameHeight;
-    }, 4, 60000, createSharedGroundTriangulation(sharedGround.snapshot!, centroid[0], centroid[1]));
+    }, 4, 60000, (sharedGround.snapshot ?? sharedGround.draftLayout) ? createSharedGroundTriangulation((sharedGround.snapshot ?? sharedGround.draftLayout)!, centroid[0], centroid[1]) : undefined);
     authored.dispose();
     return conformed;
   }, [usesSharedGround, sharedFrameHeight, sharedGround, isExtrudedBuilding, importedOrthoGeo, orthoGeo,
@@ -1172,7 +1172,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   }, [usesSharedGround, sharedFrameHeight, sharedGround, geoData, centroid]);
   useDeferredDisposable(sharedOutlineGeo);
 
-  if (!geoData || (usesSharedGround && (sharedGround.status !== 'ready'
+  if (!geoData || (usesSharedGround && ((sharedGround.status !== 'ready' && !sharedGround.preview)
     || (!isExtrudedBuilding && !sharedFillGeo)))) return null;
 
   const authoredGroundTexture = drapeActive

@@ -16,6 +16,7 @@ import { ReshapePanel } from '@/features/pickPlace/ReshapePanel';
 import { StreetRoutePanel } from '@/features/pickPlace/StreetRoutePanel';
 import { ConnectionEditor } from '@/features/pickPlace/ConnectionEditor';
 import { TerraceEditor } from '@/features/pickPlace/TerraceEditor';
+import { saveAutomaticParkGround } from '@/features/pickPlace/saveAutomaticParkGround';
 import { TerraceSummary } from '@/features/pickPlace/TerraceSummary';
 import { CALGARY_LOCAL_PLACEMENT, isCalgaryLocalRoute, streetRouteProblem } from '@/features/pickPlace/streetPlacement';
 import { assetForZone, placeAsset, placementProperties, type PlaceAssetId } from '@/features/pickPlace/catalogue';
@@ -1024,6 +1025,8 @@ export function ProjectViewPage() {
           <GlobeSitePlannerMap
             placementDraft={placementDraft}
             onPlacementDraftChange={setPlacementDraft}
+            parkGroundPaused={isSaving || automatic3D.busy}
+            onAutoParkTerrain={(zone, profile) => saveAutomaticParkGround(queryClient, project.id, zone, profile)}
             onFollowParkTerrain={async profiles => {
               // Save each measured park first. Only remove the whole-site plane
               // once every dependent surface has been confirmed by the API.

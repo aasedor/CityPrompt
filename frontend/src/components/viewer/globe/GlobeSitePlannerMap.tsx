@@ -56,6 +56,7 @@ import { GlobePedestrianConnections } from './GlobePedestrianConnections';
 import { GlobeTerraces } from './GlobeTerraces';
 import { buildTerraceScene } from './terraceScene';
 import { readParkTerrain, type ParkTerrainProfile } from './parkTerrain';
+import { AutomaticParkGround, type SaveParkGround, type ParkAlignment } from './AutomaticParkGround';
 import { GlobeResidualLandscapeLayer } from './GlobeResidualLandscapeLayer';
 import { GlobeStreetRenderProfile } from './GlobeStreetRenderProfile';
 import { getResidualLandscapeRecipe } from './residualLandscape';
@@ -1422,6 +1423,8 @@ function MeasurementOverlay({
 interface GlobeSitePlannerMapProps {
   onPrepareGround?: (zoneId: string, clear: boolean, height?: number, edges?: import('./preparedSiteEdges').PreparedEdgeProfile | null) => Promise<void>;
   onFollowParkTerrain?: (profiles: Record<string, ParkTerrainProfile>) => Promise<void>;
+  onAutoParkTerrain?: SaveParkGround;
+  parkGroundPaused?: boolean;
   placementDraft?: import('@/features/pickPlace/GlobePlacementPreview').PlacementDraft | null;
   onPlacementDraftChange?: (draft: import('@/features/pickPlace/GlobePlacementPreview').PlacementDraft) => void;
   onPlaceAsset?: (lngLat: [number, number], height: number) => void;
@@ -1522,6 +1525,8 @@ export function GlobeSitePlannerMap({
   onPlacementDraftChange,
   onPrepareGround,
   onFollowParkTerrain,
+  onAutoParkTerrain,
+  parkGroundPaused = false,
   onPlaceAsset,
   onCancelPlacement,
   referenceLayers = [],
@@ -1585,9 +1590,17 @@ export function GlobeSitePlannerMap({
   }, []);
   const terrainZonesRef = useRef(siteZones);
   terrainZonesRef.current = siteZones;
+  const [parkAlignment, setParkAlignment] = useState<ParkAlignment>({ pending: false, needsAttention: false, retry: () => {} });
+  const parkAlignmentRef = useRef(parkAlignment);
+  parkAlignmentRef.current = parkAlignment;
   const waitForSharedGround = useCallback(async () => {
+    const parkDeadline = performance.now() + 45000;
+    while (parkAlignmentRef.current.pending && !parkAlignmentRef.current.needsAttention && performance.now() < parkDeadline) {
+      await new Promise(resolve => setTimeout(resolve, 200));
+    }
+    if (parkAlignmentRef.current.pending) throw new Error('Park alignment is still updating. Your design is safe; keep working and try the render once alignment finishes.');
     if (terrainZonesRef.current.some(zone => zone.properties?.park_terrain && !readParkTerrain(zone))) {
-      throw new Error('A park moved or changed size. Open Review ground and apply its new measured terrain before rendering.');
+      throw new Error('Park alignment is updating automatically. Your design is safe; try the render once it finishes.');
     }
     const deadline = performance.now() + 20_000;
     while ((sharedGroundRef.current.status === 'sampling'
@@ -4059,6 +4072,7 @@ export function GlobeSitePlannerMap({
             onDisplayReadyChange={setAreTilesDisplayReady}
           />
           <SharedSiteGroundProvider zones={allSiteZones} onChange={handleSharedGroundChange} inspectPrepared={showGroundReview}>
+          <AutomaticParkGround zones={allSiteZones} paused={parkGroundPaused} onSave={onAutoParkTerrain} onChange={setParkAlignment} fallback={terrainElevation}>
           <group ref={referenceOverlayGroup}><GlobeReferenceLayer layers={referenceLayers} terrainHeight={terrainElevation} /></group>
           <TileStencilPatcher zones={tileMaskZones} terrainHeight={terrainElevation} />
           <GlobeTileMaskLayer zones={tileMaskZones} terrainHeight={terrainElevation} />
@@ -4201,6 +4215,7 @@ export function GlobeSitePlannerMap({
               />
             )}
           </group>
+          </AutomaticParkGround>
           </SharedSiteGroundProvider>
         </TilesRenderer>
 
@@ -4230,6 +4245,10 @@ export function GlobeSitePlannerMap({
         parks={allSiteZones.filter(z => z.zone_type === 'green_space')} onFollowParks={onFollowParkTerrain}
         boundary={getActiveSiteBoundary(allSiteZones)!} ground={sharedGroundState} onClose={() => setShowGroundReview(false)}
         onApply={(clear, height, edges) => onPrepareGround(getActiveSiteBoundary(allSiteZones)!.id, clear, height, edges)} />}
+      {parkAlignment.pending&&<div role="status" className="absolute bottom-14 left-1/2 z-40 max-w-sm -translate-x-1/2 rounded-lg bg-white/95 px-3 py-2 text-sm text-slate-800 shadow">
+        {parkAlignment.needsAttention?'Ground detail is difficult here. Your park is kept as a draft.':'Aligning park to ground… You can keep designing.'}
+        {parkAlignment.needsAttention&&<button className="ml-2 min-h-11 underline" onClick={parkAlignment.retry}>Retry alignment</button>}
+      </div>}
       {placementDraft && !interactionPaused && <>
         <div aria-hidden className="pointer-events-none absolute left-1/2 top-1/2 z-30 -translate-x-1/2 -translate-y-1/2 text-3xl font-light text-white drop-shadow sm:hidden">+</div>
         <div className="absolute bottom-6 left-1/2 z-40 w-80 max-w-[90vw] -translate-x-1/2 rounded-xl bg-white p-3 text-center text-sm text-slate-900 shadow-xl">

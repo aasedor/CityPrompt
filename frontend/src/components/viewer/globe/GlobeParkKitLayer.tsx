@@ -2042,9 +2042,9 @@ function ParkKitInstance({
     const height = sharedGround.heightAt(centroid.lng + x / metersPerDegLon(centroid.lat), centroid.lat + y / METERS_PER_DEG_LAT);
     return height === null ? null : height - sharedAnchor;
   } : undefined, [centroid, sharedAnchor, sharedGround, sharedGroundOwned]);
-  const sharedTerrainGrid = useMemo(() => sharedGroundOwned && sharedGround.snapshot
-    ? createSharedGroundTriangulation(sharedGround.snapshot, centroid.lng, centroid.lat) : undefined,
-  [centroid, sharedGround.snapshot, sharedGroundOwned]);
+  const sharedTerrainGrid = useMemo(() => sharedGroundOwned && (sharedGround.snapshot ?? sharedGround.draftLayout)
+    ? createSharedGroundTriangulation((sharedGround.snapshot ?? sharedGround.draftLayout)!, centroid.lng, centroid.lat) : undefined,
+  [centroid, sharedGround.snapshot, sharedGround.draftLayout, sharedGroundOwned]);
 
   const localProgramFrame = useMemo(
     () => buildLocalParkProgramFrame(zone.coordinates, centroid),
@@ -2367,7 +2367,7 @@ function ParkKitInstance({
     });
   }, [instanceZ, microdetailPlacements.length, placements.length, specialtyTerrainAnchors]);
   if (terrainTargets.length === 0) return null;
-  if (sharedGroundOwned && (sharedGround.status !== 'ready' || sharedAnchor === null || !sharedOffsets)) return null;
+  if (sharedGroundOwned && ((!sharedGround.preview && sharedGround.status !== 'ready') || sharedAnchor === null || !sharedOffsets)) return null;
   const terrain = sharedAnchor ?? preparedTerrain ?? resolveZoneTerrainHeight(sampledTerrain, storedTerrain, fallbackTerrainHeight);
   const activeOffsets = sharedGroundOwned ? sharedOffsets : instanceZ;
   const microdetailZ = activeOffsets
