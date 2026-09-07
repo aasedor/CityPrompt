@@ -14,6 +14,8 @@ import { GlobeNeighborhoodParkPilot } from '@/components/viewer/globe/GlobeNeigh
 import { GlobeParkTrioPilot } from '@/components/viewer/globe/GlobeParkTrioPilot';
 import { isParkTrio } from '@/components/viewer/globe/parkTrioLayout';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
+import { useSharedSiteGround } from '@/components/viewer/globe/SharedSiteGroundProvider';
+import { resolvePreparedSiteTerrainForZone } from '@/components/viewer/globe/sitePreparationSurface';
 import { placeAsset, placementPlanRequest, placementProperties, type PlaceAssetId } from './catalogue';
 import { placementProblem, rectangleAt } from './geometry';
 
@@ -37,6 +39,7 @@ const flatGround=()=>0;
 export function GlobePlacementPreview({ draft, zones }: {draft: PlacementDraft; zones: SiteZone[]}) {
   const {gl,camera,invalidate}=useThree();
   const tiles=useContext(TilesRendererContext);
+  const ground = useSharedSiteGround();
   const pointer=useRef(new THREE.Vector2(0,0));
   const dirty=useRef(true), last=useRef(0);
   const lastCamera=useRef(new THREE.Matrix4());
@@ -70,10 +73,13 @@ export function GlobePlacementPreview({ draft, zones }: {draft: PlacementDraft; 
     coordinates:rectangleAt([ORIGIN.lng,ORIGIN.lat],draft.width,draft.depth),
     properties:placementProperties(asset)} as SiteZone),[asset,draft.width,draft.depth]);
   if(!surface) return null;
-  const invalid=placementProblem(rectangleAt([surface.lng,surface.lat],draft.width,draft.depth,draft.degrees),zones,getActiveSiteBoundary(zones));
+  const footprint = rectangleAt([surface.lng,surface.lat],draft.width,draft.depth,draft.degrees);
+  const invalid=placementProblem(footprint,zones,getActiveSiteBoundary(zones));
+  const previewHeight = resolvePreparedSiteTerrainForZone({ ...previewZone, coordinates: footprint }, zones, surface.height)
+    ?? ground.heightAt(surface.lng, surface.lat) ?? surface.height;
   const envelope=asset.nativeDimensions ?? [draft.width,draft.depth,.1];
   const fallback=<mesh position={[0,0,envelope[2]/2]}><boxGeometry args={[envelope[0],envelope[1],envelope[2]]}/><meshBasicMaterial color="#64748b" wireframe/></mesh>;
-  return <EastNorthUpFrame lat={surface.lat*Math.PI/180} lon={surface.lng*Math.PI/180} height={surface.height+.12}>
+  return <EastNorthUpFrame lat={surface.lat*Math.PI/180} lon={surface.lng*Math.PI/180} height={previewHeight+.12}>
     <group rotation={[0,0,draft.degrees*Math.PI/180]} name="placement-preview" raycast={()=>null}>
       <mesh position={[0,0,.1]}><planeGeometry args={[draft.width,draft.depth]}/><meshBasicMaterial color={invalid?'#ef4444':'#c9ff3d'} transparent opacity={.3} side={THREE.DoubleSide} depthWrite={false}/></mesh>
       <PreviewFallback key={asset.id} fallback={fallback}><Suspense fallback={fallback}>

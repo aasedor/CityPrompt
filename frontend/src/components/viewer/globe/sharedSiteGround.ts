@@ -90,6 +90,30 @@ export interface SharedSiteGroundPassQuality {
   valid: boolean; reason: string | null; maxSlope: number; maxLocalResidualM: number;
 }
 
+/** Include every cell touching the boundary, even a thin sliver with no grid
+ * vertex inside. Remote corners of the bounding rectangle cannot affect it. */
+export function groundCellTouchesBoundary(layout: SharedSiteGroundLayout, x: number, y: number): boolean {
+  const { west, south, stepLng, stepLat } = layout.grid;
+  const ring = layout.boundaryCoordinates.map(([lng, lat]) => [(lng - west) / stepLng - x, (lat - south) / stepLat - y]);
+  const insideBox = ([a, b]: number[]) => a >= -1e-8 && a <= 1 + 1e-8 && b >= -1e-8 && b <= 1 + 1e-8;
+  if (ring.some(insideBox)) return true;
+  if ([[0,0],[1,0],[1,1],[0,1]].some(([a,b]) => sharedSiteGroundContains(layout.boundaryCoordinates, west+(x+a)*stepLng, south+(y+b)*stepLat))) return true;
+  for (let i = 0; i < ring.length; i++) {
+    const a = ring[i], b = ring[(i+1)%ring.length];
+    let low = 0, high = 1;
+    for (let axis = 0; axis < 2; axis++) {
+      const delta = b[axis] - a[axis];
+      if (Math.abs(delta) < 1e-12) { if (a[axis] < -1e-8 || a[axis] > 1+1e-8) { high = -1; break; } }
+      else {
+        const t0 = (-1e-8-a[axis])/delta, t1 = (1+1e-8-a[axis])/delta;
+        low = Math.max(low, Math.min(t0,t1)); high = Math.min(high, Math.max(t0,t1));
+      }
+    }
+    if (low <= high) return true;
+  }
+  return false;
+}
+
 /** Reject suspicious discontinuities instead of replacing an unobserved ground
  * height. A consistent roof or smooth embankment can still pass: this is tile
  * surface evidence, not a survey or automatic bare-earth classification. */
@@ -101,7 +125,10 @@ export function validateSharedSiteGroundPass(layout: SharedSiteGroundLayout, hei
   if (values.some((height) => height < SHARED_SITE_GROUND_LIMITS.minHeightM || height > SHARED_SITE_GROUND_LIMITS.maxHeightM)) return invalid('implausible_height');
   const dx = stepLng * metersPerDegLon(south + stepLat * (rows - 1) / 2), dy = stepLat * METERS_PER_DEG_LAT;
   let maxSlope = 0, maxLocalResidualM = 0;
+  const support = new Set<number>();
   for (let y = 0; y < rows - 1; y += 1) for (let x = 0; x < columns - 1; x += 1) {
+    if (!groundCellTouchesBoundary(layout, x, y)) continue;
+    for (const index of [y*columns+x, y*columns+x+1, (y+1)*columns+x, (y+1)*columns+x+1]) support.add(index);
     const sw = values[y * columns + x], se = values[y * columns + x + 1];
     const nw = values[(y + 1) * columns + x], ne = values[(y + 1) * columns + x + 1];
     // The two actual triangle gradients, split on the SW–NE diagonal.
@@ -109,6 +136,7 @@ export function validateSharedSiteGroundPass(layout: SharedSiteGroundLayout, hei
   }
   for (let y = 1; y < rows - 1; y += 1) for (let x = 1; x < columns - 1; x += 1) {
     const index = y * columns + x;
+    if (![index, index-1, index+1, index-columns, index+columns].every(i => support.has(i))) continue;
     const neighbors = (values[index - 1] + values[index + 1] + values[index - columns] + values[index + columns]) / 4;
     maxLocalResidualM = Math.max(maxLocalResidualM, Math.abs(values[index] - neighbors));
   }

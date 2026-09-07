@@ -241,6 +241,19 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
             ):
                 continue
             segments = {item["segment_id"] for item in instances}
+            # A published detached archetype may be delivered as one native,
+            # complete landmark rather than a repeated-lot recipe. Its plot
+            # still includes setbacks and is not a measured floor plate.
+            if (
+                catalog_parent_archetype_id(identity) in DETACHED_ARCHETYPE_IDS
+                and fit.get("assembly_mode") == "fixed_landmark"
+                and fit.get("native_scale_locked") is True
+                and len(instances) == 1
+                and instances[0].get("role") == "assembled"
+            ):
+                compiled_detached[building["id"]] = 1
+                compiled_detached_zone_ids.add(zone["id"])
+                continue
             if (
                 fit.get("placement_mode") == "detached_lots"
                 and isinstance(count, int)
@@ -460,13 +473,14 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
         linked = [b for b in snapshot["buildings"] if b["id"] in linked_ids]
         # A linked Building replaces its zone's coarse footprint; never count both.
         footprints = [
-            {**z, "floors": z["properties"].get("floors")}
+            {**z, "floors": z["properties"].get("floor_count", z["properties"].get("floors"))}
             for z in building_zones
             if not z["building_id"] and not z["building_ids"]
         ] + linked
         missing_floors = []
         areas = []
         gfa = 0.0
+        measured_floor_plates = 0
         for building in footprints:
             if building["id"] in detached_zone_ids or building["id"] in detached_building_ids:
                 # A detached recipe is anchored to its whole plot, including
@@ -484,10 +498,13 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
                 missing_floors.append(building)
             else:
                 gfa += area * floors
+                measured_floor_plates += 1
+        unresolved_development = any(not z["building_id"] and not z["building_ids"] for z in development_areas)
+        has_unknown_buildings = bool(missing_floors or unresolved_development)
         metric(
             "building_footprint_m2",
-            "Known building footprints",
-            unary_union(areas).area if areas else 0,
+            "Known building footprints (incomplete)" if has_unknown_buildings else "Known building footprints",
+            unary_union(areas).area if areas else None if has_unknown_buildings else 0,
             "m²",
             "Union of direct building-zone footprints and linked building records; excludes unbuilt development allocations and detached housing plots whose individual floor plates are not measured.",
         )
@@ -495,7 +512,7 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
         metric(
             "gfa_m2",
             "Floor-area estimate" if complete else "Known floor area (incomplete)",
-            gfa,
+            gfa if measured_floor_plates or complete else None,
             "m²",
             "Sum of known footprint × recorded storeys. Assumes equal floor plates; excludes unknown floors, unresolved development allocations, and detached housing plots (yards are not floor area).",
             0.7,
@@ -505,7 +522,7 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
                 "floor-area-inputs",
                 "Complete the building quantities",
                 "Some building footprints or storey counts are not resolved, so the floor-area total is incomplete.",
-                "Set storeys and build out development areas before using floor area for a density argument.",
+                "Record missing storeys and individual building floor plates before using floor area for a density argument. Rebuilding a detached plot alone does not measure its floor plates.",
                 kind="unresolved_question",
                 uncertainty="No floor count or housing yield has been guessed.",
             )
@@ -554,7 +571,8 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
             "detached-housing-quantities",
             "Resolve the detached housing quantities",
             f"{len(detached_zone_ids)} detached housing plots are present; {pending} await current compiled dwelling quantities. Plot area includes yards and is excluded from known building footprint and floor-area totals.",
-            "Build or refresh Community 3D for dwelling counts. Record individual measured house floor plates before using these plots for floor-area or density calculations.",
+            ("Build or refresh Community 3D for dwelling counts. " if pending else "Dwelling counts are current. ")
+            + "Record individual measured house floor plates before using these plots for floor-area or density calculations.",
             kind="unresolved_question",
             records=[zone for zone in zones if zone["id"] in detached_zone_ids],
             uncertainty="Concept placement counts are not occupancy, zoning approval, or surveyed floor area. Any uncompiled unit count remains a student estimate.",

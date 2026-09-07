@@ -660,6 +660,7 @@ export function ProjectViewPage() {
     setShowVideoRender(false);
     setGlobeRenderPosition(null);
     setShowGlobeRender(true);
+    setShowProjectRenders(false);
   }, [cityPromptWorkflow]);
 
   const handleOpenVideoRender = useCallback(() => {
@@ -741,7 +742,8 @@ export function ProjectViewPage() {
 
   const rememberSavedRender = useCallback((render: SavedRender) => {
     setSavedRenders((current) => [render, ...current.filter((item) => item.id !== render.id)]);
-    setShowProjectRenders(true);
+    // The render panel already shows the result. The gallery badge updates
+    // without opening another floating panel over the tablet controls.
   }, []);
 
   const rememberSavedVideo = useCallback((attempt: VideoAttempt) => {
@@ -1017,6 +1019,15 @@ export function ProjectViewPage() {
         <Suspense fallback={<MapLoadingFallback mode="3D" />}>
           <GlobeSitePlannerMap
             placementDraft={placementDraft}
+            onPlacementDraftChange={setPlacementDraft}
+            onPrepareGround={async (zoneId, clear, height) => {
+              const boundary = siteZones.find(zone => zone.id === zoneId);
+              if (!boundary) throw new Error('Site boundary no longer exists');
+              await updateZone.mutateAsync({ zoneId, data: { properties: { ...boundary.properties,
+                community_3d_mask_existing_tiles: clear,
+                ...(height !== undefined ? { terrain_elevation_m: height } : {}),
+              } }, previousData: { properties: boundary.properties } });
+            }}
             onPlaceAsset={placeObject}
             onCancelPlacement={cancelPlacement}
             latitude={project.location?.latitude}

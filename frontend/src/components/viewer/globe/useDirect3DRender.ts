@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 
-import { rendersApi } from '@/services/api';
+import { authApi, rendersApi } from '@/services/api';
+import { useAuthStore } from '@/store';
 import type { SavedRender } from '@/types';
 import type { Community3DCaptureClaim } from '@/features/community3d/community3d';
 import {
@@ -412,6 +413,12 @@ export function useDirect3DRender() {
         shared_ground_snapshot: capture.sharedGroundSnapshot,
       residual_landscape_claim: options.residualLandscapeClaim ?? undefined,
     });
+    // Refresh after the server charge, without hiding a successful render if
+    // the balance request fails or restoring a user who signed out meanwhile.
+    const requestingUserId = useAuthStore.getState().user?.id;
+    if (requestingUserId) void authApi.me().then(user => {
+      if (user.id === requestingUserId && useAuthStore.getState().user?.id === requestingUserId) useAuthStore.getState().setUser(user);
+    }).catch(() => { /* The next account refresh will reconcile the balance. */ });
     return {
       render: {
         imageUrl: `data:image/png;base64,${response.image_base64}`,

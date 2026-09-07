@@ -21,6 +21,14 @@ function sloped() {
 }
 
 describe('shared retained-site terrain', () => {
+  it('ignores remote bounding-box cliffs but still rejects discontinuities in boundary support cells', () => {
+    const layout = createSharedSiteGroundLayout(boundary([[0,10],[10,0],[20,10],[10,20]]))!;
+    const heights = Array<number>(layout.grid.columns * layout.grid.rows).fill(1030);
+    heights[0] = 1080; // Outside the diamond, not used to interpolate any point in it.
+    expect(validateSharedSiteGroundPass(layout, heights).valid).toBe(true);
+    heights[Math.floor(layout.grid.rows/2)*layout.grid.columns+Math.floor(layout.grid.columns/2)] = 1080;
+    expect(validateSharedSiteGroundPass(layout, heights).reason).toBe('discontinuity');
+  });
   it('retains actual sloped tile heights across both triangles and boundary edges', () => {
     const { layout, heights } = sloped();
     const snapshot = createSharedSiteGroundSnapshot(layout, heights, heights)!;

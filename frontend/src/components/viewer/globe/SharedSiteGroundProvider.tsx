@@ -4,6 +4,7 @@ import { TilesRendererContext } from '3d-tiles-renderer/r3f';
 import { WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import * as THREE from 'three';
 import type { SiteZone } from '@/types';
+import type { GroundReview } from './groundReview';
 import { createGroundSelection } from './sharedGroundSelection';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { createSharedSiteGroundLayout, createSharedSiteGroundSnapshot, sampleSharedSiteGround,
@@ -17,6 +18,7 @@ export interface SharedSiteGroundState {
   contains: (lng: number, lat: number) => boolean;
   revision: string;
   failureReason?: string | null;
+  review?: GroundReview | null;
 }
 export const INACTIVE_SHARED_SITE_GROUND: SharedSiteGroundState = Object.freeze({
   status: 'inactive', snapshot: null, heightAt: () => null, contains: () => false, revision: 'inactive',
@@ -66,6 +68,7 @@ export function SharedSiteGroundProvider({ zones, children, onChange }: {
   const [result, setResult] = useState<{ source: string; status: SharedSiteGroundState['status']; snapshot: SharedSiteGroundSnapshot | null; generation: number; failureReason?: string | null }>(
     { source: 'inactive', status: 'inactive', snapshot: null, generation: 0 });
   const onChangeRef = useRef(onChange); onChangeRef.current = onChange;
+  const [review, setReview] = useState<GroundReview | null>(null);
   const raycaster = useRef(new THREE.Raycaster());
   const origin = useRef(new THREE.Vector3()), normal = useRef(new THREE.Vector3());
   const run = useRef({ source: '', dirty: true, generation: 0, changedAt: 0, startedAt: 0, index: 0, passes: 0,
@@ -122,6 +125,7 @@ export function SharedSiteGroundProvider({ zones, children, onChange }: {
       current.source = sourceSignature; current.dirty = false; current.generation += 1;
       current.changedAt = now; current.startedAt = now; current.index = 0; current.passes = 0;
       current.previous = null; current.values = []; current.done = false; current.nextPassAt = 0;
+      setReview(null);
       diagnose({ source: sourceSignature, generation: current.generation, layout, status: !boundary ? 'inactive' : layout && tiles ? 'sampling' : 'unavailable',
         passes: 0, index: 0, missCount: 0, elapsedMs: 0, settledForMs: 0, deadlineAt: now + TIMEOUT_MS,
         deadlineReason: boundary && (!layout || !tiles) ? !layout ? 'invalid_layout' : 'missing_renderer' : null,
@@ -171,6 +175,7 @@ export function SharedSiteGroundProvider({ zones, children, onChange }: {
     if (current.index < count) return;
     current.passes += 1;
     const quality = validateSharedSiteGroundPass(layout, current.values);
+    setReview({ layout, heights: [...current.values] });
     const snapshot = current.previous ? createSharedSiteGroundSnapshot(layout, current.previous, current.values) : null;
     if (import.meta.env.DEV) diagnose({ passes: current.passes, passQuality: quality, latestCompletedRawValues: [...current.values],
       maxPassDeltaM: current.previous && quality.valid ? Math.max(...current.values.map((value, index) => Math.abs(value! - current.previous![index]!))) : null });
@@ -193,12 +198,13 @@ export function SharedSiteGroundProvider({ zones, children, onChange }: {
     const ring = layout?.boundaryCoordinates ?? boundary.coordinates.map(([lng, lat]): [number, number] => [lng, lat]);
     return { status: matching ? result.status : layout ? 'sampling' : 'unavailable', snapshot,
       failureReason: matching && result.status === 'unavailable' ? result.failureReason : null,
+      review: review?.layout.sourceSignature === sourceSignature ? review : null,
       contains: (lng, lat) => sharedSiteGroundContains(ring, lng, lat),
       heightAt: (lng, lat) => sampleSharedSiteGround(snapshot, lng, lat),
       revision: `${sourceSignature}:${result.generation}:${snapshot?.signature ?? (matching ? result.status : 'sampling')}` };
     // Source identity freezes the boundary ring across unrelated parent renders.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sourceSignature, layout, result, boundary?.updated_at]);
+  }, [sourceSignature, layout, result, boundary?.updated_at, review]);
   useEffect(() => { onChangeRef.current?.(state); }, [state]);
   return <Context.Provider value={state}>{children}</Context.Provider>;
 }
