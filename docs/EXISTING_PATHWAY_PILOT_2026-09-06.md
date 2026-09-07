@@ -84,6 +84,20 @@ wide and approximately 5.4 m from the park edge to the recorded route edge.
   ownership. Imported GIS Z values do not replace the vertical datum. Reference
   lines remain excluded from final scene captures.
 
+## Accepted product decision
+
+After reviewing the pilot, the user agreed to keep existing street/path context
+optional through student-initiated layer imports. Do not automatically load
+transport data or require it for placing, reshaping, saving or rendering a
+community. Keep this capability in Layers rather than adding a mandatory step
+to the core workflow. Imported references remain separate from design objects;
+eligible path connections are an explicit student choice. Arbitrary imported
+datasets remain visual references unless a supported adapter interprets them.
+
+The current pilot already follows this opt-in behaviour. Map-click entrance
+selection and richer network awareness remain possible follow-ups, not required
+next work or approval to expand the pilot.
+
 ## Friction found and follow-up priorities
 
 1. **Ground feedback is the largest problem.** The first boundary had no missing
