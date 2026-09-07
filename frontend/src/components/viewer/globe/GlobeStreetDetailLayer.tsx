@@ -626,8 +626,7 @@ function StreetRibbonDetail({
     sectionScale,
     placementTerrain,
     sharedGround.offsetAt,
-    zone.id,
-    zone.properties?.pedestrian_crossings,
+    zone,
   ]);
 
   // r3f does not dispose geometry props — without this every drape freeze,
