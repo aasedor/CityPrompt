@@ -1,0 +1,50 @@
+import '@testing-library/jest-dom/vitest';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { describe, expect, it, vi } from 'vitest';
+import type { SiteZone } from '@/types';
+import { ConnectionEditor } from './ConnectionEditor';
+import { rectangleAt } from './geometry';
+
+const house:SiteZone={id:'house',project_id:'test',zone_type:'building',coordinates:rectangleAt([-114,51],12,20),properties:{native_home_plot:true,unrelated:'preserve'},color:'#aaa',sort_order:0,created_at:'now',updated_at:'now'};
+const road:SiteZone={...house,id:'road',name:'Local street',zone_type:'road',properties:{road_archetype_id:'calgary_local'}};
+describe('connection controls',()=>{
+  it('saves an explicit native-house anchor without dropping other properties',async()=>{
+    const onSave=vi.fn().mockResolvedValue(undefined),onClose=vi.fn();
+    render(<ConnectionEditor zone={house} zones={[house,road]} disabled={false} onSave={onSave} onClose={onClose}/>);
+    fireEvent.click(screen.getByRole('checkbox',{name:'Link an entrance to a sidewalk'}));
+    expect(screen.getByRole('checkbox',{name:/Scale entrance/})).not.toBeChecked();
+    fireEvent.change(screen.getByLabelText('Left / right (m)'),{target:{value:'2'}});
+    fireEvent.click(screen.getByRole('button',{name:'Save connections'}));
+    await waitFor(()=>expect(onClose).toHaveBeenCalled());
+    expect(onSave.mock.calls[0][0]).toMatchObject({unrelated:'preserve',pedestrian_building_entrance:{version:1,xM:2,yM:-8,streetId:'road',scaleWithPlot:false}});
+  });
+  it('does not shift an existing proportional anchor when reopening after resize',async()=>{
+    const zone={...house,coordinates:rectangleAt([-114,51],24,40),properties:{pedestrian_building_entrance:{version:1,xM:2,yM:-8,referenceWidthM:12,referenceDepthM:20,scaleWithPlot:true,streetId:'road',widthM:1.8}}};
+    const onSave=vi.fn().mockResolvedValue(undefined);
+    render(<ConnectionEditor zone={zone} zones={[zone,road]} disabled={false} onSave={onSave} onClose={vi.fn()}/>);
+    expect(screen.getByLabelText('Left / right (m)')).toHaveValue(4);
+    expect(screen.getByLabelText('Front / back (m)')).toHaveValue(-16);
+    fireEvent.click(screen.getByRole('button',{name:'Save connections'}));
+    await waitFor(()=>expect(onSave).toHaveBeenCalled());
+    expect(onSave.mock.calls[0][0].pedestrian_building_entrance).toMatchObject({xM:4,yM:-16});
+    expect(onSave.mock.calls[0][0].pedestrian_building_entrance.referenceWidthM).toBeCloseTo(24,5);
+    expect(onSave.mock.calls[0][0].pedestrian_building_entrance.referenceDepthM).toBeCloseTo(40,5);
+  });
+  it('keeps unsaved changes after a failed save and supports cancel without a write',async()=>{
+    const onSave=vi.fn().mockRejectedValue(new Error('offline')),onClose=vi.fn();
+    render(<ConnectionEditor zone={road} zones={[road]} disabled={false} onSave={onSave} onClose={onClose}/>);
+    fireEvent.click(screen.getByRole('button',{name:'Add crossing'}));
+    fireEvent.click(screen.getByRole('button',{name:'Save connections'}));
+    expect(await screen.findByRole('alert')).toHaveTextContent('Could not save');
+    expect(screen.getByLabelText('Position along street (%)')).toHaveValue(50);
+    expect(onClose).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole('button',{name:'Cancel'}));
+    expect(onClose).toHaveBeenCalledOnce();expect(onSave).toHaveBeenCalledOnce();
+  });
+  it('invalid numeric input cannot be saved',()=>{
+    render(<ConnectionEditor zone={road} zones={[road]} disabled={false} onSave={vi.fn()} onClose={vi.fn()}/>);
+    fireEvent.click(screen.getByRole('button',{name:'Add crossing'}));
+    fireEvent.change(screen.getByLabelText('Position along street (%)'),{target:{value:'101'}});
+    expect(screen.getByRole('button',{name:'Save connections'})).toBeDisabled();
+  });
+});

@@ -62,6 +62,7 @@ interface ZonePropertiesPanelProps {
   buildings?: Building[];
   allZones?: SiteZone[];
   onOpenBlockEditor?: (draftZone: SiteZone) => void;
+  onConnections?: () => void;
 }
 
 interface ZonePropertiesReload {
@@ -441,7 +442,7 @@ function getFrontDayArchetypeImage(images: CatalogArchetypeImage[]): CatalogArch
   return images.find((image) => image.id.endsWith(`_${FRONT_DAY_VARIANT_ID}`));
 }
 
-export function ZonePropertiesPanel({ zone, savedVersionReload, onUpdate, onDelete, onClose, onAIGenerate, buildings, allZones, onOpenBlockEditor }: ZonePropertiesPanelProps) {
+export function ZonePropertiesPanel({ zone, savedVersionReload, onUpdate, onDelete, onClose, onAIGenerate, buildings, allZones, onOpenBlockEditor, onConnections }: ZonePropertiesPanelProps) {
   const config = ZONE_TYPE_CONFIG[zone.zone_type];
   const osmContext = useViewerStore((s) => s.osmContext);
   const layoutPreview = useViewerStore((s) => s.layoutPreview);
@@ -1243,6 +1244,7 @@ const buildAestheticSelectionProps = (
         </div>
 
         <div className="mt-3 space-y-2.5 text-sm">
+        {onConnections && <button type="button" onClick={onConnections} className="min-h-11 w-full rounded-lg border-2 border-slate-900 bg-white px-3 text-sm font-semibold text-slate-900">Connections</button>}
         {/* Name */}
         <div>
           <label className={panelLabelClass}>Name</label>

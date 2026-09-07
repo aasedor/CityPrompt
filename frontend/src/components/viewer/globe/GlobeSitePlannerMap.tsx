@@ -48,6 +48,8 @@ import {
 import { GlobeStreetDetailLayer } from './GlobeStreetDetailLayer';
 import { GlobeParkKitLayer } from './GlobeParkKitLayer';
 import { applyManualParkAccessSnapshot, resolveManualParkAccess } from './parkAccessConnections';
+import { resolvePedestrianConnections } from '@/features/pickPlace/pedestrianConnections';
+import { GlobePedestrianConnections } from './GlobePedestrianConnections';
 import { GlobeResidualLandscapeLayer } from './GlobeResidualLandscapeLayer';
 import { GlobeStreetRenderProfile } from './GlobeStreetRenderProfile';
 import { getResidualLandscapeRecipe } from './residualLandscape';
@@ -1601,6 +1603,7 @@ export function GlobeSitePlannerMap({
     allSiteZones, {}, siteZones.filter((zone) => zone.zone_type === 'road').map((zone) => zone.id),
   ), [allSiteZones, siteZones]);
   const parkAccessSnapshotRef = useRef(parkAccessSnapshot);
+  const pedestrianConnections = useMemo(() => resolvePedestrianConnections(allSiteZones, siteZones.map(zone=>zone.id)), [allSiteZones, siteZones]);
   parkAccessSnapshotRef.current = parkAccessSnapshot;
   const hasLocalDraftsRef = useRef(false);
   hasLocalDraftsRef.current = allSiteZones.some((zone) => zone.id.startsWith('temp-'));
@@ -4073,6 +4076,7 @@ export function GlobeSitePlannerMap({
               and park props so mixed plans retain their exact lane geometry. */}
           <group name="siteforge-direct3d-street" userData={direct3DProposalUserData('street')}>
             <GlobeStreetDetailLayer zones={siteZones} terrainHeight={terrainElevation} />
+            <GlobePedestrianConnections results={pedestrianConnections} zones={connectedSceneZones} terrainHeight={terrainElevation} />
           </group>
 
           {/* Park-program structures (playgrounds/pavilions/bridges) — sibling

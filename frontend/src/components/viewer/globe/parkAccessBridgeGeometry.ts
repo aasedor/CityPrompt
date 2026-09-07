@@ -6,7 +6,7 @@ import { drapeSharedGroundGeometry, type SharedGroundTriangulation } from './sha
  * park drape. Ground offsets come from the same terrain frame as the park kit. */
 export function buildParkAccessBridgeGeometry(input: {
   start: [number, number]; end: [number, number]; widthM: number;
-  streetLiftM: number; startGroundM?: number; endGroundM?: number;
+  streetLiftM: number; endLiftM?: number; startGroundM?: number; endGroundM?: number;
   /** Same shared surface as the road and park, in this local metre frame. */
   groundAt?: (x: number, y: number) => number | null;
   groundGrid?: SharedGroundTriangulation;
@@ -20,8 +20,8 @@ export function buildParkAccessBridgeGeometry(input: {
   geometry.setAttribute('position', new THREE.Float32BufferAttribute([
     start[0] - nx, start[1] - ny, startOffset + streetLiftM + 0.003,
     start[0] + nx, start[1] + ny, startOffset + streetLiftM + 0.003,
-    end[0] - nx, end[1] - ny, endOffset + PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS + 0.003,
-    end[0] + nx, end[1] + ny, endOffset + PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS + 0.003,
+    end[0] - nx, end[1] - ny, endOffset + (input.endLiftM ?? PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS) + 0.003,
+    end[0] + nx, end[1] + ny, endOffset + (input.endLiftM ?? PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS) + 0.003,
   ], 3));
   geometry.setIndex([0, 2, 1, 1, 2, 3]);
   geometry.computeVertexNormals();

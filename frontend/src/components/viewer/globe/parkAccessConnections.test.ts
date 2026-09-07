@@ -22,6 +22,16 @@ function fixture() {
 }
 
 describe('manual park access planning', () => {
+  it('honours an editable entrance and does not silently choose another edge', () => {
+    const {park,street,boundary}=fixture();
+    const locked={...park,properties:{...park.properties,pedestrian_park_entrance:{version:1,edge:0,position:0.25,streetId:street.id}}};
+    const plan=resolveManualParkAccess([locked,street,boundary]).parks[0];
+    expect(plan.status).toBe('connected');expect(xy(plan.connections[0].gateway)[0]).toBeCloseTo(10,3);
+    const away={...locked,properties:{...locked.properties,pedestrian_park_entrance:{version:1,edge:2,position:0.5,streetId:street.id}}};
+    expect(resolveManualParkAccess([away,street,boundary]).parks[0].connections).toHaveLength(0);
+    const missing={...locked,properties:{...locked.properties,pedestrian_park_entrance:{version:1,edge:0,position:0.5,streetId:'deleted'}}};
+    expect(resolveManualParkAccess([missing,street,boundary]).parks[0].connections).toHaveLength(0);
+  });
   it('connects a pocket park to the near-side authored sidewalk and its own complete lawn loop', () => {
     const { zones } = fixture(); const plan = resolveManualParkAccess(zones).parks[0];
     expect(plan.status).toBe('connected');

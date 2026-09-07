@@ -88,6 +88,7 @@ import {
   direct3DZoneInstanceDescriptor,
 } from './direct3dCapture';
 import { validateStreetRecipeProperties } from './streetLegoContract';
+import { readCrossings, crossingStation } from '@/features/pickPlace/pedestrianConnections';
 import {
   buildStreetFamilyFixturePlacements,
   buildWoonerfPlanterPlacements,
@@ -603,12 +604,15 @@ function StreetRibbonDetail({
       sectionScale,
       enabled: renderFamilyFurniture,
       clearancePoints: centroid
-        ? intersectionNodes
+        ? [...intersectionNodes
           .filter((node) => node.zoneIds.includes(zone.id))
           .map((node) => ({
             x: (node.longitude - centroid.lng) * mPerLon,
             y: (node.latitude - centroid.lat) * METERS_PER_DEG_LAT,
-          }))
+          })), ...readCrossings(zone).flatMap(crossing=>{
+            const station=crossingStation(zone,crossing.position);
+            return station ? [{x:(station.point[0]-centroid.lng)*mPerLon,y:(station.point[1]-centroid.lat)*METERS_PER_DEG_LAT}] : [];
+          })]
         : [],
     });
     if (!sharedGround.offsetAt) return fixtures;
@@ -623,6 +627,7 @@ function StreetRibbonDetail({
     placementTerrain,
     sharedGround.offsetAt,
     zone.id,
+    zone.properties?.pedestrian_crossings,
   ]);
 
   // r3f does not dispose geometry props — without this every drape freeze,

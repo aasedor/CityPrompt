@@ -14,6 +14,7 @@ import { SitePlannerToolbar } from '@/components/viewer/SitePlannerToolbar';
 import { PlacementPalette } from '@/features/pickPlace/PlacementPalette';
 import { ReshapePanel } from '@/features/pickPlace/ReshapePanel';
 import { StreetRoutePanel } from '@/features/pickPlace/StreetRoutePanel';
+import { ConnectionEditor } from '@/features/pickPlace/ConnectionEditor';
 import { CALGARY_LOCAL_PLACEMENT, isCalgaryLocalRoute, streetRouteProblem } from '@/features/pickPlace/streetPlacement';
 import { assetForZone, placeAsset, placementProperties, type PlaceAssetId } from '@/features/pickPlace/catalogue';
 import { placementProblem, rectangleAt } from '@/features/pickPlace/geometry';
@@ -235,6 +236,8 @@ export function ProjectViewPage() {
   const initializedSiteToolProjectRef = useRef<string | null>(null);
 
   const selectedZone = siteZones.find((z) => z.id === selectedZoneId) || null;
+  const [connectionZoneId, setConnectionZoneId] = useState<string | null>(null);
+  const connectionZone = siteZones.find(zone=>zone.id===connectionZoneId);
   const cancelPlacement = useCallback(() => setPlacementDraft(null), []);
   const pickObject = (assetId: PlaceAssetId, width?: number, depth?: number, degrees = 0) => {
     const asset = placeAsset(assetId);
@@ -1140,11 +1143,13 @@ export function ProjectViewPage() {
         {/* Zone properties panel */}
         {selectedZone && assetForZone(selectedZone) && advancedZoneId !== selectedZone.id && !placementDraft && !showHistory && !measureActive && (
           <ReshapePanel key={`${selectedZone.id}:${JSON.stringify(selectedZone.coordinates)}`} zone={selectedZone} disabled={isSaving}
+            onConnections={()=>setConnectionZoneId(selectedZone.id)}
             onReshape={coordinates => reshapeObject(selectedZone.id, coordinates)} onClose={() => selectZone(null)}
             onDelete={() => deleteZone.mutate(selectedZone.id)} onDuplicate={pickObject} onMore={() => setAdvancedZoneId(selectedZone.id)} />
         )}
         {selectedZone && isCalgaryLocalRoute(selectedZone) && advancedZoneId !== selectedZone.id && !placementDraft && !showHistory && !measureActive && (
           <StreetRoutePanel zone={selectedZone} disabled={isSaving} onReshape={coords=>reshapeObject(selectedZone.id, coords)}
+            onConnections={()=>setConnectionZoneId(selectedZone.id)}
             onClose={()=>selectZone(null)} onDelete={()=>deleteZone.mutate(selectedZone.id)} onMore={()=>setAdvancedZoneId(selectedZone.id)} />
         )}
         {selectedZone && ((!assetForZone(selectedZone) && !isCalgaryLocalRoute(selectedZone)) || advancedZoneId === selectedZone.id) && !showHistory && !measureActive && (
@@ -1152,6 +1157,7 @@ export function ProjectViewPage() {
             key={selectedZone.id}
             zone={selectedZone}
             savedVersionReload={savedVersionReload}
+            onConnections={['building','residential','green_space','road'].includes(selectedZone.zone_type) ? ()=>setConnectionZoneId(selectedZone.id) : undefined}
             onUpdate={(zoneId, data) => {
               const previousZone = siteZones.find((z) => z.id === zoneId);
               updateZone.mutate({
@@ -1172,6 +1178,10 @@ export function ProjectViewPage() {
           />
         )}
 
+        {connectionZone && <ConnectionEditor key={connectionZone.id} zone={connectionZone} zones={siteZones} visibleIds={visibleZones.map(zone=>zone.id)} disabled={isSaving}
+          onClose={()=>setConnectionZoneId(null)} onSave={async properties=>{
+            await updateZone.mutateAsync({zoneId:connectionZone.id,data:{properties},previousData:{properties:connectionZone.properties}});
+          }} />}
         {showHistory && !showGlobeRender && id && (
           <HistoryPanel
             projectId={id}

@@ -3,6 +3,12 @@ import { buildParkAccessBridgeGeometry } from './parkAccessBridgeGeometry';
 import { PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS, PUBLIC_REALM_STREET_SIDEWALK_SURFACE_LIFT_METERS } from './publicRealmDepthPolicy';
 
 describe('park access arrival strip', () => {
+  it('drapes a raised crossing at sidewalk height and supports vehicle ramp endpoints', () => {
+    const geometry=buildParkAccessBridgeGeometry({start:[0,0],end:[0,4],widthM:3,streetLiftM:0.245,endLiftM:0.1,groundAt:(x,y)=>0.03*x+0.04*y})!;
+    const p=geometry.getAttribute('position');
+    for(let i=0;i<p.count;i++)expect(p.getZ(i)).toBeCloseTo(0.03*p.getX(i)+0.04*p.getY(i)+0.245+(0.1-0.245)*p.getY(i)/4+0.003,5);
+    geometry.dispose();
+  });
   it('keeps its physical width and meets the sampled sidewalk and park datums', () => {
     const geometry = buildParkAccessBridgeGeometry({ start: [4, 1], end: [4, 5], widthM: 2.2,
       streetLiftM: PUBLIC_REALM_STREET_SIDEWALK_SURFACE_LIFT_METERS, startGroundM: 0.5, endGroundM: 0.1 })!;

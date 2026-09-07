@@ -73,7 +73,7 @@ function intersects(a: P, b: P, c: P, d: P): boolean {
   const t = cross(sub(c, a), cd) / divisor; const u = cross(sub(c, a), ab) / divisor;
   return t >= -EPS && t <= 1 + EPS && u >= -EPS && u <= 1 + EPS;
 }
-function pointInside(p: P, ring: P[]): boolean {
+export function pointInside(p: P, ring: P[]): boolean {
   if (segments(ring).some(([a, b]) => distance(p, project(p, a, b)) < EPS)) return true;
   let inside = false;
   for (const [a, b] of segments(ring)) {
@@ -85,7 +85,7 @@ function segmentDistance(a: P, b: P, c: P, d: P): number {
   if (intersects(a, b, c, d)) return 0;
   return Math.min(distance(a, project(a, c, d)), distance(b, project(b, c, d)), distance(c, project(c, a, b)), distance(d, project(d, a, b)));
 }
-function hitsObstacle(a: P, b: P, ring: P[], clearance: number): boolean {
+export function hitsObstacle(a: P, b: P, ring: P[], clearance: number): boolean {
   return pointInside(a, ring) || pointInside(b, ring) || segments(ring).some(([c, d]) => segmentDistance(a, b, c, d) < clearance + EPS);
 }
 /** Check every rectangle edge, not just its corners: concave notches matter. */
@@ -101,14 +101,14 @@ function insideSegment(a: P, b: P, ring: P[]): boolean {
   ts.sort((x, y) => x - y);
   return ts.slice(1).every((t, i) => pointInside(lerp(a, b, (t + ts[i]) / 2), ring));
 }
-function corridorInside(a: P, b: P, ring: P[], halfWidth: number): boolean {
+export function corridorInside(a: P, b: P, ring: P[], halfWidth: number): boolean {
   const delta = sub(b, a); const length = distance(a, b);
   if (length < EPS) return pointInside(a, ring);
   const n = mul([-delta[1], delta[0]], halfWidth / length);
   const quad = [add(a, n), add(b, n), sub(b, n), sub(a, n)];
   return segments(quad).every(([c, d]) => insideSegment(c, d, ring));
 }
-function corridorOverlaps(a: P, b: P, ring: P[], halfWidth: number): boolean {
+export function corridorOverlaps(a: P, b: P, ring: P[], halfWidth: number): boolean {
   const delta = sub(b, a); const length = distance(a, b);
   if (length < EPS) return false;
   const n = mul([-delta[1], delta[0]], halfWidth / length);
@@ -156,6 +156,11 @@ function solvePark(park: SiteZone, zones: readonly SiteZone[], settings: ParkAcc
   const empty = (status: ParkAccessPlan['status'], reason: string): ParkAccessPlan => ({ parkZoneId: park.id, status, reason, connections: [], paths: [] });
   // Even an explicitly empty list is authored intent, not permission to invent gates.
   if (Array.isArray(park.properties?.park_access_points)) return empty('explicit', 'Existing authored access points are preserved.');
+  const entrance = park.properties?.pedestrian_park_entrance as { version?: number; edge?: number; position?: number; streetId?: string } | null;
+  if (entrance && (entrance.version !== 1 || !Number.isInteger(entrance.edge) || entrance.edge! < 0 || entrance.edge! >= park.coordinates.length
+    || !Number.isFinite(entrance.position) || entrance.position! < 0 || entrance.position! > 1 || typeof entrance.streetId !== 'string')) {
+    return empty('unresolved', 'Choose a valid park entrance and sidewalk target.');
+  }
   if (!validRing(park) || zones.length > MAX_ZONES || zones.some((z) => !validRing(z))) return empty('unresolved', 'Geometry is invalid or exceeds the bounded access-planning limit.');
   const boundary = getActiveSiteBoundary([...zones]);
   if (!boundary || !preparedSiteContainsZone(boundary, park)) {
@@ -248,6 +253,7 @@ function solvePark(park: SiteZone, zones: readonly SiteZone[], settings: ParkAcc
   type Candidate = { street: SiteZone; point: P; gateway: P; ingress: P; band: 'sidewalk' | 'path'; widthM: number; lift: number; gap: number };
   const candidates: Candidate[] = [];
   for (const street of zones.filter((z) => z.zone_type === 'road' && eligibleStreetZoneIds.has(z.id)).sort((a, b) => a.id.localeCompare(b.id))) {
+    if (entrance && street.id !== entrance.streetId) continue;
     // Both surfaces must use one site ground contract. Retained sites wait
     // for the shared sampled surface at runtime before showing/capturing paths.
     if (!preparedSiteContainsZone(boundary, street)) continue;
@@ -256,12 +262,13 @@ function solvePark(park: SiteZone, zones: readonly SiteZone[], settings: ParkAcc
     if (!section || center.length < 2) continue;
     const scale = section.metricWidthLocked ? (section.targetRowM ?? section.rowM) / section.rowM : effectiveRoadWidth(street.properties) / section.rowM;
     const streetRing = street.coordinates.map(local);
-    for (const [edgeA, edgeB] of segments(ring)) {
+    for (const [edgeIndex, [edgeA, edgeB]] of segments(ring).entries()) {
+      if (entrance && edgeIndex !== entrance.edge) continue;
       const delta = sub(edgeB, edgeA); const edgeLength = distance(edgeA, edgeB);
       if (edgeLength < settings.pathWidthM * 2) continue;
       let inward: P = [-delta[1] / edgeLength, delta[0] / edgeLength];
       if (!pointInside(add(lerp(edgeA, edgeB, 0.5), mul(inward, 0.05)), ring)) inward = mul(inward, -1);
-      for (const t of [0.5, 0.25, 0.75]) {
+      for (const t of entrance ? [entrance.position!] : [0.5, 0.25, 0.75]) {
         const gateway = lerp(edgeA, edgeB, t); const ingress = add(gateway, mul(inward, settings.pathWidthM + 0.5));
         if (!internalSafe(gateway, ingress, true)) continue;
         for (let i = 1; i < center.length; i += 1) {
