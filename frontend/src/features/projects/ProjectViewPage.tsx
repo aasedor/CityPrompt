@@ -1020,12 +1020,13 @@ export function ProjectViewPage() {
           <GlobeSitePlannerMap
             placementDraft={placementDraft}
             onPlacementDraftChange={setPlacementDraft}
-            onPrepareGround={async (zoneId, clear, height) => {
+            onPrepareGround={async (zoneId, clear, height, edges) => {
               const boundary = siteZones.find(zone => zone.id === zoneId);
               if (!boundary) throw new Error('Site boundary no longer exists');
               await updateZone.mutateAsync({ zoneId, data: { properties: { ...boundary.properties,
                 community_3d_mask_existing_tiles: clear,
                 ...(height !== undefined ? { terrain_elevation_m: height } : {}),
+                ...(edges !== undefined ? { terrain_edge_profile: edges } : {}),
               } }, previousData: { properties: boundary.properties } });
             }}
             onPlaceAsset={placeObject}

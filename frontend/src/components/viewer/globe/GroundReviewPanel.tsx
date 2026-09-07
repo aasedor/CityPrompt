@@ -1,27 +1,35 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import type { SiteZone } from '@/types';
 import { StudioDialog } from '@/features/projects/StudioControls';
 import { describeGround, validPreparedLevel } from './groundReview';
 import type { SharedSiteGroundState } from './SharedSiteGroundProvider';
 import { groundReadinessMessage } from './sharedGroundCapture';
+import { measurePreparedEdges, preparedEdgeSummary, readPreparedEdges, supportsPreparedEdges, type PreparedEdgeProfile } from './preparedSiteEdges';
 
 export function GroundReviewPanel({ boundary, ground, onClose, onApply }: {
   boundary: SiteZone; ground: SharedSiteGroundState; onClose: () => void;
-  onApply: (clear: boolean, height?: number) => Promise<void>;
+  onApply: (clear: boolean, height?: number, edges?: PreparedEdgeProfile | null) => Promise<void>;
 }) {
   const [level, setLevel] = useState(String(boundary.properties?.terrain_elevation_m ?? ''));
   const [pending, setPending] = useState(false);
   const [error, setError] = useState('');
+  const savedEdges = useMemo(() => readPreparedEdges(boundary), [boundary]);
+  const measuredEdges = useMemo(() => measurePreparedEdges(boundary, ground.review), [boundary, ground.review]);
+  const edges = measuredEdges ?? savedEdges;
+  const [includeEdges, setIncludeEdges] = useState(Boolean(savedEdges));
+  const edgeSummary = edges && level.trim() !== '' && validPreparedLevel(Number(level)) ? preparedEdgeSummary(edges, Number(level)) : null;
   const review = ground.review, summary = review ? describeGround(review) : null;
   const apply = async (clear: boolean) => {
     setPending(true); setError('');
-    try { await onApply(clear, clear ? Number(level) : undefined); onClose(); }
+    if (clear && (level.trim() === '' || !validPreparedLevel(Number(level)) || (includeEdges && !edges))) { setPending(false); return; }
+    try { await onApply(clear, clear ? Number(level) : undefined, clear ? includeEdges ? edges : null : undefined); onClose(); }
     catch { setError('Saving ground settings could not be confirmed. Reload the project to check its current level before trying again.'); }
     finally { setPending(false); }
   };
   return <StudioDialog title="Review site ground" onClose={onClose}>
     <div className="max-h-[70dvh] space-y-4 overflow-auto p-1 text-sm text-slate-900">
-      <p>{ground.status === 'ready' ? 'The visible surface is consistent. Check that the samples are on ground rather than roofs or trees.' : ground.status === 'inactive' ? 'This site uses a prepared level. Follow existing terrain to inspect the original surface.' : groundReadinessMessage(ground)}</p>
+      <p>{ground.status === 'ready' ? 'The visible surface is consistent. Check that the samples are on ground rather than roofs or trees.' : ground.status === 'inactive' ? 'This site uses a prepared level. Reviewing its original surface does not change your design.' : groundReadinessMessage(ground)}</p>
+      {ground.inspectionStatus === 'sampling' && <p role="status">Measuring the original surface… Keep the site in view.</p>}
       {summary && review && <>
         <p>Measured heights: {summary.min?.toFixed(1) ?? 'unknown'}–{summary.max?.toFixed(1) ?? 'unknown'} m. North is up. Red marks abrupt changes; grey cells are missing or outside your boundary. Select a coloured sample to use its height as your proposed level.</p>
         <svg viewBox={`-1 -1 ${review.layout.grid.columns + 1} ${review.layout.grid.rows + 1}`} className="mx-auto h-56 w-full" role="img" aria-label="Measured site elevations, north up">
@@ -45,7 +53,14 @@ export function GroundReviewPanel({ boundary, ground, onClose, onApply }: {
         {summary?.min !== null && summary?.max !== null && summary && level !== '' && validPreparedLevel(Number(level)) &&
           <p>Compared with the visible samples, this level is {(Number(level) - summary.min).toFixed(1)} m above the lowest and {(summary.max - Number(level)).toFixed(1)} m below the highest. Roof and tree samples can exaggerate these differences.</p>}
         <p>Applying this replaces existing tiles inside the boundary. Buildings, parks and streets use this common level. Inspect the site edges afterward.</p>
-        <button disabled={level.trim() === '' || !validPreparedLevel(Number(level))} className="min-h-11 rounded-lg bg-lime-200 p-2 disabled:opacity-40" onClick={() => void apply(true)}>Apply redevelopment level</button>
+        <label className="flex min-h-11 items-center gap-2"><input type="checkbox" checked={includeEdges} disabled={!edges && !includeEdges} onChange={event => setIncludeEdges(event.target.checked)} />Add retaining edges · slope pilot</label>
+        <p className="text-xs">Connect the level surface to measured heights around its boundary. These are concept retaining faces, not engineered walls or accessible entrances. Review trees, roofs and nearby paths before applying.</p>
+        {!edges && <p role="status" className="text-xs">{supportsPreparedEdges(boundary)
+          ? 'Retaining edges need two repeatable measurements around the whole boundary. Keep the site in view while it loads, or reopen this review to retry. You can still apply a level surface without edges.'
+          : 'This boundary is too large or detailed for the retaining-edge pilot. Use a smaller site or apply a level surface without edges.'}</p>}
+        {Boolean(boundary.properties?.terrain_edge_profile) && !savedEdges && <p className="text-xs text-amber-800">The site outline changed. Its old retaining edges have been hidden; remeasure and apply to rebuild them.</p>}
+        {edgeSummary && <p className="rounded bg-slate-100 p-2">At the boundary: up to {edgeSummary.maximumFill.toFixed(1)} m of fill and {edgeSummary.maximumCut.toFixed(1)} m of cut relative to the visible surface.{!measuredEdges && savedEdges ? ' Using saved edge measurements.' : ''}</p>}
+        <button disabled={level.trim() === '' || !validPreparedLevel(Number(level)) || (includeEdges && !edges)} className="min-h-11 rounded-lg bg-lime-200 p-2 disabled:opacity-40" onClick={() => void apply(true)}>Apply redevelopment level</button>
       </fieldset>
       {error && <p role="alert">{error}</p>}
     </div>

@@ -1417,7 +1417,7 @@ function MeasurementOverlay({
 }
 
 interface GlobeSitePlannerMapProps {
-  onPrepareGround?: (zoneId: string, clear: boolean, height?: number) => Promise<void>;
+  onPrepareGround?: (zoneId: string, clear: boolean, height?: number, edges?: import('./preparedSiteEdges').PreparedEdgeProfile | null) => Promise<void>;
   placementDraft?: import('@/features/pickPlace/GlobePlacementPreview').PlacementDraft | null;
   onPlacementDraftChange?: (draft: import('@/features/pickPlace/GlobePlacementPreview').PlacementDraft) => void;
   onPlaceAsset?: (lngLat: [number, number], height: number) => void;
@@ -4043,7 +4043,7 @@ export function GlobeSitePlannerMap({
             onSettledChange={setIsSceneSettled}
             onDisplayReadyChange={setAreTilesDisplayReady}
           />
-          <SharedSiteGroundProvider zones={allSiteZones} onChange={handleSharedGroundChange}>
+          <SharedSiteGroundProvider zones={allSiteZones} onChange={handleSharedGroundChange} inspectPrepared={showGroundReview}>
           <group ref={referenceOverlayGroup}><GlobeReferenceLayer layers={referenceLayers} terrainHeight={terrainElevation} /></group>
           <TileStencilPatcher zones={tileMaskZones} terrainHeight={terrainElevation} />
           <GlobeTileMaskLayer zones={tileMaskZones} terrainHeight={terrainElevation} />
@@ -4211,7 +4211,7 @@ export function GlobeSitePlannerMap({
 
       {showGroundReview && getActiveSiteBoundary(allSiteZones) && onPrepareGround && <GroundReviewPanel
         boundary={getActiveSiteBoundary(allSiteZones)!} ground={sharedGroundState} onClose={() => setShowGroundReview(false)}
-        onApply={(clear, height) => onPrepareGround(getActiveSiteBoundary(allSiteZones)!.id, clear, height)} />}
+        onApply={(clear, height, edges) => onPrepareGround(getActiveSiteBoundary(allSiteZones)!.id, clear, height, edges)} />}
       {placementDraft && !interactionPaused && <>
         <div aria-hidden className="pointer-events-none absolute left-1/2 top-1/2 z-30 -translate-x-1/2 -translate-y-1/2 text-3xl font-light text-white drop-shadow sm:hidden">+</div>
         <div className="absolute bottom-6 left-1/2 z-40 w-80 max-w-[90vw] -translate-x-1/2 rounded-xl bg-white p-3 text-center text-sm text-slate-900 shadow-xl">

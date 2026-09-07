@@ -19,6 +19,7 @@ export interface SharedSiteGroundState {
   revision: string;
   failureReason?: string | null;
   review?: GroundReview | null;
+  inspectionStatus?: 'sampling' | 'ready' | 'unavailable';
 }
 export const INACTIVE_SHARED_SITE_GROUND: SharedSiteGroundState = Object.freeze({
   status: 'inactive', snapshot: null, heightAt: () => null, contains: () => false, revision: 'inactive',
@@ -54,12 +55,13 @@ function visibleTileHit(object: THREE.Object3D, tileGroup: THREE.Object3D, visib
  * invalidate the surface; a capture must wait for the next ready revision.
  * Full coverage and repeatability establish visible-mesh contact, not surveyed
  * bare earth. No unknown or outlier sample is synthesized. */
-export function SharedSiteGroundProvider({ zones, children, onChange }: {
-  zones: SiteZone[]; children: ReactNode; onChange?: (state: SharedSiteGroundState) => void;
+export function SharedSiteGroundProvider({ zones, children, onChange, inspectPrepared = false }: {
+  zones: SiteZone[]; children: ReactNode; onChange?: (state: SharedSiteGroundState) => void; inspectPrepared?: boolean;
 }) {
   const tiles = useContext(TilesRendererContext);
   const active = getActiveSiteBoundary(zones);
-  const boundary = active?.properties?.community_3d_mask_existing_tiles === false ? active : null;
+  const inspectionOnly = Boolean(active && active.properties?.community_3d_mask_existing_tiles !== false);
+  const boundary = !inspectionOnly || inspectPrepared ? active : null;
   const sourceSignature = boundary ? sharedSiteGroundSourceSignature(boundary) : 'inactive';
   const layout = useMemo(() => boundary ? createSharedSiteGroundLayout(boundary) : null,
     // Properties unrelated to the site's revision/geometry do not restart sampling.
@@ -72,7 +74,7 @@ export function SharedSiteGroundProvider({ zones, children, onChange }: {
   const raycaster = useRef(new THREE.Raycaster());
   const origin = useRef(new THREE.Vector3()), normal = useRef(new THREE.Vector3());
   const run = useRef({ source: '', dirty: true, generation: 0, changedAt: 0, startedAt: 0, index: 0, passes: 0,
-    previous: null as Array<number | null> | null, values: [] as Array<number | null>, nextPassAt: 0, done: false,
+    previous: null as Array<number | null> | null, previousRaw: undefined as Array<number | null> | undefined, values: [] as Array<number | null>, nextPassAt: 0, done: false,
     visibleScenes: new Set<THREE.Object3D>() });
   const diagnostics = useRef<SharedGroundDiagnostics | null>(null);
   const selection = useMemo(() => layout ? createGroundSelection(layout,
@@ -124,7 +126,7 @@ export function SharedSiteGroundProvider({ zones, children, onChange }: {
     if (current.source !== sourceSignature || current.dirty) {
       current.source = sourceSignature; current.dirty = false; current.generation += 1;
       current.changedAt = now; current.startedAt = now; current.index = 0; current.passes = 0;
-      current.previous = null; current.values = []; current.done = false; current.nextPassAt = 0;
+      current.previous = null; current.previousRaw = undefined; current.values = []; current.done = false; current.nextPassAt = 0;
       setReview(null);
       diagnose({ source: sourceSignature, generation: current.generation, layout, status: !boundary ? 'inactive' : layout && tiles ? 'sampling' : 'unavailable',
         passes: 0, index: 0, missCount: 0, elapsedMs: 0, settledForMs: 0, deadlineAt: now + TIMEOUT_MS,
@@ -175,7 +177,8 @@ export function SharedSiteGroundProvider({ zones, children, onChange }: {
     if (current.index < count) return;
     current.passes += 1;
     const quality = validateSharedSiteGroundPass(layout, current.values);
-    setReview({ layout, heights: [...current.values] });
+    setReview({ layout, heights: [...current.values], previousHeights: current.previousRaw });
+    current.previousRaw = [...current.values];
     const snapshot = current.previous ? createSharedSiteGroundSnapshot(layout, current.previous, current.values) : null;
     if (import.meta.env.DEV) diagnose({ passes: current.passes, passQuality: quality, latestCompletedRawValues: [...current.values],
       maxPassDeltaM: current.previous && quality.valid ? Math.max(...current.values.map((value, index) => Math.abs(value! - current.previous![index]!))) : null });
@@ -193,6 +196,9 @@ export function SharedSiteGroundProvider({ zones, children, onChange }: {
   const state = useMemo<SharedSiteGroundState>(() => {
     if (!boundary) return INACTIVE_SHARED_SITE_GROUND;
     const matching = result.source === sourceSignature;
+    if (inspectionOnly) return { ...INACTIVE_SHARED_SITE_GROUND,
+      review: review?.layout.sourceSignature === sourceSignature ? review : null,
+      inspectionStatus: matching && result.status !== 'inactive' ? result.status : 'sampling' };
     const measured = matching && result.status === 'ready' ? result.snapshot : null;
     const snapshot = measured ? { ...measured, boundaryUpdatedAt: boundary.updated_at } : null;
     const ring = layout?.boundaryCoordinates ?? boundary.coordinates.map(([lng, lat]): [number, number] => [lng, lat]);
@@ -204,7 +210,7 @@ export function SharedSiteGroundProvider({ zones, children, onChange }: {
       revision: `${sourceSignature}:${result.generation}:${snapshot?.signature ?? (matching ? result.status : 'sampling')}` };
     // Source identity freezes the boundary ring across unrelated parent renders.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sourceSignature, layout, result, boundary?.updated_at, review]);
+  }, [sourceSignature, layout, result, boundary?.updated_at, review, inspectionOnly]);
   useEffect(() => { onChangeRef.current?.(state); }, [state]);
   return <Context.Provider value={state}>{children}</Context.Provider>;
 }

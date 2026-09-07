@@ -1,6 +1,6 @@
 import { sharedSiteGroundContains, sharedSiteGroundGridPoint, SHARED_SITE_GROUND_LIMITS, type SharedSiteGroundLayout } from './sharedSiteGround';
 
-export interface GroundReview { layout: SharedSiteGroundLayout; heights: Array<number | null> }
+export interface GroundReview { layout: SharedSiteGroundLayout; heights: Array<number | null>; previousHeights?: Array<number | null> }
 export function describeGround(review: GroundReview) {
   const { layout, heights } = review;
   const { columns, rows } = layout.grid;

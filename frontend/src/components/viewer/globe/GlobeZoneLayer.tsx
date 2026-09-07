@@ -14,6 +14,7 @@ import { Html } from '@react-three/drei';
 import { WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import { EastNorthUpFrame, TilesRendererContext } from '3d-tiles-renderer/r3f';
 import type { SiteZone } from '@/types';
+import { createPreparedEdgeGeometry, readPreparedEdges } from './preparedSiteEdges';
 import { applyParkGroundUVs, useParkGroundTexture } from './parkGroundTexture';
 import { useStreetNetworkGroundTexture } from './streetNetworkGroundTexture';
 import {
@@ -648,6 +649,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   // leaked one fill/outline pair per terrain update.
   useDeferredLocalGeometryDisposal(geoData);
 
+  const preparedEdgeProfile = useMemo(() => isPreparedBoundary ? readPreparedEdges(zone) : null, [isPreparedBoundary, zone]);
   const preparedSiteGeo = useMemo(
     () => {
       if (!isPreparedBoundary || !geoData?.flatTopGeo) return null;
@@ -658,9 +660,9 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
       // The Google-Tiles spatial mask and replacement surface are rasterized
       // independently. A tightly coincident edge can reveal a one-pixel white
       // seam; the bounded excess remains hidden below surviving source tiles.
-      return overlapPreparedGroundEdges(geometry);
+      return preparedEdgeProfile ? geometry : overlapPreparedGroundEdges(geometry);
     },
-    [geoData, isPreparedBoundary, residualLandscapeRecipe, zone.coordinates, zone.id],
+    [geoData, isPreparedBoundary, residualLandscapeRecipe, zone.coordinates, zone.id, preparedEdgeProfile],
   );
   useDeferredDisposable(preparedSiteGeo);
   const preparedSiteTexture = useMemo(
@@ -752,6 +754,10 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
       terrainHeight,
     ));
   const terrainReferenceHeight = storedTerrainHeight ?? terrainHeight;
+  const retainingGeometry = useMemo(() => preparedEdgeProfile
+    ? createPreparedEdgeGeometry(preparedEdgeProfile, zoneTerrainHeight, centroid) : null,
+  [preparedEdgeProfile, zoneTerrainHeight, centroid]);
+  useDeferredDisposable(retainingGeometry);
   const hasAuthoredGroundTextureMeta = Boolean(
     zoneProps?.park_ground_texture || zoneProps?.street_network_ground_texture,
   );
@@ -1172,6 +1178,9 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
       lon={centroid[0] * DEG_TO_RAD}
       height={zoneTerrainHeight}
     >
+      {retainingGeometry && <mesh name="prepared-site-retaining-edges" geometry={retainingGeometry} renderOrder={101}>
+        <meshStandardMaterial color="#938c80" roughness={0.95} side={THREE.DoubleSide} />
+      </mesh>}
       {/* Fill — flat zones with terrain draping */}
       {/* Fill — flat zones: layered by type */}
       {/* Render order: site_boundary(100) < road(120) < green_space(120.5) <
