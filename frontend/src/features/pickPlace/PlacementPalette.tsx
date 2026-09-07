@@ -1,8 +1,9 @@
 import { useCallback, useState } from 'react';
 import { Building2, Trees, Route } from 'lucide-react';
 import type { PlaceAssetId } from './catalogue';
-import { browseAssets, availableGroups, type StreetAsset } from './assetRegistry';
+import { browseAssets, availableGroups, STREET_ASSETS, type StreetAsset } from './assetRegistry';
 import { CalgaryGuideDetails } from '@/features/calgaryCatalogue/CatalogueBrowser';
+import { StreetCrossSection } from './StreetCrossSection';
 import { StudioDialog } from '@/features/projects/StudioControls';
 
 const sections = [
@@ -13,10 +14,10 @@ const sections = [
 type Section = typeof sections[number]['id'];
 const filterStyle = 'min-h-11 min-w-0 rounded-lg border border-slate-400 bg-white px-3 text-sm text-slate-900';
 
-export function PlacementPalette({ selected, onPick, onCancel, status, message, onRetry, onPickStreet, streetActive = false, onBrowseChange }: {
+export function PlacementPalette({ selected, onPick, onCancel, status, message, onRetry, onPickStreet, activeStreetVariant, onBrowseChange }: {
   selected: PlaceAssetId | null; onPick: (id: PlaceAssetId) => void; onCancel: () => void;
   status: string; message: string; onRetry: () => void;
-  onPickStreet?: (asset: StreetAsset) => void; streetActive?: boolean;
+  onPickStreet?: (asset: StreetAsset) => void; activeStreetVariant?: string;
   onBrowseChange?: (open: boolean) => void;
 }) {
   const [open, setOpen] = useState(false);
@@ -29,6 +30,7 @@ export function PlacementPalette({ selected, onPick, onCancel, status, message, 
   const groups = availableGroups().filter(group => group.domain === section);
   const assets = browseAssets(query, groupId).filter(asset => groups.some(group => group.id === asset.calgaryGuide.groupId));
   const visibleSections = sections.filter(item => onPickStreet || item.id !== 'street_pathway');
+  const activeStreet = STREET_ASSETS.find(asset => asset.model.variantId === activeStreetVariant);
   return <section aria-label="Place 3D objects" className="space-y-2">
     <p className="text-sm font-bold text-slate-900">Add to your community</p>
     <div className="grid grid-cols-3 gap-1">
@@ -39,6 +41,9 @@ export function PlacementPalette({ selected, onPick, onCancel, status, message, 
         <Icon size={22} />{label}
       </button>)}
     </div>
+    {activeStreet && <p className="rounded-lg border border-lime-400 bg-lime-50 px-2 py-2 text-xs text-slate-900">
+      <strong>{activeStreet.label} · {activeStreet.sectionWidth} m wide</strong><br />Draw its route; the width stays fixed.
+    </p>}
     {selected && <button onClick={onCancel} className="min-h-11 w-full rounded-lg border border-slate-500 bg-white text-sm text-slate-900">Cancel placement · Esc</button>}
     <div role="status" aria-live="polite" className={`rounded-lg px-2 py-1 text-xs ${status === 'error' ? 'bg-amber-50 text-amber-950' : 'bg-emerald-50 text-emerald-950'}`}>
       <p className="font-semibold">{status === 'updating' ? 'Updating 3D…' : status === 'error' ? '3D update needs attention' : status === 'ready' ? '3D saved' : '3D appears automatically'}</p>
@@ -66,13 +71,13 @@ export function PlacementPalette({ selected, onPick, onCancel, status, message, 
         <div aria-label="Available objects" className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-1">
           <div className="grid items-start gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {assets.slice(0, limit).map(asset => <article key={asset.id} className="overflow-hidden rounded-xl border border-slate-300 bg-white">
-              <button aria-pressed={asset.kind === 'street' ? streetActive : selected === asset.id}
+              <button aria-pressed={asset.kind === 'street' ? activeStreetVariant === asset.model.variantId : selected === asset.id}
                 onClick={() => { close(); if (asset.kind === 'street') onPickStreet?.(asset); else onPick(asset.id); }}
                 className="group w-full text-left hover:bg-lime-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-3px]">
                 <img loading="lazy" src={asset.thumbnail} alt="" className="h-36 w-full bg-slate-100 object-contain" />
                 <span className="block space-y-1 p-3"><span className="block text-sm font-bold">{asset.label}</span><span className="block text-xs text-slate-600">{asset.description}</span><span className="block pt-1 text-sm font-semibold underline">Choose & place</span></span>
               </button>
-              <div className="px-3 pb-2"><CalgaryGuideDetails classification={asset.calgaryGuide} /></div>
+              <div className="px-3 pb-2">{asset.kind === 'street' && <StreetCrossSection asset={asset} />}<CalgaryGuideDetails classification={asset.calgaryGuide} /></div>
             </article>)}
           </div>
           {!assets.length && <div className="p-4 text-sm">No available objects match.<button onClick={() => { setQuery(''); setGroupId(''); setLimit(12); }} className="block min-h-11 underline">Clear filters</button></div>}

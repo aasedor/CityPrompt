@@ -6,6 +6,17 @@ import { LOCAL_STREET_ASSET } from './assetRegistry';
 import * as registry from './assetRegistry';
 
 describe('student asset browsing', () => {
+  it('shows the active fixed width and marks only the selected street card', () => {
+    const onPickStreet = vi.fn();
+    render(<PlacementPalette selected={null} onPick={vi.fn()} onPickStreet={onPickStreet}
+      activeStreetVariant="yield_street_v0" onCancel={vi.fn()} status="ready" message="" onRetry={vi.fn()} />);
+    expect(screen.getByText('Shared street · 6 m wide')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Streets' }));
+    expect(screen.getByRole('button', { name: /Shared street/ })).toHaveAttribute('aria-pressed','true');
+    expect(screen.getByRole('button', { name: /Planted laneway/ })).toHaveAttribute('aria-pressed','false');
+    fireEvent.click(screen.getByRole('button', { name: /Planted laneway/ }));
+    expect(onPickStreet).toHaveBeenCalledWith(expect.objectContaining({sectionWidth:5}));
+  });
   it('filters without placing, clears empty results and dispatches street selection separately', () => {
     const onPick = vi.fn(), onPickStreet = vi.fn();
     render(<PlacementPalette selected={null} onPick={onPick} onPickStreet={onPickStreet} onCancel={vi.fn()} status="ready" message="" onRetry={vi.fn()} />);
