@@ -8,7 +8,7 @@ import { useSharedSiteGround } from './SharedSiteGroundProvider';
 import { createSharedGroundTriangulation } from './sharedGroundGeometry';
 import { resolvePreparedSiteTerrainForZone } from './sitePreparationSurface';
 import { buildParkAccessBridgeGeometry } from './parkAccessBridgeGeometry';
-import { pedestrianCaptureUserData } from './pedestrianCapture';
+import { streetConnectionCaptureUserData } from './pedestrianCapture';
 import { retainResourceForDeferredDisposal } from './strictModeResourceDisposal';
 
 function Strip({ strip, owner, zones, terrainHeight }: { strip: PedestrianStrip; owner: SiteZone; zones: SiteZone[]; terrainHeight: number }) {
@@ -41,7 +41,8 @@ export function GlobePedestrianConnections({ results, zones, terrainHeight }: {
 }) {
   return <>{results.map(result => {
     const owner=zones.find(z=>z.id===result.ownerId); if(!owner)return null;
-    return <group key={`${result.kind}:${result.id}`} userData={pedestrianCaptureUserData(owner.id)}>
+    const captureData=streetConnectionCaptureUserData(owner,zones); if(!captureData)return null;
+    return <group key={`${result.kind}:${result.id}`} userData={captureData}>
       {result.strips.map(strip=><Strip key={strip.id} strip={strip} owner={owner} zones={zones} terrainHeight={terrainHeight} />)}
     </group>;
   })}</>;
