@@ -47,7 +47,7 @@ function pathGeometry(points: readonly ParkPoint[], width: number, closed: boole
   return geometry;
 }
 
-function Surface({ ring, pathWidth, closed = false, role, terrainZ, grid, tint, extraLift = 0 }: {
+export function Surface({ ring, pathWidth, closed = false, role, terrainZ, grid, tint, extraLift = 0 }: {
   ring: readonly ParkPoint[]; pathWidth?: number; closed?: boolean;
   role: 'lawn' | 'safety' | 'paver'; terrainZ: Ground; grid?: SharedGroundTriangulation | null;
   tint?: string;
@@ -141,7 +141,7 @@ function Instances({ geometry, material, points, terrainZ, size = 1 }: {
   return <instancedMesh ref={ref} args={[geometry, material, points.length]} castShadow receiveShadow />;
 }
 
-function Woodland({ points, variant, terrainZ }: { points: readonly ParkPoint[]; variant: number; terrainZ: Ground }) {
+export function Woodland({ points, variant, terrainZ }: { points: readonly ParkPoint[]; variant: number; terrainZ: Ground }) {
   const { scene } = useGLTF(`${ROOT}/oak-${variant}.glb`);
   const parts = useMemo(() => {
     scene.updateMatrixWorld(true);
@@ -171,7 +171,11 @@ export function GlobeNeighborhoodParkPilot({ zone, centroid, terrainZ, groundGri
   const access = getDerivedParkAccess(zone);
   const entryPaths = useMemo(() => (access?.paths ?? []).map(path => path.points.map(([lng, lat]) => ({ x: (lng - centroid.lng) * metersPerDegLon(centroid.lat), y: (lat - centroid.lat) * METERS_PER_DEG_LAT }))), [access, centroid]);
   const approaches = useMemo(() => layout.paths.map((path,i) => parkApproachGround(layout.modules[i],path,terrainZ)), [layout,terrainZ]);
-  const clearOfEntrances = (p: ParkPoint, clearance: number) => entryPaths.every(path => path.every((q, i) => i === 0 || distanceToSegment(p, path[i - 1], q) > clearance));
+  const terraceClearances = (zone.properties?.terrace_access_clearances ?? []) as Array<{points:number[][];widthM:number}>;
+  const clearOfEntrances = (p: ParkPoint, clearance: number) => entryPaths.every(path => path.every((q, i) => i === 0 || distanceToSegment(p, path[i - 1], q) > clearance))
+    && terraceClearances.every(path => path.points.every((q,i) => i===0 || distanceToSegment(p,
+      {x:(path.points[i-1][0]-centroid.lng)*metersPerDegLon(centroid.lat),y:(path.points[i-1][1]-centroid.lat)*METERS_PER_DEG_LAT},
+      {x:(q[0]-centroid.lng)*metersPerDegLon(centroid.lat),y:(q[1]-centroid.lat)*METERS_PER_DEG_LAT}) > Math.max(clearance,path.widthM/2+.5)));
   const trees = layout.trees.filter(p => clearOfEntrances(p, 3));
   const flowers = layout.shrubs.filter(p => clearOfEntrances(p, 2.2));
   const details = useMemo(() => {

@@ -1,3 +1,4 @@
+import { PARK_TRIO_ASSETS } from './parkTrioAssets';
 import type { SiteZoneProperties } from '@/types';
 import { PUBLISHED_BUILDING_ASSETS } from './publishedBuildingAssets';
 import streetCatalogue from '@/data/streetPathArchetypes.json';
@@ -99,7 +100,8 @@ export const LOCAL_STREET_ASSET: StreetAsset = {
 };
 
 export const CATALOGUE_ASSETS: CatalogueAsset[] = [...OBJECT_ASSETS, LOCAL_STREET_ASSET,
-  ...PUBLISHED_BUILDING_ASSETS];
+  ...PUBLISHED_BUILDING_ASSETS,
+  ...(import.meta.env.DEV && import.meta.env.VITE_PARK_TRIO_TRIAL === 'true' ? PARK_TRIO_ASSETS : [])];
 /** Pilot visibility preserves the existing local trial; it is not release approval. */
 export function isPlaceable(asset: CatalogueAsset): boolean {
   return asset.readiness === 'pilot' || asset.readiness === 'ready';

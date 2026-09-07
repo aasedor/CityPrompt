@@ -5,11 +5,13 @@ import { assetForZone, type PlaceAssetId } from './catalogue';
 import { rectangleAt, rectangleDimensions } from './geometry';
 import { neighborhoodParkLayoutForZone } from '@/components/viewer/globe/neighborhoodParkLayout';
 
-export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onDuplicate, onMore }: {
+export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onDuplicate, onMore, onConnections, onTerrace }: {
   zone: SiteZone; disabled: boolean;
   onReshape: (coordinates: number[][]) => void; onClose: () => void; onDelete: () => void;
   onDuplicate: (asset: PlaceAssetId, width: number, depth: number, degrees: number) => void;
   onMore: () => void;
+  onConnections?: () => void;
+  onTerrace?: () => void;
 }) {
   const asset = assetForZone(zone)!;
   const dimensions = rectangleDimensions(zone.coordinates);
@@ -39,6 +41,8 @@ export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onD
       <button disabled={disabled||!valid} className={`${button} w-full !bg-[#c9ff3d]`}>{disabled?'Saving…':'Apply shape'}</button>
     </form>
     <div className="mt-2 grid grid-cols-2 gap-2"><button className={button} disabled={disabled} onClick={()=>onDuplicate(asset.id,dimensions.width,dimensions.depth,dimensions.degrees)}>Place another</button><button className={button} disabled={disabled} onClick={onDelete}>Delete</button></div>
+    {onConnections && <button onClick={onConnections} className={`${button} mt-3 w-full`}>Connections</button>}
+    {onTerrace && <button onClick={onTerrace} className={`${button} mt-2 w-full`}>Terrace & path</button>}
     <button onClick={onMore} className="mt-2 min-h-11 text-xs text-slate-700 underline">More settings</button>
   </aside>;
 }

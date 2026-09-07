@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { SharedSiteGroundState } from './SharedSiteGroundProvider';
-import { captureSharedGround, assertSharedGroundUnchanged } from './sharedGroundCapture';
+import { captureSharedGround, assertSharedGroundUnchanged, groundReadinessMessage } from './sharedGroundCapture';
 import { createSharedSiteGroundLayout, createSharedSiteGroundSnapshot } from './sharedSiteGround';
 import type { SiteZone } from '@/types';
 
@@ -24,7 +24,13 @@ describe('measured ground capture guard', () => {
     expect(capture.heights[0]).toBe(100);
   });
   it.each(['sampling', 'unavailable'] as const)('rejects %s even if an old snapshot is present', (status) => {
-    expect(() => captureSharedGround({ ...readyState(), status })).toThrow('Ground alignment is not ready');
+    expect(() => captureSharedGround({ ...readyState(), status })).toThrow('Ground alignment');
+  });
+  it('explains rejected ground without telling the student to keep waiting', () => {
+    const state = { ...readyState(), status: 'unavailable' as const, failureReason: 'discontinuity' };
+    expect(groundReadinessMessage(state)).toContain('abrupt height changes');
+    expect(groundReadinessMessage(state)).toContain('intentional redevelopment');
+    expect(() => captureSharedGround(state)).toThrow('abrupt height changes');
   });
   it('rejects terrain refinement, source changes and activation during capture', () => {
     const state = readyState(), snapshot = captureSharedGround(state);

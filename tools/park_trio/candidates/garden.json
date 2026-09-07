@@ -1,0 +1,101 @@
+{
+  "park": "garden",
+  "archetypeId": "research_garden_teaching_arboretum",
+  "variantId": "research_garden_teaching_arboretum_variant_3",
+  "status": "local-pilot-not-approved",
+  "sources": [
+    {
+      "path": "frontend/public/archetypes/openspaces/research-garden-teaching-arboretum/variant_3.png",
+      "role": "ground",
+      "sha256": "c0ac61bcf1e14b6672288d1f750188a655dab931b902f761e84dbff2dfc57308",
+      "bytes": 1557500
+    },
+    {
+      "path": "frontend/public/archetypes/openspaces/research-garden-teaching-arboretum/variant_3_angle_60.jpg",
+      "role": "oblique",
+      "sha256": "06216218935e00b5f87ca76951564a1dc27705165b8a82b3e69b1889dca3c6d7",
+      "bytes": 1029853
+    },
+    {
+      "path": "frontend/public/archetypes/openspaces/research-garden-teaching-arboretum/variant_3_angle_90.jpg",
+      "role": "top",
+      "sha256": "d649896b0097725ec753a811176fd6923cefade874f54ab0b89fb8e21692d48a",
+      "bytes": 939298
+    }
+  ],
+  "assets": {
+    "shelter": {
+      "file": "shelter.glb",
+      "sha256": "afb3b54313a833b11e654a36945def5b52472808f31e20716bed3e151f163c39",
+      "bytes": 934296,
+      "boundsXYZ": [
+        [
+          -3.359999895095825,
+          -3.8499999046325684,
+          0
+        ],
+        [
+          3.359999895095825,
+          3.8499999046325684,
+          4.384842395782471
+        ]
+      ],
+      "nativeScale": [
+        1,
+        1,
+        1
+      ],
+      "meshCount": 3
+    },
+    "bed": {
+      "file": "bed.glb",
+      "sha256": "4b09f0057c7801bc8670a8a906637a958f56077f37eea285a27610ac1fc26f14",
+      "bytes": 187452,
+      "boundsXYZ": [
+        [
+          -1.4299999475479126,
+          -0.8299999833106995,
+          0
+        ],
+        [
+          1.4299999475479126,
+          0.8299999833106995,
+          1.1081328392028809
+        ]
+      ],
+      "nativeScale": [
+        1,
+        1,
+        1
+      ],
+      "meshCount": 5
+    },
+    "label": {
+      "file": "label.glb",
+      "sha256": "f57d7872dc1e4875fb537efa71914845006f24f46343106582ca4ee4ac4bbfc3",
+      "bytes": 11112,
+      "boundsXYZ": [
+        [
+          -0.32499998807907104,
+          -0.20135946571826935,
+          0
+        ],
+        [
+          0.32499998807907104,
+          0.20135946571826935,
+          0.9876439571380615
+        ]
+      ],
+      "nativeScale": [
+        1,
+        1,
+        1
+      ],
+      "meshCount": 2
+    }
+  },
+  "inferences": [
+    "Metric dimensions inferred for student design; not surveyed or construction-approved.",
+    "No people, projected source photographs or invented text in the model."
+  ]
+}

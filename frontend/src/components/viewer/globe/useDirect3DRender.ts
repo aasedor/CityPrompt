@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 
-import { rendersApi } from '@/services/api';
+import { authApi, rendersApi } from '@/services/api';
+import { useAuthStore } from '@/store';
 import type { SavedRender } from '@/types';
 import type { Community3DCaptureClaim } from '@/features/community3d/community3d';
 import {
@@ -28,7 +29,7 @@ export const DIRECT_3D_ALLOWED_STYLES = new Set(DIRECT_3D_STYLE_IDS);
  * unchanged for the colored-polygon pipeline.
  */
 export const DIRECT_3D_DEFAULT_ART_DIRECTIONS: Readonly<Record<string, string>> = Object.freeze({
-  photorealistic: 'Create a high-end contemporary architectural competition visualization. Keep the existing material palette of every building but render each surface with convincing real-world texture: brick with visible mortar depth, timber with warm grain, metal panels with soft sheen, concrete with subtle tonal variation, and the existing glazing with believable reflections and slightly warm interior illumination visible through the glass. Use a bright, softly overcast daytime atmosphere with a pale blue sky, gentle directional sunlight, soft contact shadows and natural atmospheric depth toward the horizon. Keep the existing window and door openings, rooflines, porches, paths, planting and street furniture in their authored shapes and positions. Do not add permanent landscape features or change the design. The composition should feel calm, elegant, civic and inviting, with clean architectural lines, restrained landscaping, balanced exposure, muted natural colours, crisp facade detail and a subtly softened photographic finish with gentle depth of field. Avoid dramatic sunset lighting, oversaturated colours, glossy CGI materials, distorted people and dense overgrown landscaping.',
+  photorealistic: 'Photographically finish the supplied 3D view in soft natural daylight, with balanced exposure, realistic surface texture, subtle reflections in existing glazing and contact shadows. Retain each surface\'s visible material family and colour: enrich the material already present rather than selecting a new facade finish. Preserve the existing architecture, planting and ground surfaces without adding a landscaping scheme. Keep crisp architectural detail and restrained natural colours.',
   photomontage: 'Create a professional architectural photomontage that reads as a real drone photograph of the completed proposal. Match material response, sun direction, shadow length, atmospheric haze, lens character, grain and colour temperature across the proposal and surrounding city so there is no visible compositing seam. Keep the existing material palette but give every surface true photographic texture, with glazing reflecting the actual sky. Add modest believable street life: pedestrians at accurate scale, parked and moving cars, and street trees consistent with the neighbourhood. Balanced exposure and muted natural colours, like an honest planning-submission photomontage.',
   development: 'Create a polished completed-development marketing visualization of institutional quality. Render the buildings as newly finished construction: crisp facades in their existing material palette, clean glazing with warm interior light, welcoming entrances with signage-scale detail, and a freshly landscaped public realm with young street trees, planting beds, benches and clear paving patterns. Bright optimistic daylight with gentle directional sun and soft shadows. Populate lightly with pedestrians, cyclists and cafe activity at accurate scale so the proposal feels built, occupied and integrated. Aspirational but credible, with clean lines and minimal clutter; avoid oversaturation and glossy CGI sheen.',
   atmospheric: 'Create cinematic architectural photography with warm late-day directional light raking across the facades, long soft shadows, gentle golden haze and layered atmospheric depth between foreground and horizon. Bring out material texture in the existing palette; let interior lights begin to glow warmly through the glazing. Add sparse contemplative street life: a few pedestrians, a cyclist, people lingering on benches. Keep the mood serene and restrained with muted warm colours, soft highlights and natural film-like grain, elegant rather than theatrical or oversaturated.',
@@ -320,9 +321,12 @@ export function buildDirect3DVisualPrompt(
   const artDirection = custom
     ? `${styleDirection}\nPROJECT-SPECIFIC ART DIRECTION: ${custom}`
     : styleDirection;
-  return publicRealmContext?.trim()
+  const direction = publicRealmContext?.trim()
     ? `${artDirection}\n${publicRealmContext.trim()}`
     : artDirection;
+  return resolveDirect3DPresentationMode(resolvedStyle) === 'scene'
+    ? `${direction}\nFinish only what is visible in the source camera. Keep cropped and occluded elements cropped and occluded; do not complete or relocate them elsewhere. Leave gaps between buildings, paths and parks as drawn: do not invent connecting sidewalks, driveways, planting beds or furniture. People, if requested, may use only already-visible walkable surfaces; never build a new surface for them. Preserve each building's own facade materials, openings and roof geometry. Style changes the finish, not the design.`
+    : direction;
 }
 
 export function useDirect3DRender() {
@@ -409,6 +413,12 @@ export function useDirect3DRender() {
         shared_ground_snapshot: capture.sharedGroundSnapshot,
       residual_landscape_claim: options.residualLandscapeClaim ?? undefined,
     });
+    // Refresh after the server charge, without hiding a successful render if
+    // the balance request fails or restoring a user who signed out meanwhile.
+    const requestingUserId = useAuthStore.getState().user?.id;
+    if (requestingUserId) void authApi.me().then(user => {
+      if (user.id === requestingUserId && useAuthStore.getState().user?.id === requestingUserId) useAuthStore.getState().setUser(user);
+    }).catch(() => { /* The next account refresh will reconcile the balance. */ });
     return {
       render: {
         imageUrl: `data:image/png;base64,${response.image_base64}`,

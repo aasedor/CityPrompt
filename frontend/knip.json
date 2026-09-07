@@ -3,6 +3,7 @@
   "entry": [
     "public/sw.js",
     "src/dev/NeighborhoodParkPilotReview.tsx",
+    "src/dev/ParkTrioReview.tsx",
     "e2e/**/*.ts"
   ]
 }

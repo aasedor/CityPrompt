@@ -1,3 +1,4 @@
+import { isParkTrio } from './parkTrioLayout';
 /**
  * Per-zone AI park ground textures (productionized from the 2026-07-11 pilot).
  *
@@ -1461,7 +1462,7 @@ export function buildParkDiagram(
     coordinates: ring,
     zone_type: zone.zone_type,
   });
-  const placements = isNeighborhoodParkPilot(zone) ? [] : computeParkPlacements(
+  const placements = (isNeighborhoodParkPilot(zone) || isParkTrio(zone)) ? [] : computeParkPlacements(
     { id: zone.id, coordinates: ring },
     recipe,
     plantingStructure,
@@ -1492,7 +1493,7 @@ export function buildParkDiagram(
       profile.archetypeId,
       legoAppearance,
     );
-    if (!isNeighborhoodParkPilot(zone) && !getDerivedParkAccess(zone)) drawProceduralPathNetwork(
+    if (!isNeighborhoodParkPilot(zone) && !isParkTrio(zone) && !getDerivedParkAccess(zone)) drawProceduralPathNetwork(
       ctx,
       accessPointsPx,
       centroidPx,
@@ -1505,7 +1506,7 @@ export function buildParkDiagram(
     );
   }
   const connectedGuides = [...guideFit.guides, ...derivedParkAccessGuides(zone)];
-  const executableGuides = mode === 'procedural' && !isNeighborhoodParkPilot(zone)
+  const executableGuides = mode === 'procedural' && !isNeighborhoodParkPilot(zone) && !isParkTrio(zone)
     ? styleExecutableParkGuides(connectedGuides, legoAppearance)
     : connectedGuides;
   drawParkGuides(

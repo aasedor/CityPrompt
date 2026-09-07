@@ -1,0 +1,78 @@
+{
+  "park": "concert",
+  "archetypeId": "concert_pavilion_lawn",
+  "variantId": "concert_pavilion_lawn_v1",
+  "status": "local-pilot-not-approved",
+  "sources": [
+    {
+      "path": "frontend/public/archetypes/openspaces/concert-pavilion-lawn/variant_1.png",
+      "role": "ground",
+      "sha256": "4fc23bb7a6ebe06823ef53b8aa9615acf08f36eb71ab315b969d16de65bcb06e",
+      "bytes": 1400257
+    },
+    {
+      "path": "frontend/public/archetypes/openspaces/concert-pavilion-lawn/variant_1_angle_60.jpg",
+      "role": "oblique",
+      "sha256": "8b809871917150b04b565d516e7e8149988cd904c8a1bfb3057d383ecc1a8135",
+      "bytes": 887742
+    },
+    {
+      "path": "frontend/public/archetypes/openspaces/concert-pavilion-lawn/variant_1_angle_90.jpg",
+      "role": "top",
+      "sha256": "a79b21a5d23270bef6348ad886790709746c50689fc9dfa06952a6e0e7197435",
+      "bytes": 910895
+    }
+  ],
+  "assets": {
+    "stage": {
+      "file": "stage.glb",
+      "sha256": "e55ccac969e429617a774a9ded5ce63b66abd4a9d7fd994ee4c3b92250597ef5",
+      "bytes": 2331148,
+      "boundsXYZ": [
+        [
+          -26.0,
+          -9.100000381469727,
+          0
+        ],
+        [
+          18.01618003845215,
+          9.100000381469727,
+          12.037860870361328
+        ]
+      ],
+      "nativeScale": [
+        1,
+        1,
+        1
+      ],
+      "meshCount": 6
+    },
+    "seats": {
+      "file": "seats.glb",
+      "sha256": "c4a23c5b52c4b12079a831570d65bd6b1fa1243ec5259b87174d45248353f772",
+      "bytes": 75456,
+      "boundsXYZ": [
+        [
+          -1.774999976158142,
+          -0.23499999940395355,
+          0
+        ],
+        [
+          1.774999976158142,
+          0.2907651960849762,
+          1.028751015663147
+        ]
+      ],
+      "nativeScale": [
+        1,
+        1,
+        1
+      ],
+      "meshCount": 1
+    }
+  },
+  "inferences": [
+    "Metric dimensions inferred for student design; not surveyed or construction-approved.",
+    "No people, projected source photographs or invented text in the model."
+  ]
+}

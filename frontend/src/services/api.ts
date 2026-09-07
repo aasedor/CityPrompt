@@ -619,7 +619,7 @@ export const activityApi = {
 // =============================================================================
 
 export interface ZoneMutationOptions {
-  /** Explicitly scoped to an undo/redo request, never a global UI flag. */
+  /** Scoped to undo/redo or a derived-data write, never a global UI flag. */
   skipHistory?: boolean;
 }
 

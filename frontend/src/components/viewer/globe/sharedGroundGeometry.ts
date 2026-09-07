@@ -8,7 +8,7 @@ export interface SharedGroundTriangulation {
 
 /** Transform the snapshot's actual triangle boundaries into the mesh's frame. */
 export function createSharedGroundTriangulation(
-  snapshot: SharedSiteGroundSnapshot, frameLng: number, frameLat: number, originX = 0, originY = 0,
+  snapshot: Pick<SharedSiteGroundSnapshot, 'grid'>, frameLng: number, frameLat: number, originX = 0, originY = 0,
 ): SharedGroundTriangulation {
   const grid = snapshot.grid, east = metersPerDegLon(frameLat);
   return { westX: (grid.west - frameLng) * east - originX,

@@ -38,11 +38,11 @@ function signature(value: unknown): string {
   return `ssg1-${(hash >>> 0).toString(16).padStart(8, '0')}`;
 }
 
-export function sharedSiteGroundSourceSignature(boundary: SiteZone): string {
+export function sharedSiteGroundSourceSignature(boundary: SiteZone, spacingM?: number): string {
   // A compiled landscape or label changes the row revision, not the ground.
   // Capture provenance binds the latest row revision separately in the provider.
   return signature([boundary.id, boundary.coordinates, boundary.is_active_boundary,
-    boundary.properties?.community_3d_mask_existing_tiles]);
+    boundary.properties?.community_3d_mask_existing_tiles, ...(spacingM === undefined ? [] : [spacingM])]);
 }
 
 /** Boundary-inclusive domain test; a concave notch never becomes terrain. */
@@ -61,7 +61,7 @@ export function sharedSiteGroundContains(ring: readonly SharedGroundPoint[], lng
 
 /** The rectangular support grid is fully measured, including boundary cells.
  * Interpolation is exposed only within the exact geographic boundary. */
-export function createSharedSiteGroundLayout(boundary: SiteZone): SharedSiteGroundLayout | null {
+export function createSharedSiteGroundLayout(boundary: SiteZone, spacingM?: number): SharedSiteGroundLayout | null {
   const ring = boundary.coordinates.map((point): SharedGroundPoint => [point[0], point[1]]);
   if (ring.length < 3 || ring.length > 2048 || ring.some(([lng, lat]) => !Number.isFinite(lng) || !Number.isFinite(lat)
     || Math.abs(lng) > 180 || Math.abs(lat) > 85)) return null;
@@ -69,7 +69,8 @@ export function createSharedSiteGroundLayout(boundary: SiteZone): SharedSiteGrou
   const south = Math.min(...ring.map((p) => p[1])), north = Math.max(...ring.map((p) => p[1]));
   const width = (east - west) * metersPerDegLon((north + south) / 2), height = (north - south) * METERS_PER_DEG_LAT;
   if (width < 0.1 || height < 0.1) return null;
-  let spacing = SHARED_SITE_GROUND_LIMITS.targetSpacingM;
+  let spacing = spacingM ?? SHARED_SITE_GROUND_LIMITS.targetSpacingM;
+  if (!Number.isFinite(spacing) || spacing <= 0 || spacing > SHARED_SITE_GROUND_LIMITS.maxSpacingM) return null;
   let columns = Math.ceil(width / spacing) + 1, rows = Math.ceil(height / spacing) + 1;
   while (columns * rows > SHARED_SITE_GROUND_LIMITS.maxSamples) {
     spacing *= 1.05;
@@ -77,7 +78,7 @@ export function createSharedSiteGroundLayout(boundary: SiteZone): SharedSiteGrou
     columns = Math.ceil(width / spacing) + 1; rows = Math.ceil(height / spacing) + 1;
   }
   return { boundaryId: boundary.id, boundaryUpdatedAt: boundary.updated_at, boundaryCoordinates: ring,
-    sourceSignature: sharedSiteGroundSourceSignature(boundary),
+    sourceSignature: sharedSiteGroundSourceSignature(boundary, spacingM),
     grid: { west, south, columns, rows, stepLng: (east - west) / (columns - 1), stepLat: (north - south) / (rows - 1) } };
 }
 
@@ -88,6 +89,30 @@ export function sharedSiteGroundGridPoint(layout: SharedSiteGroundLayout, index:
 
 export interface SharedSiteGroundPassQuality {
   valid: boolean; reason: string | null; maxSlope: number; maxLocalResidualM: number;
+}
+
+/** Include every cell touching the boundary, even a thin sliver with no grid
+ * vertex inside. Remote corners of the bounding rectangle cannot affect it. */
+export function groundCellTouchesBoundary(layout: SharedSiteGroundLayout, x: number, y: number): boolean {
+  const { west, south, stepLng, stepLat } = layout.grid;
+  const ring = layout.boundaryCoordinates.map(([lng, lat]) => [(lng - west) / stepLng - x, (lat - south) / stepLat - y]);
+  const insideBox = ([a, b]: number[]) => a >= -1e-8 && a <= 1 + 1e-8 && b >= -1e-8 && b <= 1 + 1e-8;
+  if (ring.some(insideBox)) return true;
+  if ([[0,0],[1,0],[1,1],[0,1]].some(([a,b]) => sharedSiteGroundContains(layout.boundaryCoordinates, west+(x+a)*stepLng, south+(y+b)*stepLat))) return true;
+  for (let i = 0; i < ring.length; i++) {
+    const a = ring[i], b = ring[(i+1)%ring.length];
+    let low = 0, high = 1;
+    for (let axis = 0; axis < 2; axis++) {
+      const delta = b[axis] - a[axis];
+      if (Math.abs(delta) < 1e-12) { if (a[axis] < -1e-8 || a[axis] > 1+1e-8) { high = -1; break; } }
+      else {
+        const t0 = (-1e-8-a[axis])/delta, t1 = (1+1e-8-a[axis])/delta;
+        low = Math.max(low, Math.min(t0,t1)); high = Math.min(high, Math.max(t0,t1));
+      }
+    }
+    if (low <= high) return true;
+  }
+  return false;
 }
 
 /** Reject suspicious discontinuities instead of replacing an unobserved ground
@@ -101,7 +126,10 @@ export function validateSharedSiteGroundPass(layout: SharedSiteGroundLayout, hei
   if (values.some((height) => height < SHARED_SITE_GROUND_LIMITS.minHeightM || height > SHARED_SITE_GROUND_LIMITS.maxHeightM)) return invalid('implausible_height');
   const dx = stepLng * metersPerDegLon(south + stepLat * (rows - 1) / 2), dy = stepLat * METERS_PER_DEG_LAT;
   let maxSlope = 0, maxLocalResidualM = 0;
+  const support = new Set<number>();
   for (let y = 0; y < rows - 1; y += 1) for (let x = 0; x < columns - 1; x += 1) {
+    if (!groundCellTouchesBoundary(layout, x, y)) continue;
+    for (const index of [y*columns+x, y*columns+x+1, (y+1)*columns+x, (y+1)*columns+x+1]) support.add(index);
     const sw = values[y * columns + x], se = values[y * columns + x + 1];
     const nw = values[(y + 1) * columns + x], ne = values[(y + 1) * columns + x + 1];
     // The two actual triangle gradients, split on the SW–NE diagonal.
@@ -109,6 +137,7 @@ export function validateSharedSiteGroundPass(layout: SharedSiteGroundLayout, hei
   }
   for (let y = 1; y < rows - 1; y += 1) for (let x = 1; x < columns - 1; x += 1) {
     const index = y * columns + x;
+    if (![index, index-1, index+1, index-columns, index+columns].every(i => support.has(i))) continue;
     const neighbors = (values[index - 1] + values[index + 1] + values[index - columns] + values[index + columns]) / 4;
     maxLocalResidualM = Math.max(maxLocalResidualM, Math.abs(values[index] - neighbors));
   }

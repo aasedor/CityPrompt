@@ -118,8 +118,8 @@ def test_compiled_detached_units_count_houses_once_and_never_count_yards_as_floo
     assert metrics["compiled_detached_dwellings"] == 3
     assert metrics["detached_plots_pending"] == 0
     assert metrics["recorded_units"] is None  # superseded student estimate, not added twice
-    assert metrics["building_footprint_m2"] == 0
-    assert metrics["gfa_m2"] == 0
+    assert metrics["building_footprint_m2"] is None
+    assert metrics["gfa_m2"] is None
     assert {"floor-area-inputs", "detached-housing-quantities"}.issubset(f["id"] for f in report["findings"])
 
 
@@ -129,6 +129,26 @@ def test_compiled_detached_recipe_linked_twice_does_not_double_dwellings():
     duplicate.id = uuid.uuid4()
     metrics = values(analyze_snapshot(snapshot([parcel, duplicate], [building])))
     assert metrics["compiled_detached_dwellings"] == 3
+
+
+def test_native_single_detached_landmark_is_one_dwelling_without_guessing_floor_area():
+    parcel, building = detached_fixture()
+    building.specifications["legoAssembly"] = {
+        "fit": {"assembly_mode": "fixed_landmark", "native_scale_locked": True},
+        "instances": [{"segment_id": "landmark", "role": "assembled"}],
+    }
+    metrics = values(analyze_snapshot(snapshot([parcel], [building])))
+    assert metrics["compiled_detached_dwellings"] == 1
+    assert metrics["detached_plots_pending"] == 0
+    assert metrics["gfa_m2"] is None
+    building.specifications["legoAssembly"]["fit"]["native_scale_locked"] = False
+    assert values(analyze_snapshot(snapshot([parcel], [building])))["compiled_detached_dwellings"] is None
+
+
+def test_direct_zone_storeys_use_canonical_floor_count():
+    report = analyze_snapshot(snapshot([zone("building", floor_count=4)]))
+    metrics = values(report)
+    assert metrics["gfa_m2"] == pytest.approx(metrics["building_footprint_m2"] * 4, abs=0.03)
 
 
 @pytest.mark.parametrize("stale_recipe", [False, True])
@@ -141,7 +161,7 @@ def test_detached_missing_or_stale_recipe_requires_compile_and_labels_recorded_e
     assert metrics["compiled_detached_dwellings"] is None
     assert metrics["detached_plots_pending"] == 1
     assert metrics["recorded_units"] == 6
-    assert metrics["gfa_m2"] == 0
+    assert metrics["gfa_m2"] is None
     recorded = next(metric for metric in report["metrics"] if metric["key"] == "recorded_units")
     assert "estimates" in recorded["label"]
 
@@ -180,8 +200,8 @@ def test_development_parcel_is_not_a_building_footprint_and_zero_parks_are_repor
     report = analyze_snapshot(plan)
     metrics = values(report)
     assert metrics["development_land_m2"] > 0
-    assert metrics["building_footprint_m2"] == 0
-    assert metrics["gfa_m2"] == 0
+    assert metrics["building_footprint_m2"] is None
+    assert metrics["gfa_m2"] is None
     assert "floor-area-inputs" in {f["id"] for f in report["findings"]}
     assert "open-space" in {f["id"] for f in report["findings"]}
 
@@ -202,7 +222,7 @@ def test_linked_footprint_not_counted_twice_and_unknown_floors_are_not_guessed()
     assert metrics["gfa_m2"] == pytest.approx(metrics["building_footprint_m2"] * 3, abs=0.02)
     building.floor_count = None
     report = analyze_snapshot(snapshot([parcel], [building]))
-    assert values(report)["gfa_m2"] == 0
+    assert values(report)["gfa_m2"] is None
     assert "floor-area-inputs" in {f["id"] for f in report["findings"]}
 
 

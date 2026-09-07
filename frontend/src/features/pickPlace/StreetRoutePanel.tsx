@@ -2,9 +2,10 @@ import type { SiteZone } from '@/types';
 import { addStreetBend } from './streetPlacement';
 import { CalgaryGuideDetails } from '@/features/calgaryCatalogue/CatalogueBrowser';
 
-export function StreetRoutePanel({ zone, disabled, onReshape, onClose, onDelete, onMore }: {
+export function StreetRoutePanel({ zone, disabled, onReshape, onClose, onDelete, onMore, onConnections }: {
   zone: SiteZone; disabled: boolean; onReshape: (coordinates: number[][]) => void;
   onClose: () => void; onDelete: () => void; onMore: () => void;
+  onConnections?: () => void;
 }) {
   const bend = addStreetBend(zone);
   const button = 'min-h-11 rounded-lg border border-slate-700 bg-white px-3 text-sm font-semibold text-slate-900 disabled:opacity-40';
@@ -15,6 +16,7 @@ export function StreetRoutePanel({ zone, disabled, onReshape, onClose, onDelete,
     <div className="grid grid-cols-2 gap-2"><button className={button} disabled={disabled || !bend} onClick={()=>bend && onReshape(bend)}>Add bend point</button><button className={button} disabled={disabled} onClick={onDelete}>Delete street</button></div>
     {!bend && <p className="mt-2 text-xs text-slate-600">Extend a segment to 32 m before adding another point.</p>}
     <CalgaryGuideDetails classification={{groupId:'local',basis:'draft_manual'}} />
+    {onConnections && <button className={`${button} mt-3 w-full`} onClick={onConnections}>Connections</button>}
     <button className="mt-2 min-h-11 text-xs text-slate-700 underline" onClick={onMore}>More street types and settings</button>
   </aside>;
 }

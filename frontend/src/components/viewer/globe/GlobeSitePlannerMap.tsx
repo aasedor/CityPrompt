@@ -33,10 +33,13 @@ import { ZONE_TYPE_CONFIG } from '@/types';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { useViewerStore } from '@/store';
 import { GlobeReferenceLayer } from '@/features/referenceLayers/GlobeReferenceLayer';
+import { EMPTY_TRANSPORT, type ExistingTransport } from '@/features/referenceLayers/existingTransport';
 import type { ReferenceLayer } from '@/features/referenceLayers/api';
 import { GlobeZoneLayer } from './GlobeZoneLayer';
+import { GroundReviewPanel } from './GroundReviewPanel';
+import { PlacementControls } from '@/features/pickPlace/PlacementControls';
 import { SharedSiteGroundProvider, INACTIVE_SHARED_SITE_GROUND, type SharedSiteGroundState } from './SharedSiteGroundProvider';
-import { captureSharedGround, assertSharedGroundUnchanged } from './sharedGroundCapture';
+import { captureSharedGround, assertSharedGroundUnchanged, groundReadinessMessage } from './sharedGroundCapture';
 import { GlobeBuildingModelsLayer } from './GlobeBuildingModelsLayer';
 import { GlobeLegoAssemblyLayer, type LegoGroundingIssue } from './GlobeLegoAssemblyLayer';
 import {
@@ -48,6 +51,12 @@ import {
 import { GlobeStreetDetailLayer } from './GlobeStreetDetailLayer';
 import { GlobeParkKitLayer } from './GlobeParkKitLayer';
 import { applyManualParkAccessSnapshot, resolveManualParkAccess } from './parkAccessConnections';
+import { resolvePedestrianConnections } from '@/features/pickPlace/pedestrianConnections';
+import { GlobePedestrianConnections } from './GlobePedestrianConnections';
+import { GlobeTerraces } from './GlobeTerraces';
+import { buildTerraceScene } from './terraceScene';
+import { readParkTerrain, type ParkTerrainProfile } from './parkTerrain';
+import { AutomaticParkGround, type SaveParkGround, type ParkAlignment } from './AutomaticParkGround';
 import { GlobeResidualLandscapeLayer } from './GlobeResidualLandscapeLayer';
 import { GlobeStreetRenderProfile } from './GlobeStreetRenderProfile';
 import { getResidualLandscapeRecipe } from './residualLandscape';
@@ -1412,10 +1421,16 @@ function MeasurementOverlay({
 }
 
 interface GlobeSitePlannerMapProps {
+  onPrepareGround?: (zoneId: string, clear: boolean, height?: number, edges?: import('./preparedSiteEdges').PreparedEdgeProfile | null) => Promise<void>;
+  onFollowParkTerrain?: (profiles: Record<string, ParkTerrainProfile>) => Promise<void>;
+  onAutoParkTerrain?: SaveParkGround;
+  parkGroundPaused?: boolean;
   placementDraft?: import('@/features/pickPlace/GlobePlacementPreview').PlacementDraft | null;
+  onPlacementDraftChange?: (draft: import('@/features/pickPlace/GlobePlacementPreview').PlacementDraft) => void;
   onPlaceAsset?: (lngLat: [number, number], height: number) => void;
   onCancelPlacement?: () => void;
   referenceLayers?: ReferenceLayer[];
+  transportContext?: ExistingTransport;
   latitude?: number;
   longitude?: number;
   preferredView?: GlobePreferredView;
@@ -1507,9 +1522,15 @@ export interface GlobeAIRenderViewport {
 
 export function GlobeSitePlannerMap({
   placementDraft,
+  onPlacementDraftChange,
+  onPrepareGround,
+  onFollowParkTerrain,
+  onAutoParkTerrain,
+  parkGroundPaused = false,
   onPlaceAsset,
   onCancelPlacement,
   referenceLayers = [],
+  transportContext = EMPTY_TRANSPORT,
   latitude: _latitude = 51.045,
   longitude: _longitude = -114.07,
   preferredView,
@@ -1551,6 +1572,8 @@ export function GlobeSitePlannerMap({
   // continues to rely on the stricter scene-settled signal below.
   const [areTilesDisplayReady, setAreTilesDisplayReady] = useState(false);
   const [sharedGroundState, setSharedGroundState] = useState<SharedSiteGroundState>(INACTIVE_SHARED_SITE_GROUND);
+  const [showGroundReview, setShowGroundReview] = useState(false);
+  const [placementProblemMessage, setPlacementProblemMessage] = useState<string | null>(null);
   const sharedGroundRef = useRef(sharedGroundState);
   const [legoGroundingIssues, setLegoGroundingIssues] = useState<LegoGroundingIssue[]>([]);
   const [modelGroundingIssues, setModelGroundingIssues] = useState<LegoGroundingIssue[]>([]);
@@ -1565,7 +1588,20 @@ export function GlobeSitePlannerMap({
     sharedGroundRef.current = state;
     setSharedGroundState(state);
   }, []);
+  const terrainZonesRef = useRef(siteZones);
+  terrainZonesRef.current = siteZones;
+  const [parkAlignment, setParkAlignment] = useState<ParkAlignment>({ pending: false, needsAttention: false, retry: () => {} });
+  const parkAlignmentRef = useRef(parkAlignment);
+  parkAlignmentRef.current = parkAlignment;
   const waitForSharedGround = useCallback(async () => {
+    const parkDeadline = performance.now() + 45000;
+    while (parkAlignmentRef.current.pending && !parkAlignmentRef.current.needsAttention && performance.now() < parkDeadline) {
+      await new Promise(resolve => setTimeout(resolve, 200));
+    }
+    if (parkAlignmentRef.current.pending) throw new Error('Park alignment is still updating. Your design is safe; keep working and try the render once alignment finishes.');
+    if (terrainZonesRef.current.some(zone => zone.properties?.park_terrain && !readParkTerrain(zone))) {
+      throw new Error('Park alignment is updating automatically. Your design is safe; try the render once it finishes.');
+    }
     const deadline = performance.now() + 20_000;
     while ((sharedGroundRef.current.status === 'sampling'
       || (sharedGroundRef.current.status === 'ready' && pendingGroundBuildingsRef.current.length > 0
@@ -1595,19 +1631,21 @@ export function GlobeSitePlannerMap({
   // without colored polygon fills baked into it. Default true so users
   // normally see their drawn zones.
   const [zoneOverlaysVisible, setZoneOverlaysVisible] = useState(true);
+  const [captureOverlaysHidden, setCaptureOverlaysHidden] = useState(false);
   const zoneOverlaysVisibleRef = useRef(true);
   zoneOverlaysVisibleRef.current = zoneOverlaysVisible;
   const parkAccessSnapshot = useMemo(() => resolveManualParkAccess(
-    allSiteZones, {}, siteZones.filter((zone) => zone.zone_type === 'road').map((zone) => zone.id),
-  ), [allSiteZones, siteZones]);
+    allSiteZones, {}, siteZones.filter((zone) => zone.zone_type === 'road').map((zone) => zone.id), transportContext,
+  ), [allSiteZones, siteZones, transportContext]);
   const parkAccessSnapshotRef = useRef(parkAccessSnapshot);
+  const pedestrianConnections = useMemo(() => resolvePedestrianConnections(allSiteZones, siteZones.map(zone=>zone.id)), [allSiteZones, siteZones]);
   parkAccessSnapshotRef.current = parkAccessSnapshot;
   const hasLocalDraftsRef = useRef(false);
   hasLocalDraftsRef.current = allSiteZones.some((zone) => zone.id.startsWith('temp-'));
   const connectedSceneZones = useMemo(() => {
     const visibleIds = new Set(siteZones.map((zone) => zone.id));
-    return applyManualParkAccessSnapshot(allSiteZones, parkAccessSnapshot).filter((zone) => visibleIds.has(zone.id));
-  }, [allSiteZones, parkAccessSnapshot, siteZones]);
+    return applyManualParkAccessSnapshot(allSiteZones, parkAccessSnapshot, transportContext).filter((zone) => visibleIds.has(zone.id));
+  }, [allSiteZones, parkAccessSnapshot, siteZones, transportContext]);
   const hasCompiledCommunity3D = useMemo(
     () => siteZones.some(isCommunity3DCompiled),
     [siteZones],
@@ -1748,6 +1786,11 @@ export function GlobeSitePlannerMap({
 
   // Dynamic terrain elevation â€” fetched from Google Elevation API on mount
   const [terrainElevation, setTerrainElevation] = useState(DEFAULT_TERRAIN_ELEVATION);
+  const terraceScene = useMemo(() => buildTerraceScene(connectedSceneZones, terrainElevation), [connectedSceneZones, terrainElevation]);
+  const preparedGroundCutouts = useMemo(() => [...terraceScene.terraces.map(z => z.coordinates), ...connectedSceneZones.filter(z => readParkTerrain(z)).map(z => z.coordinates), ...terraceScene.paths.filter(p => p.status === 'connected').map(p => p.rampFootprint)], [terraceScene, connectedSceneZones]);
+  const terraceParkZones = useMemo(() => connectedSceneZones.map(zone => ({...zone, properties:{...zone.properties,
+    terrace_access_clearances: terraceScene.paths.filter(p => p.status === 'connected' && (p.ownerId === zone.id || p.targetId === zone.id)).map(p => ({widthM:p.widthM, points:(p.ownerId === zone.id ? p.points.slice(0,2) : p.points.slice(2)).map(v => v.slice(0,2))}))
+  }})), [connectedSceneZones, terraceScene]);
   const preparedSiteTerrainHeight = useMemo(() => {
     const boundary = getActiveSiteBoundary(siteZones);
     return boundary && preparedSiteBoundaryIds.has(boundary.id)
@@ -2595,13 +2638,14 @@ export function GlobeSitePlannerMap({
       }
 
       const previousReferenceVisibility = referenceOverlayGroup.current?.visible;
-    const previousOverlaysVisible = zoneOverlaysVisibleRef.current;
+      const previousOverlaysVisible = zoneOverlaysVisibleRef.current;
       const previousSelectedBuildingId = selectedBuildingIdRef.current;
       try {
         // Direct capture consumes the compiled 3D scene, never editable color
         // polygons or selection affordances. Two frames let React commit the
         // clean state before the deterministic off-screen passes begin.
         setZoneOverlaysVisible(false);
+        setCaptureOverlaysHidden(true);
         setSelectedBuildingId(null);
         await new Promise<void>((resolve) => {
           requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
@@ -2629,6 +2673,7 @@ export function GlobeSitePlannerMap({
       } finally {
         if (referenceOverlayGroup.current && previousReferenceVisibility !== undefined) referenceOverlayGroup.current.visible = previousReferenceVisibility;
         setZoneOverlaysVisible(previousOverlaysVisible);
+        setCaptureOverlaysHidden(false);
         setSelectedBuildingId(previousSelectedBuildingId);
       }
     })().finally(() => {
@@ -2825,6 +2870,7 @@ export function GlobeSitePlannerMap({
       if (previousControlsEnabled !== null) controlsTarget.enabled = false;
       if (referenceOverlayGroup.current) referenceOverlayGroup.current.visible = false;
       setStreetCapturePegmanHidden(true);
+      setCaptureOverlaysHidden(true);
       setZoneOverlaysVisible(false);
       setSelectedBuildingId(null);
       setBuildingModelsVisible(true);
@@ -3076,6 +3122,7 @@ export function GlobeSitePlannerMap({
       if (previousControlsEnabled !== null) controlsTarget.enabled = previousControlsEnabled;
       controls?.update?.();
       setStreetCapturePegmanHidden(false);
+      setCaptureOverlaysHidden(false);
       setStreetRenderProfileActive(false);
       if (referenceOverlayGroup.current && previousReferenceVisibility !== undefined) referenceOverlayGroup.current.visible = previousReferenceVisibility;
       setZoneOverlaysVisible(previousOverlaysVisible);
@@ -3104,6 +3151,7 @@ export function GlobeSitePlannerMap({
     try {
       if (referenceOverlayGroup.current) referenceOverlayGroup.current.visible = false;
       setStreetCapturePegmanHidden(true);
+      setCaptureOverlaysHidden(true);
       setSelectedBuildingId(null);
       if (kind === 'model3d') {
         // The authored models carry the design — colored zone overlays would
@@ -3126,6 +3174,7 @@ export function GlobeSitePlannerMap({
       return await fn(kind);
     } finally {
       setStreetCapturePegmanHidden(false);
+      setCaptureOverlaysHidden(false);
       setStreetRenderProfileActive(false);
       setSelectedBuildingId(previousSelectedBuildingId);
       if (referenceOverlayGroup.current && previousReferenceVisibility !== undefined) referenceOverlayGroup.current.visible = previousReferenceVisibility;
@@ -3650,7 +3699,7 @@ export function GlobeSitePlannerMap({
 
     if (placementDraft) {
       // Touch users position the map under the preview, then confirm explicitly.
-      if (rect.width >= 640) onPlaceAsset?.(clickLngLat, clickHeight);
+      if (rect.width >= 640 && !placementDraft.inputError) onPlaceAsset?.(clickLngLat, clickHeight);
       return;
     }
 
@@ -4022,7 +4071,8 @@ export function GlobeSitePlannerMap({
             onSettledChange={setIsSceneSettled}
             onDisplayReadyChange={setAreTilesDisplayReady}
           />
-          <SharedSiteGroundProvider zones={allSiteZones} onChange={handleSharedGroundChange}>
+          <SharedSiteGroundProvider zones={allSiteZones} onChange={handleSharedGroundChange} inspectPrepared={showGroundReview}>
+          <AutomaticParkGround zones={allSiteZones} paused={parkGroundPaused} onSave={onAutoParkTerrain} onChange={setParkAlignment} fallback={terrainElevation}>
           <group ref={referenceOverlayGroup}><GlobeReferenceLayer layers={referenceLayers} terrainHeight={terrainElevation} /></group>
           <TileStencilPatcher zones={tileMaskZones} terrainHeight={terrainElevation} />
           <GlobeTileMaskLayer zones={tileMaskZones} terrainHeight={terrainElevation} />
@@ -4033,6 +4083,7 @@ export function GlobeSitePlannerMap({
               proposal ground (alongside models, street sections and props). */}
           <group name="siteforge-direct3d-ground" userData={direct3DProposalUserData('ground')}>
             <GlobeZoneLayer
+              preparedGroundCutouts={preparedGroundCutouts}
               zones={connectedSceneZones}
               selectedZoneId={interactionPaused ? null : selectedZoneId}
               terrainHeight={terrainElevation}
@@ -4040,6 +4091,7 @@ export function GlobeSitePlannerMap({
               selectionEnabled={!interactionPaused && !hasDrawingTool && !measureModeActive}
               suppressedBuildingIds={suppressedBuildingIds}
               planningOverlaysVisible={zoneOverlaysVisible}
+              placementBoundaryVisible={!captureOverlaysHidden && (Boolean(placementDraft) || activeSitePlannerTool === 'road')}
             />
           </group>
 
@@ -4073,13 +4125,15 @@ export function GlobeSitePlannerMap({
               and park props so mixed plans retain their exact lane geometry. */}
           <group name="siteforge-direct3d-street" userData={direct3DProposalUserData('street')}>
             <GlobeStreetDetailLayer zones={siteZones} terrainHeight={terrainElevation} />
+            <GlobePedestrianConnections results={pedestrianConnections} zones={connectedSceneZones} terrainHeight={terrainElevation} />
+            <GlobeTerraces scene={terraceScene} zones={connectedSceneZones} />
           </group>
 
           {/* Park-program structures (playgrounds/pavilions/bridges) — sibling
               of the zone-overlay group like the building models. Trees and
               benches stay render-only so they cannot collide with paths. */}
           <group name="siteforge-direct3d-park" userData={direct3DProposalUserData('park')}>
-            <GlobeParkKitLayer zones={connectedSceneZones} terrainHeight={terrainElevation} />
+            <GlobeParkKitLayer zones={terraceParkZones} terrainHeight={terrainElevation} />
           </group>
 
           {/* Generated 3D building models — sibling of the zone-overlay group
@@ -4121,7 +4175,7 @@ export function GlobeSitePlannerMap({
           </group>
 
           <group name="siteforge-direct3d-editor-ui" userData={DIRECT_3D_CAPTURE_EXCLUDE_USER_DATA}>
-            {placementDraft && !interactionPaused && <GlobePlacementPreview draft={placementDraft} zones={allSiteZones} />}
+            {placementDraft && !placementDraft.inputError && !interactionPaused && !captureOverlaysHidden && <GlobePlacementPreview draft={placementDraft} zones={allSiteZones} onStatusChange={setPlacementProblemMessage} />}
             {/* Drawing preview dots */}
             <DrawingDots
               points={drawingPoints}
@@ -4161,6 +4215,7 @@ export function GlobeSitePlannerMap({
               />
             )}
           </group>
+          </AutomaticParkGround>
           </SharedSiteGroundProvider>
         </TilesRenderer>
 
@@ -4186,11 +4241,22 @@ export function GlobeSitePlannerMap({
         </div>
       )}
 
+      {showGroundReview && getActiveSiteBoundary(allSiteZones) && onPrepareGround && <GroundReviewPanel
+        parks={allSiteZones.filter(z => z.zone_type === 'green_space')} onFollowParks={onFollowParkTerrain}
+        boundary={getActiveSiteBoundary(allSiteZones)!} ground={sharedGroundState} onClose={() => setShowGroundReview(false)}
+        onApply={(clear, height, edges) => onPrepareGround(getActiveSiteBoundary(allSiteZones)!.id, clear, height, edges)} />}
+      {parkAlignment.pending&&<div role="status" className="absolute bottom-14 left-1/2 z-40 max-w-sm -translate-x-1/2 rounded-lg bg-white/95 px-3 py-2 text-sm text-slate-800 shadow">
+        {parkAlignment.needsAttention?'Ground detail is difficult here. Your park is kept as a draft.':'Aligning park to ground… You can keep designing.'}
+        {parkAlignment.needsAttention&&<button className="ml-2 min-h-11 underline" onClick={parkAlignment.retry}>Retry alignment</button>}
+      </div>}
       {placementDraft && !interactionPaused && <>
         <div aria-hidden className="pointer-events-none absolute left-1/2 top-1/2 z-30 -translate-x-1/2 -translate-y-1/2 text-3xl font-light text-white drop-shadow sm:hidden">+</div>
         <div className="absolute bottom-6 left-1/2 z-40 w-80 max-w-[90vw] -translate-x-1/2 rounded-xl bg-white p-3 text-center text-sm text-slate-900 shadow-xl">
-          <p className="hidden sm:block">Click a clear space to place. Red means it will not fit.</p><p className="sm:hidden">Move the map to position your object. Red means it will not fit.</p>
-          <div className="mt-2 flex justify-center gap-2"><button className="min-h-11 rounded-lg bg-lime-200 px-3 sm:hidden" onClick={()=>{const surface=raycastSurfacePoint(0,0);if(surface) onPlaceAsset?.(surface.lngLat,surface.height);}}>Place at centre</button><button className="min-h-11 rounded-lg border px-3" onClick={onCancelPlacement}>Cancel</button></div>
+          {onPlacementDraftChange && <PlacementControls key={placementDraft.assetId} draft={placementDraft} onChange={onPlacementDraftChange} />}
+          {!placementDraft.inputError && (placementProblemMessage
+            ? <p role="status" className="mt-2 text-xs text-red-700">{placementProblemMessage}</p>
+            : <><p className="hidden sm:block">Click a clear space to place.</p><p className="sm:hidden">Move the map to position your object.</p></>)}
+          <div className="mt-2 flex justify-center gap-2"><button disabled={Boolean(placementDraft.inputError)} className="min-h-11 rounded-lg bg-lime-200 px-3 disabled:opacity-40 sm:hidden" onClick={()=>{if(placementDraft.inputError) return;const surface=raycastSurfacePoint(0,0);if(surface) onPlaceAsset?.(surface.lngLat,surface.height);}}>Place at centre</button><button className="min-h-11 rounded-lg border px-3" onClick={onCancelPlacement}>Cancel</button></div>
         </div>
       </>}
       {measureModeActive && (
@@ -4450,9 +4516,10 @@ export function GlobeSitePlannerMap({
             {zoneOverlaysVisible ? 'Plan Overlay' : 'Clean 3D'}
           </button>
         )}
+        {getActiveSiteBoundary(allSiteZones) && onPrepareGround && <button className="min-h-11 rounded-full border-2 border-[#151515] bg-[#fff9ec] px-3 text-xs font-bold" onClick={() => setShowGroundReview(true)}>Review ground</button>}
         {(sharedGroundState.status === 'sampling' || sharedGroundState.status === 'unavailable') && (
-          <span role="status" className="rounded-full border-2 border-[#151515] bg-[#fff9ec]/95 px-3 py-1.5 text-[11px] font-bold text-[#151515]">
-            {sharedGroundState.status === 'sampling' ? 'Aligning to ground…' : 'Ground alignment needs a clear view of the site'}
+          <span role="status" className="max-w-sm rounded-xl border-2 border-[#151515] bg-[#fff9ec]/95 px-3 py-1.5 text-[11px] font-bold text-[#151515]">
+            {groundReadinessMessage(sharedGroundState)}
           </span>
         )}
         {sharedGroundState.status === 'ready' && buildingGroundingIssues.some((issue) => issue.reason !== 'ground_not_ready') && (

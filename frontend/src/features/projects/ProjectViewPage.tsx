@@ -14,6 +14,10 @@ import { SitePlannerToolbar } from '@/components/viewer/SitePlannerToolbar';
 import { PlacementPalette } from '@/features/pickPlace/PlacementPalette';
 import { ReshapePanel } from '@/features/pickPlace/ReshapePanel';
 import { StreetRoutePanel } from '@/features/pickPlace/StreetRoutePanel';
+import { ConnectionEditor } from '@/features/pickPlace/ConnectionEditor';
+import { TerraceEditor } from '@/features/pickPlace/TerraceEditor';
+import { saveAutomaticParkGround } from '@/features/pickPlace/saveAutomaticParkGround';
+import { TerraceSummary } from '@/features/pickPlace/TerraceSummary';
 import { CALGARY_LOCAL_PLACEMENT, isCalgaryLocalRoute, streetRouteProblem } from '@/features/pickPlace/streetPlacement';
 import { assetForZone, placeAsset, placementProperties, type PlaceAssetId } from '@/features/pickPlace/catalogue';
 import { placementProblem, rectangleAt } from '@/features/pickPlace/geometry';
@@ -38,6 +42,8 @@ import { StudioControls, StudioDialog, StudioSaveStatus } from './StudioControls
 import { ReadOnlyProject } from './ReadOnlyProject';
 import { StudentPlanningReport } from '@/features/studentReports/StudentPlanningReport';
 import { useReferenceLayers } from '@/features/referenceLayers/useReferenceLayers';
+import { CalgaryContextButton } from '@/features/referenceLayers/CalgaryContextButton';
+import { existingTransport } from '@/features/referenceLayers/existingTransport';
 import { ReferenceLayersPanel } from '@/features/referenceLayers/ReferenceLayersPanel';
 import { SiteElevation } from '@/features/referenceLayers/SiteElevation';
 import { ShapefileImportButton } from './ShapefileImportButton';
@@ -93,6 +99,7 @@ export function ProjectViewPage() {
   const [showPlanningReport, setShowPlanningReport] = useState(false);
   const closePlanningReport = useCallback(() => setShowPlanningReport(false), []);
   const references = useReferenceLayers(id);
+  const transportContext = useMemo(() => existingTransport(references.layers), [references.layers]);
   const [aiGenerateBuildingId, setAiGenerateBuildingId] = useState<string | null>(null);
   const [legoZone, setLegoZone] = useState<SiteZone | null>(null);
   const [showLegoBuilder, setShowLegoBuilder] = useState(false);
@@ -235,6 +242,10 @@ export function ProjectViewPage() {
   const initializedSiteToolProjectRef = useRef<string | null>(null);
 
   const selectedZone = siteZones.find((z) => z.id === selectedZoneId) || null;
+  const [connectionZoneId, setConnectionZoneId] = useState<string | null>(null);
+  const connectionZone = siteZones.find(zone=>zone.id===connectionZoneId);
+  const [terraceZoneId,setTerraceZoneId]=useState<string|null>(null);
+  const terraceZone=siteZones.find(zone=>zone.id===terraceZoneId);
   const cancelPlacement = useCallback(() => setPlacementDraft(null), []);
   const pickObject = (assetId: PlaceAssetId, width?: number, depth?: number, degrees = 0) => {
     const asset = placeAsset(assetId);
@@ -250,7 +261,7 @@ export function ProjectViewPage() {
   }, [placementDraft, cancelPlacement]);
   useEffect(() => { setPlacementDraft(null); setAdvancedZoneId(null); }, [id]);
   const placeObject = async (point: [number, number], height: number) => {
-    if (!placementDraft || placementPending.current || isSaving) return;
+    if (!placementDraft || placementDraft.inputError || placementPending.current || isSaving) return;
     const coordinates = rectangleAt(point, placementDraft.width, placementDraft.depth, placementDraft.degrees);
     const problem = placementProblem(coordinates, siteZones, getActiveSiteBoundary(siteZones));
     if(problem) { toast.error(problem, { position: 'top-center' }); return; }
@@ -654,6 +665,7 @@ export function ProjectViewPage() {
     setShowVideoRender(false);
     setGlobeRenderPosition(null);
     setShowGlobeRender(true);
+    setShowProjectRenders(false);
   }, [cityPromptWorkflow]);
 
   const handleOpenVideoRender = useCallback(() => {
@@ -735,7 +747,8 @@ export function ProjectViewPage() {
 
   const rememberSavedRender = useCallback((render: SavedRender) => {
     setSavedRenders((current) => [render, ...current.filter((item) => item.id !== render.id)]);
-    setShowProjectRenders(true);
+    // The render panel already shows the result. The gallery badge updates
+    // without opening another floating panel over the tablet controls.
   }, []);
 
   const rememberSavedVideo = useCallback((attempt: VideoAttempt) => {
@@ -1011,6 +1024,35 @@ export function ProjectViewPage() {
         <Suspense fallback={<MapLoadingFallback mode="3D" />}>
           <GlobeSitePlannerMap
             placementDraft={placementDraft}
+            onPlacementDraftChange={setPlacementDraft}
+            parkGroundPaused={isSaving || automatic3D.busy}
+            onAutoParkTerrain={(zone, profile) => saveAutomaticParkGround(queryClient, project.id, zone, profile)}
+            onFollowParkTerrain={async profiles => {
+              // Save each measured park first. Only remove the whole-site plane
+              // once every dependent surface has been confirmed by the API.
+              for (const [zoneId, profile] of Object.entries(profiles)) {
+                const park = siteZones.find(z => z.id === zoneId);
+                if (!park) throw new Error('Park no longer exists');
+                await updateZone.mutateAsync({ zoneId, data: { properties: { ...park.properties,
+                  park_terrain: profile, proposed_terrace: null, community_3d_mask_existing_tiles: false,
+                } }, previousData: { properties: park.properties } });
+              }
+              const boundary = getActiveSiteBoundary(siteZones);
+              if (!boundary) throw new Error('Site no longer exists');
+              await updateZone.mutateAsync({ zoneId: boundary.id, data: { properties: { ...boundary.properties,
+                terrain_strategy: 'landscape', community_3d_mask_existing_tiles: false,
+              } }, previousData: { properties: boundary.properties } });
+            }}
+            onPrepareGround={async (zoneId, clear, height, edges) => {
+              const boundary = siteZones.find(zone => zone.id === zoneId);
+              if (!boundary) throw new Error('Site boundary no longer exists');
+              await updateZone.mutateAsync({ zoneId, data: { properties: { ...boundary.properties,
+                community_3d_mask_existing_tiles: clear,
+                terrain_strategy: null,
+                ...(height !== undefined ? { terrain_elevation_m: height } : {}),
+                ...(edges !== undefined ? { terrain_edge_profile: edges } : {}),
+              } }, previousData: { properties: boundary.properties } });
+            }}
             onPlaceAsset={placeObject}
             onCancelPlacement={cancelPlacement}
             latitude={project.location?.latitude}
@@ -1018,6 +1060,7 @@ export function ProjectViewPage() {
             siteZones={visibleZones}
             allSiteZones={siteZones}
             referenceLayers={references.visibleLayers}
+            transportContext={transportContext}
             buildings={visibleBuildings}
             onZoneCreated={(coordinates, type, properties) => {
               if (isCalgaryLocalRoute({zone_type:type, properties})) {
@@ -1123,6 +1166,7 @@ export function ProjectViewPage() {
         {showReferenceLayers && !showPlanningReport && <aside aria-label="Map layers" className="absolute bottom-20 right-3 top-32 z-40 flex max-w-[calc(100vw-1.5rem)] flex-col gap-3 overflow-y-auto rounded-xl bg-white/95 p-3 shadow-xl sm:right-4 sm:top-20">
           <div className="sticky -top-3 z-10 flex items-center justify-between bg-white py-1"><h2 className="font-semibold text-slate-900">Map layers</h2><button onClick={() => setShowReferenceLayers(false)} aria-label="Close layers" className="flex h-11 w-11 items-center justify-center"><X size={18} /></button></div>
           <ShapefileImportButton projectId={project.id} />
+          <CalgaryContextButton projectId={project.id} zones={siteZones} layers={references.layers} />
           <ReferenceLayersPanel layers={references.layers} hiddenIds={references.hiddenIds} onToggle={references.toggleLayer}
             onDelete={references.canEdit ? references.removeLayer : undefined} deletingId={references.deletingId}
             isLoading={references.isLoading} error={references.error} onRetry={() => { void references.refetch(); }} />
@@ -1130,6 +1174,7 @@ export function ProjectViewPage() {
           <SiteElevation lat={project.location?.latitude} lon={project.location?.longitude} />
         </aside>}
         {showPlanningReport && <StudioDialog title="Planning report" onClose={closePlanningReport}>
+          <TerraceSummary zones={siteZones}/>
           <StudentPlanningReport projectId={project.id} zoneIds={visibleZones.filter((zone) => isPersistedZoneId(zone.id)).map((zone) => zone.id)}
             planChangeToken={siteZones.map((zone) => `${zone.id}:${zone.updated_at}`).join('|')} canEdit
             onSelectZone={(zoneId) => { closePlanningReport(); selectZone(zoneId); }} />
@@ -1140,11 +1185,14 @@ export function ProjectViewPage() {
         {/* Zone properties panel */}
         {selectedZone && assetForZone(selectedZone) && advancedZoneId !== selectedZone.id && !placementDraft && !showHistory && !measureActive && (
           <ReshapePanel key={`${selectedZone.id}:${JSON.stringify(selectedZone.coordinates)}`} zone={selectedZone} disabled={isSaving}
+            onTerrace={['building','residential','green_space'].includes(selectedZone.zone_type)?()=>setTerraceZoneId(selectedZone.id):undefined}
+            onConnections={()=>setConnectionZoneId(selectedZone.id)}
             onReshape={coordinates => reshapeObject(selectedZone.id, coordinates)} onClose={() => selectZone(null)}
             onDelete={() => deleteZone.mutate(selectedZone.id)} onDuplicate={pickObject} onMore={() => setAdvancedZoneId(selectedZone.id)} />
         )}
         {selectedZone && isCalgaryLocalRoute(selectedZone) && advancedZoneId !== selectedZone.id && !placementDraft && !showHistory && !measureActive && (
           <StreetRoutePanel zone={selectedZone} disabled={isSaving} onReshape={coords=>reshapeObject(selectedZone.id, coords)}
+            onConnections={()=>setConnectionZoneId(selectedZone.id)}
             onClose={()=>selectZone(null)} onDelete={()=>deleteZone.mutate(selectedZone.id)} onMore={()=>setAdvancedZoneId(selectedZone.id)} />
         )}
         {selectedZone && ((!assetForZone(selectedZone) && !isCalgaryLocalRoute(selectedZone)) || advancedZoneId === selectedZone.id) && !showHistory && !measureActive && (
@@ -1152,6 +1200,7 @@ export function ProjectViewPage() {
             key={selectedZone.id}
             zone={selectedZone}
             savedVersionReload={savedVersionReload}
+            onConnections={['building','residential','green_space','road'].includes(selectedZone.zone_type) ? ()=>setConnectionZoneId(selectedZone.id) : undefined}
             onUpdate={(zoneId, data) => {
               const previousZone = siteZones.find((z) => z.id === zoneId);
               updateZone.mutate({
@@ -1172,6 +1221,13 @@ export function ProjectViewPage() {
           />
         )}
 
+        {terraceZone && <TerraceEditor key={terraceZone.id} zone={terraceZone} zones={siteZones} disabled={isSaving} onClose={()=>setTerraceZoneId(null)} onSave={async properties=>{
+          await updateZone.mutateAsync({zoneId:terraceZone.id,data:{properties},previousData:{properties:terraceZone.properties}});
+        }}/>}
+        {connectionZone && <ConnectionEditor key={connectionZone.id} zone={connectionZone} zones={siteZones} transportContext={transportContext} visibleIds={visibleZones.map(zone=>zone.id)} disabled={isSaving}
+          onClose={()=>setConnectionZoneId(null)} onSave={async properties=>{
+            await updateZone.mutateAsync({zoneId:connectionZone.id,data:{properties},previousData:{properties:connectionZone.properties}});
+          }} />}
         {showHistory && !showGlobeRender && id && (
           <HistoryPanel
             projectId={id}

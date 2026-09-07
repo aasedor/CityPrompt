@@ -44,6 +44,7 @@
     "src/components/viewer/collectArchetypeRenderInputs.ts",
     "src/components/viewer/customZoneStyle.ts",
     "src/components/viewer/deterministicVideoCapture.ts",
+    "src/components/viewer/globe/AutomaticParkGround.tsx",
     "src/components/viewer/globe/GlobeAIRenderPanel.tsx",
     "src/components/viewer/globe/GlobeArchetypeOwnedParkAssembly.tsx",
     "src/components/viewer/globe/GlobeBuildingModelsLayer.tsx",
@@ -58,6 +59,8 @@
     "src/components/viewer/globe/GlobeParkBatch5Assembly.tsx",
     "src/components/viewer/globe/GlobeParkKitLayer.tsx",
     "src/components/viewer/globe/GlobeParkMicrodetailInstances.tsx",
+    "src/components/viewer/globe/GlobeParkTrioPilot.tsx",
+    "src/components/viewer/globe/GlobePedestrianConnections.tsx",
     "src/components/viewer/globe/GlobePegman.tsx",
     "src/components/viewer/globe/GlobeResidualLandscapeLayer.tsx",
     "src/components/viewer/globe/GlobeSitePlannerMap.tsx",
@@ -68,8 +71,10 @@
     "src/components/viewer/globe/GlobeStreetRenderProfile.tsx",
     "src/components/viewer/globe/GlobeStreetTransitShelterInstances.tsx",
     "src/components/viewer/globe/GlobeStreetVehicleInstances.tsx",
+    "src/components/viewer/globe/GlobeTerraces.tsx",
     "src/components/viewer/globe/GlobeTileMaskLayer.tsx",
     "src/components/viewer/globe/GlobeZoneLayer.tsx",
+    "src/components/viewer/globe/GroundReviewPanel.tsx",
     "src/components/viewer/globe/SharedSiteGroundProvider.tsx",
     "src/components/viewer/globe/StencilMaskPlugin.ts",
     "src/components/viewer/globe/TileSpatialMaskPlugin.ts",
@@ -81,6 +86,7 @@
     "src/components/viewer/globe/drawingGeometry.ts",
     "src/components/viewer/globe/generatedBuildingLod.ts",
     "src/components/viewer/globe/globeTerrainUtils.ts",
+    "src/components/viewer/globe/groundReview.ts",
     "src/components/viewer/globe/importedBuildingGround.ts",
     "src/components/viewer/globe/landscapeKitProfiles.ts",
     "src/components/viewer/globe/legoGlobePlacement.ts",
@@ -107,6 +113,10 @@
     "src/components/viewer/globe/parkProgramAssets.ts",
     "src/components/viewer/globe/parkScatter.ts",
     "src/components/viewer/globe/parkSpecialtyGeometry.ts",
+    "src/components/viewer/globe/parkTerrain.ts",
+    "src/components/viewer/globe/parkTrioLayout.ts",
+    "src/components/viewer/globe/pedestrianCapture.ts",
+    "src/components/viewer/globe/preparedSiteEdges.ts",
     "src/components/viewer/globe/projectFrameHeight.ts",
     "src/components/viewer/globe/projectFrameRetry.ts",
     "src/components/viewer/globe/publicRealmDepthPolicy.ts",
@@ -138,6 +148,9 @@
     "src/components/viewer/globe/streetSharedGround.ts",
     "src/components/viewer/globe/streetSurfaceMaterials.ts",
     "src/components/viewer/globe/strictModeResourceDisposal.ts",
+    "src/components/viewer/globe/terraceDefinition.ts",
+    "src/components/viewer/globe/terraceGeometry.ts",
+    "src/components/viewer/globe/terraceScene.ts",
     "src/components/viewer/globe/terrainContactProfile.ts",
     "src/components/viewer/globe/terrainGroundMesh.ts",
     "src/components/viewer/globe/tileLoadReadiness.ts",
@@ -146,6 +159,8 @@
     "src/components/viewer/globe/useGlobeAIRender.ts",
     "src/components/viewer/globe/useGlobeCamera.ts",
     "src/components/viewer/globe/useGlobeDragRef.ts",
+    "src/components/viewer/globe/useParkGround.ts",
+    "src/components/viewer/globe/useRenderDraft.ts",
     "src/components/viewer/globe/useSceneSettled.ts",
     "src/components/viewer/globe/zoneSurfaceMode.ts",
     "src/components/viewer/mapEngine/geoUtils.ts",
@@ -217,14 +232,21 @@
     "src/features/legoAssembly/legoShared.tsx",
     "src/features/legoAssembly/nativeClayPlacement.ts",
     "src/features/legoAssembly/projectCommunityCompile.ts",
+    "src/features/pickPlace/ConnectionEditor.tsx",
     "src/features/pickPlace/GlobePlacementPreview.tsx",
+    "src/features/pickPlace/PlacementControls.tsx",
     "src/features/pickPlace/PlacementPalette.tsx",
     "src/features/pickPlace/ReshapePanel.tsx",
     "src/features/pickPlace/StreetRoutePanel.tsx",
+    "src/features/pickPlace/TerraceEditor.tsx",
+    "src/features/pickPlace/TerraceSummary.tsx",
     "src/features/pickPlace/assetRegistry.ts",
     "src/features/pickPlace/catalogue.ts",
     "src/features/pickPlace/geometry.ts",
+    "src/features/pickPlace/parkTrioAssets.ts",
+    "src/features/pickPlace/pedestrianConnections.ts",
     "src/features/pickPlace/publishedBuildingAssets.ts",
+    "src/features/pickPlace/saveAutomaticParkGround.ts",
     "src/features/pickPlace/streetPlacement.ts",
     "src/features/pickPlace/useAutomatic3D.ts",
     "src/features/projects/InvitationPage.tsx",
@@ -237,11 +259,13 @@
     "src/features/projects/SharedPlanPreview.tsx",
     "src/features/projects/SharedProjectPage.tsx",
     "src/features/projects/StudioControls.tsx",
+    "src/features/referenceLayers/CalgaryContextButton.tsx",
     "src/features/referenceLayers/GlobeReferenceLayer.tsx",
     "src/features/referenceLayers/ReferenceImportButton.tsx",
     "src/features/referenceLayers/ReferenceLayersPanel.tsx",
     "src/features/referenceLayers/SiteElevation.tsx",
     "src/features/referenceLayers/api.ts",
+    "src/features/referenceLayers/existingTransport.ts",
     "src/features/referenceLayers/referenceGeometry.ts",
     "src/features/referenceLayers/useReferenceLayers.ts",
     "src/features/studentReports/StudentPlanningReport.tsx",
@@ -276,10 +300,10 @@
     "src/utils/zoneIdentity.ts"
   ],
   "coverage": {
-    "explicitReferenceCount": 2606,
+    "explicitReferenceCount": 2607,
     "dynamicCollectionCount": 4,
     "requiredFileCount": 4451,
-    "requiredLogicalBytes": 11207817652,
+    "requiredLogicalBytes": 11208515996,
     "missingReferenceCount": 0
   },
   "explicitReferences": [
@@ -10887,6 +10911,7 @@
     {
       "url": "/archetypes/openspaces/concert-pavilion-lawn/variant_1.png",
       "sources": [
+        "src/components/viewer/globe/parkTrioLayout.ts",
         "src/data/archetypeReferenceAvailability.json",
         "src/data/openSpaceArchetypes.json"
       ],
@@ -12992,6 +13017,7 @@
     {
       "url": "/archetypes/openspaces/outdoor-cinema-lawn/variant_1.png",
       "sources": [
+        "src/components/viewer/globe/parkTrioLayout.ts",
         "src/data/archetypeReferenceAvailability.json",
         "src/data/openSpaceArchetypes.json"
       ],
@@ -13723,6 +13749,7 @@
     {
       "url": "/archetypes/openspaces/research-garden-teaching-arboretum/variant_3.png",
       "sources": [
+        "src/components/viewer/globe/parkTrioLayout.ts",
         "src/data/archetypeReferenceAvailability.json",
         "src/data/openSpaceArchetypes.json"
       ],
@@ -23163,6 +23190,14 @@
         "src/features/landing/LandingPage.tsx"
       ],
       "logicalBytes": 3042304
+    },
+    {
+      "url": "/landscape-pilots/neighborhood-rustic-v5/timber-bench.glb",
+      "sources": [
+        "src/components/viewer/globe/GlobeParkTrioPilot.tsx"
+      ],
+      "logicalBytes": 698344,
+      "lfsOid": "71a4a5b0850c9b5fa34e370b1a2f9540ff6c39d635de780ac655e32e2c9fe8bc"
     },
     {
       "url": "/park-kits/neighborhood-park-rustic-v0/natural-boulder-group.glb",

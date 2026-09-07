@@ -1,4 +1,5 @@
 import { isCatalogueOnlyScene, CATALOGUE_UPDATE_GUIDANCE } from '@/features/pickPlace/catalogue';
+import { useRenderDraft } from './useRenderDraft';
 /**
  * GlobeAIRenderPanel.tsx — Simplified AI render controls for the 3D globe.
  *
@@ -280,8 +281,8 @@ export function GlobeAIRenderPanel({
   const [result, setResult] = useState<GlobeRenderResult | null>(null);
   const [previews, setPreviews] = useState<GlobeRenderResult[]>([]);
   const [selectedPreviewIndex, setSelectedPreviewIndex] = useState<number | null>(null);
-  const [selectedStyle, setSelectedStyle] = useState('photorealistic');
-  const [customPrompt, setCustomPrompt] = useState('');
+  const draftStyleIds = useMemo(() => STYLES.map(style => style.id), []);
+  const { selectedStyle, setSelectedStyle, customPrompt, setCustomPrompt } = useRenderDraft(projectId, draftStyleIds);
   const [highFidelity, setHighFidelity] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [renderPipeline, setRenderPipeline] = useState<GlobeRenderPipeline>(
@@ -303,7 +304,7 @@ export function GlobeAIRenderPanel({
     if (renderPipeline === 'classic' && selectedStyle === 'development' && !hasPlacedMassing) {
       setSelectedStyle('photorealistic');
     }
-  }, [renderPipeline, selectedStyle, hasPlacedMassing]);
+  }, [renderPipeline, selectedStyle, hasPlacedMassing, setSelectedStyle]);
   const [saving, setSaving] = useState(false);
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saved' | 'error'>('idle');
   const [savedRenders, setSavedRenders] = useState<SavedRender[]>([]);
@@ -869,6 +870,7 @@ export function GlobeAIRenderPanel({
   }, [captureDirect3D, direct3DAvailable, isCheckingDirectCapture, isRendering, onBeforeRender]);
 
   const handleDirectRender = useCallback(async () => {
+    if (isCheckingDirectCapture) return;
     if (!captureDirect3D || !direct3DAvailable || isRendering) return;
     if (planGeometryStale) {
       setError(stalePlanMessage ?? 'Redraw the master plan for the current site boundary before rendering.');
@@ -949,6 +951,7 @@ export function GlobeAIRenderPanel({
     community3DCaptureClaims,
     directFidelityPolicy,
     direct3DAvailable,
+    isCheckingDirectCapture,
     isRendering,
     onBeforeRender,
     onRenderComplete,
@@ -1407,6 +1410,18 @@ export function GlobeAIRenderPanel({
               {isCheckingDirectCapture ? 'Checking…' : 'Check Direct Capture'}
             </button>
           </div>
+          <button type="button" className="mt-2 min-h-11 w-full rounded-lg border border-white/40 px-3 text-sm font-bold text-white" disabled={!direct3DAvailable || isCheckingDirectCapture || isRendering}
+            onClick={async () => {
+              if (!captureDirect3D || isCheckingDirectCapture || isRendering) return;
+              setIsCheckingDirectCapture(true); setError(null);
+              try {
+                await onBeforeRender?.();
+                const capture = await captureDirect3D({ includeGeometryPasses: false, maxLongEdge: 2048 });
+                setLightboxRender({ imageUrl: capture.beautyImageBase64.startsWith('data:') ? capture.beautyImageBase64 : `data:image/png;base64,${capture.beautyImageBase64}`,
+                  style: 'Original 3D view', providerLabel: 'Exact 3D capture · no AI changes', downloadName: `cityprompt-3d-view-${Date.now()}.png`, canSave: false });
+              } catch (err) { setError(apiErrorMessage(err, 'Could not export the current 3D view.')); }
+              finally { setIsCheckingDirectCapture(false); }
+            }}>Export current 3D view · free</button>
           {directCapturePreview && (
             <div className="mt-2">
               <div className="mb-1.5 flex flex-wrap gap-x-3 gap-y-0.5 text-[9px] font-bold text-white/55">
@@ -1886,7 +1901,7 @@ export function GlobeAIRenderPanel({
               <ImageIcon size={13} />
               Saved Renders
             </span>
-            <span>{savedRenders.length}</span>
+            <span>{savedRenders.length} files · includes AI originals</span>
           </button>
 
           {showSavedRenders && (

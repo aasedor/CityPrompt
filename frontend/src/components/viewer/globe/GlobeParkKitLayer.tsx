@@ -1,3 +1,5 @@
+import { GlobeParkTrioPilot } from './GlobeParkTrioPilot';
+import { isParkTrio, parkTrioLayout } from './parkTrioLayout';
 /**
  * GlobeParkKitLayer — mounts only fixed, programmed park structures in the
  * editable Google Tiles scene, including deterministic live canopy and
@@ -90,7 +92,7 @@ import { PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS } from './publicRealmDepthPolicy'
 import { derivedParkAccessGuides, getDerivedParkAccess, type ParkAccessConnection } from './parkAccessConnections';
 import { buildParkAccessBridgeGeometry } from './parkAccessBridgeGeometry';
 import { retainResourceForDeferredDisposal } from './strictModeResourceDisposal';
-import { useSharedSiteGround } from './SharedSiteGroundProvider';
+import { useParkGround } from './useParkGround';
 import { createSharedGroundTriangulation, type SharedGroundTriangulation } from './sharedGroundGeometry';
 import { GlobeNeighborhoodParkPilot } from './GlobeNeighborhoodParkPilot';
 import { isNeighborhoodParkPilot, neighborhoodParkLayoutForZone } from './neighborhoodParkLayout';
@@ -854,6 +856,8 @@ function ParkSpecialtyStructures({
     }
     return terrainPlane ? terrainPlane.originZ + samplePlaneOffset(terrainPlane, x, y) : 0;
   }, [sharedTerrainZ, terrainPlane]);
+
+  if (structureKind === 'park_trio_assembly') return <SilentKitBoundary fallback={null}><Suspense fallback={null}><GlobeParkTrioPilot zone={zone} centroid={centroid} terrainZ={terrainZ} groundGrid={groundGrid}/></Suspense></SilentKitBoundary>;
 
   if (structureKind === 'skate_park_v0_assembly') {
     return (
@@ -1975,7 +1979,7 @@ function ParkKitInstance({
   preparedTerrain?: number | null;
 }) {
   const tiles = useContext(TilesRendererContext);
-  const sharedGround = useSharedSiteGround();
+  const sharedGround = useParkGround(zone);
   const raycasterRef = useRef(new THREE.Raycaster());
   const frameCountRef = useRef(
     parkTerrainSampleOffset(zone.id, TERRAIN_SAMPLE_FRAME_INTERVAL),
@@ -2038,9 +2042,9 @@ function ParkKitInstance({
     const height = sharedGround.heightAt(centroid.lng + x / metersPerDegLon(centroid.lat), centroid.lat + y / METERS_PER_DEG_LAT);
     return height === null ? null : height - sharedAnchor;
   } : undefined, [centroid, sharedAnchor, sharedGround, sharedGroundOwned]);
-  const sharedTerrainGrid = useMemo(() => sharedGroundOwned && sharedGround.snapshot
-    ? createSharedGroundTriangulation(sharedGround.snapshot, centroid.lng, centroid.lat) : undefined,
-  [centroid, sharedGround.snapshot, sharedGroundOwned]);
+  const sharedTerrainGrid = useMemo(() => sharedGroundOwned && (sharedGround.snapshot ?? sharedGround.draftLayout)
+    ? createSharedGroundTriangulation((sharedGround.snapshot ?? sharedGround.draftLayout)!, centroid.lng, centroid.lat) : undefined,
+  [centroid, sharedGround.snapshot, sharedGround.draftLayout, sharedGroundOwned]);
 
   const localProgramFrame = useMemo(
     () => buildLocalParkProgramFrame(zone.coordinates, centroid),
@@ -2075,7 +2079,7 @@ function ParkKitInstance({
     )),
     ...computeParkProgramAssetPlacements(zone),
   ].filter((placement) => (
-    !isNeighborhoodParkPilot(zone) && !shouldDeferParkFinishingProp(zone, placement.propId)
+    !isNeighborhoodParkPilot(zone) && !isParkTrio(zone) && !shouldDeferParkFinishingProp(zone, placement.propId)
     && !(
       specialtyStructureKind === 'neighborhood_park_v0_sticker_assembly'
       && (placement.propId === 'playground' || placement.propId === 'pavilion')
@@ -2089,7 +2093,7 @@ function ParkKitInstance({
     zone,
   ]);
   const microdetailPlacements = useMemo<ParkMicrodetailPlacement[]>(() => {
-    if (isNeighborhoodParkPilot(zone)) return [];
+    if (isNeighborhoodParkPilot(zone) || isParkTrio(zone)) return [];
     if (
       specialtyStructureKind === 'cricket_ground_assembly'
       || specialtyStructureKind === 'basketball_court_assembly'
@@ -2131,7 +2135,7 @@ function ParkKitInstance({
     [fittedProgramGuides, programGuideFit, specialtyStructureKind],
   );
 
-  const specialtyTerrainAnchors = useMemo(() => isNeighborhoodParkPilot(zone)
+  const specialtyTerrainAnchors = useMemo(() => isParkTrio(zone) ? (() => { const layout = parkTrioLayout(zone, centroid); return [...layout.boundary, ...layout.modules.flatMap(m => [m.center, ...m.envelope]), ...layout.trees]; })() : isNeighborhoodParkPilot(zone)
     ? (() => {
         const layout = neighborhoodParkLayoutForZone(zone, centroid);
         return [...layout.boundary, ...layout.modules.flatMap(m => [m.center, ...m.envelope]), ...layout.trees];
@@ -2363,7 +2367,7 @@ function ParkKitInstance({
     });
   }, [instanceZ, microdetailPlacements.length, placements.length, specialtyTerrainAnchors]);
   if (terrainTargets.length === 0) return null;
-  if (sharedGroundOwned && (sharedGround.status !== 'ready' || sharedAnchor === null || !sharedOffsets)) return null;
+  if (sharedGroundOwned && ((!sharedGround.preview && sharedGround.status !== 'ready') || sharedAnchor === null || !sharedOffsets)) return null;
   const terrain = sharedAnchor ?? preparedTerrain ?? resolveZoneTerrainHeight(sampledTerrain, storedTerrain, fallbackTerrainHeight);
   const activeOffsets = sharedGroundOwned ? sharedOffsets : instanceZ;
   const microdetailZ = activeOffsets

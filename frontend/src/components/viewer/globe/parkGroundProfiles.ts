@@ -1,3 +1,4 @@
+import { isParkTrio, parkTrioKind, parkTrioLayout, parkTrioGuides, PARK_TRIO } from './parkTrioLayout';
 import openSpaceCatalog from '@/data/openSpaceArchetypes.json';
 import type { SiteZone } from '@/types';
 import {
@@ -1740,6 +1741,7 @@ function basketballVariantProfile(
 }
 
 export type ParkSpecialtyStructureKind =
+  | 'park_trio_assembly'
   | 'civic_fountain_assembly'
   | 'greenway_edge_assembly'
   | 'stormwater_control_assembly'
@@ -1780,6 +1782,18 @@ function isPlazaZone(zone: ParkProfileZone): boolean {
 }
 
 export function resolveParkGroundProfile(zone: ParkProfileZone): ParkGroundProfile {
+  const trioKind = parkTrioKind(zone);
+  if (trioKind) {
+    const info = PARK_TRIO[trioKind];
+    const layout = zone.coordinates?.length ? parkTrioLayout(zone, {lng:zone.coordinates[0][0],lat:zone.coordinates[0][1]}) : null;
+    const summary = `${info.label}. ${layout?.notes.join(' ') ?? 'Exact native modules; adaptive site.'}`;
+    return {...PROFILES.neighborhood_park, id:`park-trio-${trioKind}-v1`, archetypeId:info.parent, variantId:info.variant, title:info.label,
+      programDescription:summary, groundDescription:'The captured lawn, pathways and metric activity pads are the geometry authority.',
+      canopyDescription:'Preserve only the captured perimeter trees, with the centre open for the selected activity.',
+      criticalConstraints:`${summary} Preserve every object count, silhouette, camera, route and boundary. Hidden and out-of-frame objects remain hidden; never relocate them or add playgrounds, ponds, buildings or paths. Change materials and lighting only.`,
+      guides:parkTrioGuides(zone), guideLegend:['Paths and individual module envelopes come from the same live 3D composition.'], renderSummary:summary, includeCentralPlaza:false, isPilot:true};
+  }
+
   const props = (zone.properties ?? {}) as Record<string, unknown>;
   const plaza = isPlazaZone(zone);
   const legoContract = resolveParkLegoContract(zone);
@@ -1887,6 +1901,11 @@ export function resolveParkGroundProfile(zone: ParkProfileZone): ParkGroundProfi
 export function resolveParkSpecialtyStructureKind(
   zone: ParkProfileZone,
 ): ParkSpecialtyStructureKind | null {
+  if (isParkTrio(zone)) return 'park_trio_assembly';
+  // The explicitly selected adaptive pilot owns its procedural geometry even
+  // when the server records a pending external asset family. Catalogue IDs
+  // alone still must not opt generic fallback parks into a legacy assembly.
+  if (isNeighborhoodParkPilot(zone)) return 'neighborhood_park_v0_sticker_assembly';
   const properties = (zone.properties ?? {}) as Record<string, unknown>;
   // A family-pending marker certifies the generic source-fitted fallback, not
   // any fixed legacy assembly inferred from the selected catalogue IDs.

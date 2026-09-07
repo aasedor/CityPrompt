@@ -234,19 +234,26 @@ describe('Direct 3D presentation adapter', () => {
     expect(prompt).not.toContain('EXPRESSIVE FIDELITY');
   });
 
-  it('keeps Direct photoreal defaults neutral and competition-render focused', () => {
+  it('finishes source materials without prescribing new facade or landscape elements', () => {
     const prompt = buildDirect3DVisualPrompt('photorealistic', undefined, capture);
 
-    expect(prompt).toBe(DIRECT_3D_DEFAULT_ART_DIRECTIONS.photorealistic);
-    expect(prompt).toContain('architectural competition visualization');
-    expect(prompt).toContain('softly overcast daytime atmosphere');
-    expect(prompt).toContain('muted natural colours');
+    expect(prompt).toContain(DIRECT_3D_DEFAULT_ART_DIRECTIONS.photorealistic);
+    expect(prompt).toContain('soft natural daylight');
+    expect(prompt).toContain('visible material family');
+    expect(prompt).toContain('restrained natural colours');
     expect(prompt).not.toContain('Golden hour');
     expect(prompt).not.toContain('ray-traced');
     expect(prompt).not.toContain('colored polygon');
-    expect(prompt).toContain('existing window and door openings');
+    expect(prompt).toContain('openings and roof geometry');
     expect(prompt).not.toContain('floor-to-ceiling');
     expect(prompt).not.toContain('Add realistic public-realm activity');
+  });
+
+  it('keeps missing connections and hidden facilities absent even after custom directions', () => {
+    const prompt = buildDirect3DVisualPrompt('watercolour', 'Make this a lively park.', capture);
+    expect(prompt.indexOf('do not invent connecting sidewalks')).toBeGreaterThan(prompt.indexOf('Make this a lively park.'));
+    expect(prompt).toContain('Keep cropped and occluded elements cropped and occluded');
+    expect(prompt).toContain('never build a new surface for them');
   });
 
   it('separates aesthetic style from the default fidelity policy', () => {
@@ -366,7 +373,9 @@ describe('Direct 3D presentation adapter', () => {
       expect(request.presentation_mode).toBe(resolveDirect3DPresentationMode(style));
       expect(request.fidelity_policy).toBe(resolveDirect3DFidelityPolicy(style));
       expect(request.presentation_mode).not.toBe('source_anchored');
-      expect(request.prompt).toBe(DIRECT_3D_DEFAULT_ART_DIRECTIONS[style]);
+      expect(request.prompt).toContain(DIRECT_3D_DEFAULT_ART_DIRECTIONS[style]);
+      expect(request.prompt.includes('Keep cropped and occluded elements cropped and occluded'))
+        .toBe(resolveDirect3DPresentationMode(style) === 'scene');
     });
   });
 

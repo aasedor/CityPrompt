@@ -65,6 +65,22 @@ describe('shared ground provider lifecycle', () => {
     expect(state.status).toBe('sampling'); expect(state.heightAt(-114, 51)).toBeNull(); expect(state.revision).not.toBe(previous);
     tick(); tick(); expect(state.status).toBe('ready');
   });
+  it('inspects prepared terrain without replacing the design ground or changing capture readiness', () => {
+    const tiles = tileFixture(), TestContext = TilesRendererContext as ReturnType<typeof createContext<unknown>>;
+    const prepared = { ...site, properties: { community_3d_mask_existing_tiles: true, terrain_elevation_m: 99 } };
+    const view = render(<TestContext.Provider value={tiles}><SharedSiteGroundProvider zones={[prepared]} inspectPrepared><Read /></SharedSiteGroundProvider></TestContext.Provider>);
+    tick(0); tick();
+    expect(state.status).toBe('inactive'); expect(state.heightAt(-114, 51)).toBeNull();
+    expect(state.inspectionStatus).toBe('sampling');
+    tick();
+    expect(state.inspectionStatus).toBe('ready'); expect(state.snapshot).toBeNull();
+    expect(state.revision).toBe('inactive');
+    expect(state.review?.heights).toEqual([1030,1030,1030,1030]);
+    expect(state.review?.previousHeights).toEqual([1030,1030,1030,1030]);
+    view.rerender(<TestContext.Provider value={tiles}><SharedSiteGroundProvider zones={[prepared]}><Read /></SharedSiteGroundProvider></TestContext.Provider>);
+    expect(state).toBe(INACTIVE_SHARED_SITE_GROUND);
+    expect(tiles.deleteCamera).toHaveBeenCalled();
+  });
   it('retains measured ground for off-site tile events and releases its selection camera on unmount', () => {
     const tiles = tileFixture(), TestContext = TilesRendererContext as ReturnType<typeof createContext<unknown>>;
     const view = render(<TestContext.Provider value={tiles}><SharedSiteGroundProvider zones={[site]}><Read /></SharedSiteGroundProvider></TestContext.Provider>);

@@ -14,6 +14,8 @@ import { Html } from '@react-three/drei';
 import { WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import { EastNorthUpFrame, TilesRendererContext } from '3d-tiles-renderer/r3f';
 import type { SiteZone } from '@/types';
+import { createPreparedEdgeGeometry, readPreparedEdges } from './preparedSiteEdges';
+import { cutGeometry } from './terraceGeometry';
 import { applyParkGroundUVs, useParkGroundTexture } from './parkGroundTexture';
 import { useStreetNetworkGroundTexture } from './streetNetworkGroundTexture';
 import {
@@ -76,7 +78,7 @@ import {
   type StreetSurfaceMaterialKind,
 } from './streetSurfaceMaterials';
 import { resolveBuildingExtrudeHeight, resolveZoneSurfaceMode } from './zoneSurfaceMode';
-import { useSharedSiteGround } from './SharedSiteGroundProvider';
+import { useParkGround } from './useParkGround';
 import { createSharedGroundTriangulation, drapeSharedGroundGeometry } from './sharedGroundGeometry';
 
 const DEG_TO_RAD = Math.PI / 180;
@@ -109,6 +111,7 @@ function stableDelay(seed: string, spread = TERRAIN_DRAPE_SPREAD_MS): number {
 }
 
 interface GlobeZoneLayerProps {
+  preparedGroundCutouts?: number[][][];
   zones: SiteZone[];
   selectedZoneId: string | null;
   terrainHeight?: number;
@@ -120,6 +123,8 @@ interface GlobeZoneLayerProps {
   /** Planning fills/outlines/labels can be hidden while generated park
    * orthophotos remain mounted as authored proposal content. */
   planningOverlaysVisible?: boolean;
+  /** Keep placement limits legible without exposing every planning fill. */
+  placementBoundaryVisible?: boolean;
 }
 
 function coordinatesNearlyEqual(a: number[], b: number[]): boolean {
@@ -409,7 +414,8 @@ function getTerrainProbePoints(
   return probes;
 }
 
-function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabled, lightweight = false, suppressed = false, planningOverlaysVisible = true, boundaryOverlayVisible = true, sitePrepared = false, preparedTerrain = null, inheritedMaskPreference = null }: {
+function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabled, lightweight = false, suppressed = false, planningOverlaysVisible = true, boundaryOverlayVisible = true, sitePrepared = false, preparedTerrain = null, inheritedMaskPreference = null, preparedGroundCutouts }: {
+  preparedGroundCutouts?: number[][][];
   zone: SiteZone;
   isSelected: boolean;
   terrainHeight: number;
@@ -646,19 +652,25 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   // leaked one fill/outline pair per terrain update.
   useDeferredLocalGeometryDisposal(geoData);
 
+  const preparedEdgeProfile = useMemo(() => isPreparedBoundary ? readPreparedEdges(zone) : null, [isPreparedBoundary, zone]);
+  const [preparedOriginLng, preparedOriginLat] = centroid;
   const preparedSiteGeo = useMemo(
     () => {
       if (!isPreparedBoundary || !geoData?.flatTopGeo) return null;
-      const geometry = createPreparedSiteBackingGeometry(geoData.flatTopGeo, zone.id);
+      const clipped = preparedGroundCutouts?.length ? cutGeometry(geoData.flatTopGeo, preparedGroundCutouts.map(ring => ring.map(p => [(p[0]-preparedOriginLng)*metersPerDegLon(preparedOriginLat), (p[1]-preparedOriginLat)*METERS_PER_DEG_LAT]))) : null;
+      const geometry = createPreparedSiteBackingGeometry(clipped ?? geoData.flatTopGeo, zone.id);
+      clipped?.dispose();
       if (residualLandscapeRecipe) {
-        applyResidualLandscapeUVs(geometry, geoData.fillCoords, zone.coordinates);
+        const positions = geometry.getAttribute('position');
+        const fillCoords = Array.from({length:positions.count}, (_,i) => [preparedOriginLng+positions.getX(i)/metersPerDegLon(preparedOriginLat),preparedOriginLat+positions.getY(i)/METERS_PER_DEG_LAT] as [number,number]);
+        applyResidualLandscapeUVs(geometry, fillCoords, zone.coordinates);
       }
       // The Google-Tiles spatial mask and replacement surface are rasterized
       // independently. A tightly coincident edge can reveal a one-pixel white
       // seam; the bounded excess remains hidden below surviving source tiles.
-      return overlapPreparedGroundEdges(geometry);
+      return preparedEdgeProfile || preparedGroundCutouts?.length ? geometry : overlapPreparedGroundEdges(geometry);
     },
-    [geoData, isPreparedBoundary, residualLandscapeRecipe, zone.coordinates, zone.id],
+    [geoData, isPreparedBoundary, residualLandscapeRecipe, zone.coordinates, zone.id, preparedEdgeProfile, preparedGroundCutouts, preparedOriginLng, preparedOriginLat],
   );
   useDeferredDisposable(preparedSiteGeo);
   const preparedSiteTexture = useMemo(
@@ -702,7 +714,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   // Generated buildings never use flat fill geometry. Pre-generation building
   // footprints intentionally share the live terrain-drape path, while the
   // external bare-earth bake stays reserved for imported reference overlays.
-  const sharedGround = useSharedSiteGround();
+  const sharedGround = useParkGround(zone);
   const usesSharedGround = sharedGround.status !== 'inactive'
     && zone.coordinates.length > 0
     && zone.coordinates.every(([lng, lat]) => sharedGround.contains(lng, lat));
@@ -750,6 +762,10 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
       terrainHeight,
     ));
   const terrainReferenceHeight = storedTerrainHeight ?? terrainHeight;
+  const retainingGeometry = useMemo(() => preparedEdgeProfile
+    ? createPreparedEdgeGeometry(preparedEdgeProfile, zoneTerrainHeight, centroid) : null,
+  [preparedEdgeProfile, zoneTerrainHeight, centroid]);
+  useDeferredDisposable(retainingGeometry);
   const hasAuthoredGroundTextureMeta = Boolean(
     zoneProps?.park_ground_texture || zoneProps?.street_network_ground_texture,
   );
@@ -1134,7 +1150,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
         centroid[1] + y / METERS_PER_DEG_LAT,
       );
       return height === null ? null : height - sharedFrameHeight;
-    }, 4, 60000, createSharedGroundTriangulation(sharedGround.snapshot!, centroid[0], centroid[1]));
+    }, 4, 60000, (sharedGround.snapshot ?? sharedGround.draftLayout) ? createSharedGroundTriangulation((sharedGround.snapshot ?? sharedGround.draftLayout)!, centroid[0], centroid[1]) : undefined);
     authored.dispose();
     return conformed;
   }, [usesSharedGround, sharedFrameHeight, sharedGround, isExtrudedBuilding, importedOrthoGeo, orthoGeo,
@@ -1156,7 +1172,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   }, [usesSharedGround, sharedFrameHeight, sharedGround, geoData, centroid]);
   useDeferredDisposable(sharedOutlineGeo);
 
-  if (!geoData || (usesSharedGround && (sharedGround.status !== 'ready'
+  if (!geoData || (usesSharedGround && ((sharedGround.status !== 'ready' && !sharedGround.preview)
     || (!isExtrudedBuilding && !sharedFillGeo)))) return null;
 
   const authoredGroundTexture = drapeActive
@@ -1170,6 +1186,9 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
       lon={centroid[0] * DEG_TO_RAD}
       height={zoneTerrainHeight}
     >
+      {retainingGeometry && <mesh name="prepared-site-retaining-edges" geometry={retainingGeometry} renderOrder={101}>
+        <meshStandardMaterial color="#938c80" roughness={0.95} side={THREE.DoubleSide} />
+      </mesh>}
       {/* Fill — flat zones with terrain draping */}
       {/* Fill — flat zones: layered by type */}
       {/* Render order: site_boundary(100) < road(120) < green_space(120.5) <
@@ -1342,6 +1361,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
 }
 
 export function GlobeZoneLayer({
+  preparedGroundCutouts,
   zones,
   selectedZoneId,
   terrainHeight = 1045,
@@ -1349,6 +1369,7 @@ export function GlobeZoneLayer({
   selectionEnabled = true,
   suppressedBuildingIds,
   planningOverlaysVisible = true,
+  placementBoundaryVisible = false,
 }: GlobeZoneLayerProps) {
   // Render-time clean capture (cc_clean_composite): useGlobeAIRender hides the
   // zone overlays for one frame so the composite-back base holds real tiles,
@@ -1387,6 +1408,7 @@ export function GlobeZoneLayer({
             }}
           >
             <ZoneMesh
+              preparedGroundCutouts={preparedGroundCutouts}
               key={`${zone.id}:${preparedTerrain ?? 'terrain'}`}
               zone={zone}
               isSelected={zone.id === selectedZoneId}
@@ -1396,7 +1418,7 @@ export function GlobeZoneLayer({
               lightweight={lightweight}
               suppressed={Boolean(zone.building_id && suppressedBuildingIds?.has(zone.building_id))}
               planningOverlaysVisible={showPlanningOverlays}
-              boundaryOverlayVisible={showPlanningOverlays}
+              boundaryOverlayVisible={!overlaysHidden && (showPlanningOverlays || placementBoundaryVisible)}
               sitePrepared={sitePrepared && preparedTerrain !== null}
               preparedTerrain={preparedTerrain}
               inheritedMaskPreference={getActiveBoundaryTileMaskPreference(zones, zone)}
