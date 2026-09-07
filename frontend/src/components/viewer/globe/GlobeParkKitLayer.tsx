@@ -92,7 +92,7 @@ import { PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS } from './publicRealmDepthPolicy'
 import { derivedParkAccessGuides, getDerivedParkAccess, type ParkAccessConnection } from './parkAccessConnections';
 import { buildParkAccessBridgeGeometry } from './parkAccessBridgeGeometry';
 import { retainResourceForDeferredDisposal } from './strictModeResourceDisposal';
-import { useSharedSiteGround } from './SharedSiteGroundProvider';
+import { useParkGround } from './useParkGround';
 import { createSharedGroundTriangulation, type SharedGroundTriangulation } from './sharedGroundGeometry';
 import { GlobeNeighborhoodParkPilot } from './GlobeNeighborhoodParkPilot';
 import { isNeighborhoodParkPilot, neighborhoodParkLayoutForZone } from './neighborhoodParkLayout';
@@ -1979,7 +1979,7 @@ function ParkKitInstance({
   preparedTerrain?: number | null;
 }) {
   const tiles = useContext(TilesRendererContext);
-  const sharedGround = useSharedSiteGround();
+  const sharedGround = useParkGround(zone);
   const raycasterRef = useRef(new THREE.Raycaster());
   const frameCountRef = useRef(
     parkTerrainSampleOffset(zone.id, TERRAIN_SAMPLE_FRAME_INTERVAL),

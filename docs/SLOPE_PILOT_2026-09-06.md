@@ -1,5 +1,9 @@
 # Slopes: first pilot and implementation direction
 
+**Current direction:** parks must follow the hillside, with level pads only for
+local amenities. See [the corrected park pilot](PARK_FOLLOWS_HILLSIDE_PILOT_2026-09-07.md).
+The two-terrace next step below is historical; do not flatten whole parks.
+
 ## Student experience
 
 Students should choose how their development meets a hillside without needing to

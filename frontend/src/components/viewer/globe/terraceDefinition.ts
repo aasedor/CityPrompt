@@ -2,6 +2,7 @@ import type { SiteZone } from '@/types';
 
 export interface TerraceDefinition { version: 1; offsetM: number }
 export function terraceOffset(zone: SiteZone): number | null {
+  if (zone.properties?.park_terrain) return null;
   const value = zone.properties?.proposed_terrace as TerraceDefinition | undefined;
   // Pilot pads use convex plots. Never cut a concave import as a convex hole.
   const ring=zone.coordinates;

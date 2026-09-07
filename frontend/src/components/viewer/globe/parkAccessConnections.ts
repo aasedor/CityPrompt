@@ -155,6 +155,7 @@ function supported(zone: SiteZone): boolean {
 
 function solvePark(park: SiteZone, zones: readonly SiteZone[], settings: ParkAccessSettings, eligibleStreetZoneIds: ReadonlySet<string>, transport: ExistingTransport): ParkAccessPlan {
   const empty = (status: ParkAccessPlan['status'], reason: string): ParkAccessPlan => ({ parkZoneId: park.id, status, reason, connections: [], paths: [] });
+  if (park.properties?.park_terrain) return empty('unresolved', 'The park follows measured hillside ground. Its street connection needs a measured sidewalk landing and graded approach; the old flat connector is not shown.');
   // Even an explicitly empty list is authored intent, not permission to invent gates.
   if (Array.isArray(park.properties?.park_access_points)) return empty('explicit', 'Existing authored access points are preserved.');
   const entrance = park.properties?.pedestrian_park_entrance as { version?: number; edge?: number; position?: number; streetId?: string; existingGroundConfirmed?: boolean } | null;

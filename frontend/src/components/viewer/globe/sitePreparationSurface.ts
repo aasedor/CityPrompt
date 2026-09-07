@@ -52,7 +52,10 @@ export function resolvePreparedSiteTerrainForZone(
   fallbackTerrainHeight: number,
 ): number | null {
   const boundary = getActiveSiteBoundary(zones);
-  if (!zone || !boundary || !getPreparedSiteBoundaryIds(zones).has(boundary.id)) return null;
+  if (!zone || !boundary || zone.properties?.park_terrain) return null;
+  const landscape = boundary.properties?.terrain_strategy === 'landscape';
+  if (!landscape && !getPreparedSiteBoundaryIds(zones).has(boundary.id)) return null;
+  if (landscape && zone.id !== boundary.id && (zone.zone_type === 'green_space' || terraceOffset(zone) === null)) return null;
   if (zone.id !== boundary.id && !preparedSiteContainsZone(boundary, zone)) return null;
   return resolvePreparedSiteTerrainHeight(boundary, fallbackTerrainHeight) + (zone.id === boundary.id ? 0 : terraceOffset(zone) ?? 0);
 }

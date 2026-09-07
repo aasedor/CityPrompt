@@ -60,7 +60,7 @@ export function SharedSiteGroundProvider({ zones, children, onChange, inspectPre
 }) {
   const tiles = useContext(TilesRendererContext);
   const active = getActiveSiteBoundary(zones);
-  const inspectionOnly = Boolean(active && active.properties?.community_3d_mask_existing_tiles !== false);
+  const inspectionOnly = Boolean(active && (active.properties?.community_3d_mask_existing_tiles !== false || active.properties?.terrain_strategy === 'landscape'));
   const boundary = !inspectionOnly || inspectPrepared ? active : null;
   const sourceSignature = boundary ? sharedSiteGroundSourceSignature(boundary) : 'inactive';
   const layout = useMemo(() => boundary ? createSharedSiteGroundLayout(boundary) : null,

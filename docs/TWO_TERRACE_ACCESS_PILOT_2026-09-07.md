@@ -1,5 +1,9 @@
 # Two-terrace access pilot — 6–7 September 2026
 
+**Superseded for parks:** the user clarified that parks should follow the
+hillside, not sit on a flat table. See [the corrected pilot](PARK_FOLLOWS_HILLSIDE_PILOT_2026-09-07.md).
+Building terraces remain useful; whole-park terraces are not the intended default.
+
 ## Scope and local trial
 
 Branch: `codex/two-terrace-access-pilot`, based on `3e8afb6ff`.

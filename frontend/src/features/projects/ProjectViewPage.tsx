@@ -1024,11 +1024,28 @@ export function ProjectViewPage() {
           <GlobeSitePlannerMap
             placementDraft={placementDraft}
             onPlacementDraftChange={setPlacementDraft}
+            onFollowParkTerrain={async profiles => {
+              // Save each measured park first. Only remove the whole-site plane
+              // once every dependent surface has been confirmed by the API.
+              for (const [zoneId, profile] of Object.entries(profiles)) {
+                const park = siteZones.find(z => z.id === zoneId);
+                if (!park) throw new Error('Park no longer exists');
+                await updateZone.mutateAsync({ zoneId, data: { properties: { ...park.properties,
+                  park_terrain: profile, proposed_terrace: null, community_3d_mask_existing_tiles: false,
+                } }, previousData: { properties: park.properties } });
+              }
+              const boundary = getActiveSiteBoundary(siteZones);
+              if (!boundary) throw new Error('Site no longer exists');
+              await updateZone.mutateAsync({ zoneId: boundary.id, data: { properties: { ...boundary.properties,
+                terrain_strategy: 'landscape', community_3d_mask_existing_tiles: false,
+              } }, previousData: { properties: boundary.properties } });
+            }}
             onPrepareGround={async (zoneId, clear, height, edges) => {
               const boundary = siteZones.find(zone => zone.id === zoneId);
               if (!boundary) throw new Error('Site boundary no longer exists');
               await updateZone.mutateAsync({ zoneId, data: { properties: { ...boundary.properties,
                 community_3d_mask_existing_tiles: clear,
+                terrain_strategy: null,
                 ...(height !== undefined ? { terrain_elevation_m: height } : {}),
                 ...(edges !== undefined ? { terrain_edge_profile: edges } : {}),
               } }, previousData: { properties: boundary.properties } });

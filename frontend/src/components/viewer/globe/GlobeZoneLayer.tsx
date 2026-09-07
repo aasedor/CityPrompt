@@ -78,7 +78,7 @@ import {
   type StreetSurfaceMaterialKind,
 } from './streetSurfaceMaterials';
 import { resolveBuildingExtrudeHeight, resolveZoneSurfaceMode } from './zoneSurfaceMode';
-import { useSharedSiteGround } from './SharedSiteGroundProvider';
+import { useParkGround } from './useParkGround';
 import { createSharedGroundTriangulation, drapeSharedGroundGeometry } from './sharedGroundGeometry';
 
 const DEG_TO_RAD = Math.PI / 180;
@@ -714,7 +714,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   // Generated buildings never use flat fill geometry. Pre-generation building
   // footprints intentionally share the live terrain-drape path, while the
   // external bare-earth bake stays reserved for imported reference overlays.
-  const sharedGround = useSharedSiteGround();
+  const sharedGround = useParkGround(zone);
   const usesSharedGround = sharedGround.status !== 'inactive'
     && zone.coordinates.length > 0
     && zone.coordinates.every(([lng, lat]) => sharedGround.contains(lng, lat));

@@ -3,12 +3,18 @@ import type {SiteZone} from '@/types';
 import {buildTerraceScene} from '@/components/viewer/globe/terraceScene';
 import {terraceOffset} from '@/components/viewer/globe/terraceDefinition';
 import {assetForZone} from './catalogue';
+import {readParkTerrain} from '@/components/viewer/globe/parkTerrain';
 
 export function TerraceSummary({zones}:{zones:SiteZone[]}) {
   const scene=useMemo(()=>buildTerraceScene(zones,0),[zones]);
-  if(!scene.terraces.length&&!scene.paths.length)return null;
+  const parks=zones.filter(z=>z.properties?.park_terrain);
+  if(!scene.terraces.length&&!scene.paths.length&&!parks.length)return null;
   const name=(id:string)=>{const z=zones.find(v=>v.id===id);return z?.name||(z&&assetForZone(z)?.label)||'Removed object';};
   const lines=scene.terraces.map(z=>`${name(z.id)}: ${terraceOffset(z)!.toFixed(1)} m relative to the site level.`);
+  for(const park of parks) {
+    const s=readParkTerrain(park);
+    lines.push(`${name(park.id)}: ${s ? 'lawn and paths follow saved hillside measurements; local activity pads remain level. Review path grades and landings.' : 'ground needs review after a move or resize.'}`);
+  }
   for(const p of scene.paths)lines.push(`${name(p.ownerId)} → ${name(p.targetId)}: ${p.reason}`);
   const notes='Live concept grading review. Check building entrances, drainage, retaining edges, landings and connections to existing sidewalks. This is not an accessibility or engineering assessment. No routes to existing Google sidewalks are inferred.';
   return <section aria-label="Terrace access review" className="mb-4 rounded-xl border border-amber-300 bg-amber-50 p-4 text-slate-900">

@@ -55,6 +55,7 @@ import { resolvePedestrianConnections } from '@/features/pickPlace/pedestrianCon
 import { GlobePedestrianConnections } from './GlobePedestrianConnections';
 import { GlobeTerraces } from './GlobeTerraces';
 import { buildTerraceScene } from './terraceScene';
+import { readParkTerrain, type ParkTerrainProfile } from './parkTerrain';
 import { GlobeResidualLandscapeLayer } from './GlobeResidualLandscapeLayer';
 import { GlobeStreetRenderProfile } from './GlobeStreetRenderProfile';
 import { getResidualLandscapeRecipe } from './residualLandscape';
@@ -1420,6 +1421,7 @@ function MeasurementOverlay({
 
 interface GlobeSitePlannerMapProps {
   onPrepareGround?: (zoneId: string, clear: boolean, height?: number, edges?: import('./preparedSiteEdges').PreparedEdgeProfile | null) => Promise<void>;
+  onFollowParkTerrain?: (profiles: Record<string, ParkTerrainProfile>) => Promise<void>;
   placementDraft?: import('@/features/pickPlace/GlobePlacementPreview').PlacementDraft | null;
   onPlacementDraftChange?: (draft: import('@/features/pickPlace/GlobePlacementPreview').PlacementDraft) => void;
   onPlaceAsset?: (lngLat: [number, number], height: number) => void;
@@ -1519,6 +1521,7 @@ export function GlobeSitePlannerMap({
   placementDraft,
   onPlacementDraftChange,
   onPrepareGround,
+  onFollowParkTerrain,
   onPlaceAsset,
   onCancelPlacement,
   referenceLayers = [],
@@ -1580,7 +1583,12 @@ export function GlobeSitePlannerMap({
     sharedGroundRef.current = state;
     setSharedGroundState(state);
   }, []);
+  const terrainZonesRef = useRef(siteZones);
+  terrainZonesRef.current = siteZones;
   const waitForSharedGround = useCallback(async () => {
+    if (terrainZonesRef.current.some(zone => zone.properties?.park_terrain && !readParkTerrain(zone))) {
+      throw new Error('A park moved or changed size. Open Review ground and apply its new measured terrain before rendering.');
+    }
     const deadline = performance.now() + 20_000;
     while ((sharedGroundRef.current.status === 'sampling'
       || (sharedGroundRef.current.status === 'ready' && pendingGroundBuildingsRef.current.length > 0
@@ -1766,7 +1774,7 @@ export function GlobeSitePlannerMap({
   // Dynamic terrain elevation â€” fetched from Google Elevation API on mount
   const [terrainElevation, setTerrainElevation] = useState(DEFAULT_TERRAIN_ELEVATION);
   const terraceScene = useMemo(() => buildTerraceScene(connectedSceneZones, terrainElevation), [connectedSceneZones, terrainElevation]);
-  const preparedGroundCutouts = useMemo(() => [...terraceScene.terraces.map(z => z.coordinates), ...terraceScene.paths.filter(p => p.status === 'connected').map(p => p.rampFootprint)], [terraceScene]);
+  const preparedGroundCutouts = useMemo(() => [...terraceScene.terraces.map(z => z.coordinates), ...connectedSceneZones.filter(z => readParkTerrain(z)).map(z => z.coordinates), ...terraceScene.paths.filter(p => p.status === 'connected').map(p => p.rampFootprint)], [terraceScene, connectedSceneZones]);
   const terraceParkZones = useMemo(() => connectedSceneZones.map(zone => ({...zone, properties:{...zone.properties,
     terrace_access_clearances: terraceScene.paths.filter(p => p.status === 'connected' && (p.ownerId === zone.id || p.targetId === zone.id)).map(p => ({widthM:p.widthM, points:(p.ownerId === zone.id ? p.points.slice(0,2) : p.points.slice(2)).map(v => v.slice(0,2))}))
   }})), [connectedSceneZones, terraceScene]);
@@ -4219,6 +4227,7 @@ export function GlobeSitePlannerMap({
       )}
 
       {showGroundReview && getActiveSiteBoundary(allSiteZones) && onPrepareGround && <GroundReviewPanel
+        parks={allSiteZones.filter(z => z.zone_type === 'green_space')} onFollowParks={onFollowParkTerrain}
         boundary={getActiveSiteBoundary(allSiteZones)!} ground={sharedGroundState} onClose={() => setShowGroundReview(false)}
         onApply={(clear, height, edges) => onPrepareGround(getActiveSiteBoundary(allSiteZones)!.id, clear, height, edges)} />}
       {placementDraft && !interactionPaused && <>

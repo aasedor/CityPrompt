@@ -52,6 +52,10 @@ export function buildTerraceScene(zones:SiteZone[],fallback:number) {
     const c=readTerracePath(owner),target=c?zones.find(z=>z.id===c.targetId):undefined;
     const result:TerracePathResult={ownerId:owner.id,targetId:c?.targetId??'',status:'unresolved',reason:'Choose two different objects inside a prepared site.',points:[],widthM:c?.widthM??2,lengthM:0,gradePercent:0,rampFootprint:[]};
     paths.push(result);
+    if (owner.properties?.park_terrain || target?.properties?.park_terrain) {
+      result.reason = 'The park now follows the hillside. This old level-to-level connector needs a new terrain-following alignment and landing; it has not been drawn at its former height.';
+      continue;
+    }
     if(!boundary||base===null||!c||!target||target.id===owner.id||zones.length>256
       ||![owner,target].every(z=>['building','residential','green_space'].includes(z.zone_type)))continue;
     const sourceHeight=resolvePreparedSiteTerrainForZone(owner,zones,fallback),targetHeight=resolvePreparedSiteTerrainForZone(target,zones,fallback);
