@@ -1563,6 +1563,7 @@ export function GlobeSitePlannerMap({
   const [areTilesDisplayReady, setAreTilesDisplayReady] = useState(false);
   const [sharedGroundState, setSharedGroundState] = useState<SharedSiteGroundState>(INACTIVE_SHARED_SITE_GROUND);
   const [showGroundReview, setShowGroundReview] = useState(false);
+  const [placementProblemMessage, setPlacementProblemMessage] = useState<string | null>(null);
   const sharedGroundRef = useRef(sharedGroundState);
   const [legoGroundingIssues, setLegoGroundingIssues] = useState<LegoGroundingIssue[]>([]);
   const [modelGroundingIssues, setModelGroundingIssues] = useState<LegoGroundingIssue[]>([]);
@@ -3670,7 +3671,7 @@ export function GlobeSitePlannerMap({
 
     if (placementDraft) {
       // Touch users position the map under the preview, then confirm explicitly.
-      if (rect.width >= 640) onPlaceAsset?.(clickLngLat, clickHeight);
+      if (rect.width >= 640 && !placementDraft.inputError) onPlaceAsset?.(clickLngLat, clickHeight);
       return;
     }
 
@@ -4143,7 +4144,7 @@ export function GlobeSitePlannerMap({
           </group>
 
           <group name="siteforge-direct3d-editor-ui" userData={DIRECT_3D_CAPTURE_EXCLUDE_USER_DATA}>
-            {placementDraft && !interactionPaused && !captureOverlaysHidden && <GlobePlacementPreview draft={placementDraft} zones={allSiteZones} />}
+            {placementDraft && !placementDraft.inputError && !interactionPaused && !captureOverlaysHidden && <GlobePlacementPreview draft={placementDraft} zones={allSiteZones} onStatusChange={setPlacementProblemMessage} />}
             {/* Drawing preview dots */}
             <DrawingDots
               points={drawingPoints}
@@ -4214,9 +4215,11 @@ export function GlobeSitePlannerMap({
       {placementDraft && !interactionPaused && <>
         <div aria-hidden className="pointer-events-none absolute left-1/2 top-1/2 z-30 -translate-x-1/2 -translate-y-1/2 text-3xl font-light text-white drop-shadow sm:hidden">+</div>
         <div className="absolute bottom-6 left-1/2 z-40 w-80 max-w-[90vw] -translate-x-1/2 rounded-xl bg-white p-3 text-center text-sm text-slate-900 shadow-xl">
-          {onPlacementDraftChange && <PlacementControls draft={placementDraft} onChange={onPlacementDraftChange} />}
-          <p className="hidden sm:block">Click a clear space to place. Red means it will not fit.</p><p className="sm:hidden">Move the map to position your object. Red means it will not fit.</p>
-          <div className="mt-2 flex justify-center gap-2"><button className="min-h-11 rounded-lg bg-lime-200 px-3 sm:hidden" onClick={()=>{const surface=raycastSurfacePoint(0,0);if(surface) onPlaceAsset?.(surface.lngLat,surface.height);}}>Place at centre</button><button className="min-h-11 rounded-lg border px-3" onClick={onCancelPlacement}>Cancel</button></div>
+          {onPlacementDraftChange && <PlacementControls key={placementDraft.assetId} draft={placementDraft} onChange={onPlacementDraftChange} />}
+          {!placementDraft.inputError && (placementProblemMessage
+            ? <p role="status" className="mt-2 text-xs text-red-700">{placementProblemMessage}</p>
+            : <><p className="hidden sm:block">Click a clear space to place.</p><p className="sm:hidden">Move the map to position your object.</p></>)}
+          <div className="mt-2 flex justify-center gap-2"><button disabled={Boolean(placementDraft.inputError)} className="min-h-11 rounded-lg bg-lime-200 px-3 disabled:opacity-40 sm:hidden" onClick={()=>{if(placementDraft.inputError) return;const surface=raycastSurfacePoint(0,0);if(surface) onPlaceAsset?.(surface.lngLat,surface.height);}}>Place at centre</button><button className="min-h-11 rounded-lg border px-3" onClick={onCancelPlacement}>Cancel</button></div>
         </div>
       </>}
       {measureModeActive && (

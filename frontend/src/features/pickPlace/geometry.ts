@@ -41,7 +41,7 @@ export function placementProblem(coords: number[][], zones: SiteZone[], boundary
     if (boundary && !envelopeFits(footprint,local(boundary.coordinates))) return 'Keep the whole object inside your site boundary.';
     for (const zone of zones) {
       if (zone.id===ignoreId || !['building','residential','green_space','parking'].includes(zone.zone_type)) continue;
-      if (envelopesOverlap(footprint,local(zone.coordinates))) return 'This overlaps another building or park. Move it into a clear space.';
+      if (envelopesOverlap(footprint,local(zone.coordinates))) return 'This overlaps another building plot or park. Plots include the space around buildings. Move it into a clear space.';
     }
     return null;
   } catch { return 'This area cannot be placed yet. Check the site outline.'; }

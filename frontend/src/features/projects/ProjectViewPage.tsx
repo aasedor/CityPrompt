@@ -256,7 +256,7 @@ export function ProjectViewPage() {
   }, [placementDraft, cancelPlacement]);
   useEffect(() => { setPlacementDraft(null); setAdvancedZoneId(null); }, [id]);
   const placeObject = async (point: [number, number], height: number) => {
-    if (!placementDraft || placementPending.current || isSaving) return;
+    if (!placementDraft || placementDraft.inputError || placementPending.current || isSaving) return;
     const coordinates = rectangleAt(point, placementDraft.width, placementDraft.depth, placementDraft.degrees);
     const problem = placementProblem(coordinates, siteZones, getActiveSiteBoundary(siteZones));
     if(problem) { toast.error(problem, { position: 'top-center' }); return; }

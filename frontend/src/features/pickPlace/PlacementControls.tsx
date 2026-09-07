@@ -1,22 +1,34 @@
-import { useEffect, useState } from 'react';
+import { useId, useState } from 'react';
 import { placeAsset } from './catalogue';
 import type { PlacementDraft } from './GlobePlacementPreview';
 
 export function PlacementControls({ draft, onChange }: { draft: PlacementDraft; onChange: (draft: PlacementDraft) => void }) {
   const asset = placeAsset(draft.assetId);
-  const [values, setValues] = useState({ width: String(draft.width), depth: String(draft.depth), degrees: String(draft.degrees) });
-  useEffect(() => setValues({ width: String(draft.width), depth: String(draft.depth), degrees: String(draft.degrees) }), [draft]);
-  const valid = Number.isFinite(Number(values.width)) && Number(values.width) >= asset.minWidth && Number(values.width) <= asset.maxSize
-    && Number.isFinite(Number(values.depth)) && Number(values.depth) >= asset.minDepth && Number(values.depth) <= asset.maxSize
-    && values.degrees.trim() !== '' && Number.isFinite(Number(values.degrees));
-  return <form onSubmit={event => { event.preventDefault(); if (valid) onChange({ ...draft, width: Number(values.width), depth: Number(values.depth), degrees: ((Number(values.degrees) % 360) + 360) % 360 }); }} className="space-y-2 text-left">
+  const hintId = useId();
+  const [values, setValues] = useState(draft.inputValues ?? { width: String(draft.width), depth: String(draft.depth), degrees: String(draft.degrees) });
+  function update(key: keyof typeof values, value: string) {
+    const next = { ...values, [key]: value };
+    setValues(next);
+    const valid = next.width.trim() !== '' && Number.isFinite(Number(next.width)) && Number(next.width) >= asset.minWidth && Number(next.width) <= asset.maxSize
+      && next.depth.trim() !== '' && Number.isFinite(Number(next.depth)) && Number(next.depth) >= asset.minDepth && Number(next.depth) <= asset.maxSize
+      && next.degrees.trim() !== '' && Number.isFinite(Number(next.degrees));
+    // Keep text such as a trailing decimal while synchronizing the actual placement.
+    // An unfinished entry must never silently place the previous valid dimensions.
+    onChange(valid
+      ? { ...draft, width: Number(next.width), depth: Number(next.depth), degrees: ((Number(next.degrees) % 360) + 360) % 360, inputValues: next, inputError: undefined }
+      : { ...draft, inputValues: next, inputError: 'Enter dimensions within the limits and a rotation to place your object.' });
+  }
+  return <div className="space-y-2 text-left">
     <p className="font-bold">{asset.label}</p>
     <div className="grid grid-cols-3 gap-2">
       {(['width', 'depth', 'degrees'] as const).map(key => <label key={key} className="text-xs">{key === 'degrees' ? 'Rotation (°)' : `${key === 'width' ? 'Width' : 'Depth'} (m)`}
-        <input aria-label={`Placement ${key}`} type="number" step="any" value={values[key]} onChange={event => setValues(current => ({ ...current, [key]: event.target.value }))} className="mt-1 min-h-11 w-full rounded border border-slate-400 p-1" />
+        <input aria-label={`Placement ${key}`} aria-describedby={hintId} type="number" step="any"
+          min={key === 'degrees' ? undefined : key === 'width' ? asset.minWidth : asset.minDepth}
+          max={key === 'degrees' ? undefined : asset.maxSize}
+          value={values[key]} onChange={event => update(key, event.target.value)} className="mt-1 min-h-11 w-full rounded border border-slate-400 p-1" />
       </label>)}
     </div>
-    <p className="text-xs">Minimum {asset.minWidth} × {asset.minDepth} m; maximum {asset.maxSize} m per side.{asset.properties.native_home_plot === true ? ' Houses repeat at their native size.' : ''}</p>
-    <button disabled={!valid} className="min-h-11 w-full rounded-lg bg-lime-200 px-2 disabled:opacity-40">Update placement preview</button>
-  </form>;
+    <p id={hintId} className="text-xs">Minimum {asset.minWidth} × {asset.minDepth} m; maximum {asset.maxSize} m per side.{asset.properties.native_home_plot === true ? ' Houses repeat at their native size.' : ''}</p>
+    <p role="status" className={draft.inputError ? 'text-xs text-red-700' : 'text-xs text-slate-600'}>{draft.inputError ?? 'Size and rotation update automatically.'}</p>
+  </div>;
 }

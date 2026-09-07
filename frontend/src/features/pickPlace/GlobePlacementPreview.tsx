@@ -19,7 +19,11 @@ import { resolvePreparedSiteTerrainForZone } from '@/components/viewer/globe/sit
 import { placeAsset, placementPlanRequest, placementProperties, type PlaceAssetId } from './catalogue';
 import { placementProblem, rectangleAt } from './geometry';
 
-export interface PlacementDraft { assetId: PlaceAssetId; width: number; depth: number; degrees: number }
+export interface PlacementDraft {
+  assetId: PlaceAssetId; width: number; depth: number; degrees: number;
+  inputError?: string;
+  inputValues?: { width: string; depth: string; degrees: string };
+}
 class PreviewFallback extends Component<{children: ReactNode; fallback: ReactNode}, {failed: boolean}> {
   state = {failed:false};
   static getDerivedStateFromError() { return {failed:true}; }
@@ -36,7 +40,7 @@ const ORIGIN = {lng:-114.04677,lat:51.04542};
 const flatGround=()=>0;
 
 /** Local preview state avoids rerendering the full globe on every pointer move. */
-export function GlobePlacementPreview({ draft, zones }: {draft: PlacementDraft; zones: SiteZone[]}) {
+export function GlobePlacementPreview({ draft, zones, onStatusChange }: {draft: PlacementDraft; zones: SiteZone[]; onStatusChange?: (problem: string | null) => void}) {
   const {gl,camera,invalidate}=useThree();
   const tiles=useContext(TilesRendererContext);
   const ground = useSharedSiteGround();
@@ -72,9 +76,12 @@ export function GlobePlacementPreview({ draft, zones }: {draft: PlacementDraft; 
   const previewZone=useMemo(()=>({id:'placement-preview',zone_type:asset.zoneType,
     coordinates:rectangleAt([ORIGIN.lng,ORIGIN.lat],draft.width,draft.depth),
     properties:placementProperties(asset)} as SiteZone),[asset,draft.width,draft.depth]);
-  if(!surface) return null;
-  const footprint = rectangleAt([surface.lng,surface.lat],draft.width,draft.depth,draft.degrees);
-  const invalid=placementProblem(footprint,zones,getActiveSiteBoundary(zones));
+  const footprint = surface ? rectangleAt([surface.lng,surface.lat],draft.width,draft.depth,draft.degrees) : null;
+  const invalid = footprint ? placementProblem(footprint,zones,getActiveSiteBoundary(zones)) : 'Move over the site and wait for the ground to load.';
+  // Report only status transitions, not every pointer coordinate, to the planner.
+  useEffect(() => { onStatusChange?.(invalid); }, [invalid, onStatusChange]);
+  useEffect(() => () => onStatusChange?.(null), [onStatusChange]);
+  if(!surface || !footprint) return null;
   const previewHeight = resolvePreparedSiteTerrainForZone({ ...previewZone, coordinates: footprint }, zones, surface.height)
     ?? ground.heightAt(surface.lng, surface.lat) ?? surface.height;
   const envelope=asset.nativeDimensions ?? [draft.width,draft.depth,.1];
