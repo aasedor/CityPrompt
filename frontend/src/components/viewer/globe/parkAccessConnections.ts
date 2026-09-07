@@ -9,6 +9,7 @@ import { computeParkPlacements, resolveParkRecipeForZone } from './parkScatter';
 import { isNeighborhoodParkPilot } from './neighborhoodParkLayout';
 import { PARK_PROGRAM_MODULE_SPEC, resolveParkProgramAnchorLayout } from './parkLegoFamilies';
 import { preparedSiteContainsZone } from './sitePreparationSurface';
+import { EMPTY_TRANSPORT, type ExistingTransport } from '@/features/referenceLayers/existingTransport';
 
 export type ParkAccessPoint = [number, number];
 export interface ParkAccessPath { points: ParkAccessPoint[]; widthM: number }
@@ -152,11 +153,11 @@ function supported(zone: SiteZone): boolean {
     && (isNeighborhoodParkPilot(zone) || (profile.variantId ?? zone.properties?.green_space_selected_variant_id) !== 'neighborhood_park_v0');
 }
 
-function solvePark(park: SiteZone, zones: readonly SiteZone[], settings: ParkAccessSettings, eligibleStreetZoneIds: ReadonlySet<string>): ParkAccessPlan {
+function solvePark(park: SiteZone, zones: readonly SiteZone[], settings: ParkAccessSettings, eligibleStreetZoneIds: ReadonlySet<string>, transport: ExistingTransport): ParkAccessPlan {
   const empty = (status: ParkAccessPlan['status'], reason: string): ParkAccessPlan => ({ parkZoneId: park.id, status, reason, connections: [], paths: [] });
   // Even an explicitly empty list is authored intent, not permission to invent gates.
   if (Array.isArray(park.properties?.park_access_points)) return empty('explicit', 'Existing authored access points are preserved.');
-  const entrance = park.properties?.pedestrian_park_entrance as { version?: number; edge?: number; position?: number; streetId?: string } | null;
+  const entrance = park.properties?.pedestrian_park_entrance as { version?: number; edge?: number; position?: number; streetId?: string; existingGroundConfirmed?: boolean } | null;
   if (entrance && (entrance.version !== 1 || !Number.isInteger(entrance.edge) || entrance.edge! < 0 || entrance.edge! >= park.coordinates.length
     || !Number.isFinite(entrance.position) || entrance.position! < 0 || entrance.position! > 1 || typeof entrance.streetId !== 'string')) {
     return empty('unresolved', 'Choose a valid park entrance and sidewalk target.');
@@ -250,7 +251,7 @@ function solvePark(park: SiteZone, zones: readonly SiteZone[], settings: ParkAcc
     }
     return null;
   };
-  type Candidate = { street: SiteZone; point: P; gateway: P; ingress: P; band: 'sidewalk' | 'path'; widthM: number; lift: number; gap: number };
+  type Candidate = { street: { id: string }; point: P; gateway: P; ingress: P; band: 'sidewalk' | 'path'; widthM: number; lift: number; gap: number };
   const candidates: Candidate[] = [];
   for (const street of zones.filter((z) => z.zone_type === 'road' && eligibleStreetZoneIds.has(z.id)).sort((a, b) => a.id.localeCompare(b.id))) {
     if (entrance && street.id !== entrance.streetId) continue;
@@ -302,6 +303,35 @@ function solvePark(park: SiteZone, zones: readonly SiteZone[], settings: ParkAcc
       }
     }
   }
+  // Existing mapped paths are opt-in targets, never extra design zones. Their
+  // overlay can be hidden without changing saved intent or capture geometry.
+  if (entrance?.streetId?.startsWith('existing:')) {
+    if (!entrance.existingGroundConfirmed) return empty('unresolved', 'Check that the mapped path meets this site at ground level.');
+    const target = transport.lines.find(line=>line.id===entrance.streetId && line.kind==='path');
+    if (!target) return empty('unresolved', 'The mapped path is missing or no longer eligible. Choose another target.');
+    const [a,b] = segments(ring)[entrance.edge!];
+    const edgeLength=distance(a,b), gateway=lerp(a,b,entrance.position!);
+    if(edgeLength>=settings.pathWidthM*2) {
+      let inward:P=[-(b[1]-a[1])/edgeLength,(b[0]-a[0])/edgeLength];
+      if(!pointInside(add(gateway,mul(inward,0.05)),ring))inward=mul(inward,-1);
+      const ingress=add(gateway,mul(inward,settings.pathWidthM+0.5));
+      const line=target.points.map(local);
+      for(let i=1;i<line.length;i++) {
+        const centre=project(gateway,line[i-1],line[i]),centreGap=distance(centre,gateway);
+        // Meet the near edge of a recorded-width path, with a small overlap.
+        // Requiring its centreline inside the parcel incorrectly rejects a
+        // legitimate connection to a path alongside the boundary.
+        const edgeOffset=Math.min(Math.max(0,(target.widthM ?? 0)/2-0.15),Math.max(0,centreGap-0.05));
+        const point=add(centre,mul(sub(gateway,centre),edgeOffset/Math.max(EPS,centreGap))),gap=distance(point,gateway);
+        if(gap>settings.maxGapM || gap<0.05 || !internalSafe(gateway,ingress,true)
+          || !corridorInside(point,gateway,boundaryRing,half))continue;
+        if([...obstacles,...roadPolygons.map(r=>r.ring)].some(obstacle=>hitsObstacle(point,gateway,obstacle,half+settings.obstacleClearanceM)))continue;
+        if(transport.lines.filter(l=>l.kind==='road').some(road=>road.points.slice(1).some((end,j)=>segmentDistance(point,gateway,local(road.points[j]),local(end))<=half+0.5)))continue;
+        candidates.push({street:{id:target.id},point,gateway,ingress,band:'path',widthM:settings.pathWidthM,lift:0.025,gap});
+      }
+    }
+    if(!candidates.length)return empty('unresolved','No clear connection within 8 m. Keep the approach inside the site, on this side of existing roads, and check the entrance edge.');
+  }
   const connections: ParkAccessConnection[] = [];
   for (const candidate of candidates.sort((a, b) => a.gap - b.gap || a.street.id.localeCompare(b.street.id) || a.gateway[0] - b.gateway[0] || a.gateway[1] - b.gateway[1]).slice(0, 32)) {
     if (connections.some((c) => c.streetZoneId === candidate.street.id || distance(local(c.gateway), candidate.gateway) < settings.pathWidthM * 3)) continue;
@@ -316,24 +346,24 @@ function solvePark(park: SiteZone, zones: readonly SiteZone[], settings: ParkAcc
     paths: [...(extraLoop ? [{ points: extraLoop.map(world), widthM: settings.pathWidthM }] : []), ...connections.map((c) => ({ points: c.path.slice(1), widthM: c.widthM }))] };
 }
 
-export function resolveManualParkAccess(zones: readonly SiteZone[], input: Partial<ParkAccessSettings> = {}, eligibleStreetZoneIds?: readonly string[]): ParkAccessSnapshot {
+export function resolveManualParkAccess(zones: readonly SiteZone[], input: Partial<ParkAccessSettings> = {}, eligibleStreetZoneIds?: readonly string[], transport: ExistingTransport = EMPTY_TRANSPORT): ParkAccessSnapshot {
   const settings = settingsOf(input); const sorted = [...zones].sort((a, b) => a.id.localeCompare(b.id));
   const roads = new Set(sorted.filter((zone) => zone.zone_type === 'road').map((zone) => zone.id));
   const eligible = [...new Set(eligibleStreetZoneIds ?? roads)].filter((id) => roads.has(id)).sort().slice(0, MAX_ZONES);
-  return { version: 1, sourceSignature: hash({ zones: sorted.map(source), settings, eligibleStreetZoneIds: eligible }), settings, eligibleStreetZoneIds: eligible,
+  return { version: 1, sourceSignature: hash({ zones: sorted.map(source), settings, eligibleStreetZoneIds: eligible, transport }), settings, eligibleStreetZoneIds: eligible,
     sources: sorted.map((z) => ({ zoneId: z.id, updatedAt: z.updated_at, geometrySignature: hash({ coordinates: z.coordinates, type: z.zone_type, isActiveBoundary: z.is_active_boundary }) })),
-    parks: sorted.filter(supported).map((park) => solvePark(park, sorted, settings, new Set(eligible))) };
+    parks: sorted.filter(supported).map((park) => solvePark(park, sorted, settings, new Set(eligible), transport)) };
 }
 
 /** A view adapter, never a persistence mutation. Reject snapshots from old road edits. */
-export function applyManualParkAccessSnapshot(zones: readonly SiteZone[], snapshot: ParkAccessSnapshot): SiteZone[] {
+export function applyManualParkAccessSnapshot(zones: readonly SiteZone[], snapshot: ParkAccessSnapshot, transport: ExistingTransport = EMPTY_TRANSPORT): SiteZone[] {
   const clean = zones.map((zone) => {
     if (!zone.properties?.park_access_connections) return zone;
     const { park_access_connections: _old, ...properties } = zone.properties;
     return { ...zone, properties };
   });
   const current = hash({ zones: [...zones].sort((a, b) => a.id.localeCompare(b.id)).map(source), settings: snapshot.settings,
-    eligibleStreetZoneIds: snapshot.eligibleStreetZoneIds });
+    eligibleStreetZoneIds: snapshot.eligibleStreetZoneIds, transport });
   if (snapshot.version !== 1 || snapshot.sourceSignature !== current) return clean;
   return clean.map((zone) => {
     const plan = snapshot.parks.find((park) => park.parkZoneId === zone.id);

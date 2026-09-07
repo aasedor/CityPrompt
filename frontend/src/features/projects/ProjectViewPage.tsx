@@ -39,6 +39,8 @@ import { StudioControls, StudioDialog, StudioSaveStatus } from './StudioControls
 import { ReadOnlyProject } from './ReadOnlyProject';
 import { StudentPlanningReport } from '@/features/studentReports/StudentPlanningReport';
 import { useReferenceLayers } from '@/features/referenceLayers/useReferenceLayers';
+import { CalgaryContextButton } from '@/features/referenceLayers/CalgaryContextButton';
+import { existingTransport } from '@/features/referenceLayers/existingTransport';
 import { ReferenceLayersPanel } from '@/features/referenceLayers/ReferenceLayersPanel';
 import { SiteElevation } from '@/features/referenceLayers/SiteElevation';
 import { ShapefileImportButton } from './ShapefileImportButton';
@@ -94,6 +96,7 @@ export function ProjectViewPage() {
   const [showPlanningReport, setShowPlanningReport] = useState(false);
   const closePlanningReport = useCallback(() => setShowPlanningReport(false), []);
   const references = useReferenceLayers(id);
+  const transportContext = useMemo(() => existingTransport(references.layers), [references.layers]);
   const [aiGenerateBuildingId, setAiGenerateBuildingId] = useState<string | null>(null);
   const [legoZone, setLegoZone] = useState<SiteZone | null>(null);
   const [showLegoBuilder, setShowLegoBuilder] = useState(false);
@@ -1021,6 +1024,7 @@ export function ProjectViewPage() {
             siteZones={visibleZones}
             allSiteZones={siteZones}
             referenceLayers={references.visibleLayers}
+            transportContext={transportContext}
             buildings={visibleBuildings}
             onZoneCreated={(coordinates, type, properties) => {
               if (isCalgaryLocalRoute({zone_type:type, properties})) {
@@ -1126,6 +1130,7 @@ export function ProjectViewPage() {
         {showReferenceLayers && !showPlanningReport && <aside aria-label="Map layers" className="absolute bottom-20 right-3 top-32 z-40 flex max-w-[calc(100vw-1.5rem)] flex-col gap-3 overflow-y-auto rounded-xl bg-white/95 p-3 shadow-xl sm:right-4 sm:top-20">
           <div className="sticky -top-3 z-10 flex items-center justify-between bg-white py-1"><h2 className="font-semibold text-slate-900">Map layers</h2><button onClick={() => setShowReferenceLayers(false)} aria-label="Close layers" className="flex h-11 w-11 items-center justify-center"><X size={18} /></button></div>
           <ShapefileImportButton projectId={project.id} />
+          <CalgaryContextButton projectId={project.id} zones={siteZones} layers={references.layers} />
           <ReferenceLayersPanel layers={references.layers} hiddenIds={references.hiddenIds} onToggle={references.toggleLayer}
             onDelete={references.canEdit ? references.removeLayer : undefined} deletingId={references.deletingId}
             isLoading={references.isLoading} error={references.error} onRetry={() => { void references.refetch(); }} />
@@ -1178,7 +1183,7 @@ export function ProjectViewPage() {
           />
         )}
 
-        {connectionZone && <ConnectionEditor key={connectionZone.id} zone={connectionZone} zones={siteZones} visibleIds={visibleZones.map(zone=>zone.id)} disabled={isSaving}
+        {connectionZone && <ConnectionEditor key={connectionZone.id} zone={connectionZone} zones={siteZones} transportContext={transportContext} visibleIds={visibleZones.map(zone=>zone.id)} disabled={isSaving}
           onClose={()=>setConnectionZoneId(null)} onSave={async properties=>{
             await updateZone.mutateAsync({zoneId:connectionZone.id,data:{properties},previousData:{properties:connectionZone.properties}});
           }} />}

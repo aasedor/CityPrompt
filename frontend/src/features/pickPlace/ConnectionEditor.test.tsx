@@ -8,6 +8,19 @@ import { rectangleAt } from './geometry';
 const house:SiteZone={id:'house',project_id:'test',zone_type:'building',coordinates:rectangleAt([-114,51],12,20),properties:{native_home_plot:true,unrelated:'preserve'},color:'#aaa',sort_order:0,created_at:'now',updated_at:'now'};
 const road:SiteZone={...house,id:'road',name:'Local street',zone_type:'road',properties:{road_archetype_id:'calgary_local'}};
 describe('connection controls',()=>{
+  it('offers mapped pedestrian targets, omits motor roads and saves the ground-level review',async()=>{
+    const park={...house,id:'park',zone_type:'green_space' as const,properties:{green_space_archetype_id:'urban_pocket_park'}};
+    const path={id:'existing:path',kind:'path' as const,label:'Riverside path',widthM:3,points:[[-114,51],[-114.001,51]] as [number,number][]};
+    const onSave=vi.fn().mockResolvedValue(undefined);
+    render(<ConnectionEditor zone={park} zones={[park]} transportContext={{lines:[path,{...path,id:'motor',kind:'road',label:'Motor road'}]}} disabled={false} onSave={onSave} onClose={vi.fn()}/>);
+    fireEvent.click(screen.getByRole('checkbox',{name:'Choose and lock a park entrance'}));
+    expect(screen.queryByRole('option',{name:/Motor road/})).toBeNull();
+    fireEvent.change(screen.getByLabelText('Sidewalk target'),{target:{value:'existing:path'}});
+    fireEvent.click(screen.getByRole('checkbox',{name:/I checked that this is suitable/}));
+    fireEvent.click(screen.getByRole('button',{name:'Save connections'}));
+    await waitFor(()=>expect(onSave).toHaveBeenCalled());
+    expect(onSave.mock.calls[0][0].pedestrian_park_entrance).toMatchObject({streetId:'existing:path',existingGroundConfirmed:true});
+  });
   it('saves an explicit native-house anchor without dropping other properties',async()=>{
     const onSave=vi.fn().mockResolvedValue(undefined),onClose=vi.fn();
     render(<ConnectionEditor zone={house} zones={[house,road]} disabled={false} onSave={onSave} onClose={onClose}/>);

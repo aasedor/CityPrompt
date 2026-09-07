@@ -33,6 +33,7 @@ import { ZONE_TYPE_CONFIG } from '@/types';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { useViewerStore } from '@/store';
 import { GlobeReferenceLayer } from '@/features/referenceLayers/GlobeReferenceLayer';
+import { EMPTY_TRANSPORT, type ExistingTransport } from '@/features/referenceLayers/existingTransport';
 import type { ReferenceLayer } from '@/features/referenceLayers/api';
 import { GlobeZoneLayer } from './GlobeZoneLayer';
 import { SharedSiteGroundProvider, INACTIVE_SHARED_SITE_GROUND, type SharedSiteGroundState } from './SharedSiteGroundProvider';
@@ -1418,6 +1419,7 @@ interface GlobeSitePlannerMapProps {
   onPlaceAsset?: (lngLat: [number, number], height: number) => void;
   onCancelPlacement?: () => void;
   referenceLayers?: ReferenceLayer[];
+  transportContext?: ExistingTransport;
   latitude?: number;
   longitude?: number;
   preferredView?: GlobePreferredView;
@@ -1512,6 +1514,7 @@ export function GlobeSitePlannerMap({
   onPlaceAsset,
   onCancelPlacement,
   referenceLayers = [],
+  transportContext = EMPTY_TRANSPORT,
   latitude: _latitude = 51.045,
   longitude: _longitude = -114.07,
   preferredView,
@@ -1600,8 +1603,8 @@ export function GlobeSitePlannerMap({
   const zoneOverlaysVisibleRef = useRef(true);
   zoneOverlaysVisibleRef.current = zoneOverlaysVisible;
   const parkAccessSnapshot = useMemo(() => resolveManualParkAccess(
-    allSiteZones, {}, siteZones.filter((zone) => zone.zone_type === 'road').map((zone) => zone.id),
-  ), [allSiteZones, siteZones]);
+    allSiteZones, {}, siteZones.filter((zone) => zone.zone_type === 'road').map((zone) => zone.id), transportContext,
+  ), [allSiteZones, siteZones, transportContext]);
   const parkAccessSnapshotRef = useRef(parkAccessSnapshot);
   const pedestrianConnections = useMemo(() => resolvePedestrianConnections(allSiteZones, siteZones.map(zone=>zone.id)), [allSiteZones, siteZones]);
   parkAccessSnapshotRef.current = parkAccessSnapshot;
@@ -1609,8 +1612,8 @@ export function GlobeSitePlannerMap({
   hasLocalDraftsRef.current = allSiteZones.some((zone) => zone.id.startsWith('temp-'));
   const connectedSceneZones = useMemo(() => {
     const visibleIds = new Set(siteZones.map((zone) => zone.id));
-    return applyManualParkAccessSnapshot(allSiteZones, parkAccessSnapshot).filter((zone) => visibleIds.has(zone.id));
-  }, [allSiteZones, parkAccessSnapshot, siteZones]);
+    return applyManualParkAccessSnapshot(allSiteZones, parkAccessSnapshot, transportContext).filter((zone) => visibleIds.has(zone.id));
+  }, [allSiteZones, parkAccessSnapshot, siteZones, transportContext]);
   const hasCompiledCommunity3D = useMemo(
     () => siteZones.some(isCommunity3DCompiled),
     [siteZones],

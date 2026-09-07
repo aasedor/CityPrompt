@@ -22,6 +22,28 @@ function fixture() {
 }
 
 describe('manual park access planning', () => {
+  it('connects to a selected existing path, preserves boundary limits and invalidates removed context',()=>{
+    const {park,boundary}=fixture();
+    const transport={lines:[{id:'existing:path',label:'Mapped path',kind:'path' as const,widthM:null,points:[ll([-10,-3]),ll([50,-3])]}]};
+    const selected={...park,properties:{...park.properties,pedestrian_park_entrance:{version:1,edge:0,position:0.5,streetId:'existing:path',existingGroundConfirmed:true}}};
+    const snapshot=resolveManualParkAccess([selected,boundary],{},[],transport);
+    expect(snapshot.parks[0].status).toBe('connected');
+    expect(xy(snapshot.parks[0].connections[0].streetPoint)[1]).toBeCloseTo(-3,5);
+    expect(getDerivedParkAccess(applyManualParkAccessSnapshot([selected,boundary],snapshot,transport)[0])).not.toBeNull();
+    expect(getDerivedParkAccess(applyManualParkAccessSnapshot([selected,boundary],snapshot)[0])).toBeNull();
+    const unconfirmed={...selected,properties:{...selected.properties,pedestrian_park_entrance:{...selected.properties.pedestrian_park_entrance,existingGroundConfirmed:false}}};
+    expect(resolveManualParkAccess([unconfirmed,boundary],{},[],transport).parks[0].reason).toContain('ground level');
+    const road={id:'road',label:'Road',kind:'road' as const,widthM:null,points:[ll([-10,-1.5]),ll([50,-1.5])]};
+    expect(resolveManualParkAccess([selected,boundary],{},[],{lines:[...transport.lines,road]}).parks[0].connections).toHaveLength(0);
+    const smaller={...boundary,coordinates:[[-10,0],[50,0],[50,50],[-10,50]].map(ll)};
+    expect(resolveManualParkAccess([selected,smaller],{},[],transport).parks[0].connections).toHaveLength(0);
+    expect(resolveManualParkAccess([park,boundary],{},[],transport).parks[0].connections).toHaveLength(0);
+    const edgeBoundary={...boundary,coordinates:[[-10,-2],[50,-2],[50,50],[-10,50]].map(ll)};
+    const widePath={lines:[{...transport.lines[0],widthM:4}]};
+    const edgePlan=resolveManualParkAccess([selected,edgeBoundary],{},[],widePath).parks[0];
+    expect(edgePlan.status).toBe('connected');
+    expect(xy(edgePlan.connections[0].streetPoint)[1]).toBeCloseTo(-1.15,5);
+  });
   it('honours an editable entrance and does not silently choose another edge', () => {
     const {park,street,boundary}=fixture();
     const locked={...park,properties:{...park.properties,pedestrian_park_entrance:{version:1,edge:0,position:0.25,streetId:street.id}}};
