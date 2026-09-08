@@ -193,7 +193,11 @@ def _assert_optional_boundary_covers(
         active_boundary.geometry,
         candidate,
     ):
-        boundary = active_boundary.geometry if isinstance(active_boundary.geometry, Polygon) else to_shape(active_boundary.geometry)
+        boundary = (
+            active_boundary.geometry
+            if isinstance(active_boundary.geometry, Polygon)
+            else to_shape(active_boundary.geometry)
+        )
         if not public_road_connection_fits(zone_type, properties, candidate, boundary):
             raise HTTPException(status_code=409, detail=detail)
 
@@ -217,7 +221,9 @@ async def _assert_boundary_covers_existing_zones(
     for existing in result.scalars().all():
         try:
             shape = to_shape(existing.geometry)
-            covered = buffered.covers(shape) or public_road_connection_fits(existing.zone_type, existing.properties, shape, candidate_boundary)
+            covered = buffered.covers(shape) or public_road_connection_fits(
+                existing.zone_type, existing.properties, shape, candidate_boundary
+            )
         except Exception:
             covered = False
         if not covered:
@@ -981,7 +987,8 @@ async def create_zone(
             active_boundary,
             candidate_polygon,
             detail="The new zone must stay completely inside the active site boundary.",
-            zone_type=zone_in.zone_type, properties=zone_in.properties,
+            zone_type=zone_in.zone_type,
+            properties=zone_in.properties,
         )
 
     coords_str = ", ".join(f"{c[0]} {c[1]}" for c in coords)
@@ -1205,7 +1212,8 @@ async def update_zone(
                     active_boundary,
                     candidate_polygon,
                     detail="The updated zone must stay completely inside the active site boundary.",
-                    zone_type=requested_zone_type, properties=update_data.get("properties", zone.properties),
+                    zone_type=requested_zone_type,
+                    properties=update_data.get("properties", zone.properties),
                 )
             coords_str = ", ".join(f"{c[0]} {c[1]}" for c in coords)
             zone.geometry = WKTElement(f"POLYGON(({coords_str}))", srid=4326)
@@ -1213,13 +1221,22 @@ async def update_zone(
     connection_properties = update_data.get("properties", zone.properties) or {}
     if updated_coordinates is None and (
         requested_zone_type != zone.zone_type
-        or ("properties" in update_data and ((zone.properties or {}).get("connect_to_public_road") is True
-            or connection_properties.get("connect_to_public_road") is True))
+        or (
+            "properties" in update_data
+            and (
+                (zone.properties or {}).get("connect_to_public_road") is True
+                or connection_properties.get("connect_to_public_road") is True
+            )
+        )
     ):
         active_boundary = await _active_site_boundary(db, zone.project_id, for_update=True)
-        _assert_optional_boundary_covers(active_boundary, to_shape(zone.geometry),
+        _assert_optional_boundary_covers(
+            active_boundary,
+            to_shape(zone.geometry),
             detail="Move the street back inside the site before disabling its public-road connection.",
-            zone_type=requested_zone_type, properties=connection_properties)
+            zone_type=requested_zone_type,
+            properties=connection_properties,
+        )
     for field, value in update_data.items():
         setattr(zone, field, value)
     zone.updated_at = datetime.now(timezone.utc)

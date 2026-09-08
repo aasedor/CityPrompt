@@ -4534,12 +4534,23 @@ def _tee_street_zones():
 def test_fixed_collector_and_five_metre_alley_support_verified_junctions():
     collector, shared = _tee_street_zones()
     collector.properties.pop("public_realm_lego")
-    collector.properties.update(width=20, road_archetype_id="calgary_collector", road_selected_variant_id="calgary_collector_v0", public_realm_fallback={"state":"family_pending"})
+    collector.properties.update(
+        width=20,
+        road_archetype_id="calgary_collector",
+        road_selected_variant_id="calgary_collector_v0",
+        public_realm_fallback={"state": "family_pending"},
+    )
     assert direct_api._street_supports_v1_four_way_junction(collector)
-    assert direct_api._validate_junction_topology([collector,shared], [collector,shared], _junction_topology([collector,shared]))
+    assert direct_api._validate_junction_topology(
+        [collector, shared], [collector, shared], _junction_topology([collector, shared])
+    )
     collector.properties["road_selected_variant_id"] = "invented"
     assert not direct_api._street_supports_v1_four_way_junction(collector)
-    alley = _zone(uuid.uuid4(), "street", properties=_supported_street_properties(5, [[-114.08,51.039],[-114.08,51.041]], archetype_id="green_alley"))
+    alley = _zone(
+        uuid.uuid4(),
+        "street",
+        properties=_supported_street_properties(5, [[-114.08, 51.039], [-114.08, 51.041]], archetype_id="green_alley"),
+    )
     assert direct_api._street_supports_v1_four_way_junction(alley)
 
 

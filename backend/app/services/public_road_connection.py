@@ -1,4 +1,5 @@
 """Bounded, explicit conceptual connections beyond a project's parcel."""
+
 import math
 
 from shapely.affinity import affine_transform
@@ -26,7 +27,9 @@ def public_road_connection_fits(zone_type: str, properties: dict | None, candida
         ends = [parcel.covers(Point(p)) for p in [route.coords[0], route.coords[-1]]]
         outside = route.difference(parcel)
         return bool(
-            sum(ends) == 1 and outside.geom_type == "LineString" and outside.length <= 30
+            sum(ends) == 1
+            and outside.geom_type == "LineString"
+            and outside.length <= 30
             and parcel.buffer(30).covers(polygon)
             and polygon.intersection(parcel).area >= polygon.area / 2
             and route.buffer(width / 2 + 0.15, cap_style=2, join_style=2).covers(polygon)
