@@ -30,7 +30,10 @@ export const INACTIVE_SHARED_SITE_GROUND: SharedSiteGroundState = Object.freeze(
   status: 'inactive', snapshot: null, heightAt: () => null, contains: () => false, revision: 'inactive',
 });
 const Context = createContext<SharedSiteGroundState>(INACTIVE_SHARED_SITE_GROUND);
+const VerificationContext = createContext<SharedSiteGroundState>(INACTIVE_SHARED_SITE_GROUND);
+/** Display ground survives tile refreshes. Captures must use verification state. */
 export function useSharedSiteGround(): SharedSiteGroundState { return useContext(Context); }
+export function useSharedSiteGroundVerification(): SharedSiteGroundState { return useContext(VerificationContext); }
 
 const SETTLE_MS = 900, PASS_GAP_MS = 150, MAX_PASSES = 4, TIMEOUT_MS = 45000, MAX_SAMPLES_PER_FRAME = 8;
 
@@ -141,7 +144,8 @@ export function SharedSiteGroundProvider({ zones, children, onChange, inspectPre
         passes: 0, index: 0, missCount: 0, elapsedMs: 0, settledForMs: 0, deadlineAt: now + TIMEOUT_MS,
         deadlineReason: boundary && (!layout || !tiles) ? !layout ? 'invalid_layout' : 'missing_renderer' : null,
         passQuality: null, maxPassDeltaM: null, latestCompletedRawValues: null, sampledFrames: 0, lastBatchMs: 0 });
-      setResult({ source: sourceSignature, status: !boundary ? 'inactive' : layout && tiles ? 'sampling' : 'unavailable', snapshot: null, generation: current.generation });
+      setResult(previous => ({ source: sourceSignature, status: !boundary ? 'inactive' : layout && tiles ? 'sampling' : 'unavailable',
+        snapshot: previous.source === sourceSignature ? previous.snapshot : null, generation: current.generation }));
     }
     diagnose({ elapsedMs: now - current.startedAt, settledForMs: now - current.changedAt,
       visibleTileCount: tiles?.visibleTiles.size ?? 0, visibleSceneCount: current.visibleScenes.size });
@@ -149,7 +153,8 @@ export function SharedSiteGroundProvider({ zones, children, onChange, inspectPre
     const unavailable = (reason: string) => {
       current.done = true;
       diagnose({ status: 'unavailable', deadlineReason: reason });
-      setResult({ source: sourceSignature, status: 'unavailable', snapshot: null, generation: current.generation, failureReason: reason });
+      setResult(previous => ({ source: sourceSignature, status: 'unavailable',
+        snapshot: previous.source === sourceSignature ? previous.snapshot : null, generation: current.generation, failureReason: reason }));
     };
     if (now - current.startedAt > TIMEOUT_MS) { unavailable('sampling_deadline'); return; }
     // Match capture readiness: a nonempty visible tile set must be unchanged
@@ -224,6 +229,22 @@ export function SharedSiteGroundProvider({ zones, children, onChange, inspectPre
     // Source identity freezes the boundary ring across unrelated parent renders.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sourceSignature, layout, result, boundary?.updated_at, review, inspectionOnly]);
+  // Keep assemblies mounted at the last verified height while camera-driven
+  // tile LOD changes are remeasured. Never carry it across a boundary/anchor
+  // change, and never expose retained measurements as fresh capture evidence.
+  const retained = boundary && !inspectionOnly && result.source === sourceSignature ? result.snapshot : null;
+  const displayGround = useMemo<SharedSiteGroundState | null>(() => {
+    if (!retained) return null;
+    const snapshot = { ...retained, boundaryUpdatedAt: boundary!.updated_at };
+    return { status: 'ready', snapshot,
+      contains: (lng, lat) => sharedSiteGroundContains(snapshot.boundaryCoordinates, lng, lat),
+      heightAt: (lng, lat) => sampleSharedSiteGround(snapshot, lng, lat),
+      revision: `${sourceSignature}:${snapshot.signature}` };
+    // A refresh status change does not rebuild every building/street mesh.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [retained, sourceSignature, boundary?.updated_at]);
   useEffect(() => { onChangeRef.current?.(state); }, [state]);
-  return <Context.Provider value={state}>{children}</Context.Provider>;
+  return <VerificationContext.Provider value={state}>
+    <Context.Provider value={displayGround ?? state}>{children}</Context.Provider>
+  </VerificationContext.Provider>;
 }

@@ -108,7 +108,7 @@ import {
 } from './streetSurfaceMaterials';
 import { retainResourceForDeferredDisposal } from './strictModeResourceDisposal';
 import { getStreetNetworkGroundMeta } from './streetNetworkGroundTexture';
-import { SharedSiteGroundProvider, useSharedSiteGround } from './SharedSiteGroundProvider';
+import { SharedSiteGroundProvider, useSharedSiteGround, useSharedSiteGroundVerification } from './SharedSiteGroundProvider';
 import { createSharedGroundTriangulation } from './sharedGroundGeometry';
 import { applySharedStreetGround, createStreetGroundOffset, seatStreetFamilyFixtures, seatStreetFixture, sharedStreetStationTerrain } from './streetSharedGround';
 
@@ -175,7 +175,7 @@ function StreetGroundCoverage({ zone, children }: { zone: SiteZone; children: Re
 }
 
 function StreetGroundReadiness({children}: {children: ReactNode}) {
-  const ground = useSharedSiteGround();
+  const ground = useSharedSiteGroundVerification();
   return <group userData={{streetGroundStatus: ground.status}}>{children}</group>;
 }
 
