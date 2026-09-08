@@ -5,7 +5,7 @@ import {
   type ParkTrioKind,
 } from "@/components/viewer/globe/parkTrioLayout";
 
-/** Explicit local pilot; source references remain the student's selection images. */
+/** Published park assemblies; source references remain the student's selection images. */
 export const PARK_TRIO_ASSETS: PlaceAsset[] = (
   Object.keys(PARK_TRIO) as ParkTrioKind[]
 ).map((kind) => {

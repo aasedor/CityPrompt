@@ -131,7 +131,7 @@ export const STREET_ASSETS: StreetAsset[] = [LOCAL_STREET_ASSET,
 
 export const CATALOGUE_ASSETS: CatalogueAsset[] = [...OBJECT_ASSETS, ...STREET_ASSETS,
   ...PUBLISHED_BUILDING_ASSETS,
-  ...(import.meta.env.DEV && import.meta.env.VITE_PARK_TRIO_TRIAL === 'true' ? PARK_TRIO_ASSETS : [])];
+  ...PARK_TRIO_ASSETS];
 /** Pilot visibility preserves the existing local trial; it is not release approval. */
 export function isPlaceable(asset: CatalogueAsset): boolean {
   return asset.readiness === 'pilot' || asset.readiness === 'ready';

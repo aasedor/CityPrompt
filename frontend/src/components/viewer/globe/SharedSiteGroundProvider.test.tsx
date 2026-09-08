@@ -4,7 +4,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import * as THREE from 'three';
 import type { SiteZone } from '@/types';
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
-import { INACTIVE_SHARED_SITE_GROUND, SharedSiteGroundProvider, useSharedSiteGround, type SharedSiteGroundState } from './SharedSiteGroundProvider';
+import { INACTIVE_SHARED_SITE_GROUND, SharedSiteGroundProvider, useSharedSiteGround, useSharedSiteGroundVerification, type SharedSiteGroundState } from './SharedSiteGroundProvider';
+import { captureSharedGround } from './sharedGroundCapture';
 
 const frame = vi.hoisted(() => ({ current: (() => {}) as () => void }));
 vi.mock('@react-three/fiber', () => ({ useFrame: (callback: () => void) => { frame.current = callback; } }));
@@ -24,8 +25,9 @@ const site: SiteZone = { id: 'site', project_id: 'project', zone_type: 'site_bou
   properties: { community_3d_mask_existing_tiles: false, terrain_elevation_m: 99 }, is_active_boundary: true,
   created_at: 'today', updated_at: 'today', sort_order: 0, color: '#fff' };
 let state: SharedSiteGroundState;
+let verification: SharedSiteGroundState;
 let hitObject: THREE.Object3D;
-function Read() { state = useSharedSiteGround(); return null; }
+function Read() { state = useSharedSiteGround(); verification = useSharedSiteGroundVerification(); return null; }
 function tileFixture() {
   type Event = { type?: string; scene?: THREE.Object3D };
   const events = new Map<string, Set<(event?: Event) => void>>();
@@ -62,8 +64,31 @@ describe('shared ground provider lifecycle', () => {
     const previous = state.revision, notifications = onChange.mock.calls.length;
     tick(); expect(onChange).toHaveBeenCalledTimes(notifications);
     act(() => tiles.emit('load-model')); tick(0);
-    expect(state.status).toBe('sampling'); expect(state.heightAt(-114, 51)).toBeNull(); expect(state.revision).not.toBe(previous);
+    expect(state.status).toBe('ready'); expect(state.heightAt(-114, 51)).toBe(1030); expect(state.revision).toBe(previous);
+    expect(verification.status).toBe('sampling'); expect(verification.snapshot).toBeNull();
+    expect(onChange.mock.lastCall?.[0]).toBe(verification);
+    expect(() => captureSharedGround(verification)).toThrow('Ground alignment is not ready');
     tick(); tick(); expect(state.status).toBe('ready');
+  });
+  it('keeps the same display surface through failed refreshes and swaps only after two verified passes', () => {
+    const tiles = tileFixture(), TestContext = TilesRendererContext as ReturnType<typeof createContext<unknown>>;
+    render(<TestContext.Provider value={tiles}><SharedSiteGroundProvider zones={[site]}><Read /></SharedSiteGroundProvider></TestContext.Provider>);
+    tick(0); tick(); tick();
+    const displayed = state;
+    vi.mocked(THREE.Raycaster.prototype.intersectObject).mockReturnValue([]);
+    act(() => tiles.emit('tile-visibility-change')); tick(0);
+    for (let i = 0; i < 4; i += 1) tick();
+    expect(state).toBe(displayed); expect(state.heightAt(-114, 51)).toBe(1030);
+    expect(verification.status).toBe('unavailable');
+    expect(() => captureSharedGround(verification)).toThrow();
+    vi.mocked(THREE.Raycaster.prototype.intersectObject).mockReturnValue([
+      { point: new THREE.Vector3(0, 0, 1030.05), object: hitObject } as THREE.Intersection,
+    ]);
+    act(() => tiles.emit('load-model')); tick(0); tick();
+    expect(state).toBe(displayed); expect(verification.status).toBe('sampling');
+    tick();
+    expect(state.heightAt(-114, 51)).toBe(1030.05);
+    expect(captureSharedGround(verification)?.heights).toEqual([1030.05, 1030.05, 1030.05, 1030.05]);
   });
   it('inspects prepared terrain without replacing the design ground or changing capture readiness', () => {
     const tiles = tileFixture(), TestContext = TilesRendererContext as ReturnType<typeof createContext<unknown>>;

@@ -1,5 +1,10 @@
 # Three new park pilots — 2026-09-06
 
+Publication update, 2026-09-07: the user approved pushing these parks to main.
+The normal picker now includes all three, and the seven reviewed model files
+are included through Git LFS and the runtime asset manifest. The report below
+records the original pilot state and remaining refinements.
+
 Status: local visual-review candidates on `codex/new-park-trio`. Not published
 to the seed catalogue or Git main. No image/video generation calls were used.
 
