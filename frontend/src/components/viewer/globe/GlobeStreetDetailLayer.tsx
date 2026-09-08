@@ -12,7 +12,7 @@
  * 130 (depth-tested) < placed GLBs 150 < prisms 200.
  */
 
-import { useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import * as THREE from 'three';
 import { useFrame } from '@react-three/fiber';
 import { EastNorthUpFrame, TilesRendererContext } from '3d-tiles-renderer/r3f';
@@ -80,7 +80,7 @@ import {
   type ConnectedStreetIntersection,
   type FourWayStreetIntersection,
 } from './streetGraphIntersections';
-import { buildStreetJunctionSurface, clipStreetGeometryOutsideJunction, resolveStreetJunctionLayout, type StreetJunctionLayout } from './streetJunctionGeometry';
+import { buildSectionJunctionGeometry, buildStreetJunctionSurface, clipStreetGeometryOutsideJunction, resolveStreetJunctionLayout, streetJunctionContainsPoint, type StreetJunctionLayout } from './streetJunctionGeometry';
 import { STREET_APPEARANCE_KITS } from './streetFamilyCatalog';
 import {
   direct3DInstanceUserData,
@@ -108,7 +108,7 @@ import {
 } from './streetSurfaceMaterials';
 import { retainResourceForDeferredDisposal } from './strictModeResourceDisposal';
 import { getStreetNetworkGroundMeta } from './streetNetworkGroundTexture';
-import { useSharedSiteGround } from './SharedSiteGroundProvider';
+import { SharedSiteGroundProvider, useSharedSiteGround } from './SharedSiteGroundProvider';
 import { createSharedGroundTriangulation } from './sharedGroundGeometry';
 import { applySharedStreetGround, createStreetGroundOffset, seatStreetFamilyFixtures, seatStreetFixture, sharedStreetStationTerrain } from './streetSharedGround';
 
@@ -157,6 +157,26 @@ function useStreetGround(longitude?: number, latitude?: number, coordinates: num
     ? createSharedGroundTriangulation(shared.snapshot, longitude, latitude) : undefined,
   [shared.snapshot, longitude, latitude]);
   return { active, height, offsetAt, grid, revision: shared.revision, blocked: active && offsetAt === null };
+}
+
+/** A road can meet a public street beyond the parcel without changing the
+ * parcel itself. Its small extra ground field shares every existing vertex. */
+function StreetGroundCoverage({ zone, children }: { zone: SiteZone; children: ReactNode }) {
+  const shared = useSharedSiteGround();
+  const boundary = useMemo(() => ({ ...zone, zone_type: 'site_boundary', is_active_boundary: true,
+    properties: { terrain_elevation_m: zone.properties?.terrain_elevation_m,
+      terrain_strategy: null, community_3d_mask_existing_tiles: false } }) as SiteZone, [zone]);
+  const extendsSite = shared.status !== 'inactive' && zone.coordinates.some(([lng, lat]) => !shared.contains(lng, lat));
+  if (!extendsSite) return children;
+  if (!shared.snapshot || shared.status !== 'ready') return null;
+  return <SharedSiteGroundProvider zones={[boundary]} anchorSnapshot={shared.snapshot} publishDiagnostics={false}>
+    <StreetGroundReadiness>{children}</StreetGroundReadiness>
+  </SharedSiteGroundProvider>;
+}
+
+function StreetGroundReadiness({children}: {children: ReactNode}) {
+  const ground = useSharedSiteGround();
+  return <group userData={{streetGroundStatus: ground.status}}>{children}</group>;
 }
 
 /** One road zone's curbs + dashes, draped station-by-station. */
@@ -546,14 +566,18 @@ function StreetRibbonDetail({
     return result;
   }, [centerLngLat, centroid, halfWidth, intersectionNodes, sectionProfile, sectionScale, stationTerrain, zone.id, sharedGround.active, sharedGround.offsetAt, sharedGround.grid, sharedBlocked]);
 
+  const clearOfJunction = useMemo(() => (point: {x: number; y: number}) => !centroid || !intersectionNodes.some(node =>
+    node.zoneIds.includes(zone.id) && node.surfaceLayout && streetJunctionContainsPoint(node.surfaceLayout,
+      point.x - (node.longitude - centroid.lng) * metersPerDegLon(centroid.lat),
+      point.y - (node.latitude - centroid.lat) * METERS_PER_DEG_LAT, 2)), [centroid, intersectionNodes, zone.id]);
   const woonerfPlanters = useMemo(() => {
     if (
       !centerLngLat
       || !sectionProfile
       || !['woonerf_shared_street', 'yield_street'].includes(sectionProfile.archetypeId)
     ) return [];
-    return buildWoonerfPlanterPlacements(centerLngLat.local, halfWidth, placementTerrain);
-  }, [centerLngLat, halfWidth, sectionProfile, placementTerrain]);
+    return buildWoonerfPlanterPlacements(centerLngLat.local, halfWidth, placementTerrain).filter(clearOfJunction);
+  }, [centerLngLat, halfWidth, sectionProfile, placementTerrain, clearOfJunction]);
 
   const woonerfTrees = useMemo(
     () => woonerfPlanters.map((placement, index) => ({
@@ -575,9 +599,9 @@ function StreetRibbonDetail({
 
   const yieldStreetSigns = useMemo(() => (
     centerLngLat && sectionProfile?.archetypeId === 'yield_street'
-      ? buildYieldStreetEntrySignPlacements(centerLngLat.local, halfWidth, placementTerrain)
+      ? buildYieldStreetEntrySignPlacements(centerLngLat.local, halfWidth, placementTerrain).filter(clearOfJunction)
       : []
-  ), [centerLngLat, halfWidth, sectionProfile?.archetypeId, placementTerrain]);
+  ), [centerLngLat, halfWidth, sectionProfile?.archetypeId, placementTerrain, clearOfJunction]);
 
   const woonerfBenches = useMemo(
     () => woonerfPlanters
@@ -615,12 +639,16 @@ function StreetRibbonDetail({
           })]
         : [],
     });
-    if (!sharedGround.offsetAt) return fixtures;
-    return seatStreetFamilyFixtures(fixtures, sharedGround.offsetAt);
+    const cleared = Object.fromEntries(Object.entries(fixtures).map(([key, value]) => [key,
+      Array.isArray(value) ? value.filter(pose => !pose || typeof pose.x !== 'number' || typeof pose.y !== 'number' || clearOfJunction(pose)) : value,
+    ])) as typeof fixtures;
+    if (!sharedGround.offsetAt) return cleared;
+    return seatStreetFamilyFixtures(cleared, sharedGround.offsetAt);
   }, [
     centerLngLat,
     centroid,
     intersectionNodes,
+    clearOfJunction,
     renderFamilyFurniture,
     sectionProfile,
     sectionScale,
@@ -1265,7 +1293,7 @@ function AccessibleFourWayIntersectionDetail({
   const terrain = sharedGround.height ?? preparedTerrain ?? resolveZoneTerrainHeight(sampledTerrain, storedTerrain, fallbackTerrainHeight);
   const geometry = useMemo(() => {
     if (sharedGround.blocked) return null;
-    const result = buildAccessibleFourWayIntersectionGeometry(
+    const result = node.surfaceLayout?.sections ? buildSectionJunctionGeometry(node.surfaceLayout) : buildAccessibleFourWayIntersectionGeometry(
       node.axisABearingRad,
       node.axisBBearingRad,
       node.surfaceLayout?.roadA ?? node.axisAHalfWidthM,
@@ -1274,7 +1302,7 @@ function AccessibleFourWayIntersectionDetail({
       node.surfaceLayout ? { crossingSetbackM: 2.9, rampDepthM: 1.8 } : {},
     );
     if (!result) return null;
-    const surface = node.surfaceLayout ? buildStreetJunctionSurface(node.surfaceLayout) : null;
+    const surface = node.surfaceLayout && !node.surfaceLayout.sections ? buildStreetJunctionSurface(node.surfaceLayout) : null;
     const geometry = { ...result, ...surface };
     if (sharedGround.offsetAt) {
       const items = Object.values(geometry);
@@ -1466,7 +1494,7 @@ export function GlobeStreetDetailLayer({
           {isRoundaboutZone(zone) ? (
             <RoundaboutDetail key={`${zone.id}:${resolvePreparedSiteTerrainForZone(zone, zones, terrainHeight)}`} zone={zone} fallbackTerrainHeight={terrainHeight} preparedTerrain={resolvePreparedSiteTerrainForZone(zone, zones, terrainHeight)} />
           ) : (
-            <StreetRibbonDetail
+            <StreetGroundCoverage zone={zone}><StreetRibbonDetail
               key={`${zone.id}:${resolvePreparedSiteTerrainForZone(zone, zones, terrainHeight)}`}
               zone={zone}
               fallbackTerrainHeight={terrainHeight}
@@ -1474,7 +1502,7 @@ export function GlobeStreetDetailLayer({
               intersectionNodes={intersectionNodes}
               renderFamilyFurniture={furnitureStreetIds.has(zone.id)}
               renderFamilyTrees={treeStreetIds.has(zone.id)}
-            />
+            /></StreetGroundCoverage>
           )}
         </group>
       ))}

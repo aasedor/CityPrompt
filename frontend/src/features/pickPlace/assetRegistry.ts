@@ -94,12 +94,42 @@ export const LOCAL_STREET_ASSET: StreetAsset = {
     road_selected_variant_id: 'calgary_local_v0',
     pick_place_street_section: 'calgary_local_v0',
     pick_place_automatic_3d: true,
+    community_3d_mask_existing_tiles: true,
     pick_place_definition_version: 1,
     road_standard_citation: 'Street Manual Draft 4.0, Figure 2',
   },
 };
 
-export const CATALOGUE_ASSETS: CatalogueAsset[] = [...OBJECT_ASSETS, LOCAL_STREET_ASSET,
+/** Bounded placement release. Widths come from the existing metric catalogue;
+ * the section viewer and 3D renderer resolve the same source profiles. */
+function additionalStreet(archetypeId: string, label: string, description: string,
+  calgaryGuide: CalgaryClassification): StreetAsset {
+  const source = streetCatalogue.archetypes.find(entry => entry.id === archetypeId)!;
+  const variantId = `${archetypeId}_v0`;
+  return {
+    id: `${archetypeId}_street`, kind: 'street', definitionVersion: 1,
+    label, description, readiness: 'pilot', reshapeMode: 'fixed_section_route',
+    thumbnail: `/archetypes/streets/${archetypeId.replace(/_/g, '-')}/variant_0.png`,
+    sectionWidth: source.propertyPresets.width!, calgaryGuide,
+    model: { variantId, revision: archetypeId === 'calgary_collector' ? 'draft-4.0-figure-6' : 'representative-section-v1', method: 'metric_street_section' },
+    properties: {
+      ...source.propertyPresets, road_archetype_id: archetypeId,
+      road_selected_variant_id: variantId, pick_place_street_section: variantId,
+      pick_place_automatic_3d: true, pick_place_definition_version: 1,
+      community_3d_mask_existing_tiles: true,
+      road_standard_citation: archetypeId === 'calgary_collector'
+        ? 'Street Manual Draft 4.0, Figure 6' : 'City Prompt representative teaching section',
+    },
+  };
+}
+
+export const STREET_ASSETS: StreetAsset[] = [LOCAL_STREET_ASSET,
+  additionalStreet('green_alley', 'Planted laneway', '5 m wide · 3.5 m shared lane with planted edges', { groupId: 'alley', basis: 'form_reference' }),
+  additionalStreet('yield_street', 'Shared street', '6 m wide · 5.4 m shared surface with flush edges', { groupId: 'local', basis: 'form_reference' }),
+  additionalStreet('calgary_collector', 'Calgary collector', '20 m wide · two lanes, pathway, sidewalk and boulevards', { groupId: 'collector', basis: 'draft_manual' }),
+];
+
+export const CATALOGUE_ASSETS: CatalogueAsset[] = [...OBJECT_ASSETS, ...STREET_ASSETS,
   ...PUBLISHED_BUILDING_ASSETS,
   ...(import.meta.env.DEV && import.meta.env.VITE_PARK_TRIO_TRIAL === 'true' ? PARK_TRIO_ASSETS : [])];
 /** Pilot visibility preserves the existing local trial; it is not release approval. */

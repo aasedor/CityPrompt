@@ -17,7 +17,7 @@ import { Ellipsoid, WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import type { SiteZone } from '@/types';
 import { assetForZone } from '@/features/pickPlace/catalogue';
 import { resizeRectangleCorner } from '@/features/pickPlace/geometry';
-import { isCalgaryLocalRoute, reshapeStreetPoint } from '@/features/pickPlace/streetPlacement';
+import { isFixedSectionStreet, reshapeStreetPoint, streetSectionWidth } from '@/features/pickPlace/streetPlacement';
 import { extractCenterline } from '@/utils/roadGeometry';
 import { computeCentroid, METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 import { useGlobeDragRef } from './useGlobeDragRef';
@@ -190,7 +190,7 @@ export function GlobeEditMode({
   const [isRotating, setIsRotating] = useState(false);
   const dragRef = useGlobeDragRef();
   const renderedCoords = liveCoords ?? zone.coordinates;
-  const routeEditing = isCalgaryLocalRoute(zone);
+  const routeEditing = isFixedSectionStreet(zone);
   const handleCoords = routeEditing ? extractCenterline(renderedCoords) : renderedCoords;
   const zoneCentroid = useMemo(() => computeCentroid(zone.coordinates), [zone.coordinates]);
 
@@ -637,8 +637,8 @@ export function GlobeEditMode({
       if (!lngLat || !originalCoordsRef.current) return;
 
       const asset = assetForZone(zone);
-      const newCoords = isCalgaryLocalRoute(zone)
-        ? reshapeStreetPoint(originalCoordsRef.current, index, lngLat)
+      const newCoords = isFixedSectionStreet(zone)
+        ? reshapeStreetPoint(originalCoordsRef.current, index, lngLat, streetSectionWidth(zone))
         : asset && originalCoordsRef.current.length === 4
         ? resizeRectangleCorner(originalCoordsRef.current, index, lngLat, asset)
         : originalCoordsRef.current.map((c, i) => i === index ? [...lngLat] : [...c]);

@@ -4,6 +4,7 @@ import type { SiteZone } from '@/types';
 import { bufferLineToPolygon } from '@/utils/roadGeometry';
 import { detectConnectedStreetIntersections, detectFourWayStreetIntersections } from './streetGraphIntersections';
 import { resolveStreetJunctionLayout } from './streetJunctionGeometry';
+import { validateStreetRecipeProperties } from './streetLegoContract';
 
 function street(
   id: string,
@@ -53,6 +54,26 @@ function street(
 }
 
 describe('four-way street graph adapter', () => {
+  it('joins the fixed collector, shared streets and exact 5 m green alley', () => {
+    const collector = street('collector', [[-114.081,51.04],[-114.079,51.04]],20);
+    collector.properties = {...collector.properties, public_realm_lego: undefined,
+      road_archetype_id:'calgary_collector', road_selected_variant_id:'calgary_collector_v0',
+      public_realm_fallback:{state:'family_pending'}, plan_centerline:[[-114.081,51.04],[-114.079,51.04]]};
+    const shared = street('shared', [[-114.08,51.039],[-114.08,51.04]],6);
+    shared.properties = {...shared.properties, lane_count:1, road_archetype_id:'yield_street', road_selected_variant_id:'yield_street_v0',
+      public_realm_lego:{...(shared.properties!.public_realm_lego as object),archetype_id:'yield_street',variant_id:'yield_street_v0',profile_id:'yield-street-v1',appearance_kit_id:'dutch_woonerf_v1'}};
+    const alley = street('alley', [[-114.081,51.039],[-114.079,51.039]],5);
+    alley.properties = {...alley.properties, lane_count:1, road_archetype_id:'green_alley', road_selected_variant_id:'green_alley_v0',
+      public_realm_lego:{...(alley.properties!.public_realm_lego as object),archetype_id:'green_alley',variant_id:'green_alley_v0',profile_id:'green-alley-v1',appearance_kit_id:'green_corridor_v1'}};
+    const zones = [collector,shared,alley];
+    expect(validateStreetRecipeProperties(shared.properties)).toMatchObject({valid:true});
+    expect(validateStreetRecipeProperties(alley.properties)).toMatchObject({valid:true});
+    const nodes = detectConnectedStreetIntersections(zones);
+    expect(nodes).toHaveLength(2);
+    for (const node of nodes) expect(resolveStreetJunctionLayout(node,zones)?.sections).toHaveLength(2);
+    collector.properties.road_selected_variant_id = 'invented';
+    expect(detectConnectedStreetIntersections(zones)).toHaveLength(1);
+  });
   it('drops the node when a planner street has a present-but-invalid plan_centerline', () => {
     // An empty persisted centerline (seen on AI-plan access stubs next to a
     // roundabout) must exclude the street from V1 junction anchoring — the

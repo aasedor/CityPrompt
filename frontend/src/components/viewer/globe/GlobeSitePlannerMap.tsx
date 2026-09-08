@@ -36,6 +36,8 @@ import { GlobeReferenceLayer } from '@/features/referenceLayers/GlobeReferenceLa
 import { EMPTY_TRANSPORT, type ExistingTransport } from '@/features/referenceLayers/existingTransport';
 import type { ReferenceLayer } from '@/features/referenceLayers/api';
 import { GlobeZoneLayer } from './GlobeZoneLayer';
+import { streetGroundCaptureStatus } from './streetGroundCapture';
+import { streetSurfaceMaskZone } from './streetSurfaceMask';
 import { GroundReviewPanel } from './GroundReviewPanel';
 import { PlacementControls } from '@/features/pickPlace/PlacementControls';
 import { SharedSiteGroundProvider, INACTIVE_SHARED_SITE_GROUND, type SharedSiteGroundState } from './SharedSiteGroundProvider';
@@ -1602,12 +1604,16 @@ export function GlobeSitePlannerMap({
     if (terrainZonesRef.current.some(zone => zone.properties?.park_terrain && !readParkTerrain(zone))) {
       throw new Error('Park alignment is updating automatically. Your design is safe; try the render once it finishes.');
     }
-    const deadline = performance.now() + 20_000;
+    const deadline = performance.now() + 45_000;
     while ((sharedGroundRef.current.status === 'sampling'
+      || streetGroundCaptureStatus(sceneRef.current) === 'sampling'
       || (sharedGroundRef.current.status === 'ready' && pendingGroundBuildingsRef.current.length > 0
         && !buildingGroundingIssuesRef.current.some((issue) => issue.reason !== 'ground_not_ready')))
       && performance.now() < deadline) {
       await new Promise((resolve) => setTimeout(resolve, 200));
+    }
+    if (streetGroundCaptureStatus(sceneRef.current) !== 'ready') {
+      throw new Error('The road connection is still aligning with the ground. Keep your design; check its position if alignment does not finish.');
     }
     const snapshot = captureSharedGround(sharedGroundRef.current);
     if (snapshot && (pendingGroundBuildingsRef.current.length > 0 || buildingGroundingIssuesRef.current.length > 0)) {
@@ -1762,7 +1768,7 @@ export function GlobeSitePlannerMap({
           getActiveBoundaryTileMaskPreference(siteZones, zone),
         )
         || shouldMaskCommunityGroundTiles(zone, getActiveBoundaryTileMaskPreference(siteZones, zone))
-      ));
+      )).map(streetSurfaceMaskZone);
     },
     [preparedSiteBoundaryIds, siteZones, suppressedBuildingIds],
   );

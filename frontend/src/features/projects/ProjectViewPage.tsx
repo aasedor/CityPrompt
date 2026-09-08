@@ -14,11 +14,12 @@ import { SitePlannerToolbar } from '@/components/viewer/SitePlannerToolbar';
 import { PlacementPalette } from '@/features/pickPlace/PlacementPalette';
 import { ReshapePanel } from '@/features/pickPlace/ReshapePanel';
 import { StreetRoutePanel } from '@/features/pickPlace/StreetRoutePanel';
+import { publicRoadConnectionFits } from '@/features/pickPlace/publicRoadConnection';
 import { ConnectionEditor } from '@/features/pickPlace/ConnectionEditor';
 import { TerraceEditor } from '@/features/pickPlace/TerraceEditor';
 import { saveAutomaticParkGround } from '@/features/pickPlace/saveAutomaticParkGround';
 import { TerraceSummary } from '@/features/pickPlace/TerraceSummary';
-import { CALGARY_LOCAL_PLACEMENT, isCalgaryLocalRoute, streetRouteProblem } from '@/features/pickPlace/streetPlacement';
+import { CALGARY_LOCAL_PLACEMENT, isFixedSectionStreet, streetRouteProblem, streetSectionWidth } from '@/features/pickPlace/streetPlacement';
 import { assetForZone, placeAsset, placementProperties, type PlaceAssetId } from '@/features/pickPlace/catalogue';
 import { placementProblem, rectangleAt } from '@/features/pickPlace/geometry';
 import { useAutomatic3D } from '@/features/pickPlace/useAutomatic3D';
@@ -223,7 +224,7 @@ export function ProjectViewPage() {
     workflowStep,
     setWorkflowStep,
     settings,
-    activeSitePlannerTool,
+    activeSitePlannerTool, activeToolProperties,
     lightboxImageUrl,
   } = useViewerStore();
 
@@ -278,10 +279,11 @@ export function ProjectViewPage() {
   };
   const reshapeObject = (zoneId: string, coordinates: number[][]): boolean => {
     const zone = siteZones.find(item => item.id === zoneId);
-    if (zone && (assetForZone(zone) || isCalgaryLocalRoute(zone))) {
+    if (zone && (assetForZone(zone) || isFixedSectionStreet(zone))) {
       if (isSaving) { toast.error('Wait for this edit to save.'); return false; }
-      const problem = (isCalgaryLocalRoute(zone) ? streetRouteProblem(coordinates) : null)
-        ?? placementProblem(coordinates, siteZones, getActiveSiteBoundary(siteZones), zoneId);
+      const problem = (isFixedSectionStreet(zone) ? streetRouteProblem(coordinates, streetSectionWidth(zone)) : null)
+        ?? placementProblem(coordinates, siteZones,
+          publicRoadConnectionFits(zone, coordinates, getActiveSiteBoundary(siteZones)) ? null : getActiveSiteBoundary(siteZones), zoneId);
       if(problem) { toast.error(problem, { position: 'top-center' }); return false; }
     }
     handleZoneUpdated(zoneId, coordinates);
@@ -1063,8 +1065,8 @@ export function ProjectViewPage() {
             transportContext={transportContext}
             buildings={visibleBuildings}
             onZoneCreated={(coordinates, type, properties) => {
-              if (isCalgaryLocalRoute({zone_type:type, properties})) {
-                const problem = streetRouteProblem(coordinates) ?? placementProblem(coordinates, siteZones, getActiveSiteBoundary(siteZones));
+              if (isFixedSectionStreet({zone_type:type, properties})) {
+                const problem = streetRouteProblem(coordinates, streetSectionWidth({zone_type:type, properties})) ?? placementProblem(coordinates, siteZones, getActiveSiteBoundary(siteZones));
                 if (problem) { toast.error(problem, {position:'top-center'}); return false; }
               }
               handleZoneCreated(coordinates, type, properties);
@@ -1083,7 +1085,7 @@ export function ProjectViewPage() {
 
         {/* Toolbar - hidden on phones during focused vertex placement. */}
         <div
-          className={`pointer-events-none absolute inset-x-3 top-44 z-30 min-h-0 overflow-y-auto overscroll-contain sm:inset-x-auto sm:left-4 sm:top-24 sm:bottom-16 sm:w-64 sm:max-h-none sm:overflow-y-auto sm:pr-2 ${activeSitePlannerTool || placementDraft || (selectedZone && (assetForZone(selectedZone) || isCalgaryLocalRoute(selectedZone))) ? 'hidden sm:block' : 'bottom-3 max-h-[60dvh]'}`}
+          className={`pointer-events-none absolute inset-x-3 top-44 z-30 min-h-0 overflow-y-auto overscroll-contain sm:inset-x-auto sm:left-4 sm:top-24 sm:bottom-16 sm:w-64 sm:max-h-none sm:overflow-y-auto sm:pr-2 ${activeSitePlannerTool || placementDraft || (selectedZone && (assetForZone(selectedZone) || isFixedSectionStreet(selectedZone))) ? 'hidden sm:block' : 'bottom-3 max-h-[60dvh]'}`}
         >
           <div className="pointer-events-auto h-full">
             <SitePlannerToolbar
@@ -1092,11 +1094,11 @@ export function ProjectViewPage() {
               placementSlot={<PlacementPalette selected={placementDraft?.assetId ?? null} onPick={pickObject} onCancel={cancelPlacement}
                 status={automatic3D.status} message={automatic3D.message} onRetry={automatic3D.retry}
                 onBrowseChange={setShowCatalogue}
-                streetActive={activeSitePlannerTool === 'road'}
+                activeStreetVariant={activeSitePlannerTool === 'road' ? String(activeToolProperties?.road_selected_variant_id ?? '') : undefined}
                 onPickStreet={asset => {
                   cancelPlacement(); selectZone(null); setMeasureActive(false);
                   useViewerStore.getState().setStreetViewActive(false);
-                  setActiveSitePlannerTool(activeSitePlannerTool === 'road' ? null : 'road', asset.properties);
+                  setActiveSitePlannerTool('road', asset.properties);
                 }} />}
               onLeavePlacement={cancelPlacement}
               layout="sidebar"
@@ -1190,12 +1192,16 @@ export function ProjectViewPage() {
             onReshape={coordinates => reshapeObject(selectedZone.id, coordinates)} onClose={() => selectZone(null)}
             onDelete={() => deleteZone.mutate(selectedZone.id)} onDuplicate={pickObject} onMore={() => setAdvancedZoneId(selectedZone.id)} />
         )}
-        {selectedZone && isCalgaryLocalRoute(selectedZone) && advancedZoneId !== selectedZone.id && !placementDraft && !showHistory && !measureActive && (
+        {selectedZone && isFixedSectionStreet(selectedZone) && advancedZoneId !== selectedZone.id && !placementDraft && !showHistory && !measureActive && (
           <StreetRoutePanel zone={selectedZone} disabled={isSaving} onReshape={coords=>reshapeObject(selectedZone.id, coords)}
+            connectionLeavesSite={publicRoadConnectionFits(selectedZone, selectedZone.coordinates, getActiveSiteBoundary(siteZones))}
+            onPublicConnection={enabled => updateZone.mutate({zoneId: selectedZone.id, data: {
+              properties: {...selectedZone.properties, connect_to_public_road: enabled},
+            }, previousData: { properties: selectedZone.properties }})}
             onConnections={()=>setConnectionZoneId(selectedZone.id)}
             onClose={()=>selectZone(null)} onDelete={()=>deleteZone.mutate(selectedZone.id)} onMore={()=>setAdvancedZoneId(selectedZone.id)} />
         )}
-        {selectedZone && ((!assetForZone(selectedZone) && !isCalgaryLocalRoute(selectedZone)) || advancedZoneId === selectedZone.id) && !showHistory && !measureActive && (
+        {selectedZone && ((!assetForZone(selectedZone) && !isFixedSectionStreet(selectedZone)) || advancedZoneId === selectedZone.id) && !showHistory && !measureActive && (
           <ZonePropertiesPanel
             key={selectedZone.id}
             zone={selectedZone}

@@ -148,8 +148,9 @@ function detectStreetIntersections(
     const semantic = [props?.street_role, props?.road_archetype_id, lego?.archetype_id, lego?.family_id]
       .map((value) => String(value ?? '').toLowerCase().replace(/-/g, '_'))
       .join(' ');
-    return effectiveRoadWidth(zone.properties) >= 6
-      && !['trail', 'path', 'laneway', 'alley', 'roundabout'].some((token) => semantic.includes(token));
+    const alley = props?.road_archetype_id === 'green_alley' && effectiveRoadWidth(zone.properties) === 5;
+    return effectiveRoadWidth(zone.properties) >= (alley ? 5 : 6)
+      && !['trail', 'path', 'roundabout', ...(alley ? [] : ['laneway', 'alley'])].some((token) => semantic.includes(token));
   });
   if (eligibleZones.length < 2) return [];
   const allCoordinates = eligibleZones.flatMap((zone) => zone.coordinates);
@@ -182,14 +183,16 @@ function detectStreetIntersections(
     return [{
       zoneId: zone.id,
       widthM: effectiveRoadWidth(zone.properties),
-      supportedV1: validation.valid
-        && centerlineAnchorsJunction
+      supportedV1: centerlineAnchorsJunction && ((props?.road_archetype_id === 'calgary_collector'
+        && props.road_selected_variant_id === 'calgary_collector_v0'
+        && effectiveRoadWidth(zone.properties) === 20
+        && (props.public_realm_fallback as Record<string, unknown> | undefined)?.state === 'family_pending') || (validation.valid
         && validation.recipe.targetType === 'street_segment'
         && [
           'street_local_public_realm',
           'street_complete_main_18m',
           'street_complete_main_22m',
-        ].includes(validation.recipe.familyId),
+        ].includes(validation.recipe.familyId))),
       points: centerline.map((point) => ({
         x: (point[0] - originLng) * mPerLon,
         y: (point[1] - originLat) * METERS_PER_DEG_LAT,
