@@ -307,6 +307,12 @@ const collections = [
     ['/landscape-pilots/neighborhood-rustic-v5/'],
     'Reviewed park components selected by the adaptive neighbourhood park renderer.',
   ),
+  summarizeCollection(
+    'park-trio',
+    ['/landscape-pilots/park-trio-v3/'],
+    'Published cinema, teaching garden and concert lawn modules selected by the adaptive park renderer.',
+    (path) => path.endsWith('.glb'),
+  ),
 ];
 
 const allRuntimeFiles = runtimePrefixes.flatMap((prefix) => (

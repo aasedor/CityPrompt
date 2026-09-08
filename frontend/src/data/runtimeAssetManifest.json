@@ -306,9 +306,9 @@
   ],
   "coverage": {
     "explicitReferenceCount": 2607,
-    "dynamicCollectionCount": 4,
-    "requiredFileCount": 4451,
-    "requiredLogicalBytes": 11208515996,
+    "dynamicCollectionCount": 5,
+    "requiredFileCount": 4458,
+    "requiredLogicalBytes": 11212353820,
     "missingReferenceCount": 0
   },
   "explicitReferences": [
@@ -23427,6 +23427,16 @@
       "fileCount": 11,
       "logicalBytes": 4729349,
       "pathDigest": "50318e6f6dff65d2d5a7fce21d29bd08909f6f26336756b8942ac9b4cf99af2f"
+    },
+    {
+      "name": "park-trio",
+      "roots": [
+        "/landscape-pilots/park-trio-v3/"
+      ],
+      "reason": "Published cinema, teaching garden and concert lawn modules selected by the adaptive park renderer.",
+      "fileCount": 7,
+      "logicalBytes": 3837824,
+      "pathDigest": "35780c95cf34378eef076339fc25cbb95d7010d33dbdbc307f8f485f2a705549"
     }
   ],
   "cleanupCandidates": {

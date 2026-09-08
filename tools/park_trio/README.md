@@ -1,7 +1,8 @@
 # Three new park pilots
 
-Local development initiative, 2026-09-06. These are new assemblies for unused
-reference variants, not additions to the published seed/runtime catalogue.
+Originally a local development initiative, 2026-09-06. The user approved
+publication on 2026-09-07. The three assemblies now appear in the normal picker;
+their seven reviewed GLBs are tracked through Git LFS.
 
 | Difficulty | Park | Exact source variant | Initial placement | Larger review plot |
 | --- | --- | --- | --- | --- |
@@ -75,13 +76,12 @@ are recorded in `candidates/*.json`. No new image/video API calls were used.
   metadata. This does not constitute engineered grading or verified accessibility.
 - Exact parent + exact variant + `park_trio_layout` revision activate each
   assembly. Unflagged catalogue entries retain their prior behavior. The three
-  new placement cards require `DEV` and `VITE_PARK_TRIO_TRIAL=true`.
+  placement cards are available in development and production without a flag.
 - Derived street connections use authored sidewalks/path bands and the same
   internal loop. Hidden/offscreen objects must stay hidden in render guidance.
 
 ## Review before publication
 
-See `docs/PARK_TRIO_PILOT_2026-09-06.md`. User approval of the actual visuals is
-still needed before promoting binaries, updating the main runtime asset manifest
-and seed catalogue, or merging/pushing this branch. Approval of earlier building
-batches is not approval of these new parks.
+See `docs/PARK_TRIO_PILOT_2026-09-06.md` for the original review and remaining
+landscape refinements. The 2026-09-07 publication request explicitly covers these
+three parks. Future revisions still require their own review before promotion.

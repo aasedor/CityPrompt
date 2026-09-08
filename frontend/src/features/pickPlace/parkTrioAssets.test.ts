@@ -2,8 +2,15 @@ import {describe,expect,it} from 'vitest';
 import {PARK_TRIO_ASSETS} from './parkTrioAssets';
 import {CALGARY_GROUPS} from '../calgaryCatalogue/guide';
 import {parkTrioKind} from '@/components/viewer/globe/parkTrioLayout';
+import {CATALOGUE_ASSETS, browseAssets} from './assetRegistry';
 
 describe('local park trio catalogue cards',()=>{
+  it('includes all three parks in the normal catalogue without a trial flag',()=>{
+    for(const asset of PARK_TRIO_ASSETS){
+      expect(CATALOGUE_ASSETS).toContain(asset);
+      expect(browseAssets(asset.label)).toContain(asset);
+    }
+  });
   it('places every pilot in a visible park group with a working exact renderer identity',()=>{
     expect(PARK_TRIO_ASSETS).toHaveLength(3);
     for(const asset of PARK_TRIO_ASSETS){
