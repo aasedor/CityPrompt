@@ -24,7 +24,8 @@ const runtimePrefixes = Object.freeze([
   '/park-skins/',
 ]);
 const sourceExtensions = new Set(['.html', '.js', '.json', '.ts', '.tsx']);
-const runtimeTextExtensions = new Set(['.js', '.json', '.svg']);
+// License text ships beside models; normalize it too for Windows/Linux parity.
+const runtimeTextExtensions = new Set(['.js', '.json', '.svg', '.txt']);
 const lfsPointerPattern = /^version https:\/\/git-lfs\.github\.com\/spec\/v1\noid sha256:([a-f0-9]{64})\nsize (\d+)\n?$/;
 const catalogPaths = new Set([
   resolve(sourceRoot, 'data/buildingArchetypes.json'),
