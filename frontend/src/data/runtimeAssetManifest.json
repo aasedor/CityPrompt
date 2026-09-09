@@ -26,6 +26,7 @@
     "src/components/viewer/BuildingModelViewer.tsx",
     "src/components/viewer/CustomStyleEditor.tsx",
     "src/components/viewer/HistoryPanel.tsx",
+    "src/components/viewer/ImageModelSelect.tsx",
     "src/components/viewer/LayoutPreviewPanel.tsx",
     "src/components/viewer/OnboardingTour.tsx",
     "src/components/viewer/RenderEditModal.tsx",
@@ -79,6 +80,7 @@
     "src/components/viewer/globe/StencilMaskPlugin.ts",
     "src/components/viewer/globe/TileSpatialMaskPlugin.ts",
     "src/components/viewer/globe/TileStencilPatcher.tsx",
+    "src/components/viewer/globe/authoredCameraGround.ts",
     "src/components/viewer/globe/buildingGroundContact.ts",
     "src/components/viewer/globe/buildingPlacement.ts",
     "src/components/viewer/globe/direct3dArchetypeReferences.ts",
@@ -117,6 +119,7 @@
     "src/components/viewer/globe/parkTrioLayout.ts",
     "src/components/viewer/globe/pedestrianCapture.ts",
     "src/components/viewer/globe/preparedSiteEdges.ts",
+    "src/components/viewer/globe/preparedStreetTransition.ts",
     "src/components/viewer/globe/projectFrameHeight.ts",
     "src/components/viewer/globe/projectFrameRetry.ts",
     "src/components/viewer/globe/publicRealmDepthPolicy.ts",
@@ -162,14 +165,17 @@
     "src/components/viewer/globe/useGlobeAIRender.ts",
     "src/components/viewer/globe/useGlobeCamera.ts",
     "src/components/viewer/globe/useGlobeDragRef.ts",
+    "src/components/viewer/globe/useLandscapeTreeTextures.ts",
     "src/components/viewer/globe/useParkGround.ts",
     "src/components/viewer/globe/useRenderDraft.ts",
     "src/components/viewer/globe/useSceneSettled.ts",
     "src/components/viewer/globe/zoneSurfaceMode.ts",
     "src/components/viewer/mapEngine/geoUtils.ts",
     "src/components/viewer/resolvePlanZoneArchetypes.ts",
+    "src/components/viewer/runImageModelBatch.ts",
     "src/components/viewer/siteIntelligencePlanStatus.ts",
     "src/components/viewer/useAIRender.ts",
+    "src/components/viewer/useImageModelChoice.ts",
     "src/components/viewer/useStreetViewRender.ts",
     "src/components/viewer/videoCaptureInventory.ts",
     "src/components/viewer/videoRenderPath.ts",
@@ -177,6 +183,7 @@
     "src/components/viewer/videoRouteControls.ts",
     "src/components/viewer/videoSceneContract.ts",
     "src/components/viewer/videoSourceQuality.ts",
+    "src/config/imageModels.ts",
     "src/data/archetypeReferenceAvailability.json",
     "src/data/archetypeShadeMap.ts",
     "src/data/archetypeVisualSystem.json",
@@ -188,6 +195,7 @@
     "src/data/parkKitManifest.ts",
     "src/data/parkKitRecipes.ts",
     "src/data/sharedParkEquipment.ts",
+    "src/data/sportsParkDimensions.json",
     "src/data/stickerMethodPilots.json",
     "src/data/streetGeometryParams.json",
     "src/data/streetGeometryParams.ts",
@@ -246,13 +254,16 @@
     "src/features/pickPlace/TerraceSummary.tsx",
     "src/features/pickPlace/assetRegistry.ts",
     "src/features/pickPlace/catalogue.ts",
+    "src/features/pickPlace/catalogueDeletion.ts",
     "src/features/pickPlace/geometry.ts",
+    "src/features/pickPlace/parkOutline.ts",
     "src/features/pickPlace/parkTrioAssets.ts",
     "src/features/pickPlace/pedestrianConnections.ts",
     "src/features/pickPlace/publicRoadConnection.ts",
     "src/features/pickPlace/publishedBuildingAssets.ts",
     "src/features/pickPlace/saveAutomaticParkGround.ts",
     "src/features/pickPlace/streetPlacement.ts",
+    "src/features/pickPlace/streetSnapping.ts",
     "src/features/pickPlace/useAutomatic3D.ts",
     "src/features/projects/InvitationPage.tsx",
     "src/features/projects/LayersPanel.tsx",
@@ -296,6 +307,7 @@
     "src/types/index.ts",
     "src/utils/coordTransform.ts",
     "src/utils/domEvents.ts",
+    "src/utils/projectWriteQueue.ts",
     "src/utils/renderPersistence.ts",
     "src/utils/renderPresentation.ts",
     "src/utils/roadGeometry.ts",
@@ -305,10 +317,10 @@
     "src/utils/zoneIdentity.ts"
   ],
   "coverage": {
-    "explicitReferenceCount": 2607,
+    "explicitReferenceCount": 2610,
     "dynamicCollectionCount": 5,
-    "requiredFileCount": 4458,
-    "requiredLogicalBytes": 11212353820,
+    "requiredFileCount": 4461,
+    "requiredLogicalBytes": 11214776137,
     "missingReferenceCount": 0
   },
   "explicitReferences": [
@@ -14151,6 +14163,14 @@
       "lfsOid": "6e91cf1c1429a773244db0fac3f8dd984bd39e794f8c42d4bf01e3fe7663ea87"
     },
     {
+      "url": "/archetypes/openspaces/sports-basketball-regulation/preview.png",
+      "sources": [
+        "src/components/viewer/globe/parkTrioLayout.ts"
+      ],
+      "logicalBytes": 889789,
+      "lfsOid": "fe7fbd6481b4fb17e77256c0cbfde3afd4577d05a50801af7cefd3d349726bb5"
+    },
+    {
       "url": "/archetypes/openspaces/sports-field-complex/hero.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
@@ -14189,6 +14209,22 @@
         "src/data/openSpaceArchetypes.json"
       ],
       "logicalBytes": 1140021
+    },
+    {
+      "url": "/archetypes/openspaces/sports-soccer-full-size/preview.png",
+      "sources": [
+        "src/components/viewer/globe/parkTrioLayout.ts"
+      ],
+      "logicalBytes": 696999,
+      "lfsOid": "fa92107d135fd8dd612191f4c6e61ecbfe74d67c7a6395f20c54ee4e53db53b6"
+    },
+    {
+      "url": "/archetypes/openspaces/sports-twin-tennis/preview.png",
+      "sources": [
+        "src/components/viewer/globe/parkTrioLayout.ts"
+      ],
+      "logicalBytes": 835529,
+      "lfsOid": "2998f9a9e2a216760994d342106600a3136cbf941187aa689716a4f7217a1d60"
     },
     {
       "url": "/archetypes/openspaces/square-parisien/hero.png",
@@ -23440,8 +23476,8 @@
     }
   ],
   "cleanupCandidates": {
-    "unclassifiedRuntimeFileCount": 21352,
-    "unclassifiedRuntimePathDigest": "18766291414f5c7765c8c11df034f7d8ee093618e39cdeccca45ae4ac9b82cc4",
+    "unclassifiedRuntimeFileCount": 21358,
+    "unclassifiedRuntimePathDigest": "1a1f8a5bc0591272d440352e66f77821f6a9b6da4a87ce0b3a8235315a06f053",
     "unclassifiedRuntimePathSample": [
       "/archetypes/buildings/adaptive_reuse_warehouse_lofts/variant_0_angle_60.jpg",
       "/archetypes/buildings/adaptive_reuse_warehouse_lofts/variant_0_angle_90.jpg",

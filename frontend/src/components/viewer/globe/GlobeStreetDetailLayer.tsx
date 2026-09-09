@@ -111,6 +111,9 @@ import { getStreetNetworkGroundMeta } from './streetNetworkGroundTexture';
 import { SharedSiteGroundProvider, useSharedSiteGround, useSharedSiteGroundVerification } from './SharedSiteGroundProvider';
 import { createSharedGroundTriangulation } from './sharedGroundGeometry';
 import { applySharedStreetGround, createStreetGroundOffset, seatStreetFamilyFixtures, seatStreetFixture, sharedStreetStationTerrain } from './streetSharedGround';
+import { getActiveSiteBoundary } from '@/utils/siteBoundary';
+import { preparedStreetElevation, type PreparedStreetSite } from './preparedStreetTransition';
+import { sharedSiteGroundContains } from './sharedSiteGround';
 
 type RenderStreetIntersection = ConnectedStreetIntersection & { surfaceLayout: StreetJunctionLayout | null };
 
@@ -184,6 +187,7 @@ function StreetRibbonDetail({
   zone,
   fallbackTerrainHeight,
   preparedTerrain = null,
+  preparedSite,
   intersectionNodes,
   renderFamilyFurniture,
   renderFamilyTrees,
@@ -194,6 +198,7 @@ function StreetRibbonDetail({
   renderFamilyFurniture: boolean;
   renderFamilyTrees: boolean;
   preparedTerrain?: number | null;
+  preparedSite?: PreparedStreetSite;
 }) {
   const tiles = useContext(TilesRendererContext);
   const raycasterRef = useRef(new THREE.Raycaster());
@@ -306,7 +311,7 @@ function StreetRibbonDetail({
     hitFlagsRef.current = null;
     setStationTerrain(null);
     setSampledTerrain(null);
-  }, [centerLngLat, sharedGround.revision]);
+  }, [centerLngLat, sharedGround.revision, preparedSite]);
 
   // Drape-and-freeze: first resolve the frame anchor, then batch-sample
   // per-station elevations relative to it. Batches are interval-gated too —
@@ -422,7 +427,9 @@ function StreetRibbonDetail({
         const elevationAt = (offsetM: number, sampled: number | null): number => {
           const x = point.x + normal.x * offsetM;
           const y = point.y + normal.y * offsetM;
-          return (resolveTerrainContactElevation(plane, sampled, x, y) ?? anchor) - anchor;
+          const measured = resolveTerrainContactElevation(plane, sampled, x, y) ?? anchor;
+          return preparedStreetElevation(preparedSite, centroid.lng + x / mPerLon,
+            centroid.lat + y / METERS_PER_DEG_LAT, measured) - anchor;
         };
         return {
           centerZ: elevationAt(0, sample.center),
@@ -1458,6 +1465,14 @@ export function GlobeStreetDetailLayer({
   zones: SiteZone[];
   terrainHeight: number;
 }) {
+  const boundary = getActiveSiteBoundary(zones);
+  const preparedElevation = boundary?.properties?.terrain_strategy === 'landscape' ? null
+    : resolvePreparedSiteTerrainForZone(boundary ?? undefined, zones, terrainHeight);
+  const boundaryRing = boundary?.coordinates;
+  const preparedSite = useMemo<PreparedStreetSite | undefined>(() =>
+    boundaryRing && preparedElevation !== null
+      ? { ring: boundaryRing as [number, number][], elevation: preparedElevation } : undefined,
+  [boundaryRing, preparedElevation]);
   const roadZones = useMemo(
     () => zones.filter((z) =>
       resolveCommunity3DKind(z) === 'street'
@@ -1499,6 +1514,7 @@ export function GlobeStreetDetailLayer({
               zone={zone}
               fallbackTerrainHeight={terrainHeight}
               preparedTerrain={resolvePreparedSiteTerrainForZone(zone, zones, terrainHeight)}
+              preparedSite={zone.properties?.connect_to_public_road === true ? preparedSite : undefined}
               intersectionNodes={intersectionNodes}
               renderFamilyFurniture={furnitureStreetIds.has(zone.id)}
               renderFamilyTrees={treeStreetIds.has(zone.id)}
@@ -1526,7 +1542,8 @@ export function GlobeStreetDetailLayer({
             node={node}
             zones={detailedRoadZones}
             fallbackTerrainHeight={terrainHeight}
-            preparedTerrain={node.zoneIds.every((id) => resolvePreparedSiteTerrainForZone(zones.find((zone) => zone.id === id), zones, terrainHeight) !== null)
+            preparedTerrain={preparedSite && sharedSiteGroundContains(preparedSite.ring, node.longitude, node.latitude)
+              ? preparedSite.elevation : node.zoneIds.every((id) => resolvePreparedSiteTerrainForZone(zones.find((zone) => zone.id === id), zones, terrainHeight) !== null)
               ? resolvePreparedSiteTerrainForZone(zones.find((zone) => zone.id === node.zoneIds[0]), zones, terrainHeight)
               : null}
           />

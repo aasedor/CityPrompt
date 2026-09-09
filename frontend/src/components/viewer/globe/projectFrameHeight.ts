@@ -1,5 +1,10 @@
 const DEG_TO_RAD = Math.PI / 180;
 
+/** Symmetric extent around the optical centre, including an off-centre roof. */
+export function projectedFrameFraction(points: Array<{ x: number; y: number }>, width: number, height: number): number {
+  return Math.max(...points.map(p => Math.max(Math.abs(2 * p.x / width - 1), Math.abs(2 * p.y / height - 1))));
+}
+
 // Keep a single-site plan visually legible. The previous 55% / 120 m floor
 // framed a 150 m parcel like a district overview, making low park structures
 // effectively disappear. Larger master plans still scale from their measured

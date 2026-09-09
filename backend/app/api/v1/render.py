@@ -31,6 +31,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.schemas.render_media import SavedRenderResponse
 from app.core.config import get_settings
+from app.core.image_models import DEFAULT_OPENAI_IMAGE_MODEL, OPENAI_IMAGE_CREDIT_MULTIPLIERS
 from app.core.database import get_db
 from app.core.security import (
     require_auth,
@@ -56,7 +57,7 @@ router = APIRouter()
 # GA id since 2026-05-28; the -preview alias is deprecated (shutdown announced
 # ~2026-06-25, still on a grace alias as of 2026-07-12).
 _GEMINI_RENDER_MODEL = "gemini-3.1-flash-image"
-_OPENAI_RENDER_MODEL = "gpt-image-2"
+_OPENAI_RENDER_MODEL = DEFAULT_OPENAI_IMAGE_MODEL
 
 
 # ---------------------------------------------------------------------------
@@ -189,6 +190,7 @@ class RenderRequest(BaseModel):
 
 
 class RenderResponse(BaseModel):
+    model: str | None = None
     image_base64: str = Field(
         ...,
         description="Base64-encoded PNG of the rendered image.",
@@ -322,8 +324,9 @@ _ALLOWED_MODELS = {
     "gemini-3.1-flash-image-preview",
     "gpt-image-2",
     "gpt-image-2-2026-04-21",
+    *OPENAI_IMAGE_CREDIT_MULTIPLIERS,
 }
-_OPENAI_MODELS = {"gpt-image-2", "gpt-image-2-2026-04-21"}
+_OPENAI_MODELS = set(OPENAI_IMAGE_CREDIT_MULTIPLIERS)
 
 # Token cost per render by model ($5 = 1000 tokens, 1 token = $0.005)
 _MODEL_TOKEN_COST: dict[str, int] = {
@@ -331,8 +334,7 @@ _MODEL_TOKEN_COST: dict[str, int] = {
     "gemini-3.1-flash-image": 13,  # ~$0.067 (GA id)
     "gemini-3.1-flash-image-preview": 13,  # ~$0.067 (deprecated alias)
     "gemini-3-pro-image-preview": 27,  # ~$0.134
-    "gpt-image-2": 13,
-    "gpt-image-2-2026-04-21": 13,
+    **{model: 13 * multiplier for model, multiplier in OPENAI_IMAGE_CREDIT_MULTIPLIERS.items()},
 }
 _DEFAULT_TOKEN_COST = 13  # fallback
 _WEEKLY_TOKEN_ALLOWANCE = 1000
@@ -813,6 +815,13 @@ async def _refund_render(db, user, reservation):
         raise
 
 
+@router.get("/image-models")
+async def image_models(user: User = Depends(require_auth)):
+    from app.services.image_model_availability import get_image_model_availability
+
+    return await get_image_model_availability(get_settings().openai_api_key)
+
+
 @router.post("/generate", response_model=RenderResponse)
 async def generate_render(
     req: RenderRequest,
@@ -856,7 +865,7 @@ async def generate_render(
     except Exception:
         await db.rollback()
         logger.exception("Render image produced but audit image storage failed: %s", reservation.id)
-    return RenderResponse(image_base64=image_b64, seed=req.seed)
+    return RenderResponse(image_base64=image_b64, seed=req.seed, model=render_model)
 
 
 async def _generate_render_image(req: RenderRequest, settings, render_model: str) -> str:

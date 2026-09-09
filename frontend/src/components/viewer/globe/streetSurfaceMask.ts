@@ -3,6 +3,14 @@ import { bufferLineToPolygon, extractRenderableStreetCenterline } from '@/utils/
 import { isFixedSectionStreet } from '@/features/pickPlace/streetPlacement';
 import { resolvePilotStreetSectionProfile } from './streetSectionProfiles';
 
+/** Detailed bands own the ground for catalogue sections, including streets
+ * wholly inside the site. A second flat zone slab can bury their sidewalks
+ * when the tile level changes with the camera. */
+export function streetSectionOwnsGround(zone: SiteZone): boolean {
+  return zone.coordinates.length >= 4 && (isFixedSectionStreet(zone) || zone.properties?.connect_to_public_road === true)
+    && Boolean(resolvePilotStreetSectionProfile(zone)) && extractRenderableStreetCenterline(zone).length >= 2;
+}
+
 /** Clear only constructed bands. Transparent boundary setbacks must retain
  * their Google surface rather than becoming a narrow hole beside the street. */
 export function streetSurfaceMaskZone(zone: SiteZone): SiteZone {

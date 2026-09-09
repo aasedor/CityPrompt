@@ -1,0 +1,37 @@
+{
+  "sport": "tennis",
+  "playing": [
+    23.77,
+    10.97
+  ],
+  "module": [
+    38,
+    20
+  ],
+  "minimumPark": [
+    54,
+    60
+  ],
+  "standardPark": [
+    58,
+    64
+  ],
+  "maxModules": 6,
+  "sha256": "fe7e2b6f92d50fcb755238d1802f9374269158c624fd6bd79c26615022934850",
+  "bytes": 699000,
+  "reimportBounds": [
+    [
+      -19.0,
+      -10.0,
+      0.0
+    ],
+    [
+      19.0,
+      10.0,
+      3.061650514602661
+    ]
+  ],
+  "meshes": 5,
+  "triangles": 13214,
+  "paidCalls": 0
+}

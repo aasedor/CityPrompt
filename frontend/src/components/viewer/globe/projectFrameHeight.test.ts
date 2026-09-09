@@ -1,10 +1,16 @@
 import { describe, expect, it } from 'vitest';
 import {
   estimateProjectFrameHeight,
+  projectedFrameFraction,
   PROJECT_FRAME_MIN_HEIGHT_M,
 } from './projectFrameHeight';
 
 describe('project camera framing height', () => {
+  it('detects a cropped rooftop even when the footprint span fits', () => {
+    // The former span-only test sees 60% width; the roof is above the frame.
+    expect(projectedFrameFraction([{ x: 300, y: -100 }, { x: 900, y: 650 }], 1200, 900)).toBeGreaterThan(1);
+    expect(projectedFrameFraction([{ x: 180, y: 135 }, { x: 1020, y: 765 }], 1200, 900)).toBeCloseTo(0.7);
+  });
   it('frames a kilometre-scale district substantially closer than the legacy multiplier', () => {
     const height = estimateProjectFrameHeight(1_100);
     expect(height).toBeGreaterThan(400);

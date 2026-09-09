@@ -1,4 +1,4 @@
-"""Fail-closed Direct 3D image refinement through GPT Image 2.
+"""Fail-closed Direct 3D image refinement through the selected GPT Image engine.
 
 The colored-polygon renderer deliberately remains separate.  This service
 accepts a clean, authoritative 3D viewport capture, validates its proposal
@@ -16,6 +16,7 @@ import io
 import json
 import logging
 import math
+import time
 from dataclasses import asdict, dataclass, fields
 from typing import Any, Literal
 
@@ -23,12 +24,17 @@ import httpx
 import numpy as np
 from PIL import Image, ImageDraw
 
+from app.core.image_models import (
+    DEFAULT_OPENAI_IMAGE_MODEL,
+    OPENAI_IMAGE_CREDIT_MULTIPLIERS,
+    OpenAIImageModel,
+)
 from app.schemas.direct_3d_render import Direct3DRenderRequest
 from app.services.render_fidelity import RENDER_PRESERVATION_LOCK
 
 logger = logging.getLogger(__name__)
 
-DIRECT_3D_MODEL = "gpt-image-2"
+DIRECT_3D_MODEL = DEFAULT_OPENAI_IMAGE_MODEL
 # Presentation-first keeps photographic finish rather than transferring only
 # tone. Same-camera finishes must now pass measured source agreement, and
 # uncertain/failed checks return the clean source. All generative views remain
@@ -178,12 +184,16 @@ class Direct3DProviderError(RuntimeError):
         *,
         billing_status: Literal["unproduced", "produced", "unknown"],
         provider_image_base64: str | None = None,
+        provider_status_code: int | None = None,
+        provider_request_id: str | None = None,
     ) -> None:
         super().__init__(message)
         self.billing_status = billing_status
         self.refund_eligible = billing_status == "unproduced"
         self.provider_image_produced = billing_status == "produced"
         self.provider_image_base64 = provider_image_base64
+        self.provider_status_code = provider_status_code
+        self.provider_request_id = provider_request_id
 
 
 @dataclass(frozen=True)
@@ -353,6 +363,7 @@ def estimate_direct_3d_token_cost(
     object_id_attached: bool,
     instance_id_attached: bool = False,
     control_bundle_version: Literal[1, 2] = 1,
+    model: OpenAIImageModel = DEFAULT_OPENAI_IMAGE_MODEL,
 ) -> int:
     """Return the conservative credit reservation for one Direct 3D edit."""
 
@@ -371,7 +382,7 @@ def estimate_direct_3d_token_cost(
         )
         + DIRECT_3D_STRUCTURAL_GUIDE_INPUT_TOKENS
     )
-    return max(DIRECT_3D_MIN_TOKEN_COST, estimated)
+    return max(DIRECT_3D_MIN_TOKEN_COST, estimated) * OPENAI_IMAGE_CREDIT_MULTIPLIERS[model]
 
 
 def _decode_base64_payload(value: str, *, label: str) -> bytes:
@@ -3299,44 +3310,20 @@ def _presentation_prompt(
     if presentation_mode == "scene":
         if view_mode == "street":
             task = (
-                f"FULL-FRAME TASK: Image 1 is a street-level, eye-height (~1.7 m) "
-                f"pedestrian view of the authored development standing in real "
-                f"photographed context. Transform all of it into {treatment}, "
-                "re-rendering the modelled buildings and surrounding context as "
-                "one coherent finished image with consistent materials, light, "
-                "shadows, weather and atmospheric depth while removing visible "
-                "CGI and photogrammetry seams. Keep the pedestrian standpoint "
-                "and lens exactly — no aerial, elevated or pulled-back "
-                "reinterpretation."
+                f"Refine Image 1 as {treatment}. Keep its street-level pedestrian standpoint "
+                "and lens. Apply the chosen medium consistently to the proposal and context."
             )
         else:
             task = (
-                f"FULL-FRAME TASK: Transform all of Image 1 into {treatment}, "
-                "re-rendering the proposal and surrounding photographed or Google "
-                "Tiles context as one coherent finished image with consistent "
-                "materials, light, shadows, weather and atmospheric depth while "
-                "removing visible CGI and photogrammetry seams. Blend the proposal "
-                "site's edges seamlessly into the surrounding streets and "
-                "sidewalks with natural curbs, grading and planting — never render "
-                "the site boundary as a raised platform, plinth, retaining wall, "
-                "or visible cut edge."
+                f"Refine Image 1 as {treatment}. Apply the chosen medium consistently "
+                "to the proposal and surrounding context. Clean up visual seams without "
+                "adding curbs, paths, grading or planting to connect unrelated objects."
             )
         final_lock = (
-            "FINAL PRESERVATION LOCK: Preserve Image 1's exact camera angle, "
-            "projection, framing, horizon, permanent building count, massing, "
-            "floor count, facade proportions and opening pattern, footprints, "
-            "setbacks, rooflines, site layout, terrain, street, intersection and "
-            "path topology, park boundaries, water bodies and major occlusions. "
-            "Do not add, remove, split, merge, move or redesign any permanent "
-            "building, road, park, water body or site feature. You may add only "
-            "non-permanent entourage and finish detail such as people, bicycles, "
-            "vehicles, cafe seating, planting, benches and lighting." + archetype_identity_lock + " "
-            "CONTEXT IDENTITY: every existing building around the proposal is a "
-            "real photographed structure — keep each one recognizably itself, "
-            "with its own cladding colours, materials, window pattern and roof "
-            "form, improving only photographic clarity. Never re-clad, restyle, "
-            "modernize or replace a neighbouring building."
-            " " + RENDER_PRESERVATION_LOCK
+            "FINAL PRESERVATION LOCK: Keep Image 1's camera, framing, horizon, object counts, "
+            "facade proportions and opening pattern, sports markings and equipment, water bodies "
+            "and surrounding building identities. Preserve existing materials beneath the "
+            "chosen artistic medium." + archetype_identity_lock + " " + RENDER_PRESERVATION_LOCK
         )
         if view_mode == "street":
             final_lock += (
@@ -4085,11 +4072,13 @@ class Direct3DRenderService:
         visible_manifest = _camera_visible_manifest(capture.normalized_instance_id, req.instance_id_manifest)
         visible_ids = {descriptor.instance_id for descriptor in visible_manifest.values()}
         visible_inventory = [item for item in (server_inventory or []) if item.get("instance_id") in visible_ids]
-        source_geometry_only = req.presentation_mode == "scene" and req.fidelity_policy == "precise"
+        source_geometry_only = req.presentation_mode == "scene"
         if source_geometry_only:
             # Catalogue names/prose and whole-building pictures can prescribe
             # different openings, porches or roofs than the placed 3D model.
-            # A precise scene finish takes its design from the captured pixels.
+            # Every same-camera finish takes its design from the captured pixels,
+            # including watercolour and other expressive media. An expressive
+            # finish changes the medium, not the selected building identity.
             # Project validation and source protection still use the full inventory.
             visible_inventory = [
                 {key: value for key, value in item.items() if key != "design_identity"} for item in visible_inventory
@@ -4210,7 +4199,7 @@ class Direct3DRenderService:
             )
         )
         data = {
-            "model": DIRECT_3D_MODEL,
+            "model": req.model,
             "prompt": prompt,
             "n": "1",
             "size": f"{normalized_width}x{normalized_height}",
@@ -4228,7 +4217,7 @@ class Direct3DRenderService:
         ]
         logger.info(
             "Direct 3D edit request: model=%s mode=%s style=%s fidelity=%s size=%s coverage=%.3f object_id=%s instance_id=%s fingerprint=%s attachments=%s total_attachment_bytes=%d",
-            DIRECT_3D_MODEL,
+            req.model,
             req.presentation_mode,
             req.style,
             req.fidelity_policy,
@@ -4244,6 +4233,7 @@ class Direct3DRenderService:
         # Exactly one provider call. Legacy source-anchored mode includes its
         # strict edit mask; provider-first presentation modes deliberately omit
         # it. No mode retries with a different mask contract.
+        started_at = time.monotonic()
         try:
             async with httpx.AsyncClient(timeout=300.0) as client:
                 response = await client.post(
@@ -4271,6 +4261,15 @@ class Direct3DRenderService:
                 "OpenAI Direct 3D request outcome is unknown: " f"{type(exc).__name__}: {exc!r}",
                 billing_status="unknown",
             ) from exc
+        response_headers = getattr(response, "headers", {})
+        provider_request_id = response_headers.get("x-request-id")
+        logger.info(
+            "Direct 3D provider response: status=%d elapsed_seconds=%.2f request_id=%s fingerprint=%s",
+            response.status_code,
+            time.monotonic() - started_at,
+            provider_request_id,
+            capture.capture_fingerprint[:16],
+        )
         if response.status_code != 200:
             body = response.text[:500]
             logger.error("Direct 3D OpenAI edit returned %d: %s", response.status_code, body)
@@ -4278,6 +4277,8 @@ class Direct3DRenderService:
             raise Direct3DProviderError(
                 f"OpenAI Direct 3D error ({response.status_code}): {body}",
                 billing_status=billing_status,
+                provider_status_code=response.status_code,
+                provider_request_id=provider_request_id,
             )
 
         try:

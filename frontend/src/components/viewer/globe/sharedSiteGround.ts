@@ -48,12 +48,16 @@ export function sharedSiteGroundSourceSignature(boundary: SiteZone, spacingM?: n
 /** Boundary-inclusive domain test; a concave notch never becomes terrain. */
 export function sharedSiteGroundContains(ring: readonly SharedGroundPoint[], lng: number, lat: number): boolean {
   if (!Number.isFinite(lng) || !Number.isFinite(lat) || ring.length < 3) return false;
+  const east = metersPerDegLon(lat);
   let inside = false;
   for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
     const [ax, ay] = ring[j], [bx, by] = ring[i];
     const dx = bx - ax, dy = by - ay;
-    const t = ((lng - ax) * dx + (lat - ay) * dy) / (dx * dx + dy * dy || 1);
-    if (t >= 0 && t <= 1 && Math.hypot(lng - ax - t * dx, lat - ay - t * dy) < 1e-10) return true;
+    const t = Math.max(0, Math.min(1, ((lng - ax) * dx + (lat - ay) * dy) / (dx * dx + dy * dy || 1)));
+    // Float32 mesh corners and clipped edges can land micrometres beyond the
+    // exact polygon. Include a 1 mm seam, including endpoints; never extend
+    // the ground across a concave notch or a meaningful off-site distance.
+    if (Math.hypot((lng - ax - t * dx) * east, (lat - ay - t * dy) * METERS_PER_DEG_LAT) <= .001) return true;
     if ((ay > lat) !== (by > lat) && lng < (bx - ax) * (lat - ay) / (by - ay) + ax) inside = !inside;
   }
   return inside;

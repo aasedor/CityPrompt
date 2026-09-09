@@ -17,7 +17,7 @@ export function ReadOnlyProject({ project, zones, renders, videos = [] }: { proj
     <button onClick={() => setReportOpen((open) => !open)} aria-expanded={reportOpen} className="min-h-11 rounded-lg bg-teal-800 px-5 font-semibold text-white">{reportOpen ? 'Hide planning report' : 'View planning report'}</button>
     {reportOpen && <StudentPlanningReport projectId={project.id} canEdit={false} />}
     <section aria-label="Saved presentation images" className="grid gap-4 sm:grid-cols-2">
-      {renders.filter((render) => render.variant !== 'provider_original').map((render) => <figure key={render.id} className="rounded-xl border bg-white p-3">
+      {renders.map((render) => <figure key={render.id} className="rounded-xl border bg-white p-3">
         <a href={resolveApiFileUrl(render.image_url)} target="_blank" rel="noreferrer"><img src={resolveApiFileUrl(render.image_url)} alt={render.style || 'Saved community view'} className="aspect-video w-full object-contain" /></a>
         <figcaption className="mt-2 text-sm text-slate-600">{render.style || 'Community view'} · {new Date(render.created_at).toLocaleDateString()} {savedRenderNotice(render)}</figcaption>
       </figure>)}

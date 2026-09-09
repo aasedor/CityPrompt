@@ -12,7 +12,7 @@ from app.services.render_fidelity import RENDER_PRESERVATION_LOCK
 
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("provider", ["openai", "gemini"])
+@pytest.mark.parametrize("provider", ["gpt-image-2", "gpt-image-2.5-flare", "gpt-image-2.5-sunburst", "gemini"])
 @pytest.mark.parametrize("custom_length", [80, 49_000])
 async def test_provider_prompt_ends_with_geometry_lock_after_custom_and_context_text(
     monkeypatch, provider, custom_length
@@ -51,8 +51,10 @@ async def test_provider_prompt_ends_with_geometry_lock_after_custom_and_context_
         site_context={"lat": 51.0447, "lng": -114.0719},
     )
     settings = SimpleNamespace(openai_api_key="mock", gemini_api_key="mock", vertex_ai_project="")
-    if provider == "openai":
-        await render._call_openai_image_edit(req, settings, "gpt-image-2", include_mask=False, site_pack=site_pack)
+    if provider != "gemini":
+        await render._call_openai_image_edit(req, settings, provider, include_mask=False, site_pack=site_pack)
+        assert captured["data"]["model"] == provider
+        assert captured["data"]["quality"] == "auto"
         prompt = captured["data"]["prompt"]
     else:
         await render._generate_render_image(req, settings, "gemini-3.1-flash-image")

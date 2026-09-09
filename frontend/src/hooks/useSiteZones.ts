@@ -1,3 +1,4 @@
+import { runProjectWrite } from '@/utils/projectWriteQueue';
 import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useQuery, useMutation, useQueryClient, useIsMutating } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
@@ -20,6 +21,13 @@ function apiStatus(error: unknown): number | undefined {
   return (error as { response?: { status?: number } } | undefined)?.response?.status;
 }
 
+function isBoundaryRejection(error: unknown): boolean {
+  const detail = (error as { response?: { data?: { detail?: unknown } } })?.response?.data?.detail;
+  return apiStatus(error) === 409 && typeof detail === 'string'
+    && (detail.includes('must stay completely inside the active site boundary')
+      || detail.startsWith('The site boundary must contain every authored zone.'));
+}
+
 function createRejection(error: unknown): Pick<ZoneDraft, 'rejectionStatus' | 'rejectionReason'> {
   const status = apiStatus(error);
   if (status === 400 || status === 422) return { rejectionStatus: status };
@@ -28,6 +36,10 @@ function createRejection(error: unknown): Pick<ZoneDraft, 'rejectionStatus' | 'r
   // Other 409s can refer to already-saved work and must remain protected.
   if (status === 409 && detail === 'The new zone must stay completely inside the active site boundary.') {
     return { rejectionStatus: 409, rejectionReason: 'outside_site_boundary' };
+  }
+  if (status === 409 && typeof detail === 'string'
+      && detail.startsWith('The site boundary must contain every authored zone. Outside the proposed boundary: ')) {
+    return { rejectionStatus: 409, rejectionReason: 'boundary_excludes_zones' };
   }
   return {};
 }
@@ -97,14 +109,14 @@ export function useSiteZones(projectId: string | undefined) {
   const createZone = useMutation({
     mutationKey: ['save-zone', projectId],
     mutationFn: (vars: { coordinates: number[][]; zone_type: SiteZoneType; properties?: SiteZoneProperties; requestId?: string; createdAt?: string }) =>
-      siteZonesApi.create(projectId!, {
+      runProjectWrite(queryClient, projectId!, () => siteZonesApi.create(projectId!, {
         client_request_id: vars.requestId,
         zone_type: vars.zone_type,
         coordinates: vars.coordinates,
         color: ZONE_TYPE_CONFIG[vars.zone_type].color,
         properties: vars.properties ?? ZONE_TYPE_CONFIG[vars.zone_type].defaultProperties,
         is_active_boundary: vars.zone_type === 'site_boundary',
-      }),
+      })),
     onMutate: (vars) => {
       // Assign once before the first network request. A lost response and its
       // retry carry the same ID, so the server cannot create two drawings.
@@ -182,11 +194,15 @@ export function useSiteZones(projectId: string | undefined) {
     mutationKey: ['save-zone', projectId],
     onMutate: (vars) => beginEdit(vars.zoneId),
     mutationFn: (vars: { zoneId: string; data: { name?: string; color?: string; properties?: SiteZoneProperties }; previousData?: { name?: string; color?: string; properties?: SiteZoneProperties } }) =>
-      siteZonesApi.update(vars.zoneId, {
-        ...vars.data,
-        expected_updated_at: queryClient.getQueryData<SiteZone[]>(['site-zones', projectId])
-          ?.find((zone) => zone.id === vars.zoneId)?.updated_at,
-      }),
+      runProjectWrite(queryClient, projectId!, async () => {
+        const result = await siteZonesApi.update(vars.zoneId, {
+          ...vars.data,
+          expected_updated_at: queryClient.getQueryData<SiteZone[]>(['site-zones', projectId])
+            ?.find((zone) => zone.id === vars.zoneId)?.updated_at,
+        });
+        queryClient.setQueryData<SiteZone[]>(['site-zones', projectId], old => old?.map(z => z.id === result.id ? result : z));
+        return result;
+    }),
     onSuccess: async (result, vars, attempt) => {
       clearFailedEdit(vars.zoneId, attempt);
       // Await refetch so the cache is fresh before the user can click away
@@ -203,7 +219,7 @@ export function useSiteZones(projectId: string | undefined) {
       recordFailedEdit(vars.zoneId, err, attempt);
       if (apiStatus(err) === 409) {
         await queryClient.refetchQueries({ queryKey: ['site-zones', projectId] });
-        toast.error('This drawing changed in another session. Review the latest version before applying your change again.');
+        toast.error('This drawing has a newer saved version. Review the latest version before applying your change again.');
         return;
       }
       if (apiStatus(err) === 404) {
@@ -223,15 +239,25 @@ export function useSiteZones(projectId: string | undefined) {
     mutationKey: ['save-zone', projectId],
     // Keep an unsaved drawing until its in-flight request has been reconciled.
     // Silently removing it could make a successful delayed save reappear.
-    mutationFn: async (zoneId: string) => {
+    mutationFn: (zoneId: string) => runProjectWrite(queryClient, projectId!, async () => {
       if (isPersistedZoneId(zoneId)) {
-        await siteZonesApi.delete(zoneId, savedZones.find((zone) => zone.id === zoneId)?.updated_at);
+        try {
+          await siteZonesApi.delete(zoneId, queryClient.getQueryData<SiteZone[]>(['site-zones', projectId])?.find(zone => zone.id === zoneId)?.updated_at);
+        } catch (error) {
+          if (apiStatus(error) !== 404) throw error;
+          // Confirm absence through the authorized project list, not an arbitrary 404.
+          const latest = await siteZonesApi.list(projectId!);
+          if (latest.some(zone => zone.id === zoneId)) throw error;
+          queryClient.setQueryData(['site-zones', projectId], latest);
+          return 'already-deleted';
+        }
+        queryClient.setQueryData<SiteZone[]>(['site-zones', projectId], old => old?.filter(zone => zone.id !== zoneId));
         return 'deleted';
       }
       const draft = drafts.find((item) => `temp-${item.requestId}` === zoneId);
       if (draft && discardDraft(draft)) return 'discarded';
       throw new Error('Save this drawing before deleting it. Your draft is kept on this device.');
-    },
+    }),
     onMutate: (zoneId) => {
       // Capture zone snapshot before deletion for undo
       const zones = queryClient.getQueryData<SiteZone[]>(['site-zones', projectId]);
@@ -253,7 +279,7 @@ export function useSiteZones(projectId: string | undefined) {
     onError: async (err: Error) => {
       if (apiStatus(err) === 409) {
         await queryClient.refetchQueries({ queryKey: ['site-zones', projectId] });
-        toast.error('This drawing changed in another session. Review it before deleting.');
+        toast.error('This drawing has a newer saved version. Review it before deleting.');
         return;
       }
       toast.error(`Failed to delete zone: ${getApiErrorMessage(err)}`);
@@ -269,9 +295,14 @@ export function useSiteZones(projectId: string | undefined) {
     mutationKey: ['save-zone', projectId],
     onMutate: (vars) => beginEdit(vars.zoneId),
     mutationFn: (vars: { zoneId: string; coordinates: number[][]; revision?: string }) =>
-      siteZonesApi.update(vars.zoneId, { ...streetCoordinateUpdate(
-        queryClient.getQueryData<SiteZone[]>(['site-zones', projectId])?.find(zone => zone.id === vars.zoneId), vars.coordinates),
-        ...(vars.revision ? { expected_updated_at: vars.revision } : {}) }),
+      runProjectWrite(queryClient, projectId!, async () => {
+        const current = queryClient.getQueryData<SiteZone[]>(['site-zones', projectId])?.find(zone => zone.id === vars.zoneId);
+        const result = await siteZonesApi.update(vars.zoneId, { ...streetCoordinateUpdate(
+          queryClient.getQueryData<SiteZone[]>(['site-zones', projectId])?.find(zone => zone.id === vars.zoneId), vars.coordinates),
+          ...((current?.updated_at ?? vars.revision) ? { expected_updated_at: current?.updated_at ?? vars.revision } : {}) });
+        queryClient.setQueryData<SiteZone[]>(['site-zones', projectId], old => old?.map(z => z.id === result.id ? result : z));
+        return result;
+    }),
     onSuccess: (_result, vars, attempt) => clearFailedEdit(vars.zoneId, attempt),
     onError: (error, vars, attempt) => recordFailedEdit(vars.zoneId, error, attempt),
   });
@@ -301,13 +332,17 @@ export function useSiteZones(projectId: string | undefined) {
       // Push undo action for coordinate change
       if (projectId && currentProject.current === projectId && prevCoords) {
         useUndoRedoStore.getState().pushAction(
-          createZoneCoordinatesAction(projectId, zoneId, prevCoords, coordinates, queryClient, result.updated_at),
+          createZoneCoordinatesAction(projectId, zoneId, prevCoords, coordinates, queryClient, result.updated_at, prevZone),
         );
       }
     }).catch(async (err: unknown) => {
+      if (isBoundaryRejection(err)) {
+        toast.error(getApiErrorMessage(err));
+        return;
+      }
       if (apiStatus(err) === 409) {
         await queryClient.refetchQueries({ queryKey: ['site-zones', projectId] });
-        toast.error('This drawing changed in another session. Review the latest shape before moving it again.');
+        toast.error('This drawing has a newer saved version. Review the latest shape before moving it again.');
         return;
       }
       if (apiStatus(err) === 404) {

@@ -1,3 +1,4 @@
+import { runProjectWrite } from '@/utils/projectWriteQueue';
 import { useEffect, useRef, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import type { SiteZone } from '@/types';
@@ -41,16 +42,21 @@ export function useAutomatic3D(projectId: string | undefined, zones: SiteZone[],
     const timer = window.setTimeout(async () => {
       run.busy = true; setStatus('updating'); setMessage('');
       try {
-        const sources = latest.current.filter(automaticZone);
-        const result = await compileMixedCommunity3D(sources, undefined, { includeResidualLandscape: false, recoverSourceChanges: false });
-        const saved = await siteZonesApi.list(projectId);
-        // Derived writes may advance undo's revision only over our own exact source.
-        for (const source of sources) {
-          const after = saved.find(zone => zone.id === source.id);
-          if (after && authoredPlacementKey([source]) === authoredPlacementKey([after])) {
-            advanceDerivedZoneRevision(client, projectId, source.id, source.updated_at, after.updated_at);
+        const result = await runProjectWrite(client, projectId, async () => {
+          const sources = (client.getQueryData<SiteZone[]>(['site-zones', projectId]) ?? latest.current).filter(automaticZone);
+          if (!sources.length) return { plannedMasses: 0 };
+          const result = await compileMixedCommunity3D(sources, undefined, { includeResidualLandscape: false, recoverSourceChanges: false });
+          const saved = await siteZonesApi.list(projectId);
+          // Derived writes may advance undo's revision only over our own exact source.
+          for (const source of sources) {
+            const after = saved.find(zone => zone.id === source.id);
+            if (after && authoredPlacementKey([source]) === authoredPlacementKey([after])) {
+              advanceDerivedZoneRevision(client, projectId, source.id, source.updated_at, after.updated_at);
+            }
           }
-        }
+          client.setQueryData(['site-zones', projectId], saved);
+          return result;
+        });
         await Promise.all([
           client.invalidateQueries({ queryKey: ['site-zones', projectId] }),
           client.invalidateQueries({ queryKey: ['project', projectId] }),

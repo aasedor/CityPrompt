@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import type { SiteZone } from '@/types';
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 import { createSharedSiteGroundLayout, sampleSharedSiteGround } from './sharedSiteGround';
-import { measureParkTerrain, readParkTerrain } from './parkTerrain';
+import { measureParkTerrain, readParkTerrain, reuseMeasuredParkTerrain } from './parkTerrain';
 import { createSharedGroundTriangulation, drapeSharedGroundGeometry } from './sharedGroundGeometry';
 import { getPreparedSiteBoundaryIds, resolvePreparedSiteTerrainForZone } from './sitePreparationSurface';
 import { terraceOffset } from './terraceDefinition';
@@ -17,6 +17,44 @@ function review(slope = .2) {
   return {layout,heights,previousHeights:[...heights]};
 }
 describe('reviewed terrain-following park',()=>{
+  it('reuses measured support for a new outline and preserves the original pass quality',()=>{
+    const triangle={...park,coordinates:[point(5,5),point(35,5),point(20,35)]};
+    const profile=measureParkTerrain(triangle,review())!;
+    profile.snapshot.quality.maxPassDeltaM=.03;
+    const edited={...park,properties:{park_terrain:profile}};
+    const reused=reuseMeasuredParkTerrain(edited)!;
+    expect(readParkTerrain({...edited,properties:{park_terrain:reused}})).not.toBeNull();
+    expect(reused.snapshot.quality.maxPassDeltaM).toBe(.03);
+    expect(sampleSharedSiteGround(reused.snapshot,...point(6,33) as [number,number])).toBeCloseTo(1001.2,3);
+    expect(reuseMeasuredParkTerrain({...edited,coordinates:edited.coordinates.map(([x,y])=>[x+.01,y])})).toBeNull();
+  });
+  it('does not reuse an old grid where expanding a concave outline exposes rough ground',()=>{
+    const r=review(),grid=r.layout.grid;
+    const x=Math.round((point(7,30)[0]-grid.west)/grid.stepLng),y=Math.round((point(7,30)[1]-grid.south)/grid.stepLat);
+    r.heights[y*grid.columns+x]+=5;r.previousHeights=[...r.heights];
+    const triangle={...park,coordinates:[point(5,5),point(35,5),point(20,35)]};
+    const profile=measureParkTerrain(triangle,r)!;
+    expect(profile).not.toBeNull();
+    expect(reuseMeasuredParkTerrain({...park,properties:{park_terrain:profile}})).toBeNull();
+  });
+  it.each([
+    [[5.234567,5.123457],[35.134567,5.312345],[20.142857,35.831234]],
+    [[5.234567,5.123457],[35.134567,5.123457],[35.134567,18.312345],[18.142857,18.312345],[18.142857,35.831234],[5.234567,35.831234]],
+  ])('drapes Float32 irregular outlines without losing the park at a boundary corner', (...ring) => {
+    const outline={...park,coordinates:ring.map(([x,y])=>point(x,y))};
+    const profile=measureParkTerrain(outline,review())!;
+    const source=new THREE.ShapeGeometry(new THREE.Shape(ring.map(([x,y])=>new THREE.Vector2(x,y))));
+    const g=drapeSharedGroundGeometry(source,(x,y)=>{
+      const height=sampleSharedSiteGround(profile.snapshot,...point(x,y) as [number,number]);
+      return height===null?null:height-1000;
+    },3,100000,createSharedGroundTriangulation(profile.snapshot,-114,51));
+    expect(g).not.toBeNull(); expect(g!.getAttribute('position').count).toBeGreaterThan(3);
+    const pos=g!.getAttribute('position');
+    for(let i=0;i<pos.count;i++)expect(pos.getZ(i)).toBeCloseTo(pos.getX(i)*.2,3);
+    expect(sampleSharedSiteGround(profile.snapshot,...point(5.224,5.113) as [number,number])).toBeNull();
+    if(ring.length===6)expect(sampleSharedSiteGround(profile.snapshot,...point(25,25) as [number,number])).toBeNull();
+    source.dispose();g!.dispose();
+  });
   it('preserves measured height variation through save/reopen and drapes across grid triangles',()=>{
     const profile=measureParkTerrain(park,review())!;
     const saved={...park,properties:{park_terrain:JSON.parse(JSON.stringify(profile)),proposed_terrace:{version:1,offsetM:2}}};

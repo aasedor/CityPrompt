@@ -22,6 +22,23 @@ function fixture() {
 }
 
 describe('manual park access planning', () => {
+  it('keeps park access inside the site when its street continues to the public road',()=>{
+    const {park,street,boundary}=fixture();
+    const line=[[-60,-6],[55,-6]].map(ll);
+    const extended={...street,coordinates:bufferLineToPolygon(line,10),properties:{...street.properties,plan_centerline:line,connect_to_public_road:true}};
+    const plan=resolveManualParkAccess([park,extended,boundary]).parks[0];
+    expect(plan.status).toBe('connected');
+    expect(plan.connections.every(connection=>xy(connection.streetPoint)[0]>-50)).toBe(true);
+    const outside={...park,coordinates:park.coordinates.map(point=>ll([xy(point)[0]-70,xy(point)[1]]))};
+    expect(resolveManualParkAccess([outside,extended,boundary]).parks[0].connections).toHaveLength(0);
+  });
+  it('joins the paved edge of the shared-street pilot, without crossing its carriageway',()=>{
+    const {park,street,boundary}=fixture(),line=[[-15,-4],[55,-4]].map(ll);
+    const shared={...street,coordinates:bufferLineToPolygon(line,6),properties:{road_archetype_id:'yield_street',width:6,lane_count:1,plan_centerline:line}};
+    const plan=resolveManualParkAccess([park,shared,boundary]).parks[0];
+    expect(plan.status).toBe('connected');
+    expect(xy(plan.connections[0].streetPoint)[1]).toBeCloseTo(-1.15,2);
+  });
   it('connects to a selected existing path, preserves boundary limits and invalidates removed context',()=>{
     const {park,boundary}=fixture();
     const transport={lines:[{id:'existing:path',label:'Mapped path',kind:'path' as const,widthM:null,points:[ll([-10,-3]),ll([50,-3])]}]};

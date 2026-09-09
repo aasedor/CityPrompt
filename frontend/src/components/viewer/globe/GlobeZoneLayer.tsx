@@ -82,8 +82,7 @@ import { resolveBuildingExtrudeHeight, resolveZoneSurfaceMode } from './zoneSurf
 import { useParkGround } from './useParkGround';
 import { createSharedGroundTriangulation, drapeSharedGroundGeometry } from './sharedGroundGeometry';
 import { selectDetailedStreetZones } from './streetDetailLod';
-import { resolvePilotStreetSectionProfile } from './streetSectionProfiles';
-import { extractRenderableStreetCenterline } from '@/utils/roadGeometry';
+import { streetSectionOwnsGround } from './streetSurfaceMask';
 
 const DEG_TO_RAD = Math.PI / 180;
 const OBJECT_FILTER_SAMPLE_RADIUS_METERS = 8;
@@ -1394,8 +1393,7 @@ export function GlobeZoneLayer({
   const showPlanningOverlays = planningOverlaysVisible && !overlaysHidden;
   const sectionGroundIds = useMemo(() => new Set(selectDetailedStreetZones(zones.filter(zone =>
     resolveCommunity3DKind(zone) === 'street' && zone.coordinates.length >= 4 && shouldRenderCommunityGround(zone)))
-    .filter(zone => zone.properties?.connect_to_public_road === true
-      && Boolean(resolvePilotStreetSectionProfile(zone)) && extractRenderableStreetCenterline(zone).length >= 2)
+    .filter(streetSectionOwnsGround)
     .map(zone => zone.id)), [zones]);
   const sitePrepared = useMemo(
     () => getPreparedSiteBoundaryIds(zones).size > 0,

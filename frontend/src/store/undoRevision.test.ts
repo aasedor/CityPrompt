@@ -5,9 +5,41 @@ import { createZoneUpdateAction, createZoneCreateAction, createZoneDeleteAction,
 import type { SiteZone } from '@/types';
 import { CALGARY_LOCAL_PLACEMENT } from '@/features/pickPlace/streetPlacement';
 import { bufferLineToPolygon, extractCenterline } from '@/utils/roadGeometry';
+import { measureParkTerrain, readParkTerrain } from '@/components/viewer/globe/parkTerrain';
+import { createSharedSiteGroundLayout } from '@/components/viewer/globe/sharedSiteGround';
+import { rectangleAt } from '@/features/pickPlace/geometry';
 
 vi.mock('@/services/api', () => ({ siteZonesApi: { create: vi.fn(), update: vi.fn(), delete: vi.fn() }, buildingsApi: {} }));
 describe('zone undo revision checks', () => {
+  it('restores each park outline with its own measured ground through undo and redo', async () => {
+    const client=new QueryClient(), center:[number,number]=[-114,51];
+    const original={id:'park',project_id:'project',zone_type:'green_space',coordinates:rectangleAt(center,70,60),properties:{name:'keep'},updated_at:'r0'} as unknown as SiteZone;
+    const layout=createSharedSiteGroundLayout({...original,id:'site',zone_type:'site_boundary',is_active_boundary:true,coordinates:rectangleAt(center,80,70),properties:{terrain_elevation_m:1000}})!;
+    const heights=Array(layout.grid.columns*layout.grid.rows).fill(1000);
+    const review={layout,heights,previousHeights:heights};
+    const before={...original,properties:{...original.properties,park_terrain:measureParkTerrain(original,review)!}};
+    const small={...original,coordinates:rectangleAt(center,30,30),updated_at:'r2'};
+    const after={...small,properties:{name:'latest',park_terrain:measureParkTerrain(small,review)!}};
+    expect(readParkTerrain(before)).not.toBeNull();
+    expect(readParkTerrain(after)).not.toBeNull();
+    const action=createZoneCoordinatesAction('project','park',before.coordinates,after.coordinates,client,'r1',before);
+    advanceDerivedZoneRevision(client,'project','park','r1','r2');
+    client.setQueryData(['site-zones','project'],[after]);
+    vi.mocked(siteZonesApi.update).mockImplementation(async(_id,data)=>{
+      const saved={...original,...data,updated_at:data.expected_updated_at==='r2'?'r3':'r4'} as SiteZone;
+      client.setQueryData(['site-zones','project'],[saved]);
+      return saved;
+    });
+    await action.undo();
+    let saved=client.getQueryData<SiteZone[]>(['site-zones','project'])![0];
+    expect(saved.coordinates).toEqual(before.coordinates);
+    expect(saved.properties?.name).toBe('latest');
+    expect(readParkTerrain(saved)?.signature).toBe(readParkTerrain(before)?.signature);
+    await action.redo();
+    saved=client.getQueryData<SiteZone[]>(['site-zones','project'])![0];
+    expect(saved.coordinates).toEqual(after.coordinates);
+    expect(readParkTerrain(saved)?.signature).toBe(readParkTerrain(after)?.signature);
+  });
   it('undoes and redoes a native street route and its centreline in the same revision-checked request',async()=>{
     const client=new QueryClient();
     const before=bufferLineToPolygon([[-114,51],[-113.999,51]],16);

@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import { authApi, rendersApi } from '@/services/api';
+import { authApi, rendersApi, resolveApiFileUrl } from '@/services/api';
 import { useAuthStore } from '@/store';
 import type { SavedRender } from '@/types';
 import type { Community3DCaptureClaim } from '@/features/community3d/community3d';
@@ -11,6 +11,8 @@ import {
 } from './useGlobeAIRender';
 import type { Direct3DCaptureBundle, Direct3DProposalRole } from './direct3dCapture';
 import type { ResidualLandscapeClaim } from './residualLandscape';
+
+import { DEFAULT_OPENAI_IMAGE_MODEL, imageModelLabel, type OpenAIImageModel } from '@/config/imageModels';
 
 export type Direct3DPresentationMode = 'source_anchored' | 'scene' | 'reproject';
 export type Direct3DActivePresentationMode = Exclude<Direct3DPresentationMode, 'source_anchored'>;
@@ -30,16 +32,16 @@ export const DIRECT_3D_ALLOWED_STYLES = new Set(DIRECT_3D_STYLE_IDS);
  */
 export const DIRECT_3D_DEFAULT_ART_DIRECTIONS: Readonly<Record<string, string>> = Object.freeze({
   photorealistic: 'Photographically finish the supplied 3D view in soft natural daylight, with balanced exposure, realistic surface texture, subtle reflections in existing glazing and contact shadows. Retain each surface\'s visible material family and colour: enrich the material already present rather than selecting a new facade finish. Preserve the existing architecture, planting and ground surfaces without adding a landscaping scheme. Keep crisp architectural detail and restrained natural colours.',
-  photomontage: 'Create a professional architectural photomontage that reads as a real drone photograph of the completed proposal. Match material response, sun direction, shadow length, atmospheric haze, lens character, grain and colour temperature across the proposal and surrounding city so there is no visible compositing seam. Keep the existing material palette but give every surface true photographic texture, with glazing reflecting the actual sky. Add modest believable street life: pedestrians at accurate scale, parked and moving cars, and street trees consistent with the neighbourhood. Balanced exposure and muted natural colours, like an honest planning-submission photomontage.',
-  development: 'Create a polished completed-development marketing visualization of institutional quality. Render the buildings as newly finished construction: crisp facades in their existing material palette, clean glazing with warm interior light, welcoming entrances with signage-scale detail, and a freshly landscaped public realm with young street trees, planting beds, benches and clear paving patterns. Bright optimistic daylight with gentle directional sun and soft shadows. Populate lightly with pedestrians, cyclists and cafe activity at accurate scale so the proposal feels built, occupied and integrated. Aspirational but credible, with clean lines and minimal clutter; avoid oversaturation and glossy CGI sheen.',
-  atmospheric: 'Create cinematic architectural photography with warm late-day directional light raking across the facades, long soft shadows, gentle golden haze and layered atmospheric depth between foreground and horizon. Bring out material texture in the existing palette; let interior lights begin to glow warmly through the glazing. Add sparse contemplative street life: a few pedestrians, a cyclist, people lingering on benches. Keep the mood serene and restrained with muted warm colours, soft highlights and natural film-like grain, elegant rather than theatrical or oversaturated.',
-  winter: 'Create convincing winter architectural photography. Lay a fresh but tidy snow cover on roofs, lawns and planting beds with cleared walks and subtle snow piles at their edges; deciduous trees bare with fine branch detail, evergreens holding light snow, and subtle melt and salt-grit detail on paving. Cold soft overcast daylight with a pale grey-blue sky and soft blue-grey shadows, warmed by restrained interior light glowing through the glazing. Keep the existing facade materials readable through the winter light, with sparse winter-dressed pedestrians at accurate scale and a quiet desaturated palette with crisp cold-air clarity.',
-  night: 'Create realistic blue-hour architectural photography. A deep twilight sky grades from indigo to a faint warm horizon; facades in their existing materials are lit by warm interior light spilling from windows, understated facade fixtures and soft pools of street lighting, with subtle reflections on glazing and softly reflective paving. Streets show gentle headlight and taillight presence without light trails, plus sparse evening pedestrians. Keep exposure balanced and believable: readable shadow detail, no blown highlights, no neon oversaturation, the calm quality of a professional dusk shoot.',
-  watercolour: 'Create a refined architectural watercolour on textured paper with translucent layered washes, restrained earth colours, soft pigment blooms, loose foliage and enough precise edge definition to keep the design clearly legible.',
-  charcoal: 'Create a controlled architectural charcoal illustration on textured paper with a full tonal range, confident structural edges, atmospheric smudging and deep but readable shadows.',
+  photomontage: 'Create a professional architectural photomontage from the supplied camera, with photographic surface texture and coherent lighting across the proposal and surrounding city. Match sun direction, shadow length, atmospheric depth, grain and colour temperature so the existing objects share one believable exposure. Retain the existing material palette and reflect the visible sky in existing glazing. Finish only the buildings, planting, furniture and surfaces already present. Balanced exposure and muted natural colours, suitable for a planning presentation.',
+  development: 'Create a polished completed-development visualization. Treat the existing construction as newly finished: crisp facades in their current material palette, clean glazing, readable entrance details and neatly maintained existing planting and paving. Bright optimistic daylight with gentle directional sun, soft contact shadows and balanced exposure. Keep the public-realm design and furnishing inventory exactly as captured. Aspirational but credible, with restrained saturation and realistic surface texture.',
+  atmospheric: 'Create cinematic architectural photography with warm late-day directional light raking across the existing facades, long soft shadows, gentle golden haze and layered atmospheric depth. Bring out texture in the current material palette and a restrained warm glow behind existing glazing. Keep foreground details readable and retain the captured planting and furnishing arrangement. Serene, muted warm colours, soft highlights and subtle film grain.',
+  winter: 'Create convincing winter architectural photography. Add a thin snow treatment to existing roofs, lawns and planting beds while retaining their profiles. Show the existing walks cleared to their captured edges, bare deciduous branches and lightly snow-dusted evergreens in their original positions. Use cold overcast daylight, a pale grey-blue sky and soft blue-grey shadows with restrained warmth behind existing glazing. Keep facade identities and circulation clearly readable in a quiet desaturated palette.',
+  night: 'Create realistic blue-hour architectural photography with an indigo sky and a faint warm horizon. Light the existing facades through their existing windows and fixtures, with soft contact shadows and subtle reflections in glazing and paving. Preserve the captured circulation and furnishings. Balance warm light against cool twilight so architectural details remain readable without blown highlights, new light fixtures or neon oversaturation.',
+  watercolour: 'Paint the supplied view as a hand-painted architectural watercolour on warm cold-pressed paper. Use transparent overlapping washes, visible brush variation, pigment granulation and occasional pooling at wash edges. Let paper show through highlights; soften foliage with wet-on-wet colour while keeping building corners, roof profiles, openings and path edges legible with selective dry-brush definition. Translate the existing material colours into a restrained, harmonious pigment palette. Simplify surface texture without simplifying the design or filling in hidden features. The whole image, including the city context, should read as watercolour rather than a photograph with a paper-texture filter.',
+  charcoal: 'Draw the supplied view as an architectural charcoal study on lightly textured warm paper. Use broad rubbed charcoal for sky and ground, visible directional strokes for surfaces, sharp charcoal-pencil edges for the existing architecture and lifted paper highlights. Keep deep shadows readable and soften distant context with lighter marks. Describe foliage with clustered strokes while retaining its position and silhouette. A hand-drawn monochrome tonal study, with clearly preserved roof profiles, openings and circulation.',
   'marker-render': 'Create a professional architectural marker rendering with precise ink linework, visible directional marker strokes, warm greys and ochres, restrained landscape colour and deliberate white highlights.',
   'pen-and-ink': 'Create a precise architectural pen-and-ink illustration on warm paper using varied line weights, discrete hatching and stippling, crisp construction edges and no colour wash.',
-  survey: 'Create a neutral large-format aerial survey photograph with even daylight, true-to-life colour, edge-to-edge clarity and highly legible materials, roofs, streets and landscape.',
+  survey: 'Create a neutral large-format architectural survey photograph from the supplied viewpoint, with even daylight, true-to-life colour, edge-to-edge clarity and highly legible materials, buildings, streets and landscape.',
   documentary: 'Create calm documentary architectural photography with flat natural daylight, restrained true-to-life colour, honest material variation and an ordinary inhabited quality without cinematic dramatization.',
   'site-plan': 'Create a clean north-up orthographic architectural site plan with precise linework, a restrained pastel palette, clear circulation, simple top-down trees and professional planning-drawing legibility.',
   'site-plan-photo': 'Create a near-nadir photographic drone site-plan view with realistic roofs, landscape, streets and short shadows, integrated seamlessly with the surrounding city context.',
@@ -49,7 +51,7 @@ export const DIRECT_3D_DEFAULT_ART_DIRECTIONS: Readonly<Record<string, string>> 
   'clay-maquette': 'Create high-angle studio photography of a monochrome pure-white plaster architectural scale model, using soft overhead light and ambient-occlusion shadows to reveal form without any coloured materials.',
   woodblock: 'Create a graphic architectural woodblock print with bold carved outlines, visible wood grain and a restrained vintage palette of crisp flat colours.',
   collage: 'Create a refined post-digital architectural collage with layered paper, carefully cut photographic textures, restrained colour blocks and competition-board composition while keeping the design clearly readable.',
-  risograph: 'Create an architectural risograph with a controlled two- or three-colour spot palette, halftone texture, light grain and subtle intentional colour misregistration.',
+  risograph: 'Create an architectural risograph using two or three restrained spot inks on warm uncoated paper. Use flat ink shapes, visible halftone dots and subtle ink-density variation. Keep structural contours registered to the source; confine slight ink misregistration to texture within surfaces so building edges, windows and path boundaries remain legible. Apply the print treatment consistently to proposal and context.',
   'pixel-art': 'Create a polished 16-bit architectural pixel-art scene with uniform grid-aligned pixels, a strict limited palette, selective outlines and checkerboard dithering.',
 });
 
@@ -334,6 +336,7 @@ export function useDirect3DRender() {
     capture: Direct3DCaptureBundle,
     options: {
       style: string;
+      model?: OpenAIImageModel;
       fidelityPolicy?: Direct3DFidelityPolicy;
       customPrompt?: string;
       projectId: string;
@@ -382,9 +385,12 @@ export function useDirect3DRender() {
       );
     }
     const response = await rendersApi.generateDirect3D({
+      model: options.model ?? DEFAULT_OPENAI_IMAGE_MODEL,
       control_bundle_version: 2,
       view_mode: viewMode,
-      ...(options.archetypeReferences?.length && !(presentationMode === 'scene' && fidelityPolicy === 'precise')
+      // The captured 3D model owns identity for every same-camera style.
+      // Catalogue artwork can prescribe different roofs, openings or materials.
+      ...(options.archetypeReferences?.length && presentationMode !== 'scene'
         ? { archetype_references: options.archetypeReferences.slice(0, 8) }
         : {}),
       beauty_image_base64: capture.beautyImageBase64,
@@ -419,23 +425,29 @@ export function useDirect3DRender() {
     if (requestingUserId) void authApi.me().then(user => {
       if (user.id === requestingUserId && useAuthStore.getState().user?.id === requestingUserId) useAuthStore.getState().setUser(user);
     }).catch(() => { /* The next account refresh will reconcile the balance. */ });
+    // A geometry-check fallback is comparison evidence, not a rejection of the
+    // student's illustration. Keep the paid AI image as the visible result;
+    // preserve the unchanged checks and source for the student's judgement.
+    const preferredOriginal = response.diagnostics.returned_safety_strategy === 'authoritative_source'
+      ? response.provider_original_render : undefined;
     return {
       render: {
-        imageUrl: `data:image/png;base64,${response.image_base64}`,
+        imageUrl: preferredOriginal ? resolveApiFileUrl(preferredOriginal.image_url) : `data:image/png;base64,${response.image_base64}`,
         prompt,
         model: response.model,
         imageQuality: 'high',
-        savedRender: response.saved_render ?? undefined,
-        providerLabel: response.diagnostics.returned_safety_strategy === 'authoritative_source'
+        savedRender: preferredOriginal ?? response.saved_render ?? undefined,
+        providerLabel: preferredOriginal ? `AI render · ${imageModelLabel(response.model)}`
+          : response.diagnostics.returned_safety_strategy === 'authoritative_source'
           ? 'Original 3D view · AI finish needs review'
           : viewMode === 'street'
-          ? 'Direct 3D Street · GPT Image 2'
-          : 'Direct 3D · GPT Image 2',
+          ? `Direct 3D Street · ${imageModelLabel(response.model)}`
+          : `Direct 3D · ${imageModelLabel(response.model)}`,
       },
       diagnostics: response.diagnostics,
       providerOriginalRender: response.provider_original_render ?? undefined,
       captureFingerprint: response.capture_fingerprint,
-      outputFingerprint: response.output_fingerprint,
+      outputFingerprint: preferredOriginal?.output_fingerprint ?? response.output_fingerprint,
       outcome: response.outcome,
       warnings: [...response.warnings],
       sourceImageUrl: capture.beautyImageBase64.startsWith('data:') ? capture.beautyImageBase64 : `data:image/png;base64,${capture.beautyImageBase64}`,

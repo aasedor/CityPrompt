@@ -4,10 +4,19 @@ import { describe, expect, it, vi } from 'vitest';
 import type { SiteZone } from '@/types';
 import { ConnectionEditor } from './ConnectionEditor';
 import { rectangleAt } from './geometry';
+import { LOCAL_STREET_ASSET } from './assetRegistry';
 
 const house:SiteZone={id:'house',project_id:'test',zone_type:'building',coordinates:rectangleAt([-114,51],12,20),properties:{native_home_plot:true,unrelated:'preserve'},color:'#aaa',sort_order:0,created_at:'now',updated_at:'now'};
 const road:SiteZone={...house,id:'road',name:'Local street',zone_type:'road',properties:{road_archetype_id:'calgary_local'}};
 describe('connection controls',()=>{
+  it('names catalogue sidewalk targets and distinguishes repeated street types',()=>{
+    const first={...road,id:'first',name:undefined,properties:{...LOCAL_STREET_ASSET.properties,pick_place_street_section:LOCAL_STREET_ASSET.model.variantId}};
+    const second={...first,id:'second'};
+    render(<ConnectionEditor zone={house} zones={[house,first,second]} disabled={false} onSave={vi.fn()} onClose={vi.fn()}/>);
+    fireEvent.click(screen.getByRole('checkbox',{name:'Link an entrance to a sidewalk'}));
+    expect(screen.getByRole('option',{name:'Calgary local street 1'})).toHaveValue('first');
+    expect(screen.getByRole('option',{name:'Calgary local street 2'})).toHaveValue('second');
+  });
   it('offers mapped pedestrian targets, omits motor roads and saves the ground-level review',async()=>{
     const park={...house,id:'park',zone_type:'green_space' as const,properties:{green_space_archetype_id:'urban_pocket_park'}};
     const path={id:'existing:path',kind:'path' as const,label:'Riverside path',widthM:3,points:[[-114,51],[-114.001,51]] as [number,number][]};

@@ -45,11 +45,12 @@ describe('reference-locked neighbourhood park composition', () => {
     for (const module of layout.modules) expect(envelopeFits(module.envelope, rotated, .79)).toBe(true);
     expect(buildNeighborhoodParkLayout(rotated)).toEqual(layout);
   });
-  it('reports an unusable footprint instead of shrinking a playground', () => {
+  it('keeps a narrow plot as landscape without shrinking a playground', () => {
     const layout = buildNeighborhoodParkLayout(rectangle(8, 80));
     expect(layout.status).toBe('constrained');
     expect(layout.modules).toHaveLength(0);
-    expect(layout.notes.join(' ')).toContain('too narrow');
+    expect(layout.trees.length+layout.shrubs.length).toBeGreaterThan(0);
+    expect(layout.notes.join(' ')).toContain('you can keep this landscape layout');
   });
   it('rejects envelopes crossing a concave boundary even with all corners inside', () => {
     const u = [{ x: 0, y: 0 }, { x: 20, y: 0 }, { x: 20, y: 20 }, { x: 13, y: 20 }, { x: 13, y: 7 }, { x: 7, y: 7 }, { x: 7, y: 20 }, { x: 0, y: 20 }];

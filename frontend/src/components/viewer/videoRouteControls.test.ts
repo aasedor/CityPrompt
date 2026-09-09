@@ -7,9 +7,26 @@ import {
   selectVideoRecorderMimeType,
   stableNearFieldTerrainHeight,
   videoRouteSurfaceHeight,
+  videoGeometryPassProfile,
+  type VideoRouteCaptureResult,
 } from './videoRouteControls';
 
 describe('video route controls', () => {
+  it('does not claim geometry bundles for a beauty-only draft video', () => {
+    expect(videoGeometryPassProfile([], 192)).toEqual({
+      checkpointCount: 0, semanticCheckpointCount: 0, instanceCheckpointCount: 0,
+      depthCheckpointCount: 0, normalCheckpointCount: 0, materialCheckpointCount: 0,
+      motionFrameCount: 192,
+    });
+  });
+
+  it('counts only the complete checkpoint bundles accompanying the video', () => {
+    const checkpoint = {} as NonNullable<VideoRouteCaptureResult['geometryCheckpoints']>[number];
+    const profile = videoGeometryPassProfile([checkpoint, checkpoint], 192);
+    expect(profile.checkpointCount).toBe(2);
+    expect(profile.semanticCheckpointCount).toBe(profile.depthCheckpointCount);
+    expect(profile.materialCheckpointCount).toBe(2);
+  });
   it('eases camera motion into the route and into the final hold', () => {
     expect(cinematicRouteProgress(-1)).toBe(0);
     expect(cinematicRouteProgress(0)).toBe(0);

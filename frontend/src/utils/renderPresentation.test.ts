@@ -18,7 +18,8 @@ describe('saved presentation labels', () => {
   });
   it('never labels an original AI attempt as the returned source', () => {
     expect(savedRenderNotice({ variant: 'provider_original', outcome: 'review_required', presentation_strategy: 'authoritative_source' }))
-      .toBe('Original AI attempt. It may differ from the design.');
+      .toBe('AI illustration. The original 3D view is available for comparison.');
+    expect(savedRenderIsSource({ variant: 'provider_original', presentation_strategy: 'authoritative_source' })).toBe(false);
     expect(savedRenderNeedsReview({ outcome: 'accepted' })).toBe(false);
     expect(savedRenderNotice({})).toBe('');
   });

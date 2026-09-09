@@ -65,6 +65,23 @@ export interface VideoRouteCaptureResult {
 
 const clamp01 = (value: number) => Math.max(0, Math.min(1, value));
 
+/** Count the complete bundles sent to the API, not temporary preview passes.
+ * Draft captures may render semantic masks without producing a depth bundle. */
+export function videoGeometryPassProfile(
+  checkpoints: NonNullable<VideoRouteCaptureResult['geometryCheckpoints']>,
+  frameCount: number,
+): NonNullable<VideoRouteCaptureResult['geometryPassProfile']> {
+  return {
+    checkpointCount: checkpoints.length,
+    semanticCheckpointCount: checkpoints.length,
+    instanceCheckpointCount: checkpoints.length,
+    depthCheckpointCount: checkpoints.length,
+    normalCheckpointCount: checkpoints.length,
+    materialCheckpointCount: checkpoints.length,
+    motionFrameCount: frameCount,
+  };
+}
+
 /**
  * Convert timeline progress to a restrained ease-in/ease-out camera move.
  * Smoothstep keeps the authored endpoints and midpoint exact while removing

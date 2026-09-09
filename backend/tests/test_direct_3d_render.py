@@ -239,6 +239,7 @@ def _request(
     auto_presentation_object_id: bool = True,
     auto_presentation_instance_id: bool = True,
     fidelity_policy: str = "precise",
+    model: str = "gpt-image-2.5-flare",
 ) -> Direct3DRenderRequest:
     beauty = beauty or _capture_images()[0]
     mask = mask or _capture_images(beauty.size)[1]
@@ -253,6 +254,7 @@ def _request(
     beauty_b64 = _png_b64(beauty)
     mask_b64 = _png_b64(mask)
     payload = {
+        "model": model,
         "beauty_image_base64": (f"data:image/png;base64,{beauty_b64}" if data_urls else beauty_b64),
         "proposal_mask_base64": (f"data:image/png;base64,{mask_b64}" if data_urls else mask_b64),
         "prompt": "Natural stone, convincing glazing, soft afternoon light.",
@@ -1690,6 +1692,7 @@ def test_direct_token_estimator_prices_normalized_size_and_inputs(
             width,
             height,
             object_id_attached=object_id_attached,
+            model="gpt-image-2",
         )
         == expected_tokens
     )
@@ -1933,10 +1936,11 @@ def test_provider_first_prompts_use_one_concise_natural_design_lock():
 
     assert scene.count("FINAL PRESERVATION LOCK") == 1
     assert scene.count("Bright softly overcast daylight") == 1
-    assert "FULL-FRAME TASK" in scene
-    assert "surrounding photographed or Google Tiles context" in scene
+    assert "proposal and surrounding context" in scene
     assert "facade proportions and opening pattern" in scene
-    assert "non-permanent entourage and finish detail" in scene
+    assert "without adding curbs, paths, grading or planting" in scene
+    assert "sports markings and equipment" in scene
+    assert "improving only photographic clarity" not in scene
     assert "CAMERA-VISIBLE AUTHORED GROUPS: building=1" in scene
     assert "zone:test:building" not in scene
     assert "#FF0000" not in scene
@@ -2733,8 +2737,9 @@ class _RecordingClient:
 
 
 @pytest.mark.asyncio
-async def test_provider_call_uses_explicit_size_png_alpha_mask_and_no_fidelity_parameter(monkeypatch):
-    request = _request()
+@pytest.mark.parametrize("model", ["gpt-image-2.5-flare", "gpt-image-2.5-sunburst", "gpt-image-2"])
+async def test_provider_call_uses_explicit_size_png_alpha_mask_and_no_fidelity_parameter(monkeypatch, model):
+    request = _request(model=model)
     capture = prepare_direct_3d_capture(request)
     generated = capture.normalized_beauty.copy()
     _RecordingClient.calls = []
@@ -2749,7 +2754,7 @@ async def test_provider_call_uses_explicit_size_png_alpha_mask_and_no_fidelity_p
     assert output.size == capture.normalized_beauty.size
     assert len(_RecordingClient.calls) == 1
     call = _RecordingClient.calls[0]
-    assert call["data"]["model"] == "gpt-image-2"
+    assert call["data"]["model"] == model
     assert call["data"]["quality"] == "high"
     assert call["data"]["size"] == f"{output.width}x{output.height}"
     assert "input_fidelity" not in call["data"]
@@ -2849,8 +2854,9 @@ async def test_provider_receives_exact_instance_guide_and_server_owned_inventory
     "mode,fidelity,allow_design_references",
     [
         ("source_anchored", "precise", True),
-        ("scene", "balanced", True),
+        ("scene", "balanced", False),
         ("scene", "precise", False),
+        ("scene", "expressive", False),
         ("reproject", "precise", True),
     ],
 )
@@ -4060,8 +4066,9 @@ def test_reproject_sanity_rejects_random_noise():
 
 
 @pytest.mark.asyncio
-async def test_direct_endpoint_canonicalizes_frontend_data_url_before_audit(monkeypatch):
-    request = _request(data_urls=True)
+@pytest.mark.parametrize("model", ["gpt-image-2.5-flare", "gpt-image-2.5-sunburst", "gpt-image-2"])
+async def test_direct_endpoint_canonicalizes_frontend_data_url_before_audit(monkeypatch, model):
+    request = _request(data_urls=True, model=model)
     prepared = prepare_direct_3d_capture(request)
     generated = prepared.normalized_beauty.copy()
     events: list[str] = []
@@ -4080,6 +4087,8 @@ async def test_direct_endpoint_canonicalizes_frontend_data_url_before_audit(monk
     reserve_mock = AsyncMock(side_effect=fake_reserve)
     provider_mock = AsyncMock(side_effect=fake_provider)
     finalize_mock = AsyncMock(side_effect=fake_finalize)
+    gallery_mock = AsyncMock(return_value=None)
+    monkeypatch.setattr(direct_api, "persist_render_to_gallery", gallery_mock)
     monkeypatch.setattr(direct_api, "_reserve_direct_render", reserve_mock)
     monkeypatch.setattr(Direct3DRenderService, "_call_openai", provider_mock)
     monkeypatch.setattr(direct_api, "_finalize_direct_audit", finalize_mock)
@@ -4093,7 +4102,10 @@ async def test_direct_endpoint_canonicalizes_frontend_data_url_before_audit(monk
 
     response = await direct_api.generate_direct_3d_render(request, user=user, db=db)
 
-    assert response.model == "gpt-image-2"
+    assert response.model == model
+    assert gallery_mock.await_count >= 1
+    assert all(call.args[2].model == model for call in gallery_mock.await_args_list)
+    assert reserve_mock.await_args.kwargs["model"] == model
     assert response.diagnostics.mask_retry_used is False
     assert response.diagnostics.finish_fusion is not None
     assert response.diagnostics.finish_fusion.sigma_px > 0
@@ -4103,6 +4115,7 @@ async def test_direct_endpoint_canonicalizes_frontend_data_url_before_audit(monk
         prepared.normalized_beauty.width,
         prepared.normalized_beauty.height,
         object_id_attached=False,
+        model=model,
     )
     audited_input = finalize_mock.await_args.kwargs["input_b64"]
     assert not audited_input.startswith("data:")
@@ -4241,11 +4254,13 @@ async def test_direct_endpoint_keeps_charge_and_audits_post_provider_safety_fail
 
 
 @pytest.mark.asyncio
-async def test_direct_endpoint_retains_ambiguous_reservation_with_stable_detail(monkeypatch):
+async def test_direct_endpoint_restores_student_credit_but_retains_unknown_provider_cost(monkeypatch):
     request = _request()
     reservation = SimpleNamespace(id=uuid.uuid4(), tokens_spent=13)
     refund_mock = AsyncMock()
     finalize_mock = AsyncMock()
+    unknown_refund_mock = AsyncMock()
+    monkeypatch.setattr(direct_api, "_refund_unknown_direct_render", unknown_refund_mock)
     monkeypatch.setattr(
         direct_api,
         "_reserve_direct_render",
@@ -4278,16 +4293,50 @@ async def test_direct_endpoint_retains_ambiguous_reservation_with_stable_detail(
 
     assert exc_info.value.status_code == 502
     assert exc_info.value.detail == {
-        "code": "direct_3d_billing_unknown",
-        "billed": True,
+        "code": "direct_3d_provider_failure_refunded",
+        "billed": False,
+        "provider_billing_status": "unknown",
+        "provider_request_id": None,
+        "provider_status_code": None,
         "message": (
-            "The provider request outcome could not be confirmed after submission; "
-            "the reservation was conservatively retained. read timed out after upload"
+            "The image provider did not return a usable image. Your City Prompt "
+            "credits have been restored. Please try again later."
         ),
     }
     refund_mock.assert_not_awaited()
     finalize_mock.assert_awaited_once()
     assert finalize_mock.await_args.kwargs["status_label"] == "billing unknown"
+    unknown_refund_mock.assert_awaited_once()
+
+
+@pytest.mark.asyncio
+async def test_unknown_provider_refund_is_once_only_and_preserves_global_cap():
+    user = SimpleNamespace(role="editor", render_credits=87)
+    reservation = SimpleNamespace(id=uuid.uuid4(), tokens_spent=13, prompt_preview="billing unknown")
+    db = SimpleNamespace(refresh=AsyncMock(), add=MagicMock(), commit=AsyncMock(), rollback=AsyncMock())
+    for _ in range(2):
+        await direct_api._refund_unknown_direct_render(db, user, reservation, token_cost=13, detail="HTTP 500")
+    assert user.render_credits == 100
+    assert reservation.tokens_spent == 13
+    assert "student refunded; provider cost unknown" in reservation.prompt_preview
+    db.rollback.assert_not_awaited()
+
+
+@pytest.mark.asyncio
+async def test_provider_server_error_preserves_request_id_without_retrying(monkeypatch):
+    request = _request()
+    capture = prepare_direct_3d_capture(request)
+    _RecordingClient.calls = []
+    response = _FakeResponse(500, text="Internal server error")
+    response.headers = {"x-request-id": "req_diagnostic"}
+    _RecordingClient.response = response
+    monkeypatch.setattr(direct_service.httpx, "AsyncClient", _RecordingClient)
+    with pytest.raises(Direct3DProviderError) as caught:
+        await Direct3DRenderService("test-key")._call_openai(request, capture)
+    assert caught.value.provider_status_code == 500
+    assert caught.value.provider_request_id == "req_diagnostic"
+    assert caught.value.billing_status == "unknown"
+    assert len(_RecordingClient.calls) == 1
 
 
 @pytest.mark.asyncio

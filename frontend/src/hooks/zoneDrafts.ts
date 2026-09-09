@@ -10,12 +10,12 @@ export interface ZoneDraft {
   error?: string;
   /** Only identified create rejections prove that this attempt did not save. */
   rejectionStatus?: 400 | 409 | 422;
-  rejectionReason?: 'outside_site_boundary';
+  rejectionReason?: 'outside_site_boundary' | 'boundary_excludes_zones';
 }
 
 export function isDiscardableDraft(draft: ZoneDraft): boolean {
   return draft.rejectionStatus === 400 || draft.rejectionStatus === 422
-    || (draft.rejectionStatus === 409 && draft.rejectionReason === 'outside_site_boundary');
+    || (draft.rejectionStatus === 409 && (draft.rejectionReason === 'outside_site_boundary' || draft.rejectionReason === 'boundary_excludes_zones'));
 }
 
 const CHANGE_EVENT = 'cityprompt:zone-drafts-changed';

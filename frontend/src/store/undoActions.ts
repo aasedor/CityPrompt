@@ -3,6 +3,7 @@ import { siteZonesApi, buildingsApi } from '@/services/api';
 import type { SiteZone, SiteZoneProperties } from '@/types';
 import type { UndoableAction } from './undoRedo';
 import { streetCoordinateUpdate } from '@/features/pickPlace/streetPlacement';
+import { readParkTerrain, type ParkTerrainProfile } from '@/components/viewer/globe/parkTerrain';
 
 // =============================================================================
 // Helpers
@@ -152,23 +153,39 @@ export function createZoneCoordinatesAction(
   newCoords: number[][],
   queryClient: QueryClient,
   savedRevision?: string,
+  previousZone?: SiteZone,
 ): UndoableAction {
   let revision = savedRevision;
   rememberRevision(queryClient, projectId, zoneId, revision);
+  // Ground measurements belong to the outline they measured. A smaller park's
+  // derived grid cannot replace the larger outline's support when undoing.
+  const terrain = (zone?: SiteZone): ParkTerrainProfile | undefined =>
+    zone && readParkTerrain(zone) ? zone.properties?.park_terrain as ParkTerrainProfile : undefined;
+  let beforeTerrain = terrain(previousZone), afterTerrain: ParkTerrainProfile | undefined;
+  const coordinateData = (current: SiteZone | undefined, coordinates: number[][], profile?: ParkTerrainProfile) => {
+    const data = streetCoordinateUpdate(current, coordinates);
+    if (!current || !profile) return data;
+    const properties = { ...current.properties, park_terrain: profile };
+    return readParkTerrain({ ...current, coordinates, properties }) ? { ...data, properties } : data;
+  };
   return {
     projectId,
     label: 'Move zone',
     zoneId,
     undo: async () => {
       const current = queryClient.getQueryData<SiteZone[]>(['site-zones', projectId])?.find(zone => zone.id === zoneId);
-      const zone = await siteZonesApi.update(zoneId, { ...streetCoordinateUpdate(current, prevCoords), expected_updated_at: currentRevision(queryClient, projectId, zoneId, revision) }, { skipHistory: true });
+      const measured = terrain(current);
+      const zone = await siteZonesApi.update(zoneId, { ...coordinateData(current, prevCoords, beforeTerrain), expected_updated_at: currentRevision(queryClient, projectId, zoneId, revision) }, { skipHistory: true });
+      afterTerrain = measured ?? afterTerrain;
       revision = zone.updated_at;
       rememberRevision(queryClient, projectId, zoneId, revision);
       await invalidateZones(queryClient, projectId);
     },
     redo: async () => {
       const current = queryClient.getQueryData<SiteZone[]>(['site-zones', projectId])?.find(zone => zone.id === zoneId);
-      const zone = await siteZonesApi.update(zoneId, { ...streetCoordinateUpdate(current, newCoords), expected_updated_at: currentRevision(queryClient, projectId, zoneId, revision) }, { skipHistory: true });
+      const measured = terrain(current);
+      const zone = await siteZonesApi.update(zoneId, { ...coordinateData(current, newCoords, afterTerrain), expected_updated_at: currentRevision(queryClient, projectId, zoneId, revision) }, { skipHistory: true });
+      beforeTerrain = measured ?? beforeTerrain;
       revision = zone.updated_at;
       rememberRevision(queryClient, projectId, zoneId, revision);
       await invalidateZones(queryClient, projectId);

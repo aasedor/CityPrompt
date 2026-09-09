@@ -1,0 +1,37 @@
+{
+  "sport": "basketball",
+  "playing": [
+    28,
+    15
+  ],
+  "module": [
+    36,
+    23
+  ],
+  "minimumPark": [
+    52,
+    39
+  ],
+  "standardPark": [
+    56,
+    43
+  ],
+  "maxModules": 4,
+  "sha256": "d63ebe52565957885f8287a2ffd61a4b6f2fb5299d9dfec25aa1384a10d3bccb",
+  "bytes": 675884,
+  "reimportBounds": [
+    [
+      -18.0,
+      -11.5,
+      0.0
+    ],
+    [
+      18.0,
+      11.5,
+      4.002500057220459
+    ]
+  ],
+  "meshes": 8,
+  "triangles": 12702,
+  "paidCalls": 0
+}

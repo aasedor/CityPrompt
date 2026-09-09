@@ -4,7 +4,7 @@ import { effectiveRoadWidth, extractRenderableStreetCenterline } from '@/utils/r
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 import { fitParkGroundGuides, resolveParkGroundProfile, resolveParkGuideDimensionsM, type ParkGroundGuide } from './parkGroundProfiles';
-import { resolvePilotStreetSectionProfile } from './streetSectionProfiles';
+import { pedestrianAccessBands, resolvePilotStreetSectionProfile } from './streetSectionProfiles';
 import { computeParkPlacements, resolveParkRecipeForZone } from './parkScatter';
 import { isNeighborhoodParkPilot } from './neighborhoodParkLayout';
 import { PARK_PROGRAM_MODULE_SPEC, resolveParkProgramAnchorLayout } from './parkLegoFamilies';
@@ -258,7 +258,9 @@ function solvePark(park: SiteZone, zones: readonly SiteZone[], settings: ParkAcc
     if (entrance && street.id !== entrance.streetId) continue;
     // Both surfaces must use one site ground contract. Retained sites wait
     // for the shared sampled surface at runtime before showing/capturing paths.
-    if (!preparedSiteContainsZone(boundary, street)) continue;
+    // A road may legitimately continue out to the public network. The actual
+    // access corridor is still checked against the boundary below.
+    if (!preparedSiteContainsZone(boundary, street) && street.properties?.connect_to_public_road !== true) continue;
     const section = resolvePilotStreetSectionProfile(street);
     const center = extractRenderableStreetCenterline(street).map(local);
     if (!section || center.length < 2) continue;
@@ -277,7 +279,7 @@ function solvePark(park: SiteZone, zones: readonly SiteZone[], settings: ParkAcc
           const a = center[i - 1]; const b = center[i]; const length = distance(a, b);
           if (length < EPS) continue;
           const normal: P = [-(b[1] - a[1]) / length, (b[0] - a[0]) / length];
-          for (const band of section.bands.filter((v) => v.kind === 'sidewalk' || v.kind === 'path')) {
+          for (const band of pedestrianAccessBands(section)) {
             const offset = mul(normal, band.centerM * scale);
             const point = project(gateway, add(a, offset), add(b, offset)); const gap = distance(point, gateway);
             if (gap > settings.maxGapM || !pointInside(point, streetRing)) continue;
@@ -298,7 +300,7 @@ function solvePark(park: SiteZone, zones: readonly SiteZone[], settings: ParkAcc
             if (unsafeBands.some((unsafe) => corridorOverlaps(point, gateway, unsafe, half))) continue;
             if (!corridorInside(point, gateway, boundaryRing, half)) continue;
             if ([...obstacles, ...roadPolygons.filter((r) => r.id !== street.id).map((r) => r.ring)].some((obstacle) => hitsObstacle(point, gateway, obstacle, half + settings.obstacleClearanceM))) continue;
-            candidates.push({ street, point, gateway, ingress, band: band.kind as 'sidewalk' | 'path', widthM: settings.pathWidthM, lift: band.liftM, gap });
+            candidates.push({ street, point, gateway, ingress, band: band.kind === 'sidewalk' ? 'sidewalk' : 'path', widthM: settings.pathWidthM, lift: band.liftM, gap });
           }
         }
       }

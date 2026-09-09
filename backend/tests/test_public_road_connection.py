@@ -15,6 +15,15 @@ def test_public_connection_keeps_parcel_and_cross_section():
     assert public_road_connection_fits("road", props, polygon, box(0, 0, 100 / 111320, 100 / 111320))
 
 
+def test_public_connection_tolerates_rounding_at_flat_end_caps():
+    from shapely.affinity import translate
+
+    props, polygon = fixture()
+    parcel = box(0, 0, 100 / 111320, 100 / 111320)
+    assert public_road_connection_fits("road", props, translate(polygon, xoff=0.01 / 111320), parcel)
+    assert not public_road_connection_fits("road", props, translate(polygon, xoff=1 / 111320), parcel)
+
+
 @pytest.mark.parametrize("change", ["disabled", "building", "far", "two_ends", "too_wide", "reentry"])
 def test_public_connection_does_not_bypass_other_site_constraints(change):
     props, polygon = fixture(140 if change == "far" else 110, change != "disabled")

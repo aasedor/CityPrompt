@@ -2,7 +2,7 @@ import type { SiteZone } from '@/types';
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '@/components/viewer/mapEngine/geoUtils';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { effectiveRoadWidth, extractRenderableStreetCenterline } from '@/utils/roadGeometry';
-import { resolvePilotStreetSectionProfile } from '@/components/viewer/globe/streetSectionProfiles';
+import { pedestrianAccessBands, resolvePilotStreetSectionProfile } from '@/components/viewer/globe/streetSectionProfiles';
 import { corridorInside, corridorOverlaps, pointInside } from '@/components/viewer/globe/parkAccessConnections';
 import { rectangleDimensions } from './geometry';
 import { resolvePreparedSiteTerrainForZone } from '@/components/viewer/globe/sitePreparationSurface';
@@ -160,7 +160,7 @@ export function resolvePedestrianConnections(zones: readonly SiteZone[], visible
         for (let i=1;i<line.length;i++) {
           const a=line[i-1], b=line[i], size=length(sub(b,a)); if(size < 0.01) continue;
           const n: Point = [-(b[1]-a[1])/size,(b[0]-a[0])/size];
-          for(const band of section.bands.filter(v=>v.kind==='sidewalk'||v.kind==='path')) {
+          for(const band of pedestrianAccessBands(section)) {
             const target=project(door,add(a,mul(n,band.centerM*scale)),add(b,mul(n,band.centerM*scale)));
             const toward=sub(target,door);
             // A front approach cannot pass back through its own building.

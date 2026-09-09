@@ -33,4 +33,9 @@ describe('pick and reshape geometry',()=>{
     expect(placementProblem(coords,[],boundary)).toBeNull();
     expect(placementProblem(rectangleAt(center,100,100),[],boundary)).toMatch(/boundary/);
   });
+  it('identifies the overlapping neighbour by its saved name or catalogue label',()=>{
+    const coords=rectangleAt(center,20,20);
+    expect(placementProblem(coords,[{...zone(coords),name:'Corner homes'}])).toContain('overlaps Corner homes');
+    expect(placementProblem(coords,[{...zone(coords,'green_space'),properties:{pick_place_asset:'neighbourhood_park'}}])).toContain('overlaps Neighbourhood park');
+  });
 });

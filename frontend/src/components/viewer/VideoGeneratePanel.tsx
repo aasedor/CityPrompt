@@ -1099,7 +1099,7 @@ export function VideoGeneratePanel({
                         )}
                         {typeof selectedAttempt.fidelity_score === 'number' && (
                           <span className={`rounded-full px-2 py-0.5 text-[8px] font-black uppercase ${fidelityTone(selectedAttempt.fidelity_status)}`}>
-                            Fidelity {Math.round(selectedAttempt.fidelity_score)}/100 · {selectedAttempt.fidelity_status}
+                            Image similarity {Math.round(selectedAttempt.fidelity_score)}/100
                           </span>
                         )}
                       </div>
@@ -1133,7 +1133,7 @@ export function VideoGeneratePanel({
                     </div>
                   )}
                   {selectedAttempt.fidelity_samples && selectedAttempt.fidelity_samples.length > 0 && (
-                    <div className="flex items-center gap-1.5 border-t border-[#151515]/10 bg-white px-3 py-2" aria-label="Fidelity samples">
+                    <div className="flex items-center gap-1.5 border-t border-[#151515]/10 bg-white px-3 py-2" aria-label="Image similarity samples" title="Image similarity can be dominated by unchanged surroundings. Check the buildings, parks and streets visually.">
                       <span className="mr-1 text-[8px] font-black uppercase text-[#151515]/45">Scene lock</span>
                       {selectedAttempt.fidelity_samples.map((sample) => (
                         <span key={sample.time_seconds} className={`rounded-full px-1.5 py-0.5 text-[8px] font-black ${fidelityTone(sample.score >= 72 ? 'stable' : sample.score >= 52 ? 'review' : 'drift')}`} title={`${sample.time_seconds.toFixed(0)} seconds: ${sample.score.toFixed(1)}/100`}>
@@ -1164,7 +1164,7 @@ export function VideoGeneratePanel({
                           <span className="min-w-0 flex-1 truncate text-[10px] font-bold capitalize">{videoAttemptLabel(attempt)}</span>
                           {attempt.is_benchmark && <Star size={11} fill="currentColor" aria-label="Benchmark" />}
                           {typeof attempt.fidelity_score === 'number' ? (
-                            <span className={`rounded-full px-1.5 py-0.5 text-[8px] font-black ${fidelityTone(attempt.fidelity_status)}`} title={`Fidelity ${attempt.fidelity_score.toFixed(1)} of 100`}>
+                            <span className={`rounded-full px-1.5 py-0.5 text-[8px] font-black ${fidelityTone(attempt.fidelity_status)}`} title={`Image similarity ${attempt.fidelity_score.toFixed(1)} of 100; not a verification of building identity`}>
                               {Math.round(attempt.fidelity_score)}
                             </span>
                           ) : (
