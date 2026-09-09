@@ -1,0 +1,112 @@
+[
+  {
+    "file": "photomontage-provider_original-38a9e69f.png",
+    "style": "photomontage",
+    "variant": "provider_original",
+    "created_at": "2026-09-09T18:06:57.593991+00:00",
+    "outcome": "review_required",
+    "sha256": "62f555c6806810da2c147ff2aaee0b11a826685097b39a626b896f492d9b9e9c",
+    "bytes": 2811799,
+    "width": 1696,
+    "height": 992
+  },
+  {
+    "file": "watercolour-provider_original-fe6002f3.png",
+    "style": "watercolour",
+    "variant": "provider_original",
+    "created_at": "2026-09-09T18:10:11.918837+00:00",
+    "outcome": "review_required",
+    "sha256": "3b772a4c1804944d16a5a9c9cfb897dc0afafe1420f459913dba6009089082bf",
+    "bytes": 3295431,
+    "width": 1696,
+    "height": 992
+  },
+  {
+    "file": "pen-and-ink-provider_original-62e106d0.png",
+    "style": "pen-and-ink",
+    "variant": "provider_original",
+    "created_at": "2026-09-09T18:14:15.156881+00:00",
+    "outcome": "review_required",
+    "sha256": "1c99fe075e76ab5abb0e212ef2da66678772f138096ebcb3c0ab152b6688d094",
+    "bytes": 3697281,
+    "width": 1696,
+    "height": 992
+  },
+  {
+    "file": "photomontage-provider_original-9d7754cb.png",
+    "style": "photomontage",
+    "variant": "provider_original",
+    "created_at": "2026-09-09T18:19:30.263498+00:00",
+    "outcome": "review_required",
+    "sha256": "899204a95c6d1eda7eb81b1cde6bcc782bef38f6485a998b2738258003fdde23",
+    "bytes": 3097741,
+    "width": 1696,
+    "height": 992
+  },
+  {
+    "file": "site-plan-final-9a85b0a1.png",
+    "style": "site-plan",
+    "variant": "final",
+    "created_at": "2026-09-09T18:23:42.967782+00:00",
+    "outcome": "review_required",
+    "sha256": "4971dd81d958bbdb035f93749627b6b92e01a46ef7678139f45c4460123f5df3",
+    "bytes": 3027516,
+    "width": 1696,
+    "height": 992
+  },
+  {
+    "file": "photomontage-provider_original-9ab55c9b.png",
+    "style": "photomontage",
+    "variant": "provider_original",
+    "created_at": "2026-09-09T18:28:11.033356+00:00",
+    "outcome": "review_required",
+    "sha256": "ec57e5b59b30e6676009348a9ed1bab557325f2184b5cd8d8c8514cfdabce668",
+    "bytes": 2711980,
+    "width": 1696,
+    "height": 992
+  },
+  {
+    "file": "watercolour-provider_original-f1591c1e.png",
+    "style": "watercolour",
+    "variant": "provider_original",
+    "created_at": "2026-09-09T18:31:50.825813+00:00",
+    "outcome": "review_required",
+    "sha256": "4a2ef12b70c26e2b9c7a3df4b7791a75140f44dab5b9eab05d00eb2d88f62c32",
+    "bytes": 3183448,
+    "width": 1696,
+    "height": 992
+  },
+  {
+    "file": "atmospheric-provider_original-958bdd54.png",
+    "style": "atmospheric",
+    "variant": "provider_original",
+    "created_at": "2026-09-09T18:36:14.360999+00:00",
+    "outcome": "review_required",
+    "sha256": "11988b2009be51dd5cfff7c85a102c055951409762825711fb8d0759417dc676",
+    "bytes": 2593070,
+    "width": 1696,
+    "height": 992
+  },
+  {
+    "file": "winter-provider_original-38b89b42.png",
+    "style": "winter",
+    "variant": "provider_original",
+    "created_at": "2026-09-09T18:39:23.822821+00:00",
+    "outcome": "review_required",
+    "sha256": "e0289465c5627c2abfd527ab70cd1ac1b6c80770f107971987a3aaa68279178f",
+    "bytes": 2612943,
+    "width": 1696,
+    "height": 992
+  },
+  {
+    "file": "charcoal-provider_original-0f9cb9e3.png",
+    "style": "charcoal",
+    "variant": "provider_original",
+    "created_at": "2026-09-09T18:42:21.662757+00:00",
+    "outcome": "review_required",
+    "sha256": "1dbf5cfb4dea74c3cd1829b7970c848705b4532c8785ad303b691e622035315b",
+    "bytes": 3587118,
+    "width": 1696,
+    "height": 992
+  }
+]
