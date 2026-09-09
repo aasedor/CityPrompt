@@ -1,0 +1,151 @@
+{
+  "candidate": "glass-tower-twisted-clay-v005",
+  "model_sha256": "932dc2152becbf9e74f2c7d83f314d6f93853be9794c628852a5e4154d010978",
+  "reviewer": "/root/skyscraper_review",
+  "review_date": "2026-09-08",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "decision": "architectural_clay_pass",
+  "scope": "Native architectural clay; no textured keeper, runtime, terrain or engineering approval",
+  "inspected_files": [
+    {
+      "path": "sources/variant_1_angle_60.jpg",
+      "sha256": "c89d3b2eb6a3aa1957016c395a7664906af5856de09ae5ea2ee44a82c6cb39c5",
+      "bytes": 977775,
+      "directly_inspected": true
+    },
+    {
+      "path": "sources/variant_1_angle_90.jpg",
+      "sha256": "5e4cbdb3d430b410a42c4a6fa42075f5c5582ecbf4c7b50df4ec69e69a574e58",
+      "bytes": 876754,
+      "directly_inspected": true
+    },
+    {
+      "path": "sources/variant_1.png",
+      "sha256": "b7f4527dc46471bc0037ea8ceffba904cdab564a75f2c58f52c6bec3ae958ae8",
+      "bytes": 1321374,
+      "directly_inspected": true
+    },
+    {
+      "path": "renders/aerial.png",
+      "sha256": "7c8598913ffde8724c185089c8ed2cfc21263c3af8faeaf4a6bca5b1793c92f7",
+      "bytes": 1002148,
+      "directly_inspected": true
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "sha256": "9264312773e3ae8bf67b5364f1a0ac22b3b8f3a2aa159c357cc80eb5019cfc1e",
+      "bytes": 1091510,
+      "directly_inspected": true
+    },
+    {
+      "path": "renders/facade_close.png",
+      "sha256": "5e491f1422fb31e47044524ea7aec9c56cba92c4c7491bb70cc755bae85ac3a3",
+      "bytes": 1147450,
+      "directly_inspected": true
+    },
+    {
+      "path": "renders/front_corner.png",
+      "sha256": "07b524b3c492a16c865e995929c9139819eb971ed4255d3f9f1643d9086e33db",
+      "bytes": 1018048,
+      "directly_inspected": true
+    },
+    {
+      "path": "renders/front.png",
+      "sha256": "c8c65da5cfe828ea35ca1f3a8da758ec7737594d0fa06a3aef4091815ae89cfa",
+      "bytes": 986478,
+      "directly_inspected": true
+    },
+    {
+      "path": "renders/garden_contact.png",
+      "sha256": "aff21e7c24dfe22eef2ff81dae975091399f90b8c47bec37526821f1abfe6ee0",
+      "bytes": 1156615,
+      "directly_inspected": true
+    },
+    {
+      "path": "renders/garden_structure.png",
+      "sha256": "031664556326336de8fe8ec5f6d3b3a85507a51ace7c8cf096ad0ce295c23032",
+      "bytes": 892862,
+      "directly_inspected": true
+    },
+    {
+      "path": "renders/glass_close.png",
+      "sha256": "f88a2fe7c9a2f55b57be656f744a080639fb9a7394d32770053dcc9d4c101a4f",
+      "bytes": 974582,
+      "directly_inspected": true
+    },
+    {
+      "path": "renders/left_side.png",
+      "sha256": "d19346a8cae29f4f2d1a1f63ef46b57f785ab9ff77dbcfce4429d97cb0c7b68e",
+      "bytes": 985867,
+      "directly_inspected": true
+    },
+    {
+      "path": "renders/lobby_contact.png",
+      "sha256": "7ee048a7e43d3a40193b119bd269f17c890f12bca6c810d4b17b3a1fca9fa979",
+      "bytes": 1033308,
+      "directly_inspected": true
+    },
+    {
+      "path": "renders/rear_side.png",
+      "sha256": "ee095ba3a31a6a096f532380fdedbccbc9bff3bdb78d5e44ee861c89c2dc20f5",
+      "bytes": 1006671,
+      "directly_inspected": true
+    },
+    {
+      "path": "renders/rear.png",
+      "sha256": "238dcf87520fc635a2bdc993eb88fa810402f40e2746a7db5f612edff9216307",
+      "bytes": 967439,
+      "directly_inspected": true
+    },
+    {
+      "path": "renders/right_side.png",
+      "sha256": "fb7f10f94315f1f57ce450c3fc76f84e926ae39e852979db4a5bfb3899f6ef4c",
+      "bytes": 982666,
+      "directly_inspected": true
+    },
+    {
+      "path": "renders/roof_contact.png",
+      "sha256": "5213e1d66aeba6062295306643f5e02320be8fb2204550f862718ed4c5d6f9db",
+      "bytes": 1111601,
+      "directly_inspected": true
+    },
+    {
+      "path": "renders/top.png",
+      "sha256": "c5fc0d19ab36a93eaee553bf4095d27b398cc591e754c9999729a0ec53d35022",
+      "bytes": 974571,
+      "directly_inspected": true
+    },
+    {
+      "path": "boards/all-views-contact.png",
+      "sha256": "240be75b847da92774e63620efcf8510755bcc67d24930b402b5c11aa46dd861",
+      "bytes": 1731767,
+      "directly_inspected": true
+    },
+    {
+      "path": "boards/locked-source-board.png",
+      "sha256": "89265b9ee066ce1c24409de616ce0a13e118704fb14449597a29941358953c99",
+      "bytes": 1543048,
+      "directly_inspected": true
+    },
+    {
+      "path": "boards/phone-construction.png",
+      "sha256": "035e6f82f3ce985eb97c3f642a65e0a905c860c4887256891043a912eac93530",
+      "bytes": 987583,
+      "directly_inspected": true
+    },
+    {
+      "path": "boards/phone-source-comparison.png",
+      "sha256": "1d48da253d12e439eeef34c07b2a3a67ac63b1f5147c170b398a193e0768f06a",
+      "bytes": 1622430,
+      "directly_inspected": true
+    }
+  ],
+  "findings": [],
+  "limitations": [
+    "Room layouts, rear architecture and planting are simplified clay inference.",
+    "Phone whole-tower panels could use a tighter framing; full-resolution views remain usable."
+  ]
+}

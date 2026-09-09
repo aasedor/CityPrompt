@@ -1,0 +1,152 @@
+{
+  "inspected_files": [
+    {
+      "path": "sources/variant_0_angle_60.jpg",
+      "bytes": 914328,
+      "sha256": "0434065992e4852c84088795d9ecf39f05a717fb5854fab7c90780513ecd3e12",
+      "directly_inspected": true
+    },
+    {
+      "path": "sources/variant_0_angle_90.jpg",
+      "bytes": 816095,
+      "sha256": "3ed37b59fd7080f1a9fcd80efc6512632f086630443502c9be72de55eccf2d40",
+      "directly_inspected": true
+    },
+    {
+      "path": "sources/variant_0.png",
+      "bytes": 1301704,
+      "sha256": "a9ee7987a8adf937f5e41f11c89904b8acb234f4393c8cd019d352c45b088a13",
+      "directly_inspected": true
+    },
+    {
+      "path": "renders/aerial.png",
+      "bytes": 996273,
+      "sha256": "65ee1059a1843bb3b3940c6bac2ff2c18b40ff0270b436dccf2a0dd46f03aed6",
+      "directly_inspected": true
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "bytes": 1039867,
+      "sha256": "a1d8f829e03e5476109e2bcbcddfb5b031ada10cb5829c250f78cd90e815842e",
+      "directly_inspected": true
+    },
+    {
+      "path": "renders/facade_close.png",
+      "bytes": 1114238,
+      "sha256": "cdca461f786d08306d9be972f1850f4d271ffcfaab3df784b5bbc0768a45de65",
+      "directly_inspected": true
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 992861,
+      "sha256": "c89302df37af188649e7932ec4924ba221ab804531a07a8a249ff502cc9978ca",
+      "directly_inspected": true
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 946978,
+      "sha256": "f06b514e27119a94c7b3c74e8eddd03b86a226f7e05efafbf6d390d83dd544ea",
+      "directly_inspected": true
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 980349,
+      "sha256": "2e7ad190caa3d09ed9d074c72e9b5b8c6c51f9807c7b8d9a1e8154e27ffd08e6",
+      "directly_inspected": true
+    },
+    {
+      "path": "renders/left_side.png",
+      "bytes": 931866,
+      "sha256": "64c6440332cbdc4b60d0bdec218221d02fb6d8e880d6182eceadb1b0666bc822",
+      "directly_inspected": true
+    },
+    {
+      "path": "renders/lobby_contact.png",
+      "bytes": 998678,
+      "sha256": "375f57c29bffb9e4aa61b7c803f1f4b27957d1cd9b62c5807839ab8f1421d542",
+      "directly_inspected": true
+    },
+    {
+      "path": "renders/rear_side.png",
+      "bytes": 984277,
+      "sha256": "0b03d125653f97f75ebaa5e9e872f8028e89947516ef1e074a9c7b31b47cbab6",
+      "directly_inspected": true
+    },
+    {
+      "path": "renders/rear.png",
+      "bytes": 936063,
+      "sha256": "ae3182f72ece6bb1c57b50e476e561d44020cd4297fd5b6c596ef871bf0ebadc",
+      "directly_inspected": true
+    },
+    {
+      "path": "renders/right_side.png",
+      "bytes": 927076,
+      "sha256": "27fc332c6f9b50f7cacb35e2e83f59ded8b6ed1742a9178042dfe2ffdd8ca82d",
+      "directly_inspected": true
+    },
+    {
+      "path": "renders/roof_contact.png",
+      "bytes": 1150446,
+      "sha256": "6d8cf916b243b2dfa2fe934f1bc96b2de29d69b8dcbffe4e923077c34764d562",
+      "directly_inspected": true
+    },
+    {
+      "path": "renders/top.png",
+      "bytes": 869162,
+      "sha256": "baa745869b54ac9b70ae9ab3e8244fa5a7d526124f8dfc4daec6395b57715a1c",
+      "directly_inspected": true
+    },
+    {
+      "path": "boards/all-views-contact.png",
+      "bytes": 1434927,
+      "sha256": "88cacdca92739b508c0d5d823ed175b0f4d31c8dc2241e2007d58b7df0181a6f",
+      "directly_inspected": true
+    },
+    {
+      "path": "boards/locked-source-board.png",
+      "bytes": 1443972,
+      "sha256": "fc628e6f7fee689b8cea500a2b1859472c393528547755636b572978aafcc6fc",
+      "directly_inspected": true
+    },
+    {
+      "path": "boards/phone-construction.png",
+      "bytes": 995562,
+      "sha256": "53d38aa866910c27d62f18c020da8a48ced5f0c44ef6217219b8420b3df64e89",
+      "directly_inspected": true
+    },
+    {
+      "path": "boards/phone-source-comparison.png",
+      "bytes": 1545599,
+      "sha256": "8d861c9f46bfaea787db57ea6795c64c884c3757cbf0def19493e00dd1760d6c",
+      "directly_inspected": true
+    }
+  ],
+  "runtime_activation_granted": false,
+  "limitations": [
+    "Conceptual native dimensions, not surveyed.",
+    "Rear and office fitout inferred; source podium disagreement explicitly resolved in favour of front identity.",
+    "No textured keeper, engineering, terrain-fit, arbitrary-scaling or runtime activation approval."
+  ],
+  "unresolved_p1": 0,
+  "scope": "RLASM v6.1 exact-variant architectural-clay delivery only",
+  "keeper_approved": false,
+  "closed_blockers": [
+    "Projected centre bay and closed returns",
+    "Full-height right/front mast",
+    "Differentiated lobby entrance doors",
+    "Asymmetric podium portal",
+    "Crown horizontal subdivision"
+  ],
+  "candidate": "glass_tower_podium_modern-clay-v003",
+  "date": "2026-09-08",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "review_markdown": "independent-architectural-clay-review.md",
+  "unresolved_p0": 0,
+  "p2": [
+    "Top framing could be tighter; roof_contact independently proves the roof relationships."
+  ],
+  "decision": "architectural_clay_reviewed",
+  "reviewer": "skyscraper_review independent architectural-clay verifier",
+  "model_sha256": "de6faa2fa3b7abe467b6902767f42e26d0f45813fa696b9aed1abfa5fe2c9c43"
+}

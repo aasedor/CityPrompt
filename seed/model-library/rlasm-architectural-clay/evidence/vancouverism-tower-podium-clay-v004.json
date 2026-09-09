@@ -1,0 +1,152 @@
+{
+  "candidate": "vancouverism-tower-podium-clay-v004",
+  "model_sha256": "ddcdf3b267589c54d0f9d3949157c7745a4efb06a9a13e53685e20ac31e6e172",
+  "reviewer": "/root/skyscraper_review",
+  "review_date": "2026-09-08",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "decision": "architectural_clay_pass",
+  "scope": "Native architectural clay; no textured keeper, runtime, terrain or engineering approval",
+  "inspected_files": [
+    {
+      "path": "sources/variant_0_angle_60.jpg",
+      "sha256": "f213a2624823eb9de7c0f5c3e70d261cc359bba3004c7fef84e7e5e21134c7b6",
+      "bytes": 981065,
+      "directly_inspected": true
+    },
+    {
+      "path": "sources/variant_0_angle_90.jpg",
+      "sha256": "a06d2b25d445cf20678ec063d72f43099b64d78e22cb1203dcfba2816549e2ae",
+      "bytes": 932733,
+      "directly_inspected": true
+    },
+    {
+      "path": "sources/variant_0.png",
+      "sha256": "5a3076ec759214b506e653f4e82b7397b7c61c98ba54440629e1fbff8e502a6a",
+      "bytes": 1268249,
+      "directly_inspected": true
+    },
+    {
+      "path": "renders/aerial.png",
+      "sha256": "1bfc529748e5908e672d89714a0f1ff9ffab48004f0b4d543983931b2dd49ef5",
+      "bytes": 1077844,
+      "directly_inspected": true
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "sha256": "21a123499aa13e6569b0908f1f469ae284f5515d3eba3bcf1b1829ff04ba5e78",
+      "bytes": 1223895,
+      "directly_inspected": true
+    },
+    {
+      "path": "renders/facade_close.png",
+      "sha256": "df02b79ee90b20808f511b74a1a55a6ea7a298d364461c0796513cccb36eadf6",
+      "bytes": 1209450,
+      "directly_inspected": true
+    },
+    {
+      "path": "renders/front_corner.png",
+      "sha256": "16ba302d0f3327acb3a60b8651ccccebf10f81d44ee46c3328d7655eea1a5fe8",
+      "bytes": 1078503,
+      "directly_inspected": true
+    },
+    {
+      "path": "renders/front_right.png",
+      "sha256": "cf24598bd4f0565774e45cd182ee51f60061460087bcde290a74422a75f3068e",
+      "bytes": 1087644,
+      "directly_inspected": true
+    },
+    {
+      "path": "renders/front.png",
+      "sha256": "de24b3d95a7ff3d00b947b19ac1ec5c88042d5a14507d41a164b042a5442bdfc",
+      "bytes": 1055094,
+      "directly_inspected": true
+    },
+    {
+      "path": "renders/glass_close.png",
+      "sha256": "c13ce5b1cfc1000f1b5cae64e8191e8c113fc7c0a6baf395e794586da5d0187e",
+      "bytes": 973146,
+      "directly_inspected": true
+    },
+    {
+      "path": "renders/left_side.png",
+      "sha256": "2a9fbef82a1d76d474964f68d43bf99f9b5a70e4286bf0e041835ae9d64f86ee",
+      "bytes": 986639,
+      "directly_inspected": true
+    },
+    {
+      "path": "renders/lobby_contact.png",
+      "sha256": "de867453db29fc7271c37e7631c80e7e898622c6f0b34b92932202118ee4b172",
+      "bytes": 1040317,
+      "directly_inspected": true
+    },
+    {
+      "path": "renders/rear_side.png",
+      "sha256": "4f1f2b4d63ff095f60d2ebf1395fa48f074b0bdb1b8ef4fa797e0cae67fcab31",
+      "bytes": 1087625,
+      "directly_inspected": true
+    },
+    {
+      "path": "renders/rear.png",
+      "sha256": "d7962559cf1b7d26777c04277aaea20a05de2102de6ebe7c88ff2bfd4152ec71",
+      "bytes": 1020428,
+      "directly_inspected": true
+    },
+    {
+      "path": "renders/ribbon_contact.png",
+      "sha256": "8a66ccc13231d46e056bb4450fb3d72c856ba85a3f67ab790c16134c69ad3d35",
+      "bytes": 1162581,
+      "directly_inspected": true
+    },
+    {
+      "path": "renders/right_side.png",
+      "sha256": "779fe2e89ecfb7c90ed405754d45d11b3d0e3be50e6c2b26052006450f52220b",
+      "bytes": 1008888,
+      "directly_inspected": true
+    },
+    {
+      "path": "renders/roof_contact.png",
+      "sha256": "8abd8136e4a258be3a7af28c5bca1e890fba1c5e4ef0d7a0c48bad60ea8db3ec",
+      "bytes": 1117393,
+      "directly_inspected": true
+    },
+    {
+      "path": "renders/top.png",
+      "sha256": "7a9e376bb4489458889437a7277d8db36f00fc5ebb57bc5a82907dda8cbf540a",
+      "bytes": 930279,
+      "directly_inspected": true
+    },
+    {
+      "path": "boards/all-views-contact.png",
+      "sha256": "06be3113655102549f156d61abaa654183b5e713e0d8563d1559270d97d1a15b",
+      "bytes": 2100708,
+      "directly_inspected": true
+    },
+    {
+      "path": "boards/locked-source-board.png",
+      "sha256": "ca3459a5cbab874454f1ab1d840ba1c33e08e8e4c4f707ff94bf4ba680d54ad7",
+      "bytes": 1523676,
+      "directly_inspected": true
+    },
+    {
+      "path": "boards/phone-construction.png",
+      "sha256": "962a2768e2c9a041dc8dc33030779ca7524af90fa64e80f8bb9703956579d998",
+      "bytes": 1115169,
+      "directly_inspected": true
+    },
+    {
+      "path": "boards/phone-source-comparison.png",
+      "sha256": "d0c314997735a7f8eeed51366248c77c96fb0dd3eecb03caf4f59b3056d08f8c",
+      "bytes": 1672839,
+      "directly_inspected": true
+    }
+  ],
+  "findings": [],
+  "limitations": [
+    "Front source cropped; oblique governs full native height.",
+    "Rear and room layouts and low-detail planting are inferred.",
+    "Source ribbon simplified to a rounded frame; broad asymmetry is less pronounced (P2)."
+  ]
+}

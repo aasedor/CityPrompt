@@ -1,0 +1,459 @@
+{
+  "date": "2026-09-09",
+  "project_id": "9b77dbcd-b21b-4dbf-a425-216db44ed183",
+  "origin": "http://127.0.0.1:5174",
+  "tested_by": "Codex local runtime verification",
+  "grounding_issues": [],
+  "browser_page_errors": [],
+  "model_bindings": [
+    {
+      "building_id": "8731cfc9-aaf2-4567-80d9-64600c39abd9",
+      "instance": {
+        "lod": 0,
+        "role": "assembled",
+        "level": 0,
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "family": "blue-glass-office-tower",
+        "asset_id": "818f0ff3-ba54-5b23-abfa-daeca44a731e",
+        "position": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "model_url": "/api/v1/files/library/rlasm-architectural-clay/glass_tower_podium_modern-clay-v003.glb",
+        "asset_name": "Glass tower with podium \u2014 Blue glass office tower \u2014 RLASM Clay",
+        "segment_id": "landmark",
+        "variant_key": "glass_tower_blue_reflective",
+        "rotation_degrees": 0.0,
+        "native_dimensions_m": [
+          32.1200008392334,
+          30.074999809265137,
+          99.0
+        ]
+      }
+    },
+    {
+      "building_id": "7d90b5e7-0c68-4799-aad0-c5a5c68ae621",
+      "instance": {
+        "lod": 0,
+        "role": "assembled",
+        "level": 0,
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "family": "twisting-glass-sky-garden-tower",
+        "asset_id": "8a6f6ef0-e33f-5322-885c-5efe86d0662d",
+        "position": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "model_url": "/api/v1/files/library/rlasm-architectural-clay/glass-tower-twisted-clay-v005.glb",
+        "asset_name": "Glass tower with podium \u2014 Twisting glass tower with sky garden \u2014 RLASM Clay",
+        "segment_id": "landmark",
+        "variant_key": "glass_tower_twisted",
+        "rotation_degrees": 0.0,
+        "native_dimensions_m": [
+          43.4902229309082,
+          44.02606964111328,
+          147.6999969482422
+        ]
+      }
+    },
+    {
+      "building_id": "0d1ef8c6-d0a2-43ba-8521-924cae853717",
+      "instance": {
+        "lod": 0,
+        "role": "assembled",
+        "level": 0,
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "family": "vancouver-balcony-podium-tower",
+        "asset_id": "1d139e82-ca8a-5784-901a-58a1f74f338b",
+        "position": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "model_url": "/api/v1/files/library/rlasm-architectural-clay/vancouverism-tower-podium-clay-v004.glb",
+        "asset_name": "Vancouver tower with podium \u2014 Vancouver balcony and podium tower \u2014 RLASM Clay",
+        "segment_id": "landmark",
+        "variant_key": "vancouverism_classic",
+        "rotation_degrees": 0.0,
+        "native_dimensions_m": [
+          48.05500030517578,
+          40.05500030517578,
+          58.79999923706055
+        ]
+      }
+    }
+  ],
+  "captures": {
+    "overview": {
+      "path": "C:\\dev-artifacts\\CityPrompt\\roads-rlasm-towers-2026-09-09\\overview-capture.json",
+      "sha256": "4ca22d1fc738e403f42d1e98f8b31bb4948952ffa6edaaec47402d91c0525ac6",
+      "camera": {
+        "aspect": 2.2531194295900177,
+        "far": 180374.7863958338,
+        "fov": 75,
+        "matrix_world": [
+          0.9624641348214013,
+          -0.2244626709636067,
+          0.1525755502247179,
+          0,
+          -0.17923640626639872,
+          -0.1035237910373843,
+          0.9783440782045724,
+          0,
+          -0.2038065255363484,
+          -0.968968180093202,
+          -0.13986981845870172,
+          0,
+          -1643655.180571996,
+          -3670214.913850789,
+          4935638.034995243,
+          1
+        ],
+        "near": 1,
+        "position": [
+          -1643655.180571996,
+          -3670214.913850789,
+          4935638.034995243
+        ],
+        "projection": "perspective",
+        "projection_matrix": [
+          0.5784093624714529,
+          0,
+          0,
+          0,
+          0,
+          1.3032253728412058,
+          0,
+          0,
+          0,
+          0,
+          -1.0000110880856912,
+          -1,
+          0,
+          0,
+          -2.0000110880856914,
+          0
+        ],
+        "quaternion": [
+          0.7426065149723451,
+          -0.13590611888351103,
+          -0.017247012475219932,
+          0.6555666490383177
+        ],
+        "zoom": 1
+      },
+      "width": 1264,
+      "height": 561,
+      "instancePixelCounts": {
+        "zone:12d769ff-dacb-4349-a015-bdcfc7e4baee:building": 22186,
+        "zone:12d769ff-dacb-4349-a015-bdcfc7e4baee:ground": 5835,
+        "zone:272a01af-2190-4b69-9283-da0de22b6428:building": 11262,
+        "zone:272a01af-2190-4b69-9283-da0de22b6428:ground": 1001,
+        "zone:cd1d8c0e-5e08-4b46-a0ee-78489485f179:building": 6361,
+        "zone:cd1d8c0e-5e08-4b46-a0ee-78489485f179:ground": 1137
+      },
+      "instanceIdManifest": {
+        "#181834": {
+          "building_id": "0d1ef8c6-d0a2-43ba-8521-924cae853717",
+          "instance_id": "zone:272a01af-2190-4b69-9283-da0de22b6428:ground",
+          "semantic_class": "ground",
+          "zone_id": "272a01af-2190-4b69-9283-da0de22b6428"
+        },
+        "#181850": {
+          "building_id": "7d90b5e7-0c68-4799-aad0-c5a5c68ae621",
+          "instance_id": "zone:12d769ff-dacb-4349-a015-bdcfc7e4baee:ground",
+          "semantic_class": "ground",
+          "zone_id": "12d769ff-dacb-4349-a015-bdcfc7e4baee"
+        },
+        "#18186C": {
+          "building_id": "8731cfc9-aaf2-4567-80d9-64600c39abd9",
+          "instance_id": "zone:cd1d8c0e-5e08-4b46-a0ee-78489485f179:ground",
+          "semantic_class": "ground",
+          "zone_id": "cd1d8c0e-5e08-4b46-a0ee-78489485f179"
+        },
+        "#181888": {
+          "building_id": "7d90b5e7-0c68-4799-aad0-c5a5c68ae621",
+          "instance_id": "zone:12d769ff-dacb-4349-a015-bdcfc7e4baee:building",
+          "semantic_class": "building",
+          "zone_id": "12d769ff-dacb-4349-a015-bdcfc7e4baee"
+        },
+        "#1818A4": {
+          "building_id": "8731cfc9-aaf2-4567-80d9-64600c39abd9",
+          "instance_id": "zone:cd1d8c0e-5e08-4b46-a0ee-78489485f179:building",
+          "semantic_class": "building",
+          "zone_id": "cd1d8c0e-5e08-4b46-a0ee-78489485f179"
+        },
+        "#1818C0": {
+          "building_id": "0d1ef8c6-d0a2-43ba-8521-924cae853717",
+          "instance_id": "zone:272a01af-2190-4b69-9283-da0de22b6428:building",
+          "semantic_class": "building",
+          "zone_id": "272a01af-2190-4b69-9283-da0de22b6428"
+        }
+      }
+    },
+    "low": {
+      "path": "C:\\dev-artifacts\\CityPrompt\\roads-rlasm-towers-2026-09-09\\low-capture.json",
+      "sha256": "7d9ae2d168a9891a415b1ebea5ea68ee658601b1806974a14db4dbe1aca35bf5",
+      "camera": {
+        "aspect": 2.2531194295900177,
+        "far": 180374.78639206296,
+        "fov": 75,
+        "matrix_world": [
+          0.9467242492223892,
+          -0.3110586898178588,
+          0.08340076392396166,
+          0,
+          -0.28688633340821856,
+          -0.6969322648069063,
+          0.657253109520757,
+          0,
+          -0.14631960783808762,
+          -0.6461639960257093,
+          -0.7490411621547874,
+          0,
+          -1643632.4354027729,
+          -3670276.0462819375,
+          4935462.043380018,
+          1
+        ],
+        "near": 1,
+        "position": [
+          -1643632.4354027729,
+          -3670276.0462819375,
+          4935462.043380018
+        ],
+        "projection": "perspective",
+        "projection_matrix": [
+          0.5784093624714529,
+          0,
+          0,
+          0,
+          0,
+          1.3032253728412058,
+          0,
+          0,
+          0,
+          0,
+          -1.0000110880856914,
+          -1,
+          0,
+          0,
+          -2.0000110880856914,
+          0
+        ],
+        "quaternion": [
+          0.920963853278738,
+          -0.16231500864483547,
+          -0.017079618187545473,
+          0.35381874676898295
+        ],
+        "zoom": 1
+      },
+      "width": 1264,
+      "height": 561,
+      "instancePixelCounts": {
+        "zone:12d769ff-dacb-4349-a015-bdcfc7e4baee:building": 8264,
+        "zone:12d769ff-dacb-4349-a015-bdcfc7e4baee:ground": 814,
+        "zone:272a01af-2190-4b69-9283-da0de22b6428:building": 4314,
+        "zone:272a01af-2190-4b69-9283-da0de22b6428:ground": 119,
+        "zone:cd1d8c0e-5e08-4b46-a0ee-78489485f179:building": 1332,
+        "zone:cd1d8c0e-5e08-4b46-a0ee-78489485f179:ground": 76
+      },
+      "instanceIdManifest": {
+        "#181834": {
+          "building_id": "0d1ef8c6-d0a2-43ba-8521-924cae853717",
+          "instance_id": "zone:272a01af-2190-4b69-9283-da0de22b6428:ground",
+          "semantic_class": "ground",
+          "zone_id": "272a01af-2190-4b69-9283-da0de22b6428"
+        },
+        "#181850": {
+          "building_id": "7d90b5e7-0c68-4799-aad0-c5a5c68ae621",
+          "instance_id": "zone:12d769ff-dacb-4349-a015-bdcfc7e4baee:ground",
+          "semantic_class": "ground",
+          "zone_id": "12d769ff-dacb-4349-a015-bdcfc7e4baee"
+        },
+        "#18186C": {
+          "building_id": "8731cfc9-aaf2-4567-80d9-64600c39abd9",
+          "instance_id": "zone:cd1d8c0e-5e08-4b46-a0ee-78489485f179:ground",
+          "semantic_class": "ground",
+          "zone_id": "cd1d8c0e-5e08-4b46-a0ee-78489485f179"
+        },
+        "#181888": {
+          "building_id": "7d90b5e7-0c68-4799-aad0-c5a5c68ae621",
+          "instance_id": "zone:12d769ff-dacb-4349-a015-bdcfc7e4baee:building",
+          "semantic_class": "building",
+          "zone_id": "12d769ff-dacb-4349-a015-bdcfc7e4baee"
+        },
+        "#1818A4": {
+          "building_id": "8731cfc9-aaf2-4567-80d9-64600c39abd9",
+          "instance_id": "zone:cd1d8c0e-5e08-4b46-a0ee-78489485f179:building",
+          "semantic_class": "building",
+          "zone_id": "cd1d8c0e-5e08-4b46-a0ee-78489485f179"
+        },
+        "#1818C0": {
+          "building_id": "0d1ef8c6-d0a2-43ba-8521-924cae853717",
+          "instance_id": "zone:272a01af-2190-4b69-9283-da0de22b6428:building",
+          "semantic_class": "building",
+          "zone_id": "272a01af-2190-4b69-9283-da0de22b6428"
+        }
+      }
+    },
+    "close": {
+      "path": "C:\\dev-artifacts\\CityPrompt\\roads-rlasm-towers-2026-09-09\\close-capture.json",
+      "sha256": "df81ced7d0e1583520e33072c6f53ecdbfcf3554dc289762381e2059eabd0e53",
+      "camera": {
+        "aspect": 2.2531194295900177,
+        "far": 180374.78639206296,
+        "fov": 75,
+        "matrix_world": [
+          0.9467242492223892,
+          -0.3110586898178588,
+          0.08340076392396166,
+          0,
+          -0.28688633340821856,
+          -0.6969322648069063,
+          0.657253109520757,
+          0,
+          -0.14631960783808762,
+          -0.6461639960257093,
+          -0.7490411621547874,
+          0,
+          -1643632.4354027729,
+          -3670276.0462819375,
+          4935462.043380018,
+          1
+        ],
+        "near": 1,
+        "position": [
+          -1643632.4354027729,
+          -3670276.0462819375,
+          4935462.043380018
+        ],
+        "projection": "perspective",
+        "projection_matrix": [
+          1.1568187249429058,
+          0,
+          0,
+          0,
+          0,
+          2.6064507456824115,
+          0,
+          0,
+          0,
+          0,
+          -1.0000110880856914,
+          -1,
+          0,
+          0,
+          -2.0000110880856914,
+          0
+        ],
+        "quaternion": [
+          0.920963853278738,
+          -0.16231500864483547,
+          -0.017079618187545473,
+          0.35381874676898295
+        ],
+        "zoom": 2
+      },
+      "width": 1264,
+      "height": 561,
+      "instancePixelCounts": {
+        "zone:12d769ff-dacb-4349-a015-bdcfc7e4baee:building": 33059,
+        "zone:12d769ff-dacb-4349-a015-bdcfc7e4baee:ground": 3254,
+        "zone:272a01af-2190-4b69-9283-da0de22b6428:building": 17050,
+        "zone:272a01af-2190-4b69-9283-da0de22b6428:ground": 317,
+        "zone:cd1d8c0e-5e08-4b46-a0ee-78489485f179:building": 5408,
+        "zone:cd1d8c0e-5e08-4b46-a0ee-78489485f179:ground": 305
+      },
+      "instanceIdManifest": {
+        "#181834": {
+          "building_id": "0d1ef8c6-d0a2-43ba-8521-924cae853717",
+          "instance_id": "zone:272a01af-2190-4b69-9283-da0de22b6428:ground",
+          "semantic_class": "ground",
+          "zone_id": "272a01af-2190-4b69-9283-da0de22b6428"
+        },
+        "#181850": {
+          "building_id": "7d90b5e7-0c68-4799-aad0-c5a5c68ae621",
+          "instance_id": "zone:12d769ff-dacb-4349-a015-bdcfc7e4baee:ground",
+          "semantic_class": "ground",
+          "zone_id": "12d769ff-dacb-4349-a015-bdcfc7e4baee"
+        },
+        "#18186C": {
+          "building_id": "8731cfc9-aaf2-4567-80d9-64600c39abd9",
+          "instance_id": "zone:cd1d8c0e-5e08-4b46-a0ee-78489485f179:ground",
+          "semantic_class": "ground",
+          "zone_id": "cd1d8c0e-5e08-4b46-a0ee-78489485f179"
+        },
+        "#181888": {
+          "building_id": "7d90b5e7-0c68-4799-aad0-c5a5c68ae621",
+          "instance_id": "zone:12d769ff-dacb-4349-a015-bdcfc7e4baee:building",
+          "semantic_class": "building",
+          "zone_id": "12d769ff-dacb-4349-a015-bdcfc7e4baee"
+        },
+        "#1818A4": {
+          "building_id": "8731cfc9-aaf2-4567-80d9-64600c39abd9",
+          "instance_id": "zone:cd1d8c0e-5e08-4b46-a0ee-78489485f179:building",
+          "semantic_class": "building",
+          "zone_id": "cd1d8c0e-5e08-4b46-a0ee-78489485f179"
+        },
+        "#1818C0": {
+          "building_id": "0d1ef8c6-d0a2-43ba-8521-924cae853717",
+          "instance_id": "zone:272a01af-2190-4b69-9283-da0de22b6428:building",
+          "semantic_class": "building",
+          "zone_id": "272a01af-2190-4b69-9283-da0de22b6428"
+        }
+      }
+    }
+  },
+  "plot_trials": {
+    "blue": {
+      "small": [
+        36,
+        34
+      ],
+      "large": [
+        60,
+        55
+      ],
+      "rotation_degrees": 15
+    },
+    "vancouver": {
+      "small": [
+        52,
+        44
+      ],
+      "large": [
+        80,
+        70
+      ],
+      "rotation_degrees": 20
+    },
+    "twisted": {
+      "small": [
+        49,
+        49
+      ],
+      "large": [
+        75,
+        75
+      ],
+      "rotation_degrees": 25
+    }
+  },
+  "scope": "Existing independently reviewed GLBs, exact-byte installed readback; catalogue cards, UI reshape, reload, native scale, ground contact, and same-camera capture. No new geometry approval or paid render."
+}

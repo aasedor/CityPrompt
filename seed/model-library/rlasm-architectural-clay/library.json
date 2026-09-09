@@ -1,7 +1,7 @@
 {
   "schema": "cityprompt.rlasm-architectural-clay-library@1",
   "created_at": "2026-09-06T00:00:00Z",
-  "updated_at": "2026-09-06",
+  "updated_at": "2026-09-09",
   "method": "RLASM",
   "method_version": "6.1",
   "delivery_format": "architectural_clay",
@@ -528,6 +528,291 @@
       "review": {
         "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/calgary-beltline-mid-rise-clay-v003.json",
         "sha256": "057d02506643b20f8951d7c196660084e459d734f73a34981fdc43753687edb6",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "glass_tower_podium_modern-clay-v003",
+      "family": "blue-glass-office-tower",
+      "archetype_id": "glass_tower_podium_modern",
+      "archetype_label": "Glass tower with podium",
+      "variant_id": "glass_tower_blue_reflective",
+      "variant_label": "Blue glass office tower",
+      "runtime_enabled": true,
+      "native_floors": 25,
+      "design_dimensions_m": {
+        "width": 32.0,
+        "depth": 30.0,
+        "height": 99.0
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/glass_tower_podium_modern/variant_0.png",
+          "bytes": 1301704,
+          "sha256": "a9ee7987a8adf937f5e41f11c89904b8acb234f4393c8cd019d352c45b088a13"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/glass_tower_podium_modern/variant_0_angle_60.jpg",
+          "bytes": 914328,
+          "sha256": "0434065992e4852c84088795d9ecf39f05a717fb5854fab7c90780513ecd3e12"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/glass_tower_podium_modern/variant_0_angle_90.jpg",
+          "bytes": 816095,
+          "sha256": "3ed37b59fd7080f1a9fcd80efc6512632f086630443502c9be72de55eccf2d40"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\glass-v003",
+      "picker": {
+        "id": "clay_blue_glass_office_tower",
+        "description": "A 25-storey blue glass office tower with a glazed lobby, entrance canopy and rooftop crown.",
+        "group_id": "offices",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Resize the plot around the complete tower. Its floors, canopy and crown keep their original proportions.",
+        "width": 36,
+        "depth": 34,
+        "max_size": 160
+      },
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Let’s add Procedural road network, One-click RLASM generation repair, and Three tower activations",
+        "date": "2026-09-09",
+        "model_sha256": "de6faa2fa3b7abe467b6902767f42e26d0f45813fa696b9aed1abfa5fe2c9c43"
+      },
+      "local_trial": {
+        "model_sha256": "de6faa2fa3b7abe467b6902767f42e26d0f45813fa696b9aed1abfa5fe2c9c43",
+        "project_url": "http://127.0.0.1:5174/projects/9b77dbcd-b21b-4dbf-a425-216db44ed183",
+        "tested_by": "Codex local runtime verification",
+        "tested_at": "2026-09-09",
+        "evidence": [
+          "docs/TOWER_ACTIVATION_TRIAL_2026-09-09.json",
+          "docs/ROADS_RLASM_TOWERS_HANDOFF_2026-09-09.md",
+          "C:\\dev-artifacts\\CityPrompt\\roads-rlasm-towers-2026-09-09"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/glass_tower_podium_modern-clay-v003.glb",
+        "bytes": 4941064,
+        "sha256": "de6faa2fa3b7abe467b6902767f42e26d0f45813fa696b9aed1abfa5fe2c9c43",
+        "native_dimensions_m": {
+          "width": 32.1200008392334,
+          "height": 99.0,
+          "depth": 30.074999809265137
+        },
+        "mesh_count": 8,
+        "material_count": 8,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/glass_tower_podium_modern-clay-v003.json",
+        "sha256": "230740421d679916b9320dfc756045f735b9d30ee99e53a085b4f342d47ee28a",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "vancouverism-tower-podium-clay-v004",
+      "family": "vancouver-balcony-podium-tower",
+      "archetype_id": "vancouverism_tower_podium",
+      "archetype_label": "Vancouver tower with podium",
+      "variant_id": "vancouverism_classic",
+      "variant_label": "Vancouver balcony and podium tower",
+      "runtime_enabled": true,
+      "native_floors": 16,
+      "design_dimensions_m": {
+        "width": 48.0,
+        "depth": 40.0,
+        "height": 58.8
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/vancouverism-tower-podium/variant_0.png",
+          "bytes": 1268249,
+          "sha256": "5a3076ec759214b506e653f4e82b7397b7c61c98ba54440629e1fbff8e502a6a"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/vancouverism-tower-podium/variant_0_angle_60.jpg",
+          "bytes": 981065,
+          "sha256": "f213a2624823eb9de7c0f5c3e70d261cc359bba3004c7fef84e7e5e21134c7b6"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/vancouverism-tower-podium/variant_0_angle_90.jpg",
+          "bytes": 932733,
+          "sha256": "a06d2b25d445cf20678ec063d72f43099b64d78e22cb1203dcfba2816549e2ae"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\vancouver-v004",
+      "picker": {
+        "id": "clay_vancouver_balcony_podium_tower",
+        "description": "A 16-storey residential tower with rounded balconies, a landscaped podium and a lower shop wing.",
+        "group_id": "towers",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Resize the plot around this complete tower. Floors, terraces and structural details retain their authored proportions.",
+        "width": 52,
+        "depth": 44,
+        "max_size": 180
+      },
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Let’s add Procedural road network, One-click RLASM generation repair, and Three tower activations",
+        "date": "2026-09-09",
+        "model_sha256": "ddcdf3b267589c54d0f9d3949157c7745a4efb06a9a13e53685e20ac31e6e172"
+      },
+      "local_trial": {
+        "model_sha256": "ddcdf3b267589c54d0f9d3949157c7745a4efb06a9a13e53685e20ac31e6e172",
+        "project_url": "http://127.0.0.1:5174/projects/9b77dbcd-b21b-4dbf-a425-216db44ed183",
+        "tested_by": "Codex local runtime verification",
+        "tested_at": "2026-09-09",
+        "evidence": [
+          "docs/TOWER_ACTIVATION_TRIAL_2026-09-09.json",
+          "docs/ROADS_RLASM_TOWERS_HANDOFF_2026-09-09.md",
+          "C:\\dev-artifacts\\CityPrompt\\roads-rlasm-towers-2026-09-09"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/vancouverism-tower-podium-clay-v004.glb",
+        "bytes": 6919128,
+        "sha256": "ddcdf3b267589c54d0f9d3949157c7745a4efb06a9a13e53685e20ac31e6e172",
+        "native_dimensions_m": {
+          "width": 48.05500030517578,
+          "height": 58.79999923706055,
+          "depth": 40.05500030517578
+        },
+        "mesh_count": 11,
+        "material_count": 11,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/vancouverism-tower-podium-clay-v004.json",
+        "sha256": "4a7e7a536028a1b9ebc20c9e07c5f18db2d226df411217381cd0d8e9945dc6e1",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "glass-tower-twisted-clay-v005",
+      "family": "twisting-glass-sky-garden-tower",
+      "archetype_id": "glass_tower_podium_modern",
+      "archetype_label": "Glass tower with podium",
+      "variant_id": "glass_tower_twisted",
+      "variant_label": "Twisting glass tower with sky garden",
+      "runtime_enabled": true,
+      "native_floors": 40,
+      "design_dimensions_m": {
+        "width": 46.0,
+        "depth": 46.0,
+        "height": 147.7
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/glass_tower_podium_modern/variant_1.png",
+          "bytes": 1321374,
+          "sha256": "b7f4527dc46471bc0037ea8ceffba904cdab564a75f2c58f52c6bec3ae958ae8"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/glass_tower_podium_modern/variant_1_angle_60.jpg",
+          "bytes": 977775,
+          "sha256": "c89d3b2eb6a3aa1957016c395a7664906af5856de09ae5ea2ee44a82c6cb39c5"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/glass_tower_podium_modern/variant_1_angle_90.jpg",
+          "bytes": 876754,
+          "sha256": "5e4cbdb3d430b410a42c4a6fa42075f5c5582ecbf4c7b50df4ec69e69a574e58"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\twisted-v005",
+      "picker": {
+        "id": "clay_twisting_glass_sky_garden_tower",
+        "description": "A 40-level twisting glass tower with a shared sky garden, trussed lobby and a rooftop garden.",
+        "group_id": "offices",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Resize the plot around this complete tower. Floors, terraces and structural details retain their authored proportions.",
+        "width": 49,
+        "depth": 49,
+        "max_size": 180
+      },
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Let’s add Procedural road network, One-click RLASM generation repair, and Three tower activations",
+        "date": "2026-09-09",
+        "model_sha256": "932dc2152becbf9e74f2c7d83f314d6f93853be9794c628852a5e4154d010978"
+      },
+      "local_trial": {
+        "model_sha256": "932dc2152becbf9e74f2c7d83f314d6f93853be9794c628852a5e4154d010978",
+        "project_url": "http://127.0.0.1:5174/projects/9b77dbcd-b21b-4dbf-a425-216db44ed183",
+        "tested_by": "Codex local runtime verification",
+        "tested_at": "2026-09-09",
+        "evidence": [
+          "docs/TOWER_ACTIVATION_TRIAL_2026-09-09.json",
+          "docs/ROADS_RLASM_TOWERS_HANDOFF_2026-09-09.md",
+          "C:\\dev-artifacts\\CityPrompt\\roads-rlasm-towers-2026-09-09"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/glass-tower-twisted-clay-v005.glb",
+        "bytes": 11924336,
+        "sha256": "932dc2152becbf9e74f2c7d83f314d6f93853be9794c628852a5e4154d010978",
+        "native_dimensions_m": {
+          "width": 43.4902229309082,
+          "height": 147.6999969482422,
+          "depth": 44.02606964111328
+        },
+        "mesh_count": 10,
+        "material_count": 10,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/glass-tower-twisted-clay-v005.json",
+        "sha256": "fede6de6d1b2b7db4537e9f50ffb7ad21a6e133db92829b0999bd572ef231f51",
         "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
         "unresolved_p0": 0,
         "unresolved_p1": 0

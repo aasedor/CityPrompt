@@ -241,5 +241,125 @@ export const PUBLISHED_BUILDING_ASSETS: PlaceAsset[] = [
       "floor_count": 5,
       "native_plot_axes": true
     }
+  },
+  {
+    "id": "clay_blue_glass_office_tower",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Blue glass office tower",
+    "description": "A 25-storey blue glass office tower with a glazed lobby, entrance canopy and rooftop crown.",
+    "thumbnail": "/archetypes/buildings/glass_tower_podium_modern/variant_0.png",
+    "model": {
+      "variantId": "glass_tower_blue_reflective",
+      "revision": "glass_tower_podium_modern-clay-v003",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "offices",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 36.0,
+    "depth": 34.0,
+    "minWidth": 36.0,
+    "minDepth": 34.0,
+    "maxSize": 160.0,
+    "nativeDimensions": [
+      32.1200008392334,
+      30.074999809265137,
+      99.0
+    ],
+    "reshapeDescription": "Resize the plot around the complete tower. Its floors, canopy and crown keep their original proportions.",
+    "properties": {
+      "building_archetype_id": "glass_tower_podium_modern",
+      "development_archetype_id": "glass_tower_podium_modern",
+      "development_selected_variant_id": "glass_tower_blue_reflective",
+      "development_archetype_label": "Blue glass office tower",
+      "floors": 25,
+      "floor_count": 25,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "clay_vancouver_balcony_podium_tower",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Vancouver balcony and podium tower",
+    "description": "A 16-storey residential tower with rounded balconies, a landscaped podium and a lower shop wing.",
+    "thumbnail": "/archetypes/buildings/vancouverism-tower-podium/variant_0.png",
+    "model": {
+      "variantId": "vancouverism_classic",
+      "revision": "vancouverism-tower-podium-clay-v004",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "towers",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 52.0,
+    "depth": 44.0,
+    "minWidth": 52.0,
+    "minDepth": 44.0,
+    "maxSize": 180.0,
+    "nativeDimensions": [
+      48.05500030517578,
+      40.05500030517578,
+      58.79999923706055
+    ],
+    "reshapeDescription": "Resize the plot around this complete tower. Floors, terraces and structural details retain their authored proportions.",
+    "properties": {
+      "building_archetype_id": "vancouverism_tower_podium",
+      "development_archetype_id": "vancouverism_tower_podium",
+      "development_selected_variant_id": "vancouverism_classic",
+      "development_archetype_label": "Vancouver balcony and podium tower",
+      "floors": 16,
+      "floor_count": 16,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "clay_twisting_glass_sky_garden_tower",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Twisting glass tower with sky garden",
+    "description": "A 40-level twisting glass tower with a shared sky garden, trussed lobby and a rooftop garden.",
+    "thumbnail": "/archetypes/buildings/glass_tower_podium_modern/variant_1.png",
+    "model": {
+      "variantId": "glass_tower_twisted",
+      "revision": "glass-tower-twisted-clay-v005",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "offices",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 49.0,
+    "depth": 49.0,
+    "minWidth": 49.0,
+    "minDepth": 49.0,
+    "maxSize": 180.0,
+    "nativeDimensions": [
+      43.4902229309082,
+      44.02606964111328,
+      147.6999969482422
+    ],
+    "reshapeDescription": "Resize the plot around this complete tower. Floors, terraces and structural details retain their authored proportions.",
+    "properties": {
+      "building_archetype_id": "glass_tower_podium_modern",
+      "development_archetype_id": "glass_tower_podium_modern",
+      "development_selected_variant_id": "glass_tower_twisted",
+      "development_archetype_label": "Twisting glass tower with sky garden",
+      "floors": 40,
+      "floor_count": 40,
+      "native_plot_axes": true
+    }
   }
 ];
