@@ -1,4 +1,6 @@
-import { useEffect, useRef, useCallback, useState } from 'react';
+import { useRoadNetwork } from '@/hooks/useRoadNetwork';
+import { roadDisplayZones, snapRoadEndpoints } from '@/utils/proceduralRoadNetwork';
+import { useEffect, useRef, useCallback, useState, useMemo } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import type { SiteZone, SiteZoneType, SiteZoneProperties } from '@/types';
@@ -352,6 +354,8 @@ export function SitePlannerMap({
   onZoneSelected,
   onZoneDeleted,
 }: SitePlannerMapProps) {
+  const roadNetwork = useRoadNetwork(siteZones);
+  const roadSurfaceZones = useMemo(() => roadDisplayZones(siteZones, roadNetwork.data), [siteZones, roadNetwork.data]);
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const { activeSitePlannerTool, activeToolProperties, selectedZoneId, setActiveSitePlannerTool, setDraggingZone, setMapInstance, streetViewPegman, setStreetViewActive, setStreetViewPosition, setStreetViewAngle } = useViewerStore();
@@ -586,12 +590,17 @@ export function SitePlannerMap({
 
   /** Finish the current drawing and create a zone */
   const finishDrawing = useCallback((tool: SiteZoneType, pts: number[][], properties?: SiteZoneProperties | null) => {
-    const props = properties ?? activeToolPropertiesRef.current;
+    const props = { ...(properties ?? activeToolPropertiesRef.current) };
     let coords: number[][];
     if (isLinearTool(tool)) {
       const width = (props?.width as number) ?? ZONE_TYPE_CONFIG[tool]?.defaultProperties?.width ?? 10;
-      const smooth = smoothPolyline(pts);
+      const proceduralRoad = tool === 'road' && !props.pick_place_street_section;
+      const smooth = smoothPolyline(proceduralRoad ? snapRoadEndpoints(pts, siteZonesRef.current, props.road_level) : pts);
       coords = bufferLineToPolygon(smooth, width);
+      if (proceduralRoad) {
+        props.plan_centerline = smooth;
+        props.procedural_road = 1;
+      }
     } else {
       coords = [...pts];
     }
@@ -662,7 +671,7 @@ export function SitePlannerMap({
         return {
           type: 'Feature' as const,
           properties: {
-            id: zone.id,
+            id: String(zone.properties?._road_parent_id ?? zone.id),
             color: resolveZoneColor(zone),
             label: resolveZoneLabel(zone),
             zone_type: zone.zone_type,
@@ -690,7 +699,7 @@ export function SitePlannerMap({
       return {
         type: 'Feature' as const,
         properties: {
-          id: zone.id,
+          id: String(zone.properties?._road_parent_id ?? zone.id),
           color: resolveZoneColor(zone),
           label: resolveZoneLabel(zone),
           zone_type: zone.zone_type,
@@ -1634,7 +1643,7 @@ export function SitePlannerMap({
   // ─── Sync saved zones to map (re-runs when map becomes ready OR zones change) ───
   useEffect(() => {
     if (mapReady) {
-      syncZonesToMap(siteZones);
+      syncZonesToMap(roadSurfaceZones);
       if (
         !hasAppliedInitialZoneViewRef.current
         && !hasUserInteractedRef.current
@@ -1653,7 +1662,7 @@ export function SitePlannerMap({
         }
       }
     }
-  }, [siteZones, mapReady, syncZonesToMap, getZoneBounds]);
+  }, [roadSurfaceZones, siteZones, mapReady, syncZonesToMap, getZoneBounds]);
 
   // ─── Selected zone highlight + vertex handles ───
   useEffect(() => {

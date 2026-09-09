@@ -37,6 +37,8 @@ import { useViewerStore } from '@/store';
 import { GlobeReferenceLayer } from '@/features/referenceLayers/GlobeReferenceLayer';
 import { EMPTY_TRANSPORT, type ExistingTransport } from '@/features/referenceLayers/existingTransport';
 import type { ReferenceLayer } from '@/features/referenceLayers/api';
+import { useRoadNetwork } from '@/hooks/useRoadNetwork';
+import { roadDisplayZones, snapRoadEndpoints } from '@/utils/proceduralRoadNetwork';
 import { GlobeZoneLayer } from './GlobeZoneLayer';
 import { streetGroundCaptureStatus } from './streetGroundCapture';
 import { streetSurfaceMaskZone } from './streetSurfaceMask';
@@ -1558,6 +1560,7 @@ export function GlobeSitePlannerMap({
   onGlobeReady,
   onModeledBuildingsChange,
 }: GlobeSitePlannerMapProps) {
+  const roadNetwork = useRoadNetwork(siteZones);
   const containerRef = useRef<HTMLDivElement>(null);
   const cameraRef = useRef<THREE.Camera | null>(null);
   const globeControlsRef = useRef<any>(null);
@@ -1797,6 +1800,7 @@ export function GlobeSitePlannerMap({
 
   // Dynamic terrain elevation â€” fetched from Google Elevation API on mount
   const [terrainElevation, setTerrainElevation] = useState(DEFAULT_TERRAIN_ELEVATION);
+  const roadSurfaceZones = useMemo(() => roadDisplayZones(connectedSceneZones, roadNetwork.data), [connectedSceneZones, roadNetwork.data]);
   const terraceScene = useMemo(() => buildTerraceScene(connectedSceneZones, terrainElevation), [connectedSceneZones, terrainElevation]);
   const preparedGroundCutouts = useMemo(() => [...terraceScene.terraces.map(z => z.coordinates), ...connectedSceneZones.filter(z => readParkTerrain(z)).map(z => z.coordinates), ...terraceScene.paths.filter(p => p.status === 'connected').map(p => p.rampFootprint)], [terraceScene, connectedSceneZones]);
   const terraceParkZones = useMemo(() => connectedSceneZones.map(zone => ({...zone, properties:{...zone.properties,
@@ -3298,10 +3302,14 @@ export function GlobeSitePlannerMap({
 
     let finalCoords: number[][];
     if (linear) {
-      const smoothed = zoneProperties.pick_place_street_section ? snapStreetEnds(pts, siteZones) : smoothPolyline(pts);
+      const procedural = activeSitePlannerTool === 'road' && !zoneProperties.pick_place_street_section;
+      const smoothed = zoneProperties.pick_place_street_section
+        ? snapStreetEnds(pts, siteZones)
+        : smoothPolyline(procedural ? snapRoadEndpoints(pts, siteZones, zoneProperties.road_level) : pts);
       const width = (zoneProperties.width as number) || 10;
       finalCoords = sanitizeCoords(bufferLineToPolygon(smoothed, width));
-      if (zoneProperties.pick_place_street_section) zoneProperties.plan_centerline = smoothed;
+      if (zoneProperties.pick_place_street_section || procedural) zoneProperties.plan_centerline = smoothed;
+      if (procedural) zoneProperties.procedural_road = 1;
     } else {
       finalCoords = [...pts];
     }
@@ -4078,7 +4086,7 @@ export function GlobeSitePlannerMap({
           <group name="siteforge-direct3d-ground" userData={direct3DProposalUserData('ground')}>
             <GlobeZoneLayer
               preparedGroundCutouts={preparedGroundCutouts}
-              zones={connectedSceneZones}
+              zones={roadSurfaceZones}
               selectedZoneId={interactionPaused ? null : selectedZoneId}
               terrainHeight={terrainElevation}
               onZoneClick={handleZoneMeshClick}
