@@ -1,0 +1,146 @@
+[
+  {
+    "file": "sources/01-audit-input_image_key.png",
+    "title": "Aerial 3D source",
+    "source_file": "01-audit-input_image_key.png",
+    "sha256": "f2e30b34df9d5c28f2bbc270a8d6cf91c3d01f4f0472228ddac8c3319b72c11f",
+    "bytes": 1950982,
+    "width": 1500,
+    "height": 936
+  },
+  {
+    "file": "sources/02-audit-input_image_key.png",
+    "title": "Street 3D source \u2014 approved benchmark comparison",
+    "source_file": "02-audit-input_image_key.png",
+    "sha256": "eacfcecaa2f7d457e249cc6eb69d0b61667446b353ed6dc83243ca1fd5ceffc1",
+    "bytes": 1070923,
+    "width": 1500,
+    "height": 936
+  },
+  {
+    "file": "sources/05-audit-input_image_key.png",
+    "title": "Street 3D source \u2014 improved watercolour",
+    "source_file": "05-audit-input_image_key.png",
+    "sha256": "c6ca5a251924420baeee7fcd8a58cbf6c6902399101ccddfca0ff36b1644e195",
+    "bytes": 1070505,
+    "width": 1500,
+    "height": 936
+  },
+  {
+    "file": "sources/06-audit-input_image_key.png",
+    "title": "Street 3D source \u2014 revised photomontage",
+    "source_file": "06-audit-input_image_key.png",
+    "sha256": "835d85653708b4b7d1ccbed98a79e981f4503a809dbfaa484140ce7c227cd56a",
+    "bytes": 1069276,
+    "width": 1500,
+    "height": 936
+  },
+  {
+    "file": "sources/07-audit-input_image_key.png",
+    "title": "Angled timber building 3D source \u2014 charcoal comparison",
+    "source_file": "07-audit-input_image_key.png",
+    "sha256": "8b160020bf2615330a6f7b38a5b75b48a4b199b3b82436d2b0fefcec01d0308c",
+    "bytes": 822929,
+    "width": 1500,
+    "height": 936
+  },
+  {
+    "file": "renders/photomontage-provider_original-02fe5846.png",
+    "title": "User-approved photomontage benchmark",
+    "source_file": "photomontage-provider_original-02fe5846.png",
+    "sha256": "b1d93d4cb2ceda5e0849174f35834fc5cb669cd25ea3b31f7ff6485c6003d373",
+    "bytes": 2791836,
+    "width": 1616,
+    "height": 1008
+  },
+  {
+    "file": "renders/watercolour-provider_original-dc1e8317.png",
+    "title": "Improved watercolour \u2014 retained grey and timber facade",
+    "source_file": "watercolour-provider_original-dc1e8317.png",
+    "sha256": "574eef233c631672d38376c807e1ece6de2f74b31577430d28295f0f6b231070",
+    "bytes": 3208721,
+    "width": 1616,
+    "height": 1008
+  },
+  {
+    "file": "renders/photomontage-provider_original-102c747a.png",
+    "title": "Revised photomontage \u2014 people and close street detail",
+    "source_file": "photomontage-provider_original-102c747a.png",
+    "sha256": "91c95922f28a6b246b1850fb118cedf338eacf1dc10fab80354bc5d8125bc870",
+    "bytes": 2766874,
+    "width": 1616,
+    "height": 1008
+  },
+  {
+    "file": "renders/charcoal-provider_original-bc22803c.png",
+    "title": "Charcoal \u2014 close angled building and partially hidden park",
+    "source_file": "charcoal-provider_original-bc22803c.png",
+    "sha256": "64c585dcc44b499abaef898549ef779382b929638043d741471f23304f5747b8",
+    "bytes": 3280666,
+    "width": 1616,
+    "height": 1008
+  },
+  {
+    "file": "comparisons/watercolour-provider_original-09a018e3.png",
+    "title": "Earlier aerial watercolour \u2014 roof drift",
+    "source_file": "watercolour-provider_original-09a018e3.png",
+    "sha256": "d4bdb3e431225afe004298d394ad65db63d76ee00a6c16254cb1e6cbbb24012b",
+    "bytes": 3285472,
+    "width": 1616,
+    "height": 1008
+  },
+  {
+    "file": "comparisons/watercolour-provider_original-32194b93.png",
+    "title": "Earlier street watercolour \u2014 material drift and extra furniture",
+    "source_file": "watercolour-provider_original-32194b93.png",
+    "sha256": "68c4e0bd026a18ebe895a6896eafd3384964c35bde752c75315da562dc962e40",
+    "bytes": 3285835,
+    "width": 1616,
+    "height": 1008
+  },
+  {
+    "file": "comparisons/watercolour-provider_original-d6bf2828.png",
+    "title": "Intermediate watercolour \u2014 drift remained",
+    "source_file": "watercolour-provider_original-d6bf2828.png",
+    "sha256": "ff36a86113c649b92bdf869436a7e656eeccecd11fe65e6096cdd38653b3b57d",
+    "bytes": 3217709,
+    "width": 1616,
+    "height": 1008
+  },
+  {
+    "file": "screenshots/05-pegman-placement.png",
+    "title": "Pegman placement in the app",
+    "source_file": "05-pegman-placement.png",
+    "sha256": "b55415a09e017532cd5ef12b97c540aaafbee422f970cb2ca71548af0da33442",
+    "bytes": 1776959,
+    "width": 1500,
+    "height": 1000
+  },
+  {
+    "file": "screenshots/08-new-prompt-street-preview.png",
+    "title": "Street render preview",
+    "source_file": "08-new-prompt-street-preview.png",
+    "sha256": "cb9bce0bc53b4e66fc5f9e18fd127ac56123b379cd4163b11f827fc90641a1c0",
+    "bytes": 797514,
+    "width": 1500,
+    "height": 1000
+  },
+  {
+    "file": "screenshots/13-close-angled-timber.png",
+    "title": "Close angled timber building in the app",
+    "source_file": "13-close-angled-timber.png",
+    "sha256": "e0b3fc02008c30e5692f1626e3e67e08c989f5b2e9f1d776f055946481ad4785",
+    "bytes": 2073501,
+    "width": 1500,
+    "height": 1000
+  },
+  {
+    "file": "screenshots/16-final-restored-community.png",
+    "title": "Community overview after restoring local assets",
+    "source_file": "16-final-restored-community.png",
+    "sha256": "4e579f82bdf8c299601915eeb33cc127deec49dc0408d07b135ae7a2e9874b29",
+    "bytes": 2181258,
+    "width": 1500,
+    "height": 1000
+  }
+]
