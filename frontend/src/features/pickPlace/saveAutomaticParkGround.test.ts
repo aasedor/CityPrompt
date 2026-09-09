@@ -68,6 +68,7 @@ describe('quiet automatic ground persistence', () => {
           color: 'new',
           park_terrain: profile,
           proposed_terrace: null,
+          community_3d_mask_existing_tiles: true,
         },
       },
       { skipHistory: true },

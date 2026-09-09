@@ -17,7 +17,10 @@ export const PARK_TRIO_ASSETS: PlaceAsset[] = (
     readiness: "pilot",
     label: p.label,
     description:
-      kind === "cinema"
+      kind === "basketball" ? "28 × 15 m playing court, clear run-off, hoops and fenced edges."
+        : kind === "tennis" ? "Two 23.77 × 10.97 m doubles courts with nets and separate run-off."
+        : kind === "soccer" ? "105 × 68 m pitch with goals, markings and a six-metre perimeter reserve."
+        : kind === "cinema"
         ? "A fixed cinema screen, seating and an open viewing lawn."
         : kind === "garden"
           ? "Planted demonstration beds and a curved timber teaching shelter."
@@ -29,7 +32,7 @@ export const PARK_TRIO_ASSETS: PlaceAsset[] = (
       method: "source-informed metric landscape",
     },
     calgaryGuide: {
-      groupId: kind === "garden" ? "gardens" : kind === "concert" ? "regional" : "neighbourhood",
+      groupId: ["basketball", "tennis", "soccer"].includes(kind) ? "play_sport" : kind === "garden" ? "gardens" : kind === "concert" ? "regional" : "neighbourhood",
       basis: "form_reference",
     },
     zoneType: "green_space",
@@ -38,9 +41,9 @@ export const PARK_TRIO_ASSETS: PlaceAsset[] = (
     depth: p.min[1],
     minWidth: p.min[0],
     minDepth: p.min[1],
-    maxSize: 160,
+    maxSize: ["basketball", "tennis", "soccer"].includes(kind) ? 240 : 160,
     reshapeDescription:
-      "Structures keep their real size. Paths, planting and whole activity elements adapt to the plot; unsuitable shapes are reported.",
+      "Playing areas and structures keep their real size. Paths, planting and whole activity elements adapt to the plot; unsuitable shapes are reported.",
     properties: {
       green_space_archetype_id: p.parent,
       green_space_selected_variant_id: p.variant,

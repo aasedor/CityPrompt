@@ -1,0 +1,37 @@
+{
+  "sport": "soccer",
+  "playing": [
+    105,
+    68
+  ],
+  "module": [
+    117,
+    80
+  ],
+  "minimumPark": [
+    133,
+    96
+  ],
+  "standardPark": [
+    137,
+    100
+  ],
+  "maxModules": 2,
+  "sha256": "32f097c33c53698deeb51b5e69c2b16a473a9102e963643f3e964c73dd06350f",
+  "bytes": 216588,
+  "reimportBounds": [
+    [
+      -58.5,
+      -40.0,
+      0.0
+    ],
+    [
+      58.5,
+      40.0,
+      2.5970633029937744
+    ]
+  ],
+  "meshes": 5,
+  "triangles": 3974,
+  "paidCalls": 0
+}

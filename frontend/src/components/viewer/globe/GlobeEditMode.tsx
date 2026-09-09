@@ -19,6 +19,8 @@ import { assetForZone } from '@/features/pickPlace/catalogue';
 import { resizeRectangleCorner } from '@/features/pickPlace/geometry';
 import { isFixedSectionStreet, reshapeStreetPoint, streetSectionWidth } from '@/features/pickPlace/streetPlacement';
 import { extractCenterline } from '@/utils/roadGeometry';
+import { bufferLineToPolygon } from '@/utils/roadGeometry';
+import { snapStreetEndpoint } from '@/features/pickPlace/streetSnapping';
 import { computeCentroid, METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 import { useGlobeDragRef } from './useGlobeDragRef';
 import {
@@ -40,6 +42,7 @@ function isBuildableZoneType(zoneType: string | null | undefined): boolean {
 
 interface GlobeEditModeProps {
   zone: SiteZone;
+  zones?: SiteZone[];
   terrainHeight: number;
   onZoneUpdated: (zoneId: string, coordinates: number[][]) => boolean | void;
   globeControlsRef?: React.RefObject<any>;
@@ -175,6 +178,7 @@ function getTerrainProbePoints(
 
 export function GlobeEditMode({
   zone,
+  zones = [],
   terrainHeight,
   onZoneUpdated,
   globeControlsRef,
@@ -343,6 +347,7 @@ export function GlobeEditMode({
 
   // Start dragging the zone body
   const handleBodyPointerDown = useCallback((e: any) => {
+    if (e.button !== undefined && e.button !== 0) return;
     e.stopPropagation();
     const pe = e.nativeEvent ?? e;
     const startLatLng = pointerToLatLng(pe as PointerEvent);
@@ -637,11 +642,16 @@ export function GlobeEditMode({
       if (!lngLat || !originalCoordsRef.current) return;
 
       const asset = assetForZone(zone);
-      const newCoords = isFixedSectionStreet(zone)
+      let newCoords = isFixedSectionStreet(zone)
         ? reshapeStreetPoint(originalCoordsRef.current, index, lngLat, streetSectionWidth(zone))
-        : asset && originalCoordsRef.current.length === 4
+        : asset && zone.zone_type !== 'green_space' && originalCoordsRef.current.length === 4
         ? resizeRectangleCorner(originalCoordsRef.current, index, lngLat, asset)
         : originalCoordsRef.current.map((c, i) => i === index ? [...lngLat] : [...c]);
+      if (isFixedSectionStreet(zone) && !pe.altKey) {
+        const line = extractCenterline(newCoords);
+        const snapped = snapStreetEndpoint(line, index, zones, zone.id);
+        if (snapped !== line) newCoords = bufferLineToPolygon(snapped, streetSectionWidth(zone));
+      }
 
       // Write to drag ref (no React state update)
       dragRef.current.zoneId = zone.id;
@@ -686,7 +696,7 @@ export function GlobeEditMode({
     ownerWindow.addEventListener('pointerup', handlePointerUp);
     ownerWindow.addEventListener('pointercancel', handlePointerUp);
     ownerWindow.addEventListener('blur', handlePointerUp);
-  }, [dragRef, gl, onInteractionStart, onZoneUpdated, pointerToLatLng, renderedCoords, setControlsEnabled, zone]);
+  }, [dragRef, gl, onInteractionStart, onZoneUpdated, pointerToLatLng, renderedCoords, setControlsEnabled, zone, zones]);
 
   return (
     <>
@@ -707,6 +717,19 @@ export function GlobeEditMode({
           >
             <meshBasicMaterial transparent opacity={0} side={THREE.DoubleSide} depthTest={false} />
           </mesh>
+          <Html center position={[0, 0, 2]} zIndexRange={GLOBE_SCENE_HTML_Z_INDEX_RANGE}>
+            <button
+              type="button"
+              aria-label="Move selected object"
+              title="Drag to move this object"
+              className="min-h-11 select-none whitespace-nowrap rounded-full border-2 border-white bg-slate-900 px-3 py-1 text-xs font-bold text-white shadow-lg"
+              style={{ touchAction: 'none', cursor: isDraggingBody ? 'grabbing' : 'grab' }}
+              onPointerDown={handleBodyPointerDown}
+              onClick={(event) => event.stopPropagation()}
+            >
+              ↔ Move
+            </button>
+          </Html>
         </EastNorthUpFrame>
       )}
 

@@ -32,7 +32,10 @@ def public_road_connection_fits(zone_type: str, properties: dict | None, candida
             and outside.length <= 30
             and parcel.buffer(30).covers(polygon)
             and polygon.intersection(parcel).area >= polygon.area / 2
-            and route.buffer(width / 2 + 0.15, cap_style=2, join_style=2).covers(polygon)
+            # Apply the existing 15 cm tolerance at the end caps too. The
+            # browser and server project around slightly different latitudes;
+            # widening only the sides rejected valid, near-identical caps.
+            and route.buffer(width / 2, cap_style=2, join_style=2).buffer(0.15).covers(polygon)
             and polygon.buffer(0.15).covers(route.buffer(width / 2, cap_style=2, join_style=2))
         )
     except (ValueError, TypeError, OverflowError, GEOSException):

@@ -1,5 +1,9 @@
 import { isCatalogueOnlyScene, CATALOGUE_UPDATE_GUIDANCE } from '@/features/pickPlace/catalogue';
 import { useRenderDraft } from './useRenderDraft';
+import { DEFAULT_OPENAI_IMAGE_MODEL, imageModelLabel } from '@/config/imageModels';
+import { ImageModelSelect } from '../ImageModelSelect';
+import { useImageModelChoice } from '../useImageModelChoice';
+import { runImageModelBatch } from '../runImageModelBatch';
 /**
  * GlobeAIRenderPanel.tsx — Simplified AI render controls for the 3D globe.
  *
@@ -67,12 +71,12 @@ const SHOW_LEGACY_COMMUNITY_3D_TOOLS =
 const SHOW_LEGACY_CLASSIC_RENDER =
   import.meta.env.VITE_ENABLE_CLASSIC_POLYGON_RENDER === 'true';
 
-// Both preview slots run GPT Image 2 (user verdict 2026-07-07: Gemini globe
+// Both preview slots run the default GPT Image engine (user verdict 2026-07-07: Gemini globe
 // renders consistently weaker; GPT holds the drawn structure best). Two
 // samples of one engine give a real A/B choice; labels keep them apart.
 const COMPARE_RENDER_MODELS = [
-  { model: 'gpt-image-2', label: 'GPT Image 2 · A' },
-  { model: 'gpt-image-2', label: 'GPT Image 2 · B' },
+  { model: DEFAULT_OPENAI_IMAGE_MODEL, label: `${imageModelLabel(DEFAULT_OPENAI_IMAGE_MODEL)} · A` },
+  { model: DEFAULT_OPENAI_IMAGE_MODEL, label: `${imageModelLabel(DEFAULT_OPENAI_IMAGE_MODEL)} · B` },
 ];
 
 const DEFAULT_OPENAI_IMAGE_QUALITY: OpenAIImageQuality = 'auto';
@@ -201,9 +205,9 @@ export const STYLE_GROUPS = [
 export type GlobeRenderPipeline = 'classic' | 'direct3d';
 
 export const DIRECT_3D_PIPELINE_DESCRIPTION =
-  'One-call AI finish of the compiled 3D scene. The style you pick governs the look; the compiled models and public realm anchor the layout.';
+  'AI finish of the compiled 3D scene. The style you pick governs the look; the compiled models and public realm anchor the layout.';
 export const DIRECT_3D_SCOPE_DESCRIPTION =
-  'Pick a style and render. Same-camera results are checked against your 3D scene; if the finish cannot be verified, the original 3D view is returned. Review AI originals and reframed views before presenting.';
+  'Pick a style and render. Your AI illustration is saved to Project Renders. Same-camera results are checked against your 3D scene, with the original view available for comparison. Automated checks are advisory; review the design before presenting.';
 export const DIRECT_3D_CALL_DESCRIPTION =
   '1 image call · every result is saved to Project Renders, including the untouched AI original';
 
@@ -292,7 +296,9 @@ export function GlobeAIRenderPanel({
   const [directCapturePreview, setDirectCapturePreview] = useState<Direct3DCaptureQAPreview | null>(null);
   const [directDiagnostics, setDirectDiagnostics] = useState<Direct3DRenderDiagnostics | null>(null);
   const [directFidelityPolicy, setDirectFidelityPolicy] = useState<Direct3DFidelityPolicy>('precise');
+  const { imageModel: directImageModel, setImageModel: setDirectImageModel, availability: imageModelAvailability } = useImageModelChoice();
   const [directReview, setDirectReview] = useState<Direct3DReview | null>(null);
+  const directPreviewMetadata = useRef(new Map<string, { diagnostics: Direct3DRenderDiagnostics; review: Direct3DReview | null }>());
   // Development mode gate: at least one zone in the scene is backed by real
   // massing (placed LEGO stack or mounted 3D model) that the capture shows.
   const hasPlacedMassing = useMemo(
@@ -883,6 +889,7 @@ export function GlobeAIRenderPanel({
     setSelectedPreviewIndex(null);
     setDirectDiagnostics(null);
     setDirectReview(null);
+    directPreviewMetadata.current.clear();
     setError(null);
     setRenderProgress(null);
     const startTime = Date.now();
@@ -895,14 +902,14 @@ export function GlobeAIRenderPanel({
       setDirectCapturePreview(null);
       const capture = await captureDirect3D({ includeGeometryPasses: true });
       setIsPreparingCapture(false);
-      // Precise same-camera finishes use the placed design; catalogue views
-      // can prescribe different openings or roofs. Avoid fetching them here.
-      const sourceGeometryOnly = directFidelityPolicy === 'precise'
-        && resolveDirect3DPresentationMode(selectedStyle) === 'scene';
+      // Same-camera finishes use the placed design in every artistic medium.
+      // Avoid downloading catalogue views that the render will not use.
+      const sourceGeometryOnly = resolveDirect3DPresentationMode(selectedStyle) === 'scene';
       const archetypeReferences = sourceGeometryOnly
         ? []
         : await collectDirect3DArchetypeReferences(siteZones, 8, capture);
-      const direct = await renderDirect3D(capture, {
+      await runImageModelBatch(directImageModel, (model) => renderDirect3D(capture, {
+        model,
         style: selectedStyle,
         fidelityPolicy: directFidelityPolicy,
         customPrompt: customPrompt.trim() || undefined,
@@ -910,31 +917,36 @@ export function GlobeAIRenderPanel({
         community3DClaims: community3DCaptureClaims!,
         residualLandscapeClaim,
         archetypeReferences,
+      }), async (direct, index) => {
+        setPreviews((previous) => [...previous, direct.render]);
+        setSelectedPreviewIndex(index);
+        setResult(direct.render);
+        setDirectDiagnostics(direct.diagnostics);
+        if (direct.providerOriginalRender) rememberSavedRender(direct.providerOriginalRender);
+        if (direct.render.savedRender) {
+          rememberSavedRender(direct.render.savedRender);
+          setSaveStatus('saved');
+        }
+        const review: Direct3DReview | null = direct.outcome === 'review_required'
+          ? {
+              outcome: direct.outcome,
+              warnings: direct.warnings,
+              sourceImageUrl: direct.sourceImageUrl,
+              fidelityPolicy: direct.fidelityPolicy,
+              style: selectedStyle,
+              providerOriginalRender: direct.providerOriginalRender,
+            }
+          : null;
+        directPreviewMetadata.current.set(direct.render.imageUrl, { diagnostics: direct.diagnostics, review });
+        setDirectReview(review);
+        if (shouldAutoSaveDirect3D(direct.outcome)) {
+          const saved = await autoSaveGlobeRenders([direct.render]);
+          if (saved) setSaveStatus('saved');
+          onRenderComplete?.(direct.render);
+        }
+      }, (model, index, total) => {
+        setRenderProgress({ step: index + 1, total, zoneName: imageModelLabel(model), phase: 'building' });
       });
-      setPreviews([direct.render]);
-      setSelectedPreviewIndex(0);
-      setResult(direct.render);
-      setDirectDiagnostics(direct.diagnostics);
-      if (direct.providerOriginalRender) rememberSavedRender(direct.providerOriginalRender);
-      if (direct.render.savedRender) {
-        rememberSavedRender(direct.render.savedRender);
-        setSaveStatus('saved');
-      }
-      setDirectReview(direct.outcome === 'review_required'
-        ? {
-            outcome: direct.outcome,
-            warnings: direct.warnings,
-            sourceImageUrl: direct.sourceImageUrl,
-            fidelityPolicy: direct.fidelityPolicy,
-            style: selectedStyle,
-            providerOriginalRender: direct.providerOriginalRender,
-          }
-        : null);
-      if (shouldAutoSaveDirect3D(direct.outcome)) {
-        const saved = await autoSaveGlobeRenders([direct.render]);
-        if (saved) setSaveStatus('saved');
-        onRenderComplete?.(direct.render);
-      }
     } catch (err: unknown) {
       setError(apiErrorMessage(err, 'Direct 3D render failed. Please try again.'));
     } finally {
@@ -950,6 +962,7 @@ export function GlobeAIRenderPanel({
     customPrompt,
     community3DCaptureClaims,
     directFidelityPolicy,
+    directImageModel,
     direct3DAvailable,
     isCheckingDirectCapture,
     isRendering,
@@ -988,6 +1001,11 @@ export function GlobeAIRenderPanel({
     const selected = previews[index];
     setSelectedPreviewIndex(index);
     setResult(selected);
+    const metadata = directPreviewMetadata.current.get(selected.imageUrl);
+    if (metadata) {
+      setDirectDiagnostics(metadata.diagnostics);
+      setDirectReview(metadata.review);
+    }
     setLightboxRender((current) => current
       ? {
           ...current,
@@ -1307,6 +1325,11 @@ export function GlobeAIRenderPanel({
         ) : null}
       </div>
       <div className="grid gap-3 border-b-2 border-white/10 px-4 py-2 md:grid-cols-[1.35fr_0.9fr]">
+        {renderPipeline === 'direct3d' && (
+          <div className="text-white md:col-span-2">
+            <ImageModelSelect value={directImageModel} onChange={setDirectImageModel} disabled={isRendering} availability={imageModelAvailability} />
+          </div>
+        )}
         {/* Style selector */}
         <div>
           <div className="mb-1 text-[10px] font-black uppercase text-white/50">Style</div>
@@ -1504,25 +1527,23 @@ export function GlobeAIRenderPanel({
           {directReview?.outcome === 'review_required' && (
             <div className="mb-2 rounded-lg border-2 border-amber-300/45 bg-amber-300/10 px-3 py-2 text-amber-50">
               <div className="flex items-center justify-between gap-2">
-                <span className="text-[11px] font-black uppercase">Review before presenting</span>
+                <span className="text-[11px] font-black uppercase">Compare with your plan</span>
                 <span className="rounded-full border border-amber-200/40 px-2 py-0.5 text-[9px] font-black uppercase">
                   {directReview.style} · {directReview.fidelityPolicy}
                 </span>
               </div>
               <p className="mt-1 text-[10px] font-semibold text-amber-50/75">
-                {directDiagnostics?.returned_safety_strategy === 'authoritative_source'
-                  ? 'The AI finish did not pass the scene checks. This result keeps your original 3D view. The AI attempt is retained separately for comparison.'
-                  : 'Compare with your 3D view: check building identity, height, footprint, roads and parks. Hidden features should stay hidden. Image checks cannot confirm every detail.'}
+                Your render is saved and ready to use. Check building identity, locations, roads and parks against the 3D view. Automated image checks are advisory; they do not decide whether an illustration meets your vision.
               </p>
               {directReview.warnings.length > 0 && (
-                <ul className="mt-1 list-disc space-y-0.5 pl-4 text-[9px] font-semibold text-amber-100/75">
+                <details className="mt-1 text-[9px] font-semibold text-amber-100/75"><summary className="cursor-pointer">Automated comparison details</summary><ul className="list-disc space-y-0.5 pl-4">
                   {directReview.warnings.map((warning) => <li key={warning}>{warning}</li>)}
-                </ul>
+                </ul></details>
               )}
               {directReview.providerOriginalRender && (
                 <button type="button" className="mt-2 rounded border border-amber-200/50 px-2 py-1 text-[10px] font-bold"
                   onClick={() => openSavedRenderLightbox(directReview.providerOriginalRender!)}>
-                  View AI attempt · unverified
+                  View AI original
                 </button>
               )}
             </div>
@@ -1556,7 +1577,7 @@ export function GlobeAIRenderPanel({
             )}
             {directReview?.outcome === 'review_required' && (
               <span className="pointer-events-none absolute right-2 top-2 z-10 rounded bg-amber-300 px-2 py-1 text-[9px] font-black uppercase text-[#151515]">
-                {directDiagnostics?.returned_safety_strategy === 'authoritative_source' ? 'Original 3D view' : 'AI finish · review'}
+                {result.providerLabel?.startsWith('Original 3D view') ? 'Original 3D view' : 'AI illustration'}
               </span>
             )}
             <img
@@ -1983,7 +2004,9 @@ export function GlobeAIRenderPanel({
                 <span>{renderPipeline === 'direct3d' ? 'Render Direct 3D' : 'Generate Current View Previews'}</span>
                 <span className="text-[10px] font-bold opacity-70">
                   {renderPipeline === 'direct3d'
-                    ? DIRECT_3D_CALL_DESCRIPTION
+                    ? directImageModel === 'compare-flare-sunburst'
+                      ? '2 image calls · Flare then Sunburst · both saved to Project Renders'
+                      : DIRECT_3D_CALL_DESCRIPTION
                     : `${renderCallCount} image call${renderCallCount === 1 ? '' : 's'} · uses the globe view on screen now`}
                 </span>
               </span>

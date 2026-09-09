@@ -51,6 +51,19 @@ export function readParkTerrain(zone: SiteZone): SharedSiteGroundSnapshot | null
     || !landscapeQuality(s)) return null;
   return s;
 }
+
+/** Reuse the original two measured passes when an edited outline still lies
+ * within their complete support grid. Revalidate the NEW domain (including a
+ * newly exposed notch); do not extrapolate, smooth, or invent another pass. */
+export function reuseMeasuredParkTerrain(zone: SiteZone): ParkTerrainProfile | null {
+  const previous = (zone.properties?.park_terrain as ParkTerrainProfile | undefined)?.snapshot;
+  if (!previous) return null;
+  const old = readParkTerrain({ ...zone, coordinates: previous.boundaryCoordinates });
+  if (!old) return null;
+  const result = measureParkTerrain(zone, { layout: old, heights: old.heights, previousHeights: old.heights });
+  if (result) result.snapshot.quality.maxPassDeltaM = old.quality.maxPassDeltaM;
+  return result;
+}
 export function parkTerrainContains(zone: SiteZone, lng: number, lat: number): boolean {
   return sharedSiteGroundContains(zone.coordinates.map(p => [p[0],p[1]]),lng,lat);
 }

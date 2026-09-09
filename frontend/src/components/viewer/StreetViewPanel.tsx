@@ -17,10 +17,14 @@ import toast from 'react-hot-toast';
 import { getRenderImageKey, saveRenderedImage } from '@/utils/renderPersistence';
 import { getApiErrorMessage, resolveApiFileUrl } from '@/services/api';
 import { RenderEditModal } from './RenderEditModal';
-import { DIRECT_3D_ALLOWED_STYLES, useDirect3DRender } from './globe/useDirect3DRender';
+import { DIRECT_3D_ALLOWED_STYLES, resolveDirect3DPresentationMode, useDirect3DRender } from './globe/useDirect3DRender';
 import { collectDirect3DArchetypeReferences } from './globe/direct3dArchetypeReferences';
 import { getCommunity3DCaptureClaims } from '@/features/community3d/community3d';
 import { getCurrentResidualLandscapeClaim } from './globe/residualLandscape';
+import { DEFAULT_OPENAI_IMAGE_MODEL, imageModelLabel } from '@/config/imageModels';
+import { ImageModelSelect } from './ImageModelSelect';
+import { useImageModelChoice } from './useImageModelChoice';
+import { runImageModelBatch } from './runImageModelBatch';
 
 const COMPASS_LABELS: Record<number, string> = {
   0: 'N', 45: 'NE', 90: 'E', 135: 'SE',
@@ -116,9 +120,9 @@ const STREET_VIEW_STYLE_GROUPS = [
 
 const STREET_VIEW_RENDER_MODELS = [
   { model: 'gemini-3.1-flash-image', label: 'Gemini 3.1 Flash' },
-  { model: 'gpt-image-2', label: 'GPT Image 2', imageQuality: 'auto' as const },
+  { model: DEFAULT_OPENAI_IMAGE_MODEL, label: imageModelLabel(DEFAULT_OPENAI_IMAGE_MODEL), imageQuality: 'auto' as const },
 ];
-const STREET_VIEW_RENDER_LABEL = 'Gemini + GPT Image 2';
+const STREET_VIEW_RENDER_LABEL = 'Gemini + GPT Image';
 
 // Street style ids that don't exist verbatim in the Direct 3D catalogue.
 const STREET_TO_DIRECT3D_STYLE: Record<string, string> = {
@@ -189,6 +193,8 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
   const [saving, setSaving] = useState(false);
   const [savedImageKeys, setSavedImageKeys] = useState<Set<string>>(() => new Set());
   const [selectedStyle, setSelectedStyle] = useState('photorealistic');
+  const { imageModel, setImageModel, availability: imageModelAvailability } = useImageModelChoice();
+  const [imageProgress, setImageProgress] = useState('');
   const [lightboxOpen, setLightboxOpen] = useState(false);
   // Real Street View / Places / satellite grounding, anchored at the pegman.
   // On by default (it helps); toggle off to A/B against a context-free render.
@@ -318,10 +324,15 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
           return;
         }
         const directLabel = 'Direct 3D Street';
+        const completedPreviews: StreetViewResult[] = [];
         try {
-          const archetypeReferences = await collectDirect3DArchetypeReferences(siteZones, 8, bundle);
-          const direct = await renderDirect3D(bundle, {
-            style: resolveDirect3DStreetStyle(selectedStyle),
+          const directStyle = resolveDirect3DStreetStyle(selectedStyle);
+          const archetypeReferences = resolveDirect3DPresentationMode(directStyle) === 'scene'
+            ? []
+            : await collectDirect3DArchetypeReferences(siteZones, 8, bundle);
+          await runImageModelBatch(imageModel, (model) => renderDirect3D(bundle, {
+            model,
+            style: directStyle,
             projectId,
             community3DClaims: claims,
             residualLandscapeClaim: getCurrentResidualLandscapeClaim(siteZones),
@@ -330,53 +341,63 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
             customPrompt: [
               includePeople ? 'Include a few pedestrians on existing walking surfaces.' : 'Do not add people.',
               includeVehicles ? 'Include a few vehicles on existing carriageways only.' : 'Do not add vehicles.',
+              includePeople ? 'Scale people using nearby doors and storeys. Show natural walking or seated poses with believable ground contact; keep feet visible when the captured framing allows. Respect occlusion by existing trees, buildings and furniture, and keep entrances and crossings readable.' : '',
               'Keep all buildings, facilities, paths and streets in their captured positions.',
             ].join(' '),
-          });
-          const reviewSuffix = direct.outcome === 'review_required' ? ' · review' : '';
-          const directResult: StreetViewResult = {
-            imageUrl: direct.render.imageUrl,
-            prompt: direct.render.prompt,
-            model: direct.render.model,
-            imageQuality: 'high',
-            providerLabel: `${direct.render.providerLabel}${reviewSuffix}`,
-          };
-          const original = direct.providerOriginalRender;
-          const originalPreview: StreetViewResult | undefined = original ? {
-            imageUrl: resolveApiFileUrl(original.image_url),
-            prompt: original.prompt,
-            model: original.model,
-            imageQuality: original.image_quality,
-            providerLabel: 'AI attempt · unverified',
-          } : undefined;
-          setPreviews(originalPreview ? [directResult, originalPreview] : [directResult]);
-          setSelectedPreviewIndex(0);
-          setResult(directResult);
-          // The endpoint already saves both outputs. Notify the gallery and
-          // mark their preview keys so Save cannot create duplicate records.
-          if (direct.render.savedRender) onRenderSaved?.(direct.render.savedRender);
-          if (original) onRenderSaved?.(original);
-          setSavedImageKeys((previous) => new Set([
-            ...previous,
-            ...(direct.render.savedRender ? [getRenderImageKey(directResult)] : []),
-            ...(originalPreview ? [getRenderImageKey(originalPreview)] : []),
-          ]));
-          if (direct.outcome === 'review_required') {
-            toast('Saved for review. Compare the AI attempt with the original 3D view before presenting.', { icon: '🔍' });
-          }
+          }), (direct) => {
+            const directResult: StreetViewResult = {
+              imageUrl: direct.render.imageUrl,
+              prompt: direct.render.prompt,
+              model: direct.render.model,
+              imageQuality: 'high',
+              providerLabel: direct.render.providerLabel,
+            };
+            const original = direct.providerOriginalRender;
+            const originalPreview: StreetViewResult | undefined = original ? {
+              imageUrl: resolveApiFileUrl(original.image_url),
+              prompt: original.prompt,
+              model: original.model,
+              imageQuality: original.image_quality,
+              providerLabel: 'AI render',
+            } : undefined;
+            const sourcePreview: StreetViewResult = {
+              imageUrl: direct.sourceImageUrl, prompt: '', providerLabel: 'Original 3D view',
+            };
+            const showingOriginal = direct.render.savedRender?.id === original?.id && Boolean(original);
+            const index = completedPreviews.length;
+            completedPreviews.push(...(showingOriginal ? [directResult, sourcePreview] : originalPreview ? [directResult, originalPreview] : [directResult]));
+            setPreviews([...completedPreviews]);
+            setSelectedPreviewIndex(index);
+            setResult(directResult);
+            // The endpoint already saves both outputs. Notify the gallery and
+            // mark their preview keys so Save cannot create duplicate records.
+            if (direct.render.savedRender) onRenderSaved?.(direct.render.savedRender);
+            if (original && !showingOriginal) onRenderSaved?.(original);
+            setSavedImageKeys((previous) => new Set([
+              ...previous,
+              ...(direct.render.savedRender ? [getRenderImageKey(directResult)] : []),
+              ...(originalPreview ? [getRenderImageKey(originalPreview)] : []),
+            ]));
+            if (direct.outcome === 'review_required') {
+              toast('Render saved. The 3D view is available for comparison.', { icon: '✓' });
+            }
+          }, (model, index, total) => setImageProgress(`${index + 1}/${total} · ${imageModelLabel(model)}`));
         } catch (err) {
           const message = getApiErrorMessage(err, 'Direct 3D street render failed.');
           const errorResult: StreetViewResult = {
             imageUrl: createErrorPreviewImage(directLabel, message),
             prompt: '',
-            model: 'gpt-image-2',
             providerLabel: directLabel,
             error: message,
           };
-          setPreviews([errorResult]);
-          setSelectedPreviewIndex(0);
-          setResult(errorResult);
+          setPreviews([...completedPreviews, errorResult]);
+          if (!completedPreviews.length) {
+            setSelectedPreviewIndex(0);
+            setResult(errorResult);
+          }
           toast.error(`${directLabel} failed`);
+        } finally {
+          setImageProgress('');
         }
         return;
       }
@@ -450,7 +471,7 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
     } finally {
       setIsGenerating(false);
     }
-  }, [streetViewPegman, siteZones, generateStreetView, renderDirect3D, directStreetMode, buildings, selectedStyle, useRealContext, includePeople, includeVehicles, result, globeCapture, projectId, saveStreetViewRender, onRenderSaved]);
+  }, [streetViewPegman, siteZones, generateStreetView, renderDirect3D, directStreetMode, buildings, selectedStyle, imageModel, useRealContext, includePeople, includeVehicles, result, globeCapture, projectId, saveStreetViewRender, onRenderSaved]);
 
   const handleDownload = useCallback(() => {
     if (!result?.imageUrl || result.error) return;
@@ -602,7 +623,7 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
               <div className="mt-3">
                 <div className="mb-1 flex items-center justify-between text-[11px] text-white/50">
                   <span>{previews[selectedPreviewIndex ?? 0]?.providerLabel || 'Choose a render'}</span>
-                  <span>{previews.length} provider test</span>
+                  <span>{previews.length} views</span>
                 </div>
                 <div className="grid grid-cols-2 gap-2">
                   {previews.map((preview, index) => (
@@ -787,6 +808,7 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
 
         {/* Style selector */}
         <div className="street-view-style-list max-h-36 min-w-[220px] flex-1 overflow-y-auto rounded-lg p-2">
+          {directStreetMode && <div className="mb-2"><ImageModelSelect value={imageModel} onChange={setImageModel} disabled={isGenerating} availability={imageModelAvailability} />{imageProgress && <p role="status" className="mt-1 text-xs">{imageProgress}</p>}</div>}
           {STREET_VIEW_STYLE_GROUPS.map(group => (
             <div key={group.label}>
               <div className="street-view-group-label mb-1 text-[9px] font-black uppercase tracking-wider">{group.label}</div>
@@ -835,12 +857,12 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
           <button
             type="button"
             onClick={() => setDirectStreetMode((v) => !v)}
-            title="One inventory-locked render through the Direct 3D pipeline (GPT Image 2, review-first). Off = classic Gemini + GPT provider test."
+            title="One inventory-locked render through the selected GPT Image engine. Off = classic Gemini + GPT provider test."
             className={`rounded-full px-3 py-1.5 text-[10px] font-black uppercase leading-tight transition ${
               directStreetMode ? 'bg-[#c9ff3d] text-black' : 'bg-black/5 text-black/55 hover:bg-black/10'
             }`}
           >
-            {directStreetMode ? '✓ Direct 3D · 1 image' : 'Classic comparison · 2 images'}
+            {directStreetMode ? `✓ Direct 3D · ${imageModel === 'compare-flare-sunburst' ? '2 images' : '1 image'}` : 'Classic comparison · 2 images'}
           </button>
         )}
 
@@ -881,7 +903,7 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
           {isGenerating ? (
             <>
               <Loader2 size={16} className="animate-spin" />
-              Rendering {directStreetMode ? 'Direct 3D Street' : STREET_VIEW_RENDER_LABEL}
+              Rendering {directStreetMode ? imageProgress || 'Direct 3D Street' : STREET_VIEW_RENDER_LABEL}
             </>
           ) : (
             <>

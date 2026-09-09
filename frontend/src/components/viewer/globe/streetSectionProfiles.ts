@@ -54,6 +54,14 @@ export interface StreetSectionMarking {
   dashed: boolean;
 }
 
+/** The yield-street pilot has pedestrian access at its paved flush edges,
+ * rather than separate sidewalks. Other road shoulders are not footpaths. */
+export function pedestrianAccessBands(section: StreetSectionProfile): StreetSectionBand[] {
+  return section.bands.filter(band => band.kind === 'sidewalk' || band.kind === 'path'
+    || (section.archetypeId === 'yield_street' && !section.renderCurbs
+      && band.sourceType === 'shoulder' && band.surface === 'unit paving'));
+}
+
 export interface StreetSectionProfile {
   archetypeId: string;
   title: string;

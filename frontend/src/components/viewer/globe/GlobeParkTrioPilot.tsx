@@ -24,7 +24,9 @@ function FixedModule({
   const url =
     module.asset === "shared/bench"
       ? "/landscape-pilots/neighborhood-rustic-v5/timber-bench.glb"
-      : `/landscape-pilots/${PARK_TRIO_REVISION}/${module.asset}.glb`;
+      : module.asset.startsWith("sports/")
+        ? `/landscape-pilots/sports-parks-v1/${module.asset.split("/")[1]}/court.glb`
+        : `/landscape-pilots/${PARK_TRIO_REVISION}/${module.asset}.glb`;
   const { scene } = useGLTF(url);
   const clone = useMemo(() => {
     const c = scene.clone(true);
@@ -32,10 +34,16 @@ function FixedModule({
       if ((o as THREE.Mesh).isMesh) {
         o.castShadow = true;
         o.receiveShadow = true;
+        if (module.asset.startsWith("sports/")) {
+          // Near-coplanar paint must be drawn after the pad and playing surface.
+          // Keep normal depth testing: buildings and equipment still occlude it.
+          o.renderOrder = o.name === "white" ? 154 : o.name === "red" ? 153
+            : o.name === "blue" || o.name === "stripe" ? 152 : 151;
+        }
       }
     });
     return c;
-  }, [scene]);
+  }, [scene, module.asset]);
   const datum = useMemo(() => {
     const elevations: number[] = [];
     for (let i = 0; i <= 4; i++)
@@ -64,7 +72,11 @@ function FixedModule({
     const indexed = new THREE.ShapeGeometry(shape);
     const top = indexed.toNonIndexed();
     indexed.dispose();
-    const coordinates = Array.from(top.getAttribute("position").array);
+    // Sports modules already include their own continuous slab. A second cap
+    // just centimetres below it competes for depth at globe camera distances.
+    // Retain the terrain skirt, but let the delivered court own its top surface.
+    const coordinates: number[] = module.asset.startsWith("sports/")
+      ? [] : Array.from(top.getAttribute("position").array);
     for (let i = 2; i < coordinates.length; i += 3) coordinates[i] = datum.high;
     top.dispose();
     ring.forEach((a, i) => {

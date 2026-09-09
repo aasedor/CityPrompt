@@ -1,4 +1,5 @@
 import axios from 'axios';
+import type { ImageModelAvailability, OpenAIImageModel } from '@/config/imageModels';
 import { isPublicReadRequest, shouldAttemptTokenRefresh } from './authRefreshPolicy';
 import { assetAccountIdentity, createAssetAccess, type AssetContext } from './assetAccess';
 import type {
@@ -1344,6 +1345,10 @@ export const modelLibraryApi = {
 };
 
 export const rendersApi = {
+  imageModels: async (): Promise<ImageModelAvailability> => {
+    const { data } = await api.get('/api/v1/render/image-models', { timeout: 10000 });
+    return data;
+  },
   generateEdit: async (request: {
     image_base64: string;
     mask_base64: string;
@@ -1358,7 +1363,7 @@ export const rendersApi = {
     seed?: number;
     model?: string;
     image_quality?: 'auto' | 'low' | 'medium' | 'high';
-  }): Promise<{ image_base64: string; seed?: number }> => {
+  }): Promise<{ image_base64: string; seed?: number; model?: string }> => {
     const { data } = await api.post('/api/v1/render/generate', request, { timeout: 300000 });
     return data;
   },
@@ -1366,6 +1371,7 @@ export const rendersApi = {
   /** Isolated current-camera refinement for an already compiled 3D scene.
    * This endpoint never routes through the Classic colored-zone renderer. */
   generateDirect3D: async (request: {
+    model?: OpenAIImageModel;
     control_bundle_version: 2;
     park_access_snapshot?: import('@/components/viewer/globe/parkAccessConnections').ParkAccessSnapshot;
     shared_ground_snapshot?: import('@/components/viewer/globe/sharedSiteGround').SharedSiteGroundSnapshot;
@@ -1433,7 +1439,7 @@ export const rendersApi = {
     };
   }): Promise<{
     image_base64: string;
-    model: 'gpt-image-2';
+    model: OpenAIImageModel;
     outcome: 'accepted' | 'review_required';
     warnings: string[];
     capture_fingerprint: string;

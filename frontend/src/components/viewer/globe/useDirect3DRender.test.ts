@@ -25,6 +25,7 @@ import type { SharedSiteGroundSnapshot } from './sharedSiteGround';
 
 vi.mock('@/services/api', () => ({
   rendersApi: { generateDirect3D: vi.fn() },
+  resolveApiFileUrl: (url: string) => url,
 }));
 
 const capture: Direct3DCaptureBundle = {
@@ -173,7 +174,7 @@ describe('Direct 3D presentation adapter', () => {
     vi.mocked(rendersApi.generateDirect3D).mockResolvedValue(response);
   });
 
-  it('retains the saved AI attempt when the returned image is the source fallback', async () => {
+  it('shows the saved AI image when checks return a source fallback, without claiming verification', async () => {
     const original = { id: 'original-1', image_url: '/api/v1/files/original.png', prompt: 'finish', created_at: '2026-09-05', variant: 'provider_original' };
     vi.mocked(rendersApi.generateDirect3D).mockResolvedValue({
       ...response, outcome: 'review_required', provider_original_render: original,
@@ -184,7 +185,10 @@ describe('Direct 3D presentation adapter', () => {
       style: 'photorealistic', projectId: 'project-1', community3DClaims,
     });
     expect(direct.providerOriginalRender).toEqual(original);
-    expect(direct.render.providerLabel).toContain('Original 3D view');
+    expect(direct.render.providerLabel).toBe('AI render · GPT Image 2');
+    expect(direct.render.imageUrl).toBe(original.image_url);
+    expect(direct.render.savedRender).toEqual(original);
+    expect(direct.sourceImageUrl).toBe(capture.beautyImageBase64);
     expect(direct.outcome).toBe('review_required');
     expect(rendersApi.generateDirect3D).toHaveBeenCalledTimes(1);
   });
@@ -249,11 +253,53 @@ describe('Direct 3D presentation adapter', () => {
     expect(prompt).not.toContain('Add realistic public-realm activity');
   });
 
+  it.each(['gpt-image-2.5-flare', 'gpt-image-2.5-sunburst'] as const)('forwards %s with the same geometry controls and reports the actual model', async (model) => {
+    vi.mocked(rendersApi.generateDirect3D).mockResolvedValue({ ...response, model });
+    const { result } = renderHook(() => useDirect3DRender());
+    const direct = await result.current.renderDirect3D(capture, {
+      style: 'photorealistic', model, projectId: 'project-1', community3DClaims,
+    });
+    expect(rendersApi.generateDirect3D).toHaveBeenCalledWith(expect.objectContaining({
+      model, beauty_image_base64: capture.beautyImageBase64,
+      proposal_mask_base64: capture.proposalMaskBase64,
+      depth_image_base64: capture.depthImageBase64,
+      normal_image_base64: capture.normalImageBase64,
+      instance_id_manifest: capture.instanceIdManifest,
+    }));
+    expect(direct.render.model).toBe(model);
+    expect(direct.render.providerLabel).toContain(model.endsWith('flare') ? 'Flare' : 'Sunburst');
+    expect(rendersApi.generateDirect3D).toHaveBeenCalledTimes(1);
+  });
+
   it('keeps missing connections and hidden facilities absent even after custom directions', () => {
     const prompt = buildDirect3DVisualPrompt('watercolour', 'Make this a lively park.', capture);
     expect(prompt.indexOf('do not invent connecting sidewalks')).toBeGreaterThan(prompt.indexOf('Make this a lively park.'));
     expect(prompt).toContain('Keep cropped and occluded elements cropped and occluded');
     expect(prompt).toContain('never build a new surface for them');
+  });
+
+  it.each(['photomontage', 'survey'])('keeps %s usable from a street camera without prescribing an aerial viewpoint', (style) => {
+    const prompt = buildDirect3DVisualPrompt(style, 'Do not add people. Do not add vehicles.', capture);
+    expect(prompt).not.toMatch(/drone photograph|aerial survey photograph/i);
+    expect(prompt).toContain('Do not add people. Do not add vehicles.');
+    expect(prompt).toContain('Keep cropped and occluded elements cropped and occluded');
+  });
+
+  it.each(['photomontage', 'development', 'atmospheric', 'winter', 'night'])('does not let the %s preset request new activity or site furniture', (style) => {
+    const direction = DIRECT_3D_DEFAULT_ART_DIRECTIONS[style];
+    expect(direction).not.toMatch(/pedestrians|cyclists?|cafe activity|moving cars|street life|freshly landscaped|headlight|taillight/i);
+    const prompt = buildDirect3DVisualPrompt(style, undefined, capture);
+    expect(prompt).toContain('do not invent connecting sidewalks');
+  });
+
+  it('describes the illustrative medium without asking to simplify the authored geometry', () => {
+    const watercolour = buildDirect3DVisualPrompt('watercolour', undefined, capture);
+    expect(watercolour).toContain('transparent overlapping washes');
+    expect(watercolour).toContain('pigment granulation');
+    expect(watercolour).toContain('roof profiles, openings and path edges');
+    expect(watercolour).toContain('rather than a photograph with a paper-texture filter');
+    const print = buildDirect3DVisualPrompt('risograph', undefined, capture);
+    expect(print).toContain('Keep structural contours registered');
   });
 
   it('separates aesthetic style from the default fidelity policy', () => {
@@ -310,7 +356,7 @@ describe('Direct 3D presentation adapter', () => {
     expect(direct.sourceImageUrl).toBe(capture.beautyImageBase64);
   });
 
-  it.each(['precise', 'balanced'] as const)('conditions %s scene requests without changing their source controls', async (fidelityPolicy) => {
+  it.each(['precise', 'balanced', 'expressive'] as const)('conditions %s scene requests without changing their source controls', async (fidelityPolicy) => {
     const { result } = renderHook(() => useDirect3DRender());
     const references = [{ image_base64: 'catalogue-photo', label: 'Different porch and roof', zone_ids: ['zone-1'] }];
     await result.current.renderDirect3D(capture, {
@@ -318,11 +364,21 @@ describe('Direct 3D presentation adapter', () => {
       fidelityPolicy, archetypeReferences: references,
     });
     const request = vi.mocked(rendersApi.generateDirect3D).mock.calls[0][0];
-    expect(request.archetype_references).toEqual(fidelityPolicy === 'precise' ? undefined : references);
+    expect(request.archetype_references).toBeUndefined();
     expect(request.beauty_image_base64).toBe(capture.beautyImageBase64);
     expect(request.instance_id_manifest).toEqual(capture.instanceIdManifest);
     expect(request.depth_image_base64).toBe(capture.depthImageBase64);
     expect(references).toHaveLength(1);
+  });
+
+  it('retains design references for an explicit projection change', async () => {
+    const { result } = renderHook(() => useDirect3DRender());
+    const references = [{ image_base64: 'catalogue-photo', label: 'Exact facade', zone_ids: ['zone-1'] }];
+    await result.current.renderDirect3D(capture, {
+      style: 'isometric', projectId: 'project-1', community3DClaims,
+      archetypeReferences: references,
+    });
+    expect(vi.mocked(rendersApi.generateDirect3D).mock.calls[0][0].archetype_references).toEqual(references);
   });
 
   it('submits the frozen park access snapshot captured with the image for server revision validation', async () => {

@@ -69,7 +69,21 @@ export function buildNeighborhoodParkLayout(input: readonly ParkPoint[]): Neighb
   const rotate = (p: ParkPoint, theta: number): ParkPoint => ({ x: Math.cos(theta) * p.x - Math.sin(theta) * p.y, y: Math.sin(theta) * p.x + Math.cos(theta) * p.y });
   const ring = input.map(p => rotate(p, -angle)), box = bounds(ring);
   const w = box.maxX - box.minX, h = box.maxY - box.minY, cx = (box.maxX + box.minX) / 2, cy = (box.maxY + box.minY) / 2;
-  if (w < 18 || h < 18) return { ...empty, notes: ['This footprint is too narrow for the neighbourhood park programme. Enlarge it or choose a pocket park.'] };
+  const usableArea = Math.abs(ring.reduce((sum,p,i) => {
+    const q=ring[(i+1)%ring.length]; return sum+p.x*q.y-q.x*p.y;
+  },0))/2;
+  const landscapeOnly = (): NeighborhoodParkLayout => {
+    const trees: ParkPoint[] = [], shrubs: ParkPoint[] = [];
+    for (let x=box.minX+1; x<box.maxX; x+=Math.max(2.2,w/60)) for (let y=box.minY+1; y<box.maxY; y+=Math.max(2.2,h/60)) {
+      const p={x,y}, edge=edgeDistance(p,ring);
+      if (!pointInPark(p,ring) || edge<1.1 || edge>9) continue;
+      if (edge>3.3 && trees.length<70 && trees.every(q=>Math.hypot(p.x-q.x,p.y-q.y)>6.5)) trees.push(p);
+      else if (shrubs.length<260) shrubs.push(p);
+    }
+    return { ...empty, trees:trees.map(p=>rotate(p,angle)), shrubs:shrubs.map(p=>rotate(p,angle)),
+      notes:['Lawn and planting fit this outline. A walking loop and full-size play areas need a wider connected space; you can keep this landscape layout.'] };
+  };
+  if (w < 18 || h < 18) return landscapeOnly();
   const specifications: Array<{ kind: ParkModuleKind; width: number; depth: number; targetX: number; targetY: number }> = [
     { kind: 'pavilion', width: 10, depth: 8, targetX: 0, targetY: .32 },
     { kind: 'tower', width: 12, depth: 7.5, targetX: -.3, targetY: .27 },
@@ -77,13 +91,18 @@ export function buildNeighborhoodParkLayout(input: readonly ParkPoint[]): Neighb
     { kind: 'tower', width: 12, depth: 7.5, targetX: .32, targetY: -.05 },
   ];
   let best: { lawn: ParkPoint[]; loop: ParkPoint[]; modules: ParkModule[]; score: number } | null = null;
-  for (const scale of [1, .86, .72, .6]) {
-    for (const shift of [0, -.16, .16]) {
-      const rx = Math.max(4, w * .29 * scale), ry = Math.max(4, h * .26 * scale);
+  const originalCandidates = [1,.86,.72,.6].flatMap(scale => [0,-.16,.16].map(shift => ({scale,scaleY:scale,shift,yShift:null as number | null})));
+  // Concave and triangular lots need to search both axes. Try this bounded
+  // second pass only when the established composition cannot fit.
+  const irregularCandidates = [.72,.6,.48].flatMap(scale => [1,.72,.6].flatMap(scaleY => [-.24,0,.24].flatMap(shift => [-.24,0,.24].map(yShift => ({scale,scaleY,shift,yShift})))));
+  for (const candidates of [originalCandidates, irregularCandidates]) {
+    if (best) break;
+    for (const {scale,scaleY,shift,yShift} of candidates) {
+      const rx = Math.max(4, w * .29 * scale), ry = Math.max(4, h * .26 * scaleY);
       // Preserve the source's lawn offset where it fits, but reserve the full
       // loop edge before shifting it on a compact 30–31 m plot.
-      const lx = cx + shift * w, ly = cy - Math.min(.12*h, Math.max(0,h/2-ry-3-.9));
-      if (Math.PI * rx * ry < w * h * .20) continue;
+      const lx = cx + shift * w, ly = yShift === null ? cy - Math.min(.12*h, Math.max(0,h/2-ry-3-.9)) : cy+yShift*h;
+      if (Math.PI * rx * ry < usableArea * .20) continue;
       const lawn = ellipse(lx, ly, rx, ry), loop = ellipse(lx, ly, rx + 1.3, ry + 1.3), reserve = ellipse(lx, ly, rx + 3, ry + 3);
       if (!envelopeFits(reserve, ring, .8)) continue;
       const modules: ParkModule[] = [];
@@ -107,7 +126,7 @@ export function buildNeighborhoodParkLayout(input: readonly ParkPoint[]): Neighb
       if (!best || score > best.score) best = { lawn, loop, modules, score };
     }
   }
-  if (!best) return { ...empty, notes: ['The lawn and walking loop do not fit inside this shape. Widen the usable park area.'] };
+  if (!best) return landscapeOnly();
   const paths: ParkPoint[][] = [];
   const connectedModules: ParkModule[] = [];
   for (const module of best.modules) {

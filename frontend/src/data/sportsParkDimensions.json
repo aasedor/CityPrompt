@@ -1,0 +1,5 @@
+{
+  "basketball": {"playing": [28, 15], "module": [36, 23], "minimumPark": [52, 39], "standardPark": [56, 43], "maxModules": 4},
+  "tennis": {"playing": [23.77, 10.97], "module": [38, 20], "minimumPark": [54, 60], "standardPark": [58, 64], "maxModules": 6},
+  "soccer": {"playing": [105, 68], "module": [117, 80], "minimumPark": [133, 96], "standardPark": [137, 100], "maxModules": 2}
+}

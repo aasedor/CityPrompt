@@ -3,6 +3,7 @@ import type { SiteZone } from '@/types';
 import { StudioDialog } from '@/features/projects/StudioControls';
 import { resolveManualParkAccess } from '@/components/viewer/globe/parkAccessConnections';
 import { rectangleDimensions } from './geometry';
+import { streetAssetForZone } from './streetPlacement';
 import { EMPTY_TRANSPORT, type ExistingTransport } from '@/features/referenceLayers/existingTransport';
 import { readBuildingEntrance, readCrossings, resolvePedestrianConnections, type BuildingEntrance, type StreetCrossing } from './pedestrianConnections';
 
@@ -20,6 +21,11 @@ export function ConnectionEditor({ zone, zones, visibleIds, disabled, onSave, on
   const existing=readBuildingEntrance(zone);
   const park=zone.properties?.pedestrian_park_entrance as {edge:number;position:number;streetId:string;existingGroundConfirmed?:boolean}|undefined;
   const roads=zones.filter(z=>z.zone_type==='road' && !z.id.startsWith('temp-') && (!visibleIds || visibleIds.includes(z.id)));
+  const roadLabel = (road: SiteZone) => road.name?.trim() || streetAssetForZone(road)?.label || 'Street';
+  const roadOptionLabel = (road: SiteZone) => {
+    const label = roadLabel(road), matches = roads.filter(candidate => roadLabel(candidate) === label);
+    return matches.length > 1 ? `${label} ${matches.findIndex(candidate => candidate.id === road.id) + 1}` : label;
+  };
   const [enabled,setEnabled]=useState(isPark ? Boolean(park) : Boolean(existing));
   const [streetId,setStreetId]=useState(existing?.streetId ?? park?.streetId ?? roads[0]?.id ?? '');
   const [groundConfirmed,setGroundConfirmed]=useState(park?.existingGroundConfirmed ?? false);
@@ -78,7 +84,7 @@ export function ConnectionEditor({ zone, zones, visibleIds, disabled, onSave, on
         {isPark && Array.isArray(zone.properties?.park_access_points) && <p className="text-sm">Saving here replaces this park’s older authored access points with the settings shown below.</p>}
         {isPark && !enabled && <p className="text-sm">The park will choose a nearby suitable sidewalk automatically.</p>}
         {enabled && <>
-          <label className="block text-sm">Sidewalk target<select className={field} value={streetId} onChange={e=>{setStreetId(e.target.value);setGroundConfirmed(false);}}><option value="">Choose a street or path</option>{roads.map(road=><option key={road.id} value={road.id}>{road.name || 'Street'} · {road.id.slice(0,6)}</option>)}{isPark&&<optgroup label="Existing mapped paths · nearest first">{mappedPaths.map(path=><option key={path.id} value={path.id}>{Math.round(path.distance)} m · {path.label} · {path.id.slice(-8)}</option>)}</optgroup>}</select></label>
+          <label className="block text-sm">Sidewalk target<select className={field} value={streetId} onChange={e=>{setStreetId(e.target.value);setGroundConfirmed(false);}}><option value="">Choose a street or path</option>{roads.map(road=><option key={road.id} value={road.id}>{roadOptionLabel(road)}</option>)}{isPark&&<optgroup label="Existing mapped paths · nearest first">{mappedPaths.map(path=><option key={path.id} value={path.id}>{Math.round(path.distance)} m · {path.label} · {path.id.slice(-8)}</option>)}</optgroup>}</select></label>
           {isPark&&streetId.startsWith('existing:')&&<div className="rounded-lg bg-blue-50 p-3 text-sm">
             <p>Uses the recorded path width where available, otherwise its centreline. Check the Google scene: shared access routes may also carry vehicles, and mapped data does not establish precise curbs or elevation.</p>
             <label className="mt-2 flex min-h-11 items-center gap-2"><input type="checkbox" checked={groundConfirmed} onChange={e=>setGroundConfirmed(e.target.checked)}/>I checked that this is suitable pedestrian access at ground level</label>

@@ -29,7 +29,9 @@ const RENDER_API_PATH = '/api/v1/render/generate';
 const RENDER_TIMEOUT_MS = 300_000;
 const DEG_TO_RAD = Math.PI / 180;
 const EARTH_RADIUS_M = 6_371_000;
-const STREET_VIEW_RENDER_MODEL = 'gpt-image-2';
+import { DEFAULT_OPENAI_IMAGE_MODEL } from '@/config/imageModels';
+
+const STREET_VIEW_RENDER_MODEL = DEFAULT_OPENAI_IMAGE_MODEL;
 
 /**
  * What the guide image (Image 1) actually depicts. Drives both the frontend

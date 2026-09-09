@@ -4,6 +4,10 @@ import { Brush, Check, Loader2, Minus, Plus, RotateCcw, Undo2, Wand2, X } from '
 import { getApiErrorMessage, rendersApi } from '@/services/api';
 import type { SavedRender } from '@/types';
 import { imageUrlToBase64 } from '@/utils/renderPersistence';
+import { imageModelLabel } from '@/config/imageModels';
+import { ImageModelSelect } from './ImageModelSelect';
+import { useImageModelChoice } from './useImageModelChoice';
+import { runImageModelBatch } from './runImageModelBatch';
 
 interface RenderEditModalProps {
   projectId: string;
@@ -14,7 +18,6 @@ interface RenderEditModalProps {
 }
 
 const DEFAULT_BRUSH_SIZE = 44;
-const EDIT_MODEL = 'gpt-image-2';
 const MAX_UNDO_STEPS = 30;
 const MIN_ZOOM = 0.5;
 const MAX_ZOOM = 2.5;
@@ -44,6 +47,8 @@ export function RenderEditModal({ projectId, render, imageUrl, onClose, onSaved 
   const undoStackRef = useRef<CanvasSnapshot[]>([]);
 
   const [prompt, setPrompt] = useState('');
+  const { imageModel, setImageModel, availability: imageModelAvailability } = useImageModelChoice();
+  const [imageProgress, setImageProgress] = useState('');
   const [brushSize, setBrushSize] = useState(DEFAULT_BRUSH_SIZE);
   const [zoom, setZoom] = useState(1);
   const [imageSize, setImageSize] = useState<{ width: number; height: number } | null>(null);
@@ -266,35 +271,37 @@ export function RenderEditModal({ projectId, render, imageUrl, onClose, onSaved 
         'CRITICAL: Only alter the circled/masked region. Do not redesign or repaint the rest of the image.',
       ].join('\n');
 
-      const response = await rendersApi.generateEdit({
+      const maskBase64 = getCanvasBase64(mask);
+      await runImageModelBatch(imageModel, async (model) => ({ model, response: await rendersApi.generateEdit({
         image_base64: sourceBase64,
         previous_render_base64: sourceBase64,
-        mask_base64: getCanvasBase64(mask),
+        mask_base64: maskBase64,
         prompt: fullPrompt,
         project_id: projectId,
-        model: EDIT_MODEL,
+        model,
         image_quality: render.image_quality || 'auto',
-      });
-
-      const resultUrl = `data:image/png;base64,${response.image_base64}`;
-      setPreviewUrl(resultUrl);
-      const saved = await rendersApi.save(projectId, {
-        image_base64: response.image_base64,
-        prompt: `${render.prompt || 'Saved render'}\n\nEdit: ${editPrompt}`,
-        style: render.style ? `${render.style} edit` : 'masked edit',
-        seed: response.seed,
-        model: EDIT_MODEL,
-        image_quality: render.image_quality || 'auto',
-      });
-      onSaved(saved);
+      }) }), async ({ model, response }) => {
+        const resultUrl = `data:image/png;base64,${response.image_base64}`;
+        setPreviewUrl(resultUrl);
+        const saved = await rendersApi.save(projectId, {
+          image_base64: response.image_base64,
+          prompt: `${render.prompt || 'Saved render'}\n\nEdit: ${editPrompt}`,
+          style: render.style ? `${render.style} edit` : 'masked edit',
+          seed: response.seed,
+          model: response.model ?? model,
+          image_quality: render.image_quality || 'auto',
+        });
+        onSaved(saved);
+      }, (model, index, total) => setImageProgress(`${index + 1}/${total} · ${imageModelLabel(model)}`));
       toast.success('Edited render saved');
       onClose();
     } catch (error) {
       toast.error(getApiErrorMessage(error, 'Failed to edit render'));
     } finally {
       setSubmitting(false);
+      setImageProgress('');
     }
-  }, [hasMask, imageUrl, onClose, onSaved, projectId, prompt, render.image_quality, render.prompt, render.style, submitting]);
+  }, [hasMask, imageUrl, imageModel, onClose, onSaved, projectId, prompt, render.image_quality, render.prompt, render.style, submitting]);
 
   const canSubmit = Boolean(hasMask && prompt.trim() && imageSize && !submitting);
 
@@ -403,7 +410,9 @@ export function RenderEditModal({ projectId, render, imageUrl, onClose, onSaved 
             </div>
           </div>
 
-          <aside className="flex min-h-0 flex-col gap-4 border-t border-white/10 bg-gray-900/80 p-4 lg:border-l lg:border-t-0">
+          <aside className="flex min-h-0 flex-col gap-4 border-t border-white/10 bg-gray-900/80 p-4 text-white lg:border-l lg:border-t-0">
+            <ImageModelSelect value={imageModel} onChange={setImageModel} disabled={submitting} availability={imageModelAvailability} />
+            {imageProgress && <p role="status" className="text-xs">{imageProgress}</p>}
             <div className="rounded-lg bg-white/[0.04] p-3 ring-1 ring-white/10">
               <label htmlFor="render-edit-brush" className="flex items-center justify-between text-xs font-semibold text-white/75">
                 <span className="flex items-center gap-1.5"><Brush size={13} /> Brush</span>

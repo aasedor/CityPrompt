@@ -96,6 +96,18 @@ describe('useSiteZones', () => {
     });
   });
 
+  it('explains a boundary rejection without claiming another session changed the drawing', async () => {
+    queryClient.setQueryData(['site-zones', PROJECT_ID], [makeZone(REAL_ZONE_ID)]);
+    const detail = 'The updated zone must stay completely inside the active site boundary.';
+    vi.mocked(siteZonesApi.update).mockRejectedValueOnce(Object.assign(new Error(detail), {
+      response: { status: 409, data: { detail } },
+    }));
+    const { result } = renderHook(() => useSiteZones(PROJECT_ID), { wrapper });
+    act(() => result.current.handleZoneUpdated(REAL_ZONE_ID, [[2,2],[2,3],[3,3]]));
+    await waitFor(() => expect(toast.error).toHaveBeenCalledWith(detail));
+    expect(vi.mocked(toast.error).mock.calls.every(([message]) => !String(message).includes('newer saved version'))).toBe(true);
+  });
+
   it('reconciles a persisted ghost zone after an update returns 404', async () => {
     queryClient.setQueryData(['site-zones', PROJECT_ID], [makeZone(REAL_ZONE_ID)]);
     useViewerStore.setState({ selectedZoneId: REAL_ZONE_ID });
@@ -290,6 +302,19 @@ describe('useSiteZones', () => {
     expect(toast.success).toHaveBeenCalledWith('Rejected drawing discarded');
   });
 
+  it('allows discarding a boundary rejected for excluding an existing building without deleting server work', async () => {
+    const detail = 'The site boundary must contain every authored zone. Outside the proposed boundary: Tower.';
+    vi.mocked(siteZonesApi.create).mockRejectedValueOnce(Object.assign(new Error(detail), {response:{status:409,data:{detail}}}));
+    const {result} = renderHook(() => useSiteZones(PROJECT_ID), {wrapper});
+    act(() => result.current.createZone.mutate({zone_type:'site_boundary',coordinates:[[0,0],[0,1],[1,1]]}));
+    await waitFor(() => expect(result.current.discardableDrafts).toHaveLength(1));
+    const draft = result.current.discardableDrafts[0];
+    expect(draft.rejectionReason).toBe('boundary_excludes_zones');
+    act(() => { expect(result.current.discardDraft(draft)).toBe(true); });
+    expect(result.current.pendingDrafts).toHaveLength(0);
+    expect(siteZonesApi.delete).not.toHaveBeenCalled();
+  });
+
   it('discards a confirmed outside-site create locally after remount while preserving saved zones', async () => {
     const savedZone = makeZone(REAL_ZONE_ID);
     queryClient.setQueryData(['site-zones', PROJECT_ID], [savedZone]);
@@ -356,7 +381,7 @@ describe('useSiteZones', () => {
     expect(siteZonesApi.delete).toHaveBeenCalledWith(REAL_ZONE_ID, zone.updated_at);
     expect(result.current.siteZones).toEqual([zone]);
     expect(result.current.discardableDrafts).toHaveLength(0);
-    expect(toast.error).toHaveBeenCalledWith('This drawing changed in another session. Review it before deleting.');
+    expect(toast.error).toHaveBeenCalledWith('This drawing has a newer saved version. Review it before deleting.');
   });
 
   it.each([400, 409])('revokes discard permission before retrying a %s rejection and preserves a lost-response retry', async (status) => {
@@ -435,7 +460,7 @@ describe('useSiteZones', () => {
     expect(result.current.saveError).toContain('First drawing failed');
   });
 
-  it('does not let an older success erase a newer failed edit to the same drawing', async () => {
+  it('serializes edits and retains the newest failure after an older success', async () => {
     let completeOld!: (zone: SiteZone) => void;
     const zone = makeZone(REAL_ZONE_ID);
     queryClient.setQueryData(['site-zones', PROJECT_ID], [zone]);
@@ -447,8 +472,9 @@ describe('useSiteZones', () => {
     act(() => result.current.updateZone.mutate({ zoneId: REAL_ZONE_ID, data: { name: 'Old name' } }));
     await waitFor(() => expect(siteZonesApi.update).toHaveBeenCalledTimes(1));
     act(() => result.current.updateZone.mutate({ zoneId: REAL_ZONE_ID, data: { name: 'New name' } }));
-    await waitFor(() => expect(result.current.saveError).toContain('Latest edit failed'));
+    expect(siteZonesApi.update).toHaveBeenCalledTimes(1);
     await act(async () => completeOld({ ...zone, name: 'Old name' }));
+    await waitFor(() => expect(result.current.saveError).toContain('Latest edit failed'));
     expect(result.current.saveError).toContain('Latest edit failed');
   });
 
@@ -490,5 +516,45 @@ describe('useSiteZones', () => {
       expect(result.current.draftsPersistOnDevice).toBe(false);
       expect(toast.error).toHaveBeenCalledWith(expect.stringContaining('kept in this tab'));
     } finally { storage.mockRestore(); }
+  });
+});
+
+
+describe('project write coordination', () => {
+  it('waits for a derived revision before moving, then deletes with the move revision', async () => {
+    const { runProjectWrite } = await import('@/utils/projectWriteQueue');
+    const client = new QueryClient({ defaultOptions: { queries: { retry: false }, mutations: { retry: false } } });
+    const zone = { ...makeZone(REAL_ZONE_ID), updated_at: 'r1' };
+    client.setQueryData(['site-zones', PROJECT_ID], [zone]);
+    vi.mocked(siteZonesApi.list).mockImplementation(() => new Promise(() => {}));
+    vi.mocked(siteZonesApi.update).mockReset().mockResolvedValue({ ...zone, updated_at: 'r3' });
+    vi.mocked(siteZonesApi.delete).mockReset().mockResolvedValue(undefined);
+    let release!: () => void;
+    const compiling = runProjectWrite(client, PROJECT_ID, async () => {
+      await new Promise<void>(resolve => { release = resolve; });
+      client.setQueryData(['site-zones', PROJECT_ID], [{ ...zone, updated_at: 'r2' }]);
+    });
+    const wrapper = ({children}: {children:React.ReactNode}) => React.createElement(QueryClientProvider, {client}, children);
+    const {result} = renderHook(() => useSiteZones(PROJECT_ID), {wrapper});
+    await act(async () => { await Promise.resolve(); });
+    act(() => result.current.handleZoneUpdated(REAL_ZONE_ID, [[2,2],[2,3],[3,3]]));
+    expect(siteZonesApi.update).not.toHaveBeenCalled();
+    await act(async () => { release(); await compiling; });
+    await waitFor(() => expect(siteZonesApi.update).toHaveBeenCalledWith(REAL_ZONE_ID, expect.objectContaining({expected_updated_at:'r2'})));
+    await act(async () => { await result.current.deleteZone.mutateAsync(REAL_ZONE_ID); });
+    expect(siteZonesApi.delete).toHaveBeenCalledWith(REAL_ZONE_ID, 'r3');
+    expect(client.getQueryData(['site-zones', PROJECT_ID])).toEqual([]);
+  });
+
+  it('reconciles a delete 404 only after the project confirms the drawing is absent', async () => {
+    const client = new QueryClient({defaultOptions:{queries:{retry:false},mutations:{retry:false}}});
+    client.setQueryData(['site-zones', PROJECT_ID], [makeZone(REAL_ZONE_ID)]);
+    vi.mocked(siteZonesApi.list).mockReset().mockImplementationOnce(() => new Promise(() => {})).mockResolvedValue([]);
+    vi.mocked(siteZonesApi.delete).mockReset().mockRejectedValue({response:{status:404}});
+    const wrapper = ({children}: {children:React.ReactNode}) => React.createElement(QueryClientProvider, {client}, children);
+    const {result} = renderHook(() => useSiteZones(PROJECT_ID), {wrapper});
+    await act(async () => { await result.current.deleteZone.mutateAsync(REAL_ZONE_ID); });
+    expect(client.getQueryData(['site-zones', PROJECT_ID])).toEqual([]);
+    expect(result.current.deleteZone.isSuccess).toBe(true);
   });
 });

@@ -1,7 +1,7 @@
 import { envelopeFits, envelopesOverlap } from '@/components/viewer/globe/neighborhoodParkLayout';
 import type { SiteZone } from '@/types';
 import { computeCentroid, METERS_PER_DEG_LAT, metersPerDegLon } from '@/components/viewer/mapEngine/geoUtils';
-import type { PlaceAsset } from './catalogue';
+import { assetForZone, type PlaceAsset } from './catalogue';
 
 export function rectangleAt(center: number[], width: number, depth: number, degrees = 0): number[][] {
   const yaw = degrees * Math.PI / 180, c = Math.cos(yaw), s = Math.sin(yaw);
@@ -38,10 +38,14 @@ export function placementProblem(coords: number[][], zones: SiteZone[], boundary
     const origin=coords[0];
     const local=(ring:number[][])=>ring.map(p=>({x:(p[0]-origin[0])*metersPerDegLon(origin[1]),y:(p[1]-origin[1])*METERS_PER_DEG_LAT}));
     const footprint = local(coords);
-    if (boundary && !envelopeFits(footprint,local(boundary.coordinates))) return 'Keep the whole object inside your site boundary.';
+    if (boundary && !envelopeFits(footprint,local(boundary.coordinates))) return 'Keep the whole plot inside your site boundary, including the space around the building. Move it inward or resize the plot.';
     for (const zone of zones) {
       if (zone.id===ignoreId || !['building','residential','green_space','parking'].includes(zone.zone_type)) continue;
-      if (envelopesOverlap(footprint,local(zone.coordinates))) return 'This overlaps another building plot or park. Plots include the space around buildings. Move it into a clear space.';
+      if (envelopesOverlap(footprint,local(zone.coordinates))) {
+        const label = zone.name?.trim() || assetForZone(zone)?.label
+          || (zone.zone_type === 'green_space' ? 'another park' : zone.zone_type === 'parking' ? 'a parking area' : 'another building plot');
+        return `This overlaps ${label}. Plots include the space around buildings. Move it or reduce its size to leave room.`;
+      }
     }
     return null;
   } catch { return 'This area cannot be placed yet. Check the site outline.'; }

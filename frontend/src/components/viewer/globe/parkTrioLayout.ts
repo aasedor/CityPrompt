@@ -1,3 +1,4 @@
+import sportsDimensions from "@/data/sportsParkDimensions.json";
 import type { SiteZone } from "@/types";
 import type { ParkGroundGuide } from "./parkGroundProfiles";
 import {
@@ -10,6 +11,9 @@ import { METERS_PER_DEG_LAT, metersPerDegLon } from "../mapEngine/geoUtils";
 
 export const PARK_TRIO_REVISION = "park-trio-v3";
 export const PARK_TRIO = {
+  basketball: { parent: "basketball_court", variant: "basketball_court_v1", label: "Regulation basketball park", min: sportsDimensions.basketball.minimumPark, size: sportsDimensions.basketball.standardPark, image: "/archetypes/openspaces/sports-basketball-regulation/preview.png" },
+  tennis: { parent: "tennis_court_cluster", variant: "tennis_court_cluster_v0", label: "Twin tennis courts", min: sportsDimensions.tennis.minimumPark, size: sportsDimensions.tennis.standardPark, image: "/archetypes/openspaces/sports-twin-tennis/preview.png" },
+  soccer: { parent: "athletics_precinct_sports_fields", variant: "athletics_precinct_sports_fields_variant_0", label: "Full-size soccer park", min: sportsDimensions.soccer.minimumPark, size: sportsDimensions.soccer.standardPark, image: "/archetypes/openspaces/sports-soccer-full-size/preview.png" },
   cinema: {
     parent: "outdoor_cinema_lawn",
     variant: "outdoor_cinema_lawn_v1",
@@ -224,14 +228,58 @@ export function buildParkTrio(
         oy = corner < 2 ? ry - r : -ry + r;
       loop.push({ x: cx + ox + Math.cos(a) * r, y: cy + oy + Math.sin(a) * r });
     }
-  if (!route(loop, kind === "concert" ? 3 : 2.4, true))
+  if (!route(loop, kind === "concert" ? 3 : 2.4, true)) {
+    if (kind === 'basketball') {
+      // An irregular park need not have a rectangular perimeter loop. Find a
+      // complete, contained court precinct, including run-off, circulation and
+      // benches. The established rectangular builder keeps its metric assets.
+      const [courtW,courtD] = PARK_TRIO.basketball.min;
+      const candidates: Array<{points:ParkPoint[];score:number}> = [];
+      for (const yaw of [0,Math.PI/2]) {
+        const w=yaw===0?courtW:courtD, d=yaw===0?courtD:courtW;
+        for (let x=minX+w/2+.5;x<=maxX-w/2-.5;x+=Math.max(2,width/30))
+          for (let y=minY+d/2+.5;y<=maxY-d/2-.5;y+=Math.max(2,depth/30)) {
+            const points=rect(0,0,courtW,courtD).map(p=>{const q=rotate(p,yaw);return{x:x+q.x,y:y+q.y};});
+            candidates.push({points,score:Math.hypot(x-cx,y-cy)});
+          }
+      }
+      const fit=candidates.sort((a,b)=>a.score-b.score).find(candidate=>envelopeFits(candidate.points,local,.4));
+      if (fit) {
+        const core=buildParkTrio('basketball',fit.points.map(toWorld));
+        return {...core,boundary:[...input],center:layout.center,width,depth,
+          notes:[...core.notes,'A complete court, circulation and seating fit within this irregular park. The surrounding lawn keeps your drawn outline.']};
+      }
+    }
     return {
       ...layout,
       notes: [
         "The complete connected programme does not fit this concave shape. Use a wider simple plot; no cropped structures were added.",
       ],
     };
-  if (kind === "cinema") {
+  }
+  if (kind === "basketball" || kind === "tennis" || kind === "soccer") {
+    const spec = sportsDimensions[kind], [mw, md] = spec.module;
+    const cols = Math.max(1, Math.floor((width - 16 + 4 + 0.001) / (mw + 4)));
+    const rows = Math.max(1, Math.floor((depth - 16 + 4 + 0.001) / (md + 4)));
+    let count = 0;
+    for (let row = 0; row < rows; row++) for (let col = 0; col < cols; col++) {
+      if (count >= spec.maxModules) continue;
+      const x = (col - (cols - 1) / 2) * (mw + 4);
+      const y = (row - (rows - 1) / 2) * (md + 4);
+      if (!add(`court-${count}`, `sports/${kind}`, x, y, mw, md)) continue;
+      count++;
+      // Each gate opens into the gap between complete modules, never into play.
+      route([{x:cx-rx,y:cy+y-md/2-2}, {x:cx+x,y:cy+y-md/2-2}, {x:cx+x,y:cy+y-md/2}], 1.8);
+    }
+    if (count < (kind === "tennis" ? 2 : 1)) return {...layout, notes:["This shape cannot contain the complete sports programme and its clear run-off. Widen the park; courts are never compressed."]};
+    // Grow the spectator edge, not the court: keep seating outside run-off and
+    // distribute a bounded number along both long sides of the park loop.
+    const seatsPerSide = Math.min(6, Math.max(2, Math.floor(width / 20)));
+    for (const side of [-1, 1]) for (let i = 0; i < seatsPerSide; i++) {
+      const x = -rx + 4 + (2 * rx - 8) * (i + 0.5) / seatsPerSide;
+      add(`bench-${side}-${i}`, "shared/bench", x, side * (depth / 2 - 2), 2.3, 1.4, side < 0 ? Math.PI : 0);
+    }
+  } else if (kind === "cinema") {
     if (!add("screen", "cinema/screen", -2, ry - 5, 12, 4))
       return {
         ...layout,
@@ -396,6 +444,9 @@ export function buildParkTrio(
     `${counts}; ${trees.length} perimeter trees. Structures retain native dimensions.`,
     "Lawn and circulation follow site terrain. Confirm structure pads and access in detailed design.",
   ];
+  if (kind === "basketball" || kind === "tennis" || kind === "soccer") {
+    layout.notes.push(`Each ${kind} playing area is exactly ${sportsDimensions[kind].playing.join(" × ")} m. Preserve the captured markings, goals/nets, run-off and open gates. Sports pads remain level; grading and gate approaches require site review.`);
+  }
   return layout;
 }
 

@@ -18,6 +18,15 @@ function fixture(){
   return {house,street,boundary,entrance,zones:[house,street,boundary]};
 }
 describe('saved pedestrian relationships',()=>{
+  it('connects to the near flush edge of the shared-street pilot without crossing its vehicle surface',()=>{
+    const f=fixture(), line=[ll([-40,0]),ll([40,0])];
+    const shared={...f.street,coordinates:bufferLineToPolygon(line,6),properties:{road_archetype_id:'yield_street',width:6,lane_count:1,plan_centerline:line}};
+    const result=resolvePedestrianConnections([f.house,shared,f.boundary])[0];
+    expect(result.status).toBe('connected');
+    expect(xy(result.strips[0].start)[1]).toBeCloseTo(-2.85,2);
+    const barrier=zone('barrier','building',rectangleAt(ll([0,-8]),8,3));
+    expect(resolvePedestrianConnections([f.house,shared,f.boundary,barrier])[0].status).toBe('unresolved');
+  });
   it('does not label a path through a terrace wall as connected',()=>{
     const f=fixture();f.house.properties={...f.house.properties,proposed_terrace:{version:1,offsetM:1}};
     expect(resolvePedestrianConnections(f.zones)[0]).toMatchObject({status:'unresolved',strips:[]});

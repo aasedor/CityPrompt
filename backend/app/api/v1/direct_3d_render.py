@@ -1246,6 +1246,7 @@ async def _reserve_direct_render(
     daily_cap: int,
     prompt: str,
     project_id,
+    model: str = DIRECT_3D_MODEL,
 ) -> RenderAuditLog:
     """Atomically reserve credits and a daily-cap audit row before OpenAI."""
 
@@ -1280,7 +1281,7 @@ async def _reserve_direct_render(
         reservation = RenderAuditLog(
             user_id=user.id,
             user_email=user.email,
-            model=DIRECT_3D_MODEL,
+            model=model,
             tokens_spent=token_cost,
             project_id=project_id,
             prompt_preview=f"[Direct 3D reserved] {prompt[:470]}",
@@ -1315,6 +1316,34 @@ async def _refund_unproduced_direct_render(
     except Exception:
         await db.rollback()
         logger.exception("Failed to refund unproduced Direct 3D reservation %s", reservation.id)
+        raise
+
+
+async def _refund_unknown_direct_render(
+    db: AsyncSession,
+    user: User,
+    reservation: RenderAuditLog,
+    *,
+    token_cost: int,
+    detail: str,
+) -> None:
+    """Restore student credits once; retain the uncertain provider cost in the cap."""
+    marker = "[Direct 3D student refunded; provider cost unknown]"
+    try:
+        await db.refresh(reservation, with_for_update=True)
+        if (reservation.prompt_preview or "").startswith(marker):
+            return
+        if not is_admin_or_above(user):
+            await db.refresh(user, with_for_update=True)
+            user.render_credits += token_cost
+            db.add(user)
+        # tokens_spent remains reserved against the global provider-spend cap.
+        reservation.prompt_preview = f"{marker} {detail[:440]}"
+        db.add(reservation)
+        await db.commit()
+    except Exception:
+        await db.rollback()
+        logger.exception("Failed to restore student credits for Direct 3D %s", reservation.id)
         raise
 
 
@@ -1415,6 +1444,7 @@ async def generate_direct_3d_render(
         object_id_attached=capture.normalized_object_id is not None,
         instance_id_attached=capture.normalized_instance_id is not None,
         control_bundle_version=req.control_bundle_version,
+        model=req.model,
     )
 
     reservation = await _reserve_direct_render(
@@ -1424,6 +1454,7 @@ async def generate_direct_3d_render(
         daily_cap=settings.render_global_daily_token_cap,
         prompt=(f"[mode={req.presentation_mode} style={req.style}] {req.prompt}"),
         project_id=req.project_id,
+        model=req.model,
     )
     try:
         result = await Direct3DRenderService(settings.openai_api_key).generate(
@@ -1456,12 +1487,22 @@ async def generate_direct_3d_render(
                     ),
                 }
             else:
+                await _refund_unknown_direct_render(
+                    db,
+                    user,
+                    reservation,
+                    token_cost=token_cost,
+                    detail=str(exc),
+                )
                 error_detail = {
-                    "code": "direct_3d_billing_unknown",
-                    "billed": True,
+                    "code": "direct_3d_provider_failure_refunded",
+                    "billed": False,
+                    "provider_billing_status": "unknown",
+                    "provider_request_id": exc.provider_request_id,
+                    "provider_status_code": exc.provider_status_code,
                     "message": (
-                        "The provider request outcome could not be confirmed after submission; "
-                        f"the reservation was conservatively retained. {exc}"
+                        "The image provider did not return a usable image. Your City Prompt "
+                        "credits have been restored. Please try again later."
                     ),
                 }
         else:
@@ -1529,7 +1570,7 @@ async def generate_direct_3d_render(
                 image_base64=result.image_base64,
                 prompt=req.prompt,
                 style=req.style,
-                model="gpt-image-2",
+                model=req.model,
                 image_quality="high",
             ),
             variant="final",
@@ -1551,7 +1592,7 @@ async def generate_direct_3d_render(
                     image_base64=result.provider_image_base64,
                     prompt=req.prompt,
                     style=req.style,
-                    model="gpt-image-2",
+                    model=req.model,
                     image_quality="high",
                 ),
                 variant="provider_original",
@@ -1569,6 +1610,7 @@ async def generate_direct_3d_render(
         saved_render=saved_render,
         provider_original_render=provider_original_render,
         image_base64=result.image_base64,
+        model=req.model,
         outcome=result.outcome,
         warnings=list(result.warnings),
         capture_fingerprint=result.capture_fingerprint,

@@ -1,3 +1,4 @@
+import { catalogueZoneForBuilding } from '@/features/pickPlace/catalogueDeletion';
 import { lazy, Suspense, useState, useCallback, useMemo, useRef, useEffect, type PointerEvent as ReactPointerEvent } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -13,6 +14,7 @@ import { ShareModal } from '@/components/sharing/ShareModal';
 import { SitePlannerToolbar } from '@/components/viewer/SitePlannerToolbar';
 import { PlacementPalette } from '@/features/pickPlace/PlacementPalette';
 import { ReshapePanel } from '@/features/pickPlace/ReshapePanel';
+import { parkOutlineProblem } from '@/features/pickPlace/parkOutline';
 import { StreetRoutePanel } from '@/features/pickPlace/StreetRoutePanel';
 import { publicRoadConnectionFits } from '@/features/pickPlace/publicRoadConnection';
 import { ConnectionEditor } from '@/features/pickPlace/ConnectionEditor';
@@ -60,6 +62,7 @@ import { getRenderImageKey, saveRenderedImage } from '@/utils/renderPersistence'
 import { savedRenderIsSource, savedRenderNeedsReview, savedRenderNotice } from '@/utils/renderPresentation';
 import { isTextEntryTarget } from '@/utils/domEvents';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
+import { authoredCameraGround } from '@/components/viewer/globe/authoredCameraGround';
 import { isPersistedZoneId } from '@/utils/zoneIdentity';
 import {
   deriveCityPromptWorkflow,
@@ -171,7 +174,7 @@ export function ProjectViewPage() {
       const imageBase64 = await captureStreetView(
         globeRefs.canvas, globeRefs.camera,
         lat, lng, pegman.angle,
-        pegman.terrainHeight ?? globeRefs.terrainHeight,
+        authoredCameraGround(videoCaptureSceneRef.current.zones, lng, lat, pegman.terrainHeight ?? globeRefs.terrainHeight),
         flyToStreetLevel, restoreAerialView, saveCameraState,
         globeRefs.waitForTilesSettled,
         captureFrame,
@@ -281,7 +284,8 @@ export function ProjectViewPage() {
     const zone = siteZones.find(item => item.id === zoneId);
     if (zone && (assetForZone(zone) || isFixedSectionStreet(zone))) {
       if (isSaving) { toast.error('Wait for this edit to save.'); return false; }
-      const problem = (isFixedSectionStreet(zone) ? streetRouteProblem(coordinates, streetSectionWidth(zone)) : null)
+      const problem = (zone.zone_type === 'green_space' ? parkOutlineProblem(coordinates) : null)
+        ?? (isFixedSectionStreet(zone) ? streetRouteProblem(coordinates, streetSectionWidth(zone)) : null)
         ?? placementProblem(coordinates, siteZones,
           publicRoadConnectionFits(zone, coordinates, getActiveSiteBoundary(siteZones)) ? null : getActiveSiteBoundary(siteZones), zoneId);
       if(problem) { toast.error(problem, { position: 'top-center' }); return false; }
@@ -972,7 +976,20 @@ export function ProjectViewPage() {
   videoCaptureSceneRef.current = { projectId: id, zones: visibleZones, buildings: visibleBuildings };
 
   const deleteModeledBuilding = useMutation({
-    mutationFn: (buildingId: string) => buildingsApi.delete(buildingId),
+    mutationFn: async (buildingId: string) => {
+      const owner = catalogueZoneForBuilding(buildingId, project?.buildings ?? [], siteZones);
+      if (owner) {
+        await deleteZone.mutateAsync(owner.id);
+        return 'catalogue';
+      }
+      try { await buildingsApi.delete(buildingId); } catch (error) {
+        if ((error as { response?: { status?: number } }).response?.status !== 404) throw error;
+        const latest = await projectsApi.get(id!);
+        if (latest.buildings?.some(building => building.id === buildingId)) throw error;
+        queryClient.setQueryData(['project', id], latest);
+      }
+      return 'model';
+    },
     onSuccess: async (_result, buildingId) => {
       setModeledBuildingIds((previous) => {
         const next = new Set(previous);
@@ -981,7 +998,7 @@ export function ProjectViewPage() {
       });
       await queryClient.invalidateQueries({ queryKey: ['project', id] });
       await queryClient.invalidateQueries({ queryKey: ['site-zones', id] });
-      toast.success('3D model deleted');
+      if (_result === 'model') toast.success('3D model deleted');
     },
     onError: (error: Error) => toast.error(`Failed to delete 3D model: ${error.message}`),
   });
@@ -1036,7 +1053,7 @@ export function ProjectViewPage() {
                 const park = siteZones.find(z => z.id === zoneId);
                 if (!park) throw new Error('Park no longer exists');
                 await updateZone.mutateAsync({ zoneId, data: { properties: { ...park.properties,
-                  park_terrain: profile, proposed_terrace: null, community_3d_mask_existing_tiles: false,
+                  park_terrain: profile, proposed_terrace: null, community_3d_mask_existing_tiles: true,
                 } }, previousData: { properties: park.properties } });
               }
               const boundary = getActiveSiteBoundary(siteZones);
@@ -1954,7 +1971,7 @@ function videoRenderLabel(video: VideoAttempt): string {
 }
 
 function ProjectRendersTray({ renders, videos, open, onToggle, onClose, onSelect, onSelectVideo }: ProjectRendersTrayProps) {
-  const [showAiAttempts, setShowAiAttempts] = useState(false);
+  const [showAiAttempts, setShowAiAttempts] = useState(true);
   const attemptCount = renders.filter((render) => render.variant === 'provider_original').length;
   const items = [
     ...renders.filter((render) => showAiAttempts || render.variant !== 'provider_original')
@@ -1998,7 +2015,7 @@ function ProjectRendersTray({ renders, videos, open, onToggle, onClose, onSelect
       <div className="min-h-0 flex-1 overflow-y-auto p-3">
         {attemptCount > 0 && <label className="mb-3 flex min-h-11 items-center gap-2 text-xs text-slate-700">
           <input type="checkbox" checked={showAiAttempts} onChange={(event) => setShowAiAttempts(event.target.checked)} />
-          Show original AI attempts ({attemptCount})
+          Show AI originals ({attemptCount})
         </label>}
         {items.length === 0 ? (
           <div className="flex min-h-36 flex-col items-center justify-center rounded-lg border border-dashed border-primary-950/[0.12] px-4 py-6 text-center">
@@ -2012,7 +2029,7 @@ function ProjectRendersTray({ renders, videos, open, onToggle, onClose, onSelect
               <button key={`image-${item.render.id}`} type="button" onClick={() => onSelect(item.render)} className="group relative overflow-hidden rounded-lg border border-primary-950/[0.08] bg-primary-950/[0.03] text-left transition hover:border-amber-400/80">
                 <img src={resolveApiFileUrl(item.render.image_url)} alt={item.render.prompt || 'Saved render'} className="aspect-square w-full object-cover" />
                 {savedRenderNeedsReview(item.render) && <span className="absolute left-1 top-1 rounded bg-amber-100 px-1.5 py-1 text-[10px] font-bold text-amber-950">
-                  {item.render.variant === 'provider_original' ? 'Original AI attempt' : savedRenderIsSource(item.render) ? '3D source' : 'Review before presenting'}
+                  {item.render.variant === 'provider_original' ? 'AI render' : savedRenderIsSource(item.render) ? '3D source' : 'Compare with plan'}
                 </span>}
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 to-transparent p-2 opacity-0 transition group-hover:opacity-100">
                   <p className="truncate text-[10px] font-semibold text-white">{item.render.style || 'render'}</p>

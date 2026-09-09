@@ -15,6 +15,7 @@ from typing import Literal
 
 from pydantic import BaseModel, Field, field_validator, model_validator
 
+from app.core.image_models import DEFAULT_OPENAI_IMAGE_MODEL, OpenAIImageModel
 from app.schemas.render_media import SavedRenderResponse
 from app.schemas.park_access import ParkAccessSnapshot
 from app.schemas.shared_ground import SharedGroundSnapshot
@@ -184,6 +185,7 @@ class Direct3DArchetypeReference(BaseModel):
 class Direct3DRenderRequest(BaseModel):
     """A clean 3D capture plus mode-specific presentation and design authority."""
 
+    model: OpenAIImageModel = DEFAULT_OPENAI_IMAGE_MODEL
     park_access_snapshot: ParkAccessSnapshot | None = None
     shared_ground_snapshot: SharedGroundSnapshot | None = None
 
@@ -647,7 +649,7 @@ class Direct3DRenderResponse(BaseModel):
     saved_render: SavedRenderResponse | None = None
     provider_original_render: SavedRenderResponse | None = None
     image_base64: str
-    model: Literal["gpt-image-2"] = "gpt-image-2"
+    model: OpenAIImageModel = DEFAULT_OPENAI_IMAGE_MODEL
     outcome: Direct3DRenderOutcome = "accepted"
     warnings: list[str] = Field(default_factory=list)
     capture_fingerprint: str

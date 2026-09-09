@@ -17,6 +17,7 @@ import { isNeighborhoodParkPilot } from './neighborhoodParkLayout';
 import {
   measureParkTerrain,
   readParkTerrain,
+  reuseMeasuredParkTerrain,
   parkFootprintKey,
   type ParkTerrainProfile,
 } from './parkTerrain';
@@ -51,6 +52,12 @@ function Sampler({
   const completed = useRef(false),
     latest = useRef(onResult);
   latest.current = onResult;
+  const reused = useMemo(() => reuseMeasuredParkTerrain(zone), [zone]);
+  useEffect(() => {
+    if (!reused || completed.current) return;
+    completed.current = true;
+    latest.current(reused);
+  }, [reused]);
   const boundary = useMemo(
     () => ({
       ...zone,
@@ -95,7 +102,7 @@ function Sampler({
       latest.current(null);
     }
   };
-  return started ? (
+  return started && !reused ? (
     <SharedSiteGroundProvider
       zones={[boundary]}
       sampleSpacingM={1.25}

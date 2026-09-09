@@ -7,13 +7,22 @@ import { INACTIVE_SHARED_SITE_GROUND } from './SharedSiteGroundProvider';
 import { createSharedSiteGroundLayout } from './sharedSiteGround';
 
 vi.mock('@/features/projects/StudioControls', () => ({ StudioDialog: ({children}: {children: ReactNode}) => <div>{children}</div> }));
-const boundary: SiteZone = {id:'b',project_id:'p',zone_type:'site_boundary',color:'#fff',sort_order:0,created_at:'now',
+const boundary: SiteZone = {id:'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',project_id:'p',zone_type:'site_boundary',color:'#fff',sort_order:0,created_at:'now',
   coordinates:[[-114,51],[-113.9999,51],[-113.9999,51.0001],[-114,51.0001]],properties:{terrain_elevation_m:100},updated_at:'now'};
 const layout = createSharedSiteGroundLayout(boundary)!;
 const heights = Array(layout.grid.rows * layout.grid.columns).fill(99);
 const reviewed = {...INACTIVE_SHARED_SITE_GROUND,review:{layout,heights,previousHeights:[...heights]}};
 afterEach(cleanup);
 describe('slope ground review', () => {
+  it('keeps a rejected local boundary inspectable without sending impossible ground saves', () => {
+    const onApply = vi.fn();
+    render(<GroundReviewPanel boundary={{...boundary,id:'temp-rejected'}} ground={reviewed} onApply={onApply} onClose={vi.fn()}/>);
+    expect(screen.getByRole('alert').textContent).toContain('has not saved');
+    fireEvent.click(screen.getByRole('button',{name:'Follow existing terrain'}));
+    expect(onApply).not.toHaveBeenCalled();
+    expect(screen.getByRole('button',{name:'Follow existing terrain'}).matches(':disabled')).toBe(true);
+    expect(screen.getByRole('button',{name:'Apply redevelopment level'}).matches(':disabled')).toBe(true);
+  });
   it('saves a reviewed park surface only on explicit application and preserves the review after failure', async () => {
     const park={...boundary,id:'park',zone_type:'green_space' as const,properties:{green_space_archetype_id:'neighborhood_park',green_space_selected_variant_id:'neighborhood_park_v0',neighborhood_park_layout:'adaptive_rustic_v1'}};
     const onFollowParks=vi.fn().mockRejectedValueOnce(new Error('offline')).mockResolvedValue(undefined),onClose=vi.fn();

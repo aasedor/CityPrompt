@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, type RefObject } from 'react';
 import { useThree } from '@react-three/fiber';
-import { useTexture } from '@react-three/drei';
+import { useLandscapeTreeTextures } from './useLandscapeTreeTextures';
 import * as THREE from 'three';
 
 import {
@@ -366,10 +366,7 @@ function LandscapeTreeStandContent({
   renderOrder = 145,
 }: GlobeLandscapeTreeStandProps) {
   const { gl } = useThree();
-  const textureUrls = LANDSCAPE_TREE_VARIANTS.map(
-    (variant) => LANDSCAPE_TREE_PROFILES[variant].textureUrl,
-  );
-  const textures = useTexture(textureUrls);
+  const textures = useLandscapeTreeTextures();
   useEffect(() => {
     const maxAnisotropy = Math.min(8, gl.capabilities.getMaxAnisotropy());
     for (const texture of textures) {

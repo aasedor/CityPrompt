@@ -1,5 +1,6 @@
 import { Suspense, useCallback, useEffect, useRef, useState, type ChangeEvent } from 'react';
 import { createPortal } from 'react-dom';
+import { DEFAULT_OPENAI_IMAGE_MODEL } from '@/config/imageModels';
 import { useQueryClient } from '@tanstack/react-query';
 import { Canvas } from '@react-three/fiber';
 import { Bounds, Environment, Grid, OrbitControls } from '@react-three/drei';
@@ -601,7 +602,7 @@ export function LegoBuilderPanel({
     setStreetAtlasStatus(null);
     try {
       const meta = await importStreetNetworkGroundTexture(projectId, zones, file, {
-        model: 'gpt-image-2',
+        model: DEFAULT_OPENAI_IMAGE_MODEL,
         provider: 'openai',
       });
       await refetchPlacedData();

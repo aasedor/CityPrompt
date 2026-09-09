@@ -7,6 +7,7 @@ import { groundReadinessMessage } from './sharedGroundCapture';
 import { measurePreparedEdges, preparedEdgeSummary, readPreparedEdges, supportsPreparedEdges, type PreparedEdgeProfile } from './preparedSiteEdges';
 import { measureParkTerrain, type ParkTerrainProfile } from './parkTerrain';
 import { isNeighborhoodParkPilot } from './neighborhoodParkLayout';
+import { isPersistedZoneId } from '@/utils/zoneIdentity';
 
 export function GroundReviewPanel({ boundary, ground, onClose, onApply, parks = [], onFollowParks }: {
   boundary: SiteZone; ground: SharedSiteGroundState; onClose: () => void;
@@ -16,6 +17,7 @@ export function GroundReviewPanel({ boundary, ground, onClose, onApply, parks = 
   const [level, setLevel] = useState(String(boundary.properties?.terrain_elevation_m ?? ''));
   const [pending, setPending] = useState(false);
   const [error, setError] = useState('');
+  const unsaved = !isPersistedZoneId(boundary.id);
   const savedEdges = useMemo(() => readPreparedEdges(boundary), [boundary]);
   const measuredEdges = useMemo(() => measurePreparedEdges(boundary, ground.review), [boundary, ground.review]);
   const edges = measuredEdges ?? savedEdges;
@@ -54,7 +56,7 @@ export function GroundReviewPanel({ boundary, ground, onClose, onApply, parks = 
         <h2 className="font-semibold">Let parks follow the hillside</h2>
         <p>Keep the existing site terrain. Drape the neighbourhood park's lawn and paths over its own measured surface; only activity pads stay level. Existing building terraces keep their saved level.</p>
         <p>{Object.keys(parkProfiles).length} of {parks.length} parks have repeatable measurements. Review that the park is on open ground, not tree crowns or roofs. Steep landscape is allowed; path grades still need design.</p>
-        <button className="min-h-11 rounded-lg bg-lime-200 p-2 disabled:opacity-40" disabled={pending || Object.keys(parkProfiles).length !== parks.length} onClick={async () => {
+        <button className="min-h-11 rounded-lg bg-lime-200 p-2 disabled:opacity-40" disabled={pending || unsaved || Object.keys(parkProfiles).length !== parks.length} onClick={async () => {
           setPending(true); setError('');
           try { await onFollowParks(parkProfiles); onClose(); }
           catch { setError('Could not finish saving the terrain settings. Reopen this review to check and retry.'); }
@@ -62,8 +64,9 @@ export function GroundReviewPanel({ boundary, ground, onClose, onApply, parks = 
         }}>Use measured park terrain</button>
         <p className="text-xs">This pilot supports neighbourhood parks. Moving or resizing a park updates its ground automatically. You can keep designing while it aligns.</p>
       </section>}
-      <button disabled={pending} className="min-h-11 rounded-lg border p-2" onClick={() => void apply(false)}>Follow existing terrain</button>
-      <fieldset className="space-y-2 rounded-lg border p-3" disabled={pending}>
+      {unsaved && <p role="alert">This boundary has not saved yet. Close this review and resolve the drawing message in the sidebar before applying ground settings.</p>}
+      <button disabled={pending || unsaved} className="min-h-11 rounded-lg border p-2 disabled:opacity-40" onClick={() => void apply(false)}>Follow existing terrain</button>
+      <fieldset className="space-y-2 rounded-lg border p-3" disabled={pending || unsaved}>
         <legend className="font-semibold">Prepare a level redevelopment surface</legend>
         <label className="block">Proposed level (m, WGS84 ellipsoid)
           <input type="number" step="0.1" min="-1000" max="10000" value={level} onChange={event => setLevel(event.target.value)} className="ml-2 min-h-11 w-36 rounded border p-2" />

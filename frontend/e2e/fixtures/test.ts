@@ -7,6 +7,21 @@ type CityPromptFixtures = {
 
 export const test = base.extend<CityPromptFixtures>({
   deterministicApiMocks: [async ({ page }, use) => {
+    // Model discovery is read-only and must not reach a real provider in UI tests.
+    await page.route('**/api/v1/render/image-models', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          default_model: 'gpt-image-2',
+          models: [
+            { id: 'gpt-image-2', available: true },
+            { id: 'gpt-image-2.5-flare', available: false },
+            { id: 'gpt-image-2.5-sunburst', available: false },
+          ],
+        }),
+      });
+    });
     // Workspace tests intentionally run without the backend. Keep terrain
     // startup deterministic instead of allowing Vite's proxy to return 500.
     await page.route('**/api/v1/elevation?*', async (route) => {
