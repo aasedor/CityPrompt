@@ -853,6 +853,58 @@ describe('LegoBuilderPanel', () => {
     });
   });
 
+  it('preserves and labels a source-locked RLASM keeper as detailed 3D', async () => {
+    apiPost.mockImplementation((url: string) => {
+      if (url === '/api/v1/lego-assembly/place-community') {
+        return Promise.resolve({
+          data: {
+            status: 'compiled',
+            compiled_at: '2026-08-31T23:00:00Z',
+            counts: { building: 1, park: 0, street: 0 },
+            items: [{
+              zone_id: 'z-rlasm',
+              kind: 'building',
+              building_id: 'b-rlasm',
+              building_created: false,
+              generator: 'meshy',
+              source_locked_rlasm: true,
+            }],
+          },
+        });
+      }
+      return Promise.reject(make422({
+        code: 'family_not_found',
+        message: 'No reviewed repeatable family exists for this exact keeper.',
+      }));
+    });
+
+    const sourceLocked = makeZone({
+      id: 'z-rlasm',
+      building_id: 'b-rlasm',
+      properties: {
+        development_archetype_id: 'calgary-inner-city-bungalow',
+        rlasm_keeper: '94794941a0b266797e87a78d246087d84b0d9eeb8143761a57071e7254ce3987',
+        community_3d: {
+          schema_version: 1,
+          state: 'compiled',
+          kind: 'building',
+          generator: 'meshy',
+          compiled_at: '2026-08-31T22:00:00Z',
+        },
+      },
+    });
+
+    render(<LegoBuilderPanel zones={[sourceLocked]} autoGenerate onClose={vi.fn()} />);
+
+    expect(await screen.findByText(/Built 1 detailed building/)).toBeInTheDocument();
+    expect(screen.getByText(/Detailed 1/)).toBeInTheDocument();
+    expect(screen.getByText(/Massing ready 0/)).toBeInTheDocument();
+    expect(screen.getByText('RLASM keeper')).toBeInTheDocument();
+    expect(screen.getByText(/Source-locked RLASM model preserved/)).toBeInTheDocument();
+    expect(screen.getByText(/Kept 1 source-locked RLASM building on the globe/)).toBeInTheDocument();
+    expect(screen.queryByText(/Nothing could be placed/)).not.toBeInTheDocument();
+  });
+
   it('saves recipes only for zones with building ids and reports the saved count', async () => {
     const currentCatalogue = 'c'.repeat(64);
     apiPost.mockImplementation((url: string) =>

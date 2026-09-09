@@ -162,6 +162,9 @@ export interface ZoneBuildItem {
   error?: string;
   familyMissing?: boolean;
   familyIncompatible?: boolean;
+  /** The linked model is a backend-certified, source-locked RLASM keeper.
+   * It is already detailed 3D even when no repeatable LEGO family exists. */
+  sourceLockedRlasm?: boolean;
   placeState?: 'placing' | 'placed' | 'failed';
   massingState?: 'compiling' | 'compiled' | 'failed';
 }
@@ -233,6 +236,11 @@ export function deriveItems(zones: SiteZone[]): ZoneBuildItem[] {
       ? persistedWingDepth
       : undefined;
     const communityMeta = getCommunity3DMeta(zone);
+    const sourceLockedRlasm = Boolean(
+      zone.building_id
+      && communityMeta?.generator === 'meshy'
+      && isSourceLockedRlasmZone(zone),
+    );
     return {
       zone,
       label:
@@ -262,12 +270,13 @@ export function deriveItems(zones: SiteZone[]): ZoneBuildItem[] {
             -(centroid[1] - lat0) * METRES_PER_DEG_LAT,
           ] as [number, number]
         : null,
+      sourceLockedRlasm,
       // Deleting a generated Building leaves the planning polygon available
       // for another design.  A historical compile marker alone must not make
       // the builder think the now-unlinked model is still placed.
       placeState: (
         communityMeta?.generator === 'lego_assembly'
-        || communityMeta?.generator === 'meshy'
+        || sourceLockedRlasm
       ) && Boolean(zone.building_id)
         ? 'placed' as const
         : undefined,
@@ -380,11 +389,14 @@ export function assertCommunityCompileResponse(
     const hasExpectedLink = result?.kind === 'building'
       ? typeof result.building_id === 'string' && result.building_id.trim().length > 0
       : result?.building_id === null;
+    const hasExpectedSourceLock = result?.generator !== 'meshy'
+      || result.source_locked_rlasm === true;
     if (
       matches.length === 1
       && result.kind === item.kind
       && item.generators.has(result.generator)
       && hasExpectedLink
+      && hasExpectedSourceLock
     ) return [];
     const returned = matches.length === 0
       ? 'missing'
@@ -560,9 +572,7 @@ export async function compileMixedCommunity3D(
       generators: new Set<CommunityCompileGenerator>(
         planResults[index]?.status === 'fulfilled'
           ? ['lego_assembly']
-          : isSourceLockedRlasmZone(item.zone)
-            ? ['meshy']
-            : ['planned_massing'],
+          : ['planned_massing', 'meshy'],
       ),
     }));
   const groundItems = deriveGroundItems(zones);

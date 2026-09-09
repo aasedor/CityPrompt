@@ -1611,7 +1611,13 @@ def _is_source_locked_rlasm_model(building: Building | None) -> bool:
 
 
 def _place_source_locked_rlasm_on_zone(zone: SiteZone, building: Building) -> Building:
-    """Keep the reviewed GLB current while synchronizing its placement shell."""
+    """Keep the reviewed GLB current and repair its duplicated zone markers.
+
+    The linked ``Building`` is the source-lock authority. Older/manual imports
+    may predate the client-side ``rlasm_keeper`` and catalogue markers, so a
+    rebuild must heal those denormalized fields instead of requiring users to
+    understand or repair internal metadata before Generate to 3D can succeed.
+    """
     floors, height = _planned_massing_dimensions(zone)
     building.footprint = zone.geometry
     building.floor_count = floors
@@ -1620,6 +1626,22 @@ def _place_source_locked_rlasm_on_zone(zone: SiteZone, building: Building) -> Bu
     specifications.pop(PLANNED_MASSING_SPEC_KEY, None)
     building.specifications = specifications
     flag_modified(building, "specifications")
+
+    rlasm = specifications.get("rlasm") if isinstance(specifications.get("rlasm"), dict) else {}
+    properties = dict(zone.properties or {})
+    keeper_marker = (
+        rlasm.get("candidate_id")
+        or rlasm.get("source_keeper_sha256")
+        or rlasm.get("sha256")
+        or rlasm.get("delivery_sha256")
+    )
+    if keeper_marker and not str(properties.get("rlasm_keeper") or "").strip():
+        properties["rlasm_keeper"] = str(keeper_marker)
+    if building.architectural_style and not str(properties.get("development_archetype_id") or "").strip():
+        properties["development_archetype_id"] = str(building.architectural_style)
+    if properties != (zone.properties or {}):
+        zone.properties = properties
+        flag_modified(zone, "properties")
     return building
 
 
@@ -2080,14 +2102,16 @@ async def place_community_3d(
         building: Building | None = None
         building_created = False
         building_generator: Literal["lego_assembly", "planned_massing", "meshy"] = "lego_assembly"
+        source_locked_rlasm = False
         if kind == "building":
             if item.recipe is not None:
                 building, building_created = await _place_recipe_on_zone(db, zone, item.recipe)
             else:
-                source_locked_rlasm = project_buildings_by_id.get(str(zone.building_id))
-                if _is_source_locked_rlasm_model(source_locked_rlasm):
-                    building = _place_source_locked_rlasm_on_zone(zone, source_locked_rlasm)
+                linked_building = project_buildings_by_id.get(str(zone.building_id))
+                if _is_source_locked_rlasm_model(linked_building):
+                    building = _place_source_locked_rlasm_on_zone(zone, linked_building)
                     building_generator = "meshy"
+                    source_locked_rlasm = True
                 else:
                     building, building_created = await _place_planned_massing_on_zone(db, zone)
                     building_generator = "planned_massing"
@@ -2111,6 +2135,7 @@ async def place_community_3d(
                 "generator": (
                     building_generator if kind == "building" else "park_kit" if kind == "park" else "street_section"
                 ),
+                "source_locked_rlasm": source_locked_rlasm if kind == "building" else False,
             }
         )
 

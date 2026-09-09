@@ -31,6 +31,7 @@ from app.core.security import (
     is_admin_or_above,
     require_auth,
 )
+from app.services.road_source import prepare_road_update
 from app.models.models import (
     Building,
     Project,
@@ -859,6 +860,32 @@ async def _ensure_project_access(
     return project
 
 
+@router.get("/projects/{project_id}/road-network")
+async def get_road_network(
+    project_id: uuid.UUID,
+    user: User = Depends(require_auth),
+    db: AsyncSession = Depends(get_db),
+):
+    """Resolve a source-keyed graph without mutating editable zone/history IDs."""
+    from app.services.road_network import network_snapshot
+    from starlette.concurrency import run_in_threadpool
+
+    await _ensure_project_access(db, project_id, user)
+    result = await db.execute(
+        select(SiteZone)
+        .where(
+            SiteZone.project_id == project_id,
+            SiteZone.zone_type == "road",
+        )
+        .order_by(SiteZone.id)
+    )
+    sources = [{"id": str(z.id), "properties": z.properties or {}} for z in result.scalars().all()]
+    try:
+        return await run_in_threadpool(network_snapshot, json.dumps(sources, sort_keys=True))
+    except (ValueError, TypeError, KeyError) as exc:
+        raise HTTPException(status_code=422, detail=f"Invalid procedural road: {exc}") from exc
+
+
 @router.get("/projects/{project_id}/zones", response_model=list[SiteZoneResponse])
 async def list_zones(
     project_id: uuid.UUID,
@@ -956,8 +983,9 @@ async def create_zone(
     # Convert coordinates to a valid WKT POLYGON. Invalid rings used to be
     # accepted by PostGIS and fail much later in the master planner.
     try:
-        coords = _validated_polygon_coordinates(zone_in.coordinates)
-    except ValueError as exc:
+        road_input = prepare_road_update(zone_in.model_dump()) if zone_in.zone_type == "road" else zone_in.model_dump()
+        coords = _validated_polygon_coordinates(road_input["coordinates"])
+    except (ValueError, TypeError) as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     candidate_polygon = Polygon(coords)
     active_boundary = await _active_site_boundary(
@@ -1000,7 +1028,11 @@ async def create_zone(
         geometry=WKTElement(f"POLYGON(({coords_str}))", srid=4326),
         color=zone_in.color,
         properties={
-            **{key: value for key, value in (zone_in.properties or {}).items() if key not in _CREATE_REQUEST_FIELDS},
+            **{
+                key: value
+                for key, value in (road_input.get("properties") or {}).items()
+                if key not in _CREATE_REQUEST_FIELDS
+            },
             **(
                 {
                     "_client_request_id": str(request_id),
@@ -1171,6 +1203,11 @@ async def update_zone(
             },
             **{key: value for key, value in (zone.properties or {}).items() if key in _CREATE_REQUEST_FIELDS},
         }
+    if zone.zone_type == "road":
+        try:
+            update_data = prepare_road_update(update_data, zone.properties)
+        except (ValueError, TypeError) as exc:
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
     requested_zone_type = update_data.get("zone_type", zone.zone_type)
     if requested_zone_type != zone.zone_type and (
         requested_zone_type == "site_boundary" or zone.zone_type == "site_boundary"

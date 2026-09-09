@@ -288,6 +288,7 @@
     "src/features/studentReports/studentReportsApi.ts",
     "src/features/workflow/cityPromptWorkflow.ts",
     "src/hooks/useGenerationPolling.ts",
+    "src/hooks/useRoadNetwork.ts",
     "src/hooks/useSiteZones.ts",
     "src/hooks/useUndoRedoKeyboard.ts",
     "src/hooks/useZoneHistory.ts",
@@ -307,6 +308,7 @@
     "src/types/index.ts",
     "src/utils/coordTransform.ts",
     "src/utils/domEvents.ts",
+    "src/utils/proceduralRoadNetwork.ts",
     "src/utils/projectWriteQueue.ts",
     "src/utils/renderPersistence.ts",
     "src/utils/renderPresentation.ts",
@@ -4518,17 +4520,21 @@
       "url": "/archetypes/buildings/glass_tower_podium_modern/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
-      "logicalBytes": 1301704
+      "logicalBytes": 1301704,
+      "lfsOid": "a9ee7987a8adf937f5e41f11c89904b8acb234f4393c8cd019d352c45b088a13"
     },
     {
       "url": "/archetypes/buildings/glass_tower_podium_modern/variant_1.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
-      "logicalBytes": 1321374
+      "logicalBytes": 1321374,
+      "lfsOid": "b7f4527dc46471bc0037ea8ceffba904cdab564a75f2c58f52c6bec3ae958ae8"
     },
     {
       "url": "/archetypes/buildings/glass_tower_podium_modern/variant_2.png",
@@ -9391,7 +9397,8 @@
       "url": "/archetypes/buildings/vancouverism-tower-podium/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1268249,
       "lfsOid": "5a3076ec759214b506e653f4e82b7397b7c61c98ba54440629e1fbff8e502a6a"

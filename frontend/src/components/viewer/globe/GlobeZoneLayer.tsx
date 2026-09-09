@@ -1408,7 +1408,7 @@ export function GlobeZoneLayer({
         const preparedTerrain = resolvePreparedSiteTerrainForZone(zone, zones, terrainHeight);
         return (
           <group
-            key={zone.id}
+            key={String(zone.properties?._road_surface_key ?? zone.id)}
             name={`siteforge-direct3d-zone-${zone.id}`}
             userData={{
               ...direct3DProposalUserData(role),

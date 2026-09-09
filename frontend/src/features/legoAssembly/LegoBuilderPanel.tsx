@@ -29,7 +29,6 @@ import {
   deriveItems,
   compileMixedCommunity3D,
   isCommunity3DSourceRevisionConflict,
-  isSourceLockedRlasmZone,
   recipeFromPlan,
   type CommunityCompileExpectation,
   type GroundBuildItem,
@@ -202,11 +201,7 @@ export function LegoBuilderPanel({
         zoneId: item.zone.id,
         label: item.label,
         kind: 'building' as const,
-        generators: new Set(
-          isSourceLockedRlasmZone(item.zone)
-            ? ['meshy'] as const
-            : ['planned_massing'] as const,
-        ),
+        generators: new Set(['planned_massing', 'meshy'] as const),
       })),
       ...groundToCompile.map((item) => ({
         zoneId: item.zone.id,
@@ -318,7 +313,14 @@ export function LegoBuilderPanel({
           representation?.generator === 'lego_assembly'
           || representation?.generator === 'meshy'
         ) {
-          return { ...base, zone, placeState: 'placed', massingState: undefined };
+          return {
+            ...base,
+            zone,
+            sourceLockedRlasm: representation.generator === 'meshy'
+              && representation.source_locked_rlasm === true,
+            placeState: 'placed',
+            massingState: undefined,
+          };
         }
         if (representation?.generator === 'planned_massing') {
           return {
@@ -527,8 +529,16 @@ export function LegoBuilderPanel({
   }, [autoGenerate, handlePlaceAll, initialPlanningComplete]);
 
   const assembledCount = items.filter((item) => item.plan).length;
-  const missingFamilyCount = items.filter((item) => item.familyMissing).length;
-  const incompatibleFamilyCount = items.filter((item) => item.familyIncompatible).length;
+  const sourceLockedDetailedCount = items.filter((item) => (
+    !item.plan && item.sourceLockedRlasm && item.placeState === 'placed'
+  )).length;
+  const detailedCount = assembledCount + sourceLockedDetailedCount;
+  const missingFamilyCount = items.filter((item) => (
+    item.familyMissing && !item.sourceLockedRlasm
+  )).length;
+  const incompatibleFamilyCount = items.filter((item) => (
+    item.familyIncompatible && !item.sourceLockedRlasm
+  )).length;
   const massingFallbackCount = missingFamilyCount + incompatibleFamilyCount;
   const issueCount = items.filter((item) => (
     item.error && !item.familyMissing && !item.familyIncompatible
@@ -544,6 +554,7 @@ export function LegoBuilderPanel({
   ).length;
   const uncompiledMassingCount = items.filter((item) => (
     !item.plan
+    && !item.sourceLockedRlasm
     && (item.familyMissing || item.familyIncompatible)
     && item.offset
     && item.massingState !== 'compiled'
@@ -636,7 +647,7 @@ export function LegoBuilderPanel({
               {`${items.length} buildings · ${parkCount} parks · ${streetCount} streets`}
             </p>
             <p className="mt-1 text-[11px] font-bold text-black/55">
-              {`Detailed ${assembledCount} · Massing ready ${massingFallbackCount} · Needs footprint ${skippedCount}`}
+              {`Detailed ${detailedCount} · Massing ready ${massingFallbackCount} · Needs footprint ${skippedCount}`}
               {issueCount > 0 ? ` · Needs review ${issueCount}` : ''}
             </p>
             {planning && (
@@ -666,7 +677,7 @@ export function LegoBuilderPanel({
                 className={`rounded border-2 p-2 text-[11px] ${
                   item.error && !item.familyMissing && !item.familyIncompatible
                     ? 'border-red-300 bg-red-50'
-                    : item.familyMissing || item.familyIncompatible
+                    : (item.familyMissing || item.familyIncompatible) && !item.sourceLockedRlasm
                       ? 'border-amber-300 bg-amber-50'
                       : 'border-[#151515]/15 bg-white'
                 }`}
@@ -684,7 +695,13 @@ export function LegoBuilderPanel({
                       form preserved
                     </span>
                   )}
-                  {!item.plan && item.massingState && (
+                  {!item.plan && item.sourceLockedRlasm && item.placeState === 'placed' && (
+                    <span className="flex shrink-0 items-center gap-1 rounded bg-emerald-100 px-1.5 py-0.5 text-[10px] font-bold text-emerald-800">
+                      <Check className="h-3 w-3" />
+                      RLASM keeper
+                    </span>
+                  )}
+                  {!item.plan && !item.sourceLockedRlasm && item.massingState && (
                     <span className={`shrink-0 rounded px-1.5 py-0.5 text-[10px] font-bold ${
                       item.massingState === 'compiled'
                         ? 'bg-emerald-100 text-emerald-800'
@@ -697,7 +714,7 @@ export function LegoBuilderPanel({
                         : item.massingState === 'compiled' ? '3D massing' : 'retry massing'}
                     </span>
                   )}
-                  {!item.plan && !item.massingState && (item.familyMissing || item.familyIncompatible) && (
+                  {!item.plan && !item.sourceLockedRlasm && !item.massingState && (item.familyMissing || item.familyIncompatible) && (
                     <span className="shrink-0 rounded bg-sky-100 px-1.5 py-0.5 text-[10px] font-bold text-sky-800">
                       massing ready
                     </span>
@@ -737,14 +754,20 @@ export function LegoBuilderPanel({
                     )}
                   </div>
                 )}
-                {item.familyMissing && (
+                {item.sourceLockedRlasm && (
+                  <p className="mt-0.5 text-emerald-950">
+                    <span className="font-black">Source-locked RLASM model preserved. </span>
+                    Generate to 3D keeps the reviewed detailed GLB and its exact materials; a separate reviewed LEGO family is only required for rational resizing.
+                  </p>
+                )}
+                {item.familyMissing && !item.sourceLockedRlasm && (
                   <p className="mt-0.5 text-amber-950">
                     <span className="font-black">Detailed family to add. </span>
                     Generate to 3D uses this exact footprint and {item.targets.floors}-floor height now;
                     importing its reviewed Sticker/LEGO family later upgrades it in place.
                   </p>
                 )}
-                {item.familyIncompatible && (
+                {item.familyIncompatible && !item.sourceLockedRlasm && (
                   <p className="mt-0.5 text-amber-950">
                     <span className="font-black">Detailed family outside its reviewed fit. </span>
                     {item.error} Correctly sized {item.targets.floors}-floor massing remains ready for this parcel.
@@ -753,7 +776,7 @@ export function LegoBuilderPanel({
                 {item.error && !item.familyMissing && !item.familyIncompatible && (
                   <p className="mt-0.5 text-red-800">{item.error}</p>
                 )}
-                {!item.plan && !item.error && planning && (
+                {!item.plan && !item.sourceLockedRlasm && !item.error && planning && (
                   <p className="mt-0.5 text-black/50">Assembling…</p>
                 )}
                 {!item.offset && (
@@ -953,6 +976,8 @@ export function LegoBuilderPanel({
                 <p className="max-w-md text-sm font-bold">
                   {planning
                     ? 'Assembling the plan from LEGO modules…'
+                    : sourceLockedDetailedCount > 0
+                      ? `Kept ${sourceLockedDetailedCount} source-locked RLASM building${sourceLockedDetailedCount === 1 ? '' : 's'} on the globe. Close this dialog to inspect the detailed models.`
                     : compiledMassingCount > 0 || compiledGroundCount > 0
                       ? `Built ${compiledMassingCount} massing building${compiledMassingCount === 1 ? '' : 's'} and ${compiledGroundCount} park/street layer${compiledGroundCount === 1 ? '' : 's'} on the globe. Close this dialog to review the 3D scene.`
                     : items.length === 0 && groundItems.length === 0

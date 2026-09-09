@@ -6163,6 +6163,7 @@ async def test_place_community_certifies_source_locked_rlasm_glb_as_current_mode
         model_url="/api/v1/files/rlasm-keeper.glb",
         lod_urls={"0": "/api/v1/files/rlasm-keeper.glb"},
         generation_engine="rlasm",
+        architectural_style="calgary-inner-city-bungalow",
         specifications={
             "rlasm": {
                 "method": "canonical RLASM v6.1",
@@ -6201,7 +6202,10 @@ async def test_place_community_certifies_source_locked_rlasm_glb_as_current_mode
 
     assert response.status_code == 200, response.text
     assert response.json()["items"][0]["generator"] == "meshy"
+    assert response.json()["items"][0]["source_locked_rlasm"] is True
     assert zone.properties["community_3d"]["generator"] == "meshy"
+    assert zone.properties["rlasm_keeper"] == "a" * 64
+    assert zone.properties["development_archetype_id"] == "calgary-inner-city-bungalow"
     assert building.footprint == zone.geometry
     assert building.floor_count == 2
     assert building.height_meters == 6.2
