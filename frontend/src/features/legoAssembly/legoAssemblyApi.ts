@@ -228,6 +228,9 @@ export interface Community3DCompileResponse {
     building_id: string | null;
     building_created: boolean;
     generator: 'lego_assembly' | 'planned_massing' | 'meshy' | 'park_kit' | 'street_section';
+    /** Backend certification that a Meshy-shaped response is actually the
+     * linked, source-locked RLASM keeper rather than an arbitrary stale model. */
+    source_locked_rlasm?: boolean;
   }>;
 }
 

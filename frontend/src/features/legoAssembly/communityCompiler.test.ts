@@ -598,10 +598,9 @@ describe('mixed community compiler', () => {
     );
   });
 
-  it('accepts the server-certified detailed GLB for a source-locked RLASM zone', async () => {
+  it('accepts a server-certified RLASM keeper without requiring a duplicated zone marker', async () => {
     const generated = zone('rlasm-generated', 'building', {
       _plan_role: 'building',
-      rlasm_keeper: 'calgary-inner-city-bungalow-v020',
       floors: 2,
     });
     generated.building_id = 'b-rlasm';
@@ -621,6 +620,7 @@ describe('mixed community compiler', () => {
         building_id: 'b-rlasm',
         building_created: false,
         generator: 'meshy',
+        source_locked_rlasm: true,
       }],
     });
 
