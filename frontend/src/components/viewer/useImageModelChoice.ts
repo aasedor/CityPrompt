@@ -12,11 +12,11 @@ export function useImageModelChoice() {
     }).catch(() => { /* Keep the established engine if discovery is unavailable. */ });
     return () => { active = false; };
   }, []);
-  const pairAvailable = ['gpt-image-2.5-flare', 'gpt-image-2.5-sunburst'].every(
+  const allAvailable = ['gpt-image-2', 'gpt-image-2.5-flare', 'gpt-image-2.5-sunburst'].every(
     (id) => availability?.models.some((model) => model.id === id && model.available === true),
   );
   return {
-    imageModel: selected ?? (pairAvailable ? 'compare-flare-sunburst' : availability?.default_model ?? DEFAULT_OPENAI_IMAGE_MODEL),
+    imageModel: selected ?? (allAvailable ? 'compare-all-three' : availability?.default_model ?? DEFAULT_OPENAI_IMAGE_MODEL),
     setImageModel: setSelected,
     availability,
   };

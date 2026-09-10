@@ -119,8 +119,9 @@ const STREET_VIEW_STYLE_GROUPS = [
 ] as const;
 
 const STREET_VIEW_RENDER_MODELS = [
-  { model: 'gemini-3.1-flash-image', label: 'Gemini 3.1 Flash' },
   { model: DEFAULT_OPENAI_IMAGE_MODEL, label: imageModelLabel(DEFAULT_OPENAI_IMAGE_MODEL), imageQuality: 'auto' as const },
+  { model: 'gpt-image-2.5-flare', label: imageModelLabel('gpt-image-2.5-flare'), imageQuality: 'auto' as const },
+  { model: 'gpt-image-2.5-sunburst', label: imageModelLabel('gpt-image-2.5-sunburst'), imageQuality: 'auto' as const },
 ];
 const STREET_VIEW_RENDER_LABEL = 'Gemini + GPT Image';
 
@@ -184,7 +185,7 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
   const { generateStreetView } = useStreetViewRender();
   const { renderDirect3D } = useDirect3DRender();
   // Inventory-locked single-call street render through the Direct 3D endpoint
-  // (review-first). Off = the classic Gemini + GPT two-provider flow.
+  // (review-first). Off = the classic three-model flow.
   const [directStreetMode, setDirectStreetMode] = useState(Boolean(globeCapture));
   const [isGenerating, setIsGenerating] = useState(false);
   const [result, setResult] = useState<StreetViewResult | null>(null);
@@ -862,7 +863,7 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
               directStreetMode ? 'bg-[#c9ff3d] text-black' : 'bg-black/5 text-black/55 hover:bg-black/10'
             }`}
           >
-            {directStreetMode ? `✓ Direct 3D · ${imageModel === 'compare-flare-sunburst' ? '2 images' : '1 image'}` : 'Classic comparison · 2 images'}
+            {directStreetMode ? `✓ Direct 3D · ${imageModel === 'compare-all-three' ? '3 images' : '1 image'}` : 'Classic comparison · 3 images'}
           </button>
         )}
 

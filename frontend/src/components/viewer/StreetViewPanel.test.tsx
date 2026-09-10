@@ -81,22 +81,22 @@ describe('student street render', () => {
     expect(mocks.save).not.toHaveBeenCalled();
   });
 
-  it('compares Flare then Sunburst from the identical street capture and saves both', async () => {
+  it('compares all three models from the identical street capture and saves each', async () => {
     mocks.imageModels.mockResolvedValue(pairAccess);
     const bundle = { beautyImageBase64: 'same camera' };
     const capture = vi.fn().mockResolvedValue({ kind: 'model3d', direct3d: bundle });
     const saved = vi.fn();
-    for (const engine of ['Flare', 'Sunburst']) mocks.direct.mockResolvedValueOnce({
+    for (const engine of ['Image 2', 'Flare', 'Sunburst']) mocks.direct.mockResolvedValueOnce({
       outcome: 'review_required', sourceImageUrl: '/source.png',
       render: { imageUrl: `/${engine}.png`, prompt: 'finish', providerLabel: engine, savedRender: { id: engine } },
     });
     render(<StreetViewPanel siteZones={[]} projectId="project-1" globeCapture={capture} onRenderSaved={saved} />);
-    await waitFor(() => expect(screen.getByRole('combobox', { name: 'Image engine' })).toHaveValue('compare-flare-sunburst'));
+    await waitFor(() => expect(screen.getByRole('combobox', { name: 'Image engine' })).toHaveValue('compare-all-three'));
     fireEvent.click(screen.getByRole('button', { name: 'Render' }));
-    await waitFor(() => expect(saved).toHaveBeenCalledTimes(2));
+    await waitFor(() => expect(saved).toHaveBeenCalledTimes(3));
     expect(capture).toHaveBeenCalledTimes(1);
     expect(mocks.direct.mock.calls.map(([input, options]) => [input, options.model])).toEqual([
-      [bundle, 'gpt-image-2.5-flare'], [bundle, 'gpt-image-2.5-sunburst'],
+      [bundle, 'gpt-image-2'], [bundle, 'gpt-image-2.5-flare'], [bundle, 'gpt-image-2.5-sunburst'],
     ]);
     expect(mocks.direct.mock.calls[0][0]).toBe(mocks.direct.mock.calls[1][0]);
     expect(screen.getAllByAltText('Flare render').length).toBeGreaterThan(0);
@@ -104,20 +104,20 @@ describe('student street render', () => {
     expect(mocks.save).not.toHaveBeenCalled();
   });
 
-  it('keeps the Flare image visible if Sunburst fails', async () => {
+  it('keeps the Image 2 result visible if Flare fails', async () => {
     mocks.imageModels.mockResolvedValue(pairAccess);
     mocks.direct.mockResolvedValueOnce({
       outcome: 'review_required', sourceImageUrl: '/source.png',
-      render: { imageUrl: '/Flare.png', prompt: 'finish', providerLabel: 'Flare', savedRender: { id: 'Flare' } },
-    }).mockRejectedValueOnce(new Error('Sunburst unavailable'));
+      render: { imageUrl: '/Image2.png', prompt: 'finish', providerLabel: 'Image 2', savedRender: { id: 'Image2' } },
+    }).mockRejectedValueOnce(new Error('Flare unavailable'));
     const saved = vi.fn();
     render(<StreetViewPanel siteZones={[]} projectId="project-1" globeCapture={vi.fn().mockResolvedValue({ kind: 'model3d', direct3d: {} })} onRenderSaved={saved} />);
-    await waitFor(() => expect(screen.getByRole('combobox', { name: 'Image engine' })).toHaveValue('compare-flare-sunburst'));
+    await waitFor(() => expect(screen.getByRole('combobox', { name: 'Image engine' })).toHaveValue('compare-all-three'));
     fireEvent.click(screen.getByRole('button', { name: 'Render' }));
     await waitFor(() => expect(mocks.direct).toHaveBeenCalledTimes(2));
     await waitFor(() => expect(screen.getByRole('button', { name: 'Re-render Previews' })).not.toBeDisabled());
     expect(saved).toHaveBeenCalledTimes(1);
-    expect(screen.getAllByAltText('Flare render').length).toBeGreaterThan(0);
+    expect(screen.getAllByAltText('Image 2 render').length).toBeGreaterThan(0);
   });
 
   it('retains the classic path for a map without a 3D capture', () => {
