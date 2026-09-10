@@ -10,15 +10,15 @@ export const OPENAI_IMAGE_MODELS = [
 ] as const;
 
 export type OpenAIImageModel = typeof OPENAI_IMAGE_MODELS[number]['id'] | 'gpt-image-2-2026-04-21';
-export type ImageModelChoice = OpenAIImageModel | 'compare-flare-sunburst';
+export type ImageModelChoice = OpenAIImageModel | 'compare-all-three';
 export type ImageModelAvailability = {
   default_model: OpenAIImageModel;
   models: Array<{ id: OpenAIImageModel; available: boolean | null }>;
 };
 
 export function imageModelsForChoice(choice: ImageModelChoice): OpenAIImageModel[] {
-  return choice === 'compare-flare-sunburst'
-    ? ['gpt-image-2.5-flare', 'gpt-image-2.5-sunburst']
+  return choice === 'compare-all-three'
+    ? ['gpt-image-2', 'gpt-image-2.5-flare', 'gpt-image-2.5-sunburst']
     : [choice];
 }
 

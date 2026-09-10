@@ -1,6 +1,6 @@
 import { isCatalogueOnlyScene, CATALOGUE_UPDATE_GUIDANCE } from '@/features/pickPlace/catalogue';
 import { useRenderDraft } from './useRenderDraft';
-import { DEFAULT_OPENAI_IMAGE_MODEL, imageModelLabel } from '@/config/imageModels';
+import { DEFAULT_OPENAI_IMAGE_MODEL, imageModelLabel, imageModelsForChoice } from '@/config/imageModels';
 import { ImageModelSelect } from '../ImageModelSelect';
 import { useImageModelChoice } from '../useImageModelChoice';
 import { runImageModelBatch } from '../runImageModelBatch';
@@ -75,8 +75,9 @@ const SHOW_LEGACY_CLASSIC_RENDER =
 // renders consistently weaker; GPT holds the drawn structure best). Two
 // samples of one engine give a real A/B choice; labels keep them apart.
 const COMPARE_RENDER_MODELS = [
-  { model: DEFAULT_OPENAI_IMAGE_MODEL, label: `${imageModelLabel(DEFAULT_OPENAI_IMAGE_MODEL)} · A` },
-  { model: DEFAULT_OPENAI_IMAGE_MODEL, label: `${imageModelLabel(DEFAULT_OPENAI_IMAGE_MODEL)} · B` },
+  { model: DEFAULT_OPENAI_IMAGE_MODEL, label: imageModelLabel(DEFAULT_OPENAI_IMAGE_MODEL) },
+  { model: 'gpt-image-2.5-flare', label: imageModelLabel('gpt-image-2.5-flare') },
+  { model: 'gpt-image-2.5-sunburst', label: imageModelLabel('gpt-image-2.5-sunburst') },
 ];
 
 const DEFAULT_OPENAI_IMAGE_QUALITY: OpenAIImageQuality = 'auto';
@@ -333,7 +334,7 @@ export function GlobeAIRenderPanel({
   const [isQueuing3D, setIsQueuing3D] = useState(false);
   const [generate3DStatus, setGenerate3DStatus] = useState<string | null>(null);
   const renderCallCount = renderPipeline === 'direct3d'
-    ? 1
+    ? imageModelsForChoice(directImageModel).length
     : estimateCurrentViewRenderCalls(
         COMPARE_RENDER_MODELS.length,
         highFidelity && HIGH_FIDELITY_STYLES.has(selectedStyle),
@@ -816,7 +817,7 @@ export function GlobeAIRenderPanel({
         ...provider,
         imageQuality: getQualityForModel(provider.model, DEFAULT_OPENAI_IMAGE_QUALITY),
       }));
-      // Fan out the two bounded previews with different server seeds. The
+      // Fan out the three model previews with different server seeds. The
       // first success is auto-selected; the user can compare the other.
       const results = await renderPreviews(canvas, camera, editableZones, terrainHeight, {
         style: selectedStyle,
@@ -2004,8 +2005,8 @@ export function GlobeAIRenderPanel({
                 <span>{renderPipeline === 'direct3d' ? 'Render Direct 3D' : 'Generate Current View Previews'}</span>
                 <span className="text-[10px] font-bold opacity-70">
                   {renderPipeline === 'direct3d'
-                    ? directImageModel === 'compare-flare-sunburst'
-                      ? '2 image calls · Flare then Sunburst · both saved to Project Renders'
+                    ? directImageModel === 'compare-all-three'
+                      ? '3 image calls · GPT Image 2, Flare, Sunburst · all saved to Project Renders'
                       : DIRECT_3D_CALL_DESCRIPTION
                     : `${renderCallCount} image call${renderCallCount === 1 ? '' : 's'} · uses the globe view on screen now`}
                 </span>
