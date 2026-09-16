@@ -105,7 +105,8 @@ test.describe('Integrated project workspace', () => {
 
     await expect(page.getByText('Master Plan', { exact: true }).first()).toBeVisible();
     await expect(page.getByRole('button', { name: 'Generate to 3D' })).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Render', exact: true })).toBeVisible();
+    await page.getByRole('button', { name: 'Render this view', exact: true }).click();
+    await expect(page.getByRole('button', { name: 'Image', exact: true })).toBeVisible();
     await expect(page.getByRole('button', { name: 'Video', exact: true })).toBeVisible();
   });
 
