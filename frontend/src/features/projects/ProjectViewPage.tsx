@@ -48,6 +48,7 @@ import { WorkflowStepper } from '@/components/viewer/WorkflowStepper';
 import { StudioControls, StudioDialog, StudioSaveStatus } from './StudioControls';
 import { ReadOnlyProject } from './ReadOnlyProject';
 import { StudentWorkflowNav, StudentStepPanel, type StudentStep } from './StudentWorkflow';
+import { defaultStudentStep } from './studentNavigation';
 import { StudentPlanningReport } from '@/features/studentReports/StudentPlanningReport';
 import { useReferenceLayers } from '@/features/referenceLayers/useReferenceLayers';
 import { CalgaryContextButton } from '@/features/referenceLayers/CalgaryContextButton';
@@ -732,7 +733,7 @@ export function ProjectViewPage() {
   ]);
 
   // Presentation navigation is transient UI state; the saved design and camera stay authoritative.
-  const activeStudentStep = studentStep ?? (cityPromptWorkflow.activeBoundary ? 'design' : 'site');
+  const activeStudentStep = studentStep ?? defaultStudentStep(cityPromptWorkflow);
   const changeStudentStep = (step: StudentStep) => {
     cancelPlacement();
     selectZone(null);
