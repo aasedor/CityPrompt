@@ -1,3 +1,4 @@
+import { BuildingGroundProblems } from './BuildingGroundProblems';
 import { assetForZone } from '@/features/pickPlace/catalogue';
 import { projectedFrameFraction } from './projectFrameHeight';
 /**
@@ -1584,6 +1585,7 @@ export function GlobeSitePlannerMap({
   const [areTilesDisplayReady, setAreTilesDisplayReady] = useState(false);
   const [sharedGroundState, setSharedGroundState] = useState<SharedSiteGroundState>(INACTIVE_SHARED_SITE_GROUND);
   const [showGroundReview, setShowGroundReview] = useState(false);
+  const [showBuildingGroundProblems, setShowBuildingGroundProblems] = useState(false);
   const [placementProblemMessage, setPlacementProblemMessage] = useState<string | null>(null);
   const sharedGroundRef = useRef(sharedGroundState);
   const [legoGroundingIssues, setLegoGroundingIssues] = useState<LegoGroundingIssue[]>([]);
@@ -4250,6 +4252,11 @@ export function GlobeSitePlannerMap({
         </div>
       )}
 
+      {showBuildingGroundProblems && <BuildingGroundProblems issues={buildingGroundingIssues} zones={siteZones}
+        onClose={() => setShowBuildingGroundProblems(false)} onSelect={zone => {
+          setShowBuildingGroundProblems(false); onZoneSelected(zone.id);
+          void requestProjectFrame([{ ...zone, coordinates: zone.coordinates as [number, number][] }], 'manual');
+        }} />}
       {showGroundReview && getActiveSiteBoundary(allSiteZones) && onPrepareGround && <GroundReviewPanel
         parks={allSiteZones.filter(z => z.zone_type === 'green_space')} onFollowParks={onFollowParkTerrain}
         boundary={getActiveSiteBoundary(allSiteZones)!} ground={sharedGroundState} onClose={() => setShowGroundReview(false)}
@@ -4532,9 +4539,9 @@ export function GlobeSitePlannerMap({
           </span>
         )}
         {sharedGroundState.status === 'ready' && buildingGroundingIssues.some((issue) => issue.reason !== 'ground_not_ready') && (
-          <span role="status" className="rounded-full border-2 border-[#151515] bg-[#fff9ec]/95 px-3 py-1.5 text-[11px] font-bold text-[#151515]">
-            A building needs its ground placement checked
-          </span>
+          <button type="button" onClick={() => setShowBuildingGroundProblems(true)} className="min-h-11 rounded-full border-2 border-amber-700 bg-amber-50 px-3 py-1.5 text-[11px] font-bold text-slate-900">
+            Check building ground
+          </button>
         )}
       </div>
     </div>
