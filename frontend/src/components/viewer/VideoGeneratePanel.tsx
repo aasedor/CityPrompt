@@ -34,6 +34,7 @@ import {
   type VideoRoutePoint,
 } from './videoRenderPath';
 import { buildVideoSceneContract } from './videoSceneContract';
+import { useVideoRoutePreview } from './useVideoRoutePreview';
 import {
   type VideoControlMode,
   type VideoRouteCaptureRequest,
@@ -359,8 +360,8 @@ export function VideoGeneratePanel({
   const [internalEnhanceQuality, setInternalEnhanceQuality] = useState<InternalEnhanceQuality>('fast');
   const [renderQuality, setRenderQuality] = useState<VideoRenderQuality>('high');
   const [controlMode, setControlMode] = useState<VideoControlMode>('preview_video');
-  const [routeControls, setRouteControls] = useState<(VideoRouteCaptureResult & { signature: string }) | null>(null);
-  const [isPreparingControls, setIsPreparingControls] = useState(false);
+  const [sourceCaptureVersion, setSourceCaptureVersion] = useState(0);
+  const [previewProgress, setPreviewProgress] = useState('Preparing your route…');
   const [pilot, setPilot] = useState<VideoPilotState>({
     attempts: [],
     attempts_used: 0,
@@ -396,9 +397,11 @@ export function VideoGeneratePanel({
     [community3DClaims, residualLandscapeClaim],
   );
   const routeCaptureSignature = useMemo(
-    () => `${renderQuality}:${motion}:${routeSignature(routePoints)}`,
-    [motion, renderQuality, routePoints],
+    () => `${projectId}:${sourceCaptureVersion}:${renderQuality}:${motion}:${routeSignature(routePoints)}:${sceneContract.signature}:${currentSceneRevisionSignature}`,
+    [projectId, sourceCaptureVersion, motion, renderQuality, routePoints, sceneContract.signature, currentSceneRevisionSignature],
   );
+
+  const { routeControls, setRouteControls, isPreparingControls, prepare: prepareRoutePreview } = useVideoRoutePreview(routeCaptureSignature);
 
   const currentSignature = useMemo(
     () => `${provider}:${seedanceReferenceMode}:${internalEnhanceQuality}:${renderQuality}:${controlMode}:${motion}:${routeSignature(routePoints)}:${sceneContract.signature}:${currentSceneRevisionSignature}`,
@@ -465,6 +468,7 @@ export function VideoGeneratePanel({
         : await captureSceneFrame(canvas!, quality);
       if (sequence === captureSequence.current) {
         setSourceFrame(captured);
+        setSourceCaptureVersion(version => version + 1);
         setRouteControls(null);
         setPreflight(null);
         setPrepared(null);
@@ -476,7 +480,7 @@ export function VideoGeneratePanel({
     } finally {
       if (sequence === captureSequence.current) setIsCapturing(false);
     }
-  }, [canvas, captureAerialFrame, onBeforeCapture, renderQuality, waitForTilesSettled]);
+  }, [canvas, captureAerialFrame, onBeforeCapture, renderQuality, waitForTilesSettled, setRouteControls]);
 
   const selectMotion = useCallback((nextMotion: MotionId) => {
     setMotion(nextMotion);
@@ -484,15 +488,18 @@ export function VideoGeneratePanel({
     setRoutePoints([]);
     setPreflight(null);
     setPrepared(null);
-  }, []);
+  }, [setRouteControls]);
 
   useEffect(() => {
     void loadPilot();
+  }, [loadPilot]);
+
+  useEffect(() => {
     if (!captureStarted.current) {
       captureStarted.current = true;
       void capture();
     }
-  }, [capture, loadPilot]);
+  }, [capture]);
 
   useEffect(() => {
     if (preparedSignature && preparedSignature !== currentSignature) {
@@ -501,40 +508,39 @@ export function VideoGeneratePanel({
     }
   }, [currentSignature, preparedSignature]);
 
+  const prepareLocalPreview = useCallback(async () => {
+    if (!sourceFrame) throw new Error('Capture the scene before preparing a preview.');
+    if (routePoints.length < 2) throw new Error('Draw a route with a start and finish.');
+    if (!community3DClaims || community3DClaims.length === 0) {
+      throw new Error(isCatalogueOnlyScene(siteZones) ? CATALOGUE_UPDATE_GUIDANCE : 'The 3D scene changed. Close Video Render and update the 3D scene before trying again.');
+    }
+    if (!captureRouteControls) throw new Error('This 3D view cannot prepare a video preview yet.');
+    return prepareRoutePreview(async () => {
+      setPreviewProgress('Preparing your route…');
+      const captured = await captureRouteControls({
+        routePoints, cameraMotion: motion, renderQuality, durationSeconds: 8, keyframeCount: 6,
+        onProgress: (phase, completed, total) => setPreviewProgress(`${phase === 'loading' ? 'Loading the surroundings' : phase === 'checking' ? 'Checking route views' : 'Creating your preview'} · ${Math.round(completed / total * 100)}%`),
+      });
+      const normalizedKeyframes = await Promise.all(captured.keyframesBase64.map(frame => normalizeImageFrame(
+        frame.startsWith('data:') ? frame : `data:image/png;base64,${frame}`, renderQuality,
+      )));
+      return { ...captured, keyframesBase64: normalizedKeyframes };
+    });
+  }, [sourceFrame, routePoints, community3DClaims, siteZones, captureRouteControls, prepareRoutePreview, motion, renderQuality]);
+
+  const previewLocally = useCallback(async () => {
+    setError(null);
+    try { await prepareLocalPreview(); }
+    catch (previewError) { setError(getApiErrorMessage(previewError, 'The preview could not be prepared. Try again when the scene is ready.')); }
+  }, [prepareLocalPreview]);
+
   const requestBody = useCallback(async (): Promise<PreparedVideoRequest> => {
     if (!sourceFrame) throw new Error('Capture the scene before validating.');
     if (routePoints.length < 2) throw new Error('Draw a route with a start and finish.');
     if (!community3DClaims || community3DClaims.length === 0) {
-      throw new Error(isCatalogueOnlyScene(siteZones) ? CATALOGUE_UPDATE_GUIDANCE : 'The compiled scene changed. Close Video Render, run Generate to 3D, and capture it again.');
+      throw new Error(isCatalogueOnlyScene(siteZones) ? CATALOGUE_UPDATE_GUIDANCE : 'The 3D scene changed. Close Video Render and update the 3D scene before trying again.');
     }
-    let activeControls = routeControls?.signature === routeCaptureSignature ? routeControls : null;
-    if (controlMode !== 'single_frame' && !activeControls) {
-      if (!captureRouteControls) throw new Error('This 3D view cannot prepare route controls yet.');
-      setIsPreparingControls(true);
-      try {
-        const captured = await captureRouteControls({
-          routePoints,
-          cameraMotion: motion,
-          renderQuality,
-          durationSeconds: 8,
-          keyframeCount: 6,
-        });
-        const normalizedKeyframes = await Promise.all(captured.keyframesBase64.map((frame) => (
-          normalizeImageFrame(
-            frame.startsWith('data:') ? frame : `data:image/png;base64,${frame}`,
-            renderQuality,
-          )
-        )));
-        activeControls = {
-          ...captured,
-          keyframesBase64: normalizedKeyframes,
-          signature: routeCaptureSignature,
-        };
-        setRouteControls(activeControls);
-      } finally {
-        setIsPreparingControls(false);
-      }
-    }
+    const activeControls = controlMode !== 'single_frame' ? await prepareLocalPreview() : null;
 
     const sceneBrief = provider === 'internal_enhance'
       ? `${sceneContract.text}\nSOURCE POLICY: The deterministic City Prompt route preview already contains the approved render-locked GLB skins, open-space assets, context buildings, and exact camera timing. Restore only detail present in those pixels. Do not synthesize or reinterpret any object.`
@@ -611,7 +617,7 @@ export function VideoGeneratePanel({
         residual_landscape_claim: residualLandscapeClaim,
       } : {}),
     };
-  }, [captureRouteControls, community3DClaims, controlMode, internalEnhanceQuality, motion, projectId, provider, renderQuality, residualLandscapeClaim, routeCaptureSignature, routeControls, routePoints, sceneContract, seedanceReferenceMode, sourceFrame, siteZones]);
+  }, [prepareLocalPreview, community3DClaims, controlMode, internalEnhanceQuality, motion, projectId, provider, renderQuality, residualLandscapeClaim, routePoints, sceneContract, seedanceReferenceMode, sourceFrame, siteZones]);
 
   const runPreflight = useCallback(async () => {
     setIsPreflighting(true);
@@ -667,7 +673,7 @@ export function VideoGeneratePanel({
   }, [hasValidPreflight, loadPilot, onVideoSaved, prepared, providerCanRun]);
 
   const addRouteVertex = (event: ReactMouseEvent<HTMLDivElement>) => {
-    if (isGenerating) return;
+    if (isGenerating || isPreparingControls || isCapturing || isPreflighting) return;
     setRouteControls(null);
     setPreflight(null);
     setPrepared(null);
@@ -747,13 +753,13 @@ export function VideoGeneratePanel({
                 : `${providerUsage.attempts_used}/${providerUsage.max_attempts}`}
             </span>
           </div>
-          <button onClick={onClose} disabled={isGenerating} className="rounded-full p-2 text-white/60 transition hover:bg-white/10 hover:text-white disabled:opacity-30" aria-label="Close Video Render">
+          <button onClick={onClose} disabled={isGenerating || isPreparingControls} className="rounded-full p-2 text-white/60 transition hover:bg-white/10 hover:text-white disabled:opacity-30" aria-label="Close Video Render">
             <X size={19} />
           </button>
         </header>
 
         <div className="grid min-h-0 flex-1 overflow-y-auto lg:grid-cols-[minmax(0,1.65fr)_minmax(330px,0.75fr)] lg:overflow-hidden">
-          <section className="flex min-h-[430px] flex-col border-b-2 border-[#151515] bg-[#0d1718] p-3 lg:border-b-0 lg:border-r-2 lg:p-5">
+          <section className="flex min-h-[430px] flex-col border-b-2 border-[#151515] bg-[#0d1718] p-3 lg:min-h-0 lg:overflow-y-auto lg:border-b-0 lg:border-r-2 lg:p-5">
             <div className="mb-3 flex flex-wrap items-center gap-2 text-white">
               <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-[10px] font-black uppercase tracking-wider">
                 <MapPinned size={12} /> Flight path
@@ -778,7 +784,7 @@ export function VideoGeneratePanel({
               </button>
             </div>
 
-            <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-white/15 bg-black shadow-2xl">
+            <div className="relative aspect-video w-full shrink-0 overflow-hidden rounded-2xl border border-white/15 bg-black shadow-2xl">
               {sourceFrame && <img src={sourceFrame} alt="Captured City Prompt scene" className="absolute inset-0 h-full w-full select-none object-cover" draggable={false} />}
               {isCapturing && (
                 <div className="absolute inset-0 flex items-center justify-center bg-[#111c1d] text-sm font-semibold text-white/65">
@@ -788,9 +794,7 @@ export function VideoGeneratePanel({
               {isPreparingControls && (
                 <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-[#111c1d]/90 px-8 text-center text-sm font-semibold text-white/75">
                   <Loader2 className="mb-3 animate-spin" size={24} />
-                  {renderQuality === 'high'
-                    ? 'Dry-traversing all 192 camera poses, freezing Google context, then rendering at 1440p…'
-                    : 'Preloading six geographic route views, then rendering 192 fixed camera frames…'}
+                  <span role="status" aria-live="polite">{previewProgress}</span>
                   <span className="mt-1 text-[10px] font-normal text-white/45">{renderQuality === 'high' ? 'This can take a few minutes on a laptop.' : 'This may take several seconds.'} No provider call or credit is used.</span>
                 </div>
               )}
@@ -838,7 +842,14 @@ export function VideoGeneratePanel({
               )}
             </div>
 
-            {routeControls?.signature === routeCaptureSignature && controlMode !== 'single_frame' && (
+            <button type="button" onClick={() => void previewLocally()}
+              disabled={isCapturing || isPreparingControls || isPreflighting || isGenerating || !sourceFrame || routePoints.length < 2}
+              className="mt-3 min-h-11 rounded-xl border-2 border-[#c9ff3d] bg-[#c9ff3d] px-4 py-2 text-sm font-bold text-slate-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white disabled:opacity-40">
+              {isPreparingControls ? 'Preparing preview…' : 'Preview route · free'}
+            </button>
+            <p className="mt-1 text-center text-xs text-white/70">Review the camera journey before generating a finished video.</p>
+
+            {routeControls?.signature === routeCaptureSignature && (
               <div className="mt-3 rounded-xl border border-white/10 bg-black/25 p-2">
                 <div className="mb-2 flex items-center justify-between text-[9px] font-black uppercase tracking-wider text-white/45">
                   <span>{controlMode === 'multi_keyframe' ? 'Ordered route checkpoints' : 'Deterministic camera preview'}</span>
@@ -858,8 +869,10 @@ export function VideoGeneratePanel({
                     ))}
                   </div>
                 ) : (
-                  <video controls muted playsInline className="aspect-video max-h-36 w-full rounded-lg bg-black object-contain" src={routeControls.previewVideoBase64} />
+                  <video controls muted playsInline className="aspect-video max-h-36 w-full rounded-lg bg-black object-contain" aria-label="Local route preview" src={routeControls.previewVideoBase64} />
                 )}
+                <a href={routeControls.previewVideoBase64} download={`city-prompt-guide.${routeControls.previewVideoMimeType.includes('mp4') ? 'mp4' : 'webm'}`}
+                  className="mt-2 inline-flex min-h-11 items-center gap-2 rounded-lg px-3 text-xs font-semibold text-white underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"><Download size={14} />Download preview</a>
                 {motion === 'street_walkby' && routeControls.streetRenderReadiness && (
                   <div className="mt-2 rounded-lg border border-white/10 bg-white/[0.05] px-2.5 py-2 text-[9px] text-white/55">
                     <div className="flex flex-wrap items-center gap-x-2 gap-y-1 font-bold">
