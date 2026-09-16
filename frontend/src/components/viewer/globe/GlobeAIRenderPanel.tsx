@@ -1,3 +1,4 @@
+import { STYLES } from './imageStyles';
 import { savedRenderNotice, savedRenderIsSource, savedRenderNeedsReview } from '@/utils/renderPresentation';
 import { isCatalogueOnlyScene, CATALOGUE_UPDATE_GUIDANCE } from '@/features/pickPlace/catalogue';
 import { useRenderDraft } from './useRenderDraft';
@@ -168,45 +169,7 @@ interface GlobeAIRenderPanelProps {
   onClose?: () => void;
 }
 
-export const STYLES = [
-  // ── Realistic — photo-style final-stage visualization ──
-  { id: 'photorealistic', label: 'Photo Realistic' },
-  { id: 'photomontage', label: 'Photomontage' },
-  { id: 'development', label: 'Development' },
-  { id: 'atmospheric', label: 'Atmospheric' },
-  { id: 'winter', label: 'Winter' },
-  { id: 'night', label: 'Night' },
-  // ── Concept — hand-drawn / painterly early-stage exploration ──
-  { id: 'watercolour', label: 'Watercolour' },
-  { id: 'charcoal', label: 'Charcoal' },
-  { id: 'marker-render', label: 'Marker' },
-  { id: 'pen-and-ink', label: 'Pen & Ink' },
-  // ── Accurate — geometry-faithful architectural photography ──
-  { id: 'survey', label: 'Survey' },
-  { id: 'documentary', label: 'Documentary' },
-  // ── Plan — top-down orthographic / drafted planning views ──
-  { id: 'site-plan', label: 'Site Plan' },
-  { id: 'site-plan-photo', label: 'Site Plan Photo' },
-  { id: 'blueprint', label: 'Blueprint' },
-  { id: 'site-plan-watercolor', label: 'Site Plan WC' },
-  // ── Stylized — bold, graphic, distinctive ──
-  { id: 'isometric', label: 'Isometric' },
-  { id: 'clay-maquette', label: 'Clay' },
-  { id: 'woodblock', label: 'Wood Block' },
-  { id: 'collage', label: 'Collage' },
-  { id: 'risograph', label: 'Risograph' },
-  { id: 'pixel-art', label: 'Pixel Art' },
-] as const;
-
-// UI grouping for the style picker — keeps the new-user taxonomy visible.
-// Update this when adding a style so it lands in the right group in the UI.
-export const STYLE_GROUPS = [
-  { label: 'Realistic', ids: ['photorealistic', 'photomontage', 'development', 'atmospheric', 'winter', 'night'] },
-  { label: 'Accurate', ids: ['survey', 'documentary'] },
-  { label: 'Concept', ids: ['watercolour', 'charcoal', 'marker-render', 'pen-and-ink'] },
-  { label: 'Plan', ids: ['site-plan', 'site-plan-photo', 'blueprint', 'site-plan-watercolor'] },
-  { label: 'Stylized', ids: ['isometric', 'clay-maquette', 'woodblock', 'collage', 'risograph', 'pixel-art'] },
-] as const;
+export { STYLES, STYLE_GROUPS } from './imageStyles';
 
 export type GlobeRenderPipeline = 'classic' | 'direct3d';
 
@@ -1202,7 +1165,7 @@ export function GlobeAIRenderPanel({
       ref={panelRef}
       onPointerMove={handlePanelPointerMove}
       onPointerLeave={handlePanelPointerLeave}
-      className={`globe-ai-dynamic-bg flex w-full flex-col overflow-hidden rounded-lg border-2 border-[#151515] shadow-[10px_10px_0_0_#151515] backdrop-blur-xl ${isRendering ? 'mx-auto max-h-[13rem] max-w-md globe-ai-rendering' : 'max-h-[min(34rem,calc(100dvh-12rem))]'}`}
+      className={`globe-ai-dynamic-bg flex w-full flex-col overflow-hidden rounded-lg border-2 border-[#151515] shadow-[10px_10px_0_0_#151515] backdrop-blur-xl ${isRendering ? 'mx-auto max-h-[13rem] max-w-md globe-ai-rendering' : 'max-h-[min(46rem,calc(100dvh-10rem))]'}`}
     >
       {/* Header */}
       <div
@@ -1263,9 +1226,14 @@ export function GlobeAIRenderPanel({
       ) : (
       <div className="min-h-0 flex-1 overflow-y-auto">
       {!result && <>
-      {renderPipeline === 'direct3d' && <ImagePresentationControls style={selectedStyle}
+      <ImagePresentationControls style={selectedStyle}
         onStyle={style => { setSelectedStyle(style); setDirectFidelityPolicy(resolveDirect3DFidelityPolicy(style)); }}
-        addPeople={addPeople} addVehicles={addVehicles} onPeople={setAddPeople} onVehicles={setAddVehicles} />}
+        isStyleDisabled={style => isRenderStyleDisabled(renderPipeline, style, hasPlacedMassing)}
+        styleHint={style => isRenderStyleDisabled(renderPipeline, style, hasPlacedMassing)
+          ? catalogueOnly ? CATALOGUE_UPDATE_GUIDANCE : 'Place 3D buildings before using Development.'
+          : resolveDirect3DPresentationMode(style) === 'reproject'
+            ? 'Creates a different projection of your design. Check the resulting layout before presenting.' : undefined}
+        addPeople={addPeople} addVehicles={addVehicles} onPeople={setAddPeople} onVehicles={setAddVehicles} />
       {!direct3DAvailable && renderPipeline === 'direct3d' && <p role="status" className="bg-slate-900 px-4 py-2 text-sm text-amber-200">{direct3DUnavailableReason}</p>}
       {imageGenerationUnavailable && renderPipeline === 'direct3d' && <p role="status" className="bg-slate-900 px-4 py-2 text-sm text-amber-200">Image generation is unavailable right now. You can still export your current 3D view below.</p>}
       <details className="border-b border-white/20 bg-slate-900/90 text-white">
@@ -1354,56 +1322,6 @@ export function GlobeAIRenderPanel({
             <ImageModelSelect value={directImageModel} onChange={setDirectImageModel} disabled={isRendering} availability={imageModelAvailability} />
           </div>
         )}
-        {/* Style selector */}
-        <div>
-          <div className="mb-1 text-[10px] font-black uppercase text-white/50">Style</div>
-          <div className="space-y-1.5">
-            {STYLE_GROUPS.map(group => (
-              <div key={group.label}>
-                <div className="mb-0.5 text-[9px] font-black uppercase tracking-wider text-white/40">{group.label}</div>
-                <div className="flex flex-wrap gap-1">
-                  {group.ids.map(id => {
-                    const s = STYLES.find(x => x.id === id);
-                    if (!s) return null;
-                    // Preserve Classic's placed-massing gate. Direct already
-                    // requires a compiled scene and exposes the full catalogue.
-                    const disabled = isRenderStyleDisabled(renderPipeline, s.id, hasPlacedMassing);
-                    const presentationMode = resolveDirect3DPresentationMode(s.id);
-                    return (
-                      <button
-                        key={s.id}
-                        onClick={() => {
-                          setSelectedStyle(s.id);
-                          if (renderPipeline === 'direct3d') {
-                            setDirectFidelityPolicy(resolveDirect3DFidelityPolicy(s.id));
-                          }
-                        }}
-                        disabled={disabled}
-                        title={disabled
-                          ? catalogueOnly ? CATALOGUE_UPDATE_GUIDANCE : 'Development mode needs placed 3D massing — run Generate to 3D first.'
-                          : renderPipeline === 'direct3d' && presentationMode === 'reproject'
-                            ? 'Experimental reproject: the compiled scene guides inventory and layout, but screen-space geometry proof is impossible after the camera transform. Visually verify the result.'
-                            : s.id === 'development'
-                              ? 'High-fidelity render of the placed development: the textured stacks in view act as geometry conditioning.'
-                              : undefined}
-                        className={`rounded-full border px-2 py-1 text-[11px] font-black transition ${
-                          selectedStyle === s.id
-                            ? 'border-[#151515] bg-[#c9ff3d] text-[#151515] shadow-[2px_2px_0_0_#151515]'
-                            : disabled
-                              ? 'cursor-not-allowed border-white/10 bg-white/5 text-white/30'
-                              : 'border-white/15 bg-white/10 text-white/70 hover:bg-white/20 hover:text-white'
-                        }`}
-                      >
-                        {s.label}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
         {/* High-fidelity two-pass toggle — camera-preserving artistic styles only */}
         {renderPipeline === 'classic' && HIGH_FIDELITY_STYLES.has(selectedStyle) && (
           <label className="flex cursor-pointer items-center gap-2 text-[11px] font-bold text-white/70">
