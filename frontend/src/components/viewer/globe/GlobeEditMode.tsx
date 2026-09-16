@@ -644,7 +644,7 @@ export function GlobeEditMode({
       const asset = assetForZone(zone);
       let newCoords = isFixedSectionStreet(zone)
         ? reshapeStreetPoint(originalCoordsRef.current, index, lngLat, streetSectionWidth(zone))
-        : asset && zone.zone_type !== 'green_space' && originalCoordsRef.current.length === 4
+        : asset && asset.reshapeMode !== 'authored_footprint' && zone.zone_type !== 'green_space' && originalCoordsRef.current.length === 4
         ? resizeRectangleCorner(originalCoordsRef.current, index, lngLat, asset)
         : originalCoordsRef.current.map((c, i) => i === index ? [...lngLat] : [...c]);
       if (isFixedSectionStreet(zone) && !pe.altKey) {

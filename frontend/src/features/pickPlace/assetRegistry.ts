@@ -21,7 +21,7 @@ interface AssetRecord {
 export interface PlaceAsset extends AssetRecord {
   kind: 'object';
   zoneType: 'building' | 'green_space';
-  reshapeMode: 'repeat_native' | 'adaptive_layout' | 'fixed_native';
+  reshapeMode: 'repeat_native' | 'adaptive_layout' | 'fixed_native' | 'authored_footprint';
   width: number;
   depth: number;
   minWidth: number;

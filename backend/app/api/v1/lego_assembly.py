@@ -35,6 +35,7 @@ from app.services.community_3d_scope import (
 from app.services.lego_assembly import (
     AssemblyPlanningError,
     AssemblyRequest,
+    assert_authored_height,
     DETACHED_ARCHETYPE_IDS,
     catalog_parent_archetype_id,
     detached_plot_local_coordinates,
@@ -87,6 +88,7 @@ class LegoAssemblyPlanRequest(BaseModel):
     target_width_m: float = Field(gt=0)
     target_depth_m: float = Field(gt=0)
     target_floors: int = Field(ge=1, le=100)
+    target_height_m: float | None = Field(default=None, gt=0, le=1000)
     archetype_id: str | None = None
     reuse_keys: list[str] = Field(default_factory=list)
     preferred_family: str | None = None
@@ -405,7 +407,7 @@ def _strict_locked_building_plan(
     # Wing depth is intentionally omitted: the current imported family owns
     # the deterministic native/default thickness. The returned target is then
     # the independent value against which a submitted shaped recipe is bound.
-    return plan_vertical_assembly(
+    plan = plan_vertical_assembly(
         descriptors,
         AssemblyRequest(
             target_width_m=width,
@@ -420,6 +422,8 @@ def _strict_locked_building_plan(
         ),
         allow_forced_fit=allow_forced_fit,
     )
+    assert_authored_height(plan, _positive_float(properties.get("development_height_override_m")))
+    return plan
 
 
 async def _assert_ai_lego_recipes_are_current(
@@ -841,6 +845,7 @@ async def create_lego_assembly_plan(
             ),
             allow_forced_fit=body.allow_forced_fit,
         )
+        assert_authored_height(plan, body.target_height_m)
         # The caller persists this token with an AI recipe. Community 3D
         # re-plans under a row/inventory lock and accepts only the same current
         # revision, including first family-pending -> detailed upgrades.
@@ -2108,7 +2113,7 @@ async def place_community_3d(
                 building, building_created = await _place_recipe_on_zone(db, zone, item.recipe)
             else:
                 linked_building = project_buildings_by_id.get(str(zone.building_id))
-                if _is_source_locked_rlasm_model(linked_building):
+                if _is_source_locked_rlasm_model(linked_building) and not (zone.properties or {}).get("development_height_override_m"):
                     building = _place_source_locked_rlasm_on_zone(zone, linked_building)
                     building_generator = "meshy"
                     source_locked_rlasm = True
