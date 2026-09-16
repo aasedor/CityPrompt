@@ -207,6 +207,26 @@ describe('useSiteZones', () => {
     ]);
   });
 
+  it.each([true, false])('advances undo only for our context source revision (matches=%s)', async matches => {
+    const created = {...makeZone(REAL_ZONE_ID), updated_at: 'created'};
+    const context = {buildings: [], roads: [], water: [], parks: [], fetched_at: '', buffer_m: 50,
+      zone_id: REAL_ZONE_ID, source_updated_at: matches ? 'created' : 'teammate', updated_at: 'enriched'};
+    vi.mocked(siteZonesApi.create).mockResolvedValue(created);
+    vi.mocked(siteZonesApi.fetchContext).mockResolvedValue(context);
+    const {result} = renderHook(() => useSiteZones(PROJECT_ID), {wrapper});
+    act(() => result.current.createZone.mutate({zone_type:'site_boundary',coordinates:created.coordinates}));
+    await waitFor(() => expect(useViewerStore.getState().osmContext).toEqual(context));
+    expect(useUndoRedoStore.getState().undoStack).toHaveLength(1);
+    vi.spyOn(queryClient, 'invalidateQueries').mockResolvedValue(undefined);
+    await act(() => useUndoRedoStore.getState().undo());
+    expect(siteZonesApi.delete).toHaveBeenCalledWith(REAL_ZONE_ID, matches ? 'enriched' : 'created', {skipHistory:true});
+    if (matches) {
+      await act(() => useUndoRedoStore.getState().redo());
+      expect(siteZonesApi.create).toHaveBeenLastCalledWith(PROJECT_ID,
+        expect.objectContaining({coordinates:created.coordinates,properties:expect.objectContaining({_osm_context:context})}), {skipHistory:true});
+    }
+  });
+
   it('reuses boundary context returned by create instead of fetching it twice', async () => {
     const context = {
       buildings: [],

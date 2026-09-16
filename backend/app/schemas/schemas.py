@@ -620,6 +620,10 @@ class OSMContextFeature(BaseModel):
 class OSMContextResponse(BaseModel):
     """Complete OSM context for a site boundary."""
 
+    zone_id: uuid.UUID | None = None
+    source_updated_at: datetime | None = None
+    updated_at: datetime | None = None
+
     buildings: list[OSMContextBuilding] = Field(default=[], description="Nearby buildings")
     roads: list[OSMContextRoad] = Field(default=[], description="Nearby roads")
     water: list[OSMContextFeature] = Field(default=[], description="Water features")
