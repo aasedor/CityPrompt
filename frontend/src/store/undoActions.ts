@@ -120,8 +120,8 @@ export function createZoneDeleteAction(
 export function createZoneUpdateAction(
   projectId: string,
   zoneId: string,
-  prevData: { name?: string; color?: string; properties?: SiteZoneProperties },
-  newData: { name?: string; color?: string; properties?: SiteZoneProperties },
+  prevData: { name?: string; color?: string; coordinates?: number[][]; properties?: SiteZoneProperties },
+  newData: { name?: string; color?: string; coordinates?: number[][]; properties?: SiteZoneProperties },
   queryClient: QueryClient,
   savedRevision?: string,
 ): UndoableAction {

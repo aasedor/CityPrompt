@@ -19,6 +19,22 @@ describe('catalogue cross-section junctions', () => {
     { low: -2, high: 4, roadZ: 0.1, edgeZ: 0.245, raised: true },
     { low: -2.7, high: 2.7, roadZ: 0.11, edgeZ: 0.09, raised: false },
   ] };
+  it.each([-.6, .6])('joins skew surfaces and clips the same footprint, shear=%s', shear => {
+    const skew = { ...layout, shear }, geometry = buildSectionJunctionGeometry(skew);
+    const x = (u: number, v: number) => u + shear * v;
+    expect(covers(geometry.pavement, x(0, 10), 10)).toBe(true);
+    expect(covers(geometry.pavement, x(4, 10), 10)).toBe(false);
+    expect(covers(geometry.sidewalks, x(0, -6), -6)).toBe(true);
+    expect(covers(geometry.pavement, x(0, -10), -10)).toBe(false);
+    expect(streetJunctionContainsPoint(skew, x(0, 11), 11)).toBe(true);
+    const source = new THREE.PlaneGeometry(100, 100);
+    const clipped = clipStreetGeometryOutsideJunction(source, skew);
+    expect(covers(clipped, x(0, 10), 10)).toBe(false);
+    expect(covers(clipped, 40, 40)).toBe(true);
+    const plain = buildSectionJunctionGeometry(layout);
+    expect(area(geometry.pavement)).toBeCloseTo(area(plain.pavement), 4);
+    Object.values(geometry).forEach(g => g.dispose()); Object.values(plain).forEach(g => g.dispose()); source.dispose(); clipped.dispose();
+  });
   it('keeps an offset carriageway, cuts six ramps and does not invent a fourth arm', () => {
     const g = buildSectionJunctionGeometry(layout);
     expect(covers(g.pavement, -8, 3.8)).toBe(true);

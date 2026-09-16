@@ -2,6 +2,7 @@ import { LOCAL_STREET_ASSET, STREET_ASSETS } from './assetRegistry';
 import type { SiteZone } from '@/types';
 import { bufferLineToPolygon, extractCenterline, extractZoneCenterline } from '@/utils/roadGeometry';
 import { metersPerDegLon, METERS_PER_DEG_LAT } from '@/components/viewer/mapEngine/geoUtils';
+import { canonicalStreetForZone } from './canonicalStreetPlacement';
 
 export const CALGARY_LOCAL_PLACEMENT = LOCAL_STREET_ASSET;
 export const CALGARY_LOCAL_WIDTH_M = LOCAL_STREET_ASSET.sectionWidth;
@@ -14,7 +15,7 @@ export function streetAssetForZone(zone: Pick<SiteZone, 'zone_type' | 'propertie
   if (zone.zone_type !== 'road') return undefined;
   return STREET_ASSETS.find(asset => zone.properties?.pick_place_street_section === asset.model.variantId
     && zone.properties.road_archetype_id === asset.properties.road_archetype_id
-    && zone.properties.road_selected_variant_id === asset.model.variantId);
+    && zone.properties.road_selected_variant_id === asset.model.variantId) ?? canonicalStreetForZone(zone);
 }
 export function isFixedSectionStreet(zone: Pick<SiteZone, 'zone_type' | 'properties'>) {
   return Boolean(streetAssetForZone(zone));

@@ -213,9 +213,23 @@ describe('bounded connected T graph', () => {
     expect(detectFourWayStreetIntersections(zones)).toEqual([]);
   });
 
-  it('rejects a skew T rather than inventing an orthogonal arm', () => {
+  it('joins a skew T while preserving its actual approach bearing', () => {
     const diagonal = street('stem', [[-114.1, 51], [-114.099, 51.001]], 14);
-    expect(detectConnectedStreetIntersections([main(), diagonal])).toEqual([]);
+    const original = JSON.stringify(diagonal);
+    const zones = [main(), diagonal], [node] = detectConnectedStreetIntersections(zones);
+    expect(node.armCount).toBe(3);
+    expect(node.orthogonal).toBe(false);
+    const layout = resolveStreetJunctionLayout(node, zones)!;
+    expect(layout).not.toBeNull();
+    expect(layout.shear).toBeCloseTo(111320 * Math.cos(51 * Math.PI / 180) / 111320, 3);
+    expect(layout.rowB * Math.sin(node.axisBBearingRad)).toBeCloseTo(node.axisBHalfWidthM, 5);
+    expect(JSON.stringify(diagonal)).toBe(original);
+  });
+
+  it('keeps a remote bend without disabling the straight segment entering a T', () => {
+    const bent = street('stem', [[-114.1, 51], [-114.0995, 51.001], [-114.0985, 51.0013]], 14);
+    const zones = [main(), bent], [node] = detectConnectedStreetIntersections(zones);
+    expect(resolveStreetJunctionLayout(node, zones)).not.toBeNull();
   });
 
   it('reconstructs a three-source T with split through arms', () => {

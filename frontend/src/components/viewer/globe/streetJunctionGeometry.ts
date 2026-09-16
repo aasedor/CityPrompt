@@ -14,6 +14,9 @@ export interface JunctionRect { minX: number; maxX: number; minY: number; maxY: 
 export interface JunctionSection { low: number; high: number; raised: boolean; roadZ: number; edgeZ: number }
 export interface StreetJunctionLayout {
   bearing: number;
+  /** x = u + shear*v, y = v in the A-aligned frame. Widths on B are
+   * divided by sin(angle), preserving their physical perpendicular width. */
+  shear?: number;
   surfaceZoneId?: string;
   uvFrame?: { bearing: number; u: number; v: number };
   rowA: number;
@@ -27,10 +30,14 @@ export interface StreetJunctionLayout {
   sections?: [JunctionSection, JunctionSection];
 }
 
-/** A bounded, symmetric orthogonal section join. Reviewed network atlases retain
+/** A bounded section join with 45–135 degree approaches. Reviewed network atlases retain
  * their existing ground ownership; this helper never silently replaces them. */
 export function resolveStreetJunctionLayout(node: ConnectedStreetIntersection, zones: SiteZone[]): StreetJunctionLayout | null {
-  if (!node.orthogonal || node.approachSides[0].length !== 2) return null;
+  if (node.approachSides[0].length !== 2) return null;
+  const angleB = node.axisBBearingRad - node.axisABearingRad;
+  const sine = Math.abs(Math.sin(angleB));
+  if (sine < Math.SQRT1_2 - .001) return null;
+  const shear = node.orthogonal ? 0 : Math.cos(angleB) / Math.sin(angleB);
   const connected = zones.filter((zone) => node.zoneIds.includes(zone.id));
   if (connected.length !== node.zoneIds.length || connected.some((zone) => getStreetNetworkGroundMeta(zone))) return null;
   const roads = [0, 0];
@@ -40,8 +47,18 @@ export function resolveStreetJunctionLayout(node: ConnectedStreetIntersection, z
   const reaches = [[0, 0], [0, 0]];
   for (const zone of connected) {
     const profile = resolvePilotStreetSectionProfile(zone);
-    const line = extractZoneCenterline(zone);
-    if (!profile || line.length < 2) return null;
+    const route = extractZoneCenterline(zone);
+    if (!profile || route.length < 2) return null;
+    // Only the segment entering this node owns the join. A bend farther down
+    // the route must not disable an otherwise valid junction.
+    const distance = (a: number[], b: number[]) => {
+      const ax = (a[0] - node.longitude) * metersPerDegLon(node.latitude), ay = (a[1] - node.latitude) * METERS_PER_DEG_LAT;
+      const dx = (b[0] - a[0]) * metersPerDegLon(node.latitude), dy = (b[1] - a[1]) * METERS_PER_DEG_LAT;
+      const t = Math.max(0, Math.min(1, -(ax * dx + ay * dy) / (dx * dx + dy * dy || 1)));
+      return Math.hypot(ax + t * dx, ay + t * dy);
+    };
+    const line = route.slice(1).map((p, i) => [route[i], p]).sort((a, b) => distance(a[0], a[1]) - distance(b[0], b[1]))[0];
+    if (!node.orthogonal && distance(line[0], line[1]) > .25) return null;
     const first = line[0]; const last = line[line.length - 1];
     const angle = Math.atan2((last[1] - first[1]) * METERS_PER_DEG_LAT, (last[0] - first[0]) * metersPerDegLon(node.latitude));
     const axis = Math.abs(Math.cos(angle - node.axisABearingRad)) > 0.9 ? 0 : 1;
@@ -69,7 +86,7 @@ export function resolveStreetJunctionLayout(node: ConnectedStreetIntersection, z
     // The B axis runs across the node; its normal points towards negative X.
     const direction = axis === 0 ? Math.sign(Math.cos(angle - node.axisABearingRad))
       : -Math.sign(Math.sin(angle - node.axisABearingRad));
-    const offsets = drive.flatMap((band) => [band.startM * scale * direction, band.endM * scale * direction]);
+    const offsets = drive.flatMap((band) => [band.startM * scale * direction / (axis === 1 ? sine : 1), band.endM * scale * direction / (axis === 1 ? sine : 1)]);
     const low = Math.min(...offsets); const high = Math.max(...offsets);
     if (low >= 0 || high <= 0) return null;
     const section = { low, high, raised: profile.renderCurbs, roadZ: drive[0].liftM,
@@ -81,16 +98,16 @@ export function resolveStreetJunctionLayout(node: ConnectedStreetIntersection, z
     sections[axis] = section;
     roads[axis] = Math.max(Math.abs(low), high);
   }
-  const rowA = node.axisAHalfWidthM; const rowB = node.axisBHalfWidthM;
+  const rowA = node.axisAHalfWidthM; const rowB = node.axisBHalfWidthM / sine;
   if (!sections[0] || !sections[1]) return null;
   if (sections.some((section, axis) => section!.raised &&
     (section!.low - 1.8 < -(axis === 0 ? rowA : rowB) || section!.high + 1.8 > (axis === 0 ? rowA : rowB)))) return null;
   if (node.approachSides.some((sides, axis) => sides.some((side) =>
-    reaches[axis][side === -1 ? 0 : 1] < (axis === 0 ? rowB : rowA) + 4 - 0.01))) return null;
+    reaches[axis][side === -1 ? 0 : 1] < (axis === 0 ? rowB + 4 + Math.abs(shear) * rowA : (rowA + 4) / sine + rowB * Math.abs(Math.cos(angleB))) - 0.01))) return null;
   const orientation = Math.sin(node.axisBBearingRad - node.axisABearingRad) >= 0 ? 1 : -1;
   const sidesB = node.approachSides[1].map((side) => side * orientation as -1 | 1);
   return {
-    bearing: node.axisABearingRad, surfaceZoneId, uvFrame, rowA, rowB, roadA: roads[0], roadB: roads[1], sidesB,
+    bearing: node.axisABearingRad, shear, surfaceZoneId, uvFrame, rowA, rowB, roadA: roads[0], roadB: roads[1], sidesB,
     sections: sections as [JunctionSection, JunctionSection],
     bounds: [
       { minX: -rowB - 4, maxX: rowB + 4, minY: -rowA, maxY: rowA },
@@ -199,7 +216,8 @@ export function buildSectionJunctionGeometry(layout: StreetJunctionLayout) {
       - (points[1][1] - points[0][1]) * (points[2][0] - points[0][0]);
     const order = cross < 0 ? [0, 2, 1, 0, 3, 2] : [0, 1, 2, 0, 2, 3];
     for (const i of order) {
-      const [x, y, z] = points[i]; target.push(x * cos - y * sin, x * sin + y * cos, z);
+      const [u, y, z] = points[i], x = u + (layout.shear ?? 0) * y;
+      target.push(x * cos - y * sin, x * sin + y * cos, z);
     }
   };
   const rectangle = (target: number[], x0: number, y0: number, x1: number, y1: number, z: (x: number, y: number) => number) =>
@@ -274,8 +292,8 @@ export function buildSectionJunctionGeometry(layout: StreetJunctionLayout) {
 }
 
 export function streetJunctionContainsPoint(layout: StreetJunctionLayout, x: number, y: number, padding = 0): boolean {
-  const localX = x * Math.cos(layout.bearing) + y * Math.sin(layout.bearing);
   const localY = -x * Math.sin(layout.bearing) + y * Math.cos(layout.bearing);
+  const localX = x * Math.cos(layout.bearing) + y * Math.sin(layout.bearing) - (layout.shear ?? 0) * localY;
   return layout.bounds.some(rect => localX >= rect.minX - padding && localX <= rect.maxX + padding
     && localY >= rect.minY - padding && localY <= rect.maxY + padding);
 }
@@ -291,7 +309,8 @@ export function clipStreetGeometryOutsideJunction(
   const cos = Math.cos(layout.bearing); const sin = Math.sin(layout.bearing);
   const coordinate = (vertex: Vertex, axis: number) => {
     const x = vertex.position[0] - centerX; const y = vertex.position[1] - centerY;
-    return axis === 0 ? x * cos + y * sin : -x * sin + y * cos;
+    const v = -x * sin + y * cos;
+    return axis === 0 ? x * cos + y * sin - (layout.shear ?? 0) * v : v;
   };
   const clip = (polygon: Vertex[], axis: number, edge: number, sign: number): Vertex[] => {
     const output: Vertex[] = [];

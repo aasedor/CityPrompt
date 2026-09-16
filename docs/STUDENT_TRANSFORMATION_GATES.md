@@ -13,7 +13,7 @@ This file records actual status. Unchecked phases are not implemented or accepte
 | 2. Site → Design → Present | Navigation slice verified | Fresh local project search/draw/confirm/catalogue; exact camera invariance; keyboard; three inspected viewports. Full novice journey and downstream render simplification still pending; see STUDENT_WORKFLOW_CHECKPOINT.md |
 | 3. Full canonical discovery | Discovery slice verified | 468 eligible parents; all 33 categories browser-tested; 2,080 references verified; identity/massing pilot and persistent fallback notice. Park surface defect and full placement journey remain open; see CANONICAL_CATALOGUE_CHECKPOINT.md |
 | 4. Building placement/editing | Interaction slice verified | Canonical click placement; street-facing/manual rotation; move/type/height/resize; native-to-massing and undo; exact reload coordinates. Ground contact and broad identity acceptance remain open; see BUILDING_EDITING_CHECKPOINT.md |
-| 5. Streets/intersections | Pending | Straight/angled/T/X network, type/width changes, section continuity at pedestrian level |
+| 5. Streets/intersections | Interaction slice verified | UI-drawn straight/angled/T/X network; atomic type/width edits and undo/redo; pedestrian surface inspection and fixed benchmark views. Natural-slope/acute/curved acceptance remains open; see STREET_EDITING_CHECKPOINT.md |
 | 6. Reviewed parks | Pending | Multiple assemblies; appropriate component edits; paths/entrances/props; reload |
 | 7. Google grounding | Pending | Flat/slope/contact matrix; asynchronous refinement; context reload; no major floating/sinking or Z drift |
 | 8. Alternate context pilot | Pending | Permitted small sample, provenance/datum/transform, reload/toggle invariance, performance, Lux delivery contract |

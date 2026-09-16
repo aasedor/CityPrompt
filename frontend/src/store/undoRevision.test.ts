@@ -11,6 +11,16 @@ import { rectangleAt } from '@/features/pickPlace/geometry';
 
 vi.mock('@/services/api', () => ({ siteZonesApi: { create: vi.fn(), update: vi.fn(), delete: vi.fn() }, buildingsApi: {} }));
 describe('zone undo revision checks', () => {
+  it('restores street type, width, centreline and footprint together', async () => {
+    const client = new QueryClient(), line = [[-114, 51], [-113.999, 51]];
+    const before = { coordinates: bufferLineToPolygon(line, 16), properties: { width: 16, road_archetype_id: 'calgary_local', plan_centerline: line } };
+    const after = { coordinates: bufferLineToPolygon(line, 20), properties: { width: 20, road_archetype_id: 'calgary_collector', plan_centerline: line } };
+    const action = createZoneUpdateAction('project', 'street', before, after, client, 'r1');
+    vi.mocked(siteZonesApi.update).mockResolvedValueOnce({ updated_at: 'r2' } as SiteZone).mockResolvedValueOnce({ updated_at: 'r3' } as SiteZone);
+    await action.undo(); await action.redo();
+    expect(siteZonesApi.update).toHaveBeenNthCalledWith(1, 'street', { ...before, expected_updated_at: 'r1' }, { skipHistory: true });
+    expect(siteZonesApi.update).toHaveBeenNthCalledWith(2, 'street', { ...after, expected_updated_at: 'r2' }, { skipHistory: true });
+  });
   it('restores each park outline with its own measured ground through undo and redo', async () => {
     const client=new QueryClient(), center:[number,number]=[-114,51];
     const original={id:'park',project_id:'project',zone_type:'green_space',coordinates:rectangleAt(center,70,60),properties:{name:'keep'},updated_at:'r0'} as unknown as SiteZone;

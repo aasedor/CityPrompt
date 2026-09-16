@@ -1,5 +1,6 @@
 import { canonicalDrawing } from '@/features/pickPlace/canonicalCatalogue';
 import { canonicalBuildingAsset } from '@/features/pickPlace/canonicalBuildingPlacement';
+import { canonicalStreetAsset } from '@/features/pickPlace/canonicalStreetPlacement';
 import { streetFacingDegrees } from '@/features/pickPlace/streetFacing';
 import { catalogueZoneForBuilding } from '@/features/pickPlace/catalogueDeletion';
 import { lazy, Suspense, useState, useCallback, useMemo, useRef, useEffect, type PointerEvent as ReactPointerEvent } from 'react';
@@ -1149,7 +1150,9 @@ export function ProjectViewPage() {
                   }
                   cancelPlacement(); selectZone(null); setMeasureActive(false);
                   useViewerStore.getState().setStreetViewActive(false);
-                  const drawing = canonicalDrawing(selection);
+                  const drawing = selection.choice.domain === 'street_pathway'
+                    ? { type: 'road' as const, properties: canonicalStreetAsset(selection).properties }
+                    : canonicalDrawing(selection);
                   setActiveSitePlannerTool(drawing.type, drawing.properties);
                 }}
                 activeStreetVariant={activeSitePlannerTool === 'road' ? String(activeToolProperties?.road_selected_variant_id ?? '') : undefined}
@@ -1237,6 +1240,14 @@ export function ProjectViewPage() {
         )}
         {selectedZone && isFixedSectionStreet(selectedZone) && advancedZoneId !== selectedZone.id && !placementDraft && !showHistory && !measureActive && (
           <StreetRoutePanel zone={selectedZone} disabled={isSaving} onReshape={coords=>reshapeObject(selectedZone.id, coords)}
+            onUpdateDesign={data => {
+              const problem = streetRouteProblem(data.coordinates, Number(data.properties.width))
+                ?? placementProblem(data.coordinates, siteZones,
+                  publicRoadConnectionFits({ ...selectedZone, ...data }, data.coordinates, getActiveSiteBoundary(siteZones)) ? null : getActiveSiteBoundary(siteZones), selectedZone.id);
+              if (problem) { toast.error(problem); return; }
+              updateZone.mutate({ zoneId: selectedZone.id, data,
+                previousData: { coordinates: selectedZone.coordinates, properties: selectedZone.properties } });
+            }}
             connectionLeavesSite={publicRoadConnectionFits(selectedZone, selectedZone.coordinates, getActiveSiteBoundary(siteZones))}
             onPublicConnection={enabled => updateZone.mutate({zoneId: selectedZone.id, data: {
               properties: {...selectedZone.properties, connect_to_public_road: enabled},

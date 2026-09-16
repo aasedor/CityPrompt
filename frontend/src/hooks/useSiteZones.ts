@@ -193,7 +193,7 @@ export function useSiteZones(projectId: string | undefined) {
   const updateZone = useMutation({
     mutationKey: ['save-zone', projectId],
     onMutate: (vars) => beginEdit(vars.zoneId),
-    mutationFn: (vars: { zoneId: string; data: { name?: string; color?: string; properties?: SiteZoneProperties }; previousData?: { name?: string; color?: string; properties?: SiteZoneProperties } }) =>
+    mutationFn: (vars: { zoneId: string; data: { name?: string; color?: string; coordinates?: number[][]; properties?: SiteZoneProperties }; previousData?: { name?: string; color?: string; coordinates?: number[][]; properties?: SiteZoneProperties } }) =>
       runProjectWrite(queryClient, projectId!, async () => {
         const result = await siteZonesApi.update(vars.zoneId, {
           ...vars.data,

@@ -57,8 +57,8 @@ export function detectFourWayStreetIntersections(zones: SiteZone[]): FourWayStre
   return detectStreetIntersections(zones, false) as FourWayStreetIntersection[];
 }
 
-/** Bounded connected surface pilot: T nodes must be orthogonal within one degree.
- * Existing skew four-way details remain available, without a new surface patch. */
+/** Keep actual approach bearings. Surface eligibility is checked independently;
+ * a skew T must never acquire a fictitious perpendicular or fourth arm. */
 export function detectConnectedStreetIntersections(zones: SiteZone[]): ConnectedStreetIntersection[] {
   const legacy = detectStreetIntersections(zones, false);
   const tees = detectStreetIntersections(zones, true).filter((node) => node.armCount === 3
@@ -316,8 +316,8 @@ function detectStreetIntersections(
     });
     if (!axisB) return [];
     const orthogonal = Math.abs(undirectedAngleDistance(axisA.bearing, axisB.bearing) - Math.PI / 2) <= Math.PI / 180;
-    if (groupedArms.length === 3 && (!orthogonal || arms.some((arm) =>
-      Math.min(undirectedAngleDistance(arm.bearing, axisA.bearing), undirectedAngleDistance(arm.bearing, axisB.bearing)) > Math.PI / 180))) return [];
+    if (groupedArms.length === 3 && arms.some((arm) =>
+      Math.min(undirectedAngleDistance(arm.bearing, axisA.bearing), undirectedAngleDistance(arm.bearing, axisB.bearing)) > Math.PI / 180)) return [];
     const approachSides = [axisA, axisB].map((axis) => ([-1, 1] as const).filter((side) => (
       groupedArms.some((arm) => angleDistance(arm.bearing, axis.bearing + (side === -1 ? Math.PI : 0)) < Math.PI / 12)
     ))) as ConnectedStreetIntersection['approachSides'];
