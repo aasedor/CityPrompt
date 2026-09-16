@@ -1,0 +1,10 @@
+{
+  "reloadToSettledSecondsIncludingCli": 8.813000000000102,
+  "authoredZonesExactlyEqual": true,
+  "zoneCount": 22,
+  "newBrowserErrors": 0,
+  "limitations": [
+    "Warm cache and CLI overhead; not cold first-meaningful-scene timing",
+    "Prepared grade; not natural slope validation"
+  ]
+}

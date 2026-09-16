@@ -9,7 +9,7 @@ This file records actual status. Unchecked phases are not implemented or accepte
 | Phase | Status | Required evidence before acceptance |
 | --- | --- | --- |
 | 0. Architecture audit | Source audit complete | Current architecture report; computed inventory; 65 frontend + 61 backend checks and type-check; login shell inspected |
-| 1. Gold Standard and baseline | In progress | Saved Calgary benchmark, five fixed cameras, deterministic route, before screenshots, baseline measurements; independent older-project fixtures |
+| 1. Gold Standard and baseline | Baseline frozen; coverage limits recorded | 16 buildings, three streets, two parks; five inspected cameras; frozen route definition; reload invariance and measured cadence. Natural-slope and guide capture remain open; see GOLD_STANDARD_2026-09-15.md |
 | 2. Site → Design → Present | Pending | Fresh-session navigation; manual design primary; discoverable controls; desktop/laptop/narrow screenshots |
 | 3. Full canonical discovery | Pending | Eligible IDs computed from current catalogue; metadata search/categories; references resolve; representations/fallback honest; no bespoke catalogue UI edits |
 | 4. Building placement/editing | Pending | Street facing; move/rotate/type/height/stretch; native RLASM or explicit massing; stable save/reload and undo |
@@ -58,6 +58,7 @@ spend from application credit balances. Begin with local/source/browser checks.
 
 ## Current limitations
 
-Only the login shell has been visually verified on the isolated current source.
-No authenticated benchmark, final media, complete student journey or performance
-improvement is claimed. See the architecture report for existing known defects.
+Authenticated benchmark, fixed views, deterministic source capture and a clean
+reload are verified. No final media, complete student journey, natural-slope
+grounding pass or performance improvement is claimed. See the Gold Standard
+record and architecture report for defects and coverage limits.

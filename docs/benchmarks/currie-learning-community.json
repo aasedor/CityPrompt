@@ -1,0 +1,1100 @@
+{
+  "schema_version": 1,
+  "source_revision": "1172db1ef97036a92286463c5da83b54321f8a4f",
+  "anchor": [
+    -114.1249,
+    51.0169
+  ],
+  "declared_ellipsoid_grade_m": 1102,
+  "description": "Synthetic authored Calgary redevelopment benchmark. Canonical native buildings, mixed streets and reviewed parks. Not a student-authored journey or a survey. Salisbury is the separate natural-slope fixture.",
+  "zones": [
+    {
+      "id": "boundary",
+      "name": "Gold Standard \u00e2\u20ac\u201d declared redevelopment site",
+      "zone_type": "site_boundary",
+      "coordinates": [
+        [
+          -114.12682773354518,
+          51.01577711103126
+        ],
+        [
+          -114.12297226645481,
+          51.01577711103126
+        ],
+        [
+          -114.12297226645481,
+          51.01802288896874
+        ],
+        [
+          -114.12682773354518,
+          51.01802288896874
+        ]
+      ],
+      "properties": {
+        "terrain_elevation_m": 1102,
+        "community_3d_mask_existing_tiles": true
+      },
+      "color": "#F59E0B"
+    },
+    {
+      "id": "fixture-1",
+      "name": "Residential 1",
+      "zone_type": "building",
+      "coordinates": [
+        [
+          -114.12664924189772,
+          51.01774441250449
+        ],
+        [
+          -114.12643504488295,
+          51.01774441250449
+        ],
+        [
+          -114.12643504488295,
+          51.017960007186495
+        ],
+        [
+          -114.12664924189772,
+          51.017960007186495
+        ]
+      ],
+      "properties": {
+        "building_archetype_id": "vancouver_craftsman_bungalow",
+        "development_archetype_id": "vancouver_craftsman_bungalow",
+        "development_selected_variant_id": "craftsman_classic",
+        "native_home_plot": true,
+        "development_archetype_label": "Craftsman bungalows",
+        "floors": 1,
+        "floor_count": 1,
+        "pick_place_asset": "craftsman_bungalow",
+        "pick_place_definition_version": 1,
+        "terrain_elevation_m": 1102,
+        "target_w_m": 15,
+        "target_d_m": 24
+      },
+      "color": "#b6b9bd"
+    },
+    {
+      "id": "fixture-2",
+      "name": "Residential 2",
+      "zone_type": "building",
+      "coordinates": [
+        [
+          -114.12636365174288,
+          51.017762378727994
+        ],
+        [
+          -114.12614945472811,
+          51.017762378727994
+        ],
+        [
+          -114.12614945472811,
+          51.01794204096299
+        ],
+        [
+          -114.12636365174288,
+          51.01794204096299
+        ]
+      ],
+      "properties": {
+        "building_archetype_id": "calgary_inner_city_bungalow",
+        "development_archetype_id": "calgary_inner_city_bungalow",
+        "development_selected_variant_id": "bungalow_postwar_ranch",
+        "development_archetype_label": "Post-war bungalow",
+        "floors": 1,
+        "floor_count": 1,
+        "native_home_plot": true,
+        "pick_place_asset": "trial_postwar_bungalow",
+        "pick_place_definition_version": 1,
+        "terrain_elevation_m": 1102,
+        "target_w_m": 15,
+        "target_d_m": 20
+      },
+      "color": "#b6b9bd"
+    },
+    {
+      "id": "fixture-3",
+      "name": "Residential 3",
+      "zone_type": "building",
+      "coordinates": [
+        [
+          -114.12607806158803,
+          51.017753395616246
+        ],
+        [
+          -114.12586386457326,
+          51.017753395616246
+        ],
+        [
+          -114.12586386457326,
+          51.01795102407474
+        ],
+        [
+          -114.12607806158803,
+          51.01795102407474
+        ]
+      ],
+      "properties": {
+        "building_archetype_id": "toronto_edwardian_foursquare",
+        "development_archetype_id": "toronto_edwardian_foursquare",
+        "development_selected_variant_id": "toronto_foursquare_red_brick",
+        "development_archetype_label": "Edwardian Foursquare",
+        "floors": 2,
+        "floor_count": 2,
+        "native_home_plot": true,
+        "pick_place_asset": "trial_edwardian_foursquare",
+        "pick_place_definition_version": 1,
+        "terrain_elevation_m": 1102,
+        "target_w_m": 15,
+        "target_d_m": 22
+      },
+      "color": "#b6b9bd"
+    },
+    {
+      "id": "fixture-4",
+      "name": "Residential 4",
+      "zone_type": "building",
+      "coordinates": [
+        [
+          -114.12577105173173,
+          51.0177803449515
+        ],
+        [
+          -114.1255996941199,
+          51.0177803449515
+        ],
+        [
+          -114.1255996941199,
+          51.01792407473949
+        ],
+        [
+          -114.12577105173173,
+          51.01792407473949
+        ]
+      ],
+      "properties": {
+        "building_archetype_id": "calgary_modern_infill_house",
+        "development_archetype_id": "calgary_modern_infill_house",
+        "development_selected_variant_id": "infill_flat_roof_minimal",
+        "native_home_plot": true,
+        "development_archetype_label": "Calgary infill homes",
+        "floors": 2,
+        "floor_count": 2,
+        "pick_place_asset": "infill_home",
+        "pick_place_definition_version": 1,
+        "terrain_elevation_m": 1102,
+        "target_w_m": 12,
+        "target_d_m": 16
+      },
+      "color": "#b6b9bd"
+    },
+    {
+      "id": "fixture-5",
+      "name": "Residential 5",
+      "zone_type": "building",
+      "coordinates": [
+        [
+          -114.12548546157689,
+          51.0177803449515
+        ],
+        [
+          -114.12531410396505,
+          51.0177803449515
+        ],
+        [
+          -114.12531410396505,
+          51.01792407473949
+        ],
+        [
+          -114.12548546157689,
+          51.01792407473949
+        ]
+      ],
+      "properties": {
+        "building_archetype_id": "calgary_modern_infill_house",
+        "development_archetype_id": "calgary_modern_infill_house",
+        "development_selected_variant_id": "infill_flat_roof_minimal",
+        "native_home_plot": true,
+        "development_archetype_label": "Calgary infill homes",
+        "floors": 2,
+        "floor_count": 2,
+        "pick_place_asset": "infill_home",
+        "pick_place_definition_version": 1,
+        "terrain_elevation_m": 1102,
+        "target_w_m": 12,
+        "target_d_m": 16
+      },
+      "color": "#b6b9bd"
+    },
+    {
+      "id": "fixture-6",
+      "name": "Residential 6",
+      "zone_type": "building",
+      "coordinates": [
+        [
+          -114.12470008865107,
+          51.0177803449515
+        ],
+        [
+          -114.12452873103923,
+          51.0177803449515
+        ],
+        [
+          -114.12452873103923,
+          51.01792407473949
+        ],
+        [
+          -114.12470008865107,
+          51.01792407473949
+        ]
+      ],
+      "properties": {
+        "building_archetype_id": "calgary_modern_infill_house",
+        "development_archetype_id": "calgary_modern_infill_house",
+        "development_selected_variant_id": "infill_flat_roof_minimal",
+        "native_home_plot": true,
+        "development_archetype_label": "Calgary infill homes",
+        "floors": 2,
+        "floor_count": 2,
+        "pick_place_asset": "infill_home",
+        "pick_place_definition_version": 1,
+        "terrain_elevation_m": 1102,
+        "target_w_m": 12,
+        "target_d_m": 16
+      },
+      "color": "#b6b9bd"
+    },
+    {
+      "id": "fixture-7",
+      "name": "Residential 7",
+      "zone_type": "building",
+      "coordinates": [
+        [
+          -114.12441449849624,
+          51.0177803449515
+        ],
+        [
+          -114.1242431408844,
+          51.0177803449515
+        ],
+        [
+          -114.1242431408844,
+          51.01792407473949
+        ],
+        [
+          -114.12441449849624,
+          51.01792407473949
+        ]
+      ],
+      "properties": {
+        "building_archetype_id": "calgary_modern_infill_house",
+        "development_archetype_id": "calgary_modern_infill_house",
+        "development_selected_variant_id": "infill_flat_roof_minimal",
+        "native_home_plot": true,
+        "development_archetype_label": "Calgary infill homes",
+        "floors": 2,
+        "floor_count": 2,
+        "pick_place_asset": "infill_home",
+        "pick_place_definition_version": 1,
+        "terrain_elevation_m": 1102,
+        "target_w_m": 12,
+        "target_d_m": 16
+      },
+      "color": "#b6b9bd"
+    },
+    {
+      "id": "fixture-8",
+      "name": "Residential 8",
+      "zone_type": "building",
+      "coordinates": [
+        [
+          -114.12412890834139,
+          51.0177803449515
+        ],
+        [
+          -114.12395755072956,
+          51.0177803449515
+        ],
+        [
+          -114.12395755072956,
+          51.01792407473949
+        ],
+        [
+          -114.12412890834139,
+          51.01792407473949
+        ]
+      ],
+      "properties": {
+        "building_archetype_id": "calgary_modern_infill_house",
+        "development_archetype_id": "calgary_modern_infill_house",
+        "development_selected_variant_id": "infill_flat_roof_minimal",
+        "native_home_plot": true,
+        "development_archetype_label": "Calgary infill homes",
+        "floors": 2,
+        "floor_count": 2,
+        "pick_place_asset": "infill_home",
+        "pick_place_definition_version": 1,
+        "terrain_elevation_m": 1102,
+        "target_w_m": 12,
+        "target_d_m": 16
+      },
+      "color": "#b6b9bd"
+    },
+    {
+      "id": "fixture-9",
+      "name": "Residential 9",
+      "zone_type": "building",
+      "coordinates": [
+        [
+          -114.12384331818654,
+          51.0177803449515
+        ],
+        [
+          -114.12367196057471,
+          51.0177803449515
+        ],
+        [
+          -114.12367196057471,
+          51.01792407473949
+        ],
+        [
+          -114.12384331818654,
+          51.01792407473949
+        ]
+      ],
+      "properties": {
+        "building_archetype_id": "calgary_modern_infill_house",
+        "development_archetype_id": "calgary_modern_infill_house",
+        "development_selected_variant_id": "infill_flat_roof_minimal",
+        "native_home_plot": true,
+        "development_archetype_label": "Calgary infill homes",
+        "floors": 2,
+        "floor_count": 2,
+        "pick_place_asset": "infill_home",
+        "pick_place_definition_version": 1,
+        "terrain_elevation_m": 1102,
+        "target_w_m": 12,
+        "target_d_m": 16
+      },
+      "color": "#b6b9bd"
+    },
+    {
+      "id": "fixture-10",
+      "name": "Residential 10",
+      "zone_type": "building",
+      "coordinates": [
+        [
+          -114.12341493295429,
+          51.0177803449515
+        ],
+        [
+          -114.12324357534246,
+          51.0177803449515
+        ],
+        [
+          -114.12324357534246,
+          51.01792407473949
+        ],
+        [
+          -114.12341493295429,
+          51.01792407473949
+        ]
+      ],
+      "properties": {
+        "building_archetype_id": "calgary_modern_infill_house",
+        "development_archetype_id": "calgary_modern_infill_house",
+        "development_selected_variant_id": "infill_flat_roof_minimal",
+        "native_home_plot": true,
+        "development_archetype_label": "Calgary infill homes",
+        "floors": 2,
+        "floor_count": 2,
+        "pick_place_asset": "infill_home",
+        "pick_place_definition_version": 1,
+        "terrain_elevation_m": 1102,
+        "target_w_m": 12,
+        "target_d_m": 16
+      },
+      "color": "#b6b9bd"
+    },
+    {
+      "id": "fixture-11",
+      "name": "Sandstone civic hall",
+      "zone_type": "building",
+      "coordinates": [
+        [
+          -114.12665638334737,
+          51.01699881422925
+        ],
+        [
+          -114.12574248706169,
+          51.01699881422925
+        ],
+        [
+          -114.12574248706169,
+          51.01759169960474
+        ],
+        [
+          -114.12665638334737,
+          51.01759169960474
+        ]
+      ],
+      "properties": {
+        "building_archetype_id": "calgary_sandstone_heritage",
+        "development_archetype_id": "calgary_sandstone_heritage",
+        "development_selected_variant_id": "sandstone_romanesque_revival",
+        "development_archetype_label": "Sandstone civic hall",
+        "floors": 3,
+        "floor_count": 3,
+        "native_plot_axes": true,
+        "pick_place_asset": "trial_sandstone_civic",
+        "pick_place_definition_version": 1,
+        "terrain_elevation_m": 1102,
+        "target_w_m": 64,
+        "target_d_m": 66
+      },
+      "color": "#b6b9bd"
+    },
+    {
+      "id": "fixture-12",
+      "name": "Beltline brick mixed-use mid-rise",
+      "zone_type": "building",
+      "coordinates": [
+        [
+          -114.12563539691439,
+          51.01710212001437
+        ],
+        [
+          -114.12507849158109,
+          51.01710212001437
+        ],
+        [
+          -114.12507849158109,
+          51.01745246137261
+        ],
+        [
+          -114.12563539691439,
+          51.01745246137261
+        ]
+      ],
+      "properties": {
+        "building_archetype_id": "calgary_beltline_mid_rise",
+        "development_archetype_id": "calgary_beltline_mid_rise",
+        "development_selected_variant_id": "beltline_brick_modern",
+        "development_archetype_label": "Beltline brick mixed-use mid-rise",
+        "floors": 5,
+        "floor_count": 5,
+        "native_plot_axes": true,
+        "pick_place_asset": "clay_beltline_brick_midrise",
+        "pick_place_definition_version": 1,
+        "terrain_elevation_m": 1102,
+        "target_w_m": 39,
+        "target_d_m": 39
+      },
+      "color": "#b6b9bd"
+    },
+    {
+      "id": "fixture-13",
+      "name": "Classic courtyard motel",
+      "zone_type": "building",
+      "coordinates": [
+        [
+          -114.12466438980698,
+          51.017088645346746
+        ],
+        [
+          -114.124250280713,
+          51.017088645346746
+        ],
+        [
+          -114.124250280713,
+          51.01746593604024
+        ],
+        [
+          -114.12466438980698,
+          51.01746593604024
+        ]
+      ],
+      "properties": {
+        "building_archetype_id": "highway_motor_hotel",
+        "development_archetype_id": "highway_motor_hotel",
+        "development_selected_variant_id": "hotel_roadside_motel",
+        "development_archetype_label": "Classic courtyard motel",
+        "floors": 1,
+        "floor_count": 1,
+        "native_plot_axes": true,
+        "pick_place_asset": "clay_classic_courtyard_motel",
+        "pick_place_definition_version": 1,
+        "terrain_elevation_m": 1102,
+        "target_w_m": 29,
+        "target_d_m": 42
+      },
+      "color": "#b6b9bd"
+    },
+    {
+      "id": "fixture-14",
+      "name": "Rammed-earth timber infill",
+      "zone_type": "building",
+      "coordinates": [
+        [
+          -114.12412890762762,
+          51.01716949335249
+        ],
+        [
+          -114.12387187439687,
+          51.01716949335249
+        ],
+        [
+          -114.12387187439687,
+          51.017385088034494
+        ],
+        [
+          -114.12412890762762,
+          51.017385088034494
+        ]
+      ],
+      "properties": {
+        "building_archetype_id": "detached_contemporary_infill",
+        "development_archetype_id": "detached_contemporary_infill",
+        "development_selected_variant_id": "detached_infill_rammed_earth",
+        "development_archetype_label": "Rammed-earth timber infill",
+        "floors": 3,
+        "floor_count": 3,
+        "native_plot_axes": true,
+        "pick_place_asset": "clay_rammed_earth_infill",
+        "pick_place_definition_version": 1,
+        "terrain_elevation_m": 1102,
+        "target_w_m": 18,
+        "target_d_m": 24
+      },
+      "color": "#b6b9bd"
+    },
+    {
+      "id": "fixture-15",
+      "name": "Vancouver balcony and podium tower",
+      "zone_type": "building",
+      "coordinates": [
+        [
+          -114.12380048092477,
+          51.01707966223499
+        ],
+        [
+          -114.12305794048036,
+          51.01707966223499
+        ],
+        [
+          -114.12305794048036,
+          51.017474919151994
+        ],
+        [
+          -114.12380048092477,
+          51.017474919151994
+        ]
+      ],
+      "properties": {
+        "building_archetype_id": "vancouverism_tower_podium",
+        "development_archetype_id": "vancouverism_tower_podium",
+        "development_selected_variant_id": "vancouverism_classic",
+        "development_archetype_label": "Vancouver balcony and podium tower",
+        "floors": 16,
+        "floor_count": 16,
+        "native_plot_axes": true,
+        "pick_place_asset": "clay_vancouver_balcony_podium_tower",
+        "pick_place_definition_version": 1,
+        "terrain_elevation_m": 1102,
+        "target_w_m": 52,
+        "target_d_m": 44
+      },
+      "color": "#b6b9bd"
+    },
+    {
+      "id": "fixture-16",
+      "name": "Beltline brick mixed-use mid-rise",
+      "zone_type": "building",
+      "coordinates": [
+        [
+          -114.12467866520254,
+          51.016320589292135
+        ],
+        [
+          -114.12412176925551,
+          51.016320589292135
+        ],
+        [
+          -114.12412176925551,
+          51.01667093065038
+        ],
+        [
+          -114.12467866520254,
+          51.01667093065038
+        ]
+      ],
+      "properties": {
+        "building_archetype_id": "calgary_beltline_mid_rise",
+        "development_archetype_id": "calgary_beltline_mid_rise",
+        "development_selected_variant_id": "beltline_brick_modern",
+        "development_archetype_label": "Beltline brick mixed-use mid-rise",
+        "floors": 5,
+        "floor_count": 5,
+        "native_plot_axes": true,
+        "pick_place_asset": "clay_beltline_brick_midrise",
+        "pick_place_definition_version": 1,
+        "terrain_elevation_m": 1102,
+        "target_w_m": 39,
+        "target_d_m": 39
+      },
+      "color": "#b6b9bd"
+    },
+    {
+      "id": "fixture-17",
+      "name": "Outdoor cinema lawn",
+      "zone_type": "green_space",
+      "coordinates": [
+        [
+          -114.1265992576176,
+          51.01606906216313
+        ],
+        [
+          -114.12588528983791,
+          51.01606906216313
+        ],
+        [
+          -114.12588528983791,
+          51.01674279554438
+        ],
+        [
+          -114.1265992576176,
+          51.01674279554438
+        ]
+      ],
+      "properties": {
+        "green_space_archetype_id": "outdoor_cinema_lawn",
+        "green_space_selected_variant_id": "outdoor_cinema_lawn_v1",
+        "park_trio_layout": "park-trio-v3",
+        "pick_place_asset": "park_trio_cinema",
+        "pick_place_definition_version": 1,
+        "terrain_elevation_m": 1102,
+        "target_w_m": 50,
+        "target_d_m": 75
+      },
+      "color": "#78a461"
+    },
+    {
+      "id": "fixture-18",
+      "name": "Neighbourhood park",
+      "zone_type": "green_space",
+      "coordinates": [
+        [
+          -114.12571392889834,
+          51.016113977721886
+        ],
+        [
+          -114.12514275467458,
+          51.016113977721886
+        ],
+        [
+          -114.12514275467458,
+          51.01669787998563
+        ],
+        [
+          -114.12571392889834,
+          51.01669787998563
+        ]
+      ],
+      "properties": {
+        "green_space_archetype_id": "neighborhood_park",
+        "green_space_selected_variant_id": "neighborhood_park_v0",
+        "neighborhood_park_layout": "adaptive_rustic_v1",
+        "pick_place_asset": "neighbourhood_park",
+        "pick_place_definition_version": 1,
+        "terrain_elevation_m": 1102,
+        "target_w_m": 40,
+        "target_d_m": 65
+      },
+      "color": "#78a461"
+    },
+    {
+      "id": "fixture-19",
+      "name": "North\u00e2\u20ac\u201csouth local street",
+      "zone_type": "road",
+      "coordinates": [
+        [
+          -114.12501423351695,
+          51.01586694214876
+        ],
+        [
+          -114.12501423351695,
+          51.017968990298236
+        ],
+        [
+          -114.12478576648304,
+          51.017968990298236
+        ],
+        [
+          -114.12478576648304,
+          51.01586694214876
+        ]
+      ],
+      "properties": {
+        "mobility_profile": "balanced",
+        "transport_modes": [
+          "walking",
+          "automobile"
+        ],
+        "width": 16,
+        "lane_count": 2,
+        "volume": "low",
+        "road_surface": "asphalt",
+        "sidewalks": "both",
+        "has_sidewalks": true,
+        "priority_pedestrian": 2,
+        "priority_cycling": 4,
+        "priority_transit": 4,
+        "priority_auto": 1,
+        "road_archetype_id": "calgary_local",
+        "road_selected_variant_id": "calgary_local_v0",
+        "pick_place_street_section": "calgary_local_v0",
+        "pick_place_automatic_3d": true,
+        "community_3d_mask_existing_tiles": true,
+        "pick_place_definition_version": 1,
+        "road_standard_citation": "Street Manual Draft 4.0, Figure 2",
+        "terrain_elevation_m": 1102,
+        "plan_centerline": [
+          [
+            -114.1249,
+            51.01586694214876
+          ],
+          [
+            -114.1249,
+            51.017968990298236
+          ]
+        ]
+      },
+      "color": "#666666"
+    },
+    {
+      "id": "fixture-20",
+      "name": "Main street",
+      "zone_type": "road",
+      "coordinates": [
+        [
+          -114.1266992179755,
+          51.0169898311175
+        ],
+        [
+          -114.1231007820245,
+          51.0169898311175
+        ],
+        [
+          -114.1231007820245,
+          51.0168101688825
+        ],
+        [
+          -114.1266992179755,
+          51.0168101688825
+        ]
+      ],
+      "properties": {
+        "mobility_profile": "balanced",
+        "transport_modes": [
+          "walking",
+          "bicycle",
+          "automobile"
+        ],
+        "width": 20,
+        "lane_count": 2,
+        "volume": "medium",
+        "road_surface": "asphalt",
+        "sidewalks": "both",
+        "has_sidewalks": true,
+        "priority_pedestrian": 2,
+        "priority_cycling": 2,
+        "priority_transit": 3,
+        "priority_auto": 1,
+        "road_archetype_id": "calgary_collector",
+        "road_selected_variant_id": "calgary_collector_v0",
+        "pick_place_street_section": "calgary_collector_v0",
+        "pick_place_automatic_3d": true,
+        "pick_place_definition_version": 1,
+        "community_3d_mask_existing_tiles": true,
+        "road_standard_citation": "Street Manual Draft 4.0, Figure 6",
+        "terrain_elevation_m": 1102,
+        "plan_centerline": [
+          [
+            -114.1266992179755,
+            51.0169
+          ],
+          [
+            -114.1231007820245,
+            51.0169
+          ]
+        ]
+      },
+      "color": "#666666"
+    },
+    {
+      "id": "fixture-21",
+      "name": "Residential shared street",
+      "zone_type": "road",
+      "coordinates": [
+        [
+          -114.1266992179755,
+          51.017672547610495
+        ],
+        [
+          -114.1231007820245,
+          51.017672547610495
+        ],
+        [
+          -114.1231007820245,
+          51.017618648939994
+        ],
+        [
+          -114.1266992179755,
+          51.017618648939994
+        ]
+      ],
+      "properties": {
+        "mobility_profile": "balanced",
+        "transport_modes": [
+          "walking",
+          "cycling",
+          "automobile"
+        ],
+        "width": 6,
+        "lane_count": 1,
+        "volume": "low",
+        "road_surface": "brick_paving",
+        "sidewalks": "none",
+        "has_sidewalks": false,
+        "priority_pedestrian": 1,
+        "priority_cycling": 2,
+        "priority_transit": 4,
+        "priority_auto": 3,
+        "road_archetype_id": "yield_street",
+        "road_selected_variant_id": "yield_street_v0",
+        "pick_place_street_section": "yield_street_v0",
+        "pick_place_automatic_3d": true,
+        "pick_place_definition_version": 1,
+        "community_3d_mask_existing_tiles": true,
+        "road_standard_citation": "City Prompt representative teaching section",
+        "terrain_elevation_m": 1102,
+        "plan_centerline": [
+          [
+            -114.1266992179755,
+            51.017645598275244
+          ],
+          [
+            -114.1231007820245,
+            51.017645598275244
+          ]
+        ]
+      },
+      "color": "#666666"
+    }
+  ],
+  "views": {
+    "AERIAL": {
+      "eye": [
+        180,
+        -340,
+        235
+      ],
+      "target": [
+        0,
+        20,
+        10
+      ],
+      "camera": {
+        "aspect": 1.709401709401709,
+        "far": 180374.7863900232,
+        "fov": 75,
+        "near": 1,
+        "position": [
+          -1643603.2965441374,
+          -3670481.7319559567,
+          4935552.990417533
+        ],
+        "quaternion": [
+          0.7369830603173134,
+          -0.11304213116319972,
+          0.08958489524039574,
+          0.6603423293506001
+        ],
+        "up": [
+          -0.2571266131376188,
+          -0.5741442000639589,
+          0.7773315523953045
+        ]
+      }
+    },
+    "MAIN_STREET": {
+      "eye": [
+        -116,
+        -4,
+        1.7
+      ],
+      "target": [
+        70,
+        -4,
+        1.7
+      ],
+      "camera": {
+        "aspect": 1.709401709401709,
+        "far": 180374.78639865032,
+        "fov": 75,
+        "near": 1,
+        "position": [
+          -1643706.7025279978,
+          -3669988.430119624,
+          4935583.013588123
+        ],
+        "quaternion": [
+          -0.5604524304999805,
+          0.4311531898834386,
+          0.6877246347039256,
+          -0.16442270774242868
+        ],
+        "up": [
+          -0.2571266131376188,
+          -0.5741442000639589,
+          0.7773315523953045
+        ]
+      }
+    },
+    "PARK": {
+      "eye": [
+        -38,
+        -102,
+        5
+      ],
+      "target": [
+        -60,
+        -42,
+        2
+      ],
+      "camera": {
+        "aspect": 1.709401709401709,
+        "far": 180374.786396134,
+        "fov": 75,
+        "near": 1,
+        "position": [
+          -1643667.5000444984,
+          -3670091.730317803,
+          4935523.927850898
+        ],
+        "quaternion": [
+          0.8739946105761965,
+          -0.11358942278559538,
+          0.06303890202938829,
+          0.4682488233257259
+        ],
+        "up": [
+          -0.2571266131376188,
+          -0.5741442000639589,
+          0.7773315523953045
+        ]
+      }
+    },
+    "RESIDENTIAL": {
+      "eye": [
+        100,
+        82,
+        2
+      ],
+      "target": [
+        -45,
+        105,
+        4
+      ],
+      "camera": {
+        "aspect": 1.709401709401709,
+        "far": 180374.7864008586,
+        "fov": 75,
+        "near": 1,
+        "position": [
+          -1643482.3222142523,
+          -3670015.875857692,
+          4935637.348625302
+        ],
+        "quaternion": [
+          0.7326338996979603,
+          0.13347127800626343,
+          0.5037850401716641,
+          0.43775977460242815
+        ],
+        "up": [
+          -0.2571266131376188,
+          -0.5741442000639589,
+          0.7773315523953045
+        ]
+      }
+    },
+    "INTERSECTION": {
+      "eye": [
+        32,
+        -28,
+        7
+      ],
+      "target": [
+        0,
+        0,
+        0
+      ],
+      "camera": {
+        "aspect": 1.709401709401709,
+        "far": 180374.7863980341,
+        "fov": 75,
+        "near": 1,
+        "position": [
+          -1643580.617312753,
+          -3670068.991181969,
+          4935572.035258082
+        ],
+        "quaternion": [
+          0.8005074237388726,
+          -0.020780612640205667,
+          0.28199441857752466,
+          0.5284270797076686
+        ],
+        "up": [
+          -0.2571266131376188,
+          -0.5741442000639589,
+          0.7773315523953045
+        ]
+      }
+    }
+  },
+  "route": {
+    "name": "Main street eastbound",
+    "durationSeconds": 8,
+    "fps": 24,
+    "frameCount": 192,
+    "startEyeENU": [
+      -116,
+      -4,
+      1.7
+    ],
+    "endEyeENU": [
+      -56,
+      -4,
+      1.7
+    ],
+    "lookDirectionENU": [
+      1,
+      0,
+      0
+    ],
+    "interpolation": "linear index / 191",
+    "fov": 75,
+    "status": "Frozen route definition; guide capture pending video phase"
+  },
+  "sourceCommit": "1172db1ef97036a92286463c5da83b54321f8a4f",
+  "localProjectId": "e18c8436-2612-4548-990e-0fa506748efd",
+  "evidence": {
+    "FROZEN-BEFORE-AERIAL.png": "5d7cd12ae36cdcc192852a5851cc2eaa99ca630fc740896fa58ea03245426d2c",
+    "FROZEN-BEFORE-INTERSECTION.png": "0aa66ae2019c54be8ff9db9ac7849d8bf55841830ef89219f8fe448c29dc6b2d",
+    "FROZEN-BEFORE-MAIN-STREET.png": "b2584a9b96cb1250c07417464ed4765359fe213e080480f4f02a5742fec2a7d8",
+    "FROZEN-BEFORE-PARK.png": "58bbc31be1b4aa3e059f147656154433d71cbfad048c1d9d86325c4cd3073d8e",
+    "FROZEN-BEFORE-RESIDENTIAL.png": "9afc50e67607bf46e2f561c16e3a90a1509c5bd26682df4f42fcc687a096788b"
+  }
+}

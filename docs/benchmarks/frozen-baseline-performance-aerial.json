@@ -1,0 +1,27 @@
+{
+  "devicePixelRatio": 1,
+  "failedStatusResources": [],
+  "frameSampleMs": 5021.5,
+  "framesOver50Ms": 0,
+  "groundStatus": "inactive",
+  "groundingIssues": [],
+  "heapBytes": 380047824,
+  "medianIntervalMs": 16.700000000000728,
+  "notes": [
+    "rAF cadence is not GPU draw time",
+    "triangle count is scene traversal, not submitted triangles",
+    "cross-origin transfer sizes may be zero",
+    "GPU memory and renderer draw calls unavailable"
+  ],
+  "p95IntervalMs": 16.799999999999272,
+  "reportedTransferBytes": 146059,
+  "resourceCount": 250,
+  "sceneTriangleEstimate": 1226844,
+  "settled": true,
+  "time": "2026-09-16T02:25:16.085Z",
+  "viewport": [
+    1600,
+    1000
+  ],
+  "visibleSceneMeshes": 575
+}
