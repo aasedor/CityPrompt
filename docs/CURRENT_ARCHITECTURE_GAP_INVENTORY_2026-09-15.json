@@ -1,0 +1,94 @@
+{
+  "revision": "1172db1ef97036a92286463c5da83b54321f8a4f",
+  "domains": {
+    "building": {
+      "archetypes": 224,
+      "variants": 896,
+      "referenceVisible": 223,
+      "placementParents": 10
+    },
+    "park_plaza": {
+      "archetypes": 130,
+      "variants": 520,
+      "referenceVisible": 130,
+      "placementParents": 7
+    },
+    "street_pathway": {
+      "archetypes": 115,
+      "variants": 355,
+      "referenceVisible": 115,
+      "placementParents": 4
+    }
+  },
+  "placement": {
+    "building": 11,
+    "green_space": 7,
+    "street": 4
+  },
+  "registryErrors": [],
+  "clayEnabled": 9,
+  "clayBytes": 55296804,
+  "parkFamilyCount": 37,
+  "parkKitCount": 15,
+  "streetFamilyCount": 5,
+  "streetSelectionCount": 20,
+  "aestheticOptionCounts": {},
+  "largestSourceFiles": [
+    {
+      "path": "backend/app/services/master_plan_2d.py",
+      "bytes": 266928
+    },
+    {
+      "path": "backend/app/services/direct_3d_render.py",
+      "bytes": 229301
+    },
+    {
+      "path": "frontend/src/components/viewer/ZonePropertiesPanel.tsx",
+      "bytes": 192529
+    },
+    {
+      "path": "frontend/src/components/viewer/globe/GlobeSitePlannerMap.tsx",
+      "bytes": 189991
+    },
+    {
+      "path": "frontend/src/components/viewer/globe/useGlobeAIRender.ts",
+      "bytes": 173809
+    },
+    {
+      "path": "backend/app/services/layout_planner.py",
+      "bytes": 164424
+    },
+    {
+      "path": "frontend/src/components/viewer/useAIRender.ts",
+      "bytes": 155653
+    },
+    {
+      "path": "frontend/src/components/viewer/globe/parkGroundProfiles.ts",
+      "bytes": 139845
+    },
+    {
+      "path": "backend/app/api/v1/site_zones.py",
+      "bytes": 137843
+    },
+    {
+      "path": "frontend/src/components/viewer/useStreetViewRender.ts",
+      "bytes": 105829
+    },
+    {
+      "path": "backend/app/services/public_realm_lego.py",
+      "bytes": 102348
+    },
+    {
+      "path": "frontend/src/components/viewer/globe/GlobeParkKitLayer.tsx",
+      "bytes": 101282
+    },
+    {
+      "path": "frontend/src/features/projects/ProjectViewPage.tsx",
+      "bytes": 99910
+    },
+    {
+      "path": "frontend/src/components/viewer/globe/GlobeAIRenderPanel.tsx",
+      "bytes": 99888
+    }
+  ]
+}
