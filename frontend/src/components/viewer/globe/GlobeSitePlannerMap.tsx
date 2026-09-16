@@ -63,6 +63,7 @@ import { GlobePedestrianConnections } from './GlobePedestrianConnections';
 import { GlobeTerraces } from './GlobeTerraces';
 import { buildTerraceScene } from './terraceScene';
 import { readParkTerrain, type ParkTerrainProfile } from './parkTerrain';
+import { ParkAssemblyGroundProvider } from './ParkAssemblyGround';
 import { AutomaticParkGround, type SaveParkGround, type ParkAlignment } from './AutomaticParkGround';
 import { GlobeResidualLandscapeLayer } from './GlobeResidualLandscapeLayer';
 import { GlobeStreetRenderProfile } from './GlobeStreetRenderProfile';
@@ -4074,9 +4075,10 @@ export function GlobeSitePlannerMap({
             onDisplayReadyChange={setAreTilesDisplayReady}
           />
           <SharedSiteGroundProvider zones={allSiteZones} onChange={handleSharedGroundChange} inspectPrepared={showGroundReview}>
+          <ParkAssemblyGroundProvider>
           <AutomaticParkGround zones={allSiteZones} paused={parkGroundPaused} onSave={onAutoParkTerrain} onChange={setParkAlignment} fallback={terrainElevation}>
           <group ref={referenceOverlayGroup}><GlobeReferenceLayer layers={referenceLayers} terrainHeight={terrainElevation} /></group>
-          <TileStencilPatcher zones={tileMaskZones} terrainHeight={terrainElevation} />
+          <TileStencilPatcher zones={tileMaskZones} assemblyZones={allSiteZones} terrainHeight={terrainElevation} />
           <GlobeTileMaskLayer zones={tileMaskZones} terrainHeight={terrainElevation} />
           {/* Camera starts at project location via Canvas camera prop */}
 
@@ -4219,6 +4221,7 @@ export function GlobeSitePlannerMap({
             )}
           </group>
           </AutomaticParkGround>
+          </ParkAssemblyGroundProvider>
           </SharedSiteGroundProvider>
         </TilesRenderer>
 

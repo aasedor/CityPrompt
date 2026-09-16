@@ -1,4 +1,4 @@
-import { canonicalDrawing } from '@/features/pickPlace/canonicalCatalogue';
+import { canonicalParkAsset } from '@/features/pickPlace/canonicalParkPlacement';
 import { canonicalBuildingAsset } from '@/features/pickPlace/canonicalBuildingPlacement';
 import { canonicalStreetAsset } from '@/features/pickPlace/canonicalStreetPlacement';
 import { streetFacingDegrees } from '@/features/pickPlace/streetFacing';
@@ -1144,15 +1144,13 @@ export function ProjectViewPage() {
                 status={automatic3D.status} message={automatic3D.message} onRetry={automatic3D.retry}
                 onBrowseChange={setShowCatalogue}
                 onPickCanonical={selection => {
-                  if (selection.choice.domain === 'building') {
-                    pickObject(canonicalBuildingAsset(selection).id);
+                  if (selection.choice.domain !== 'street_pathway') {
+                    pickObject((selection.choice.domain === 'building' ? canonicalBuildingAsset(selection) : canonicalParkAsset(selection)).id);
                     return;
                   }
                   cancelPlacement(); selectZone(null); setMeasureActive(false);
                   useViewerStore.getState().setStreetViewActive(false);
-                  const drawing = selection.choice.domain === 'street_pathway'
-                    ? { type: 'road' as const, properties: canonicalStreetAsset(selection).properties }
-                    : canonicalDrawing(selection);
+                  const drawing = { type: 'road' as const, properties: canonicalStreetAsset(selection).properties };
                   setActiveSitePlannerTool(drawing.type, drawing.properties);
                 }}
                 activeStreetVariant={activeSitePlannerTool === 'road' ? String(activeToolProperties?.road_selected_variant_id ?? '') : undefined}

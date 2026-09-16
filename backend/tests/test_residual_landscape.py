@@ -63,6 +63,13 @@ def source_fingerprint(zone_type: str, properties: dict, geometry=None) -> str:
     )
 
 
+def test_skate_seating_changes_scene_identity_without_invalidating_legacy_default():
+    props = {"green_space_archetype_id": "skate_park", "green_space_selected_variant_id": "skate_park_v0"}
+    original = source_fingerprint("green_space", props)
+    assert source_fingerprint("green_space", {**props, "skate_spectator_edge": "north"}) == original
+    assert source_fingerprint("green_space", {**props, "skate_spectator_edge": "south"}) != original
+
+
 def test_community_representation_fingerprint_tracks_exact_generator_content():
     source_hash = "a" * 64
     building = SimpleNamespace(

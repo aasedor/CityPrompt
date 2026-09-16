@@ -362,6 +362,7 @@ def community_3d_source_properties(
                         "planting_structure": _canonical_semantic_value(props.get("planting_structure")),
                         "tree_density": _semantic_number(props.get("tree_density")),
                         "park_access_points": _canonical_semantic_value(props.get("park_access_points")),
+                        "skate_spectator_edge": "south" if props.get("skate_spectator_edge") == "south" else None,
                         "neighborhood_park_layout": _semantic_text(
                             props.get("neighborhood_park_layout"), identifier=True
                         ),

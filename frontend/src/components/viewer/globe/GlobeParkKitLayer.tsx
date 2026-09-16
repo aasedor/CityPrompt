@@ -863,7 +863,7 @@ function ParkSpecialtyStructures({
     return (
       <SilentKitBoundary fallback={null}>
         <Suspense fallback={null}>
-          <GlobeSkateParkAssembly boundary={programFrame.points} terrainZ={terrainZ} />
+          <GlobeSkateParkAssembly zone={zone} boundary={programFrame.points} terrainZ={terrainZ} />
         </Suspense>
       </SilentKitBoundary>
     );

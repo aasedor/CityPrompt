@@ -6,6 +6,7 @@ import { rectangleAt, rectangleDimensions } from './geometry';
 import { neighborhoodParkLayoutForZone } from '@/components/viewer/globe/neighborhoodParkLayout';
 import { isParkTrio, parkTrioLayout } from '@/components/viewer/globe/parkTrioLayout';
 import { parkOutlineDimensions, reshapeParkOutline, addParkOutlinePoint, type ParkOutlineShape } from './parkOutline';
+import { ParkComponentControls } from './ParkComponentControls';
 import { BuildingDesignControls } from './BuildingDesignControls';
 import type { SiteZoneProperties } from '@/types';
 
@@ -37,6 +38,7 @@ export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onD
     <div className="flex items-center justify-between"><h2 className="font-bold text-slate-900">{asset.label}</h2><button aria-label="Close reshape" onClick={onClose} className="flex h-11 w-11 items-center justify-center text-slate-900"><X size={18}/></button></div>
     <p className="mb-3 text-xs text-slate-600">{isPark ? 'Drag the park to move it. Drag individual white corners to fit its outline to the site; use the orange handle to turn it.' : 'Drag the object to move it. Drag a corner to reshape; use the orange handle to turn it.'}</p>
     {!isPark && onUpdateDesign && <BuildingDesignControls key={JSON.stringify([zone.id, zone.properties?.development_subcategory, zone.properties?.development_archetype_id, zone.properties?.development_selected_variant_id, zone.properties?.floors, zone.properties?.floor_count, zone.properties?.height, zone.properties?.height_m])} zone={zone} disabled={disabled} onSave={onUpdateDesign} />}
+    {isPark && onUpdateDesign && <ParkComponentControls key={`${zone.id}:${zone.properties?.skate_spectator_edge}`} zone={zone} disabled={disabled} onSave={onUpdateDesign} />}
     {park && <div role="status" className="mb-3 rounded-lg bg-white p-2 text-xs text-slate-800">
       <p className="font-semibold">Current park · {park.status==='full'?'full programme':park.status==='compact'?'compact arrangement':park.loop.length?'reduced programme':'landscape layout'}</p>
       {park.notes.map(note=><p className="mt-1" key={note}>{note}</p>)}

@@ -98,7 +98,9 @@ export function GlobePlacementPreview({ draft, zones, onStatusChange }: {draft: 
           <Home url={instance.model_url}/></group>) : fallback
           : isParkTrio(previewZone)
             ? <GlobeParkTrioPilot zone={previewZone} centroid={ORIGIN} terrainZ={flatGround}/>
-            : <GlobeNeighborhoodParkPilot zone={previewZone} centroid={ORIGIN} terrainZ={flatGround}/>}
+            : asset.id === 'neighbourhood_park'
+              ? <GlobeNeighborhoodParkPilot zone={previewZone} centroid={ORIGIN} terrainZ={flatGround}/>
+              : fallback}
       </Suspense></PreviewFallback>
     </group>
   </EastNorthUpFrame>;
