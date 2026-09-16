@@ -6,6 +6,7 @@ import type { SiteZone } from '@/types';
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 import { INACTIVE_SHARED_SITE_GROUND, SharedSiteGroundProvider, useSharedSiteGround, useSharedSiteGroundVerification, type SharedSiteGroundState } from './SharedSiteGroundProvider';
 import { captureSharedGround } from './sharedGroundCapture';
+import { surveySite } from '@/features/context/surveyGround.testFixtures';
 
 const frame = vi.hoisted(() => ({ current: (() => {}) as () => void }));
 vi.mock('@react-three/fiber', () => ({ useFrame: (callback: () => void) => { frame.current = callback; } }));
@@ -46,6 +47,16 @@ describe('shared ground provider lifecycle', () => {
   beforeEach(() => { vi.useFakeTimers(); vi.setSystemTime(0); state = INACTIVE_SHARED_SITE_GROUND; hitObject = new THREE.Object3D();
     vi.spyOn(THREE.Raycaster.prototype, 'intersectObject').mockImplementation(() => [{ point: new THREE.Vector3(0, 0, 1030), object: hitObject } as THREE.Intersection]); });
   afterEach(() => { cleanup(); vi.restoreAllMocks(); vi.unstubAllEnvs(); vi.useRealTimers(); });
+  it('uses saved classified ground without a renderer and without tile refinement changing it', () => {
+    const view = render(<SharedSiteGroundProvider zones={[surveySite()]}><Read /></SharedSiteGroundProvider>);
+    const revision = state.revision;
+    tick(); tick(60000);
+    expect(state.status).toBe('ready'); expect(state.revision).toBe(revision);
+    expect(state.heightAt(-122.42695, 37.75905)).toBeCloseTo(-3, 6);
+    expect(THREE.Raycaster.prototype.intersectObject).not.toHaveBeenCalled();
+    view.rerender(<SharedSiteGroundProvider zones={[surveySite(null)]}><Read /></SharedSiteGroundProvider>);
+    expect(state.status).toBe('unavailable'); expect(state.heightAt(-122.42695, 37.75905)).toBeNull();
+  });
   it('is safe outside a provider and inactive for a prepared site', () => {
     render(<Read />); expect(state).toBe(INACTIVE_SHARED_SITE_GROUND);
     cleanup();

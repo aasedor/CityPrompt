@@ -14,6 +14,14 @@ const heights = Array(layout.grid.rows * layout.grid.columns).fill(99);
 const reviewed = {...INACTIVE_SHARED_SITE_GROUND,review:{layout,heights,previousHeights:[...heights]}};
 afterEach(cleanup);
 describe('slope ground review', () => {
+  it('does not offer Google ground replacement for a saved survey pilot', () => {
+    const onApply = vi.fn();
+    render(<GroundReviewPanel boundary={{ ...boundary, properties: { survey_ground: {} } }} ground={{ ...INACTIVE_SHARED_SITE_GROUND, status: 'unavailable', failureReason: 'survey_invalid' }} onApply={onApply} onClose={vi.fn()} />);
+    expect(screen.getByText(/saved survey ground/)).toBeTruthy();
+    expect(screen.getByText(/does not cover this site/)).toBeTruthy();
+    expect(screen.queryByRole('button', { name: 'Follow existing terrain' })).toBeNull();
+    expect(screen.queryByRole('spinbutton')).toBeNull(); expect(onApply).not.toHaveBeenCalled();
+  });
   it('keeps a rejected local boundary inspectable without sending impossible ground saves', () => {
     const onApply = vi.fn();
     render(<GroundReviewPanel boundary={{...boundary,id:'temp-rejected'}} ground={reviewed} onApply={onApply} onClose={vi.fn()}/>);

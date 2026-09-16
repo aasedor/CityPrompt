@@ -34,6 +34,13 @@ export function GroundReviewPanel({ boundary, ground, onClose, onApply, parks = 
     catch { setError('Saving ground settings could not be confirmed. Reload the project to check its current level before trying again.'); }
     finally { setPending(false); }
   };
+  if (boundary.properties?.survey_ground !== undefined) return <StudioDialog title="Review site ground" onClose={onClose}>
+    <div className="space-y-3 text-sm text-slate-900">
+      <p>This test project uses saved survey ground. Changing the visible context keeps that ground and your design fixed.</p>
+      <p>{ground.status === 'ready' ? 'The ground data covers this site. Agreement with the surrounding Google surface is still under review.' : groundReadinessMessage(ground)}</p>
+      <p>Changing the ground source or preparing a new site level is not available in this survey pilot yet.</p>
+    </div>
+  </StudioDialog>;
   return <StudioDialog title="Review site ground" onClose={onClose}>
     <div className="max-h-[70dvh] space-y-4 overflow-auto p-1 text-sm text-slate-900">
       <p>{boundary.properties?.terrain_strategy === 'landscape' ? 'This site retains its hillside. Review the original surface here to update a park after moving or resizing it.' : ground.status === 'ready' ? 'The visible surface is consistent. Check that the samples are on ground rather than roofs or trees.' : ground.status === 'inactive' ? 'This site uses a prepared level. Reviewing its original surface does not change your design.' : groundReadinessMessage(ground)}</p>

@@ -5,6 +5,7 @@ import { WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import * as THREE from 'three';
 import type { SiteZone } from '@/types';
 import type { GroundReview } from './groundReview';
+import { surveyGroundState } from '@/features/context/surveyGround';
 import { createGroundSelection } from './sharedGroundSelection';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { alignStreetGroundLayout, anchoredStreetGroundHeight } from './streetGroundExtension';
@@ -69,8 +70,9 @@ export function SharedSiteGroundProvider({ zones, children, onChange, inspectPre
 }) {
   const tiles = useContext(TilesRendererContext);
   const active = getActiveSiteBoundary(zones);
+  const survey = useMemo(() => surveyGroundState(active), [active]);
   const inspectionOnly = Boolean(active && (active.properties?.community_3d_mask_existing_tiles !== false || active.properties?.terrain_strategy === 'landscape'));
-  const boundary = !inspectionOnly || inspectPrepared ? active : null;
+  const boundary = !survey && (!inspectionOnly || inspectPrepared) ? active : null;
   const sourceSignature = boundary ? `${sharedSiteGroundSourceSignature(boundary, sampleSpacingM)}${anchorSnapshot ? `:${anchorSnapshot.signature}` : ''}` : 'inactive';
   const layout = useMemo(() => {
     const base = boundary ? createSharedSiteGroundLayout(boundary, sampleSpacingM) : null;
@@ -212,6 +214,7 @@ export function SharedSiteGroundProvider({ zones, children, onChange, inspectPre
   });
 
   const state = useMemo<SharedSiteGroundState>(() => {
+    if (survey) return survey;
     if (!boundary) return INACTIVE_SHARED_SITE_GROUND;
     const matching = result.source === sourceSignature;
     if (inspectionOnly) return { ...INACTIVE_SHARED_SITE_GROUND,
@@ -228,7 +231,7 @@ export function SharedSiteGroundProvider({ zones, children, onChange, inspectPre
       revision: `${sourceSignature}:${result.generation}:${snapshot?.signature ?? (matching ? result.status : 'sampling')}` };
     // Source identity freezes the boundary ring across unrelated parent renders.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sourceSignature, layout, result, boundary?.updated_at, review, inspectionOnly]);
+  }, [sourceSignature, layout, result, boundary?.updated_at, review, inspectionOnly, survey]);
   // Keep assemblies mounted at the last verified height while camera-driven
   // tile LOD changes are remeasured. Never carry it across a boundary/anchor
   // change, and never expose retained measurements as fresh capture evidence.
