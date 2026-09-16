@@ -16,7 +16,7 @@ This file records actual status. Unchecked phases are not implemented or accepte
 | 5. Streets/intersections | Interaction slice verified | UI-drawn straight/angled/T/X network; atomic type/width edits and undo/redo; pedestrian surface inspection and fixed benchmark views. Natural-slope/acute/curved acceptance remains open; see STREET_EDITING_CHECKPOINT.md |
 | 6. Reviewed parks | Interaction slice verified | Canonical click placement; reviewed skate and adaptive neighbourhood assemblies; recessed ground ownership; seating edit/undo/redo and exact reload coordinates. Slope seams, wider component/entrance coverage and final visuals remain open; see PARK_EDITING_CHECKPOINT.md |
 | 7. Google grounding | In progress | Early manual camera ownership fixed; rejected building recovery and exact move/undo/reload verified (GROUNDING_RECOVERY_CHECKPOINT.md). Terrain/contact matrix and site-edge seams remain open |
-| 8. Alternate context pilot | Pending | Permitted small sample, provenance/datum/transform, reload/toggle invariance, performance, Lux delivery contract |
+| 8. Alternate context pilot | In progress | Licensed textured-mesh visual switching, exact proposal/camera invariance, failure fallback and texture budget verified; Lux delivery contract documented. Real registration and classified LiDAR/DTM remain open; see CONTEXT_PROVIDER_PILOT.md |
 | 9. Environment/presentation | Pending | Semantic deterministic placement, collisions/entrances/terrain; same-camera visual comparison |
 | 10. Render This View | Pending | Current camera, concise presets, opt-in people/vehicles, hidden provider controls |
 | 11. Image fidelity | Pending | Exact source/output pairs, archetype/geometry checks, failure/fallback behavior and provenance |

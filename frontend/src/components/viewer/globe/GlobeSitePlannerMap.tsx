@@ -1,4 +1,8 @@
 import { BuildingGroundProblems } from './BuildingGroundProblems';
+import { useContextPresentation } from '@/features/context/useContextPresentation';
+import { ContextControls } from '@/features/context/ContextControls';
+import { AlternateContextLayer, GoogleContextVisibility } from '@/features/context/ContextLayers';
+import { contextPilotCaptureProblem } from '@/features/context/contextProvider';
 import { assetForZone } from '@/features/pickPlace/catalogue';
 import { projectedFrameFraction } from './projectFrameHeight';
 /**
@@ -1586,6 +1590,9 @@ export function GlobeSitePlannerMap({
   const [sharedGroundState, setSharedGroundState] = useState<SharedSiteGroundState>(INACTIVE_SHARED_SITE_GROUND);
   const [showGroundReview, setShowGroundReview] = useState(false);
   const [showBuildingGroundProblems, setShowBuildingGroundProblems] = useState(false);
+  const contextPresentation = useContextPresentation(allSiteZones);
+  const contextPresentationRef = useRef(contextPresentation);
+  contextPresentationRef.current = contextPresentation;
   const [placementProblemMessage, setPlacementProblemMessage] = useState<string | null>(null);
   const sharedGroundRef = useRef(sharedGroundState);
   const [legoGroundingIssues, setLegoGroundingIssues] = useState<LegoGroundingIssue[]>([]);
@@ -1607,6 +1614,9 @@ export function GlobeSitePlannerMap({
   const parkAlignmentRef = useRef(parkAlignment);
   parkAlignmentRef.current = parkAlignment;
   const waitForSharedGround = useCallback(async () => {
+    const context = contextPresentationRef.current;
+    const contextProblem = contextPilotCaptureProblem(context.provider, context.requested);
+    if (contextProblem) throw new Direct3DCaptureError('capture_failed', contextProblem);
     const parkDeadline = performance.now() + 45000;
     while (parkAlignmentRef.current.pending && !parkAlignmentRef.current.needsAttention && performance.now() < parkDeadline) {
       await new Promise(resolve => setTimeout(resolve, 200));
@@ -3222,6 +3232,10 @@ export function GlobeSitePlannerMap({
         captureDirect3D,
         sharedGround: sharedGroundState,
         groundingIssues: buildingGroundingIssues,
+        renderInfo: () => {
+          const info = rendererRef.current?.info;
+          return info ? { render: { ...info.render }, memory: { ...info.memory } } : null;
+        },
       });
     }
   }, [buildingGroundingIssues, captureDirect3D, captureStreetDirect3D, captureVideoRouteControls, globeAIRenderViewport, isSceneSettled, onGlobeReady, sharedGroundState, terrainElevation, waitForCurrentTiles, withStreetCaptureScene]);
@@ -4053,6 +4067,7 @@ export function GlobeSitePlannerMap({
           />
         )}
         <TilesRenderer>
+          <GoogleContextVisibility visible={contextPresentation.visible === 'google'} />
           {/* autoRefreshToken: Google 3D Tiles sessions expire after a few hours;
               without it every tile fetch 400s (pale background polygons through
               the holes) until a full reload. Refreshes the session on 4xx. */}
@@ -4230,6 +4245,10 @@ export function GlobeSitePlannerMap({
           </SharedSiteGroundProvider>
         </TilesRenderer>
 
+        {contextPresentation.loadCapture && contextPresentation.provider && <AlternateContextLayer
+          provider={contextPresentation.provider} zones={tileMaskZones} terrainHeight={terrainElevation}
+          onReady={contextPresentation.onReady} onFailure={contextPresentation.onFailure} />}
+
         {/* Click handling is attached in onCreated (canvas click + dblclick listeners) */}
         </GlobeDragProvider>
       </Canvas>
@@ -4257,6 +4276,13 @@ export function GlobeSitePlannerMap({
           setShowBuildingGroundProblems(false); onZoneSelected(zone.id);
           void requestProjectFrame([{ ...zone, coordinates: zone.coordinates as [number, number][] }], 'manual');
         }} />}
+      {contextPresentation.provider &&
+        <ContextControls requested={contextPresentation.requested} onChange={contextPresentation.select}
+          loading={contextPresentation.loading} failed={contextPresentation.failed}>
+        {contextPresentation.visible === 'capture' && <p className="mt-2 text-xs text-slate-700">
+          {contextPresentation.provider.attribution} · <a className="underline" href={contextPresentation.provider.licenseUrl} target="_blank" rel="noreferrer">CC BY 4.0</a>
+        </p>}
+        </ContextControls>}
       {showGroundReview && getActiveSiteBoundary(allSiteZones) && onPrepareGround && <GroundReviewPanel
         parks={allSiteZones.filter(z => z.zone_type === 'green_space')} onFollowParks={onFollowParkTerrain}
         boundary={getActiveSiteBoundary(allSiteZones)!} ground={sharedGroundState} onClose={() => setShowGroundReview(false)}
