@@ -21,7 +21,8 @@ const main = street('main', [[-50, 0], [50, 0]]);
 describe('student street endpoint snapping', () => {
   it('turns an imprecise near-kerb endpoint into a renderable T and persists the same line', () => {
     const raw = [[0, -45], [2, -6]].map(ll);
-    expect(detectConnectedStreetIntersections([main, street('arm', [[0, -45], [2, -6]])])).toHaveLength(0);
+    const unjoined = [main, street('arm', [[0, -45], [2, -6]])];
+    for (const node of detectConnectedStreetIntersections(unjoined)) expect(resolveStreetJunctionLayout(node, unjoined)).toBeNull();
     const line = snapStreetEnds(raw, [main]);
     expect(xy(line[1])[0]).toBeCloseTo(0, 4);
     expect(xy(line[1])[1]).toBeCloseTo(0, 4);
