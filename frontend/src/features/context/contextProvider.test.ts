@@ -21,6 +21,15 @@ it('retains Google while loading or after failure, without changing the chosen d
   expect(visibleContext('google', true, false)).toBe('google');
 });
 
+it('keeps Gaussian samples separate from tile and survey contracts', () => {
+  const { tilesetPath: _unused, ...base } = fixture;
+  const splat = { ...base, id: 'knock-community-hall', kind: 'gaussian-splat', assetPath: '/gaussian-splat/knock-community-hall.sog' };
+  expect(readContextPilot(splat, 'pilot')).toEqual(splat);
+  for (const bad of [{ ...splat, assetPath: 'https://example.com/test.sog' },
+    { ...splat, registration: 'geographic-pilot' }, { ...splat, groundAuthority: 'classified-lidar' },
+    { ...splat, kind: '3d-tiles' }]) expect(readContextPilot(bad, 'pilot')).toBeNull();
+});
+
 it('accepts the fixed geographic LiDAR fixture without mixing its registration and ground contract with the mesh', () => {
   const lidar = { ...fixture, id: 'usgs-san-francisco-2023', tilesetPath: '/sf-lidar/tileset.json',
     registration: 'geographic-pilot', groundAuthority: 'classified-lidar',

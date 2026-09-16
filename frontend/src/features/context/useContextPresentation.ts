@@ -19,8 +19,9 @@ export function useContextPresentation(zones: SiteZone[]) {
     setProvider(null); setRequested('google'); setReady(false); setFailed(false);
     if (!import.meta.env.DEV || import.meta.env.VITE_CONTEXT_PILOT !== 'true' || !projectId || (!prepared && !survey)) return;
     const controller = new AbortController();
-    void fetch(survey ? '/sf-lidar/manifest.json' : '/context-pilot/manifest.json', { signal: controller.signal }).then(r => r.ok ? r.json() : null)
-      .then(value => { if (!controller.signal.aborted) setProvider(readContextPilot(value, projectId)); })
+    const paths = survey ? ['/sf-lidar/manifest.json'] : ['/context-pilot/manifest.json', '/gaussian-splat/manifest.json'];
+    void Promise.all(paths.map(path => fetch(path, { signal: controller.signal }).then(r => r.ok ? r.json() : null).catch(() => null)))
+      .then(values => { if (!controller.signal.aborted) setProvider(values.map(value => readContextPilot(value, projectId)).find(Boolean) ?? null); })
       .catch(() => { /* Missing optional capture leaves Google available. */ });
     return () => controller.abort();
   }, [projectId, prepared, survey]);

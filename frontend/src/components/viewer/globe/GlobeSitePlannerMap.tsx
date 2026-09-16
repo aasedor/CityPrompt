@@ -2,6 +2,7 @@ import { BuildingGroundProblems } from './BuildingGroundProblems';
 import { useContextPresentation } from '@/features/context/useContextPresentation';
 import { ContextControls } from '@/features/context/ContextControls';
 import { SurveyGroundSurface } from '@/features/context/SurveyGroundSurface';
+import { GaussianContextLayer } from '@/features/context/GaussianContextLayer';
 import { AlternateContextLayer, GoogleContextVisibility } from '@/features/context/ContextLayers';
 import { contextPilotCaptureProblem } from '@/features/context/contextProvider';
 import { assetForZone } from '@/features/pickPlace/catalogue';
@@ -4247,9 +4248,11 @@ export function GlobeSitePlannerMap({
           </SharedSiteGroundProvider>
         </TilesRenderer>
 
-        {contextPresentation.loadCapture && contextPresentation.provider && <AlternateContextLayer
+        {contextPresentation.loadCapture && contextPresentation.provider?.kind === '3d-tiles' && <AlternateContextLayer
           provider={contextPresentation.provider} zones={tileMaskZones} terrainHeight={terrainElevation}
           onReady={contextPresentation.onReady} onFailure={contextPresentation.onFailure} />}
+        {contextPresentation.provider?.kind === 'gaussian-splat' && <GaussianContextLayer
+          zones={allSiteZones} enabled={contextPresentation.loadCapture} onReady={contextPresentation.onReady} onFailure={contextPresentation.onFailure} />}
 
         {/* Click handling is attached in onCreated (canvas click + dblclick listeners) */}
         </GlobeDragProvider>
