@@ -11,7 +11,7 @@ This file records actual status. Unchecked phases are not implemented or accepte
 | 0. Architecture audit | Source audit complete | Current architecture report; computed inventory; 65 frontend + 61 backend checks and type-check; login shell inspected |
 | 1. Gold Standard and baseline | Baseline frozen; coverage limits recorded | 16 buildings, three streets, two parks; five inspected cameras; frozen route definition; reload invariance and measured cadence. Natural-slope and guide capture remain open; see GOLD_STANDARD_2026-09-15.md |
 | 2. Site → Design → Present | Navigation slice verified | Fresh local project search/draw/confirm/catalogue; exact camera invariance; keyboard; three inspected viewports. Full novice journey and downstream render simplification still pending; see STUDENT_WORKFLOW_CHECKPOINT.md |
-| 3. Full canonical discovery | Pending | Eligible IDs computed from current catalogue; metadata search/categories; references resolve; representations/fallback honest; no bespoke catalogue UI edits |
+| 3. Full canonical discovery | Discovery slice verified | 468 eligible parents; all 33 categories browser-tested; 2,080 references verified; identity/massing pilot and persistent fallback notice. Park surface defect and full placement journey remain open; see CANONICAL_CATALOGUE_CHECKPOINT.md |
 | 4. Building placement/editing | Pending | Street facing; move/rotate/type/height/stretch; native RLASM or explicit massing; stable save/reload and undo |
 | 5. Streets/intersections | Pending | Straight/angled/T/X network, type/width changes, section continuity at pedestrian level |
 | 6. Reviewed parks | Pending | Multiple assemblies; appropriate component edits; paths/entrances/props; reload |

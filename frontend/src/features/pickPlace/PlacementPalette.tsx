@@ -1,9 +1,10 @@
 import { useCallback, useState } from 'react';
 import { Building2, Trees, Route } from 'lucide-react';
 import type { PlaceAssetId } from './catalogue';
-import { browseAssets, availableGroups, STREET_ASSETS, type StreetAsset } from './assetRegistry';
-import { CalgaryGuideDetails } from '@/features/calgaryCatalogue/CatalogueBrowser';
-import { StreetCrossSection } from './StreetCrossSection';
+import { STREET_ASSETS, type StreetAsset } from './assetRegistry';
+import { CANONICAL_CHOICES, filterCanonicalChoices, type CanonicalSelection } from './canonicalCatalogue';
+import { CALGARY_GROUPS } from '@/features/calgaryCatalogue/guide';
+import { CanonicalCatalogueCard } from './CanonicalCatalogueCard';
 import { StudioDialog } from '@/features/projects/StudioControls';
 
 const sections = [
@@ -14,11 +15,12 @@ const sections = [
 type Section = typeof sections[number]['id'];
 const filterStyle = 'min-h-11 min-w-0 rounded-lg border border-slate-400 bg-white px-3 text-sm text-slate-900';
 
-export function PlacementPalette({ selected, onPick, onCancel, status, message, onRetry, onPickStreet, activeStreetVariant, onBrowseChange }: {
+export function PlacementPalette({ selected, onPick, onCancel, status, message, onRetry, onPickStreet, activeStreetVariant, onBrowseChange, onPickCanonical }: {
   selected: PlaceAssetId | null; onPick: (id: PlaceAssetId) => void; onCancel: () => void;
   status: string; message: string; onRetry: () => void;
   onPickStreet?: (asset: StreetAsset) => void; activeStreetVariant?: string;
   onBrowseChange?: (open: boolean) => void;
+  onPickCanonical: (selection: CanonicalSelection) => void;
 }) {
   const [open, setOpen] = useState(false);
   const [section, setSection] = useState<Section>('building');
@@ -27,8 +29,8 @@ export function PlacementPalette({ selected, onPick, onCancel, status, message, 
   const [limit, setLimit] = useState(12);
   const close = useCallback(() => { setOpen(false); onBrowseChange?.(false); }, [onBrowseChange]);
   const chooseSection = (id: Section) => { setSection(id); setGroupId(''); setQuery(''); setLimit(12); };
-  const groups = availableGroups().filter(group => group.domain === section);
-  const assets = browseAssets(query, groupId).filter(asset => groups.some(group => group.id === asset.calgaryGuide.groupId));
+  const groups = CALGARY_GROUPS.filter(group => group.domain === section && CANONICAL_CHOICES.some(c => c.option.calgaryGuide?.groupId === group.id));
+  const assets = filterCanonicalChoices(section, query, groupId);
   const visibleSections = sections.filter(item => onPickStreet || item.id !== 'street_pathway');
   const activeStreet = STREET_ASSETS.find(asset => asset.model.variantId === activeStreetVariant);
   return <section aria-label="Place 3D objects" className="space-y-2">
@@ -66,19 +68,14 @@ export function PlacementPalette({ selected, onPick, onCancel, status, message, 
               {groups.map(group => <option key={group.id} value={group.id}>{group.label}</option>)}
             </select>
           </div>
-          <p className="text-xs text-slate-600" role="status">{assets.length} {assets.length === 1 ? 'choice' : 'choices'} · Pick an asset, then place it on your site.</p>
+          <p className="text-xs text-slate-600" role="status">{assets.length} {assets.length === 1 ? 'choice' : 'choices'} · Choose a design, then place it or draw its outline.</p>
         </div>
         <div aria-label="Available objects" className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-1">
           <div className="grid items-start gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {assets.slice(0, limit).map(asset => <article key={asset.id} className="overflow-hidden rounded-xl border border-slate-300 bg-white">
-              <button aria-pressed={asset.kind === 'street' ? activeStreetVariant === asset.model.variantId : selected === asset.id}
-                onClick={() => { close(); if (asset.kind === 'street') onPickStreet?.(asset); else onPick(asset.id); }}
-                className="group w-full text-left hover:bg-lime-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-3px]">
-                <img loading="lazy" src={asset.thumbnail} alt="" className="h-36 w-full bg-slate-100 object-contain" />
-                <span className="block space-y-1 p-3"><span className="block text-sm font-bold">{asset.label}</span><span className="block text-xs text-slate-600">{asset.description}</span><span className="block pt-1 text-sm font-semibold underline">Choose & place</span></span>
-              </button>
-              <div className="px-3 pb-2">{asset.kind === 'street' && <StreetCrossSection asset={asset} />}<CalgaryGuideDetails classification={asset.calgaryGuide} /></div>
-            </article>)}
+            {assets.slice(0, limit).map(choice => <CanonicalCatalogueCard key={choice.id} choice={choice}
+              selected={selected} activeStreetVariant={activeStreetVariant}
+              onPlacement={asset => { close(); if (asset.kind === 'street') onPickStreet?.(asset); else onPick(asset.id); }}
+              onDraw={selection => { close(); onPickCanonical(selection); }} />)}
           </div>
           {!assets.length && <div className="p-4 text-sm">No available objects match.<button onClick={() => { setQuery(''); setGroupId(''); setLimit(12); }} className="block min-h-11 underline">Clear filters</button></div>}
           {assets.length > limit && <button onClick={() => setLimit(value => value + 12)} className="mt-3 min-h-11 w-full rounded-lg border border-slate-400 font-semibold">Show more choices</button>}
