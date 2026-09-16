@@ -1,15 +1,21 @@
 /** Visual context never owns proposal coordinates, heights or the camera. */
-export interface ContextProviderDefinition {
+interface ContextProviderBase {
   id: string;
-  kind: '3d-tiles';
   projectId: string;
-  tilesetPath: '/context-pilot/tileset.json' | '/sf-lidar/tileset.json';
   attribution: string;
   licenseUrl: string;
   /** This bounded pilot has an explicit artificial ENU placement, not a survey. */
   registration: 'local-engineering-test' | 'geographic-pilot';
   groundAuthority: 'saved-project' | 'classified-lidar';
 }
+
+export type ContextProviderDefinition = ContextProviderBase & ({
+  kind: '3d-tiles';
+  tilesetPath: '/context-pilot/tileset.json' | '/sf-lidar/tileset.json';
+} | {
+  kind: 'gaussian-splat';
+  assetPath: '/gaussian-splat/knock-community-hall.sog';
+});
 
 export type ContextView = 'google' | 'capture' | 'terrain';
 
@@ -24,9 +30,13 @@ export function readContextPilot(value: unknown, projectId: string): ContextProv
   const lidar = v.id === 'usgs-san-francisco-2023' && v.tilesetPath === '/sf-lidar/tileset.json'
     && v.registration === 'geographic-pilot' && v.groundAuthority === 'classified-lidar'
     && v.licenseUrl === 'https://www.fisheries.noaa.gov/inport/item/73386/full-list';
-  if ((!mesh && !lidar) || v.kind !== '3d-tiles' || v.projectId !== projectId
+  const splat = v.id === 'knock-community-hall' && v.kind === 'gaussian-splat'
+    && v.assetPath === '/gaussian-splat/knock-community-hall.sog'
+    && v.registration === 'local-engineering-test' && v.groundAuthority === 'saved-project'
+    && v.licenseUrl === 'https://creativecommons.org/licenses/by/4.0/';
+  if ((!splat && (!(mesh || lidar) || v.kind !== '3d-tiles')) || v.projectId !== projectId
     || typeof v.attribution !== 'string' || !v.attribution.trim() || v.attribution.length > 500) return null;
-  return { id: v.id, kind: '3d-tiles', projectId, tilesetPath: v.tilesetPath,
+  return { id: v.id, kind: v.kind, projectId, ...(splat ? { assetPath: v.assetPath } : { tilesetPath: v.tilesetPath }),
     registration: v.registration, groundAuthority: v.groundAuthority, attribution: v.attribution, licenseUrl: v.licenseUrl } as ContextProviderDefinition;
 }
 

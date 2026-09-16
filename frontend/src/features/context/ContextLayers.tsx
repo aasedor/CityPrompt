@@ -44,7 +44,7 @@ export function GoogleContextVisibility({ visible }: { visible: boolean }) {
 }
 
 export function AlternateContextLayer({ provider, onReady, onFailure, zones, terrainHeight }: {
-  provider: ContextProviderDefinition; onReady: () => void; onFailure: () => void;
+  provider: Extract<ContextProviderDefinition, { kind: '3d-tiles' }>; onReady: () => void; onFailure: () => void;
   zones: SiteZone[]; terrainHeight: number;
 }) {
   const draco = useMemo(() => new DRACOLoader().setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/'), []);
