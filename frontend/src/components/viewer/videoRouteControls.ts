@@ -20,6 +20,7 @@ export interface VideoRouteCaptureRequest {
   renderQuality: VideoRenderQuality;
   durationSeconds: 8;
   keyframeCount?: number;
+  onProgress?: (phase: 'loading' | 'checking' | 'rendering', completed: number, total: number) => void;
 }
 
 export interface VideoRouteCaptureResult {

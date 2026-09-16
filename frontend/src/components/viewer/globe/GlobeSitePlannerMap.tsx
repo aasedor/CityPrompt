@@ -2959,6 +2959,7 @@ export function GlobeSitePlannerMap({
       const warmupFrames = buildVideoWarmupFrames(renderProfile);
       if (request.renderQuality === 'high') {
         for (const warmup of warmupFrames) {
+          if (warmup.index % 8 === 0) request.onProgress?.('loading', warmup.index, warmupFrames.length);
           applyRoutePose(warmup.progress);
           await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
           if (warmup.settleTiles) {
@@ -2986,6 +2987,7 @@ export function GlobeSitePlannerMap({
       const keyframesBase64: string[] = [];
       const geometryCheckpoints: NonNullable<VideoRouteCaptureResult['geometryCheckpoints']> = [];
       for (let index = 0; index < sampledRoute.length; index += 1) {
+        request.onProgress?.('checking', index, sampledRoute.length);
         applyRoutePose(cinematicRouteProgress(index / (sampledRoute.length - 1)));
         await twoFrames();
         const settled = await waitForRouteContext();
@@ -3065,6 +3067,7 @@ export function GlobeSitePlannerMap({
         durationSeconds: request.durationSeconds,
         bitrate: renderProfile.bitrate,
         renderFrame: async (frame) => {
+          if (frame.index % 8 === 0) request.onProgress?.('rendering', frame.index, 192);
           applyRoutePose(cinematicRouteProgress(frame.progress));
           // Give TilesRenderer and the authored R3F layers one render cycle to
           // respond to this indexed pose, then render that exact camera state.
