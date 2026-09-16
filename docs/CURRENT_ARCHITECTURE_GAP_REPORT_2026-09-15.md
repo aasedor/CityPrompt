@@ -5,12 +5,14 @@ Authoritative baseline: `origin/main`, `1172db1ef97036a92286463c5da83b54321f8a4f
 
 ## Scope, evidence and checkpoint
 
-The supplied master brief stops after section 21's “Prefer the conceptual
-separation:”. Neither visual goalpost image is attached. The complete acceptance
-gates and referenced API validation budget are therefore unavailable. This
-report reconciles the supplied sections with current source; it does not invent
-the missing requirements, carry forward another mission's spending allowance,
-or claim the transformation is complete. The remainder and images were requested.
+The complete 95-section master brief was received in four parts. The initial
+audit checkpoint covered sections 1–20; this revision reconciles all sections.
+The mission explicitly authorizes at most US $10 total external API validation,
+using conservative cost estimates and local validation first. This is a ceiling,
+not a spending target. No paid calls have been made. Referenced visual goalpost
+images were not supplied; use the written fidelity and quality gates without
+inventing image-specific requirements. This report is an audit, not a completion
+claim. Phase status and evidence are tracked in STUDENT_TRANSFORMATION_GATES.md.
 
 The original OneDrive checkout is on `codex/neighborhood-presentation` at
 `679b76a35`, eleven commits behind main, with substantial staged, unstaged and
@@ -153,8 +155,11 @@ adding engineering terminology to the student UI.
 For Lux Modus, first separate context display from an immutable design frame and
 an explicit ground-surface contract. Preserve WGS84 design geometry, units,
 vertical-reference provenance and saved elevations across provider switches.
-Do not implement a guessed Lux file importer or geoid offset. A sample dataset
-and its CRS/vertical datum are required before validating that adapter.
+Do not implement a guessed Lux file importer or geoid offset. A small permitted
+public dataset must prove this boundary before production Lux data arrives.
+Document license, horizontal and vertical assumptions, transform and performance.
+LiDAR/DTM is geometric authority when suitable; textured mesh is visual context.
+Switching visual providers must not recompute saved proposal coordinates/grade.
 
 ## Scene truth, persistence and compatibility
 
@@ -287,7 +292,7 @@ generation into editor changes.
 | 4. Ground/context boundary | `SharedSiteGroundProvider.tsx`, `sharedSiteGround.ts`, `buildingGroundContact.ts`, `sitePreparationSurface.ts`, park/street surface consumers | Invalid footprint does not hide valid neighbors; no stale capture; explicit CRS/datum/provider provenance; change provider without moving proposal; ground lifecycle/contact/capture and backend provenance tests |
 | 5. Street/park interaction | `streetPlacement.ts`, `streetSnapping.ts`, `road_network.py`, junction geometry, park layout/access modules | Finite T/X/unequal-width/acute cases; disjoint pavement and connected sidewalks; no props in paths/water/courts; source IDs and revisions survive reload |
 | 6. Full slope gate | Existing Salisbury hillside fixture as candidate, then a disposable mixed project | Detached + mid-rise + tower + street/junction + park/trees/furniture; uphill/downhill/side/street/aerial; save/reopen; no float/burial or elevation drift. Prior park-only trials do not pass this matrix |
-| 7. Present | `direct3dCapture.ts`, `useDirect3DRender.ts`, render API/service, deterministic video/camera controls | Frozen source/camera, masks/fingerprints/revisions, captured-source vs provider-output inspection, actual dimensions/temporal fidelity; no paid calls until missing budget is resolved |
+| 7. Present | `direct3dCapture.ts`, `useDirect3DRender.ts`, render API/service, deterministic video/camera controls | Frozen source/camera, masks/fingerprints/revisions, captured-source vs provider-output inspection, actual dimensions/temporal fidelity; conservative ledger within US $10 total |
 | 8. Performance/release | Vite bundle checker, runtime manifest tooling, scene diagnostics | Fresh cold-load/frame/transfer/memory measurements with 20 buildings; context retained; current scene truth and reviewed identities preserved; real laptop/tablet and novice usability checks |
 
 Relevant existing backend suites include `test_road_network*`,
@@ -316,6 +321,51 @@ contracts change. Each production TypeScript slice must also pass type-check.
   paid media call, provider comparison or production deployment is claimed.
 
 Audit artifacts remain external; application source and canonical catalogues are
-unchanged. The next checkpoint requires the remainder of the master brief and
-its visual references to finalize the mission-wide gates. No push is authorized
-or performed by this audit.
+unchanged. No push is authorized or performed by this audit.
+
+## Complete-brief reconciliation and required dependency order
+
+The implementation map above describes code seams, not permission to skip the
+Gold Standard baseline. Follow the mission's dependency sequence: benchmark;
+Site/Design/Present shell; canonical discovery; placement/editing; streets;
+parks; Google grounding; alternate context; environment; image recipes/fidelity;
+video; hardening; final acceptance. Product fundamentals gate downstream work.
+
+- **Benchmark first (46–47, 49, 74):** preserve a real Calgary project with
+  approximately 15–20 buildings, mixed reviewed types, 2–3 streets, intersections
+  and two parks. Freeze five cameras and a video route. Existing Currie and
+  Salisbury trials are candidates, not proof of complete coverage. Record
+  missing categories honestly; do not reshape the benchmark after observing
+  defects. Keep older projects as independent compatibility fixtures.
+- **Context and replacement (21–27, 54–56, 76):** Google remains production and
+  fallback. Reuse polygon masking before considering mesh editing. Classify
+  existing/proposed semantically without data duplication. Pilot bounded public
+  mesh and terrain data; do not wait for production Lux specifications. Document
+  dataset/CRS/datum/LiDAR/DTM/mesh/imagery/delivery metadata requirements. Unknown
+  vertical references must remain unknown rather than receiving guessed offsets.
+- **Environment (28–30, 58):** extend semantic surface ownership and existing
+  seeded park/street placement. Archetypes own their design; gap filling cannot
+  redesign parks or put vegetation/furniture in entrances, lanes, water or paths.
+  Curated presentation recipes must preserve the current authored camera.
+- **Images and provenance (31–35, 52, 57, 64–65, 81):** current camera and exact
+  scene are authoritative. Primary presets hide provider complexity. People and
+  vehicles default off. Reuse capture/provenance and practical fidelity checks;
+  obvious drift cannot be shown as accepted success. Preserve original outputs
+  and clearly identify source fallback or failed review. Reference conditioning
+  must not undo the source-lock improvements merely to attach more images.
+  Mark old output as earlier-revision output where existing provenance permits.
+- **Video (36–38, 59, 82):** expose Start→End, named motions and semantic tour
+  through existing deterministic controls. Validate guide first; only a justified
+  short paid pilot follows. Compare beginning/25%/50%/75%/end frames. Missing
+  provider support is a documented limit, not permission to invent a route.
+- **Hardening (39–45, 66–69, 77–87):** real save/reopen and older-project tests,
+  undo/redo, bounded failure recovery, student-language errors, visible progress,
+  keyboard/focus/contrast, desktop/laptop/narrow layout, console/network review.
+  Profile the same benchmark before and after; do not claim GPU memory when only
+  JS heap or scene estimates are measured. No new dependency without a reason.
+- **Completion (88–95):** source tests cannot substitute for visual inspection.
+  Repeat fresh-session novice and professional journeys, flat/slope/context
+  switch/reload, street network and park suites. Preserve source/final render
+  pairs and guide/video frames, spend ledger, commands, screenshots, performance
+  and honest limitations in one local evidence package. Mark each gate using its
+  evidence; a docs-only checkpoint is not implementation completion.

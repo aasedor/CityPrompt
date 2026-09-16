@@ -1,0 +1,63 @@
+# Student design transformation — acceptance record
+
+Initiative: `codex/student-design-transformation`, baseline `1172db1ef`.
+Mission: the complete 95-section brief received 15 September 2026.
+This file records actual status. Unchecked phases are not implemented or accepted.
+
+## Checkpoints
+
+| Phase | Status | Required evidence before acceptance |
+| --- | --- | --- |
+| 0. Architecture audit | Source audit complete | Current architecture report; computed inventory; 65 frontend + 61 backend checks and type-check; login shell inspected |
+| 1. Gold Standard and baseline | In progress | Saved Calgary benchmark, five fixed cameras, deterministic route, before screenshots, baseline measurements; independent older-project fixtures |
+| 2. Site → Design → Present | Pending | Fresh-session navigation; manual design primary; discoverable controls; desktop/laptop/narrow screenshots |
+| 3. Full canonical discovery | Pending | Eligible IDs computed from current catalogue; metadata search/categories; references resolve; representations/fallback honest; no bespoke catalogue UI edits |
+| 4. Building placement/editing | Pending | Street facing; move/rotate/type/height/stretch; native RLASM or explicit massing; stable save/reload and undo |
+| 5. Streets/intersections | Pending | Straight/angled/T/X network, type/width changes, section continuity at pedestrian level |
+| 6. Reviewed parks | Pending | Multiple assemblies; appropriate component edits; paths/entrances/props; reload |
+| 7. Google grounding | Pending | Flat/slope/contact matrix; asynchronous refinement; context reload; no major floating/sinking or Z drift |
+| 8. Alternate context pilot | Pending | Permitted small sample, provenance/datum/transform, reload/toggle invariance, performance, Lux delivery contract |
+| 9. Environment/presentation | Pending | Semantic deterministic placement, collisions/entrances/terrain; same-camera visual comparison |
+| 10. Render This View | Pending | Current camera, concise presets, opt-in people/vehicles, hidden provider controls |
+| 11. Image fidelity | Pending | Exact source/output pairs, archetype/geometry checks, failure/fallback behavior and provenance |
+| 12. Video | Pending | Deterministic Start→End, named motion and useful tour; guide/finished comparison if funded and supported |
+| 13. Hardening | Pending | Measured performance, keyboard/focus/responsive, persistence/undo/older states, safe failures, console/network |
+| 14. Final acceptance | Pending | Fresh novice journey and professional sanity checks; all applicable gates and local evidence package |
+
+Grounding, RLASM identity and data recoverability are release gates. Passing source
+tests alone does not accept a phase. Capture and visually inspect actual browser
+results; preserve failures as evidence. No push or production publication is
+authorized. Existing unpublished building waves remain unpublished.
+
+## Benchmark candidates
+
+- Currie Commons (`bb4a6a7b-479f-45a1-b7f2-94f50b84e696`): documented mixed
+  eight-plot community, two streets and two parks; prepared grade. Candidate
+  compatibility fixture and starting point, below the target building count.
+- Currie 20-building trial (`3c12dda6-3b15-4151-bf8b-eb59628a99ff`): useful older
+  load/performance fixture, but detached-heavy and no saved street network.
+- Salisbury hillside (`f289f565-1a52-43ec-accc-38cb5ac24ea2`): documented measured
+  park slope; does not cover the full mixed-object grounding matrix.
+- Tower activation (`9b77dbcd-b21b-4dbf-a425-216db44ed183`): reviewed native tower
+  representations and capture provenance; separate identity fixture.
+
+Availability and current behavior still require live local verification. Do not
+replace these saved projects while building a new benchmark. Freeze benchmark
+geometry, revisions and camera definitions before subsequent product changes.
+
+## Evidence and spending
+
+Local evidence root:
+`C:/dev-artifacts/CityPrompt/student-design-transformation/`.
+Heavy screenshots, videos, database exports and runtime logs stay outside Git.
+Use `api-test-ledger.json` there for each paid request's timestamp, feature,
+provider/model, purpose, conservative reserved/actual USD, result, output path
+and conclusion. Maximum aggregate external validation: **US $10**. No automatic
+paid retries or bulk generation. Stop before the ceiling; do not infer actual
+spend from application credit balances. Begin with local/source/browser checks.
+
+## Current limitations
+
+Only the login shell has been visually verified on the isolated current source.
+No authenticated benchmark, final media, complete student journey or performance
+improvement is claimed. See the architecture report for existing known defects.
