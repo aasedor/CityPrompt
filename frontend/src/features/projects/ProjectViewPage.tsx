@@ -1,3 +1,4 @@
+import { canonicalDrawing } from '@/features/pickPlace/canonicalCatalogue';
 import { catalogueZoneForBuilding } from '@/features/pickPlace/catalogueDeletion';
 import { lazy, Suspense, useState, useCallback, useMemo, useRef, useEffect, type PointerEvent as ReactPointerEvent } from 'react';
 import { useParams, Link } from 'react-router-dom';
@@ -1136,6 +1137,12 @@ export function ProjectViewPage() {
               placementSlot={<PlacementPalette selected={placementDraft?.assetId ?? null} onPick={pickObject} onCancel={cancelPlacement}
                 status={automatic3D.status} message={automatic3D.message} onRetry={automatic3D.retry}
                 onBrowseChange={setShowCatalogue}
+                onPickCanonical={selection => {
+                  cancelPlacement(); selectZone(null); setMeasureActive(false);
+                  useViewerStore.getState().setStreetViewActive(false);
+                  const drawing = canonicalDrawing(selection);
+                  setActiveSitePlannerTool(drawing.type, drawing.properties);
+                }}
                 activeStreetVariant={activeSitePlannerTool === 'road' ? String(activeToolProperties?.road_selected_variant_id ?? '') : undefined}
                 onPickStreet={asset => {
                   cancelPlacement(); selectZone(null); setMeasureActive(false);

@@ -7,6 +7,7 @@ import { isCommunity3DCompiled } from '@/features/community3d/community3d';
 import { compileMixedCommunity3D } from '@/features/legoAssembly/communityCompiler';
 import { advanceDerivedZoneRevision } from '@/store/undoActions';
 import { assetForZone } from './catalogue';
+import { representationNotice } from './representationNotice';
 
 const automaticZone = (zone: SiteZone) => (assetForZone(zone) || zone.properties?.pick_place_automatic_3d === true) && !zone.id.startsWith('temp-');
 
@@ -78,6 +79,6 @@ export function useAutomatic3D(projectId: string | undefined, zones: SiteZone[],
   }, [projectId, key, compiled, saving, client, attempt]);
 
   const visibleStatus = !compiled && candidates.length > 0 && status !== 'error' ? 'updating' : status;
-  return { status: visibleStatus, message: visibleStatus === 'updating' ? 'Your placed objects are being updated.' : message, busy: visibleStatus === 'updating',
+  return { status: visibleStatus, message: visibleStatus === 'updating' ? 'Your placed objects are being updated.' : visibleStatus === 'ready' ? representationNotice(candidates) : message, busy: visibleStatus === 'updating',
     retry: () => { state.current.failed = ''; state.current.completed = ''; setAttempt(value => value + 1); } };
 }
