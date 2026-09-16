@@ -442,6 +442,8 @@ function planRequestForItem(item: ZoneBuildItem) {
     target_width_m: item.targets.width_m,
     target_depth_m: item.targets.depth_m,
     target_floors: item.targets.floors,
+    ...(typeof item.zone.properties?.development_height_override_m === 'number'
+      ? { target_height_m: item.zone.properties.development_height_override_m } : {}),
     footprint_profile: item.targets.footprint_profile,
     footprint_local_m: assemblyFootprintCoordinates(item.zone.coordinates, item.targets, preservesAuthoredPlotAxes(item.zone.properties)),
     // Let the selected LEGO family's native podium depth determine wing

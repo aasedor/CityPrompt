@@ -6,18 +6,22 @@ import { rectangleAt, rectangleDimensions } from './geometry';
 import { neighborhoodParkLayoutForZone } from '@/components/viewer/globe/neighborhoodParkLayout';
 import { isParkTrio, parkTrioLayout } from '@/components/viewer/globe/parkTrioLayout';
 import { parkOutlineDimensions, reshapeParkOutline, addParkOutlinePoint, type ParkOutlineShape } from './parkOutline';
+import { BuildingDesignControls } from './BuildingDesignControls';
+import type { SiteZoneProperties } from '@/types';
 
-export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onDuplicate, onMore, onConnections, onTerrace }: {
+export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onDuplicate, onMore, onConnections, onTerrace, onUpdateDesign }: {
   zone: SiteZone; disabled: boolean;
   onReshape: (coordinates: number[][]) => void; onClose: () => void; onDelete: () => void;
   onDuplicate: (asset: PlaceAssetId, width: number, depth: number, degrees: number) => void;
   onMore: () => void;
   onConnections?: () => void;
   onTerrace?: () => void;
+  onUpdateDesign?: (properties: SiteZoneProperties) => void;
 }) {
   const asset = assetForZone(zone)!;
   const isPark = zone.zone_type === 'green_space';
-  const dimensions = isPark ? parkOutlineDimensions(zone.coordinates) : rectangleDimensions(zone.coordinates);
+  const keepOutline = isPark || asset.reshapeMode === 'authored_footprint';
+  const dimensions = keepOutline ? parkOutlineDimensions(zone.coordinates) : rectangleDimensions(zone.coordinates);
   const park = useMemo(() => asset.id === 'neighbourhood_park' ? neighborhoodParkLayoutForZone(zone,
     {lng:zone.coordinates[0][0],lat:zone.coordinates[0][1]}) : null, [asset.id, zone]);
   const structuredPark = useMemo(() => isParkTrio(zone) ? parkTrioLayout(zone,
@@ -29,9 +33,10 @@ export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onD
   const valid = Number.isFinite(Number(width)) && Number.isFinite(Number(depth)) && Number.isFinite(Number(degrees))
     && Number(width)>=asset.minWidth && Number(depth)>=asset.minDepth && Number(width)<=asset.maxSize && Number(depth)<=asset.maxSize;
   const button = 'min-h-11 rounded-lg border border-slate-700 bg-white px-3 text-sm font-semibold text-slate-900 disabled:opacity-40';
-  return <aside aria-label="Reshape object" className="absolute bottom-4 inset-x-4 top-auto z-40 max-h-[42dvh] overflow-y-auto overscroll-contain rounded-xl border-2 border-slate-900 bg-[#fff9ec] p-3 shadow-xl sm:left-auto sm:w-72 sm:bottom-auto sm:top-20 sm:max-h-[80vh]">
+  return <aside aria-label="Reshape object" className="absolute bottom-4 inset-x-4 top-auto z-40 max-h-[42dvh] overflow-y-auto overscroll-contain rounded-xl border-2 border-slate-900 bg-[#fff9ec] p-3 shadow-xl sm:left-auto sm:w-72 sm:bottom-4 sm:top-28 sm:max-h-none">
     <div className="flex items-center justify-between"><h2 className="font-bold text-slate-900">{asset.label}</h2><button aria-label="Close reshape" onClick={onClose} className="flex h-11 w-11 items-center justify-center text-slate-900"><X size={18}/></button></div>
     <p className="mb-3 text-xs text-slate-600">{isPark ? 'Drag the park to move it. Drag individual white corners to fit its outline to the site; use the orange handle to turn it.' : 'Drag the object to move it. Drag a corner to reshape; use the orange handle to turn it.'}</p>
+    {!isPark && onUpdateDesign && <BuildingDesignControls key={JSON.stringify([zone.id, zone.properties?.development_subcategory, zone.properties?.development_archetype_id, zone.properties?.development_selected_variant_id, zone.properties?.floors, zone.properties?.floor_count, zone.properties?.height, zone.properties?.height_m])} zone={zone} disabled={disabled} onSave={onUpdateDesign} />}
     {park && <div role="status" className="mb-3 rounded-lg bg-white p-2 text-xs text-slate-800">
       <p className="font-semibold">Current park · {park.status==='full'?'full programme':park.status==='compact'?'compact arrangement':park.loop.length?'reduced programme':'landscape layout'}</p>
       {park.notes.map(note=><p className="mt-1" key={note}>{note}</p>)}
@@ -39,8 +44,8 @@ export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onD
     {structuredPark && structuredPark.notes.length > 0 && <div role="status" className="mb-3 rounded-lg bg-white p-2 text-xs text-slate-800">
       {structuredPark.notes.map(note=><p className="mt-1" key={note}>{note}</p>)}
     </div>}
-    <form onSubmit={event => { event.preventDefault(); if(valid) onReshape(isPark
-      ? reshapeParkOutline(zone.coordinates,Number(width),Number(depth),Number(degrees),outline || undefined)
+    <form onSubmit={event => { event.preventDefault(); if(valid) onReshape(keepOutline
+      ? reshapeParkOutline(zone.coordinates,Number(width),Number(depth),Number(degrees),isPark ? outline || undefined : undefined)
       : rectangleAt(dimensions.center,Number(width),Number(depth),Number(degrees))); }}>
       {isPark && <div className="mb-3">
         <label className="text-xs font-semibold text-slate-800">Park outline<select aria-label="Park outline" value={outline} onChange={e=>setOutline(e.target.value as ParkOutlineShape | '')} className="mt-1 min-h-11 w-full rounded border border-slate-400 bg-white px-2 text-base text-slate-900">

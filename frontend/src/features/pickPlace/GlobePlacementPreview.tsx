@@ -18,9 +18,11 @@ import { useSharedSiteGround } from '@/components/viewer/globe/SharedSiteGroundP
 import { resolvePreparedSiteTerrainForZone } from '@/components/viewer/globe/sitePreparationSurface';
 import { placeAsset, placementPlanRequest, placementProperties, type PlaceAssetId } from './catalogue';
 import { placementProblem, rectangleAt } from './geometry';
+import { streetFacingDegrees } from './streetFacing';
 
 export interface PlacementDraft {
   assetId: PlaceAssetId; width: number; depth: number; degrees: number;
+  faceStreet?: boolean;
   inputError?: string;
   inputValues?: { width: string; depth: string; degrees: string };
 }
@@ -76,7 +78,8 @@ export function GlobePlacementPreview({ draft, zones, onStatusChange }: {draft: 
   const previewZone=useMemo(()=>({id:'placement-preview',zone_type:asset.zoneType,
     coordinates:rectangleAt([ORIGIN.lng,ORIGIN.lat],draft.width,draft.depth),
     properties:placementProperties(asset)} as SiteZone),[asset,draft.width,draft.depth]);
-  const footprint = surface ? rectangleAt([surface.lng,surface.lat],draft.width,draft.depth,draft.degrees) : null;
+  const degrees = surface && draft.faceStreet ? streetFacingDegrees([surface.lng,surface.lat], zones, draft.degrees) : draft.degrees;
+  const footprint = surface ? rectangleAt([surface.lng,surface.lat],draft.width,draft.depth,degrees) : null;
   const invalid = footprint ? placementProblem(footprint,zones,getActiveSiteBoundary(zones)) : 'Move over the site and wait for the ground to load.';
   // Report only status transitions, not every pointer coordinate, to the planner.
   useEffect(() => { onStatusChange?.(invalid); }, [invalid, onStatusChange]);
@@ -84,10 +87,10 @@ export function GlobePlacementPreview({ draft, zones, onStatusChange }: {draft: 
   if(!surface || !footprint) return null;
   const previewHeight = resolvePreparedSiteTerrainForZone({ ...previewZone, coordinates: footprint }, zones, surface.height)
     ?? ground.heightAt(surface.lng, surface.lat) ?? surface.height;
-  const envelope=asset.nativeDimensions ?? [draft.width,draft.depth,.1];
+  const envelope=asset.nativeDimensions ?? [draft.width,draft.depth,Number(asset.properties.height) || .1];
   const fallback=<mesh position={[0,0,envelope[2]/2]}><boxGeometry args={[envelope[0],envelope[1],envelope[2]]}/><meshBasicMaterial color="#64748b" wireframe/></mesh>;
   return <EastNorthUpFrame lat={surface.lat*Math.PI/180} lon={surface.lng*Math.PI/180} height={previewHeight+.12}>
-    <group rotation={[0,0,draft.degrees*Math.PI/180]} name="placement-preview" raycast={()=>null}>
+    <group rotation={[0,0,degrees*Math.PI/180]} name="placement-preview" raycast={()=>null}>
       <mesh position={[0,0,.1]}><planeGeometry args={[draft.width,draft.depth]}/><meshBasicMaterial color={invalid?'#ef4444':'#c9ff3d'} transparent opacity={.3} side={THREE.DoubleSide} depthWrite={false}/></mesh>
       <PreviewFallback key={asset.id} fallback={fallback}><Suspense fallback={fallback}>
         {asset.zoneType==='building' ? plan ? plan.instances.map((instance,index)=><group key={`${instance.asset_id}-${index}`}

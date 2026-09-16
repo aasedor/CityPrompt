@@ -1,4 +1,6 @@
 import { canonicalDrawing } from '@/features/pickPlace/canonicalCatalogue';
+import { canonicalBuildingAsset } from '@/features/pickPlace/canonicalBuildingPlacement';
+import { streetFacingDegrees } from '@/features/pickPlace/streetFacing';
 import { catalogueZoneForBuilding } from '@/features/pickPlace/catalogueDeletion';
 import { lazy, Suspense, useState, useCallback, useMemo, useRef, useEffect, type PointerEvent as ReactPointerEvent } from 'react';
 import { useParams, Link } from 'react-router-dom';
@@ -258,7 +260,8 @@ export function ProjectViewPage() {
     const asset = placeAsset(assetId);
     setActiveSitePlannerTool(null); selectZone(null); setMeasureActive(false);
     useViewerStore.getState().setStreetViewActive(false);
-    setPlacementDraft({ assetId, width: width ?? asset.width, depth: depth ?? asset.depth, degrees });
+    setPlacementDraft({ assetId, width: width ?? asset.width, depth: depth ?? asset.depth, degrees,
+      faceStreet: asset.zoneType === 'building' && width === undefined });
   };
   useEffect(() => {
     if (!placementDraft) return;
@@ -269,7 +272,8 @@ export function ProjectViewPage() {
   useEffect(() => { setPlacementDraft(null); setAdvancedZoneId(null); }, [id]);
   const placeObject = async (point: [number, number], height: number) => {
     if (!placementDraft || placementDraft.inputError || placementPending.current || isSaving) return;
-    const coordinates = rectangleAt(point, placementDraft.width, placementDraft.depth, placementDraft.degrees);
+    const degrees = placementDraft.faceStreet ? streetFacingDegrees(point, siteZones, placementDraft.degrees) : placementDraft.degrees;
+    const coordinates = rectangleAt(point, placementDraft.width, placementDraft.depth, degrees);
     const problem = placementProblem(coordinates, siteZones, getActiveSiteBoundary(siteZones));
     if(problem) { toast.error(problem, { position: 'top-center' }); return; }
     placementPending.current = true;
@@ -287,7 +291,8 @@ export function ProjectViewPage() {
     const zone = siteZones.find(item => item.id === zoneId);
     if (zone && (assetForZone(zone) || isFixedSectionStreet(zone))) {
       if (isSaving) { toast.error('Wait for this edit to save.'); return false; }
-      const problem = (zone.zone_type === 'green_space' ? parkOutlineProblem(coordinates) : null)
+      const problem = (zone.zone_type === 'green_space' ? parkOutlineProblem(coordinates)
+        : assetForZone(zone)?.reshapeMode === 'authored_footprint' ? parkOutlineProblem(coordinates)?.replace(/park/g, 'building') : null)
         ?? (isFixedSectionStreet(zone) ? streetRouteProblem(coordinates, streetSectionWidth(zone)) : null)
         ?? placementProblem(coordinates, siteZones,
           publicRoadConnectionFits(zone, coordinates, getActiveSiteBoundary(siteZones)) ? null : getActiveSiteBoundary(siteZones), zoneId);
@@ -1138,6 +1143,10 @@ export function ProjectViewPage() {
                 status={automatic3D.status} message={automatic3D.message} onRetry={automatic3D.retry}
                 onBrowseChange={setShowCatalogue}
                 onPickCanonical={selection => {
+                  if (selection.choice.domain === 'building') {
+                    pickObject(canonicalBuildingAsset(selection).id);
+                    return;
+                  }
                   cancelPlacement(); selectZone(null); setMeasureActive(false);
                   useViewerStore.getState().setStreetViewActive(false);
                   const drawing = canonicalDrawing(selection);
@@ -1220,6 +1229,7 @@ export function ProjectViewPage() {
         {/* Zone properties panel */}
         {selectedZone && assetForZone(selectedZone) && advancedZoneId !== selectedZone.id && !placementDraft && !showHistory && !measureActive && (
           <ReshapePanel key={`${selectedZone.id}:${JSON.stringify(selectedZone.coordinates)}`} zone={selectedZone} disabled={isSaving}
+            onUpdateDesign={properties => updateZone.mutate({ zoneId: selectedZone.id, data: { properties }, previousData: { properties: selectedZone.properties } })}
             onTerrace={['building','residential','green_space'].includes(selectedZone.zone_type)?()=>setTerraceZoneId(selectedZone.id):undefined}
             onConnections={()=>setConnectionZoneId(selectedZone.id)}
             onReshape={coordinates => reshapeObject(selectedZone.id, coordinates)} onClose={() => selectZone(null)}

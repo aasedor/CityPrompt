@@ -148,6 +148,23 @@ class AssemblyPlanningError(ValueError):
         self.supported_families = supported_families
 
 
+def assert_authored_height(plan: dict[str, Any], target_height_m: float | None) -> None:
+    """An explicit height edit cannot silently retain a differently sized model.
+
+    Native geometry is never vertically scaled. Five centimetres only absorb
+    rounded property input / measured asset precision, not storey differences.
+    Older projects without an explicit height edit keep their existing behavior.
+    """
+    if target_height_m is None:
+        return
+    actual = float(plan.get("assembled_height_m", 0))
+    if not math.isfinite(actual) or not math.isfinite(target_height_m) or target_height_m <= 0 or abs(actual - target_height_m) > .05:
+        raise AssemblyPlanningError(
+            "A detailed model is not available at the requested height. Design massing preserves your height.",
+            requested={"height_m": target_height_m},
+        )
+
+
 def _as_float(value: Any, default: float = 0.0) -> float:
     try:
         return float(value)

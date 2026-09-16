@@ -90,6 +90,8 @@ export interface LegoPlanRequest {
   target_width_m: number;
   target_depth_m: number;
   target_floors: number;
+  /** Explicit authored height; incompatible native models must use massing. */
+  target_height_m?: number;
   footprint_local_m?: number[][];
   archetype_id?: string;
   reuse_keys?: string[];

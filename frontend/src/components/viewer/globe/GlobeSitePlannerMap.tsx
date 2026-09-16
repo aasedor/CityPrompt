@@ -4254,7 +4254,7 @@ export function GlobeSitePlannerMap({
       </div>}
       {placementDraft && !interactionPaused && <>
         <div aria-hidden className="pointer-events-none absolute left-1/2 top-1/2 z-30 -translate-x-1/2 -translate-y-1/2 text-3xl font-light text-white drop-shadow sm:hidden">+</div>
-        <div className="absolute bottom-6 left-1/2 z-40 w-80 max-w-[90vw] -translate-x-1/2 rounded-xl bg-white p-3 text-center text-sm text-slate-900 shadow-xl">
+        <div className="absolute bottom-6 left-1/2 z-40 w-80 max-w-[90vw] -translate-x-1/2 rounded-xl bg-white p-3 text-center text-sm text-slate-900 shadow-xl sm:bottom-auto sm:left-auto sm:right-4 sm:top-28 sm:w-72 sm:translate-x-0">
           {onPlacementDraftChange && <PlacementControls key={placementDraft.assetId} draft={placementDraft} onChange={onPlacementDraftChange} />}
           {!placementDraft.inputError && (placementProblemMessage
             ? <p role="status" className="mt-2 text-xs text-red-700">{placementProblemMessage}</p>
