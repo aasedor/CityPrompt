@@ -43,6 +43,7 @@ import { StreetViewPanel } from '@/components/viewer/StreetViewPanel';
 import { WorkflowStepper } from '@/components/viewer/WorkflowStepper';
 import { StudioControls, StudioDialog, StudioSaveStatus } from './StudioControls';
 import { ReadOnlyProject } from './ReadOnlyProject';
+import { StudentWorkflowNav, StudentStepPanel, type StudentStep } from './StudentWorkflow';
 import { StudentPlanningReport } from '@/features/studentReports/StudentPlanningReport';
 import { useReferenceLayers } from '@/features/referenceLayers/useReferenceLayers';
 import { CalgaryContextButton } from '@/features/referenceLayers/CalgaryContextButton';
@@ -117,6 +118,7 @@ export function ProjectViewPage() {
   const [showProjectRenders, setShowProjectRenders] = useState(false);
   const [showTour, setShowTour] = useState(false);
   const [showCatalogue, setShowCatalogue] = useState(false);
+  const [studentStep, setStudentStep] = useState<StudentStep | null>(null);
   const [showGlobeRender, setShowGlobeRender] = useState(false);
   const [showVideoRender, setShowVideoRender] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
@@ -722,6 +724,21 @@ export function ProjectViewPage() {
     settings.mapMode,
   ]);
 
+  // Presentation navigation is transient UI state; the saved design and camera stay authoritative.
+  const activeStudentStep = studentStep ?? (cityPromptWorkflow.activeBoundary ? 'design' : 'site');
+  const changeStudentStep = (step: StudentStep) => {
+    cancelPlacement();
+    selectZone(null);
+    setActiveSitePlannerTool(null);
+    useViewerStore.getState().setStreetViewActive(false);
+    setMeasureActive(false);
+    setShowHistory(false);
+    setShowGlobeRender(false);
+    setShowVideoRender(false);
+    setShowReferenceLayers(false);
+    setStudentStep(step);
+  };
+
   const prepareForAIRenderCapture = useCallback(async () => {
     const tilesSettled = await globeRefs?.waitForTilesSettled?.();
     if (tilesSettled === false) {
@@ -1102,9 +1119,17 @@ export function ProjectViewPage() {
 
         {/* Toolbar - hidden on phones during focused vertex placement. */}
         <div
-          className={`pointer-events-none absolute inset-x-3 top-44 z-30 min-h-0 overflow-y-auto overscroll-contain sm:inset-x-auto sm:left-4 sm:top-24 sm:bottom-16 sm:w-64 sm:max-h-none sm:overflow-y-auto sm:pr-2 ${activeSitePlannerTool || placementDraft || (selectedZone && (assetForZone(selectedZone) || isFixedSectionStreet(selectedZone))) ? 'hidden sm:block' : 'bottom-3 max-h-[60dvh]'}`}
+          className={`pointer-events-none absolute inset-x-3 top-44 z-30 min-h-0 overflow-y-auto overscroll-contain sm:inset-x-auto sm:left-4 sm:top-28 sm:bottom-16 sm:w-64 sm:max-h-none sm:overflow-y-auto sm:pr-2 ${activeSitePlannerTool || placementDraft || (selectedZone && (assetForZone(selectedZone) || isFixedSectionStreet(selectedZone))) ? 'hidden sm:block' : 'bottom-3 max-h-[60dvh]'}`}
         >
           <div className="pointer-events-auto h-full">
+            <StudentWorkflowNav step={activeStudentStep} onChange={changeStudentStep} />
+            {activeStudentStep !== 'design' && !showGlobeRender && !showVideoRender && <StudentStepPanel
+              step={activeStudentStep} hasSite={Boolean(cityPromptWorkflow.activeBoundary && isPersistedZoneId(cityPromptWorkflow.activeBoundary.id))}
+              drawingSite={activeSitePlannerTool === 'site_boundary'} location={project.location?.address}
+              canRender={cityPromptWorkflow.canRender} renderReason={cityPromptWorkflow.renderReason}
+              onSite={() => { setStudentStep('site'); handleSiteBoundary(); }} onDesign={() => changeStudentStep('design')}
+              onImage={handleOpenGlobeRender} onVideo={handleOpenVideoRender} />}
+            <div hidden={activeStudentStep !== 'design'}>
             <SitePlannerToolbar
               streetPlacement={CALGARY_LOCAL_PLACEMENT}
               streetInPlacement
@@ -1150,35 +1175,19 @@ export function ProjectViewPage() {
                       <Blocks size={16} />
                       {isPreparingGenerate3D ? 'Preparing…' : 'Generate to 3D'}
                     </button></details>
-                    <div className="grid grid-cols-2 gap-2">
-                      <button
-                        data-tour="ai-render-btn"
-                        onClick={handleOpenGlobeRender}
-                        disabled={!cityPromptWorkflow.canRender}
-                        title={cityPromptWorkflow.renderReason}
-                        className="flex w-full items-center justify-center min-h-11 gap-1.5 rounded-full border-2 border-[#151515] bg-white px-2 py-2 text-xs font-black uppercase text-[#151515] shadow-[3px_3px_0_0_#151515] transition hover:bg-[#fff9ec] disabled:cursor-not-allowed disabled:opacity-40"
-                      >
-                        <Camera size={14} />
-                        Render
-                      </button>
-                      <button
-                        onClick={handleOpenVideoRender}
-                        disabled={!cityPromptWorkflow.canRender}
-                        title={cityPromptWorkflow.renderReason}
-                        className="flex w-full items-center justify-center min-h-11 gap-1.5 rounded-full border-2 border-[#151515] bg-[#151515] px-2 py-2 text-xs font-black uppercase text-white shadow-[3px_3px_0_0_#28c7e8] transition hover:bg-[#2b2b2b] disabled:cursor-not-allowed disabled:opacity-40"
-                      >
-                        <Video size={14} />
-                        Video
-                      </button>
-                    </div>
+                    <button type="button" data-tour="ai-render-btn" onClick={() => changeStudentStep('present')}
+                      className="flex min-h-11 w-full items-center justify-center gap-2 rounded-lg border-2 border-slate-950 bg-[#c9ff3d] px-3 py-2 text-sm font-bold text-slate-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-700">
+                      <Camera size={16} aria-hidden /> Render this view
+                    </button>
                   </div>
                 ) : null
               }
             />
+            </div>
           </div>
         </div>
 
-        <div className="absolute right-3 top-16 z-40 max-w-[calc(100vw-1.5rem)] sm:right-4 sm:top-4">
+        <div className="absolute right-3 top-16 z-40 max-w-[calc(100vw-1.5rem)] sm:right-4 sm:top-2">
           <StudioControls layersOpen={showReferenceLayers} onLayers={() => { selectZone(null); setShowReferenceLayers((open) => !open); }}
             onReport={() => { setActiveSitePlannerTool(null); setShowPlanningReport(true); }} onTeam={() => setShowShare(true)} onHelp={() => setShowTour(true)} />
         </div>
@@ -1221,6 +1230,7 @@ export function ProjectViewPage() {
         {selectedZone && ((!assetForZone(selectedZone) && !isFixedSectionStreet(selectedZone)) || advancedZoneId === selectedZone.id) && !showHistory && !measureActive && (
           <ZonePropertiesPanel
             key={selectedZone.id}
+            belowGlobeControls
             zone={selectedZone}
             savedVersionReload={savedVersionReload}
             onConnections={['building','residential','green_space','road'].includes(selectedZone.zone_type) ? ()=>setConnectionZoneId(selectedZone.id) : undefined}
@@ -1312,11 +1322,11 @@ export function ProjectViewPage() {
         )}
 
         {/* Back button */}
-        <div className="absolute left-4 top-4 z-30 flex max-w-[calc(100vw-2rem)] items-center gap-3">
-          <Link to="/projects" className="shrink-0 rounded-lg bg-gray-900/75 p-2 backdrop-blur-sm hover:bg-gray-900/90">
+        <div className="absolute left-4 top-4 z-30 flex max-w-[calc(100vw-2rem)] items-center gap-3 sm:top-2 sm:max-w-[calc(100vw-26rem)]">
+          <Link to="/projects" aria-label="Back to projects" className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-gray-900/90 backdrop-blur-sm hover:bg-gray-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white">
             <ArrowLeft size={18} className="text-white" />
           </Link>
-          <span className="min-w-0 max-w-[calc(100vw-5.5rem)] truncate text-sm font-medium text-white/80 sm:max-w-none">
+          <span className="min-w-0 max-w-[calc(100vw-5.5rem)] truncate rounded-lg bg-slate-950/85 px-3 py-2 text-sm font-medium text-white sm:max-w-sm">
             {project.name}
           </span>
         </div>

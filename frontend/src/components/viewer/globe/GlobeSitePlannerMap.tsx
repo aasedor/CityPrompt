@@ -4430,7 +4430,7 @@ export function GlobeSitePlannerMap({
         </div>
       )}
 
-      <div className="absolute top-32 left-4 right-4 z-20 flex items-center gap-2 overflow-x-auto [&>*]:shrink-0 sm:top-14 sm:right-auto">
+      <div className="absolute top-32 left-4 right-4 z-20 flex items-center gap-2 overflow-x-auto [&>*]:shrink-0 sm:top-16 sm:right-4">
         <div className="rounded-full border-2 border-[#151515] bg-[#c9ff3d] px-3 py-1.5 shadow-[3px_3px_0_0_#151515] backdrop-blur-xl">
           <span className="text-[11px] font-black uppercase text-[#151515]">3D Globe</span>
         </div>

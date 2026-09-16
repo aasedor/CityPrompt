@@ -54,6 +54,7 @@ const SHOW_LEGACY_SITE_BOUNDARY_TOOLS =
 
 interface ZonePropertiesPanelProps {
   zone: SiteZone;
+  belowGlobeControls?: boolean;
   savedVersionReload?: ZonePropertiesReload;
   onUpdate: (zoneId: string, data: { name?: string; color?: string; properties?: SiteZoneProperties }) => void;
   onDelete: (zoneId: string) => void;
@@ -442,7 +443,8 @@ function getFrontDayArchetypeImage(images: CatalogArchetypeImage[]): CatalogArch
   return images.find((image) => image.id.endsWith(`_${FRONT_DAY_VARIANT_ID}`));
 }
 
-export function ZonePropertiesPanel({ zone, savedVersionReload, onUpdate, onDelete, onClose, onAIGenerate, buildings, allZones, onOpenBlockEditor, onConnections }: ZonePropertiesPanelProps) {
+export function ZonePropertiesPanel({ zone, belowGlobeControls = false, savedVersionReload, onUpdate, onDelete, onClose, onAIGenerate, buildings, allZones, onOpenBlockEditor, onConnections }: ZonePropertiesPanelProps) {
+  const [siteAnalysisOpen, setSiteAnalysisOpen] = useState(false);
   const config = ZONE_TYPE_CONFIG[zone.zone_type];
   const osmContext = useViewerStore((s) => s.osmContext);
   const layoutPreview = useViewerStore((s) => s.layoutPreview);
@@ -1222,7 +1224,7 @@ const buildAestheticSelectionProps = (
         className="pointer-events-auto fixed inset-0 z-20 bg-black/30 sm:hidden"
         onClick={onClose}
       />
-      <div ref={panelRef} className="pointer-events-auto fixed inset-x-0 bottom-0 z-30 max-h-[70dvh] w-full overflow-x-hidden overflow-y-auto rounded-t-lg border-2 border-[#151515] bg-[#fff9ec]/95 p-4 shadow-[8px_8px_0_0_#151515] backdrop-blur-xl sm:absolute sm:inset-auto sm:right-4 sm:top-16 sm:bottom-auto sm:left-auto sm:z-40 sm:w-96 sm:max-w-[calc(100vw-2rem)] sm:max-h-[calc(100dvh-5rem)] sm:rounded-lg xl:w-[28rem]">
+      <div ref={panelRef} className={`pointer-events-auto fixed inset-x-0 bottom-0 z-30 max-h-[70dvh] w-full overflow-x-hidden overflow-y-auto rounded-t-lg border-2 border-[#151515] bg-[#fff9ec]/95 p-4 shadow-[8px_8px_0_0_#151515] backdrop-blur-xl sm:absolute sm:inset-auto sm:right-4 sm:bottom-auto sm:left-auto sm:z-40 sm:w-96 sm:max-w-[calc(100vw-2rem)] sm:rounded-lg xl:w-[28rem] ${belowGlobeControls ? 'sm:top-28 sm:max-h-[calc(100dvh-13rem)]' : 'sm:top-16 sm:max-h-[calc(100dvh-5rem)]'}`}>
         {/* Drag handle ? mobile visual cue */}
         <div className="mb-3 flex justify-center sm:hidden">
           <div className="h-1 w-10 rounded-full bg-[#151515]" />
@@ -1237,7 +1239,8 @@ const buildAestheticSelectionProps = (
           </div>
           <button
             onClick={onClose}
-            className="rounded-full border-2 border-[#151515] bg-white p-1 text-[#151515] shadow-[2px_2px_0_0_#151515] transition hover:bg-[#ff5a3d] hover:text-white"
+            aria-label="Close object properties"
+            className="flex h-11 w-11 items-center justify-center rounded-full border-2 border-[#151515] bg-white p-1 text-[#151515] shadow-[2px_2px_0_0_#151515] transition hover:bg-[#ff5a3d] hover:text-white"
           >
             <X size={14} />
           </button>
@@ -1312,7 +1315,10 @@ const buildAestheticSelectionProps = (
                   : 'Replaces the existing site with a level surface. Use Follow existing terrain to build on an open site.'}
               </p>
             </div>
-            <SiteIntelligencePanel zone={zone} />
+            {belowGlobeControls ? <details onToggle={event => setSiteAnalysisOpen(event.currentTarget.open)}>
+              <summary className="min-h-11 cursor-pointer py-3 font-semibold focus-visible:outline focus-visible:outline-2">Optional AI site analysis</summary>
+              {siteAnalysisOpen && <SiteIntelligencePanel zone={zone} />}
+            </details> : <SiteIntelligencePanel zone={zone} />}
             {SHOW_LEGACY_SITE_BOUNDARY_TOOLS && (
               <SiteBoundarySection
                 zone={zone}
