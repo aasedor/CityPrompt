@@ -14,12 +14,14 @@ export interface SharedSiteGroundLayout {
 }
 export interface SharedSiteGroundSnapshot extends SharedSiteGroundLayout {
   version: 1;
-  source: 'google_3d_tiles';
+  source: 'google_3d_tiles' | 'classified_lidar';
   verticalReference: 'WGS84_ellipsoid';
-  /** South-to-north rows, west-to-east columns. No absent/interpolated samples. */
+  /** South-to-north rows, west-to-east columns. No absent samples. Google
+   * vertices are measured; classified survey derivation is recorded separately. */
   heights: number[];
   quality: {
-    sampleCount: number; stablePasses: 2; maxPassDeltaM: number; maxSlope: number; maxLocalResidualM: number;
+    /** Two live mesh passes, or zero for an immutable saved survey source. */
+    sampleCount: number; stablePasses: 2 | 0; maxPassDeltaM: number; maxSlope: number; maxLocalResidualM: number;
   };
   signature: string;
 }
@@ -32,7 +34,7 @@ export const SHARED_SITE_GROUND_LIMITS = Object.freeze({
   minHeightM: -1000, maxHeightM: 10000,
 });
 
-function signature(value: unknown): string {
+export function sharedGroundSignature(value: unknown): string {
   const text = JSON.stringify(value); let hash = 2166136261;
   for (let i = 0; i < text.length; i += 1) hash = Math.imul(hash ^ text.charCodeAt(i), 16777619);
   return `ssg1-${(hash >>> 0).toString(16).padStart(8, '0')}`;
@@ -41,7 +43,7 @@ function signature(value: unknown): string {
 export function sharedSiteGroundSourceSignature(boundary: SiteZone, spacingM?: number): string {
   // A compiled landscape or label changes the row revision, not the ground.
   // Capture provenance binds the latest row revision separately in the provider.
-  return signature([boundary.id, boundary.coordinates, boundary.is_active_boundary,
+  return sharedGroundSignature([boundary.id, boundary.coordinates, boundary.is_active_boundary,
     boundary.properties?.community_3d_mask_existing_tiles, ...(spacingM === undefined ? [] : [spacingM])]);
 }
 
@@ -161,7 +163,7 @@ export function createSharedSiteGroundSnapshot(layout: SharedSiteGroundLayout, p
   const snapshot = { ...layout, version: 1 as const, source: 'google_3d_tiles' as const, verticalReference: 'WGS84_ellipsoid' as const,
     heights: [...heights], quality: { sampleCount: heights.length, stablePasses: 2 as const, maxPassDeltaM,
       maxSlope: quality.maxSlope, maxLocalResidualM: quality.maxLocalResidualM } };
-  return { ...snapshot, signature: signature(snapshot) };
+  return { ...snapshot, signature: sharedGroundSignature(snapshot) };
 }
 
 /** Piecewise planar, not bilinear: every consumer samples identical triangles. */

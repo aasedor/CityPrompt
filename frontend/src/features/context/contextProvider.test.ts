@@ -21,6 +21,15 @@ it('retains Google while loading or after failure, without changing the chosen d
   expect(visibleContext('google', true, false)).toBe('google');
 });
 
+it('accepts the fixed geographic LiDAR fixture without mixing its registration and ground contract with the mesh', () => {
+  const lidar = { ...fixture, id: 'usgs-san-francisco-2023', tilesetPath: '/sf-lidar/tileset.json',
+    registration: 'geographic-pilot', groundAuthority: 'classified-lidar',
+    licenseUrl: 'https://www.fisheries.noaa.gov/inport/item/73386/full-list' };
+  expect(readContextPilot(lidar, 'pilot')).toEqual(lidar);
+  expect(readContextPilot({ ...lidar, groundAuthority: 'saved-project' }, 'pilot')).toBeNull();
+  expect(readContextPilot({ ...lidar, tilesetPath: '/context-pilot/tileset.json' }, 'pilot')).toBeNull();
+});
+
 it('keeps the unregistered sample out of professional render provenance', () => {
   const provider = readContextPilot(fixture, 'pilot');
   expect(contextPilotCaptureProblem(provider, 'capture')).toMatch(/Switch to Google 3D/);

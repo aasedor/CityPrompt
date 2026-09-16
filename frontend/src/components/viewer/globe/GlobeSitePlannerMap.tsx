@@ -1,6 +1,7 @@
 import { BuildingGroundProblems } from './BuildingGroundProblems';
 import { useContextPresentation } from '@/features/context/useContextPresentation';
 import { ContextControls } from '@/features/context/ContextControls';
+import { SurveyGroundSurface } from '@/features/context/SurveyGroundSurface';
 import { AlternateContextLayer, GoogleContextVisibility } from '@/features/context/ContextLayers';
 import { contextPilotCaptureProblem } from '@/features/context/contextProvider';
 import { assetForZone } from '@/features/pickPlace/catalogue';
@@ -4095,6 +4096,7 @@ export function GlobeSitePlannerMap({
             onDisplayReadyChange={setAreTilesDisplayReady}
           />
           <SharedSiteGroundProvider zones={allSiteZones} onChange={handleSharedGroundChange} inspectPrepared={showGroundReview}>
+          <SurveyGroundSurface visible={contextPresentation.visible === 'terrain'} />
           <ParkAssemblyGroundProvider>
           <AutomaticParkGround zones={allSiteZones} paused={parkGroundPaused} onSave={onAutoParkTerrain} onChange={setParkAlignment} fallback={terrainElevation}>
           <group ref={referenceOverlayGroup}><GlobeReferenceLayer layers={referenceLayers} terrainHeight={terrainElevation} /></group>
@@ -4278,9 +4280,10 @@ export function GlobeSitePlannerMap({
         }} />}
       {contextPresentation.provider &&
         <ContextControls requested={contextPresentation.requested} onChange={contextPresentation.select}
+          geographic={contextPresentation.provider.registration === 'geographic-pilot'}
           loading={contextPresentation.loading} failed={contextPresentation.failed}>
         {contextPresentation.visible === 'capture' && <p className="mt-2 text-xs text-slate-700">
-          {contextPresentation.provider.attribution} · <a className="underline" href={contextPresentation.provider.licenseUrl} target="_blank" rel="noreferrer">CC BY 4.0</a>
+          {contextPresentation.provider.attribution} · <a className="underline" href={contextPresentation.provider.licenseUrl} target="_blank" rel="noreferrer">{contextPresentation.provider.groundAuthority === 'classified-lidar' ? 'Source and use terms' : 'CC BY 4.0'}</a>
         </p>}
         </ContextControls>}
       {showGroundReview && getActiveSiteBoundary(allSiteZones) && onPrepareGround && <GroundReviewPanel

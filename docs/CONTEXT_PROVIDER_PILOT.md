@@ -1,7 +1,8 @@
 # Context provider engineering pilot
 
-**Status: visual-source separation verified; survey/LiDAR/DTM integration remains
-open.** This is an opted-in development fixture, not production capture coverage.
+**Status: visual-source separation verified.** A subsequent
+[San Francisco LiDAR pilot](SAN_FRANCISCO_LIDAR_PILOT.md) adds classified ground at
+its geographic location; precise Google/survey registration remains open. This is an opted-in development fixture, not production capture coverage.
 See [the Lux Modus delivery contract](LUX_MODUS_ADAPTER_CONTRACT.md).
 
 ## Architecture
