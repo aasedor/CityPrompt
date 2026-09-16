@@ -18,25 +18,30 @@ import {
 } from './TileSpatialMaskPlugin';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { resolvePreparedSiteTerrainHeight } from './sitePreparationSurface';
+import { useParkAssemblyGroundOwners } from './ParkAssemblyGround';
 
 interface TileStencilPatcherProps {
   /** Only patch when there are zones that need tile masking. */
   zones: SiteZone[];
   terrainHeight: number;
+  assemblyZones?: SiteZone[];
 }
 
-export function TileStencilPatcher({ zones, terrainHeight }: TileStencilPatcherProps) {
+const NO_ASSEMBLY_ZONES: SiteZone[] = [];
+
+export function TileStencilPatcher({ zones, terrainHeight, assemblyZones = NO_ASSEMBLY_ZONES }: TileStencilPatcherProps) {
   const tiles = useContext(TilesRendererContext);
+  const parkGroundOwners = useParkAssemblyGroundOwners(assemblyZones);
   const patchedMaterials = useRef(new Set<THREE.Material>());
   const spatialMask = useMemo(
     () => {
       const siteBoundary = getActiveSiteBoundary(zones);
       return createTileSpatialMaskSetConfig(
-        siteBoundary ? [siteBoundary] : zones,
+        siteBoundary ? [siteBoundary] : [...zones, ...parkGroundOwners.filter(owner => !zones.some(zone => zone.id === owner.id))],
         siteBoundary ? resolvePreparedSiteTerrainHeight(siteBoundary, terrainHeight) : terrainHeight,
       );
     },
-    [zones, terrainHeight],
+    [zones, terrainHeight, parkGroundOwners],
   );
 
   useEffect(() => {

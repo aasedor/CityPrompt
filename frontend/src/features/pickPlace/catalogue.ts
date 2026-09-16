@@ -2,6 +2,7 @@ import { resolveCommunity3DKind } from '@/features/community3d/community3d';
 import type { SiteZone, SiteZoneProperties } from '@/types';
 import type { LegoPlanRequest } from '@/features/legoAssembly/legoAssemblyApi';
 import { CATALOGUE_ASSETS, isPlaceable, type PlaceAsset, type PlaceAssetId } from './assetRegistry';
+import { canonicalParkById, canonicalParkForProperties } from './canonicalParkPlacement';
 import { canonicalBuildingById, canonicalBuildingForProperties } from './canonicalBuildingPlacement';
 export type { PlaceAsset, PlaceAssetId } from './assetRegistry';
 const OBJECT_ASSETS = CATALOGUE_ASSETS.filter((asset): asset is PlaceAsset => asset.kind === 'object');
@@ -19,7 +20,7 @@ export function placementPlanRequest(asset: PlaceAsset, width: number, depth: nu
 }
 
 export function placeAsset(id: PlaceAssetId): PlaceAsset {
-  const asset = OBJECT_ASSETS.find(asset => asset.id === id) ?? canonicalBuildingById(id);
+  const asset = OBJECT_ASSETS.find(asset => asset.id === id) ?? canonicalBuildingById(id) ?? canonicalParkById(id);
   if (!asset) throw new Error(`Unknown placeable asset: ${id}`);
   return asset;
 }
@@ -27,8 +28,8 @@ export function assetForZone(zone: Pick<SiteZone, 'properties'>): PlaceAsset | u
   const properties = zone.properties ?? {};
   const native = OBJECT_ASSETS.find(asset => asset.id === properties.pick_place_asset);
   if (native && properties.development_height_override_m == null && (!properties.development_selected_variant_id || native.model.variantId === properties.development_selected_variant_id)) return native;
-  if (native || properties.pick_place_automatic_3d === true || String(properties.pick_place_asset).startsWith('canonical-building:')) {
-    return canonicalBuildingForProperties(properties);
+  if (native || properties.pick_place_automatic_3d === true || String(properties.pick_place_asset).startsWith('canonical-building:') || String(properties.pick_place_asset).startsWith('canonical-park:')) {
+    return canonicalBuildingForProperties(properties) ?? canonicalParkForProperties(properties);
   }
   return undefined;
 }

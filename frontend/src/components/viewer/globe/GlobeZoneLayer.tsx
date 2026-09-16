@@ -82,6 +82,7 @@ import { resolveBuildingExtrudeHeight, resolveZoneSurfaceMode } from './zoneSurf
 import { useParkGround } from './useParkGround';
 import { createSharedGroundTriangulation, drapeSharedGroundGeometry } from './sharedGroundGeometry';
 import { selectDetailedStreetZones } from './streetDetailLod';
+import { useParkAssemblyGroundOwners } from './ParkAssemblyGround';
 import { streetSectionOwnsGround } from './streetSurfaceMask';
 
 const DEG_TO_RAD = Math.PI / 180;
@@ -1222,7 +1223,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
               map define recompiles (toggling `map` in place leaves it white) */}
           {sectionOwnsGround ? (
             // Retain the editor hit target, but not an independently seated
-            // slab covering the measured street bands or entering captures.
+            // slab covering street bands or recessed park assemblies.
             <meshBasicMaterial colorWrite={false} depthWrite={false} />
           ) : isPreparedBoundary ? (
             <meshStandardMaterial
@@ -1391,6 +1392,8 @@ export function GlobeZoneLayer({
     return () => window.removeEventListener('cityprompt:hide-zone-overlays', onToggle);
   }, []);
   const showPlanningOverlays = planningOverlaysVisible && !overlaysHidden;
+  const parkGroundOwners = useParkAssemblyGroundOwners(zones);
+  const groundCutouts = useMemo(() => [...(preparedGroundCutouts ?? []), ...parkGroundOwners.map(zone => zone.coordinates)], [preparedGroundCutouts, parkGroundOwners]);
   const sectionGroundIds = useMemo(() => new Set(selectDetailedStreetZones(zones.filter(zone =>
     resolveCommunity3DKind(zone) === 'street' && zone.coordinates.length >= 4 && shouldRenderCommunityGround(zone)))
     .filter(streetSectionOwnsGround)
@@ -1420,8 +1423,8 @@ export function GlobeZoneLayer({
             }}
           >
             <ZoneMesh
-              sectionOwnsGround={sectionGroundIds.has(zone.id)}
-              preparedGroundCutouts={preparedGroundCutouts}
+              sectionOwnsGround={sectionGroundIds.has(zone.id) || parkGroundOwners.some(owner => owner.id === zone.id)}
+              preparedGroundCutouts={groundCutouts}
               key={`${zone.id}:${preparedTerrain ?? 'terrain'}`}
               zone={zone}
               isSelected={zone.id === selectedZoneId}

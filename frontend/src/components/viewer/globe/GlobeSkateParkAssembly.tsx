@@ -1,3 +1,5 @@
+import type { SiteZone } from '@/types';
+import { useOwnParkAssemblyGround } from './ParkAssemblyGround';
 import { useEffect, useMemo } from 'react';
 import { useGLTF, useTexture } from '@react-three/drei';
 import * as THREE from 'three';
@@ -133,9 +135,9 @@ function MetricGlb({
   );
 }
 
-function SpectatorBench() {
+function SpectatorBench({ front }: { front: boolean }) {
   return (
-    <group position={[0, 13, 0.18]} rotation={[0, 0, Math.PI]}>
+    <group position={[0, front ? -13 : 13, 0.18]} rotation={[0, 0, front ? 0 : Math.PI]}>
       {[-0.72, 0, 0.72].map((y) => (
         <mesh key={`bench-board-${y}`} position={[0, y * 0.42, 0.62 + (y + 0.72) * 0.16]} renderOrder={SKATE_RENDER_ORDER + 3}>
           <boxGeometry args={[4.2, 0.28, 0.12]} />
@@ -159,14 +161,17 @@ function SpectatorBench() {
 }
 
 function LoadedSkatePark({
+  zone,
   boundary,
   fit,
   terrainZ,
 }: {
+  zone: SiteZone;
   boundary: readonly SkateParkPoint[];
   fit: NonNullable<ReturnType<typeof fitSkateParkV0Program>>;
   terrainZ: (x: number, y: number) => number;
 }) {
+  useOwnParkAssemblyGround(zone);
   const concrete = useArchetypeMaterial('paver', 4);
   const lawn = useArchetypeMaterial('lawn', 5);
   const deckGeometry = useMemo(buildSkateDeckGeometry, []);
@@ -196,22 +201,24 @@ function LoadedSkatePark({
         <MetricGlb url={ASSETS.hubba} />
         <MetricGlb url={ASSETS.rail} position={[0, -8, 0]} />
         <MetricGlb url={ASSETS.ledge} position={[0, 9, 0]} />
-        <SpectatorBench />
+        <SpectatorBench front={zone.properties?.skate_spectator_edge === 'south'} />
       </group>
     </group>
   );
 }
 
 export function GlobeSkateParkAssembly({
+  zone,
   boundary,
   terrainZ,
 }: {
+  zone: SiteZone;
   boundary: readonly SkateParkPoint[];
   terrainZ: (x: number, y: number) => number;
 }) {
   const fit = useMemo(() => fitSkateParkV0Program(boundary), [boundary]);
   if (!fit) return null;
-  return <LoadedSkatePark boundary={boundary} fit={fit} terrainZ={terrainZ} />;
+  return <LoadedSkatePark zone={zone} boundary={boundary} fit={fit} terrainZ={terrainZ} />;
 }
 
 Object.values(ASSETS).forEach((url) => useGLTF.preload(url));
