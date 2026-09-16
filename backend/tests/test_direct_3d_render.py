@@ -2782,12 +2782,16 @@ async def test_provider_call_uses_explicit_size_png_alpha_mask_and_no_fidelity_p
         ("reproject", "isometric"),
     ],
 )
+@pytest.mark.parametrize("add_people,add_vehicles", [(False, False), (True, False), (False, True), (True, True)])
 async def test_provider_first_payload_omits_mask_and_keeps_one_concise_authority(
     monkeypatch,
     presentation_mode,
     style,
+    add_people,
+    add_vehicles,
 ):
     request = _request(presentation_mode=presentation_mode, style=style)
+    request.add_people, request.add_vehicles = add_people, add_vehicles
     capture = prepare_direct_3d_capture(request)
     _RecordingClient.calls = []
     _RecordingClient.response = _FakeResponse(
@@ -2804,6 +2808,8 @@ async def test_provider_first_payload_omits_mask_and_keeps_one_concise_authority
     assert call["data"]["prompt"].count("FINAL PRESERVATION LOCK") == 1
     assert call["data"]["prompt"].count(request.prompt) == 1
     assert len(call["data"]["prompt"]) < 3_500
+    assert ("Do not add people" in call["data"]["prompt"]) is not add_people
+    assert ("Do not add vehicles" in call["data"]["prompt"]) is not add_vehicles
 
 
 @pytest.mark.asyncio

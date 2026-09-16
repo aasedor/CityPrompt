@@ -7,11 +7,17 @@ import {
   isRenderStyleDisabled,
   shouldAutoSaveDirect3D,
   STYLES,
+  apiErrorMessage,
   STYLE_GROUPS,
 } from './GlobeAIRenderPanel';
 import { GLOBE_STYLE_PROMPTS } from './useGlobeAIRender';
 
 describe('Globe AI render panel Direct 3D styles', () => {
+  it('explains availability and network failures while retaining billed error information', () => {
+    expect(apiErrorMessage({response:{status:503,data:{detail:'OpenAI is not configured'}}}, 'Failed')).toContain('Your design is unchanged');
+    expect(apiErrorMessage({message:'Network Error'}, 'Failed')).toContain('Check your connection');
+    expect(apiErrorMessage({response:{data:{detail:{message:'Output needs review.',billed:true}}}}, 'Failed')).toContain('This attempt was charged');
+  });
   it('exposes every Classic aesthetic as a selectable Direct style', () => {
     expect(STYLES).toHaveLength(22);
     expect(new Set(STYLES.map((style) => style.id)))

@@ -212,6 +212,8 @@ class Direct3DRenderRequest(BaseModel):
         ),
     )
     prompt: str = Field(..., min_length=1, max_length=20_000)
+    add_people: bool = Field(default=False, strict=True)
+    add_vehicles: bool = Field(default=False, strict=True)
     presentation_mode: Direct3DPresentationMode = Field(
         default="source_anchored",
         description=(

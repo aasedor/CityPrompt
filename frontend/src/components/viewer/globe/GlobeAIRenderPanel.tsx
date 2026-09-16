@@ -1,5 +1,6 @@
 import { isCatalogueOnlyScene, CATALOGUE_UPDATE_GUIDANCE } from '@/features/pickPlace/catalogue';
 import { useRenderDraft } from './useRenderDraft';
+import { ImagePresentationControls } from './ImagePresentationControls';
 import { DEFAULT_OPENAI_IMAGE_MODEL, imageModelLabel, imageModelsForChoice } from '@/config/imageModels';
 import { ImageModelSelect } from '../ImageModelSelect';
 import { useImageModelChoice } from '../useImageModelChoice';
@@ -101,12 +102,14 @@ function formatImageQualityLabel(quality?: OpenAIImageQuality): string | null {
   return `GPT ${OPENAI_IMAGE_QUALITY_LABELS[quality] ?? quality}`;
 }
 
-function apiErrorMessage(error: unknown, fallback: string): string {
+export function apiErrorMessage(error: unknown, fallback: string): string {
   const candidate = error as {
     message?: unknown;
-    response?: { data?: { detail?: unknown } };
+    response?: { status?: number; data?: { detail?: unknown } };
   };
   const detail = candidate?.response?.data?.detail;
+  if (candidate?.response?.status === 503) return 'Image generation is unavailable right now. Your design is unchanged. Try again later or export the current 3D view.';
+  if (candidate?.message === 'Network Error') return 'The connection was interrupted. Your design is unchanged. Check your connection before trying again.';
   if (typeof detail === 'string' && detail.trim()) return detail;
   if (detail && typeof detail === 'object') {
     const structured = detail as { message?: unknown; billed?: unknown };
@@ -287,7 +290,7 @@ export function GlobeAIRenderPanel({
   const [previews, setPreviews] = useState<GlobeRenderResult[]>([]);
   const [selectedPreviewIndex, setSelectedPreviewIndex] = useState<number | null>(null);
   const draftStyleIds = useMemo(() => STYLES.map(style => style.id), []);
-  const { selectedStyle, setSelectedStyle, customPrompt, setCustomPrompt } = useRenderDraft(projectId, draftStyleIds);
+  const { selectedStyle, setSelectedStyle, customPrompt, setCustomPrompt, addPeople, addVehicles, setAddPeople, setAddVehicles } = useRenderDraft(projectId, draftStyleIds);
   const [highFidelity, setHighFidelity] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [renderPipeline, setRenderPipeline] = useState<GlobeRenderPipeline>(
@@ -297,7 +300,8 @@ export function GlobeAIRenderPanel({
   const [directCapturePreview, setDirectCapturePreview] = useState<Direct3DCaptureQAPreview | null>(null);
   const [directDiagnostics, setDirectDiagnostics] = useState<Direct3DRenderDiagnostics | null>(null);
   const [directFidelityPolicy, setDirectFidelityPolicy] = useState<Direct3DFidelityPolicy>('precise');
-  const { imageModel: directImageModel, setImageModel: setDirectImageModel, availability: imageModelAvailability } = useImageModelChoice();
+  const { imageModel: directImageModel, setImageModel: setDirectImageModel, availability: imageModelAvailability } = useImageModelChoice({ compareByDefault: false });
+  const imageGenerationUnavailable = imageModelsForChoice(directImageModel).some(model => imageModelAvailability?.models.find(entry => entry.id === model)?.available === false);
   const [directReview, setDirectReview] = useState<Direct3DReview | null>(null);
   const directPreviewMetadata = useRef(new Map<string, { diagnostics: Direct3DRenderDiagnostics; review: Direct3DReview | null }>());
   // Development mode gate: at least one zone in the scene is backed by real
@@ -878,7 +882,7 @@ export function GlobeAIRenderPanel({
 
   const handleDirectRender = useCallback(async () => {
     if (isCheckingDirectCapture) return;
-    if (!captureDirect3D || !direct3DAvailable || isRendering) return;
+    if (!captureDirect3D || !direct3DAvailable || isRendering || imageGenerationUnavailable) return;
     if (planGeometryStale) {
       setError(stalePlanMessage ?? 'Redraw the master plan for the current site boundary before rendering.');
       return;
@@ -913,6 +917,8 @@ export function GlobeAIRenderPanel({
         model,
         style: selectedStyle,
         fidelityPolicy: directFidelityPolicy,
+        addPeople,
+        addVehicles,
         customPrompt: customPrompt.trim() || undefined,
         projectId: projectId!,
         community3DClaims: community3DCaptureClaims!,
@@ -958,6 +964,9 @@ export function GlobeAIRenderPanel({
       setIsRendering(false);
     }
   }, [
+    addPeople,
+    addVehicles,
+    imageGenerationUnavailable,
     autoSaveGlobeRenders,
     captureDirect3D,
     customPrompt,
@@ -1187,7 +1196,7 @@ export function GlobeAIRenderPanel({
       ref={panelRef}
       onPointerMove={handlePanelPointerMove}
       onPointerLeave={handlePanelPointerLeave}
-      className={`globe-ai-dynamic-bg flex w-full flex-col overflow-hidden rounded-lg border-2 border-[#151515] shadow-[10px_10px_0_0_#151515] backdrop-blur-xl ${isRendering ? 'mx-auto max-h-[13rem] max-w-md globe-ai-rendering' : 'max-h-[44vh]'}`}
+      className={`globe-ai-dynamic-bg flex w-full flex-col overflow-hidden rounded-lg border-2 border-[#151515] shadow-[10px_10px_0_0_#151515] backdrop-blur-xl ${isRendering ? 'mx-auto max-h-[13rem] max-w-md globe-ai-rendering' : 'max-h-[min(34rem,calc(100dvh-12rem))]'}`}
     >
       {/* Header */}
       <div
@@ -1202,11 +1211,11 @@ export function GlobeAIRenderPanel({
             <span className="flex h-7 w-7 items-center justify-center rounded-lg border-2 border-[#151515] bg-[#28c7e8] text-[#151515] shadow-[2px_2px_0_0_#151515]">
               <Orbit size={15} />
             </span>
-            Render (Globe)
+            Render this view · Image
           </h3>
           <div className="flex items-center gap-2 text-[10px] font-black uppercase text-[#151515]/60">
             <Camera size={12} />
-            3D Capture
+            Current view
             <GripHorizontal size={13} className="text-[#151515]/35" />
             {onClose && (
               <button
@@ -1215,7 +1224,7 @@ export function GlobeAIRenderPanel({
                   event.stopPropagation();
                   onClose();
                 }}
-                className="ml-1 flex h-7 w-7 items-center justify-center rounded-full border-2 border-[#151515] bg-[#ff5a3d] text-white shadow-[2px_2px_0_0_#151515] transition hover:bg-[#ff725c] focus:outline-none focus:ring-2 focus:ring-[#c9ff3d]"
+                className="ml-1 flex h-11 w-11 items-center justify-center rounded-full border-2 border-[#151515] bg-[#ff5a3d] text-white shadow-[2px_2px_0_0_#151515] transition hover:bg-[#ff725c] focus:outline-none focus:ring-2 focus:ring-[#c9ff3d]"
                 aria-label="Close AI Render panel"
                 title="Close"
               >
@@ -1247,6 +1256,13 @@ export function GlobeAIRenderPanel({
         </div>
       ) : (
       <div className="min-h-0 flex-1 overflow-y-auto">
+      {renderPipeline === 'direct3d' && <ImagePresentationControls style={selectedStyle}
+        onStyle={style => { setSelectedStyle(style); setDirectFidelityPolicy(resolveDirect3DFidelityPolicy(style)); }}
+        addPeople={addPeople} addVehicles={addVehicles} onPeople={setAddPeople} onVehicles={setAddVehicles} />}
+      {!direct3DAvailable && renderPipeline === 'direct3d' && <p role="status" className="bg-slate-900 px-4 py-2 text-sm text-amber-200">{direct3DUnavailableReason}</p>}
+      {imageGenerationUnavailable && renderPipeline === 'direct3d' && <p role="status" className="bg-slate-900 px-4 py-2 text-sm text-amber-200">Image generation is unavailable right now. You can still export your current 3D view below.</p>}
+      <details className="border-b border-white/20 bg-slate-900/90 text-white">
+      <summary className="min-h-11 cursor-pointer px-4 py-3 text-sm font-bold focus-visible:outline focus-visible:outline-2 focus-visible:outline-lime-300">Advanced image controls</summary>
       <div className="border-b-2 border-white/10 px-4 py-2">
         <div className="flex items-start gap-2 rounded-lg border-2 border-[#151515] bg-[#c9ff3d] px-3 py-2 text-[#151515] shadow-[3px_3px_0_0_#151515]">
           <Camera size={15} className="mt-0.5 shrink-0" />
@@ -1409,43 +1425,33 @@ export function GlobeAIRenderPanel({
       </div>
 
       {/* Error display */}
+      </details>
       {error && (
         <div className="px-4 py-2">
-          <div className="rounded-lg border-2 border-[#ff5a3d] bg-red-500/20 px-3 py-2 text-xs font-bold text-red-200">
+          <div role="alert" className="rounded-lg border-2 border-[#ff5a3d] bg-red-500/20 px-3 py-2 text-xs font-bold text-red-200">
             {error}
           </div>
         </div>
       )}
 
       {renderPipeline === 'direct3d' && (
-        <div className="border-b-2 border-white/10 px-4 py-2">
+        <details className="border-b border-white/20 bg-slate-900/90 px-4 py-2 text-white">
+          <summary className="min-h-11 cursor-pointer py-3 text-sm font-bold">Source checks · advanced</summary>
           <div className="flex items-center justify-between gap-3">
             <div>
-              <p className="text-[10px] font-black uppercase text-white/60">Capture safety check</p>
-              <p className="text-[9px] font-semibold text-white/40">Free · never reused for the paid render</p>
+              <p className="text-sm font-bold text-white">Original 3D view</p>
+              <p className="text-xs text-white/80">Free preview and export</p>
             </div>
             <button
               type="button"
               onClick={handleCheckDirectCapture}
               disabled={!direct3DAvailable || isCheckingDirectCapture || isRendering}
-              className="flex items-center gap-1.5 rounded-full border border-cyan-200/40 bg-cyan-300/10 px-2.5 py-1.5 text-[10px] font-black uppercase text-cyan-100 transition hover:bg-cyan-300/20 disabled:opacity-40"
+              className="flex min-h-11 items-center gap-1.5 rounded-lg border border-cyan-200/60 bg-slate-900 px-3 text-sm font-bold text-cyan-100 transition hover:bg-slate-800 disabled:opacity-40"
             >
               {isCheckingDirectCapture ? <Loader2 size={11} className="animate-spin" /> : <Camera size={11} />}
-              {isCheckingDirectCapture ? 'Checking…' : 'Check Direct Capture'}
+              {isCheckingDirectCapture ? 'Preparing…' : 'Check source details'}
             </button>
           </div>
-          <button type="button" className="mt-2 min-h-11 w-full rounded-lg border border-white/40 px-3 text-sm font-bold text-white" disabled={!direct3DAvailable || isCheckingDirectCapture || isRendering}
-            onClick={async () => {
-              if (!captureDirect3D || isCheckingDirectCapture || isRendering) return;
-              setIsCheckingDirectCapture(true); setError(null);
-              try {
-                await onBeforeRender?.();
-                const capture = await captureDirect3D({ includeGeometryPasses: false, maxLongEdge: 2048 });
-                setLightboxRender({ imageUrl: capture.beautyImageBase64.startsWith('data:') ? capture.beautyImageBase64 : `data:image/png;base64,${capture.beautyImageBase64}`,
-                  style: 'Original 3D view', providerLabel: 'Exact 3D capture · no AI changes', downloadName: `cityprompt-3d-view-${Date.now()}.png`, canSave: false });
-              } catch (err) { setError(apiErrorMessage(err, 'Could not export the current 3D view.')); }
-              finally { setIsCheckingDirectCapture(false); }
-            }}>Export current 3D view · free</button>
           {directCapturePreview && (
             <div className="mt-2">
               <div className="mb-1.5 flex flex-wrap gap-x-3 gap-y-0.5 text-[9px] font-bold text-white/55">
@@ -1472,7 +1478,7 @@ export function GlobeAIRenderPanel({
               </div>
             </div>
           )}
-        </div>
+        </details>
       )}
 
       {/* Preview grid (only when multiple previews exist) */}
@@ -1970,11 +1976,26 @@ export function GlobeAIRenderPanel({
             Redraw the master plan for the current boundary before rendering.
           </p>
         )}
+        {renderPipeline === 'direct3d' && (
+          <button type="button" className="mb-2 min-h-11 w-full rounded-lg border-2 border-slate-900 bg-white px-3 text-sm font-bold text-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900" disabled={!direct3DAvailable || isCheckingDirectCapture || isRendering}
+            onClick={async () => {
+              if (!captureDirect3D || isCheckingDirectCapture || isRendering) return;
+              setIsCheckingDirectCapture(true); setError(null);
+              try {
+                await onBeforeRender?.();
+                const capture = await captureDirect3D({ includeGeometryPasses: false, maxLongEdge: 2048 });
+                setLightboxRender({ imageUrl: capture.beautyImageBase64.startsWith('data:') ? capture.beautyImageBase64 : `data:image/png;base64,${capture.beautyImageBase64}`,
+                  style: 'Original 3D view', providerLabel: 'Exact 3D capture · no AI changes', downloadName: `cityprompt-3d-view-${Date.now()}.png`, canSave: false });
+              } catch (err) { setError(apiErrorMessage(err, 'Could not export the current 3D view.')); }
+              finally { setIsCheckingDirectCapture(false); }
+            }}>Export current 3D view · free</button>
+        )}
         <button
           onClick={handleRender}
           disabled={
             planGeometryStale
             || isRendering
+            || (renderPipeline === 'direct3d' && imageGenerationUnavailable)
             || !canvas
             || !camera
             || (renderPipeline === 'direct3d' && !direct3DAvailable)
@@ -2002,12 +2023,12 @@ export function GlobeAIRenderPanel({
             <>
               <Camera size={16} />
               <span className="flex min-w-0 flex-col leading-tight">
-                <span>{renderPipeline === 'direct3d' ? 'Render Direct 3D' : 'Generate Current View Previews'}</span>
+                <span>{renderPipeline === 'direct3d' ? 'Generate image' : 'Generate Current View Previews'}</span>
                 <span className="text-[10px] font-bold opacity-70">
                   {renderPipeline === 'direct3d'
                     ? directImageModel === 'compare-all-three'
                       ? '3 image calls · GPT Image 2, Flare, Sunburst · all saved to Project Renders'
-                      : DIRECT_3D_CALL_DESCRIPTION
+                      : '1 image · uses your current view'
                     : `${renderCallCount} image call${renderCallCount === 1 ? '' : 's'} · uses the globe view on screen now`}
                 </span>
               </span>

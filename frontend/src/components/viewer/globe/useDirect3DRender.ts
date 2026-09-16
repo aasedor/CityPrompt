@@ -42,12 +42,12 @@ export const DIRECT_3D_DEFAULT_ART_DIRECTIONS: Readonly<Record<string, string>> 
   'marker-render': 'Create a professional architectural marker rendering with precise ink linework, visible directional marker strokes, warm greys and ochres, restrained landscape colour and deliberate white highlights.',
   'pen-and-ink': 'Create a precise architectural pen-and-ink illustration on warm paper using varied line weights, discrete hatching and stippling, crisp construction edges and no colour wash.',
   survey: 'Create a neutral large-format architectural survey photograph from the supplied viewpoint, with even daylight, true-to-life colour, edge-to-edge clarity and highly legible materials, buildings, streets and landscape.',
-  documentary: 'Create calm documentary architectural photography with flat natural daylight, restrained true-to-life colour, honest material variation and an ordinary inhabited quality without cinematic dramatization.',
+  documentary: 'Create calm documentary architectural photography with soft overcast daylight, restrained true-to-life colour, honest material variation and an ordinary inhabited quality without cinematic dramatization.',
   'site-plan': 'Create a clean north-up orthographic architectural site plan with precise linework, a restrained pastel palette, clear circulation, simple top-down trees and professional planning-drawing legibility.',
   'site-plan-photo': 'Create a near-nadir photographic drone site-plan view with realistic roofs, landscape, streets and short shadows, integrated seamlessly with the surrounding city context.',
   blueprint: 'Create a strict orthographic architectural blueprint with crisp white construction linework, hatching and tree symbols on a deep Prussian-blue cyanotype ground with subtle aged-paper texture.',
   'site-plan-watercolor': 'Create a near-nadir architectural site plan as a refined hand-painted watercolour with translucent ochre, sage, grey and ultramarine washes, faint pencil construction lines and clearly legible site organization.',
-  isometric: 'Create a clean 30-degree axonometric architectural visualization with consistent parallel projection and no perspective distortion, in the manner of a contemporary urban-design diagram. Buildings keep their existing colours as softly lit matte volumes with crisp edges, simple readable facade detail and gentle ambient occlusion; streets and paths are tidy neutral bands; trees are neat stylized canopies; a few small-scale people and vehicles add life. Place the scene on a flat white or very pale ground with soft consistent shadows to one side and an immaculate presentation-board finish.',
+  isometric: 'Create a clean 30-degree axonometric architectural visualization with consistent parallel projection and no perspective distortion, in the manner of a contemporary urban-design diagram. Buildings keep their existing colours as softly lit matte volumes with crisp edges, simple readable facade detail and gentle ambient occlusion; streets and paths are tidy neutral bands; trees are neat stylized canopies; Place the scene on a flat white or very pale ground with soft consistent shadows to one side and an immaculate presentation-board finish.',
   'clay-maquette': 'Create high-angle studio photography of a monochrome pure-white plaster architectural scale model, using soft overhead light and ambient-occlusion shadows to reveal form without any coloured materials.',
   woodblock: 'Create a graphic architectural woodblock print with bold carved outlines, visible wood grain and a restrained vintage palette of crisp flat colours.',
   collage: 'Create a refined post-digital architectural collage with layered paper, carefully cut photographic textures, restrained colour blocks and competition-board composition while keeping the design clearly readable.',
@@ -339,6 +339,8 @@ export function useDirect3DRender() {
       model?: OpenAIImageModel;
       fidelityPolicy?: Direct3DFidelityPolicy;
       customPrompt?: string;
+      addPeople?: boolean;
+      addVehicles?: boolean;
       projectId: string;
       community3DClaims: Community3DCaptureClaim[];
       residualLandscapeClaim?: ResidualLandscapeClaim | null;
@@ -411,6 +413,8 @@ export function useDirect3DRender() {
       },
       prompt,
       style: options.style,
+      add_people: options.addPeople === true,
+      add_vehicles: options.addVehicles === true,
       fidelity_policy: fidelityPolicy,
       presentation_mode: presentationMode,
       project_id: options.projectId,

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-type RenderDraft = { selectedStyle: string; customPrompt: string };
-const DEFAULT_DRAFT: RenderDraft = { selectedStyle: 'photorealistic', customPrompt: '' };
+type RenderDraft = { selectedStyle: string; customPrompt: string; addPeople: boolean; addVehicles: boolean };
+const DEFAULT_DRAFT: RenderDraft = { selectedStyle: 'photorealistic', customPrompt: '', addPeople: false, addVehicles: false };
 
 /** Closing the panel to frame a camera must not discard the student's directions. */
 export function useRenderDraft(projectId: string | undefined, styleIds: readonly string[]) {
@@ -12,6 +12,8 @@ export function useRenderDraft(projectId: string | undefined, styleIds: readonly
       return {
         selectedStyle: styleIds.includes(saved?.selectedStyle) ? saved.selectedStyle as string : DEFAULT_DRAFT.selectedStyle,
         customPrompt: typeof saved?.customPrompt === 'string' ? saved.customPrompt as string : '',
+        addPeople: saved?.addPeople === true,
+        addVehicles: saved?.addVehicles === true,
       };
     } catch { return DEFAULT_DRAFT; }
   }, [key, styleIds]);
@@ -26,5 +28,7 @@ export function useRenderDraft(projectId: string | undefined, styleIds: readonly
   }, [key, initial]);
   const setSelectedStyle = useCallback((selectedStyle: string) => update({ selectedStyle }), [update]);
   const setCustomPrompt = useCallback((customPrompt: string) => update({ customPrompt }), [update]);
-  return { ...draft, setSelectedStyle, setCustomPrompt };
+  const setAddPeople = useCallback((addPeople: boolean) => update({ addPeople }), [update]);
+  const setAddVehicles = useCallback((addVehicles: boolean) => update({ addVehicles }), [update]);
+  return { ...draft, setSelectedStyle, setCustomPrompt, setAddPeople, setAddVehicles };
 }

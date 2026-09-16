@@ -6,6 +6,16 @@ const styles = ['photorealistic', 'watercolour'];
 beforeEach(() => { sessionStorage.clear(); vi.restoreAllMocks(); });
 
 describe('render panel drafts', () => {
+  it('defaults old drafts to no entourage and remembers only explicit selections per project', () => {
+    sessionStorage.setItem('cityprompt:render-draft:a', JSON.stringify({selectedStyle:'photorealistic', customPrompt:'Add crowds', addVehicles:'true'}));
+    const hook = renderHook(({id}) => useRenderDraft(id, styles), {initialProps:{id:'a'}});
+    expect(hook.result.current.addPeople).toBe(false); expect(hook.result.current.addVehicles).toBe(false);
+    act(() => hook.result.current.setAddPeople(true));
+    hook.rerender({id:'b'}); expect(hook.result.current.addPeople).toBe(false);
+    hook.unmount();
+    const reopened = renderHook(() => useRenderDraft('a', styles));
+    expect(reopened.result.current.addPeople).toBe(true); expect(reopened.result.current.addVehicles).toBe(false);
+  });
   it('retains directions and style after closing and reopening', () => {
     const first = renderHook(() => useRenderDraft('site-a', styles));
     act(() => { first.result.current.setSelectedStyle('watercolour'); first.result.current.setCustomPrompt('Two people on the existing path'); });

@@ -22,9 +22,29 @@ from app.services.direct_3d_render import (
 from app.services.render_fidelity import (
     RENDER_PRESERVATION_LOCK,
     append_render_preservation_lock,
+    apply_presentation_selections,
 )
 from app.services.render_provenance import build_render_source_snapshot
 from tests.test_direct_3d_render import TEST_ZONE_ID, _png_b64, _request
+
+
+@pytest.mark.parametrize("people,vehicles", [(False, False), (True, False), (False, True), (True, True)])
+def test_entourage_is_explicit_bounded_and_does_not_change_scene_provenance(people, vehicles):
+    request, zone, building = _snapshot_inputs()
+    before = build_render_source_snapshot(request, [zone], [building], captured_at="before")
+    assert request.add_people is False and request.add_vehicles is False
+    request.add_people, request.add_vehicles = people, vehicles
+    after = build_render_source_snapshot(request, [zone], [building], captured_at="after")
+    assert before["plan_revision_sha256"] == after["plan_revision_sha256"]
+    assert before["camera_revision_sha256"] == after["camera_revision_sha256"]
+    assert after["presentation"]["add_people"] is people
+    assert after["presentation"]["add_vehicles"] is vehicles
+    prompt = apply_presentation_selections("Add crowds and traffic. " * 2000, add_people=people, add_vehicles=vehicles)
+    assert len(prompt) <= 32000
+    assert ("Do not add people" in prompt) is not people
+    assert ("Do not add vehicles" in prompt) is not vehicles
+    assert "Preserve any people or vehicles already captured" in prompt
+    assert prompt.endswith(RENDER_PRESERVATION_LOCK)
 
 
 def _snapshot_inputs():
