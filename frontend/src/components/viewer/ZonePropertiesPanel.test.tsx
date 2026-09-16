@@ -32,6 +32,7 @@ vi.mock('./aestheticCatalog', async (importOriginal) => {
   const actual = await importOriginal<typeof import('./aestheticCatalog')>();
   const industrialBrick = {
     id: 'industrial_brick_mixed_use',
+    calgaryGuide: actual.BUILDING_AESTHETIC_OPTIONS_V2.find(option => option.id === 'industrial_brick_mixed_use')!.calgaryGuide,
     categoryId: 'industrial_brick',
     label: 'Industrial Brick Mixed Use',
     description: 'Adapted industrial building with brick piers and large windows.',
@@ -113,6 +114,7 @@ vi.mock('./aestheticCatalog', async (importOriginal) => {
   };
   const streetOption = (id: string, label: string, width: number, volume: 'low' | 'medium') => ({
     id,
+    calgaryGuide: actual.ROADWAY_AESTHETIC_OPTIONS_V2.find(option => option.id === id)!.calgaryGuide,
     categoryId: 'auto_oriented',
     label,
     description: `${label} catalog description.`,
@@ -156,6 +158,7 @@ vi.mock('./aestheticCatalog', async (importOriginal) => {
   ];
   const urbanPocketPark = {
     id: 'urban_pocket_park',
+    calgaryGuide: actual.OPENSPACE_AESTHETIC_OPTIONS_V2.find(option => option.id === 'urban_pocket_park')!.calgaryGuide,
     categoryId: 'neighborhood_public_realm',
     label: 'Urban Pocket Park',
     description: 'Compact landscaped public room.',
@@ -174,6 +177,7 @@ vi.mock('./aestheticCatalog', async (importOriginal) => {
   };
   const neighborhoodPark = {
     id: 'neighborhood_park',
+    calgaryGuide: actual.OPENSPACE_AESTHETIC_OPTIONS_V2.find(option => option.id === 'neighborhood_park')!.calgaryGuide,
     categoryId: 'neighborhood_public_realm',
     label: 'Neighborhood Park',
     description: 'Everyday community park with recreation and planting.',

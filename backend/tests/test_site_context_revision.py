@@ -1,4 +1,5 @@
 """Context enrichment preserves edit authorization and revision-safe undo."""
+
 from datetime import datetime, timezone, timedelta
 from types import SimpleNamespace
 from unittest.mock import AsyncMock, MagicMock
@@ -20,19 +21,29 @@ def scalar(value):
 @pytest.mark.parametrize("mode", ["success", "conflict", "unauthorized"])
 async def test_context_revision_contract(mode, client, mock_db, test_user, auth_headers, monkeypatch):
     before = datetime(2026, 9, 16, tzinfo=timezone.utc)
-    zone = SimpleNamespace(id=uuid.uuid4(), project_id=uuid.uuid4(), zone_type="site_boundary",
-                           geometry=None, properties={"terrain_elevation_m": 1102}, updated_at=before)
+    zone = SimpleNamespace(
+        id=uuid.uuid4(),
+        project_id=uuid.uuid4(),
+        zone_type="site_boundary",
+        geometry=None,
+        properties={"terrain_elevation_m": 1102},
+        updated_at=before,
+    )
     project = FakeProject(id=zone.project_id, owner_id=test_user.id if mode != "unauthorized" else uuid.uuid4())
     mock_db.execute = AsyncMock(side_effect=[scalar(test_user), scalar(zone), scalar(project), scalar(None)])
-    fetch = AsyncMock(return_value={"buildings": [], "roads": [], "parks": [], "water": [], "fetched_at": before.isoformat()})
+    fetch = AsyncMock(
+        return_value={"buildings": [], "roads": [], "parks": [], "water": [], "fetched_at": before.isoformat()}
+    )
     monkeypatch.setattr(site_zones, "OSMContextFetcher", lambda: SimpleNamespace(fetch=fetch))
-    monkeypatch.setattr(site_zones, "to_shape", lambda _: Polygon([(0,0),(1,0),(1,1),(0,1)]))
+    monkeypatch.setattr(site_zones, "to_shape", lambda _: Polygon([(0, 0), (1, 0), (1, 1), (0, 1)]))
     lock = AsyncMock()
     monkeypatch.setattr(site_zones, "lock_residual_landscape_project", lock)
+
     async def refresh(_):
         if mode == "conflict":
             zone.updated_at = before + timedelta(seconds=1)
             zone.properties = {"terrain_elevation_m": 1105, "name": "newer authored edit"}
+
     mock_db.refresh = AsyncMock(side_effect=refresh)
     response = await client.post(f"/api/v1/site-zones/{zone.id}/fetch-context", headers=auth_headers)
     if mode == "unauthorized":

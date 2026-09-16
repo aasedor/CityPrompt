@@ -24,4 +24,6 @@ def test_locked_recipe_recheck_enforces_the_saved_height_override():
     with patch("app.api.v1.lego_assembly.plan_vertical_assembly", return_value={"assembled_height_m": 7}):
         assert _strict_locked_building_plan([], "infill", (12, 16, 2, "rectangle", None), {})["assembled_height_m"] == 7
         with pytest.raises(AssemblyPlanningError):
-            _strict_locked_building_plan([], "infill", (12, 16, 2, "rectangle", None), {"development_height_override_m": 12})
+            _strict_locked_building_plan(
+                [], "infill", (12, 16, 2, "rectangle", None), {"development_height_override_m": 12}
+            )
