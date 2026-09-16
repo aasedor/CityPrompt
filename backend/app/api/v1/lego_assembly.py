@@ -2113,7 +2113,9 @@ async def place_community_3d(
                 building, building_created = await _place_recipe_on_zone(db, zone, item.recipe)
             else:
                 linked_building = project_buildings_by_id.get(str(zone.building_id))
-                if _is_source_locked_rlasm_model(linked_building) and not (zone.properties or {}).get("development_height_override_m"):
+                if _is_source_locked_rlasm_model(linked_building) and not (zone.properties or {}).get(
+                    "development_height_override_m"
+                ):
                     building = _place_source_locked_rlasm_on_zone(zone, linked_building)
                     building_generator = "meshy"
                     source_locked_rlasm = True

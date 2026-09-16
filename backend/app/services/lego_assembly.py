@@ -158,7 +158,12 @@ def assert_authored_height(plan: dict[str, Any], target_height_m: float | None) 
     if target_height_m is None:
         return
     actual = float(plan.get("assembled_height_m", 0))
-    if not math.isfinite(actual) or not math.isfinite(target_height_m) or target_height_m <= 0 or abs(actual - target_height_m) > .05:
+    if (
+        not math.isfinite(actual)
+        or not math.isfinite(target_height_m)
+        or target_height_m <= 0
+        or abs(actual - target_height_m) > 0.05
+    ):
         raise AssemblyPlanningError(
             "A detailed model is not available at the requested height. Design massing preserves your height.",
             requested={"height_m": target_height_m},

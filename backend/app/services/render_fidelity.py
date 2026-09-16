@@ -18,15 +18,20 @@ def presentation_entourage_lock(*, add_people: bool = False, add_vehicles: bool 
     people = (
         "Add a restrained number of realistically scaled people only on existing visible sidewalks, paths or plazas, "
         "with ground contact and correct occlusion; keep entrances clear."
-        if add_people else "Do not add people, even if the style or custom text suggests them."
+        if add_people
+        else "Do not add people, even if the style or custom text suggests them."
     )
     vehicles = (
         "Add a restrained number of realistically scaled vehicles only in existing lanes or parking spaces, "
         "aligned with the street, with ground contact and correct occlusion; keep sidewalks clear."
-        if add_vehicles else "Do not add vehicles, even if the style or custom text suggests them."
+        if add_vehicles
+        else "Do not add vehicles, even if the style or custom text suggests them."
     )
     return (
-        "EXPLICIT PRESENTATION SELECTIONS: " + people + " " + vehicles
+        "EXPLICIT PRESENTATION SELECTIONS: "
+        + people
+        + " "
+        + vehicles
         + " Preserve any people or vehicles already captured in the existing context. "
         "These selections never permit changes to camera, buildings, streets, park layout, paths or furniture."
     )
@@ -41,5 +46,10 @@ def append_render_preservation_lock(prompt: str, *, max_length: int = 32_000) ->
 
 
 def apply_presentation_selections(prompt: str, *, add_people: bool = False, add_vehicles: bool = False) -> str:
-    suffix = "\n" + presentation_entourage_lock(add_people=add_people, add_vehicles=add_vehicles) + "\n" + RENDER_PRESERVATION_LOCK
-    return prompt.removesuffix(RENDER_PRESERVATION_LOCK)[:32_000 - len(suffix)].rstrip() + suffix
+    suffix = (
+        "\n"
+        + presentation_entourage_lock(add_people=add_people, add_vehicles=add_vehicles)
+        + "\n"
+        + RENDER_PRESERVATION_LOCK
+    )
+    return prompt.removesuffix(RENDER_PRESERVATION_LOCK)[: 32_000 - len(suffix)].rstrip() + suffix
