@@ -1097,14 +1097,21 @@ async def fetch_context(
     if zone.zone_type != "site_boundary":
         raise HTTPException(status_code=400, detail="Only site_boundary zones support context fetching")
 
+    await _ensure_project_access(db, zone.project_id, user, write=True)
+    source_updated_at = zone.updated_at
     shape = to_shape(zone.geometry)
     fetcher = OSMContextFetcher()
     osm_context = await fetcher.fetch(shape)
 
-    # Store in zone properties
+    # Fetching context must not overwrite an edit made while the network was slow.
+    await lock_residual_landscape_project(db, zone.project_id)
+    await db.refresh(zone)
+    _check_expected_zone_version(zone, source_updated_at)
+    # Store derived context and report precisely which local revision advanced.
     updated_props = dict(zone.properties or {})
     updated_props["_osm_context"] = osm_context
     zone.properties = updated_props
+    zone.updated_at = datetime.now(timezone.utc)
     await db.flush()
     await db.refresh(zone)
 
@@ -1112,6 +1119,9 @@ async def fetch_context(
     from app.schemas.schemas import OSMContextBuilding, OSMContextRoad, OSMContextFeature
 
     return OSMContextResponse(
+        zone_id=zone.id,
+        source_updated_at=source_updated_at,
+        updated_at=zone.updated_at,
         buildings=[
             OSMContextBuilding(
                 osm_id=b["osm_id"],

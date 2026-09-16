@@ -519,6 +519,9 @@ export interface OSMContextFeature {
 }
 
 export interface OSMContext {
+  zone_id?: string;
+  source_updated_at?: string;
+  updated_at?: string;
   buildings: OSMContextBuilding[];
   roads: OSMContextRoad[];
   water: OSMContextFeature[];

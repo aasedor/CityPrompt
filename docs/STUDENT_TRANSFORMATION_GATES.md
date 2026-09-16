@@ -21,7 +21,7 @@ This file records actual status. Unchecked phases are not implemented or accepte
 | 10. Render This View | Controls verified; image acceptance pending | All 22 original styles in the primary picker (user correction, 16 September); explicit persisted people/vehicle flags and provenance; one-image default; advanced provider controls; free export; keyboard/three viewports; unavailable/network recovery. See IMAGE_PRESENTATION_CHECKPOINT.md. No paid image quality acceptance yet |
 | 11. Image fidelity | Failure contract verified; visual acceptance open | Synthetic rejection + actual one-image source/raw/returned comparison; camera/provenance retained; no automatic retries. Professional image quality and detailed identity remain open; see IMAGE_FIDELITY_CHECKPOINT.md |
 | 12. Video | Pending | Deterministic Start→End, named motion and useful tour; guide/finished comparison if funded and supported |
-| 13. Hardening | Pending | Measured performance, keyboard/focus/responsive, persistence/undo/older states, safe failures, console/network |
+| 13. Hardening | In progress | Boundary context enrichment/undo/redo/reload verified; see CONTEXT_UNDO_CHECKPOINT.md. Broader performance, accessibility, persistence/older states and failure matrix remain open |
 | 14. Final acceptance | Pending | Fresh novice journey and professional sanity checks; all applicable gates and local evidence package |
 
 Grounding, RLASM identity and data recoverability are release gates. Passing source

@@ -41,8 +41,9 @@ assuming free-tier coverage. The US $10 aggregate ceiling remains in force.
 
 The full novice journey is not yet accepted. Catalogue coverage and editing
 remain subsequent phases. A boundary undo attempt returned HTTP 409 after
-derived grounding updated the zone; dedicated undo/revision investigation is
-required before persistence acceptance. An agent navigation to `/projects/new`
+background context enrichment updated the zone. This was repaired and verified
+on 16 September; see `CONTEXT_UNDO_CHECKPOINT.md`. Broader persistence acceptance
+remains open. An agent navigation to `/projects/new`
 produced 422s: creation actually uses the Projects page's New Project button.
 This was not a visible broken link. No production data or benchmark geometry
 was altered by this UI checkpoint.

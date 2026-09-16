@@ -11,6 +11,7 @@ import { useViewerStore, useAuthStore } from '@/store';
 import { draftToZone, isDiscardableDraft, useZoneDrafts, type ZoneDraft } from './zoneDrafts';
 import { useUndoRedoStore } from '@/store/undoRedo';
 import {
+  advanceDerivedZoneRevision,
   createZoneCreateAction,
   createZoneDeleteAction,
   createZoneUpdateAction,
@@ -169,6 +170,12 @@ export function useSiteZones(projectId: string | undefined) {
         toast.success('Site boundary saved. Loading surrounding context…');
         void siteZonesApi.fetchContext(createdZone.id).then((context) => {
           if (useUndoRedoStore.getState().projectId !== projectId) return;
+          if (context.zone_id === createdZone.id && context.source_updated_at && context.updated_at) {
+            advanceDerivedZoneRevision(queryClient, projectId, createdZone.id, context.source_updated_at, context.updated_at);
+            queryClient.setQueryData<SiteZone[]>(['site-zones', projectId], old => old?.map(zone =>
+              zone.id === createdZone.id && zone.updated_at === context.source_updated_at
+                ? { ...zone, updated_at: context.updated_at!, properties: { ...zone.properties, _osm_context: context } } : zone));
+          }
           const { setOSMContext } = useViewerStore.getState();
           setOSMContext(context);
           void queryClient.invalidateQueries({ queryKey: ['site-zones', projectId] });

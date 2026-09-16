@@ -54,6 +54,7 @@ export function createZoneCreateAction(
   queryClient: QueryClient,
 ): UndoableAction {
   const originalZoneId = createdZone.id;
+  let restoreZone = createdZone;
   const idRef: IdRef = { current: createdZone.id, revision: createdZone.updated_at };
   rememberRevision(queryClient, projectId, createdZone.id, createdZone.updated_at);
 
@@ -63,17 +64,20 @@ export function createZoneCreateAction(
     getZoneId: () => idRef.current,
     matchesZoneId: (zoneId) => zoneId === originalZoneId || zoneId === idRef.current,
     undo: async () => {
-      await siteZonesApi.delete(idRef.current, currentRevision(queryClient, projectId, idRef.current, idRef.revision), { skipHistory: true });
+      const expected = currentRevision(queryClient, projectId, idRef.current, idRef.revision);
+      const current = queryClient.getQueryData<SiteZone[]>(['site-zones', projectId])?.find(zone => zone.id === idRef.current);
+      await siteZonesApi.delete(idRef.current, expected, { skipHistory: true });
+      if (current && current.updated_at === expected) restoreZone = current;
       await invalidateZones(queryClient, projectId);
     },
     redo: async () => {
       const zone = await siteZonesApi.create(projectId, {
-        name: createdZone.name,
-        zone_type: createdZone.zone_type,
-        coordinates: createdZone.coordinates,
-        color: createdZone.color,
-        properties: createdZone.properties,
-        sort_order: createdZone.sort_order,
+        name: restoreZone.name,
+        zone_type: restoreZone.zone_type,
+        coordinates: restoreZone.coordinates,
+        color: restoreZone.color,
+        properties: restoreZone.properties,
+        sort_order: restoreZone.sort_order,
       }, { skipHistory: true });
       idRef.current = zone.id;
       idRef.revision = zone.updated_at;
