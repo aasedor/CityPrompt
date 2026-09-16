@@ -15,7 +15,7 @@ This file records actual status. Unchecked phases are not implemented or accepte
 | 4. Building placement/editing | Interaction slice verified | Canonical click placement; street-facing/manual rotation; move/type/height/resize; native-to-massing and undo; exact reload coordinates. Ground contact and broad identity acceptance remain open; see BUILDING_EDITING_CHECKPOINT.md |
 | 5. Streets/intersections | Interaction slice verified | UI-drawn straight/angled/T/X network; atomic type/width edits and undo/redo; pedestrian surface inspection and fixed benchmark views. Natural-slope/acute/curved acceptance remains open; see STREET_EDITING_CHECKPOINT.md |
 | 6. Reviewed parks | Interaction slice verified | Canonical click placement; reviewed skate and adaptive neighbourhood assemblies; recessed ground ownership; seating edit/undo/redo and exact reload coordinates. Slope seams, wider component/entrance coverage and final visuals remain open; see PARK_EDITING_CHECKPOINT.md |
-| 7. Google grounding | Pending | Flat/slope/contact matrix; asynchronous refinement; context reload; no major floating/sinking or Z drift |
+| 7. Google grounding | In progress | Early manual camera ownership fixed; terrain/contact matrix, asynchronous refinement and reload gates remain open |
 | 8. Alternate context pilot | Pending | Permitted small sample, provenance/datum/transform, reload/toggle invariance, performance, Lux delivery contract |
 | 9. Environment/presentation | Pending | Semantic deterministic placement, collisions/entrances/terrain; same-camera visual comparison |
 | 10. Render This View | Pending | Current camera, concise presets, opt-in people/vehicles, hidden provider controls |
@@ -62,3 +62,10 @@ Authenticated benchmark, fixed views, deterministic source capture and a clean
 reload are verified. No final media, complete student journey, natural-slope
 grounding pass or performance improvement is claimed. See the Gold Standard
 record and architecture report for defects and coverage limits.
+
+Phase 7 navigation correction: Top View and manual Focus Plan now cancel queued
+startup framing using the same interaction generation as pointer navigation.
+An immediate Top View after reload retained exactly equal ECEF position and
+quaternion 31 seconds later, after asynchronous loading (`phase7-top-*` and
+visually inspected `PHASE7-TOP-SETTLED.png`). Fourteen existing camera/focus
+tests, TypeScript and changed-file ESLint pass. This does not accept grounding.

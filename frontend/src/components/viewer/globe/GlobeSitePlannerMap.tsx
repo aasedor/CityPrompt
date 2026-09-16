@@ -2194,11 +2194,22 @@ export function GlobeSitePlannerMap({
     }
   }, []);
 
+  const markUserInteracted = useCallback(() => {
+    focusedSiteAnchorRef.current = null;
+    // A real pointer/wheel/keyboard gesture must immediately cancel every
+    // pending initial/auto-frame retry. Waiting until the delayed canvas reveal
+    // flag is set lets a retry move the camera between polygon vertices.
+    hasUserInteractedRef.current = true;
+    cameraInteractionGenerationRef.current += 1;
+    projectFrameRequestGenerationRef.current += 1;
+  }, []);
+
   const requestProjectFrame = useCallback(async (
     renderZones: Array<{ coordinates?: [number, number][]; properties?: SiteZone['properties']; zone_type?: SiteZone['zone_type'] }>,
     source: 'auto' | 'manual',
   ): Promise<boolean> => {
     if (getFrameableProjectCoordinates(renderZones).length < 3) return false;
+    if (source === 'manual') markUserInteracted();
 
     const requestGeneration = projectFrameRequestGenerationRef.current + 1;
     projectFrameRequestGenerationRef.current = requestGeneration;
@@ -2238,7 +2249,7 @@ export function GlobeSitePlannerMap({
     });
 
     return applied && !isCancelled();
-  }, [frameZonesForRender, revealCanvasAfterPose]);
+  }, [frameZonesForRender, revealCanvasAfterPose, markUserInteracted]);
 
   const handleGlobeControlsRef = useCallback((controls: any | null) => {
     globeControlsRef.current = controls;
@@ -2251,15 +2262,7 @@ export function GlobeSitePlannerMap({
     setGlobeControlsReady(Boolean(controls));
   }, [isTerrainReady]);
 
-  const markUserInteracted = useCallback(() => {
-    focusedSiteAnchorRef.current = null;
-    // A real pointer/wheel/keyboard gesture must immediately cancel every
-    // pending initial/auto-frame retry. Waiting until the delayed canvas reveal
-    // flag is set lets a retry move the camera between polygon vertices.
-    hasUserInteractedRef.current = true;
-    cameraInteractionGenerationRef.current += 1;
-    projectFrameRequestGenerationRef.current += 1;
-  }, []);
+
 
   useEffect(() => {
     let cancelled = false;
@@ -4446,12 +4449,16 @@ export function GlobeSitePlannerMap({
             const camera = cameraRef.current;
             const hit = focusedSiteAnchorRef.current ?? raycastSurfacePoint(0, 0);
             if (!camera || !hit) return;
+            markUserInteracted();
             const [lng, lat] = hit.lngLat;
             const surface = new THREE.Vector3();
             WGS84_ELLIPSOID.getCartographicToPosition(lat * DEG_TO_RAD, lng * DEG_TO_RAD, hit.height, surface);
             const nextPitch = cameraElevation >= 85 ? DEFAULT_INITIAL_CAMERA_PITCH_DEGREES : 0;
             const height = Math.max(20, camera.position.distanceTo(surface) * Math.cos(nextPitch * DEG_TO_RAD));
             applyCameraPose(computeCameraPose(lat, lng, height, hit.height, nextPitch));
+            hasAppliedSettledViewRef.current = true;
+            setIsInitialCameraApplied(true);
+            revealCanvasAfterPose();
           }}
           className="rounded-full border-2 border-[#151515] bg-[#fff9ec]/95 px-3 py-1.5 text-[11px] font-black uppercase shadow-[3px_3px_0_0_#151515] hover:bg-white"
           title={cameraElevation >= 85 ? 'See your community from an angle' : 'Look straight down to draw and resize footprints'}
