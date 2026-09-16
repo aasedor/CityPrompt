@@ -329,6 +329,8 @@ describe('Direct 3D presentation adapter', () => {
 
     expect(rendersApi.generateDirect3D).toHaveBeenCalledTimes(1);
     expect(rendersApi.generateDirect3D).toHaveBeenCalledWith(expect.objectContaining({
+      add_people: false,
+      add_vehicles: false,
       beauty_image_base64: capture.beautyImageBase64,
       proposal_mask_base64: capture.proposalMaskBase64,
       object_id_image_base64: capture.classIdImageBase64,
@@ -354,6 +356,12 @@ describe('Direct 3D presentation adapter', () => {
     expect(direct.diagnostics.macro_design_fidelity?.silhouette_edge_recall).toBe(0.94);
     expect(direct.outcome).toBe('accepted');
     expect(direct.sourceImageUrl).toBe(capture.beautyImageBase64);
+  });
+
+  it('sends explicit presentation selections without changing the authoritative camera', async () => {
+    const { result } = renderHook(() => useDirect3DRender());
+    await result.current.renderDirect3D(capture, {style:'atmospheric', projectId:'project-1', community3DClaims, addPeople:true, addVehicles:false});
+    expect(rendersApi.generateDirect3D).toHaveBeenCalledWith(expect.objectContaining({add_people:true, add_vehicles:false, camera:capture.camera, presentation_mode:'scene'}));
   });
 
   it.each(['precise', 'balanced', 'expressive'] as const)('conditions %s scene requests without changing their source controls', async (fidelityPolicy) => {

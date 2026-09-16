@@ -143,6 +143,13 @@ def build_render_source_snapshot(req: Any, zones: Iterable[Any], buildings: Iter
         "camera_revision_sha256": revision_sha256(capture) if camera is not None else None,
         "plan": plan,
         "capture": capture,
+        "presentation": {
+            "style": getattr(req, "style", "photorealistic"),
+            "add_people": getattr(req, "add_people", False),
+            "add_vehicles": getattr(req, "add_vehicles", False),
+            "model": getattr(req, "model", None),
+            "mode": getattr(req, "presentation_mode", None),
+        },
         "camera_evidence": "validated_client_capture_manifest" if camera is not None else "not_supplied",
         "plan_evidence": "server_project_state_after_claim_validation",
         "scope": (

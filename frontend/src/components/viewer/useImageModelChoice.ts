@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { rendersApi } from '@/services/api';
 import { DEFAULT_OPENAI_IMAGE_MODEL, type ImageModelAvailability, type ImageModelChoice } from '@/config/imageModels';
 
-export function useImageModelChoice() {
+export function useImageModelChoice({ compareByDefault = true }: { compareByDefault?: boolean } = {}) {
   const [availability, setAvailability] = useState<ImageModelAvailability | null>(null);
   const [selected, setSelected] = useState<ImageModelChoice | null>(null);
   useEffect(() => {
@@ -16,7 +16,7 @@ export function useImageModelChoice() {
     (id) => availability?.models.some((model) => model.id === id && model.available === true),
   );
   return {
-    imageModel: selected ?? (allAvailable ? 'compare-all-three' : availability?.default_model ?? DEFAULT_OPENAI_IMAGE_MODEL),
+    imageModel: selected ?? (compareByDefault && allAvailable ? 'compare-all-three' : availability?.default_model ?? DEFAULT_OPENAI_IMAGE_MODEL),
     setImageModel: setSelected,
     availability,
   };

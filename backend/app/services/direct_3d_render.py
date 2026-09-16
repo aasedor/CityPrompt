@@ -30,7 +30,7 @@ from app.core.image_models import (
     OpenAIImageModel,
 )
 from app.schemas.direct_3d_render import Direct3DRenderRequest
-from app.services.render_fidelity import RENDER_PRESERVATION_LOCK
+from app.services.render_fidelity import RENDER_PRESERVATION_LOCK, apply_presentation_selections
 
 logger = logging.getLogger(__name__)
 
@@ -4198,6 +4198,7 @@ class Direct3DRenderService:
                 control_bundle_version=req.control_bundle_version,
             )
         )
+        prompt = apply_presentation_selections(prompt, add_people=req.add_people, add_vehicles=req.add_vehicles)
         data = {
             "model": req.model,
             "prompt": prompt,
