@@ -1,6 +1,8 @@
+import { savedRenderNotice, savedRenderIsSource, savedRenderNeedsReview } from '@/utils/renderPresentation';
 import { isCatalogueOnlyScene, CATALOGUE_UPDATE_GUIDANCE } from '@/features/pickPlace/catalogue';
 import { useRenderDraft } from './useRenderDraft';
 import { ImagePresentationControls } from './ImagePresentationControls';
+import { ImageFidelityReview, imageFidelityStatus, type ImageFidelityStatus } from './ImageFidelityReview';
 import { DEFAULT_OPENAI_IMAGE_MODEL, imageModelLabel, imageModelsForChoice } from '@/config/imageModels';
 import { ImageModelSelect } from '../ImageModelSelect';
 import { useImageModelChoice } from '../useImageModelChoice';
@@ -211,7 +213,7 @@ export type GlobeRenderPipeline = 'classic' | 'direct3d';
 export const DIRECT_3D_PIPELINE_DESCRIPTION =
   'AI finish of the compiled 3D scene. The style you pick governs the look; the compiled models and public realm anchor the layout.';
 export const DIRECT_3D_SCOPE_DESCRIPTION =
-  'Pick a style and render. Your AI illustration is saved to Project Renders. Same-camera results are checked against your 3D scene, with the original view available for comparison. Automated checks are advisory; review the design before presenting.';
+  'Pick a style and render. Results are saved to Project Renders and checked against your 3D scene, with the original view available for comparison. A failed finish returns the original 3D view. Passing image checks still requires visual review.';
 export const DIRECT_3D_CALL_DESCRIPTION =
   '1 image call · every result is saved to Project Renders, including the untouched AI original';
 
@@ -247,12 +249,14 @@ type LightboxRender = {
   imageQuality?: OpenAIImageQuality;
   providerLabel?: string;
   savedRenderId?: string;
+  notice?: string;
   createdAt?: string;
   downloadName: string;
   canSave?: boolean;
 };
 
 type Direct3DReview = {
+  status: ImageFidelityStatus;
   outcome: 'accepted' | 'review_required';
   warnings: string[];
   sourceImageUrl: string;
@@ -936,6 +940,7 @@ export function GlobeAIRenderPanel({
         }
         const review: Direct3DReview | null = direct.outcome === 'review_required'
           ? {
+              status: imageFidelityStatus(direct.diagnostics),
               outcome: direct.outcome,
               warnings: direct.warnings,
               sourceImageUrl: direct.sourceImageUrl,
@@ -1102,7 +1107,7 @@ export function GlobeAIRenderPanel({
   }, [projectId, rememberSavedRender, selectedStyle, saving]);
 
   const handleSave = useCallback(async () => {
-    if (!result?.imageUrl || result.error) return;
+    if (!result?.imageUrl || result.error || directReview?.status === 'failed') return;
     const saved = await saveRenderToProject({
       imageUrl: result.imageUrl,
       prompt: result.prompt,
@@ -1145,6 +1150,7 @@ export function GlobeAIRenderPanel({
       imageQuality: saved.image_quality,
       createdAt: saved.created_at,
       savedRenderId: saved.id,
+      notice: savedRenderNotice(saved),
       downloadName: `render-${saved.id}.png`,
       canSave: false,
     });
@@ -1256,6 +1262,7 @@ export function GlobeAIRenderPanel({
         </div>
       ) : (
       <div className="min-h-0 flex-1 overflow-y-auto">
+      {!result && <>
       {renderPipeline === 'direct3d' && <ImagePresentationControls style={selectedStyle}
         onStyle={style => { setSelectedStyle(style); setDirectFidelityPolicy(resolveDirect3DFidelityPolicy(style)); }}
         addPeople={addPeople} addVehicles={addVehicles} onPeople={setAddPeople} onVehicles={setAddVehicles} />}
@@ -1426,6 +1433,7 @@ export function GlobeAIRenderPanel({
 
       {/* Error display */}
       </details>
+      </>}
       {error && (
         <div className="px-4 py-2">
           <div role="alert" className="rounded-lg border-2 border-[#ff5a3d] bg-red-500/20 px-3 py-2 text-xs font-bold text-red-200">
@@ -1434,7 +1442,7 @@ export function GlobeAIRenderPanel({
         </div>
       )}
 
-      {renderPipeline === 'direct3d' && (
+      {!result && renderPipeline === 'direct3d' && (
         <details className="border-b border-white/20 bg-slate-900/90 px-4 py-2 text-white">
           <summary className="min-h-11 cursor-pointer py-3 text-sm font-bold">Source checks · advanced</summary>
           <div className="flex items-center justify-between gap-3">
@@ -1531,30 +1539,8 @@ export function GlobeAIRenderPanel({
       {/* Result */}
       {result && (
         <div className="px-4 pb-3">
-          {directReview?.outcome === 'review_required' && (
-            <div className="mb-2 rounded-lg border-2 border-amber-300/45 bg-amber-300/10 px-3 py-2 text-amber-50">
-              <div className="flex items-center justify-between gap-2">
-                <span className="text-[11px] font-black uppercase">Compare with your plan</span>
-                <span className="rounded-full border border-amber-200/40 px-2 py-0.5 text-[9px] font-black uppercase">
-                  {directReview.style} · {directReview.fidelityPolicy}
-                </span>
-              </div>
-              <p className="mt-1 text-[10px] font-semibold text-amber-50/75">
-                Your render is saved and ready to use. Check building identity, locations, roads and parks against the 3D view. Automated image checks are advisory; they do not decide whether an illustration meets your vision.
-              </p>
-              {directReview.warnings.length > 0 && (
-                <details className="mt-1 text-[9px] font-semibold text-amber-100/75"><summary className="cursor-pointer">Automated comparison details</summary><ul className="list-disc space-y-0.5 pl-4">
-                  {directReview.warnings.map((warning) => <li key={warning}>{warning}</li>)}
-                </ul></details>
-              )}
-              {directReview.providerOriginalRender && (
-                <button type="button" className="mt-2 rounded border border-amber-200/50 px-2 py-1 text-[10px] font-bold"
-                  onClick={() => openSavedRenderLightbox(directReview.providerOriginalRender!)}>
-                  View AI original
-                </button>
-              )}
-            </div>
-          )}
+          {directReview?.outcome === 'review_required' && <ImageFidelityReview status={directReview.status} warnings={directReview.warnings}
+            onOriginal={directReview.providerOriginalRender ? () => openSavedRenderLightbox(directReview.providerOriginalRender!) : undefined} />}
           <div className={directReview?.outcome === 'review_required' ? 'grid grid-cols-2 gap-2' : undefined}>
             {directReview?.outcome === 'review_required' && (
               <figure className="overflow-hidden rounded-lg border border-white/15 bg-black/30">
@@ -1584,7 +1570,7 @@ export function GlobeAIRenderPanel({
             )}
             {directReview?.outcome === 'review_required' && (
               <span className="pointer-events-none absolute right-2 top-2 z-10 rounded bg-amber-300 px-2 py-1 text-[9px] font-black uppercase text-[#151515]">
-                {result.providerLabel?.startsWith('Original 3D view') ? 'Original 3D view' : 'AI illustration'}
+                {directReview.status === 'failed' ? 'Original 3D view · fallback' : directReview.status === 'passed' ? 'Checks passed · review' : 'Unverified image'}
               </span>
             )}
             <img
@@ -1603,12 +1589,12 @@ export function GlobeAIRenderPanel({
                 <>
                   <button
                     onClick={handleSave}
-                    disabled={saving || saveStatus === 'saved'}
+                    disabled={saving || saveStatus === 'saved' || Boolean(result.savedRender) || directReview?.status === 'failed'}
                     className="flex items-center gap-1 text-[10px] text-white/80 hover:text-white disabled:opacity-70"
                   >
                     {saving && <Loader2 size={10} className="animate-spin" />}
                     {saveStatus === 'saved' && <Check size={10} />}
-                    {saving
+                    {directReview?.status === 'failed' ? 'Original 3D view' : result.savedRender ? 'Saved' : saving
                       ? 'Saving...'
                       : saveStatus === 'saved'
                         ? 'Saved'
@@ -1630,7 +1616,7 @@ export function GlobeAIRenderPanel({
             </div>
           </div>
           </div>
-          {directDiagnostics && (
+          {directDiagnostics && (<details className="mt-2 rounded-lg bg-slate-900 px-3 text-white"><summary className="min-h-11 cursor-pointer py-3 text-sm">Render diagnostics · advanced</summary>
             <div className={`mt-1.5 grid grid-cols-2 gap-x-3 gap-y-1 rounded border px-2 py-1.5 text-[9px] font-bold ${
               directReview?.outcome === 'review_required'
                 ? 'border-amber-300/25 bg-amber-300/10 text-amber-100/80'
@@ -1759,20 +1745,7 @@ export function GlobeAIRenderPanel({
                 </>
               )}
             </div>
-          )}
-          <button
-            onClick={() => {
-              setResult(null);
-              setPreviews([]);
-              setSelectedPreviewIndex(null);
-              setDirectCapturePreview(null);
-              setDirectDiagnostics(null);
-              setDirectReview(null);
-            }}
-            className="mt-1.5 w-full text-center text-[10px] text-gray-500 hover:text-gray-300"
-          >
-            Clear result
-          </button>
+          </details>)}
         </div>
       )}
 
@@ -1942,20 +1915,22 @@ export function GlobeAIRenderPanel({
                 <div className="grid grid-cols-3 gap-2">
                   {savedRenders.map((saved) => {
                     const savedUrl = resolveApiFileUrl(saved.image_url);
+                    const label = saved.variant === 'provider_original' ? 'Unverified AI original' : savedRenderIsSource(saved) ? 'Original 3D view' : savedRenderNeedsReview(saved) ? 'Review design' : 'Saved image';
                     return (
                       <button
                         key={saved.id}
                         onClick={() => openSavedRenderLightbox(saved)}
                         className="group relative aspect-square overflow-hidden rounded border border-white/10 transition hover:border-amber-400/60"
-                        title="Open saved render"
+                        title={savedRenderNotice(saved) || 'Open saved image'}
+                        aria-label={`${label} · ${saved.style || 'Community view'}`}
                       >
                         <img
                           src={savedUrl}
-                          alt={saved.prompt || 'Saved render'}
+                          alt={label}
                           className="h-full w-full object-cover"
                         />
-                        <span className="absolute inset-x-0 bottom-0 truncate bg-black/65 px-1 py-0.5 text-left text-[9px] text-white/80 opacity-0 transition group-hover:opacity-100">
-                          {saved.style || new Date(saved.created_at).toLocaleDateString()}
+                        <span className="absolute inset-x-0 bottom-0 truncate bg-black/65 px-1 py-0.5 text-left text-[9px] text-white">
+                          {label}
                         </span>
                       </button>
                     );
@@ -1991,15 +1966,18 @@ export function GlobeAIRenderPanel({
             }}>Export current 3D view · free</button>
         )}
         <button
-          onClick={handleRender}
-          disabled={
+          onClick={result ? () => {
+            setResult(null); setPreviews([]); setSelectedPreviewIndex(null);
+            setDirectCapturePreview(null); setDirectDiagnostics(null); setDirectReview(null);
+          } : handleRender}
+          disabled={!result && (
             planGeometryStale
             || isRendering
             || (renderPipeline === 'direct3d' && imageGenerationUnavailable)
             || !canvas
             || !camera
             || (renderPipeline === 'direct3d' && !direct3DAvailable)
-          }
+          )}
           className="flex w-full items-center justify-center gap-2 rounded-full border-2 border-[#151515] bg-gradient-to-r from-[#28c7e8] via-[#c9ff3d] to-[#ffe45e] px-4 py-2.5 text-sm font-black text-[#151515] shadow-[5px_5px_0_0_#151515] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[3px_3px_0_0_#151515] disabled:opacity-50"
         >
           {isRendering ? (
@@ -2007,13 +1985,15 @@ export function GlobeAIRenderPanel({
               <Loader2 size={16} className="animate-spin" />
               <span className="min-w-0 truncate">
                 {isPreparingCapture
-                  ? `${renderPipeline === 'direct3d' ? 'Capturing compiled 3D scene' : 'Preparing Google tiles'}... ${renderTime > 0 ? `(${renderTime}s)` : ''}`
+                  ? `${renderPipeline === 'direct3d' ? 'Preparing your current view' : 'Preparing Google tiles'}... ${renderTime > 0 ? `(${renderTime}s)` : ''}`
                   : renderProgress
-                  ? `Rendering ${renderProgress.step}/${renderProgress.total}: ${renderProgress.zoneName}... ${renderTime > 0 ? `(${renderTime}s)` : ''}`
+                  ? `${renderPipeline === 'direct3d' ? `Finishing image ${renderProgress.step} of ${renderProgress.total}` : `Rendering ${renderProgress.step}/${renderProgress.total}: ${renderProgress.zoneName}`}... ${renderTime > 0 ? `(${renderTime}s)` : ''}`
                   : `${renderPipeline === 'direct3d' ? 'Finishing Direct 3D scene' : 'Rendering current view'}... ${renderTime > 0 ? `(${renderTime}s)` : ''}`
                 }
               </span>
             </>
+          ) : result ? (
+            <span>Change image options</span>
           ) : planGeometryStale ? (
             <>
               <Camera size={16} />
@@ -2091,6 +2071,7 @@ export function GlobeAIRenderPanel({
             alt="Enlarged render"
             className="max-h-[82vh] max-w-[92vw] rounded-lg object-contain shadow-2xl"
           />
+          {lightboxRender.notice && <p role="status" className="max-w-3xl rounded-lg border border-amber-300 bg-slate-900 px-4 py-2 text-center text-sm text-white">{lightboxRender.notice}</p>}
           {(lightboxRender.prompt || getLightboxMetaParts(lightboxRender).length > 0) && (
             <div className="max-w-3xl rounded-lg bg-black/60 px-4 py-2 text-center text-xs text-white/75">
               {lightboxRender.prompt && <p className="line-clamp-2">{lightboxRender.prompt}</p>}

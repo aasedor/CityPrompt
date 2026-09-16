@@ -174,7 +174,7 @@ describe('Direct 3D presentation adapter', () => {
     vi.mocked(rendersApi.generateDirect3D).mockResolvedValue(response);
   });
 
-  it('shows the saved AI image when checks return a source fallback, without claiming verification', async () => {
+  it('shows the server source fallback and retains the rejected AI image only for separate inspection', async () => {
     const original = { id: 'original-1', image_url: '/api/v1/files/original.png', prompt: 'finish', created_at: '2026-09-05', variant: 'provider_original' };
     vi.mocked(rendersApi.generateDirect3D).mockResolvedValue({
       ...response, outcome: 'review_required', provider_original_render: original,
@@ -185,9 +185,10 @@ describe('Direct 3D presentation adapter', () => {
       style: 'photorealistic', projectId: 'project-1', community3DClaims,
     });
     expect(direct.providerOriginalRender).toEqual(original);
-    expect(direct.render.providerLabel).toBe('AI render · GPT Image 2');
-    expect(direct.render.imageUrl).toBe(original.image_url);
-    expect(direct.render.savedRender).toEqual(original);
+    expect(direct.render.providerLabel).toBe('Original 3D view · AI finish needs review');
+    expect(direct.render.imageUrl).toBe(`data:image/png;base64,${response.image_base64}`);
+    expect(direct.render.savedRender).not.toEqual(original);
+    expect(direct.outputFingerprint).toBe(response.output_fingerprint);
     expect(direct.sourceImageUrl).toBe(capture.beautyImageBase64);
     expect(direct.outcome).toBe('review_required');
     expect(rendersApi.generateDirect3D).toHaveBeenCalledTimes(1);
