@@ -37,4 +37,3 @@ export const STYLE_GROUPS = [
   { label: 'Plan', ids: ['site-plan', 'site-plan-photo', 'blueprint', 'site-plan-watercolor'] },
   { label: 'Stylized', ids: ['isometric', 'clay-maquette', 'woodblock', 'collage', 'risograph', 'pixel-art'] },
 ] as const;
-

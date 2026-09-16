@@ -36,12 +36,14 @@ it('falls back after a failed capture and requires an explicit selection to retr
 it('ignores an old project response after navigation', async () => {
   vi.stubEnv('VITE_CONTEXT_PILOT', 'true');
   let finish!: (response: Response) => void;
-  const fetcher = vi.fn().mockImplementationOnce(() => new Promise<Response>(resolve => { finish = resolve; }))
-    .mockResolvedValueOnce(new Response('null'));
+  const fetcher = vi.fn().mockImplementation(() => Promise.resolve(new Response('null')))
+    .mockImplementationOnce(() => new Promise<Response>(resolve => { finish = resolve; }));
   vi.stubGlobal('fetch', fetcher);
   const { result, rerender } = renderHook(({ id }) => useContextPresentation([boundary(id)]), { initialProps: { id: 'pilot' } });
   rerender({ id: 'another-project' });
   await act(async () => { finish(new Response(JSON.stringify(manifest))); });
+  expect(fetcher).toHaveBeenCalledTimes(4);
   expect(fetcher.mock.calls[0][1].signal.aborted).toBe(true);
+  expect(fetcher.mock.calls[1][1].signal.aborted).toBe(true);
   expect(result.current.provider).toBeNull(); expect(result.current.visible).toBe('google');
 });
