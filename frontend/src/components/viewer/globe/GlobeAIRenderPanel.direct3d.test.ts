@@ -43,14 +43,14 @@ describe('Globe AI render panel Direct 3D styles', () => {
     expect(new Set(groupedIds)).toEqual(new Set(STYLES.map((style) => style.id)));
   });
 
-  it('explains saved illustrations and advisory comparison before spend', () => {
+  it('explains saved results, failure fallback and comparison before spend', () => {
     expect(DIRECT_3D_PIPELINE_DESCRIPTION).toContain('AI finish');
     expect(DIRECT_3D_PIPELINE_DESCRIPTION).toContain('style you pick governs the look');
     expect(DIRECT_3D_SCOPE_DESCRIPTION).toContain('Pick a style and render');
     expect(DIRECT_3D_SCOPE_DESCRIPTION).toContain('checked against your 3D scene');
-    expect(DIRECT_3D_SCOPE_DESCRIPTION).toContain('AI illustration is saved');
+    expect(DIRECT_3D_SCOPE_DESCRIPTION).toContain('Results are saved');
     expect(DIRECT_3D_SCOPE_DESCRIPTION).toContain('original view available for comparison');
-    expect(DIRECT_3D_SCOPE_DESCRIPTION).toContain('Automated checks are advisory');
+    expect(DIRECT_3D_SCOPE_DESCRIPTION).toContain('A failed finish returns the original 3D view');
     expect(DIRECT_3D_CALL_DESCRIPTION).toContain('1 image call');
     expect(DIRECT_3D_CALL_DESCRIPTION).toContain('saved to Project Renders');
   });

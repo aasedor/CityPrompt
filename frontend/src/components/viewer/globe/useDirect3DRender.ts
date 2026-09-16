@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import { authApi, rendersApi, resolveApiFileUrl } from '@/services/api';
+import { authApi, rendersApi } from '@/services/api';
 import { useAuthStore } from '@/store';
 import type { SavedRender } from '@/types';
 import type { Community3DCaptureClaim } from '@/features/community3d/community3d';
@@ -429,20 +429,16 @@ export function useDirect3DRender() {
     if (requestingUserId) void authApi.me().then(user => {
       if (user.id === requestingUserId && useAuthStore.getState().user?.id === requestingUserId) useAuthStore.getState().setUser(user);
     }).catch(() => { /* The next account refresh will reconcile the balance. */ });
-    // A geometry-check fallback is comparison evidence, not a rejection of the
-    // student's illustration. Keep the paid AI image as the visible result;
-    // preserve the unchanged checks and source for the student's judgement.
-    const preferredOriginal = response.diagnostics.returned_safety_strategy === 'authoritative_source'
-      ? response.provider_original_render : undefined;
+    // Respect the server's fidelity decision. The rejected provider image stays
+    // available separately for QA; it must never replace the returned source.
     return {
       render: {
-        imageUrl: preferredOriginal ? resolveApiFileUrl(preferredOriginal.image_url) : `data:image/png;base64,${response.image_base64}`,
+        imageUrl: `data:image/png;base64,${response.image_base64}`,
         prompt,
         model: response.model,
         imageQuality: 'high',
-        savedRender: preferredOriginal ?? response.saved_render ?? undefined,
-        providerLabel: preferredOriginal ? `AI render · ${imageModelLabel(response.model)}`
-          : response.diagnostics.returned_safety_strategy === 'authoritative_source'
+        savedRender: response.saved_render ?? undefined,
+        providerLabel: response.diagnostics.returned_safety_strategy === 'authoritative_source'
           ? 'Original 3D view · AI finish needs review'
           : viewMode === 'street'
           ? `Direct 3D Street · ${imageModelLabel(response.model)}`
@@ -451,7 +447,7 @@ export function useDirect3DRender() {
       diagnostics: response.diagnostics,
       providerOriginalRender: response.provider_original_render ?? undefined,
       captureFingerprint: response.capture_fingerprint,
-      outputFingerprint: preferredOriginal?.output_fingerprint ?? response.output_fingerprint,
+      outputFingerprint: response.output_fingerprint,
       outcome: response.outcome,
       warnings: [...response.warnings],
       sourceImageUrl: capture.beautyImageBase64.startsWith('data:') ? capture.beautyImageBase64 : `data:image/png;base64,${capture.beautyImageBase64}`,

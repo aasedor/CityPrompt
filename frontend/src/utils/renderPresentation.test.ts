@@ -18,7 +18,7 @@ describe('saved presentation labels', () => {
   });
   it('never labels an original AI attempt as the returned source', () => {
     expect(savedRenderNotice({ variant: 'provider_original', outcome: 'review_required', presentation_strategy: 'authoritative_source' }))
-      .toBe('AI illustration. The original 3D view is available for comparison.');
+      .toBe('Unverified AI original. It may change the design; compare it with the original 3D view before using it.');
     expect(savedRenderIsSource({ variant: 'provider_original', presentation_strategy: 'authoritative_source' })).toBe(false);
     expect(savedRenderNeedsReview({ outcome: 'accepted' })).toBe(false);
     expect(savedRenderNotice({})).toBe('');
