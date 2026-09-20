@@ -57,6 +57,7 @@ Mark type-specific gates N/A with a reason; keep applicable unrun cases open.
 | --- | --- | --- |
 | Level site; low views from multiple sides | NOT TESTED | |
 | Sloped site; contacts and route continuity | NOT TESTED | |
+| Prepared level: actual native step pick, current review and route; unresolved export guard | NOT TESTED | |
 | Edge/unsupported case and inward recovery | NOT TESTED | |
 | Local ground hole: unaffected object works; affected object rejects; recovery/reload/export guard | NOT TESTED | |
 | Supported minimum/maximum size and rotation | NOT TESTED | |

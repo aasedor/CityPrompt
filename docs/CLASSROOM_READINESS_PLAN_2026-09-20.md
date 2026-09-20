@@ -17,7 +17,7 @@ or asset/publication approval from a working classroom scene.
 | --- | --- | --- |
 | Independent authoring | Student creates a site, buildings, street and park; connects, edits and reopens without developer offsets or API-authored geometry | Fresh Currie project, UI boundary/street/house/park and plot-guide entrance completed. Local ground recovery now keeps the house/street visible. Entrance and park recovery remain open; prepared-site workflow was tested separately. |
 | Plausible scene | No persistent missing models, floating/buried objects, obvious scale/connection errors or blocking furniture at normal presentation distances | Existing seven-house natural-ground fixture has detailed evidence. Fresh local rejections now preserve usable areas; affected objects and exports remain blocked. Fine rail joins are follow-up work. |
-| Dependable controls | Advertised placement/rotation/resize/variant/delete and recovery work predictably | Fresh Move-handle/Undo/Redo/reload passed. Native-body drag panned instead of moving. Prepared-site 3D entrance picker has an incompatible ground contract. Legacy Generate to 3D mismatch remains open. |
+| Dependable controls | Advertised placement/rotation/resize/variant/delete and recovery work predictably | Fresh Move-handle/Undo/Redo/reload passed. Native-body drag panned instead of moving. Prepared-site 3D picking now accepts the visible native step; the fresh house still lacks a clear route to its shared sidewalk. Legacy Generate to 3D mismatch remains open. |
 | Useful visuals | Clean, useful camera views; reliable exact export; AI output preserves the student's actual design | Fresh free export passed and was inspected. It is a plain concept scene, not proof of attractive AI output. Current local harness disables paid AI; image fidelity needs a separate bounded live test. |
 | Repeatable catalogue entry | New variants reuse shared terrain, placement, connection and capture behavior with useful defaults | Shared guidance/template exist. Need an end-to-end entry pilot for one building, street and park, including reusable measured entrance/connection metadata where appropriate. |
 
@@ -29,12 +29,14 @@ or asset/publication approval from a working classroom scene.
    per-proposal capture coverage; partial sites still conservatively block exports.
    Preserve the distinction between usable and unresolved areas. Do not silently
    replace measured heights or flatten the site. The original failure evidence
-   and prepared-mode backup remain available; the fresh pilot is now natural.
-2. **Consistent terrain modes:** make entrance authoring and readiness agree with
+   and prepared-mode backup remain available; the fresh pilot is currently at a
+   prepared level for entrance testing.
+2. **Consistent terrain modes (picker/review checkpoint passed):** entrance
+   authoring and readiness now agree with
    the actually rendered ground on both natural and explicitly prepared sites.
-   Until supported, an unavailable action must explain its limit instead of
-   implying that waiting or changing camera angle will resolve it. Test the
-   whole sidewalk-to-native-step connection at normal viewing distance.
+   See `CURRIE_PREPARED_ENTRANCE_2026-09-20.md`. Finish a complete ordinary
+   sidewalk-to-native-step route at normal viewing distance; this fresh house
+   still faces away from its useful connection.
 3. **Control clarity:** use object labels in boundary exclusion errors, make the
    native-house move gesture match its instructions, and resolve or remove the
    broken legacy Generate to 3D route from the student flow. Prioritize actual

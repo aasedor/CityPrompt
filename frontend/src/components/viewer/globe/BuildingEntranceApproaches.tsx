@@ -5,7 +5,7 @@ import { readBuildingEntrance, type ConnectionResult } from '@/features/pickPlac
 import type { BuildingGroundContact, GroundPoint } from './buildingGroundContact';
 import type { FootprintFrame } from './buildingPlacement';
 import { buildBuildingEntranceApproach, ENTRANCE_REVIEW_RELIEF_M } from './buildingEntranceApproach';
-import { useSharedSiteGround } from './SharedSiteGroundProvider';
+import { useSharedSiteGround, type SharedSiteGroundState } from './SharedSiteGroundProvider';
 import { streetConnectionCaptureUserData } from './pedestrianCapture';
 import { retainResourceForDeferredDisposal } from './strictModeResourceDisposal';
 
@@ -21,8 +21,9 @@ export function BuildingEntranceApproaches({ zones, results, children }: Inputs 
  * that model's native pads and displayed base, including retained safe ground.
  * No scene traversal, async registry, or new persistent geometry is involved. */
 export function useBuildingEntranceApproach(contact: BuildingGroundContact, footprints: GroundPoint[][],
-  frame: FootprintFrame, buildingId: string) {
-  const inputs=useContext(Context), ground=useSharedSiteGround();
+  frame: FootprintFrame, buildingId: string, preparedGround?: SharedSiteGroundState | null) {
+  const inputs=useContext(Context), sharedGround=useSharedSiteGround();
+  const ground=sharedGround.status === 'inactive' && preparedGround ? preparedGround : sharedGround;
   const result=useMemo(()=>{
     if (!inputs || contact.status !== 'ready') return { reason:null, geometry:null,railGeometry:null,supportGeometry:null, userData:undefined };
     const owner=inputs.zones.find(zone=>zone.building_id===buildingId || zone.building_ids?.includes(buildingId));

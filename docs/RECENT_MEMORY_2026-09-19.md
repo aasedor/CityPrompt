@@ -7,6 +7,19 @@ historical; the actual results below supersede those statements.
 
 ## Latest continuation checkpoint
 
+**Latest — prepared-site native entrance (20 September):** read
+`docs/CURRIE_PREPARED_ENTRANCE_2026-09-20.md` first. Prepared sites now use
+their authored level for native foundation, 3D step picking, generated approach
+and entrance review. The fresh Currie UI accepted a real step pick, but its only
+door still lacks a clear route to the shared sidewalk; the draft was not saved.
+The free export now rejects the saved approximate entrance with the specific
+foundation-edge issue. Protected Currie stayed unchanged. The disposable fresh
+project is presently **prepared** at 1102.62 m, with the saved approximate
+entrance and original 90° house orientation. Natural-ground failure evidence is
+external, as described below. Next: resolve street-facing placement/route in
+a full ordinary student flow, then finish partial-ground park/export coverage.
+
+
 **Latest — local natural-ground recovery (20 September):** read
 `docs/CURRIE_LOCAL_GROUND_RECOVERY_2026-09-20.md` before the earlier checkpoint
 below. The exact fresh Currie residual now excludes eight local cells while

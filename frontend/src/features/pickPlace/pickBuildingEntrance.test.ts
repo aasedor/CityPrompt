@@ -7,6 +7,7 @@ import { resolveBuildingGroundContact, type GroundPoint } from '@/components/vie
 import type { SharedSiteGroundState } from '@/components/viewer/globe/SharedSiteGroundProvider';
 import { rectangleAt } from './geometry';
 import { entrancePickOccluded, entrancePickZoneKey, pickBuildingEntrance, type NativeEntranceHit } from './pickBuildingEntrance';
+import { preparedEntranceGround } from '@/components/viewer/globe/preparedEntranceGround';
 
 const geo = ([x,y]:number[]):GroundPoint => [-114+x/metersPerDegLon(51),51+y/METERS_PER_DEG_LAT];
 const zone = (id:string,zone_type:SiteZone['zone_type'],coordinates:number[][],properties:SiteZone['properties']={}):SiteZone =>
@@ -38,6 +39,14 @@ describe('native entrance step picking',()=>{
     const f=fixture();
     expect(f.pick({...f.hit,point:[1,7.8,3]})).toMatchObject({error:expect.stringContaining('lowest entrance step')});
     expect(f.pick({...f.hit,point:[0,0,0]})).toMatchObject({error:expect.stringContaining('outer edge')});
+  });
+  it('picks and checks the same authored level used by a prepared-site house',()=>{
+    const f=fixture();
+    const prepared=preparedEntranceGround(f.zones[2],100)!;
+    const hit={...f.hit,contact:resolveBuildingGroundContact(f.hit.footprints,f.hit.lng,f.hit.lat,prepared)};
+    expect(f.pick(hit,prepared)).toMatchObject({result:{status:'ready',anchor:{xM:1,yM:8}}});
+    expect(f.pick(hit,{...prepared,heightAt:()=>101})).toMatchObject({error:expect.stringContaining('still aligning')});
+    expect(prepared.heightAt(...geo([100,100]))).toBeNull();
   });
   it('rejects pending, synchronously stale, draft, and mismatched model ground',()=>{
     const f=fixture();

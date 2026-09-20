@@ -3,6 +3,9 @@ import type { SharedSiteGroundState } from './SharedSiteGroundProvider';
 /** Display geometry may survive a tile refresh. Publish only when verification
  * has measured the same surface; their revision formats intentionally differ. */
 export function entranceReviewRevision(display: SharedSiteGroundState, verification: SharedSiteGroundState): string | null {
+  if (display.prepared && verification.prepared && display.status === 'ready' && verification.status === 'ready'
+    && !display.preview && !verification.preview && verification.isCurrent?.() !== false
+    && display.revision === verification.revision) return verification.revision;
   if (display.status !== 'ready' || verification.status !== 'ready' || display.preview || verification.preview ||
       verification.isCurrent?.() === false || !display.snapshot || !verification.snapshot ||
       display.snapshot.sourceSignature !== verification.snapshot.sourceSignature ||

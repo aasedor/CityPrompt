@@ -34,6 +34,7 @@ import { useGLTF } from '@react-three/drei';
 import { WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import { EastNorthUpFrame, TilesRendererContext } from '3d-tiles-renderer/r3f';
 import type { Building, SiteZone } from '@/types';
+import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import type { NativeEntranceHit } from '@/features/pickPlace/pickBuildingEntrance';
 import type { LegoAssemblyRecipe } from '@/features/legoAssembly/legoAssemblyApi';
 import { centreNativeClayClone, isNativeClayPlan } from '@/features/legoAssembly/nativeClayPlacement';
@@ -43,6 +44,7 @@ import { createKtx2LoaderExtension } from '@/lib/ktx2GltfLoader';
 import { computeFootprintFrame, type FootprintFrame } from './buildingPlacement';
 import { raycastTerrainHeightAtLatLng } from './GlobeZoneLayer';
 import { resolvePreparedSiteTerrainForZone } from './sitePreparationSurface';
+import { preparedEntranceGround } from './preparedEntranceGround';
 import { currentEntranceReviews, entranceReviewRevision, updateEntranceReviews, type BuildingEntranceReview } from './buildingEntranceReview';
 import { useSharedSiteGround, useSharedSiteGroundVerification } from './SharedSiteGroundProvider';
 import { useBuildingEntranceApproach, BuildingEntranceApproachMesh } from './BuildingEntranceApproaches';
@@ -199,12 +201,16 @@ function stableFrameOffset(id: string, modulo: number): number {
   return Math.abs(hash) % modulo;
 }
 
-function useBuildingFoundation(footprints: GroundPoint[][], frame: FootprintFrame, buildingId: string, report?: GroundingStatusReporter, reviewDetailed = false) {
+function useBuildingFoundation(footprints: GroundPoint[][], frame: FootprintFrame, buildingId: string,
+  preparedBoundary?: SiteZone | null, preparedLevel?: number | null, report?: GroundingStatusReporter, reviewDetailed = false) {
   const sharedGround = useSharedSiteGround();
   const verifiedGround = useSharedSiteGroundVerification();
+  const prepared = useMemo(() => preparedEntranceGround(preparedBoundary, preparedLevel), [preparedBoundary, preparedLevel]);
+  const ground = sharedGround.status === 'inactive' && prepared ? prepared : sharedGround;
+  const verification = ground === prepared ? prepared! : verifiedGround;
   const rendererId = useId();
-  const contact = useMemo(() => resolveBuildingGroundContact(footprints, frame.centroidLng, frame.centroidLat, sharedGround),
-    [footprints, frame.centroidLng, frame.centroidLat, sharedGround]);
+  const contact = useMemo(() => resolveBuildingGroundContact(footprints, frame.centroidLng, frame.centroidLat, ground),
+    [footprints, frame.centroidLng, frame.centroidLat, ground]);
   const geometry = useMemo(() => {
     if (contact.status !== 'ready') return null;
     const result = new THREE.BufferGeometry();
@@ -215,18 +221,18 @@ function useBuildingFoundation(footprints: GroundPoint[][], frame: FootprintFram
     return result;
   }, [contact]);
   useEffect(() => () => geometry?.dispose(), [geometry]);
-  const approach = useBuildingEntranceApproach(contact, footprints, frame, buildingId);
+  const approach = useBuildingEntranceApproach(contact, footprints, frame, buildingId, prepared);
   const reason = contact.status === 'unresolved' ? contact.reason ?? 'incomplete_footprint_ground' : approach.reason;
   const review=useMemo<BuildingEntranceReview|null>(()=>{
     const sections=approach.userData?.entranceApproachSections;
     const details=approach.userData?.entranceApproachDetails;
-    const groundRevision = entranceReviewRevision(sharedGround, verifiedGround);
+    const groundRevision = entranceReviewRevision(ground, verification);
     if(!reviewDetailed||reason||contact.status!=='ready'||!sections?.length||!details||groundRevision===null)return null;
     return {buildingId,groundRevision,
       generatedSteps:approach.userData!.entranceApproachStepCount,
       riseM:sections[sections.length-1].endHeightM-sections[0].startHeightM,clearWidthM:details.clearWidthM,
       supportHeightM:contact.positions.reduce((max,value,index)=>index%3===2?Math.max(max,-value):max,0)};
-  },[approach.userData,buildingId,contact,reason,reviewDetailed,sharedGround,verifiedGround]);
+  },[approach.userData,buildingId,contact,reason,reviewDetailed,ground,verification]);
   useEffect(() => {
     report?.(buildingId, rendererId, reason, review);
     return () => report?.(buildingId, rendererId, null);
@@ -243,6 +249,7 @@ function LegoMassingStack({
   zone,
   fallbackTerrainHeight,
   preparedSiteTerrainHeight,
+  preparedBoundary,
   onLoaded,
   onUnloaded,
   onGroundingStatus,
@@ -258,6 +265,7 @@ function LegoMassingStack({
   zone: SiteZone | undefined;
   fallbackTerrainHeight: number;
   preparedSiteTerrainHeight?: number | null;
+  preparedBoundary?: SiteZone | null;
   onLoaded?: (id: string) => void;
   onUnloaded?: (id: string) => void;
   onGroundingStatus?: GroundingStatusReporter;
@@ -290,7 +298,7 @@ function LegoMassingStack({
   useEffect(() => () => geometry?.dispose(), [geometry]);
 
   const groundFootprints = useMemo(() => [geographicFootprint(ring, frame.centroidLng, frame.centroidLat)], [ring, frame.centroidLng, frame.centroidLat]);
-  const foundation = useBuildingFoundation(groundFootprints, frame, building.id, onGroundingStatus);
+  const foundation = useBuildingFoundation(groundFootprints, frame, building.id, preparedBoundary, preparedSiteTerrainHeight, onGroundingStatus);
 
   const tiles = useContext(TilesRendererContext);
   const properties = zone?.properties as Record<string, unknown> | undefined;
@@ -406,6 +414,7 @@ function LegoStackInstance({
   zone,
   fallbackTerrainHeight,
   preparedSiteTerrainHeight,
+  preparedBoundary,
   onLoaded,
   onUnloaded,
   onGroundingStatus,
@@ -421,6 +430,7 @@ function LegoStackInstance({
   zone: SiteZone | undefined;
   fallbackTerrainHeight: number;
   preparedSiteTerrainHeight?: number | null;
+  preparedBoundary?: SiteZone | null;
   onLoaded: (id: string) => void;
   onUnloaded: (id: string) => void;
   onGroundingStatus?: GroundingStatusReporter;
@@ -482,7 +492,7 @@ function LegoStackInstance({
     ? placedNativeFootprints(modules, yawRad, frame.rectCenterLocal)
     : [geographicFootprint(ring, frame.centroidLng, frame.centroidLat)],
   [recipe, modules, yawRad, frame.rectCenterLocal, ring, frame.centroidLng, frame.centroidLat]);
-  const foundation = useBuildingFoundation(groundFootprints, frame, building.id, onGroundingStatus, detailedReady);
+  const foundation = useBuildingFoundation(groundFootprints, frame, building.id, preparedBoundary, preparedSiteTerrainHeight, onGroundingStatus, detailedReady);
   const stackBaseLift = useMemo(() => computeLegoStackBaseLift(
     modules.map(({ bounds, transform }) => ({
       positionY: transform.position[1],
@@ -676,6 +686,7 @@ export function GlobeLegoAssemblyLayer({
   },[buildings,entranceReviews,onEntranceReviewsChange]);
   useEffect(()=>()=>onEntranceReviewsChange?.([]),[onEntranceReviewsChange]);
   const camera = useThree((state) => state.camera);
+  const preparedBoundary = getActiveSiteBoundary(zones);
 
   const zoneRingByBuildingId = useMemo(() => {
     const map = new Map<string, number[][]>();
@@ -885,6 +896,7 @@ export function GlobeLegoAssemblyLayer({
               zone={zone}
               fallbackTerrainHeight={terrainHeight}
               preparedSiteTerrainHeight={preparedSiteTerrainHeight}
+              preparedBoundary={preparedBoundary}
               onLoaded={handleLoaded}
               onUnloaded={handleUnloaded}
               onGroundingStatus={handleGroundingStatus}
@@ -905,6 +917,7 @@ export function GlobeLegoAssemblyLayer({
             zone={zone}
             fallbackTerrainHeight={terrainHeight}
             preparedSiteTerrainHeight={preparedSiteTerrainHeight}
+            preparedBoundary={preparedBoundary}
             onLoaded={handleFallbackLoaded}
             onUnloaded={handleFallbackUnloaded}
             onGroundingStatus={handleGroundingStatus}
@@ -924,6 +937,7 @@ export function GlobeLegoAssemblyLayer({
             zone={zone}
             fallbackTerrainHeight={terrainHeight}
             preparedSiteTerrainHeight={preparedSiteTerrainHeight}
+            preparedBoundary={preparedBoundary}
             onLoaded={handleLoaded}
             onUnloaded={handleUnloaded}
             onGroundingStatus={handleGroundingStatus}
@@ -943,6 +957,7 @@ export function GlobeLegoAssemblyLayer({
                 zone={zone}
                 fallbackTerrainHeight={terrainHeight}
                 preparedSiteTerrainHeight={preparedSiteTerrainHeight}
+                preparedBoundary={preparedBoundary}
                 onLoaded={handleDetailedLoaded}
                 onUnloaded={handleDetailedUnloaded}
                 onGroundingStatus={handleGroundingStatus}

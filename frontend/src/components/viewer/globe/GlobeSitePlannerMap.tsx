@@ -53,6 +53,7 @@ import { GlobeZoneLayer } from './GlobeZoneLayer';
 import { streetGroundCaptureStatus } from './streetGroundCapture';
 import { streetSurfaceMaskZone } from './streetSurfaceMask';
 import { GroundReviewPanel } from './GroundReviewPanel';
+import { preparedEntranceGround } from './preparedEntranceGround';
 import { PlacementControls } from '@/features/pickPlace/PlacementControls';
 import { SharedSiteGroundProvider, INACTIVE_SHARED_SITE_GROUND, type SharedSiteGroundState } from './SharedSiteGroundProvider';
 import { captureSharedGround, assertSharedGroundUnchanged, groundReadinessMessage } from './sharedGroundCapture';
@@ -108,6 +109,7 @@ import {
   getPreparedSiteBoundaryIds,
   getActiveBoundaryTileMaskPreference,
   resolvePreparedSiteTerrainHeight,
+  resolvePreparedSiteTerrainForZone,
   shouldMaskReplacementBuildingTiles,
 } from './sitePreparationSurface';
 import {
@@ -1663,7 +1665,7 @@ export function GlobeSitePlannerMap({
       throw new Error('The road connection is still aligning with the ground. Keep your design; check its position if alignment does not finish.');
     }
     const snapshot = captureSharedGround(sharedGroundRef.current);
-    if (snapshot && (pendingGroundBuildingsRef.current.length > 0 || buildingGroundingIssuesRef.current.length > 0)) {
+    if (pendingGroundBuildingsRef.current.length > 0 || buildingGroundingIssuesRef.current.length > 0) {
       if (buildingGroundingIssuesRef.current.some((issue) => issue.reason === 'foundation_exceeds_3m')) {
         throw new Error('The site is too uneven beneath a building for automatic grounding. Choose a flatter placement before rendering.');
       }
@@ -1853,6 +1855,8 @@ export function GlobeSitePlannerMap({
       ? resolvePreparedSiteTerrainHeight(boundary, terrainElevation)
       : null;
   }, [preparedSiteBoundaryIds, siteZones, terrainElevation]);
+  const preparedReviewGround = useMemo(() => preparedEntranceGround(
+    getActiveSiteBoundary(siteZones), preparedSiteTerrainHeight), [siteZones, preparedSiteTerrainHeight]);
   const [isTerrainReady, setIsTerrainReady] = useState(false);
   const terrainElevationRef = useRef(DEFAULT_TERRAIN_ELEVATION);
   terrainElevationRef.current = terrainElevation;
@@ -3745,8 +3749,11 @@ export function GlobeSitePlannerMap({
       if (!sceneRef.current || entrancePickOccluded(sceneRef.current,candidate.hit)) {
         setEntrancePickError('Something is in front of that step. Move the camera until the step is clearly visible.'); return;
       }
+      const prepared = sharedGroundRef.current.status === 'inactive'
+        ? preparedEntranceGround(getActiveSiteBoundary(allSiteZones),
+          resolvePreparedSiteTerrainForZone(zone, allSiteZones, terrainElevation)) : null;
       const selected = pickBuildingEntrance(candidate.hit, zone, allSiteZones, entrancePick.properties,
-        siteZones.map(z => z.id), sharedGroundRef.current);
+        siteZones.map(z => z.id), prepared ?? sharedGroundRef.current);
       if ('error' in selected) setEntrancePickError(selected.error);
       else entrancePick.finish(selected.result);
       return;
@@ -3879,7 +3886,7 @@ export function GlobeSitePlannerMap({
     setDrawingPoints(newPts);
     setDrawingPointHeights(newHeights);
     requestAnimationFrame(updateCenterConnectionState);
-  }, [externalInteractionPaused, allSiteZones, entrancePick, placementDraft, onPlaceAsset, activeSitePlannerTool, cancelDrawing, hasDrawingTool, interactionPaused, linear, markUserInteracted, measureModeActive, onZoneSelected, raycastSurfacePoint, setStreetViewPosition, siteZones, streetViewPegman, updateCenterConnectionState]);
+  }, [externalInteractionPaused, allSiteZones, entrancePick, placementDraft, onPlaceAsset, activeSitePlannerTool, cancelDrawing, hasDrawingTool, interactionPaused, linear, markUserInteracted, measureModeActive, onZoneSelected, raycastSurfacePoint, setStreetViewPosition, siteZones, streetViewPegman, terrainElevation, updateCenterConnectionState]);
 
   const handleZoneMeshClick = useCallback((zoneId: string) => {
     if (placementDraft) return;
@@ -4342,7 +4349,9 @@ export function GlobeSitePlannerMap({
         <button type="button" className="mt-2 min-h-11 rounded-lg border border-slate-600 px-3 font-semibold" onClick={()=>entrancePick.finish(null)}>Cancel pick</button>
       </section>}
       {showEntranceReview&&<BuildingEntranceReviewPanel zones={siteZones} reviews={entranceReviews} issues={buildingGroundingIssues}
-        groundRevision={sharedGroundState.revision} groundCurrent={sharedGroundState.status==='ready'&&sharedGroundState.isCurrent?.()!==false&&!sharedGroundState.preview}
+        groundRevision={sharedGroundState.status === 'inactive' && preparedReviewGround ? preparedReviewGround.revision : sharedGroundState.revision}
+        groundCurrent={(sharedGroundState.status === 'inactive' && Boolean(preparedReviewGround))
+          || (sharedGroundState.status==='ready'&&sharedGroundState.isCurrent?.()!==false&&!sharedGroundState.preview)}
         onClose={()=>setShowEntranceReview(false)} onSelect={zone=>{
           setShowEntranceReview(false);onZoneSelected(zone.id);
           void requestProjectFrame([{ ...zone, coordinates: zone.coordinates as [number, number][] }], 'manual');

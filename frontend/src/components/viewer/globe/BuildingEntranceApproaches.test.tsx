@@ -6,6 +6,7 @@ import type { ConnectionResult } from '@/features/pickPlace/pedestrianConnection
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 import { resolveBuildingGroundContact, type GroundPoint } from './buildingGroundContact';
 import { BuildingEntranceApproaches, useBuildingEntranceApproach } from './BuildingEntranceApproaches';
+import { preparedEntranceGround } from './preparedEntranceGround';
 
 const ground=vi.hoisted(()=>({status:'ready',contains:()=>true,heightAt:(x:number)=>100+Math.max(0,5-(x+114)*111320*Math.cos(51*Math.PI/180))*.2}));
 vi.mock('./SharedSiteGroundProvider',()=>({useSharedSiteGround:()=>ground}));
@@ -22,6 +23,20 @@ const configured={...house,properties:{pedestrian_building_entrance:{version:1,x
   scaleWithPlot:false,streetId:'street',widthM:1.8,heightAboveBaseM:0}}};
 
 describe('foundation and entrance ownership',()=>{
+  it('builds the approach on the authored level when live terrain is inactive',()=>{
+    const boundary={...house,id:'site',zone_type:'site_boundary' as const,coordinates:[[-114.001,50.999],[-113.999,50.999],[-113.999,51.001],[-114.001,51.001]]};
+    const prepared=preparedEntranceGround(boundary,100)!;
+    const levelContact=resolveBuildingGroundContact(footprints,lng,lat,prepared);
+    const wrapper=({children}:{children:ReactNode})=><BuildingEntranceApproaches zones={[configured,street]} results={[connected]}>{children}</BuildingEntranceApproaches>;
+    ground.status='inactive';
+    try {
+      const {result,unmount}=renderHook(()=>useBuildingEntranceApproach(levelContact,footprints,frame,'model',prepared),{wrapper});
+      expect(levelContact.status).toBe('ready');
+      expect(result.current.reason).toBeNull();
+      expect(result.current.geometry?.getAttribute('position').count).toBeGreaterThan(0);
+      unmount();
+    } finally { ground.status='ready'; }
+  });
   it('reports an unconnected raised foundation while keeping the building contact ready',()=>{
     const wrapper=({children}:{children:ReactNode})=><BuildingEntranceApproaches zones={[house,street]} results={[]}>{children}</BuildingEntranceApproaches>;
     const {result}=renderHook(()=>useBuildingEntranceApproach(contact,footprints,frame,'model'),{wrapper});

@@ -102,6 +102,15 @@ Do not transfer a model's visual approval or a different site's measured result.
 | B4 Approach | Reserve the level building landing before sizing the stair flight. Check native steps meet it and every landing/tread clears measured terrain without crossing another pad or obstacle. Exercise a route that fits bare stairs but not the landing, then recover by moving the plot. Test descending as well as raised routes where supported. |
 | B5 Architectural review | Inspect exposed foundation height, stair length, landings, guards, route width, accessible alternatives, and frontage furniture. Ground-ready status and current concept stair limits do not establish accessibility or construction suitability. Record unresolved design items. |
 
+Natural ground and explicit prepared ground must use the surface actually
+rendered under the native pads. A prepared site's authored boundary and level
+supply interactive contact and 3D picking; it does not require a live Google
+snapshot. Review revisions must match that boundary and level. Export must check
+unresolved entrance issues in both modes. Test an actual low-step pick, rejected
+stale/mismatched ground, and a complete route on the exact new variant. A valid
+step pick may still yield an unresolved route if the door faces away from its
+sidewalk. See `CURRIE_PREPARED_ENTRANCE_2026-09-20.md`.
+
 Current saved entrance data is `pedestrian_building_entrance` version 1 in
 plot properties: `xM`, `yM`, `referenceWidthM`, `referenceDepthM`,
 `scaleWithPlot`, `streetId`, `widthM`, and optional `heightAboveBaseM`.

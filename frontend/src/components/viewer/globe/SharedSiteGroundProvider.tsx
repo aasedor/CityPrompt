@@ -14,6 +14,8 @@ import { createSharedSiteGroundLayout, createSharedSiteGroundSnapshot, createPar
   type SharedSiteGroundLayout, type SharedSiteGroundPassQuality, type SharedSiteGroundSnapshot } from './sharedSiteGround';
 
 export interface SharedSiteGroundState {
+  /** Authored prepared surface; only used for interactive object contact. */
+  prepared?: boolean;
   /** Visible design draft only; never evidence for a final capture. */
   preview?: boolean;
   /** Shared triangles for an approximate visible draft; not capture evidence. */
