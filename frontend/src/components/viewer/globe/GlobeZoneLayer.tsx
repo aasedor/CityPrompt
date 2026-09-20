@@ -1056,10 +1056,13 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   const handleZonePointerDown = useCallback((e: { stopPropagation: () => void }) => {
     // When the zone is already selected, let the edit surface behind it
     // receive the pointer event so body dragging can start.
-    if (isSelected || selectionEnabled === false) return;
+    // A prepared site's ground can be the first raycast hit even where an
+    // authored street crosses it. Let the canvas's smallest-containing-zone
+    // picker resolve that overlap instead of selecting the whole site.
+    if (isSelected || selectionEnabled === false || isSiteBoundary) return;
     e.stopPropagation();
     onZoneClick?.(zone.id);
-  }, [isSelected, onZoneClick, selectionEnabled, zone.id]);
+  }, [isSelected, isSiteBoundary, onZoneClick, selectionEnabled, zone.id]);
 
   // --- Imported zones: drape onto a bare-earth elevation model ---------------
   // Fetch smooth ground heights once (no canopy, no photogrammetry noise) and

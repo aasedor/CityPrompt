@@ -131,6 +131,15 @@ low view. Do not infer that junction grade from a zone's stored point elevation;
 the prepared renderer may use the active site level. The
 [irregular Currie street pilot](CURRIE_IRREGULAR_STREET_TRANSFER_2026-09-20.md)
 records this finite test and its still-open visual checks.
+On prepared ground, the site surface may win the first 3D pointer hit over a
+contained street. Re-select the street directly after reload, then select the
+site elsewhere and return to the street; the smallest containing authored
+zone should win without requiring the Layers panel. For a fixed street, test
+the panel's Add bend point control, drag the new route point, and verify the
+saved centreline, compiled identity and edit handles after reload. The Currie
+second pass found and repaired the boundary picking overlap, and confirmed a
+three-point route through ordinary controls. Keep junction grade and clearance
+as separate checks.
 
 ## Buildings
 
