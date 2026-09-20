@@ -7,6 +7,18 @@ historical; the actual results below supersede those statements.
 
 ## Latest continuation checkpoint
 
+**Latest entrance continuation:** read
+`docs/CURRIE_ENTRANCE_BROWSER_QA_2026-09-19.md` first, then
+`docs/BUILDING_ENTRANCE_GROUND_HANDOFF_2026-09-19.md`. The source adds
+terrain-supported entrance approaches and capture gating for raised
+foundations. Browser review passed on a measured one-bungalow disposable
+Currie copy after moving the house 1.2 m from the street. It also exposed an
+Undo defect: a restored street acquired a new ID and stranded the entrance.
+That identity path was fixed and rechecked live. The original seven-house
+fixture remains unchanged and entrance-blocked, so Batch A is not accepted.
+The earlier "no production source changed" statement below describes the
+prior browser continuation only.
+
 Read `docs/CURRIE_GROUNDING_CONTINUATION_2026-09-19.md` before executing the
 older next-step list below. The vacant Currie browser continuation has now
 verified rotation/Undo/Redo/reload, sampled tile-refinement stability, capture
@@ -67,7 +79,8 @@ Google context before placement showed bare ground, with public streets and
 occupied structures beside it. All nine proposal polygons are inside the
 saved site boundary, with no positive-area pairwise overlaps. The buildings
 fit the scale of nearby residential development. Ground and models settled
-after reload; pedestrian-level contact is still unverified.
+after reload; subsequent pedestrian-level review found the entrance drop
+described above, and the source repair still needs visual verification.
 
 The first broad rectangular boundary failed ground quality. The final fixture
 uses the previously validated eight-vertex boundary from
