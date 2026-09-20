@@ -71,6 +71,15 @@ or asset/publication approval from a working classroom scene.
    contract. Reuse shared checks; review new geometry assumptions and exact
    asset identity per variant. Then expand in finite batches.
 
+An additional [existing-street transfer pilot](CURRIE_IRREGULAR_STREET_TRANSFER_2026-09-20.md)
+used ordinary controls to draw a 12-corner site between Currie's straight east
+road and curving west road, connect a 10 m tree-lined residential street to the
+northern public road, Undo/Redo, reload and make a free exact capture. This
+strengthens the repeatable checklist but does **not** close the new-variant
+pilot. Natural ground is still partial there; the explicit prepared level has
+a visible large-parcel edge and the junction grade/advertised street furniture
+remain open for visual review.
+
 Stop this pre-catalogue phase when a student can independently create, revise,
 reopen and present a plausible mixed scene, with these practical blockers closed
 and minor limitations documented. Catalogue expansion need not wait for every

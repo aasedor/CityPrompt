@@ -120,6 +120,18 @@ algorithm tests may be cited across candidates when the implementation is
 unchanged, but new geometry/variant assumptions need their own runtime proof.
 Do not transfer a model's visual approval or a different site's measured result.
 
+Include an irregular development boundary when the real vacant parcel lies
+between roads with different alignments. Trace the visible road edges with
+ordinary site controls and record that the polygon is an approximation unless
+surveyed. Test natural and explicitly prepared ground separately: a large
+level prepared pad may expose a conspicuous boundary even when street contact
+and exact capture pass. For a proposed public-road extension, verify the saved
+endpoint against the map, Undo/Redo/reload, and the actual off-site surface at
+low view. Do not infer that junction grade from a zone's stored point elevation;
+the prepared renderer may use the active site level. The
+[irregular Currie street pilot](CURRIE_IRREGULAR_STREET_TRANSFER_2026-09-20.md)
+records this finite test and its still-open visual checks.
+
 ## Buildings
 
 | ID | Required integration |
