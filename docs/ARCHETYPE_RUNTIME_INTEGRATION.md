@@ -112,6 +112,22 @@ detail's capture ownership and retirement when a route becomes unresolved.
 Native steps and exposed foundation edges outside the approach remain separate
 review items. Do not infer complete edge protection from the added rails.
 
+The [entrance review panel pilot](CURRIE_ENTRANCE_REVIEW_PILOT_2026-09-20.md)
+exposes actual approach step count, signed rise, clear width and maximum foundation
+support height per saved plot. Use detailed rendered measurements tied to the
+current verified surface. Display ground may retain geometry during tile refresh;
+its revision format differs from verification. Match snapshot source/signature,
+then publish the verification revision. Hide measurements while pending, obsolete,
+unloaded or blocked; never turn absent evidence into a pass. Exercise the visible
+review → select plot → Connections → edit → Undo/Redo/reload journey.
+
+The runtime's whole-model support envelope is conservative, not evidence of an
+authored terrace or pedestrian area. Do not auto-rail its perimeter or claim its
+edges are usable without exact-variant evidence. Keep native-step joins, rail ends,
+furniture and step-free access to the actual door open independently of a nearly
+level generated approach. Review/export UI must preserve this distinction for
+future building, street and park connections; it does not grant asset approval.
+
 Entrance-only edits must update runtime geometry without recompiling native
 houses. `useAutomatic3D` excludes `pedestrian_building_entrance` from its rebuild
 trigger, matching the backend building-source contract; its full authored-state

@@ -43,7 +43,8 @@ import { createKtx2LoaderExtension } from '@/lib/ktx2GltfLoader';
 import { computeFootprintFrame, type FootprintFrame } from './buildingPlacement';
 import { raycastTerrainHeightAtLatLng } from './GlobeZoneLayer';
 import { resolvePreparedSiteTerrainForZone } from './sitePreparationSurface';
-import { useSharedSiteGround } from './SharedSiteGroundProvider';
+import { currentEntranceReviews, entranceReviewRevision, updateEntranceReviews, type BuildingEntranceReview } from './buildingEntranceReview';
+import { useSharedSiteGround, useSharedSiteGroundVerification } from './SharedSiteGroundProvider';
 import { useBuildingEntranceApproach, BuildingEntranceApproachMesh } from './BuildingEntranceApproaches';
 import { currentBuildingGroundingIssues, geographicFootprint, placedNativeFootprints, resolveBuildingGroundContact, updateBuildingGroundingIssues, type GroundPoint, type LegoGroundingIssue } from './buildingGroundContact';
 import {
@@ -141,7 +142,7 @@ function direct3DBuildingInstanceUserData(
 }
 
 export type { LegoGroundingIssue } from './buildingGroundContact';
-type GroundingStatusReporter = (buildingId: string, rendererId: string, reason: string | null) => void;
+type GroundingStatusReporter = (buildingId: string, rendererId: string, reason: string | null, review?: BuildingEntranceReview | null) => void;
 
 interface GlobeLegoAssemblyLayerProps {
   buildings: Building[];
@@ -154,6 +155,7 @@ interface GlobeLegoAssemblyLayerProps {
   onLoadedIdsChange: (ids: Set<string>) => void;
   /** Blocking contact issues, separate from asset-loading/prism suppression. */
   onGroundingIssuesChange?: (issues: LegoGroundingIssue[]) => void;
+  onEntranceReviewsChange?: (reviews: BuildingEntranceReview[]) => void;
   selectedBuildingId?: string | null;
   onBuildingClick?: (buildingId: string, hit?: NativeEntranceHit, phase?: 'pointerdown') => void;
 }
@@ -197,8 +199,9 @@ function stableFrameOffset(id: string, modulo: number): number {
   return Math.abs(hash) % modulo;
 }
 
-function useBuildingFoundation(footprints: GroundPoint[][], frame: FootprintFrame, buildingId: string, report?: GroundingStatusReporter) {
+function useBuildingFoundation(footprints: GroundPoint[][], frame: FootprintFrame, buildingId: string, report?: GroundingStatusReporter, reviewDetailed = false) {
   const sharedGround = useSharedSiteGround();
+  const verifiedGround = useSharedSiteGroundVerification();
   const rendererId = useId();
   const contact = useMemo(() => resolveBuildingGroundContact(footprints, frame.centroidLng, frame.centroidLat, sharedGround),
     [footprints, frame.centroidLng, frame.centroidLat, sharedGround]);
@@ -214,10 +217,20 @@ function useBuildingFoundation(footprints: GroundPoint[][], frame: FootprintFram
   useEffect(() => () => geometry?.dispose(), [geometry]);
   const approach = useBuildingEntranceApproach(contact, footprints, frame, buildingId);
   const reason = contact.status === 'unresolved' ? contact.reason ?? 'incomplete_footprint_ground' : approach.reason;
+  const review=useMemo<BuildingEntranceReview|null>(()=>{
+    const sections=approach.userData?.entranceApproachSections;
+    const details=approach.userData?.entranceApproachDetails;
+    const groundRevision = entranceReviewRevision(sharedGround, verifiedGround);
+    if(!reviewDetailed||reason||contact.status!=='ready'||!sections?.length||!details||groundRevision===null)return null;
+    return {buildingId,groundRevision,
+      generatedSteps:approach.userData!.entranceApproachStepCount,
+      riseM:sections[sections.length-1].endHeightM-sections[0].startHeightM,clearWidthM:details.clearWidthM,
+      supportHeightM:contact.positions.reduce((max,value,index)=>index%3===2?Math.max(max,-value):max,0)};
+  },[approach.userData,buildingId,contact,reason,reviewDetailed,sharedGround,verifiedGround]);
   useEffect(() => {
-    report?.(buildingId, rendererId, reason);
+    report?.(buildingId, rendererId, reason, review);
     return () => report?.(buildingId, rendererId, null);
-  }, [buildingId, rendererId, reason, report]);
+  }, [buildingId, rendererId, reason, report, review]);
   return { contact, geometry, approach };
 }
 
@@ -469,7 +482,7 @@ function LegoStackInstance({
     ? placedNativeFootprints(modules, yawRad, frame.rectCenterLocal)
     : [geographicFootprint(ring, frame.centroidLng, frame.centroidLat)],
   [recipe, modules, yawRad, frame.rectCenterLocal, ring, frame.centroidLng, frame.centroidLat]);
-  const foundation = useBuildingFoundation(groundFootprints, frame, building.id, onGroundingStatus);
+  const foundation = useBuildingFoundation(groundFootprints, frame, building.id, onGroundingStatus, detailedReady);
   const stackBaseLift = useMemo(() => computeLegoStackBaseLift(
     modules.map(({ bounds, transform }) => ({
       positionY: transform.position[1],
@@ -638,6 +651,7 @@ export function GlobeLegoAssemblyLayer({
   terrainHeight,
   onLoadedIdsChange,
   onGroundingIssuesChange,
+  onEntranceReviewsChange,
   selectedBuildingId = null,
   onBuildingClick,
 }: GlobeLegoAssemblyLayerProps) {
@@ -647,7 +661,9 @@ export function GlobeLegoAssemblyLayer({
   // Renderer identity prevents a departing Suspense fallback from clearing a
   // still-unresolved detailed renderer for the same building.
   const [groundingIssues, setGroundingIssues] = useState<ReadonlyMap<string, LegoGroundingIssue>>(() => new Map());
-  const handleGroundingStatus = useCallback<GroundingStatusReporter>((buildingId, rendererId, reason) => {
+  const [entranceReviews,setEntranceReviews]=useState<ReadonlyMap<string,BuildingEntranceReview>>(()=>new Map());
+  const handleGroundingStatus = useCallback<GroundingStatusReporter>((buildingId, rendererId, reason, review=null) => {
+    setEntranceReviews(previous=>updateEntranceReviews(previous,rendererId,review));
     setGroundingIssues((previous) => updateBuildingGroundingIssues(previous, buildingId, rendererId, reason));
   }, []);
   useEffect(() => {
@@ -655,6 +671,10 @@ export function GlobeLegoAssemblyLayer({
     onGroundingIssuesChange?.(currentBuildingGroundingIssues(groundingIssues, ids));
   }, [buildings, groundingIssues, onGroundingIssuesChange]);
   useEffect(() => () => onGroundingIssuesChange?.([]), [onGroundingIssuesChange]);
+  useEffect(()=>{
+    onEntranceReviewsChange?.(currentEntranceReviews(entranceReviews,new Set(buildings.map(building=>building.id))));
+  },[buildings,entranceReviews,onEntranceReviewsChange]);
+  useEffect(()=>()=>onEntranceReviewsChange?.([]),[onEntranceReviewsChange]);
   const camera = useThree((state) => state.camera);
 
   const zoneRingByBuildingId = useMemo(() => {

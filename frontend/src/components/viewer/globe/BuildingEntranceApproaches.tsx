@@ -46,7 +46,8 @@ export function useBuildingEntranceApproach(contact: BuildingGroundContact, foot
     };
     const {rails,supports,...detailSummary}=approach.details;
     return {reason:null,geometry:toGeometry(approach),railGeometry:toGeometry(rails),supportGeometry:toGeometry(supports),
-      userData:{...userData,entranceApproachSections:approach.sections,entranceApproachDetails:detailSummary}};
+      userData:{...userData,entranceApproachSections:approach.sections,entranceApproachDetails:detailSummary,
+        entranceApproachStepCount:approach.sections.some(section=>section.kind==='flight')?approach.steps:0}};
   },[inputs,contact,footprints,frame.centroidLng,frame.centroidLat,buildingId,ground]);
   useEffect(()=>{
     const releases=[result.geometry,result.railGeometry,result.supportGeometry].filter(geometry=>geometry!==null)

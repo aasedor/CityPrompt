@@ -91,6 +91,15 @@ Test picking with an intervening rail and after moving to a clear view. Verify
 entrance-only Save/Undo/Redo/reload preserves compiled model markers and does not
 request model planning/placement; verify real footprint changes still rebuild.
 
+Record the student review panel's saved plot identity, measured generated steps,
+signed rise, clear width and maximum foundation support height. Confirm sampling
+hides numbers, current geometry restores them, an invalid edit replaces them with
+repair guidance, and Select/Connections/Undo/Redo/reload preserves the plot. Match
+retained display and verified ground by measured source/snapshot identity, not by
+assuming their revision strings have the same format. Distinguish support-envelope
+edges from authored walking surfaces, and nearly level approach from step-free
+access to the native door. These design checks remain open after export.
+
 ## Verification and decision
 
 - Focused test commands/results and reused shared-test evidence:

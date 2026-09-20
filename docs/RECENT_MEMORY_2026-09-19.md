@@ -7,6 +7,24 @@ historical; the actual results below supersede those statements.
 
 ## Latest continuation checkpoint
 
+**Student entrance review (20 September):** read
+`docs/CURRIE_ENTRANCE_REVIEW_PILOT_2026-09-20.md` first. Review entrances now
+lists the seven saved plots with current generated steps, rise, clear walking
+width and maximum foundation support height. It keeps native-step joins,
+exposed support edges and step-free access visibly unresolved. Browser QA found
+and fixed display/verification revision mismatch; the panel now uses matching
+measured surfaces and the current verification revision. Select/Connections,
+invalid-width guidance, Escape, Undo/Redo/reload and free exact export passed.
+All copy coordinates/properties (including compiled markers) are restored; the
+protected original is unchanged. 104 focused tests, type-check and lint pass.
+The conservative whole-model foundation cap is support geometry, not an authored
+terrace; do not auto-rail its perimeter. Next: exact-variant native-step/rail join
+and exposed edge evidence, furniture clearance, a supported accessible alternative,
+then the full novice-authored journey. Keep the separate legacy Generate to 3D
+locked-recipe mismatch open. No native assets, RLASM method, publication or paid
+generation changed; this panel does not establish student-ready acceptance.
+
+
 **Entrance side details and edit recovery (20 September):** read
 `docs/CURRIE_ENTRANCE_EDGE_PILOT_2026-09-20.md` first. Shared concept rails and
 measured landing posts now preserve open route ends and check clear walking

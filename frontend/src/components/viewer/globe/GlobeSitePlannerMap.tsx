@@ -1,3 +1,5 @@
+import { BuildingEntranceReviewPanel } from './BuildingEntranceReviewPanel';
+import type { BuildingEntranceReview } from './buildingEntranceReview';
 import { BuildingGroundProblems } from './BuildingGroundProblems';
 import { pickBuildingEntrance, entrancePickOccluded, entrancePickZoneKey, type NativeEntranceHit } from '@/features/pickPlace/pickBuildingEntrance';
 import { useContextPresentation } from '@/features/context/useContextPresentation';
@@ -1611,6 +1613,8 @@ export function GlobeSitePlannerMap({
   const [sharedGroundState, setSharedGroundState] = useState<SharedSiteGroundState>(INACTIVE_SHARED_SITE_GROUND);
   const [showGroundReview, setShowGroundReview] = useState(false);
   const [showBuildingGroundProblems, setShowBuildingGroundProblems] = useState(false);
+  const [showEntranceReview,setShowEntranceReview]=useState(false);
+  const [entranceReviews,setEntranceReviews]=useState<BuildingEntranceReview[]>([]);
   const contextPresentation = useContextPresentation(allSiteZones);
   const contextPresentationRef = useRef(contextPresentation);
   contextPresentationRef.current = contextPresentation;
@@ -4247,6 +4251,7 @@ export function GlobeSitePlannerMap({
                 terrainHeight={terrainElevation}
                 onLoadedIdsChange={handleLegoIdsChange}
                 onGroundingIssuesChange={handleGroundingIssuesChange}
+                onEntranceReviewsChange={setEntranceReviews}
                 selectedBuildingId={selectedRenderedBuildingId}
                 onBuildingClick={handleBuildingModelClick}
               />
@@ -4335,6 +4340,12 @@ export function GlobeSitePlannerMap({
         {entrancePickError && <p role="alert" className="mt-2 text-amber-900">{entrancePickError}</p>}
         <button type="button" className="mt-2 min-h-11 rounded-lg border border-slate-600 px-3 font-semibold" onClick={()=>entrancePick.finish(null)}>Cancel pick</button>
       </section>}
+      {showEntranceReview&&<BuildingEntranceReviewPanel zones={siteZones} reviews={entranceReviews} issues={buildingGroundingIssues}
+        groundRevision={sharedGroundState.revision} groundCurrent={sharedGroundState.status==='ready'&&sharedGroundState.isCurrent?.()!==false&&!sharedGroundState.preview}
+        onClose={()=>setShowEntranceReview(false)} onSelect={zone=>{
+          setShowEntranceReview(false);onZoneSelected(zone.id);
+          void requestProjectFrame([{ ...zone, coordinates: zone.coordinates as [number, number][] }], 'manual');
+        }}/>}
       {showBuildingGroundProblems && <BuildingGroundProblems issues={buildingGroundingIssues} zones={siteZones}
         onClose={() => setShowBuildingGroundProblems(false)} onSelect={zone => {
           setShowBuildingGroundProblems(false); onZoneSelected(zone.id);
@@ -4624,6 +4635,8 @@ export function GlobeSitePlannerMap({
           </button>
         )}
         {getActiveSiteBoundary(allSiteZones) && onPrepareGround && <button className="min-h-11 rounded-full border-2 border-[#151515] bg-[#fff9ec] px-3 text-xs font-bold" onClick={() => setShowGroundReview(true)}>Review ground</button>}
+        {siteZones.some(zone=>zone.building_id||zone.building_ids?.length)&&<button type="button" className="min-h-11 rounded-full border-2 border-[#151515] bg-[#fff9ec] px-3 text-xs font-bold"
+          onClick={()=>setShowEntranceReview(true)}>Review entrances</button>}
         {(sharedGroundState.status === 'sampling' || sharedGroundState.status === 'unavailable') && (
           <span role="status" className="max-w-sm rounded-xl border-2 border-[#151515] bg-[#fff9ec]/95 px-3 py-1.5 text-[11px] font-bold text-[#151515]">
             {groundReadinessMessage(sharedGroundState)}
