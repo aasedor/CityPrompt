@@ -7,6 +7,17 @@ historical; the actual results below supersede those statements.
 
 ## Latest continuation checkpoint
 
+**Latest — natural park and hillside capture guard (20 September):** read
+`docs/CURRIE_NATURAL_PARK_CAPTURE_CHECK_2026-09-20.md`. A UI resize/move
+restored repeatable natural park measurement and a saved street entrance, but
+its minimum-size programme omitted play equipment. Hillside mode had bypassed
+shared-site verification and allowed an exact export while house approach
+measurements were unavailable; the shared provider now verifies it and rejects
+the partial-site export. The disposable fresh project was restored to its
+prepared 1102.62 m scene with original park/route/edges, and free exact preview
+passed. Next: bounded image-fidelity check and one building/street/park
+catalogue-entry pilot. Natural partial-site capture remains a follow-up.
+
 **Latest — boundary exclusion labels (20 September):** read
 `docs/CURRIE_BOUNDARY_EXCLUSION_LABELS_2026-09-20.md`. Unnamed street, house
 and park exclusions now return type/variant labels instead of UUIDs. Live 409

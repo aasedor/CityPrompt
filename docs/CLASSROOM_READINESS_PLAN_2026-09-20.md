@@ -15,7 +15,7 @@ or asset/publication approval from a working classroom scene.
 
 | Gate | Required result | Current evidence / remaining work |
 | --- | --- | --- |
-| Independent authoring | Student creates a site, buildings, street and park; connects, edits and reopens without developer offsets or API-authored geometry | Fresh Currie boundary/street/house/park and native front-step connection were authored through UI and survived reload on an explicit prepared level. Natural ground can hide the park on this parcel; Review ground now explains move/resize or intentional prepared-level recovery. Partial-site capture remains open. |
+| Independent authoring | Student creates a site, buildings, street and park; connects, edits and reopens without developer offsets or API-authored geometry | Fresh Currie boundary/street/house/park and native front-step connection were authored through UI and survived reload on an explicit prepared level. Natural-ground park move/resize, repeatable measurement and saved street entrance were also exercised. That minimum-size park loses its play programme and the site still has partial measurement; the prepared level remains the complete presentation route. |
 | Plausible scene | No persistent missing models, floating/buried objects, obvious scale/connection errors or blocking furniture at normal presentation distances | Fresh Currie prepared-site front approach reaches the native step at low view and in exact 3D preview. Local natural-ground rejections retain usable areas; partial-site capture remains blocked. Fine rail joins are follow-up work. |
 | Dependable controls | Advertised placement/rotation/resize/variant/delete and recovery work predictably | Fresh Move-handle/Undo/Redo/reload passed. Prepared-site 3D picking saved a connected front step; a rear-step pick now explains the facing problem and Cancel preserves the front link. Native-house instructions point to the working Move handle. The seven-house Generate to 3D recipe mismatch is fixed and browser-retested. Boundary exclusions now identify unnamed objects by type and variant instead of UUID. |
 | Useful visuals | Clean, useful camera views; reliable exact export; AI output preserves the student's actual design | Fresh free export passed and was inspected. It is a plain concept scene, not proof of attractive AI output. Current local harness disables paid AI; image fidelity needs a separate bounded live test. |
@@ -28,7 +28,12 @@ or asset/publication approval from a working classroom scene.
    See `CURRIE_LOCAL_GROUND_RECOVERY_2026-09-20.md` and
    `CURRIE_PARK_GROUND_RECOVERY_2026-09-20.md`. The park disappears and the
    entrance intersects terrain in the current natural mode; the shared warning
-   now names deliberate recovery choices. The explicit prepared level restores
+   now names deliberate recovery choices. A bounded natural-mode trial moved
+   the park onto repeatably measured ground and connected it to the street,
+   but the minimum-size version omits play features. The hillside mode now
+   keeps whole-site verification active and correctly blocks exact export on
+   this partial site; see `CURRIE_NATURAL_PARK_CAPTURE_CHECK_2026-09-20.md`.
+   The explicit prepared level restores
    the whole scene, and measured concept retaining edges remove the exposed
    bright strip in exact preview. Finish a real natural park recovery and
    per-proposal capture coverage; partial sites still conservatively block exports.

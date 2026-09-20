@@ -62,6 +62,7 @@ Mark type-specific gates N/A with a reason; keep applicable unrun cases open.
 | Edge/unsupported case and inward recovery | NOT TESTED | |
 | Local ground hole: unaffected object works; affected object rejects; recovery/reload/export guard | NOT TESTED | |
 | Park measurement unavailable: visible warning, move/resize or explicit prepared-level recovery | NOT TESTED | |
+| Hillside park profile: whole-site and house-route verification still gates capture | NOT TESTED | |
 | Supported minimum/maximum size and rotation | NOT TESTED | |
 | Edit during pending ground / tile refinement | NOT TESTED | |
 | Delete / Undo / Redo; referenced route target | NOT TESTED | |

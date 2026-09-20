@@ -165,6 +165,15 @@ describe('shared ground provider lifecycle', () => {
     expect(state).toBe(INACTIVE_SHARED_SITE_GROUND);
     expect(tiles.deleteCamera).toHaveBeenCalled();
   });
+  it('keeps hillside park sites under shared-ground verification', () => {
+    const tiles = tileFixture(), TestContext = TilesRendererContext as ReturnType<typeof createContext<unknown>>;
+    const landscape = { ...site, properties: { ...site.properties, terrain_strategy: 'landscape' as const } };
+    render(<TestContext.Provider value={tiles}><SharedSiteGroundProvider zones={[landscape]}><Read /></SharedSiteGroundProvider></TestContext.Provider>);
+    expect(verification.status).toBe('sampling');
+    tick(0); tick(); tick();
+    expect(verification.status).toBe('ready');
+    expect(captureSharedGround(verification)?.heights).toEqual([1030, 1030, 1030, 1030]);
+  });
   it('retains measured ground for off-site tile events and releases its selection camera on unmount', () => {
     const tiles = tileFixture(), TestContext = TilesRendererContext as ReturnType<typeof createContext<unknown>>;
     const view = render(<TestContext.Provider value={tiles}><SharedSiteGroundProvider zones={[site]}><Read /></SharedSiteGroundProvider></TestContext.Provider>);

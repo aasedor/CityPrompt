@@ -77,7 +77,10 @@ export function SharedSiteGroundProvider({ zones, children, onChange, inspectPre
   const tiles = useContext(TilesRendererContext);
   const active = getActiveSiteBoundary(zones);
   const survey = useMemo(() => surveyGroundState(active), [active]);
-  const inspectionOnly = Boolean(active && (active.properties?.community_3d_mask_existing_tiles !== false || active.properties?.terrain_strategy === 'landscape'));
+  // A hillside park keeps the original tiles, so building approaches and
+  // captures still need the shared measured surface. Only a replacement site
+  // plane makes this provider inspection-only.
+  const inspectionOnly = Boolean(active && active.properties?.community_3d_mask_existing_tiles !== false);
   const boundary = !survey && (!inspectionOnly || inspectPrepared) ? active : null;
   const sourceSignature = boundary ? `${sharedSiteGroundSourceSignature(boundary, sampleSpacingM)}${anchorSnapshot ? `:${anchorSnapshot.signature}` : ''}` : 'inactive';
   const layout = useMemo(() => {

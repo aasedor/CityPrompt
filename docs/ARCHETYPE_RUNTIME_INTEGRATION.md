@@ -79,6 +79,14 @@ placement, plus recovery, reload and capture rejection. See the bounded
 `CURRIE_LOCAL_GROUND_RECOVERY_2026-09-20.md` evidence; do not inherit its visual
 acceptance for a new archetype.
 
+A park-specific repeatable profile does not certify the house, street, access
+route or the rest of a hillside site. `terrain_strategy: landscape` keeps the
+original tiles visible and must retain shared-site verification and capture
+guards. The [natural Currie park check](CURRIE_NATURAL_PARK_CAPTURE_CHECK_2026-09-20.md)
+shows a park moved onto clear ground while the site's eight uncertain cells and
+house approach still block exact export. Review the programme at minimum size;
+the supported 30 m park can omit its play equipment.
+
 Ground-review problem markers must use the same slope and local-residual tests
 as the actual ground validator, including boundary-support cells. A separate
 fixed height-jump threshold can show an apparently clean map while rejecting
