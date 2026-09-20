@@ -46,4 +46,15 @@ describe('automatic placement compilation',()=>{
     const viewer=renderHook(()=>useAutomatic3D(undefined,[zone()],false),{wrapper});await advance();viewer.unmount();
     expect(compileMixedCommunity3D).not.toHaveBeenCalled();
   });
+  it('keeps runtime building entrance edits and Undo from recompiling the saved native house',async()=>{
+    const saved=zone(0,true);
+    const {rerender,unmount}=renderHook(({zones})=>useAutomatic3D('p',zones,false),{initialProps:{zones:[saved]},wrapper});
+    await advance();
+    const edited={...saved,properties:{...saved.properties,pedestrian_building_entrance:{version:1,widthM:1.2}}};
+    rerender({zones:[edited]});await advance();
+    rerender({zones:[saved]});await advance();
+    expect(compileMixedCommunity3D).not.toHaveBeenCalled();
+    rerender({zones:[{...edited,coordinates:zone(2).coordinates}]});await advance();
+    expect(compileMixedCommunity3D).toHaveBeenCalledOnce();unmount();
+  });
 });

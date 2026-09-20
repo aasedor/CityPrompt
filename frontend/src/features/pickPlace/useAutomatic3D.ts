@@ -11,10 +11,11 @@ import { representationNotice } from './representationNotice';
 
 const automaticZone = (zone: SiteZone) => (assetForZone(zone) || zone.properties?.pick_place_automatic_3d === true) && !zone.id.startsWith('temp-');
 
-export function authoredPlacementKey(zones: SiteZone[]): string {
+export function authoredPlacementKey(zones: SiteZone[], includeRuntimeEntrance = true): string {
   return JSON.stringify(zones.map(zone => ({ id: zone.id, coordinates: zone.coordinates,
     design: Object.fromEntries(Object.entries(zone.properties ?? {})
-      .filter(([name]) => /^(pick_place|native_home|development_|green_space_|road_|width$|floors$|floor_height$|height|custom_style_|generation_style_input$|neighborhood_park_layout$|park_trio_layout$|pedestrian_|park_access_points$)/.test(name))
+      .filter(([name]) => (includeRuntimeEntrance || name !== 'pedestrian_building_entrance')
+        && /^(pick_place|native_home|development_|green_space_|road_|width$|floors$|floor_height$|height|custom_style_|generation_style_input$|neighborhood_park_layout$|park_trio_layout$|pedestrian_|park_access_points$)/.test(name))
       .sort(([a],[b]) => a.localeCompare(b))) })).sort((a,b) => a.id.localeCompare(b.id)));
 }
 
@@ -28,7 +29,12 @@ export function useAutomatic3D(projectId: string | undefined, zones: SiteZone[],
   const latest = useRef(zones);
   latest.current = zones;
   const candidates = zones.filter(automaticZone);
-  const key = authoredPlacementKey(candidates);
+  // The building entrance is derived beside the native model, and is not an
+  // input to the backend building source hash. Recompiling on a width/anchor
+  // edit changes the model's compiled_at while Undo can restore older zone
+  // metadata, stranding an otherwise identical model. Keep the full authored
+  // key below for revision comparisons; only the rebuild trigger excludes it.
+  const key = authoredPlacementKey(candidates, false);
   const compiled = candidates.every(isCommunity3DCompiled);
 
   useEffect(() => {
