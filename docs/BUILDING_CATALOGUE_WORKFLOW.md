@@ -6,6 +6,13 @@ work. The promotion tools handle the repeatable wiring and detect mismatches.
 No command below buys renders, changes account credits, self-approves a model,
 or automatically commits or pushes Git.
 
+Read [Runtime integration for every archetype](ARCHETYPE_RUNTIME_INTEGRATION.md)
+before building. Complete [its per-variant review](ARCHETYPE_RUNTIME_REVIEW_TEMPLATE.md)
+alongside the local student trial and include the record in the delivery/PR.
+The promotion CLI does not yet enforce that complete checklist: a preflight
+pass cannot substitute for measured entrance, terrain, edit/recovery and visual
+evidence. Keep failing or untested applicable checks open.
+
 ## 1. Build and independently review
 
 Start a clean `codex/<building-name>` worktree from `origin/main`. Read
@@ -177,8 +184,10 @@ Publishing to Git does not silently modify cityprompt.ca.
 ## Contributor prompt
 
 > Build one exact RLASM 6.1 architectural-clay building using the canonical
-> method. Follow docs/BUILDING_CATALOGUE_WORKFLOW.md. Work on an isolated
-> codex branch, keep generated evidence external, obtain an independent
+> method. Follow docs/BUILDING_CATALOGUE_WORKFLOW.md and complete
+> docs/ARCHETYPE_RUNTIME_REVIEW_TEMPLATE.md against
+> docs/ARCHETYPE_RUNTIME_INTEGRATION.md for this exact variant. Work on an
+> isolated codex branch, keep generated evidence external, obtain an independent
 > holistic review, use the promotion package tools, and trial the exact GLB
 > on an empty local site. Preserve native scale and saved identities. Report
 > the review, student trial, local install/readback, and Git publication

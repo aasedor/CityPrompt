@@ -7,6 +7,15 @@ historical; the actual results below supersede those statements.
 
 ## Latest continuation checkpoint
 
+**Reusable archetype integration (20 September):** the user requires these
+lessons to carry into every future building, street and park archetype. Read
+`docs/ARCHETYPE_RUNTIME_INTEGRATION.md` and complete
+`docs/ARCHETYPE_RUNTIME_REVIEW_TEMPLATE.md` per exact variant. AGENTS, CLAUDE,
+building publication and public-realm guidance now link this shared checklist.
+Update it with subsequent generalizable findings. It is a contributor/reviewer
+requirement, not yet a fully automated CLI gate; it does not retroactively
+approve assets or change RLASM 6.1.
+
 **3D entrance-picking pilot (20 September):** read
 `docs/CURRIE_3D_ENTRANCE_PICK_BROWSER_QA_2026-09-20.md` first. Students can
 choose a low native-house step directly in 3D, receive current-ground approach

@@ -20,6 +20,12 @@ Sticker Method/V98 material is historical compatibility evidence.
 
 ## Generated assets
 
+- For every new or materially revised building, street/path, or park/open-space
+  variant, read `docs/ARCHETYPE_RUNTIME_INTEGRATION.md` before authoring and
+  complete `docs/ARCHETYPE_RUNTIME_REVIEW_TEMPLATE.md` for its exact delivery.
+  Carry generalizable runtime findings into that checklist and its template;
+  keep site-specific measurements in the candidate's evidence. Unrun or failing
+  applicable gates must remain visible and cannot be called student-ready.
 - Keep heavyweight render experiments and visual-QA output outside the source
   tree when a command supports an output directory. Otherwise use an ignored
   local output directory such as `artifacts/`.
