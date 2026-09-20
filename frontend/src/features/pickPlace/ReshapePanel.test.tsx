@@ -10,6 +10,14 @@ import { CANONICAL_CHOICES } from './canonicalCatalogue';
 import { canonicalBuildingAsset } from './canonicalBuildingPlacement';
 afterEach(cleanup);
 
+it('points native-house students to the working Move handle', () => {
+  const asset=placeAsset('infill_home');
+  const zone={id:'infill',zone_type:'building',properties:placementProperties(asset),coordinates:rectangleAt([-114,51],12,16)} as SiteZone;
+  render(<ReshapePanel zone={zone} disabled={false} onDuplicate={vi.fn()} onReshape={vi.fn()} onClose={vi.fn()} onDelete={vi.fn()} onMore={vi.fn()}/>);
+  expect(screen.getByText(/Drag the Move handle on the selected plot/)).toBeTruthy();
+  expect(screen.queryByText(/Drag the object to move it/)).toBeNull();
+});
+
 it('preserves an older irregular building footprint when resizing', () => {
   const choice = CANONICAL_CHOICES.find(c => c.option.id === 'brownstone_rowhouse_frontage')!;
   const asset = canonicalBuildingAsset({ choice, variant: choice.option.variants![0] });

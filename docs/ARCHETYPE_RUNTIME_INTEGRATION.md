@@ -86,6 +86,12 @@ alignment. Offer boundary adjustment without silently preparing a level surface.
 Boundary edits must preserve contained objects or explain how to move them first.
 See the [fresh workflow pilot](CURRIE_STUDENT_WORKFLOW_PILOT_2026-09-20.md).
 
+For a native-house plot, verify that the visible Move handle actually moves the
+selected plot, then Undo/Redo and reload it. Model-body dragging may pan the
+camera; do not instruct students to use that gesture unless it is implemented
+for the exact runtime. See the
+[Currie control check](CURRIE_NATIVE_MOVE_CONTROL_2026-09-20.md).
+
 For each pilot, test a level case, a slope, an edge/unsupported case with
 recovery, and an edit while ground is pending. Keep the matrix finite. Shared
 algorithm tests may be cited across candidates when the implementation is

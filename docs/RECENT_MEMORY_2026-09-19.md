@@ -7,6 +7,15 @@ historical; the actual results below supersede those statements.
 
 ## Latest continuation checkpoint
 
+**Latest — native-house Move control (20 September):** read
+`docs/CURRIE_NATIVE_MOVE_CONTROL_2026-09-20.md`. The Currie model body pans on
+drag, but the plot's Move handle works and its edit/Undo/Redo/reload were
+previously verified. The reshape and screen hints now direct students to that
+handle. Live selection shows both hints and the actual handle; no geometry
+changed. Next: fix the legacy Generate to 3D mismatch and boundary error labels,
+then a bounded image-fidelity test.
+
+
 **Latest — Currie park ground recovery choice (20 September):** read
 `docs/CURRIE_PARK_GROUND_RECOVERY_2026-09-20.md`. Follow existing terrain on the
 fresh disposable site retained eight excluded cells and the house/street, but
