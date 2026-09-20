@@ -17,7 +17,7 @@ export function groundReadinessMessage(state: SharedSiteGroundState): string {
 export function captureSharedGround(state: SharedSiteGroundState): SharedSiteGroundSnapshot | undefined {
   if (state.snapshot?.source === 'classified_lidar') throw new Error('This survey pilot is available for interactive testing. Professional rendering is not available for this test project yet.');
   if (state.status === 'inactive') return undefined;
-  if (state.status !== 'ready' || !state.snapshot) {
+  if (state.status !== 'ready' || !state.snapshot || state.isCurrent?.() === false) {
     throw new Error(state.status === 'sampling'
       ? 'Ground alignment is not ready. Keep the site in view while its 3D terrain loads, then try again.'
       : groundReadinessMessage(state));
@@ -29,7 +29,7 @@ export function assertSharedGroundUnchanged(
   snapshot: SharedSiteGroundSnapshot | undefined,
   current: SharedSiteGroundState,
 ): void {
-  if (snapshot ? current.status !== 'ready' || snapshot.signature !== current.snapshot?.signature
+  if (snapshot ? current.status !== 'ready' || current.isCurrent?.() === false || snapshot.signature !== current.snapshot?.signature
     : current.status !== 'inactive') {
     throw new Error('The terrain changed during capture. Let ground alignment finish and try again.');
   }

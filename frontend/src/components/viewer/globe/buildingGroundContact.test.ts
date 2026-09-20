@@ -9,6 +9,11 @@ const footprint: GroundPoint[][] = [[[-5, -6], [5, -6], [5, 6], [-5, 6]]];
 const module = (rotationYRad = 0): PlacedModuleBounds => ({ bounds: new THREE.Box3(new THREE.Vector3(-5, 0, -6), new THREE.Vector3(5, 8, 6)),
   transform: { position: [0, 0, 0], scale: [1, 1, 1], rotationYRad } });
 const ground = (heightAt = (_lng: number, _lat: number) => 1031.3) => ({ status: 'ready', contains: () => true, heightAt });
+function boundedGround(ring: GroundPoint[]) {
+  const boundaryCoordinates: GroundPoint[] = ring.map(([x, y]) => [lng + x / metersPerDegLon(lat), lat + y / METERS_PER_DEG_LAT]);
+  return { ...ground(), boundaryCoordinates,
+    contains: (x: number, y: number) => sharedSiteGroundContains(boundaryCoordinates, x, y) };
+}
 
 function peakedGround(peakX: number, peakY: number) {
   const ll = (x: number, y: number): GroundPoint => [lng + x / metersPerDegLon(lat), lat + y / METERS_PER_DEG_LAT];
@@ -25,6 +30,33 @@ function peakedGround(peakX: number, peakY: number) {
 }
 
 describe('native building footprint contact', () => {
+  it.each([
+    { name: 'thin crossing', site: [[2,-10],[2.2,-10],[2.2,10],[2,10]], pad: [[-5,-2],[5,-2],[5,2],[-5,2]] },
+    { name: 'site surrounded by an offset footprint', site: [[2,2],[3,2],[3,3],[2,3]], pad: [[1,1],[4,1],[4,4],[1,4]] },
+    { name: 'narrow concave notch between perimeter probes', site: [[-8,-8],[8,-8],[8,8],[2.3,8],[2.3,-3],[2.2,-3],[2.2,8],[-8,8]], pad: [[-5,-2],[5,-2],[5,2],[-5,2]] },
+  ])('rejects partial ground support: $name', ({ site, pad }) => {
+    expect(resolveBuildingGroundContact([pad as GroundPoint[]], lng, lat, boundedGround(site as GroundPoint[])))
+      .toEqual({ status: 'unresolved', reason: 'incomplete_footprint_ground' });
+  });
+  it('recognizes an intersecting footprint while ground is still sampling', () => {
+    const measured = boundedGround([[2,-10],[2.2,-10],[2.2,10],[2,10]]);
+    expect(resolveBuildingGroundContact(footprint, lng, lat, { ...measured, status: 'sampling', heightAt: () => null }))
+      .toEqual({ status: 'unresolved', reason: 'ground_not_ready' });
+  });
+  it('keeps wholly outside detached pads outside even when their shared origin is on site', () => {
+    const measured = boundedGround([[-1,-1],[1,-1],[1,1],[-1,1]]);
+    const pads: GroundPoint[][] = [[[-5,-1],[-3,-1],[-3,1],[-5,1]], [[3,-1],[5,-1],[5,1],[3,1]]];
+    expect(resolveBuildingGroundContact(pads, lng, lat, measured)).toEqual({ status: 'outside' });
+  });
+  it('accepts a fully supported footprint sharing the measured boundary', () => {
+    expect(resolveBuildingGroundContact(footprint, lng, lat, boundedGround(footprint[0])).status).toBe('ready');
+  });
+  it.each([Math.PI / 6, Math.PI / 2])('detects an edge crossing after rotation by %s', (angle) => {
+    const rotate = ([x, y]: GroundPoint): GroundPoint => [x * Math.cos(angle) - y * Math.sin(angle), x * Math.sin(angle) + y * Math.cos(angle)];
+    const measured = boundedGround(([[2,-10],[2.2,-10],[2.2,10],[2,10]] as GroundPoint[]).map(rotate));
+    expect(resolveBuildingGroundContact(footprint.map(ring => ring.map(rotate)), lng, lat, measured))
+      .toEqual({ status: 'unresolved', reason: 'incomplete_footprint_ground' });
+  });
   it('uses native bounds rather than a larger plot and preserves source dimensions', () => {
     const source = module();
     const points = placedNativeFootprints([source], 0, [2, 3])[0];

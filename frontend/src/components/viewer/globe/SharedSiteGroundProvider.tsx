@@ -18,11 +18,15 @@ export interface SharedSiteGroundState {
   preview?: boolean;
   /** Shared triangles for an approximate visible draft; not capture evidence. */
   draftLayout?: SharedSiteGroundLayout;
+  /** Current geographic domain, available even before measurements finish. */
+  boundaryCoordinates?: readonly [number, number][];
   status: 'inactive' | 'sampling' | 'ready' | 'unavailable';
   snapshot: SharedSiteGroundSnapshot | null;
   heightAt: (lng: number, lat: number) => number | null;
   contains: (lng: number, lat: number) => boolean;
   revision: string;
+  /** Synchronous capture guard: tile events can precede React's next commit. */
+  isCurrent?: () => boolean;
   failureReason?: string | null;
   review?: GroundReview | null;
   inspectionStatus?: 'sampling' | 'ready' | 'unavailable';
@@ -111,11 +115,16 @@ export function SharedSiteGroundProvider({ zones, children, onChange, inspectPre
   }, []);
 
   useEffect(() => {
+    const activeRun = run.current;
     const invalidate = (event?: { type?: string; scene?: THREE.Object3D }) => {
       // Previously even a download behind the camera cleared every assembly.
       // Keep the last measured surface when the changed model cannot cover it.
       if (event?.scene && selection && !selection.intersects(event.scene)) return;
-      run.current.dirty = true; run.current.changedAt = Date.now();
+      activeRun.dirty = true; activeRun.changedAt = Date.now();
+      // Retain display geometry, but stop advertising the old measurement for
+      // capture immediately rather than waiting for the next animation frame.
+      setResult(previous => previous.status === 'ready' || previous.status === 'unavailable'
+        ? { ...previous, status: 'sampling', failureReason: null } : previous);
       diagnose({ lastInvalidation: { type: event?.type ?? 'source_or_renderer', at: Date.now() } });
     };
     invalidate();
@@ -128,6 +137,7 @@ export function SharedSiteGroundProvider({ zones, children, onChange, inspectPre
     tiles.addEventListener('dispose-model', invalidate);
     tiles.addEventListener('tile-visibility-change', invalidate);
     return () => {
+      activeRun.dirty = true;
       tiles.removeEventListener('load-model', invalidate);
       tiles.removeEventListener('dispose-model', invalidate);
       tiles.removeEventListener('tile-visibility-change', invalidate);
@@ -223,7 +233,8 @@ export function SharedSiteGroundProvider({ zones, children, onChange, inspectPre
     const measured = matching && result.status === 'ready' ? result.snapshot : null;
     const snapshot = measured ? { ...measured, boundaryUpdatedAt: boundary.updated_at } : null;
     const ring = layout?.boundaryCoordinates ?? boundary.coordinates.map(([lng, lat]): [number, number] => [lng, lat]);
-    return { status: matching ? result.status : layout ? 'sampling' : 'unavailable', snapshot,
+    return { status: matching ? result.status : layout ? 'sampling' : 'unavailable', snapshot, boundaryCoordinates: ring,
+      isCurrent: () => !run.current.dirty && run.current.source === sourceSignature && run.current.generation === result.generation,
       failureReason: matching && result.status === 'unavailable' ? result.failureReason : null,
       review: review?.layout.sourceSignature === sourceSignature ? review : null,
       contains: (lng, lat) => sharedSiteGroundContains(ring, lng, lat),
