@@ -83,6 +83,13 @@ and test the shared integration when a new archetype needs those capabilities.
 Measured entrance evidence is presently a review record; there is no automatic
 catalogue entrance-metadata importer in this checkpoint.
 
+Native steps may be merged into a stone mesh, a foundation mesh, or another
+material group. Preserve the real transform and surface hit; do not identify
+entrances from mesh names. Record both the lowest tread top and the outer
+step-foot/base datum so the generated approach does not acquire a duplicate
+rise. The [Craftsman/Edwardian pilots](CURRIE_ENTRANCE_FAMILY_PILOTS_2026-09-20.md)
+verify this distinction with actual model bytes and browser edits.
+
 ## Streets and paths
 
 | ID | Required integration |

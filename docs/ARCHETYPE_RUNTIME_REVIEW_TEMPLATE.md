@@ -74,6 +74,9 @@ door/step/landing edge coordinates, clear width, route direction, measured plot
 anchor, `scaleWithPlot` behavior and reference dimensions. Link front/side/low
 views to the exact model hash. Record repeated-house or multiple-entrance limits.
 These are reviewed measurements; this template does not install runtime metadata.
+Identify the actual step surface and its transform, even when it belongs to a
+different material/mesh group. Distinguish lowest tread-top height from the
+step-foot/base datum used by the generated approach; do not select by mesh name.
 
 ## Verification and decision
 

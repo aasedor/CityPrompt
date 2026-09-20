@@ -7,6 +7,18 @@ historical; the actual results below supersede those statements.
 
 ## Latest continuation checkpoint
 
+**Craftsman/Edwardian entrance pilots (20 September):** read
+`docs/CURRIE_ENTRANCE_FAMILY_PILOTS_2026-09-20.md` first. Both exact families
+passed 3D step picking, Save/Undo/Redo/reload on the disposable Currie copy.
+Two small Craftsman drags reproduced insufficient setback; Undo restored the
+exact footprint and repicking recovered. All trial coordinates and entrances
+were restored; seven houses returned to ready ground without warnings. No
+production source changed. Shared guidance now records that actual step hits
+must work across material/mesh groups. Measured street-to-base rises are
+2.349 m / 1.793 m for the two Craftsmen and 0.414 m for the Edwardian. Next:
+shared landing/flight/edge-protection design and low-view validation, keeping
+accessibility separate. Stay on Astra for that unit. No push occurred.
+
 **Reusable archetype integration (20 September):** the user requires these
 lessons to carry into every future building, street and park archetype. Read
 `docs/ARCHETYPE_RUNTIME_INTEGRATION.md` and complete
