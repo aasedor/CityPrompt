@@ -23,7 +23,13 @@ park to its right at approximately the authored scale and position. It adds
 photographic context, planting texture and shadows. It also changes the large
 flat prepared-ground surface to scrub/grass and makes the red six-metre shared
 street read more like a pedestrian path; the exact source already gives this
-street ambiguous vehicle semantics at this camera distance. This single image
+street ambiguous vehicle semantics at this camera distance. The runtime
+contract deliberately defines a Dutch woonerf: 0.3 m flush edges around a
+5.4 m red-brown brick lane, with no raised curb or standard lane markings.
+Planters and bollards are intentional chicane cues, so a pedestrian character
+alone does not establish a rendering defect. The image needs a closer view
+to confirm a continuous vehicle-clear route and whether the road reaches a
+plausible external connection. This single image
 is useful as an illustrative image after human comparison, not proof that
 faithful AI imagery is dependable for students yet.
 
@@ -41,9 +47,10 @@ contains `exact-source.png`, `provider-original.png`,
 `saved-fallback.png`, UI screenshots, and a scrubbed diagnostics summary.
 The full provider response is local-only and may contain generated image data.
 
-Before scaling the catalogue, make the shared-street source legible as its
-actual section at useful aerial and low cameras, and run one finite follow-up
-image check against that improved source. A future building/street/park
+Before scaling the catalogue, verify the shared-street source and any generated
+image at a camera where its usable width, chicanes and connection can be read.
+If that view exposes a real geometry or semantics fault, fix the shared source
+first, then make one finite follow-up image check. A future building/street/park
 candidate must compare an exact source image with any AI result for count,
 outline, location, dimensions, access, material/function and unwanted additions.
 Record whether the result passed automatically, needs human review, or falls
