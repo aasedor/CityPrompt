@@ -16,6 +16,46 @@ const strip = { id: 'entrance:house', ownerId: 'house', start: geo([11, 0]), end
 const input = { contact, footprints, lng, lat, ground, strip, heightAboveBaseM: 0 };
 
 describe('entrances on generated foundations', () => {
+  it('reserves a level landing at the native-step foot before allocating stair run', () => {
+    const result = buildBuildingEntranceApproach(input);
+    expect(result.status).toBe('ready');
+    if (result.status !== 'ready') return;
+    const landing = result.sections.find(section => section.kind === 'building_landing');
+    expect(landing?.startM).toBeCloseTo(4.8);
+    expect(landing?.endM).toBeCloseTo(6);
+    expect(landing).toMatchObject({ startHeightM: result.endHeightM, endHeightM: result.endHeightM });
+    const nearHouseTops = result.positions.filter((_, index) => index % 3 === 2 && result.positions[index-2] < 6.19);
+    expect(Math.max(...nearHouseTops)).toBeCloseTo(0);
+  });
+  it('rejects a route that fits bare treads but cannot also fit the building landing', () => {
+    expect(buildBuildingEntranceApproach({ ...input, strip: { ...strip, start: geo([9, 0]) } }))
+      .toMatchObject({ status: 'unresolved', reason: 'entrance_landing_run_too_short' });
+  });
+  it('separates a low rise into a street landing, compact flight and building landing', () => {
+    const flat = { ...ground, heightAt: () => 100 };
+    const result = buildBuildingEntranceApproach({ ...input, ground: flat,
+      contact: resolveBuildingGroundContact(footprints,lng,lat,flat), heightAboveBaseM: .4 });
+    expect(result.status).toBe('ready');
+    if (result.status !== 'ready') return;
+    expect(result.sections.map(section => section.kind)).toEqual(['street_landing','flight','building_landing']);
+    const flight = result.sections[1];
+    expect(flight.endM-flight.startM).toBeCloseTo(1.2);
+    expect(flight.startHeightM).toBeCloseTo(result.startHeightM);
+    expect(flight.endHeightM).toBeCloseTo(result.endHeightM);
+  });
+  it('keeps a nearly level connection as a walk without requiring stair landing space', () => {
+    const flat = { ...ground, heightAt: () => 100 };
+    const result = buildBuildingEntranceApproach({ ...input, ground: flat,
+      contact: resolveBuildingGroundContact(footprints,lng,lat,flat), strip:{...strip,start:geo([6,0])} });
+    expect(result.status).toBe('ready');
+    if (result.status === 'ready') expect(result.sections.map(section=>section.kind)).toEqual(['walk']);
+  });
+  it('rejects an uphill approach whose treads fit but whose new building landing would cut terrain', () => {
+    const uphill = { ...ground, heightAt: (x: number) => 100 + Math.max(0, (x-lng)*metersPerDegLon(lat)-5)*.2 };
+    expect(buildBuildingEntranceApproach({ ...input, ground:uphill,
+      contact:resolveBuildingGroundContact(footprints,lng,lat,uphill) }))
+      .toMatchObject({status:'unresolved',reason:'entrance_terrain_intersection'});
+  });
   it('meets the actual elevated building base instead of draping the entrance onto the terrain below it', () => {
     const result = buildBuildingEntranceApproach(input);
     expect(result.status).toBe('ready');
@@ -30,10 +70,10 @@ describe('entrances on generated foundations', () => {
       expect(top-underside).toBeGreaterThanOrEqual(0);
       expect(top-underside).toBeLessThanOrEqual(.24+1e-6);
     }
-    // Two continuous stringers reach both ends of the run while the earlier
+    // Two continuous stringers reach both ends of the flight while the earlier
     // full-polygon checks still gate the terrain below every tread.
     const beams=result.positions.slice(-16*3);
-    expect(Math.min(...beams.filter((_,i)=>i%3===0))).toBeCloseTo(5,3);
+    expect(Math.min(...beams.filter((_,i)=>i%3===0))).toBeCloseTo(6.2,3);
     expect(Math.max(...beams.filter((_,i)=>i%3===0))).toBeCloseTo(11,3);
   });
   it('keeps the native model and authored route immutable', () => {
@@ -78,7 +118,7 @@ describe('entrances on generated foundations', () => {
     expect(Math.max(...result.positions.filter((_, i) => i % 3 === 2))).toBeCloseTo(.18);
   });
   it('supports a descending approach from an uphill street', () => {
-    const uphill = { ...ground, heightAt: (x: number) => 100 + Math.max(0, (x-lng)*metersPerDegLon(lat)-5)*.2 };
+    const uphill = { ...ground, heightAt: (x: number) => 100 + Math.max(0, (x-lng)*metersPerDegLon(lat)-6.2)*.25 };
     const result = buildBuildingEntranceApproach({ ...input, ground: uphill,
       contact: resolveBuildingGroundContact(footprints,lng,lat,uphill) });
     expect(result.status).toBe('ready');
@@ -86,6 +126,9 @@ describe('entrances on generated foundations', () => {
     expect(result.startHeightM).toBeCloseTo(101.225);
     expect(result.endHeightM).toBeCloseTo(100.04);
     expect(result.steps).toBe(7);
+    const landing=result.sections.find(section=>section.kind==='building_landing');
+    expect(landing?.startHeightM).toBeCloseTo(result.endHeightM);
+    expect(landing?.endHeightM).toBeCloseTo(result.endHeightM);
   });
   it('preserves approach elevation and run after rotating the house and route together', () => {
     const angle = 95*Math.PI/180;

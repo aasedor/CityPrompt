@@ -5,15 +5,23 @@ import { corridorOverlaps } from './parkAccessConnections';
 
 // Concept geometry limits, not an accessibility or building-code assessment.
 const MAX_RISE_M = .18, MIN_GOING_M = .28, MAX_TOTAL_RISE_M = 3;
+// Concept layout dimensions; these do not certify landings or accessible routes.
+const BUILDING_LANDING_M = 1.2, MAX_GOING_M = .4;
 // Render the stair as a shallow connected flight. Full-height skirts from
 // every tread make a 2 m street-to-door climb look like a row of retaining
 // walls; the building foundation remains the separate measured-ground support.
 const MAX_STAIR_BODY_DEPTH_M = .24;
 export const ENTRANCE_REVIEW_RELIEF_M = .3;
 type Ground = Parameters<typeof resolveBuildingGroundContact>[3];
+export interface BuildingApproachSection {
+  kind: 'walk' | 'street_landing' | 'flight' | 'building_landing';
+  startM: number; endM: number;
+  startHeightM: number; endHeightM: number;
+}
 export type BuildingApproach = { status: 'unresolved'; reason: string } | {
   status: 'ready'; positions: number[]; indices: number[]; steps: number;
   startHeightM: number; endHeightM: number;
+  sections: BuildingApproachSection[];
 };
 
 /** Connect an explicitly authored foot-of-steps anchor to its selected street.
@@ -52,6 +60,21 @@ export function buildBuildingEntranceApproach(input: {
   const rise = endHeightM-startHeightM, steps = Math.ceil(Math.abs(rise)/MAX_RISE_M);
   if (Math.abs(rise) > MAX_TOTAL_RISE_M || (steps > 1 && length/steps < MIN_GOING_M))
     return fail('entrance_approach_too_short');
+  const sections: BuildingApproachSection[] = [];
+  const hasFlight = Math.abs(rise) > .04;
+  if (hasFlight) {
+    const availableRun = length-BUILDING_LANDING_M;
+    if (availableRun < steps*MIN_GOING_M-1e-6) return fail('entrance_landing_run_too_short');
+    const flightRun = Math.min(availableRun,steps*MAX_GOING_M);
+    const flightStart = availableRun-flightRun;
+    if (flightStart > 1e-6) sections.push({kind:'street_landing',startM:0,endM:flightStart,
+      startHeightM,endHeightM:startHeightM});
+    sections.push({kind:'flight',startM:flightStart,endM:availableRun,startHeightM,endHeightM});
+    sections.push({kind:'building_landing',startM:availableRun,endM:length,
+      startHeightM:endHeightM,endHeightM});
+  } else {
+    sections.push({kind:'walk',startM:0,endM:length,startHeightM,endHeightM});
+  }
   const normal: GroundPoint = [-toward[1]*strip.widthM/2,toward[0]*strip.widthM/2];
   const at = (t: number): GroundPoint => [a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t];
   const footprint = (p: GroundPoint,q: GroundPoint): GroundPoint[] => [
@@ -61,41 +84,52 @@ export function buildBuildingEntranceApproach(input: {
   const fullSupport = resolveBuildingGroundContact([footprint(a,b)],lng,lat,ground);
   if (fullSupport.status !== 'ready') return fail('incomplete_footprint_ground');
   const count = Math.max(1,steps), positions: number[] = [], indices: number[] = [];
-  for (let i=0;i<count;i++) {
-    const pad = resolveBuildingGroundContact([footprint(at(i/count),at((i+1)/count))],lng,lat,ground);
-    if (pad.status !== 'ready') return fail('incomplete_footprint_ground');
-    const top = rise >= 0 ? startHeightM+rise*(i+1)/count : startHeightM+rise*i/count;
-    // No cut/fill guess: the entire tread must clear the measured triangle field.
-    if (pad.anchorHeight-.04 > top+.005) return fail('entrance_terrain_intersection');
-    const offset=positions.length/3;
-    for (let j=0;j<pad.positions.length;j+=3) {
-      const z=pad.positions[j+2];
-      const height=z === 0 ? top : Math.max(z+pad.anchorHeight,top-MAX_STAIR_BODY_DEPTH_M);
-      positions.push(pad.positions[j],pad.positions[j+1],height-contact.anchorHeight);
+  for (const section of sections) {
+    const treadCount = section.kind === 'flight' ? count : 1;
+    for (let i=0;i<treadCount;i++) {
+      const from = (section.startM+(section.endM-section.startM)*i/treadCount)/length;
+      const to = (section.startM+(section.endM-section.startM)*(i+1)/treadCount)/length;
+      const pad = resolveBuildingGroundContact([footprint(at(from),at(to))],lng,lat,ground);
+      if (pad.status !== 'ready') return fail('incomplete_footprint_ground');
+      const top = section.kind === 'flight'
+        ? startHeightM+rise*(rise>=0 ? i+1 : i)/count
+        : section.endHeightM;
+      // No cut/fill guess: the entire tread must clear the measured triangle field.
+      if (pad.anchorHeight-.04 > top+.005) return fail('entrance_terrain_intersection');
+      const offset=positions.length/3;
+      for (let j=0;j<pad.positions.length;j+=3) {
+        const z=pad.positions[j+2];
+        const height=z === 0 ? top : Math.max(z+pad.anchorHeight,top-MAX_STAIR_BODY_DEPTH_M);
+        positions.push(pad.positions[j],pad.positions[j+1],height-contact.anchorHeight);
+      }
+      indices.push(...pad.indices.map(index=>index+offset));
     }
-    indices.push(...pad.indices.map(index=>index+offset));
   }
   // Two shallow continuous stringers make the stair read as one flight
   // supported at street and foundation, rather than disconnected slabs. They
   // are display massing only; this does not establish structural adequacy.
   const perpendicular: GroundPoint = [-toward[1],toward[0]];
-  for (const side of [-1,1]) {
-    const center=side*(strip.widthM/2-.1), halfWidth=.06;
-    const offsets=[center-halfWidth,center+halfWidth];
-    const xy=(point: GroundPoint, offset: number): GroundPoint =>
-      [point[0]+perpendicular[0]*offset,point[1]+perpendicular[1]*offset];
-    const corners=[xy(a,offsets[0]),xy(b,offsets[0]),xy(b,offsets[1]),xy(a,offsets[1])];
-    const base=positions.length/3;
-    corners.forEach(([x,y],index)=>{
-      const top=(index===0||index===3?startHeightM:endHeightM)-.07-contact.anchorHeight;
-      positions.push(x,y,top-MAX_STAIR_BODY_DEPTH_M,x,y,top);
-    });
-    for(let edge=0;edge<4;edge++){
-      const p=base+edge*2,q=base+((edge+1)%4)*2;
-      indices.push(p,q,q+1,p,q+1,p+1);
+  const flight = sections.find(section => section.kind === 'flight');
+  if (flight) {
+    for (const side of [-1,1]) {
+      const center=side*(strip.widthM/2-.1), halfWidth=.06;
+      const offsets=[center-halfWidth,center+halfWidth];
+      const xy=(point: GroundPoint, offset: number): GroundPoint =>
+        [point[0]+perpendicular[0]*offset,point[1]+perpendicular[1]*offset];
+      const flightA=at(flight.startM/length),flightB=at(flight.endM/length);
+      const corners=[xy(flightA,offsets[0]),xy(flightB,offsets[0]),xy(flightB,offsets[1]),xy(flightA,offsets[1])];
+      const base=positions.length/3;
+      corners.forEach(([x,y],index)=>{
+        const top=(index===0||index===3?startHeightM:endHeightM)-.07-contact.anchorHeight;
+        positions.push(x,y,top-MAX_STAIR_BODY_DEPTH_M,x,y,top);
+      });
+      for(let edge=0;edge<4;edge++){
+        const p=base+edge*2,q=base+((edge+1)%4)*2;
+        indices.push(p,q,q+1,p,q+1,p+1);
+      }
+      indices.push(base+1,base+3,base+5,base+1,base+5,base+7);
+      indices.push(base,base+4,base+2,base,base+6,base+4);
     }
-    indices.push(base+1,base+3,base+5,base+1,base+5,base+7);
-    indices.push(base,base+4,base+2,base,base+6,base+4);
   }
-  return { status:'ready', positions, indices, steps:count, startHeightM, endHeightM };
+  return { status:'ready', positions, indices, steps:count, startHeightM, endHeightM, sections };
 }

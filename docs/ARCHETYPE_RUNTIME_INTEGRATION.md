@@ -63,7 +63,7 @@ Do not transfer a model's visual approval or a different site's measured result.
 | B1 Native placement | Record the actual transformed envelope and all support pads. Preserve native scale and authored frontage through full-turn rotation and supported plot resize/repetition. Test minimum and maximum advertised plot sizes. |
 | B2 Entrance evidence | Measure and record the visible door, lowest authored step/landing edge, native coordinate frame, base datum, width, and route direction for each supported entrance. Tie measurements to exact asset bytes and evidence views. Do not copy another variant's anchor. |
 | B3 Authoring | For supported native-house picking, test visible low-step selection, wrong-house/high-surface rejection, foreground occlusion including transparent foliage, camera drag, Escape/Cancel, preserved unsaved settings, explicit Save, and reload. Exact offsets remain an alternative; do not claim automatic door detection. |
-| B4 Approach | Check native steps meet the generated approach and that every tread is supported without crossing another pad or obstacle. Exercise insufficient setback and successful recovery after moving the plot. Test descending as well as raised routes where supported. |
+| B4 Approach | Reserve the level building landing before sizing the stair flight. Check native steps meet it and every landing/tread clears measured terrain without crossing another pad or obstacle. Exercise a route that fits bare stairs but not the landing, then recover by moving the plot. Test descending as well as raised routes where supported. |
 | B5 Architectural review | Inspect exposed foundation height, stair length, landings, guards, route width, accessible alternatives, and frontage furniture. Ground-ready status and current concept stair limits do not establish accessibility or construction suitability. Record unresolved design items. |
 
 Current saved entrance data is `pedestrian_building_entrance` version 1 in
@@ -89,6 +89,18 @@ entrances from mesh names. Record both the lowest tread top and the outer
 step-foot/base datum so the generated approach does not acquire a duplicate
 rise. The [Craftsman/Edwardian pilots](CURRIE_ENTRANCE_FAMILY_PILOTS_2026-09-20.md)
 verify this distinction with actual model bytes and browser edits.
+
+The shared approach currently reserves a 1.2 m building-end landing for rises
+over 0.04 m, then sizes the flight with 0.28–0.40 m concept goings and up to
+0.18 m rise per step. Remaining street-end space stays level; nearly level
+connections remain walks. These are display-layout choices, not construction
+or accessible-route certification. Each landing uses the same complete-footprint
+terrain checks as the treads. A previously ready route can become unresolved
+when its landing will not fit; retain the saved anchor, explain the failure,
+and verify move/Undo/Redo/reload recovery. Inspect high and low rises separately.
+See the [landing pilot](CURRIE_ENTRANCE_LANDING_PILOT_2026-09-20.md).
+Review guards, structural support, exposed foundations and accessible alternatives
+separately; do not transfer a clear solver issue list into B5 approval.
 
 ## Streets and paths
 

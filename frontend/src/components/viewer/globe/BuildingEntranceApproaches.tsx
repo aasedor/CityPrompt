@@ -40,7 +40,7 @@ export function useBuildingEntranceApproach(contact: BuildingGroundContact, foot
     const geometry=new THREE.BufferGeometry();
     geometry.setAttribute('position',new THREE.Float32BufferAttribute(approach.positions,3));
     geometry.setIndex(approach.indices);geometry.computeVertexNormals();geometry.computeBoundingSphere();
-    return {reason:null,geometry,userData};
+    return {reason:null,geometry,userData:{...userData,entranceApproachSections:approach.sections}};
   },[inputs,contact,footprints,frame.centroidLng,frame.centroidLat,buildingId,ground]);
   useEffect(()=>result.geometry?retainResourceForDeferredDisposal(result.geometry,geometry=>geometry.dispose()):undefined,[result.geometry]);
   return result;

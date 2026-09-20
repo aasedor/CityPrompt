@@ -7,6 +7,20 @@ historical; the actual results below supersede those statements.
 
 ## Latest continuation checkpoint
 
+**Shared entrance landings (20 September):** read
+`docs/CURRIE_ENTRANCE_LANDING_PILOT_2026-09-20.md` first. The shared solver now
+reserves a level 1.2 m building landing and a distinct compact flight, rejecting
+routes where the landing cannot fit or cuts measured terrain. The tight west 3
+Craftsman reproduced that warning. An ordinary browser drag moved it another
+1.165 m west / 0.086 m north in the disposable seven-house copy; Undo restored
+the warning, Redo and reload restored seven ready approaches. That new setback
+is retained in the copy; every saved entrance and the protected original remain
+unchanged. Free exact 3D export was downloaded and inspected. Checks: 86 tests,
+type-check and changed-file lint pass. Shared checklist/template updated. Next:
+guard/edge treatment, landing support and high-foundation design review, then
+accessible-route decisions and the novice journey. Stay on Astra for that visual
+design unit. No push, paid generation or catalogue changes occurred.
+
 **Craftsman/Edwardian entrance pilots (20 September):** read
 `docs/CURRIE_ENTRANCE_FAMILY_PILOTS_2026-09-20.md` first. Both exact families
 passed 3D step picking, Save/Undo/Redo/reload on the disposable Currie copy.

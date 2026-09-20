@@ -78,6 +78,14 @@ Identify the actual step surface and its transform, even when it belongs to a
 different material/mesh group. Distinguish lowest tread-top height from the
 step-foot/base datum used by the generated approach; do not select by mesh name.
 
+Record total route length and rise, building/street landing depths and elevations,
+flight run and step count. Verify the landing is level at the native-step foot,
+clears the entire measured terrain footprint and leaves enough stair run.
+Include a bare-stairs-fit/landing-does-not-fit case and its move/Undo/Redo/reload
+recovery. Preserve exact capture ownership and inspect the exported geometry.
+List unresolved foundation height, landing support, guards, frontage clearance
+and accessible-route design separately from geometric readiness.
+
 ## Verification and decision
 
 - Focused test commands/results and reused shared-test evidence:
