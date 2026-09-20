@@ -50,3 +50,11 @@ journey. Then complete the remaining edit/recovery and presentation gates in
 `STUDENT_TRANSFORMATION_GATES.md`, followed by a small student pilot. Park,
 street-end and full mixed-slope checks from the previous continuation also
 remain open.
+
+A subsequent seven-house layout review is recorded in
+`CURRIE_FULL_LAYOUT_ENTRANCE_REVIEW_2026-09-19.md`. It established that 1.2 m
+and 2.4 m westward alternatives fit the original boundary and neighbouring
+plots. The first house's measured connection remained issue-free in the full
+copy, while the other six retained entrance warnings. Pedestrian screenshots
+show that the high foundation and long stair still need design refinement;
+neither alternative was promoted to the main fixture.

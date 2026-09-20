@@ -7,6 +7,17 @@ historical; the actual results below supersede those statements.
 
 ## Latest continuation checkpoint
 
+**Seven-house layout follow-up:** read
+`docs/CURRIE_FULL_LAYOUT_ENTRANCE_REVIEW_2026-09-19.md`. A disposable copy
+verified that 1.2 m and 2.4 m westward placements of `Shared street west 2`
+fit the vacant Currie boundary without overlapping six neighbouring plots,
+the street, or the park. Browser ground was ready with seven visible houses;
+the first entrance was issue-free and the other six retained their warnings.
+Pedestrian views show a high exposed foundation and long unguarded concept
+stair. No placement was promoted to the original fixture; entrance design
+and the other six houses remain release work. The working tree's latest source
+commits are `65d28c884` and `726ba18ef`; no push was made.
+
 **Latest entrance continuation:** read
 `docs/CURRIE_ENTRANCE_BROWSER_QA_2026-09-19.md` first, then
 `docs/BUILDING_ENTRANCE_GROUND_HANDOFF_2026-09-19.md`. The source adds
