@@ -7,6 +7,35 @@ historical; the actual results below supersede those statements.
 
 ## Latest continuation checkpoint
 
+**Practical classroom target and fresh workflow (20 September):** the user
+explicitly prioritizes students designing freely and making strong visuals
+without glaring errors; do not keep polishing construction details as release
+blockers. Read `docs/CLASSROOM_READINESS_PLAN_2026-09-20.md` and
+`docs/CURRIE_STUDENT_WORKFLOW_PILOT_2026-09-20.md` first. A new project was created
+and its boundary, street, infill house and park authored through ordinary UI on
+vacant Currie. Natural-ground alignment still failed after bounded boundary
+recovery attempts: local roughness blocks the whole scene. The review map's
+independent 2 m marker threshold hid real validator failures; markers now use
+actual slope/residual rejection and offer Adjust site boundary. No thresholds
+were relaxed and no measured heights were replaced.
+
+The remaining workflow was tested with the explicit prepared-level option,
+including measured retaining edges. The plot guide saved an approximate entrance;
+Move-handle/Undo/Redo/reload and free exact 3D export passed. This is not a
+natural-ground pass or detailed entrance-join approval. The 3D step picker also
+has an incompatible prepared-ground contract (expects a ready measured surface);
+normal picking attempts gave unhelpful occlusion feedback. A raw model drag panned
+the camera, while its Move handle worked. Boundary exclusion errors name UUIDs
+for unnamed objects. These are practical workflow findings, not new asset work.
+
+New disposable project: `0320bb4f-395c-41c6-a6c0-ad28bb1572ef`, kept in prepared
+mode with the redone house move. Original Currie and earlier seven-house layout
+were not edited. 54 relevant tests, type-check and lint pass. Evidence is external
+under `grounding-batch-a/student-*`. No paid AI or publication. Next: localized
+ground failure/recovery and consistent terrain-mode entrance authoring, then
+presentation fidelity and the repeatable catalogue entry process.
+
+
 **Student entrance review (20 September):** read
 `docs/CURRIE_ENTRANCE_REVIEW_PILOT_2026-09-20.md` first. Review entrances now
 lists the seven saved plots with current generated steps, rise, clear walking

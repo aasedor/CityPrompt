@@ -124,7 +124,8 @@ export function groundCellTouchesBoundary(layout: SharedSiteGroundLayout, x: num
 /** Reject suspicious discontinuities instead of replacing an unobserved ground
  * height. A consistent roof or smooth embankment can still pass: this is tile
  * surface evidence, not a survey or automatic bare-earth classification. */
-export function validateSharedSiteGroundPass(layout: SharedSiteGroundLayout, heights: readonly (number | null)[]): SharedSiteGroundPassQuality {
+export function validateSharedSiteGroundPass(layout: SharedSiteGroundLayout, heights: readonly (number | null)[],
+  onDiscontinuity?: (sampleIndices: readonly number[]) => void): SharedSiteGroundPassQuality {
   const { columns, rows, stepLng, stepLat, south } = layout.grid;
   const invalid = (reason: string): SharedSiteGroundPassQuality => ({ valid: false, reason, maxSlope: 0, maxLocalResidualM: 0 });
   if (heights.length !== columns * rows || heights.some((height) => height === null || !Number.isFinite(height))) return invalid('missing_samples');
@@ -139,13 +140,18 @@ export function validateSharedSiteGroundPass(layout: SharedSiteGroundLayout, hei
     const sw = values[y * columns + x], se = values[y * columns + x + 1];
     const nw = values[(y + 1) * columns + x], ne = values[(y + 1) * columns + x + 1];
     // The two actual triangle gradients, split on the SW–NE diagonal.
-    maxSlope = Math.max(maxSlope, Math.hypot((se - sw) / dx, (ne - se) / dy), Math.hypot((ne - nw) / dx, (nw - sw) / dy));
+    const slope = Math.max(Math.hypot((se - sw) / dx, (ne - se) / dy), Math.hypot((ne - nw) / dx, (nw - sw) / dy));
+    maxSlope = Math.max(maxSlope, slope);
+    if (slope > SHARED_SITE_GROUND_LIMITS.maxSlope)
+      onDiscontinuity?.([y*columns+x, y*columns+x+1, (y+1)*columns+x, (y+1)*columns+x+1]);
   }
   for (let y = 1; y < rows - 1; y += 1) for (let x = 1; x < columns - 1; x += 1) {
     const index = y * columns + x;
     if (![index, index-1, index+1, index-columns, index+columns].every(i => support.has(i))) continue;
     const neighbors = (values[index - 1] + values[index + 1] + values[index - columns] + values[index + columns]) / 4;
-    maxLocalResidualM = Math.max(maxLocalResidualM, Math.abs(values[index] - neighbors));
+    const residual = Math.abs(values[index] - neighbors);
+    maxLocalResidualM = Math.max(maxLocalResidualM, residual);
+    if (residual > SHARED_SITE_GROUND_LIMITS.maxLocalResidualM) onDiscontinuity?.([index]);
   }
   const valid = Number.isFinite(maxSlope) && maxSlope <= SHARED_SITE_GROUND_LIMITS.maxSlope
     && maxLocalResidualM <= SHARED_SITE_GROUND_LIMITS.maxLocalResidualM;

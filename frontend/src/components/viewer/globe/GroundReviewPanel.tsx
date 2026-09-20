@@ -9,10 +9,11 @@ import { measureParkTerrain, type ParkTerrainProfile } from './parkTerrain';
 import { isNeighborhoodParkPilot } from './neighborhoodParkLayout';
 import { isPersistedZoneId } from '@/utils/zoneIdentity';
 
-export function GroundReviewPanel({ boundary, ground, onClose, onApply, parks = [], onFollowParks }: {
+export function GroundReviewPanel({ boundary, ground, onClose, onApply, parks = [], onFollowParks, onEditBoundary }: {
   boundary: SiteZone; ground: SharedSiteGroundState; onClose: () => void;
   onApply: (clear: boolean, height?: number, edges?: PreparedEdgeProfile | null) => Promise<void>;
   parks?: SiteZone[]; onFollowParks?: (profiles: Record<string, ParkTerrainProfile>) => Promise<void>;
+  onEditBoundary?: () => void;
 }) {
   const [level, setLevel] = useState(String(boundary.properties?.terrain_elevation_m ?? ''));
   const [pending, setPending] = useState(false);
@@ -45,6 +46,10 @@ export function GroundReviewPanel({ boundary, ground, onClose, onApply, parks = 
     <div className="max-h-[70dvh] space-y-4 overflow-auto p-1 text-sm text-slate-900">
       <p>{boundary.properties?.terrain_strategy === 'landscape' ? 'This site retains its hillside. Review the original surface here to update a park after moving or resizing it.' : ground.status === 'ready' ? 'The visible surface is consistent. Check that the samples are on ground rather than roofs or trees.' : ground.status === 'inactive' ? 'This site uses a prepared level. Reviewing its original surface does not change your design.' : groundReadinessMessage(ground)}</p>
       {ground.inspectionStatus === 'sampling' && <p role="status">Measuring the original surface… Keep the site in view.</p>}
+      {ground.status === 'unavailable' && onEditBoundary && <div className="rounded-lg border border-amber-300 bg-amber-50 p-3">
+        <p>For an open site, move the boundary away from problem areas or choose a smaller area of ground. Your placed objects stay saved; keep them inside the revised boundary.</p>
+        <button type="button" disabled={pending || unsaved} className="mt-2 min-h-11 rounded-lg border border-slate-700 bg-white px-3 font-semibold disabled:opacity-40" onClick={onEditBoundary}>Adjust site boundary</button>
+      </div>}
       {summary && review && <>
         <p>Measured heights: {summary.min?.toFixed(1) ?? 'unknown'}–{summary.max?.toFixed(1) ?? 'unknown'} m. North is up. Red marks abrupt changes; grey cells are missing or outside your boundary. Select a coloured sample to use its height as your proposed level.</p>
         <svg viewBox={`-1 -1 ${review.layout.grid.columns + 1} ${review.layout.grid.rows + 1}`} className="mx-auto h-56 w-full" role="img" aria-label="Measured site elevations, north up">

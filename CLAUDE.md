@@ -71,6 +71,11 @@ edit/recovery and capture systems; preserve measured evidence and open failures.
 Update the checklist when a new generalizable lesson is verified. RLASM asset
 review, runtime acceptance and publication approval are separate checkpoints.
 
+Classroom release priorities follow `docs/CLASSROOM_READINESS_PLAN_2026-09-20.md`:
+independent authoring, plausible geometry, reliable recovery and faithful visuals.
+Keep concept limitations visible; do not make fine construction detailing a
+blocker unless an advertised student feature depends on it.
+
 ### Render prompt guidelines
 - Do NOT send temperature on Gemini 3 image calls (official guidance: keep the
   default; the old temp-0.0 rule and the guidance_scale knob are retired —

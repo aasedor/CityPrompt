@@ -100,6 +100,16 @@ assuming their revision strings have the same format. Distinguish support-envelo
 edges from authored walking surfaces, and nearly level approach from step-free
 access to the native door. These design checks remain open after export.
 
+## Classroom impact
+
+Use the practical classroom target in `CLASSROOM_READINESS_PLAN_2026-09-20.md`.
+For every open item, record whether it prevents authoring, plausible geometry,
+reliable recovery or faithful presentation (blocker), or is a finer concept
+limitation (follow-up). Keep visual acceptance and publication decisions separate.
+Do not require construction-level detail to pass a concept-design classroom pilot.
+When ground rejects a placement/site, verify its review highlights the actual
+rejected samples and offers a usable recovery through ordinary controls.
+
 ## Verification and decision
 
 - Focused test commands/results and reused shared-test evidence:

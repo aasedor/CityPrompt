@@ -9,6 +9,23 @@ construction and visual-review authority. Existing catalogue publication,
 independent review, and human activation requirements remain in force.
 This checklist adds site integration evidence; it does not grant asset approval.
 
+## Classroom acceptance scope
+
+The user clarified the release target on 20 September: students must be able to
+create their own designs and strong visuals without glaring errors. Prioritize
+usable authoring, faithful identity and scale, plausible ground/connections,
+recoverable edits and presentation. Fine railing joins, construction detailing,
+comprehensive accessibility assessment and exhaustive edge cases are follow-up
+work unless an advertised classroom feature depends on them. Do not imply code
+compliance or hide a visible defect. This clarification changes prioritization;
+it does not grant catalogue publication or RLASM asset approval.
+
+Classify each open finding as a classroom blocker or a recorded follow-up.
+Minor concept limitations do not automatically prevent a classroom pilot or
+bounded catalogue expansion. Missing models, impossible access, lost edits,
+unusable advertised controls and misleading captures remain blockers. See
+[the practical readiness plan](CLASSROOM_READINESS_PLAN_2026-09-20.md).
+
 ## Use on every delivery
 
 1. Copy [the review template](ARCHETYPE_RUNTIME_REVIEW_TEMPLATE.md) into the
@@ -28,9 +45,9 @@ This checklist adds site integration evidence; it does not grant asset approval.
    evidence; N/A requires a reason tied to the advertised capability. A missing
    advertised feature is a failure or untested item, never N/A.
 6. Include the completed record in the delivery/PR alongside asset review.
-   Keep failed or untested applicable checks open; do not describe the candidate
-   as student-ready. Scale only after the pilot's applicable checks pass and
-   the existing publication requirements are met.
+   Keep failed or untested applicable checks open with their classroom impact.
+   Scale only after classroom blockers are resolved, remaining limitations are
+   recorded, and the existing publication requirements are met.
 
 These are contributor and reviewer requirements. The existing publication CLI
 does **not** yet enforce this whole checklist. Its success does not establish
@@ -49,6 +66,13 @@ these checks passed. The review template is evidence, not a runtime schema.
 | C7 Recovery | Exercise unavailable measurement, interrupted navigation, and failed/conflicting saves. Keep the design editable, preserve drafts, bound retries, and provide an actionable recovery. Capture waits for current verified geometry. |
 | C8 Visibility | Inspect low views from several directions plus aerial and exact 3D capture. No persistent proxy, duplicate surface, floating base, buried path, hidden gap, or furniture obstructing a route. Preserve surrounding context and capture ownership. |
 | C9 Student use | Complete the advertised placement/connection workflow through ordinary controls, without API-authored geometry or numeric offsets supplied by a developer. Check keyboard, pointer, and supported viewport behavior; report touch separately if not tested. |
+
+Ground-review problem markers must use the same slope and local-residual tests
+as the actual ground validator, including boundary-support cells. A separate
+fixed height-jump threshold can show an apparently clean map while rejecting
+alignment. Offer boundary adjustment without silently preparing a level surface.
+Boundary edits must preserve contained objects or explain how to move them first.
+See the [fresh workflow pilot](CURRIE_STUDENT_WORKFLOW_PILOT_2026-09-20.md).
 
 For each pilot, test a level case, a slope, an edge/unsupported case with
 recovery, and an edit while ground is pending. Keep the matrix finite. Shared

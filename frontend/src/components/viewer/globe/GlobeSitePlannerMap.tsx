@@ -4362,6 +4362,10 @@ export function GlobeSitePlannerMap({
       {showGroundReview && getActiveSiteBoundary(allSiteZones) && onPrepareGround && <GroundReviewPanel
         parks={allSiteZones.filter(z => z.zone_type === 'green_space')} onFollowParks={onFollowParkTerrain}
         boundary={getActiveSiteBoundary(allSiteZones)!} ground={sharedGroundState} onClose={() => setShowGroundReview(false)}
+        onEditBoundary={() => {
+          const boundary = getActiveSiteBoundary(allSiteZones);
+          if (boundary) { setShowGroundReview(false); onZoneSelected(boundary.id); }
+        }}
         onApply={(clear, height, edges) => onPrepareGround(getActiveSiteBoundary(allSiteZones)!.id, clear, height, edges)} />}
       {parkAlignment.pending&&<div role="status" className="absolute bottom-14 left-1/2 z-40 max-w-sm -translate-x-1/2 rounded-lg bg-white/95 px-3 py-2 text-sm text-slate-800 shadow">
         {parkAlignment.needsAttention?'Ground detail is difficult here. Your park is kept as a draft.':'Aligning park to ground… You can keep designing.'}
