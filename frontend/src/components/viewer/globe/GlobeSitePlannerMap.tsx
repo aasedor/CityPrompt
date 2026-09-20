@@ -66,6 +66,8 @@ import { GlobeStreetDetailLayer } from './GlobeStreetDetailLayer';
 import { GlobeParkKitLayer } from './GlobeParkKitLayer';
 import { applyManualParkAccessSnapshot, resolveManualParkAccess } from './parkAccessConnections';
 import { resolvePedestrianConnections } from '@/features/pickPlace/pedestrianConnections';
+import { BuildingEntranceApproaches } from './BuildingEntranceApproaches';
+import { buildingGroundProblemMessage } from './buildingGroundProblemMessage';
 import { GlobePedestrianConnections } from './GlobePedestrianConnections';
 import { GlobeTerraces } from './GlobeTerraces';
 import { buildTerraceScene } from './terraceScene';
@@ -1643,6 +1645,8 @@ export function GlobeSitePlannerMap({
       if (buildingGroundingIssuesRef.current.some((issue) => issue.reason === 'foundation_exceeds_3m')) {
         throw new Error('The site is too uneven beneath a building for automatic grounding. Choose a flatter placement before rendering.');
       }
+      const entranceIssue = buildingGroundingIssuesRef.current.find((issue) => issue.reason.startsWith('entrance_'));
+      if (entranceIssue) throw new Error(buildingGroundProblemMessage(entranceIssue.reason));
       throw new Error(`These buildings are not ready at ground level: ${pendingGroundBuildingsRef.current.join(', ') || 'check the marked building'}. Check their placement before rendering.`);
     }
     return snapshot;
@@ -4100,6 +4104,7 @@ export function GlobeSitePlannerMap({
             onDisplayReadyChange={setAreTilesDisplayReady}
           />
           <SharedSiteGroundProvider zones={allSiteZones} onChange={handleSharedGroundChange} inspectPrepared={showGroundReview}>
+          <BuildingEntranceApproaches zones={connectedSceneZones} results={pedestrianConnections}>
           <SurveyGroundSurface visible={contextPresentation.visible === 'terrain'} />
           <ParkAssemblyGroundProvider>
           <AutomaticParkGround zones={allSiteZones} paused={parkGroundPaused} onSave={onAutoParkTerrain} onChange={setParkAlignment} fallback={terrainElevation}>
@@ -4248,6 +4253,7 @@ export function GlobeSitePlannerMap({
           </group>
           </AutomaticParkGround>
           </ParkAssemblyGroundProvider>
+          </BuildingEntranceApproaches>
           </SharedSiteGroundProvider>
         </TilesRenderer>
 

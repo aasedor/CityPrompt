@@ -13,6 +13,8 @@ export type Point = [number, number];
 export interface BuildingEntrance {
   version: 1; xM: number; yM: number; referenceWidthM: number; referenceDepthM: number;
   scaleWithPlot: boolean; streetId: string; widthM: number;
+  /** Vertical offset of the authored foot-of-steps anchor, never plot-scaled. */
+  heightAboveBaseM?: number;
 }
 export interface StreetCrossing { id: string; position: number; widthM: number }
 export interface PedestrianStrip {
@@ -43,7 +45,8 @@ export function readBuildingEntrance(zone: SiteZone): BuildingEntrance | null {
   const v = zone.properties?.pedestrian_building_entrance as BuildingEntrance | undefined;
   return v?.version === 1 && finite(v.xM) && finite(v.yM) && Math.abs(v.xM) <= 500 && Math.abs(v.yM) <= 500
     && finite(v.referenceWidthM) && v.referenceWidthM > 0 && finite(v.referenceDepthM) && v.referenceDepthM > 0
-    && typeof v.scaleWithPlot === 'boolean' && typeof v.streetId === 'string' && finite(v.widthM) && v.widthM >= 1.2 && v.widthM <= 4 ? v : null;
+    && typeof v.scaleWithPlot === 'boolean' && typeof v.streetId === 'string' && finite(v.widthM) && v.widthM >= 1.2 && v.widthM <= 4
+    && (v.heightAboveBaseM === undefined || (finite(v.heightAboveBaseM) && v.heightAboveBaseM >= 0 && v.heightAboveBaseM <= 3)) ? v : null;
 }
 export function entranceWorldPoint(zone: SiteZone, entrance: BuildingEntrance): Point | null {
   if (!validRing(zone) || zone.coordinates.length !== 4) return null;
@@ -181,7 +184,7 @@ export function resolvePedestrianConnections(zones: readonly SiteZone[], visible
         const best=options[0];
         result.strips=[{id:`entrance:${owner.id}`,ownerId:owner.id,start:f.world(best.point),end:anchor,widthM:entrance.widthM,
           startLiftM:best.lift,endLiftM:0.025,color:'#c3baa8'}];
-        result.status='connected';result.reason='Walkway follows this entrance and the selected sidewalk.';
+        result.status='connected';result.reason='Route reaches the selected sidewalk in plan. Ground and entrance height are checked in 3D.';
       }
     }
   }

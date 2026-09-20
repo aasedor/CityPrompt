@@ -52,6 +52,17 @@ describe('connection controls',()=>{
     expect(onSave.mock.calls[0][0].pedestrian_building_entrance.referenceWidthM).toBeCloseTo(24,5);
     expect(onSave.mock.calls[0][0].pedestrian_building_entrance.referenceDepthM).toBeCloseTo(40,5);
   });
+  it('saves the entrance height without scaling it with the plot and rejects missing heights',async()=>{
+    const onSave=vi.fn().mockResolvedValue(undefined);
+    render(<ConnectionEditor zone={house} zones={[house,road]} disabled={false} onSave={onSave} onClose={vi.fn()}/>);
+    fireEvent.click(screen.getByRole('checkbox',{name:'Link an entrance to a sidewalk'}));
+    fireEvent.change(screen.getByLabelText('Entrance height above building base (m)'),{target:{value:''}});
+    expect(screen.getByRole('button',{name:'Save connections'})).toBeDisabled();
+    fireEvent.change(screen.getByLabelText('Entrance height above building base (m)'),{target:{value:'0.18'}});
+    fireEvent.click(screen.getByRole('button',{name:'Save connections'}));
+    await waitFor(()=>expect(onSave).toHaveBeenCalledOnce());
+    expect(onSave.mock.calls[0][0].pedestrian_building_entrance.heightAboveBaseM).toBe(.18);
+  });
   it('keeps unsaved changes after a failed save and supports cancel without a write',async()=>{
     const onSave=vi.fn().mockRejectedValue(new Error('offline')),onClose=vi.fn();
     render(<ConnectionEditor zone={road} zones={[road]} disabled={false} onSave={onSave} onClose={onClose}/>);

@@ -4,10 +4,11 @@ import * as THREE from 'three';
 import type { Building, SiteZone } from '@/types';
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 
-const state = vi.hoisted(() => ({ status: 'sampling', height: 100 }));
+const state = vi.hoisted(() => ({ status: 'sampling', height: 100, slope: 0 }));
 vi.mock('./SharedSiteGroundProvider', () => ({ useSharedSiteGround: () => ({
   status: state.status, snapshot: null, revision: `${state.status}:${state.height}`,
-  contains: () => true, heightAt: () => state.status === 'ready' ? state.height : null,
+  contains: () => true, heightAt: (lng: number) => state.status === 'ready'
+    ? state.height + (lng + 114) * 111320 * Math.cos(51 * Math.PI / 180) * state.slope : null,
 }) }));
 vi.mock('@react-three/fiber', async () => {
   const three = await import('three');
@@ -25,6 +26,7 @@ vi.mock('./modelAssetAvailability', () => ({ modelAssetAvailable: async () => fa
 vi.mock('@/services/api', () => ({ resolveApiFileUrl: (url: string) => url }));
 
 import { GlobeBuildingModelsLayer } from './GlobeBuildingModelsLayer';
+import { BuildingEntranceApproaches } from './BuildingEntranceApproaches';
 
 const lng = -114, lat = 51;
 const coordinates = [[lng, lat], [lng + 10 / metersPerDegLon(lat), lat],
@@ -34,7 +36,7 @@ const building = { id: 'imported', project_id: 'project', name: 'Imported buildi
 const zones: SiteZone[] = [];
 
 describe('imported model grounding lifecycle', () => {
-  afterEach(() => cleanup());
+  afterEach(() => { cleanup(); state.slope = 0; });
   it('does not certify a loading mass until shared ground is ready and withdraws it on refinement', async () => {
     state.status = 'sampling'; state.height = 100;
     const loaded = vi.fn(), issues = vi.fn();
@@ -58,5 +60,20 @@ describe('imported model grounding lifecycle', () => {
     state.status = 'ready'; state.height = 101; view.rerender(tree());
     await waitFor(() => expect(loaded).toHaveBeenLastCalledWith(new Set(['imported'])));
     expect(Number(screen.getByTestId('model-frame').dataset.height)).toBeCloseTo(101.04);
+  });
+  it('reports a raised entrance through the capture issue callback while keeping its model visible', async () => {
+    state.status = 'ready'; state.height = 100; state.slope = .2;
+    const loaded = vi.fn(), issues = vi.fn();
+    const owner = { id: 'house', zone_type: 'building', building_id: building.id, coordinates,
+      properties: {} } as SiteZone;
+    render(<BuildingEntranceApproaches zones={[owner]} results={[]}>
+      <GlobeBuildingModelsLayer buildings={[building]} zones={[owner]} terrainHeight={-200}
+        onLoadedIdsChange={loaded} onGroundingIssuesChange={issues} />
+    </BuildingEntranceApproaches>);
+    await waitFor(() => expect(issues).toHaveBeenLastCalledWith([
+      { buildingId: 'imported', reason: 'entrance_connection_required' },
+    ]));
+    expect(loaded).toHaveBeenLastCalledWith(new Set(['imported']));
+    expect(Number(screen.getByTestId('model-frame').dataset.height)).toBeCloseTo(102.04);
   });
 });

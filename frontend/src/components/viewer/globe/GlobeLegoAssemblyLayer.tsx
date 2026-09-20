@@ -43,6 +43,7 @@ import { computeFootprintFrame, type FootprintFrame } from './buildingPlacement'
 import { raycastTerrainHeightAtLatLng } from './GlobeZoneLayer';
 import { resolvePreparedSiteTerrainForZone } from './sitePreparationSurface';
 import { useSharedSiteGround } from './SharedSiteGroundProvider';
+import { useBuildingEntranceApproach, BuildingEntranceApproachMesh } from './BuildingEntranceApproaches';
 import { currentBuildingGroundingIssues, geographicFootprint, placedNativeFootprints, resolveBuildingGroundContact, updateBuildingGroundingIssues, type GroundPoint, type LegoGroundingIssue } from './buildingGroundContact';
 import {
   isPlausibleTerrainAnchor,
@@ -210,12 +211,13 @@ function useBuildingFoundation(footprints: GroundPoint[][], frame: FootprintFram
     return result;
   }, [contact]);
   useEffect(() => () => geometry?.dispose(), [geometry]);
-  const reason = contact.status === 'unresolved' ? contact.reason ?? 'incomplete_footprint_ground' : null;
+  const approach = useBuildingEntranceApproach(contact, footprints, frame, buildingId);
+  const reason = contact.status === 'unresolved' ? contact.reason ?? 'incomplete_footprint_ground' : approach.reason;
   useEffect(() => {
     report?.(buildingId, rendererId, reason);
     return () => report?.(buildingId, rendererId, null);
   }, [buildingId, rendererId, reason, report]);
-  return { contact, geometry };
+  return { contact, geometry, approach };
 }
 
 function LegoMassingStack({
@@ -376,6 +378,7 @@ function LegoMassingStack({
         userData={proposalForDirect3D ? direct3DBuildingInstanceUserData(building, zone) : DIRECT_3D_CAPTURE_CONTEXT_USER_DATA}>
         <meshStandardMaterial color="#8f8c84" roughness={0.95} side={THREE.DoubleSide} />
       </mesh>}
+      <BuildingEntranceApproachMesh approach={foundation.approach} />
       {selected && <LocalModelSelectionOutline ring={ring} frame={frame} />}
     </EastNorthUpFrame>
   );
@@ -611,6 +614,7 @@ function LegoStackInstance({
         userData={proposalForDirect3D ? direct3DBuildingInstanceUserData(building, zone) : DIRECT_3D_CAPTURE_CONTEXT_USER_DATA}>
         <meshStandardMaterial color="#8f8c84" roughness={0.95} side={THREE.DoubleSide} />
       </mesh>}
+      <BuildingEntranceApproachMesh approach={foundation.approach} />
       {selected && <LocalModelSelectionOutline ring={ring} frame={frame} />}
     </EastNorthUpFrame>
   );

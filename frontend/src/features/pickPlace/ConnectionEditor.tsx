@@ -43,6 +43,7 @@ export function ConnectionEditor({ zone, zones, visibleIds, disabled, onSave, on
   const [y,setY]=useState(displayMetres(existing ? existing.yM*(existing.scaleWithPlot?dimensions.depth/existing.referenceDepthM:1) : -dimensions.depth/2+2));
   const [scale,setScale]=useState(existing?.scaleWithPlot ?? zone.properties?.native_home_plot !== true);
   const [width,setWidth]=useState(existing?.widthM ?? 1.8);
+  const [entranceHeight,setEntranceHeight]=useState(existing?.heightAboveBaseM ?? 0);
   const [edge,setEdge]=useState(park?.edge ?? 0),[position,setPosition]=useState(park?.position ?? 0.5);
   const [crossings,setCrossings]=useState<StreetCrossing[]>(()=>readCrossings(zone));
   const [busy,setBusy]=useState(false),[error,setError]=useState('');
@@ -50,9 +51,9 @@ export function ConnectionEditor({ zone, zones, visibleIds, disabled, onSave, on
     if(isStreet)return {...zone.properties,pedestrian_crossings:crossings};
     if(isPark)return {...zone.properties,park_access_points:null,pedestrian_park_entrance:enabled ? {version:1,edge,position,streetId,existingGroundConfirmed:groundConfirmed}:null};
     const anchor:BuildingEntrance={version:1,xM:x,yM:y,referenceWidthM:dimensions.width,referenceDepthM:dimensions.depth,
-      scaleWithPlot:scale,streetId,widthM:width};
+      scaleWithPlot:scale,streetId,widthM:width,heightAboveBaseM:entranceHeight};
     return {...zone.properties,pedestrian_building_entrance:enabled ? anchor:null};
-  },[zone.properties,isStreet,isPark,crossings,enabled,edge,position,streetId,x,y,dimensions.width,dimensions.depth,scale,width,groundConfirmed]);
+  },[zone.properties,isStreet,isPark,crossings,enabled,edge,position,streetId,x,y,dimensions.width,dimensions.depth,scale,width,groundConfirmed,entranceHeight]);
   const preview=useMemo(()=>{
     const next=zones.map(z=>z.id===zone.id?{...zone,properties}:z);
     return isPark ? resolveManualParkAccess(next,{},visibleIds?.filter(id=>zones.some(z=>z.id===id&&z.zone_type==='road')),transportContext).parks.filter(p=>p.parkZoneId===zone.id).map(p=>p.reason ?? 'Entrance connects to the selected sidewalk or mapped path.')
@@ -61,7 +62,8 @@ export function ConnectionEditor({ zone, zones, visibleIds, disabled, onSave, on
   const supported=isPark ? preview.length>0 : isStreet || zone.coordinates.length===4;
   const valid = isStreet ? crossings.every(c=>Number.isFinite(c.position)&&c.position>=0&&c.position<=1&&c.widthM>=1.8&&c.widthM<=5)
     : !enabled || Boolean(streetId) && (isPark ? Number.isFinite(position)&&position>=0&&position<=1
-      : Number.isFinite(x)&&Number.isFinite(y)&&width>=1.2&&width<=4&&Math.abs(x)<=500&&Math.abs(y)<=500);
+      : Number.isFinite(x)&&Number.isFinite(y)&&width>=1.2&&width<=4&&Math.abs(x)<=500&&Math.abs(y)<=500
+        && Number.isFinite(entranceHeight)&&entranceHeight>=0&&entranceHeight<=3);
   return <StudioDialog title="Connections" onClose={onClose}>
     <form className="space-y-4 text-slate-900" onSubmit={async event=>{
       event.preventDefault();if(!valid||disabled||busy)return;setBusy(true);setError('');
@@ -94,12 +96,14 @@ export function ConnectionEditor({ zone, zones, visibleIds, disabled, onSave, on
             <label className="block text-sm">Position along edge (%)<input className={field} type="number" min="0" max="100" value={Math.round(position*100)} onChange={e=>setPosition(e.target.valueAsNumber/100)}/></label>
             <p className="text-xs text-slate-600">The chosen edge and position rotate and resize with the park. If this entrance cannot connect, it stays unresolved.</p>
           </> : <>
-            <p className="text-sm">Position the anchor at the door or foot of its entrance steps. Distances are from the plot centre in its own orientation.</p>
+            <p className="text-sm">Position the anchor at the outer foot of the building's entrance steps, where they meet its foundation edge. Distances are from the plot centre in its own orientation.</p>
             <div className="grid grid-cols-2 gap-3">
               <label className="text-sm">Left / right (m)<input className={field} type="number" step="0.1" value={x} onChange={e=>setX(e.target.valueAsNumber)}/></label>
               <label className="text-sm">Front / back (m)<input className={field} type="number" step="0.1" value={y} onChange={e=>setY(e.target.valueAsNumber)}/></label>
             </div>
             <p className="text-xs text-slate-600">Negative values mean left or front; positive values mean right or back. Review the walkway against the actual door in 3D.</p>
+            <label className="block text-sm">Entrance height above building base (m)<input className={field} type="number" min="0" max="3" step="0.01" value={entranceHeight} onChange={e=>setEntranceHeight(e.target.valueAsNumber)}/></label>
+            <p className="text-xs text-slate-600">Use 0 for steps that reach the model base. A supported stair approach is added where it fits. Review the connection in 3D; this does not assess an accessible route or edge protection.</p>
             <label className="flex min-h-11 items-center gap-2 text-sm"><input type="checkbox" checked={scale} onChange={e=>setScale(e.target.checked)}/>Scale entrance offsets when the plot is resized</label>
             <p className="text-xs text-slate-600">Keep this off for an unscaled catalogue house. One entrance serves this plot; check its position if resizing adds more houses.</p>
             <label className="block text-sm">Walkway width (m)<input className={field} type="number" min="1.2" max="4" step="0.1" value={width} onChange={e=>setWidth(e.target.valueAsNumber)}/></label>

@@ -3,7 +3,7 @@ import type { SiteZone } from '@/types';
 import { bufferLineToPolygon } from '@/utils/roadGeometry';
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '@/components/viewer/mapEngine/geoUtils';
 import { rectangleAt } from './geometry';
-import { entranceWorldPoint, readCrossings, resolvePedestrianConnections, type BuildingEntrance } from './pedestrianConnections';
+import { entranceWorldPoint, readBuildingEntrance, readCrossings, resolvePedestrianConnections, type BuildingEntrance } from './pedestrianConnections';
 
 const ll=([x,y]:number[])=>[-114+x/metersPerDegLon(51),51+y/METERS_PER_DEG_LAT];
 const xy=([x,y]:number[])=>[(x+114)*metersPerDegLon(51),(y-51)*METERS_PER_DEG_LAT];
@@ -18,6 +18,13 @@ function fixture(){
   return {house,street,boundary,entrance,zones:[house,street,boundary]};
 }
 describe('saved pedestrian relationships',()=>{
+  it('keeps old anchors readable but rejects invalid new vertical offsets',()=>{
+    const f=fixture();
+    expect(readBuildingEntrance(f.house)).toEqual(f.entrance);
+    for(const heightAboveBaseM of [NaN,-1,4,'0.2']) {
+      expect(readBuildingEntrance({...f.house,properties:{pedestrian_building_entrance:{...f.entrance,heightAboveBaseM}}})).toBeNull();
+    }
+  });
   it('connects to the near flush edge of the shared-street pilot without crossing its vehicle surface',()=>{
     const f=fixture(), line=[ll([-40,0]),ll([40,0])];
     const shared={...f.street,coordinates:bufferLineToPolygon(line,6),properties:{road_archetype_id:'yield_street',width:6,lane_count:1,plan_centerline:line}};
