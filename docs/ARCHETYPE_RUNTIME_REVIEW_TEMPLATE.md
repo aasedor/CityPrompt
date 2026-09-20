@@ -58,6 +58,7 @@ Mark type-specific gates N/A with a reason; keep applicable unrun cases open.
 | Level site; low views from multiple sides | NOT TESTED | |
 | Sloped site; contacts and route continuity | NOT TESTED | |
 | Prepared level: actual native step pick, current review and route; unresolved export guard | NOT TESTED | |
+| Multiple low steps: choose street-facing step; opposite-side rejection and Cancel preserve saved link | NOT TESTED | |
 | Edge/unsupported case and inward recovery | NOT TESTED | |
 | Local ground hole: unaffected object works; affected object rejects; recovery/reload/export guard | NOT TESTED | |
 | Supported minimum/maximum size and rotation | NOT TESTED | |
@@ -79,6 +80,9 @@ These are reviewed measurements; this template does not install runtime metadata
 Identify the actual step surface and its transform, even when it belongs to a
 different material/mesh group. Distinguish lowest tread-top height from the
 step-foot/base datum used by the generated approach; do not select by mesh name.
+When the model has front and rear low steps, record both positions and test the
+facing/recovery behavior against the chosen sidewalk. Automatic street-facing
+rotation alone does not prove that a picked step connects.
 
 Record total route length and rise, building/street landing depths and elevations,
 flight run and step count. Verify the landing is level at the native-step foot,

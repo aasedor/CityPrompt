@@ -15,9 +15,9 @@ or asset/publication approval from a working classroom scene.
 
 | Gate | Required result | Current evidence / remaining work |
 | --- | --- | --- |
-| Independent authoring | Student creates a site, buildings, street and park; connects, edits and reopens without developer offsets or API-authored geometry | Fresh Currie project, UI boundary/street/house/park and plot-guide entrance completed. Local ground recovery now keeps the house/street visible. Entrance and park recovery remain open; prepared-site workflow was tested separately. |
-| Plausible scene | No persistent missing models, floating/buried objects, obvious scale/connection errors or blocking furniture at normal presentation distances | Existing seven-house natural-ground fixture has detailed evidence. Fresh local rejections now preserve usable areas; affected objects and exports remain blocked. Fine rail joins are follow-up work. |
-| Dependable controls | Advertised placement/rotation/resize/variant/delete and recovery work predictably | Fresh Move-handle/Undo/Redo/reload passed. Native-body drag panned instead of moving. Prepared-site 3D picking now accepts the visible native step; the fresh house still lacks a clear route to its shared sidewalk. Legacy Generate to 3D mismatch remains open. |
+| Independent authoring | Student creates a site, buildings, street and park; connects, edits and reopens without developer offsets or API-authored geometry | Fresh Currie boundary/street/house/park and native front-step connection were authored through UI and survived reload on an explicit prepared level. Natural-ground park and partial-site recovery remain open. |
+| Plausible scene | No persistent missing models, floating/buried objects, obvious scale/connection errors or blocking furniture at normal presentation distances | Fresh Currie prepared-site front approach reaches the native step at low view and in exact 3D preview. Local natural-ground rejections retain usable areas; partial-site capture remains blocked. Fine rail joins are follow-up work. |
+| Dependable controls | Advertised placement/rotation/resize/variant/delete and recovery work predictably | Fresh Move-handle/Undo/Redo/reload passed. Prepared-site 3D picking saved a connected front step; a rear-step pick now explains the facing problem and Cancel preserves the front link. Native-body drag panned instead of moving. Legacy Generate to 3D mismatch remains open. |
 | Useful visuals | Clean, useful camera views; reliable exact export; AI output preserves the student's actual design | Fresh free export passed and was inspected. It is a plain concept scene, not proof of attractive AI output. Current local harness disables paid AI; image fidelity needs a separate bounded live test. |
 | Repeatable catalogue entry | New variants reuse shared terrain, placement, connection and capture behavior with useful defaults | Shared guidance/template exist. Need an end-to-end entry pilot for one building, street and park, including reusable measured entrance/connection metadata where appropriate. |
 
@@ -31,12 +31,13 @@ or asset/publication approval from a working classroom scene.
    replace measured heights or flatten the site. The original failure evidence
    and prepared-mode backup remain available; the fresh pilot is currently at a
    prepared level for entrance testing.
-2. **Consistent terrain modes (picker/review checkpoint passed):** entrance
+2. **Consistent terrain modes (prepared-route checkpoint passed):** entrance
    authoring and readiness now agree with
    the actually rendered ground on both natural and explicitly prepared sites.
-   See `CURRIE_PREPARED_ENTRANCE_2026-09-20.md`. Finish a complete ordinary
-   sidewalk-to-native-step route at normal viewing distance; this fresh house
-   still faces away from its useful connection.
+   See `CURRIE_PREPARED_ENTRANCE_2026-09-20.md` and
+   `CURRIE_STUDENT_ENTRANCE_ROUTE_2026-09-20.md`. The fresh Currie front step now
+   connects through ordinary controls and survives reload and exact preview.
+   A separate rear step faces away; the shared solver explains that recovery.
 3. **Control clarity:** use object labels in boundary exclusion errors, make the
    native-house move gesture match its instructions, and resolve or remove the
    broken legacy Generate to 3D route from the student flow. Prioritize actual

@@ -111,6 +111,14 @@ stale/mismatched ground, and a complete route on the exact new variant. A valid
 step pick may still yield an unresolved route if the door faces away from its
 sidewalk. See `CURRIE_PREPARED_ENTRANCE_2026-09-20.md`.
 
+If one model has both front and rear low steps, test both picks against the
+selected sidewalk. Street-facing placement is an initial orientation; the
+rendered step and route solver decide whether the connection works. A rear pick
+must explain the facing problem and leave the saved front connection intact
+when canceled. Record both entrances per exact variant in B2 evidence. The
+[fresh Currie route pilot](CURRIE_STUDENT_ENTRANCE_ROUTE_2026-09-20.md) verifies
+this shared recovery without variant-specific offsets in the solver.
+
 Current saved entrance data is `pedestrian_building_entrance` version 1 in
 plot properties: `xM`, `yM`, `referenceWidthM`, `referenceDepthM`,
 `scaleWithPlot`, `streetId`, `widthM`, and optional `heightAboveBaseM`.

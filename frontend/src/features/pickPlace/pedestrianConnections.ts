@@ -160,6 +160,7 @@ export function resolvePedestrianConnections(zones: readonly SiteZone[], visible
         const outward:Point=sideX ? [Math.sign(entrance.xM)*Math.cos(angle),Math.sign(entrance.xM)*Math.sin(angle)]
           : [-Math.sign(entrance.yM)*Math.sin(angle),Math.sign(entrance.yM)*Math.cos(angle)];
         const options: Array<{ point: Point; lift: number; distance: number }> = [];
+        let sidewalkBehindEntrance = false, sidewalkInFrontOfEntrance = false;
         for (let i=1;i<line.length;i++) {
           const a=line[i-1], b=line[i], size=length(sub(b,a)); if(size < 0.01) continue;
           const n: Point = [-(b[1]-a[1])/size,(b[0]-a[0])/size];
@@ -167,7 +168,9 @@ export function resolvePedestrianConnections(zones: readonly SiteZone[], visible
             const target=project(door,add(a,mul(n,band.centerM*scale)),add(b,mul(n,band.centerM*scale)));
             const toward=sub(target,door);
             // A front approach cannot pass back through its own building.
-            if(toward[0]*outward[0]+toward[1]*outward[1]<=0 || !pointInside(target,street.coordinates.map(f.local))) continue;
+            if(!pointInside(target,street.coordinates.map(f.local))) continue;
+            if(toward[0]*outward[0]+toward[1]*outward[1]<=0){sidewalkBehindEntrance=true;continue;}
+            sidewalkInFrontOfEntrance=true;
             if(length(sub(target,door)) > 30 || !safe(door,target,entrance.widthM,street.id)) continue;
             const crossesOtherBand=line.slice(1).some((end,j)=>{
               const start=line[j], l=length(sub(end,start)); if(l<0.01)return false;
@@ -180,7 +183,12 @@ export function resolvePedestrianConnections(zones: readonly SiteZone[], visible
           }
         }
         options.sort((a,b)=>a.distance-b.distance);
-        if(!options.length){result.reason='No clear approach within 30 m reaches that sidewalk. Check the entrance position or street target.';continue;}
+        if(!options.length){
+          result.reason=!sidewalkInFrontOfEntrance&&sidewalkBehindEntrance
+            ? 'This entrance faces away from the selected sidewalk. Choose a step on the street-facing side of the model, or rotate the plot toward the street.'
+            : 'No clear approach within 30 m reaches that sidewalk. Check the entrance position or street target.';
+          continue;
+        }
         const best=options[0];
         result.strips=[{id:`entrance:${owner.id}`,ownerId:owner.id,start:f.world(best.point),end:anchor,widthM:entrance.widthM,
           startLiftM:best.lift,endLiftM:0.025,color:'#c3baa8'}];

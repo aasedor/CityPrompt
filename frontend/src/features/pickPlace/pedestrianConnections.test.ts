@@ -100,7 +100,16 @@ describe('saved pedestrian relationships',()=>{
   });
   it('does not draw an approach back through its own building',()=>{
     const f=fixture(),back={...f.house,properties:{...f.house.properties,pedestrian_building_entrance:{...f.entrance,yM:-8}}};
-    expect(resolvePedestrianConnections([back,f.street,f.boundary])[0].status).toBe('unresolved');
+    expect(resolvePedestrianConnections([back,f.street,f.boundary])[0]).toMatchObject({status:'unresolved',strips:[],reason:expect.stringMatching(/faces away.*street-facing side/)});
+  });
+  it('distinguishes the street-side and rear native steps of a rotated house',()=>{
+    const f=fixture(),line=[ll([0,-40]),ll([0,40])];
+    const street={...f.street,coordinates:bufferLineToPolygon(line,6),properties:{road_archetype_id:'yield_street',width:6,lane_count:1,plan_centerline:line}};
+    const plot=rectangleAt(ll([-15,0]),12,16,90);
+    const front={...f.house,coordinates:plot,properties:{pedestrian_building_entrance:{...f.entrance,xM:2.9,yM:-5.875,referenceDepthM:16,scaleWithPlot:false}}};
+    const rear={...front,properties:{pedestrian_building_entrance:{...f.entrance,xM:-.64,yM:5.875,referenceDepthM:16,scaleWithPlot:false}}};
+    expect(resolvePedestrianConnections([front,street,f.boundary])[0].status).toBe('connected');
+    expect(resolvePedestrianConnections([rear,street,f.boundary])[0]).toMatchObject({status:'unresolved',reason:expect.stringMatching(/faces away/)});
   });
   it('ignores malformed, duplicated or oversized crossing lists',()=>{
     const {street}=fixture();

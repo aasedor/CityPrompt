@@ -7,17 +7,29 @@ historical; the actual results below supersede those statements.
 
 ## Latest continuation checkpoint
 
-**Latest — prepared-site native entrance (20 September):** read
+**Latest — fresh Currie front-step route (20 September):** read
+`docs/CURRIE_STUDENT_ENTRANCE_ROUTE_2026-09-20.md` first. The prior disconnected
+pick was the model's rear low step, not a bad automatic street orientation. The
+student's 90° plot already faced the shared street. An ordinary UI pick on its
+front native step, Save, reload, entrance review and low exact 3D preview now
+pass in the disposable prepared project. A rear pick shows a specific
+faces-away recovery message; Cancel leaves the saved front link unchanged.
+The source change is shared route feedback plus a rotated-house regression,
+with no variant-specific offset or relaxed clearance rule. Next: finish
+natural/partial-ground park and export recovery, clarify the native-house move
+gesture and legacy Generate to 3D, then run bounded image-fidelity review.
+
+
+**Earlier — prepared-site native entrance (20 September):** read
 `docs/CURRIE_PREPARED_ENTRANCE_2026-09-20.md` first. Prepared sites now use
 their authored level for native foundation, 3D step picking, generated approach
-and entrance review. The fresh Currie UI accepted a real step pick, but its only
-door still lacks a clear route to the shared sidewalk; the draft was not saved.
-The free export now rejects the saved approximate entrance with the specific
-foundation-edge issue. Protected Currie stayed unchanged. The disposable fresh
-project is presently **prepared** at 1102.62 m, with the saved approximate
-entrance and original 90° house orientation. Natural-ground failure evidence is
-external, as described below. Next: resolve street-facing placement/route in
-a full ordinary student flow, then finish partial-ground park/export coverage.
+and entrance review. At that checkpoint the fresh Currie UI accepted a rear
+step pick, but it lacked a route to the shared sidewalk and the draft was not
+saved. The then-saved approximate entrance made free export reject with a
+foundation-edge issue. The newer front-step route checkpoint above supersedes
+that fixture state. Protected Currie stayed unchanged. The disposable project
+remains **prepared** at 1102.62 m. Natural-ground failure evidence is external,
+as described below.
 
 
 **Latest — local natural-ground recovery (20 September):** read
