@@ -34,6 +34,7 @@ import { useGLTF } from '@react-three/drei';
 import { WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import { EastNorthUpFrame, TilesRendererContext } from '3d-tiles-renderer/r3f';
 import type { Building, SiteZone } from '@/types';
+import type { NativeEntranceHit } from '@/features/pickPlace/pickBuildingEntrance';
 import type { LegoAssemblyRecipe } from '@/features/legoAssembly/legoAssemblyApi';
 import { centreNativeClayClone, isNativeClayPlan } from '@/features/legoAssembly/nativeClayPlacement';
 import { authoredHomePlotFrame, preservesAuthoredPlotAxes } from '@/features/legoAssembly/detachedPlot';
@@ -154,7 +155,7 @@ interface GlobeLegoAssemblyLayerProps {
   /** Blocking contact issues, separate from asset-loading/prism suppression. */
   onGroundingIssuesChange?: (issues: LegoGroundingIssue[]) => void;
   selectedBuildingId?: string | null;
-  onBuildingClick?: (buildingId: string) => void;
+  onBuildingClick?: (buildingId: string, hit?: NativeEntranceHit, phase?: 'pointerdown') => void;
 }
 
 /** useGLTF throws on bad/missing modules; Suspense doesn't catch errors.
@@ -249,7 +250,7 @@ function LegoMassingStack({
   onGroundingStatus?: GroundingStatusReporter;
   selected: boolean;
   proposalForDirect3D: boolean;
-  onBuildingClick?: (buildingId: string) => void;
+  onBuildingClick?: (buildingId: string, hit?: NativeEntranceHit, phase?: 'pointerdown') => void;
 }) {
   const height = Math.max(
     2.5,
@@ -412,7 +413,7 @@ function LegoStackInstance({
   onGroundingStatus?: GroundingStatusReporter;
   selected: boolean;
   proposalForDirect3D: boolean;
-  onBuildingClick?: (buildingId: string) => void;
+  onBuildingClick?: (buildingId: string, hit?: NativeEntranceHit, phase?: 'pointerdown') => void;
   incompleteFallback: ReactNode;
 }) {
   // One suspension point for the whole stack: all distinct module GLBs load
@@ -586,9 +587,19 @@ function LegoStackInstance({
         userData={proposalForDirect3D
           ? direct3DBuildingInstanceUserData(building, zone)
           : DIRECT_3D_CAPTURE_CONTEXT_USER_DATA}
+        onPointerDown={(event) => {
+          event.stopPropagation();
+          // Capture the surface before globe controls adjust the camera on release.
+          // The map accepts this candidate only after a click, never after a drag.
+          const local = event.eventObject.parent?.worldToLocal(event.point.clone());
+          onBuildingClick?.(building.id, local && isNativeClayPlan(recipe) && zone?.properties?.native_home_plot === true
+            ? {point:[local.x,local.y,local.z],footprints:groundFootprints,lng:frame.centroidLng,lat:frame.centroidLat,contact:foundation.contact,
+              ray:{origin:event.ray.origin.toArray(),direction:event.ray.direction.toArray(),distance:event.distance}}
+            : undefined, 'pointerdown');
+        }}
         onClick={(event) => {
           event.stopPropagation();
-          onBuildingClick?.(building.id);
+          if (event.delta <= 6) onBuildingClick?.(building.id);
         }}
       >
         {/* Rx(+90°): glTF Y-up -> ENU Z-up (stack Y becomes Up, Z becomes -North).

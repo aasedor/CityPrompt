@@ -22,6 +22,7 @@ import { parkOutlineProblem } from '@/features/pickPlace/parkOutline';
 import { StreetRoutePanel } from '@/features/pickPlace/StreetRoutePanel';
 import { publicRoadConnectionFits } from '@/features/pickPlace/publicRoadConnection';
 import { ConnectionEditor } from '@/features/pickPlace/ConnectionEditor';
+import type { EntrancePickRequest } from '@/features/pickPlace/pickBuildingEntrance';
 import { TerraceEditor } from '@/features/pickPlace/TerraceEditor';
 import { saveAutomaticParkGround } from '@/features/pickPlace/saveAutomaticParkGround';
 import { TerraceSummary } from '@/features/pickPlace/TerraceSummary';
@@ -254,6 +255,7 @@ export function ProjectViewPage() {
 
   const selectedZone = siteZones.find((z) => z.id === selectedZoneId) || null;
   const [connectionZoneId, setConnectionZoneId] = useState<string | null>(null);
+  const [entrancePick,setEntrancePick] = useState<EntrancePickRequest|null>(null);
   const connectionZone = siteZones.find(zone=>zone.id===connectionZoneId);
   const [terraceZoneId,setTerraceZoneId]=useState<string|null>(null);
   const terraceZone=siteZones.find(zone=>zone.id===terraceZoneId);
@@ -271,7 +273,7 @@ export function ProjectViewPage() {
     window.addEventListener('keydown', cancel);
     return () => window.removeEventListener('keydown', cancel);
   }, [placementDraft, cancelPlacement]);
-  useEffect(() => { setPlacementDraft(null); setAdvancedZoneId(null); }, [id]);
+  useEffect(() => { setPlacementDraft(null); setAdvancedZoneId(null); setEntrancePick(null); setConnectionZoneId(null); }, [id]);
   const placeObject = async (point: [number, number], height: number) => {
     if (!placementDraft || placementDraft.inputError || placementPending.current || isSaving) return;
     const degrees = placementDraft.faceStreet ? streetFacingDegrees(point, siteZones, placementDraft.degrees) : placementDraft.degrees;
@@ -1067,6 +1069,7 @@ export function ProjectViewPage() {
       <div className="fixed inset-x-0 bottom-0 top-16 z-50 bg-black">
         <Suspense fallback={<MapLoadingFallback mode="3D" />}>
           <GlobeSitePlannerMap
+            entrancePick={entrancePick}
             placementDraft={placementDraft}
             onPlacementDraftChange={setPlacementDraft}
             parkGroundPaused={isSaving || automatic3D.busy}
@@ -1120,13 +1123,14 @@ export function ProjectViewPage() {
             onGlobeReady={setGlobeRefs}
             onModeledBuildingsChange={setModeledBuildingIds}
             measureModeActive={measureActive}
-            interactionPaused={renderViewerActive || showPlanningReport || showShare || showTour || showReferenceLayers || showCatalogue}
+            interactionPaused={renderViewerActive || showPlanningReport || showShare || showTour || showReferenceLayers || showCatalogue || Boolean(connectionZone && !entrancePick)}
             onMeasureModeChange={handleMeasureModeChange}
           />
         </Suspense>
 
         {/* Toolbar - hidden on phones during focused vertex placement. */}
         <div
+          style={entrancePick ? {display:'none'} : undefined}
           className={`pointer-events-none absolute inset-x-3 top-44 z-30 min-h-0 overflow-y-auto overscroll-contain sm:inset-x-auto sm:left-4 sm:top-28 sm:bottom-16 sm:w-64 sm:max-h-none sm:overflow-y-auto sm:pr-2 ${activeSitePlannerTool || placementDraft || (selectedZone && (assetForZone(selectedZone) || isFixedSectionStreet(selectedZone))) ? 'hidden sm:block' : 'bottom-3 max-h-[60dvh]'}`}
         >
           <div className="pointer-events-auto h-full">
@@ -1229,7 +1233,7 @@ export function ProjectViewPage() {
         {showTour && <OnboardingTour placementMode forceShow onComplete={() => setShowTour(false)} />}
 
         {/* Zone properties panel */}
-        {selectedZone && assetForZone(selectedZone) && advancedZoneId !== selectedZone.id && !placementDraft && !showHistory && !measureActive && (
+        {selectedZone && !entrancePick && assetForZone(selectedZone) && advancedZoneId !== selectedZone.id && !placementDraft && !showHistory && !measureActive && (
           <ReshapePanel key={`${selectedZone.id}:${JSON.stringify(selectedZone.coordinates)}`} zone={selectedZone} disabled={isSaving}
             onUpdateDesign={properties => updateZone.mutate({ zoneId: selectedZone.id, data: { properties }, previousData: { properties: selectedZone.properties } })}
             onTerrace={['building','residential','green_space'].includes(selectedZone.zone_type)?()=>setTerraceZoneId(selectedZone.id):undefined}
@@ -1237,7 +1241,7 @@ export function ProjectViewPage() {
             onReshape={coordinates => reshapeObject(selectedZone.id, coordinates)} onClose={() => selectZone(null)}
             onDelete={() => deleteZone.mutate(selectedZone.id)} onDuplicate={pickObject} onMore={() => setAdvancedZoneId(selectedZone.id)} />
         )}
-        {selectedZone && isFixedSectionStreet(selectedZone) && advancedZoneId !== selectedZone.id && !placementDraft && !showHistory && !measureActive && (
+        {selectedZone && !entrancePick && isFixedSectionStreet(selectedZone) && advancedZoneId !== selectedZone.id && !placementDraft && !showHistory && !measureActive && (
           <StreetRoutePanel zone={selectedZone} disabled={isSaving} onReshape={coords=>reshapeObject(selectedZone.id, coords)}
             onUpdateDesign={data => {
               const problem = streetRouteProblem(data.coordinates, Number(data.properties.width))
@@ -1254,7 +1258,7 @@ export function ProjectViewPage() {
             onConnections={()=>setConnectionZoneId(selectedZone.id)}
             onClose={()=>selectZone(null)} onDelete={()=>deleteZone.mutate(selectedZone.id)} onMore={()=>setAdvancedZoneId(selectedZone.id)} />
         )}
-        {selectedZone && ((!assetForZone(selectedZone) && !isFixedSectionStreet(selectedZone)) || advancedZoneId === selectedZone.id) && !showHistory && !measureActive && (
+        {selectedZone && !entrancePick && ((!assetForZone(selectedZone) && !isFixedSectionStreet(selectedZone)) || advancedZoneId === selectedZone.id) && !showHistory && !measureActive && (
           <ZonePropertiesPanel
             key={selectedZone.id}
             belowGlobeControls
@@ -1285,7 +1289,11 @@ export function ProjectViewPage() {
           await updateZone.mutateAsync({zoneId:terraceZone.id,data:{properties},previousData:{properties:terraceZone.properties}});
         }}/>}
         {connectionZone && <ConnectionEditor key={connectionZone.id} zone={connectionZone} zones={siteZones} transportContext={transportContext} visibleIds={visibleZones.map(zone=>zone.id)} disabled={isSaving}
-          onClose={()=>setConnectionZoneId(null)} onSave={async properties=>{
+          onPickEntrance={request=>{
+            setActiveSitePlannerTool(null);setMeasureActive(false);useViewerStore.getState().setStreetViewActive(false);
+            setEntrancePick({...request,finish:result=>{setEntrancePick(null);request.finish(result);}});
+          }}
+          onClose={()=>{setEntrancePick(null);setConnectionZoneId(null);}} onSave={async properties=>{
             await updateZone.mutateAsync({zoneId:connectionZone.id,data:{properties},previousData:{properties:connectionZone.properties}});
           }} />}
         {showHistory && !showGlobeRender && id && (

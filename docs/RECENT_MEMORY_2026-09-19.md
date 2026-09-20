@@ -7,6 +7,17 @@ historical; the actual results below supersede those statements.
 
 ## Latest continuation checkpoint
 
+**3D entrance-picking pilot (20 September):** read
+`docs/CURRIE_3D_ENTRANCE_PICK_BROWSER_QA_2026-09-20.md` first. Students can
+choose a low native-house step directly in 3D, receive current-ground approach
+feedback, and save explicitly. Drafts survive dragging/cancellation; stale
+plot edits cannot be overwritten. The modern-infill pilot on the disposable
+Currie copy passed pick/save/reload and restored its original entrance settings.
+All seven houses returned to ready ground without warnings. Focused checks
+passed 46 tests, type-check, and changed-file lint. Next: Craftsman/Edwardian
+browser pilots and setback recovery, then high-foundation design review and
+the full novice journey. Original Currie remains unchanged; no push occurred.
+
 **Seven-house entrance continuation (20 September):** read
 `docs/CURRIE_SEVEN_ENTRANCE_BROWSER_QA_2026-09-20.md` first. A disposable
 full-layout copy now has all seven native-step entrance anchors; browser ground

@@ -6,14 +6,17 @@ import { rectangleDimensions } from './geometry';
 import { streetAssetForZone } from './streetPlacement';
 import { EMPTY_TRANSPORT, type ExistingTransport } from '@/features/referenceLayers/existingTransport';
 import { readBuildingEntrance, readCrossings, resolvePedestrianConnections, type BuildingEntrance, type StreetCrossing } from './pedestrianConnections';
+import { entrancePickZoneKey, type EntrancePickRequest, type EntrancePickResult } from './pickBuildingEntrance';
 
 const field='min-h-11 w-full rounded border border-slate-400 bg-white px-2 text-base text-slate-900';
 const button='min-h-11 rounded-lg border border-slate-700 bg-white px-3 text-sm font-semibold text-slate-900 disabled:opacity-40';
 const displayMetres = (value: number) => Math.round(value*1000)/1000;
-export function ConnectionEditor({ zone, zones, visibleIds, disabled, onSave, onClose, transportContext=EMPTY_TRANSPORT }: {
+const anchorKey = (anchor: BuildingEntrance | null) => anchor && JSON.stringify([anchor.xM,anchor.yM,anchor.widthM,anchor.heightAboveBaseM,anchor.streetId,anchor.scaleWithPlot]);
+export function ConnectionEditor({ zone, zones, visibleIds, disabled, onSave, onClose, onPickEntrance, transportContext=EMPTY_TRANSPORT }: {
   zone: SiteZone; zones: SiteZone[]; disabled: boolean;
   visibleIds?: string[];
   transportContext?: ExistingTransport;
+  onPickEntrance?: (request: EntrancePickRequest) => void;
   onSave: (properties: SiteZone['properties']) => Promise<unknown>; onClose: () => void;
 }) {
   const isPark=zone.zone_type==='green_space', isStreet=zone.zone_type==='road';
@@ -58,6 +61,10 @@ export function ConnectionEditor({ zone, zones, visibleIds, disabled, onSave, on
   const [edge,setEdge]=useState(park?.edge ?? 0),[position,setPosition]=useState(park?.position ?? 0.5);
   const [crossings,setCrossings]=useState<StreetCrossing[]>(()=>readCrossings(zone));
   const [busy,setBusy]=useState(false),[error,setError]=useState('');
+  const [picking,setPicking]=useState(false);
+  const [openedZoneKey]=useState(()=>entrancePickZoneKey(zone));
+  const zoneChanged = openedZoneKey !== entrancePickZoneKey(zone);
+  const [picked,setPicked]=useState<EntrancePickResult|null>(null);
   const properties=useMemo(()=>{
     if(isStreet)return {...zone.properties,pedestrian_crossings:crossings};
     if(isPark)return {...zone.properties,park_access_points:null,pedestrian_park_entrance:enabled ? {version:1,edge,position,streetId,existingGroundConfirmed:groundConfirmed}:null};
@@ -75,9 +82,11 @@ export function ConnectionEditor({ zone, zones, visibleIds, disabled, onSave, on
     : !enabled || Boolean(streetId) && (isPark ? Number.isFinite(position)&&position>=0&&position<=1
       : Number.isFinite(x)&&Number.isFinite(y)&&width>=1.2&&width<=4&&Math.abs(x)<=500&&Math.abs(y)<=500
         && Number.isFinite(entranceHeight)&&entranceHeight>=0&&entranceHeight<=3);
+  const pickFeedback = picked && anchorKey(picked.anchor) === anchorKey(readBuildingEntrance({...zone,properties})) ? picked : null;
+  if (picking) return null;
   return <StudioDialog title="Connections" onClose={onClose}>
     <form className="space-y-4 text-slate-900" onSubmit={async event=>{
-      event.preventDefault();if(!valid||disabled||busy)return;setBusy(true);setError('');
+      event.preventDefault();if(!valid||disabled||busy||zoneChanged)return;setBusy(true);setError('');
       try{await onSave(properties);onClose();}catch{setError('Could not save. Your changes are still here; retry or close.');}finally{setBusy(false);}
     }}>
       <p className="text-sm font-semibold">{zone.name || (isPark?'Park':isStreet?'Street':'Building')}</p>
@@ -107,6 +116,18 @@ export function ConnectionEditor({ zone, zones, visibleIds, disabled, onSave, on
             <label className="block text-sm">Position along edge (%)<input className={field} type="number" min="0" max="100" value={Math.round(position*100)} onChange={e=>setPosition(e.target.valueAsNumber/100)}/></label>
             <p className="text-xs text-slate-600">The chosen edge and position rotate and resize with the park. If this entrance cannot connect, it stays unresolved.</p>
           </> : <>
+            {onPickEntrance && zone.properties?.native_home_plot === true && <div className="rounded-lg border border-slate-300 bg-lime-50 p-3 text-sm">
+              <button className={button} type="button" disabled={!valid||disabled||busy||zoneChanged} onClick={()=>{
+                setPicking(true);
+                onPickEntrance({zoneId:zone.id,zoneKey:entrancePickZoneKey(zone),properties,finish:result=>{
+                  setPicking(false);
+                  if (!result) return;
+                  setX(result.anchor.xM);setY(result.anchor.yM);setEntranceHeight(0);setScale(false);setPicked(result);
+                }});
+              }}>Pick entrance step in 3D</button>
+              <p className="mt-2">Choose the outer edge of the lowest entrance step on this house. You can navigate the map while picking. Changes stay in this dialog until you save.</p>
+            </div>}
+            {pickFeedback && <p role="status" className={`rounded-lg p-3 text-sm ${pickFeedback.status==='ready'?'bg-lime-50':'bg-amber-50'}`}>{pickFeedback.message} Ground is checked again after saving.</p>}
             <p className="text-sm">Position the anchor at the outer foot of the building's entrance steps, where they meet its foundation edge. Distances are from the plot centre in its own orientation.</p>
             <div className="rounded-lg border border-slate-300 bg-slate-50 p-3 text-sm">
               <p className="font-semibold">Entrance position on this plot</p>
@@ -143,7 +164,8 @@ export function ConnectionEditor({ zone, zones, visibleIds, disabled, onSave, on
       </>}
       <div role="status" className="space-y-1 rounded-lg bg-slate-100 p-3 text-sm">{preview.length ? preview.map((message,i)=><p key={i}>{message}</p>):<p>No connections selected.</p>}</div>
       {error && <p role="alert" className="text-sm text-red-700">{error}</p>}
-      <div className="flex gap-2"><button className={`${button} !bg-[#c9ff3d]`} disabled={!supported||!valid||disabled||busy}>{busy?'Saving…':'Save connections'}</button><button className={button} type="button" onClick={onClose}>Cancel</button></div>
+      {zoneChanged && <p role="alert" className="text-sm text-red-700">This plot changed while Connections was open. Close and reopen Connections to use its current shape and settings.</p>}
+      <div className="flex gap-2"><button className={`${button} !bg-[#c9ff3d]`} disabled={!supported||!valid||disabled||busy||zoneChanged}>{busy?'Saving…':'Save connections'}</button><button className={button} type="button" onClick={onClose}>Cancel</button></div>
     </form>
   </StudioDialog>;
 }
