@@ -215,6 +215,13 @@ not proof of precise curb height or safe pedestrian access.
 Neighbourhood-park terrain behavior is not automatically inherited by every
 new open-space recipe. Register the actual geometry with the shared terrain and
 access systems, or document the unsupported capability until integration passes.
+If repeated measurements cannot cover a park, the terrain option stays disabled
+and natural mode may hide the whole unsupported assembly. Test the visible
+move/resize and deliberate prepared-level recovery before claiming student use.
+Do not release a partial-site capture until every rendered park surface, object
+and route has current complete support; the existing capture guard rejects the
+whole partial snapshot. See the
+[fresh Currie park check](CURRIE_PARK_GROUND_RECOVERY_2026-09-20.md).
 
 ## Shared implementation map
 

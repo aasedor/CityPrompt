@@ -61,6 +61,7 @@ Mark type-specific gates N/A with a reason; keep applicable unrun cases open.
 | Multiple low steps: choose street-facing step; opposite-side rejection and Cancel preserve saved link | NOT TESTED | |
 | Edge/unsupported case and inward recovery | NOT TESTED | |
 | Local ground hole: unaffected object works; affected object rejects; recovery/reload/export guard | NOT TESTED | |
+| Park measurement unavailable: visible warning, move/resize or explicit prepared-level recovery | NOT TESTED | |
 | Supported minimum/maximum size and rotation | NOT TESTED | |
 | Edit during pending ground / tile refinement | NOT TESTED | |
 | Delete / Undo / Redo; referenced route target | NOT TESTED | |

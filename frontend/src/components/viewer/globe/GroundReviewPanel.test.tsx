@@ -50,6 +50,12 @@ describe('slope ground review', () => {
     fireEvent.click(apply);await waitFor(()=>expect(onClose).toHaveBeenCalledOnce());
     expect(onFollowParks).toHaveBeenLastCalledWith({park:expect.objectContaining({version:1,snapshot:expect.objectContaining({source:'google_3d_tiles'})})});
   });
+  it('explains how an unmeasured park can disappear on existing terrain', () => {
+    const park={...boundary,id:'park',zone_type:'green_space' as const,properties:{green_space_archetype_id:'neighborhood_park',green_space_selected_variant_id:'neighborhood_park_v0',neighborhood_park_layout:'adaptive_rustic_v1'}};
+    render(<GroundReviewPanel boundary={boundary} ground={INACTIVE_SHARED_SITE_GROUND} parks={[park]} onFollowParks={vi.fn()} onApply={vi.fn()} onClose={vi.fn()}/>);
+    expect(screen.getByRole('button',{name:'Use measured park terrain'}).matches(':disabled')).toBe(true);
+    expect(screen.getByText(/Following existing terrain may hide an unmeasured park.*Move or resize.*intentionally prepare a level/)).toBeTruthy();
+  });
   it('inspection and edits do not mutate the site until Apply; opt-in saves the measured edge profile', async () => {
     const onApply=vi.fn().mockResolvedValue(undefined), onClose=vi.fn();
     render(<GroundReviewPanel boundary={boundary} ground={reviewed} onApply={onApply} onClose={onClose} />);

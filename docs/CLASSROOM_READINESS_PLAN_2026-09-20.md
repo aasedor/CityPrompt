@@ -15,7 +15,7 @@ or asset/publication approval from a working classroom scene.
 
 | Gate | Required result | Current evidence / remaining work |
 | --- | --- | --- |
-| Independent authoring | Student creates a site, buildings, street and park; connects, edits and reopens without developer offsets or API-authored geometry | Fresh Currie boundary/street/house/park and native front-step connection were authored through UI and survived reload on an explicit prepared level. Natural-ground park and partial-site recovery remain open. |
+| Independent authoring | Student creates a site, buildings, street and park; connects, edits and reopens without developer offsets or API-authored geometry | Fresh Currie boundary/street/house/park and native front-step connection were authored through UI and survived reload on an explicit prepared level. Natural ground can hide the park on this parcel; Review ground now explains move/resize or intentional prepared-level recovery. Partial-site capture remains open. |
 | Plausible scene | No persistent missing models, floating/buried objects, obvious scale/connection errors or blocking furniture at normal presentation distances | Fresh Currie prepared-site front approach reaches the native step at low view and in exact 3D preview. Local natural-ground rejections retain usable areas; partial-site capture remains blocked. Fine rail joins are follow-up work. |
 | Dependable controls | Advertised placement/rotation/resize/variant/delete and recovery work predictably | Fresh Move-handle/Undo/Redo/reload passed. Prepared-site 3D picking saved a connected front step; a rear-step pick now explains the facing problem and Cancel preserves the front link. Native-body drag panned instead of moving. Legacy Generate to 3D mismatch remains open. |
 | Useful visuals | Clean, useful camera views; reliable exact export; AI output preserves the student's actual design | Fresh free export passed and was inspected. It is a plain concept scene, not proof of attractive AI output. Current local harness disables paid AI; image fidelity needs a separate bounded live test. |
@@ -25,7 +25,12 @@ or asset/publication approval from a working classroom scene.
 
 1. **Natural-ground recovery (interactive checkpoint passed):** the exact Currie
    failure now isolates eight cells and retains the house/street through reload.
-   See `CURRIE_LOCAL_GROUND_RECOVERY_2026-09-20.md`. Finish park recovery and
+   See `CURRIE_LOCAL_GROUND_RECOVERY_2026-09-20.md` and
+   `CURRIE_PARK_GROUND_RECOVERY_2026-09-20.md`. The park disappears and the
+   entrance intersects terrain in the current natural mode; the shared warning
+   now names deliberate recovery choices. The explicit prepared level restores
+   the whole scene, and measured concept retaining edges remove the exposed
+   bright strip in exact preview. Finish a real natural park recovery and
    per-proposal capture coverage; partial sites still conservatively block exports.
    Preserve the distinction between usable and unresolved areas. Do not silently
    replace measured heights or flatten the site. The original failure evidence

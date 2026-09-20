@@ -75,6 +75,7 @@ export function GroundReviewPanel({ boundary, ground, onClose, onApply, parks = 
         <h2 className="font-semibold">Let parks follow the hillside</h2>
         <p>Keep the existing site terrain. Drape the neighbourhood park's lawn and paths over its own measured surface; only activity pads stay level. Existing building terraces keep their saved level.</p>
         <p>{Object.keys(parkProfiles).length} of {parks.length} parks have repeatable measurements. Review that the park is on open ground, not tree crowns or roofs. Steep landscape is allowed; path grades still need design.</p>
+        {Object.keys(parkProfiles).length < parks.length && <p role="status" className="rounded border border-amber-300 bg-amber-50 p-2">Following existing terrain may hide an unmeasured park. Move or resize it onto clear measured ground and review again, or intentionally prepare a level redevelopment surface.</p>}
         <button className="min-h-11 rounded-lg bg-lime-200 p-2 disabled:opacity-40" disabled={pending || unsaved || Object.keys(parkProfiles).length !== parks.length} onClick={async () => {
           setPending(true); setError('');
           try { await onFollowParks(parkProfiles); onClose(); }

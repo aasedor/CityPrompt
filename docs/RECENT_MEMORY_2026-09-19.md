@@ -7,6 +7,20 @@ historical; the actual results below supersede those statements.
 
 ## Latest continuation checkpoint
 
+**Latest — Currie park ground recovery choice (20 September):** read
+`docs/CURRIE_PARK_GROUND_RECOVERY_2026-09-20.md`. Follow existing terrain on the
+fresh disposable site retained eight excluded cells and the house/street, but
+hid the park; the saved entrance also intersected natural terrain. Review ground
+could measure 0/1 park profiles. A shared warning now tells students an
+unmeasured park may disappear and offers move/resize or an intentional prepared
+level. The exact capture guard remains strict. Through UI, the site was restored
+to **prepared 1102.62 m** with a measured concept retaining-edge profile; the
+house, street, park and front route returned, and exact preview succeeded. The
+edge trial removed a bright exposed strip. Natural-ground park/partial-capture
+acceptance remains open. Next practical work: native-house move-hint/control
+consistency, legacy Generate to 3D mismatch, then bounded image-fidelity review.
+
+
 **Latest — fresh Currie front-step route (20 September):** read
 `docs/CURRIE_STUDENT_ENTRANCE_ROUTE_2026-09-20.md` first. The prior disconnected
 pick was the model's rear low step, not a bad automatic street orientation. The
