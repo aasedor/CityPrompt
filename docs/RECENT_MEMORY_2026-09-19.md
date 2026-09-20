@@ -7,6 +7,14 @@ historical; the actual results below supersede those statements.
 
 ## Latest continuation checkpoint
 
+**Latest — three-type catalogue-entry rehearsal (20 September):** read
+`docs/CLASSROOM_CATALOGUE_ENTRY_REHEARSAL_2026-09-20.md`. The existing infill
+house, yield street and neighbourhood park now have a single runtime gate
+record. It names prepared-scene passes, natural-ground/minimum-park limits,
+and asset-byte/AI-image evidence still needed. This is not new-family visual
+approval or Wave 2 activation. Next: a bounded real image-fidelity comparison,
+then the first actual new-variant building/street/park entry pilot.
+
 **Latest — natural park and hillside capture guard (20 September):** read
 `docs/CURRIE_NATURAL_PARK_CAPTURE_CHECK_2026-09-20.md`. A UI resize/move
 restored repeatable natural park measurement and a saved street entrance, but

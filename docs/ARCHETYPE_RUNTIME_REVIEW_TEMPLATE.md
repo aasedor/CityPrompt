@@ -2,6 +2,8 @@
 
 Copy this template into the candidate evidence package. Complete it using
 [Runtime integration for every archetype](ARCHETYPE_RUNTIME_INTEGRATION.md).
+The [Currie three-type rehearsal](CLASSROOM_CATALOGUE_ENTRY_REHEARSAL_2026-09-20.md)
+shows how to keep scene-level passes separate from exact-variant untested gates.
 Replace this relative link with the repository document path if copied elsewhere.
 Default status is NOT TESTED. Do not prefill a pass from another archetype.
 

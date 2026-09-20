@@ -19,7 +19,7 @@ or asset/publication approval from a working classroom scene.
 | Plausible scene | No persistent missing models, floating/buried objects, obvious scale/connection errors or blocking furniture at normal presentation distances | Fresh Currie prepared-site front approach reaches the native step at low view and in exact 3D preview. Local natural-ground rejections retain usable areas; partial-site capture remains blocked. Fine rail joins are follow-up work. |
 | Dependable controls | Advertised placement/rotation/resize/variant/delete and recovery work predictably | Fresh Move-handle/Undo/Redo/reload passed. Prepared-site 3D picking saved a connected front step; a rear-step pick now explains the facing problem and Cancel preserves the front link. Native-house instructions point to the working Move handle. The seven-house Generate to 3D recipe mismatch is fixed and browser-retested. Boundary exclusions now identify unnamed objects by type and variant instead of UUID. |
 | Useful visuals | Clean, useful camera views; reliable exact export; AI output preserves the student's actual design | Fresh free export passed and was inspected. It is a plain concept scene, not proof of attractive AI output. Current local harness disables paid AI; image fidelity needs a separate bounded live test. |
-| Repeatable catalogue entry | New variants reuse shared terrain, placement, connection and capture behavior with useful defaults | Shared guidance/template exist. Need an end-to-end entry pilot for one building, street and park, including reusable measured entrance/connection metadata where appropriate. |
+| Repeatable catalogue entry | New variants reuse shared terrain, placement, connection and capture behavior with useful defaults | Shared guidance/template and an existing-variant building/street/park rehearsal now exist. Its matrix separates classroom passes from asset-specific gaps. An actual new-variant entry pilot with locked asset evidence remains before scale-up. |
 
 ## Next work in order
 
@@ -59,9 +59,11 @@ or asset/publication approval from a working classroom scene.
 4. **Presentation pilot:** use a small mixed scene with a useful camera and run
    a bounded real image-generation check. Compare source/export/output for
    obvious identity, placement and scale changes. Preserve all existing styles.
-5. **Catalogue entry pilot:** one exact building, one street and one park using
-   the common integration contract. Reuse shared checks; review only new
-   geometry assumptions per variant. Then expand in finite batches.
+5. **Catalogue entry pilot:** use the
+   `CLASSROOM_CATALOGUE_ENTRY_REHEARSAL_2026-09-20.md` record to onboard one
+   **new** exact building, one street and one park with the common integration
+   contract. Reuse shared checks; review new geometry assumptions and exact
+   asset identity per variant. Then expand in finite batches.
 
 Stop this pre-catalogue phase when a student can independently create, revise,
 reopen and present a plausible mixed scene, with these practical blockers closed

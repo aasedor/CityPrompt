@@ -8,6 +8,8 @@ This is the shared runtime acceptance checklist. RLASM 6.1 remains the building
 construction and visual-review authority. Existing catalogue publication,
 independent review, and human activation requirements remain in force.
 This checklist adds site integration evidence; it does not grant asset approval.
+The [Currie building/street/park rehearsal](CLASSROOM_CATALOGUE_ENTRY_REHEARSAL_2026-09-20.md)
+is an example of recording classroom passes and explicit variant-specific gaps.
 
 ## Classroom acceptance scope
 
