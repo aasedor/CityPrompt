@@ -5,6 +5,27 @@ live Batch A browser QA and the user's correction to test on an empty parcel.
 Older handoffs saying Docker is unavailable or no browser testing occurred are
 historical; the actual results below supersede those statements.
 
+## Latest continuation checkpoint
+
+Read `docs/CURRIE_GROUNDING_CONTINUATION_2026-09-19.md` before executing the
+older next-step list below. The vacant Currie browser continuation has now
+verified rotation/Undo/Redo/reload, sampled tile-refinement stability, capture
+waiting during refinement, a 0.40 m concave crossing and inward recovery in a
+further disposable copy, park navigation/deletion cancellation, and one bounded
+context interruption/recovery. **Batch A is still unaccepted:** the first western
+bungalow's stairs end on a raised generated foundation, with an additional drop
+to surrounding ground. This is visible despite the solver reporting ready.
+
+The main Currie fixture retains seven houses, park, street and its unchanged
+eight-vertex site boundary. `Shared street west 2` now retains the tested 95-degree
+rotation; exact original geometry is saved externally. The further disposable
+copy is `bfcc05d2-b5b8-4447-8fe3-79f0f6e60a3d`; its temporary notch was restored,
+house moved 22 m north, and temporary cancellation park deleted. All browser
+network interruption routes were removed. No production source or catalogue
+assets changed in this continuation, and no paid AI generation or push occurred.
+Use the new report's next bounded work and evidence qualifications. Do not repeat
+fixture creation or mistake successful captures for entrance acceptance.
+
 ## Working location and rules
 
 - **Use `C:/dev/CityPrompt-grounding-edit-race`**, branch
