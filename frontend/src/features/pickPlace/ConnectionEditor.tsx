@@ -41,6 +41,17 @@ export function ConnectionEditor({ zone, zones, visibleIds, disabled, onSave, on
   }).filter(line=>line.distance<100 || line.id===streetId).sort((a,b)=>a.distance-b.distance).slice(0,30),[transportContext,dimensions.center,streetId]);
   const [x,setX]=useState(displayMetres(existing ? existing.xM*(existing.scaleWithPlot?dimensions.width/existing.referenceWidthM:1) : 0));
   const [y,setY]=useState(displayMetres(existing ? existing.yM*(existing.scaleWithPlot?dimensions.depth/existing.referenceDepthM:1) : -dimensions.depth/2+2));
+  const pickPlotPoint=(clientX:number,clientY:number,rect:DOMRect)=>{
+    if(rect.width<=0||rect.height<=0)return;
+    setX(displayMetres((Math.max(0,Math.min(1,(clientX-rect.left)/rect.width))-.5)*dimensions.width));
+    setY(displayMetres((Math.max(0,Math.min(1,(clientY-rect.top)/rect.height))-.5)*dimensions.depth));
+  };
+  const nudgePlotPoint=(key:string)=>{
+    if(key==='ArrowLeft')setX(value=>displayMetres(Math.max(-dimensions.width/2,value-.25)));
+    if(key==='ArrowRight')setX(value=>displayMetres(Math.min(dimensions.width/2,value+.25)));
+    if(key==='ArrowUp')setY(value=>displayMetres(Math.max(-dimensions.depth/2,value-.25)));
+    if(key==='ArrowDown')setY(value=>displayMetres(Math.min(dimensions.depth/2,value+.25)));
+  };
   const [scale,setScale]=useState(existing?.scaleWithPlot ?? zone.properties?.native_home_plot !== true);
   const [width,setWidth]=useState(existing?.widthM ?? 1.8);
   const [entranceHeight,setEntranceHeight]=useState(existing?.heightAboveBaseM ?? 0);
@@ -97,6 +108,26 @@ export function ConnectionEditor({ zone, zones, visibleIds, disabled, onSave, on
             <p className="text-xs text-slate-600">The chosen edge and position rotate and resize with the park. If this entrance cannot connect, it stays unresolved.</p>
           </> : <>
             <p className="text-sm">Position the anchor at the outer foot of the building's entrance steps, where they meet its foundation edge. Distances are from the plot centre in its own orientation.</p>
+            <div className="rounded-lg border border-slate-300 bg-slate-50 p-3 text-sm">
+              <p className="font-semibold">Entrance position on this plot</p>
+              <p className="mt-1 text-xs text-slate-600">Choose an approximate position here, then check the actual step foot in 3D. This outline is the plot, not the building or its doorway.</p>
+              <div className="mt-3 flex flex-col items-center gap-1">
+                <span className="text-xs font-semibold">Front · negative front/back</span>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-semibold">Left</span>
+                  <button type="button" className="relative h-44 w-44 touch-none rounded border-2 border-slate-700 bg-white focus-visible:outline-4 focus-visible:outline-blue-600"
+                    aria-label={`Plot anchor guide. Left or right ${x} metres; front or back ${y} metres. Use arrow keys to adjust.`}
+                    onPointerDown={event=>pickPlotPoint(event.clientX,event.clientY,event.currentTarget.getBoundingClientRect())}
+                    onKeyDown={event=>{if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key)){event.preventDefault();nudgePlotPoint(event.key);}}}>
+                    <span aria-hidden="true" className="absolute inset-x-0 top-1/2 border-t border-dashed border-slate-300"/>
+                    <span aria-hidden="true" className="absolute inset-y-0 left-1/2 border-l border-dashed border-slate-300"/>
+                    <span aria-hidden="true" className="absolute size-4 rounded-full border-2 border-slate-900 bg-[#c9ff3d] shadow-sm" style={{left:`${Math.max(0,Math.min(100,50+x/dimensions.width*100))}%`,top:`${Math.max(0,Math.min(100,50+y/dimensions.depth*100))}%`,transform:'translate(-50%, -50%)'}}/>
+                  </button>
+                  <span className="text-xs font-semibold">Right</span>
+                </div>
+                <span className="text-xs font-semibold">Back · positive front/back</span>
+              </div>
+            </div>
             <div className="grid grid-cols-2 gap-3">
               <label className="text-sm">Left / right (m)<input className={field} type="number" step="0.1" value={x} onChange={e=>setX(e.target.valueAsNumber)}/></label>
               <label className="text-sm">Front / back (m)<input className={field} type="number" step="0.1" value={y} onChange={e=>setY(e.target.valueAsNumber)}/></label>

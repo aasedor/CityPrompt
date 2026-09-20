@@ -52,6 +52,21 @@ describe('connection controls',()=>{
     expect(onSave.mock.calls[0][0].pedestrian_building_entrance.referenceWidthM).toBeCloseTo(24,5);
     expect(onSave.mock.calls[0][0].pedestrian_building_entrance.referenceDepthM).toBeCloseTo(40,5);
   });
+  it('lets a student place and adjust an entrance with the plot guide while retaining exact offsets',async()=>{
+    const onSave=vi.fn().mockResolvedValue(undefined);
+    render(<ConnectionEditor zone={house} zones={[house,road]} disabled={false} onSave={onSave} onClose={vi.fn()}/>);
+    fireEvent.click(screen.getByRole('checkbox',{name:'Link an entrance to a sidewalk'}));
+    const guide=screen.getByRole('button',{name:/Plot anchor guide/});
+    vi.spyOn(guide,'getBoundingClientRect').mockReturnValue({left:10,top:20,width:120,height:200} as DOMRect);
+    fireEvent.pointerDown(guide,{clientX:100,clientY:70});
+    expect(screen.getByLabelText('Left / right (m)')).toHaveValue(3);
+    expect(screen.getByLabelText('Front / back (m)')).toHaveValue(-5);
+    fireEvent.keyDown(guide,{key:'ArrowRight'});
+    expect(screen.getByLabelText('Left / right (m)')).toHaveValue(3.25);
+    fireEvent.click(screen.getByRole('button',{name:'Save connections'}));
+    await waitFor(()=>expect(onSave).toHaveBeenCalledOnce());
+    expect(onSave.mock.calls[0][0].pedestrian_building_entrance).toMatchObject({xM:3.25,yM:-5});
+  });
   it('saves the entrance height without scaling it with the plot and rejects missing heights',async()=>{
     const onSave=vi.fn().mockResolvedValue(undefined);
     render(<ConnectionEditor zone={house} zones={[house,road]} disabled={false} onSave={onSave} onClose={vi.fn()}/>);

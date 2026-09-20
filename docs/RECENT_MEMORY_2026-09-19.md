@@ -7,6 +7,14 @@ historical; the actual results below supersede those statements.
 
 ## Latest continuation checkpoint
 
+**Connections plot guide:** read
+`docs/CURRIE_CONNECTION_GUIDE_BROWSER_QA_2026-09-19.md`. The building
+Connections dialog now has a pointer/keyboard plot-position guide alongside
+its exact offsets. Browser check on the disposable seven-house Currie copy
+showed the saved marker, live offset updates, and Cancel restoring the saved
+anchor. It does not infer or verify the native door or resolve the remaining
+grounding work.
+
 **Stair body pilot:** read `docs/CURRIE_STAIR_BODY_BROWSER_QA_2026-09-19.md`.
 The approach now renders shallow treads with two slim continuous stringers
 instead of a full-height wall below every tread. On the seven-house disposable
