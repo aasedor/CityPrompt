@@ -5,6 +5,7 @@ import { siteZonesApi } from '@/services/api';
 import { createZoneCoordinatesAction } from '@/store/undoActions';
 import { saveAutomaticParkGround } from './saveAutomaticParkGround';
 import type { ParkTerrainProfile } from '@/components/viewer/globe/parkTerrain';
+import { runProjectWrite } from '@/utils/projectWriteQueue';
 vi.mock('@/services/api', () => ({
   siteZonesApi: { update: vi.fn() },
   buildingsApi: {},
@@ -23,6 +24,26 @@ const zone = {
 const profile = { version: 1 } as ParkTerrainProfile;
 beforeEach(() => vi.clearAllMocks());
 describe('quiet automatic ground persistence', () => {
+  it('discards a measurement queued before a newer grade edit finishes saving', async () => {
+    const client = new QueryClient();
+    client.setQueryData(['site-zones', 'p'], [zone]);
+    let release!: () => void;
+    const gate = new Promise<void>((resolve) => { release = resolve; });
+    const edited = { ...zone, updated_at: 'r2', properties: {
+      ...zone.properties, proposed_terrace: { version: 1, offsetM: 2 },
+    } };
+    vi.mocked(siteZonesApi.update).mockResolvedValue({ ...edited, updated_at: 'r3' });
+    const edit = runProjectWrite(client, 'p', async () => {
+      await gate;
+      client.setQueryData(['site-zones', 'p'], [edited]);
+    });
+    const save = saveAutomaticParkGround(client, 'p', zone, profile);
+    release();
+    await edit;
+    expect(await save).toBe(false);
+    expect(siteZonesApi.update).not.toHaveBeenCalled();
+    expect(client.getQueryData(['site-zones', 'p'])).toEqual([edited]);
+  });
   it('does not save a late result after movement or deletion', async () => {
     const client = new QueryClient();
     client.setQueryData(
@@ -90,5 +111,16 @@ describe('quiet automatic ground persistence', () => {
       false,
     );
     expect(client.getQueryData(['site-zones', 'p'])).toEqual([zone]);
+  });
+  it('retains a newer cache revision when an already submitted ground write returns', async () => {
+    const client = new QueryClient();
+    client.setQueryData(['site-zones', 'p'], [zone]);
+    const newer = { ...zone, updated_at: 'r3', properties: { name: 'newer edit' } };
+    vi.mocked(siteZonesApi.update).mockImplementationOnce(async () => {
+      client.setQueryData(['site-zones', 'p'], [newer]);
+      return { ...zone, updated_at: 'r2' };
+    });
+    expect(await saveAutomaticParkGround(client, 'p', zone, profile)).toBe(true);
+    expect(client.getQueryData(['site-zones', 'p'])).toEqual([newer]);
   });
 });
