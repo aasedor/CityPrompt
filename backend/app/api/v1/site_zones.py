@@ -213,13 +213,16 @@ async def _assert_boundary_covers_existing_zones(
     statement = select(SiteZone).where(
         SiteZone.project_id == project_id,
         SiteZone.zone_type != "site_boundary",
-    )
+    ).order_by(SiteZone.sort_order, SiteZone.created_at, SiteZone.id)
     if exclude_zone_id is not None:
         statement = statement.where(SiteZone.id != exclude_zone_id)
     result = await db.execute(statement)
     outside: list[str] = []
     buffered = candidate_boundary.buffer(1e-9)
+    type_counts: dict[str, int] = {}
     for existing in result.scalars().all():
+        kind = _boundary_zone_kind(existing.zone_type)
+        type_counts[kind] = type_counts.get(kind, 0) + 1
         try:
             shape = to_shape(existing.geometry)
             covered = buffered.covers(shape) or public_road_connection_fits(
@@ -228,7 +231,7 @@ async def _assert_boundary_covers_existing_zones(
         except Exception:
             covered = False
         if not covered:
-            outside.append(existing.name or str(existing.id))
+            outside.append(_boundary_zone_label(existing, type_counts[kind]))
     if outside:
         preview = ", ".join(outside[:3])
         suffix = "" if len(outside) <= 3 else f" and {len(outside) - 3} more"
@@ -239,6 +242,34 @@ async def _assert_boundary_covers_existing_zones(
                 f"Outside the proposed boundary: {preview}{suffix}."
             ),
         )
+
+
+def _boundary_zone_kind(zone_type: str) -> str:
+    return {
+        "road": "Street",
+        "green_space": "Park",
+        "building": "Building",
+        "residential": "Building",
+    }.get(zone_type, zone_type.replace("_", " ").title())
+
+
+def _boundary_zone_label(zone: SiteZone, ordinal: int) -> str:
+    """Name unnamed authored objects in the same terms students see in the editor."""
+    if zone.name and zone.name.strip():
+        return zone.name.strip()
+    kind = _boundary_zone_kind(zone.zone_type)
+    properties = zone.properties or {}
+    variant = next((str(properties[key]).strip() for key in (
+        "road_selected_variant_id", "green_space_selected_variant_id",
+        "development_selected_variant_id",
+    ) if properties.get(key)), "")
+    variant = re.sub(r"_v\d+$", "", variant).replace("_", " ").replace("-", " ").strip().title()
+    width = properties.get("width") if zone.zone_type == "road" else None
+    details = [variant] if variant else []
+    if isinstance(width, (int, float)) and not isinstance(width, bool) and math.isfinite(width) and width > 0:
+        details.append(f"{width:g} m")
+    detail = f" ({', '.join(details)})" if details else ""
+    return f"{kind} #{ordinal}{detail}"
 
 
 async def _invalidate_boundary_dependents(

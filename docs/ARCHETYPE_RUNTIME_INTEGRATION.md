@@ -85,6 +85,10 @@ fixed height-jump threshold can show an apparently clean map while rejecting
 alignment. Offer boundary adjustment without silently preparing a level surface.
 Boundary edits must preserve contained objects or explain how to move them first.
 See the [fresh workflow pilot](CURRIE_STUDENT_WORKFLOW_PILOT_2026-09-20.md).
+When an edit excludes an unnamed object, the server must identify its type,
+ordinal and available variant/size in the rejection. Do not surface UUIDs as
+the only recovery clue. Verify the failed edit leaves the saved boundary and
+objects intact; see the [Currie label check](CURRIE_BOUNDARY_EXCLUSION_LABELS_2026-09-20.md).
 
 For a native-house plot, verify that the visible Move handle actually moves the
 selected plot, then Undo/Redo and reload it. Model-body dragging may pan the

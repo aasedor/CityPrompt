@@ -7,6 +7,13 @@ historical; the actual results below supersede those statements.
 
 ## Latest continuation checkpoint
 
+**Latest — boundary exclusion labels (20 September):** read
+`docs/CURRIE_BOUNDARY_EXCLUSION_LABELS_2026-09-20.md`. Unnamed street, house
+and park exclusions now return type/variant labels instead of UUIDs. Live 409
+readback on the disposable fresh Currie project confirmed saved geometry and
+revision unchanged. Next: natural park/partial-capture recovery and bounded
+image-fidelity review, then a building/street/park catalogue entry pilot.
+
 **Latest — seven-house Generate to 3D repair (20 September):** read
 `docs/CURRIE_GENERATE_3D_RECIPE_REPAIR_2026-09-20.md`. The panel omitted the
 native plot flag and authored axes, so its plan differed from the server's

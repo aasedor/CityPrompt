@@ -17,7 +17,7 @@ or asset/publication approval from a working classroom scene.
 | --- | --- | --- |
 | Independent authoring | Student creates a site, buildings, street and park; connects, edits and reopens without developer offsets or API-authored geometry | Fresh Currie boundary/street/house/park and native front-step connection were authored through UI and survived reload on an explicit prepared level. Natural ground can hide the park on this parcel; Review ground now explains move/resize or intentional prepared-level recovery. Partial-site capture remains open. |
 | Plausible scene | No persistent missing models, floating/buried objects, obvious scale/connection errors or blocking furniture at normal presentation distances | Fresh Currie prepared-site front approach reaches the native step at low view and in exact 3D preview. Local natural-ground rejections retain usable areas; partial-site capture remains blocked. Fine rail joins are follow-up work. |
-| Dependable controls | Advertised placement/rotation/resize/variant/delete and recovery work predictably | Fresh Move-handle/Undo/Redo/reload passed. Prepared-site 3D picking saved a connected front step; a rear-step pick now explains the facing problem and Cancel preserves the front link. Native-house instructions point to the working Move handle. The seven-house Generate to 3D recipe mismatch is fixed and browser-retested. Boundary exclusion labels remain open. |
+| Dependable controls | Advertised placement/rotation/resize/variant/delete and recovery work predictably | Fresh Move-handle/Undo/Redo/reload passed. Prepared-site 3D picking saved a connected front step; a rear-step pick now explains the facing problem and Cancel preserves the front link. Native-house instructions point to the working Move handle. The seven-house Generate to 3D recipe mismatch is fixed and browser-retested. Boundary exclusions now identify unnamed objects by type and variant instead of UUID. |
 | Useful visuals | Clean, useful camera views; reliable exact export; AI output preserves the student's actual design | Fresh free export passed and was inspected. It is a plain concept scene, not proof of attractive AI output. Current local harness disables paid AI; image fidelity needs a separate bounded live test. |
 | Repeatable catalogue entry | New variants reuse shared terrain, placement, connection and capture behavior with useful defaults | Shared guidance/template exist. Need an end-to-end entry pilot for one building, street and park, including reusable measured entrance/connection metadata where appropriate. |
 
@@ -43,10 +43,12 @@ or asset/publication approval from a working classroom scene.
    `CURRIE_STUDENT_ENTRANCE_ROUTE_2026-09-20.md`. The fresh Currie front step now
    connects through ordinary controls and survives reload and exact preview.
    A separate rear step faces away; the shared solver explains that recovery.
-3. **Control clarity:** use object labels in boundary exclusion errors. The
-   native-house instructions now point to its working Move handle. The legacy
+3. **Control clarity (checkpoint passed):** boundary exclusion errors now name
+   unnamed objects, and the native-house instructions point to its working Move handle. The legacy
    Generate to 3D route now builds the seven-house Currie scene through its
    strict locked recipe; see `CURRIE_GENERATE_3D_RECIPE_REPAIR_2026-09-20.md`.
+   See `CURRIE_BOUNDARY_EXCLUSION_LABELS_2026-09-20.md` for the rejected-edit
+   readback.
    Prioritize actual
    loss, stuck states and invisible geometry over minor UI polish.
 4. **Presentation pilot:** use a small mixed scene with a useful camera and run
