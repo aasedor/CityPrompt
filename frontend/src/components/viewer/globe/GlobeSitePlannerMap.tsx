@@ -1639,6 +1639,7 @@ export function GlobeSitePlannerMap({
   const parkAlignmentRef = useRef(parkAlignment);
   parkAlignmentRef.current = parkAlignment;
   const waitForSharedGround = useCallback(async () => {
+    if (sharedGroundRef.current.snapshot?.excludedCells?.length) captureSharedGround(sharedGroundRef.current);
     const context = contextPresentationRef.current;
     const contextProblem = contextPilotCaptureProblem(context.provider, context.requested);
     if (contextProblem) throw new Direct3DCaptureError('capture_failed', contextProblem);
@@ -4641,7 +4642,7 @@ export function GlobeSitePlannerMap({
         {getActiveSiteBoundary(allSiteZones) && onPrepareGround && <button className="min-h-11 rounded-full border-2 border-[#151515] bg-[#fff9ec] px-3 text-xs font-bold" onClick={() => setShowGroundReview(true)}>Review ground</button>}
         {siteZones.some(zone=>zone.building_id||zone.building_ids?.length)&&<button type="button" className="min-h-11 rounded-full border-2 border-[#151515] bg-[#fff9ec] px-3 text-xs font-bold"
           onClick={()=>setShowEntranceReview(true)}>Review entrances</button>}
-        {(sharedGroundState.status === 'sampling' || sharedGroundState.status === 'unavailable') && (
+        {(sharedGroundState.status === 'sampling' || sharedGroundState.status === 'unavailable' || Boolean(sharedGroundState.snapshot?.excludedCells?.length)) && (
           <span role="status" className="max-w-sm rounded-xl border-2 border-[#151515] bg-[#fff9ec]/95 px-3 py-1.5 text-[11px] font-bold text-[#151515]">
             {groundReadinessMessage(sharedGroundState)}
           </span>

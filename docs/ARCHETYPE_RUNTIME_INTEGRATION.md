@@ -67,6 +67,18 @@ these checks passed. The review template is evidence, not a runtime schema.
 | C8 Visibility | Inspect low views from several directions plus aerial and exact 3D capture. No persistent proxy, duplicate surface, floating base, buried path, hidden gap, or furniture obstructing a route. Preserve surrounding context and capture ownership. |
 | C9 Student use | Complete the advertised placement/connection workflow through ordinary controls, without API-authored geometry or numeric offsets supplied by a developer. Check keyboard, pointer, and supported viewport behavior; report touch separately if not tested. |
 
+For local natural-ground recovery, a ready interactive snapshot may include
+`excludedCells`. All variants must use shared `heightAt` and reject null throughout
+their footprint/face; never interpolate `snapshot.heights` directly, span an
+excluded cell using distant corners, or substitute a stored/frame elevation.
+`contains` indicates boundary ownership, not verified support. Preserve local
+holes when extending/reusing ground, and include coverage in freshness identity.
+Captures currently reject any partial snapshot. A ready interactive status is
+not sufficient export evidence. Test both an unaffected placement and an affected
+placement, plus recovery, reload and capture rejection. See the bounded
+`CURRIE_LOCAL_GROUND_RECOVERY_2026-09-20.md` evidence; do not inherit its visual
+acceptance for a new archetype.
+
 Ground-review problem markers must use the same slope and local-residual tests
 as the actual ground validator, including boundary-support cells. A separate
 fixed height-jump threshold can show an apparently clean map while rejecting

@@ -7,6 +7,21 @@ historical; the actual results below supersede those statements.
 
 ## Latest continuation checkpoint
 
+**Latest — local natural-ground recovery (20 September):** read
+`docs/CURRIE_LOCAL_GROUND_RECOVERY_2026-09-20.md` before the earlier checkpoint
+below. The exact fresh Currie residual now excludes eight local cells while
+retaining usable measured coverage. The house and street remain visible after
+reload; partial coverage is explicit in Review ground and blocks exports.
+76 targeted tests, type-check, lint and live reload/export rejection passed.
+Original Currie and object geometry are unchanged. The disposable fresh student
+project `0320bb4f-395c-41c6-a6c0-ad28bb1572ef` is now **natural mode**, switched
+through UI; its previous prepared backup is `local-ground-before.json` outside
+Git. Its approximate entrance still reports `entrance_anchor_not_at_edge`; the
+park and partial-ground export recovery are not yet presentation-ready.
+Next: consistent entrance authoring in natural/prepared modes, then finish
+partial-ground/park presentation recovery. All measurements/limits remain intact.
+
+
 **Practical classroom target and fresh workflow (20 September):** the user
 explicitly prioritizes students designing freely and making strong visuals
 without glaring errors; do not keep polishing construction details as release

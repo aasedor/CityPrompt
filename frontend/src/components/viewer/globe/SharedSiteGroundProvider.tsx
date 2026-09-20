@@ -9,7 +9,7 @@ import { surveyGroundState } from '@/features/context/surveyGround';
 import { createGroundSelection } from './sharedGroundSelection';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { alignStreetGroundLayout, anchoredStreetGroundHeight } from './streetGroundExtension';
-import { createSharedSiteGroundLayout, createSharedSiteGroundSnapshot, sampleSharedSiteGround,
+import { createSharedSiteGroundLayout, createSharedSiteGroundSnapshot, createPartialSharedSiteGroundSnapshot, sampleSharedSiteGround,
   sharedSiteGroundContains, sharedSiteGroundGridPoint, sharedSiteGroundSourceSignature, validateSharedSiteGroundPass,
   type SharedSiteGroundLayout, type SharedSiteGroundPassQuality, type SharedSiteGroundSnapshot } from './sharedSiteGround';
 
@@ -182,6 +182,12 @@ export function SharedSiteGroundProvider({ zones, children, onChange, inspectPre
     const batchStarted = performance.now();
     for (let processed = 0; current.index < count && processed < MAX_SAMPLES_PER_FRAME; processed += 1) {
       const [lng, lat] = sharedSiteGroundGridPoint(layout, current.index);
+      if (anchorSnapshot?.excludedCells?.length && sharedSiteGroundContains(anchorSnapshot.boundaryCoordinates, lng, lat)
+        && sampleSharedSiteGround(anchorSnapshot, lng, lat) === null) {
+        // A street extension must not reclassify a rejected site patch by
+        // measuring it with fewer neighbours or a different domain.
+        current.values.push(null); current.index += 1; continue;
+      }
       const anchored = anchorSnapshot ? anchoredStreetGroundHeight(anchorSnapshot, lng, lat) : null;
       if (anchored !== null) {
         current.values.push(anchored); current.index += 1; continue;
@@ -209,16 +215,16 @@ export function SharedSiteGroundProvider({ zones, children, onChange, inspectPre
     const quality = validateSharedSiteGroundPass(layout, current.values);
     setReview({ layout, heights: [...current.values], previousHeights: current.previousRaw });
     current.previousRaw = [...current.values];
-    const snapshot = current.previous ? createSharedSiteGroundSnapshot(layout, current.previous, current.values) : null;
+    const snapshot = current.previous ? (inspectionOnly ? createSharedSiteGroundSnapshot : createPartialSharedSiteGroundSnapshot)(layout, current.previous, current.values) : null;
     if (import.meta.env.DEV) diagnose({ passes: current.passes, passQuality: quality, latestCompletedRawValues: [...current.values],
-      maxPassDeltaM: current.previous && quality.valid ? Math.max(...current.values.map((value, index) => Math.abs(value! - current.previous![index]!))) : null });
+      maxPassDeltaM: current.previous ? Math.max(...current.values.map((value, index) => Math.abs(value! - current.previous![index]!))) : null });
     if (snapshot) {
       current.done = true;
       diagnose({ status: 'ready', deadlineReason: null });
       setResult({ source: sourceSignature, status: 'ready', snapshot, generation: current.generation });
     } else if (current.passes >= MAX_PASSES) unavailable(quality.valid ? 'unstable_passes' : quality.reason ?? 'quality_rejected');
     else {
-      current.previous = quality.valid ? current.values : null;
+      current.previous = current.values;
       current.values = []; current.index = 0; current.nextPassAt = now + PASS_GAP_MS;
     }
   });

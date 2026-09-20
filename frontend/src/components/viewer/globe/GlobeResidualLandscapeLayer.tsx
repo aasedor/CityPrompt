@@ -96,17 +96,21 @@ function ResidualLandscapeInstance({
 
   const placements = useMemo(() => {
     const metresPerLongitudeDegree = metersPerDegLon(centroid[1]);
-    return recipe.placements.map((placement, index) => ({
-      x: (placement.lng - centroid[0]) * metresPerLongitudeDegree,
-      y: (placement.lat - centroid[1]) * METERS_PER_DEG_LAT,
-      z: sharedActive ? (sharedGround.heightAt(placement.lng, placement.lat) ?? frameHeight) - frameHeight : zOffsets[index] ?? 0,
-      yawRad: placement.yaw_rad,
-      scale: placement.scale,
-      treeVariant: resolveParkTreeVariant(
-        'native_meadow',
-        `${zone.id}:${placement.id}:${index}`,
-      ),
-    }));
+    return recipe.placements.flatMap((placement, index) => {
+      const measured = sharedActive ? sharedGround.heightAt(placement.lng, placement.lat) : null;
+      if (sharedActive && measured === null) return [];
+      return [{
+        x: (placement.lng - centroid[0]) * metresPerLongitudeDegree,
+        y: (placement.lat - centroid[1]) * METERS_PER_DEG_LAT,
+        z: sharedActive ? measured! - frameHeight : zOffsets[index] ?? 0,
+        yawRad: placement.yaw_rad,
+        scale: placement.scale,
+        treeVariant: resolveParkTreeVariant(
+          'native_meadow',
+          `${zone.id}:${placement.id}:${index}`,
+        ),
+      }];
+    });
   }, [centroid, recipe.placements, zone.id, zOffsets, sharedActive, sharedGround, frameHeight]);
 
   if (!placements.length || (sharedActive && sharedGround.status !== 'ready')) return null;

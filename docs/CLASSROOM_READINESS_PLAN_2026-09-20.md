@@ -15,19 +15,21 @@ or asset/publication approval from a working classroom scene.
 
 | Gate | Required result | Current evidence / remaining work |
 | --- | --- | --- |
-| Independent authoring | Student creates a site, buildings, street and park; connects, edits and reopens without developer offsets or API-authored geometry | Fresh Currie project, UI boundary/street/house/park and plot-guide entrance completed. Natural ground remains a blocker; prepared-site workflow was tested separately. |
-| Plausible scene | No persistent missing models, floating/buried objects, obvious scale/connection errors or blocking furniture at normal presentation distances | Existing seven-house natural-ground fixture has detailed evidence. Fresh scene can disappear because of a local site-ground rejection. Fine rail joins are follow-up work. |
+| Independent authoring | Student creates a site, buildings, street and park; connects, edits and reopens without developer offsets or API-authored geometry | Fresh Currie project, UI boundary/street/house/park and plot-guide entrance completed. Local ground recovery now keeps the house/street visible. Entrance and park recovery remain open; prepared-site workflow was tested separately. |
+| Plausible scene | No persistent missing models, floating/buried objects, obvious scale/connection errors or blocking furniture at normal presentation distances | Existing seven-house natural-ground fixture has detailed evidence. Fresh local rejections now preserve usable areas; affected objects and exports remain blocked. Fine rail joins are follow-up work. |
 | Dependable controls | Advertised placement/rotation/resize/variant/delete and recovery work predictably | Fresh Move-handle/Undo/Redo/reload passed. Native-body drag panned instead of moving. Prepared-site 3D entrance picker has an incompatible ground contract. Legacy Generate to 3D mismatch remains open. |
 | Useful visuals | Clean, useful camera views; reliable exact export; AI output preserves the student's actual design | Fresh free export passed and was inspected. It is a plain concept scene, not proof of attractive AI output. Current local harness disables paid AI; image fidelity needs a separate bounded live test. |
 | Repeatable catalogue entry | New variants reuse shared terrain, placement, connection and capture behavior with useful defaults | Shared guidance/template exist. Need an end-to-end entry pilot for one building, street and park, including reusable measured entrance/connection metadata where appropriate. |
 
 ## Next work in order
 
-1. **Natural-ground recovery:** keep a local rough patch from turning an entire
-   student design into an invisible/unusable scene. Decide and test how valid
-   areas and unresolved areas are represented separately, with truthful capture
-   checks and a usable recovery. Do not silently replace measured heights or
-   flatten the site. The fresh Currie reproducer is saved before preparation.
+1. **Natural-ground recovery (interactive checkpoint passed):** the exact Currie
+   failure now isolates eight cells and retains the house/street through reload.
+   See `CURRIE_LOCAL_GROUND_RECOVERY_2026-09-20.md`. Finish park recovery and
+   per-proposal capture coverage; partial sites still conservatively block exports.
+   Preserve the distinction between usable and unresolved areas. Do not silently
+   replace measured heights or flatten the site. The original failure evidence
+   and prepared-mode backup remain available; the fresh pilot is now natural.
 2. **Consistent terrain modes:** make entrance authoring and readiness agree with
    the actually rendered ground on both natural and explicitly prepared sites.
    Until supported, an unavailable action must explain its limit instead of

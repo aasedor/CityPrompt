@@ -44,13 +44,14 @@ export function GroundReviewPanel({ boundary, ground, onClose, onApply, parks = 
   </StudioDialog>;
   return <StudioDialog title="Review site ground" onClose={onClose}>
     <div className="max-h-[70dvh] space-y-4 overflow-auto p-1 text-sm text-slate-900">
-      <p>{boundary.properties?.terrain_strategy === 'landscape' ? 'This site retains its hillside. Review the original surface here to update a park after moving or resizing it.' : ground.status === 'ready' ? 'The visible surface is consistent. Check that the samples are on ground rather than roofs or trees.' : ground.status === 'inactive' ? 'This site uses a prepared level. Reviewing its original surface does not change your design.' : groundReadinessMessage(ground)}</p>
+      <p>{boundary.properties?.terrain_strategy === 'landscape' ? 'This site retains its hillside. Review the original surface here to update a park after moving or resizing it.' : ground.status === 'ready' && !ground.snapshot?.excludedCells?.length ? 'The visible surface is consistent. Check that the samples are on ground rather than roofs or trees.' : ground.status === 'inactive' ? 'This site uses a prepared level. Reviewing its original surface does not change your design.' : groundReadinessMessage(ground)}</p>
       {ground.inspectionStatus === 'sampling' && <p role="status">Measuring the original surface… Keep the site in view.</p>}
-      {ground.status === 'unavailable' && onEditBoundary && <div className="rounded-lg border border-amber-300 bg-amber-50 p-3">
+      {(ground.status === 'unavailable' || Boolean(ground.snapshot?.excludedCells?.length)) && onEditBoundary && <div className="rounded-lg border border-amber-300 bg-amber-50 p-3">
         <p>For an open site, move the boundary away from problem areas or choose a smaller area of ground. Your placed objects stay saved; keep them inside the revised boundary.</p>
         <button type="button" disabled={pending || unsaved} className="mt-2 min-h-11 rounded-lg border border-slate-700 bg-white px-3 font-semibold disabled:opacity-40" onClick={onEditBoundary}>Adjust site boundary</button>
       </div>}
       {summary && review && <>
+        {Boolean(ground.snapshot?.excludedCells?.length) && <p>{ground.snapshot!.excludedCells!.length} ground cells are unavailable. Red outlines mark these cells and their edges. Move affected objects onto clear ground, or adjust the site boundary.</p>}
         <p>Measured heights: {summary.min?.toFixed(1) ?? 'unknown'}–{summary.max?.toFixed(1) ?? 'unknown'} m. North is up. Red marks abrupt changes; grey cells are missing or outside your boundary. Select a coloured sample to use its height as your proposed level.</p>
         <svg viewBox={`-1 -1 ${review.layout.grid.columns + 1} ${review.layout.grid.rows + 1}`} className="mx-auto h-56 w-full" role="img" aria-label="Measured site elevations, north up">
           {summary.cells.map(cell => <rect key={cell.index} x={cell.index % review.layout.grid.columns} y={review.layout.grid.rows - 1 - Math.floor(cell.index / review.layout.grid.columns)} width="0.9" height="0.9"
@@ -60,6 +61,12 @@ export function GroundReviewPanel({ boundary, ground, onClose, onApply, parks = 
             onKeyDown={event => { if ((event.key === 'Enter' || event.key === ' ') && cell.inside && cell.height !== null) { event.preventDefault(); setLevel(cell.height.toFixed(2)); } }}
             fill={!cell.inside || cell.height === null ? '#cbd5e1' : cell.jump ? '#dc2626' : `hsl(${120 - 90 * (cell.height - summary.min!) / Math.max(1, summary.max! - summary.min!)} 55% 48%)`}>
             <title>{cell.point.map(p => p.toFixed(6)).join(', ')}: {cell.height?.toFixed(2) ?? 'missing'} m{cell.jump ? ' — abrupt change' : ''}</title>
+          </rect>)}
+          {ground.snapshot?.excludedCells?.map(index => <rect key={`excluded-${index}`}
+            x={index % (review.layout.grid.columns - 1) + .45}
+            y={review.layout.grid.rows - 2 - Math.floor(index / (review.layout.grid.columns - 1)) + .45}
+            width="1" height="1" fill="none" stroke="#b91c1c" strokeWidth=".12" pointerEvents="none">
+            <title>Unavailable ground cell {index}</title>
           </rect>)}
         </svg>
       </>}

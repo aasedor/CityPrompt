@@ -3,6 +3,7 @@ import type { SharedSiteGroundSnapshot } from './sharedSiteGround';
 
 export function groundReadinessMessage(state: SharedSiteGroundState): string {
   if (state.failureReason === 'survey_invalid') return 'The saved ground data does not cover this site correctly. Your design has been kept unchanged; restore the site boundary or review its ground data.';
+  if (state.snapshot?.excludedCells?.length) return 'Some ground areas need review. You can keep designing on verified areas. Objects touching uncertain ground stay hidden; exports are paused. Open Review ground to locate the problem areas.';
   if (state.status === 'sampling') return 'Aligning to ground…';
   if (state.failureReason === 'discontinuity') {
     return 'Ground has abrupt height changes. Check for roofs, trees or steep terrain inside the site. Use Clear site only for an intentional redevelopment.';
@@ -22,6 +23,7 @@ export function captureSharedGround(state: SharedSiteGroundState): SharedSiteGro
       ? 'Ground alignment is not ready. Keep the site in view while its 3D terrain loads, then try again.'
       : groundReadinessMessage(state));
   }
+  if (state.snapshot.excludedCells?.length) throw new Error(groundReadinessMessage(state));
   return structuredClone(state.snapshot);
 }
 
@@ -29,6 +31,7 @@ export function assertSharedGroundUnchanged(
   snapshot: SharedSiteGroundSnapshot | undefined,
   current: SharedSiteGroundState,
 ): void {
+  if (snapshot?.excludedCells?.length || current.snapshot?.excludedCells?.length) throw new Error(groundReadinessMessage(current));
   if (snapshot ? current.status !== 'ready' || current.isCurrent?.() === false || snapshot.signature !== current.snapshot?.signature
     : current.status !== 'inactive') {
     throw new Error('The terrain changed during capture. Let ground alignment finish and try again.');
