@@ -34,7 +34,7 @@ to each N/A. Use the shared checklist for each gate's full meaning.
 | C5 Pedestrian continuity | NOT TESTED | |
 | C6 Edit / Undo / save / reopen | NOT TESTED | |
 | C7 Failure and recovery | NOT TESTED | |
-| C8 Low/aerial views and exact capture | NOT TESTED | |
+| C8 Low/aerial views, exact capture and any AI-image comparison | NOT TESTED | Same-camera source/output; count, outline, location, scale, access, material/function, additions; pass/review/fallback |
 | C9 Student controls and supported inputs | NOT TESTED | |
 | B1 Native placement | NOT TESTED | |
 | B2 Measured entrance evidence | NOT TESTED | |

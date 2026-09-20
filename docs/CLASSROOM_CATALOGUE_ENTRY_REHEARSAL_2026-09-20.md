@@ -33,7 +33,7 @@ from the picker registry, not a visual approval stamp.
 | C5 circulation | Prepared house approach PASS; natural route FAIL | Front step reaches the street on prepared ground. The natural-house approach intersects measured terrain. Park west entrance solved after relocation, but its low-view grade was not approved. |
 | C6 editing | PASS for observed controls | Place, Move, park resize, Undo/Redo and reload were tested. This does not establish every transform on every candidate. |
 | C7 recovery | PASS for bounded errors | Boundary rejection, rear-step facing, locked-recipe conflict and partial-ground capture all kept saved design recoverable. |
-| C8 visibility/capture | Prepared exact preview PASS; paid AI fidelity NOT TESTED | Browser preview shows the mixed scene and route. A real generated image was not run in the isolated harness. |
+| C8 visibility/capture | Prepared exact preview PASS; paid AI fidelity REVIEW REQUIRED | One Photo Realistic `gpt-image-2.5-flare` image was generated in the isolated harness. Its house/street/park inventory remained visible, but source layout checks failed; the UI returned exact 3D and retained the original as unverified. See [image-fidelity pilot](CURRIE_IMAGE_FIDELITY_PILOT_2026-09-20.md). |
 | C9 student use | PASS for this prepared desktop path | Boundary, street, building, park, front entrance and free preview were authored through ordinary controls. Touch/mobile was not tested. |
 
 The next catalogue candidate should copy
@@ -45,8 +45,8 @@ is unchanged; never transfer this scene's visual approval to a new variant.
 Keep the existing separate RLASM 6.1 independent review and human catalogue
 activation process.
 
-The remaining pre-scale classroom checks are a bounded real image-fidelity
-comparison and an actual **new** building/street/park entry pilot. The prepared
+The remaining pre-scale classroom checks are a source/street-semantics improvement
+with a bounded image recheck and an actual **new** building/street/park entry pilot. The prepared
 Currie student journey already supplies a working classroom fallback while
 natural partial-site capture and the park's minimum-size programme remain
 recorded limits.

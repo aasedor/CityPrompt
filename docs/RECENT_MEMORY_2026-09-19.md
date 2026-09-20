@@ -375,9 +375,11 @@ $env:API_PROXY_TARGET = 'http://127.0.0.1:8000'
 npm run dev -- --host 127.0.0.1 --port 5174 --strictPort
 ```
 
-The harness uses local services and disables paid AI providers. The Maps flag
-loads only the existing Maps key for context. Do not run its seed/migrate modes
-unnecessarily. Frontend `node_modules` is an existing ignored junction and the
+The normal harness uses local services and disables paid AI providers. A separate
+one-call image-fidelity harness loaded only the existing OpenAI and Maps keys;
+see `CURRIE_IMAGE_FIDELITY_PILOT_2026-09-20.md`. The Maps flag loads only the
+existing Maps key for context. Do not run its seed/migrate modes unnecessarily.
+Frontend `node_modules` is an existing ignored junction and the
 public assets are hydrated externally; do not reinstall or regenerate blindly.
 
 Browser automation uses the `vercel:agent-browser` skill and
