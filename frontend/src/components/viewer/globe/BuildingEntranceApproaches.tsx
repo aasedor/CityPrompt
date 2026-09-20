@@ -24,30 +24,48 @@ export function useBuildingEntranceApproach(contact: BuildingGroundContact, foot
   frame: FootprintFrame, buildingId: string) {
   const inputs=useContext(Context), ground=useSharedSiteGround();
   const result=useMemo(()=>{
-    if (!inputs || contact.status !== 'ready') return { reason:null, geometry:null, userData:undefined };
+    if (!inputs || contact.status !== 'ready') return { reason:null, geometry:null,railGeometry:null,supportGeometry:null, userData:undefined };
     const owner=inputs.zones.find(zone=>zone.building_id===buildingId || zone.building_ids?.includes(buildingId));
-    if (!owner) return { reason:null, geometry:null, userData:undefined };
+    if (!owner) return { reason:null, geometry:null,railGeometry:null,supportGeometry:null, userData:undefined };
     const entrance=readBuildingEntrance(owner);
     if (!entrance) return { reason:owner.properties?.pedestrian_building_entrance || contact.reliefM>ENTRANCE_REVIEW_RELIEF_M
-      ? 'entrance_connection_required':null, geometry:null, userData:undefined };
+      ? 'entrance_connection_required':null, geometry:null,railGeometry:null,supportGeometry:null, userData:undefined };
     const plan=inputs.results.find(item=>item.ownerId===owner.id && item.kind==='building');
     const userData=streetConnectionCaptureUserData(owner,inputs.zones);
     if (plan?.status!=='connected' || plan.strips.length!==1 || !userData)
-      return { reason:'entrance_approach_obstructed',geometry:null,userData:undefined };
+      return { reason:'entrance_approach_obstructed',geometry:null,railGeometry:null,supportGeometry:null,userData:undefined };
     const approach=buildBuildingEntranceApproach({contact,footprints,lng:frame.centroidLng,lat:frame.centroidLat,
       ground,strip:plan.strips[0],heightAboveBaseM:entrance.heightAboveBaseM??0});
-    if (approach.status!=='ready') return {reason:approach.reason,geometry:null,userData:undefined};
-    const geometry=new THREE.BufferGeometry();
-    geometry.setAttribute('position',new THREE.Float32BufferAttribute(approach.positions,3));
-    geometry.setIndex(approach.indices);geometry.computeVertexNormals();geometry.computeBoundingSphere();
-    return {reason:null,geometry,userData:{...userData,entranceApproachSections:approach.sections}};
+    if (approach.status!=='ready') return {reason:approach.reason,geometry:null,railGeometry:null,supportGeometry:null,userData:undefined};
+    const toGeometry=(data:{positions:number[];indices:number[]})=>{
+      if(!data.positions.length)return null;
+      const geometry=new THREE.BufferGeometry();
+      geometry.setAttribute('position',new THREE.Float32BufferAttribute(data.positions,3));
+      geometry.setIndex(data.indices);geometry.computeVertexNormals();geometry.computeBoundingSphere();
+      return geometry;
+    };
+    const {rails,supports,...detailSummary}=approach.details;
+    return {reason:null,geometry:toGeometry(approach),railGeometry:toGeometry(rails),supportGeometry:toGeometry(supports),
+      userData:{...userData,entranceApproachSections:approach.sections,entranceApproachDetails:detailSummary}};
   },[inputs,contact,footprints,frame.centroidLng,frame.centroidLat,buildingId,ground]);
-  useEffect(()=>result.geometry?retainResourceForDeferredDisposal(result.geometry,geometry=>geometry.dispose()):undefined,[result.geometry]);
+  useEffect(()=>{
+    const releases=[result.geometry,result.railGeometry,result.supportGeometry].filter(geometry=>geometry!==null)
+      .map(geometry=>retainResourceForDeferredDisposal(geometry,geometry=>geometry.dispose()));
+    return ()=>releases.forEach(release=>release());
+  },[result.geometry,result.railGeometry,result.supportGeometry]);
   return result;
 }
 
 export function BuildingEntranceApproachMesh({ approach }: { approach: ReturnType<typeof useBuildingEntranceApproach> }) {
-  return approach.geometry ? <mesh name="building-entrance-approach" geometry={approach.geometry} userData={approach.userData} renderOrder={145}>
-    <meshStandardMaterial color="#c3baa8" roughness={.94} flatShading side={THREE.DoubleSide} />
-  </mesh> : null;
+  return approach.geometry ? <group>
+    <mesh name="building-entrance-approach" geometry={approach.geometry} userData={approach.userData} renderOrder={145}>
+      <meshStandardMaterial color="#c3baa8" roughness={.94} flatShading side={THREE.DoubleSide} />
+    </mesh>
+    {approach.supportGeometry&&<mesh name="building-entrance-supports" geometry={approach.supportGeometry} userData={approach.userData} renderOrder={145}>
+      <meshStandardMaterial color="#a69f91" roughness={.94} flatShading side={THREE.DoubleSide} />
+    </mesh>}
+    {approach.railGeometry&&<mesh name="building-entrance-rails" geometry={approach.railGeometry} userData={approach.userData} renderOrder={145}>
+      <meshStandardMaterial color="#545b58" roughness={.72} flatShading side={THREE.DoubleSide} />
+    </mesh>}
+  </group> : null;
 }

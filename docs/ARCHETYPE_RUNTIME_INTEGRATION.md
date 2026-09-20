@@ -102,6 +102,25 @@ See the [landing pilot](CURRIE_ENTRANCE_LANDING_PILOT_2026-09-20.md).
 Review guards, structural support, exposed foundations and accessible alternatives
 separately; do not transfer a clear solver issue list into B5 approval.
 
+The [side-detail pilot](CURRIE_ENTRANCE_EDGE_PILOT_2026-09-20.md) adds concept
+side rails and measured landing posts in the shared approach. Rails stay inside
+the validated corridor and reserve 0.08 m on each side; check usable width, not
+only total width. Both route ends must stay open. Landings/posts need measured
+footprint coverage, including sloped post feet; do not guess a flat support
+plane or extend accessories outside an already validated envelope. Check every
+detail's capture ownership and retirement when a route becomes unresolved.
+Native steps and exposed foundation edges outside the approach remain separate
+review items. Do not infer complete edge protection from the added rails.
+
+Entrance-only edits must update runtime geometry without recompiling native
+houses. `useAutomatic3D` excludes `pedestrian_building_entrance` from its rebuild
+trigger, matching the backend building-source contract; its full authored-state
+comparison still protects revision tracking. Exercise Save/Undo/Redo/reload
+with unchanged model markers and no model plan/place requests. Keep genuine
+footprint/variant edits on the compilation path. This distinction is required
+when extending runtime details to future archetypes; do not blindly exclude
+other properties that may be actual compiler inputs.
+
 ## Streets and paths
 
 | ID | Required integration |

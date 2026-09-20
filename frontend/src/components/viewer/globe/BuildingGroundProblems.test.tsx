@@ -39,3 +39,10 @@ it('explains missing landing space and keeps the original plot available for rep
   fireEvent.click(screen.getByRole('button',{name:'Select and adjust'}));
   expect(select).toHaveBeenCalledWith(zone);
 });
+
+it('explains how to recover usable width between the new side rails', () => {
+  render(<BuildingGroundProblems issues={[{buildingId:'model',reason:'entrance_clear_width_too_small'}]}
+    zones={[zone]} onClose={vi.fn()} onSelect={vi.fn()}/>);
+  expect(screen.getByText(/side rails leave too little walking space/)).toBeTruthy();
+  expect(screen.getByText(/at least 1.36 m/)).toBeTruthy();
+});

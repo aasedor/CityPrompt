@@ -1,4 +1,5 @@
 export function buildingGroundProblemMessage(reason?: string): string {
+  if (reason === 'entrance_clear_width_too_small') return 'The side rails leave too little walking space. In Connections, increase the walkway width to at least 1.36 m, then check the route again.';
   if (reason === 'entrance_connection_required') return 'This raised foundation needs an entrance connection. Open Connections, mark the foot of the steps and choose a street, or move the building to flatter ground.';
   if (reason === 'entrance_anchor_not_at_edge') return 'The entrance anchor does not meet the outer foundation edge. In Connections, place it at the outer foot of the actual entrance steps.';
   if (reason === 'entrance_approach_obstructed') return 'The entrance route is missing or obstructed. Check its street target and keep the approach clear of buildings, plots and vehicle lanes.';

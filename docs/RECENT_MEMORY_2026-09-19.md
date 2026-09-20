@@ -7,6 +7,23 @@ historical; the actual results below supersede those statements.
 
 ## Latest continuation checkpoint
 
+**Entrance side details and edit recovery (20 September):** read
+`docs/CURRIE_ENTRANCE_EDGE_PILOT_2026-09-20.md` first. Shared concept rails and
+measured landing posts now preserve open route ends and check clear walking
+width. High Craftsman and low Edwardian browser views passed the bounded
+geometry review. A 1.2 m total-width trial failed honestly and blocked export;
+Undo/Redo/reload recovered. It also exposed unnecessary native-house rebuilding
+on entrance-only edits, which could leave an older zone compilation marker after
+Undo. That trigger is fixed and rechecked: zero plan/place requests and unchanged
+compiled markers throughout the repeated edit cycle. All seven approaches are
+ready; copy coordinates/entrances are restored and the original is unchanged.
+The copy's compiled timestamps were refreshed during recovery. Checks: 95 tests,
+type-check and lint. Shared guidance/template updated. Next: exposed foundation
+edges, native-step rail joins, accessibility workflow and novice authoring.
+The legacy Generate to 3D panel also reported a locked-recipe mismatch during
+the recovery attempt; keep that separate failure open. Stay on Astra for design
+review. No push, paid generation or catalogue asset change occurred.
+
 **Shared entrance landings (20 September):** read
 `docs/CURRIE_ENTRANCE_LANDING_PILOT_2026-09-20.md` first. The shared solver now
 reserves a level 1.2 m building landing and a distinct compact flight, rejecting

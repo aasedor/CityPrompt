@@ -85,6 +85,11 @@ Include a bare-stairs-fit/landing-does-not-fit case and its move/Undo/Redo/reloa
 recovery. Preserve exact capture ownership and inspect the exported geometry.
 List unresolved foundation height, landing support, guards, frontage clearance
 and accessible-route design separately from geometric readiness.
+Record clear walking width after rail intrusion, open entry/exit ends, detail
+envelopes, measured support-foot elevations, and detail capture ownership.
+Test picking with an intervening rail and after moving to a clear view. Verify
+entrance-only Save/Undo/Redo/reload preserves compiled model markers and does not
+request model planning/placement; verify real footprint changes still rebuild.
 
 ## Verification and decision
 

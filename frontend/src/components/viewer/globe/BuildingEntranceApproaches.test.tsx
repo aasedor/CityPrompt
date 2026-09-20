@@ -34,7 +34,10 @@ describe('foundation and entrance ownership',()=>{
     const {result}=renderHook(()=>useBuildingEntranceApproach(contact,footprints,frame,'model'),{wrapper});
     expect(result.current.reason).toBeNull();
     expect(result.current.geometry?.getAttribute('position').count).toBeGreaterThan(0);
+    expect(result.current.railGeometry?.getAttribute('position').count).toBeGreaterThan(0);
+    expect(result.current.supportGeometry?.getAttribute('position').count).toBeGreaterThan(0);
     expect(result.current.userData).toMatchObject({pedestrianOwnerZoneId:'house',siteforgeDirect3DInstance:{zone_id:'street',semantic_class:'street'}});
+    expect(result.current.userData?.entranceApproachDetails.clearWidthM).toBeCloseTo(1.64);
   });
   it('retires geometry and reports the missing target after an edit',()=>{
     let zones=[configured,street];
@@ -44,6 +47,8 @@ describe('foundation and entrance ownership',()=>{
     zones=[configured];rerender();
     expect(result.current.geometry).toBeNull();
     expect(result.current.reason).toBe('entrance_approach_obstructed');
+    expect(result.current.railGeometry).toBeNull();
+    expect(result.current.supportGeometry).toBeNull();
   });
   it('does not introduce warnings on a level supported foundation without an authored entrance',()=>{
     const flat=resolveBuildingGroundContact(footprints,lng,lat,{...ground,heightAt:()=>100});

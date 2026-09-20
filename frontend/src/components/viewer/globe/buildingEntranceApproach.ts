@@ -2,6 +2,7 @@ import type { PedestrianStrip } from '@/features/pickPlace/pedestrianConnections
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 import { resolveBuildingGroundContact, type BuildingGroundContact, type GroundPoint } from './buildingGroundContact';
 import { corridorOverlaps } from './parkAccessConnections';
+import { buildApproachDetails, type ApproachDetails } from './buildingApproachDetails';
 
 // Concept geometry limits, not an accessibility or building-code assessment.
 const MAX_RISE_M = .18, MIN_GOING_M = .28, MAX_TOTAL_RISE_M = 3;
@@ -22,6 +23,7 @@ export type BuildingApproach = { status: 'unresolved'; reason: string } | {
   status: 'ready'; positions: number[]; indices: number[]; steps: number;
   startHeightM: number; endHeightM: number;
   sections: BuildingApproachSection[];
+  details: ApproachDetails;
 };
 
 /** Connect an explicitly authored foot-of-steps anchor to its selected street.
@@ -84,7 +86,9 @@ export function buildBuildingEntranceApproach(input: {
   const fullSupport = resolveBuildingGroundContact([footprint(a,b)],lng,lat,ground);
   if (fullSupport.status !== 'ready') return fail('incomplete_footprint_ground');
   const count = Math.max(1,steps), positions: number[] = [], indices: number[] = [];
+  const sectionDrops: number[] = [];
   for (const section of sections) {
+    let maxDrop=0;
     const treadCount = section.kind === 'flight' ? count : 1;
     for (let i=0;i<treadCount;i++) {
       const from = (section.startM+(section.endM-section.startM)*i/treadCount)/length;
@@ -96,6 +100,7 @@ export function buildBuildingEntranceApproach(input: {
         : section.endHeightM;
       // No cut/fill guess: the entire tread must clear the measured triangle field.
       if (pad.anchorHeight-.04 > top+.005) return fail('entrance_terrain_intersection');
+      maxDrop=Math.max(maxDrop,top-(pad.anchorHeight-.04-pad.reliefM));
       const offset=positions.length/3;
       for (let j=0;j<pad.positions.length;j+=3) {
         const z=pad.positions[j+2];
@@ -104,6 +109,7 @@ export function buildBuildingEntranceApproach(input: {
       }
       indices.push(...pad.indices.map(index=>index+offset));
     }
+    sectionDrops.push(maxDrop);
   }
   // Two shallow continuous stringers make the stair read as one flight
   // supported at street and foundation, rather than disconnected slabs. They
@@ -131,5 +137,8 @@ export function buildBuildingEntranceApproach(input: {
       indices.push(base,base+4,base+2,base,base+6,base+4);
     }
   }
-  return { status:'ready', positions, indices, steps:count, startHeightM, endHeightM, sections };
+  const detailResult=buildApproachDetails({sections,sectionDrops,steps:count,widthM:strip.widthM,
+    start:a,toward,baseHeightM:contact.anchorHeight,bodyDepthM:MAX_STAIR_BODY_DEPTH_M,lng,lat,ground});
+  if(detailResult.status!=='ready')return fail(detailResult.reason);
+  return { status:'ready', positions, indices, steps:count, startHeightM, endHeightM, sections, details:detailResult.details };
 }

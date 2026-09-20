@@ -16,6 +16,46 @@ const strip = { id: 'entrance:house', ownerId: 'house', start: geo([11, 0]), end
 const input = { contact, footprints, lng, lat, ground, strip, heightAboveBaseM: 0 };
 
 describe('entrances on generated foundations', () => {
+  it('keeps rails at the sides with open ends and preserves usable width', () => {
+    const result=buildBuildingEntranceApproach(input);
+    expect(result.status).toBe('ready');
+    if(result.status!=='ready')return;
+    expect(result.details.clearWidthM).toBeCloseTo(1.64);
+    expect(result.details.guardedSectionKinds).toEqual(['flight','building_landing']);
+    const {positions,indices}=result.details.rails;
+    expect(indices.length).toBeGreaterThan(0);
+    for(let i=0;i<positions.length;i+=3){
+      expect(positions[i]).toBeGreaterThanOrEqual(5-1e-6);
+      expect(positions[i]).toBeLessThanOrEqual(11+1e-6);
+      expect(Math.abs(positions[i+1])).toBeGreaterThanOrEqual(.82-1e-6);
+      expect(Math.abs(positions[i+1])).toBeLessThanOrEqual(.9+1e-6);
+    }
+    expect(indices.every(index=>index>=0&&index<positions.length/3)).toBe(true);
+  });
+  it('rejects a guarded route whose nominal width conceals insufficient clear space', () => {
+    expect(buildBuildingEntranceApproach({...input,strip:{...strip,widthM:1.2}}))
+      .toMatchObject({status:'unresolved',reason:'entrance_clear_width_too_small'});
+    const recovered=buildBuildingEntranceApproach({...input,strip:{...strip,widthM:1.36}});
+    expect(recovered.status).toBe('ready');
+    if(recovered.status==='ready')expect(recovered.details.clearWidthM).toBeCloseTo(1.2);
+  });
+  it('grounds landing supports at measured corners and meets the slab underside', () => {
+    const sloped={...ground,heightAt:(x:number,y:number)=>ground.heightAt(x)+(y-lat)*METERS_PER_DEG_LAT*.03};
+    const slopedContact=resolveBuildingGroundContact(footprints,lng,lat,sloped);
+    const result=buildBuildingEntranceApproach({...input,ground:sloped,contact:slopedContact});
+    expect(result.status).toBe('ready');
+    if(result.status!=='ready'||slopedContact.status!=='ready')return;
+    expect(result.details.supportCount).toBe(4);
+    const p=result.details.supports.positions;
+    for(let i=0;i<p.length;i+=6){
+      const [x,y]=geo([p[i],p[i+1]]);
+      expect(p[i+2]+slopedContact.anchorHeight).toBeCloseTo(sloped.heightAt(x,y)-.02);
+      expect(p[i+5]).toBeCloseTo(-.24);
+      expect(p[i+5]).toBeGreaterThan(p[i+2]);
+    }
+    const feet=p.filter((_,i)=>i%6===2);
+    expect(Math.max(...feet)-Math.min(...feet)).toBeGreaterThan(.04);
+  });
   it('reserves a level landing at the native-step foot before allocating stair run', () => {
     const result = buildBuildingEntranceApproach(input);
     expect(result.status).toBe('ready');
@@ -48,7 +88,11 @@ describe('entrances on generated foundations', () => {
     const result = buildBuildingEntranceApproach({ ...input, ground: flat,
       contact: resolveBuildingGroundContact(footprints,lng,lat,flat), strip:{...strip,start:geo([6,0])} });
     expect(result.status).toBe('ready');
-    if (result.status === 'ready') expect(result.sections.map(section=>section.kind)).toEqual(['walk']);
+    if (result.status === 'ready') {
+      expect(result.sections.map(section=>section.kind)).toEqual(['walk']);
+      expect(result.details.rails.positions).toEqual([]);
+      expect(result.details.supportCount).toBe(0);
+    }
   });
   it('rejects an uphill approach whose treads fit but whose new building landing would cut terrain', () => {
     const uphill = { ...ground, heightAt: (x: number) => 100 + Math.max(0, (x-lng)*metersPerDegLon(lat)-5)*.2 };
@@ -129,6 +173,8 @@ describe('entrances on generated foundations', () => {
     const landing=result.sections.find(section=>section.kind==='building_landing');
     expect(landing?.startHeightM).toBeCloseTo(result.endHeightM);
     expect(landing?.endHeightM).toBeCloseTo(result.endHeightM);
+    expect(result.details.guardedSectionKinds).toContain('flight');
+    expect(result.details.rails.positions.every(Number.isFinite)).toBe(true);
   });
   it('preserves approach elevation and run after rotating the house and route together', () => {
     const angle = 95*Math.PI/180;
@@ -146,6 +192,18 @@ describe('entrances on generated foundations', () => {
     expect(result.startHeightM).toBeCloseTo(100.025);
     expect(result.endHeightM).toBeCloseTo(102.04);
     expect(result.steps).toBe(12);
+    const original=buildBuildingEntranceApproach(input);
+    if(original.status!=='ready')throw Error('Original fixture must be ready');
+    for(const key of ['rails','supports'] as const){
+      const before=original.details[key].positions,after=result.details[key].positions;
+      expect(after.length).toBe(before.length);
+      for(let i=0;i<before.length;i+=3){
+        const rotated=rotate([before[i],before[i+1]]);
+        expect(after[i]).toBeCloseTo(rotated[0],5);
+        expect(after[i+1]).toBeCloseTo(rotated[1],5);
+        expect(after[i+2]).toBeCloseTo(before[i+2],5);
+      }
+    }
   });
   it('rejects a non-finite street elevation instead of certifying empty geometry', () => {
     expect(buildBuildingEntranceApproach({ ...input, strip: { ...strip, startLiftM: NaN } }))

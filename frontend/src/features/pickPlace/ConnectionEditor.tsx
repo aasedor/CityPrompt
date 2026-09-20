@@ -155,10 +155,11 @@ export function ConnectionEditor({ zone, zones, visibleIds, disabled, onSave, on
             </div>
             <p className="text-xs text-slate-600">Negative values mean left or front; positive values mean right or back. Review the walkway against the actual door in 3D.</p>
             <label className="block text-sm">Entrance height above building base (m)<input className={field} type="number" min="0" max="3" step="0.01" value={entranceHeight} onChange={e=>setEntranceHeight(e.target.valueAsNumber)}/></label>
-            <p className="text-xs text-slate-600">Use 0 for steps that reach the model base. A supported stair approach is added where it fits. Review the connection in 3D; this does not assess an accessible route or edge protection.</p>
+            <p className="text-xs text-slate-600">Use 0 for steps that reach the model base. Concept steps, landings and side rails are added where they fit. Review the connection and exposed foundation edges in 3D; structural safety and an accessible route have not been assessed.</p>
             <label className="flex min-h-11 items-center gap-2 text-sm"><input type="checkbox" checked={scale} onChange={e=>setScale(e.target.checked)}/>Scale entrance offsets when the plot is resized</label>
             <p className="text-xs text-slate-600">Keep this off for an unscaled catalogue house. One entrance serves this plot; check its position if resizing adds more houses.</p>
             <label className="block text-sm">Walkway width (m)<input className={field} type="number" min="1.2" max="4" step="any" value={width} onChange={e=>setWidth(e.target.valueAsNumber)}/></label>
+            <p className="text-xs text-slate-600">Where side rails are needed, allow at least 1.36 m total width for 1.2 m of walking space.</p>
           </>}
         </>}
       </>}
