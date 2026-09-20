@@ -7,6 +7,18 @@ historical; the actual results below supersede those statements.
 
 ## Latest continuation checkpoint
 
+**Seven-house entrance continuation (20 September):** read
+`docs/CURRIE_SEVEN_ENTRANCE_BROWSER_QA_2026-09-20.md` first. A disposable
+full-layout copy now has all seven native-step entrance anchors; browser ground
+was ready after reload with two stable passes, seven visible models, seven
+connected routes, and zero building-ground warnings. West 3 required a bounded
+0.6 m setback; the Edwardian and four infills connected at their original
+locations. A form-step bug that prevented saving the Edwardian's exact 1.65 m
+walkway width was fixed and browser checked. The original Currie project was
+not edited. The high Craftsman foundation, long concept stairs, landings,
+guards, accessible route, furniture clearance, and novice authoring journey
+remain release work; zero warnings do not establish student-ready acceptance.
+
 **Connections plot guide:** read
 `docs/CURRIE_CONNECTION_GUIDE_BROWSER_QA_2026-09-19.md`. The building
 Connections dialog now has a pointer/keyboard plot-position guide alongside

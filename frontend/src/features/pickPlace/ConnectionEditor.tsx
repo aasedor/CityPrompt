@@ -137,7 +137,7 @@ export function ConnectionEditor({ zone, zones, visibleIds, disabled, onSave, on
             <p className="text-xs text-slate-600">Use 0 for steps that reach the model base. A supported stair approach is added where it fits. Review the connection in 3D; this does not assess an accessible route or edge protection.</p>
             <label className="flex min-h-11 items-center gap-2 text-sm"><input type="checkbox" checked={scale} onChange={e=>setScale(e.target.checked)}/>Scale entrance offsets when the plot is resized</label>
             <p className="text-xs text-slate-600">Keep this off for an unscaled catalogue house. One entrance serves this plot; check its position if resizing adds more houses.</p>
-            <label className="block text-sm">Walkway width (m)<input className={field} type="number" min="1.2" max="4" step="0.1" value={width} onChange={e=>setWidth(e.target.valueAsNumber)}/></label>
+            <label className="block text-sm">Walkway width (m)<input className={field} type="number" min="1.2" max="4" step="any" value={width} onChange={e=>setWidth(e.target.valueAsNumber)}/></label>
           </>}
         </>}
       </>}
