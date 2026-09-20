@@ -7,6 +7,17 @@ historical; the actual results below supersede those statements.
 
 ## Latest continuation checkpoint
 
+**Latest — seven-house Generate to 3D repair (20 September):** read
+`docs/CURRIE_GENERATE_3D_RECIPE_REPAIR_2026-09-20.md`. The panel omitted the
+native plot flag and authored axes, so its plan differed from the server's
+locked recipe. Both planning paths now share one request builder. The same
+disposable Currie copy built seven detailed houses, street, park and residual
+landscape atomically, then reloaded with visible models after tile/model
+loading. The protected original stayed untouched. Next: boundary error labels,
+natural park/partial-capture recovery, bounded image-fidelity test, then one
+building/street/park catalogue entry pilot. The fresh student project remains
+prepared at 1102.62 m with its front entrance and measured concept edges.
+
 **Latest — native-house Move control (20 September):** read
 `docs/CURRIE_NATIVE_MOVE_CONTROL_2026-09-20.md`. The Currie model body pans on
 drag, but the plot's Move handle works and its edit/Undo/Redo/reload were

@@ -68,6 +68,7 @@ Mark type-specific gates N/A with a reason; keep applicable unrun cases open.
 | Interrupted navigation or measurement | NOT TESTED | |
 | Failed/conflicting save; retry without lost edits | NOT TESTED | |
 | Save/reload/reopen; exact persisted identity | NOT TESTED | |
+| Generate to 3D: panel recipe matches locked compiler; reload and inspect visible models | NOT TESTED | |
 | Capture blocked while stale, then succeeds | NOT TESTED | |
 | Student-authored placement and connections | NOT TESTED | |
 

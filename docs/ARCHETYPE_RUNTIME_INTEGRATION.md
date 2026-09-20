@@ -92,6 +92,14 @@ camera; do not instruct students to use that gesture unless it is implemented
 for the exact runtime. See the
 [Currie control check](CURRIE_NATIVE_MOVE_CONTROL_2026-09-20.md).
 
+When adding a building family, the visible Generate to 3D panel and atomic
+Community 3D compiler must prepare the same locked plot recipe. Use the shared
+request builder: `native_home_plot`, authored first-edge axes, explicit height,
+metric target and the caller's fit policy are recipe inputs. Do not introduce a
+second preview-only request that can pass planning but fail locked placement.
+After generation, reload and wait for tile/model readiness before judging the
+scene. See the [seven-house Currie repair](CURRIE_GENERATE_3D_RECIPE_REPAIR_2026-09-20.md).
+
 For each pilot, test a level case, a slope, an edge/unsupported case with
 recovery, and an edit while ground is pending. Keep the matrix finite. Shared
 algorithm tests may be cited across candidates when the implementation is
