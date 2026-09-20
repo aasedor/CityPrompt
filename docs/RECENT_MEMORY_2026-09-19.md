@@ -7,6 +7,15 @@ historical; the actual results below supersede those statements.
 
 ## Latest continuation checkpoint
 
+**Stair body pilot:** read `docs/CURRIE_STAIR_BODY_BROWSER_QA_2026-09-19.md`.
+The approach now renders shallow treads with two slim continuous stringers
+instead of a full-height wall below every tread. On the seven-house disposable
+Currie copy at the 2.4 m setback, browser ground was ready with seven visible
+houses; the first entrance remained issue-free and the other six remained
+blocked. The screenshot is visibly less bulky, but the high foundation,
+missing landing/edge treatment, and remaining entrances are not accepted.
+The original Currie fixture remains untouched.
+
 **Seven-house layout follow-up:** read
 `docs/CURRIE_FULL_LAYOUT_ENTRANCE_REVIEW_2026-09-19.md`. A disposable copy
 verified that 1.2 m and 2.4 m westward placements of `Shared street west 2`

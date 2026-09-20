@@ -25,6 +25,16 @@ describe('entrances on generated foundations', () => {
     expect(result.startHeightM).toBeCloseTo(100.025);
     expect(result.positions.filter((_, i) => i % 3 === 2)).toContain(0);
     expect(result.positions.every(Number.isFinite)).toBe(true);
+    for (let vertex=0;vertex<result.positions.length;vertex+=6) {
+      const underside=result.positions[vertex+2],top=result.positions[vertex+5];
+      expect(top-underside).toBeGreaterThanOrEqual(0);
+      expect(top-underside).toBeLessThanOrEqual(.24+1e-6);
+    }
+    // Two continuous stringers reach both ends of the run while the earlier
+    // full-polygon checks still gate the terrain below every tread.
+    const beams=result.positions.slice(-16*3);
+    expect(Math.min(...beams.filter((_,i)=>i%3===0))).toBeCloseTo(5,3);
+    expect(Math.max(...beams.filter((_,i)=>i%3===0))).toBeCloseTo(11,3);
   });
   it('keeps the native model and authored route immutable', () => {
     const before = JSON.stringify(input);
