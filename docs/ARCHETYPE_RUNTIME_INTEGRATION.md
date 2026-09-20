@@ -141,6 +141,18 @@ second pass found and repaired the boundary picking overlap, and confirmed a
 three-point route through ordinary controls. Keep junction grade and clearance
 as separate checks.
 
+In a mixed building/street/park pilot, verify connections twice: first the
+plan-level building and park route, then the current 3D ground/entrance review
+after saving. A plan-connected building route can still meet an obstruction at
+the rendered step; adjust it through the UI and recheck instead of accepting
+the line alone. Automatic park access may save no entrance anchor while its
+derived path is connected, so inspect the resolved path to the sidewalk rather
+than treating a null manual anchor as failure. Reload and download the free
+exact 3D image, then judge the actual composition at both context and close
+views. The [irregular mixed-scene prototype](CURRIE_MIXED_PROTOTYPE_2026-09-20.md)
+records one finite example; its clay model and sparse pad do not transfer
+visual approval to new variants.
+
 ## Buildings
 
 | ID | Required integration |

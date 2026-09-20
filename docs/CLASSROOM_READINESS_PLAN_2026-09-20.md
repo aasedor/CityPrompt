@@ -80,6 +80,17 @@ pilot. Natural ground is still partial there; the explicit prepared level has
 a visible large-parcel edge and the junction grade/advertised street furniture
 remain open for visual review.
 
+The [mixed-scene continuation](CURRIE_MIXED_PROTOTYPE_2026-09-20.md) placed a
+house and park beside that bent street through ordinary controls, resolved both
+pedestrian connections, reopened all four zones, and downloaded a free exact
+image. This passes the narrow **working desktop prototype** path on explicit
+prepared ground. The wide image is sparse and the large pad edge is obvious;
+it does not yet demonstrate a great finished visual. The next practical work is
+one denser, student-composed presentation scene and an actual new-variant entry
+pilot with locked source identity, plus only defects those runs reveal. Natural
+partial-ground capture and quantitative off-site junction review remain honest
+limits rather than reasons to block the prepared prototype.
+
 Stop this pre-catalogue phase when a student can independently create, revise,
 reopen and present a plausible mixed scene, with these practical blockers closed
 and minor limitations documented. Catalogue expansion need not wait for every
