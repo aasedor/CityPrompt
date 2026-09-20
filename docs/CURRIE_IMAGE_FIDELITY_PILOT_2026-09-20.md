@@ -47,10 +47,11 @@ contains `exact-source.png`, `provider-original.png`,
 `saved-fallback.png`, UI screenshots, and a scrubbed diagnostics summary.
 The full provider response is local-only and may contain generated image data.
 
-Before scaling the catalogue, verify the shared-street source and any generated
-image at a camera where its usable width, chicanes and connection can be read.
-If that view exposes a real geometry or semantics fault, fix the shared source
-first, then make one finite follow-up image check. A future building/street/park
+The subsequent [street access check](CURRIE_SHARED_STREET_CONNECTION_CHECK_2026-09-20.md)
+found a visible shared surface but no authored public-road junction. Complete
+the design's off-site link through ordinary controls before using this scene
+as a vehicle-access example. A new paid image check is appropriate only after
+a source change that warrants it. A future building/street/park
 candidate must compare an exact source image with any AI result for count,
 outline, location, dimensions, access, material/function and unwanted additions.
 Record whether the result passed automatically, needs human review, or falls

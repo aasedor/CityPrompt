@@ -1,4 +1,6 @@
 import { Camera, MapPin, Pencil, Video } from 'lucide-react';
+import type { SiteZone } from '@/types';
+import { publicRoadConnectionFits } from '@/features/pickPlace/publicRoadConnection';
 
 export type StudentStep = 'site' | 'design' | 'present';
 
@@ -8,6 +10,19 @@ const steps = [
   { id: 'present', label: 'Present', icon: Camera },
 ] as const;
 const action = 'flex min-h-11 w-full items-center justify-center gap-2 rounded-lg border border-slate-900 px-3 py-2 text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-700';
+
+/** The explicit off-site marker is a proposal, not proof of a real junction. */
+export function studentStreetAccessNotice(zones: SiteZone[], boundary: SiteZone | null): string | null {
+  const streets = zones.filter(zone => zone.zone_type === 'road');
+  if (!streets.length || !boundary) return null;
+  if (streets.some(zone => publicRoadConnectionFits(zone, zone.coordinates, boundary))) {
+    return 'A public-road connection is proposed. Check that its end meets an existing road on the map before presenting.';
+  }
+  if (streets.some(zone => zone.properties?.connect_to_public_road === true)) {
+    return 'A public-road connection is marked, but its short off-site route is not valid yet. In Design, keep one end inside and drag the other toward the road.';
+  }
+  return 'No public-road connection is marked for this design. If vehicles need access, select a street in Design and use Connect to a public road.';
+}
 
 export function StudentWorkflowNav({ step, onChange }: {
   step: StudentStep; onChange: (step: StudentStep) => void;
@@ -21,10 +36,10 @@ export function StudentWorkflowNav({ step, onChange }: {
   </nav>;
 }
 
-export function StudentStepPanel({ step, hasSite, drawingSite = false, location, canRender, renderReason, onSite, onDesign, onImage, onVideo }: {
+export function StudentStepPanel({ step, hasSite, drawingSite = false, location, canRender, renderReason, streetAccessNotice, onSite, onDesign, onImage, onVideo }: {
   step: 'site' | 'present'; hasSite: boolean; location?: string | null;
   drawingSite?: boolean;
-  canRender: boolean; renderReason: string;
+  canRender: boolean; renderReason: string; streetAccessNotice?: string | null;
   onSite: () => void; onDesign: () => void; onImage: () => void; onVideo: () => void;
 }) {
   return <section aria-label={step === 'site' ? 'Choose your site' : 'Present your community'}
@@ -39,6 +54,7 @@ export function StudentStepPanel({ step, hasSite, drawingSite = false, location,
     </> : <>
       <h2 className="text-base font-bold">Render this view</h2>
       <p className="text-sm">Move around your community to find your view, then choose an output.</p>
+      {streetAccessNotice && <p role="status" className="rounded-lg border border-amber-300 bg-amber-50 p-2 text-xs text-amber-950">{streetAccessNotice}</p>}
       <button type="button" className={`${action} bg-[#c9ff3d] disabled:opacity-50`} disabled={!canRender} onClick={onImage}><Camera size={18} aria-hidden />Image</button>
       <button type="button" className={`${action} bg-white disabled:opacity-50`} disabled={!canRender} onClick={onVideo}><Video size={18} aria-hidden />Video</button>
       {!canRender && <p role="status" className="text-sm text-slate-700">{renderReason}</p>}

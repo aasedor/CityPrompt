@@ -48,7 +48,7 @@ import { StreetViewPanel } from '@/components/viewer/StreetViewPanel';
 import { WorkflowStepper } from '@/components/viewer/WorkflowStepper';
 import { StudioControls, StudioDialog, StudioSaveStatus } from './StudioControls';
 import { ReadOnlyProject } from './ReadOnlyProject';
-import { StudentWorkflowNav, StudentStepPanel, type StudentStep } from './StudentWorkflow';
+import { StudentWorkflowNav, StudentStepPanel, studentStreetAccessNotice, type StudentStep } from './StudentWorkflow';
 import { defaultStudentStep } from './studentNavigation';
 import { StudentPlanningReport } from '@/features/studentReports/StudentPlanningReport';
 import { useReferenceLayers } from '@/features/referenceLayers/useReferenceLayers';
@@ -461,6 +461,10 @@ export function ProjectViewPage() {
       savedRenders.length > 0 || savedVideos.length > 0,
     ),
     [savedRenders.length, savedVideos.length, visibleZones],
+  );
+  const streetAccessNotice = useMemo(
+    () => studentStreetAccessNotice(siteZones, cityPromptWorkflow.activeBoundary),
+    [siteZones, cityPromptWorkflow.activeBoundary],
   );
 
   useEffect(() => {
@@ -1139,6 +1143,7 @@ export function ProjectViewPage() {
               step={activeStudentStep} hasSite={Boolean(cityPromptWorkflow.activeBoundary && isPersistedZoneId(cityPromptWorkflow.activeBoundary.id))}
               drawingSite={activeSitePlannerTool === 'site_boundary'} location={project.location?.address}
               canRender={cityPromptWorkflow.canRender} renderReason={cityPromptWorkflow.renderReason}
+              streetAccessNotice={streetAccessNotice}
               onSite={() => { setStudentStep('site'); handleSiteBoundary(); }} onDesign={() => changeStudentStep('design')}
               onImage={handleOpenGlobeRender} onVideo={handleOpenVideoRender} />}
             <div hidden={activeStudentStep !== 'design'}>

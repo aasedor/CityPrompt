@@ -31,7 +31,7 @@ to each N/A. Use the shared checklist for each gate's full meaning.
 | C2 Dimensions and transformations | NOT TESTED | |
 | C3 Full footprint ground support | NOT TESTED | |
 | C4 Freshness and late results | NOT TESTED | |
-| C5 Pedestrian continuity | NOT TESTED | |
+| C5 Pedestrian continuity and public-road access for vehicle streets | NOT TESTED | Entrance/park path; street endpoint, marker, real-road match, clear route |
 | C6 Edit / Undo / save / reopen | NOT TESTED | |
 | C7 Failure and recovery | NOT TESTED | |
 | C8 Low/aerial views, exact capture and any AI-image comparison | NOT TESTED | Same-camera source/output; count, outline, location, scale, access, material/function, additions; pass/review/fallback |

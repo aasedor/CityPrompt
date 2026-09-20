@@ -56,12 +56,14 @@ or asset/publication approval from a working classroom scene.
    readback.
    Prioritize actual
    loss, stuck states and invisible geometry over minor UI polish.
-4. **Presentation pilot (first paid check complete):** the same-camera source,
+4. **Presentation pilot (source/access check complete):** the same-camera source,
    provider image and fallback are recorded in
    `CURRIE_IMAGE_FIDELITY_PILOT_2026-09-20.md`. Check the six-metre Dutch
-   woonerf's vehicle-clear route and external connection at useful low cameras;
-   its pedestrian character is intentional. Fix a verified source fault before
-   one finite follow-up image check. Keep explicit review/fallback for imagery that changes
+   woonerf's closer route is visually continuous, but its authored ends stop
+   inside the site. The shared Present step now advises students to check
+   public-road access without blocking concept renders. Complete an external
+   connection through ordinary controls before using this project as a
+   vehicle-access demonstration. Keep explicit review/fallback for imagery that changes
    the design. Preserve all existing styles.
 5. **Catalogue entry pilot:** use the
    `CLASSROOM_CATALOGUE_ENTRY_REHEARSAL_2026-09-20.md` record to onboard one
