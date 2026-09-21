@@ -77,3 +77,28 @@ image is `prototype-exact-download.png`
 `prototype-house-close-view.png` shows the clay model and street from a closer
 camera. Local model/park GLBs returned HTTP 200 on reload, with no failed
 asset responses or page errors. Source files were unchanged in this pilot.
+
+## Grass finish follow-up
+
+At the user's request, the default plain prepared site now renders as muted
+grass with deterministic variation. The shared ground texture accepts an
+explicit grass appearance for the boundary; standalone replacement-building
+aprons retain their earth finish, and authored residual-landscape recipes keep
+their own material. Ground heights, masking, opacity, selection and connections
+are unchanged. This is a concept grass finish, not imagery copied from Google.
+
+On this same disposable scene, `grass-final-exact.png` in the external evidence
+directory shows the house, park and tree-lined street above the new grass
+surface. The free PNG downloaded successfully. The 13 focused surface tests,
+TypeScript check and changed-file lint passed; the browser reported no page
+errors or current grounding issues. The exposed site edge remains a separate
+geometry limitation.
+
+The fresh browser session also exposed a loading/capture defect: an early exact
+export (`grass-exact.png`) showed the street below the prepared surface. It
+became visible after its terrain sampling settled, without a geometry edit;
+the later live view and `grass-final-exact.png` show the expected street. The
+colour change does not alter heights, but this cold-load path needs a bounded
+regression and repair: contained street stations should use the known prepared
+level immediately, and capture must not certify an unfinished off-site grade.
+Do not treat the early export as passing mixed-scene fidelity evidence.

@@ -683,7 +683,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
       if (!isPreparedBoundary) return null;
       return residualLandscapeRecipe
         ? createResidualLandscapeTexture(zone, residualLandscapeRecipe)
-        : createSitePreparationTexture(zone.id);
+        : createSitePreparationTexture(zone.id, 256, 'grass');
     },
     [isPreparedBoundary, residualLandscapeRecipe, zone],
   );
@@ -1231,7 +1231,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
           ) : isPreparedBoundary ? (
             <meshStandardMaterial
               key="prepared-site"
-              color="#d5d0c6"
+              color={residualLandscapeRecipe ? '#d5d0c6' : '#ffffff'}
               map={preparedSiteTexture ?? undefined}
               roughness={0.98}
               metalness={0}

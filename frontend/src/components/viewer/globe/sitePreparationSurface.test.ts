@@ -166,9 +166,9 @@ describe('compiled site preparation', () => {
     preparedB.dispose();
   });
 
-  it('creates a deterministic textured aerial surface instead of a flat site wash', () => {
-    const textureA = createSitePreparationTexture('boundary-1', 32);
-    const textureB = createSitePreparationTexture('boundary-1', 32);
+  it.each(['earth', 'grass'] as const)('creates a deterministic %s surface without changing its opacity', (appearance) => {
+    const textureA = createSitePreparationTexture('boundary-1', 32, appearance);
+    const textureB = createSitePreparationTexture('boundary-1', 32, appearance);
     const dataA = textureA.image.data as Uint8Array;
     const dataB = textureB.image.data as Uint8Array;
     expect(Array.from(dataA)).toEqual(Array.from(dataB));
@@ -182,10 +182,16 @@ describe('compiled site preparation', () => {
       for (let index = channel; index < dataA.length; index += 4) total += dataA[index];
       return total / (dataA.length / 4);
     });
-    expect(Math.max(...channelMeans) - Math.min(...channelMeans)).toBeLessThan(32);
-    expect(channelMeans.every((mean) => mean > 100 && mean < 165)).toBe(true);
-    expect(channelMeans[0]).toBeGreaterThanOrEqual(channelMeans[1]);
-    expect(channelMeans[1] - channelMeans[2]).toBeLessThan(24);
+    expect(Array.from(dataA.filter((_, index) => index % 4 === 3)).every(alpha => alpha === 255)).toBe(true);
+    if (appearance === 'grass') {
+      expect(channelMeans[1]).toBeGreaterThan(channelMeans[0] + 20);
+      expect(channelMeans[1]).toBeGreaterThan(channelMeans[2] + 40);
+    } else {
+      expect(Math.max(...channelMeans) - Math.min(...channelMeans)).toBeLessThan(32);
+      expect(channelMeans.every((mean) => mean > 100 && mean < 165)).toBe(true);
+      expect(channelMeans[0]).toBeGreaterThanOrEqual(channelMeans[1]);
+      expect(channelMeans[1] - channelMeans[2]).toBeLessThan(24);
+    }
     textureA.dispose();
     textureB.dispose();
   });

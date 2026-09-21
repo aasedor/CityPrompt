@@ -153,6 +153,13 @@ views. The [irregular mixed-scene prototype](CURRIE_MIXED_PROTOTYPE_2026-09-20.m
 records one finite example; its clay model and sparse pad do not transfer
 visual approval to new variants.
 
+Plain prepared boundaries use a shared grass finish by default; this represents
+proposed ground cover, not the original Google texture. Authored park and
+residual-landscape materials still own their surfaces. Keep appearance choices
+independent of elevation, masking and contact checks. Check an immediate
+post-reload capture as well as the settled scene: the grass follow-up in the
+mixed-scene record exposed delayed street elevation that a late screenshot hid.
+
 ## Buildings
 
 | ID | Required integration |

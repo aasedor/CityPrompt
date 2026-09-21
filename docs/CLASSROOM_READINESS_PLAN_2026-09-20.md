@@ -91,6 +91,12 @@ pilot with locked source identity, plus only defects those runs reveal. Natural
 partial-ground capture and quantitative off-site junction review remain honest
 limits rather than reasons to block the prepared prototype.
 
+**New immediate follow-up from the grass finish check:** the public-road street
+can initially render beneath the known prepared level while its station sampling
+finishes, and an early exact export can capture that state. Repair its initial
+prepared elevations and capture readiness before the denser presentation pilot.
+The settled scene and grass export work; see the mixed-scene record's follow-up.
+
 Stop this pre-catalogue phase when a student can independently create, revise,
 reopen and present a plausible mixed scene, with these practical blockers closed
 and minor limitations documented. Catalogue expansion need not wait for every

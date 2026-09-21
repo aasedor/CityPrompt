@@ -153,16 +153,16 @@ function mixChannel(a: number, b: number, amount: number): number {
  * authored streets, parks and buildings. Dense texture is important here:
  * vertex colours alone interpolate across the site's large terrain triangles
  * and read as one opaque brown planning slab at district scale. */
-export function createSitePreparationTexture(seed: string, size = 256): THREE.DataTexture {
+export function createSitePreparationTexture(seed: string, size = 256, appearance: 'earth' | 'grass' = 'earth'): THREE.DataTexture {
   const dimension = Math.max(16, Math.round(size));
   const data = new Uint8Array(dimension * dimension * 4);
   const phase = hashSeed(seed) * Math.PI * 2;
-  // Keep residual redevelopment ground close to desaturated aerial imagery.
-  // The former vegetation-heavy olive average made a compiled district read
-  // as one green planning slab and visually swallowed authored parks.
-  const earth = [150, 144, 134];
-  const vegetation = [119, 130, 110];
-  const aggregate = [171, 168, 160];
+  // A plain prepared site uses modest grass variation for the student scene.
+  // Replacement-building aprons retain their neutral earth finish. Neither
+  // appearance changes the ground datum or claims to reproduce Google imagery.
+  const earth = appearance === 'grass' ? [102, 133, 69] : [150, 144, 134];
+  const vegetation = appearance === 'grass' ? [83, 114, 61] : [119, 130, 110];
+  const aggregate = appearance === 'grass' ? [137, 151, 89] : [171, 168, 160];
 
   for (let y = 0; y < dimension; y += 1) {
     for (let x = 0; x < dimension; x += 1) {
@@ -177,9 +177,8 @@ export function createSitePreparationTexture(seed: string, size = 256): THREE.Da
         Math.sin(x * 0.73 + y * 0.31 + phase * 3.7)
         + Math.cos(x * 0.19 - y * 0.67 - phase)
       ) * 0.25 + 0.5;
-      // Residual land is mostly neutral retained earth and aggregate. A small
-      // amount of seeded cover breaks up the parcel without competing with
-      // the authored green-space polygons at district scale.
+      // Restrained seeded patches keep both finishes varied without adding
+      // artificial mowing stripes or competing with authored park details.
       const vegetationMix = clamp01(0.08 + broad * 0.22 + (fine - 0.5) * 0.06);
       const aggregateSignal = (
         Math.sin(nx * Math.PI * 8.3 - phase * 0.4)
