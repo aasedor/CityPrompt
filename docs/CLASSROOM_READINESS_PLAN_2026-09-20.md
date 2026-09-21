@@ -97,6 +97,19 @@ measurements. A delayed-terrain check and fresh-session UI download passed;
 see [the repair record](CURRIE_STREET_LOADING_EXPORT_2026-09-20.md). Continue
 with the denser presentation pilot and bounded new-variant integration.
 
+**Seven-home exercise completed:** the
+[student neighbourhood exercise](CURRIE_STUDENT_NEIGHBOURHOOD_2026-09-20.md)
+added six homes to the irregular mixed scene using ordinary controls, edited
+opposite-side rotations, used Undo/Redo, retained ten zones exactly through
+reload, and downloaded a visually inspected exact image in 2.5 seconds from a
+ready scene. All seven building routes and the park connection resolve connected;
+the final 3D review reports no grounding issues. The functional prepared-ground
+exercise passes. Independent novice usability still needs easier entrance
+placement: the step pick required manual adjustment. Prioritize exact-variant
+entrance snapping/defaults and repeated-placement orientation before scaling
+the catalogue. The large pad edge, unprogrammed land and internal dead-end street
+remain concept-design limitations; this is not a fully resolved masterplan.
+
 Stop this pre-catalogue phase when a student can independently create, revise,
 reopen and present a plausible mixed scene, with these practical blockers closed
 and minor limitations documented. Catalogue expansion need not wait for every

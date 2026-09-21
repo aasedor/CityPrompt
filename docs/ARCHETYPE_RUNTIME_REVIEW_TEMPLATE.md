@@ -79,6 +79,7 @@ Mark type-specific gates N/A with a reason; keep applicable unrun cases open.
 | Generate to 3D: panel recipe matches locked compiler; reload and inspect visible models | NOT TESTED | |
 | Capture blocked while stale, then succeeds | NOT TESTED | |
 | Student-authored placement and connections | NOT TESTED | |
+| Repeat placement on both sides of a bent street | NOT TESTED | Check actual entry-facing geometry, Place another orientation, visible step picking and number of manual adjustments; separate assisted completion from novice usability. |
 
 ## Entrance measurements (buildings)
 

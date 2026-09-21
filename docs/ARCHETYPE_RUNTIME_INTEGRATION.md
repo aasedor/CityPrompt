@@ -316,6 +316,16 @@ Paths below are relative to `frontend/src/`. Read their focused tests too.
 
 ## Evidence and maintenance
 
+For repeated placements, test the same native building on **both sides of a bent
+street**. Verify the actual entry-facing geometry and the Place another behavior;
+an enabled street-facing control or a prior house's rotation is insufficient.
+An entrance should be authorable from visible geometry without trial-and-error
+developer coordinates. Preserve failed pick/gap evidence, count manual adjustments,
+and distinguish an assisted functional pass from independent novice usability.
+The [Currie seven-home student exercise](CURRIE_STUDENT_NEIGHBOURHOOD_2026-09-20.md)
+passed save/reload/exact export but exposed this remaining entrance-placement
+friction. Its measured anchors must not become defaults for other variants.
+
 The [Currie 3D-picking pilot](CURRIE_3D_ENTRANCE_PICK_BROWSER_QA_2026-09-20.md)
 passed on one modern infill. The [seven-house review](CURRIE_SEVEN_ENTRANCE_BROWSER_QA_2026-09-20.md)
 established connected routes in one disposable layout; high foundations,
