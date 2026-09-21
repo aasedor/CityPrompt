@@ -102,3 +102,7 @@ colour change does not alter heights, but this cold-load path needs a bounded
 regression and repair: contained street stations should use the known prepared
 level immediately, and capture must not certify an unfinished off-site grade.
 Do not treat the early export as passing mixed-scene fidelity evidence.
+
+The [street loading/export repair](CURRIE_STREET_LOADING_EXPORT_2026-09-20.md)
+subsequently closed that reproduced timing defect, including a fresh-session UI
+download and capture waiting while terrain requests were delayed.

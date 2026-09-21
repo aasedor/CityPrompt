@@ -160,6 +160,14 @@ independent of elevation, masking and contact checks. Check an immediate
 post-reload capture as well as the settled scene: the grass follow-up in the
 mixed-scene record exposed delayed street elevation that a late screenshot hid.
 
+Prepared public-road extensions must seat inside pavement and furniture on the
+known site datum immediately, while publishing pending status until the outside
+centre and both edges have measurements. Reuse the street readiness guard for
+early capture and recheck it before releasing output; a screenshot fallback must
+not bypass an unfinished alignment. Reset the sampler after route, boundary or
+level edits. The [Currie loading/export repair](CURRIE_STREET_LOADING_EXPORT_2026-09-20.md)
+records both a held-terrain test and an immediate UI export after a fresh load.
+
 ## Buildings
 
 | ID | Required integration |

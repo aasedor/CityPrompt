@@ -50,7 +50,7 @@ import type { ReferenceLayer } from '@/features/referenceLayers/api';
 import { useRoadNetwork } from '@/hooks/useRoadNetwork';
 import { roadDisplayZones, snapRoadEndpoints } from '@/utils/proceduralRoadNetwork';
 import { GlobeZoneLayer } from './GlobeZoneLayer';
-import { streetGroundCaptureStatus } from './streetGroundCapture';
+import { assertStreetGroundReady, streetGroundCaptureStatus } from './streetGroundCapture';
 import { streetSurfaceMaskZone } from './streetSurfaceMask';
 import { GroundReviewPanel } from './GroundReviewPanel';
 import { preparedEntranceGround } from './preparedEntranceGround';
@@ -1661,9 +1661,7 @@ export function GlobeSitePlannerMap({
       && performance.now() < deadline) {
       await new Promise((resolve) => setTimeout(resolve, 200));
     }
-    if (streetGroundCaptureStatus(sceneRef.current) !== 'ready') {
-      throw new Error('The road connection is still aligning with the ground. Keep your design; check its position if alignment does not finish.');
-    }
+    assertStreetGroundReady(sceneRef.current);
     const snapshot = captureSharedGround(sharedGroundRef.current);
     if (pendingGroundBuildingsRef.current.length > 0 || buildingGroundingIssuesRef.current.length > 0) {
       if (buildingGroundingIssuesRef.current.some((issue) => issue.reason === 'foundation_exceeds_3m')) {
@@ -2738,6 +2736,7 @@ export function GlobeSitePlannerMap({
           throw new Direct3DCaptureError('capture_failed', 'The plan changed during capture. Let the scene settle and try again.');
         }
         assertSharedGroundUnchanged(sharedGroundSnapshot, sharedGroundRef.current);
+        assertStreetGroundReady(scene);
         return { ...captured, sharedGroundSnapshot, ...(accessSnapshot.parks.length && accessSnapshot.sources.length <= 256
           ? { parkAccessSnapshot: structuredClone(accessSnapshot) } : {}) };
       } finally {
@@ -2784,9 +2783,12 @@ export function GlobeSitePlannerMap({
       });
       if (accessSnapshot.sourceSignature !== parkAccessSnapshotRef.current.sourceSignature) return null;
       assertSharedGroundUnchanged(sharedGroundSnapshot, sharedGroundRef.current);
+      assertStreetGroundReady(scene);
       return { ...captured, sharedGroundSnapshot, ...(accessSnapshot.parks.length && accessSnapshot.sources.length <= 256
         ? { parkAccessSnapshot: structuredClone(accessSnapshot) } : {}) };
     } catch (err) {
+      // A screenshot fallback must not bypass an unfinished road alignment.
+      assertStreetGroundReady(scene);
       console.warn('[GlobeSitePlannerMap] Street Direct 3D capture failed — falling back to screenshot:', err);
       return null;
     }
@@ -3026,6 +3028,7 @@ export function GlobeSitePlannerMap({
         }
         await waitForSharedGround();
         assertSharedGroundUnchanged(routeGroundSnapshot, sharedGroundRef.current);
+        assertStreetGroundReady(scene);
         // Near-field source creation needs a trustworthy beauty checkpoint,
         // not a full semantic/instance pass at every pose. The latter is a
         // metadata product and can fail when a close facade fills the frame;
@@ -3103,6 +3106,7 @@ export function GlobeSitePlannerMap({
           // respond to this indexed pose, then render that exact camera state.
           await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
           assertSharedGroundUnchanged(routeGroundSnapshot, sharedGroundRef.current);
+          assertStreetGroundReady(scene);
           renderer.setRenderTarget(null);
           renderer.render(scene, camera);
           drawPreviewFrame();
@@ -3267,6 +3271,7 @@ export function GlobeSitePlannerMap({
         captureDirect3D,
         sharedGround: sharedGroundState,
         groundingIssues: buildingGroundingIssues,
+        streetGroundStatus: () => streetGroundCaptureStatus(sceneRef.current),
         renderInfo: () => {
           const info = rendererRef.current?.info;
           return info ? { render: { ...info.render }, memory: { ...info.memory } } : null;
