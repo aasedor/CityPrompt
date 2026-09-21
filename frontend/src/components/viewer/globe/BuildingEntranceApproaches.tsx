@@ -28,8 +28,8 @@ export function useBuildingEntranceApproach(contact: BuildingGroundContact, foot
     if (!inputs || contact.status !== 'ready') return { reason:null, geometry:null,railGeometry:null,supportGeometry:null, userData:undefined };
     const owner=inputs.zones.find(zone=>zone.building_id===buildingId || zone.building_ids?.includes(buildingId));
     if (!owner) return { reason:null, geometry:null,railGeometry:null,supportGeometry:null, userData:undefined };
-    const entrance=readBuildingEntrance(owner);
-    if (!entrance) return { reason:owner.properties?.pedestrian_building_entrance || contact.reliefM>ENTRANCE_REVIEW_RELIEF_M
+    const entrance=readBuildingEntrance(owner, inputs.zones);
+    if (!entrance) return { reason:(readBuildingEntrance(owner)?.automatic !== true && owner.properties?.pedestrian_building_entrance) || contact.reliefM>ENTRANCE_REVIEW_RELIEF_M
       ? 'entrance_connection_required':null, geometry:null,railGeometry:null,supportGeometry:null, userData:undefined };
     const plan=inputs.results.find(item=>item.ownerId===owner.id && item.kind==='building');
     const userData=streetConnectionCaptureUserData(owner,inputs.zones);

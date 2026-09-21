@@ -28,6 +28,9 @@ export interface PlaceAsset extends AssetRecord {
   minDepth: number;
   maxSize: number;
   nativeDimensions?: [number, number, number];
+  /** Reviewed native step foot, in the plot frame. Register per exact variant,
+   * never infer a doorway from a generic bounding box. */
+  entranceSnap?: { xM: number; yM: number; plotWidthM: number; plotDepthM: number; widthM: number };
   reshapeDescription: string;
 }
 export interface StreetAsset extends AssetRecord {
@@ -45,6 +48,7 @@ const OBJECT_ASSETS: PlaceAsset[] = [
     thumbnail: '/archetypes/buildings/calgary-modern-infill-house/variant_0.png',
     zoneType: 'building', width: 12, depth: 16, minWidth: 12, minDepth: 15, maxSize: 100,
     nativeDimensions: [8.45, 11.75, 6.98001],
+    entranceSnap: { xM: 3.2, yM: -5.9, plotWidthM: 12, plotDepthM: 16, widthM: 1.8 },
     reshapeDescription: 'Homes stay two storeys and retain their proportions. A larger plot fits additional whole homes with space between them.',
     properties: { building_archetype_id: 'calgary_modern_infill_house',
       development_archetype_id: 'calgary_modern_infill_house',

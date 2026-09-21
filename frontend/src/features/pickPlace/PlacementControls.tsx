@@ -34,5 +34,8 @@ export function PlacementControls({ draft, onChange }: { draft: PlacementDraft; 
     </div>
     <p id={hintId} className="text-xs">Minimum {asset.minWidth} × {asset.minDepth} m; maximum {asset.maxSize} m per side.{asset.properties.native_home_plot === true ? ' Houses repeat at their native size.' : ''}</p>
     <p role="status" className={draft.inputError ? 'text-xs text-red-700' : 'text-xs text-slate-600'}>{draft.inputError ?? (draft.faceStreet ? 'The preview faces a nearby street. Enter a rotation for manual control.' : 'Size and rotation update automatically.')}</p>
+    {asset.zoneType === 'building' && <p className="text-xs text-slate-600">Buildings settle into available space beside other plots.
+      {asset.entranceSnap && Math.abs(draft.width-asset.entranceSnap.plotWidthM)<.05 && Math.abs(draft.depth-asset.entranceSnap.plotDepthM)<.05
+        ? ' This home connects to a nearby sidewalk automatically.' : ''}</p>}
   </div>;
 }

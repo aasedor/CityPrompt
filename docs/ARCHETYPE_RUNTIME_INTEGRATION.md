@@ -316,6 +316,18 @@ Paths below are relative to `frontend/src/`. Read their focused tests too.
 
 ## Evidence and maintenance
 
+**Ideation interaction contract:** normal building placement must settle into
+nearby valid space rather than ask the student to repair an overlap. Protect
+existing sidewalks and entrance routes while snapping; verify preview/drop
+agreement and a single reversible move. Default entrance connections should
+follow the nearest supported sidewalk using the exact variant's reviewed native
+entrance. Register this with the placement asset, including supported dimensions;
+do not send students to coordinate fields for each ordinary placement. Test
+both street sides, existing mapped proposed roads, route changes and Undo.
+Manual choices must remain available and preserved. See
+[the snapping pilot](IDEATION_SNAPPING_2026-09-20.md) for the initial supported
+infill, shared solver, acceptance evidence and remaining catalogue coverage.
+
 For repeated placements, test the same native building on **both sides of a bent
 street**. Verify the actual entry-facing geometry and the Place another behavior;
 an enabled street-facing control or a prior house's rotation is insufficient.

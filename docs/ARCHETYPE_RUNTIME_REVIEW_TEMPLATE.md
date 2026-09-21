@@ -80,6 +80,7 @@ Mark type-specific gates N/A with a reason; keep applicable unrun cases open.
 | Capture blocked while stale, then succeeds | NOT TESTED | |
 | Student-authored placement and connections | NOT TESTED | |
 | Repeat placement on both sides of a bent street | NOT TESTED | Check actual entry-facing geometry, Place another orientation, visible step picking and number of manual adjustments; separate assisted completion from novice usability. |
+| Assisted placement and automatic entrance | NOT TESTED | Place without opening Connections, overlap a neighbour, preserve existing paths/street space, confirm preview/drop agree, then move/Undo/Redo/reload/capture. Register reviewed native entrance metadata and supported sizes; preserve manual overrides. |
 
 ## Entrance measurements (buildings)
 

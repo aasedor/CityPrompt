@@ -21,7 +21,8 @@ export function ConnectionEditor({ zone, zones, visibleIds, disabled, onSave, on
 }) {
   const isPark=zone.zone_type==='green_space', isStreet=zone.zone_type==='road';
   const dimensions=rectangleDimensions(zone.coordinates);
-  const existing=readBuildingEntrance(zone);
+  const existing=readBuildingEntrance(zone, zones) ?? readBuildingEntrance(zone);
+  const [automatic,setAutomatic]=useState(existing?.automatic === true);
   const park=zone.properties?.pedestrian_park_entrance as {edge:number;position:number;streetId:string;existingGroundConfirmed?:boolean}|undefined;
   const roads=zones.filter(z=>z.zone_type==='road' && !z.id.startsWith('temp-') && (!visibleIds || visibleIds.includes(z.id)));
   const roadLabel = (road: SiteZone) => road.name?.trim() || streetAssetForZone(road)?.label || 'Street';
@@ -68,10 +69,10 @@ export function ConnectionEditor({ zone, zones, visibleIds, disabled, onSave, on
   const properties=useMemo(()=>{
     if(isStreet)return {...zone.properties,pedestrian_crossings:crossings};
     if(isPark)return {...zone.properties,park_access_points:null,pedestrian_park_entrance:enabled ? {version:1,edge,position,streetId,existingGroundConfirmed:groundConfirmed}:null};
-    const anchor:BuildingEntrance={version:1,xM:x,yM:y,referenceWidthM:dimensions.width,referenceDepthM:dimensions.depth,
+    const anchor:BuildingEntrance={version:1,...(automatic ? {automatic:true}:{}),xM:x,yM:y,referenceWidthM:dimensions.width,referenceDepthM:dimensions.depth,
       scaleWithPlot:scale,streetId,widthM:width,heightAboveBaseM:entranceHeight};
     return {...zone.properties,pedestrian_building_entrance:enabled ? anchor:null};
-  },[zone.properties,isStreet,isPark,crossings,enabled,edge,position,streetId,x,y,dimensions.width,dimensions.depth,scale,width,groundConfirmed,entranceHeight]);
+  },[zone.properties,isStreet,isPark,crossings,enabled,automatic,edge,position,streetId,x,y,dimensions.width,dimensions.depth,scale,width,groundConfirmed,entranceHeight]);
   const preview=useMemo(()=>{
     const next=zones.map(z=>z.id===zone.id?{...zone,properties}:z);
     return isPark ? resolveManualParkAccess(next,{},visibleIds?.filter(id=>zones.some(z=>z.id===id&&z.zone_type==='road')),transportContext).parks.filter(p=>p.parkZoneId===zone.id).map(p=>p.reason ?? 'Entrance connects to the selected sidewalk or mapped path.')
@@ -79,7 +80,7 @@ export function ConnectionEditor({ zone, zones, visibleIds, disabled, onSave, on
   },[zones,zone,properties,isPark,visibleIds,transportContext]);
   const supported=isPark ? preview.length>0 : isStreet || zone.coordinates.length===4;
   const valid = isStreet ? crossings.every(c=>Number.isFinite(c.position)&&c.position>=0&&c.position<=1&&c.widthM>=1.8&&c.widthM<=5)
-    : !enabled || Boolean(streetId) && (isPark ? Number.isFinite(position)&&position>=0&&position<=1
+    : !enabled || (Boolean(streetId) || (!isPark && automatic)) && (isPark ? Number.isFinite(position)&&position>=0&&position<=1
       : Number.isFinite(x)&&Number.isFinite(y)&&width>=1.2&&width<=4&&Math.abs(x)<=500&&Math.abs(y)<=500
         && Number.isFinite(entranceHeight)&&entranceHeight>=0&&entranceHeight<=3);
   const pickFeedback = picked && anchorKey(picked.anchor) === anchorKey(readBuildingEntrance({...zone,properties})) ? picked : null;
@@ -106,7 +107,8 @@ export function ConnectionEditor({ zone, zones, visibleIds, disabled, onSave, on
         {isPark && Array.isArray(zone.properties?.park_access_points) && <p className="text-sm">Saving here replaces this park’s older authored access points with the settings shown below.</p>}
         {isPark && !enabled && <p className="text-sm">The park will choose a nearby suitable sidewalk automatically.</p>}
         {enabled && <>
-          <label className="block text-sm">Sidewalk target<select className={field} value={streetId} onChange={e=>{setStreetId(e.target.value);setGroundConfirmed(false);}}><option value="">Choose a street or path</option>{roads.map(road=><option key={road.id} value={road.id}>{roadOptionLabel(road)}</option>)}{isPark&&<optgroup label="Existing mapped paths · nearest first">{mappedPaths.map(path=><option key={path.id} value={path.id}>{Math.round(path.distance)} m · {path.label} · {path.id.slice(-8)}</option>)}</optgroup>}</select></label>
+          {!isPark && <label className="flex min-h-11 items-center gap-2"><input type="checkbox" checked={automatic} onChange={e=>setAutomatic(e.target.checked)}/>Snap to the nearest sidewalk as I move this building</label>}
+          <label className="block text-sm">Sidewalk target<select disabled={!isPark && automatic} className={field} value={streetId} onChange={e=>{setStreetId(e.target.value);setGroundConfirmed(false);}}><option value="">Choose a street or path</option>{roads.map(road=><option key={road.id} value={road.id}>{roadOptionLabel(road)}</option>)}{isPark&&<optgroup label="Existing mapped paths · nearest first">{mappedPaths.map(path=><option key={path.id} value={path.id}>{Math.round(path.distance)} m · {path.label} · {path.id.slice(-8)}</option>)}</optgroup>}</select></label>
           {isPark&&streetId.startsWith('existing:')&&<div className="rounded-lg bg-blue-50 p-3 text-sm">
             <p>Uses the recorded path width where available, otherwise its centreline. Check the Google scene: shared access routes may also carry vehicles, and mapped data does not establish precise curbs or elevation.</p>
             <label className="mt-2 flex min-h-11 items-center gap-2"><input type="checkbox" checked={groundConfirmed} onChange={e=>setGroundConfirmed(e.target.checked)}/>I checked that this is suitable pedestrian access at ground level</label>

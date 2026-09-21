@@ -36,6 +36,11 @@ export function assetForZone(zone: Pick<SiteZone, 'properties'>): PlaceAsset | u
 export function placementProperties(asset: PlaceAsset, elevation?: number): SiteZoneProperties {
   return { ...asset.properties, pick_place_asset: asset.id,
     pick_place_definition_version: asset.definitionVersion,
+    ...(asset.entranceSnap ? { pedestrian_building_entrance: {
+      version: 1, automatic: true, sourceVariantId: asset.model.variantId, xM: asset.entranceSnap.xM, yM: asset.entranceSnap.yM,
+      referenceWidthM: asset.entranceSnap.plotWidthM, referenceDepthM: asset.entranceSnap.plotDepthM,
+      widthM: asset.entranceSnap.widthM, scaleWithPlot: false, streetId: '', heightAboveBaseM: 0,
+    } } : {}),
     ...(Number.isFinite(elevation) ? { terrain_elevation_m: elevation } : {}) };
 }
 

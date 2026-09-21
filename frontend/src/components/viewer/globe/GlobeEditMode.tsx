@@ -17,6 +17,8 @@ import { Ellipsoid, WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import type { SiteZone } from '@/types';
 import { assetForZone } from '@/features/pickPlace/catalogue';
 import { resizeRectangleCorner } from '@/features/pickPlace/geometry';
+import { snapBuildingMove } from '@/features/pickPlace/snapPlacement';
+import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { isFixedSectionStreet, reshapeStreetPoint, streetSectionWidth } from '@/features/pickPlace/streetPlacement';
 import { extractCenterline } from '@/utils/roadGeometry';
 import { bufferLineToPolygon } from '@/utils/roadGeometry';
@@ -369,7 +371,12 @@ export function GlobeEditMode({
       const dlng = currentLatLng[0] - bodyDragStartRef.current[0];
       const dlat = currentLatLng[1] - bodyDragStartRef.current[1];
 
-      const newCoords = bodyDragCoordsRef.current.map(c => [c[0] + dlng, c[1] + dlat]);
+      let newCoords = bodyDragCoordsRef.current.map(c => [c[0] + dlng, c[1] + dlat]);
+      if (['building', 'residential'].includes(zone.zone_type)) {
+        const snapped = snapBuildingMove(zone, newCoords, zones, getActiveSiteBoundary(zones));
+        if (snapped.problem) return; // Hold the last valid preview until space opens.
+        newCoords = snapped.coordinates;
+      }
 
       // Write to drag ref (no React state update — useFrame reads this)
       dragRef.current.zoneId = zone.id;
@@ -414,7 +421,7 @@ export function GlobeEditMode({
     ownerWindow.addEventListener('pointerup', handlePointerUp);
     ownerWindow.addEventListener('pointercancel', handlePointerUp);
     ownerWindow.addEventListener('blur', handlePointerUp);
-  }, [dragRef, gl, onInteractionStart, onZoneUpdated, pointerToLatLng, renderedCoords, setControlsEnabled, zone]);
+  }, [dragRef, gl, onInteractionStart, onZoneUpdated, pointerToLatLng, renderedCoords, setControlsEnabled, zone, zones]);
 
   // --- Build drag surface geometry (same shape as zone, invisible) ---
   // ENU frame: X=East, Y=North, Z=Up. Ground plane = XY.

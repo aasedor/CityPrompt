@@ -29,6 +29,7 @@ import { TerraceSummary } from '@/features/pickPlace/TerraceSummary';
 import { CALGARY_LOCAL_PLACEMENT, isFixedSectionStreet, streetRouteProblem, streetSectionWidth } from '@/features/pickPlace/streetPlacement';
 import { assetForZone, placeAsset, placementProperties, type PlaceAssetId } from '@/features/pickPlace/catalogue';
 import { placementProblem, rectangleAt } from '@/features/pickPlace/geometry';
+import { snapPlacement } from '@/features/pickPlace/snapPlacement';
 import { useAutomatic3D } from '@/features/pickPlace/useAutomatic3D';
 import type { PlacementDraft } from '@/features/pickPlace/GlobePlacementPreview';
 import { HistoryPanel } from '@/components/viewer/HistoryPanel';
@@ -265,7 +266,7 @@ export function ProjectViewPage() {
     setActiveSitePlannerTool(null); selectZone(null); setMeasureActive(false);
     useViewerStore.getState().setStreetViewActive(false);
     setPlacementDraft({ assetId, width: width ?? asset.width, depth: depth ?? asset.depth, degrees,
-      faceStreet: asset.zoneType === 'building' && width === undefined });
+      faceStreet: asset.zoneType === 'building' });
   };
   useEffect(() => {
     if (!placementDraft) return;
@@ -277,8 +278,10 @@ export function ProjectViewPage() {
   const placeObject = async (point: [number, number], height: number) => {
     if (!placementDraft || placementDraft.inputError || placementPending.current || isSaving) return;
     const degrees = placementDraft.faceStreet ? streetFacingDegrees(point, siteZones, placementDraft.degrees) : placementDraft.degrees;
-    const coordinates = rectangleAt(point, placementDraft.width, placementDraft.depth, degrees);
-    const problem = placementProblem(coordinates, siteZones, getActiveSiteBoundary(siteZones));
+    const proposed = rectangleAt(point, placementDraft.width, placementDraft.depth, degrees);
+    const { coordinates, problem } = placeAsset(placementDraft.assetId).zoneType === 'building'
+      ? snapPlacement(proposed, siteZones, getActiveSiteBoundary(siteZones),undefined,placementProperties(placeAsset(placementDraft.assetId)))
+      : {coordinates:proposed,problem:placementProblem(proposed,siteZones,getActiveSiteBoundary(siteZones))};
     if(problem) { toast.error(problem, { position: 'top-center' }); return; }
     placementPending.current = true;
     try {
@@ -293,6 +296,11 @@ export function ProjectViewPage() {
   };
   const reshapeObject = (zoneId: string, coordinates: number[][]): boolean => {
     const zone = siteZones.find(item => item.id === zoneId);
+    if (zone && ['building', 'residential'].includes(zone.zone_type)) {
+      const snapped = snapPlacement(coordinates, siteZones, getActiveSiteBoundary(siteZones), zoneId,zone.properties);
+      if (snapped.problem) return false; // Keep the previous valid location.
+      coordinates = snapped.coordinates;
+    }
     if (zone && (assetForZone(zone) || isFixedSectionStreet(zone))) {
       if (isSaving) { toast.error('Wait for this edit to save.'); return false; }
       const problem = (zone.zone_type === 'green_space' ? parkOutlineProblem(coordinates)

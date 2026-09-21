@@ -115,6 +115,14 @@ reopen and present a plausible mixed scene, with these practical blockers closed
 and minor limitations documented. Catalogue expansion need not wait for every
 architectural detail or for the full historical 95-section mission to finish.
 
+**User direction: ideation first.** Ordinary overlaps should snap into usable
+space and ordinary entrances should connect without manual coordinate work.
+The [initial snapping implementation](IDEATION_SNAPPING_2026-09-20.md) now passes
+the native infill place/move/Undo/reload path, including protection of neighbour
+walkways. Carry the same interaction contract into every new catalogue item.
+Automatic native entrances are currently registered for that exact infill only;
+other variants and repeated plots need their own reviewed entrance metadata.
+
 Evidence: [fresh workflow pilot](CURRIE_STUDENT_WORKFLOW_PILOT_2026-09-20.md).
 The earlier [transformation gates](STUDENT_TRANSFORMATION_GATES.md) remain the
 historical broader mission record; their unimplemented phases are not silently

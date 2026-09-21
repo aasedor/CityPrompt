@@ -14,8 +14,9 @@ export function streetFacingDegrees(point: number[], zones: SiteZone[], fallback
     }
   }
   const lonM = metersPerDegLon(point[1]);
-  let best: { distance: number; x: number; y: number } | undefined;
-  for (const [, route] of [...routes].sort(([a], [b]) => a.localeCompare(b))) {
+  let best: { distance: number; x: number; y: number; proposal: boolean } | undefined;
+  for (const [id, route] of [...routes].sort(([a], [b]) => a.localeCompare(b))) {
+    const proposal = id.startsWith('proposal:');
     for (let i = 1; i < route.length; i++) {
       const a = [(route[i - 1][0] - point[0]) * lonM, (route[i - 1][1] - point[1]) * METERS_PER_DEG_LAT];
       const b = [(route[i][0] - point[0]) * lonM, (route[i][1] - point[1]) * METERS_PER_DEG_LAT];
@@ -23,8 +24,8 @@ export function streetFacingDegrees(point: number[], zones: SiteZone[], fallback
       if (!Number.isFinite(lengthSquared) || lengthSquared < 1) continue;
       const t = Math.min(1, Math.max(0, -(a[0] * dx + a[1] * dy) / lengthSquared));
       const x = a[0] + t * dx, y = a[1] + t * dy, distance = Math.hypot(x, y);
-      if (distance < .5 || distance > 100 || (best && distance >= best.distance - .001)) continue;
-      best = { distance, x, y };
+      if (distance < .5 || distance > 100 || (best && (best.proposal && !proposal || best.proposal === proposal && distance >= best.distance - .001))) continue;
+      best = { distance, x, y, proposal };
     }
   }
   return best ? (Math.atan2(best.x, -best.y) * 180 / Math.PI + 360) % 360 : fallback;

@@ -15,6 +15,8 @@ export interface BuildingEntrance {
   scaleWithPlot: boolean; streetId: string; widthM: number;
   /** Vertical offset of the authored foot-of-steps anchor, never plot-scaled. */
   heightAboveBaseM?: number;
+  automatic?: boolean;
+  sourceVariantId?: string;
 }
 export interface StreetCrossing { id: string; position: number; widthM: number }
 export interface PedestrianStrip {
@@ -41,12 +43,41 @@ const frame = (origin: number[]) => ({
   local: (p: number[]): Point => [(p[0] - origin[0]) * metersPerDegLon(origin[1]), (p[1] - origin[1]) * METERS_PER_DEG_LAT],
   world: (p: Point): Point => [origin[0] + p[0] / metersPerDegLon(origin[1]), origin[1] + p[1] / METERS_PER_DEG_LAT],
 });
-export function readBuildingEntrance(zone: SiteZone): BuildingEntrance | null {
+export function readBuildingEntrance(zone: SiteZone, zones?: readonly SiteZone[]): BuildingEntrance | null {
   const v = zone.properties?.pedestrian_building_entrance as BuildingEntrance | undefined;
-  return v?.version === 1 && finite(v.xM) && finite(v.yM) && Math.abs(v.xM) <= 500 && Math.abs(v.yM) <= 500
+  const valid = v?.version === 1 && finite(v.xM) && finite(v.yM) && Math.abs(v.xM) <= 500 && Math.abs(v.yM) <= 500
     && finite(v.referenceWidthM) && v.referenceWidthM > 0 && finite(v.referenceDepthM) && v.referenceDepthM > 0
     && typeof v.scaleWithPlot === 'boolean' && typeof v.streetId === 'string' && finite(v.widthM) && v.widthM >= 1.2 && v.widthM <= 4
-    && (v.heightAboveBaseM === undefined || (finite(v.heightAboveBaseM) && v.heightAboveBaseM >= 0 && v.heightAboveBaseM <= 3)) ? v : null;
+    && (v.heightAboveBaseM === undefined || (finite(v.heightAboveBaseM) && v.heightAboveBaseM >= 0 && v.heightAboveBaseM <= 3));
+  if (!valid) return null;
+  if (!v.automatic || !zones) return v;
+  if (!validRing(zone) || zone.coordinates.length !== 4) return null;
+  if (v.sourceVariantId && v.sourceVariantId !== zone.properties?.development_selected_variant_id) return null;
+  const d = rectangleDimensions(zone.coordinates);
+  // Multiple repeated houses need a per-instance entrance contract; do not
+  // attach their shared plot centre to an imaginary doorway.
+  if (!v.scaleWithPlot && (Math.abs(d.width-v.referenceWidthM) > .05 || Math.abs(d.depth-v.referenceDepthM) > .05)) return null;
+  const anchor = entranceWorldPoint(zone, v);
+  if (!anchor) return null;
+  const f = frame(anchor);
+  let best: { id: string; distance: number } | null = null;
+  for (const street of [...zones].filter(z => z.zone_type === 'road' && !z.id.startsWith('temp-')).sort((a,b)=>a.id.localeCompare(b.id))) {
+    const section = resolvePilotStreetSectionProfile(street);
+    if (!section) continue;
+    const scale = section.metricWidthLocked ? (section.targetRowM ?? section.rowM)/section.rowM : effectiveRoadWidth(street.properties)/section.rowM;
+    const line = extractRenderableStreetCenterline(street).map(f.local);
+    for (let i=1;i<line.length;i++) {
+      const a=line[i-1], b=line[i], size=length(sub(b,a));
+      if (size < .01) continue;
+      const n: Point = [-(b[1]-a[1])/size,(b[0]-a[0])/size];
+      for (const band of pedestrianAccessBands(section)) {
+        const target=project([0,0],add(a,mul(n,band.centerM*scale)),add(b,mul(n,band.centerM*scale)));
+        const distance=length(target);
+        if (distance <= 30 && (!best || distance < best.distance)) best={id:street.id,distance};
+      }
+    }
+  }
+  return best ? {...v,streetId:best.id} : null;
 }
 export function entranceWorldPoint(zone: SiteZone, entrance: BuildingEntrance): Point | null {
   if (!validRing(zone) || zone.coordinates.length !== 4) return null;
@@ -89,7 +120,8 @@ export function resolvePedestrianConnections(zones: readonly SiteZone[], visible
   const results: ConnectionResult[] = [];
   const inventoryValid = zones.length <= 256 && zones.every(validRing);
   for (const owner of zones.filter(z => visible.has(z.id))) {
-    const rawEntrance = owner.properties?.pedestrian_building_entrance;
+    const configured = owner.properties?.pedestrian_building_entrance as BuildingEntrance | undefined;
+    const rawEntrance = configured?.automatic ? readBuildingEntrance(owner, zones) : configured;
     const entries = owner.zone_type === 'road' ? readCrossings(owner) : [];
     const configs = rawEntrance && ['building', 'residential'].includes(owner.zone_type) ? [null] : entries;
     for (const crossing of configs) {
@@ -140,7 +172,7 @@ export function resolvePedestrianConnections(zones: readonly SiteZone[], visible
         }
         result.status = 'connected'; result.reason = 'Raised crossing joins both sidewalks. Review its location and slopes.';
       } else {
-        const entrance = readBuildingEntrance(owner), anchor = entrance && entranceWorldPoint(owner, entrance);
+        const entrance = readBuildingEntrance(owner, zones), anchor = entrance && entranceWorldPoint(owner, entrance);
         result.reason = 'Set the entrance position and choose a sidewalk target.';
         if (!entrance || !anchor) continue;
         const street = zones.find(z => z.id === entrance.streetId && z.zone_type === 'road' && visible.has(z.id));
