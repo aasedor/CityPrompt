@@ -1,0 +1,4472 @@
+{
+  "version": 1,
+  "paid_calls": 0,
+  "runtime_activated": false,
+  "candidates": [
+    {
+      "id": "student_main_street_v1",
+      "title": "Neighbourhood Main Street",
+      "package": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\pilot\\main_street",
+      "dimensions_m": [
+        23.0,
+        48
+      ],
+      "assembly": {
+        "path": "assembly-preview.glb",
+        "bytes": 1957272,
+        "sha256": "e0e34bfde671aee925a2199d2845cdd3a49e2935cac587f9d7c2b845e36e2177"
+      },
+      "modules": {
+        "bench": {
+          "path": "bench.glb",
+          "bytes": 34024,
+          "sha256": "996f77a959d098469940fc032f23960c959b0c8275842575bb4de33c152539f7"
+        },
+        "bike_rack": {
+          "path": "bike_rack.glb",
+          "bytes": 96964,
+          "sha256": "0be3cabadaddbf9f22556f0f7ead696eb8ca41f5c881b4f30a0c2940272bf907"
+        },
+        "bin": {
+          "path": "bin.glb",
+          "bytes": 80532,
+          "sha256": "a146ecda675ef0cba34caf1edac9c13c4f8e8d93b42b137e070c47b32c8f89f1"
+        },
+        "grove_tree": {
+          "path": "grove_tree.glb",
+          "bytes": 1287628,
+          "sha256": "6de066f61229af40aa4b1ee14917b4472012e276c7ba6d419986e5a24e74ee41"
+        },
+        "heritage_lantern": {
+          "path": "heritage_lantern.glb",
+          "bytes": 17096,
+          "sha256": "3128c76ab7eff91eefa2421aef13d01a947408dcb3dc828a0f35146841cbebdc"
+        },
+        "planter": {
+          "path": "planter.glb",
+          "bytes": 131616,
+          "sha256": "86d98db9b14d250aa2c3e89e9dbff7f86240430564978ab64faeb9ae7b9ed232"
+        },
+        "timber_seat_wall": {
+          "path": "timber_seat_wall.glb",
+          "bytes": 18172,
+          "sha256": "921b92412fc7ad93a7910004109ab751d1d02bd476ab889b3408cd291f89b6c8"
+        },
+        "tree_well_grate": {
+          "path": "tree_well_grate.glb",
+          "bytes": 95608,
+          "sha256": "861ceb2e4166ff74825c42c485d1f9b118334f85b6a3231d8c3a905cc309e493"
+        }
+      },
+      "triangles": 106782,
+      "mesh_instances": 42,
+      "verification": {
+        "status": "PASS_OFFLINE_GEOMETRY",
+        "checks": [
+          "self-contained GLB buffers",
+          "delivered byte hashes",
+          "finite metric bounds",
+          "1422 clear material-aware route rays",
+          "8 tree root openings checked",
+          "archived authoritative reference hashes",
+          "cross-section width sum",
+          "2 reimported native module bounds and ground contacts",
+          "5 native amenity envelopes and pairwise clearances",
+          "18 supported endpoint rays",
+          "right-hand cycle direction",
+          "350k triangle / 12 MB per-fixture budget"
+        ],
+        "runtime_tested": false
+      },
+      "source_sha256": {
+        "build_streets.py": "2484b4054c44a1c5c3cf263b29a892be2da51ac68436b47bd18bd664556683e5",
+        "build_street_batch.py": "6b9c86248e0a52d57b32dc010e26db33244380c446be3e9159cfaae9408ed7ec",
+        "scene.py": "b7572497dc11bffbb80c08d28bbf3a8f41ae12f666c471d34eb1d7654f62eb0a",
+        "sports_furniture.py": "e3738872b5191f3598652b91db5d9119b5f2219ac8f95a3a7a4513f8678c1a29",
+        "street_furniture.py": "2604b0462775a69d5b47e8f348737a5218029957fe012bbb2718656778a88ef5",
+        "street_specs.py": "7de2483734a8261155d226e4909025a16137b86bcf686cb954ae0e29df01f2c2",
+        "verify.py": "94f8fb729b78b294cea720a5982e8caaa62286d8a4df511ad0cb2ba9b22e56c6",
+        "verify_street_batch.py": "d3577777aca04814b7c406cd459a2c4ace6f1f5116c6bfac72eec3ba00ad7f8f"
+      },
+      "builder_review": "Visual review recorded in repository batch report; not independent human approval",
+      "runtime_status": "NOT TESTED; not installed in student picker",
+      "source_base_revision": "69786529a4ce149e2b80ad05438d09ff1e3980ea",
+      "image_references": [
+        {
+          "path": "references/neighborhood-main-street/hero.png",
+          "sha256": "af0d9590d9aac59acd94fe64c0511ca753e6bd3bf4b9e250b9e041f7a706b392",
+          "bytes": 985092,
+          "source": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\streets\\neighborhood-main-street\\hero.png"
+        }
+      ],
+      "reference_profile": {
+        "observed": [
+          "Traditional lamps, paired tree rows, parking bays and contrasting crossing paving"
+        ],
+        "adapted": [
+          "Parallel parking replaces angled parking; a small planted parklet replaces one bay"
+        ]
+      },
+      "reference_assets": [
+        {
+          "kind": "heritage_lantern",
+          "x": -7.0,
+          "y": -11,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              -7.289999961853027,
+              -11.289999961853027,
+              0.0
+            ],
+            [
+              -6.710000038146973,
+              -10.710000038146973,
+              4.03000020980835
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -0.28999999165534973,
+              -0.28999999165534973,
+              0.0
+            ],
+            [
+              0.28999999165534973,
+              0.28999999165534973,
+              4.03000020980835
+            ]
+          ]
+        },
+        {
+          "kind": "heritage_lantern",
+          "x": -7.0,
+          "y": 11,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              -7.289999961853027,
+              10.710000038146973,
+              0.0
+            ],
+            [
+              -6.710000038146973,
+              11.289999961853027,
+              4.03000020980835
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -0.28999999165534973,
+              -0.28999999165534973,
+              0.0
+            ],
+            [
+              0.28999999165534973,
+              0.28999999165534973,
+              4.03000020980835
+            ]
+          ]
+        },
+        {
+          "kind": "heritage_lantern",
+          "x": 7.0,
+          "y": -11,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              6.710000038146973,
+              -11.289999961853027,
+              0.0
+            ],
+            [
+              7.289999961853027,
+              -10.710000038146973,
+              4.03000020980835
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -0.28999999165534973,
+              -0.28999999165534973,
+              0.0
+            ],
+            [
+              0.28999999165534973,
+              0.28999999165534973,
+              4.03000020980835
+            ]
+          ]
+        },
+        {
+          "kind": "heritage_lantern",
+          "x": 7.0,
+          "y": 11,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              6.710000038146973,
+              10.710000038146973,
+              0.0
+            ],
+            [
+              7.289999961853027,
+              11.289999961853027,
+              4.03000020980835
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -0.28999999165534973,
+              -0.28999999165534973,
+              0.0
+            ],
+            [
+              0.28999999165534973,
+              0.28999999165534973,
+              4.03000020980835
+            ]
+          ]
+        },
+        {
+          "kind": "timber_seat_wall",
+          "x": -4.25,
+          "y": -11,
+          "yaw": 1.5707963267948966,
+          "bounds_m": [
+            [
+              -4.595000267028809,
+              -12.800000190734863,
+              0.0
+            ],
+            [
+              -3.9049999713897705,
+              -9.199999809265137,
+              0.47999998927116394
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.7999999523162842,
+              -0.3449999988079071,
+              0.0
+            ],
+            [
+              1.7999999523162842,
+              0.3449999988079071,
+              0.47999998927116394
+            ]
+          ]
+        }
+      ],
+      "visual_review": {
+        "status": "PASS_NATIVE_CONCEPT",
+        "reviewer": "Codex agent; not independent human approval",
+        "notes": "Clear paired sidewalks, parking bay spacing, native parklet and eight grate wells.",
+        "views": {
+          "aerial": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\pilot\\main_street\\renders\\aerial.png",
+            "sha256": "ebfbac27b8c1715acbd31a93a7da5546cf7eae8ceac5704514285a03bf7994c0"
+          },
+          "top": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\pilot\\main_street\\renders\\top.png",
+            "sha256": "463016995f68463deb2ab932a8c97a1f1e8051bdf969d4b710da3d39782af143"
+          },
+          "detail": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\pilot\\main_street\\renders\\detail.png",
+            "sha256": "9a34aba1cd10286edac6145610c1c78809443fe3e37eb4f003fe991dd674fd11"
+          },
+          "street": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\pilot\\main_street\\renders\\street.png",
+            "sha256": "74313d57506a55e9bea7eedc09b0bd58c5025fa79d3c2697869b2f01e99e12bc"
+          }
+        }
+      }
+    },
+    {
+      "id": "student_cycle_avenue_v1",
+      "title": "Protected Cycle Avenue",
+      "package": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\batch\\cycle_avenue",
+      "dimensions_m": [
+        24.0,
+        48
+      ],
+      "assembly": {
+        "path": "assembly-preview.glb",
+        "bytes": 2423592,
+        "sha256": "673c1618cd6002c7e03523e06faf87b9476d8f5ce3b0c29ba0f237c63e75a2ea"
+      },
+      "modules": {
+        "bench": {
+          "path": "bench.glb",
+          "bytes": 34024,
+          "sha256": "996f77a959d098469940fc032f23960c959b0c8275842575bb4de33c152539f7"
+        },
+        "bike_rack": {
+          "path": "bike_rack.glb",
+          "bytes": 96964,
+          "sha256": "0be3cabadaddbf9f22556f0f7ead696eb8ca41f5c881b4f30a0c2940272bf907"
+        },
+        "flowering_perennial": {
+          "path": "flowering_perennial.glb",
+          "bytes": 162120,
+          "sha256": "c3e00c1d9cde18c492fc2ce263240dc3b49d826f6a47b9dd4848c11e58140581"
+        },
+        "grove_tree": {
+          "path": "grove_tree.glb",
+          "bytes": 1287628,
+          "sha256": "6de066f61229af40aa4b1ee14917b4472012e276c7ba6d419986e5a24e74ee41"
+        },
+        "light": {
+          "path": "light.glb",
+          "bytes": 37668,
+          "sha256": "bb7a9513267af2c399c6f57e5c926cf6ca50c123e93ee2960bbdd9efe4b48ded"
+        },
+        "meadow_grass": {
+          "path": "meadow_grass.glb",
+          "bytes": 68700,
+          "sha256": "bca9690b583b30a487a37d8624b3a899d87413415dc301fef1dcc3e9afa8efb4"
+        },
+        "silver_shrub": {
+          "path": "silver_shrub.glb",
+          "bytes": 367296,
+          "sha256": "d29da10a583df058606b5ebb7385b50f4e76eb12e4c0a3789c2377e7453832cc"
+        },
+        "street_bollard": {
+          "path": "street_bollard.glb",
+          "bytes": 9892,
+          "sha256": "530a525ac72258b0ed6b48d4918dbd80a00a14a0c56724fcdd27cb8224e09217"
+        },
+        "tree_well_grate": {
+          "path": "tree_well_grate.glb",
+          "bytes": 95608,
+          "sha256": "861ceb2e4166ff74825c42c485d1f9b118334f85b6a3231d8c3a905cc309e493"
+        }
+      },
+      "triangles": 127612,
+      "mesh_instances": 71,
+      "verification": {
+        "status": "PASS_OFFLINE_GEOMETRY",
+        "checks": [
+          "self-contained GLB buffers",
+          "delivered byte hashes",
+          "finite metric bounds",
+          "1839 clear material-aware route rays",
+          "8 tree root openings checked",
+          "archived authoritative reference hashes",
+          "cross-section width sum",
+          "1 reimported native module bounds and ground contacts",
+          "4 native amenity envelopes and pairwise clearances",
+          "24 supported endpoint rays",
+          "right-hand cycle direction",
+          "350k triangle / 12 MB per-fixture budget"
+        ],
+        "runtime_tested": false
+      },
+      "source_sha256": {
+        "build_streets.py": "2484b4054c44a1c5c3cf263b29a892be2da51ac68436b47bd18bd664556683e5",
+        "build_street_batch.py": "6b9c86248e0a52d57b32dc010e26db33244380c446be3e9159cfaae9408ed7ec",
+        "scene.py": "b7572497dc11bffbb80c08d28bbf3a8f41ae12f666c471d34eb1d7654f62eb0a",
+        "sports_furniture.py": "e3738872b5191f3598652b91db5d9119b5f2219ac8f95a3a7a4513f8678c1a29",
+        "street_furniture.py": "2604b0462775a69d5b47e8f348737a5218029957fe012bbb2718656778a88ef5",
+        "street_specs.py": "7de2483734a8261155d226e4909025a16137b86bcf686cb954ae0e29df01f2c2",
+        "verify.py": "94f8fb729b78b294cea720a5982e8caaa62286d8a4df511ad0cb2ba9b22e56c6",
+        "verify_street_batch.py": "d3577777aca04814b7c406cd459a2c4ace6f1f5116c6bfac72eec3ba00ad7f8f"
+      },
+      "builder_review": "Visual review recorded in repository batch report; not independent human approval",
+      "runtime_status": "NOT TESTED; not installed in student picker",
+      "source_base_revision": "69786529a4ce149e2b80ad05438d09ff1e3980ea",
+      "image_references": [
+        {
+          "path": "references/protected-bike-lane-bi-directional/variant_0.png",
+          "sha256": "633f0a4a02171263a705e6eee464c254cb6d7be752aa1c17cca544acb37daca9",
+          "bytes": 1397063,
+          "source": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\streets\\protected-bike-lane-bi-directional\\variant_0.png"
+        }
+      ],
+      "reference_profile": {
+        "observed": [
+          "Two-way protected cycle track, planted divider and separate sidewalk"
+        ],
+        "adapted": [
+          "Warm red cycle surfacing and kit furniture; right-hand cycle arrows"
+        ]
+      },
+      "reference_assets": [
+        {
+          "kind": "street_bollard",
+          "x": -1.5,
+          "y": -20,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              -1.6399999856948853,
+              -20.139999389648438,
+              0.0
+            ],
+            [
+              -1.3600000143051147,
+              -19.860000610351562,
+              0.9800000190734863
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -0.14000000059604645,
+              -0.14000000059604645,
+              0.0
+            ],
+            [
+              0.14000000059604645,
+              0.14000000059604645,
+              0.9800000190734863
+            ]
+          ]
+        },
+        {
+          "kind": "street_bollard",
+          "x": -1.5,
+          "y": -3.5,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              -1.6399999856948853,
+              -3.640000104904175,
+              0.0
+            ],
+            [
+              -1.3600000143051147,
+              -3.359999895095825,
+              0.9800000190734863
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -0.14000000059604645,
+              -0.14000000059604645,
+              0.0
+            ],
+            [
+              0.14000000059604645,
+              0.14000000059604645,
+              0.9800000190734863
+            ]
+          ]
+        },
+        {
+          "kind": "street_bollard",
+          "x": -1.5,
+          "y": 3.5,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              -1.6399999856948853,
+              3.359999895095825,
+              0.0
+            ],
+            [
+              -1.3600000143051147,
+              3.640000104904175,
+              0.9800000190734863
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -0.14000000059604645,
+              -0.14000000059604645,
+              0.0
+            ],
+            [
+              0.14000000059604645,
+              0.14000000059604645,
+              0.9800000190734863
+            ]
+          ]
+        },
+        {
+          "kind": "street_bollard",
+          "x": -1.5,
+          "y": 20,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              -1.6399999856948853,
+              19.860000610351562,
+              0.0
+            ],
+            [
+              -1.3600000143051147,
+              20.139999389648438,
+              0.9800000190734863
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -0.14000000059604645,
+              -0.14000000059604645,
+              0.0
+            ],
+            [
+              0.14000000059604645,
+              0.14000000059604645,
+              0.9800000190734863
+            ]
+          ]
+        }
+      ],
+      "visual_review": {
+        "status": "PASS_NATIVE_CONCEPT",
+        "reviewer": "Codex agent; not independent human approval",
+        "notes": "Separated cycle and foot routes, correct opposing travel symbols, planted separator and clear cross-link.",
+        "views": {
+          "aerial": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\batch\\cycle_avenue\\renders\\aerial.png",
+            "sha256": "2e506f95e6d5bcacd3691a0ef0a63bb643759480c79a8095aaf5cd7a362145e4"
+          },
+          "top": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\batch\\cycle_avenue\\renders\\top.png",
+            "sha256": "cb45082890ccb40c38fa83af936d685677bc7a568b3ec4f0cac3d31626dc65dc"
+          },
+          "detail": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\batch\\cycle_avenue\\renders\\detail.png",
+            "sha256": "a349ddde1b089c681fdfe02f99034de21541925f151e719baee946b98bdd2191"
+          },
+          "street": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\batch\\cycle_avenue\\renders\\street.png",
+            "sha256": "89a379546d7345171cf7f977da2dec1d526a00fe553497f1b2cbb2424c7c5722"
+          }
+        }
+      }
+    },
+    {
+      "id": "student_planted_lane_v1",
+      "title": "Planted Service Lane",
+      "package": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\revised\\planted_lane",
+      "dimensions_m": [
+        12.0,
+        40
+      ],
+      "assembly": {
+        "path": "assembly-preview.glb",
+        "bytes": 2710156,
+        "sha256": "4aa6b76af2abee3a0c97e9bea39a2c73c242303a2ec1f210abb41bc3a84b5732"
+      },
+      "modules": {
+        "bench": {
+          "path": "bench.glb",
+          "bytes": 34024,
+          "sha256": "996f77a959d098469940fc032f23960c959b0c8275842575bb4de33c152539f7"
+        },
+        "flowering_perennial": {
+          "path": "flowering_perennial.glb",
+          "bytes": 162120,
+          "sha256": "c3e00c1d9cde18c492fc2ce263240dc3b49d826f6a47b9dd4848c11e58140581"
+        },
+        "grove_tree": {
+          "path": "grove_tree.glb",
+          "bytes": 1287628,
+          "sha256": "6de066f61229af40aa4b1ee14917b4472012e276c7ba6d419986e5a24e74ee41"
+        },
+        "light": {
+          "path": "light.glb",
+          "bytes": 37668,
+          "sha256": "bb7a9513267af2c399c6f57e5c926cf6ca50c123e93ee2960bbdd9efe4b48ded"
+        },
+        "meadow_grass": {
+          "path": "meadow_grass.glb",
+          "bytes": 68700,
+          "sha256": "bca9690b583b30a487a37d8624b3a899d87413415dc301fef1dcc3e9afa8efb4"
+        },
+        "silver_shrub": {
+          "path": "silver_shrub.glb",
+          "bytes": 367296,
+          "sha256": "d29da10a583df058606b5ebb7385b50f4e76eb12e4c0a3789c2377e7453832cc"
+        },
+        "timber_fence_panel": {
+          "path": "timber_fence_panel.glb",
+          "bytes": 16640,
+          "sha256": "82ddd661c48a10569cb0814eedb85551447cbd633124bf240b6276ab2694453d"
+        }
+      },
+      "triangles": 195616,
+      "mesh_instances": 193,
+      "verification": {
+        "status": "PASS_OFFLINE_GEOMETRY",
+        "checks": [
+          "self-contained GLB buffers",
+          "delivered byte hashes",
+          "finite metric bounds",
+          "444 clear material-aware route rays",
+          "4 tree root openings checked",
+          "archived authoritative reference hashes",
+          "cross-section width sum",
+          "1 reimported native module bounds and ground contacts",
+          "16 native amenity envelopes and pairwise clearances",
+          "6 supported endpoint rays",
+          "right-hand cycle direction",
+          "350k triangle / 12 MB per-fixture budget"
+        ],
+        "runtime_tested": false
+      },
+      "source_sha256": {
+        "build_streets.py": "2484b4054c44a1c5c3cf263b29a892be2da51ac68436b47bd18bd664556683e5",
+        "build_street_batch.py": "af8fac626e46945984fcf88a7728f0c2f4c0991c7768b3c77cce787a0c43ce07",
+        "scene.py": "b7572497dc11bffbb80c08d28bbf3a8f41ae12f666c471d34eb1d7654f62eb0a",
+        "sports_furniture.py": "e3738872b5191f3598652b91db5d9119b5f2219ac8f95a3a7a4513f8678c1a29",
+        "street_furniture.py": "ba14c49f8fe23c87a962bc8894a8e99d70486083cb24f2857fd14129245c6ec4",
+        "street_specs.py": "7de2483734a8261155d226e4909025a16137b86bcf686cb954ae0e29df01f2c2",
+        "verify.py": "94f8fb729b78b294cea720a5982e8caaa62286d8a4df511ad0cb2ba9b22e56c6",
+        "verify_street_batch.py": "d3577777aca04814b7c406cd459a2c4ace6f1f5116c6bfac72eec3ba00ad7f8f"
+      },
+      "builder_review": "Visual review recorded in repository batch report; not independent human approval",
+      "runtime_status": "NOT TESTED; not installed in student picker",
+      "source_base_revision": "69786529a4ce149e2b80ad05438d09ff1e3980ea",
+      "image_references": [
+        {
+          "path": "references/green-alley/hero.png",
+          "sha256": "c23b9dc96579b1e81f6327634b84f4733fb0b591ecc802819fe3bd9f4033b555",
+          "bytes": 1202559,
+          "source": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\streets\\green-alley\\hero.png"
+        }
+      ],
+      "reference_profile": {
+        "observed": [
+          "Timber boundary fences, narrow planted edges and a continuous paved lane"
+        ],
+        "adapted": [
+          "Generous concept lane, separate seating pockets, openings in fence at midblock"
+        ]
+      },
+      "reference_assets": [
+        {
+          "kind": "timber_fence_panel",
+          "x": -5.85,
+          "y": -17,
+          "yaw": 1.5707963267948966,
+          "bounds_m": [
+            [
+              -5.947499752044678,
+              -18.510000228881836,
+              0.0
+            ],
+            [
+              -5.789999961853027,
+              -15.489999771118164,
+              1.7999999523162842
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.5099999904632568,
+              -0.05999999865889549,
+              0.0
+            ],
+            [
+              1.5099999904632568,
+              0.09749999642372131,
+              1.7999999523162842
+            ]
+          ]
+        },
+        {
+          "kind": "timber_fence_panel",
+          "x": -5.85,
+          "y": -14,
+          "yaw": 1.5707963267948966,
+          "bounds_m": [
+            [
+              -5.947499752044678,
+              -15.510000228881836,
+              0.0
+            ],
+            [
+              -5.789999961853027,
+              -12.489999771118164,
+              1.7999999523162842
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.5099999904632568,
+              -0.05999999865889549,
+              0.0
+            ],
+            [
+              1.5099999904632568,
+              0.09749999642372131,
+              1.7999999523162842
+            ]
+          ]
+        },
+        {
+          "kind": "timber_fence_panel",
+          "x": -5.85,
+          "y": -11,
+          "yaw": 1.5707963267948966,
+          "bounds_m": [
+            [
+              -5.947499752044678,
+              -12.510000228881836,
+              0.0
+            ],
+            [
+              -5.789999961853027,
+              -9.489999771118164,
+              1.7999999523162842
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.5099999904632568,
+              -0.05999999865889549,
+              0.0
+            ],
+            [
+              1.5099999904632568,
+              0.09749999642372131,
+              1.7999999523162842
+            ]
+          ]
+        },
+        {
+          "kind": "timber_fence_panel",
+          "x": -5.85,
+          "y": -8,
+          "yaw": 1.5707963267948966,
+          "bounds_m": [
+            [
+              -5.947499752044678,
+              -9.510000228881836,
+              0.0
+            ],
+            [
+              -5.789999961853027,
+              -6.489999771118164,
+              1.7999999523162842
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.5099999904632568,
+              -0.05999999865889549,
+              0.0
+            ],
+            [
+              1.5099999904632568,
+              0.09749999642372131,
+              1.7999999523162842
+            ]
+          ]
+        },
+        {
+          "kind": "timber_fence_panel",
+          "x": -5.85,
+          "y": 8,
+          "yaw": 1.5707963267948966,
+          "bounds_m": [
+            [
+              -5.947499752044678,
+              6.489999771118164,
+              0.0
+            ],
+            [
+              -5.789999961853027,
+              9.510000228881836,
+              1.7999999523162842
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.5099999904632568,
+              -0.05999999865889549,
+              0.0
+            ],
+            [
+              1.5099999904632568,
+              0.09749999642372131,
+              1.7999999523162842
+            ]
+          ]
+        },
+        {
+          "kind": "timber_fence_panel",
+          "x": -5.85,
+          "y": 11,
+          "yaw": 1.5707963267948966,
+          "bounds_m": [
+            [
+              -5.947499752044678,
+              9.489999771118164,
+              0.0
+            ],
+            [
+              -5.789999961853027,
+              12.510000228881836,
+              1.7999999523162842
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.5099999904632568,
+              -0.05999999865889549,
+              0.0
+            ],
+            [
+              1.5099999904632568,
+              0.09749999642372131,
+              1.7999999523162842
+            ]
+          ]
+        },
+        {
+          "kind": "timber_fence_panel",
+          "x": -5.85,
+          "y": 14,
+          "yaw": 1.5707963267948966,
+          "bounds_m": [
+            [
+              -5.947499752044678,
+              12.489999771118164,
+              0.0
+            ],
+            [
+              -5.789999961853027,
+              15.510000228881836,
+              1.7999999523162842
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.5099999904632568,
+              -0.05999999865889549,
+              0.0
+            ],
+            [
+              1.5099999904632568,
+              0.09749999642372131,
+              1.7999999523162842
+            ]
+          ]
+        },
+        {
+          "kind": "timber_fence_panel",
+          "x": -5.85,
+          "y": 17,
+          "yaw": 1.5707963267948966,
+          "bounds_m": [
+            [
+              -5.947499752044678,
+              15.489999771118164,
+              0.0
+            ],
+            [
+              -5.789999961853027,
+              18.510000228881836,
+              1.7999999523162842
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.5099999904632568,
+              -0.05999999865889549,
+              0.0
+            ],
+            [
+              1.5099999904632568,
+              0.09749999642372131,
+              1.7999999523162842
+            ]
+          ]
+        },
+        {
+          "kind": "timber_fence_panel",
+          "x": 5.85,
+          "y": -17,
+          "yaw": 1.5707963267948966,
+          "bounds_m": [
+            [
+              5.752500057220459,
+              -18.510000228881836,
+              0.0
+            ],
+            [
+              5.909999847412109,
+              -15.489999771118164,
+              1.7999999523162842
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.5099999904632568,
+              -0.05999999865889549,
+              0.0
+            ],
+            [
+              1.5099999904632568,
+              0.09749999642372131,
+              1.7999999523162842
+            ]
+          ]
+        },
+        {
+          "kind": "timber_fence_panel",
+          "x": 5.85,
+          "y": -14,
+          "yaw": 1.5707963267948966,
+          "bounds_m": [
+            [
+              5.752500057220459,
+              -15.510000228881836,
+              0.0
+            ],
+            [
+              5.909999847412109,
+              -12.489999771118164,
+              1.7999999523162842
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.5099999904632568,
+              -0.05999999865889549,
+              0.0
+            ],
+            [
+              1.5099999904632568,
+              0.09749999642372131,
+              1.7999999523162842
+            ]
+          ]
+        },
+        {
+          "kind": "timber_fence_panel",
+          "x": 5.85,
+          "y": -11,
+          "yaw": 1.5707963267948966,
+          "bounds_m": [
+            [
+              5.752500057220459,
+              -12.510000228881836,
+              0.0
+            ],
+            [
+              5.909999847412109,
+              -9.489999771118164,
+              1.7999999523162842
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.5099999904632568,
+              -0.05999999865889549,
+              0.0
+            ],
+            [
+              1.5099999904632568,
+              0.09749999642372131,
+              1.7999999523162842
+            ]
+          ]
+        },
+        {
+          "kind": "timber_fence_panel",
+          "x": 5.85,
+          "y": -8,
+          "yaw": 1.5707963267948966,
+          "bounds_m": [
+            [
+              5.752500057220459,
+              -9.510000228881836,
+              0.0
+            ],
+            [
+              5.909999847412109,
+              -6.489999771118164,
+              1.7999999523162842
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.5099999904632568,
+              -0.05999999865889549,
+              0.0
+            ],
+            [
+              1.5099999904632568,
+              0.09749999642372131,
+              1.7999999523162842
+            ]
+          ]
+        },
+        {
+          "kind": "timber_fence_panel",
+          "x": 5.85,
+          "y": 8,
+          "yaw": 1.5707963267948966,
+          "bounds_m": [
+            [
+              5.752500057220459,
+              6.489999771118164,
+              0.0
+            ],
+            [
+              5.909999847412109,
+              9.510000228881836,
+              1.7999999523162842
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.5099999904632568,
+              -0.05999999865889549,
+              0.0
+            ],
+            [
+              1.5099999904632568,
+              0.09749999642372131,
+              1.7999999523162842
+            ]
+          ]
+        },
+        {
+          "kind": "timber_fence_panel",
+          "x": 5.85,
+          "y": 11,
+          "yaw": 1.5707963267948966,
+          "bounds_m": [
+            [
+              5.752500057220459,
+              9.489999771118164,
+              0.0
+            ],
+            [
+              5.909999847412109,
+              12.510000228881836,
+              1.7999999523162842
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.5099999904632568,
+              -0.05999999865889549,
+              0.0
+            ],
+            [
+              1.5099999904632568,
+              0.09749999642372131,
+              1.7999999523162842
+            ]
+          ]
+        },
+        {
+          "kind": "timber_fence_panel",
+          "x": 5.85,
+          "y": 14,
+          "yaw": 1.5707963267948966,
+          "bounds_m": [
+            [
+              5.752500057220459,
+              12.489999771118164,
+              0.0
+            ],
+            [
+              5.909999847412109,
+              15.510000228881836,
+              1.7999999523162842
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.5099999904632568,
+              -0.05999999865889549,
+              0.0
+            ],
+            [
+              1.5099999904632568,
+              0.09749999642372131,
+              1.7999999523162842
+            ]
+          ]
+        },
+        {
+          "kind": "timber_fence_panel",
+          "x": 5.85,
+          "y": 17,
+          "yaw": 1.5707963267948966,
+          "bounds_m": [
+            [
+              5.752500057220459,
+              15.489999771118164,
+              0.0
+            ],
+            [
+              5.909999847412109,
+              18.510000228881836,
+              1.7999999523162842
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.5099999904632568,
+              -0.05999999865889549,
+              0.0
+            ],
+            [
+              1.5099999904632568,
+              0.09749999642372131,
+              1.7999999523162842
+            ]
+          ]
+        }
+      ],
+      "visual_review": {
+        "status": "PASS_NATIVE_CONCEPT",
+        "reviewer": "Codex agent; not independent human approval",
+        "notes": "Continuous planting and timber fences, open seating pads, midblock and endpoint access; revised fuller planting accepted.",
+        "views": {
+          "aerial": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\revised\\planted_lane\\renders\\aerial.png",
+            "sha256": "e5392e2c2224d876cbf44cfe2694f0e6dd7c1a6d92dc2e370e35ae83c74ec8bc"
+          },
+          "top": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\revised\\planted_lane\\renders\\top.png",
+            "sha256": "11e71207c0eebefd59424c18c5011d5ac639effd59f9b5dd90b322362d58946a"
+          },
+          "detail": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\revised\\planted_lane\\renders\\detail.png",
+            "sha256": "e3e65ebc7eef8c2314e9611c8bc58d4733435f4fc838ff24bd5460033255c36a"
+          },
+          "street": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\revised\\planted_lane\\renders\\street.png",
+            "sha256": "ed04f1220ba3b20670dab5c6bbacef30601899317f7a89134f6cc5959cc2312b"
+          }
+        }
+      }
+    },
+    {
+      "id": "student_transit_street_v1",
+      "title": "Transit Stop Street",
+      "package": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\revised\\transit_street",
+      "dimensions_m": [
+        27.0,
+        48
+      ],
+      "assembly": {
+        "path": "assembly-preview.glb",
+        "bytes": 1755528,
+        "sha256": "9f5527e4d54c083b5a640a2ba00bf081a4924d13c9df7500ad58d5166c55971e"
+      },
+      "modules": {
+        "bench": {
+          "path": "bench.glb",
+          "bytes": 34024,
+          "sha256": "996f77a959d098469940fc032f23960c959b0c8275842575bb4de33c152539f7"
+        },
+        "bin": {
+          "path": "bin.glb",
+          "bytes": 80532,
+          "sha256": "a146ecda675ef0cba34caf1edac9c13c4f8e8d93b42b137e070c47b32c8f89f1"
+        },
+        "grove_tree": {
+          "path": "grove_tree.glb",
+          "bytes": 1287628,
+          "sha256": "6de066f61229af40aa4b1ee14917b4472012e276c7ba6d419986e5a24e74ee41"
+        },
+        "light": {
+          "path": "light.glb",
+          "bytes": 37668,
+          "sha256": "bb7a9513267af2c399c6f57e5c926cf6ca50c123e93ee2960bbdd9efe4b48ded"
+        },
+        "transit_shelter": {
+          "path": "transit_shelter.glb",
+          "bytes": 19188,
+          "sha256": "1470fdc1c62962d794ccb97a932cef8e020398602930772a5e7343f96bf88b62"
+        },
+        "transit_stop_pole": {
+          "path": "transit_stop_pole.glb",
+          "bytes": 8316,
+          "sha256": "f4b8b9ced2b2f4ad631ad4722450d83d63b8add99829fb403e69ae291d6afcf2"
+        },
+        "tree_well_grate": {
+          "path": "tree_well_grate.glb",
+          "bytes": 95608,
+          "sha256": "861ceb2e4166ff74825c42c485d1f9b118334f85b6a3231d8c3a905cc309e493"
+        }
+      },
+      "triangles": 103268,
+      "mesh_instances": 42,
+      "verification": {
+        "status": "PASS_OFFLINE_GEOMETRY",
+        "checks": [
+          "self-contained GLB buffers",
+          "delivered byte hashes",
+          "finite metric bounds",
+          "1956 clear material-aware route rays",
+          "8 tree root openings checked",
+          "measured road-facing shelter opening and cycle-side rear glass",
+          "archived authoritative reference hashes",
+          "cross-section width sum",
+          "2 reimported native module bounds and ground contacts",
+          "2 native amenity envelopes and pairwise clearances",
+          "24 supported endpoint rays",
+          "right-hand cycle direction",
+          "350k triangle / 12 MB per-fixture budget"
+        ],
+        "runtime_tested": false
+      },
+      "source_sha256": {
+        "build_streets.py": "2484b4054c44a1c5c3cf263b29a892be2da51ac68436b47bd18bd664556683e5",
+        "build_street_batch.py": "af8fac626e46945984fcf88a7728f0c2f4c0991c7768b3c77cce787a0c43ce07",
+        "scene.py": "b7572497dc11bffbb80c08d28bbf3a8f41ae12f666c471d34eb1d7654f62eb0a",
+        "sports_furniture.py": "e3738872b5191f3598652b91db5d9119b5f2219ac8f95a3a7a4513f8678c1a29",
+        "street_furniture.py": "ba14c49f8fe23c87a962bc8894a8e99d70486083cb24f2857fd14129245c6ec4",
+        "street_specs.py": "7de2483734a8261155d226e4909025a16137b86bcf686cb954ae0e29df01f2c2",
+        "verify.py": "94f8fb729b78b294cea720a5982e8caaa62286d8a4df511ad0cb2ba9b22e56c6",
+        "verify_street_batch.py": "d3577777aca04814b7c406cd459a2c4ace6f1f5116c6bfac72eec3ba00ad7f8f"
+      },
+      "builder_review": "Visual review recorded in repository batch report; not independent human approval",
+      "runtime_status": "NOT TESTED; not installed in student picker",
+      "source_base_revision": "69786529a4ce149e2b80ad05438d09ff1e3980ea",
+      "image_references": [
+        {
+          "path": "references/floating-bus-stop-transit-street/variant_0.png",
+          "sha256": "f62ccfe36d292970e94282f255a4d5a14778445c1427bf42bb672dc834fc184d",
+          "bytes": 1468655,
+          "source": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\streets\\floating-bus-stop-transit-street\\variant_0.png"
+        }
+      ],
+      "reference_profile": {
+        "observed": [
+          "Glazed transit shelter, stop pole, waiting island and cycle crossing"
+        ],
+        "adapted": [
+          "Flush concept island; shelter shifted behind clear boarding strip; no live routes or operational traffic design"
+        ]
+      },
+      "reference_assets": [
+        {
+          "kind": "transit_shelter",
+          "x": 1.05,
+          "y": -6,
+          "yaw": -1.5707963267948966,
+          "bounds_m": [
+            [
+              0.14999988675117493,
+              -8.199999809265137,
+              0.0
+            ],
+            [
+              1.9500000476837158,
+              -3.799999952316284,
+              2.803999900817871
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -2.200000047683716,
+              -0.8999999761581421,
+              0.0
+            ],
+            [
+              2.200000047683716,
+              0.8999999761581421,
+              2.803999900817871
+            ]
+          ]
+        },
+        {
+          "kind": "transit_stop_pole",
+          "x": -0.25,
+          "y": -11,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              -0.550000011920929,
+              -11.0600004196167,
+              0.0
+            ],
+            [
+              0.050000011920928955,
+              -10.960000038146973,
+              3.200000047683716
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -0.30000001192092896,
+              -0.05999999865889549,
+              0.0
+            ],
+            [
+              0.30000001192092896,
+              0.03999999910593033,
+              3.200000047683716
+            ]
+          ]
+        }
+      ],
+      "visual_review": {
+        "status": "PASS_NATIVE_CONCEPT",
+        "reviewer": "Codex agent; not independent human approval",
+        "notes": "Revised shelter opens toward boarding strip; cycle-side glass and separate cycle crossings visible.",
+        "views": {
+          "aerial": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\revised\\transit_street\\renders\\aerial.png",
+            "sha256": "e765e2730985af8ef558a2072b2a966959f1bcaeb5472feda2003ad676a6c893"
+          },
+          "top": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\revised\\transit_street\\renders\\top.png",
+            "sha256": "25f2e428cae622455d50b018d590a63774a5afaf723d152f15902414a6a1a5c7"
+          },
+          "detail": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\revised\\transit_street\\renders\\detail.png",
+            "sha256": "36180734dbd1a4d0949bfd720a4d183de029c67e3f38863a29c71deeb313722e"
+          },
+          "street": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\revised\\transit_street\\renders\\street.png",
+            "sha256": "2e6d5ae3feec0b290a67e65250297ba5b87f026b5bdfe1fd3b599dd9f92e4215"
+          }
+        }
+      }
+    },
+    {
+      "id": "student_market_street_v1",
+      "title": "Pedestrian Market Street",
+      "package": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\batch\\market_street",
+      "dimensions_m": [
+        18.0,
+        48
+      ],
+      "assembly": {
+        "path": "assembly-preview.glb",
+        "bytes": 2575800,
+        "sha256": "81f6715283b740536795300e0a7860c9757dcab77b8c4044b1ed3d99b507b88a"
+      },
+      "modules": {
+        "bench": {
+          "path": "bench.glb",
+          "bytes": 34024,
+          "sha256": "996f77a959d098469940fc032f23960c959b0c8275842575bb4de33c152539f7"
+        },
+        "cafe_parasol": {
+          "path": "cafe_parasol.glb",
+          "bytes": 60388,
+          "sha256": "c33eb363972b2679a0173c02628cd876c31016bc39df34be6bf345933bf4c065"
+        },
+        "heritage_lantern": {
+          "path": "heritage_lantern.glb",
+          "bytes": 17092,
+          "sha256": "a107d4d6c76e8f1980363eb05f369b7d258120fe6bec5c7f0832c7b33d5bd322"
+        },
+        "market_stall": {
+          "path": "market_stall.glb",
+          "bytes": 47684,
+          "sha256": "571d1debbc930e350fd6018bb6f0d52a3e7350848b25ec4f2c04c6fb1503f33f"
+        },
+        "planter": {
+          "path": "planter.glb",
+          "bytes": 131616,
+          "sha256": "86d98db9b14d250aa2c3e89e9dbff7f86240430564978ab64faeb9ae7b9ed232"
+        },
+        "stone_fountain": {
+          "path": "stone_fountain.glb",
+          "bytes": 115904,
+          "sha256": "71c58dc39bbd919a77e765a84f0d60a50526dbf62000dda124ca052c12c27da3"
+        }
+      },
+      "triangles": 50326,
+      "mesh_instances": 20,
+      "verification": {
+        "status": "PASS_OFFLINE_GEOMETRY",
+        "checks": [
+          "self-contained GLB buffers",
+          "delivered byte hashes",
+          "finite metric bounds",
+          "1380 clear material-aware route rays",
+          "0 tree root openings checked",
+          "archived authoritative reference hashes",
+          "cross-section width sum",
+          "4 reimported native module bounds and ground contacts",
+          "11 native amenity envelopes and pairwise clearances",
+          "18 supported endpoint rays",
+          "right-hand cycle direction",
+          "350k triangle / 12 MB per-fixture budget"
+        ],
+        "runtime_tested": false
+      },
+      "source_sha256": {
+        "build_streets.py": "2484b4054c44a1c5c3cf263b29a892be2da51ac68436b47bd18bd664556683e5",
+        "build_street_batch.py": "6b9c86248e0a52d57b32dc010e26db33244380c446be3e9159cfaae9408ed7ec",
+        "scene.py": "b7572497dc11bffbb80c08d28bbf3a8f41ae12f666c471d34eb1d7654f62eb0a",
+        "sports_furniture.py": "e3738872b5191f3598652b91db5d9119b5f2219ac8f95a3a7a4513f8678c1a29",
+        "street_furniture.py": "2604b0462775a69d5b47e8f348737a5218029957fe012bbb2718656778a88ef5",
+        "street_specs.py": "7de2483734a8261155d226e4909025a16137b86bcf686cb954ae0e29df01f2c2",
+        "verify.py": "94f8fb729b78b294cea720a5982e8caaa62286d8a4df511ad0cb2ba9b22e56c6",
+        "verify_street_batch.py": "d3577777aca04814b7c406cd459a2c4ace6f1f5116c6bfac72eec3ba00ad7f8f"
+      },
+      "builder_review": "Visual review recorded in repository batch report; not independent human approval",
+      "runtime_status": "NOT TESTED; not installed in student picker",
+      "source_base_revision": "69786529a4ce149e2b80ad05438d09ff1e3980ea",
+      "image_references": [
+        {
+          "path": "references/pedestrian-only-street/hero.png",
+          "sha256": "32fb34cbe478cdba6b1e098ac74f17d61b706c2e28781c754b86608b9645e1ee",
+          "bytes": 1172072,
+          "source": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\streets\\pedestrian-only-street\\hero.png"
+        }
+      ],
+      "reference_profile": {
+        "observed": [
+          "Cobbled pedestrian space, fountain, cafe seating, planters and traditional lamps"
+        ],
+        "adapted": [
+          "Side-bay fountain keeps the centre clear; striped market stalls extend the cafe programme"
+        ]
+      },
+      "reference_assets": [
+        {
+          "kind": "market_stall",
+          "x": -4.5,
+          "y": -15,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              -5.920000076293945,
+              -15.949999809265137,
+              0.0
+            ],
+            [
+              -3.0799999237060547,
+              -14.050000190734863,
+              2.819999933242798
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.4199999570846558,
+              -0.949999988079071,
+              0.0
+            ],
+            [
+              1.4199999570846558,
+              0.949999988079071,
+              2.819999933242798
+            ]
+          ]
+        },
+        {
+          "kind": "market_stall",
+          "x": -4.5,
+          "y": -7,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              -5.920000076293945,
+              -7.949999809265137,
+              0.0
+            ],
+            [
+              -3.0799999237060547,
+              -6.050000190734863,
+              2.819999933242798
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.4199999570846558,
+              -0.949999988079071,
+              0.0
+            ],
+            [
+              1.4199999570846558,
+              0.949999988079071,
+              2.819999933242798
+            ]
+          ]
+        },
+        {
+          "kind": "market_stall",
+          "x": -4.5,
+          "y": 7,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              -5.920000076293945,
+              6.050000190734863,
+              0.0
+            ],
+            [
+              -3.0799999237060547,
+              7.949999809265137,
+              2.819999933242798
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.4199999570846558,
+              -0.949999988079071,
+              0.0
+            ],
+            [
+              1.4199999570846558,
+              0.949999988079071,
+              2.819999933242798
+            ]
+          ]
+        },
+        {
+          "kind": "market_stall",
+          "x": -4.5,
+          "y": 15,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              -5.920000076293945,
+              14.050000190734863,
+              0.0
+            ],
+            [
+              -3.0799999237060547,
+              15.949999809265137,
+              2.819999933242798
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.4199999570846558,
+              -0.949999988079071,
+              0.0
+            ],
+            [
+              1.4199999570846558,
+              0.949999988079071,
+              2.819999933242798
+            ]
+          ]
+        },
+        {
+          "kind": "stone_fountain",
+          "x": 4.5,
+          "y": -10,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              2.700000047683716,
+              -11.800000190734863,
+              0.0
+            ],
+            [
+              6.300000190734863,
+              -8.199999809265137,
+              1.2899999618530273
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.7999999523162842,
+              -1.7999999523162842,
+              0.0
+            ],
+            [
+              1.7999999523162842,
+              1.7999999523162842,
+              1.2899999618530273
+            ]
+          ]
+        },
+        {
+          "kind": "cafe_parasol",
+          "x": 4.5,
+          "y": 6,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              2.9463701248168945,
+              4.4463701248168945,
+              0.0
+            ],
+            [
+              6.0536298751831055,
+              7.5536298751831055,
+              2.9000000953674316
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.5536298751831055,
+              -1.5536298751831055,
+              0.0
+            ],
+            [
+              1.5536298751831055,
+              1.5536298751831055,
+              2.9000000953674316
+            ]
+          ]
+        },
+        {
+          "kind": "cafe_parasol",
+          "x": 4.5,
+          "y": 13,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              2.9463701248168945,
+              11.446370124816895,
+              0.0
+            ],
+            [
+              6.0536298751831055,
+              14.553629875183105,
+              2.9000000953674316
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.5536298751831055,
+              -1.5536298751831055,
+              0.0
+            ],
+            [
+              1.5536298751831055,
+              1.5536298751831055,
+              2.9000000953674316
+            ]
+          ]
+        },
+        {
+          "kind": "heritage_lantern",
+          "x": -4.5,
+          "y": -22.1,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              -4.789999961853027,
+              -22.39000129699707,
+              0.0
+            ],
+            [
+              -4.210000038146973,
+              -21.809999465942383,
+              4.03000020980835
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -0.28999999165534973,
+              -0.28999999165534973,
+              0.0
+            ],
+            [
+              0.28999999165534973,
+              0.28999999165534973,
+              4.03000020980835
+            ]
+          ]
+        },
+        {
+          "kind": "heritage_lantern",
+          "x": -4.5,
+          "y": 17.9,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              -4.789999961853027,
+              17.60999870300293,
+              0.0
+            ],
+            [
+              -4.210000038146973,
+              18.190000534057617,
+              4.03000020980835
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -0.28999999165534973,
+              -0.28999999165534973,
+              0.0
+            ],
+            [
+              0.28999999165534973,
+              0.28999999165534973,
+              4.03000020980835
+            ]
+          ]
+        },
+        {
+          "kind": "heritage_lantern",
+          "x": 4.5,
+          "y": -22.1,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              4.210000038146973,
+              -22.39000129699707,
+              0.0
+            ],
+            [
+              4.789999961853027,
+              -21.809999465942383,
+              4.03000020980835
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -0.28999999165534973,
+              -0.28999999165534973,
+              0.0
+            ],
+            [
+              0.28999999165534973,
+              0.28999999165534973,
+              4.03000020980835
+            ]
+          ]
+        },
+        {
+          "kind": "heritage_lantern",
+          "x": 4.5,
+          "y": 17.9,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              4.210000038146973,
+              17.60999870300293,
+              0.0
+            ],
+            [
+              4.789999961853027,
+              18.190000534057617,
+              4.03000020980835
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -0.28999999165534973,
+              -0.28999999165534973,
+              0.0
+            ],
+            [
+              0.28999999165534973,
+              0.28999999165534973,
+              4.03000020980835
+            ]
+          ]
+        }
+      ],
+      "visual_review": {
+        "status": "PASS_NATIVE_CONCEPT",
+        "reviewer": "Codex agent; not independent human approval",
+        "notes": "Distinct striped stalls, basin fountain, parasols and clear centre/side walks.",
+        "views": {
+          "aerial": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\batch\\market_street\\renders\\aerial.png",
+            "sha256": "dd54e24aa99f983f9effde29c604bf69983b9299a98132e17de0d587ed80226d"
+          },
+          "top": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\batch\\market_street\\renders\\top.png",
+            "sha256": "9c66c111d6ad2dc810bbd6cd6c01ded65a8dfc5108b1572060410bd3cc455d30"
+          },
+          "detail": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\batch\\market_street\\renders\\detail.png",
+            "sha256": "29e64e33540f8d28269b75b4f9a0217f32b952ea97fddab70b012414efcc86b9"
+          },
+          "street": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\batch\\market_street\\renders\\street.png",
+            "sha256": "dc4fb241838a109b1aaeb986bc3569c6c800bab79c4fb14eba329eabce4a45ee"
+          }
+        }
+      }
+    },
+    {
+      "id": "student_green_alley_v1",
+      "title": "Ruelle Verte Community Alley",
+      "package": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\batch\\green_alley",
+      "dimensions_m": [
+        11,
+        40
+      ],
+      "assembly": {
+        "path": "assembly-preview.glb",
+        "bytes": 2788176,
+        "sha256": "6d9514b1e9ab469ee38f3fa7115c00c6513e9fcb6abf199159108f24599963c5"
+      },
+      "modules": {
+        "bench": {
+          "path": "bench.glb",
+          "bytes": 34024,
+          "sha256": "996f77a959d098469940fc032f23960c959b0c8275842575bb4de33c152539f7"
+        },
+        "flowering_perennial": {
+          "path": "flowering_perennial.glb",
+          "bytes": 162120,
+          "sha256": "c3e00c1d9cde18c492fc2ce263240dc3b49d826f6a47b9dd4848c11e58140581"
+        },
+        "grove_tree": {
+          "path": "grove_tree.glb",
+          "bytes": 1287628,
+          "sha256": "6de066f61229af40aa4b1ee14917b4472012e276c7ba6d419986e5a24e74ee41"
+        },
+        "light": {
+          "path": "light.glb",
+          "bytes": 37668,
+          "sha256": "bb7a9513267af2c399c6f57e5c926cf6ca50c123e93ee2960bbdd9efe4b48ded"
+        },
+        "meadow_grass": {
+          "path": "meadow_grass.glb",
+          "bytes": 68700,
+          "sha256": "bca9690b583b30a487a37d8624b3a899d87413415dc301fef1dcc3e9afa8efb4"
+        },
+        "planted_trellis": {
+          "path": "planted_trellis.glb",
+          "bytes": 33656,
+          "sha256": "e81afde69f848f2407c607da9b727b1073db8fe315d8568636e75a85b7a0731c"
+        },
+        "silver_shrub": {
+          "path": "silver_shrub.glb",
+          "bytes": 367296,
+          "sha256": "d29da10a583df058606b5ebb7385b50f4e76eb12e4c0a3789c2377e7453832cc"
+        }
+      },
+      "triangles": 82746,
+      "mesh_instances": 48,
+      "verification": {
+        "status": "PASS_OFFLINE_GEOMETRY",
+        "checks": [
+          "self-contained GLB buffers",
+          "delivered byte hashes",
+          "finite metric bounds",
+          "435 clear material-aware route rays",
+          "4 tree root openings checked",
+          "archived authoritative reference hashes",
+          "cross-section width sum",
+          "1 reimported native module bounds and ground contacts",
+          "8 native amenity envelopes and pairwise clearances",
+          "6 supported endpoint rays",
+          "right-hand cycle direction",
+          "350k triangle / 12 MB per-fixture budget"
+        ],
+        "runtime_tested": false
+      },
+      "source_sha256": {
+        "build_streets.py": "2484b4054c44a1c5c3cf263b29a892be2da51ac68436b47bd18bd664556683e5",
+        "build_street_batch.py": "6b9c86248e0a52d57b32dc010e26db33244380c446be3e9159cfaae9408ed7ec",
+        "scene.py": "b7572497dc11bffbb80c08d28bbf3a8f41ae12f666c471d34eb1d7654f62eb0a",
+        "sports_furniture.py": "e3738872b5191f3598652b91db5d9119b5f2219ac8f95a3a7a4513f8678c1a29",
+        "street_furniture.py": "2604b0462775a69d5b47e8f348737a5218029957fe012bbb2718656778a88ef5",
+        "street_specs.py": "7de2483734a8261155d226e4909025a16137b86bcf686cb954ae0e29df01f2c2",
+        "verify.py": "94f8fb729b78b294cea720a5982e8caaa62286d8a4df511ad0cb2ba9b22e56c6",
+        "verify_street_batch.py": "d3577777aca04814b7c406cd459a2c4ace6f1f5116c6bfac72eec3ba00ad7f8f"
+      },
+      "builder_review": "Visual review recorded in repository batch report; not independent human approval",
+      "runtime_status": "NOT TESTED; not installed in student picker",
+      "source_base_revision": "69786529a4ce149e2b80ad05438d09ff1e3980ea",
+      "image_references": [
+        {
+          "path": "references/montreal-ruelle-verte-green-alley/hero.png",
+          "sha256": "9387cb75833f31cb1a7f5127aef73cdf594cbc1d0aa0c9911718a21e9774d0a1",
+          "bytes": 1724508,
+          "source": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\streets\\montreal-ruelle-verte-green-alley\\hero.png"
+        }
+      ],
+      "reference_profile": {
+        "observed": [
+          "Raised timber planters, vines, small trees and community seating"
+        ],
+        "adapted": [
+          "Freestanding planted trellises instead of invented neighbouring walls; firm paver route instead of grass-grid surface"
+        ]
+      },
+      "reference_assets": [
+        {
+          "kind": "planted_trellis",
+          "x": -4.8,
+          "y": -15,
+          "yaw": -1.5707963267948966,
+          "bounds_m": [
+            [
+              -5.310000419616699,
+              -16.399999618530273,
+              0.0
+            ],
+            [
+              -4.289999961853027,
+              -13.600000381469727,
+              2.4800000190734863
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.399999976158142,
+              -0.5099999904632568,
+              0.0
+            ],
+            [
+              1.399999976158142,
+              0.5099999904632568,
+              2.4800000190734863
+            ]
+          ]
+        },
+        {
+          "kind": "planted_trellis",
+          "x": -4.8,
+          "y": -6,
+          "yaw": -1.5707963267948966,
+          "bounds_m": [
+            [
+              -5.310000419616699,
+              -7.400000095367432,
+              0.0
+            ],
+            [
+              -4.289999961853027,
+              -4.599999904632568,
+              2.4800000190734863
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.399999976158142,
+              -0.5099999904632568,
+              0.0
+            ],
+            [
+              1.399999976158142,
+              0.5099999904632568,
+              2.4800000190734863
+            ]
+          ]
+        },
+        {
+          "kind": "planted_trellis",
+          "x": -4.8,
+          "y": 6,
+          "yaw": -1.5707963267948966,
+          "bounds_m": [
+            [
+              -5.310000419616699,
+              4.599999904632568,
+              0.0
+            ],
+            [
+              -4.289999961853027,
+              7.400000095367432,
+              2.4800000190734863
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.399999976158142,
+              -0.5099999904632568,
+              0.0
+            ],
+            [
+              1.399999976158142,
+              0.5099999904632568,
+              2.4800000190734863
+            ]
+          ]
+        },
+        {
+          "kind": "planted_trellis",
+          "x": -4.8,
+          "y": 15,
+          "yaw": -1.5707963267948966,
+          "bounds_m": [
+            [
+              -5.310000419616699,
+              13.600000381469727,
+              0.0
+            ],
+            [
+              -4.289999961853027,
+              16.399999618530273,
+              2.4800000190734863
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.399999976158142,
+              -0.5099999904632568,
+              0.0
+            ],
+            [
+              1.399999976158142,
+              0.5099999904632568,
+              2.4800000190734863
+            ]
+          ]
+        },
+        {
+          "kind": "planted_trellis",
+          "x": 4.8,
+          "y": -15,
+          "yaw": 1.5707963267948966,
+          "bounds_m": [
+            [
+              4.289999961853027,
+              -16.399999618530273,
+              0.0
+            ],
+            [
+              5.310000419616699,
+              -13.600000381469727,
+              2.4800000190734863
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.399999976158142,
+              -0.5099999904632568,
+              0.0
+            ],
+            [
+              1.399999976158142,
+              0.5099999904632568,
+              2.4800000190734863
+            ]
+          ]
+        },
+        {
+          "kind": "planted_trellis",
+          "x": 4.8,
+          "y": -6,
+          "yaw": 1.5707963267948966,
+          "bounds_m": [
+            [
+              4.289999961853027,
+              -7.400000095367432,
+              0.0
+            ],
+            [
+              5.310000419616699,
+              -4.599999904632568,
+              2.4800000190734863
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.399999976158142,
+              -0.5099999904632568,
+              0.0
+            ],
+            [
+              1.399999976158142,
+              0.5099999904632568,
+              2.4800000190734863
+            ]
+          ]
+        },
+        {
+          "kind": "planted_trellis",
+          "x": 4.8,
+          "y": 6,
+          "yaw": 1.5707963267948966,
+          "bounds_m": [
+            [
+              4.289999961853027,
+              4.599999904632568,
+              0.0
+            ],
+            [
+              5.310000419616699,
+              7.400000095367432,
+              2.4800000190734863
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.399999976158142,
+              -0.5099999904632568,
+              0.0
+            ],
+            [
+              1.399999976158142,
+              0.5099999904632568,
+              2.4800000190734863
+            ]
+          ]
+        },
+        {
+          "kind": "planted_trellis",
+          "x": 4.8,
+          "y": 15,
+          "yaw": 1.5707963267948966,
+          "bounds_m": [
+            [
+              4.289999961853027,
+              13.600000381469727,
+              0.0
+            ],
+            [
+              5.310000419616699,
+              16.399999618530273,
+              2.4800000190734863
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.399999976158142,
+              -0.5099999904632568,
+              0.0
+            ],
+            [
+              1.399999976158142,
+              0.5099999904632568,
+              2.4800000190734863
+            ]
+          ]
+        }
+      ],
+      "visual_review": {
+        "status": "PASS_NATIVE_CONCEPT",
+        "reviewer": "Codex agent; not independent human approval",
+        "notes": "Raised planted trellises, soft tree beds, seating and open central lane.",
+        "views": {
+          "aerial": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\batch\\green_alley\\renders\\aerial.png",
+            "sha256": "3b01c7cd3c410cfcd64435c9a42e4d2f29e1ee464ee9c89c269f84b5b655da88"
+          },
+          "top": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\batch\\green_alley\\renders\\top.png",
+            "sha256": "3c7bccd7fd2343aeaedeeda32689519b2ec54527b0091beb851025ac153c024e"
+          },
+          "detail": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\batch\\green_alley\\renders\\detail.png",
+            "sha256": "e1a9f1b95187e30e1b2f1ead5021c66f6cd5e4de9ff2d68b701e51d4add4692b"
+          },
+          "street": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\batch\\green_alley\\renders\\street.png",
+            "sha256": "ff5f7a40db8806ead972c8d599f5067c2a8433fa055a8adafac84e9dd6d55d2d"
+          }
+        }
+      }
+    },
+    {
+      "id": "student_heritage_mews_v1",
+      "title": "Heritage Mews Lane",
+      "package": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\batch\\heritage_mews",
+      "dimensions_m": [
+        10,
+        40
+      ],
+      "assembly": {
+        "path": "assembly-preview.glb",
+        "bytes": 1245992,
+        "sha256": "3c5e8241394b528f9c8af2f10339bed4aaa015aece4717de25949c927df730cd"
+      },
+      "modules": {
+        "bench": {
+          "path": "bench.glb",
+          "bytes": 34024,
+          "sha256": "996f77a959d098469940fc032f23960c959b0c8275842575bb4de33c152539f7"
+        },
+        "heritage_lantern": {
+          "path": "heritage_lantern.glb",
+          "bytes": 17092,
+          "sha256": "689fbeab53e9702d6f0f2b83663282084466e42b502030762e0a4188d15d0dfe"
+        },
+        "planter": {
+          "path": "planter.glb",
+          "bytes": 131616,
+          "sha256": "86d98db9b14d250aa2c3e89e9dbff7f86240430564978ab64faeb9ae7b9ed232"
+        },
+        "street_bollard": {
+          "path": "street_bollard.glb",
+          "bytes": 9892,
+          "sha256": "530a525ac72258b0ed6b48d4918dbd80a00a14a0c56724fcdd27cb8224e09217"
+        }
+      },
+      "triangles": 30006,
+      "mesh_instances": 19,
+      "verification": {
+        "status": "PASS_OFFLINE_GEOMETRY",
+        "checks": [
+          "self-contained GLB buffers",
+          "delivered byte hashes",
+          "finite metric bounds",
+          "426 clear material-aware route rays",
+          "0 tree root openings checked",
+          "archived authoritative reference hashes",
+          "cross-section width sum",
+          "2 reimported native module bounds and ground contacts",
+          "12 native amenity envelopes and pairwise clearances",
+          "6 supported endpoint rays",
+          "right-hand cycle direction",
+          "350k triangle / 12 MB per-fixture budget"
+        ],
+        "runtime_tested": false
+      },
+      "source_sha256": {
+        "build_streets.py": "2484b4054c44a1c5c3cf263b29a892be2da51ac68436b47bd18bd664556683e5",
+        "build_street_batch.py": "6b9c86248e0a52d57b32dc010e26db33244380c446be3e9159cfaae9408ed7ec",
+        "scene.py": "b7572497dc11bffbb80c08d28bbf3a8f41ae12f666c471d34eb1d7654f62eb0a",
+        "sports_furniture.py": "e3738872b5191f3598652b91db5d9119b5f2219ac8f95a3a7a4513f8678c1a29",
+        "street_furniture.py": "2604b0462775a69d5b47e8f348737a5218029957fe012bbb2718656778a88ef5",
+        "street_specs.py": "7de2483734a8261155d226e4909025a16137b86bcf686cb954ae0e29df01f2c2",
+        "verify.py": "94f8fb729b78b294cea720a5982e8caaa62286d8a4df511ad0cb2ba9b22e56c6",
+        "verify_street_batch.py": "d3577777aca04814b7c406cd459a2c4ace6f1f5116c6bfac72eec3ba00ad7f8f"
+      },
+      "builder_review": "Visual review recorded in repository batch report; not independent human approval",
+      "runtime_status": "NOT TESTED; not installed in student picker",
+      "source_base_revision": "69786529a4ce149e2b80ad05438d09ff1e3980ea",
+      "image_references": [
+        {
+          "path": "references/london-mews-lane/hero.png",
+          "sha256": "e77bf7b408b6ccf9b7884c3e5e9904faee5f8d899c688224c3c9893a42961699",
+          "bytes": 1415562,
+          "source": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\streets\\london-mews-lane\\hero.png"
+        }
+      ],
+      "reference_profile": {
+        "observed": [
+          "Small-scale cobbled lane, lanterns and individual frontage planters"
+        ],
+        "adapted": [
+          "Freestanding lanterns stand in for facade-mounted lights; building facades are omitted"
+        ]
+      },
+      "reference_assets": [
+        {
+          "kind": "heritage_lantern",
+          "x": -4.0,
+          "y": -15,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              -4.289999961853027,
+              -15.289999961853027,
+              0.0
+            ],
+            [
+              -3.7100000381469727,
+              -14.710000038146973,
+              4.03000020980835
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -0.28999999165534973,
+              -0.28999999165534973,
+              0.0
+            ],
+            [
+              0.28999999165534973,
+              0.28999999165534973,
+              4.03000020980835
+            ]
+          ]
+        },
+        {
+          "kind": "heritage_lantern",
+          "x": -4.0,
+          "y": -5,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              -4.289999961853027,
+              -5.289999961853027,
+              0.0
+            ],
+            [
+              -3.7100000381469727,
+              -4.710000038146973,
+              4.03000020980835
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -0.28999999165534973,
+              -0.28999999165534973,
+              0.0
+            ],
+            [
+              0.28999999165534973,
+              0.28999999165534973,
+              4.03000020980835
+            ]
+          ]
+        },
+        {
+          "kind": "heritage_lantern",
+          "x": -4.0,
+          "y": 5,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              -4.289999961853027,
+              4.710000038146973,
+              0.0
+            ],
+            [
+              -3.7100000381469727,
+              5.289999961853027,
+              4.03000020980835
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -0.28999999165534973,
+              -0.28999999165534973,
+              0.0
+            ],
+            [
+              0.28999999165534973,
+              0.28999999165534973,
+              4.03000020980835
+            ]
+          ]
+        },
+        {
+          "kind": "heritage_lantern",
+          "x": -4.0,
+          "y": 15,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              -4.289999961853027,
+              14.710000038146973,
+              0.0
+            ],
+            [
+              -3.7100000381469727,
+              15.289999961853027,
+              4.03000020980835
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -0.28999999165534973,
+              -0.28999999165534973,
+              0.0
+            ],
+            [
+              0.28999999165534973,
+              0.28999999165534973,
+              4.03000020980835
+            ]
+          ]
+        },
+        {
+          "kind": "street_bollard",
+          "x": -4.0,
+          "y": -18,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              -4.139999866485596,
+              -18.139999389648438,
+              0.0
+            ],
+            [
+              -3.859999895095825,
+              -17.860000610351562,
+              0.9800000190734863
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -0.14000000059604645,
+              -0.14000000059604645,
+              0.0
+            ],
+            [
+              0.14000000059604645,
+              0.14000000059604645,
+              0.9800000190734863
+            ]
+          ]
+        },
+        {
+          "kind": "street_bollard",
+          "x": -4.0,
+          "y": 18,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              -4.139999866485596,
+              17.860000610351562,
+              0.0
+            ],
+            [
+              -3.859999895095825,
+              18.139999389648438,
+              0.9800000190734863
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -0.14000000059604645,
+              -0.14000000059604645,
+              0.0
+            ],
+            [
+              0.14000000059604645,
+              0.14000000059604645,
+              0.9800000190734863
+            ]
+          ]
+        },
+        {
+          "kind": "heritage_lantern",
+          "x": 4.0,
+          "y": -15,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              3.7100000381469727,
+              -15.289999961853027,
+              0.0
+            ],
+            [
+              4.289999961853027,
+              -14.710000038146973,
+              4.03000020980835
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -0.28999999165534973,
+              -0.28999999165534973,
+              0.0
+            ],
+            [
+              0.28999999165534973,
+              0.28999999165534973,
+              4.03000020980835
+            ]
+          ]
+        },
+        {
+          "kind": "heritage_lantern",
+          "x": 4.0,
+          "y": -5,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              3.7100000381469727,
+              -5.289999961853027,
+              0.0
+            ],
+            [
+              4.289999961853027,
+              -4.710000038146973,
+              4.03000020980835
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -0.28999999165534973,
+              -0.28999999165534973,
+              0.0
+            ],
+            [
+              0.28999999165534973,
+              0.28999999165534973,
+              4.03000020980835
+            ]
+          ]
+        },
+        {
+          "kind": "heritage_lantern",
+          "x": 4.0,
+          "y": 5,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              3.7100000381469727,
+              4.710000038146973,
+              0.0
+            ],
+            [
+              4.289999961853027,
+              5.289999961853027,
+              4.03000020980835
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -0.28999999165534973,
+              -0.28999999165534973,
+              0.0
+            ],
+            [
+              0.28999999165534973,
+              0.28999999165534973,
+              4.03000020980835
+            ]
+          ]
+        },
+        {
+          "kind": "heritage_lantern",
+          "x": 4.0,
+          "y": 15,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              3.7100000381469727,
+              14.710000038146973,
+              0.0
+            ],
+            [
+              4.289999961853027,
+              15.289999961853027,
+              4.03000020980835
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -0.28999999165534973,
+              -0.28999999165534973,
+              0.0
+            ],
+            [
+              0.28999999165534973,
+              0.28999999165534973,
+              4.03000020980835
+            ]
+          ]
+        },
+        {
+          "kind": "street_bollard",
+          "x": 4.0,
+          "y": -18,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              3.859999895095825,
+              -18.139999389648438,
+              0.0
+            ],
+            [
+              4.139999866485596,
+              -17.860000610351562,
+              0.9800000190734863
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -0.14000000059604645,
+              -0.14000000059604645,
+              0.0
+            ],
+            [
+              0.14000000059604645,
+              0.14000000059604645,
+              0.9800000190734863
+            ]
+          ]
+        },
+        {
+          "kind": "street_bollard",
+          "x": 4.0,
+          "y": 18,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              3.859999895095825,
+              17.860000610351562,
+              0.0
+            ],
+            [
+              4.139999866485596,
+              18.139999389648438,
+              0.9800000190734863
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -0.14000000059604645,
+              -0.14000000059604645,
+              0.0
+            ],
+            [
+              0.14000000059604645,
+              0.14000000059604645,
+              0.9800000190734863
+            ]
+          ]
+        }
+      ],
+      "visual_review": {
+        "status": "PASS_NATIVE_CONCEPT",
+        "reviewer": "Codex agent; not independent human approval",
+        "notes": "Compact cobbled lane, lanterns, bollards and small frontage planters.",
+        "views": {
+          "aerial": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\batch\\heritage_mews\\renders\\aerial.png",
+            "sha256": "bd872679da689cfd44c41aac90fd09e9702883477ebde11261cca1f8a9e6a4f5"
+          },
+          "top": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\batch\\heritage_mews\\renders\\top.png",
+            "sha256": "c9f8ce46a5f9a9262c1fc2277305a16a4c80fe2235ceb7c0138033f5585d7570"
+          },
+          "detail": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\batch\\heritage_mews\\renders\\detail.png",
+            "sha256": "65edeb2ff235721923aa61d08810468d0c6d4ccaadb9ebb67dbcf6a2eed77cae"
+          },
+          "street": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\batch\\heritage_mews\\renders\\street.png",
+            "sha256": "4f39d8f41f426f358fe2e66d44af4a2a217892beab3286f199c0a15430bd4b64"
+          }
+        }
+      }
+    },
+    {
+      "id": "student_boardwalk_v1",
+      "title": "Waterfront Timber Boardwalk",
+      "package": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\batch\\boardwalk",
+      "dimensions_m": [
+        12.0,
+        48
+      ],
+      "assembly": {
+        "path": "assembly-preview.glb",
+        "bytes": 903284,
+        "sha256": "bcaf43f61fbb5b645fbc27b1906d973224894c2a6b050b062c2e901956a306b9"
+      },
+      "modules": {
+        "bench": {
+          "path": "bench.glb",
+          "bytes": 34024,
+          "sha256": "996f77a959d098469940fc032f23960c959b0c8275842575bb4de33c152539f7"
+        },
+        "boardwalk_guard": {
+          "path": "boardwalk_guard.glb",
+          "bytes": 28164,
+          "sha256": "e36d7f71be98273753cd60a68749d08a86b23d809f4c23f0e93f8768ac28ec4a"
+        },
+        "boardwalk_hammock": {
+          "path": "boardwalk_hammock.glb",
+          "bytes": 23116,
+          "sha256": "82421ec3f2dff83ed99b567aa20e1e85057916ff737c57f03242aa6d727f5ec1"
+        },
+        "cafe_table_chairs": {
+          "path": "cafe_table_chairs.glb",
+          "bytes": 49444,
+          "sha256": "da7900c6b13585d5a43025e4505c471339153f79b195556ce37f98a7e1119cb2"
+        },
+        "light": {
+          "path": "light.glb",
+          "bytes": 37668,
+          "sha256": "bb7a9513267af2c399c6f57e5c926cf6ca50c123e93ee2960bbdd9efe4b48ded"
+        }
+      },
+      "triangles": 18516,
+      "mesh_instances": 18,
+      "verification": {
+        "status": "PASS_OFFLINE_GEOMETRY",
+        "checks": [
+          "self-contained GLB buffers",
+          "delivered byte hashes",
+          "finite metric bounds",
+          "546 clear material-aware route rays",
+          "0 tree root openings checked",
+          "archived authoritative reference hashes",
+          "cross-section width sum",
+          "3 reimported native module bounds and ground contacts",
+          "22 native amenity envelopes and pairwise clearances",
+          "6 supported endpoint rays",
+          "right-hand cycle direction",
+          "350k triangle / 12 MB per-fixture budget"
+        ],
+        "runtime_tested": false
+      },
+      "source_sha256": {
+        "build_streets.py": "2484b4054c44a1c5c3cf263b29a892be2da51ac68436b47bd18bd664556683e5",
+        "build_street_batch.py": "6b9c86248e0a52d57b32dc010e26db33244380c446be3e9159cfaae9408ed7ec",
+        "scene.py": "b7572497dc11bffbb80c08d28bbf3a8f41ae12f666c471d34eb1d7654f62eb0a",
+        "sports_furniture.py": "e3738872b5191f3598652b91db5d9119b5f2219ac8f95a3a7a4513f8678c1a29",
+        "street_furniture.py": "2604b0462775a69d5b47e8f348737a5218029957fe012bbb2718656778a88ef5",
+        "street_specs.py": "7de2483734a8261155d226e4909025a16137b86bcf686cb954ae0e29df01f2c2",
+        "verify.py": "94f8fb729b78b294cea720a5982e8caaa62286d8a4df511ad0cb2ba9b22e56c6",
+        "verify_street_batch.py": "d3577777aca04814b7c406cd459a2c4ace6f1f5116c6bfac72eec3ba00ad7f8f"
+      },
+      "builder_review": "Visual review recorded in repository batch report; not independent human approval",
+      "runtime_status": "NOT TESTED; not installed in student picker",
+      "source_base_revision": "69786529a4ce149e2b80ad05438d09ff1e3980ea",
+      "image_references": [
+        {
+          "path": "references/halifax-waterfront-boardwalk/hero.png",
+          "sha256": "dbcff020b890f59cf940b54a7c2f5ee58ea3e421389ecb5c3e23354d76fa0a76",
+          "bytes": 1343173,
+          "source": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\streets\\halifax-waterfront-boardwalk\\hero.png"
+        }
+      ],
+      "reference_profile": {
+        "observed": [
+          "Timber decking, waterside guard, suspended hammocks and cafe furniture"
+        ],
+        "adapted": [
+          "Level deck fixture with explicit open ends; no invented water or surrounding buildings"
+        ]
+      },
+      "reference_assets": [
+        {
+          "kind": "boardwalk_guard",
+          "x": -5.8,
+          "y": -21,
+          "yaw": 1.5707963267948966,
+          "bounds_m": [
+            [
+              -5.865000247955322,
+              -22.524999618530273,
+              0.0
+            ],
+            [
+              -5.735000133514404,
+              -19.475000381469727,
+              1.159999966621399
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.524999976158142,
+              -0.06499999761581421,
+              0.0
+            ],
+            [
+              1.524999976158142,
+              0.06499999761581421,
+              1.159999966621399
+            ]
+          ]
+        },
+        {
+          "kind": "boardwalk_guard",
+          "x": -5.8,
+          "y": -18,
+          "yaw": 1.5707963267948966,
+          "bounds_m": [
+            [
+              -5.865000247955322,
+              -19.524999618530273,
+              0.0
+            ],
+            [
+              -5.735000133514404,
+              -16.475000381469727,
+              1.159999966621399
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.524999976158142,
+              -0.06499999761581421,
+              0.0
+            ],
+            [
+              1.524999976158142,
+              0.06499999761581421,
+              1.159999966621399
+            ]
+          ]
+        },
+        {
+          "kind": "boardwalk_guard",
+          "x": -5.8,
+          "y": -15,
+          "yaw": 1.5707963267948966,
+          "bounds_m": [
+            [
+              -5.865000247955322,
+              -16.524999618530273,
+              0.0
+            ],
+            [
+              -5.735000133514404,
+              -13.475000381469727,
+              1.159999966621399
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.524999976158142,
+              -0.06499999761581421,
+              0.0
+            ],
+            [
+              1.524999976158142,
+              0.06499999761581421,
+              1.159999966621399
+            ]
+          ]
+        },
+        {
+          "kind": "boardwalk_guard",
+          "x": -5.8,
+          "y": -12,
+          "yaw": 1.5707963267948966,
+          "bounds_m": [
+            [
+              -5.865000247955322,
+              -13.524999618530273,
+              0.0
+            ],
+            [
+              -5.735000133514404,
+              -10.475000381469727,
+              1.159999966621399
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.524999976158142,
+              -0.06499999761581421,
+              0.0
+            ],
+            [
+              1.524999976158142,
+              0.06499999761581421,
+              1.159999966621399
+            ]
+          ]
+        },
+        {
+          "kind": "boardwalk_guard",
+          "x": -5.8,
+          "y": -9,
+          "yaw": 1.5707963267948966,
+          "bounds_m": [
+            [
+              -5.865000247955322,
+              -10.524999618530273,
+              0.0
+            ],
+            [
+              -5.735000133514404,
+              -7.474999904632568,
+              1.159999966621399
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.524999976158142,
+              -0.06499999761581421,
+              0.0
+            ],
+            [
+              1.524999976158142,
+              0.06499999761581421,
+              1.159999966621399
+            ]
+          ]
+        },
+        {
+          "kind": "boardwalk_guard",
+          "x": -5.8,
+          "y": -6,
+          "yaw": 1.5707963267948966,
+          "bounds_m": [
+            [
+              -5.865000247955322,
+              -7.525000095367432,
+              0.0
+            ],
+            [
+              -5.735000133514404,
+              -4.474999904632568,
+              1.159999966621399
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.524999976158142,
+              -0.06499999761581421,
+              0.0
+            ],
+            [
+              1.524999976158142,
+              0.06499999761581421,
+              1.159999966621399
+            ]
+          ]
+        },
+        {
+          "kind": "boardwalk_guard",
+          "x": -5.8,
+          "y": -3,
+          "yaw": 1.5707963267948966,
+          "bounds_m": [
+            [
+              -5.865000247955322,
+              -4.525000095367432,
+              0.0
+            ],
+            [
+              -5.735000133514404,
+              -1.475000023841858,
+              1.159999966621399
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.524999976158142,
+              -0.06499999761581421,
+              0.0
+            ],
+            [
+              1.524999976158142,
+              0.06499999761581421,
+              1.159999966621399
+            ]
+          ]
+        },
+        {
+          "kind": "boardwalk_guard",
+          "x": -5.8,
+          "y": 0,
+          "yaw": 1.5707963267948966,
+          "bounds_m": [
+            [
+              -5.865000247955322,
+              -1.524999976158142,
+              0.0
+            ],
+            [
+              -5.735000133514404,
+              1.524999976158142,
+              1.159999966621399
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.524999976158142,
+              -0.06499999761581421,
+              0.0
+            ],
+            [
+              1.524999976158142,
+              0.06499999761581421,
+              1.159999966621399
+            ]
+          ]
+        },
+        {
+          "kind": "boardwalk_guard",
+          "x": -5.8,
+          "y": 3,
+          "yaw": 1.5707963267948966,
+          "bounds_m": [
+            [
+              -5.865000247955322,
+              1.475000023841858,
+              0.0
+            ],
+            [
+              -5.735000133514404,
+              4.525000095367432,
+              1.159999966621399
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.524999976158142,
+              -0.06499999761581421,
+              0.0
+            ],
+            [
+              1.524999976158142,
+              0.06499999761581421,
+              1.159999966621399
+            ]
+          ]
+        },
+        {
+          "kind": "boardwalk_guard",
+          "x": -5.8,
+          "y": 6,
+          "yaw": 1.5707963267948966,
+          "bounds_m": [
+            [
+              -5.865000247955322,
+              4.474999904632568,
+              0.0
+            ],
+            [
+              -5.735000133514404,
+              7.525000095367432,
+              1.159999966621399
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.524999976158142,
+              -0.06499999761581421,
+              0.0
+            ],
+            [
+              1.524999976158142,
+              0.06499999761581421,
+              1.159999966621399
+            ]
+          ]
+        },
+        {
+          "kind": "boardwalk_guard",
+          "x": -5.8,
+          "y": 9,
+          "yaw": 1.5707963267948966,
+          "bounds_m": [
+            [
+              -5.865000247955322,
+              7.474999904632568,
+              0.0
+            ],
+            [
+              -5.735000133514404,
+              10.524999618530273,
+              1.159999966621399
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.524999976158142,
+              -0.06499999761581421,
+              0.0
+            ],
+            [
+              1.524999976158142,
+              0.06499999761581421,
+              1.159999966621399
+            ]
+          ]
+        },
+        {
+          "kind": "boardwalk_guard",
+          "x": -5.8,
+          "y": 12,
+          "yaw": 1.5707963267948966,
+          "bounds_m": [
+            [
+              -5.865000247955322,
+              10.475000381469727,
+              0.0
+            ],
+            [
+              -5.735000133514404,
+              13.524999618530273,
+              1.159999966621399
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.524999976158142,
+              -0.06499999761581421,
+              0.0
+            ],
+            [
+              1.524999976158142,
+              0.06499999761581421,
+              1.159999966621399
+            ]
+          ]
+        },
+        {
+          "kind": "boardwalk_guard",
+          "x": -5.8,
+          "y": 15,
+          "yaw": 1.5707963267948966,
+          "bounds_m": [
+            [
+              -5.865000247955322,
+              13.475000381469727,
+              0.0
+            ],
+            [
+              -5.735000133514404,
+              16.524999618530273,
+              1.159999966621399
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.524999976158142,
+              -0.06499999761581421,
+              0.0
+            ],
+            [
+              1.524999976158142,
+              0.06499999761581421,
+              1.159999966621399
+            ]
+          ]
+        },
+        {
+          "kind": "boardwalk_guard",
+          "x": -5.8,
+          "y": 18,
+          "yaw": 1.5707963267948966,
+          "bounds_m": [
+            [
+              -5.865000247955322,
+              16.475000381469727,
+              0.0
+            ],
+            [
+              -5.735000133514404,
+              19.524999618530273,
+              1.159999966621399
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.524999976158142,
+              -0.06499999761581421,
+              0.0
+            ],
+            [
+              1.524999976158142,
+              0.06499999761581421,
+              1.159999966621399
+            ]
+          ]
+        },
+        {
+          "kind": "boardwalk_guard",
+          "x": -5.8,
+          "y": 21,
+          "yaw": 1.5707963267948966,
+          "bounds_m": [
+            [
+              -5.865000247955322,
+              19.475000381469727,
+              0.0
+            ],
+            [
+              -5.735000133514404,
+              22.524999618530273,
+              1.159999966621399
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.524999976158142,
+              -0.06499999761581421,
+              0.0
+            ],
+            [
+              1.524999976158142,
+              0.06499999761581421,
+              1.159999966621399
+            ]
+          ]
+        },
+        {
+          "kind": "boardwalk_hammock",
+          "x": -3.25,
+          "y": -16,
+          "yaw": 1.5707963267948966,
+          "bounds_m": [
+            [
+              -3.75,
+              -18.080839157104492,
+              0.0
+            ],
+            [
+              -2.75,
+              -13.919159889221191,
+              1.850000023841858
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -2.0808398723602295,
+              -0.5,
+              0.0
+            ],
+            [
+              2.0808398723602295,
+              0.5,
+              1.850000023841858
+            ]
+          ]
+        },
+        {
+          "kind": "boardwalk_hammock",
+          "x": -3.25,
+          "y": -8,
+          "yaw": 1.5707963267948966,
+          "bounds_m": [
+            [
+              -3.75,
+              -10.080840110778809,
+              0.0
+            ],
+            [
+              -2.75,
+              -5.919159889221191,
+              1.850000023841858
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -2.0808398723602295,
+              -0.5,
+              0.0
+            ],
+            [
+              2.0808398723602295,
+              0.5,
+              1.850000023841858
+            ]
+          ]
+        },
+        {
+          "kind": "boardwalk_hammock",
+          "x": -3.25,
+          "y": 8,
+          "yaw": 1.5707963267948966,
+          "bounds_m": [
+            [
+              -3.75,
+              5.919159889221191,
+              0.0
+            ],
+            [
+              -2.75,
+              10.080840110778809,
+              1.850000023841858
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -2.0808398723602295,
+              -0.5,
+              0.0
+            ],
+            [
+              2.0808398723602295,
+              0.5,
+              1.850000023841858
+            ]
+          ]
+        },
+        {
+          "kind": "boardwalk_hammock",
+          "x": -3.25,
+          "y": 16,
+          "yaw": 1.5707963267948966,
+          "bounds_m": [
+            [
+              -3.75,
+              13.919159889221191,
+              0.0
+            ],
+            [
+              -2.75,
+              18.080839157104492,
+              1.850000023841858
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -2.0808398723602295,
+              -0.5,
+              0.0
+            ],
+            [
+              2.0808398723602295,
+              0.5,
+              1.850000023841858
+            ]
+          ]
+        },
+        {
+          "kind": "cafe_table_chairs",
+          "x": 4.25,
+          "y": -15,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              3.2750000953674316,
+              -15.975000381469727,
+              0.0
+            ],
+            [
+              5.224999904632568,
+              -14.024999618530273,
+              0.8399999737739563
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -0.9750000238418579,
+              -0.9750000238418579,
+              0.0
+            ],
+            [
+              0.9750000238418579,
+              0.9750000238418579,
+              0.8399999737739563
+            ]
+          ]
+        },
+        {
+          "kind": "cafe_table_chairs",
+          "x": 4.25,
+          "y": 8,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              3.2750000953674316,
+              7.025000095367432,
+              0.0
+            ],
+            [
+              5.224999904632568,
+              8.975000381469727,
+              0.8399999737739563
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -0.9750000238418579,
+              -0.9750000238418579,
+              0.0
+            ],
+            [
+              0.9750000238418579,
+              0.9750000238418579,
+              0.8399999737739563
+            ]
+          ]
+        },
+        {
+          "kind": "cafe_table_chairs",
+          "x": 4.25,
+          "y": 15,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              3.2750000953674316,
+              14.024999618530273,
+              0.0
+            ],
+            [
+              5.224999904632568,
+              15.975000381469727,
+              0.8399999737739563
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -0.9750000238418579,
+              -0.9750000238418579,
+              0.0
+            ],
+            [
+              0.9750000238418579,
+              0.9750000238418579,
+              0.8399999737739563
+            ]
+          ]
+        }
+      ],
+      "visual_review": {
+        "status": "PASS_NATIVE_CONCEPT",
+        "reviewer": "Codex agent; not independent human approval",
+        "notes": "Timber boards, supported guardrail, sagging fabric hammocks and clear central route.",
+        "views": {
+          "aerial": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\batch\\boardwalk\\renders\\aerial.png",
+            "sha256": "27befebdf5942f92b1cc0dece664eead29dca53ef023c1af038a4740854067d9"
+          },
+          "top": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\batch\\boardwalk\\renders\\top.png",
+            "sha256": "bf0b07e2244447703f9ebf123502aadb34f4f396c409b6e7604114391b60c093"
+          },
+          "detail": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\batch\\boardwalk\\renders\\detail.png",
+            "sha256": "6134fd7b429a6e3c4dd00ccd38313eeb95c989d5c9f6826d1b27def595745719"
+          },
+          "street": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\batch\\boardwalk\\renders\\street.png",
+            "sha256": "9a47303123f231e6f7ed7367959296a7f55ec98b461c232bbaa123948de003a7"
+          }
+        }
+      }
+    },
+    {
+      "id": "student_school_street_v1",
+      "title": "Playful School Street",
+      "package": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\revised\\school_street",
+      "dimensions_m": [
+        18.0,
+        48
+      ],
+      "assembly": {
+        "path": "assembly-preview.glb",
+        "bytes": 1846172,
+        "sha256": "9606b8a34562784b1c5aeba0f108445c9e08cb2a83dfeb510fae1135b2ca8f3f"
+      },
+      "modules": {
+        "bike_rack": {
+          "path": "bike_rack.glb",
+          "bytes": 96964,
+          "sha256": "0be3cabadaddbf9f22556f0f7ead696eb8ca41f5c881b4f30a0c2940272bf907"
+        },
+        "grove_tree": {
+          "path": "grove_tree.glb",
+          "bytes": 1287628,
+          "sha256": "6de066f61229af40aa4b1ee14917b4472012e276c7ba6d419986e5a24e74ee41"
+        },
+        "light": {
+          "path": "light.glb",
+          "bytes": 37668,
+          "sha256": "bb7a9513267af2c399c6f57e5c926cf6ca50c123e93ee2960bbdd9efe4b48ded"
+        },
+        "planted_trellis": {
+          "path": "planted_trellis.glb",
+          "bytes": 33656,
+          "sha256": "815e43e86d7c5d6622390acf36ba5bde84be054c1b2fcfebd6bc0e688b4886d0"
+        },
+        "street_bollard": {
+          "path": "street_bollard.glb",
+          "bytes": 9892,
+          "sha256": "6316b618afc54fecd980497cebcee3d49d6b930420cab8ad71819ffe9ac4783e"
+        },
+        "timber_seat_wall": {
+          "path": "timber_seat_wall.glb",
+          "bytes": 18172,
+          "sha256": "21064ded3591dc46184b9be308ab147ae3d3b2fcfc8993707f185fc3b6090248"
+        },
+        "tree_well_grate": {
+          "path": "tree_well_grate.glb",
+          "bytes": 95608,
+          "sha256": "861ceb2e4166ff74825c42c485d1f9b118334f85b6a3231d8c3a905cc309e493"
+        }
+      },
+      "triangles": 59056,
+      "mesh_instances": 32,
+      "verification": {
+        "status": "PASS_OFFLINE_GEOMETRY",
+        "checks": [
+          "self-contained GLB buffers",
+          "delivered byte hashes",
+          "finite metric bounds",
+          "1380 clear material-aware route rays",
+          "4 tree root openings checked",
+          "archived authoritative reference hashes",
+          "cross-section width sum",
+          "3 reimported native module bounds and ground contacts",
+          "12 native amenity envelopes and pairwise clearances",
+          "18 supported endpoint rays",
+          "right-hand cycle direction",
+          "350k triangle / 12 MB per-fixture budget"
+        ],
+        "runtime_tested": false
+      },
+      "source_sha256": {
+        "build_streets.py": "2484b4054c44a1c5c3cf263b29a892be2da51ac68436b47bd18bd664556683e5",
+        "build_street_batch.py": "af8fac626e46945984fcf88a7728f0c2f4c0991c7768b3c77cce787a0c43ce07",
+        "scene.py": "b7572497dc11bffbb80c08d28bbf3a8f41ae12f666c471d34eb1d7654f62eb0a",
+        "sports_furniture.py": "e3738872b5191f3598652b91db5d9119b5f2219ac8f95a3a7a4513f8678c1a29",
+        "street_furniture.py": "ba14c49f8fe23c87a962bc8894a8e99d70486083cb24f2857fd14129245c6ec4",
+        "street_specs.py": "7de2483734a8261155d226e4909025a16137b86bcf686cb954ae0e29df01f2c2",
+        "verify.py": "94f8fb729b78b294cea720a5982e8caaa62286d8a4df511ad0cb2ba9b22e56c6",
+        "verify_street_batch.py": "d3577777aca04814b7c406cd459a2c4ace6f1f5116c6bfac72eec3ba00ad7f8f"
+      },
+      "builder_review": "Visual review recorded in repository batch report; not independent human approval",
+      "runtime_status": "NOT TESTED; not installed in student picker",
+      "source_base_revision": "69786529a4ce149e2b80ad05438d09ff1e3980ea",
+      "image_references": [
+        {
+          "path": "references/school-street/variant_0.png",
+          "sha256": "36eb4c62f554de603e7b3a82b1f7f688ecdd509ee99fbd459af06f6e40d3e17a",
+          "bytes": 1606131,
+          "source": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\streets\\school-street\\variant_0.png"
+        }
+      ],
+      "reference_profile": {
+        "observed": [
+          "Painted play graphics, timber planters, bicycle parking, seats and bollards"
+        ],
+        "adapted": [
+          "Side bollards leave centre open for later network-controlled access; no school building or claimed traffic restriction"
+        ]
+      },
+      "reference_assets": [
+        {
+          "kind": "timber_seat_wall",
+          "x": -4.75,
+          "y": -6,
+          "yaw": 1.5707963267948966,
+          "bounds_m": [
+            [
+              -5.095000267028809,
+              -7.800000190734863,
+              0.0
+            ],
+            [
+              -4.404999732971191,
+              -4.199999809265137,
+              0.47999998927116394
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.7999999523162842,
+              -0.3449999988079071,
+              0.0
+            ],
+            [
+              1.7999999523162842,
+              0.3449999988079071,
+              0.47999998927116394
+            ]
+          ]
+        },
+        {
+          "kind": "timber_seat_wall",
+          "x": -4.75,
+          "y": 6,
+          "yaw": 1.5707963267948966,
+          "bounds_m": [
+            [
+              -5.095000267028809,
+              4.199999809265137,
+              0.0
+            ],
+            [
+              -4.404999732971191,
+              7.800000190734863,
+              0.47999998927116394
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.7999999523162842,
+              -0.3449999988079071,
+              0.0
+            ],
+            [
+              1.7999999523162842,
+              0.3449999988079071,
+              0.47999998927116394
+            ]
+          ]
+        },
+        {
+          "kind": "planted_trellis",
+          "x": -4.75,
+          "y": -21,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              -6.150000095367432,
+              -21.510000228881836,
+              0.0
+            ],
+            [
+              -3.3499999046325684,
+              -20.489999771118164,
+              2.4800000190734863
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.399999976158142,
+              -0.5099999904632568,
+              0.0
+            ],
+            [
+              1.399999976158142,
+              0.5099999904632568,
+              2.4800000190734863
+            ]
+          ]
+        },
+        {
+          "kind": "planted_trellis",
+          "x": -4.75,
+          "y": 21,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              -6.150000095367432,
+              20.489999771118164,
+              0.0
+            ],
+            [
+              -3.3499999046325684,
+              21.510000228881836,
+              2.4800000190734863
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.399999976158142,
+              -0.5099999904632568,
+              0.0
+            ],
+            [
+              1.399999976158142,
+              0.5099999904632568,
+              2.4800000190734863
+            ]
+          ]
+        },
+        {
+          "kind": "street_bollard",
+          "x": -4.75,
+          "y": -2.5,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              -4.889999866485596,
+              -2.640000104904175,
+              0.0
+            ],
+            [
+              -4.610000133514404,
+              -2.359999895095825,
+              0.9800000190734863
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -0.14000000059604645,
+              -0.14000000059604645,
+              0.0
+            ],
+            [
+              0.14000000059604645,
+              0.14000000059604645,
+              0.9800000190734863
+            ]
+          ]
+        },
+        {
+          "kind": "street_bollard",
+          "x": -4.75,
+          "y": 2.5,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              -4.889999866485596,
+              2.359999895095825,
+              0.0
+            ],
+            [
+              -4.610000133514404,
+              2.640000104904175,
+              0.9800000190734863
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -0.14000000059604645,
+              -0.14000000059604645,
+              0.0
+            ],
+            [
+              0.14000000059604645,
+              0.14000000059604645,
+              0.9800000190734863
+            ]
+          ]
+        },
+        {
+          "kind": "timber_seat_wall",
+          "x": 4.75,
+          "y": -6,
+          "yaw": 1.5707963267948966,
+          "bounds_m": [
+            [
+              4.404999732971191,
+              -7.800000190734863,
+              0.0
+            ],
+            [
+              5.095000267028809,
+              -4.199999809265137,
+              0.47999998927116394
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.7999999523162842,
+              -0.3449999988079071,
+              0.0
+            ],
+            [
+              1.7999999523162842,
+              0.3449999988079071,
+              0.47999998927116394
+            ]
+          ]
+        },
+        {
+          "kind": "timber_seat_wall",
+          "x": 4.75,
+          "y": 6,
+          "yaw": 1.5707963267948966,
+          "bounds_m": [
+            [
+              4.404999732971191,
+              4.199999809265137,
+              0.0
+            ],
+            [
+              5.095000267028809,
+              7.800000190734863,
+              0.47999998927116394
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.7999999523162842,
+              -0.3449999988079071,
+              0.0
+            ],
+            [
+              1.7999999523162842,
+              0.3449999988079071,
+              0.47999998927116394
+            ]
+          ]
+        },
+        {
+          "kind": "planted_trellis",
+          "x": 4.75,
+          "y": -21,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              3.3499999046325684,
+              -21.510000228881836,
+              0.0
+            ],
+            [
+              6.150000095367432,
+              -20.489999771118164,
+              2.4800000190734863
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.399999976158142,
+              -0.5099999904632568,
+              0.0
+            ],
+            [
+              1.399999976158142,
+              0.5099999904632568,
+              2.4800000190734863
+            ]
+          ]
+        },
+        {
+          "kind": "planted_trellis",
+          "x": 4.75,
+          "y": 21,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              3.3499999046325684,
+              20.489999771118164,
+              0.0
+            ],
+            [
+              6.150000095367432,
+              21.510000228881836,
+              2.4800000190734863
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.399999976158142,
+              -0.5099999904632568,
+              0.0
+            ],
+            [
+              1.399999976158142,
+              0.5099999904632568,
+              2.4800000190734863
+            ]
+          ]
+        },
+        {
+          "kind": "street_bollard",
+          "x": 4.75,
+          "y": -2.5,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              4.610000133514404,
+              -2.640000104904175,
+              0.0
+            ],
+            [
+              4.889999866485596,
+              -2.359999895095825,
+              0.9800000190734863
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -0.14000000059604645,
+              -0.14000000059604645,
+              0.0
+            ],
+            [
+              0.14000000059604645,
+              0.14000000059604645,
+              0.9800000190734863
+            ]
+          ]
+        },
+        {
+          "kind": "street_bollard",
+          "x": 4.75,
+          "y": 2.5,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              4.610000133514404,
+              2.359999895095825,
+              0.0
+            ],
+            [
+              4.889999866485596,
+              2.640000104904175,
+              0.9800000190734863
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -0.14000000059604645,
+              -0.14000000059604645,
+              0.0
+            ],
+            [
+              0.14000000059604645,
+              0.14000000059604645,
+              0.9800000190734863
+            ]
+          ]
+        }
+      ],
+      "visual_review": {
+        "status": "PASS_NATIVE_CONCEPT",
+        "reviewer": "Codex agent; not independent human approval",
+        "notes": "Revised blue/yellow play graphics, cycle racks, seat walls, trellis planters and clear route.",
+        "views": {
+          "aerial": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\revised\\school_street\\renders\\aerial.png",
+            "sha256": "a3085479c0d29e24ffe308eddf1673ca13ff79d3ac62e1f0d1ab4245648f1785"
+          },
+          "top": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\revised\\school_street\\renders\\top.png",
+            "sha256": "a74f3bbe556745c205628f9ae9e83b963939d7dac6d169551a604140476800ed"
+          },
+          "detail": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\revised\\school_street\\renders\\detail.png",
+            "sha256": "46573588363dd86d117224cb805a5edb30dc0f7c356855c4ceafcaa07d484309"
+          },
+          "street": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\revised\\school_street\\renders\\street.png",
+            "sha256": "983da01d230d4eb320924646e2f5dd790117f479e1756717801fa8aed5010320"
+          }
+        }
+      }
+    },
+    {
+      "id": "student_grand_promenade_v1",
+      "title": "Grand Promenade Boulevard",
+      "package": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\batch\\grand_promenade",
+      "dimensions_m": [
+        24.5,
+        48
+      ],
+      "assembly": {
+        "path": "assembly-preview.glb",
+        "bytes": 1860808,
+        "sha256": "b2a7df47bbc8efbea0e6b5a25b7bdcf124196af44deb992ad0e5fc618d0b9d32"
+      },
+      "modules": {
+        "bench": {
+          "path": "bench.glb",
+          "bytes": 34024,
+          "sha256": "996f77a959d098469940fc032f23960c959b0c8275842575bb4de33c152539f7"
+        },
+        "bike_rack": {
+          "path": "bike_rack.glb",
+          "bytes": 96964,
+          "sha256": "0be3cabadaddbf9f22556f0f7ead696eb8ca41f5c881b4f30a0c2940272bf907"
+        },
+        "bin": {
+          "path": "bin.glb",
+          "bytes": 80532,
+          "sha256": "a146ecda675ef0cba34caf1edac9c13c4f8e8d93b42b137e070c47b32c8f89f1"
+        },
+        "grove_tree": {
+          "path": "grove_tree.glb",
+          "bytes": 1287628,
+          "sha256": "6de066f61229af40aa4b1ee14917b4472012e276c7ba6d419986e5a24e74ee41"
+        },
+        "heritage_lantern": {
+          "path": "heritage_lantern.glb",
+          "bytes": 17096,
+          "sha256": "3128c76ab7eff91eefa2421aef13d01a947408dcb3dc828a0f35146841cbebdc"
+        },
+        "market_stall": {
+          "path": "market_stall.glb",
+          "bytes": 47684,
+          "sha256": "137b0185fc4e3384a314ddb9e06a1e99dc8091514882db7d14d1bb43af1e95b1"
+        },
+        "promenade_kiosk": {
+          "path": "promenade_kiosk.glb",
+          "bytes": 20692,
+          "sha256": "ca79602138b3144fdb198ca56f2a3d0e4c80c01e9b6b3d780e686548e716cba9"
+        },
+        "tree_well_grate": {
+          "path": "tree_well_grate.glb",
+          "bytes": 95608,
+          "sha256": "861ceb2e4166ff74825c42c485d1f9b118334f85b6a3231d8c3a905cc309e493"
+        }
+      },
+      "triangles": 104484,
+      "mesh_instances": 44,
+      "verification": {
+        "status": "PASS_OFFLINE_GEOMETRY",
+        "checks": [
+          "self-contained GLB buffers",
+          "delivered byte hashes",
+          "finite metric bounds",
+          "2250 clear material-aware route rays",
+          "8 tree root openings checked",
+          "archived authoritative reference hashes",
+          "cross-section width sum",
+          "3 reimported native module bounds and ground contacts",
+          "6 native amenity envelopes and pairwise clearances",
+          "30 supported endpoint rays",
+          "right-hand cycle direction",
+          "350k triangle / 12 MB per-fixture budget"
+        ],
+        "runtime_tested": false
+      },
+      "source_sha256": {
+        "build_streets.py": "2484b4054c44a1c5c3cf263b29a892be2da51ac68436b47bd18bd664556683e5",
+        "build_street_batch.py": "6b9c86248e0a52d57b32dc010e26db33244380c446be3e9159cfaae9408ed7ec",
+        "scene.py": "b7572497dc11bffbb80c08d28bbf3a8f41ae12f666c471d34eb1d7654f62eb0a",
+        "sports_furniture.py": "e3738872b5191f3598652b91db5d9119b5f2219ac8f95a3a7a4513f8678c1a29",
+        "street_furniture.py": "2604b0462775a69d5b47e8f348737a5218029957fe012bbb2718656778a88ef5",
+        "street_specs.py": "7de2483734a8261155d226e4909025a16137b86bcf686cb954ae0e29df01f2c2",
+        "verify.py": "94f8fb729b78b294cea720a5982e8caaa62286d8a4df511ad0cb2ba9b22e56c6",
+        "verify_street_batch.py": "d3577777aca04814b7c406cd459a2c4ace6f1f5116c6bfac72eec3ba00ad7f8f"
+      },
+      "builder_review": "Visual review recorded in repository batch report; not independent human approval",
+      "runtime_status": "NOT TESTED; not installed in student picker",
+      "source_base_revision": "69786529a4ce149e2b80ad05438d09ff1e3980ea",
+      "image_references": [
+        {
+          "path": "references/barcelona-passeig-grand-promenade/hero.png",
+          "sha256": "2bfaafe6de42342e1ae01ee79ba4d547b7776c07725d71dc9ccb7a1b7050a135",
+          "bytes": 1669144,
+          "source": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\streets\\barcelona-passeig-grand-promenade\\hero.png"
+        }
+      ],
+      "reference_profile": {
+        "observed": [
+          "Broad central walk, paired tree rows, benches, kiosks and outer traffic lanes"
+        ],
+        "adapted": [
+          "Small news kiosk and flower stall occupy side bays; original metric section"
+        ]
+      },
+      "reference_assets": [
+        {
+          "kind": "heritage_lantern",
+          "x": -4.75,
+          "y": -11,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              -5.039999961853027,
+              -11.289999961853027,
+              0.0
+            ],
+            [
+              -4.460000038146973,
+              -10.710000038146973,
+              4.03000020980835
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -0.28999999165534973,
+              -0.28999999165534973,
+              0.0
+            ],
+            [
+              0.28999999165534973,
+              0.28999999165534973,
+              4.03000020980835
+            ]
+          ]
+        },
+        {
+          "kind": "heritage_lantern",
+          "x": -4.75,
+          "y": 11,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              -5.039999961853027,
+              10.710000038146973,
+              0.0
+            ],
+            [
+              -4.460000038146973,
+              11.289999961853027,
+              4.03000020980835
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -0.28999999165534973,
+              -0.28999999165534973,
+              0.0
+            ],
+            [
+              0.28999999165534973,
+              0.28999999165534973,
+              4.03000020980835
+            ]
+          ]
+        },
+        {
+          "kind": "heritage_lantern",
+          "x": 4.75,
+          "y": -11,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              4.460000038146973,
+              -11.289999961853027,
+              0.0
+            ],
+            [
+              5.039999961853027,
+              -10.710000038146973,
+              4.03000020980835
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -0.28999999165534973,
+              -0.28999999165534973,
+              0.0
+            ],
+            [
+              0.28999999165534973,
+              0.28999999165534973,
+              4.03000020980835
+            ]
+          ]
+        },
+        {
+          "kind": "heritage_lantern",
+          "x": 4.75,
+          "y": 11,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              4.460000038146973,
+              10.710000038146973,
+              0.0
+            ],
+            [
+              5.039999961853027,
+              11.289999961853027,
+              4.03000020980835
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -0.28999999165534973,
+              -0.28999999165534973,
+              0.0
+            ],
+            [
+              0.28999999165534973,
+              0.28999999165534973,
+              4.03000020980835
+            ]
+          ]
+        },
+        {
+          "kind": "promenade_kiosk",
+          "x": -4.75,
+          "y": -14,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              -6.199999809265137,
+              -15.300000190734863,
+              0.0
+            ],
+            [
+              -3.299999952316284,
+              -12.699999809265137,
+              3.0999999046325684
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.4500000476837158,
+              -1.2999999523162842,
+              0.0
+            ],
+            [
+              1.4500000476837158,
+              1.2999999523162842,
+              3.0999999046325684
+            ]
+          ]
+        },
+        {
+          "kind": "market_stall",
+          "x": 4.75,
+          "y": 14,
+          "yaw": 0,
+          "bounds_m": [
+            [
+              3.3299999237060547,
+              13.050000190734863,
+              0.0
+            ],
+            [
+              6.170000076293945,
+              14.949999809265137,
+              2.819999933242798
+            ]
+          ],
+          "native_bounds_m": [
+            [
+              -1.4199999570846558,
+              -0.949999988079071,
+              0.0
+            ],
+            [
+              1.4199999570846558,
+              0.949999988079071,
+              2.819999933242798
+            ]
+          ]
+        }
+      ],
+      "visual_review": {
+        "status": "PASS_NATIVE_CONCEPT",
+        "reviewer": "Codex agent; not independent human approval",
+        "notes": "Central tree promenade, kiosk, market stall, paired outer lanes and open cross-link.",
+        "views": {
+          "aerial": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\batch\\grand_promenade\\renders\\aerial.png",
+            "sha256": "44719cb2f7d34ee1034b02be98b9a000eb4d3233795fe0f605095993c61b4a0e"
+          },
+          "top": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\batch\\grand_promenade\\renders\\top.png",
+            "sha256": "e9fe71ee28294d786c629df2ae2af3626e45281d30d44c72035aa30a8a17a6ae"
+          },
+          "detail": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\batch\\grand_promenade\\renders\\detail.png",
+            "sha256": "e98cd93829fc22eabdfa083b6317c21b80e2d5f480fdb9d99bf3105bbffd475a"
+          },
+          "street": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\batch\\grand_promenade\\renders\\street.png",
+            "sha256": "8f270ad66d320e12514bafb2e2423667c469063ff15a1989eee8447fd611858d"
+          }
+        }
+      }
+    }
+  ],
+  "pilot_checkpoint": "69786529a",
+  "source_worktree": "C:/dev/CityPrompt-sol-empty-lot-trial",
+  "source_branch": "codex/ten-street-asset-batch",
+  "delivery_root": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\delivery",
+  "native_amenity_kit": {
+    "units": "metres",
+    "axes": "standard GLB Y-up; recorded bounds Z-up",
+    "runtime_approved": false,
+    "modules": {
+      "heritage_lantern": {
+        "path": "heritage_lantern.glb",
+        "bytes": 17096,
+        "sha256": "3128c76ab7eff91eefa2421aef13d01a947408dcb3dc828a0f35146841cbebdc",
+        "native_bounds_m": [
+          [
+            -0.28999999165534973,
+            -0.28999999165534973,
+            0.0
+          ],
+          [
+            0.28999999165534973,
+            0.28999999165534973,
+            4.03000020980835
+          ]
+        ],
+        "source_package": "student_main_street_v1"
+      },
+      "timber_seat_wall": {
+        "path": "timber_seat_wall.glb",
+        "bytes": 18172,
+        "sha256": "921b92412fc7ad93a7910004109ab751d1d02bd476ab889b3408cd291f89b6c8",
+        "native_bounds_m": [
+          [
+            -1.7999999523162842,
+            -0.3449999988079071,
+            0.0
+          ],
+          [
+            1.7999999523162842,
+            0.3449999988079071,
+            0.47999998927116394
+          ]
+        ],
+        "source_package": "student_main_street_v1"
+      },
+      "street_bollard": {
+        "path": "street_bollard.glb",
+        "bytes": 9892,
+        "sha256": "530a525ac72258b0ed6b48d4918dbd80a00a14a0c56724fcdd27cb8224e09217",
+        "native_bounds_m": [
+          [
+            -0.14000000059604645,
+            -0.14000000059604645,
+            0.0
+          ],
+          [
+            0.14000000059604645,
+            0.14000000059604645,
+            0.9800000190734863
+          ]
+        ],
+        "source_package": "student_cycle_avenue_v1"
+      },
+      "timber_fence_panel": {
+        "path": "timber_fence_panel.glb",
+        "bytes": 16640,
+        "sha256": "82ddd661c48a10569cb0814eedb85551447cbd633124bf240b6276ab2694453d",
+        "native_bounds_m": [
+          [
+            -1.5099999904632568,
+            -0.05999999865889549,
+            0.0
+          ],
+          [
+            1.5099999904632568,
+            0.09749999642372131,
+            1.7999999523162842
+          ]
+        ],
+        "source_package": "student_planted_lane_v1"
+      },
+      "transit_shelter": {
+        "path": "transit_shelter.glb",
+        "bytes": 19188,
+        "sha256": "1470fdc1c62962d794ccb97a932cef8e020398602930772a5e7343f96bf88b62",
+        "native_bounds_m": [
+          [
+            -2.200000047683716,
+            -0.8999999761581421,
+            0.0
+          ],
+          [
+            2.200000047683716,
+            0.8999999761581421,
+            2.803999900817871
+          ]
+        ],
+        "source_package": "student_transit_street_v1"
+      },
+      "transit_stop_pole": {
+        "path": "transit_stop_pole.glb",
+        "bytes": 8316,
+        "sha256": "f4b8b9ced2b2f4ad631ad4722450d83d63b8add99829fb403e69ae291d6afcf2",
+        "native_bounds_m": [
+          [
+            -0.30000001192092896,
+            -0.05999999865889549,
+            0.0
+          ],
+          [
+            0.30000001192092896,
+            0.03999999910593033,
+            3.200000047683716
+          ]
+        ],
+        "source_package": "student_transit_street_v1"
+      },
+      "market_stall": {
+        "path": "market_stall.glb",
+        "bytes": 47684,
+        "sha256": "571d1debbc930e350fd6018bb6f0d52a3e7350848b25ec4f2c04c6fb1503f33f",
+        "native_bounds_m": [
+          [
+            -1.4199999570846558,
+            -0.949999988079071,
+            0.0
+          ],
+          [
+            1.4199999570846558,
+            0.949999988079071,
+            2.819999933242798
+          ]
+        ],
+        "source_package": "student_market_street_v1"
+      },
+      "stone_fountain": {
+        "path": "stone_fountain.glb",
+        "bytes": 115904,
+        "sha256": "71c58dc39bbd919a77e765a84f0d60a50526dbf62000dda124ca052c12c27da3",
+        "native_bounds_m": [
+          [
+            -1.7999999523162842,
+            -1.7999999523162842,
+            0.0
+          ],
+          [
+            1.7999999523162842,
+            1.7999999523162842,
+            1.2899999618530273
+          ]
+        ],
+        "source_package": "student_market_street_v1"
+      },
+      "cafe_parasol": {
+        "path": "cafe_parasol.glb",
+        "bytes": 60388,
+        "sha256": "c33eb363972b2679a0173c02628cd876c31016bc39df34be6bf345933bf4c065",
+        "native_bounds_m": [
+          [
+            -1.5536298751831055,
+            -1.5536298751831055,
+            0.0
+          ],
+          [
+            1.5536298751831055,
+            1.5536298751831055,
+            2.9000000953674316
+          ]
+        ],
+        "source_package": "student_market_street_v1"
+      },
+      "planted_trellis": {
+        "path": "planted_trellis.glb",
+        "bytes": 33656,
+        "sha256": "e81afde69f848f2407c607da9b727b1073db8fe315d8568636e75a85b7a0731c",
+        "native_bounds_m": [
+          [
+            -1.399999976158142,
+            -0.5099999904632568,
+            0.0
+          ],
+          [
+            1.399999976158142,
+            0.5099999904632568,
+            2.4800000190734863
+          ]
+        ],
+        "source_package": "student_green_alley_v1"
+      },
+      "boardwalk_guard": {
+        "path": "boardwalk_guard.glb",
+        "bytes": 28164,
+        "sha256": "e36d7f71be98273753cd60a68749d08a86b23d809f4c23f0e93f8768ac28ec4a",
+        "native_bounds_m": [
+          [
+            -1.524999976158142,
+            -0.06499999761581421,
+            0.0
+          ],
+          [
+            1.524999976158142,
+            0.06499999761581421,
+            1.159999966621399
+          ]
+        ],
+        "source_package": "student_boardwalk_v1"
+      },
+      "boardwalk_hammock": {
+        "path": "boardwalk_hammock.glb",
+        "bytes": 23116,
+        "sha256": "82421ec3f2dff83ed99b567aa20e1e85057916ff737c57f03242aa6d727f5ec1",
+        "native_bounds_m": [
+          [
+            -2.0808398723602295,
+            -0.5,
+            0.0
+          ],
+          [
+            2.0808398723602295,
+            0.5,
+            1.850000023841858
+          ]
+        ],
+        "source_package": "student_boardwalk_v1"
+      },
+      "cafe_table_chairs": {
+        "path": "cafe_table_chairs.glb",
+        "bytes": 49444,
+        "sha256": "da7900c6b13585d5a43025e4505c471339153f79b195556ce37f98a7e1119cb2",
+        "native_bounds_m": [
+          [
+            -0.9750000238418579,
+            -0.9750000238418579,
+            0.0
+          ],
+          [
+            0.9750000238418579,
+            0.9750000238418579,
+            0.8399999737739563
+          ]
+        ],
+        "source_package": "student_boardwalk_v1"
+      },
+      "promenade_kiosk": {
+        "path": "promenade_kiosk.glb",
+        "bytes": 20692,
+        "sha256": "ca79602138b3144fdb198ca56f2a3d0e4c80c01e9b6b3d780e686548e716cba9",
+        "native_bounds_m": [
+          [
+            -1.4500000476837158,
+            -1.2999999523162842,
+            0.0
+          ],
+          [
+            1.4500000476837158,
+            1.2999999523162842,
+            3.0999999046325684
+          ]
+        ],
+        "source_package": "student_grand_promenade_v1"
+      }
+    }
+  },
+  "superseded_packages": [
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\batch\\transit_street",
+      "reason": "Shelter opening faced cycle track; final orientation regression test fails."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\batch\\planted_lane",
+      "reason": "Replaced by fuller planting."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\batch\\school_street",
+      "reason": "Replaced by reference blue/yellow play graphics."
+    }
+  ],
+  "archive": {
+    "path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-2026-09-22\\CityPrompt-ten-streets-3D.zip",
+    "bytes": 96014758,
+    "sha256": "76c695e196de4ab8016f7578c37d1efdd1d9f352106453d27020cc0d4c53ebec",
+    "files": 271,
+    "crc_check": "PASS"
+  }
+}

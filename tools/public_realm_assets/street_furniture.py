@@ -4,6 +4,7 @@ import scene as S
 import sports_furniture as F
 
 BOUNDS={}
+material=F.material
 
 
 def bollard():

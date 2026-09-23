@@ -24,6 +24,7 @@ Default status is NOT TESTED. Do not prefill a pass from another archetype.
 - Hardscape trees: paired bed/well style and footprint, visible root opening, shared surface datum, paving/joint exclusion, clear routes and sloped-contact evidence:
 - Sports: sourced playing dimensions, full run-off/equipment reserve, measured net/rim heights, open gates, crown clearance and non-coplanar floor finishes; separate recreational adaptations:
 - Reference-image fidelity: exact image hashes, observed amenity cues, borrowed/inferred details, native before/after views and separately exported reusable amenity modules:
+- Street asset handoff: metric band widths, metre-scale paving phase, supported full-width endpoints, native amenity contacts, and flush versus raised boarding/kerb limitations:
 - Asset review status and separate publication/activation status:
 - Evidence manifest location and hashes; durable shared location for delivery:
 

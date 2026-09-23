@@ -23,6 +23,15 @@ def main():
             modules[kind]=dict(**module,native_bounds_m=placement['native_bounds_m'],source_package=r['id'])
     (kit/'index.json').write_text(json.dumps(dict(units='metres',axes='standard GLB Y-up; recorded bounds Z-up',runtime_approved=False,modules=modules),indent=2)+'\n')
     font=ImageFont.truetype('C:/Windows/Fonts/segoeui.ttf',21);heading=ImageFont.truetype('C:/Windows/Fonts/segoeuib.ttf',30)
+    reviews=a.output/'reviews';reviews.mkdir(exist_ok=True)
+    for folder,r in records:
+        canvas=Image.new('RGB',(1600,1280),'#f0eee7');draw=ImageDraw.Draw(canvas)
+        draw.text((16,8),r['title'],font=heading,fill='#293e36')
+        for i,mode in enumerate(('aerial','top','detail','street')):
+            im=Image.open(folder/'renders'/f'{mode}.png').convert('RGB');im.thumbnail((800,580))
+            x=(i%2)*800;y=(i//2)*610+45;canvas.paste(im,(x+(800-im.width)//2,y))
+            draw.text((x+14,y+580),mode,font=font,fill='#293e36')
+        canvas.save(reviews/f"{r['kind']}.jpg",quality=93)
     for mode in ('aerial','detail','top','street'):
         cw,ch=700,560;rows=(len(records)+1)//2
         canvas=Image.new('RGB',(cw*2,ch*rows+85),'#f0eee7');draw=ImageDraw.Draw(canvas)

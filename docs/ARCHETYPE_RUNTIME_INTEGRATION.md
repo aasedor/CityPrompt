@@ -550,6 +550,16 @@ against the intended local traffic convention. These offline checks complement,
 but cannot replace, bent-route and real-road connection trials. See
 [planted street assets](PLANTED_STREET_ASSET_BATCH_2026-09-22.md).
 
+For reference-informed street batches, retain the observed-versus-adapted image
+notes alongside explicit metric cross-section bands. Keep brick, cobble and
+deck pattern phase in world metres when partitioning paving around tree wells
+or planting; do not paint joints across a root opening. Audit full-width route
+endpoints separately from midblock links, and reimport native amenity modules
+to check their real envelopes and ground contacts. A flush transit-stop concept
+must not be presented as a resolved raised boarding island. The
+[ten-street batch](TEN_STREET_ASSET_BATCH_2026-09-22.md) preserves these recipes,
+source-image locks and reusable street details for future archetypes.
+
 Keep sky colour separate from missing terrestrial context. A grass fallback
 must be non-pickable ground/context geometry, never the global scene background
 or a source of terrain/support samples. Verify sky and ground simultaneously in

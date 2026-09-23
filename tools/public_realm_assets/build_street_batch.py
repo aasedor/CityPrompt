@@ -18,7 +18,7 @@ def patterned_paving(style):
     if style=='stone':return original
     base={'brick':(.43,.34,.24),'cobble':(.35,.37,.34),'deck':(.36,.27,.17)}[style]
     for i,f in enumerate((.84,.96,1.06,1.12)):
-        F.F.material(f'paving.tile{i}',tuple(c*f for c in base))
+        F.material(f'paving.tile{i}',tuple(c*f for c in base))
     def paving(x,y,w,d):
         S.box('paving underlay',(x,y,-.06),(w,d,.12),'paving')
         tw,td={'brick':(.48,.24),'cobble':(.26,.20),'deck':(3.6,.18)}[style]
@@ -109,7 +109,8 @@ def make(r):
     elif kind=='planted_lane':
         link();drain('shared_lane')
         for bay,sgn in (('west_garden',-1),('east_garden',1)):
-            for yy in (-13,13):bed(bay,yy,6,True);tree(bay,yy,.68,dx=-sgn*.20)
+            for yy in (-13,13):bed(bay,yy,13,True);tree(bay,yy,.68,dx=-sgn*.20)
+            for yy in (-2.5,2.5):bed(bay,yy,1.4)
             for yy in (-17,-14,-11,-8,8,11,14,17):asset('timber_fence_panel',bay,yy,math.pi/2,sgn*1.10)
             for yy in (-5,5):
                 regions.append((x(bay),yy,2.5,3,'paving'));kit('bench',bay,yy,sgn*-math.pi/2)
@@ -118,7 +119,7 @@ def make(r):
         # Midblock links across a continuous flush fixture; no invented ramps.
         link();cycles('cycle');centre_marks('road')
         lit_trees('west_furniture');lit_trees('east_furniture')
-        asset('transit_shelter','island',-6,math.pi/2,dx=.55)
+        asset('transit_shelter','island',-6,-math.pi/2,dx=.55)
         asset('transit_stop_pole','island',-11,dx=-.75)
         kit('bin','island',-3,dx=.9)
         island_x=x('island')-.78
@@ -166,6 +167,7 @@ def make(r):
         for yy in (-12,12):
             r['clear_routes'].append(dict(name='lounge_access',a=[x('lounge'),yy],b=[x('east_furniture'),yy],width=1.5))
     elif kind=='school_street':
+        F.material('paint.school_blue',(.07,.32,.58));F.material('paint.school_yellow',(.78,.51,.075))
         link();lit_trees('west_furniture',(-16,16));lit_trees('east_furniture',(-16,16))
         for bay in ('west_furniture','east_furniture'):
             for yy in (-6,6):asset('timber_seat_wall',bay,yy,math.pi/2)
@@ -175,12 +177,13 @@ def make(r):
         # Inlaid paint, never raised play obstacles in the through route.
         for i in range(40):
             yy=-20+i;xx=1.30*math.sin(yy*.24)
-            S.line((xx,yy),(1.30*math.sin((yy+1)*.24),yy+1),.65,'cycle',.014)
+            S.line((xx,yy),(1.30*math.sin((yy+1)*.24),yy+1),.65,'paint.school_blue',.014)
         for i in range(8):
             yy=-15+i*.85
             S.rectline(-1.8,yy,.8,.8,.05)
         for yy in (8,11,14,17):
-            S.arc(-1.8,yy,.40,width=.17)
+            points=[(-1.8+.40*math.cos(i*math.tau/24),yy+.40*math.sin(i*math.tau/24),.013) for i in range(24)]
+            S.mesh('painted play dot',points,[tuple(range(24))],'paint.school_yellow')
     elif kind=='grand_promenade':
         link();centre_marks('west_road',-1);centre_marks('east_road',1)
         for bay in ('west_furniture','east_furniture'):

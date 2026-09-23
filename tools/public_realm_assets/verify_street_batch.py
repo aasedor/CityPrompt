@@ -51,6 +51,15 @@ try:
     if r['cycle_directions']:
         left,right=sorted(r['cycle_directions'],key=lambda p:p['x'])
         assert left['sign']==-1 and right['sign']==1
+    if r['kind']=='transit_street':
+        a=next(a for a in assets if a['kind']=='transit_shelter')
+        bpy.context.view_layer.update();actual_deps=bpy.context.evaluated_depsgraph_get()
+        # Open front must face the road/boarding strip; rear glass faces cycle track.
+        hit,*_=bpy.context.scene.ray_cast(actual_deps,Vector((a['x']-.95,a['y']+.4,1.5)),Vector((1,0,0)),distance=.40)
+        assert not hit,'Transit shelter front blocks road-facing boarding side'
+        hit,p,n,idx,obj,_=bpy.context.scene.ray_cast(actual_deps,Vector((a['x']+.95,a['y']+.4,1.5)),Vector((-1,0,0)),distance=.40)
+        assert hit and obj.data.materials[obj.data.polygons[idx].material_index].name.split('.')[0]=='glass','Shelter rear glass missing on cycle side'
+        checks.append('measured road-facing shelter opening and cycle-side rear glass')
     assert r['triangles']<350000 and r['assembly']['bytes']<12_000_000
     checks+=['archived authoritative reference hashes','cross-section width sum',
              f'{len(native)} reimported native module bounds and ground contacts',
