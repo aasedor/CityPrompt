@@ -52,6 +52,10 @@ unusable advertised controls and misleading captures remain blockers. See
    vacant-site project. Use the protected vacant Currie layout as a reference;
    use copies for edits. Choose another genuinely vacant, appropriately sized
    site if the archetype cannot fit Currie. Preserve occupied-land exclusion.
+   For a Model Library GLB, run `python scripts/check_model_library_storage.py`
+   with the same database and S3 environment as the backend before browser
+   review. A database model URL alone does not prove the configured bucket has
+   the asset; resolve missing objects in that environment and rerun the check.
 5. Record PASS, FAIL, NOT TESTED, or N/A for every applicable check. PASS requires
    evidence; N/A requires a reason tied to the advertised capability. A missing
    advertised feature is a failure or untested item, never N/A.

@@ -26,6 +26,7 @@ Default status is NOT TESTED. Do not prefill a pass from another archetype.
 - Reference-image fidelity: exact image hashes, observed amenity cues, borrowed/inferred details, native before/after views and separately exported reusable amenity modules:
 - Street asset handoff: metric band widths, metre-scale paving phase, supported full-width endpoints, native amenity contacts, and flush versus raised boarding/kerb limitations:
 - Asset review status and separate publication/activation status:
+- Model Library storage check, configured bucket and result (building GLBs):
 - Evidence manifest location and hashes; durable shared location for delivery:
 
 ## Gates
