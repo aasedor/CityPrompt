@@ -1,5 +1,7 @@
 frontend/public/families/**/*.glb filter=lfs diff=lfs merge=lfs -text
 frontend/public/park-kits/**/*.glb filter=lfs diff=lfs merge=lfs -text
+frontend/public/street-kits/**/*.glb filter=lfs diff=lfs merge=lfs -text
+frontend/public/street-kits/**/*.png filter=lfs diff=lfs merge=lfs -text
 frontend/public/landscape-pilots/**/*.glb filter=lfs diff=lfs merge=lfs -text
 frontend/public/park-skins/**/*.png filter=lfs diff=lfs merge=lfs -text
 frontend/public/park-skins/**/*.jpg filter=lfs diff=lfs merge=lfs -text

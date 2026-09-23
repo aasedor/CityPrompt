@@ -89,6 +89,8 @@ import {
   direct3DZoneInstanceDescriptor,
 } from './direct3dCapture';
 import { validateStreetRecipeProperties } from './streetLegoContract';
+import { nativeStreetPilotForZone, placeNativeStreetModules } from './nativeStreetPilot';
+import { GlobeNativeStreetPilotModules } from './GlobeNativeStreetPilotModules';
 import { readCrossings, crossingStation } from '@/features/pickPlace/pedestrianConnections';
 import {
   buildStreetFamilyFixturePlacements,
@@ -312,6 +314,7 @@ function StreetRibbonDetail({
     ? preparedStreetPreview(preparedSite, centerLngLat.local, centerLngLat.normals, centroid, halfWidth, frameElevation) : null,
   [preparedSite, centerLngLat, centroid, halfWidth, frameElevation]);
   const placementTerrain = sharedGround.active ? undefined : stationTerrain ?? preparedPreview;
+  const nativePilot = nativeStreetPilotForZone(zone);
   const requiresPreparedAlignment = Boolean(preparedSite) && preparedTerrain === null && !sharedGround.active;
   const alignmentStatus = !requiresPreparedAlignment ? 'ready' : alignmentUnavailable ? 'unavailable' : stationTerrain ? 'ready' : 'sampling';
   const alignmentData = {streetGroundStatus: alignmentStatus, streetGroundZoneId: zone.id};
@@ -735,6 +738,20 @@ function StreetRibbonDetail({
     });
   }, [geometries]);
 
+  const nativePilotModules = useMemo(() => {
+    if (!nativePilot || !centerLngLat || !centroid) return [];
+    const longitudeScale = metersPerDegLon(centroid.lat);
+    return placeNativeStreetModules(
+      nativePilot,
+      centerLngLat.local.map((point, index) => ({ ...point, z: placementTerrain?.[index]?.centerZ ?? 0 })),
+      intersectionNodes.filter(node => node.zoneIds.includes(zone.id)).map(node => ({
+        x: (node.longitude - centroid.lng) * longitudeScale,
+        y: (node.latitude - centroid.lat) * METERS_PER_DEG_LAT,
+        clearanceM: Math.max(node.axisAHalfWidthM, node.axisBHalfWidthM) + 4,
+      })),
+    );
+  }, [nativePilot, centerLngLat, centroid, placementTerrain, intersectionNodes, zone.id]);
+
   if (!centerLngLat || !centroid || !geometries) return requiresPreparedAlignment
     ? <group userData={{...alignmentData, streetGroundStatus: 'unavailable'}} /> : null;
   const seat = <T extends { x: number; y: number; z: number }>(poses: T[]) => sharedGround.offsetAt
@@ -851,6 +868,7 @@ function StreetRibbonDetail({
         }))}
         renderOrder={RENDER_ORDER_FURNITURE + 3}
       />
+      {nativePilot && <GlobeNativeStreetPilotModules poses={seat(nativePilotModules)} />}
       {seat(yieldStreetSigns).map((placement, index) => (
         <group
           key={`yield-street-entry-sign-${index}`}
@@ -1583,8 +1601,8 @@ export function GlobeStreetDetailLayer({
               preparedTerrain={resolvePreparedSiteTerrainForZone(zone, zones, terrainHeight)}
               preparedSite={zone.properties?.connect_to_public_road === true ? preparedSite : undefined}
               intersectionNodes={intersectionNodes}
-              renderFamilyFurniture={furnitureStreetIds.has(zone.id)}
-              renderFamilyTrees={treeStreetIds.has(zone.id)}
+              renderFamilyFurniture={!nativeStreetPilotForZone(zone) && furnitureStreetIds.has(zone.id)}
+              renderFamilyTrees={!nativeStreetPilotForZone(zone) && treeStreetIds.has(zone.id)}
             /></StreetGroundCoverage>
           )}
         </group>
