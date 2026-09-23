@@ -11,13 +11,15 @@ def main():
     parser.add_argument('--kinds',choices=COURTS,nargs='+',required=True)
     parser.add_argument('--workers',type=int,choices=(1,2),default=2)
     parser.add_argument('--dry-run',action='store_true')
+    parser.add_argument('--reference-root',type=Path)
     args=parser.parse_args();root=Path(__file__).parent
     assert args.blender.is_file() and args.kit.is_file()
     assert len(args.kinds)==len(set(args.kinds))
     for kind in args.kinds:assert not (args.output/kind).exists(),f'Preserve existing package: {kind}'
     def command(kind):
         return [str(args.blender),'--background','--threads','4','--python-exit-code','1','--python',str(root/'build_courts.py'),
-                '--','--kind',kind,'--kit',str(args.kit),'--output',str(args.output/kind)]
+                '--','--kind',kind,'--kit',str(args.kit),'--output',str(args.output/kind),
+                *(['--reference-root',str(args.reference_root)] if args.reference_root else [])]
     # Dry run every recipe before any build, with no provider calls or output models.
     for kind in args.kinds:
         result=subprocess.run([*command(kind),'--dry-run'],capture_output=True,text=True)

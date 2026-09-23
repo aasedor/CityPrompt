@@ -1,5 +1,5 @@
 """Reimported-mesh checks for the bounded ten-court batch, without a browser."""
-import json, math, runpy, sys
+import hashlib, json, math, runpy, sys
 from pathlib import Path
 from mathutils import Vector
 
@@ -62,6 +62,36 @@ try:
             assert not hit,'padel door blocked'
     assert r['triangles']<350000,(r['sport'],'triangle budget')
     assert r['mesh_instances']<260,(r['sport'],'mesh budget')
+    if r.get('reference_assets'):
+        # Reimport the delivered amenity modules, rather than trusting dimensions
+        # declared by the builder. Rotate their real bounds at each placement.
+        native={};feet={}
+        for kind in sorted({p['kind'] for p in r['reference_assets']}):
+            before=set(bpy.context.scene.objects)
+            bpy.ops.import_scene.gltf(filepath=str(root/'modules'/r['modules'][kind]['path']))
+            objects=[o for o in set(bpy.context.scene.objects)-before if o.type=='MESH']
+            points=[o.matrix_world@v.co for o in objects for v in o.data.vertices]
+            native[kind]=[[min(p[i] for p in points) for i in range(3)],[max(p[i] for p in points) for i in range(3)]]
+            feet[kind]=[p for p in points if p.z<.07]
+            assert feet[kind],(kind,'missing ground contacts')
+            for o in objects:bpy.data.objects.remove(o,do_unlink=True)
+        for asset in r['reference_assets']:
+            kind=asset['kind'];bounds=native[kind]
+            assert all(abs(bounds[j][i]-asset['native_bounds_m'][j][i])<.012 for j in (0,1) for i in range(3)),(kind,'module envelope changed')
+            c,s=math.cos(asset['yaw']),math.sin(asset['yaw'])
+            world=lambda p:(asset['x']+p[0]*c-p[1]*s,asset['y']+p[0]*s+p[1]*c)
+            corners=[world((xx,yy)) for xx in (bounds[0][0],bounds[1][0]) for yy in (bounds[0][1],bounds[1][1])]
+            x0,x1=min(p[0] for p in corners),max(p[0] for p in corners)
+            y0,y1=min(p[1] for p in corners),max(p[1] for p in corners)
+            assert x1<=-mw/2 or x0>=mw/2 or y1<=cy-md/2 or y0>=cy+md/2,(kind,'amenity in sport reserve')
+            for point in feet[kind]:
+                x,y=world(point);surface='grass'
+                for region in r['surface_regions']:
+                    if abs(x-region['x'])<=region['width']/2 and abs(y-region['y'])<=region['depth']/2:surface=region['material']
+                assert surface=='paving',(kind,x,y,'contact outside owned paving')
+        for ref in r['image_references']:
+            assert hashlib.sha256((root/'references'/ref['path']).read_bytes()).hexdigest()==ref['sha256'],'reference image changed'
+        result['checks'] += [f'{len(native)} reimported amenity module envelopes',f'{len(r["reference_assets"])} amenity placements outside sports reserve with paved contacts','archived reference-image hashes']
     result['checks'] += ['no coplanar sport underlay',f'{samples} court-entry width rays',f'{equipment_checks} measured net/rim heights',f'{crowns} tree-part envelopes outside sport reserve','bounded triangles and mesh instances']
     result['browser_tested']=False
     (root/'geometry-verification.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')

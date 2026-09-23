@@ -233,18 +233,22 @@ def park(r,out):
         S.bed(x,y,bw,bd,True,False);S.kit('grove_tree',x,y,0,x*.13+y*.17)
     # Front terrace trees are deliberately on hardscape: shared builder adds wells.
     for x in (-bed_x,bed_x):S.kit('ornamental_tree',x,terrace_y,0,x*.08)
-    S.pergola(0,terrace_y,7,3.3)
-    for x in (-2.25,2.25):S.kit('bench',x,terrace_y+.65)
-    for x in (-mw/2-4,mw/2+4):
-        # Seating alcoves sit outside the continuous 1.8 m court-side walking route.
-        for y in (cy-1.8,cy+3.5):
-            S.SURFACES.append(dict(x=x,y=y,width=1.2,depth=3.2,material='paving'))
-            S.kit('bench',x,y,0,math.copysign(math.pi/2,-x))
-    for x in (-mw/2-2.8,mw/2+2.8):
-        for y in (front-3,cy+md/2+2.6):S.kit('light',x,y)
-    S.kit('bike_rack',5.4,terrace_y);S.kit('bin',-5.4,terrace_y)
-    # Human-scale spectator table on a connected south apron.
-    S.kit('picnic_table',-5.4,front-9.2)
+    if 'reference_profile' in r:
+        from court_surroundings import furnish
+        furnish(r)
+    else:
+        S.pergola(0,terrace_y,7,3.3)
+        for x in (-2.25,2.25):S.kit('bench',x,terrace_y+.65)
+        for x in (-mw/2-4,mw/2+4):
+            # Seating alcoves sit outside the continuous 1.8 m court-side walking route.
+            for y in (cy-1.8,cy+3.5):
+                S.SURFACES.append(dict(x=x,y=y,width=1.2,depth=3.2,material='paving'))
+                S.kit('bench',x,y,0,math.copysign(math.pi/2,-x))
+        for x in (-mw/2-2.8,mw/2+2.8):
+            for y in (front-3,cy+md/2+2.6):S.kit('light',x,y)
+        S.kit('bike_rack',5.4,terrace_y);S.kit('bin',-5.4,terrace_y)
+        # Human-scale spectator table on a connected south apron.
+        S.kit('picnic_table',-5.4,front-9.2)
     # Main approach passes beside the table, then through the open pergola centre.
     entry_x=3.2
     r['clear_routes']=[dict(a=[entry_x,-d/2+.1],b=[entry_x,front-9],width=1.8),
@@ -266,15 +270,28 @@ def park(r,out):
 def main():
     p=argparse.ArgumentParser();p.add_argument('--kind',choices=COURTS,required=True)
     p.add_argument('--kit',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--dry-run',action='store_true')
+    p.add_argument('--reference-root',type=Path,help='Opt in to v2 surroundings using verified catalogue images')
     a=p.parse_args(sys.argv[sys.argv.index('--')+1:]);r=recipe(a.kind)
     assert a.kit.is_file();assert not a.output.exists(),a.output
+    if a.reference_root:
+        from court_reference_profiles import apply_profile
+        r=apply_profile(r,a.reference_root)
     if a.dry_run:print('DRY_RUN_PASS',json.dumps(r));return
     a.output.mkdir(parents=True);S.init(a.kit)
     shader=S.MATS['court'].node_tree.nodes['Principled BSDF'];shader.inputs['Base Color'].default_value=(*r['court_colour'],1)
     material('key',[.29,.40,.35]);material('padding',[.08,.13,.12]);material('rim',[.61,.20,.06]);material('board',[.65,.69,.64])
     material('glass',[.52,.69,.67],.20);material('sand',[.63,.54,.37]);material('sand_grain',[.45,.38,.24])
     material('gravel',[.39,.37,.30]);material('gravel_grain',[.25,.24,.21]);material('bocce_lane',[.51,.43,.29])
+    if a.reference_root:
+        import sports_furniture
+        sports_furniture.init()
     cameras=park(r,a.output)
     for name in ('build_courts.py','court_specs.py','scene.py'):shutil.copy2(Path(__file__).with_name(name),a.output/name)
+    if a.reference_root:
+        for name in ('sports_furniture.py','court_reference_profiles.py','court_surroundings.py'):
+            shutil.copy2(Path(__file__).with_name(name),a.output/name)
+        for ref in r['image_references']:
+            target=a.output/'references'/ref['path'];target.parent.mkdir(parents=True,exist_ok=True)
+            shutil.copy2(a.reference_root/ref['path'],target)
     S.deliver(a.output,r,cameras)
 if __name__=='__main__':main()

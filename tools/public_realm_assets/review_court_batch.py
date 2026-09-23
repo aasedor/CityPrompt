@@ -45,6 +45,7 @@ def main():
         records.append(dict(kind=kind,id=r['id'],title=r['title'],dimensions_m=r['dimensions_m'],playing_m=r['playing_m'],module_m=r['module_m'],
             assembly=r['assembly'],sport_asset=r['sport_asset'],triangles=r['triangles'],mesh_instances=r['mesh_instances'],
             source=r['source'],package=str(folder),geometry_status=verification['status'],browser_status='DEFERRED_BY_USER',
+            image_references=r.get('image_references',[]),reference_profile=r.get('reference_profile'),
             files={str(f.relative_to(a.root)):hashlib.sha256(f.read_bytes()).hexdigest() for f in files}))
     (a.root/'delivery.json').write_text(json.dumps(dict(candidates=records,paid_calls=0,local_only=True,catalogue_activated=False),indent=2)+'\n',encoding='utf-8')
     if a.source_manifest:
