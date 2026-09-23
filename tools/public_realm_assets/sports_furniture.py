@@ -3,7 +3,7 @@
 Metric Z-up prototypes at the origin, shared by instances and exported as GLBs.
 No people, logos, provider calls or building/clubhouse generation.
 """
-import math
+import math, random
 import scene as S
 from mathutils import Vector
 
@@ -115,13 +115,18 @@ def vine_pergola():
     for y in (-1.5,1.5):S.box('arbour beam',(0,y,2.9),(7.3,.18,.25),'timber')
     for i in range(23):S.box('arbour rafters',(-3.52+i*.32,0,3.08),(.09,3.6,.18),'timber')
     # Sparse vines read as foliage over structure, rather than a solid roof blob.
-    for j in range(4):
+    rng=random.Random(37)
+    for j,(start,stop) in enumerate(((0,9),(1,17),(5,14),(11,20))):
         y=-1.2+j*.8
-        for i in range(20):
+        for i in range(start,stop):
             x=-3.2+i*.33;yy=y+.10*math.sin(i*1.7+j)
             S.beam('vine stem',(x,yy,3.21),(x+.33,y+.10*math.sin((i+1)*1.7+j),3.21),.012,'timber',4)
             for side in (-1,1):
-                S.mesh('vine leaf',[(x,yy,3.22),(x+.10,yy+side*.25,3.25),(x+.26,yy+side*.34,3.21),(x+.28,yy+side*.12,3.25)],[(0,1,2),(0,2,3)],'vine')
+                if rng.random()<.22:continue
+                angle=side*math.pi/2+rng.uniform(-.9,.9);length=rng.uniform(.16,.30)
+                c,s=math.cos(angle),math.sin(angle);base=x+rng.uniform(0,.22);z=3.22+rng.uniform(0,.055)
+                point=lambda along,across,dz:(base+along*c-across*s,yy+along*s+across*c,z+dz)
+                S.mesh('vine leaf',[point(0,0,0),point(length*.5,-length*.3,.015),point(length,0,.01),point(length*.5,length*.3,.045)],[(0,1,2),(0,2,3)],'vine')
 
 def festoon():
     for x in (-3.1,3.1):

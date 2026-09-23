@@ -1,5 +1,9 @@
 # Ten sports-court park candidates
 
+The preserved v1 batch below now has a [reference-led v2 amenity revision](SPORTS_REFERENCE_DETAILS_2026-09-23.md),
+with distinct sports surroundings and ten reusable amenity modules. Use that
+revision for the next browser trial; both generations remain local candidates.
+
 User requested ten more native 3D sports parks in the style of the pickleball
 garden, and explicitly deferred browser testing. Scope is offline asset creation,
 native visual review and geometry checks; no picker, seed, provider call or push.

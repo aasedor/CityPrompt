@@ -532,6 +532,17 @@ Native images and material-aware rays
 complement one another. The [ten-court batch](SPORTS_COURT_BATCH_TEN_2026-09-23.md)
 records these offline checks; its browser testing was expressly deferred.
 
+For catalogue-image fidelity, inspect and lock the actual authoritative images
+before assigning amenities. Record observed features separately from borrowed
+or inferred details; a related-sport adaptation is not an exact-image match.
+Vary the surrounding seating, shelter and equipment by archetype instead of
+attaching one identical furniture arrangement to every court. Export new
+amenities at their native origin, verify their delivered module bounds and
+paved contacts, and keep the full court reserve and tree-root openings clear.
+Archive the images with hashes and compare native before/after views. The
+[sports reference details](SPORTS_REFERENCE_DETAILS_2026-09-23.md) preserve
+this mapping and the reusable amenity kit.
+
 For straight street assets, check the full walking width and seating-bay links,
 not just the corridor centreline. Ground ownership regions must meet without
 thin lawn gaps. Orient cycle stencils along travel and verify both directions
