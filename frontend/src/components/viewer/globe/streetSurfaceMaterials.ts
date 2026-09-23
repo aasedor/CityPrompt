@@ -35,6 +35,7 @@ export interface StreetSurfaceTextureOptions {
 
 export interface StreetSurfaceMaterialOptions extends StreetSurfaceTextureOptions {
   tint?: THREE.ColorRepresentation;
+  relief?: boolean;
   roughness?: number;
   metalness?: number;
 }
@@ -343,7 +344,7 @@ export function resolveStreetBandMaterial(
   const tint = createStreetSurfacePaletteTint(typeof color === 'string' ? color : band.color);
   const seed = `${profile.archetypeId}:${profile.variantId ?? 'base'}:${kind}`;
   return { kind, cacheKey: [kind, tint.getHexString(), band.roughness, band.metalness, seed].join('|'),
-    options: { seed, tint, roughness: band.roughness, metalness: band.metalness, anisotropy: 8 } };
+    options: { seed, tint, ...(profile.archetypeId === 'neighborhood_greenway' ? { size: 256, relief: true } : {}), roughness: band.roughness, metalness: band.metalness, anisotropy: 8 } };
 }
 
 /** Allocate a material and its owned albedo texture with an explicit,
@@ -360,6 +361,8 @@ export function createStreetSurfaceMaterialResources(
   const material = new THREE.MeshStandardMaterial({
     name: `street-${kind}-material`,
     map: albedo,
+    bumpMap: options.relief ? albedo : null,
+    bumpScale: options.relief ? (kind === 'concrete' ? .014 : .008) : 0,
     color: options.tint ?? '#ffffff',
     roughness: options.roughness ?? spec.roughness,
     metalness: options.metalness ?? spec.metalness,

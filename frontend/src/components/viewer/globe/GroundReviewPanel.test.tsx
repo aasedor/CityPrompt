@@ -14,6 +14,15 @@ const heights = Array(layout.grid.rows * layout.grid.columns).fill(99);
 const reviewed = {...INACTIVE_SHARED_SITE_GROUND,review:{layout,heights,previousHeights:[...heights]}};
 afterEach(cleanup);
 describe('slope ground review', () => {
+  it('offers boundary recovery without preparing a level or changing saved objects', () => {
+    const edit=vi.fn(),apply=vi.fn();
+    const {rerender}=render(<GroundReviewPanel boundary={boundary} ground={{...reviewed,status:'unavailable',failureReason:'discontinuity'}} onApply={apply} onClose={vi.fn()} onEditBoundary={edit}/>);
+    fireEvent.click(screen.getByRole('button',{name:'Adjust site boundary'}));
+    expect(edit).toHaveBeenCalledOnce();expect(apply).not.toHaveBeenCalled();
+    expect(screen.getByText(/Your placed objects stay saved/)).toBeTruthy();
+    rerender(<GroundReviewPanel boundary={boundary} ground={{...reviewed,status:'ready'}} onApply={apply} onClose={vi.fn()} onEditBoundary={edit}/>);
+    expect(screen.queryByRole('button',{name:'Adjust site boundary'})).toBeNull();
+  });
   it('does not offer Google ground replacement for a saved survey pilot', () => {
     const onApply = vi.fn();
     render(<GroundReviewPanel boundary={{ ...boundary, properties: { survey_ground: {} } }} ground={{ ...INACTIVE_SHARED_SITE_GROUND, status: 'unavailable', failureReason: 'survey_invalid' }} onApply={onApply} onClose={vi.fn()} />);
@@ -40,6 +49,12 @@ describe('slope ground review', () => {
     fireEvent.click(apply);await screen.findByRole('alert');expect(onClose).not.toHaveBeenCalled();
     fireEvent.click(apply);await waitFor(()=>expect(onClose).toHaveBeenCalledOnce());
     expect(onFollowParks).toHaveBeenLastCalledWith({park:expect.objectContaining({version:1,snapshot:expect.objectContaining({source:'google_3d_tiles'})})});
+  });
+  it('explains how an unmeasured park can disappear on existing terrain', () => {
+    const park={...boundary,id:'park',zone_type:'green_space' as const,properties:{green_space_archetype_id:'neighborhood_park',green_space_selected_variant_id:'neighborhood_park_v0',neighborhood_park_layout:'adaptive_rustic_v1'}};
+    render(<GroundReviewPanel boundary={boundary} ground={INACTIVE_SHARED_SITE_GROUND} parks={[park]} onFollowParks={vi.fn()} onApply={vi.fn()} onClose={vi.fn()}/>);
+    expect(screen.getByRole('button',{name:'Use measured park terrain'}).matches(':disabled')).toBe(true);
+    expect(screen.getByText(/Following existing terrain may hide an unmeasured park.*Move or resize.*intentionally prepare a level/)).toBeTruthy();
   });
   it('inspection and edits do not mutate the site until Apply; opt-in saves the measured edge profile', async () => {
     const onApply=vi.fn().mockResolvedValue(undefined), onClose=vi.fn();

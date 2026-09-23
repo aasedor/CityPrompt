@@ -9,20 +9,26 @@ import { surveyGroundState } from '@/features/context/surveyGround';
 import { createGroundSelection } from './sharedGroundSelection';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { alignStreetGroundLayout, anchoredStreetGroundHeight } from './streetGroundExtension';
-import { createSharedSiteGroundLayout, createSharedSiteGroundSnapshot, sampleSharedSiteGround,
+import { createSharedSiteGroundLayout, createSharedSiteGroundSnapshot, createPartialSharedSiteGroundSnapshot, sampleSharedSiteGround,
   sharedSiteGroundContains, sharedSiteGroundGridPoint, sharedSiteGroundSourceSignature, validateSharedSiteGroundPass,
   type SharedSiteGroundLayout, type SharedSiteGroundPassQuality, type SharedSiteGroundSnapshot } from './sharedSiteGround';
 
 export interface SharedSiteGroundState {
+  /** Authored prepared surface; only used for interactive object contact. */
+  prepared?: boolean;
   /** Visible design draft only; never evidence for a final capture. */
   preview?: boolean;
   /** Shared triangles for an approximate visible draft; not capture evidence. */
   draftLayout?: SharedSiteGroundLayout;
+  /** Current geographic domain, available even before measurements finish. */
+  boundaryCoordinates?: readonly [number, number][];
   status: 'inactive' | 'sampling' | 'ready' | 'unavailable';
   snapshot: SharedSiteGroundSnapshot | null;
   heightAt: (lng: number, lat: number) => number | null;
   contains: (lng: number, lat: number) => boolean;
   revision: string;
+  /** Synchronous capture guard: tile events can precede React's next commit. */
+  isCurrent?: () => boolean;
   failureReason?: string | null;
   review?: GroundReview | null;
   inspectionStatus?: 'sampling' | 'ready' | 'unavailable';
@@ -71,7 +77,10 @@ export function SharedSiteGroundProvider({ zones, children, onChange, inspectPre
   const tiles = useContext(TilesRendererContext);
   const active = getActiveSiteBoundary(zones);
   const survey = useMemo(() => surveyGroundState(active), [active]);
-  const inspectionOnly = Boolean(active && (active.properties?.community_3d_mask_existing_tiles !== false || active.properties?.terrain_strategy === 'landscape'));
+  // A hillside park keeps the original tiles, so building approaches and
+  // captures still need the shared measured surface. Only a replacement site
+  // plane makes this provider inspection-only.
+  const inspectionOnly = Boolean(active && active.properties?.community_3d_mask_existing_tiles !== false);
   const boundary = !survey && (!inspectionOnly || inspectPrepared) ? active : null;
   const sourceSignature = boundary ? `${sharedSiteGroundSourceSignature(boundary, sampleSpacingM)}${anchorSnapshot ? `:${anchorSnapshot.signature}` : ''}` : 'inactive';
   const layout = useMemo(() => {
@@ -111,11 +120,16 @@ export function SharedSiteGroundProvider({ zones, children, onChange, inspectPre
   }, []);
 
   useEffect(() => {
+    const activeRun = run.current;
     const invalidate = (event?: { type?: string; scene?: THREE.Object3D }) => {
       // Previously even a download behind the camera cleared every assembly.
       // Keep the last measured surface when the changed model cannot cover it.
       if (event?.scene && selection && !selection.intersects(event.scene)) return;
-      run.current.dirty = true; run.current.changedAt = Date.now();
+      activeRun.dirty = true; activeRun.changedAt = Date.now();
+      // Retain display geometry, but stop advertising the old measurement for
+      // capture immediately rather than waiting for the next animation frame.
+      setResult(previous => previous.status === 'ready' || previous.status === 'unavailable'
+        ? { ...previous, status: 'sampling', failureReason: null } : previous);
       diagnose({ lastInvalidation: { type: event?.type ?? 'source_or_renderer', at: Date.now() } });
     };
     invalidate();
@@ -128,6 +142,7 @@ export function SharedSiteGroundProvider({ zones, children, onChange, inspectPre
     tiles.addEventListener('dispose-model', invalidate);
     tiles.addEventListener('tile-visibility-change', invalidate);
     return () => {
+      activeRun.dirty = true;
       tiles.removeEventListener('load-model', invalidate);
       tiles.removeEventListener('dispose-model', invalidate);
       tiles.removeEventListener('tile-visibility-change', invalidate);
@@ -172,6 +187,12 @@ export function SharedSiteGroundProvider({ zones, children, onChange, inspectPre
     const batchStarted = performance.now();
     for (let processed = 0; current.index < count && processed < MAX_SAMPLES_PER_FRAME; processed += 1) {
       const [lng, lat] = sharedSiteGroundGridPoint(layout, current.index);
+      if (anchorSnapshot?.excludedCells?.length && sharedSiteGroundContains(anchorSnapshot.boundaryCoordinates, lng, lat)
+        && sampleSharedSiteGround(anchorSnapshot, lng, lat) === null) {
+        // A street extension must not reclassify a rejected site patch by
+        // measuring it with fewer neighbours or a different domain.
+        current.values.push(null); current.index += 1; continue;
+      }
       const anchored = anchorSnapshot ? anchoredStreetGroundHeight(anchorSnapshot, lng, lat) : null;
       if (anchored !== null) {
         current.values.push(anchored); current.index += 1; continue;
@@ -199,16 +220,16 @@ export function SharedSiteGroundProvider({ zones, children, onChange, inspectPre
     const quality = validateSharedSiteGroundPass(layout, current.values);
     setReview({ layout, heights: [...current.values], previousHeights: current.previousRaw });
     current.previousRaw = [...current.values];
-    const snapshot = current.previous ? createSharedSiteGroundSnapshot(layout, current.previous, current.values) : null;
+    const snapshot = current.previous ? (inspectionOnly ? createSharedSiteGroundSnapshot : createPartialSharedSiteGroundSnapshot)(layout, current.previous, current.values) : null;
     if (import.meta.env.DEV) diagnose({ passes: current.passes, passQuality: quality, latestCompletedRawValues: [...current.values],
-      maxPassDeltaM: current.previous && quality.valid ? Math.max(...current.values.map((value, index) => Math.abs(value! - current.previous![index]!))) : null });
+      maxPassDeltaM: current.previous ? Math.max(...current.values.map((value, index) => Math.abs(value! - current.previous![index]!))) : null });
     if (snapshot) {
       current.done = true;
       diagnose({ status: 'ready', deadlineReason: null });
       setResult({ source: sourceSignature, status: 'ready', snapshot, generation: current.generation });
     } else if (current.passes >= MAX_PASSES) unavailable(quality.valid ? 'unstable_passes' : quality.reason ?? 'quality_rejected');
     else {
-      current.previous = quality.valid ? current.values : null;
+      current.previous = current.values;
       current.values = []; current.index = 0; current.nextPassAt = now + PASS_GAP_MS;
     }
   });
@@ -223,7 +244,8 @@ export function SharedSiteGroundProvider({ zones, children, onChange, inspectPre
     const measured = matching && result.status === 'ready' ? result.snapshot : null;
     const snapshot = measured ? { ...measured, boundaryUpdatedAt: boundary.updated_at } : null;
     const ring = layout?.boundaryCoordinates ?? boundary.coordinates.map(([lng, lat]): [number, number] => [lng, lat]);
-    return { status: matching ? result.status : layout ? 'sampling' : 'unavailable', snapshot,
+    return { status: matching ? result.status : layout ? 'sampling' : 'unavailable', snapshot, boundaryCoordinates: ring,
+      isCurrent: () => !run.current.dirty && run.current.source === sourceSignature && run.current.generation === result.generation,
       failureReason: matching && result.status === 'unavailable' ? result.failureReason : null,
       review: review?.layout.sourceSignature === sourceSignature ? review : null,
       contains: (lng, lat) => sharedSiteGroundContains(ring, lng, lat),

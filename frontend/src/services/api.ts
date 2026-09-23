@@ -169,6 +169,9 @@ api.interceptors.response.use(async (response) => {
   if (!response.data || typeof response.data !== 'object' || response.data instanceof Blob
       || response.data instanceof ArrayBuffer || /(?:asset-ticket|read-ticket)$/.test(response.config.url || '')) return response;
   const route = response.config.url || '';
+  // Signed previews are opaque. Decorating their URLs with read tickets would
+  // change the signed payload before Apply returns it to the server.
+  if (/\/site-landscape\/[^/]+\/preview$/.test(route)) return response;
   const publicToken = route.match(/\/shares\/shared\/([^/?]+)/)?.[1] || response.config.params?.share_token;
   const projectId = route.match(/\/projects\/([0-9a-f-]{36})(?:\/|$)/i)?.[1]
     || (publicToken ? response.data.id : undefined);

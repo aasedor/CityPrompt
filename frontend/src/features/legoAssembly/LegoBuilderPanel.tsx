@@ -25,6 +25,7 @@ import {
 } from './legoShared';
 import {
   assertCommunityCompileResponse,
+  buildPlanRequestForItem,
   deriveGroundItems,
   deriveItems,
   compileMixedCommunity3D,
@@ -40,7 +41,6 @@ import {
 } from '@/components/viewer/globe/streetNetworkGroundTexture';
 import { usesArchetypeOwnedParkSurface } from '@/components/viewer/globe/parkLegoFamilies';
 import { compileProjectCommunity3D } from './projectCommunityCompile';
-import { assemblyFootprintCoordinates } from './detachedPlot';
 import { isNativeClayPlan } from './nativeClayPlacement';
 
 function BuilderScene({ items }: { items: ZoneBuildItem[] }) {
@@ -412,22 +412,15 @@ export function LegoBuilderPanel({
     try {
       const results = await allSettledWithConcurrency(
       base,
-      (item) => legoAssemblyApi.plan({
-          target_width_m: item.targets.width_m,
-          target_depth_m: item.targets.depth_m,
-          target_floors: item.targets.floors,
-          footprint_profile: item.targets.footprint_profile,
-          footprint_local_m: assemblyFootprintCoordinates(item.zone.coordinates, item.targets),
-          wing_depth_m: item.targets.wing_depth_m,
-          project_id: item.zone.project_id,
+      (item) => legoAssemblyApi.plan(buildPlanRequestForItem(
+        item,
           // A manually drawn parcel is an intentional design target. Match the
           // single-building LEGO composer by allowing modular families to
           // repeat or uniformly contain-scale into that footprint. AI master
           // plans stay strict because their recipes are catalog-locked and
           // certified again by the atomic community compiler.
-          allow_forced_fit: !String(item.zone.properties?._plan_scenario ?? '').trim(),
-          ...legoArchetypeContextFromZone(item.zone.properties),
-        }),
+          !String(item.zone.properties?._plan_scenario ?? '').trim(),
+        )),
       8,
     );
       if (!isCurrentBatch()) return;

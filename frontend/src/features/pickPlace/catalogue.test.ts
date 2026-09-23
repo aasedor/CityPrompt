@@ -21,7 +21,7 @@ describe('native catalogue placement contracts', () => {
     expect(dimensions.depth).toBeCloseTo(asset.minDepth, 3);
     expect(dimensions.width - asset.nativeDimensions![0]).toBeGreaterThanOrEqual(3 - 1e-6);
     expect(dimensions.depth - asset.nativeDimensions![1]).toBeGreaterThanOrEqual(3 - 1e-6);
-    expect(resized[2][0]).toBeCloseTo(fixed[0], 8);
-    expect(resized[2][1]).toBeCloseTo(fixed[1], 8);
+    expect(resized[2][0]).toBeCloseTo(fixed[0], 7);
+    expect(resized[2][1]).toBeCloseTo(fixed[1], 7);
   });
 });

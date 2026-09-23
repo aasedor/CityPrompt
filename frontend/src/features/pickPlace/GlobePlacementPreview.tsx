@@ -17,7 +17,8 @@ import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { useSharedSiteGround } from '@/components/viewer/globe/SharedSiteGroundProvider';
 import { resolvePreparedSiteTerrainForZone } from '@/components/viewer/globe/sitePreparationSurface';
 import { placeAsset, placementPlanRequest, placementProperties, type PlaceAssetId } from './catalogue';
-import { placementProblem, rectangleAt } from './geometry';
+import { placementProblem, rectangleAt, rectangleDimensions } from './geometry';
+import { snapPlacement } from './snapPlacement';
 import { streetFacingDegrees } from './streetFacing';
 
 export interface PlacementDraft {
@@ -79,17 +80,22 @@ export function GlobePlacementPreview({ draft, zones, onStatusChange }: {draft: 
     coordinates:rectangleAt([ORIGIN.lng,ORIGIN.lat],draft.width,draft.depth),
     properties:placementProperties(asset)} as SiteZone),[asset,draft.width,draft.depth]);
   const degrees = surface && draft.faceStreet ? streetFacingDegrees([surface.lng,surface.lat], zones, draft.degrees) : draft.degrees;
-  const footprint = surface ? rectangleAt([surface.lng,surface.lat],draft.width,draft.depth,degrees) : null;
-  const invalid = footprint ? placementProblem(footprint,zones,getActiveSiteBoundary(zones)) : 'Move over the site and wait for the ground to load.';
+  const proposed = surface ? rectangleAt([surface.lng,surface.lat],draft.width,draft.depth,degrees) : null;
+  const snapped = proposed ? asset.zoneType === 'building'
+    ? snapPlacement(proposed,zones,getActiveSiteBoundary(zones),undefined,previewZone.properties)
+    : {coordinates:proposed,problem:placementProblem(proposed,zones,getActiveSiteBoundary(zones))} : null;
+  const footprint = snapped?.coordinates;
+  const invalid = snapped ? snapped.problem : 'Move over the site and wait for the ground to load.';
   // Report only status transitions, not every pointer coordinate, to the planner.
   useEffect(() => { onStatusChange?.(invalid); }, [invalid, onStatusChange]);
   useEffect(() => () => onStatusChange?.(null), [onStatusChange]);
   if(!surface || !footprint) return null;
+  const { center } = rectangleDimensions(footprint);
   const previewHeight = resolvePreparedSiteTerrainForZone({ ...previewZone, coordinates: footprint }, zones, surface.height)
-    ?? ground.heightAt(surface.lng, surface.lat) ?? surface.height;
+    ?? ground.heightAt(center[0], center[1]) ?? surface.height;
   const envelope=asset.nativeDimensions ?? [draft.width,draft.depth,Number(asset.properties.height) || .1];
   const fallback=<mesh position={[0,0,envelope[2]/2]}><boxGeometry args={[envelope[0],envelope[1],envelope[2]]}/><meshBasicMaterial color="#64748b" wireframe/></mesh>;
-  return <EastNorthUpFrame lat={surface.lat*Math.PI/180} lon={surface.lng*Math.PI/180} height={previewHeight+.12}>
+  return <EastNorthUpFrame lat={center[1]*Math.PI/180} lon={center[0]*Math.PI/180} height={previewHeight+.12}>
     <group rotation={[0,0,degrees*Math.PI/180]} name="placement-preview" raycast={()=>null}>
       <mesh position={[0,0,.1]}><planeGeometry args={[draft.width,draft.depth]}/><meshBasicMaterial color={invalid?'#ef4444':'#c9ff3d'} transparent opacity={.3} side={THREE.DoubleSide} depthWrite={false}/></mesh>
       <PreviewFallback key={asset.id} fallback={fallback}><Suspense fallback={fallback}>

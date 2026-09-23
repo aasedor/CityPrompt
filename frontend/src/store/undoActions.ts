@@ -1,5 +1,5 @@
 import type { QueryClient } from '@tanstack/react-query';
-import { siteZonesApi, buildingsApi } from '@/services/api';
+import { siteZonesApi, buildingsApi, zoneHistoryApi } from '@/services/api';
 import type { SiteZone, SiteZoneProperties } from '@/types';
 import type { UndoableAction } from './undoRedo';
 import { streetCoordinateUpdate } from '@/features/pickPlace/streetPlacement';
@@ -71,14 +71,11 @@ export function createZoneCreateAction(
       await invalidateZones(queryClient, projectId);
     },
     redo: async () => {
-      const zone = await siteZonesApi.create(projectId, {
-        name: restoreZone.name,
-        zone_type: restoreZone.zone_type,
-        coordinates: restoreZone.coordinates,
-        color: restoreZone.color,
-        properties: restoreZone.properties,
-        sort_order: restoreZone.sort_order,
-      }, { skipHistory: true });
+      // Recreating via POST assigns a different ID and strands entrances,
+      // park access and any other saved reference to this zone.
+      const restored = await zoneHistoryApi.restoreSnapshot(projectId, originalZoneId, restoreZone);
+      const zone = restored.zone;
+      if (!zone || zone.id !== originalZoneId) throw new Error('Zone identity was not restored');
       idRef.current = zone.id;
       idRef.revision = zone.updated_at;
       rememberRevision(queryClient, projectId, zone.id, zone.updated_at);
@@ -101,14 +98,9 @@ export function createZoneDeleteAction(
     getZoneId: () => idRef.current,
     matchesZoneId: (zoneId) => zoneId === originalZoneId || zoneId === idRef.current,
     undo: async () => {
-      const zone = await siteZonesApi.create(projectId, {
-        name: deletedZone.name,
-        zone_type: deletedZone.zone_type,
-        coordinates: deletedZone.coordinates,
-        color: deletedZone.color,
-        properties: deletedZone.properties,
-        sort_order: deletedZone.sort_order,
-      }, { skipHistory: true });
+      const restored = await zoneHistoryApi.restoreSnapshot(projectId, originalZoneId, deletedZone);
+      const zone = restored.zone;
+      if (!zone || zone.id !== originalZoneId) throw new Error('Zone identity was not restored');
       idRef.current = zone.id;
       idRef.revision = zone.updated_at;
       rememberRevision(queryClient, projectId, zone.id, zone.updated_at);

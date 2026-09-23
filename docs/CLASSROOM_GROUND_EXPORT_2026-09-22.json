@@ -1,0 +1,139 @@
+{
+  "version": 1,
+  "date": "2026-09-22",
+  "branch": "codex/classroom-ground-export",
+  "baseCommit": "f09da9700",
+  "projectId": "3a52b4df-8508-408e-ac20-2f674d7c23b9",
+  "verification": {
+    "protectedProjectUnchanged": true,
+    "buildingsAndGardenDesignUnchangedIgnoringCompileTimestamps": true,
+    "siteOutlineUnchanged": true,
+    "siteLevelUnchanged": true,
+    "roadUndo": true,
+    "roadRedo": true,
+    "roadReload": true,
+    "edgeSamples": 359,
+    "creditsBefore": 4057,
+    "creditsAfter": 4057,
+    "paidCalls": 0,
+    "finalDownload": {
+      "nativeClick": true,
+      "bytes": 3130892,
+      "identical": true,
+      "width": 1440,
+      "height": 936
+    }
+  },
+  "tests": {
+    "files": 8,
+    "passed": 40,
+    "typecheck": "passed",
+    "focusedEslint": "passed",
+    "browserErrors": []
+  },
+  "source": [
+    {
+      "path": "frontend/src/components/viewer/globe/GlobeSitePlannerMap.tsx",
+      "bytes": 206533,
+      "sha256": "8f1628733ef344c003552ea24fe8a9cf6eb3c40d7c5d60e6f6829725547a31bd"
+    },
+    {
+      "path": "frontend/src/components/viewer/globe/GlobeStreetDetailLayer.tsx",
+      "bytes": 71467,
+      "sha256": "f3d17c74a09305bc246b98c41246c17dbc06754c52a3c403632641d0061c89bf"
+    },
+    {
+      "path": "frontend/src/components/viewer/globe/GlobeZoneLayer.tsx",
+      "bytes": 62844,
+      "sha256": "8d4f506bf820891811eef327c7dd0ca549735abd989a3b1aae627ff1afe7aacc"
+    },
+    {
+      "path": "frontend/src/components/viewer/globe/GroundReviewPanel.tsx",
+      "bytes": 12280,
+      "sha256": "1a5d4b8aea825604731e1cbc77e6af77a02b8bcba09be634dcfa3a44250a048d"
+    },
+    {
+      "path": "frontend/src/components/viewer/globe/TileStencilPatcher.tsx",
+      "bytes": 3894,
+      "sha256": "6afefb1a25d3aceb18bddb3945478b41ae5f8a2cb4fcf6ce8b88d93298209ca1"
+    },
+    {
+      "path": "frontend/src/components/viewer/globe/preparedPublicRoads.ts",
+      "bytes": 948,
+      "sha256": "b2c6f5e204295f628b7c75e250040cce817c96d2d0c3cfdbd3817b39ccb5055f"
+    },
+    {
+      "path": "frontend/src/components/viewer/globe/preparedSiteEdges.ts",
+      "bytes": 7397,
+      "sha256": "4a47f52953fa298124168e35b69fc446e7311620a9b6407514c8af87c38669ad"
+    },
+    {
+      "path": "frontend/src/components/viewer/globe/preparedStreetEdges.ts",
+      "bytes": 2301,
+      "sha256": "fe44120dcbe9388c3b6ebd20d781390251ed267c153944930a8dfb83ee3147ef"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "C:/dev-artifacts/CityPrompt/ground-export-2026-09-22/edge-before.png",
+      "bytes": 2164876,
+      "sha256": "23658a0574f576cf10eb83495addd094bd946a3884d6597deffb6849f17aa9cf"
+    },
+    {
+      "path": "C:/dev-artifacts/CityPrompt/ground-export-2026-09-22/edges-applied.png",
+      "bytes": 2164596,
+      "sha256": "a7655153987c5136a0d1af1c8681b35b086701a137eddcd27c8c6790b1ab941e"
+    },
+    {
+      "path": "C:/dev-artifacts/CityPrompt/ground-export-2026-09-22/junction-before.png",
+      "bytes": 681277,
+      "sha256": "2b4ce2488d2289f27abcc1443612dab58067fde89b2a52b4d1d7c907fef1d80d"
+    },
+    {
+      "path": "C:/dev-artifacts/CityPrompt/ground-export-2026-09-22/junction-connected-from-site.png",
+      "bytes": 1242263,
+      "sha256": "0580bc18fffc445757085f4dbec2c8a390504d9d801368cf30462e4bb3976466"
+    },
+    {
+      "path": "C:/dev-artifacts/CityPrompt/ground-export-2026-09-22/road-extended-top.png",
+      "bytes": 1691053,
+      "sha256": "3bda9da7a2655411ed3344a9c7119fe44ae98a936a5f0922198a185d9e547041"
+    },
+    {
+      "path": "C:/dev-artifacts/CityPrompt/ground-export-2026-09-22/final-export.png",
+      "bytes": 3130892,
+      "sha256": "a25594bca66717bdf3cbac054cf280455bc03de8c0124e38e05ac618e97e0e43"
+    },
+    {
+      "path": "C:/dev-artifacts/CityPrompt/ground-export-2026-09-22/before.json",
+      "bytes": 281192,
+      "sha256": "328a2b82c3622d975ae74d989dce1a649ea23c8d0a21ffab253eac1f4e9791b7"
+    },
+    {
+      "path": "C:/dev-artifacts/CityPrompt/ground-export-2026-09-22/final-zones.json",
+      "bytes": 327667,
+      "sha256": "97a54ccb3601cabcf3e03e69502a7e50b0ce9e739af7db04acca6d9f5026b720"
+    },
+    {
+      "path": "C:/dev-artifacts/CityPrompt/ground-export-2026-09-22/road-undo.json",
+      "bytes": 56611,
+      "sha256": "d16daff17c5e293401341d695d5a330ed23da5619960ce582612d81e8a222fdb"
+    },
+    {
+      "path": "C:/dev-artifacts/CityPrompt/ground-export-2026-09-22/road-redo.json",
+      "bytes": 56459,
+      "sha256": "b4c476559dc78300b3c3a1cca3a144bc68a160bef4d5db66ea4862f1f49913c6"
+    },
+    {
+      "path": "C:/dev-artifacts/CityPrompt/ground-export-2026-09-22/verification.json",
+      "bytes": 455,
+      "sha256": "cf668373795f30f7c3382d32ad654aca0331fe27c09bad107f1e0dab3632881f"
+    }
+  ],
+  "limits": [
+    "Concept grade and junction only; close-view seams and Google photogrammetry artifacts remain.",
+    "Natural-ground acceptance, accessibility and shader-capacity scale-up not tested.",
+    "Local artifacts are not a shared durable backup."
+  ],
+  "next": "Independent student trial before targeted starter-catalogue expansion"
+}

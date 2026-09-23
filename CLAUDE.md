@@ -61,6 +61,21 @@ legacy compatibility evidence only. A legacy package cannot become a keeper
 without a new canonical RLASM holistic review with zero P0 and zero P1
 blockers.
 
+### Runtime integration for every archetype
+
+Before authoring or materially revising a building, street/path, or park/open
+space, read `docs/ARCHETYPE_RUNTIME_INTEGRATION.md`. Complete
+`docs/ARCHETYPE_RUNTIME_REVIEW_TEMPLATE.md` per exact variant before declaring
+its student runtime integration ready. Reuse shared terrain, entrance, route,
+edit/recovery and capture systems; preserve measured evidence and open failures.
+Update the checklist when a new generalizable lesson is verified. RLASM asset
+review, runtime acceptance and publication approval are separate checkpoints.
+
+Classroom release priorities follow `docs/CLASSROOM_READINESS_PLAN_2026-09-20.md`:
+independent authoring, plausible geometry, reliable recovery and faithful visuals.
+Keep concept limitations visible; do not make fine construction detailing a
+blocker unless an advertised student feature depends on it.
+
 ### Render prompt guidelines
 - Do NOT send temperature on Gemini 3 image calls (official guidance: keep the
   default; the old temp-0.0 rule and the guidance_scale knob are retired —

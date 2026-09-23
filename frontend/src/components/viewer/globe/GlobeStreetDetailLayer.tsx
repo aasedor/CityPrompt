@@ -112,8 +112,10 @@ import { SharedSiteGroundProvider, useSharedSiteGround, useSharedSiteGroundVerif
 import { createSharedGroundTriangulation } from './sharedGroundGeometry';
 import { applySharedStreetGround, createStreetGroundOffset, seatStreetFamilyFixtures, seatStreetFixture, sharedStreetStationTerrain } from './streetSharedGround';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
-import { preparedStreetElevation, type PreparedStreetSite } from './preparedStreetTransition';
+import { completeStreetStation, preparedStreetElevation, preparedStreetPreview, type PreparedStreetSite } from './preparedStreetTransition';
 import { sharedSiteGroundContains } from './sharedSiteGround';
+import { waitForCaptureTileReadiness } from './tileLoadReadiness';
+import { createPreparedStreetEdges } from './preparedStreetEdges';
 
 type RenderStreetIntersection = ConnectedStreetIntersection & { surfaceLayout: StreetJunctionLayout | null };
 
@@ -147,19 +149,24 @@ function zoneStoredTerrain(zone: SiteZone): number | null {
   return Number.isFinite(raw) ? raw : null;
 }
 
-function useStreetGround(longitude?: number, latitude?: number, coordinates: number[][] = []) {
+function useStreetGround(longitude?: number, latitude?: number) {
   const shared = useSharedSiteGround();
-  const active = shared.status !== 'inactive' && ((longitude !== undefined && latitude !== undefined && shared.contains(longitude, latitude))
-    || coordinates.some(([lng, lat]) => shared.contains(lng, lat)));
-  const height = active && shared.status === 'ready' && longitude !== undefined && latitude !== undefined
-    ? shared.heightAt(longitude, latitude) : null;
-  const offsetAt = useMemo(() => height !== null && longitude !== undefined && latitude !== undefined
-    ? createStreetGroundOffset(longitude, latitude, height, shared.heightAt) : null,
-  [height, longitude, latitude, shared.heightAt]);
-  const grid = useMemo(() => shared.snapshot && longitude !== undefined && latitude !== undefined
+  const candidateHeight = shared.status === 'ready' && longitude !== undefined && latitude !== undefined
+    && shared.contains(longitude, latitude) ? shared.heightAt(longitude, latitude) : null;
+  // Partial site-ground snapshots intentionally exclude cells where Google
+  // photogrammetry is discontinuous. A street whose anchor falls in one of
+  // those holes must use its existing local terrain sampler; treating the
+  // whole site snapshot as active leaves the section with no geometry while
+  // the tile mask exposes a blank ribbon.
+  const offsetAt = useMemo(() => candidateHeight !== null && longitude !== undefined && latitude !== undefined
+    ? createStreetGroundOffset(longitude, latitude, candidateHeight, shared.heightAt) : null,
+  [candidateHeight, longitude, latitude, shared.heightAt]);
+  const active = offsetAt !== null;
+  const height = active ? candidateHeight : null;
+  const grid = useMemo(() => active && shared.snapshot && longitude !== undefined && latitude !== undefined
     ? createSharedGroundTriangulation(shared.snapshot, longitude, latitude) : undefined,
-  [shared.snapshot, longitude, latitude]);
-  return { active, height, offsetAt, grid, revision: shared.revision, blocked: active && offsetAt === null };
+  [active, shared.snapshot, longitude, latitude]);
+  return { active, height, offsetAt, grid, revision: shared.revision, blocked: false };
 }
 
 /** A road can meet a public street beyond the parcel without changing the
@@ -214,6 +221,9 @@ function StreetRibbonDetail({
   }> | null>(null);
   const frozenRef = useRef(false);
   const [stationTerrain, setStationTerrain] = useState<StreetStationTerrain[] | null>(null);
+  const [measuredTerrain, setMeasuredTerrain] = useState<StreetStationTerrain[] | null>(null);
+  const [alignmentUnavailable, setAlignmentUnavailable] = useState(false);
+  const [preparedTilesReady, setPreparedTilesReady] = useState(false);
   const sectionProfile = useMemo(
     () => resolvePilotStreetSectionProfile(zone),
     [zone],
@@ -291,13 +301,19 @@ function StreetRibbonDetail({
   const [sampledTerrain, setSampledTerrain] = useState<number | null>(null);
   const hitFlagsRef = useRef<boolean[] | null>(null);
   const passRef = useRef(0);
-  const sharedGround = useStreetGround(centroid?.lng, centroid?.lat, zone.coordinates);
-  const frameElevation = sharedGround.height ?? preparedTerrain ?? resolveZoneTerrainHeight(sampledTerrain, storedTerrain, fallbackTerrainHeight);
+  const sharedGround = useStreetGround(centroid?.lng, centroid?.lat);
+  const frameElevation = sharedGround.height ?? preparedTerrain ?? preparedSite?.elevation ?? resolveZoneTerrainHeight(sampledTerrain, storedTerrain, fallbackTerrainHeight);
   const sharedStations = useMemo(() => centerLngLat && sharedGround.offsetAt
     ? sharedStreetStationTerrain(centerLngLat.local, centerLngLat.normals, halfWidth, sharedGround.offsetAt) : null,
   [centerLngLat, halfWidth, sharedGround.offsetAt]);
   const sharedBlocked = sharedGround.blocked || (sharedGround.active && sharedStations === null);
-  const placementTerrain = sharedGround.active ? undefined : stationTerrain;
+  const preparedPreview = useMemo(() => preparedSite && centerLngLat && centroid
+    ? preparedStreetPreview(preparedSite, centerLngLat.local, centerLngLat.normals, centroid, halfWidth, frameElevation) : null,
+  [preparedSite, centerLngLat, centroid, halfWidth, frameElevation]);
+  const placementTerrain = sharedGround.active ? undefined : stationTerrain ?? preparedPreview;
+  const requiresPreparedAlignment = Boolean(preparedSite) && preparedTerrain === null && !sharedGround.active;
+  const alignmentStatus = !requiresPreparedAlignment ? 'ready' : alignmentUnavailable ? 'unavailable' : stationTerrain ? 'ready' : 'sampling';
+  const alignmentData = {streetGroundStatus: alignmentStatus, streetGroundZoneId: zone.id};
 
   // Geometry edits (vertex drag commits, re-buffering) change coordinates
   // under the SAME zone id — the frozen drape state must restart or curbs
@@ -310,8 +326,24 @@ function StreetRibbonDetail({
     rawTerrainRef.current = null;
     hitFlagsRef.current = null;
     setStationTerrain(null);
+    setMeasuredTerrain(null);
     setSampledTerrain(null);
+    setAlignmentUnavailable(false);
   }, [centerLngLat, sharedGround.revision, preparedSite]);
+
+  useEffect(() => {
+    if (!requiresPreparedAlignment) return;
+    let canceled = false;
+    setPreparedTilesReady(false);
+    // Do not spend all measurement attempts against coarse startup tiles.
+    // The editable inside preview is already seated on the prepared level.
+    void waitForCaptureTileReadiness(tiles, {timeoutMs: 45000}).then(ready => {
+      if (canceled) return;
+      setPreparedTilesReady(ready);
+      if (!ready) setAlignmentUnavailable(true);
+    });
+    return () => { canceled = true; };
+  }, [tiles, requiresPreparedAlignment, centerLngLat, preparedSite]);
 
   // Drape-and-freeze: first resolve the frame anchor, then batch-sample
   // per-station elevations relative to it. Batches are interval-gated too —
@@ -319,12 +351,13 @@ function StreetRibbonDetail({
   // tiles and bakes garbage; missed stations get re-sampled across passes.
   useFrame(() => {
     if (sharedGround.active || preparedTerrain !== null || frozenRef.current || !centerLngLat || !centroid) return;
+    if (preparedSite && !preparedTilesReady) return;
     frameCountRef.current += 1;
     if (frameCountRef.current % TERRAIN_SAMPLE_FRAME_INTERVAL !== 0) return;
     const tilesGroup = tiles?.group;
     if (!tilesGroup || tilesGroup.children.length === 0) return;
 
-    const anchored = sampledTerrain !== null;
+    const anchored = preparedSite !== undefined || sampledTerrain !== null;
     if (!anchored) {
       if (attemptsRef.current >= TERRAIN_SAMPLE_MAX_ATTEMPTS) {
         frozenRef.current = true;
@@ -350,7 +383,7 @@ function StreetRibbonDetail({
 
     // Anchor known — drape stations in gated batches, accumulated in refs
     // (state is set ONCE at freeze so geometry rebuilds once).
-    const anchor = resolveZoneTerrainHeight(sampledTerrain, storedTerrain, fallbackTerrainHeight);
+    const anchor = preparedSite?.elevation ?? resolveZoneTerrainHeight(sampledTerrain, storedTerrain, fallbackTerrainHeight);
     const n = centerLngLat.lngLat.length;
     if (!rawTerrainRef.current || rawTerrainRef.current.length !== n) {
       rawTerrainRef.current = Array.from({ length: n }, () => ({
@@ -371,9 +404,12 @@ function StreetRibbonDetail({
       if (!hits[i]) {
         const point = centerLngLat.local[i];
         const normal = centerLngLat.normals[i];
+        let measuredStation = false;
         const probeAt = (offsetM: number): number | null => {
           const lng = centroid.lng + (point.x + normal.x * offsetM) / mPerLon;
           const lat = centroid.lat + (point.y + normal.y * offsetM) / METERS_PER_DEG_LAT;
+          if (preparedSite && sharedSiteGroundContains(preparedSite.ring, lng, lat)) return preparedSite.elevation;
+          measuredStation = true;
           const sampled = raycastTerrainHeightAtLatLng(
             lng,
             lat,
@@ -387,17 +423,22 @@ function StreetRibbonDetail({
           left: probeAt(halfWidth),
           right: probeAt(-halfWidth),
         };
-        hits[i] = Object.values(rawTerrain[i]).some(Number.isFinite);
-        processed++;
+        hits[i] = preparedSite ? completeStreetStation(rawTerrain[i]) : Object.values(rawTerrain[i]).some(Number.isFinite);
+        if (measuredStation) processed++;
       }
       i++;
     }
     nextStationRef.current = i;
     if (i >= n) {
       const misses = hits.filter((x) => !x).length;
-      if (misses > n * 0.2 && passRef.current < MAX_SAMPLE_PASSES) {
+      if (misses > (preparedSite ? 0 : n * 0.2) && passRef.current < MAX_SAMPLE_PASSES) {
         passRef.current += 1;
         nextStationRef.current = 0;
+        return;
+      }
+      if (preparedSite && misses > 0) {
+        frozenRef.current = true;
+        setAlignmentUnavailable(true);
         return;
       }
       const fitSamples: TerrainContactSample[] = [];
@@ -427,7 +468,10 @@ function StreetRibbonDetail({
         const elevationAt = (offsetM: number, sampled: number | null): number => {
           const x = point.x + normal.x * offsetM;
           const y = point.y + normal.y * offsetM;
-          const measured = resolveTerrainContactElevation(plane, sampled, x, y) ?? anchor;
+          // Prepared public connections require all three real hits. Preserve
+          // their endpoint elevations instead of replacing them with a fitted
+          // interior plane that can leave the road floating above its junction.
+          const measured = preparedSite ? sampled! : resolveTerrainContactElevation(plane, sampled, x, y) ?? anchor;
           return preparedStreetElevation(preparedSite, centroid.lng + x / mPerLon,
             centroid.lat + y / METERS_PER_DEG_LAT, measured) - anchor;
         };
@@ -439,13 +483,25 @@ function StreetRibbonDetail({
         };
       });
       frozenRef.current = true;
+      setMeasuredTerrain(preparedSite ? rawTerrain.map(sample => ({centerZ:sample.center!-anchor,
+        leftZ:sample.left!-anchor,rightZ:sample.right!-anchor,halfWidthM:halfWidth})) : null);
       setStationTerrain(profile);
     }
   });
 
+  const preparedEdgeGeometry = useMemo(() => {
+    if (!preparedSite || !centerLngLat || !stationTerrain || !measuredTerrain || sharedGround.active || !sectionProfile) return null;
+    const bands = sectionProfile.bands.filter(band => band.sourceType !== 'setback');
+    if (!bands.length) return null;
+    return createPreparedStreetEdges(centerLngLat.local,stationTerrain,measuredTerrain,
+      Math.min(...bands.map(band=>band.startM))*sectionScale,Math.max(...bands.map(band=>band.endM))*sectionScale);
+  }, [preparedSite,centerLngLat,stationTerrain,measuredTerrain,sharedGround.active,sectionProfile,sectionScale]);
+  useEffect(() => preparedEdgeGeometry
+    ? retainResourceForDeferredDisposal(preparedEdgeGeometry, geometry => geometry.dispose()) : undefined, [preparedEdgeGeometry]);
+
   const geometries = useMemo(() => {
     if (!centerLngLat || sharedBlocked) return null;
-    const zs = sharedGround.active ? undefined : stationTerrain ?? undefined;
+    const zs = placementTerrain ?? undefined;
     const mPerLon = centroid ? metersPerDegLon(centroid.lat) : 1;
     const connectedIntersectionNodes = intersectionNodes.filter((node) => node.zoneIds.includes(zone.id));
     const curbRampClearanceMask = centerLngLat.local.map((point) => (
@@ -571,7 +627,7 @@ function StreetRibbonDetail({
       }
     }
     return result;
-  }, [centerLngLat, centroid, halfWidth, intersectionNodes, sectionProfile, sectionScale, stationTerrain, zone.id, sharedGround.active, sharedGround.offsetAt, sharedGround.grid, sharedBlocked]);
+  }, [centerLngLat, centroid, halfWidth, intersectionNodes, sectionProfile, sectionScale, placementTerrain, zone.id, sharedGround.offsetAt, sharedGround.grid, sharedBlocked]);
 
   const clearOfJunction = useMemo(() => (point: {x: number; y: number}) => !centroid || !intersectionNodes.some(node =>
     node.zoneIds.includes(zone.id) && node.surfaceLayout && streetJunctionContainsPoint(node.surfaceLayout,
@@ -678,7 +734,8 @@ function StreetRibbonDetail({
     });
   }, [geometries]);
 
-  if (!centerLngLat || !centroid || !geometries) return null;
+  if (!centerLngLat || !centroid || !geometries) return requiresPreparedAlignment
+    ? <group userData={{...alignmentData, streetGroundStatus: 'unavailable'}} /> : null;
   const seat = <T extends { x: number; y: number; z: number }>(poses: T[]) => sharedGround.offsetAt
     ? poses.flatMap((pose) => { const seated = seatStreetFixture(pose, sharedGround.offsetAt!); return seated ? [seated] : []; }) : poses;
 
@@ -688,6 +745,7 @@ function StreetRibbonDetail({
       lon={centroid.lng * DEG_TO_RAD}
       height={frameElevation}
     >
+      <group userData={alignmentData} />
       {!hasAuthoredNetworkGround && geometries.bands.map(({ band, geometry }, index) => (
         <mesh
           key={`${band.sourceType}-${band.startM}`}
@@ -695,7 +753,7 @@ function StreetRibbonDetail({
           renderOrder={RENDER_ORDER_FLATWORK}
           frustumCulled={false}
         >
-          <primitive object={bandMaterials[index].material} attach="material" />
+          <primitive object={bandMaterials[index].material} attach="material" dispose={null} />
         </mesh>
       ))}
       {geometries.markings.map(({ marking, geometry }, index) => (
@@ -747,6 +805,9 @@ function StreetRibbonDetail({
           />
         </mesh>
       )}
+      {preparedEdgeGeometry && <mesh name="prepared-street-ground-edges" geometry={preparedEdgeGeometry} renderOrder={RENDER_ORDER_RAISED}>
+        <meshStandardMaterial color="#938c80" roughness={0.95} side={THREE.DoubleSide} />
+      </mesh>}
       {geometries.dashes && (
         <mesh geometry={geometries.dashes} renderOrder={RENDER_ORDER_DASHES} frustumCulled={false}>
           <meshBasicMaterial
@@ -774,6 +835,7 @@ function StreetRibbonDetail({
       />
       <GlobeStreetMicrodetailInstances
         fixtures={familyFixtures}
+        detailedPlanting={sectionProfile?.archetypeId === 'neighborhood_greenway'}
         fixtureMetalColor={sectionProfile?.appearance?.palette.fixtureMetal ?? '#30383a'}
         renderOrder={RENDER_ORDER_FURNITURE}
       />
@@ -961,7 +1023,7 @@ function RoundaboutDetail({
 
   const frame = useMemo(() => computeFootprintFrame(zone.coordinates), [zone.coordinates]);
   const storedTerrain = zoneStoredTerrain(zone);
-  const sharedGround = useStreetGround(frame?.centroidLng, frame?.centroidLat, zone.coordinates);
+  const sharedGround = useStreetGround(frame?.centroidLng, frame?.centroidLat);
   const terrain = sharedGround.height ?? preparedTerrain ?? resolveZoneTerrainHeight(sampledTerrain, storedTerrain, fallbackTerrainHeight);
   const geometry = useMemo(() => {
     if (!frame || sharedGround.blocked) return null;
@@ -1177,24 +1239,24 @@ function RoundaboutDetail({
         {!hasAuthoredNetworkGround && (
           <>
             <mesh geometry={geometry.ring} renderOrder={RENDER_ORDER_FLATWORK} frustumCulled={false}>
-              <primitive object={roundaboutMaterials.ring.material} attach="material" />
+              <primitive object={roundaboutMaterials.ring.material} attach="material" dispose={null} />
             </mesh>
             <mesh geometry={geometry.apron} renderOrder={RENDER_ORDER_FLATWORK} frustumCulled={false}>
-              <primitive object={roundaboutMaterials.concrete.material} attach="material" />
+              <primitive object={roundaboutMaterials.concrete.material} attach="material" dispose={null} />
             </mesh>
             <mesh geometry={geometry.sidewalks} renderOrder={RENDER_ORDER_RAISED} frustumCulled={false}>
-              <primitive object={roundaboutMaterials.concrete.material} attach="material" />
+              <primitive object={roundaboutMaterials.concrete.material} attach="material" dispose={null} />
             </mesh>
           </>
         )}
         <mesh geometry={geometry.island} renderOrder={RENDER_ORDER_RAISED} frustumCulled={false}>
-          <primitive object={roundaboutMaterials.planting.material} attach="material" />
+          <primitive object={roundaboutMaterials.planting.material} attach="material" dispose={null} />
         </mesh>
         <mesh geometry={geometry.splitters} renderOrder={RENDER_ORDER_RAISED} frustumCulled={false}>
-          <primitive object={roundaboutMaterials.concrete.material} attach="material" />
+          <primitive object={roundaboutMaterials.concrete.material} attach="material" dispose={null} />
         </mesh>
         <mesh geometry={geometry.splitterPlanting} renderOrder={RENDER_ORDER_RAISED + 1} frustumCulled={false}>
-          <primitive object={roundaboutMaterials.planting.material} attach="material" />
+          <primitive object={roundaboutMaterials.planting.material} attach="material" dispose={null} />
         </mesh>
         <mesh geometry={geometry.approachMarkings} renderOrder={RENDER_ORDER_DASHES + 1} frustumCulled={false}>
           <meshBasicMaterial
@@ -1415,11 +1477,11 @@ function AccessibleFourWayIntersectionDetail({
       height={terrain}
     >
       {geometry.pavement && <mesh geometry={geometry.pavement} renderOrder={RENDER_ORDER_FLATWORK} frustumCulled={false}>
-        {surfaceMaterials?.pavement ? <primitive object={surfaceMaterials.pavement.material} attach="material" />
+        {surfaceMaterials?.pavement ? <primitive object={surfaceMaterials.pavement.material} attach="material" dispose={null} />
           : <meshStandardMaterial color={appearance.palette.motor} roughness={0.97} metalness={0} side={THREE.DoubleSide} />}
       </mesh>}
       {geometry.sidewalks && <mesh geometry={geometry.sidewalks} renderOrder={RENDER_ORDER_FLATWORK} frustumCulled={false}>
-        {surfaceMaterials?.sidewalks ? <primitive object={surfaceMaterials.sidewalks.material} attach="material" />
+        {surfaceMaterials?.sidewalks ? <primitive object={surfaceMaterials.sidewalks.material} attach="material" dispose={null} />
           : <meshStandardMaterial color={appearance.palette.sidewalk} roughness={0.94} metalness={0} side={THREE.DoubleSide} />}
       </mesh>}
       {geometry.curbs && <mesh geometry={geometry.curbs} renderOrder={RENDER_ORDER_RAISED} frustumCulled={false}>
@@ -1510,7 +1572,7 @@ export function GlobeStreetDetailLayer({
             <RoundaboutDetail key={`${zone.id}:${resolvePreparedSiteTerrainForZone(zone, zones, terrainHeight)}`} zone={zone} fallbackTerrainHeight={terrainHeight} preparedTerrain={resolvePreparedSiteTerrainForZone(zone, zones, terrainHeight)} />
           ) : (
             <StreetGroundCoverage zone={zone}><StreetRibbonDetail
-              key={`${zone.id}:${resolvePreparedSiteTerrainForZone(zone, zones, terrainHeight)}`}
+              key={JSON.stringify([zone.id, zone.updated_at, zone.coordinates, resolvePreparedSiteTerrainForZone(zone, zones, terrainHeight), preparedSite])}
               zone={zone}
               fallbackTerrainHeight={terrainHeight}
               preparedTerrain={resolvePreparedSiteTerrainForZone(zone, zones, terrainHeight)}

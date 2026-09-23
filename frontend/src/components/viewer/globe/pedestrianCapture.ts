@@ -13,7 +13,7 @@ export function pedestrianCaptureUserData(ownerId: string) {
  * building identity and makes the server reject an otherwise valid capture. */
 export function streetConnectionCaptureUserData(owner: SiteZone, zones: readonly SiteZone[]) {
   if (owner.zone_type === 'road') return pedestrianCaptureUserData(owner.id);
-  const entrance = readBuildingEntrance(owner);
+  const entrance = readBuildingEntrance(owner, zones);
   const street = entrance && zones.find(zone => zone.id === entrance.streetId && zone.zone_type === 'road');
   if (!street) return null;
   return { ...pedestrianCaptureUserData(street.id), pedestrianOwnerZoneId: owner.id };

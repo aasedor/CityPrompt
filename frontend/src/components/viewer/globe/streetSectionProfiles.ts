@@ -157,6 +157,7 @@ export const PILOT_STREET_ARCHETYPE_IDS = Object.freeze([
   'protected_bike_lane_bidirectional',
   'calgary_arterial_4lane_50',
   'multi_use_trail',
+  'neighborhood_greenway',
   'toronto_victorian_residential_street',
   'toronto_laneway',
 ] as const);
@@ -561,6 +562,7 @@ function addMarkings(
         'narrow_residential_street',
         'main_street_complete',
         'yield_street',
+        'neighborhood_greenway',
         'toronto_victorian_residential_street',
         'toronto_laneway',
       ].includes(archetypeId)) continue;

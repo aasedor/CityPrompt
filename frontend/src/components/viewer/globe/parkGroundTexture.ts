@@ -1,3 +1,4 @@
+import { finishParkSurface } from './publicRealmSurfaceFinish';
 import { isParkTrio } from './parkTrioLayout';
 /**
  * Per-zone AI park ground textures (productionized from the 2026-07-11 pilot).
@@ -460,7 +461,7 @@ function drawParkGuides(
       if (mode === 'procedural') {
         trace();
         ctx.strokeStyle = guide.strokeColor ?? '#6e5435';
-        ctx.lineWidth = Math.max(3, ((guide.strokeWidthM ?? 2.4) + 0.7) * pxPerM);
+        ctx.lineWidth = Math.max(3, ((guide.strokeWidthM ?? 2.4) + (archetypeId === 'neighborhood_park' && variantId === 'neighborhood_park_v2' ? .16 : .7)) * pxPerM);
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
         ctx.stroke();
@@ -1403,7 +1404,9 @@ export function buildParkDiagram(
   const heightM = (bbox.north - bbox.south) * METERS_PER_DEG_LAT;
   if (widthM <= 0 || heightM <= 0) return null;
 
-  const canvasSize = mode === 'procedural' ? PROCEDURAL_CANVAS : CANVAS;
+  const meadowPilot = zone.properties?.green_space_archetype_id === 'neighborhood_park'
+    && zone.properties?.green_space_selected_variant_id === 'neighborhood_park_v2';
+  const canvasSize = mode === 'procedural' && !meadowPilot ? PROCEDURAL_CANVAS : CANVAS;
   const pxPerM = (canvasSize * FIT) / Math.max(widthM, heightM);
   const parkW = widthM * pxPerM;
   const parkH = heightM * pxPerM;
@@ -1506,9 +1509,15 @@ export function buildParkDiagram(
     );
   }
   const connectedGuides = [...guideFit.guides, ...derivedParkAccessGuides(zone)];
-  const executableGuides = mode === 'procedural' && !isNeighborhoodParkPilot(zone) && !isParkTrio(zone)
+  const materialGuides = mode === 'procedural' && !isNeighborhoodParkPilot(zone) && !isParkTrio(zone)
     ? styleExecutableParkGuides(connectedGuides, legoAppearance)
     : connectedGuides;
+  const executableGuides = meadowPilot && mode === 'procedural' ? materialGuides.map(guide => {
+    if (guide.kind === 'polyline' || guide.kind === 'line') return { ...guide, color: '#c3bfae', strokeColor: '#8d907d' };
+    if (guide.kind === 'ellipse') return { ...guide, strokeColor: guide.color };
+    if (guide.kind === 'rectangle') return { ...guide, color: '#b4b2a5', strokeColor: '#999b8a' };
+    return guide;
+  }) : materialGuides;
   drawParkGuides(
     ctx,
     mode === 'procedural'
@@ -1614,6 +1623,13 @@ export function buildParkDiagram(
     ctx.fillStyle = '#a28f70';
     ctx.fillRect(0, 0, canvasSize, canvasSize);
     ctx.restore();
+  }
+
+  if (mode === 'procedural' && profile.archetypeId === 'neighborhood_park'
+      && zone.properties?.green_space_selected_variant_id === 'neighborhood_park_v2') {
+    const pixels = ctx.getImageData(0, 0, canvasSize, canvasSize);
+    finishParkSurface(pixels.data, canvasSize, pxPerM);
+    ctx.putImageData(pixels, 0, 0);
   }
 
   return {

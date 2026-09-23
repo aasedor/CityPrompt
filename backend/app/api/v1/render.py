@@ -167,7 +167,7 @@ class RenderRequest(BaseModel):
             "surroundings. Validated 2026-06-10, artifacts/sv-context-pilot/."
         ),
     )
-    guide_image_kind: Optional[Literal["clay", "context_3d", "model_3d"]] = Field(
+    guide_image_kind: Optional[Literal["clay", "context_3d", "model_3d", "landscape_plan", "landscape_base"]] = Field(
         default=None,
         description=(
             "What image_base64 actually depicts, so the provider-facing description "
@@ -175,8 +175,15 @@ class RenderRequest(BaseModel):
             "'context_3d': photorealistic 3D-tiles capture of the EXISTING site with "
             "zone overlays marking intervention areas. 'model_3d': street-level capture "
             "of the authored 3D development model standing in real 3D-tiles context — "
-            "the modelled buildings are the design and must be preserved."
+            "the modelled buildings are the design and must be preserved. "
+            "'landscape_plan': north-up ground-material template with protected object and access footprints. "
+            "'landscape_base': continuous ground beneath separately rendered 3D objects."
         ),
+    )
+    site_scene_reference_base64: Optional[str] = Field(
+        default=None,
+        max_length=5_000_000,
+        description="Appearance-only image of the authored development and surrounding Google tiles. The primary landscape plan controls output coordinates.",
     )
     semantic_guide_base64: Optional[str] = Field(
         default=None,
@@ -432,6 +439,21 @@ def _prompt_with_negative(req: RenderRequest) -> str:
     return prompt_text
 
 
+LANDSCAPE_BASE_LOCK = (
+    "FINAL GROUND-LAYER AUTHORITY: Return only continuous flat ground materials within Image 1's exact parcel frame. "
+    "All buildings, roads, sidewalks, parks and trees in the context reference are separate 3D objects placed ABOVE this texture. "
+    "Do not reproduce them, their footprints, shadows, labels or cutouts in the ground image. "
+    "The reference guides local material character only. Preserve Image 1's north-up orientation, extent and proportions."
+)
+
+
+def _finish_render_prompt(req: RenderRequest, prompt: str) -> str:
+    if req.guide_image_kind == "landscape_base":
+        suffix = "\n\n" + LANDSCAPE_BASE_LOCK
+        return prompt[: 32000 - len(suffix)].rstrip() + suffix
+    return append_render_preservation_lock(prompt)
+
+
 def _decode_base64_payload(image_b64: str) -> bytes:
     """Decode a raw base64 image string, tolerating data URL prefixes."""
     payload = image_b64.split(",", 1)[1] if "," in image_b64[:64] else image_b64
@@ -472,6 +494,18 @@ def _openai_mask_png_bytes(mask_b64: str) -> bytes:
         return raw
 
 
+def _site_scene_reference_parts(image_base64: str) -> list[dict]:
+    return [
+        {
+            "text": "NEIGHBOURHOOD APPEARANCE REFERENCE: The current authored development standing in surrounding Google 3D tiles. "
+            "Study the proposed building materials, park character, street edges and neighbouring planting, paving and ground colours. "
+            "Choose landscape materials and planting that belong to both. Avoid copying the empty temporary site grass as the design. "
+            "This is appearance context only; use the LANDSCAPE PLAN for output extent and protected areas. Do not paint neighbouring land."
+        },
+        {"inlineData": {"mimeType": "image/png", "data": image_base64}},
+    ]
+
+
 def _gemini_guide_image_text(kind: Optional[str], img_index: int) -> str:
     """Describe the primary guide image (image_base64) to Gemini.
 
@@ -479,6 +513,17 @@ def _gemini_guide_image_text(kind: Optional[str], img_index: int) -> str:
     label (e.g. calling a photorealistic 3D capture a "clay massing model")
     makes the model distrust or reinterpret the guide.
     """
+    if kind == "landscape_base":
+        return (
+            f"Image {img_index} (LANDSCAPE BASE): Exact north-up parcel frame for a continuous ground texture. "
+            "3D objects are added above it separately. Create ground only, without buildings, roads or interior cutouts."
+        )
+    if kind == "landscape_plan":
+        return (
+            f"Image {img_index} (LANDSCAPE PLAN): A north-up, flat ground-material template. "
+            "This image fixes output extent, orientation and protected grey footprints. "
+            "Other scene references guide appearance only; never copy their camera or expand this extent."
+        )
     if kind == "model_3d":
         return (
             f"Image {img_index} (DEVELOPMENT MODEL IN REAL CONTEXT): This is a "
@@ -507,6 +552,19 @@ def _gemini_guide_image_text(kind: Optional[str], img_index: int) -> str:
 
 def _openai_source_framing(kind: Optional[str]) -> str:
     """First-paragraph framing of the source image for the OpenAI edit path."""
+    if kind == "landscape_base":
+        return (
+            "The first image is the authoritative north-up LANDSCAPE BASE. Keep its exact frame and parcel proportions. "
+            "Create continuous ground throughout the parcel without interior holes or object footprints. "
+            "The second image shows the development and surrounding Google tiles for material character only. "
+            "Its buildings, streets and parks will be separate 3D objects above this ground; do not draw them.\n\n"
+        )
+    if kind == "landscape_plan":
+        return (
+            "The first image is the authoritative north-up LANDSCAPE PLAN: keep its extent and protected footprints. "
+            "The separate NEIGHBOURHOOD APPEARANCE REFERENCE shows the proposed development in Google tiles. "
+            "Use that reference for compatible planting and materials, never as the output camera or canvas.\n\n"
+        )
     if kind == "model_3d":
         return (
             "Use the first attached image as the source scene. It is a street-level "
@@ -585,7 +643,13 @@ def _build_openai_files(
     # site screenshot, optional previous render, and any real-context photos,
     # then use the rest for archetype refs.
     context_images = (site_pack or {}).get("images", [])
-    max_refs = 16 - 1 - (1 if req.previous_render_base64 else 0) - len(context_images)
+    max_refs = (
+        16
+        - 1
+        - (1 if req.previous_render_base64 else 0)
+        - len(context_images)
+        - (1 if req.site_scene_reference_base64 else 0)
+    )
     for idx, arch_img in enumerate((req.archetype_images or [])[:max_refs], start=1):
         mime = _guess_image_mime(arch_img.image_base64)
         ext = _extension_for_mime(mime)
@@ -594,6 +658,18 @@ def _build_openai_files(
             (
                 "image[]",
                 (f"archetype-reference-{safe_idx}.{ext}", _decode_base64_payload(arch_img.image_base64), mime),
+            )
+        )
+
+    if req.site_scene_reference_base64:
+        files.append(
+            (
+                "image[]",
+                (
+                    "neighbourhood-appearance-reference.png",
+                    _decode_base64_payload(req.site_scene_reference_base64),
+                    "image/png",
+                ),
             )
         )
 
@@ -643,7 +719,7 @@ async def _call_openai_image_edit(
             "signage, vegetation. The camera position, angle and framing must come from "
             "Image 1 EXACTLY; do not adopt the viewpoint of any context photograph.\n" + site_pack["prompt_block"]
         )
-    prompt_text = append_render_preservation_lock(prompt_text)
+    prompt_text = _finish_render_prompt(req, prompt_text)
 
     image_quality = req.image_quality or "auto"
     data = {
@@ -965,6 +1041,9 @@ async def _generate_render_image(req: RenderRequest, settings, render_model: str
                 }
             )
 
+    if req.site_scene_reference_base64:
+        parts.extend(_site_scene_reference_parts(req.site_scene_reference_base64))
+
     # Real-world site context: Street View photos + satellite + tenant list.
     # Fetched server-side (keys stay in backend/.env); failure degrades silently.
     site_pack = None
@@ -1022,7 +1101,7 @@ async def _generate_render_image(req: RenderRequest, settings, render_model: str
     if site_pack:
         prompt_text = prompt_text + "\n\n" + site_pack["prompt_block"]
 
-    prompt_text = append_render_preservation_lock(prompt_text)
+    prompt_text = _finish_render_prompt(req, prompt_text)
     parts.append({"text": prompt_text})
 
     # No temperature: Gemini 3 image docs list no temperature parameter, and the

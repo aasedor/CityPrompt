@@ -1,0 +1,277 @@
+{
+  "version": 1,
+  "paid_calls": 0,
+  "runtime_activated": false,
+  "candidates": [
+    {
+      "id": "student_pickleball_garden_v1",
+      "title": "Pickleball Social Garden",
+      "package": "C:\\dev-artifacts\\CityPrompt\\public-realm-batch3-2026-09-22\\pickleball-final",
+      "dimensions_m": [
+        34,
+        34
+      ],
+      "assembly": {
+        "path": "assembly-preview.glb",
+        "bytes": 4075048,
+        "sha256": "40509eb4f0dcc885cdd697a1de622acb37fbfff0efb01a92985a0f2567897d2b"
+      },
+      "modules": {
+        "bench": {
+          "path": "bench.glb",
+          "bytes": 34024,
+          "sha256": "996f77a959d098469940fc032f23960c959b0c8275842575bb4de33c152539f7"
+        },
+        "bike_rack": {
+          "path": "bike_rack.glb",
+          "bytes": 96964,
+          "sha256": "0be3cabadaddbf9f22556f0f7ead696eb8ca41f5c881b4f30a0c2940272bf907"
+        },
+        "bin": {
+          "path": "bin.glb",
+          "bytes": 80532,
+          "sha256": "a146ecda675ef0cba34caf1edac9c13c4f8e8d93b42b137e070c47b32c8f89f1"
+        },
+        "flowering_perennial": {
+          "path": "flowering_perennial.glb",
+          "bytes": 162120,
+          "sha256": "c3e00c1d9cde18c492fc2ce263240dc3b49d826f6a47b9dd4848c11e58140581"
+        },
+        "grove_tree": {
+          "path": "grove_tree.glb",
+          "bytes": 1287628,
+          "sha256": "6de066f61229af40aa4b1ee14917b4472012e276c7ba6d419986e5a24e74ee41"
+        },
+        "light": {
+          "path": "light.glb",
+          "bytes": 37668,
+          "sha256": "bb7a9513267af2c399c6f57e5c926cf6ca50c123e93ee2960bbdd9efe4b48ded"
+        },
+        "meadow_grass": {
+          "path": "meadow_grass.glb",
+          "bytes": 68700,
+          "sha256": "bca9690b583b30a487a37d8624b3a899d87413415dc301fef1dcc3e9afa8efb4"
+        },
+        "ornamental_tree": {
+          "path": "ornamental_tree.glb",
+          "bytes": 1464120,
+          "sha256": "cfa294df10cb0b1bd482c4141f1ef2da8958d878271378fce846ffed48338b1b"
+        },
+        "pergola-7x3": {
+          "path": "pergola-7x3.glb",
+          "bytes": 22672,
+          "sha256": "21ce3ad5617e31e05a8e58dc067f34cf028352aceecd16a51caeea97acf17dde"
+        },
+        "silver_shrub": {
+          "path": "silver_shrub.glb",
+          "bytes": 367296,
+          "sha256": "d29da10a583df058606b5ebb7385b50f4e76eb12e4c0a3789c2377e7453832cc"
+        }
+      },
+      "triangles": 163760,
+      "mesh_instances": 133,
+      "verification": {
+        "status": "PASS_OFFLINE_GEOMETRY",
+        "checks": [
+          "self-contained GLB buffers",
+          "delivered byte hashes",
+          "finite metric bounds",
+          "105 clear material-aware route rays"
+        ],
+        "runtime_tested": false
+      },
+      "source_sha256": {
+        "build_parks.py": "693f6309850458f9174a471ab382897f38ce631b0693e32e8a442e22998dea32",
+        "scene.py": "a8939dd9523e5985e9f7d7260d88b1b997ab838935a0be5ca44f9f2dcb9f2528"
+      },
+      "builder_review": "Visual review recorded in repository batch report; not independent human approval",
+      "runtime_status": "NOT TESTED; not installed in student picker",
+      "source_base_revision": "f0e2e787889d6b925be7341e54252934ffcf5493",
+      "sport_asset": {
+        "path": "sport-module.glb",
+        "bytes": 341956,
+        "sha256": "c12256c09cc0c86e9c26d0e85c2dfc056d5cd4869a52a65b3b1a4720e3fca976"
+      }
+    },
+    {
+      "id": "student_futsal_park_v1",
+      "title": "Community Futsal Park",
+      "package": "C:\\dev-artifacts\\CityPrompt\\public-realm-batch3-2026-09-22\\futsal-final",
+      "dimensions_m": [
+        42,
+        60
+      ],
+      "assembly": {
+        "path": "assembly-preview.glb",
+        "bytes": 4504836,
+        "sha256": "ba243a59d18279b1588f7c4101d2bf553c68bb7436a35863c93fee6341730808"
+      },
+      "modules": {
+        "bench": {
+          "path": "bench.glb",
+          "bytes": 34024,
+          "sha256": "996f77a959d098469940fc032f23960c959b0c8275842575bb4de33c152539f7"
+        },
+        "bike_rack": {
+          "path": "bike_rack.glb",
+          "bytes": 96964,
+          "sha256": "0be3cabadaddbf9f22556f0f7ead696eb8ca41f5c881b4f30a0c2940272bf907"
+        },
+        "bin": {
+          "path": "bin.glb",
+          "bytes": 80532,
+          "sha256": "a146ecda675ef0cba34caf1edac9c13c4f8e8d93b42b137e070c47b32c8f89f1"
+        },
+        "flowering_perennial": {
+          "path": "flowering_perennial.glb",
+          "bytes": 162120,
+          "sha256": "c3e00c1d9cde18c492fc2ce263240dc3b49d826f6a47b9dd4848c11e58140581"
+        },
+        "grove_tree": {
+          "path": "grove_tree.glb",
+          "bytes": 1287628,
+          "sha256": "6de066f61229af40aa4b1ee14917b4472012e276c7ba6d419986e5a24e74ee41"
+        },
+        "light": {
+          "path": "light.glb",
+          "bytes": 37668,
+          "sha256": "bb7a9513267af2c399c6f57e5c926cf6ca50c123e93ee2960bbdd9efe4b48ded"
+        },
+        "meadow_grass": {
+          "path": "meadow_grass.glb",
+          "bytes": 68700,
+          "sha256": "bca9690b583b30a487a37d8624b3a899d87413415dc301fef1dcc3e9afa8efb4"
+        },
+        "ornamental_tree": {
+          "path": "ornamental_tree.glb",
+          "bytes": 1464120,
+          "sha256": "cfa294df10cb0b1bd482c4141f1ef2da8958d878271378fce846ffed48338b1b"
+        },
+        "pergola-7x3": {
+          "path": "pergola-7x3.glb",
+          "bytes": 22672,
+          "sha256": "c10b7d5539bace6fd69a0b3923c94a2fb6e81c3a72a0006fc87a9f2ad2803569"
+        },
+        "silver_shrub": {
+          "path": "silver_shrub.glb",
+          "bytes": 367296,
+          "sha256": "d29da10a583df058606b5ebb7385b50f4e76eb12e4c0a3789c2377e7453832cc"
+        }
+      },
+      "triangles": 171820,
+      "mesh_instances": 132,
+      "verification": {
+        "status": "PASS_OFFLINE_GEOMETRY",
+        "checks": [
+          "self-contained GLB buffers",
+          "delivered byte hashes",
+          "finite metric bounds",
+          "159 clear material-aware route rays"
+        ],
+        "runtime_tested": false
+      },
+      "source_sha256": {
+        "build_parks.py": "693f6309850458f9174a471ab382897f38ce631b0693e32e8a442e22998dea32",
+        "scene.py": "a8939dd9523e5985e9f7d7260d88b1b997ab838935a0be5ca44f9f2dcb9f2528"
+      },
+      "builder_review": "Visual review recorded in repository batch report; not independent human approval",
+      "runtime_status": "NOT TESTED; not installed in student picker",
+      "source_base_revision": "f0e2e787889d6b925be7341e54252934ffcf5493",
+      "sport_asset": {
+        "path": "sport-module.glb",
+        "bytes": 784516,
+        "sha256": "12f284ffa87d62e42734360151eec0d531e05546bccf1f8ead3ab953cd68400c"
+      }
+    },
+    {
+      "id": "student_reading_garden_v1",
+      "title": "Shaded Reading Garden",
+      "package": "C:\\dev-artifacts\\CityPrompt\\public-realm-batch3-2026-09-22\\reading-final",
+      "dimensions_m": [
+        30,
+        26
+      ],
+      "assembly": {
+        "path": "assembly-preview.glb",
+        "bytes": 2508992,
+        "sha256": "ba32262b553fd208761c70c51bfba1dc1b5e4678bb5dfa8a0afee0eff592abfc"
+      },
+      "modules": {
+        "backless_bench": {
+          "path": "backless_bench.glb",
+          "bytes": 21728,
+          "sha256": "12d407b9518804d068c3b4132d3e4ea5eec9828bf1f098eff753be962c4a731a"
+        },
+        "bench": {
+          "path": "bench.glb",
+          "bytes": 34024,
+          "sha256": "996f77a959d098469940fc032f23960c959b0c8275842575bb4de33c152539f7"
+        },
+        "bike_rack": {
+          "path": "bike_rack.glb",
+          "bytes": 96964,
+          "sha256": "0be3cabadaddbf9f22556f0f7ead696eb8ca41f5c881b4f30a0c2940272bf907"
+        },
+        "bin": {
+          "path": "bin.glb",
+          "bytes": 80532,
+          "sha256": "a146ecda675ef0cba34caf1edac9c13c4f8e8d93b42b137e070c47b32c8f89f1"
+        },
+        "flowering_perennial": {
+          "path": "flowering_perennial.glb",
+          "bytes": 162120,
+          "sha256": "c3e00c1d9cde18c492fc2ce263240dc3b49d826f6a47b9dd4848c11e58140581"
+        },
+        "grove_tree": {
+          "path": "grove_tree.glb",
+          "bytes": 1287628,
+          "sha256": "6de066f61229af40aa4b1ee14917b4472012e276c7ba6d419986e5a24e74ee41"
+        },
+        "light": {
+          "path": "light.glb",
+          "bytes": 37668,
+          "sha256": "bb7a9513267af2c399c6f57e5c926cf6ca50c123e93ee2960bbdd9efe4b48ded"
+        },
+        "meadow_grass": {
+          "path": "meadow_grass.glb",
+          "bytes": 68700,
+          "sha256": "bca9690b583b30a487a37d8624b3a899d87413415dc301fef1dcc3e9afa8efb4"
+        },
+        "pergola-6x3.5": {
+          "path": "pergola-6x3.5.glb",
+          "bytes": 20716,
+          "sha256": "53facec73836d6fec42f4a78ec177604ca9cfc519d41940e43a63e24e6c2c238"
+        },
+        "picnic_table": {
+          "path": "picnic_table.glb",
+          "bytes": 36764,
+          "sha256": "fb2508dcd04593a69c6843e288d51aff9fab1fceaec49f4303246c2b08a5b548"
+        },
+        "silver_shrub": {
+          "path": "silver_shrub.glb",
+          "bytes": 367296,
+          "sha256": "d29da10a583df058606b5ebb7385b50f4e76eb12e4c0a3789c2377e7453832cc"
+        }
+      },
+      "triangles": 153654,
+      "mesh_instances": 140,
+      "verification": {
+        "status": "PASS_OFFLINE_GEOMETRY",
+        "checks": [
+          "self-contained GLB buffers",
+          "delivered byte hashes",
+          "finite metric bounds",
+          "483 clear material-aware route rays"
+        ],
+        "runtime_tested": false
+      },
+      "source_sha256": {
+        "build_parks.py": "693f6309850458f9174a471ab382897f38ce631b0693e32e8a442e22998dea32",
+        "scene.py": "a8939dd9523e5985e9f7d7260d88b1b997ab838935a0be5ca44f9f2dcb9f2528"
+      },
+      "builder_review": "Visual review recorded in repository batch report; not independent human approval",
+      "runtime_status": "NOT TESTED; not installed in student picker",
+      "source_base_revision": "f0e2e787889d6b925be7341e54252934ffcf5493"
+    }
+  ]
+}

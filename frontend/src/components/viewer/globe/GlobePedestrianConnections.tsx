@@ -39,7 +39,11 @@ function Strip({ strip, owner, zones, terrainHeight }: { strip: PedestrianStrip;
 export function GlobePedestrianConnections({ results, zones, terrainHeight }: {
   results: ConnectionResult[]; zones: SiteZone[]; terrainHeight: number;
 }) {
+  const ground = useSharedSiteGround();
   return <>{results.map(result => {
+    // On measured terrain the owning model draws its foundation-aware approach.
+    // Retain this legacy drape for prepared sites and raised street crossings.
+    if (result.kind === 'building' && ground.status !== 'inactive') return null;
     const owner=zones.find(z=>z.id===result.ownerId); if(!owner)return null;
     const captureData=streetConnectionCaptureUserData(owner,zones); if(!captureData)return null;
     return <group key={`${result.kind}:${result.id}`} userData={captureData}>

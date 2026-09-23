@@ -3,6 +3,7 @@ import type { SiteZone } from '@/types';
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 import { validPreparedLevel, type GroundReview } from './groundReview';
 import { SHARED_SITE_GROUND_LIMITS } from './sharedSiteGround';
+import { cutGeometry, type Cutout } from './terraceGeometry';
 
 export interface PreparedEdgeProfile {
   version: 1;
@@ -75,7 +76,7 @@ export function preparedEdgeSummary(profile: PreparedEdgeProfile, level: number)
 
 /** A concept retaining face on the exact boundary. Cut and fill faces split at
  * grade crossings; no inverted bow-tie quads or walls across concave notches. */
-export function createPreparedEdgeGeometry(profile: Pick<PreparedEdgeProfile, 'samples'>, level: number, origin: [number, number], closed = true): THREE.BufferGeometry {
+export function createPreparedEdgeGeometry(profile: Pick<PreparedEdgeProfile, 'samples'>, level: number, origin: [number, number], closed = true, openings: number[][][] = []): THREE.BufferGeometry {
   const positions: number[] = [], uvs: number[] = [];
   const local = ([lng, lat, h]: number[]) => [(lng - origin[0]) * metersPerDegLon(origin[1]), (lat - origin[1]) * METERS_PER_DEG_LAT, h - level];
   const face = (a: number[], b: number[]) => {
@@ -96,5 +97,17 @@ export function createPreparedEdgeGeometry(profile: Pick<PreparedEdgeProfile, 's
   geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions,3));
   geometry.setAttribute('uv', new THREE.Float32BufferAttribute(uvs,2));
   geometry.computeVertexNormals(); geometry.computeBoundingSphere();
+  if (openings.length) {
+    // Road outlines can bend. Triangulate first: cutGeometry accepts convex
+    // cutouts, and using the entire bent outline would leave a wall in the road.
+    const cutouts: Cutout[] = openings.flatMap(ring => {
+      const points = ring.map(([lng, lat]) => new THREE.Vector2(
+        (lng - origin[0]) * metersPerDegLon(origin[1]), (lat - origin[1]) * METERS_PER_DEG_LAT));
+      return THREE.ShapeUtils.triangulateShape(points, []).map(face => face.map(i => [points[i].x, points[i].y] as [number, number]));
+    });
+    const opened = cutGeometry(geometry, cutouts);
+    geometry.dispose();
+    return opened;
+  }
   return geometry;
 }

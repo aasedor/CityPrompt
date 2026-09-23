@@ -34,6 +34,7 @@ from app.api.v1 import (
     custom_style,
     urban_dna,
     lego_assembly,
+    site_landscape,
     video,
 )
 
@@ -71,3 +72,5 @@ api_router.include_router(urban_dna.router, prefix="/urban-dna", tags=["Urban In
 
 api_router.include_router(reference_layers.router, prefix="/reference-layers", tags=["Reference layers"])
 api_router.include_router(student_reports.router)
+
+api_router.include_router(site_landscape.router, prefix="/site-landscape", tags=["Site Landscape"])

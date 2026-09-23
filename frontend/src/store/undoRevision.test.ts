@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { QueryClient } from '@tanstack/react-query';
-import { siteZonesApi } from '@/services/api';
+import { siteZonesApi, zoneHistoryApi } from '@/services/api';
 import { createZoneUpdateAction, createZoneCreateAction, createZoneDeleteAction, createZoneCoordinatesAction, advanceDerivedZoneRevision } from './undoActions';
 import type { SiteZone } from '@/types';
 import { CALGARY_LOCAL_PLACEMENT } from '@/features/pickPlace/streetPlacement';
@@ -9,7 +9,8 @@ import { measureParkTerrain, readParkTerrain } from '@/components/viewer/globe/p
 import { createSharedSiteGroundLayout } from '@/components/viewer/globe/sharedSiteGround';
 import { rectangleAt } from '@/features/pickPlace/geometry';
 
-vi.mock('@/services/api', () => ({ siteZonesApi: { create: vi.fn(), update: vi.fn(), delete: vi.fn() }, buildingsApi: {} }));
+vi.mock('@/services/api', () => ({ siteZonesApi: { create: vi.fn(), update: vi.fn(), delete: vi.fn() },
+  zoneHistoryApi: { restoreSnapshot: vi.fn() }, buildingsApi: {} }));
 describe('zone undo revision checks', () => {
   it('restores street type, width, centreline and footprint together', async () => {
     const client = new QueryClient(), line = [[-114, 51], [-113.999, 51]];
@@ -101,11 +102,26 @@ describe('zone undo revision checks', () => {
     const action = kind === 'create'
       ? createZoneCreateAction('project', original, client)
       : createZoneDeleteAction('project', original, client);
-    vi.mocked(siteZonesApi.create).mockResolvedValue({ id: 'recreated', updated_at: 'r2' } as SiteZone);
+    vi.mocked(zoneHistoryApi.restoreSnapshot).mockResolvedValue({ zone_id: 'zone', deleted: false,
+      zone: { ...original, updated_at: 'r2' } });
     await action.undo();
     await action.redo();
-    expect(siteZonesApi.create).toHaveBeenCalledWith('project', expect.any(Object), { skipHistory: true });
+    expect(zoneHistoryApi.restoreSnapshot).toHaveBeenCalledWith('project', 'zone', original);
+    expect(siteZonesApi.create).not.toHaveBeenCalled();
     expect(siteZonesApi.delete).toHaveBeenCalledWith(expect.any(String), expect.any(String), { skipHistory: true });
+  });
+
+  it('retains a deleted street ID so a building entrance still points to it after Undo', async () => {
+    const street = { id:'street',project_id:'project',zone_type:'road',coordinates:[[0,0],[0,1],[1,1]],
+      properties:{ width:6 },updated_at:'r1' } as SiteZone;
+    const action = createZoneDeleteAction('project', street, new QueryClient());
+    vi.mocked(zoneHistoryApi.restoreSnapshot).mockResolvedValueOnce({ zone_id:'street',deleted:false,
+      zone:{...street,updated_at:'r2'} });
+    await action.undo();
+    expect(action.getZoneId?.()).toBe('street');
+    expect(zoneHistoryApi.restoreSnapshot).toHaveBeenCalledWith('project','street',street);
+    await action.redo();
+    expect(siteZonesApi.delete).toHaveBeenCalledWith('street','r2',{skipHistory:true});
   });
 
   it('keeps coordinate undo/redo revisions and request history options together', async () => {

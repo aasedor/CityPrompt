@@ -16,7 +16,7 @@ export type LandscapeTreeCanopyClass =
 
 export interface LandscapeTreeProfile {
   textureUrl: string;
-  crownGeometry: 'billboard_cluster' | 'radial_palm_fronds';
+  crownGeometry: 'branching_leaf_cluster' | 'radial_palm_fronds';
   trunkHeightM: number;
   trunkRadiusM: number;
   crownWidthM: number;
@@ -32,7 +32,7 @@ export interface LandscapeTreeProfile {
 export const LANDSCAPE_TREE_PROFILES: Record<LandscapeTreeVariant, LandscapeTreeProfile> = {
   honey_locust: {
     textureUrl: '/assets/landscape/tree-crown-honey-locust.png',
-    crownGeometry: 'billboard_cluster',
+    crownGeometry: 'branching_leaf_cluster',
     trunkHeightM: 4.2,
     trunkRadiusM: 0.22,
     crownWidthM: 7.4,
@@ -43,7 +43,7 @@ export const LANDSCAPE_TREE_PROFILES: Record<LandscapeTreeVariant, LandscapeTree
   },
   maple: {
     textureUrl: '/assets/landscape/tree-crown-maple.png',
-    crownGeometry: 'billboard_cluster',
+    crownGeometry: 'branching_leaf_cluster',
     trunkHeightM: 3.8,
     trunkRadiusM: 0.28,
     crownWidthM: 7.8,
@@ -57,7 +57,7 @@ export const LANDSCAPE_TREE_PROFILES: Record<LandscapeTreeVariant, LandscapeTree
     // metric trunk/crown assembly. This creates the spreading village-green
     // silhouette without adding a runtime image/model-generation dependency.
     textureUrl: '/assets/landscape/tree-crown-maple.png',
-    crownGeometry: 'billboard_cluster',
+    crownGeometry: 'branching_leaf_cluster',
     trunkHeightM: 4.2,
     trunkRadiusM: 0.38,
     crownWidthM: 10.2,
@@ -68,7 +68,7 @@ export const LANDSCAPE_TREE_PROFILES: Record<LandscapeTreeVariant, LandscapeTree
   },
   ornamental_pear: {
     textureUrl: '/assets/landscape/tree-crown-ornamental-pear.png',
-    crownGeometry: 'billboard_cluster',
+    crownGeometry: 'branching_leaf_cluster',
     trunkHeightM: 3.4,
     trunkRadiusM: 0.18,
     crownWidthM: 4.7,
@@ -79,7 +79,7 @@ export const LANDSCAPE_TREE_PROFILES: Record<LandscapeTreeVariant, LandscapeTree
   },
   columnar_hornbeam: {
     textureUrl: '/assets/landscape/tree-crown-ornamental-pear.png',
-    crownGeometry: 'billboard_cluster',
+    crownGeometry: 'branching_leaf_cluster',
     trunkHeightM: 4.0,
     trunkRadiusM: 0.17,
     crownWidthM: 3.15,
@@ -90,7 +90,7 @@ export const LANDSCAPE_TREE_PROFILES: Record<LandscapeTreeVariant, LandscapeTree
   },
   pollarded_plane: {
     textureUrl: '/assets/landscape/tree-crown-maple.png',
-    crownGeometry: 'billboard_cluster',
+    crownGeometry: 'branching_leaf_cluster',
     trunkHeightM: 4.55,
     trunkRadiusM: 0.27,
     crownWidthM: 5.25,

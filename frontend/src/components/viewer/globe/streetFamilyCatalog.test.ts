@@ -32,6 +32,7 @@ describe('Public Realm LEGO street family catalog', () => {
     expect(local.sourceArchetypeIds).toEqual(expect.arrayContaining([
       'yield_street', 'narrow_residential_street', 'woonerf_shared_street',
       'green_alley', 'toronto_laneway', 'calgary_local', 'multi_use_trail',
+      'neighborhood_greenway',
     ]));
     expect(local.sourceArchetypeIds).not.toContain('toronto_victorian_residential_street');
   });
@@ -65,6 +66,8 @@ describe('Public Realm LEGO street family catalog', () => {
       .toBe('green_corridor_v1');
     expect(appearanceFor('street_local_public_realm', 'toronto_laneway_v0'))
       .toBe('calgary_contemporary_native');
+    expect(appearanceFor('street_local_public_realm', 'neighborhood_greenway_v0'))
+      .toBe('green_corridor_v1');
     for (const archetypeId of [
       'yield_street',
       'woonerf_shared_street',

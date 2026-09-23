@@ -11,6 +11,7 @@ import {
   type LandscapeTreeCanopyClass,
   type LandscapeTreeVariant,
 } from './landscapeKitProfiles';
+import { createLandscapeCrownGeometry, landscapeTreeTint } from './landscapeCrownGeometry';
 import { retainResourceForDeferredDisposal } from './strictModeResourceDisposal';
 
 export interface LandscapeTreePlacement {
@@ -35,99 +36,54 @@ interface TreeVariantInstancesProps {
 function TreeVariantInstances({
   placements,
   profile,
-  texture,
   renderOrder,
 }: TreeVariantInstancesProps) {
   const trunkRef = useRef<THREE.InstancedMesh>(null);
-  const crownARef = useRef<THREE.InstancedMesh>(null);
-  const crownBRef = useRef<THREE.InstancedMesh>(null);
-  const crownTopRef = useRef<THREE.InstancedMesh>(null);
+  const crownRef = useRef<THREE.InstancedMesh>(null);
+  const branchRef = useRef<THREE.InstancedMesh>(null);
   const trunkGeometry = useMemo(() => {
-    const geometry = new THREE.CylinderGeometry(1, 1.28, 1, 10);
+    const geometry = new THREE.CylinderGeometry(0.55, 1.28, 1, 8);
     geometry.rotateX(Math.PI / 2);
     return geometry;
   }, []);
-  const planeGeometry = useMemo(() => new THREE.PlaneGeometry(1, 1), []);
+  const crown = useMemo(createLandscapeCrownGeometry, []);
+  const crownGeometry = crown.foliage;
+  const branchGeometry = crown.branches;
 
   useEffect(() => {
-    const releaseTrunk = retainResourceForDeferredDisposal(
-      trunkGeometry,
-      (ownedGeometry) => ownedGeometry.dispose(),
-    );
-    const releasePlane = retainResourceForDeferredDisposal(
-      planeGeometry,
-      (ownedGeometry) => ownedGeometry.dispose(),
-    );
-    return () => {
-      releaseTrunk();
-      releasePlane();
-    };
-  }, [planeGeometry, trunkGeometry]);
+    const releases = [trunkGeometry, crownGeometry, branchGeometry].map(geometry =>
+      retainResourceForDeferredDisposal(geometry, owned => owned.dispose()));
+    return () => releases.forEach(release => release());
+  }, [crownGeometry, branchGeometry, trunkGeometry]);
 
   useEffect(() => {
     const matrix = new THREE.Matrix4();
     const position = new THREE.Vector3();
     const scale = new THREE.Vector3();
-    const yawQuaternion = new THREE.Quaternion();
-    const verticalQuaternion = new THREE.Quaternion();
-    const localVertical = new THREE.Quaternion().setFromAxisAngle(
-      new THREE.Vector3(1, 0, 0),
-      Math.PI / 2,
-    );
+    const rotation = new THREE.Quaternion();
     const zAxis = new THREE.Vector3(0, 0, 1);
-
     placements.forEach((placement, index) => {
       const treeScale = placement.scale;
-      yawQuaternion.setFromAxisAngle(zAxis, placement.yawRad);
-
-      position.set(
-        placement.x,
-        placement.y,
-        placement.z + profile.trunkHeightM * treeScale * 0.5,
-      );
-      scale.set(
-        profile.trunkRadiusM * treeScale,
-        profile.trunkRadiusM * treeScale,
-        profile.trunkHeightM * treeScale,
-      );
-      matrix.compose(position, yawQuaternion, scale);
+      rotation.setFromAxisAngle(zAxis, placement.yawRad);
+      // Extend the taper into the crown so the foliage never appears detached.
+      const trunkHeight = profile.trunkHeightM + profile.crownHeightM * 0.22;
+      position.set(placement.x, placement.y, placement.z + trunkHeight * treeScale * 0.5);
+      scale.set(profile.trunkRadiusM * treeScale, profile.trunkRadiusM * treeScale, trunkHeight * treeScale);
+      matrix.compose(position, rotation, scale);
       trunkRef.current?.setMatrixAt(index, matrix);
-
-      const crownCenterZ = placement.z + (
-        profile.trunkHeightM + profile.crownHeightM * 0.40
-      ) * treeScale;
-      position.set(placement.x, placement.y, crownCenterZ);
-      scale.set(
-        profile.crownWidthM * treeScale,
-        profile.crownHeightM * treeScale,
-        1,
-      );
-      verticalQuaternion.multiplyQuaternions(yawQuaternion, localVertical);
-      matrix.compose(position, verticalQuaternion, scale);
-      crownARef.current?.setMatrixAt(index, matrix);
-
-      yawQuaternion.setFromAxisAngle(zAxis, placement.yawRad + Math.PI / 2);
-      verticalQuaternion.multiplyQuaternions(yawQuaternion, localVertical);
-      matrix.compose(position, verticalQuaternion, scale);
-      crownBRef.current?.setMatrixAt(index, matrix);
-
-      yawQuaternion.setFromAxisAngle(zAxis, placement.yawRad + Math.PI / 5);
-      position.z = placement.z + (
-        profile.trunkHeightM + profile.crownHeightM * 0.68
-      ) * treeScale;
-      scale.set(
-        profile.crownWidthM * 0.88 * treeScale,
-        profile.crownDepthM * 0.88 * treeScale,
-        1,
-      );
-      matrix.compose(position, yawQuaternion, scale);
-      crownTopRef.current?.setMatrixAt(index, matrix);
+      // Preserve the existing crown envelope and advertised overall height.
+      position.z = placement.z + (profile.trunkHeightM + profile.crownHeightM * 0.39) * treeScale;
+      scale.set(profile.crownWidthM * treeScale, profile.crownDepthM * treeScale, profile.crownHeightM * 0.98 * treeScale);
+      matrix.compose(position, rotation, scale);
+      crownRef.current?.setMatrixAt(index, matrix);
+      branchRef.current?.setMatrixAt(index, matrix);
+      crownRef.current?.setColorAt(index, landscapeTreeTint(placement.x, placement.y));
     });
-
-    for (const ref of [trunkRef, crownARef, crownBRef, crownTopRef]) {
+    for (const ref of [trunkRef, crownRef, branchRef]) {
       if (!ref.current) continue;
       ref.current.count = placements.length;
       ref.current.instanceMatrix.needsUpdate = true;
+      if (ref.current.instanceColor) ref.current.instanceColor.needsUpdate = true;
       ref.current.computeBoundingSphere();
     }
   }, [placements, profile]);
@@ -135,32 +91,18 @@ function TreeVariantInstances({
   if (placements.length === 0) return null;
   return (
     <>
-      <instancedMesh
-        ref={trunkRef}
-        args={[trunkGeometry, undefined, placements.length]}
-        renderOrder={renderOrder}
-        frustumCulled={false}
-      >
+      <instancedMesh ref={trunkRef} args={[trunkGeometry, undefined, placements.length]}
+        renderOrder={renderOrder} frustumCulled={false}>
         <meshStandardMaterial color={profile.barkColor} roughness={0.98} />
       </instancedMesh>
-      {[crownARef, crownBRef, crownTopRef].map((ref, index) => (
-        <instancedMesh
-          key={index}
-          ref={ref}
-          args={[planeGeometry, undefined, placements.length]}
-          renderOrder={renderOrder + 1}
-          frustumCulled={false}
-        >
-          <meshStandardMaterial
-            map={texture}
-            color={profile.foliageTint}
-            alphaTest={0.18}
-            side={THREE.DoubleSide}
-            roughness={0.96}
-            metalness={0}
-          />
-        </instancedMesh>
-      ))}
+      <instancedMesh ref={crownRef} args={[crownGeometry, undefined, placements.length]}
+        renderOrder={renderOrder + 1} frustumCulled={false}>
+        <meshStandardMaterial vertexColors side={THREE.DoubleSide} roughness={1} metalness={0} />
+      </instancedMesh>
+      <instancedMesh ref={branchRef} args={[branchGeometry, undefined, placements.length]}
+        renderOrder={renderOrder} frustumCulled={false}>
+        <meshStandardMaterial color={profile.barkColor} roughness={1} />
+      </instancedMesh>
     </>
   );
 }

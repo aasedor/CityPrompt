@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { PUBLISHED_BUILDING_ASSETS } from './publishedBuildingAssets';
+import { CATALOGUE_BUILDING_ASSETS, PUBLISHED_BUILDING_ASSETS } from './publishedBuildingAssets';
 import { CATALOGUE_ASSETS, validateRegistry } from './assetRegistry';
 import { placementPlanRequest } from './catalogue';
 
@@ -10,6 +10,11 @@ describe('published building catalogue', () => {
       expect(asset.readiness).toBe('ready');
       expect(asset.label).not.toContain('trial');
     }
+  });
+  it('keeps unpublished local pilots out of the release catalogue', () => {
+    expect(CATALOGUE_BUILDING_ASSETS.filter(asset => asset.readiness === 'pilot')).toEqual([]);
+    expect(PUBLISHED_BUILDING_ASSETS).toEqual(CATALOGUE_BUILDING_ASSETS);
+    expect(PUBLISHED_BUILDING_ASSETS.every(asset => CATALOGUE_ASSETS.includes(asset))).toBe(true);
   });
   it('uses valid categories, exact variants and plots larger than complete envelopes', () => {
     expect(validateRegistry(PUBLISHED_BUILDING_ASSETS)).toEqual([]);

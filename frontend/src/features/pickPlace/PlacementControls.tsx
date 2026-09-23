@@ -1,9 +1,11 @@
 import { useId, useState } from 'react';
 import { placeAsset } from './catalogue';
 import type { PlacementDraft } from './GlobePlacementPreview';
+import { reviewedEntranceForAsset } from './reviewedEntrances';
 
 export function PlacementControls({ draft, onChange }: { draft: PlacementDraft; onChange: (draft: PlacementDraft) => void }) {
   const asset = placeAsset(draft.assetId);
+  const entrance = reviewedEntranceForAsset(asset);
   const hintId = useId();
   const [values, setValues] = useState(draft.inputValues ?? { width: String(draft.width), depth: String(draft.depth), degrees: String(draft.degrees) });
   function update(key: keyof typeof values, value: string) {
@@ -34,5 +36,8 @@ export function PlacementControls({ draft, onChange }: { draft: PlacementDraft; 
     </div>
     <p id={hintId} className="text-xs">Minimum {asset.minWidth} × {asset.minDepth} m; maximum {asset.maxSize} m per side.{asset.properties.native_home_plot === true ? ' Houses repeat at their native size.' : ''}</p>
     <p role="status" className={draft.inputError ? 'text-xs text-red-700' : 'text-xs text-slate-600'}>{draft.inputError ?? (draft.faceStreet ? 'The preview faces a nearby street. Enter a rotation for manual control.' : 'Size and rotation update automatically.')}</p>
+    {asset.zoneType === 'building' && <p className="text-xs text-slate-600">Buildings settle into available space beside other plots.
+      {entrance && (entrance.fixedNative || (Math.abs(draft.width-entrance.plotWidthM)<.05 && Math.abs(draft.depth-entrance.plotDepthM)<.05))
+        ? ' This building connects to a nearby sidewalk automatically.' : ''}</p>}
   </div>;
 }

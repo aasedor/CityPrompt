@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "initiative": "classroom-catalogue-entry-pilot",
+  "date": "2026-09-22",
+  "source_base_commit": "c02c16227",
+  "branch": "codex/classroom-catalogue-pilot",
+  "project_id": "3a52b4df-8508-408e-ac20-2f674d7c23b9",
+  "viewport": [
+    1440,
+    1000
+  ],
+  "terrain_scope": "prepared Currie site only",
+  "new_asset_approval": false,
+  "paid_calls": 0,
+  "served_assets": [
+    {
+      "path": "/api/v1/files/library/rlasm-architectural-clay/calgary-beltline-mid-rise-clay-v003.glb",
+      "bytes": 5022608,
+      "sha256": "1ed0f47bb38a6879233fe54d441ba734f60f533f97a21b5e894a0706472cef41"
+    },
+    {
+      "path": "/landscape-pilots/park-trio-v3/garden/shelter.glb",
+      "bytes": 934296,
+      "sha256": "afb3b54313a833b11e654a36945def5b52472808f31e20716bed3e151f163c39"
+    },
+    {
+      "path": "/landscape-pilots/park-trio-v3/garden/bed.glb",
+      "bytes": 187452,
+      "sha256": "4b09f0057c7801bc8670a8a906637a958f56077f37eea285a27610ac1fc26f14"
+    },
+    {
+      "path": "/landscape-pilots/park-trio-v3/garden/label.glb",
+      "bytes": 11112,
+      "sha256": "f57d7872dc1e4875fb537efa71914845006f24f46343106582ca4ee4ac4bbfc3"
+    },
+    {
+      "path": "/landscape-pilots/neighborhood-rustic-v5/timber-bench.glb",
+      "bytes": 698344,
+      "sha256": "71a4a5b0850c9b5fa34e370b1a2f9540ff6c39d635de780ac655e32e2c9fe8bc"
+    }
+  ],
+  "source_hashes": [
+    {
+      "path": "frontend/src/features/pickPlace/reviewedEntrances.ts",
+      "sha256": "c8e690f9e3705ee8f7a877fe51204231fcd3a0e855eb7ff003bf258f56166a50"
+    },
+    {
+      "path": "frontend/src/features/pickPlace/catalogue.ts",
+      "sha256": "9c01a233cbfd645d1461dca8a7a11983b3e5ad125e0f4fba93b6b4b884aeaf9b"
+    },
+    {
+      "path": "frontend/src/features/pickPlace/pedestrianConnections.ts",
+      "sha256": "4ab977cda9acea276db3f89149a1f250b27d3c11c1b6c0a2d4adb2ad958e3ea1"
+    },
+    {
+      "path": "frontend/src/features/pickPlace/PlacementControls.tsx",
+      "sha256": "30a17f2b7f24204b73be719cd70fa0f2a7b37bb011df0888022940109596fe87"
+    },
+    {
+      "path": "frontend/src/features/pickPlace/parkTrioAssets.ts",
+      "sha256": "d5672274e1710d40f55df04cb2df5a54c662eace847f793fd2f3918ea8c12217"
+    },
+    {
+      "path": "frontend/src/features/pickPlace/representationNotice.ts",
+      "sha256": "0fb7ee3b8ed07508bddc2c78e735445671331cf723984f9dce5079b46f99cbe1"
+    },
+    {
+      "path": "frontend/src/components/viewer/globe/parkTrioLayout.ts",
+      "sha256": "cdbe0a1cc67067116f411aae941541e3e5ecc7679211373cb91b5d3ec9457b63"
+    },
+    {
+      "path": "frontend/src/components/viewer/globe/streetSectionProfiles.ts",
+      "sha256": "5bd664eb89d1014977b6b1b80ceea38e10402506db8954ac095502c3599178b8"
+    },
+    {
+      "path": "frontend/src/data/streetPathArchetypes.json",
+      "sha256": "3293941ac1f55da0bdff88b09c62d42e80227fd90ac07f1741c37cbe92bcf07b"
+    }
+  ],
+  "local_evidence_root": "C:/dev-artifacts/CityPrompt/catalogue-pilot-2026-09-22",
+  "evidence_shared": false,
+  "evidence": [
+    {
+      "path": "served-assets.json",
+      "sha256": "ad5daaacd08c32600644ad3063e3685ae86075e0fd73b7753fa7e845afe971d1"
+    },
+    {
+      "path": "before-undo.json",
+      "sha256": "13158eeca2e5631b3852a3e6bf77aab7f84a9f8d43260003421845d6cb1c7033"
+    },
+    {
+      "path": "after-undo.json",
+      "sha256": "63ef0755a6ee2da8be2f6fb47a5a9c186d078105f0cdeecf5010eef8c9daf104"
+    },
+    {
+      "path": "after-redo.json",
+      "sha256": "72a5da3016beed30dcc041917762659736373fe83b9eaaa3be448384821f152f"
+    },
+    {
+      "path": "final-reloaded.json",
+      "sha256": "cb1614546ab64d9a7fda5d5aec5723715cd92b25497f51dd6c864b9d5155c313"
+    },
+    {
+      "path": "access.json",
+      "sha256": "c568b7ffeab196d77d92c84e8ca97270ed20d2dbc12933bf58e1286da95b469a"
+    },
+    {
+      "path": "verification.json",
+      "sha256": "e8ae5c2ea507ce32fe06fdd133c2ee80a36ee5352fb9fe01a729cb3bb2df4e34"
+    },
+    {
+      "path": "entrance-close.png",
+      "sha256": "3a609d0f796cede7c0fd5afa60037b39c9fa3800cc0b887d1a41dc01243fd926"
+    },
+    {
+      "path": "exact-export.png",
+      "sha256": "0751604ab26ccac939c4cee5f8f6823bf029091cb55a0c42c165cd791c3287a8"
+    }
+  ],
+  "checks": {
+    "protectedProjectUnchanged": true,
+    "undoChangedFootprint": true,
+    "redoRestoredFootprint": true,
+    "entrancePreservedByUndoRedo": true,
+    "tokens": "4,057 TOKENS",
+    "exactPngBytes": 3120851,
+    "downloadButton": "cancelled in automation; saved exact data URL from the existing link instead"
+  },
+  "tests": {
+    "vitest_files": 9,
+    "vitest_passed": 86,
+    "typecheck": "PASS",
+    "focused_eslint": "PASS"
+  },
+  "open": [
+    "download button cancelled in automation; exact link PNG saved and inspected",
+    "prepared ground white edge geometry",
+    "low public-junction grade review",
+    "natural terrain and race matrix not rerun",
+    "independent student trial"
+  ]
+}

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
+import { createPublicRealmPlant } from './publicRealmPlantGeometry';
 
 import {
   PUBLIC_REALM_STREET_MARKING_LIFT_METERS,
@@ -70,7 +71,7 @@ function InstancedPart({
       renderOrder={renderOrder}
       frustumCulled={false}
     >
-      <meshStandardMaterial color={color} roughness={roughness} metalness={metalness} />
+      <meshStandardMaterial color={geometry.getAttribute('color') ? '#ffffff' : color} vertexColors={Boolean(geometry.getAttribute('color'))} side={THREE.DoubleSide} roughness={roughness} metalness={metalness} />
     </instancedMesh>
   );
 }
@@ -96,10 +97,12 @@ function poseTransform(
 export function GlobeStreetMicrodetailInstances({
   fixtures,
   fixtureMetalColor,
+  detailedPlanting = false,
   renderOrder,
 }: {
   fixtures: StreetFamilyFixturePlacements;
   fixtureMetalColor: string;
+  detailedPlanting?: boolean;
   renderOrder: number;
 }) {
   const box = useMemo(() => new THREE.BoxGeometry(1, 1, 1), []);
@@ -114,7 +117,7 @@ export function GlobeStreetMicrodetailInstances({
     geometry.translate(0, 0, 0.42);
     return geometry;
   }, []);
-  const shrub = useMemo(() => new THREE.DodecahedronGeometry(0.5, 1), []);
+  const shrub = useMemo(() => detailedPlanting ? createPublicRealmPlant('grass') : new THREE.DodecahedronGeometry(0.5, 1), [detailedPlanting]);
   useEffect(() => () => {
     box.dispose();
     cylinder.dispose();

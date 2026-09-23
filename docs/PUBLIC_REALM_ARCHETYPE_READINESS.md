@@ -1,5 +1,12 @@
 # Public-Realm Archetype Readiness
 
+For new or materially revised street/path and park/open-space variants, use
+[Runtime integration for every archetype](ARCHETYPE_RUNTIME_INTEGRATION.md)
+and complete [the per-variant review](ARCHETYPE_RUNTIME_REVIEW_TEMPLATE.md).
+It captures the later shared-ground, connection, edit-race and capture lessons.
+The dated results below retain their original scope; they do not establish
+that every current runtime gate has passed for those historical variants.
+
 This log tracks the incremental park, plaza, street and pathway workflow:
 
 1. Build a polygon from the catalog's real metric metadata.

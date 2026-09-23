@@ -1,0 +1,138 @@
+{
+  "date": "2026-09-22",
+  "scope": "isolated_browser_asset_closeups",
+  "runtime_integration": "not_tested",
+  "human_visual_approval": "pending",
+  "model": "gpt-image-2.5-flare",
+  "output_root": "C:\\dev-artifacts\\CityPrompt\\public-realm-browser-review-2026-09-22",
+  "project_id": "54818ada-581f-4643-900a-78867b076c8c",
+  "credit_verification": {
+    "balance": 588,
+    "gallery_count": 11,
+    "saved_ids": [
+      "5b763f12-5356-454a-bf18-ed1d53ff3a67",
+      "ba4ac884-ecd1-4da1-9fe8-170e6f9eb7fb",
+      "1effbef6-098a-4738-af3a-4d4df6967618",
+      "47387125-8505-4d12-86d5-e21514f777c5",
+      "29f11438-51ba-4fab-8b55-0c4e7855db7e"
+    ],
+    "saved_matches": 5,
+    "successful_calls": 5,
+    "credits_spent": 130,
+    "audit_rows": [
+      {
+        "id": "9654f677-7608-4c04-b5a9-7a68707c506b",
+        "created_at": "2026-09-23 01:26:25.090411+00:00",
+        "model": "gpt-image-2.5-flare",
+        "tokens_spent": 26
+      },
+      {
+        "id": "4158b64b-6e86-4fbd-9816-9ef96efddb7e",
+        "created_at": "2026-09-23 01:27:58.758208+00:00",
+        "model": "gpt-image-2.5-flare",
+        "tokens_spent": 26
+      },
+      {
+        "id": "9bc556b9-0fe4-4523-89b7-f1aa12f32254",
+        "created_at": "2026-09-23 01:29:11.852873+00:00",
+        "model": "gpt-image-2.5-flare",
+        "tokens_spent": 26
+      },
+      {
+        "id": "97ab8ff6-1df7-45e0-a34d-9878d6f62000",
+        "created_at": "2026-09-23 01:31:26.473886+00:00",
+        "model": "gpt-image-2.5-flare",
+        "tokens_spent": 26
+      },
+      {
+        "id": "dfa357f5-5dc3-4970-bfb4-e64d427cf8ef",
+        "created_at": "2026-09-23 01:33:00.584739+00:00",
+        "model": "gpt-image-2.5-flare",
+        "tokens_spent": 26
+      }
+    ],
+    "initial_balance": 718,
+    "account_refresh_issue": {
+      "concept": "Planted Shared Street",
+      "error": "HTTP 500 after image generation and gallery save completed",
+      "resolution": "No generation retry. Final authenticated profile and gallery GETs succeeded; database charges reconciled."
+    }
+  },
+  "concepts": [
+    {
+      "concept_id": "student_pickleball_garden_v1",
+      "saved_render_id": "29f11438-51ba-4fab-8b55-0c4e7855db7e",
+      "source": {
+        "file": "01-pickleball-source.png",
+        "bytes": 581956,
+        "sha256": "813eff77e58a9db86dbaeef325f051b5058a633ae2ee9d4b2050dc88c0905958"
+      },
+      "render": {
+        "file": "01-pickleball-render.png",
+        "bytes": 2973447,
+        "sha256": "7a5e0e08e68ca5994f467e3e48b6d8311978116a2308ac59eecbc1c8853f8a2e"
+      },
+      "manual_observation": "Main court, pergola, seating and planted-bed arrangement retained. The AI adds paving beyond the model edge and changes some fence/gate detailing; use the 3D source for exact geometry."
+    },
+    {
+      "concept_id": "student_futsal_park_v1",
+      "saved_render_id": "47387125-8505-4d12-86d5-e21514f777c5",
+      "source": {
+        "file": "02-futsal-source.png",
+        "bytes": 492210,
+        "sha256": "72d530c60a1f530650744c2f09f257519f1f15456f2670b877a8ae344587ac6f"
+      },
+      "render": {
+        "file": "02-futsal-render.png",
+        "bytes": 3041555,
+        "sha256": "cdc6b1de51f122e3f17115ecb23f5c2733fe32739b799559a5b0b7a665ca9c4d"
+      },
+      "manual_observation": "Near goal, offset entrance, team pergola, seating and main court markings retained. The neutral background becomes extended grass, so the illustrated landscape edge is not the model boundary."
+    },
+    {
+      "concept_id": "student_reading_garden_v1",
+      "saved_render_id": "1effbef6-098a-4738-af3a-4d4df6967618",
+      "source": {
+        "file": "03-reading-garden-source.png",
+        "bytes": 521153,
+        "sha256": "8327b36b95caa08b7c379f2d2bb75b5065eeef766b1ec33b07d7fa61d99d59e0"
+      },
+      "render": {
+        "file": "03-reading-garden-render.png",
+        "bytes": 2791149,
+        "sha256": "fae633c108d74e03e68570f9778f641be49709313d147a2f31bd721b49fdbc83"
+      },
+      "manual_observation": "Both pergolas, reading benches, picnic table and planted-room pattern retained. The AI thickens planting, adds flowers and small soil openings, and interprets parts of the neutral background as paving."
+    },
+    {
+      "concept_id": "student_planted_shared_street_v1",
+      "saved_render_id": "ba4ac884-ecd1-4da1-9fe8-170e6f9eb7fb",
+      "source": {
+        "file": "04-shared-street-source.png",
+        "bytes": 347221,
+        "sha256": "8e14371b6192ee7f995b10cb81578f0195542f3c84a49ed3be4ba5658b3103d5"
+      },
+      "render": {
+        "file": "04-shared-street-render.png",
+        "bytes": 2553199,
+        "sha256": "788bfc2a0d6ff61b4be17ef8f1d43a4c3df8fc72e125d7ed4f2418f3c2894dc4"
+      },
+      "manual_observation": "The flush paved route, connected seating bays, tree beds and lights remain legible. The AI enriches paver joints, grass and planting density; fine paving detail is illustrative."
+    },
+    {
+      "concept_id": "student_garden_cycle_promenade_v1",
+      "saved_render_id": "5b763f12-5356-454a-bf18-ed1d53ff3a67",
+      "source": {
+        "file": "05-cycle-promenade-source.png",
+        "bytes": 298042,
+        "sha256": "927835593c1a889602ae509409012de3403effc86a9f550f2716e523d0b22f38"
+      },
+      "render": {
+        "file": "05-cycle-promenade-render.png",
+        "bytes": 2354023,
+        "sha256": "7b8ed19a469d27b2e161a0ee1bfd8b609427ecb0f3fbdfca3360320eef41ddc0"
+      },
+      "manual_observation": "Separate pedestrian and terracotta cycle routes, crossing, benches, planting and opposing travel arrows retained. The AI redraws bicycle symbols and adds grass texture beyond the clean model edge."
+    }
+  ]
+}

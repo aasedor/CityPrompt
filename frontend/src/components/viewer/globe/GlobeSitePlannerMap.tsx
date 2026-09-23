@@ -1,4 +1,9 @@
+import { frameLandscapeContext } from '@/features/siteLandscape/landscapeContext';
+import { assertSiteLandscapeReady } from '@/features/siteLandscape/landscapeCapture';
+import { BuildingEntranceReviewPanel } from './BuildingEntranceReviewPanel';
+import type { BuildingEntranceReview } from './buildingEntranceReview';
 import { BuildingGroundProblems } from './BuildingGroundProblems';
+import { pickBuildingEntrance, entrancePickOccluded, entrancePickZoneKey, type NativeEntranceHit } from '@/features/pickPlace/pickBuildingEntrance';
 import { useContextPresentation } from '@/features/context/useContextPresentation';
 import { ContextControls } from '@/features/context/ContextControls';
 import { SurveyGroundSurface } from '@/features/context/SurveyGroundSurface';
@@ -47,9 +52,11 @@ import type { ReferenceLayer } from '@/features/referenceLayers/api';
 import { useRoadNetwork } from '@/hooks/useRoadNetwork';
 import { roadDisplayZones, snapRoadEndpoints } from '@/utils/proceduralRoadNetwork';
 import { GlobeZoneLayer } from './GlobeZoneLayer';
-import { streetGroundCaptureStatus } from './streetGroundCapture';
+import { assertStreetGroundReady, streetGroundCaptureStatus } from './streetGroundCapture';
 import { streetSurfaceMaskZone } from './streetSurfaceMask';
+import { preparedPublicRoadMasks } from './preparedPublicRoads';
 import { GroundReviewPanel } from './GroundReviewPanel';
+import { preparedEntranceGround } from './preparedEntranceGround';
 import { PlacementControls } from '@/features/pickPlace/PlacementControls';
 import { SharedSiteGroundProvider, INACTIVE_SHARED_SITE_GROUND, type SharedSiteGroundState } from './SharedSiteGroundProvider';
 import { captureSharedGround, assertSharedGroundUnchanged, groundReadinessMessage } from './sharedGroundCapture';
@@ -64,8 +71,13 @@ import {
 } from './legoGlobePlacement';
 import { GlobeStreetDetailLayer } from './GlobeStreetDetailLayer';
 import { GlobeParkKitLayer } from './GlobeParkKitLayer';
+import { GlobePublicRealmTrialLayer } from './GlobePublicRealmTrialLayer';
+import { GlobeGroundBackdrop } from './GlobeGroundBackdrop';
+import { publicRealmTrialAsset, assertPublicRealmTrialsReady } from './publicRealmTrial';
 import { applyManualParkAccessSnapshot, resolveManualParkAccess } from './parkAccessConnections';
 import { resolvePedestrianConnections } from '@/features/pickPlace/pedestrianConnections';
+import { BuildingEntranceApproaches } from './BuildingEntranceApproaches';
+import { buildingGroundProblemMessage } from './buildingGroundProblemMessage';
 import { GlobePedestrianConnections } from './GlobePedestrianConnections';
 import { GlobeTerraces } from './GlobeTerraces';
 import { buildTerraceScene } from './terraceScene';
@@ -103,6 +115,7 @@ import {
   getPreparedSiteBoundaryIds,
   getActiveBoundaryTileMaskPreference,
   resolvePreparedSiteTerrainHeight,
+  resolvePreparedSiteTerrainForZone,
   shouldMaskReplacementBuildingTiles,
 } from './sitePreparationSurface';
 import {
@@ -1438,6 +1451,7 @@ function MeasurementOverlay({
 }
 
 interface GlobeSitePlannerMapProps {
+  entrancePick?: import('@/features/pickPlace/pickBuildingEntrance').EntrancePickRequest | null;
   onPrepareGround?: (zoneId: string, clear: boolean, height?: number, edges?: import('./preparedSiteEdges').PreparedEdgeProfile | null) => Promise<void>;
   onFollowParkTerrain?: (profiles: Record<string, ParkTerrainProfile>) => Promise<void>;
   onAutoParkTerrain?: SaveParkGround;
@@ -1488,6 +1502,7 @@ interface GlobeSitePlannerMapProps {
     /** Capture a clean, current-camera 3D beauty frame plus exact proposal
      *  mask and semantic class-ID frame. This is isolated from Classic. */
     captureDirect3D?: (options?: {
+      landscapeBoundary?: number[][];
       skipTileWait?: boolean;
       includeGeometryPasses?: boolean;
       maxLongEdge?: number;
@@ -1538,6 +1553,7 @@ export interface GlobeAIRenderViewport {
 }
 
 export function GlobeSitePlannerMap({
+  entrancePick,
   placementDraft,
   onPlacementDraftChange,
   onPrepareGround,
@@ -1563,11 +1579,25 @@ export function GlobeSitePlannerMap({
   onPasteZone,
   canPasteZone = false,
   measureModeActive = false,
-  interactionPaused = false,
+  interactionPaused: externalInteractionPaused = false,
   onMeasureModeChange,
   onGlobeReady,
   onModeledBuildingsChange,
 }: GlobeSitePlannerMapProps) {
+  const interactionPaused = externalInteractionPaused || Boolean(entrancePick);
+  const [entrancePickError, setEntrancePickError] = useState('');
+  const entrancePointerHitRef = useRef<{buildingId:string;hit?:NativeEntranceHit}|null>(null);
+  useEffect(() => { setEntrancePickError(''); }, [entrancePick]);
+  useEffect(() => {
+    if (!entrancePick) return;
+    const zone = siteZones.find(z => z.id === entrancePick.zoneId);
+    if (!zone || entrancePickZoneKey(zone) !== entrancePick.zoneKey) { entrancePick.finish(null); return; }
+    const cancel = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); entrancePick.finish(null); }
+    };
+    window.addEventListener('keydown', cancel, true);
+    return () => window.removeEventListener('keydown', cancel, true);
+  }, [entrancePick, siteZones]);
   const roadNetwork = useRoadNetwork(siteZones);
   const containerRef = useRef<HTMLDivElement>(null);
   const cameraRef = useRef<THREE.Camera | null>(null);
@@ -1592,6 +1622,8 @@ export function GlobeSitePlannerMap({
   const [sharedGroundState, setSharedGroundState] = useState<SharedSiteGroundState>(INACTIVE_SHARED_SITE_GROUND);
   const [showGroundReview, setShowGroundReview] = useState(false);
   const [showBuildingGroundProblems, setShowBuildingGroundProblems] = useState(false);
+  const [showEntranceReview,setShowEntranceReview]=useState(false);
+  const [entranceReviews,setEntranceReviews]=useState<BuildingEntranceReview[]>([]);
   const contextPresentation = useContextPresentation(allSiteZones);
   const contextPresentationRef = useRef(contextPresentation);
   contextPresentationRef.current = contextPresentation;
@@ -1616,6 +1648,7 @@ export function GlobeSitePlannerMap({
   const parkAlignmentRef = useRef(parkAlignment);
   parkAlignmentRef.current = parkAlignment;
   const waitForSharedGround = useCallback(async () => {
+    if (sharedGroundRef.current.snapshot?.excludedCells?.length) captureSharedGround(sharedGroundRef.current);
     const context = contextPresentationRef.current;
     const contextProblem = contextPilotCaptureProblem(context.provider, context.requested);
     if (contextProblem) throw new Direct3DCaptureError('capture_failed', contextProblem);
@@ -1635,14 +1668,14 @@ export function GlobeSitePlannerMap({
       && performance.now() < deadline) {
       await new Promise((resolve) => setTimeout(resolve, 200));
     }
-    if (streetGroundCaptureStatus(sceneRef.current) !== 'ready') {
-      throw new Error('The road connection is still aligning with the ground. Keep your design; check its position if alignment does not finish.');
-    }
+    assertStreetGroundReady(sceneRef.current);
     const snapshot = captureSharedGround(sharedGroundRef.current);
-    if (snapshot && (pendingGroundBuildingsRef.current.length > 0 || buildingGroundingIssuesRef.current.length > 0)) {
+    if (pendingGroundBuildingsRef.current.length > 0 || buildingGroundingIssuesRef.current.length > 0) {
       if (buildingGroundingIssuesRef.current.some((issue) => issue.reason === 'foundation_exceeds_3m')) {
         throw new Error('The site is too uneven beneath a building for automatic grounding. Choose a flatter placement before rendering.');
       }
+      const entranceIssue = buildingGroundingIssuesRef.current.find((issue) => issue.reason.startsWith('entrance_'));
+      if (entranceIssue) throw new Error(buildingGroundProblemMessage(entranceIssue.reason));
       throw new Error(`These buildings are not ready at ground level: ${pendingGroundBuildingsRef.current.join(', ') || 'check the marked building'}. Check their placement before rendering.`);
     }
     return snapshot;
@@ -1782,7 +1815,8 @@ export function GlobeSitePlannerMap({
       // photogrammetry without a parallax apron or terrain tearing beneath
       // parks and streets.
       if (preparedSiteBoundaryIds.size > 0) {
-        return siteZones.filter((zone) => preparedSiteBoundaryIds.has(zone.id));
+        return [...siteZones.filter((zone) => preparedSiteBoundaryIds.has(zone.id)),
+          ...preparedPublicRoadMasks(siteZones)];
       }
       return siteZones.filter((zone) => (
         shouldMaskReplacementBuildingTiles(
@@ -1827,6 +1861,8 @@ export function GlobeSitePlannerMap({
       ? resolvePreparedSiteTerrainHeight(boundary, terrainElevation)
       : null;
   }, [preparedSiteBoundaryIds, siteZones, terrainElevation]);
+  const preparedReviewGround = useMemo(() => preparedEntranceGround(
+    getActiveSiteBoundary(siteZones), preparedSiteTerrainHeight), [siteZones, preparedSiteTerrainHeight]);
   const [isTerrainReady, setIsTerrainReady] = useState(false);
   const terrainElevationRef = useRef(DEFAULT_TERRAIN_ELEVATION);
   terrainElevationRef.current = terrainElevation;
@@ -2624,6 +2660,7 @@ export function GlobeSitePlannerMap({
   );
 
   const captureDirect3D = useCallback((options: {
+    landscapeBoundary?: number[][];
     skipTileWait?: boolean;
     includeGeometryPasses?: boolean;
     maxLongEdge?: number;
@@ -2657,64 +2694,77 @@ export function GlobeSitePlannerMap({
         );
       }
 
-      const tilesSettled = options.skipTileWait || await waitForCurrentTiles();
-      if (!tilesSettled) {
-        throw new Direct3DCaptureError(
-          'capture_failed',
-          'The surrounding 3D tiles did not settle in time. Hold the camera still and try again.',
-        );
-      }
-      const sharedGroundSnapshot = await waitForSharedGround();
-      if (
-        rendererRef.current !== renderer
-        || sceneRef.current !== scene
-        || cameraRef.current !== camera
-        || !canvas.isConnected
-      ) {
-        throw new Direct3DCaptureError(
-          'capture_failed',
-          'The 3D globe changed while preparing the capture. Try again after it stabilizes.',
-        );
-      }
-
-      const previousReferenceVisibility = referenceOverlayGroup.current?.visible;
-      const previousOverlaysVisible = zoneOverlaysVisibleRef.current;
-      const previousSelectedBuildingId = selectedBuildingIdRef.current;
+      const restoreContextCamera = options.landscapeBoundary
+        ? frameLandscapeContext(camera, options.landscapeBoundary, terrainElevationRef.current, globeControlsRef.current) : null;
+      const previousModelsVisible = buildingModelsVisibleRef.current;
       try {
-        // Direct capture consumes the compiled 3D scene, never editable color
-        // polygons or selection affordances. Two frames let React commit the
-        // clean state before the deterministic off-screen passes begin.
-        setZoneOverlaysVisible(false);
-        setCaptureOverlaysHidden(true);
-        setSelectedBuildingId(null);
-        await new Promise<void>((resolve) => {
-          requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
-        });
-        if (direct3DContextLostRef.current || renderer.getContext().isContextLost()) {
+        if (restoreContextCamera) setBuildingModelsVisible(true);
+        if (restoreContextCamera) await new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
+        const tilesSettled = options.skipTileWait || await waitForCurrentTiles();
+        if (!tilesSettled) {
           throw new Direct3DCaptureError(
-            'context_lost',
-            'The WebGL context was lost while preparing the Direct 3D capture.',
+            'capture_failed',
+            'The surrounding 3D tiles did not settle in time. Hold the camera still and try again.',
           );
         }
-        const captured = await captureDirect3DScene(renderer, scene, camera, {
-          includeGeometryPasses: options.includeGeometryPasses,
-          maxLongEdge: options.maxLongEdge,
-          // Close-up scene framing may contain only the proposal. The server
-          // applies presentation-specific geometry checks and source fallback.
-          maxMaskCoverage: 1,
-          minVisibleContextCoverage: 0,
-        });
-        if (accessSnapshot.sourceSignature !== parkAccessSnapshotRef.current.sourceSignature) {
-          throw new Direct3DCaptureError('capture_failed', 'The plan changed during capture. Let the scene settle and try again.');
+        const sharedGroundSnapshot = await waitForSharedGround();
+        if (
+          rendererRef.current !== renderer
+          || sceneRef.current !== scene
+          || cameraRef.current !== camera
+          || !canvas.isConnected
+        ) {
+          throw new Direct3DCaptureError(
+            'capture_failed',
+            'The 3D globe changed while preparing the capture. Try again after it stabilizes.',
+          );
         }
-        assertSharedGroundUnchanged(sharedGroundSnapshot, sharedGroundRef.current);
-        return { ...captured, sharedGroundSnapshot, ...(accessSnapshot.parks.length && accessSnapshot.sources.length <= 256
-          ? { parkAccessSnapshot: structuredClone(accessSnapshot) } : {}) };
+
+        const previousReferenceVisibility = referenceOverlayGroup.current?.visible;
+        const previousOverlaysVisible = zoneOverlaysVisibleRef.current;
+        const previousSelectedBuildingId = selectedBuildingIdRef.current;
+        try {
+          // Direct capture consumes the compiled 3D scene, never editable color
+          // polygons or selection affordances. Two frames let React commit the
+          // clean state before the deterministic off-screen passes begin.
+          setZoneOverlaysVisible(false);
+          setCaptureOverlaysHidden(true);
+          setSelectedBuildingId(null);
+          await new Promise<void>((resolve) => {
+            requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
+          });
+          if (direct3DContextLostRef.current || renderer.getContext().isContextLost()) {
+            throw new Direct3DCaptureError(
+              'context_lost',
+              'The WebGL context was lost while preparing the Direct 3D capture.',
+            );
+          }
+          assertSiteLandscapeReady(scene);
+          assertPublicRealmTrialsReady(scene);
+          const captured = await captureDirect3DScene(renderer, scene, camera, {
+            includeGeometryPasses: options.includeGeometryPasses,
+            maxLongEdge: options.maxLongEdge,
+            // Close-up scene framing may contain only the proposal. The server
+            // applies presentation-specific geometry checks and source fallback.
+            maxMaskCoverage: 1,
+            minVisibleContextCoverage: 0,
+          });
+          if (accessSnapshot.sourceSignature !== parkAccessSnapshotRef.current.sourceSignature) {
+            throw new Direct3DCaptureError('capture_failed', 'The plan changed during capture. Let the scene settle and try again.');
+          }
+          assertSharedGroundUnchanged(sharedGroundSnapshot, sharedGroundRef.current);
+          assertStreetGroundReady(scene);
+          return { ...captured, sharedGroundSnapshot, ...(accessSnapshot.parks.length && accessSnapshot.sources.length <= 256
+            ? { parkAccessSnapshot: structuredClone(accessSnapshot) } : {}) };
+        } finally {
+          if (referenceOverlayGroup.current && previousReferenceVisibility !== undefined) referenceOverlayGroup.current.visible = previousReferenceVisibility;
+          setZoneOverlaysVisible(previousOverlaysVisible);
+          setCaptureOverlaysHidden(false);
+          setSelectedBuildingId(previousSelectedBuildingId);
+        }
       } finally {
-        if (referenceOverlayGroup.current && previousReferenceVisibility !== undefined) referenceOverlayGroup.current.visible = previousReferenceVisibility;
-        setZoneOverlaysVisible(previousOverlaysVisible);
-        setCaptureOverlaysHidden(false);
-        setSelectedBuildingId(previousSelectedBuildingId);
+        restoreContextCamera?.();
+        if (restoreContextCamera) setBuildingModelsVisible(previousModelsVisible);
       }
     })().finally(() => {
       if (direct3DCapturePromiseRef.current === trackedPromise) {
@@ -2742,6 +2792,7 @@ export function GlobeSitePlannerMap({
     const sharedGroundSnapshot = await waitForSharedGround();
     try {
       const accessSnapshot = parkAccessSnapshotRef.current;
+      assertPublicRealmTrialsReady(scene);
       const captured = await captureDirect3DScene(renderer, scene, camera, {
         ...options,
         // Direct 3D v2 requires the same registered geometry controls at
@@ -2754,9 +2805,12 @@ export function GlobeSitePlannerMap({
       });
       if (accessSnapshot.sourceSignature !== parkAccessSnapshotRef.current.sourceSignature) return null;
       assertSharedGroundUnchanged(sharedGroundSnapshot, sharedGroundRef.current);
+      assertStreetGroundReady(scene);
       return { ...captured, sharedGroundSnapshot, ...(accessSnapshot.parks.length && accessSnapshot.sources.length <= 256
         ? { parkAccessSnapshot: structuredClone(accessSnapshot) } : {}) };
     } catch (err) {
+      // A screenshot fallback must not bypass an unfinished road alignment.
+      assertStreetGroundReady(scene);
       console.warn('[GlobeSitePlannerMap] Street Direct 3D capture failed — falling back to screenshot:', err);
       return null;
     }
@@ -2996,6 +3050,7 @@ export function GlobeSitePlannerMap({
         }
         await waitForSharedGround();
         assertSharedGroundUnchanged(routeGroundSnapshot, sharedGroundRef.current);
+        assertStreetGroundReady(scene);
         // Near-field source creation needs a trustworthy beauty checkpoint,
         // not a full semantic/instance pass at every pose. The latter is a
         // metadata product and can fail when a close facade fills the frame;
@@ -3073,6 +3128,7 @@ export function GlobeSitePlannerMap({
           // respond to this indexed pose, then render that exact camera state.
           await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
           assertSharedGroundUnchanged(routeGroundSnapshot, sharedGroundRef.current);
+          assertStreetGroundReady(scene);
           renderer.setRenderTarget(null);
           renderer.render(scene, camera);
           drawPreviewFrame();
@@ -3237,6 +3293,7 @@ export function GlobeSitePlannerMap({
         captureDirect3D,
         sharedGround: sharedGroundState,
         groundingIssues: buildingGroundingIssues,
+        streetGroundStatus: () => streetGroundCaptureStatus(sceneRef.current),
         renderInfo: () => {
           const info = rendererRef.current?.info;
           return info ? { render: { ...info.render }, memory: { ...info.memory } } : null;
@@ -3706,6 +3763,28 @@ export function GlobeSitePlannerMap({
   // Canvas onPointerMissed â€” fires when click doesn't hit any R3F mesh
   // We use this + onCreated to handle globe clicks at the Canvas level
   const handleCanvasClick = useCallback((e: MouseEvent) => {
+    if (entrancePick) {
+      const candidate=entrancePointerHitRef.current;
+      entrancePointerHitRef.current=null;
+      ignoreNextCanvasClickRef.current=false;
+      if (externalInteractionPaused) return;
+      const zone = siteZones.find(z => z.id === entrancePick.zoneId);
+      if (!zone || entrancePickZoneKey(zone) !== entrancePick.zoneKey) { entrancePick.finish(null); return; }
+      if (zone.building_id !== candidate?.buildingId || !candidate?.hit) {
+        setEntrancePickError('Choose the lowest entrance step on the selected catalogue house.'); return;
+      }
+      if (!sceneRef.current || entrancePickOccluded(sceneRef.current,candidate.hit)) {
+        setEntrancePickError('Something is in front of that step. Move the camera until the step is clearly visible.'); return;
+      }
+      const prepared = sharedGroundRef.current.status === 'inactive'
+        ? preparedEntranceGround(getActiveSiteBoundary(allSiteZones),
+          resolvePreparedSiteTerrainForZone(zone, allSiteZones, terrainElevation)) : null;
+      const selected = pickBuildingEntrance(candidate.hit, zone, allSiteZones, entrancePick.properties,
+        siteZones.map(z => z.id), prepared ?? sharedGroundRef.current);
+      if ('error' in selected) setEntrancePickError(selected.error);
+      else entrancePick.finish(selected.result);
+      return;
+    }
     if (interactionPaused) return;
     markUserInteracted();
     if (ignoreNextCanvasClickRef.current) {
@@ -3834,7 +3913,7 @@ export function GlobeSitePlannerMap({
     setDrawingPoints(newPts);
     setDrawingPointHeights(newHeights);
     requestAnimationFrame(updateCenterConnectionState);
-  }, [placementDraft, onPlaceAsset, activeSitePlannerTool, cancelDrawing, hasDrawingTool, interactionPaused, linear, markUserInteracted, measureModeActive, onZoneSelected, raycastSurfacePoint, setStreetViewPosition, siteZones, streetViewPegman, updateCenterConnectionState]);
+  }, [externalInteractionPaused, allSiteZones, entrancePick, placementDraft, onPlaceAsset, activeSitePlannerTool, cancelDrawing, hasDrawingTool, interactionPaused, linear, markUserInteracted, measureModeActive, onZoneSelected, raycastSurfacePoint, setStreetViewPosition, siteZones, streetViewPegman, terrainElevation, updateCenterConnectionState]);
 
   const handleZoneMeshClick = useCallback((zoneId: string) => {
     if (placementDraft) return;
@@ -3848,7 +3927,13 @@ export function GlobeSitePlannerMap({
     onZoneSelected(zoneId);
   }, [placementDraft, hasDrawingTool, interactionPaused, measureModeActive, onZoneSelected, streetViewPegman]);
 
-  const handleBuildingModelClick = useCallback((buildingId: string) => {
+  const handleBuildingModelClick = useCallback((buildingId: string, hit?: NativeEntranceHit, phase?: 'pointerdown') => {
+    if (externalInteractionPaused) return;
+    if (phase === 'pointerdown') {
+      if (entrancePick) entrancePointerHitRef.current={buildingId,hit};
+      return;
+    }
+    if (entrancePick) return;
     if (placementDraft) return;
     if (interactionPaused || hasDrawingTool || measureModeActive) return;
     // Street View pegman-drop mode owns the canvas click. Generated building
@@ -3862,7 +3947,7 @@ export function GlobeSitePlannerMap({
     const owningZone = siteZones.find((zone) => zone.building_id === buildingId);
     onZoneSelected(owningZone ? owningZone.id : null);
     setSelectedBuildingId(buildingId);
-  }, [placementDraft, hasDrawingTool, interactionPaused, measureModeActive, onZoneSelected, siteZones, streetViewPegman]);
+  }, [externalInteractionPaused, entrancePick, placementDraft, hasDrawingTool, interactionPaused, measureModeActive, onZoneSelected, siteZones, streetViewPegman]);
 
   useEffect(() => {
     if (!selectedBuildingId) return;
@@ -3912,7 +3997,7 @@ export function GlobeSitePlannerMap({
       <Canvas
         aria-label="3D city map"
         role="application"
-        style={{ visibility: isInitialCameraApplied ? 'visible' : 'hidden' }}
+        style={{ visibility: isInitialCameraApplied ? 'visible' : 'hidden', cursor: entrancePick ? 'crosshair' : undefined }}
         camera={initialThreeCamera}
         dpr={[1, 2]}
         shadows
@@ -3946,6 +4031,7 @@ export function GlobeSitePlannerMap({
           const handleClick = (e: MouseEvent) => {
             if (draggedSincePointerDownRef.current) {
               draggedSincePointerDownRef.current = false;
+              entrancePointerHitRef.current=null;
               return;
             }
             // Every click adds a point â€” dblclick handler will pop the duplicate
@@ -3969,6 +4055,7 @@ export function GlobeSitePlannerMap({
           };
 
           const handlePointerDown = (e: PointerEvent) => {
+            entrancePointerHitRef.current=null;
             markUserInteracted();
             pointerDownRef.current = { x: e.clientX, y: e.clientY };
             draggedSincePointerDownRef.current = false;
@@ -4012,7 +4099,7 @@ export function GlobeSitePlannerMap({
           };
 
           cvs.addEventListener('wheel', handleTrackpadWheel, { capture: true, passive: false });
-          cvs.addEventListener('pointerdown', handlePointerDown);
+          cvs.addEventListener('pointerdown', handlePointerDown, true);
           cvs.addEventListener('pointermove', handlePointerMove);
           cvs.addEventListener('pointerup', handlePointerUp);
           cvs.addEventListener('click', handleClick);
@@ -4022,7 +4109,7 @@ export function GlobeSitePlannerMap({
 
           cleanupCanvasListenersRef.current = () => {
             cvs.removeEventListener('wheel', handleTrackpadWheel, { capture: true });
-            cvs.removeEventListener('pointerdown', handlePointerDown);
+            cvs.removeEventListener('pointerdown', handlePointerDown, true);
             cvs.removeEventListener('pointermove', handlePointerMove);
             cvs.removeEventListener('pointerup', handlePointerUp);
             cvs.removeEventListener('click', handleClick);
@@ -4037,6 +4124,7 @@ export function GlobeSitePlannerMap({
         <PitchMonitor onPitchChange={setPitchAngle} />
         <FallbackPlaneSync controlsRef={globeControlsRef} />
         <color attach="background" args={[streetRenderProfileActive ? '#cfdae4' : '#dbeafe']} />
+        {contextPresentation.visible === 'google' && <GlobeGroundBackdrop />}
         {streetRenderProfileActive ? (
           <GlobeStreetRenderProfile
             latitude={focusLatitude}
@@ -4100,6 +4188,7 @@ export function GlobeSitePlannerMap({
             onDisplayReadyChange={setAreTilesDisplayReady}
           />
           <SharedSiteGroundProvider zones={allSiteZones} onChange={handleSharedGroundChange} inspectPrepared={showGroundReview}>
+          <BuildingEntranceApproaches zones={connectedSceneZones} results={pedestrianConnections}>
           <SurveyGroundSurface visible={contextPresentation.visible === 'terrain'} />
           <ParkAssemblyGroundProvider>
           <AutomaticParkGround zones={allSiteZones} paused={parkGroundPaused} onSave={onAutoParkTerrain} onChange={setParkAlignment} fallback={terrainElevation}>
@@ -4154,7 +4243,7 @@ export function GlobeSitePlannerMap({
               overlays. Keep them in clean captures alongside building models
               and park props so mixed plans retain their exact lane geometry. */}
           <group name="siteforge-direct3d-street" userData={direct3DProposalUserData('street')}>
-            <GlobeStreetDetailLayer zones={siteZones} terrainHeight={terrainElevation} />
+            <GlobeStreetDetailLayer zones={siteZones.filter(zone => !publicRealmTrialAsset(zone))} terrainHeight={terrainElevation} />
             <GlobePedestrianConnections results={pedestrianConnections} zones={connectedSceneZones} terrainHeight={terrainElevation} />
             <GlobeTerraces scene={terraceScene} zones={connectedSceneZones} />
           </group>
@@ -4163,8 +4252,9 @@ export function GlobeSitePlannerMap({
               of the zone-overlay group like the building models. Trees and
               benches stay render-only so they cannot collide with paths. */}
           <group name="siteforge-direct3d-park" userData={direct3DProposalUserData('park')}>
-            <GlobeParkKitLayer zones={terraceParkZones} terrainHeight={terrainElevation} />
+            <GlobeParkKitLayer zones={terraceParkZones.filter(zone => !publicRealmTrialAsset(zone))} terrainHeight={terrainElevation} />
           </group>
+          <GlobePublicRealmTrialLayer zones={siteZones} terrainHeight={terrainElevation} />
 
           {/* Generated 3D building models — sibling of the zone-overlay group
               on purpose: they're real massing and stay visible in AI-render
@@ -4198,6 +4288,7 @@ export function GlobeSitePlannerMap({
                 terrainHeight={terrainElevation}
                 onLoadedIdsChange={handleLegoIdsChange}
                 onGroundingIssuesChange={handleGroundingIssuesChange}
+                onEntranceReviewsChange={setEntranceReviews}
                 selectedBuildingId={selectedRenderedBuildingId}
                 onBuildingClick={handleBuildingModelClick}
               />
@@ -4248,6 +4339,7 @@ export function GlobeSitePlannerMap({
           </group>
           </AutomaticParkGround>
           </ParkAssemblyGroundProvider>
+          </BuildingEntranceApproaches>
           </SharedSiteGroundProvider>
         </TilesRenderer>
 
@@ -4279,6 +4371,20 @@ export function GlobeSitePlannerMap({
         </div>
       )}
 
+      {entrancePick && <section aria-label="Choose entrance in 3D" className="absolute inset-x-3 bottom-3 z-50 rounded-xl border border-slate-400 bg-white p-3 text-sm text-slate-900 shadow-lg sm:inset-x-auto sm:bottom-auto sm:right-4 sm:top-28 sm:w-80">
+        <p className="font-semibold">Pick the lowest entrance step</p>
+        <p className="mt-1">{siteZones.find(z=>z.id===entrancePick.zoneId)?.name}. Click the outer edge where the step meets the building base. Drag or zoom to see it clearly.</p>
+        {entrancePickError && <p role="alert" className="mt-2 text-amber-900">{entrancePickError}</p>}
+        <button type="button" className="mt-2 min-h-11 rounded-lg border border-slate-600 px-3 font-semibold" onClick={()=>entrancePick.finish(null)}>Cancel pick</button>
+      </section>}
+      {showEntranceReview&&<BuildingEntranceReviewPanel zones={siteZones} reviews={entranceReviews} issues={buildingGroundingIssues}
+        groundRevision={sharedGroundState.status === 'inactive' && preparedReviewGround ? preparedReviewGround.revision : sharedGroundState.revision}
+        groundCurrent={(sharedGroundState.status === 'inactive' && Boolean(preparedReviewGround))
+          || (sharedGroundState.status==='ready'&&sharedGroundState.isCurrent?.()!==false&&!sharedGroundState.preview)}
+        onClose={()=>setShowEntranceReview(false)} onSelect={zone=>{
+          setShowEntranceReview(false);onZoneSelected(zone.id);
+          void requestProjectFrame([{ ...zone, coordinates: zone.coordinates as [number, number][] }], 'manual');
+        }}/>}
       {showBuildingGroundProblems && <BuildingGroundProblems issues={buildingGroundingIssues} zones={siteZones}
         onClose={() => setShowBuildingGroundProblems(false)} onSelect={zone => {
           setShowBuildingGroundProblems(false); onZoneSelected(zone.id);
@@ -4295,6 +4401,10 @@ export function GlobeSitePlannerMap({
       {showGroundReview && getActiveSiteBoundary(allSiteZones) && onPrepareGround && <GroundReviewPanel
         parks={allSiteZones.filter(z => z.zone_type === 'green_space')} onFollowParks={onFollowParkTerrain}
         boundary={getActiveSiteBoundary(allSiteZones)!} ground={sharedGroundState} onClose={() => setShowGroundReview(false)}
+        onEditBoundary={() => {
+          const boundary = getActiveSiteBoundary(allSiteZones);
+          if (boundary) { setShowGroundReview(false); onZoneSelected(boundary.id); }
+        }}
         onApply={(clear, height, edges) => onPrepareGround(getActiveSiteBoundary(allSiteZones)!.id, clear, height, edges)} />}
       {parkAlignment.pending&&<div role="status" className="absolute bottom-14 left-1/2 z-40 max-w-sm -translate-x-1/2 rounded-lg bg-white/95 px-3 py-2 text-sm text-slate-800 shadow">
         {parkAlignment.needsAttention?'Ground detail is difficult here. Your park is kept as a draft.':'Aligning park to ground… You can keep designing.'}
@@ -4464,9 +4574,11 @@ export function GlobeSitePlannerMap({
       )}
 
       {/* 3D Globe badge + pitch + LOD status â€” offset below back button */}
-      {!hasDrawingTool && !streetViewPegman && !measureModeActive && (
+      {!entrancePick && !hasDrawingTool && !streetViewPegman && !measureModeActive && (
         <div className="pointer-events-none absolute bottom-4 left-1/2 z-20 hidden max-w-[min(38rem,calc(100%-36rem))] -translate-x-1/2 rounded-xl border border-slate-300 bg-white/95 px-3 py-2 text-center text-xs font-medium text-slate-700 shadow-lg backdrop-blur-xl select-none lg:block">
-          {siteZones.some(zone => zone.id === selectedZoneId && zone.properties?.pick_place_asset)
+          {siteZones.some(zone => zone.id === selectedZoneId && zone.properties?.native_home_plot === true)
+            ? 'Drag the Move handle to reposition this house | Use the reshape panel to resize or rotate | Esc to deselect'
+            : siteZones.some(zone => zone.id === selectedZoneId && zone.properties?.pick_place_asset)
             ? 'Drag to move | Use the reshape panel to resize or rotate | 3D updates automatically after saving | Esc to deselect'
             : selectedBuildingId && selectedZoneId
             ? '3D model selected | Edit type/floors in the panel, then Regenerate | Drag body/vertices or amber handle to move/reshape/rotate | Delete removes the model | Esc to deselect'
@@ -4568,7 +4680,9 @@ export function GlobeSitePlannerMap({
           </button>
         )}
         {getActiveSiteBoundary(allSiteZones) && onPrepareGround && <button className="min-h-11 rounded-full border-2 border-[#151515] bg-[#fff9ec] px-3 text-xs font-bold" onClick={() => setShowGroundReview(true)}>Review ground</button>}
-        {(sharedGroundState.status === 'sampling' || sharedGroundState.status === 'unavailable') && (
+        {siteZones.some(zone=>zone.building_id||zone.building_ids?.length)&&<button type="button" className="min-h-11 rounded-full border-2 border-[#151515] bg-[#fff9ec] px-3 text-xs font-bold"
+          onClick={()=>setShowEntranceReview(true)}>Review entrances</button>}
+        {(sharedGroundState.status === 'sampling' || sharedGroundState.status === 'unavailable' || Boolean(sharedGroundState.snapshot?.excludedCells?.length)) && (
           <span role="status" className="max-w-sm rounded-xl border-2 border-[#151515] bg-[#fff9ec]/95 px-3 py-1.5 text-[11px] font-bold text-[#151515]">
             {groundReadinessMessage(sharedGroundState)}
           </span>

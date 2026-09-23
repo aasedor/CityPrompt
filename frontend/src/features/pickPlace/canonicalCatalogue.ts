@@ -3,7 +3,7 @@ import {
   type AestheticOption, type ArchetypeVariant,
 } from '@/components/viewer/aestheticCatalog';
 import { buildAestheticSelectionProps } from '@/components/viewer/aestheticSelection';
-import { calgaryGroup, type CatalogueDomain } from '@/features/calgaryCatalogue/guide';
+import { calgaryGroup, classifyCalgaryVariant, type CatalogueDomain } from '@/features/calgaryCatalogue/guide';
 import type { SiteZoneProperties, SiteZoneType } from '@/types';
 import { CATALOGUE_ASSETS, isPlaceable, type CatalogueAsset } from './assetRegistry';
 
@@ -40,11 +40,27 @@ export function catalogueChoices(domains = CANONICAL_DOMAINS, assets = CATALOGUE
   return choices.sort((a, b) => Number(b.placements.length > 0) - Number(a.placements.length > 0));
 }
 export const CANONICAL_CHOICES = catalogueChoices();
+const normalizeSearch = (v: string) => v.toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ');
+export function choiceMatchesGroup(choice: CanonicalChoice, groupId: string) {
+  return !groupId || choice.option.calgaryGuide?.groupId === groupId
+    || choice.option.variants?.some(variant => classifyCalgaryVariant(choice.option.id, variant.id)?.groupId === groupId)
+    || choice.placements.some(asset => asset.calgaryGuide.groupId === groupId);
+}
+/** Open a matching detailed variant when a parent spans several housing types. */
+export function preferredCatalogueVariant(choice: CanonicalChoice, query = '', groupId = '') {
+  const terms = normalizeSearch(query).trim().split(/\s+/).filter(Boolean);
+  const placements = choice.placements.filter(asset => !groupId || asset.calgaryGuide.groupId === groupId);
+  const variants = choice.option.variants?.filter(variant => !groupId || classifyCalgaryVariant(choice.option.id, variant.id)?.groupId === groupId) ?? [];
+  const matching = placements.find(asset => terms.every(term => normalizeSearch(`${asset.label} ${asset.model.variantId}`).includes(term)));
+  const variant = variants.find(item => terms.length && terms.every(term => normalizeSearch(`${item.label} ${item.id} ${item.description ?? ''}`).includes(term)));
+  return matching?.model.variantId || (groupId && placements[0]?.model.variantId) || variant?.id || (groupId && variants[0]?.id)
+    || placements[0]?.model.variantId || choice.placements[0]?.model.variantId || choice.option.variants?.[0]?.id || '';
+}
 export function filterCanonicalChoices(domain: CatalogueDomain, query = '', groupId = '', choices = CANONICAL_CHOICES) {
-  const normalize = (v: string) => v.toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ');
+  const normalize = normalizeSearch;
   const terms = normalize(query).trim().split(/\s+/).filter(Boolean);
   return choices.filter(choice => {
-    if (choice.domain !== domain || (groupId && choice.option.calgaryGuide?.groupId !== groupId)) return false;
+    if (choice.domain !== domain || !choiceMatchesGroup(choice, groupId)) return false;
     const group = calgaryGroup(choice.option.calgaryGuide);
     const haystack = normalize([choice.option.id, choice.option.label, choice.option.description, choice.option.categoryId,
       group?.label, ...(group?.districts ?? []), ...(choice.option.generationTags ?? []),

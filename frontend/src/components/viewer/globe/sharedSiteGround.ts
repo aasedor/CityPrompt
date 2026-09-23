@@ -19,6 +19,9 @@ export interface SharedSiteGroundSnapshot extends SharedSiteGroundLayout {
   /** South-to-north rows, west-to-east columns. No absent samples. Google
    * vertices are measured; classified survey derivation is recorded separately. */
   heights: number[];
+  /** Interactive-only coverage holes. Cell indices use (columns - 1) stride.
+   * Heights remain measured and unchanged; no consumer may interpolate here. */
+  excludedCells?: number[];
   quality: {
     /** Two live mesh passes, or zero for an immutable saved survey source. */
     sampleCount: number; stablePasses: 2 | 0; maxPassDeltaM: number; maxSlope: number; maxLocalResidualM: number;
@@ -124,7 +127,8 @@ export function groundCellTouchesBoundary(layout: SharedSiteGroundLayout, x: num
 /** Reject suspicious discontinuities instead of replacing an unobserved ground
  * height. A consistent roof or smooth embankment can still pass: this is tile
  * surface evidence, not a survey or automatic bare-earth classification. */
-export function validateSharedSiteGroundPass(layout: SharedSiteGroundLayout, heights: readonly (number | null)[]): SharedSiteGroundPassQuality {
+export function validateSharedSiteGroundPass(layout: SharedSiteGroundLayout, heights: readonly (number | null)[],
+  onDiscontinuity?: (sampleIndices: readonly number[]) => void): SharedSiteGroundPassQuality {
   const { columns, rows, stepLng, stepLat, south } = layout.grid;
   const invalid = (reason: string): SharedSiteGroundPassQuality => ({ valid: false, reason, maxSlope: 0, maxLocalResidualM: 0 });
   if (heights.length !== columns * rows || heights.some((height) => height === null || !Number.isFinite(height))) return invalid('missing_samples');
@@ -139,13 +143,18 @@ export function validateSharedSiteGroundPass(layout: SharedSiteGroundLayout, hei
     const sw = values[y * columns + x], se = values[y * columns + x + 1];
     const nw = values[(y + 1) * columns + x], ne = values[(y + 1) * columns + x + 1];
     // The two actual triangle gradients, split on the SW–NE diagonal.
-    maxSlope = Math.max(maxSlope, Math.hypot((se - sw) / dx, (ne - se) / dy), Math.hypot((ne - nw) / dx, (nw - sw) / dy));
+    const slope = Math.max(Math.hypot((se - sw) / dx, (ne - se) / dy), Math.hypot((ne - nw) / dx, (nw - sw) / dy));
+    maxSlope = Math.max(maxSlope, slope);
+    if (slope > SHARED_SITE_GROUND_LIMITS.maxSlope)
+      onDiscontinuity?.([y*columns+x, y*columns+x+1, (y+1)*columns+x, (y+1)*columns+x+1]);
   }
   for (let y = 1; y < rows - 1; y += 1) for (let x = 1; x < columns - 1; x += 1) {
     const index = y * columns + x;
     if (![index, index-1, index+1, index-columns, index+columns].every(i => support.has(i))) continue;
     const neighbors = (values[index - 1] + values[index + 1] + values[index - columns] + values[index + columns]) / 4;
-    maxLocalResidualM = Math.max(maxLocalResidualM, Math.abs(values[index] - neighbors));
+    const residual = Math.abs(values[index] - neighbors);
+    maxLocalResidualM = Math.max(maxLocalResidualM, residual);
+    if (residual > SHARED_SITE_GROUND_LIMITS.maxLocalResidualM) onDiscontinuity?.([index]);
   }
   const valid = Number.isFinite(maxSlope) && maxSlope <= SHARED_SITE_GROUND_LIMITS.maxSlope
     && maxLocalResidualM <= SHARED_SITE_GROUND_LIMITS.maxLocalResidualM;
@@ -166,12 +175,52 @@ export function createSharedSiteGroundSnapshot(layout: SharedSiteGroundLayout, p
   return { ...snapshot, signature: sharedGroundSignature(snapshot) };
 }
 
+/** Local recovery for repeatable, fully measured surfaces. Keep the strict
+ * capture snapshot contract above. Only discontinuities can be isolated;
+ * missing, implausible or changing measurements still reject the whole pass. */
+export function createPartialSharedSiteGroundSnapshot(layout: SharedSiteGroundLayout,
+  previous: readonly (number | null)[], current: readonly (number | null)[]): SharedSiteGroundSnapshot | null {
+  const { columns, rows } = layout.grid;
+  const excluded = new Set<number>();
+  const exclude = (x: number, y: number) => {
+    if (x >= 0 && x < columns - 1 && y >= 0 && y < rows - 1) excluded.add(y * (columns - 1) + x);
+  };
+  const mark = (indices: readonly number[]) => {
+    const x = indices[0] % columns, y = Math.floor(indices[0] / columns);
+    if (indices.length === 4) exclude(x, y); // Actual steep cell.
+    else for (const dx of [-1, 0]) for (const dy of [-1, 0]) exclude(x + dx, y + dy); // Residual vertex support.
+  };
+  const a = validateSharedSiteGroundPass(layout, previous, mark), b = validateSharedSiteGroundPass(layout, current, mark);
+  if ([a, b].some(q => !q.valid && q.reason !== 'discontinuity')) return null;
+  const heights = current as readonly number[];
+  const maxPassDeltaM = Math.max(...heights.map((height, index) => Math.abs(height - previous[index]!)));
+  if (maxPassDeltaM > SHARED_SITE_GROUND_LIMITS.maxPassDeltaM) return null;
+  let usable = false;
+  for (let y = 0; y < rows - 1 && !usable; y++) for (let x = 0; x < columns - 1 && !usable; x++) {
+    usable = !excluded.has(y * (columns - 1) + x) && groundCellTouchesBoundary(layout, x, y);
+  }
+  if (!usable) return null;
+  const snapshot = { ...layout, version: 1 as const, source: 'google_3d_tiles' as const, verticalReference: 'WGS84_ellipsoid' as const,
+    heights: [...heights], ...(excluded.size ? { excludedCells: [...excluded].sort((x, y) => x - y) } : {}),
+    quality: { sampleCount: heights.length, stablePasses: 2 as const, maxPassDeltaM,
+      maxSlope: b.maxSlope, maxLocalResidualM: b.maxLocalResidualM } };
+  return { ...snapshot, signature: sharedGroundSignature(snapshot) };
+}
+
 /** Piecewise planar, not bilinear: every consumer samples identical triangles. */
 export function sampleSharedSiteGround(snapshot: SharedSiteGroundSnapshot | null | undefined, lng: number, lat: number): number | null {
   if (!snapshot || !sharedSiteGroundContains(snapshot.boundaryCoordinates, lng, lat)) return null;
   const { west, south, columns, rows, stepLng, stepLat } = snapshot.grid;
   const gx = Math.max(0, Math.min(columns - 1, (lng - west) / stepLng)), gy = Math.max(0, Math.min(rows - 1, (lat - south) / stepLat));
   const x = Math.min(columns - 2, Math.floor(gx)), y = Math.min(rows - 2, Math.floor(gy));
+  // Include both sides of grid seams. Otherwise a footprint or draped face
+  // could bridge an excluded cell using its apparently valid corner heights.
+  if (snapshot.excludedCells?.length) {
+    const xs = Math.abs(gx - Math.round(gx)) < 1e-6 ? [Math.round(gx) - 1, Math.round(gx)] : [x];
+    const ys = Math.abs(gy - Math.round(gy)) < 1e-6 ? [Math.round(gy) - 1, Math.round(gy)] : [y];
+    if (xs.some(cx => ys.some(cy => cx >= 0 && cx < columns - 1 && cy >= 0 && cy < rows - 1
+      && snapshot.excludedCells!.includes(cy * (columns - 1) + cx)))) return null;
+  }
   const u = gx - x, v = gy - y;
   const sw = snapshot.heights[y * columns + x], se = snapshot.heights[y * columns + x + 1];
   const nw = snapshot.heights[(y + 1) * columns + x], ne = snapshot.heights[(y + 1) * columns + x + 1];

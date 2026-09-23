@@ -13,6 +13,12 @@ export type Point = [number, number];
 export interface BuildingEntrance {
   version: 1; xM: number; yM: number; referenceWidthM: number; referenceDepthM: number;
   scaleWithPlot: boolean; streetId: string; widthM: number;
+  /** Vertical offset of the authored foot-of-steps anchor, never plot-scaled. */
+  heightAboveBaseM?: number;
+  automatic?: boolean;
+  sourceVariantId?: string;
+  /** One unscaled, centred building inside an editable plot, never repetition. */
+  fixedNative?: boolean;
 }
 export interface StreetCrossing { id: string; position: number; widthM: number }
 export interface PedestrianStrip {
@@ -39,11 +45,45 @@ const frame = (origin: number[]) => ({
   local: (p: number[]): Point => [(p[0] - origin[0]) * metersPerDegLon(origin[1]), (p[1] - origin[1]) * METERS_PER_DEG_LAT],
   world: (p: Point): Point => [origin[0] + p[0] / metersPerDegLon(origin[1]), origin[1] + p[1] / METERS_PER_DEG_LAT],
 });
-export function readBuildingEntrance(zone: SiteZone): BuildingEntrance | null {
+export function readBuildingEntrance(zone: SiteZone, zones?: readonly SiteZone[]): BuildingEntrance | null {
   const v = zone.properties?.pedestrian_building_entrance as BuildingEntrance | undefined;
-  return v?.version === 1 && finite(v.xM) && finite(v.yM) && Math.abs(v.xM) <= 500 && Math.abs(v.yM) <= 500
+  const valid = v?.version === 1 && finite(v.xM) && finite(v.yM) && Math.abs(v.xM) <= 500 && Math.abs(v.yM) <= 500
     && finite(v.referenceWidthM) && v.referenceWidthM > 0 && finite(v.referenceDepthM) && v.referenceDepthM > 0
-    && typeof v.scaleWithPlot === 'boolean' && typeof v.streetId === 'string' && finite(v.widthM) && v.widthM >= 1.2 && v.widthM <= 4 ? v : null;
+    && typeof v.scaleWithPlot === 'boolean' && typeof v.streetId === 'string' && finite(v.widthM) && v.widthM >= 1.2 && v.widthM <= 4
+    && (v.heightAboveBaseM === undefined || (finite(v.heightAboveBaseM) && v.heightAboveBaseM >= 0 && v.heightAboveBaseM <= 3));
+  if (!valid) return null;
+  if (!v.automatic || !zones) return v;
+  if (!validRing(zone) || zone.coordinates.length !== 4) return null;
+  if (v.sourceVariantId && v.sourceVariantId !== zone.properties?.development_selected_variant_id) return null;
+  const d = rectangleDimensions(zone.coordinates);
+  // Multiple repeated houses need a per-instance entrance contract; do not
+  // attach their shared plot centre to an imaginary doorway.
+  const fixedNative = v.fixedNative === true && zone.properties?.native_plot_axes === true
+    && zone.properties?.native_home_plot !== true && !v.scaleWithPlot
+    && d.width >= v.referenceWidthM-.05 && d.depth >= v.referenceDepthM-.05;
+  if (v.fixedNative === true && !fixedNative) return null;
+  if (!v.scaleWithPlot && !fixedNative && (Math.abs(d.width-v.referenceWidthM) > .05 || Math.abs(d.depth-v.referenceDepthM) > .05)) return null;
+  const anchor = entranceWorldPoint(zone, v);
+  if (!anchor) return null;
+  const f = frame(anchor);
+  let best: { id: string; distance: number } | null = null;
+  for (const street of [...zones].filter(z => z.zone_type === 'road' && !z.id.startsWith('temp-')).sort((a,b)=>a.id.localeCompare(b.id))) {
+    const section = resolvePilotStreetSectionProfile(street);
+    if (!section) continue;
+    const scale = section.metricWidthLocked ? (section.targetRowM ?? section.rowM)/section.rowM : effectiveRoadWidth(street.properties)/section.rowM;
+    const line = extractRenderableStreetCenterline(street).map(f.local);
+    for (let i=1;i<line.length;i++) {
+      const a=line[i-1], b=line[i], size=length(sub(b,a));
+      if (size < .01) continue;
+      const n: Point = [-(b[1]-a[1])/size,(b[0]-a[0])/size];
+      for (const band of pedestrianAccessBands(section)) {
+        const target=project([0,0],add(a,mul(n,band.centerM*scale)),add(b,mul(n,band.centerM*scale)));
+        const distance=length(target);
+        if (distance <= 30 && (!best || distance < best.distance)) best={id:street.id,distance};
+      }
+    }
+  }
+  return best ? {...v,streetId:best.id} : null;
 }
 export function entranceWorldPoint(zone: SiteZone, entrance: BuildingEntrance): Point | null {
   if (!validRing(zone) || zone.coordinates.length !== 4) return null;
@@ -86,7 +126,8 @@ export function resolvePedestrianConnections(zones: readonly SiteZone[], visible
   const results: ConnectionResult[] = [];
   const inventoryValid = zones.length <= 256 && zones.every(validRing);
   for (const owner of zones.filter(z => visible.has(z.id))) {
-    const rawEntrance = owner.properties?.pedestrian_building_entrance;
+    const configured = owner.properties?.pedestrian_building_entrance as BuildingEntrance | undefined;
+    const rawEntrance = configured?.automatic ? readBuildingEntrance(owner, zones) : configured;
     const entries = owner.zone_type === 'road' ? readCrossings(owner) : [];
     const configs = rawEntrance && ['building', 'residential'].includes(owner.zone_type) ? [null] : entries;
     for (const crossing of configs) {
@@ -137,7 +178,7 @@ export function resolvePedestrianConnections(zones: readonly SiteZone[], visible
         }
         result.status = 'connected'; result.reason = 'Raised crossing joins both sidewalks. Review its location and slopes.';
       } else {
-        const entrance = readBuildingEntrance(owner), anchor = entrance && entranceWorldPoint(owner, entrance);
+        const entrance = readBuildingEntrance(owner, zones), anchor = entrance && entranceWorldPoint(owner, entrance);
         result.reason = 'Set the entrance position and choose a sidewalk target.';
         if (!entrance || !anchor) continue;
         const street = zones.find(z => z.id === entrance.streetId && z.zone_type === 'road' && visible.has(z.id));
@@ -157,6 +198,7 @@ export function resolvePedestrianConnections(zones: readonly SiteZone[], visible
         const outward:Point=sideX ? [Math.sign(entrance.xM)*Math.cos(angle),Math.sign(entrance.xM)*Math.sin(angle)]
           : [-Math.sign(entrance.yM)*Math.sin(angle),Math.sign(entrance.yM)*Math.cos(angle)];
         const options: Array<{ point: Point; lift: number; distance: number }> = [];
+        let sidewalkBehindEntrance = false, sidewalkInFrontOfEntrance = false;
         for (let i=1;i<line.length;i++) {
           const a=line[i-1], b=line[i], size=length(sub(b,a)); if(size < 0.01) continue;
           const n: Point = [-(b[1]-a[1])/size,(b[0]-a[0])/size];
@@ -164,7 +206,9 @@ export function resolvePedestrianConnections(zones: readonly SiteZone[], visible
             const target=project(door,add(a,mul(n,band.centerM*scale)),add(b,mul(n,band.centerM*scale)));
             const toward=sub(target,door);
             // A front approach cannot pass back through its own building.
-            if(toward[0]*outward[0]+toward[1]*outward[1]<=0 || !pointInside(target,street.coordinates.map(f.local))) continue;
+            if(!pointInside(target,street.coordinates.map(f.local))) continue;
+            if(toward[0]*outward[0]+toward[1]*outward[1]<=0){sidewalkBehindEntrance=true;continue;}
+            sidewalkInFrontOfEntrance=true;
             if(length(sub(target,door)) > 30 || !safe(door,target,entrance.widthM,street.id)) continue;
             const crossesOtherBand=line.slice(1).some((end,j)=>{
               const start=line[j], l=length(sub(end,start)); if(l<0.01)return false;
@@ -177,11 +221,16 @@ export function resolvePedestrianConnections(zones: readonly SiteZone[], visible
           }
         }
         options.sort((a,b)=>a.distance-b.distance);
-        if(!options.length){result.reason='No clear approach within 30 m reaches that sidewalk. Check the entrance position or street target.';continue;}
+        if(!options.length){
+          result.reason=!sidewalkInFrontOfEntrance&&sidewalkBehindEntrance
+            ? 'This entrance faces away from the selected sidewalk. Choose a step on the street-facing side of the model, or rotate the plot toward the street.'
+            : 'No clear approach within 30 m reaches that sidewalk. Check the entrance position or street target.';
+          continue;
+        }
         const best=options[0];
         result.strips=[{id:`entrance:${owner.id}`,ownerId:owner.id,start:f.world(best.point),end:anchor,widthM:entrance.widthM,
           startLiftM:best.lift,endLiftM:0.025,color:'#c3baa8'}];
-        result.status='connected';result.reason='Walkway follows this entrance and the selected sidewalk.';
+        result.status='connected';result.reason='Route reaches the selected sidewalk in plan. Ground and entrance height are checked in 3D.';
       }
     }
   }

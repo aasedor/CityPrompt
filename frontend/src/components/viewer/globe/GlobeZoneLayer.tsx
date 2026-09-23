@@ -1,3 +1,4 @@
+import { useSiteLandscapeTexture } from '@/features/siteLandscape/useSiteLandscapeTexture';
 /**
  * GlobeZoneLayer.tsx — Renders SiteForge zones on the 3D tile globe.
  *
@@ -63,7 +64,6 @@ import {
 } from './publicRealmDepthPolicy';
 import {
   applyResidualLandscapeUVs,
-  createResidualLandscapeTexture,
   getResidualLandscapeRecipe,
 } from './residualLandscape';
 import {
@@ -84,6 +84,7 @@ import { createSharedGroundTriangulation, drapeSharedGroundGeometry } from './sh
 import { selectDetailedStreetZones } from './streetDetailLod';
 import { useParkAssemblyGroundOwners } from './ParkAssemblyGround';
 import { streetSectionOwnsGround } from './streetSurfaceMask';
+import { preparedPublicRoadMasks } from './preparedPublicRoads';
 
 const DEG_TO_RAD = Math.PI / 180;
 const OBJECT_FILTER_SAMPLE_RADIUS_METERS = 8;
@@ -418,8 +419,9 @@ function getTerrainProbePoints(
   return probes;
 }
 
-function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabled, lightweight = false, suppressed = false, planningOverlaysVisible = true, boundaryOverlayVisible = true, sitePrepared = false, preparedTerrain = null, inheritedMaskPreference = null, preparedGroundCutouts, sectionOwnsGround = false }: {
+function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabled, lightweight = false, suppressed = false, planningOverlaysVisible = true, boundaryOverlayVisible = true, sitePrepared = false, preparedTerrain = null, inheritedMaskPreference = null, preparedGroundCutouts, preparedRoadOpenings, sectionOwnsGround = false }: {
   preparedGroundCutouts?: number[][][];
+  preparedRoadOpenings?: number[][][];
   zone: SiteZone;
   isSelected: boolean;
   terrainHeight: number;
@@ -678,15 +680,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     [geoData, isPreparedBoundary, residualLandscapeRecipe, zone.coordinates, zone.id, preparedEdgeProfile, preparedGroundCutouts, preparedOriginLng, preparedOriginLat],
   );
   useDeferredDisposable(preparedSiteGeo);
-  const preparedSiteTexture = useMemo(
-    () => {
-      if (!isPreparedBoundary) return null;
-      return residualLandscapeRecipe
-        ? createResidualLandscapeTexture(zone, residualLandscapeRecipe)
-        : createSitePreparationTexture(zone.id);
-    },
-    [isPreparedBoundary, residualLandscapeRecipe, zone],
-  );
+  const preparedSiteTexture = useSiteLandscapeTexture(zone, residualLandscapeRecipe, isPreparedBoundary);
   useDeferredDisposable(preparedSiteTexture);
   const replacementGroundGeo = useMemo(
     () => (
@@ -768,8 +762,8 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     ));
   const terrainReferenceHeight = storedTerrainHeight ?? terrainHeight;
   const retainingGeometry = useMemo(() => preparedEdgeProfile
-    ? createPreparedEdgeGeometry(preparedEdgeProfile, zoneTerrainHeight, centroid) : null,
-  [preparedEdgeProfile, zoneTerrainHeight, centroid]);
+    ? createPreparedEdgeGeometry(preparedEdgeProfile, zoneTerrainHeight, centroid, true, preparedRoadOpenings) : null,
+  [preparedEdgeProfile, zoneTerrainHeight, centroid, preparedRoadOpenings]);
   useDeferredDisposable(retainingGeometry);
   const hasAuthoredGroundTextureMeta = Boolean(
     zoneProps?.park_ground_texture || zoneProps?.street_network_ground_texture,
@@ -1056,10 +1050,13 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   const handleZonePointerDown = useCallback((e: { stopPropagation: () => void }) => {
     // When the zone is already selected, let the edit surface behind it
     // receive the pointer event so body dragging can start.
-    if (isSelected || selectionEnabled === false) return;
+    // A prepared site's ground can be the first raycast hit even where an
+    // authored street crosses it. Let the canvas's smallest-containing-zone
+    // picker resolve that overlap instead of selecting the whole site.
+    if (isSelected || selectionEnabled === false || isSiteBoundary) return;
     e.stopPropagation();
     onZoneClick?.(zone.id);
-  }, [isSelected, onZoneClick, selectionEnabled, zone.id]);
+  }, [isSelected, isSiteBoundary, onZoneClick, selectionEnabled, zone.id]);
 
   // --- Imported zones: drape onto a bare-earth elevation model ---------------
   // Fetch smooth ground heights once (no canopy, no photogrammetry noise) and
@@ -1228,7 +1225,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
           ) : isPreparedBoundary ? (
             <meshStandardMaterial
               key="prepared-site"
-              color="#d5d0c6"
+              color="#ffffff"
               map={preparedSiteTexture ?? undefined}
               roughness={0.98}
               metalness={0}
@@ -1393,6 +1390,7 @@ export function GlobeZoneLayer({
   }, []);
   const showPlanningOverlays = planningOverlaysVisible && !overlaysHidden;
   const parkGroundOwners = useParkAssemblyGroundOwners(zones);
+  const preparedRoadOpenings = useMemo(() => preparedPublicRoadMasks(zones).map(zone => zone.coordinates), [zones]);
   const groundCutouts = useMemo(() => [...(preparedGroundCutouts ?? []), ...parkGroundOwners.map(zone => zone.coordinates)], [preparedGroundCutouts, parkGroundOwners]);
   const sectionGroundIds = useMemo(() => new Set(selectDetailedStreetZones(zones.filter(zone =>
     resolveCommunity3DKind(zone) === 'street' && zone.coordinates.length >= 4 && shouldRenderCommunityGround(zone)))
@@ -1425,6 +1423,7 @@ export function GlobeZoneLayer({
             <ZoneMesh
               sectionOwnsGround={sectionGroundIds.has(zone.id) || parkGroundOwners.some(owner => owner.id === zone.id)}
               preparedGroundCutouts={groundCutouts}
+              preparedRoadOpenings={preparedRoadOpenings}
               key={`${zone.id}:${preparedTerrain ?? 'terrain'}`}
               zone={zone}
               isSelected={zone.id === selectedZoneId}
