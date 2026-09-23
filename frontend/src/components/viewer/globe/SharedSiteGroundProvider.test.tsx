@@ -5,7 +5,7 @@ import * as THREE from 'three';
 import type { SiteZone } from '@/types';
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 import { INACTIVE_SHARED_SITE_GROUND, SharedSiteGroundProvider, useSharedSiteGround, useSharedSiteGroundVerification, type SharedSiteGroundState } from './SharedSiteGroundProvider';
-import { captureSharedGround } from './sharedGroundCapture';
+import { assertSharedGroundUnchanged, captureSharedGround } from './sharedGroundCapture';
 import { surveySite } from '@/features/context/surveyGround.testFixtures';
 
 const frame = vi.hoisted(() => ({ current: (() => {}) as () => void }));
@@ -74,7 +74,18 @@ describe('shared ground provider lifecycle', () => {
       passQuality: { valid: true }, deadlineReason: null, latestCompletedRawValues: [1030, 1030, 1030, 1030] });
     const previous = state.revision, notifications = onChange.mock.calls.length;
     tick(); expect(onChange).toHaveBeenCalledTimes(notifications);
-    act(() => tiles.emit('load-model')); tick(0);
+    const sourceFrameGround = captureSharedGround(verification);
+    act(() => {
+      tiles.emit('load-model');
+      // Even a caller holding the previous React value must reject stale data.
+      expect(() => captureSharedGround(verification)).toThrow('Ground alignment is not ready');
+      expect(() => assertSharedGroundUnchanged(sourceFrameGround, verification)).toThrow('terrain changed');
+    });
+    // Capture can be requested between a tile event and the next animation frame.
+    expect(verification.status).toBe('sampling');
+    expect(() => captureSharedGround(verification)).toThrow('Ground alignment is not ready');
+    expect(state.status).toBe('ready'); expect(state.revision).toBe(previous);
+    tick(0);
     expect(state.status).toBe('ready'); expect(state.heightAt(-114, 51)).toBe(1030); expect(state.revision).toBe(previous);
     expect(verification.status).toBe('sampling'); expect(verification.snapshot).toBeNull();
     expect(onChange.mock.lastCall?.[0]).toBe(verification);
@@ -101,6 +112,43 @@ describe('shared ground provider lifecycle', () => {
     expect(state.heightAt(-114, 51)).toBe(1030.05);
     expect(captureSharedGround(verification)?.heights).toEqual([1030.05, 1030.05, 1030.05, 1030.05]);
   });
+  it('invalidates capture immediately when the tile renderer is replaced at the same site', () => {
+    const tiles = tileFixture(), TestContext = TilesRendererContext as ReturnType<typeof createContext<unknown>>;
+    const tree = (value: typeof tiles) => <TestContext.Provider value={value}><SharedSiteGroundProvider zones={[site]}><Read /></SharedSiteGroundProvider></TestContext.Provider>;
+    const view = render(tree(tiles)); tick(0); tick(); tick();
+    const previous = state.revision;
+    view.rerender(tree(tileFixture()));
+    expect(state.revision).toBe(previous);
+    expect(() => captureSharedGround(verification)).toThrow('Ground alignment is not ready');
+    tick(0); tick(); tick();
+    expect(captureSharedGround(verification)?.heights).toEqual([1030,1030,1030,1030]);
+  });
+  it('retains valid ground through a metadata-only save without sampling again', () => {
+    const tiles = tileFixture(), TestContext = TilesRendererContext as ReturnType<typeof createContext<unknown>>;
+    const tree = (zone: SiteZone) => <TestContext.Provider value={tiles}><SharedSiteGroundProvider zones={[zone]}><Read /></SharedSiteGroundProvider></TestContext.Provider>;
+    const view = render(tree(site)); tick(0); tick(); tick();
+    const before = captureSharedGround(verification);
+    const rays = vi.mocked(THREE.Raycaster.prototype.intersectObject).mock.calls.length;
+    view.rerender(tree({ ...site, updated_at: 'renamed', properties: { ...site.properties, name: 'Updated label' } }));
+    tick();
+    expect(captureSharedGround(verification)).toMatchObject({ signature: before!.signature, boundaryUpdatedAt: 'renamed' });
+    expect(THREE.Raycaster.prototype.intersectObject).toHaveBeenCalledTimes(rays);
+  });
+  it('retires capture evidence on unmount and remeasures after reopening', () => {
+    const tiles = tileFixture(), TestContext = TilesRendererContext as ReturnType<typeof createContext<unknown>>;
+    const tree = <TestContext.Provider value={tiles}><SharedSiteGroundProvider zones={[site]}><Read /></SharedSiteGroundProvider></TestContext.Provider>;
+    const view = render(tree); tick(0); tick(); tick();
+    const previous = verification;
+    view.unmount();
+    expect(() => captureSharedGround(previous)).toThrow('Ground alignment is not ready');
+    vi.mocked(THREE.Raycaster.prototype.intersectObject).mockReturnValue([
+      { point: new THREE.Vector3(0, 0, 1031), object: hitObject } as THREE.Intersection,
+    ]);
+    render(tree);
+    expect(() => captureSharedGround(verification)).toThrow();
+    tick(0); tick(); tick();
+    expect(captureSharedGround(verification)?.heights).toEqual([1031,1031,1031,1031]);
+  });
   it('inspects prepared terrain without replacing the design ground or changing capture readiness', () => {
     const tiles = tileFixture(), TestContext = TilesRendererContext as ReturnType<typeof createContext<unknown>>;
     const prepared = { ...site, properties: { community_3d_mask_existing_tiles: true, terrain_elevation_m: 99 } };
@@ -116,6 +164,15 @@ describe('shared ground provider lifecycle', () => {
     view.rerender(<TestContext.Provider value={tiles}><SharedSiteGroundProvider zones={[prepared]}><Read /></SharedSiteGroundProvider></TestContext.Provider>);
     expect(state).toBe(INACTIVE_SHARED_SITE_GROUND);
     expect(tiles.deleteCamera).toHaveBeenCalled();
+  });
+  it('keeps hillside park sites under shared-ground verification', () => {
+    const tiles = tileFixture(), TestContext = TilesRendererContext as ReturnType<typeof createContext<unknown>>;
+    const landscape = { ...site, properties: { ...site.properties, terrain_strategy: 'landscape' as const } };
+    render(<TestContext.Provider value={tiles}><SharedSiteGroundProvider zones={[landscape]}><Read /></SharedSiteGroundProvider></TestContext.Provider>);
+    expect(verification.status).toBe('sampling');
+    tick(0); tick(); tick();
+    expect(verification.status).toBe('ready');
+    expect(captureSharedGround(verification)?.heights).toEqual([1030, 1030, 1030, 1030]);
   });
   it('retains measured ground for off-site tile events and releases its selection camera on unmount', () => {
     const tiles = tileFixture(), TestContext = TilesRendererContext as ReturnType<typeof createContext<unknown>>;

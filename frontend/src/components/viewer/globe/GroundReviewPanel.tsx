@@ -9,10 +9,11 @@ import { measureParkTerrain, type ParkTerrainProfile } from './parkTerrain';
 import { isNeighborhoodParkPilot } from './neighborhoodParkLayout';
 import { isPersistedZoneId } from '@/utils/zoneIdentity';
 
-export function GroundReviewPanel({ boundary, ground, onClose, onApply, parks = [], onFollowParks }: {
+export function GroundReviewPanel({ boundary, ground, onClose, onApply, parks = [], onFollowParks, onEditBoundary }: {
   boundary: SiteZone; ground: SharedSiteGroundState; onClose: () => void;
   onApply: (clear: boolean, height?: number, edges?: PreparedEdgeProfile | null) => Promise<void>;
   parks?: SiteZone[]; onFollowParks?: (profiles: Record<string, ParkTerrainProfile>) => Promise<void>;
+  onEditBoundary?: () => void;
 }) {
   const [level, setLevel] = useState(String(boundary.properties?.terrain_elevation_m ?? ''));
   const [pending, setPending] = useState(false);
@@ -43,9 +44,14 @@ export function GroundReviewPanel({ boundary, ground, onClose, onApply, parks = 
   </StudioDialog>;
   return <StudioDialog title="Review site ground" onClose={onClose}>
     <div className="max-h-[70dvh] space-y-4 overflow-auto p-1 text-sm text-slate-900">
-      <p>{boundary.properties?.terrain_strategy === 'landscape' ? 'This site retains its hillside. Review the original surface here to update a park after moving or resizing it.' : ground.status === 'ready' ? 'The visible surface is consistent. Check that the samples are on ground rather than roofs or trees.' : ground.status === 'inactive' ? 'This site uses a prepared level. Reviewing its original surface does not change your design.' : groundReadinessMessage(ground)}</p>
+      <p>{boundary.properties?.terrain_strategy === 'landscape' ? 'This site retains its hillside. Review the original surface here to update a park after moving or resizing it.' : ground.status === 'ready' && !ground.snapshot?.excludedCells?.length ? 'The visible surface is consistent. Check that the samples are on ground rather than roofs or trees.' : ground.status === 'inactive' ? 'This site uses a prepared level. Reviewing its original surface does not change your design.' : groundReadinessMessage(ground)}</p>
       {ground.inspectionStatus === 'sampling' && <p role="status">Measuring the original surface… Keep the site in view.</p>}
+      {(ground.status === 'unavailable' || Boolean(ground.snapshot?.excludedCells?.length)) && onEditBoundary && <div className="rounded-lg border border-amber-300 bg-amber-50 p-3">
+        <p>For an open site, move the boundary away from problem areas or choose a smaller area of ground. Your placed objects stay saved; keep them inside the revised boundary.</p>
+        <button type="button" disabled={pending || unsaved} className="mt-2 min-h-11 rounded-lg border border-slate-700 bg-white px-3 font-semibold disabled:opacity-40" onClick={onEditBoundary}>Adjust site boundary</button>
+      </div>}
       {summary && review && <>
+        {Boolean(ground.snapshot?.excludedCells?.length) && <p>{ground.snapshot!.excludedCells!.length} ground cells are unavailable. Red outlines mark these cells and their edges. Move affected objects onto clear ground, or adjust the site boundary.</p>}
         <p>Measured heights: {summary.min?.toFixed(1) ?? 'unknown'}–{summary.max?.toFixed(1) ?? 'unknown'} m. North is up. Red marks abrupt changes; grey cells are missing or outside your boundary. Select a coloured sample to use its height as your proposed level.</p>
         <svg viewBox={`-1 -1 ${review.layout.grid.columns + 1} ${review.layout.grid.rows + 1}`} className="mx-auto h-56 w-full" role="img" aria-label="Measured site elevations, north up">
           {summary.cells.map(cell => <rect key={cell.index} x={cell.index % review.layout.grid.columns} y={review.layout.grid.rows - 1 - Math.floor(cell.index / review.layout.grid.columns)} width="0.9" height="0.9"
@@ -56,6 +62,12 @@ export function GroundReviewPanel({ boundary, ground, onClose, onApply, parks = 
             fill={!cell.inside || cell.height === null ? '#cbd5e1' : cell.jump ? '#dc2626' : `hsl(${120 - 90 * (cell.height - summary.min!) / Math.max(1, summary.max! - summary.min!)} 55% 48%)`}>
             <title>{cell.point.map(p => p.toFixed(6)).join(', ')}: {cell.height?.toFixed(2) ?? 'missing'} m{cell.jump ? ' — abrupt change' : ''}</title>
           </rect>)}
+          {ground.snapshot?.excludedCells?.map(index => <rect key={`excluded-${index}`}
+            x={index % (review.layout.grid.columns - 1) + .45}
+            y={review.layout.grid.rows - 2 - Math.floor(index / (review.layout.grid.columns - 1)) + .45}
+            width="1" height="1" fill="none" stroke="#b91c1c" strokeWidth=".12" pointerEvents="none">
+            <title>Unavailable ground cell {index}</title>
+          </rect>)}
         </svg>
       </>}
       <p className="rounded-lg bg-amber-50 p-3">Google tiles show visible surfaces, including roofs and trees. These heights are not a ground survey. A level redevelopment surface may require cut, fill or retaining edges.</p>
@@ -63,6 +75,7 @@ export function GroundReviewPanel({ boundary, ground, onClose, onApply, parks = 
         <h2 className="font-semibold">Let parks follow the hillside</h2>
         <p>Keep the existing site terrain. Drape the neighbourhood park's lawn and paths over its own measured surface; only activity pads stay level. Existing building terraces keep their saved level.</p>
         <p>{Object.keys(parkProfiles).length} of {parks.length} parks have repeatable measurements. Review that the park is on open ground, not tree crowns or roofs. Steep landscape is allowed; path grades still need design.</p>
+        {Object.keys(parkProfiles).length < parks.length && <p role="status" className="rounded border border-amber-300 bg-amber-50 p-2">Following existing terrain may hide an unmeasured park. Move or resize it onto clear measured ground and review again, or intentionally prepare a level redevelopment surface.</p>}
         <button className="min-h-11 rounded-lg bg-lime-200 p-2 disabled:opacity-40" disabled={pending || unsaved || Object.keys(parkProfiles).length !== parks.length} onClick={async () => {
           setPending(true); setError('');
           try { await onFollowParks(parkProfiles); onClose(); }
@@ -81,8 +94,8 @@ export function GroundReviewPanel({ boundary, ground, onClose, onApply, parks = 
         {summary?.min !== null && summary?.max !== null && summary && level !== '' && validPreparedLevel(Number(level)) &&
           <p>Compared with the visible samples, this level is {(Number(level) - summary.min).toFixed(1)} m above the lowest and {(summary.max - Number(level)).toFixed(1)} m below the highest. Roof and tree samples can exaggerate these differences.</p>}
         <p>Applying this replaces existing tiles inside the boundary. Objects without their own saved ground use this common level; measured parks keep their slope. Inspect the site edges afterward.</p>
-        <label className="flex min-h-11 items-center gap-2"><input type="checkbox" checked={includeEdges} disabled={!edges && !includeEdges} onChange={event => setIncludeEdges(event.target.checked)} />Add retaining edges · slope pilot</label>
-        <p className="text-xs">Connect the level surface to measured heights around its boundary. These are concept retaining faces, not engineered walls or accessible entrances. Review trees, roofs and nearby paths before applying.</p>
+        <label className="flex min-h-11 items-center gap-2"><input type="checkbox" checked={includeEdges} disabled={!edges && !includeEdges} onChange={event => setIncludeEdges(event.target.checked)} />Close gaps at site edges</label>
+        <p className="text-xs">Connect the site to the surrounding ground with measured retaining faces. Keep the proposed level unchanged to preserve your design. Supported public-road connections stay open through these faces. Review trees, roofs and nearby paths before applying; this is concept grading.</p>
         {!edges && <p role="status" className="text-xs">{supportsPreparedEdges(boundary)
           ? 'Retaining edges need two repeatable measurements around the whole boundary. Keep the site in view while it loads, or reopen this review to retry. You can still apply a level surface without edges.'
           : 'This boundary is too large or detailed for the retaining-edge pilot. Use a smaller site or apply a level surface without edges.'}</p>}

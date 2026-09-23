@@ -1,0 +1,56 @@
+[
+  {
+    "candidate": "student_separated_active_path_v1",
+    "package": "C:\\dev-artifacts\\CityPrompt\\public-realm-batch2-2026-09-22\\active-path-v002",
+    "preview": {
+      "path": "assembly-preview.glb",
+      "bytes": 85072,
+      "sha256": "9c2d56d780c96dbfb71a91935b016f7b2e447067034bcec533cb39c9d6cccbf2"
+    },
+    "assets": {
+      "path-bench": {
+        "path": "path-bench.glb",
+        "bytes": 17388,
+        "sha256": "7aaef44594049f2a98b5605a5c1d6b52a1c3f45d6500b34a8b1193f5601f280a"
+      },
+      "cycle-stand": {
+        "path": "cycle-stand.glb",
+        "bytes": 7684,
+        "sha256": "7ac84d55d204ca0e1a52bf0aebfa72980e0072fc16a5c76399747038dec75b36"
+      },
+      "path-light": {
+        "path": "path-light.glb",
+        "bytes": 6156,
+        "sha256": "ed6a24bdda7e3688c1ebc48132436bc693fe9cd0278e86865eded79eeeff9499"
+      }
+    },
+    "dimensions_m": [
+      8,
+      36
+    ],
+    "triangles": 944,
+    "verification": {
+      "status": "PASS_OFFLINE_GEOMETRY",
+      "checks": [
+        "8 m section with 2.5 m footpath and 3 m cycle track",
+        "finite full-envelope geometry",
+        "447 unobstructed travel and crossing rays",
+        "raised divider outside flush crossing"
+      ],
+      "runtime_tested": false
+    },
+    "review": {
+      "status": "BUILDER_VISUAL_PASS_ONLY",
+      "inspected_views": [
+        "aerial.png",
+        "crossing.png",
+        "pedestrian.png",
+        "top.png"
+      ],
+      "model_sha256": "9c2d56d780c96dbfb71a91935b016f7b2e447067034bcec533cb39c9d6cccbf2",
+      "independent_review": false,
+      "runtime_approved": false
+    },
+    "recipe_sha256": "12ab3ecf05d5732d441fe4e44b76e8392fa781057b5afa9db21772e5220b66fb"
+  }
+]

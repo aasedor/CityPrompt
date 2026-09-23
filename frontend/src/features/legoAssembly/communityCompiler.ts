@@ -16,6 +16,7 @@ import {
   getLegoPlanningFailure,
   type Community3DCompileResponse,
   type LegoAssemblyPlan,
+  type LegoPlanRequest,
   type LegoAssemblyRecipe,
   type LegoFootprintProfile,
 } from './legoAssemblyApi';
@@ -436,8 +437,9 @@ function isExplicitlyMissingFamily(error: unknown, archetypeId: string | undefin
   return Boolean(archetypeId && getLegoPlanningFailure(error)?.code === 'family_not_found');
 }
 
-function planRequestForItem(item: ZoneBuildItem) {
-  return legoAssemblyApi.plan({
+/** Keep the panel preview and atomic compiler on the same authoritative plot recipe. */
+export function buildPlanRequestForItem(item: ZoneBuildItem, allowForcedFit = false): LegoPlanRequest {
+  return {
     native_home_plot: item.zone.properties?.native_home_plot === true,
     target_width_m: item.targets.width_m,
     target_depth_m: item.targets.depth_m,
@@ -449,9 +451,13 @@ function planRequestForItem(item: ZoneBuildItem) {
     // Let the selected LEGO family's native podium depth determine wing
     // thickness, matching the backend's final-footprint proof exactly.
     project_id: item.zone.project_id,
-    allow_forced_fit: false,
+    allow_forced_fit: allowForcedFit,
     ...legoArchetypeContextFromZone(item.zone.properties),
-  });
+  };
+}
+
+function planRequestForItem(item: ZoneBuildItem) {
+  return legoAssemblyApi.plan(buildPlanRequestForItem(item));
 }
 
 /** Plan every supported modular family and persist the entire mixed community

@@ -28,6 +28,10 @@ describe('street-facing placement', () => {
     expect(streetFacingDegrees(origin, [], 24)).toBe(24);
     expect(streetFacingDegrees(origin, context([[point(0, 0), point(0, 0)]]), 24)).toBe(24);
   });
+  it('prioritizes the authored neighbourhood street over a nearer mapped proposed road',()=>{
+    const road={id:'street',zone_type:'road',coordinates:[],properties:{plan_centerline:[point(20,-40),point(20,40)]}} as unknown as SiteZone;
+    expect(streetFacingDegrees(origin,[road,...context([[point(-40,-3),point(40,-3)]],'proposed')])).toBeCloseTo(90,4);
+  });
   it('faces the street even when a footpath passes closer to the building', () => {
     const road = context([[point(-40, -20), point(40, -20)]]);
     const path = context([[point(5, -40), point(5, 40)]], 'footway');

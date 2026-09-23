@@ -4,6 +4,7 @@ import type { LegoPlanRequest } from '@/features/legoAssembly/legoAssemblyApi';
 import { CATALOGUE_ASSETS, isPlaceable, type PlaceAsset, type PlaceAssetId } from './assetRegistry';
 import { canonicalParkById, canonicalParkForProperties } from './canonicalParkPlacement';
 import { canonicalBuildingById, canonicalBuildingForProperties } from './canonicalBuildingPlacement';
+import { reviewedEntranceForAsset } from './reviewedEntrances';
 export type { PlaceAsset, PlaceAssetId } from './assetRegistry';
 const OBJECT_ASSETS = CATALOGUE_ASSETS.filter((asset): asset is PlaceAsset => asset.kind === 'object');
 export const PLACE_ASSETS = OBJECT_ASSETS.filter(isPlaceable);
@@ -34,8 +35,15 @@ export function assetForZone(zone: Pick<SiteZone, 'properties'>): PlaceAsset | u
   return undefined;
 }
 export function placementProperties(asset: PlaceAsset, elevation?: number): SiteZoneProperties {
+  const entrance = reviewedEntranceForAsset(asset);
   return { ...asset.properties, pick_place_asset: asset.id,
     pick_place_definition_version: asset.definitionVersion,
+    ...(entrance ? { pedestrian_building_entrance: {
+      version: 1, automatic: true, sourceVariantId: asset.model.variantId, xM: entrance.xM, yM: entrance.yM,
+      referenceWidthM: entrance.plotWidthM, referenceDepthM: entrance.plotDepthM,
+      widthM: entrance.widthM, scaleWithPlot: false, streetId: '', heightAboveBaseM: 0,
+      ...(entrance.fixedNative ? { fixedNative: true } : {}),
+    } } : {}),
     ...(Number.isFinite(elevation) ? { terrain_elevation_m: elevation } : {}) };
 }
 

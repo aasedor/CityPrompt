@@ -37,8 +37,9 @@ export const PARK_TRIO_ASSETS: PlaceAsset[] = (
     },
     zoneType: "green_space",
     reshapeMode: "adaptive_layout",
-    width: p.min[0],
-    depth: p.min[1],
+    // Start with the complete programme; minima remain available when resizing.
+    width: p.size[0],
+    depth: p.size[1],
     minWidth: p.min[0],
     minDepth: p.min[1],
     maxSize: ["basketball", "tennis", "soccer"].includes(kind) ? 240 : 160,

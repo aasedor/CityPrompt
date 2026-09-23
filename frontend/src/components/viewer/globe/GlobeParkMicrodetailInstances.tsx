@@ -1,5 +1,9 @@
 import { Suspense, useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
+import { createPublicRealmPlant } from './publicRealmPlantGeometry';
+import { GlobeMeadowFurniture } from './GlobeMeadowFurniture';
+import { GlobeMeadowVegetation } from './GlobeMeadowVegetation';
+import { meadowPlantScale } from './meadowVegetationPlacement';
 import { useGLTF } from '@react-three/drei';
 
 import type { ParkLegoPalette } from './parkLegoFamilies';
@@ -149,7 +153,8 @@ function ParkInstancedPart({
     >
       {!material && (
         <meshStandardMaterial
-          color={color}
+          color={geometry.getAttribute('color') ? '#ffffff' : color}
+          vertexColors={Boolean(geometry.getAttribute('color'))}
           roughness={roughness}
           metalness={metalness}
           side={THREE.DoubleSide}
@@ -182,18 +187,26 @@ export function GlobeParkMicrodetailInstances({
   terrainOffsets,
   palette,
   renderOrder,
+  detailedPlanting = false,
+  meadowFurniture = false,
+  meadowVegetation = false,
 }: {
+  meadowVegetation?: boolean;
+  meadowFurniture?: boolean;
+  detailedPlanting?: boolean;
   placements: ParkMicrodetailPlacement[];
   terrainOffsets: number[] | null;
   palette?: ParkLegoPalette | null;
   renderOrder: number;
 }) {
-  const shrubGeometry = useMemo(() => new THREE.DodecahedronGeometry(0.55, 1), []);
+  const shrubGeometry = useMemo(() => detailedPlanting ? createPublicRealmPlant('shrub') : new THREE.DodecahedronGeometry(0.55, 1), [detailedPlanting]);
+  const flowerGeometry = useMemo(() => detailedPlanting ? createPublicRealmPlant('perennial') : new THREE.DodecahedronGeometry(0.55, 1), [detailedPlanting]);
   const tuftGeometry = useMemo(() => {
+    if (detailedPlanting) return createPublicRealmPlant('grass');
     const geometry = new THREE.ConeGeometry(0.44, 1, 7);
     geometry.rotateX(Math.PI / 2);
     return geometry;
-  }, []);
+  }, [detailedPlanting]);
   const stoneGeometry = useMemo(() => new THREE.DodecahedronGeometry(0.55, 0), []);
   const boxGeometry = useMemo(() => new THREE.BoxGeometry(1, 1, 1), []);
   const poleGeometry = useMemo(() => {
@@ -204,12 +217,13 @@ export function GlobeParkMicrodetailInstances({
   const grateGeometry = useMemo(() => new THREE.RingGeometry(0.26, 1, 24), []);
   useEffect(() => () => {
     shrubGeometry.dispose();
+    flowerGeometry.dispose();
     tuftGeometry.dispose();
     stoneGeometry.dispose();
     boxGeometry.dispose();
     poleGeometry.dispose();
     grateGeometry.dispose();
-  }, [boxGeometry, grateGeometry, poleGeometry, shrubGeometry, stoneGeometry, tuftGeometry]);
+  }, [boxGeometry, flowerGeometry, grateGeometry, poleGeometry, shrubGeometry, stoneGeometry, tuftGeometry]);
 
   const byKind = useMemo(() => {
     const result = new Map<ParkMicrodetailKind, ResolvedMicrodetailPlacement[]>();
@@ -227,14 +241,16 @@ export function GlobeParkMicrodetailInstances({
       const isTall = kind === 'reed' || kind === 'ornamental_grass';
       return buildParkMicrodetailElementOffsets(placement).map((element, index) => {
         const elementSize = radius * element.sizeFactor;
+        const botanical = detailedPlanting && !['boulder', 'riprap'].includes(kind);
+        const height = botanical ? (isTall ? .62 : kind === 'perennial' ? .42 : .55) + (index % 3) * .06 : elementSize * (isTall ? 1.55 : .9);
         return {
           x: placement.x + element.x,
           y: placement.y + element.y,
-          z: baseZ(placement.z) + (isTall ? elementSize * 0.72 : elementSize * 0.4),
+          z: baseZ(placement.z) + (botanical ? height * .5 : (isTall ? elementSize * 0.72 : elementSize * 0.4)),
           yaw: element.yawRad,
           sx: elementSize,
           sy: elementSize * (0.78 + (index % 3) * 0.08),
-          sz: elementSize * (isTall ? 1.55 : 0.9),
+          sz: height,
         };
       });
     })
@@ -258,22 +274,32 @@ export function GlobeParkMicrodetailInstances({
 
   return (
     <>
-      {(['shrub', 'perennial'] as const).map((kind) => (
-        <ParkInstancedPart key={kind} geometry={shrubGeometry} transforms={organicTransforms(kind)} color={colorFor(kind, palette)} roughness={0.98} renderOrder={renderOrder} />
+      {meadowVegetation && (['shrub', 'perennial', 'ornamental_grass'] as const).map(kind => {
+        const prototype = kind === 'shrub' ? 'silver_shrub' : kind === 'perennial' ? 'flowering_perennial' : 'meadow_grass';
+        return <GlobeMeadowVegetation key={kind} kind={prototype} renderOrder={renderOrder}
+          placements={(byKind.get(kind) ?? []).map(p => ({ ...p, z: baseZ(p.z), scale: meadowPlantScale(prototype, p.footprintRadiusM) }))} />;
+      })}
+      {!meadowVegetation && (['shrub', 'perennial'] as const).map((kind) => (
+        <ParkInstancedPart key={kind} geometry={kind === 'perennial' ? flowerGeometry : shrubGeometry} transforms={organicTransforms(kind)} color={colorFor(kind, palette)} roughness={0.98} renderOrder={renderOrder} />
       ))}
-      {(['ornamental_grass', 'reed'] as const).map((kind) => (
+      {(['ornamental_grass', 'reed'] as const).filter(kind => !meadowVegetation || kind === 'reed').map((kind) => (
         <ParkInstancedPart key={kind} geometry={tuftGeometry} transforms={organicTransforms(kind)} color={colorFor(kind, palette)} roughness={0.98} renderOrder={renderOrder} />
       ))}
       {(['boulder', 'riprap'] as const).map((kind) => (
         <ParkInstancedPart key={kind} geometry={stoneGeometry} transforms={organicTransforms(kind)} color={colorFor(kind, palette)} roughness={0.98} renderOrder={renderOrder} />
       ))}
-      <ParkInstancedPart geometry={poleGeometry} transforms={lightPoleTransforms} color={colorFor('light', palette)} roughness={0.48} metalness={0.52} renderOrder={renderOrder + 1} />
-      <ParkInstancedPart geometry={boxGeometry} transforms={lightHeadTransforms} color="#e4d7ae" roughness={0.35} renderOrder={renderOrder + 2} />
+      {meadowFurniture ? <GlobeMeadowFurniture kind="light" placements={(byKind.get('light') ?? []).map(p => ({ ...p, z: baseZ(p.z) }))} renderOrder={renderOrder + 1} /> : <>
+        <ParkInstancedPart geometry={poleGeometry} transforms={lightPoleTransforms} color={colorFor('light', palette)} roughness={0.48} metalness={0.52} renderOrder={renderOrder + 1} />
+        <ParkInstancedPart geometry={boxGeometry} transforms={lightHeadTransforms} color="#e4d7ae" roughness={0.35} renderOrder={renderOrder + 2} />
+      </>}
       <ParkInstancedPart geometry={poleGeometry} transforms={bollardTransforms} color={colorFor('bollard', palette)} roughness={0.56} metalness={0.42} renderOrder={renderOrder + 1} />
       {(Object.keys(SHARED_EQUIPMENT) as Array<keyof typeof SHARED_EQUIPMENT>).map((kind) => {
         const asset = SHARED_EQUIPMENT[kind];
         const equipmentPlacements = byKind.get(kind) ?? [];
         if (equipmentPlacements.length === 0) return null;
+        if (meadowFurniture && (kind === 'picnic_table' || kind === 'bin' || kind === 'bike_rack')) {
+          return <GlobeMeadowFurniture key={kind} kind={kind} placements={equipmentPlacements.map(p => ({ ...p, z: baseZ(p.z) }))} renderOrder={renderOrder + 1} />;
+        }
         return (
           <Suspense key={kind} fallback={null}>
             <ParkMicrodetailGlbInstances

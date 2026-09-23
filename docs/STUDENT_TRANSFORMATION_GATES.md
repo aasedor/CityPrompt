@@ -4,6 +4,15 @@ Initiative: `codex/student-design-transformation`, baseline `1172db1ef`.
 Mission: the complete 95-section brief received 15 September 2026.
 This file records actual status. Unchecked phases are not implemented or accepted.
 
+## Immediate classroom target
+
+On 20 September the user prioritized a working concept-design product with
+strong visuals and no glaring errors over perfection. Follow
+`CLASSROOM_READINESS_PLAN_2026-09-20.md` for the immediate pre-catalogue work.
+The broad phases below remain historical coverage; their unimplemented features
+are not all prerequisites for the first classroom pilot and are not marked
+complete by the narrower target.
+
 ## Checkpoints
 
 | Phase | Status | Required evidence before acceptance |

@@ -60,11 +60,14 @@ const STEPS: TourStep[] = [
 ];
 
 const PLACEMENT_STEPS: TourStep[] = [
-  {target:'[data-tour="place-infill_home"]',title:'Pick and place a home',body:'Open Buildings, choose Infill homes from the catalogue, then move the preview over an empty part of your site, then click to place it. On a phone, move the map under the crosshair and tap Place at centre. Red means the object does not fit there.',placement:'right'},
-  {target:'[data-tour="place-neighbourhood_park"]',title:'Make room for a park',body:'Open Parks, choose Neighbourhood park, and place it beside your homes. The park appears in 3D automatically. Keep some space for streets and connections.',placement:'right'},
-  {target:'[data-tour="select-btn"]',title:'Reshape your ideas',body:'Select an object. Drag its body to move, a white corner to resize, or the orange handle to rotate. You can also enter dimensions in the side panel. A wider home plot fits more whole houses; a park rearranges its paths and equipment.',placement:'right'},
-  {target:'[data-tour="tool-streetsPaths"]',title:'Connect the places',body:'Choose Road, click at least two points along the route, then press Enter. Roads update in 3D automatically. More Tools contains custom outlines and optional planning tools.',placement:'right'},
-  {target:'[data-tour="ai-render-btn"]',title:'Present your community',body:'Once your objects have saved and 3D has updated, choose Render. Review your image settings before starting. Undo and Redo let you explore alternatives; your placed objects remain in the saved project.',placement:'right'},
+  {target:'[data-tour="workflow-site"]',title:'Choose your site',body:'In Site, choose Draw site boundary and click around an empty parcel. Follow its shape and keep existing roads outside. Press Enter to finish, then Confirm site & design. For a first exercise, aim for several buildings, one street and a park that fit the surrounding neighbourhood.',placement:'right'},
+  {target:'[data-tour="tool-streetsPaths"]',title:'Lay out a street',body:'Open Streets and choose a street from the catalogue. Click two or more route points, then press Enter. Select the street to drag its white points. To reach an existing road, enable Connect to a public road and bring one end to its visible edge. Check from above and in 3D.',placement:'right'},
+  {target:'[data-tour="place-infill_home"]',title:'Place buildings beside it',body:'Open Buildings and try Infill homes or Beltline brick mixed-use mid-rise. Search by name and choose the matching Detailed 3D card. Position the preview, then click to place. Nearby overlaps snap into usable space when possible. Supported entrances connect to nearby sidewalks; check the actual path. Use Place another for more buildings.',placement:'right'},
+  {target:'[data-tour="place-neighbourhood_park"]',title:'Give people a place to gather',body:'Open Parks and choose Neighbourhood park or a teaching garden. Keep its starting size for the full programme and place it close to the street. Look for a path from the sidewalk into the park; move it closer if the connection is missing.',placement:'right'},
+  {target:'[data-tour="select-btn"]',title:'Try an edit and Undo',body:'Select an object and drag its Move handle to move it. Use white corners to resize or the orange handle to rotate where available. Try Undo, then Redo. A wider infill plot can add houses; a fixed building keeps its proportions. Keep doors, sidewalks and park paths clear.',placement:'right'},
+  {target:'[data-tour="workflow-site"]',title:'Finish the spaces between',body:'Open Site → Review site boundary. For a level redevelopment site, choose Clear site for redevelopment under Site ground, then Save changes. Choose a preset, Generate 3D Site Landscape, then Apply landscape. Presets use no image-generation tokens. After layout edits, regenerate the landscape if it disappears or needs updating.',placement:'right'},
+  {target:'[data-tour="select-btn"]',title:'Save, reopen and review',body:'Wait for Drawings saved and 3D saved, then reload the project. Check that your buildings, street and park return. If a level site has an exposed edge, use Review ground → Close gaps at site edges and keep its level unchanged. Wait for measurements before applying.',placement:'right'},
+  {target:'[data-tour="ai-render-btn"]',title:'Download your first image',body:'Use Focus plan, right-drag to orbit and scroll to zoom. Choose Render this view → Image → Export current 3D view · free, then Download render in the preview. Open the saved PNG and check your design. AI styles are optional; compare their results with this original. Reopen Guide whenever you need it.',placement:'right'},
 ];
 
 // ---------------------------------------------------------------------------
@@ -391,8 +394,9 @@ interface TooltipProps {
   onNext: () => void;
   onBack: () => void;
   onSkip: () => void;
+  finishLabel: string;
 }
-function TourTooltip({ step, stepIndex, total, targetRect, onNext, onBack, onSkip }: TooltipProps) {
+function TourTooltip({ step, stepIndex, total, targetRect, onNext, onBack, onSkip, finishLabel }: TooltipProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [pos, setPos] = useState({ top: 12, left: 12 });
   const [reducedMotion, setReducedMotion] = useState(() => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false);
@@ -464,7 +468,7 @@ function TourTooltip({ step, stepIndex, total, targetRect, onNext, onBack, onSki
         <button type="button" onClick={onSkip} className={buttonClass + ' text-slate-700 hover:bg-slate-100'}>Close guide</button>
         <div className="flex gap-2">
           <button type="button" disabled={stepIndex === 0} onClick={onBack} className={buttonClass + ' border border-slate-300 disabled:opacity-40 hover:bg-slate-100'}>Back</button>
-          <button type="button" onClick={onNext} className={buttonClass + ' bg-slate-900 text-white hover:bg-slate-700'}>{stepIndex === total - 1 ? 'Start drawing' : 'Next'}</button>
+          <button type="button" onClick={onNext} className={buttonClass + ' bg-slate-900 text-white hover:bg-slate-700'}>{stepIndex === total - 1 ? finishLabel : 'Next'}</button>
         </div>
       </div>
     </div>
@@ -528,6 +532,7 @@ export function OnboardingTour({ forceShow, onComplete, placementMode = false }:
     <SpotlightOverlay rect={targetRect} />
     <div aria-hidden className="fixed inset-0 z-[998]" />
     <TourTooltip step={steps[stepIndex]} stepIndex={stepIndex} total={steps.length}
+      finishLabel={placementMode ? 'Start designing' : 'Start drawing'}
       targetRect={targetRect} onNext={handleNext} onBack={handleBack} onSkip={dismiss} />
   </>, document.body);
 }

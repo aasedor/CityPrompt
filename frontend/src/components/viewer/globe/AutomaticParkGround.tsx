@@ -37,7 +37,7 @@ export type SaveParkGround = (
   profile: ParkTerrainProfile,
 ) => Promise<boolean>;
 
-/** One bounded, debounced sampling job. A newer footprint cancels its result. */
+/** One bounded, debounced sampling job. Retired providers cannot finish it. */
 function Sampler({
   zone,
   attempt,
@@ -51,6 +51,11 @@ function Sampler({
 }) {
   const completed = useRef(false),
     latest = useRef(onResult);
+  const mounted = useRef(true);
+  useEffect(() => {
+    mounted.current = true;
+    return () => { mounted.current = false; };
+  }, []);
   latest.current = onResult;
   const reused = useMemo(() => reuseMeasuredParkTerrain(zone), [zone]);
   useEffect(() => {
@@ -92,7 +97,7 @@ function Sampler({
     return () => clearTimeout(deadline);
   }, [started]);
   const change = (state: SharedSiteGroundState) => {
-    if (completed.current) return;
+    if (completed.current || !mounted.current) return;
     const profile = measureParkTerrain(zone, state.review);
     if (profile) {
       completed.current = true;
@@ -129,8 +134,13 @@ export function AutomaticParkGround({
   children: ReactNode;
   fallback: number;
 }) {
-  const landscape =
-    getActiveSiteBoundary(zones)?.properties?.terrain_strategy === 'landscape';
+  const boundary = getActiveSiteBoundary(zones);
+  const landscape = boundary?.properties?.terrain_strategy === 'landscape';
+  // A row or site revision can change grade without changing the park outline.
+  // Restart conservatively; never re-label old samples with a newer revision.
+  const jobKey = (zone: SiteZone) => JSON.stringify([
+    parkFootprintKey(zone), zone.updated_at, boundary?.id, boundary?.updated_at, fallback,
+  ]);
   const eligible = zones.filter(
     (z) =>
       isNeighborhoodParkPilot(z) &&
@@ -147,8 +157,8 @@ export function AutomaticParkGround({
   const latest = useRef({ zones, paused, onSave });
   latest.current = { zones, paused, onSave };
   const pending = eligible.filter((z) => !readParkTerrain(z));
-  const job = pending.find((z) => (attempts[parkFootprintKey(z)] ?? 0) < 3),
-    key = job ? parkFootprintKey(job) : '';
+  const job = pending.find((z) => (attempts[jobKey(z)] ?? 0) < 3),
+    key = job ? jobKey(job) : '';
   const active = useRef(key);
   active.current = key;
   const mounted = useRef(true);
@@ -167,7 +177,7 @@ export function AutomaticParkGround({
   const callback = useRef(onChange);
   callback.current = onChange;
   const needsAttention = pending.some(
-    (z) => (attempts[parkFootprintKey(z)] ?? 0) >= 3,
+    (z) => (attempts[jobKey(z)] ?? 0) >= 3,
   );
   useEffect(() => {
     callback.current({
@@ -179,11 +189,11 @@ export function AutomaticParkGround({
   const finish = async (profile: ParkTerrainProfile | null) => {
     if (!mounted.current || !job || active.current !== key) return;
     const current = latest.current.zones.find((z) => z.id === job.id);
-    if (!current || parkFootprintKey(current) !== key || latest.current.paused)
+    if (!current || jobKey(current) !== key || latest.current.paused)
       return;
     setSaving(true);
     try {
-      if (profile && (await latest.current.onSave?.(current, profile))) return;
+      if (profile && (await latest.current.onSave?.(job, profile))) return;
     } catch {
       /* Bounded quiet retries; preserve the visible draft on failure. */
     } finally {

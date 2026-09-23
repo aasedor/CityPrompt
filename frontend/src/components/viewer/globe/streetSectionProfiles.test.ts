@@ -52,6 +52,7 @@ describe('street section pilot profiles', () => {
     ['protected_bike_lane_bidirectional', 20],
     ['calgary_arterial_4lane_50', 33],
     ['multi_use_trail', 4],
+    ['neighborhood_greenway', 11],
     ['toronto_victorian_residential_street', 16],
     ['toronto_laneway', 5],
   ])('compiles %s to its measured right-of-way', (id, rowM) => {
@@ -167,6 +168,16 @@ describe('street section pilot profiles', () => {
     expect(profile?.bands.filter((band) => band.kind === 'planting').map((band) => band.widthM))
       .toEqual([0.75, 0.75]);
     expect(profile?.bands.find((band) => band.kind === 'motor')?.widthM).toBe(3.5);
+  });
+
+  it('compiles the neighborhood greenway as a planted, unmarked bike-priority street', () => {
+    const profile = resolvePilotStreetSectionProfile('neighborhood_greenway');
+    expect(profile).not.toBeNull();
+    expect(profile?.rowM).toBe(11);
+    expect(profile?.bands.filter((band) => band.kind === 'motor')).toHaveLength(2);
+    expect(profile?.bands.filter((band) => band.kind === 'sidewalk')).toHaveLength(2);
+    expect(profile?.treeOffsetsM).toHaveLength(2);
+    expect(profile?.markings).toHaveLength(0);
   });
 
   it('preserves the reviewed Calgary v0 local section and records the recipe target width', () => {

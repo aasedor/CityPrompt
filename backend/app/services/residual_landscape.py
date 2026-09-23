@@ -49,12 +49,10 @@ _REGION_ORDER = {
     "low_groundcover": 4,
 }
 _TREE_REGION_KINDS = {"boulevard_planting", "perimeter_planting", "lawn"}
-# The widest approved overhead crown plane is 7.8 x 7.2 m, rendered at 0.88
-# profile size and up to 1.08 placement scale. Its half-diagonal is 5.05 m.
-# Keeping every centre 5.1 m inside eligible residual geometry guarantees the
-# complete textured plane stays inside the parcel and outside authored parks,
-# streets, water and buildings, not merely the trunk point.
-_TREE_CANOPY_CLEARANCE_M = 5.1
+# Shared broadleaf crowns occupy their full metric width/depth after the
+# branching-tree upgrade. A 7.8 x 7.2 m envelope at scale 1.08 has a 5.73 m
+# half-diagonal, including arbitrary yaw. Keep the full crown off access routes.
+_TREE_CANOPY_CLEARANCE_M = 5.8
 
 _COMMUNITY_BUILDING_TYPES = {"building", "residential", "development_area", "development"}
 _COMMUNITY_PARK_TYPES = {"green_space", "park", "plaza", "parking"}

@@ -68,6 +68,28 @@ function footprintContains(ring: readonly GroundPoint[], point: GroundPoint): bo
   return inside;
 }
 
+/** Split a footprint edge at every site-boundary crossing. Testing each open
+ * interval catches arbitrarily narrow notches that fixed-distance probes miss. */
+function boundaryEdgeSamples(a: GroundPoint, b: GroundPoint, boundary: readonly GroundPoint[]): GroundPoint[] {
+  const dx = b[0] - a[0], dy = b[1] - a[1], lengthSquared = dx * dx + dy * dy;
+  if (lengthSquared < 1e-14) return [a];
+  const times = [0, 1];
+  boundary.forEach((c, i) => {
+    const d = boundary[(i + 1) % boundary.length];
+    const ex = d[0] - c[0], ey = d[1] - c[1], cx = c[0] - a[0], cy = c[1] - a[1];
+    const determinant = dx * ey - dy * ex;
+    if (Math.abs(determinant) > 1e-10) {
+      const t = (cx * ey - cy * ex) / determinant, u = (cx * dy - cy * dx) / determinant;
+      if (t >= 0 && t <= 1 && u >= -1e-9 && u <= 1 + 1e-9) times.push(t);
+    } else if (Math.abs(cx * dy - cy * dx) < 1e-7) {
+      for (const p of [c, d]) times.push(Math.max(0, Math.min(1, ((p[0] - a[0]) * dx + (p[1] - a[1]) * dy) / lengthSquared)));
+    }
+  });
+  times.sort((x, y) => x - y);
+  return times.flatMap((t, i) => (i ? [t, (times[i - 1] + t) / 2] : [t])
+    .map((value): GroundPoint => [a[0] + value * dx, a[1] + value * dy]));
+}
+
 /** In normalized grid coordinates, every terrain triangle edge lies on x=i,
  * y=j or y-x=k. Split at those exact crossings so the skirt bottom follows
  * each shared plane rather than spanning an unobserved ridge between probes. */
@@ -99,13 +121,27 @@ export function resolveBuildingGroundContact(
   footprints: readonly GroundPoint[][],
   lng: number,
   lat: number,
-  ground: { status: string; snapshot?: SharedSiteGroundSnapshot | null; contains: (lng: number, lat: number) => boolean; heightAt: (lng: number, lat: number) => number | null },
+  ground: { status: string; snapshot?: SharedSiteGroundSnapshot | null; boundaryCoordinates?: readonly GroundPoint[]; contains: (lng: number, lat: number) => boolean; heightAt: (lng: number, lat: number) => number | null },
 ): BuildingGroundContact {
   const toGeo = ([east, north]: GroundPoint): GroundPoint => [lng + east / metersPerDegLon(lat), lat + north / METERS_PER_DEG_LAT];
   const points = footprints.flat();
   if (!points.length || footprints.some((ring) => ring.length < 3) || points.some((point) => !point.every(Number.isFinite))) return { status: 'unresolved', reason: 'missing_footprint' };
-  if (!points.some((point) => ground.contains(...toGeo(point))) && !ground.contains(lng, lat)) return { status: 'outside' };
+  const boundary = ground.boundaryCoordinates ?? ground.snapshot?.boundaryCoordinates;
+  let fullySupported = true;
+  if (boundary) {
+    if (boundary.length < 3 || boundary.length * points.length > 1_000_000) return { status: 'unresolved', reason: 'footprint_probe_budget' };
+    const localBoundary = geographicFootprint(boundary, lng, lat);
+    let overlaps = false;
+    for (const ring of footprints) {
+      const samples = ring.flatMap((point, i) => boundaryEdgeSamples(point, ring[(i + 1) % ring.length], localBoundary));
+      const inside = samples.map((point) => ground.contains(...toGeo(point)));
+      overlaps ||= inside.some(Boolean) || localBoundary.some((point) => footprintContains(ring, point));
+      fullySupported &&= inside.every(Boolean);
+    }
+    if (!overlaps) return { status: 'outside' };
+  } else if (!points.some((point) => ground.contains(...toGeo(point))) && !ground.contains(lng, lat)) return { status: 'outside' };
   if (ground.status !== 'ready') return { status: 'unresolved', reason: 'ground_not_ready' };
+  if (!fullySupported) return { status: 'unresolved', reason: 'incomplete_footprint_ground' };
   const probeCount = footprints.reduce((sum, ring) => sum + ring.reduce((count, point, index) => {
     const next = ring[(index + 1) % ring.length];
     return count + Math.max(2, Math.ceil(Math.hypot(next[0] - point[0], next[1] - point[1]) / 2));

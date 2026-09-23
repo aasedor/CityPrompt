@@ -713,6 +713,10 @@ def test_local_row_compatibility_is_source_specific():
         plan_public_realm_recipe(_street_request("woonerf_shared_street", 14)).family_id == "street_local_public_realm"
     )
     assert plan_public_realm_recipe(_street_request("multi_use_trail", 4)).variant_id == "multi_use_trail_v1"
+    greenway = plan_public_realm_recipe(_street_request("neighborhood_greenway", 11))
+    assert greenway.family_id == "street_local_public_realm"
+    assert greenway.variant_id == "neighborhood_greenway_v0"
+    assert greenway.appearance_kit_id == "green_corridor_v1"
 
     with pytest.raises(PublicRealmPlanningError) as raised:
         plan_public_realm_recipe(_street_request("multi_use_trail", 7))

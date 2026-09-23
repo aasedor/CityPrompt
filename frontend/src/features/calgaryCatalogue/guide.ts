@@ -85,6 +85,9 @@ const BUILDING_OVERRIDES: Record<string, string> = {
   london_townhouse: 'ground_housing', london_crescent_terrace: 'ground_housing', regency_stucco_terrace: 'ground_housing',
   rndsqr_missing_middle_townhomes: 'ground_housing',
 };
+const BUILDING_VARIANT_OVERRIDES: Record<string, string> = {
+  'calgary_modern_infill_house/infill_duplex': 'two_home',
+};
 const BUILDING_TYPES: Record<string, string> = {
   residential_single_family: 'detached', residential_duplex: 'two_home', residential_multifamily: 'apartments',
   residential_highrise: 'towers', mixed_use: 'mixed', 'mixed-use': 'mixed', commercial_office: 'offices',
@@ -137,6 +140,12 @@ export function classifyCalgaryAsset(domain: CatalogueDomain, seed: CatalogueSee
     : category === 'transit_oriented' ? 'transit'
     : ['cycling_oriented', 'pedestrian_oriented', 'alberta_bike_design_guide'].includes(category) ? 'active' : 'street_other');
   return { groupId, basis: category === 'calgary_street_manual' ? 'draft_manual' : 'design_reference' };
+}
+/** Some catalogue parents span several housing forms. Keep their variant
+ * browsing identity independent of whether a detailed trial model is active. */
+export function classifyCalgaryVariant(parentId: string, variantId: string): CalgaryClassification | undefined {
+  const groupId = BUILDING_VARIANT_OVERRIDES[`${parentId}/${variantId}`];
+  return groupId ? { groupId, basis: 'form_reference' } : undefined;
 }
 export function calgaryGroup(classification?: CalgaryClassification) {
   return classification ? GROUP_BY_ID.get(classification.groupId) : undefined;

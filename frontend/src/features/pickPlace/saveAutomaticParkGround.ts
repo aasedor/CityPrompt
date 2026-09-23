@@ -6,7 +6,8 @@ import { advanceDerivedZoneRevision } from '@/store/undoActions';
 import { parkFootprintKey } from '@/components/viewer/globe/parkTerrain';
 import type { ParkTerrainProfile } from '@/components/viewer/globe/parkTerrain';
 
-/** Derived data: no toast or undo step; optimistic version check protects edits. */
+/** Derived data: no toast or undo step. Bind the write to the sampled revision,
+ * including time spent waiting behind an authored write in the project queue. */
 export async function saveAutomaticParkGround(
   client: QueryClient,
   projectId: string,
@@ -20,6 +21,7 @@ export async function saveAutomaticParkGround(
         ?.find((z) => z.id === source.id);
     if (
       !current ||
+      current.updated_at !== source.updated_at ||
       parkFootprintKey(current) !== parkFootprintKey(source) ||
       client.isMutating({ mutationKey: ['save-zone', projectId] })
     )

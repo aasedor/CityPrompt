@@ -1,6 +1,6 @@
 import { PARK_TRIO_ASSETS } from './parkTrioAssets';
 import type { SiteZoneProperties } from '@/types';
-import { PUBLISHED_BUILDING_ASSETS } from './publishedBuildingAssets';
+import { CATALOGUE_BUILDING_ASSETS } from './publishedBuildingAssets';
 import streetCatalogue from '@/data/streetPathArchetypes.json';
 import { classifyCalgaryAsset, calgaryGroup, CALGARY_GROUPS, type CalgaryClassification } from '@/features/calgaryCatalogue/guide';
 
@@ -28,6 +28,9 @@ export interface PlaceAsset extends AssetRecord {
   minDepth: number;
   maxSize: number;
   nativeDimensions?: [number, number, number];
+  /** Reviewed native step foot, in the plot frame. Register per exact variant,
+   * never infer a doorway from a generic bounding box. */
+  entranceSnap?: { xM: number; yM: number; plotWidthM: number; plotDepthM: number; widthM: number };
   reshapeDescription: string;
 }
 export interface StreetAsset extends AssetRecord {
@@ -45,6 +48,7 @@ const OBJECT_ASSETS: PlaceAsset[] = [
     thumbnail: '/archetypes/buildings/calgary-modern-infill-house/variant_0.png',
     zoneType: 'building', width: 12, depth: 16, minWidth: 12, minDepth: 15, maxSize: 100,
     nativeDimensions: [8.45, 11.75, 6.98001],
+    entranceSnap: { xM: 3.2, yM: -5.9, plotWidthM: 12, plotDepthM: 16, widthM: 1.8 },
     reshapeDescription: 'Homes stay two storeys and retain their proportions. A larger plot fits additional whole homes with space between them.',
     properties: { building_archetype_id: 'calgary_modern_infill_house',
       development_archetype_id: 'calgary_modern_infill_house',
@@ -130,7 +134,7 @@ export const STREET_ASSETS: StreetAsset[] = [LOCAL_STREET_ASSET,
 ];
 
 export const CATALOGUE_ASSETS: CatalogueAsset[] = [...OBJECT_ASSETS, ...STREET_ASSETS,
-  ...PUBLISHED_BUILDING_ASSETS,
+  ...CATALOGUE_BUILDING_ASSETS,
   ...PARK_TRIO_ASSETS];
 /** Pilot visibility preserves the existing local trial; it is not release approval. */
 export function isPlaceable(asset: CatalogueAsset): boolean {

@@ -850,7 +850,7 @@ export function buildStreetFamilyFixturePlacements({
       clearancePoints,
     })
   );
-  const selectedIndices = selectStations(isMain ? 24 : 28, MAX_STREET_FIXTURE_STATIONS);
+  const selectedIndices = selectStations(profile.archetypeId === 'neighborhood_greenway' ? 14 : isMain ? 24 : 28, MAX_STREET_FIXTURE_STATIONS);
 
   const trees: StreetTreePlacement[] = [];
   const benches: StreetBenchPlacement[] = [];

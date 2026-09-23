@@ -9,6 +9,26 @@ describe('Quick-start guide', () => {
     localStorage.clear();
     vi.stubGlobal('matchMedia', vi.fn(() => ({ matches: true, addEventListener: vi.fn(), removeEventListener: vi.fn() })));
   });
+  it('guides placement through site, editing, recovery and free download without operating the project', () => {
+    const action = vi.fn();
+    const finish = vi.fn();
+    render(<><button data-tour="workflow-site" onClick={action}>Site</button>
+      <button data-tour="ai-render-btn" onClick={action}>Render this view</button>
+      <OnboardingTour placementMode forceShow onComplete={finish} /></>);
+    expect(screen.getByRole('dialog')).toHaveAccessibleName('Choose your site');
+    for (let i = 0; i < 4; i++) fireEvent.click(screen.getByRole('button', { name: 'Next' }));
+    expect(screen.getByRole('dialog')).toHaveAccessibleName('Try an edit and Undo');
+    expect(screen.getByText(/drag its Move handle/)).toBeVisible();
+    fireEvent.click(screen.getByRole('button', { name: 'Next' }));
+    expect(screen.getByText(/Presets use no image-generation tokens/)).toBeVisible();
+    fireEvent.click(screen.getByRole('button', { name: 'Next' }));
+    expect(screen.getByText(/Wait for Drawings saved and 3D saved/)).toBeVisible();
+    fireEvent.click(screen.getByRole('button', { name: 'Next' }));
+    expect(screen.getByText(/Export current 3D view · free, then Download render/)).toBeVisible();
+    fireEvent.click(screen.getByRole('button', { name: 'Start designing' }));
+    expect(finish).toHaveBeenCalledOnce();
+    expect(action).not.toHaveBeenCalled();
+  });
   it('follows drawing to 3D to render without triggering a generation', () => {
     const renderAction = vi.fn();
     const finish = vi.fn();

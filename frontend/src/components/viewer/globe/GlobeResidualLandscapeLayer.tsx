@@ -96,17 +96,21 @@ function ResidualLandscapeInstance({
 
   const placements = useMemo(() => {
     const metresPerLongitudeDegree = metersPerDegLon(centroid[1]);
-    return recipe.placements.map((placement, index) => ({
-      x: (placement.lng - centroid[0]) * metresPerLongitudeDegree,
-      y: (placement.lat - centroid[1]) * METERS_PER_DEG_LAT,
-      z: sharedActive ? (sharedGround.heightAt(placement.lng, placement.lat) ?? frameHeight) - frameHeight : zOffsets[index] ?? 0,
-      yawRad: placement.yaw_rad,
-      scale: placement.scale,
-      treeVariant: resolveParkTreeVariant(
-        'native_meadow',
-        `${zone.id}:${placement.id}:${index}`,
-      ),
-    }));
+    return recipe.placements.flatMap((placement, index) => {
+      const measured = sharedActive ? sharedGround.heightAt(placement.lng, placement.lat) : null;
+      if (sharedActive && measured === null) return [];
+      return [{
+        x: (placement.lng - centroid[0]) * metresPerLongitudeDegree,
+        y: (placement.lat - centroid[1]) * METERS_PER_DEG_LAT,
+        z: sharedActive ? measured! - frameHeight : zOffsets[index] ?? 0,
+        yawRad: placement.yaw_rad,
+        scale: placement.scale,
+        treeVariant: resolveParkTreeVariant(
+          'native_meadow',
+          `${zone.id}:${placement.id}:${index}`,
+        ),
+      }];
+    });
   }, [centroid, recipe.placements, zone.id, zOffsets, sharedActive, sharedGround, frameHeight]);
 
   if (!placements.length || (sharedActive && sharedGround.status !== 'ready')) return null;
@@ -117,8 +121,29 @@ function ResidualLandscapeInstance({
       height={frameHeight}
     >
       <GlobeLandscapeTreeStand placements={placements} renderOrder={143} />
+      {recipe.preset && <ResidualShrubs placements={placements} /> }
     </EastNorthUpFrame>
   );
+}
+
+/** Small, shared low-poly understory; stays inside each tree's protected envelope. */
+function ResidualShrubs({placements}: {placements: Array<{x:number;y:number;z:number;yawRad:number}>}) {
+  const ref=useRef<THREE.InstancedMesh>(null);
+  useEffect(()=>{
+    const dummy=new THREE.Object3D();
+    placements.forEach((p,index)=>{
+      for(let j=0;j<3;j++) {
+        const angle=p.yawRad+j*Math.PI*2/3;
+        dummy.position.set(p.x+Math.cos(angle)*2,p.y+Math.sin(angle)*2,p.z+0.38);
+        dummy.scale.set(0.95,0.72,0.48);dummy.rotation.set(0,0,angle);dummy.updateMatrix();
+        ref.current?.setMatrixAt(index*3+j,dummy.matrix);
+      }
+    });
+    if(ref.current){ref.current.instanceMatrix.needsUpdate=true;ref.current.computeBoundingSphere();}
+  },[placements]);
+  return <instancedMesh ref={ref} args={[undefined,undefined,placements.length*3]} frustumCulled={false} renderOrder={143}>
+    <icosahedronGeometry args={[1,1]}/><meshStandardMaterial color="#647652" roughness={1}/>
+  </instancedMesh>;
 }
 
 /** Generated canopy for the exact site-boundary remainder. It is proposal

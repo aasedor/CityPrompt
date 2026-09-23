@@ -1,0 +1,33 @@
+{
+  "projectId": "1e37fb9f-c9f2-4a9a-b5e0-9d7089ddbc66",
+  "participant": "agent simulation",
+  "authoring": "visible UI only; API readbacks for verification",
+  "counts": {
+    "boundary": 1,
+    "street": 1,
+    "buildings": 6,
+    "park": 1
+  },
+  "editChanged": true,
+  "undoRestored": true,
+  "redoRestored": true,
+  "reloadExact": true,
+  "download": {
+    "nativeClick": true,
+    "name": "cityprompt-3d-view-1790104649854.png",
+    "bytes": 2506789,
+    "identical": true,
+    "downloadMs": 372
+  },
+  "paidCalls": 0,
+  "artifacts": {
+    "before-edit.json": "d8efc2e41fb67d24e6fcc9e2244abe40e2e4412bbe7be3315916ea1b772183bc",
+    "after-edit.json": "c701e65f65c2ed322be7c44ab1da83a707d90a112471d67f2e18243d4ef2919b",
+    "after-undo.json": "2945acf757edf4f51bc8a80bb5b021f5708db11fb42e9d261d0d53c94576530a",
+    "after-redo.json": "1e452d36148c9a2f29a7f5ba376c3f8213a9c9e4d5288137be0c71b7a27f8aca",
+    "before-reload.json": "508709f21e3b0371bdaa19ce76a03c17116104f65968c104b398f523e748d947",
+    "after-reload.json": "508709f21e3b0371bdaa19ce76a03c17116104f65968c104b398f523e748d947",
+    "student-final.png": "43d86641f353b114d33d7d413a5fa469f3067bf780ca4cfbf617cd5eedcdc0c5",
+    "student-context.png": "d6945c5921c50b6440d5a7f0bf2f9ae2faa0b67abb8a5156b86419f047b2cc2c"
+  }
+}

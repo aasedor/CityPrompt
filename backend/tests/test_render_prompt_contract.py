@@ -12,7 +12,10 @@ from app.services.render_fidelity import RENDER_PRESERVATION_LOCK
 
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("provider", ["gpt-image-2", "gpt-image-2.5-flare", "gpt-image-2.5-sunburst", "gemini"])
+@pytest.mark.parametrize(
+    "provider",
+    ["gpt-image-2", "gpt-image-2.5-flare", "gpt-image-2.5-sunburst", "gemini"],
+)
 @pytest.mark.parametrize("custom_length", [80, 49_000])
 async def test_provider_prompt_ends_with_geometry_lock_after_custom_and_context_text(
     monkeypatch, provider, custom_length
@@ -35,7 +38,18 @@ async def test_provider_prompt_ends_with_geometry_lock_after_custom_and_context_
                 200,
                 json={
                     "candidates": [
-                        {"content": {"parts": [{"inlineData": {"mimeType": "image/png", "data": "mock-image"}}]}}
+                        {
+                            "content": {
+                                "parts": [
+                                    {
+                                        "inlineData": {
+                                            "mimeType": "image/png",
+                                            "data": "mock-image",
+                                        }
+                                    }
+                                ]
+                            }
+                        }
                     ]
                 },
             )
@@ -65,3 +79,102 @@ async def test_provider_prompt_ends_with_geometry_lock_after_custom_and_context_
         assert (
             prompt.index(req.prompt) < prompt.index(site_pack["prompt_block"]) < prompt.index(RENDER_PRESERVATION_LOCK)
         )
+
+
+@pytest.mark.asyncio
+async def test_landscape_provider_keeps_template_and_neighbourhood_reference_separate(
+    monkeypatch,
+):
+    captured = {}
+
+    class Client:
+        def __init__(self, **kwargs):
+            pass
+
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, *args):
+            pass
+
+        async def post(self, url, **kwargs):
+            captured.update(kwargs)
+            return httpx.Response(
+                200,
+                json={
+                    "candidates": [
+                        {
+                            "content": {
+                                "parts": [
+                                    {
+                                        "inlineData": {
+                                            "mimeType": "image/png",
+                                            "data": "mock-result",
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+            )
+
+    monkeypatch.setattr(render.httpx, "AsyncClient", Client)
+    req = render.RenderRequest(
+        image_base64="template-pixels",
+        site_scene_reference_base64="neighbourhood-pixels",
+        guide_image_kind="landscape_plan",
+        prompt="Blend the landscape with its context.",
+    )
+    await render._generate_render_image(
+        req,
+        SimpleNamespace(gemini_api_key="mock", vertex_ai_project=""),
+        "gemini-3.1-flash-image",
+    )
+    parts = captured["json"]["contents"][0]["parts"]
+    images = [p["inlineData"]["data"] for p in parts if "inlineData" in p]
+    assert images == ["template-pixels", "neighbourhood-pixels"]
+    text = " ".join(p.get("text", "") for p in parts)
+    assert "LANDSCAPE PLAN" in text and "NEIGHBOURHOOD APPEARANCE REFERENCE" in text
+    assert "3D clay massing" not in text
+    assert "never copy their camera" in text
+    assert "LANDSCAPE PLAN" in render._openai_source_framing("landscape_plan")
+
+
+@pytest.mark.asyncio
+async def test_continuous_base_uses_ground_authority_without_recreating_3d_objects(
+    monkeypatch,
+):
+    captured = {}
+
+    class Client:
+        def __init__(self, **kwargs):
+            pass
+
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, *args):
+            pass
+
+        async def post(self, url, **kwargs):
+            captured.update(kwargs)
+            return httpx.Response(200, json={})
+
+    monkeypatch.setattr(render.httpx, "AsyncClient", Client)
+    req = render.RenderRequest(
+        image_base64="aW1hZ2U=",
+        site_scene_reference_base64="Y29udGV4dA==",
+        guide_image_kind="landscape_base",
+        prompt="Garden beds with local materials.",
+        image_quality="high",
+        model="gpt-image-2.5-flare",
+    )
+    await render._call_openai_image_edit(req, SimpleNamespace(openai_api_key="mock"), req.model, include_mask=False)
+    prompt = captured["data"]["prompt"]
+    assert prompt.endswith(render.LANDSCAPE_BASE_LOCK)
+    assert RENDER_PRESERVATION_LOCK not in prompt
+    assert "separate 3D objects above this ground" in prompt
+    assert captured["data"]["model"] == "gpt-image-2.5-flare"
+    assert captured["data"]["quality"] == "high"
+    assert len([f for f in captured["files"] if f[0] == "image[]"]) == 2

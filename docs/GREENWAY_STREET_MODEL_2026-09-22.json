@@ -1,0 +1,50 @@
+{
+  "candidate": "student_greenway_segment_v1",
+  "package": "C:\\dev-artifacts\\CityPrompt\\public-realm-pilots-2026-09-22\\greenway-v001",
+  "preview": {
+    "path": "assembly-preview.glb",
+    "bytes": 346124,
+    "sha256": "b00ff868c624bd8bf7575081f1edac93eb51bebc24911317a5503363c98637de"
+  },
+  "assets": {
+    "greenway-light": {
+      "path": "greenway-light.glb",
+      "bytes": 6152,
+      "sha256": "b197b332e5e013ba8afe0b50675030893c9b614bbb7122f77a3144cf6d00c010"
+    }
+  },
+  "triangles": 2766,
+  "geometry_verification": {
+    "status": "PASS_OFFLINE_GEOMETRY",
+    "checks": [
+      "exact 11 m section",
+      "48 m fixture extent",
+      "315 ray samples across unobstructed flush crossing",
+      "sidewalk ramp continuity",
+      "speed table rise and full width",
+      "lamps outside sidewalk and crossing"
+    ],
+    "runtime_tested": false
+  },
+  "review": {
+    "status": "BUILDER_VISUAL_PASS_ONLY",
+    "candidate": "student_greenway_segment_v1",
+    "model_sha256": "b00ff868c624bd8bf7575081f1edac93eb51bebc24911317a5503363c98637de",
+    "inspected_views": [
+      "access_close.png",
+      "aerial.png",
+      "pedestrian.png",
+      "table_close.png",
+      "top.png"
+    ],
+    "runtime_approved": false,
+    "independent_review": false,
+    "limitations": [
+      "No island, mini-circle or public-road junction is supplied by this straight-segment pilot.",
+      "Do not inherit the existing reference variant runtime approval or overwrite its saved identity.",
+      "No engineering, speed-control, accessibility or winter-maintenance certification.",
+      "Bent routes, slope, approach connection, edit recovery and capture NOT TESTED."
+    ]
+  },
+  "recipe_sha256": "07b794daa56d89a3e43c4eae73abe27533a1a14fbdb3b1ba3d4b5144c4a05cbb"
+}

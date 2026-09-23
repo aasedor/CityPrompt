@@ -1,3 +1,5 @@
+import type { CaptureLandscapeContext } from '@/features/siteLandscape/landscapeContext';
+import { SiteLandscapePanel } from '@/features/siteLandscape/SiteLandscapePanel';
 import { buildAestheticSelectionProps } from './aestheticSelection';
 import { useState, useEffect, useLayoutEffect, useCallback, useMemo, useRef } from 'react';
 import type { ReactNode } from 'react';
@@ -52,6 +54,7 @@ const SHOW_LEGACY_SITE_BOUNDARY_TOOLS =
   import.meta.env.VITE_ENABLE_LEGACY_SITE_BOUNDARY_TOOLS === 'true';
 
 interface ZonePropertiesPanelProps {
+  captureLandscapeContext?: CaptureLandscapeContext;
   zone: SiteZone;
   belowGlobeControls?: boolean;
   savedVersionReload?: ZonePropertiesReload;
@@ -440,7 +443,7 @@ function getFrontDayArchetypeImage(images: CatalogArchetypeImage[]): CatalogArch
   return images.find((image) => image.id.endsWith(`_${FRONT_DAY_VARIANT_ID}`));
 }
 
-export function ZonePropertiesPanel({ zone, belowGlobeControls = false, savedVersionReload, onUpdate, onDelete, onClose, onAIGenerate, buildings, allZones, onOpenBlockEditor, onConnections }: ZonePropertiesPanelProps) {
+export function ZonePropertiesPanel({ captureLandscapeContext, zone, belowGlobeControls = false, savedVersionReload, onUpdate, onDelete, onClose, onAIGenerate, buildings, allZones, onOpenBlockEditor, onConnections }: ZonePropertiesPanelProps) {
   const [siteAnalysisOpen, setSiteAnalysisOpen] = useState(false);
   const config = ZONE_TYPE_CONFIG[zone.zone_type];
   const osmContext = useViewerStore((s) => s.osmContext);
@@ -1008,6 +1011,10 @@ export function ZonePropertiesPanel({ zone, belowGlobeControls = false, savedVer
                   : 'Replaces the existing site with a level surface. Use Follow existing terrain to build on an open site.'}
               </p>
             </div>
+            <SiteLandscapePanel zone={zone} captureContext={captureLandscapeContext} onSaved={saved => setProps(current => ({...current,
+              community_3d_landscape:saved.community_3d_landscape,
+              community_3d_landscape_mode:saved.community_3d_landscape_mode,
+            }))}/>
             {belowGlobeControls ? <details onToggle={event => setSiteAnalysisOpen(event.currentTarget.open)}>
               <summary className="min-h-11 cursor-pointer py-3 font-semibold focus-visible:outline focus-visible:outline-2">Optional AI site analysis</summary>
               {siteAnalysisOpen && <SiteIntelligencePanel zone={zone} />}

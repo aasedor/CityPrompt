@@ -1,0 +1,117 @@
+[
+  {
+    "candidate": "student_picnic_garden_v1",
+    "package": "C:\\dev-artifacts\\CityPrompt\\public-realm-batch2-2026-09-22\\picnic-v002",
+    "preview": {
+      "path": "assembly-preview.glb",
+      "bytes": 253944,
+      "sha256": "786642f5e6b77474efbf84de9bb5b6885a7e094347460447f80c4035769a06ec"
+    },
+    "assets": {
+      "picnic-table": {
+        "path": "picnic-table.glb",
+        "bytes": 35988,
+        "sha256": "57e71be17bdf09117f8f1e9127ac1b029af5fdca2876adbc2e3fd661508b5552"
+      },
+      "timber-pergola": {
+        "path": "timber-pergola.glb",
+        "bytes": 51256,
+        "sha256": "325e7b0140e0b270cb77fd5e8f3439a5e22f4df1029dd73edcf14574e6861977"
+      },
+      "garden-bench": {
+        "path": "garden-bench.glb",
+        "bytes": 17388,
+        "sha256": "f3857655b8e24ddc543f4cedb9c2568e45a06052655471d661dcee7f657ca7f4"
+      },
+      "garden-light": {
+        "path": "garden-light.glb",
+        "bytes": 6156,
+        "sha256": "c30ce75360a63b7ccba0d59d1ceb14f477c542ce99f2850668e368a664c96b24"
+      }
+    },
+    "dimensions_m": [
+      28,
+      24
+    ],
+    "triangles": 3160,
+    "verification": {
+      "status": "PASS_OFFLINE_GEOMETRY",
+      "checks": [
+        "finite GLB geometry",
+        "full footprint containment",
+        "266 clear walking-surface rays",
+        "four tables and one pergola",
+        "clear centre aisle under pergola"
+      ],
+      "runtime_tested": false
+    },
+    "review": {
+      "status": "BUILDER_VISUAL_PASS_ONLY",
+      "inspected_views": [
+        "aerial.png",
+        "detail.png",
+        "entrance.png",
+        "top.png"
+      ],
+      "model_sha256": "786642f5e6b77474efbf84de9bb5b6885a7e094347460447f80c4035769a06ec",
+      "independent_review": false,
+      "runtime_approved": false
+    },
+    "recipe_sha256": "842ff2e73345fbe31c44b3b3a291f31d258ea7e261592e085c888788def7da03"
+  },
+  {
+    "candidate": "student_rain_garden_v1",
+    "package": "C:\\dev-artifacts\\CityPrompt\\public-realm-batch2-2026-09-22\\rain-v001",
+    "preview": {
+      "path": "assembly-preview.glb",
+      "bytes": 325252,
+      "sha256": "6e595890215fc3aaf80d3fa00b0b9d22cae487e38279f36e141ef7fa57e644c5"
+    },
+    "assets": {
+      "rain-garden-bench": {
+        "path": "rain-garden-bench.glb",
+        "bytes": 17388,
+        "sha256": "5575f0e168697958c4fdbb294f1d9264e40bf9a4d77f7f1158e21ab124aadb15"
+      },
+      "interpretation-sign": {
+        "path": "interpretation-sign.glb",
+        "bytes": 5264,
+        "sha256": "30b34071242fb9bdc0564323fd0baced6c4ec54a8d3a6a02ea9fad77632006ca"
+      },
+      "rain-garden-light": {
+        "path": "rain-garden-light.glb",
+        "bytes": 6152,
+        "sha256": "8e61307e4be5a2819bb1e5be65ea89452c8981a63bca25b8795b3648a3d70534"
+      }
+    },
+    "dimensions_m": [
+      24,
+      20
+    ],
+    "triangles": 1722,
+    "verification": {
+      "status": "PASS_OFFLINE_GEOMETRY",
+      "checks": [
+        "finite GLB geometry",
+        "full footprint containment",
+        "798 clear walking-surface rays",
+        "actual open basin bottom at -0.35 m",
+        "sloped bank at half depth; no ground cap"
+      ],
+      "runtime_tested": false
+    },
+    "review": {
+      "status": "BUILDER_VISUAL_PASS_ONLY",
+      "inspected_views": [
+        "aerial.png",
+        "detail.png",
+        "entrance.png",
+        "top.png"
+      ],
+      "model_sha256": "6e595890215fc3aaf80d3fa00b0b9d22cae487e38279f36e141ef7fa57e644c5",
+      "independent_review": false,
+      "runtime_approved": false
+    },
+    "recipe_sha256": "2a524df3345cee2c71a1e7c1a631f1d79e6b87c7bbf180ba58620f75b4d2a41e"
+  }
+]

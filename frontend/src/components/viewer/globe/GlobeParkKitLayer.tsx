@@ -1,3 +1,7 @@
+import { meadowPlantingDrifts } from './meadowPlantingDrifts';
+import { GlobeMeadowFurniture } from './GlobeMeadowFurniture';
+import { GlobeMeadowVegetation } from './GlobeMeadowVegetation';
+import { MEADOW_TREE_KINDS, selectMeadowTrees } from './meadowVegetationPlacement';
 import { GlobeParkTrioPilot } from './GlobeParkTrioPilot';
 import { isParkTrio, parkTrioLayout } from './parkTrioLayout';
 /**
@@ -409,12 +413,16 @@ function ProceduralParkFinishingProps({
   centroid,
   instanceZ,
   appearance,
+  meadowBoundary,
+  meadowObstacles,
 }: {
   propId: 'tree' | 'bench';
   placements: PropPlacement[];
   centroid: { lng: number; lat: number };
   instanceZ: number[] | null;
   appearance: ParkLegoAppearance | null;
+  meadowBoundary?: Array<{ x: number; y: number }>;
+  meadowObstacles?: Array<{ x: number; y: number; radius: number }>;
 }) {
   const mPerLon = metersPerDegLon(centroid.lat);
   const resolved = placements.map((placement, index) => ({
@@ -432,7 +440,15 @@ function ProceduralParkFinishingProps({
       : {}),
   }));
   if (propId === 'tree') {
+    if (meadowBoundary && appearance?.archetypeId === 'neighborhood_park' && appearance.variantId === 'neighborhood_park_v2') {
+      const trees = selectMeadowTrees(resolved, meadowBoundary, meadowObstacles);
+      return <>{MEADOW_TREE_KINDS.map(kind => <GlobeMeadowVegetation key={kind} kind={kind}
+        placements={trees.filter(tree => tree.kind === kind).map(tree => tree.placement)} renderOrder={RENDER_ORDER_PROPS} />)}</>;
+    }
     return <GlobeLandscapeTreeStand placements={resolved} renderOrder={RENDER_ORDER_PROPS} />;
+  }
+  if (appearance?.archetypeId === 'neighborhood_park' && appearance.variantId === 'neighborhood_park_v2') {
+    return <GlobeMeadowFurniture kind="bench" placements={resolved} renderOrder={RENDER_ORDER_PROPS} />;
   }
   if (!appearance) {
     return <GlobeLandscapeBenchStand placements={resolved} renderOrder={RENDER_ORDER_PROPS} />;
@@ -2128,6 +2144,21 @@ function ParkKitInstance({
     });
   }, [centroid, dressingFamilyId, fittedMicrodetailGuides, localProgramFrame.points, placements, specialtyStructureKind, zone]);
 
+  const meadowDrifts = useMemo(() => zone.properties?.green_space_archetype_id === 'neighborhood_park'
+    && zone.properties?.green_space_selected_variant_id === 'neighborhood_park_v2'
+    ? meadowPlantingDrifts(localProgramFrame.points, [...fittedProgramGuides, ...derivedParkAccessGuides(zone)], [
+        ...placements.map(p => ({x:(p.lng-centroid.lng)*metersPerDegLon(centroid.lat),y:(p.lat-centroid.lat)*METERS_PER_DEG_LAT,radius:p.propId==='tree'?1.8:p.propId==='bench'?1.5:5})),
+        ...microdetailPlacements.map(p=>({x:p.x,y:p.y,radius:p.footprintRadiusM})),
+      ]) : [], [zone, localProgramFrame.points, fittedProgramGuides, placements, microdetailPlacements, centroid]);
+  const supportedMeadowDrifts = useMemo(() => ( !sharedTerrainZ && preparedTerrain === null ) ? [] : meadowDrifts.flatMap(p => {
+    const r = p.footprintRadiusM;
+    const samples = [[p.x,p.y],[p.x-r,p.y-r],[p.x+r,p.y-r],[p.x+r,p.y+r],[p.x-r,p.y+r]].map(([x,y])=>sharedTerrainZ ? sharedTerrainZ(x,y) : 0);
+    if (samples.some(z=>z===null||!Number.isFinite(z))) return [];
+    const heights = samples as number[];
+    if (Math.max(...heights)-Math.min(...heights)>.18) return [];
+    return [{placement:p,z:Math.max(...heights)}];
+  }), [meadowDrifts, sharedTerrainZ, preparedTerrain]);
+
   const specialtyProgramGuides = useMemo(
     () => specialtyStructureKind === 'cricket_ground_assembly'
       ? resolveParkPlacementGuides(programGuideFit)
@@ -2397,17 +2428,23 @@ function ParkKitInstance({
       </SilentKitBoundary>
       <GlobeParkMicrodetailInstances
         placements={microdetailPlacements}
+        detailedPlanting={zone.properties?.green_space_archetype_id === 'neighborhood_park' && zone.properties?.green_space_selected_variant_id === 'neighborhood_park_v2'}
+        meadowFurniture={zone.properties?.green_space_archetype_id === 'neighborhood_park' && zone.properties?.green_space_selected_variant_id === 'neighborhood_park_v2'}
+        meadowVegetation={zone.properties?.green_space_archetype_id === 'neighborhood_park' && zone.properties?.green_space_selected_variant_id === 'neighborhood_park_v2'}
         terrainOffsets={microdetailZ}
         palette={dressingAppearance?.palette}
         renderOrder={RENDER_ORDER_PROPS}
       />
+      <GlobeParkMicrodetailInstances placements={supportedMeadowDrifts.map(p=>p.placement)} terrainOffsets={supportedMeadowDrifts.map(p=>p.z)} detailedPlanting meadowVegetation palette={dressingAppearance?.palette} renderOrder={RENDER_ORDER_PROPS} />
       {[...byProp.entries()].map(([propId, group]) => {
         const groupZ = activeOffsets
           ? group.map((g) => activeOffsets[placements.indexOf(g)] ?? 0)
           : null;
         const asset = PARK_KIT_MANIFEST[propId];
         if (shouldDeferParkFinishingProp(zone, propId)) return null;
-        if (!asset && (propId === 'tree' || propId === 'bench')) {
+        const meadowFinishing = (propId === 'bench' || propId === 'tree') && dressingAppearance?.archetypeId === 'neighborhood_park'
+          && dressingAppearance.variantId === 'neighborhood_park_v2';
+        if (meadowFinishing || (!asset && (propId === 'tree' || propId === 'bench'))) {
           return (
             <ProceduralParkFinishingProps
               key={propId}
@@ -2416,6 +2453,14 @@ function ParkKitInstance({
               centroid={centroid}
               instanceZ={groupZ}
               appearance={dressingAppearance}
+              meadowBoundary={localProgramFrame.points}
+              meadowObstacles={placements.filter(p => p.propId === 'playground' || p.propId === 'pavilion').map(p => ({
+                x: (p.lng - centroid.lng) * metersPerDegLon(centroid.lat),
+                y: (p.lat - centroid.lat) * METERS_PER_DEG_LAT,
+                radius: p.propId === 'playground'
+                  ? PARK_PROGRAM_MODULE_SPEC.playground.safetyDiameterM / 2
+                  : Math.hypot(PARK_PROGRAM_MODULE_SPEC.pavilion.widthM, PARK_PROGRAM_MODULE_SPEC.pavilion.depthM) / 2,
+              }))}
             />
           );
         }

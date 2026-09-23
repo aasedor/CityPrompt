@@ -37,7 +37,9 @@ export function TileStencilPatcher({ zones, terrainHeight, assemblyZones = NO_AS
     () => {
       const siteBoundary = getActiveSiteBoundary(zones);
       return createTileSpatialMaskSetConfig(
-        siteBoundary ? [siteBoundary] : [...zones, ...parkGroundOwners.filter(owner => !zones.some(zone => zone.id === owner.id))],
+        // The caller already reduces a prepared site to its boundary plus
+        // supported public-road extensions. Do not discard those outside cuts.
+        siteBoundary ? zones : [...zones, ...parkGroundOwners.filter(owner => !zones.some(zone => zone.id === owner.id))],
         siteBoundary ? resolvePreparedSiteTerrainHeight(siteBoundary, terrainHeight) : terrainHeight,
       );
     },

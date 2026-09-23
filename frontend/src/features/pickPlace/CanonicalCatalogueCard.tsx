@@ -1,17 +1,20 @@
 import { useState } from 'react';
 import { CalgaryGuideDetails } from '@/features/calgaryCatalogue/CatalogueBrowser';
+import { classifyCalgaryVariant } from '@/features/calgaryCatalogue/guide';
 import { StreetCrossSection } from './StreetCrossSection';
 import type { CatalogueAsset } from './assetRegistry';
 import type { CanonicalChoice, CanonicalSelection } from './canonicalCatalogue';
 
-export function CanonicalCatalogueCard({ choice, selected, activeStreetVariant, onPlacement, onDraw }: {
+export function CanonicalCatalogueCard({ choice, selected, activeStreetVariant, onPlacement, onDraw, initialVariantId }: {
   choice: CanonicalChoice; selected: string | null; activeStreetVariant?: string;
+  initialVariantId?: string;
   onPlacement: (asset: CatalogueAsset) => void; onDraw: (selection: CanonicalSelection) => void;
 }) {
   const { option, placements } = choice;
-  const [variantId, setVariantId] = useState(placements[0]?.model.variantId ?? option.variants?.[0]?.id ?? '');
+  const [variantId, setVariantId] = useState(initialVariantId ?? placements[0]?.model.variantId ?? option.variants?.[0]?.id ?? '');
   const variant = option.variants?.find(v => v.id === variantId);
   const placement = placements.find(a => a.model.variantId === variantId);
+  const variantGuide = classifyCalgaryVariant(option.id, variantId);
   const thumbnail = placement?.thumbnail ?? variant?.thumbnailUrl ?? option.catalogCardImageUrl ?? option.photoUrl;
   const label = placement?.label ?? option.label;
   return <article className="overflow-hidden rounded-xl border border-slate-300 bg-white">
@@ -35,7 +38,7 @@ export function CanonicalCatalogueCard({ choice, selected, activeStreetVariant, 
         </select>
       </label>}
       {placement?.kind === 'street' && <StreetCrossSection asset={placement} />}
-      {option.calgaryGuide && <CalgaryGuideDetails classification={option.calgaryGuide} />}
+      {(placement?.calgaryGuide ?? variantGuide ?? option.calgaryGuide) && <CalgaryGuideDetails classification={(placement?.calgaryGuide ?? variantGuide ?? option.calgaryGuide)!} />}
     </div>
   </article>;
 }

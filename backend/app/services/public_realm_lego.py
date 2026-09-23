@@ -773,6 +773,14 @@ _STREET_APPEARANCE_KITS_BY_ARCHETYPE: dict[str, tuple[str, ...]] = {
     # other source-card variants remain manual/legacy until their own kits are
     # reviewed rather than borrowing unrelated district-building identities.
     "green_alley": ("green_corridor_v1",),
+    # All three greenway cards share the same planted residential section.
+    # Their traffic-control distinctions remain source metadata until the
+    # mini-circle, median refuge and modal-filter modules are executable.
+    "neighborhood_greenway": (
+        "green_corridor_v1",
+        "green_corridor_v1",
+        "green_corridor_v1",
+    ),
     # Traditional service-lane v0 is intentionally neutral.  Of the existing
     # reviewed kits, the contemporary local-street palette makes the fewest
     # unsupported claims about heritage, timber, or industrial character.
@@ -1891,6 +1899,16 @@ _CAPABILITIES: tuple[PublicRealmFamilyCapability, ...] = (
                 "green_alley",
                 profile_id="green-alley-v1",
                 compatibility=_segment_envelope(nominal_row_m=5, row=(3.5, 7)),
+            ),
+            *_street_variants(
+                "neighborhood_greenway",
+                profile_id="neighborhood-greenway-v1",
+                compatibility=_segment_envelope(nominal_row_m=11, row=(9, 14)),
+                components=(
+                    "greenway_metric_section_v1",
+                    "bike_priority_markings_v1",
+                    "public_realm_furnishings_v1",
+                ),
             ),
             _selection(
                 "multi_use_trail",

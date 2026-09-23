@@ -3,7 +3,7 @@ import React from 'react';
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useSiteZones } from './useSiteZones';
-import { siteZonesApi } from '@/services/api';
+import { siteZonesApi, zoneHistoryApi } from '@/services/api';
 import type { SiteZone } from '@/types';
 import { useViewerStore } from '@/store';
 import { useUndoRedoStore } from '@/store/undoRedo';
@@ -18,6 +18,7 @@ vi.mock('@/services/api', () => ({
     delete: vi.fn().mockResolvedValue(undefined),
     fetchContext: vi.fn(),
   },
+  zoneHistoryApi: { restoreSnapshot: vi.fn() },
 }));
 
 vi.mock('react-hot-toast', () => ({
@@ -212,6 +213,7 @@ describe('useSiteZones', () => {
     const context = {buildings: [], roads: [], water: [], parks: [], fetched_at: '', buffer_m: 50,
       zone_id: REAL_ZONE_ID, source_updated_at: matches ? 'created' : 'teammate', updated_at: 'enriched'};
     vi.mocked(siteZonesApi.create).mockResolvedValue(created);
+    vi.mocked(zoneHistoryApi.restoreSnapshot).mockResolvedValue({ zone_id: REAL_ZONE_ID, deleted: false, zone: created });
     vi.mocked(siteZonesApi.fetchContext).mockResolvedValue(context);
     const {result} = renderHook(() => useSiteZones(PROJECT_ID), {wrapper});
     act(() => result.current.createZone.mutate({zone_type:'site_boundary',coordinates:created.coordinates}));
@@ -222,8 +224,8 @@ describe('useSiteZones', () => {
     expect(siteZonesApi.delete).toHaveBeenCalledWith(REAL_ZONE_ID, matches ? 'enriched' : 'created', {skipHistory:true});
     if (matches) {
       await act(() => useUndoRedoStore.getState().redo());
-      expect(siteZonesApi.create).toHaveBeenLastCalledWith(PROJECT_ID,
-        expect.objectContaining({coordinates:created.coordinates,properties:expect.objectContaining({_osm_context:context})}), {skipHistory:true});
+      expect(zoneHistoryApi.restoreSnapshot).toHaveBeenCalledWith(PROJECT_ID, REAL_ZONE_ID,
+        expect.objectContaining({coordinates:created.coordinates,properties:expect.objectContaining({_osm_context:context})}));
     }
   });
 

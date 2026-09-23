@@ -20,6 +20,13 @@ Sticker Method/V98 material is historical compatibility evidence.
 
 ## Generated assets
 
+- For every new or materially revised building, street/path, or park/open-space
+  variant, read `docs/ARCHETYPE_RUNTIME_INTEGRATION.md` before authoring and
+  complete `docs/ARCHETYPE_RUNTIME_REVIEW_TEMPLATE.md` for its exact delivery.
+  Carry generalizable runtime findings into that checklist and its template;
+  keep site-specific measurements in the candidate's evidence. Unrun or failing
+  checks must remain visible and cannot be called passed. Apply the classroom
+  scope below when distinguishing release blockers from minor follow-up work.
 - Keep heavyweight render experiments and visual-QA output outside the source
   tree when a command supports an output directory. Otherwise use an ignored
   local output directory such as `artifacts/`.
@@ -30,6 +37,13 @@ Sticker Method/V98 material is historical compatibility evidence.
   review, then bounded scale-up.
 - Do not start an open-ended generation loop. Define a finite batch and create
   a checkpoint before the next batch.
+
+## Classroom product target
+
+Use `docs/CLASSROOM_READINESS_PLAN_2026-09-20.md` for the user's practical
+acceptance target: usable student authoring and strong visuals without glaring
+errors. Keep failed checks visible and distinguish classroom blockers from
+minor concept limitations. Fine construction detailing is follow-up work.
 
 ## Verification and checkpoints
 

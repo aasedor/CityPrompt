@@ -258,6 +258,7 @@ export const PUBLIC_REALM_STREET_FAMILIES: Readonly<Record<PublicRealmStreetFami
       'narrow_residential_street',
       'woonerf_shared_street',
       'green_alley',
+      'neighborhood_greenway',
       'multi_use_trail',
       'toronto_laneway',
     ]),
@@ -371,6 +372,13 @@ export const PUBLIC_REALM_STREET_SELECTIONS: readonly PublicRealmStreetSelection
     appearanceKitId: 'green_corridor_v1',
     targetType: 'street_segment',
   },
+  ...['neighborhood_greenway_v0', 'neighborhood_greenway_v1', 'neighborhood_greenway_v2'].map((variantId) => ({
+    familyId: 'street_local_public_realm' as const,
+    archetypeId: 'neighborhood_greenway',
+    variantId,
+    appearanceKitId: 'green_corridor_v1' as const,
+    targetType: 'street_segment' as const,
+  })),
   ...explicitSelections('street_complete_main_18m', 'main_street_complete', CLASSIC_STREET_APPEARANCE_IDS),
   ...explicitSelections('street_complete_main_22m', 'main_street_complete', CLASSIC_STREET_APPEARANCE_IDS),
   {

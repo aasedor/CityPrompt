@@ -1,0 +1,157 @@
+{
+  "version": 1,
+  "paid_calls": 0,
+  "runtime_activated": false,
+  "candidates": [
+    {
+      "id": "student_planted_shared_street_v1",
+      "title": "Planted Shared Street",
+      "package": "C:\\dev-artifacts\\CityPrompt\\public-realm-batch3-2026-09-22\\shared-street-v2",
+      "dimensions_m": [
+        18,
+        48
+      ],
+      "assembly": {
+        "path": "assembly-preview.glb",
+        "bytes": 2320852,
+        "sha256": "89ce5cf23598bf36292cc39ccb3666f95f6eff356791208a907fc1fb27cc2248"
+      },
+      "modules": {
+        "bench": {
+          "path": "bench.glb",
+          "bytes": 34024,
+          "sha256": "996f77a959d098469940fc032f23960c959b0c8275842575bb4de33c152539f7"
+        },
+        "bike_rack": {
+          "path": "bike_rack.glb",
+          "bytes": 96964,
+          "sha256": "0be3cabadaddbf9f22556f0f7ead696eb8ca41f5c881b4f30a0c2940272bf907"
+        },
+        "bin": {
+          "path": "bin.glb",
+          "bytes": 80532,
+          "sha256": "a146ecda675ef0cba34caf1edac9c13c4f8e8d93b42b137e070c47b32c8f89f1"
+        },
+        "flowering_perennial": {
+          "path": "flowering_perennial.glb",
+          "bytes": 162120,
+          "sha256": "c3e00c1d9cde18c492fc2ce263240dc3b49d826f6a47b9dd4848c11e58140581"
+        },
+        "grove_tree": {
+          "path": "grove_tree.glb",
+          "bytes": 1287628,
+          "sha256": "6de066f61229af40aa4b1ee14917b4472012e276c7ba6d419986e5a24e74ee41"
+        },
+        "light": {
+          "path": "light.glb",
+          "bytes": 37668,
+          "sha256": "bb7a9513267af2c399c6f57e5c926cf6ca50c123e93ee2960bbdd9efe4b48ded"
+        },
+        "meadow_grass": {
+          "path": "meadow_grass.glb",
+          "bytes": 68700,
+          "sha256": "bca9690b583b30a487a37d8624b3a899d87413415dc301fef1dcc3e9afa8efb4"
+        },
+        "silver_shrub": {
+          "path": "silver_shrub.glb",
+          "bytes": 367296,
+          "sha256": "d29da10a583df058606b5ebb7385b50f4e76eb12e4c0a3789c2377e7453832cc"
+        }
+      },
+      "triangles": 104022,
+      "mesh_instances": 95,
+      "verification": {
+        "status": "PASS_OFFLINE_GEOMETRY",
+        "checks": [
+          "self-contained GLB buffers",
+          "delivered byte hashes",
+          "finite metric bounds",
+          "1545 clear material-aware route rays"
+        ],
+        "runtime_tested": false
+      },
+      "source_sha256": {
+        "build_streets.py": "06259afc45f0cb61bccfdb8119bf44258ec7c93da95ee9a3084f0a05ab878709",
+        "scene.py": "a8939dd9523e5985e9f7d7260d88b1b997ab838935a0be5ca44f9f2dcb9f2528"
+      },
+      "builder_review": "Visual review recorded in repository batch report; not independent human approval",
+      "runtime_status": "NOT TESTED; not installed in student picker",
+      "source_base_revision": "f5d97fb6fe7edd1520db2df4398c156a69746d5f"
+    },
+    {
+      "id": "student_garden_cycle_promenade_v1",
+      "title": "Garden Cycle Promenade",
+      "package": "C:\\dev-artifacts\\CityPrompt\\public-realm-batch3-2026-09-22\\promenade-v2",
+      "dimensions_m": [
+        16,
+        48
+      ],
+      "assembly": {
+        "path": "assembly-preview.glb",
+        "bytes": 2332568,
+        "sha256": "2d1addea419b633e94ef8bb3a856943ae22d41b45453072b785de33be829b659"
+      },
+      "modules": {
+        "bench": {
+          "path": "bench.glb",
+          "bytes": 34024,
+          "sha256": "996f77a959d098469940fc032f23960c959b0c8275842575bb4de33c152539f7"
+        },
+        "bike_rack": {
+          "path": "bike_rack.glb",
+          "bytes": 96964,
+          "sha256": "0be3cabadaddbf9f22556f0f7ead696eb8ca41f5c881b4f30a0c2940272bf907"
+        },
+        "bin": {
+          "path": "bin.glb",
+          "bytes": 80532,
+          "sha256": "a146ecda675ef0cba34caf1edac9c13c4f8e8d93b42b137e070c47b32c8f89f1"
+        },
+        "flowering_perennial": {
+          "path": "flowering_perennial.glb",
+          "bytes": 162120,
+          "sha256": "c3e00c1d9cde18c492fc2ce263240dc3b49d826f6a47b9dd4848c11e58140581"
+        },
+        "grove_tree": {
+          "path": "grove_tree.glb",
+          "bytes": 1287628,
+          "sha256": "6de066f61229af40aa4b1ee14917b4472012e276c7ba6d419986e5a24e74ee41"
+        },
+        "light": {
+          "path": "light.glb",
+          "bytes": 37668,
+          "sha256": "bb7a9513267af2c399c6f57e5c926cf6ca50c123e93ee2960bbdd9efe4b48ded"
+        },
+        "meadow_grass": {
+          "path": "meadow_grass.glb",
+          "bytes": 68700,
+          "sha256": "bca9690b583b30a487a37d8624b3a899d87413415dc301fef1dcc3e9afa8efb4"
+        },
+        "silver_shrub": {
+          "path": "silver_shrub.glb",
+          "bytes": 367296,
+          "sha256": "d29da10a583df058606b5ebb7385b50f4e76eb12e4c0a3789c2377e7453832cc"
+        }
+      },
+      "triangles": 118096,
+      "mesh_instances": 109,
+      "verification": {
+        "status": "PASS_OFFLINE_GEOMETRY",
+        "checks": [
+          "self-contained GLB buffers",
+          "delivered byte hashes",
+          "finite metric bounds",
+          "1026 clear material-aware route rays"
+        ],
+        "runtime_tested": false
+      },
+      "source_sha256": {
+        "build_streets.py": "55aced6aae0d8b220dee9b53feb430c9ec6c00f574009e39b688076b6ced4aa6",
+        "scene.py": "a8939dd9523e5985e9f7d7260d88b1b997ab838935a0be5ca44f9f2dcb9f2528"
+      },
+      "builder_review": "Visual review recorded in repository batch report; not independent human approval",
+      "runtime_status": "NOT TESTED; not installed in student picker",
+      "source_base_revision": "f5d97fb6fe7edd1520db2df4398c156a69746d5f"
+    }
+  ]
+}

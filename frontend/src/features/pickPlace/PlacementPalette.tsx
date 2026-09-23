@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import { Building2, Trees, Route } from 'lucide-react';
 import type { PlaceAssetId } from './catalogue';
 import { STREET_ASSETS, type StreetAsset } from './assetRegistry';
-import { CANONICAL_CHOICES, filterCanonicalChoices, type CanonicalSelection } from './canonicalCatalogue';
+import { CANONICAL_CHOICES, choiceMatchesGroup, filterCanonicalChoices, preferredCatalogueVariant, type CanonicalSelection } from './canonicalCatalogue';
 import { CALGARY_GROUPS } from '@/features/calgaryCatalogue/guide';
 import { CanonicalCatalogueCard } from './CanonicalCatalogueCard';
 import { StudioDialog } from '@/features/projects/StudioControls';
@@ -29,7 +29,7 @@ export function PlacementPalette({ selected, onPick, onCancel, status, message, 
   const [limit, setLimit] = useState(12);
   const close = useCallback(() => { setOpen(false); onBrowseChange?.(false); }, [onBrowseChange]);
   const chooseSection = (id: Section) => { setSection(id); setGroupId(''); setQuery(''); setLimit(12); };
-  const groups = CALGARY_GROUPS.filter(group => group.domain === section && CANONICAL_CHOICES.some(c => c.option.calgaryGuide?.groupId === group.id));
+  const groups = CALGARY_GROUPS.filter(group => group.domain === section && CANONICAL_CHOICES.some(c => c.domain === section && choiceMatchesGroup(c, group.id)));
   const assets = filterCanonicalChoices(section, query, groupId);
   const visibleSections = sections.filter(item => onPickStreet || item.id !== 'street_pathway');
   const activeStreet = STREET_ASSETS.find(asset => asset.model.variantId === activeStreetVariant);
@@ -72,7 +72,8 @@ export function PlacementPalette({ selected, onPick, onCancel, status, message, 
         </div>
         <div aria-label="Available objects" className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-1">
           <div className="grid items-start gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {assets.slice(0, limit).map(choice => <CanonicalCatalogueCard key={choice.id} choice={choice}
+            {assets.slice(0, limit).map(choice => <CanonicalCatalogueCard key={`${choice.id}:${query}:${groupId}`} choice={choice}
+              initialVariantId={preferredCatalogueVariant(choice, query, groupId)}
               selected={selected} activeStreetVariant={activeStreetVariant}
               onPlacement={asset => { close(); if (asset.kind === 'street') onPickStreet?.(asset); else onPick(asset.id); }}
               onDraw={selection => { close(); onPickCanonical(selection); }} />)}

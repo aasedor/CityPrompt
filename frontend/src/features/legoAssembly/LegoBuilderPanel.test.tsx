@@ -209,6 +209,37 @@ describe('LegoBuilderPanel', () => {
     ));
   });
 
+  it('plans a native home with the authored frontage used by locked Community 3D', async () => {
+    apiPost.mockResolvedValue({ data: planFixture });
+    render(<LegoBuilderPanel zones={[makeZone({
+      id: 'native-home',
+      coordinates: [
+        [-114.125, 51.017], [-114.125, 51.017108],
+        [-114.12477, 51.017108], [-114.12477, 51.017],
+      ],
+      properties: {
+        development_archetype_id: 'calgary_inner_city_bungalow',
+        native_home_plot: true,
+        floors: 1,
+        development_height_override_m: 8.72,
+      },
+    })]} onClose={vi.fn()} />);
+
+    await waitFor(() => expect(apiPost).toHaveBeenCalledWith(
+      '/api/v1/lego-assembly/plan',
+      expect.objectContaining({
+        native_home_plot: true,
+        target_height_m: 8.72,
+        allow_forced_fit: true,
+      }),
+    ));
+    const request = apiPost.mock.calls.find(([url]) => url === '/api/v1/lego-assembly/plan')?.[1];
+    expect(request.footprint_local_m).toHaveLength(4);
+    expect(request.footprint_local_m[0][1]).toBeCloseTo(request.footprint_local_m[1][1], 5);
+    expect(request.footprint_local_m[0][0]).not.toBeCloseTo(request.footprint_local_m[1][0], 5);
+    expect(request).not.toHaveProperty('wing_depth_m');
+  });
+
   it('runs the complete atomic compile without a second click from the top-level workflow', async () => {
     apiPost.mockImplementation((url: string) => (
       url === '/api/v1/lego-assembly/place-community'

@@ -50,7 +50,7 @@ describe('landscape tree kit profiles', () => {
     const palm = LANDSCAPE_TREE_PROFILES.tropical_palm;
     const deciduous = LANDSCAPE_TREE_PROFILES.honey_locust;
     expect(palm.crownGeometry).toBe('radial_palm_fronds');
-    expect(deciduous.crownGeometry).toBe('billboard_cluster');
+    expect(deciduous.crownGeometry).toBe('branching_leaf_cluster');
     expect(palm.trunkHeightM).toBeGreaterThan(deciduous.trunkHeightM * 1.7);
     expect(palm.trunkRadiusM / palm.trunkHeightM)
       .toBeLessThan(deciduous.trunkRadiusM / deciduous.trunkHeightM);

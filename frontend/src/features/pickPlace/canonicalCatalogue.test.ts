@@ -1,8 +1,16 @@
 import { describe, expect, it } from 'vitest';
-import { CANONICAL_CHOICES, CANONICAL_DOMAINS, catalogueChoices, canonicalDrawing, filterCanonicalChoices } from './canonicalCatalogue';
+import { CANONICAL_CHOICES, CANONICAL_DOMAINS, catalogueChoices, canonicalDrawing, filterCanonicalChoices, preferredCatalogueVariant } from './canonicalCatalogue';
 import { CATALOGUE_ASSETS } from './assetRegistry';
 
 describe('canonical discovery and identity', () => {
+  it('finds a duplex inside an infill parent and opens the matching detailed variant', () => {
+    const choice = CANONICAL_CHOICES.find(c => c.option.id === 'calgary_modern_infill_house')!;
+    expect(filterCanonicalChoices('building', '', 'two_home')).toContain(choice);
+    expect(preferredCatalogueVariant(choice, '', 'two_home')).toBe('infill_duplex');
+    expect(preferredCatalogueVariant(choice, 'side-by-side duplex')).toBe('infill_duplex');
+    expect(preferredCatalogueVariant(choice, 'duplex')).toBe('infill_duplex');
+    expect(preferredCatalogueVariant(choice)).toBe(choice.placements[0].model.variantId);
+  });
   it('discovers exactly the current eligible parents in each domain', () => {
     for (const [domain, options] of Object.entries(CANONICAL_DOMAINS)) {
       expect(CANONICAL_CHOICES.filter(c => c.domain === domain).map(c => c.option.id).sort()).toEqual(options.map(o => o.id).sort());

@@ -1,0 +1,578 @@
+{
+  "date": "2026-09-22",
+  "project_id": "4786a19c-cf48-44fb-9624-8e922ac3e67e",
+  "scope": "Assisted native-size Currie editor review; local DEV candidates only",
+  "assets": [
+    {
+      "id": "student_pickleball_garden_v1",
+      "title": "Pickleball Social Garden",
+      "kind": "park",
+      "dimensions": [
+        34,
+        34
+      ],
+      "sha256": "40509eb4f0dcc885cdd697a1de622acb37fbfff0efb01a92985a0f2567897d2b",
+      "surfaceRegions": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 14.8,
+          "depth": 34,
+          "material": "paving"
+        },
+        {
+          "x": -13.0,
+          "y": -13.0,
+          "width": 8,
+          "depth": 4,
+          "material": "paving"
+        },
+        {
+          "x": 13.0,
+          "y": -13.0,
+          "width": 8,
+          "depth": 4,
+          "material": "paving"
+        },
+        {
+          "x": -13.0,
+          "y": -4,
+          "width": 4,
+          "depth": 7,
+          "material": "soil"
+        },
+        {
+          "x": 13.0,
+          "y": -4,
+          "width": 4,
+          "depth": 7,
+          "material": "soil"
+        },
+        {
+          "x": -13.0,
+          "y": 11.0,
+          "width": 4,
+          "depth": 6,
+          "material": "soil"
+        },
+        {
+          "x": 13.0,
+          "y": 11.0,
+          "width": 4,
+          "depth": 6,
+          "material": "soil"
+        },
+        {
+          "x": 0,
+          "y": 3,
+          "width": 10.8,
+          "depth": 20,
+          "material": null
+        }
+      ],
+      "url": "/public-realm-trials/batch3/student_pickleball_garden_v1.glb"
+    },
+    {
+      "id": "student_futsal_park_v1",
+      "title": "Community Futsal Park",
+      "kind": "park",
+      "dimensions": [
+        42,
+        60
+      ],
+      "sha256": "ba243a59d18279b1588f7c4101d2bf553c68bb7436a35863c93fee6341730808",
+      "surfaceRegions": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 30,
+          "depth": 60,
+          "material": "paving"
+        },
+        {
+          "x": -17.0,
+          "y": -26.0,
+          "width": 8,
+          "depth": 4,
+          "material": "paving"
+        },
+        {
+          "x": 17.0,
+          "y": -26.0,
+          "width": 8,
+          "depth": 4,
+          "material": "paving"
+        },
+        {
+          "x": -17.0,
+          "y": -4,
+          "width": 4,
+          "depth": 7,
+          "material": "soil"
+        },
+        {
+          "x": 17.0,
+          "y": -4,
+          "width": 4,
+          "depth": 7,
+          "material": "soil"
+        },
+        {
+          "x": -17.0,
+          "y": 24.0,
+          "width": 4,
+          "depth": 6,
+          "material": "soil"
+        },
+        {
+          "x": 17.0,
+          "y": 24.0,
+          "width": 4,
+          "depth": 6,
+          "material": "soil"
+        },
+        {
+          "x": 0,
+          "y": 2,
+          "width": 26,
+          "depth": 46,
+          "material": null
+        }
+      ],
+      "url": "/public-realm-trials/batch3/student_futsal_park_v1.glb"
+    },
+    {
+      "id": "student_reading_garden_v1",
+      "title": "Shaded Reading Garden",
+      "kind": "park",
+      "dimensions": [
+        30,
+        26
+      ],
+      "sha256": "ba32262b553fd208761c70c51bfba1dc1b5e4678bb5dfa8a0afee0eff592abfc",
+      "surfaceRegions": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 3,
+          "depth": 26,
+          "material": "paving"
+        },
+        {
+          "x": 0,
+          "y": 0,
+          "width": 30,
+          "depth": 3,
+          "material": "paving"
+        },
+        {
+          "x": -10,
+          "y": 0,
+          "width": 7,
+          "depth": 26,
+          "material": "paving"
+        },
+        {
+          "x": 10,
+          "y": 0,
+          "width": 7,
+          "depth": 26,
+          "material": "paving"
+        },
+        {
+          "x": 0,
+          "y": 9,
+          "width": 30,
+          "depth": 5,
+          "material": "paving"
+        },
+        {
+          "x": 0,
+          "y": -9,
+          "width": 30,
+          "depth": 5,
+          "material": "paving"
+        },
+        {
+          "x": 0,
+          "y": -5,
+          "width": 6.6,
+          "depth": 4,
+          "material": "paving"
+        },
+        {
+          "x": 0,
+          "y": 5,
+          "width": 6.6,
+          "depth": 4,
+          "material": "paving"
+        },
+        {
+          "x": -11,
+          "y": -3.25,
+          "width": 4,
+          "depth": 2.5,
+          "material": "soil"
+        },
+        {
+          "x": -11,
+          "y": 3.25,
+          "width": 4,
+          "depth": 2.5,
+          "material": "soil"
+        },
+        {
+          "x": 11,
+          "y": -3.25,
+          "width": 4,
+          "depth": 2.5,
+          "material": "soil"
+        },
+        {
+          "x": 11,
+          "y": 3.25,
+          "width": 4,
+          "depth": 2.5,
+          "material": "soil"
+        },
+        {
+          "x": -5.5,
+          "y": 9,
+          "width": 5,
+          "depth": 3,
+          "material": "soil"
+        },
+        {
+          "x": 5.5,
+          "y": 9,
+          "width": 5,
+          "depth": 3,
+          "material": "soil"
+        },
+        {
+          "x": -5.5,
+          "y": -9,
+          "width": 5,
+          "depth": 3,
+          "material": "soil"
+        },
+        {
+          "x": 5.5,
+          "y": -9,
+          "width": 5,
+          "depth": 3,
+          "material": "soil"
+        }
+      ],
+      "url": "/public-realm-trials/batch3/student_reading_garden_v1.glb"
+    },
+    {
+      "id": "student_planted_shared_street_v1",
+      "title": "Planted Shared Street",
+      "kind": "street",
+      "dimensions": [
+        18,
+        48
+      ],
+      "sha256": "89ce5cf23598bf36292cc39ccb3666f95f6eff356791208a907fc1fb27cc2248",
+      "surfaceRegions": [
+        {
+          "x": -8.75,
+          "y": 0,
+          "width": 0.5,
+          "depth": 48,
+          "material": "grass"
+        },
+        {
+          "x": -7.5,
+          "y": 0,
+          "width": 2,
+          "depth": 48,
+          "material": "paving"
+        },
+        {
+          "x": -4.625,
+          "y": 0,
+          "width": 3.75,
+          "depth": 48,
+          "material": "grass"
+        },
+        {
+          "x": 0.0,
+          "y": 0,
+          "width": 5.5,
+          "depth": 48,
+          "material": "paving"
+        },
+        {
+          "x": 4.625,
+          "y": 0,
+          "width": 3.75,
+          "depth": 48,
+          "material": "grass"
+        },
+        {
+          "x": 7.5,
+          "y": 0,
+          "width": 2,
+          "depth": 48,
+          "material": "paving"
+        },
+        {
+          "x": 8.75,
+          "y": 0,
+          "width": 0.5,
+          "depth": 48,
+          "material": "grass"
+        },
+        {
+          "x": 0,
+          "y": 0,
+          "width": 18,
+          "depth": 4,
+          "material": "paving"
+        },
+        {
+          "x": -4.625,
+          "y": -5.5,
+          "width": 3.75,
+          "depth": 5,
+          "material": "paving"
+        },
+        {
+          "x": -4.625,
+          "y": 5.5,
+          "width": 3.75,
+          "depth": 5,
+          "material": "paving"
+        },
+        {
+          "x": 4.625,
+          "y": -5.5,
+          "width": 3.75,
+          "depth": 5,
+          "material": "paving"
+        },
+        {
+          "x": 4.625,
+          "y": 5.5,
+          "width": 3.75,
+          "depth": 5,
+          "material": "paving"
+        },
+        {
+          "x": -4.625,
+          "y": 21,
+          "width": 3.75,
+          "depth": 3,
+          "material": "paving"
+        },
+        {
+          "x": 4.625,
+          "y": -21,
+          "width": 3.75,
+          "depth": 3,
+          "material": "paving"
+        },
+        {
+          "x": -4.7,
+          "y": -14,
+          "width": 3,
+          "depth": 7,
+          "material": "soil"
+        },
+        {
+          "x": -4.7,
+          "y": 14,
+          "width": 3,
+          "depth": 7,
+          "material": "soil"
+        },
+        {
+          "x": 4.7,
+          "y": -14,
+          "width": 3,
+          "depth": 7,
+          "material": "soil"
+        },
+        {
+          "x": 4.7,
+          "y": 14,
+          "width": 3,
+          "depth": 7,
+          "material": "soil"
+        }
+      ],
+      "url": "/public-realm-trials/batch3/student_planted_shared_street_v1.glb"
+    },
+    {
+      "id": "student_garden_cycle_promenade_v1",
+      "title": "Garden Cycle Promenade",
+      "kind": "street",
+      "dimensions": [
+        16,
+        48
+      ],
+      "sha256": "2d1addea419b633e94ef8bb3a856943ae22d41b45453072b785de33be829b659",
+      "surfaceRegions": [
+        {
+          "x": -6.0,
+          "y": 0,
+          "width": 4,
+          "depth": 48,
+          "material": "grass"
+        },
+        {
+          "x": -2.5,
+          "y": 0,
+          "width": 3,
+          "depth": 48,
+          "material": "paving"
+        },
+        {
+          "x": 0.0,
+          "y": 0,
+          "width": 2,
+          "depth": 48,
+          "material": "grass"
+        },
+        {
+          "x": 2.75,
+          "y": 0,
+          "width": 3.5,
+          "depth": 48,
+          "material": "cycle"
+        },
+        {
+          "x": 6.25,
+          "y": 0,
+          "width": 3.5,
+          "depth": 48,
+          "material": "grass"
+        },
+        {
+          "x": 0,
+          "y": 0,
+          "width": 16,
+          "depth": 4,
+          "material": "paving"
+        },
+        {
+          "x": -5.8,
+          "y": -6,
+          "width": 3.8,
+          "depth": 4,
+          "material": "paving"
+        },
+        {
+          "x": -5.8,
+          "y": 6,
+          "width": 3.8,
+          "depth": 4,
+          "material": "paving"
+        },
+        {
+          "x": -6,
+          "y": 21,
+          "width": 4,
+          "depth": 3,
+          "material": "paving"
+        },
+        {
+          "x": -6,
+          "y": -21,
+          "width": 4,
+          "depth": 3,
+          "material": "paving"
+        },
+        {
+          "x": -6,
+          "y": -14,
+          "width": 3,
+          "depth": 7,
+          "material": "soil"
+        },
+        {
+          "x": -6,
+          "y": 14,
+          "width": 3,
+          "depth": 7,
+          "material": "soil"
+        },
+        {
+          "x": 6,
+          "y": -14,
+          "width": 3,
+          "depth": 7,
+          "material": "soil"
+        },
+        {
+          "x": 6,
+          "y": 14,
+          "width": 3,
+          "depth": 7,
+          "material": "soil"
+        },
+        {
+          "x": 0,
+          "y": -14,
+          "width": 1.7,
+          "depth": 7,
+          "material": "soil"
+        },
+        {
+          "x": 0,
+          "y": 14,
+          "width": 1.7,
+          "depth": 7,
+          "material": "soil"
+        }
+      ],
+      "url": "/public-realm-trials/batch3/student_garden_cycle_promenade_v1.glb"
+    }
+  ],
+  "saved_renders": {
+    "student_futsal_park_v1": {
+      "id": "2b487c33-e464-479b-b8a5-0663631e1d27",
+      "style": "currie-native-closeup-illustrative",
+      "model": "gpt-image-2.5-flare"
+    },
+    "student_garden_cycle_promenade_v1": {
+      "id": "f8d6307b-5865-41f6-97ca-96de6d902019",
+      "style": "currie-native-closeup-illustrative",
+      "model": "gpt-image-2.5-flare"
+    },
+    "student_pickleball_garden_v1": {
+      "id": "d4929ccc-59e0-4bd9-801d-f8bdd5b6a237",
+      "style": "currie-native-closeup-illustrative",
+      "model": "gpt-image-2.5-flare"
+    },
+    "student_planted_shared_street_v1": {
+      "id": "e1418be9-777f-4982-9f82-3d813eeef415",
+      "style": "currie-native-closeup-illustrative",
+      "model": "gpt-image-2.5-flare"
+    },
+    "student_reading_garden_v1": {
+      "id": "6c245082-7d74-4f2e-82d8-853c028a071a",
+      "style": "currie-native-closeup-illustrative",
+      "model": "gpt-image-2.5-flare"
+    }
+  },
+  "calls": 5,
+  "credits": 130,
+  "balance": 458,
+  "sky": "Blue scene background; green recessed terrestrial context shell",
+  "evidence_root": "C:\\dev-artifacts\\CityPrompt\\currie-public-realm-2026-09-22",
+  "manifest_sha256": "c3abc39ccbcec2d98d3fb3ac36c4baf8d2e51cdec45aae6fbdd113041e421755",
+  "visual_notes": {
+    "pickleball": "Court, pergola and major planting retained. Fine net, fence and court details are illustrative.",
+    "futsal": "Court, goals and entrance arrangement retained. AI adds small tree pits and material detail.",
+    "reading-garden": "Both pergolas, seating and paths retained. Foliage, flowers and background facade details are reinterpreted.",
+    "shared-street": "Paving, planting and furniture arrangement retained. This is a straight review section; its ends are not connected to the surrounding roads.",
+    "cycle-promenade": "Cycle route and crossing retained. AI adds a distant pergola to the adjacent shared-street concept and redraws cycle symbols. This image is not a faithful design-verification pass."
+  },
+  "student_authoring_acceptance": false,
+  "connected_street_network_acceptance": false,
+  "paid_direct3d_fidelity_acceptance": false,
+  "publication_approved": false
+}

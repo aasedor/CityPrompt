@@ -6,19 +6,23 @@ import { rectangleDimensions } from './geometry';
 import { streetAssetForZone } from './streetPlacement';
 import { EMPTY_TRANSPORT, type ExistingTransport } from '@/features/referenceLayers/existingTransport';
 import { readBuildingEntrance, readCrossings, resolvePedestrianConnections, type BuildingEntrance, type StreetCrossing } from './pedestrianConnections';
+import { entrancePickZoneKey, type EntrancePickRequest, type EntrancePickResult } from './pickBuildingEntrance';
 
 const field='min-h-11 w-full rounded border border-slate-400 bg-white px-2 text-base text-slate-900';
 const button='min-h-11 rounded-lg border border-slate-700 bg-white px-3 text-sm font-semibold text-slate-900 disabled:opacity-40';
 const displayMetres = (value: number) => Math.round(value*1000)/1000;
-export function ConnectionEditor({ zone, zones, visibleIds, disabled, onSave, onClose, transportContext=EMPTY_TRANSPORT }: {
+const anchorKey = (anchor: BuildingEntrance | null) => anchor && JSON.stringify([anchor.xM,anchor.yM,anchor.widthM,anchor.heightAboveBaseM,anchor.streetId,anchor.scaleWithPlot]);
+export function ConnectionEditor({ zone, zones, visibleIds, disabled, onSave, onClose, onPickEntrance, transportContext=EMPTY_TRANSPORT }: {
   zone: SiteZone; zones: SiteZone[]; disabled: boolean;
   visibleIds?: string[];
   transportContext?: ExistingTransport;
+  onPickEntrance?: (request: EntrancePickRequest) => void;
   onSave: (properties: SiteZone['properties']) => Promise<unknown>; onClose: () => void;
 }) {
   const isPark=zone.zone_type==='green_space', isStreet=zone.zone_type==='road';
   const dimensions=rectangleDimensions(zone.coordinates);
-  const existing=readBuildingEntrance(zone);
+  const existing=readBuildingEntrance(zone, zones) ?? readBuildingEntrance(zone);
+  const [automatic,setAutomatic]=useState(existing?.automatic === true);
   const park=zone.properties?.pedestrian_park_entrance as {edge:number;position:number;streetId:string;existingGroundConfirmed?:boolean}|undefined;
   const roads=zones.filter(z=>z.zone_type==='road' && !z.id.startsWith('temp-') && (!visibleIds || visibleIds.includes(z.id)));
   const roadLabel = (road: SiteZone) => road.name?.trim() || streetAssetForZone(road)?.label || 'Street';
@@ -41,18 +45,34 @@ export function ConnectionEditor({ zone, zones, visibleIds, disabled, onSave, on
   }).filter(line=>line.distance<100 || line.id===streetId).sort((a,b)=>a.distance-b.distance).slice(0,30),[transportContext,dimensions.center,streetId]);
   const [x,setX]=useState(displayMetres(existing ? existing.xM*(existing.scaleWithPlot?dimensions.width/existing.referenceWidthM:1) : 0));
   const [y,setY]=useState(displayMetres(existing ? existing.yM*(existing.scaleWithPlot?dimensions.depth/existing.referenceDepthM:1) : -dimensions.depth/2+2));
+  const pickPlotPoint=(clientX:number,clientY:number,rect:DOMRect)=>{
+    if(rect.width<=0||rect.height<=0)return;
+    setX(displayMetres((Math.max(0,Math.min(1,(clientX-rect.left)/rect.width))-.5)*dimensions.width));
+    setY(displayMetres((Math.max(0,Math.min(1,(clientY-rect.top)/rect.height))-.5)*dimensions.depth));
+  };
+  const nudgePlotPoint=(key:string)=>{
+    if(key==='ArrowLeft')setX(value=>displayMetres(Math.max(-dimensions.width/2,value-.25)));
+    if(key==='ArrowRight')setX(value=>displayMetres(Math.min(dimensions.width/2,value+.25)));
+    if(key==='ArrowUp')setY(value=>displayMetres(Math.max(-dimensions.depth/2,value-.25)));
+    if(key==='ArrowDown')setY(value=>displayMetres(Math.min(dimensions.depth/2,value+.25)));
+  };
   const [scale,setScale]=useState(existing?.scaleWithPlot ?? zone.properties?.native_home_plot !== true);
   const [width,setWidth]=useState(existing?.widthM ?? 1.8);
+  const [entranceHeight,setEntranceHeight]=useState(existing?.heightAboveBaseM ?? 0);
   const [edge,setEdge]=useState(park?.edge ?? 0),[position,setPosition]=useState(park?.position ?? 0.5);
   const [crossings,setCrossings]=useState<StreetCrossing[]>(()=>readCrossings(zone));
   const [busy,setBusy]=useState(false),[error,setError]=useState('');
+  const [picking,setPicking]=useState(false);
+  const [openedZoneKey]=useState(()=>entrancePickZoneKey(zone));
+  const zoneChanged = openedZoneKey !== entrancePickZoneKey(zone);
+  const [picked,setPicked]=useState<EntrancePickResult|null>(null);
   const properties=useMemo(()=>{
     if(isStreet)return {...zone.properties,pedestrian_crossings:crossings};
     if(isPark)return {...zone.properties,park_access_points:null,pedestrian_park_entrance:enabled ? {version:1,edge,position,streetId,existingGroundConfirmed:groundConfirmed}:null};
-    const anchor:BuildingEntrance={version:1,xM:x,yM:y,referenceWidthM:dimensions.width,referenceDepthM:dimensions.depth,
-      scaleWithPlot:scale,streetId,widthM:width};
+    const anchor:BuildingEntrance={version:1,...(automatic ? {automatic:true}:{}),xM:x,yM:y,referenceWidthM:dimensions.width,referenceDepthM:dimensions.depth,
+      scaleWithPlot:scale,streetId,widthM:width,heightAboveBaseM:entranceHeight};
     return {...zone.properties,pedestrian_building_entrance:enabled ? anchor:null};
-  },[zone.properties,isStreet,isPark,crossings,enabled,edge,position,streetId,x,y,dimensions.width,dimensions.depth,scale,width,groundConfirmed]);
+  },[zone.properties,isStreet,isPark,crossings,enabled,automatic,edge,position,streetId,x,y,dimensions.width,dimensions.depth,scale,width,groundConfirmed,entranceHeight]);
   const preview=useMemo(()=>{
     const next=zones.map(z=>z.id===zone.id?{...zone,properties}:z);
     return isPark ? resolveManualParkAccess(next,{},visibleIds?.filter(id=>zones.some(z=>z.id===id&&z.zone_type==='road')),transportContext).parks.filter(p=>p.parkZoneId===zone.id).map(p=>p.reason ?? 'Entrance connects to the selected sidewalk or mapped path.')
@@ -60,11 +80,14 @@ export function ConnectionEditor({ zone, zones, visibleIds, disabled, onSave, on
   },[zones,zone,properties,isPark,visibleIds,transportContext]);
   const supported=isPark ? preview.length>0 : isStreet || zone.coordinates.length===4;
   const valid = isStreet ? crossings.every(c=>Number.isFinite(c.position)&&c.position>=0&&c.position<=1&&c.widthM>=1.8&&c.widthM<=5)
-    : !enabled || Boolean(streetId) && (isPark ? Number.isFinite(position)&&position>=0&&position<=1
-      : Number.isFinite(x)&&Number.isFinite(y)&&width>=1.2&&width<=4&&Math.abs(x)<=500&&Math.abs(y)<=500);
+    : !enabled || (Boolean(streetId) || (!isPark && automatic)) && (isPark ? Number.isFinite(position)&&position>=0&&position<=1
+      : Number.isFinite(x)&&Number.isFinite(y)&&width>=1.2&&width<=4&&Math.abs(x)<=500&&Math.abs(y)<=500
+        && Number.isFinite(entranceHeight)&&entranceHeight>=0&&entranceHeight<=3);
+  const pickFeedback = picked && anchorKey(picked.anchor) === anchorKey(readBuildingEntrance({...zone,properties})) ? picked : null;
+  if (picking) return null;
   return <StudioDialog title="Connections" onClose={onClose}>
     <form className="space-y-4 text-slate-900" onSubmit={async event=>{
-      event.preventDefault();if(!valid||disabled||busy)return;setBusy(true);setError('');
+      event.preventDefault();if(!valid||disabled||busy||zoneChanged)return;setBusy(true);setError('');
       try{await onSave(properties);onClose();}catch{setError('Could not save. Your changes are still here; retry or close.');}finally{setBusy(false);}
     }}>
       <p className="text-sm font-semibold">{zone.name || (isPark?'Park':isStreet?'Street':'Building')}</p>
@@ -84,7 +107,8 @@ export function ConnectionEditor({ zone, zones, visibleIds, disabled, onSave, on
         {isPark && Array.isArray(zone.properties?.park_access_points) && <p className="text-sm">Saving here replaces this park’s older authored access points with the settings shown below.</p>}
         {isPark && !enabled && <p className="text-sm">The park will choose a nearby suitable sidewalk automatically.</p>}
         {enabled && <>
-          <label className="block text-sm">Sidewalk target<select className={field} value={streetId} onChange={e=>{setStreetId(e.target.value);setGroundConfirmed(false);}}><option value="">Choose a street or path</option>{roads.map(road=><option key={road.id} value={road.id}>{roadOptionLabel(road)}</option>)}{isPark&&<optgroup label="Existing mapped paths · nearest first">{mappedPaths.map(path=><option key={path.id} value={path.id}>{Math.round(path.distance)} m · {path.label} · {path.id.slice(-8)}</option>)}</optgroup>}</select></label>
+          {!isPark && <label className="flex min-h-11 items-center gap-2"><input type="checkbox" checked={automatic} onChange={e=>setAutomatic(e.target.checked)}/>Snap to the nearest sidewalk as I move this building</label>}
+          <label className="block text-sm">Sidewalk target<select disabled={!isPark && automatic} className={field} value={streetId} onChange={e=>{setStreetId(e.target.value);setGroundConfirmed(false);}}><option value="">Choose a street or path</option>{roads.map(road=><option key={road.id} value={road.id}>{roadOptionLabel(road)}</option>)}{isPark&&<optgroup label="Existing mapped paths · nearest first">{mappedPaths.map(path=><option key={path.id} value={path.id}>{Math.round(path.distance)} m · {path.label} · {path.id.slice(-8)}</option>)}</optgroup>}</select></label>
           {isPark&&streetId.startsWith('existing:')&&<div className="rounded-lg bg-blue-50 p-3 text-sm">
             <p>Uses the recorded path width where available, otherwise its centreline. Check the Google scene: shared access routes may also carry vehicles, and mapped data does not establish precise curbs or elevation.</p>
             <label className="mt-2 flex min-h-11 items-center gap-2"><input type="checkbox" checked={groundConfirmed} onChange={e=>setGroundConfirmed(e.target.checked)}/>I checked that this is suitable pedestrian access at ground level</label>
@@ -94,21 +118,57 @@ export function ConnectionEditor({ zone, zones, visibleIds, disabled, onSave, on
             <label className="block text-sm">Position along edge (%)<input className={field} type="number" min="0" max="100" value={Math.round(position*100)} onChange={e=>setPosition(e.target.valueAsNumber/100)}/></label>
             <p className="text-xs text-slate-600">The chosen edge and position rotate and resize with the park. If this entrance cannot connect, it stays unresolved.</p>
           </> : <>
-            <p className="text-sm">Position the anchor at the door or foot of its entrance steps. Distances are from the plot centre in its own orientation.</p>
+            {onPickEntrance && zone.properties?.native_home_plot === true && <div className="rounded-lg border border-slate-300 bg-lime-50 p-3 text-sm">
+              <button className={button} type="button" disabled={!valid||disabled||busy||zoneChanged} onClick={()=>{
+                setPicking(true);
+                onPickEntrance({zoneId:zone.id,zoneKey:entrancePickZoneKey(zone),properties,finish:result=>{
+                  setPicking(false);
+                  if (!result) return;
+                  setX(result.anchor.xM);setY(result.anchor.yM);setEntranceHeight(0);setScale(false);setPicked(result);
+                }});
+              }}>Pick entrance step in 3D</button>
+              <p className="mt-2">Choose the outer edge of the lowest entrance step on this house. You can navigate the map while picking. Changes stay in this dialog until you save.</p>
+            </div>}
+            {pickFeedback && <p role="status" className={`rounded-lg p-3 text-sm ${pickFeedback.status==='ready'?'bg-lime-50':'bg-amber-50'}`}>{pickFeedback.message} Ground is checked again after saving.</p>}
+            <p className="text-sm">Position the anchor at the outer foot of the building's entrance steps, where they meet its foundation edge. Distances are from the plot centre in its own orientation.</p>
+            <div className="rounded-lg border border-slate-300 bg-slate-50 p-3 text-sm">
+              <p className="font-semibold">Entrance position on this plot</p>
+              <p className="mt-1 text-xs text-slate-600">Choose an approximate position here, then check the actual step foot in 3D. This outline is the plot, not the building or its doorway.</p>
+              <div className="mt-3 flex flex-col items-center gap-1">
+                <span className="text-xs font-semibold">Front · negative front/back</span>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-semibold">Left</span>
+                  <button type="button" className="relative h-44 w-44 touch-none rounded border-2 border-slate-700 bg-white focus-visible:outline-4 focus-visible:outline-blue-600"
+                    aria-label={`Plot anchor guide. Left or right ${x} metres; front or back ${y} metres. Use arrow keys to adjust.`}
+                    onPointerDown={event=>pickPlotPoint(event.clientX,event.clientY,event.currentTarget.getBoundingClientRect())}
+                    onKeyDown={event=>{if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key)){event.preventDefault();nudgePlotPoint(event.key);}}}>
+                    <span aria-hidden="true" className="absolute inset-x-0 top-1/2 border-t border-dashed border-slate-300"/>
+                    <span aria-hidden="true" className="absolute inset-y-0 left-1/2 border-l border-dashed border-slate-300"/>
+                    <span aria-hidden="true" className="absolute size-4 rounded-full border-2 border-slate-900 bg-[#c9ff3d] shadow-sm" style={{left:`${Math.max(0,Math.min(100,50+x/dimensions.width*100))}%`,top:`${Math.max(0,Math.min(100,50+y/dimensions.depth*100))}%`,transform:'translate(-50%, -50%)'}}/>
+                  </button>
+                  <span className="text-xs font-semibold">Right</span>
+                </div>
+                <span className="text-xs font-semibold">Back · positive front/back</span>
+              </div>
+            </div>
             <div className="grid grid-cols-2 gap-3">
               <label className="text-sm">Left / right (m)<input className={field} type="number" step="0.1" value={x} onChange={e=>setX(e.target.valueAsNumber)}/></label>
               <label className="text-sm">Front / back (m)<input className={field} type="number" step="0.1" value={y} onChange={e=>setY(e.target.valueAsNumber)}/></label>
             </div>
             <p className="text-xs text-slate-600">Negative values mean left or front; positive values mean right or back. Review the walkway against the actual door in 3D.</p>
+            <label className="block text-sm">Entrance height above building base (m)<input className={field} type="number" min="0" max="3" step="0.01" value={entranceHeight} onChange={e=>setEntranceHeight(e.target.valueAsNumber)}/></label>
+            <p className="text-xs text-slate-600">Use 0 for steps that reach the model base. Concept steps, landings and side rails are added where they fit. Review the connection and exposed foundation edges in 3D; structural safety and an accessible route have not been assessed.</p>
             <label className="flex min-h-11 items-center gap-2 text-sm"><input type="checkbox" checked={scale} onChange={e=>setScale(e.target.checked)}/>Scale entrance offsets when the plot is resized</label>
             <p className="text-xs text-slate-600">Keep this off for an unscaled catalogue house. One entrance serves this plot; check its position if resizing adds more houses.</p>
-            <label className="block text-sm">Walkway width (m)<input className={field} type="number" min="1.2" max="4" step="0.1" value={width} onChange={e=>setWidth(e.target.valueAsNumber)}/></label>
+            <label className="block text-sm">Walkway width (m)<input className={field} type="number" min="1.2" max="4" step="any" value={width} onChange={e=>setWidth(e.target.valueAsNumber)}/></label>
+            <p className="text-xs text-slate-600">Where side rails are needed, allow at least 1.36 m total width for 1.2 m of walking space.</p>
           </>}
         </>}
       </>}
       <div role="status" className="space-y-1 rounded-lg bg-slate-100 p-3 text-sm">{preview.length ? preview.map((message,i)=><p key={i}>{message}</p>):<p>No connections selected.</p>}</div>
       {error && <p role="alert" className="text-sm text-red-700">{error}</p>}
-      <div className="flex gap-2"><button className={`${button} !bg-[#c9ff3d]`} disabled={!supported||!valid||disabled||busy}>{busy?'Saving…':'Save connections'}</button><button className={button} type="button" onClick={onClose}>Cancel</button></div>
+      {zoneChanged && <p role="alert" className="text-sm text-red-700">This plot changed while Connections was open. Close and reopen Connections to use its current shape and settings.</p>}
+      <div className="flex gap-2"><button className={`${button} !bg-[#c9ff3d]`} disabled={!supported||!valid||disabled||busy||zoneChanged}>{busy?'Saving…':'Save connections'}</button><button className={button} type="button" onClick={onClose}>Cancel</button></div>
     </form>
   </StudioDialog>;
 }

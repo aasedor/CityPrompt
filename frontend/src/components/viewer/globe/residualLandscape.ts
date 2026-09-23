@@ -8,7 +8,9 @@ export type ResidualLandscapeKind =
   | 'boulevard_planting'
   | 'perimeter_planting'
   | 'lawn'
-  | 'low_groundcover';
+  | 'low_groundcover'
+  | 'meadow'
+  | 'shared_paving';
 
 type Position = [number, number];
 type PolygonCoordinates = Position[][];
@@ -43,6 +45,11 @@ export interface ResidualLandscapePlacement {
 }
 
 export interface ResidualLandscapeRecipe {
+  preset?: 'gardens' | 'natural' | 'urban';
+  surface_image_url?: string;
+  surface_prompt?: string;
+  surface_mode?: 'site_base';
+  surface_model?: string;
   schema_version: 1;
   state: 'compiled';
   generator: 'residual_landscape';
@@ -68,6 +75,8 @@ const REGION_KINDS = new Set<ResidualLandscapeKind>([
   'perimeter_planting',
   'lawn',
   'low_groundcover',
+  'meadow',
+  'shared_paving',
 ]);
 
 const BASE_PREPARED_GROUND: [number, number, number] = [151, 146, 137];
@@ -77,6 +86,8 @@ const REGION_PALETTES: Record<ResidualLandscapeKind, [number, number, number]> =
   perimeter_planting: [91, 121, 70],
   lawn: [104, 142, 72],
   low_groundcover: [123, 137, 92],
+  meadow: [149, 147, 108],
+  shared_paving: [187, 181, 168],
 };
 
 function isFinitePosition(value: unknown): value is Position {
@@ -520,11 +531,13 @@ export function createResidualLandscapeTexture(
     for (let x = 0; x < dimension; x += 1) {
       const regionLabel = regionLabels[y * dimension + x];
       const region = regionLabel >= 0 ? recipe.regions[regionLabel] : undefined;
-      const base = region ? REGION_PALETTES[region.kind] : BASE_PREPARED_GROUND;
+      const base = region ? REGION_PALETTES[region.kind] : recipe.preset ? [105, 127, 74] : BASE_PREPARED_GROUND;
       const broad = Math.sin((x + (seed & 255)) * 0.18) * 3.2
         + Math.cos((y + ((seed >>> 8) & 255)) * 0.14) * 2.8;
       const fine = (((Math.imul(x + 31, 1103515245) ^ Math.imul(y + seed, 12345)) >>> 24) - 128) / 32;
-      const variation = broad + fine;
+      const variation = recipe.preset
+        ? Math.sin(x * 0.024 + y * 0.017) * 1.2 + Math.cos(y * 0.03 - x * 0.012) + fine * 0.55
+        : broad + fine;
       const offset = (y * dimension + x) * 4;
       data[offset] = channel(base[0] + variation);
       data[offset + 1] = channel(base[1] + variation * 0.86);

@@ -3,6 +3,7 @@ import type { SiteZone } from '@/types';
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 import { createSharedSiteGroundLayout, sharedSiteGroundGridPoint } from './sharedSiteGround';
 import { createPreparedEdgeGeometry, measurePreparedEdges, preparedEdgeSummary, readPreparedEdges } from './preparedSiteEdges';
+import * as THREE from 'three';
 
 const origin: [number,number] = [-114,51];
 const point = (x: number,y: number) => [origin[0]+x/metersPerDegLon(origin[1]),origin[1]+y/METERS_PER_DEG_LAT];
@@ -13,6 +14,33 @@ function review(boundary = site) {
   return { layout, heights, previousHeights: [...heights] };
 }
 describe('prepared-site retaining edges', () => {
+  it('opens a bent road through cut and fill faces while preserving the rest of the boundary', () => {
+    const profile = measurePreparedEdges(site,review())!;
+    // Concave L: 4 m opening on the south edge and 4 m on the east edge.
+    const opening = [[8,-2],[12,-2],[12,6],[22,6],[22,10],[8,10]].map(([x,y])=>point(x,y));
+    const full = createPreparedEdgeGeometry(profile,102,origin);
+    const opened = createPreparedEdgeGeometry(profile,102,origin,true,[opening]);
+    const area = (geometry: THREE.BufferGeometry) => {
+      const p=geometry.getAttribute('position'),a=new THREE.Vector3(),b=new THREE.Vector3(),c=new THREE.Vector3();
+      let sum=0;
+      for(let i=0;i<p.count;i+=3) {
+        a.fromBufferAttribute(p,i);b.fromBufferAttribute(p,i+1);c.fromBufferAttribute(p,i+2);
+        sum+=b.sub(a).cross(c.sub(a)).length()/2;
+      }
+      return sum;
+    };
+    expect(area(opened)).toBeLessThan(area(full)-8);
+    expect(area(opened)).toBeGreaterThan(area(full)-15);
+    const material = new THREE.MeshBasicMaterial({side:THREE.DoubleSide});
+    const mesh = new THREE.Mesh(opened,material);
+    const hits = (x:number,y:number,z:number,dx:number,dy:number) => new THREE.Raycaster(
+      new THREE.Vector3(x,y,z),new THREE.Vector3(dx,dy,0),0,3).intersectObject(mesh).length;
+    expect(hits(9,-1,-.1,0,1)).toBe(0); // Fill-side road opening.
+    expect(hits(21,8,1,-1,0)).toBe(0); // Cut-side road opening.
+    expect(hits(3,-1,-.5,0,1)).toBeGreaterThan(0);
+    expect(hits(21,13,1,-1,0)).toBeGreaterThan(0);
+    opened.dispose();full.dispose();material.dispose();
+  });
   it('uses repeatable perimeter measurements, with cut and fill at the proposed level', () => {
     const profile = measurePreparedEdges(site,review())!;
     expect(profile.samples.length).toBeGreaterThan(28);

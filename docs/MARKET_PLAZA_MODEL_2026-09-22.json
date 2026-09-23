@@ -1,0 +1,120 @@
+{
+  "candidate": "student_summer_market_plaza_v1",
+  "package": "C:\\dev-artifacts\\CityPrompt\\public-realm-pilots-2026-09-22\\market-v001",
+  "preview": {
+    "path": "assembly-preview.glb",
+    "bytes": 227328,
+    "sha256": "206d8b89724b18f49f4adfb4fc3491e61e7111905ab1c8233a9708950db8146b"
+  },
+  "assets": {
+    "market-stall": {
+      "path": "market-stall.glb",
+      "bytes": 15268,
+      "sha256": "9a60ffc2d11346d7a24414c66cd4610c7e847968d413f8982a45eddafa4fa612"
+    },
+    "timber-bench": {
+      "path": "timber-bench.glb",
+      "bytes": 17388,
+      "sha256": "232bd24b74ddf395b6bcf13080f7060cd5fc0f82c08556eb00812893384a3b8d"
+    },
+    "prairie-planter": {
+      "path": "prairie-planter.glb",
+      "bytes": 92960,
+      "sha256": "47b08ba1047d0dc79a00b196de3476f87e91697b2a76cb8bb4fc64851fcaf4f2"
+    },
+    "plaza-light": {
+      "path": "plaza-light.glb",
+      "bytes": 6152,
+      "sha256": "8b8733506ff250473ce5e245cb2f5c7dc5b8315ca722de9243ab0e0ea2c79ad1"
+    }
+  },
+  "triangles": 2584,
+  "geometry_verification": {
+    "status": "PASS_OFFLINE_GEOMETRY",
+    "module_bounds_m": {
+      "market-stall": [
+        [
+          -1.649999976158142,
+          -1.399999976158142,
+          0.0
+        ],
+        [
+          1.649999976158142,
+          1.399999976158142,
+          2.9000000953674316
+        ]
+      ],
+      "timber-bench": [
+        [
+          -0.8999999761581421,
+          -0.26749998331069946,
+          0.0
+        ],
+        [
+          0.8999999761581421,
+          0.28999999165534973,
+          0.9500000476837158
+        ]
+      ],
+      "prairie-planter": [
+        [
+          -1.559999942779541,
+          -1.059999942779541,
+          0.0
+        ],
+        [
+          1.559999942779541,
+          1.059999942779541,
+          1.100000023841858
+        ]
+      ],
+      "plaza-light": [
+        [
+          -0.23999999463558197,
+          -0.14000000059604645,
+          0.0
+        ],
+        [
+          0.23999999463558197,
+          0.14000000059604645,
+          4.059999942779541
+        ]
+      ]
+    },
+    "counts": {
+      "market-stall": 6,
+      "timber-bench": 4,
+      "prairie-planter": 4,
+      "plaza-light": 4
+    },
+    "checks": [
+      "GLB finite geometry",
+      "module feet at zero",
+      "whole furniture fit",
+      "no module overlap",
+      "four entrances and crossing corridors clear",
+      "12 x 14 m event area clear"
+    ],
+    "runtime_tested": false
+  },
+  "review": {
+    "status": "BUILDER_VISUAL_PASS_ONLY",
+    "candidate": "student_summer_market_plaza_v1",
+    "model_sha256": "206d8b89724b18f49f4adfb4fc3491e61e7111905ab1c8233a9708950db8146b",
+    "inspected_views": [
+      "aerial.png",
+      "entrance.png",
+      "market_close.png",
+      "top.png"
+    ],
+    "runtime_approved": false,
+    "independent_review": false,
+    "limitations": [
+      "No fountain or retail buildings advertised.",
+      "Level/prepared-ground visual pilot only; natural-ground component seating untested.",
+      "Not an exact-source reconstruction: existing summer-market and market-square cards fail identity audit.",
+      "No runtime adapter, picker activation, save/reload or exact export tested."
+    ]
+  },
+  "recipe_sha256": "7fbd4d7748975bc7a3148152e1a462c5560083959dc3c33e502da26623f8b929"
+}

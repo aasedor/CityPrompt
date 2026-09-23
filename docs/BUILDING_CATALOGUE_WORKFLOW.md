@@ -6,6 +6,13 @@ work. The promotion tools handle the repeatable wiring and detect mismatches.
 No command below buys renders, changes account credits, self-approves a model,
 or automatically commits or pushes Git.
 
+Read [Runtime integration for every archetype](ARCHETYPE_RUNTIME_INTEGRATION.md)
+before building. Complete [its per-variant review](ARCHETYPE_RUNTIME_REVIEW_TEMPLATE.md)
+alongside the local student trial and include the record in the delivery/PR.
+The promotion CLI does not yet enforce that complete checklist: a preflight
+pass cannot substitute for measured entrance, terrain, edit/recovery and visual
+evidence. Keep failing or untested applicable checks open.
+
 ## 1. Build and independently review
 
 Start a clean `codex/<building-name>` worktree from `origin/main`. Read
@@ -98,6 +105,14 @@ in `trial` in the package. Check:
 - Close capture and a partially occluded or out-of-frame building.
 - Browser console errors and visible responsiveness.
 
+Before scaling a batch, also complete the mixed-scene and oversized-candidate
+cases in the runtime review template. Use a separate genuinely vacant parcel for
+a warehouse or other fixed-native asset that cannot plausibly fit the residential
+pilot. Preserve its complete envelope and verify the terrain mode it advertises.
+The [September 22 Currie trial](CURRIE_EMPTY_LOT_CATALOGUE_TRIAL_2026-09-22.md)
+shows the expected neighbourhood/edit/landscape/export sequence and records why
+paid image cost must be shown before generation.
+
 The capture check can use the free direct-capture preview. Paid AI image/video
 trials require the already agreed budget and remain a separate quality result;
 do not describe a successful capture as a verified AI render. Record any LOD,
@@ -177,8 +192,10 @@ Publishing to Git does not silently modify cityprompt.ca.
 ## Contributor prompt
 
 > Build one exact RLASM 6.1 architectural-clay building using the canonical
-> method. Follow docs/BUILDING_CATALOGUE_WORKFLOW.md. Work on an isolated
-> codex branch, keep generated evidence external, obtain an independent
+> method. Follow docs/BUILDING_CATALOGUE_WORKFLOW.md and complete
+> docs/ARCHETYPE_RUNTIME_REVIEW_TEMPLATE.md against
+> docs/ARCHETYPE_RUNTIME_INTEGRATION.md for this exact variant. Work on an
+> isolated codex branch, keep generated evidence external, obtain an independent
 > holistic review, use the promotion package tools, and trial the exact GLB
 > on an empty local site. Preserve native scale and saved identities. Report
 > the review, student trial, local install/readback, and Git publication
