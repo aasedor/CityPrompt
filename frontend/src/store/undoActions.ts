@@ -2,7 +2,7 @@ import type { QueryClient } from '@tanstack/react-query';
 import { siteZonesApi, buildingsApi, zoneHistoryApi } from '@/services/api';
 import type { SiteZone, SiteZoneProperties } from '@/types';
 import type { UndoableAction } from './undoRedo';
-import { streetCoordinateUpdate } from '@/features/pickPlace/streetPlacement';
+import { isFixedSectionStreet, streetCoordinateUpdate } from '@/features/pickPlace/streetPlacement';
 import { readParkTerrain, type ParkTerrainProfile } from '@/components/viewer/globe/parkTerrain';
 
 // =============================================================================
@@ -150,6 +150,7 @@ export function createZoneCoordinatesAction(
   queryClient: QueryClient,
   savedRevision?: string,
   previousZone?: SiteZone,
+  savedZone?: SiteZone,
 ): UndoableAction {
   let revision = savedRevision;
   rememberRevision(queryClient, projectId, zoneId, revision);
@@ -158,7 +159,15 @@ export function createZoneCoordinatesAction(
   const terrain = (zone?: SiteZone): ParkTerrainProfile | undefined =>
     zone && readParkTerrain(zone) ? zone.properties?.park_terrain as ParkTerrainProfile : undefined;
   let beforeTerrain = terrain(previousZone), afterTerrain: ParkTerrainProfile | undefined;
-  const coordinateData = (current: SiteZone | undefined, coordinates: number[][], profile?: ParkTerrainProfile) => {
+  const coordinateData = (current: SiteZone | undefined, coordinates: number[][], profile?: ParkTerrainProfile, snapshot?: SiteZone) => {
+    // Curved street controls are authored alongside the sampled centreline.
+    // Undo/redo must restore that pair, not infer new controls from the strip.
+    if (current && snapshot && isFixedSectionStreet(current) && isFixedSectionStreet(snapshot)) {
+      return { coordinates, properties: { ...current.properties,
+        plan_centerline: snapshot.properties?.plan_centerline,
+        plan_route_controls: snapshot.properties?.plan_route_controls,
+      } };
+    }
     const data = streetCoordinateUpdate(current, coordinates);
     if (!current || !profile) return data;
     const properties = { ...current.properties, park_terrain: profile };
@@ -171,7 +180,7 @@ export function createZoneCoordinatesAction(
     undo: async () => {
       const current = queryClient.getQueryData<SiteZone[]>(['site-zones', projectId])?.find(zone => zone.id === zoneId);
       const measured = terrain(current);
-      const zone = await siteZonesApi.update(zoneId, { ...coordinateData(current, prevCoords, beforeTerrain), expected_updated_at: currentRevision(queryClient, projectId, zoneId, revision) }, { skipHistory: true });
+      const zone = await siteZonesApi.update(zoneId, { ...coordinateData(current, prevCoords, beforeTerrain, previousZone), expected_updated_at: currentRevision(queryClient, projectId, zoneId, revision) }, { skipHistory: true });
       afterTerrain = measured ?? afterTerrain;
       revision = zone.updated_at;
       rememberRevision(queryClient, projectId, zoneId, revision);
@@ -180,7 +189,7 @@ export function createZoneCoordinatesAction(
     redo: async () => {
       const current = queryClient.getQueryData<SiteZone[]>(['site-zones', projectId])?.find(zone => zone.id === zoneId);
       const measured = terrain(current);
-      const zone = await siteZonesApi.update(zoneId, { ...coordinateData(current, newCoords, afterTerrain), expected_updated_at: currentRevision(queryClient, projectId, zoneId, revision) }, { skipHistory: true });
+      const zone = await siteZonesApi.update(zoneId, { ...coordinateData(current, newCoords, afterTerrain, savedZone), expected_updated_at: currentRevision(queryClient, projectId, zoneId, revision) }, { skipHistory: true });
       beforeTerrain = measured ?? beforeTerrain;
       revision = zone.updated_at;
       rememberRevision(queryClient, projectId, zoneId, revision);

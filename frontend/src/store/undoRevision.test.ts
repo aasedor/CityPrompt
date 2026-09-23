@@ -3,7 +3,7 @@ import { QueryClient } from '@tanstack/react-query';
 import { siteZonesApi, zoneHistoryApi } from '@/services/api';
 import { createZoneUpdateAction, createZoneCreateAction, createZoneDeleteAction, createZoneCoordinatesAction, advanceDerivedZoneRevision } from './undoActions';
 import type { SiteZone } from '@/types';
-import { CALGARY_LOCAL_PLACEMENT } from '@/features/pickPlace/streetPlacement';
+import { CALGARY_LOCAL_PLACEMENT, isFixedSectionStreet, streetCoordinateUpdate } from '@/features/pickPlace/streetPlacement';
 import { bufferLineToPolygon, extractCenterline } from '@/utils/roadGeometry';
 import { measureParkTerrain, readParkTerrain } from '@/components/viewer/globe/parkTerrain';
 import { createSharedSiteGroundLayout } from '@/components/viewer/globe/sharedSiteGround';
@@ -61,6 +61,34 @@ describe('zone undo revision checks', () => {
     await action.undo();await action.redo();
     expect(siteZonesApi.update).toHaveBeenNthCalledWith(1,'zone',expect.objectContaining({coordinates:before,expected_updated_at:'r1',properties:expect.objectContaining({plan_centerline:extractCenterline(before),width:16})}),{skipHistory:true});
     expect(siteZonesApi.update).toHaveBeenNthCalledWith(2,'zone',expect.objectContaining({coordinates:after,expected_updated_at:'r2',properties:expect.objectContaining({plan_centerline:extractCenterline(after),width:16})}),{skipHistory:true});
+  });
+  it('restores editable curve controls together with sampled paving on redo', async () => {
+    const client = new QueryClient();
+    const controls = [[-114, 51], [-113.9995, 51], [-113.9995, 51.0006]];
+    const before = { id: 'street', project_id: 'project', zone_type: 'road', color: '#777', sort_order: 0,
+      created_at: 'r0',
+      coordinates: bufferLineToPolygon([controls[0], controls[1]], 16),
+      properties: { ...CALGARY_LOCAL_PLACEMENT.properties, plan_centerline: [controls[0], controls[1]] },
+      updated_at: 'r1' } as SiteZone;
+    const change = streetCoordinateUpdate(before, bufferLineToPolygon(controls, 16));
+    const after = { ...before, ...change, updated_at: 'r2' } as SiteZone;
+    expect(isFixedSectionStreet(before)).toBe(true);
+    expect(isFixedSectionStreet(after)).toBe(true);
+    client.setQueryData(['site-zones', 'project'], [after]);
+    const action = createZoneCoordinatesAction('project', 'street', before.coordinates,
+      after.coordinates, client, 'r2', before, after);
+    vi.mocked(siteZonesApi.update).mockImplementation(async (_id, data) => {
+      const saved = { ...after, ...data, updated_at: data.expected_updated_at === 'r2' ? 'r3' : 'r4' } as SiteZone;
+      client.setQueryData(['site-zones', 'project'], [saved]);
+      return saved;
+    });
+    await action.undo();
+    expect(client.getQueryData<SiteZone[]>(['site-zones', 'project'])![0].properties?.plan_route_controls).toBeUndefined();
+    await action.redo();
+    const restored = client.getQueryData<SiteZone[]>(['site-zones', 'project'])![0];
+    expect(restored.coordinates).toEqual(after.coordinates);
+    expect(restored.properties?.plan_centerline).toEqual(after.properties?.plan_centerline);
+    expect(restored.properties?.plan_route_controls).toEqual(controls);
   });
   it('accepts our derived compile revision but not a compile over a teammate edit', async () => {
     const client = new QueryClient();

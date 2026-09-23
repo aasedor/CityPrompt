@@ -3,6 +3,7 @@ import * as THREE from 'three';
 
 import type { SiteZone } from '@/types';
 import { bufferLineToPolygon } from '@/utils/roadGeometry';
+import { roundStreetCenterline } from '@/utils/streetRouteCurves';
 import { detectConnectedStreetIntersections, detectFourWayStreetIntersections } from './streetGraphIntersections';
 import { resolveStreetJunctionLayout } from './streetJunctionGeometry';
 import { buildSectionJunctionGeometry } from './streetJunctionGeometry';
@@ -316,6 +317,17 @@ describe('bounded connected T graph', () => {
     const bent = street('stem', [[-114.1, 51], [-114.0995, 51.001], [-114.0985, 51.0013]], 14);
     const zones = [main(), bent], [node] = detectConnectedStreetIntersections(zones);
     expect(resolveStreetJunctionLayout(node, zones)).not.toBeNull();
+  });
+
+  it('keeps a rounded approach tangent and an owned T surface', () => {
+    const line = roundStreetCenterline([[-114.1, 51], [-114.1, 51.0007], [-114.0993, 51.0013]], 24);
+    const curved = street('curved-stem', line, 14);
+    curved.properties = { ...curved.properties, plan_centerline: line };
+    const zones = [main(), curved];
+    const nodes = detectConnectedStreetIntersections(zones);
+    expect(nodes).toHaveLength(1);
+    expect(nodes[0].armCount).toBe(3);
+    expect(resolveStreetJunctionLayout(nodes[0], zones)).not.toBeNull();
   });
 
   it('joins a compiled public-road route with a redundant saved station at the T', () => {

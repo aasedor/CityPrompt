@@ -7,11 +7,14 @@ import { nativeStreetPilot, placeNativeStreetModules } from '../components/viewe
 import { GlobeNativeStreetPilotModules } from '../components/viewer/globe/GlobeNativeStreetPilotModules';
 import { resolvePilotStreetSectionProfile } from '../components/viewer/globe/streetSectionProfiles';
 import { buildRibbonBandGeometry } from '../components/viewer/globe/streetMesh3D';
+import { roundMetricStreetCenterline } from '../utils/streetRouteCurves';
 
 const main = nativeStreetPilot('student_main_street_v1')!;
 const market = nativeStreetPilot('student_market_street_v1')!;
-const mainRoute = [{ x: -38, y: -48 }, { x: -38, y: 48 }];
-const marketRoute = [{ x: 29, y: -48 }, { x: 29, y: 0 }, { x: 66, y: 0 }];
+const route = (points: number[][], radiusM: number) => roundMetricStreetCenterline(points, radiusM)
+  .map(([x, y]) => ({ x, y }));
+const mainRoute = route([[-43, -54], [-43, -22], [-19, 18], [-19, 54]], 34.5);
+const marketRoute = route([[35, -54], [35, -5], [89, -5]], 18);
 
 function Street({ pilot, route }: { pilot: typeof main; route: typeof mainRoute }) {
   const profile = resolvePilotStreetSectionProfile({ properties: {
@@ -35,8 +38,8 @@ if (import.meta.hot) import.meta.hot.dispose(() => root.unmount());
 root.render(<>
   <div style={{ position: 'absolute', zIndex: 2, top: 14, left: 18, padding: 12,
     background: 'rgba(255,255,255,.9)', borderRadius: 8, fontFamily: 'Arial' }}>
-    <b>Route-based native street pilot</b><br />Main street: 23 m × 96 m, two module cycles<br />
-    Pedestrian market street: 18 m, with a 90° bend<br />Drag to orbit; wheel to zoom.
+    <b>Curved native street pilot</b><br />Main street: 23 m, gentle S alignment<br />
+    Pedestrian market street: 18 m, rounded 90° alignment<br />Drag to orbit; wheel to zoom.
   </div>
   <Canvas shadows orthographic camera={{ position: [105, -120, 115], zoom: 5.2, near: 0.1, far: 500 }}>
     <ambientLight intensity={1.3} />

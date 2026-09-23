@@ -577,6 +577,11 @@ must not be presented as a resolved raised boarding island. The
 [ten-street batch](TEN_STREET_ASSET_BATCH_2026-09-22.md) preserves these recipes,
 source-image locks and reusable street details for future archetypes.
 
+New street families should use the shared tangent-arc centreline and retain
+editable route controls separately from sampled surface stations. The
+[curved-street checkpoint](STREET_CURVE_GEOMETRY_2026-09-23.md) records the
+source guidance, visual pilot and remaining Currie acceptance gate.
+
 Keep sky colour separate from missing terrestrial context. A grass fallback
 must be non-pickable ground/context geometry, never the global scene background
 or a source of terrain/support samples. Verify sky and ground simultaneously in

@@ -26,7 +26,7 @@ import type { EntrancePickRequest } from '@/features/pickPlace/pickBuildingEntra
 import { TerraceEditor } from '@/features/pickPlace/TerraceEditor';
 import { saveAutomaticParkGround } from '@/features/pickPlace/saveAutomaticParkGround';
 import { TerraceSummary } from '@/features/pickPlace/TerraceSummary';
-import { CALGARY_LOCAL_PLACEMENT, isFixedSectionStreet, streetRouteProblem, streetSectionWidth } from '@/features/pickPlace/streetPlacement';
+import { CALGARY_LOCAL_PLACEMENT, isFixedSectionStreet, streetCoordinateUpdate, streetRouteProblem, streetSectionWidth } from '@/features/pickPlace/streetPlacement';
 import { assetForZone, placeAsset, placementProperties, type PlaceAssetId } from '@/features/pickPlace/catalogue';
 import { placementProblem, rectangleAt } from '@/features/pickPlace/geometry';
 import { snapPlacement } from '@/features/pickPlace/snapPlacement';
@@ -64,7 +64,7 @@ import type { AIRenderResult } from '@/components/viewer/useAIRender';
 import { useViewerStore } from '@/store';
 import { useSiteZones } from '@/hooks/useSiteZones';
 import { useUndoRedoKeyboard } from '@/hooks/useUndoRedoKeyboard';
-import { rebufferRoadOnUpdate } from '@/utils/roadGeometry';
+import { parsePersistedCenterline, rebufferRoadOnUpdate } from '@/utils/roadGeometry';
 import { ImageLightbox } from '@/components/ui/ImageLightbox';
 import { getRenderImageKey, saveRenderedImage } from '@/utils/renderPersistence';
 import { savedRenderIsSource, savedRenderNeedsReview, savedRenderNotice } from '@/utils/renderPresentation';
@@ -304,11 +304,14 @@ export function ProjectViewPage() {
     }
     if (zone && (assetForZone(zone) || isFixedSectionStreet(zone))) {
       if (isSaving) { toast.error('Wait for this edit to save.'); return false; }
+      const streetUpdate = isFixedSectionStreet(zone) ? streetCoordinateUpdate(zone, coordinates) : null;
+      const footprint = streetUpdate?.coordinates ?? coordinates;
       const problem = (zone.zone_type === 'green_space' ? parkOutlineProblem(coordinates)
         : assetForZone(zone)?.reshapeMode === 'authored_footprint' ? parkOutlineProblem(coordinates)?.replace(/park/g, 'building') : null)
-        ?? (isFixedSectionStreet(zone) ? streetRouteProblem(coordinates, streetSectionWidth(zone)) : null)
-        ?? placementProblem(coordinates, siteZones,
-          publicRoadConnectionFits(zone, coordinates, getActiveSiteBoundary(siteZones)) ? null : getActiveSiteBoundary(siteZones), zoneId);
+        ?? (isFixedSectionStreet(zone) ? streetRouteProblem(coordinates, streetSectionWidth(zone),
+          parsePersistedCenterline(streetUpdate?.properties?.plan_route_controls) ?? undefined) : null)
+        ?? placementProblem(footprint, siteZones,
+          publicRoadConnectionFits(zone, footprint, getActiveSiteBoundary(siteZones)) ? null : getActiveSiteBoundary(siteZones), zoneId);
       if(problem) { toast.error(problem, { position: 'top-center' }); return false; }
     }
     handleZoneUpdated(zoneId, coordinates);
@@ -1124,7 +1127,9 @@ export function ProjectViewPage() {
             buildings={visibleBuildings}
             onZoneCreated={(coordinates, type, properties) => {
               if (isFixedSectionStreet({zone_type:type, properties})) {
-                const problem = streetRouteProblem(coordinates, streetSectionWidth({zone_type:type, properties})) ?? placementProblem(coordinates, siteZones, getActiveSiteBoundary(siteZones));
+                const problem = streetRouteProblem(coordinates, streetSectionWidth({zone_type:type, properties}),
+                  parsePersistedCenterline(properties?.plan_route_controls) ?? undefined)
+                  ?? placementProblem(coordinates, siteZones, getActiveSiteBoundary(siteZones));
                 if (problem) { toast.error(problem, {position:'top-center'}); return false; }
               }
               handleZoneCreated(coordinates, type, properties);
@@ -1258,7 +1263,8 @@ export function ProjectViewPage() {
         {selectedZone && !entrancePick && isFixedSectionStreet(selectedZone) && advancedZoneId !== selectedZone.id && !placementDraft && !showHistory && !measureActive && (
           <StreetRoutePanel zone={selectedZone} disabled={isSaving} onReshape={coords=>reshapeObject(selectedZone.id, coords)}
             onUpdateDesign={data => {
-              const problem = streetRouteProblem(data.coordinates, Number(data.properties.width))
+              const problem = streetRouteProblem(data.coordinates, Number(data.properties.width),
+                parsePersistedCenterline(data.properties.plan_route_controls) ?? undefined)
                 ?? placementProblem(data.coordinates, siteZones,
                   publicRoadConnectionFits({ ...selectedZone, ...data }, data.coordinates, getActiveSiteBoundary(siteZones)) ? null : getActiveSiteBoundary(siteZones), selectedZone.id);
               if (problem) { toast.error(problem); return; }

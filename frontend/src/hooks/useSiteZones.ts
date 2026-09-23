@@ -339,7 +339,7 @@ export function useSiteZones(projectId: string | undefined) {
       // Push undo action for coordinate change
       if (projectId && currentProject.current === projectId && prevCoords) {
         useUndoRedoStore.getState().pushAction(
-          createZoneCoordinatesAction(projectId, zoneId, prevCoords, coordinates, queryClient, result.updated_at, prevZone),
+          createZoneCoordinatesAction(projectId, zoneId, prevCoords, result.coordinates, queryClient, result.updated_at, prevZone, result),
         );
       }
     }).catch(async (err: unknown) => {

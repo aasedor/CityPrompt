@@ -1,5 +1,6 @@
 import { useRoadNetwork } from '@/hooks/useRoadNetwork';
 import { roadDisplayZones, snapRoadEndpoints } from '@/utils/proceduralRoadNetwork';
+import { roundAuthoredStreetRoute } from '@/utils/streetRouteCurves';
 import { useEffect, useRef, useCallback, useState, useMemo } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
@@ -426,14 +427,17 @@ export function SitePlannerMap({
     if (linear) {
       // Road: open polyline (no closing back to start) — smoothed
       if (pts.length >= 2) {
-        const smooth = smoothPolyline(pts);
+        const width = (activeToolPropertiesRef.current?.width as number)
+          ?? ZONE_TYPE_CONFIG[tool!]?.defaultProperties?.width ?? 10;
+        const smooth = tool === 'road'
+          ? roundAuthoredStreetRoute(pts, width, activeToolPropertiesRef.current ?? {})
+          : smoothPolyline(pts);
         features.push({
           type: 'Feature',
           properties: {},
           geometry: { type: 'LineString', coordinates: smooth },
         });
         // Show buffered polygon preview using smoothed line
-        const width = activeToolPropertiesRef.current?.width ?? ZONE_TYPE_CONFIG[tool!]?.defaultProperties?.width ?? 10;
         const buffered = bufferLineToPolygon(smooth, width);
         features.push({
           type: 'Feature',
@@ -595,10 +599,14 @@ export function SitePlannerMap({
     if (isLinearTool(tool)) {
       const width = (props?.width as number) ?? ZONE_TYPE_CONFIG[tool]?.defaultProperties?.width ?? 10;
       const proceduralRoad = tool === 'road' && !props.pick_place_street_section;
-      const smooth = smoothPolyline(proceduralRoad ? snapRoadEndpoints(pts, siteZonesRef.current, props.road_level) : pts);
+      const authored = proceduralRoad ? snapRoadEndpoints(pts, siteZonesRef.current, props.road_level) : pts;
+      const smooth = tool === 'road' ? roundAuthoredStreetRoute(authored, width, props) : smoothPolyline(authored);
       coords = bufferLineToPolygon(smooth, width);
-      if (proceduralRoad) {
+      if (tool === 'road') {
         props.plan_centerline = smooth;
+        if (props.pick_place_street_section) props.plan_route_controls = authored;
+      }
+      if (proceduralRoad) {
         props.procedural_road = 1;
       }
     } else {

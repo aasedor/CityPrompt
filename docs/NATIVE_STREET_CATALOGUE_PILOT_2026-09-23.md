@@ -56,6 +56,8 @@ modules above those bands, while suppressing duplicate generic furniture.
 The marker remains DEV-only, outside ordinary student controls and the
 production renderer. The isolated browser review page is
 `/native-street-pilot-review.html` from this worktree's Vite server.
+The page now exercises a rounded main-street S bend and a rounded pedestrian
+market turn through the shared [curved route contract](STREET_CURVE_GEOMETRY_2026-09-23.md).
 
 This seam is the pattern for later street archetypes: preserve the source
 image/recipe/model hashes, ordered full-width bands, physical model axes,

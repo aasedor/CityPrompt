@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { nativeStreetPilot, nativeStreetPilotForZone, placeNativeStreetModules } from './nativeStreetPilot';
 import { resolvePilotStreetSectionProfile } from './streetSectionProfiles';
+import { roundMetricStreetCenterline } from '@/utils/streetRouteCurves';
 
 const main = nativeStreetPilot('student_main_street_v1')!;
 const market = nativeStreetPilot('student_market_street_v1')!;
@@ -34,6 +35,20 @@ describe('candidate native street modules on route geometry', () => {
     expect(placed.filter(item => item.kind === 'market_stall')).toHaveLength(4);
     expect(placed.filter(item => item.kind === 'stone_fountain')).toHaveLength(1);
     expect(placed.every(item => item.url.startsWith('/street-kits/pilots/student_market_street_v1/'))).toBe(true);
+  });
+
+  it('turns tree wells, trees and market fixtures with a curved street', () => {
+    const route = roundMetricStreetCenterline([[0, 0], [0, 50], [55, 50]], 23)
+      .map(([x, y]) => ({ x, y }));
+    const placed = placeNativeStreetModules(main, route);
+    const trees = placed.filter(item => item.kind === 'grove_tree');
+    const grates = placed.filter(item => item.kind === 'tree_well_grate');
+    expect(trees.length).toBeGreaterThan(0);
+    expect(trees).toHaveLength(grates.length);
+    trees.forEach(tree => {
+      expect(grates.some(grate => Math.hypot(grate.x - tree.x, grate.y - tree.y) < .001)).toBe(true);
+    });
+    expect(new Set(placed.map(item => Math.round(item.yaw * 10))).size).toBeGreaterThan(2);
   });
 
   it('uses the source metric bands in the local procedural preview', () => {

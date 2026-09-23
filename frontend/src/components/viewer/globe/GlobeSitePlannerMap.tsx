@@ -51,6 +51,7 @@ import { EMPTY_TRANSPORT, type ExistingTransport } from '@/features/referenceLay
 import type { ReferenceLayer } from '@/features/referenceLayers/api';
 import { useRoadNetwork } from '@/hooks/useRoadNetwork';
 import { roadDisplayZones, snapRoadEndpoints } from '@/utils/proceduralRoadNetwork';
+import { roundAuthoredStreetRoute } from '@/utils/streetRouteCurves';
 import { GlobeZoneLayer } from './GlobeZoneLayer';
 import { assertStreetGroundReady, streetGroundCaptureStatus } from './streetGroundCapture';
 import { streetSurfaceMaskZone } from './streetSurfaceMask';
@@ -3385,12 +3386,18 @@ export function GlobeSitePlannerMap({
     let finalCoords: number[][];
     if (linear) {
       const procedural = activeSitePlannerTool === 'road' && !zoneProperties.pick_place_street_section;
-      const smoothed = zoneProperties.pick_place_street_section
-        ? snapStreetEnds(pts, siteZones)
-        : smoothPolyline(procedural ? snapRoadEndpoints(pts, siteZones, zoneProperties.road_level) : pts);
       const width = (zoneProperties.width as number) || 10;
+      const authored = zoneProperties.pick_place_street_section
+        ? snapStreetEnds(pts, siteZones)
+        : procedural ? snapRoadEndpoints(pts, siteZones, zoneProperties.road_level) : pts;
+      const smoothed = activeSitePlannerTool === 'road'
+        ? roundAuthoredStreetRoute(authored, width, zoneProperties)
+        : smoothPolyline(authored);
       finalCoords = sanitizeCoords(bufferLineToPolygon(smoothed, width));
-      if (zoneProperties.pick_place_street_section || procedural) zoneProperties.plan_centerline = smoothed;
+      if (zoneProperties.pick_place_street_section || procedural) {
+        zoneProperties.plan_centerline = smoothed;
+        if (zoneProperties.pick_place_street_section) zoneProperties.plan_route_controls = authored;
+      }
       if (procedural) zoneProperties.procedural_road = 1;
     } else {
       finalCoords = [...pts];
