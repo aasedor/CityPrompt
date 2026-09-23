@@ -24,6 +24,7 @@ import type { Building, SiteZone, SavedRender } from '@/types';
 import { useGlobeAIRender, type GlobeRenderResult, type GlobeRenderProgress, type OpenAIImageQuality, HIGH_FIDELITY_STYLES } from './useGlobeAIRender';
 import { rendersApi, resolveApiFileUrl } from '@/services/api';
 import { getRenderImageKey, saveRenderedImage } from '@/utils/renderPersistence';
+import { downloadDataImage } from '@/utils/downloadDataImage';
 import { isTextEntryTarget } from '@/utils/domEvents';
 import { isPersistedZoneId } from '@/utils/zoneIdentity';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
@@ -1027,9 +1028,14 @@ export function GlobeAIRenderPanel({
   const handleDownload = useCallback(() => {
     if (!result?.imageUrl || result.error) return;
     const providerSlug = (result.providerLabel || 'render').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    const filename = `siteforge-globe-${providerSlug}-${Date.now()}.png`;
+    if (result.imageUrl.startsWith('data:')) {
+      downloadDataImage(result.imageUrl, filename);
+      return;
+    }
     const a = document.createElement('a');
     a.href = result.imageUrl;
-    a.download = `siteforge-globe-${providerSlug}-${Date.now()}.png`;
+    a.download = filename;
     a.click();
   }, [result]);
 
@@ -1968,6 +1974,11 @@ export function GlobeAIRenderPanel({
           <a
             href={lightboxRender.imageUrl}
             download={lightboxRender.downloadName}
+            onClick={(event) => {
+              if (!lightboxRender.imageUrl.startsWith('data:')) return;
+              event.preventDefault();
+              downloadDataImage(lightboxRender.imageUrl, lightboxRender.downloadName);
+            }}
             className="flex h-10 w-10 items-center justify-center rounded-full bg-black text-white shadow-lg ring-2 ring-white/30 transition hover:bg-white hover:text-black"
             aria-label="Download render"
             title="Download"
