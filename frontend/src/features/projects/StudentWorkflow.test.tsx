@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom/vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
-import { StudentStepPanel, StudentWorkflowNav, studentStreetAccessNotice } from './StudentWorkflow';
+import { StudentStepPanel, StudentWorkflowNav, studentLandscapeNeedsRefresh, studentStreetAccessNotice } from './StudentWorkflow';
 import type { SiteZone } from '@/types';
 
 describe('student workflow', () => {
@@ -41,6 +41,23 @@ describe('student workflow', () => {
     expect(screen.getByRole('status')).toHaveTextContent('No public-road connection');
     fireEvent.click(screen.getByRole('button', { name: 'Image' }));
     expect(onImage).toHaveBeenCalledOnce();
+  });
+  it('routes a student to refresh a stale landscape before presentation', () => {
+    const onSite = vi.fn();
+    const boundary: SiteZone = {
+      id: 'boundary', project_id: 'project', zone_type: 'site_boundary',
+      coordinates: [[0, 0], [1, 0], [1, 1]], color: '#8ba65f', sort_order: 0,
+      created_at: '', updated_at: '',
+      properties: { community_3d_landscape: { state: 'stale' } },
+    };
+    expect(studentLandscapeNeedsRefresh(boundary)).toBe(true);
+    expect(studentLandscapeNeedsRefresh({ ...boundary, properties: { community_3d_landscape: { state: 'compiled' } } })).toBe(false);
+    render(<StudentStepPanel step="present" hasSite canRender renderReason=""
+      landscapeNeedsRefresh={studentLandscapeNeedsRefresh(boundary)}
+      onSite={onSite} onDesign={vi.fn()} onImage={vi.fn()} onVideo={vi.fn()} />);
+    expect(screen.getByRole('status')).toHaveTextContent('site landscape needs a fresh preview');
+    fireEvent.click(screen.getByRole('button', { name: 'Refresh site landscape' }));
+    expect(onSite).toHaveBeenCalledOnce();
   });
   it('distinguishes an unmarked road from a marked route that still ends inside the site', () => {
     const boundary = { zone_type: 'site_boundary', coordinates: [[0,0],[1,0],[1,1],[0,1]] } as SiteZone;

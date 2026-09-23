@@ -49,7 +49,7 @@ import { StreetViewPanel } from '@/components/viewer/StreetViewPanel';
 import { WorkflowStepper } from '@/components/viewer/WorkflowStepper';
 import { StudioControls, StudioDialog, StudioSaveStatus } from './StudioControls';
 import { ReadOnlyProject } from './ReadOnlyProject';
-import { StudentWorkflowNav, StudentStepPanel, studentStreetAccessNotice, type StudentStep } from './StudentWorkflow';
+import { StudentWorkflowNav, StudentStepPanel, studentLandscapeNeedsRefresh, studentStreetAccessNotice, type StudentStep } from './StudentWorkflow';
 import { defaultStudentStep } from './studentNavigation';
 import { StudentPlanningReport } from '@/features/studentReports/StudentPlanningReport';
 import { useReferenceLayers } from '@/features/referenceLayers/useReferenceLayers';
@@ -1158,6 +1158,7 @@ export function ProjectViewPage() {
               drawingSite={activeSitePlannerTool === 'site_boundary'} location={project.location?.address}
               canRender={cityPromptWorkflow.canRender} renderReason={cityPromptWorkflow.renderReason}
               streetAccessNotice={streetAccessNotice}
+              landscapeNeedsRefresh={studentLandscapeNeedsRefresh(cityPromptWorkflow.activeBoundary)}
               onSite={() => { setStudentStep('site'); handleSiteBoundary(); }} onDesign={() => changeStudentStep('design')}
               onImage={handleOpenGlobeRender} onVideo={handleOpenVideoRender} />}
             <div hidden={activeStudentStep !== 'design'}>
