@@ -63,11 +63,15 @@ def basketball_end(baseline,sign,r):
     for x in (-xcorner,xcorner):S.line(pos(x,0),pos(x,1.575+join))
     basketball_hoop(baseline,sign,r)
 
-def court_net(width,center,end,bottom=.06,mesh_step=.075,post_height=None,padding=False):
+def court_net(width,center,end,bottom=.06,mesh_step=.075,post_height=None,padding=False,post_span=None):
     post_height=post_height or end+.08
-    for x in (-width/2,width/2):
+    post_span=post_span or width
+    for x in (-post_span/2,post_span/2):
         S.beam('net upright',(x,0,0),(x,0,post_height),.045,'metal',10)
         if padding:S.beam('net upright padding',(x,0,.1),(x,0,1.85),.10,'padding',10)
+    if post_span>width:
+        for side in (-1,1):
+            for z in (bottom,end):S.beam('net tension cord',(side*width/2,0,z),(side*post_span/2,0,z),.003,'net',4)
     top=lambda x:center+(end-center)*(2*x/width)**2
     n=math.ceil(width/mesh_step)
     for i in range(n+1):
@@ -110,11 +114,11 @@ def padel_walls():
             S.beam('door padding',(x,sign*1.15,0),(x,sign*1.15,2.2),.06,'padding',8)
             S.beam('door padding',(x,sign*.05,2.2),(x,sign*1.15,2.2),.045,'padding',8)
 
-def aggregate(w,d,material_name):
+def aggregate(w,d,material_name,z=0):
     rng=random.Random(17);verts=[];faces=[]
     for i in range(min(2600,int(w*d*6))):
         x=rng.uniform(-w/2+.1,w/2-.1);y=rng.uniform(-d/2+.1,d/2-.1);s=rng.uniform(.014,.05)
-        k=len(verts);verts.extend([(x-s,y,.002),(x+s,y,.002),(x,y+s,.004)]);faces.append((k,k+1,k+2))
+        k=len(verts);verts.extend([(x-s,y,z+.002),(x+s,y,z+.002),(x,y+s,z+.004)]);faces.append((k,k+1,k+2))
     S.mesh('fine aggregate',verts,faces,material_name)
 
 def sports_module(r):
@@ -124,8 +128,13 @@ def sports_module(r):
     surface='sand' if kind=='beach_volleyball' else 'gravel' if kind in ('bocce','petanque') else 'court'
     # Keep the underlay below playing/sand surfaces: coincident top faces turn
     # black or flicker after GLB reimport. The 12 mm reveal is a concept finish.
-    S.box('sport base',(0,0,-.066),(mw,md,.108),'runoff')
-    if surface in ('sand','gravel'):S.box('granular surface',(0,0,-.035),(mw,md,.07),surface);aggregate(mw,md,surface+'_grain')
+    # Bocce adds a distinct lane over the surrounding gravel. Keep both finish
+    # layers separated, including the aggregate, rather than stacking at Z=0.
+    granular_z=-.01 if kind=='bocce' else 0
+    S.box('sport base',(0,0,-.066+granular_z),(mw,md,.108),'runoff')
+    if surface in ('sand','gravel'):
+        S.box('granular surface',(0,0,-.035+granular_z),(mw,md,.07),surface)
+        aggregate(mw,md,surface+'_grain',granular_z)
     else:S.box('playing surface',(0,0,-.03),(pw,pd,.06),'court')
     if kind in ('basketball','three_x_three'):
         # FIBA boundaries lie outside the 15 x 28 / 15 x 11 inner playing area.
@@ -154,7 +163,8 @@ def sports_module(r):
             for x in (-singles/2,singles/2):S.line((x,-pd/2),(x,pd/2),.04 if kind=='badminton' else .05)
         sd=r['service_distance_m']
         for sign in (-1,1):
-            S.line((-singles/2,sign*sd),(singles/2,sign*sd),.04 if kind=='badminton' else .05)
+            service_width=pw if kind=='badminton' else singles
+            S.line((-service_width/2,sign*sd),(service_width/2,sign*sd),.04 if kind=='badminton' else .05)
             if kind=='badminton':
                 S.line((-pw/2,sign*(pd/2-.76)),(pw/2,sign*(pd/2-.76)),.04)
                 S.line((0,sign*sd),(0,sign*pd/2),.04)
@@ -174,8 +184,8 @@ def sports_module(r):
         if kind=='volleyball':
             S.line((-pw/2,0),(pw/2,0))
             for y in (-3,3):S.line((-pw/2,y),(pw/2,y))
-        nw=pw+1.5
-        court_net(nw,2.43,2.43,bottom=1.43,mesh_step=.10,post_height=2.55,padding=True)
+        nw=pw+.5
+        court_net(nw,2.43,2.43,bottom=1.43,mesh_step=.10,post_height=2.55,padding=True,post_span=pw+1.5)
         for x in (-pw/2,pw/2):
             for i in range(8):S.beam('antenna',(x,0,2.43+i*.1),(x,0,2.43+(i+1)*.1),.006,'paint' if i%2==0 else 'rim',6)
         # No hard perimeter fence at the edge of sand run-off.

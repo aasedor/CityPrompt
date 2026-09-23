@@ -22,6 +22,7 @@ Default status is NOT TESTED. Do not prefill a pass from another archetype.
 - Replacement furniture: complete mesh envelope/base datum, legacy-asset flag independence, component and in-site evidence:
 - Vegetation: canopy envelope, seeded prototype/triangle budget, furniture-scale comparison and route/entrance visibility:
 - Hardscape trees: paired bed/well style and footprint, visible root opening, shared surface datum, paving/joint exclusion, clear routes and sloped-contact evidence:
+- Sports: sourced playing dimensions, full run-off/equipment reserve, measured net/rim heights, open gates, crown clearance and non-coplanar floor finishes; separate recreational adaptations:
 - Asset review status and separate publication/activation status:
 - Evidence manifest location and hashes; durable shared location for delivery:
 

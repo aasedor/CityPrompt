@@ -15,10 +15,12 @@ try:
     for o in bpy.context.scene.objects:
         if o.type!='MESH' or not o.data.materials:continue
         mat=o.data.materials[0].name.split('.')[0]
-        if mat in ('runoff','court','sand','gravel'):
+        if mat in ('runoff','court','sand','gravel','bocce_lane'):
             tops[mat]=max(tops.get(mat,-math.inf),max((o.matrix_world@Vector(v)).z for v in o.bound_box))
     for name in ('court','sand','gravel'):
         if name in tops:assert tops[name]-tops['runoff']>.004,(r['sport'],'coplanar playing-surface underlay')
+    if r['sport']=='bocce':
+        assert tops['bocce_lane']-tops['gravel']>.004,(r['sport'],'coplanar bocce lane and surrounding gravel')
     samples=0
     allowed={'paving','edge','runoff','court','sand','sand_grain','gravel','gravel_grain','bocce_lane','paint','key'}
     for route in r['sport_access_routes']:

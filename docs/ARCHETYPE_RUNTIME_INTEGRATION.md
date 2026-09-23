@@ -521,6 +521,17 @@ corridors against the reimported GLB's surface material and obstruction height;
 put sports entries beside, not behind, goals. Full view framing must account
 for render aspect ratio. See [sports/garden assets](SPORTS_GARDEN_ASSET_BATCH_2026-09-22.md).
 
+For sports courts, record the exact playing rectangle separately from its full
+run-off/equipment reserve and whole-park footprint, with governing-body sources
+and explicit recreational adaptations. Measure native nets/rims on the delivered
+mesh; keep tree crowns outside the complete sports reserve. Check open gates at
+their actual clear width, including padel side openings and low boules edging.
+Verify playing surfaces do not coincide with underlay or surrounding granular
+finish top faces: this can render black or flicker despite valid dimensions.
+Native images and material-aware rays
+complement one another. The [ten-court batch](SPORTS_COURT_BATCH_TEN_2026-09-23.md)
+records these offline checks; its browser testing was expressly deferred.
+
 For straight street assets, check the full walking width and seating-bay links,
 not just the corridor centreline. Ground ownership regions must meet without
 thin lawn gaps. Orient cycle stencils along travel and verify both directions
