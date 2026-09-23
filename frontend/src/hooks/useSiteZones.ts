@@ -181,9 +181,10 @@ export function useSiteZones(projectId: string | undefined) {
           void queryClient.invalidateQueries({ queryKey: ['site-zones', projectId] });
           const total = context.buildings.length + context.roads.length + context.water.length + context.parks.length;
           toast.success(`Site ready with ${total} nearby context features`);
-        }).catch((error: unknown) => {
-          const message = getApiErrorMessage(error, 'context service unavailable');
-          toast.error(`Site boundary saved, but surrounding context could not load: ${message}`);
+        }).catch(() => {
+          toast('Site boundary saved. Nearby map context is unavailable for now; you can keep designing.', {
+            icon: 'ℹ️',
+          });
         });
       }
     },

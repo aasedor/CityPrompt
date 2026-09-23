@@ -12,6 +12,7 @@ from datetime import datetime, timezone
 
 from typing import Optional
 
+import httpx
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from geoalchemy2.elements import WKTElement
 from geoalchemy2.functions import ST_CoveredBy
@@ -1163,7 +1164,14 @@ async def fetch_context(
     source_updated_at = zone.updated_at
     shape = to_shape(zone.geometry)
     fetcher = OSMContextFetcher()
-    osm_context = await fetcher.fetch(shape)
+    try:
+        osm_context = await fetcher.fetch(shape)
+    except httpx.HTTPError as exc:
+        logger.warning("Optional OSM context unavailable for zone %s: %s", zone_id, exc)
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Nearby map context is temporarily unavailable; the site boundary is saved.",
+        ) from exc
 
     # Fetching context must not overwrite an edit made while the network was slow.
     await lock_residual_landscape_project(db, zone.project_id)
