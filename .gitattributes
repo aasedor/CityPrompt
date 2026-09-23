@@ -51,5 +51,6 @@ frontend/public/archetypes/streets/**/*.jpg filter=lfs diff=lfs merge=lfs -text
 seed/model-library/objects/** filter=lfs diff=lfs merge=lfs -text
 
 seed/model-library/rlasm-architectural-clay/models/*.glb filter=lfs diff=lfs merge=lfs -text
+seed/classroom-release/models/*.glb filter=lfs diff=lfs merge=lfs -text
 tools/catalogue_*_pilot/evidence/independent-review.json -text whitespace=cr-at-eol
 seed/model-library/rlasm-architectural-clay/evidence/*.json -text whitespace=cr-at-eol

@@ -87,6 +87,13 @@ here instead of creating another competing roadmap.
 
 ### 1. Lock the release baseline and starter catalogue
 
+Approved implementation decisions: 60 students working in approximately eight
+group projects; individual home placement; a starter-first picker with the larger
+catalogue explicitly exploratory. AI finishes use concept fidelity (arrangement,
+scale, street topology and park programme retained), with exact sources and honest
+human/automatic review status. Hosting is undecided. No paid retry, refill, push
+or deployment is authorized by the implementation approval.
+
 **Deliverables**
 
 - Create one release inventory: exact archetype/variant IDs, source revision,
@@ -238,7 +245,7 @@ exercise does not activate an unapproved family or grant construction compliance
 
 | Milestone | Current status | Exit evidence |
 | --- | --- | --- |
-| 1. Baseline and roster | Next | Pending exact roster and failure/dependency triage |
+| 1. Baseline and roster | Asset baseline verified locally; broader deployment manifest work pending | 185/185 assembly tests after restoring 65 tracked manifests; exact nine-variant roster and 47 byte-locked dependencies; local preflight 47/47 |
 | 2. Shared runtime behaviour | Partially demonstrated | Shared route/junction work exists; native catalogue pilots still pending |
 | 3. Authoring/recovery | Partially demonstrated | September 22/23 local trials; release roster and regular-browser run pending |
 | 4. Presentation | Partially demonstrated | Edge exact PNG; faithful AI comparison remains open |
@@ -252,9 +259,20 @@ the coherent unit. Run narrow tests and TypeScript checks for changed production
 code, then the integrated release checks. Keep bulky evidence outside source and
 never treat ignored local assets as shipped files.
 
-The next action is milestone 1: produce the exact starter inventory and diagnose
-the release test/asset baseline. Its result fixes the scope for milestone 2. No
-additional asset-generation batch is required to begin.
+Implementation checkpoint: the 71 assembly failures were individually matched to
+FileNotFoundError paths in the saved test report; all 65 unique files were already
+tracked and excluded by sparse checkout. Restoring them produced 185/185 passing
+tests without changing assertions or regenerating assets. Evidence:
+`artifacts/student-release-assembly-hydrated.xml` (ignored local output).
+
+The versioned roster is `seed/classroom-release/starter-v1.json`; generated
+frontend/backend copies and `scripts/classroom_release.py` provide identity/parity
+and byte checks. All 47 dependencies pass against the current trial public root.
+Sixteen street files were restored from local LFS cache. The existing infill v006
+was packaged unchanged in LFS. `--require-release` remains red until exact-variant
+runtime reviews pass. This is local source/asset evidence, not remote storage or
+hosted success. The next unit is starter selection and the native street compiler,
+saved recipe, rendering and capture integration.
 
 ## Main evidence
 
