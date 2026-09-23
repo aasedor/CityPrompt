@@ -1,6 +1,7 @@
 [
   {
     "id": "student_main_street_v1",
+    "sourceArchetypeId": "neighborhood_main_street",
     "title": "Neighbourhood Main Street",
     "status": "candidate",
     "sourceRecipeSha256": "01b88587a564e94f0dfe62062529993096833f4846765ba304917cb3e4430d59",
@@ -408,6 +409,7 @@
   },
   {
     "id": "student_market_street_v1",
+    "sourceArchetypeId": "pedestrian_only_street",
     "title": "Pedestrian Market Street",
     "status": "candidate",
     "sourceRecipeSha256": "c7670fd29bafdcb6acf7ef095cfe78aa28a0678b47595ae958bad1c52fbb11fe",

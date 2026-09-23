@@ -559,7 +559,7 @@ function StreetRibbonDetail({
         .filter((item): item is typeof item & { geometry: THREE.BufferGeometry } => Boolean(item.geometry))
       : [];
     const isCompleteMainStreet = sectionProfile?.archetypeId === 'main_street_complete';
-    const parkingMarkings = isCompleteMainStreet
+    const parkingMarkings = sectionProfile && (isCompleteMainStreet || nativePilot?.id === 'student_main_street_v1')
       ? sectionProfile.bands
         .filter((band) => band.kind === 'parking')
         .map((band) => buildParkingStallMarkingGeometry(
@@ -631,7 +631,7 @@ function StreetRibbonDetail({
       }
     }
     return result;
-  }, [centerLngLat, centroid, halfWidth, intersectionNodes, sectionProfile, sectionScale, placementTerrain, zone.id, sharedGround.offsetAt, sharedGround.grid, sharedBlocked]);
+  }, [centerLngLat, centroid, halfWidth, intersectionNodes, sectionProfile, sectionScale, placementTerrain, zone.id, nativePilot?.id, sharedGround.offsetAt, sharedGround.grid, sharedBlocked]);
 
   const clearOfJunction = useMemo(() => (point: {x: number; y: number}) => !centroid || !intersectionNodes.some(node =>
     node.zoneIds.includes(zone.id) && node.surfaceLayout && streetJunctionContainsPoint(node.surfaceLayout,

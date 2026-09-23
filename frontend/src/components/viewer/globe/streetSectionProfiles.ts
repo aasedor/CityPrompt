@@ -758,7 +758,9 @@ export function resolvePilotStreetSectionProfile(
     title: entry.title ?? pilotId.replace(/_/g, ' '),
     rowM,
     bands,
-    markings: addMarkings(pilotId, bands),
+    markings: nativePilot?.id === 'student_main_street_v1'
+      ? [{ offsetM: 0, color: '#eae8e1', widthM: 0.1, dashed: true }]
+      : addMarkings(pilotId, bands),
     treeOffsetsM,
     curbOffsetsM,
     renderCurbs: curbOffsetsM.length > 0,

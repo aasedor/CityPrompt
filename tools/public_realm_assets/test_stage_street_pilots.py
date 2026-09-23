@@ -23,6 +23,7 @@ def _package(root: Path) -> Path:
     (root / "references" / "reference.png").write_bytes(reference)
     recipe = {
         "id": "student_main_street_v1", "title": "Pilot", "runtime_approved": False,
+        "reference": "neighborhood-main-street/hero.png",
         "dimensions_m": [10, 48], "fixed_width_m": 10, "fixture_length_m": 48,
         "pattern": "stone", "sections": [
             {"name": "walk", "x": -3, "width": 4, "material": "paving"},
@@ -47,6 +48,7 @@ def test_staging_excludes_preview_and_locks_component_bytes(tmp_path):
     assert not public.exists() and not manifest.exists()
     rows = stage([package], public, manifest, dry_run=False)
     assert rows[0]["widthM"] == 10
+    assert rows[0]["sourceArchetypeId"] == "neighborhood_main_street"
     staged = public / "street-kits" / "pilots" / rows[0]["id"]
     assert (staged / "bench.glb").read_bytes() == b"rigid-furniture"
     assert not (staged / "assembly-preview.glb").exists()
@@ -83,3 +85,18 @@ def test_staging_rejects_unreviewed_identity_and_unknown_tree_pair(tmp_path):
     recipe_path.write_text(json.dumps(recipe))
     with pytest.raises(ValueError, match="native module|hardscape tree"):
         inspect_pilot(package)
+
+
+def test_staging_requires_explicit_replacement_for_changed_candidate_metadata(tmp_path):
+    package = _package(tmp_path / "package")
+    public = tmp_path / "public"
+    manifest = tmp_path / "pilots.json"
+    stage([package], public, manifest, dry_run=False)
+    recipe_path = package / "recipe.json"
+    recipe = json.loads(recipe_path.read_text())
+    recipe["title"] = "Revised candidate"
+    recipe_path.write_text(json.dumps(recipe), encoding="utf-8")
+    with pytest.raises(ValueError, match="silently replace"):
+        stage([package], public, manifest, dry_run=True)
+    stage([package], public, manifest, dry_run=False, replace=True)
+    assert json.loads(manifest.read_text())[0]["title"] == "Revised candidate"

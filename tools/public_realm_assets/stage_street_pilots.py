@@ -98,6 +98,9 @@ def inspect_pilot(package: Path) -> tuple[dict, dict[str, bytes]]:
                 raise ValueError("Every hardscape tree needs its exact tree/well pair")
         tree_wells.append({key: item[key] for key in ("x", "y", "width", "depth", "style", "tree_kind")})
     reference = recipe["image_references"][0]
+    reference_parent = Path(recipe["reference"]).parts[0].replace("-", "_")
+    if not re.fullmatch(r"[a-z][a-z0-9_]*", reference_parent):
+        raise ValueError("Source reference must identify one catalogue street")
     relative_reference = Path(reference["path"])
     if relative_reference.is_absolute() or ".." in relative_reference.parts or relative_reference.suffix.lower() != ".png":
         raise ValueError("Reference image must be a package-local PNG")
@@ -107,6 +110,7 @@ def inspect_pilot(package: Path) -> tuple[dict, dict[str, bytes]]:
         raise ValueError("Source reference image changed")
     manifest = {
         "id": street_id,
+        "sourceArchetypeId": reference_parent,
         "title": recipe["title"],
         "status": "candidate",
         "sourceRecipeSha256": _sha256(recipe_bytes),
@@ -127,7 +131,8 @@ def inspect_pilot(package: Path) -> tuple[dict, dict[str, bytes]]:
     return manifest, {**{f"{name}.glb": data for name, data in modules.items()}, "reference.png": reference_data}
 
 
-def stage(pilots: list[Path], public_root: Path, manifest_path: Path, *, dry_run: bool) -> list[dict]:
+def stage(pilots: list[Path], public_root: Path, manifest_path: Path, *, dry_run: bool,
+          replace: bool = False) -> list[dict]:
     inspected = [inspect_pilot(package) for package in pilots]
     ids = [manifest["id"] for manifest, _ in inspected]
     if len(ids) != len(set(ids)):
@@ -137,7 +142,7 @@ def stage(pilots: list[Path], public_root: Path, manifest_path: Path, *, dry_run
     if len(existing) != len(existing_rows):
         raise ValueError("Existing pilot registry contains duplicate identities")
     for manifest, files in inspected:
-        if manifest["id"] in existing and existing[manifest["id"]] != manifest:
+        if not replace and manifest["id"] in existing and existing[manifest["id"]] != manifest:
             raise ValueError(f"Refusing to silently replace a staged pilot: {manifest['id']}")
         destination = public_root / "street-kits" / "pilots" / manifest["id"]
         for name, data in files.items():
@@ -153,7 +158,9 @@ def stage(pilots: list[Path], public_root: Path, manifest_path: Path, *, dry_run
                 if not target.exists():
                     target.write_bytes(data)
         manifest_path.parent.mkdir(parents=True, exist_ok=True)
-        merged = existing_rows + [item for item, _ in inspected if item["id"] not in existing]
+        replacements = {item["id"]: item for item, _ in inspected}
+        merged = [replacements.get(row["id"], row) for row in existing_rows]
+        merged += [item for item, _ in inspected if item["id"] not in existing]
         manifest_path.write_text(json.dumps(merged, indent=2) + "\n", encoding="utf-8")
     return [item for item, _ in inspected]
 
@@ -164,8 +171,9 @@ def main() -> None:
     parser.add_argument("--public-root", type=Path, required=True)
     parser.add_argument("--manifest", type=Path, required=True)
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--replace", action="store_true", help="Explicitly revise previously staged metadata")
     args = parser.parse_args()
-    result = stage(args.pilot, args.public_root, args.manifest, dry_run=args.dry_run)
+    result = stage(args.pilot, args.public_root, args.manifest, dry_run=args.dry_run, replace=args.replace)
     print(("DRY_RUN_PASS" if args.dry_run else "STAGED_CANDIDATES"), ", ".join(row["id"] for row in result))
 
 

@@ -44,11 +44,11 @@ describe('candidate native street modules on route geometry', () => {
       native_street_pilot_id: main.id, width: 23,
     } })?.sourceAssemblySha256).toBe(main.sourceAssemblySha256);
     const mainProfile = resolvePilotStreetSectionProfile({ properties: {
-      road_archetype_id: 'main_street_complete', road_selected_variant_id: 'main_street_complete_v0',
+      road_archetype_id: main.sourceArchetypeId, road_selected_variant_id: 'neighborhood_main_street_v0',
       native_street_pilot_id: main.id, width: main.widthM,
     } });
     const marketProfile = resolvePilotStreetSectionProfile({ properties: {
-      road_archetype_id: 'stephen_avenue_pedestrian_mall', road_selected_variant_id: 'stephen_avenue_pedestrian_mall_v0',
+      road_archetype_id: market.sourceArchetypeId, road_selected_variant_id: 'pedestrian_only_street_v0',
       native_street_pilot_id: market.id, width: market.widthM,
     } });
     expect(mainProfile?.rowM).toBe(23);

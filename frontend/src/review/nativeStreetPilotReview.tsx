@@ -13,9 +13,9 @@ const market = nativeStreetPilot('student_market_street_v1')!;
 const mainRoute = [{ x: -38, y: -48 }, { x: -38, y: 48 }];
 const marketRoute = [{ x: 29, y: -48 }, { x: 29, y: 0 }, { x: 66, y: 0 }];
 
-function Street({ pilot, route, parent }: { pilot: typeof main; route: typeof mainRoute; parent: string }) {
+function Street({ pilot, route }: { pilot: typeof main; route: typeof mainRoute }) {
   const profile = resolvePilotStreetSectionProfile({ properties: {
-    road_archetype_id: parent, road_selected_variant_id: `${parent}_v0`,
+    road_archetype_id: pilot.sourceArchetypeId, road_selected_variant_id: `${pilot.sourceArchetypeId}_v0`,
     native_street_pilot_id: pilot.id, width: pilot.widthM,
   } })!;
   const bands = useMemo(() => profile.bands.map(band => ({
@@ -30,7 +30,9 @@ function Street({ pilot, route, parent }: { pilot: typeof main; route: typeof ma
   </group>;
 }
 
-createRoot(document.getElementById('root')!).render(<>
+const root = createRoot(document.getElementById('root')!);
+if (import.meta.hot) import.meta.hot.dispose(() => root.unmount());
+root.render(<>
   <div style={{ position: 'absolute', zIndex: 2, top: 14, left: 18, padding: 12,
     background: 'rgba(255,255,255,.9)', borderRadius: 8, fontFamily: 'Arial' }}>
     <b>Route-based native street pilot</b><br />Main street: 23 m × 96 m, two module cycles<br />
@@ -39,8 +41,8 @@ createRoot(document.getElementById('root')!).render(<>
   <Canvas shadows orthographic camera={{ position: [105, -120, 115], zoom: 5.2, near: 0.1, far: 500 }}>
     <ambientLight intensity={1.3} />
     <directionalLight position={[-25, 35, 90]} intensity={2} castShadow shadow-mapSize={[2048, 2048]} />
-    <Street pilot={main} route={mainRoute} parent="main_street_complete" />
-    <Street pilot={market} route={marketRoute} parent="stephen_avenue_pedestrian_mall" />
+    <Street pilot={main} route={mainRoute} />
+    <Street pilot={market} route={marketRoute} />
     <OrbitControls target={[0, 0, 0]} makeDefault />
   </Canvas>
 </>);

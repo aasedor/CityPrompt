@@ -3,7 +3,7 @@
 Branch: `codex/native-street-catalogue-pilot`. Date: 2026-09-23.
 
 This is a bounded **candidate** checkpoint for two accepted offline street
-concepts. It is not yet a student-picker release, a Public Realm LEGO compiler
+concepts. It is not yet a student-picker release, an active Public Realm LEGO
 family, a Currie project acceptance, or authorization to publish the other
 eight streets. The source package still declares `runtime_approved: false`.
 
@@ -11,8 +11,8 @@ eight streets. The source package still declares `runtime_approved: false`.
 
 | Candidate | Width / source fixture | Separate modules / poses | Locked preview assembly SHA-256 |
 | --- | --- | --- | --- |
-| `student_main_street_v1` | 23 m / 48 m | 8 / 30 | `e0e34bfde671aee925a2199d2845cdd3a49e2935cac587f9d7c2b845e36e2177` |
-| `student_market_street_v1` | 18 m / 48 m | 6 / 16 | `81f6715283b740536795300e0a7860c9757dcab77b8c4044b1ed3d99b507b88a` |
+| `student_main_street_v1` (`neighborhood_main_street`) | 23 m / 48 m | 8 / 30 | `e0e34bfde671aee925a2199d2845cdd3a49e2935cac587f9d7c2b845e36e2177` |
+| `student_market_street_v1` (`pedestrian_only_street`) | 18 m / 48 m | 6 / 16 | `81f6715283b740536795300e0a7860c9757dcab77b8c4044b1ed3d99b507b88a` |
 
 The [machine-readable pilot manifest](../frontend/src/data/nativeStreetPilots.json)
 locks the source recipe, preview assembly and reference image hashes, ordered
@@ -33,6 +33,16 @@ stage surfaced a real omission: `reference_assets` listed only five specially
 reviewed props, while `placements` held all 30 actual main-street modules. The
 staging contract now uses and validates every `placements` entry. It requires a
 matching native tree and grate for each hardscape well.
+
+The source references identify the existing catalogue parents shown in the
+table. These pilots are new exact model identities, not the parents' existing
+visual `v0` cards. `backend/app/services/native_street_candidate_contract.py`
+compiles each staged identity into a **review-only** Public Realm LEGO recipe:
+the recipe binds the source, assembly, reference and every module SHA-256, plus
+the exact ROW width. Its catalogue is constructed only when a caller explicitly
+passes the manifest; it is excluded from the active capability catalogue and
+AI prompt vocabulary. This makes the future compiler selection inspectable
+without implying that the production renderer or student picker supports it.
 
 ## Reusable runtime seam
 
@@ -57,7 +67,7 @@ establishes that contract.
 ## Evidence and remaining gates
 
 - Narrow frontend tests: 67 passed for the pilot, street profile and graph.
-  Staging tests: 3 passed. Frontend type check, touched-file ESLint and
+  Staging tests: 4 passed. Candidate compiler tests: 2 passed. Frontend type check, touched-file ESLint and
   production build passed. Pilot main/market module and reference URLs returned
   HTTP 200 with expected byte lengths.
 - The route review page loaded a 96 m main street (two component cycles) and
