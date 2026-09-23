@@ -64,19 +64,39 @@ modules at native scale; clear junction/turn envelopes; and bind any eventual
 student selection to a server-verified recipe. A screenshot or GLB alone never
 establishes that contract.
 
+## Mixed street node pilot
+
+The shared graph now accepts an exact development-only pilot as a contributing
+route when its marker, width and catalogue parent agree. The market promenade
+joins the candidate main street at T and X nodes, and also joins an existing
+compiled main street. The section junction uses its central 5 m pedestrian
+promenade as circulation, keeps the rest of the 18 m paved, and draws crossings
+only on vehicle approaches. It never draws a zebra across the car-free market
+route. The node has separate vehicle-asphalt and market-paver surfaces in
+either axis order, so the market entrance does not turn into an asphalt patch.
+Tests check one continuous T/X footprint, the real three-arm
+closure, both axis orders and a car-free market-to-market crossing. The separate local
+`/native-street-mixed-junction-review.html` page renders the actual graph-owned
+surface and rigid modules with a T/X toggle; both views loaded without browser
+console errors or warnings. This is still a local DEV graph/surface check;
+the backend has not been taught to attest or export these candidate nodes.
+
 ## Evidence and remaining gates
 
 - Narrow frontend tests: 67 passed for the pilot, street profile and graph.
-  Staging tests: 4 passed. Candidate compiler tests: 2 passed. Frontend type check, touched-file ESLint and
+  The subsequent mixed-junction suite passed 89 focused tests. Staging tests:
+  4 passed. Candidate compiler tests: 2 passed. Frontend type check, touched-file ESLint and
   production build passed. Pilot main/market module and reference URLs returned
   HTTP 200 with expected byte lengths.
 - The route review page loaded a 96 m main street (two component cycles) and
   bent pedestrian market street. Native modules, trees, grates, stalls and
-  fountain were visible; browser console errors/warnings: none. This review
+  fountain were visible; browser console errors/warnings: none. The mixed T/X
+  review also showed the market pavers meeting asphalt, two vehicle crossings,
+  clear furniture and a closed fourth arm on the T. These reviews
   uses an isolated neutral scene, not Google Tiles or a saved Currie project.
 - S1 metric sections are exercised locally. S2 is partial: bend/junction
-  furniture clearance is implemented, but a mixed vehicular/pedestrian
-  crossing surface and compiled/native graph ownership have not passed. S3
+  furniture clearance and mixed T/X graph surfaces pass focused tests, but
+  live compiled/native node ownership and server proof have not passed. S3
   prepared/irregular Currie terrain and public-road endpoints remain untested.
   S4 tree-root, crossing and clearance detail in the live globe remains open.
 - C1–C9, editing/Undo/reload/export, paid-image fidelity and novice picker

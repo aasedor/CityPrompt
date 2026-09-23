@@ -7,6 +7,7 @@ import {
 } from './streetFamilyCatalog';
 import { validateStreetRecipeProperties } from './streetLegoContract';
 import { publicRealmTrialAsset } from './publicRealmTrial';
+import { nativeStreetPilotForZone } from './nativeStreetPilot';
 
 interface LocalPoint {
   x: number;
@@ -163,6 +164,7 @@ function detectStreetIntersections(
   const mPerLon = metersPerDegLon(originLat);
   const axes: StreetAxis[] = eligibleZones.flatMap((zone) => {
     const native = publicRealmTrialAsset(zone);
+    const nativePilot = nativeStreetPilotForZone(zone);
     // Review-native rectangles use local X for section width and local Y for
     // the route. Generic buffered-road ring pairing follows the opposite
     // edge order and would make a long street's *width* its graph axis.
@@ -197,7 +199,7 @@ function detectStreetIntersections(
     return [{
       zoneId: zone.id,
       widthM: native?.dimensions[0] ?? effectiveRoadWidth(zone.properties),
-      supportedV1: centerlineAnchorsJunction && (native?.kind === 'street' || ((props?.road_archetype_id === 'calgary_collector'
+      supportedV1: centerlineAnchorsJunction && (native?.kind === 'street' || nativePilot !== undefined || ((props?.road_archetype_id === 'calgary_collector'
         && props.road_selected_variant_id === 'calgary_collector_v0'
         && effectiveRoadWidth(zone.properties) === 20
         && (props.public_realm_fallback as Record<string, unknown> | undefined)?.state === 'family_pending') || (validation.valid

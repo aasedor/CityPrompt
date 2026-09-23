@@ -38,10 +38,13 @@ describe('candidate native street modules on route geometry', () => {
 
   it('uses the source metric bands in the local procedural preview', () => {
     expect(nativeStreetPilotForZone({ zone_type: 'road', properties: {
-      native_street_pilot_id: main.id, width: 22,
+      native_street_pilot_id: main.id, road_archetype_id: main.sourceArchetypeId, width: 22,
     } })).toBeUndefined();
     expect(nativeStreetPilotForZone({ zone_type: 'road', properties: {
-      native_street_pilot_id: main.id, width: 23,
+      native_street_pilot_id: main.id, road_archetype_id: market.sourceArchetypeId, width: 23,
+    } })).toBeUndefined();
+    expect(nativeStreetPilotForZone({ zone_type: 'road', properties: {
+      native_street_pilot_id: main.id, road_archetype_id: main.sourceArchetypeId, width: 23,
     } })?.sourceAssemblySha256).toBe(main.sourceAssemblySha256);
     const mainProfile = resolvePilotStreetSectionProfile({ properties: {
       road_archetype_id: main.sourceArchetypeId, road_selected_variant_id: 'neighborhood_main_street_v0',

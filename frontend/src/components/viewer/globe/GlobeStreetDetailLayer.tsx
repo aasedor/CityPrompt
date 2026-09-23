@@ -1365,20 +1365,32 @@ function AccessibleFourWayIntersectionDetail({
   }, [connectedZones]);
   const surfaceProfile = useMemo(() => {
     const source = connectedZones.find((zone) => zone.id === node.surfaceLayout?.surfaceZoneId);
+    const vehicle = node.surfaceLayout?.pedestrianAxes?.includes(true)
+      ? connectedZones.map(resolvePilotStreetSectionProfile).find((profile) => profile?.bands.some((band) => band.kind === 'motor'))
+      : null;
+    return vehicle ?? (source ? resolvePilotStreetSectionProfile(source) : null);
+  }, [connectedZones, node.surfaceLayout?.surfaceZoneId, node.surfaceLayout?.pedestrianAxes]);
+  const promenadeProfile = useMemo(() => {
+    const source = connectedZones.find((zone) => nativeStreetPilotForZone(zone)?.id === 'student_market_street_v1');
     return source ? resolvePilotStreetSectionProfile(source) : null;
-  }, [connectedZones, node.surfaceLayout?.surfaceZoneId]);
+  }, [connectedZones]);
   const surfaceMaterials = useMemo(() => {
     if (!surfaceProfile) return null;
     const make = (kind: 'motor' | 'sidewalk') => {
-      const band = surfaceProfile.bands.find((item) => item.kind === kind);
+      const band = surfaceProfile.bands.find((item) => item.kind === kind)
+        ?? (kind === 'motor' ? surfaceProfile.bands.find((item) => item.kind === 'path') : undefined);
       if (!band) return null;
       const recipe = resolveStreetBandMaterial(surfaceProfile, band);
       return createStreetSurfaceMaterialResources(recipe.kind, recipe.options);
     };
-    return { pavement: make('motor'), sidewalks: make('sidewalk') };
-  }, [surfaceProfile]);
+    const promenadeBand = promenadeProfile?.bands.find((item) => item.kind === 'path');
+    const promenade = promenadeBand && promenadeProfile
+      ? resolveStreetBandMaterial(promenadeProfile, promenadeBand) : null;
+    return { pavement: make('motor'), sidewalks: make('sidewalk'),
+      promenade: promenade ? createStreetSurfaceMaterialResources(promenade.kind, promenade.options) : null };
+  }, [surfaceProfile, promenadeProfile]);
   useEffect(() => surfaceMaterials ? retainResourceForDeferredDisposal(surfaceMaterials, (owned) => {
-    owned.pavement?.dispose(); owned.sidewalks?.dispose();
+    owned.pavement?.dispose(); owned.sidewalks?.dispose(); owned.promenade?.dispose();
   }) : undefined, [surfaceMaterials]);
   const appearance = surfaceProfile?.appearance ?? STREET_APPEARANCE_KITS[node.appearanceKitId];
   const sharedGround = useStreetGround(node.longitude, node.latitude);
@@ -1395,16 +1407,22 @@ function AccessibleFourWayIntersectionDetail({
     );
     if (!result) return null;
     const surface = node.surfaceLayout && !node.surfaceLayout.sections ? buildStreetJunctionSurface(node.surfaceLayout) : null;
-    const geometry = { ...result, ...surface };
+    const geometry = { ...result, ...surface } as {
+      crosswalks: THREE.BufferGeometry; curbRamps: THREE.BufferGeometry; tactilePads: THREE.BufferGeometry;
+      pavement?: THREE.BufferGeometry; sidewalks?: THREE.BufferGeometry;
+      promenadePaving?: THREE.BufferGeometry; curbs?: THREE.BufferGeometry;
+    };
     if (sharedGround.offsetAt) {
-      const items = Object.values(geometry);
+      const items = Object.values(geometry).filter((item): item is THREE.BufferGeometry =>
+        Boolean(item?.getAttribute('position')?.count));
       if (items.some((item) => !applySharedStreetGround(item, sharedGround.offsetAt!, 0, 0, sharedGround.grid))) {
         items.forEach((item) => item.dispose()); return null;
       }
       return geometry;
     }
     if (!terrainPlane) return geometry;
-    for (const item of Object.values(geometry)) {
+    for (const item of Object.values(geometry).filter((item): item is THREE.BufferGeometry =>
+      Boolean(item?.getAttribute('position')?.count))) {
       applyTerrainPlaneToStreetGeometry(item, terrainPlane, terrain);
     }
     return geometry;
@@ -1488,6 +1506,7 @@ function AccessibleFourWayIntersectionDetail({
       ownedGeometry.tactilePads.dispose();
       ownedGeometry.pavement?.dispose();
       ownedGeometry.sidewalks?.dispose();
+      ownedGeometry.promenadePaving?.dispose();
       ownedGeometry.curbs?.dispose();
     });
   }, [geometry]);
@@ -1506,6 +1525,10 @@ function AccessibleFourWayIntersectionDetail({
       {geometry.sidewalks && <mesh geometry={geometry.sidewalks} renderOrder={RENDER_ORDER_FLATWORK} frustumCulled={false}>
         {surfaceMaterials?.sidewalks ? <primitive object={surfaceMaterials.sidewalks.material} attach="material" />
           : <meshStandardMaterial color={appearance.palette.sidewalk} roughness={0.94} metalness={0} side={THREE.DoubleSide} />}
+      </mesh>}
+      {geometry.promenadePaving && <mesh geometry={geometry.promenadePaving} renderOrder={RENDER_ORDER_FLATWORK} frustumCulled={false}>
+        {surfaceMaterials?.promenade ? <primitive object={surfaceMaterials.promenade.material} attach="material" />
+          : <meshStandardMaterial color="#aaa69e" roughness={0.94} metalness={0} side={THREE.DoubleSide} />}
       </mesh>}
       {geometry.curbs && <mesh geometry={geometry.curbs} renderOrder={RENDER_ORDER_RAISED} frustumCulled={false}>
         <meshStandardMaterial color={appearance.palette.curb} roughness={0.94} metalness={0} side={THREE.DoubleSide} />

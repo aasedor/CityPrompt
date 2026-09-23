@@ -31,7 +31,8 @@ export function nativeStreetPilotForZone(zone: Pick<SiteZone, 'zone_type' | 'pro
   if (!import.meta.env.DEV || zone.zone_type !== 'road') return undefined;
   const id = zone.properties?.native_street_pilot_id;
   const pilot = typeof id === 'string' ? nativeStreetPilot(id) : undefined;
-  return pilot && zone.properties?.width === pilot.widthM ? pilot : undefined;
+  return pilot && zone.properties?.width === pilot.widthM
+    && zone.properties?.road_archetype_id === pilot.sourceArchetypeId ? pilot : undefined;
 }
 
 interface RouteSegment {

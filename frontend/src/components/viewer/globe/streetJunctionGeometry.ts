@@ -5,6 +5,7 @@ import { METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 import type { ConnectedStreetIntersection } from './streetGraphIntersections';
 import { resolvePilotStreetSectionProfile } from './streetSectionProfiles';
 import { getStreetNetworkGroundMeta } from './streetNetworkGroundTexture';
+import { nativeStreetPilotForZone } from './nativeStreetPilot';
 import {
   PUBLIC_REALM_STREET_ROAD_SURFACE_LIFT_METERS as ROAD_Z,
   PUBLIC_REALM_STREET_SIDEWALK_SURFACE_LIFT_METERS as WALK_Z,
@@ -28,6 +29,9 @@ export interface StreetJunctionLayout {
   /** Actual carriageway bounds in node-local y (A) and x (B), including
    * asymmetric sections and reversed source centerlines. */
   sections?: [JunctionSection, JunctionSection];
+  /** A pedestrian approach stays paved, without a zebra/curb-ramp crossing
+   * across its own promenade. Motor approaches retain their crossings. */
+  pedestrianAxes?: [boolean, boolean];
 }
 
 /** A bounded section join with 45–135 degree approaches. Reviewed network atlases retain
@@ -41,6 +45,7 @@ export function resolveStreetJunctionLayout(node: ConnectedStreetIntersection, z
   const connected = zones.filter((zone) => node.zoneIds.includes(zone.id));
   if (connected.length !== node.zoneIds.length || connected.some((zone) => getStreetNetworkGroundMeta(zone))) return null;
   const roads = [0, 0];
+  const pedestrianAxes = [false, false];
   const sections: Array<JunctionSection | undefined> = [undefined, undefined];
   let surfaceZoneId: string | undefined;
   let uvFrame: StreetJunctionLayout['uvFrame'];
@@ -81,8 +86,11 @@ export function resolveStreetJunctionLayout(node: ConnectedStreetIntersection, z
     }
     if (Math.acos(Math.min(1, Math.abs(Math.cos(angle - expected)))) > Math.PI / 180) return null;
     const scale = (profile.metricWidthLocked ? profile.targetRowM ?? profile.rowM : effectiveRoadWidth(zone.properties)) / profile.rowM;
+    const pedestrianPilot = nativeStreetPilotForZone(zone)?.id === 'student_market_street_v1';
     const drive = profile.bands.filter((band) => ['motor', 'parking', 'cycle'].includes(band.kind));
+    if (pedestrianPilot && drive.length === 0) drive.push(...profile.bands.filter((band) => band.kind === 'path'));
     if (!drive.length) return null;
+    pedestrianAxes[axis] = pedestrianPilot;
     // The B axis runs across the node; its normal points towards negative X.
     const direction = axis === 0 ? Math.sign(Math.cos(angle - node.axisABearingRad))
       : -Math.sign(Math.sin(angle - node.axisABearingRad));
@@ -109,6 +117,7 @@ export function resolveStreetJunctionLayout(node: ConnectedStreetIntersection, z
   return {
     bearing: node.axisABearingRad, shear, surfaceZoneId, uvFrame, rowA, rowB, roadA: roads[0], roadB: roads[1], sidesB,
     sections: sections as [JunctionSection, JunctionSection],
+    pedestrianAxes: pedestrianAxes as [boolean, boolean],
     bounds: [
       { minX: -rowB - 4, maxX: rowB + 4, minY: -rowA, maxY: rowA },
       { minX: -rowB, maxX: rowB, minY: sidesB.includes(-1) ? -rowA - 4 : 0, maxY: sidesB.includes(1) ? rowA + 4 : 0 },
@@ -124,8 +133,8 @@ function inside(x: number, y: number, rect: JunctionRect): boolean {
  * one continuous sidewalk behind the closed side of a T. No fourth stub. */
 export function buildStreetJunctionSurface(layout: StreetJunctionLayout): { pavement: THREE.BufferGeometry; sidewalks: THREE.BufferGeometry; curbs: THREE.BufferGeometry } {
   if (layout.sections) {
-    const { pavement, sidewalks, curbs, crosswalks, curbRamps, tactilePads } = buildSectionJunctionGeometry(layout);
-    crosswalks.dispose(); curbRamps.dispose(); tactilePads.dispose();
+    const { pavement, sidewalks, curbs, promenadePaving, crosswalks, curbRamps, tactilePads } = buildSectionJunctionGeometry(layout);
+    promenadePaving.dispose(); crosswalks.dispose(); curbRamps.dispose(); tactilePads.dispose();
     return { pavement, sidewalks, curbs };
   }
   const { rowA, rowB, roadA, roadB, sidesB, bounds, bearing } = layout;
@@ -197,7 +206,7 @@ export function buildSectionJunctionGeometry(layout: StreetJunctionLayout) {
   const { rowA, rowB, sidesB, bounds, bearing } = layout;
   const xs = [...new Set([-rowB - 4, -rowB, b.low, 0, b.high, rowB, rowB + 4])].sort((x, y) => x - y);
   const ys = [...new Set([-rowA - 4, -rowA, a.low, 0, a.high, rowA, rowA + 4])].sort((x, y) => x - y);
-  const data = { pavement: [] as number[], sidewalks: [] as number[], curbs: [] as number[],
+  const data = { pavement: [] as number[], sidewalks: [] as number[], promenadePaving: [] as number[], curbs: [] as number[],
     crosswalks: [] as number[], curbRamps: [] as number[], tactilePads: [] as number[] };
   const inBounds = (x: number, y: number) => bounds.some((r) => inside(x, y, r));
   const roadAt = (x: number, y: number) => (y > a.low && y < a.high)
@@ -226,7 +235,13 @@ export function buildSectionJunctionGeometry(layout: StreetJunctionLayout) {
     const x = (xs[i] + xs[i + 1]) / 2; const y = (ys[j] + ys[j + 1]) / 2;
     if (!inBounds(x, y)) continue;
     const road = roadAt(x, y);
-    rectangle(road ? data.pavement : data.sidewalks, xs[i], ys[j], xs[i + 1], ys[j + 1], road ? roadZ : walkZ);
+    const [pedestrianA, pedestrianB] = layout.pedestrianAxes ?? [false, false];
+    const promenade = pedestrianA && pedestrianB
+      || (pedestrianA && (x < b.low || x > b.high))
+      || (pedestrianB && x > -rowB && x < rowB && sidesB.includes(y > 0 ? 1 : -1)
+        && (y < a.low || y > a.high));
+    rectangle(promenade ? data.promenadePaving : road ? data.pavement : data.sidewalks,
+      xs[i], ys[j], xs[i + 1], ys[j + 1], road ? roadZ : walkZ);
     if (road) continue;
     const edges = [[xs[i], ys[j], xs[i + 1], ys[j], x, ys[j] - 0.001],
       [xs[i + 1], ys[j], xs[i + 1], ys[j + 1], xs[i + 1] + 0.001, y],
@@ -240,6 +255,7 @@ export function buildSectionJunctionGeometry(layout: StreetJunctionLayout) {
   }
   const openings: JunctionRect[] = [];
   for (const axis of [0, 1]) for (const side of axis === 0 ? [-1, 1] : sidesB) {
+    if (layout.pedestrianAxes?.[axis]) continue;
     const cross = axis === 0 ? b : a; const section = axis === 0 ? a : b;
     const center = (side < 0 ? cross.low : cross.high) + side * 2.9;
     const point = (along: number, across: number) => axis === 0 ? [along, across] : [across, along];
