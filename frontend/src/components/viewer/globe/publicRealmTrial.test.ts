@@ -59,6 +59,6 @@ describe('bounded public-realm native trial', () => {
         expect(overlaps.reduce((area, cell) => area + cell.width * cell.depth, 0)).toBeCloseTo(well.width * well.depth, 6);
       }
     }
-    expect(wells).toBe(8);
+    expect(wells).toBe(44);
   });
 });

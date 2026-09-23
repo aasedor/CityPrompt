@@ -5,7 +5,9 @@ import { METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { resolvePreparedSiteTerrainForZone } from './sitePreparationSurface';
 
-export const TRIAL_GROUND_MATERIALS = new Set(['grass', 'paving', 'soil', 'cycle']);
+// The coloured preview underlays are rebuilt on prepared terrain. Fine paving
+// units and painted symbols remain in the native GLB above that owned ground.
+export const TRIAL_GROUND_MATERIALS = new Set(['grass', 'paving', 'soil', 'cycle', 'asphalt']);
 export type PublicRealmTrialAsset = typeof assets[number];
 export function publicRealmTrialAsset(zone: SiteZone): PublicRealmTrialAsset | null {
   if (!import.meta.env.DEV) return null;

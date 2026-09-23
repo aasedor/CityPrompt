@@ -653,5 +653,1264 @@
     ],
     "url": "/public-realm-trials/batch3/student_garden_cycle_promenade_v1.glb",
     "treeWells": []
+  },
+  {
+    "id": "student_main_street_v1",
+    "title": "Neighbourhood Main Street",
+    "kind": "street",
+    "dimensions": [
+      23.0,
+      48
+    ],
+    "sha256": "e0e34bfde671aee925a2199d2845cdd3a49e2935cac587f9d7c2b845e36e2177",
+    "surfaceRegions": [
+      {
+        "x": -10.0,
+        "y": 0,
+        "width": 3,
+        "depth": 48,
+        "material": "paving"
+      },
+      {
+        "x": -7.0,
+        "y": 0,
+        "width": 3,
+        "depth": 48,
+        "material": "paving"
+      },
+      {
+        "x": -4.25,
+        "y": 0,
+        "width": 2.5,
+        "depth": 48,
+        "material": "asphalt"
+      },
+      {
+        "x": 0.0,
+        "y": 0,
+        "width": 6,
+        "depth": 48,
+        "material": "asphalt"
+      },
+      {
+        "x": 4.25,
+        "y": 0,
+        "width": 2.5,
+        "depth": 48,
+        "material": "asphalt"
+      },
+      {
+        "x": 7.0,
+        "y": 0,
+        "width": 3,
+        "depth": 48,
+        "material": "paving"
+      },
+      {
+        "x": 10.0,
+        "y": 0,
+        "width": 3,
+        "depth": 48,
+        "material": "paving"
+      },
+      {
+        "x": 0,
+        "y": 0,
+        "width": 23.0,
+        "depth": 3,
+        "material": "paving"
+      },
+      {
+        "x": -4.25,
+        "y": -11,
+        "width": 2.5,
+        "depth": 7,
+        "material": "paving"
+      },
+      {
+        "x": -7.0,
+        "y": -16,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      },
+      {
+        "x": -7.0,
+        "y": -6,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      },
+      {
+        "x": -7.0,
+        "y": 6,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      },
+      {
+        "x": -7.0,
+        "y": 16,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      },
+      {
+        "x": 7.0,
+        "y": -16,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      },
+      {
+        "x": 7.0,
+        "y": -6,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      },
+      {
+        "x": 7.0,
+        "y": 6,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      },
+      {
+        "x": 7.0,
+        "y": 16,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      }
+    ],
+    "url": "/public-realm-trials/ten-streets-2026-09-23/student_main_street_v1-e0e34bfd.glb",
+    "treeWells": [
+      {
+        "x": -7.0,
+        "y": -16,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "grove_tree"
+      },
+      {
+        "x": -7.0,
+        "y": -6,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "grove_tree"
+      },
+      {
+        "x": -7.0,
+        "y": 6,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "grove_tree"
+      },
+      {
+        "x": -7.0,
+        "y": 16,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "grove_tree"
+      },
+      {
+        "x": 7.0,
+        "y": -16,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "grove_tree"
+      },
+      {
+        "x": 7.0,
+        "y": -6,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "grove_tree"
+      },
+      {
+        "x": 7.0,
+        "y": 6,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "grove_tree"
+      },
+      {
+        "x": 7.0,
+        "y": 16,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "grove_tree"
+      }
+    ]
+  },
+  {
+    "id": "student_cycle_avenue_v1",
+    "title": "Protected Cycle Avenue",
+    "kind": "street",
+    "dimensions": [
+      24.0,
+      48
+    ],
+    "sha256": "673c1618cd6002c7e03523e06faf87b9476d8f5ce3b0c29ba0f237c63e75a2ea",
+    "surfaceRegions": [
+      {
+        "x": -10.5,
+        "y": 0,
+        "width": 3,
+        "depth": 48,
+        "material": "paving"
+      },
+      {
+        "x": -7.75,
+        "y": 0,
+        "width": 2.5,
+        "depth": 48,
+        "material": "paving"
+      },
+      {
+        "x": -4.5,
+        "y": 0,
+        "width": 4,
+        "depth": 48,
+        "material": "cycle"
+      },
+      {
+        "x": -1.5,
+        "y": 0,
+        "width": 2,
+        "depth": 48,
+        "material": "soil"
+      },
+      {
+        "x": 2.5,
+        "y": 0,
+        "width": 6,
+        "depth": 48,
+        "material": "asphalt"
+      },
+      {
+        "x": 7.25,
+        "y": 0,
+        "width": 3.5,
+        "depth": 48,
+        "material": "paving"
+      },
+      {
+        "x": 10.5,
+        "y": 0,
+        "width": 3,
+        "depth": 48,
+        "material": "paving"
+      },
+      {
+        "x": 0,
+        "y": 0,
+        "width": 24.0,
+        "depth": 3,
+        "material": "paving"
+      },
+      {
+        "x": -1.5,
+        "y": -16,
+        "width": 1.65,
+        "depth": 5,
+        "material": "soil"
+      },
+      {
+        "x": -1.5,
+        "y": -7,
+        "width": 1.65,
+        "depth": 5,
+        "material": "soil"
+      },
+      {
+        "x": -1.5,
+        "y": 7,
+        "width": 1.65,
+        "depth": 5,
+        "material": "soil"
+      },
+      {
+        "x": -1.5,
+        "y": 16,
+        "width": 1.65,
+        "depth": 5,
+        "material": "soil"
+      },
+      {
+        "x": -7.75,
+        "y": -16,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      },
+      {
+        "x": -7.75,
+        "y": -6,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      },
+      {
+        "x": -7.75,
+        "y": 6,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      },
+      {
+        "x": -7.75,
+        "y": 16,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      },
+      {
+        "x": 7.25,
+        "y": -16,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      },
+      {
+        "x": 7.25,
+        "y": -6,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      },
+      {
+        "x": 7.25,
+        "y": 6,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      },
+      {
+        "x": 7.25,
+        "y": 16,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      }
+    ],
+    "url": "/public-realm-trials/ten-streets-2026-09-23/student_cycle_avenue_v1-673c1618.glb",
+    "treeWells": [
+      {
+        "x": -7.75,
+        "y": -16,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "grove_tree"
+      },
+      {
+        "x": -7.75,
+        "y": -6,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "grove_tree"
+      },
+      {
+        "x": -7.75,
+        "y": 6,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "grove_tree"
+      },
+      {
+        "x": -7.75,
+        "y": 16,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "grove_tree"
+      },
+      {
+        "x": 7.25,
+        "y": -16,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "grove_tree"
+      },
+      {
+        "x": 7.25,
+        "y": -6,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "grove_tree"
+      },
+      {
+        "x": 7.25,
+        "y": 6,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "grove_tree"
+      },
+      {
+        "x": 7.25,
+        "y": 16,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "grove_tree"
+      }
+    ]
+  },
+  {
+    "id": "student_planted_lane_v1",
+    "title": "Planted Service Lane",
+    "kind": "street",
+    "dimensions": [
+      12.0,
+      40
+    ],
+    "sha256": "4aa6b76af2abee3a0c97e9bea39a2c73c242303a2ec1f210abb41bc3a84b5732",
+    "surfaceRegions": [
+      {
+        "x": -4.75,
+        "y": 0,
+        "width": 2.5,
+        "depth": 40,
+        "material": "soil"
+      },
+      {
+        "x": 0.0,
+        "y": 0,
+        "width": 7,
+        "depth": 40,
+        "material": "paving"
+      },
+      {
+        "x": 4.75,
+        "y": 0,
+        "width": 2.5,
+        "depth": 40,
+        "material": "soil"
+      },
+      {
+        "x": 0,
+        "y": 0,
+        "width": 12.0,
+        "depth": 3,
+        "material": "paving"
+      },
+      {
+        "x": -4.75,
+        "y": -13,
+        "width": 2.2,
+        "depth": 13,
+        "material": "soil"
+      },
+      {
+        "x": -4.75,
+        "y": 13,
+        "width": 2.2,
+        "depth": 13,
+        "material": "soil"
+      },
+      {
+        "x": -4.75,
+        "y": -2.5,
+        "width": 2.2,
+        "depth": 1.4,
+        "material": "soil"
+      },
+      {
+        "x": -4.75,
+        "y": 2.5,
+        "width": 2.2,
+        "depth": 1.4,
+        "material": "soil"
+      },
+      {
+        "x": -4.75,
+        "y": -5,
+        "width": 2.5,
+        "depth": 3,
+        "material": "paving"
+      },
+      {
+        "x": -4.75,
+        "y": 5,
+        "width": 2.5,
+        "depth": 3,
+        "material": "paving"
+      },
+      {
+        "x": 4.75,
+        "y": -13,
+        "width": 2.2,
+        "depth": 13,
+        "material": "soil"
+      },
+      {
+        "x": 4.75,
+        "y": 13,
+        "width": 2.2,
+        "depth": 13,
+        "material": "soil"
+      },
+      {
+        "x": 4.75,
+        "y": -2.5,
+        "width": 2.2,
+        "depth": 1.4,
+        "material": "soil"
+      },
+      {
+        "x": 4.75,
+        "y": 2.5,
+        "width": 2.2,
+        "depth": 1.4,
+        "material": "soil"
+      },
+      {
+        "x": 4.75,
+        "y": -5,
+        "width": 2.5,
+        "depth": 3,
+        "material": "paving"
+      },
+      {
+        "x": 4.75,
+        "y": 5,
+        "width": 2.5,
+        "depth": 3,
+        "material": "paving"
+      }
+    ],
+    "url": "/public-realm-trials/ten-streets-2026-09-23/student_planted_lane_v1-4aa6b76a.glb",
+    "treeWells": []
+  },
+  {
+    "id": "student_transit_street_v1",
+    "title": "Transit Stop Street",
+    "kind": "street",
+    "dimensions": [
+      27.0,
+      48
+    ],
+    "sha256": "9f5527e4d54c083b5a640a2ba00bf081a4924d13c9df7500ad58d5166c55971e",
+    "surfaceRegions": [
+      {
+        "x": -12.0,
+        "y": 0,
+        "width": 3,
+        "depth": 48,
+        "material": "paving"
+      },
+      {
+        "x": -8.75,
+        "y": 0,
+        "width": 3.5,
+        "depth": 48,
+        "material": "paving"
+      },
+      {
+        "x": -4.0,
+        "y": 0,
+        "width": 6,
+        "depth": 48,
+        "material": "asphalt"
+      },
+      {
+        "x": 0.5,
+        "y": 0,
+        "width": 3,
+        "depth": 48,
+        "material": "paving"
+      },
+      {
+        "x": 3.75,
+        "y": 0,
+        "width": 3.5,
+        "depth": 48,
+        "material": "cycle"
+      },
+      {
+        "x": 8.0,
+        "y": 0,
+        "width": 5,
+        "depth": 48,
+        "material": "paving"
+      },
+      {
+        "x": 12.0,
+        "y": 0,
+        "width": 3,
+        "depth": 48,
+        "material": "paving"
+      },
+      {
+        "x": 0,
+        "y": 0,
+        "width": 27.0,
+        "depth": 3,
+        "material": "paving"
+      },
+      {
+        "x": 3.75,
+        "y": 10,
+        "width": 6.5,
+        "depth": 2.2,
+        "material": "paving"
+      },
+      {
+        "x": -8.75,
+        "y": -16,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      },
+      {
+        "x": -8.75,
+        "y": -6,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      },
+      {
+        "x": -8.75,
+        "y": 6,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      },
+      {
+        "x": -8.75,
+        "y": 16,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      },
+      {
+        "x": 8.0,
+        "y": -16,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      },
+      {
+        "x": 8.0,
+        "y": -6,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      },
+      {
+        "x": 8.0,
+        "y": 6,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      },
+      {
+        "x": 8.0,
+        "y": 16,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      }
+    ],
+    "url": "/public-realm-trials/ten-streets-2026-09-23/student_transit_street_v1-9f5527e4.glb",
+    "treeWells": [
+      {
+        "x": -8.75,
+        "y": -16,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "grove_tree"
+      },
+      {
+        "x": -8.75,
+        "y": -6,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "grove_tree"
+      },
+      {
+        "x": -8.75,
+        "y": 6,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "grove_tree"
+      },
+      {
+        "x": -8.75,
+        "y": 16,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "grove_tree"
+      },
+      {
+        "x": 8.0,
+        "y": -16,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "grove_tree"
+      },
+      {
+        "x": 8.0,
+        "y": -6,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "grove_tree"
+      },
+      {
+        "x": 8.0,
+        "y": 6,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "grove_tree"
+      },
+      {
+        "x": 8.0,
+        "y": 16,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "grove_tree"
+      }
+    ]
+  },
+  {
+    "id": "student_market_street_v1",
+    "title": "Pedestrian Market Street",
+    "kind": "street",
+    "dimensions": [
+      18.0,
+      48
+    ],
+    "sha256": "81f6715283b740536795300e0a7860c9757dcab77b8c4044b1ed3d99b507b88a",
+    "surfaceRegions": [
+      {
+        "x": -7.75,
+        "y": 0,
+        "width": 2.5,
+        "depth": 48,
+        "material": "paving"
+      },
+      {
+        "x": -4.5,
+        "y": 0,
+        "width": 4,
+        "depth": 48,
+        "material": "paving"
+      },
+      {
+        "x": 0.0,
+        "y": 0,
+        "width": 5,
+        "depth": 48,
+        "material": "paving"
+      },
+      {
+        "x": 4.5,
+        "y": 0,
+        "width": 4,
+        "depth": 48,
+        "material": "paving"
+      },
+      {
+        "x": 7.75,
+        "y": 0,
+        "width": 2.5,
+        "depth": 48,
+        "material": "paving"
+      },
+      {
+        "x": 0,
+        "y": 0,
+        "width": 18.0,
+        "depth": 3,
+        "material": "paving"
+      }
+    ],
+    "url": "/public-realm-trials/ten-streets-2026-09-23/student_market_street_v1-81f67152.glb",
+    "treeWells": []
+  },
+  {
+    "id": "student_green_alley_v1",
+    "title": "Ruelle Verte Community Alley",
+    "kind": "street",
+    "dimensions": [
+      11,
+      40
+    ],
+    "sha256": "6d9514b1e9ab469ee38f3fa7115c00c6513e9fcb6abf199159108f24599963c5",
+    "surfaceRegions": [
+      {
+        "x": -4.0,
+        "y": 0,
+        "width": 3,
+        "depth": 40,
+        "material": "paving"
+      },
+      {
+        "x": 0.0,
+        "y": 0,
+        "width": 5,
+        "depth": 40,
+        "material": "paving"
+      },
+      {
+        "x": 4.0,
+        "y": 0,
+        "width": 3,
+        "depth": 40,
+        "material": "paving"
+      },
+      {
+        "x": 0,
+        "y": 0,
+        "width": 11,
+        "depth": 3,
+        "material": "paving"
+      },
+      {
+        "x": -4.0,
+        "y": -10,
+        "width": 2.7,
+        "depth": 2.7,
+        "material": "soil"
+      },
+      {
+        "x": -4.0,
+        "y": 10,
+        "width": 2.7,
+        "depth": 2.7,
+        "material": "soil"
+      },
+      {
+        "x": 4.0,
+        "y": -10,
+        "width": 2.7,
+        "depth": 2.7,
+        "material": "soil"
+      },
+      {
+        "x": 4.0,
+        "y": 10,
+        "width": 2.7,
+        "depth": 2.7,
+        "material": "soil"
+      }
+    ],
+    "url": "/public-realm-trials/ten-streets-2026-09-23/student_green_alley_v1-6d9514b1.glb",
+    "treeWells": []
+  },
+  {
+    "id": "student_heritage_mews_v1",
+    "title": "Heritage Mews Lane",
+    "kind": "street",
+    "dimensions": [
+      10,
+      40
+    ],
+    "sha256": "3c5e8241394b528f9c8af2f10339bed4aaa015aece4717de25949c927df730cd",
+    "surfaceRegions": [
+      {
+        "x": -4.0,
+        "y": 0,
+        "width": 2,
+        "depth": 40,
+        "material": "paving"
+      },
+      {
+        "x": 0.0,
+        "y": 0,
+        "width": 6,
+        "depth": 40,
+        "material": "paving"
+      },
+      {
+        "x": 4.0,
+        "y": 0,
+        "width": 2,
+        "depth": 40,
+        "material": "paving"
+      },
+      {
+        "x": 0,
+        "y": 0,
+        "width": 10,
+        "depth": 3,
+        "material": "paving"
+      }
+    ],
+    "url": "/public-realm-trials/ten-streets-2026-09-23/student_heritage_mews_v1-3c5e8241.glb",
+    "treeWells": []
+  },
+  {
+    "id": "student_boardwalk_v1",
+    "title": "Waterfront Timber Boardwalk",
+    "kind": "street",
+    "dimensions": [
+      12.0,
+      48
+    ],
+    "sha256": "bcaf43f61fbb5b645fbc27b1906d973224894c2a6b050b062c2e901956a306b9",
+    "surfaceRegions": [
+      {
+        "x": -5.5,
+        "y": 0,
+        "width": 1,
+        "depth": 48,
+        "material": "paving"
+      },
+      {
+        "x": -3.25,
+        "y": 0,
+        "width": 3.5,
+        "depth": 48,
+        "material": "paving"
+      },
+      {
+        "x": 0.5,
+        "y": 0,
+        "width": 4,
+        "depth": 48,
+        "material": "paving"
+      },
+      {
+        "x": 4.25,
+        "y": 0,
+        "width": 3.5,
+        "depth": 48,
+        "material": "paving"
+      }
+    ],
+    "url": "/public-realm-trials/ten-streets-2026-09-23/student_boardwalk_v1-bcaf43f6.glb",
+    "treeWells": []
+  },
+  {
+    "id": "student_school_street_v1",
+    "title": "Playful School Street",
+    "kind": "street",
+    "dimensions": [
+      18.0,
+      48
+    ],
+    "sha256": "9606b8a34562784b1c5aeba0f108445c9e08cb2a83dfeb510fae1135b2ca8f3f",
+    "surfaceRegions": [
+      {
+        "x": -7.75,
+        "y": 0,
+        "width": 2.5,
+        "depth": 48,
+        "material": "paving"
+      },
+      {
+        "x": -4.75,
+        "y": 0,
+        "width": 3.5,
+        "depth": 48,
+        "material": "paving"
+      },
+      {
+        "x": 0.0,
+        "y": 0,
+        "width": 6,
+        "depth": 48,
+        "material": "asphalt"
+      },
+      {
+        "x": 4.75,
+        "y": 0,
+        "width": 3.5,
+        "depth": 48,
+        "material": "paving"
+      },
+      {
+        "x": 7.75,
+        "y": 0,
+        "width": 2.5,
+        "depth": 48,
+        "material": "paving"
+      },
+      {
+        "x": 0,
+        "y": 0,
+        "width": 18.0,
+        "depth": 3,
+        "material": "paving"
+      },
+      {
+        "x": -4.75,
+        "y": -16,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      },
+      {
+        "x": -4.75,
+        "y": 16,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      },
+      {
+        "x": 4.75,
+        "y": -16,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      },
+      {
+        "x": 4.75,
+        "y": 16,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      }
+    ],
+    "url": "/public-realm-trials/ten-streets-2026-09-23/student_school_street_v1-9606b8a3.glb",
+    "treeWells": [
+      {
+        "x": -4.75,
+        "y": -16,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "grove_tree"
+      },
+      {
+        "x": -4.75,
+        "y": 16,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "grove_tree"
+      },
+      {
+        "x": 4.75,
+        "y": -16,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "grove_tree"
+      },
+      {
+        "x": 4.75,
+        "y": 16,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "grove_tree"
+      }
+    ]
+  },
+  {
+    "id": "student_grand_promenade_v1",
+    "title": "Grand Promenade Boulevard",
+    "kind": "street",
+    "dimensions": [
+      24.5,
+      48
+    ],
+    "sha256": "b2a7df47bbc8efbea0e6b5a25b7bdcf124196af44deb992ad0e5fc618d0b9d32",
+    "surfaceRegions": [
+      {
+        "x": -11.0,
+        "y": 0,
+        "width": 2.5,
+        "depth": 48,
+        "material": "paving"
+      },
+      {
+        "x": -8.125,
+        "y": 0,
+        "width": 3.25,
+        "depth": 48,
+        "material": "asphalt"
+      },
+      {
+        "x": -4.75,
+        "y": 0,
+        "width": 3.5,
+        "depth": 48,
+        "material": "paving"
+      },
+      {
+        "x": 0.0,
+        "y": 0,
+        "width": 6,
+        "depth": 48,
+        "material": "paving"
+      },
+      {
+        "x": 4.75,
+        "y": 0,
+        "width": 3.5,
+        "depth": 48,
+        "material": "paving"
+      },
+      {
+        "x": 8.125,
+        "y": 0,
+        "width": 3.25,
+        "depth": 48,
+        "material": "asphalt"
+      },
+      {
+        "x": 11.0,
+        "y": 0,
+        "width": 2.5,
+        "depth": 48,
+        "material": "paving"
+      },
+      {
+        "x": 0,
+        "y": 0,
+        "width": 24.5,
+        "depth": 3,
+        "material": "paving"
+      },
+      {
+        "x": -4.75,
+        "y": -19,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      },
+      {
+        "x": -4.75,
+        "y": -9,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      },
+      {
+        "x": -4.75,
+        "y": 9,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      },
+      {
+        "x": -4.75,
+        "y": 19,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      },
+      {
+        "x": 4.75,
+        "y": -19,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      },
+      {
+        "x": 4.75,
+        "y": -9,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      },
+      {
+        "x": 4.75,
+        "y": 9,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      },
+      {
+        "x": 4.75,
+        "y": 19,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      }
+    ],
+    "url": "/public-realm-trials/ten-streets-2026-09-23/student_grand_promenade_v1-b2a7df47.glb",
+    "treeWells": [
+      {
+        "x": -4.75,
+        "y": -19,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "grove_tree"
+      },
+      {
+        "x": -4.75,
+        "y": -9,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "grove_tree"
+      },
+      {
+        "x": -4.75,
+        "y": 9,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "grove_tree"
+      },
+      {
+        "x": -4.75,
+        "y": 19,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "grove_tree"
+      },
+      {
+        "x": 4.75,
+        "y": -19,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "grove_tree"
+      },
+      {
+        "x": 4.75,
+        "y": -9,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "grove_tree"
+      },
+      {
+        "x": 4.75,
+        "y": 9,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "grove_tree"
+      },
+      {
+        "x": 4.75,
+        "y": 19,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "grove_tree"
+      }
+    ]
   }
 ]

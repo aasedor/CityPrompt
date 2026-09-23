@@ -1,6 +1,6 @@
 # Runtime integration for every archetype
 
-Version: 2026-09-20. Applies to every new or materially revised building,
+Version: 2026-09-23. Applies to every new or materially revised building,
 street/path, and park/open-space variant intended for the student catalogue.
 Read this before authoring the asset, not only when installing its picker card.
 
@@ -340,6 +340,14 @@ clearance; flat crossed sheets can pass one camera while failing another.
 Do not assume every section has a raised sidewalk. Flush shared streets and
 paths must use their actual section semantics. A mapped public route is context,
 not proof of precise curb height or safe pedestrian access.
+
+For fixed native street models, also cross two different variants in one
+prepared-site scene. A full-length surface, marking, tree well or furniture
+module must not continue through the junction simply because each individual
+section passed inspection. Review the exact 3D capture before any AI finish:
+image models can invent a clean connection even when the saved street geometry
+only overlaps. The [ten-street Currie crossing trial](TEN_STREET_CURRIE_INTERSECTION_TRIAL_2026-09-23.md)
+records five concrete examples and their source/render comparisons.
 
 ## Parks and open spaces
 

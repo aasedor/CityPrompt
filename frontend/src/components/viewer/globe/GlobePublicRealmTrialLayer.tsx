@@ -10,6 +10,7 @@ import { retainResourceForDeferredDisposal } from './strictModeResourceDisposal'
 
 const palette: Record<string, [number, number, number]> = {
   paving: [.53, .50, .43], grass: [.21, .28, .105], soil: [.105, .073, .045], cycle: [.33, .145, .085],
+  asphalt: [.10, .115, .11],
 };
 class TrialBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
   state = { failed: false };
