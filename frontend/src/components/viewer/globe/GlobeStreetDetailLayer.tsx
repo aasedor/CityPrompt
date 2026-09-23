@@ -1,3 +1,4 @@
+import { GlobeTreeWells } from './GlobeTreeWells';
 /**
  * GlobeStreetDetailLayer — subtle procedural 3D for road zones: raised curb
  * bands along both edges, a dashed centerline, and a parametric roundabout
@@ -1266,6 +1267,10 @@ function RoundaboutDetail({
             side={THREE.DoubleSide}
           />
         </mesh>
+        <GlobeTreeWells placements={approachTrees.map((tree, index) => ({ ...tree,
+          yawRad: frame.bearingRad + Math.floor(index / 2) * Math.PI / 2,
+          widthM: 1.6 * geometry.scale, lengthM: 1.8 * geometry.scale,
+        }))} renderOrder={RENDER_ORDER_FURNITURE} />
         <GlobeLandscapeTreeStand
           placements={[
             { x: 0, y: 0, z: roundaboutTerrainZ(0, 0) + PUBLIC_REALM_STREET_ROAD_SURFACE_LIFT_METERS + STREET_DETAIL_3D.islandHeight_m, yawRad: 0.37, scale: 0.72 * geometry.scale, canopyClass: roundaboutAppearanceStyle.canopyClass },

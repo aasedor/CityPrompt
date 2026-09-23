@@ -46,4 +46,19 @@ describe('bounded public-realm native trial', () => {
       expect(()=>assertPublicRealmTrialsReady(scene)).not.toThrow();
     }
   });
+  it('rebuilds every native tree-well footprint as soil without pavement over its opening', () => {
+    let wells = 0;
+    for (const asset of assets) {
+      const cells = publicRealmTrialGroundCells(asset);
+      for (const well of asset.treeWells) {
+        wells++;
+        const overlaps = cells.filter(cell => Math.abs(cell.x - well.x) < (cell.width + well.width) / 2 - 1e-6
+          && Math.abs(cell.y - well.y) < (cell.depth + well.depth) / 2 - 1e-6);
+        expect(overlaps.length).toBeGreaterThan(0);
+        expect(overlaps.every(cell => cell.material === 'soil')).toBe(true);
+        expect(overlaps.reduce((area, cell) => area + cell.width * cell.depth, 0)).toBeCloseTo(well.width * well.depth, 6);
+      }
+    }
+    expect(wells).toBe(8);
+  });
 });

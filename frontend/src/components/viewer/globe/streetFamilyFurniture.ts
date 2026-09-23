@@ -7,6 +7,7 @@ import {
   type LocalPt,
   type StreetStationElevationInput,
 } from './streetMesh3D';
+import { resolveStreetBandMaterial } from './streetSurfaceMaterials';
 import type { StreetSectionBand, StreetSectionProfile } from './streetSectionProfiles';
 
 export const MAX_STREET_FIXTURE_STATIONS = 8;
@@ -116,6 +117,7 @@ export type StreetPlantingCellStyle = 'tree_grate' | 'low_planting_cell';
 
 export interface StreetPlantingCellPlacement extends StreetFixturePose {
   style: StreetPlantingCellStyle;
+  surfaceLiftM?: number;
   lengthM: number;
   widthM: number;
   bandStartM: number;
@@ -211,12 +213,7 @@ const EMPTY_FIXTURES: StreetFamilyFixturePlacements = Object.freeze({
   stationCount: 0,
 });
 
-interface ScaledBand extends Pick<StreetSectionBand, 'kind' | 'liftM'> {
-  startM: number;
-  endM: number;
-  centerM: number;
-  widthM: number;
-}
+type ScaledBand = StreetSectionBand;
 
 interface StationFrame {
   index: number;
@@ -494,8 +491,7 @@ function fixturePose(
 
 function scaleBand(band: StreetSectionBand, sectionScale: number): ScaledBand {
   return {
-    kind: band.kind,
-    liftM: band.liftM,
+    ...band,
     startM: band.startM * sectionScale,
     endM: band.endM * sectionScale,
     centerM: band.centerM * sectionScale,
@@ -896,13 +892,14 @@ export function buildStreetFamilyFixturePlacements({
       const basePose = fixturePose(frame, band.centerM);
       const plantingWidthM = Math.max(0, band.widthM - STREET_BENCH_EDGE_CLEARANCE_M * 2);
       if (
-        plantingCells.length < MAX_STREET_PLANTING_CELLS_PER_ZONE
+        resolveStreetBandMaterial(profile, band).kind === 'planting_grass'
+        && plantingCells.length < MAX_STREET_PLANTING_CELLS_PER_ZONE
         && plantingWidthM >= 0.3
         && fixtureFitsClearance(basePose, clearancePoints)
       ) {
         plantingCells.push({
           ...basePose,
-          style: isMain ? 'tree_grate' : 'low_planting_cell',
+          style: 'low_planting_cell',
           lengthM: isMain ? Math.min(1.05, plantingWidthM) : 1.5,
           widthM: Math.min(isMain ? 1.05 : 0.9, plantingWidthM),
           bandStartM: Math.min(band.startM, band.endM),
@@ -1083,6 +1080,20 @@ export function buildStreetFamilyFixturePlacements({
     })
     : null;
 
+  // A tree well belongs to its tree, never to a separately decimated set of
+  // furniture stations. Align rectangular wells with the street, not crown yaw.
+  const finalTrees = streetSignature?.trees ?? trees;
+  for (const tree of finalTrees) {
+    const band = plantingBands.find(b => Math.abs(b.centerM - tree.offsetM) < 1e-6);
+    if (!band || resolveStreetBandMaterial(profile, band).kind === 'planting_grass') continue;
+    plantingCells.push({ ...tree, z: tree.z - .16,
+      surfaceLiftM: band.liftM,
+      yawRad: Math.atan2(tree.tangentY, tree.tangentX), style: 'tree_grate',
+      lengthM: 1.8, widthM: Math.min(1.8, band.widthM - STREET_BENCH_EDGE_CLEARANCE_M * 2),
+      bandStartM: Math.min(band.startM, band.endM), bandEndM: Math.max(band.startM, band.endM),
+    });
+  }
+
   const transitShelters: StreetTransitShelterPlacement[] = [];
   if (isMain && furnishingBands.length > 0 && lengthM >= 60) {
     const band = furnishingBands[0];
@@ -1117,7 +1128,7 @@ export function buildStreetFamilyFixturePlacements({
   }
 
   return {
-    trees: streetSignature?.trees ?? trees,
+    trees: finalTrees,
     benches,
     lights: streetSignature?.lights ?? lights,
     drains,

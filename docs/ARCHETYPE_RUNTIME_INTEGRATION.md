@@ -472,6 +472,23 @@ support. Bound instance counts and texture size per exact variant. The
 opt-in geometry, prepared-ground behavior and limits; it is not approval for
 other variants.
 
+Every tree on a sidewalk, plaza or other hardscape must have a visible soil
+opening: a planted bed, open planted well, or metal grate with a trunk opening.
+Never place a bare trunk through continuous paving. Apply this to building
+forecourts, streets, parks and site landscaping, including future archetypes.
+Pair wells with the final tree placements rather than separate furniture
+sampling; keep well dimensions independent of canopy scale and align rectangular
+wells with paving or the street. Existing soft beds need no duplicate well.
+Reserve the full well and guard envelope outside clear walking/cycling routes,
+doors, court run-offs and plot edges. Cut authored paving and joint lines around
+the opening; rebuild the same soil region when runtime replaces preview slabs.
+Review the trunk collar, ground contact, surface ownership and clear route at
+close range. Inspect grade changes explicitly; centre-height matching alone
+does not prove a flat well fits sloping paving. Use the shared metric geometry
+in `treeWellGeometry.ts` / `GlobeTreeWells.tsx` and the offline builder's
+`prepare_tree_wells()` instead of inventing another solid tree-grate slab.
+See [tree-well implementation and bounded evidence](TREE_WELLS_PUBLIC_REALM_2026-09-23.md).
+
 For replacement furniture, prove that the complete new mesh stays inside the
 existing placement envelope, with feet at the shared metric datum. Use batched
 geometry and retain the same yaw, scale and support offsets. An exact variant's

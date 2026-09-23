@@ -3,10 +3,10 @@ import bpy, json, math, hashlib
 from pathlib import Path
 from mathutils import Vector
 
-MATS={}; KIT={}; PLACEMENTS=[]; RIGID={}; SURFACES=[]
+MATS={}; KIT={}; PLACEMENTS=[]; RIGID={}; SURFACES=[]; GROUND_SIZE=[]
 def init(kit):
     bpy.ops.object.select_all(action='SELECT'); bpy.ops.object.delete(use_global=False)
-    PLACEMENTS.clear(); KIT.clear(); MATS.clear(); RIGID.clear(); SURFACES.clear()
+    PLACEMENTS.clear(); KIT.clear(); MATS.clear(); RIGID.clear(); SURFACES.clear(); GROUND_SIZE.clear()
     palette={'paving':(.53,.50,.43),'edge':(.35,.34,.29),'grass':(.21,.28,.105),
       'soil':(.105,.073,.045),'metal':(.035,.049,.045),'timber':(.32,.235,.15),
       'court':(.085,.235,.245),'runoff':(.19,.28,.255),'kitchen':(.28,.39,.34),
@@ -109,6 +109,11 @@ def ground(w,d,regions):
     Regions: (x,y,width,depth,material); last wins, None leaves a module opening.
     """
     SURFACES.extend([dict(x=x,y=y,width=rw,depth=rd,material=m) for x,y,rw,rd,m in regions])
+    GROUND_SIZE[:] = [w,d]
+
+def build_ground():
+    w,d=GROUND_SIZE
+    regions=[(r['x'],r['y'],r['width'],r['depth'],r['material']) for r in SURFACES]
     xs=sorted({-w/2,w/2,*[x+s*rw/2 for x,y,rw,rd,m in regions for s in (-1,1)]})
     ys=sorted({-d/2,d/2,*[y+s*rd/2 for x,y,rw,rd,m in regions for s in (-1,1)]})
     assert xs[0]>=-w/2 and xs[-1]<=w/2 and ys[0]>=-d/2 and ys[-1]<=d/2
@@ -119,6 +124,42 @@ def ground(w,d,regions):
                 if abs(x-rx)<rw/2 and abs(y-ry)<rd/2:mat=rm
             if mat=='paving':paving(x,y,b-a,e-c)
             elif mat:box(mat,(x,y,-.06),(b-a,e-c,.12),mat)
+
+def surface_at(x,y):
+    material='grass'
+    for r in SURFACES:
+        if abs(x-r['x'])<=r['width']/2 and abs(y-r['y'])<=r['depth']/2:material=r['material']
+    return material
+
+def prepare_tree_wells():
+    """Every authored hardscape tree gets a root opening; existing soft beds win.
+
+    Ground is emitted afterwards, so paving/joints never span these openings.
+    Use the actual exported runtime kit, with independent metre-scale wells.
+    """
+    wells=[];w,d=GROUND_SIZE
+    for tree in list(PLACEMENTS):
+        if tree['kind'] not in ('shade_tree','grove_tree','ornamental_tree'):continue
+        x,y=tree['x'],tree['y']
+        support=[surface_at(x+dx,y+dy) for dx in (-.45,0,.45) for dy in (-.45,0,.45)]
+        if all(m in ('grass','soil') for m in support):continue
+        assert all(m in ('paving','grass','soil') for m in support),(tree,'tree intersects a protected surface')
+        style='planted' if tree['kind']=='ornamental_tree' else 'grate'
+        size=2.4 if style=='planted' else 1.8
+        assert abs(x)+size/2<=w/2 and abs(y)+size/2<=d/2,(tree,'well outside plot')
+        # Check complete rectangle, including internal surface region boundaries.
+        xs={x-size/2,x+size/2,*[r['x']+sign*r['width']/2 for r in SURFACES for sign in (-1,1) if abs(r['x']+sign*r['width']/2-x)<size/2]}
+        ys={y-size/2,y+size/2,*[r['y']+sign*r['depth']/2 for r in SURFACES for sign in (-1,1) if abs(r['y']+sign*r['depth']/2-y)<size/2]}
+        xs=sorted(xs);ys=sorted(ys)
+        assert all(surface_at((a+b)/2,(c+e)/2) in ('paving','soil','grass') for a,b in zip(xs,xs[1:]) for c,e in zip(ys,ys[1:])),(tree,'well overlaps protected surface')
+        SURFACES.append(dict(x=x,y=y,width=size,depth=size,material='soil'))
+        # Keep vertical dimensions unchanged when widening an ornamental well.
+        objects=kit('tree_well_'+style,x,y,0,0,1)
+        for o in objects:o.scale=(size/1.8,size/1.8,1)
+        PLACEMENTS[-1]['scale_xy']=size/1.8
+        wells.append(dict(x=x,y=y,width=size,depth=size,style=style,tree_kind=tree['kind']))
+    return wells
+
 def export(path,objects):
     # Consolidate small static wires, paint and slabs by material. Preserve the
     # shared kit mesh datablocks so repeating plants/furniture stay instanced.
@@ -139,6 +180,8 @@ def export(path,objects):
     for o in temporary:bpy.data.objects.remove(o,do_unlink=True)
     return dict(path=Path(path).name,bytes=Path(path).stat().st_size,sha256=hashlib.sha256(Path(path).read_bytes()).hexdigest())
 def deliver(out,recipe,cameras):
+    recipe['tree_wells']=prepare_tree_wells()
+    build_ground()
     out=Path(out);objects=[o for o in bpy.context.scene.objects if o.type=='MESH']
     recipe['placements']=list(PLACEMENTS)
     recipe['surface_regions']=list(SURFACES)

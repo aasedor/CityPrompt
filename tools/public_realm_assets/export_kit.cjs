@@ -10,13 +10,15 @@ if (fs.existsSync(geometryFile)) throw new Error('Refusing to overwrite kit.json
 const source = `
 import { createMeadowFurniture } from './frontend/src/components/viewer/globe/meadowFurnitureGeometry';
 import { createMeadowVegetation } from './frontend/src/components/viewer/globe/meadowVegetationGeometry';
+import { createTreeWellGeometry, TREE_WELL_STYLES } from './frontend/src/components/viewer/globe/treeWellGeometry';
 import fs from 'node:fs';
 const pack = g => ({position:Array.from(g.attributes.position.array),color:Array.from(g.attributes.color.array),index:g.index ? Array.from(g.index.array):null});
 const result = {};
 for (const k of ['bench','picnic_table','backless_bench','bike_rack','bin','light','planter']) result[k]={body:pack(createMeadowFurniture(k))};
 for (const k of ['shade_tree','grove_tree','ornamental_tree','silver_shrub','meadow_grass','flowering_perennial']) result[k]=Object.fromEntries(Object.entries(createMeadowVegetation(k,17)).map(([n,g])=>[n,pack(g)]));
+for (const k of TREE_WELL_STYLES) result['tree_well_'+k]={body:pack(createTreeWellGeometry(k))};
 fs.writeFileSync(process.argv[2],JSON.stringify(result),{flag:'wx'});
 `;
 esbuild.buildSync({stdin:{contents:source,resolveDir:root,loader:'ts'},bundle:true,platform:'node',outfile:path.join(out,'export-kit.cjs')});
 require('node:child_process').execFileSync(process.execPath,[path.join(out,'export-kit.cjs'),geometryFile],{stdio:'inherit'});
-console.log('Exported 13 runtime kit prototypes to '+geometryFile);
+console.log('Exported 16 runtime kit prototypes to '+geometryFile);

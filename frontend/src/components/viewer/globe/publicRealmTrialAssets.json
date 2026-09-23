@@ -7,7 +7,7 @@
       34,
       34
     ],
-    "sha256": "40509eb4f0dcc885cdd697a1de622acb37fbfff0efb01a92985a0f2567897d2b",
+    "sha256": "bdb0f854fab104dba862b0f8f3426b09db8c29e35a6b2bad3c2769d08e00c48a",
     "surfaceRegions": [
       {
         "x": 0,
@@ -64,9 +64,41 @@
         "width": 10.8,
         "depth": 20,
         "material": null
+      },
+      {
+        "x": -13.0,
+        "y": -13.0,
+        "width": 2.4,
+        "depth": 2.4,
+        "material": "soil"
+      },
+      {
+        "x": 13.0,
+        "y": -13.0,
+        "width": 2.4,
+        "depth": 2.4,
+        "material": "soil"
       }
     ],
-    "url": "/public-realm-trials/batch3/student_pickleball_garden_v1.glb"
+    "url": "/public-realm-trials/tree-wells-2026-09-23/student_pickleball_garden_v1-bdb0f854.glb",
+    "treeWells": [
+      {
+        "x": -13.0,
+        "y": -13.0,
+        "width": 2.4,
+        "depth": 2.4,
+        "style": "planted",
+        "tree_kind": "ornamental_tree"
+      },
+      {
+        "x": 13.0,
+        "y": -13.0,
+        "width": 2.4,
+        "depth": 2.4,
+        "style": "planted",
+        "tree_kind": "ornamental_tree"
+      }
+    ]
   },
   {
     "id": "student_futsal_park_v1",
@@ -76,7 +108,7 @@
       42,
       60
     ],
-    "sha256": "ba243a59d18279b1588f7c4101d2bf553c68bb7436a35863c93fee6341730808",
+    "sha256": "ddcf47fd7ac37fadab333f4601dc615c633e011271efd779d74fc0575bbfcacd",
     "surfaceRegions": [
       {
         "x": 0,
@@ -133,9 +165,41 @@
         "width": 26,
         "depth": 46,
         "material": null
+      },
+      {
+        "x": -17.0,
+        "y": -26.0,
+        "width": 2.4,
+        "depth": 2.4,
+        "material": "soil"
+      },
+      {
+        "x": 17.0,
+        "y": -26.0,
+        "width": 2.4,
+        "depth": 2.4,
+        "material": "soil"
       }
     ],
-    "url": "/public-realm-trials/batch3/student_futsal_park_v1.glb"
+    "url": "/public-realm-trials/tree-wells-2026-09-23/student_futsal_park_v1-ddcf47fd.glb",
+    "treeWells": [
+      {
+        "x": -17.0,
+        "y": -26.0,
+        "width": 2.4,
+        "depth": 2.4,
+        "style": "planted",
+        "tree_kind": "ornamental_tree"
+      },
+      {
+        "x": 17.0,
+        "y": -26.0,
+        "width": 2.4,
+        "depth": 2.4,
+        "style": "planted",
+        "tree_kind": "ornamental_tree"
+      }
+    ]
   },
   {
     "id": "student_reading_garden_v1",
@@ -145,7 +209,7 @@
       30,
       26
     ],
-    "sha256": "ba32262b553fd208761c70c51bfba1dc1b5e4678bb5dfa8a0afee0eff592abfc",
+    "sha256": "ff5a5e756235d361e995b162e5528042558d1a4d5c30a80e69422f60042481e2",
     "surfaceRegions": [
       {
         "x": 0,
@@ -258,9 +322,71 @@
         "width": 5,
         "depth": 3,
         "material": "soil"
+      },
+      {
+        "x": -10,
+        "y": -8.5,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      },
+      {
+        "x": -10,
+        "y": 8.5,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      },
+      {
+        "x": 10,
+        "y": -8.5,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      },
+      {
+        "x": 10,
+        "y": 8.5,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
       }
     ],
-    "url": "/public-realm-trials/batch3/student_reading_garden_v1.glb"
+    "url": "/public-realm-trials/tree-wells-2026-09-23/student_reading_garden_v1-ff5a5e75.glb",
+    "treeWells": [
+      {
+        "x": -10,
+        "y": -8.5,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "grove_tree"
+      },
+      {
+        "x": -10,
+        "y": 8.5,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "grove_tree"
+      },
+      {
+        "x": 10,
+        "y": -8.5,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "grove_tree"
+      },
+      {
+        "x": 10,
+        "y": 8.5,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "grove_tree"
+      }
+    ]
   },
   {
     "id": "student_planted_shared_street_v1",
@@ -399,7 +525,8 @@
         "material": "soil"
       }
     ],
-    "url": "/public-realm-trials/batch3/student_planted_shared_street_v1.glb"
+    "url": "/public-realm-trials/batch3/student_planted_shared_street_v1.glb",
+    "treeWells": []
   },
   {
     "id": "student_garden_cycle_promenade_v1",
@@ -524,6 +651,7 @@
         "material": "soil"
       }
     ],
-    "url": "/public-realm-trials/batch3/student_garden_cycle_promenade_v1.glb"
+    "url": "/public-realm-trials/batch3/student_garden_cycle_promenade_v1.glb",
+    "treeWells": []
   }
 ]
