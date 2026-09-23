@@ -1,5 +1,11 @@
 # Practical classroom readiness plan — 20 September 2026
 
+**Active execution plan — 23 September:** follow
+[Student-ready release plan](STUDENT_READY_RELEASE_PLAN_2026-09-23.md) for the
+finite release scope, milestone order and completion ledger. This document retains
+the acceptance rationale and historical evidence. Earlier "next work" entries
+below do not add requirements to the consolidated release plan.
+
 The user clarified the goal: students should be able to build their own designs
 and create great visuals without glaring errors or inaccuracies. Perfection is
 not required. This is the immediate target before expanding the remaining
