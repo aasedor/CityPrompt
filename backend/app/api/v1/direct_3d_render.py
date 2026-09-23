@@ -1669,6 +1669,8 @@ async def generate_direct_3d_render(
             source_snapshot=source_snapshot,
             capture_fingerprint=result.capture_fingerprint,
             output_fingerprint=result.output_fingerprint,
+            render_diagnostics=result.diagnostics,
+            render_warnings=list(result.warnings),
         )
         if result.provider_image_base64 and strategy not in (
             None,
@@ -1691,6 +1693,8 @@ async def generate_direct_3d_render(
                 source_snapshot=source_snapshot,
                 capture_fingerprint=result.capture_fingerprint,
                 output_fingerprint=hashlib.sha256(base64.b64decode(result.provider_image_base64)).hexdigest(),
+                render_diagnostics=result.diagnostics,
+                render_warnings=list(result.warnings),
             )
     except Exception as gallery_exc:
         logger.warning("Failed to auto-save Direct 3D render to gallery: %s", gallery_exc)

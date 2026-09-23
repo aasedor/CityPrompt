@@ -1344,6 +1344,8 @@ async def persist_render_to_gallery(
     source_snapshot: dict | None = None,
     capture_fingerprint: str | None = None,
     output_fingerprint: str | None = None,
+    render_diagnostics: dict | None = None,
+    render_warnings: list[str] | None = None,
 ) -> SavedRenderResponse:
     """Core gallery save: watermark, dedupe, upload, append to project metadata.
 
@@ -1417,6 +1419,8 @@ async def persist_render_to_gallery(
                     "variant": variant,
                     "outcome": outcome,
                     "presentation_strategy": presentation_strategy,
+                    "render_diagnostics": render_diagnostics,
+                    "render_warnings": render_warnings,
                     "original_output_sha256": image_hash,
                     "prompt_sha256": hashlib.sha256(req.prompt.encode("utf-8")).hexdigest(),
                     "image_note": "Gallery PNG includes a visible illustrative label; output fingerprint identifies the original pixels.",
