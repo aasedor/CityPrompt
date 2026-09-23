@@ -1043,6 +1043,30 @@ def test_street_junction_topology_uses_polygon_centerline_fallback():
     assert direct_api._street_sources_form_four_arm_junction([horizontal, vertical])
 
 
+def test_native_trial_street_junction_is_proven_only_for_registered_local_sections(monkeypatch):
+    longitude, latitude = -114.12, 51.0184
+    meters_per_longitude = 111_320 * math.cos(math.radians(latitude))
+    north_south = _zone(uuid.uuid4(), "street", properties={"public_realm_trial_asset": "student_main_street_v1"})
+    north_south.geometry = from_shape(box(
+        longitude - 23 / 2 / meters_per_longitude, latitude - 48 / 2 / 111_320,
+        longitude + 23 / 2 / meters_per_longitude, latitude + 48 / 2 / 111_320,
+    ), srid=4326)
+    east_west = _zone(uuid.uuid4(), "street", properties={"public_realm_trial_asset": "student_cycle_avenue_v1"})
+    east_west.geometry = from_shape(box(
+        longitude - 48 / 2 / meters_per_longitude, latitude - 24 / 2 / 111_320,
+        longitude + 48 / 2 / meters_per_longitude, latitude + 24 / 2 / 111_320,
+    ), srid=4326)
+    streets = [north_south, east_west]
+    assert direct_api._effective_street_width(north_south) == 23
+    assert direct_api._street_sources_form_four_arm_junction(streets)
+    direct_api._bind_instance_manifest_to_server_zones(_street_junction_request(streets), streets, streets)
+    north_south.properties["public_realm_trial_asset"] = "unregistered_street"
+    assert not direct_api._street_sources_form_four_arm_junction(streets)
+    north_south.properties["public_realm_trial_asset"] = "student_main_street_v1"
+    monkeypatch.setattr(direct_api, "get_settings", lambda: SimpleNamespace(app_env="production"))
+    assert not direct_api._street_sources_form_four_arm_junction(streets)
+
+
 def test_street_junction_rejects_present_but_invalid_plan_centerline():
     """AI plans sometimes persist an EMPTY centerline (roundabout access stubs).
 

@@ -5,6 +5,9 @@ assisted local browser and image-render review of the ten accepted street
 candidates from [the bounded asset batch](TEN_STREET_ASSET_BATCH_2026-09-22.md).
 The [machine-readable record](TEN_STREET_CURRIE_INTERSECTION_TRIAL_2026-09-23.json)
 locks the ten model hashes, saved zone IDs, capture hashes and five render IDs.
+This document records the pre-junction baseline. The later
+[native junction runtime pilot](NATIVE_STREET_JUNCTION_RUNTIME_2026-09-23.md)
+adds the first graph-owned crossing treatment to this same Currie scene.
 
 ## Setup and result
 

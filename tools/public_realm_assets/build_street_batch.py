@@ -195,6 +195,7 @@ def make(r):
     S.ground(w,d,regions)
     r.update(reference_profile=dict(observed=r['observed_features'],adapted=r['adapted_features']),
         terrain_policy='Straight level concept fixture; reconstruct every band with shared runtime ground.',
+        junction_surface={'deck':'timber','cobble':'cobble','brick':'brick','stone':'pavers'}[r['pattern']],
         junction_policy='Network owns all junctions, endpoints, crossings and ramps. Omit or move modules around connections.',
         limitations=['Original section for ideation, not measured from the image or certified for traffic/accessibility/drainage.',
           'Ground-level street fixture; elevated kerbs, operational stop islands and sloped joins require runtime integration.',

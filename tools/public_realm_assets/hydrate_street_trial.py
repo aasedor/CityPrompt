@@ -28,6 +28,13 @@ def main():
         root = Path(candidate['package'])
         recipe = json.loads((root / 'recipe.json').read_text(encoding='utf-8'))
         assert recipe['id'] == candidate['id'] and recipe['runtime_approved'] is False
+        # Native junctions inherit the authored long-section finish. Requiring
+        # this at hydration keeps future street batches in the shared crossing
+        # contract rather than silently falling back to a blank paving square.
+        finish = recipe.get('junction_surface') or {
+            'deck': 'timber', 'cobble': 'cobble', 'brick': 'brick', 'stone': 'pavers'
+        }.get(recipe.get('pattern'))
+        assert finish in {'pavers', 'brick', 'cobble', 'timber'}, f"Register junction finish for {candidate['id']}"
         assembly = recipe['assembly']
         source = root / assembly['path']
         content = source.read_bytes()
@@ -40,6 +47,7 @@ def main():
         row = dict(
             id=recipe['id'], title=recipe['title'], kind='street',
             dimensions=recipe['dimensions_m'], sha256=assembly['sha256'],
+            junctionSurface=finish,
             surfaceRegions=recipe['surface_regions'],
             url='/' + relative.as_posix(), treeWells=recipe['tree_wells'],
         )

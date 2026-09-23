@@ -348,6 +348,15 @@ section passed inspection. Review the exact 3D capture before any AI finish:
 image models can invent a clean connection even when the saved street geometry
 only overlaps. The [ten-street Currie crossing trial](TEN_STREET_CURRIE_INTERSECTION_TRIAL_2026-09-23.md)
 records five concrete examples and their source/render comparisons.
+The subsequent [native junction pilot](NATIVE_STREET_JUNCTION_RUNTIME_2026-09-23.md)
+uses the shared graph to cut both fixed sections and create one crossing owner.
+For every new fixed native street, register its metric width/length axes,
+ordered surface regions and a junction finish (`pavers`, `brick`, `cobble` or
+`timber`). The hydration check must reject unknown finishes; the crossing
+regression must include the new variant automatically. Prove the node in the
+exact 3D capture after moving/rotating/reloading. This local four-arm pilot is
+not evidence for T/skew, bent streets, unequal grades, native/procedural mixes
+or public-road endpoints; test those separately when advertised.
 
 ## Parks and open spaces
 

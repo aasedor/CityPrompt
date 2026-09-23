@@ -390,6 +390,7 @@
   },
   {
     "id": "student_planted_shared_street_v1",
+    "junctionSurface": "pavers",
     "title": "Planted Shared Street",
     "kind": "street",
     "dimensions": [
@@ -530,6 +531,7 @@
   },
   {
     "id": "student_garden_cycle_promenade_v1",
+    "junctionSurface": "pavers",
     "title": "Garden Cycle Promenade",
     "kind": "street",
     "dimensions": [
@@ -656,6 +658,7 @@
   },
   {
     "id": "student_main_street_v1",
+    "junctionSurface": "pavers",
     "title": "Neighbourhood Main Street",
     "kind": "street",
     "dimensions": [
@@ -854,6 +857,7 @@
   },
   {
     "id": "student_cycle_avenue_v1",
+    "junctionSurface": "pavers",
     "title": "Protected Cycle Avenue",
     "kind": "street",
     "dimensions": [
@@ -1073,6 +1077,7 @@
   },
   {
     "id": "student_planted_lane_v1",
+    "junctionSurface": "brick",
     "title": "Planted Service Lane",
     "kind": "street",
     "dimensions": [
@@ -1199,6 +1204,7 @@
   },
   {
     "id": "student_transit_street_v1",
+    "junctionSurface": "pavers",
     "title": "Transit Stop Street",
     "kind": "street",
     "dimensions": [
@@ -1397,6 +1403,7 @@
   },
   {
     "id": "student_market_street_v1",
+    "junctionSurface": "cobble",
     "title": "Pedestrian Market Street",
     "kind": "street",
     "dimensions": [
@@ -1453,6 +1460,7 @@
   },
   {
     "id": "student_green_alley_v1",
+    "junctionSurface": "brick",
     "title": "Ruelle Verte Community Alley",
     "kind": "street",
     "dimensions": [
@@ -1523,6 +1531,7 @@
   },
   {
     "id": "student_heritage_mews_v1",
+    "junctionSurface": "cobble",
     "title": "Heritage Mews Lane",
     "kind": "street",
     "dimensions": [
@@ -1565,6 +1574,7 @@
   },
   {
     "id": "student_boardwalk_v1",
+    "junctionSurface": "timber",
     "title": "Waterfront Timber Boardwalk",
     "kind": "street",
     "dimensions": [
@@ -1607,6 +1617,7 @@
   },
   {
     "id": "student_school_street_v1",
+    "junctionSurface": "pavers",
     "title": "Playful School Street",
     "kind": "street",
     "dimensions": [
@@ -1724,6 +1735,7 @@
   },
   {
     "id": "student_grand_promenade_v1",
+    "junctionSurface": "pavers",
     "title": "Grand Promenade Boulevard",
     "kind": "street",
     "dimensions": [

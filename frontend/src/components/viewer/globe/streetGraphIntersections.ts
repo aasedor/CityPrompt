@@ -6,6 +6,7 @@ import {
   PUBLIC_REALM_STREET_FAMILY_VERSION,
 } from './streetFamilyCatalog';
 import { validateStreetRecipeProperties } from './streetLegoContract';
+import { publicRealmTrialAsset } from './publicRealmTrial';
 
 interface LocalPoint {
   x: number;
@@ -141,6 +142,8 @@ function detectStreetIntersections(
   includeThreeArm: boolean,
 ): ConnectedStreetIntersection[] {
   const eligibleZones = [...zones].sort((a, b) => a.id.localeCompare(b.id)).filter((zone) => {
+    const native = publicRealmTrialAsset(zone);
+    if (native) return native.kind === 'street' && native.dimensions[0] >= 5;
     const props = zone.properties as Record<string, unknown> | undefined;
     const lego = props?.public_realm_lego && typeof props.public_realm_lego === 'object'
       ? props.public_realm_lego as Record<string, unknown>
@@ -159,6 +162,7 @@ function detectStreetIntersections(
   const originLat = allCoordinates.reduce((sum, point) => sum + point[1], 0) / allCoordinates.length;
   const mPerLon = metersPerDegLon(originLat);
   const axes: StreetAxis[] = eligibleZones.flatMap((zone) => {
+    const native = publicRealmTrialAsset(zone);
     const centerline = extractZoneCenterline(zone);
     if (centerline.length < 2) return [];
     const validation = validateStreetRecipeProperties(zone.properties);
@@ -182,8 +186,8 @@ function detectStreetIntersections(
       );
     return [{
       zoneId: zone.id,
-      widthM: effectiveRoadWidth(zone.properties),
-      supportedV1: centerlineAnchorsJunction && ((props?.road_archetype_id === 'calgary_collector'
+      widthM: native?.dimensions[0] ?? effectiveRoadWidth(zone.properties),
+      supportedV1: centerlineAnchorsJunction && (native?.kind === 'street' || ((props?.road_archetype_id === 'calgary_collector'
         && props.road_selected_variant_id === 'calgary_collector_v0'
         && effectiveRoadWidth(zone.properties) === 20
         && (props.public_realm_fallback as Record<string, unknown> | undefined)?.state === 'family_pending') || (validation.valid
@@ -192,7 +196,7 @@ function detectStreetIntersections(
           'street_local_public_realm',
           'street_complete_main_18m',
           'street_complete_main_22m',
-        ].includes(validation.recipe.familyId))),
+        ].includes(validation.recipe.familyId)))),
       points: centerline.map((point) => ({
         x: (point[0] - originLng) * mPerLon,
         y: (point[1] - originLat) * METERS_PER_DEG_LAT,

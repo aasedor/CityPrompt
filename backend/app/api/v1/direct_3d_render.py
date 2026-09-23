@@ -9,10 +9,13 @@ from __future__ import annotations
 
 import base64
 import hashlib
+import json
 import logging
 import math
 import re
 from datetime import datetime, timezone
+from functools import lru_cache
+from pathlib import Path
 
 import boto3
 from botocore.config import Config as BotoConfig
@@ -507,6 +510,9 @@ def _street_zone_centerline(zone: SiteZone) -> list[tuple[float, float]] | None:
 
 def _effective_street_width(zone: SiteZone) -> float:
     properties = zone.properties or {}
+    native_width = _local_trial_street_width(zone)
+    if native_width is not None:
+        return native_width
     try:
         width = float(properties.get("width", 10))
     except (TypeError, ValueError):
@@ -534,6 +540,33 @@ def _effective_street_width(zone: SiteZone) -> float:
     return max(width, lanes * 3.5)
 
 
+@lru_cache(maxsize=1)
+def _local_trial_street_registry() -> dict[str, float]:
+    """Review-only native sections; production never reads or trusts this file."""
+    path = Path(__file__).resolve().parents[4] / "frontend/src/components/viewer/globe/publicRealmTrialAssets.json"
+    try:
+        rows = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+    return {
+        row["id"]: float(row["dimensions"][0])
+        for row in rows
+        if row.get("kind") == "street"
+        and row.get("junctionSurface") in {"pavers", "brick", "cobble", "timber"}
+        and isinstance(row.get("dimensions"), list)
+        and len(row["dimensions"]) == 2
+        and isinstance(row["dimensions"][0], (int, float))
+        and 5 <= row["dimensions"][0] <= 40
+    }
+
+
+def _local_trial_street_width(zone: SiteZone) -> float | None:
+    if get_settings().app_env.lower() != "development":
+        return None
+    asset_id = (zone.properties or {}).get("public_realm_trial_asset")
+    return _local_trial_street_registry().get(asset_id) if isinstance(asset_id, str) else None
+
+
 def _street_supports_v1_four_way_junction(zone: SiteZone) -> bool:
     """Mirror the browser's executable street-axis eligibility, fail closed."""
 
@@ -553,6 +586,8 @@ def _street_supports_v1_four_way_junction(zone: SiteZone) -> bool:
             return False
         if "_plan_snapshot_id" in properties or "_imported_from" in properties:
             return False
+    if _local_trial_street_width(zone) is not None:
+        return True
     raw_recipe = properties.get(PUBLIC_REALM_RECIPE_PROPERTY)
     # The fixed 20 m catalogue collector has a metric section but no promoted
     # LEGO family yet. Accept only that exact fallback, never arbitrary legacy
