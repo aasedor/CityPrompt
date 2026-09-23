@@ -8,10 +8,10 @@ import { trimNativeStreetModel } from './nativeStreetModelTrim';
 
 const origin = [-114.12, 51.0184];
 const east = 111320 * Math.cos(origin[1] * Math.PI / 180);
-const ring = (w: number, d: number, yaw = 0) =>
+const ring = (w: number, d: number, yaw = 0, shiftX = 0, shiftY = 0) =>
   [[-w/2,-d/2],[w/2,-d/2],[w/2,d/2],[-w/2,d/2]].map(([x,y]) =>
-    [origin[0] + (x*Math.cos(yaw)-y*Math.sin(yaw))/east,
-      origin[1] + (x*Math.sin(yaw)+y*Math.cos(yaw))/111320]);
+    [origin[0] + (shiftX+x*Math.cos(yaw)-y*Math.sin(yaw))/east,
+      origin[1] + (shiftY+x*Math.sin(yaw)+y*Math.cos(yaw))/111320]);
 const common = { project_id: 'test', color: '#777', sort_order: 0,
   created_at: '2026-09-23', updated_at: '2026-09-23', is_active_boundary: false };
 const boundary: SiteZone = { ...common, id: 'site', zone_type: 'site_boundary', is_active_boundary: true,
@@ -36,7 +36,32 @@ describe('native street junction ownership', () => {
       const ground = buildNativeStreetJunctionGround(nodes[0]);
       expect(ground.getAttribute('position').count).toBeGreaterThan(0);
       ground.dispose();
+      // Registering a new section must also provide a usable T approach.
+      const through = street(market, Math.PI / 2, 'through');
+      const stem = { ...street(asset, 0, 'stem'),
+        coordinates: ring(asset.dimensions[0], asset.dimensions[1], 0, 0, asset.dimensions[1] / 2) };
+      expect(nativeStreetJunctions([boundary, through, stem], 0), `${asset.id} T`).toHaveLength(1);
     }
+  });
+  it.each([-1, 1])('owns only the three present native arms of a T, stem side %i', (side) => {
+    const through = street(market, Math.PI / 2, 'through');
+    const alley = assets.find((asset) => asset.id === 'student_green_alley_v1')!;
+    const stem = { ...street(alley, 0, 'stem'),
+      coordinates: ring(alley.dimensions[0], alley.dimensions[1], 0, 0, side * alley.dimensions[1] / 2) };
+    const [junction] = nativeStreetJunctions([boundary, through, stem], 0);
+    expect(junction).toBeDefined();
+    expect(junction.node.armCount).toBe(3);
+    expect(junction.node.approachSides.flat()).toHaveLength(3);
+    expect(junction.layout.sidesB).toEqual([side]);
+    const ground = buildNativeStreetJunctionGround(junction);
+    const positions = ground.getAttribute('position');
+    expect(positions.count).toBeGreaterThan(0);
+    // The patch cannot paint a fourth road stem beyond the through street.
+    const minY = Math.min(...Array.from({ length: positions.count }, (_, i) => positions.getY(i)));
+    const maxY = Math.max(...Array.from({ length: positions.count }, (_, i) => positions.getY(i)));
+    expect(side === 1 ? maxY : -minY).toBeGreaterThan(junction.layout.rowA);
+    expect(side === 1 ? -minY : maxY).toBeLessThanOrEqual(junction.layout.rowA + .05);
+    ground.dispose();
   });
   it('cuts both source grounds exactly and keeps the outer street', () => {
     const first = street(assets.find((asset) => asset.id === 'student_main_street_v1')!, 0);

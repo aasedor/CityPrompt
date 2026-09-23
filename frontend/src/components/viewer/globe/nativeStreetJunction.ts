@@ -28,9 +28,9 @@ function junctionSurface(asset: PublicRealmTrialAsset): JunctionSurface {
   return 'pavers';
 }
 
-/** The same graph nodes and footprint contract used by the procedural street
- * renderer. The bounded native adapter only claims straight, orthogonal,
- * fixed-size sections on one prepared datum. */
+/** The same graph nodes and footprint contract used by the compiled street
+ * renderer. Rigid native sections join at straight, orthogonal T/X nodes on
+ * one prepared datum; a missing T arm never acquires a fictitious surface. */
 export function nativeStreetJunctions(zones: SiteZone[], terrainHeight: number): NativeStreetJunction[] {
   const streets = zones.flatMap((zone): NativeStreetPlacement[] => {
     const asset = publicRealmTrialAsset(zone);
@@ -40,7 +40,7 @@ export function nativeStreetJunctions(zones: SiteZone[], terrainHeight: number):
   if (streets.length < 2) return [];
   const byId = new Map(streets.map((street) => [street.zone.id, street]));
   return detectConnectedStreetIntersections(streets.map((street) => street.zone)).flatMap((node) => {
-    if (node.armCount !== 4 || !node.orthogonal || node.approachSides[0].length !== 2 || node.zoneIds.length !== 2) return [];
+    if (!node.orthogonal || node.approachSides[0].length !== 2 || node.zoneIds.length !== 2) return [];
     const connected = node.zoneIds.map((id) => byId.get(id));
     if (connected.some((item) => !item)) return [];
     const pair = connected as NativeStreetPlacement[];
@@ -57,14 +57,25 @@ export function nativeStreetJunctions(zones: SiteZone[], terrainHeight: number):
           maxY: sidesB.includes(1) ? rowA + 2 : 0 },
       ],
     };
-    // Every approach must actually reach the node and the two-metre lead-in.
+    // A T stem legitimately ends at the node. Check the *present* directed
+    // approaches against the complete node footprint instead of demanding
+    // two metres of model beyond that endpoint (which would invent arm four).
     const reaches = pair.every(({ placement }) => {
       const [width, length] = placement.asset.dimensions;
       const dx = (node.longitude - placement.lng) * metersPerDegLon(node.latitude);
       const dy = (node.latitude - placement.lat) * METERS_PER_DEG_LAT;
       const localX = dx * Math.cos(placement.yaw) + dy * Math.sin(placement.yaw);
       const localY = -dx * Math.sin(placement.yaw) + dy * Math.cos(placement.yaw);
-      return Math.abs(localX) <= width / 2 + .05 && Math.abs(localY) <= length / 2 - 2;
+      if (Math.abs(localX) > width / 2 + .05) return false;
+      const routeBearing = placement.yaw + Math.PI / 2;
+      const axis = Math.abs(Math.cos(routeBearing - node.axisABearingRad)) > .9 ? 0 : 1;
+      const bearing = axis === 0 ? node.axisABearingRad : node.axisBBearingRad;
+      if (Math.abs(Math.cos(routeBearing - bearing)) < .999) return false;
+      const direction = Math.sign(Math.cos(routeBearing - bearing));
+      const endpoints = [(-length / 2 - localY) * direction, (length / 2 - localY) * direction];
+      const required = (axis === 0 ? rowB : rowA) + 2;
+      return node.approachSides[axis].every((side) =>
+        Math.max(...endpoints.map((value) => value * side)) >= required - .05);
     });
     return reaches ? [{ node, layout, streets: pair, height: pair[0].placement.height }] : [];
   });

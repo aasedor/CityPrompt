@@ -66,3 +66,10 @@ the compiled recipe, use the same graph-owned clipping and junction ground,
 and complete S1–S4 of the
 [runtime checklist](ARCHETYPE_RUNTIME_INTEGRATION.md) for each exact variant.
 Review a vehicular and a pedestrian crossing before scaling a new batch.
+
+## Follow-up: connected network verification
+
+See [STREET_JUNCTION_NETWORK_FOLLOWUP_2026-09-23.md](STREET_JUNCTION_NETWORK_FOLLOWUP_2026-09-23.md).
+The native rectangle now uses its physical length as the graph axis and joins
+orthogonal three-arm T nodes as well as X nodes. The earlier “T junctions” item
+above records the scope at the time of this pilot; the follow-up supersedes it.

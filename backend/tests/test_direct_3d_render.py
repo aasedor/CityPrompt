@@ -1067,6 +1067,30 @@ def test_native_trial_street_junction_is_proven_only_for_registered_local_sectio
     assert not direct_api._street_sources_form_four_arm_junction(streets)
 
 
+def test_native_trial_street_t_uses_long_axis_and_does_not_invent_fourth_arm():
+    longitude, latitude = -114.12, 51.0184
+    meters_per_longitude = 111_320 * math.cos(math.radians(latitude))
+    through = _zone(uuid.uuid4(), "street", properties={"public_realm_trial_asset": "student_main_street_v1"})
+    through.geometry = from_shape(box(
+        longitude - 23 / 2 / meters_per_longitude, latitude - 48 / 2 / 111_320,
+        longitude + 23 / 2 / meters_per_longitude, latitude + 48 / 2 / 111_320,
+    ), srid=4326)
+    stem = _zone(uuid.uuid4(), "street", properties={"public_realm_trial_asset": "student_green_alley_v1"})
+    stem.geometry = from_shape(box(
+        longitude, latitude - 11 / 2 / 111_320,
+        longitude + 40 / meters_per_longitude, latitude + 11 / 2 / 111_320,
+    ), srid=4326)
+    from app.schemas.direct_3d_render import Direct3DJunctionTopology
+    topology = Direct3DJunctionTopology(
+        version=1, arm_count=3, longitude=longitude, latitude=latitude,
+        source_fingerprint="sj1|" + "|".join(
+            f"{zone.id}:{'a' * 64}:{'b' * 64}" for zone in sorted([through, stem], key=lambda item: str(item.id))
+        ),
+    )
+    assert direct_api._street_sources_form_junction([through, stem], topology)
+    assert not direct_api._street_sources_form_four_arm_junction([through, stem])
+
+
 def test_street_junction_rejects_present_but_invalid_plan_centerline():
     """AI plans sometimes persist an EMPTY centerline (roundabout access stubs).
 
@@ -4668,6 +4692,33 @@ def test_connected_junction_accepts_three_arms_and_preserves_verified_metadata()
     assert not direct_api._street_sources_form_four_arm_junction(streets)
 
 
+def test_connected_junction_accepts_skew_mixed_streets_and_a_remote_bend():
+    streets = _tee_street_zones()
+    # The stem joins at about 58 degrees and bends only after its straight
+    # approach has cleared the junction. Mixed compiled sections stay valid.
+    streets[1].properties = {
+        **_supported_street_properties(
+            10, [[-114.08, 51.04], [-114.079, 51.041], [-114.0785, 51.0413]],
+            archetype_id="yield_street",
+        ),
+        "community_3d": streets[1].properties["community_3d"],
+    }
+    topology = _junction_topology(streets)
+    assert direct_api._street_sources_form_junction(streets, topology)
+    request = _connected_junction_request(streets, topology)
+    assert direct_api._bind_instance_manifest_to_server_zones(request, streets, streets)
+
+
+def test_connected_junction_keeps_public_road_connection_as_one_authored_arm():
+    streets = _tee_street_zones()
+    streets[0].properties["connect_to_public_road"] = True
+    streets[0].properties["plan_centerline"] = [
+        [-114.0815, 51.04], [-114.08, 51.04], [-114.079, 51.04],
+    ]
+    topology = _junction_topology(streets)
+    assert direct_api._validate_junction_topology(streets, streets, topology)
+
+
 @pytest.mark.parametrize("change", ["count", "anchor", "source_revision", "skew"])
 def test_connected_junction_rejects_false_or_stale_claims_before_generation(change):
     streets = _tee_street_zones()
@@ -4679,7 +4730,7 @@ def test_connected_junction_rejects_false_or_stale_claims_before_generation(chan
     elif change == "source_revision":
         streets[0].properties["community_3d"]["source_hash"] = "f" * 64
     else:
-        streets[1].properties["plan_centerline"][1][0] += 0.001
+        streets[1].properties["plan_centerline"][1][0] += 0.003
     request = _connected_junction_request(streets, topology)
     with pytest.raises(HTTPException, match="topology, anchor, or source revision") as error:
         direct_api._bind_instance_manifest_to_server_zones(request, streets, streets)
@@ -4744,4 +4795,12 @@ def test_connected_junction_rejects_bent_through_arms_hidden_by_bearing_grouping
 def test_connected_junction_rejects_stub_too_short_for_an_actual_third_approach():
     streets = _tee_street_zones()
     streets[1].properties["plan_centerline"][1][1] = 51.04005
+    assert not direct_api._street_sources_form_junction(streets, _junction_topology(streets))
+
+
+def test_connected_junction_rejects_turn_inside_node_envelope():
+    streets = _tee_street_zones()
+    streets[1].properties["plan_centerline"] = [
+        [-114.08, 51.04], [-114.08, 51.04004], [-114.079, 51.0405],
+    ]
     assert not direct_api._street_sources_form_junction(streets, _junction_topology(streets))

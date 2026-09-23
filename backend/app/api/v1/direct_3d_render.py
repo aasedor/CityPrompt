@@ -508,6 +508,28 @@ def _street_zone_centerline(zone: SiteZone) -> list[tuple[float, float]] | None:
     return _valid_centerline_points([list(point) for point in centerline])
 
 
+def _collapse_straight_street_stations(
+    points: list[tuple[float, float]],
+) -> list[tuple[float, float]]:
+    """Ignore redundant route stations at a junction, preserving true bends."""
+    if len(points) < 3:
+        return points
+    meters_per_longitude = 111_320 * math.cos(math.radians(points[0][1]))
+    result = [points[0]]
+    for current, following in zip(points[1:-1], points[2:]):
+        previous = result[-1]
+        ax = (current[0] - previous[0]) * meters_per_longitude
+        ay = (current[1] - previous[1]) * 111_320
+        bx = (following[0] - current[0]) * meters_per_longitude
+        by = (following[1] - current[1]) * 111_320
+        lengths = math.hypot(ax, ay) * math.hypot(bx, by)
+        if lengths > 0 and (ax * bx + ay * by) / lengths > math.cos(math.pi / 180):
+            continue
+        result.append(current)
+    result.append(points[-1])
+    return result
+
+
 def _effective_street_width(zone: SiteZone) -> float:
     properties = zone.properties or {}
     native_width = _local_trial_street_width(zone)
@@ -731,6 +753,7 @@ def _street_sources_form_junction(
         width = _effective_street_width(zone)
         if centerline is None or len(centerline) > 512 or not _street_supports_v1_four_way_junction(zone):
             return False
+        centerline = _collapse_straight_street_stations(centerline)
         geographic_axes.append(
             {
                 "zone_id": str(zone.id),
@@ -884,6 +907,29 @@ def _street_sources_form_junction(
             > 0.5
         ):
             continue
+        # One nearest segment cannot stand in for a curved turn inside the
+        # node. Leave that connection unclaimed until a turn transition is
+        # actually authored; remote bends remain valid.
+        bend_inside_node = False
+        for axis in axes:
+            points = axis["points"]
+            for index in range(1, len(points) - 1):  # type: ignore[arg-type]
+                previous, current, following = points[index - 1:index + 2]  # type: ignore[index]
+                distance_to_node = math.hypot(
+                    current[0] - float(cluster["x"]),
+                    current[1] - float(cluster["y"]),
+                )
+                if distance_to_node > float(axis["width"]) / 2 + 4:
+                    continue
+                before = math.atan2(current[1] - previous[1], current[0] - previous[0])
+                after = math.atan2(following[1] - current[1], following[0] - current[0])
+                if _angle_distance(before, after) > math.pi / 180:
+                    bend_inside_node = True
+                    break
+            if bend_inside_node:
+                break
+        if bend_inside_node:
+            continue
         arms: list[dict[str, object]] = []
         contributing_zone_ids: set[str] = set()
         cluster_zone_ids = cluster["zone_ids"]
@@ -972,17 +1018,25 @@ def _street_sources_form_junction(
             continue
         separation = _undirected_angle_distance(orientations[0], orientations[1])
         if topology is not None:
+            sine = math.sin(separation)
+            if sine < math.sqrt(0.5) - 0.001:
+                continue
             if any(
                 arm["reach"] + 0.01
                 < max(
                     other["width"] / 2 + 4
                     for other in grouped_arms
                     if _undirected_angle_distance(arm["bearing"], other["bearing"]) >= math.pi / 6
-                )
+                ) / sine
                 for arm in grouped_arms
             ):
                 continue
-            if abs(separation - math.pi / 2) <= math.pi / 180 and all(
+            # The compiled renderer owns 45–135 degree section joins as well
+            # as square T/X nodes. The server must independently accept that
+            # same bounded geometry or a valid skew capture always 409s.
+            # Require every authored arm to stay straight at the anchor; a
+            # bent opposing street cannot be laundered by bearing grouping.
+            if all(
                 min(_undirected_angle_distance(float(arm["bearing"]), orientation) for orientation in orientations)
                 <= math.pi / 180
                 for arm in arms

@@ -754,7 +754,7 @@ function StreetRibbonDetail({
           renderOrder={RENDER_ORDER_FLATWORK}
           frustumCulled={false}
         >
-          <primitive object={bandMaterials[index].material} attach="material" dispose={null} />
+          <primitive object={bandMaterials[index].material} attach="material" />
         </mesh>
       ))}
       {geometries.markings.map(({ marking, geometry }, index) => (
@@ -1240,24 +1240,24 @@ function RoundaboutDetail({
         {!hasAuthoredNetworkGround && (
           <>
             <mesh geometry={geometry.ring} renderOrder={RENDER_ORDER_FLATWORK} frustumCulled={false}>
-              <primitive object={roundaboutMaterials.ring.material} attach="material" dispose={null} />
+              <primitive object={roundaboutMaterials.ring.material} attach="material" />
             </mesh>
             <mesh geometry={geometry.apron} renderOrder={RENDER_ORDER_FLATWORK} frustumCulled={false}>
-              <primitive object={roundaboutMaterials.concrete.material} attach="material" dispose={null} />
+              <primitive object={roundaboutMaterials.concrete.material} attach="material" />
             </mesh>
             <mesh geometry={geometry.sidewalks} renderOrder={RENDER_ORDER_RAISED} frustumCulled={false}>
-              <primitive object={roundaboutMaterials.concrete.material} attach="material" dispose={null} />
+              <primitive object={roundaboutMaterials.concrete.material} attach="material" />
             </mesh>
           </>
         )}
         <mesh geometry={geometry.island} renderOrder={RENDER_ORDER_RAISED} frustumCulled={false}>
-          <primitive object={roundaboutMaterials.planting.material} attach="material" dispose={null} />
+          <primitive object={roundaboutMaterials.planting.material} attach="material" />
         </mesh>
         <mesh geometry={geometry.splitters} renderOrder={RENDER_ORDER_RAISED} frustumCulled={false}>
-          <primitive object={roundaboutMaterials.concrete.material} attach="material" dispose={null} />
+          <primitive object={roundaboutMaterials.concrete.material} attach="material" />
         </mesh>
         <mesh geometry={geometry.splitterPlanting} renderOrder={RENDER_ORDER_RAISED + 1} frustumCulled={false}>
-          <primitive object={roundaboutMaterials.planting.material} attach="material" dispose={null} />
+          <primitive object={roundaboutMaterials.planting.material} attach="material" />
         </mesh>
         <mesh geometry={geometry.approachMarkings} renderOrder={RENDER_ORDER_DASHES + 1} frustumCulled={false}>
           <meshBasicMaterial
@@ -1482,11 +1482,11 @@ function AccessibleFourWayIntersectionDetail({
       height={terrain}
     >
       {geometry.pavement && <mesh geometry={geometry.pavement} renderOrder={RENDER_ORDER_FLATWORK} frustumCulled={false}>
-        {surfaceMaterials?.pavement ? <primitive object={surfaceMaterials.pavement.material} attach="material" dispose={null} />
+        {surfaceMaterials?.pavement ? <primitive object={surfaceMaterials.pavement.material} attach="material" />
           : <meshStandardMaterial color={appearance.palette.motor} roughness={0.97} metalness={0} side={THREE.DoubleSide} />}
       </mesh>}
       {geometry.sidewalks && <mesh geometry={geometry.sidewalks} renderOrder={RENDER_ORDER_FLATWORK} frustumCulled={false}>
-        {surfaceMaterials?.sidewalks ? <primitive object={surfaceMaterials.sidewalks.material} attach="material" dispose={null} />
+        {surfaceMaterials?.sidewalks ? <primitive object={surfaceMaterials.sidewalks.material} attach="material" />
           : <meshStandardMaterial color={appearance.palette.sidewalk} roughness={0.94} metalness={0} side={THREE.DoubleSide} />}
       </mesh>}
       {geometry.curbs && <mesh geometry={geometry.curbs} renderOrder={RENDER_ORDER_RAISED} frustumCulled={false}>

@@ -232,6 +232,21 @@ describe('bounded connected T graph', () => {
     expect(resolveStreetJunctionLayout(node, zones)).not.toBeNull();
   });
 
+  it('joins a compiled public-road route with a redundant saved station at the T', () => {
+    const through = street('public', [[-114.101, 51], [-114.1, 51], [-114.099, 51]], 16);
+    through.properties = { ...through.properties, connect_to_public_road: true };
+    const zones = [through, stem()];
+    const [node] = detectConnectedStreetIntersections(zones);
+    expect(node.armCount).toBe(3);
+    expect(node.zoneIds).toEqual(['public', 'stem']);
+    expect(resolveStreetJunctionLayout(node, zones)).not.toBeNull();
+  });
+
+  it('does not claim a turn inside the junction envelope as a straight arm', () => {
+    const turning = street('turning', [[-114.1, 51], [-114.1, 51.00004], [-114.099, 51.0005]], 14);
+    expect(detectConnectedStreetIntersections([main(), turning])).toEqual([]);
+  });
+
   it('reconstructs a three-source T with split through arms', () => {
     const zones = [street('west', [[-114.101, 51], [-114.1, 51]], 16),
       street('east', [[-114.1, 51], [-114.099, 51]], 16), stem()];

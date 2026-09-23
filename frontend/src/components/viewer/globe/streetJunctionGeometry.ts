@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import type { SiteZone } from '@/types';
-import { extractZoneCenterline, effectiveRoadWidth } from '@/utils/roadGeometry';
+import { collapseStraightStreetStations, extractZoneCenterline, effectiveRoadWidth } from '@/utils/roadGeometry';
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 import type { ConnectedStreetIntersection } from './streetGraphIntersections';
 import { resolvePilotStreetSectionProfile } from './streetSectionProfiles';
@@ -47,7 +47,7 @@ export function resolveStreetJunctionLayout(node: ConnectedStreetIntersection, z
   const reaches = [[0, 0], [0, 0]];
   for (const zone of connected) {
     const profile = resolvePilotStreetSectionProfile(zone);
-    const route = extractZoneCenterline(zone);
+    const route = collapseStraightStreetStations(extractZoneCenterline(zone));
     if (!profile || route.length < 2) return null;
     // Only the segment entering this node owns the join. A bend farther down
     // the route must not disable an otherwise valid junction.

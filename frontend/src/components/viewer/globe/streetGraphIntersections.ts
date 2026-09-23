@@ -1,5 +1,5 @@
 import type { SiteZone } from '@/types';
-import { effectiveRoadWidth, extractZoneCenterline, parsePersistedCenterline } from '@/utils/roadGeometry';
+import { collapseStraightStreetStations, effectiveRoadWidth, extractZoneCenterline, parsePersistedCenterline } from '@/utils/roadGeometry';
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 import {
   PUBLIC_REALM_STREET_CATALOG_FINGERPRINT,
@@ -163,7 +163,17 @@ function detectStreetIntersections(
   const mPerLon = metersPerDegLon(originLat);
   const axes: StreetAxis[] = eligibleZones.flatMap((zone) => {
     const native = publicRealmTrialAsset(zone);
-    const centerline = extractZoneCenterline(zone);
+    // Review-native rectangles use local X for section width and local Y for
+    // the route. Generic buffered-road ring pairing follows the opposite
+    // edge order and would make a long street's *width* its graph axis.
+    // Recover the same dominant physical axis as the server's rotated-
+    // rectangle fallback. Native placement validates this exact ring later.
+    const ring = zone.coordinates.length === 5 && zone.coordinates[0].every((value, index) =>
+      value === zone.coordinates[4][index]) ? zone.coordinates.slice(0, 4) : zone.coordinates;
+    const centerline = collapseStraightStreetStations(native?.kind === 'street' && ring.length === 4
+      ? [[(ring[0][0] + ring[1][0]) / 2, (ring[0][1] + ring[1][1]) / 2],
+        [(ring[2][0] + ring[3][0]) / 2, (ring[2][1] + ring[3][1]) / 2]]
+      : extractZoneCenterline(zone));
     if (centerline.length < 2) return [];
     const validation = validateStreetRecipeProperties(zone.properties);
     // Junction anchoring requires a centerline BOTH sides derive identically.
@@ -268,6 +278,17 @@ function detectStreetIntersections(
     );
     const contributingAxes: StreetAxis[] = [];
     for (const axis of axes) {
+      // A turn inside the node envelope needs a curved transition; choosing
+      // only one adjacent segment here would fabricate a straight through arm.
+      const bendsInsideNode = axis.points.some((point, index) => {
+        if (index === 0 || index === axis.points.length - 1) return false;
+        if (Math.hypot(point.x - cluster.x, point.y - cluster.y) > axis.widthM / 2 + 4) return false;
+        const before = axis.points[index - 1], after = axis.points[index + 1];
+        const firstBearing = Math.atan2(point.y - before.y, point.x - before.x);
+        const secondBearing = Math.atan2(after.y - point.y, after.x - point.x);
+        return angleDistance(firstBearing, secondBearing) > Math.PI / 180;
+      });
+      if (bendsInsideNode) return [];
       let best: ReturnType<typeof closestPointOnSegment> & { segmentIndex: number } | null = null;
       for (let index = 0; index < axis.points.length - 1; index += 1) {
         const closest = closestPointOnSegment(cluster, axis.points[index], axis.points[index + 1]);
