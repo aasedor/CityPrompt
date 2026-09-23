@@ -6413,8 +6413,9 @@ async def test_place_community_rejects_framework_overlay_without_mutating_it(cli
 
 @pytest.mark.anyio
 @pytest.mark.parametrize("include_landscape", [True, False])
+@pytest.mark.parametrize("landscape_mode", [None, "generated", "placed_objects_only"])
 async def test_place_community_derives_residual_from_all_project_zones(
-    client, mock_db, test_user, auth_headers, include_landscape
+    client, mock_db, test_user, auth_headers, include_landscape, landscape_mode
 ):
     from geoalchemy2.shape import from_shape, to_shape
     from shapely.geometry import box
@@ -6431,7 +6432,17 @@ async def test_place_community_derives_residual_from_all_project_zones(
         project,
         zone_type="site_boundary",
         geometry=from_shape(box(-114.0800, 51.0400, -114.0780, 51.0415), srid=4326),
-        properties={"site_name": "Residual landscape test"},
+        properties={
+            "site_name": "Residual landscape test",
+            **(
+                {
+                    "community_3d_landscape_mode": landscape_mode,
+                    "community_3d_landscape": {"state": "stale", "source_hash": "previous-plan"},
+                }
+                if landscape_mode
+                else {}
+            ),
+        },
     )
     building_zone = _make_zone(
         project,
@@ -6476,8 +6487,12 @@ async def test_place_community_derives_residual_from_all_project_zones(
     payload = response.json()
     if not include_landscape:
         assert payload["residual_landscape"]["boundary_count"] == 0
-        assert "community_3d_landscape" not in boundary.properties
-        assert boundary.properties["community_3d_landscape_mode"] == "placed_objects_only"
+        if landscape_mode == "generated":
+            assert boundary.properties["community_3d_landscape"]["state"] == "stale"
+            assert boundary.properties["community_3d_landscape_mode"] == "generated"
+        else:
+            assert "community_3d_landscape" not in boundary.properties
+            assert boundary.properties["community_3d_landscape_mode"] == "placed_objects_only"
         return
     assert payload["residual_landscape"]["boundary_count"] == 1
     assert payload["residual_landscape"]["area_sqm"] > 0

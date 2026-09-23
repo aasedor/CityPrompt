@@ -2053,6 +2053,17 @@ async def place_community_3d(
     try:
         for boundary in boundaries:
             if not body.include_residual_landscape:
+                existing_landscape = (boundary.properties or {}).get("community_3d_landscape")
+                # Automatic object recompiles do not own a landscape the
+                # student explicitly generated in the Site tab. A zone edit
+                # has already marked that recipe stale; keep its refresh
+                # signal until the student reapplies or removes it there.
+                if (
+                    isinstance(existing_landscape, dict)
+                    and existing_landscape.get("state") in {"compiled", "stale"}
+                    and (boundary.properties or {}).get("community_3d_landscape_mode") != "placed_objects_only"
+                ):
+                    continue
                 if (
                     "community_3d_landscape" in (boundary.properties or {})
                     or (boundary.properties or {}).get("community_3d_landscape_mode") != "placed_objects_only"
